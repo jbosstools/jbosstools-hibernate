@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryPage;
 
@@ -155,12 +156,21 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 		}*/
 	}
 
+	public Object getAdapter(Class adapter) {
+
+		if (adapter.equals(IPropertySheetPage.class))
+		{
+			return new HibernatePropertyPage();
+		}
+		return super.getAdapter(adapter);
+	}
 	
 	public ISelection getSelection() {
 		QueryPage selection = getSelectedQueryPage();
+		
 		return selection == null 
 			? new StructuredSelection() 
-			: new StructuredSelection(selection);
+			: new StructuredSelection(selection);	
 	}
 
 	/**
