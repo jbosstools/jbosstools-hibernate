@@ -11,7 +11,9 @@
     <property name="version" value="3.0"/>
 	<property name="javadoc.packagenames" value="org.hibernate.eclipse.*"/>
     <property name="lib.dir" location="build/lib"/>
-    	
+
+	<property name="src.dir" location="src"/>
+	
 	<import file="../common/common-build.xml"/> 
 
 	<target name="javadoc"/>
@@ -24,6 +26,12 @@
 		<ant antfile="..\console\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
 		<copy file="..\console\target\hibernateconsole-3.0\hibernateconsole.jar" todir="lib"/>
 
+		<ant antfile="..\console\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
+		<copy file="..\console\target\hibernateconsole-3.0\hibernateconsole.jar" todir="lib"/>
+
+		<ant antfile="..\tools\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
+		<copy file="..\tools\target\hibernate-tools-3.0\hibernate-tools.jar" todir="lib"/>
+		
 		<property file="${hibernate-core.lib.dir}/version.properties" prefix="h3"/>
 		
         <copy todir="lib" >
