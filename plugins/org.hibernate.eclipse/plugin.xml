@@ -4,9 +4,19 @@
    id="org.hibernate.eclipse"
    name="Hibernate Core Plugin"
    version="1.0.0"
-   provider-name="Hibernate Team">
+   provider-name="Hibernate Team"
+   class="org.hibernate.eclipse.HibernatePlugin">
 
    <runtime>
+      <library name="lib/hibernateconsole.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/hibernate-tools.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/hibernate3.jar">
+         <export name="*"/>
+      </library>
       <library name="lib/antlr-2.7.4.jar">
          <export name="*"/>
       </library>
@@ -32,9 +42,6 @@
          <export name="*"/>
       </library>
       <library name="lib/ehcache-0.9.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/hibernate3.jar">
          <export name="*"/>
       </library>
       <library name="lib/jaas.jar">
@@ -73,9 +80,15 @@
       <library name="lib/swarmcache-1.0rc2.jar">
          <export name="*"/>
       </library>
-      <library name="lib/hibernateconsole.jar">
+      <library name="lib/velocity-1.4.jar">
+         <export name="*"/>
+      </library>
+      <library name="lib/velocity-tools-generic-1.1.jar">
          <export name="*"/>
       </library>
    </runtime>
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+   </requires>
 
 </plugin>
