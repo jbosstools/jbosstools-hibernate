@@ -21,8 +21,12 @@
 			</arguments>
 		</buildCommand>
 		<buildCommand>
-			<name>com.ibm.sse.model.structuredbuilder</name>
+			<name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>
 			<arguments>
+				<dictionary>
+					<key>LaunchConfigHandle</key>
+					<value>&lt;project&gt;/.externalToolBuilders/com.ibm.sse.model.structuredbuilder.launch</value>
+				</dictionary>
 			</arguments>
 		</buildCommand>
 		<buildCommand>

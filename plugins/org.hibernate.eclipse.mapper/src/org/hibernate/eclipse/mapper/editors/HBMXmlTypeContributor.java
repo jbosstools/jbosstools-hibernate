@@ -37,6 +37,7 @@ public class HBMXmlTypeContributor implements IAttributeValueContributor {
 	final Set canProvideTypeViaName = new HashSet();
 	private final IJavaProject javaProject;
 	private HBMXmlResultCollector rc;
+	private static final boolean DEBUG = false;
 	
 	public HBMXmlTypeContributor(IJavaProject javaProject) {
 
@@ -49,6 +50,23 @@ public class HBMXmlTypeContributor implements IAttributeValueContributor {
 		
 		fieldAttributes.add("property>name");
 		fieldAttributes.add("id>name");
+		fieldAttributes.add("set>name");
+		
+		fieldAttributes.add("property>name");
+		fieldAttributes.add("many-to-one>name");
+		fieldAttributes.add("one-to-one>name");
+		fieldAttributes.add("component>name");
+		fieldAttributes.add("dynamic-component>name");
+		fieldAttributes.add("properties>name");
+		fieldAttributes.add("any>name");
+		fieldAttributes.add("map>name");
+		fieldAttributes.add("set>name");
+		fieldAttributes.add("list>name");
+		fieldAttributes.add("bag>name");
+		fieldAttributes.add("idbag>name");
+		fieldAttributes.add("array>name");
+		fieldAttributes.add("primitive-array>name");
+		fieldAttributes.add("query-list>name");
 		
 		canProvideTypeViaName.add("class");
 		canProvideTypeViaName.add("subclass");
@@ -72,7 +90,7 @@ public class HBMXmlTypeContributor implements IAttributeValueContributor {
 			proposals.addAll(Arrays.asList(handleFields(node, attribute, start, offset)));
 		}
 		
-		proposals.add(new CompletionProposal("start=[" + start + "]", offset, 1, 4));
+		if (DEBUG) proposals.add(new CompletionProposal("start=[" + start + "]", offset, 1, 4));
 
 		return proposals;
 	}
