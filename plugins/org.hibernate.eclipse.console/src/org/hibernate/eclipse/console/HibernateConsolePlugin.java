@@ -118,7 +118,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 			temp = temp.getCause();
 		}
 		
-		return new MultiStatus(ID, IStatus.ERROR,(IStatus[]) causes.toArray(new IStatus[causes.size()]), t.getMessage(), t);
+		return new MultiStatus(ID, IStatus.ERROR,(IStatus[]) causes.toArray(new IStatus[causes.size()]), t==null?"<No message>":t.getMessage(), t);
 		
 	}
 	
@@ -166,9 +166,12 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 	 */
 	public static void showError(Shell shell, String message, Throwable he) {
 		logErrorMessage(message, he);
+		String string = he==null?"<No message>":he.getClass().getName() + ":" + he.getMessage();
 		IStatus warning = new Status(IStatus.WARNING, 
-		 	      HibernateConsolePlugin.ID, 1, he.getClass().getName() + ":" + he.getMessage() , he);
+		 	      HibernateConsolePlugin.ID, 1, string , he);
 		 	   ErrorDialog.openError(shell, 
-		 	      message, null, warning);		
+		 	      "Hibernate Console", message, warning);		
 	}
+	
+	
 }

@@ -310,7 +310,8 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	List locateTypes(final IJavaProject javaProject) {
 	    
 		try {
-			final SearchPattern pattern = SearchPattern.createPattern("java.sql.Driver", IJavaSearchConstants.TYPE, IJavaSearchConstants.IMPLEMENTORS, SearchPattern.R_EXACT_MATCH);
+			String typeName = "java.sql.Driver";
+            final SearchPattern pattern = SearchPattern.createPattern(typeName, IJavaSearchConstants.TYPE, IJavaSearchConstants.IMPLEMENTORS, SearchPattern.R_EXACT_MATCH);
 			final IJavaSearchScope scope = SearchEngine.createJavaSearchScope(new IJavaElement[] {javaProject });
 			
 			final SearchEngine engine = new SearchEngine();

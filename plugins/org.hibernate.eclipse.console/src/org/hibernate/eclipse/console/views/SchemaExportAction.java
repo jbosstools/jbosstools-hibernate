@@ -6,17 +6,13 @@ package org.hibernate.eclipse.console.views;
 
 import java.util.Iterator;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.dialogs.ErrorDialog;
-import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.StructuredViewer;
-import org.eclipse.ui.actions.SelectionListenerAction;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.node.BaseNode;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.actions.ConsoleConfigurationBasedAction;
-import org.hibernate.console.node.BaseNode;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
 /**
@@ -25,51 +21,86 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
  */
 public class SchemaExportAction extends ConsoleConfigurationBasedAction {
 
-	private StructuredViewer viewer;
+    private StructuredViewer viewer;
 
-	/**
-	 * @param text
-	 */
-	protected SchemaExportAction(String text) {
-		super(text);
-	}
+    /**
+     * @param text
+     */
+    protected SchemaExportAction(String text) {
+        super(text);
+    }
 
-	/**
-	 * @param selectionProvider
-	 */
-	public SchemaExportAction(StructuredViewer selectionProvider) {
-		super("Run SchemaExport");
-		this.viewer = selectionProvider;
-	}
+    /**
+     * @param selectionProvider
+     */
+    public SchemaExportAction(StructuredViewer selectionProvider) {
+        super("Run SchemaExport");
+        this.viewer = selectionProvider;
+    }
 
-	public void doRun() {
-		for (Iterator i = getSelectedNonResources().iterator(); i.hasNext();) {
-        	try {
-            BaseNode node = ((BaseNode) i.next());
-			final ConsoleConfiguration config = node.getConsoleConfiguration();
-			config.execute(new org.hibernate.console.ConsoleConfiguration.Command() {
-				public Object execute() {
-					if (config.getConfiguration() != null) {
-						new SchemaExport(config.getConfiguration())
-								.create(true, true);
-					}
-					return null;
-				}
-			});
-            viewer.refresh(node); // todo: should we do it here or should the view just react to config being build ?
-        	} catch(HibernateException he) {
-        		 IStatus warning = new Status(IStatus.WARNING, 
-        		 	      HibernateConsolePlugin.ID, 1, he.getClass().getName() + ":" + he.getMessage() , he);
-        		 	   ErrorDialog.openError(viewer.getControl().getShell(), 
-        		 	      "Exception while running SchemaExport", null, warning);
-        	}
+    public void doRun() {
+        for (Iterator i = getSelectedNonResources().iterator(); i.hasNext();) {
+            try {
+                BaseNode node = ((BaseNode) i.next());
+                final ConsoleConfiguration config = node
+                        .getConsoleConfiguration();
+                config
+                        .execute(new org.hibernate.console.ConsoleConfiguration.Command() {
+                            public Object execute() {
+                                if (config.getConfiguration() != null
+                                        && MessageDialog.openConfirm(viewer
+                                                .getControl().getShell(),
+                                                "Run SchemaExport",
+                                                "Are you sure you want to run SchemaExport on '"
+                                                        + config.getName()
+                                                        + "'?")) {
+                                    SchemaExport export = new SchemaExport(
+                                            config.getConfiguration());
+                                    export.create(false, true);
+                                    if (!export.getExceptions().isEmpty()) {
+                                        Iterator iterator = export
+                                                .getExceptions().iterator();
+                                        int cnt = 1;
+                                        while (iterator.hasNext()) {
+                                            Throwable element = (Throwable) iterator
+                                                    .next();
+                                            HibernateConsolePlugin
+                                                    .logErrorMessage(
+                                                            "Error "
+                                                                    + cnt++
+                                                                    + " while performing SchemaExport",
+                                                            element);
+                                        }
+                                        HibernateConsolePlugin
+                                                .showError(
+                                                        viewer.getControl()
+                                                                .getShell(),
+                                                        cnt
+                                                                - 1
+                                                                + " error(s) while performing SchemaExport, see Error Log for details",
+                                                        null);
+                                    }
+                                }
+                                return null;
+                            }
+                        });
+                viewer.refresh(node); // todo: should we do it here or should
+                                        // the view just react to config being
+                                        // build ?
+            } catch (HibernateException he) {
+                HibernateConsolePlugin.showError(
+                        viewer.getControl().getShell(),
+                        "Exception while running SchemaExport", he);
+            }
         }
-	}
+    }
 
-		/* (non-Javadoc)
-		 * @see org.hibernate.eclipse.console.actions.SessionFactoryBasedAction#updateState(org.hibernate.console.ConsoleConfiguration)
-		 */
-		protected boolean updateState(ConsoleConfiguration consoleConfiguration) {
-			return consoleConfiguration.hasConfiguration();
-		}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.hibernate.eclipse.console.actions.SessionFactoryBasedAction#updateState(org.hibernate.console.ConsoleConfiguration)
+     */
+    protected boolean updateState(ConsoleConfiguration consoleConfiguration) {
+        return consoleConfiguration.hasConfiguration();
+    }
 }

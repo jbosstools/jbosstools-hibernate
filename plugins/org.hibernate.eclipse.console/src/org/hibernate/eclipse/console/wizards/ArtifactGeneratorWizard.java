@@ -167,7 +167,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 	private Configuration buildConfiguration(boolean reveng, ConsoleConfiguration cc) {
 		if(reveng) {
 			final JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
-			cc.buildWith(cfg);
+			cc.buildWith(cfg,false);
 			cfg.setGeneratingDynamicClasses(false);
 			ConfigurableReverseNamingStrategy configurableNamingStrategy = new ConfigurableReverseNamingStrategy();
 			configurableNamingStrategy.setPackageName("org.reveng"); // TODO: packagename
@@ -187,7 +187,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 			
 			return cfg;
 		} else {
-			return cc.buildWith(new Configuration());
+			return cc.buildWith(new Configuration(), true);
 		}
 	}
 

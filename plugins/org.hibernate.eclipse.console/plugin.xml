@@ -13,6 +13,7 @@
       </library>
    </runtime>
    <requires>
+      <import plugin="org.hibernate.eclipse"/>
       <import plugin="org.eclipse.jdt.ui"/>
       <import plugin="org.eclipse.jdt.core"/>
       <import plugin="org.eclipse.core.resources"/>
@@ -25,7 +26,6 @@
       <import plugin="org.eclipse.ui.workbench.texteditor"/>
       <import plugin="org.eclipse.jface.text"/>
       <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.hibernate.eclipse"/>
    </requires>
    <extension
          point="org.eclipse.ui.perspectives">
@@ -65,20 +65,47 @@
             name="Hibernate"
             id="hibernatewizards"/>
       <wizard
-            finalPerspective="org.hibernate.eclipse.console.HibernateConsolePerspective"
-            class="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"
             icon="icons/hibernate_small_icon.gif"
-            category="hibernatewizards"
+            class="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"
+            finalPerspective="org.hibernate.eclipse.console.HibernateConsolePerspective"
             descriptionImage="icons/hibernate_small_icon.gif"
+            category="hibernatewizards"
+            project="true"
             preferredPerspectives="org.hibernate.eclipse.console.HibernateConsolePerspective"
-            name="Create Console Configuration Wizard"
+            name="Console Configuration"
             id="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"/>
       <wizard
             class="org.hibernate.eclipse.console.wizards.ArtifactGeneratorWizard"
             icon="icons/hibernate_small_icon.gif"
             category="hibernatewizards"
-            name="Generate artifacts wizard"
+            name="Hibernate Artifact Generation"
             id="org.hibernate.eclipse.console.wizards.ArtifactGeneratorWizard"/>
+      <wizard
+            class="org.hibernate.eclipse.console.wizards.NewConfigurationWizard"
+            icon="icons/hibernate_small_icon.gif"
+            category="hibernatewizards"
+            name="Hibernate Configuration File (cfg.xml)"
+            id="org.hibernate.eclipse.console.wizards.NewConfigurationWizard"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
+            nameFilter="*.xml"
+            id="org.hibernate.eclipse.console.jtidyformat">
+         <menu
+               label="JTidy"
+               path="additions"
+               id="org.hibernate.eclipse.console.jtidymenu">
+            <separator name="group1"/>
+         </menu>
+         <action
+               enablesFor="1"
+               label="Format with JTidy"
+               class="org.hibernate.eclipse.console.actions.JTidyFormatAction"
+               menubarPath="org.hibernate.eclipse.console.jtidymenu/group1"
+               id="org.hibernate.eclipse.console.jtidyformat"/>
+      </objectContribution>
    </extension>
 
 </plugin>
