@@ -66,6 +66,12 @@
             name="Hibernate"
             id="hibernatewizards"/>
       <wizard
+            class="org.hibernate.eclipse.console.wizards.NewConfigurationWizard"
+            icon="icons/hibernate_small_icon.gif"
+            category="hibernatewizards"
+            name="Hibernate Configuration File (cfg.xml)"
+            id="org.hibernate.eclipse.console.wizards.NewConfigurationWizard"/>
+      <wizard
             icon="icons/hibernate_small_icon.gif"
             class="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"
             finalPerspective="org.hibernate.eclipse.console.HibernateConsolePerspective"
@@ -73,7 +79,7 @@
             category="hibernatewizards"
             project="true"
             preferredPerspectives="org.hibernate.eclipse.console.HibernateConsolePerspective"
-            name="Console Configuration"
+            name="Hibernate Console Configuration"
             id="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"/>
       <wizard
             class="org.hibernate.eclipse.console.wizards.ArtifactGeneratorWizard"
@@ -81,12 +87,6 @@
             category="hibernatewizards"
             name="Hibernate Artifact Generation"
             id="org.hibernate.eclipse.console.wizards.ArtifactGeneratorWizard"/>
-      <wizard
-            class="org.hibernate.eclipse.console.wizards.NewConfigurationWizard"
-            icon="icons/hibernate_small_icon.gif"
-            category="hibernatewizards"
-            name="Hibernate Configuration File (cfg.xml)"
-            id="org.hibernate.eclipse.console.wizards.NewConfigurationWizard"/>
    </extension>
    <extension
          point="org.eclipse.ui.popupMenus">
