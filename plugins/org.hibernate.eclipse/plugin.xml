@@ -8,84 +8,90 @@
    class="org.hibernate.eclipse.HibernatePlugin">
 
    <runtime>
-      <library name="lib/hibernateconsole.jar">
+<library name="org.hibernate.eclipse.jar">
          <export name="*"/>
       </library>
-      <library name="lib/hibernate-tools.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/hibernate3.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/antlr-2.7.4.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/c3p0-0.8.4.5.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/cglib-full-2.0.2.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/commons-collections-2.1.1.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/commons-logging-1.0.4.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/concurrent-1.3.2.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/connector.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/dom4j-1.5.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/ehcache-0.9.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/jaas.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/jboss-cache.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/jboss-common.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/jboss-jmx.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/jboss-system.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/jdbc2_0-stdext.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/jgroups-2.2.7.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/jta.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/log4j-1.2.8.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/oscache-2.0.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/proxool-0.8.3.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/swarmcache-1.0rc2.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/velocity-1.4.jar">
-         <export name="*"/>
-      </library>
-      <library name="lib/velocity-tools-generic-1.1.jar">
-         <export name="*"/>
-      </library>
+<library name="lib/antlr-2.7.4.jar">
+   <export name="*"/>
+</library>
+<library name="lib/c3p0-0.8.4.5.jar">
+   <export name="*"/>
+</library>
+<library name="lib/cglib-full-2.0.2.jar">
+   <export name="*"/>
+</library>
+<library name="lib/commons-collections-2.1.1.jar">
+   <export name="*"/>
+</library>
+<library name="lib/commons-logging-1.0.4.jar">
+   <export name="*"/>
+</library>
+<library name="lib/concurrent-1.3.2.jar">
+   <export name="*"/>
+</library>
+<library name="lib/connector.jar">
+   <export name="*"/>
+</library>
+<library name="lib/dom4j-1.5.2.jar">
+   <export name="*"/>
+</library>
+<library name="lib/ehcache-1.1.jar">
+   <export name="*"/>
+</library>
+<library name="lib/hibernate3.jar">
+   <export name="*"/>
+</library>
+<library name="lib/hibernateconsole.jar">
+   <export name="*"/>
+</library>
+<library name="lib/hibernate-tools.jar">
+   <export name="*"/>
+</library>
+<library name="lib/jaas.jar">
+   <export name="*"/>
+</library>
+<library name="lib/jboss-cache.jar">
+   <export name="*"/>
+</library>
+<library name="lib/jboss-common.jar">
+   <export name="*"/>
+</library>
+<library name="lib/jboss-jmx.jar">
+   <export name="*"/>
+</library>
+<library name="lib/jboss-system.jar">
+   <export name="*"/>
+</library>
+<library name="lib/jdbc2_0-stdext.jar">
+   <export name="*"/>
+</library>
+<library name="lib/jgroups-2.2.7.jar">
+   <export name="*"/>
+</library>
+<library name="lib/jta.jar">
+   <export name="*"/>
+</library>
+<library name="lib/log4j-1.2.9.jar">
+   <export name="*"/>
+</library>
+<library name="lib/oscache-2.0.2.jar">
+   <export name="*"/>
+</library>
+<library name="lib/proxool-0.8.3.jar">
+   <export name="*"/>
+</library>
+<library name="lib/swarmcache-1.0rc2.jar">
+   <export name="*"/>
+</library>
+<library name="lib/velocity-1.4.jar">
+   <export name="*"/>
+</library>
+<library name="lib/velocity-tools-generic-1.1.jar">
+   <export name="*"/>
+</library>
+<library name="lib/jtidy-r8-21122004.jar">
+   <export name="*"/>
+</library>
    </runtime>
    <requires>
       <import plugin="org.eclipse.core.runtime"/>
