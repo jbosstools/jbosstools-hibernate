@@ -11,12 +11,6 @@
 <library name="org.hibernate.eclipse.jar">
          <export name="*"/>
       </library>
-<library name="lib/antlr-2.7.4.jar">
-   <export name="*"/>
-</library>
-<library name="lib/c3p0-0.8.4.5.jar">
-   <export name="*"/>
-</library>
 <library name="lib/cglib-full-2.0.2.jar">
    <export name="*"/>
 </library>
@@ -93,6 +87,12 @@
    <export name="*"/>
 </library>
 <library name="lib/l2fprod-common.jar">
+   <export name="*"/>
+</library>
+<library name="lib/antlr-2.7.5H3.jar">
+   <export name="*"/>
+</library>
+<library name="lib/c3p0-0.8.5.jar">
    <export name="*"/>
 </library>
    </runtime>
