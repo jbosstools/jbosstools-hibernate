@@ -16,7 +16,10 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
+import org.hibernate.cfg.ConfigurableReverseNamingStrategy;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.JDBCFilter;
+import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
@@ -27,10 +30,7 @@ import org.hibernate.tool.hbm2x.ConfigurationNavigator;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
-import org.hibernate.tool.hbm2x.VelocityExporter;
-import org.hibernate.tool.jdbc2cfg.ConfigurableReverseNamingStrategy;
-import org.hibernate.tool.jdbc2cfg.Filter;
-import org.hibernate.tool.jdbc2cfg.JDBCMetaDataConfiguration;
+import org.hibernate.tool.hbm2x.POJOExporter;
 
 /**
  * This is a sample new wizard. Its role is to create a new file 
@@ -134,9 +134,22 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 			public Object execute() {
 				File outputdir = resource.getRawLocation().toFile(); 
 				
-				final ConfigurationNavigator cv = new ConfigurationNavigator();
-				final Exporter hbmExporter = new HibernateMappingExporter(cfg, outputdir);
-				final Exporter javaExporter = new VelocityExporter(cfg, outputdir);
+                String[] templatePaths = new String[0];
+                
+                /*Bundle bundle = Platform.getBundle("org.hibernate.eclipse");
+                Path path = new Path("");
+                URL fileURL = Platform.find(bundle, path);
+                if(fileURL!=null) {
+                    try {
+                        URL url = Platform.resolve(fileURL);
+                        templatePaths = new String[] { url.getPath() };
+                    } catch (IOException e) {
+                        //
+                    }
+                }*/
+                final ConfigurationNavigator cv = new ConfigurationNavigator();
+				final Exporter hbmExporter = new HibernateMappingExporter(cfg, outputdir,templatePaths);
+				final Exporter javaExporter = new POJOExporter(cfg, outputdir, templatePaths);
 				final Exporter cfgExporter = new HibernateConfigurationExporter(cfg, outputdir); 
 				
 				if(genhbm) {
@@ -180,11 +193,12 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 			cc.execute(new Command() { // need to execute in the consoleconfiguration to let it handle classpath stuff!
 
 				public Object execute() {
-					cfg.readFromJDBC(new Filter() {
+					cfg.readFromJDBC(new JDBCFilter() {
 						public boolean acceptTableName(String name) {
-							return true; //name.startsWith("R_");
+							return !name.startsWith("BIN$"); // to avoid oracle pain. HACK! need to be configurable
 						}
 					});
+                    cfg.buildMappings();
 					return null;
 				}
 			});	

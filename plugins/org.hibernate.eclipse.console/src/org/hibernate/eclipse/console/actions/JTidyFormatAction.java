@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Properties;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -21,8 +20,7 @@ public class JTidyFormatAction implements IObjectActionDelegate {
 
 	private IFile file;
     private IWorkbenchPart targetPart;
-    private Properties properties;
-
+    
     /**
 	 * Constructor for Action1.
 	 */
@@ -53,9 +51,7 @@ public class JTidyFormatAction implements IObjectActionDelegate {
                 try {
                     contents = file.getContents();
                     bos = new ByteArrayOutputStream();
-                    properties = new Properties();
-                    properties.load(this.getClass().getResourceAsStream("jtidy.properties"));
-                    XMLPrettyPrinter.prettyPrint(properties, contents, bos);
+                    XMLPrettyPrinter.prettyPrint(contents, bos);
                     stream = new ByteArrayInputStream(bos.toByteArray());
                     file.setContents(stream, true, false, null);
                 } finally {
