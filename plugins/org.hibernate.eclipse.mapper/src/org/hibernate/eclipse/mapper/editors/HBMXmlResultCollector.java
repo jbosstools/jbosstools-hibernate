@@ -5,15 +5,25 @@
 package org.hibernate.eclipse.mapper.editors;
 
 import org.eclipse.jdt.core.CompletionProposal;
-import org.eclipse.jdt.internal.ui.text.java.ResultCollector;
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.ui.text.java.CompletionProposalCollector;
 
 /**
  * @author max
  *
  */
-public class HBMXmlResultCollector extends ResultCollector {
+public class HBMXmlResultCollector extends CompletionProposalCollector {
 
-    static class Settings {
+    public HBMXmlResultCollector(ICompilationUnit cu) {
+		super(cu);	
+	}
+	
+	HBMXmlResultCollector(IJavaProject project) {
+		super(project);
+	}
+
+	static class Settings {
         private boolean acceptTypes = false;
         private boolean acceptPackages = false;
         private boolean acceptClasses = false;

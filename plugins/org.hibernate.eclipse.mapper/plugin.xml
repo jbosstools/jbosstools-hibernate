@@ -16,15 +16,6 @@
    <requires>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.jboss.ide.eclipse.jdt.xml.ui"/>
-      <import plugin="org.jboss.ide.eclipse.core"/>
-      <import plugin="org.jboss.ide.eclipse.jdt.core"/>
-      <import plugin="org.jboss.ide.eclipse.jdt.j2ee.core"/>
-      <import plugin="org.jboss.ide.eclipse.jdt.j2ee.xml.core"/>
-      <import plugin="org.jboss.ide.eclipse.jdt.j2ee.xml.ui"/>
-      <import plugin="org.jboss.ide.eclipse.jdt.ui"/>
-      <import plugin="org.jboss.ide.eclipse.jdt.xml.core"/>
-      <import plugin="org.jboss.ide.eclipse.ui"/>
       <import plugin="org.eclipse.ui.editors"/>
       <import plugin="org.eclipse.ui.workbench.texteditor"/>
       <import plugin="org.eclipse.jface.text"/>
@@ -32,23 +23,57 @@
       <import plugin="org.eclipse.jdt.core"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.wst.xml.core"/>
+      <import plugin="org.eclipse.wst.sse.core"/>
+      <import plugin="org.eclipse.wst.xml.ui"/>
+      <import plugin="org.eclipse.wst.sse.ui"/>
+      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="org.eclipse.wst.common.contentmodel"/>
+      <import plugin="org.eclipse.wst.common.encoding"/>
    </requires>
    <extension
-         point="org.eclipse.ui.editors">
-      <editor
-            icon="icons/images/hibernate_mapping.gif"
-            class="org.hibernate.eclipse.mapper.editors.HBMXmlEditor"
-            default="false"
-            name="hbm.xml Editor (Hibernate Tools)"
-            id="org.hibernate.eclipse.mapper.editors.HBMXmlEditor"
-            extensions="hbm.xml"/>
-      <editor
-            class="org.hibernate.eclipse.mapper.editors.HibernateConfigurationEditor"
-            icon="icons/images/hibernate_config.gif"
-            contributorClass="org.hibernate.eclipse.mapper.editors.MultiPageEditorContributor"
-            name="hibernate.cfg.xml Editor"
-            id="org.hibernate.eclipse.mapper.editors.HibernateConfigurationEditor"
-            extensions="cfg.xml"/>
+         point="org.eclipse.core.runtime.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.xml"
+            file-extensions="xml"
+            id="content-type.hbm.xml"
+            name="Hibernate Mapping Content-Type"
+            priority="normal">
+         <describer class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
+            <parameter
+                  name="element"
+                  value="hibernate-mapping"/>
+         </describer>
+      </content-type>
    </extension>
+   <extension
+         point="org.eclipse.wst.sse.core.modelHandler">
+         <modelHandler
+               associatedContentTypeId="org.hibernate.eclipse.mapper.content-type.hbm.xml"
+               class="org.hibernate.eclipse.mapper.modelhandler.ModelHandlerForHBMXML"
+               default="false"
+               id="org.hibernate.eclipse.mapper.handler.hbm.xml">
+         </modelHandler>
+   </extension>
+   <extension
+         point="org.eclipse.wst.sse.ui.extendedconfiguration">
+      <configuration
+            class="org.hibernate.eclipse.mapper.editors.HBMXmlStructuredTextViewerConfiguration"
+            target="org.hibernate.eclipse.mapper.content-type.hbm.xml"
+            type="textviewerconfiguration"/>
+   </extension>
+   <extension
+         point="org.eclipse.wst.sse.ui.adapterFactoryDescription">
+      <adapterFactoryDescription
+            class="org.hibernate.eclipse.mapper.registry.AdapterFactoryProviderForHBMXML">
+      </adapterFactoryDescription>
+         
+   </extension>
+
+
+
+
+
+
 
 </plugin>
