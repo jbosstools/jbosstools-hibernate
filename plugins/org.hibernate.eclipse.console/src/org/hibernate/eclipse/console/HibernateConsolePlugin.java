@@ -117,8 +117,12 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 			causes.add(new Status(IStatus.ERROR, ID, 150, temp.getMessage()==null?"<no message>":temp.getMessage(), temp));
 			temp = temp.getCause();
 		}
+        String msg = "<No message>";
+        if(t!=null && t.getMessage()!=null) {
+            msg = t.getMessage();
+        }
 		
-		return new MultiStatus(ID, IStatus.ERROR,(IStatus[]) causes.toArray(new IStatus[causes.size()]), t==null?"<No message>":t.getMessage(), t);
+		return new MultiStatus(ID, IStatus.ERROR,(IStatus[]) causes.toArray(new IStatus[causes.size()]), msg, t);
 		
 	}
 	
