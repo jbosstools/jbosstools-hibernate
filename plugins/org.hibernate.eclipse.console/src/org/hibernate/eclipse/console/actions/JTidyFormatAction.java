@@ -12,7 +12,6 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
@@ -60,7 +59,7 @@ public class JTidyFormatAction implements IObjectActionDelegate {
                     bos = new ByteArrayOutputStream();
                     XMLPrettyPrinter.prettyPrint(contents, bos);
                     stream = new ByteArrayInputStream(bos.toByteArray());
-                    file.setContents(stream, true, false, null);
+                    file.setContents(stream, true, true, null);
                 } finally {
                     if(stream!=null) stream.close();
                     if(bos!=null) bos.close();
