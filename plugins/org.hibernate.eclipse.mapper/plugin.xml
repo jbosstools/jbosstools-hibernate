@@ -3,7 +3,7 @@
 <plugin
    id="org.hibernate.eclipse.mapper"
    name="Mapper Plug-in"
-   version="3.0.0.alpha2"
+   version="3.0.0.alpha3"
    provider-name="Hibernate Team"
    class="org.hibernate.eclipse.mapper.MapperPlugin">
 

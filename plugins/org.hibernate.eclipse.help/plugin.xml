@@ -3,8 +3,8 @@
 <plugin
    id="org.hibernate.eclipse.help"
    name="Hibernate Help"
-   version="1.0.0"
-   provider-name=""
+   version="3.0.0.alpha3"
+   provider-name="Hibernate Team"
    class="org.hibernate.eclipse.help.HelpPlugin">
 
    <runtime>
