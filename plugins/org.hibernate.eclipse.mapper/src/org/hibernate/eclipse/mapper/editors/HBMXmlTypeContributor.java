@@ -147,15 +147,16 @@ public class HBMXmlTypeContributor implements IAttributeValueContributor {
 	 */
 	private ICompletionProposal[] handleFields(XMLNode node, XMLNode attribute, String start, int offset) {
 		if(javaProject!=null) {
-			String typename = getNearestType(node);
-			if(typename.indexOf('.')<0) {
+			String typename = getNearestType(node);			
+			if(typename!=null && typename.indexOf('.')<0) {
 				typename = getPackageName(node) + "." + typename;
 			}
 			try {
 				IType type = javaProject.findType(typename);
 				if(type==null) return new ICompletionProposal[0]; //nothing to look for then
-				rc.reset(offset, javaProject, null);
 				rc.setAccepts(false,false,false,false,true,false); // TODO: only handle properties ?
+				rc.reset(offset, javaProject, null);
+				
 				
 				type.codeComplete(start.toCharArray(), -1, start.length(), new char[0][0], new char[0][0], new int[0], false, rc);
 			} catch(JavaModelException jme) {
@@ -210,6 +211,8 @@ public class HBMXmlTypeContributor implements IAttributeValueContributor {
                 if(packageName!=null) {
                     context.setPackageName(packageName);
                 }
+				
+				
 
 				rc.reset(offset, javaProject, null);
 				rc.setAccepts(settings);
