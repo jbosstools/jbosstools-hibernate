@@ -3,7 +3,7 @@
 <plugin
    id="org.hibernate.eclipse"
    name="Hibernate Core Plugin"
-   version="3.0.0.alpha"
+   version="3.0.0.alpha2"
    provider-name="Hibernate Team"
    class="org.hibernate.eclipse.HibernatePlugin">
 

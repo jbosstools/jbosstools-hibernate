@@ -11,8 +11,8 @@
 	<classpathentry exported="true" kind="lib" path="lib/dom4j-1.5.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ehcache-1.1.jar"/>
 	<classpathentry exported="true" sourcepath="/hibernate3/src" kind="lib" path="lib/hibernate3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/hibernateconsole.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/hibernate-tools.jar"/>
+	<classpathentry exported="true" sourcepath="/hibernateext.console/src/java" kind="lib" path="lib/hibernateconsole.jar"/>
+	<classpathentry exported="true" sourcepath="/hibernateext.tools/src/java" kind="lib" path="lib/hibernate-tools.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jaas.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jboss-cache.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jboss-common.jar"/>
