@@ -9,6 +9,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -20,6 +21,7 @@ import org.hibernate.cfg.ConfigurableReverseNamingStrategy;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCFilter;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.cfg.ReverseNamingStrategy;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
@@ -71,16 +73,24 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 	 * using wizard as execution context.
 	 */
 	public boolean performFinish() {
-		final String containerName = page.getConfigurationName();
+        final String outputPackage = page.getOutputPackage();
+        if(!MessageDialog.openQuestion(getShell(), "Start artifact generation", "Do you want to start generating artifcats into " + outputPackage + ",\npossibly overwriting existing files in this directory ?")) {
+            return false;
+        }
+        
+        final String configurationName = page.getConfigurationName();        
 		final boolean reveng = page.isReverseEngineerEnabled();
 		final boolean genjava = page.isGenerateJava();
 		final boolean genhbm = page.isGenerateMappings();
 		final boolean gencfg = page.isGenerateCfg();
+        final boolean preferRaw = page.isPreferRawCompositeIds();
 		final IPath output = page.getOutputDirectory();
+        
+        final IPath templatedir = page.getTemplateDirectory();
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
-					doFinish(containerName, output, reveng, genjava, genhbm, gencfg, monitor);
+					doFinish(configurationName, output, outputPackage, reveng, genjava, genhbm, gencfg, monitor, preferRaw, templatedir);
 				} catch (CoreException e) {
 					throw new InvocationTargetException(e);
 				} finally {
@@ -104,21 +114,24 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 	 * The worker method. It will find the container, create the
 	 * file if missing or just replace its contents, and open
 	 * the editor on the newly created file.
+	 * @param outputPackage 
 	 * @param gencfg
 	 * @param genhbm
 	 * @param genjava
 	 * @param reveng
+	 * @param preferRawCompositeids 
 	 */
 
 	private void doFinish(
 		String configName, IPath output,
-		boolean reveng, final boolean genjava, final boolean genhbm, boolean gencfg, final IProgressMonitor monitor)
+		String outputPackage, boolean reveng, final boolean genjava, final boolean genhbm, final boolean gencfg, final IProgressMonitor monitor, boolean preferRawCompositeids, IPath templateDir)
 		throws CoreException {
 		// create a sample file
 		monitor.beginTask("Generating artifacts for " + configName, 10);
 		
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		final IResource resource = root.findMember(output);
+        final IResource templateres = root.findMember(templateDir);
 		/*if (!resource.exists() || !(resource instanceof IContainer)) {
 			throwCoreException("Output directory \"" + configName + "\" does not exist.");
 		}*/
@@ -127,7 +140,9 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 		ConsoleConfiguration cc = KnownConfigurations.getInstance().find(configName);
 		
 		if (reveng) monitor.subTask("reading jdbc metadata");
-		final Configuration cfg = buildConfiguration(reveng, cc);
+        ConfigurableReverseNamingStrategy configurableNamingStrategy = new ConfigurableReverseNamingStrategy();
+        configurableNamingStrategy.setPackageName(outputPackage); 
+		final Configuration cfg = buildConfiguration(reveng, cc, configurableNamingStrategy, preferRawCompositeids);
 		monitor.worked(3);
 		
 		cc.execute(new Command() {
@@ -135,18 +150,11 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 				File outputdir = resource.getRawLocation().toFile(); 
 				
                 String[] templatePaths = new String[0];
+        
+                if(templateres!=null) {
+                    templatePaths = new String[] { templateres.getRawLocation().toOSString() };
+                }
                 
-                /*Bundle bundle = Platform.getBundle("org.hibernate.eclipse");
-                Path path = new Path("");
-                URL fileURL = Platform.find(bundle, path);
-                if(fileURL!=null) {
-                    try {
-                        URL url = Platform.resolve(fileURL);
-                        templatePaths = new String[] { url.getPath() };
-                    } catch (IOException e) {
-                        //
-                    }
-                }*/
                 final ConfigurationNavigator cv = new ConfigurationNavigator();
 				final Exporter hbmExporter = new HibernateMappingExporter(cfg, outputdir,templatePaths);
 				final Exporter javaExporter = new POJOExporter(cfg, outputdir, templatePaths);
@@ -164,12 +172,18 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 					monitor.worked(6);
 				}
 				
-				if(genhbm) {
+				if(gencfg) {
 					monitor.subTask("hibernate configuration");
 					cv.export(cfg, cfgExporter);
 					monitor.worked(7);
 				}
 				
+                try {
+                    resource.refreshLocal(IResource.DEPTH_INFINITE, monitor);
+                } catch (CoreException e) {
+                    HibernateConsolePlugin.logErrorMessage("Problem refreshing", e);
+                }
+
 				monitor.worked(10);
 				return null;
 			}
@@ -179,17 +193,18 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 	/**
 	 * @param reveng
 	 * @param cc
+	 * @param rawCompositeids 
+	 * @param configurableReverseNamingStrategy TODO
 	 * @return
 	 */
-	private Configuration buildConfiguration(boolean reveng, ConsoleConfiguration cc) {
+	private Configuration buildConfiguration(boolean reveng, ConsoleConfiguration cc, ReverseNamingStrategy namingStrategy, boolean rawCompositeids) {
 		if(reveng) {
 			final JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
 			cc.buildWith(cfg,false);
-			cfg.setGeneratingDynamicClasses(false);
-			ConfigurableReverseNamingStrategy configurableNamingStrategy = new ConfigurableReverseNamingStrategy();
-			configurableNamingStrategy.setPackageName("org.reveng"); // TODO: packagename
-			cfg.setReverseNamingStrategy(configurableNamingStrategy);
-			
+			cfg.setGeneratingDynamicClasses(false);			
+			cfg.setReverseNamingStrategy(namingStrategy);
+			cfg.setPreferRawCompositeIds(rawCompositeids);
+            
 			cc.execute(new Command() { // need to execute in the consoleconfiguration to let it handle classpath stuff!
 
 				public Object execute() {

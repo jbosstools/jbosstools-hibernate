@@ -1,14 +1,24 @@
 package org.hibernate.eclipse.console.wizards;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.ComboDialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.DialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.IDialogFieldListener;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.IStringButtonAdapter;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.SelectionButtonDialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.StringButtonDialogField;
+import org.eclipse.jdt.internal.ui.wizards.dialogfields.StringDialogField;
 import org.eclipse.jface.dialogs.IDialogPage;
+import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
@@ -39,9 +49,19 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 
 	private SelectionButtonDialogField generatejava;
 
+    
 	private SelectionButtonDialogField generatemappings;
 
 	private StringButtonDialogField outputdir;
+    
+    private StringDialogField packageName;
+
+    private SelectionButtonDialogField preferRawCompositeIds;
+
+    private SelectionButtonDialogField useOwnTemplates;
+    private StringButtonDialogField templatedir;
+    
+    //private Package
 
 	/**
 	 * Constructor for SampleNewWizardPage.
@@ -76,12 +96,14 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 			names[i] = configuration.getName();
 		}
 		consoleConfigurationName.setItems(names);
-
-		consoleConfigurationName.setDialogFieldListener(new IDialogFieldListener() {
+		
+		IDialogFieldListener fieldlistener = new IDialogFieldListener() {
 			public void dialogFieldChanged(DialogField field) {
 				dialogChanged();
 			}
-		});
+		};
+        
+        consoleConfigurationName.setDialogFieldListener(fieldlistener);
 		
 		outputdir = new StringButtonDialogField(new IStringButtonAdapter() {
 			public void changeControlPressed(DialogField field) {
@@ -91,29 +113,62 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 				}					
 			}
 		});
+        outputdir.setDialogFieldListener(fieldlistener);
 		outputdir.setLabelText("Output &directory");
 		outputdir.setButtonLabel("&Browse...");
 		
+        templatedir = new StringButtonDialogField(new IStringButtonAdapter() {
+            public void changeControlPressed(DialogField field) {
+                IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  getTemplateDirectory(), new IPath[0], "Select output directory", "Choose directory in which the generated files will be stored", new String[] {"cfg.xml"}, false, true, false);
+                if(paths!=null && paths.length==1) {
+                    templatedir.setText(((paths[0]).toOSString()));
+                }                   
+            }
+        });
+        templatedir.setDialogFieldListener(fieldlistener);
+        templatedir.setLabelText("Template &directory");
+        templatedir.setButtonLabel("&Browse...");
+        
+        packageName = new StringDialogField();
+        packageName.setDialogFieldListener(fieldlistener);
+        packageName.setLabelText("Output &package");
+                
 		reverseengineer = new SelectionButtonDialogField(SWT.CHECK);
 		reverseengineer.setLabelText("Reverse engineer from JDBC Connection");
-		
-		generatejava = new SelectionButtonDialogField(SWT.CHECK);
+        generatejava = new SelectionButtonDialogField(SWT.CHECK);
 		generatejava.setLabelText("Generate domain code (.java)");
 		
+        useOwnTemplates = new SelectionButtonDialogField(SWT.CHECK);
+        useOwnTemplates.setDialogFieldListener(fieldlistener);
+        useOwnTemplates.setLabelText("Use custom templates");
+        
+        preferRawCompositeIds = new SelectionButtonDialogField(SWT.CHECK);
+        preferRawCompositeIds.setLabelText("Generate 'raw' composite ids");
+                
 		generatemappings = new SelectionButtonDialogField(SWT.CHECK);
 		generatemappings.setLabelText("Generate mappings (hbm.xml)");
 		
 		generatecfgfile = new SelectionButtonDialogField(SWT.CHECK);
 		generatecfgfile.setLabelText("Generate hibernate configuration (hibernate.cfg.xml)");
 		
+        useOwnTemplates.attachDialogField(templatedir);
+        reverseengineer.attachDialogFields(new DialogField[] { packageName, preferRawCompositeIds });
+       
 		consoleConfigurationName.doFillIntoGrid(container, 3);
 		Control[] controls = outputdir.doFillIntoGrid(container, 3);
 		// Hack to tell the text field to stretch!
 		((GridData)controls[1].getLayoutData()).grabExcessHorizontalSpace=true;
 		reverseengineer.doFillIntoGrid(container, 3);
+        packageName.doFillIntoGrid(container, 3);
+        preferRawCompositeIds.doFillIntoGrid(container, 3);
 		generatejava.doFillIntoGrid(container, 3);
 		generatemappings.doFillIntoGrid(container, 3);
 		generatecfgfile.doFillIntoGrid(container, 3);
+        useOwnTemplates.doFillIntoGrid(container, 3);
+        controls = templatedir.doFillIntoGrid(container, 3);
+        // Hack to tell the text field to stretch!
+        ((GridData)controls[1].getLayoutData()).grabExcessHorizontalSpace=true;
+        
 
 		initialize();
 		dialogChanged();
@@ -133,7 +188,9 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 			Object obj = ssel.getFirstElement();
 			if (obj instanceof ConfigurationNode) {
 				consoleConfigurationName.setText(((ConfigurationNode)obj).getConsoleConfiguration().getName());
-			}
+			} else if(consoleConfigurationName.getItems().length==1) {
+                consoleConfigurationName.setText(consoleConfigurationName.getItems()[0]);
+            }
 		}
 		
 	}
@@ -145,19 +202,87 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 	 */
 
 	private void dialogChanged() {
-		
+
+        if(packageName.isEnabled() && getOutputPackage().length()>0) {
+            IStatus val= JavaConventions.validatePackageName(getOutputPackage());
+            if (val.getSeverity() == IStatus.ERROR || val.getSeverity() == IStatus.WARNING) {
+                updateStatus(val.getMessage());
+                return;
+            } 
+        }
 		if (getConfigurationName().length() == 0) {
 			updateStatus("Console configuration must be specified");
 			return;
 		}
+        
+        String msg = checkDirectory(getOutputDirectory(), "output directory");
+        
+        if (msg!=null) {
+            updateStatus(msg);
+            return;
+        } 
+        
+        if(useOwnTemplates.isSelected()) {
+            msg = checkDirectory(getTemplateDirectory(), "template directory");
+            if (msg!=null) {
+                updateStatus(msg);
+                return;
+            } else {
+                IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(getTemplateDirectory());
+                IResource[] files = new IFile[0];
+                if(resource.getType() == IResource.FOLDER) {
+                    try {
+                        files = ((IFolder)resource).members();
+                    } catch (CoreException e) {
+                        // noop
+                    }
+                }
+                
+                boolean found = false;
+                for (int i = 0; i < files.length; i++) {
+                    if(files[i].getType() == IResource.FILE && files[i].getName().endsWith(".vm")) {
+                        found = true;
+                        break;
+                    }
+                }
+                if(!found) {
+                    setMessage("No templates (*.vm) found in template directory", IMessageProvider.WARNING);
+                } else {
+                    setMessage(null);
+                }
+            }
+        } else {
+            setMessage(null);
+        }
+        
 		updateStatus(null);
 	}
 
-	private void updateStatus(String message) {
-		setErrorMessage(message);
-		setPageComplete(message == null);
-	}
 
+
+    protected String checkDirectory(IPath path, String name) {
+        IResource res= ResourcesPlugin.getWorkspace().getRoot().findMember(path);
+        if (res != null) {
+            int resType= res.getType();
+            if (resType == IResource.PROJECT || resType == IResource.FOLDER) {
+                IProject proj= res.getProject();
+                if (!proj.isOpen()) {
+                    return "Project for " + name + " is closed";                    
+                }                               
+            } else {
+                return name + " has to be a folder or project";
+            }
+        } else {
+            return name + " does not exist";
+        }
+        return null;
+    }
+    
+    private void updateStatus(String message) {
+        setErrorMessage(message);
+        setPageComplete(message==null);
+    }
+    
 	public String getConfigurationName() {
 		return consoleConfigurationName.getText();
 	}
@@ -209,4 +334,25 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 	public IPath getOutputDirectory() {
 		return pathOrNull(outputdir.getText());
 	}
+    
+    public IPath getTemplateDirectory() {
+        return pathOrNull(templatedir.getText());
+    }
+
+
+    /**
+     * @return
+     */
+    public String getOutputPackage() {
+          return packageName.getText();
+    }
+
+
+    /**
+     * @return
+     */
+    public boolean isPreferRawCompositeIds() {
+        return preferRawCompositeIds.isSelected();
+    }
+    
 }

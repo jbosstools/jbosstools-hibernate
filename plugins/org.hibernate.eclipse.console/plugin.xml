@@ -3,7 +3,7 @@
 <plugin
    id="org.hibernate.eclipse.console"
    name="Hibernate Console"
-   version="0.0.1"
+   version="3.0.0.alpha"
    provider-name="Hibernate Team"
    class="org.hibernate.eclipse.console.HibernateConsolePlugin">
 
