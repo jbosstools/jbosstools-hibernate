@@ -103,7 +103,10 @@ public class ExecuteHQLAction extends Action implements IMenuCreator {
 			if(lastUsed!=null) {
 			HibernateConsolePlugin.getDefault().getPreferenceStore().setValue(
 					LAST_USED_CONFIGURATION_PREFERENCE, lastUsed.getName());
-			}
+			} else {
+                HibernateConsolePlugin.getDefault().getPreferenceStore().setValue(
+                        LAST_USED_CONFIGURATION_PREFERENCE, "");         
+            }
 			initTextAndToolTip();
 		}
 		
@@ -124,9 +127,14 @@ public class ExecuteHQLAction extends Action implements IMenuCreator {
 	private ConsoleConfiguration getLastUsedConfiguration() {
 		String lastUsedName = HibernateConsolePlugin.getDefault().getPreferenceStore().getString(
 				LAST_USED_CONFIGURATION_PREFERENCE);
-		ConsoleConfiguration lastUsed = lastUsedName == null 
+		ConsoleConfiguration lastUsed = (lastUsedName == null || lastUsedName.trim().length()==0) 
 				? null 
 				: KnownConfigurations.getInstance().find(lastUsedName);
+        
+        if(lastUsed==null && KnownConfigurations.getInstance().getConfigurations().length==1) {
+            lastUsed = KnownConfigurations.getInstance().getConfigurations()[0];
+        }
+        
 		return lastUsed;
 	}
 
