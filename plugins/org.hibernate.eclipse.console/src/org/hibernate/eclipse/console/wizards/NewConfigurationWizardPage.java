@@ -332,7 +332,7 @@ public class NewConfigurationWizardPage extends WizardPage {
      * @return
      */
     public String getDialect() {
-        return nullIfEmpty(dialectCombo.getText());
+    	return nullIfEmpty(helper.getDialectClass(dialectCombo.getText()));
     }
 
     /**
