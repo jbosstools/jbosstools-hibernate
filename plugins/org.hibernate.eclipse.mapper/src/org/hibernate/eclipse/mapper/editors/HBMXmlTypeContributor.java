@@ -48,6 +48,16 @@ public class HBMXmlTypeContributor implements IAttributeValueContributor {
 		typedAttributes.add("joined-subclass>name");
 		typedAttributes.add("union-subclass>name");
 		
+		typedAttributes.add("many-to-one>class");
+		typedAttributes.add("one-to-many>class");
+		typedAttributes.add("many-to-many>class");
+		typedAttributes.add("composite-element>class");
+		typedAttributes.add("many-to-one>entity-name");
+		typedAttributes.add("one-to-many>entity-name");
+		typedAttributes.add("many-to-many>entity-name");
+		typedAttributes.add("composite-element>entity-name");
+		
+		
 		fieldAttributes.add("property>name");
 		fieldAttributes.add("id>name");
 		fieldAttributes.add("set>name");
@@ -90,7 +100,7 @@ public class HBMXmlTypeContributor implements IAttributeValueContributor {
 			proposals.addAll(Arrays.asList(handleFields(node, attribute, start, offset)));
 		}
 		
-		if (DEBUG) proposals.add(new CompletionProposal("start=[" + start + "]", offset, 1, 4));
+		if (true) proposals.add(new CompletionProposal("start=[" + start + "], path=[" + path + "]", offset, 1, 4));
 
 		return proposals;
 	}
@@ -225,7 +235,7 @@ public class HBMXmlTypeContributor implements IAttributeValueContributor {
 				}
 			}
 		}
-		return null;		
+		return "";		
 	}
 
 
