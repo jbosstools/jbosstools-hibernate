@@ -1,7 +1,5 @@
 package org.hibernate.eclipse.console.wizards;
 
-import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.ComboDialogField;
@@ -19,9 +17,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.dialogs.FileSelectionDialog;
-import org.eclipse.ui.views.navigator.ResourceSelectionUtil;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.node.ConfigurationNode;
