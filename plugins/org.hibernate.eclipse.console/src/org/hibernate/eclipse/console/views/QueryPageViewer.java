@@ -192,22 +192,10 @@ public class QueryPageViewer {
 		ISelection selection = tableViewer.getSelection();
 		if (selection != null && !selection.isEmpty() && selection instanceof IStructuredSelection)
 		{
-			IStructuredSelection selection2 = (IStructuredSelection) selection;
-			Object selected = selection2.getFirstElement();
-			
-			ISelectionService o;
-			setPropertySheetSource (selected);
+			qrView.fireSelectionChangedEvent(selection);
 		}
 	}
-	
-	private void setPropertySheetSource (Object source)
-	{
-		queryPage.setActive (source);
-		qrView.fireSelectionChangedEvent();
 		
-		//System.out.println("sheet source = " + source.getClass() );
-	}
-	
 	/**
 	 * @param table
 	 */

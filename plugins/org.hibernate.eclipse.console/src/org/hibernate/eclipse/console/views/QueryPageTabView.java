@@ -15,6 +15,7 @@ import javax.swing.event.ListDataListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
@@ -28,8 +29,11 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
+import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryPage;
+import org.hibernate.eclipse.console.views.properties.HibernatePropertyPage;
+import org.hibernate.eclipse.console.views.properties.HibernatePropertySourceProvider;
 
 
 
@@ -141,8 +145,7 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
         this.actionGroup.fillActionBars(actionBars);
 	}
 
-	protected void fireSelectionChangedEvent() {
-		ISelection selection = getSelection();
+	public void fireSelectionChangedEvent(ISelection selection) {
 		for (Iterator i = this.listeners.iterator(); i.hasNext();) {
 			ISelectionChangedListener listener = (ISelectionChangedListener) i.next();
 			listener.selectionChanged(new SelectionChangedEvent(this, selection));
@@ -153,14 +156,22 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 			results.updateStatusLine();
 		} else {
 			getViewSite().getActionBars().getStatusLineManager().setMessage("");
-		}*/
+		}*/		
+	}
+	
+	/** fire event that query-tab is changed **/
+	protected void fireSelectionChangedEvent() {
+		ISelection selection = getSelection();
+		fireSelectionChangedEvent(selection);
 	}
 
 	public Object getAdapter(Class adapter) {
 
 		if (adapter.equals(IPropertySheetPage.class))
 		{
-			return new HibernatePropertyPage();
+			PropertySheetPage page = new PropertySheetPage();
+			page.setPropertySourceProvider(new HibernatePropertySourceProvider(this));
+			return page;
 		}
 		return super.getAdapter(adapter);
 	}
@@ -176,7 +187,7 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 	/**
 	 * @return
 	 */
-	protected QueryPage getSelectedQueryPage() {
+	public QueryPage getSelectedQueryPage() {
 		QueryPageViewer viewer = getSelectedQueryPageViewer();
 		return viewer == null ? null : viewer.getQueryPage();
 	}
@@ -251,5 +262,8 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 	public void setSelection(ISelection selection) {
 		System.out.println("Told to select " + selection);
 	}
+
+
+	
 
 }
