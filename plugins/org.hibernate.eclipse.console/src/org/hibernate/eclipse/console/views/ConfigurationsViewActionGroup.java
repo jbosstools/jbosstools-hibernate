@@ -6,6 +6,7 @@ package org.hibernate.eclipse.console.views;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.ui.IActionBars;
@@ -18,6 +19,7 @@ import org.hibernate.eclipse.console.actions.AddConfigurationAction;
 import org.hibernate.eclipse.console.actions.BuildSessionFactoryAction;
 import org.hibernate.eclipse.console.actions.DeleteConfigurationAction;
 import org.hibernate.eclipse.console.actions.RefreshAction;
+import org.hibernate.eclipse.console.actions.ArtifactGeneratorAction;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
 /**
@@ -31,6 +33,7 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 	private SelectionListenerAction refreshAction;
 	private SelectionListenerAction connectAction;
 	private SelectionListenerAction schemaExportAction;
+	private ArtifactGeneratorAction revEngAction;
 
 	public ConfigurationsViewActionGroup(IViewPart part, StructuredViewer selectionProvider) {
 		
@@ -54,15 +57,21 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 		schemaExportAction = new SchemaExportAction(selectionProvider);
 		selectionProvider.addSelectionChangedListener(schemaExportAction);
 		
+		revEngAction = new ArtifactGeneratorAction();
+		selectionProvider.addSelectionChangedListener(revEngAction);
+		
 	}
 
 	public void fillContextMenu(IMenuManager menu) {
 	
+		menu.add(connectAction);
+		menu.add(refreshAction);
+		menu.add(new Separator());
 		menu.add(addConfigurationAction);
 		menu.add(deleteConfigurationAction);
-		menu.add(refreshAction);
-		menu.add(connectAction);
+		menu.add(new Separator());
 		menu.add(schemaExportAction);
+		menu.add(revEngAction);
 	}
 	
 	public void fillActionBars(IActionBars actionBars) {

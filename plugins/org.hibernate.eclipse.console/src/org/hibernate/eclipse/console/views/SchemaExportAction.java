@@ -15,7 +15,7 @@ import org.eclipse.ui.actions.SelectionListenerAction;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.eclipse.console.actions.SessionFactoryBasedAction;
+import org.hibernate.eclipse.console.actions.ConsoleConfigurationBasedAction;
 import org.hibernate.console.node.BaseNode;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
@@ -23,7 +23,7 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
  * @author max
  * 
  */
-public class SchemaExportAction extends SessionFactoryBasedAction {
+public class SchemaExportAction extends ConsoleConfigurationBasedAction {
 
 	private StructuredViewer viewer;
 

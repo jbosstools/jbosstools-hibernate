@@ -15,9 +15,10 @@ import org.hibernate.console.node.ConfigurationNode;
  * @author max
  *
  */
-public abstract class SessionFactoryBasedAction extends SelectionListenerAction {
+public abstract class ConsoleConfigurationBasedAction extends SelectionListenerAction {
 
 	boolean enabledWhenNoSessionFactory = false;
+	boolean supportMultiple = true;
 
 	protected void setEnabledWhenNoSessionFactory(
 			boolean enabledWhenNoSessionFactory) {
@@ -25,14 +26,22 @@ public abstract class SessionFactoryBasedAction extends SelectionListenerAction 
 	}
 	
 	/**
+	 * @param supportMultiple The supportMultiple to set.
+	 */
+	public void setSupportMultiple(boolean supportMultiple) {
+		this.supportMultiple = supportMultiple;
+	}
+	
+	/**
 	 * @param text
 	 */
-	protected SessionFactoryBasedAction(String text) {
+	protected ConsoleConfigurationBasedAction(String text) {
 		super(text);
 	}
 
 	final protected boolean updateSelection(IStructuredSelection selection) {
 		   boolean enabled = false;
+		   if(!supportMultiple && selection.size()>1) return false; 
 	        for (Iterator i = selection.iterator();
 	            i.hasNext();
 	            ) {

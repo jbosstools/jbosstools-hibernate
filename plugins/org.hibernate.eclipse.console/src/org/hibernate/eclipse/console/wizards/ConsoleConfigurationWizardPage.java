@@ -5,7 +5,9 @@
  */
 package org.hibernate.eclipse.console.wizards;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,6 +19,7 @@ import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
@@ -27,6 +30,8 @@ import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
 import org.eclipse.jface.dialogs.IDialogPage;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
@@ -159,7 +164,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 					exclude[i] = (IPath) item.getData();			
 				}
 				
-				return DialogSelectionHelper.chooseFileEntries(getShell(), null, exclude, "Add classpath entry", "Add a directory, .zip or .jar file", new String[] { ".jar", ".zip" }, true, true);
+				return DialogSelectionHelper.chooseFileEntries(getShell(), null, exclude, "Add classpath entry", "Add a directory, .zip or .jar file", new String[] { ".jar", ".zip" }, true, true, true);
 			}
 
 			protected void listChanged() {
@@ -180,7 +185,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 					exclude[i] = (IPath) item.getData();			
 				}
 				
-				return DialogSelectionHelper.chooseFileEntries(getShell(), null, exclude, "Add hbm.xml file", "Add a Hibernate Mapping file", new String[] { "hbm.xml" }, true, false);
+				return DialogSelectionHelper.chooseFileEntries(getShell(), null, exclude, "Add hbm.xml file", "Add a Hibernate Mapping file", new String[] { "hbm.xml" }, true, false, true);
 			}
 
 			protected void listChanged() {
@@ -305,15 +310,28 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	List locateTypes(final IJavaProject javaProject) {
 	    
 		try {
-			SearchPattern pattern = SearchPattern.createPattern("java.sql.Driver", IJavaSearchConstants.TYPE, IJavaSearchConstants.IMPLEMENTORS, SearchPattern.R_EXACT_MATCH);
-			IJavaSearchScope scope = SearchEngine.createJavaSearchScope(new IJavaElement[] {javaProject });
+			final SearchPattern pattern = SearchPattern.createPattern("java.sql.Driver", IJavaSearchConstants.TYPE, IJavaSearchConstants.IMPLEMENTORS, SearchPattern.R_EXACT_MATCH);
+			final IJavaSearchScope scope = SearchEngine.createJavaSearchScope(new IJavaElement[] {javaProject });
 			
-			SearchEngine engine = new SearchEngine();
+			final SearchEngine engine = new SearchEngine();
 			
-			CollectingSearchRequestor sr = new CollectingSearchRequestor();
-			SearchParticipant[] participants = new SearchParticipant[] {SearchEngine.getDefaultSearchParticipant()};
+			final CollectingSearchRequestor sr = new CollectingSearchRequestor();
+			final SearchParticipant[] participants = new SearchParticipant[] {SearchEngine.getDefaultSearchParticipant()};
 			
-			engine.search(pattern, participants, scope, sr, null); // TODO: get progress monitor from somewhere!
+			final ProgressMonitorDialog dialog = new ProgressMonitorDialog(getShell());
+			
+			
+			dialog.run(true, false, new IRunnableWithProgress() {
+				public void run(IProgressMonitor monitor) {
+					try {
+						engine.search(pattern, participants, scope, sr, monitor);
+					} catch (CoreException ce) {
+						HibernateConsolePlugin.logErrorMessage(
+								"Problem while locating jdbc drivers", ce);									
+					}
+				}
+			});
+			
 			
 			List resources = new ArrayList();
 			Iterator iter = sr.getResults().iterator();
@@ -325,13 +343,16 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			}
 			
 			return resources;
-		} catch (CoreException e) {
+		} catch (InvocationTargetException e) {
 			HibernateConsolePlugin.logErrorMessage(
 					"Problem while locating jdbc drivers", e);
+			} catch (InterruptedException e) {
+				HibernateConsolePlugin.logErrorMessage(
+						"Problem while locating jdbc drivers", e);
 		}
 		
 		
-		return null;
+		return Collections.EMPTY_LIST;
 	}
 	
 	IPath[] getMappingFiles() {
@@ -354,14 +375,14 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	}
 
 	private void handlePropertyFileBrowse() {
-		IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  getPropertyFilePath(), new IPath[0], "Select property file", "Choose file to use as hibernate.properties", new String[] {"properties"}, false, false);
+		IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  getPropertyFilePath(), new IPath[0], "Select property file", "Choose file to use as hibernate.properties", new String[] {"properties"}, false, false, true);
 		if(paths!=null && paths.length==1) {
 			propertyFileText.setText((paths[0]).toOSString());
 		}
 	}
 	
 	private void handleConfigurationFileBrowse() {
-		IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  getConfigurationFilePath(), new IPath[0], "Select hibernate.cfg.xml file", "Choose file to use as hibernate.cfg.xml", new String[] {"cfg.xml"}, false, false);
+		IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  getConfigurationFilePath(), new IPath[0], "Select hibernate.cfg.xml file", "Choose file to use as hibernate.cfg.xml", new String[] {"cfg.xml"}, false, false, true);
 		if(paths!=null && paths.length==1) {
 			configurationFileText.setText((paths[0]).toOSString());
 		}
@@ -408,8 +429,9 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 				return;
 			}
 		} else if(mappingFilesViewer.getTable().getItemCount()==0) {
-			updateStatus("Need to specify one or more mapping files");
-			return;
+			//TODO: removed to provide a way to create a non-mapping base configuration
+			//updateStatus("Need to specify one or more mapping files");
+			//return;
 		}
 		
 		updateStatus(null);
@@ -422,6 +444,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	private String checkForFile(String msgPrefix, IResource resource) {
 		if(resource!=null) {
 			if(resource instanceof File) {
+				
 				return null;
 			} else {
 				return msgPrefix + " is not a file";

@@ -9,6 +9,8 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
+import org.hibernate.console.ImageConstants;
+import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard;
 
 /**
@@ -23,7 +25,8 @@ public class AddConfigurationAction extends Action {
 
 	public AddConfigurationAction(IViewPart part) {
 		this.part = part;
-		setText("Add Configuration");		
+		setText("Add Configuration");
+		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.ADD));
 	}
 
 	public void run() {

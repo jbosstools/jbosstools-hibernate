@@ -22,7 +22,7 @@ import org.hibernate.console.node.ConfigurationNode;
  * @author max
  *
  */
-public class BuildSessionFactoryAction extends SessionFactoryBasedAction {
+public class BuildSessionFactoryAction extends ConsoleConfigurationBasedAction {
 
 	private final StructuredViewer viewer;
 
