@@ -86,7 +86,7 @@ function generate_TOC(parentElementId) {
 <body onload="generate_TOC('toc')">
 
 <h1>Hibernate Tools</h1>
-<b><big>Reverse engineering and code generation with Eclipse plugins and a hbm.xml editor</b></big>
+<b><big>Reverse engineering and code generation with Eclipse plugins and a hbm.xml editor</big></b>
 <br/>
 <br/>
 <b>Version:</b> 3.0 alpha 1, 25. January 2005
@@ -119,7 +119,7 @@ information about the road map.</i></p>
 
 <p>
   <ol>
-    <li>Install Eclipse 3.1M4 (<a href="http://www.eclipse.org/">http://www.eclipse.org</a>)
+    <li>Install Eclipse 3.1M4 (<a href="http://www.eclipse.org/">http://www.eclipse.org</a>)</li>
     <li>Install JBoss Eclipse IDE 1.4.x - required for the mapping file editor (<a href="http://www.jboss.org/products/jbosside">http://www.jboss.org/</a>)</li>
   </ol>
 </p>
@@ -405,6 +405,104 @@ The built-in templates can be found in the hibernate-tools.jar in
           Note that we expect significant changes to the structure and
 	organization of the built-in templates in one of the next releases.
 	</p>
+	
+	<h2>Improved Ant tasks</h2>
+	
+	<p>In this release we have included a new set of Ant tasks that consolidate the Ant tasks included in the core and tool set.</p>
+	
+	<p>
+	To use it you ned to have the hibernatetool task defined. That is done in your build.xml by the following line:
+	</p>
+	
+	<table class="code"><tr><td>
+ <pre>
+ &lt;taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpath="[location of hibernatetools.jar, velocity-1.4.jar, velocity-tools-generic-1.4.jar, hibernate3.jar & jdbc drivers]"/&gt; 
+ </pre>
+ 
+ </td></tr></table>
+ 
+ <p>
+  You do not need to use the hibernate3.jar included in the tools distribution, but all the tool related jars you will find in the plugins directory under org.hibernate.eclipse_3.0.0.alpha2\lib.
+ </p>
+ 
+ <p>
+  The ant tasks 
+  To use the task you have to specify one or more of the following:
+  
+  <ul>
+    <li>(Optional) A classpath that contains the needed classes</li>
+    <li>(Required) One of the following: 
+    	<ul>
+    	  <li>&lt;configuration&gt; - uses a normal Hibernate Configuration.
+    	  <li>&lt;annotationconfiguration&gt; - Supports using jdk 1.5/JSR-220 annotated classes. Specify classes/packages to load in your hibernate.cfg.xml
+    	  <li>&lt;jdbcconfiguration&gt; - Will reverse engineer the database and create classes/associations based on the JDBC meta data.
+    	</ul>
+    </li>
+    <li>(Required) One or more of the "generators" that operates on the above chosen configuration.
+    	<ul>
+    		<li>&lt;hbm2dll&gt; - a.k.a. schemaexport, exports and/or executes the SQL DDL for the configuration to the database</li>
+    		<li>&lt;hbm2java&gt; - a.k.a. codegenerator, generates a set of .java files</li>
+    		<li>&lt;cfg2hbm&gt; - generates a set .hbm files. Mostly used together with a &lt;jdbcconfiguration&gt;</li>
+    		<li>&lt;cfg2cfgXml&gt;- generates a set .cfg.xml file. Mostly used together with a &lt;jdbcconfiguration&gt;</li>
+    	</ul>
+  </ul>
+  
+  
+  Some generic templates for each type of configuration with comments on what each item do is shown below:
+ </p>
+ 
+ 
+ <h3>A normal hibernate configuration</h3>
+
+ 	<table class="code"><tr><td>
+ <pre>
+  &lt;hibernatetool destdir="[output dir]"&gt; 
+   &lt;classpath&gt; &lt;!-- a classpath is optional, but needed for generators that require access to domain classes etc. --&gt;
+    &lt;path location="[classpath of needed classes, such as domain classes and usertypes - dependent on the chosen generators]"/&gt; 
+   &lt;/classpath&gt; 
+   
+   &lt;configuration configurationfile="hibernate.cfg.xml" &gt; 
+    &lt;fileset dir="${src.dir}/../test" id="id"&gt; &lt;!-- A configuration can take a configurationfile and/or a fileset of hbm.xml's --&gt;
+      &lt;include name="**/*TopDown.hbm.xml"/&gt; 
+    &lt;/fileset&gt; 
+   &lt;/configuration&gt; 
+
+   &lt;hbm2java/&gt; &lt;!-- generate default .java files --&gt;
+   &lt;hbm2ddl drop="false"/&gt; &lt;!-- export schema to database. If outputfilename is provided a text file is generated instead. --&gt;
+  &lt;/hibernatetool&gt;
+</pre></td></tr></table>      
+
+<h3>A configuration with annotation support</h3>
+
+<table class="code"><tr><td>
+ <pre>
+  &lt;hibernatetool destdir="[output dir]"&gt; 
+   &lt;classpath&gt; &lt;!-- a classpath is optional, but needed for generators that require access to domain classes etc. --&gt;
+    &lt;path location="[classpath of needed classes, such as domain classes and usertypes - dependent on the chosen generators]"/&gt; 
+   &lt;/classpath&gt; 
+   
+   &lt;configuration configurationfile="hibernate.cfg.xml"/&gt; &lt;!-- annotated class/packages are specified in the hibernate.cfg.xml --&gt;
+
+   &lt;hbm2ddl drop="false" outputfilename="xxx.sql"/&gt; &lt;!-- SchemaExport based on Annotations --&gt;
+  &lt;/hibernatetool&gt;
+</pre></td></tr></table>      
+
+<h3>A configuration with reverse engineering support</h3>
+
+<table class="code"><tr><td>
+ <pre>
+  &lt;hibernatetool destdir="[output dir]"&gt; 
+   &lt;classpath&gt; &lt;!-- a classpath is optional, but needed for generators that require access to domain classes etc. --&gt;
+    &lt;path location="[classpath of needed classes, such as domain classes and usertypes - dependent on the chosen generators]"/&gt; 
+   &lt;/classpath&gt; 
+   
+   &lt;jdbcconfiguration configurationfile="hibernate.cfg.xml"/&gt; &lt;!-- database settings are read from hibernate.cfg.xml and/or via propertyfile if provided --&gt;
+
+   &lt;hbm2java ejb3="true" /&gt; &lt;!-- generate default .java files with EJB3 annotations --&gt;
+   &lt;hbm2java templatespath="src/testsupport/templates"/&gt; &lt;!-- code generation with custom templates (yes, can run each task more than once! --&gt;
+  &lt;/hibernatetool&gt;
+</pre></td></tr></table>      
+
 -- 
 
 </body>
