@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="org.hibernate.eclipse.mapper"
+   name="Mapper Plug-in"
+   version="1.0.0"
+   provider-name="Hibernate Team"
+   class="org.hibernate.eclipse.mapper.MapperPlugin">
+
+   <runtime>
+      <library name="org.hibernate.eclipse.mapper.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.jboss.ide.eclipse.jdt.xml.ui"/>
+      <import plugin="org.jboss.ide.eclipse.core"/>
+      <import plugin="org.jboss.ide.eclipse.jdt.core"/>
+      <import plugin="org.jboss.ide.eclipse.jdt.j2ee.core"/>
+      <import plugin="org.jboss.ide.eclipse.jdt.j2ee.xml.core"/>
+      <import plugin="org.jboss.ide.eclipse.jdt.j2ee.xml.ui"/>
+      <import plugin="org.jboss.ide.eclipse.jdt.ui"/>
+      <import plugin="org.jboss.ide.eclipse.jdt.xml.core"/>
+      <import plugin="org.jboss.ide.eclipse.ui"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.jdt.ui"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui.ide"/>
+   </requires>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            icon="icons/images/hibernate_mapping.gif"
+            class="org.hibernate.eclipse.mapper.editors.HBMXmlEditor"
+            default="false"
+            name="hbm.xml Editor (Hibernate Mapper)"
+            id="org.hibernate.eclipse.mapper.editors.HBMXmlEditor"
+            extensions="hbm.xml"/>
+      <editor
+            class="org.hibernate.eclipse.mapper.editors.HibernateConfigurationEditor"
+            icon="icons/images/hibernate_config.gif"
+            contributorClass="org.hibernate.eclipse.mapper.editors.MultiPageEditorContributor"
+            name="hibernate.cfg.xml Editor"
+            id="org.hibernate.eclipse.mapper.editors.HibernateConfigurationEditor"
+            extensions="cfg.xml"/>
+   </extension>
+
+</plugin>
