@@ -1,0 +1,119 @@
+<!--
+
+  HibernateTools ANT build script.
+
+
+-->
+
+<project name="Hibernate Help" default="build" basedir=".">
+
+	<!-- Give user a chance to override without editing this file
+	     (and without typing -D each time it compiles it) -->
+	<property file="build.properties"/>
+	<property file="${user.home}/.ant.properties"/>
+
+
+	<!-- Name of project and version, used to create filenames -->
+    <property name="Name" value="Hibernate Help"/>
+    <property name="name" value="hibernatehelp"/>
+    <property name="version" value="3.0.0.alpha"/>
+
+    <property name="common-build.basedir" location="." />
+
+    <!-- location of hibernate installation -->
+    <property name="hibernate-core.home"
+          location="${common-build.basedir}/../../hibernate-3.0"/>
+	
+    <!-- take the api html (javadoc) files from here -->
+    <property name="hibernate-core.doc.api"
+          location="${hibernate-core.home}/doc/api" />
+	
+    <property name="tmpdir" location="tmp"/>	
+	<target name="create-doc-zip">
+		
+		<!-- copy in the reference document -->
+	    <copy todir="${tmpdir}/html/reference">
+	       <fileset dir="${hibernate-core.home}/doc/reference" >
+	       		<include name="**/html/*"/>	
+	  	       	<include name="**/shared/images/*" />
+	        </fileset>
+	    </copy>
+
+		<!-- copy in the api javadoc output -->
+	    <copy todir="${tmpdir}/html/api">
+	      <fileset dir="${hibernate-core.home}/doc/api"/>
+	    </copy>
+	  	       		
+		<!-- zip into single zip file (must be called 'doc.zip') -->
+		<zip destfile="doc.zip" basedir="tmp"/>
+		
+		<!-- delete the html directory -->
+		<delete dir="${tmpdir}" />
+
+	</target>
+
+	
+    <!-- top of hibernate source tree -->
+    <property name="hibernate.src.top"
+          location="${common-build.basedir}/../../Hibernate3"/>
+
+    <!-- documnent source top -->
+    <property name="hibernate.docsrc" location="${hibernate.src.top}/doc" />
+
+    <!-- reference documnent source top -->
+    <property name="hibernate.ref.docsrc"
+          location="${hibernate.docsrc}/reference" />
+
+    <!-- so far, only english is in the source tree -->
+    <property name="lang" value="en" />
+
+    <!-- xslt file that converts document source to eclipse table of contents -->
+    <property name="refdoc.toc.translation" value="toc.refdoc.xsl" />
+
+    <!-- xslt file that converts hibernate's ant build.xml to eclipse table of contents -->
+    <property name="apiref.toc.translation" value="toc.apiref.xsl" />
+    
+    <property name="toc.refdoc.xml" value="tocreferencedocumentation.xml" />
+    <property name="toc.apiref.xml" value="tocapireference.xml" />
+
+
+    <!-- Classpath for the document build tools, namely saxon  -->
+    <path id="lib.classpath">
+        <fileset dir="${hibernate.ref.docsrc}/support/lib">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+
+    <!-- reach into hibernate source to generate toc from document source -->
+    <target name="gen-toc-refdocs" >
+        <java classname="com.icl.saxon.StyleSheet" fork="true">
+            <classpath refid="lib.classpath"/>
+            <arg value="-o"/>
+            <arg value="${toc.refdoc.xml}" />
+            <arg value="${hibernate.ref.docsrc}/${lang}/master.xml"/>
+            <arg value="${refdoc.toc.translation}"/>
+        </java>
+
+        <java classname="com.icl.saxon.StyleSheet" fork="true">
+            <classpath refid="lib.classpath"/>
+            <arg value="-o"/>
+            <arg value="${toc.apiref.xml}" />
+            <arg value="${hibernate.src.top}/build.xml"/>
+            <arg value="${apiref.toc.translation}"/>
+        </java>
+
+    </target>
+	
+	<target name="clean">
+		<delete>
+			<fileset dir=".">
+				<include name="${toc.refdoc.xsl}"/>
+				<include name="${toc.apiref.xml}"/>
+			</fileset>
+		</delete>
+	</target>
+
+    <target name="build" depends="create-doc-zip, gen-toc-refdocs" />
+
+</project>
