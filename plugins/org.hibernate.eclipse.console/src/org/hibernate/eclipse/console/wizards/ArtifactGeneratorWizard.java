@@ -159,7 +159,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
                 
                 final ConfigurationNavigator cv = new ConfigurationNavigator();
 				final Exporter hbmExporter = new HibernateMappingExporter(cfg, outputdir,templatePaths);
-				final Exporter javaExporter = new POJOExporter(cfg, outputdir, templatePaths, ejb3);
+				final Exporter javaExporter = new POJOExporter(cfg, outputdir, templatePaths, ejb3, ejb3); // TODO: expose generics as an option
 				final Exporter cfgExporter = new HibernateConfigurationExporter(cfg, outputdir); 
 				
 				if(genhbm) {
