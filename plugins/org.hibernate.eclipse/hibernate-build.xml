@@ -19,8 +19,9 @@
 	<target name="javadoc"/>
 	
 	<target name="update" depends="init">
-		<ant antfile="${hibernate-core.home}\..\hibernate3\build.xml" inheritall="false" inheritrefs="false" target="jar"/> 
-		<ant antfile="${hibernate-core.home}\..\hibernate3\build.xml" inheritall="false" inheritrefs="false" target="copylib"/>  
+		<!-- DONT BUILD H3 unless you have to use new features from the core. use the released binary if you can!
+		 <ant antfile="${hibernate-core.home}\..\hibernate3\build.xml" inheritall="false" inheritrefs="false" target="jar"/> 
+		<ant antfile="${hibernate-core.home}\..\hibernate3\build.xml" inheritall="false" inheritrefs="false" target="copylib"/>  -->
 
 		<!-- we need to have the hibernateconsole stuff together with the core to fake DriverManager into allow loading drivers -->
 		<ant antfile="..\console\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
