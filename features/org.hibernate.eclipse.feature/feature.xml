@@ -2,7 +2,7 @@
 <feature
       id="org.hibernate.eclipse.feature"
       label="org.hibernate.eclipse.feature"
-      version="3.0.0.N200504051000"
+      version="3.0.0.N200504051900"
       provider-name="Hibernate Team">
 
    <description url="http://tools.hibernate.org">
@@ -456,7 +456,8 @@ END OF TERMS AND CONDITIONS
          id="org.hibernate.eclipse.mapper"
          download-size="0"
          install-size="0"
-         version="3.0.0.N200504051000"/>
+         version="3.0.0.N200504051000"
+         />
 
    <plugin
          id="org.hibernate.eclipse.help"

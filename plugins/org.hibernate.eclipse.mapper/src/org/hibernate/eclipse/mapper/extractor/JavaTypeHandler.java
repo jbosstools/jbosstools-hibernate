@@ -5,6 +5,7 @@ package org.hibernate.eclipse.mapper.extractor;
 
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.eval.IEvaluationContext;
 import org.eclipse.jdt.internal.ui.text.java.JavaCompletionProposal;
@@ -66,7 +67,20 @@ class JavaTypeHandler implements HBMInfoHandler {
 	}
 	
 	public IJavaElement getJavaElement(IJavaProject project, Node currentNode, Attr currentAttrNode) {
-		return extractor.getNearestTypeJavaElement(project, currentNode);
+		return getNearestTypeJavaElement(project, currentNode);
+	}
+
+	public IJavaElement getNearestTypeJavaElement(IJavaProject project, Node currentNode) {
+		String nearestType = extractor.getNearestType(currentNode);
+		if(nearestType!=null) {
+			try {
+				IType type = project.findType(nearestType);
+				return type;
+			} catch (JavaModelException e) {
+				//ignore
+			}
+		}
+		return null;
 	}
 
 }

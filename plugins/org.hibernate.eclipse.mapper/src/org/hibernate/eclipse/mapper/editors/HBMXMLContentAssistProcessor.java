@@ -1,72 +1,48 @@
 package org.hibernate.eclipse.mapper.editors;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jface.text.ITextViewer;
-import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.eclipse.wst.sse.core.text.IStructuredDocumentRegion;
-import org.eclipse.wst.sse.core.text.ITextRegion;
-import org.eclipse.wst.sse.core.text.ITextRegionList;
-import org.eclipse.wst.xml.core.document.XMLNode;
-import org.eclipse.wst.xml.core.parser.XMLRegionContext;
+import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.wst.xml.ui.contentassist.ContentAssistRequest;
-import org.eclipse.wst.xml.ui.contentassist.XMLContentAssistProcessor;
+import org.hibernate.eclipse.mapper.extractor.HBMInfoExtractor;
+import org.hibernate.eclipse.mapper.extractor.HBMInfoHandler;
+import org.w3c.dom.Node;
 
-public class HBMXMLContentAssistProcessor extends XMLContentAssistProcessor {
+public class HBMXMLContentAssistProcessor extends HibernateContentAssistProcessor {
 
-	HBMXMLTypeContributor contributor;
+	private HBMInfoExtractor sourceLocator = new HBMInfoExtractor();
 	
 	public HBMXMLContentAssistProcessor(IJavaProject javaProject) {
-		contributor = new HBMXMLTypeContributor(javaProject);
+		super(javaProject);
 	}
+
+	private static final boolean DEBUG = false;
 	
-	protected void addAttributeValueProposals(ContentAssistRequest contentAssistRequest) {
-		super.addAttributeValueProposals(contentAssistRequest);
+	public List getAttributeValueProposals(String attributeName, String start, int offset, ContentAssistRequest contentAssistRequest) {
+		Node node = contentAssistRequest.getNode();
+		List proposals = new ArrayList();
 		
-		XMLNode node = (XMLNode) contentAssistRequest.getNode();
-
-		// Find the attribute region and name for which this position should have a value proposed
-		IStructuredDocumentRegion open = node.getFirstStructuredDocumentRegion();
-		ITextRegionList openRegions = open.getRegions();
-		int i = openRegions.indexOf(contentAssistRequest.getRegion());
-		if (i < 0)
-			return;
-		ITextRegion nameRegion = null;
-		while (i >= 0) {
-			nameRegion = openRegions.get(i--);
-			if (nameRegion.getType() == XMLRegionContext.XML_TAG_ATTRIBUTE_NAME)
-				break;
+		String path = node.getNodeName() + ">" + attributeName;
+        HBMInfoHandler handler = sourceLocator.getAttributeHandler(path);
+		if (handler != null) {
+			proposals.addAll(Arrays.asList(handler.attributeCompletionProposals(getJavaProject(), node, attributeName, start, offset)));
 		}
-
-		String matchString = contentAssistRequest.getMatchString();
-		int offset = contentAssistRequest.getReplacementBeginPosition();
-		if (matchString == null) {
-			matchString = ""; //$NON-NLS-1$			
-		}
-		if (matchString.length() > 0 && (matchString.startsWith("\"") || matchString.startsWith("'"))) {//$NON-NLS-2$//$NON-NLS-1$
-			matchString = matchString.substring(1);
-			offset = offset+1;
-		}
-
-		if (nameRegion != null) {
-			String attributeName = open.getText(nameRegion);
+		
+		if (DEBUG) {
+			String string = contentAssistRequest.getDocumentRegion().getText();
+			string = string.replace('<', '[');
+			string = string.replace('>', ']');
+			CompletionProposal completionProposal = new CompletionProposal("[" + start + "],[" + path + "],[" + offset + "]", offset, 1, 4, null, null, null, string);
 			
-			List attributeValueProposals = contributor.getAttributeValueProposals(attributeName, matchString, offset, contentAssistRequest);
-			for (Iterator iter = attributeValueProposals.iterator(); iter.hasNext();) {
-				ICompletionProposal element = (ICompletionProposal) iter.next();				
-				contentAssistRequest.addProposal(element);					
-			}			
-			
+			proposals.add(completionProposal);
 		}
-		
-		
+
+		return proposals;
 	}
+
 	
-	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer, int offset) {
-		return super.computeCompletionProposals(viewer, offset);
-		
-	}
-	
+
 }

@@ -16,6 +16,19 @@
                   value="hibernate-mapping"/>
          </describer>
       </content-type>
+      <content-type
+            base-type="org.eclipse.core.runtime.xml"
+            file-extensions="xml"
+            file-names="hibernate.cfg.xml"
+            id="content-type.cfg.xml"
+            name="Hibernate Configuration Content-type"
+            priority="normal">
+            <describer class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
+            <parameter
+                  name="element"
+                  value="hibernate-configuration"/>
+         </describer>
+      </content-type>
    </extension>
    <extension
          point="org.eclipse.wst.sse.core.modelHandler">
@@ -25,6 +38,12 @@
                default="false"
                id="org.hibernate.eclipse.mapper.handler.hbm.xml">
          </modelHandler>
+         <modelHandler
+               associatedContentTypeId="org.hibernate.eclipse.mapper.content-type.cfg.xml"
+               class="org.hibernate.eclipse.mapper.modelhandler.ModelHandlerForCFGXML"
+               default="false"
+               id="org.hibernate.eclipse.mapper.handler.cfg.xml">
+         </modelHandler>
    </extension>
    <extension
          point="org.eclipse.wst.sse.ui.extendedconfiguration">
@@ -32,11 +51,15 @@
             class="org.hibernate.eclipse.mapper.editors.HBMXMLStructuredTextViewerConfiguration"
             target="org.hibernate.eclipse.mapper.content-type.hbm.xml"
             type="textviewerconfiguration"/>
+	  <configuration
+            class="org.hibernate.eclipse.mapper.editors.CFGXMLStructuredTextViewerConfiguration"
+            target="org.hibernate.eclipse.mapper.content-type.cfg.xml"
+            type="textviewerconfiguration"/>            
    </extension>
    <extension
          point="org.eclipse.wst.sse.ui.adapterFactoryDescription">
       <adapterFactoryDescription
-            class="org.hibernate.eclipse.mapper.registry.AdapterFactoryProviderForHBMXML">
+            class="org.hibernate.eclipse.mapper.registry.AdapterFactoryProviderForCFGXML">
       </adapterFactoryDescription>         
    </extension>
   </plugin>

@@ -17,9 +17,10 @@ import org.eclipse.wst.xml.ui.internal.XMLUIPlugin;
 import org.eclipse.wst.xml.ui.registry.AdapterFactoryProviderForXML;
 import org.eclipse.wst.xml.ui.views.contentoutline.JFaceNodeAdapterFactory;
 import org.eclipse.wst.xml.ui.views.properties.XMLPropertySourceAdapterFactory;
+import org.hibernate.eclipse.mapper.modelhandler.ModelHandlerForCFGXML;
 import org.hibernate.eclipse.mapper.modelhandler.ModelHandlerForHBMXML;
 
-public class AdapterFactoryProviderForHBMXML extends AdapterFactoryProviderForXML {
+public class AdapterFactoryProviderForCFGXML extends AdapterFactoryProviderForXML {
 	
 	/*
 	 * @see AdapterFactoryProvider#addAdapterFactories(IStructuredModel)
@@ -79,7 +80,7 @@ public class AdapterFactoryProviderForHBMXML extends AdapterFactoryProviderForXM
 	 * @see AdapterFactoryProvider#isFor(ContentTypeDescription)
 	 */
 	public boolean isFor(IDocumentTypeHandler contentTypeDescription) {
-		return (contentTypeDescription instanceof ModelHandlerForHBMXML);
+		return (contentTypeDescription instanceof ModelHandlerForCFGXML);
 	}
 
 	public void reinitializeFactories(IStructuredModel structuredModel) {

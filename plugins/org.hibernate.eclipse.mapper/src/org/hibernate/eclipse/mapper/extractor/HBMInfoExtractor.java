@@ -1,5 +1,7 @@
 package org.hibernate.eclipse.mapper.extractor;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,6 +21,7 @@ import org.eclipse.jdt.ui.text.java.CompletionProposalComparator;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.wst.sse.ui.internal.contentassist.CustomCompletionProposal;
 import org.eclipse.wst.xml.ui.contentassist.XMLRelevanceConstants;
+import org.hibernate.cfg.Environment;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -36,6 +39,8 @@ public class HBMInfoExtractor {
 	
 	/** set of "tagname>attribname", used to decide which attributes we should react to */	
 	final Map attributeHandlers = new HashMap(); // completes a possible package or classname
+
+	private String[] hibernatePropertyNames;
 	
 	public HBMInfoExtractor() {
 		setupTypeFinder();
@@ -49,6 +54,38 @@ public class HBMInfoExtractor {
 		setupHibernateTypeHandlers();
 		
 		setupHibernateTypeDescriptors();
+		
+		setupHibernateProperties();
+	}
+
+	private void setupHibernateProperties() {
+		hibernatePropertyNames = extractHibernateProperties();
+		
+	}
+
+	private String[] extractHibernateProperties() {
+		try {
+			// TODO: extract property names from the Environment class in the users hibernate configuration.
+			Class cl = Environment.class;
+			List names = new ArrayList();
+			Field[] fields = cl.getFields();
+			for (int i = 0; i < fields.length; i++) {
+				Field field = fields[i];
+				if(Modifier.isStatic(field.getModifiers()) && 
+						field.getType().equals(String.class) ) {
+					String str = (String) field.get(cl);
+					if(str.startsWith("hibernate.")) {
+						names.add(str);
+					}
+				}
+			}
+			String[] propertyNames = (String[]) names.toArray(new String[names.size()]);
+			Arrays.sort(propertyNames);
+			return propertyNames;
+		} catch (IllegalAccessException iae) {
+			// ignore
+			return new String[0]; 
+		}
 	}
 
 	private void setupTypeFinder() {
@@ -150,6 +187,7 @@ public class HBMInfoExtractor {
 		attributeHandlers.put("composite-element>class", classFinder);
 		attributeHandlers.put("component>class", classFinder);
 		attributeHandlers.put("composite-id>class", classFinder);
+		attributeHandlers.put("key-many-to-one>class", classFinder);
 	}
 	
 	List findMatchingHibernateTypes(String item) {
@@ -167,6 +205,23 @@ public class HBMInfoExtractor {
 		return l;
 	}
 
+	public List findMatchingPropertyTypes(String prefix) {
+		List l = new ArrayList();
+		boolean foundFirst = false;
+		for (int i = 0; i < hibernatePropertyNames.length; i++) {
+			String element = hibernatePropertyNames[i];
+			if(element.startsWith(prefix)) {
+				foundFirst = true;
+				l.add(element);
+			} else if (element.startsWith("hibernate." + prefix)) {
+				foundFirst = true;
+				l.add(element.substring("hibernate.".length()));
+			} else if (foundFirst) {
+				return l; // fail fast since if we dont get a match no future match can be found.
+			}
+		}
+		return l;
+	}
 
 	/**
 	 * @param start
@@ -179,8 +234,7 @@ public class HBMInfoExtractor {
 		// we move the replacementoffset on every proposol to fit nicely
 		// into our non-java code
 		for (int i = 0; i < results.length; i++) {
-			JavaCompletionProposal proposal = (JavaCompletionProposal) results[i]; // TODO: eclipse bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=84998
-			System.out.println(proposal.getReplacementOffset());
+			JavaCompletionProposal proposal = (JavaCompletionProposal) results[i]; // TODO: eclipse bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=84998			
 			proposal.setReplacementOffset(proposal.getReplacementOffset() + (offset /*- start.length()*/));
 		}
 		Arrays.sort(results, new CompletionProposalComparator());		
