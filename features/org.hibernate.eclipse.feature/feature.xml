@@ -2,7 +2,7 @@
 <feature
       id="org.hibernate.eclipse.feature"
       label="org.hibernate.eclipse.feature"
-      version="3.0.0.alpha3"
+      version="3.0.0.N200504051000"
       provider-name="Hibernate Team">
 
    <description url="http://tools.hibernate.org">
@@ -432,39 +432,36 @@ END OF TERMS AND CONDITIONS
       <import plugin="org.eclipse.jface.text"/>
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="org.eclipse.help"/>
-      <import plugin="org.jboss.ide.eclipse.jdt.xml.ui"/>
-      <import plugin="org.jboss.ide.eclipse.core"/>
-      <import plugin="org.jboss.ide.eclipse.jdt.core"/>
-      <import plugin="org.jboss.ide.eclipse.jdt.j2ee.core"/>
-      <import plugin="org.jboss.ide.eclipse.jdt.j2ee.xml.core"/>
-      <import plugin="org.jboss.ide.eclipse.jdt.j2ee.xml.ui"/>
-      <import plugin="org.jboss.ide.eclipse.jdt.ui"/>
-      <import plugin="org.jboss.ide.eclipse.jdt.xml.core"/>
-      <import plugin="org.jboss.ide.eclipse.ui"/>
+      <import plugin="org.eclipse.wst.xml.core"/>
+      <import plugin="org.eclipse.wst.sse.core"/>
+      <import plugin="org.eclipse.wst.xml.ui"/>
+      <import plugin="org.eclipse.wst.sse.ui"/>
+      <import plugin="org.eclipse.wst.common.contentmodel"/>
+      <import plugin="org.eclipse.wst.common.encoding"/>
    </requires>
 
    <plugin
          id="org.hibernate.eclipse"
          download-size="0"
          install-size="0"
-         version="3.0.0.alpha3"/>
+         version="3.0.0.N200504051000"/>
 
    <plugin
          id="org.hibernate.eclipse.console"
          download-size="0"
          install-size="0"
-         version="3.0.0.alpha3"/>
+         version="3.0.0.N200504051000"/>
 
    <plugin
          id="org.hibernate.eclipse.mapper"
          download-size="0"
          install-size="0"
-         version="3.0.0.alpha3"/>
+         version="3.0.0.N200504051000"/>
 
    <plugin
          id="org.hibernate.eclipse.help"
          download-size="0"
          install-size="0"
-         version="3.0.0.alpha3"/>
+         version="3.0.0.N200504051000"/>
 
 </feature>

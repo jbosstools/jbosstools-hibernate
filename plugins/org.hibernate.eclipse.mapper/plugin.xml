@@ -1,37 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
-<plugin
-   id="org.hibernate.eclipse.mapper"
-   name="Mapper Plug-in"
-   version="3.0.0.alpha3"
-   provider-name="Hibernate Team"
-   class="org.hibernate.eclipse.mapper.MapperPlugin">
+<plugin>
 
-   <runtime>
-      <library name="org.hibernate.eclipse.mapper.jar">
-         <export name="*"/>
-      </library>
-   </runtime>
-
-   <requires>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.ui.editors"/>
-      <import plugin="org.eclipse.ui.workbench.texteditor"/>
-      <import plugin="org.eclipse.jface.text"/>
-      <import plugin="org.eclipse.jdt.ui"/>
-      <import plugin="org.eclipse.jdt.core"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.eclipse.wst.xml.core"/>
-      <import plugin="org.eclipse.wst.sse.core"/>
-      <import plugin="org.eclipse.wst.xml.ui"/>
-      <import plugin="org.eclipse.wst.sse.ui"/>
-      <import plugin="org.eclipse.ui.views"/>
-      <import plugin="org.eclipse.wst.common.contentmodel"/>
-      <import plugin="org.eclipse.wst.common.encoding"/>
-   </requires>
-   <extension
+     <extension
          point="org.eclipse.core.runtime.contentTypes">
       <content-type
             base-type="org.eclipse.core.runtime.xml"
@@ -58,7 +29,7 @@
    <extension
          point="org.eclipse.wst.sse.ui.extendedconfiguration">
       <configuration
-            class="org.hibernate.eclipse.mapper.editors.HBMXmlStructuredTextViewerConfiguration"
+            class="org.hibernate.eclipse.mapper.editors.HBMXMLStructuredTextViewerConfiguration"
             target="org.hibernate.eclipse.mapper.content-type.hbm.xml"
             type="textviewerconfiguration"/>
    </extension>
@@ -66,14 +37,6 @@
          point="org.eclipse.wst.sse.ui.adapterFactoryDescription">
       <adapterFactoryDescription
             class="org.hibernate.eclipse.mapper.registry.AdapterFactoryProviderForHBMXML">
-      </adapterFactoryDescription>
-         
+      </adapterFactoryDescription>         
    </extension>
-
-
-
-
-
-
-
-</plugin>
+  </plugin>

@@ -2,7 +2,7 @@
  * Created on 19-Nov-2004
  *
  */
-package org.hibernate.eclipse.mapper.editors;
+package org.hibernate.eclipse.mapper.extractor;
 
 import org.eclipse.jdt.core.CompletionProposal;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -13,13 +13,13 @@ import org.eclipse.jdt.ui.text.java.CompletionProposalCollector;
  * @author max
  *
  */
-public class HBMXmlResultCollector extends CompletionProposalCollector {
+public class HBMXMLResultCollector extends CompletionProposalCollector {
 
-    public HBMXmlResultCollector(ICompilationUnit cu) {
+    public HBMXMLResultCollector(ICompilationUnit cu) {
 		super(cu);	
 	}
 	
-	HBMXmlResultCollector(IJavaProject project) {
+	HBMXMLResultCollector(IJavaProject project) {
 		super(project);
 	}
 

@@ -16,10 +16,10 @@ import org.eclipse.wst.xml.ui.contentassist.XMLContentAssistProcessor;
 
 public class HBMXMLContentAssistProcessor extends XMLContentAssistProcessor {
 
-	HBMXmlTypeContributor contributor;
+	HBMXMLTypeContributor contributor;
 	
 	public HBMXMLContentAssistProcessor(IJavaProject javaProject) {
-		contributor = new HBMXmlTypeContributor(javaProject);
+		contributor = new HBMXMLTypeContributor(javaProject);
 	}
 	
 	protected void addAttributeValueProposals(ContentAssistRequest contentAssistRequest) {

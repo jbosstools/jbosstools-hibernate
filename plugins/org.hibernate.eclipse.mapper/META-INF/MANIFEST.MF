@@ -1,0 +1,32 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Mapper Plug-in
+Bundle-SymbolicName: org.hibernate.eclipse.mapper; singleton:=true
+Bundle-Version: 3.0.0.N200504051000
+Bundle-ClassPath: org.hibernate.eclipse.mapper.jar
+Bundle-Activator: org.hibernate.eclipse.mapper.MapperPlugin
+Bundle-Vendor: Hibernate Team
+Bundle-Localization: plugin
+Export-Package: org.hibernate.eclipse.editors,
+ org.hibernate.eclipse.mapper,
+ org.hibernate.eclipse.mapper.editors,
+ org.hibernate.eclipse.mapper.extractor,
+ org.hibernate.eclipse.mapper.modelhandler,
+ org.hibernate.eclipse.mapper.registry
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.jface.text,
+ org.eclipse.jdt.ui,
+ org.eclipse.jdt.core,
+ org.eclipse.core.resources,
+ org.eclipse.ui.ide,
+ org.eclipse.wst.xml.core,
+ org.eclipse.wst.sse.core,
+ org.eclipse.wst.xml.ui,
+ org.eclipse.wst.sse.ui,
+ org.eclipse.ui.views,
+ org.eclipse.wst.common.contentmodel,
+ org.eclipse.wst.common.encoding
+Eclipse-AutoStart: true
