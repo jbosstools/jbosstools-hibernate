@@ -7,48 +7,64 @@ package org.hibernate.eclipse.console.views.properties;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource2;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
+import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.console.QueryPage;
 
 public class QueryPagePropertySource implements IPropertySource2
 {	
 	private final QueryPage page;
 
-	IPropertyDescriptor[] descriptors;
+	static IPropertyDescriptor[] descriptors;
+
+	private static final String QUERY_TEXT = "QueryPage.queryString";
+
+	private static final Object CONFIGURATION_TEXT = "QueryPage.consoleConfiguration";
+	
+	static {
+		descriptors = new IPropertyDescriptor[2];
+        PropertyDescriptor descriptor;
+
+        // query string
+        descriptor = new TextPropertyDescriptor(QUERY_TEXT,
+                "Query string");
+        descriptor.setAlwaysIncompatible(true);
+        //descriptor.setCategory(IResourcePropertyConstants.P_FILE_SYSTEM_CATEGORY);
+        descriptors[0] = descriptor;
+        
+        // configuration name
+        descriptor = new TextPropertyDescriptor(CONFIGURATION_TEXT,
+                "Console configuration");
+        descriptor.setAlwaysIncompatible(true);
+        //descriptor.setCategory(IResourcePropertyConstants.P_FILE_SYSTEM_CATEGORY);
+        descriptors[1] = descriptor;
+    }
+	
 	public QueryPagePropertySource (QueryPage page) {
 		this.page = page;			
 	}
 
-	public boolean isPropertyResettable(Object id) {
-		
+	public boolean isPropertyResettable(Object id) {		
 		return false;
 	}
 
 	public Object getEditableValue() {
-		return null;
+		return "";
 	}
 
 	public IPropertyDescriptor[] getPropertyDescriptors() {
-		if(descriptors==null) {
-			descriptors = new PropertyDescriptor[2];
-			PropertyDescriptor pd = new PropertyDescriptor(new Long(0), "Query string");
-			pd.setDescription("The query string used on this querypage.");
-			descriptors[0] = pd;
-			pd = new PropertyDescriptor(new Long(1), "Configuration name");
-			descriptors[1] = pd;
-		}
-		
 		return descriptors;
 	}
 
 	public Object getPropertyValue(Object id) {
-		Long l = (Long) id;
-		
-		switch(l.intValue()) {
-			case 0: return page.getQueryString();
-			case 1: return page.getConsoleConfiguration().getName();
+		if(CONFIGURATION_TEXT.equals(id)) {
+			return page.getConsoleConfiguration().getName();
+		}
+		if(QUERY_TEXT.equals(id)) {
+			return page.getQueryString();
 		}
 		
-		return null;		}
+		return null;		
+	}
 
 	public boolean isPropertySet(Object id) {
 		return false;

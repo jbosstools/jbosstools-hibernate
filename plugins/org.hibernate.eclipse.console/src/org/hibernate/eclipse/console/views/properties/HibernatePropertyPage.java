@@ -5,14 +5,16 @@
 package org.hibernate.eclipse.console.views.properties;
 
 
+import java.beans.PropertyDescriptor;
+import java.util.Collection;
+
 import org.eclipse.ui.views.properties.ComboBoxPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
-import org.hibernate.Session;
-import org.hibernate.console.ConsoleConfiguration;
 
 import com.l2fprod.common.propertysheet.Property;
+
 
 /**
  * @author Marshall
@@ -40,6 +42,9 @@ public class HibernatePropertyPage extends PropertySheetPage {
 				return new ComboBoxPropertyDescriptor(propertyId, propertyName, new String[] { "true", "false" });
 			}
 			
+			if(clazz.isAssignableFrom(Collection.class)) {
+				return new org.eclipse.ui.views.properties.PropertyDescriptor(propertyId, propertyName);
+			}
 			return new TextPropertyDescriptor(propertyId, propertyName);
 			
 		} catch (Exception e) { 

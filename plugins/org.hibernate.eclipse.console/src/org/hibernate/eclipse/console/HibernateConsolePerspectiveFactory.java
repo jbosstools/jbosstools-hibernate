@@ -17,6 +17,7 @@ public class HibernateConsolePerspectiveFactory implements IPerspectiveFactory {
 	//	Folders
 	public static final String ID_CONFIGURATION_FOLDERVIEW = "org.hibernate.eclipse.console.ConfigurationFolderView"; //$NON-NLS-1$
 	public static final String ID_RESULT_FOLDERVIEW = "org.hibernate.eclipse.console.QueryResultsFolderView"; //$NON-NLS-1$
+	public static final String ID_PROPERTY_SHEET_FOLDERVIEW = "org.hibernate.eclipse.console.PropertiesFolderView"; //$NON-NLS-1$
 
 	public static final String ID_QUERYEDITOR_VIEW = "org.hibernate.eclipse.console.views.HQLEditorView";
 	public static final String ID_CONFIGURATION_VIEW = "org.hibernate.eclipse.console.views.KnownConfigurationsView";
@@ -34,8 +35,18 @@ public class HibernateConsolePerspectiveFactory implements IPerspectiveFactory {
 				IPageLayout.LEFT,
 				0.33F,
 				layout.getEditorArea());
+		
 		side.addView(ID_CONFIGURATION_VIEW);
-		side.addView(ID_PROPERTY_SHEET_VIEW);
+		
+		IFolderLayout leftBottomLeft = 
+			layout.createFolder(
+				ID_PROPERTY_SHEET_FOLDERVIEW,
+				IPageLayout.BOTTOM,
+				0.75F,
+				ID_CONFIGURATION_VIEW
+			);
+			
+		leftBottomLeft.addView(ID_PROPERTY_SHEET_VIEW);
 		
 		layout.addView(ID_QUERYEDITOR_VIEW, IPageLayout.TOP, 0.33F, layout.getEditorArea()); //$NON-NLS-1$
 
