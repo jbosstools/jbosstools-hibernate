@@ -21,7 +21,7 @@ import org.eclipse.core.runtime.Path;
  */
 public class HibernateConsoleSaveParticipant implements ISaveParticipant {
 
-	static final String SAVENAME = "save";
+	static final String SAVENAME = "hibernate-console.xml";
 	
 	public void prepareToSave(ISaveContext context) throws CoreException {
 
