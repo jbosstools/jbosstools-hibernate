@@ -17,8 +17,6 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.wizards.EclipseConsoleConfigurationPreferences;
 import org.osgi.framework.BundleContext;
 
-import antlr.collections.List;
-
 /**
  * The main plugin class to be used in the desktop.
  */
