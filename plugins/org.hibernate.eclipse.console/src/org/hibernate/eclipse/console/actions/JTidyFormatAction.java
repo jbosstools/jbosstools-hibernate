@@ -4,21 +4,24 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Iterator;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.internal.ObjectPluginAction;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.tool.hbm2x.XMLPrettyPrinter;
 
 public class JTidyFormatAction implements IObjectActionDelegate {
 
-	private IFile file;
     private IWorkbenchPart targetPart;
     
     /**
@@ -42,9 +45,13 @@ public class JTidyFormatAction implements IObjectActionDelegate {
 	 * @see IActionDelegate#run(IAction)
 	 */
 	public void run(IAction action) {
-		
-        if(file!=null) {
+		IStructuredSelection selection = (IStructuredSelection) ((ObjectPluginAction)action).getSelection();
+        
+        if(selection!=null && MessageDialog.openQuestion(targetPart.getSite().getShell(), "Format with JTidy", "Do you want to format " + selection.size() + " xml files with JTidy ?")) {
+            Iterator iterator = selection.iterator();
             try {
+            while(iterator.hasNext()) {
+                IFile file = (IFile) iterator.next();
                 InputStream contents = null ;
                 ByteArrayOutputStream bos = null;
                 ByteArrayInputStream stream = null;
@@ -59,7 +66,7 @@ public class JTidyFormatAction implements IObjectActionDelegate {
                     if(bos!=null) bos.close();
                     if(contents!=null) contents.close();                    
                 }
-                
+            }
             } catch (CoreException e) {
                 HibernateConsolePlugin.showError(targetPart.getSite().getShell(), "Error while running JTidy", e);
             } catch (IOException io) {
@@ -68,22 +75,12 @@ public class JTidyFormatAction implements IObjectActionDelegate {
         }
 	}
 
-	/**
-	 * @see IActionDelegate#selectionChanged(IAction, ISelection)
-	 */
-	public void selectionChanged(IAction action, ISelection selection) {
-        if(selection instanceof StructuredSelection) {
-            StructuredSelection sel = (StructuredSelection)selection;
-            if(!sel.isEmpty()) {
-                if(sel.getFirstElement() instanceof IFile) {
-                    this.file = (IFile)sel.getFirstElement();
-                    action.setEnabled(true);
-                    return;
-                }
-            }
-        }
-        file = null;
-        action.setEnabled(false);
-	}
+    /* (non-Javadoc)
+     * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction, org.eclipse.jface.viewers.ISelection)
+     */
+    public void selectionChanged(IAction action, ISelection selection) {
+        // TODO Auto-generated method stub
+        
+    }
 
 }

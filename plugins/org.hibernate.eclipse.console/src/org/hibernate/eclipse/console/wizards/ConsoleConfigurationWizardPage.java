@@ -155,7 +155,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	
 	
 	private void buildClassPathTable(Composite parent) {
-		classPathViewer = new UpDownList(parent, getShell(), "Classpath") {
+		classPathViewer = new UpDownList(parent, getShell(), "Classpath (only add path for POJO and driver - No Hibernate jars!)") {
 			protected Object[] handleAdd() {
 
 				TableItem[] items = getTable().getItems();

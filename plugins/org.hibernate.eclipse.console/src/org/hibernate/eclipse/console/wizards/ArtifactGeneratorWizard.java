@@ -74,7 +74,9 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 	 */
 	public boolean performFinish() {
         final String outputPackage = page.getOutputPackage();
-        if(!MessageDialog.openQuestion(getShell(), "Start artifact generation", "Do you want to start generating artifcats into " + outputPackage + ",\npossibly overwriting existing files in this directory ?")) {
+        final IPath output = page.getOutputDirectory();
+        
+        if(!MessageDialog.openQuestion(getShell(), "Start artifact generation", "Do you want to start generating artifcats into " + output.toPortableString() + ",\npossibly overwriting existing files in this directory ?")) {
             return false;
         }
         
@@ -85,8 +87,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 		final boolean gencfg = page.isGenerateCfg();
         final boolean preferRaw = page.isPreferRawCompositeIds();
         final boolean ejb3 = page.isEJB3Enabled();
-		final IPath output = page.getOutputDirectory();
-        
+		
         final IPath templatedir = page.getTemplateDirectory();
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {

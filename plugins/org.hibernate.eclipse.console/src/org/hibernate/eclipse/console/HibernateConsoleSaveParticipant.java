@@ -66,7 +66,7 @@ public class HibernateConsoleSaveParticipant implements ISaveParticipant {
 		String oldFileName = "save-" + Integer.toString(previousSaveNumber);
 		File f = myPluginInstance.getStateLocation().append(oldFileName)
 				.toFile();
-		System.out.println("delete " + f);
+		//System.out.println("delete " + f);
 		f.delete();
 	}
 

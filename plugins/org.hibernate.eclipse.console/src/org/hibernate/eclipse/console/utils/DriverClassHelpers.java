@@ -73,13 +73,16 @@ public class DriverClassHelpers {
         addDriverAndURLS("org.hibernate.dialect.MySQLDialect", 
                          "org.gjt.mm.mysql.Driver",
                          new String[] {
+                            "jdbc:mysql://<hostname>/<database>",
                             "jdbc:mysql:///test",
-                            "jdbc:mysql:///<name>" }
+                            "jdbc:mysql:///<name>",
+                             }
                         );
         
         addDriverAndURLS("org.hibernate.dialect.MySQLInnoDBDialect", 
                     "org.gjt.mm.mysql.Driver",
                     new String[] {
+                       "jdbc:mysql://<hostname>/<database>",
                        "jdbc:mysql:///test",
                        "jdbc:mysql:///<name>" }
                    );
@@ -88,6 +91,7 @@ public class DriverClassHelpers {
         addDriverAndURLS("org.hibernate.dialect.MySQLMyISAMDBDialect", 
                     "org.gjt.mm.mysql.Driver",
                     new String[] {
+                       "jdbc:mysql://<hostname>/<database>",
                        "jdbc:mysql:///test",
                        "jdbc:mysql:///<name>" }
                    );
