@@ -3,7 +3,7 @@
 <plugin
    id="org.hibernate.eclipse"
    name="Hibernate Core Plugin"
-   version="1.0.0"
+   version="3.0.0.alpha"
    provider-name="Hibernate Team"
    class="org.hibernate.eclipse.HibernatePlugin">
 
@@ -74,9 +74,6 @@
 <library name="lib/log4j-1.2.9.jar">
    <export name="*"/>
 </library>
-<library name="lib/oscache-2.0.2.jar">
-   <export name="*"/>
-</library>
 <library name="lib/proxool-0.8.3.jar">
    <export name="*"/>
 </library>
@@ -90,6 +87,9 @@
    <export name="*"/>
 </library>
 <library name="lib/jtidy-r8-21122004.jar">
+   <export name="*"/>
+</library>
+<library name="lib/oscache-2.1.jar">
    <export name="*"/>
 </library>
    </runtime>
