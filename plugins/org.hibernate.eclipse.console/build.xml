@@ -1,0 +1,23 @@
+<!--
+
+  HibernateTools ANT build script.
+
+
+-->
+
+<project name="org.hibernate.eclipse.console" default="dist" basedir=".">
+
+    <!-- Name of project and version, used to create filenames -->
+    <property name="Name" value="Hibernate Console Eclipse Plugin"/>
+    <property name="name" value="org.hibernate.eclipse.console"/>
+    <property name="version" value="3.0"/>
+
+	<property name="javadoc.packagenames" value="org.hibernate.eclipse.console"/>	
+
+	<import file="../common/common-build.xml"/>
+	
+    <!-- set global properties for this build -->
+    <property name="template.dir" value="src/velocity"/>
+    <property name="dist.template.dir" value="${dist.dir}/src/velocity"/>
+	
+</project>

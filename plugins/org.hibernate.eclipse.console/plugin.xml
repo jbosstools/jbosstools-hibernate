@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="org.hibernate.eclipse.console"
+   name="Hibernate Console"
+   version="0.0.1"
+   provider-name="Hibernate Team"
+   class="org.hibernate.eclipse.console.HibernateConsolePlugin">
+
+   <runtime>
+      <library name="lib/hibernateconsole.jar">
+         <export name="*"/>
+      </library>
+      <library name="org.hibernate.eclipse.console.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+   <requires>
+      <import plugin="org.eclipse.jdt.ui"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="org.eclipse.ui.workbench"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.hibernate.eclipse"/>
+   </requires>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            icon="icons/hibernate_small_icon.gif"
+            class="org.hibernate.eclipse.console.HibernateConsolePerspectiveFactory"
+            name="Hibernate Console"
+            id="org.hibernate.eclipse.console.HibernateConsolePerspective"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="Hibernate"
+            id="hibernatecategory"/>
+      <view
+            icon="icons/hibernate_small_icon.gif"
+            class="org.hibernate.eclipse.console.views.HQLEditorView"
+            category="hibernatecategory"
+            name="HQL Editor View"
+            id="org.hibernate.eclipse.console.views.HQLEditorView"/>
+      <view
+            icon="icons/hibernate_small_icon.gif"
+            class="org.hibernate.eclipse.console.views.KnownConfigurationsView"
+            category="hibernatecategory"
+            name="Hibernate Configurations"
+            id="org.hibernate.eclipse.console.views.KnownConfigurationsView"/>
+      <view
+            icon="icons/hibernate_small_icon.gif"
+            class="org.hibernate.eclipse.console.views.QueryPageTabView"
+            category="hibernatecategory"
+            name="Query result"
+            id="org.hibernate.eclipse.console.views.QueryPageTabView"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="Hibernate"
+            id="hibernatewizards"/>
+      <wizard
+            icon="icons/hibernate_small_icon.gif"
+            class="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"
+            descriptionImage="icons/hibernate_small_icon.gif"
+            category="hibernatewizards"
+            preferredPerspectives="org.hibernate.eclipse.console.HibernateConsolePerspective"
+            name="Create Console Configuration Wizard"
+            id="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"/>
+   </extension>
+
+</plugin>
