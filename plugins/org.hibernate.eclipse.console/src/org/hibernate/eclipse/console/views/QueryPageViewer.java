@@ -10,10 +10,15 @@ import java.util.List;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
@@ -25,6 +30,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.ui.ISelectionService;
 import org.hibernate.console.QueryPage;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
@@ -167,9 +173,41 @@ public class QueryPageViewer {
 		this.tableViewer.setContentProvider(new ContentProviderImpl());
 		this.tableViewer.setInput(this.queryPage);
 
+		this.tableViewer.addDoubleClickListener(new IDoubleClickListener () {
+			public void doubleClick(DoubleClickEvent event) {
+				tableDoubleClicked();
+			}
+		});
+		
+		this.tableViewer.addSelectionChangedListener(new ISelectionChangedListener () {
+			public void selectionChanged(SelectionChangedEvent event) {
+				tableDoubleClicked();
+			}
+		});
 		packColumns(table);
 	}
 
+	private void tableDoubleClicked ()
+	{
+		ISelection selection = tableViewer.getSelection();
+		if (selection != null && !selection.isEmpty() && selection instanceof IStructuredSelection)
+		{
+			IStructuredSelection selection2 = (IStructuredSelection) selection;
+			Object selected = selection2.getFirstElement();
+			
+			ISelectionService o;
+			setPropertySheetSource (selected);
+		}
+	}
+	
+	private void setPropertySheetSource (Object source)
+	{
+		queryPage.setActive (source);
+		qrView.fireSelectionChangedEvent();
+		
+		//System.out.println("sheet source = " + source.getClass() );
+	}
+	
 	/**
 	 * @param table
 	 */
