@@ -145,40 +145,40 @@ You will also need JDBC drivers for your database to use the reverse engineering
 </p>
 
 <p>
-  Please note that these tools does not try to hide any functionality
-  of Hibernate. It's goal is to ease some of the tasks that is
+  Please note that these tools do not try to hide any functionality
+  of Hibernate. It's goal is to ease some of the tasks that are
   connected with using a ORM such as Hibernate. Users are still
-  encourage/required to read the documentation for Hibernate to fully
+  encouraged/required to read the documentation for Hibernate to fully
   utilize Hibernate and it's tools.
 </p>
 
 <h2>3. Creating hibernate.cfg.xml</h2>
 
   <p>
-    To be able to reverse engineer, prototype queries and of course to
+    To be able to reverse engineer, prototype queries, and of course to
     simply use Hibernate a hibernate.properties or hibernate.cfg.xml
     file is needed. Hibernate Tools provide a wizard for generating
     the hibernate.cfg.xml.
   </p>
 
   <p>
-    The wizard can be started by clicking "New Wizard" (Ctrl+N), selecting the Hibernate/Hibernate Configuration file (cfg.xml) wizard and press "Next".
-    After starting the wizard and you have selected a location for the hibernate.cfg.xml you will see the following page: 
+    The wizard can be started by clicking "New Wizard" (Ctrl+N), selecting the Hibernate/Hibernate Configuration file (cfg.xml) wizard and pressing "Next".
+    After starting the wizard and you have selected a location for the hibernate.cfg.xml, you will see the following page: 
   </p>
   <img src="hibernatecfgwizard.jpg"/>
   <br><b>Figure 1: Creating hibernate.cfg.xml</b></br><br>
 
     <p>
       On this page you enter the information that is placed in the
-      hibernate.cfg.xml. Details about these can be found in Hibernate
+      hibernate.cfg.xml. Details about this can be found in Hibernate
       reference documentation.<br>
-      Pressing Finish will generate the hibernate.cfg.xml and the file is opened up in a editor.
+      Pressing Finish will generate the hibernate.cfg.xml and open it in an editor.
     </p>
 
     <p>
-      Tip: The contents in the comboboxes for Driver class
-      changes dependent on which Dialect you have chosen. The same is
-      done for Connection URL dependent on the chosen Driver. 
+      Tip: The contents in the combo boxes for the Driver class
+      changes depending on which Dialect you have chosen. The same is
+      done for the Connection URL depending on the chosen Driver. 
     </p>
 
 <h2>4. hbm.xml editor</h2>
@@ -215,8 +215,8 @@ session factory can be built.</p>
   <br><b>Figure 2: Creating a Hibernate Console configuration</b></br><br>
 
     <p>
-      Eeach parameter is described in the following table. The
-      "Detected default" column is the values the Wizard will automatically
+      Each parameter is described in the following table. The
+      "Detected default" column are the values the Wizard will automatically
       detect if started when a resource from a Java Project is
       selected.<br></br>
 
@@ -238,7 +238,7 @@ session factory can be built.</p>
             <td>Classpath</td><td>The classpath for loading POJO and
             JDBC drivers. Do not add Hibernate related .jars here
             since it will conflict with the Hibernate libraries used
-              inside Hibernate Console. This also include any .jars Hibernate is dependent on, such as cglib, commons-logging etc.</td><td>The default build output directory and any .jars that contains a class that implements java.sql.Driver</td>
+              inside Hibernate Console. This also includes any .jars Hibernate is dependent on, such as cglib, commons-logging etc.</td><td>The default build output directory and any .jars that contains a class that implements java.sql.Driver</td>
           </tr>
       </table>
     </p>
@@ -255,13 +255,13 @@ configuration and select "Create SessionFactory". This will create a
 standard Hibernate SessionFactory based on the parameters given in the
 console configuration.<br> 
 
-When this have been created a small + should appear next to the named
+When this has been created a small + should appear next to the named
 console configuration. Clicking on this will allow you to browse the
   class/entity structure.</p>
 
-  <p>If an error occur it is probably because of an error in the
+  <p>If an error occured it is probably because of an error in the
 console configuration. This will be shown in a message dialog and if
-that does not contain enough informationm details about the error and
+that does not contain enough information, details about the error and
 its exception can be seen in the Error Log view.
 </p>
 
@@ -304,18 +304,18 @@ its exception can be seen in the Error Log view.
     <p>
       First you need to select which Console configuration will be
       used and in which directory you want the generated code to
-      reside. Note: all generation will generate files, and overwrite
+      be placed. Note: Generation will generate files, and overwrite
       possibly existing files in this location. 
     </p>
 
     <p>
-      Following you have a range of options which are explained in the following.</p>
+      Next, you have a list of options which are explained here:</p>
 
       <h3>6.1.1 Reverse engineering</h3>
 
         <p>
            When reverse engineering is selected Hibernate Tools will
-           connect to your database and use JDBC metadata to build up
+           connect to your database and use the JDBC metadata to create
            a Hibernate Configuration.
         </p>      
         
@@ -335,10 +335,10 @@ its exception can be seen in the Error Log view.
         <h4>6.1.1.1 Generate 'raw' composite ids</h4>
         <p>
           The flag "Generate 'raw' composite ids" decides how primary
-          keys with multiple keys are handled. There is always created
-          a &lt;composite-id&gt;, and if there are matching
+          keys with multiple keys are handled. A &lt;composite-id&gt;
+          is always created, and if there are matching
           foreign-keys a &lt;key-many-to-one&gt; will be created.
-          Except if you choose to active the 'raw' composite ids, then
+          If you choose to active the 'raw' composite ids, then
           it is just treated as a 'raw' scalar value
           (string,long,etc.) instead of a reference to an
           entity. Note: a &lt;many-to-one&gt; property is still
@@ -393,18 +393,18 @@ its exception can be seen in the Error Log view.
       <h3>6.2 Hibernate Mapping file generation</h3>   
 
         <p>
-          This basically dumps a hbm.xml per defined class in the
-          configuration. This also goes for inheriance mappings. Each
+          This basically dumps a hbm.xml for each defined class in the
+          configuration. This also goes for inheritance mappings. Each
           &lt;subclass&gt; or &lt;joined-subclass&gt; will be placed
           in a single file with an extends attribute for their superclass.
         </p>
 
         <p>
-          The generation support all the needed features for utilizing
+          The generation supports all the needed features for utilizing
           the reverse engineering functionallity.  Still, not all
           major constructs are supported, and some aspects of the
-          hbm.xml is not fully generated yet. We plan to complete this
-          in future releases.
+          hbm.xml are not fully generated yet. We plan on completing this
+          in a future release.
         </p>
 
         <h3>6.3 Hibernate configuration file generation</h3>
@@ -420,10 +420,9 @@ its exception can be seen in the Error Log view.
       <h3>6.4 Custom templates</h3>
 
         <p>
-          All the code generated are controlled by templates (except
-          the hibernate.cfg.xml in this release). These templates are
-          per default looked up in the classpath of the Hibernate
-          Console Plugin.
+          All of the generated code is controlled by templates (except
+          the hibernate.cfg.xml in this release). Hibernate Console searches
+          for these templates in the classpath of the plugin by default.
         </p>
 
         <p>
