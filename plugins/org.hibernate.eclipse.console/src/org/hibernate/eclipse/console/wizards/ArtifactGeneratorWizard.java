@@ -178,7 +178,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 				public Object execute() {
 					cfg.readFromJDBC(new Filter() {
 						public boolean acceptTableName(String name) {
-							return name.startsWith("R_");
+							return true; //name.startsWith("R_");
 						}
 					});
 					return null;

@@ -42,7 +42,7 @@ public class SchemaExportAction extends ConsoleConfigurationBasedAction {
 		this.viewer = selectionProvider;
 	}
 
-	public void run() {
+	public void doRun() {
 		for (Iterator i = getSelectedNonResources().iterator(); i.hasNext();) {
         	try {
             BaseNode node = ((BaseNode) i.next());

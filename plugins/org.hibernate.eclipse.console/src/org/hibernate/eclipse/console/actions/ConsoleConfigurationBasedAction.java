@@ -8,8 +8,10 @@ import java.util.Iterator;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.actions.SelectionListenerAction;
+import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.node.ConfigurationNode;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 /**
  * @author max
@@ -38,6 +40,17 @@ public abstract class ConsoleConfigurationBasedAction extends SelectionListenerA
 	protected ConsoleConfigurationBasedAction(String text) {
 		super(text);
 	}
+
+	final public void run() {
+		
+		try {
+			doRun();
+		} catch(HibernateException he) {
+			HibernateConsolePlugin.showError(null, "Problem while executing " + getText() + "(" + he + ")", he);
+		}      		
+	}
+	
+	abstract protected void doRun();
 
 	final protected boolean updateSelection(IStructuredSelection selection) {
 		   boolean enabled = false;

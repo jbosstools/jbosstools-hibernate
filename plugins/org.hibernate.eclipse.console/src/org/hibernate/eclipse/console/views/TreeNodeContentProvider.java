@@ -16,6 +16,7 @@ import org.eclipse.jface.viewers.Viewer;
 abstract public class TreeNodeContentProvider implements ITreeContentProvider {
 
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+		
 	}
 
 	public void dispose() {

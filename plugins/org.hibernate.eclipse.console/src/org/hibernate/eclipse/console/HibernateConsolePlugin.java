@@ -114,7 +114,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 		ArrayList causes = new ArrayList();
 		Throwable temp = t;
 		while(temp!=null && temp.getCause()!=temp) {
-			causes.add(new Status(IStatus.ERROR, ID, 150, temp.getMessage(), temp));
+			causes.add(new Status(IStatus.ERROR, ID, 150, temp.getMessage()==null?"<no message>":temp.getMessage(), temp));
 			temp = temp.getCause();
 		}
 		

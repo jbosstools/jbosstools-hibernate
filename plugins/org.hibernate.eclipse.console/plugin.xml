@@ -80,8 +80,5 @@
             name="Generate artifacts wizard"
             id="org.hibernate.eclipse.console.wizards.ArtifactGeneratorWizard"/>
    </extension>
-   <extension
-         point="org.eclipse.core.runtime.adapters">
-   </extension>
 
 </plugin>

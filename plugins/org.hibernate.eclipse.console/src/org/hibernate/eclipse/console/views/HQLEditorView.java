@@ -11,6 +11,7 @@ import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.part.ViewPart;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.actions.ExecuteHQLAction;
+import org.hibernate.eclipse.console.editors.HQLEditor;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 
 public class HQLEditorView extends ViewPart {

@@ -15,8 +15,10 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.FileSelectionDialog;
 import org.eclipse.ui.views.navigator.ResourceSelectionUtil;
@@ -85,8 +87,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 				dialogChanged();
 			}
 		});
-		consoleConfigurationName.doFillIntoGrid(container, 3);
-
+		
 		outputdir = new StringButtonDialogField(new IStringButtonAdapter() {
 			public void changeControlPressed(DialogField field) {
 				IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  getOutputDirectory(), new IPath[0], "Select output directory", "Choose directory in which the generated files will be stored", new String[] {"cfg.xml"}, false, true, false);
@@ -97,36 +98,28 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 		});
 		outputdir.setLabelText("Output &directory");
 		outputdir.setButtonLabel("&Browse...");
-		outputdir.doFillIntoGrid(container, 3);
-		
 		
 		reverseengineer = new SelectionButtonDialogField(SWT.CHECK);
 		reverseengineer.setLabelText("Reverse engineer from JDBC Connection");
-		reverseengineer.doFillIntoGrid(container, 3);
 		
 		generatejava = new SelectionButtonDialogField(SWT.CHECK);
 		generatejava.setLabelText("Generate domain code (.java)");
-		generatejava.doFillIntoGrid(container, 3);
 		
 		generatemappings = new SelectionButtonDialogField(SWT.CHECK);
 		generatemappings.setLabelText("Generate mappings (hbm.xml)");
-		generatemappings.doFillIntoGrid(container, 3);
 		
 		generatecfgfile = new SelectionButtonDialogField(SWT.CHECK);
 		generatecfgfile.setLabelText("Generate hibernate configuration (hibernate.cfg.xml)");
-		generatecfgfile.doFillIntoGrid(container, 3);
 		
-		/*Label label = new Label(container, SWT.NULL);
-		label.setText("&File name:");
+		consoleConfigurationName.doFillIntoGrid(container, 3);
+		Control[] controls = outputdir.doFillIntoGrid(container, 3);
+		// Hack to tell the text field to stretch!
+		((GridData)controls[1].getLayoutData()).grabExcessHorizontalSpace=true;
+		reverseengineer.doFillIntoGrid(container, 3);
+		generatejava.doFillIntoGrid(container, 3);
+		generatemappings.doFillIntoGrid(container, 3);
+		generatecfgfile.doFillIntoGrid(container, 3);
 
-		fileText = new Text(container, SWT.BORDER | SWT.SINGLE);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		fileText.setLayoutData(gd);
-		fileText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				dialogChanged();
-			}
-		});*/
 		initialize();
 		dialogChanged();
 		setControl(container);

@@ -27,7 +27,7 @@ public class HQLConfiguration extends SourceViewerConfiguration {
 	}
 	
 
-	protected HQLScanner getXMLScanner() {
+	protected HQLScanner getHQLScanner() {
 		if (scanner == null) {
 			scanner = new HQLScanner(colorManager);
 			scanner.setDefaultReturnToken(
@@ -56,7 +56,7 @@ public class HQLConfiguration extends SourceViewerConfiguration {
 		reconciler.setDamager(dr, HQLPartitionScanner.HQL_TAG);
 		reconciler.setRepairer(dr, HQLPartitionScanner.HQL_TAG);
 
-		dr = new DefaultDamagerRepairer(getXMLScanner());
+		dr = new DefaultDamagerRepairer(getHQLScanner());
 		reconciler.setDamager(dr, IDocument.DEFAULT_CONTENT_TYPE);
 		reconciler.setRepairer(dr, IDocument.DEFAULT_CONTENT_TYPE);
 

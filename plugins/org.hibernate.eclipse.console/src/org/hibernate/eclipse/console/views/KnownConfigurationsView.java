@@ -33,6 +33,7 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.KnownConfigurations.IConsoleConfigurationListener;
 import org.hibernate.console.node.BaseNode;
 import org.hibernate.console.node.ConfigurationNode;
+import org.hibernate.eclipse.console.actions.EditConsoleConfiguration;
 import org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard;
 
 
@@ -143,13 +144,10 @@ public class KnownConfigurationsView extends ViewPart {
 				BaseNode node = (BaseNode) ((IStructuredSelection)selection).getFirstElement();
 				ConsoleConfiguration consoleConfiguration = node.getConsoleConfiguration();
 				if(node instanceof ConfigurationNode) {
-					ConsoleConfigurationCreationWizard wizard = new ConsoleConfigurationCreationWizard();
-					wizard.init(PlatformUI.getWorkbench(), new StructuredSelection(node.getConsoleConfiguration()));
-					WizardDialog dialog = new WizardDialog(getViewSite().getShell(), wizard);
-					dialog.open(); // This opens a dialog
+					new EditConsoleConfiguration().run();
 				} else if(consoleConfiguration.isSessionFactoryCreated()) {
 						consoleConfiguration.executeHQLQuery(node.getHQL());
-					}
+				}
 			}
 		};
 	}

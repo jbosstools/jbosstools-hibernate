@@ -32,19 +32,12 @@ public class BuildSessionFactoryAction extends ConsoleConfigurationBasedAction {
 		setEnabledWhenNoSessionFactory(true);
 	}
 	
-	public void run() {
-		
-		try {
-			doRun();
-		} catch(HibernateException he) {
-			ErrorDialog.openError(null, "Hibernate Console error", "Problem while connecting. (" + he + ")", new Status(IStatus.ERROR, HibernateConsolePlugin.ID, IStatus.OK, "Could not connect", he));
-		}        		
-	}
+	
 
 	/**
 	 * 
 	 */
-	private void doRun() {
+	protected void doRun() {
 		for (Iterator i = getSelectedNonResources().iterator(); i.hasNext();) {
         	try {
             BaseNode node = ((BaseNode) i.next());

@@ -18,8 +18,8 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.actions.AddConfigurationAction;
 import org.hibernate.eclipse.console.actions.BuildSessionFactoryAction;
 import org.hibernate.eclipse.console.actions.DeleteConfigurationAction;
+import org.hibernate.eclipse.console.actions.EditConsoleConfiguration;
 import org.hibernate.eclipse.console.actions.RefreshAction;
-import org.hibernate.eclipse.console.actions.ArtifactGeneratorAction;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
 /**
@@ -33,7 +33,7 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 	private SelectionListenerAction refreshAction;
 	private SelectionListenerAction connectAction;
 	private SelectionListenerAction schemaExportAction;
-	private ArtifactGeneratorAction revEngAction;
+	private EditConsoleConfiguration editConfigurationAction;
 
 	public ConfigurationsViewActionGroup(IViewPart part, StructuredViewer selectionProvider) {
 		
@@ -57,8 +57,8 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 		schemaExportAction = new SchemaExportAction(selectionProvider);
 		selectionProvider.addSelectionChangedListener(schemaExportAction);
 		
-		revEngAction = new ArtifactGeneratorAction();
-		selectionProvider.addSelectionChangedListener(revEngAction);
+		editConfigurationAction = new EditConsoleConfiguration();
+		selectionProvider.addSelectionChangedListener(editConfigurationAction);
 		
 	}
 
@@ -68,10 +68,11 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 		menu.add(refreshAction);
 		menu.add(new Separator());
 		menu.add(addConfigurationAction);
+		menu.add(editConfigurationAction);
 		menu.add(deleteConfigurationAction);
 		menu.add(new Separator());
 		menu.add(schemaExportAction);
-		menu.add(revEngAction);
+		
 	}
 	
 	public void fillActionBars(IActionBars actionBars) {
