@@ -21,6 +21,7 @@ public class HibernateConsolePerspectiveFactory implements IPerspectiveFactory {
 	public static final String ID_QUERYEDITOR_VIEW = "org.hibernate.eclipse.console.views.HQLEditorView";
 	public static final String ID_CONFIGURATION_VIEW = "org.hibernate.eclipse.console.views.KnownConfigurationsView";
 	public static final String ID_QUERYRESULTS_VIEW = "org.hibernate.eclipse.console.views.QueryPageTabView";
+	public static final String ID_PROPERTY_SHEET_VIEW = "org.eclipse.ui.views.PropertySheet";
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IPerspectiveFactory#createInitialLayout(org.eclipse.ui.IPageLayout)
@@ -34,7 +35,8 @@ public class HibernateConsolePerspectiveFactory implements IPerspectiveFactory {
 				0.33F,
 				layout.getEditorArea());
 		side.addView(ID_CONFIGURATION_VIEW);
-
+		side.addView(ID_PROPERTY_SHEET_VIEW);
+		
 		layout.addView(ID_QUERYEDITOR_VIEW, IPageLayout.TOP, 0.33F, layout.getEditorArea()); //$NON-NLS-1$
 
 		IFolderLayout bottomRight =
