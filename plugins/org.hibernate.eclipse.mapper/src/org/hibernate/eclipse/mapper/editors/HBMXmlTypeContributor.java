@@ -6,9 +6,11 @@ package org.hibernate.eclipse.mapper.editors;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.jdt.core.IJavaProject;
@@ -21,6 +23,7 @@ import org.eclipse.jdt.internal.ui.text.java.JavaCompletionProposalComparator;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
+import org.hibernate.eclipse.mapper.editors.HBMXmlResultCollector.Settings;
 import org.jboss.ide.eclipse.jdt.xml.ui.assist.contributor.IAttributeValueContributor;
 import org.jboss.ide.eclipse.jdt.xml.ui.reconciler.IReconcilierHolder;
 import org.jboss.ide.eclipse.jdt.xml.ui.reconciler.XMLNode;
@@ -32,32 +35,61 @@ import org.jboss.ide.eclipse.jdt.xml.ui.reconciler.XMLNode;
 public class HBMXmlTypeContributor implements IAttributeValueContributor {
 
 	/** set of "tagname>attribname", used to decide which attributes we should react to */	
-	final Set typedAttributes = new HashSet();
+	final Map typedAttributes = new HashMap();
 	final Set fieldAttributes = new HashSet();
 	final Set canProvideTypeViaName = new HashSet();
 	private final IJavaProject javaProject;
 	private HBMXmlResultCollector rc;
-	private static final boolean DEBUG = false;
 	
-	public HBMXmlTypeContributor(IJavaProject javaProject) {
+    static public abstract class CompletionHandler {
+        
+        protected final Settings settings;
+
+        CompletionHandler(HBMXmlResultCollector.Settings settings) {
+            this.settings = settings;
+            
+        }
+        
+        abstract public ICompletionProposal[] handle(XMLNode node, XMLNode attribute, String start, int offset); 
+    }
+    
+    
+    public HBMXmlTypeContributor(IJavaProject javaProject) {
 
 		this.javaProject = javaProject;
 		rc = new HBMXmlResultCollector();
-		typedAttributes.add("class>name");
-		typedAttributes.add("subclass>name");
-		typedAttributes.add("joined-subclass>name");
-		typedAttributes.add("union-subclass>name");
+        
+        Settings settings = new Settings();
+        settings.setAcceptClasses(true);
+        settings.setAcceptInterfaces(true);
+        settings.setAcceptPackages(true);
+        settings.setAcceptTypes(true);
+        CompletionHandler classFinder = new CompletionHandler(settings) {
+            public ICompletionProposal[] handle(XMLNode node, XMLNode attribute, String start, int offset) {
+                return handleTypes(this.settings,getPackageName(node), start, offset);            
+            }
+        };
+        
+		typedAttributes.put("class>name", classFinder);
+		typedAttributes.put("subclass>name", classFinder);
+		typedAttributes.put("joined-subclass>name", classFinder);
+		typedAttributes.put("union-subclass>name", classFinder);
 		
-		typedAttributes.add("many-to-one>class");
-		typedAttributes.add("one-to-many>class");
-		typedAttributes.add("many-to-many>class");
-		typedAttributes.add("composite-element>class");
-		typedAttributes.add("many-to-one>entity-name");
-		typedAttributes.add("one-to-many>entity-name");
-		typedAttributes.add("many-to-many>entity-name");
-		typedAttributes.add("composite-element>entity-name");
+		typedAttributes.put("many-to-one>class", classFinder);
+		typedAttributes.put("one-to-many>class", classFinder);
+		typedAttributes.put("many-to-many>class", classFinder);
+		typedAttributes.put("composite-element>class", classFinder);
+		typedAttributes.put("component>class", classFinder);
 		
-		
+        settings = new Settings();
+        settings.setAcceptPackages(true);
+        CompletionHandler packageFinder = new CompletionHandler(settings) {
+            public ICompletionProposal[] handle(XMLNode node, XMLNode attribute, String start, int offset) {
+                return handleTypes(this.settings,getPackageName(node), start, offset);            
+            }
+        };        
+        typedAttributes.put("hibernate-mapping>package", packageFinder);
+        		
 		fieldAttributes.add("property>name");
 		fieldAttributes.add("id>name");
 		fieldAttributes.add("set>name");
@@ -93,8 +125,9 @@ public class HBMXmlTypeContributor implements IAttributeValueContributor {
 		List proposals = new ArrayList();
 		
 		String path = node.getName() + ">" + attribute.getName();
-		if (typedAttributes.contains(path)) {
-			proposals.addAll(Arrays.asList(handleTypes(node, attribute, start, offset)));
+        CompletionHandler handler = (CompletionHandler) typedAttributes.get(path);
+		if (handler != null) {
+			proposals.addAll(Arrays.asList(handler.handle(node, attribute, start, offset)));
 		}
 		if (fieldAttributes.contains(path)) {	
 			proposals.addAll(Arrays.asList(handleFields(node, attribute, start, offset)));
@@ -123,10 +156,8 @@ public class HBMXmlTypeContributor implements IAttributeValueContributor {
 				if(type==null) return new ICompletionProposal[0]; //nothing to look for then
 				rc.reset(offset, javaProject, null);
 				rc.setAccepts(false,false,false,false,true,false); // TODO: only handle properties ?
-				CompletionEngine.DEBUG = true;
 				
 				type.codeComplete(start.toCharArray(), -1, start.length(), new char[0][0], new char[0][0], new int[0], false, rc);
-				CompletionEngine.DEBUG = false;
 			} catch(JavaModelException jme) {
 				// TODO: report
 			}
@@ -164,6 +195,7 @@ public class HBMXmlTypeContributor implements IAttributeValueContributor {
 
 
 	/**
+	 * @param settings 
 	 * @param node
 	 * @param attribute
 	 * @param start
@@ -171,14 +203,16 @@ public class HBMXmlTypeContributor implements IAttributeValueContributor {
 	 * @param proposals
 	 * @return
 	 */
-	private ICompletionProposal[] handleTypes(XMLNode node, XMLNode attribute, String start, int offset) {
+	private ICompletionProposal[] handleTypes(Settings settings, String packageName, String start, int offset) {
 		
 			if (javaProject != null) {
-				IEvaluationContext context = javaProject.newEvaluationContext();
-				context.setPackageName(getPackageName(node));
+				IEvaluationContext context = javaProject.newEvaluationContext();                
+                if(packageName!=null) {
+                    context.setPackageName(packageName);
+                }
 
 				rc.reset(offset, javaProject, null);
-				rc.setAccepts(true,false,true,true,false,false);
+				rc.setAccepts(settings);
 				try {
 					// cannot send in my own document as it won't compile as
 					// java - so we just send in
@@ -218,7 +252,7 @@ public class HBMXmlTypeContributor implements IAttributeValueContributor {
 	/**
 	 * @param holder
 	 * @param root TODO
-	 * @return
+	 * @return nearest package attribute, null if none found. 
 	 */
 	private String getPackageName(XMLNode root) {
 		if(root!=null) {
@@ -235,7 +269,7 @@ public class HBMXmlTypeContributor implements IAttributeValueContributor {
 				}
 			}
 		}
-		return "";		
+		return null;		
 	}
 
 

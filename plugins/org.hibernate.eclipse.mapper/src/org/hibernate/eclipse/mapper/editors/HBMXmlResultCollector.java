@@ -13,30 +13,111 @@ import org.eclipse.jdt.internal.ui.text.java.ResultCollector;
  */
 public class HBMXmlResultCollector extends ResultCollector {
 
-	private boolean acceptTypes = false;
-	private boolean acceptPackages = false;
-	private boolean acceptClasses = false;
-	private boolean acceptInterfaces = false;
-	private boolean acceptFields = false;
-	private boolean acceptMethods = false;
-	 	
+    static class Settings {
+        private boolean acceptTypes = false;
+        private boolean acceptPackages = false;
+        private boolean acceptClasses = false;
+        private boolean acceptInterfaces = false;
+        private boolean acceptFields = false;
+        private boolean acceptMethods = false;        
+        
+        
+        /**
+         * @return Returns the acceptClasses.
+         */
+        public boolean isAcceptClasses() {
+            return acceptClasses;
+        }
+        /**
+         * @param acceptClasses The acceptClasses to set.
+         */
+        public void setAcceptClasses(boolean acceptClasses) {
+            this.acceptClasses = acceptClasses;
+        }
+        /**
+         * @return Returns the acceptFields.
+         */
+        public boolean isAcceptFields() {
+            return acceptFields;
+        }
+        /**
+         * @param acceptFields The acceptFields to set.
+         */
+        public void setAcceptFields(boolean acceptFields) {
+            this.acceptFields = acceptFields;
+        }
+        /**
+         * @return Returns the acceptInterfaces.
+         */
+        public boolean isAcceptInterfaces() {
+            return acceptInterfaces;
+        }
+        /**
+         * @param acceptInterfaces The acceptInterfaces to set.
+         */
+        public void setAcceptInterfaces(boolean acceptInterfaces) {
+            this.acceptInterfaces = acceptInterfaces;
+        }
+        /**
+         * @return Returns the acceptMethods.
+         */
+        public boolean isAcceptMethods() {
+            return acceptMethods;
+        }
+        /**
+         * @param acceptMethods The acceptMethods to set.
+         */
+        public void setAcceptMethods(boolean acceptMethods) {
+            this.acceptMethods = acceptMethods;
+        }
+        /**
+         * @return Returns the acceptPackages.
+         */
+        public boolean isAcceptPackages() {
+            return acceptPackages;
+        }
+        /**
+         * @param acceptPackages The acceptPackages to set.
+         */
+        public void setAcceptPackages(boolean acceptPackages) {
+            this.acceptPackages = acceptPackages;
+        }
+        /**
+         * @return Returns the acceptTypes.
+         */
+        public boolean isAcceptTypes() {
+            return acceptTypes;
+        }
+        /**
+         * @param acceptTypes The acceptTypes to set.
+         */
+        public void setAcceptTypes(boolean acceptTypes) {
+            this.acceptTypes = acceptTypes;
+        }
+    }
+    
+    Settings settings;
 	public void setAccepts(boolean types, boolean packages, boolean classes, boolean interfaces, boolean fields, boolean methods) {
-		acceptTypes = types;
-		acceptPackages = packages;
-		acceptClasses = classes;
-		acceptInterfaces = interfaces;
-		acceptFields = fields;
-		acceptMethods = methods;
-		
+        settings = new Settings();
+        settings.acceptTypes = types;
+        settings.acceptPackages = packages;
+        settings.acceptClasses = classes;
+        settings.acceptInterfaces = interfaces;
+        settings.acceptFields = fields;
+        settings.acceptMethods = methods;		
 	}
 	
+    public void setAccepts(Settings settings) {
+        setAccepts(settings.acceptTypes,settings.acceptPackages,settings.acceptClasses,settings.acceptInterfaces, settings.acceptFields, settings.acceptMethods);
+    }
+    
 	/* (non-Javadoc)
 	 * @see org.eclipse.jdt.core.ICompletionRequestor#acceptPackage(char[], char[], int, int, int)
 	 */
 	public void acceptPackage(char[] packageName, char[] completionName,
 			int start, int end, int relevance) {
 		// TODO Auto-generated method stub
-		if(acceptPackages) { 
+		if(settings.acceptPackages) { 
 			super.acceptPackage(packageName, completionName, start, end, relevance);
 		}
 	}
@@ -46,7 +127,7 @@ public class HBMXmlResultCollector extends ResultCollector {
 	public void acceptClass(char[] packageName, char[] typeName,
 			char[] completionName, int modifiers, int start, int end,
 			int relevance) {
-		if(acceptClasses) {
+		if(settings.acceptClasses) {
 			super.acceptClass(packageName, typeName, completionName, modifiers,
 					start, end, relevance);
 		}
@@ -58,7 +139,7 @@ public class HBMXmlResultCollector extends ResultCollector {
 	public void acceptInterface(char[] packageName, char[] typeName,
 			char[] completionName, int modifiers, int start, int end,
 			int relevance) {
-		if(acceptInterfaces) {
+		if(settings.acceptInterfaces) {
 			super.acceptInterface(packageName, typeName, completionName, modifiers,
 					start, end, relevance);
 		}
@@ -69,7 +150,7 @@ public class HBMXmlResultCollector extends ResultCollector {
 	 */
 	public void acceptType(char[] packageName, char[] typeName,
 			char[] completionName, int start, int end, int relevance) {
-		if(acceptTypes) {
+		if(settings.acceptTypes) {
 			super.acceptType(packageName, typeName, completionName, start, end,
 					relevance);
 		}
@@ -82,7 +163,7 @@ public class HBMXmlResultCollector extends ResultCollector {
 			char[] declaringTypeName, char[] name, char[] typePackageName,
 			char[] typeName, char[] completionName, int modifiers, int start,
 			int end, int relevance) {
-		if(acceptFields) {
+		if(settings.acceptFields) {
 			super.acceptField(declaringTypePackageName, declaringTypeName, name,
 					typePackageName, typeName, completionName, modifiers, start,					
 					end, relevance);
@@ -152,7 +233,7 @@ public class HBMXmlResultCollector extends ResultCollector {
 			char[] returnTypeName, char[] completionName, int modifiers,
 			int start, int end, int relevance) {
 
-		if(acceptMethods ) {
+		if(settings.acceptMethods ) {
 		super.acceptMethod(declaringTypePackageName, declaringTypeName, name,
 				parameterPackageNames, parameterTypeNames, parameterNames,
 				returnTypePackageName, returnTypeName, completionName,
@@ -211,60 +292,60 @@ public class HBMXmlResultCollector extends ResultCollector {
 	 * @return Returns the acceptClasses.
 	 */
 	public boolean isAcceptClasses() {
-		return acceptClasses;
+		return settings.acceptClasses;
 	}
 	/**
 	 * @param acceptClasses The acceptClasses to set.
 	 */
 	public void setAcceptClasses(boolean acceptClasses) {
-		this.acceptClasses = acceptClasses;
+		settings.acceptClasses = acceptClasses;
 	}
 	/**
-	 * @return Returns the acceptFields.
+	 * @return settings.Returns the acceptFields.
 	 */
 	public boolean isAcceptFields() {
-		return acceptFields;
+		return settings.acceptFields;
 	}
 	/**
 	 * @param acceptFields The acceptFields to set.
 	 */
 	public void setAcceptFields(boolean acceptFields) {
-		this.acceptFields = acceptFields;
+		settings.acceptFields = acceptFields;
 	}
 	/**
-	 * @return Returns the acceptInterfaces.
+	 * @return settings.Returns the acceptInterfaces.
 	 */
 	public boolean isAcceptInterfaces() {
-		return acceptInterfaces;
+		return settings.acceptInterfaces;
 	}
 	/**
 	 * @param acceptInterfaces The acceptInterfaces to set.
 	 */
 	public void setAcceptInterfaces(boolean acceptInterfaces) {
-		this.acceptInterfaces = acceptInterfaces;
+		settings.acceptInterfaces = acceptInterfaces;
 	}
 	/**
-	 * @return Returns the acceptPackages.
+	 * @return settings.Returns the acceptPackages.
 	 */
 	public boolean isAcceptPackages() {
-		return acceptPackages;
+		return settings.acceptPackages;
 	}
 	/**
 	 * @param acceptPackages The acceptPackages to set.
 	 */
 	public void setAcceptPackages(boolean acceptPackages) {
-		this.acceptPackages = acceptPackages;
+		settings.acceptPackages = acceptPackages;
 	}
 	/**
-	 * @return Returns the acceptTypes.
+	 * @return settings.Returns the acceptTypes.
 	 */
 	public boolean isAcceptTypes() {
-		return acceptTypes;
+		return settings.acceptTypes;
 	}
 	/**
 	 * @param acceptTypes The acceptTypes to set.
 	 */
 	public void setAcceptTypes(boolean acceptTypes) {
-		this.acceptTypes = acceptTypes;
+		settings.acceptTypes = acceptTypes;
 	}
 }
