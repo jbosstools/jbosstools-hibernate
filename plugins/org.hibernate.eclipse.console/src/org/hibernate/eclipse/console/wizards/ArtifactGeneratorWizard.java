@@ -222,7 +222,17 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 			
 			return cfg;
 		} else {
-			return cc.buildWith(new Configuration(), true);
+			final Configuration configuration = new Configuration();
+			cc.buildWith(configuration, true);
+			
+			cc.execute(new Command() {
+				public Object execute() {
+					
+					configuration.buildMappings();
+					return configuration;		
+				}
+			});
+			return configuration;
 		}
 	}
 
