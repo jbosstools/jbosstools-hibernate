@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="org.hibernate.eclipse.console.test"
+   name="Hibernate Console Test Plug-in"
+   version="0.0.1"
+   provider-name="Hibernate Team">
+
+   <runtime>
+      <library name="org.hibernate.eclipse.console.test/">
+         <export name="*"/>
+      </library>
+   </runtime>
+   <requires>
+      <import plugin="org.hibernate.eclipse.console"/>
+      <import plugin="org.junit"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.jdt.launching"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.jdt.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+   </requires>
+
+</plugin>
