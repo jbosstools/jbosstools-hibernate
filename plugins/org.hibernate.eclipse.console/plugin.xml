@@ -26,6 +26,7 @@
       <import plugin="org.eclipse.ui.workbench.texteditor"/>
       <import plugin="org.eclipse.jface.text"/>
       <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.help"/>
    </requires>
    <extension
          point="org.eclipse.ui.perspectives">
@@ -100,12 +101,18 @@
             <separator name="group1"/>
          </menu>
          <action
-               enablesFor="1"
                label="Format with JTidy"
                class="org.hibernate.eclipse.console.actions.JTidyFormatAction"
                menubarPath="org.hibernate.eclipse.console.jtidymenu/group1"
                id="org.hibernate.eclipse.console.jtidyformat"/>
       </objectContribution>
+   </extension>
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            primary="true"
+            file="toc.xml"/>
+      <toc file="tocgettingstarted.xml"/>
    </extension>
 
 </plugin>
