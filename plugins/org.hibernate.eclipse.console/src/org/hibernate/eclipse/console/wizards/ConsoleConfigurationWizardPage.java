@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.eclipse.core.internal.resources.File;
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceProxy;
 import org.eclipse.core.resources.IResourceProxyVisitor;
@@ -23,6 +24,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
@@ -274,12 +276,18 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			if(container!=null) {
 				container.accept(v, IResource.NONE);
 				
+                if(v.javaProject==null) {
+                    IProject project = container.getProject();
+                    v.javaProject = JavaCore.create(project);
+                }
+                
 				if(v.javaProject!=null) configurationNameText.setText(v.javaProject.getElementName());
 				if (v.propertyFile!=null) propertyFileText.setText(v.propertyFile.toOSString());
 				if (v.configFile!=null) configurationFileText.setText(v.configFile.toOSString());
 				if (!v.mappings.isEmpty()) mappingFilesViewer.add(v.mappings.toArray(), false);
 				if (!v.classpath.isEmpty()) classPathViewer.add(v.classpath.toArray(), false);
 
+                
 				if(v.javaProject!=null) {
 					classPathViewer.add(locateTypes(v.javaProject).toArray(), false);				
 				}

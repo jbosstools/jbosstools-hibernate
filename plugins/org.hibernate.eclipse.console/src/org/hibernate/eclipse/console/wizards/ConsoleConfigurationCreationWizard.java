@@ -20,9 +20,11 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ConsoleConfigurationPreferences;
+import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.EclipseConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.utils.EclipseImages;
 
 /**
  * @author max
@@ -38,6 +40,7 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 	 */
 	public ConsoleConfigurationCreationWizard() {
 		super();
+        setDefaultPageImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.NEW_WIZARD));
 		setNeedsProgressMonitor(true);
 	}
 	
