@@ -133,7 +133,7 @@ public class HBMXmlTypeContributor implements IAttributeValueContributor {
 			proposals.addAll(Arrays.asList(handleFields(node, attribute, start, offset)));
 		}
 		
-		if (true) proposals.add(new CompletionProposal("start=[" + start + "], path=[" + path + "]", offset, 1, 4));
+		//if (true) proposals.add(new CompletionProposal("start=[" + start + "], path=[" + path + "]", offset, 1, 4));
 
 		return proposals;
 	}
