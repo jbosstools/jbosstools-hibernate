@@ -27,6 +27,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Label;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.node.ConfigurationNode;
@@ -48,7 +49,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 	private SelectionButtonDialogField generatecfgfile;
 
 	private SelectionButtonDialogField generatejava;
-
+	private SelectionButtonDialogField enableEJB3annotations;
     
 	private SelectionButtonDialogField generatemappings;
 
@@ -88,7 +89,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 		layout.verticalSpacing = 9;
 		
 		consoleConfigurationName = new ComboDialogField(SWT.READ_ONLY);
-		consoleConfigurationName.setLabelText("Console &configuration");
+		consoleConfigurationName.setLabelText("Console &configuration:");
 		ConsoleConfiguration[] cfg = KnownConfigurations.getInstance().getConfigurations();
 		String[] names = new String[cfg.length];
 		for (int i = 0; i < cfg.length; i++) {
@@ -114,7 +115,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 			}
 		});
         outputdir.setDialogFieldListener(fieldlistener);
-		outputdir.setLabelText("Output &directory");
+		outputdir.setLabelText("Output &directory:");
 		outputdir.setButtonLabel("&Browse...");
 		
         templatedir = new StringButtonDialogField(new IStringButtonAdapter() {
@@ -126,18 +127,23 @@ public class BasicGeneratorSettingsPage extends WizardPage {
             }
         });
         templatedir.setDialogFieldListener(fieldlistener);
-        templatedir.setLabelText("Template &directory");
+        templatedir.setLabelText("Template &directory:");
         templatedir.setButtonLabel("&Browse...");
         
         packageName = new StringDialogField();
         packageName.setDialogFieldListener(fieldlistener);
-        packageName.setLabelText("Output &package");
+        packageName.setLabelText("&Package:");
                 
 		reverseengineer = new SelectionButtonDialogField(SWT.CHECK);
 		reverseengineer.setLabelText("Reverse engineer from JDBC Connection");
         generatejava = new SelectionButtonDialogField(SWT.CHECK);
 		generatejava.setLabelText("Generate domain code (.java)");
 		
+        enableEJB3annotations = new SelectionButtonDialogField(SWT.CHECK);
+        enableEJB3annotations.setLabelText("EJB3/JSR-220 annotations (experimental!)");
+        
+        generatejava.attachDialogField(enableEJB3annotations);
+        
         useOwnTemplates = new SelectionButtonDialogField(SWT.CHECK);
         useOwnTemplates.setDialogFieldListener(fieldlistener);
         useOwnTemplates.setLabelText("Use custom templates");
@@ -160,8 +166,11 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 		((GridData)controls[1].getLayoutData()).grabExcessHorizontalSpace=true;
 		reverseengineer.doFillIntoGrid(container, 3);
         packageName.doFillIntoGrid(container, 3);
-        preferRawCompositeIds.doFillIntoGrid(container, 3);
+        fillLabel(container);
+        preferRawCompositeIds.doFillIntoGrid(container, 2);
 		generatejava.doFillIntoGrid(container, 3);
+        fillLabel(container);
+        enableEJB3annotations.doFillIntoGrid(container, 2);
 		generatemappings.doFillIntoGrid(container, 3);
 		generatecfgfile.doFillIntoGrid(container, 3);
         useOwnTemplates.doFillIntoGrid(container, 3);
@@ -175,6 +184,9 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 		setControl(container);
 	}
 
+    private void fillLabel(Composite container) {
+        new Label(container, SWT.NULL);
+    }
 	/**
 	 * Tests if the current workbench selection is a suitable container to use.
 	 */
@@ -353,6 +365,14 @@ public class BasicGeneratorSettingsPage extends WizardPage {
      */
     public boolean isPreferRawCompositeIds() {
         return preferRawCompositeIds.isSelected();
+    }
+
+
+    /**
+     * @return
+     */
+    public boolean isEJB3Enabled() {
+        return enableEJB3annotations.isSelected();
     }
     
 }

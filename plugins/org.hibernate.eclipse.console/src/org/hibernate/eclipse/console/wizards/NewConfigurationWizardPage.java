@@ -11,16 +11,12 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.hibernate.eclipse.console.utils.DriverClassHelpers;
 
@@ -47,6 +43,11 @@ public class NewConfigurationWizardPage extends WizardPage {
 
     private Combo urlCombo;
 
+    private Text datasourceName;
+    private Text jndiURL;
+    private Text jndiClassname;
+    
+    
     private ISelection selection;
 
     private final WizardNewFileCreationPage fileCreation;
@@ -126,9 +127,15 @@ public class NewConfigurationWizardPage extends WizardPage {
         });
         fillLabel(container);
 
-        label = new Label(container, SWT.NULL);
+        gd = new GridData(GridData.BEGINNING, GridData.CENTER, false,false);
+        gd.horizontalAlignment = SWT.TOP;
+        gd.verticalAlignment = SWT.TOP;
+        label.setLayoutData(gd);
+        
+        Composite driverManagerTabContainer = container;
+        label = new Label(driverManagerTabContainer, SWT.NULL);
         label.setText("&Driver class:");
-        driver_classCombo = new Combo(container, SWT.NULL);
+        driver_classCombo = new Combo(driverManagerTabContainer, SWT.NULL);
         driver_classCombo.select(0);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         gd.grabExcessHorizontalSpace = true;
@@ -141,34 +148,59 @@ public class NewConfigurationWizardPage extends WizardPage {
                 dialogChanged();
             }
         });
-        fillLabel(container);
+        fillLabel(driverManagerTabContainer);
 
-        label = new Label(container, SWT.NULL);
+        label = new Label(driverManagerTabContainer, SWT.NULL);
         label.setText("Connection &URL:");
-        urlCombo = new Combo(container, SWT.NULL);
+        urlCombo = new Combo(driverManagerTabContainer, SWT.NULL);
         urlCombo.select(0);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         gd.grabExcessHorizontalSpace = true;
         urlCombo.setLayoutData(gd);
         urlCombo.addModifyListener(listener);
-        fillLabel(container);
+        fillLabel(driverManagerTabContainer);
 
-        label = new Label(container, SWT.NULL);
-        label.setText("User &name:");
-        usernameText = new Text(container, SWT.BORDER | SWT.SINGLE);
+        label = new Label(driverManagerTabContainer, SWT.NULL);
+        label.setText("User&name:");
+        usernameText = new Text(driverManagerTabContainer, SWT.BORDER | SWT.SINGLE);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         usernameText.setLayoutData(gd);
         usernameText.addModifyListener(listener);
-        fillLabel(container);
+        fillLabel(driverManagerTabContainer);
 
-        label = new Label(container, SWT.NULL);
+        label = new Label(driverManagerTabContainer, SWT.NULL);
         label.setText("&Password:");
-        passwordText = new Text(container, SWT.BORDER | SWT.SINGLE);
+        passwordText = new Text(driverManagerTabContainer, SWT.BORDER | SWT.SINGLE);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         passwordText.setLayoutData(gd);
         passwordText.addModifyListener(listener);
-        fillLabel(container);
-
+        fillLabel(driverManagerTabContainer);        
+        
+        /*
+        label = new Label(driverManagerTabContainer, SWT.NULL);
+        label.setText("Data&source name:");
+        datasourceName = new Text(driverManagerTabContainer, SWT.BORDER | SWT.SINGLE);
+        gd = new GridData(GridData.FILL_HORIZONTAL);
+        datasourceName.setLayoutData(gd);
+        datasourceName.addModifyListener(listener);
+        fillLabel(driverManagerTabContainer);        
+        
+        label = new Label(driverManagerTabContainer, SWT.NULL);
+        label.setText("JNDI URL:");
+        jndiURL = new Text(driverManagerTabContainer, SWT.BORDER | SWT.SINGLE);
+        gd = new GridData(GridData.FILL_HORIZONTAL);
+        jndiURL.setLayoutData(gd);
+        jndiURL.addModifyListener(listener);
+        fillLabel(driverManagerTabContainer);        
+        
+        label = new Label(driverManagerTabContainer, SWT.NULL);
+        label.setText("JNDI Classname:");
+        jndiClassname = new Text(driverManagerTabContainer, SWT.BORDER | SWT.SINGLE);
+        gd = new GridData(GridData.FILL_HORIZONTAL);
+        jndiClassname.setLayoutData(gd);
+        jndiClassname.addModifyListener(listener);
+        fillLabel(driverManagerTabContainer);*/        
+        
         initialize();
         dialogChanged();
         

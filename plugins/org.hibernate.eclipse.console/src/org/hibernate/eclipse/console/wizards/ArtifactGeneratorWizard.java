@@ -84,13 +84,14 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 		final boolean genhbm = page.isGenerateMappings();
 		final boolean gencfg = page.isGenerateCfg();
         final boolean preferRaw = page.isPreferRawCompositeIds();
+        final boolean ejb3 = page.isEJB3Enabled();
 		final IPath output = page.getOutputDirectory();
         
         final IPath templatedir = page.getTemplateDirectory();
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
-					doFinish(configurationName, output, outputPackage, reveng, genjava, genhbm, gencfg, monitor, preferRaw, templatedir);
+					doFinish(configurationName, output, outputPackage, reveng, genjava, genhbm, gencfg, monitor, preferRaw, templatedir, ejb3);
 				} catch (CoreException e) {
 					throw new InvocationTargetException(e);
 				} finally {
@@ -124,7 +125,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 
 	private void doFinish(
 		String configName, IPath output,
-		String outputPackage, boolean reveng, final boolean genjava, final boolean genhbm, final boolean gencfg, final IProgressMonitor monitor, boolean preferRawCompositeids, IPath templateDir)
+		String outputPackage, boolean reveng, final boolean genjava, final boolean genhbm, final boolean gencfg, final IProgressMonitor monitor, boolean preferRawCompositeids, IPath templateDir, final boolean ejb3)
 		throws CoreException {
 		// create a sample file
 		monitor.beginTask("Generating artifacts for " + configName, 10);
@@ -157,7 +158,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
                 
                 final ConfigurationNavigator cv = new ConfigurationNavigator();
 				final Exporter hbmExporter = new HibernateMappingExporter(cfg, outputdir,templatePaths);
-				final Exporter javaExporter = new POJOExporter(cfg, outputdir, templatePaths);
+				final Exporter javaExporter = new POJOExporter(cfg, outputdir, templatePaths, ejb3);
 				final Exporter cfgExporter = new HibernateConfigurationExporter(cfg, outputdir); 
 				
 				if(genhbm) {
