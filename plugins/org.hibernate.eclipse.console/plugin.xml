@@ -107,12 +107,5 @@
                id="org.hibernate.eclipse.console.jtidyformat"/>
       </objectContribution>
    </extension>
-   <extension
-         point="org.eclipse.help.toc">
-      <toc
-            primary="true"
-            file="toc.xml"/>
-      <toc file="tocgettingstarted.xml"/>
-   </extension>
 
 </plugin>
