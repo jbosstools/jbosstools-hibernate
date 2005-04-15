@@ -15,10 +15,12 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
-import org.eclipse.wst.sse.core.text.rules.StructuredTextPartitioner;
-import org.eclipse.wst.xml.core.text.rules.StructuredTextPartitionerForXML;
+import org.eclipse.wst.sse.core.internal.text.rules.StructuredTextPartitioner;
+import org.eclipse.wst.sse.core.text.IStructuredPartitionTypes;
+import org.eclipse.wst.xml.core.internal.text.rules.StructuredTextPartitionerForXML;
+import org.eclipse.wst.xml.core.text.IXMLPartitions;
 import org.eclipse.wst.xml.ui.StructuredTextViewerConfigurationXML;
-import org.eclipse.wst.xml.ui.contentassist.NoRegionContentAssistProcessor;
+import org.eclipse.wst.xml.ui.internal.contentassist.NoRegionContentAssistProcessor;
 
 public class HBMXMLStructuredTextViewerConfiguration extends StructuredTextViewerConfigurationXML {
 
@@ -28,9 +30,9 @@ public class HBMXMLStructuredTextViewerConfiguration extends StructuredTextViewe
 			ContentAssistant contentAssistant = (ContentAssistant) ca;
 			IContentAssistProcessor xmlContentAssistProcessor = new HBMXMLContentAssistProcessor(findJavaProject());
 			IContentAssistProcessor noRegionProcessor = new NoRegionContentAssistProcessor();
-			setContentAssistProcessor(contentAssistant, xmlContentAssistProcessor, StructuredTextPartitioner.ST_DEFAULT_PARTITION);
-			setContentAssistProcessor(contentAssistant, xmlContentAssistProcessor, StructuredTextPartitionerForXML.ST_DEFAULT_XML);
-			setContentAssistProcessor(contentAssistant, noRegionProcessor, StructuredTextPartitioner.ST_UNKNOWN_PARTITION);			
+			setContentAssistProcessor(contentAssistant, xmlContentAssistProcessor, IStructuredPartitionTypes.DEFAULT_PARTITION);
+			setContentAssistProcessor(contentAssistant, xmlContentAssistProcessor, IXMLPartitions.XML_DEFAULT);
+			setContentAssistProcessor(contentAssistant, noRegionProcessor, IStructuredPartitionTypes.UNKNOWN_PARTITION);			
 		}
 		return ca;
 	}	

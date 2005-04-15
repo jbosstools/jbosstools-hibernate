@@ -13,9 +13,9 @@ import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
 import org.eclipse.wst.sse.core.IStructuredModel;
 import org.eclipse.wst.sse.core.IndexedRegion;
 import org.eclipse.wst.sse.core.StructuredModelManager;
-import org.eclipse.wst.sse.core.util.StringUtils;
-import org.eclipse.wst.xml.core.document.XMLAttr;
-import org.eclipse.wst.xml.core.document.XMLNode;
+import org.eclipse.wst.sse.core.internal.util.StringUtils;
+import org.eclipse.wst.xml.core.document.IDOMAttr;
+import org.eclipse.wst.xml.core.document.IDOMNode;
 import org.hibernate.eclipse.mapper.extractor.HBMInfoExtractor;
 import org.hibernate.eclipse.mapper.extractor.HBMInfoHandler;
 import org.w3c.dom.Attr;
@@ -89,12 +89,12 @@ public class HBMXMLHyperlinkDetector implements IHyperlinkDetector {
 			short nodeType = node.getNodeType();
 			if (nodeType == Node.DOCUMENT_TYPE_NODE) {
 				// handle doc type node
-				XMLNode docNode = (XMLNode) node;
+				IDOMNode docNode = (IDOMNode) node;
 				hyperRegion = new Region(docNode.getStartOffset(), docNode.getEndOffset() - docNode.getStartOffset());
 			}
 			else if (nodeType == Node.ATTRIBUTE_NODE) {
 				// handle attribute nodes
-				XMLAttr att = (XMLAttr) node;
+				IDOMAttr att = (IDOMAttr) node;
 				// do not include quotes in attribute value region
 				int regOffset = att.getValueRegionStartOffset();
 				int regLength = att.getValueRegion().getTextLength();

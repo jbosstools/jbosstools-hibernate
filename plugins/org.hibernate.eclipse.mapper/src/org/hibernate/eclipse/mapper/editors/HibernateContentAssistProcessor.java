@@ -9,10 +9,10 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.wst.sse.core.text.IStructuredDocumentRegion;
 import org.eclipse.wst.sse.core.text.ITextRegion;
 import org.eclipse.wst.sse.core.text.ITextRegionList;
-import org.eclipse.wst.xml.core.document.XMLNode;
-import org.eclipse.wst.xml.core.parser.XMLRegionContext;
-import org.eclipse.wst.xml.ui.contentassist.ContentAssistRequest;
-import org.eclipse.wst.xml.ui.contentassist.XMLContentAssistProcessor;
+import org.eclipse.wst.xml.core.document.IDOMNode;
+import org.eclipse.wst.xml.core.internal.regions.DOMRegionContext;
+import org.eclipse.wst.xml.ui.internal.contentassist.ContentAssistRequest;
+import org.eclipse.wst.xml.ui.internal.contentassist.XMLContentAssistProcessor;
 
 public abstract class HibernateContentAssistProcessor extends XMLContentAssistProcessor {
 
@@ -25,7 +25,7 @@ public abstract class HibernateContentAssistProcessor extends XMLContentAssistPr
 	protected void addAttributeValueProposals(ContentAssistRequest contentAssistRequest) {
 		super.addAttributeValueProposals(contentAssistRequest);
 		
-		XMLNode node = (XMLNode) contentAssistRequest.getNode();
+		IDOMNode node = (IDOMNode) contentAssistRequest.getNode();
 	
 		// Find the attribute region and name for which this position should have a value proposed
 		IStructuredDocumentRegion open = node.getFirstStructuredDocumentRegion();
@@ -36,7 +36,7 @@ public abstract class HibernateContentAssistProcessor extends XMLContentAssistPr
 		ITextRegion nameRegion = null;
 		while (i >= 0) {
 			nameRegion = openRegions.get(i--);
-			if (nameRegion.getType() == XMLRegionContext.XML_TAG_ATTRIBUTE_NAME)
+			if (nameRegion.getType() == DOMRegionContext.XML_TAG_ATTRIBUTE_NAME)
 				break;
 		}
 	

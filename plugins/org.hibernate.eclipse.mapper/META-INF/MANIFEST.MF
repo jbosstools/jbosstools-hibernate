@@ -7,7 +7,7 @@ Bundle-ClassPath: org.hibernate.eclipse.mapper.jar
 Bundle-Activator: org.hibernate.eclipse.mapper.MapperPlugin
 Bundle-Vendor: Hibernate Team
 Bundle-Localization: plugin
-Export-Package: org.hibernate.eclipse.editors,
+Export-Package: 
  org.hibernate.eclipse.mapper,
  org.hibernate.eclipse.mapper.editors,
  org.hibernate.eclipse.mapper.extractor,
@@ -27,6 +27,5 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.wst.xml.ui,
  org.eclipse.wst.sse.ui,
  org.eclipse.ui.views,
- org.eclipse.wst.common.contentmodel,
- org.eclipse.wst.common.encoding
+ org.hibernate.eclipse
 Eclipse-AutoStart: true
