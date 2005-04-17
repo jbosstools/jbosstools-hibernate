@@ -22,6 +22,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCFilter;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.ReverseNamingStrategy;
+import org.hibernate.cfg.TableIdentifier;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
@@ -211,8 +212,8 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 
 				public Object execute() {
 					cfg.readFromJDBC(new JDBCFilter() {
-						public boolean acceptTableName(String name) {
-							return !name.startsWith("BIN$"); // to avoid oracle pain. HACK! need to be configurable
+						public boolean acceptTableName(TableIdentifier name) {
+							return !name.getName().startsWith("BIN$"); // to avoid oracle pain. HACK! need to be configurable
 						}
 					});
                     cfg.buildMappings();
