@@ -56,6 +56,8 @@ public class BuildSessionFactoryAction extends ConsoleConfigurationBasedAction {
             viewer.refresh(node); // todo: should we do it here or should the view just react to config being build ?
         	} catch(HibernateConsoleRuntimeException he) {
         		 HibernateConsolePlugin.showError(viewer.getControl().getShell(), "Exception while connecting/starting Hibernate",he);
+        	} catch(UnsupportedClassVersionError ucve) {
+				 HibernateConsolePlugin.showError(viewer.getControl().getShell(), "Starting Hibernate resulted in a UnsupportedClassVersionError.\nThis can occur if you are running eclipse with JDK 1.4 and your domain classes require JDK 1.5. \n\nResolution: Run eclipse with JDK 1.5.",ucve);
         	}
         }
 	}
