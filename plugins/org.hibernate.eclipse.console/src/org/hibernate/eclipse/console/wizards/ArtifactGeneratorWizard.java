@@ -16,13 +16,12 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchWizard;
-import org.hibernate.cfg.ConfigurableReverseNamingStrategy;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.JDBCFilter;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
-import org.hibernate.cfg.ReverseNamingStrategy;
-import org.hibernate.cfg.TableIdentifier;
+import org.hibernate.cfg.reveng.ConfigurableReverseNamingStrategy;
+import org.hibernate.cfg.reveng.JDBCFilter;
+import org.hibernate.cfg.reveng.ReverseNamingStrategy;
+import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
@@ -211,11 +210,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 			cc.execute(new Command() { // need to execute in the consoleconfiguration to let it handle classpath stuff!
 
 				public Object execute() {
-					cfg.readFromJDBC(new JDBCFilter() {
-						public boolean acceptTableName(TableIdentifier name) {
-							return !name.getName().startsWith("BIN$"); // to avoid oracle pain. HACK! need to be configurable
-						}
-					});
+					cfg.readFromJDBC();
                     cfg.buildMappings();
 					return null;
 				}
