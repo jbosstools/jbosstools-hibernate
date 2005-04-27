@@ -34,10 +34,7 @@
      -  on command line, but are not defaulted in the build.xml file.
      -->
 
-   <property name="eclipse31.home" value="C:/temp/eclipse/eclipse-3.1M6"/>
-   <property name="pdescriptdir" value="${eclipse31.home}/plugins/org.eclipse.pde.build_3.1.0/scripts"/>
-   <property name="xerces.home" value="C:/work/products/xerces-2_6_2"/>
-   <property name="workspace" value="workspace"/>
+	<property file="build.properties"/>
    <property name="verbose" value="-verbose" />
 
    <target name="main">
@@ -48,7 +45,7 @@
    		
      <java classname="org.eclipse.core.launcher.Main" fork="true">
 
-        <classpath path="${eclipse31.home}/startup.jar" />
+        <classpath path="${eclipse31.home}/startup.jar;${junit.lib}" />
         <jvmarg value="-Djava.endorsed.dir=${xerces.home}"/>
         <arg line="-application org.eclipse.ant.core.antRunner" />
 
