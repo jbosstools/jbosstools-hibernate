@@ -1,17 +1,26 @@
 package org.hibernate.eclipse.mapper;
 
-import org.eclipse.ui.plugin.*;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.hibernate.eclipse.EclipseLogger;
 import org.osgi.framework.BundleContext;
-import java.util.*;
 
 /**
  * The main plugin class to be used in the desktop.
  */
 public class MapperPlugin extends AbstractUIPlugin {
+	
+	final public static String ID = MapperPlugin.class.getName();
+	
 	//The shared instance.
 	private static MapperPlugin plugin;
 	//Resource bundle.
 	private ResourceBundle resourceBundle;
+	
+	private final EclipseLogger logger = new EclipseLogger(ID);
 	
 	/**
 	 * The constructor.
@@ -43,6 +52,10 @@ public class MapperPlugin extends AbstractUIPlugin {
 	public static MapperPlugin getDefault() {
 		return plugin;
 	}
+	
+	public EclipseLogger getLogger() {
+		return logger;
+	}
 
 	/**
 	 * Returns the string from the plugin's resource bundle,
@@ -68,5 +81,9 @@ public class MapperPlugin extends AbstractUIPlugin {
 			resourceBundle = null;
 		}
 		return resourceBundle;
+	}
+
+	public void logException(Throwable exception) {
+		getLogger().logException(exception);
 	}
 }
