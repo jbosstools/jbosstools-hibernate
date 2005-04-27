@@ -112,7 +112,7 @@ public class DialogSelectionHelper {
 		try {
 			projects= JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProjects();
 		} catch (JavaModelException e) {
-			HibernateConsolePlugin.log(e.getStatus());
+			HibernateConsolePlugin.getDefault().log(e.getStatus());
 			projects= new IJavaProject[0];
 		}
 		

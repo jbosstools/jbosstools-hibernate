@@ -50,7 +50,7 @@ public class EclipseImageMap extends ImageMap {
 		try {
 			desc = ImageDescriptor.createFromURL(makeIconFileURL(path));
 		} catch (MalformedURLException me) {
-			HibernateConsolePlugin.log(me);
+			HibernateConsolePlugin.getDefault().log(me);
 		}
 		imageRegistry.put(key, desc);
 		imageDescriptors.put(key, desc);

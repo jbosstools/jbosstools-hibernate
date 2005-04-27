@@ -65,14 +65,14 @@ public class SchemaExportAction extends ConsoleConfigurationBasedAction {
                                             Throwable element = (Throwable) iterator
                                                     .next();
                                             HibernateConsolePlugin
-                                                    .logErrorMessage(
+                                                    .getDefault().logErrorMessage(
                                                             "Error "
                                                                     + cnt++
                                                                     + " while performing SchemaExport",
                                                             element);
                                         }
                                         HibernateConsolePlugin
-                                                .showError(
+                                                .getDefault().showError(
                                                         viewer.getControl()
                                                                 .getShell(),
                                                         cnt
@@ -88,7 +88,7 @@ public class SchemaExportAction extends ConsoleConfigurationBasedAction {
                                         // the view just react to config being
                                         // build ?
             } catch (HibernateException he) {
-                HibernateConsolePlugin.showError(
+                HibernateConsolePlugin.getDefault().showError(
                         viewer.getControl().getShell(),
                         "Exception while running SchemaExport", he);
             }

@@ -119,7 +119,7 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 			return false;
 		} catch (InvocationTargetException e) {
 			Throwable realException = e.getTargetException();
-			HibernateConsolePlugin.showError(getShell(), "Error", realException);
+			HibernateConsolePlugin.getDefault().showError(getShell(), "Error", realException);
 			return false;
 		}
 		return true;
@@ -187,7 +187,7 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
         try {
             return new ByteArrayInputStream(stringWriter.toString().getBytes("UTF-8"));
         } catch (UnsupportedEncodingException uec) {
-            HibernateConsolePlugin.logErrorMessage("Problems converting to UTF-8", uec);
+            HibernateConsolePlugin.getDefault().logErrorMessage("Problems converting to UTF-8", uec);
             return new ByteArrayInputStream(stringWriter.toString().getBytes());
         }
 	}

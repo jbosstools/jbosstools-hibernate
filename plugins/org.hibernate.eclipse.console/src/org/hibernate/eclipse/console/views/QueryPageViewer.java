@@ -82,7 +82,7 @@ public class QueryPageViewer {
 					return objects;
 				} else {
 					Throwable[] throwables = (Throwable[])qp.getExceptions().toArray(new Throwable[0]);
-					HibernateConsolePlugin.logErrorMessage("Exception while executing HQL Query", throwables);
+					HibernateConsolePlugin.getDefault().logErrorMessage("Exception while executing HQL Query", throwables);
 					return throwables; // TODO: provide actual error page					
 				}
 			} else {

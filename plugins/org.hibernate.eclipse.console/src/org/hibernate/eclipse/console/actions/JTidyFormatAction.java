@@ -67,9 +67,9 @@ public class JTidyFormatAction implements IObjectActionDelegate {
                 }
             }
             } catch (CoreException e) {
-                HibernateConsolePlugin.showError(targetPart.getSite().getShell(), "Error while running JTidy", e);
+                HibernateConsolePlugin.getDefault().showError(targetPart.getSite().getShell(), "Error while running JTidy", e);
             } catch (IOException io) {
-                HibernateConsolePlugin.showError(targetPart.getSite().getShell(), "Error while running JTidy", io);
+                HibernateConsolePlugin.getDefault().showError(targetPart.getSite().getShell(), "Error while running JTidy", io);
             }
         }
 	}

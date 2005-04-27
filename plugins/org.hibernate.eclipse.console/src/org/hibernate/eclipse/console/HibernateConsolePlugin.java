@@ -14,6 +14,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.hibernate.console.ConsoleConfigurationPreferences;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.eclipse.EclipseLogger;
 import org.hibernate.eclipse.console.wizards.EclipseConsoleConfigurationPreferences;
 import org.osgi.framework.BundleContext;
 
@@ -28,6 +29,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 	private static HibernateConsolePlugin plugin;
 	//Resource bundle.
 	private ResourceBundle resourceBundle;
+	private EclipseLogger logger = new EclipseLogger(ID);
 	
 	/**
 	 * The constructor.
@@ -95,16 +97,18 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 	 * 
 	 * @param status status to log
 	 */
-	public static void log(IStatus status) {
-		getDefault().getLog().log(status);
+	public void log(IStatus status) {
+		logger.log(status);
 	}
+	
+	
 	
 	/**
 	 * Logs an internal error with the specified message.
 	 * 
 	 * @param message the error message to log
 	 */
-	public static void logErrorMessage(String message, Throwable t) {
+	public void logErrorMessage(String message, Throwable t) {
 		log(new MultiStatus(HibernateConsolePlugin.ID, IStatus.ERROR , new IStatus[] { throwableToStatus(t) }, message, t));
 	}
 	
@@ -124,7 +128,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 		
 	}
 	
-	public static void logErrorMessage(String message, Throwable t[]) {
+	public void logErrorMessage(String message, Throwable t[]) {
 		IStatus[] children = new IStatus[t.length];
 		for (int i = 0; i < t.length; i++) {
 			Throwable throwable = t[i];
@@ -140,7 +144,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 	 * 
 	 * @param e the exception to be logged
 	 */	
-	public static void log(Throwable e) {
+	public void log(Throwable e) {
 		log(new Status(IStatus.ERROR, ID, 150, "Hibernate Console Internal Error", e));  //$NON-NLS-1$
 	}
 
@@ -166,7 +170,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 	/**
 	 * 
 	 */
-	public static void showError(Shell shell, String message, Throwable he) {
+	public void showError(Shell shell, String message, Throwable he) {
 		logErrorMessage(message, he);
 		String string = he==null?"<No message>":he.getClass().getName() + ":" + he.getMessage();
 		IStatus warning = new Status(IStatus.WARNING, 

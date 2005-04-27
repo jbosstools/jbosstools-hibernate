@@ -310,7 +310,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			
 		}
 		} catch (CoreException ce) {
-			HibernateConsolePlugin.logErrorMessage("Problem while initializing ConsoleConfigurationWizardPage", ce);
+			HibernateConsolePlugin.getDefault().logErrorMessage("Problem while initializing ConsoleConfigurationWizardPage", ce);
 		}
 		
 	}
@@ -335,7 +335,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 					try {
 						engine.search(pattern, participants, scope, sr, monitor);
 					} catch (CoreException ce) {
-						HibernateConsolePlugin.logErrorMessage(
+						HibernateConsolePlugin.getDefault().logErrorMessage(
 								"Problem while locating jdbc drivers", ce);									
 					}
 				}
@@ -353,10 +353,10 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			
 			return resources;
 		} catch (InvocationTargetException e) {
-			HibernateConsolePlugin.logErrorMessage(
+			HibernateConsolePlugin.getDefault().logErrorMessage(
 					"Problem while locating jdbc drivers", e);
 			} catch (InterruptedException e) {
-				HibernateConsolePlugin.logErrorMessage(
+				HibernateConsolePlugin.getDefault().logErrorMessage(
 						"Problem while locating jdbc drivers", e);
 		}
 		

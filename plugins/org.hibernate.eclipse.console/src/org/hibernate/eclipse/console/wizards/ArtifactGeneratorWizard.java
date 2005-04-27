@@ -106,7 +106,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 			return false;
 		} catch (InvocationTargetException e) {
 			Throwable realException = e.getTargetException();
-			HibernateConsolePlugin.showError(getShell(), "Error under artifact generation", realException);
+			HibernateConsolePlugin.getDefault().showError(getShell(), "Error under artifact generation", realException);
 			return false;
 		}
 		return true;
@@ -183,7 +183,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
                 try {
                     resource.refreshLocal(IResource.DEPTH_INFINITE, monitor);
                 } catch (CoreException e) {
-                    HibernateConsolePlugin.logErrorMessage("Problem refreshing", e);
+                    HibernateConsolePlugin.getDefault().logErrorMessage("Problem refreshing", e);
                 }
 
 				monitor.worked(10);

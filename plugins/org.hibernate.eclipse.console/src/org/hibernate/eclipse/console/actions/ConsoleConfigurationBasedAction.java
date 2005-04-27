@@ -46,7 +46,7 @@ public abstract class ConsoleConfigurationBasedAction extends SelectionListenerA
 		try {
 			doRun();
 		} catch(HibernateException he) {
-			HibernateConsolePlugin.showError(null, "Problem while executing " + getText() + "(" + he + ")", he);
+			HibernateConsolePlugin.getDefault().showError(null, "Problem while executing " + getText() + "(" + he + ")", he);
 		}      		
 	}
 	

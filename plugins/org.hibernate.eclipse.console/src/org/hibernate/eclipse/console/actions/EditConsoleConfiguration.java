@@ -41,7 +41,7 @@ public class EditConsoleConfiguration extends ConsoleConfigurationBasedAction {
         		WizardDialog dialog = new WizardDialog(win.getShell(), wizard);
         		dialog.open(); // This opens a dialog
 			} catch(HibernateException he) {
-				HibernateConsolePlugin.showError(null, "Exception while trying to edit configuration", he);
+				HibernateConsolePlugin.getDefault().showError(null, "Exception while trying to edit configuration", he);
         	}
         }
 	}
