@@ -1,0 +1,146 @@
+################################
+#
+# This file contains MACHINE DEPENDENT values!
+# It will not work out of the box, and is also not intended to do so!
+# Adjust it according to the build machine and call the file build.properties
+#
+# This file was copied from the build-template.properties
+# file in the pde build plugin's 'scripts' directory.
+#
+# properties added to reference hibernate core and ext builds
+################################
+
+# path to a directory with hibernate3 and hibernateExt source.
+hibernatebasedir=C:/work/projects/hibernate/hibernate.sf.net
+
+# location of hibernate core distribution (not source tree!)
+# precondition: Hibernate core is successfully built!
+hibernate-core.home=${hibernatebasedir}/hibernate-3.0
+
+# location of HibernateExt source directory (not distribution tree!)
+# precondition: HibernateExt (console, tools) is successfully built!
+hibernate-ext-src.home=${hibernatebasedir}/HibernateExt
+
+
+#################################
+#
+# End hibernate properties
+#################################
+
+###############################################################################
+# Copyright (c) 2003, 2005 IBM Corporation and others.
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Eclipse Public License v1.0
+# which accompanies this distribution, and is available at
+# http://www.eclipse.org/legal/epl-v10.html
+# 
+# Contributors:
+#     IBM Corporation - initial API and implementation
+###############################################################################
+#####################
+# Parameters describing how and where to execute the build.
+# Typical users need only update the following properties:
+#    baseLocation - where things you are building against are installed
+#    bootclasspath - The base jars to compile against (typicaly rt.jar)
+#    configs - the list of {os, ws, arch} configurations to build.  
+#
+# Of course any of the settings here can be overridden by spec'ing 
+# them on the command line (e.g., -DbaseLocation=d:/eclipse
+
+############# CVS CONTROL ################
+# The CVS tag to use when fetching the map files from the repository
+mapVersionTag=HEAD
+
+# The CVS tag to use when fetching elements to build.  By default the
+# builder will use whatever is in the maps.  Use this value to override
+# for example, when doing a nightly build out of HEAD
+# fetchTag=HEAD
+
+
+############## BUILD / GENERATION CONTROL ################
+# The directory into which the build elements will be fetched and where
+# the build will take place.
+#
+# the directory where all files are checkout into, the build is run from
+# and where the final product is located.
+#
+# From pde build article: "On Windows systems, this directory should
+# be close to the drive root to avoid path length limitations
+# particularly at compile time."
+#
+# Also, due to eclipse pde build issue 92174, disregard pde build article:
+# this MUST be absolute path.
+buildDirectory=c:/temp/pdebuild
+
+
+# Type of build.  Used in naming the build output.  Typically this value is
+# one of I, N, M, S, ...
+buildType=S
+
+# ID of the build.  Used in naming the build output.
+buildId=${BUILDID}
+
+# Label for the build.  Used in naming the build output
+buildLabel=${buildType}.${buildId}
+
+# Timestamp for the build.  Used in naming the build output
+timestamp=${TIMESTAMP}
+
+# Base location for anything the build needs to compile against.  For example,
+# when building GEF, the baseLocation should be the location of a previously
+# installed Eclipse against which the GEF code will be compiled.
+#
+# the directory where an eclipse with all dependent plugins are
+# installed.  MUST NOT CONTAIN HIBERNATE PLUGINS! but otherwise
+# could be set to ECLIPSE31_HOME.
+baseLocation=C:/temp/eclipse/eclipse-3.1M6
+
+
+#Os/Ws/Arch/nl of the eclipse specified by baseLocation
+#baseos
+#basews
+#basearch
+#basenl
+
+# The location underwhich all of the build output will be collected.
+collectingFolder=eclipse
+
+# The prefix that will be used in the generated archive.
+archivePrefix=${collectingFolder}
+
+# workaround to eclipse issue in org.eclipse.pde.build (as of 3.1M6):
+# 90398: workaround:  -DarchivesFormat="*, *, * - zip"
+# use zip format until issue 92380 is resolved
+archivesFormat=*, *, * - zip
+
+# The list of {os, ws, arch} configurations to build.  This 
+# value is a '&' separated list of ',' separate triples.  For example, 
+#     configs=win32,win32,x86 & linux,motif,x86
+# By default the value is *,*,*
+#configs=*,*,* 
+
+#Arguments to send to the zip executable
+# zipargs must be set to something!, otherwise no archive is created
+# eclipse issue: 92290
+zipargs=-q
+
+
+#Arguments to send to the tar executable
+#tarargs=
+
+
+############# JAVA COMPILER OPTIONS ##############
+# The location of the Java jars to compile against.  Typically the rt.jar for your JDK/JRE
+bootclasspath=${java.home}/lib/rt.jar
+
+# Whether or not to include debug info in the output jars
+javacDebugInfo=false 
+
+# Whether or not to fail the build if there are compiler errors
+javacfailonerror=true
+
+# The version of the source code
+javacSource=1.4
+
+# The version of the byte code targeted
+javacTarget=1.4
