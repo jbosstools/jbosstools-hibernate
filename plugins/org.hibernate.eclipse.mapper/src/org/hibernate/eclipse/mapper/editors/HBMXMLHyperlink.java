@@ -14,7 +14,7 @@ public class HBMXMLHyperlink implements IHyperlink {
 	private IJavaElement element;
 
 	public HBMXMLHyperlink(IRegion region, IJavaElement element) {
-		assert (element!=null);
+		//assert (element!=null);
 		this.region = region;
 		this.element = element;		
 	}
