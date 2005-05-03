@@ -1,10 +1,10 @@
 package org.hibernate.eclipse.mapper.modelhandler;
 
-import org.eclipse.wst.sse.core.IModelLoader;
 import org.eclipse.wst.sse.core.internal.document.IDocumentCharsetDetector;
 import org.eclipse.wst.sse.core.internal.document.IDocumentLoader;
 import org.eclipse.wst.sse.core.internal.ltk.modelhandler.AbstractModelHandler;
 import org.eclipse.wst.sse.core.internal.ltk.modelhandler.IModelHandler;
+import org.eclipse.wst.sse.core.internal.provisional.IModelLoader;
 import org.eclipse.wst.xml.core.internal.encoding.XMLDocumentCharsetDetector;
 import org.eclipse.wst.xml.core.internal.encoding.XMLDocumentLoader;
 import org.eclipse.wst.xml.core.internal.modelhandler.XMLModelLoader;

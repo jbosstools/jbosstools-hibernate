@@ -3,7 +3,6 @@ package org.hibernate.eclipse.mapper;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.hibernate.eclipse.EclipseLogger;
 import org.osgi.framework.BundleContext;

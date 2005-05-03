@@ -7,11 +7,10 @@ import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.PropertySheetPage;
-import org.eclipse.wst.sse.core.INodeAdapterFactory;
-import org.eclipse.wst.sse.core.INodeNotifier;
+import org.eclipse.wst.sse.core.internal.provisional.INodeAdapterFactory;
+import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.sse.ui.internal.contentoutline.IJFaceNodeAdapter;
 import org.eclipse.wst.xml.ui.internal.XMLUIMessages;
-import org.eclipse.wst.xml.ui.internal.XMLUIPlugin;
 import org.eclipse.wst.xml.ui.internal.contentoutline.BufferedOutlineUpdater;
 import org.eclipse.wst.xml.ui.internal.contentoutline.JFaceNodeAdapter;
 import org.eclipse.wst.xml.ui.internal.contentoutline.JFaceNodeAdapterFactory;
@@ -28,9 +27,11 @@ import org.w3c.dom.Node;
 public class JFaceNodeAdapterForHBMXML extends JFaceNodeAdapter {
 	final static Class ADAPTER_KEY = IJFaceNodeAdapter.class;
 	private BufferedOutlineUpdater fUpdater;
+	private INodeAdapterFactory adapterFactory;
 
 	public JFaceNodeAdapterForHBMXML(INodeAdapterFactory adapterFactory) {
 		super(adapterFactory);
+		this.adapterFactory = adapterFactory;
 	}
 
 	

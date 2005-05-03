@@ -1,8 +1,6 @@
 package org.hibernate.eclipse.mapper.editors;
 
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.ui.javaeditor.EditorUtility;
 import org.eclipse.jface.text.IRegion;
@@ -13,15 +11,12 @@ import org.eclipse.ui.PartInitException;
 public class HBMXMLHyperlink implements IHyperlink {
 
 	private final IRegion region;
-	private final IJavaProject project;
-	private IEditorPart fEditor; // used for opening
 	private IJavaElement element;
 
-	public HBMXMLHyperlink(IRegion region, IJavaElement element, IJavaProject project) {
+	public HBMXMLHyperlink(IRegion region, IJavaElement element) {
 		assert (element!=null);
 		this.region = region;
-		this.element = element;
-		this.project = project;
+		this.element = element;		
 	}
 
 	public IRegion getHyperlinkRegion() {

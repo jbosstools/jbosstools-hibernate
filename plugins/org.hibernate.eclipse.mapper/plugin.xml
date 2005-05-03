@@ -65,4 +65,23 @@
             class="org.hibernate.eclipse.mapper.registry.AdapterFactoryProviderForCFGXML">
       </adapterFactoryDescription>         
    </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="hibernatecategory"
+            class="org.hibernate.eclipse.mapper.views.FormView"
+            icon="icons/sample.gif"
+            id="org.hibernate.eclipse.mapper.views.FormView"
+            name="Form View"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.hibernate.eclipse.mapper.editors.ReverseEngineeringMultiPageEditor"
+            contributorClass="org.hibernate.eclipse.mapper.editors.ReverseEngineeringMultiPageEditorContributor"
+            extensions="xml"
+            icon="icons/hibernate_small_icon.gif"
+            id="org.hibernate.eclipse.mapper.editors.ReverseEngineeringMultiPageEditor"
+            name="Hibernate reverse engineering editor"/>
+   </extension>
   </plugin>

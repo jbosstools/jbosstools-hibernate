@@ -3,19 +3,18 @@ package org.hibernate.eclipse.mapper.editors;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.text.Assert;
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.hyperlink.IHyperlink;
 import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
-import org.eclipse.wst.sse.core.IStructuredModel;
-import org.eclipse.wst.sse.core.IndexedRegion;
-import org.eclipse.wst.sse.core.StructuredModelManager;
+import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
+import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
+import org.eclipse.wst.sse.core.internal.provisional.StructuredModelManager;
 import org.eclipse.wst.sse.core.internal.util.StringUtils;
-import org.eclipse.wst.xml.core.document.IDOMAttr;
-import org.eclipse.wst.xml.core.document.IDOMNode;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMAttr;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.hibernate.eclipse.mapper.extractor.HBMInfoExtractor;
 import org.hibernate.eclipse.mapper.extractor.HBMInfoHandler;
 import org.w3c.dom.Attr;
@@ -68,7 +67,7 @@ public class HBMXMLHyperlinkDetector implements IHyperlinkDetector {
 					if(handler!=null) {
 						IJavaElement element = handler.getJavaElement(project, currentNode, currentAttrNode);
 						if(element!=null) {
-							return new IHyperlink[] {new HBMXMLHyperlink(getHyperlinkRegion(currentAttrNode), element, project)};
+							return new IHyperlink[] {new HBMXMLHyperlink(getHyperlinkRegion(currentAttrNode), element)};
 						} else {
 							return null;
 						}
@@ -126,46 +125,7 @@ public class HBMXMLHyperlinkDetector implements IHyperlinkDetector {
 		return null;
 	}
 	
-	private IRegion selectWord(IDocument document, int anchor) {
-	
-		try {		
-			int offset= anchor;
-			char c;
-
-			while (offset >= 0) {
-				c= document.getChar(offset);
-				if (!Character.isJavaIdentifierPart(c) && '.'!=c)
-					break;
-				--offset;
-			}
-
-			int start= offset;
-
-			offset= anchor;
-			int length= document.getLength();
-
-			while (offset < length) {
-				c= document.getChar(offset);
-				if (!Character.isJavaIdentifierPart(c) && '.'!=c)
-					break;
-				++offset;
-			}
-			
-			int end= offset;
-			
-			IRegion reg = null;
-			if (start == end) {
-				reg = new Region(start, 0);
-			} else {
-				reg = new Region(start + 1, end - start - 1);
-			}
-			return reg;
-			
-		} catch (BadLocationException x) {
-			return null;
-		}
-	}
-	
+		
 	/**
 	 * Returns the node the cursor is currently on in the document. null if no
 	 * node is selected
