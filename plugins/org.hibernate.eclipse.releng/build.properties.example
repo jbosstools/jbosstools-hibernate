@@ -21,6 +21,11 @@ hibernate-core.home=${hibernatebasedir}/hibernate-3.0
 # precondition: HibernateExt (console, tools) is successfully built!
 hibernate-ext-src.home=${hibernatebasedir}/HibernateExt
 
+eclipse31.home=C:/temp/eclipse/eclipse-3.1M6
+pdescriptdir=${eclipse31.home}/plugins/org.eclipse.pde.build_3.1.0/scripts
+xerces.home=C:/work/products/xerces-2_6_2
+junit.lib=C:/work/products/junit-3.8.1/junit.jar
+workspace=workspace
 
 #################################
 #
