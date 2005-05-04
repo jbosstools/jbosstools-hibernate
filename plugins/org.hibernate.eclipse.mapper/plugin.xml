@@ -79,7 +79,7 @@
       <editor
             class="org.hibernate.eclipse.mapper.editors.ReverseEngineeringMultiPageEditor"
             contributorClass="org.hibernate.eclipse.mapper.editors.ReverseEngineeringMultiPageEditorContributor"
-            extensions="xml"
+            extensions="override.reveng.xml"
             icon="icons/hibernate_small_icon.gif"
             id="org.hibernate.eclipse.mapper.editors.ReverseEngineeringMultiPageEditor"
             name="Hibernate reverse engineering editor"/>
