@@ -31,6 +31,7 @@ import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
+import org.eclipse.jdt.ui.wizards.BuildPathDialogAccess;
 import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -66,8 +67,6 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	private Text configurationFileText;
 	private Text configurationNameText;
 	private EclipseConsoleConfiguration oldConfiguaration = null;
-	
-	private boolean userHasMadeChanges;
 	
 	private ISelection selection;
 	private UpDownList mappingFilesViewer;
@@ -156,7 +155,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	
 	private void buildClassPathTable(Composite parent) {
 		classPathViewer = new UpDownList(parent, getShell(), "Classpath (only add path for POJO and driver - No Hibernate jars!)") {
-			protected Object[] handleAdd() {
+			protected Object[] handleAdd(int idx) {
 
 				TableItem[] items = getTable().getItems();
 				IPath[] exclude = new IPath[items.length];
@@ -166,19 +165,31 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 					exclude[i] = (IPath) item.getData();			
 				}
 				
-				return DialogSelectionHelper.chooseFileEntries(getShell(), null, exclude, "Add classpath entry", "Add a directory, .zip or .jar file", new String[] { ".jar", ".zip" }, true, true, true);
+				switch (idx) {
+				case 0:
+					return DialogSelectionHelper.chooseFileEntries(getShell(), null, exclude, "Add classpath entry", "Add a directory, .zip or .jar file", new String[] { ".jar", ".zip" }, true, true, true);					
+				case 1:
+					return BuildPathDialogAccess.chooseExternalJAREntries(getShell());
+				default:
+					return null;
+				}
+				
 			}
 
+			protected String[] getAddButtonLabels() {
+				return new String[] { "Add JARS...", "Add External JARS..." };				
+			}
 			protected void listChanged() {
 				dialogChanged();
 			}
+			
 		};
 		
 	}
 
 	private void buildMappingFileTable(Composite parent) {
 		mappingFilesViewer = new UpDownList(parent, getShell(), "Mapping files") {
-			protected Object[] handleAdd() {
+			protected Object[] handleAdd(int idx) {
 				TableItem[] items = getTable().getItems();
 				IPath[] exclude = new IPath[items.length];
 				
