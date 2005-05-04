@@ -29,7 +29,7 @@
 		<!--
 		 I guess we also need l2fprod for Property / HibernateProperty
 		-->
-		<copy file="..\console\target\hibernateconsole-3.0\lib\l2fprod-common.jar" todir="lib"/>
+		<copy file="..\console\lib\l2fprod-common.jar" todir="lib"/>
 
 		<ant antfile="..\tools\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
         <ant antfile="..\tools\build.xml" inheritall="false" inheritrefs="false" target="copylib"/>        
