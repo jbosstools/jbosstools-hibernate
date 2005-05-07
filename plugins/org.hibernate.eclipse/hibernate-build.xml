@@ -33,10 +33,10 @@
 
 		<ant antfile="..\tools\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
         <ant antfile="..\tools\build.xml" inheritall="false" inheritrefs="false" target="copylib"/>        
-		<copy file="..\tools\target\hibernate-tools-3.0\hibernate-tools.jar" todir="lib"/>
-		<copy file="..\tools\target\hibernate-tools-3.0\lib\velocity-1.4.jar" todir="lib"/>
-		<copy file="..\tools\target\hibernate-tools-3.0\lib\velocity-tools-generic-1.1.jar" todir="lib"/>		
-		<copy file="..\tools\target\hibernate-tools-3.0\lib\jtidy-r8-21122004.jar" todir="lib"/>		
+		<copy file="..\tools\target\hibernate-tools\hibernate-tools.jar" todir="lib"/>
+		<copy file="..\tools\target\hibernate-tools\lib\velocity-1.4.jar" todir="lib"/>
+		<copy file="..\tools\target\hibernate-tools\lib\velocity-tools-generic-1.1.jar" todir="lib"/>		
+		<copy file="..\tools\target\hibernate-tools\lib\jtidy-r8-21122004.jar" todir="lib"/>		
 		
 		<property file="${hibernate-core.lib.dir}/version.properties" prefix="h3"/>
 		

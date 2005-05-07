@@ -59,8 +59,8 @@
 <!-- ===================================================================== -->
 <target name="postFetch">
 
-   <property name="tools.dist.dir" location="${hibernate-ext-src.home}/tools/target/hibernate-tools-3.0/" />
-   <property name="console.dist.dir" location="${hibernate-ext-src.home}/console/target/hibernateconsole-3.0" />
+   <property name="tools.dist.dir" location="${hibernate-ext-src.home}/tools/target/hibernate-tools/" />
+   <property name="console.dist.dir" location="${hibernate-ext-src.home}/console/target/hibernateconsole" />
 
    <delete dir="${buildDirectory}/plugins/org.hibernate.eclipse/lib"> 
    	 <include name="**/*"/>
