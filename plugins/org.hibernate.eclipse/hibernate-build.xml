@@ -25,7 +25,7 @@
 
 		<!-- we need to have the hibernateconsole stuff together with the core to fake DriverManager into allow loading drivers -->
 		<ant antfile="..\console\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
-		<copy file="..\console\target\hibernateconsole-3.0\hibernateconsole.jar" todir="lib"/>
+		<copy file="..\console\target\hibernateconsole\hibernateconsole.jar" todir="lib"/>
 		<!--
 		 I guess we also need l2fprod for Property / HibernateProperty
 		-->
