@@ -20,16 +20,16 @@ import org.w3c.dom.Node;
 
 
 /**
- * For hbm.xml files.
+ * For xml files in general.
  * 
  * Adapts a DOM node to a JFace viewer.
  */
-public class JFaceNodeAdapterForHBMXML extends JFaceNodeAdapter {
+public class JFaceNodeAdapterForXML extends JFaceNodeAdapter {
 	final static Class ADAPTER_KEY = IJFaceNodeAdapter.class;
-	private BufferedOutlineUpdater fUpdater;
-	private INodeAdapterFactory adapterFactory;
+	protected BufferedOutlineUpdater fUpdater;
+	protected INodeAdapterFactory adapterFactory;
 
-	public JFaceNodeAdapterForHBMXML(INodeAdapterFactory adapterFactory) {
+	public JFaceNodeAdapterForXML(INodeAdapterFactory adapterFactory) {
 		super(adapterFactory);
 		this.adapterFactory = adapterFactory;
 	}
@@ -56,35 +56,6 @@ public class JFaceNodeAdapterForHBMXML extends JFaceNodeAdapter {
 	private String getNodeName(Object object) {
 		Node node = (Node) object;
 		String nodeName = node.getNodeName();
-		if ("cheatsheet".equals(nodeName)) {
-			Node titleNode = node.getAttributes().getNamedItem("title");
-			String title = "";
-			if (titleNode != null) {
-				title = titleNode.getNodeValue();
-			}
-			return "XXX Title:" + title;
-		}
-		if ("item".equals(nodeName)) {
-			Node titleNode = node.getAttributes().getNamedItem("title");
-			String title = "";
-			if (titleNode != null) {
-				title = titleNode.getNodeValue();
-			}
-			return "Funky Title:" + title;
-		}
-		if ("action".equals(nodeName)) {
-			Node classNode = node.getAttributes().getNamedItem("class");
-			String className = "";
-			if (classNode != null) {
-				className = classNode.getNodeValue();
-				int index = className.lastIndexOf(".");
-				
-				if (index != -1) {
-					className = className.substring(index + 1);
-				}
-			}
-			return "Action:" + className;
-		}
 		return nodeName;
 	}
 
@@ -95,15 +66,7 @@ public class JFaceNodeAdapterForHBMXML extends JFaceNodeAdapter {
 	}
 
 	public boolean hasChildren(Object object) {
-		Node node = (Node) object;
-		if ("description".equals(node.getNodeName())) {
-			return false;
-		}
-		for (Node child = node.getFirstChild(); child != null; child = child.getNextSibling()) {
-			if (child.getNodeType() != Node.TEXT_NODE)
-				return true;
-		}
-		return false;
+		return super.hasChildren(object);
 	}
 
 	/**
@@ -154,7 +117,7 @@ public class JFaceNodeAdapterForHBMXML extends JFaceNodeAdapter {
 			Object listener = iterator.next();			
 			if (notifier instanceof Node && (listener instanceof StructuredViewer) && (eventType == INodeNotifier.STRUCTURE_CHANGED || (eventType == INodeNotifier.CHANGE /*&& changedFeature == null*/))) {
 
-					System.out.println("JFaceNodeAdapter notified on event type > " + eventType + " at " + changedFeature);
+				//	System.out.println("JFaceNodeAdapter notified on event type > " + eventType + " at " + changedFeature);
 
 				// refresh on structural and "unknown" changes
 				StructuredViewer structuredViewer = (StructuredViewer) listener;

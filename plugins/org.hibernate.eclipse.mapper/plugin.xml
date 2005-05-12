@@ -29,6 +29,19 @@
                   value="hibernate-configuration"/>
          </describer>
       </content-type>
+	  <content-type
+            base-type="org.eclipse.core.runtime.xml"
+            file-extensions="xml"
+            file-names="override.reveng.xml"
+            id="content-type.reveng.xml"
+            name="Hibernate Reverse Engineering Override Content-type"
+            priority="normal">
+            <describer class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
+            <parameter
+                  name="element"
+                  value="hibernate-reverse-engineering"/>
+         </describer>
+      </content-type>      
    </extension>
    <extension
          point="org.eclipse.wst.sse.core.modelHandler">
@@ -43,6 +56,12 @@
                class="org.hibernate.eclipse.mapper.modelhandler.ModelHandlerForCFGXML"
                default="false"
                id="org.hibernate.eclipse.mapper.handler.cfg.xml">
+         </modelHandler>
+         <modelHandler
+               associatedContentTypeId="org.hibernate.eclipse.mapper.content-type.reveng.xml"
+               class="org.hibernate.eclipse.mapper.modelhandler.ModelHandlerForREVENGXML"
+               default="false"
+               id="org.hibernate.eclipse.mapper.handler.reveng.xml">
          </modelHandler>
    </extension>
    <extension
@@ -64,6 +83,9 @@
       <adapterFactoryDescription
             class="org.hibernate.eclipse.mapper.registry.AdapterFactoryProviderForCFGXML">
       </adapterFactoryDescription>         
+      <adapterFactoryDescription
+            class="org.hibernate.eclipse.mapper.registry.AdapterFactoryProviderForREVENGXML">
+      </adapterFactoryDescription>          
    </extension>
    <extension
          point="org.eclipse.ui.views">

@@ -20,17 +20,20 @@ import org.eclipse.wst.xml.ui.internal.contentoutline.JFaceNodeAdapterFactory;
 
 
 /**
+ * General enhancements to the xml outline.
+ * e.g. show first attribute of a node in the outline for easy recognition.
+ * 
  * An adapter factory to create JFaceNodeAdapters.  Use this
  * adapter factory with a JFaceAdapterContentProvider to display
  * DOM nodes in a tree.
  */
-public class JFaceNodeAdapterFactoryForHBMXML extends JFaceNodeAdapterFactory {
+public class JFaceNodeAdapterFactoryForXML extends JFaceNodeAdapterFactory {
 
-	public JFaceNodeAdapterFactoryForHBMXML() {
+	public JFaceNodeAdapterFactoryForXML() {
 		this(IJFaceNodeAdapter.class, true);
 	}
 
-	public JFaceNodeAdapterFactoryForHBMXML(Object adapterKey, boolean registerAdapters) {
+	public JFaceNodeAdapterFactoryForXML(Object adapterKey, boolean registerAdapters) {
 		super(adapterKey, registerAdapters);
 	}
 
@@ -40,7 +43,7 @@ public class JFaceNodeAdapterFactoryForHBMXML extends JFaceNodeAdapterFactory {
 	protected INodeAdapter createAdapter(INodeNotifier node) {
 		if (singletonAdapter == null) {
 			// create the JFaceNodeAdapter
-			singletonAdapter = new JFaceNodeAdapterForHBMXML(this);
+			singletonAdapter = new JFaceNodeAdapterForXML(this);
 			initAdapter(singletonAdapter, node);
 		}
 		return singletonAdapter;
