@@ -158,8 +158,12 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
                 }
                 
                 final ConfigurationNavigator cv = new ConfigurationNavigator();
-				final Exporter hbmExporter = new HibernateMappingExporter(cfg, outputdir,templatePaths);
-				final Exporter javaExporter = new POJOExporter(cfg, outputdir, templatePaths, ejb3, ejb3); // TODO: expose generics as an option
+				final HibernateMappingExporter hbmExporter = new HibernateMappingExporter(cfg, outputdir);
+				hbmExporter.setTemplatePaths(templatePaths);
+				final POJOExporter javaExporter = new POJOExporter(cfg, outputdir); // TODO: expose generics as an option
+				javaExporter.setEjb3(ejb3);
+				javaExporter.setGenerics(ejb3);
+				javaExporter.setTemplatePaths(templatePaths);
 				final Exporter cfgExporter = new HibernateConfigurationExporter(cfg, outputdir); 
 				
 				if(genhbm) {
@@ -203,7 +207,6 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 		if(reveng) {
 			final JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
 			cc.buildWith(cfg,false);
-			cfg.setGeneratingDynamicClasses(false);			
 			cfg.setReverseNamingStrategy(namingStrategy);
 			cfg.setPreferRawCompositeIds(rawCompositeids);
             
