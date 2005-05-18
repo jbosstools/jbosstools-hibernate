@@ -11,7 +11,7 @@ import org.hibernate.eclipse.mapper.views.contentoutline.JFaceNodeAdapterFactory
 public class AdapterFactoryProviderForXML extends org.eclipse.wst.xml.ui.internal.registry.AdapterFactoryProviderForXML {
 	
 	public AdapterFactoryProviderForXML() {
-		
+	
 	}
 	
 	protected void addContentBasedFactories(IStructuredModel structuredModel) {

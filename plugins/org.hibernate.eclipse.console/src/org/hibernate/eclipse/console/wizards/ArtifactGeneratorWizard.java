@@ -16,12 +16,11 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchWizard;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
-import org.hibernate.cfg.reveng.ConfigurableReverseNamingStrategy;
-import org.hibernate.cfg.reveng.JDBCFilter;
-import org.hibernate.cfg.reveng.ReverseNamingStrategy;
-import org.hibernate.cfg.reveng.TableIdentifier;
+import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
@@ -142,7 +141,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 		ConsoleConfiguration cc = KnownConfigurations.getInstance().find(configName);
 		
 		if (reveng) monitor.subTask("reading jdbc metadata");
-        ConfigurableReverseNamingStrategy configurableNamingStrategy = new ConfigurableReverseNamingStrategy();
+        DefaultReverseEngineeringStrategy configurableNamingStrategy = new DefaultReverseEngineeringStrategy();
         configurableNamingStrategy.setPackageName(outputPackage); 
 		final Configuration cfg = buildConfiguration(reveng, cc, configurableNamingStrategy, preferRawCompositeids);
 		monitor.worked(3);
@@ -203,11 +202,11 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 	 * @param configurableReverseNamingStrategy TODO
 	 * @return
 	 */
-	private Configuration buildConfiguration(boolean reveng, ConsoleConfiguration cc, ReverseNamingStrategy namingStrategy, boolean rawCompositeids) {
+	private Configuration buildConfiguration(boolean reveng, ConsoleConfiguration cc, ReverseEngineeringStrategy revEngStrategy, boolean rawCompositeids) {
 		if(reveng) {
 			final JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
 			cc.buildWith(cfg,false);
-			cfg.setReverseNamingStrategy(namingStrategy);
+			cfg.setReverseEngineeringStrategy(revEngStrategy);
 			cfg.setPreferRawCompositeIds(rawCompositeids);
             
 			cc.execute(new Command() { // need to execute in the consoleconfiguration to let it handle classpath stuff!

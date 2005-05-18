@@ -32,10 +32,6 @@
 		<attributes>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="lib/hibernate-tools.jar">
-		<attributes>
-		</attributes>
-	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="lib/jaas.jar">
 		<attributes>
 		</attributes>
@@ -129,6 +125,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/asm-attrs.jar">
+		<attributes>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/hibernate-tools.jar">
 		<attributes>
 		</attributes>
 	</classpathentry>
