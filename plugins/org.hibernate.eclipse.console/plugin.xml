@@ -46,12 +46,18 @@
             name="Hibernate Configuration File (cfg.xml)"
             id="org.hibernate.eclipse.console.wizards.NewConfigurationWizard"/>
       <wizard
+            class="org.hibernate.eclipse.console.wizards.NewReverseEngineeringFileWizard"
+            icon="icons/hibernate_small_icon.gif"
+            category="hibernatewizards"
+            name="Hibernate Reverse Engineering File (reveng.xml)"
+            id="org.hibernate.eclipse.console.wizards.NewReverseEngineeringFileWizard"/>
+      <wizard
             icon="icons/hibernate_small_icon.gif"
             class="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"
             finalPerspective="org.hibernate.eclipse.console.HibernateConsolePerspective"
             descriptionImage="icons/hibernate_small_icon.gif"
             category="hibernatewizards"
-            project="true"
+            project="false"
             preferredPerspectives="org.hibernate.eclipse.console.HibernateConsolePerspective"
             name="Hibernate Console Configuration"
             id="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"/>

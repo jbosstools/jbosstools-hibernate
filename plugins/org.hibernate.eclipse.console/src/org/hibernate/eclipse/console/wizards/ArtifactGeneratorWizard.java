@@ -20,6 +20,7 @@ import org.eclipse.ui.IWorkbenchWizard;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
@@ -79,7 +80,8 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
             return false;
         }
         
-        final String configurationName = page.getConfigurationName();        
+		final IPath revengsettings = page.getReverseEngineeringSettingsFile();
+        final String configurationName = page.getConfigurationName();
 		final boolean reveng = page.isReverseEngineerEnabled();
 		final boolean genjava = page.isGenerateJava();
 		final boolean genhbm = page.isGenerateMappings();
@@ -91,7 +93,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
-					doFinish(configurationName, output, outputPackage, reveng, genjava, genhbm, gencfg, monitor, preferRaw, templatedir, ejb3);
+					doFinish(configurationName, output, outputPackage, revengsettings, reveng, genjava, genhbm, gencfg, monitor, preferRaw, templatedir, ejb3);
 				} catch (CoreException e) {
 					throw new InvocationTargetException(e);
 				} finally {
@@ -116,6 +118,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 	 * file if missing or just replace its contents, and open
 	 * the editor on the newly created file.
 	 * @param outputPackage 
+	 * @param revengsettings 
 	 * @param gencfg
 	 * @param genhbm
 	 * @param genjava
@@ -125,7 +128,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 
 	private void doFinish(
 		String configName, IPath output,
-		String outputPackage, boolean reveng, final boolean genjava, final boolean genhbm, final boolean gencfg, final IProgressMonitor monitor, boolean preferRawCompositeids, IPath templateDir, final boolean ejb3)
+		String outputPackage, IPath revengsettings, boolean reveng, final boolean genjava, final boolean genhbm, final boolean gencfg, final IProgressMonitor monitor, boolean preferRawCompositeids, IPath templateDir, final boolean ejb3)
 		throws CoreException {
 		// create a sample file
 		monitor.beginTask("Generating artifacts for " + configName, 10);
@@ -133,17 +136,29 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		final IResource resource = root.findMember(output);
         final IResource templateres = root.findMember(templateDir);
+		final IResource revengres = root.findMember(revengsettings);
 		/*if (!resource.exists() || !(resource instanceof IContainer)) {
 			throwCoreException("Output directory \"" + configName + "\" does not exist.");
 		}*/
 		/*IContainer container = (IContainer) resource;*/
 
 		ConsoleConfiguration cc = KnownConfigurations.getInstance().find(configName);
+		ReverseEngineeringStrategy res = null;
+		if (reveng) {
+			monitor.subTask("reading jdbc metadata");
 		
-		if (reveng) monitor.subTask("reading jdbc metadata");
-        DefaultReverseEngineeringStrategy configurableNamingStrategy = new DefaultReverseEngineeringStrategy();
-        configurableNamingStrategy.setPackageName(outputPackage); 
-		final Configuration cfg = buildConfiguration(reveng, cc, configurableNamingStrategy, preferRawCompositeids);
+			DefaultReverseEngineeringStrategy configurableNamingStrategy = new DefaultReverseEngineeringStrategy();
+			configurableNamingStrategy.setPackageName(outputPackage);
+			
+			res = configurableNamingStrategy;
+			if(revengsettings!=null) {
+				File file = revengres.getRawLocation().toFile();
+				OverrideRepository repository = new OverrideRepository();
+				repository.addFile(file);
+				res = repository.getReverseEngineeringStrategy(res);
+			}
+		}
+		final Configuration cfg = buildConfiguration(reveng, cc, res, preferRawCompositeids);
 		monitor.worked(3);
 		
 		cc.execute(new Command() {

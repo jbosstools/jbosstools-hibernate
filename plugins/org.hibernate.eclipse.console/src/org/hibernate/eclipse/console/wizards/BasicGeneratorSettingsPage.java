@@ -54,6 +54,8 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 	private SelectionButtonDialogField generatemappings;
 
 	private StringButtonDialogField outputdir;
+	
+	private StringButtonDialogField reverseEngineeringSettings;
     
     private StringDialogField packageName;
 
@@ -120,7 +122,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 		
         templatedir = new StringButtonDialogField(new IStringButtonAdapter() {
             public void changeControlPressed(DialogField field) {
-                IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  getTemplateDirectory(), new IPath[0], "Select output directory", "Choose directory in which the generated files will be stored", new String[] {"cfg.xml"}, false, true, false);
+                IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  getTemplateDirectory(), new IPath[0], "Select output directory", "Choose directory in which the generated files will be stored", new String[0], false, true, false);
                 if(paths!=null && paths.length==1) {
                     templatedir.setText(((paths[0]).toOSString()));
                 }                   
@@ -130,10 +132,22 @@ public class BasicGeneratorSettingsPage extends WizardPage {
         templatedir.setLabelText("Template &directory:");
         templatedir.setButtonLabel("&Browse...");
         
-        packageName = new StringDialogField();
+		packageName = new StringDialogField();
         packageName.setDialogFieldListener(fieldlistener);
         packageName.setLabelText("&Package:");
-                
+        
+		reverseEngineeringSettings= new StringButtonDialogField(new IStringButtonAdapter() {
+            public void changeControlPressed(DialogField field) {
+                IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  getTemplateDirectory(), new IPath[0], "Select reverse engineering settings file", "Choose file from which settings for the reverse engineering will be read", new String[] {"reveng.xml"}, false, false, true);
+                if(paths!=null && paths.length==1) {
+                    reverseEngineeringSettings.setText(((paths[0]).toOSString()));
+                }                   
+            }
+        });
+		reverseEngineeringSettings.setDialogFieldListener(fieldlistener);
+        reverseEngineeringSettings.setLabelText("Override &xml:");
+        reverseEngineeringSettings.setButtonLabel("&Browse...");
+		
 		reverseengineer = new SelectionButtonDialogField(SWT.CHECK);
 		reverseengineer.setLabelText("Reverse engineer from JDBC Connection");
         generatejava = new SelectionButtonDialogField(SWT.CHECK);
@@ -158,7 +172,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 		generatecfgfile.setLabelText("Generate hibernate configuration (hibernate.cfg.xml)");
 		
         useOwnTemplates.attachDialogField(templatedir);
-        reverseengineer.attachDialogFields(new DialogField[] { packageName, preferRawCompositeIds });
+        reverseengineer.attachDialogFields(new DialogField[] { packageName, preferRawCompositeIds, reverseEngineeringSettings });
        
 		consoleConfigurationName.doFillIntoGrid(container, 3);
 		Control[] controls = outputdir.doFillIntoGrid(container, 3);
@@ -166,6 +180,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 		((GridData)controls[1].getLayoutData()).grabExcessHorizontalSpace=true;
 		reverseengineer.doFillIntoGrid(container, 3);
         packageName.doFillIntoGrid(container, 3);
+		reverseEngineeringSettings.doFillIntoGrid(container, 3);
         fillLabel(container);
         preferRawCompositeIds.doFillIntoGrid(container, 2);
 		generatejava.doFillIntoGrid(container, 3);
@@ -374,5 +389,10 @@ public class BasicGeneratorSettingsPage extends WizardPage {
     public boolean isEJB3Enabled() {
         return enableEJB3annotations.isSelected();
     }
+
+
+	public IPath getReverseEngineeringSettingsFile() {
+		return pathOrNull(reverseEngineeringSettings.getText());
+	}
     
 }

@@ -128,7 +128,7 @@
 		<attributes>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/hibernate-tools.jar">
+	<classpathentry sourcepath="/hibernateext.tools/src/java" kind="lib" path="lib/hibernate-tools.jar">
 		<attributes>
 		</attributes>
 	</classpathentry>

@@ -29,18 +29,17 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 
 /**
- * Creates a new hibernate.cfg.xml
+ * Creates a new reveng.xml
  */
 
-public class NewConfigurationWizard extends Wizard implements INewWizard {
-	private NewConfigurationWizardPage page;
+public class NewReverseEngineeringFileWizard extends Wizard implements INewWizard {
 	private ISelection selection;
     private WizardNewFileCreationPage cPage;
 
 	/**
 	 * Constructor for NewConfigurationWizard.
 	 */
-	public NewConfigurationWizard() {
+	public NewReverseEngineeringFileWizard() {
 		super();
         setDefaultPageImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.NEW_WIZARD));
 		setNeedsProgressMonitor(true);
@@ -69,13 +68,11 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	public void addPages() {
         cPage =
         new ExtendedWizardNewFileCreationPage( "Ccfgxml", (IStructuredSelection) selection );
-        cPage.setTitle( "Create Hibernate Configuration file (cfg.xml)" );
-        cPage.setDescription( "Create a new hibernate.cfg.xml." );
-        cPage.setFileName("hibernate.cfg.xml");
+        cPage.setTitle( "Create Hibernate Reverse Engineering file (reveng.xml)" );
+        cPage.setDescription( "Create a new hibernate.reveng.xml." );
+        cPage.setFileName("hibernate.reveng.xml");
         addPage( cPage );        
         
-        page = new NewConfigurationWizardPage(selection, cPage);
-		addPage(page);
 	}
     
     
@@ -86,18 +83,11 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 * using wizard as execution context.
 	 */
 	public boolean performFinish() {
-		final Properties props = new Properties();
-        putIfNotNull(props, Environment.SESSION_FACTORY_NAME, page.getSessionFactoryName());
-        putIfNotNull(props, Environment.DIALECT, page.getDialect());
-        putIfNotNull(props, Environment.DRIVER, page.getDriver());
-        putIfNotNull(props, Environment.URL, page.getConnectionURL());
-        putIfNotNull(props, Environment.USER, page.getUsername());
-        putIfNotNull(props, Environment.PASS, page.getPassword());
-        final IFile file = cPage.createNewFile();
+		final IFile file = cPage.createNewFile();
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
-					doFinish(file, props, monitor);
+					doFinish(file, monitor);
 				} catch (CoreException e) {
 					throw new InvocationTargetException(e);
 				} finally {
@@ -137,12 +127,12 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 */
 
 	private void doFinish(
-		final IFile file, Properties props, IProgressMonitor monitor)
+		final IFile file, IProgressMonitor monitor)
 		throws CoreException {
 		// create a sample file
 		monitor.beginTask("Creating " + file.getName(), 2);		
 		try {
-			InputStream stream = openContentStream(props);
+			InputStream stream = openContentStream();
 			if (file.exists()) {
                 file.setContents(stream, true, true, monitor);                
 			} else {
@@ -171,14 +161,14 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 * @throws UnsupportedEncodingException 
 	 */
 
-	private InputStream openContentStream(Properties props) {
+	private InputStream openContentStream() {
         StringWriter stringWriter = new StringWriter();
-        HibernateConfigurationExporter hce = new HibernateConfigurationExporter(null, null);
-		hce.setCustomProperties(props);
-		hce.setOutput(stringWriter);
-        hce.init();
-        hce.finish();
-        try {
+        stringWriter.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
+        		"<!DOCTYPE hibernate-reverse-engineering PUBLIC \"-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN\" \"http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd\" >\r\n" + 
+        		"\r\n" + 
+        		"<hibernate-reverse-engineering>\r\n" + 
+        		"</hibernate-reverse-engineering>");
+		try {
             return new ByteArrayInputStream(stringWriter.toString().getBytes("UTF-8"));
         } catch (UnsupportedEncodingException uec) {
             HibernateConsolePlugin.getDefault().logErrorMessage("Problems converting to UTF-8", uec);
