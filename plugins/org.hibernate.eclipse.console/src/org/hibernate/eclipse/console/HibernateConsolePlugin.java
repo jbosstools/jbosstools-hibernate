@@ -102,6 +102,14 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 	}
 	
 	
+	/**
+	 * Logs an internal info with the specified message.
+	 * 
+	 * @param message the error message to log
+	 */
+	public void log(String message) {
+		log(new Status(IStatus.INFO, HibernateConsolePlugin.ID, 0, message, null));
+	}
 	
 	/**
 	 * Logs an internal error with the specified message.

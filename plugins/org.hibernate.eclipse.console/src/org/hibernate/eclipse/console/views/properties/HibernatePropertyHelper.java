@@ -5,12 +5,10 @@
 package org.hibernate.eclipse.console.views.properties;
 
 
-import java.beans.PropertyDescriptor;
 import java.util.Collection;
 
 import org.eclipse.ui.views.properties.ComboBoxPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
-import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 import com.l2fprod.common.propertysheet.Property;
@@ -21,7 +19,7 @@ import com.l2fprod.common.propertysheet.Property;
  *
  * TODO: remove this class since it just contains helper stuff. 
  */
-public class HibernatePropertyPage extends PropertySheetPage {
+public class HibernatePropertyHelper {
 	
 	static String getPropertyId (Property property)
 	{

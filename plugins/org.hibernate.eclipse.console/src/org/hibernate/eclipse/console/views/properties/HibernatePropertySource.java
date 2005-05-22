@@ -46,7 +46,7 @@ public class HibernatePropertySource implements IPropertySource
 			for (Iterator iter = collection.iterator(); iter.hasNext(); i++)	
 			{
 				Object object = iter.next();
-				descriptors.add( HibernatePropertyPage.getClassDescriptor(object.hashCode() + "", object.getClass().getName() + "[" + i + "]", object.getClass()) );
+				descriptors.add( HibernatePropertyHelper.getClassDescriptor(object.hashCode() + "", object.getClass().getName() + "[" + i + "]", object.getClass()) );
 			}
 		}
 		

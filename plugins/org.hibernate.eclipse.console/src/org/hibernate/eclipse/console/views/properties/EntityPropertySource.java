@@ -36,8 +36,8 @@ public class EntityPropertySource implements IPropertySource2
 					Property objectProperties[] = PropertyUtil.extractProperties(object, currentSession);
 					for (int i = 0; i < objectProperties.length; i++)
 					{
-						String propertyId = HibernatePropertyPage.getPropertyId(objectProperties[i]);
-						IPropertyDescriptor descriptor = HibernatePropertyPage.getPropertyDescriptor(objectProperties[i]);
+						String propertyId = HibernatePropertyHelper.getPropertyId(objectProperties[i]);
+						IPropertyDescriptor descriptor = HibernatePropertyHelper.getPropertyDescriptor(objectProperties[i]);
 						descriptors.put(propertyId, descriptor);
 						properties.put(propertyId, objectProperties[i]);
 						

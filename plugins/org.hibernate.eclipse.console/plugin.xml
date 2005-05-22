@@ -87,5 +87,36 @@
                id="org.hibernate.eclipse.console.jtidyformat"/>
       </objectContribution>
    </extension>
+   <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            class="org.hibernate.eclipse.console.properties.HibernatePropertyPage"
+            id="org.hibernate.eclipse.console.properties.HibernatePropertyPage"
+            name="Hibernate Settings"
+            objectClass="org.eclipse.jdt.core.IJavaProject">
+             </page>
+   </extension>
+   
+   <extension
+        id="hibernateNature"
+        name="Hibernate Nature"
+        point="org.eclipse.core.resources.natures">
+        <runtime>
+            <run
+                class="org.hibernate.eclipse.nature.HibernateNature">
+            </run>
+        </runtime>
+        <requires-nature
+            id="org.eclipse.jdt.core.javanature">
+        </requires-nature>
+    </extension>
 
+     <extension	
+         id="hibernateBuilder"
+         name="Hibernate Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder hasNature="false">
+         <run class="org.hibernate.eclipse.builder.HibernateBuilder"/>
+      </builder>
+   </extension>
 </plugin>

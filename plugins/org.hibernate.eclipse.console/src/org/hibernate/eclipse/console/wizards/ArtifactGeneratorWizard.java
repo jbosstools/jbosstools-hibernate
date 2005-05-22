@@ -29,6 +29,7 @@ import org.hibernate.console.ConsoleConfiguration.Command;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.tool.hbm2x.ConfigurationNavigator;
+import org.hibernate.tool.hbm2x.DocExporter;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
@@ -88,12 +89,13 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 		final boolean gencfg = page.isGenerateCfg();
         final boolean preferRaw = page.isPreferRawCompositeIds();
         final boolean ejb3 = page.isEJB3Enabled();
+		final boolean gendoc = page.isGenerateDoc();
 		
         final IPath templatedir = page.getTemplateDirectory();
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
-					doFinish(configurationName, output, outputPackage, revengsettings, reveng, genjava, genhbm, gencfg, monitor, preferRaw, templatedir, ejb3);
+					doFinish(configurationName, output, outputPackage, revengsettings, reveng, genjava, genhbm, gencfg, monitor, preferRaw, templatedir, ejb3, gendoc);
 				} catch (CoreException e) {
 					throw new InvocationTargetException(e);
 				} finally {
@@ -124,11 +126,12 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 	 * @param genjava
 	 * @param reveng
 	 * @param preferRawCompositeids 
+	 * @param gendoc 
 	 */
 
 	private void doFinish(
 		String configName, IPath output,
-		String outputPackage, IPath revengsettings, boolean reveng, final boolean genjava, final boolean genhbm, final boolean gencfg, final IProgressMonitor monitor, boolean preferRawCompositeids, IPath templateDir, final boolean ejb3)
+		String outputPackage, IPath revengsettings, boolean reveng, final boolean genjava, final boolean genhbm, final boolean gencfg, final IProgressMonitor monitor, boolean preferRawCompositeids, IPath templateDir, final boolean ejb3, final boolean gendoc)
 		throws CoreException {
 		// create a sample file
 		monitor.beginTask("Generating artifacts for " + configName, 10);
@@ -198,6 +201,11 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 					monitor.worked(7);
 				}
 				
+				if(gendoc) {
+					monitor.subTask("hibernate doc");
+					new DocExporter(cfg, outputdir).generate();
+					monitor.worked(8);
+				}
                 try {
                     resource.refreshLocal(IResource.DEPTH_INFINITE, monitor);
                 } catch (CoreException e) {

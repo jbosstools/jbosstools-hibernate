@@ -53,6 +53,8 @@ public class BasicGeneratorSettingsPage extends WizardPage {
     
 	private SelectionButtonDialogField generatemappings;
 
+	private SelectionButtonDialogField generatedocs;
+	
 	private StringButtonDialogField outputdir;
 	
 	private StringButtonDialogField reverseEngineeringSettings;
@@ -168,6 +170,9 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 		generatemappings = new SelectionButtonDialogField(SWT.CHECK);
 		generatemappings.setLabelText("Generate mappings (hbm.xml)");
 		
+		generatedocs = new SelectionButtonDialogField(SWT.CHECK);
+		generatedocs.setLabelText("Generate schema html-documentation");
+		
 		generatecfgfile = new SelectionButtonDialogField(SWT.CHECK);
 		generatecfgfile.setLabelText("Generate hibernate configuration (hibernate.cfg.xml)");
 		
@@ -188,6 +193,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
         enableEJB3annotations.doFillIntoGrid(container, 2);
 		generatemappings.doFillIntoGrid(container, 3);
 		generatecfgfile.doFillIntoGrid(container, 3);
+		generatedocs.doFillIntoGrid(container, 3);
         useOwnTemplates.doFillIntoGrid(container, 3);
         controls = templatedir.doFillIntoGrid(container, 3);
         // Hack to tell the text field to stretch!
@@ -393,6 +399,11 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 
 	public IPath getReverseEngineeringSettingsFile() {
 		return pathOrNull(reverseEngineeringSettings.getText());
+	}
+
+
+	public boolean isGenerateDoc() {
+		return generatedocs.isSelected();
 	}
     
 }
