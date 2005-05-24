@@ -1,6 +1,8 @@
 package org.hibernate.eclipse.mapper.extractor;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -232,8 +234,46 @@ public class HBMInfoExtractor {
 		// we move the replacementoffset on every proposol to fit nicely
 		// into our non-java code
 		for (int i = 0; i < results.length; i++) {
-			JavaCompletionProposal proposal = (JavaCompletionProposal) results[i]; // TODO: eclipse bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=84998			
-			proposal.setReplacementOffset(proposal.getReplacementOffset() + (offset /*- start.length()*/));
+			if(results[i] instanceof JavaCompletionProposal) {
+				JavaCompletionProposal proposal = (JavaCompletionProposal) results[i]; // TODO: eclipse bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=84998			
+				int wanted = proposal.getReplacementOffset() + (offset /*- start.length()*/);
+				if(wanted==proposal.getReplacementOffset()) { 
+					System.out.println("NO TRANSPOSE!");
+				}
+				proposal.setReplacementOffset(wanted);
+			} else {
+				Class c = results[i].getClass();
+				try {
+					Method setMethod = c.getMethod("setReplacementOffset", new Class[] { int.class });
+					Method GetMethod = c.getMethod("getReplacementOffset", new Class[0]);
+					
+					Integer offsetx = (Integer) GetMethod.invoke(results[i], null);
+					int wanted = offsetx.intValue() + (offset /*- start.length()*/);
+					setMethod.invoke(results[i], new Object[] { new Integer(wanted) });
+				} catch (SecurityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchMethodException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				// M7
+//				LazyJavaCompletionProposal proposal = (LazyJavaCompletionProposal) results[i]; // TODO: eclipse bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=84998
+//				int wanted = proposal.getReplacementOffset() + (offset /*- start.length()*/);
+//				if(wanted==proposal.getReplacementOffset()) { 
+//					System.out.println("NO TRANSPOSE!");
+//				}
+//				proposal.setReplacementOffset(proposal.getReplacementOffset() + (offset /*- start.length()*/)); 
+			}
 		}
 		Arrays.sort(results, new CompletionProposalComparator());		
 	}
