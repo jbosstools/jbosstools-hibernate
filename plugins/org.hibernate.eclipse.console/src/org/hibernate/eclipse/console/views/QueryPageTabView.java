@@ -32,7 +32,7 @@ import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryPage;
-import org.hibernate.eclipse.console.views.properties.HibernatePropertyPage;
+import org.hibernate.eclipse.console.views.properties.HibernatePropertyHelper;
 import org.hibernate.eclipse.console.views.properties.HibernatePropertySourceProvider;
 
 

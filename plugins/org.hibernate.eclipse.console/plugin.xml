@@ -96,7 +96,7 @@
             objectClass="org.eclipse.jdt.core.IJavaProject">
              </page>
    </extension>
-   
+   <!-- DISABLED for 24th may release.
    <extension
         id="hibernateNature"
         name="Hibernate Nature"
@@ -118,5 +118,5 @@
       <builder hasNature="false">
          <run class="org.hibernate.eclipse.builder.HibernateBuilder"/>
       </builder>
-   </extension>
+   </extension> -->
 </plugin>
