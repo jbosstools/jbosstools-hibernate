@@ -43,7 +43,17 @@
 	    <copy todir="${tmpdir}/html/api">
 	      <fileset dir="${hibernate-core.home}/doc/api"/>
 	    </copy>
-	  	       		
+
+        <!-- copy in the eclipse docs -->
+        <copy todir="${tmpdir}/html/tools/eclipse">
+          <fileset dir="../org.hibernate.eclipse.console/doc"/>
+        </copy>
+
+        <!-- copy in the tool docs -->
+        <copy todir="${tmpdir}/html/tools/ant">
+          <fileset dir="../tools/doc"/>
+        </copy>
+        
 		<!-- zip into single zip file (must be called 'doc.zip') -->
 		<zip destfile="doc.zip" basedir="tmp"/>
 		

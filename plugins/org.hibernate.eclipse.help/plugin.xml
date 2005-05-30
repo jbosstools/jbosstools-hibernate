@@ -14,6 +14,9 @@
       <toc
             file="tocapireference.xml">
       </toc>
+      <toc
+            file="toctoolsreference.xml">
+      </toc>
    </extension>
 
 </plugin>
