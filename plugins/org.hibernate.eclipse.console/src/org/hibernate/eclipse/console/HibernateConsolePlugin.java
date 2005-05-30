@@ -23,7 +23,7 @@ import org.osgi.framework.BundleContext;
  */
 public class HibernateConsolePlugin extends AbstractUIPlugin {
 	
-	public static final String ID = HibernateConsolePlugin.class.getName();
+	public static final String ID = "org.hibernate.eclipse.console";
 	
 	//The shared instance.
 	private static HibernateConsolePlugin plugin;

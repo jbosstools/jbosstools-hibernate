@@ -2,19 +2,24 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate Console
 Bundle-SymbolicName: org.hibernate.eclipse.console; singleton:=true
-Bundle-Version: 3.0.0.N200504051000
+Bundle-Version: 3.0.0.N200505302200
 Bundle-ClassPath: org.hibernate.eclipse.console.jar
 Bundle-Activator: org.hibernate.eclipse.console.HibernateConsolePlugin
 Bundle-Vendor: Hibernate Team
 Bundle-Localization: plugin
-Export-Package: org.hibernate.eclipse.console,
+Export-Package: org.hibernate.cfg,
+ org.hibernate.cfg.reveng,
+ org.hibernate.eclipse.builder,
+ org.hibernate.eclipse.console,
  org.hibernate.eclipse.console.actions,
  org.hibernate.eclipse.console.editors,
  org.hibernate.eclipse.console.preferences,
+ org.hibernate.eclipse.console.properties,
  org.hibernate.eclipse.console.utils,
  org.hibernate.eclipse.console.views,
  org.hibernate.eclipse.console.views.properties,
- org.hibernate.eclipse.console.wizards
+ org.hibernate.eclipse.console.wizards,
+ org.hibernate.eclipse.nature
 Require-Bundle: org.hibernate.eclipse,
  org.eclipse.jdt.ui,
  org.eclipse.jdt.core,

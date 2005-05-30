@@ -6,23 +6,13 @@
 package org.hibernate.eclipse.builder;
 
 import java.io.File;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.tool.instrument.InstrumentTask;
 
 /**
  * @author juozas
@@ -77,6 +67,9 @@ public class HibernateBuilder extends IncrementalProjectBuilder {
 
 /**
 * $Log$
+* Revision 1.2  2005/05/30 20:28:46  maxcsaucdk
+* enablement of HibernateNature
+*
 * Revision 1.1  2005/05/24 20:21:36  maxcsaucdk
 * commit for jbosside integration build
 *
