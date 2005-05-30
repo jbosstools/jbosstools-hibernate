@@ -16,5 +16,6 @@ public interface HBMInfoHandler {
 	 **/
      public ICompletionProposal[] attributeCompletionProposals(IJavaProject javaProject, Node node, String attributeName, String start, int offset);
 
+     /** Provide JavaElement info for hyperlinking */
 	public IJavaElement getJavaElement(IJavaProject project, Node currentNode, Attr currentAttrNode); 
 }

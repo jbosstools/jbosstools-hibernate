@@ -55,6 +55,8 @@ public class HBMInfoExtractor {
 		
 		setupHibernateTypeDescriptors();
 		
+		setupTableNameHandlers();
+		
 		setupHibernateProperties();
 	}
 
@@ -145,6 +147,22 @@ public class HBMInfoExtractor {
 		attributeHandlers.put("return-scalar>type", hibernateTypeFinder);
 	}
 
+	private void setupTableNameHandlers() {
+		HBMInfoHandler hih = new TableNameHandler();
+		attributeHandlers.put("class>table", hih);
+		attributeHandlers.put("join>table", hih);
+		attributeHandlers.put("joined-subclass>table", hih);
+		attributeHandlers.put("union-subclass>table", hih);
+		attributeHandlers.put("map>table", hih);
+		attributeHandlers.put("set>table", hih);
+		attributeHandlers.put("bag>table", hih);
+		attributeHandlers.put("idbag>table", hih);
+		attributeHandlers.put("list>table", hih);
+		attributeHandlers.put("array>table", hih);
+		attributeHandlers.put("primitive-array>table", hih);
+		attributeHandlers.put("synchronize>table", hih);	
+	}
+	
 	private void setupFieldsPropertyHandlers() {
 		
 		HBMInfoHandler fieldsFinder = new FieldPropertyHandler(this);
