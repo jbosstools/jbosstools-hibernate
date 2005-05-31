@@ -6,7 +6,10 @@
       provider-name="Hibernate Team">
 
    <description url="http://tools.hibernate.org">
-      Hibernate Tools Eclipse Plugin provides development wizards, a query console and a mapping editor for Hibernate 3/EJB 3
+      Hibernate Tools Eclipse Plugin provides development wizards,
+a query console and a mapping editor for Hibernate 3.
+
+Also includes hibernate-tools.jar for use with standalone Ant tools.
    </description>
 
    <license url="http://osdn.dl.sourceforge.net/sourceforge/jboss/LGPL.html">
