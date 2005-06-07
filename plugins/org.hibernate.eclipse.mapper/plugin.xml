@@ -110,4 +110,20 @@
             id="org.hibernate.eclipse.mapper.editors.ReverseEngineeringMultiPageEditor"
             name="Hibernate reverse engineering editor"/>
    </extension>
+    <extension point = "org.eclipse.wst.xml.uriresolver.catalogContributor">
+     <catalogContributor catalogId="default">
+               <mappingInfo
+               key="-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+               uri="dtds/hibernate-mapping-3.0.dtd">
+         </mappingInfo>
+         <mappingInfo
+               key="-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+               uri="dtds/hibernate-configuration-3.0.dtd">
+         </mappingInfo>
+         <mappingInfo
+               key="-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN"
+               uri="dtds/hibernate-reverse-engineering-3.0.dtd">
+         </mappingInfo>
+     </catalogContributor>
+     </extension>
   </plugin>

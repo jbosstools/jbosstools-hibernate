@@ -1,0 +1,51 @@
+<!-- Hibernate Reverse Engineering DTD.
+
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
+
+An instance of this XML document may contain misc. overrides used
+when hibernate tools perform reverse engineering.
+
+-->
+
+<!--
+	The document root.
+ -->
+
+<!ELEMENT hibernate-reverse-engineering (
+	type-mapping?,
+	(table|table-filter)*)>
+
+<!ELEMENT type-mapping ( sql-type+ ) >
+
+<!ELEMENT sql-type EMPTY >
+<!ATTLIST sql-type name CDATA #IMPLIED >
+<!ATTLIST sql-type jdbc-type CDATA #IMPLIED >
+<!ATTLIST sql-type length CDATA #IMPLIED >
+<!ATTLIST sql-type precision CDATA #IMPLIED >
+<!ATTLIST sql-type scale CDATA #IMPLIED >
+<!ATTLIST sql-type hibernate-type CDATA #REQUIRED >
+
+<!ELEMENT column ( meta* ) >
+<!ATTLIST column name CDATA #REQUIRED >
+<!ATTLIST column exclude (true|false) "false" >
+<!ATTLIST column property-name CDATA #IMPLIED >
+<!ATTLIST column hibernate-type CDATA #IMPLIED >
+
+<!ELEMENT table ( column? ) >
+<!ATTLIST table catalog CDATA #IMPLIED >
+<!ATTLIST table schema CDATA #IMPLIED >
+<!ATTLIST table name CDATA #REQUIRED >
+<!ATTLIST table class-name CDATA #IMPLIED >
+<!ATTLIST table package CDATA #IMPLIED >
+
+<!ELEMENT table-filter EMPTY >
+<!ATTLIST table-filter exclude (true|false) "false" >
+<!ATTLIST table-filter match-catalog CDATA ".*" >  
+<!ATTLIST table-filter match-schema CDATA ".*" >
+<!ATTLIST table-filter match-name CDATA #REQUIRED >
+
+<!ELEMENT meta ( #PCDATA ) >
+<!ATTLIST meta attribute CDATA #REQUIRED >
+
