@@ -174,8 +174,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
                     templatePaths = new String[] { templateres.getRawLocation().toOSString() };
                 }
                 
-                final ConfigurationNavigator cv = new ConfigurationNavigator();
-				final HibernateMappingExporter hbmExporter = new HibernateMappingExporter(cfg, outputdir);
+                final HibernateMappingExporter hbmExporter = new HibernateMappingExporter(cfg, outputdir);
 				hbmExporter.setTemplatePaths(templatePaths);
 				final POJOExporter javaExporter = new POJOExporter(cfg, outputdir); // TODO: expose generics as an option
 				javaExporter.setEjb3(ejb3);
@@ -185,25 +184,25 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 				
 				if(genhbm) {
 					monitor.subTask("mapping files");
-					cv.export(cfg, hbmExporter);
+					hbmExporter.start();
 					monitor.worked(5);
 				}
 				
 				if(genjava) {
 					monitor.subTask("domain code");
-					cv.export(cfg, javaExporter);
+					javaExporter.start();
 					monitor.worked(6);
 				}
 				
 				if(gencfg) {
 					monitor.subTask("hibernate configuration");
-					cv.export(cfg, cfgExporter);
+					cfgExporter.start();
 					monitor.worked(7);
 				}
 				
 				if(gendoc) {
 					monitor.subTask("hibernate doc");
-					new DocExporter(cfg, outputdir).generate();
+					new DocExporter(cfg, outputdir).start();
 					monitor.worked(8);
 				}
                 try {

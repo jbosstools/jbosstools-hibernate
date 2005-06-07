@@ -176,8 +176,7 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
         HibernateConfigurationExporter hce = new HibernateConfigurationExporter(null, null);
 		hce.setCustomProperties(props);
 		hce.setOutput(stringWriter);
-        hce.init();
-        hce.finish();
+        hce.start();       
         try {
             return new ByteArrayInputStream(stringWriter.toString().getBytes("UTF-8"));
         } catch (UnsupportedEncodingException uec) {
