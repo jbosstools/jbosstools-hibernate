@@ -2,7 +2,7 @@
 <feature
       id="org.hibernate.eclipse.feature"
       label="org.hibernate.eclipse.feature"
-      version="3.0.0"
+      version="3.0.0.alpha3"
       provider-name="Hibernate Team">
 
    <description url="http://tools.hibernate.org">
@@ -447,12 +447,6 @@ END OF TERMS AND CONDITIONS
    </requires>
 
    <plugin
-         id="org.eclipse.draw2d"
-         download-size="0"
-         install-size="0"
-         version="3.1.0"/>
-
-   <plugin
          id="org.eclipse.gef"
          download-size="0"
          install-size="0"
@@ -558,24 +552,24 @@ END OF TERMS AND CONDITIONS
          id="org.hibernate.eclipse"
          download-size="0"
          install-size="0"
-         version="3.0.0.N200505312200"/>
+         version="3.0.0.alpha3"/>
 
    <plugin
          id="org.hibernate.eclipse.console"
          download-size="0"
          install-size="0"
-         version="3.0.0.N200505312200"/>
+         version="3.0.0.alpha3"/>
 
    <plugin
          id="org.hibernate.eclipse.help"
          download-size="0"
          install-size="0"
-         version="3.0.0.N200505312200"/>
+         version="3.0.0.alpha3"/>
 
    <plugin
          id="org.hibernate.eclipse.mapper"
          download-size="0"
          install-size="0"
-         version="3.0.0.N200505312200"/>
+         version="3.0.0.alpha3"/>
 
 </feature>

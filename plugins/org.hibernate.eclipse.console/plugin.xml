@@ -33,6 +33,7 @@
             category="hibernatecategory"
             name="Query result"
             id="org.hibernate.eclipse.console.views.QueryPageTabView"/>
+            
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">

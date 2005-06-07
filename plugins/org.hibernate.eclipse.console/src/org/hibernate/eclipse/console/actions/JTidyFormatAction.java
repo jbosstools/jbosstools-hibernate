@@ -15,7 +15,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.internal.ObjectPluginAction;
+import org.eclipse.ui.internal.PluginAction;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.tool.hbm2x.XMLPrettyPrinter;
 
@@ -44,7 +44,7 @@ public class JTidyFormatAction implements IObjectActionDelegate {
 	 * @see IActionDelegate#run(IAction)
 	 */
 	public void run(IAction action) {
-		IStructuredSelection selection = (IStructuredSelection) ((ObjectPluginAction)action).getSelection();
+		IStructuredSelection selection = (IStructuredSelection) ((PluginAction)action).getSelection();
         
         if(selection!=null && MessageDialog.openQuestion(targetPart.getSite().getShell(), "Format with JTidy", "Do you want to format " + selection.size() + " xml files with JTidy ?")) {
             Iterator iterator = selection.iterator();
