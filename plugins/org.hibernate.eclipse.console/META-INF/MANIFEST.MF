@@ -7,8 +7,7 @@ Bundle-ClassPath: org.hibernate.eclipse.console.jar
 Bundle-Activator: org.hibernate.eclipse.console.HibernateConsolePlugin
 Bundle-Vendor: Hibernate Team
 Bundle-Localization: plugin
-Export-Package: org.hibernate.cfg,
- org.hibernate.cfg.reveng,
+Export-Package: 
  org.hibernate.eclipse.builder,
  org.hibernate.eclipse.console,
  org.hibernate.eclipse.console.actions,
