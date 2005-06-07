@@ -19,6 +19,7 @@ when hibernate tools perform reverse engineering.
 
 <!ELEMENT type-mapping ( sql-type+ ) >
 
+<!-- Defines a sql-type mapping. Will match on any combination of jdbc-type, length, precision and/or scale - first match will win. -->
 <!ELEMENT sql-type EMPTY >
 <!ATTLIST sql-type name CDATA #IMPLIED >
 <!ATTLIST sql-type jdbc-type CDATA #IMPLIED >
@@ -27,25 +28,31 @@ when hibernate tools perform reverse engineering.
 <!ATTLIST sql-type scale CDATA #IMPLIED >
 <!ATTLIST sql-type hibernate-type CDATA #REQUIRED >
 
+<!-- nyi
 <!ELEMENT column ( meta* ) >
 <!ATTLIST column name CDATA #REQUIRED >
 <!ATTLIST column exclude (true|false) "false" >
 <!ATTLIST column property-name CDATA #IMPLIED >
 <!ATTLIST column hibernate-type CDATA #IMPLIED >
+-->
 
-<!ELEMENT table ( column? ) >
+<!-- nyi
+<!ELEMENT table EMPTY >
 <!ATTLIST table catalog CDATA #IMPLIED >
 <!ATTLIST table schema CDATA #IMPLIED >
 <!ATTLIST table name CDATA #REQUIRED >
 <!ATTLIST table class-name CDATA #IMPLIED >
 <!ATTLIST table package CDATA #IMPLIED >
+-->
 
+<!-- a table-filter allows to explicitly exclude or include tables or complete catalog/schemas into the reverse engineering -->
 <!ELEMENT table-filter EMPTY >
 <!ATTLIST table-filter exclude (true|false) "false" >
 <!ATTLIST table-filter match-catalog CDATA ".*" >  
 <!ATTLIST table-filter match-schema CDATA ".*" >
 <!ATTLIST table-filter match-name CDATA #REQUIRED >
 
+<!-- nyi
 <!ELEMENT meta ( #PCDATA ) >
 <!ATTLIST meta attribute CDATA #REQUIRED >
-
+-->
