@@ -171,7 +171,9 @@ public class HBMInfoExtractor {
 		attributeHandlers.put("id>name", fieldsFinder);
 		attributeHandlers.put("composite-id>name", fieldsFinder);
 		attributeHandlers.put("set>name", fieldsFinder);
+		attributeHandlers.put("key-property>name", fieldsFinder);
 		attributeHandlers.put("property>name", fieldsFinder);
+		attributeHandlers.put("key-many-to-one>name", fieldsFinder);
 		attributeHandlers.put("many-to-one>name", fieldsFinder);
 		attributeHandlers.put("one-to-one>name", fieldsFinder);
 		attributeHandlers.put("component>name", fieldsFinder);
