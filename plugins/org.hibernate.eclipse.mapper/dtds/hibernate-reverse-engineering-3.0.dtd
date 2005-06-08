@@ -15,7 +15,7 @@ when hibernate tools perform reverse engineering.
 
 <!ELEMENT hibernate-reverse-engineering (
 	type-mapping?,
-	(table|table-filter)*)>
+	(table-filter)*)>
 
 <!ELEMENT type-mapping ( sql-type+ ) >
 
