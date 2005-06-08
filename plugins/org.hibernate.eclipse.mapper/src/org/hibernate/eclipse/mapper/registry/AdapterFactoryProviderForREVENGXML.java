@@ -16,7 +16,6 @@ public class AdapterFactoryProviderForREVENGXML extends AdapterFactoryProviderFo
 
 
 	protected void addContentBasedFactories(IStructuredModel structuredModel) {
-		// TODO Auto-generated method stub
 		super.addContentBasedFactories(structuredModel);
 	}
 }

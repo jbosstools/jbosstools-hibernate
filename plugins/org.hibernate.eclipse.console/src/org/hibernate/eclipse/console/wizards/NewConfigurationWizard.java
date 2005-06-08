@@ -173,7 +173,7 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 
 	private InputStream openContentStream(Properties props) {
         StringWriter stringWriter = new StringWriter();
-        HibernateConfigurationExporter hce = new HibernateConfigurationExporter(null, null);
+        HibernateConfigurationExporter hce = new HibernateConfigurationExporter();
 		hce.setCustomProperties(props);
 		hce.setOutput(stringWriter);
         hce.start();       

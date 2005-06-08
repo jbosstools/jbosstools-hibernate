@@ -166,6 +166,8 @@ public class HBMInfoExtractor {
 	private void setupFieldsPropertyHandlers() {
 		
 		HBMInfoHandler fieldsFinder = new FieldPropertyHandler(this);
+		attributeHandlers.put("version>name", fieldsFinder);
+		attributeHandlers.put("timestamp>name", fieldsFinder);
 		attributeHandlers.put("property>name", fieldsFinder);
 		attributeHandlers.put("key-property>name", fieldsFinder);
 		attributeHandlers.put("id>name", fieldsFinder);
