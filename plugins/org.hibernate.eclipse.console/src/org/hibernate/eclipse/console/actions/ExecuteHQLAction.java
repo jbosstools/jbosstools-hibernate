@@ -35,7 +35,7 @@ public class ExecuteHQLAction extends Action implements IMenuCreator {
 		
 		this.view = view;
 		setMenuCreator(this);
-		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.EXECUTE));
+		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.EXECUTE) );
 		initTextAndToolTip();
 	}
 
@@ -70,7 +70,7 @@ public class ExecuteHQLAction extends Action implements IMenuCreator {
 		}
 		
 		ConsoleConfiguration[] configs = KnownConfigurations.getInstance().getConfigurations();
-		//Arrays.sort(bookmarks, new DisplayableComparator());
+		//Arrays.sort(bookmarks, new DisplayableComparator() );
 		for (int i = 0, length = configs == null ? 0 : configs.length; i < length; i++) {
 			final ConsoleConfiguration bookmark = configs[i];
 			createSubAction(menu, bookmark);
@@ -83,26 +83,26 @@ public class ExecuteHQLAction extends Action implements IMenuCreator {
 				ExecuteHQLAction.this.execute(lastUsed);
 			}
 		};
-		//action.setImageDescriptor(ImageStore.getImageDescriptor(ImageStore.BOOKMARK));
+		//action.setImageDescriptor(ImageStore.getImageDescriptor(ImageStore.BOOKMARK) );
 		
-		action.setText(lastUsed.getName());
+		action.setText(lastUsed.getName() );
 		ActionContributionItem item = new ActionContributionItem(action);
 		item.fill(menu, -1);
 	}
 
 	public void run() {
-		execute(getLastUsedConfiguration());
+		execute(getLastUsedConfiguration() );
 	}
 	protected void execute(ConsoleConfiguration lastUsed) {
 		try {	
-			if(lastUsed!=null && lastUsed.isSessionFactoryCreated()) {
-				lastUsed.executeHQLQuery(view.getQuery());
+			if(lastUsed!=null && lastUsed.isSessionFactoryCreated() ) {
+				lastUsed.executeHQLQuery(view.getQuery() );
 			}
 		}
 		finally {
 			if(lastUsed!=null) {
 			HibernateConsolePlugin.getDefault().getPreferenceStore().setValue(
-					LAST_USED_CONFIGURATION_PREFERENCE, lastUsed.getName());
+					LAST_USED_CONFIGURATION_PREFERENCE, lastUsed.getName() );
 			} else {
                 HibernateConsolePlugin.getDefault().getPreferenceStore().setValue(
                         LAST_USED_CONFIGURATION_PREFERENCE, "");         
@@ -118,8 +118,8 @@ public class ExecuteHQLAction extends Action implements IMenuCreator {
 			setText("");
 			setToolTipText("");
 		} else {
-			setText(lastUsed.getName());
-			setToolTipText(lastUsed.getName());
+			setText(lastUsed.getName() );
+			setToolTipText(lastUsed.getName() );
 		}
 		
 	}

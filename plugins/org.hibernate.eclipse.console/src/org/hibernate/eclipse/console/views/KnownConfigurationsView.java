@@ -55,11 +55,11 @@ public class KnownConfigurationsView extends ViewPart {
 	public void createPartControl(Composite parent) {
 		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		
-		viewer.setContentProvider(new ConfigurationsContentProvider());
+		viewer.setContentProvider(new ConfigurationsContentProvider() );
 		
-		viewer.setLabelProvider(new ConfigurationsLabelProvider());
+		viewer.setLabelProvider(new ConfigurationsLabelProvider() );
 		
-		viewer.setInput(KnownConfigurations.getInstance().getRootNode());
+		viewer.setInput(KnownConfigurations.getInstance().getRootNode() );
 		
 		KnownConfigurations.getInstance().addConsoleConfigurationListener(new IConsoleConfigurationListener() {
 			public void configurationAdded(ConsoleConfiguration root) {
@@ -107,7 +107,7 @@ public class KnownConfigurationsView extends ViewPart {
 			}
 		});
 
-		Menu menu = menuMgr.createContextMenu(viewer.getControl());
+		Menu menu = menuMgr.createContextMenu(viewer.getControl() );
 		
 		viewer.getControl().setMenu(menu);
 		getSite().registerContextMenu(menuMgr, viewer);
@@ -119,9 +119,9 @@ public class KnownConfigurationsView extends ViewPart {
     }
     
 	protected void fillContextMenu(IMenuManager menuMgr) {
-		actionGroup.setContext(new ActionContext(viewer.getSelection()));
+		actionGroup.setContext(new ActionContext(viewer.getSelection() ) );
 		actionGroup.fillContextMenu(menuMgr);
-		menuMgr.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));		
+		menuMgr.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS) );		
 	}
 
 	/**
@@ -135,12 +135,12 @@ public class KnownConfigurationsView extends ViewPart {
 			public void run() {
 				// TODO: make action dependent on having a connected console configuration!
 				ISelection selection = viewer.getSelection();
-				BaseNode node = (BaseNode) ((IStructuredSelection)selection).getFirstElement();
+				BaseNode node = (BaseNode) ( (IStructuredSelection)selection).getFirstElement();
 				ConsoleConfiguration consoleConfiguration = node.getConsoleConfiguration();
 				if(node instanceof ConfigurationNode) {
 					new EditConsoleConfiguration().run();
-				} else if(consoleConfiguration.isSessionFactoryCreated()) {
-						consoleConfiguration.executeHQLQuery(node.getHQL());
+				} else if(consoleConfiguration.isSessionFactoryCreated() ) {
+						consoleConfiguration.executeHQLQuery(node.getHQL() );
 				}
 			}
 		};

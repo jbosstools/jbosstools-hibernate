@@ -47,7 +47,7 @@ public class SQLTypeMappingFormPage extends FormPage {
 		
 		
 		TableViewer tableViewer = new TableViewer(table);
-		tableViewer.setContentProvider(new SQLTypeContentProvider());
+		tableViewer.setContentProvider(new SQLTypeContentProvider() );
 		
 		
 		/*tableViewer.setLabelProvider(new ITableLabelProvider() {

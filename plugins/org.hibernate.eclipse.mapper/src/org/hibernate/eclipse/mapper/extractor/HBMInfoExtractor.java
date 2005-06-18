@@ -73,10 +73,10 @@ public class HBMInfoExtractor {
 			Field[] fields = cl.getFields();
 			for (int i = 0; i < fields.length; i++) {
 				Field field = fields[i];
-				if(Modifier.isStatic(field.getModifiers()) && 
+				if(Modifier.isStatic(field.getModifiers() ) && 
 						field.getType().equals(String.class) ) {
 					String str = (String) field.get(cl);
-					if(str.startsWith("hibernate.")) {
+					if(str.startsWith("hibernate.") ) {
 						names.add(str);
 					}
 				}
@@ -217,7 +217,7 @@ public class HBMInfoExtractor {
 		boolean foundFirst = false;
 		for (int i = 0; i < hibernateTypes.size(); i++) {
 			HibernateTypeDescriptor element = (HibernateTypeDescriptor) hibernateTypes.get(i);
-			if(element.getName().startsWith(item)) {
+			if(element.getName().startsWith(item) ) {
 				foundFirst = true;
 				l.add(element);
 			} else if (foundFirst) {
@@ -232,12 +232,12 @@ public class HBMInfoExtractor {
 		boolean foundFirst = false;
 		for (int i = 0; i < hibernatePropertyNames.length; i++) {
 			String element = hibernatePropertyNames[i];
-			if(element.startsWith(prefix)) {
+			if(element.startsWith(prefix) ) {
 				foundFirst = true;
 				l.add(element);
-			} else if (element.startsWith("hibernate." + prefix)) {
+			} else if (element.startsWith("hibernate." + prefix) ) {
 				foundFirst = true;
-				l.add(element.substring("hibernate.".length()));
+				l.add(element.substring("hibernate.".length() ) );
 			} else if (foundFirst) {
 				return l; // fail fast since if we dont get a match no future match can be found.
 			}
@@ -259,7 +259,7 @@ public class HBMInfoExtractor {
 			if(results[i] instanceof JavaCompletionProposal) {
 				JavaCompletionProposal proposal = (JavaCompletionProposal) results[i]; // TODO: eclipse bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=84998			
 				int wanted = proposal.getReplacementOffset() + (offset /*- start.length()*/);
-				if(wanted==proposal.getReplacementOffset()) { 
+				if(wanted==proposal.getReplacementOffset() ) { 
 					System.out.println("NO TRANSPOSE!");
 				}
 				proposal.setReplacementOffset(wanted);
@@ -291,13 +291,13 @@ public class HBMInfoExtractor {
 				// M7
 //				LazyJavaCompletionProposal proposal = (LazyJavaCompletionProposal) results[i]; // TODO: eclipse bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=84998
 //				int wanted = proposal.getReplacementOffset() + (offset /*- start.length()*/);
-//				if(wanted==proposal.getReplacementOffset()) { 
+//				if(wanted==proposal.getReplacementOffset() ) { 
 //					System.out.println("NO TRANSPOSE!");
 //				}
-//				proposal.setReplacementOffset(proposal.getReplacementOffset() + (offset /*- start.length()*/)); 
+//				proposal.setReplacementOffset(proposal.getReplacementOffset() + (offset /*- start.length()*/) ); 
 			}
 		}
-		Arrays.sort(results, new CompletionProposalComparator());		
+		Arrays.sort(results, new CompletionProposalComparator() );		
 	}
 
 
@@ -310,14 +310,14 @@ public class HBMInfoExtractor {
 	 */
 	String getPackageName(Node root) {
 		if(root!=null) {
-			while(!"hibernate-mapping".equals(root.getNodeName())) {
+			while(!"hibernate-mapping".equals(root.getNodeName() ) ) {
 				root = root.getParentNode();
 				if(root==null) return null;
 			}
 			NamedNodeMap attributes = root.getAttributes();
 			for(int count = 0; count<attributes.getLength(); count++) {
 				Node att = attributes.item(count);
-				if("package".equals(att.getNodeName())) {
+				if("package".equals(att.getNodeName() ) ) {
 					return att.getNodeValue();
 				}	
 			}			
@@ -330,21 +330,21 @@ public class HBMInfoExtractor {
 			return true;
 		// (pa) 221190 matching independent of case to be consistant with Java
 		// editor CA
-		return aString.toLowerCase().startsWith(prefix.toLowerCase());
+		return aString.toLowerCase().startsWith(prefix.toLowerCase() );
 	}
 
 	void generateTypeProposals(String matchString, int offset, List proposals, Set alreadyFound, IType[] classes) throws JavaModelException {
 		for (int j = 0; j < classes.length; j++) {
 			IType type = classes[j];
-			if (!Flags.isAbstract(type.getFlags())) {
+			if (!Flags.isAbstract(type.getFlags() ) ) {
 				String fullName = type.getFullyQualifiedName();
 				String shortName = type.getElementName();
-				if(alreadyFound.contains(fullName)) {
+				if(alreadyFound.contains(fullName) ) {
 					continue;							
 				} else {
 					alreadyFound.add(fullName);
 				}
-				if (beginsWith(fullName,matchString) || beginsWith(shortName,matchString)) {
+				if (beginsWith(fullName,matchString) || beginsWith(shortName,matchString) ) {
 					CustomCompletionProposal proposal = new CustomCompletionProposal(fullName, //$NON-NLS-2$//$NON-NLS-1$
 							offset, matchString.length(), fullName.length() + 1, null/*XMLEditorPluginImageHelper.getInstance().getImage(XMLEditorPluginImages.IMG_OBJ_ATTRIBUTE)*/,
 							fullName, null, null, XMLRelevanceConstants.R_XML_ATTRIBUTE_VALUE);
@@ -357,7 +357,7 @@ public class HBMInfoExtractor {
 
 	
 	private void addHibernateType(String name, String returnClass, String primitiveClass) {
-		hibernateTypes.add(new HibernateTypeDescriptor(name, returnClass, primitiveClass));
+		hibernateTypes.add(new HibernateTypeDescriptor(name, returnClass, primitiveClass) );
 	}
 
 	/**
@@ -375,16 +375,16 @@ public class HBMInfoExtractor {
 	 */
 	public String getNearestType(Node node) {
 		if(node==null) return null;
-		while(!javaTypeProvider.containsKey(node.getNodeName())) {
+		while(!javaTypeProvider.containsKey(node.getNodeName() ) ) {
 			node = node.getParentNode();			
 			if(node==null) return null;
 		}
-		String attributeName = (String) javaTypeProvider.get(node.getNodeName());
+		String attributeName = (String) javaTypeProvider.get(node.getNodeName() );
 		NamedNodeMap attributes = node.getAttributes();
 		
 		for(int count = 0; count<attributes.getLength(); count++) {
 			Node att = attributes.item(count);
-			if(attributeName.equals(att.getNodeName())) {
+			if(attributeName.equals(att.getNodeName() ) ) {
 				String typename = att.getNodeValue();
 				if(typename!=null && typename.indexOf('.')<0) {
 					typename = getPackageName(node) + "." + typename;					

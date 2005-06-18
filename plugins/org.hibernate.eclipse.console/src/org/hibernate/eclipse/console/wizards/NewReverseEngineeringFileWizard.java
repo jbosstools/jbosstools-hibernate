@@ -40,7 +40,7 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
 	 */
 	public NewReverseEngineeringFileWizard() {
 		super();
-        setDefaultPageImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.NEW_WIZARD));
+        setDefaultPageImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.NEW_WIZARD) );
 		setNeedsProgressMonitor(true);
 	}
 
@@ -132,7 +132,7 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
 		monitor.beginTask("Creating " + file.getName(), 2);		
 		try {
 			InputStream stream = openContentStream();
-			if (file.exists()) {
+			if (file.exists() ) {
                 file.setContents(stream, true, true, monitor);                
 			} else {
 				file.create(stream, true, monitor);
@@ -168,10 +168,10 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
         		"<hibernate-reverse-engineering>\r\n" + 
         		"</hibernate-reverse-engineering>");
 		try {
-            return new ByteArrayInputStream(stringWriter.toString().getBytes("UTF-8"));
+            return new ByteArrayInputStream(stringWriter.toString().getBytes("UTF-8") );
         } catch (UnsupportedEncodingException uec) {
             HibernateConsolePlugin.getDefault().logErrorMessage("Problems converting to UTF-8", uec);
-            return new ByteArrayInputStream(stringWriter.toString().getBytes());
+            return new ByteArrayInputStream(stringWriter.toString().getBytes() );
         }
 	}
 

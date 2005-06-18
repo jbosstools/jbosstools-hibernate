@@ -48,10 +48,10 @@ public class QueryPageViewer {
 		public String getColumnText(Object element, int columnIndex) {
 			Object value = element; //TODO: should just be a columnprovider per querypage....
 			if (element instanceof QueryPage) {
-				value = ((QueryPage) element).getList().get(columnIndex);
+				value = ( (QueryPage) element).getList().get(columnIndex);
 			}
 			
-			if (value.getClass().isArray()) {
+			if (value.getClass().isArray() ) {
 				Object[] arr = (Object[]) value;
 				if (columnIndex > arr.length - 1) {
 					return "<Unknown value>";
@@ -76,9 +76,9 @@ public class QueryPageViewer {
 	class ContentProviderImpl implements IStructuredContentProvider {
 		public Object[] getElements(Object inputElement) {
 			if (inputElement instanceof QueryPage) {
-				QueryPage qp = ((QueryPage) inputElement);
+				QueryPage qp = ( (QueryPage) inputElement);
 				Object[] objects = qp.getList().toArray();
-				if(qp.getExceptions().isEmpty()) {
+				if(qp.getExceptions().isEmpty() ) {
 					return objects;
 				} else {
 					Throwable[] throwables = (Throwable[])qp.getExceptions().toArray(new Throwable[0]);
@@ -130,24 +130,24 @@ public class QueryPageViewer {
 		layout.marginWidth = 5;
 		layout.marginHeight = 5;
 		composite.setLayout(layout);
-		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		composite.setLayoutData(new GridData(GridData.FILL_BOTH) );
 
-		this.tabItem.setText(this.queryPage.getQueryString().replace('\n', ' ').replace('\r', ' '));
+		this.tabItem.setText(this.queryPage.getQueryString().replace('\n', ' ').replace('\r', ' ') );
 		/* different icon dependent on java/hql etc.
 		if (this.queryPage.getEntity() == null) {
-			this.tabItem.setImage(ImageStore.getImage(ImageStore.SCRIPT));
-			this.tabItem.setText(this.queryPage.getBookmark().getName());
-			this.tabItem.setToolTipText(this.queryPage.getQuery());
-		} else if (this.queryPage.isMetaData()) {
-			this.tabItem.setImage(ImageStore.getImage(ImageStore.TABLE_DETAILS));
+			this.tabItem.setImage(ImageStore.getImage(ImageStore.SCRIPT) );
+			this.tabItem.setText(this.queryPage.getBookmark().getName() );
+			this.tabItem.setToolTipText(this.queryPage.getQuery() );
+		} else if (this.queryPage.isMetaData() ) {
+			this.tabItem.setImage(ImageStore.getImage(ImageStore.TABLE_DETAILS) );
 			this.tabItem.setText(this.queryPage.getBookmark().getName() + ":" + 
-					this.queryPage.getEntity().getQualifiedName());
-			tabItem.setToolTipText(this.queryPage.getEntity().getQualifiedName());
+					this.queryPage.getEntity().getQualifiedName() );
+			tabItem.setToolTipText(this.queryPage.getEntity().getQualifiedName() );
 		} else {
-			this.tabItem.setImage(ImageStore.getImage(ImageStore.TABLE));
+			this.tabItem.setImage(ImageStore.getImage(ImageStore.TABLE) );
 			this.tabItem.setText(this.queryPage.getBookmark().getName() + ":" + 
-					this.queryPage.getEntity().getQualifiedName());
-			this.tabItem.setToolTipText(this.queryPage.getEntity().getQualifiedName());
+					this.queryPage.getEntity().getQualifiedName() );
+			this.tabItem.setToolTipText(this.queryPage.getEntity().getQualifiedName() );
 		}*/
 		
 		createTable(composite);
@@ -164,13 +164,13 @@ public class QueryPageViewer {
 	 */
 	private void createTable(Composite composite) {
 		final Table table = new Table(composite,  SWT.FULL_SELECTION | SWT.MULTI | SWT.BORDER);
-    	table.setLayout(new GridLayout());
-    	table.setLayoutData(new GridData(GridData.FILL_BOTH));
+    	table.setLayout(new GridLayout() );
+    	table.setLayoutData(new GridData(GridData.FILL_BOTH) );
 
 		addColumnsToTable(table);
 		this.tableViewer = new TableViewer(table);
-		this.tableViewer.setLabelProvider(new LabelProviderImpl());
-		this.tableViewer.setContentProvider(new ContentProviderImpl());
+		this.tableViewer.setLabelProvider(new LabelProviderImpl() );
+		this.tableViewer.setContentProvider(new ContentProviderImpl() );
 		this.tableViewer.setInput(this.queryPage);
 
 		this.tableViewer.addDoubleClickListener(new IDoubleClickListener () {
@@ -216,15 +216,15 @@ public class QueryPageViewer {
 		int columnCount = columns.size();
 		for (int i = 0; i < columnCount; i++) {
 			TableColumn column = new TableColumn(table, SWT.NONE);
-			column.setText(columns.get(i).toString());
+			column.setText(columns.get(i).toString() );
 		}
 		return columnCount;
 	}
 
 	public void propertyChange(PropertyChangeEvent event) {
-		if ("rows".equals(event.getPropertyName())) {
+		if ("rows".equals(event.getPropertyName() ) ) {
 			this.tableViewer.refresh();
-		} else if ("columns".equals(event.getPropertyName())) {
+		} else if ("columns".equals(event.getPropertyName() ) ) {
 			Table table = this.tableViewer.getTable();
 			TableColumn[] columns = table.getColumns();
 			for (int i = 0, length = columns == null ? 0 : columns.length; i < length; i++) {
@@ -255,7 +255,7 @@ public class QueryPageViewer {
                 //QueryPageViewer.this.tableView.actionGroup.fillContextMenu(menuManager);
             }
         });
-        Menu contextMenu = manager.createContextMenu(this.tableViewer.getControl());
+        Menu contextMenu = manager.createContextMenu(this.tableViewer.getControl() );
         this.tableViewer.getControl().setMenu(contextMenu);
         // register the menu to the site so that we can allow 
         // actions to be plugged in

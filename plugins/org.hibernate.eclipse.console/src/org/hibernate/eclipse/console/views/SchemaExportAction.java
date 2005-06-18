@@ -41,7 +41,7 @@ public class SchemaExportAction extends ConsoleConfigurationBasedAction {
     public void doRun() {
         for (Iterator i = getSelectedNonResources().iterator(); i.hasNext();) {
             try {
-                BaseNode node = ((BaseNode) i.next());
+                BaseNode node = ( (BaseNode) i.next() );
                 final ConsoleConfiguration config = node
                         .getConsoleConfiguration();
                 config
@@ -53,15 +53,15 @@ public class SchemaExportAction extends ConsoleConfigurationBasedAction {
                                                 "Run SchemaExport",
                                                 "Are you sure you want to run SchemaExport on '"
                                                         + config.getName()
-                                                        + "'?")) {
+                                                        + "'?") ) {
                                     SchemaExport export = new SchemaExport(
-                                            config.getConfiguration());
+                                            config.getConfiguration() );
                                     export.create(false, true);
-                                    if (!export.getExceptions().isEmpty()) {
+                                    if (!export.getExceptions().isEmpty() ) {
                                         Iterator iterator = export
                                                 .getExceptions().iterator();
                                         int cnt = 1;
-                                        while (iterator.hasNext()) {
+                                        while (iterator.hasNext() ) {
                                             Throwable element = (Throwable) iterator
                                                     .next();
                                             HibernateConsolePlugin

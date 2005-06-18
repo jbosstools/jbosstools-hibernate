@@ -48,7 +48,7 @@ public class NonRuleBasedDamagerRepairer
 	protected int endOfLineOf(int offset) throws BadLocationException {
 
 		IRegion info = fDocument.getLineInformationOfOffset(offset);
-		if (offset <= info.getOffset() + info.getLength())
+		if (offset <= info.getOffset() + info.getLength() )
 			return info.getOffset() + info.getLength();
 
 		int line = fDocument.getLineOfOffset(offset);
@@ -71,17 +71,17 @@ public class NonRuleBasedDamagerRepairer
 			try {
 
 				IRegion info =
-					fDocument.getLineInformationOfOffset(event.getOffset());
-				int start = Math.max(partition.getOffset(), info.getOffset());
+					fDocument.getLineInformationOfOffset(event.getOffset() );
+				int start = Math.max(partition.getOffset(), info.getOffset() );
 
 				int end =
 					event.getOffset()
 						+ (event.getText() == null
 							? event.getLength()
-							: event.getText().length());
+							: event.getText().length() );
 
 				if (info.getOffset() <= end
-					&& end <= info.getOffset() + info.getLength()) {
+					&& end <= info.getOffset() + info.getLength() ) {
 					// optimize the case of the same line
 					end = info.getOffset() + info.getLength();
 				} else
@@ -133,6 +133,6 @@ public class NonRuleBasedDamagerRepairer
 					length,
 					attr.getForeground(),
 					attr.getBackground(),
-					attr.getStyle()));
+					attr.getStyle() ) );
 	}
 }

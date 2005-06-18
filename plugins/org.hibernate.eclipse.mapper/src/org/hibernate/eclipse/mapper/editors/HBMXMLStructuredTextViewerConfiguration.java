@@ -26,7 +26,7 @@ public class HBMXMLStructuredTextViewerConfiguration extends StructuredTextViewe
 		IContentAssistant ca = super.getContentAssistant(sourceViewer);
 		if (ca != null && ca instanceof ContentAssistant) {
 			ContentAssistant contentAssistant = (ContentAssistant) ca;
-			IContentAssistProcessor xmlContentAssistProcessor = new HBMXMLContentAssistProcessor(findJavaProject());
+			IContentAssistProcessor xmlContentAssistProcessor = new HBMXMLContentAssistProcessor(findJavaProject() );
 			IContentAssistProcessor noRegionProcessor = new NoRegionContentAssistProcessor();
 			setContentAssistProcessor(contentAssistant, xmlContentAssistProcessor, IStructuredPartitionTypes.DEFAULT_PARTITION);
 			setContentAssistProcessor(contentAssistant, xmlContentAssistProcessor, IXMLPartitions.XML_DEFAULT);
@@ -62,16 +62,16 @@ public class HBMXMLStructuredTextViewerConfiguration extends StructuredTextViewe
 	}
 	
 	public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
-		if (sourceViewer == null || !fPreferenceStore.getBoolean(AbstractDecoratedTextEditorPreferenceConstants.EDITOR_HYPERLINKS_ENABLED))
+		if (sourceViewer == null || !fPreferenceStore.getBoolean(AbstractDecoratedTextEditorPreferenceConstants.EDITOR_HYPERLINKS_ENABLED) )
 			return null;
 		
 		List allDetectors = new ArrayList(0);
-		allDetectors.add(new HBMXMLHyperlinkDetector(findJavaProject()));
+		allDetectors.add(new HBMXMLHyperlinkDetector(findJavaProject() ) );
 		
 		IHyperlinkDetector[] superDetectors =  super.getHyperlinkDetectors(sourceViewer);
 		for (int m = 0; m < superDetectors.length; m++) {
 			IHyperlinkDetector detector = superDetectors[m];
-			if (!allDetectors.contains(detector)) {
+			if (!allDetectors.contains(detector) ) {
 				allDetectors.add(detector);
 			}
 		}

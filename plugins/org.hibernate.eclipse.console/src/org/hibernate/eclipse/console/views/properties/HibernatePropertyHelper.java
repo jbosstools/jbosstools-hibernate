@@ -28,19 +28,19 @@ public class HibernatePropertyHelper {
 	
 	static IPropertyDescriptor getPropertyDescriptor (Property property)
 	{
-		return  getClassDescriptor (getPropertyId(property), property.getName(), property.getType());
+		return  getClassDescriptor (getPropertyId(property), property.getName(), property.getType() );
 	}
 	
 	static IPropertyDescriptor getClassDescriptor (String propertyId, String propertyName, Class clazz)
 	{
 		try {
 			
-			if (clazz.equals(Boolean.class))
+			if (clazz.equals(Boolean.class) )
 			{
 				return new ComboBoxPropertyDescriptor(propertyId, propertyName, new String[] { "true", "false" });
 			}
 			
-			if(clazz.isAssignableFrom(Collection.class)) {
+			if(clazz.isAssignableFrom(Collection.class) ) {
 				return new org.eclipse.ui.views.properties.PropertyDescriptor(propertyId, propertyName);
 			}
 			return new TextPropertyDescriptor(propertyId, propertyName);

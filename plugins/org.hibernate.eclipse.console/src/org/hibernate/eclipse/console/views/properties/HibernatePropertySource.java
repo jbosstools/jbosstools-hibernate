@@ -25,7 +25,7 @@ public class HibernatePropertySource implements IPropertySource
 	}
 
 	public Object getEditableValue() {			
-		if (property.getType().equals(Set.class) || property.getType().equals(List.class))
+		if (property.getType().equals(Set.class) || property.getType().equals(List.class) )
 		{
 			return "";
 		}
@@ -38,7 +38,7 @@ public class HibernatePropertySource implements IPropertySource
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		ArrayList descriptors = new ArrayList();
 		
-		if (property.getType().equals(Set.class) || property.getType().equals(List.class))
+		if (property.getType().equals(Set.class) || property.getType().equals(List.class) )
 		{
 			Collection collection = (Collection) property.getValue();
 			int i = 0;
@@ -46,7 +46,7 @@ public class HibernatePropertySource implements IPropertySource
 			for (Iterator iter = collection.iterator(); iter.hasNext(); i++)	
 			{
 				Object object = iter.next();
-				descriptors.add( HibernatePropertyHelper.getClassDescriptor(object.hashCode() + "", object.getClass().getName() + "[" + i + "]", object.getClass()) );
+				descriptors.add( HibernatePropertyHelper.getClassDescriptor(object.hashCode() + "", object.getClass().getName() + "[" + i + "]", object.getClass() ) );
 			}
 		}
 		
@@ -54,14 +54,14 @@ public class HibernatePropertySource implements IPropertySource
 	}
 	
 	public Object getPropertyValue(Object id) {
-		if (property.getType().equals(Set.class) || property.getType().equals(List.class))
+		if (property.getType().equals(Set.class) || property.getType().equals(List.class) )
 		{
 			Collection collection = (Collection) property.getValue();
 			
 			for (Iterator iter = collection.iterator(); iter.hasNext();)	
 			{
 				Object object = iter.next();
-				if (id.equals(object.hashCode() + ""))
+				if (id.equals(object.hashCode() + "") )
 				{
 					return object;
 				}

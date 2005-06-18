@@ -108,7 +108,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 	 * @param message the error message to log
 	 */
 	public void log(String message) {
-		log(new Status(IStatus.INFO, HibernateConsolePlugin.ID, 0, message, null));
+		log(new Status(IStatus.INFO, HibernateConsolePlugin.ID, 0, message, null) );
 	}
 	
 	/**
@@ -117,14 +117,14 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 	 * @param message the error message to log
 	 */
 	public void logErrorMessage(String message, Throwable t) {
-		log(new MultiStatus(HibernateConsolePlugin.ID, IStatus.ERROR , new IStatus[] { throwableToStatus(t) }, message, t));
+		log(new MultiStatus(HibernateConsolePlugin.ID, IStatus.ERROR , new IStatus[] { throwableToStatus(t) }, message, t) );
 	}
 	
 	static IStatus throwableToStatus(Throwable t) {
 		ArrayList causes = new ArrayList();
 		Throwable temp = t;
 		while(temp!=null && temp.getCause()!=temp) {
-			causes.add(new Status(IStatus.ERROR, ID, 150, temp.getMessage()==null?"<no message>":temp.getMessage(), temp));
+			causes.add(new Status(IStatus.ERROR, ID, 150, temp.getMessage()==null?"<no message>":temp.getMessage(), temp) );
 			temp = temp.getCause();
 		}
         String msg = "<No message>";
@@ -153,7 +153,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 	 * @param e the exception to be logged
 	 */	
 	public void log(Throwable e) {
-		log(new Status(IStatus.ERROR, ID, 150, "Hibernate Console Internal Error", e));  //$NON-NLS-1$
+		log(new Status(IStatus.ERROR, ID, 150, "Hibernate Console Internal Error", e) );  //$NON-NLS-1$
 	}
 
 	void readStateFrom(File f) {

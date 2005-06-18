@@ -38,7 +38,7 @@ public class ClassLoaderHelper {
 //			System.out.println("[aop-core-plugin] class-loader-path: " + urlPaths[i]);
 //		}
 		
-		return new URLClassLoader(urlPaths, Thread.currentThread().getContextClassLoader());
+		return new URLClassLoader(urlPaths, Thread.currentThread().getContextClassLoader() );
 	}
 	
 	static public List getProjectClassPathURLs (IJavaProject project)
@@ -71,11 +71,11 @@ public class ClassLoaderHelper {
 				pathElements.add(url);
 			}*/
 			
-			IPath location = getProjectLocation(project.getProject());
+			IPath location = getProjectLocation(project.getProject() );
 			IPath outputPath = location.append(
-				project.getOutputLocation().removeFirstSegments(1));
+				project.getOutputLocation().removeFirstSegments(1) );
 			
-			pathElements.add(outputPath.toFile().toURL());
+			pathElements.add(outputPath.toFile().toURL() );
 		} catch (JavaModelException e) {
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
@@ -114,7 +114,7 @@ public class ClassLoaderHelper {
 	 * Convenience method to get access to the java model.
 	 */
 	public static IJavaModel getJavaModel() {
-		return JavaCore.create(ResourcesPlugin.getWorkspace().getRoot());
+		return JavaCore.create(ResourcesPlugin.getWorkspace().getRoot() );
 	}
 
 	public static URL[] getRawLocationsURLForResources(IPath[] classpaths) throws MalformedURLException {

@@ -27,16 +27,16 @@ public class DeleteConfigurationAction extends SelectionListenerAction {
 		List selectedNonResources = getSelectedNonResources();
 		
 		Iterator iter = selectedNonResources.iterator();
-		while (iter.hasNext()) {
+		while (iter.hasNext() ) {
 			BaseNode element = (BaseNode) iter.next();
-			KnownConfigurations.getInstance().removeConfiguration(element.getConsoleConfiguration());
+			KnownConfigurations.getInstance().removeConfiguration(element.getConsoleConfiguration() );
 		}
 	}	
 	
 	protected boolean updateSelection(IStructuredSelection selection) {
-		if(!selection.isEmpty()) {
+		if(!selection.isEmpty() ) {
 			Iterator iter = getSelectedNonResources().iterator();
-			while (iter.hasNext()) {
+			while (iter.hasNext() ) {
 				Object element = iter.next();
 				if(element instanceof BaseNode) {
 					return true;

@@ -173,7 +173,7 @@ public class DriverClassHelpers {
     }
 
     public String[] getDialectNames() {
-        List list = new ArrayList(dialectNames.keySet());
+        List list = new ArrayList(dialectNames.keySet() );
         Collections.sort(list);
         return (String[]) list.toArray(new String[list.size()]);
     }
@@ -184,7 +184,7 @@ public class DriverClassHelpers {
      * @return corresponding class name if available, otherwise return dialectName assuming it is a "raw" classname
      */
     public String getDialectClass(String dialectName) {
-        if(dialectNames.containsKey(dialectName)) {
+        if(dialectNames.containsKey(dialectName) ) {
             return (String) dialectNames.get(dialectName);
         } else {
             return dialectName;
@@ -192,7 +192,7 @@ public class DriverClassHelpers {
     }
     
     public String[] getDriverClasses(String dialectName) {
-        Set result = (Set) (driverClasses.get(dialectName));
+        Set result = (Set) (driverClasses.get(dialectName) );
         if(result!=null) {
             return (String[]) result.toArray(new String[result.size()]);
         } else {
@@ -201,7 +201,7 @@ public class DriverClassHelpers {
     }
     
     public String[] getConnectionURLS(String driverclass) {
-        Set result = (Set) (connectionUrls.get(driverclass));
+        Set result = (Set) (connectionUrls.get(driverclass) );
         if(result!=null) {
             return (String[]) result.toArray(new String[result.size()]);
         } else {

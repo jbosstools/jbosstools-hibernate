@@ -48,7 +48,7 @@ public class EclipseLogger {
 	 */
 	protected void _log(int level, String message, Throwable exception) {
 		if (level == OK_DEBUG || level == INFO_DEBUG || level == WARNING_DEBUG || level == ERROR_DEBUG) {
-			if (!isDebugging())
+			if (!isDebugging() )
 				return;
 		}
 
@@ -82,15 +82,15 @@ public class EclipseLogger {
 	 *            /debug/tracefilter
 	 */
 	protected void _trace(String category, String message, Throwable exception) {
-		if (!isDebugging())
+		if (!isDebugging() )
 			return;
 
 		String traceFilter = Platform.getDebugOption(PLUGIN_ID + TRACEFILTER_LOCATION);
 		if (traceFilter != null) {
 			StringTokenizer tokenizer = new StringTokenizer(traceFilter, ","); //$NON-NLS-1$
-			while (tokenizer.hasMoreTokens()) {
+			while (tokenizer.hasMoreTokens() ) {
 				String cat = tokenizer.nextToken().trim();
-				if (category.equals(cat)) {
+				if (category.equals(cat) ) {
 					Status statusObj = new Status(IStatus.OK, PLUGIN_ID, IStatus.OK, message, exception);
 					Bundle bundle = Platform.getBundle(PLUGIN_ID);
 					if (bundle != null)

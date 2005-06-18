@@ -114,7 +114,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 			public void changeControlPressed(DialogField field) {
 				IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  getOutputDirectory(), new IPath[0], "Select output directory", "Choose directory in which the generated files will be stored", new String[] {"cfg.xml"}, false, true, false);
 				if(paths!=null && paths.length==1) {
-					outputdir.setText(((paths[0]).toOSString()));
+					outputdir.setText( ( (paths[0]).toOSString() ) );
 				}					
 			}
 		});
@@ -126,7 +126,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
             public void changeControlPressed(DialogField field) {
                 IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  getTemplateDirectory(), new IPath[0], "Select output directory", "Choose directory in which the generated files will be stored", new String[0], false, true, false);
                 if(paths!=null && paths.length==1) {
-                    templatedir.setText(((paths[0]).toOSString()));
+                    templatedir.setText( ( (paths[0]).toOSString() ) );
                 }                   
             }
         });
@@ -142,7 +142,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
             public void changeControlPressed(DialogField field) {
                 IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  getTemplateDirectory(), new IPath[0], "Select reverse engineering settings file", "Choose file from which settings for the reverse engineering will be read", new String[] {"reveng.xml"}, false, false, true);
                 if(paths!=null && paths.length==1) {
-                    reverseEngineeringSettings.setText(((paths[0]).toOSString()));
+                    reverseEngineeringSettings.setText( ( (paths[0]).toOSString() ) );
                 }                   
             }
         });
@@ -182,7 +182,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 		consoleConfigurationName.doFillIntoGrid(container, 3);
 		Control[] controls = outputdir.doFillIntoGrid(container, 3);
 		// Hack to tell the text field to stretch!
-		((GridData)controls[1].getLayoutData()).grabExcessHorizontalSpace=true;
+		( (GridData)controls[1].getLayoutData() ).grabExcessHorizontalSpace=true;
 		reverseengineer.doFillIntoGrid(container, 3);
         packageName.doFillIntoGrid(container, 3);
 		reverseEngineeringSettings.doFillIntoGrid(container, 3);
@@ -197,7 +197,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
         useOwnTemplates.doFillIntoGrid(container, 3);
         controls = templatedir.doFillIntoGrid(container, 3);
         // Hack to tell the text field to stretch!
-        ((GridData)controls[1].getLayoutData()).grabExcessHorizontalSpace=true;
+        ( (GridData)controls[1].getLayoutData() ).grabExcessHorizontalSpace=true;
         
 
 		initialize();
@@ -220,7 +220,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 				return;
 			Object obj = ssel.getFirstElement();
 			if (obj instanceof ConfigurationNode) {
-				consoleConfigurationName.setText(((ConfigurationNode)obj).getConsoleConfiguration().getName());
+				consoleConfigurationName.setText( ( (ConfigurationNode)obj).getConsoleConfiguration().getName() );
 			} else if(consoleConfigurationName.getItems().length==1) {
                 consoleConfigurationName.setText(consoleConfigurationName.getItems()[0]);
             }
@@ -237,9 +237,9 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 	private void dialogChanged() {
 
         if(packageName.isEnabled() && getOutputPackage().length()>0) {
-            IStatus val= JavaConventions.validatePackageName(getOutputPackage());
+            IStatus val= JavaConventions.validatePackageName(getOutputPackage() );
             if (val.getSeverity() == IStatus.ERROR || val.getSeverity() == IStatus.WARNING) {
-                updateStatus(val.getMessage());
+                updateStatus(val.getMessage() );
                 return;
             } 
         }
@@ -255,17 +255,17 @@ public class BasicGeneratorSettingsPage extends WizardPage {
             return;
         } 
         
-        if(useOwnTemplates.isSelected()) {
+        if(useOwnTemplates.isSelected() ) {
             msg = checkDirectory(getTemplateDirectory(), "template directory");
             if (msg!=null) {
                 updateStatus(msg);
                 return;
             } else {
-                IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(getTemplateDirectory());
+                IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(getTemplateDirectory() );
                 IResource[] files = new IFile[0];
                 if(resource.getType() == IResource.FOLDER) {
                     try {
-                        files = ((IFolder)resource).members();
+                        files = ( (IFolder)resource).members();
                     } catch (CoreException e) {
                         // noop
                     }
@@ -273,7 +273,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
                 
                 boolean found = false;
                 for (int i = 0; i < files.length; i++) {
-                    if(files[i].getType() == IResource.FILE && files[i].getName().endsWith(".vm")) {
+                    if(files[i].getType() == IResource.FILE && files[i].getName().endsWith(".vm") ) {
                         found = true;
                         break;
                     }
@@ -299,7 +299,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
             int resType= res.getType();
             if (resType == IResource.PROJECT || resType == IResource.FOLDER) {
                 IProject proj= res.getProject();
-                if (!proj.isOpen()) {
+                if (!proj.isOpen() ) {
                     return "Project for " + name + " is closed";                    
                 }                               
             } else {
@@ -365,11 +365,11 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 	 * @return
 	 */
 	public IPath getOutputDirectory() {
-		return pathOrNull(outputdir.getText());
+		return pathOrNull(outputdir.getText() );
 	}
     
     public IPath getTemplateDirectory() {
-        return pathOrNull(templatedir.getText());
+        return pathOrNull(templatedir.getText() );
     }
 
 
@@ -398,7 +398,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 
 
 	public IPath getReverseEngineeringSettingsFile() {
-		return pathOrNull(reverseEngineeringSettings.getText());
+		return pathOrNull(reverseEngineeringSettings.getText() );
 	}
 
 

@@ -22,7 +22,7 @@ public class CFGXMLStructuredTextViewerConfiguration extends StructuredTextViewe
 		IContentAssistant ca = super.getContentAssistant(sourceViewer);
 		if (ca != null && ca instanceof ContentAssistant) {
 			ContentAssistant contentAssistant = (ContentAssistant) ca;
-			IContentAssistProcessor xmlContentAssistProcessor = new CFGXMLContentAssistProcessor(findJavaProject());
+			IContentAssistProcessor xmlContentAssistProcessor = new CFGXMLContentAssistProcessor(findJavaProject() );
 			IContentAssistProcessor noRegionProcessor = new NoRegionContentAssistProcessor();
 			setContentAssistProcessor(contentAssistant, xmlContentAssistProcessor, IStructuredPartitionTypes.DEFAULT_PARTITION);
 			setContentAssistProcessor(contentAssistant, xmlContentAssistProcessor, IXMLPartitions.XML_DEFAULT);

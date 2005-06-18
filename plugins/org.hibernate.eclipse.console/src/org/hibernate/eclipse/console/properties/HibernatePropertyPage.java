@@ -80,7 +80,7 @@ public class HibernatePropertyPage extends PropertyPage {
 			ConsoleConfiguration[] configurations = KnownConfigurations.getInstance().getConfigurations();
 			for (int i = 0; i < configurations.length; i++) {
 				ConsoleConfiguration configuration = configurations[i];
-				selectedConfiguration.add(configuration.getName());
+				selectedConfiguration.add(configuration.getName() );
 			}
 		
 		settings = new Control[] { ownerLabel, selectedConfiguration };
@@ -103,7 +103,7 @@ public class HibernatePropertyPage extends PropertyPage {
 		addSecondSection(composite);
 		
 		loadValues();
-		enableSettings(enableHibernate.getSelection());
+		enableSettings(enableHibernate.getSelection() );
 		
 		return composite;
 	}
@@ -129,13 +129,13 @@ public class HibernatePropertyPage extends PropertyPage {
 	
 	public void loadValues() {
 		IJavaProject prj = (IJavaProject) getElement();
-		IScopeContext scope = new ProjectScope(prj.getProject());
+		IScopeContext scope = new ProjectScope(prj.getProject() );
 		
 		Preferences node = scope.getNode("org.hibernate.eclipse.console");
 		
 		if(node!=null) {
-			enableHibernate.setSelection(node.getBoolean("hibernate3.enabled", false));
-			String cfg = node.get("default.configuration", prj.getProject().getName());
+			enableHibernate.setSelection(node.getBoolean("hibernate3.enabled", false) );
+			String cfg = node.get("default.configuration", prj.getProject().getName() );
 			ConsoleConfiguration configuration = KnownConfigurations.getInstance().find(cfg);
 			if(configuration==null) {
 				selectedConfiguration.setText("");
@@ -147,13 +147,13 @@ public class HibernatePropertyPage extends PropertyPage {
 	}
 	public boolean performOk() {
 		IJavaProject prj = (IJavaProject) getElement();
-		IScopeContext scope = new ProjectScope(prj.getProject());
+		IScopeContext scope = new ProjectScope(prj.getProject() );
 		
 		Preferences node = scope.getNode("org.hibernate.eclipse.console");
 		
 		if(node!=null) {
-			node.putBoolean("hibernate3.enabled", enableHibernate.getSelection());
-			node.put("default.configuration", selectedConfiguration.getText());
+			node.putBoolean("hibernate3.enabled", enableHibernate.getSelection() );
+			node.put("default.configuration", selectedConfiguration.getText() );
 			try {
 				node.flush();
 			} catch (BackingStoreException e) {
@@ -165,14 +165,14 @@ public class HibernatePropertyPage extends PropertyPage {
 		}
 		
 		try {
-			if(enableHibernate.getSelection()) {
-				ProjectUtils.addProjectNature(prj.getProject(), "org.hibernate.eclipse.console.hibernateNature", new NullProgressMonitor());
+			if(enableHibernate.getSelection() ) {
+				ProjectUtils.addProjectNature(prj.getProject(), "org.hibernate.eclipse.console.hibernateNature", new NullProgressMonitor() );
 			} else {
-				ProjectUtils.removeProjectNature(prj.getProject(), "org.hibernate.eclipse.console.hibernateNature", new NullProgressMonitor());
+				ProjectUtils.removeProjectNature(prj.getProject(), "org.hibernate.eclipse.console.hibernateNature", new NullProgressMonitor() );
 			}
 		} catch(CoreException ce) {
 			HibernateConsolePlugin.getDefault().logErrorMessage("Could not activate Hibernate nature on project " + prj.getProject().getName(), ce);
-			HibernateConsolePlugin.getDefault().log(ce.getStatus());
+			HibernateConsolePlugin.getDefault().log(ce.getStatus() );
 		}
 		return true;
 	}

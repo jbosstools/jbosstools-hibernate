@@ -29,10 +29,10 @@ public class CloseQueryPageAction extends SelectionListenerAction {
 		super("");
 		this.selectionProvider = selectionProvider;
 		this.selectionProvider.addSelectionChangedListener(this);
-		setEnabled(!this.selectionProvider.getSelection().isEmpty());
+		setEnabled(!this.selectionProvider.getSelection().isEmpty() );
 		
-		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.CLOSE));
-		setDisabledImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.CLOSE_DISABLED));
+		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.CLOSE) );
+		setDisabledImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.CLOSE_DISABLED) );
 		
 		setToolTipText("Close query page");
 	}
@@ -40,9 +40,9 @@ public class CloseQueryPageAction extends SelectionListenerAction {
 	public void run() {
 		IStructuredSelection selection = 
 			(IStructuredSelection) this.selectionProvider.getSelection();
-		if (!selection.isEmpty()) {
+		if (!selection.isEmpty() ) {
 			for (Iterator i = selection.iterator(); i.hasNext(); ) {
-				KnownConfigurations.getInstance().getQueryPageModel().remove((QueryPage) i.next());
+				KnownConfigurations.getInstance().getQueryPageModel().remove( (QueryPage) i.next() );
 			}
 		}
 	}

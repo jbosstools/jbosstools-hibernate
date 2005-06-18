@@ -24,7 +24,7 @@ public class FormView extends ViewPart {
 	 * it.
 	 */
 	public void createPartControl(Composite parent) {
-		toolkit = new FormToolkit(parent.getDisplay());
+		toolkit = new FormToolkit(parent.getDisplay() );
 		form = toolkit.createScrolledForm(parent);
 		// form.setAlwaysShowScrollBars(true);
 		form.setText("Hello, Eclipse Forms");
@@ -74,22 +74,22 @@ public class FormView extends ViewPart {
 		label = toolkit.createLabel(form.getBody(),
 				"This text goes into column 2 and consumes only one cell",
 				SWT.WRAP);
-		label.setLayoutData(new TableWrapData(TableWrapData.FILL_GRAB));
+		label.setLayoutData(new TableWrapData(TableWrapData.FILL_GRAB) );
 		label = toolkit.createLabel(form.getBody(),
 				"This text goes into column 3 and consumes only one cell too",
 				SWT.WRAP);
-		label.setLayoutData(new TableWrapData(TableWrapData.FILL));
+		label.setLayoutData(new TableWrapData(TableWrapData.FILL) );
 		label = toolkit.createLabel(form.getBody(),
 				"This text goes into column 2 and consumes only one cell",
 				SWT.WRAP);
-		label.setLayoutData(new TableWrapData(TableWrapData.FILL_GRAB));
+		label.setLayoutData(new TableWrapData(TableWrapData.FILL_GRAB) );
 		label = toolkit.createLabel(form.getBody(),
 				"This text goes into column 3 and consumes only one cell too",
 				SWT.WRAP);
-		label.setLayoutData(new TableWrapData(TableWrapData.FILL));
+		label.setLayoutData(new TableWrapData(TableWrapData.FILL) );
 		form.getBody().setBackground(
 				form.getBody().getDisplay().getSystemColor(
-						SWT.COLOR_WIDGET_BACKGROUND));
+						SWT.COLOR_WIDGET_BACKGROUND) );
 	}
 
 	/**

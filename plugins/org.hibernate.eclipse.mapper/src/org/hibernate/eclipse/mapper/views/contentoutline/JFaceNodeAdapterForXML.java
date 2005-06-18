@@ -91,7 +91,7 @@ public class JFaceNodeAdapterForXML extends JFaceNodeAdapter {
 		// (unless running headless), whereas Display.getCurrent()
 		// only returns the display if the currently executing thread
 		// has one.
-		if (PlatformUI.isWorkbenchRunning())
+		if (PlatformUI.isWorkbenchRunning() )
 			return PlatformUI.getWorkbench().getDisplay();
 		else
 			return null;
@@ -110,12 +110,12 @@ public class JFaceNodeAdapterForXML extends JFaceNodeAdapter {
 		// (That is, may be be worthy of job manager management). If they are
 		// found to be important enough to leave in,
 		// there's probably some optimization that can be done.
-		Collection listeners = ((JFaceNodeAdapterFactory) adapterFactory).getListeners();
+		Collection listeners = ( (JFaceNodeAdapterFactory) adapterFactory).getListeners();
 		Iterator iterator = listeners.iterator();
 
-		while (iterator.hasNext()) {
+		while (iterator.hasNext() ) {
 			Object listener = iterator.next();			
-			if (notifier instanceof Node && (listener instanceof StructuredViewer) && (eventType == INodeNotifier.STRUCTURE_CHANGED || (eventType == INodeNotifier.CHANGE /*&& changedFeature == null*/))) {
+			if (notifier instanceof Node && (listener instanceof StructuredViewer) && (eventType == INodeNotifier.STRUCTURE_CHANGED || (eventType == INodeNotifier.CHANGE /*&& changedFeature == null*/) ) ) {
 
 				//	System.out.println("JFaceNodeAdapter notified on event type > " + eventType + " at " + changedFeature);
 
@@ -127,7 +127,7 @@ public class JFaceNodeAdapterForXML extends JFaceNodeAdapter {
 														   * structuredViewer.getControl().isVisible()
 														   */)
 					getOutlineUpdater().processNode(structuredViewer, (Node) notifier);
-			} else if ((listener instanceof PropertySheetPage) && ((eventType == INodeNotifier.CHANGE) || (eventType == INodeNotifier.STRUCTURE_CHANGED))) {
+			} else if ( (listener instanceof PropertySheetPage) && ( (eventType == INodeNotifier.CHANGE) || (eventType == INodeNotifier.STRUCTURE_CHANGED) ) ) {
 				PropertySheetPage propertySheetPage = (PropertySheetPage) listener;
 				if (propertySheetPage.getControl() != null /*
 														    * &&

@@ -34,7 +34,7 @@ public class HibernateTypeHandler implements HBMInfoHandler {
 	public ICompletionProposal[] attributeCompletionProposals(IJavaProject project, Node node, String attributeName, String start, int offset) {
 	    List types = this.extractor.findMatchingHibernateTypes(start);
 		
-		List proposals = new ArrayList(types.size());		
+		List proposals = new ArrayList(types.size() );		
 		for (Iterator iter = types.iterator(); iter.hasNext();) {
 			HibernateTypeDescriptor element = (HibernateTypeDescriptor) iter.next();
 			String extendedinfo = "<b>Hibernate type</b>: " + element.getName();
@@ -44,21 +44,21 @@ public class HibernateTypeHandler implements HBMInfoHandler {
 			if(element.getPrimitiveClass()!=null) {
 				extendedinfo += "<br><b>Return primitive</b>: " + element.getPrimitiveClass();
 			}
-			proposals.add(new CompletionProposal(element.getName(), offset, start.length(), element.getName().length(), null, null, null, extendedinfo));
+			proposals.add(new CompletionProposal(element.getName(), offset, start.length(), element.getName().length(), null, null, null, extendedinfo) );
 		}
 		
 		try {
 			IType typeInterface = project.findType("org.hibernate.usertype.CompositeUserType");
 			Set alreadyFound = new HashSet();			
 			if (typeInterface != null) {
-				ITypeHierarchy hier = typeInterface.newTypeHierarchy(project, new NullProgressMonitor());
+				ITypeHierarchy hier = typeInterface.newTypeHierarchy(project, new NullProgressMonitor() );
 				IType[] classes = hier.getAllSubtypes(typeInterface); // TODO: cache these results ?
 				this.extractor.generateTypeProposals(start, offset, proposals, alreadyFound, classes);				
 			}
 			
 			typeInterface = project.findType("org.hibernate.usertype.UserType");
 			if (typeInterface != null) {
-				ITypeHierarchy hier = typeInterface.newTypeHierarchy(project, new NullProgressMonitor());
+				ITypeHierarchy hier = typeInterface.newTypeHierarchy(project, new NullProgressMonitor() );
 				IType[] classes = hier.getAllSubtypes(typeInterface); // TODO: cache these results ?
 				this.extractor.generateTypeProposals(start, offset, proposals, alreadyFound, classes);				
 			}

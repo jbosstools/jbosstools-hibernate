@@ -169,7 +169,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 				case 0:
 					return DialogSelectionHelper.chooseFileEntries(getShell(), null, exclude, "Add classpath entry", "Add a directory, .zip or .jar file", new String[] { ".jar", ".zip" }, true, true, true);					
 				case 1:
-					return BuildPathDialogAccess.chooseExternalJAREntries(getShell());
+					return BuildPathDialogAccess.chooseExternalJAREntries(getShell() );
 				default:
 					return null;
 				}
@@ -225,30 +225,30 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 		public List    mappings = new ArrayList();
 		
 		public boolean visit(IResourceProxy proxy) throws CoreException {
-			//System.out.println("visit: " + proxy.getName());
+			//System.out.println("visit: " + proxy.getName() );
 			IPath fullPath = proxy.requestFullPath();
 			if(proxy.getType() == IResource.FILE) {
-				if("hibernate.properties".equals(proxy.getName())) {
+				if("hibernate.properties".equals(proxy.getName() ) ) {
 					propertyFile = fullPath;
 					return false;
 				}
 				
-				if("hibernate.cfg.xml".equals(proxy.getName())) {
+				if("hibernate.cfg.xml".equals(proxy.getName() ) ) {
 					configFile = fullPath;
 					mappings.clear(); // we prefer af cfg.xml over mappings
 					return false;
 				}				
 				
 				// only add mappings if we don't have a config file.
-				if(configFile==null && proxy.getName().endsWith(".hbm.xml")) {
+				if(configFile==null && proxy.getName().endsWith(".hbm.xml") ) {
 					mappings.add(fullPath);
 					return false;
 				}
 			} else if(proxy.getType() == IResource.FOLDER) {
 				if(javaProject!=null) {
-					if(javaProject.getOutputLocation().isPrefixOf(fullPath)) {
+					if(javaProject.getOutputLocation().isPrefixOf(fullPath) ) {
 						classpath.add(fullPath);
-						//System.out.println("SKIPPING " + proxy.getName());
+						//System.out.println("SKIPPING " + proxy.getName() );
 						return false; // skip output locations
 					}
 				}
@@ -276,12 +276,12 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			IContainer container = null;
 			if (obj instanceof IJavaProject) {
 				v.javaProject = (IJavaProject) obj;
-				container = ((IJavaProject)obj).getProject();
+				container = ( (IJavaProject)obj).getProject();
 			} else if (obj instanceof IResource) {
 				if (obj instanceof IContainer)
 					container = (IContainer)obj;
 				else
-					container = ((IResource)obj).getParent();
+					container = ( (IResource)obj).getParent();
 			}
 			
 			if(container!=null) {
@@ -292,11 +292,11 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
                     v.javaProject = JavaCore.create(project);
                 }
                 
-				if(v.javaProject!=null) configurationNameText.setText(v.javaProject.getElementName());
-				if (v.propertyFile!=null) propertyFileText.setText(v.propertyFile.toOSString());
-				if (v.configFile!=null) configurationFileText.setText(v.configFile.toOSString());
-				if (!v.mappings.isEmpty()) mappingFilesViewer.add(v.mappings.toArray(), false);
-				if (!v.classpath.isEmpty()) classPathViewer.add(v.classpath.toArray(), false);
+				if(v.javaProject!=null) configurationNameText.setText(v.javaProject.getElementName() );
+				if (v.propertyFile!=null) propertyFileText.setText(v.propertyFile.toOSString() );
+				if (v.configFile!=null) configurationFileText.setText(v.configFile.toOSString() );
+				if (!v.mappings.isEmpty() ) mappingFilesViewer.add(v.mappings.toArray(), false);
+				if (!v.classpath.isEmpty() ) classPathViewer.add(v.classpath.toArray(), false);
 
                 
 				if(v.javaProject!=null) {
@@ -307,9 +307,9 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 				EclipseConsoleConfiguration cc = (EclipseConsoleConfiguration) obj;
 				EclipseConsoleConfigurationPreferences prefs = (EclipseConsoleConfigurationPreferences) cc.getPreferences();
 				
-				configurationNameText.setText(prefs.getName());
-				if(prefs.getPropertyFilename()!=null) propertyFileText.setText(prefs.getPropertyFilename().toOSString());
-				if(prefs.getCfgFile()!=null) configurationFileText.setText(prefs.getCfgFile().toOSString());
+				configurationNameText.setText(prefs.getName() );
+				if(prefs.getPropertyFilename()!=null) propertyFileText.setText(prefs.getPropertyFilename().toOSString() );
+				if(prefs.getCfgFile()!=null) configurationFileText.setText(prefs.getCfgFile().toOSString() );
 				if(prefs.getMappings()!=null) mappingFilesViewer.add(prefs.getMappings(),false);
 				if(prefs.getCustomClasspath()!=null) classPathViewer.add(prefs.getCustomClasspath(),false);
 				
@@ -338,7 +338,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			final CollectingSearchRequestor sr = new CollectingSearchRequestor();
 			final SearchParticipant[] participants = new SearchParticipant[] {SearchEngine.getDefaultSearchParticipant()};
 			
-			final ProgressMonitorDialog dialog = new ProgressMonitorDialog(getShell());
+			final ProgressMonitorDialog dialog = new ProgressMonitorDialog(getShell() );
 			
 			
 			dialog.run(true, false, new IRunnableWithProgress() {
@@ -355,10 +355,10 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			
 			List resources = new ArrayList();
 			Iterator iter = sr.getResults().iterator();
-			while (iter.hasNext()) {
+			while (iter.hasNext() ) {
 				SearchMatch match = (SearchMatch) iter.next();
 				if(match.getResource() instanceof File) { // what happens if a actual class implements java.sql.driver ?
-					resources.add(match.getResource().getFullPath());
+					resources.add(match.getResource().getFullPath() );
 				}
 			}
 			
@@ -376,11 +376,11 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	}
 	
 	IPath[] getMappingFiles() {
-		return tableItems2File(mappingFilesViewer.getTable());
+		return tableItems2File(mappingFilesViewer.getTable() );
 	}
 
 	IPath[] getClassPath() {
-		return tableItems2File(classPathViewer.getTable());
+		return tableItems2File(classPathViewer.getTable() );
 	}
 	
 	private IPath[] tableItems2File(Table table) {
@@ -397,14 +397,14 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	private void handlePropertyFileBrowse() {
 		IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  getPropertyFilePath(), new IPath[0], "Select property file", "Choose file to use as hibernate.properties", new String[] {"properties"}, false, false, true);
 		if(paths!=null && paths.length==1) {
-			propertyFileText.setText((paths[0]).toOSString());
+			propertyFileText.setText( (paths[0]).toOSString() );
 		}
 	}
 	
 	private void handleConfigurationFileBrowse() {
 		IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  getConfigurationFilePath(), new IPath[0], "Select hibernate.cfg.xml file", "Choose file to use as hibernate.cfg.xml", new String[] {"cfg.xml"}, false, false, true);
 		if(paths!=null && paths.length==1) {
-			configurationFileText.setText((paths[0]).toOSString());
+			configurationFileText.setText( (paths[0]).toOSString() );
 		}
 	}
 	
@@ -421,7 +421,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			updateStatus("A name must be specificed");
 			return;
 		} else {
-			if(oldConfiguaration==null && KnownConfigurations.getInstance().find(getConfigurationName())!=null) {
+			if(oldConfiguaration==null && KnownConfigurations.getInstance().find(getConfigurationName() )!=null) {
 				updateStatus("A configuration with that name already exists!");
 				return;
 			}
@@ -492,7 +492,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	}
 
 	public Path getConfigurationFilePath() {
-		return pathOrNull(configurationFileText.getText());
+		return pathOrNull(configurationFileText.getText() );
 	}
 
 	/**

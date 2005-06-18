@@ -40,7 +40,7 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 	 */
 	public ConsoleConfigurationCreationWizard() {
 		super();
-        setDefaultPageImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.NEW_WIZARD));
+        setDefaultPageImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.NEW_WIZARD) );
 		setNeedsProgressMonitor(true);
 	}
 	
@@ -84,7 +84,7 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 			realException.printStackTrace();
 			IStatus s = null;
 			if(realException instanceof CoreException) {
-				s = ((CoreException)realException).getStatus();
+				s = ( (CoreException)realException).getStatus();
 			} else {
 				s = new Status(Status.ERROR,HibernateConsolePlugin.ID, Status.OK, "Probably missing classes or errors with classloading", e);
 				

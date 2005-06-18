@@ -27,7 +27,7 @@ public class RefreshAction extends SelectionListenerAction {
 		List selectedNonResources = getSelectedNonResources();
 		
 		Iterator iter = selectedNonResources.iterator();
-		while (iter.hasNext()) {
+		while (iter.hasNext() ) {
 			Object element = iter.next();
 			viewer.refresh(element);	
 		}

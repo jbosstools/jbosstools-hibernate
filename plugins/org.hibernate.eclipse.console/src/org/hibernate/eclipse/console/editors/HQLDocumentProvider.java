@@ -27,9 +27,9 @@ public class HQLDocumentProvider extends FileDocumentProvider {
 	}
 	
 	public boolean setDocumentContent(IDocument document, IEditorInput editorInput, String encoding) throws CoreException {
-		if(!super.setDocumentContent(document, editorInput, encoding)) {
+		if(!super.setDocumentContent(document, editorInput, encoding) ) {
 			if(editorInput instanceof HQLEditorInput) {
-				setDocumentContent(document, new ByteArrayInputStream(((HQLEditorInput)editorInput).getQueryString().getBytes()), null);
+				setDocumentContent(document, new ByteArrayInputStream( ( (HQLEditorInput)editorInput).getQueryString().getBytes() ), null);
 				return true;
 			} else {
 				return false;

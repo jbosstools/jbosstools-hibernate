@@ -27,12 +27,12 @@ public class TableNameHandler implements HBMInfoHandler {
 		List tables = new ArrayList(); 
 		
 		try {
-			if(javaProject.getProject().hasNature(HibernateNature.ID)) {
+			if(javaProject.getProject().hasNature(HibernateNature.ID) ) {
 				HibernateNature nature = (HibernateNature) javaProject.getProject().getNature(HibernateNature.ID);
 				Iterator tableMappings = nature.getTables().iterator();
-				while (tableMappings.hasNext()) {
+				while (tableMappings.hasNext() ) {
 					Table table = (Table) tableMappings.next();
-					if(table.getName().startsWith(start)) {
+					if(table.getName().startsWith(start) ) {
 						tables.add(table);
 					}
 				}
@@ -44,7 +44,7 @@ public class TableNameHandler implements HBMInfoHandler {
 		List proposals = new ArrayList();
 		for (Iterator iter = tables.iterator(); iter.hasNext();) {
 			Table element = (Table) iter.next();
-			proposals.add(new CompletionProposal(element.getName(), offset, start.length(), element.getName().length(), null, null, null, null));
+			proposals.add(new CompletionProposal(element.getName(), offset, start.length(), element.getName().length(), null, null, null, null) );
 		}
 		
 		return (ICompletionProposal[]) proposals.toArray(new ICompletionProposal[proposals.size()]);

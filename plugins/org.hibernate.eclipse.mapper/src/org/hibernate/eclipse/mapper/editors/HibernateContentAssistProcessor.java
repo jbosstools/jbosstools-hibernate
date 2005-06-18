@@ -30,7 +30,7 @@ public abstract class HibernateContentAssistProcessor extends XMLContentAssistPr
 		// Find the attribute region and name for which this position should have a value proposed
 		IStructuredDocumentRegion open = node.getFirstStructuredDocumentRegion();
 		ITextRegionList openRegions = open.getRegions();
-		int i = openRegions.indexOf(contentAssistRequest.getRegion());
+		int i = openRegions.indexOf(contentAssistRequest.getRegion() );
 		if (i < 0)
 			return;
 		ITextRegion nameRegion = null;
@@ -45,7 +45,7 @@ public abstract class HibernateContentAssistProcessor extends XMLContentAssistPr
 		if (matchString == null) {
 			matchString = ""; //$NON-NLS-1$			
 		}
-		if (matchString.length() > 0 && (matchString.startsWith("\"") || matchString.startsWith("'"))) {//$NON-NLS-2$//$NON-NLS-1$
+		if (matchString.length() > 0 && (matchString.startsWith("\"") || matchString.startsWith("'") ) ) {//$NON-NLS-2$//$NON-NLS-1$
 			matchString = matchString.substring(1);
 			offset = offset+1;
 		}

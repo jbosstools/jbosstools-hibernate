@@ -55,9 +55,9 @@ class FieldPropertyHandler implements HBMInfoHandler {
 	}
 
 	public IJavaElement getJavaElement(IJavaProject project, Node currentNode, Attr currentAttrNode) {
-		IType type = extractor.getNearestTypeJavaElement(project, currentNode.getParentNode());
+		IType type = extractor.getNearestTypeJavaElement(project, currentNode.getParentNode() );
 		if(type!=null) {				
-			IField field = type.getField(currentAttrNode.getValue());
+			IField field = type.getField(currentAttrNode.getValue() );
 			return field;
 		}
 		

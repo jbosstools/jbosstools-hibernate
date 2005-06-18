@@ -28,7 +28,7 @@ public class HibernateConsoleSaveParticipant implements ISaveParticipant {
 	}
 
 	public void saving(ISaveContext context) throws CoreException {
-		switch (context.getKind()) {
+		switch (context.getKind() ) {
 		case ISaveContext.FULL_SAVE:
 			HibernateConsolePlugin myPluginInstance = HibernateConsolePlugin
 					.getDefault();
@@ -40,7 +40,7 @@ public class HibernateConsoleSaveParticipant implements ISaveParticipant {
 			// if we fail to write, an exception is thrown and we do not update
 			// the path
 			myPluginInstance.writeStateTo(f);
-			context.map(new Path(SAVENAME), new Path(saveFileName));
+			context.map(new Path(SAVENAME), new Path(saveFileName) );
 			context.needSaveNumber();
 			break;
 		case ISaveContext.PROJECT_SAVE:
@@ -88,7 +88,7 @@ public class HibernateConsoleSaveParticipant implements ISaveParticipant {
 		if (lastState == null) {
 			return;
 		}
-		IPath location = lastState.lookup(new Path(HibernateConsoleSaveParticipant.SAVENAME));
+		IPath location = lastState.lookup(new Path(HibernateConsoleSaveParticipant.SAVENAME) );
 		if (location == null) {
 			return;
 		}

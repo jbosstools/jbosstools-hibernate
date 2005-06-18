@@ -19,7 +19,7 @@ public class HQLEditorView extends ViewPart {
 	private class ClearAction extends Action {
 		
 		public ClearAction() {
-			setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.CLEAR));
+			setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.CLEAR) );
 			setToolTipText("Clear editor");
 			//setText("Clear");
 		}
@@ -46,11 +46,11 @@ public class HQLEditorView extends ViewPart {
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
 		parent.setLayout(layout);
-		parent.setLayoutData(new GridData(GridData.FILL_BOTH));
+		parent.setLayoutData(new GridData(GridData.FILL_BOTH) );
 		
 		viewer = new StyledText(parent, SWT.H_SCROLL | SWT.V_SCROLL);
 		viewer.setEditable(true);
-		viewer.setLayoutData(new GridData(GridData.FILL_BOTH));
+		viewer.setLayoutData(new GridData(GridData.FILL_BOTH) );
 
 		initActions();
 	}
@@ -62,7 +62,7 @@ public class HQLEditorView extends ViewPart {
 
 		executeAction = new ExecuteHQLAction(this);
 		toolBar.add(this.executeAction);
-		toolBar.add(new ClearAction());
+		toolBar.add(new ClearAction() );
 		
         IActionBars actionBars = getViewSite().getActionBars();
 		

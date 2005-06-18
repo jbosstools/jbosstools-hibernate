@@ -35,7 +35,7 @@ class HibernateTypeDescriptor implements Comparable {
 
 	public int compareTo(Object o) {
 		
-		return name.compareTo(((HibernateTypeDescriptor)o).getName());
+		return name.compareTo( ( (HibernateTypeDescriptor)o).getName() );
 	}
 	
 	

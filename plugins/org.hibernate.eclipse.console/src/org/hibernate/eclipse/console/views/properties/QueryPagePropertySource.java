@@ -56,10 +56,10 @@ public class QueryPagePropertySource implements IPropertySource2
 	}
 
 	public Object getPropertyValue(Object id) {
-		if(CONFIGURATION_TEXT.equals(id)) {
+		if(CONFIGURATION_TEXT.equals(id) ) {
 			return page.getConsoleConfiguration().getName();
 		}
-		if(QUERY_TEXT.equals(id)) {
+		if(QUERY_TEXT.equals(id) ) {
 			return page.getQueryString();
 		}
 		

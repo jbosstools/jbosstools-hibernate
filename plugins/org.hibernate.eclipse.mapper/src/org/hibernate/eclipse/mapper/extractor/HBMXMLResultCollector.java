@@ -117,16 +117,16 @@ public class HBMXMLResultCollector extends CompletionProposalCollector {
         settings.acceptMethods = methods;
 		
 		setIgnored(CompletionProposal.ANONYMOUS_CLASS_DECLARATION,true);
-		setIgnored(CompletionProposal.FIELD_REF,!isAcceptFields());
+		setIgnored(CompletionProposal.FIELD_REF,!isAcceptFields() );
 		setIgnored(CompletionProposal.KEYWORD, true);
 		setIgnored(CompletionProposal.LABEL_REF, true);
 		setIgnored(CompletionProposal.LOCAL_VARIABLE_REF,true);
 		setIgnored(CompletionProposal.METHOD_DECLARATION,true);
 		setIgnored(CompletionProposal.METHOD_NAME_REFERENCE,true); // maybe true to handle properties ?
 		setIgnored(CompletionProposal.METHOD_REF,true); // maybe true to handle properties ?
-		setIgnored(CompletionProposal.PACKAGE_REF,!isAcceptPackages());
+		setIgnored(CompletionProposal.PACKAGE_REF,!isAcceptPackages() );
 		setIgnored(CompletionProposal.POTENTIAL_METHOD_DECLARATION,true);
-		setIgnored(CompletionProposal.TYPE_REF,!(isAcceptClasses() || isAcceptInterfaces())); // decide during completion if accepted truly
+		setIgnored(CompletionProposal.TYPE_REF,!(isAcceptClasses() || isAcceptInterfaces() ) ); // decide during completion if accepted truly
 		setIgnored(CompletionProposal.VARIABLE_DECLARATION, true);
 	}
 	

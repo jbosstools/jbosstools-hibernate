@@ -58,11 +58,11 @@ public class FileFilter extends ViewerFilter {
 	 * @see ViewerFilter#select
 	 */
 	public boolean select(Viewer viewer, Object parent, Object element) {
-		if ((element instanceof IFile)) {
-			if (this.excludedFiles != null && this.excludedFiles.contains(element)) {
+		if ( (element instanceof IFile) ) {
+			if (this.excludedFiles != null && this.excludedFiles.contains(element) ) {
 				return false;
 			}
-			return isFileExtension(((IFile)element).getFullPath());
+			return isFileExtension( ( (IFile)element).getFullPath() );
 		} 
 		else if (allowDirectories && element instanceof IFolder) {
 			return true;
@@ -71,15 +71,15 @@ public class FileFilter extends ViewerFilter {
 				return true;
 			}
 			try {
-				IResource[] resources= ((IContainer)element).members();
+				IResource[] resources= ( (IContainer)element).members();
 				for (int i= 0; i < resources.length; i++) {
 					// recursive! Only show containers that contain a matching file
-					if (select(viewer, parent, resources[i])) {
+					if (select(viewer, parent, resources[i]) ) {
 						return true;
 					}
 				}
 			} catch (CoreException e) {
-				JavaPlugin.log(e.getStatus());
+				JavaPlugin.log(e.getStatus() );
 			}				
 		}
 		return false;
@@ -87,7 +87,7 @@ public class FileFilter extends ViewerFilter {
 	
 	public boolean isFileExtension(IPath path) {
 		for (int i= 0; i < fileExtensions.length; i++) {
-			if (path.lastSegment().endsWith(fileExtensions[i])) {
+			if (path.lastSegment().endsWith(fileExtensions[i]) ) {
 				return true;
 			}
 		}

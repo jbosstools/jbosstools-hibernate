@@ -81,14 +81,14 @@ public class DialogSelectionHelper {
 		}
 		IResource focus= initialSelection != null ? root.findMember(initialSelection) : null;
 		
-		ElementTreeSelectionDialog dialog= new ElementTreeSelectionDialog(shell, new WorkbenchLabelProvider(), new WorkbenchContentProvider());
+		ElementTreeSelectionDialog dialog= new ElementTreeSelectionDialog(shell, new WorkbenchLabelProvider(), new WorkbenchContentProvider() );
 		dialog.setValidator(validator);
 		dialog.setAllowMultiple(allowMultiple);
 		dialog.setTitle(title);
 		dialog.setMessage(description);
-		dialog.addFilter(new FileFilter(fileExtensions, usedFiles, true, allowDirectories));
+		dialog.addFilter(new FileFilter(fileExtensions, usedFiles, true, allowDirectories) );
 		dialog.setInput(root);
-		dialog.setSorter(new ResourceSorter(ResourceSorter.NAME));
+		dialog.setSorter(new ResourceSorter(ResourceSorter.NAME) );
 		dialog.setInitialSelection(focus);
 
 		if (dialog.open() == Window.OK) {
@@ -110,9 +110,9 @@ public class DialogSelectionHelper {
 	public static IJavaProject chooseJavaProject(Shell shell, IJavaProject initialSelection, String title, String description) {
 		IJavaProject[] projects;
 		try {
-			projects= JavaCore.create(ResourcesPlugin.getWorkspace().getRoot()).getJavaProjects();
+			projects= JavaCore.create(ResourcesPlugin.getWorkspace().getRoot() ).getJavaProjects();
 		} catch (JavaModelException e) {
-			HibernateConsolePlugin.getDefault().log(e.getStatus());
+			HibernateConsolePlugin.getDefault().log(e.getStatus() );
 			projects= new IJavaProject[0];
 		}
 		

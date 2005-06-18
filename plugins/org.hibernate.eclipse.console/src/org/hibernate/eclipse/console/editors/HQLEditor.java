@@ -10,8 +10,8 @@ public class HQLEditor extends TextEditor {
 	public HQLEditor() {
 		super();
 		colorManager = new ColorManager();
-		setSourceViewerConfiguration(new HQLConfiguration(colorManager));
-		setDocumentProvider(new HQLDocumentProvider());
+		setSourceViewerConfiguration(new HQLConfiguration(colorManager) );
+		setDocumentProvider(new HQLDocumentProvider() );
 	}
 	public void dispose() {
 		colorManager.dispose();

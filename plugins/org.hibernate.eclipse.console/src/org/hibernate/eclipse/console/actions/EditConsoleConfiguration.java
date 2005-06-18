@@ -32,10 +32,10 @@ public class EditConsoleConfiguration extends ConsoleConfigurationBasedAction {
 	protected void doRun() {
 		for (Iterator i = getSelectedNonResources().iterator(); i.hasNext();) {
         	try {
-        		BaseNode node = ((BaseNode) i.next());
+        		BaseNode node = ( (BaseNode) i.next() );
         		final ConsoleConfiguration config = node.getConsoleConfiguration();
         		ConsoleConfigurationCreationWizard wizard = new ConsoleConfigurationCreationWizard();
-        		wizard.init(PlatformUI.getWorkbench(), new StructuredSelection(config));
+        		wizard.init(PlatformUI.getWorkbench(), new StructuredSelection(config) );
         		IWorkbenchWindow win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
         		
         		WizardDialog dialog = new WizardDialog(win.getShell(), wizard);

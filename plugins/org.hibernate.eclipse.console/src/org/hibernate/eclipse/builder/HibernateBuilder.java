@@ -26,7 +26,7 @@ public class HibernateBuilder extends IncrementalProjectBuilder {
             throws CoreException {
         
         
-     /*   IJavaProject jproject = JavaCore.create(getProject());
+     /*   IJavaProject jproject = JavaCore.create(getProject() );
         IPath location = jproject.getOutputLocation();
         IResource res = ResourcesPlugin.getWorkspace().getRoot().findMember(location);
         if(res != null){
@@ -36,7 +36,7 @@ public class HibernateBuilder extends IncrementalProjectBuilder {
                     
                     if( resource instanceof IFile ){
                         IFile file = (IFile)resource;
-                        process(file.getLocation().toFile());
+                        process(file.getLocation().toFile() );
                         file.refreshLocal(IResource.DEPTH_ZERO, monitor);
                     }
                     return true;
@@ -67,6 +67,9 @@ public class HibernateBuilder extends IncrementalProjectBuilder {
 
 /**
 * $Log$
+* Revision 1.3  2005/06/18 23:37:46  maxcsaucdk
+* checkstyle nazi
+*
 * Revision 1.2  2005/05/30 20:28:46  maxcsaucdk
 * enablement of HibernateNature
 *

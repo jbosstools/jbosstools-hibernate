@@ -163,7 +163,7 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 			
 			for(int i = 0; i < elementsByTagName.getLength(); i++) {
 				result[i] = new EclipseConsoleConfigurationPreferences();
-				result[i].readStateFrom((Element)elementsByTagName.item(i));
+				result[i].readStateFrom( (Element)elementsByTagName.item(i) );
 			}
 			return result;
 		} catch(SAXException sa) {

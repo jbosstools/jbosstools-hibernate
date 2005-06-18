@@ -31,14 +31,14 @@ abstract public class TreeNodeContentProvider implements ITreeContentProvider {
 
 	public boolean hasChildren(final Object element) {
 		if(element instanceof TreeNode) {
-			return !((TreeNode)element).isLeaf();
+			return !( (TreeNode)element).isLeaf();
 		}
 		return false;
 	}
 
 	public Object getParent(Object element) {
 		if (element instanceof TreeNode) {
-			return ((TreeNode)element).getParent();
+			return ( (TreeNode)element).getParent();
 		} 
 		return null;
 	}
@@ -50,7 +50,7 @@ abstract public class TreeNodeContentProvider implements ITreeContentProvider {
 		if(parentElement instanceof TreeNode) {
 			final TreeNode t = (TreeNode) parentElement;
 			TreeNode[] children = new TreeNode[0];
-			if(!t.isLeaf()) {
+			if(!t.isLeaf() ) {
 				children = new TreeNode[t.getChildCount()];
 				for(int i = 0; i < t.getChildCount(); i++) {
 					children[i] = t.getChildAt(i);

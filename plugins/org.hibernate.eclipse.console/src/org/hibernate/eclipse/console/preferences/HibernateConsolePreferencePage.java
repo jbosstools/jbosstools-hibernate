@@ -31,7 +31,7 @@ public class HibernateConsolePreferencePage
 
 	public HibernateConsolePreferencePage() {
 		super(GRID);
-		setPreferenceStore(HibernateConsolePlugin.getDefault().getPreferenceStore());
+		setPreferenceStore(HibernateConsolePlugin.getDefault().getPreferenceStore() );
 		setDescription("A demonstration of a preference page implementation");
 		initializeDefaults();
 	}
@@ -54,12 +54,12 @@ public class HibernateConsolePreferencePage
 
 	public void createFieldEditors() {
 		addField(new DirectoryFieldEditor(P_PATH, 
-				"&Directory preference:", getFieldEditorParent()));
+				"&Directory preference:", getFieldEditorParent() ) );
 		addField(
 			new BooleanFieldEditor(
 				P_BOOLEAN,
 				"&An example of a boolean preference",
-				getFieldEditorParent()));
+				getFieldEditorParent() ) );
 
 		addField(new RadioGroupFieldEditor(
 			P_CHOICE,
@@ -67,9 +67,9 @@ public class HibernateConsolePreferencePage
 			1,
 			new String[][] { { "&Choice 1", "choice1" }, {
 				"C&hoice 2", "choice2" }
-		}, getFieldEditorParent()));
+		}, getFieldEditorParent() ) );
 		addField(
-			new StringFieldEditor(P_STRING, "A &text preference:", getFieldEditorParent()));
+			new StringFieldEditor(P_STRING, "A &text preference:", getFieldEditorParent() ) );
 	}
 	
 	public void init(IWorkbench workbench) {

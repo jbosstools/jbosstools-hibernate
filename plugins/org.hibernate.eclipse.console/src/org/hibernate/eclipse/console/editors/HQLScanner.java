@@ -26,11 +26,11 @@ public class HQLScanner extends RuleBasedScanner {
            }
         });
         Token keyword = new Token(new TextAttribute(
-        		colorManager.getColor(new RGB(238,238,255)), null, SWT.BOLD));
+        		colorManager.getColor(new RGB(238,238,255) ), null, SWT.BOLD) );
         Token comment = new Token(
-        		colorManager.getColor(new RGB(200,200,200)));
+        		colorManager.getColor(new RGB(200,200,200) ) );
         Token string = new Token(
-        		colorManager.getColor(new RGB(255,255,255)));
+        		colorManager.getColor(new RGB(255,255,255) ) );
         //add tokens for each reserved word
         String[] KEYWORDS = new String[] {
         		"from",

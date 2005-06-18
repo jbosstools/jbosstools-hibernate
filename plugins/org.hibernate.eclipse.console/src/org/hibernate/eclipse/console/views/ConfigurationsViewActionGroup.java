@@ -66,11 +66,11 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 	
 		menu.add(connectAction);
 		menu.add(refreshAction);
-		menu.add(new Separator());
+		menu.add(new Separator() );
 		menu.add(addConfigurationAction);
 		menu.add(editConfigurationAction);
 		menu.add(deleteConfigurationAction);
-		menu.add(new Separator());
+		menu.add(new Separator() );
 		menu.add(schemaExportAction);
 		
 	}

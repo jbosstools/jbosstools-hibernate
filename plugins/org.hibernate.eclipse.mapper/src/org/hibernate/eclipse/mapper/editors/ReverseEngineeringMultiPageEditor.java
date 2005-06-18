@@ -151,7 +151,7 @@ public class ReverseEngineeringMultiPageEditor extends FormEditor {
 	 */
 	protected void addSourcePage() {
 		try {
-			fSourcePageIndex = addPage(fTextEditor, getEditorInput());
+			fSourcePageIndex = addPage(fTextEditor, getEditorInput() );
 			setPageText(fSourcePageIndex, "source");
 		} catch (PartInitException exception) {
 			// dispose editor
@@ -245,7 +245,7 @@ public class ReverseEngineeringMultiPageEditor extends FormEditor {
 		if (input instanceof IFileEditorInput) {
 			// verify that it can be opened
 			CoreException[] coreExceptionArray = new CoreException[1];
-			if (fileDoesNotExist((IFileEditorInput) input, coreExceptionArray)) {
+			if (fileDoesNotExist( (IFileEditorInput) input, coreExceptionArray) ) {
 				CoreException coreException = coreExceptionArray[0];
 				if (coreException.getStatus().getCode() == IResourceStatus.FAILED_READ_LOCAL) {
 					// I'm assuming this is always 'does not exist'
@@ -254,24 +254,24 @@ public class ReverseEngineeringMultiPageEditor extends FormEditor {
 					// troublesome file is refreshed (and will cause it to
 					// 'disappear' from Navigator.
 					try {
-						((IFileEditorInput) input).getFile().refreshLocal(IResource.DEPTH_ZERO, new NullProgressMonitor());
+						( (IFileEditorInput) input).getFile().refreshLocal(IResource.DEPTH_ZERO, new NullProgressMonitor() );
 					} catch (CoreException ce) {
 						// very unlikely
 						MapperPlugin.getDefault().logException(ce);
 					}
-					throw new PartInitException("Resource does not exist" + input.getName());
+					throw new PartInitException("Resource does not exist" + input.getName() );
 				} else {
-					throw new PartInitException("Editor could not be open" + input.getName());
+					throw new PartInitException("Editor could not be open" + input.getName() );
 				}
 			}
 		} else if (input instanceof IStorageEditorInput) {
 			InputStream contents = null;
 			try {
-				contents = ((IStorageEditorInput) input).getStorage().getContents();
+				contents = ( (IStorageEditorInput) input).getStorage().getContents();
 			} catch (CoreException noStorageExc) {
 			}
 			if (contents == null) {
-				throw new PartInitException("Editor could not be open on " + input.getName());
+				throw new PartInitException("Editor could not be open on " + input.getName() );
 			} else {
 				try {
 					contents.close();
@@ -287,14 +287,14 @@ public class ReverseEngineeringMultiPageEditor extends FormEditor {
 	 * Subclasses of <code> EditorPart </code> must implement this method.
 	 * Within the implementation subclasses should verify that the input type
 	 * is acceptable and then save the site and input. Here is sample code:
-	 * </p><pre> if (!(input instanceof IFileEditorInput)) throw new
+	 * </p><pre> if (!(input instanceof IFileEditorInput) ) throw new
 	 * PartInitException("Invalid Input: Must be IFileEditorInput");
 	 * setSite(site); setInput(editorInput); </pre>
 	 */
 	protected boolean fileDoesNotExist(IFileEditorInput input, Throwable[] coreException) {
 		boolean result = false;
 		InputStream inStream = null;
-		if ((!(input.exists())) || (!(input.getFile().exists()))) {
+		if ( (!(input.exists() ) ) || (!(input.getFile().exists() ) ) ) {
 			result = true;
 		} else {
 			try {
@@ -409,14 +409,14 @@ public class ReverseEngineeringMultiPageEditor extends FormEditor {
 			window.getShell().addShellListener(partListener);
 		} catch (Exception e) {
 			if (e instanceof SourceEditingRuntimeException) {
-				Throwable t = ((SourceEditingRuntimeException) e).getOriginalException();
+				Throwable t = ( (SourceEditingRuntimeException) e).getOriginalException();
 				if (t instanceof IOException) {
 					System.out.println(t);
 					// file not found
 				}
 			}
 		}
-		setPartName(input.getName());
+		setPartName(input.getName() );
 	}*/
 
 	/*
@@ -477,7 +477,7 @@ public class ReverseEngineeringMultiPageEditor extends FormEditor {
 		if (getTextEditor() == null)
 			return;
 
-		getTextEditor().safelySanityCheckState(getEditorInput());
+		getTextEditor().safelySanityCheckState(getEditorInput() );
 
 	}
 
@@ -498,7 +498,7 @@ public class ReverseEngineeringMultiPageEditor extends FormEditor {
 		// experience :( ... if they do, we'll reset to default and continue
 		// rather than throw an assertion error in the setActivePage(int)
 		// method.
-		if (activePageIndex < 0 || activePageIndex >= getPageCount()) {
+		if (activePageIndex < 0 || activePageIndex >= getPageCount() ) {
 			activePageIndex = getDefaultPageIndex();
 		}
 		setActivePage(activePageIndex);
@@ -515,8 +515,8 @@ public class ReverseEngineeringMultiPageEditor extends FormEditor {
 		// TextViewer to set us straight
 		super.setInput(input);
 		/*if (fDesignViewer != null)
-			fDesignViewer.setModel(getModel());*/
-		setPartName(input.getName());
+			fDesignViewer.setModel(getModel() );*/
+		setPartName(input.getName() );
 	}
 
 	/**

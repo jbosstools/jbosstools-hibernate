@@ -50,12 +50,12 @@ public class ReverseEngineeringMultiPageEditorContributor extends MultiPageEdito
 
 	protected void initDesignViewerActionBarContributor(IActionBars actionBars) {
 		if (designViewerActionBarContributor != null)
-			designViewerActionBarContributor.init(actionBars, getPage());
+			designViewerActionBarContributor.init(actionBars, getPage() );
 	}
 
 	protected void initSourceViewerActionContributor(IActionBars actionBars) {
 		if (sourceViewerActionContributor != null)
-			sourceViewerActionContributor.init(actionBars, getPage());
+			sourceViewerActionContributor.init(actionBars, getPage() );
 	}
 
 	public void dispose() {
@@ -190,7 +190,7 @@ public class ReverseEngineeringMultiPageEditorContributor extends MultiPageEdito
 			} else {
 				sourceViewerActionContributor.setActiveEditor(activeEditor);
 			}
-			((ISourceViewerActionBarContributor) sourceViewerActionContributor).setViewerSpecificContributionsEnabled(false);
+			( (ISourceViewerActionBarContributor) sourceViewerActionContributor).setViewerSpecificContributionsEnabled(false);
 		}
 	}
 
@@ -201,7 +201,7 @@ public class ReverseEngineeringMultiPageEditorContributor extends MultiPageEdito
 
 		if (sourceViewerActionContributor != null && sourceViewerActionContributor instanceof ISourceViewerActionBarContributor) {
 			sourceViewerActionContributor.setActiveEditor(activeEditor);
-			((ISourceViewerActionBarContributor) sourceViewerActionContributor).setViewerSpecificContributionsEnabled(true);
+			( (ISourceViewerActionBarContributor) sourceViewerActionContributor).setViewerSpecificContributionsEnabled(true);
 		}
 	}
 }

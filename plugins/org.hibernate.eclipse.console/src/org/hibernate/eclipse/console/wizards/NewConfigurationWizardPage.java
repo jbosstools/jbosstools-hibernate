@@ -112,7 +112,7 @@ public class NewConfigurationWizardPage extends WizardPage {
         label = new Label(container, SWT.NULL);
         label.setText("&Database dialect:");
         dialectCombo = new Combo(container, SWT.NULL);
-        fillHerUp(dialectCombo, helper.getDialectNames());
+        fillHerUp(dialectCombo, helper.getDialectNames() );
         dialectCombo.select(0);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         gd.grabExcessHorizontalSpace = true;
@@ -120,7 +120,7 @@ public class NewConfigurationWizardPage extends WizardPage {
         dialectCombo.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
                 String[] driverClasses = helper.getDriverClasses(helper
-                        .getDialectClass(dialectCombo.getText()));
+                        .getDialectClass(dialectCombo.getText() ) );
                 fillHerUp(driver_classCombo, driverClasses);
                 dialogChanged();
             }
@@ -143,7 +143,7 @@ public class NewConfigurationWizardPage extends WizardPage {
         driver_classCombo.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent e) {
                 String[] connectionURLS = helper
-                        .getConnectionURLS(driver_classCombo.getText());
+                        .getConnectionURLS(driver_classCombo.getText() );
                 fillHerUp(urlCombo, connectionURLS);
                 dialogChanged();
             }
@@ -245,8 +245,8 @@ public class NewConfigurationWizardPage extends WizardPage {
                 if (obj instanceof IContainer)
                     container = (IContainer) obj;
                 else
-                    container = ((IResource) obj).getParent();
-                containerText.setText(container.getFullPath().toString());
+                    container = ( (IResource) obj).getParent();
+                containerText.setText(container.getFullPath().toString() );
             }
         }
         fileText.setText("hibernate.cfg.xml");*/
@@ -257,7 +257,7 @@ public class NewConfigurationWizardPage extends WizardPage {
      */
     private void dialogChanged() {
         IResource container = ResourcesPlugin.getWorkspace().getRoot()
-                .findMember(new Path(getContainerName()));
+                .findMember(new Path(getContainerName() ) );
         String fileName = getFileName();
 
         if (getContainerName().length() == 0) {
@@ -265,12 +265,12 @@ public class NewConfigurationWizardPage extends WizardPage {
             return;
         }
         if (container == null
-                || (container.getType() & (IResource.PROJECT | IResource.FOLDER)) == 0) {
+                || (container.getType() & (IResource.PROJECT | IResource.FOLDER) ) == 0) {
             updateStatus("File container must exist");
             return;
         }        
         
-        if (!container.isAccessible()) {
+        if (!container.isAccessible() ) {
             updateStatus("Project must be writable");
             return;
         }
@@ -283,13 +283,13 @@ public class NewConfigurationWizardPage extends WizardPage {
             updateStatus("File name must be valid");
             return;
         }
-        if (!fileName.endsWith(".cfg.xml")) {
+        if (!fileName.endsWith(".cfg.xml") ) {
             updateStatus("File extension must be \"cfg.xml\"");
             return;
         }
 
-        IFile file = ((IContainer) container).getFile(new Path(fileName));
-        if(file.exists()) {
+        IFile file = ( (IContainer) container).getFile(new Path(fileName) );
+        if(file.exists() ) {
             updateStatus("File already exists");
             return;
         }
@@ -314,7 +314,7 @@ public class NewConfigurationWizardPage extends WizardPage {
      * @return
      */
     public String getSessionFactoryName() {
-        return nullIfEmpty(sessionFactoryNameText.getText());
+        return nullIfEmpty(sessionFactoryNameText.getText() );
     }
 
     /**
@@ -332,43 +332,43 @@ public class NewConfigurationWizardPage extends WizardPage {
      * @return
      */
     public String getDialect() {
-    	return nullIfEmpty(helper.getDialectClass(dialectCombo.getText()));
+    	return nullIfEmpty(helper.getDialectClass(dialectCombo.getText() ) );
     }
 
     /**
      * @return
      */
     public String getDriver() {
-        return nullIfEmpty(driver_classCombo.getText());
+        return nullIfEmpty(driver_classCombo.getText() );
     }
 
     /**
      * @return
      */
     public String getConnectionURL() {
-        return nullIfEmpty(urlCombo.getText());
+        return nullIfEmpty(urlCombo.getText() );
     }
 
     /**
      * @return
      */
     public String getUsername() {
-        return nullIfEmpty(usernameText.getText());
+        return nullIfEmpty(usernameText.getText() );
     }
 
     /**
      * @return
      */
     public String getPassword() {
-        return nullIfEmpty(passwordText.getText());
+        return nullIfEmpty(passwordText.getText() );
     }
 
     /* (non-Javadoc)
      * @see org.eclipse.jface.dialogs.DialogPage#setVisible(boolean)
      */
     public void setVisible(boolean visible) {       
-        containerText.setText(fileCreation.getContainerFullPath().toPortableString());
-        fileText.setText(fileCreation.getFileName());        
+        containerText.setText(fileCreation.getContainerFullPath().toPortableString() );
+        fileText.setText(fileCreation.getFileName() );        
         super.setVisible(visible);
         if(visible) {
             sessionFactoryNameText.setFocus();

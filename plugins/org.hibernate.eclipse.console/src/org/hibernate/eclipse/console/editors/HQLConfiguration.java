@@ -33,7 +33,7 @@ public class HQLConfiguration extends SourceViewerConfiguration {
 			scanner.setDefaultReturnToken(
 				new Token(
 					new TextAttribute(
-						colorManager.getColor(IHQLColorConstants.DEFAULT))));
+						colorManager.getColor(IHQLColorConstants.DEFAULT) ) ) );
 		}
 		return scanner;
 	}
@@ -43,7 +43,7 @@ public class HQLConfiguration extends SourceViewerConfiguration {
 			tagScanner.setDefaultReturnToken(
 				new Token(
 					new TextAttribute(
-						colorManager.getColor(IHQLColorConstants.TAG))));
+						colorManager.getColor(IHQLColorConstants.TAG) ) ) );
 		}
 		return tagScanner;
 	}
@@ -52,18 +52,18 @@ public class HQLConfiguration extends SourceViewerConfiguration {
 		PresentationReconciler reconciler = new PresentationReconciler();
 
 		DefaultDamagerRepairer dr =
-			new DefaultDamagerRepairer(getXMLTagScanner());
+			new DefaultDamagerRepairer(getXMLTagScanner() );
 		reconciler.setDamager(dr, HQLPartitionScanner.HQL_TAG);
 		reconciler.setRepairer(dr, HQLPartitionScanner.HQL_TAG);
 
-		dr = new DefaultDamagerRepairer(getHQLScanner());
+		dr = new DefaultDamagerRepairer(getHQLScanner() );
 		reconciler.setDamager(dr, IDocument.DEFAULT_CONTENT_TYPE);
 		reconciler.setRepairer(dr, IDocument.DEFAULT_CONTENT_TYPE);
 
 		NonRuleBasedDamagerRepairer ndr =
 			new NonRuleBasedDamagerRepairer(
 				new TextAttribute(
-					colorManager.getColor(IHQLColorConstants.XML_COMMENT)));
+					colorManager.getColor(IHQLColorConstants.XML_COMMENT) ) );
 		reconciler.setDamager(ndr, HQLPartitionScanner.HQL_COMMENT);
 		reconciler.setRepairer(ndr, HQLPartitionScanner.HQL_COMMENT);
 

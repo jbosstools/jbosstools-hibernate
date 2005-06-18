@@ -14,7 +14,7 @@ public class ConfigurationsLabelProvider implements ILabelProvider {
 	 */
 	public Image getImage(Object element) {
        if (element != null && element instanceof BaseNode) {
-            return EclipseImages.getImage(((BaseNode) element).getIconName());
+            return EclipseImages.getImage( ( (BaseNode) element).getIconName() );
         } else {
             return null;
         }
@@ -25,7 +25,7 @@ public class ConfigurationsLabelProvider implements ILabelProvider {
 	 */
 	public String getText(Object element) {
 		if (element != null && element instanceof BaseNode) {
-            String labelName = ((BaseNode) element).getName();
+            String labelName = ( (BaseNode) element).getName();
             return labelName;
 		} else {
             return element == null ? "<<empty>>" : element.toString();

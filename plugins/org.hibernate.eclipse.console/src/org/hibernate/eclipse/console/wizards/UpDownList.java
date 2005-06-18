@@ -30,7 +30,7 @@ public abstract class UpDownList {
 
 	private SelectionListener buttonListener= new SelectionAdapter() {
 		public void widgetSelected(SelectionEvent e) {
-			handleButtonPressed((Button) e.widget);
+			handleButtonPressed( (Button) e.widget);
 		}
 	};
 	
@@ -74,7 +74,7 @@ public abstract class UpDownList {
 		//TODO: viewer.setLabelProvider(labelProvider);
 		
 		Table builderTable= tableView.getTable();
-		builderTable.setLayoutData(new GridData(GridData.FILL_BOTH));
+		builderTable.setLayoutData(new GridData(GridData.FILL_BOTH) );
 		builderTable.setFont(font);
 		builderTable.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -89,7 +89,7 @@ public abstract class UpDownList {
 		layout.marginWidth = 0;
 		buttonArea.setLayout(layout);
 		buttonArea.setFont(font);
-		buttonArea.setLayoutData(new GridData(GridData.FILL_VERTICAL));
+		buttonArea.setLayoutData(new GridData(GridData.FILL_VERTICAL) );
 		
 		String[] addButtonLabels = getAddButtonLabels();
 		addButton = new Button[addButtonLabels.length];
@@ -184,7 +184,7 @@ public abstract class UpDownList {
 			int numSelected= selection.size();
 			
 			Iterator iterator= selection.iterator();
-			while (iterator.hasNext()) {
+			while (iterator.hasNext() ) {
 				Object item= iterator.next();
 				viewer.remove(item);
 			}
@@ -251,7 +251,7 @@ public abstract class UpDownList {
 		//data.verticalAlignment = GridData.FILL;
 		
 		button.setLayoutData(data);
-		button.setFont(parent.getFont());
+		button.setFont(parent.getFont() );
 		button.setText(label);
 		button.setEnabled(false);
 		button.addSelectionListener(buttonListener);

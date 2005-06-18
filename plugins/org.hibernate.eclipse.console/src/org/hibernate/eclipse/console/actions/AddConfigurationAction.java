@@ -26,7 +26,7 @@ public class AddConfigurationAction extends Action {
 	public AddConfigurationAction(IViewPart part) {
 		this.part = part;
 		setText("Add Configuration");
-		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.ADD));
+		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.ADD) );
 	}
 
 	public void run() {

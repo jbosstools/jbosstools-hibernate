@@ -8,7 +8,7 @@ public class HQLTagScanner extends RuleBasedScanner {
 	public HQLTagScanner(ColorManager manager) {
 		IToken string =
 			new Token(
-				new TextAttribute(manager.getColor(IHQLColorConstants.STRING)));
+				new TextAttribute(manager.getColor(IHQLColorConstants.STRING) ) );
 
 		IRule[] rules = new IRule[3];
 
@@ -17,7 +17,7 @@ public class HQLTagScanner extends RuleBasedScanner {
 		// Add a rule for single quotes
 		rules[1] = new SingleLineRule("'", "'", string, '\\');
 		// Add generic whitespace rule.
-		rules[2] = new WhitespaceRule(new HQLWhitespaceDetector());
+		rules[2] = new WhitespaceRule(new HQLWhitespaceDetector() );
 
 		setRules(rules);
 	}

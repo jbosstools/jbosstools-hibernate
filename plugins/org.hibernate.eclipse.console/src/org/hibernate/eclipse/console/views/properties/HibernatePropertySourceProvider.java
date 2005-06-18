@@ -25,7 +25,7 @@ public class HibernatePropertySourceProvider implements IPropertySourceProvider
 	public IPropertySource getPropertySource(Object object) {
 		if (object instanceof QueryPage)
 		{
-			return new QueryPagePropertySource((QueryPage)object);
+			return new QueryPagePropertySource( (QueryPage)object);
 		}
 		else if (object instanceof Property)
 		{
@@ -35,7 +35,7 @@ public class HibernatePropertySourceProvider implements IPropertySourceProvider
 			//			 maybe we should be hooked up with the queryview to get this ?
 			Session currentSession = view.getSelectedQueryPage().getSession();
 			ConsoleConfiguration currentConfiguration = view.getSelectedQueryPage().getConsoleConfiguration();
-			if(currentSession.contains(object)) {
+			if(currentSession.contains(object) ) {
 				return new EntityPropertySource(object, currentSession, currentConfiguration);	
 			} else {
 				return null;

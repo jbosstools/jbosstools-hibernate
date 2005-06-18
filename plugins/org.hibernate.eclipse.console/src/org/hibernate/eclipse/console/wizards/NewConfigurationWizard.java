@@ -42,7 +42,7 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 */
 	public NewConfigurationWizard() {
 		super();
-        setDefaultPageImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.NEW_WIZARD));
+        setDefaultPageImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.NEW_WIZARD) );
 		setNeedsProgressMonitor(true);
 	}
 
@@ -87,12 +87,12 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 */
 	public boolean performFinish() {
 		final Properties props = new Properties();
-        putIfNotNull(props, Environment.SESSION_FACTORY_NAME, page.getSessionFactoryName());
-        putIfNotNull(props, Environment.DIALECT, page.getDialect());
-        putIfNotNull(props, Environment.DRIVER, page.getDriver());
-        putIfNotNull(props, Environment.URL, page.getConnectionURL());
-        putIfNotNull(props, Environment.USER, page.getUsername());
-        putIfNotNull(props, Environment.PASS, page.getPassword());
+        putIfNotNull(props, Environment.SESSION_FACTORY_NAME, page.getSessionFactoryName() );
+        putIfNotNull(props, Environment.DIALECT, page.getDialect() );
+        putIfNotNull(props, Environment.DRIVER, page.getDriver() );
+        putIfNotNull(props, Environment.URL, page.getConnectionURL() );
+        putIfNotNull(props, Environment.USER, page.getUsername() );
+        putIfNotNull(props, Environment.PASS, page.getPassword() );
         final IFile file = cPage.createNewFile();
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
@@ -143,7 +143,7 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 		monitor.beginTask("Creating " + file.getName(), 2);		
 		try {
 			InputStream stream = openContentStream(props);
-			if (file.exists()) {
+			if (file.exists() ) {
                 file.setContents(stream, true, true, monitor);                
 			} else {
 				file.create(stream, true, monitor);
@@ -178,10 +178,10 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 		hce.setOutput(stringWriter);
         hce.start();       
         try {
-            return new ByteArrayInputStream(stringWriter.toString().getBytes("UTF-8"));
+            return new ByteArrayInputStream(stringWriter.toString().getBytes("UTF-8") );
         } catch (UnsupportedEncodingException uec) {
             HibernateConsolePlugin.getDefault().logErrorMessage("Problems converting to UTF-8", uec);
-            return new ByteArrayInputStream(stringWriter.toString().getBytes());
+            return new ByteArrayInputStream(stringWriter.toString().getBytes() );
         }
 	}
 

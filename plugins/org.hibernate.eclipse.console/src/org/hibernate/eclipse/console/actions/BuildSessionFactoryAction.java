@@ -40,10 +40,10 @@ public class BuildSessionFactoryAction extends ConsoleConfigurationBasedAction {
 	protected void doRun() {
 		for (Iterator i = getSelectedNonResources().iterator(); i.hasNext();) {
         	try {
-            BaseNode node = ((BaseNode) i.next());
+            BaseNode node = ( (BaseNode) i.next() );
             if(node instanceof ConfigurationNode) {
             	ConsoleConfiguration config = node.getConsoleConfiguration();
-            	if(config.isSessionFactoryCreated()) {
+            	if(config.isSessionFactoryCreated() ) {
             		config.reset();
             	} else {
             		//DriverManager.setLogStream(System.out);
@@ -66,7 +66,7 @@ public class BuildSessionFactoryAction extends ConsoleConfigurationBasedAction {
 	 * @param config
 	 */
 	protected boolean updateState(ConsoleConfiguration config) {
-		setEnabledWhenNoSessionFactory(!config.isSessionFactoryCreated());
+		setEnabledWhenNoSessionFactory(!config.isSessionFactoryCreated() );
 		if(enabledWhenNoSessionFactory) {
 			setText("Create SessionFactory");
 		} else {

@@ -55,7 +55,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 	 */
 	public ArtifactGeneratorWizard() {
 		super();
-        setDefaultPageImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.NEW_WIZARD));
+        setDefaultPageImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.NEW_WIZARD) );
 		setNeedsProgressMonitor(true);
 	}
 	
@@ -77,7 +77,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
         final String outputPackage = page.getOutputPackage();
         final IPath output = page.getOutputDirectory();
         
-        if(!MessageDialog.openQuestion(getShell(), "Start artifact generation", "Do you want to start generating artifcats into " + output.toPortableString() + ",\npossibly overwriting existing files in this directory ?")) {
+        if(!MessageDialog.openQuestion(getShell(), "Start artifact generation", "Do you want to start generating artifcats into " + output.toPortableString() + ",\npossibly overwriting existing files in this directory ?") ) {
             return false;
         }
         
@@ -140,7 +140,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 		final IResource resource = root.findMember(output);
         final IResource templateres = root.findMember(templateDir);
 		final IResource revengres = root.findMember(revengsettings);
-		/*if (!resource.exists() || !(resource instanceof IContainer)) {
+		/*if (!resource.exists() || !(resource instanceof IContainer) ) {
 			throwCoreException("Output directory \"" + configName + "\" does not exist.");
 		}*/
 		/*IContainer container = (IContainer) resource;*/

@@ -44,12 +44,12 @@ public class JTidyFormatAction implements IObjectActionDelegate {
 	 * @see IActionDelegate#run(IAction)
 	 */
 	public void run(IAction action) {
-		IStructuredSelection selection = (IStructuredSelection) ((PluginAction)action).getSelection();
+		IStructuredSelection selection = (IStructuredSelection) ( (PluginAction)action).getSelection();
         
-        if(selection!=null && MessageDialog.openQuestion(targetPart.getSite().getShell(), "Format with JTidy", "Do you want to format " + selection.size() + " xml files with JTidy ?")) {
+        if(selection!=null && MessageDialog.openQuestion(targetPart.getSite().getShell(), "Format with JTidy", "Do you want to format " + selection.size() + " xml files with JTidy ?") ) {
             Iterator iterator = selection.iterator();
             try {
-            while(iterator.hasNext()) {
+            while(iterator.hasNext() ) {
                 IFile file = (IFile) iterator.next();
                 InputStream contents = null ;
                 ByteArrayOutputStream bos = null;
@@ -58,7 +58,7 @@ public class JTidyFormatAction implements IObjectActionDelegate {
                     contents = file.getContents();
                     bos = new ByteArrayOutputStream();
                     XMLPrettyPrinter.prettyPrint(contents, bos);
-                    stream = new ByteArrayInputStream(bos.toByteArray());
+                    stream = new ByteArrayInputStream(bos.toByteArray() );
                     file.setContents(stream, true, true, null);
                 } finally {
                     if(stream!=null) stream.close();

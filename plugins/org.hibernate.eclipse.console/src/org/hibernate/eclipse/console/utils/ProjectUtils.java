@@ -20,11 +20,11 @@ public class ProjectUtils {
 	 * @throws OperationCanceledException if job were cancelled or CoreException if something went wrong. 
 	 */
 	public static boolean addProjectNature(IProject project, String nature, IProgressMonitor monitor) throws CoreException {
-		if (monitor != null && monitor.isCanceled()) {
+		if (monitor != null && monitor.isCanceled() ) {
 			throw new OperationCanceledException();
 		}
 		
-		if (!project.hasNature(nature)) {
+		if (!project.hasNature(nature) ) {
 			IProjectDescription description = project.getDescription();
 			String[] prevNatures= description.getNatureIds();
 			String[] newNatures= new String[prevNatures.length + 1];
@@ -40,17 +40,17 @@ public class ProjectUtils {
 	}
 
 	public static boolean removeProjectNature(IProject project, String nature, NullProgressMonitor monitor) throws CoreException {
-		if (monitor != null && monitor.isCanceled()) {
+		if (monitor != null && monitor.isCanceled() ) {
 			throw new OperationCanceledException();
 		}
 		
-		if (project.hasNature(nature)) {
+		if (project.hasNature(nature) ) {
 			IProjectDescription description = project.getDescription();
 			
 			String[] natures = description.getNatureIds();
 	        String[] newNatures = new String[natures.length - 1];
 	        for(int i = 0; i < natures.length; i++) {
-	            if (!natures[i].equals(nature))
+	            if (!natures[i].equals(nature) )
 	                newNatures[i] = natures[i];
 	        }
 	        description.setNatureIds(newNatures);

@@ -51,7 +51,7 @@ public class HBMXMLHyperlinkDetector implements IHyperlinkDetector {
 		}
 		
 		IDocument document = textViewer.getDocument();
-		Node currentNode = getCurrentNode(document, region.getOffset());
+		Node currentNode = getCurrentNode(document, region.getOffset() );
 		if (currentNode != null) {
 		
 			short nodeType = currentNode.getNodeType();
@@ -59,7 +59,7 @@ public class HBMXMLHyperlinkDetector implements IHyperlinkDetector {
 									
 			} else if (nodeType == Node.ELEMENT_NODE){
 
-				Attr currentAttrNode = getCurrentAttrNode(currentNode, region.getOffset());
+				Attr currentAttrNode = getCurrentAttrNode(currentNode, region.getOffset() );
 				
 				if(currentAttrNode!=null) {
 					String path = currentNode.getNodeName() + ">" + currentAttrNode.getName();
@@ -89,7 +89,7 @@ public class HBMXMLHyperlinkDetector implements IHyperlinkDetector {
 			if (nodeType == Node.DOCUMENT_TYPE_NODE) {
 				// handle doc type node
 				IDOMNode docNode = (IDOMNode) node;
-				hyperRegion = new Region(docNode.getStartOffset(), docNode.getEndOffset() - docNode.getStartOffset());
+				hyperRegion = new Region(docNode.getStartOffset(), docNode.getEndOffset() - docNode.getStartOffset() );
 			}
 			else if (nodeType == Node.ATTRIBUTE_NODE) {
 				// handle attribute nodes
@@ -98,7 +98,7 @@ public class HBMXMLHyperlinkDetector implements IHyperlinkDetector {
 				int regOffset = att.getValueRegionStartOffset();
 				int regLength = att.getValueRegion().getTextLength();
 				String attValue = att.getValueRegionText();
-				if (StringUtils.isQuoted(attValue)) {
+				if (StringUtils.isQuoted(attValue) ) {
 					regOffset = ++regOffset;
 					regLength = regLength - 2;
 				}
@@ -109,7 +109,7 @@ public class HBMXMLHyperlinkDetector implements IHyperlinkDetector {
 	}
 	
 	private Attr getCurrentAttrNode(Node node, int offset) {
-		if ((node instanceof IndexedRegion) && ((IndexedRegion) node).contains(offset) && (node.hasAttributes())) {
+		if ( (node instanceof IndexedRegion) && ( (IndexedRegion) node).contains(offset) && (node.hasAttributes() ) ) {
 			NamedNodeMap attrs = node.getAttributes();
 			// go through each attribute in node and if attribute contains
 			// offset, return that attribute
@@ -117,7 +117,7 @@ public class HBMXMLHyperlinkDetector implements IHyperlinkDetector {
 				// assumption that if parent node is of type IndexedRegion,
 				// then its attributes will also be of type IndexedRegion
 				IndexedRegion attRegion = (IndexedRegion) attrs.item(i);
-				if (attRegion.contains(offset)) {
+				if (attRegion.contains(offset) ) {
 					return (Attr) attrs.item(i);
 				}
 			}

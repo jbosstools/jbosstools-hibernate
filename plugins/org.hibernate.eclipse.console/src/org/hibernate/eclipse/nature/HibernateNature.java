@@ -44,7 +44,7 @@ public class HibernateNature implements IProjectNature {
 		   boolean found = false;
 
 		   for (int i = 0; i < commands.length; ++i) {
-		      if (commands[i].getBuilderName().equals(HibernateBuilder.BUILDER_ID)) {
+		      if (commands[i].getBuilderName().equals(HibernateBuilder.BUILDER_ID) ) {
 		         found = true;
 		         break;
 		      }
@@ -54,10 +54,10 @@ public class HibernateNature implements IProjectNature {
 		      ICommand command = desc.newCommand();
 		      command.setBuilderName(HibernateBuilder.BUILDER_ID);
 		      ArrayList list = new ArrayList();
-		      list.addAll(Arrays.asList(commands));
+		      list.addAll(Arrays.asList(commands) );
 		      list.add(command);
-		      desc.setBuildSpec((ICommand[])list.toArray(new ICommand[]{}));
-		      project.setDescription(desc, new NullProgressMonitor());
+		      desc.setBuildSpec( (ICommand[])list.toArray(new ICommand[]{}) );
+		      project.setDescription(desc, new NullProgressMonitor() );
 		   }
 	}
 
@@ -81,12 +81,12 @@ public class HibernateNature implements IProjectNature {
 	
 	public String getDefaultConsoleConfigurationName() {
 		IJavaProject prj = JavaCore.create(project);
-		IScopeContext scope = new ProjectScope(prj.getProject());
+		IScopeContext scope = new ProjectScope(prj.getProject() );
 		
 		Preferences node = scope.getNode("org.hibernate.eclipse.console");
 		
 		if(node!=null) {
-			String cfg = node.get("default.configuration", prj.getProject().getName());
+			String cfg = node.get("default.configuration", prj.getProject().getName() );
 			return cfg;						
 		} else {
 			return null;
@@ -118,7 +118,7 @@ public class HibernateNature implements IProjectNature {
 		private ConsoleConfiguration ccfg;
 
 		public ReadDatabaseMetaData(ConsoleConfiguration ccfg) {
-			super("Reading database metadata for " + getProject().getName());
+			super("Reading database metadata for " + getProject().getName() );
 			this.ccfg = ccfg;
 		}
 		
@@ -137,9 +137,9 @@ public class HibernateNature implements IProjectNature {
 				List result = new ArrayList();
 				Iterator tabs = jcfg.getTableMappings();
 				
-				while (tabs.hasNext()) {
+				while (tabs.hasNext() ) {
 					Table table = (Table) tabs.next();
-					monitor.subTask(table.getName());
+					monitor.subTask(table.getName() );
 					result.add(table);
 				}
 				

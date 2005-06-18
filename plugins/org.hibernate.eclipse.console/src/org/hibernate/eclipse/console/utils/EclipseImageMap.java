@@ -48,7 +48,7 @@ public class EclipseImageMap extends ImageMap {
 	protected void declareRegistryImage(String key, String path) {
 		ImageDescriptor desc = ImageDescriptor.getMissingImageDescriptor();
 		try {
-			desc = ImageDescriptor.createFromURL(makeIconFileURL(path));
+			desc = ImageDescriptor.createFromURL(makeIconFileURL(path) );
 		} catch (MalformedURLException me) {
 			HibernateConsolePlugin.getDefault().log(me);
 		}

@@ -43,9 +43,9 @@ import org.hibernate.eclipse.console.views.properties.HibernatePropertySourcePro
 public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 	protected TabFolder tabs = null;
 
-	private Set listeners = Collections.synchronizedSet(new HashSet());
+	private Set listeners = Collections.synchronizedSet(new HashSet() );
 	
-	protected List pageViewers = Collections.synchronizedList(new ArrayList());
+	protected List pageViewers = Collections.synchronizedList(new ArrayList() );
 	
 	ListDataListener dataListener = new ListDataListener() {
 		public void contentsChanged(ListDataEvent e) {
@@ -80,7 +80,7 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 		Collection additions = getAddedResultSets();
 		for (Iterator i = additions.iterator(); i.hasNext();) {
 			QueryPage results = (QueryPage) i.next();
-			this.pageViewers.add(new QueryPageViewer(this, results));
+			this.pageViewers.add(new QueryPageViewer(this, results) );
 		}
 		
 		Collection deletions = getRemovedResultSets(); 
@@ -99,7 +99,7 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 			fireSelectionChangedEvent();
 		} else if (selection == null && newSelection != null) {
 			fireSelectionChangedEvent();
-		} else if (selection != null && !selection.equals(newSelection)) {
+		} else if (selection != null && !selection.equals(newSelection) ) {
 			fireSelectionChangedEvent();
 		}
 	}
@@ -148,7 +148,7 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 	public void fireSelectionChangedEvent(ISelection selection) {
 		for (Iterator i = this.listeners.iterator(); i.hasNext();) {
 			ISelectionChangedListener listener = (ISelectionChangedListener) i.next();
-			listener.selectionChanged(new SelectionChangedEvent(this, selection));
+			listener.selectionChanged(new SelectionChangedEvent(this, selection) );
 		}
 		
 		/*QueryPageViewer results = getSelectedQueryPageViewer();
@@ -167,10 +167,10 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 
 	public Object getAdapter(Class adapter) {
 
-		if (adapter.equals(IPropertySheetPage.class))
+		if (adapter.equals(IPropertySheetPage.class) )
 		{
 			PropertySheetPage page = new PropertySheetPage();
-			page.setPropertySourceProvider(new HibernatePropertySourceProvider(this));
+			page.setPropertySourceProvider(new HibernatePropertySourceProvider(this) );
 			return page;
 		}
 		return super.getAdapter(adapter);
@@ -194,7 +194,7 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 
 	protected QueryPageViewer getSelectedQueryPageViewer() {
 		QueryPageViewer selection = null;
-		if(this.tabs.isDisposed()) {
+		if(this.tabs.isDisposed() ) {
 			return selection;
 		} else {
 			int index = this.tabs.getSelectionIndex();
@@ -203,7 +203,7 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 				for (Iterator i = this.pageViewers.iterator(); 
 				selection == null && i.hasNext();) {
 					QueryPageViewer viewer = (QueryPageViewer) i.next();
-					if (item == viewer.getTabItem()) {
+					if (item == viewer.getTabItem() ) {
 						selection = viewer;
 					}
 				}
@@ -226,7 +226,7 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 
 	private Collection getAddedResultSets() {
 		Collection collection = KnownConfigurations.getInstance().getQueryPageModel().getPagesAsList();
-		collection.removeAll(getQueryPages());
+		collection.removeAll(getQueryPages() );
 		return collection;
 	}
 	
@@ -234,7 +234,7 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 		List list = new ArrayList();
 		for (Iterator i = this.pageViewers.iterator(); i.hasNext();) {
 			QueryPageViewer viewer = (QueryPageViewer) i.next();
-			list.add(viewer.getQueryPage());
+			list.add(viewer.getQueryPage() );
 		}
 		return list;
 	}
@@ -243,7 +243,7 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 		QueryPageViewer viewer = null;
 		for (Iterator i = this.pageViewers.iterator(); viewer == null && i.hasNext();) {
 			QueryPageViewer temp = (QueryPageViewer) i.next();
-			if (results != null && results.equals(temp.getQueryPage())) {
+			if (results != null && results.equals(temp.getQueryPage() ) ) {
 				viewer = temp;
 			}
 		}
