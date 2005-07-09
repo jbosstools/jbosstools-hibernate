@@ -29,6 +29,7 @@ import org.hibernate.console.ConsoleConfiguration.Command;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.tool.hbm2x.ConfigurationNavigator;
+import org.hibernate.tool.hbm2x.DAOExporter;
 import org.hibernate.tool.hbm2x.DocExporter;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
@@ -85,6 +86,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
         final String configurationName = page.getConfigurationName();
 		final boolean reveng = page.isReverseEngineerEnabled();
 		final boolean genjava = page.isGenerateJava();
+        final boolean gendao = page.isGenerateDao();
 		final boolean genhbm = page.isGenerateMappings();
 		final boolean gencfg = page.isGenerateCfg();
         final boolean preferRaw = page.isPreferRawCompositeIds();
@@ -95,7 +97,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
-					doFinish(configurationName, output, outputPackage, revengsettings, reveng, genjava, genhbm, gencfg, monitor, preferRaw, templatedir, ejb3, gendoc);
+doFinish(configurationName, output, outputPackage, revengsettings, reveng, genjava, gendao, genhbm, gencfg, monitor, preferRaw, templatedir, ejb3, gendoc);
 				} catch (CoreException e) {
 					throw new InvocationTargetException(e);
 				} finally {
@@ -131,7 +133,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 
 	private void doFinish(
 		String configName, IPath output,
-		String outputPackage, IPath revengsettings, boolean reveng, final boolean genjava, final boolean genhbm, final boolean gencfg, final IProgressMonitor monitor, boolean preferRawCompositeids, IPath templateDir, final boolean ejb3, final boolean gendoc)
+String outputPackage, IPath revengsettings, boolean reveng, final boolean genjava, final boolean gendao, final boolean genhbm, final boolean gencfg, final IProgressMonitor monitor, boolean preferRawCompositeids, IPath templateDir, final boolean ejb3, final boolean gendoc)
 		throws CoreException {
 		// create a sample file
 		monitor.beginTask("Generating artifacts for " + configName, 10);
@@ -180,6 +182,9 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 				javaExporter.setEjb3(ejb3);
 				javaExporter.setGenerics(ejb3);
 				javaExporter.setTemplatePaths(templatePaths);
+                // Add support for DAO generation
+                final DAOExporter daoExporter = new DAOExporter(cfg,outputdir);
+                daoExporter.setTemplatePaths(templatePaths);
 				final Exporter cfgExporter = new HibernateConfigurationExporter(cfg, outputdir); 
 				
 				if(genhbm) {
@@ -193,17 +198,23 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 					javaExporter.start();
 					monitor.worked(6);
 				}
+                
+                if(gendao) {
+                    monitor.subTask("DAO code");
+                    daoExporter.start();
+                    monitor.worked(7);
+                }
 				
 				if(gencfg) {
 					monitor.subTask("hibernate configuration");
 					cfgExporter.start();
-					monitor.worked(7);
+monitor.worked(8);
 				}
 				
 				if(gendoc) {
 					monitor.subTask("hibernate doc");
 					new DocExporter(cfg, outputdir).start();
-					monitor.worked(8);
+monitor.worked(9);
 				}
                 try {
                     resource.refreshLocal(IResource.DEPTH_INFINITE, monitor);

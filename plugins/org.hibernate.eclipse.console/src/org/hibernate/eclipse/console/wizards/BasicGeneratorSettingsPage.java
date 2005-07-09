@@ -51,6 +51,8 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 	private SelectionButtonDialogField generatejava;
 	private SelectionButtonDialogField enableEJB3annotations;
     
+    private SelectionButtonDialogField generatedao;
+    
 	private SelectionButtonDialogField generatemappings;
 
 	private SelectionButtonDialogField generatedocs;
@@ -90,7 +92,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 		
 		container.setLayout(layout);
 		layout.numColumns = 3;
-		layout.verticalSpacing = 9;
+layout.verticalSpacing = 10;
 		
 		consoleConfigurationName = new ComboDialogField(SWT.READ_ONLY);
 		consoleConfigurationName.setLabelText("Console &configuration:");
@@ -124,7 +126,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 		
         templatedir = new StringButtonDialogField(new IStringButtonAdapter() {
             public void changeControlPressed(DialogField field) {
-                IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  getTemplateDirectory(), new IPath[0], "Select output directory", "Choose directory in which the generated files will be stored", new String[0], false, true, false);
+                IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  getTemplateDirectory(), new IPath[0], "Select template directory", "Choose directory containing custom templates", new String[0], false, true, false);
                 if(paths!=null && paths.length==1) {
                     templatedir.setText( ( (paths[0]).toOSString() ) );
                 }                   
@@ -160,6 +162,9 @@ public class BasicGeneratorSettingsPage extends WizardPage {
         
         generatejava.attachDialogField(enableEJB3annotations);
         
+        generatedao = new SelectionButtonDialogField(SWT.CHECK);
+        generatedao.setLabelText("Generate DAO code (.java)");
+        
         useOwnTemplates = new SelectionButtonDialogField(SWT.CHECK);
         useOwnTemplates.setDialogFieldListener(fieldlistener);
         useOwnTemplates.setLabelText("Use custom templates");
@@ -191,6 +196,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 		generatejava.doFillIntoGrid(container, 3);
         fillLabel(container);
         enableEJB3annotations.doFillIntoGrid(container, 2);
+        generatedao.doFillIntoGrid(container, 3);
 		generatemappings.doFillIntoGrid(container, 3);
 		generatecfgfile.doFillIntoGrid(container, 3);
 		generatedocs.doFillIntoGrid(container, 3);
@@ -343,6 +349,13 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 	public boolean isGenerateJava() {
 		return generatejava.isSelected();
 	}
+    
+    /**
+     * @return
+     */
+    public boolean isGenerateDao() {
+        return generatedao.isSelected();
+    }   
 
 
 	/**
