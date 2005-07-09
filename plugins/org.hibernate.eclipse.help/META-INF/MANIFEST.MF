@@ -10,5 +10,6 @@ Bundle-Localization: plugin
 Export-Package: org.hibernate.eclipse.help
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.help
+ org.eclipse.help,
+ org.eclipse.help.ui
 Eclipse-AutoStart: true
