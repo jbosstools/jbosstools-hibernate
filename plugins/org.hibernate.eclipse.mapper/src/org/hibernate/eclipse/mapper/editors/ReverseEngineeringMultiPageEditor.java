@@ -333,46 +333,6 @@ public class ReverseEngineeringMultiPageEditor extends FormEditor {
 	}
 
 	/**
-	 * IExtendedMarkupEditor method
-	 */
-	public Node getCaretNode() {
-		if (getTextEditor() == null)
-			return null;
-
-		return getTextEditor().getCaretNode();
-	}
-
-	/**
-	 * IExtendedSimpleEditor method
-	 */
-	public int getCaretPosition() {
-		if (getTextEditor() == null)
-			return -1;
-
-		return getTextEditor().getCaretPosition();
-	}
-
-	/**
-	 * IExtendedSimpleEditor method
-	 */
-	public IDocument getDocument() {
-		if (getTextEditor() == null)
-			return null;
-
-		return getTextEditor().getDocument();
-	}
-
-	/**
-	 * IExtendedMarkupEditor method
-	 */
-	public Document getDOMDocument() {
-		if (getTextEditor() == null)
-			return null;
-
-		return getTextEditor().getDOMDocument();
-	}
-
-	/**
 	 * IExtendedSimpleEditor method
 	 */
 	public IEditorPart getEditorPart() {

@@ -1,9 +1,12 @@
 package org.hibernate.eclipse.mapper.views.contentoutline;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.eclipse.jface.viewers.StructuredViewer;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.views.properties.PropertySheetPage;
@@ -15,6 +18,8 @@ import org.eclipse.wst.xml.ui.internal.contentoutline.BufferedOutlineUpdater;
 import org.eclipse.wst.xml.ui.internal.contentoutline.JFaceNodeAdapter;
 import org.eclipse.wst.xml.ui.internal.contentoutline.JFaceNodeAdapterFactory;
 import org.eclipse.wst.xml.ui.internal.contentoutline.RefreshPropertySheetJob;
+import org.hibernate.console.ImageConstants;
+import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -34,9 +39,7 @@ public class JFaceNodeAdapterForXML extends JFaceNodeAdapter {
 		this.adapterFactory = adapterFactory;
 	}
 
-	
-
-	/**
+		/**
 	 * Fetches the label text specific to this object instance.
 	 */
 	public String getLabelText(Object object) {
@@ -56,6 +59,9 @@ public class JFaceNodeAdapterForXML extends JFaceNodeAdapter {
 	private String getNodeName(Object object) {
 		Node node = (Node) object;
 		String nodeName = node.getNodeName();
+		if(node.getNodeType()==Node.PROCESSING_INSTRUCTION_NODE && "xml".equals(nodeName)) {
+			return "xml (Hibernate Tools)";
+		}
 		return nodeName;
 	}
 
@@ -138,5 +144,30 @@ public class JFaceNodeAdapterForXML extends JFaceNodeAdapter {
 				}
 			}
 		}
+	}
+	
+	static Map nameToMap = new HashMap();
+	static {
+		nameToMap.put("many-to-one", ImageConstants.MANYTOONE);
+		nameToMap.put("one-to-many", ImageConstants.ONETOMANY);
+		nameToMap.put("property", ImageConstants.PROPERTY);	
+		nameToMap.put("class", ImageConstants.MAPPEDCLASS);
+		nameToMap.put("subclass", ImageConstants.MAPPEDCLASS);
+		nameToMap.put("joined-subclass", ImageConstants.MAPPEDCLASS);
+		nameToMap.put("union-subclass", ImageConstants.MAPPEDCLASS);
+		nameToMap.put("id", ImageConstants.IDPROPERTY);
+		nameToMap.put("one-to-one", ImageConstants.ONETOONE);
+		nameToMap.put("component", ImageConstants.ONETOONE);
+	}
+	
+	protected Image createImage(Object object) {
+		Node node = (Node) object;
+		if(node.getNodeType()==Node.ELEMENT_NODE) {
+			String key = (String) nameToMap.get( getNodeName(node) );
+			if(key!=null) {
+				return EclipseImages.getImage(key);
+			}
+		}
+		return super.createImage( object );
 	}
 }

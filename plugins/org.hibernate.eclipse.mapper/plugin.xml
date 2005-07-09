@@ -9,7 +9,7 @@
             file-extensions="xml"
             id="content-type.hbm.xml"
             name="Hibernate Mapping Content-Type"
-            priority="normal">
+            priority="low">
          <describer class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
             <parameter
                   name="element"
@@ -70,26 +70,29 @@
             class="org.hibernate.eclipse.mapper.editors.HBMXMLStructuredTextViewerConfiguration"
             target="org.hibernate.eclipse.mapper.content-type.hbm.xml"
             type="textviewerconfiguration"/>
+      <configuration
+            type="contentoutlineconfiguration"
+            target="org.hibernate.eclipse.mapper.content-type.hbm.xml" 
+            class="org.hibernate.eclipse.mapper.views.contentoutline.HibernateXMLContentOutlineConfiguration"            
+            />                       
 	  <configuration
             class="org.hibernate.eclipse.mapper.editors.CFGXMLStructuredTextViewerConfiguration"
             target="org.hibernate.eclipse.mapper.content-type.cfg.xml"
             type="textviewerconfiguration"/>            
-	  <configuration
+      <configuration
+            type="contentoutlineconfiguration"
+            target="org.hibernate.eclipse.mapper.content-type.cfg.xml" 
+            class="org.hibernate.eclipse.mapper.views.contentoutline.HibernateXMLContentOutlineConfiguration"            
+            />                       
+   	  <configuration
             class="org.hibernate.eclipse.mapper.editors.CFGXMLStructuredTextViewerConfiguration"
             target="org.hibernate.eclipse.mapper.content-type.reveng.xml"
-            type="textviewerconfiguration"/>             
-   </extension>
-   <extension
-         point="org.eclipse.wst.sse.ui.adapterFactoryDescription">
-      <adapterFactoryDescription
-            class="org.hibernate.eclipse.mapper.registry.AdapterFactoryProviderForHBMXML">
-      </adapterFactoryDescription>         
-      <adapterFactoryDescription
-            class="org.hibernate.eclipse.mapper.registry.AdapterFactoryProviderForCFGXML">
-      </adapterFactoryDescription>         
-      <adapterFactoryDescription
-            class="org.hibernate.eclipse.mapper.registry.AdapterFactoryProviderForREVENGXML">
-      </adapterFactoryDescription>          
+            type="textviewerconfiguration"/>  
+      <configuration
+            type="contentoutlineconfiguration"
+            target="org.hibernate.eclipse.mapper.content-type.reveng.xml" 
+            class="org.hibernate.eclipse.mapper.views.contentoutline.HibernateXMLContentOutlineConfiguration"            
+            />                                   
    </extension>
    <extension
          point="org.eclipse.ui.views">
@@ -110,20 +113,18 @@
             id="org.hibernate.eclipse.mapper.editors.ReverseEngineeringMultiPageEditor"
             name="Hibernate reverse engineering editor"/>
    </extension>
-    <extension point = "org.eclipse.wst.xml.uriresolver.catalogContributor">
-     <catalogContributor catalogId="default">
-               <mappingInfo
-               key="-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-               uri="dtds/hibernate-mapping-3.0.dtd">
-         </mappingInfo>
-         <mappingInfo
-               key="-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-               uri="dtds/hibernate-configuration-3.0.dtd">
-         </mappingInfo>
-         <mappingInfo
-               key="-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN"
-               uri="dtds/hibernate-reverse-engineering-3.0.dtd">
-         </mappingInfo>
-     </catalogContributor>
-     </extension>
+  
+    <extension point = "org.eclipse.wst.xml.core.catalogContributions">
+     <catalogContribution>
+	        <public publicId="-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+				uri="dtds/hibernate-mapping-3.0.dtd"
+				webURL="http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"/>
+           <public publicId="-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+               uri="dtds/hibernate-configuration-3.0.dtd"
+               webURL="http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd"/>
+           <public
+               publicId="-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN"
+               uri="dtds/hibernate-reverse-engineering-3.0.dtd"/>
+     </catalogContribution>
+    </extension>
   </plugin>
