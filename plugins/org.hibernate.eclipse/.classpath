@@ -31,7 +31,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/swarmcache-1.0rc2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/velocity-1.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/velocity-tools-generic-1.1.jar"/>
-	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="build/eclipse"/>
 </classpath>
