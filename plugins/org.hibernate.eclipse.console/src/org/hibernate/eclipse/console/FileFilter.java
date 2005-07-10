@@ -9,7 +9,6 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
@@ -79,7 +78,7 @@ public class FileFilter extends ViewerFilter {
 					}
 				}
 			} catch (CoreException e) {
-				JavaPlugin.log(e.getStatus() );
+				HibernateConsolePlugin.getDefault().log(e.getStatus() );
 			}				
 		}
 		return false;
