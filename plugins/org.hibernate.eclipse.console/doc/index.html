@@ -120,11 +120,16 @@ information about the road map.</i></p>
 
 <p>
   <ol>
-    <li>Install Eclipse 3.1 (M7 to RC4 should work) (<a href="http://www.eclipse.org/">http://www.eclipse.org</a>)</li>
+    <li>Install Eclipse 3.1 (<a href="http://www.eclipse.org/">http://www.eclipse.org</a>)</li>
   </ol>
 </p>
 
-<p>After you have downloaded the Hibernate Tools for Eclipse, unpack and copy the plugins to your Eclipse plugins directory. You will also need JDBC drivers for your database available to use the reverse engineering and querying support.</p>
+<p>After you have downloaded the Hibernate Tools for Eclipse, unpack and copy the plugins to your Eclipse plugins directory. 
+Sometimes Eclipse does not automatically detect new plugins and thus the tools will not be activated. To ensure eclipse sees
+these changes run eclipse with the -clean option. E.g. <code>eclipse -clean</code>
+</p>
+
+<p>You will also need JDBC drivers for your database available to use the reverse engineering and querying support.</p>
 
 <p>
   Please note that these tools do not try to hide any functionality of Hibernate. The tools make working with
