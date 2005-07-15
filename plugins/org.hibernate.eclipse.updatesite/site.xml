@@ -12,6 +12,9 @@
    <feature url="features/org.hibernate.eclipse.feature_3.1.0.beta1.jar" id="org.hibernate.eclipse.feature" version="3.1.0.beta1">
       <category name="Latest Hibernate Tools"/>
    </feature>
+   <feature url="features/org.hibernate.eclipse.feature_3.1.0.N20050711.jar" id="org.hibernate.eclipse.feature" version="3.1.0.N20050711">
+      <category name="Latest Hibernate Tools"/>
+   </feature>
    <category-def name="Latest Hibernate Tools" label="latest_hibernate_tools">
       <description>
          Latest builds of Hibernate Tools - USE AT OWN RISK ;)

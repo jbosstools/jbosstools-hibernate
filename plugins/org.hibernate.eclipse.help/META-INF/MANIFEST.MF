@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate Help
 Bundle-SymbolicName: org.hibernate.eclipse.help; singleton:=true
-Bundle-Version: 3.1.0.beta1
+Bundle-Version: 3.1.0.N20050711
 Bundle-ClassPath: help.jar
 Bundle-Activator: org.hibernate.eclipse.help.HelpPlugin
 Bundle-Vendor: Hibernate Team

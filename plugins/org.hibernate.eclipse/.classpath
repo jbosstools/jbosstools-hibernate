@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/"/>
-	<classpathentry exported="true" kind="lib" path="lib/antlr-2.7.5H3.jar"/>
+	<classpathentry exported="true" sourcepath="C:/work/products/antlr-2.7.5" kind="lib" path="lib/antlr-2.7.5H3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/asm.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/asm-attrs.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/c3p0-0.8.5.2.jar"/>
@@ -12,8 +12,8 @@
 	<classpathentry exported="true" kind="lib" path="lib/connector.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/dom4j-1.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ehcache-1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/hibernate3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/hibernateconsole.jar"/>
+	<classpathentry exported="true" sourcepath="/hibernate3" kind="lib" path="lib/hibernate3.jar"/>
+	<classpathentry exported="true" sourcepath="/hibernateext.console" kind="lib" path="lib/hibernateconsole.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate-tools.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jboss-cache.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jboss-common.jar"/>
