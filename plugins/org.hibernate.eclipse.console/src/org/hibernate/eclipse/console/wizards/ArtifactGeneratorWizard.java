@@ -89,7 +89,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
         final boolean gendao = page.isGenerateDao();
 		final boolean genhbm = page.isGenerateMappings();
 		final boolean gencfg = page.isGenerateCfg();
-        final boolean preferRaw = page.isPreferRawCompositeIds();
+        final boolean preferBasic = page.isPreferBasicCompositeIds();
         final boolean ejb3 = page.isEJB3Enabled();
 		final boolean gendoc = page.isGenerateDoc();
 		
@@ -97,7 +97,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
-doFinish(configurationName, output, outputPackage, revengsettings, reveng, genjava, gendao, genhbm, gencfg, monitor, preferRaw, templatedir, ejb3, gendoc);
+doFinish(configurationName, output, outputPackage, revengsettings, reveng, genjava, gendao, genhbm, gencfg, monitor, preferBasic, templatedir, ejb3, gendoc);
 				} catch (CoreException e) {
 					throw new InvocationTargetException(e);
 				} finally {
@@ -127,13 +127,13 @@ doFinish(configurationName, output, outputPackage, revengsettings, reveng, genja
 	 * @param genhbm
 	 * @param genjava
 	 * @param reveng
-	 * @param preferRawCompositeids 
+	 * @param preferBasicCompositeids 
 	 * @param gendoc 
 	 */
 
 	private void doFinish(
 		String configName, IPath output,
-String outputPackage, IPath revengsettings, boolean reveng, final boolean genjava, final boolean gendao, final boolean genhbm, final boolean gencfg, final IProgressMonitor monitor, boolean preferRawCompositeids, IPath templateDir, final boolean ejb3, final boolean gendoc)
+String outputPackage, IPath revengsettings, boolean reveng, final boolean genjava, final boolean gendao, final boolean genhbm, final boolean gencfg, final IProgressMonitor monitor, boolean preferBasicCompositeids, IPath templateDir, final boolean ejb3, final boolean gendoc)
 		throws CoreException {
 		// create a sample file
 		monitor.beginTask("Generating artifacts for " + configName, 10);
@@ -163,7 +163,7 @@ String outputPackage, IPath revengsettings, boolean reveng, final boolean genjav
 				res = repository.getReverseEngineeringStrategy(res);
 			}
 		}
-		final Configuration cfg = buildConfiguration(reveng, cc, res, preferRawCompositeids);
+		final Configuration cfg = buildConfiguration(reveng, cc, res, preferBasicCompositeids);
 		monitor.worked(3);
 		
 		cc.execute(new Command() {

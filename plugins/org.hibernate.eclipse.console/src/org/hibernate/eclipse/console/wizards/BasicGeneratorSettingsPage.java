@@ -170,8 +170,9 @@ layout.verticalSpacing = 10;
         useOwnTemplates.setLabelText("Use custom templates");
         
         preferRawCompositeIds = new SelectionButtonDialogField(SWT.CHECK);
-        preferRawCompositeIds.setLabelText("Generate 'raw' composite ids");
-                
+        preferRawCompositeIds.setLabelText("Generate basic typed composite ids");
+        preferRawCompositeIds.setSelection(true);
+        
 		generatemappings = new SelectionButtonDialogField(SWT.CHECK);
 		generatemappings.setLabelText("Generate mappings (hbm.xml)");
 		
@@ -397,7 +398,7 @@ layout.verticalSpacing = 10;
     /**
      * @return
      */
-    public boolean isPreferRawCompositeIds() {
+    public boolean isPreferBasicCompositeIds() {
         return preferRawCompositeIds.isSelected();
     }
 
