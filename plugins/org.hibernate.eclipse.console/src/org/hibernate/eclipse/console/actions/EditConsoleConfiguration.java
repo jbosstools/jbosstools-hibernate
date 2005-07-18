@@ -22,6 +22,8 @@ import org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard;
  */
 public class EditConsoleConfiguration extends ConsoleConfigurationBasedAction {
 
+	ConsoleConfiguration cfg = null;
+	
 	/**
 	 * @param text
 	 */
@@ -29,21 +31,38 @@ public class EditConsoleConfiguration extends ConsoleConfigurationBasedAction {
 		super("Edit Configuration");
 	}
 
+	public EditConsoleConfiguration(ConsoleConfiguration configuration) {
+		this();
+		cfg = configuration;
+	}
+
 	protected void doRun() {
-		for (Iterator i = getSelectedNonResources().iterator(); i.hasNext();) {
-        	try {
-        		BaseNode node = ( (BaseNode) i.next() );
-        		final ConsoleConfiguration config = node.getConsoleConfiguration();
-        		ConsoleConfigurationCreationWizard wizard = new ConsoleConfigurationCreationWizard();
-        		wizard.init(PlatformUI.getWorkbench(), new StructuredSelection(config) );
-        		IWorkbenchWindow win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-        		
-        		WizardDialog dialog = new WizardDialog(win.getShell(), wizard);
-        		dialog.open(); // This opens a dialog
+		if(cfg==null) {
+			for (Iterator i = getSelectedNonResources().iterator(); i.hasNext();) {
+				try {
+					BaseNode node = ( (BaseNode) i.next() );
+					final ConsoleConfiguration config = node.getConsoleConfiguration();
+					edit( config );
+				} catch(HibernateException he) {
+					HibernateConsolePlugin.getDefault().showError(null, "Exception while trying to edit configuration", he);
+				}
+			} 
+		} else {
+			try {
+				edit(cfg);    	
 			} catch(HibernateException he) {
 				HibernateConsolePlugin.getDefault().showError(null, "Exception while trying to edit configuration", he);
-        	}
-        }
+			}        
+		}
+	}
+
+	private void edit(final ConsoleConfiguration config) {
+		ConsoleConfigurationCreationWizard wizard = new ConsoleConfigurationCreationWizard();
+		wizard.init(PlatformUI.getWorkbench(), new StructuredSelection(config) );
+		IWorkbenchWindow win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		
+		WizardDialog dialog = new WizardDialog(win.getShell(), wizard);
+		dialog.open(); // This opens a dialog
 	}
 
 	protected boolean updateState(ConsoleConfiguration consoleConfiguration) {

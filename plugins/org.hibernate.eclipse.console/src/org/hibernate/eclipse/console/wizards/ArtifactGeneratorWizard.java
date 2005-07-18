@@ -231,16 +231,16 @@ monitor.worked(9);
 	/**
 	 * @param reveng
 	 * @param cc
-	 * @param rawCompositeids 
+	 * @param preferBasicCompositeids 
 	 * @param configurableReverseNamingStrategy TODO
 	 * @return
 	 */
-	private Configuration buildConfiguration(boolean reveng, ConsoleConfiguration cc, ReverseEngineeringStrategy revEngStrategy, boolean rawCompositeids) {
+	private Configuration buildConfiguration(boolean reveng, ConsoleConfiguration cc, ReverseEngineeringStrategy revEngStrategy, boolean preferBasicCompositeids) {
 		if(reveng) {
 			final JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
 			cc.buildWith(cfg,false);
 			cfg.setReverseEngineeringStrategy(revEngStrategy);
-			cfg.setPreferRawCompositeIds(rawCompositeids);
+			cfg.setPreferBasicCompositeIds(preferBasicCompositeids);
             
 			cc.execute(new Command() { // need to execute in the consoleconfiguration to let it handle classpath stuff!
 

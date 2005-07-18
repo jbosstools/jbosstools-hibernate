@@ -5,17 +5,22 @@ import java.util.ArrayList;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.eclipse.core.runtime.IAdapterFactory;
+import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfigurationPreferences;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.EclipseLogger;
 import org.hibernate.eclipse.console.wizards.EclipseConsoleConfigurationPreferences;
+import org.hibernate.eclipse.console.workbench.ConfigurationAdapterFactory;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -47,6 +52,10 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 		
 		HibernateConsoleSaveParticipant participant = new HibernateConsoleSaveParticipant();
 		participant.doStart(this);
+		
+		IAdapterManager adapterManager = Platform.getAdapterManager();
+		ConfigurationAdapterFactory fact =  new ConfigurationAdapterFactory();
+		fact.registerAdapters(adapterManager);
 	}
 
 	
@@ -186,6 +195,8 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 		 	   ErrorDialog.openError(shell, 
 		 	      "Hibernate Console", message, warning);		
 	}
+	
+	
 	
 	
 }
