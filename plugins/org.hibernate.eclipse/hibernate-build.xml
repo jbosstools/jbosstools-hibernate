@@ -10,7 +10,6 @@
     <property name="name" value="org.hibernate.eclipse"/>
     <property name="version" value="3.1"/>
 	<property name="javadoc.packagenames" value="org.hibernate.eclipse.*"/>
-    <property name="lib.dir" location="build/lib"/>
 
 	<property name="src.dir" location="src"/>
 	
@@ -83,7 +82,7 @@
             	<include name="${h3.swarmcache.lib}"/>
             </fileset>
         </copy>
-
+  
 	</target>
 
 </project>
