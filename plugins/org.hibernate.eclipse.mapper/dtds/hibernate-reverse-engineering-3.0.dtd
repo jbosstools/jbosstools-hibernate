@@ -15,7 +15,7 @@ when hibernate tools perform reverse engineering.
 
 <!ELEMENT hibernate-reverse-engineering (
 	type-mapping?,
-	(table-filter)*)>
+	(table-filter)*, table*)>
 
 <!ELEMENT type-mapping ( sql-type+ ) >
 
@@ -28,31 +28,32 @@ when hibernate tools perform reverse engineering.
 <!ATTLIST sql-type scale CDATA #IMPLIED >
 <!ATTLIST sql-type hibernate-type CDATA #REQUIRED >
 
-<!-- nyi
-<!ELEMENT column ( meta* ) >
-<!ATTLIST column name CDATA #REQUIRED >
-<!ATTLIST column exclude (true|false) "false" >
-<!ATTLIST column property-name CDATA #IMPLIED >
-<!ATTLIST column hibernate-type CDATA #IMPLIED >
--->
-
-<!-- nyi
-<!ELEMENT table EMPTY >
+<!ELEMENT table (column*, foreign-key*) >
 <!ATTLIST table catalog CDATA #IMPLIED >
-<!ATTLIST table schema CDATA #IMPLIED >
-<!ATTLIST table name CDATA #REQUIRED >
-<!ATTLIST table class-name CDATA #IMPLIED >
-<!ATTLIST table package CDATA #IMPLIED >
--->
+<!ATTLIST table schema  CDATA #IMPLIED >
+<!ATTLIST table name    CDATA #REQUIRED >
+
+<!ELEMENT column EMPTY >
+<!ATTLIST column name           CDATA        #REQUIRED >
+<!ATTLIST column exclude        (true|false) "false" >
+<!ATTLIST column foreign-table  CDATA        #IMPLIED >
+<!ATTLIST column foreign-column CDATA        #IMPLIED >
+
+<!ELEMENT foreign-key (column-ref+) >
+<!ATTLIST foreign-key name          CDATA    #IMPLIED >
+<!ATTLIST foreign-key foreign-table CDATA    #REQUIRED >
+
+<!ELEMENT column-ref EMPTY >
+<!ATTLIST column-ref local-column   CDATA    #REQUIRED >
+<!ATTLIST column-ref foreign-column CDATA    #IMPLIED >
+
+
 
 <!-- a table-filter allows to explicitly exclude or include tables or complete catalog/schemas into the reverse engineering -->
 <!ELEMENT table-filter EMPTY >
-<!ATTLIST table-filter exclude (true|false) "false" >
 <!ATTLIST table-filter match-catalog CDATA ".*" >  
 <!ATTLIST table-filter match-schema CDATA ".*" >
 <!ATTLIST table-filter match-name CDATA #REQUIRED >
+<!ATTLIST table-filter exclude (true|false) "false" >
+<!ATTLIST table-filter package CDATA #IMPLIED >
 
-<!-- nyi
-<!ELEMENT meta ( #PCDATA ) >
-<!ATTLIST meta attribute CDATA #REQUIRED >
--->

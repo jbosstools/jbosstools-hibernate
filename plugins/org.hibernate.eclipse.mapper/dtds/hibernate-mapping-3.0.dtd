@@ -21,7 +21,8 @@ arbitrary number of queries, and import declarations of arbitrary classes.
 	typedef*, 
 	import*, 
 	(class|subclass|joined-subclass|union-subclass)*,
-	(query|sql-query)*, 
+    resultset*,
+	(query|sql-query)*,
 	filter-def*
 )>
 	<!ATTLIST hibernate-mapping schema CDATA #IMPLIED>									<!-- default: none -->
@@ -67,6 +68,7 @@ arbitrary number of queries, and import declarations of arbitrary classes.
 	cache?,
 	synchronize*,
 	comment?,
+    tuplizer*,
 	(id|composite-id),
 	discriminator?,
 	natural-id?,
@@ -74,7 +76,9 @@ arbitrary number of queries, and import declarations of arbitrary classes.
 	(property|many-to-one|one-to-one|component|dynamic-component|properties|any|map|set|list|bag|idbag|array|primitive-array|query-list)*,
 	((join*,subclass*)|joined-subclass*|union-subclass*),
 	loader?,sql-insert?,sql-update?,sql-delete?,
-	filter*
+	filter*,
+    resultset*,
+	(query|sql-query)*
 )>
 	<!ATTLIST class entity-name CDATA #IMPLIED>
 	<!ATTLIST class name CDATA #IMPLIED>                            <!-- this is the class name -->
@@ -99,6 +103,12 @@ arbitrary number of queries, and import declarations of arbitrary classes.
 	<!ATTLIST class rowid CDATA #IMPLIED>
 	<!ATTLIST class node CDATA #IMPLIED>
 
+<!--
+    TUPLIZER element; defines tuplizer to use for a component/entity for a given entity-mode
+-->
+<!ELEMENT tuplizer EMPTY>
+    <!ATTLIST tuplizer entity-mode (pojo|dom4j|dynamic-map) #IMPLIED>   <!-- entity mode for which tuplizer is in effect -->
+    <!ATTLIST tuplizer class CDATA #REQUIRED>                           <!-- the tuplizer class to use -->
 
 <!--
 	FILTER-DEF element; top-level filter definition.
@@ -165,6 +175,7 @@ and hashCode(). -->
 
 <!ELEMENT composite-id ( meta*, (key-property|key-many-to-one)+ )>
 	<!ATTLIST composite-id class CDATA #IMPLIED>
+	<!ATTLIST composite-id mapped (true|false) "false">
 	<!ATTLIST composite-id name CDATA #IMPLIED>
 	<!ATTLIST composite-id node CDATA #IMPLIED>
 	<!ATTLIST composite-id access CDATA #IMPLIED>
@@ -209,11 +220,14 @@ application through a property of the Java class. -->
 -->
 <!ELEMENT subclass (
  	meta*,
+    tuplizer*,
 	synchronize*,
 	(property|many-to-one|one-to-one|component|dynamic-component|any|map|set|list|bag|idbag|array|primitive-array|query-list)*,
 	join*, 
 	subclass*,
-	loader?,sql-insert?,sql-update?,sql-delete?
+	loader?,sql-insert?,sql-update?,sql-delete?,
+    resultset*,
+	(query|sql-query)*
 )>
 	<!ATTLIST subclass entity-name CDATA #IMPLIED>
 	<!ATTLIST subclass name CDATA #IMPLIED>
@@ -239,10 +253,13 @@ application through a property of the Java class. -->
 	subselect?,
 	synchronize*,
 	comment?,
+    tuplizer*,
 	key,
-	(property|many-to-one|one-to-one|component|dynamic-component|any|map|set|list|bag|idbag|array|primitive-array|query-list)*, 
+	(property|many-to-one|one-to-one|component|dynamic-component|properties|any|map|set|list|bag|idbag|array|primitive-array|query-list)*, 
 	joined-subclass*,
-	loader?,sql-insert?,sql-update?,sql-delete?
+	loader?,sql-insert?,sql-update?,sql-delete?,
+    resultset*,
+	(query|sql-query)*
 )>
 	<!ATTLIST joined-subclass entity-name CDATA #IMPLIED>
 	<!ATTLIST joined-subclass name CDATA #IMPLIED>
@@ -272,9 +289,12 @@ application through a property of the Java class. -->
 	subselect?,
 	synchronize*,
 	comment?,
-	(property|many-to-one|one-to-one|component|dynamic-component|any|map|set|list|bag|idbag|array|primitive-array|query-list)*,
+    tuplizer*,
+	(property|many-to-one|one-to-one|component|dynamic-component|properties|any|map|set|list|bag|idbag|array|primitive-array|query-list)*,
 	union-subclass*,
-	loader?,sql-insert?,sql-update?,sql-delete?
+	loader?,sql-insert?,sql-update?,sql-delete?,
+    resultset*,
+	(query|sql-query)*
 )>
 	<!ATTLIST union-subclass entity-name CDATA #IMPLIED>
 	<!ATTLIST union-subclass name CDATA #IMPLIED>
@@ -343,7 +363,7 @@ etc. to an entity). -->
 	<!ATTLIST many-to-one foreign-key CDATA #IMPLIED>
 	<!ATTLIST many-to-one property-ref CDATA #IMPLIED>
 	<!ATTLIST many-to-one formula CDATA #IMPLIED>
-	<!ATTLIST many-to-one lazy (true|false|proxy) #IMPLIED>
+	<!ATTLIST many-to-one lazy (false|proxy|no-proxy) #IMPLIED>
 	<!ATTLIST many-to-one not-found (exception|ignore) "exception">
 	<!ATTLIST many-to-one node CDATA #IMPLIED>
 	<!ATTLIST many-to-one embed-xml (true|false) "true">
@@ -363,7 +383,7 @@ component element, etc. to an entity). -->
 	<!ATTLIST one-to-one constrained (true|false) "false">
 	<!ATTLIST one-to-one foreign-key CDATA #IMPLIED>
 	<!ATTLIST one-to-one property-ref CDATA #IMPLIED>
-	<!ATTLIST one-to-one lazy (true|false|proxy) #IMPLIED>
+	<!ATTLIST one-to-one lazy (true|false|proxy|no-proxy) #IMPLIED>
 	<!ATTLIST one-to-one node CDATA #IMPLIED>
 	<!ATTLIST one-to-one embed-xml (true|false) "true">
 	
@@ -418,6 +438,7 @@ shared reference semantics. -->
 
 <!ELEMENT component (
 	meta*,
+    tuplizer*,
 	parent?,
 	(property|many-to-one|one-to-one|component|dynamic-component|any|map|set|list|bag|array|primitive-array)*
 )>
@@ -486,6 +507,7 @@ relationship from the collection table to the enclosing class. -->
 	<!ATTLIST map subselect CDATA #IMPLIED>
 	<!ATTLIST map catalog CDATA #IMPLIED>															<!-- default: none -->
 	<!ATTLIST map lazy (true|false) #IMPLIED>
+	<!ATTLIST map mutable (true|false) "true">
 	<!ATTLIST map inverse (true|false) "false">
 	<!ATTLIST map sort CDATA "unsorted">														 	<!-- unsorted|natural|"comparator class", default: unsorted -->
 	<!ATTLIST map cascade CDATA #IMPLIED>
@@ -521,6 +543,7 @@ relationship from the collection table to the enclosing class. -->
 	<!ATTLIST set lazy (true|false) #IMPLIED>
 	<!ATTLIST set sort CDATA "unsorted">														 	<!-- unsorted|natural|"comparator class" -->
 	<!ATTLIST set inverse (true|false) "false">
+	<!ATTLIST set mutable (true|false) "true">
 	<!ATTLIST set cascade CDATA #IMPLIED>
 	<!ATTLIST set order-by CDATA #IMPLIED>													 		<!-- default: none -->
 	<!ATTLIST set where CDATA #IMPLIED>																<!-- default: none -->
@@ -553,6 +576,7 @@ relationship from the collection table to the enclosing class. -->
 	<!ATTLIST bag subselect CDATA #IMPLIED>
 	<!ATTLIST bag lazy (true|false) #IMPLIED>
 	<!ATTLIST bag inverse (true|false) "false">
+	<!ATTLIST bag mutable (true|false) "true">
 	<!ATTLIST bag cascade CDATA #IMPLIED>
 	<!ATTLIST bag order-by CDATA #IMPLIED>													 		<!-- default: none -->
 	<!ATTLIST bag where CDATA #IMPLIED>																<!-- default: none -->
@@ -585,6 +609,7 @@ relationship from the collection table to the enclosing class. -->
 	<!ATTLIST idbag catalog CDATA #IMPLIED>															<!-- default: none -->
 	<!ATTLIST idbag subselect CDATA #IMPLIED>
 	<!ATTLIST idbag lazy (true|false) #IMPLIED>
+	<!ATTLIST idbag mutable (true|false) "true">
 	<!ATTLIST idbag cascade CDATA #IMPLIED>
 	<!ATTLIST idbag order-by CDATA #IMPLIED>													 	<!-- default: none -->
 	<!ATTLIST idbag where CDATA #IMPLIED>															<!-- default: none -->
@@ -618,6 +643,7 @@ relationship from the collection table to the enclosing class. -->
 	<!ATTLIST list subselect CDATA #IMPLIED>
 	<!ATTLIST list lazy (true|false) #IMPLIED>
 	<!ATTLIST list inverse (true|false) "false">
+	<!ATTLIST list mutable (true|false) "true">
 	<!ATTLIST list cascade CDATA #IMPLIED>
 	<!ATTLIST list where CDATA #IMPLIED>														 	<!-- default: none -->
 	<!ATTLIST list batch-size CDATA #IMPLIED>
@@ -648,6 +674,7 @@ relationship from the collection table to the enclosing class. -->
 	<!ATTLIST array catalog CDATA #IMPLIED>															<!-- default: none -->
 	<!ATTLIST array subselect CDATA #IMPLIED>
 	<!ATTLIST array inverse (true|false) "false">
+	<!ATTLIST array mutable (true|false) "true">
 	<!ATTLIST array element-class CDATA #IMPLIED>
 	<!ATTLIST array cascade CDATA #IMPLIED>
 	<!ATTLIST array where CDATA #IMPLIED>															<!-- default: none -->
@@ -678,6 +705,7 @@ relationship from the collection table to the enclosing class. -->
 	<!ATTLIST primitive-array schema CDATA #IMPLIED>								<!-- default: none -->
 	<!ATTLIST primitive-array catalog CDATA #IMPLIED>								<!-- default: none -->
 	<!ATTLIST primitive-array subselect CDATA #IMPLIED>
+	<!ATTLIST primitive-array mutable (true|false) "true">
 	<!ATTLIST primitive-array where CDATA #IMPLIED>									<!-- default: none -->
 	<!ATTLIST primitive-array batch-size CDATA #IMPLIED>
 	<!ATTLIST primitive-array outer-join (true|false|auto) #IMPLIED>
@@ -875,7 +903,7 @@ domain model -->
 
 <!-- The query element declares a named Hibernate query string -->
 
-<!ELEMENT query (#PCDATA|representation)*>
+<!ELEMENT query (#PCDATA|query-param)*>
 	<!ATTLIST query name CDATA #REQUIRED>
 	<!ATTLIST query flush-mode (auto|never|always) #IMPLIED>
 	<!ATTLIST query cacheable (true|false) "false">
@@ -883,18 +911,28 @@ domain model -->
 	<!ATTLIST query fetch-size CDATA #IMPLIED>
 	<!ATTLIST query timeout CDATA #IMPLIED>
 
-<!ELEMENT representation EMPTY>
-	<!ATTLIST representation name (pojo|dom4j|dynamic-map) #REQUIRED>
-
 <!-- The sql-query element declares a named SQL query string -->
-<!ELEMENT sql-query (#PCDATA|return-scalar|return|return-join|load-collection|synchronize)*>
+
+<!ELEMENT sql-query (#PCDATA|return-scalar|return|return-join|load-collection|synchronize|query-param)*>
 	<!ATTLIST sql-query name CDATA #REQUIRED>
+    <!ATTLIST sql-query resultset-ref CDATA #IMPLIED>
 	<!ATTLIST sql-query flush-mode (auto|never|always) #IMPLIED>
 	<!ATTLIST sql-query cacheable (true|false) "false">
 	<!ATTLIST sql-query cache-region CDATA #IMPLIED>
 	<!ATTLIST sql-query fetch-size CDATA #IMPLIED>
 	<!ATTLIST sql-query timeout CDATA #IMPLIED>
-	<!ATTLIST sql-query callable (true|false) "false"> 
+	<!ATTLIST sql-query callable (true|false) "false">
+
+<!-- The query-param element is used only by tools that generate
+finder methods for named queries -->
+
+<!ELEMENT query-param EMPTY>
+	<!ATTLIST query-param name CDATA #REQUIRED>
+	<!ATTLIST query-param type CDATA #REQUIRED>
+
+<!-- The resultset element declares a named resultset mapping definition for SQL queries -->
+<!ELEMENT resultset (return-scalar|return|return-join|load-collection)*>
+	<!ATTLIST resultset name CDATA #REQUIRED>
 
 <!--
 	Defines a return component for a sql-query.  Alias refers to the alias
@@ -921,12 +959,12 @@ domain model -->
 <!ELEMENT return-discriminator EMPTY> 
 	<!ATTLIST return-discriminator column CDATA #REQUIRED>
 	
-<!ELEMENT return-join EMPTY> <!-- TODO: (return-property)* -->
+<!ELEMENT return-join (return-property)*> 
 	<!ATTLIST return-join alias CDATA #REQUIRED>
 	<!ATTLIST return-join property CDATA #REQUIRED>
 	<!ATTLIST return-join lock-mode (none|read|upgrade|upgrade-nowait|write) "read">
 
-<!ELEMENT load-collection EMPTY> <!-- TODO: (return-property)* -->
+<!ELEMENT load-collection (return-property)*> 
 	<!ATTLIST load-collection alias CDATA #REQUIRED>
 	<!ATTLIST load-collection role CDATA #REQUIRED>
 	<!ATTLIST load-collection lock-mode (none|read|upgrade|upgrade-nowait|write) "read">
