@@ -10,6 +10,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.node.BaseNode;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.actions.ConsoleConfigurationBasedAction;
@@ -45,7 +46,7 @@ public class SchemaExportAction extends ConsoleConfigurationBasedAction {
                 final ConsoleConfiguration config = node
                         .getConsoleConfiguration();
                 config
-                        .execute(new org.hibernate.console.ConsoleConfiguration.Command() {
+                        .execute(new Command() {
                             public Object execute() {
                                 if (config.getConfiguration() != null
                                         && MessageDialog.openConfirm(viewer

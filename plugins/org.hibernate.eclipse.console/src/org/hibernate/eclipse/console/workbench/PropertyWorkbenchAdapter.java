@@ -28,7 +28,71 @@ public class PropertyWorkbenchAdapter extends BasicWorkbenchAdapter implements
 
 	public Object[] getChildren(Object o) {
 		Property p = (Property) o;
-		return new Object[] { p.getValue() };
+		
+		Object[] result = (Object[]) p.getValue().accept(new ValueVisitor() {
+		
+			public Object accept(OneToOne oto) {
+				return NO_CHILDREN;
+			}
+		
+			public Object accept(ManyToOne mto) {
+				return NO_CHILDREN;
+			}
+		
+			public Object accept(Component component) {
+				return toArray(component.getPropertyIterator(), Property.class);				
+			}
+		
+			public Object accept(DependantValue value) {
+				return NO_CHILDREN;
+			}
+		
+			public Object accept(SimpleValue value) {
+				return NO_CHILDREN;
+			}
+		
+			public Object accept(Any any) {
+				return NO_CHILDREN;
+			}
+		
+			public Object accept(Set set) {
+				return NO_CHILDREN; // should it look up the target entity?
+			}
+		
+			public Object accept(QueryList list) {
+				return NO_CHILDREN;
+			}
+		
+			public Object accept(OneToMany many) {
+				return NO_CHILDREN;
+			}
+		
+			public Object accept(Map map) {
+				return NO_CHILDREN;
+			}
+		
+			public Object accept(Array list) {
+				return NO_CHILDREN;
+			}
+		
+			public Object accept(PrimitiveArray primitiveArray) {
+				return NO_CHILDREN;
+			}
+		
+			public Object accept(List list) {
+				return NO_CHILDREN;
+			}
+		
+			public Object accept(IdentifierBag bag) {
+				return NO_CHILDREN;
+			}
+		
+			public Object accept(Bag bag) {
+				return NO_CHILDREN;
+			}		
+		});
+		
+		return result;
 	}
 
 	public ImageDescriptor getImageDescriptor(Object object) {
@@ -45,7 +109,16 @@ public class PropertyWorkbenchAdapter extends BasicWorkbenchAdapter implements
 
 	public String getLabel(Object o) {
 		Property property = ((Property)o);
-		return property.getName() + ":" + property.getType().getReturnedClass().getName();
+		Value value = property.getValue();
+		if (value.isSimpleValue()) {
+			SimpleValue sv = (SimpleValue)value;
+			
+			if(sv.getTypeName()!=null) {
+				return property.getName() + " : " + sv.getTypeName();	
+			}
+			
+		}
+		return property.getName(); 
 	}
 
 	public Object getParent(Object o) {

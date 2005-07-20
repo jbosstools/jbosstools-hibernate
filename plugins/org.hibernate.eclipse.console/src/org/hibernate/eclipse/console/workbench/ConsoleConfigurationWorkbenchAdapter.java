@@ -14,24 +14,10 @@ import org.hibernate.console.node.NodeFactory;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 
-public class ConsoleConfigurationWorkbenchAdapter implements
-		IDeferredWorkbenchAdapter {
-
-	public void fetchDeferredChildren(Object object,
-			IElementCollector collector, IProgressMonitor monitor) {
-		collector.add(getChildren(object), monitor);
-	}
-
-	public boolean isContainer() {
-		return true;
-	}
-
-	public ISchedulingRule getRule(Object object) {
-		return null;
-	}
+public class ConsoleConfigurationWorkbenchAdapter extends BasicWorkbenchAdapter {
 
 	public Object[] getChildren(Object o) {
-		ConsoleConfiguration ccfg = (ConsoleConfiguration) o;
+		ConsoleConfiguration ccfg = getConsoleConfiguration( o );
 		String sfError = null;
 		if(ccfg.getConfiguration()==null) {
 			ccfg.build();
@@ -44,18 +30,27 @@ public class ConsoleConfigurationWorkbenchAdapter implements
 		}
 		
 		Configuration configuration = ccfg.getConfiguration();
-		Object o1 = (configuration==null?"<Empty Configuration>":(Object)configuration);
+		Object o1;
+		if(configuration!=null) {
+			o1 = configuration;
+		} else {
+			o1 = "<Empty Configuration>";
+		}
 		
 		Object o2;
 		if(sfError==null) {
 			NodeFactory fac = new NodeFactory(ccfg);
-			ConfigurationEntitiesNode cfgNode = fac.createConfigurationEntitiesNode();
+			ConfigurationEntitiesNode cfgNode = fac.createConfigurationEntitiesNode("Session factory");
 			o2 = cfgNode;
 		} else {
 			o2 = sfError;
 		}
 		
-		return new Object[] { o1, o2 };
+		return new Object[] { o1, o2, new LazyDatabaseSchema(ccfg) };
+	}
+
+	private ConsoleConfiguration getConsoleConfiguration(Object o) {
+		return (ConsoleConfiguration) o;
 	}
 
 	public ImageDescriptor getImageDescriptor(Object object) {
@@ -63,7 +58,7 @@ public class ConsoleConfigurationWorkbenchAdapter implements
 	}
 
 	public String getLabel(Object o) {
-		ConsoleConfiguration cfg = (ConsoleConfiguration) o;
+		ConsoleConfiguration cfg = getConsoleConfiguration( o );
 		return cfg.getName();
 	}
 

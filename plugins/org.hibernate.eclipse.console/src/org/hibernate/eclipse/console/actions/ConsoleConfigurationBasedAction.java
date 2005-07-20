@@ -59,9 +59,8 @@ public abstract class ConsoleConfigurationBasedAction extends SelectionListenerA
 	            i.hasNext();
 	            ) {
 	            Object object = i.next();
-	            if (object instanceof ConfigurationNode) {
-	                ConfigurationNode node = (ConfigurationNode) object;
-	                ConsoleConfiguration consoleConfiguration = node.getConsoleConfiguration();
+	            if (object instanceof ConsoleConfiguration) {
+	                ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration) object;
 	                enabled |= updateState(consoleConfiguration);
 					
 	            } else {

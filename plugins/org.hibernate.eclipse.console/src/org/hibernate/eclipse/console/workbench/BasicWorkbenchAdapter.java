@@ -13,6 +13,8 @@ import org.eclipse.ui.progress.IElementCollector;
 
 public abstract class BasicWorkbenchAdapter implements IDeferredWorkbenchAdapter {
 
+	final static Object[] NO_CHILDREN = new Object[0];
+	
 	protected Object[] toArray(Iterator iterator, Class clazz) {
 		List obj = toList( iterator );
 		return obj.toArray((Object[]) Array.newInstance(clazz, obj.size()));		

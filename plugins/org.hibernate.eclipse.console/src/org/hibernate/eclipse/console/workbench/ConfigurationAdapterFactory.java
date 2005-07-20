@@ -1,71 +1,88 @@
 package org.hibernate.eclipse.console.workbench;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
+import org.eclipse.ui.views.properties.IPropertySource;
+import org.eclipse.ui.views.properties.IPropertySource2;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.node.BaseNode;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.Subclass;
+import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 
 public class ConfigurationAdapterFactory implements IAdapterFactory {
 
-	IDeferredWorkbenchAdapter configuration = new ConfigurationWorkbenchAdapter();
-	IDeferredWorkbenchAdapter knownConfigurations = new KnownConfigurationsWorkbenchAdapter();
-	IDeferredWorkbenchAdapter consoleConfiguration = new ConsoleConfigurationWorkbenchAdapter();
-	IDeferredWorkbenchAdapter persistentClass = new PersistentClassWorkbenchAdapter();
-	IDeferredWorkbenchAdapter property = new PropertyWorkbenchAdapter();
-	IDeferredWorkbenchAdapter value = new ValueWorkbenchAdapter();
-	IDeferredWorkbenchAdapter baseNode = new BaseNodeWorkbenchAdapter();
+	private Class[] classes;
+	private IDeferredWorkbenchAdapter[] adapters;
+	
+	
+	public ConfigurationAdapterFactory() {
+		Map map = new HashMap();
+		
+		map.put(ConsoleConfiguration.class, new ConsoleConfigurationWorkbenchAdapter());
+		map.put(Configuration.class, new ConfigurationWorkbenchAdapter());
+		map.put(KnownConfigurations.class, new KnownConfigurationsWorkbenchAdapter());
+		map.put(PersistentClass.class, new PersistentClassWorkbenchAdapter());
+		map.put(Property.class, new PropertyWorkbenchAdapter());
+		map.put(Value.class, new ValueWorkbenchAdapter());
+		map.put(BaseNode.class, new BaseNodeWorkbenchAdapter());
+		map.put(LazyDatabaseSchema.class, new LazyDatabaseSchemaWorkbenchAdapter());
+		map.put(Table.class, new TableWorkbenchAdapter());
+		map.put(Column.class, new ColumnWorkbenchAdapter());		
+		
+		
+		classes = new Class[map.size()];
+		adapters = new IDeferredWorkbenchAdapter[map.size()];
+		
+		Iterator iter = map.entrySet().iterator();
+		int cnt = 0;
+		while ( iter.hasNext() ) {
+			Map.Entry entry = (Map.Entry) iter.next();
+			classes[cnt] = (Class) entry.getKey();
+			adapters[cnt] = (IDeferredWorkbenchAdapter) entry.getValue();
+			cnt++;			
+		}
+	}
 	
 	public Object getAdapter(Object adaptableObject, Class adapterType) {
 		if((adapterType==IDeferredWorkbenchAdapter.class || adapterType==IWorkbenchAdapter.class)) {
-			if(adaptableObject instanceof Configuration) {
-				return configuration;
-			}
-			if(adaptableObject instanceof KnownConfigurations) {
-				return knownConfigurations;
-			}
-			if(adaptableObject instanceof ConsoleConfiguration) {
-				return consoleConfiguration;
-			}
-			if(adaptableObject instanceof PersistentClass) {
-				return persistentClass;
-			}
-			if(adaptableObject instanceof Property) {
-				return property;
-			}
-			if(adaptableObject instanceof Value) {
-				return value;
-			}
-			if(adaptableObject instanceof BaseNode) {
-				return baseNode;
-			}
+			return getAdapter( adaptableObject );
+		}		
+		if(adapterType==IPropertySource2.class || adapterType==IPropertySource.class) {
+			return new GenericPropertySource(adaptableObject);
 		}
-		
+		return null;
+	}
+
+	private Object getAdapter(Object adaptableObject) {
+		for (int i = 0; i < classes.length; i++) {
+			Class clazz = classes[i];
+			if (clazz.isInstance(adaptableObject)) {
+				return adapters[i];
+			}
+		}		
 		return null;
 	}
 
 	public Class[] getAdapterList() {
-		return new Class[] { IDeferredWorkbenchAdapter.class, IWorkbenchAdapter.class };
+		return new Class[] { IDeferredWorkbenchAdapter.class, IWorkbenchAdapter.class, IPropertySource.class, IPropertySource2.class };
 	}
 
 	public void registerAdapters(IAdapterManager adapterManager) {
-		adapterManager.registerAdapters(this, Configuration.class);
-		adapterManager.registerAdapters(this, KnownConfigurations.class);
-		adapterManager.registerAdapters(this, ConsoleConfiguration.class);
-		adapterManager.registerAdapters(this, RootClass.class);
-		adapterManager.registerAdapters(this, Subclass.class);
-		adapterManager.registerAdapters(this, Property.class);
-		adapterManager.registerAdapters(this, Value.class);
-		
-		adapterManager.registerAdapters(this, BaseNode.class);
+		for (int i = 0; i < classes.length; i++) {
+			Class clazz = classes[i];
+			adapterManager.registerAdapters(this, clazz);
+		}		
 	}
 
 }

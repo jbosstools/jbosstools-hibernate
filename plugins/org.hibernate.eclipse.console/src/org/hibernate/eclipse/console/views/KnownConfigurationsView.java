@@ -18,17 +18,21 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.actions.ActionContext;
 import org.eclipse.ui.actions.ActionGroup;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.views.properties.IPropertySheetPage;
+import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.KnownConfigurations.IConsoleConfigurationListener;
 import org.hibernate.console.node.BaseNode;
 import org.hibernate.console.node.ConfigurationNode;
 import org.hibernate.eclipse.console.actions.EditConsoleConfiguration;
+import org.hibernate.eclipse.console.views.properties.HibernatePropertySourceProvider;
 import org.hibernate.eclipse.console.workbench.AnyAdaptableLabelProvider;
 
 
@@ -140,12 +144,15 @@ public class KnownConfigurationsView extends ViewPart {
 				
 		this.doubleAction = new Action() {
 			public void run() {
+				
+				
+				
 				// TODO: make action dependent on having a connected console configuration!
 				ISelection selection = viewer.getSelection();
 				Object firstElement = ( (IStructuredSelection)selection).getFirstElement();
 				if(firstElement instanceof ConsoleConfiguration) {
 					new EditConsoleConfiguration((ConsoleConfiguration)firstElement).run();
-				} else {
+				} else if (firstElement instanceof BaseNode){
 					BaseNode node = (BaseNode) firstElement;
 					ConsoleConfiguration consoleConfiguration = node.getConsoleConfiguration();
 					if(consoleConfiguration.isSessionFactoryCreated() ) {
@@ -161,4 +168,14 @@ public class KnownConfigurationsView extends ViewPart {
 		viewer.getTree().setFocus();
 	}
 
+	public Object getAdapter(Class adapter) {
+		if (adapter.equals(IPropertySheetPage.class) )
+		{
+			PropertySheetPage page = new PropertySheetPage();
+			page.setPropertySourceProvider(new ConsoleConfigurationPropertySourceProvider() );
+			return page;
+		}
+		
+		return super.getAdapter( adapter );
+	}
 }

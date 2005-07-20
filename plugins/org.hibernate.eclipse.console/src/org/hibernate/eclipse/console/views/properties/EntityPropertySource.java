@@ -11,6 +11,7 @@ import org.eclipse.ui.views.properties.IPropertySource2;
 import org.hibernate.Session;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.PropertyUtil;
+import org.hibernate.console.execution.ExecutionContext.Command;
 
 import com.l2fprod.common.propertysheet.Property;
 
@@ -29,7 +30,7 @@ public class EntityPropertySource implements IPropertySource2
 		properties = new Hashtable();
 		reflectedObject = object;
 		
-		currentConfiguration.execute(new ConsoleConfiguration.Command() {
+		currentConfiguration.execute(new Command() {
 
 			public Object execute() {
 				try {
