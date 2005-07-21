@@ -9,8 +9,6 @@ import java.util.Iterator;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
-import org.hibernate.console.node.BaseNode;
-import org.hibernate.console.node.ConfigurationNode;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 /**
@@ -27,27 +25,21 @@ public class BuildSessionFactoryAction extends ConsoleConfigurationBasedAction {
 		setEnabledWhenNoSessionFactory(true);
 	}
 	
-	
-
-	/**
-	 * 
-	 */
 	protected void doRun() {
 		for (Iterator i = getSelectedNonResources().iterator(); i.hasNext();) {
         	try {
-            BaseNode node = ( (BaseNode) i.next() );
-            if(node instanceof ConfigurationNode) {
-            	ConsoleConfiguration config = node.getConsoleConfiguration();
+            Object node = i.next();
+            if(node instanceof ConsoleConfiguration) {
+            	ConsoleConfiguration config = (ConsoleConfiguration) node;
             	if(config.isSessionFactoryCreated() ) {
-            		config.reset();
+            		config.reset();            		
             	} else {
             		config.build();
             		config.initSessionFactory();
             	}
             	updateState(config);
             }
-			
-            viewer.refresh(node); // todo: should we do it here or should the view just react to config being build ?
+			                     
         	} catch(HibernateConsoleRuntimeException he) {
         		 HibernateConsolePlugin.getDefault().showError(viewer.getControl().getShell(), "Exception while connecting/starting Hibernate",he);
         	} catch(UnsupportedClassVersionError ucve) {

@@ -16,9 +16,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.actions.ActionContext;
@@ -28,11 +26,8 @@ import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.KnownConfigurations.IConsoleConfigurationListener;
 import org.hibernate.console.node.BaseNode;
-import org.hibernate.console.node.ConfigurationNode;
 import org.hibernate.eclipse.console.actions.EditConsoleConfiguration;
-import org.hibernate.eclipse.console.views.properties.HibernatePropertySourceProvider;
 import org.hibernate.eclipse.console.workbench.AnyAdaptableLabelProvider;
 
 
@@ -44,10 +39,7 @@ public class KnownConfigurationsView extends ViewPart {
 
 	TreeViewer viewer;
 	
-	
 	private ActionGroup actionGroup;
-
-
 	private Action doubleAction;
 	
 	/**
@@ -71,24 +63,6 @@ public class KnownConfigurationsView extends ViewPart {
 		
 		//viewer.setInput(KnownConfigurations.getInstance().getRootNode() );
 		viewer.setInput( KnownConfigurations.getInstance() );
-		
-		KnownConfigurations.getInstance().addConsoleConfigurationListener(new IConsoleConfigurationListener() {
-			public void configurationAdded(ConsoleConfiguration root) {
-				refreshInUI();				
-			}
-
-			private void refreshInUI() {
-				Display.getDefault().syncExec(new Runnable() {
-					public void run() {
-						viewer.refresh();
-					}
-				});
-			}
-
-			public void configurationRemoved(ConsoleConfiguration root) {
-				refreshInUI();
-			}
-		});
 		
 		makeActions();
 		createContextMenu();		

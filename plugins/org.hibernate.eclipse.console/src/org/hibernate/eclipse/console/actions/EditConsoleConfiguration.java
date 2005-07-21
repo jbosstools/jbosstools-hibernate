@@ -12,7 +12,6 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.node.BaseNode;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard;
 
@@ -40,9 +39,11 @@ public class EditConsoleConfiguration extends ConsoleConfigurationBasedAction {
 		if(cfg==null) {
 			for (Iterator i = getSelectedNonResources().iterator(); i.hasNext();) {
 				try {
-					BaseNode node = ( (BaseNode) i.next() );
-					final ConsoleConfiguration config = node.getConsoleConfiguration();
-					edit( config );
+					Object node = i.next();
+					if(node instanceof ConsoleConfiguration) {
+						final ConsoleConfiguration config = (ConsoleConfiguration) node;
+						edit( config );
+					}
 				} catch(HibernateException he) {
 					HibernateConsolePlugin.getDefault().showError(null, "Exception while trying to edit configuration", he);
 				}

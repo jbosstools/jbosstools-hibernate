@@ -13,6 +13,31 @@ import org.eclipse.ui.progress.IElementCollector;
 
 public abstract class BasicWorkbenchAdapter implements IDeferredWorkbenchAdapter {
 
+	static class MutexRule implements ISchedulingRule {
+		
+		private final Object mutex;
+
+		public MutexRule(Object mutex) {
+			this.mutex = mutex;
+		}
+
+		public boolean contains(ISchedulingRule rule) {
+			if(rule instanceof MutexRule) {
+				return mutex == ((MutexRule)rule).mutex;
+			} else {
+				return false;
+			}
+		}
+
+		public boolean isConflicting(ISchedulingRule rule) {
+			if(rule instanceof MutexRule) {
+				return mutex == ((MutexRule)rule).mutex;
+			} else {
+				return false;
+			}
+		}	
+	}
+
 	final static Object[] NO_CHILDREN = new Object[0];
 	
 	protected Object[] toArray(Iterator iterator, Class clazz) {
@@ -45,9 +70,12 @@ public abstract class BasicWorkbenchAdapter implements IDeferredWorkbenchAdapter
 	public boolean isContainer() {
 		return true;
 	}
-
-	public ISchedulingRule getRule(Object object) {
+	
+	final public ISchedulingRule getRule(Object object) {
+		//return new MutexRule(object);
 		return null;
 	}
+
+	
 
 }

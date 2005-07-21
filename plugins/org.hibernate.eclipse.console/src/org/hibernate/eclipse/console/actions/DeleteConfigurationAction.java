@@ -9,8 +9,8 @@ import java.util.List;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.actions.SelectionListenerAction;
+import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.node.BaseNode;
 
 /**
  * @author max
@@ -28,8 +28,8 @@ public class DeleteConfigurationAction extends SelectionListenerAction {
 		
 		Iterator iter = selectedNonResources.iterator();
 		while (iter.hasNext() ) {
-			BaseNode element = (BaseNode) iter.next();
-			KnownConfigurations.getInstance().removeConfiguration(element.getConsoleConfiguration() );
+			ConsoleConfiguration element = (ConsoleConfiguration) iter.next();
+			KnownConfigurations.getInstance().removeConfiguration(element);
 		}
 	}	
 	
@@ -38,7 +38,7 @@ public class DeleteConfigurationAction extends SelectionListenerAction {
 			Iterator iter = getSelectedNonResources().iterator();
 			while (iter.hasNext() ) {
 				Object element = iter.next();
-				if(element instanceof BaseNode) {
+				if(element instanceof ConsoleConfiguration) {
 					return true;
 				}
 			}

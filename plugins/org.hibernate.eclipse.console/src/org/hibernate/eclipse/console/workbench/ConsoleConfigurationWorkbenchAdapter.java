@@ -16,6 +16,10 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
 
 public class ConsoleConfigurationWorkbenchAdapter extends BasicWorkbenchAdapter {
 
+	public void fetchDeferredChildren(Object object, IElementCollector collector, IProgressMonitor monitor) {
+		super.fetchDeferredChildren( object, collector, monitor );
+	}
+	
 	public Object[] getChildren(Object o) {
 		ConsoleConfiguration ccfg = getConsoleConfiguration( o );
 		String sfError = null;

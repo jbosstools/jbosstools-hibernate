@@ -5,8 +5,10 @@ package org.hibernate.eclipse.console.views;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
@@ -56,5 +58,21 @@ class RealKnownConfigurationsProvider extends DeferredContentProvider implements
         } else {
         	return (IWorkbenchAdapter) Platform.getAdapterManager().getAdapter(o, IWorkbenchAdapter.class);
         }
+	}
+
+	public void factoryCreated(final ConsoleConfiguration ccfg) {
+		/*Display.getDefault().syncExec(new Runnable() {
+			public void run() {
+				tv.refresh(ccfg);
+			}
+		});*/				
+	}
+
+	public void factoryClosed(final ConsoleConfiguration configuration) {
+		Display.getDefault().syncExec(new Runnable() {
+			public void run() {
+				tv.collapseToLevel(configuration, AbstractTreeViewer.ALL_LEVELS);
+			}
+		});				
 	}
 }
