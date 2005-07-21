@@ -37,6 +37,7 @@ public class ConfigurationAdapterFactory implements IAdapterFactory {
 		map.put(Value.class, new ValueWorkbenchAdapter());
 		map.put(BaseNode.class, new BaseNodeWorkbenchAdapter());
 		map.put(LazyDatabaseSchema.class, new LazyDatabaseSchemaWorkbenchAdapter());
+		map.put(TableContainer.class, new TableContainerWorkbenchAdapter());
 		map.put(Table.class, new TableWorkbenchAdapter());
 		map.put(Column.class, new ColumnWorkbenchAdapter());		
 		

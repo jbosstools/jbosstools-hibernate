@@ -21,6 +21,9 @@ public class ConsoleConfigurationWorkbenchAdapter extends BasicWorkbenchAdapter 
 		String sfError = null;
 		if(ccfg.getConfiguration()==null) {
 			ccfg.build();
+		} 
+		
+		if(ccfg.getSessionFactory()==null) { // initialize later?
 			try {
 				ccfg.initSessionFactory();
 			} catch(Throwable t) {
@@ -28,6 +31,7 @@ public class ConsoleConfigurationWorkbenchAdapter extends BasicWorkbenchAdapter 
 				HibernateConsolePlugin.getDefault().logErrorMessage("Problems while creating sessionfactory", t);
 			}
 		}
+		
 		
 		Configuration configuration = ccfg.getConfiguration();
 		Object o1;

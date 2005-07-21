@@ -3,32 +3,31 @@ package org.hibernate.eclipse.console.workbench;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Table;
 
-public class TableWorkbenchAdapter extends BasicWorkbenchAdapter {
+public class TableContainerWorkbenchAdapter extends BasicWorkbenchAdapter {
 
 	public Object[] getChildren(Object o) {
-		Table t = getTable( o );
-		return toArray(t.getColumnIterator(), Column.class);
+		TableContainer tc = getTableContainer( o );
+		return toArray(tc.getTables().iterator(), Table.class);
 	}
 
-	private Table getTable(Object o) {
-		return (Table) o;
+	private TableContainer getTableContainer(Object o) {
+		return (TableContainer) o;
 	}
 
 	public ImageDescriptor getImageDescriptor(Object object) {
-		return EclipseImages.getImageDescriptor(ImageConstants.TABLE);
+		return EclipseImages.getImageDescriptor(ImageConstants.SCHEMA);
 	}
 
 	public String getLabel(Object o) {
-		Table table = getTable(o);
-		//return Table.qualify(table.getCatalog(), table.getSchema(), table.getName(), '.');
-		return table.getName();
+		String name = getTableContainer(o).getName();
+		return "".equals(name)?"<default>":name;
 	}
 
 	public Object getParent(Object o) {
 		return null;
 	}
 
+	
 }

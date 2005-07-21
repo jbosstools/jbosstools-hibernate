@@ -2,6 +2,10 @@ package org.hibernate.eclipse.console.workbench;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -19,7 +23,6 @@ import org.hibernate.console.ImageConstants;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.mapping.Table;
 
 public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 
@@ -49,8 +52,7 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 					connection = connectionProvider.getConnection();
 				
 					JDBCReader reader = new JDBCReader(connection, settings.getSQLExceptionConverter(), new DefaultReverseEngineeringStrategy());
-					// todo: use default schema/catalog
-					reader.readDatabaseSchema(db, null, null, new ProgressListenerMonitor(monitor));
+					reader.readDatabaseSchema(db, settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), new ProgressListenerMonitor(monitor));
 				} catch(HibernateException he) {
 					HibernateConsolePlugin.getDefault().logErrorMessage("Problem while reading database schema", he);
 				}
@@ -63,7 +65,7 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 							connectionProvider.closeConnection(connection);
 						}
 						catch (SQLException e) {
-						
+						 //noop
 						}
 					}
 				}
@@ -72,7 +74,14 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 			}
 		});
 				
-		return toArray(db.iterateTables(), Table.class);
+		List result = new ArrayList();
+		
+		Iterator qualifierEntries = db.getQualifierEntries();
+		while ( qualifierEntries.hasNext() ) {
+			Map.Entry entry = (Map.Entry) qualifierEntries.next();
+			result.add(new TableContainer((String) entry.getKey(),(List)entry.getValue()));
+		}
+		return toArray(result.iterator(), TableContainer.class);
 	}
 
 	private LazyDatabaseSchema getLazyDatabaseSchema(Object o) {

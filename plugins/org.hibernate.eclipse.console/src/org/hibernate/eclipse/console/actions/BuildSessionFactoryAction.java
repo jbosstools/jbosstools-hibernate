@@ -4,19 +4,14 @@
  */
 package org.hibernate.eclipse.console.actions;
 
-import java.sql.DriverManager;
 import java.util.Iterator;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.StructuredViewer;
-import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
-import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.console.node.BaseNode;
 import org.hibernate.console.node.ConfigurationNode;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 /**
  * @author max
@@ -46,7 +41,6 @@ public class BuildSessionFactoryAction extends ConsoleConfigurationBasedAction {
             	if(config.isSessionFactoryCreated() ) {
             		config.reset();
             	} else {
-            		//DriverManager.setLogStream(System.out);
             		config.build();
             		config.initSessionFactory();
             	}
