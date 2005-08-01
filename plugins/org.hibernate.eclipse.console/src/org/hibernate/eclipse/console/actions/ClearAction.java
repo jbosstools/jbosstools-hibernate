@@ -1,4 +1,4 @@
-package org.hibernate.eclipse.console.views;
+package org.hibernate.eclipse.console.actions;
 
 
 import org.eclipse.jface.action.Action;

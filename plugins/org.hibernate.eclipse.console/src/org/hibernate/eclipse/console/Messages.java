@@ -3,7 +3,7 @@ package org.hibernate.eclipse.console;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages {
-	private static final String BUNDLE_NAME = "org.hibernate.eclipse.console.messages"; //$NON-NLS-1$
+	public static final String BUNDLE_NAME = "org.hibernate.eclipse.console.messages"; //$NON-NLS-1$
 
 
 	public static String popup_copy_text;

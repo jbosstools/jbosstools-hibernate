@@ -15,13 +15,7 @@
       <category
             name="Hibernate"
             id="hibernatecategory"/>
-      <view
-            icon="icons/hibernate_small_icon.gif"
-            class="org.hibernate.eclipse.console.views.HQLEditorView"
-            category="hibernatecategory"
-            name="HQL Editor View"
-            id="org.hibernate.eclipse.console.views.HQLEditorView"/>
-      <view
+     <view
             icon="icons/hibernate_small_icon.gif"
             class="org.hibernate.eclipse.console.views.KnownConfigurationsView"
             category="hibernatecategory"
@@ -119,4 +113,69 @@
          <run class="org.hibernate.eclipse.builder.HibernateBuilder"/>
       </builder>
    </extension> 
+   
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.hibernate.eclipse.console.editors.HQLEditor"
+            contributorClass="org.hibernate.eclipse.console.editors.HQLEditorActionContributor"
+            extensions="hql"
+            icon="icons/images/hql_editor.gif"
+            id="org.hibernate.eclipse.console.editors.HQLEditor"
+            name="HQL Editor">
+      </editor>
+   </extension>
+    <extension
+          point="org.eclipse.ui.actionSets">
+       <actionSet
+             id="org.hibernate.eclipse.console.actionSet"
+             label="HQL"
+             visible="false">
+          <menu
+                id="HQL"
+                label="H&amp;QL">
+             <separator name="hqlGroup"/>
+          </menu>
+          <action
+                allowLabelUpdate="true"
+                class="org.hibernate.eclipse.console.actions.ExecuteHQLAction"                
+                icon="icons/images/execute.gif"
+                id="org.hibernate.eclipse.console.actions.ExecuteHQLAction"
+                label="Run Query"
+                retarget="false"
+                style="pulldown"
+                toolbarPath="hqlGroup"
+                tooltip="Run HQL Query from current editor">
+         </action>
+          		  
+       </actionSet>
+    </extension>
+ <extension point="org.eclipse.ui.actionSetPartAssociations">
+  <actionSetPartAssociation targetID="org.hibernate.eclipse.console.actionSet">
+   <part id="org.hibernate.eclipse.console.editors.HQLEditor"/>
+  </actionSetPartAssociation>
+ </extension>
+ <extension
+       point="org.eclipse.ui.editorActions">
+    <editorContribution
+          id="org.hibernate.eclipse.console.editors.HQLEditorContributions"
+          targetID="org.hibernate.eclipse.console.editors.HQLEditor">
+          <action
+                actionID="clearEditor"
+                class="org.hibernate.eclipse.console.actions.ClearHQLEditorAction"
+                icon="icons/images/clear.gif"
+                id="org.hibernate.eclipse.console.actions.ClearHQLEditorAction"
+                label="&amp;Clear HQL Editor"
+                menubarPath="HQL/hqlGroup"
+                style="push"
+                toolbarPath="hqlGroup"
+                tooltip="Clear HQL Editor"/>
+          <menu
+                id="HQL"
+                label="H&amp;QL">
+             <separator name="hqlGroup"/>
+          </menu> 
+    </editorContribution>
+ </extension>
+
 </plugin>

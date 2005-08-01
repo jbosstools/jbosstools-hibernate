@@ -13,12 +13,18 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfigurationPreferences;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.EclipseLogger;
+import org.hibernate.eclipse.console.editors.HQLEditorInput;
+import org.hibernate.eclipse.console.editors.HQLEditorStorage;
 import org.hibernate.eclipse.console.wizards.EclipseConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.workbench.ConfigurationAdapterFactory;
 import org.osgi.framework.BundleContext;
@@ -197,6 +203,27 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 	}
 	
 	
+	HQLEditorStorage storage = null;
 	
+	public void openScratchHQLEditor(String hql) {
+		 try {
+		        final IWorkbenchWindow activeWorkbenchWindow =
+		            PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		        IWorkbenchPage page = activeWorkbenchWindow.getActivePage();
+		        
+		        
+		        if(storage==null) {
+		        	storage = new HQLEditorStorage(hql==null?"":hql);
+		        	storage.setName("HQL Scratchpad");
+		        } else if (hql!=null) { 
+		        	storage.setQuery(hql);
+		        }
+		        
+		        final HQLEditorInput editorInput = new HQLEditorInput(storage);
+		            page.openEditor(editorInput, "org.hibernate.eclipse.console.editors.HQLEditor", true);
+		    } catch (PartInitException ex) {
+		        ex.printStackTrace();
+		    }
+	}
 	
 }

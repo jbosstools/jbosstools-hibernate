@@ -6,19 +6,28 @@ package org.hibernate.eclipse.console.actions;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuCreator;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.IWorkbenchWindowPulldownDelegate2;
+import org.eclipse.ui.texteditor.IDocumentProvider;
+import org.eclipse.ui.texteditor.ITextEditor;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.editors.HQLEditor;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.eclipse.console.views.HQLEditorView;
 
 
 
@@ -26,17 +35,20 @@ import org.hibernate.eclipse.console.views.HQLEditorView;
  * @author max
  *
  */
-public class ExecuteHQLAction extends Action implements IMenuCreator {
+public class ExecuteHQLAction extends Action implements IMenuCreator, IWorkbenchWindowPulldownDelegate2 {
 
 	private static final String LAST_USED_CONFIGURATION_PREFERENCE = "lastusedconfig";
-	private final HQLEditorView view;
+	private HQLEditor hqlEditor;
 
-	public ExecuteHQLAction(HQLEditorView view) {
+	public ExecuteHQLAction() {
 		
-		this.view = view;
 		setMenuCreator(this);
 		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.EXECUTE) );
 		initTextAndToolTip();
+	}
+
+	public ExecuteHQLAction(HQLEditor editor) {
+		
 	}
 
 	public void dispose() {
@@ -85,7 +97,7 @@ public class ExecuteHQLAction extends Action implements IMenuCreator {
 		};
 		//action.setImageDescriptor(ImageStore.getImageDescriptor(ImageStore.BOOKMARK) );
 		
-		action.setText(lastUsed.getName() );
+		action.setText(lastUsed.getName());
 		ActionContributionItem item = new ActionContributionItem(action);
 		item.fill(menu, -1);
 	}
@@ -93,10 +105,15 @@ public class ExecuteHQLAction extends Action implements IMenuCreator {
 	public void run() {
 		execute(getLastUsedConfiguration() );
 	}
+	
+	public void runWithEvent(Event event) {
+		super.runWithEvent( event );
+	}
 	protected void execute(ConsoleConfiguration lastUsed) {
 		try {	
 			if(lastUsed!=null && lastUsed.isSessionFactoryCreated() ) {
-				lastUsed.executeHQLQuery(view.getQuery() );
+				//lastUsed.executeHQLQuery(view.getQuery() );
+				System.out.println("Execute query on " + lastUsed);
 			}
 		}
 		finally {
@@ -115,8 +132,8 @@ public class ExecuteHQLAction extends Action implements IMenuCreator {
 	private void initTextAndToolTip() {
 		ConsoleConfiguration lastUsed = getLastUsedConfiguration();
 		if (lastUsed == null) {
-			setText("");
-			setToolTipText("");
+			setText("Run HQL");
+			setToolTipText("Run HQL");
 		} else {
 			setText(lastUsed.getName() );
 			setToolTipText(lastUsed.getName() );
@@ -143,4 +160,35 @@ public class ExecuteHQLAction extends Action implements IMenuCreator {
 		//return null;
 	}
 
+	public void setHQLEditor(HQLEditor hqlEditor) {
+		this.hqlEditor = hqlEditor;		
+	}
+
+	public void setText(String text) {
+			super.setText( text );
+	}
+
+	public void init(IWorkbenchWindow window) {
+	}
+
+	public void run(IAction action) {
+		run();
+	}
+
+	public void selectionChanged(IAction action, ISelection selection) {
+	}
+	
+	/*private IDocument getDocument() {
+		
+		ITextEditor editor= getTextEditor();
+		if (editor != null) {
+			
+			IDocumentProvider provider= editor.getDocumentProvider();
+			IEditorInput input= editor.getEditorInput();
+			if (provider != null && input != null)
+				return provider.getDocument(input);
+			
+		}
+		return null;
+	}*/
 }

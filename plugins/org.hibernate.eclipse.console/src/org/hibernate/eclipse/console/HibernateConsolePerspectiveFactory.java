@@ -48,20 +48,21 @@ public class HibernateConsolePerspectiveFactory implements IPerspectiveFactory {
 			
 		leftBottomLeft.addView(ID_PROPERTY_SHEET_VIEW);
 		
-		layout.addView(ID_QUERYEDITOR_VIEW, IPageLayout.TOP, 0.33F, layout.getEditorArea() ); //$NON-NLS-1$
+		//layout.addView(ID_QUERYEDITOR_VIEW, IPageLayout.TOP, 0.33F, layout.getEditorArea() ); //$NON-NLS-1$
 
 		IFolderLayout bottomRight =
 			layout.createFolder(
 				ID_RESULT_FOLDERVIEW,
-				IPageLayout.LEFT,
-				0.33F,
+				IPageLayout.BOTTOM,
+				0.50F,
 				layout.getEditorArea() );
 		
 		bottomRight.addView(ID_QUERYRESULTS_VIEW);
 		bottomRight.addView("org.eclipse.pde.runtime.LogView");
 		
-		layout.setEditorAreaVisible(false);
+		layout.setEditorAreaVisible(true);
 		
+		HibernateConsolePlugin.getDefault().openScratchHQLEditor(null);
 	}
 
 }
