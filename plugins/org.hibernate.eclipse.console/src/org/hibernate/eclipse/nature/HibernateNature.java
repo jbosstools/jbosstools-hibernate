@@ -146,7 +146,7 @@ public class HibernateNature implements IProjectNature {
 				monitor.done();
 				return Status.OK_STATUS;
 			} catch(Throwable t) {
-				return new Status(Status.ERROR, HibernateConsolePlugin.ID, 1, "Error while performing background reading of database schema", t); 
+				return new Status(IStatus.ERROR, HibernateConsolePlugin.ID, 1, "Error while performing background reading of database schema", t); 
 			}
 		}			
 

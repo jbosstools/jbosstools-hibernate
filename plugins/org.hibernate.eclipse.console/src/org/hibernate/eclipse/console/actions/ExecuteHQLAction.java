@@ -47,9 +47,11 @@ public class ExecuteHQLAction extends Action implements IMenuCreator, IWorkbench
 		initTextAndToolTip();
 	}
 
+
 	public ExecuteHQLAction(HQLEditor editor) {
-		
+		this.hqlEditor=editor;
 	}
+
 
 	public void dispose() {
 	}
@@ -111,9 +113,8 @@ public class ExecuteHQLAction extends Action implements IMenuCreator, IWorkbench
 	}
 	protected void execute(ConsoleConfiguration lastUsed) {
 		try {	
-			if(lastUsed!=null && lastUsed.isSessionFactoryCreated() ) {
-				//lastUsed.executeHQLQuery(view.getQuery() );
-				System.out.println("Execute query on " + lastUsed);
+			if(lastUsed!=null && lastUsed.isSessionFactoryCreated() ) {				
+				lastUsed.executeHQLQuery(hqlEditor.getQuery() );
 			}
 		}
 		finally {

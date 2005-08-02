@@ -8,7 +8,7 @@ import org.eclipse.jface.text.rules.DefaultPartitioner;
 
 /**
  * This class implements the <code>IDocumentSetupParticipant</code> interface in
- * order to setup document partitioning for SQL documents.
+ * order to setup document partitioning for HQL documents.
  */
 public class HQLEditorDocumentSetupParticipant implements IDocumentSetupParticipant {
 	

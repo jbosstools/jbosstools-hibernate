@@ -6,11 +6,8 @@ import org.eclipse.jface.text.source.projection.ProjectionViewer;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * This class implements a source viewer for editing SQL source text. This
- * class extends <code>ProjectViewer</code> in order to get the source folding
- * capability.
+ * Source viewer for editing HQL source text. 
  * 
- * @see org.eclipse.jface.text.source.projection.ProjectionViewer
  */
 public class HQLSourceViewer extends ProjectionViewer {
 

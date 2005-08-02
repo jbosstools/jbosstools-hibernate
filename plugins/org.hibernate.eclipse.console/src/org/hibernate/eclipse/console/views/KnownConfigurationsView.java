@@ -5,6 +5,7 @@
 package org.hibernate.eclipse.console.views;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -16,6 +17,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
@@ -25,9 +27,13 @@ import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.node.BaseNode;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.actions.EditConsoleConfiguration;
+import org.hibernate.eclipse.console.actions.FormatAction;
+import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.workbench.AnyAdaptableLabelProvider;
 
 
@@ -36,6 +42,22 @@ import org.hibernate.eclipse.console.workbench.AnyAdaptableLabelProvider;
  *
  */
 public class KnownConfigurationsView extends ViewPart {
+
+	private static class HQLScratchpadAction extends Action {
+		private HQLScratchpadAction() {
+			super( "HQL Scratchpad" );
+			setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.HQL_EDITOR));
+			setToolTipText("Open HQL Scratchpad");
+		}
+
+		public void runWithEvent(Event event) {
+			run();
+		}
+
+		public void run() {
+			HibernateConsolePlugin.getDefault().openScratchHQLEditor("");
+		}
+	}
 
 	TreeViewer viewer;
 	
@@ -98,6 +120,7 @@ public class KnownConfigurationsView extends ViewPart {
 		getSite().registerContextMenu(menuMgr, viewer);
 		
 		IActionBars actionBars = getViewSite().getActionBars();
+		actionBars.getToolBarManager().add(new HQLScratchpadAction());
 		IMenuManager dropDownMenu = actionBars.getMenuManager();
 		
 		actionGroup.fillContextMenu(dropDownMenu);

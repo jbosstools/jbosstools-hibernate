@@ -224,8 +224,8 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
         Database db = null;
         String defaultSchemaName = null;
         if (input instanceof IHQLEditorInput) {
-            IHQLEditorInput sqlInput = (IHQLEditorInput) input;
-            connInfo = sqlInput.getConnectionInfo();
+            IHQLEditorInput hqlInput = (IHQLEditorInput) input;
+            connInfo = hqlInput.getConnectionInfo();
             db = sqlInput.getDatabase();
             defaultSchemaName = sqlInput.getDefaultSchemaName();
         }*/
@@ -511,6 +511,13 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
 			}
 			
 		
+	}
+
+	public String getQuery() {		
+        IEditorInput editorInput = getEditorInput();
+        IDocumentProvider docProvider = getDocumentProvider();
+        IDocument doc = docProvider.getDocument( editorInput );
+        return doc.get();
 	}
 
 
