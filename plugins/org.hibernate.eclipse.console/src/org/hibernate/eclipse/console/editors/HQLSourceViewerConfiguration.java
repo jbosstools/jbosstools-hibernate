@@ -1,9 +1,6 @@
 package org.hibernate.eclipse.console.editors;
 
-import org.eclipse.jface.text.DefaultAutoIndentStrategy;
-import org.eclipse.jface.text.IAutoIndentStrategy;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.ITextDoubleClickStrategy;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
@@ -19,7 +16,6 @@ import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
-import org.eclipse.swt.graphics.RGB;
 
 /**
  * This class defines the editor add-ons; content assist, content formatter,
@@ -124,6 +120,10 @@ public class HQLSourceViewerConfiguration extends SourceViewerConfiguration {
     public IContentFormatter getContentFormatter(ISourceViewer sourceViewer) {
         ContentFormatter formatter = new ContentFormatter();
         formatter.setDocumentPartitioning( HQL_PARTITIONING );
+        
+        IFormattingStrategy formattingStrategy = new HQLFormattingStrategy();
+        formatter.setFormattingStrategy( formattingStrategy, IDocument.DEFAULT_CONTENT_TYPE );
+        
                
         return formatter;
     }

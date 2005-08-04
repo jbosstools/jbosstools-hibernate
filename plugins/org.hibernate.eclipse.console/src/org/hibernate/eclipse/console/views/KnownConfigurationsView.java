@@ -5,7 +5,6 @@
 package org.hibernate.eclipse.console.views;
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -32,7 +31,6 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.node.BaseNode;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.actions.EditConsoleConfiguration;
-import org.hibernate.eclipse.console.actions.FormatAction;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.workbench.AnyAdaptableLabelProvider;
 

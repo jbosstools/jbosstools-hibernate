@@ -24,13 +24,11 @@ import org.hibernate.eclipse.console.actions.ExecuteHQLAction;
  */
 public class HQLEditorActionContributor extends TextEditorActionContributor {
 
-    protected RetargetTextEditorAction fContentAssistProposalAction;
-    protected RetargetTextEditorAction fContentAssistTipAction;
-    protected RetargetTextEditorAction fContentFormatAction;
+    protected RetargetTextEditorAction contentAssistProposalAction;
+    protected RetargetTextEditorAction contentAssistTipAction;
+    protected RetargetTextEditorAction contentFormatAction;
     
-    private IPropertyChangeListener    fConnectActionListener;
-    private IPropertyChangeListener    fSetStatementTerminatorActionListener;
-	private ExecuteHQLAction executeHQLAction;
+    private ExecuteHQLAction executeHQLAction;
 	
 
     /**
@@ -40,9 +38,9 @@ public class HQLEditorActionContributor extends TextEditorActionContributor {
         super();
         ResourceBundle bundle = ResourceBundle.getBundle(Messages.BUNDLE_NAME);
 
-        fContentAssistProposalAction = new RetargetTextEditorAction( bundle, "ContentAssistProposal." ); // $NON-NLS-1$
-        fContentAssistTipAction =  new RetargetTextEditorAction( bundle, "ContentAssistTip." ); // $NON-NLS-1$
-        fContentFormatAction = new RetargetTextEditorAction( bundle, "ContentFormat." ); // $NON-NLS-1$
+        contentAssistProposalAction = new RetargetTextEditorAction( bundle, "ContentAssistProposal." ); // $NON-NLS-1$
+        contentAssistTipAction =  new RetargetTextEditorAction( bundle, "ContentAssistTip." ); // $NON-NLS-1$
+        contentFormatAction = new RetargetTextEditorAction( bundle, "ContentFormat." ); // $NON-NLS-1$
         executeHQLAction = new ExecuteHQLAction();
         
     }
@@ -56,9 +54,9 @@ public class HQLEditorActionContributor extends TextEditorActionContributor {
         IMenuManager editMenu = mm.findMenuUsingPath( IWorkbenchActionConstants.M_EDIT );
         if (editMenu != null) {
             editMenu.add( new Separator() );
-            editMenu.add( fContentAssistProposalAction );
-            editMenu.add( fContentFormatAction );
-            editMenu.add( fContentAssistTipAction );
+            editMenu.add( contentAssistProposalAction );
+            editMenu.add( contentFormatAction );
+            editMenu.add( contentAssistTipAction );
         }
         /*IMenuManager hqlMenu = mm.findMenuUsingPath( "HQL" );
         if (hqlMenu != null) {
@@ -86,9 +84,9 @@ public class HQLEditorActionContributor extends TextEditorActionContributor {
         // "retargetable action" associated with them.  The action needs to be
         // "retargeted" to associate it with the active editor whenever the active
         // editor changes.
-        fContentAssistProposalAction.setAction( getAction( textEditor, "ContentAssistProposal" )); // $NON-NLS-1$
-        fContentAssistTipAction.setAction( getAction( textEditor, "ContentAssistTip" )); // $NON-NLS-1$
-        fContentFormatAction.setAction( getAction( textEditor, "ContentFormat" )); // $NON-NLS-1$
+        contentAssistProposalAction.setAction( getAction( textEditor, "ContentAssistProposal" )); // $NON-NLS-1$
+        contentAssistTipAction.setAction( getAction( textEditor, "ContentAssistTip" )); // $NON-NLS-1$
+        contentFormatAction.setAction( getAction( textEditor, "ContentFormat" )); // $NON-NLS-1$
      //   IAction action = getAction( textEditor, "clearEditor");
        // action.equals(action);
         
