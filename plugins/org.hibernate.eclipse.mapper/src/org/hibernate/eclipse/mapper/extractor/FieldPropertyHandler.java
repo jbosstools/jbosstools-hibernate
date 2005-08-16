@@ -10,6 +10,8 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
+import org.hibernate.eclipse.hqleditor.CompletionHelper;
+import org.hibernate.eclipse.hqleditor.HibernateResultCollector;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Node;
 
@@ -32,11 +34,11 @@ class FieldPropertyHandler implements HBMInfoHandler {
 	    if(project!=null) {
 			String typename = this.extractor.getNearestType(node);			
 						
-			HBMXMLResultCollector rc = null;
+			HibernateResultCollector rc = null;
 			try {
 				IType type = project.findType(typename);
 				if(type==null) return new ICompletionProposal[0]; //nothing to look for then
-				rc = new HBMXMLResultCollector(project);
+				rc = new HibernateResultCollector(project);
 				rc.setAccepts(false,false,false,false,true,false); // TODO: only handle properties ?
 				//rc.reset(offset, javaProject, null);
 				
@@ -47,7 +49,7 @@ class FieldPropertyHandler implements HBMInfoHandler {
 			}
 			
 			IJavaCompletionProposal[] results = rc.getJavaCompletionProposals();
-			this.extractor.transpose(start, offset, results);
+			CompletionHelper.transpose(start, offset, results);
 			return results; 
 		}
 		

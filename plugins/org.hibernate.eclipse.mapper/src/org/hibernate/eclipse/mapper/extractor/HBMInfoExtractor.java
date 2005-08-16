@@ -246,64 +246,6 @@ public class HBMInfoExtractor {
 	}
 
 	/**
-	 * @param start
-	 * @param offset
-	 * @param results replacementoffset is changed and array is sorted inplace for relevance
-	 */
-	void transpose(String start, int offset, IJavaCompletionProposal[] results) {
-		// As all completions have made with the assumption on a empty
-		// (or almost empty) string
-		// we move the replacementoffset on every proposol to fit nicely
-		// into our non-java code
-		for (int i = 0; i < results.length; i++) {
-			if(results[i] instanceof JavaCompletionProposal) {
-				JavaCompletionProposal proposal = (JavaCompletionProposal) results[i]; // TODO: eclipse bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=84998			
-				int wanted = proposal.getReplacementOffset() + (offset /*- start.length()*/);
-				if(wanted==proposal.getReplacementOffset() ) { 
-					System.out.println("NO TRANSPOSE!");
-				}
-				proposal.setReplacementOffset(wanted);
-			} else {
-				Class c = results[i].getClass();
-				try {
-					Method setMethod = c.getMethod("setReplacementOffset", new Class[] { int.class });
-					Method GetMethod = c.getMethod("getReplacementOffset", new Class[0]);
-					
-					Integer offsetx = (Integer) GetMethod.invoke(results[i], null);
-					int wanted = offsetx.intValue() + (offset /*- start.length()*/);
-					setMethod.invoke(results[i], new Object[] { new Integer(wanted) });
-				} catch (SecurityException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NoSuchMethodException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				// M7
-//				LazyJavaCompletionProposal proposal = (LazyJavaCompletionProposal) results[i]; // TODO: eclipse bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=84998
-//				int wanted = proposal.getReplacementOffset() + (offset /*- start.length()*/);
-//				if(wanted==proposal.getReplacementOffset() ) { 
-//					System.out.println("NO TRANSPOSE!");
-//				}
-//				proposal.setReplacementOffset(proposal.getReplacementOffset() + (offset /*- start.length()*/) ); 
-			}
-		}
-		Arrays.sort(results, new CompletionProposalComparator() );		
-	}
-
-
-	
-
-	/**
 	 * @param holder
 	 * @param root TODO
 	 * @return nearest package attribute, null if none found. 
