@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
@@ -18,15 +17,15 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ConsoleConfigurationPreferences;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.EclipseLogger;
-import org.hibernate.eclipse.console.editors.HQLEditorInput;
-import org.hibernate.eclipse.console.editors.HQLEditorStorage;
 import org.hibernate.eclipse.console.wizards.EclipseConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.workbench.ConfigurationAdapterFactory;
+import org.hibernate.eclipse.hqleditor.HQLEditorInput;
+import org.hibernate.eclipse.hqleditor.HQLEditorStorage;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -35,6 +34,8 @@ import org.osgi.framework.BundleContext;
 public class HibernateConsolePlugin extends AbstractUIPlugin {
 	
 	public static final String ID = "org.hibernate.eclipse.console";
+	
+	static public final String LAST_USED_CONFIGURATION_PREFERENCE = "lastusedconfig";
 	
 	//The shared instance.
 	private static HibernateConsolePlugin plugin;
@@ -203,27 +204,46 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 	}
 	
 	
-	HQLEditorStorage storage = null;
-	
-	public void openScratchHQLEditor(String hql) {
+	public void openScratchHQLEditor(String consoleName, String hql) {
 		 try {
 		        final IWorkbenchWindow activeWorkbenchWindow =
 		            PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		        IWorkbenchPage page = activeWorkbenchWindow.getActivePage();
 		        
 		        
-		        if(storage==null) {
-		        	storage = new HQLEditorStorage(hql==null?"":hql);
-		        	storage.setName("HQL Scratchpad");
-		        } else if (hql!=null) { 
-		        	storage.setQuery(hql);
-		        }
+		        HQLEditorStorage storage = new HQLEditorStorage(consoleName, "HQL: " + consoleName, hql==null?"":hql);		        
 		        
 		        final HQLEditorInput editorInput = new HQLEditorInput(storage);
-		            page.openEditor(editorInput, "org.hibernate.eclipse.console.editors.HQLEditor", true);
+		            page.openEditor(editorInput, "org.hibernate.eclipse.hqleditor.HQLEditor", true);
 		    } catch (PartInitException ex) {
 		        ex.printStackTrace();
 		    }
+	}
+
+	public ConsoleConfiguration getLastUsedConfiguration() {
+		String lastUsedName = getDefault().getPreferenceStore().getString(HibernateConsolePlugin.LAST_USED_CONFIGURATION_PREFERENCE);
+		
+		ConsoleConfiguration lastUsed = (lastUsedName == null || lastUsedName.trim().length()==0) 
+				? null 
+				: KnownConfigurations.getInstance().find(lastUsedName);
+	    
+	    if(lastUsed==null && KnownConfigurations.getInstance().getConfigurations().length==1) {
+	        lastUsed = KnownConfigurations.getInstance().getConfigurations()[0];
+	    }
+	    
+		return lastUsed;
+	}
+	
+	public void setLastUsedConfiguration(ConsoleConfiguration lastUsed) {
+		String name;
+		if(lastUsed==null) {
+			name = "";
+		} else {
+			name = lastUsed.getName();
+		}
+		
+		HibernateConsolePlugin.getDefault().getPreferenceStore().setValue(
+				LAST_USED_CONFIGURATION_PREFERENCE, name );
 	}
 	
 }

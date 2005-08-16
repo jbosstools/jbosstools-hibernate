@@ -11,8 +11,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.internal.resources.File;
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceProxy;
@@ -357,7 +357,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			Iterator iter = sr.getResults().iterator();
 			while (iter.hasNext() ) {
 				SearchMatch match = (SearchMatch) iter.next();
-				if(match.getResource() instanceof File) { // what happens if a actual class implements java.sql.driver ?
+				if(match.getResource() instanceof IFile) { // what happens if a actual class implements java.sql.driver ?
 					resources.add(match.getResource().getFullPath() );
 				}
 			}
@@ -463,7 +463,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 
 	private String checkForFile(String msgPrefix, IResource resource) {
 		if(resource!=null) {
-			if(resource instanceof File) {
+			if(resource instanceof IFile) {
 				
 				return null;
 			} else {

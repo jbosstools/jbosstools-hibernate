@@ -33,11 +33,6 @@ public class ClassLoaderHelper {
 		List pathElements = getProjectClassPathURLs(project);
 		URL urlPaths[] = (URL[]) pathElements.toArray(new URL[pathElements.size()]);
 		
-//		for (int i = 0; i < urlPaths.length; i++)
-//		{
-//			System.out.println("[aop-core-plugin] class-loader-path: " + urlPaths[i]);
-//		}
-		
 		return new URLClassLoader(urlPaths, Thread.currentThread().getContextClassLoader() );
 	}
 	
@@ -55,7 +50,6 @@ public class ClassLoaderHelper {
 					IClasspathEntry path = paths[i];					
 					if (path.getEntryKind() == IClasspathEntry.CPE_LIBRARY)
 					{
-						System.out.println("Path: " + path);
 						IPath simplePath = path.getPath();
 						URL url = getRawLocationURL(simplePath);
 						

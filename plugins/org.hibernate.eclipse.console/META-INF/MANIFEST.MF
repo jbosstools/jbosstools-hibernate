@@ -2,22 +2,23 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate Console
 Bundle-SymbolicName: org.hibernate.eclipse.console; singleton:=true
-Bundle-Version: 3.1.0.N20050711
+Bundle-Version: 3.1.0.alpha5
 Bundle-ClassPath: org.hibernate.eclipse.console.jar
 Bundle-Activator: org.hibernate.eclipse.console.HibernateConsolePlugin
 Bundle-Vendor: Hibernate Team
 Bundle-Localization: plugin
-Export-Package: 
- org.hibernate.eclipse.builder,
+Export-Package: org.hibernate.eclipse.builder,
  org.hibernate.eclipse.console,
  org.hibernate.eclipse.console.actions,
- org.hibernate.eclipse.console.editors,
  org.hibernate.eclipse.console.preferences,
  org.hibernate.eclipse.console.properties,
+ org.hibernate.eclipse.console.sql,
  org.hibernate.eclipse.console.utils,
  org.hibernate.eclipse.console.views,
  org.hibernate.eclipse.console.views.properties,
  org.hibernate.eclipse.console.wizards,
+ org.hibernate.eclipse.console.workbench,
+ org.hibernate.eclipse.hqleditor,
  org.hibernate.eclipse.nature
 Require-Bundle: org.hibernate.eclipse,
  org.eclipse.jdt.ui,
@@ -32,5 +33,7 @@ Require-Bundle: org.hibernate.eclipse,
  org.eclipse.ui.workbench.texteditor,
  org.eclipse.jface.text,
  org.eclipse.ui.ide,
- org.eclipse.help
+ org.eclipse.help,
+ org.eclipse.ui.console,
+ org.eclipse.gef
 Eclipse-AutoStart: true

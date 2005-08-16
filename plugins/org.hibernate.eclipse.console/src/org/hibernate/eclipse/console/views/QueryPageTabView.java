@@ -36,9 +36,9 @@ import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryPage;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.eclipse.console.editors.HQLEditorInput;
-import org.hibernate.eclipse.console.editors.HQLEditorStorage;
 import org.hibernate.eclipse.console.views.properties.HibernatePropertySourceProvider;
+import org.hibernate.eclipse.hqleditor.HQLEditorInput;
+import org.hibernate.eclipse.hqleditor.HQLEditorStorage;
 
 
 
@@ -264,7 +264,7 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 
 
 	public void setSelection(ISelection selection) {
-		System.out.println("Told to select " + selection);
+		
 	}
 
 

@@ -10,7 +10,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.actions.SelectionListenerAction;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.node.ConfigurationNode;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 /**

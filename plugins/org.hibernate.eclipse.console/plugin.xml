@@ -27,6 +27,12 @@
             category="hibernatecategory"
             name="Query result"
             id="org.hibernate.eclipse.console.views.QueryPageTabView"/>
+      <view
+            category="hibernatecategory"
+            class="org.hibernate.eclipse.graph.EntityGraphView"
+            icon="icons/images/hibernate_icon.jpg"
+            id="org.hibernate.eclipse.graph.EntityGraphView"
+            name="Hibernate UML View"/>
             
    </extension>
    <extension
@@ -117,11 +123,11 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="org.hibernate.eclipse.console.editors.HQLEditor"
-            contributorClass="org.hibernate.eclipse.console.editors.HQLEditorActionContributor"
+            class="org.hibernate.eclipse.hqleditor.HQLEditor"
+            contributorClass="org.hibernate.eclipse.hqleditor.HQLEditorActionContributor"
             extensions="hql"
             icon="icons/images/hql_editor.gif"
-            id="org.hibernate.eclipse.console.editors.HQLEditor"
+            id="org.hibernate.eclipse.hqleditor.HQLEditor"
             name="HQL Editor">
       </editor>
    </extension>
@@ -142,7 +148,7 @@
                 icon="icons/images/execute.gif"
                 id="org.hibernate.eclipse.console.actions.ExecuteHQLAction"
                 label="Run Query"
-                retarget="false"
+                retarget="true"
                 style="pulldown"
                 toolbarPath="hqlGroup"
                 tooltip="Run HQL Query from current editor">
@@ -152,14 +158,14 @@
     </extension>
  <extension point="org.eclipse.ui.actionSetPartAssociations">
   <actionSetPartAssociation targetID="org.hibernate.eclipse.console.actionSet">
-   <part id="org.hibernate.eclipse.console.editors.HQLEditor"/>
+   <part id="org.hibernate.eclipse.hqleditor.HQLEditor"/>
   </actionSetPartAssociation>
  </extension>
  <extension
        point="org.eclipse.ui.editorActions">
     <editorContribution
-          id="org.hibernate.eclipse.console.editors.HQLEditorContributions"
-          targetID="org.hibernate.eclipse.console.editors.HQLEditor">
+          id="org.hibernate.eclipse.hqleditor.HQLEditorContributions"
+          targetID="org.hibernate.eclipse.hqleditor.HQLEditor">
           <action
                 actionID="clearEditor"
                 class="org.hibernate.eclipse.console.actions.ClearHQLEditorAction"
@@ -177,5 +183,35 @@
           </menu> 
     </editorContribution>
  </extension>
-
+ 
+   <extension 
+      point = "org.eclipse.ui.elementFactories"> 
+         <factory 
+            id ="org.hibernate.eclipse.hqleditor.HQLEditorInputFactory" 
+            class="org.hibernate.eclipse.hqleditor.HQLEditorInputFactory"> 
+         </factory> 
+   </extension> 
+ 
+ <!--
+ <extension
+       point="org.eclipse.ui.console.consoleFactories">
+    <consoleFactory
+          class="org.hibernate.eclipse.console.sql.ConsoleSQLLogFactory"
+          label="Hibernate SQL Log"/>
+ </extension>
+ <extension
+       point="org.eclipse.ui.themes">
+    <themeElementCategory
+          id="org.hibernate.eclipse.console.theme.HQLColors"
+          label="HQL Colors"/>
+    <colorDefinition
+          categoryId="org.hibernate.eclipse.console.theme.HQLColors"
+          id="HQL_KEYWORD"
+          isEditable="true"
+          label="HQL Keyword"
+          value="123,45,3">
+       <description>Color for a HQL keyword</description>
+    </colorDefinition>
+ </extension>
+-->
 </plugin>

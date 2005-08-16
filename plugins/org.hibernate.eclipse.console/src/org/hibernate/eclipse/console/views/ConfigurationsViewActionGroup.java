@@ -7,20 +7,17 @@ package org.hibernate.eclipse.console.views;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.ActionGroup;
 import org.eclipse.ui.actions.SelectionListenerAction;
-import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.actions.AddConfigurationAction;
 import org.hibernate.eclipse.console.actions.BuildSessionFactoryAction;
 import org.hibernate.eclipse.console.actions.DeleteConfigurationAction;
 import org.hibernate.eclipse.console.actions.EditConsoleConfiguration;
 import org.hibernate.eclipse.console.actions.RefreshAction;
-import org.hibernate.tool.hbm2ddl.SchemaExport;
 
 /**
  * @author max
@@ -34,9 +31,11 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 	private SelectionListenerAction connectAction;
 	private SelectionListenerAction schemaExportAction;
 	private EditConsoleConfiguration editConfigurationAction;
+	private final StructuredViewer selectionProvider;
 
 	public ConfigurationsViewActionGroup(IViewPart part, StructuredViewer selectionProvider) {
 		
+		this.selectionProvider = selectionProvider;
 		addConfigurationAction = new AddConfigurationAction(part);
 		
 		deleteConfigurationAction = new DeleteConfigurationAction();
@@ -62,6 +61,15 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 		
 	}
 
+	public void dispose() {
+		super.dispose();
+		selectionProvider.removeSelectionChangedListener(deleteConfigurationAction);
+		selectionProvider.removeSelectionChangedListener(refreshAction);
+		selectionProvider.removeSelectionChangedListener(connectAction);
+		selectionProvider.removeSelectionChangedListener(schemaExportAction);
+		selectionProvider.removeSelectionChangedListener(editConfigurationAction);
+	}
+	
 	public void fillContextMenu(IMenuManager menu) {
 	
 		menu.add(connectAction);
@@ -79,4 +87,6 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 		
 		actionBars.getToolBarManager().add(addConfigurationAction);
 	}
+	
+	
 }
