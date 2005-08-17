@@ -1,9 +1,11 @@
 package org.hibernate.eclipse.graph.model;
 
-import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.Property;
+import org.hibernate.type.CollectionType;
 import org.hibernate.type.EntityType;
 import org.hibernate.util.StringHelper;
 
@@ -46,6 +48,20 @@ public class PropertyViewAdapter {
 			PersistentClassViewAdapter target = configuration
 					.getPersistentClassViewAdapter( et.getAssociatedEntityName() );
 			configuration.addAssociation( new PropertyAssociationViewAdapter( clazz, this, target ) );
+		} 
+		
+		if ( property.getValue() instanceof Collection ) {
+			Collection collection = (Collection) property.getValue();
+			if(collection.getElement() instanceof OneToMany) {
+				OneToMany oneToMany = (OneToMany) collection.getElement();
+				String entityName = oneToMany.getAssociatedClass().getEntityName();
+				PersistentClassViewAdapter target = configuration
+				.getPersistentClassViewAdapter( entityName );
+				configuration.addAssociation( new PropertyAssociationViewAdapter( clazz, this, target ) );
+			}
+			
 		}
+		
+		
 	}
 }

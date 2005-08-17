@@ -13,7 +13,9 @@ public class InheritanceViewAdapter extends AssociationViewAdapter {
 	private final PersistentClassViewAdapter superclass;
 
 	public InheritanceViewAdapter(PersistentClassViewAdapter subclass, PersistentClassViewAdapter superclass) {
-		if(subclass==superclass) throw new IllegalArgumentException("subclass must not be equal to superclass");				
+		if(subclass==superclass) throw new IllegalArgumentException("subclass must not be equal to superclass");
+		if(subclass==null) throw new IllegalArgumentException("subclass must not null");
+		if(superclass==null) throw new IllegalArgumentException("superclass must not null");
 		this.subclass = subclass;
 		this.superclass = superclass;
 	}

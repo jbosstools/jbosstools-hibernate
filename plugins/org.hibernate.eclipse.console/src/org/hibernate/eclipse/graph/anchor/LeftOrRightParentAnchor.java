@@ -13,7 +13,7 @@ public class LeftOrRightParentAnchor extends ChopboxAnchor {
 		super(owner);
 	}
 	public Point getLocation(Point reference) {
-		Point p = getOwner().getParent().getBounds().getCenter();
+		Point p = getOwner().getBounds().getCenter();
 		getOwner().translateToAbsolute(p);
 		if (reference.x < p.x) {
 			p = p.setLocation(getOwner().getParent().getBounds().getLeft().x,p.y);

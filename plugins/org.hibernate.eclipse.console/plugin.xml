@@ -22,17 +22,23 @@
             name="Hibernate Configurations"
             id="org.hibernate.eclipse.console.views.KnownConfigurationsView"/>
       <view
+            category="hibernatecategory"
+            class="org.hibernate.eclipse.graph.EntityGraphView"
+            icon="icons/hibernate_small_icon.gif"
+            id="org.hibernate.eclipse.graph.EntityGraphView"
+            name="Hibernate Entity Model"/>
+      <view
             icon="icons/hibernate_small_icon.gif"
             class="org.hibernate.eclipse.console.views.QueryPageTabView"
             category="hibernatecategory"
-            name="Query result"
+            name="Hibernate Query Result"
             id="org.hibernate.eclipse.console.views.QueryPageTabView"/>
       <view
             category="hibernatecategory"
-            class="org.hibernate.eclipse.graph.EntityGraphView"
-            icon="icons/images/hibernate_icon.jpg"
-            id="org.hibernate.eclipse.graph.EntityGraphView"
-            name="Hibernate UML View"/>
+            class="org.hibernate.eclipse.console.views.DynamicQueryTranslatorView"
+            icon="icons/images/hibernate_small_icon.jpg"
+            id="org.hibernate.eclipse.console.views.DynamicQueryTranslatorView"
+            name="Hibernate Dynamic Query Translator"/>
             
    </extension>
    <extension

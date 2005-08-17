@@ -61,17 +61,18 @@ class RealKnownConfigurationsProvider extends DeferredContentProvider implements
 	}
 
 	public void factoryCreated(final ConsoleConfiguration ccfg) {
-		/*Display.getDefault().syncExec(new Runnable() {
+		/*(Display.getDefault().syncExec(new Runnable() { Disabled as it will generate double entries in the child list
 			public void run() {
 				tv.refresh(ccfg);
-			}
-		});*/				
+			} 
+		});	*/			
 	}
 
 	public void factoryClosed(final ConsoleConfiguration configuration) {
 		Display.getDefault().syncExec(new Runnable() {
 			public void run() {
 				tv.collapseToLevel(configuration, AbstractTreeViewer.ALL_LEVELS);
+				tv.refresh(configuration);
 			}
 		});				
 	}

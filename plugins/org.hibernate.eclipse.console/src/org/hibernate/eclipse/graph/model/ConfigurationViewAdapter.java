@@ -34,7 +34,14 @@ public class ConfigurationViewAdapter extends Observable {
 				PersistentClass clazz = (PersistentClass) classMappings.next();
 				persistentClasses.put( clazz.getEntityName(), new PersistentClassViewAdapter(this, clazz) );
 			}
+			
+			Iterator iterator = persistentClasses.values().iterator();
+			while ( iterator.hasNext() ) {
+				PersistentClassViewAdapter element = (PersistentClassViewAdapter) iterator.next();
+				element.getSourceAssociations();				
+			}
 		}
+		
 		return new ArrayList(persistentClasses.values());
 	}
 

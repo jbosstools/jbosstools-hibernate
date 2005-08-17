@@ -14,7 +14,7 @@ public class PersistentClassViewAdapter extends Observable {
 
 	private final ConfigurationViewAdapter configuration;
 
-	private List sourceAssociations;
+	private boolean sourceAssociationsCalculated;
 
 	public PersistentClassViewAdapter(ConfigurationViewAdapter configuration, PersistentClass clazz) {
 		this.configuration = configuration;
@@ -46,11 +46,12 @@ public class PersistentClassViewAdapter extends Observable {
 
 
 	public List getSourceAssociations() {
-		if(sourceAssociations==null) {
+		if(!sourceAssociationsCalculated) {
 			createInheritanceAssociations();
-			sourceAssociations = configuration.getSourceAssociations(this.getPersistentClass().getEntityName());
+			configuration.getSourceAssociations(this.getPersistentClass().getEntityName());
+			sourceAssociationsCalculated = true;
 		} 
-		return sourceAssociations;
+		return configuration.getSourceAssociations(this.getPersistentClass().getEntityName());
 	}
 
 
