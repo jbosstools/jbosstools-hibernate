@@ -15,10 +15,14 @@ public class LeftOrRightParentAnchor extends ChopboxAnchor {
 	public Point getLocation(Point reference) {
 		Point p = getOwner().getBounds().getCenter();
 		getOwner().translateToAbsolute(p);
+		IFigure parent = getOwner().getParent();
+		if(parent==null) {
+			parent = getOwner();
+		}
 		if (reference.x < p.x) {
-			p = p.setLocation(getOwner().getParent().getBounds().getLeft().x,p.y);
+			p = p.setLocation(parent.getBounds().getLeft().x,p.y);
 		} else {
-			p = p.setLocation(getOwner().getParent().getBounds().getRight().x,p.y);
+			p = p.setLocation(parent.getBounds().getRight().x,p.y);
 		}
 		getOwner().translateToAbsolute(p);
 		return p;

@@ -2,6 +2,8 @@ package org.hibernate.eclipse.graph.parts;
 
 import org.eclipse.draw2d.ConnectionRouter;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.MidpointLocator;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.hibernate.eclipse.graph.model.AssociationViewAdapter;
@@ -26,6 +28,14 @@ public class AssociationEditPart extends AbstractConnectionEditPart {
 		if(connectionRouter!=null) {
 			polylineConnection.setConnectionRouter(connectionRouter);	
 		}
+		
+		AssociationViewAdapter ava = (AssociationViewAdapter) getModel();
+		if(ava.getAssociationName()!=null) {
+			MidpointLocator mpl = new MidpointLocator(polylineConnection, 0);
+			polylineConnection.add(new Label(ava.getAssociationName()), mpl);	
+		}
+		
+		
 		
 		return polylineConnection;
 	}

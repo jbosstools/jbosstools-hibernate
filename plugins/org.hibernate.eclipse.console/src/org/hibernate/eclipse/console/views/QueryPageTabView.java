@@ -119,12 +119,6 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 	
 	public void createPartControl(Composite parent) {
 		this.tabs = new TabFolder(parent, SWT.NONE);
-		tabs.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
-				System.err.println("should not happen!");
-
-			}
-		});
 		this.tabs.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
 				fireSelectionChangedEvent();

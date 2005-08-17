@@ -15,15 +15,15 @@ public class ConfigurationViewAdapter extends Observable {
 	
 	private final Configuration cfg;
 	private Map persistentClasses; // key: name, value: PersistentClassViewAdapter
-	private final Map sourceAssociations; // key: name, value: List of AssociationViewAdapter
-	private final Map targetAssociations; // key: name, value: List of AssociationViewAdapter
+	//private final Map sourceAssociations; // key: name, value: List of AssociationViewAdapter
+	//private final Map targetAssociations; // key: name, value: List of AssociationViewAdapter
 	private boolean manualLayout;
 
 	public ConfigurationViewAdapter(Configuration cfg) {
 		this.cfg = cfg;		
 		
-		sourceAssociations = new HashMap();
-		targetAssociations = new HashMap();
+		//sourceAssociations = new HashMap();
+		//targetAssociations = new HashMap();
 	}
 
 	public List getPersistentClasses() {
@@ -45,21 +45,21 @@ public class ConfigurationViewAdapter extends Observable {
 		return new ArrayList(persistentClasses.values());
 	}
 
-	public List getSourceAssociations(String key) {
+	/*public List getSourceAssociations(String key) {
 		List list = (List) sourceAssociations.get(key);
 		return list;		
-	}
+	}*/
 
-	public List getTargetAssociations(String key) {
+	/*public List getTargetAssociations(String key) {
 		List list = (List) targetAssociations.get(key);
 		return list;		
-	}
+	}*/
 
 	public PersistentClassViewAdapter getPersistentClassViewAdapter(String associatedEntityName) {
 		return (PersistentClassViewAdapter) persistentClasses.get(associatedEntityName);		
 	}
 
-	public void addAssociation(AssociationViewAdapter adapter) {
+	/*public void addAssociation(AssociationViewAdapter adapter) {
 		List l = getSourceAssociations(adapter.getSourceName());
 		if(l==null) {
 			l = new ArrayList();
@@ -73,7 +73,7 @@ public class ConfigurationViewAdapter extends Observable {
 			targetAssociations.put(adapter.getTargetName(), l);
 		}
 		l.add(adapter);		
-	}
+	}*/
 
 	public boolean isManualLayoutDesired() {
 		return manualLayout;

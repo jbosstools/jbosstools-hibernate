@@ -21,4 +21,8 @@ public abstract class AssociationViewAdapter {
 	public String toString() {
 		return "Association target: " + getSourceName() + " source: " + getTargetName(); 
 	}
+
+	public String getAssociationName() {
+		return null;
+	}
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -20,6 +21,7 @@ import org.hibernate.eclipse.graph.model.PersistentClassViewAdapter;
 import org.hibernate.eclipse.graph.model.PropertyViewAdapter;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
+import org.hibernate.util.StringHelper;
 
 public class PersistentClassEditPart extends AbstractGraphicalEditPart implements Observer, NodeEditPart {
 
@@ -31,6 +33,8 @@ public class PersistentClassEditPart extends AbstractGraphicalEditPart implement
 		super.activate();
 		Observable o = (Observable) getModel();
 		o.addObserver(this);
+		refreshSourceConnections(); // to be in sync with the models connections
+		refreshTargetConnections(); // cannot just call refresh as that makes the connections available twice
 	}
 	
 	public void deactivate() {
@@ -44,15 +48,24 @@ public class PersistentClassEditPart extends AbstractGraphicalEditPart implement
 
 	public void refreshVisuals() {
 		PersistentClassFigure myFigure = (PersistentClassFigure) getFigure();
-		PersistentClass node = getPersistentClass();
 		ConfigurationEditPart parent = (ConfigurationEditPart) getParent();
-		myFigure.getLabel().setText( node.getEntityName() );
+		myFigure.getLabel().setText( getHeaderName() );
 		Rectangle bounds = getPersistentClassViewAdapter().getBounds().getCopy();
 		parent.setLayoutConstraint( this, myFigure, bounds );		
 	}
 
 	protected IFigure createFigure() {
-		return new PersistentClassFigure(new EditableLabel(getPersistentClass().getEntityName()));
+		
+		String unqualify = getHeaderName();
+		return new PersistentClassFigure(new EditableLabel(unqualify));
+	}
+
+	private String getHeaderName() {
+		String unqualify = getPersistentClass().getEntityName();
+		if(unqualify.indexOf('.')>=0) {
+			unqualify = StringHelper.unqualify(getPersistentClass().getEntityName());
+		}
+		return unqualify;
 	}
 
 	protected List getModelChildren() {	
@@ -78,33 +91,36 @@ public class PersistentClassEditPart extends AbstractGraphicalEditPart implement
 	}
 
 	public void update(Observable o, Object arg) {
-		refreshVisuals();
+		if(arg==PersistentClassViewAdapter.ASSOCIATONS) {
+			refreshSourceConnections(); 
+			refreshTargetConnections();
+		} else {
+			refreshVisuals();
+		}
 	}
 	
 	protected List getModelSourceConnections() {
-		System.out.println("Getting source of " + this);
 		return getPersistentClassViewAdapter().getSourceAssociations();		
 	}
 	
 	protected List getModelTargetConnections() {
-		System.out.println("Getting target of " + this);
 		return getPersistentClassViewAdapter().getTargetAssociations();
 	}
 
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-		return new TopOrBottomAnchor(getFigure());
+		return new ChopboxAnchor(getFigure());
 	}
 
 	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-		return new TopOrBottomAnchor(getFigure());
+		return new ChopboxAnchor(getFigure());
 	}
 
 	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-		return new TopOrBottomAnchor(getFigure());
+		return new ChopboxAnchor(getFigure());
 	}
 
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-		return new TopOrBottomAnchor(getFigure());
+		return new ChopboxAnchor(getFigure());
 	}
 
 	

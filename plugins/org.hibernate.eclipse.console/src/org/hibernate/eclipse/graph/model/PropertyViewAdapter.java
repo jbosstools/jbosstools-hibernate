@@ -1,15 +1,16 @@
 package org.hibernate.eclipse.graph.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Observable;
 
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.Property;
-import org.hibernate.type.CollectionType;
 import org.hibernate.type.EntityType;
-import org.hibernate.util.StringHelper;
 
-public class PropertyViewAdapter {
+public class PropertyViewAdapter extends Observable {
 
 	final private Property property;
 
@@ -18,28 +19,36 @@ public class PropertyViewAdapter {
 	private final PersistentClassViewAdapter clazz;
 
 	private List sourceAssociations;
-
+	private List targetAssociations;
+	
 	public PropertyViewAdapter(PersistentClassViewAdapter clazz,
 			Property property) {
 		this.clazz = clazz;
 		this.property = property;
 		this.configuration = clazz.getConfiguration();
+		this.sourceAssociations = null;
+		this.targetAssociations = Collections.EMPTY_LIST;
+		
 	}
 
 	public Property getProperty() {
 		return property;
 	}
 
-	public List getSourceConnections() {		
-		if(sourceAssociations==null) {
-			createSingleEndedEnityAssociations();
-			sourceAssociations = configuration.getSourceAssociations(StringHelper.qualify(clazz.getPersistentClass().getEntityName(), property.getName())); 
-		}
+	public List getSourceConnections() {
+		checkConnections();
 		return sourceAssociations;
 	}
 
+	private void checkConnections() {
+		if(sourceAssociations==null) {
+			sourceAssociations = new ArrayList();
+			createSingleEndedEnityAssociations();
+		}		
+	}
+
 	public List getTargetConnections() {
-		return configuration.getTargetAssociations(StringHelper.qualify(clazz.getPersistentClass().getEntityName(), property.getName()));
+		return targetAssociations;
 	}
 	
 	private void createSingleEndedEnityAssociations() {
@@ -47,7 +56,9 @@ public class PropertyViewAdapter {
 			EntityType et = (EntityType) property.getType();
 			PersistentClassViewAdapter target = configuration
 					.getPersistentClassViewAdapter( et.getAssociatedEntityName() );
-			configuration.addAssociation( new PropertyAssociationViewAdapter( clazz, this, target ) );
+			PropertyAssociationViewAdapter pava = new PropertyAssociationViewAdapter( clazz, this, target );
+			this.addSourceAssociation( pava );
+			target.addTargetAssociation( pava );
 		} 
 		
 		if ( property.getValue() instanceof Collection ) {
@@ -57,11 +68,20 @@ public class PropertyViewAdapter {
 				String entityName = oneToMany.getAssociatedClass().getEntityName();
 				PersistentClassViewAdapter target = configuration
 				.getPersistentClassViewAdapter( entityName );
-				configuration.addAssociation( new PropertyAssociationViewAdapter( clazz, this, target ) );
+				PropertyAssociationViewAdapter pava = new PropertyAssociationViewAdapter( clazz, this, target );
+				this.addSourceAssociation( pava );
+				target.addTargetAssociation( pava );
 			}
 			
 		}
 		
 		
+	}
+
+	private void addSourceAssociation(PropertyAssociationViewAdapter pava) {
+		checkConnections();
+		sourceAssociations.add(pava);
+		setChanged();
+		notifyObservers(PersistentClassViewAdapter.ASSOCIATONS);
 	}
 }

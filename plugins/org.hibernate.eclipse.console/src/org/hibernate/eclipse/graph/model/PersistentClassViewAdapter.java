@@ -1,5 +1,6 @@
 package org.hibernate.eclipse.graph.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
@@ -8,17 +9,24 @@ import org.hibernate.mapping.PersistentClass;
 
 public class PersistentClassViewAdapter extends Observable {
 
+	public static final String ASSOCIATONS = "ASSOCIATIONS";
+
 	private PersistentClass persistentClass;
 
 	private Rectangle bounds = new Rectangle( 0, 0, -1, -1 );
 
 	private final ConfigurationViewAdapter configuration;
 
-	private boolean sourceAssociationsCalculated;
+	private List targetAssociations;
+	private List sourceAssociations;
 
 	public PersistentClassViewAdapter(ConfigurationViewAdapter configuration, PersistentClass clazz) {
 		this.configuration = configuration;
 		this.persistentClass = clazz;
+		
+		targetAssociations = new ArrayList();
+		sourceAssociations = null; //lazily created
+				
 	}
 
 	
@@ -46,12 +54,16 @@ public class PersistentClassViewAdapter extends Observable {
 
 
 	public List getSourceAssociations() {
-		if(!sourceAssociationsCalculated) {
+		checkAssociations();
+		return sourceAssociations;
+	}
+
+
+	private void checkAssociations() {
+		if(sourceAssociations==null) {
+			sourceAssociations=new ArrayList();
 			createInheritanceAssociations();
-			configuration.getSourceAssociations(this.getPersistentClass().getEntityName());
-			sourceAssociationsCalculated = true;
-		} 
-		return configuration.getSourceAssociations(this.getPersistentClass().getEntityName());
+		}		
 	}
 
 
@@ -60,12 +72,27 @@ public class PersistentClassViewAdapter extends Observable {
 		PersistentClass superclass = getPersistentClass().getSuperclass();
 		if(superclass!=null) {
 			PersistentClassViewAdapter target = getConfiguration().getPersistentClassViewAdapter(superclass.getEntityName());
-			configuration.addAssociation(new InheritanceViewAdapter(this, target));
+			InheritanceViewAdapter iva = new InheritanceViewAdapter(this, target);
+			this.addSourceAssociation(iva);
+			target.addTargetAssociation(iva);			
 		}
 	}
 
+	void addTargetAssociation(AssociationViewAdapter iva) {
+		targetAssociations.add(iva);
+		setChanged();
+		notifyObservers(ASSOCIATONS);
+	}
+
+	private void addSourceAssociation(AssociationViewAdapter iva) {
+		checkAssociations();
+		sourceAssociations.add(iva);
+		setChanged();
+		notifyObservers(ASSOCIATONS);
+	}
+
+
 	public List getTargetAssociations() {
-		List targetAssociations = getConfiguration().getTargetAssociations(this.getPersistentClass().getEntityName());
 		return targetAssociations;
 	}
 	

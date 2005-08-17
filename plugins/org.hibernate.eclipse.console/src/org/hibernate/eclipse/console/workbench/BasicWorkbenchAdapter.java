@@ -61,14 +61,13 @@ public abstract class BasicWorkbenchAdapter implements IDeferredWorkbenchAdapter
 		return obj.toArray((Object[]) Array.newInstance(clazz, obj.size()));
 	}
 
-	int beenHere = 0;
 	
 	public void fetchDeferredChildren(Object object,
 			IElementCollector collector, IProgressMonitor monitor) {
-		beenHere++;
+		
 		collector.add(getChildren(object), monitor);
 		collector.done();
-		beenHere--;
+		
 	}
 
 	public boolean isContainer() {

@@ -21,5 +21,12 @@ public class PropertyAssociationViewAdapter extends AssociationViewAdapter {
 	public String getTargetName() {
 		return target.getPersistentClass().getEntityName();
 	}
+	
+	public String toString() {
+		return "Property " + property.getProperty().getName() + " " + super.toString();
+	}
 
+	public String getAssociationName() {
+		return property.getProperty().getName();
+	}
 }
