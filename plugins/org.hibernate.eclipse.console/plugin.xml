@@ -47,33 +47,41 @@
             name="Hibernate"
             id="hibernatewizards"/>
       <wizard
+            category="hibernatewizards"
             class="org.hibernate.eclipse.console.wizards.NewConfigurationWizard"
             icon="icons/hibernate_small_icon.gif"
-            category="hibernatewizards"
-            name="Hibernate Configuration File (cfg.xml)"
-            id="org.hibernate.eclipse.console.wizards.NewConfigurationWizard"/>
+            id="org.hibernate.eclipse.console.wizards.NewConfigurationWizard"
+            name="Hibernate Configuration File (cfg.xml)">
+         <description>Create a new hibernate.cfg.xml file (Helping with the initial JDBC setup etc.)</description>
+      </wizard>
       <wizard
+            category="hibernatewizards"
             class="org.hibernate.eclipse.console.wizards.NewReverseEngineeringFileWizard"
             icon="icons/hibernate_small_icon.gif"
-            category="hibernatewizards"
-            name="Hibernate Reverse Engineering File (reveng.xml)"
-            id="org.hibernate.eclipse.console.wizards.NewReverseEngineeringFileWizard"/>
+            id="org.hibernate.eclipse.console.wizards.NewReverseEngineeringFileWizard"
+            name="Hibernate Reverse Engineering File (reveng.xml)">
+         <description>Create a new hibernate.reveng.xml (Helping with the initial table and type filtering)</description>
+      </wizard>
       <wizard
-            icon="icons/hibernate_small_icon.gif"
+            category="hibernatewizards"
             class="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"
-            finalPerspective="org.hibernate.eclipse.console.HibernateConsolePerspective"
             descriptionImage="icons/hibernate_small_icon.gif"
-            category="hibernatewizards"
-            project="false"
-            preferredPerspectives="org.hibernate.eclipse.console.HibernateConsolePerspective"
+            finalPerspective="org.hibernate.eclipse.console.HibernateConsolePerspective"
+            icon="icons/hibernate_small_icon.gif"
+            id="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"
             name="Hibernate Console Configuration"
-            id="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"/>
+            preferredPerspectives="org.hibernate.eclipse.console.HibernateConsolePerspective"
+            project="false">
+         <description>Creates a new Hibernate Console Configuration</description>
+      </wizard>
       <wizard
+            category="hibernatewizards"
             class="org.hibernate.eclipse.console.wizards.ArtifactGeneratorWizard"
             icon="icons/hibernate_small_icon.gif"
-            category="hibernatewizards"
-            name="Hibernate Artifact Generation"
-            id="org.hibernate.eclipse.console.wizards.ArtifactGeneratorWizard"/>
+            id="org.hibernate.eclipse.console.wizards.ArtifactGeneratorWizard"
+            name="Hibernate Artifact Generation">
+         <description>Run the artifiact generator to generate POJO, DAO, .hbm, etc. files from a console configuration or database</description>
+      </wizard>
    </extension>
    <extension
          point="org.eclipse.ui.popupMenus">
