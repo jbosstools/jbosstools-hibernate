@@ -18,28 +18,42 @@
 	<target name="javadoc"/>
 	
 	<target name="update" depends="init">
+         
+        <delete failonerror="no">
+	     <fileset dir="lib">
+	       <include name="**/*"/>
+    	   <exclude name="CVS"/>
+    	 </fileset>
+        </delete>
+        
+        <mkdir dir="lib/hibernate"/>      
+        <mkdir dir="lib/tools"/>            
+        
+        <property name="lib.hibernate" location="lib/hibernate"/>
+        <property name="lib.tools" location="lib/tools"/>      
+        
 		<!-- DONT BUILD H3 unless you have to use new features from the core. use the released binary if you can! -->
 		 <ant antfile="${hibernate-core.home}\..\hibernate3\build.xml" inheritall="false" inheritrefs="false" target="jar"/> 
 		<ant antfile="${hibernate-core.home}\..\hibernate3\build.xml" inheritall="false" inheritrefs="false" target="copylib"/>  
-
-		<!-- we need to have the hibernateconsole stuff together with the core to fake DriverManager into allow loading drivers -->
+    
+        <!-- we need to have the hibernateconsole stuff together with the core to fake DriverManager into allow loading drivers -->
 		<ant antfile="..\console\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
-		<copy file="..\console\target\hibernateconsole\hibernateconsole.jar" todir="lib"/>
+		<copy file="..\console\target\hibernateconsole\hibernateconsole.jar" todir="${lib.tools}"/>
 		<!--
 		 I guess we also need l2fprod for Property / HibernateProperty
 		-->
-		<copy file="..\console\lib\l2fprod-common.jar" todir="lib"/>
+		<copy file="..\console\lib\l2fprod-common.jar" todir="${lib.tools}"/>
 
 		<ant antfile="..\tools\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
         <ant antfile="..\tools\build.xml" inheritall="false" inheritrefs="false" target="copylib"/>        
-		<copy file="..\tools\target\hibernate-tools\hibernate-tools.jar" todir="lib"/>
-		<copy file="..\tools\target\hibernate-tools\lib\velocity-1.4.jar" todir="lib"/>
-		<copy file="..\tools\target\hibernate-tools\lib\velocity-tools-generic-1.1.jar" todir="lib"/>		
-		<copy file="..\tools\target\hibernate-tools\lib\jtidy-r8-21122004.jar" todir="lib"/>		
+		<copy file="..\tools\target\hibernate-tools\hibernate-tools.jar" todir="${lib.tools}"/>
+		<copy file="..\tools\target\hibernate-tools\lib\velocity-1.4.jar" todir="${lib.tools}"/>
+		<copy file="..\tools\target\hibernate-tools\lib\velocity-tools-generic-1.1.jar" todir="${lib.tools}"/>		
+		<copy file="..\tools\target\hibernate-tools\lib\jtidy-r8-21122004.jar" todir="${lib.tools}"/>		
 		
 		<property file="${hibernate-core.lib.dir}/version.properties" prefix="h3"/>
 		
-        <copy todir="lib" >
+        <copy todir="${lib.hibernate}" >
 			<fileset dir="${hibernate-core.home}">
 				<include name="hibernate3.jar"/>	
         	</fileset>

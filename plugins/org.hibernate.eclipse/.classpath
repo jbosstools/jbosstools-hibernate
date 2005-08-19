@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/"/>
-	<classpathentry exported="true" kind="lib" path="lib/antlr-2.7.5H3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/asm.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/asm-attrs.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/cglib-2.1.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-collections-2.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-logging-1.0.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/concurrent-1.3.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/connector.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/dom4j-1.6.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/ehcache-1.1.jar"/>
-	<classpathentry exported="true" sourcepath="/hibernate3/src" kind="lib" path="lib/hibernate3.jar"/>
-	<classpathentry exported="true" sourcepath="/hibernateext.console/src/java" kind="lib" path="lib/hibernateconsole.jar"/>
-	<classpathentry exported="true" sourcepath="/hibernateext.tools/src/java" kind="lib" path="lib/hibernate-tools.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jboss-cache.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jboss-common.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jboss-jmx.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jboss-system.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jdbc2_0-stdext.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jgroups-2.2.7.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jta.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jtidy-r8-21122004.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jaas.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/l2fprod-common.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/log4j-1.2.9.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/oscache-2.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/proxool-0.8.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/swarmcache-1.0rc2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/velocity-1.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/velocity-tools-generic-1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/antlr-2.7.5H3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/tools/hibernateconsole.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/asm.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/asm-attrs.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/c3p0-0.9.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/cglib-2.1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/commons-collections-2.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/commons-logging-1.0.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/concurrent-1.3.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/connector.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/dom4j-1.6.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/ehcache-1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/hibernate3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/jboss-cache.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/jboss-common.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/jboss-jmx.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/jboss-system.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/jdbc2_0-stdext.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/jgroups-2.2.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/jta.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/jaas.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/log4j-1.2.11.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/oscache-2.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/proxool-0.8.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/swarmcache-1.0rc2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/tools/hibernate-tools.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/tools/jtidy-r8-21122004.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/tools/l2fprod-common.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/tools/velocity-1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/tools/velocity-tools-generic-1.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="build/eclipse"/>
