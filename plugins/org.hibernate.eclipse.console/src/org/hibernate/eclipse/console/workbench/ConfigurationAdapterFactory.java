@@ -14,6 +14,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.node.BaseNode;
+import org.hibernate.console.node.ConfigurationEntitiesNode;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
@@ -39,8 +40,7 @@ public class ConfigurationAdapterFactory implements IAdapterFactory {
 		map.put(LazyDatabaseSchema.class, new LazyDatabaseSchemaWorkbenchAdapter());
 		map.put(TableContainer.class, new TableContainerWorkbenchAdapter());
 		map.put(Table.class, new TableWorkbenchAdapter());
-		map.put(Column.class, new ColumnWorkbenchAdapter());		
-		
+		map.put(Column.class, new ColumnWorkbenchAdapter());				
 		
 		classes = new Class[map.size()];
 		adapters = new IDeferredWorkbenchAdapter[map.size()];
@@ -60,9 +60,14 @@ public class ConfigurationAdapterFactory implements IAdapterFactory {
 			return getAdapter( adaptableObject );
 		}		
 		if(adapterType==IPropertySource2.class || adapterType==IPropertySource.class) {
-			return new GenericPropertySource(adaptableObject);
+			return getPropertySource(adaptableObject);
 		}
 		return null;
+	}
+
+	
+	private Object getPropertySource(Object adaptableObject) {	
+		return new GenericPropertySource(adaptableObject);		
 	}
 
 	private Object getAdapter(Object adaptableObject) {

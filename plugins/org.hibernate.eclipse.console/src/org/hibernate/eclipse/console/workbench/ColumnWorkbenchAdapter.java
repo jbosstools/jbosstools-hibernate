@@ -7,8 +7,6 @@ import org.hibernate.mapping.Column;
 
 public class ColumnWorkbenchAdapter extends BasicWorkbenchAdapter {
 
-	private static final Object[] NO_CHILDREN = new Object[0];
-
 	public Object[] getChildren(Object o) {		
 		return NO_CHILDREN;
 	}

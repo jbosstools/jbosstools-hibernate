@@ -99,7 +99,7 @@ public class KnownConfigurationsView extends ViewPart {
 		
 		viewer.setLabelProvider(new AnyAdaptableLabelProvider());
 		
-		viewer.setContentProvider(new RealKnownConfigurationsProvider());
+		viewer.setContentProvider(new KnownConfigurationsProvider());
 		
 		//viewer.setInput(KnownConfigurations.getInstance().getRootNode() );
 		viewer.setInput( KnownConfigurations.getInstance() );

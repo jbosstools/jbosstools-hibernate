@@ -10,8 +10,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySheetEntry;
-import org.hibernate.console.ImageConstants;
-import org.hibernate.eclipse.console.utils.EclipseImages;
 
 public class BeanPropertyDescriptor implements IPropertyDescriptor {
 

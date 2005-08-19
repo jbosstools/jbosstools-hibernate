@@ -39,14 +39,12 @@ public abstract class UpDownList {
 	private Button upButton;
 	private Button downButton;
 	private TableViewer tableView;
-	private Shell shell;
-
+	
 	private final Composite parent;
 	private final String title;
 	
-	public UpDownList(Composite parent, Shell shell2, String title) {
-		this.parent = parent;
-		this.shell = shell2;
+	public UpDownList(Composite parent, String title) {
+		this.parent = parent;		
 		this.title = title;
 		build();
 	}
@@ -207,10 +205,6 @@ public abstract class UpDownList {
 	abstract protected void listChanged();
 
 	abstract protected Object[] handleAdd(int i);
-
-	protected Shell getShell() {
-		return shell;
-	}
 
 	/**
 	 * The user has selected a different item in table.

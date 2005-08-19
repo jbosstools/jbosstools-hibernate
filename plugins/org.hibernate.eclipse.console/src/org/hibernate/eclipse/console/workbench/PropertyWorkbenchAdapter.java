@@ -17,7 +17,6 @@ import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.QueryList;
 import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Value;
@@ -58,11 +57,7 @@ public class PropertyWorkbenchAdapter extends BasicWorkbenchAdapter implements
 			public Object accept(Set set) {
 				return NO_CHILDREN; // should it look up the target entity?
 			}
-		
-			public Object accept(QueryList list) {
-				return NO_CHILDREN;
-			}
-		
+					
 			public Object accept(OneToMany many) {
 				return NO_CHILDREN;
 			}
@@ -110,14 +105,12 @@ public class PropertyWorkbenchAdapter extends BasicWorkbenchAdapter implements
 	public String getLabel(Object o) {
 		Property property = ((Property)o);
 		Value value = property.getValue();
-		if (value.isSimpleValue()) {
-			SimpleValue sv = (SimpleValue)value;
-			
-			if(sv.getTypeName()!=null) {
-				return property.getName() + " : " + sv.getTypeName();	
-			}
-			
+		String typeName = (String) value.accept(new TypeNameValueVisitor(true));
+		
+		if (typeName!=null) {
+			return property.getName() + " : " + typeName;
 		}
+		
 		return property.getName(); 
 	}
 
@@ -129,68 +122,7 @@ public class PropertyWorkbenchAdapter extends BasicWorkbenchAdapter implements
 	static public String getIconNameForValue(Value value) {
 		String result;
 		
-		result = (String) value.accept(new ValueVisitor() {
-		
-			public Object accept(OneToOne oto) {
-				return ImageConstants.ONETOONE;
-			}
-		
-			public Object accept(ManyToOne mto) {
-				return ImageConstants.MANYTOONE;
-			}
-		
-			public Object accept(Component component) {
-				return ImageConstants.COMPONENT;
-			}
-		
-			public Object accept(DependantValue value) {
-				return ImageConstants.UNKNOWNPROPERTY;
-			}
-		
-			public Object accept(SimpleValue value) {
-				return ImageConstants.PROPERTY;
-			}
-		
-			public Object accept(Any any) {
-				return ImageConstants.PROPERTY;
-			}
-		
-			public Object accept(Set set) {
-				return ImageConstants.MANYTOONE;
-			}
-		
-			public Object accept(QueryList list) {
-				return ImageConstants.UNKNOWNPROPERTY;
-			}
-		
-			public Object accept(OneToMany many) {
-				return ImageConstants.ONETOMANY;
-			}
-		
-			public Object accept(Map map) {
-				return ImageConstants.MANYTOONE;
-			}
-		
-			public Object accept(Array list) {
-				return ImageConstants.MANYTOONE;
-			}
-		
-			public Object accept(PrimitiveArray primitiveArray) {
-				return ImageConstants.MANYTOONE;			
-			}
-		
-			public Object accept(List list) {
-				return ImageConstants.MANYTOONE;
-			}
-		
-			public Object accept(IdentifierBag bag) {
-				return ImageConstants.MANYTOONE;
-			}
-		
-			public Object accept(Bag bag) {
-				return ImageConstants.MANYTOONE;
-			}
-		});
+		result = (String) value.accept(new IconNameValueVisitor());
 		
 		if(result==null) {
 			result = ImageConstants.UNKNOWNPROPERTY;

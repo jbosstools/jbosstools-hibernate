@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.draw2d.CheckBox;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -31,6 +32,7 @@ import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
+import org.eclipse.jdt.internal.ui.wizards.dialogfields.SelectionButtonDialogField;
 import org.eclipse.jdt.ui.wizards.BuildPathDialogAccess;
 import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -67,6 +69,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	private Text configurationFileText;
 	private Text configurationNameText;
 	private EclipseConsoleConfiguration oldConfiguaration = null;
+	private Button enableAnnotations; 
 	
 	private ISelection selection;
 	private UpDownList mappingFilesViewer;
@@ -145,6 +148,14 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			}
 		});
 		
+		label = new Label(container, SWT.NULL);
+		label.setText("Use &Annotations (require JDK 1.5):");
+		
+		enableAnnotations = new Button(container, SWT.CHECK | SWT.BORDER | SWT.SINGLE);
+		gd = new GridData(GridData.FILL_HORIZONTAL);
+		enableAnnotations.setLayoutData(gd);
+		//enableAnnotations.addModifyListener(modifyListener);		
+		
 		buildMappingFileTable(container);
 		buildClassPathTable(container);
 		initialize();
@@ -154,7 +165,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	
 	
 	private void buildClassPathTable(Composite parent) {
-		classPathViewer = new UpDownList(parent, getShell(), "Classpath (only add path for POJO and driver - No Hibernate jars!)") {
+		classPathViewer = new UpDownList(parent, "Classpath (only add path for POJO and driver - No Hibernate jars!)") {
 			protected Object[] handleAdd(int idx) {
 
 				TableItem[] items = getTable().getItems();
@@ -188,7 +199,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	}
 
 	private void buildMappingFileTable(Composite parent) {
-		mappingFilesViewer = new UpDownList(parent, getShell(), "Mapping files") {
+		mappingFilesViewer = new UpDownList(parent, "Mapping files") {
 			protected Object[] handleAdd(int idx) {
 				TableItem[] items = getTable().getItems();
 				IPath[] exclude = new IPath[items.length];

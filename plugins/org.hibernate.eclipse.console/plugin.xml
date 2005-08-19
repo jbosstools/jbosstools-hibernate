@@ -55,6 +55,7 @@
          <description>Create a new hibernate.cfg.xml file (Helping with the initial JDBC setup etc.)</description>
       </wizard>
       <wizard
+            canFinishEarly="false"
             category="hibernatewizards"
             class="org.hibernate.eclipse.console.wizards.NewReverseEngineeringFileWizard"
             icon="icons/hibernate_small_icon.gif"

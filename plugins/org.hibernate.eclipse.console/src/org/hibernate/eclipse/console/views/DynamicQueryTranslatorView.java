@@ -10,6 +10,9 @@ import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.TextViewer;
 import org.eclipse.jface.text.reconciler.IReconcilingStrategy;
 import org.eclipse.jface.text.reconciler.MonoReconciler;
+import org.eclipse.jface.text.source.OverviewRuler;
+import org.eclipse.jface.text.source.SourceViewer;
+import org.eclipse.jface.text.source.VerticalRuler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -25,10 +28,14 @@ import org.eclipse.ui.part.ViewPart;
 import org.hibernate.SessionFactory;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.execution.ExecutionContext;
+import org.hibernate.eclipse.console.utils.QLFormatHelper;
 import org.hibernate.eclipse.hqleditor.HQLEditor;
+import org.hibernate.eclipse.hqleditor.HQLSourceViewer;
+import org.hibernate.eclipse.hqleditor.HQLSourceViewerConfiguration;
 import org.hibernate.hql.QueryTranslator;
 import org.hibernate.impl.SessionFactoryImpl;
 import org.hibernate.pretty.Formatter;
+import org.hibernate.type.Type;
 import org.hibernate.util.StringHelper;
 
 public class DynamicQueryTranslatorView extends ViewPart {
@@ -73,7 +80,7 @@ public class DynamicQueryTranslatorView extends ViewPart {
 
 	};
 	
-	private ITextViewer textViewer;
+	private SourceViewer textViewer;
 	private HQLEditor currentEditor;
     private MonoReconciler reconciler;
 	
@@ -134,7 +141,16 @@ public class DynamicQueryTranslatorView extends ViewPart {
 					QueryTranslator[] translators = sfimpl.getQuery(query, false, Collections.EMPTY_MAP);
 					for (int i = 0; i < translators.length; i++) {
 						QueryTranslator translator = translators[i];
-						str.append(new Formatter(translator.getSQLString()).format());
+						Type[] returnTypes = translator.getReturnTypes();						
+						str.append("SQL #" + i + " types: ");
+						for (int j = 0; j < returnTypes.length; j++) {
+							Type returnType = returnTypes[j];
+							str.append(returnType.getName());
+							if(j<returnTypes.length-1) { str.append(", "); }							
+						}
+						str.append("\n-----------------\n");
+						
+						str.append(QLFormatHelper.formatForScreen(translator.getSQLString()));
 						str.append("\n\n");
 					}
 					return str.toString();
@@ -151,9 +167,10 @@ public class DynamicQueryTranslatorView extends ViewPart {
 	}
 
 	public void createPartControl(Composite parent) {
-		textViewer = new TextViewer( parent, SWT.READ_ONLY | SWT.H_SCROLL | SWT.V_SCROLL );
+		textViewer = new HQLSourceViewer( parent, new VerticalRuler(1), null, false, SWT.READ_ONLY | SWT.H_SCROLL | SWT.V_SCROLL );
 		//textViewer.setEditable(false);
 		textViewer.setDocument( new Document() );
+		textViewer.configure(new HQLSourceViewerConfiguration(null));
 		
 		IWorkbenchWindow window = PlatformUI.getWorkbench()
 		.getActiveWorkbenchWindow();

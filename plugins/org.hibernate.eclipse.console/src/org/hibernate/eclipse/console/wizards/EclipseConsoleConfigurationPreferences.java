@@ -122,7 +122,7 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 	}
 
 	public void writeStateTo(Element node) {
-		writeStateTo(node, getName(), cfgFile, propertyFilename, mappings, customClasspath);
+		writeStateTo(node, getName(), useAnnotations(), cfgFile, propertyFilename, mappings, customClasspath);
 	}
 
 	protected void setConfigFile(String cfgFile) {

@@ -23,6 +23,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.ide.IDE;
+import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
@@ -34,6 +35,7 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
 public class NewReverseEngineeringFileWizard extends Wizard implements INewWizard {
 	private ISelection selection;
     private WizardNewFileCreationPage cPage;
+	private TableFilterWizardPage tableFilterWizardPage;
 
 	/**
 	 * Constructor for NewConfigurationWizard.
@@ -70,7 +72,10 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
         cPage.setTitle( "Create Hibernate Reverse Engineering file (reveng.xml)" );
         cPage.setDescription( "Create a new hibernate.reveng.xml." );
         cPage.setFileName("hibernate.reveng.xml");
-        addPage( cPage );        
+        addPage( cPage );  
+        
+        tableFilterWizardPage = new TableFilterWizardPage( "revengtable" );
+		addPage( tableFilterWizardPage );
         
 	}
     
@@ -155,23 +160,35 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
 		monitor.worked(1);
 	}
 	
-	/**
-	 * We will initialize file contents with a sample text.
-	 * @throws UnsupportedEncodingException 
-	 */
-
 	private InputStream openContentStream() {
-        StringWriter stringWriter = new StringWriter();
-        stringWriter.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
+        StringWriter sw = new StringWriter();
+        sw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
         		"<!DOCTYPE hibernate-reverse-engineering PUBLIC \"-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN\" \"http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd\" >\r\n" + 
         		"\r\n" + 
-        		"<hibernate-reverse-engineering>\r\n" + 
-        		"</hibernate-reverse-engineering>");
+        		"<hibernate-reverse-engineering>\r\n");
+        TableFilter[] filters = (TableFilter[]) tableFilterWizardPage.getTableFilters().toArray(new TableFilter[0]);
+        for (int i = 0; i < filters.length; i++) {
+			TableFilter filter = filters[i];
+			sw.write("  <table-filter");
+			if(!".*".equals(filter.getMatchCatalog())) {
+				sw.write(" match-catalog=\"" + filter.getMatchCatalog() + "\"");
+			}
+			if(!".*".equals(filter.getMatchSchema())) {
+				sw.write(" match-schema=\"" + filter.getMatchSchema() + "\"");
+			}
+			sw.write(" match-name=\"" + filter.getMatchName() + "\"");
+			if(filter.getExclude().booleanValue()) {
+				sw.write(" exclude=\"" + filter.getExclude().booleanValue() + "\"");
+			}
+			sw.write("/>\r\n");
+		}
+    	
+        sw.write("</hibernate-reverse-engineering>");
 		try {
-            return new ByteArrayInputStream(stringWriter.toString().getBytes("UTF-8") );
+            return new ByteArrayInputStream(sw.toString().getBytes("UTF-8") );
         } catch (UnsupportedEncodingException uec) {
             HibernateConsolePlugin.getDefault().logErrorMessage("Problems converting to UTF-8", uec);
-            return new ByteArrayInputStream(stringWriter.toString().getBytes() );
+            return new ByteArrayInputStream(sw.toString().getBytes() );
         }
 	}
 

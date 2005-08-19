@@ -15,7 +15,7 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.KnownConfigurations.IConsoleConfigurationListener;
 import org.hibernate.eclipse.console.workbench.DeferredContentProvider;
 
-class RealKnownConfigurationsProvider extends DeferredContentProvider implements IConsoleConfigurationListener {
+class KnownConfigurationsProvider extends DeferredContentProvider implements IConsoleConfigurationListener {
 
 	private TreeViewer tv;
 

@@ -87,12 +87,15 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 	 * @see IDialogPage#createControl(Composite)
 	 */
 	public void createControl(Composite parent) {
+		
+		initializeDialogUnits(parent);
+		
 		Composite container = new Composite(parent, SWT.NULL);
 		GridLayout layout = new GridLayout();
 		
 		container.setLayout(layout);
 		layout.numColumns = 3;
-layout.verticalSpacing = 10;
+		layout.verticalSpacing = 10;
 		
 		consoleConfigurationName = new ComboDialogField(SWT.READ_ONLY);
 		consoleConfigurationName.setLabelText("Console &configuration:");

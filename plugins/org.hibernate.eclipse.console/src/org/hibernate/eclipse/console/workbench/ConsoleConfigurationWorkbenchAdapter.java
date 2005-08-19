@@ -1,10 +1,6 @@
 package org.hibernate.eclipse.console.workbench;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
-import org.eclipse.ui.progress.IElementCollector;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
@@ -42,12 +38,13 @@ public class ConsoleConfigurationWorkbenchAdapter extends BasicWorkbenchAdapter 
 		}
 		
 		Object o2;
+		
 		if(sfError==null) {
 			NodeFactory fac = new NodeFactory(ccfg);
 			ConfigurationEntitiesNode cfgNode = fac.createConfigurationEntitiesNode("Session factory");
-			o2 = cfgNode;
+			o2 = cfgNode;			
 		} else {
-			o2 = sfError;
+			o2 = sfError;			
 		}
 		
 		return new Object[] { o1, o2, new LazyDatabaseSchema(ccfg) };
