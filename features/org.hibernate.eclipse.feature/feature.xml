@@ -2,7 +2,7 @@
 <feature
       id="org.hibernate.eclipse.feature"
       label="org.hibernate.eclipse.feature"
-      version="3.1.0.beta1"
+      version="3.1.0.alpha5"
       provider-name="Hibernate Team">
 
    <description url="http://tools.hibernate.org">
@@ -422,7 +422,6 @@ END OF TERMS AND CONDITIONS
    </url>
 
    <requires>
-      <import plugin="org.eclipse.draw2d" version="3.1.0"/>
       <import plugin="org.eclipse.core.runtime" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.views" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.workbench" version="0.0.0" match="greaterOrEqual"/>
@@ -446,6 +445,7 @@ END OF TERMS AND CONDITIONS
       <import plugin="org.eclipse.help" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.help.ui"/>
       <import plugin="org.eclipse.ui.forms" version="0.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.console"/>
    </requires>
 
    <plugin
@@ -551,25 +551,25 @@ END OF TERMS AND CONDITIONS
          id="org.hibernate.eclipse"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="3.1.0.alpha5"/>
 
    <plugin
          id="org.hibernate.eclipse.console"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="3.1.0.alpha5"/>
 
    <plugin
          id="org.hibernate.eclipse.help"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="3.1.0.alpha5"/>
 
    <plugin
          id="org.hibernate.eclipse.mapper"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="3.1.0.alpha5"/>
 
    <plugin
          id="org.eclipse.draw2d"
