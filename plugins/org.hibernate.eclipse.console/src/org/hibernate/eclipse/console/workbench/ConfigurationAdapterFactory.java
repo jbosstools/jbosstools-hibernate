@@ -66,7 +66,7 @@ public class ConfigurationAdapterFactory implements IAdapterFactory {
 
 	
 	private Object getPropertySource(Object adaptableObject) {	
-		return new GenericPropertySource(adaptableObject);		
+		return null;//new GenericPropertySource(adaptableObject);		
 	}
 
 	private Object getAdapter(Object adaptableObject) {
