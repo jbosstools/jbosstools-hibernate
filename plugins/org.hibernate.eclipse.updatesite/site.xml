@@ -3,16 +3,7 @@
    <description url="http://download.jboss.org/jbosside/latestbuilds/">
       On the edge latest builds of Hibernate Tools
    </description>
-   <feature url="features/org.hibernate.eclipse.feature_3.0.0.alpha3.jar" id="org.hibernate.eclipse.feature" version="3.0.0.alpha3">
-      <category name="Latest Hibernate Tools"/>
-   </feature>
-   <feature url="features/org.hibernate.eclipse.feature_3.0.0.alpha4.jar" id="org.hibernate.eclipse.feature" version="3.0.0.alpha4">
-      <category name="Latest Hibernate Tools"/>
-   </feature>
-   <feature url="features/org.hibernate.eclipse.feature_3.1.0.beta1.jar" id="org.hibernate.eclipse.feature" version="3.1.0.beta1">
-      <category name="Latest Hibernate Tools"/>
-   </feature>
-   <feature url="features/org.hibernate.eclipse.feature_3.1.0.N20050711.jar" id="org.hibernate.eclipse.feature" version="3.1.0.N20050711">
+   <feature url="features/org.hibernate.eclipse.feature_3.1.0.alpha5.jar" id="org.hibernate.eclipse.feature" version="3.1.0.alpha5">
       <category name="Latest Hibernate Tools"/>
    </feature>
    <category-def name="Latest Hibernate Tools" label="latest_hibernate_tools">
