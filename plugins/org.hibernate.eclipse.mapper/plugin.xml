@@ -96,12 +96,6 @@
    </extension>
    <extension
          point="org.eclipse.ui.views">
-      <view
-            category="hibernatecategory"
-            class="org.hibernate.eclipse.mapper.views.FormView"
-            icon="icons/sample.gif"
-            id="org.hibernate.eclipse.mapper.views.FormView"
-            name="Form View"/>
    </extension>
    <extension
          point="org.eclipse.ui.editors">
