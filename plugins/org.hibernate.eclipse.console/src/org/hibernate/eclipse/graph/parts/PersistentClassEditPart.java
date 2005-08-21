@@ -14,14 +14,13 @@ import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-import org.hibernate.eclipse.graph.anchor.TopOrBottomAnchor;
+import org.hibernate.eclipse.console.workbench.HibernateWorkbenchHelper;
 import org.hibernate.eclipse.graph.figures.EditableLabel;
 import org.hibernate.eclipse.graph.figures.PersistentClassFigure;
 import org.hibernate.eclipse.graph.model.PersistentClassViewAdapter;
 import org.hibernate.eclipse.graph.model.PropertyViewAdapter;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.hibernate.util.StringHelper;
 
 public class PersistentClassEditPart extends AbstractGraphicalEditPart implements Observer, NodeEditPart {
 
@@ -61,16 +60,20 @@ public class PersistentClassEditPart extends AbstractGraphicalEditPart implement
 	}
 
 	private String getHeaderName() {
-		String unqualify = getPersistentClass().getEntityName();
-		if(unqualify.indexOf('.')>=0) {
-			unqualify = StringHelper.unqualify(getPersistentClass().getEntityName());
-		}
-		return unqualify;
+		return HibernateWorkbenchHelper.getLabelForClassName(getPersistentClass().getEntityName());
 	}
 
 	protected List getModelChildren() {	
-		Iterator propertyIterator = getPersistentClass().getPropertyIterator();
+		
 		List list = new ArrayList();
+		
+		Property identifierProperty = getPersistentClass().getIdentifierProperty();
+		if(identifierProperty!=null) {
+			list.add( new PropertyViewAdapter(getPersistentClassViewAdapter(), identifierProperty ));
+		}
+		
+		Iterator propertyIterator = getPersistentClass().getPropertyIterator();
+		
 		while ( propertyIterator.hasNext() ) {
 			list.add( new PropertyViewAdapter(getPersistentClassViewAdapter(), (Property) propertyIterator.next()) );
 		}

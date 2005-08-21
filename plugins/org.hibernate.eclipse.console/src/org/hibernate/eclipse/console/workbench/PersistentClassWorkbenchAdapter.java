@@ -33,7 +33,7 @@ public class PersistentClassWorkbenchAdapter extends BasicWorkbenchAdapter {
 
 	public String getLabel(Object o) {
 		PersistentClass pc = (PersistentClass) o;
-		return pc.getClassName();
+		return HibernateWorkbenchHelper.getLabelForClassName(pc.getEntityName());
 	}
 
 	public Object getParent(Object o) {

@@ -10,10 +10,10 @@ public class MovePersistentClassEditPartCommand extends Command {
 	private Rectangle oldBounds;
 	private Rectangle newBounds;
 
-	public MovePersistentClassEditPartCommand(PersistentClassViewAdapter table, Rectangle oldBounds, Rectangle newBounds)
+	public MovePersistentClassEditPartCommand(PersistentClassViewAdapter pc, Rectangle oldBounds, Rectangle newBounds)
 	{
 		super();
-		this.view = table;
+		this.view = pc;
 		this.oldBounds = oldBounds;
 		this.newBounds = newBounds;
 	}

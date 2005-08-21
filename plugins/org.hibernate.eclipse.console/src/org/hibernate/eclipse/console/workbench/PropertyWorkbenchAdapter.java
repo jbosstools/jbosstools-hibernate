@@ -93,13 +93,7 @@ public class PropertyWorkbenchAdapter extends BasicWorkbenchAdapter implements
 	public ImageDescriptor getImageDescriptor(Object object) {
 		Property property = ((Property)object);
 		
-		if(property.getPersistentClass()!=null) {
-			if(property.getPersistentClass().getIdentifierProperty()==property) {
-				return EclipseImages.getImageDescriptor(ImageConstants.IDPROPERTY);
-			}
-		}
-		Value v = property.getValue();
-		return EclipseImages.getImageDescriptor(getIconNameForValue(v));
+		return HibernateWorkbenchHelper.getImageDescriptor(property);		 
 	}
 
 	public String getLabel(Object o) {
@@ -119,14 +113,5 @@ public class PropertyWorkbenchAdapter extends BasicWorkbenchAdapter implements
 		return p.getPersistentClass();
 	}
 
-	static public String getIconNameForValue(Value value) {
-		String result;
-		
-		result = (String) value.accept(new IconNameValueVisitor());
-		
-		if(result==null) {
-			result = ImageConstants.UNKNOWNPROPERTY;
-		}
-		return result;
-	}
+	
 }

@@ -1,24 +1,24 @@
 package org.hibernate.eclipse.graph.figures;
 
 import org.eclipse.draw2d.AbstractBorder;
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.swt.graphics.Color;
 
 public class PropertiesFigure extends Figure {
 
-	public PropertiesFigure() {
+	public PropertiesFigure(Color bgColor, Color fgColor) {
 		FlowLayout layout = new FlowLayout();
 		layout.setMinorAlignment( FlowLayout.ALIGN_LEFTTOP );
 		layout.setStretchMinorAxis( true );		
 		layout.setHorizontal( false );
 		setLayoutManager( layout );
 		setBorder( new PropertiesFigureBorder() );
-		setBackgroundColor( ColorConstants.tooltipBackground );
-		setForegroundColor( ColorConstants.blue );
+		setBackgroundColor( bgColor );
+		setForegroundColor( fgColor );
 		setOpaque( true );
 	}
 

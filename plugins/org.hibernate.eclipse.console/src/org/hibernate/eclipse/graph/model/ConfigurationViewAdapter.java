@@ -17,7 +17,7 @@ public class ConfigurationViewAdapter extends Observable {
 	private Map persistentClasses; // key: name, value: PersistentClassViewAdapter
 	//private final Map sourceAssociations; // key: name, value: List of AssociationViewAdapter
 	//private final Map targetAssociations; // key: name, value: List of AssociationViewAdapter
-	private boolean manualLayout;
+	private boolean manualLayout = false;
 
 	public ConfigurationViewAdapter(Configuration cfg) {
 		this.cfg = cfg;		

@@ -101,6 +101,8 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
         putIfNotNull(props, Environment.URL, connectionInfoPage.getConnectionURL() );
         putIfNotNull(props, Environment.USER, connectionInfoPage.getUsername() );
         putIfNotNull(props, Environment.PASS, connectionInfoPage.getPassword() );
+        putIfNotNull(props, Environment.DEFAULT_CATALOG, connectionInfoPage.getDefaultCatalog() );
+        putIfNotNull(props, Environment.DEFAULT_SCHEMA, connectionInfoPage.getDefaultSchema() );
         final IFile file = cPage.createNewFile();
                 
 		IRunnableWithProgress op = new IRunnableWithProgress() {

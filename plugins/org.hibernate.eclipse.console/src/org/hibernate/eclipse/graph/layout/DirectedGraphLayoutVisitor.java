@@ -118,6 +118,10 @@ public class DirectedGraphLayoutVisitor
 			return;
 		}
 		
+		if(source==null || target == null) {
+			return;
+		}
+		
 		Edge e = new Edge(relationshipPart, source, target);
 		e.weight = 2;
 		graph.edges.add(e);
@@ -150,12 +154,12 @@ public class DirectedGraphLayoutVisitor
 	{
 
 		Node n = (Node) partToNodesMap.get(pClassPart);
-		Figure tableFigure = (Figure) pClassPart.getFigure();
+		Figure classFigure = (Figure) pClassPart.getFigure();
 
-		Rectangle bounds = new Rectangle(n.x, n.y, tableFigure.getPreferredSize().width,
-				tableFigure.getPreferredSize().height);
+		Rectangle bounds = new Rectangle(n.x, n.y, classFigure.getPreferredSize().width,
+				classFigure.getPreferredSize().height);
 
-		tableFigure.setBounds(bounds);
+		classFigure.setBounds(bounds);
 
 		for (int i = 0; i < pClassPart.getSourceConnections().size(); i++)
 		{

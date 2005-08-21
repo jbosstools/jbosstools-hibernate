@@ -44,6 +44,9 @@ public class NewConfigurationWizardPage extends WizardPage {
     private Text usernameText;
 
     private Text passwordText;
+    
+    private Text defaultSchemaText;
+    private Text defaultCatalogText;
 
     private Combo urlCombo;
     
@@ -168,6 +171,20 @@ public class NewConfigurationWizardPage extends WizardPage {
         gd.grabExcessHorizontalSpace = true;
         urlCombo.setLayoutData(gd);
         urlCombo.addModifyListener(listener);
+        
+        label = new Label(driverManagerTabContainer, SWT.NULL);
+        label.setText("Default Schema:");
+        defaultSchemaText = new Text(driverManagerTabContainer, SWT.BORDER | SWT.SINGLE);
+        gd = new GridData(GridData.FILL_HORIZONTAL);
+        defaultSchemaText.setLayoutData(gd);
+        defaultSchemaText.addModifyListener(listener);
+        
+        label = new Label(driverManagerTabContainer, SWT.NULL);
+        label.setText("Default Catalog:");
+        defaultCatalogText = new Text(driverManagerTabContainer, SWT.BORDER | SWT.SINGLE);
+        gd = new GridData(GridData.FILL_HORIZONTAL);
+        defaultCatalogText.setLayoutData(gd);
+        defaultCatalogText.addModifyListener(listener);
         
         label = new Label(driverManagerTabContainer, SWT.NULL);
         label.setText("User&name:");
@@ -379,5 +396,12 @@ public class NewConfigurationWizardPage extends WizardPage {
 
 	public boolean isCreateConsoleConfigurationEnabled() {
 		return createConsoleConfiguration.getSelection();
+	}
+	public String getDefaultCatalog() {
+		return nullIfEmpty(defaultCatalogText.getText());
+	}
+
+	public String getDefaultSchema() {
+		return nullIfEmpty(defaultSchemaText.getText());
 	}
 }

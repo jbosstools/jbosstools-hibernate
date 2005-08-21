@@ -35,6 +35,7 @@ public class PropertyEditPart extends AbstractGraphicalEditPart implements NodeE
 		Property property = ((PropertyViewAdapter) getModel()).getProperty();
 		String label = property.getName();
 		Label propertyLabel = new EditableLabel(label);
+		propertyLabel.setIcon(((PropertyViewAdapter)getModel()).getImage());
 		return propertyLabel;
 	}
 

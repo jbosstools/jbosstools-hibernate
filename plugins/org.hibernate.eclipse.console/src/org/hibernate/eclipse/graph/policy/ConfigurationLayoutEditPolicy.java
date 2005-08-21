@@ -8,6 +8,7 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
+import org.hibernate.eclipse.graph.command.MoveEditPartCommand;
 import org.hibernate.eclipse.graph.command.MovePersistentClassEditPartCommand;
 import org.hibernate.eclipse.graph.model.PersistentClassViewAdapter;
 import org.hibernate.eclipse.graph.parts.PersistentClassEditPart;
@@ -33,6 +34,7 @@ public class ConfigurationLayoutEditPolicy extends XYLayoutEditPolicy {
 				return null;
 
 			return new MovePersistentClassEditPartCommand(classView, oldBounds, newBounds);
+			//return new MoveEditPartCommand(classPart, oldBounds, newBounds);
 		}
 		return null;
 	}

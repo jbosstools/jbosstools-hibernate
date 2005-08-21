@@ -5,6 +5,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
 
+import org.eclipse.swt.graphics.Image;
+import org.hibernate.HibernateException;
+import org.hibernate.console.ImageConstants;
+import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.hibernate.eclipse.console.workbench.HibernateWorkbenchHelper;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.Property;
@@ -52,36 +57,41 @@ public class PropertyViewAdapter extends Observable {
 	}
 	
 	private void createSingleEndedEnityAssociations() {
-		if ( property.getType().isEntityType() ) {
-			EntityType et = (EntityType) property.getType();
-			PersistentClassViewAdapter target = configuration
-					.getPersistentClassViewAdapter( et.getAssociatedEntityName() );
-			PropertyAssociationViewAdapter pava = new PropertyAssociationViewAdapter( clazz, this, target );
-			this.addSourceAssociation( pava );
-			target.addTargetAssociation( pava );
-		} 
-		
-		if ( property.getValue() instanceof Collection ) {
-			Collection collection = (Collection) property.getValue();
-			if(collection.getElement() instanceof OneToMany) {
-				OneToMany oneToMany = (OneToMany) collection.getElement();
-				String entityName = oneToMany.getAssociatedClass().getEntityName();
+		try { //TODO: we need the consoleconfiguration here to know the exact types
+			if ( property.getValue() instanceof Collection ) {
+				Collection collection = (Collection) property.getValue();
+				if(collection.getElement() instanceof OneToMany) {
+					OneToMany oneToMany = (OneToMany) collection.getElement();
+					String entityName = oneToMany.getAssociatedClass().getEntityName();
+					PersistentClassViewAdapter target = configuration
+					.getPersistentClassViewAdapter( entityName );
+					PropertyAssociationViewAdapter pava = new PropertyAssociationViewAdapter( clazz, this, target );
+					this.addSourceAssociation( pava );
+					target.addTargetAssociation( pava );
+				}
+			} else if ( property.getType().isEntityType() ) {
+				EntityType et = (EntityType) property.getType();
 				PersistentClassViewAdapter target = configuration
-				.getPersistentClassViewAdapter( entityName );
+				.getPersistentClassViewAdapter( et.getAssociatedEntityName() );
 				PropertyAssociationViewAdapter pava = new PropertyAssociationViewAdapter( clazz, this, target );
 				this.addSourceAssociation( pava );
 				target.addTargetAssociation( pava );
 			}
-			
+		} catch(HibernateException he) {
+			System.out.println(he);
 		}
 		
+		}
 		
-	}
 
 	private void addSourceAssociation(PropertyAssociationViewAdapter pava) {
 		checkConnections();
 		sourceAssociations.add(pava);
 		setChanged();
 		notifyObservers(PersistentClassViewAdapter.ASSOCIATONS);
+	}
+	
+	public Image getImage() {
+		return HibernateWorkbenchHelper.getImage(getProperty());
 	}
 }

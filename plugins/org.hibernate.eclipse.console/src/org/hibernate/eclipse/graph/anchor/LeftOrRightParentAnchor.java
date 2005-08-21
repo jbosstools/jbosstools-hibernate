@@ -13,19 +13,19 @@ public class LeftOrRightParentAnchor extends ChopboxAnchor {
 		super(owner);
 	}
 	public Point getLocation(Point reference) {
+		return super.getLocation(reference);
+		/*
 		Point p = getOwner().getBounds().getCenter();
 		getOwner().translateToAbsolute(p);
-		IFigure parent = getOwner().getParent();
-		if(parent==null) {
-			parent = getOwner();
-		}
+		IFigure parent = getOwner();
+		
 		if (reference.x < p.x) {
 			p = p.setLocation(parent.getBounds().getLeft().x,p.y);
 		} else {
 			p = p.setLocation(parent.getBounds().getRight().x,p.y);
 		}
 		getOwner().translateToAbsolute(p);
-		return p;
+		return p;*/
 	}
 
 }

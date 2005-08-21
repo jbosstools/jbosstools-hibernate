@@ -81,7 +81,7 @@
             icon="icons/hibernate_small_icon.gif"
             id="org.hibernate.eclipse.console.wizards.ArtifactGeneratorWizard"
             name="Hibernate Artifact Generation">
-         <description>Run the artifiact generator to generate POJO, DAO, .hbm, etc. files from a console configuration or database</description>
+         <description>Run the artifact generator to generate POJO, DAO, .hbm, etc. files from a console configuration or database</description>
       </wizard>
    </extension>
    <extension

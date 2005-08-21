@@ -79,10 +79,10 @@ public class ConfigurationEditPart extends AbstractGraphicalEditPart implements 
 		for (Iterator iter = tableParts.iterator(); iter.hasNext();)
 		{
 			PersistentClassEditPart tablePart = (PersistentClassEditPart) iter.next();
-			PersistentClassViewAdapter table = tablePart.getPersistentClassViewAdapter();
+			//PersistentClassViewAdapter pcva = tablePart.getPersistentClassViewAdapter();
 			
 			// now check whether we can find an entry in the tableToNodesMap
-			Rectangle bounds = table.getBounds();
+			Rectangle bounds = tablePart.getFigure().getBounds();
 			if (bounds == null)
 			{
 				// TODO handle this better
@@ -135,7 +135,8 @@ public class ConfigurationEditPart extends AbstractGraphicalEditPart implements 
 	}
 
 	public void update(Observable o, Object arg) {
-		getFigure().setLayoutManager(delegatingLayoutManager);		
+		getFigure().setLayoutManager(delegatingLayoutManager);
+		refresh();
 	}
 	
 }

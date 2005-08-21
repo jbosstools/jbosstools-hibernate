@@ -7,8 +7,7 @@ import org.hibernate.eclipse.graph.model.ConfigurationViewAdapter;
 
 public class ToggleLayoutAction extends Action {
 
-	EntityGraphView view;
-	boolean automaticLayout;
+	EntityGraphView view;	
 
 	public ToggleLayoutAction(EntityGraphView view)
 	{
@@ -22,9 +21,8 @@ public class ToggleLayoutAction extends Action {
 		{			
 			ConfigurationViewAdapter cva = view.getConfigurationViewAdapter();
 			boolean isManual = cva.isManualLayoutDesired();
-			cva.setManualLayoutDesired(!isManual);
-			automaticLayout = !isManual;
-			setChecked(automaticLayout);
+			cva.setManualLayoutDesired(!isManual);			
+			setChecked(!isManual);
 		}
 	}
 
