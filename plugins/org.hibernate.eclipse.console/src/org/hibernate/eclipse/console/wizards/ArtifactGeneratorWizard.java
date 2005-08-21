@@ -183,6 +183,8 @@ String outputPackage, IPath revengsettings, boolean reveng, final boolean genjav
 				javaExporter.setTemplatePaths(templatePaths);
                 // Add support for DAO generation
                 final DAOExporter daoExporter = new DAOExporter(cfg,outputdir);
+                daoExporter.setEjb3(ejb3);
+                daoExporter.setGenerics(ejb3);
                 daoExporter.setTemplatePaths(templatePaths);
 				final Exporter cfgExporter = new HibernateConfigurationExporter(cfg, outputdir); 
 				
