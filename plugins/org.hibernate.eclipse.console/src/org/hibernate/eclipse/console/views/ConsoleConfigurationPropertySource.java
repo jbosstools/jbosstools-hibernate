@@ -8,8 +8,7 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.ConsoleConfigurationPreferences;
-import org.hibernate.eclipse.console.wizards.EclipseConsoleConfigurationPreferences;
+import org.hibernate.eclipse.console.EclipseConsoleConfigurationPreferences;
 
 public class ConsoleConfigurationPropertySource implements IPropertySource {
 

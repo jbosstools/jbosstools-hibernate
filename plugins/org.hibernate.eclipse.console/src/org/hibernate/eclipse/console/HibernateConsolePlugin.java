@@ -22,7 +22,6 @@ import org.hibernate.console.ConsoleConfigurationPreferences;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.EclipseLogger;
-import org.hibernate.eclipse.console.wizards.EclipseConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.workbench.ConfigurationAdapterFactory;
 import org.hibernate.eclipse.hqleditor.HQLEditorInput;
 import org.hibernate.eclipse.hqleditor.HQLEditorStorage;

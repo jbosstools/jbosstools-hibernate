@@ -2,7 +2,7 @@
  * Created on 2004-11-01 by max
  * 
  */
-package org.hibernate.eclipse.console.wizards;
+package org.hibernate.eclipse.console;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +18,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.hibernate.console.AbstractConsoleConfigurationPreferences;
-import org.hibernate.console.ConsoleConfigurationPreferences;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.eclipse.console.utils.ClassLoaderHelper;
 import org.w3c.dom.Document;

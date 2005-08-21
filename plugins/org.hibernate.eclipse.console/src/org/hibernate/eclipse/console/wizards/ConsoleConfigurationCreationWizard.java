@@ -14,6 +14,7 @@ import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
@@ -23,6 +24,7 @@ import org.hibernate.console.ConsoleConfigurationPreferences;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.EclipseConsoleConfiguration;
+import org.hibernate.eclipse.console.EclipseConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 
@@ -59,15 +61,20 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 	 * using wizard as execution context.
 	 */
 	public boolean performFinish() {
-		final String configName = page.getConfigurationName();
-		final IPath propertyFile = page.getPropertyFilePath();
-		final IPath fileName = page.getConfigurationFilePath();
-		final IPath[] mappings = page.getMappingFiles();
-		final IPath[] classpaths = page.getClassPath();
+		final ConsoleConfigurationWizardPage confPage = this.page;
+		return createConsoleConfiguration( getContainer(), confPage );
+	}
+
+	static boolean createConsoleConfiguration(IWizardContainer container, final ConsoleConfigurationWizardPage confPage) {
+		final String configName = confPage.getConfigurationName();
+		final IPath propertyFile = confPage.getPropertyFilePath();
+		final IPath fileName = confPage.getConfigurationFilePath();
+		final IPath[] mappings = confPage.getMappingFiles();
+		final IPath[] classpaths = confPage.getClassPath();
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
-					doFinish(page.getOldConfiguration(), configName, propertyFile, fileName, mappings, classpaths, monitor);
+					createConsoleConfiguration(confPage.getOldConfiguration(), configName, propertyFile, fileName, mappings, classpaths, monitor);
 				} catch (CoreException e) {
 					throw new InvocationTargetException(e);
 				} finally {
@@ -76,35 +83,25 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 			}
 		};
 		try {
-			getContainer().run(true, false, op);
+			container.run(true, false, op);
 		} catch (InterruptedException e) {
 			return false;
 		} catch (InvocationTargetException e) {
-			Throwable realException = e.getTargetException();
-			realException.printStackTrace();
+			Throwable realException = e.getTargetException();			
 			IStatus s = null;
 			if(realException instanceof CoreException) {
 				s = ( (CoreException)realException).getStatus();
 			} else {
-				s = new Status(Status.ERROR,HibernateConsolePlugin.ID, Status.OK, "Probably missing classes or errors with classloading", e);
+				s = new Status(IStatus.ERROR,HibernateConsolePlugin.ID, IStatus.OK, "Probably missing classes or errors with classloading", e);
 				
 			}
-			ErrorDialog.openError(getShell(), "Create Conscole Configuration Wizard", "Error while finishing Wizard", s);
+			ErrorDialog.openError(container.getShell(), "Create Conscole Configuration Wizard", "Error while finishing Wizard", s);
 			return false;
 		}
 		return true;
 	}
 	
-	/**
-	 * The worker method. It will find the container, create the
-	 * file if missing or just replace its contents, and open
-	 * the editor on the newly created file.
-	 * @param mappings
-	 * @param classpaths
-	 * @param fileName2
-	 */
-
-	private void doFinish(
+	static private void createConsoleConfiguration(
 			EclipseConsoleConfiguration oldConfig,
 			String configName,
 			IPath propertyFilename,

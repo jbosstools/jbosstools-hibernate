@@ -11,13 +11,17 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
+import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.utils.DriverClassHelpers;
 
 /**
@@ -42,11 +46,8 @@ public class NewConfigurationWizardPage extends WizardPage {
     private Text passwordText;
 
     private Combo urlCombo;
-
-    private Text datasourceName;
-    private Text jndiURL;
-    private Text jndiClassname;
     
+    private Button createConsoleConfiguration;
     
     private ISelection selection;
 
@@ -54,6 +55,7 @@ public class NewConfigurationWizardPage extends WizardPage {
 
     private boolean beenShown = false;
 
+	
     /**
      * Constructor for SampleNewWizardPage.
      * @param page 
@@ -79,18 +81,31 @@ public class NewConfigurationWizardPage extends WizardPage {
             }
         };
 
+        SelectionListener selectionListener = new SelectionListener() {
+    		
+			public void widgetDefaultSelected(SelectionEvent e) {
+				dialogChanged();
+				getContainer().updateButtons();
+			}
+		
+			public void widgetSelected(SelectionEvent e) {
+				dialogChanged();
+				getContainer().updateButtons();
+			}
+		
+		};
+		
         Composite container = new Composite(parent, SWT.NULL);
         GridLayout layout = new GridLayout();
         container.setLayout(layout);
-        layout.numColumns = 3;
+        layout.numColumns = 2;
         layout.verticalSpacing = 9;
         Label label = new Label(container, SWT.NULL);
         label.setText("&Container:");
 
         containerText = new Label(container, SWT.BORDER | SWT.SINGLE);
-        GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+        GridData gd = new GridData(GridData.FILL_HORIZONTAL);        
         containerText.setLayoutData(gd);        
-        fillLabel(container);
         
         label = new Label(container, SWT.NULL);
         label.setText("&File name:");
@@ -98,17 +113,14 @@ public class NewConfigurationWizardPage extends WizardPage {
         fileText = new Label(container, SWT.BORDER | SWT.SINGLE);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         fileText.setLayoutData(gd);
-        
-        fillLabel(container);
-
+             
         label = new Label(container, SWT.NULL);
         label.setText("&Session factory name:");
         sessionFactoryNameText = new Text(container, SWT.BORDER | SWT.SINGLE);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         sessionFactoryNameText.setLayoutData(gd);
         sessionFactoryNameText.addModifyListener(listener);
-        fillLabel(container);
-
+        
         label = new Label(container, SWT.NULL);
         label.setText("&Database dialect:");
         dialectCombo = new Combo(container, SWT.NULL);
@@ -125,8 +137,7 @@ public class NewConfigurationWizardPage extends WizardPage {
                 dialogChanged();
             }
         });
-        fillLabel(container);
-
+        
         gd = new GridData(GridData.BEGINNING, GridData.CENTER, false,false);
         gd.horizontalAlignment = SWT.TOP;
         gd.verticalAlignment = SWT.TOP;
@@ -148,8 +159,7 @@ public class NewConfigurationWizardPage extends WizardPage {
                 dialogChanged();
             }
         });
-        fillLabel(driverManagerTabContainer);
-
+        
         label = new Label(driverManagerTabContainer, SWT.NULL);
         label.setText("Connection &URL:");
         urlCombo = new Combo(driverManagerTabContainer, SWT.NULL);
@@ -158,48 +168,32 @@ public class NewConfigurationWizardPage extends WizardPage {
         gd.grabExcessHorizontalSpace = true;
         urlCombo.setLayoutData(gd);
         urlCombo.addModifyListener(listener);
-        fillLabel(driverManagerTabContainer);
-
+        
         label = new Label(driverManagerTabContainer, SWT.NULL);
         label.setText("User&name:");
         usernameText = new Text(driverManagerTabContainer, SWT.BORDER | SWT.SINGLE);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         usernameText.setLayoutData(gd);
         usernameText.addModifyListener(listener);
-        fillLabel(driverManagerTabContainer);
-
+        
         label = new Label(driverManagerTabContainer, SWT.NULL);
         label.setText("&Password:");
         passwordText = new Text(driverManagerTabContainer, SWT.BORDER | SWT.SINGLE);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         passwordText.setLayoutData(gd);
         passwordText.addModifyListener(listener);
-        fillLabel(driverManagerTabContainer);        
         
-        /*
-        label = new Label(driverManagerTabContainer, SWT.NULL);
-        label.setText("Data&source name:");
-        datasourceName = new Text(driverManagerTabContainer, SWT.BORDER | SWT.SINGLE);
-        gd = new GridData(GridData.FILL_HORIZONTAL);
-        datasourceName.setLayoutData(gd);
-        datasourceName.addModifyListener(listener);
-        fillLabel(driverManagerTabContainer);        
+        fillLabel(container);
+        fillLabel(container);
         
-        label = new Label(driverManagerTabContainer, SWT.NULL);
-        label.setText("JNDI URL:");
-        jndiURL = new Text(driverManagerTabContainer, SWT.BORDER | SWT.SINGLE);
-        gd = new GridData(GridData.FILL_HORIZONTAL);
-        jndiURL.setLayoutData(gd);
-        jndiURL.addModifyListener(listener);
-        fillLabel(driverManagerTabContainer);        
+        fillLabel(container);
         
-        label = new Label(driverManagerTabContainer, SWT.NULL);
-        label.setText("JNDI Classname:");
-        jndiClassname = new Text(driverManagerTabContainer, SWT.BORDER | SWT.SINGLE);
+        createConsoleConfiguration = new Button(container, SWT.CHECK);
         gd = new GridData(GridData.FILL_HORIZONTAL);
-        jndiClassname.setLayoutData(gd);
-        jndiClassname.addModifyListener(listener);
-        fillLabel(driverManagerTabContainer);*/        
+        createConsoleConfiguration.setLayoutData(gd);        
+        createConsoleConfiguration.setText("Create a console configuration");        
+        createConsoleConfiguration.addSelectionListener(selectionListener);
+                
         
         initialize();
         dialogChanged();
@@ -225,7 +219,10 @@ public class NewConfigurationWizardPage extends WizardPage {
      * @param container
      */
     private void fillLabel(Composite container) {
-        new Label(container, SWT.NULL);
+        Label label = new Label(container, SWT.NULL);
+        //GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+      //  label.setLayoutData(gd);
+        //label.setBackground(getShell().getDisplay().getSystemColor(SWT.COLOR_CYAN));
     }
 
     /**
@@ -293,6 +290,7 @@ public class NewConfigurationWizardPage extends WizardPage {
             updateStatus("File already exists");
             return;
         }
+                
         // TODO: check for driver class availability.
         updateStatus(null);
     }
@@ -376,4 +374,10 @@ public class NewConfigurationWizardPage extends WizardPage {
         beenShown = true;        
         dialogChanged();               
     }
+
+	
+
+	public boolean isCreateConsoleConfigurationEnabled() {
+		return createConsoleConfiguration.getSelection();
+	}
 }

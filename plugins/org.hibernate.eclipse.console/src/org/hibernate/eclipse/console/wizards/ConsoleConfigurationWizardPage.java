@@ -22,7 +22,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.draw2d.CheckBox;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -32,7 +31,6 @@ import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
-import org.eclipse.jdt.internal.ui.wizards.dialogfields.SelectionButtonDialogField;
 import org.eclipse.jdt.ui.wizards.BuildPathDialogAccess;
 import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
@@ -55,6 +53,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.EclipseConsoleConfiguration;
+import org.hibernate.eclipse.console.EclipseConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 
@@ -69,11 +68,13 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	private Text configurationFileText;
 	private Text configurationNameText;
 	private EclipseConsoleConfiguration oldConfiguaration = null;
-	private Button enableAnnotations; 
+	//private Button enableAnnotations; 
 	
 	private ISelection selection;
 	private UpDownList mappingFilesViewer;
 	private UpDownList classPathViewer;
+	private boolean configurationFileWillBeCreated;
+	private Button confbutton;
 	
 	/**
 	 * Constructor for SampleNewWizardPage.
@@ -140,22 +141,16 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 		configurationFileText.setLayoutData(gd);
 		configurationFileText.addModifyListener(modifyListener);
 		
-		button = new Button(container, SWT.PUSH);
-		button.setText("Browse...");
-		button.addSelectionListener(new SelectionAdapter() {
+		confbutton = new Button(container, SWT.PUSH);
+		confbutton.setText("Browse...");
+		confbutton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				handleConfigurationFileBrowse();
 			}
 		});
 		
-		label = new Label(container, SWT.NULL);
-		label.setText("Use &Annotations (require JDK 1.5):");
-		
-		enableAnnotations = new Button(container, SWT.CHECK | SWT.BORDER | SWT.SINGLE);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		enableAnnotations.setLayoutData(gd);
-		//enableAnnotations.addModifyListener(modifyListener);		
-		
+		//label = new Label(container, SWT.NULL);		
+				
 		buildMappingFileTable(container);
 		buildClassPathTable(container);
 		initialize();
@@ -452,7 +447,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			}
 		}
 		
-		if (configurationFilename.length() > 0) {
+		if (!configurationFileWillBeCreated && configurationFilename.length() > 0) {
 			IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(configurationFilename);
 			String msg = checkForFile("Configuration file",resource);
 			if(msg!=null) {
@@ -511,6 +506,13 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	 */
 	public EclipseConsoleConfiguration getOldConfiguration() {
 		return oldConfiguaration;
+	}
+
+	public void setConfigurationFilePath(IPath containerFullPath) {
+		configurationFileText.setText(containerFullPath.toPortableString());
+		configurationFileWillBeCreated = true;
+		configurationFileText.setEnabled(false);
+		confbutton.setEnabled(false);
 	}
 
 }

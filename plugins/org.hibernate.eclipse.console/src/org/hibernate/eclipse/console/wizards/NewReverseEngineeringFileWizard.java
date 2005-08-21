@@ -1,6 +1,7 @@
 package org.hibernate.eclipse.console.wizards;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -10,7 +11,9 @@ import java.util.Properties;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -33,10 +36,12 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
  */
 
 public class NewReverseEngineeringFileWizard extends Wizard implements INewWizard {
-	private ISelection selection;
+	private IStructuredSelection selection;
     private WizardNewFileCreationPage cPage;
 	private TableFilterWizardPage tableFilterWizardPage;
-
+	private IPath createdFile;
+	private String selectedConfiguratonName;
+	
 	/**
 	 * Constructor for NewConfigurationWizard.
 	 */
@@ -65,18 +70,17 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
 	/**
 	 * Adding the page to the wizard.
 	 */
-
+	
 	public void addPages() {
-        cPage =
-        new ExtendedWizardNewFileCreationPage( "Ccfgxml", (IStructuredSelection) selection );
-        cPage.setTitle( "Create Hibernate Reverse Engineering file (reveng.xml)" );
-        cPage.setDescription( "Create a new hibernate.reveng.xml." );
-        cPage.setFileName("hibernate.reveng.xml");
-        addPage( cPage );  
-        
-        tableFilterWizardPage = new TableFilterWizardPage( "revengtable" );
+	    cPage = new ExtendedWizardNewFileCreationPage( "Ccfgxml", selection );
+	    cPage.setTitle( "Create Hibernate Reverse Engineering file (reveng.xml)" );
+	    cPage.setDescription( "Create a new hibernate.reveng.xml." );
+	    cPage.setFileName("hibernate.reveng.xml");
+	    addPage( cPage );  
+	    
+	    tableFilterWizardPage = new TableFilterWizardPage( "revengtable", selectedConfiguratonName );
 		addPage( tableFilterWizardPage );
-        
+	    
 	}
     
     
@@ -87,6 +91,7 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
 	 * using wizard as execution context.
 	 */
 	public boolean performFinish() {
+		createdFile = cPage.getContainerFullPath().append(cPage.getFileName());
 		final IFile file = cPage.createNewFile();
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
@@ -140,10 +145,11 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
 			if (file.exists() ) {
                 file.setContents(stream, true, true, monitor);                
 			} else {
-				file.create(stream, true, monitor);
+				file.create(stream, true, monitor);				
 			}
 			stream.close();
 		} catch (IOException e) {
+			
 		}
 		monitor.worked(1);
 		monitor.setTaskName("Opening file for editing...");
@@ -199,5 +205,15 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
 	 */
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		this.selection = selection;        
+	}
+	
+	public IPath getCreatedFilePath() {
+		return createdFile;
+	}
+
+
+
+	public void setSelectConfiguration(String configurationName) {
+		this.selectedConfiguratonName = configurationName;				
 	}
 }

@@ -17,17 +17,24 @@ import org.eclipse.jdt.internal.ui.wizards.dialogfields.IStringButtonAdapter;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.SelectionButtonDialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.StringButtonDialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.StringDialogField;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.node.ConfigurationNode;
@@ -42,7 +49,7 @@ import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 public class BasicGeneratorSettingsPage extends WizardPage {
 	private ComboDialogField consoleConfigurationName;
 
-	private ISelection selection;
+	private IStructuredSelection selection;
 
 	private SelectionButtonDialogField reverseengineer;
 
@@ -75,7 +82,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 	 * 
 	 * @param pageName
 	 */
-	public BasicGeneratorSettingsPage(ISelection selection) {
+	public BasicGeneratorSettingsPage(IStructuredSelection selection) {
 		super("wizardPage");
 		setTitle("Basic settings for artifact generation");
 		setDescription("This wizard allows you to generate artifacts (configuration, mapping & source code files)");
@@ -145,46 +152,83 @@ public class BasicGeneratorSettingsPage extends WizardPage {
         
 		reverseEngineeringSettings= new StringButtonDialogField(new IStringButtonAdapter() {
             public void changeControlPressed(DialogField field) {
-                IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  getTemplateDirectory(), new IPath[0], "Select reverse engineering settings file", "Choose file from which settings for the reverse engineering will be read", new String[] {"reveng.xml"}, false, false, true);
-                if(paths!=null && paths.length==1) {
-                    reverseEngineeringSettings.setText( ( (paths[0]).toOSString() ) );
-                }                   
+            	int defaultChoice = 0;
+            	IPath reverseEngineeringSettingsFile = getReverseEngineeringSettingsFile();
+            	
+				if(reverseEngineeringSettingsFile==null) {
+            		defaultChoice = 0;
+            	} else {
+            		defaultChoice = 1;
+            	}
+				MessageDialog dialog = new MessageDialog(getShell(), 
+						"Setup reverse engineering", 
+						null, 
+						"Do you want to create a new reveng.xml or use an existing file ?", 
+						MessageDialog.QUESTION, 
+						new String[] { "Create &new...", "Use &existing...", IDialogConstants.CANCEL_LABEL}, 
+						defaultChoice);
+				int answer = dialog.open();
+				if(answer==0) { // create new
+					NewReverseEngineeringFileWizard wizard = new NewReverseEngineeringFileWizard();
+					wizard.init(PlatformUI.getWorkbench(), selection );
+					wizard.setSelectConfiguration(getConfigurationName());
+					IWorkbenchWindow win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+					
+					WizardDialog wdialog = new WizardDialog(win.getShell(), wizard);
+					wdialog.open(); // This opens a dialog
+					IPath createdFilePath = wizard.getCreatedFilePath();
+					if(createdFilePath!=null) {
+						reverseEngineeringSettings.setText(createdFilePath.toOSString());
+					}
+				} else if (answer==1) { // use existing
+					IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  reverseEngineeringSettingsFile, new IPath[0], "Select reverse engineering settings file", "Choose file from which settings for the reverse engineering will be read", new String[] {"reveng.xml"}, false, false, true);
+					if(paths!=null && paths.length==1) {
+						reverseEngineeringSettings.setText( ( (paths[0]).toOSString() ) );
+					}		
+				}                                	
             }
         });
 		reverseEngineeringSettings.setDialogFieldListener(fieldlistener);
-        reverseEngineeringSettings.setLabelText("Override &xml:");
-        reverseEngineeringSettings.setButtonLabel("&Browse...");
-		
+        reverseEngineeringSettings.setLabelText("reveng.&xml:");
+        reverseEngineeringSettings.setButtonLabel("&Setup...");
+		        
 		reverseengineer = new SelectionButtonDialogField(SWT.CHECK);
 		reverseengineer.setLabelText("Reverse engineer from JDBC Connection");
+		reverseengineer.setDialogFieldListener(fieldlistener);
         generatejava = new SelectionButtonDialogField(SWT.CHECK);
 		generatejava.setLabelText("Generate domain code (.java)");
+		generatejava.setDialogFieldListener(fieldlistener);
 		
         enableEJB3annotations = new SelectionButtonDialogField(SWT.CHECK);
         enableEJB3annotations.setLabelText("EJB3/JSR-220 annotations (experimental!)");
+        enableEJB3annotations.setDialogFieldListener(fieldlistener);
         
         generatejava.attachDialogField(enableEJB3annotations);
         
         generatedao = new SelectionButtonDialogField(SWT.CHECK);
         generatedao.setLabelText("Generate DAO code (.java)");
+        generatedao.setDialogFieldListener(fieldlistener);
         
         useOwnTemplates = new SelectionButtonDialogField(SWT.CHECK);
         useOwnTemplates.setDialogFieldListener(fieldlistener);
         useOwnTemplates.setLabelText("Use custom templates");
-        
+       
         preferRawCompositeIds = new SelectionButtonDialogField(SWT.CHECK);
         preferRawCompositeIds.setLabelText("Generate basic typed composite ids");
         preferRawCompositeIds.setSelection(true);
+        preferRawCompositeIds.setDialogFieldListener(fieldlistener);
         
 		generatemappings = new SelectionButtonDialogField(SWT.CHECK);
 		generatemappings.setLabelText("Generate mappings (hbm.xml)");
+		generatemappings.setDialogFieldListener(fieldlistener);
 		
 		generatedocs = new SelectionButtonDialogField(SWT.CHECK);
 		generatedocs.setLabelText("Generate schema html-documentation");
+		generatedocs.setDialogFieldListener(fieldlistener);
 		
 		generatecfgfile = new SelectionButtonDialogField(SWT.CHECK);
 		generatecfgfile.setLabelText("Generate hibernate configuration (hibernate.cfg.xml)");
-		
+		generatecfgfile.setDialogFieldListener(fieldlistener);
         useOwnTemplates.attachDialogField(templatedir);
         reverseengineer.attachDialogFields(new DialogField[] { packageName, preferRawCompositeIds, reverseEngineeringSettings });
        
@@ -195,6 +239,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 		reverseengineer.doFillIntoGrid(container, 3);
         packageName.doFillIntoGrid(container, 3);
 		reverseEngineeringSettings.doFillIntoGrid(container, 3);
+		
         fillLabel(container);
         preferRawCompositeIds.doFillIntoGrid(container, 2);
 		generatejava.doFillIntoGrid(container, 3);
@@ -246,14 +291,19 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 
 	private void dialogChanged() {
 
-        if(packageName.isEnabled() && getOutputPackage().length()>0) {
-            IStatus val= JavaConventions.validatePackageName(getOutputPackage() );
-            if (val.getSeverity() == IStatus.ERROR || val.getSeverity() == IStatus.WARNING) {
-                updateStatus(val.getMessage() );
-                return;
-            } 
-        }
-		if (getConfigurationName().length() == 0) {
+		
+		
+		boolean configSelected = getConfigurationName().length()==0;
+		outputdir.setEnabled(!configSelected);
+		reverseengineer.setEnabled(!configSelected);
+		generatejava.setEnabled(!configSelected);
+		generatecfgfile.setEnabled(!configSelected);
+		generatedao.setEnabled(!configSelected);
+		generatedocs.setEnabled(!configSelected);
+		generatemappings.setEnabled(!configSelected);
+		useOwnTemplates.setEnabled(!configSelected);
+		
+		if (configSelected) {
 			updateStatus("Console configuration must be specified");
 			return;
 		}
@@ -264,7 +314,15 @@ public class BasicGeneratorSettingsPage extends WizardPage {
             updateStatus(msg);
             return;
         } 
-        
+
+        if(packageName.isEnabled() && getOutputPackage().length()>0) {
+            IStatus val= JavaConventions.validatePackageName(getOutputPackage() );
+            if (val.getSeverity() == IStatus.ERROR || val.getSeverity() == IStatus.WARNING) {
+                updateStatus(val.getMessage() );
+                return;
+            } 
+        }
+
         if(useOwnTemplates.isSelected() ) {
             msg = checkDirectory(getTemplateDirectory(), "template directory");
             if (msg!=null) {

@@ -48,7 +48,7 @@ import org.hibernate.tool.hbm2x.POJOExporter;
 
 public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 	private BasicGeneratorSettingsPage page;
-	private ISelection selection;
+	private IStructuredSelection selection;
 
 	/**
 	 * Constructor for ArtifactGeneratorWizard.
@@ -96,7 +96,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
-doFinish(configurationName, output, outputPackage, revengsettings, reveng, genjava, gendao, genhbm, gencfg, monitor, preferBasic, templatedir, ejb3, gendoc);
+					doFinish(configurationName, output, outputPackage, revengsettings, reveng, genjava, gendao, genhbm, gencfg, monitor, preferBasic, templatedir, ejb3, gendoc);
 				} catch (CoreException e) {
 					throw new InvocationTargetException(e);
 				} finally {

@@ -44,9 +44,11 @@ public class TableFilterWizardPage extends WizardPage {
 	
 	private ComboDialogField consoleConfigurationName;
 	private TableFilterView tfc;
+	private final String selectedConfiguratonName;
 	
-	protected TableFilterWizardPage(String pageName) {		
+	protected TableFilterWizardPage(String pageName, String selectedConfiguratonName) {		
 		super( pageName );
+		this.selectedConfiguratonName = selectedConfiguratonName;
 		setTitle("Configure Table filters");
 		setDescription("Specify which catalog/schema/tables should be included or excluded from the reverse engineering.");
 	}
@@ -72,7 +74,7 @@ public class TableFilterWizardPage extends WizardPage {
 			names[i] = configuration.getName();
 		}
 		consoleConfigurationName.setItems(names);
-
+		
 		consoleConfigurationName.doFillIntoGrid(container, 3);
 		
 		TableFilterComposite tfc = createTableFilterPart( container );
@@ -81,7 +83,10 @@ public class TableFilterWizardPage extends WizardPage {
 		tfc.setLayoutData(gd);
 						
 		setControl(container);
-		
+
+		if(selectedConfiguratonName!=null) {
+			consoleConfigurationName.setText(selectedConfiguratonName);			
+		}
 	}
 
 	private TableFilterComposite createTableFilterPart(Composite container) {
@@ -373,4 +378,5 @@ public class TableFilterWizardPage extends WizardPage {
 	public List getTableFilters() {
 		return tfc.getTableFilterList();
 	}
+	
 }

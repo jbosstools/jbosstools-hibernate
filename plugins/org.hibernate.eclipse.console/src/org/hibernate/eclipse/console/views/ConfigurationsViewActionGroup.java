@@ -55,7 +55,7 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 		
 		schemaExportAction = new SchemaExportAction(selectionProvider);
 		selectionProvider.addSelectionChangedListener(schemaExportAction);
-		
+				
 		editConfigurationAction = new EditConsoleConfiguration();
 		selectionProvider.addSelectionChangedListener(editConfigurationAction);
 		

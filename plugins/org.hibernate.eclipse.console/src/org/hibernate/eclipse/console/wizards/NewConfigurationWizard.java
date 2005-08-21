@@ -11,9 +11,11 @@ import java.util.Properties;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
@@ -33,10 +35,11 @@ import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
  */
 
 public class NewConfigurationWizard extends Wizard implements INewWizard {
-	private NewConfigurationWizardPage page;
+	private NewConfigurationWizardPage connectionInfoPage;
 	private ISelection selection;
     private WizardNewFileCreationPage cPage;
-
+	private ConsoleConfigurationWizardPage confPage;
+	
 	/**
 	 * Constructor for NewConfigurationWizard.
 	 */
@@ -74,8 +77,12 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
         cPage.setFileName("hibernate.cfg.xml");
         addPage( cPage );        
         
-        page = new NewConfigurationWizardPage(selection, cPage);
-		addPage(page);
+        
+        connectionInfoPage = new NewConfigurationWizardPage(selection, cPage);
+		addPage(connectionInfoPage);
+		
+		confPage = new ConsoleConfigurationWizardPage(selection);
+		addPage(confPage);		
 	}
     
     
@@ -86,18 +93,20 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 * using wizard as execution context.
 	 */
 	public boolean performFinish() {
+		
 		final Properties props = new Properties();
-        putIfNotNull(props, Environment.SESSION_FACTORY_NAME, page.getSessionFactoryName() );
-        putIfNotNull(props, Environment.DIALECT, page.getDialect() );
-        putIfNotNull(props, Environment.DRIVER, page.getDriver() );
-        putIfNotNull(props, Environment.URL, page.getConnectionURL() );
-        putIfNotNull(props, Environment.USER, page.getUsername() );
-        putIfNotNull(props, Environment.PASS, page.getPassword() );
+        putIfNotNull(props, Environment.SESSION_FACTORY_NAME, connectionInfoPage.getSessionFactoryName() );
+        putIfNotNull(props, Environment.DIALECT, connectionInfoPage.getDialect() );
+        putIfNotNull(props, Environment.DRIVER, connectionInfoPage.getDriver() );
+        putIfNotNull(props, Environment.URL, connectionInfoPage.getConnectionURL() );
+        putIfNotNull(props, Environment.USER, connectionInfoPage.getUsername() );
+        putIfNotNull(props, Environment.PASS, connectionInfoPage.getPassword() );
         final IFile file = cPage.createNewFile();
+                
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
-					doFinish(file, props, monitor);
+					createHibernateCfgXml(file, props, monitor);
 				} catch (CoreException e) {
 					throw new InvocationTargetException(e);
 				} finally {
@@ -114,6 +123,11 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 			HibernateConsolePlugin.getDefault().showError(getShell(), "Error", realException);
 			return false;
 		}
+		
+		if(connectionInfoPage.isCreateConsoleConfigurationEnabled()) {
+        	ConsoleConfigurationCreationWizard.createConsoleConfiguration(getContainer(), confPage);
+        }
+        
 		return true;
 	}
 	
@@ -136,7 +150,7 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
      * @param props 
 	 */
 
-	private void doFinish(
+	private void createHibernateCfgXml(
 		final IFile file, Properties props, IProgressMonitor monitor)
 		throws CoreException {
 		// create a sample file
@@ -192,5 +206,22 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 */
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		this.selection = selection;        
+	}
+	
+	public IWizardPage getNextPage(IWizardPage page) {
+		if(page==connectionInfoPage) {
+			if(!connectionInfoPage.isCreateConsoleConfigurationEnabled()) {
+				return null;
+			} 
+			confPage.setConfigurationFilePath(cPage.getContainerFullPath().append(cPage.getFileName()));
+		}				
+		return super.getNextPage( page );
+	}
+	
+	public boolean canFinish() {
+		if(!connectionInfoPage.isCreateConsoleConfigurationEnabled()) {
+			return connectionInfoPage.isPageComplete();
+		} 
+		return super.canFinish();
 	}
 }
