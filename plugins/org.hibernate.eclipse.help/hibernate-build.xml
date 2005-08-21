@@ -16,13 +16,13 @@
 	<!-- Name of project and version, used to create filenames -->
     <property name="Name" value="Hibernate Help"/>
     <property name="name" value="hibernatehelp"/>
-    <property name="version" value="3.0.0.alpha"/>
+    <property name="version" value="3.1.0.alpha"/>
 
     <property name="common-build.basedir" location="." />
 
     <!-- location of hibernate installation -->
     <property name="hibernate-core.home"
-          location="${common-build.basedir}/../../hibernate-3.0"/>
+          location="${common-build.basedir}/../../hibernate-3.1"/>
 	
     <!-- take the api html (javadoc) files from here -->
     <property name="hibernate-core.doc.api"
