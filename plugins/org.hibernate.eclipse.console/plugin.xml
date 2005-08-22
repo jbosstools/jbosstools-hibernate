@@ -205,6 +205,19 @@
             id ="org.hibernate.eclipse.hqleditor.HQLEditorInputFactory" 
             class="org.hibernate.eclipse.hqleditor.HQLEditorInputFactory"> 
          </factory> 
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension targetID="org.hibernate.eclipse.console.HibernateConsolePerspective">
+         <newWizardShortcut id="org.hibernate.eclipse.console.wizards.NewConfigurationWizard"/>
+         <newWizardShortcut id="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"/>
+         <newWizardShortcut id="org.hibernate.eclipse.console.newWizardShortcut3"/>
+         <newWizardShortcut id="org.hibernate.eclipse.console.wizards.ArtifactGeneratorWizard"/>
+         <viewShortcut id="org.hibernate.eclipse.console.views.KnownConfigurationsView"/>
+         <viewShortcut id="org.hibernate.eclipse.graph.EntityGraphView"/>
+         <viewShortcut id="org.hibernate.eclipse.console.views.QueryPageTabView"/>
+         <viewShortcut id="org.hibernate.eclipse.console.views.DynamicQueryTranslatorView"/>
+      </perspectiveExtension>
    </extension> 
  
  <!--
