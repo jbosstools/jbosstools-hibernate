@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/"/>
+	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/antlr-2.7.5H3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/tools/hibernateconsole.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/asm.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/asm-attrs.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/c3p0-0.9.0.jar"/>
@@ -28,9 +27,9 @@
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/swarmcache-1.0rc2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/hibernate-tools.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/jtidy-r8-21122004.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/tools/l2fprod-common.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/velocity-1.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/velocity-tools-generic-1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/tools/bsh-2.0b1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="build/eclipse"/>

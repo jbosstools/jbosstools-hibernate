@@ -23,6 +23,8 @@ public class HibernateConsolePerspectiveFactory implements IPerspectiveFactory {
 	public static final String ID_CONFIGURATION_VIEW = "org.hibernate.eclipse.console.views.KnownConfigurationsView";
 	public static final String ID_QUERYRESULTS_VIEW = "org.hibernate.eclipse.console.views.QueryPageTabView";
 	public static final String ID_PROPERTY_SHEET_VIEW = "org.eclipse.ui.views.PropertySheet";
+	public static final String ID_DYNAMIC_QUERY_TRANSLATOR_VIEW = "org.hibernate.eclipse.console.views.DynamicQueryTranslatorView";
+	public static final String ID_ENTITY_MODEL_VIEW = "org.hibernate.eclipse.graph.EntityGraphView";
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IPerspectiveFactory#createInitialLayout(org.eclipse.ui.IPageLayout)
@@ -59,6 +61,8 @@ public class HibernateConsolePerspectiveFactory implements IPerspectiveFactory {
 		
 		bottomRight.addView(ID_QUERYRESULTS_VIEW);
 		bottomRight.addView("org.eclipse.pde.runtime.LogView");
+		bottomRight.addView(ID_ENTITY_MODEL_VIEW);
+		bottomRight.addView(ID_DYNAMIC_QUERY_TRANSLATOR_VIEW);
 		
 		layout.setEditorAreaVisible(true);
 		

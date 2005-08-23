@@ -4,53 +4,39 @@
  */
 package org.hibernate.eclipse.console.views.properties;
 
+import java.util.Collection;
 import java.util.Hashtable;
 
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource2;
+import org.eclipse.ui.views.properties.PropertyDescriptor;
+import org.eclipse.ui.views.properties.TextPropertyDescriptor;
+import org.hibernate.EntityMode;
 import org.hibernate.Session;
+import org.hibernate.collection.PersistentCollection;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.PropertyUtil;
 import org.hibernate.console.execution.ExecutionContext.Command;
+import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.metadata.CollectionMetadata;
 
-import com.l2fprod.common.propertysheet.Property;
+
 
 public class EntityPropertySource implements IPropertySource2
 {
 	private Object reflectedObject;
-	private Hashtable descriptors, properties;
+	private IPropertyDescriptor[] propertyDescriptors;
+	
 	private final ConsoleConfiguration currentConfiguration;
 	private final Session currentSession;
+	private ClassMetadata classMetadata;
 	
 	public EntityPropertySource (final Object object, final Session currentSession, ConsoleConfiguration currentConfiguration)
 	{
 		this.currentSession = currentSession;
 		this.currentConfiguration = currentConfiguration;
-		descriptors = new Hashtable();
-		properties = new Hashtable();
 		reflectedObject = object;
-		
-		currentConfiguration.execute(new Command() {
-
-			public Object execute() {
-				try {
-					Property objectProperties[] = PropertyUtil.extractProperties(object, currentSession);
-					for (int i = 0; i < objectProperties.length; i++)
-					{
-						String propertyId = HibernatePropertyHelper.getPropertyId(objectProperties[i]);
-						IPropertyDescriptor descriptor = HibernatePropertyHelper.getPropertyDescriptor(objectProperties[i]);
-						descriptors.put(propertyId, descriptor);
-						properties.put(propertyId, objectProperties[i]);
-						
-					}
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				return null;	
-			}		
-		});
-				
+		classMetadata = currentSession.getSessionFactory().getClassMetadata( currentSession.getEntityName(reflectedObject) );
+							
 	}
 	
 	
@@ -59,27 +45,66 @@ public class EntityPropertySource implements IPropertySource2
 	}
 	
 	public IPropertyDescriptor[] getPropertyDescriptors() {
-		return (IPropertyDescriptor[]) descriptors.values().toArray(new IPropertyDescriptor[descriptors.values().size()]);
+		if(propertyDescriptors==null) {
+			currentConfiguration.execute(new Command() {
+			
+				public Object execute() {
+					
+					propertyDescriptors = initializePropertyDescriptors(classMetadata);
+					return null;
+				}
+			
+			});
+		}
+		return propertyDescriptors;
 	}
-	
-	private Property getProperty (Object id)
-	{
-		return (Property) properties.get(id);
-	}
-	
-	public Object getPropertyValue(Object id) {
-		Property property = getProperty(id);
-		if (property != null)
-		{
-			try {
-				property.readFromObject(reflectedObject);					
-				return property;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		
+	static protected IPropertyDescriptor[] initializePropertyDescriptors(ClassMetadata classMetadata) {
+		
+		String[] propertyNames = classMetadata.getPropertyNames();
+		int length = propertyNames.length;
+		
+		PropertyDescriptor identifier = null;
+		
+		if(classMetadata.hasIdentifierProperty() ) {			
+			identifier = new PropertyDescriptor(classMetadata.getIdentifierPropertyName(), classMetadata.getIdentifierPropertyName());
+			identifier.setCategory("Identifier");
+			length++;
 		}
 		
-		return "";
+		PropertyDescriptor[] properties = new PropertyDescriptor[length];
+		
+		int idx = 0;
+		if(identifier!=null) {
+			properties[idx++] = identifier; 
+		}
+		
+		for (int i = 0; i < propertyNames.length; i++) {
+			 PropertyDescriptor prop = new PropertyDescriptor(propertyNames[i],propertyNames[i]);
+			 prop.setCategory("Properties");
+			 properties[i+idx] = prop;			
+		}
+		
+		return properties;
+	}
+
+
+	public Object getPropertyValue(Object id) {
+		Object propertyValue;
+		
+		if(id.equals(classMetadata.getIdentifierPropertyName())) {
+			propertyValue = classMetadata.getIdentifier(reflectedObject, EntityMode.POJO);			
+		} else {
+			propertyValue = classMetadata.getPropertyValue(reflectedObject, (String)id, EntityMode.POJO);	
+		} 
+		
+		if (propertyValue instanceof Collection) {
+			CollectionMetadata collectionMetadata = currentSession.getSessionFactory().getCollectionMetadata(classMetadata.getEntityName() + "." + id);
+			if(collectionMetadata!=null) {
+				propertyValue = new CollectionPropertySource((Collection) propertyValue,currentSession,currentConfiguration, collectionMetadata);
+			}
+		}
+		return propertyValue;
 	}
 	
 	public boolean isPropertySet(Object id) {		
@@ -91,15 +116,8 @@ public class EntityPropertySource implements IPropertySource2
 	}
 	
 	public void setPropertyValue(Object id, Object value) {
-		Property property = getProperty(id);
-		if (property != null)
-		{
-			try {
-				property.setValue(value);					
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+		// lets not support editing in the raw properties view - to flakey ui.
+		//classMetadata.setPropertyValue(reflectedObject, (String) id, value, EntityMode.POJO);
 	}
 	
 	public boolean isPropertyResettable(Object id) {

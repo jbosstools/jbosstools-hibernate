@@ -37,12 +37,12 @@
 		<ant antfile="${hibernate-core.home}\..\hibernate3\build.xml" inheritall="false" inheritrefs="false" target="copylib"/>  
     
         <!-- we need to have the hibernateconsole stuff together with the core to fake DriverManager into allow loading drivers -->
-		<ant antfile="..\console\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
-		<copy file="..\console\target\hibernateconsole\hibernateconsole.jar" todir="${lib.tools}"/>
+		<!-- <ant antfile="..\console\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
+		<copy file="..\console\target\hibernateconsole\hibernateconsole.jar" todir="${lib.tools}"/> -->
 		<!--
 		 I guess we also need l2fprod for Property / HibernateProperty
 		-->
-		<copy file="..\console\lib\l2fprod-common.jar" todir="${lib.tools}"/>
+		<!--<copy file="..\console\lib\l2fprod-common.jar" todir="${lib.tools}"/> -->
 
 		<ant antfile="..\tools\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
         <ant antfile="..\tools\build.xml" inheritall="false" inheritrefs="false" target="copylib"/>        

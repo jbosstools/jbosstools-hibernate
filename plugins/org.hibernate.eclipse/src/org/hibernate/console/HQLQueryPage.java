@@ -1,0 +1,87 @@
+/*
+ * Created on 27-09-2003
+ *
+ * To change the template for this generated file go to
+ * Window - Preferences - Java - Code Generation - Code and Comments
+ */
+package org.hibernate.console;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.type.Type;
+
+
+public class HQLQueryPage extends AbstractQueryPage {
+
+	private Query query;
+	private String queryString;
+	public List getList() {
+		if (list == null) {
+			try {
+				
+				//list = query.list();
+				list = new ArrayList();
+				Iterator iter = query.list().iterator(); // need to be user-controllable to toggle between iterate, scroll etc.
+				while (iter.hasNext() ) {
+					Object element = iter.next();
+					list.add(element);
+				}
+				pcs.firePropertyChange("list", null, list);
+			} 
+			catch (HibernateException e) {
+				list = Collections.EMPTY_LIST;
+				addException(e);				                
+			}
+		}
+		return list;
+	}
+
+	/**
+	 * @param session
+	 * @param string
+	 */
+	public HQLQueryPage(ConsoleConfiguration cfg, String string) {
+		super(cfg);
+		queryString = string;
+	}
+
+	public void setSession(Session s) {
+		super.setSession(s);
+		try {			             
+			query = this.getSession().createQuery(queryString);
+		} catch (HibernateException e) {
+			addException(e);			
+		}
+	}
+	
+    /**
+     * @return
+     */
+    public String getQueryString() {
+    	return query.getQueryString();    
+    }
+
+    public List getPathNames() {
+    	List l = Collections.EMPTY_LIST;
+    
+    	try {
+    		Type[] t = query.getReturnTypes();
+    		l = new ArrayList(t.length);
+    
+    		for (int i = 0; i < t.length; i++) {
+    			Type type = t[i];
+    			l.add(type.getName() );
+    		}
+    	} catch (HibernateException he) {
+    		addException(he);           
+    	}
+    
+    	return l;
+    }
+}

@@ -11,8 +11,6 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.QueryPage;
 import org.hibernate.eclipse.console.views.QueryPageTabView;
 
-import com.l2fprod.common.propertysheet.Property;
-
 public class HibernatePropertySourceProvider implements IPropertySourceProvider
 {	
 	// TODO: refactor to be some interface that can provide currentsession and currentconfiguration
@@ -27,10 +25,9 @@ public class HibernatePropertySourceProvider implements IPropertySourceProvider
 		{
 			return new QueryPagePropertySource( (QueryPage)object);
 		}
-		else if (object instanceof Property)
-		{
-			return new HibernatePropertySource(object);
-		} 
+		else if (object instanceof CollectionPropertySource) {
+			return (IPropertySource) object;
+		}
 		else {
 			//			 maybe we should be hooked up with the queryview to get this ?
 			Session currentSession = view.getSelectedQueryPage().getSession();
