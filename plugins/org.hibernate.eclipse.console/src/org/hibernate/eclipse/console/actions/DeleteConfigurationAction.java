@@ -19,7 +19,7 @@ import org.hibernate.console.KnownConfigurations;
 public class DeleteConfigurationAction extends SelectionListenerAction {
 	
 	public DeleteConfigurationAction() {
-		super("Delete");
+		super("Delete Configuration");
 		setEnabled(false);
 	}
 

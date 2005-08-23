@@ -4,7 +4,6 @@
  */
 package org.hibernate.eclipse.console.views;
 
-import java.util.Iterator;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
@@ -18,7 +17,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISelectionListener;
@@ -28,15 +26,10 @@ import org.eclipse.ui.actions.ActionGroup;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheetPage;
-import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.node.BaseNode;
-import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.eclipse.console.actions.ConsoleConfigurationBasedAction;
 import org.hibernate.eclipse.console.actions.EditConsoleConfiguration;
-import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.workbench.AnyAdaptableLabelProvider;
 
 
@@ -46,45 +39,13 @@ import org.hibernate.eclipse.console.workbench.AnyAdaptableLabelProvider;
  */
 public class KnownConfigurationsView extends ViewPart {
 
-	private static class HQLScratchpadAction extends ConsoleConfigurationBasedAction {
-		private HQLScratchpadAction() {
-			super( "HQL Scratchpad" );
-			setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.HQL_EDITOR));
-			setToolTipText("Open HQL Scratchpad");
-			setEnabled(false);
-		}
-
-		public void runWithEvent(Event event) {
-			run();
-		}
-
-		protected void doRun() {
-			for (Iterator i = getSelectedNonResources().iterator(); i.hasNext();) {
-				try {
-					Object node = i.next();
-					if(node instanceof ConsoleConfiguration) {
-						final ConsoleConfiguration config = (ConsoleConfiguration) node;
-						HibernateConsolePlugin.getDefault().openScratchHQLEditor(config.getName(), "");
-					}
-				} catch(HibernateException he) {
-					HibernateConsolePlugin.getDefault().showError(null, "Exception while trying to edit configuration", he);
-				}
-			} 
-						
-		}
-		
-	}
-
 	public static final String ID = "org.hibernate.eclipse.console.views.KnownConfigurationsView";
 
 	TreeViewer viewer;
 	
 	private ActionGroup actionGroup;
 	private Action doubleAction;
-	private HQLScratchpadAction scratchpadAction = new HQLScratchpadAction();
-	/**
-	 * 
-	 */
+	
 	public KnownConfigurationsView() {
 		super();
 	}
@@ -139,7 +100,6 @@ public class KnownConfigurationsView extends ViewPart {
 		
 		IActionBars actionBars = getViewSite().getActionBars();
 		
-		actionBars.getToolBarManager().add(scratchpadAction);
 		IMenuManager dropDownMenu = actionBars.getMenuManager();
 		
 		actionGroup.fillContextMenu(dropDownMenu);
@@ -157,9 +117,6 @@ public class KnownConfigurationsView extends ViewPart {
 	private void makeActions() {
 		
 		this.actionGroup = new ConfigurationsViewActionGroup(this, viewer);
-
-		this.scratchpadAction = new HQLScratchpadAction();
-		viewer.addSelectionChangedListener(scratchpadAction);
 		
 		this.doubleAction = new Action() {
 			public void run() {
@@ -182,7 +139,7 @@ public class KnownConfigurationsView extends ViewPart {
 	public void dispose() {
 		super.dispose();
 		actionGroup.dispose();
-		viewer.removeSelectionChangedListener(scratchpadAction);
+		
 	}
 
 	public void setFocus() {

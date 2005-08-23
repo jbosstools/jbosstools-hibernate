@@ -17,6 +17,7 @@ import org.hibernate.eclipse.console.actions.AddConfigurationAction;
 import org.hibernate.eclipse.console.actions.BuildSessionFactoryAction;
 import org.hibernate.eclipse.console.actions.DeleteConfigurationAction;
 import org.hibernate.eclipse.console.actions.EditConsoleConfiguration;
+import org.hibernate.eclipse.console.actions.HQLScratchpadAction;
 import org.hibernate.eclipse.console.actions.RefreshAction;
 
 /**
@@ -32,6 +33,7 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 	private SelectionListenerAction schemaExportAction;
 	private EditConsoleConfiguration editConfigurationAction;
 	private final StructuredViewer selectionProvider;
+	private SelectionListenerAction scratchpadAction;
 
 	public ConfigurationsViewActionGroup(IViewPart part, StructuredViewer selectionProvider) {
 		
@@ -59,6 +61,8 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 		editConfigurationAction = new EditConsoleConfiguration();
 		selectionProvider.addSelectionChangedListener(editConfigurationAction);
 		
+		scratchpadAction = new HQLScratchpadAction();
+		selectionProvider.addSelectionChangedListener(scratchpadAction);
 	}
 
 	public void dispose() {
@@ -68,17 +72,19 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 		selectionProvider.removeSelectionChangedListener(connectAction);
 		selectionProvider.removeSelectionChangedListener(schemaExportAction);
 		selectionProvider.removeSelectionChangedListener(editConfigurationAction);
+		selectionProvider.removeSelectionChangedListener(scratchpadAction);
 	}
 	
 	public void fillContextMenu(IMenuManager menu) {
 	
 		menu.add(connectAction);
-		menu.add(refreshAction);
+		menu.add(scratchpadAction);
 		menu.add(new Separator() );
 		menu.add(addConfigurationAction);
 		menu.add(editConfigurationAction);
 		menu.add(deleteConfigurationAction);
 		menu.add(new Separator() );
+		menu.add(refreshAction);
 		menu.add(schemaExportAction);
 		
 	}
@@ -86,6 +92,7 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 	public void fillActionBars(IActionBars actionBars) {
 		
 		actionBars.getToolBarManager().add(addConfigurationAction);
+		actionBars.getToolBarManager().add(scratchpadAction);
 	}
 	
 	
