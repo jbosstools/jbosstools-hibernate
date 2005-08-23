@@ -1,11 +1,10 @@
 package org.hibernate.eclipse.mapper.extractor;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -16,9 +15,6 @@ import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.internal.ui.text.java.JavaCompletionProposal;
-import org.eclipse.jdt.ui.text.java.CompletionProposalComparator;
-import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.wst.sse.ui.internal.contentassist.CustomCompletionProposal;
 import org.eclipse.wst.xml.ui.internal.contentassist.XMLRelevanceConstants;
 import org.hibernate.cfg.Environment;
@@ -33,7 +29,7 @@ import org.w3c.dom.Node;
  */
 public class HBMInfoExtractor {
 
-	final List hibernateTypes = new ArrayList(); // key: element>attributename, value: handler
+	HibernateTypeDescriptor[] hibernateTypes;
 	
 	final Map javaTypeProvider = new HashMap(); // key: element name, value: attribute which contains javaType
 	
@@ -41,6 +37,10 @@ public class HBMInfoExtractor {
 	final Map attributeHandlers = new HashMap(); // completes a possible package or classname
 
 	private String[] hibernatePropertyNames;
+
+	private HibernateTypeDescriptor[] generatorTypes;
+
+	private HibernateTypeDescriptor[] propertyAccessors;
 	
 	public HBMInfoExtractor() {
 		setupTypeFinder();
@@ -58,8 +58,14 @@ public class HBMInfoExtractor {
 		setupTableNameHandlers();
 		
 		setupHibernateProperties();
+		
+		setupGeneratorClassHandlers();
+		
+		
+		setupAccessHandlers();
 	}
 
+	
 	private void setupHibernateProperties() {
 		hibernatePropertyNames = extractHibernateProperties();
 		
@@ -102,36 +108,55 @@ public class HBMInfoExtractor {
 	}
 
 	private void setupHibernateTypeDescriptors() {
-		addHibernateType("long","java.lang.Long","long");
-		addHibernateType("short","java.lang.Short","short");
-		addHibernateType("integer","java.lang.Integer","int");
-		addHibernateType("byte","java.lang.Byte","byte");
-		addHibernateType("float","java.lang.Float","float");
-		addHibernateType("double","java.lang.Double","double");
-		addHibernateType("character","java.lang.Character","char");
-		addHibernateType("string","java.lang.String",null);
-		addHibernateType("time","java.util.Date",null);
-		addHibernateType("date","java.util.Date",null);
-		addHibernateType("timestamp","java.util.Date",null);
-		addHibernateType("boolean","java.lang.Boolean","boolean");
-		addHibernateType("true_false","java.lang.Boolean","boolean");
-		addHibernateType("yes_no","java.lang.Boolean","boolean");
-		addHibernateType("big_decimal","java.math.BigDecimal",null);
-		addHibernateType("binary","byte[]",null);
-		addHibernateType("text","java.lang.String",null);
-		addHibernateType("blob","java.sql.Blob",null);
-		addHibernateType("clob","java.sql.Clob",null);
-		addHibernateType("calendar","java.util.Calendar",null);
-		addHibernateType("calendar_date","java.util.Calendar",null);
-		addHibernateType("locale","java.util.Locale",null);
-		addHibernateType("currency","java.util.Currency",null);
-		addHibernateType("timezone","java.util.TimeZone",null);
-		addHibernateType("class","java.lang.Class",null);
-		addHibernateType("serializable","java.io.Serializable",null);
-		addHibernateType("object","java.lang.Object",null);
-		Collections.sort(hibernateTypes);
+		List types = new ArrayList();
+		addType("long","java.lang.Long","long", types);
+		addType("short","java.lang.Short","short", types);
+		addType("integer","java.lang.Integer","int", types);
+		addType("byte","java.lang.Byte","byte", types);
+		addType("float","java.lang.Float","float", types);
+		addType("double","java.lang.Double","double", types);
+		addType("character","java.lang.Character","char", types);
+		addType("string","java.lang.String",null, types);
+		addType("time","java.util.Date",null, types);
+		addType("date","java.util.Date",null, types);
+		addType("timestamp","java.util.Date",null, types);
+		addType("boolean","java.lang.Boolean","boolean", types);
+		addType("true_false","java.lang.Boolean","boolean", types);
+		addType("yes_no","java.lang.Boolean","boolean", types);
+		addType("big_decimal","java.math.BigDecimal",null, types);
+		addType("binary","byte[]",null, types);
+		addType("text","java.lang.String",null, types);
+		addType("blob","java.sql.Blob",null, types);
+		addType("clob","java.sql.Clob",null, types);
+		addType("calendar","java.util.Calendar",null, types);
+		addType("calendar_date","java.util.Calendar",null, types);
+		addType("locale","java.util.Locale",null, types);
+		addType("currency","java.util.Currency",null, types);
+		addType("timezone","java.util.TimeZone",null, types);
+		addType("class","java.lang.Class",null, types);
+		addType("serializable","java.io.Serializable",null, types);
+		addType("object","java.lang.Object",null, types);
+		Collections.sort(types);
+		hibernateTypes = (HibernateTypeDescriptor[]) types.toArray(new HibernateTypeDescriptor[types.size()]);
 	}
 
+	private void setupGeneratorClassHandlers() {
+		List types = new ArrayList();
+		addType("native", "Database dependent", null, types);
+		addType("uuid", "UUIDHexGenerator", null, types);
+		addType("hilo", "TableHiLoGenerator", null, types);
+		addType("assigned", "Assigned", null, types);
+		addType("identity", "IdentityGenerator", null, types);
+		addType("select", "SelectGenerator", null, types);
+		addType("sequence", "SequenceGenerator", null, types);
+		addType("seqhilo", "SequenceHiLoGenerator", null, types);
+		addType("increment", "IncrementGenerator", null, types);
+		addType("foreign", "ForeignGenerator", null, types);
+		addType("guid", "GUIDGenerator", null, types);
+		Collections.sort(types);
+		generatorTypes = (HibernateTypeDescriptor[]) types.toArray(new HibernateTypeDescriptor[types.size()]);
+	}
+	
 	private void setupHibernateTypeHandlers() {
 		HBMInfoHandler hibernateTypeFinder = new HibernateTypeHandler(this);
 		attributeHandlers.put("filter-param>type", hibernateTypeFinder);
@@ -145,6 +170,8 @@ public class HBMInfoExtractor {
 		attributeHandlers.put("index>type", hibernateTypeFinder);
 		attributeHandlers.put("collection-id>type", hibernateTypeFinder);
 		attributeHandlers.put("return-scalar>type", hibernateTypeFinder);
+		HBMInfoHandler generatorClassFinder = new GeneratorTypeHandler(this);
+		attributeHandlers.put("generator>class", generatorClassFinder);
 	}
 
 	private void setupTableNameHandlers() {
@@ -162,6 +189,39 @@ public class HBMInfoExtractor {
 		attributeHandlers.put("primitive-array>table", hih);
 		attributeHandlers.put("synchronize>table", hih);	
 	}
+	
+	private void setupAccessHandlers() {
+		List types = new ArrayList();
+		addType("property", "Use JavaBean accessor methods", null, types);
+		addType("field", "Access fields directly", null, types);
+		addType("noop", "Do not perform any access. Use with HQL-only properties", null, types);
+		Collections.sort(types);
+		propertyAccessors = (HibernateTypeDescriptor[]) types.toArray(new HibernateTypeDescriptor[types.size()]);
+		
+		HBMInfoHandler hih = new PropertyAccessHandler(this);
+		attributeHandlers.put("hibernate-mapping>default-access", hih);
+		attributeHandlers.put("id>access", hih);
+		attributeHandlers.put("composite-id>access", hih);
+		attributeHandlers.put("version>access", hih);
+		attributeHandlers.put("timestamp>access", hih);
+		attributeHandlers.put("property>access", hih);
+		attributeHandlers.put("many-to-one>access", hih);
+		attributeHandlers.put("one-to-one>access", hih);
+		attributeHandlers.put("key-property>access", hih);
+		attributeHandlers.put("key-many-to-one>access", hih);
+		attributeHandlers.put("any>access", hih);
+		attributeHandlers.put("component>access", hih);
+		attributeHandlers.put("dynamic-component>access", hih);
+		attributeHandlers.put("map>access", hih);
+		attributeHandlers.put("set>access", hih);
+		attributeHandlers.put("bag>access", hih);
+		attributeHandlers.put("idbag>access", hih);
+		attributeHandlers.put("list>access", hih);
+		attributeHandlers.put("array>access", hih);
+		attributeHandlers.put("primitive-array>access", hih);
+		attributeHandlers.put("nested-composite-element>access", hih);
+	}
+
 	
 	private void setupFieldsPropertyHandlers() {
 		
@@ -213,10 +273,14 @@ public class HBMInfoExtractor {
 	}
 	
 	List findMatchingHibernateTypes(String item) {
+		return findInTypes( item, hibernateTypes );
+	}
+
+	private List findInTypes(String item, HibernateTypeDescriptor[] types) {
 		List l = new ArrayList();
 		boolean foundFirst = false;
-		for (int i = 0; i < hibernateTypes.size(); i++) {
-			HibernateTypeDescriptor element = (HibernateTypeDescriptor) hibernateTypes.get(i);
+		for (int i = 0; i < types.length; i++) {
+			HibernateTypeDescriptor element = types[i];
 			if(element.getName().startsWith(item) ) {
 				foundFirst = true;
 				l.add(element);
@@ -226,6 +290,11 @@ public class HBMInfoExtractor {
 		}
 		return l;
 	}
+	
+	public List findMatchingGenerators(String start) {
+		return findInTypes(start, generatorTypes);
+	}
+
 
 	public List findMatchingPropertyTypes(String prefix) {
 		List l = new ArrayList();
@@ -275,10 +344,10 @@ public class HBMInfoExtractor {
 		return aString.toLowerCase().startsWith(prefix.toLowerCase() );
 	}
 
-	void generateTypeProposals(String matchString, int offset, List proposals, Set alreadyFound, IType[] classes) throws JavaModelException {
+	void generateTypeProposals(String matchString, int offset, List proposals, Set alreadyFound, IType[] classes, String filterPackage) throws JavaModelException {
 		for (int j = 0; j < classes.length; j++) {
 			IType type = classes[j];
-			if (!Flags.isAbstract(type.getFlags() ) ) {
+			if (!Flags.isAbstract(type.getFlags() ) && (filterPackage==null || !type.getFullyQualifiedName().startsWith(filterPackage)) ) {				
 				String fullName = type.getFullyQualifiedName();
 				String shortName = type.getElementName();
 				if(alreadyFound.contains(fullName) ) {
@@ -298,7 +367,7 @@ public class HBMInfoExtractor {
 
 
 	
-	private void addHibernateType(String name, String returnClass, String primitiveClass) {
+	private void addType(String name, String returnClass, String primitiveClass, Collection hibernateTypes) {
 		hibernateTypes.add(new HibernateTypeDescriptor(name, returnClass, primitiveClass) );
 	}
 
@@ -308,7 +377,8 @@ public class HBMInfoExtractor {
 	 * @return
 	 */
 	public HBMInfoHandler getAttributeHandler(String path) {
-		return (HBMInfoHandler) attributeHandlers.get(path);
+		HBMInfoHandler infoHandler = (HBMInfoHandler) attributeHandlers.get(path);
+		return infoHandler;
 	}
 
 	/**
@@ -350,4 +420,10 @@ public class HBMInfoExtractor {
 		}
 		return null;
 	}
-}
+
+
+	public List findMatchingAccessMethods(String start) {
+		return findInTypes(start, propertyAccessors);
+	}
+
+	}
