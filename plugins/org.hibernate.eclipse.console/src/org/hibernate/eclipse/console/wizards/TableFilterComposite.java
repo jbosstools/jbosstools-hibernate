@@ -25,7 +25,6 @@ public class TableFilterComposite extends Composite {
 	private Button downButton = null;
 	private Button removeButton = null;
 	private Label fillLabel = null;
-	private UpDownList upDown;
 	private Composite composite = null;
 	private Label label = null;
 	private Button refreshButton = null;

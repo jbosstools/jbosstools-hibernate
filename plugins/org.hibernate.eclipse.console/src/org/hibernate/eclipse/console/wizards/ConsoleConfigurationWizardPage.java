@@ -71,8 +71,8 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	//private Button enableAnnotations; 
 	
 	private ISelection selection;
-	private UpDownList mappingFilesViewer;
-	private UpDownList classPathViewer;
+	private UpDownListComposite mappingFilesViewer;
+	private UpDownListComposite classPathViewer;
 	private boolean configurationFileWillBeCreated;
 	private Button confbutton;
 	
@@ -95,7 +95,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 		GridLayout layout = new GridLayout();
 		container.setLayout(layout);
 		layout.numColumns = 3;
-		layout.verticalSpacing = 9;
+		layout.verticalSpacing = 9;		
 		
 		Label label;
 		Button button;
@@ -151,16 +151,29 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 		
 		//label = new Label(container, SWT.NULL);		
 				
-		buildMappingFileTable(container);
-		buildClassPathTable(container);
+		UpDownListComposite composite = buildMappingFileTable(container);
+		gd = createGridData();
+		composite.setLayoutData(gd);
+		composite = buildClassPathTable(container);
+		gd = createGridData();
+		composite.setLayoutData(gd);
 		initialize();
 		dialogChanged();
 		setControl(container);
 	}
+
+	private GridData createGridData() {
+		GridData gd;
+		gd = new GridData(GridData.FILL_HORIZONTAL);
+		
+		gd.horizontalSpan = 3;
+		gd.verticalSpan = 1;
+		return gd;
+	}
 	
 	
-	private void buildClassPathTable(Composite parent) {
-		classPathViewer = new UpDownList(parent, "Classpath (only add path for POJO and driver - No Hibernate jars!)") {
+	private UpDownListComposite buildClassPathTable(Composite parent) {
+		classPathViewer = new UpDownListComposite(parent, SWT.NONE, "Classpath (only add path for POJO and driver - No Hibernate jars!)") {
 			protected Object[] handleAdd(int idx) {
 
 				TableItem[] items = getTable().getItems();
@@ -190,11 +203,11 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			}
 			
 		};
-		
+		return classPathViewer; 
 	}
 
-	private void buildMappingFileTable(Composite parent) {
-		mappingFilesViewer = new UpDownList(parent, "Mapping files") {
+	private UpDownListComposite buildMappingFileTable(Composite parent) {
+		mappingFilesViewer = new UpDownListComposite(parent, SWT.NONE, "Mapping files") {
 			protected Object[] handleAdd(int idx) {
 				TableItem[] items = getTable().getItems();
 				IPath[] exclude = new IPath[items.length];
@@ -211,6 +224,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 				dialogChanged();
 			}
 		};
+		return mappingFilesViewer;
 	}
 	
 	
