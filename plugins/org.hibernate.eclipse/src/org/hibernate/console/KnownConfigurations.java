@@ -1,13 +1,9 @@
 package org.hibernate.console;
 
-import java.awt.Container;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
 import java.util.TreeMap;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -37,7 +33,7 @@ import org.w3c.dom.Node;
  * This class keeps track of the Hibernate Configurations that are known to
  * the Hibernate Console plugin.
  */
-public class KnownConfigurations {
+public class KnownConfigurations  {
 
 	// TODO: is the best way for the querypage model ?
 	private QueryPageModel queryPages = new QueryPageModel(); 
@@ -280,5 +276,13 @@ public class KnownConfigurations {
 		xformer.transform(source, result);
 	}
 
+	List queryParameters = new ArrayList();
 	
+	public ConsoleQueryParameter[] getQueryParameters() {
+		return (ConsoleQueryParameter[]) queryParameters.toArray(new ConsoleQueryParameter[queryParameters.size()]);
+	}
+	
+	public List getQueryParameterList() {
+		return queryParameters;
+	}	
 }

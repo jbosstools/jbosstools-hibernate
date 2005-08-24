@@ -130,10 +130,10 @@ public class ExecuteHQLAction extends Action implements IMenuCreator, IWorkbench
 							lastUsed.build();
 						}
 						lastUsed.initSessionFactory();
-						lastUsed.executeHQLQuery(part.getQuery() );
+						lastUsed.executeHQLQuery(part.getQuery(), KnownConfigurations.getInstance().getQueryParameters() );
 					}
 				} else {
-					lastUsed.executeHQLQuery(part.getQuery() );
+					lastUsed.executeHQLQuery(part.getQuery(), KnownConfigurations.getInstance().getQueryParameters() );
 				}
 			} 
 		}

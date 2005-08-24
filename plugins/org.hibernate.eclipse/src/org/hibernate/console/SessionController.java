@@ -11,9 +11,7 @@ import org.hibernate.Session;
  *
  */
 public interface SessionController {
-
-	void selectObject(Session session, Object o);
-
+	
 	void executeHQLQuery(String text);
 
 	void executeJavaQuery(String text);

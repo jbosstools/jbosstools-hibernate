@@ -21,12 +21,14 @@ public class HQLQueryPage extends AbstractQueryPage {
 
 	private Query query;
 	private String queryString;
+	private final ConsoleQueryParameter[] queryParameters;
 	public List getList() {
 		if (list == null) {
 			try {
 				
 				//list = query.list();
 				list = new ArrayList();
+				setupParameters(query, queryParameters);
 				Iterator iter = query.list().iterator(); // need to be user-controllable to toggle between iterate, scroll etc.
 				while (iter.hasNext() ) {
 					Object element = iter.next();
@@ -37,18 +39,30 @@ public class HQLQueryPage extends AbstractQueryPage {
 			catch (HibernateException e) {
 				list = Collections.EMPTY_LIST;
 				addException(e);				                
+			} catch (IllegalArgumentException e) {
+				list = Collections.EMPTY_LIST;
+				addException(e);
 			}
 		}
 		return list;
 	}
 
+	private void setupParameters(Query query2, ConsoleQueryParameter[] queryParameters2) {
+		for (int i = 0; i < queryParameters2.length; i++) {
+			ConsoleQueryParameter parameter = queryParameters2[i];
+			query2.setParameter(parameter.getName(), parameter.getValue(), parameter.getType());
+		}		
+	}
+
 	/**
 	 * @param session
 	 * @param string
+	 * @param queryParameters 
 	 */
-	public HQLQueryPage(ConsoleConfiguration cfg, String string) {
+	public HQLQueryPage(ConsoleConfiguration cfg, String string, ConsoleQueryParameter[] queryParameters) {
 		super(cfg);
 		queryString = string;
+		this.queryParameters = queryParameters;
 	}
 
 	public void setSession(Session s) {

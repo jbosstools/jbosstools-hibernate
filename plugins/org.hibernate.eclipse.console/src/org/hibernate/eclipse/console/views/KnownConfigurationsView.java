@@ -103,6 +103,7 @@ public class KnownConfigurationsView extends ViewPart {
 		IMenuManager dropDownMenu = actionBars.getMenuManager();
 		
 		actionGroup.fillContextMenu(dropDownMenu);
+		actionGroup.fillActionBars(actionBars);
     }
     
 	protected void fillContextMenu(IMenuManager menuMgr) {

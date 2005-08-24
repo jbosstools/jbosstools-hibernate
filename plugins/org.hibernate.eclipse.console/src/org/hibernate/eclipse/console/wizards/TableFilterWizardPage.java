@@ -1,6 +1,5 @@
 package org.hibernate.eclipse.console.wizards;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
@@ -149,7 +148,7 @@ public class TableFilterWizardPage extends WizardPage {
 		}
 
 		List getTableFilterList() {
-			return tableFilterList.filters;
+			return tableFilterList.getList();
 		}
 		private void toggle(boolean exclude) {
 			ISelection selection = viewer.getSelection();
@@ -196,7 +195,7 @@ public class TableFilterWizardPage extends WizardPage {
 				TableFilter item = (TableFilter) selection[i].getData();
 				tableFilterList.removeTableFilter(item);
 			}
-			tableFilters.setSelection(Math.min(sel, tableFilterList.filters.size()-1));
+			tableFilters.setSelection(Math.min(sel, tableFilterList.getList().size()-1));
 		}
 
 		protected void doMoveDown() {
@@ -312,7 +311,7 @@ public class TableFilterWizardPage extends WizardPage {
 		}
 		
 		public Object[] getElements(Object inputElement) {
-			return ((TableFilterList)inputElement).filters.toArray();
+			return ((TableFilterList)inputElement).getList().toArray();
 		}
 
 		public void dispose() {
@@ -332,47 +331,6 @@ public class TableFilterWizardPage extends WizardPage {
 			tv.refresh();			
 		}
 		
-	}
-	
-	static public class TableFilterList extends Observable {
-		List filters;
-		
-		public TableFilterList() {
-			filters = new ArrayList();
-		}
-		
-		public void addTableFilter(TableFilter tf) {
-			filters.add(tf);
-			setChanged();
-			notifyObservers();
-		}
-		
-		public void removeTableFilter(TableFilter tf) {
-			filters.remove(tf);
-			setChanged();
-			notifyObservers();
-		}
-		
-		public void moveUp(TableFilter tf) {
-			move( tf, -1 );
-		}
-
-		private void move(TableFilter tf, int shift) {
-			int i = filters.indexOf(tf);
-			
-			if(i>=0) {
-				if(i+shift<filters.size() && i+shift>=0) { 
-					filters.remove(i);
-					filters.add(i+shift, tf);
-				}
-			}
-			setChanged();
-			notifyObservers();
-		}
-		
-		public void moveDown(TableFilter tf) {
-			move( tf, 1 );
-		}
 	}
 	
 	public List getTableFilters() {

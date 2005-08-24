@@ -224,11 +224,16 @@ public class ConsoleConfiguration implements SessionController, ExecutionContext
 	List factoryListeners = new ArrayList();
 		
 	public void executeHQLQuery(final String hql) {
-		executionContext.execute(new ExecutionContext.Command() {
+		executeHQLQuery(hql, new ConsoleQueryParameter[0]);
+	}
+	
+	public void executeHQLQuery(final String hql, final ConsoleQueryParameter[] queryParameters) {
 		
+		executionContext.execute(new ExecutionContext.Command() {
+			
 			public Object execute() {
 				Session session = getSessionFactory().openSession();
-				QueryPage qp = new HQLQueryPage(ConsoleConfiguration.this,hql);
+				QueryPage qp = new HQLQueryPage(ConsoleConfiguration.this,hql,queryParameters);
 				qp.setSession(session);
 				
 				qp.setId(++execcount);				
@@ -237,7 +242,7 @@ public class ConsoleConfiguration implements SessionController, ExecutionContext
 				return null;
 			}
 		
-		});
+		});		
 	}
 	
 	private void fireFactoryUpdated(ConsoleConfiguration ccfg) {
@@ -256,14 +261,6 @@ public class ConsoleConfiguration implements SessionController, ExecutionContext
 		}		
 	}
 	
-	
-	protected void fireObjectUpdated(Session session, Object o) {
-		Iterator i = sessionListeners.iterator();
-		while (i.hasNext() ) {
-			SessionListener view = (SessionListener) i.next();
-			view.objectUpdated(this, session, o);
-		}		
-	}
 
 	private void fireFactoryCreated() {
 		Iterator i = factoryListeners.iterator();
@@ -319,10 +316,6 @@ public class ConsoleConfiguration implements SessionController, ExecutionContext
 		
 	}
 
-	public void selectObject(Session session, Object o) {
-		fireObjectUpdated(session, o);		
-	}
-
 	public boolean isSessionFactoryCreated() {
 		return sessionFactory!=null;
 	}
@@ -338,6 +331,8 @@ public class ConsoleConfiguration implements SessionController, ExecutionContext
 	public ExecutionContext getExecutionContext() {
 		return executionContext;
 	}
+
+	
 
 	
 }

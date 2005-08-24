@@ -39,6 +39,12 @@
             icon="icons/images/hibernate_small_icon.jpg"
             id="org.hibernate.eclipse.console.views.DynamicQueryTranslatorView"
             name="Hibernate Dynamic Query Translator"/>
+      <view
+            category="hibernatecategory"
+            class="org.hibernate.eclipse.console.views.QueryParametersView"
+            icon="icons/hibernate_small_icon.gif"
+            id="org.hibernate.eclipse.console.views.QueryParametersView"
+            name="Hibernate Query Parameters"/>
             
    </extension>
    <extension
@@ -162,6 +168,7 @@
                 class="org.hibernate.eclipse.console.actions.ExecuteHQLAction"                
                 icon="icons/images/execute.gif"
                 id="org.hibernate.eclipse.console.actions.ExecuteHQLAction"
+                definitionId="org.hibernate.eclipse.console.actions.ExecuteHQLActionCommand"
                 label="Run Query"
                 retarget="true"
                 style="pulldown"
@@ -171,6 +178,22 @@
           		  
        </actionSet>
     </extension>
+    
+    <extension
+      point="org.eclipse.ui.commands">
+   <command
+         id="org.hibernate.eclipse.console.actions.ExecuteHQLActionCommand"
+         name="Run Query command"/>
+</extension>
+<extension
+      point="org.eclipse.ui.bindings">
+   <key
+         commandId="org.hibernate.eclipse.console.actions.ExecuteHQLActionCommand"
+         contextId="org.eclipse.ui.contexts.window"
+         schemeId="CodeGenerator.key1"
+         sequence="CTRL+ALT+B"/>
+</extension>
+
  <extension point="org.eclipse.ui.actionSetPartAssociations">
   <actionSetPartAssociation targetID="org.hibernate.eclipse.console.actionSet">
    <part id="org.hibernate.eclipse.hqleditor.HQLEditor"/>
@@ -218,7 +241,8 @@
          <viewShortcut id="org.hibernate.eclipse.console.views.QueryPageTabView"/>
          <viewShortcut id="org.hibernate.eclipse.console.views.DynamicQueryTranslatorView"/>
       </perspectiveExtension>
-   </extension> 
+   </extension>
+
  
  <!--
  <extension

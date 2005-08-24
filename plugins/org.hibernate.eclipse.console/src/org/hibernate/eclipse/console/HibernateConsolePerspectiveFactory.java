@@ -14,6 +14,7 @@ import org.eclipse.ui.IPerspectiveFactory;
  */
 public class HibernateConsolePerspectiveFactory implements IPerspectiveFactory {
 
+	public static final String ID_CONSOLE_PERSPECTIVE = "org.hibernate.eclipse.console.HibernateConsolePerspective";
 	//	Folders
 	public static final String ID_CONFIGURATION_FOLDERVIEW = "org.hibernate.eclipse.console.ConfigurationFolderView"; //$NON-NLS-1$
 	public static final String ID_RESULT_FOLDERVIEW = "org.hibernate.eclipse.console.QueryResultsFolderView"; //$NON-NLS-1$
@@ -25,6 +26,7 @@ public class HibernateConsolePerspectiveFactory implements IPerspectiveFactory {
 	public static final String ID_PROPERTY_SHEET_VIEW = "org.eclipse.ui.views.PropertySheet";
 	public static final String ID_DYNAMIC_QUERY_TRANSLATOR_VIEW = "org.hibernate.eclipse.console.views.DynamicQueryTranslatorView";
 	public static final String ID_ENTITY_MODEL_VIEW = "org.hibernate.eclipse.graph.EntityGraphView";
+	
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IPerspectiveFactory#createInitialLayout(org.eclipse.ui.IPageLayout)
