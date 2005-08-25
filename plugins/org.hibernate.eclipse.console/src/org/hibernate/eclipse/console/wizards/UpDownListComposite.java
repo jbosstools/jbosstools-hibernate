@@ -4,20 +4,19 @@ import java.util.Iterator;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 
 public class UpDownListComposite extends Composite {
 
@@ -88,13 +87,19 @@ public class UpDownListComposite extends Composite {
 		gridData1.grabExcessHorizontalSpace = true;
 		gridData1.grabExcessVerticalSpace = false;
 		gridData1.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
+		gridData1.heightHint = 20;
+		gridData1.widthHint = 20;
+		
 		table = new Table(group, SWT.FULL_SELECTION);
-		table.setHeaderVisible(false);
+		table.setHeaderVisible(true);
 		table.setLayoutData(gridData1);
 		table.setLinesVisible(true);
+		TableColumn column = new TableColumn(table, SWT.NULL);
+		column.setText("Name");
+		column.setWidth(1000);
+		
 		tableView = new TableViewer(table);
-			gridData1.heightHint = 20;
-			gridData1.widthHint = 20;
+		
 	}
 
 	/**
@@ -291,4 +296,4 @@ public class UpDownListComposite extends Composite {
 	public Table getTable() {
 		return tableView.getTable();
 	}
-}  //  @jve:decl-index=0:visual-constraint="10,10"
+}

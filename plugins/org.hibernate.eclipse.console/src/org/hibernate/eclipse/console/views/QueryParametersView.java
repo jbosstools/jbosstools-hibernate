@@ -98,6 +98,11 @@ public class QueryParametersView extends ViewPart {
 		possibleTypes.add(Hibernate.BIG_DECIMAL);
 		possibleTypes.add(Hibernate.BIG_INTEGER);
 		possibleTypes.add(Hibernate.INTEGER);
+		possibleTypes.add(Hibernate.BOOLEAN);
+		possibleTypes.add(Hibernate.CALENDAR);
+		possibleTypes.add(Hibernate.CALENDAR_DATE);
+		possibleTypes.add(Hibernate.CHARACTER);
+		
 		
 		tv.setCellModifier( new ICellModifier() {
 
