@@ -63,6 +63,8 @@ public class HQLCodeScanner extends RuleBasedScanner {
     	"update", //$NON-NLS-1$
     	"versioned", //$NON-NLS-1$
     	"where", //$NON-NLS-1$
+    	"and",
+    	"or",
 
    		// -- SQL tokens --
    		// These aren't part of HQL, but usefull when you have SQL in the editor
