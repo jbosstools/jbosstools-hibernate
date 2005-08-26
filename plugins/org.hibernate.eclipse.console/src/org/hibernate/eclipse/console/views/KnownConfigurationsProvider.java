@@ -10,12 +10,13 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.model.IWorkbenchAdapter;
+import org.hibernate.SessionFactory;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.KnownConfigurations.IConsoleConfigurationListener;
+import org.hibernate.console.KnownConfigurationsListener;
 import org.hibernate.eclipse.console.workbench.DeferredContentProvider;
 
-class KnownConfigurationsProvider extends DeferredContentProvider implements IConsoleConfigurationListener {
+class KnownConfigurationsProvider extends DeferredContentProvider implements KnownConfigurationsListener {
 
 	private TreeViewer tv;
 
@@ -60,7 +61,7 @@ class KnownConfigurationsProvider extends DeferredContentProvider implements ICo
         }
 	}
 
-	public void factoryCreated(final ConsoleConfiguration ccfg) {
+	public void sessionFactoryBuilt(final ConsoleConfiguration ccfg, SessionFactory builtFactory) {
 		/*(Display.getDefault().syncExec(new Runnable() { Disabled as it will generate double entries in the child list
 			public void run() {
 				tv.refresh(ccfg);
@@ -68,7 +69,7 @@ class KnownConfigurationsProvider extends DeferredContentProvider implements ICo
 		});	*/			
 	}
 
-	public void factoryClosed(final ConsoleConfiguration configuration) {
+	public void sessionFactoryClosing(final ConsoleConfiguration configuration, SessionFactory closingFactory) {
 		Display.getDefault().syncExec(new Runnable() {
 			public void run() {
 				tv.collapseToLevel(configuration, AbstractTreeViewer.ALL_LEVELS);

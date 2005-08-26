@@ -1,8 +1,10 @@
 package org.hibernate.console.node;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.ConsoleConfigurationListener;
 import org.hibernate.console.ImageConstants;
-import org.hibernate.console.views.SessionFactoryListener;
+import org.hibernate.console.QueryPage;
 
 /**
  * @author max
@@ -16,17 +18,16 @@ public class ConfigurationNode extends BaseNode {
 	public ConfigurationNode(BaseNode parent, ConsoleConfiguration configuration) {
 		super(null,parent);
 		this.configuration = configuration;		
-		configuration.addListener(new SessionFactoryListener() {
-			public void factoryCreated(ConsoleConfiguration ccfg) {
+		configuration.addConsoleConfigurationListener(new ConsoleConfigurationListener() {
+			public void sessionFactoryBuilt(ConsoleConfiguration ccfg, SessionFactory builtSessionFactory) {
+				clear();
+			}
+			
+			public void sessionFactoryClosing(ConsoleConfiguration configuration, SessionFactory closedSessionFactory) {
 				clear();
 			}
 
-			public void factoryUpdated(ConsoleConfiguration ccfg) {
-			}
-
-			public void factoryClosed(ConsoleConfiguration configuration) {
-				clear();
-			}
+			public void queryPageCreated(QueryPage qp) { }
 		});
 		
 		name = configuration.getName();

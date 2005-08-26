@@ -2,7 +2,7 @@
  * Created on 2004-11-01 by max
  * 
  */
-package org.hibernate.console;
+package org.hibernate.console.preferences;
 
 import java.io.File;
 import java.net.URL;

@@ -25,12 +25,10 @@ import org.hibernate.console.execution.DefaultExecutionContext;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.console.execution.ExecutionContextHolder;
 import org.hibernate.console.execution.ExecutionContext.Command;
-import org.hibernate.console.views.QueryListener;
-import org.hibernate.console.views.SessionFactoryListener;
-import org.hibernate.console.views.SessionListener;
+import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.util.ReflectHelper;
 
-public class ConsoleConfiguration implements SessionController, ExecutionContextHolder {
+public class ConsoleConfiguration implements ExecutionContextHolder {
 
 	private ExecutionContext executionContext;
 	
@@ -47,26 +45,10 @@ public class ConsoleConfiguration implements SessionController, ExecutionContext
 		return prefs.getName();
 	}
 	
-	/**
-	 * @param c
-	 */
-	public ConsoleConfiguration(Configuration c) {
-		configuration = c;
-	}
-	
-	public ConsoleConfiguration(SessionFactory sessions) {
-		sessionFactory = sessions;
-	}
-
 	public ConsoleConfiguration(ConsoleConfigurationPreferences config) {
 		prefs = config;
 	}
-
-	public ConsoleConfiguration(ConsoleConfigurationPreferences prefs, Configuration c) {
-		this.prefs = prefs;
-		this.configuration = c;
-	}
-
+	
 	public Object execute(Command c) {
 		return executionContext.execute(c);
 	}
@@ -82,13 +64,7 @@ public class ConsoleConfiguration implements SessionController, ExecutionContext
 	public void reset() {
 		// reseting state 
 		configuration = null;
-		if(sessionFactory!=null) {
-			sessionFactory.close();
-			fireFactoryClosed();
-			sessionFactory = null;
-			
-		}
-		
+		closeSessionFactory();
 	}
 	
 	public void build() {
@@ -116,9 +92,7 @@ public class ConsoleConfiguration implements SessionController, ExecutionContext
 	 */
 	public Configuration buildWith(final Configuration cfg, final boolean includeMappings) {
 			URL[] customClassPathURLS = prefs.getCustomClassPathURLS();
-			if(customClassPathURLS.length>0) {
-				executionContext = new DefaultExecutionContext( new URLClassLoader( customClassPathURLS, getParentClassLoader() ) );							
-			}
+			executionContext = new DefaultExecutionContext( new URLClassLoader( customClassPathURLS, getParentClassLoader() ) );							
 			
 			Configuration result = (Configuration) executionContext.execute(new ExecutionContext.Command() {
 			
@@ -174,7 +148,6 @@ public class ConsoleConfiguration implements SessionController, ExecutionContext
 					DriverManager.registerDriver(fakeDelegatingDriver);
 					fakeDrivers.put(driverClassName,fakeDelegatingDriver);
 				}
-				
 			} 
 			catch (ClassNotFoundException e) {
 				throw new HibernateConsoleRuntimeException("Problems while loading database driverclass (" + driverClassName + ")", e);					
@@ -203,11 +176,14 @@ public class ConsoleConfiguration implements SessionController, ExecutionContext
 		return configuration!=null;
 	}
 
-	public void initSessionFactory() {
+	public void buildSessionFactory() {
 		execute(new ExecutionContext.Command() {
 			public Object execute() {
+				if(sessionFactory!=null) {
+					throw new HibernateConsoleRuntimeException("Factory were not closed before attempting to built a new factory.");
+				}
 				sessionFactory = getConfiguration().buildSessionFactory();
-				fireFactoryCreated();
+				fireFactoryBuilt();
 				return null;
 			}
 		});
@@ -220,16 +196,15 @@ public class ConsoleConfiguration implements SessionController, ExecutionContext
 	
 	int execcount;
 	List queryListeners = new ArrayList();
-	List sessionListeners = new ArrayList();
-	List factoryListeners = new ArrayList();
+	List consoleCfgListeners = new ArrayList();
 		
-	public void executeHQLQuery(final String hql) {
-		executeHQLQuery(hql, new ConsoleQueryParameter[0]);
+	public QueryPage executeHQLQuery(final String hql) {
+		return executeHQLQuery(hql, new ConsoleQueryParameter[0]);
 	}
 	
-	public void executeHQLQuery(final String hql, final ConsoleQueryParameter[] queryParameters) {
+	public QueryPage executeHQLQuery(final String hql, final ConsoleQueryParameter[] queryParameters) {
 		
-		executionContext.execute(new ExecutionContext.Command() {
+		return (QueryPage) executionContext.execute(new ExecutionContext.Command() {
 			
 			public Object execute() {
 				Session session = getSessionFactory().openSession();
@@ -238,70 +213,45 @@ public class ConsoleConfiguration implements SessionController, ExecutionContext
 				
 				qp.setId(++execcount);				
 				fireQueryPageCreated(qp);			
-				fireFactoryUpdated(ConsoleConfiguration.this);
-				return null;
+				return qp;
 			}
 		
 		});		
-	}
-	
-	private void fireFactoryUpdated(ConsoleConfiguration ccfg) {
-		Iterator i = factoryListeners.iterator();
-		while (i.hasNext() ) {
-			SessionFactoryListener view = (SessionFactoryListener) i.next();
-			view.factoryUpdated(ccfg);
-		}
-	}
+	}	
 	
 	private void fireQueryPageCreated(QueryPage qp) {
-		Iterator i = sessionListeners.iterator(); //should be querylisteners but noone adds to them
+		Iterator i = consoleCfgListeners.iterator(); 
 		while (i.hasNext() ) {
-			QueryListener view = (QueryListener) i.next();
+			ConsoleConfigurationListener view = (ConsoleConfigurationListener) i.next();
 			view.queryPageCreated(qp);
 		}		
 	}
 	
 
-	private void fireFactoryCreated() {
-		Iterator i = factoryListeners.iterator();
+	private void fireFactoryBuilt() {
+		Iterator i = consoleCfgListeners.iterator();
 		while (i.hasNext() ) {
-			SessionFactoryListener view = (SessionFactoryListener) i.next();
-			view.factoryCreated(this);
+			ConsoleConfigurationListener view = (ConsoleConfigurationListener) i.next();
+			view.sessionFactoryBuilt(this, sessionFactory);
 		}
 	}
 
-	private void fireFactoryClosed() {
-		Iterator i = factoryListeners.iterator();
+	private void fireFactoryClosing(SessionFactory sessionFactory2) {
+		Iterator i = consoleCfgListeners.iterator();
 		while (i.hasNext() ) {
-			SessionFactoryListener view = (SessionFactoryListener) i.next();
-			view.factoryClosed(this);
+			ConsoleConfigurationListener view = (ConsoleConfigurationListener) i.next();
+			view.sessionFactoryClosing(this, sessionFactory2);
 		}
 	}
 
-	public void addListener(SessionFactoryListener v) {
-		factoryListeners.add(v);		
+	public void addConsoleConfigurationListener(ConsoleConfigurationListener v) {
+		consoleCfgListeners.add(v);		
 	}
 	
-	public void removeListener(SessionFactoryListener sfListener) {
-		factoryListeners.remove(sfListener);		
+	public void removeConsoleConfigurationListener(ConsoleConfigurationListener sfListener) {
+		consoleCfgListeners.remove(sfListener);		
 	}
-	
-	public void addQueryListener(QueryListener ql) {
-		queryListeners.add(ql);
-	}
-	
-	public void removeQueryListener(QueryListener ql) {
-		queryListeners.remove(ql);
-	}
-	
-	public void addSessionListener(SessionListener v) {
-		sessionListeners.add(v);
-	}
-	
-	public void removeSessionListener(SessionListener v) {
-		sessionListeners.remove(v);
-	}
-
+		
 	public void executeJavaQuery(final String text) {
 		execute(new ExecutionContext.Command() {
 			public Object execute() {
@@ -330,6 +280,14 @@ public class ConsoleConfiguration implements SessionController, ExecutionContext
 
 	public ExecutionContext getExecutionContext() {
 		return executionContext;
+	}
+
+	public void closeSessionFactory() {
+		if(sessionFactory!=null) {
+			fireFactoryClosing(sessionFactory);
+			sessionFactory.close();			
+			sessionFactory = null;
+		}		
 	}
 
 	

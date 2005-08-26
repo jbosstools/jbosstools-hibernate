@@ -10,10 +10,10 @@ import java.sql.DriverPropertyInfo;
 import java.sql.SQLException;
 import java.util.Properties;
 
-class FakeDelegatingDriver implements Driver {
+public class FakeDelegatingDriver implements Driver {
 	private Driver driver;
 	
-	FakeDelegatingDriver(Driver d) {
+	public FakeDelegatingDriver(Driver d) {
 		this.driver = d;
 	}
 	public boolean acceptsURL(String u) throws SQLException {

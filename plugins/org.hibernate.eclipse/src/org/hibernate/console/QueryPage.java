@@ -46,7 +46,6 @@ public interface QueryPage {
     public Session getSession();
     public void setSession(Session session);
     
-	// TODO: limit to ExecutionContext(?)
 	public ConsoleConfiguration getConsoleConfiguration();
 	
     public void addPropertyChangeListener(PropertyChangeListener listener);
@@ -62,6 +61,5 @@ public interface QueryPage {
 			PropertyChangeListener listener);
 	
     public void addException(Throwable he);
-
     
 }

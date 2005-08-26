@@ -1,7 +1,6 @@
 package org.hibernate.eclipse.console.views.properties;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -10,7 +9,7 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.hibernate.Session;
-import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.execution.ExecutionContextHolder;
 import org.hibernate.metadata.CollectionMetadata;
 
 public class CollectionPropertySource implements IPropertySource {
@@ -23,11 +22,11 @@ public class CollectionPropertySource implements IPropertySource {
 
 	private final CollectionMetadata collectionMetadata;
 
-	private final ConsoleConfiguration currentConfiguration;
+	private final ExecutionContextHolder currentConfiguration;
 	
 	Map values = new WeakHashMap();
 	
-	public CollectionPropertySource(Collection propertyValue, Session currentSession, ConsoleConfiguration currentConfiguration, CollectionMetadata collectionMetadata) {
+	public CollectionPropertySource(Collection propertyValue, Session currentSession, ExecutionContextHolder currentConfiguration, CollectionMetadata collectionMetadata) {
 		collection = propertyValue;
 		this.currentSession = currentSession;
 		this.currentConfiguration = currentConfiguration;

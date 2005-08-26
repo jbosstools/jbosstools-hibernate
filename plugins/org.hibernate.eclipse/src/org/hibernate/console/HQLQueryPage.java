@@ -85,12 +85,21 @@ public class HQLQueryPage extends AbstractQueryPage {
     	List l = Collections.EMPTY_LIST;
     
     	try {
+    		if(query.getReturnAliases()==null) {
     		Type[] t = query.getReturnTypes();
     		l = new ArrayList(t.length);
     
     		for (int i = 0; i < t.length; i++) {
     			Type type = t[i];
     			l.add(type.getName() );
+    		}
+    		} else {
+    			String[] t = query.getReturnAliases();
+        		l = new ArrayList(t.length);
+        
+        		for (int i = 0; i < t.length; i++) {
+        			l.add(t[i]);
+        		}			
     		}
     	} catch (HibernateException he) {
     		addException(he);           

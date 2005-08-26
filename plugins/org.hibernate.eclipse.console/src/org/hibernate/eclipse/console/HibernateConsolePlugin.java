@@ -18,9 +18,9 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.ConsoleConfigurationPreferences;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.EclipseLogger;
 import org.hibernate.eclipse.console.workbench.ConfigurationAdapterFactory;
 import org.hibernate.eclipse.hqleditor.HQLEditorInput;
@@ -177,7 +177,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 			
 			for (int i = 0; i < preferences.length; i++) {
 				ConsoleConfigurationPreferences prefs = preferences[i];
-				KnownConfigurations.getInstance().addConfiguration(new EclipseConsoleConfiguration(prefs), true); // TODO: do we need to broadcast every time when reading state ?
+				KnownConfigurations.getInstance().addConfiguration(new EclipseConsoleConfiguration(prefs), false); // TODO: do we need to broadcast every time when reading state ?
 			}
 		} catch(HibernateConsoleRuntimeException hcr) {
 			logErrorMessage("Error while reading console configuration", hcr);

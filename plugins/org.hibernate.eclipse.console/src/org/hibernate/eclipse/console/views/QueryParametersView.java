@@ -254,6 +254,7 @@ public class QueryParametersView extends ViewPart {
 		site.getActionBars().getToolBarManager().add(newRowAction);
 		
 		site.getActionBars().getToolBarManager().add(new RemoveRowAction());
+		
 	}
 	
 	private class NewRowAction extends Action {
@@ -273,6 +274,7 @@ public class QueryParametersView extends ViewPart {
 	private class RemoveRowAction extends Action {
 		public RemoveRowAction() {
 			super( "Remove parameter" );
+			setImageDescriptor(getSite().getWorkbenchWindow().getWorkbench().getSharedImages().getImageDescriptor(org.eclipse.ui.ISharedImages.IMG_TOOL_DELETE));
 		}
 
 		public void run() {

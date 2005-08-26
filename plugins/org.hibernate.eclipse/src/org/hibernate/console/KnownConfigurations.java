@@ -21,10 +21,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.console.node.BaseNode;
 import org.hibernate.console.node.ConfigurationListNode;
-import org.hibernate.console.views.SessionFactoryListener;
-import org.hibernate.console.views.SessionListener;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -39,39 +38,29 @@ public class KnownConfigurations  {
 	private QueryPageModel queryPages = new QueryPageModel(); 
 	private List configurationListeners = new ArrayList();
 	private Map configurations;
-	private SessionFactoryListener sfListener = new SessionFactoryListener() {
+	private ConsoleConfigurationListener sfListener = new ConsoleConfigurationListener() {
 	
-		public void factoryClosed(final ConsoleConfiguration configuration) {
+		public void sessionFactoryClosing(final ConsoleConfiguration configuration, final SessionFactory closingFactory) {
 			fireNotification(new Notification() {
-				public void notify(IConsoleConfigurationListener listener) {
-					listener.factoryClosed(configuration);
+				public void notify(KnownConfigurationsListener listener) {
+					listener.sessionFactoryClosing(configuration, closingFactory);
 				}
 			});
 		}
-	
-		public void factoryUpdated(ConsoleConfiguration ccfg) {
-		}
-	
-		public void factoryCreated(final ConsoleConfiguration ccfg) {
+			
+		public void sessionFactoryBuilt(final ConsoleConfiguration ccfg, final SessionFactory builtSessionFactory) {
 			fireNotification(new Notification() {
-				public void notify(IConsoleConfigurationListener listener) {
-					listener.factoryCreated(ccfg);
+				public void notify(KnownConfigurationsListener listener) {
+					listener.sessionFactoryBuilt(ccfg, builtSessionFactory);
 				}
 			});
 		}
-	
-	};
 
-	private SessionListener queryPageListener = new SessionListener() {
-		public void queryPageCreated(QueryPage qp) { 
-			queryPages.add(qp); 			
+		public void queryPageCreated(QueryPage qp) {
+			queryPages.add(qp); 						
 		}
-		public void objectUpdated(ConsoleConfiguration config, Session session, Object o) { }
+	
 	};
-	
-	 
-	
-	
 
 	private static KnownConfigurations instance;
 	
@@ -82,18 +71,9 @@ public class KnownConfigurations  {
 		return instance;
 	}
 	
-	public interface IConsoleConfigurationListener {
-		public void configurationAdded(ConsoleConfiguration root);
-		public void factoryCreated(ConsoleConfiguration ccfg);
-		public void factoryClosed(ConsoleConfiguration configuration);
-		public void configurationRemoved(ConsoleConfiguration root);
-	}
-	
 	private abstract class Notification {
-		private IConsoleConfigurationListener listener;
-		
-		public void run(IConsoleConfigurationListener listener) {
-			this.listener = listener;
+	
+		public void run(KnownConfigurationsListener listener) {
 			notify(listener);
 		}
 
@@ -101,13 +81,13 @@ public class KnownConfigurations  {
 		 * Subsclasses overide this method to send an event safely to a lsistener
 		 * @param listener
 		 */
-		protected abstract void notify(IConsoleConfigurationListener listener);
+		protected abstract void notify(KnownConfigurationsListener listener);
 	}
 	
 	/**
 	 * Register to receive notification of repository creation and disposal
 	 */
-	public void addConsoleConfigurationListener(IConsoleConfigurationListener listener) {
+	public void addConsoleConfigurationListener(KnownConfigurationsListener listener) {
 		synchronized(configurationListeners) {
 			configurationListeners.add(listener);			
 		}
@@ -116,7 +96,7 @@ public class KnownConfigurations  {
 	/**
 	 * De-register a listener
 	 */
-	public void removeConfigurationListener(IConsoleConfigurationListener listener) {
+	public void removeConfigurationListener(KnownConfigurationsListener listener) {
 		synchronized(configurationListeners) {
 			configurationListeners.remove(listener);
 		}
@@ -133,15 +113,14 @@ public class KnownConfigurations  {
 			// Store the location
 			// Cache the location instance for later retrieval
 			getRepositoriesMap().put(configuration.getName(), configuration);
-			configuration.addSessionListener(queryPageListener);
-			configuration.addListener(sfListener);			
+			configuration.addConsoleConfigurationListener(sfListener);			
 			//TODO: location.storePreferences();
 			existingConfiguration = configuration;
 		}
 		
 		if (broadcast) {
 			fireNotification(new Notification() {
-				public void notify(IConsoleConfigurationListener listener) {
+				public void notify(KnownConfigurationsListener listener) {
 					listener.configurationAdded(configuration);
 				}
 			});
@@ -158,19 +137,13 @@ public class KnownConfigurations  {
 		
 	}
 	
-	/**
-	 * Dispose of the repository location
-	 * 
-	 * Removes any cached information about the repository such as a remembered password.
-	 */
 	public void removeConfiguration(final ConsoleConfiguration configuration) {
 		
 		ConsoleConfiguration oldConfig = (ConsoleConfiguration) getRepositoriesMap().remove(configuration.getName() );
 		if (oldConfig != null) {
-			oldConfig.removeSessionListener(queryPageListener);
-			oldConfig.removeListener(sfListener);
+			oldConfig.removeConsoleConfigurationListener(sfListener);
 			fireNotification(new Notification() {
-				public void notify(IConsoleConfigurationListener listener) {
+				public void notify(KnownConfigurationsListener listener) {
 					listener.configurationRemoved(configuration);
 				}
 			});
@@ -204,18 +177,18 @@ public class KnownConfigurations  {
 		return configurations;
 	}
 	
-	private IConsoleConfigurationListener[] getListeners() {
+	private KnownConfigurationsListener[] getListeners() {
 		synchronized(configurationListeners) {
-			return (IConsoleConfigurationListener[]) configurationListeners.toArray(new IConsoleConfigurationListener[configurationListeners.size()]);
+			return (KnownConfigurationsListener[]) configurationListeners.toArray(new KnownConfigurationsListener[configurationListeners.size()]);
 		}
 	}
 	
 	private void fireNotification(Notification notification) {
 		// Get a snapshot of the listeners so the list doesn't change while we're firing
-		IConsoleConfigurationListener[] listeners = getListeners();
+		KnownConfigurationsListener[] listeners = getListeners();
 		// Notify each listener in a safe manner (i.e. so their exceptions don't kill us)
 		for (int i = 0; i < listeners.length; i++) {
-			IConsoleConfigurationListener listener = listeners[i];
+			KnownConfigurationsListener listener = listeners[i];
 			notification.run(listener);
 		}
 	}

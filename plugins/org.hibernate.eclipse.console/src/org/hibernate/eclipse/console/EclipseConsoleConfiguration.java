@@ -5,7 +5,7 @@
 package org.hibernate.eclipse.console;
 
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.ConsoleConfigurationPreferences;
+import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 
 /**
  * @author max

@@ -5,16 +5,14 @@
 package org.hibernate.eclipse.console.views.properties;
 
 import java.util.Collection;
-import java.util.Hashtable;
 
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource2;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
-import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.EntityMode;
 import org.hibernate.Session;
-import org.hibernate.collection.PersistentCollection;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.execution.ExecutionContextHolder;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
@@ -26,11 +24,11 @@ public class EntityPropertySource implements IPropertySource2
 	private Object reflectedObject;
 	private IPropertyDescriptor[] propertyDescriptors;
 	
-	private final ConsoleConfiguration currentConfiguration;
+	private final ExecutionContextHolder currentConfiguration;
 	private final Session currentSession;
 	private ClassMetadata classMetadata;
 	
-	public EntityPropertySource (final Object object, final Session currentSession, ConsoleConfiguration currentConfiguration)
+	public EntityPropertySource (final Object object, final Session currentSession, ExecutionContextHolder currentConfiguration)
 	{
 		this.currentSession = currentSession;
 		this.currentConfiguration = currentConfiguration;
@@ -46,7 +44,7 @@ public class EntityPropertySource implements IPropertySource2
 	
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		if(propertyDescriptors==null) {
-			currentConfiguration.execute(new Command() {
+			currentConfiguration.getExecutionContext().execute(new Command() {
 			
 				public Object execute() {
 					

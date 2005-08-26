@@ -2,7 +2,7 @@
  * Created on 2004-10-31 by max
  * 
  */
-package org.hibernate.console;
+package org.hibernate.console.preferences;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -35,6 +36,7 @@ public class StandAloneConsoleConfigurationPreferences extends AbstractConsoleCo
 	}
 
 	protected StandAloneConsoleConfigurationPreferences() {
+		// hidden for others
 	}
 	
 	protected StandAloneConsoleConfigurationPreferences(String name) {
@@ -92,7 +94,7 @@ public class StandAloneConsoleConfigurationPreferences extends AbstractConsoleCo
 		this.mappings = new File[mappings.length];
 		for (int i = 0; i < mappings.length; i++) {
 			String str = mappings[i];
-			this.mappings[i] = new File(mappings[i]);	
+			this.mappings[i] = new File(str);	
 		}
 	}
 
@@ -100,7 +102,7 @@ public class StandAloneConsoleConfigurationPreferences extends AbstractConsoleCo
 		this.customClasspath = new File[mappings.length];
 		for (int i = 0; i < mappings.length; i++) {
 			String str = mappings[i];
-			this.customClasspath[i] = new File(mappings[i]);	
+			this.customClasspath[i] = new File(str);	
 		}
 	}	
 	public static StandAloneConsoleConfigurationPreferences[] readStateFrom(File f) {

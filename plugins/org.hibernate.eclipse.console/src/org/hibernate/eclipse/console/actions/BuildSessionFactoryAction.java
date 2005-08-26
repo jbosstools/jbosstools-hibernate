@@ -35,7 +35,7 @@ public class BuildSessionFactoryAction extends ConsoleConfigurationBasedAction {
             		config.reset();            		
             	} else {
             		config.build();
-            		config.initSessionFactory();
+            		config.buildSessionFactory();
             	}
             	updateState(config);
             }

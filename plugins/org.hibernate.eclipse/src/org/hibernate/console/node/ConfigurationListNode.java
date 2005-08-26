@@ -7,9 +7,10 @@ package org.hibernate.console.node;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import org.hibernate.SessionFactory;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.KnownConfigurations.IConsoleConfigurationListener;
+import org.hibernate.console.KnownConfigurationsListener;
 
 /**
  * @author max
@@ -24,7 +25,7 @@ public class ConfigurationListNode extends BaseNode {
 		super(null,null);
 		this.kc = kc;
 		
-		kc.addConsoleConfigurationListener(new IConsoleConfigurationListener() {
+		kc.addConsoleConfigurationListener(new KnownConfigurationsListener() {
 			public void configurationAdded(ConsoleConfiguration root) {
 				markChildrenForReload();				
 			}
@@ -38,10 +39,10 @@ public class ConfigurationListNode extends BaseNode {
 				markChildrenForReload();
 			}
 
-			public void factoryClosed(ConsoleConfiguration configuration) {
+			public void sessionFactoryClosing(ConsoleConfiguration configuration, SessionFactory closingFactory) {
 			}
 
-			public void factoryCreated(ConsoleConfiguration ccfg) {
+			public void sessionFactoryBuilt(ConsoleConfiguration ccfg, SessionFactory builtFactory) {
 				// TODO Auto-generated method stub
 				
 			}

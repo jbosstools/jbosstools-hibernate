@@ -84,6 +84,7 @@ public abstract class AbstractQueryPage implements QueryPage {
 		session = s;		
 	}
 
+	// currently notifications for exceptions and for list execution (hql)
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		pcs.addPropertyChangeListener(listener);
 	}

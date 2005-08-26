@@ -2,13 +2,14 @@
  * Created on 2004-11-01 by max
  * 
  */
-package org.hibernate.console;
+package org.hibernate.console.preferences;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -21,7 +22,6 @@ import org.w3c.dom.NodeList;
 public abstract class AbstractConsoleConfigurationPreferences implements
 		ConsoleConfigurationPreferences {
 
-	// TODO: move name to consoleconfiguration ?
 	private String name = "<unknown>";
 	private boolean useAnnotations = false;
 
@@ -30,8 +30,7 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 	}
 	
 	protected AbstractConsoleConfigurationPreferences() {
-
-	
+			// hidden 	
 	}
 	
 	public boolean useAnnotations() {
@@ -104,8 +103,6 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 	
 	public void readStateFrom(Element node) {
 		    
-		
-		int i = 0;
 		String cfgName = null;
 		String cfgFile = null;
 		String propFile = null;
@@ -115,7 +112,7 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 		cfgName = node.getAttribute(NAME_ATTRIB);
 		
 		String attribute = node.getAttribute(ANNOTATIONS_ATTRIB);
-		useAnnotations = ((attribute != null) && attribute.equalsIgnoreCase("true"));;
+		useAnnotations = ((attribute != null) && attribute.equalsIgnoreCase("true"));
 		
 		NodeList elements = node.getElementsByTagName(HIBERNATE_CONFIG_XML_TAG);
 		if(elements.getLength()==1) {

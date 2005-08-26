@@ -7,8 +7,8 @@ package org.hibernate.eclipse.console.views.properties;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.IPropertySourceProvider;
 import org.hibernate.Session;
-import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.QueryPage;
+import org.hibernate.console.execution.ExecutionContextHolder;
 import org.hibernate.eclipse.console.views.QueryPageTabView;
 
 public class HibernatePropertySourceProvider implements IPropertySourceProvider
@@ -31,7 +31,7 @@ public class HibernatePropertySourceProvider implements IPropertySourceProvider
 		else {
 			//			 maybe we should be hooked up with the queryview to get this ?
 			Session currentSession = view.getSelectedQueryPage().getSession();
-			ConsoleConfiguration currentConfiguration = view.getSelectedQueryPage().getConsoleConfiguration();
+			ExecutionContextHolder currentConfiguration = view.getSelectedQueryPage().getConsoleConfiguration();
 			if(currentSession.contains(object) ) {
 				return new EntityPropertySource(object, currentSession, currentConfiguration);	
 			} else {

@@ -129,7 +129,7 @@ public class ExecuteHQLAction extends Action implements IMenuCreator, IWorkbench
 						if(lastUsed.getConfiguration()==null) {
 							lastUsed.build();
 						}
-						lastUsed.initSessionFactory();
+						lastUsed.buildSessionFactory();
 						lastUsed.executeHQLQuery(part.getQuery(), KnownConfigurations.getInstance().getQueryParameters() );
 					}
 				} else {
