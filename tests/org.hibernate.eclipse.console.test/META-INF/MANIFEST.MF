@@ -14,5 +14,10 @@ Require-Bundle: org.hibernate.eclipse.console,
  org.eclipse.jdt.launching,
  org.eclipse.ui,
  org.eclipse.jdt.ui,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.eclipse.ui.ide,
+ org.hibernate.eclipse,
+ org.hibernate.eclipse.help,
+ org.hibernate.eclipse.mapper
 Eclipse-AutoStart: true
+Bundle-Activator: org.hibernate.eclipse.console.HibernateConsoleTestPlugin

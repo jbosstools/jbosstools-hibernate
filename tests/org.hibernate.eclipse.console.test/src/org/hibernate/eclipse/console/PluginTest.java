@@ -13,6 +13,6 @@ import junit.framework.TestCase;
 public class PluginTest extends TestCase {
 
 	public void testNothing() {
-		System.out.println("funky");
+		
 	}
 }
