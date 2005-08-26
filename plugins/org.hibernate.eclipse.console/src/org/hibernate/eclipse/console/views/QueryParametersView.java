@@ -10,9 +10,12 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.Viewer;
@@ -21,6 +24,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -29,8 +33,10 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 import org.hibernate.Hibernate;
 import org.hibernate.console.ConsoleQueryParameter;
-import org.hibernate.console.KnownConfigurations;
-import org.hibernate.eclipse.console.workbench.TableModelList;
+import org.hibernate.console.ImageConstants;
+import org.hibernate.console.QueryInputModel;
+import org.hibernate.console.QueryInputs;
+import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.type.NullableType;
 import org.hibernate.type.Type;
 
@@ -40,8 +46,17 @@ public class QueryParametersView extends ViewPart {
 
 	private Table queryParametersTable = null;
 
-	private TableViewer tv;
+	private TableViewer tableViewer;
 
+	private Label statusLabel;
+
+	private Observer observer = new Observer() {
+		public void update(java.util.Observable o, Object arg) {
+			tableViewer.refresh();
+			tableViewer.getTable().setEnabled(!model.ignoreParameters());
+		}
+	};
+	
 	public QueryParametersView() {
 		super();
 	}
@@ -50,7 +65,25 @@ public class QueryParametersView extends ViewPart {
 		top = new Composite( parent, SWT.NONE );
 		top.setLayout( new GridLayout() );
 		createQueryParametersTable();
+		createStatusLabel();
+		model = QueryInputs.getInstance().getQueryInputModel();
+		
+		model.addObserver(observer);
+		
+		toggleActive.setChecked(model.ignoreParameters());
+		tableViewer.getTable().setEnabled(!model.ignoreParameters());
+		tableViewer.setInput(model);
+		
 
+	}
+
+	private void createStatusLabel() {
+		GridData gridData = new org.eclipse.swt.layout.GridData();
+		gridData.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;		
+		gridData.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
+		statusLabel = new Label( top, SWT.NULL );
+		//statusLabel.setText("max");
+		statusLabel.setLayoutData(gridData);
 	}
 
 	public void setFocus() {
@@ -58,7 +91,9 @@ public class QueryParametersView extends ViewPart {
 
 	}
 	
-	QueryParametersModelList list = new QueryParametersModelList(KnownConfigurations.getInstance().getQueryParameterList()); 
+	QueryInputModel model;
+
+	private ToggleActive toggleActive; 
 	
 
 	/**
@@ -77,19 +112,34 @@ public class QueryParametersView extends ViewPart {
 		queryParametersTable.setLinesVisible( true );
 		TableColumn nameColumn = new TableColumn( queryParametersTable,
 				SWT.NONE );
-		nameColumn.setWidth( 60 );
+		nameColumn.setWidth(100);
 		nameColumn.setText( "Name" );
 		TableColumn typeColumn = new TableColumn( queryParametersTable,
 				SWT.NONE );
-		typeColumn.setWidth( 60 );
+		typeColumn.setWidth(100);
 		typeColumn.setText( "Type" );
 		TableColumn valueColumn = new TableColumn( queryParametersTable,
 				SWT.NONE );
 		valueColumn.setWidth( 100 );
 		valueColumn.setText( "Value" );
+		
+		tableViewer = new TableViewer( queryParametersTable );
 
-		tv = new TableViewer( queryParametersTable );
+		tableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
+			public void selectionChanged(SelectionChangedEvent event) {
+				if(statusLabel!=null) {
+					Object firstElement = ((IStructuredSelection)tableViewer.getSelection()).getFirstElement();
+					if(firstElement instanceof ConsoleQueryParameter) {
+						statusLabel.setText("Format: " + ((ConsoleQueryParameter)firstElement).getDefaultFormat());
+					} else {
+						statusLabel.setText("");
+					}
+				}
+				
+			}
+			
+		});
 		final List possibleTypes = new ArrayList();
 		possibleTypes.add(Hibernate.STRING);
 		possibleTypes.add(Hibernate.DATE);
@@ -104,7 +154,7 @@ public class QueryParametersView extends ViewPart {
 		possibleTypes.add(Hibernate.CHARACTER);
 		
 		
-		tv.setCellModifier( new ICellModifier() {
+		tableViewer.setCellModifier( new ICellModifier() {
 
 			public void modify(Object element, String property, Object value) {
 				TableItem item = (TableItem) element;
@@ -131,7 +181,7 @@ public class QueryParametersView extends ViewPart {
 				if ( "value".equals( property ) ) {
 					cqp.setValueFromString((String) value);
 				}
-				tv.refresh(cqp);
+				tableViewer.refresh(cqp);
 			}
 
 			public Object getValue(Object element, String property) {
@@ -161,9 +211,9 @@ public class QueryParametersView extends ViewPart {
 			}
 		} );
 
-		tv.setContentProvider( new IStructuredContentProvider() {
+		tableViewer.setContentProvider( new IStructuredContentProvider() {
 			public Object[] getElements(Object inputElement) {
-				return ((TableModelList) inputElement).getList().toArray(new ConsoleQueryParameter[0]);
+				return ((QueryInputModel) inputElement).getQueryParameters();
 			}
 
 			public void dispose() {
@@ -174,7 +224,7 @@ public class QueryParametersView extends ViewPart {
 			}
 		} );
 
-		tv.setColumnProperties( new String[] { "name", "type", "value" } );
+		tableViewer.setColumnProperties( new String[] { "name", "type", "value" } );
 		
 		
 		String[] valueTypes = new String[possibleTypes.size()];
@@ -190,9 +240,9 @@ public class QueryParametersView extends ViewPart {
 		editors[1] = new ComboBoxCellEditor( queryParametersTable, valueTypes );
 		editors[2] = new TextCellEditor( queryParametersTable );
 		
-		tv.setCellEditors( editors );
+		tableViewer.setCellEditors( editors );
 
-		tv.setLabelProvider( new ITableLabelProvider() {
+		tableViewer.setLabelProvider( new ITableLabelProvider() {
 
 			public void removeListener(ILabelProviderListener listener) {
 			}
@@ -227,25 +277,7 @@ public class QueryParametersView extends ViewPart {
 			}
 
 		} );
-		tv.setInput( list );
 		
-		list.addObserver(new Observer() {
-			public void update(java.util.Observable o, Object arg) {
-				tv.refresh();
-			}
-		});
-		ConsoleQueryParameter qcp = new ConsoleQueryParameter();
-		qcp.setName( "from" );
-		qcp.setType( Hibernate.STRING );
-		qcp.setValueFromString( "max" );
-
-		ConsoleQueryParameter cqp = new ConsoleQueryParameter();
-		cqp.setName("param");
-		cqp.setType(Hibernate.DATE);
-		cqp.setValueFromString("");
-		list.addParameter(cqp);		
-		list.addParameter( qcp );
-
 	}
 
 	public void init(IViewSite site) throws PartInitException {
@@ -255,34 +287,57 @@ public class QueryParametersView extends ViewPart {
 		
 		site.getActionBars().getToolBarManager().add(new RemoveRowAction());
 		
+		toggleActive = new ToggleActive();
+		site.getActionBars().getToolBarManager().add(toggleActive);
+		
 	}
 	
 	private class NewRowAction extends Action {
 		public NewRowAction() {
-			super( "Add parameter" );
+			super( "" );
+			setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.NEW_PARAMETER));
 		}
 
 		public void run() {
-			ConsoleQueryParameter cqp = new ConsoleQueryParameter();
-			cqp.setName("param");
-			cqp.setType(Hibernate.DATE);
-			cqp.setValueFromString("");
-			list.addParameter( cqp );
+			ConsoleQueryParameter cqp = model.createUniqueParameter();
+			model.addParameter( cqp );
 		}
 	}
 
 	private class RemoveRowAction extends Action {
 		public RemoveRowAction() {
-			super( "Remove parameter" );
+			super( "" );
 			setImageDescriptor(getSite().getWorkbenchWindow().getWorkbench().getSharedImages().getImageDescriptor(org.eclipse.ui.ISharedImages.IMG_TOOL_DELETE));
 		}
 
 		public void run() {
-			Object firstElement = ((IStructuredSelection)tv.getSelection()).getFirstElement();
+			Object firstElement = ((IStructuredSelection)tableViewer.getSelection()).getFirstElement();
 			if(firstElement!=null) {
-				tv.cancelEditing();
-				list.removeParameter((ConsoleQueryParameter) firstElement);
+				tableViewer.cancelEditing();
+				model.removeParameter((ConsoleQueryParameter) firstElement);
+				if(model.getParameterCount()>0) {
+					tableViewer.setSelection(new StructuredSelection(model.getQueryParameters()[0]));
+				}
 			}
 		}
+	}
+	
+	private class ToggleActive extends Action {
+		public ToggleActive() {
+			super("");
+			setChecked(false);
+			setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.IGNORE_PARAMETER));
+		}
+		
+		public void run() {
+			model.setIgnoreParameters(isChecked());
+			setChecked(model.ignoreParameters());
+		}
+	}
+	
+	
+	public void dispose() {
+		super.dispose();
+		model.deleteObserver(observer);
 	}
 }

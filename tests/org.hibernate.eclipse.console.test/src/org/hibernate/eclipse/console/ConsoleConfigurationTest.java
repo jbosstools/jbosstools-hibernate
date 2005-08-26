@@ -2,8 +2,6 @@ package org.hibernate.eclipse.console;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 import junit.framework.TestCase;
@@ -13,7 +11,6 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ConsoleConfigurationListener;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.KnownConfigurationsListener;
 import org.hibernate.console.QueryPage;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.w3c.dom.Element;

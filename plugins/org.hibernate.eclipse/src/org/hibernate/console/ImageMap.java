@@ -42,6 +42,9 @@ public abstract class ImageMap implements ImageConstants {
         declareRegistryImage(DATABASE, "images/database.gif");
         declareRegistryImage(FORMAT_QL, "images/format.gif");
         declareRegistryImage(HQL_EDITOR, "images/hql_editor.gif");
+        declareRegistryImage(PARAMETER, "images/parameter.gif");
+        declareRegistryImage(NEW_PARAMETER, "images/new_param.gif");
+        declareRegistryImage(IGNORE_PARAMETER, "images/ignoreparameter.gif");
 		
 	}
 

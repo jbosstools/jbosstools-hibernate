@@ -24,6 +24,7 @@ import org.eclipse.ui.IWorkbenchWindowPulldownDelegate2;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.QueryInputs;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.hqleditor.HQLEditor;
@@ -130,10 +131,10 @@ public class ExecuteHQLAction extends Action implements IMenuCreator, IWorkbench
 							lastUsed.build();
 						}
 						lastUsed.buildSessionFactory();
-						lastUsed.executeHQLQuery(part.getQuery(), KnownConfigurations.getInstance().getQueryParameters() );
+						lastUsed.executeHQLQuery(part.getQuery(), QueryInputs.getInstance().getQueryInputModel().getQueryParametersForQuery() );
 					}
 				} else {
-					lastUsed.executeHQLQuery(part.getQuery(), KnownConfigurations.getInstance().getQueryParameters() );
+					lastUsed.executeHQLQuery(part.getQuery(), QueryInputs.getInstance().getQueryInputModel().getQueryParametersForQuery() );
 				}
 			} 
 		}

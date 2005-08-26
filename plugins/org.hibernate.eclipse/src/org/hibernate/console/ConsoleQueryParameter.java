@@ -12,6 +12,22 @@ public class ConsoleQueryParameter {
 	NullableType type;
 	Object value;
 	
+	public ConsoleQueryParameter(ConsoleQueryParameter cqp) {
+		name = cqp.name;
+		type = cqp.type;
+		value = cqp.value;
+	}
+
+	public ConsoleQueryParameter() {
+		
+	}
+
+	public ConsoleQueryParameter(String name, NullableType type, Object value) {
+		this.name = name;
+		this.type = type;
+		this.value = value;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -49,5 +65,22 @@ public class ConsoleQueryParameter {
 		} catch(HibernateException he) {
 			setValue(NULL_MARKER);
 		}
+	}
+
+	public String getDefaultFormat() {
+		if(type!=null) {
+			try {
+				Object defaultInstance = type.getReturnedClass().newInstance();
+				String string = type.toString(defaultInstance);
+				return string;
+			}
+			catch (InstantiationException e) {
+				//e.printStackTrace();
+			}
+			catch (IllegalAccessException e) {
+				//e.printStackTrace();
+			}
+		}
+		return "<unknown>";				
 	}
 }

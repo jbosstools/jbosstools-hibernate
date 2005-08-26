@@ -84,5 +84,8 @@ public interface ImageConstants {
     public static final String CATALOG = "CATALOG";
     public static final String DATABASE = "DATABASE";
     public static final String HQL_EDITOR = "HQL_EDITOR";
+    public static final String PARAMETER = "PARAMETER";
+    public static final String NEW_PARAMETER = "NEW_PARAMETER";
+    public static final String IGNORE_PARAMETER = "IGNORE_PARAMETER";
     
 }

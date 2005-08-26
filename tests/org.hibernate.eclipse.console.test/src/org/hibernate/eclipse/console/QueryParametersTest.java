@@ -1,0 +1,66 @@
+package org.hibernate.eclipse.console;
+
+import java.util.Observable;
+import java.util.Observer;
+
+import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.ConsoleQueryParameter;
+import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.QueryInputModel;
+import org.hibernate.console.QueryInputs;
+import org.hibernate.eclipse.console.ConsoleConfigurationTest.TestConsoleConfigurationPreferences;
+
+import junit.framework.TestCase;
+
+public class QueryParametersTest extends TestCase {
+	
+	private ConsoleConfiguration consoleCfg;
+
+	protected void setUp() throws Exception {
+		super.setUp();
+		
+		TestConsoleConfigurationPreferences cfgprefs = new TestConsoleConfigurationPreferences();
+		consoleCfg = new ConsoleConfiguration(cfgprefs);
+		KnownConfigurations.getInstance().addConfiguration(consoleCfg, true);
+	}
+	
+	protected void tearDown() throws Exception {
+		KnownConfigurations.getInstance().removeAllConfigurations();
+	}
+
+	public void testQueryParameter() {
+		
+		ConsoleQueryParameter[] cqps = QueryInputs.getInstance().getQueryInputModel().getQueryParameters();
+		assertNotNull(cqps);
+		
+		QueryInputModel qpmodel = QueryInputs.getInstance().getQueryInputModel();
+		assertNotNull(qpmodel);
+		
+		class TestObserver implements Observer {
+			int cnt = 0;
+			public void update(Observable o, Object arg) {
+				cnt++;			
+			}			
+		};
+		
+		TestObserver testObserver = new TestObserver();
+		qpmodel.addObserver(testObserver);
+		ConsoleQueryParameter consoleQueryParameter = new ConsoleQueryParameter();
+		qpmodel.addParameter(consoleQueryParameter);
+		assertEquals(1,testObserver.cnt);
+		
+		qpmodel.removeParameter(consoleQueryParameter);
+		assertEquals(2,testObserver.cnt);
+	}
+	
+	public void testCreateUnique() {
+		
+		QueryInputModel model = new QueryInputModel();
+		
+		ConsoleQueryParameter parameter = model.createUniqueParameter();
+		model.addParameter(parameter);
+		
+		assertFalse(model.createUniqueParameter().getName().equals(parameter.getName()));
+	}
+
+}
