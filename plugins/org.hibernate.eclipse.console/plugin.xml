@@ -182,6 +182,7 @@
     <extension
       point="org.eclipse.ui.commands">
    <command
+         category="org.eclipse.ui.category.edit"
          id="org.hibernate.eclipse.console.actions.ExecuteHQLActionCommand"
          name="Run Query command"/>
 </extension>
@@ -246,7 +247,7 @@
          point="org.eclipse.ui.contexts">
       <context
             id="org.hibernate.eclipse.console.hql"
-            name="HQL Console context"
+            name="Editing HQL"
             parentId="org.eclipse.ui.textEditorScope"/>
    </extension>
 
