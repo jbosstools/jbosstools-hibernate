@@ -435,4 +435,8 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
    public ITextViewer getTextViewer() {
 	   return getSourceViewer();
    }
+   
+   protected void initializeKeyBindingScopes() {
+       setKeyBindingScopes(new String[] { "org.hibernate.eclipse.console.hql" });  //$NON-NLS-1$
+   }
 } 
