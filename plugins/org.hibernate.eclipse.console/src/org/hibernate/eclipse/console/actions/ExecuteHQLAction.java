@@ -9,7 +9,6 @@ import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuCreator;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
@@ -17,14 +16,12 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.ui.IEditorActionDelegate;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowPulldownDelegate2;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.QueryInputs;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.hqleditor.HQLEditor;
@@ -131,10 +128,10 @@ public class ExecuteHQLAction extends Action implements IMenuCreator, IWorkbench
 							lastUsed.build();
 						}
 						lastUsed.buildSessionFactory();
-						lastUsed.executeHQLQuery(part.getQuery(), QueryInputs.getInstance().getQueryInputModel().getQueryParametersForQuery() );
+						lastUsed.executeHQLQuery(part.getQuery(), part.getQueryInputModel().getQueryParametersForQuery() );
 					}
 				} else {
-					lastUsed.executeHQLQuery(part.getQuery(), QueryInputs.getInstance().getQueryInputModel().getQueryParametersForQuery() );
+					lastUsed.executeHQLQuery(part.getQuery(), part.getQueryInputModel().getQueryParametersForQuery() );
 				}
 			} 
 		}

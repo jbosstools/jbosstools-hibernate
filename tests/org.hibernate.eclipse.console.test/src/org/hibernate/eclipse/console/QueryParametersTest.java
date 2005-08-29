@@ -3,14 +3,13 @@ package org.hibernate.eclipse.console;
 import java.util.Observable;
 import java.util.Observer;
 
+import junit.framework.TestCase;
+
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ConsoleQueryParameter;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryInputModel;
-import org.hibernate.console.QueryInputs;
 import org.hibernate.eclipse.console.ConsoleConfigurationTest.TestConsoleConfigurationPreferences;
-
-import junit.framework.TestCase;
 
 public class QueryParametersTest extends TestCase {
 	
@@ -29,11 +28,12 @@ public class QueryParametersTest extends TestCase {
 	}
 
 	public void testQueryParameter() {
+		QueryInputModel model = new QueryInputModel();
 		
-		ConsoleQueryParameter[] cqps = QueryInputs.getInstance().getQueryInputModel().getQueryParameters();
+		ConsoleQueryParameter[] cqps = model.getQueryParameters();
 		assertNotNull(cqps);
 		
-		QueryInputModel qpmodel = QueryInputs.getInstance().getQueryInputModel();
+		QueryInputModel qpmodel = model;
 		assertNotNull(qpmodel);
 		
 		class TestObserver implements Observer {

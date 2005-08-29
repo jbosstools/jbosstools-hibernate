@@ -44,7 +44,7 @@
             class="org.hibernate.eclipse.console.views.QueryParametersView"
             icon="icons/images/parameter.gif"
             id="org.hibernate.eclipse.console.views.QueryParametersView"
-            name="Hibernate Query Parameters"/>
+            name="Query Parameters"/>
             
    </extension>
    <extension

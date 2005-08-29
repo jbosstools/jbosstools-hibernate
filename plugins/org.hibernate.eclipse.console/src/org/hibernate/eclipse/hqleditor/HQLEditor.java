@@ -30,8 +30,11 @@ import org.eclipse.ui.texteditor.TextOperationAction;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.QueryInputModel;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.Messages;
+import org.hibernate.eclipse.console.views.IQueryParametersPage;
+import org.hibernate.eclipse.console.views.QueryParametersPage;
 
 
 /**
@@ -47,12 +50,14 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
     private HQLEditorDocumentSetupParticipant fDocSetupParticipant;
     /** The projection (code folding) support object. */
     private ProjectionSupport fProjectionSupport;
+	final private QueryInputModel queryInputModel;
     
     /**
      * Constructs an instance of this class. This is the default constructor.
      */
     public HQLEditor() {
         super();
+        queryInputModel = new QueryInputModel();
     }
 
     /**
@@ -112,7 +117,7 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
         viewer.doOperation( ProjectionViewer.TOGGLE );
         
         /* Set a help context ID to enable F1 help. */
-        WorkbenchHelp.setHelp( parent, HELP_CONTEXT_ID );
+        getSite().getWorkbenchWindow().getWorkbench().getHelpSystem().setHelp( parent, HELP_CONTEXT_ID );
                
     }
 
@@ -272,6 +277,9 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
     public Object getAdapter( Class classForWhichAdapterNeeded ) {
         Object adapter = null;
 
+        if(IQueryParametersPage.class.equals( classForWhichAdapterNeeded )) {
+        	return new QueryParametersPage(this);
+        }
         /* Get and return the content outline page, if that's what's requested. */
       if (IContentOutlinePage.class.equals( classForWhichAdapterNeeded )) {
 //            HQLEditorContentOutlinePage outlinePage = getOutlinePage();
@@ -438,5 +446,9 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
    
    protected void initializeKeyBindingScopes() {
        setKeyBindingScopes(new String[] { "org.hibernate.eclipse.console.hql" });  //$NON-NLS-1$
+   }
+
+   public QueryInputModel getQueryInputModel() {
+	   return queryInputModel;
    }
 } 

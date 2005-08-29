@@ -7,10 +7,8 @@ import java.util.Collections;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewer;
-import org.eclipse.jface.text.TextViewer;
 import org.eclipse.jface.text.reconciler.IReconcilingStrategy;
 import org.eclipse.jface.text.reconciler.MonoReconciler;
-import org.eclipse.jface.text.source.OverviewRuler;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.text.source.VerticalRuler;
 import org.eclipse.swt.SWT;
@@ -34,7 +32,6 @@ import org.hibernate.eclipse.hqleditor.HQLSourceViewer;
 import org.hibernate.eclipse.hqleditor.HQLSourceViewerConfiguration;
 import org.hibernate.hql.QueryTranslator;
 import org.hibernate.impl.SessionFactoryImpl;
-import org.hibernate.pretty.Formatter;
 import org.hibernate.type.Type;
 import org.hibernate.util.StringHelper;
 
@@ -170,6 +167,7 @@ public class DynamicQueryTranslatorView extends ViewPart {
 		textViewer = new HQLSourceViewer( parent, new VerticalRuler(1), null, false, SWT.READ_ONLY | SWT.H_SCROLL | SWT.V_SCROLL );
 		//textViewer.setEditable(false);
 		textViewer.setDocument( new Document() );
+		textViewer.getDocument().set("No HQL Query editor selected");
 		textViewer.configure(new HQLSourceViewerConfiguration(null));
 		
 		IWorkbenchWindow window = PlatformUI.getWorkbench()
