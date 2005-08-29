@@ -40,7 +40,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 	private static HibernateConsolePlugin plugin;
 	//Resource bundle.
 	private ResourceBundle resourceBundle;
-	private EclipseLogger logger = new EclipseLogger(ID);
+	private EclipseLogger logger;
 	
 	/**
 	 * The constructor.
@@ -55,7 +55,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		
+		logger=new EclipseLogger(context.getBundle());
 		HibernateConsoleSaveParticipant participant = new HibernateConsoleSaveParticipant();
 		participant.doStart(this);
 		

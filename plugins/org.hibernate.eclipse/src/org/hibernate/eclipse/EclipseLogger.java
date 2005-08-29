@@ -35,6 +35,11 @@ public class EclipseLogger {
 		bundle = Platform.getBundle(PLUGIN_ID);
 	}
 
+	public EclipseLogger(Bundle bundle) {
+		this.bundle = bundle;
+		this.PLUGIN_ID = bundle.getSymbolicName();
+	}
+
 	/**
 	 * Adds message to log.
 	 * 

@@ -19,7 +19,7 @@ public class MapperPlugin extends AbstractUIPlugin {
 	//Resource bundle.
 	private ResourceBundle resourceBundle;
 	
-	private final EclipseLogger logger = new EclipseLogger(ID);
+	private EclipseLogger logger;
 	
 	/**
 	 * The constructor.
@@ -34,6 +34,7 @@ public class MapperPlugin extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		logger = new EclipseLogger(context.getBundle());
 	}
 
 	/**
