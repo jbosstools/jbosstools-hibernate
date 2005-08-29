@@ -418,7 +418,18 @@ The built-in templates can be found in the hibernate-tools.jar in
           Note that we expect significant changes to the structure and
 	organization of the built-in templates in one of the next releases.
 	</p>
+	<h2>7. Enable debug logging</h2>
 	
+	<p>It is possible to configure the eclipse plugin to route all logging made
+	by the plugins and hibernate code it self to the "Error log" view in Eclipse.</p>
+	
+	<p>
+	This is done by editing the "hibernate-log4j.properties" in org.hibernate.eclipse/ directory/jar.
+	This file includes a default configuration that only logs WARN and above to a set of custom
+	appenders (PluginFileAppender and PluginLogAppender). You can change these settings to be as verbose
+	or silent as you please - see hibernate documentation for interesting categories and log4j documentation
+	for how to configure logging via a log4j property file.
+	</p>
 -- 
 
 </body>
