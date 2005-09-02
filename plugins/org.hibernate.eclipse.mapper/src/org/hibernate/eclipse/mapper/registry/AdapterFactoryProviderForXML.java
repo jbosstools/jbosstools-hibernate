@@ -15,6 +15,9 @@ public class AdapterFactoryProviderForXML extends org.eclipse.wst.xml.ui.interna
 	}
 	
 	protected void addContentBasedFactories(IStructuredModel structuredModel) {
+		super.addContentBasedFactories(structuredModel);
+		
+		/* doesn't work in M7 since it doesnt select the content type deterministicly
 		FactoryRegistry factoryRegistry = structuredModel.getFactoryRegistry();
 		//Assert.isNotNull(factoryRegistry, "Program Error: client caller must ensure model has factory registry"); //$NON-NLS-1$
 		INodeAdapterFactory factory = null;
@@ -25,5 +28,6 @@ public class AdapterFactoryProviderForXML extends org.eclipse.wst.xml.ui.interna
 			factoryRegistry.addFactory(factory);
 		}
 		super.addContentBasedFactories(structuredModel);
+		*/
 	}
 }

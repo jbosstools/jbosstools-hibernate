@@ -144,9 +144,8 @@ public class DynamicQueryTranslatorView extends ViewPart {
 							Type returnType = returnTypes[j];
 							str.append(returnType.getName());
 							if(j<returnTypes.length-1) { str.append(", "); }							
-						}
+						}						
 						str.append("\n-----------------\n");
-						
 						str.append(QLFormatHelper.formatForScreen(translator.getSQLString()));
 						str.append("\n\n");
 					}

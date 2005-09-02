@@ -90,62 +90,7 @@ public class JFaceNodeAdapterForXML extends JFaceNodeAdapter {
 		return fUpdater;
 	}
 	
-	/** only needed to provide better notifychanged operation */
-	Display getDisplay() {
-
-		// Note: the workbench should always have a display
-		// (unless running headless), whereas Display.getCurrent()
-		// only returns the display if the currently executing thread
-		// has one.
-		if (PlatformUI.isWorkbenchRunning() )
-			return PlatformUI.getWorkbench().getDisplay();
-		else
-			return null;
-	}
-
-	/**
-	 * Called by the object being adapter (the notifier) when something has
-	 * changed.
-	 */
-	public void notifyChanged(INodeNotifier notifier, int eventType, Object changedFeature, Object oldValue, Object newValue, int pos) {
-
-		// future_TODO: the 'uijobs' used in this method were added to solve
-		// threading problems when the dom
-		// is updated in the background while the editor is open. They may be
-		// a bit overkill and not that useful.
-		// (That is, may be be worthy of job manager management). If they are
-		// found to be important enough to leave in,
-		// there's probably some optimization that can be done.
-		Collection listeners = ( (JFaceNodeAdapterFactory) adapterFactory).getListeners();
-		Iterator iterator = listeners.iterator();
-
-		while (iterator.hasNext() ) {
-			Object listener = iterator.next();			
-			if (notifier instanceof Node && (listener instanceof StructuredViewer) && (eventType == INodeNotifier.STRUCTURE_CHANGED || (eventType == INodeNotifier.CHANGE /*&& changedFeature == null*/) ) ) {
-
-				//	System.out.println("JFaceNodeAdapter notified on event type > " + eventType + " at " + changedFeature);
-
-				// refresh on structural and "unknown" changes
-				StructuredViewer structuredViewer = (StructuredViewer) listener;
-				// https://w3.opensource.ibm.com/bugzilla/show_bug.cgi?id=5230
-				if (structuredViewer.getControl() != null /*
-														   * &&
-														   * structuredViewer.getControl().isVisible()
-														   */)
-					getOutlineUpdater().processNode(structuredViewer, (Node) notifier);
-			} else if ( (listener instanceof PropertySheetPage) && ( (eventType == INodeNotifier.CHANGE) || (eventType == INodeNotifier.STRUCTURE_CHANGED) ) ) {
-				PropertySheetPage propertySheetPage = (PropertySheetPage) listener;
-				if (propertySheetPage.getControl() != null /*
-														    * &&
-														    * !propertySheetPage.getControl().isDisposed()
-														    */) {
-					RefreshPropertySheetJob refreshPropertySheetJob = new RefreshPropertySheetJob(getDisplay(), XMLUIMessages.JFaceNodeAdapter_1, propertySheetPage); //$NON-NLS-1$
-					refreshPropertySheetJob.schedule();
-				}
-			}
-		}
-	}
-	
+		
 	static Map nameToMap = new HashMap();
 	static {
 		nameToMap.put("many-to-one", ImageConstants.MANYTOONE);

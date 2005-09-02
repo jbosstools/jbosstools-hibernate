@@ -34,7 +34,7 @@ public class MapperPlugin extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		logger = new EclipseLogger(context.getBundle());
+		logger = new EclipseLogger(context.getBundle());		
 	}
 
 	/**

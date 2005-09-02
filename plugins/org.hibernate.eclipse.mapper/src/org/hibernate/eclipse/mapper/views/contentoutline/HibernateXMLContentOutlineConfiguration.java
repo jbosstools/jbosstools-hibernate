@@ -7,12 +7,15 @@ public class HibernateXMLContentOutlineConfiguration extends
 		XMLContentOutlineConfiguration {
 
 	
-	private JFaceNodeAdapterFactoryForXML factory;
+	private JFaceNodeAdapterFactoryForXML myFactory;
 
 	protected IJFaceNodeAdapterFactory getFactory() {
-		if(factory==null) {
-			factory = new JFaceNodeAdapterFactoryForXML();
+		
+		if(myFactory==null) {
+			IJFaceNodeAdapterFactory realFactory = super.getFactory();
+			
+			myFactory = new JFaceNodeAdapterFactoryForXML(realFactory);
 		}
-		return factory;
+		return myFactory;
 	}
 }

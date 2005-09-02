@@ -13,9 +13,12 @@ package org.hibernate.eclipse.mapper.views.contentoutline;
 
 
 
+import java.util.Collection;
+
 import org.eclipse.wst.sse.core.internal.provisional.INodeAdapter;
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.sse.ui.internal.contentoutline.IJFaceNodeAdapter;
+import org.eclipse.wst.sse.ui.internal.contentoutline.IJFaceNodeAdapterFactory;
 import org.eclipse.wst.xml.ui.internal.contentoutline.JFaceNodeAdapterFactory;
 
 
@@ -29,14 +32,14 @@ import org.eclipse.wst.xml.ui.internal.contentoutline.JFaceNodeAdapterFactory;
  */
 public class JFaceNodeAdapterFactoryForXML extends JFaceNodeAdapterFactory {
 
-	public JFaceNodeAdapterFactoryForXML() {
-		this(IJFaceNodeAdapter.class, true);
+	final private IJFaceNodeAdapterFactory realFactory;
+
+	public JFaceNodeAdapterFactoryForXML(IJFaceNodeAdapterFactory realFactory) {
+		super(IJFaceNodeAdapter.class, true);
+		this.realFactory = realFactory;
 	}
 
-	public JFaceNodeAdapterFactoryForXML(Object adapterKey, boolean registerAdapters) {
-		super(adapterKey, registerAdapters);
-	}
-
+	
 	/**
 	 * Create a new JFace adapter for the DOM node passed in
 	 */
@@ -47,6 +50,18 @@ public class JFaceNodeAdapterFactoryForXML extends JFaceNodeAdapterFactory {
 			initAdapter(singletonAdapter, node);
 		}
 		return singletonAdapter;
+	}
+
+	public void addListener(Object listener) {
+		realFactory.addListener(listener);
+	}
+
+	public Collection getListeners() {
+		return realFactory.getListeners();
+	}
+
+	public void removeListener(Object listener) {
+		realFactory.removeListener(listener);
 	}
 
 }

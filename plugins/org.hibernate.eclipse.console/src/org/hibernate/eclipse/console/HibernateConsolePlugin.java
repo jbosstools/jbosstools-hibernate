@@ -16,6 +16,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
@@ -62,6 +63,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 		IAdapterManager adapterManager = Platform.getAdapterManager();
 		ConfigurationAdapterFactory fact =  new ConfigurationAdapterFactory();
 		fact.registerAdapters(adapterManager);
+				
 	}
 
 	

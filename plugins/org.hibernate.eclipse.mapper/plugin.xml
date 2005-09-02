@@ -32,10 +32,10 @@
 	  <content-type
             base-type="org.eclipse.core.runtime.xml"
             file-extensions="xml"
-            file-names="override.reveng.xml"
+            file-names="hibernate.reveng.xml"
             id="content-type.reveng.xml"
             name="Hibernate Reverse Engineering Override Content-type"
-            priority="normal">
+            priority="high">
             <describer class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
             <parameter
                   name="element"
@@ -100,12 +100,13 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="org.hibernate.eclipse.mapper.editors.ReverseEngineeringMultiPageEditor"
-            contributorClass="org.hibernate.eclipse.mapper.editors.ReverseEngineeringMultiPageEditorContributor"
-            extensions="override.reveng.xml"
+            class="org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor"
+            contributorClass="org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditorContributor"
             icon="icons/hibernate_small_icon.gif"
-            id="org.hibernate.eclipse.mapper.editors.ReverseEngineeringMultiPageEditor"
-            name="Hibernate reverse engineering editor"/>
+            id="org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor"
+            name="Hibernate reverse engineering editor">
+         <contentTypeBinding contentTypeId="org.hibernate.eclipse.mapper.content-type.reveng.xml"/>
+      </editor>
    </extension>
   
     <extension point = "org.eclipse.wst.xml.core.catalogContributions">
@@ -120,5 +121,5 @@
                publicId="-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN"
                uri="dtds/hibernate-reverse-engineering-3.0.dtd"/>
      </catalogContribution>
-    </extension>
-  </plugin>
+    </extension>   
+</plugin>

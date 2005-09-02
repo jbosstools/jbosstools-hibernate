@@ -20,16 +20,16 @@ import org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart;
  * Responsible for the redirection of global actions to the active editor.
  * Multi-page contributor replaces the contributors for the individual editors in the multi-page editor.
  */
-public class ReverseEngineeringMultiPageEditorContributor extends MultiPageEditorActionBarContributor {
+public class ReverseEngineeringEditorContributor extends MultiPageEditorActionBarContributor {
 	protected IEditorActionBarContributor designViewerActionBarContributor = null;
 	protected IEditorActionBarContributor sourceViewerActionContributor = null;
 	protected XMLMultiPageEditorPart multiPageEditor = null;
 
 	// EditorExtension
-	private static final String EDITOR_ID = "org.hibernate.eclipse.mapper.editors.ReverseEngineeringMultiPageEditor"; //$NON-NLS-1$
+	private static final String EDITOR_ID = "org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor"; //$NON-NLS-1$
 	private IExtendedContributor extendedContributor;
 
-	public ReverseEngineeringMultiPageEditorContributor() {
+	public ReverseEngineeringEditorContributor() {
 		super();
 
 		sourceViewerActionContributor = new SourcePageActionContributor();

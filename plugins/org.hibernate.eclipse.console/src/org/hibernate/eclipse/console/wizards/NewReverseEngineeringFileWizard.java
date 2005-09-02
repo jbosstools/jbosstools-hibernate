@@ -1,7 +1,6 @@
 package org.hibernate.eclipse.console.wizards;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -13,9 +12,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
@@ -26,9 +23,9 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.ide.IDE;
-import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.model.ITableFilter;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 
 /**
@@ -172,9 +169,9 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
         		"<!DOCTYPE hibernate-reverse-engineering PUBLIC \"-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN\" \"http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd\" >\r\n" + 
         		"\r\n" + 
         		"<hibernate-reverse-engineering>\r\n");
-        TableFilter[] filters = (TableFilter[]) tableFilterWizardPage.getTableFilters().toArray(new TableFilter[0]);
+        ITableFilter[] filters = tableFilterWizardPage.getTableFilters();
         for (int i = 0; i < filters.length; i++) {
-			TableFilter filter = filters[i];
+			ITableFilter filter = filters[i];
 			sw.write("  <table-filter");
 			if(!".*".equals(filter.getMatchCatalog())) {
 				sw.write(" match-catalog=\"" + filter.getMatchCatalog() + "\"");
