@@ -26,7 +26,7 @@ public class DelegatingLayoutManager implements LayoutManager {
 	private GraphLayoutManager graphLayoutManager;
 
 	private GraphXYLayout xyLayoutManager;
-
+	
 	public DelegatingLayoutManager(ConfigurationEditPart diagram) {
 		this.diagram = diagram;
 		this.graphLayoutManager = new GraphLayoutManager( diagram );
@@ -41,9 +41,7 @@ public class DelegatingLayoutManager implements LayoutManager {
 
 	public void layout(IFigure container) {
 
-		ConfigurationViewAdapter schema = diagram.getConfigurationViewAdapter();
-
-		if ( schema.isManualLayoutDesired() ) {
+		if ( diagram.isManualLayoutActive() ) {
 
 			if ( activeLayoutManager != xyLayoutManager ) {
 
@@ -112,5 +110,5 @@ public class DelegatingLayoutManager implements LayoutManager {
 	public LayoutManager getActiveLayoutManager() {
 		return activeLayoutManager;
 	}
-
+	
 }

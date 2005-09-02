@@ -21,6 +21,7 @@ import org.hibernate.eclipse.graph.policy.ConfigurationLayoutEditPolicy;
 public class ConfigurationEditPart extends AbstractGraphicalEditPart implements Observer {
 
 	private DelegatingLayoutManager delegatingLayoutManager;
+	private boolean manualLayoutActive;
 
 	public void activate() {
 		super.activate();
@@ -135,6 +136,16 @@ public class ConfigurationEditPart extends AbstractGraphicalEditPart implements 
 	}
 
 	public void update(Observable o, Object arg) {
+		getFigure().setLayoutManager(delegatingLayoutManager);
+		refresh();
+	}
+
+	public boolean isManualLayoutActive() {
+		return manualLayoutActive;
+	}
+	
+	public void setManualLayoutActive(boolean manualLayoutActive) {
+		this.manualLayoutActive = manualLayoutActive;
 		getFigure().setLayoutManager(delegatingLayoutManager);
 		refresh();
 	}

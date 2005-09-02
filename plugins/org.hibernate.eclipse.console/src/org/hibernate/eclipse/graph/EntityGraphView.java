@@ -15,6 +15,9 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionGroup;
 import org.eclipse.ui.part.ViewPart;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.eclipse.console.ConsolePreferencesConstants;
+import org.hibernate.eclipse.console.HibernateConsolePerspectiveFactory;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.views.KnownConfigurationsView;
 import org.hibernate.eclipse.graph.model.ConfigurationViewAdapter;
 import org.hibernate.eclipse.graph.parts.ConfigurationEditPart;
@@ -30,7 +33,8 @@ public class EntityGraphView extends ViewPart {
 	            Object o = ss.getFirstElement();
 	            if (o instanceof Configuration) {
 	            	viewer.setContents(new ConfigurationViewAdapter((Configuration) o));
-	            	
+	            	boolean b = HibernateConsolePlugin.getDefault().getPluginPreferences().getBoolean(ConsolePreferencesConstants.ENTITY_MODEL_LAYOUT);
+					((ConfigurationEditPart)viewer.getContents()).setManualLayoutActive(b);
 	            }	               
 		}
 	
@@ -92,6 +96,14 @@ public class EntityGraphView extends ViewPart {
 			return null;
 		}
 	}
-	
-	
+
+	public void setManualLayout(boolean value) {
+		ConfigurationEditPart cp = (ConfigurationEditPart) viewer.getContents();
+		if(cp!=null) {
+			cp.setManualLayoutActive(value);
+		}
+	}
+
 }
+	
+	

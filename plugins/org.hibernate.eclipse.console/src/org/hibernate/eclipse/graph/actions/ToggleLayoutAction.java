@@ -1,9 +1,13 @@
 package org.hibernate.eclipse.graph.actions;
 
+import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.hibernate.console.ImageConstants;
+import org.hibernate.eclipse.console.ConsolePreferencesConstants;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.graph.EntityGraphView;
-import org.hibernate.eclipse.graph.model.ConfigurationViewAdapter;
 
 public class ToggleLayoutAction extends Action {
 
@@ -13,39 +17,32 @@ public class ToggleLayoutAction extends Action {
 	{
 		super("Automatic Layout", IAction.AS_CHECK_BOX);
 		this.view = view;
+		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.LAYOUT));
+		setDisabledImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.LAYOUT));
+		Preferences prefs = HibernateConsolePlugin.getDefault().getPluginPreferences();
+		boolean checked = prefs.getBoolean(ConsolePreferencesConstants.ENTITY_MODEL_LAYOUT);
+		valueChanged(!checked, false);
 	}
 
 	public void run()
 	{
-		if (view != null && view.getConfigurationViewAdapter()!=null) 
-		{			
-			ConfigurationViewAdapter cva = view.getConfigurationViewAdapter();
-			boolean isManual = cva.isManualLayoutDesired();
-			cva.setManualLayoutDesired(!isManual);			
-			setChecked(!isManual);
-		}
+		valueChanged(!isChecked(), true);
 	}
 
-	public boolean isChecked()
-	{
-		if (view != null)
-			return isChecked(view);
-		else
-			return super.isChecked();
-	}
-
-	public boolean isChecked(EntityGraphView view)
-	{
-
-		if (view != null && view.getConfigurationViewAdapter()!=null)
-		{
-			boolean checkTrue = view.getConfigurationViewAdapter().isManualLayoutDesired();
-			return (!checkTrue);
-		}
-		else
-		{
-			return false;
-		}
-
-	}
+	private void valueChanged(boolean value, boolean doStore) {
+        setChecked(!value);
+        view.setManualLayout(value);
+        
+        setToolTipText(value ?
+			"Manual layout active" :
+			"Automatic layout active");
+        setDescription(value ?
+        		"Enable automatic layout" :
+        		"Enable manual layout");
+        if (doStore) {
+	        Preferences prefs = HibernateConsolePlugin.getDefault().getPluginPreferences();
+	        prefs.setValue(ConsolePreferencesConstants.ENTITY_MODEL_LAYOUT, value);
+	        HibernateConsolePlugin.getDefault().savePluginPreferences();
+        }
+    }
 }
