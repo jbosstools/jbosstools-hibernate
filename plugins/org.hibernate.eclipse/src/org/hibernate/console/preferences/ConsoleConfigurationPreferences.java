@@ -26,6 +26,8 @@ public interface ConsoleConfigurationPreferences {
 	final String NAME_ATTRIB = "name";
 	final String CONFIGURATION_TAG = "configuration";
 	final String ANNOTATIONS_ATTRIB = "annotations";
+	final String ENTITYRESOLVER_ATTRIB = "entityresolver";
+	
 	
 	public abstract boolean useAnnotations();
 	
@@ -52,4 +54,6 @@ public interface ConsoleConfigurationPreferences {
 	public abstract void readStateFrom(Element element);
 
 	public abstract void setName(String name);
+
+	public abstract String getEntityResolverName();
 }

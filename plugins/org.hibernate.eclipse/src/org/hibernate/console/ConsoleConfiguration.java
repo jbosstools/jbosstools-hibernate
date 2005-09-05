@@ -27,6 +27,8 @@ import org.hibernate.console.execution.ExecutionContextHolder;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.util.ReflectHelper;
+import org.hibernate.util.StringHelper;
+import org.xml.sax.EntityResolver;
 
 public class ConsoleConfiguration implements ExecutionContextHolder {
 
@@ -102,7 +104,13 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 					if(properties!=null) {
 						localCfg = localCfg.setProperties(properties);
 					}
-					
+					if(StringHelper.isNotEmpty(prefs.getEntityResolverName())) {
+						try {
+							localCfg.setEntityResolver((EntityResolver) ReflectHelper.classForName(prefs.getEntityResolverName()).newInstance());
+						} catch (Exception c) {
+							throw new HibernateConsoleRuntimeException("Could not configure entity resolver " + prefs.getEntityResolverName(), c);
+						}
+					}
 					if (prefs.getConfigXMLFile() != null) {
 						localCfg = localCfg.configure(prefs.getConfigXMLFile() );
 					}

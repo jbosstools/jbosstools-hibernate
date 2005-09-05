@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.hibernate.console.HibernateConsoleRuntimeException;
+import org.hibernate.util.StringHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -22,9 +23,11 @@ import org.w3c.dom.NodeList;
 public abstract class AbstractConsoleConfigurationPreferences implements
 		ConsoleConfigurationPreferences {
 
+
 	private String name = "<unknown>";
 	private boolean useAnnotations = false;
-
+	protected String entityResolverName = null;
+	
 	public AbstractConsoleConfigurationPreferences(String name) {
 		setName(name);
 	}
@@ -64,12 +67,16 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 
 	/** generic xml dumper that just dumps the toString representation of the paramters 
 	 * @param useAnnotations */
-	protected static void writeStateTo(Node node, String name, boolean useAnnotations, Object cfgFile, Object propertyFilename, Object[] mappings, Object[] customClasspath) {
+	protected static void writeStateTo(Node node, String name, String entityResolver, boolean useAnnotations, Object cfgFile, Object propertyFilename, Object[] mappings, Object[] customClasspath) {
 		Document doc = node.getOwnerDocument();
 		Element n = createElementWithAttribute(doc, CONFIGURATION_TAG, NAME_ATTRIB, name);
 		if(useAnnotations) {
 			n.setAttribute(ANNOTATIONS_ATTRIB, "true");
 		}
+		if(StringHelper.isNotEmpty(entityResolver)) {
+			n.setAttribute(ENTITYRESOLVER_ATTRIB, entityResolver);
+		}
+		
 		node.appendChild(n);
 		
 		if(cfgFile!=null) {
@@ -103,6 +110,7 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 	
 	public void readStateFrom(Element node) {
 		    
+		String entityResolver = null;
 		String cfgName = null;
 		String cfgFile = null;
 		String propFile = null;
@@ -114,6 +122,11 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 		String attribute = node.getAttribute(ANNOTATIONS_ATTRIB);
 		useAnnotations = ((attribute != null) && attribute.equalsIgnoreCase("true"));
 		
+		attribute = node.getAttribute(ENTITYRESOLVER_ATTRIB);
+		if(attribute!=null && attribute.trim().length()>0) {
+			entityResolver = attribute;
+		}
+			
 		NodeList elements = node.getElementsByTagName(HIBERNATE_CONFIG_XML_TAG);
 		if(elements.getLength()==1) {
 			cfgFile = ( (Element)elements.item(0) ).getAttribute(LOCATION_ATTRIB);
@@ -128,10 +141,16 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 		classpath = parseListOfLocations(node, CLASSPATH_TAG, PATH_TAG);
 		
 		setName(cfgName);
+		setEntityResolverName(entityResolver);
 		setConfigFile(cfgFile);
 		setPropertyFile(propFile);
 		setMappings(mappings);
 		setCustomClassPath(classpath);
+		
+	}
+
+	private void setEntityResolverName(String entityResolver) {
+		this.entityResolverName = entityResolver;
 		
 	}
 
@@ -154,6 +173,8 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 	 * generic XML handling. Ugly like hell - but done to reduce jar requirements and code duplication.
 	 * TODO: make better ;) 
 	 **/
+	
+	public String getEntityResolverName() { return entityResolverName; };
 	
 	protected abstract void setConfigFile(String cfgFile);
 	protected abstract void setPropertyFile(String cfgFile);

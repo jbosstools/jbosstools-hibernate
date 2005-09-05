@@ -67,6 +67,7 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 
 	static boolean createConsoleConfiguration(IWizardContainer container, final ConsoleConfigurationWizardPage confPage) {
 		final String configName = confPage.getConfigurationName();
+		final String entityResolver = confPage.getEntityResolverClassName();
 		final IPath propertyFile = confPage.getPropertyFilePath();
 		final IPath fileName = confPage.getConfigurationFilePath();
 		final IPath[] mappings = confPage.getMappingFiles();
@@ -74,7 +75,7 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
-					createConsoleConfiguration(confPage.getOldConfiguration(), configName, propertyFile, fileName, mappings, classpaths, monitor);
+					createConsoleConfiguration(confPage.getOldConfiguration(), configName, entityResolver, propertyFile, fileName, mappings, classpaths, monitor);
 				} catch (CoreException e) {
 					throw new InvocationTargetException(e);
 				} finally {
@@ -104,13 +105,13 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 	static private void createConsoleConfiguration(
 			EclipseConsoleConfiguration oldConfig,
 			String configName,
-			IPath propertyFilename,
+			String entityResolver, IPath propertyFilename,
 			IPath cfgFile, IPath[] mappings, IPath[] classpaths, IProgressMonitor monitor)
 		throws CoreException {
 
 		monitor.beginTask("Configuring Hibernate Console" + propertyFilename, IProgressMonitor.UNKNOWN);
 								
-		ConsoleConfigurationPreferences ccp = new EclipseConsoleConfigurationPreferences(configName, cfgFile, propertyFilename, mappings, classpaths);
+		ConsoleConfigurationPreferences ccp = new EclipseConsoleConfigurationPreferences(configName, entityResolver, cfgFile, propertyFilename, mappings, classpaths);
 		
 		final ConsoleConfiguration cfg = new EclipseConsoleConfiguration(ccp);
 			

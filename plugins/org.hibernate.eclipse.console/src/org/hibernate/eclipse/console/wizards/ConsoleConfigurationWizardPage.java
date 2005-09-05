@@ -70,11 +70,14 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	private EclipseConsoleConfiguration oldConfiguaration = null;
 	//private Button enableAnnotations; 
 	
+	private Text entityResolverClassNameText;
+	
 	private ISelection selection;
 	private UpDownListComposite mappingFilesViewer;
 	private UpDownListComposite classPathViewer;
 	private boolean configurationFileWillBeCreated;
 	private Button confbutton;
+	private Button entbutton;
 	
 	/**
 	 * Constructor for SampleNewWizardPage.
@@ -115,7 +118,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 		gd.horizontalSpan = 2;
 		configurationNameText.setLayoutData(gd);		
 		configurationNameText.addModifyListener(modifyListener);
-		
+				
 		label = new Label(container, SWT.NULL);
 		label.setText("&Property file:");
 		
@@ -149,6 +152,23 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			}
 		});
 		
+		label = new Label(container, SWT.NULL);
+		label.setText("&Entity resolver:");
+		
+		entityResolverClassNameText = new Text(container, SWT.BORDER | SWT.SINGLE);
+		gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd.horizontalSpan = 1;
+		entityResolverClassNameText.setLayoutData(gd);		
+		entityResolverClassNameText.addModifyListener(modifyListener);
+		
+		entbutton = new Button(container, SWT.PUSH);
+		entbutton.setText("Browse...");
+		entbutton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				handleEntityResolverBrowse();
+			}
+		});
+		
 		//label = new Label(container, SWT.NULL);		
 				
 		UpDownListComposite composite = buildMappingFileTable(container);
@@ -160,6 +180,11 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 		initialize();
 		dialogChanged();
 		setControl(container);
+	}
+
+	protected void handleEntityResolverBrowse() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private GridData createGridData() {
@@ -196,7 +221,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			}
 
 			protected String[] getAddButtonLabels() {
-				return new String[] { "Add JARS...", "Add External JARS..." };				
+				return new String[] { "Add JAR/Dir...", "Add External JARS..." };				
 			}
 			protected void listChanged() {
 				dialogChanged();
@@ -332,6 +357,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 				if(prefs.getCfgFile()!=null) configurationFileText.setText(prefs.getCfgFile().toOSString() );
 				if(prefs.getMappings()!=null) mappingFilesViewer.add(prefs.getMappings(),false);
 				if(prefs.getCustomClasspath()!=null) classPathViewer.add(prefs.getCustomClasspath(),false);
+				if(prefs.getEntityResolverName()!=null) entityResolverClassNameText.setText(prefs.getEntityResolverName());
 				
 				oldConfiguaration = cc;
 			}
@@ -527,6 +553,10 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 		configurationFileWillBeCreated = true;
 		configurationFileText.setEnabled(false);
 		confbutton.setEnabled(false);
+	}
+
+	public String getEntityResolverClassName() {
+		return entityResolverClassNameText.getText();
 	}
 
 }
