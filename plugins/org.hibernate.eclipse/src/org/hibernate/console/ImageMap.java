@@ -45,6 +45,8 @@ public abstract class ImageMap implements ImageConstants {
         declareRegistryImage(PARAMETER, "images/parameter.gif");
         declareRegistryImage(NEW_PARAMETER, "images/new_param.gif");
         declareRegistryImage(IGNORE_PARAMETER, "images/ignoreparameter.gif");
+        declareRegistryImage(LAYOUT, "images/layout.gif");
+        declareRegistryImage(LAYOUT_DISABLED, "images/layout_disabled.gif");
 		
 	}
 

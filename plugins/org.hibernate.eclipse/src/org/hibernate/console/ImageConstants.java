@@ -87,5 +87,7 @@ public interface ImageConstants {
     public static final String PARAMETER = "PARAMETER";
     public static final String NEW_PARAMETER = "NEW_PARAMETER";
     public static final String IGNORE_PARAMETER = "IGNORE_PARAMETER";
+	public static final String LAYOUT = "LAYOUT";
+	public static final String LAYOUT_DISABLED = "LAYOUT_DISABLED";
     
 }
