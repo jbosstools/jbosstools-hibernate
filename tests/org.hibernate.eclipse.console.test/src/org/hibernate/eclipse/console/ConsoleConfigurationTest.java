@@ -78,6 +78,10 @@ public class ConsoleConfigurationTest extends TestCase {
 		public boolean useAnnotations() {
 			return false;
 		}
+
+		public String getEntityResolverName() {			
+			return "";
+		}
 	
 	};
 	

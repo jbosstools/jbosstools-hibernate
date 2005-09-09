@@ -6,7 +6,8 @@ Bundle-Version: 0.0.1
 Bundle-ClassPath: org.hibernate.eclipse.console.test/
 Bundle-Vendor: Hibernate Team
 Bundle-Localization: plugin
-Export-Package: org.hibernate.eclipse.console
+Export-Package: org.hibernate.eclipse.console,
+ org.hibernate.eclipse.console.perspective
 Require-Bundle: org.hibernate.eclipse.console,
  org.junit,
  org.eclipse.jdt.core,

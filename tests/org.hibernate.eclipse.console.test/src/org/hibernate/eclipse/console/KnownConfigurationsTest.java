@@ -107,6 +107,11 @@ public class KnownConfigurationsTest extends TestCase {
 				// TODO Auto-generated method stub
 				return false;
 			}
+
+			public String getEntityResolverName() {
+				// TODO Auto-generated method stub
+				return null;
+			}
 		
 		};
 		ConsoleConfiguration configuration = new ConsoleConfiguration(preferences);
