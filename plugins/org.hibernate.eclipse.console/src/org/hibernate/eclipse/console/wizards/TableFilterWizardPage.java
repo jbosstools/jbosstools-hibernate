@@ -53,7 +53,7 @@ public class TableFilterWizardPage extends WizardPage {
 		
 		consoleConfigurationName.doFillIntoGrid(container, 3);
 		
-		TableFilterComposite tfc = createTableFilterPart( container );
+		TreeToTableComposite tfc = createTableFilterPart( container );
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		gd.horizontalSpan=3;
 		tfc.setLayoutData(gd);
@@ -65,14 +65,15 @@ public class TableFilterWizardPage extends WizardPage {
 		}
 	}
 
-	private TableFilterComposite createTableFilterPart(Composite container) {
-		tfc = new TableFilterView(new ReverseEngineeringDefinitionImpl(), container, SWT.NULL){
+	private TreeToTableComposite createTableFilterPart(Composite container) {
+		tfc = new TableFilterView(container, SWT.NULL){
 		
 			protected String getConsoleConfigurationName() {
 				return consoleConfigurationName.getText();
 			}
 		
 		}; 
+		tfc.setModel(new ReverseEngineeringDefinitionImpl());
 		return tfc;
 	}
 

@@ -2,15 +2,15 @@ package org.hibernate.eclipse.graph.command;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
-import org.hibernate.eclipse.graph.model.PersistentClassViewAdapter;
+import org.hibernate.eclipse.graph.model.GraphNode;
 
-public class MovePersistentClassEditPartCommand extends Command {
+public class MoveGraphNodeEditPartCommand extends Command {
 
-	private PersistentClassViewAdapter view;
+	private GraphNode view;
 	private Rectangle oldBounds;
 	private Rectangle newBounds;
 
-	public MovePersistentClassEditPartCommand(PersistentClassViewAdapter pc, Rectangle oldBounds, Rectangle newBounds)
+	public MoveGraphNodeEditPartCommand(GraphNode pc, Rectangle oldBounds, Rectangle newBounds)
 	{
 		super();
 		this.view = pc;

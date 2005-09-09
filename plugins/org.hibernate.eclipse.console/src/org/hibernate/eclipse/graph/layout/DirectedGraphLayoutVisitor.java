@@ -73,7 +73,7 @@ public class DirectedGraphLayoutVisitor
 		Node n = new Node(pClassPart);
 		n.width = pClassPart.getFigure().getPreferredSize(400, 300).width;
 		n.height = pClassPart.getFigure().getPreferredSize(400, 300).height;
-		n.setPadding(new Insets(10, 8, 10, 12));
+		n.setPadding(new Insets(50));
 		partToNodesMap.put(pClassPart, n);
 		graph.nodes.add(n);
 	}
@@ -155,7 +155,8 @@ public class DirectedGraphLayoutVisitor
 		Node n = (Node) partToNodesMap.get(pClassPart);
 		Figure classFigure = (Figure) pClassPart.getFigure();
 
-		Rectangle bounds = new Rectangle(n.x, n.y, classFigure.getPreferredSize().width,
+		// switched x/y to make it go left to right
+		Rectangle bounds = new Rectangle(n.y, n.x, classFigure.getPreferredSize().width,
 				classFigure.getPreferredSize().height);
 
 		classFigure.setBounds(bounds);

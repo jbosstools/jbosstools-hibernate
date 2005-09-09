@@ -1,5 +1,6 @@
-package org.hibernate.eclipse.graph.parts;
+package org.hibernate.eclipse.graph;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -14,14 +15,14 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.hibernate.eclipse.graph.anchor.LeftOrRightParentAnchor;
 import org.hibernate.eclipse.graph.figures.EditableLabel;
-import org.hibernate.eclipse.graph.model.PersistentClassViewAdapter;
-import org.hibernate.eclipse.graph.model.PropertyViewAdapter;
-import org.hibernate.mapping.Property;
+import org.hibernate.eclipse.graph.model.ColumnViewAdapter;
+import org.hibernate.eclipse.graph.model.GraphNode;
+import org.hibernate.mapping.Column;
 
-public class PropertyEditPart extends AbstractGraphicalEditPart implements NodeEditPart, Observer {
-
-	public PropertyEditPart(PropertyViewAdapter property) {
-		setModel(property);
+public class ColumnEditPart extends AbstractGraphicalEditPart implements NodeEditPart, Observer {
+	
+	public ColumnEditPart(ColumnViewAdapter column) {
+		setModel(column);
 	}
 
 	public void activate() {
@@ -35,11 +36,11 @@ public class PropertyEditPart extends AbstractGraphicalEditPart implements NodeE
 	}
 	
 	protected IFigure createFigure() {
-		Property property = ((PropertyViewAdapter) getModel()).getProperty();
-		String label = property.getName();
-		Label propertyLabel = new EditableLabel(label);
-		propertyLabel.setIcon(((PropertyViewAdapter)getModel()).getImage());
-		return propertyLabel;
+		Column column = ((ColumnViewAdapter) getModel()).getcolumn();
+		String label = column.getName();
+		Label columnLabel = new EditableLabel(label);
+		//columnLabel.setIcon(((ColumnViewAdapter)getModel()).getImage());
+		return columnLabel;
 	}
 
 	protected void createEditPolicies() {
@@ -51,14 +52,15 @@ public class PropertyEditPart extends AbstractGraphicalEditPart implements NodeE
 		// TODO Auto-generated method stub
 		return super.getCommand( request );
 	}
+	
 	public List getModelSourceConnections() {
-		List sc = ((PropertyViewAdapter) getModel()).getSourceConnections();
-		return sc;
+	//	List sc = ((ColumnViewAdapter) getModel()).getSourceConnections();
+		return Collections.EMPTY_LIST;
 	}
 	
 	public List getModelTargetConnections() {
-		List tc = ((PropertyViewAdapter) getModel()).getTargetConnections();
-		return tc;
+		//List tc = ((ColumnViewAdapter) getModel()).getTargetConnections();
+		return Collections.EMPTY_LIST;
 	}
 
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
@@ -78,7 +80,7 @@ public class PropertyEditPart extends AbstractGraphicalEditPart implements NodeE
 	}
 
 	public void update(Observable o, Object arg) {
-	 if(arg==PersistentClassViewAdapter.ASSOCIATONS) {
+	 if(arg==GraphNode.ASSOCIATONS) {
 		 refreshSourceConnections();
 		 refreshTargetConnections();
 	 }
@@ -86,7 +88,7 @@ public class PropertyEditPart extends AbstractGraphicalEditPart implements NodeE
 	}
 
 	public void setSelected(int value) {
-		// TODO Auto-generated method stub
 		super.setSelected( value );
 	}
+
 }

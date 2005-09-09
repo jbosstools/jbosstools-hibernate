@@ -6,16 +6,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
-import java.util.Observer;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.PersistentClass;
 
 public class ConfigurationViewAdapter extends Observable {
 
-	
 	private final Configuration cfg;
 	private Map persistentClasses; // key: name, value: PersistentClassViewAdapter
+	private List selectedTables;
 	//private final Map sourceAssociations; // key: name, value: List of AssociationViewAdapter
 	//private final Map targetAssociations; // key: name, value: List of AssociationViewAdapter
 	
@@ -47,6 +46,18 @@ public class ConfigurationViewAdapter extends Observable {
 
 	public PersistentClassViewAdapter getPersistentClassViewAdapter(String associatedEntityName) {
 		return (PersistentClassViewAdapter) persistentClasses.get(associatedEntityName);		
+	}
+
+	public List getSelectedTables() {		
+		return selectedTables;
+	}
+
+	public Configuration getConfiguration() {
+		return cfg;
+	}
+
+	public void setSelectedTables(List tables) {
+		selectedTables = tables;		
 	}
 	
 	

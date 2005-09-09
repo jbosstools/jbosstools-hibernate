@@ -1,6 +1,5 @@
 package org.hibernate.eclipse.graph.policy;
 
-import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
@@ -8,9 +7,10 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
-import org.hibernate.eclipse.graph.command.MoveEditPartCommand;
-import org.hibernate.eclipse.graph.command.MovePersistentClassEditPartCommand;
+import org.hibernate.eclipse.graph.command.MoveGraphNodeEditPartCommand;
+import org.hibernate.eclipse.graph.model.GraphNode;
 import org.hibernate.eclipse.graph.model.PersistentClassViewAdapter;
+import org.hibernate.eclipse.graph.parts.GraphNodeEditPart;
 import org.hibernate.eclipse.graph.parts.PersistentClassEditPart;
 
 public class ConfigurationLayoutEditPolicy extends XYLayoutEditPolicy {
@@ -21,9 +21,9 @@ public class ConfigurationLayoutEditPolicy extends XYLayoutEditPolicy {
 	}
 
 	protected Command createChangeConstraintCommand(EditPart child, Object constraint) {
-		if(child instanceof PersistentClassEditPart) {
-			PersistentClassEditPart classPart = (PersistentClassEditPart) child;
-			PersistentClassViewAdapter classView = classPart.getPersistentClassViewAdapter();
+		if(child instanceof GraphNodeEditPart) {
+			GraphNodeEditPart classPart = (GraphNodeEditPart) child;
+			GraphNode classView = classPart.getGraphNode();
 			IFigure figure = classPart.getFigure();
 			Rectangle oldBounds = figure.getBounds();
 			Rectangle newBounds = (Rectangle) constraint;
@@ -33,7 +33,7 @@ public class ConfigurationLayoutEditPolicy extends XYLayoutEditPolicy {
 			if (oldBounds.height != newBounds.height && newBounds.height != -1)
 				return null;
 
-			return new MovePersistentClassEditPartCommand(classView, oldBounds, newBounds);
+			return new MoveGraphNodeEditPartCommand(classView, oldBounds, newBounds);
 			//return new MoveEditPartCommand(classPart, oldBounds, newBounds);
 		}
 		return null;
@@ -48,6 +48,5 @@ public class ConfigurationLayoutEditPolicy extends XYLayoutEditPolicy {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 	
 }

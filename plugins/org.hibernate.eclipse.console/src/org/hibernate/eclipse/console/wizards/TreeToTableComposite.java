@@ -1,6 +1,9 @@
 package org.hibernate.eclipse.console.wizards;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -9,18 +12,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.Widget;
 
-public class TableFilterComposite extends Composite {
+public class TreeToTableComposite extends Composite {
 
 	private Group dbgroup = null;
-	private Composite includeExcludeGroup = null;
-	private Button excludeButton = null;
-	private Button includeButton = null;
-	protected Tree databaseTree = null;
+	private Composite manipulationGroup = null;
+	protected Tree tree = null;
 	private Group tableFiltersGroup = null;
-	protected Table tableFilters = null;
+	protected Table rightTable = null;
 	private Button upButton = null;
 	private Button downButton = null;
 	private Button removeButton = null;
@@ -29,11 +30,28 @@ public class TableFilterComposite extends Composite {
 	private Label label = null;
 	private Button refreshButton = null;
 	private Label emptyLabel = null;
+	private Button[] addButtons;
+	private SelectionListener buttonListener= new SelectionAdapter() {
+		public void widgetSelected(SelectionEvent e) {
+			Widget button = e.widget;
+			for (int i = 0; i < addButtons.length; i++) {
+				Button but = addButtons[i];
+				if(button == but) {
+				 handleAddButtonPressed(i);
+				}				
+			}
+		}
+	};;
 
-	public TableFilterComposite(Composite parent, int style) {
+	public TreeToTableComposite(Composite parent, int style) {
 		super( parent, style );
 		initialize();
 	}
+
+	protected void handleAddButtonPressed(int i) {
+				
+	}
+
 
 	protected void initialize() {
 		GridLayout gridLayout = new GridLayout();
@@ -59,10 +77,14 @@ public class TableFilterComposite extends Composite {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		dbgroup = new Group( this, SWT.NONE );
-		dbgroup.setText("Database schema:");
+		dbgroup.setText(getTreeTitle());
 		dbgroup.setLayout(new FillLayout());
-		createDatabaseTree();
+		createTree();
 		dbgroup.setLayoutData(gridData);
+	}
+
+	protected String getTreeTitle() {
+		return "Database schema:";
 	}
 
 	/**
@@ -70,9 +92,6 @@ public class TableFilterComposite extends Composite {
 	 *
 	 */
 	private void createIncludeExcludeGroup() {
-		GridData gridData7 = new org.eclipse.swt.layout.GridData();
-		gridData7.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
-		gridData7.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		GridData gridData6 = new org.eclipse.swt.layout.GridData();
 		gridData6.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		gridData6.verticalSpan = 1;
@@ -97,30 +116,14 @@ public class TableFilterComposite extends Composite {
 		gridData1.grabExcessVerticalSpace = false;
 		gridData1.grabExcessHorizontalSpace = false;
 		gridData1.verticalAlignment = org.eclipse.swt.layout.GridData.CENTER;
-		includeExcludeGroup = new Composite( this, SWT.NONE );
-		includeExcludeGroup.setLayoutData(gridData1);
-		includeExcludeGroup.setLayout(gridLayout1);
-		excludeButton = new Button(includeExcludeGroup, SWT.NONE);
-		excludeButton.setText("Exclude...");
-		excludeButton
-				.addSelectionListener( new org.eclipse.swt.events.SelectionAdapter() {
-					public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-						doExclusion();
-					}
-				} );		
-		includeButton = new Button(includeExcludeGroup, SWT.NONE);
-		includeButton.setText("Include...");
-		includeButton.setLayoutData(gridData7);
-		includeButton
-				.addSelectionListener( new org.eclipse.swt.events.SelectionAdapter() {
-					public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-						doInclusion();
-					}
-				} );
-		fillLabel = new Label(includeExcludeGroup, SWT.NONE);
+		manipulationGroup = new Composite( this, SWT.NONE );
+		manipulationGroup.setLayoutData(gridData1);
+		manipulationGroup.setLayout(gridLayout1);
+		createAddButtons(manipulationGroup);
+		fillLabel = new Label(manipulationGroup, SWT.NONE);
 		fillLabel.setText("");
 		fillLabel.setLayoutData(gridData6);
-		upButton = new Button(includeExcludeGroup, SWT.NONE);
+		upButton = new Button(manipulationGroup, SWT.NONE);
 		upButton.setText("Up");
 		upButton.setLayoutData(gridData5);
 		upButton.addSelectionListener( new org.eclipse.swt.events.SelectionAdapter() {
@@ -128,7 +131,7 @@ public class TableFilterComposite extends Composite {
 				doMoveUp();
 			}
 		} );
-		downButton = new Button(includeExcludeGroup, SWT.NONE);
+		downButton = new Button(manipulationGroup, SWT.NONE);
 		downButton.setText("Down");
 		downButton.setLayoutData(gridData4);
 		downButton.addSelectionListener( new org.eclipse.swt.events.SelectionAdapter() {
@@ -136,7 +139,7 @@ public class TableFilterComposite extends Composite {
 				doMoveDown();
 			}
 		} );
-		removeButton = new Button(includeExcludeGroup, SWT.NONE);
+		removeButton = new Button(manipulationGroup, SWT.NONE);
 		removeButton.setText("Remove");
 		removeButton.setLayoutData(gridData3);
 		removeButton
@@ -145,6 +148,34 @@ public class TableFilterComposite extends Composite {
 						doRemove();
 					}
 				} );
+	}
+
+	private void createAddButtons(Composite parent) {
+		
+		String[] addButtonLabels = getAddButtonLabels();
+		addButtons = new Button[addButtonLabels.length];
+		for (int i = 0; i < addButtonLabels.length; i++) {
+			String label = addButtonLabels[i];
+			addButtons[i] = createButton(parent, label); 
+			addButtons[i].setEnabled(true);
+		}
+	}
+
+	private Button createButton(Composite parent, String label) {
+		Button button = new Button(parent, SWT.PUSH);
+		GridData data = new GridData();
+		data.horizontalAlignment = GridData.FILL;
+		
+		button.setLayoutData(data);
+		button.setFont(parent.getFont() );
+		button.setText(label);
+		button.setEnabled(false);
+		button.addSelectionListener(buttonListener );
+		return button;
+	}
+
+	protected String[] getAddButtonLabels() {
+		return new String[] { "Include...", "Exclude..."};
 	}
 
 	protected void doRemove() {
@@ -161,23 +192,13 @@ public class TableFilterComposite extends Composite {
 		// TODO Auto-generated method stub
 		
 	}
-
-	protected void doInclusion() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	protected void doExclusion() {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	/**
-	 * This method initializes databaseTree	
+	 * This method initializes tree	
 	 *
 	 */
-	private void createDatabaseTree() {
-		databaseTree = new Tree(dbgroup, SWT.MULTI);
+	private void createTree() {
+		tree = new Tree(dbgroup, SWT.MULTI);
 	}
 
 	/**
@@ -192,10 +213,14 @@ public class TableFilterComposite extends Composite {
 		gridData2.horizontalSpan = 1;
 		gridData2.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		tableFiltersGroup = new Group( this, SWT.NONE );
-		tableFiltersGroup.setText("Table filters:");
+		tableFiltersGroup.setText(getTableTitle());
 		tableFiltersGroup.setLayout(new FillLayout());
 		createTableFilters();
 		tableFiltersGroup.setLayoutData(gridData2);
+	}
+
+	protected String getTableTitle() {
+		return "Table filters:";
 	}
 
 	/**
@@ -203,26 +228,15 @@ public class TableFilterComposite extends Composite {
 	 *
 	 */
 	private void createTableFilters() {
-		tableFilters = new Table(tableFiltersGroup, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION );
-		tableFilters.setHeaderVisible(true);
-		tableFilters.setLinesVisible(true);
+		rightTable = new Table(tableFiltersGroup, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION );
+		rightTable.setHeaderVisible(true);
+		rightTable.setLinesVisible(true);
 				
-		TableColumn column = new TableColumn(tableFilters, SWT.CENTER, 0);		
-		column.setText("!");
-		column.setWidth(20);
-		
-		column = new TableColumn(tableFilters, SWT.LEFT, 1);
-		column.setText("Catalog");
-		column.setWidth(100);
-		
-		column = new TableColumn(tableFilters, SWT.LEFT, 2);
-		column.setText("Schema");
-		column.setWidth(100);
+		createTableColumns(rightTable);
 
-		column = new TableColumn(tableFilters, SWT.LEFT, 3);
-		column.setText("Table");
-		column.setWidth(100);
+	}
 
+	protected void createTableColumns(Table table) {
 	}
 
 	/**

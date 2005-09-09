@@ -5,14 +5,14 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.dialect.FirebirdDialect;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 import org.hibernate.eclipse.console.model.ITableFilter;
+import org.hibernate.eclipse.console.model.ITypeMapping;
 
 public class ReverseEngineeringDefinitionImpl implements
 		IReverseEngineeringDefinition {
 
-	PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 		
 	public void addPropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.addPropertyChangeListener(pcl);		
@@ -21,16 +21,29 @@ public class ReverseEngineeringDefinitionImpl implements
 	public void removePropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.removePropertyChangeListener(pcl);		
 	}
+	
+	public void addPropertyChangeListener(String property, PropertyChangeListener pcl) {
+		pcs.addPropertyChangeListener(property, pcl);
+	}
+
+	public void removePropertyChangeListener(String property, PropertyChangeListener pcl) {
+		pcs.removePropertyChangeListener(property, pcl);
+	}
 
 	public ITableFilter createTableFilter() {		
 		return new TableFilterImpl();
 	}
 
 	List tableFilters = new ArrayList();
+	private List typeMappings = new ArrayList();
 	
 	public void addTableFilter(ITableFilter filter) {
 		tableFilters.add(filter);
-		pcs.firePropertyChange("tableFilters", null, filter);		
+		firePropertyChange( TABLEFILTER_STRUCTURE, null, filter );		
+	}
+
+	private void firePropertyChange(String property, Object old, Object newValue) {
+		pcs.firePropertyChange(property, old, newValue);
 	}
 
 	public ITableFilter[] getTableFilters() {
@@ -39,7 +52,7 @@ public class ReverseEngineeringDefinitionImpl implements
 
 	public void removeTableFilter(ITableFilter item) {
 		tableFilters.remove(item);
-		pcs.firePropertyChange("tableFilters", item, null);
+		firePropertyChange(TABLEFILTER_STRUCTURE, item, null);
 	}
 
 	public void moveTableFilterDown(ITableFilter item) {
@@ -59,6 +72,21 @@ public class ReverseEngineeringDefinitionImpl implements
 				tableFilters.add(i+shift, tf);
 			}
 		}
-		pcs.firePropertyChange("tableFilters",null, null);
+		firePropertyChange(TABLEFILTER_STRUCTURE, null, null);
 	}
+
+	public ITypeMapping[] getTypeMappings() {
+		return (ITypeMapping[]) typeMappings .toArray(new ITypeMapping[typeMappings.size()]);
+	}
+
+	public ITypeMapping createTypeMapping() {
+		return new TypeMappingImpl();
+	}
+
+	public void addTypeMapping(ITypeMapping typeMapping) {
+		typeMappings.add(typeMapping);
+		firePropertyChange(TYPEMAPPING_STRUCTURE, null, typeMapping);
+	}
+
+
 }

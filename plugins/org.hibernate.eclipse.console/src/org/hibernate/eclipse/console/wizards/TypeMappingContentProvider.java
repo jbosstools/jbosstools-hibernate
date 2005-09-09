@@ -7,20 +7,19 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 
-public class TableFilterContentProvider implements IStructuredContentProvider, PropertyChangeListener {
+public class TypeMappingContentProvider implements IStructuredContentProvider, PropertyChangeListener {
 
-	private final TableViewer tv;
+	private final Viewer tv;
 
-	public TableFilterContentProvider(TableViewer tv) {
+	public TypeMappingContentProvider(Viewer tv) {
 		this.tv = tv;			
 	}
 	
 	public Object[] getElements(Object inputElement) {
-		return (getReverseEngineeringDef( inputElement )).getTableFilters();
+		return (getReverseEngineeringDef( inputElement )).getTypeMappings();
 	}
 
 	private IReverseEngineeringDefinition getReverseEngineeringDef(Object inputElement) {
@@ -33,14 +32,16 @@ public class TableFilterContentProvider implements IStructuredContentProvider, P
 
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		if (oldInput != null) {
-			(getReverseEngineeringDef(oldInput)).removePropertyChangeListener(IReverseEngineeringDefinition.TABLEFILTER_STRUCTURE, this);
+			(getReverseEngineeringDef(oldInput)).removePropertyChangeListener(this);
 		}
 		if (newInput != null) {
-			(getReverseEngineeringDef(newInput)).addPropertyChangeListener(IReverseEngineeringDefinition.TABLEFILTER_STRUCTURE, this);
+			(getReverseEngineeringDef(newInput)).addPropertyChangeListener(this);
 		}		
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {
-		tv.refresh();					
+		if(evt.getPropertyName()==null || evt.getPropertyName().equals(IReverseEngineeringDefinition.TYPEMAPPING_STRUCTURE)) {
+			tv.refresh();	
+		}							
 	}
 }

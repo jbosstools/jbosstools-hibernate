@@ -6,10 +6,12 @@ import org.hibernate.eclipse.graph.model.AssociationViewAdapter;
 import org.hibernate.eclipse.graph.model.ConfigurationViewAdapter;
 import org.hibernate.eclipse.graph.model.PersistentClassViewAdapter;
 import org.hibernate.eclipse.graph.model.PropertyViewAdapter;
+import org.hibernate.eclipse.graph.model.TableViewAdapter;
 import org.hibernate.eclipse.graph.parts.AssociationEditPart;
 import org.hibernate.eclipse.graph.parts.ConfigurationEditPart;
 import org.hibernate.eclipse.graph.parts.PersistentClassEditPart;
 import org.hibernate.eclipse.graph.parts.PropertyEditPart;
+import org.hibernate.eclipse.graph.parts.TableEditPart;
 
 public class HibernateConfigurationPartFactory implements EditPartFactory {
 
@@ -22,8 +24,11 @@ public class HibernateConfigurationPartFactory implements EditPartFactory {
 			return new PropertyEditPart( (PropertyViewAdapter)model );
 		} else if ( model instanceof AssociationViewAdapter) {
 			return new AssociationEditPart( (AssociationViewAdapter) model);
+		} else if ( model instanceof TableViewAdapter ) {
+			return new TableEditPart( (TableViewAdapter) model);
 		}
-			throw new IllegalArgumentException(model.getClass() + " not known by factory");
+		
+		throw new IllegalArgumentException(model.getClass() + " not known by factory");
 	}
 
 }

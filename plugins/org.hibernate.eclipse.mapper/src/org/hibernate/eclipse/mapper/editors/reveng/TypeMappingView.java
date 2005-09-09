@@ -1,12 +1,8 @@
-/**
- * 
- */
-package org.hibernate.eclipse.console.wizards;
+package org.hibernate.eclipse.mapper.editors.reveng;
 
 import java.util.Iterator;
 
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
@@ -20,26 +16,74 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 import org.hibernate.eclipse.console.model.ITableFilter;
+import org.hibernate.eclipse.console.model.ITypeMapping;
+import org.hibernate.eclipse.console.wizards.TreeToTableComposite;
+import org.hibernate.eclipse.console.wizards.TypeMappingCellModifier;
+import org.hibernate.eclipse.console.wizards.TypeMappingContentProvider;
+import org.hibernate.eclipse.console.wizards.TypeMappingLabelProvider;
 import org.hibernate.eclipse.console.workbench.AnyAdaptableLabelProvider;
 import org.hibernate.eclipse.console.workbench.DeferredContentProvider;
 import org.hibernate.eclipse.console.workbench.LazyDatabaseSchema;
-import org.hibernate.eclipse.console.workbench.TableContainer;
-import org.hibernate.mapping.Table;
-import org.hibernate.util.StringHelper;
 
-public abstract class TableFilterView extends TreeToTableComposite {
+public abstract class TypeMappingView extends TreeToTableComposite {
+
+	static private class NullableTextCellEditor extends TextCellEditor {
+		private NullableTextCellEditor(Composite parent) {
+			super( parent );
+		}
+
+		protected void doSetValue(Object value) {
+			if(value==null) { value=""; }
+			super.doSetValue( value );
+		}
+
+		public Object doGetValue() {
+			String str = (String) super.doGetValue();
+			if(str==null || str.trim().length()==0) {
+				return null;
+			} else {
+				return super.doGetValue();
+			}
+		}		
+	}
+	
+	/** CellEditor that works like a texteditor, but returns/accepts Integer values. If the entered string is not parsable it returns null */
+	static private final class IntegerCellEditor extends NullableTextCellEditor {
+		private IntegerCellEditor(Composite parent) {
+			super( parent );
+		}
+
+		protected void doSetValue(Object value) {
+			if(value!=null && value instanceof Integer) {
+				value = ((Integer)value).toString();
+			}			
+			super.doSetValue( value );
+		}
+
+		public Object doGetValue() {
+			String str = (String) super.doGetValue();
+			if(str==null || str.trim().length()==0) {
+				return null;
+			} else {
+				try {
+				return new Integer(Integer.parseInt((String) super.doGetValue()));
+				} catch(NumberFormatException nfe) {
+					return null;
+				}
+			}
+		}
+	}
+
+	public TypeMappingView(Composite parent, int style) {
+		super( parent, style );
+	}
 
 	TreeViewer viewer;
 
 	private TableViewer tableViewer;
 
 	private IReverseEngineeringDefinition revEngDef;
-
-	public TableFilterView(Composite parent, int style) {
-		super( parent, style );
-
-	}
-
+	
 	public void setModel(IReverseEngineeringDefinition revEngDef) {
 		this.revEngDef = revEngDef;
 		tableViewer.setInput( revEngDef );
@@ -47,43 +91,34 @@ public abstract class TableFilterView extends TreeToTableComposite {
 
 	protected void initialize() {
 		super.initialize();
-		tableViewer = createTableFilterViewer();
+		tableViewer = createTypeMappingViewer();
 
 		viewer = new TreeViewer( tree );
 		viewer.setLabelProvider( new AnyAdaptableLabelProvider() );
-
 		viewer.setContentProvider( new DeferredContentProvider() );
 
 		viewer.setInput( null );
-
 	}
 
-	private TableViewer createTableFilterViewer() {
+	private TableViewer createTypeMappingViewer() {
 		TableViewer result = new TableViewer( rightTable );
 		result.setUseHashlookup( true );
-		result.setColumnProperties( new String[] { "inclusion", "catalog",
-				"schema", "name" } );
+		result.setColumnProperties( new String[] { "jdbctype", "hibernatetype",
+				"length", "scale", "precision" } );
 
-		/*
-		 * AutoResizeTableLayout autoResizeTableLayout = new
-		 * AutoResizeTableLayout(result.getTable());
-		 * result.getTable().setLayout(autoResizeTableLayout);
-		 * autoResizeTableLayout.addColumnData(new ColumnWeightData(4));
-		 * autoResizeTableLayout.addColumnData(new ColumnWeightData(40));
-		 * autoResizeTableLayout.addColumnData(new ColumnWeightData(40));
-		 * autoResizeTableLayout.addColumnData(new ColumnWeightData(40));
-		 */
 		CellEditor[] editors = new CellEditor[result.getColumnProperties().length];
-		editors[0] = new CheckboxCellEditor( result.getTable() );
-		editors[1] = new TextCellEditor( result.getTable() );
-		editors[2] = new TextCellEditor( result.getTable() );
-		editors[3] = new TextCellEditor( result.getTable() );
+		editors[0] = new NullableTextCellEditor( result.getTable() );
+		editors[1] = new NullableTextCellEditor( result.getTable() );
+		editors[2] = new IntegerCellEditor( result.getTable() );
+		editors[3] = new IntegerCellEditor( result.getTable() );
+		editors[4] = new IntegerCellEditor( result.getTable() );
 
 		result.setCellEditors( editors );
-		result.setCellModifier( new TableFilterCellModifier( result ) );
-
-		result.setLabelProvider( new TableFilterLabelProvider() );
-		result.setContentProvider( new TableFilterContentProvider( result ) );
+		result.setCellModifier( new TypeMappingCellModifier( result ) );
+		result.setLabelProvider( new TypeMappingLabelProvider() );
+		result.setContentProvider( new TypeMappingContentProvider( result ) );
+		
+		
 		return result;
 	}
 
@@ -97,15 +132,12 @@ public abstract class TableFilterView extends TreeToTableComposite {
 
 	abstract protected String getConsoleConfigurationName();
 
-	protected void doInclusion() {
-		toggle( false );
+
+	ITypeMapping[] getTypeMappingList() {
+		return revEngDef.getTypeMappings();
 	}
 
-	ITableFilter[] getTableFilterList() {
-		return revEngDef.getTableFilters();
-	}
-
-	private void toggle(boolean exclude) {
+	private void doAdd() {
 		ISelection selection = viewer.getSelection();
 
 		if ( !selection.isEmpty() ) {
@@ -113,50 +145,29 @@ public abstract class TableFilterView extends TreeToTableComposite {
 			Iterator iterator = ss.iterator();
 			while ( iterator.hasNext() ) {
 				Object sel = iterator.next();
-				ITableFilter filter = null;
+				ITypeMapping typeMapping = null;
 
-				if ( sel instanceof Table ) {
-					Table table = (Table) sel;
-					filter = revEngDef.createTableFilter();
-					if ( StringHelper.isNotEmpty( table.getName() ) ) {
-						filter.setMatchName( table.getName() );
-					}
-					if ( StringHelper.isNotEmpty( table.getCatalog() ) ) {
-						filter.setMatchCatalog( table.getCatalog() );
-					}
-					if ( StringHelper.isNotEmpty( table.getSchema() ) ) {
-						filter.setMatchSchema( table.getSchema() );
-					}
-					filter.setExclude( Boolean.valueOf( exclude ) );
-				}
-				else if ( sel instanceof TableContainer ) { // assume its a
-															// schema!
-					TableContainer tc = (TableContainer) sel;
-					filter = revEngDef.createTableFilter();
-					filter.setMatchSchema( tc.getName() );
-					filter.setExclude( Boolean.valueOf( exclude ) );
-				}
-				if ( filter != null )
-					revEngDef.addTableFilter( filter );
+				if ( typeMapping != null )
+					revEngDef.addTypeMapping( typeMapping );
 			}
+		} else {
+			ITypeMapping createTypeMapping = revEngDef.createTypeMapping();
+			createTypeMapping.setJDBCType("VARCHAR");
+			createTypeMapping.setHibernateType("string");
+			revEngDef.addTypeMapping(createTypeMapping);
 		}
 	}
 
-	protected void doExclusion() {
-		toggle( true );
-	}
+	
 
 	protected String[] getAddButtonLabels() {
-		return new String[] { "Include...", "Exclude..." };
+		return new String[] { "Add..." };
 	}
 
 	protected void handleAddButtonPressed(int i) {
 		switch (i) {
 		case 0:
-			doInclusion();
-			break;
-		case 1:
-			doExclusion();
+			doAdd();
 			break;
 		default:
 			throw new IllegalArgumentException( i + " not a known button" );
@@ -192,24 +203,32 @@ public abstract class TableFilterView extends TreeToTableComposite {
 	
 	protected void createTableColumns(org.eclipse.swt.widgets.Table table) {
 		TableColumn column = new TableColumn(table, SWT.CENTER, 0);		
-		column.setText("!");
-		column.setWidth(20);
+		column.setText("JDBC Type");
+		column.setWidth(100);
 		
 		column = new TableColumn(table, SWT.LEFT, 1);
-		column.setText("Catalog");
+		column.setText("Hibernate Type");
 		column.setWidth(100);
 		
 		column = new TableColumn(table, SWT.LEFT, 2);
-		column.setText("Schema");
+		column.setText("Length");
 		column.setWidth(100);
 
 		column = new TableColumn(table, SWT.LEFT, 3);
-		column.setText("Table");
+		column.setText("Scale");
+		column.setWidth(100);
+		
+		column = new TableColumn(table, SWT.LEFT, 3);
+		column.setText("Precision");
 		column.setWidth(100);
 	}
-	
-	public void dispose() {
-		tableViewer.setInput(null);
-		super.dispose();
+
+	protected String getTableTitle() {
+		return "Type mappings:";
 	}
+	
+	protected String getTreeTitle() {
+		return "Found types:";
+	}
+	
 }

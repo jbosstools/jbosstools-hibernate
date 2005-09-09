@@ -4,23 +4,24 @@ import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.hibernate.console.ImageConstants;
-import org.hibernate.eclipse.console.ConsolePreferencesConstants;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.eclipse.graph.EntityGraphView;
+import org.hibernate.eclipse.graph.AbstractGraphViewPart;
 
 public class ToggleLayoutAction extends Action {
 
-	EntityGraphView view;	
+	final AbstractGraphViewPart view;
+	final private String pluginKey;	
 
-	public ToggleLayoutAction(EntityGraphView view)
+	public ToggleLayoutAction(AbstractGraphViewPart view, String pluginKey)
 	{
 		super("Automatic Layout", IAction.AS_CHECK_BOX);
 		this.view = view;
+		this.pluginKey = pluginKey;
 		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.LAYOUT));
 		setDisabledImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.LAYOUT));
 		Preferences prefs = HibernateConsolePlugin.getDefault().getPluginPreferences();
-		boolean checked = prefs.getBoolean(ConsolePreferencesConstants.ENTITY_MODEL_LAYOUT);
+		boolean checked = prefs.getBoolean(pluginKey);
 		valueChanged(!checked, false);
 	}
 
@@ -41,7 +42,7 @@ public class ToggleLayoutAction extends Action {
         		"Enable manual layout");
         if (doStore) {
 	        Preferences prefs = HibernateConsolePlugin.getDefault().getPluginPreferences();
-	        prefs.setValue(ConsolePreferencesConstants.ENTITY_MODEL_LAYOUT, value);
+	        prefs.setValue(pluginKey, value);
 	        HibernateConsolePlugin.getDefault().savePluginPreferences();
         }
     }

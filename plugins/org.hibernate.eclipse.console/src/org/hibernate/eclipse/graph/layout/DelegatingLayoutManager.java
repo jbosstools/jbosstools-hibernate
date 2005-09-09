@@ -32,8 +32,12 @@ public class DelegatingLayoutManager implements LayoutManager {
 		this.graphLayoutManager = new GraphLayoutManager( diagram );
 		this.xyLayoutManager = new GraphXYLayout( diagram );
 
-		// use the graph layout manager as the initial delegate
-		this.activeLayoutManager = this.graphLayoutManager;
+		if(diagram.isManualLayoutActive()) {
+			this.activeLayoutManager = xyLayoutManager;
+		} else {
+			this.activeLayoutManager = this.graphLayoutManager;			
+		}
+
 	}
 
 	// ********************* layout manager methods methods

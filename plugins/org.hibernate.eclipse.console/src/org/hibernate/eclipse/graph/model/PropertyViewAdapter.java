@@ -57,7 +57,7 @@ public class PropertyViewAdapter extends Observable {
 	}
 	
 	private void createSingleEndedEnityAssociations() {
-		try { //TODO: we need the consoleconfiguration here to know the exact types
+		try { //TODO: we need the consoleconfiguration here to know the exact types			
 			if ( property.getValue() instanceof Collection ) {
 				Collection collection = (Collection) property.getValue();
 				if(collection.getElement() instanceof OneToMany) {
@@ -71,8 +71,7 @@ public class PropertyViewAdapter extends Observable {
 				}
 			} else if ( property.getType().isEntityType() ) {
 				EntityType et = (EntityType) property.getType();
-				PersistentClassViewAdapter target = configuration
-				.getPersistentClassViewAdapter( et.getAssociatedEntityName() );
+				PersistentClassViewAdapter target = configuration.getPersistentClassViewAdapter( et.getAssociatedEntityName() );
 				PropertyAssociationViewAdapter pava = new PropertyAssociationViewAdapter( clazz, this, target );
 				this.addSourceAssociation( pava );
 				target.addTargetAssociation( pava );

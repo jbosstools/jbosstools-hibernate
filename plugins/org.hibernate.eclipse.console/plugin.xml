@@ -28,6 +28,12 @@
             id="org.hibernate.eclipse.graph.EntityGraphView"
             name="Hibernate Entity Model"/>
       <view
+            category="hibernatecategory"
+            class="org.hibernate.eclipse.graph.RelationalGraphView"
+            icon="icons/hibernate_small_icon.gif"
+            id="org.hibernate.eclipse.graph.RelationalGraphView"
+            name="Hibernate Relational Model"/>
+      <view
             icon="icons/hibernate_small_icon.gif"
             class="org.hibernate.eclipse.console.views.QueryPageTabView"
             category="hibernatecategory"

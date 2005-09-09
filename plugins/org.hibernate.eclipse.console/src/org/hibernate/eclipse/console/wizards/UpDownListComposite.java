@@ -33,7 +33,7 @@ public class UpDownListComposite extends Composite {
 	private Button upButton = null;
 	private Button downButton = null;
 	private Label fillLabel = null;
-	private Button[] addButton;
+	private Button[] addButtons;
 
 	private TableViewer tableView;
 
@@ -129,11 +129,11 @@ public class UpDownListComposite extends Composite {
 		buttons.setLayoutData(gridData2);
 		
 		String[] addButtonLabels = getAddButtonLabels();
-		addButton = new Button[addButtonLabels.length];
+		addButtons = new Button[addButtonLabels.length];
 		for (int i = 0; i < addButtonLabels.length; i++) {
 			String label = addButtonLabels[i];
-			addButton[i] = createButton(buttons, label); 
-			addButton[i].setEnabled(true);
+			addButtons[i] = createButton(buttons, label); 
+			addButtons[i].setEnabled(true);
 		}
 		removeButton = new Button(buttons, SWT.NONE);
 		removeButton.setText("Remove");
@@ -180,8 +180,8 @@ public class UpDownListComposite extends Composite {
 		} else if (button == downButton) {
 			moveSelectionDown(tableView);
 		} else {
-			for (int i = 0; i < addButton.length; i++) {
-				Button but = addButton[i];
+			for (int i = 0; i < addButtons.length; i++) {
+				Button but = addButtons[i];
 				if(button == but) {
 				 handleAddButtonPressed(i);
 				}				
@@ -271,8 +271,8 @@ public class UpDownListComposite extends Composite {
 	 * Update button enablement.
 	 */
 	private void handleTableSelectionChanged() {
-		for (int i = 0; i < addButton.length; i++) {
-			addButton[i].setEnabled(true);
+		for (int i = 0; i < addButtons.length; i++) {
+			addButtons[i].setEnabled(true);
 		}
 		Table builderTable= tableView.getTable();
 		TableItem[] items = builderTable.getSelection();

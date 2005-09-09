@@ -6,23 +6,23 @@ import org.eclipse.ui.IKeyBindingService;
 import org.eclipse.ui.INestableKeyBindingService;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.wst.xml.ui.internal.provisional.StructuredTextEditorXML;
 import org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart;
+import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 import org.hibernate.eclipse.mapper.MapperPlugin;
 import org.hibernate.eclipse.mapper.editors.reveng.RevEngOverviewPage;
-import org.hibernate.eclipse.mapper.factory.ElementAdapterFactory;
-import org.hibernate.eclipse.mapper.model.ReverseEngineeringDefinitionElement;
+import org.hibernate.eclipse.mapper.model.DOMReverseEngineeringDefinition;
 import org.w3c.dom.Document;
 
 public class ReverseEngineeringEditor extends XMLMultiPageEditorPart {
 
 	private StructuredTextEditorXML sourcePage;
-
-	private ReverseEngineeringDefinitionElement reverseEngineeringDefinition;
-
 	private RevEngOverviewPage formPage;
+	private DOMReverseEngineeringDefinition definition;	
 
+	public ReverseEngineeringEditor() {
+		
+	}
 	public void init(IEditorSite site, IEditorInput input)
 			throws PartInitException {
 		super.init( site, input );
@@ -57,30 +57,16 @@ public class ReverseEngineeringEditor extends XMLMultiPageEditorPart {
 		for (int i = 0; i < pageCount; i++) {
 			if ( getEditor( i ) instanceof StructuredTextEditorXML ) {
 				sourcePage = (StructuredTextEditorXML) getEditor( i );
-				reverseEngineeringDefinition = getReverseEngineeringDefinition( sourcePage );
+				IDOMDocument document = getDocument(sourcePage);
+				definition = new DOMReverseEngineeringDefinition(document);				
 			}
 		}
 	}
 
-	private ReverseEngineeringDefinitionElement getReverseEngineeringDefinition(
-			StructuredTextEditorXML sp) {
-		IDOMNode node = getDocumentElement( sp );
-		return (ReverseEngineeringDefinitionElement) ElementAdapterFactory
-				.getDefault().adapt( node );
-	}
-
-	public ReverseEngineeringDefinitionElement getReverseEngineeringDefinition() {
-		return reverseEngineeringDefinition;
-	}
-
-	private IDOMNode getDocumentElement(StructuredTextEditorXML source) {
-		IDOMNode result = null;
+	private IDOMDocument getDocument(StructuredTextEditorXML source) {
 		IDOMDocument document = (IDOMDocument) source
 				.getAdapter( Document.class );
-		if ( document != null ) {
-			result = (IDOMNode) document.getDocumentElement();
-		}
-		return result;
+		return document;
 	}
 
 	protected void pageChange(int newPageIndex) {
@@ -92,6 +78,10 @@ public class ReverseEngineeringEditor extends XMLMultiPageEditorPart {
             }	        
 		}
 		super.pageChange(newPageIndex);
+	}
+	
+	public IReverseEngineeringDefinition getReverseEngineeringDefinition() {
+		return definition;
 	}
 	
 }

@@ -107,6 +107,14 @@
             name="Hibernate reverse engineering editor">
          <contentTypeBinding contentTypeId="org.hibernate.eclipse.mapper.content-type.reveng.xml"/>
       </editor>
+      <editor
+            class="org.hibernate.eclipse.mapper.editors.HibernateCfgXmlEditor"
+            contributorClass="org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditorContributor"
+            icon="icons/hibernate_small_icon.gif"
+            id="org.hibernate.eclipse.mapper.editors.HibernateCfgXmlEditor"
+            name="Hibernate Configuration XML Editor">
+         <contentTypeBinding contentTypeId="org.hibernate.eclipse.mapper.content-type.cfg.xml"/>
+      </editor>
    </extension>
   
     <extension point = "org.eclipse.wst.xml.core.catalogContributions">

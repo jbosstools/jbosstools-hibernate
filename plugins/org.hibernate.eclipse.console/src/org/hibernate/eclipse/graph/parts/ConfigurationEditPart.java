@@ -11,17 +11,17 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-import org.hibernate.eclipse.graph.figures.PersistentClassFigure;
 import org.hibernate.eclipse.graph.layout.DelegatingLayoutManager;
 import org.hibernate.eclipse.graph.model.ConfigurationViewAdapter;
-import org.hibernate.eclipse.graph.model.PersistentClassViewAdapter;
+import org.hibernate.eclipse.graph.model.GraphNode;
 import org.hibernate.eclipse.graph.policy.ConfigurationLayoutEditPolicy;
 
 public class ConfigurationEditPart extends AbstractGraphicalEditPart implements Observer {
 
 	private DelegatingLayoutManager delegatingLayoutManager;
-	private boolean manualLayoutActive;
+	private boolean manualLayoutActive = true;
 
 	public void activate() {
 		super.activate();
@@ -60,8 +60,7 @@ public class ConfigurationEditPart extends AbstractGraphicalEditPart implements 
 	}
 
 	protected void createEditPolicies() {
-	installEditPolicy( EditPolicy.LAYOUT_ROLE,
-				new ConfigurationLayoutEditPolicy() );
+		installEditPolicy( EditPolicy.LAYOUT_ROLE,	new ConfigurationLayoutEditPolicy() );
 	}
 
 	/**
@@ -75,15 +74,13 @@ public class ConfigurationEditPart extends AbstractGraphicalEditPart implements 
 	public boolean resetFigureBounds(boolean updateConstraint)
 	{
 		List tableParts = getChildren();
-		ConfigurationViewAdapter schema = getConfigurationViewAdapter();
 		
 		for (Iterator iter = tableParts.iterator(); iter.hasNext();)
 		{
-			PersistentClassEditPart tablePart = (PersistentClassEditPart) iter.next();
-			//PersistentClassViewAdapter pcva = tablePart.getPersistentClassViewAdapter();
+			GraphicalEditPart nodePart = (GraphicalEditPart) iter.next();
 			
 			// now check whether we can find an entry in the tableToNodesMap
-			Rectangle bounds = tablePart.getFigure().getBounds();
+			Rectangle bounds = nodePart.getFigure().getBounds();
 			if (bounds == null)
 			{
 				// TODO handle this better
@@ -91,7 +88,7 @@ public class ConfigurationEditPart extends AbstractGraphicalEditPart implements 
 			}
 			else
 			{
-				Figure tableFigure = (Figure) tablePart.getFigure();
+				Figure tableFigure = (Figure) nodePart.getFigure();
 				if (tableFigure == null)
 				{
 					return false;
@@ -119,8 +116,8 @@ public class ConfigurationEditPart extends AbstractGraphicalEditPart implements 
 			
 			for (Iterator iter = tableParts.iterator(); iter.hasNext();)
 			{
-				PersistentClassEditPart tablePart = (PersistentClassEditPart) iter.next();
-				PersistentClassFigure persistentClassFigure = (PersistentClassFigure) tablePart.getFigure();
+				GraphNodeEditPart classPart = (GraphNodeEditPart) iter.next();
+				IFigure persistentClassFigure = classPart.getFigure();
 
 				//if we don't find a node for one of the children then we should
 				// continue
@@ -128,7 +125,7 @@ public class ConfigurationEditPart extends AbstractGraphicalEditPart implements 
 					continue;
 
 				Rectangle bounds = persistentClassFigure.getBounds().getCopy();
-				PersistentClassViewAdapter table = tablePart.getPersistentClassViewAdapter();
+				GraphNode table = classPart.getGraphNode();
 				table.setBounds(bounds);
 			}
 
