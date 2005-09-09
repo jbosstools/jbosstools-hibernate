@@ -91,7 +91,9 @@ public abstract class TableFilterView extends TreeToTableComposite {
 		ConsoleConfiguration configuration = KnownConfigurations.getInstance()
 				.find( getConsoleConfigurationName() );
 
-		viewer.setInput( new LazyDatabaseSchema( configuration ) );
+		if(configuration!=null) {
+			viewer.setInput( new LazyDatabaseSchema( configuration ) );
+		}
 
 	}
 

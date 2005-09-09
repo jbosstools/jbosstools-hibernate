@@ -13,10 +13,12 @@ import org.hibernate.eclipse.console.wizards.TableFilterView;
 public class TableFilterFormPart extends RevEngSectionPart {
 
 	private TableFilterView composite;
+	private final ConsoleConfigNamePart configNamePart;
 
 
-	public TableFilterFormPart(Composite body, FormToolkit toolkit) {
+	public TableFilterFormPart(Composite body, FormToolkit toolkit, ConsoleConfigNamePart configNamePart) {
 		super(body,toolkit);
+		this.configNamePart = configNamePart;
 	}
 
 	protected String getSectionTitle() {
@@ -36,7 +38,7 @@ public class TableFilterFormPart extends RevEngSectionPart {
 		composite = new TableFilterView(sectionClient, SWT.NULL) {
 
 			protected String getConsoleConfigurationName() {
-				return "hibernate-adv-labA";
+				return configNamePart.getConsoleConfigName();
 			}			
 		};
 		GridData data = new GridData();

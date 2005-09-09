@@ -15,6 +15,7 @@ public class RevEngOverviewPage extends EditorPart {
 
 	private ManagedForm managedForm;
 	private final ReverseEngineeringEditor reditor;
+	private ConsoleConfigNamePart configNamePart;
 	
 	public RevEngOverviewPage(ReverseEngineeringEditor reditor) {
 		this.reditor = reditor;		
@@ -53,6 +54,7 @@ public class RevEngOverviewPage extends EditorPart {
 		form.getBody().setLayout(layout);
 		
 		createNotificationCounterSection();
+		createConsoleConfigName();
 		createTableFilterSection();
 		createTypeMappingSection();
 		
@@ -68,16 +70,25 @@ public class RevEngOverviewPage extends EditorPart {
 		managedForm.addPart(part);
 	}
 
-	private void createNotificationCounterSection() {
+	private void createConsoleConfigName() {
 		Composite parent = managedForm.getForm().getBody();
+		
+		configNamePart = new ConsoleConfigNamePart(parent, managedForm.getToolkit());
+		
+		managedForm.addPart(configNamePart);
+			
+	}
+	
+	private void createNotificationCounterSection() {
+		/*Composite parent = managedForm.getForm().getBody();
 		
 		CounterFormPart part = new CounterFormPart(parent, managedForm.getToolkit());
 		
 		managedForm.addPart(part);
-		
+		*/
 	}
 	private void createTableFilterSection() {
-		TableFilterFormPart part = new TableFilterFormPart(managedForm.getForm().getBody(), managedForm.getToolkit());
+		TableFilterFormPart part = new TableFilterFormPart(managedForm.getForm().getBody(), managedForm.getToolkit(), configNamePart);
 		managedForm.addPart(part);		
 	}
 
