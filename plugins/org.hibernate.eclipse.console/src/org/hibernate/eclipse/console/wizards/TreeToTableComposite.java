@@ -265,13 +265,13 @@ public class TreeToTableComposite extends Composite {
 		refreshButton
 				.addSelectionListener( new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-						doRefreshDatabaseSchema();					
+						doRefreshTree();					
 					}
 				} );
 	}
 
-	protected void doRefreshDatabaseSchema() {
-		// TODO Auto-generated method stub
+	protected void doRefreshTree() {
+
 		
 	}
 

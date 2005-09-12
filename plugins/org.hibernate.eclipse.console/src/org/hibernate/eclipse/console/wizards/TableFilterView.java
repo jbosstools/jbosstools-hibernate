@@ -87,7 +87,7 @@ public abstract class TableFilterView extends TreeToTableComposite {
 		return result;
 	}
 
-	protected void doRefreshDatabaseSchema() {
+	protected void doRefreshTree() {
 		ConsoleConfiguration configuration = KnownConfigurations.getInstance()
 				.find( getConsoleConfigurationName() );
 
@@ -210,8 +210,7 @@ public abstract class TableFilterView extends TreeToTableComposite {
 		column.setWidth(100);
 	}
 	
-	public void dispose() {
-		tableViewer.setInput(null);
+	public void dispose() {		
 		super.dispose();
 	}
 }

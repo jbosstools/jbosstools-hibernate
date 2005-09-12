@@ -64,15 +64,22 @@ public class ReverseEngineeringDefinitionImpl implements
 	}
 
 	private void move(Object tf, int shift) {
-		int i = tableFilters.indexOf(tf);
+		List list = tableFilters;
+		String prop = TABLEFILTER_STRUCTURE;
+		move( tf, shift, list, prop );
+	}
+
+	private void move(Object tf, int shift, List list, String prop) {
+		int i = list.indexOf(tf);
 		
 		if(i>=0) {
-			if(i+shift<tableFilters.size() && i+shift>=0) { 
-				tableFilters.remove(i);
-				tableFilters.add(i+shift, tf);
+			if(i+shift<list.size() && i+shift>=0) { 
+				list.remove(i);
+				list.add(i+shift, tf);
 			}
 		}
-		firePropertyChange(TABLEFILTER_STRUCTURE, null, null);
+		
+		firePropertyChange(prop, null, null);
 	}
 
 	public ITypeMapping[] getTypeMappings() {
@@ -88,5 +95,15 @@ public class ReverseEngineeringDefinitionImpl implements
 		firePropertyChange(TYPEMAPPING_STRUCTURE, null, typeMapping);
 	}
 
+	public void moveTypeMappingDown(ITypeMapping item) {
+		move(item, 1, typeMappings, TYPEMAPPING_STRUCTURE);		
+	}
 
+	public void moveTypeMappingUp(ITypeMapping item) {
+		move(item, -1, typeMappings, TYPEMAPPING_STRUCTURE);		
+	}
+
+	public void removeTypeMapping(ITypeMapping item) {
+		typeMappings.remove(item);		
+	}
 }

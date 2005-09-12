@@ -57,7 +57,7 @@ final public class TypeMappingCellModifier implements ICellModifier {
 			return tf.getPrecision();
 		}
 		if("jdbctype".equals(property)) {
-			return tf.getPrecision();
+			return tf.getJDBCType();
 		}
 		if("hibernatetype".equals(property)) {
 			return tf.getHibernateType();
