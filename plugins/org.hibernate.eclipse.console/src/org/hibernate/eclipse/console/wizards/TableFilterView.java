@@ -51,7 +51,6 @@ public abstract class TableFilterView extends TreeToTableComposite {
 
 		viewer = new TreeViewer( tree );
 		viewer.setLabelProvider( new AnyAdaptableLabelProvider() );
-
 		viewer.setContentProvider( new DeferredContentProvider() );
 
 		viewer.setInput( null );

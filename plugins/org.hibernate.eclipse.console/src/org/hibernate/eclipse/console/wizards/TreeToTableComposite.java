@@ -1,5 +1,6 @@
 package org.hibernate.eclipse.console.wizards;
 
+import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -17,6 +18,53 @@ import org.eclipse.swt.widgets.Widget;
 
 public class TreeToTableComposite extends Composite {
 
+	static protected class NullableTextCellEditor extends TextCellEditor {
+		public NullableTextCellEditor(Composite parent) {
+			super( parent );
+		}
+
+		protected void doSetValue(Object value) {
+			if(value==null) { value=""; }
+			super.doSetValue( value );
+		}
+
+		public Object doGetValue() {
+			String str = (String) super.doGetValue();
+			if(str==null || str.trim().length()==0) {
+				return null;
+			} else {
+				return super.doGetValue();
+			}
+		}		
+	}
+	
+	/** CellEditor that works like a texteditor, but returns/accepts Integer values. If the entered string is not parsable it returns null */
+	static protected final class IntegerCellEditor extends NullableTextCellEditor {
+		public IntegerCellEditor(Composite parent) {
+			super( parent );
+		}
+
+		protected void doSetValue(Object value) {
+			if(value!=null && value instanceof Integer) {
+				value = ((Integer)value).toString();
+			}			
+			super.doSetValue( value );
+		}
+
+		public Object doGetValue() {
+			String str = (String) super.doGetValue();
+			if(str==null || str.trim().length()==0) {
+				return null;
+			} else {
+				try {
+				return new Integer(Integer.parseInt((String) super.doGetValue()));
+				} catch(NumberFormatException nfe) {
+					return null;
+				}
+			}
+		}
+	}
+	
 	private Group dbgroup = null;
 	private Composite manipulationGroup = null;
 	protected Tree tree = null;

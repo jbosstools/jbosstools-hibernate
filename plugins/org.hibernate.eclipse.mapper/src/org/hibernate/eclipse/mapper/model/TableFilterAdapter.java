@@ -3,13 +3,14 @@
  */
 package org.hibernate.eclipse.mapper.model;
 
+import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.hibernate.eclipse.console.model.ITableFilter;
 import org.w3c.dom.Node;
 
-class TableFilterAdapter extends DOMAdapter implements ITableFilter {
+public class TableFilterAdapter extends DOMAdapter implements ITableFilter {
 
-	public TableFilterAdapter(Node node) {
-		super(node);
+	public TableFilterAdapter(Node node, DOMReverseEngineeringDefinition revEngDef) {
+		super(node, revEngDef);
 	}
 	
 	public void setExclude(Boolean exclude) {
@@ -29,23 +30,26 @@ class TableFilterAdapter extends DOMAdapter implements ITableFilter {
 	}
 
 	public Boolean getExclude() {
-		Node type = node.getAttributes().getNamedItem("exclude");
+		Node type = getNode().getAttributes().getNamedItem("exclude");
 		return type == null ? Boolean.FALSE : Boolean.valueOf(type.getNodeValue());
 	}
 
 	public String getMatchCatalog() {
-		Node type = node.getAttributes().getNamedItem("match-catalog");
+		Node type = getNode().getAttributes().getNamedItem("match-catalog");
 		return type == null ? ".*" : type.getNodeValue();
 	}
 
 	public String getMatchSchema() {
-		Node type = node.getAttributes().getNamedItem("match-schema");
+		Node type = getNode().getAttributes().getNamedItem("match-schema");
 		return type == null ? ".*" : type.getNodeValue();
 	}
 
 	public String getMatchName() {
-		Node type = node.getAttributes().getNamedItem("match-name");
+		Node type = getNode().getAttributes().getNamedItem("match-name");
 		return type == null ? ".*" : type.getNodeValue();	
 	}
 	
+	public void notifyChanged(INodeNotifier notifier, int eventType, Object changedFeature, Object oldValue, Object newValue, int pos) {
+		getModel().tableFilterChanged(notifier);	
+	}
 }

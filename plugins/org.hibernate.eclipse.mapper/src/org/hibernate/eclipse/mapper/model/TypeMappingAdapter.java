@@ -1,22 +1,22 @@
 package org.hibernate.eclipse.mapper.model;
 
+import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.hibernate.eclipse.console.model.ITypeMapping;
 import org.w3c.dom.Node;
 
 public class TypeMappingAdapter extends DOMAdapter implements ITypeMapping {
-
 	
-	public TypeMappingAdapter(Node node) {
-		super( node );
+	public TypeMappingAdapter(Node node, DOMReverseEngineeringDefinition model) {
+		super( node, model );
 	}
 
 	public String getJDBCType() {
-		Node type = node.getAttributes().getNamedItem("jdbc-type");
+		Node type = getNode().getAttributes().getNamedItem("jdbc-type");
 		return type == null ? null : type.getNodeValue();
 	}
 
 	public String getHibernateType() {
-		Node type = node.getAttributes().getNamedItem("hibernate-type");
+		Node type = getNode().getAttributes().getNamedItem("hibernate-type");
 		return type == null ? null : type.getNodeValue();
 	}
 
@@ -26,7 +26,7 @@ public class TypeMappingAdapter extends DOMAdapter implements ITypeMapping {
 	}
 
 	private Integer getInteger(String name) {
-		Node type = node.getAttributes().getNamedItem(name);
+		Node type = getNode().getAttributes().getNamedItem(name);
 		if(type == null) {
 			return null;
 		} else {
@@ -67,4 +67,7 @@ public class TypeMappingAdapter extends DOMAdapter implements ITypeMapping {
 		setAttribute("scale", string==null?null:string.toString(), null);
 	}
 
+	public void notifyChanged(INodeNotifier notifier, int eventType, Object changedFeature, Object oldValue, Object newValue, int pos) {
+		getModel().sqlTypeChanged(notifier);		
+	}
 }

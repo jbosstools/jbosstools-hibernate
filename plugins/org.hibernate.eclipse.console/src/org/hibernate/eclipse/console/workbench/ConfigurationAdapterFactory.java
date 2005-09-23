@@ -16,6 +16,7 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.node.BaseNode;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
@@ -39,6 +40,7 @@ public class ConfigurationAdapterFactory implements IAdapterFactory {
 		map.put(LazyDatabaseSchema.class, new LazyDatabaseSchemaWorkbenchAdapter());
 		map.put(TableContainer.class, new TableContainerWorkbenchAdapter());
 		map.put(Table.class, new TableWorkbenchAdapter());
+		map.put(PrimaryKey.class, new PrimaryKeyWorkbenchAdapter());
 		map.put(Column.class, new ColumnWorkbenchAdapter());				
 		
 		classes = new Class[map.size()];

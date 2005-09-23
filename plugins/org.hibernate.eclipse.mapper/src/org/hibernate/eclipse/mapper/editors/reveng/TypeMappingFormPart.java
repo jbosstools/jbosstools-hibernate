@@ -2,19 +2,21 @@ package org.hibernate.eclipse.mapper.editors.reveng;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.Section;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
+import org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor;
 
 public class TypeMappingFormPart extends RevEngSectionPart {
 
 	private TypeMappingView composite;
+	private final ReverseEngineeringEditor configNamePart;
 
-	public TypeMappingFormPart(Composite parent, FormToolkit toolkit) {
-		super(parent, toolkit);
+	public TypeMappingFormPart(Composite parent, IManagedForm form, ReverseEngineeringEditor configNamePart) {
+		super(parent, form);
+		this.configNamePart=configNamePart;
 	}
 
 	protected String getSectionDescription() {
@@ -25,25 +27,22 @@ public class TypeMappingFormPart extends RevEngSectionPart {
 		return "Type mappings";
 	}
 
-	public Control createClient(FormToolkit toolkit) {
-		Section section = getSection();
-		
-		Composite sectionClient = toolkit.createComposite(section);		
-		sectionClient.setLayout(new GridLayout());
-		
-		composite = new TypeMappingView(sectionClient, SWT.NULL) {
+	public Control createClient(IManagedForm form) {
+		FormToolkit toolkit = form.getToolkit();
+		composite = new TypeMappingView(getSection(), SWT.NULL) {
 
 			protected String getConsoleConfigurationName() {
-				return "hibernate-adv-labA";
+				return configNamePart.getConsoleConfigurationName();
 			}			
 		};
-		GridData data = new GridData();
-		data.heightHint = 400; // makes the table stay reasonable small when large list available TODO: make it relative
-		sectionClient.setLayoutData(data);
-			
+				
+		GridData gd = new GridData(SWT.FILL,SWT.FILL);
+		gd.heightHint = 400;
+		composite.setLayoutData(gd);
+		
 		adaptRecursively( toolkit, composite);
 
-		return sectionClient;
+		return composite;
 	}
 
 	public boolean setFormInput(IReverseEngineeringDefinition reveng) {

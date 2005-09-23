@@ -7,6 +7,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 
@@ -16,8 +17,8 @@ public class CounterFormPart extends RevEngSectionPart {
 	private IReverseEngineeringDefinition def;
 	private PropertyChangeListener listener;
 
-	public CounterFormPart(Composite parent, FormToolkit toolkit) {
-		super(parent,toolkit);
+	public CounterFormPart(Composite parent, IManagedForm form) {
+		super(parent,form);
 	}
 
 	public boolean setFormInput(IReverseEngineeringDefinition def) {
@@ -37,7 +38,8 @@ public class CounterFormPart extends RevEngSectionPart {
 		def.removePropertyChangeListener(listener);
 	}
 	
-	Control createClient(FormToolkit toolkit) {
+	Control createClient(IManagedForm form) {
+		FormToolkit toolkit = form.getToolkit();
 		Composite composite = toolkit.createComposite(getSection());
 		composite.setLayout(new FillLayout());
 		text = toolkit.createText(composite, "Zero");

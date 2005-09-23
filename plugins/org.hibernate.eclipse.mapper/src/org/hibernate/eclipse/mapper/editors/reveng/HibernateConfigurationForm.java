@@ -1,4 +1,4 @@
-package org.hibernate.eclipse.mapper.editors;
+package org.hibernate.eclipse.mapper.editors.reveng;
 
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.layout.GridLayout;

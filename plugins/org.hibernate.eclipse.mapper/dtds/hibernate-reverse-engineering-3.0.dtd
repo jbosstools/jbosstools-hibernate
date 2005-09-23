@@ -1,11 +1,13 @@
 <!-- Hibernate Reverse Engineering DTD.
 
-<!DOCTYPE hibernate-mapping PUBLIC 
+<!DOCTYPE hibernate-reverse-engineering PUBLIC 
     "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN"
     "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
 
 An instance of this XML document may contain misc. overrides used
 when hibernate tools perform reverse engineering.
+
+TODO: document the tags in the DTD
 
 -->
 
@@ -28,20 +30,32 @@ when hibernate tools perform reverse engineering.
 <!ATTLIST sql-type scale CDATA #IMPLIED >
 <!ATTLIST sql-type hibernate-type CDATA #REQUIRED >
 
-<!ELEMENT table (column*, foreign-key*) >
+<!ELEMENT table (primary-key?, column*, foreign-key*) >
 <!ATTLIST table catalog CDATA #IMPLIED >
 <!ATTLIST table schema  CDATA #IMPLIED >
 <!ATTLIST table name    CDATA #REQUIRED >
 
 <!ELEMENT column EMPTY >
 <!ATTLIST column name           CDATA        #REQUIRED >
+<!ATTLIST column jdbc-type      CDATA        #REQUIRED >
+<!ATTLIST column type           CDATA        #IMPLIED >
+<!ATTLIST column property       CDATA        #IMPLIED >
 <!ATTLIST column exclude        (true|false) "false" >
 <!ATTLIST column foreign-table  CDATA        #IMPLIED >
 <!ATTLIST column foreign-column CDATA        #IMPLIED >
 
+<!ELEMENT primary-key (generator?, column*) >
+
+<!ELEMENT generator (param*)>
+<!ATTLIST generator class CDATA #REQUIRED>
+<!ELEMENT param (#PCDATA)>
+<!ATTLIST param name CDATA #REQUIRED>
+
 <!ELEMENT foreign-key (column-ref+) >
 <!ATTLIST foreign-key name          CDATA    #IMPLIED >
 <!ATTLIST foreign-key foreign-table CDATA    #REQUIRED >
+<!--<!ATTLIST foreign-key cardinality   (many-to-one|one-to-many)    #REQUIRED >
+<!ATTLIST foreign-key direction     (bi|uni|none) #REQUIRED > -->
 
 <!ELEMENT column-ref EMPTY >
 <!ATTLIST column-ref local-column   CDATA    #REQUIRED >

@@ -2,21 +2,33 @@ package org.hibernate.eclipse.console.wizards;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Properties;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceProxy;
+import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.ui.actions.FormatAllAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.text.Document;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.IWorkbenchWizard;
+import org.eclipse.ui.PlatformUI;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
@@ -175,54 +187,71 @@ String outputPackage, IPath revengsettings, boolean reveng, final boolean genjav
                     templatePaths = new String[] { templateres.getRawLocation().toOSString() };
                 }
                 
-                final HibernateMappingExporter hbmExporter = new HibernateMappingExporter(cfg, outputdir);
-				hbmExporter.setTemplatePaths(templatePaths);
-				final POJOExporter javaExporter = new POJOExporter(cfg, outputdir); // TODO: expose generics as an option
-				javaExporter.setEjb3(ejb3);
-				javaExporter.setGenerics(ejb3);
-				javaExporter.setTemplatePaths(templatePaths);
-                // Add support for DAO generation
-                final DAOExporter daoExporter = new DAOExporter(cfg,outputdir);
-                daoExporter.setEjb3(ejb3);
-                daoExporter.setGenerics(ejb3);
-                daoExporter.setTemplatePaths(templatePaths);
-				final Exporter cfgExporter = new HibernateConfigurationExporter(cfg, outputdir); 
-				
+                Properties props = new Properties(System.getProperties());
+                String key = "org.hibernate.tool.hbm2x.";
+                props.put(key + "ejb3", "" + ejb3);
+                props.put(key + "outputdir", outputdir.toString());
+                props.put(key + "template_paths", templatePaths);
+                
 				if(genhbm) {
 					monitor.subTask("mapping files");
+					final HibernateMappingExporter hbmExporter = new HibernateMappingExporter();
+					hbmExporter.configure(props);
+					hbmExporter.setOutputDirectory(outputdir);
+					hbmExporter.setConfiguration(cfg);
+					hbmExporter.setTemplatePath(templatePaths);						               
 					hbmExporter.start();
 					monitor.worked(5);
 				}
 				
 				if(genjava) {
 					monitor.subTask("domain code");
+					final POJOExporter javaExporter = new POJOExporter(); // TODO: expose generics as an option
+					javaExporter.setOutputDirectory(outputdir);
+					javaExporter.setConfiguration(cfg);
+					javaExporter.setTemplatePath(templatePaths);	                
+					
+					javaExporter.setEjb3(ejb3);
+					javaExporter.setGenerics(ejb3);
+										
 					javaExporter.start();
 					monitor.worked(6);
 				}
                 
                 if(gendao) {
                     monitor.subTask("DAO code");
+                    final DAOExporter daoExporter = new DAOExporter();
+                    
+                    daoExporter.setOutputDirectory(outputdir);
+					daoExporter.setConfiguration(cfg);
+					daoExporter.setTemplatePath(templatePaths);
+    			    
+                    daoExporter.setEjb3(ejb3);
+                    daoExporter.setGenerics(ejb3);
+                    
                     daoExporter.start();
                     monitor.worked(7);
                 }
 				
 				if(gencfg) {
 					monitor.subTask("hibernate configuration");
+					final Exporter cfgExporter = new HibernateConfigurationExporter();
+					
+					cfgExporter.setOutputDirectory(outputdir);
+					cfgExporter.setConfiguration(cfg);
+					cfgExporter.setTemplatePath(templatePaths);
+					
 					cfgExporter.start();
-monitor.worked(8);
+					
+					monitor.worked(8);
 				}
 				
 				if(gendoc) {
 					monitor.subTask("hibernate doc");
 					new DocExporter(cfg, outputdir).start();
-monitor.worked(9);
+					monitor.worked(9);
 				}
-                try {
-                    resource.refreshLocal(IResource.DEPTH_INFINITE, monitor);
-                } catch (CoreException e) {
-                    HibernateConsolePlugin.getDefault().logErrorMessage("Problem refreshing", e);
-                }
-
+				                
 				monitor.worked(10);
 				return null;
 			}

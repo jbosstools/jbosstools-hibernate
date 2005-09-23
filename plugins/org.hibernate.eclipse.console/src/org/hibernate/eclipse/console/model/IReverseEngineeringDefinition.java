@@ -6,6 +6,7 @@ public interface IReverseEngineeringDefinition {
 
 	public static final String TABLEFILTER_STRUCTURE = "tableFilterStructure";
 	public static final String TYPEMAPPING_STRUCTURE = "typeMappingStructure";
+	public static final String TABLES_STRUCTURE = "tablesStructure";
 	
 
 	void addPropertyChangeListener(PropertyChangeListener pcl);
@@ -26,5 +27,9 @@ public interface IReverseEngineeringDefinition {
 	void addTypeMapping(ITypeMapping typeMapping);
 	void moveTypeMappingDown(ITypeMapping item);
 	void moveTypeMappingUp(ITypeMapping item);
+	
+	IRevEngTable[] getTables();
+	IRevEngTable createTable();
+	void addTable(IRevEngTable retable);
 		
 }

@@ -5,6 +5,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.eclipse.console.model.IRevEngTable;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 import org.hibernate.eclipse.console.model.ITableFilter;
 import org.hibernate.eclipse.console.model.ITypeMapping;
@@ -105,5 +106,17 @@ public class ReverseEngineeringDefinitionImpl implements
 
 	public void removeTypeMapping(ITypeMapping item) {
 		typeMappings.remove(item);		
+	}
+
+	public IRevEngTable[] getTables() {
+		return new IRevEngTable[0];
+	}
+
+	public IRevEngTable createTable() {
+		return null;
+	}
+
+	public void addTable(IRevEngTable retable) {
+		
 	}
 }

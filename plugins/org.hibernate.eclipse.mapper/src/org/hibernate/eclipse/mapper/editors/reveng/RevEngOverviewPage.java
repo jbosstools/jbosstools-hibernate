@@ -1,107 +1,119 @@
 package org.hibernate.eclipse.mapper.editors.reveng;
 
-import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.forms.ManagedForm;
+import org.eclipse.ui.forms.IManagedForm;
+import org.eclipse.ui.forms.events.HyperlinkEvent;
+import org.eclipse.ui.forms.events.IHyperlinkListener;
 import org.eclipse.ui.forms.widgets.ColumnLayout;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.FormText;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.eclipse.ui.part.EditorPart;
+import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.ui.forms.widgets.TableWrapData;
+import org.eclipse.ui.forms.widgets.TableWrapLayout;
 import org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor;
 
-public class RevEngOverviewPage extends EditorPart {
+public class RevEngOverviewPage extends RevEngFormEditorPart {
 
-	private ManagedForm managedForm;
+	public static final String PART_ID = "overview";
+	
+	public RevEngOverviewPage(ReverseEngineeringEditor reditor) {
+		super(reditor, PART_ID, "Overview");
+		this.reditor = reditor;
+	}
+	
 	private final ReverseEngineeringEditor reditor;
 	private ConsoleConfigNamePart configNamePart;
 	
-	public RevEngOverviewPage(ReverseEngineeringEditor reditor) {
-		this.reditor = reditor;		
-	}
-	
-	public void doSave(IProgressMonitor monitor) {
-		
-	}
-
-	public void doSaveAs() {
-
-	}
-
-	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
-		setSite(site);
-		//TODO:setup connection to input		
-	}
-
-	public boolean isDirty() {
-		return false;
-	}
-
-	public boolean isSaveAsAllowed() {
-		return false;
-	}
-
-	public void createPartControl(Composite parent) {
-		managedForm = new ManagedForm(parent);
-		ScrolledForm form = managedForm.getForm();
-		form.setText("Overview");
-		
-		/*TableWrapLayout layout = new TableWrapLayout();
-		layout.numColumns = 2;*/
+	public void createFormContent(IManagedForm parent) {
+		ScrolledForm form = parent.getForm();
+				
 		ColumnLayout layout = new ColumnLayout();
+		layout.maxNumColumns = 2;
 		
 		form.getBody().setLayout(layout);
 		
-		createNotificationCounterSection();
 		createConsoleConfigName();
-		createTableFilterSection();
-		createTypeMappingSection();
+		createContentsSection();
 		
-		managedForm.setInput(reditor.getReverseEngineeringDefinition());
-		
-		//updateTableFiltersTable(reditor.getReverseEngineeringDefinition());
-	}
-
-	private void createTypeMappingSection() {
-		Composite parent = managedForm.getForm().getBody();
-		
-		TypeMappingFormPart part = new TypeMappingFormPart(parent, managedForm.getToolkit());
-		managedForm.addPart(part);
+		getManagedForm().setInput(reditor.getReverseEngineeringDefinition());
+				
 	}
 
 	private void createConsoleConfigName() {
-		Composite parent = managedForm.getForm().getBody();
+		Composite parent = getManagedForm().getForm().getBody();
+				
+		configNamePart = new ConsoleConfigNamePart(parent, getManagedForm(), reditor);
 		
-		configNamePart = new ConsoleConfigNamePart(parent, managedForm.getToolkit());
+		//GridData gd = new GridData(GridData.FILL_HORIZONTAL|GridData.VERTICAL_ALIGN_BEGINNING);
+		//configNamePart.getSection().setLayoutData(gd);
 		
-		managedForm.addPart(configNamePart);
+		getManagedForm().addPart(configNamePart);
 			
 	}
 	
-	private void createNotificationCounterSection() {
-		/*Composite parent = managedForm.getForm().getBody();
-		
-		CounterFormPart part = new CounterFormPart(parent, managedForm.getToolkit());
-		
-		managedForm.addPart(part);
-		*/
-	}
-	private void createTableFilterSection() {
-		TableFilterFormPart part = new TableFilterFormPart(managedForm.getForm().getBody(), managedForm.getToolkit(), configNamePart);
-		managedForm.addPart(part);		
-	}
-
-	
-
-	public void setFocus() {
-		managedForm.getForm().setFocus();
+	private Section createStaticSection(FormToolkit toolkit, Composite parent, String text) {
+		Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR);
+		section.clientVerticalSpacing = 4;
+		section.setText(text);
+		return section;
 	}
 	
-	public void dispose() {
-		managedForm.dispose();
-		super.dispose();
+	private void createContentsSection() {
+		String sectionTitle;
+		sectionTitle = "Contents";
+		Section section = createStaticSection(
+							getManagedForm().getToolkit(), 
+							getManagedForm().getForm().getBody(), 
+							sectionTitle);
+	
+		Composite container = getManagedForm().getToolkit().createComposite(section, SWT.NONE);
+		TableWrapLayout layout = new TableWrapLayout();
+		layout.leftMargin = layout.rightMargin = layout.topMargin = layout.bottomMargin = 0;
+		container.setLayout(layout);
+		container.setLayoutData(new TableWrapData(TableWrapData.FILL_GRAB));
+		
+		FormText text = createClient(container, "<form><p>The content of the reveng.xml is made up of three sections:</p><li style=\"image\" value=\"page\" bindent=\"5\"><a href=\"typemappings\">Type Mappings</a>: lists the mappings from a JDBC/SQL type to Hibernate type.</li><li style=\"image\" value=\"page\" bindent=\"5\"><a href=\"tablefilter\">Table filters</a>: lists which tables that should be included or excluded during reverse engineering.</li><li style=\"image\" value=\"page\" bindent=\"5\"><a href=\"tables\">Tables &amp; Columns</a>: explicitly set properties for tables and columns.</li></form>", getManagedForm().getToolkit());
+		//text.setImage("page", EclipseImages.getImage(ImageConstants.)); //$NON-NLS-1$
+		
+		section.setClient(container);
+		//section.setLayoutData(new TableWrapData(TableWrapData.FILL_GRAB));
+		//section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL,GridData.FILL_VERTICAL));
+	
+		//getManagedForm().addPart(s);		
+	}
+	
+	private FormText createClient(Composite section, String content, FormToolkit toolkit) {
+		FormText text = toolkit.createFormText(section, true);
+		try {
+			text.setText(content, true, false);
+		} catch (SWTException e) {
+			text.setText(e.getMessage(), false, false);
+		}
+		section.setLayoutData(new TableWrapData(TableWrapData.FILL_GRAB));
+		text.addHyperlinkListener(new IHyperlinkListener() {
+		
+			public void linkEntered(HyperlinkEvent e) {}
+
+			public void linkExited(HyperlinkEvent e) {}
+
+			public void linkActivated(HyperlinkEvent e) {
+				String href = (String) e.getHref();
+				getEditor().setActivePage(href);				
+			}
+		});
+		return text;
 	}
 
+	protected ReverseEngineeringEditor getRevEngEditor() {
+		return reditor;
+	}
+
+	public String getConsoleConfigName() {
+		return configNamePart.getConsoleConfigName();
+	}
 	
 }

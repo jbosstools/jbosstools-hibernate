@@ -7,8 +7,6 @@ import java.util.Observable;
 
 import org.eclipse.swt.graphics.Image;
 import org.hibernate.HibernateException;
-import org.hibernate.console.ImageConstants;
-import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.workbench.HibernateWorkbenchHelper;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.OneToMany;

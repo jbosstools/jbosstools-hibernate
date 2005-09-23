@@ -10,7 +10,7 @@ public class UnknownNodeAdapter implements INodeAdapter {
 	private INodeAdapterFactory factory;
 	protected final DOMReverseEngineeringDefinition observer;
 
-	UnknownNodeAdapter(INodeAdapterFactory factory, DOMReverseEngineeringDefinition revEngDefinition) {
+	public UnknownNodeAdapter(INodeAdapterFactory factory, DOMReverseEngineeringDefinition revEngDefinition) {
 		this.factory = factory;
 		this.observer = revEngDefinition;
 	}

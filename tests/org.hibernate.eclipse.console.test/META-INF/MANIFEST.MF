@@ -19,6 +19,7 @@ Require-Bundle: org.hibernate.eclipse.console,
  org.eclipse.ui.ide,
  org.hibernate.eclipse,
  org.hibernate.eclipse.help,
- org.hibernate.eclipse.mapper
+ org.hibernate.eclipse.mapper,
+ org.eclipse.jface.text
 Eclipse-AutoStart: true
 Bundle-Activator: org.hibernate.eclipse.console.HibernateConsoleTestPlugin

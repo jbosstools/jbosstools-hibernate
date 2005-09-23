@@ -1,7 +1,10 @@
 package org.hibernate.eclipse.mapper.editors.reveng;
 
+import org.eclipse.jface.viewers.deferred.SetModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.forms.IManagedForm;
+import org.eclipse.ui.forms.ManagedForm;
 import org.eclipse.ui.forms.SectionPart;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
@@ -12,8 +15,8 @@ import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 
 public abstract class RevEngSectionPart extends SectionPart {
 
-	public RevEngSectionPart(Composite parent, FormToolkit toolkit) {
-		super(parent, toolkit, Section.DESCRIPTION|ExpandableComposite.TWISTIE|ExpandableComposite.EXPANDED|ExpandableComposite.TITLE_BAR);
+	public RevEngSectionPart(Composite parent, IManagedForm form) {
+		super(parent, form.getToolkit(), Section.DESCRIPTION|/*ExpandableComposite.TWISTIE|*/ExpandableComposite.EXPANDED|ExpandableComposite.TITLE_BAR);
 		
 		getSection().addExpansionListener(new ExpansionAdapter() {
 			public void expansionStateChanged(ExpansionEvent e) {
@@ -28,7 +31,7 @@ public abstract class RevEngSectionPart extends SectionPart {
 		getSection().setText(getSectionTitle());
 		getSection().setDescription(getSectionDescription());
 		
-		getSection().setClient(createClient(toolkit));
+		getSection().setClient(createClient(form));
 	}
 
 	abstract protected String getSectionDescription();
@@ -41,7 +44,7 @@ public abstract class RevEngSectionPart extends SectionPart {
 		getSection().setLayoutData(td);*/
 	}
 
-	abstract Control createClient(FormToolkit toolkit);
+	abstract Control createClient(IManagedForm form);
 
 	final public boolean setFormInput(Object input) {
 		if(input instanceof IReverseEngineeringDefinition) {
