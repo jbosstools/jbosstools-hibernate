@@ -151,9 +151,22 @@ public class DynamicQueryTranslatorView extends ViewPart {
 					}
 					return str.toString();
 				} catch(Throwable t) {
-					StringWriter sw = new StringWriter();
-					t.printStackTrace(new PrintWriter(sw));					
-					return sw.getBuffer().toString();
+					//StringWriter sw = new StringWriter();
+					StringBuffer msgs = new StringBuffer();
+					
+					Throwable cause = t;
+					while(cause!=null) {
+						msgs.append(t);
+						if(cause.getCause()==cause) {
+							cause=null;
+						} else {							
+							cause = cause.getCause();
+							if(cause!=null) msgs.append("\nCaused by:\n");
+						}
+					}
+					//	t.printStackTrace(new PrintWriter(sw));					
+					//return sw.getBuffer().toString();
+					return msgs.toString();
 				}
 				
 			}
