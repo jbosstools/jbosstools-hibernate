@@ -36,9 +36,8 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 	private IPath[] mappings;
 	private IPath[] customClasspath;
 
-	public EclipseConsoleConfigurationPreferences(String configName, String entityResolver, IPath cfgFile, IPath propertyFilename, IPath[] mappings, IPath[] classpaths) {
-		super(configName);
-		this.entityResolverName = entityResolver;
+	public EclipseConsoleConfigurationPreferences(String configName, boolean annotations, String entityResolver, IPath cfgFile, IPath propertyFilename, IPath[] mappings, IPath[] classpaths) {
+		super(configName, annotations, entityResolver);		
 		this.cfgFile = cfgFile;
 		this.propertyFilename = propertyFilename;
 		this.mappings = mappings;

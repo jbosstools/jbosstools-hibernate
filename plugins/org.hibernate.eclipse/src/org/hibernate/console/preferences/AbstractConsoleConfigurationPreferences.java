@@ -28,8 +28,10 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 	private boolean useAnnotations = false;
 	protected String entityResolverName = null;
 	
-	public AbstractConsoleConfigurationPreferences(String name) {
+	public AbstractConsoleConfigurationPreferences(String name, boolean annotations, String entityResolver) {
 		setName(name);
+		useAnnotations = annotations;
+		entityResolverName = entityResolver;
 	}
 	
 	protected AbstractConsoleConfigurationPreferences() {

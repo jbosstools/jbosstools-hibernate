@@ -70,12 +70,13 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 		final String entityResolver = confPage.getEntityResolverClassName();
 		final IPath propertyFile = confPage.getPropertyFilePath();
 		final IPath fileName = confPage.getConfigurationFilePath();
+		final boolean annotations = confPage.useAnnotations();
 		final IPath[] mappings = confPage.getMappingFiles();
 		final IPath[] classpaths = confPage.getClassPath();
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
-					createConsoleConfiguration(confPage.getOldConfiguration(), configName, entityResolver, propertyFile, fileName, mappings, classpaths, monitor);
+					createConsoleConfiguration(confPage.getOldConfiguration(), configName, annotations, entityResolver, propertyFile, fileName, mappings, classpaths, monitor);
 				} catch (CoreException e) {
 					throw new InvocationTargetException(e);
 				} finally {
@@ -105,13 +106,13 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 	static private void createConsoleConfiguration(
 			EclipseConsoleConfiguration oldConfig,
 			String configName,
-			String entityResolver, IPath propertyFilename,
+			boolean annotations, String entityResolver, IPath propertyFilename,
 			IPath cfgFile, IPath[] mappings, IPath[] classpaths, IProgressMonitor monitor)
 		throws CoreException {
 
 		monitor.beginTask("Configuring Hibernate Console" + propertyFilename, IProgressMonitor.UNKNOWN);
 								
-		ConsoleConfigurationPreferences ccp = new EclipseConsoleConfigurationPreferences(configName, entityResolver, cfgFile, propertyFilename, mappings, classpaths);
+		ConsoleConfigurationPreferences ccp = new EclipseConsoleConfigurationPreferences(configName, annotations, entityResolver, cfgFile, propertyFilename, mappings, classpaths);
 		
 		final ConsoleConfiguration cfg = new EclipseConsoleConfiguration(ccp);
 			

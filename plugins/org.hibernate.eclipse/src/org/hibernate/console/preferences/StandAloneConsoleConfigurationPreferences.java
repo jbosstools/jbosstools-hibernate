@@ -28,7 +28,7 @@ public class StandAloneConsoleConfigurationPreferences extends AbstractConsoleCo
 	private File[] customClasspath;	
 
 	public StandAloneConsoleConfigurationPreferences(String name, File xmlconfig, File propertiesFile, File[] mappingFiles, File[] customClasspath) {
-		super(name);
+		super(name, false, null);
 		this.cfgFile = xmlconfig;
 		this.propertyFilename = propertiesFile;
 		this.mappings = mappingFiles;

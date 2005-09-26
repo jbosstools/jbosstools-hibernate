@@ -43,6 +43,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -68,7 +69,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	private Text configurationFileText;
 	private Text configurationNameText;
 	private EclipseConsoleConfiguration oldConfiguaration = null;
-	//private Button enableAnnotations; 
+	private Button enableAnnotations; 
 	
 	private Text entityResolverClassNameText;
 	
@@ -169,7 +170,19 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			}
 		});
 		
-		//label = new Label(container, SWT.NULL);		
+		label = new Label(container, SWT.NULL);
+		enableAnnotations = new Button(container, SWT.CHECK);
+		enableAnnotations.setText("Enable hibernate ejb3/annotations (requires running eclipse with JDK 5)");
+		enableAnnotations.addSelectionListener(new SelectionListener() {
+		
+			public void widgetDefaultSelected(SelectionEvent e) {
+				dialogChanged();
+			}
+		
+			public void widgetSelected(SelectionEvent e) {
+				dialogChanged();		
+			}
+		});		
 				
 		UpDownListComposite composite = buildMappingFileTable(container);
 		gd = createGridData();
@@ -358,6 +371,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 				if(prefs.getMappings()!=null) mappingFilesViewer.add(prefs.getMappings(),false);
 				if(prefs.getCustomClasspath()!=null) classPathViewer.add(prefs.getCustomClasspath(),false);
 				if(prefs.getEntityResolverName()!=null) entityResolverClassNameText.setText(prefs.getEntityResolverName());
+				enableAnnotations.setSelection(prefs.useAnnotations());
 				
 				oldConfiguaration = cc;
 			}
@@ -557,6 +571,10 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 
 	public String getEntityResolverClassName() {
 		return entityResolverClassNameText.getText();
+	}
+
+	public boolean useAnnotations() {
+		return enableAnnotations.getSelection();
 	}
 
 }

@@ -196,7 +196,7 @@ String outputPackage, IPath revengsettings, boolean reveng, final boolean genjav
 				if(genhbm) {
 					monitor.subTask("mapping files");
 					final HibernateMappingExporter hbmExporter = new HibernateMappingExporter();
-					hbmExporter.configure(props);
+					hbmExporter.setProperties(props);
 					hbmExporter.setOutputDirectory(outputdir);
 					hbmExporter.setConfiguration(cfg);
 					hbmExporter.setTemplatePath(templatePaths);						               
