@@ -106,7 +106,7 @@ public class DriverClassHelpers {
         addDriverAndURLS("org.hibernate.dialect.DB2Dialect", "COM.ibm.db2.jdbc.app.DB2Driver",
                           new String[] { "jdbc:db2:test", "jdbc:db2:<name>" });
         
-        addDriverAndURLS("org.hibernate.dialect.DB2400Dialect", "COM.ibm.db2.jdbc.app.DB2Driver",
+        addDriverAndURLS("org.hibernate.dialect.DB2400Dialect", "com.ibm.as400.access.AS400JDBCDriver",
                 new String[] { "jdbc:as400://<systemname>", "jdbc:db2:<name>" });
         
         addDriverAndURLS("org.hibernate.dialect.DerbyDialect", "org.apache.derby.jdbc.EmbeddedDriver",
