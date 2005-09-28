@@ -187,11 +187,7 @@ String outputPackage, IPath revengsettings, boolean reveng, final boolean genjav
                     templatePaths = new String[] { templateres.getRawLocation().toOSString() };
                 }
                 
-                Properties props = new Properties(System.getProperties());
-                String key = "org.hibernate.tool.hbm2x.";
-                props.put(key + "ejb3", "" + ejb3);
-                props.put(key + "outputdir", outputdir.toString());
-                props.put(key + "template_paths", templatePaths);
+                Properties props = new Properties();
                 
 				if(genhbm) {
 					monitor.subTask("mapping files");
