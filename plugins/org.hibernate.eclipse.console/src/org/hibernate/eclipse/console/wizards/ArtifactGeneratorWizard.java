@@ -18,6 +18,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.ui.actions.FormatAllAction;
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.text.Document;
@@ -67,6 +68,11 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 	 */
 	public ArtifactGeneratorWizard() {
 		super();
+		IDialogSettings ds = HibernateConsolePlugin.getDefault().getDialogSettings().getSection(this.getClass().getName());
+		if(ds==null) {
+			ds = ds.addNewSection(this.getClass().getName());
+		} 
+		setDialogSettings(ds);
         setDefaultPageImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.NEW_WIZARD) );
 		setNeedsProgressMonitor(true);
 	}
@@ -86,6 +92,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 	 * using wizard as execution context.
 	 */
 	public boolean performFinish() {
+		page.saveSettings();		
         final String outputPackage = page.getOutputPackage();
         final IPath output = page.getOutputDirectory();
         
@@ -146,13 +153,14 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 		String configName, IPath output,
 String outputPackage, IPath revengsettings, boolean reveng, final boolean genjava, final boolean gendao, final boolean genhbm, final boolean gencfg, final IProgressMonitor monitor, boolean preferBasicCompositeids, IPath templateDir, final boolean ejb3, final boolean gendoc)
 		throws CoreException {
+				
 		// create a sample file
 		monitor.beginTask("Generating artifacts for " + configName, 10);
 		
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		final IResource resource = root.findMember(output);
         final IResource templateres = root.findMember(templateDir);
-		final IResource revengres = root.findMember(revengsettings);
+		final IResource revengres = revengsettings==null?null:root.findMember(revengsettings);
 		/*if (!resource.exists() || !(resource instanceof IContainer) ) {
 			throwCoreException("Output directory \"" + configName + "\" does not exist.");
 		}*/
@@ -167,7 +175,7 @@ String outputPackage, IPath revengsettings, boolean reveng, final boolean genjav
 			configurableNamingStrategy.setPackageName(outputPackage);
 			
 			res = configurableNamingStrategy;
-			if(revengsettings!=null) {
+			if(revengres!=null) {
 				File file = revengres.getRawLocation().toFile();
 				OverrideRepository repository = new OverrideRepository();
 				repository.addFile(file);

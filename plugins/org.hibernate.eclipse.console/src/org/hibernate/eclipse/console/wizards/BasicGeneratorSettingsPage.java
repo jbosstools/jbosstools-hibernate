@@ -4,6 +4,8 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceProxy;
+import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -281,6 +283,8 @@ public class BasicGeneratorSettingsPage extends WizardPage {
             }
 		}
 		
+		loadSettings();
+		
 	}
 
 
@@ -322,6 +326,14 @@ public class BasicGeneratorSettingsPage extends WizardPage {
                 return;
             } 
         }
+        
+        if(reverseEngineeringSettings.getText().trim().length()>0) {
+        	msg = checkFile(getReverseEngineeringSettingsFile(), "reveng.xml");
+        	if(msg!=null) {
+        		updateStatus(msg);
+        		return;
+        	}
+        }
 
         if(useOwnTemplates.isSelected() ) {
             msg = checkDirectory(getTemplateDirectory(), "template directory");
@@ -329,28 +341,30 @@ public class BasicGeneratorSettingsPage extends WizardPage {
                 updateStatus(msg);
                 return;
             } else {
-                IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(getTemplateDirectory() );
+            	// imprecise and inefficient to check recursively all for .vm
+                /*IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(getTemplateDirectory() );
                 IResource[] files = new IFile[0];
+                boolean found = false;
+                
                 if(resource.getType() == IResource.FOLDER) {
                     try {
-                        files = ( (IFolder)resource).members();
+                        found = ( (IFolder)resource).accept(new IResourceProxyVisitor() {
+						
+							public boolean visit(IResourceProxy proxy) throws CoreException {								
+								return false;
+							}
+						
+						});
                     } catch (CoreException e) {
                         // noop
                     }
                 }
                 
-                boolean found = false;
-                for (int i = 0; i < files.length; i++) {
-                    if(files[i].getType() == IResource.FILE && files[i].getName().endsWith(".vm") ) {
-                        found = true;
-                        break;
-                    }
-                }
                 if(!found) {
                     setMessage("No templates (*.vm) found in template directory", IMessageProvider.WARNING);
                 } else {
                     setMessage(null);
-                }
+                }*/
             }
         } else {
             setMessage(null);
@@ -377,6 +391,20 @@ public class BasicGeneratorSettingsPage extends WizardPage {
             return name + " does not exist";
         }
         return null;
+    }
+    
+    protected String checkFile(IPath path, String name) {
+        IResource res= ResourcesPlugin.getWorkspace().getRoot().findMember(path);
+        if (res != null) {
+            int resType= res.getType();
+            if (resType == IResource.FILE) {
+                return null;
+            } else {
+            	return name + " must be a file";
+            }
+        } else {
+            return name + " does not exist";
+        }
     }
     
     private void updateStatus(String message) {
@@ -480,5 +508,39 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 	public boolean isGenerateDoc() {
 		return generatedocs.isSelected();
 	}
+
+
+	public void saveSettings() {
+		getDialogSettings().put("outputdir", outputdir.getText());
+		getDialogSettings().put("schema2hbm", isReverseEngineerEnabled());
+		getDialogSettings().put("revengfile", reverseEngineeringSettings.getText());
+		getDialogSettings().put("templatepathenabled", useOwnTemplates.isSelected());		
+		getDialogSettings().put("configurationname", getConfigurationName());
+		getDialogSettings().put("hbm2cfgxml", isGenerateCfg());
+		getDialogSettings().put("ejb3", isEJB3Enabled());
+		getDialogSettings().put("hbm2dao", isGenerateDao());
+		getDialogSettings().put("hbm2doc", isGenerateDoc());
+		getDialogSettings().put("hbm2java", isGenerateJava());
+		getDialogSettings().put("hbm2hbmxml", isGenerateMappings());
+		getDialogSettings().put("package", getOutputPackage());
+		getDialogSettings().put("templatepath", templatedir.getText());				
+	}
     
+	public void loadSettings() {
+		if(getDialogSettings().get("outputdir")!=null) {
+			outputdir.setText(getDialogSettings().get("outputdir"));
+			reverseengineer.setSelection(getDialogSettings().getBoolean("schema2hbm"));
+			reverseEngineeringSettings.setText(getDialogSettings().get("revengfile"));
+			useOwnTemplates.setSelection(getDialogSettings().getBoolean("templatepathenabled"));
+			consoleConfigurationName.setText(getDialogSettings().get("configurationname"));
+			generatecfgfile.setSelection(getDialogSettings().getBoolean("hbm2cfgxml"));
+			enableEJB3annotations.setSelection(getDialogSettings().getBoolean("ejb3"));
+			generatedao.setSelection(getDialogSettings().getBoolean("hbm2dao"));
+			generatedocs.setSelection(getDialogSettings().getBoolean("hbm2doc"));
+			generatejava.setSelection(getDialogSettings().getBoolean("hbm2java"));
+			generatemappings.setSelection(getDialogSettings().getBoolean("hbm2hbmxml"));
+			packageName.setText(getDialogSettings().get("package"));
+			templatedir.setText(getDialogSettings().get("templatepath"));
+		}
+	}
 }
