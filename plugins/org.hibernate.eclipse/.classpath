@@ -30,6 +30,9 @@
 	<classpathentry exported="true" kind="lib" path="lib/tools/velocity-1.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/velocity-tools-generic-1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/bsh-core-2.0b4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/annotations/ejb3-persistence.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/annotations/hibernate-annotations.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/annotations/lucene-1.4.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="build/eclipse"/>

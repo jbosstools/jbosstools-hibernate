@@ -21,10 +21,10 @@
          
         <delete failonerror="no">
 	     <fileset dir="lib">
-	       <include name="**/*"/>
-           <exclude name="bsh-core-2.0b4.jar"/>     
-           <exclude name="annotations"/>
-    	   <exclude name="CVS"/>
+               <exclude name="bsh-core-2.0b4.jar"/>     
+               <exclude name="annotations/*"/>
+               <exclude name="CVS"/>
+            <include name="**/*"/>
     	 </fileset>
         </delete>
         

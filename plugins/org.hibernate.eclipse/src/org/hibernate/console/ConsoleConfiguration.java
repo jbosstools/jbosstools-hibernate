@@ -5,6 +5,10 @@
 package org.hibernate.console;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.sql.Driver;
@@ -17,6 +21,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.dom4j.DocumentException;
+import org.dom4j.Node;
+import org.dom4j.io.DOMWriter;
+import org.hibernate.HibernateException;
+import org.hibernate.MappingException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -28,7 +37,10 @@ import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.util.ReflectHelper;
 import org.hibernate.util.StringHelper;
+import org.hibernate.util.XMLHelper;
+import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 
 public class ConsoleConfiguration implements ExecutionContextHolder {
 
@@ -104,15 +116,18 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 					if(properties!=null) {
 						localCfg = localCfg.setProperties(properties);
 					}
+					EntityResolver entityResolver = XMLHelper.DEFAULT_DTD_RESOLVER;
 					if(StringHelper.isNotEmpty(prefs.getEntityResolverName())) {
 						try {
-							localCfg.setEntityResolver((EntityResolver) ReflectHelper.classForName(prefs.getEntityResolverName()).newInstance());
+							entityResolver = (EntityResolver) ReflectHelper.classForName(prefs.getEntityResolverName()).newInstance();
 						} catch (Exception c) {
 							throw new HibernateConsoleRuntimeException("Could not configure entity resolver " + prefs.getEntityResolverName(), c);
 						}
 					}
+					localCfg.setEntityResolver(entityResolver);
+					
 					if (prefs.getConfigXMLFile() != null) {
-						localCfg = localCfg.configure(prefs.getConfigXMLFile() );
+						localCfg = loadConfigurationXML( localCfg, includeMappings, entityResolver );
 					}
 					
 					// here both setProperties and configxml have had their chance to tell which databasedriver is needed. 
@@ -136,6 +151,62 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		return result;
 	}
 
+	private Configuration loadConfigurationXML(Configuration localCfg, boolean includeMappings, EntityResolver entityResolver) {
+		if(!includeMappings) {
+			org.dom4j.Document doc;
+			XMLHelper xmlHelper = new XMLHelper();
+			String resourceName = prefs.getConfigXMLFile().toString();
+			InputStream stream;
+			try {
+				stream = new FileInputStream( prefs.getConfigXMLFile() );
+			}
+			catch (FileNotFoundException e1) {
+				throw new HibernateConsoleRuntimeException("Could not access " + prefs.getConfigXMLFile(), e1);
+			}
+			
+			try {
+				List errors = new ArrayList();
+				
+				doc = xmlHelper.createSAXReader( resourceName, errors, entityResolver )
+				.read( new InputSource( stream ) );
+				if ( errors.size() != 0 ) {
+					throw new MappingException(
+							"invalid configuration",
+							(Throwable) errors.get( 0 )
+					);
+				}
+				
+				
+				List list = doc.getRootElement().element("session-factory").elements("mapping"); 
+				Iterator iterator = list.iterator();
+				while ( iterator.hasNext() ) {
+					Node element = (Node) iterator.next();
+					element.getParent().remove(element);				
+				}
+				
+				DOMWriter dw = new DOMWriter();
+				Document document = dw.write(doc);
+				return localCfg.configure( document );
+		
+			}
+			catch (DocumentException e) {
+				throw new HibernateException(
+						"Could not parse configuration: " + resourceName,
+						e
+				);
+			}
+			finally {
+				try {
+					stream.close();
+				}
+				catch (IOException ioe) {
+					//log.warn( "could not close input stream for: " + resourceName, ioe );
+				}
+			}
+		} else {
+			return localCfg.configure(prefs.getConfigXMLFile());
+		}
+	}
 	
 	/**
 	 * DriverManager checks what classloader a class is loaded from thus
