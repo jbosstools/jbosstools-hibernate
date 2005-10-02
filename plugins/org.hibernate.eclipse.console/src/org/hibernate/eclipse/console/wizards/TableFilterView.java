@@ -135,11 +135,20 @@ public abstract class TableFilterView extends TreeToTableComposite {
 					TableContainer tc = (TableContainer) sel;
 					filter = revEngDef.createTableFilter();
 					filter.setMatchSchema( tc.getName() );
+					filter.setMatchName(".*");
+					filter.setExclude( Boolean.valueOf( exclude ) );
+				} else {
+					filter = revEngDef.createTableFilter();
 					filter.setExclude( Boolean.valueOf( exclude ) );
 				}
 				if ( filter != null )
 					revEngDef.addTableFilter( filter );
 			}
+		} else {
+			ITableFilter filter = revEngDef.createTableFilter();
+			filter.setMatchName(".*");
+			filter.setExclude( Boolean.valueOf( exclude ) );
+			revEngDef.addTableFilter( filter );
 		}
 	}
 

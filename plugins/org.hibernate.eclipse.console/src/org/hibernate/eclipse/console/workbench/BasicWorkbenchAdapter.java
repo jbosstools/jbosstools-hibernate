@@ -10,6 +10,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
 import org.eclipse.ui.progress.IElementCollector;
+import org.hibernate.HibernateException;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 public abstract class BasicWorkbenchAdapter implements IDeferredWorkbenchAdapter {
 
@@ -64,10 +66,20 @@ public abstract class BasicWorkbenchAdapter implements IDeferredWorkbenchAdapter
 	
 	public void fetchDeferredChildren(Object object,
 			IElementCollector collector, IProgressMonitor monitor) {
-		
-		collector.add(getChildren(object), monitor);
-		collector.done();
-		
+		try {
+			collector.add(getChildren(object), monitor);
+			collector.done();
+		} catch(Exception e) {
+			handleError(collector,e);			
+		} finally {
+			collector.done();
+			monitor.done();
+		}
+	}
+
+	protected void handleError(IElementCollector collector, Exception e) {
+		HibernateConsolePlugin.getDefault().logErrorMessage(e.toString(), e);
+		HibernateConsolePlugin.openError(null, "Lazy tree error", "Error while fetching children", e, HibernateConsolePlugin.PERFORM_SYNC_EXEC);		
 	}
 
 	public boolean isContainer() {

@@ -1,22 +1,25 @@
 package org.hibernate.eclipse.console;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
@@ -36,6 +39,8 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 	public static final String ID = "org.hibernate.eclipse.console";
 	
 	static public final String LAST_USED_CONFIGURATION_PREFERENCE = "lastusedconfig";
+
+	public static final int PERFORM_SYNC_EXEC = 1;
 	
 	//The shared instance.
 	private static HibernateConsolePlugin plugin;
@@ -134,22 +139,26 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 	 * @param message the error message to log
 	 */
 	public void logErrorMessage(String message, Throwable t) {
-		log(new MultiStatus(HibernateConsolePlugin.ID, IStatus.ERROR , new IStatus[] { throwableToStatus(t) }, message, t) );
+		log(new MultiStatus(HibernateConsolePlugin.ID, IStatus.ERROR , new IStatus[] { throwableToStatus(t.getCause()) }, message, t) );
 	}
 	
-	static IStatus throwableToStatus(Throwable t) {
+	static IStatus throwableToStatus(Throwable t) {		
 		ArrayList causes = new ArrayList();
 		Throwable temp = t;
 		while(temp!=null && temp.getCause()!=temp) {
-			causes.add(new Status(IStatus.ERROR, ID, 150, temp.getMessage()==null?"<no message>":temp.getMessage(), temp) );
+			causes.add(new Status(IStatus.ERROR, ID, 150, temp.getMessage()==null?temp.toString() + ": <no message>":temp.toString(), temp) );
 			temp = temp.getCause();
 		}
         String msg = "<No message>";
         if(t!=null && t.getMessage()!=null) {
-            msg = t.getMessage();
+            msg = t.toString();
         }
-		
-		return new MultiStatus(ID, IStatus.ERROR,(IStatus[]) causes.toArray(new IStatus[causes.size()]), msg, t);
+        
+        if(causes.isEmpty()) {
+        	return new Status(Status.ERROR, ID, 150, msg, t);
+        } else {
+        	return new MultiStatus(ID, 150,(IStatus[]) causes.toArray(new IStatus[causes.size()]), msg, t);
+        }
 		
 	}
 	
@@ -160,7 +169,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 			children[i] = throwableToStatus(throwable);
 		}
 		
-		IStatus s = new MultiStatus(ID, IStatus.ERROR,children, message, null);
+		IStatus s = new MultiStatus(ID, 150,children, message, null);
 		log(s);
 	}
 
@@ -247,4 +256,124 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 				LAST_USED_CONFIGURATION_PREFERENCE, name );
 	}
 	
+	/**
+	 * Convenience method for showing an error dialog 
+	 * @param shell a valid shell or null
+	 * @param exception the exception to be report
+	 * @param title the title to be displayed
+	 * @param flags customizing attributes for the error handling
+	 * @return IStatus the status that was displayed to the user
+	 */
+	public static IStatus openError(Shell providedShell, String title, String message, Throwable exception, int flags) {
+		// Unwrap InvocationTargetExceptions
+		if (exception instanceof InvocationTargetException) {
+			Throwable target = ((InvocationTargetException)exception).getTargetException();
+			// re-throw any runtime exceptions or errors so they can be handled by the workbench
+			if (target instanceof RuntimeException) {
+				throw (RuntimeException)target;
+			}
+			if (target instanceof Error) {
+				throw (Error)target;
+			} 
+			return openError(providedShell, title, message, target, flags);
+		}
+		
+		// Determine the status to be displayed (and possibly logged)
+		IStatus status = null;
+		if (exception instanceof CoreException) {
+			status = ((CoreException)exception).getStatus();
+		} else if (exception != null) {
+			status = new MultiStatus(ID, IStatus.ERROR, new IStatus[] { throwableToStatus(exception.getCause())}, exception.toString(), exception); //$NON-NLS-1$
+		}
+				
+		// Check for multi-status with only one child
+		/*if (status.isMultiStatus() && status.getChildren().length == 1) {
+			status = status.getChildren()[0]; // makes Status.ERROR - Status.OK
+		}*/
+		
+		if (status.isOK()) {
+			return status;
+		}
+		
+		// Create a runnable that will display the error status
+		final String displayTitle = title;
+		final String displayMessage = message;
+		final IStatus displayStatus = status;
+		final IOpenableInShell openable = new IOpenableInShell() {
+			public void open(Shell shell) {
+				if (displayStatus.getSeverity() == IStatus.INFO && !displayStatus.isMultiStatus()) {
+					MessageDialog.openInformation(shell, "Information", displayStatus.getMessage()); //$NON-NLS-1$
+				} else {
+					ErrorDialog.openError(shell, displayTitle, displayMessage, displayStatus);
+				}
+			}
+		};
+		openDialog(providedShell, openable, flags);
+		
+		// return the status we display
+		return status;
+	}
+	
+	/**
+	 * Open the dialog code provided in the IOpenableInShell, ensuring that 
+	 * the provided whll is valid. This method will provide a shell to the
+	 * IOpenableInShell if one is not provided to the method.
+	 * 
+	 * @param providedShell
+	 * @param openable
+	 * @param flags
+	 */
+	public static void openDialog(Shell providedShell, final IOpenableInShell openable, int flags) {
+		// If no shell was provided, try to get one from the active window
+		if (providedShell == null) {
+			IWorkbenchWindow window = getDefault().getWorkbench().getActiveWorkbenchWindow();
+			if (window != null) {
+				providedShell = window.getShell();
+				// sync-exec when we do this just in case
+				flags = flags | PERFORM_SYNC_EXEC;
+			}
+		}
+		
+		// Create a runnable that will display the error status
+		final Shell shell = providedShell;
+		Runnable outerRunnable = new Runnable() {
+			public void run() {
+				Shell displayShell;
+				if (shell == null) {
+					Display display = Display.getCurrent();
+					displayShell = new Shell(display);
+				} else {
+					displayShell = shell;
+				}
+				openable.open(displayShell);
+				if (shell == null) {
+					displayShell.dispose();
+				}
+			}
+		};
+		
+		// Execute the above runnable as determined by the parameters
+		if (shell == null || (flags & PERFORM_SYNC_EXEC) > 0) {
+			Display display;
+			if (shell == null) {
+				display = Display.getCurrent();
+				if (display == null) {
+					display = Display.getDefault();
+				}
+			} else {
+				display = shell.getDisplay();
+			}
+			display.syncExec(outerRunnable);
+		} else {
+			outerRunnable.run();
+		}
+	}
+
+	/**
+	 * Interface that allows a shell to be passed to an open method. The
+	 * provided shell can be used without sync-execing, etc.
+	 */
+	public interface IOpenableInShell {
+		public void open(Shell shell);
+	}
 }

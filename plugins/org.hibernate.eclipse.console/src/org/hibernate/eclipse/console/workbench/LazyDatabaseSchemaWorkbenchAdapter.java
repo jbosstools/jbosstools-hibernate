@@ -10,13 +10,12 @@ import java.util.Map;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.progress.IElementCollector;
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
-import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.JDBCReader;
+import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.connection.ConnectionProvider;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
@@ -25,10 +24,6 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 
 public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
-
-	public void fetchDeferredChildren(Object object, IElementCollector collector, IProgressMonitor monitor) {
-		collector.add(getChildren(object, monitor), monitor);
-	}
 	
 	public Object[] getChildren(Object o) {
 		return getChildren(o, new NullProgressMonitor());
@@ -39,7 +34,7 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 		final DefaultDatabaseCollector db = new DefaultDatabaseCollector();
 		
 		ConsoleConfiguration consoleConfiguration = dbs.getConsoleConfiguration();
-		readDatabaseSchema(monitor, db, consoleConfiguration);
+		readDatabaseSchema(monitor, db, consoleConfiguration, dbs.getReverseEngineeringStrategy());
 				
 		List result = new ArrayList();
 		
@@ -67,7 +62,7 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 		return getLazyDatabaseSchema(o).getConsoleConfiguration();
 	}
 	
-	protected void readDatabaseSchema(final IProgressMonitor monitor, final DefaultDatabaseCollector db, ConsoleConfiguration consoleConfiguration) {
+	protected void readDatabaseSchema(final IProgressMonitor monitor, final DefaultDatabaseCollector db, ConsoleConfiguration consoleConfiguration, final ReverseEngineeringStrategy strategy) {
 		final Configuration configuration = consoleConfiguration.buildWith(new Configuration(), false);
 		
 		consoleConfiguration.getExecutionContext().execute(new ExecutionContext.Command() {
@@ -80,7 +75,7 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 					connectionProvider = settings.getConnectionProvider();
 					connection = connectionProvider.getConnection();
 				
-					JDBCReader reader = new JDBCReader(connection, settings.getSQLExceptionConverter(), new DefaultReverseEngineeringStrategy());
+					JDBCReader reader = new JDBCReader(connection, settings.getSQLExceptionConverter(), strategy);
 					reader.readDatabaseSchema(db, settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), new ProgressListenerMonitor(monitor));
 				} catch(HibernateException he) {
 					HibernateConsolePlugin.getDefault().logErrorMessage("Problem while reading database schema", he);
@@ -93,6 +88,7 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 					if (connection!=null) {
 						try {
 							connectionProvider.closeConnection(connection);
+							connectionProvider.close();
 						}
 						catch (SQLException e) {
 						 //noop

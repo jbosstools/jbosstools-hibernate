@@ -21,7 +21,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
-import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.utils.DriverClassHelpers;
 
 /**
