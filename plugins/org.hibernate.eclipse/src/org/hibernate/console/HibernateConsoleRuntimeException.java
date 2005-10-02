@@ -4,11 +4,13 @@
  */
 package org.hibernate.console;
 
+import org.hibernate.HibernateException;
+
 /**
  * @author max
  *
  */
-public class HibernateConsoleRuntimeException extends RuntimeException {
+public class HibernateConsoleRuntimeException extends HibernateException {
 
 	
 	public HibernateConsoleRuntimeException(String message) {
