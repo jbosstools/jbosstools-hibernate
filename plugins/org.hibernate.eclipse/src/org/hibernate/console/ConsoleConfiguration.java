@@ -88,7 +88,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 				Class clazz = ReflectHelper
 						.classForName( "org.hibernate.cfg.AnnotationConfiguration" );
 				configuration = buildWith( (Configuration) clazz.newInstance(),
-						false );
+						true );
 			}
 			catch (Exception e) {
 				throw new HibernateConsoleRuntimeException("Could not load AnnotationConfiguration",e);
