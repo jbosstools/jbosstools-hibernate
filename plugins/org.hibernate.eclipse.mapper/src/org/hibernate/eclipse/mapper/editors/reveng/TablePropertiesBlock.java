@@ -5,7 +5,7 @@ import java.util.Iterator;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -29,11 +29,14 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.internal.WorkbenchMessages;
-import org.hibernate.cfg.reveng.TableIdentifier;
+import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.OverrideRepository;
+import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.model.IRevEngTable;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
+import org.hibernate.eclipse.console.model.ITableFilter;
 import org.hibernate.eclipse.console.workbench.AnyAdaptableLabelProvider;
 import org.hibernate.eclipse.console.workbench.DeferredContentProvider;
 import org.hibernate.eclipse.console.workbench.LazyDatabaseSchema;
@@ -110,7 +113,42 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 	}
 
 	protected void doAdd() {
-		CheckedTreeSelectionDialog dialog = new CheckedTreeSelectionDialog(getComposite().getShell(), new AnyAdaptableLabelProvider(), new DeferredContentProvider()) {
+		CheckedTreeSelectionDialog dialog = createTreeSelectionDialog();
+		
+		
+		LazyDatabaseSchema lds = editor.getLazyDatabaseSchema();
+		
+		if(lds!=null) {
+			dialog.setInput(lds);
+			dialog.setContainerMode(true);
+			dialog.open();
+			Object[] result = dialog.getResult();
+			if(result!=null) { 
+				for (int i = 0; i < result.length; i++) {
+					Object object = result[i];
+					if(object instanceof Table) {
+						Table table = (Table) object;
+						IRevEngTable retable = null;
+						//	editor.getReverseEngineeringDefinition().findTable(TableIdentifier.create(table));
+						if(retable==null) {
+							retable = editor.getReverseEngineeringDefinition().createTable();
+							retable.setCatalog(table.getCatalog());
+							retable.setSchema(table.getSchema());
+							retable.setName(table.getName());
+							editor.getReverseEngineeringDefinition().addTable(retable);
+						}
+					}
+				}
+			}
+			
+			//editor.getReverseEngineeringDefinition();
+		}
+		
+		
+	}
+
+	private CheckedTreeSelectionDialog createTreeSelectionDialog() {
+		return new CheckedTreeSelectionDialog(getComposite().getShell(), new AnyAdaptableLabelProvider(), new DeferredContentProvider()) {
 			
 			protected Composite createSelectionButtons(Composite composite) {
 		        Composite buttonComposite = new Composite(composite, SWT.RIGHT);
@@ -151,34 +189,6 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 
 			
 		};
-		
-		ConsoleConfiguration configuration = KnownConfigurations.getInstance().find( editor.getConsoleConfigurationName() );
-		
-		if(configuration!=null) {
-			dialog.setInput(new LazyDatabaseSchema(configuration));
-			dialog.setContainerMode(true);
-			dialog.open();
-			Object[] result = dialog.getResult();
-			for (int i = 0; i < result.length; i++) {
-				Object object = result[i];
-				if(object instanceof Table) {
-					Table table = (Table) object;
-					IRevEngTable retable = null;
-					//	editor.getReverseEngineeringDefinition().findTable(TableIdentifier.create(table));
-					if(retable==null) {
-						retable = editor.getReverseEngineeringDefinition().createTable();
-						retable.setCatalog(table.getCatalog());
-						retable.setSchema(table.getSchema());
-						retable.setName(table.getName());
-						editor.getReverseEngineeringDefinition().addTable(retable);
-					}
-				}
-			}
-			
-			//editor.getReverseEngineeringDefinition();
-		}
-		
-		
 	}
 
 	protected void createToolBarActions(IManagedForm managedForm) {

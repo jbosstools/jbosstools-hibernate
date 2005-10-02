@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IKeyBindingService;
@@ -12,8 +13,16 @@ import org.eclipse.ui.INestableKeyBindingService;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.ui.internal.provisional.StructuredTextEditorXML;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.OverrideRepository;
+import org.hibernate.cfg.reveng.TableFilter;
+import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
+import org.hibernate.eclipse.console.model.ITableFilter;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
+import org.hibernate.eclipse.console.workbench.LazyDatabaseSchema;
 import org.hibernate.eclipse.mapper.MapperPlugin;
 import org.hibernate.eclipse.mapper.editors.reveng.RevEngOverviewPage;
 import org.hibernate.eclipse.mapper.editors.reveng.RevEngTableFilterPage;
@@ -26,10 +35,11 @@ import org.w3c.dom.Document;
 public class ReverseEngineeringEditor extends XMLFormEditorPart {
 
 	private StructuredTextEditorXML sourcePage;
-	private RevEngTableFilterPage tableFilters;
 	private DOMReverseEngineeringDefinition definition;
-	private RevEngTypeMappingPage typeMappings;
-	private RevEngOverviewPage overview;	
+	
+	private RevEngTableFilterPage tableFilterPage;
+	private RevEngTypeMappingPage typeMappingsPage;
+	private RevEngOverviewPage overviewsPage;	
 	private Map pageNameToIndex = new HashMap();
 	private RevEngTablesPage tableProperties;
 	
@@ -57,21 +67,21 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 
 	private void addFormPages() throws PartInitException {
 		int i = 0;
-		overview = new RevEngOverviewPage(this);
-		addPage( i, overview);
+		overviewsPage = new RevEngOverviewPage(this);
+		addPage( i, overviewsPage);
 		setPageText(i, "Overview");
 		pageNameToIndex.put(RevEngOverviewPage.PART_ID, new Integer(i));
 		i++;
 		
-		typeMappings = new RevEngTypeMappingPage( this );
-		addPage( i, typeMappings);
+		typeMappingsPage = new RevEngTypeMappingPage( this );
+		addPage( i, typeMappingsPage);
 		setPageText( i, "Type Mappings" );
 		pageNameToIndex.put(RevEngTypeMappingPage.PART_ID, new Integer(i));
 		i++;
 		
 
-		tableFilters = new RevEngTableFilterPage( this );
-		addPage( i, tableFilters);
+		tableFilterPage = new RevEngTableFilterPage( this );
+		addPage( i, tableFilterPage);
 		setPageText( i, "Table Filters" );
 		pageNameToIndex.put(RevEngTableFilterPage.PART_ID, new Integer(i));		
 		i++;
@@ -124,7 +134,7 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 		return definition;
 	}
 	public String getConsoleConfigurationName() {
-		return overview.getConsoleConfigName();
+		return overviewsPage.getConsoleConfigName();
 	}
 	
 	public HibernateNature getHibernateNature() throws CoreException {
@@ -136,6 +146,40 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 			}
 		}
 		return null;
+	}
+
+	public LazyDatabaseSchema getLazyDatabaseSchema() {
+		
+		ConsoleConfiguration configuration = KnownConfigurations.getInstance().find( getConsoleConfigurationName() );
+
+		ITableFilter[] tableFilters = getReverseEngineeringDefinition().getTableFilters();
+		OverrideRepository repository = new OverrideRepository();
+		boolean hasExcludes = false;
+		for (int i = 0; i < tableFilters.length; i++) {
+			ITableFilter filter = tableFilters[i];
+			TableFilter tf = new TableFilter();
+			tf.setExclude(filter.getExclude());
+			if(filter.getExclude()==null || filter.getExclude().booleanValue()) {
+				hasExcludes = true;
+			}
+			tf.setMatchCatalog(filter.getMatchCatalog());
+			tf.setMatchName(filter.getMatchName());
+			tf.setMatchSchema(filter.getMatchSchema());
+			repository.addTableFilter(tf);
+		}
+		
+		configuration.buildWith(new Configuration(), false);
+		if(!hasExcludes) {
+			boolean b = MessageDialog.openQuestion(getContainer().getShell(), "No exclude filters defined", "No exclude filters has been defined.\n This can make the reading of the database schema very slow.\n Do you wish to continue reading the database schema ?");
+			if(!b) {
+				return null;
+			}
+		}
+		
+		LazyDatabaseSchema lazyDatabaseSchema = new LazyDatabaseSchema(configuration, repository.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy()));
+
+		return lazyDatabaseSchema;
+		
 	}
 	
 }

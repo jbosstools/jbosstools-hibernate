@@ -14,7 +14,7 @@ public class TableFilterAdapter extends DOMAdapter implements ITableFilter {
 	}
 	
 	public void setExclude(Boolean exclude) {
-		setAttribute("exclude", exclude==null?"false":"true", "false");					
+		setAttribute("exclude", exclude==null?"false":exclude.toString(), "false");					
 	}
 
 	public void setMatchCatalog(String catalog) {
