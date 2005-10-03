@@ -50,7 +50,12 @@ public class HQLQueryPage extends AbstractQueryPage {
 	private void setupParameters(Query query2, ConsoleQueryParameter[] queryParameters2) {
 		for (int i = 0; i < queryParameters2.length; i++) {
 			ConsoleQueryParameter parameter = queryParameters2[i];
-			query2.setParameter(parameter.getName(), parameter.getValue(), parameter.getType());
+			try {
+				int pos = Integer.parseInt(parameter.getName());
+				query2.setParameter(pos, parameter.getValue(), parameter.getType());
+			} catch(NumberFormatException nfe) {
+				query2.setParameter(parameter.getName(), parameter.getValue(), parameter.getType());	
+			}			
 		}		
 	}
 

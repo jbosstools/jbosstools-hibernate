@@ -4,32 +4,20 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IResourceProxy;
-import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.ui.actions.FormatAllAction;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jface.text.Document;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.IWorkbenchWizard;
-import org.eclipse.ui.PlatformUI;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
@@ -239,12 +227,12 @@ String outputPackage, IPath revengsettings, boolean reveng, final boolean genjav
 				
 				if(gencfg) {
 					monitor.subTask("hibernate configuration");
-					final Exporter cfgExporter = new HibernateConfigurationExporter();
+					final HibernateConfigurationExporter cfgExporter = new HibernateConfigurationExporter();
 					
 					cfgExporter.setOutputDirectory(outputdir);
 					cfgExporter.setConfiguration(cfg);
 					cfgExporter.setTemplatePath(templatePaths);
-					
+					cfgExporter.setEjb3(ejb3);
 					cfgExporter.start();
 					
 					monitor.worked(8);

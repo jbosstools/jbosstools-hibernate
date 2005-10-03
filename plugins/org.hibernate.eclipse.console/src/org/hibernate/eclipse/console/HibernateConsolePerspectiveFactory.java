@@ -40,7 +40,7 @@ public class HibernateConsolePerspectiveFactory implements IPerspectiveFactory {
 		
 		IFolderLayout folder= layout.createFolder("left", IPageLayout.LEFT, (float)0.25, editorArea); //$NON-NLS-1$
 		folder.addView(ID_CONFIGURATION_VIEW);
-		folder.addView(JavaUI.ID_PACKAGES_VIEW);
+		folder.addView(JavaUI.ID_PACKAGES);
 		folder.addPlaceholder(IPageLayout.ID_RES_NAV);
 		
 		IFolderLayout outputfolder= layout.createFolder("bottom", IPageLayout.BOTTOM, (float)0.75, editorArea); //$NON-NLS-1$

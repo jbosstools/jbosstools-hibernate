@@ -83,13 +83,13 @@ public class QueryInputModel extends Observable {
 	}
 
 	/** create a parameter which does not collide with any other parameter */
-	public ConsoleQueryParameter createUniqueParameter() {
+	public ConsoleQueryParameter createUniqueParameter(String paramName) {
 		if(parameters.isEmpty()) {
-			return new ConsoleQueryParameter("param", Hibernate.STRING, "");
+			return new ConsoleQueryParameter(paramName, Hibernate.STRING, "");
 		} else {
 			ConsoleQueryParameter cqp = (ConsoleQueryParameter) parameters.get(parameters.size()-1);
 			ConsoleQueryParameter c = new ConsoleQueryParameter(cqp);
-			c.setName(makeUnique(parameters.iterator(), "param"));
+			c.setName(makeUnique(parameters.iterator(), paramName));
 			return c;
 		}
 	}
@@ -121,6 +121,12 @@ public class QueryInputModel extends Observable {
 
 	public boolean ignoreParameters() {
 		return ignoreParameters;
+	}
+
+	public void clear() {
+		parameters.clear();
+		setChanged();
+		notifyObservers("clear");		
 	}
 
 }

@@ -206,9 +206,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 	 */
 	public void showError(Shell shell, String message, Throwable he) {
 		logErrorMessage(message, he);
-		String string = he==null?"<No message>":he.getClass().getName() + ":" + he.getMessage();
-		IStatus warning = new Status(IStatus.WARNING, 
-		 	      HibernateConsolePlugin.ID, 1, string , he);
+		IStatus warning = throwableToStatus(he);
 		 	   ErrorDialog.openError(shell, 
 		 	      "Hibernate Console", message, warning);		
 	}

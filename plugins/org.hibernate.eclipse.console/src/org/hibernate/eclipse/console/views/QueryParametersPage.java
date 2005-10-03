@@ -3,9 +3,14 @@ package org.hibernate.eclipse.console.views;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Observer;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.CellEditor;
@@ -33,14 +38,15 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
-import org.hibernate.Hibernate;
 import org.hibernate.console.ConsoleQueryParameter;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.hqleditor.HQLEditor;
+import org.hibernate.hql.classic.ParserHelper;
 import org.hibernate.type.NullableType;
 import org.hibernate.type.Type;
+import org.hibernate.util.StringHelper;
 
 public class QueryParametersPage extends Page implements IQueryParametersPage {
 
@@ -65,8 +71,11 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 		}
 	};
 
+	private final HQLEditor editor;
+
 		
 	public QueryParametersPage(HQLEditor editor) {
+		this.editor = editor;
 		model = editor.getQueryInputModel();
 	}
 
@@ -303,11 +312,55 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 		}
 
 		public void run() {
-			ConsoleQueryParameter cqp = model.createUniqueParameter();
-			model.addParameter( cqp );
+			ConsoleQueryParameter[] queryParameters = model.getQueryParameters();
+			
+			Map qp = new HashMap();
+			for (int i = 0; i < queryParameters.length; i++) {
+				ConsoleQueryParameter parameter = queryParameters[i];
+				qp.put(parameter.getName(), parameter);
+			}
+			
+			model.clear();
+			
+			String queryString = editor.getQuery();
+			
+			ConsoleQueryParameter cqp = null;
+			int[] positions = StringHelper.locateUnquoted( queryString, '?' );
+			for (int i = 0; i < positions.length; i++) {
+				cqp = (ConsoleQueryParameter) qp.get(""+i);
+				if(cqp==null) {
+					cqp = model.createUniqueParameter(""+i);					
+				}
+				model.addParameter( cqp );
+			}
+			
+			StringTokenizer st = new StringTokenizer(queryString, ParserHelper.HQL_SEPARATORS);
+			Set result = new HashSet();
+
+			while ( st.hasMoreTokens() ) {
+				String string = st.nextToken();
+				if( string.startsWith(ParserHelper.HQL_VARIABLE_PREFIX) ) {
+					result.add( string.substring(1) );
+				}
+			}
+
+			Iterator iterator = result.iterator();			
+			while ( iterator.hasNext() ) {
+				String paramName = (String) iterator.next();
+				cqp = (ConsoleQueryParameter) qp.get(paramName);
+				if(cqp==null) {
+					cqp = model.createUniqueParameter(paramName);	
+				}				
+				model.addParameter(cqp);
+			}
+			
+/*			if(cqp==null) {
+				cqp = model.createUniqueParameter("param");
+				model.addParameter( cqp );
+			}*/
 		}
 	}
-
+	
 	private class RemoveRowAction extends Action {
 		public RemoveRowAction() {
 			super( "" );
