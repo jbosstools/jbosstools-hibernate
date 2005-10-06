@@ -8,8 +8,8 @@ Bundle-Activator: org.hibernate.eclipse.help.HelpPlugin
 Bundle-Vendor: Hibernate Team
 Bundle-Localization: plugin
 Export-Package: org.hibernate.eclipse.help
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
+Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.help,
- org.eclipse.help.ui
+ org.eclipse.help.ui,
+ org.eclipse.ui
 Eclipse-AutoStart: true
