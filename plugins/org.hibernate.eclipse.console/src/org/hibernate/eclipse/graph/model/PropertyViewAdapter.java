@@ -58,8 +58,9 @@ public class PropertyViewAdapter extends Observable {
 		try { //TODO: we need the consoleconfiguration here to know the exact types			
 			if ( property.getValue() instanceof Collection ) {
 				Collection collection = (Collection) property.getValue();
-				if(collection.getElement() instanceof OneToMany) {
+				if(!collection.isInverse() && collection.getElement() instanceof OneToMany) {
 					OneToMany oneToMany = (OneToMany) collection.getElement();
+					
 					String entityName = oneToMany.getAssociatedClass().getEntityName();
 					PersistentClassViewAdapter target = configuration
 					.getPersistentClassViewAdapter( entityName );

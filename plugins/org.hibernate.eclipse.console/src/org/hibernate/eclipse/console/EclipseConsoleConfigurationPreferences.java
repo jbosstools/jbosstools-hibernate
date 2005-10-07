@@ -157,7 +157,7 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 			
 			Element root = doc.getDocumentElement();
 			
-			NodeList elementsByTagName = root.getElementsByTagName(CONFIGURATION_TAG);
+			NodeList elementsByTagName = root.getElementsByTagName(CONFIGURATION_TAG); //TODO: only get nearest children.
 			EclipseConsoleConfigurationPreferences[] result = new EclipseConsoleConfigurationPreferences[elementsByTagName.getLength()];
 			
 			for(int i = 0; i < elementsByTagName.getLength(); i++) {

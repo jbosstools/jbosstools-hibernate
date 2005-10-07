@@ -1,11 +1,13 @@
 package org.hibernate.eclipse.mapper.editors;
 
+import java.util.List;
+
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
+import org.hibernate.eclipse.mapper.model.DOMModelUtil;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 public class SQLTypeContentProvider implements IStructuredContentProvider {
 
@@ -14,15 +16,15 @@ public class SQLTypeContentProvider implements IStructuredContentProvider {
 		
 		if(im instanceof IDOMModel) {
 			IDOMModel model = (IDOMModel)im;
-			NodeList childNodes = model.getDocument().getElementsByTagName("hibernate-reverse-engineering");
-			if(childNodes.getLength()>=1) {
-				Element l = (Element)childNodes.item(0);
-				childNodes = l.getElementsByTagName("type-mapping");
-				if(childNodes.getLength()>=1) {
-					childNodes = l.getElementsByTagName("sql-type");
-					Object[] o = new Object[childNodes.getLength()];
-					for (int i = 0; i < childNodes.getLength(); i++) {
-						o[i] = childNodes.item(i);					
+			List childNodes = DOMModelUtil.getChildrenByTagName(model.getDocument(), "hibernate-reverse-engineering");
+			if(childNodes.size()>=1) {
+				Element l = (Element)childNodes.get(0);
+				childNodes = DOMModelUtil.getChildrenByTagName(l, "type-mapping");
+				if(childNodes.size()>=1) {
+					childNodes = DOMModelUtil.getChildrenByTagName(l, "sql-type");
+					Object[] o = new Object[childNodes.size()];
+					for (int i = 0; i < childNodes.size(); i++) {
+						o[i] = childNodes.get(i);					
 					}
 					return o;	
 				}

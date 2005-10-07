@@ -31,5 +31,6 @@ public interface IReverseEngineeringDefinition {
 	IRevEngTable[] getTables();
 	IRevEngTable createTable();
 	void addTable(IRevEngTable retable);
+	IRevEngColumn createColumn();
 		
 }

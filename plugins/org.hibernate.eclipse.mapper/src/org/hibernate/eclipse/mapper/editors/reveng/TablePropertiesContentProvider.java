@@ -4,9 +4,11 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.hibernate.eclipse.console.model.IRevEngParameter;
 import org.hibernate.eclipse.console.model.IRevEngColumn;
+import org.hibernate.eclipse.console.model.IRevEngGenerator;
+import org.hibernate.eclipse.console.model.IRevEngPrimaryKey;
 import org.hibernate.eclipse.console.model.IRevEngTable;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 
@@ -41,13 +43,40 @@ public class TablePropertiesContentProvider implements
 	}
 
 	public Object[] getChildren(Object parentElement) {
-		if(parentElement instanceof IRevEngTable ) {
-			return ((IRevEngTable)parentElement).getColumns();
+		if(parentElement instanceof IRevEngTable ) {			
+			IRevEngTable revEngTable = ((IRevEngTable)parentElement);
+			IRevEngPrimaryKey primaryKey = revEngTable.getPrimaryKey();
+			IRevEngColumn[] columns = revEngTable.getColumns();
+			
+			if(primaryKey!=null) {
+				Object[] des = new Object[columns.length+1];
+				des[0] = primaryKey;
+				System.arraycopy(columns, 0, des, 1, columns.length);
+				return des;
+			} else {
+				return columns;
+			}			
 		} 
 		else if (parentElement instanceof IRevEngColumn) {
 			return new Object[0];
-		} else {
-			return new Object[] { parentElement };
+		} else if (parentElement instanceof IRevEngPrimaryKey) {
+			IRevEngPrimaryKey pk = (IRevEngPrimaryKey) parentElement;
+			IRevEngGenerator generator = pk.getGenerator();
+			IRevEngColumn[] columns = pk.getColumns();
+			if(generator!=null) {
+				Object[] des = new Object[columns.length+1];
+				des[0] = generator;
+				System.arraycopy(columns, 0, des, 1, columns.length);
+				return des;
+			} else {
+				return columns;
+			}			
+		} else if (parentElement instanceof IRevEngGenerator) { 
+			IRevEngGenerator generator = (IRevEngGenerator) parentElement;
+			return generator.getParameters();
+		}
+		else {
+			return new Object[0];
 		}
 	}
 
@@ -56,8 +85,11 @@ public class TablePropertiesContentProvider implements
 	}
 
 	public boolean hasChildren(Object element) {
-		// TODO Auto-generated method stub
-		return true;
+		if(element instanceof IRevEngColumn || element instanceof IRevEngParameter) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {

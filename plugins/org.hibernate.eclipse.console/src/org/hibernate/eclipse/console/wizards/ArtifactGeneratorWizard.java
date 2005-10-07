@@ -20,6 +20,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
@@ -158,14 +159,16 @@ String outputPackage, IPath revengsettings, boolean reveng, final boolean genjav
 		ReverseEngineeringStrategy res = null;
 		if (reveng) {
 			monitor.subTask("reading jdbc metadata");
-		
+					
 			DefaultReverseEngineeringStrategy configurableNamingStrategy = new DefaultReverseEngineeringStrategy();
 			configurableNamingStrategy.setPackageName(outputPackage);
 			
 			res = configurableNamingStrategy;
 			if(revengres!=null) {
+				Configuration configuration = cc.buildWith(new Configuration(), false);				
+				Settings settings = cc.getSettings(configuration);
 				File file = revengres.getRawLocation().toFile();
-				OverrideRepository repository = new OverrideRepository();
+				OverrideRepository repository = new OverrideRepository(settings.getDefaultCatalogName(),settings.getDefaultSchemaName());
 				repository.addFile(file);
 				res = repository.getReverseEngineeringStrategy(res);
 			}

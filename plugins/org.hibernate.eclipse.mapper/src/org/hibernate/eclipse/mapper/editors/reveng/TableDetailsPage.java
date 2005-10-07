@@ -6,6 +6,10 @@ import java.beans.PropertyChangeListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.IDetailsPage;
 import org.eclipse.ui.forms.IFormPart;
@@ -47,6 +51,22 @@ public class TableDetailsPage extends RevEngDetailsPage implements IDetailsPage,
 				table.setName(entry.getValue());
 			}
 		});
+		
+		Button button = toolkit.createButton(client, "Add primary key", SWT.NULL);
+		button.addSelectionListener(new SelectionAdapter() {
+		
+			public void widgetSelected(SelectionEvent e) {
+				handleAddPrimaryKey();		
+			}
+		
+		});
+	}
+
+
+	protected void handleAddPrimaryKey() {
+		if(table.getPrimaryKey()==null) {
+			table.addPrimaryKey();
+		}
 	}
 
 

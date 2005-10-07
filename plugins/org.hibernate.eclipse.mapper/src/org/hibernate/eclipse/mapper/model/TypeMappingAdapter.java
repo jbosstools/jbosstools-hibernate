@@ -51,20 +51,20 @@ public class TypeMappingAdapter extends DOMAdapter implements ITypeMapping {
 		setAttribute("jdbc-type", string, null);
 	}
 
-	public void setLength(Integer string) {
-		setAttribute("length", string==null?null:string.toString(), null);
+	public void setLength(Integer length) {
+		setAttribute("length", length==null?null:length.toString(), null);
 	}
 
-	public void setHibernateType(String string) {
-		setAttribute("hibernate-type", string, "");
+	public void setHibernateType(String type) {
+		setAttribute("hibernate-type", type, "");
 	}
 
-	public void setPrecision(Integer string) {
-		setAttribute("precision", string==null?null:string.toString(), null);
+	public void setPrecision(Integer precision) {
+		setAttribute("precision", precision==null?null:precision.toString(), null);
 	}
 
-	public void setScale(Integer string) {
-		setAttribute("scale", string==null?null:string.toString(), null);
+	public void setScale(Integer scale) {
+		setAttribute("scale", scale==null?null:scale.toString(), null);
 	}
 
 	public void notifyChanged(INodeNotifier notifier, int eventType, Object changedFeature, Object oldValue, Object newValue, int pos) {

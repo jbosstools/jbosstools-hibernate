@@ -30,7 +30,17 @@ public class RevEngTableAdapter extends DOMAdapter implements IRevEngTable {
 	}
 
 	public IRevEngPrimaryKey getPrimaryKey() {
-		return null;
+		String elementName = "primary-key";
+		return (IRevEngPrimaryKey) getAdaptedElement( elementName );
+	}
+
+	private Object getAdaptedElement(String elementName) {
+		List adaptedElements = getAdaptedElements((Element) getNode(), elementName);
+		if(adaptedElements.isEmpty()) {
+			return null;
+		} else {
+			return adaptedElements.get(0);
+		}
 	}
 
 	public IRevEngColumn[] getColumns() {
@@ -43,7 +53,11 @@ public class RevEngTableAdapter extends DOMAdapter implements IRevEngTable {
 
 	public void notifyChanged(INodeNotifier notifier, int eventType, Object changedFeature, Object oldValue, Object newValue, int pos) {
 		getModel().tablesChanged(notifier);
-		firePropertyChange(((Node)changedFeature).getNodeName(), oldValue, newValue);
+		if(changedFeature==null) {
+			firePropertyChange("unknown-changed-feature", oldValue, newValue);
+		} else {
+			firePropertyChange(((Node)changedFeature).getNodeName(), oldValue, newValue);
+		}
 	}
 
 	public void setName(String value) {
@@ -51,11 +65,21 @@ public class RevEngTableAdapter extends DOMAdapter implements IRevEngTable {
 	}
 
 	public void setCatalog(String value) {	
-		setAttribute("catalog", value, "");
+		setAttribute("catalog", value, null);
 	}
 
 	public void setSchema(String value) {
-		setAttribute("schema", value, "");		
+		setAttribute("schema", value, null);		
+	}
+	
+	public void addColumn(IRevEngColumn revCol) {
+		getNode().appendChild(((RevEngColumnAdapter)revCol).getNode());
+		DOMModelUtil.formatNode(getNode().getParentNode());
 	}
 
+	public void addPrimaryKey() {
+		DOMAdapter key = (DOMAdapter) getModel().createPrimaryKey();
+		getNode().insertBefore(key.getNode(), getNode().getFirstChild());
+		DOMModelUtil.formatNode(getNode().getParentNode());		
+	}
 }

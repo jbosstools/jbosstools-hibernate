@@ -4,6 +4,9 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.model.IRevEngColumn;
+import org.hibernate.eclipse.console.model.IRevEngGenerator;
+import org.hibernate.eclipse.console.model.IRevEngParameter;
+import org.hibernate.eclipse.console.model.IRevEngPrimaryKey;
 import org.hibernate.eclipse.console.model.IRevEngTable;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 
@@ -24,6 +27,13 @@ public class TablePropertiesLabelProvider extends LabelProvider {
 			return getLabel( table );			
 		} else if(element instanceof IRevEngColumn) {
 			return ((IRevEngColumn)element).getName();
+		} else if(element instanceof IRevEngPrimaryKey) {
+			return "Primary key";
+		} else if(element instanceof IRevEngGenerator) {
+			return ((IRevEngGenerator)element).getGeneratorClassName();
+		} else if ( element instanceof IRevEngParameter ) {
+			IRevEngParameter new_name = (IRevEngParameter) element;
+			return new_name.getName();
 		}
 		return super.getText( element );
 	}
@@ -51,6 +61,8 @@ public class TablePropertiesLabelProvider extends LabelProvider {
 			return EclipseImages.getImage(ImageConstants.TABLE);			
 		} else if(element instanceof IRevEngColumn) {
 			return EclipseImages.getImage(ImageConstants.COLUMN);
+		} else if(element instanceof IRevEngParameter) {
+			return EclipseImages.getImage(ImageConstants.PARAMETER);
 		}
 		return null;
 	}

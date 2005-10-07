@@ -3,6 +3,7 @@ package org.hibernate.eclipse.mapper.model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.wst.sse.core.internal.provisional.IModelStateListener;
@@ -10,6 +11,9 @@ import org.eclipse.wst.sse.core.internal.provisional.INodeAdapterFactory;
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
+import org.hibernate.eclipse.console.model.IRevEngColumn;
+import org.hibernate.eclipse.console.model.IRevEngGenerator;
+import org.hibernate.eclipse.console.model.IRevEngPrimaryKey;
 import org.hibernate.eclipse.console.model.IRevEngTable;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 import org.hibernate.eclipse.console.model.ITableFilter;
@@ -80,17 +84,23 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 			TableFilterAdapter tf = (TableFilterAdapter) filter;
 			factory.adapt((INodeNotifier) tf.getNode());
 			
-			NodeList lastChild = getDocument().getDocumentElement().getElementsByTagName("table-filter");
-			if(lastChild==null || lastChild.getLength()==0) {
-				NodeList typeMapping = getDocument().getDocumentElement().getElementsByTagName("type-mapping");
-				if(typeMapping==null || typeMapping.getLength()==0) {
-					getDocument().getDocumentElement().appendChild(tf.getNode());
+			List lastChild = DOMModelUtil.getChildrenByTagName(getDocument().getDocumentElement(),"table-filter");
+			if(lastChild==null || lastChild.isEmpty()) {
+				List typeMapping = DOMModelUtil.getChildrenByTagName(getDocument().getDocumentElement(),"type-mapping");
+				if(typeMapping==null || typeMapping.isEmpty()) {
+					List tableMapping = DOMModelUtil.getChildrenByTagName(getDocument().getDocumentElement(),"table");
+					if(tableMapping==null || tableMapping.isEmpty()) {
+						getDocument().getDocumentElement().appendChild(tf.getNode());
+					} else {
+						Element e = (Element) tableMapping.get(tableMapping.size()-1);
+						getDocument().getDocumentElement().insertBefore(tf.getNode(),e);	
+					}
 				} else {
-					Element e = (Element) typeMapping.item(typeMapping.getLength()-1);
+					Element e = (Element) typeMapping.get(typeMapping.size()-1);
 					getDocument().getDocumentElement().insertBefore(tf.getNode(), e.getNextSibling());
 				}
 			}  else {
-				Element e = (Element) lastChild.item(lastChild.getLength()-1);
+				Element e = (Element) lastChild.get(lastChild.size()-1);
 				getDocument().getDocumentElement().insertBefore(tf.getNode(), e.getNextSibling());			
 			}
 			
@@ -182,12 +192,12 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 
 	private List getTypeMappingsList() {
 		List result = new ArrayList();
-		NodeList list = getDocument().getDocumentElement().getElementsByTagName("type-mapping");
-		for (int i = 0; i < list.getLength(); i++) {
-			Element item = (Element) list.item(i);
-			NodeList sqllist = item.getElementsByTagName("sql-type");
-			for (int j = 0; j < sqllist.getLength(); j++) {
-				Element item2 = (Element) sqllist.item(j);
+		List list = DOMModelUtil.getChildrenByTagName(getDocument().getDocumentElement(),"type-mapping");
+		for (int i = 0; i < list.size(); i++) {
+			Element item = (Element) list.get(i);
+			List sqllist = DOMModelUtil.getChildrenByTagName(item, "sql-type");
+			for (int j = 0; j < sqllist.size(); j++) {
+				Element item2 = (Element) sqllist.get(j);
 				result.add(factory.adapt((INodeNotifier) item2));
 			}
 		}
@@ -202,9 +212,9 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 		if ( typeMapping instanceof TypeMappingAdapter ) {
 			TypeMappingAdapter tf = (TypeMappingAdapter) typeMapping;
 			
-			NodeList parentList = getDocument().getDocumentElement().getElementsByTagName("type-mapping");
+			List parentList = DOMModelUtil.getChildrenByTagName(getDocument().getDocumentElement(),"type-mapping");
 			Element parent;
-			if(parentList.getLength()==0) {
+			if(parentList.isEmpty()) {
 				parent = getDocument().createElement("type-mapping");
 				Node firstChild = getDocument().getDocumentElement().getFirstChild();
 				if(firstChild==null) {
@@ -213,7 +223,7 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 					parent = (Element) getDocument().getDocumentElement().insertBefore(parent, firstChild);
 				}
 			} else {
-				parent = (Element) parentList.item(0);
+				parent = (Element) parentList.get(0);
 			}
 			parent.appendChild(tf.getNode());
 			DOMModelUtil.formatNode(tf.getNode().getParentNode());
@@ -294,6 +304,18 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 			
 			DOMModelUtil.formatNode(tf.getNode().getParentNode());
 		}	
+	}
+
+	public IRevEngColumn createColumn() {
+		return (IRevEngColumn) factory.adapt((INodeNotifier) getDocument().createElement("column"));
+	}
+
+	public IRevEngPrimaryKey createPrimaryKey() {
+		return (IRevEngPrimaryKey) factory.adapt((INodeNotifier) getDocument().createElement("primary-key"));
+	}
+
+	public IRevEngGenerator createGenerator() {
+		return (IRevEngGenerator) factory.adapt((INodeNotifier) getDocument().createElement("generator"));
 	}
 
 	

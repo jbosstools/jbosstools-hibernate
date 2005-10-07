@@ -6,6 +6,9 @@ import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.hibernate.eclipse.mapper.model.DOMAdapter;
 import org.hibernate.eclipse.mapper.model.DOMReverseEngineeringDefinition;
 import org.hibernate.eclipse.mapper.model.RevEngColumnAdapter;
+import org.hibernate.eclipse.mapper.model.RevEngGeneratorAdapter;
+import org.hibernate.eclipse.mapper.model.RevEngParamAdapter;
+import org.hibernate.eclipse.mapper.model.RevEngPrimaryKeyAdapter;
 import org.hibernate.eclipse.mapper.model.RevEngTableAdapter;
 import org.hibernate.eclipse.mapper.model.TableFilterAdapter;
 import org.hibernate.eclipse.mapper.model.TypeMappingAdapter;
@@ -43,21 +46,25 @@ public class ObserverAdapterFactory extends AbstractAdapterFactory {
 			};
 		} else if("sql-type".equals(nodeName)) {
 			result = new TypeMappingAdapter((Node) target, revEngDefinition);
-		} else if( 
-				 "primary-key".equals(nodeName) 
-				|| "foreign-key".equals(nodeName) 
+		} else if("table".equals(nodeName)) {
+			result = new RevEngTableAdapter((Node) target, revEngDefinition);
+		} else if("column".equals(nodeName)) {
+			result = new RevEngColumnAdapter((Node) target, revEngDefinition);				
+		} else if("primary-key".equals(nodeName)) {
+			result = new RevEngPrimaryKeyAdapter((Node) target, revEngDefinition);
+		} else if("generator".equals(nodeName)) { 
+			result = new RevEngGeneratorAdapter((Node) target, revEngDefinition);
+		} else if("param".equals(nodeName)) { 
+			result = new RevEngParamAdapter((Node) target, revEngDefinition);
+		}
+		else if("foreign-key".equals(nodeName) 
 				|| "column-ref".equals(nodeName) 
-				|| "generator".equals(nodeName) 
-				|| "param".equals(nodeName)) {
+				) {
 			result = new UnknownNodeAdapter(this, revEngDefinition) {
 				public void notifyChanged(INodeNotifier notifier, int eventType, Object changedFeature, Object oldValue, Object newValue, int pos) {
 					observer.tablesChanged(notifier);
 				}
 			};
-		} else if("table".equals(nodeName)) {
-			result = new RevEngTableAdapter((Node) target, revEngDefinition);
-		} else if("column".equals(nodeName)) {
-			result = new RevEngColumnAdapter((Node) target, revEngDefinition);				
 		}
     
 		if(result==null) {

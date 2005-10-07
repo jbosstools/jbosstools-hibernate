@@ -26,17 +26,21 @@ in JNDI.
 <!ATTLIST class-cache class CDATA #REQUIRED>
 <!ATTLIST class-cache region CDATA #IMPLIED>
 <!ATTLIST class-cache usage (read-only|read-write|nonstrict-read-write|transactional) #REQUIRED>
+<!ATTLIST class-cache include (all|non-lazy) "all">
 
 <!ELEMENT collection-cache EMPTY>
 <!ATTLIST collection-cache collection CDATA #REQUIRED>
 <!ATTLIST collection-cache region CDATA #IMPLIED>
 <!ATTLIST collection-cache usage (read-only|read-write|nonstrict-read-write|transactional) #REQUIRED>
 
+<!ELEMENT event (listener*)>
+<!ATTLIST event type (auto-flush|merge|create|delete|dirty-check|evict|flush|flush-entity|load|load-collection|lock|refresh|replicate|save-update|save|update|pre-load|pre-update|pre-insert|pre-delete|post-load|post-update|post-insert|post-delete|post-commit-update|post-commit-insert|post-commit-delete) #REQUIRED>
+
 <!ELEMENT listener EMPTY>
-<!ATTLIST listener type (auto-flush|merge|create|delete|dirty-check|evict|flush|flush-entity|load|load-collection|lock|refresh|replicate|save-update|save|update|pre-load|pre-update|pre-insert|pre-delete|post-load|post-update|post-insert|post-delete) #REQUIRED>
+<!ATTLIST listener type (auto-flush|merge|create|delete|dirty-check|evict|flush|flush-entity|load|load-collection|lock|refresh|replicate|save-update|save|update|pre-load|pre-update|pre-insert|pre-delete|post-load|post-update|post-insert|post-delete|post-commit-update|post-commit-insert|post-commit-delete) #IMPLIED>
 <!ATTLIST listener class CDATA #REQUIRED>
 
-<!ELEMENT session-factory (property*, mapping*, (class-cache|collection-cache)*, listener*)>
+<!ELEMENT session-factory (property*, mapping*, (class-cache|collection-cache)*, event*, listener*)>
 <!ATTLIST session-factory name CDATA #IMPLIED> <!-- the JNDI name -->
 
 <!ELEMENT security (grant*)>

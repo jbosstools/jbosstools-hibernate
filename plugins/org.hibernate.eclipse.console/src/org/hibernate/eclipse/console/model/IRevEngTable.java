@@ -11,4 +11,6 @@ public interface IRevEngTable extends Notifiable {
 	void setName(String value);
 	void setCatalog(String value);
 	void setSchema(String value);
+	void addColumn(IRevEngColumn revCol);
+	void addPrimaryKey();
 }

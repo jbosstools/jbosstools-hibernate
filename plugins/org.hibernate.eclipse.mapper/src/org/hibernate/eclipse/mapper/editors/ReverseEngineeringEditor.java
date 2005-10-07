@@ -14,6 +14,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.eclipse.wst.xml.ui.internal.provisional.StructuredTextEditorXML;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.TableFilter;
@@ -153,14 +154,17 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 		ConsoleConfiguration configuration = KnownConfigurations.getInstance().find( getConsoleConfigurationName() );
 
 		ITableFilter[] tableFilters = getReverseEngineeringDefinition().getTableFilters();
-		OverrideRepository repository = new OverrideRepository();
-		boolean hasExcludes = false;
+		Configuration cfg = configuration.buildWith(new Configuration(), false);
+		Settings settings = configuration.getSettings(cfg);
+		
+		OverrideRepository repository = new OverrideRepository(settings.getDefaultCatalogName(),settings.getDefaultSchemaName());
+		boolean hasIncludes = false;
 		for (int i = 0; i < tableFilters.length; i++) {
 			ITableFilter filter = tableFilters[i];
 			TableFilter tf = new TableFilter();
 			tf.setExclude(filter.getExclude());
-			if(filter.getExclude()==null || filter.getExclude().booleanValue()) {
-				hasExcludes = true;
+			if(filter.getExclude()!=null && !filter.getExclude().booleanValue()) {
+				hasIncludes = true;
 			}
 			tf.setMatchCatalog(filter.getMatchCatalog());
 			tf.setMatchName(filter.getMatchName());
@@ -168,9 +172,14 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 			repository.addTableFilter(tf);
 		}
 		
-		configuration.buildWith(new Configuration(), false);
-		if(!hasExcludes) {
-			boolean b = MessageDialog.openQuestion(getContainer().getShell(), "No exclude filters defined", "No exclude filters has been defined.\n This can make the reading of the database schema very slow.\n Do you wish to continue reading the database schema ?");
+		if(tableFilters.length==0) {
+			boolean b = MessageDialog.openQuestion(getContainer().getShell(), "No filters defined", "No filters has been defined.\n This can make the reading of the database schema very slow.\n Do you wish to continue reading the database schema ?");
+			if(!b) {
+				return null;
+			}
+		}
+		if(!hasIncludes) {
+			boolean b = MessageDialog.openQuestion(getContainer().getShell(), "Only exclude filters defined", "Only exclude filters has been defined.\n This will result in no tables being read from the database schema.\n Do you wish to continue reading the database schema ?");
 			if(!b) {
 				return null;
 			}

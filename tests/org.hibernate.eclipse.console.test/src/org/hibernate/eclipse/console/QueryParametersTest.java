@@ -57,10 +57,10 @@ public class QueryParametersTest extends TestCase {
 		
 		QueryInputModel model = new QueryInputModel();
 		
-		ConsoleQueryParameter parameter = model.createUniqueParameter();
+		ConsoleQueryParameter parameter = model.createUniqueParameter("param");
 		model.addParameter(parameter);
 		
-		assertFalse(model.createUniqueParameter().getName().equals(parameter.getName()));
+		assertFalse(model.createUniqueParameter("param").getName().equals(parameter.getName()));
 	}
 
 }

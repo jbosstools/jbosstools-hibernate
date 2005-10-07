@@ -18,11 +18,6 @@ public class HibernateConsolePerspectiveFactory implements IPerspectiveFactory {
 
 	static final String ID_CONSOLE_PERSPECTIVE = "org.hibernate.eclipse.console.HibernateConsolePerspective";
 	//	Folders
-	private static final String ID_CONFIGURATION_FOLDERVIEW = "org.hibernate.eclipse.console.ConfigurationFolderView"; //$NON-NLS-1$
-	private static final String ID_RESULT_FOLDERVIEW = "org.hibernate.eclipse.console.QueryResultsFolderView"; //$NON-NLS-1$
-	private static final String ID_PROPERTY_SHEET_FOLDERVIEW = "org.hibernate.eclipse.console.PropertiesFolderView"; //$NON-NLS-1$
-
-	private static final String ID_QUERYEDITOR_VIEW = "org.hibernate.eclipse.console.views.HQLEditorView";
 	private static final String ID_CONFIGURATION_VIEW = "org.hibernate.eclipse.console.views.KnownConfigurationsView";
 	private static final String ID_QUERYRESULTS_VIEW = "org.hibernate.eclipse.console.views.QueryPageTabView";
 	private static final String ID_PROPERTY_SHEET_VIEW = "org.eclipse.ui.views.PropertySheet";
@@ -42,6 +37,10 @@ public class HibernateConsolePerspectiveFactory implements IPerspectiveFactory {
 		folder.addView(ID_CONFIGURATION_VIEW);
 		folder.addView(JavaUI.ID_PACKAGES);
 		folder.addPlaceholder(IPageLayout.ID_RES_NAV);
+		
+		IFolderLayout propertiesFolder= layout.createFolder("leftBottom", IPageLayout.BOTTOM, (float)0.75, "left"); //$NON-NLS-1$
+		propertiesFolder.addView(ID_PROPERTY_SHEET_VIEW);
+				
 		
 		IFolderLayout outputfolder= layout.createFolder("bottom", IPageLayout.BOTTOM, (float)0.75, editorArea); //$NON-NLS-1$
 		outputfolder.addView("org.eclipse.pde.runtime.LogView");

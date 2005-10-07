@@ -41,6 +41,8 @@ TODO: document the tags in the DTD
 <!ATTLIST column type           CDATA        #IMPLIED >
 <!ATTLIST column property       CDATA        #IMPLIED >
 <!ATTLIST column exclude        (true|false) "false" >
+<!ATTLIST column foreign-catalog CDATA  #IMPLIED >
+<!ATTLIST column foreign-schema CDATA   #IMPLIED >
 <!ATTLIST column foreign-table  CDATA        #IMPLIED >
 <!ATTLIST column foreign-column CDATA        #IMPLIED >
 
@@ -53,6 +55,8 @@ TODO: document the tags in the DTD
 
 <!ELEMENT foreign-key (column-ref+) >
 <!ATTLIST foreign-key name          CDATA    #IMPLIED >
+<!ATTLIST foreign-key foreign-catalog CDATA  #IMPLIED >
+<!ATTLIST foreign-key foreign-schema CDATA   #IMPLIED >
 <!ATTLIST foreign-key foreign-table CDATA    #REQUIRED >
 <!--<!ATTLIST foreign-key cardinality   (many-to-one|one-to-many)    #REQUIRED >
 <!ATTLIST foreign-key direction     (bi|uni|none) #REQUIRED > -->

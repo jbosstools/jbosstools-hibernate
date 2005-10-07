@@ -172,7 +172,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 		
 		label = new Label(container, SWT.NULL);
 		enableAnnotations = new Button(container, SWT.CHECK);
-		enableAnnotations.setText("Enable hibernate ejb3/annotations (requires running eclipse with JDK 5)");
+		enableAnnotations.setText("Enable hibernate ejb3/annotations (requires running eclipse with a Java 5 runtime)");
 		enableAnnotations.addSelectionListener(new SelectionListener() {
 		
 			public void widgetDefaultSelected(SelectionEvent e) {

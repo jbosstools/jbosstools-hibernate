@@ -105,13 +105,22 @@ public abstract class TypeMappingView extends TreeToTableComposite {
 						ITypeMapping typeMapping = revEngDef.createTypeMapping();
 						
 						typeMapping.setJDBCType(JDBCToHibernateTypeHelper.getJDBCTypeName(sqlTypeCode.intValue()));
-						typeMapping.setHibernateType(JDBCToHibernateTypeHelper.getPreferredHibernateType(sqlTypeCode.intValue(), col.getLength(), col.getPrecision(), col.getScale()));
+						int length = col.getLength();
+						int precision = col.getPrecision();
+						int scale = col.getScale();
+						typeMapping.setHibernateType(JDBCToHibernateTypeHelper.getPreferredHibernateType(sqlTypeCode.intValue(), length, precision, scale));
 						if(JDBCToHibernateTypeHelper.typeHasLength(sqlTypeCode.intValue())) {
-							typeMapping.setLength(new Integer(col.getLength()));							
+							if(length!=0 && Column.DEFAULT_LENGTH!=length) {
+								typeMapping.setLength(new Integer(length));		
+							}
 						} 
 						if(JDBCToHibernateTypeHelper.typeHasScaleAndPrecision(sqlTypeCode.intValue())) {
-							typeMapping.setPrecision(new Integer(col.getPrecision()));
-							typeMapping.setScale(new Integer(col.getScale()));
+							if(precision!=0 && Column.DEFAULT_PRECISION!=precision) {
+								typeMapping.setPrecision(new Integer(precision));
+							}
+							if(scale!=0 && Column.DEFAULT_SCALE!=scale) {
+								typeMapping.setScale(new Integer(scale));
+							}
 						}
 						revEngDef.addTypeMapping( typeMapping );
 					}

@@ -5,6 +5,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.eclipse.console.model.IRevEngColumn;
 import org.hibernate.eclipse.console.model.IRevEngTable;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 import org.hibernate.eclipse.console.model.ITableFilter;
@@ -118,5 +119,9 @@ public class ReverseEngineeringDefinitionImpl implements
 
 	public void addTable(IRevEngTable retable) {
 		
+	}
+
+	public IRevEngColumn createColumn() {
+		return null;
 	}
 }

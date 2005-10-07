@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheetPage;
@@ -37,6 +38,9 @@ import org.hibernate.eclipse.console.views.properties.HibernatePropertySourcePro
  */
 
 public class QueryPageTabView extends ViewPart implements ISelectionProvider {
+	
+	public static final String ID = "org.hibernate.eclipse.console.views.QueryPageTabView";
+	
 	protected TabFolder tabs = null;
 
 	private Set listeners = Collections.synchronizedSet(new HashSet() );
@@ -49,6 +53,12 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 		}
 
 		public void intervalAdded(ListDataEvent e) {
+			try {
+				getSite().getPage().showView(ID);
+			}
+			catch (PartInitException e1) {
+				// ignore
+			}
 			contentsChanged(e);
 
 		}
@@ -96,7 +106,8 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 			fireSelectionChangedEvent();
 		} else if (selection != null && !selection.equals(newSelection) ) {
 			fireSelectionChangedEvent();
-		}
+		}		
+		
 	}
 
 
@@ -153,7 +164,7 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 		ISelection selection = getSelection();
 		fireSelectionChangedEvent(selection);
 	}
-
+	
 	public Object getAdapter(Class adapter) {
 
 		if (adapter.equals(IPropertySheetPage.class) )

@@ -270,6 +270,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 	 */
 
 	private void initialize() {
+		loadSettings();
 		if (selection != null && selection.isEmpty() == false
 				&& selection instanceof IStructuredSelection) {
 			IStructuredSelection ssel = (IStructuredSelection) selection;
@@ -281,10 +282,15 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 			} else if(consoleConfigurationName.getItems().length==1) {
                 consoleConfigurationName.setText(consoleConfigurationName.getItems()[0]);
             }
+			
+			if(obj instanceof IResource) {
+				IResource res = (IResource) obj;
+				
+				if(res.getName().endsWith(".reveng.xml")) { // TODO: should be based on contenttype
+					reverseEngineeringSettings.setText(res.getFullPath().toOSString());
+				}
+			}
 		}
-		
-		loadSettings();
-		
 	}
 
 

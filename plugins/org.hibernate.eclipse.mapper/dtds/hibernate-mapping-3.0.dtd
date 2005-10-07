@@ -23,7 +23,8 @@ arbitrary number of queries, and import declarations of arbitrary classes.
 	(class|subclass|joined-subclass|union-subclass)*,
     resultset*,
 	(query|sql-query)*,
-	filter-def*
+	filter-def*,
+    database-object*
 )>
 	<!ATTLIST hibernate-mapping schema CDATA #IMPLIED>									<!-- default: none -->
 	<!ATTLIST hibernate-mapping catalog CDATA #IMPLIED>									<!-- default: none -->
@@ -73,7 +74,7 @@ arbitrary number of queries, and import declarations of arbitrary classes.
 	discriminator?,
 	natural-id?,
 	(version|timestamp)?,
-	(property|many-to-one|one-to-one|component|dynamic-component|properties|any|map|set|list|bag|idbag|array|primitive-array|query-list)*,
+	(property|many-to-one|one-to-one|component|dynamic-component|properties|any|map|set|list|bag|idbag|array|primitive-array)*,
 	((join*,subclass*)|joined-subclass*|union-subclass*),
 	loader?,sql-insert?,sql-update?,sql-delete?,
 	filter*,
@@ -160,7 +161,7 @@ If a name attribut is given, the id is exposed to the application through the
 named property of the class. If not, the id is only exposed to the application 
 via Session.getIdentifier() -->
 
-<!ELEMENT id (meta*, column*, generator?)>
+<!ELEMENT id (meta*,column*,type?,generator?)>
 	<!ATTLIST id name CDATA #IMPLIED>
 	<!ATTLIST id node CDATA #IMPLIED>
 	<!ATTLIST id access CDATA #IMPLIED>
@@ -196,13 +197,15 @@ value is not directly exposed to the application. -->
 <!-- Versioned data requires a column holding a version number. This is exposed to the
 application through a property of the Java class. -->
 
-<!ELEMENT version (meta*)>
+<!ELEMENT version (meta*,column*)>
 	<!ATTLIST version name CDATA #REQUIRED>
 	<!ATTLIST version node CDATA #IMPLIED>
 	<!ATTLIST version access CDATA #IMPLIED>
 	<!ATTLIST version column CDATA #IMPLIED>
 	<!ATTLIST version type CDATA "integer">
 	<!ATTLIST version unsaved-value (null|negative|undefined) "undefined">
+    <!ATTLIST version generated (never|always) "never">
+    <!ATTLIST version insert (true|false) #IMPLIED>
 
 <!ELEMENT timestamp (meta*)>
 	<!ATTLIST timestamp name CDATA #REQUIRED>
@@ -210,6 +213,8 @@ application through a property of the Java class. -->
 	<!ATTLIST timestamp column CDATA #IMPLIED>
 	<!ATTLIST timestamp access CDATA #IMPLIED>
 	<!ATTLIST timestamp unsaved-value (null|undefined) "null">
+    <!ATTLIST timestamp source (vm|db) "vm">
+    <!ATTLIST timestamp generated (never|always) "never">
 
 
 <!--
@@ -222,7 +227,7 @@ application through a property of the Java class. -->
  	meta*,
     tuplizer*,
 	synchronize*,
-	(property|many-to-one|one-to-one|component|dynamic-component|any|map|set|list|bag|idbag|array|primitive-array|query-list)*,
+	(property|many-to-one|one-to-one|component|dynamic-component|any|map|set|list|bag|idbag|array|primitive-array)*,
 	join*, 
 	subclass*,
 	loader?,sql-insert?,sql-update?,sql-delete?,
@@ -255,7 +260,7 @@ application through a property of the Java class. -->
 	comment?,
     tuplizer*,
 	key,
-	(property|many-to-one|one-to-one|component|dynamic-component|properties|any|map|set|list|bag|idbag|array|primitive-array|query-list)*, 
+	(property|many-to-one|one-to-one|component|dynamic-component|properties|any|map|set|list|bag|idbag|array|primitive-array)*, 
 	joined-subclass*,
 	loader?,sql-insert?,sql-update?,sql-delete?,
     resultset*,
@@ -290,7 +295,7 @@ application through a property of the Java class. -->
 	synchronize*,
 	comment?,
     tuplizer*,
-	(property|many-to-one|one-to-one|component|dynamic-component|properties|any|map|set|list|bag|idbag|array|primitive-array|query-list)*,
+	(property|many-to-one|one-to-one|component|dynamic-component|properties|any|map|set|list|bag|idbag|array|primitive-array)*,
 	union-subclass*,
 	loader?,sql-insert?,sql-update?,sql-delete?,
     resultset*,
@@ -330,11 +335,12 @@ JavaBeans style properties are mapped to table columns. -->
 	<!ATTLIST property unique (true|false) "false">
 	<!ATTLIST property unique-key CDATA #IMPLIED>
 	<!ATTLIST property index CDATA #IMPLIED>				<!-- include the columns spanned by this property in an index -->
-	<!ATTLIST property update (true|false) "true">
-	<!ATTLIST property insert (true|false) "true">
+	<!ATTLIST property update (true|false) #IMPLIED>
+	<!ATTLIST property insert (true|false) #IMPLIED>
 	<!ATTLIST property optimistic-lock (true|false) "true">	<!-- only supported for properties of a class (not component) -->
 	<!ATTLIST property formula CDATA #IMPLIED>
 	<!ATTLIST property lazy (true|false) "false">
+    <!ATTLIST property generated (never|insert|always) "never">
 
 <!-- Declares the type of the containing property (overrides an eventually existing type
 attribute of the property). May contain param elements to customize a ParametrizableType. -->
@@ -383,13 +389,13 @@ component element, etc. to an entity). -->
 	<!ATTLIST one-to-one constrained (true|false) "false">
 	<!ATTLIST one-to-one foreign-key CDATA #IMPLIED>
 	<!ATTLIST one-to-one property-ref CDATA #IMPLIED>
-	<!ATTLIST one-to-one lazy (true|false|proxy|no-proxy) #IMPLIED>
+	<!ATTLIST one-to-one lazy (false|proxy|no-proxy) #IMPLIED>
 	<!ATTLIST one-to-one node CDATA #IMPLIED>
 	<!ATTLIST one-to-one embed-xml (true|false) "true">
 	
 <!-- A property embedded in a composite identifier or map index (always not-null). -->
 
-<!ELEMENT key-property (meta*,column*)>
+<!ELEMENT key-property (meta*,column*,type?)>
 	<!ATTLIST key-property name CDATA #REQUIRED>
 	<!ATTLIST key-property access CDATA #IMPLIED>
 	<!ATTLIST key-property type CDATA #IMPLIED>
@@ -506,7 +512,7 @@ relationship from the collection table to the enclosing class. -->
 	<!ATTLIST map schema CDATA #IMPLIED>															<!-- default: none -->
 	<!ATTLIST map subselect CDATA #IMPLIED>
 	<!ATTLIST map catalog CDATA #IMPLIED>															<!-- default: none -->
-	<!ATTLIST map lazy (true|false) #IMPLIED>
+	<!ATTLIST map lazy (true|false|extra) #IMPLIED>
 	<!ATTLIST map mutable (true|false) "true">
 	<!ATTLIST map inverse (true|false) "false">
 	<!ATTLIST map sort CDATA "unsorted">														 	<!-- unsorted|natural|"comparator class", default: unsorted -->
@@ -540,7 +546,7 @@ relationship from the collection table to the enclosing class. -->
 	<!ATTLIST set schema CDATA #IMPLIED>															<!-- default: none -->
 	<!ATTLIST set catalog CDATA #IMPLIED>															<!-- default: none -->
 	<!ATTLIST set subselect CDATA #IMPLIED>
-	<!ATTLIST set lazy (true|false) #IMPLIED>
+	<!ATTLIST set lazy (true|false|extra) #IMPLIED>
 	<!ATTLIST set sort CDATA "unsorted">														 	<!-- unsorted|natural|"comparator class" -->
 	<!ATTLIST set inverse (true|false) "false">
 	<!ATTLIST set mutable (true|false) "true">
@@ -574,7 +580,7 @@ relationship from the collection table to the enclosing class. -->
 	<!ATTLIST bag schema CDATA #IMPLIED>															<!-- default: none -->
 	<!ATTLIST bag catalog CDATA #IMPLIED>															<!-- default: none -->
 	<!ATTLIST bag subselect CDATA #IMPLIED>
-	<!ATTLIST bag lazy (true|false) #IMPLIED>
+	<!ATTLIST bag lazy (true|false|extra) #IMPLIED>
 	<!ATTLIST bag inverse (true|false) "false">
 	<!ATTLIST bag mutable (true|false) "true">
 	<!ATTLIST bag cascade CDATA #IMPLIED>
@@ -608,7 +614,7 @@ relationship from the collection table to the enclosing class. -->
 	<!ATTLIST idbag schema CDATA #IMPLIED>														 	<!-- default: none -->
 	<!ATTLIST idbag catalog CDATA #IMPLIED>															<!-- default: none -->
 	<!ATTLIST idbag subselect CDATA #IMPLIED>
-	<!ATTLIST idbag lazy (true|false) #IMPLIED>
+	<!ATTLIST idbag lazy (true|false|extra) #IMPLIED>
 	<!ATTLIST idbag mutable (true|false) "true">
 	<!ATTLIST idbag cascade CDATA #IMPLIED>
 	<!ATTLIST idbag order-by CDATA #IMPLIED>													 	<!-- default: none -->
@@ -641,7 +647,7 @@ relationship from the collection table to the enclosing class. -->
 	<!ATTLIST list schema CDATA #IMPLIED>															<!-- default: none -->
 	<!ATTLIST list catalog CDATA #IMPLIED>															<!-- default: none -->
 	<!ATTLIST list subselect CDATA #IMPLIED>
-	<!ATTLIST list lazy (true|false) #IMPLIED>
+	<!ATTLIST list lazy (true|false|extra) #IMPLIED>
 	<!ATTLIST list inverse (true|false) "false">
 	<!ATTLIST list mutable (true|false) "true">
 	<!ATTLIST list cascade CDATA #IMPLIED>
@@ -759,6 +765,7 @@ element type of a collection and specifies a many-to-many relational model -->
 	<!ATTLIST many-to-many foreign-key CDATA #IMPLIED>
 	<!ATTLIST many-to-many unique (true|false) "false">
 	<!ATTLIST many-to-many where CDATA #IMPLIED>
+	<!ATTLIST many-to-many property-ref CDATA #IMPLIED>
 
 <!-- A composite element allows a collection to hold instances of an arbitrary 
 class, without the requirement of joining to an entity table. Composite elements
@@ -874,7 +881,8 @@ mapping associations to classes with composite ids. -->
 	<!ATTLIST column unique-key CDATA #IMPLIED>					<!-- default: no unique key -->
 	<!ATTLIST column sql-type CDATA #IMPLIED>					<!-- override default column type for hibernate type -->
 	<!ATTLIST column index CDATA #IMPLIED>
-	<!ATTLIST column check CDATA #IMPLIED>						<!-- default: none -->
+	<!ATTLIST column check CDATA #IMPLIED>						<!-- default: no check constraint -->
+    <!ATTLIST column default CDATA #IMPLIED>                    <!-- default: no default value -->
 
 <!-- The formula and subselect elements allow us to map derived properties and 
 entities. -->
@@ -886,17 +894,14 @@ entities. -->
 <!ELEMENT cache EMPTY>
 	<!ATTLIST cache usage (read-only|read-write|nonstrict-read-write|transactional) #REQUIRED>				
 	<!ATTLIST cache region CDATA #IMPLIED>						<!-- default: class or collection role name -->
+	<!ATTLIST cache include (all|non-lazy) "all">
 
 <!-- The comment element allows definition of a database table or column comment. -->
 
 <!ELEMENT comment (#PCDATA)>
 
-<!-- A mapped query-list allows a named query to be attached to a property of the 
-domain model -->
-
-<!ELEMENT query-list EMPTY>
-	<!ATTLIST query-list name CDATA #REQUIRED>
-	<!ATTLIST query-list query-ref CDATA #REQUIRED>
+<!-- The loader element allows specification of a named query to be used for fetching
+an entity or collection -->
 
 <!ELEMENT loader EMPTY>
 	<!ATTLIST loader query-ref CDATA #REQUIRED>
@@ -910,6 +915,9 @@ domain model -->
 	<!ATTLIST query cache-region CDATA #IMPLIED>
 	<!ATTLIST query fetch-size CDATA #IMPLIED>
 	<!ATTLIST query timeout CDATA #IMPLIED>
+	<!ATTLIST query cache-mode (get|ignore|normal|put|refresh) #IMPLIED>
+    <!ATTLIST query read-only (true|false) #IMPLIED>
+    <!ATTLIST query comment CDATA #IMPLIED>
 
 <!-- The sql-query element declares a named SQL query string -->
 
@@ -921,6 +929,9 @@ domain model -->
 	<!ATTLIST sql-query cache-region CDATA #IMPLIED>
 	<!ATTLIST sql-query fetch-size CDATA #IMPLIED>
 	<!ATTLIST sql-query timeout CDATA #IMPLIED>
+	<!ATTLIST query cache-mode (get|ignore|normal|put|refresh) #IMPLIED>
+    <!ATTLIST query read-only (true|false) #IMPLIED>
+    <!ATTLIST query comment CDATA #IMPLIED>
 	<!ATTLIST sql-query callable (true|false) "false">
 
 <!-- The query-param element is used only by tools that generate
@@ -988,3 +999,33 @@ finder methods for named queries -->
 
 <!ELEMENT sql-delete-all (#PCDATA)>
 	<!ATTLIST sql-delete-all callable (true|false) "false">
+
+<!--
+    Element for defining "auxiliary" database objects.  Must be one of two forms:
+
+    #1 :
+        <auxiliary-object>
+            <definition class="CustomClassExtendingAuxiliaryObject"/>
+        </auxiliary-object>
+
+    #2 :
+        <auxiliary-object>
+            <create>CRAETE OR REPLACE ....</create>
+            <drop>DROP ....</drop>
+        </auxiliary-object>
+-->
+<!ELEMENT database-object ( (definition|(create,drop)), dialect-scope* )>
+
+<!ELEMENT definition EMPTY>
+    <!ATTLIST definition class CDATA #REQUIRED>
+
+<!ELEMENT create (#PCDATA)>
+<!ELEMENT drop (#PCDATA)>
+
+<!--
+    dialect-scope element allows scoping auxiliary-objects to a particular
+    Hibernate dialect implementation.
+-->
+<!ELEMENT dialect-scope (#PCDATA)>
+    <!ATTLIST dialect-scope name CDATA #REQUIRED>
+

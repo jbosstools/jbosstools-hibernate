@@ -1,8 +1,10 @@
 package org.hibernate.eclipse.console.model;
 
-public interface IRevEngGenerator {
+public interface IRevEngGenerator extends Notifiable {
 
 	String getGeneratorClassName();
 	
-	IParameter[] getParameters();
+	IRevEngParameter[] getParameters();
+
+	void setGeneratorClassName(String value);
 }

@@ -24,12 +24,13 @@ import org.hibernate.eclipse.console.workbench.AnyAdaptableLabelProvider;
 import org.hibernate.eclipse.console.workbench.DeferredContentProvider;
 import org.hibernate.eclipse.console.workbench.LazyDatabaseSchema;
 import org.hibernate.eclipse.console.workbench.TableContainer;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Table;
 import org.hibernate.util.StringHelper;
 
 public abstract class TableFilterView extends TreeToTableComposite {
 
-	TreeViewer viewer;
+	protected TreeViewer viewer;
 
 	private TableViewer tableViewer;
 
@@ -137,6 +138,9 @@ public abstract class TableFilterView extends TreeToTableComposite {
 					filter.setMatchSchema( tc.getName() );
 					filter.setMatchName(".*");
 					filter.setExclude( Boolean.valueOf( exclude ) );
+				} else if ( sel instanceof Column ) {
+					// we ignore column since at the moment we dont know which table is there.
+					return;
 				} else {
 					filter = revEngDef.createTableFilter();
 					filter.setExclude( Boolean.valueOf( exclude ) );
