@@ -30,6 +30,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
+import org.hibernate.cfg.Settings;
 import org.hibernate.console.execution.DefaultExecutionContext;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.console.execution.ExecutionContextHolder;
@@ -367,6 +368,16 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			sessionFactory.close();			
 			sessionFactory = null;
 		}		
+	}
+
+	public Settings getSettings(final Configuration cfg) {
+		return (Settings) execute(new Command() {
+		
+			public Object execute() {
+				return cfg.buildSettings();
+			}
+		
+		}); 
 	}
 
 	
