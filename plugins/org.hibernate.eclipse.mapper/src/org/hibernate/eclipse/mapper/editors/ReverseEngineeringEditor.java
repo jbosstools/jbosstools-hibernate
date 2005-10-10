@@ -152,7 +152,10 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 	public LazyDatabaseSchema getLazyDatabaseSchema() {
 		
 		ConsoleConfiguration configuration = KnownConfigurations.getInstance().find( getConsoleConfigurationName() );
-
+		if(configuration==null) {
+			MessageDialog.openInformation(getContainer().getShell(), "No console configuraiton", "No console configuration found.\n Select a valid one on the overview page");
+			return null;
+		}
 		ITableFilter[] tableFilters = getReverseEngineeringDefinition().getTableFilters();
 		Configuration cfg = configuration.buildWith(new Configuration(), false);
 		Settings settings = configuration.getSettings(cfg);

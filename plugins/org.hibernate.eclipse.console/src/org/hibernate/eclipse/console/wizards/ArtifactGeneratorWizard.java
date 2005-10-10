@@ -59,7 +59,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 		super();
 		IDialogSettings ds = HibernateConsolePlugin.getDefault().getDialogSettings().getSection(this.getClass().getName());
 		if(ds==null) {
-			ds = ds.addNewSection(this.getClass().getName());
+			ds = HibernateConsolePlugin.getDefault().getDialogSettings().addNewSection(this.getClass().getName());			
 		} 
 		setDialogSettings(ds);
         setDefaultPageImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.NEW_WIZARD) );
