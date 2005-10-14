@@ -28,8 +28,6 @@ public class HBMXMLContentAssistProcessor extends HibernateContentAssistProcesso
 		Node node = contentAssistRequest.getNode();
 		List proposals = new ArrayList();
 		
-		MapperPlugin.getDefault().getLogger().log(IStatus.WARNING, "getAttributeProposals");
-		LogFactory.getLog(this.getClass()).warn("getAttrib via log");
 		String path = node.getNodeName() + ">" + attributeName;
         HBMInfoHandler handler = sourceLocator.getAttributeHandler(path);
 		if (handler != null) {
