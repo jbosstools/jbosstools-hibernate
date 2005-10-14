@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><toc label="Reference Documentation">
     <topic label="Table of Contents" href="html/reference/en/html/index.html"/>
     <topic label="Preface" href="html/reference/en/html/preface.html"/>
-    <topic label="Quickstart with Tomcat" href="html/reference/en/html/quickstart.html">
-    <topic label="Getting started with Hibernate" href="html/reference/en/html/quickstart.html#quickstart-intro"/>
-    <topic label="First persistent class" href="html/reference/en/html/quickstart.html#quickstart-persistentclass"/>
-    <topic label="Mapping the cat" href="html/reference/en/html/quickstart.html#quickstart-mapping"/>
-    <topic label="Playing with cats" href="html/reference/en/html/quickstart.html#quickstart-playingwithcats"/>
-    <topic label="Finally" href="html/reference/en/html/quickstart.html#quickstart-summary"/></topic>
     <topic label="Introduction to Hibernate" href="html/reference/en/html/tutorial.html">
     <topic label="Preface" href="html/reference/en/html/tutorial.html#tutorial-intro"/>
     <topic label="Part 1 - The first Hibernate Application" href="html/reference/en/html/tutorial.html#tutorial-firstapp">
@@ -28,7 +22,8 @@
     <topic label="Overview" href="html/reference/en/html/architecture.html#architecture-overview"/>
     <topic label="Instance states" href="html/reference/en/html/architecture.html#architecture-states"/>
     <topic label="JMX Integration" href="html/reference/en/html/architecture.html#architecture-jmx"/>
-    <topic label="JCA Support" href="html/reference/en/html/architecture.html#architecture-jca"/></topic>
+    <topic label="JCA Support" href="html/reference/en/html/architecture.html#architecture-jca"/>
+    <topic label="Contextual Sessions" href="html/reference/en/html/architecture.html#architecture-current-session"/></topic>
     <topic label="Configuration" href="html/reference/en/html/session-configuration.html">
     <topic label="Programmatic configuration" href="html/reference/en/html/session-configuration.html#configuration-programmatic"/>
     <topic label="Obtaining a SessionFactory" href="html/reference/en/html/session-configuration.html#configuration-sessionfactory"/>
@@ -46,7 +41,7 @@
     <topic label="J2EE Application Server integration" href="html/reference/en/html/session-configuration.html#configuration-j2ee">
     <topic label="Transaction strategy configuration" href="html/reference/en/html/session-configuration.html#configuration-optional-transactionstrategy"/>
     <topic label="JNDI-bound SessionFactory" href="html/reference/en/html/session-configuration.html#configuration-optional-jndi"/>
-    <topic label="Automatic JTA and Session binding" href="html/reference/en/html/session-configuration.html#configuration-j2ee-currentsession"/>
+    <topic label="Current Session context management with JTA" href="html/reference/en/html/session-configuration.html#configuration-j2ee-currentsession"/>
     <topic label="JMX deployment" href="html/reference/en/html/session-configuration.html#configuration-j2ee-jmx"/></topic></topic>
     <topic label="Persistent Classes" href="html/reference/en/html/persistent-classes.html">
     <topic label="A simple POJO example" href="html/reference/en/html/persistent-classes.html#persistent-classes-pojo">
@@ -176,7 +171,7 @@
     <topic label="Transactions And Concurrency" href="html/reference/en/html/transactions.html">
     <topic label="Session and transaction scopes" href="html/reference/en/html/transactions.html#transactions-basics">
     <topic label="Unit of work" href="html/reference/en/html/transactions.html#transactions-basics-uow"/>
-    <topic label="Application transactions" href="html/reference/en/html/transactions.html#transactions-basics-apptx"/>
+    <topic label="Long conversations" href="html/reference/en/html/transactions.html#transactions-basics-apptx"/>
     <topic label="Considering object identity" href="html/reference/en/html/transactions.html#transactions-basics-identity"/>
     <topic label="Common issues" href="html/reference/en/html/transactions.html#transactions-basics-issues"/></topic>
     <topic label="Database transaction demarcation" href="html/reference/en/html/transactions.html#transactions-demarcation">
@@ -186,7 +181,7 @@
     <topic label="Transaction timeout" href="html/reference/en/html/transactions.html#transactions-demarcation-timeout"/></topic>
     <topic label="Optimistic concurrency control" href="html/reference/en/html/transactions.html#transactions-optimistic">
     <topic label="Application version checking" href="html/reference/en/html/transactions.html#transactions-optimistic-manual"/>
-    <topic label="Long session and automatic versioning" href="html/reference/en/html/transactions.html#transactions-optimistic-longsession"/>
+    <topic label="Extended session and automatic versioning" href="html/reference/en/html/transactions.html#transactions-optimistic-longsession"/>
     <topic label="Detached objects and automatic versioning" href="html/reference/en/html/transactions.html#transactions-optimistic-detached"/>
     <topic label="Customizing automatic versioning" href="html/reference/en/html/transactions.html#transactions-optimistic-customizing"/></topic>
     <topic label="Pessimistic Locking" href="html/reference/en/html/transactions.html#transactions-locking"/></topic>
@@ -203,6 +198,7 @@
     <topic label="Case Sensitivity" href="html/reference/en/html/queryhql.html#queryhql-casesensitivity"/>
     <topic label="The from clause" href="html/reference/en/html/queryhql.html#queryhql-from"/>
     <topic label="Associations and joins" href="html/reference/en/html/queryhql.html#queryhql-joins"/>
+    <topic label="Forms of join syntax" href="html/reference/en/html/queryhql.html#queryhql-joins-forms"/>
     <topic label="The select clause" href="html/reference/en/html/queryhql.html#queryhql-select"/>
     <topic label="Aggregate functions" href="html/reference/en/html/queryhql.html#queryhql-aggregation"/>
     <topic label="Polymorphic queries" href="html/reference/en/html/queryhql.html#queryhql-polymorphism"/>
