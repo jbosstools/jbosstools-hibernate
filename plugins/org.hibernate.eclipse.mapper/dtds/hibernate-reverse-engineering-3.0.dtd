@@ -37,14 +37,14 @@ TODO: document the tags in the DTD
 
 <!ELEMENT column EMPTY >
 <!ATTLIST column name           CDATA        #REQUIRED >
-<!ATTLIST column jdbc-type      CDATA        #REQUIRED >
+<!ATTLIST column jdbc-type      CDATA        #IMPLIED >
 <!ATTLIST column type           CDATA        #IMPLIED >
 <!ATTLIST column property       CDATA        #IMPLIED >
 <!ATTLIST column exclude        (true|false) "false" >
 <!ATTLIST column foreign-catalog CDATA  #IMPLIED >
 <!ATTLIST column foreign-schema CDATA   #IMPLIED >
-<!ATTLIST column foreign-table  CDATA        #IMPLIED >
-<!ATTLIST column foreign-column CDATA        #IMPLIED >
+<!ATTLIST column foreign-table  CDATA   #IMPLIED >
+<!ATTLIST column foreign-column CDATA   #IMPLIED >
 
 <!ELEMENT primary-key (generator?, column*) >
 
