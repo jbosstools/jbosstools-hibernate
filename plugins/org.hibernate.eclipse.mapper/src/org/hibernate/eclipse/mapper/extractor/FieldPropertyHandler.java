@@ -8,6 +8,7 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.hibernate.eclipse.hqleditor.CompletionHelper;
@@ -32,8 +33,12 @@ class FieldPropertyHandler implements HBMInfoHandler {
 	public ICompletionProposal[] attributeCompletionProposals(IJavaProject project, Node node, String attributeName, String start, int offset) {
 		//	TODO: should also try to find properties getXXX()
 	    if(project!=null) {
-			String typename = this.extractor.getNearestType(node);			
-						
+	    	
+			String typename = this.extractor.getNearestType(node.getParentNode());			
+			
+			if(typename==null) {
+				return new IJavaCompletionProposal[0]; // could not locate type
+			}
 			HibernateResultCollector rc = null;
 			try {
 				IType type = project.findType(typename);

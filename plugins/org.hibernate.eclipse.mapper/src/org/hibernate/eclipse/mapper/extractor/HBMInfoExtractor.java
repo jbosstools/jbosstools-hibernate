@@ -387,24 +387,24 @@ public class HBMInfoExtractor {
 	 */
 	public String getNearestType(Node node) {
 		if(node==null) return null;
+			
 		while(!javaTypeProvider.containsKey(node.getNodeName() ) ) {
 			node = node.getParentNode();			
 			if(node==null) return null;
 		}
+		
 		String attributeName = (String) javaTypeProvider.get(node.getNodeName() );
 		NamedNodeMap attributes = node.getAttributes();
 		
-		for(int count = 0; count<attributes.getLength(); count++) {
-			Node att = attributes.item(count);
-			if(attributeName.equals(att.getNodeName() ) ) {
-				String typename = att.getNodeValue();
-				if(typename!=null && typename.indexOf('.')<0) {
-					typename = getPackageName(node) + "." + typename;					
-				}
-				return typename;
+		Node att = attributes.getNamedItem(attributeName);
+		if(att!=null && attributeName.equals(att.getNodeName() ) ) {
+			String typename = att.getNodeValue();
+			if(typename!=null && typename.indexOf('.')<0) {
+				typename = getPackageName(node) + "." + typename;					
 			}
+			return typename;
 		}
-		
+				
 		return null;
 	}
 
