@@ -7,8 +7,6 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.eval.IEvaluationContext;
-import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.hibernate.eclipse.hqleditor.CompletionHelper;
 import org.hibernate.eclipse.hqleditor.HibernateResultCollector.Settings;

@@ -4,12 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.logging.LogFactory;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.wst.xml.ui.internal.contentassist.ContentAssistRequest;
-import org.hibernate.eclipse.mapper.MapperPlugin;
 import org.hibernate.eclipse.mapper.extractor.HBMInfoExtractor;
 import org.hibernate.eclipse.mapper.extractor.HBMInfoHandler;
 import org.w3c.dom.Node;

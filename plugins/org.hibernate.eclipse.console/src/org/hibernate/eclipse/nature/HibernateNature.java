@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
+import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext.Command;
@@ -107,6 +108,8 @@ public class HibernateNature implements IProjectNature {
 				job = new ReadDatabaseMetaData(ccfg);
 				job.setPriority(Job.DECORATE);
 				job.schedule();
+			} else if(job.getState()==Job.NONE) {
+				job.schedule();
 			}
 			return Collections.EMPTY_LIST;
 		}
@@ -150,5 +153,31 @@ public class HibernateNature implements IProjectNature {
 			}
 		}			
 
+	}
+
+	public List getMatchingTables(String tableName) {
+		List result = new ArrayList();
+		Iterator tableMappings = getTables().iterator();
+		while (tableMappings.hasNext() ) {
+			Table table = (Table) tableMappings.next();
+			if(table.getName().toUpperCase().startsWith(tableName.toUpperCase()) ) {
+				result.add(table);
+			}
+		}
+		return result;
+	}
+
+	public Table getTable(TableIdentifier nearestTableName) { 
+		// TODO: can be made MUCH more efficient with proper indexing of the tables.
+		// TODO: handle catalog/schema properly
+		List result = new ArrayList();
+		Iterator tableMappings = getTables().iterator();
+		while (tableMappings.hasNext() ) {
+			Table table = (Table) tableMappings.next();
+			if(nearestTableName.getName().equals(table.getName())) {
+				return table;
+			}
+		}
+		return null;
 	}
 }

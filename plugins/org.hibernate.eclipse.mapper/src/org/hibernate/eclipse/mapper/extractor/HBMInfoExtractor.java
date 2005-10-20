@@ -18,6 +18,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.wst.sse.ui.internal.contentassist.CustomCompletionProposal;
 import org.eclipse.wst.xml.ui.internal.contentassist.XMLRelevanceConstants;
 import org.hibernate.cfg.Environment;
+import org.hibernate.cfg.reveng.TableIdentifier;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -32,6 +33,7 @@ public class HBMInfoExtractor {
 	HibernateTypeDescriptor[] hibernateTypes;
 	
 	final Map javaTypeProvider = new HashMap(); // key: element name, value: attribute which contains javaType
+	final Map tableProvider = new HashMap(); // key: element name, value: attribute which contains table
 	
 	/** set of "tagname>attribname", used to decide which attributes we should react to */	
 	final Map attributeHandlers = new HashMap(); // completes a possible package or classname
@@ -44,9 +46,12 @@ public class HBMInfoExtractor {
 	
 	public HBMInfoExtractor() {
 		setupTypeFinder();
-		        
+		setupTableFinder();
+		
         setupJavaTypeHandlers();
-		        
+		
+        
+        
         setupPackageHandlers();
     
 		setupFieldsPropertyHandlers();
@@ -56,7 +61,7 @@ public class HBMInfoExtractor {
 		setupHibernateTypeDescriptors();
 		
 		setupTableNameHandlers();
-		
+		setupColumnNameHandlers();
 		setupHibernateProperties();
 		
 		setupGeneratorClassHandlers();
@@ -105,6 +110,21 @@ public class HBMInfoExtractor {
 		// TODO: use eclipse java model to infer types of components property/fields
 		javaTypeProvider.put("composite-id", "class");
 		javaTypeProvider.put("component", "class");
+	}
+	
+	private void setupTableFinder() {
+		tableProvider.put("class", "table");
+		tableProvider.put("join", "table");
+		tableProvider.put("joined-subclass", "table");
+		tableProvider.put("union-subclass", "table");
+		tableProvider.put("map", "table");
+		tableProvider.put("set", "table");
+		tableProvider.put("bag", "table");
+		tableProvider.put("idbag", "table");
+		tableProvider.put("list", "table");
+		tableProvider.put("array", "table");
+		tableProvider.put("primitive-array", "table");
+		tableProvider.put("synchronize", "table");
 	}
 
 	private void setupHibernateTypeDescriptors() {
@@ -188,6 +208,33 @@ public class HBMInfoExtractor {
 		attributeHandlers.put("array>table", hih);
 		attributeHandlers.put("primitive-array>table", hih);
 		attributeHandlers.put("synchronize>table", hih);	
+	}
+	
+	private void setupColumnNameHandlers() {
+		HBMInfoHandler hih = new ColumnNameHandler(this);
+		attributeHandlers.put("id>column", hih);
+		attributeHandlers.put("discriminator>column", hih);
+		attributeHandlers.put("version>column", hih);
+		attributeHandlers.put("timestamp>column", hih);
+		attributeHandlers.put("property>column", hih);
+		attributeHandlers.put("many-to-one>column", hih);
+		attributeHandlers.put("key-property>column", hih);
+		attributeHandlers.put("key-many-to-one>column", hih);
+		attributeHandlers.put("element>column", hih);
+		attributeHandlers.put("many-to-many>column", hih);
+		attributeHandlers.put("key>column", hih);
+		attributeHandlers.put("list-index>column", hih);
+		attributeHandlers.put("map-key>column", hih);
+		attributeHandlers.put("index>column", hih);
+		attributeHandlers.put("map-key-many-to-many>column", hih);
+		attributeHandlers.put("index-many-to-many>column", hih);
+		attributeHandlers.put("collection-id>column", hih);
+		attributeHandlers.put("column>name", hih);
+		attributeHandlers.put("return-property>column", hih);
+		attributeHandlers.put("return-column>column", hih);
+		attributeHandlers.put("return-discriminator>column", hih);
+		attributeHandlers.put("return-scalar>column", hih);
+
 	}
 	
 	private void setupAccessHandlers() {
@@ -386,14 +433,16 @@ public class HBMInfoExtractor {
 	 * @return the name of the nearest type from the node or null if none found. 
 	 */
 	public String getNearestType(Node node) {
+		Map map = javaTypeProvider;
+		
 		if(node==null) return null;
-			
-		while(!javaTypeProvider.containsKey(node.getNodeName() ) ) {
+		
+		while(!map.containsKey(node.getNodeName() ) ) {
 			node = node.getParentNode();			
 			if(node==null) return null;
 		}
 		
-		String attributeName = (String) javaTypeProvider.get(node.getNodeName() );
+		String attributeName = (String) map.get(node.getNodeName() );
 		NamedNodeMap attributes = node.getAttributes();
 		
 		Node att = attributes.getNamedItem(attributeName);
@@ -408,6 +457,41 @@ public class HBMInfoExtractor {
 		return null;
 	}
 
+	public TableIdentifier getNearestTableName(Node node) {
+		Map map = tableProvider;
+		
+		if(node==null) return null;
+		
+		while(!map.containsKey(node.getNodeName() ) ) {
+			node = node.getParentNode();			
+			if(node==null) return null;
+		}
+		
+		String attributeName = (String) map.get(node.getNodeName() );
+		NamedNodeMap attributes = node.getAttributes();
+		
+		Node att = attributes.getNamedItem(attributeName);
+		if(att!=null && attributeName.equals(att.getNodeName() ) ) {
+			String typename = att.getNodeValue();
+			String catalog = null;
+			String schema = null;
+			
+			Node namedItem = attributes.getNamedItem("catalog");
+			if(namedItem!=null) {
+				catalog = namedItem.getNodeValue();
+			}
+			
+			namedItem = attributes.getNamedItem("schema");
+			if(namedItem!=null) {
+				schema = namedItem.getNodeValue();
+			}
+			
+			return new TableIdentifier(catalog,schema,typename);
+		}
+				
+		return null;
+	}
+	
 	public IType getNearestTypeJavaElement(IJavaProject project, Node currentNode) {
 		String nearestType = getNearestType(currentNode);
 		if(nearestType!=null) {

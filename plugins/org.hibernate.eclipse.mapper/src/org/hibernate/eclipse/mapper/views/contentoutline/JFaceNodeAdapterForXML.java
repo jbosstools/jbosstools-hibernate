@@ -1,23 +1,13 @@
 package org.hibernate.eclipse.mapper.views.contentoutline;
 
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
-import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.eclipse.wst.sse.core.internal.provisional.INodeAdapterFactory;
-import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.sse.ui.internal.contentoutline.IJFaceNodeAdapter;
-import org.eclipse.wst.xml.ui.internal.XMLUIMessages;
 import org.eclipse.wst.xml.ui.internal.contentoutline.BufferedOutlineUpdater;
 import org.eclipse.wst.xml.ui.internal.contentoutline.JFaceNodeAdapter;
-import org.eclipse.wst.xml.ui.internal.contentoutline.JFaceNodeAdapterFactory;
-import org.eclipse.wst.xml.ui.internal.contentoutline.RefreshPropertySheetJob;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.w3c.dom.NamedNodeMap;

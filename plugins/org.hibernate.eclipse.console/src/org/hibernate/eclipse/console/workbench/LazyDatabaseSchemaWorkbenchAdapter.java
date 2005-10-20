@@ -11,7 +11,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.hibernate.HibernateException;
+import org.hibernate.JDBCException;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.JDBCReaderFactory;
 import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DefaultDatabaseCollector;
 import org.hibernate.cfg.reveng.JDBCReader;
@@ -69,31 +71,20 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 			
 			public Object execute() {
 				Settings settings = configuration.buildSettings();
-				Connection connection = null;
 				ConnectionProvider connectionProvider = null;
 				try {
 					connectionProvider = settings.getConnectionProvider();
-					connection = connectionProvider.getConnection();
 				
-					JDBCReader reader = new JDBCReader(connection, settings.getSQLExceptionConverter(), strategy);
+					JDBCReader reader = JDBCReaderFactory.newJDBCReader(configuration.getProperties(), settings, strategy);
 					reader.readDatabaseSchema(db, settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), new ProgressListenerMonitor(monitor));
 				} catch(HibernateException he) {
 					HibernateConsolePlugin.getDefault().logErrorMessage("Problem while reading database schema", he);
 					return new Object[] { "<Schema not available>"};
 				}
-				catch (SQLException e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage("Could not open connection for reading database schema", e);
-					return new Object[] { "<Connection error>" };
-				} finally {
-					if (connection!=null) {
-						try {
-							connectionProvider.closeConnection(connection);
-							connectionProvider.close();
-						}
-						catch (SQLException e) {
-						 //noop
-						}
-					}
+			    finally {
+					if (connectionProvider!=null) {
+						connectionProvider.close();
+					}				
 				}
 							
 				return null;
