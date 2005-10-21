@@ -142,7 +142,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 		log(new MultiStatus(HibernateConsolePlugin.ID, IStatus.ERROR , new IStatus[] { throwableToStatus(t.getCause()) }, message, t) );
 	}
 	
-	static IStatus throwableToStatus(Throwable t) {		
+	public static IStatus throwableToStatus(Throwable t) {		
 		ArrayList causes = new ArrayList();
 		Throwable temp = t;
 		while(temp!=null && temp.getCause()!=temp) {
