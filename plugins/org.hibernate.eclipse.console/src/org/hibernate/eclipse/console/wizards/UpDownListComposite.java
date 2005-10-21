@@ -289,7 +289,6 @@ public class UpDownListComposite extends Composite {
 		Table builderTable= tableView.getTable();
 		TableItem[] items = builderTable.getSelection();
 		boolean validSelection= items != null && items.length > 0;
-		boolean enableEdit= validSelection;
 		boolean enableRemove= validSelection;
 		boolean enableUp= validSelection;
 		boolean enableDown= validSelection;
