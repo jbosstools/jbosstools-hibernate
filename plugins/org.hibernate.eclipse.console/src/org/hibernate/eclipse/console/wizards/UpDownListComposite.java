@@ -98,6 +98,18 @@ public class UpDownListComposite extends Composite {
 		column.setText("Name");
 		column.setWidth(1000);
 		
+		table.addSelectionListener(new SelectionListener() {
+		
+			public void widgetDefaultSelected(SelectionEvent e) {
+				handleTableSelectionChanged();		
+			}
+		
+			public void widgetSelected(SelectionEvent e) {
+				handleTableSelectionChanged();		
+			}
+		
+		});
+		
 		tableView = new TableViewer(table);
 		
 	}
