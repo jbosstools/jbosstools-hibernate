@@ -13,6 +13,7 @@ import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.hibernate.eclipse.hqleditor.CompletionHelper;
 import org.hibernate.eclipse.hqleditor.HibernateResultCollector;
+import org.hibernate.util.StringHelper;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Node;
 
@@ -22,6 +23,7 @@ class FieldPropertyHandler implements HBMInfoHandler {
 	 * 
 	 */
 	private final HBMInfoExtractor extractor;
+	
 
 	/**
 	 * @param extractor
@@ -34,7 +36,10 @@ class FieldPropertyHandler implements HBMInfoHandler {
 		//	TODO: should also try to find properties getXXX()
 	    if(project!=null) {
 	    	
-			String typename = this.extractor.getNearestType(node.getParentNode());			
+			Node parentNode = node.getParentNode();
+			String typename = null;			
+			
+			typename = this.extractor.getNearestType( project, parentNode );
 			
 			if(typename==null) {
 				return new IJavaCompletionProposal[0]; // could not locate type
@@ -61,6 +66,7 @@ class FieldPropertyHandler implements HBMInfoHandler {
 		return new ICompletionProposal[0];            
 	}
 
+	
 	public IJavaElement getJavaElement(IJavaProject project, Node currentNode, Attr currentAttrNode) {
 		IType type = extractor.getNearestTypeJavaElement(project, currentNode.getParentNode() );
 		if(type!=null) {				

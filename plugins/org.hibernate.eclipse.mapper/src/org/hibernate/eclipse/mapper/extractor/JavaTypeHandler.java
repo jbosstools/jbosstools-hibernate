@@ -43,7 +43,7 @@ public class JavaTypeHandler implements HBMInfoHandler {
 	}
 
 	public IJavaElement getNearestTypeJavaElement(IJavaProject project, Node currentNode) {
-		String nearestType = extractor.getNearestType(currentNode);
+		String nearestType = extractor.getNearestType(project, currentNode);
 		if(nearestType!=null) {
 			try {
 				IType type = project.findType(nearestType);

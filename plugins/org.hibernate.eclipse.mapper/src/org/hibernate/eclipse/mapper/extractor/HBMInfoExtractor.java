@@ -12,13 +12,16 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.jdt.core.Flags;
+import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.Signature;
 import org.eclipse.wst.sse.ui.internal.contentassist.CustomCompletionProposal;
 import org.eclipse.wst.xml.ui.internal.contentassist.XMLRelevanceConstants;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.reveng.TableIdentifier;
+import org.hibernate.util.StringHelper;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -344,6 +347,11 @@ public class HBMInfoExtractor {
 
 
 	public List findMatchingPropertyTypes(String prefix) {
+		for (int i = 0; i < hibernatePropertyNames.length; i++) {
+			String ae = hibernatePropertyNames[i];
+			System.out.println(ae);
+			
+		}
 		List l = new ArrayList();
 		boolean foundFirst = false;
 		for (int i = 0; i < hibernatePropertyNames.length; i++) {
@@ -432,7 +440,7 @@ public class HBMInfoExtractor {
 	 * @param node
 	 * @return the name of the nearest type from the node or null if none found. 
 	 */
-	public String getNearestType(Node node) {
+	private String getNearestType(Node node) {
 		Map map = javaTypeProvider;
 		
 		if(node==null) return null;
@@ -455,6 +463,44 @@ public class HBMInfoExtractor {
 		}
 				
 		return null;
+	}
+
+	public String getNearestType(IJavaProject project, Node parentNode) {
+		String typename = getNearestType(parentNode);
+		if(typename!=null) return typename;
+		
+		try {
+			if("component".equals(parentNode.getNodeName())) { // probably need to integrate this into extractor?
+				Node componentPropertyNodeName = parentNode.getAttributes().getNamedItem("name");
+				if(componentPropertyNodeName!=null) {
+					String parentTypeName = getNearestType(project, parentNode.getParentNode());
+					if(parentTypeName!=null) {
+						String componentName = componentPropertyNodeName.getNodeValue();
+						IType parentType = project.findType(parentTypeName);
+						IField field = parentType.getField(componentName);
+						if(field.exists()) {
+							String fieldTypeSignature = field.getTypeSignature();
+							String qualifier = Signature.getSignatureQualifier(fieldTypeSignature);
+							String simpleName = Signature.getSignatureSimpleName(fieldTypeSignature);
+							if(!StringHelper.isEmpty(qualifier)) {
+								simpleName = Signature.toQualifiedName(new String[] { qualifier, simpleName });
+							}
+							
+							String[][] possibleTypes = null;
+							possibleTypes = parentType.resolveType(simpleName);								
+							if(possibleTypes != null && possibleTypes.length>0) {
+								typename = Signature.toQualifiedName(possibleTypes[0]);
+							}
+							
+						}
+					}
+				}
+			}
+		} catch(JavaModelException jme) {
+			// ignore, reset typename for safety
+			typename=null;
+		}
+		return typename;
 	}
 
 	public TableIdentifier getNearestTableName(Node node) {
@@ -493,7 +539,7 @@ public class HBMInfoExtractor {
 	}
 	
 	public IType getNearestTypeJavaElement(IJavaProject project, Node currentNode) {
-		String nearestType = getNearestType(currentNode);
+		String nearestType = getNearestType(project, currentNode);
 		if(nearestType!=null) {
 			try {
 				IType type = project.findType(nearestType);
