@@ -2,6 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/antlr-2.7.5H3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/asm.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/asm-attrs.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/c3p0-0.9.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/cglib-2.1.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/commons-collections-2.1.1.jar"/>
@@ -10,7 +12,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/connector.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/dom4j-1.6.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/ehcache-1.1.jar"/>
-	<classpathentry exported="true" sourcepath="/hibernate3" kind="lib" path="lib/hibernate/hibernate3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/hibernate3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/jboss-cache.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/jboss-common.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/jboss-jmx.jar"/>
@@ -23,17 +25,15 @@
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/oscache-2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/proxool-0.8.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/swarmcache-1.0rc2.jar"/>
-	<classpathentry exported="true" sourcepath="/hibernateext.tools" kind="lib" path="lib/tools/hibernate-tools.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/tools/hibernate-tools.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/jtidy-r8-21122004.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/velocity-1.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/velocity-tools-generic-1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/bsh-core-2.0b4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/annotations/ejb3-persistence.jar"/>
-	<classpathentry exported="true" sourcepath="/hibernateext.metadata" kind="lib" path="lib/annotations/hibernate-annotations.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/annotations/hibernate-annotations.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/annotations/lucene-1.4.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="lib" path="lib/hibernate/asm-attrs.jar"/>
-	<classpathentry kind="lib" path="lib/hibernate/asm.jar"/>
 	<classpathentry kind="output" path="build/eclipse"/>
 </classpath>
