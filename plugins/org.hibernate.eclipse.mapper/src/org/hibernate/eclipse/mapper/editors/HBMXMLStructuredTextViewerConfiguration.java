@@ -3,6 +3,7 @@ package org.hibernate.eclipse.mapper.editors;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
@@ -36,7 +37,10 @@ public class HBMXMLStructuredTextViewerConfiguration extends StructuredTextViewe
 			return null;
 		
 		List allDetectors = new ArrayList(0);
-		allDetectors.add(new HBMXMLHyperlinkDetector(ProjectUtils.findJavaProject(getEditorPart()) ) );
+		IJavaProject jp = ProjectUtils.findJavaProject(getEditorPart());
+		if(jp!=null) { // HBX-463
+			allDetectors.add(new HBMXMLHyperlinkDetector(jp ) );
+		}
 		
 		IHyperlinkDetector[] superDetectors =  super.getHyperlinkDetectors(sourceViewer);
 		for (int m = 0; m < superDetectors.length; m++) {
