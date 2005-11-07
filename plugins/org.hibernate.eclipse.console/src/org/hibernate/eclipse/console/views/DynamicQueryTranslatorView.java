@@ -23,13 +23,17 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.classic.Session;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.HQLQueryPage;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.utils.QLFormatHelper;
 import org.hibernate.eclipse.hqleditor.HQLEditor;
 import org.hibernate.eclipse.hqleditor.HQLSourceViewer;
 import org.hibernate.eclipse.hqleditor.HQLSourceViewerConfiguration;
+import org.hibernate.engine.query.HQLQueryPlan;
 import org.hibernate.hql.QueryTranslator;
 import org.hibernate.impl.SessionFactoryImpl;
 import org.hibernate.type.Type;
@@ -132,10 +136,13 @@ public class DynamicQueryTranslatorView extends ViewPart {
 		
 		result = (String) context.execute(new ExecutionContext.Command() {
 			public Object execute() {
+				Session session = null;
 				try {
 					SessionFactoryImpl sfimpl = (SessionFactoryImpl) sf; // hack - to get to the actual queries..
 					StringBuffer str = new StringBuffer(256);
-					QueryTranslator[] translators = sfimpl.getQuery(query, false, Collections.EMPTY_MAP);
+					HQLQueryPlan plan = new HQLQueryPlan(query, false, Collections.EMPTY_MAP, sfimpl);
+					
+					QueryTranslator[] translators = plan.getTranslators();
 					for (int i = 0; i < translators.length; i++) {
 						QueryTranslator translator = translators[i];
 						Type[] returnTypes = translator.getReturnTypes();						
@@ -150,7 +157,8 @@ public class DynamicQueryTranslatorView extends ViewPart {
 						str.append("\n\n");
 					}
 					return str.toString();
-				} catch(Throwable t) {
+				} catch(Throwable t) {					
+					if(session!=null) session.close();
 					//StringWriter sw = new StringWriter();
 					StringBuffer msgs = new StringBuffer();
 					

@@ -7,7 +7,6 @@ import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MidpointLocator;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
-import org.eclipse.swt.graphics.Color;
 import org.hibernate.eclipse.graph.model.AssociationViewAdapter;
 
 public class AssociationEditPart extends AbstractConnectionEditPart {

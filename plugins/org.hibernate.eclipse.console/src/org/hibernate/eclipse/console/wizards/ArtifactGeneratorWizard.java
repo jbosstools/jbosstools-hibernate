@@ -201,13 +201,13 @@ String outputPackage, IPath revengsettings, boolean reveng, final boolean genjav
 				
 				if(genjava) {
 					monitor.subTask("domain code");
-					final POJOExporter javaExporter = new POJOExporter(); // TODO: expose generics as an option
+					final POJOExporter javaExporter = new POJOExporter(); // TODO: expose jdk5 as an option
 					javaExporter.setOutputDirectory(outputdir);
 					javaExporter.setConfiguration(cfg);
 					javaExporter.setTemplatePath(templatePaths);	                
 					
 					javaExporter.setEjb3(ejb3);
-					javaExporter.setGenerics(ejb3);
+					javaExporter.setJdk5(ejb3);
 										
 					javaExporter.start();
 					monitor.worked(6);
@@ -222,7 +222,7 @@ String outputPackage, IPath revengsettings, boolean reveng, final boolean genjav
 					daoExporter.setTemplatePath(templatePaths);
     			    
                     daoExporter.setEjb3(ejb3);
-                    daoExporter.setGenerics(ejb3);
+                    daoExporter.setJdk5(ejb3);
                     
                     daoExporter.start();
                     monitor.worked(7);
