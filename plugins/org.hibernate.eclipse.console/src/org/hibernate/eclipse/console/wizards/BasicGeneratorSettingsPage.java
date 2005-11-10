@@ -1,13 +1,8 @@
 package org.hibernate.eclipse.console.wizards;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IResourceProxy;
-import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -21,17 +16,13 @@ import org.eclipse.jdt.internal.ui.wizards.dialogfields.StringButtonDialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.StringDialogField;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogPage;
-import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -59,7 +50,8 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 
 	private SelectionButtonDialogField generatejava;
 	private SelectionButtonDialogField enableEJB3annotations;
-    
+    private SelectionButtonDialogField enableJDK5;
+        
     private SelectionButtonDialogField generatedao;
     
 	private SelectionButtonDialogField generatemappings;
@@ -200,13 +192,17 @@ public class BasicGeneratorSettingsPage extends WizardPage {
         generatejava = new SelectionButtonDialogField(SWT.CHECK);
 		generatejava.setLabelText("Generate domain code (.java)");
 		generatejava.setDialogFieldListener(fieldlistener);
-		
+        
+        enableJDK5 = new SelectionButtonDialogField(SWT.CHECK);
+        enableJDK5.setLabelText("JDK 1.5 Constructs (generics, etc.)");
+        enableJDK5.setDialogFieldListener(fieldlistener);
+ 
         enableEJB3annotations = new SelectionButtonDialogField(SWT.CHECK);
         enableEJB3annotations.setLabelText("EJB3/JSR-220 annotations (experimental!)");
         enableEJB3annotations.setDialogFieldListener(fieldlistener);
-        
-        generatejava.attachDialogField(enableEJB3annotations);
-        
+      
+        generatejava.attachDialogFields(new DialogField[] {enableJDK5, enableEJB3annotations});
+                
         generatedao = new SelectionButtonDialogField(SWT.CHECK);
         generatedao.setLabelText("Generate DAO code (.java)");
         generatedao.setDialogFieldListener(fieldlistener);
@@ -245,6 +241,8 @@ public class BasicGeneratorSettingsPage extends WizardPage {
         fillLabel(container);
         preferRawCompositeIds.doFillIntoGrid(container, 2);
 		generatejava.doFillIntoGrid(container, 3);
+        fillLabel(container);
+        enableJDK5.doFillIntoGrid(container, 2);
         fillLabel(container);
         enableEJB3annotations.doFillIntoGrid(container, 2);
         generatedao.doFillIntoGrid(container, 3);
@@ -516,6 +514,10 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 	}
 
 
+    public boolean isJDK5ConstructsEnabled() {
+        return enableJDK5.isSelected();
+    }
+    
 	public void saveSettings() {
 		getDialogSettings().put("outputdir", outputdir.getText());
 		getDialogSettings().put("schema2hbm", isReverseEngineerEnabled());
@@ -523,6 +525,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 		getDialogSettings().put("templatepathenabled", useOwnTemplates.isSelected());		
 		getDialogSettings().put("configurationname", getConfigurationName());
 		getDialogSettings().put("hbm2cfgxml", isGenerateCfg());
+        getDialogSettings().put("jdk5", isJDK5ConstructsEnabled());
 		getDialogSettings().put("ejb3", isEJB3Enabled());
 		getDialogSettings().put("hbm2dao", isGenerateDao());
 		getDialogSettings().put("hbm2doc", isGenerateDoc());
@@ -540,8 +543,9 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 			useOwnTemplates.setSelection(getDialogSettings().getBoolean("templatepathenabled"));
 			consoleConfigurationName.setText(getDialogSettings().get("configurationname"));
 			generatecfgfile.setSelection(getDialogSettings().getBoolean("hbm2cfgxml"));
+enableJDK5.setSelection(getDialogSettings().getBoolean("jdk5"));
 			enableEJB3annotations.setSelection(getDialogSettings().getBoolean("ejb3"));
-			generatedao.setSelection(getDialogSettings().getBoolean("hbm2dao"));
+ generatedao.setSelection(getDialogSettings().getBoolean("hbm2dao"));
 			generatedocs.setSelection(getDialogSettings().getBoolean("hbm2doc"));
 			generatejava.setSelection(getDialogSettings().getBoolean("hbm2java"));
 			generatemappings.setSelection(getDialogSettings().getBoolean("hbm2hbmxml"));

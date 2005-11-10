@@ -98,13 +98,14 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 		final boolean gencfg = page.isGenerateCfg();
         final boolean preferBasic = page.isPreferBasicCompositeIds();
         final boolean ejb3 = page.isEJB3Enabled();
+        final boolean generics = page.isJDK5ConstructsEnabled();
 		final boolean gendoc = page.isGenerateDoc();
 		
         final IPath templatedir = page.getTemplateDirectory();
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
-					doFinish(configurationName, output, outputPackage, revengsettings, reveng, genjava, gendao, genhbm, gencfg, monitor, preferBasic, templatedir, ejb3, gendoc);
+doFinish(configurationName, output, outputPackage, revengsettings, reveng, genjava, gendao, genhbm, gencfg, monitor, preferBasic, templatedir, ejb3, generics, gendoc);
 				} catch (CoreException e) {
 					throw new InvocationTargetException(e);
 				} finally {
@@ -140,7 +141,7 @@ public class ArtifactGeneratorWizard extends Wizard implements INewWizard {
 
 	private void doFinish(
 		String configName, IPath output,
-String outputPackage, IPath revengsettings, boolean reveng, final boolean genjava, final boolean gendao, final boolean genhbm, final boolean gencfg, final IProgressMonitor monitor, boolean preferBasicCompositeids, IPath templateDir, final boolean ejb3, final boolean gendoc)
+String outputPackage, IPath revengsettings, boolean reveng, final boolean genjava, final boolean gendao, final boolean genhbm, final boolean gencfg, final IProgressMonitor monitor, boolean preferBasicCompositeids, IPath templateDir, final boolean ejb3, final boolean generics, final boolean gendoc)
 		throws CoreException {
 				
 		// create a sample file
@@ -207,7 +208,7 @@ String outputPackage, IPath revengsettings, boolean reveng, final boolean genjav
 					javaExporter.setTemplatePath(templatePaths);	                
 					
 					javaExporter.setEjb3(ejb3);
-					javaExporter.setJdk5(ejb3);
+					javaExporter.setJdk5(generics);
 										
 					javaExporter.start();
 					monitor.worked(6);
@@ -222,7 +223,7 @@ String outputPackage, IPath revengsettings, boolean reveng, final boolean genjav
 					daoExporter.setTemplatePath(templatePaths);
     			    
                     daoExporter.setEjb3(ejb3);
-                    daoExporter.setJdk5(ejb3);
+                    daoExporter.setJdk5(generics);
                     
                     daoExporter.start();
                     monitor.worked(7);
