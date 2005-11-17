@@ -3,6 +3,7 @@ package org.hibernate.eclipse.console;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -142,11 +143,11 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 		log(new MultiStatus(HibernateConsolePlugin.ID, IStatus.ERROR , new IStatus[] { throwableToStatus(t.getCause()) }, message, t) );
 	}
 	
-	public static IStatus throwableToStatus(Throwable t) {		
-		ArrayList causes = new ArrayList();
+	public static IStatus throwableToStatus(Throwable t, int code) {
+		List causes = new ArrayList();
 		Throwable temp = t;
 		while(temp!=null && temp.getCause()!=temp) {
-			causes.add(new Status(IStatus.ERROR, ID, 150, temp.getMessage()==null?temp.toString() + ": <no message>":temp.toString(), temp) );
+			causes.add(new Status(IStatus.ERROR, ID, code, temp.getMessage()==null?temp.toString() + ": <no message>":temp.toString(), temp) );
 			temp = temp.getCause();
 		}
         String msg = "<No message>";
@@ -155,11 +156,15 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
         }
         
         if(causes.isEmpty()) {
-        	return new Status(Status.ERROR, ID, 150, msg, t);
+        	return new Status(IStatus.ERROR, ID, code, msg, t);
         } else {
-        	return new MultiStatus(ID, 150,(IStatus[]) causes.toArray(new IStatus[causes.size()]), msg, t);
+        	return new MultiStatus(ID, code,(IStatus[]) causes.toArray(new IStatus[causes.size()]), msg, t);
         }
 		
+	}
+	
+	public static IStatus throwableToStatus(Throwable t) {		
+		return throwableToStatus(t, 150);
 	}
 	
 	public void logErrorMessage(String message, Throwable t[]) {
@@ -373,5 +378,16 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 	 */
 	public interface IOpenableInShell {
 		public void open(Shell shell);
+	}
+	
+	public static Shell getShell() {
+		if (getActiveWorkbenchWindow() != null) {
+			return getActiveWorkbenchWindow().getShell();
+		}
+		return null;
+	}
+	
+	public static IWorkbenchWindow getActiveWorkbenchWindow() {
+		return getDefault().getWorkbench().getActiveWorkbenchWindow();
 	}
 }

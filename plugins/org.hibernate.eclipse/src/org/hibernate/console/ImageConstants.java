@@ -11,6 +11,7 @@ package org.hibernate.console;
 public interface ImageConstants {
 	
 	public static final String HIBERNATE_LOGO = "images/hibernate.gif";
+	public static final String MINI_HIBERNATE = "images/hicon.gif";
 	public static final String JBOSS_LOGO = "images/jboss.gif";
 	
 	public static final String FORMAT_QL = "images/format.gif";

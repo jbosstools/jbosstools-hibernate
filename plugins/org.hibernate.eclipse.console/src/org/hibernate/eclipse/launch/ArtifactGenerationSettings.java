@@ -1,11 +1,15 @@
-package org.hibernate.eclipse.console.wizards;
+package org.hibernate.eclipse.launch;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.ComboDialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.DialogField;
@@ -19,8 +23,8 @@ import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -29,34 +33,20 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.node.ConfigurationNode;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
+import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.hibernate.eclipse.console.wizards.NewReverseEngineeringFileWizard;
 
-/**
- * The "New" wizard page allows setting the container for the new file as well
- * as the file name. The page will only accept file name without the extension
- * OR with the extension that matches the expected one (mpe).
- */
+public class ArtifactGenerationSettings extends	AbstractLaunchConfigurationTab {
 
-public class BasicGeneratorSettingsPage extends WizardPage {
 	private ComboDialogField consoleConfigurationName;
 
 	private IStructuredSelection selection;
 
 	private SelectionButtonDialogField reverseengineer;
-
-	private SelectionButtonDialogField generatecfgfile;
-
-	private SelectionButtonDialogField generatejava;
-	private SelectionButtonDialogField enableEJB3annotations;
-    private SelectionButtonDialogField enableJDK5;
-        
-    private SelectionButtonDialogField generatedao;
-    
-	private SelectionButtonDialogField generatemappings;
-
-	private SelectionButtonDialogField generatedocs;
 	
 	private StringButtonDialogField outputdir;
 	
@@ -69,27 +59,13 @@ public class BasicGeneratorSettingsPage extends WizardPage {
     private SelectionButtonDialogField useOwnTemplates;
     private StringButtonDialogField templatedir;
     
-    //private Package
-
-	/**
-	 * Constructor for SampleNewWizardPage.
-	 * 
-	 * @param pageName
-	 */
-	public BasicGeneratorSettingsPage(IStructuredSelection selection) {
-		super("wizardPage");
-		setTitle("Basic settings for artifact generation");
-		setDescription("This wizard allows you to generate artifacts (configuration, mapping & source code files)");
-		this.selection = selection;
+	public ArtifactGenerationSettings() {
+		super();
 	}
 
-	
-	/**
-	 * @see IDialogPage#createControl(Composite)
-	 */
-	public void createControl(Composite parent) {
+    public void createControl(Composite parent) {
 		
-		initializeDialogUnits(parent);
+		//initializeDialogUnits(parent);
 		
 		Composite container = new Composite(parent, SWT.NULL);
 		GridLayout layout = new GridLayout();
@@ -189,24 +165,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 		reverseengineer = new SelectionButtonDialogField(SWT.CHECK);
 		reverseengineer.setLabelText("Reverse engineer from JDBC Connection");
 		reverseengineer.setDialogFieldListener(fieldlistener);
-        generatejava = new SelectionButtonDialogField(SWT.CHECK);
-		generatejava.setLabelText("Generate domain code (.java)");
-		generatejava.setDialogFieldListener(fieldlistener);
-        
-        enableJDK5 = new SelectionButtonDialogField(SWT.CHECK);
-        enableJDK5.setLabelText("JDK 1.5 Constructs (generics, etc.)");
-        enableJDK5.setDialogFieldListener(fieldlistener);
- 
-        enableEJB3annotations = new SelectionButtonDialogField(SWT.CHECK);
-        enableEJB3annotations.setLabelText("EJB3/JSR-220 annotations (experimental!)");
-        enableEJB3annotations.setDialogFieldListener(fieldlistener);
-      
-        generatejava.attachDialogFields(new DialogField[] {enableJDK5, enableEJB3annotations});
-                
-        generatedao = new SelectionButtonDialogField(SWT.CHECK);
-        generatedao.setLabelText("Generate DAO code (.java)");
-        generatedao.setDialogFieldListener(fieldlistener);
-        
+          
         useOwnTemplates = new SelectionButtonDialogField(SWT.CHECK);
         useOwnTemplates.setDialogFieldListener(fieldlistener);
         useOwnTemplates.setLabelText("Use custom templates");
@@ -216,18 +175,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
         preferRawCompositeIds.setSelection(true);
         preferRawCompositeIds.setDialogFieldListener(fieldlistener);
         
-		generatemappings = new SelectionButtonDialogField(SWT.CHECK);
-		generatemappings.setLabelText("Generate mappings (hbm.xml)");
-		generatemappings.setDialogFieldListener(fieldlistener);
-		
-		generatedocs = new SelectionButtonDialogField(SWT.CHECK);
-		generatedocs.setLabelText("Generate schema html-documentation");
-		generatedocs.setDialogFieldListener(fieldlistener);
-		
-		generatecfgfile = new SelectionButtonDialogField(SWT.CHECK);
-		generatecfgfile.setLabelText("Generate hibernate configuration (hibernate.cfg.xml)");
-		generatecfgfile.setDialogFieldListener(fieldlistener);
-        useOwnTemplates.attachDialogField(templatedir);
+		useOwnTemplates.attachDialogField(templatedir);
         reverseengineer.attachDialogFields(new DialogField[] { packageName, preferRawCompositeIds, reverseEngineeringSettings });
        
 		consoleConfigurationName.doFillIntoGrid(container, 3);
@@ -240,22 +188,12 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 		
         fillLabel(container);
         preferRawCompositeIds.doFillIntoGrid(container, 2);
-		generatejava.doFillIntoGrid(container, 3);
-        fillLabel(container);
-        enableJDK5.doFillIntoGrid(container, 2);
-        fillLabel(container);
-        enableEJB3annotations.doFillIntoGrid(container, 2);
-        generatedao.doFillIntoGrid(container, 3);
-		generatemappings.doFillIntoGrid(container, 3);
-		generatecfgfile.doFillIntoGrid(container, 3);
-		generatedocs.doFillIntoGrid(container, 3);
+		fillLabel(container);
         useOwnTemplates.doFillIntoGrid(container, 3);
         controls = templatedir.doFillIntoGrid(container, 3);
         // Hack to tell the text field to stretch!
         ( (GridData)controls[1].getLayoutData() ).grabExcessHorizontalSpace=true;
         
-
-		initialize();
 		dialogChanged();
 		setControl(container);
 	}
@@ -263,52 +201,12 @@ public class BasicGeneratorSettingsPage extends WizardPage {
     private void fillLabel(Composite container) {
         new Label(container, SWT.NULL);
     }
-	/**
-	 * Tests if the current workbench selection is a suitable container to use.
-	 */
 
-	private void initialize() {
-		loadSettings();
-		if (selection != null && selection.isEmpty() == false
-				&& selection instanceof IStructuredSelection) {
-			IStructuredSelection ssel = (IStructuredSelection) selection;
-			if (ssel.size() > 1)
-				return;
-			Object obj = ssel.getFirstElement();
-			if (obj instanceof ConfigurationNode) {
-				consoleConfigurationName.setText( ( (ConfigurationNode)obj).getConsoleConfiguration().getName() );
-			} else if(consoleConfigurationName.getItems().length==1) {
-                consoleConfigurationName.setText(consoleConfigurationName.getItems()[0]);
-            }
-			
-			if(obj instanceof IResource) {
-				IResource res = (IResource) obj;
-				
-				if(res.getName().endsWith(".reveng.xml")) { // TODO: should be based on contenttype
-					reverseEngineeringSettings.setText(res.getFullPath().toOSString());
-				}
-			}
-		}
-	}
-
-
-
-	/**
-	 * Ensures that both text fields are set.
-	 */
 
 	private void dialogChanged() {
-
-		
-		
 		boolean configSelected = getConfigurationName().length()==0;
 		outputdir.setEnabled(!configSelected);
 		reverseengineer.setEnabled(!configSelected);
-		generatejava.setEnabled(!configSelected);
-		generatecfgfile.setEnabled(!configSelected);
-		generatedao.setEnabled(!configSelected);
-		generatedocs.setEnabled(!configSelected);
-		generatemappings.setEnabled(!configSelected);
 		useOwnTemplates.setEnabled(!configSelected);
 		
 		if (configSelected) {
@@ -413,7 +311,7 @@ public class BasicGeneratorSettingsPage extends WizardPage {
     
     private void updateStatus(String message) {
         setErrorMessage(message);
-        setPageComplete(message==null);
+        updateLaunchConfigurationDialog();
     }
     
 	public String getConfigurationName() {
@@ -436,41 +334,6 @@ public class BasicGeneratorSettingsPage extends WizardPage {
 		return reverseengineer.isSelected();
 	}
 
-
-	/**
-	 * @return
-	 */
-	public boolean isGenerateJava() {
-		return generatejava.isSelected();
-	}
-    
-    /**
-     * @return
-     */
-    public boolean isGenerateDao() {
-        return generatedao.isSelected();
-    }   
-
-
-	/**
-	 * @return
-	 */
-	public boolean isGenerateMappings() {
-		return generatemappings.isSelected();
-	}
-
-
-	/**
-	 * @return
-	 */
-	public boolean isGenerateCfg() {
-		return generatecfgfile.isSelected();
-	}
-
-
-	/**
-	 * @return
-	 */
 	public IPath getOutputDirectory() {
 		return pathOrNull(outputdir.getText() );
 	}
@@ -479,78 +342,57 @@ public class BasicGeneratorSettingsPage extends WizardPage {
         return pathOrNull(templatedir.getText() );
     }
 
-
-    /**
-     * @return
-     */
     public String getOutputPackage() {
           return packageName.getText();
     }
 
-
-    /**
-     * @return
-     */
     public boolean isPreferBasicCompositeIds() {
         return preferRawCompositeIds.isSelected();
     }
 
-
-    /**
-     * @return
-     */
-    public boolean isEJB3Enabled() {
-        return enableEJB3annotations.isSelected();
-    }
-
-
 	public IPath getReverseEngineeringSettingsFile() {
 		return pathOrNull(reverseEngineeringSettings.getText() );
-	}
-
-
-	public boolean isGenerateDoc() {
-		return generatedocs.isSelected();
-	}
-
-
-    public boolean isJDK5ConstructsEnabled() {
-        return enableJDK5.isSelected();
-    }
+	}    
     
-	public void saveSettings() {
-		getDialogSettings().put("outputdir", outputdir.getText());
-		getDialogSettings().put("schema2hbm", isReverseEngineerEnabled());
-		getDialogSettings().put("revengfile", reverseEngineeringSettings.getText());
-		getDialogSettings().put("templatepathenabled", useOwnTemplates.isSelected());		
-		getDialogSettings().put("configurationname", getConfigurationName());
-		getDialogSettings().put("hbm2cfgxml", isGenerateCfg());
-        getDialogSettings().put("jdk5", isJDK5ConstructsEnabled());
-		getDialogSettings().put("ejb3", isEJB3Enabled());
-		getDialogSettings().put("hbm2dao", isGenerateDao());
-		getDialogSettings().put("hbm2doc", isGenerateDoc());
-		getDialogSettings().put("hbm2java", isGenerateJava());
-		getDialogSettings().put("hbm2hbmxml", isGenerateMappings());
-		getDialogSettings().put("package", getOutputPackage());
-		getDialogSettings().put("templatepath", templatedir.getText());				
+	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {		
+		// TODO
 	}
-    
-	public void loadSettings() {
-		if(getDialogSettings().get("outputdir")!=null) {
-			outputdir.setText(getDialogSettings().get("outputdir"));
-			reverseengineer.setSelection(getDialogSettings().getBoolean("schema2hbm"));
-			reverseEngineeringSettings.setText(getDialogSettings().get("revengfile"));
-			useOwnTemplates.setSelection(getDialogSettings().getBoolean("templatepathenabled"));
-			consoleConfigurationName.setText(getDialogSettings().get("configurationname"));
-			generatecfgfile.setSelection(getDialogSettings().getBoolean("hbm2cfgxml"));
-enableJDK5.setSelection(getDialogSettings().getBoolean("jdk5"));
-			enableEJB3annotations.setSelection(getDialogSettings().getBoolean("ejb3"));
- generatedao.setSelection(getDialogSettings().getBoolean("hbm2dao"));
-			generatedocs.setSelection(getDialogSettings().getBoolean("hbm2doc"));
-			generatejava.setSelection(getDialogSettings().getBoolean("hbm2java"));
-			generatemappings.setSelection(getDialogSettings().getBoolean("hbm2hbmxml"));
-			packageName.setText(getDialogSettings().get("package"));
-			templatedir.setText(getDialogSettings().get("templatepath"));
-		}
+
+	public void initializeFrom(ILaunchConfiguration configuration) {
+		try {
+			consoleConfigurationName.setText(configuration.getAttribute(PREFIX + "configurationname",""));
+			preferRawCompositeIds.setSelection(configuration.getAttribute(PREFIX + "prefercompositeids", true));
+			outputdir.setText(configuration.getAttribute(PREFIX + "outputdir",""));
+			reverseengineer.setSelection(configuration.getAttribute(PREFIX + "schema2hbm", false));
+			reverseEngineeringSettings.setText(configuration.getAttribute(PREFIX + "revengfile", ""));
+			useOwnTemplates.setSelection(configuration.getAttribute(PREFIX + "templatepathenabled",false));		
+			packageName.setText(configuration.getAttribute(PREFIX + "package",""));
+			templatedir.setText(configuration.getAttribute(PREFIX + "templatepath",""));
+		} catch (CoreException ce) {
+			HibernateConsolePlugin.getDefault().logErrorMessage("Problem when reading hibernate tools launch configuration", ce);
+		} 		
 	}
+
+	static String PREFIX = "org.hibernate.tools.";
+	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
+		
+		configuration.setAttribute(PREFIX + "outputdir", outputdir.getText());
+		configuration.setAttribute(PREFIX + "prefercompositeids", preferRawCompositeIds.isSelected());
+		configuration.setAttribute(PREFIX + "schema2hbm", isReverseEngineerEnabled());
+		configuration.setAttribute(PREFIX + "revengfile", reverseEngineeringSettings.getText());
+		configuration.setAttribute(PREFIX + "templatepathenabled", useOwnTemplates.isSelected());		
+		configuration.setAttribute(PREFIX + "configurationname", getConfigurationName());
+		configuration.setAttribute(PREFIX + "package", getOutputPackage());
+		configuration.setAttribute(PREFIX + "templatepath", templatedir.getText());		
+	}
+
+	public String getName() {
+		return "Main";
+	}
+	
+	public Image getImage() {
+		return EclipseImages.getImage(ImageConstants.MINI_HIBERNATE);
+	}
+
+	
 }

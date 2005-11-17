@@ -87,14 +87,6 @@
             project="false">
          <description>Creates a new Hibernate Console Configuration</description>
       </wizard>
-      <wizard
-            category="hibernatewizards"
-            class="org.hibernate.eclipse.console.wizards.ArtifactGeneratorWizard"
-            icon="icons/hibernate_small_icon.gif"
-            id="org.hibernate.eclipse.console.wizards.ArtifactGeneratorWizard"
-            name="Hibernate Artifact Generation">
-         <description>Run the artifact generator to generate POJO, DAO, .hbm, etc. files from a console configuration or database</description>
-      </wizard>
    </extension>
    <extension
          point="org.eclipse.ui.popupMenus">
@@ -180,9 +172,46 @@
                 style="pulldown"
                 toolbarPath="hqlGroup"
                 tooltip="Run HQL Query from current editor">
-         </action>
-          		  
+         </action>         		  
        </actionSet>
+        <actionSet 
+            label="Hibernate Artifact Generation" 
+            visible="true" 
+            id="org.hibernate.eclipse.launch.actionset"> 
+         <menu 
+               label="Generate" 
+               path="additions" 
+               id="org.hibernate.eclipse.launch.generate"> 
+            <separator 
+                  name="HibernateArtifactGenerationGroup"> 
+            </separator> 
+         </menu> 
+         <action 
+               label="Generate artifacts" 
+               pulldown="true" 
+               icon="icons/hibernate_small_icon.gif" 
+               class="org.hibernate.eclipse.launch.LaunchMenuDelegate" 
+               menubarPath="org.eclipse.ui.run/HibernateToolsGroup" 
+               id="org.hibernate.eclipse.launch.LaunchMenuDelegateMenu"> 
+         </action> 
+         <action 
+               definitionId="org.hibernate.eclipse.launch.LaunchMenuDelegateToolBar" 
+               label="Generate artifacts" 
+               pulldown="true" 
+               icon="icons/hibernate_small_icon.gif" 
+               tooltip="Generate artifacts via Hibernate Tools" 
+               class="org.hibernate.eclipse.launch.LaunchMenuDelegate" 
+               toolbarPath="org.eclipse.debug.ui.launchActionSet/hibernatetool" 
+               id="org.hibernate.eclipse.launch.LaunchMenuDelegateToolBar"> 
+         </action> 
+         <action
+               definitionId="org.hibernate.eclipse.launch.OpenHibernateToolsConfigurations"
+               label="Hibernate Tools ..."
+               class="org.hibernate.eclipse.launch.OpenHibernateToolsConfigurations"
+               id="org.hibernate.eclipse.launch.OpenHibernateToolsConfigurations">
+         </action>
+      </actionSet> 
+       
     </extension>
     
     <extension
@@ -212,6 +241,33 @@
           id="org.hibernate.eclipse.hqleditor.HQLEditorContributions"
           targetID="org.hibernate.eclipse.hqleditor.HQLEditor">
           <action
+                class="org.hibernate.eclipse.console.actions.ListStrategyAction"
+                icon="icons/images/columns.gif"
+                id="org.hibernate.eclipse.console.list"
+                label="List"
+                state="false"
+                style="radio"
+                toolbarPath="hqlGroup"
+                tooltip="Select list Strategy"/>
+          <action
+                class="org.hibernate.eclipse.console.actions.IterateStrategyAction"
+                icon="icons/images/layout.gif"
+                id="org.hibernate.eclipse.console.iterate"
+                label="Iterate"
+                state="true"
+                style="radio"
+                toolbarPath="hqlGroup"
+                tooltip="Select Iterate strategy"/>
+          <action
+                class="org.hibernate.eclipse.console.actions.ScrollStrategyAction"
+                icon="icons/images/table.gif"
+                id="org.hibernate.eclipse.console.scroll"
+                label="Scroll"
+                state="false"
+                style="radio"
+                toolbarPath="hqlGroup"
+                tooltip="Select Scroll Strategy"/> 
+          <action
                 actionID="clearEditor"
                 class="org.hibernate.eclipse.console.actions.ClearHQLEditorAction"
                 icon="icons/images/clear.gif"
@@ -225,7 +281,7 @@
                 id="HQL"
                 label="H&amp;QL">
              <separator name="hqlGroup"/>
-          </menu> 
+          </menu>
     </editorContribution>
  </extension>
  
@@ -242,7 +298,6 @@
          <newWizardShortcut id="org.hibernate.eclipse.console.wizards.NewConfigurationWizard"/>
          <newWizardShortcut id="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"/>
          <newWizardShortcut id="org.hibernate.eclipse.console.newWizardShortcut3"/>
-         <newWizardShortcut id="org.hibernate.eclipse.console.wizards.ArtifactGeneratorWizard"/>
          <viewShortcut id="org.hibernate.eclipse.console.views.KnownConfigurationsView"/>
          <viewShortcut id="org.hibernate.eclipse.graph.EntityGraphView"/>
          <viewShortcut id="org.hibernate.eclipse.console.views.QueryPageTabView"/>
@@ -255,6 +310,49 @@
             id="org.hibernate.eclipse.console.hql"
             name="Editing HQL"
             parentId="org.eclipse.ui.textEditorScope"/>
+   </extension>
+
+  <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            category="org.hibernate.eclipse.launchcategory"
+            delegate="org.hibernate.eclipse.launch.ArtifactLaunchDelegate"
+            id="org.hibernate.eclipse.launch.ArtifactLaunchConfigurationType"
+            modes="run"
+            name="Hibernate Artifact Generation"
+            public="true"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            icon="icons/hibernate_small_icon.gif"
+            configTypeID="org.hibernate.eclipse.launch.ArtifactLaunchConfigurationType"
+            id="org.hibernate.eclipse.launch.ArtifactLaunchImage"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            type="org.hibernate.eclipse.launch.ArtifactLaunchConfigurationType"
+            class="org.hibernate.eclipse.launch.LaunchConfigurationTabGroup"
+            id="org.hibernate.eclipse.launch.ArtifactLaunchTabGroup"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchGroups">
+      <launchGroup
+            bannerImage="icons/images/newhibernate_wiz.gif"
+            category="org.hibernate.eclipse.launchcategory"
+            id="org.hibernate.eclipse.launch.ArtifactLaunchGroup"
+            image="icons/hibernate_small_icon.gif"
+            label="Hibernate Run"
+            mode="run"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.statusHandlers">
+      <statusHandler
+            class="org.hibernate.eclipse.launch.GeneralExceptionStatusHandler"
+            code="666"
+            id="org.hibernate.eclipse.launch.GeneralExceptionStatusHandler"
+            plugin="org.hibernate.eclipse.console"/>
    </extension>
 
  

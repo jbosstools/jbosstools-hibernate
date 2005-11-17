@@ -7,7 +7,7 @@ Bundle-ClassPath: org.hibernate.eclipse.console.jar
 Bundle-Activator: org.hibernate.eclipse.console.HibernateConsolePlugin
 Bundle-Vendor: Hibernate Team
 Bundle-Localization: plugin
-Export-Package: org.hibernate.eclipse.builder,
+Export-Package: org.hibernate.eclipse.builder;x-internal:=true,
  org.hibernate.eclipse.console,
  org.hibernate.eclipse.console.actions,
  org.hibernate.eclipse.console.model,
@@ -19,18 +19,18 @@ Export-Package: org.hibernate.eclipse.builder,
  org.hibernate.eclipse.console.views,
  org.hibernate.eclipse.console.views.properties,
  org.hibernate.eclipse.console.wizards,
- org.hibernate.eclipse.console.workbench,
- org.hibernate.eclipse.graph,
- org.hibernate.eclipse.graph.actions,
- org.hibernate.eclipse.graph.anchor,
- org.hibernate.eclipse.graph.command,
- org.hibernate.eclipse.graph.figures,
- org.hibernate.eclipse.graph.layout,
- org.hibernate.eclipse.graph.model,
- org.hibernate.eclipse.graph.parts,
- org.hibernate.eclipse.graph.policy,
- org.hibernate.eclipse.hqleditor,
- org.hibernate.eclipse.nature
+ org.hibernate.eclipse.console.workbench;x-internal:=true,
+ org.hibernate.eclipse.graph;x-internal:=true,
+ org.hibernate.eclipse.graph.actions;x-internal:=true,
+ org.hibernate.eclipse.graph.anchor;x-internal:=true,
+ org.hibernate.eclipse.graph.command;x-internal:=true,
+ org.hibernate.eclipse.graph.figures;x-internal:=true,
+ org.hibernate.eclipse.graph.layout;x-internal:=true,
+ org.hibernate.eclipse.graph.model;x-internal:=true,
+ org.hibernate.eclipse.graph.parts;x-internal:=true,
+ org.hibernate.eclipse.graph.policy;x-internal:=true,
+ org.hibernate.eclipse.hqleditor;x-internal:=true,
+ org.hibernate.eclipse.nature;x-internal:=true
 Require-Bundle: org.hibernate.eclipse,
  org.eclipse.jdt.ui,
  org.eclipse.core.resources,
@@ -46,5 +46,7 @@ Require-Bundle: org.hibernate.eclipse,
  org.eclipse.ui.ide,
  org.eclipse.help,
  org.eclipse.ui.console,
- org.eclipse.gef
+ org.eclipse.gef,
+ org.eclipse.debug.core,
+ org.eclipse.debug.ui
 Eclipse-AutoStart: true
