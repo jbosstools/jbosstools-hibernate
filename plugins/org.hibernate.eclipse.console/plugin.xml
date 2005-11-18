@@ -195,7 +195,6 @@
                id="org.hibernate.eclipse.launch.LaunchMenuDelegateMenu"> 
          </action> 
          <action 
-               definitionId="org.hibernate.eclipse.launch.LaunchMenuDelegateToolBar" 
                label="Generate artifacts" 
                pulldown="true" 
                icon="icons/hibernate_small_icon.gif" 
@@ -240,34 +239,7 @@
     <editorContribution
           id="org.hibernate.eclipse.hqleditor.HQLEditorContributions"
           targetID="org.hibernate.eclipse.hqleditor.HQLEditor">
-          <action
-                class="org.hibernate.eclipse.console.actions.ListStrategyAction"
-                icon="icons/images/columns.gif"
-                id="org.hibernate.eclipse.console.list"
-                label="List"
-                state="false"
-                style="radio"
-                toolbarPath="hqlGroup"
-                tooltip="Select list Strategy"/>
-          <action
-                class="org.hibernate.eclipse.console.actions.IterateStrategyAction"
-                icon="icons/images/layout.gif"
-                id="org.hibernate.eclipse.console.iterate"
-                label="Iterate"
-                state="true"
-                style="radio"
-                toolbarPath="hqlGroup"
-                tooltip="Select Iterate strategy"/>
-          <action
-                class="org.hibernate.eclipse.console.actions.ScrollStrategyAction"
-                icon="icons/images/table.gif"
-                id="org.hibernate.eclipse.console.scroll"
-                label="Scroll"
-                state="false"
-                style="radio"
-                toolbarPath="hqlGroup"
-                tooltip="Select Scroll Strategy"/> 
-          <action
+         <action
                 actionID="clearEditor"
                 class="org.hibernate.eclipse.console.actions.ClearHQLEditorAction"
                 icon="icons/images/clear.gif"
@@ -354,6 +326,7 @@
             id="org.hibernate.eclipse.launch.GeneralExceptionStatusHandler"
             plugin="org.hibernate.eclipse.console"/>
    </extension>
+  
 
  
  <!--
