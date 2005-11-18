@@ -28,23 +28,27 @@
     	 </fileset>
         </delete>
         
-        <mkdir dir="lib/hibernate"/>      
-        <mkdir dir="lib/tools"/>            
-        
         <property name="lib.hibernate" location="lib/hibernate"/>
         <property name="lib.tools" location="lib/tools"/>      
-        
+        <property name="lib.annotations" location="lib/annotations"/>            
+
+        <mkdir dir="${lib.hibernate}"/>      
+        <mkdir dir="${lib.tools}"/>      
+        <mkdir dir="${lib.annotations}"/>      
+                      
 		<!-- DONT BUILD H3 unless you have to use new features from the core. use the released binary if you can! -->
 		<ant antfile="${hibernate-core.home}\..\hibernate3\build.xml" inheritall="false" inheritrefs="false" target="jar"/> 
 		<ant antfile="${hibernate-core.home}\..\hibernate3\build.xml" inheritall="false" inheritrefs="false" target="copylib"/>  
     
+        <ant antfile="..\metadata\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
+        <ant antfile="..\metadata\build.xml" inheritall="false" inheritrefs="false" target="copylib"/>        
+        <copy file="..\metadata\target\hibernate-annotations\hibernate-annotations.jar" todir="${lib.annotations}"/>
+        <copy file="..\metadata\target\hibernate-annotations\lib\ejb3-persistence.jar" todir="${lib.annotations}"/>
+        <copy file="..\metadata\target\hibernate-annotations\lib\lucene-1.4.3.jar" todir="${lib.annotations}"/>
+              
         <!-- we need to have the hibernateconsole stuff together with the core to fake DriverManager into allow loading drivers -->
 		<!-- <ant antfile="..\console\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
 		<copy file="..\console\target\hibernateconsole\hibernateconsole.jar" todir="${lib.tools}"/> -->
-		<!--
-		 I guess we also need l2fprod for Property / HibernateProperty
-		-->
-		<!--<copy file="..\console\lib\l2fprod-common.jar" todir="${lib.tools}"/> -->
 
 		<ant antfile="..\tools\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
         <ant antfile="..\tools\build.xml" inheritall="false" inheritrefs="false" target="copylib"/>        
