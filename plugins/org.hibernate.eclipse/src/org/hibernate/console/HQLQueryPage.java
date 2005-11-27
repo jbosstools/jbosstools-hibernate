@@ -23,6 +23,7 @@ public class HQLQueryPage extends AbstractQueryPage {
 	private String queryString;
 	private final ConsoleQueryParameter[] queryParameters;
 	public List getList() {
+		if (query==null) return Collections.EMPTY_LIST;
 		if (list == null) {
 			try {
 				
@@ -83,13 +84,14 @@ public class HQLQueryPage extends AbstractQueryPage {
      * @return
      */
     public String getQueryString() {
-    	return query.getQueryString();    
+    	return queryString; // cannot use query since it might be null because of an error!    
     }
 
     public List getPathNames() {
     	List l = Collections.EMPTY_LIST;
     
     	try {
+    		if(query==null) return l;
     		if(query.getReturnAliases()==null) {
     		Type[] t = query.getReturnTypes();
     		l = new ArrayList(t.length);
