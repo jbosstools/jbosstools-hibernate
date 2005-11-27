@@ -24,14 +24,20 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchConstants;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchParticipant;
 import org.eclipse.jdt.core.search.SearchPattern;
+import org.eclipse.jdt.internal.core.JavaProject;
+import org.eclipse.jdt.ui.IJavaElementSearchConstants;
+import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jdt.ui.wizards.BuildPathDialogAccess;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -49,9 +55,12 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.SelectionDialog;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.EclipseConsoleConfiguration;
 import org.hibernate.eclipse.console.EclipseConsoleConfigurationPreferences;
@@ -196,7 +205,34 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	}
 
 	protected void handleEntityResolverBrowse() {
-		// TODO Auto-generated method stub
+		Shell shell= getShell();
+		SelectionDialog dialog= null;
+		try {
+			final IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
+			// TODO: limit to a certain implementor
+			dialog=
+				JavaUI.createTypeDialog(
+					shell,
+					PlatformUI.getWorkbench().getProgressService(),
+					scope,
+					IJavaElementSearchConstants.CONSIDER_CLASSES,
+					false, entityResolverClassNameText.getText());
+		} catch (JavaModelException jme) {
+			return;
+		}
+
+		dialog.setTitle("Select entity resolver class"); 
+		dialog.setMessage("Select entity resolver class");
+		
+		if (dialog.open() == IDialogConstants.CANCEL_ID)
+			return;
+
+		Object[] types= dialog.getResult();
+		if (types != null && types.length > 0) {
+			IType type= (IType) types[0];
+			entityResolverClassNameText.setText(type.getFullyQualifiedName('.'));
+		}
+
 		
 	}
 
