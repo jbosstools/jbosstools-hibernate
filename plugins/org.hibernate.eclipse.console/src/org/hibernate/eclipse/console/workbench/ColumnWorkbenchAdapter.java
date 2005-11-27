@@ -18,6 +18,10 @@ public class ColumnWorkbenchAdapter extends BasicWorkbenchAdapter {
 
 	public String getLabel(Object o) {
 		Column c = (Column) o;
+		return getColumnLabel( c );
+	}
+
+	static String getColumnLabel(Column c) {
 		String label = c.getName();
 		if(c.getSqlTypeCode()!=null) {
 			label += " : " + JDBCToHibernateTypeHelper.getJDBCTypeName(c.getSqlTypeCode().intValue());

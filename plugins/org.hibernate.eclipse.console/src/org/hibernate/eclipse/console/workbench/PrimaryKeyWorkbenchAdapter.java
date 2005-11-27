@@ -29,7 +29,7 @@ public class PrimaryKeyWorkbenchAdapter extends BasicWorkbenchAdapter {
 	public String getLabel(Object o) {
 		PrimaryKey table = getPrimaryKey(o);
 		if(table.getColumnSpan()==1) {
-			return table.getColumn(0).getName();
+			return ColumnWorkbenchAdapter.getColumnLabel(table.getColumn(0));
 		} else {
 			return "Composite primary key";
 		}
