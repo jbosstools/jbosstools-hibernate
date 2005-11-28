@@ -26,7 +26,7 @@ public class DriverClassHelpers {
         dialectNames.put("DB2390", "org.hibernate.dialect.DB2390Dialect");
         dialectNames.put("DB2400", "org.hibernate.dialect.DB2400Dialect");
         dialectNames.put("Derby", "org.hibernate.dialect.DerbyDialect");
-        dialectNames.put("FrontBase", "org.hibernate.dialect.FrontbaseDialect");
+        dialectNames.put("FrontBase", "org.hibernate.dialect.FrontBaseDialect");
         dialectNames.put("Generic", "org.hibernate.dialect.GenericDialect");
         dialectNames.put("HSQL", "org.hibernate.dialect.HSQLDialect");
         dialectNames.put("Informix", "org.hibernate.dialect.InformixDialect");
