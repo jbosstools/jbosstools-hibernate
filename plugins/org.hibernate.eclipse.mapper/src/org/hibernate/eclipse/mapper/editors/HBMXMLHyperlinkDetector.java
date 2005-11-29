@@ -29,17 +29,12 @@ public class HBMXMLHyperlinkDetector implements IHyperlinkDetector {
 
 	HBMInfoExtractor infoExtractor = new HBMInfoExtractor();
 	
-	private final IJavaProject project;
-
 	/**
 	 * Creates a new hbm.xml element hyperlink detector.
-	 * @param project 
-	 *  
-	 * @param editor the editor in which to detect the hyperlink
+	 * 
 	 */
-	public HBMXMLHyperlinkDetector(IJavaProject project) {
-		Assert.isNotNull(project);
-		this.project = project;		
+	public HBMXMLHyperlinkDetector() {
+		
 	}
 
 	/*
@@ -65,6 +60,7 @@ public class HBMXMLHyperlinkDetector implements IHyperlinkDetector {
 					String path = currentNode.getNodeName() + ">" + currentAttrNode.getName();
 			        HBMInfoHandler handler = infoExtractor.getAttributeHandler(path);
 					if(handler!=null) {
+						IJavaProject project = CFGXMLStructuredTextViewerConfiguration.findJavaProject(document);
 						IJavaElement element = handler.getJavaElement(project, currentNode, currentAttrNode);
 						if(element!=null) {
 							return new IHyperlink[] {new HBMXMLHyperlink(getHyperlinkRegion(currentAttrNode), element)};

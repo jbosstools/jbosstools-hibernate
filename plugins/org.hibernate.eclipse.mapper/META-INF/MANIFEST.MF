@@ -30,5 +30,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.forms,
  org.eclipse.ui.workbench.texteditor,
  org.hibernate.eclipse.console,
- org.eclipse.wst.dtd.core
+ org.eclipse.wst.dtd.core,
+ org.eclipse.wst.common.ui
 Eclipse-AutoStart: true

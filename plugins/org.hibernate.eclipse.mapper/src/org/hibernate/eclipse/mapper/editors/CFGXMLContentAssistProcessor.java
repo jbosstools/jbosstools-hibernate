@@ -16,8 +16,8 @@ public class CFGXMLContentAssistProcessor extends HibernateContentAssistProcesso
 	
 	static String[] propertyNames;
 	
-	public CFGXMLContentAssistProcessor(IJavaProject project) {
-		super(project);
+	public CFGXMLContentAssistProcessor() {
+		super();
 	
 		extractor = new HBMInfoExtractor();
 		

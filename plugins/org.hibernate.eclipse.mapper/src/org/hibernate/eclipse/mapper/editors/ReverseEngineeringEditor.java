@@ -11,8 +11,8 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IKeyBindingService;
 import org.eclipse.ui.INestableKeyBindingService;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.wst.sse.ui.StructuredTextEditor;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
-import org.eclipse.wst.xml.ui.internal.provisional.StructuredTextEditorXML;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
@@ -35,7 +35,7 @@ import org.w3c.dom.Document;
 
 public class ReverseEngineeringEditor extends XMLFormEditorPart {
 
-	private StructuredTextEditorXML sourcePage;
+	private StructuredTextEditor sourcePage;
 	private DOMReverseEngineeringDefinition definition;
 	
 	private RevEngTableFilterPage tableFilterPage;
@@ -106,15 +106,15 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 	private void initSourcePage() {
 		int pageCount = getPageCount();
 		for (int i = 0; i < pageCount; i++) {
-			if ( getEditor( i ) instanceof StructuredTextEditorXML ) {
-				sourcePage = (StructuredTextEditorXML) getEditor( i );
+			if ( getEditor( i ) instanceof StructuredTextEditor ) {
+				sourcePage = (StructuredTextEditor) getEditor( i );
 				IDOMDocument document = getDocument(sourcePage);
 				definition = new DOMReverseEngineeringDefinition(document);				
 			}
 		}
 	}
 
-	private IDOMDocument getDocument(StructuredTextEditorXML source) {
+	private IDOMDocument getDocument(StructuredTextEditor source) {
 		IDOMDocument document = (IDOMDocument) source
 				.getAdapter( Document.class );
 		return document;

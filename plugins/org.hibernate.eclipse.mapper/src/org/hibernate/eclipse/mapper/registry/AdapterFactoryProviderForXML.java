@@ -1,10 +1,6 @@
 package org.hibernate.eclipse.mapper.registry;
 
-import org.eclipse.wst.sse.core.internal.model.FactoryRegistry;
-import org.eclipse.wst.sse.core.internal.provisional.INodeAdapterFactory;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
-import org.eclipse.wst.sse.ui.internal.contentoutline.IJFaceNodeAdapter;
-import org.hibernate.eclipse.mapper.views.contentoutline.JFaceNodeAdapterFactoryForXML;
 
 
 

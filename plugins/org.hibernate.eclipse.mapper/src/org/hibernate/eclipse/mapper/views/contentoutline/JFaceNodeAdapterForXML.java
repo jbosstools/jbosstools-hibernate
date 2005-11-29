@@ -6,8 +6,8 @@ import java.util.Map;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.sse.core.internal.provisional.INodeAdapterFactory;
 import org.eclipse.wst.sse.ui.internal.contentoutline.IJFaceNodeAdapter;
-import org.eclipse.wst.xml.ui.internal.contentoutline.BufferedOutlineUpdater;
 import org.eclipse.wst.xml.ui.internal.contentoutline.JFaceNodeAdapter;
+import org.eclipse.wst.xml.ui.internal.contentoutline.JFaceNodeAdapterFactory;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.w3c.dom.NamedNodeMap;
@@ -21,10 +21,9 @@ import org.w3c.dom.Node;
  */
 public class JFaceNodeAdapterForXML extends JFaceNodeAdapter {
 	final static Class ADAPTER_KEY = IJFaceNodeAdapter.class;
-	protected BufferedOutlineUpdater fUpdater;
 	protected INodeAdapterFactory adapterFactory;
 
-	public JFaceNodeAdapterForXML(INodeAdapterFactory adapterFactory) {
+	public JFaceNodeAdapterForXML(JFaceNodeAdapterFactory adapterFactory) {
 		super(adapterFactory);
 		this.adapterFactory = adapterFactory;
 	}
@@ -71,13 +70,6 @@ public class JFaceNodeAdapterForXML extends JFaceNodeAdapter {
 	 */
 	public boolean isAdapterForType(Object type) {
 		return type.equals(ADAPTER_KEY);
-	}
-
-	/** only needed to provide better notifychanged operation */
-	private BufferedOutlineUpdater getOutlineUpdater() {
-		if (fUpdater == null)
-			fUpdater = new BufferedOutlineUpdater();
-		return fUpdater;
 	}
 	
 		

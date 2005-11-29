@@ -16,12 +16,15 @@ import org.eclipse.wst.xml.ui.internal.contentassist.XMLContentAssistProcessor;
 
 public abstract class HibernateContentAssistProcessor extends XMLContentAssistProcessor {
 
-	private final IJavaProject project;
-
-	public HibernateContentAssistProcessor(IJavaProject project) {
-		this.project = project;
+	
+	public HibernateContentAssistProcessor() {
+		
 	}
 
+	protected IJavaProject getJavaProject(ContentAssistRequest contentAssistRequest) {
+		return CFGXMLStructuredTextViewerConfiguration.findJavaProject(contentAssistRequest);
+	}
+	
 	protected void addAttributeValueProposals(ContentAssistRequest contentAssistRequest) {
 		super.addAttributeValueProposals(contentAssistRequest);
 		
@@ -72,7 +75,4 @@ public abstract class HibernateContentAssistProcessor extends XMLContentAssistPr
 		
 	}
 	
-	protected IJavaProject getJavaProject() {
-		return project;
-	}
 }

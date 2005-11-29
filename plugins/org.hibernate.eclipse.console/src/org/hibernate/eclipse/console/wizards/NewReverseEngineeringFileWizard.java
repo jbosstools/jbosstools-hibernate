@@ -12,6 +12,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -53,6 +54,7 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
 
         public ExtendedWizardNewFileCreationPage(String pageName, IStructuredSelection selection) {
             super(pageName, selection);
+            setContainerFullPath(new Path("/")); // TODO: make it based on the selection which should be available when doing the launch!
         }
 
         boolean firstTime = true;
@@ -201,7 +203,8 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
 	 * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
 	 */
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		this.selection = selection;        
+		this.selection = selection;
+		
 	}
 	
 	public IPath getCreatedFilePath() {

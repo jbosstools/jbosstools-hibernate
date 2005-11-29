@@ -12,24 +12,24 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredPartitionTypes;
 import org.eclipse.wst.xml.core.internal.provisional.text.IXMLPartitions;
+import org.eclipse.wst.xml.ui.StructuredTextViewerConfigurationXML;
 import org.eclipse.wst.xml.ui.internal.contentassist.NoRegionContentAssistProcessor;
-import org.eclipse.wst.xml.ui.internal.provisional.StructuredTextViewerConfigurationXML;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 
 public class HBMXMLStructuredTextViewerConfiguration extends StructuredTextViewerConfigurationXML {
 
-	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
-		IContentAssistant ca = super.getContentAssistant(sourceViewer);
-		if (ca != null && ca instanceof ContentAssistant) {
-			ContentAssistant contentAssistant = (ContentAssistant) ca;
-			IContentAssistProcessor xmlContentAssistProcessor = new HBMXMLContentAssistProcessor(ProjectUtils.findJavaProject(getEditorPart()) );
-			IContentAssistProcessor noRegionProcessor = new NoRegionContentAssistProcessor();
-			setContentAssistProcessor(contentAssistant, xmlContentAssistProcessor, IStructuredPartitionTypes.DEFAULT_PARTITION);
-			setContentAssistProcessor(contentAssistant, xmlContentAssistProcessor, IXMLPartitions.XML_DEFAULT);
-			setContentAssistProcessor(contentAssistant, noRegionProcessor, IStructuredPartitionTypes.UNKNOWN_PARTITION);			
+	protected IContentAssistProcessor[] getContentAssistProcessors(ISourceViewer sourceViewer, String partitionType) {
+		IContentAssistProcessor[] processors = null;
+		
+		if ((partitionType == IStructuredPartitionTypes.DEFAULT_PARTITION) || (partitionType == IXMLPartitions.XML_DEFAULT)) {
+			processors = new IContentAssistProcessor[]{new HBMXMLContentAssistProcessor()}; // TODO: return cached one ?
 		}
-		return ca;
-	}	
+		else if (partitionType == IStructuredPartitionTypes.UNKNOWN_PARTITION) {
+			processors = new IContentAssistProcessor[]{new NoRegionContentAssistProcessor()};
+		}
+		
+		return processors;
+	}
 	
 	
 	public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
@@ -37,9 +37,9 @@ public class HBMXMLStructuredTextViewerConfiguration extends StructuredTextViewe
 			return null;
 		
 		List allDetectors = new ArrayList(0);
-		IJavaProject jp = ProjectUtils.findJavaProject(getEditorPart());
+		IJavaProject jp = CFGXMLStructuredTextViewerConfiguration.findJavaProject(sourceViewer);
 		if(jp!=null) { // HBX-463
-			allDetectors.add(new HBMXMLHyperlinkDetector(jp ) );
+			allDetectors.add(new HBMXMLHyperlinkDetector() );
 		}
 		
 		IHyperlinkDetector[] superDetectors =  super.getHyperlinkDetectors(sourceViewer);

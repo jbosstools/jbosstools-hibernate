@@ -13,12 +13,9 @@ package org.hibernate.eclipse.mapper.views.contentoutline;
 
 
 
-import java.util.Collection;
-
 import org.eclipse.wst.sse.core.internal.provisional.INodeAdapter;
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.sse.ui.internal.contentoutline.IJFaceNodeAdapter;
-import org.eclipse.wst.sse.ui.internal.contentoutline.IJFaceNodeAdapterFactory;
 import org.eclipse.wst.xml.ui.internal.contentoutline.JFaceNodeAdapterFactory;
 
 
@@ -32,11 +29,11 @@ import org.eclipse.wst.xml.ui.internal.contentoutline.JFaceNodeAdapterFactory;
  */
 public class JFaceNodeAdapterFactoryForXML extends JFaceNodeAdapterFactory {
 
-	final private IJFaceNodeAdapterFactory realFactory;
+	//final private IJFaceNodeAdapterFactory realFactory;
 
-	public JFaceNodeAdapterFactoryForXML(IJFaceNodeAdapterFactory realFactory) {
+	public JFaceNodeAdapterFactoryForXML() {
 		super(IJFaceNodeAdapter.class, true);
-		this.realFactory = realFactory;
+//		this.realFactory = realFactory;
 	}
 
 	
@@ -52,16 +49,16 @@ public class JFaceNodeAdapterFactoryForXML extends JFaceNodeAdapterFactory {
 		return singletonAdapter;
 	}
 
-	public void addListener(Object listener) {
-		realFactory.addListener(listener);
-	}
-
-	public Collection getListeners() {
-		return realFactory.getListeners();
-	}
-
-	public void removeListener(Object listener) {
-		realFactory.removeListener(listener);
-	}
+//	public void addListener(Object listener) {
+//		realFactory.addListener(listener);
+//	}
+//
+//	public Collection getListeners() {
+//		return realFactory.getListeners();
+//	}
+//
+//	public void removeListener(Object listener) {
+//		realFactory.removeListener(listener);
+//	}
 
 }

@@ -16,14 +16,10 @@ import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.ide.IGotoMarker;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
-import org.eclipse.wst.sse.core.internal.provisional.exceptions.SourceEditingRuntimeException;
-import org.eclipse.wst.sse.ui.internal.StructuredTextEditor;
-import org.eclipse.wst.xml.ui.internal.Logger;
+import org.eclipse.wst.sse.ui.StructuredTextEditor;
 import org.eclipse.wst.xml.ui.internal.XMLUIPlugin;
-import org.eclipse.wst.xml.ui.internal.provisional.StructuredTextEditorXML;
 import org.eclipse.wst.xml.ui.internal.tabletree.IDesignViewer;
 import org.eclipse.wst.xml.ui.internal.tabletree.XMLEditorMessages;
-import org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart;
 import org.eclipse.wst.xml.ui.internal.tabletree.XMLTableTreeHelpContextIds;
 import org.eclipse.wst.xml.ui.internal.tabletree.XMLTableTreeViewer;
 import org.hibernate.eclipse.mapper.MapperPlugin;
@@ -60,8 +56,10 @@ public class XMLFormEditorPart extends FormEditor {
 	 */
 	private void connectDesignPage() {
 		if (designViewer != null) {
-			designViewer.setModel(getModel());
-			designViewer.setViewerSelectionManager(textEditor.getViewerSelectionManager());
+			designViewer.setDocument(getDocument());
+			//designViewer.setModel(getModel());
+//			TODO Is this needed anymore? since 3.1beta1 / WTP M9
+			//designViewer.setViewerSelectionManager(textEditor.getViewerSelectionManager());			
 		}
 	}
 	/**
@@ -98,7 +96,7 @@ public class XMLFormEditorPart extends FormEditor {
 	}
 	
 	private StructuredTextEditor createTextEditor() {
-		return new StructuredTextEditorXML();
+		return new StructuredTextEditor();
 	}
 	
 	StructuredTextEditor getTextEditor() {
@@ -166,7 +164,7 @@ public class XMLFormEditorPart extends FormEditor {
 
 		public void inputDocumentChanged(IDocument oldInput, IDocument newInput) {
 			if (designViewer != null && newInput != null)
-				designViewer.setModel(getModel());
+				designViewer.setDocument(newInput);
 		}
 	}
 	
@@ -189,7 +187,7 @@ public class XMLFormEditorPart extends FormEditor {
 			// dispose editor
 			dispose();
 			MapperPlugin.getDefault().logException(exception);
-			throw new SourceEditingRuntimeException(exception, XMLEditorMessages.An_error_has_occurred_when1_ERROR_);
+			throw exception;
 		}
 	}
 
@@ -263,5 +261,12 @@ public class XMLFormEditorPart extends FormEditor {
 		} else {
 			return result;
 		}
+	}
+	
+	private IDocument getDocument() {
+		IDocument document = null;
+		if (textEditor != null)
+			document = textEditor.getDocumentProvider().getDocument(textEditor.getEditorInput());
+		return document;
 	}
 }

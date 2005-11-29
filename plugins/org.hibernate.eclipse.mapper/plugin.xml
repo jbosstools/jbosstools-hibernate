@@ -65,34 +65,31 @@
          </modelHandler>
    </extension>
    <extension
-         point="org.eclipse.wst.sse.ui.extendedconfiguration">
-      <configuration
-            class="org.hibernate.eclipse.mapper.editors.HBMXMLStructuredTextViewerConfiguration"
+         point="org.eclipse.wst.sse.ui.editorConfiguration">
+      <sourceViewerConfiguration
             target="org.hibernate.eclipse.mapper.content-type.hbm.xml"
-            type="textviewerconfiguration"/>
-      <configuration
-            type="contentoutlineconfiguration"
+            class="org.hibernate.eclipse.mapper.editors.HBMXMLStructuredTextViewerConfiguration"
+            />
+      <contentOutlineConfiguration
             target="org.hibernate.eclipse.mapper.content-type.hbm.xml" 
             class="org.hibernate.eclipse.mapper.views.contentoutline.HibernateXMLContentOutlineConfiguration"            
-            />                       
-	  <configuration
-            class="org.hibernate.eclipse.mapper.editors.CFGXMLStructuredTextViewerConfiguration"
+            />                      
+	  <sourceViewerConfiguration
             target="org.hibernate.eclipse.mapper.content-type.cfg.xml"
-            type="textviewerconfiguration"/>            
-      <configuration
-            type="contentoutlineconfiguration"
+            class="org.hibernate.eclipse.mapper.editors.CFGXMLStructuredTextViewerConfiguration"
+            />
+      <contentOutlineConfiguration
             target="org.hibernate.eclipse.mapper.content-type.cfg.xml" 
             class="org.hibernate.eclipse.mapper.views.contentoutline.HibernateXMLContentOutlineConfiguration"            
             />                       
-   	  <configuration
-            class="org.hibernate.eclipse.mapper.editors.CFGXMLStructuredTextViewerConfiguration"
+   	  <sourceViewerConfiguration
             target="org.hibernate.eclipse.mapper.content-type.reveng.xml"
-            type="textviewerconfiguration"/>  
-      <configuration
-            type="contentoutlineconfiguration"
+            class="org.hibernate.eclipse.mapper.editors.CFGXMLStructuredTextViewerConfiguration"
+            />
+      <contentOutlineConfiguration
             target="org.hibernate.eclipse.mapper.content-type.reveng.xml" 
             class="org.hibernate.eclipse.mapper.views.contentoutline.HibernateXMLContentOutlineConfiguration"            
-            />                                   
+            />
    </extension>
    <extension
          point="org.eclipse.ui.views">
@@ -122,4 +119,18 @@
                uri="dtds/hibernate-reverse-engineering-3.0.dtd"/>
      </catalogContribution>
     </extension>   
+    
+    <extension
+		point="org.eclipse.wst.sse.ui.adapterFactoryDescription">
+		<adapterFactoryDescription
+			class="org.hibernate.eclipse.mapper.registry.AdapterFactoryProviderForHBMXML">
+		</adapterFactoryDescription>
+		<adapterFactoryDescription
+			class="org.hibernate.eclipse.mapper.registry.AdapterFactoryProviderForCFGXML">
+		</adapterFactoryDescription>
+		<adapterFactoryDescription
+			class="org.hibernate.eclipse.mapper.registry.AdapterFactoryProviderForREVENGXML">
+		</adapterFactoryDescription>
+	</extension> 
+    
 </plugin>

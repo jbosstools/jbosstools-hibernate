@@ -15,8 +15,8 @@ public class HBMXMLContentAssistProcessor extends HibernateContentAssistProcesso
 
 	private HBMInfoExtractor sourceLocator = new HBMInfoExtractor();
 	
-	public HBMXMLContentAssistProcessor(IJavaProject javaProject) {
-		super(javaProject);
+	public HBMXMLContentAssistProcessor() {
+		super();
 	}
 
 	private static final boolean DEBUG = false;
@@ -28,7 +28,7 @@ public class HBMXMLContentAssistProcessor extends HibernateContentAssistProcesso
 		String path = node.getNodeName() + ">" + attributeName;
         HBMInfoHandler handler = sourceLocator.getAttributeHandler(path);
 		if (handler != null) {
-			proposals.addAll(Arrays.asList(handler.attributeCompletionProposals(getJavaProject(), node, attributeName, start, offset) ) );
+			proposals.addAll(Arrays.asList(handler.attributeCompletionProposals(getJavaProject(contentAssistRequest), node, attributeName, start, offset) ) );
 		}
 		
 		if (DEBUG) {
