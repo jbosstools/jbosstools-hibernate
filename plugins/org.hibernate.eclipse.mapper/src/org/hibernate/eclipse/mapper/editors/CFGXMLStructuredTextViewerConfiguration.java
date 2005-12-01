@@ -9,6 +9,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
@@ -24,7 +25,7 @@ import org.hibernate.eclipse.mapper.MapperPlugin;
 
 public class CFGXMLStructuredTextViewerConfiguration extends StructuredTextViewerConfigurationXML {
 	
-	static public IJavaProject findJavaProject(ISourceViewer viewer) {
+	static public IJavaProject findJavaProject(ITextViewer viewer) {
 		
 		if(viewer==null) return null;
 		

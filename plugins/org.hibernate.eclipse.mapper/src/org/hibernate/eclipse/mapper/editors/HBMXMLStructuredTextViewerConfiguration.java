@@ -37,10 +37,7 @@ public class HBMXMLStructuredTextViewerConfiguration extends StructuredTextViewe
 			return null;
 		
 		List allDetectors = new ArrayList(0);
-		IJavaProject jp = CFGXMLStructuredTextViewerConfiguration.findJavaProject(sourceViewer);
-		if(jp!=null) { // HBX-463
-			allDetectors.add(new HBMXMLHyperlinkDetector() );
-		}
+		allDetectors.add(new HBMXMLHyperlinkDetector() );
 		
 		IHyperlinkDetector[] superDetectors =  super.getHyperlinkDetectors(sourceViewer);
 		for (int m = 0; m < superDetectors.length; m++) {

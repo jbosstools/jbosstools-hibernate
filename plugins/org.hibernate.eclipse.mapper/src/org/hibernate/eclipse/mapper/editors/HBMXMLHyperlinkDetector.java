@@ -44,6 +44,8 @@ public class HBMXMLHyperlinkDetector implements IHyperlinkDetector {
 		if (region == null || textViewer == null) {
 			return null;
 		}
+		IJavaProject jp = CFGXMLStructuredTextViewerConfiguration.findJavaProject(textViewer);
+		if(jp==null) return new IHyperlink[0];
 		
 		IDocument document = textViewer.getDocument();
 		Node currentNode = getCurrentNode(document, region.getOffset() );
