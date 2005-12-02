@@ -3,6 +3,9 @@ package org.hibernate.eclipse.console.views;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
@@ -145,16 +148,31 @@ public class DynamicQueryTranslatorView extends ViewPart {
 					QueryTranslator[] translators = plan.getTranslators();
 					for (int i = 0; i < translators.length; i++) {
 						QueryTranslator translator = translators[i];
-						Type[] returnTypes = translator.getReturnTypes();						
-						str.append("SQL #" + i + " types: ");
-						for (int j = 0; j < returnTypes.length; j++) {
-							Type returnType = returnTypes[j];
-							str.append(returnType.getName());
-							if(j<returnTypes.length-1) { str.append(", "); }							
-						}						
+						if(translator.isManipulationStatement()) {
+							str.append("DML #" + i + " tables: ");
+							Iterator iterator = translator.getQuerySpaces().iterator();
+							while ( iterator.hasNext() ) {
+								Object qspace = iterator.next();
+								str.append(qspace);
+								if(iterator.hasNext()) { str.append(", "); }
+							}
+							
+						} else {
+							Type[] returnTypes = translator.getReturnTypes();						
+							str.append("SQL #" + i + " types: ");
+							for (int j = 0; j < returnTypes.length; j++) {
+								Type returnType = returnTypes[j];
+								str.append(returnType.getName());
+								if(j<returnTypes.length-1) { str.append(", "); }							
+							}		
+						}
 						str.append("\n-----------------\n");
-						str.append(QLFormatHelper.formatForScreen(translator.getSQLString()));
-						str.append("\n\n");
+						Iterator sqls = translator.collectSqlStrings().iterator();
+						while ( sqls.hasNext() ) {
+							String sql = (String) sqls.next();
+							str.append(QLFormatHelper.formatForScreen(sql));
+							str.append("\n\n");	
+						}
 					}
 					return str.toString();
 				} catch(Throwable t) {					
@@ -172,7 +190,7 @@ public class DynamicQueryTranslatorView extends ViewPart {
 							if(cause!=null) msgs.append("\nCaused by:\n");
 						}
 					}
-					//	t.printStackTrace(new PrintWriter(sw));					
+					//t.printStackTrace(new PrintWriter(sw));					
 					//return sw.getBuffer().toString();
 					return msgs.toString();
 				}
