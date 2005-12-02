@@ -82,10 +82,6 @@
             target="org.hibernate.eclipse.mapper.content-type.cfg.xml" 
             class="org.hibernate.eclipse.mapper.views.contentoutline.HibernateXMLContentOutlineConfiguration"            
             />                       
-   	  <sourceViewerConfiguration
-            target="org.hibernate.eclipse.mapper.content-type.reveng.xml"
-            class="org.hibernate.eclipse.mapper.editors.CFGXMLStructuredTextViewerConfiguration"
-            />
       <contentOutlineConfiguration
             target="org.hibernate.eclipse.mapper.content-type.reveng.xml" 
             class="org.hibernate.eclipse.mapper.views.contentoutline.HibernateXMLContentOutlineConfiguration"            
