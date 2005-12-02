@@ -304,9 +304,10 @@
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-            type="org.hibernate.eclipse.launch.CodeGenerationLaunchConfigurationType"
             class="org.hibernate.eclipse.launch.LaunchConfigurationTabGroup"
-            id="org.hibernate.eclipse.launch.CodeGenerationLaunchTabGroup"/>
+            description="Select or configure a code generation"
+            id="org.hibernate.eclipse.launch.CodeGenerationLaunchTabGroup"
+            type="org.hibernate.eclipse.launch.CodeGenerationLaunchConfigurationType"/>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchGroups">
@@ -316,7 +317,8 @@
             id="org.hibernate.eclipse.launch.CodeGenerationLaunchGroup"
             image="icons/hibernate_small_icon.gif"
             label="Hibernate Code Generation..."
-            mode="run"/>
+            mode="run"
+            title="Select or configure a code generation to run"/>
    </extension>
    <extension
          point="org.eclipse.debug.core.statusHandlers">
