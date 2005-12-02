@@ -53,8 +53,6 @@ public class HBMInfoExtractor {
 		
         setupJavaTypeHandlers();
 		
-        
-        
         setupPackageHandlers();
     
 		setupFieldsPropertyHandlers();
@@ -68,7 +66,6 @@ public class HBMInfoExtractor {
 		setupHibernateProperties();
 		
 		setupGeneratorClassHandlers();
-		
 		
 		setupAccessHandlers();
 	}
