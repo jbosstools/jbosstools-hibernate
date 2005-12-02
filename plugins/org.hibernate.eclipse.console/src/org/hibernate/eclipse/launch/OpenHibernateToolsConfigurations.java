@@ -8,6 +8,6 @@ import org.eclipse.debug.ui.actions.OpenLaunchDialogAction;
 public class OpenHibernateToolsConfigurations extends OpenLaunchDialogAction {
 
 	public OpenHibernateToolsConfigurations() {
-		super("org.hibernate.eclipse.launch.ArtifactLaunchGroup");
+		super("org.hibernate.eclipse.launch.CodeGenerationLaunchGroup");
 	}
 }

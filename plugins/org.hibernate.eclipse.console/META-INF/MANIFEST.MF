@@ -30,6 +30,7 @@ Export-Package: org.hibernate.eclipse.builder;x-internal:=true,
  org.hibernate.eclipse.graph.parts;x-internal:=true,
  org.hibernate.eclipse.graph.policy;x-internal:=true,
  org.hibernate.eclipse.hqleditor;x-internal:=true,
+ org.hibernate.eclipse.launch,
  org.hibernate.eclipse.nature;x-internal:=true
 Require-Bundle: org.hibernate.eclipse,
  org.eclipse.jdt.ui,

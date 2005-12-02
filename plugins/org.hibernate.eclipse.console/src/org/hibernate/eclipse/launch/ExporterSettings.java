@@ -23,7 +23,7 @@ import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 
-public class ExporterSettings extends	AbstractLaunchConfigurationTab {
+public class ExporterSettings extends AbstractLaunchConfigurationTab {
 
 	private SelectionButtonDialogField generatecfgfile;
 

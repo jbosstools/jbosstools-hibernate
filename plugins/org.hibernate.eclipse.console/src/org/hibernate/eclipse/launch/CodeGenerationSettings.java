@@ -40,7 +40,7 @@ import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.wizards.NewReverseEngineeringFileWizard;
 
-public class ArtifactGenerationSettings extends	AbstractLaunchConfigurationTab {
+public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
 
 	private ComboDialogField consoleConfigurationName;
 
@@ -59,7 +59,7 @@ public class ArtifactGenerationSettings extends	AbstractLaunchConfigurationTab {
     private SelectionButtonDialogField useOwnTemplates;
     private StringButtonDialogField templatedir;
     
-	public ArtifactGenerationSettings() {
+	public CodeGenerationSettings() {
 		super();
 	}
 

@@ -175,19 +175,19 @@
          </action>         		  
        </actionSet>
         <actionSet 
-            label="Hibernate Artifact Generation" 
+            label="Hibernate Code Generation" 
             visible="true" 
             id="org.hibernate.eclipse.launch.actionset"> 
          <menu 
-               label="Generate" 
+               label="Generate code" 
                path="additions" 
                id="org.hibernate.eclipse.launch.generate"> 
             <separator 
-                  name="HibernateArtifactGenerationGroup"> 
+                  name="HibernateCodeGenerationGroup"> 
             </separator> 
          </menu> 
          <action 
-               label="Generate artifacts" 
+               label="Generate code" 
                pulldown="true" 
                icon="icons/hibernate_small_icon.gif" 
                class="org.hibernate.eclipse.launch.LaunchMenuDelegate" 
@@ -195,10 +195,10 @@
                id="org.hibernate.eclipse.launch.LaunchMenuDelegateMenu"> 
          </action> 
          <action 
-               label="Generate artifacts" 
+               label="Generate code" 
                pulldown="true" 
                icon="icons/hibernate_small_icon.gif" 
-               tooltip="Generate artifacts via Hibernate Tools" 
+               tooltip="Generate code via Hibernate Tools" 
                class="org.hibernate.eclipse.launch.LaunchMenuDelegate" 
                toolbarPath="org.eclipse.debug.ui.launchActionSet/hibernatetool" 
                id="org.hibernate.eclipse.launch.LaunchMenuDelegateToolBar"> 
@@ -288,32 +288,32 @@
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
             category="org.hibernate.eclipse.launchcategory"
-            delegate="org.hibernate.eclipse.launch.ArtifactLaunchDelegate"
-            id="org.hibernate.eclipse.launch.ArtifactLaunchConfigurationType"
+            delegate="org.hibernate.eclipse.launch.CodeGenerationLaunchDelegate"
+            id="org.hibernate.eclipse.launch.CodeGenerationLaunchConfigurationType"
             modes="run"
-            name="Hibernate Artifact Generation"
+            name="Hibernate Code Generation"
             public="true"/>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTypeImages">
       <launchConfigurationTypeImage
             icon="icons/hibernate_small_icon.gif"
-            configTypeID="org.hibernate.eclipse.launch.ArtifactLaunchConfigurationType"
-            id="org.hibernate.eclipse.launch.ArtifactLaunchImage"/>
+            configTypeID="org.hibernate.eclipse.launch.CodeGenerationLaunchConfigurationType"
+            id="org.hibernate.eclipse.launch.CodeGenerationLaunchImage"/>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-            type="org.hibernate.eclipse.launch.ArtifactLaunchConfigurationType"
+            type="org.hibernate.eclipse.launch.CodeGenerationLaunchConfigurationType"
             class="org.hibernate.eclipse.launch.LaunchConfigurationTabGroup"
-            id="org.hibernate.eclipse.launch.ArtifactLaunchTabGroup"/>
+            id="org.hibernate.eclipse.launch.CodeGenerationLaunchTabGroup"/>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchGroups">
       <launchGroup
             bannerImage="icons/images/newhibernate_wiz.gif"
             category="org.hibernate.eclipse.launchcategory"
-            id="org.hibernate.eclipse.launch.ArtifactLaunchGroup"
+            id="org.hibernate.eclipse.launch.CodeGenerationLaunchGroup"
             image="icons/hibernate_small_icon.gif"
             label="Hibernate Run"
             mode="run"/>

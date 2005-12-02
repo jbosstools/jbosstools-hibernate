@@ -1,8 +1,6 @@
 package org.hibernate.eclipse.launch;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.text.MessageFormat;
 import java.util.Properties;
 
 import org.eclipse.core.resources.IResource;
@@ -33,7 +31,7 @@ import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
 
-public class ArtifactLaunchDelegate extends
+public class CodeGenerationLaunchDelegate extends
 		LaunchConfigurationDelegate {
 
 	private static final String PREFIX = "org.hibernate.tools."; // move to HibernateLaunchConstants
@@ -88,7 +86,7 @@ public class ArtifactLaunchDelegate extends
 	String outputPackage, IPath revengsettings, boolean reveng, final boolean genjava, final boolean gendao, final boolean genhbm, final boolean gencfg, final IProgressMonitor monitor, boolean preferBasicCompositeids, IPath templateDir, final boolean ejb3, final boolean generics, final boolean gendoc)
 			throws CoreException {
 			
-		 	monitor.beginTask("Generating artifacts for " + configName, 10);
+		 	monitor.beginTask("Generating code for " + configName, 10);
 		
 			if (monitor.isCanceled())
 				return;

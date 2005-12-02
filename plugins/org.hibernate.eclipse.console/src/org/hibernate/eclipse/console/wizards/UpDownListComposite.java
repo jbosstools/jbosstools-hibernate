@@ -2,6 +2,7 @@ package org.hibernate.eclipse.console.wizards;
 
 import java.util.Iterator;
 
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -36,7 +37,7 @@ public class UpDownListComposite extends Composite {
 	private Button[] addButtons;
 
 	private TableViewer tableView;
-
+	private ILabelProvider provider = null;
 	private final String title;
 	
 
@@ -45,8 +46,13 @@ public class UpDownListComposite extends Composite {
 	}
 	
 	public UpDownListComposite(Composite parent, int style, String title) {
+		this( parent, style, title, null);
+	}
+
+	public UpDownListComposite(Composite parent, int style, String title, ILabelProvider provider) {
 		super( parent, style );
 		this.title = title;
+		this.provider = provider;
 		initialize();
 	}
 
@@ -94,9 +100,7 @@ public class UpDownListComposite extends Composite {
 		table.setHeaderVisible(true);
 		table.setLayoutData(gridData1);
 		table.setLinesVisible(true);
-		TableColumn column = new TableColumn(table, SWT.NULL);
-		column.setText("Name");
-		column.setWidth(1000);
+		createColumns(table);
 		
 		table.addSelectionListener(new SelectionListener() {
 		
@@ -111,7 +115,14 @@ public class UpDownListComposite extends Composite {
 		});
 		
 		tableView = new TableViewer(table);
+		if(provider!=null) tableView.setLabelProvider(provider);
 		
+	}
+
+	protected void createColumns(Table table) {
+		TableColumn column = new TableColumn(table, SWT.NULL);
+		column.setText("Name");
+		column.setWidth(1000);
 	}
 
 	/**

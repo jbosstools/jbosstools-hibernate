@@ -10,7 +10,7 @@ public class GeneralExceptionStatusHandler implements IStatusHandler {
 	public Object handleStatus(IStatus status, Object source)
 			throws CoreException {
 		final boolean[] result = new boolean[1];
-		HibernateConsolePlugin.openError(null, "Generating artifacts", "Exception while generating artifacts", status.getException(), HibernateConsolePlugin.PERFORM_SYNC_EXEC);
+		HibernateConsolePlugin.openError(null, "Generating code", "Exception while generating code", status.getException(), HibernateConsolePlugin.PERFORM_SYNC_EXEC);
 		return new Boolean(result[0]);		
 	}
 
