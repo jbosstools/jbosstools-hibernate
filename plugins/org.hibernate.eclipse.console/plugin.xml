@@ -179,7 +179,7 @@
             visible="true" 
             id="org.hibernate.eclipse.launch.actionset"> 
          <menu 
-               label="Generate code" 
+               label="Hibernate Code Generation..." 
                path="additions" 
                id="org.hibernate.eclipse.launch.generate"> 
             <separator 
@@ -187,7 +187,7 @@
             </separator> 
          </menu> 
          <action 
-               label="Generate code" 
+               label="Hibernate Code Generation..." 
                pulldown="true" 
                icon="icons/hibernate_small_icon.gif" 
                class="org.hibernate.eclipse.launch.LaunchMenuDelegate" 
@@ -195,7 +195,7 @@
                id="org.hibernate.eclipse.launch.LaunchMenuDelegateMenu"> 
          </action> 
          <action 
-               label="Generate code" 
+               label="Hibernate Code Generation..." 
                pulldown="true" 
                icon="icons/hibernate_small_icon.gif" 
                tooltip="Generate code via Hibernate Tools" 
@@ -315,7 +315,7 @@
             category="org.hibernate.eclipse.launchcategory"
             id="org.hibernate.eclipse.launch.CodeGenerationLaunchGroup"
             image="icons/hibernate_small_icon.gif"
-            label="Hibernate Run"
+            label="Hibernate Code Generation..."
             mode="run"/>
    </extension>
    <extension
