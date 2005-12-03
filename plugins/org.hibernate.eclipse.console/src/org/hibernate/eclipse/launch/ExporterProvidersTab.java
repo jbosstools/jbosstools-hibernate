@@ -21,7 +21,6 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.dialogs.ListSelectionDialog;
 import org.hibernate.eclipse.console.wizards.UpDownListComposite;
 import org.hibernate.tool.hbm2x.DAOExporter;
-import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.ExporterProvider;
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;

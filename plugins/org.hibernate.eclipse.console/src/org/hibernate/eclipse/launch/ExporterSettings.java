@@ -13,7 +13,6 @@ import org.eclipse.jdt.internal.ui.wizards.dialogfields.DialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.IDialogFieldListener;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.SelectionButtonDialogField;
 import org.eclipse.jface.dialogs.IDialogPage;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridLayout;
@@ -36,6 +35,8 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
 	private SelectionButtonDialogField generatemappings;
 
 	private SelectionButtonDialogField generatedocs;
+	
+	private SelectionButtonDialogField generateseam;
 		    
 	/**
 	 * Constructor for SampleNewWizardPage.
@@ -94,6 +95,10 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
 		generatedocs.setLabelText("Generate schema html-documentation");
 		generatedocs.setDialogFieldListener(fieldlistener);
 		
+		generateseam = new SelectionButtonDialogField(SWT.CHECK);
+		generateseam.setLabelText("Generate JBoss Seam skeleton app (alpha!)");
+		generateseam.setDialogFieldListener(fieldlistener);
+		
 		generatecfgfile = new SelectionButtonDialogField(SWT.CHECK);
 		generatecfgfile.setLabelText("Generate hibernate configuration (hibernate.cfg.xml)");
 		generatecfgfile.setDialogFieldListener(fieldlistener);
@@ -108,6 +113,7 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
 		generatemappings.doFillIntoGrid(container, 3);
 		generatecfgfile.doFillIntoGrid(container, 3);
 		generatedocs.doFillIntoGrid(container, 3);
+		generateseam.doFillIntoGrid(container, 3);
         
 		dialogChanged();
 		setControl(container);
@@ -124,6 +130,7 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
 		generatecfgfile.setEnabled(!configSelected);
 		generatedao.setEnabled(!configSelected);
 		generatedocs.setEnabled(!configSelected);
+		generateseam.setEnabled(!configSelected);
 		generatemappings.setEnabled(!configSelected);
 		
 		if (configSelected) {
@@ -131,7 +138,7 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
 			return;
 		}
         
-		if(!generatecfgfile.isSelected() && !generatejava.isSelected() && !generatedao.isSelected() && !generatedocs.isSelected() && !generatemappings.isSelected()) {
+		if(!generatecfgfile.isSelected() && !generatejava.isSelected() && !generatedao.isSelected() && !generatedocs.isSelected() && !generatemappings.isSelected() && !generateseam.isSelected()) {
 			updateStatus("At least one exporter option must be selected");
 			return;
 		}
@@ -212,6 +219,10 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
 		return generatedocs.isSelected();
 	}
 
+	public boolean isGenerateSeam() {
+		return generateseam.isSelected();
+	}
+	
     public boolean isJDK5ConstructsEnabled() {
         return enableJDK5.isSelected();
     }
@@ -228,6 +239,7 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
 			enableEJB3annotations.setSelection(configuration.getAttribute(PREFIX + "ejb3",false));
 			generatedao.setSelection(configuration.getAttribute(PREFIX + "hbm2dao",false));
 			generatedocs.setSelection(configuration.getAttribute(PREFIX + "hbm2doc",false));
+			generateseam.setSelection(configuration.getAttribute(PREFIX + "hbm2seam",false));
 			generatejava.setSelection(configuration.getAttribute(PREFIX + "hbm2java",false));
 			generatemappings.setSelection(configuration.getAttribute(PREFIX + "hbm2hbmxml",false));			
 		} catch (CoreException ce) {
@@ -243,6 +255,7 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(PREFIX + "ejb3", isEJB3Enabled());
 		configuration.setAttribute(PREFIX + "hbm2dao", isGenerateDao());
 		configuration.setAttribute(PREFIX + "hbm2doc", isGenerateDoc());
+		configuration.setAttribute(PREFIX + "hbm2seam", isGenerateSeam());
 		configuration.setAttribute(PREFIX + "hbm2java", isGenerateJava());
 		configuration.setAttribute(PREFIX + "hbm2hbmxml", isGenerateMappings());				
 	}

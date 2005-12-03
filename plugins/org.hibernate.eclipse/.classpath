@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry exported="true" kind="lib" path="lib/hibernate/antlr-2.7.5H3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/asm.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/asm-attrs.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/c3p0-0.9.0.jar"/>
@@ -12,7 +11,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/connector.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/dom4j-1.6.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/ehcache-1.1.jar"/>
-	<classpathentry exported="true" sourcepath="C:/lib/java/hibernate-3.0.5/src" kind="lib" path="lib/hibernate/hibernate3.jar"/>
+	<classpathentry exported="true" sourcepath="/hibernate3" kind="lib" path="lib/hibernate/hibernate3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/jboss-cache.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/jboss-common.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/jboss-jmx.jar"/>
@@ -35,5 +34,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/annotations/lucene-1.4.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="lib" path="lib/hibernate/antlr-2.7.5H3.jar"/>
 	<classpathentry kind="output" path="build/eclipse"/>
 </classpath>

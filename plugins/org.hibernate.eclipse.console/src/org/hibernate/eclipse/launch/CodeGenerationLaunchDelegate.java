@@ -27,9 +27,11 @@ import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.tool.hbm2x.DAOExporter;
 import org.hibernate.tool.hbm2x.DocExporter;
+import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
+import org.hibernate.tool.hbm2x.seam.SeamExporter;
 
 public class CodeGenerationLaunchDelegate extends
 		LaunchConfigurationDelegate {
@@ -51,6 +53,7 @@ public class CodeGenerationLaunchDelegate extends
 			boolean enableEJB3annotations = configuration.getAttribute(PREFIX + "ejb3",false);
 			boolean generatedao = configuration.getAttribute(PREFIX + "hbm2dao",false);
 			boolean generatedocs = configuration.getAttribute(PREFIX + "hbm2doc",false);
+			boolean generateseam = configuration.getAttribute(PREFIX + "hbm2seam",false);
 			boolean generatejava = configuration.getAttribute(PREFIX + "hbm2java",false);
 			boolean generatemappings = configuration.getAttribute(PREFIX + "hbm2hbmxml",false);
 			String packageName = configuration.getAttribute(PREFIX + "package","");
@@ -60,7 +63,7 @@ public class CodeGenerationLaunchDelegate extends
 			if(!useOwnTemplates) {
 				templatedir = null;
 			}
-			doFinish(consoleConfigurationName, pathOrNull(outputdir), packageName, pathOrNull(reverseEngineeringSettings), reverseengineer, generatejava, generatedao, generatemappings, generatecfgfile, monitor, preferBasicCompositeIds, pathOrNull(templatedir), enableEJB3annotations, enableJDK5, generatedocs);
+			doFinish(consoleConfigurationName, pathOrNull(outputdir), packageName, pathOrNull(reverseEngineeringSettings), reverseengineer, generatejava, generatedao, generatemappings, generatecfgfile, monitor, preferBasicCompositeIds, pathOrNull(templatedir), enableEJB3annotations, enableJDK5, generatedocs, generateseam);
 
 			// refresh resources
 			RefreshTab.refreshResources(configuration, monitor);
@@ -83,7 +86,7 @@ public class CodeGenerationLaunchDelegate extends
 
 	private void doFinish(
 			String configName, IPath output,
-	String outputPackage, IPath revengsettings, boolean reveng, final boolean genjava, final boolean gendao, final boolean genhbm, final boolean gencfg, final IProgressMonitor monitor, boolean preferBasicCompositeids, IPath templateDir, final boolean ejb3, final boolean generics, final boolean gendoc)
+	String outputPackage, IPath revengsettings, boolean reveng, final boolean genjava, final boolean gendao, final boolean genhbm, final boolean gencfg, final IProgressMonitor monitor, boolean preferBasicCompositeids, IPath templateDir, final boolean ejb3, final boolean generics, final boolean gendoc, final boolean generateseam)
 			throws CoreException {
 			
 		 	monitor.beginTask("Generating code for " + configName, 10);
@@ -193,10 +196,28 @@ public class CodeGenerationLaunchDelegate extends
 					
 					if(gendoc) {
 						monitor.subTask("hibernate doc");
-						new DocExporter(cfg, outputdir).start();
+						Exporter docExporter = new DocExporter();
+						docExporter.setOutputDirectory(outputdir);
+						docExporter.setConfiguration(cfg);
+						docExporter.setTemplatePath(templatePaths);
+						docExporter.start();
 						monitor.worked(9);
 					}
-					                
+					
+					if(generateseam) {
+						monitor.subTask("Seam skeleton");
+						Exporter docExporter = new SeamExporter();
+						Properties p = new Properties();
+						p.setProperty("seam_appname", "Seam Application");
+						p.setProperty("seam_shortname", "seamapp");
+						docExporter.setProperties(p);
+						docExporter.setOutputDirectory(outputdir);
+						docExporter.setConfiguration(cfg);
+						docExporter.setTemplatePath(templatePaths);
+						docExporter.start();
+						monitor.worked(9);
+					}
+					
 					monitor.worked(10);
 					return null;
 				}
