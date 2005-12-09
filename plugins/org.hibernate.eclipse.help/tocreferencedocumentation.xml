@@ -17,6 +17,10 @@
     <topic label="Collection of values" href="html/reference/en/html/tutorial.html#tutorial-associations-valuecollections"/>
     <topic label="Bi-directional associations" href="html/reference/en/html/tutorial.html#tutorial-associations-bidirectional"/>
     <topic label="Working bi-directional links" href="html/reference/en/html/tutorial.html#tutorial-associations-usingbidir"/></topic>
+    <topic label="Part 3 - The EventManager web application" href="html/reference/en/html/tutorial.html#tutorial-webapp">
+    <topic label="Writing the basic servlet" href="html/reference/en/html/tutorial.html#tutorial-webapp-servlet"/>
+    <topic label="Processing and rendering" href="html/reference/en/html/tutorial.html#tutorial-webapp-processing"/>
+    <topic label="Deploying and testing" href="html/reference/en/html/tutorial.html#tutorial-webapp-deploy"/></topic>
     <topic label="Summary" href="html/reference/en/html/tutorial.html#tutorial-summary"/></topic>
     <topic label="Architecture" href="html/reference/en/html/architecture.html">
     <topic label="Overview" href="html/reference/en/html/architecture.html#architecture-overview"/>
@@ -184,7 +188,8 @@
     <topic label="Extended session and automatic versioning" href="html/reference/en/html/transactions.html#transactions-optimistic-longsession"/>
     <topic label="Detached objects and automatic versioning" href="html/reference/en/html/transactions.html#transactions-optimistic-detached"/>
     <topic label="Customizing automatic versioning" href="html/reference/en/html/transactions.html#transactions-optimistic-customizing"/></topic>
-    <topic label="Pessimistic Locking" href="html/reference/en/html/transactions.html#transactions-locking"/></topic>
+    <topic label="Pessimistic Locking" href="html/reference/en/html/transactions.html#transactions-locking"/>
+    <topic label="Connection Release Modes" href="html/reference/en/html/transactions.html#transactions-connection-release"/></topic>
     <topic label="Interceptors and events" href="html/reference/en/html/events.html">
     <topic label="Interceptors" href="html/reference/en/html/events.html#objectstate-interceptors"/>
     <topic label="Event system" href="html/reference/en/html/events.html#objectstate-events"/>
