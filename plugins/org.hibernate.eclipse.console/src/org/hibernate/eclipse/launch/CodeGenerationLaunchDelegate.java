@@ -116,7 +116,7 @@ public class CodeGenerationLaunchDelegate extends
 				if(revengres!=null) {
 					Configuration configuration = cc.buildWith(new Configuration(), false);				
 					Settings settings = cc.getSettings(configuration);
-					File file = revengres.getRawLocation().toFile();
+					File file = getLocation( revengres ).toFile();
 					OverrideRepository repository = new OverrideRepository(settings.getDefaultCatalogName(),settings.getDefaultSchemaName());
 					repository.addFile(file);
 					res = repository.getReverseEngineeringStrategy(res);
@@ -131,12 +131,12 @@ public class CodeGenerationLaunchDelegate extends
 			
 			cc.execute(new Command() {
 				public Object execute() {
-					File outputdir = resource.getRawLocation().toFile(); 
+					File outputdir = getLocation( resource ).toFile(); 
 					
 	                String[] templatePaths = new String[0];
 	        
 	                if(templateres!=null) {
-	                    templatePaths = new String[] { templateres.getRawLocation().toOSString() };
+	                    templatePaths = new String[] { getLocation( templateres ).toOSString() };
 	                }
 	                
 	                Properties props = new Properties();
@@ -223,6 +223,13 @@ public class CodeGenerationLaunchDelegate extends
 				}
 			});
 		}
+
+	private IPath getLocation(final IResource resource) {		
+		if (resource.getRawLocation() == null) { 
+			return resource.getLocation(); 
+		} 
+		else return resource.getRawLocation();  
+	}
 
 	private Configuration buildConfiguration(boolean reveng, ConsoleConfiguration cc, ReverseEngineeringStrategy revEngStrategy, boolean preferBasicCompositeids) {
 		if(reveng) {

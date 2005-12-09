@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -64,6 +65,7 @@ public class DialogSelectionHelper {
 		List clazzes = new ArrayList();
 		if(allowDirectories) {
 			clazzes.add(IFolder.class);
+			clazzes.add(IProject.class);
 		}
 		if(allowFiles) {
 			clazzes.add(IFile.class);
