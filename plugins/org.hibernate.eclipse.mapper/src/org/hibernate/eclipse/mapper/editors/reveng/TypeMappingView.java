@@ -125,15 +125,15 @@ public abstract class TypeMappingView extends TreeToTableComposite {
 						revEngDef.addTypeMapping( typeMapping );
 					}
 				} else {
-					createDefaultTypeMapping();
+					createDefaultSqlTypeMapping();
 				}
 			}
 		} else {
-			createDefaultTypeMapping();
+			createDefaultSqlTypeMapping();
 		}
 	}
 
-	private void createDefaultTypeMapping() {
+	private void createDefaultSqlTypeMapping() {
 		ITypeMapping createTypeMapping = revEngDef.createTypeMapping();
 		createTypeMapping.setJDBCType("VARCHAR");
 		createTypeMapping.setHibernateType("string");

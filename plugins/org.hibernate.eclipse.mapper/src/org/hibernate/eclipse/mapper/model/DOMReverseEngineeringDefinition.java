@@ -216,6 +216,7 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 			Element parent;
 			if(parentList.isEmpty()) {
 				parent = getDocument().createElement("type-mapping");
+				factory.adapt((INodeNotifier)parent);
 				Node firstChild = getDocument().getDocumentElement().getFirstChild();
 				if(firstChild==null) {
 					parent = (Element) getDocument().getDocumentElement().appendChild(parent);
@@ -269,6 +270,10 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 			}
 			parentNode.removeChild(tf.getNode());
 			DOMModelUtil.formatNode(parentNode);
+			if(parentNode.getChildNodes().getLength()==0) {
+				Node parentNode2 = parentNode.getParentNode();
+				parentNode2.removeChild(parentNode);
+			}
 		}
 	}
 

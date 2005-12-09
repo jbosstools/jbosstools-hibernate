@@ -20,7 +20,9 @@ public class ObserverAdapterFactory extends AbstractAdapterFactory {
 	DOMReverseEngineeringDefinition revEngDefinition;
 	
 	public ObserverAdapterFactory(DOMReverseEngineeringDefinition revEngDefinition) {
-		super(DOMAdapter.class, true);
+		super();
+		setAdapterKey(DOMAdapter.class); //DOMAdapter.class, true
+		setShouldRegisterAdapter(true);
 		this.revEngDefinition = revEngDefinition;
     }
 			
@@ -30,8 +32,10 @@ public class ObserverAdapterFactory extends AbstractAdapterFactory {
 		String nodeName = n.getNodeName();
 		INodeAdapter result = null;
 			
+		Object key = DOMAdapter.class;
+		
 		if("hibernate-reverse-engineering".equals(nodeName)) {
-			result = new UnknownNodeAdapter(this, revEngDefinition) {
+			result = new UnknownNodeAdapter(key, revEngDefinition) {
 				public void notifyChanged(INodeNotifier notifier, int eventType, Object changedFeature, Object oldValue, Object newValue, int pos) {
 					observer.hibernateMappingChanged();
 				}
@@ -39,7 +43,7 @@ public class ObserverAdapterFactory extends AbstractAdapterFactory {
 		} else if("table-filter".equals(nodeName)) {
 			result = new TableFilterAdapter((Node) target, revEngDefinition);
 		} else if("type-mapping".equals(nodeName)) {
-			result = new UnknownNodeAdapter(this, revEngDefinition) {
+			result = new UnknownNodeAdapter(key, revEngDefinition) {
 				public void notifyChanged(INodeNotifier notifier, int eventType, Object changedFeature, Object oldValue, Object newValue, int pos) {
 					observer.typeMappingChanged(notifier);
 				}
@@ -60,7 +64,7 @@ public class ObserverAdapterFactory extends AbstractAdapterFactory {
 		else if("foreign-key".equals(nodeName) 
 				|| "column-ref".equals(nodeName) 
 				) {
-			result = new UnknownNodeAdapter(this, revEngDefinition) {
+			result = new UnknownNodeAdapter(key, revEngDefinition) {
 				public void notifyChanged(INodeNotifier notifier, int eventType, Object changedFeature, Object oldValue, Object newValue, int pos) {
 					observer.tablesChanged(notifier);
 				}
@@ -68,7 +72,7 @@ public class ObserverAdapterFactory extends AbstractAdapterFactory {
 		}
     
 		if(result==null) {
-			result = new UnknownNodeAdapter(this, revEngDefinition);
+			result = new UnknownNodeAdapter(key, revEngDefinition);
 		}
 		
 		if (result != null) {

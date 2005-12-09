@@ -1,23 +1,22 @@
 package org.hibernate.eclipse.mapper.factory;
 
 import org.eclipse.wst.sse.core.internal.provisional.INodeAdapter;
-import org.eclipse.wst.sse.core.internal.provisional.INodeAdapterFactory;
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.hibernate.eclipse.mapper.model.DOMReverseEngineeringDefinition;
 
 public class UnknownNodeAdapter implements INodeAdapter {
 
-	private INodeAdapterFactory factory;
 	protected final DOMReverseEngineeringDefinition observer;
+	private final Object key;
 
-	public UnknownNodeAdapter(INodeAdapterFactory factory, DOMReverseEngineeringDefinition revEngDefinition) {
-		this.factory = factory;
+	public UnknownNodeAdapter(Object key, DOMReverseEngineeringDefinition revEngDefinition) {
+		this.key = key;		
 		this.observer = revEngDefinition;
 	}
 	
 	public boolean isAdapterForType(Object type)
     {
-        return type.equals(factory);
+        return type.equals(key);
     }
 
     public void notifyChanged(INodeNotifier notifier, int eventType, Object changedFeature, Object oldValue, Object newValue, int pos)
