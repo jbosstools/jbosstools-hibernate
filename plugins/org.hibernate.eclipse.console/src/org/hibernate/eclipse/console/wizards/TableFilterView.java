@@ -135,7 +135,7 @@ public abstract class TableFilterView extends TreeToTableComposite {
 															// schema!
 					TableContainer tc = (TableContainer) sel;
 					filter = revEngDef.createTableFilter();
-					filter.setMatchSchema( tc.getName() );
+					filter.setMatchSchema( "".equals(tc.getName())?".*":tc.getName() );
 					filter.setMatchName(".*");
 					filter.setExclude( Boolean.valueOf( exclude ) );
 				} else if ( sel instanceof Column ) {

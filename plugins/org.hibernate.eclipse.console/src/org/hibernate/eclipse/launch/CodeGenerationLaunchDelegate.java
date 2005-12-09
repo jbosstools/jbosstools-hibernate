@@ -114,10 +114,10 @@ public class CodeGenerationLaunchDelegate extends
 				
 				res = configurableNamingStrategy;
 				if(revengres!=null) {
-					Configuration configuration = cc.buildWith(new Configuration(), false);				
-					Settings settings = cc.getSettings(configuration);
+					/*Configuration configuration = cc.buildWith(new Configuration(), false);*/				
+					/*Settings settings = cc.getSettings(configuration);*/
 					File file = getLocation( revengres ).toFile();
-					OverrideRepository repository = new OverrideRepository(settings.getDefaultCatalogName(),settings.getDefaultSchemaName());
+					OverrideRepository repository = new OverrideRepository(/*settings.getDefaultCatalogName(),settings.getDefaultSchemaName()*/);
 					repository.addFile(file);
 					res = repository.getReverseEngineeringStrategy(res);
 				}

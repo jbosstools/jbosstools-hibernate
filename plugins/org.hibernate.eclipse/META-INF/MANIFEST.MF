@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate Core Plugin
 Bundle-SymbolicName: org.hibernate.eclipse
-Bundle-Version: 3.1.0.beta1
+Bundle-Version: 3.1.0.beta1JBIDERC2
 Bundle-ClassPath: org.hibernate.eclipse.jar,
  lib/tools/hibernateconsole.jar,
  lib/hibernate/asm.jar,

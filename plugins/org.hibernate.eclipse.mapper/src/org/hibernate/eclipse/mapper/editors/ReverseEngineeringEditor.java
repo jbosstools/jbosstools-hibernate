@@ -6,6 +6,8 @@ import java.util.Map;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.pde.core.plugin.IPluginModelBase;
+import org.eclipse.pde.internal.core.PDECore;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IKeyBindingService;
@@ -150,7 +152,7 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 	}
 
 	public LazyDatabaseSchema getLazyDatabaseSchema() {
-		
+
 		ConsoleConfiguration configuration = KnownConfigurations.getInstance().find( getConsoleConfigurationName() );
 		if(configuration==null) {
 			MessageDialog.openInformation(getContainer().getShell(), "No console configuraiton", "No console configuration found.\n Select a valid one on the overview page");
@@ -160,7 +162,7 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 		Configuration cfg = configuration.buildWith(new Configuration(), false);
 		Settings settings = configuration.getSettings(cfg);
 		
-		OverrideRepository repository = new OverrideRepository(settings.getDefaultCatalogName(),settings.getDefaultSchemaName());
+		OverrideRepository repository = new OverrideRepository(/*settings.getDefaultCatalogName(),settings.getDefaultSchemaName()*/);
 		boolean hasIncludes = false;
 		for (int i = 0; i < tableFilters.length; i++) {
 			ITableFilter filter = tableFilters[i];

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Mapper Plug-in
 Bundle-SymbolicName: org.hibernate.eclipse.mapper; singleton:=true
-Bundle-Version: 3.1.0.beta1
+Bundle-Version: 3.1.0.beta1JBIDERC2
 Bundle-ClassPath: org.hibernate.eclipse.mapper.jar
 Bundle-Activator: org.hibernate.eclipse.mapper.MapperPlugin
 Bundle-Vendor: Hibernate Team
@@ -31,5 +31,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.workbench.texteditor,
  org.hibernate.eclipse.console,
  org.eclipse.wst.dtd.core,
- org.eclipse.wst.common.ui
+ org.eclipse.wst.common.ui,
+ org.eclipse.pde.core
 Eclipse-AutoStart: true
