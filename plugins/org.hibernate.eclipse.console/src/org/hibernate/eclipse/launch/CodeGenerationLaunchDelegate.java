@@ -117,7 +117,7 @@ public class CodeGenerationLaunchDelegate extends
 					/*Configuration configuration = cc.buildWith(new Configuration(), false);*/				
 					/*Settings settings = cc.getSettings(configuration);*/
 					File file = getLocation( revengres ).toFile();
-					OverrideRepository repository = new OverrideRepository(/*settings.getDefaultCatalogName(),settings.getDefaultSchemaName()*/);
+					OverrideRepository repository = new OverrideRepository(null,null);///*settings.getDefaultCatalogName(),settings.getDefaultSchemaName()*/);
 					repository.addFile(file);
 					res = repository.getReverseEngineeringStrategy(res);
 				}
