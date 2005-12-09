@@ -93,7 +93,7 @@ public class ConsoleQueryParameter {
 	}
 	
 	public void setValue(Object value) {
-		if(value == null) { throw new IllegalArgumentException("Value must not be set to null"); };
+		if(value == null) { throw new IllegalArgumentException("Value must not be set to null"); }
 		this.value = value;
 	}
 	
