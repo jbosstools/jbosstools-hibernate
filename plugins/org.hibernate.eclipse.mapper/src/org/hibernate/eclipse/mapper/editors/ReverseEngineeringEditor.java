@@ -181,7 +181,7 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 				return null;
 			}
 		}
-		if(!hasIncludes) {
+		if(!hasIncludes && tableFilters.length>0) {
 			boolean b = MessageDialog.openQuestion(getContainer().getShell(), "Only exclude filters defined", "Only exclude filters has been defined.\n This will result in no tables being read from the database schema.\n Do you wish to continue reading the database schema ?");
 			if(!b) {
 				return null;
