@@ -155,7 +155,7 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 
 		ConsoleConfiguration configuration = KnownConfigurations.getInstance().find( getConsoleConfigurationName() );
 		if(configuration==null) {
-			MessageDialog.openInformation(getContainer().getShell(), "No console configuraiton", "No console configuration found.\n Select a valid one on the overview page");
+			MessageDialog.openInformation(getContainer().getShell(), "No console configuration", "No console configuration found.\n Select a valid one on the overview page");
 			return null;
 		}
 		ITableFilter[] tableFilters = getReverseEngineeringDefinition().getTableFilters();
@@ -176,7 +176,12 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 			tf.setMatchSchema(filter.getMatchSchema());
 			repository.addTableFilter(tf);
 		}
-		
+		TableFilter tf = new TableFilter();
+		tf.setExclude(Boolean.FALSE);
+		tf.setMatchCatalog(".*");
+		tf.setMatchSchema(".*");
+		tf.setMatchName(".*");
+		repository.addTableFilter(tf);
 		if(tableFilters.length==0) {
 			boolean b = MessageDialog.openQuestion(getContainer().getShell(), "No filters defined", "No filters has been defined.\n This can make the reading of the database schema very slow.\n Do you wish to continue reading the database schema ?");
 			if(!b) {
