@@ -1,6 +1,7 @@
 package org.hibernate.eclipse.launch;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.util.Properties;
 
 import org.eclipse.core.resources.IResource;
@@ -17,11 +18,11 @@ import org.eclipse.debug.ui.RefreshTab;
 import org.eclipse.jface.util.Assert;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
-import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -32,6 +33,7 @@ import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.POJOExporter;
 import org.hibernate.tool.hbm2x.seam.SeamExporter;
+import org.hibernate.util.ReflectHelper;
 
 public class CodeGenerationLaunchDelegate extends
 		LaunchConfigurationDelegate {
@@ -47,6 +49,7 @@ public class CodeGenerationLaunchDelegate extends
 			String outputdir = configuration.getAttribute(PREFIX + "outputdir","");
 			boolean reverseengineer = configuration.getAttribute(PREFIX + "schema2hbm", false);
 			String reverseEngineeringSettings = configuration.getAttribute(PREFIX + "revengfile", "");
+			String reverseEngineeringStrategy = configuration.getAttribute(PREFIX + "revengstrategy", "");
 			boolean useOwnTemplates = configuration.getAttribute(PREFIX + "templatepathenabled",false);		
 			boolean generatecfgfile = configuration.getAttribute(PREFIX + "hbm2cfgxml",false);
 			boolean enableJDK5 = configuration.getAttribute(PREFIX + "jdk5",false);
@@ -63,7 +66,7 @@ public class CodeGenerationLaunchDelegate extends
 			if(!useOwnTemplates) {
 				templatedir = null;
 			}
-			doFinish(consoleConfigurationName, pathOrNull(outputdir), packageName, pathOrNull(reverseEngineeringSettings), reverseengineer, generatejava, generatedao, generatemappings, generatecfgfile, monitor, preferBasicCompositeIds, pathOrNull(templatedir), enableEJB3annotations, enableJDK5, generatedocs, generateseam);
+			doFinish(consoleConfigurationName, pathOrNull(outputdir), packageName, pathOrNull(reverseEngineeringSettings), reverseEngineeringStrategy, reverseengineer, generatejava, generatedao, generatemappings, generatecfgfile, monitor, preferBasicCompositeIds, pathOrNull(templatedir), enableEJB3annotations, enableJDK5, generatedocs, generateseam);
 
 			// refresh resources
 			RefreshTab.refreshResources(configuration, monitor);
@@ -86,7 +89,7 @@ public class CodeGenerationLaunchDelegate extends
 
 	private void doFinish(
 			String configName, IPath output,
-	String outputPackage, IPath revengsettings, boolean reveng, final boolean genjava, final boolean gendao, final boolean genhbm, final boolean gencfg, final IProgressMonitor monitor, boolean preferBasicCompositeids, IPath templateDir, final boolean ejb3, final boolean generics, final boolean gendoc, final boolean generateseam)
+	String outputPackage, IPath revengsettings, String reverseEngineeringStrategy, boolean reveng, final boolean genjava, final boolean gendao, final boolean genhbm, final boolean gencfg, final IProgressMonitor monitor, boolean preferBasicCompositeids, IPath templateDir, final boolean ejb3, final boolean generics, final boolean gendoc, final boolean generateseam)
 			throws CoreException {
 			
 		 	monitor.beginTask("Generating code for " + configName, 10);
@@ -121,8 +124,9 @@ public class CodeGenerationLaunchDelegate extends
 					repository.addFile(file);
 					res = repository.getReverseEngineeringStrategy(res);
 				}
+				
 			}
-			final Configuration cfg = buildConfiguration(reveng, cc, res, preferBasicCompositeids);
+			final Configuration cfg = buildConfiguration(reveng, reverseEngineeringStrategy, cc, res, preferBasicCompositeids);
 			
 			monitor.worked(3);
 			
@@ -231,16 +235,23 @@ public class CodeGenerationLaunchDelegate extends
 		else return resource.getRawLocation();  
 	}
 
-	private Configuration buildConfiguration(boolean reveng, ConsoleConfiguration cc, ReverseEngineeringStrategy revEngStrategy, boolean preferBasicCompositeids) {
+	private Configuration buildConfiguration(boolean reveng, final String reverseEngineeringStrategy, ConsoleConfiguration cc, final ReverseEngineeringStrategy revEngStrategy, boolean preferBasicCompositeids) {
 		if(reveng) {
 			final JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
 			cc.buildWith(cfg,false);
-			cfg.setReverseEngineeringStrategy(revEngStrategy);
+			
 			cfg.setPreferBasicCompositeIds(preferBasicCompositeids);
             
 			cc.execute(new Command() { // need to execute in the consoleconfiguration to let it handle classpath stuff!
 
 				public Object execute() {
+					
+					if(reverseEngineeringStrategy!=null) {
+						ReverseEngineeringStrategy res = loadreverseEngineeringStrategy(reverseEngineeringStrategy, revEngStrategy);
+						cfg.setReverseEngineeringStrategy(res);
+					} else {
+						cfg.setReverseEngineeringStrategy(revEngStrategy);
+					}
 					cfg.readFromJDBC();
                     cfg.buildMappings();
 					return null;
@@ -263,4 +274,25 @@ public class CodeGenerationLaunchDelegate extends
 		}
 	}
 
+	// TODO: merge with revstrategy load in JDBCConfigurationTask
+	private ReverseEngineeringStrategy loadreverseEngineeringStrategy(final String className, ReverseEngineeringStrategy delegate) {
+        try {
+            Class clazz = ReflectHelper.classForName(className);			
+			Constructor constructor = clazz.getConstructor(new Class[] { ReverseEngineeringStrategy.class });
+            return (ReverseEngineeringStrategy) constructor.newInstance(new Object[] { delegate }); 
+        } 
+        catch (NoSuchMethodException e) {
+			try {
+				Class clazz = ReflectHelper.classForName(className);						
+				ReverseEngineeringStrategy rev = (ReverseEngineeringStrategy) clazz.newInstance();
+				return rev;
+			} 
+			catch (Exception eq) {
+				throw new HibernateConsoleRuntimeException("Could not create or find " + className + " with default no-arg constructor", eq);
+			}
+		} 
+        catch (Exception e) {
+			throw new HibernateConsoleRuntimeException("Could not create or find " + className + " with one argument delegate constructor", e);
+		} 
+    }
 }

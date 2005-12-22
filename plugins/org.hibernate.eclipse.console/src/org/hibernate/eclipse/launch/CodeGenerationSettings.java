@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
@@ -51,6 +52,8 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
 	private StringButtonDialogField outputdir;
 	
 	private StringButtonDialogField reverseEngineeringSettings;
+	
+	private StringButtonDialogField reverseEngineeringStrategy;
     
     private StringDialogField packageName;
 
@@ -120,6 +123,19 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
         packageName.setDialogFieldListener(fieldlistener);
         packageName.setLabelText("&Package:");
         
+        reverseEngineeringStrategy = new StringButtonDialogField(new IStringButtonAdapter() {
+		
+			public void changeControlPressed(DialogField field) {
+				String string = DialogSelectionHelper.chooseImplementation(ReverseEngineeringStrategy.class.getName(), reverseEngineeringStrategy.getText(), "Choose a reverse engineering strategy", getShell());
+				if(string!=null) {
+					reverseEngineeringStrategy.setText(string);
+				}		
+			}	
+		});
+        reverseEngineeringStrategy.setDialogFieldListener(fieldlistener);
+        reverseEngineeringStrategy.setLabelText("reveng. s&trategy:");
+        reverseEngineeringStrategy.setButtonLabel("&Browse...");
+		
 		reverseEngineeringSettings= new StringButtonDialogField(new IStringButtonAdapter() {
             public void changeControlPressed(DialogField field) {
             	int defaultChoice = 0;
@@ -176,15 +192,16 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
         preferRawCompositeIds.setDialogFieldListener(fieldlistener);
         
 		useOwnTemplates.attachDialogField(templatedir);
-        reverseengineer.attachDialogFields(new DialogField[] { packageName, preferRawCompositeIds, reverseEngineeringSettings });
+        reverseengineer.attachDialogFields(new DialogField[] { packageName, preferRawCompositeIds, reverseEngineeringSettings, reverseEngineeringStrategy });
        
 		consoleConfigurationName.doFillIntoGrid(container, 3);
 		Control[] controls = outputdir.doFillIntoGrid(container, 3);
 		// Hack to tell the text field to stretch!
 		( (GridData)controls[1].getLayoutData() ).grabExcessHorizontalSpace=true;
 		reverseengineer.doFillIntoGrid(container, 3);
-        packageName.doFillIntoGrid(container, 3);
+        packageName.doFillIntoGrid(container, 3);        
 		reverseEngineeringSettings.doFillIntoGrid(container, 3);
+		reverseEngineeringStrategy.doFillIntoGrid(container, 3);
 		
         fillLabel(container);
         preferRawCompositeIds.doFillIntoGrid(container, 2);
@@ -350,10 +367,14 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
         return preferRawCompositeIds.isSelected();
     }
 
-	public IPath getReverseEngineeringSettingsFile() {
+	private IPath getReverseEngineeringSettingsFile() {
 		return pathOrNull(reverseEngineeringSettings.getText() );
 	}    
     
+	private String getReverseEngineeringStrategy() {
+		return reverseEngineeringStrategy.getText();
+	}   
+	
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {		
 		// TODO
 	}
@@ -365,6 +386,7 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
 			outputdir.setText(configuration.getAttribute(PREFIX + "outputdir",""));
 			reverseengineer.setSelection(configuration.getAttribute(PREFIX + "schema2hbm", false));
 			reverseEngineeringSettings.setText(configuration.getAttribute(PREFIX + "revengfile", ""));
+			reverseEngineeringStrategy.setText(configuration.getAttribute(PREFIX + "revengstrategy", ""));
 			useOwnTemplates.setSelection(configuration.getAttribute(PREFIX + "templatepathenabled",false));		
 			packageName.setText(configuration.getAttribute(PREFIX + "package",""));
 			templatedir.setText(configuration.getAttribute(PREFIX + "templatepath",""));
@@ -380,6 +402,7 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
 		configuration.setAttribute(PREFIX + "prefercompositeids", preferRawCompositeIds.isSelected());
 		configuration.setAttribute(PREFIX + "schema2hbm", isReverseEngineerEnabled());
 		configuration.setAttribute(PREFIX + "revengfile", reverseEngineeringSettings.getText());
+		configuration.setAttribute(PREFIX + "revengstrategy", reverseEngineeringStrategy.getText());
 		configuration.setAttribute(PREFIX + "templatepathenabled", useOwnTemplates.isSelected());		
 		configuration.setAttribute(PREFIX + "configurationname", getConfigurationName());
 		configuration.setAttribute(PREFIX + "package", getOutputPackage());

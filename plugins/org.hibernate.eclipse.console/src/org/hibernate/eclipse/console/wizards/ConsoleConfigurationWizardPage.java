@@ -66,6 +66,7 @@ import org.hibernate.eclipse.console.EclipseConsoleConfiguration;
 import org.hibernate.eclipse.console.EclipseConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
+import org.xml.sax.EntityResolver;
 
 /**
  * @author max
@@ -205,37 +206,13 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	}
 
 	protected void handleEntityResolverBrowse() {
-		Shell shell= getShell();
-		SelectionDialog dialog= null;
-		try {
-			final IJavaSearchScope scope = SearchEngine.createWorkspaceScope();
-			// TODO: limit to a certain implementor
-			dialog=
-				JavaUI.createTypeDialog(
-					shell,
-					PlatformUI.getWorkbench().getProgressService(),
-					scope,
-					IJavaElementSearchConstants.CONSIDER_CLASSES,
-					false, entityResolverClassNameText.getText());
-		} catch (JavaModelException jme) {
-			return;
+		String string = DialogSelectionHelper.chooseImplementation(EntityResolver.class.getName(), entityResolverClassNameText.getText(), "Select entity resolver class", getShell());
+		if(string!=null) {
+			entityResolverClassNameText.setText(string);
 		}
-
-		dialog.setTitle("Select entity resolver class"); 
-		dialog.setMessage("Select entity resolver class");
-		
-		if (dialog.open() == IDialogConstants.CANCEL_ID)
-			return;
-
-		Object[] types= dialog.getResult();
-		if (types != null && types.length > 0) {
-			IType type= (IType) types[0];
-			entityResolverClassNameText.setText(type.getFullyQualifiedName('.'));
-		}
-
-		
 	}
 
+	
 	private GridData createGridData() {
 		GridData gd;
 		gd = new GridData(GridData.FILL_HORIZONTAL);
