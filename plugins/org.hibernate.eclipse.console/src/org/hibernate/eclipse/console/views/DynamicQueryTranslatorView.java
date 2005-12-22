@@ -89,7 +89,10 @@ public class DynamicQueryTranslatorView extends ViewPart {
     private MonoReconciler reconciler;
 	
     private void hookIntoEditor(IWorkbenchPartReference partRef) {
-    	if(partRef==null) setCurrentEditor(null);
+    	if(partRef==null) {
+    		setCurrentEditor(null);
+    		return;
+    	}
 		IWorkbenchPart part = partRef.getPart(false);
 		if(part!=null && (part instanceof HQLEditor)) {
 			setCurrentEditor((HQLEditor) part);
