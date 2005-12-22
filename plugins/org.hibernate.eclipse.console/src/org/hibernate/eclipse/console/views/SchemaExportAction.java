@@ -60,7 +60,7 @@ public class SchemaExportAction extends ConsoleConfigurationBasedAction {
 								int cnt = 1;
 								while ( iterator.hasNext() ) {
 									Throwable element = (Throwable) iterator.next();
-									HibernateConsolePlugin.getDefault().logErrorMessage("Error "
+									HibernateConsolePlugin.getDefault().logErrorMessage("Error #"
 															+ cnt++
 															+ " while performing SchemaExport",
 															element );
