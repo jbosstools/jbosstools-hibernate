@@ -77,7 +77,7 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
         enableJDK5.setDialogFieldListener(fieldlistener);
  
         enableEJB3annotations = new SelectionButtonDialogField(SWT.CHECK);
-        enableEJB3annotations.setLabelText("EJB3/JSR-220 annotations (experimental!)");
+        enableEJB3annotations.setLabelText("EJB3/JSR-220 annotations");
         enableEJB3annotations.setDialogFieldListener(fieldlistener);
       
         generatejava.attachDialogFields(new DialogField[] {enableJDK5, enableEJB3annotations});
@@ -96,7 +96,7 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
 		generatedocs.setDialogFieldListener(fieldlistener);
 		
 		generateseam = new SelectionButtonDialogField(SWT.CHECK);
-		generateseam.setLabelText("Generate JBoss Seam skeleton app (alpha!)");
+		generateseam.setLabelText("Generate JBoss Seam skeleton app (beta)");
 		generateseam.setDialogFieldListener(fieldlistener);
 		
 		generatecfgfile = new SelectionButtonDialogField(SWT.CHECK);
