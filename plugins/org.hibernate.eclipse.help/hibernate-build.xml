@@ -51,7 +51,7 @@
 
         <!-- copy in the tool docs -->
         <copy todir="${tmpdir}/html/tools/ant">
-          <fileset dir="../tools/doc"/>
+          <fileset dir="../tools/doc/reference/build"/>
         </copy>
         
 		<!-- zip into single zip file (must be called 'doc.zip') -->

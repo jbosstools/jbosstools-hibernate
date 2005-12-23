@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <toc label="Hibernate Tools Reference">
       <topic label="Eclipse plugins" href="html/tools/eclipse/index.html"/>
-      <topic label="Ant tools" href="html/tools/ant/index.html"/>      
-      <topic label="New &amp; Noteworthy" href="html/tools/eclipse/newandnoteworthy/hibernate-eclipse-news-3.1.0.beta1.html"/>
+      <topic label="Ant tools" href="html/tools/ant/en/html_single/index.html"/>      
+      <topic label="New &amp; Noteworthy" href="html/tools/eclipse/newandnoteworthy/hibernate-eclipse-news-3.1.0.beta3.html"/>
 </toc>
