@@ -91,7 +91,7 @@ arbitrary number of queries, and import declarations of arbitrary classes.
 	<!ATTLIST class subselect CDATA #IMPLIED>
 	<!ATTLIST class discriminator-value CDATA #IMPLIED>				<!-- default: unqualified class name | none -->
 	<!ATTLIST class mutable (true|false) "true">
-	<!ATTLIST class abstract (true|false) "false">
+	<!ATTLIST class abstract (true|false) #IMPLIED>
 	<!ATTLIST class polymorphism (implicit|explicit) "implicit">
 	<!ATTLIST class where CDATA #IMPLIED>							<!-- default: none -->
 	<!ATTLIST class persister CDATA #IMPLIED>
@@ -243,7 +243,7 @@ application through a property of the Java class. -->
 	<!ATTLIST subclass select-before-update (true|false) "false">
 	<!ATTLIST subclass extends CDATA #IMPLIED>							<!-- default: empty when a toplevel, otherwise the nearest class definition -->
 	<!ATTLIST subclass lazy (true|false) #IMPLIED>
-	<!ATTLIST subclass abstract (true|false) "false">
+	<!ATTLIST subclass abstract (true|false) #IMPLIED>
 	<!ATTLIST subclass persister CDATA #IMPLIED>
 	<!ATTLIST subclass batch-size CDATA #IMPLIED>
 	<!ATTLIST subclass node CDATA #IMPLIED>
@@ -278,7 +278,7 @@ application through a property of the Java class. -->
 	<!ATTLIST joined-subclass select-before-update (true|false) "false">
 	<!ATTLIST joined-subclass extends CDATA #IMPLIED>			 		<!-- default: none when toplevel, otherwise the nearest class definition -->
 	<!ATTLIST joined-subclass lazy (true|false) #IMPLIED>
-	<!ATTLIST joined-subclass abstract (true|false) "false">
+	<!ATTLIST joined-subclass abstract (true|false) #IMPLIED>
 	<!ATTLIST joined-subclass persister CDATA #IMPLIED>
 	<!ATTLIST joined-subclass check CDATA #IMPLIED>				 		<!-- default: none -->
 	<!ATTLIST joined-subclass batch-size CDATA #IMPLIED>
@@ -313,7 +313,7 @@ application through a property of the Java class. -->
 	<!ATTLIST union-subclass select-before-update (true|false) "false">
 	<!ATTLIST union-subclass extends CDATA #IMPLIED>					<!-- default: none when toplevel, otherwise the nearest class definition -->
 	<!ATTLIST union-subclass lazy (true|false) #IMPLIED>
-	<!ATTLIST union-subclass abstract (true|false) "false">
+	<!ATTLIST union-subclass abstract (true|false) #IMPLIED>
 	<!ATTLIST union-subclass persister CDATA #IMPLIED>
 	<!ATTLIST union-subclass check CDATA #IMPLIED>						<!-- default: none -->
 	<!ATTLIST union-subclass batch-size CDATA #IMPLIED>
@@ -1004,15 +1004,15 @@ finder methods for named queries -->
     Element for defining "auxiliary" database objects.  Must be one of two forms:
 
     #1 :
-        <auxiliary-object>
+        <database-object>
             <definition class="CustomClassExtendingAuxiliaryObject"/>
-        </auxiliary-object>
+        </database-object>
 
     #2 :
-        <auxiliary-object>
-            <create>CRAETE OR REPLACE ....</create>
+        <database-object>
+            <create>CREATE OR REPLACE ....</create>
             <drop>DROP ....</drop>
-        </auxiliary-object>
+        </database-object>
 -->
 <!ELEMENT database-object ( (definition|(create,drop)), dialect-scope* )>
 

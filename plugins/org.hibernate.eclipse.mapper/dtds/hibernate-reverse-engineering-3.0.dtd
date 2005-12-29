@@ -31,9 +31,14 @@ TODO: document the tags in the DTD
 <!ATTLIST sql-type hibernate-type CDATA #REQUIRED >
 
 <!ELEMENT table (primary-key?, column*, foreign-key*) >
+<!-- Catalog for the table -->
 <!ATTLIST table catalog CDATA #IMPLIED >
+<!-- Schema for the table -->
 <!ATTLIST table schema  CDATA #IMPLIED >
+<!-- Name of the table -->
 <!ATTLIST table name    CDATA #REQUIRED >
+<!-- The class name to use for the table -->
+<!ATTLIST table class   CDATA #IMPLIED >
 
 <!ELEMENT column EMPTY >
 <!ATTLIST column name           CDATA        #REQUIRED >
