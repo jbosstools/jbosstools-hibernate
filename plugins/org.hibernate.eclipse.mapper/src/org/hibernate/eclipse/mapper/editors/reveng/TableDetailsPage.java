@@ -24,7 +24,7 @@ public class TableDetailsPage extends RevEngDetailsPage implements IDetailsPage,
 	private FormTextEntry nameEntry;
 	private FormTextEntry schemaEntry;
 	private FormTextEntry catalogEntry;
-
+	private FormTextEntry classEntry;
 
 	private IRevEngTable table;
 	
@@ -49,6 +49,13 @@ public class TableDetailsPage extends RevEngDetailsPage implements IDetailsPage,
 		nameEntry.setFormEntryListener(new FormTextEntryListenerAdapter() {
 			public void textValueChanged(FormTextEntry entry) {
 				table.setName(entry.getValue());
+			}
+		});
+		
+		classEntry = new FormTextEntry(client, toolkit, "Class name:", SWT.NULL);
+		classEntry.setFormEntryListener(new FormTextEntryListenerAdapter() {
+			public void textValueChanged(FormTextEntry entry) {
+				table.setClassname(entry.getValue());
 			}
 		});
 		
@@ -87,7 +94,8 @@ public class TableDetailsPage extends RevEngDetailsPage implements IDetailsPage,
 		catalogEntry.setValue(table.getCatalog());
 		schemaEntry.setValue(table.getSchema());
 		nameEntry.setValue(table.getName());
-		//excludeEntry.setValue(c.getExclude());
+		classEntry.setValue(table.getClassname());
+		//excludeEntry.setValue(table.getExclude());
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {

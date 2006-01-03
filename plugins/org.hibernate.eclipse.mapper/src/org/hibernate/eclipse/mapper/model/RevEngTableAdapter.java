@@ -25,6 +25,10 @@ public class RevEngTableAdapter extends DOMAdapter implements IRevEngTable {
 		return getNodeValue("schema", null);
 	}
 
+	public String getClassname() {
+		return getNodeValue("class", null);
+	}
+	
 	public String getName() {
 		return getNodeValue("name", null);
 	}
@@ -64,6 +68,10 @@ public class RevEngTableAdapter extends DOMAdapter implements IRevEngTable {
 		setAttribute("name", value, "");
 	}
 
+	public void setClassname(String value) {
+		setAttribute("class", value, "");
+	}
+	
 	public void setCatalog(String value) {	
 		setAttribute("catalog", value, null);
 	}

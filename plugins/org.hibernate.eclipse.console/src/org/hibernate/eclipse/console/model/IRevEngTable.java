@@ -13,4 +13,6 @@ public interface IRevEngTable extends Notifiable {
 	void setSchema(String value);
 	void addColumn(IRevEngColumn revCol);
 	void addPrimaryKey();
+	void setClassname(String classname);
+	String getClassname();
 }
