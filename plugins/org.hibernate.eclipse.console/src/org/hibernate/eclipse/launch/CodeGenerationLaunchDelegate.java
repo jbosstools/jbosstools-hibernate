@@ -246,7 +246,7 @@ public class CodeGenerationLaunchDelegate extends
 
 				public Object execute() {
 					
-					if(reverseEngineeringStrategy!=null) {
+					if(reverseEngineeringStrategy!=null && reverseEngineeringStrategy.trim().length()>0) {
 						ReverseEngineeringStrategy res = loadreverseEngineeringStrategy(reverseEngineeringStrategy, revEngStrategy);
 						cfg.setReverseEngineeringStrategy(res);
 					} else {
