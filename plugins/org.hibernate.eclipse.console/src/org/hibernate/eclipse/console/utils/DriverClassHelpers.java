@@ -42,6 +42,7 @@ public class DriverClassHelpers {
         dialectNames.put("Pointbase", "org.hibernate.dialect.PointbaseDialect");
         dialectNames.put("PostgreSQL", "org.hibernate.dialect.PostgreSQLDialect");
         dialectNames.put("Postgress", "org.hibernate.dialect.PostgressDialect");
+        dialectNames.put("Progress", "org.hibernate.dialect.ProgressDialect");        
         dialectNames.put("SAP DB", "org.hibernate.dialect.SAPDBDialect");
         dialectNames.put("Sybase", "org.hibernate.dialect.SybaseDialect");
         dialectNames.put("Sybase11", "org.hibernate.dialect.Sybase11Dialect");
@@ -101,6 +102,13 @@ public class DriverClassHelpers {
                 new String[] {
                    "jdbc:postgresql:template1",
                    "jdbc:postgresql:<name>" }
+               );
+        
+        addDriverAndURLS("org.hibernate.dialect.ProgressDialect", 
+                "com.progress.sql.jdbc.JdbcProgressDriver",
+                new String[] {
+                   "jdbc:JdbcProgress:T:host:port:dbname;WorkArounds=536870912",
+                   }
                );
         
         addDriverAndURLS("org.hibernate.dialect.DB2Dialect", "COM.ibm.db2.jdbc.app.DB2Driver",
