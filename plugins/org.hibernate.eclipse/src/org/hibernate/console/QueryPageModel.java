@@ -90,6 +90,7 @@ public class QueryPageModel extends AbstractListModel {
 		boolean b = pages.remove(page);
 		if(b) {
 			fireContentsChanged(pages, 0, getSize() );
+			page.release();
 		}
 		return b;
 	}
