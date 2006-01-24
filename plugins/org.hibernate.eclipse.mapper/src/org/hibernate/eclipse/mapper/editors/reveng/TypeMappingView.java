@@ -108,7 +108,8 @@ public abstract class TypeMappingView extends TreeToTableComposite {
 						int length = col.getLength();
 						int precision = col.getPrecision();
 						int scale = col.getScale();
-						typeMapping.setHibernateType(JDBCToHibernateTypeHelper.getPreferredHibernateType(sqlTypeCode.intValue(), length, precision, scale));
+						boolean nullability = col.isNullable();
+						typeMapping.setHibernateType(JDBCToHibernateTypeHelper.getPreferredHibernateType(sqlTypeCode.intValue(), length, precision, scale, nullability));
 						if(JDBCToHibernateTypeHelper.typeHasLength(sqlTypeCode.intValue())) {
 							if(length!=0 && Column.DEFAULT_LENGTH!=length) {
 								typeMapping.setLength(new Integer(length));		
