@@ -1,4 +1,4 @@
-package org.hibernate.eclipse.console;
+package org.hibernate.eclipse.console.test;
 
 import org.eclipse.ui.plugin.*;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -63,7 +63,7 @@ public class HibernateConsoleTestPlugin extends AbstractUIPlugin {
 	public ResourceBundle getResourceBundle() {
 		try {
 			if (resourceBundle == null)
-				resourceBundle = ResourceBundle.getBundle("org.hibernate.eclipse.console.test.HibernateConsoleTestPluginResources");
+				resourceBundle = ResourceBundle.getBundle("org.hibernate.eclipse.console.test.test.HibernateConsoleTestPluginResources");
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}
@@ -78,6 +78,6 @@ public class HibernateConsoleTestPlugin extends AbstractUIPlugin {
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin("org.hibernate.eclipse.console.test", path);
+		return AbstractUIPlugin.imageDescriptorFromPlugin("org.hibernate.eclipse.console.test.test", path);
 	}
 }

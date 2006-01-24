@@ -1,4 +1,4 @@
-package org.hibernate.eclipse.console;
+package org.hibernate.eclipse.console.test;
 
 import java.lang.reflect.Field;
 
@@ -14,6 +14,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
+import org.hibernate.eclipse.console.HibernateConsolePerspectiveFactory;
 
 public abstract class HibernateConsoleTest extends TestCase {
 

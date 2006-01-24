@@ -1,4 +1,4 @@
-package org.hibernate.eclipse.console;
+package org.hibernate.eclipse.console.test;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -9,7 +9,7 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ConsoleQueryParameter;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryInputModel;
-import org.hibernate.eclipse.console.ConsoleConfigurationTest.TestConsoleConfigurationPreferences;
+import org.hibernate.eclipse.console.test.ConsoleConfigurationTest.TestConsoleConfigurationPreferences;
 
 public class QueryParametersTest extends TestCase {
 	

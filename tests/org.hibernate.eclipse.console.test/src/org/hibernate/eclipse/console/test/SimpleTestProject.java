@@ -6,7 +6,7 @@
  * 
  * Contributors: Oracle. - initial API and implementation
  ******************************************************************************/        
-package org.hibernate.eclipse.console;
+package org.hibernate.eclipse.console.test;
 
 import java.io.StringBufferInputStream; //used for v2
 

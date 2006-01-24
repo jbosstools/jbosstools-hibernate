@@ -1,4 +1,6 @@
-package org.hibernate.eclipse.console;
+package org.hibernate.eclipse.console.test;
+
+import java.util.Map;
 
 import javax.management.monitor.Monitor;
 
@@ -12,8 +14,15 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.ToolFactory;
+import org.eclipse.jdt.core.formatter.CodeFormatter;
 import org.eclipse.jdt.ui.actions.FormatAllAction;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.Document;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.text.edits.MalformedTreeException;
+import org.eclipse.text.edits.TextEdit;
 import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.PlatformUI;
 
@@ -27,8 +36,8 @@ public class JavaFormattingTest extends TestCase {
 	protected void tearDown() throws Exception {
 	}
 
-	public void testJavaFormatting() throws JavaModelException {
-
+	public void testJavaFormatting() throws JavaModelException, MalformedTreeException, BadLocationException {
+/*
 		IFile file = ResourcesPlugin
 				.getWorkspace()
 				.getRoot()
@@ -45,7 +54,18 @@ public class JavaFormattingTest extends TestCase {
 		
 		action.runOnMultiple(new ICompilationUnit[] { (ICompilationUnit) element } );
 		
-		((ICompilationUnit)element).commit(true, new NullProgressMonitor());
+		((ICompilationUnit)element).commit(true, new NullProgressMonitor());*/
+		
+		Map codeFormatterOptions = null;
+		CodeFormatter codeFormatter = ToolFactory.createCodeFormatter(codeFormatterOptions);
+		String contents = "java.lang.String str; System.out.println();";
+		IDocument doc = new Document(contents);
+		TextEdit edit = codeFormatter.format(CodeFormatter.K_UNKNOWN, doc.get(), 0, doc.get().length(), 0, null);
+		
+		edit.apply(doc);
+		String newcontents = doc.get();
+		//assertEquals(newcontents,"java.lang.String str; \nSystem.out.println();");
+		
 	}
 
 }

@@ -16,7 +16,7 @@ import org.eclipse.ui.progress.IProgressConstants;
  */
 public class HibernateConsolePerspectiveFactory implements IPerspectiveFactory {
 
-	static final String ID_CONSOLE_PERSPECTIVE = "org.hibernate.eclipse.console.HibernateConsolePerspective";
+	static public final String ID_CONSOLE_PERSPECTIVE = "org.hibernate.eclipse.console.HibernateConsolePerspective";
 	//	Folders
 	private static final String ID_CONFIGURATION_VIEW = "org.hibernate.eclipse.console.views.KnownConfigurationsView";
 	private static final String ID_QUERYRESULTS_VIEW = "org.hibernate.eclipse.console.views.QueryPageTabView";

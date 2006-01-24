@@ -1,9 +1,8 @@
-package org.hibernate.eclipse.console.perspective;
+package org.hibernate.eclipse.console.test.perspective;
 
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.PlatformUI;
-import org.hibernate.eclipse.console.HibernateConsolePerspectiveFactory;
-import org.hibernate.eclipse.console.HibernateConsoleTest;
+import org.hibernate.eclipse.console.test.HibernateConsoleTest;
 
 public class PerspectiveTest extends HibernateConsoleTest {
 

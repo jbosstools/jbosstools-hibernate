@@ -1,4 +1,4 @@
-package org.hibernate.eclipse.console;
+package org.hibernate.eclipse.console.test;
 
 import java.io.File;
 import java.net.URL;
@@ -83,7 +83,7 @@ public class ConsoleConfigurationTest extends TestCase {
 			return "";
 		}
 	
-	};
+	}
 	
 	
 	static class MockCCListener implements ConsoleConfigurationListener {
