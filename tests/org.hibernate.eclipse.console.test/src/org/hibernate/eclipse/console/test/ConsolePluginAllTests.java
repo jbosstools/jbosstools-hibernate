@@ -9,11 +9,13 @@ public class ConsolePluginAllTests {
 		TestSuite suite = new TestSuite(
 				"Test for org.hibernate.eclipse.console.test" );
 		//$JUnit-BEGIN$
-		suite.addTestSuite( JavaFormattingTest.class );
 		suite.addTestSuite( KnownConfigurationsTest.class );
-		suite.addTestSuite( ConsoleConfigurationTest.class );
-		suite.addTestSuite( PluginTest.class );
 		suite.addTestSuite( QueryParametersTest.class );
+		suite.addTestSuite( PluginTest.class );
+		suite.addTestSuite( PerspectiveTest.class );
+		suite.addTestSuite( ConsoleConfigurationTest.class );
+		suite.addTestSuite( JavaFormattingTest.class );
+		suite.addTestSuite( HibernateProjectTests.class );
 		//$JUnit-END$
 		return suite;
 	}

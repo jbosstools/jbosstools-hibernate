@@ -111,21 +111,5 @@ public abstract class HibernateConsoleTest extends TestCase {
 		return this.project;
 	}
 	
-	//TODO move to ClassTools if we copy that over
-	protected Object getField(Object object, String fieldName) {
-		try {
-			Field field = object.getClass().getDeclaredField(fieldName);
-			field.setAccessible(true);
-			return field.get(object);
-		} catch (IllegalArgumentException e) {
-			throw new RuntimeException(e);
-		} catch (SecurityException e) {
-			throw new RuntimeException(e);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		} catch (NoSuchFieldException e) {
-			throw new RuntimeException(e);
-		}	
-	}
 }
  
