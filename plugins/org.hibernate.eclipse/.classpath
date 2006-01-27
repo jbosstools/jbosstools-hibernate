@@ -10,7 +10,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/connector.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/dom4j-1.6.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/ehcache-1.1.jar"/>
-	<classpathentry exported="true" sourcepath="/hibernate3" kind="lib" path="lib/hibernate/hibernate3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/hibernate3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/jboss-cache.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/jboss-common.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/jboss-jmx.jar"/>
@@ -22,7 +22,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/oscache-2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/proxool-0.8.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/swarmcache-1.0rc2.jar"/>
-	<classpathentry exported="true" sourcepath="/hibernateext.tools" kind="lib" path="lib/tools/hibernate-tools.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/tools/hibernate-tools.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/jtidy-r8-21122004.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/velocity-1.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/velocity-tools-generic-1.1.jar"/>
