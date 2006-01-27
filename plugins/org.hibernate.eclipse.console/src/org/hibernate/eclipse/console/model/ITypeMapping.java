@@ -22,4 +22,8 @@ public interface ITypeMapping {
 
 	void setScale(Integer integer);
 
+	Boolean getNullable();
+	
+	void setNullable(Boolean value);
+
 }

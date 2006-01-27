@@ -9,6 +9,7 @@ public class TypeMappingImpl implements ITypeMapping {
 	Integer length;
 	Integer precision;
 	Integer scale;
+	private Boolean nullable;
 	
 	public String getHibernateType() {
 		return hibernateType;
@@ -39,6 +40,12 @@ public class TypeMappingImpl implements ITypeMapping {
 	}
 	public void setScale(Integer scale) {
 		this.scale = scale;
+	}
+	public Boolean getNullable() {
+		return nullable;
+	}
+	public void setNullable(Boolean value) {
+		this.nullable = value;		
 	}
 	
 	

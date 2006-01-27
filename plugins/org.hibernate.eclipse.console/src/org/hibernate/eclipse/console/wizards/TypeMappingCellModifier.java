@@ -6,6 +6,7 @@ package org.hibernate.eclipse.console.wizards;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.TableItem;
+import org.hibernate.cfg.reveng.SQLTypeMapping;
 import org.hibernate.eclipse.console.model.ITypeMapping;
 
 final public class TypeMappingCellModifier implements ICellModifier {
@@ -42,7 +43,20 @@ final public class TypeMappingCellModifier implements ICellModifier {
 				tf.setScale((Integer) value);
 			}
 		}
+		if("not-null".equals(property)) {
+			Boolean integerToBoolean = notnullToNullable((Integer) value);
+			if(!safeEquals(integerToBoolean,tf.getNullable())) {
+				tf.setNullable(integerToBoolean);
+			}
+		}
 		tv.update(new Object[] { tf }, new String[] { property });
+	}
+
+	private Boolean notnullToNullable(Integer value) {
+		if(value.intValue()==1) return Boolean.FALSE;
+		if(value.intValue()==0) return Boolean.TRUE;
+		if(value.intValue()==2) return SQLTypeMapping.UNKNOWN_NULLABLE;
+		return SQLTypeMapping.UNKNOWN_NULLABLE;
 	}
 
 	private boolean safeEquals(Object value, Object tf) {
@@ -68,7 +82,19 @@ final public class TypeMappingCellModifier implements ICellModifier {
 
 		if("length".equals(property)) {
 			return tf.getLength();
+		}
+		
+		if("not-null".equals(property)) {
+			if(tf.getNullable()==null) {
+				return new Integer(2);
+			}
+			if(tf.getNullable().booleanValue()) {
+				return new Integer(0);
+			} else {
+				return new Integer(1);
+			}
 		}		
+		
 		return null;
 	}
 

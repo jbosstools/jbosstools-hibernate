@@ -25,6 +25,10 @@ public class TypeMappingAdapter extends DOMAdapter implements ITypeMapping {
 		return getInteger( name );
 	}
 
+	public Boolean getNullable() {
+		return getBoolean("not-null");
+	}
+	
 	private Integer getInteger(String name) {
 		Node type = getNode().getAttributes().getNamedItem(name);
 		if(type == null) {
@@ -36,6 +40,16 @@ public class TypeMappingAdapter extends DOMAdapter implements ITypeMapping {
 			} catch (NumberFormatException nfe) {
 				return null;
 			}
+		}		
+	}
+	
+	private Boolean getBoolean(String name) {
+		Node type = getNode().getAttributes().getNamedItem(name);
+		if(type == null) {
+			return null;
+		} else {
+			Boolean decode = Boolean.valueOf(type.getNodeValue());
+			return decode;
 		}		
 	}
 
@@ -67,7 +81,15 @@ public class TypeMappingAdapter extends DOMAdapter implements ITypeMapping {
 		setAttribute("scale", scale==null?null:scale.toString(), null);
 	}
 
+	public void setNullable(Boolean value) {
+		setAttribute("not-null", value==null?null:value.toString(), null);		
+	}
+	
 	public void notifyChanged(INodeNotifier notifier, int eventType, Object changedFeature, Object oldValue, Object newValue, int pos) {
 		getModel().sqlTypeChanged(notifier);		
 	}
+
+	
+
+	
 }

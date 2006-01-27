@@ -1,5 +1,6 @@
 package org.hibernate.eclipse.console.wizards;
 
+import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -10,6 +11,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
@@ -37,6 +39,54 @@ public class TreeToTableComposite extends Composite {
 			}
 		}		
 	}
+	
+
+	static public class MultiStateCellEditor extends CellEditor {
+		
+		private int value;
+		private final int maxStates;
+		
+		public MultiStateCellEditor(Composite parent, int stateCount, int initialValue) {
+			super(parent);
+			if(stateCount < 1) throw new IllegalArgumentException("incorrect state count");
+			maxStates= stateCount;
+			
+			if(!(initialValue >= 0 && initialValue < stateCount)) throw new IllegalArgumentException("incorrect initial value");
+			value= initialValue;
+			
+			setValueValid(true);
+		}
+
+		public void activate() {
+			value= getNextValue(maxStates, value);
+			fireApplyEditorValue();
+		}
+		
+		public static int getNextValue(int stateCount, int currentValue){
+			if(!(stateCount > 1)) throw new IllegalStateException("incorrect state count");
+			if(!(currentValue >= 0 && currentValue < stateCount)) throw new IllegalStateException("incorrect initial value"); 
+			return (currentValue + 1) % stateCount;
+		}
+
+		protected Control createControl(Composite parent) {
+			return null;
+		}
+		protected Object doGetValue() {
+			return new Integer(value);
+		}
+
+		protected void doSetFocus() {
+			// Ignore
+		}
+
+		protected void doSetValue(Object value) {
+			this.value = ((Integer) value).intValue();
+			if(!(this.value >= 0 && this.value < maxStates)) {
+				throw new IllegalStateException("invalid value");
+			}
+		}
+	}
+
 	
 	/** CellEditor that works like a texteditor, but returns/accepts Integer values. If the entered string is not parsable it returns null */
 	static protected final class IntegerCellEditor extends NullableTextCellEditor {

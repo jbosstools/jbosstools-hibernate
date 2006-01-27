@@ -3,6 +3,7 @@ package org.hibernate.eclipse.mapper.editors.reveng;
 import java.util.Iterator;
 
 import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
@@ -24,6 +25,7 @@ import org.hibernate.eclipse.console.workbench.AnyAdaptableLabelProvider;
 import org.hibernate.eclipse.console.workbench.DeferredContentProvider;
 import org.hibernate.eclipse.console.workbench.LazyDatabaseSchema;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.PrimaryKey;
 
 public abstract class TypeMappingView extends TreeToTableComposite {
 
@@ -57,7 +59,7 @@ public abstract class TypeMappingView extends TreeToTableComposite {
 		TableViewer result = new TableViewer( rightTable );
 		result.setUseHashlookup( true );
 		result.setColumnProperties( new String[] { "jdbctype", "hibernatetype",
-				"length", "scale", "precision" } );
+				"length", "scale", "precision", "not-null" } );
 
 		CellEditor[] editors = new CellEditor[result.getColumnProperties().length];
 		editors[0] = new NullableTextCellEditor( result.getTable() );//new ComboBoxCellEditor( result.getTable(), JDBCToHibernateTypeHelper.getJDBCTypes() );
@@ -65,6 +67,7 @@ public abstract class TypeMappingView extends TreeToTableComposite {
 		editors[2] = new IntegerCellEditor( result.getTable() );
 		editors[3] = new IntegerCellEditor( result.getTable() );
 		editors[4] = new IntegerCellEditor( result.getTable() );
+		editors[5] = new MultiStateCellEditor( result.getTable(), 3, 2 );
 
 		result.setCellEditors( editors );
 		result.setCellModifier( new TypeMappingCellModifier( result ) );
@@ -101,36 +104,48 @@ public abstract class TypeMappingView extends TreeToTableComposite {
 				if(sel instanceof Column) {
 					Column col = (Column) sel;
 					Integer sqlTypeCode = col.getSqlTypeCode();
-					if(sqlTypeCode!=null) {
-						ITypeMapping typeMapping = revEngDef.createTypeMapping();
-						
-						typeMapping.setJDBCType(JDBCToHibernateTypeHelper.getJDBCTypeName(sqlTypeCode.intValue()));
-						int length = col.getLength();
-						int precision = col.getPrecision();
-						int scale = col.getScale();
-						boolean nullability = col.isNullable();
-						typeMapping.setHibernateType(JDBCToHibernateTypeHelper.getPreferredHibernateType(sqlTypeCode.intValue(), length, precision, scale, nullability));
-						if(JDBCToHibernateTypeHelper.typeHasLength(sqlTypeCode.intValue())) {
-							if(length!=0 && Column.DEFAULT_LENGTH!=length) {
-								typeMapping.setLength(new Integer(length));		
-							}
-						} 
-						if(JDBCToHibernateTypeHelper.typeHasScaleAndPrecision(sqlTypeCode.intValue())) {
-							if(precision!=0 && Column.DEFAULT_PRECISION!=precision) {
-								typeMapping.setPrecision(new Integer(precision));
-							}
-							if(scale!=0 && Column.DEFAULT_SCALE!=scale) {
-								typeMapping.setScale(new Integer(scale));
-							}
-						}
-						revEngDef.addTypeMapping( typeMapping );
-					}
+					createTypeMapping( col, sqlTypeCode );
+				} else if (sel instanceof PrimaryKey) {
+					PrimaryKey pk = (PrimaryKey) sel;
+					Iterator iter = pk.columnIterator();
+					while ( iter.hasNext() ) {
+						Column column = (Column) iter.next();
+						createTypeMapping(column, column.getSqlTypeCode());
+					}					
 				} else {
 					createDefaultSqlTypeMapping();
 				}
 			}
 		} else {
 			createDefaultSqlTypeMapping();
+		}
+	}
+
+	private void createTypeMapping(Column col, Integer sqlTypeCode) {
+		if(sqlTypeCode!=null) {
+			ITypeMapping typeMapping = revEngDef.createTypeMapping();
+			
+			typeMapping.setJDBCType(JDBCToHibernateTypeHelper.getJDBCTypeName(sqlTypeCode.intValue()));
+			int length = col.getLength();
+			int precision = col.getPrecision();
+			int scale = col.getScale();
+			boolean nullability = col.isNullable();
+			typeMapping.setHibernateType(JDBCToHibernateTypeHelper.getPreferredHibernateType(sqlTypeCode.intValue(), length, precision, scale, nullability));
+			if(JDBCToHibernateTypeHelper.typeHasLength(sqlTypeCode.intValue())) {
+				if(length!=0 && Column.DEFAULT_LENGTH!=length) {
+					typeMapping.setLength(new Integer(length));		
+				}
+			} 
+			if(JDBCToHibernateTypeHelper.typeHasScaleAndPrecision(sqlTypeCode.intValue())) {
+				if(precision!=0 && Column.DEFAULT_PRECISION!=precision) {
+					typeMapping.setPrecision(new Integer(precision));
+				}
+				if(scale!=0 && Column.DEFAULT_SCALE!=scale) {
+					typeMapping.setScale(new Integer(scale));
+				}
+			}
+			typeMapping.setNullable(Boolean.valueOf(!nullability));
+			revEngDef.addTypeMapping( typeMapping );
 		}
 	}
 
@@ -201,9 +216,13 @@ public abstract class TypeMappingView extends TreeToTableComposite {
 		column.setText("Scale");
 		column.setWidth(100);
 		
-		column = new TableColumn(table, SWT.LEFT, 3);
+		column = new TableColumn(table, SWT.LEFT, 4);
 		column.setText("Precision");
 		column.setWidth(100);
+		
+		column = new TableColumn(table, SWT.LEFT, 5);
+		column.setText("Not-Null");
+		column.setWidth(75);
 	}
 
 	protected String getTableTitle() {

@@ -29,12 +29,14 @@ public class TypeMappingLabelProvider extends LabelProvider implements ITableLab
 			return safeToString(tf.getScale());
 		case 4: 
 			return safeToString(tf.getPrecision());
+		case 5: 
+			return safeToString(tf.getNullable());		
 		default:
 			return result;
 		}			
 	}
 
-	private String safeToString(Integer length) {
+	private String safeToString(Object length) {
 		if(length==null) return "";
 		return length.toString();
 	}
