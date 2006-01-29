@@ -426,10 +426,14 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
         return doc.get();
 	}
 
-   public void doSave(IProgressMonitor progressMonitor) {
+   public void doSave(IProgressMonitor progressMonitor) { 
+	   //super.doSave(progressMonitor);
 	   HQLEditorInput hei = (HQLEditorInput)getEditorInput();
 	   hei.setQuery(getQuery());
+	   performSave(false, progressMonitor);
    }
+   
+ 
 
    public ConsoleConfiguration getConsoleConfiguration() {
 	   HQLEditorInput hei = (HQLEditorInput)getEditorInput();
