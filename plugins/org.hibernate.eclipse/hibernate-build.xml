@@ -42,9 +42,9 @@
     
         <ant antfile="..\metadata\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
         <ant antfile="..\metadata\build.xml" inheritall="false" inheritrefs="false" target="copylib"/>        
-        <copy file="..\metadata\target\hibernate-annotations\hibernate-annotations.jar" todir="${lib.annotations}"/>
-        <copy file="..\metadata\target\hibernate-annotations\lib\ejb3-persistence.jar" todir="${lib.annotations}"/>
-        <copy file="..\metadata\target\hibernate-annotations\lib\lucene-1.4.3.jar" todir="${lib.annotations}"/>
+        <copy preservelastmodified="true" file="..\metadata\target\hibernate-annotations\hibernate-annotations.jar" todir="${lib.annotations}"/>
+        <copy preservelastmodified="true" file="..\metadata\target\hibernate-annotations\lib\ejb3-persistence.jar" todir="${lib.annotations}"/>
+        <copy preservelastmodified="true" file="..\metadata\target\hibernate-annotations\lib\lucene-1.4.3.jar" todir="${lib.annotations}"/>
               
         <!-- we need to have the hibernateconsole stuff together with the core to fake DriverManager into allow loading drivers -->
 		<!-- <ant antfile="..\console\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
@@ -52,14 +52,14 @@
 
 		<ant antfile="..\tools\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
         <ant antfile="..\tools\build.xml" inheritall="false" inheritrefs="false" target="copylib"/>        
-		<copy file="..\tools\target\hibernate-tools\hibernate-tools.jar" todir="${lib.tools}"/>
-		<copy file="..\tools\target\hibernate-tools\lib\velocity-1.4.jar" todir="${lib.tools}"/>
-		<copy file="..\tools\target\hibernate-tools\lib\velocity-tools-generic-1.1.jar" todir="${lib.tools}"/>		
-		<copy file="..\tools\target\hibernate-tools\lib\jtidy-r8-21122004.jar" todir="${lib.tools}"/>		
+		<copy preservelastmodified="true" file="..\tools\target\hibernate-tools\hibernate-tools.jar" todir="${lib.tools}"/>
+		<copy preservelastmodified="true" file="..\tools\target\hibernate-tools\lib\velocity-1.4.jar" todir="${lib.tools}"/>
+		<copy preservelastmodified="true" file="..\tools\target\hibernate-tools\lib\velocity-tools-generic-1.1.jar" todir="${lib.tools}"/>		
+		<copy preservelastmodified="true" file="..\tools\target\hibernate-tools\lib\jtidy-r8-21122004.jar" todir="${lib.tools}"/>		
 		
 		<property file="${hibernate-core.lib.dir}/version.properties" prefix="h3"/>
 		
-        <copy todir="${lib.hibernate}" >
+        <copy preservelastmodified="true" todir="${lib.hibernate}" >
 			<fileset dir="${hibernate-core.home}">
 				<include name="hibernate3.jar"/>	
         	</fileset>
