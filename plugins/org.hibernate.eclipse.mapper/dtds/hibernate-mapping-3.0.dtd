@@ -929,9 +929,9 @@ an entity or collection -->
 	<!ATTLIST sql-query cache-region CDATA #IMPLIED>
 	<!ATTLIST sql-query fetch-size CDATA #IMPLIED>
 	<!ATTLIST sql-query timeout CDATA #IMPLIED>
-	<!ATTLIST query cache-mode (get|ignore|normal|put|refresh) #IMPLIED>
-    <!ATTLIST query read-only (true|false) #IMPLIED>
-    <!ATTLIST query comment CDATA #IMPLIED>
+	<!ATTLIST sql-query cache-mode (get|ignore|normal|put|refresh) #IMPLIED>
+    <!ATTLIST sql-query read-only (true|false) #IMPLIED>
+    <!ATTLIST sql-query comment CDATA #IMPLIED>
 	<!ATTLIST sql-query callable (true|false) "false">
 
 <!-- The query-param element is used only by tools that generate
@@ -982,7 +982,7 @@ finder methods for named queries -->
 
 <!ELEMENT return-scalar EMPTY>
 	<!ATTLIST return-scalar column CDATA #REQUIRED>
-	<!ATTLIST return-scalar type CDATA #REQUIRED>
+	<!ATTLIST return-scalar type CDATA #IMPLIED>
 
 <!ELEMENT synchronize EMPTY>
 	<!ATTLIST synchronize table CDATA #REQUIRED>

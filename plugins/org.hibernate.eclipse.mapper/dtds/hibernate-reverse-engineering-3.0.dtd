@@ -28,6 +28,7 @@ TODO: document the tags in the DTD
 <!ATTLIST sql-type length CDATA #IMPLIED >
 <!ATTLIST sql-type precision CDATA #IMPLIED >
 <!ATTLIST sql-type scale CDATA #IMPLIED >
+<!ATTLIST sql-type not-null (true|false) #IMPLIED >
 <!ATTLIST sql-type hibernate-type CDATA #REQUIRED >
 
 <!ELEMENT table (primary-key?, column*, foreign-key*) >
