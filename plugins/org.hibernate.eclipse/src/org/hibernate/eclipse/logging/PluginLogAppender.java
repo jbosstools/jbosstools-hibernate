@@ -1,14 +1,14 @@
 package org.hibernate.eclipse.logging;
 
-import org.eclipse.core.runtime.ILog; 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status; 
-import org.apache.log4j.Level; 
 import org.apache.log4j.AppenderSkeleton;
+import org.apache.log4j.Level;
 import org.apache.log4j.Priority;
 import org.apache.log4j.spi.ErrorCode;
 import org.apache.log4j.spi.LoggingEvent;
 import org.apache.log4j.spi.ThrowableInformation;
+import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 
 /**
  * PluginLogAppender

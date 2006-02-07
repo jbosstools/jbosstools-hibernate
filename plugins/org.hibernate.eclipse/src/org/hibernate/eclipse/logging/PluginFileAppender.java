@@ -1,8 +1,9 @@
 package org.hibernate.eclipse.logging;
 
 import java.io.IOException;
-import org.apache.log4j.RollingFileAppender;
+
 import org.apache.log4j.Layout;
+import org.apache.log4j.RollingFileAppender;
 import org.apache.log4j.spi.LoggingEvent;
 import org.eclipse.core.runtime.IPath;
 

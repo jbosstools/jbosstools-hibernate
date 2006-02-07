@@ -8,7 +8,6 @@ import java.util.Observable;
 import java.util.Set;
 
 import org.hibernate.Hibernate;
-import org.hibernate.dialect.FirebirdDialect;
 
 /**
  * Class for managing misc parameters and other inputs to a Query, Criteria etc.  

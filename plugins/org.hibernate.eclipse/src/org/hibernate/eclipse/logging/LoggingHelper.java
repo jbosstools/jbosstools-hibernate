@@ -1,8 +1,11 @@
 package org.hibernate.eclipse.logging;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
-import java.util.*;
 
 public class LoggingHelper {
 		
