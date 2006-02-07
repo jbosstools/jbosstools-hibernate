@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.ui.ISelectionService;
 import org.hibernate.console.QueryPage;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 

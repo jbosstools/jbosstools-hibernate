@@ -10,7 +10,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
 import org.eclipse.ui.progress.IElementCollector;
-import org.hibernate.HibernateException;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 public abstract class BasicWorkbenchAdapter implements IDeferredWorkbenchAdapter {

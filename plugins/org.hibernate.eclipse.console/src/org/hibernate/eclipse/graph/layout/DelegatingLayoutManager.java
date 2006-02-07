@@ -1,13 +1,10 @@
 package org.hibernate.eclipse.graph.layout;
 
-import java.util.Map;
-
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LayoutManager;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
-import org.hibernate.eclipse.graph.model.ConfigurationViewAdapter;
 import org.hibernate.eclipse.graph.parts.ConfigurationEditPart;
 import org.hibernate.eclipse.graph.policy.ConfigurationLayoutEditPolicy;
 

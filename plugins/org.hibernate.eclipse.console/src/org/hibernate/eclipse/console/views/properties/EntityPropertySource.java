@@ -11,7 +11,6 @@ import org.eclipse.ui.views.properties.IPropertySource2;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.hibernate.EntityMode;
 import org.hibernate.Session;
-import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.execution.ExecutionContextHolder;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.metadata.ClassMetadata;

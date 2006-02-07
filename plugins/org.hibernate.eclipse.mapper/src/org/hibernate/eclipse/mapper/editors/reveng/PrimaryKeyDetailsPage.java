@@ -14,7 +14,6 @@ import org.eclipse.ui.forms.IDetailsPage;
 import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
-import org.hibernate.eclipse.console.model.IRevEngParameter;
 import org.hibernate.eclipse.console.model.IRevEngPrimaryKey;
 
 public class PrimaryKeyDetailsPage extends RevEngDetailsPage implements

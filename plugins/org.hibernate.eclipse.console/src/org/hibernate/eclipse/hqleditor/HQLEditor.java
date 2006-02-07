@@ -21,7 +21,6 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IShowEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.editors.text.TextEditor;
-import org.eclipse.ui.help.WorkbenchHelp;
 import org.eclipse.ui.texteditor.DefaultRangeIndicator;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;

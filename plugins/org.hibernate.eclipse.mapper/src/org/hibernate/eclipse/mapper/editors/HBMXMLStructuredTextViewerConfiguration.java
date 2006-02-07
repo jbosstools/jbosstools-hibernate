@@ -3,10 +3,7 @@ package org.hibernate.eclipse.mapper.editors;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
-import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
@@ -14,7 +11,6 @@ import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredPartitionTy
 import org.eclipse.wst.xml.core.internal.provisional.text.IXMLPartitions;
 import org.eclipse.wst.xml.ui.StructuredTextViewerConfigurationXML;
 import org.eclipse.wst.xml.ui.internal.contentassist.NoRegionContentAssistProcessor;
-import org.hibernate.eclipse.console.utils.ProjectUtils;
 
 public class HBMXMLStructuredTextViewerConfiguration extends StructuredTextViewerConfigurationXML {
 

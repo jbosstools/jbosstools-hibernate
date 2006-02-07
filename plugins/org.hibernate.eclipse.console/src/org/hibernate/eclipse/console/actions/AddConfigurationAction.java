@@ -4,7 +4,6 @@
  */
 package org.hibernate.eclipse.console.actions;
 
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IViewPart;

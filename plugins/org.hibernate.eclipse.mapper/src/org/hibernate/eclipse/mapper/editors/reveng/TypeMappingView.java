@@ -3,7 +3,6 @@ package org.hibernate.eclipse.mapper.editors.reveng;
 import java.util.Iterator;
 
 import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;

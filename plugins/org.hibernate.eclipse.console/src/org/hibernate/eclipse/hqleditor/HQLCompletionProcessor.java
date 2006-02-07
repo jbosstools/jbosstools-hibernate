@@ -18,7 +18,6 @@ import org.eclipse.jface.text.contentassist.IContextInformationPresenter;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 /**
  * content assist processor for HQL code.

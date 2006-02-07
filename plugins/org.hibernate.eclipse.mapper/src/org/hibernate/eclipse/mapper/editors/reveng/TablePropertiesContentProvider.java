@@ -5,9 +5,9 @@ import java.beans.PropertyChangeListener;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.hibernate.eclipse.console.model.IRevEngParameter;
 import org.hibernate.eclipse.console.model.IRevEngColumn;
 import org.hibernate.eclipse.console.model.IRevEngGenerator;
+import org.hibernate.eclipse.console.model.IRevEngParameter;
 import org.hibernate.eclipse.console.model.IRevEngPrimaryKey;
 import org.hibernate.eclipse.console.model.IRevEngTable;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;

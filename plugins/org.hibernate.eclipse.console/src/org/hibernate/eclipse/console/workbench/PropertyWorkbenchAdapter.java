@@ -2,8 +2,6 @@ package org.hibernate.eclipse.console.workbench;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
-import org.hibernate.console.ImageConstants;
-import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;

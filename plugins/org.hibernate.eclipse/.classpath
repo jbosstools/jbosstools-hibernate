@@ -24,7 +24,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/swarmcache-1.0rc2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/hibernate-tools.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/jtidy-r8-21122004.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/tools/freemarker.jar"/>
+	<classpathentry exported="true" sourcepath="/freemarker" kind="lib" path="lib/tools/freemarker.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/bsh-core-2.0b4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/annotations/ejb3-persistence.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/annotations/hibernate-annotations.jar"/>

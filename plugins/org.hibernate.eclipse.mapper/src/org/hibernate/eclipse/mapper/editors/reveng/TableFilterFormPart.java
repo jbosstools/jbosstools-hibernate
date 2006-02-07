@@ -5,8 +5,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 import org.hibernate.eclipse.console.wizards.TableFilterView;
 import org.hibernate.eclipse.console.workbench.LazyDatabaseSchema;

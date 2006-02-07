@@ -1,10 +1,8 @@
 package org.hibernate.eclipse.mapper.editors.reveng;
 
-import org.eclipse.jface.viewers.deferred.SetModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.forms.IManagedForm;
-import org.eclipse.ui.forms.ManagedForm;
 import org.eclipse.ui.forms.SectionPart;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;

@@ -2,10 +2,8 @@ package org.hibernate.eclipse.hqleditor;
 
 import java.util.ResourceBundle;
 
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchActionConstants;

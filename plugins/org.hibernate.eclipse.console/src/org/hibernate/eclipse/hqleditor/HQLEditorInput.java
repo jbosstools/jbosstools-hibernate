@@ -5,7 +5,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.IStorageEditorInput;
-import org.hibernate.console.ConsoleConfiguration;
 
 /**
  * input for hql editor on non file based storage.

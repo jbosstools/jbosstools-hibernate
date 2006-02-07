@@ -9,9 +9,7 @@ import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
 import org.hibernate.eclipse.graph.command.MoveGraphNodeEditPartCommand;
 import org.hibernate.eclipse.graph.model.GraphNode;
-import org.hibernate.eclipse.graph.model.PersistentClassViewAdapter;
 import org.hibernate.eclipse.graph.parts.GraphNodeEditPart;
-import org.hibernate.eclipse.graph.parts.PersistentClassEditPart;
 
 public class ConfigurationLayoutEditPolicy extends XYLayoutEditPolicy {
 

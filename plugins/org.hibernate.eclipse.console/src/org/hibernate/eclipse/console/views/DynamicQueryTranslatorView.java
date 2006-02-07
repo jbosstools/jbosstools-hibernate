@@ -1,11 +1,7 @@
 package org.hibernate.eclipse.console.views;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
@@ -26,11 +22,9 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.HQLQueryPage;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.utils.QLFormatHelper;
 import org.hibernate.eclipse.hqleditor.HQLEditor;

@@ -1,9 +1,5 @@
 package org.hibernate.eclipse.graph.policy;
 
-import org.eclipse.gef.EditPart;
-import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.Request;
-import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.hibernate.eclipse.graph.figures.EditableLabel;
 import org.hibernate.eclipse.graph.parts.PropertyEditPart;

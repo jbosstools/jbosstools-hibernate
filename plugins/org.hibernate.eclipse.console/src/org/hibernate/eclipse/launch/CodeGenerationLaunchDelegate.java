@@ -1,21 +1,38 @@
 package org.hibernate.eclipse.launch;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.lang.reflect.Constructor;
+import java.util.Map;
 import java.util.Properties;
 
+import org.eclipse.core.filebuffers.FileBuffers;
+import org.eclipse.core.filebuffers.ITextFileBuffer;
+import org.eclipse.core.filebuffers.manipulation.FileBufferOperationRunner;
+import org.eclipse.core.filebuffers.manipulation.MultiTextEditWithProgress;
+import org.eclipse.core.filebuffers.manipulation.TextFileBufferOperation;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.debug.ui.RefreshTab;
+import org.eclipse.jdt.core.ToolFactory;
+import org.eclipse.jdt.core.formatter.CodeFormatter;
+import org.eclipse.jface.text.Document;
+import org.eclipse.jface.text.DocumentRewriteSessionType;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.util.Assert;
+import org.eclipse.text.edits.TextEdit;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
@@ -26,6 +43,7 @@ import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.DAOExporter;
 import org.hibernate.tool.hbm2x.DocExporter;
 import org.hibernate.tool.hbm2x.Exporter;
@@ -66,7 +84,7 @@ public class CodeGenerationLaunchDelegate extends
 			if(!useOwnTemplates) {
 				templatedir = null;
 			}
-			doFinish(consoleConfigurationName, pathOrNull(outputdir), packageName, pathOrNull(reverseEngineeringSettings), reverseEngineeringStrategy, reverseengineer, generatejava, generatedao, generatemappings, generatecfgfile, monitor, preferBasicCompositeIds, pathOrNull(templatedir), enableEJB3annotations, enableJDK5, generatedocs, generateseam);
+			doFinish(consoleConfigurationName, pathOrNull(outputdir), packageName, pathOrNull(reverseEngineeringSettings), reverseEngineeringStrategy, reverseengineer, generatejava, generatedao, generatemappings, generatecfgfile, monitor, preferBasicCompositeIds, pathOrNull(templatedir), enableEJB3annotations, enableJDK5, generatedocs, generateseam, monitor);
 
 			// refresh resources
 			RefreshTab.refreshResources(configuration, monitor);
@@ -89,7 +107,7 @@ public class CodeGenerationLaunchDelegate extends
 
 	private void doFinish(
 			String configName, IPath output,
-	String outputPackage, IPath revengsettings, String reverseEngineeringStrategy, boolean reveng, final boolean genjava, final boolean gendao, final boolean genhbm, final boolean gencfg, final IProgressMonitor monitor, boolean preferBasicCompositeids, IPath templateDir, final boolean ejb3, final boolean generics, final boolean gendoc, final boolean generateseam)
+	String outputPackage, IPath revengsettings, String reverseEngineeringStrategy, boolean reveng, final boolean genjava, final boolean gendao, final boolean genhbm, final boolean gencfg, final IProgressMonitor monitor, boolean preferBasicCompositeids, IPath templateDir, final boolean ejb3, final boolean generics, final boolean gendoc, final boolean generateseam, IProgressMonitor monitor2)
 			throws CoreException {
 			
 		 	monitor.beginTask("Generating code for " + configName, 10);
@@ -134,13 +152,67 @@ public class CodeGenerationLaunchDelegate extends
 				return;
 			
 			cc.execute(new Command() {
+				private ArtifactCollector artifactCollector = new ArtifactCollector() {
+					public void formatFiles() {
+						super.formatFiles();
+						
+						Map codeFormatterOptions = null;
+						final CodeFormatter codeFormatter = ToolFactory.createCodeFormatter(codeFormatterOptions);
+						final TextFileBufferOperation operation = new TextFileBufferOperation("java-artifact-format") {
+							
+							protected DocumentRewriteSessionType getDocumentRewriteSessionType() {
+								return DocumentRewriteSessionType.SEQUENTIAL;
+							}
+							
+							protected MultiTextEditWithProgress computeTextEdit(
+									ITextFileBuffer textFileBuffer, IProgressMonitor progressMonitor)
+							throws CoreException, OperationCanceledException {
+								
+								IDocument document = textFileBuffer.getDocument();
+								String string = document.get();
+								TextEdit edit = codeFormatter.format(CodeFormatter.K_UNKNOWN, string, 0, string.length(), 0, null);
+								MultiTextEditWithProgress multiTextEditWithProgress = new MultiTextEditWithProgress(getOperationName());
+								if(edit==null) {
+									HibernateConsolePlugin.getDefault().log("empty format for " + textFileBuffer.getLocation().toOSString());
+								} else {
+																	
+									multiTextEditWithProgress.addChild(edit);
+								}
+								return multiTextEditWithProgress;
+							}
+							
+						};
+
+						File[] javaFiles = getFiles("java");
+						if(javaFiles.length>0) {
+							IPath[] locations = new IPath[javaFiles.length];
+							
+							for (int i = 0; i < javaFiles.length; i++) {
+								File file = javaFiles[i];
+								locations[i] = new Path(file.getPath());
+							}
+							FileBufferOperationRunner runner= new FileBufferOperationRunner(FileBuffers.getTextFileBufferManager(), HibernateConsolePlugin.getShell());
+							try {
+								runner.execute(locations, operation, monitor);
+							}
+							catch (OperationCanceledException e) {
+								HibernateConsolePlugin.getDefault().logErrorMessage("java format cancelled", e);
+							}
+							catch (CoreException e) {
+								HibernateConsolePlugin.getDefault().logErrorMessage("exception during java format", e);
+							}
+						}
+
+					}
+				};
+
 				public Object execute() {
 					File outputdir = getLocation( resource ).toFile(); 
 					
 	                String[] templatePaths = new String[0];
 	        
 	                if(templateres!=null) {
-	                    templatePaths = new String[] { getLocation( templateres ).toOSString() };
+	                    templatePaths = new String[] { getLocation( templateres ).toOSString() }; // TODO: this should not be..should it ?
 	                }
 	                
 	                Properties props = new Properties();
@@ -148,10 +220,7 @@ public class CodeGenerationLaunchDelegate extends
 					if(genhbm) {
 						monitor.subTask("mapping files");
 						final HibernateMappingExporter hbmExporter = new HibernateMappingExporter();
-						hbmExporter.setProperties(props);
-						hbmExporter.setOutputDirectory(outputdir);
-						hbmExporter.setConfiguration(cfg);
-						hbmExporter.setTemplatePath(templatePaths);						               
+						configureExporter( cfg, outputdir, templatePaths, props, hbmExporter );						               
 						hbmExporter.start();
 						monitor.worked(5);
 					}
@@ -159,9 +228,7 @@ public class CodeGenerationLaunchDelegate extends
 					if(genjava) {
 						monitor.subTask("domain code");
 						final POJOExporter javaExporter = new POJOExporter(); // TODO: expose jdk5 as an option
-						javaExporter.setOutputDirectory(outputdir);
-						javaExporter.setConfiguration(cfg);
-						javaExporter.setTemplatePath(templatePaths);	                
+						configureExporter(cfg, outputdir, templatePaths, props, javaExporter);
 						
 						javaExporter.setEjb3(ejb3);
 						javaExporter.setJdk5(generics);
@@ -173,11 +240,8 @@ public class CodeGenerationLaunchDelegate extends
 	                if(gendao) {
 	                    monitor.subTask("DAO code");
 	                    final DAOExporter daoExporter = new DAOExporter();
+	                    configureExporter(cfg, outputdir, templatePaths, props, daoExporter);
 	                    
-	                    daoExporter.setOutputDirectory(outputdir);
-						daoExporter.setConfiguration(cfg);
-						daoExporter.setTemplatePath(templatePaths);
-	    			    
 	                    daoExporter.setEjb3(ejb3);
 	                    daoExporter.setJdk5(generics);
 	                    
@@ -188,10 +252,8 @@ public class CodeGenerationLaunchDelegate extends
 					if(gencfg) {
 						monitor.subTask("hibernate configuration");
 						final HibernateConfigurationExporter cfgExporter = new HibernateConfigurationExporter();
+						configureExporter(cfg, outputdir, templatePaths, props, cfgExporter);
 						
-						cfgExporter.setOutputDirectory(outputdir);
-						cfgExporter.setConfiguration(cfg);
-						cfgExporter.setTemplatePath(templatePaths);
 						cfgExporter.setEjb3(ejb3);
 						cfgExporter.start();
 						
@@ -201,29 +263,36 @@ public class CodeGenerationLaunchDelegate extends
 					if(gendoc) {
 						monitor.subTask("hibernate doc");
 						Exporter docExporter = new DocExporter();
-						docExporter.setOutputDirectory(outputdir);
-						docExporter.setConfiguration(cfg);
-						docExporter.setTemplatePath(templatePaths);
+						configureExporter(cfg, outputdir, templatePaths, props, docExporter);
 						docExporter.start();
 						monitor.worked(9);
 					}
 					
 					if(generateseam) {
 						monitor.subTask("Seam skeleton");
-						Exporter docExporter = new SeamExporter();
+						Exporter seamExporter = new SeamExporter();
 						Properties p = new Properties();
 						p.setProperty("seam_appname", "Seam Application");
 						p.setProperty("seam_shortname", "seamapp");
-						docExporter.setProperties(p);
-						docExporter.setOutputDirectory(outputdir);
-						docExporter.setConfiguration(cfg);
-						docExporter.setTemplatePath(templatePaths);
-						docExporter.start();
+						configureExporter(cfg, outputdir, templatePaths, props, seamExporter);
+						seamExporter.start();
 						monitor.worked(9);
 					}
 					
 					monitor.worked(10);
 					return null;
+				}
+
+				private void configureExporter(final Configuration cfg, File outputdir, String[] templatePaths, Properties props, Exporter exporter) {
+					exporter.setProperties(props);
+					exporter.setOutputDirectory(outputdir);
+					exporter.setConfiguration(cfg);
+					exporter.setTemplatePath(templatePaths);
+					exporter.setArtifactCollector(getArtififactCollector());
+				}
+
+				private ArtifactCollector getArtififactCollector() {
+					return artifactCollector ;
 				}
 			});
 		}

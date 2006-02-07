@@ -1,9 +1,6 @@
 package org.hibernate.eclipse.console.wizards;
 
-import java.util.List;
-
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.ComboDialogField;
-import org.eclipse.jface.viewers.ColumnLayoutData;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;

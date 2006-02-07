@@ -1,7 +1,5 @@
 package org.hibernate.eclipse.console.test;
 
-import java.lang.reflect.Field;
-
 import junit.framework.TestCase;
 
 import org.eclipse.core.resources.IFile;

@@ -454,7 +454,10 @@ public class HBMInfoExtractor {
 		if(att!=null && attributeName.equals(att.getNodeName() ) ) {
 			String typename = att.getNodeValue();
 			if(typename!=null && typename.indexOf('.')<0) {
-				typename = getPackageName(node) + "." + typename;					
+				String packageName = getPackageName(node);
+				if(packageName!=null) {
+					typename = packageName + "." + typename;					
+				}
 			}
 			return typename;
 		}

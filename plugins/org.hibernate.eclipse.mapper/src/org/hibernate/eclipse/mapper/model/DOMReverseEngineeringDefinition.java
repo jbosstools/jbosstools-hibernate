@@ -3,7 +3,6 @@ package org.hibernate.eclipse.mapper.model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.wst.sse.core.internal.provisional.IModelStateListener;
@@ -22,7 +21,6 @@ import org.hibernate.eclipse.mapper.factory.ObserverAdapterFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefinition {
 
