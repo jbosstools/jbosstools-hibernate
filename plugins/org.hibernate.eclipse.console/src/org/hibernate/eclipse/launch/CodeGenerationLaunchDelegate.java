@@ -11,6 +11,7 @@ import org.eclipse.core.filebuffers.ITextFileBuffer;
 import org.eclipse.core.filebuffers.manipulation.FileBufferOperationRunner;
 import org.eclipse.core.filebuffers.manipulation.MultiTextEditWithProgress;
 import org.eclipse.core.filebuffers.manipulation.TextFileBufferOperation;
+import org.eclipse.core.internal.resources.Workspace;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -26,6 +27,8 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.debug.ui.RefreshTab;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.ToolFactory;
 import org.eclipse.jdt.core.formatter.CodeFormatter;
 import org.eclipse.jface.text.Document;
@@ -33,6 +36,7 @@ import org.eclipse.jface.text.DocumentRewriteSessionType;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.text.edits.TextEdit;
+import org.eclipse.ui.actions.WorkspaceAction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
@@ -55,6 +59,41 @@ import org.hibernate.util.ReflectHelper;
 
 public class CodeGenerationLaunchDelegate extends
 		LaunchConfigurationDelegate {
+
+	private static final class FormatGeneratedCode extends TextFileBufferOperation {
+		private FormatGeneratedCode(String name) {
+			super( name );
+		}
+
+		protected DocumentRewriteSessionType getDocumentRewriteSessionType() {
+			return DocumentRewriteSessionType.SEQUENTIAL;
+		}
+
+		protected MultiTextEditWithProgress computeTextEdit(
+				ITextFileBuffer textFileBuffer, IProgressMonitor progressMonitor)
+		throws CoreException, OperationCanceledException {
+			
+			IResource bufferRes = ResourcesPlugin.getWorkspace().getRoot().findMember(textFileBuffer.getLocation());
+			Map options = null;
+			if(bufferRes!=null) {
+				IJavaProject project = JavaCore.create(bufferRes.getProject());
+				options = project.getOptions(true);																	
+			}
+			
+			CodeFormatter codeFormatter = ToolFactory.createCodeFormatter(options);
+			
+			IDocument document = textFileBuffer.getDocument();
+			String string = document.get();
+			TextEdit edit = codeFormatter.format(CodeFormatter.K_COMPILATION_UNIT, string, 0, string.length(), 0, null);
+			MultiTextEditWithProgress multiTextEditWithProgress = new MultiTextEditWithProgress(getOperationName());
+			if(edit==null) {
+				//HibernateConsolePlugin.getDefault().log("empty format for " + textFileBuffer.getLocation().toOSString());
+			} else {														
+				multiTextEditWithProgress.addChild(edit);
+			}
+			return multiTextEditWithProgress;
+		}
+	}
 
 	private static final String PREFIX = "org.hibernate.tools."; // move to HibernateLaunchConstants
 
@@ -84,17 +123,60 @@ public class CodeGenerationLaunchDelegate extends
 			if(!useOwnTemplates) {
 				templatedir = null;
 			}
-			doFinish(consoleConfigurationName, pathOrNull(outputdir), packageName, pathOrNull(reverseEngineeringSettings), reverseEngineeringStrategy, reverseengineer, generatejava, generatedao, generatemappings, generatecfgfile, monitor, preferBasicCompositeIds, pathOrNull(templatedir), enableEJB3annotations, enableJDK5, generatedocs, generateseam, monitor);
+			
+			ArtifactCollector collector = runExporters(consoleConfigurationName, pathOrNull(outputdir), packageName, pathOrNull(reverseEngineeringSettings), reverseEngineeringStrategy, reverseengineer, generatejava, generatedao, generatemappings, generatecfgfile, monitor, preferBasicCompositeIds, pathOrNull(templatedir), enableEJB3annotations, enableJDK5, generatedocs, generateseam, monitor);
 
-			// refresh resources
+			refreshOutputDir( outputdir );
+
+			if(collector==null) return;
+			
+			formatGeneratedCode( monitor, collector );
+			
 			RefreshTab.refreshResources(configuration, monitor);
-
+			
 		} catch(Exception e) {
 			throw new CoreException(HibernateConsolePlugin.throwableToStatus(e, 666)); 
 		} finally {
 			monitor.done();
 		} 
 		
+	}
+
+	private void formatGeneratedCode(IProgressMonitor monitor, ArtifactCollector collector) {
+		final TextFileBufferOperation operation = new FormatGeneratedCode( "java-artifact-format" );
+
+		File[] javaFiles = collector.getFiles("java");
+		if(javaFiles.length>0) {
+			IPath[] locations = new IPath[javaFiles.length];
+			
+			for (int i = 0; i < javaFiles.length; i++) {
+				File file = javaFiles[i];
+				locations[i] = new Path(file.getPath());
+			}
+			
+			FileBufferOperationRunner runner= new FileBufferOperationRunner(FileBuffers.getTextFileBufferManager(), HibernateConsolePlugin.getShell());
+			try {
+				runner.execute(locations, operation, monitor);
+			}
+			catch (OperationCanceledException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage("java format cancelled", e);
+			}
+			catch (CoreException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage("exception during java format", e);
+			}
+		}
+	}
+
+	private void refreshOutputDir(String outputdir) {
+		IResource bufferRes = ResourcesPlugin.getWorkspace().getRoot().findMember(pathOrNull(outputdir));
+		
+		if (bufferRes != null && bufferRes.isAccessible()) {
+			try {
+				bufferRes.refreshLocal(IResource.DEPTH_INFINITE, null);
+			} catch (CoreException e) {
+				//ignore, maybe merge into possible existing status.
+			}
+		}
 	}
 	
 	private Path pathOrNull(String p) {
@@ -105,7 +187,7 @@ public class CodeGenerationLaunchDelegate extends
 		}
 	}
 
-	private void doFinish(
+	private ArtifactCollector runExporters(
 			String configName, IPath output,
 	String outputPackage, IPath revengsettings, String reverseEngineeringStrategy, boolean reveng, final boolean genjava, final boolean gendao, final boolean genhbm, final boolean gencfg, final IProgressMonitor monitor, boolean preferBasicCompositeids, IPath templateDir, final boolean ejb3, final boolean generics, final boolean gendoc, final boolean generateseam, IProgressMonitor monitor2)
 			throws CoreException {
@@ -113,7 +195,7 @@ public class CodeGenerationLaunchDelegate extends
 		 	monitor.beginTask("Generating code for " + configName, 10);
 		
 			if (monitor.isCanceled())
-				return;
+				return null;
 			
 			
 			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
@@ -149,62 +231,10 @@ public class CodeGenerationLaunchDelegate extends
 			monitor.worked(3);
 			
 			if (monitor.isCanceled())
-				return;
+				return null;
 			
-			cc.execute(new Command() {
-				private ArtifactCollector artifactCollector = new ArtifactCollector() {
-					public void formatFiles() {
-						super.formatFiles();
-						
-						Map codeFormatterOptions = null;
-						final CodeFormatter codeFormatter = ToolFactory.createCodeFormatter(codeFormatterOptions);
-						final TextFileBufferOperation operation = new TextFileBufferOperation("java-artifact-format") {
-							
-							protected DocumentRewriteSessionType getDocumentRewriteSessionType() {
-								return DocumentRewriteSessionType.SEQUENTIAL;
-							}
-							
-							protected MultiTextEditWithProgress computeTextEdit(
-									ITextFileBuffer textFileBuffer, IProgressMonitor progressMonitor)
-							throws CoreException, OperationCanceledException {
-								
-								IDocument document = textFileBuffer.getDocument();
-								String string = document.get();
-								TextEdit edit = codeFormatter.format(CodeFormatter.K_UNKNOWN, string, 0, string.length(), 0, null);
-								MultiTextEditWithProgress multiTextEditWithProgress = new MultiTextEditWithProgress(getOperationName());
-								if(edit==null) {
-									HibernateConsolePlugin.getDefault().log("empty format for " + textFileBuffer.getLocation().toOSString());
-								} else {
-																	
-									multiTextEditWithProgress.addChild(edit);
-								}
-								return multiTextEditWithProgress;
-							}
-							
-						};
-
-						File[] javaFiles = getFiles("java");
-						if(javaFiles.length>0) {
-							IPath[] locations = new IPath[javaFiles.length];
-							
-							for (int i = 0; i < javaFiles.length; i++) {
-								File file = javaFiles[i];
-								locations[i] = new Path(file.getPath());
-							}
-							FileBufferOperationRunner runner= new FileBufferOperationRunner(FileBuffers.getTextFileBufferManager(), HibernateConsolePlugin.getShell());
-							try {
-								runner.execute(locations, operation, monitor);
-							}
-							catch (OperationCanceledException e) {
-								HibernateConsolePlugin.getDefault().logErrorMessage("java format cancelled", e);
-							}
-							catch (CoreException e) {
-								HibernateConsolePlugin.getDefault().logErrorMessage("exception during java format", e);
-							}
-						}
-
-					}
-				};
+			return (ArtifactCollector) cc.execute(new Command() {
+				private ArtifactCollector artifactCollector = new ArtifactCollector();
 
 				public Object execute() {
 					File outputdir = getLocation( resource ).toFile(); 
@@ -280,7 +310,7 @@ public class CodeGenerationLaunchDelegate extends
 					}
 					
 					monitor.worked(10);
-					return null;
+					return getArtififactCollector();
 				}
 
 				private void configureExporter(final Configuration cfg, File outputdir, String[] templatePaths, Properties props, Exporter exporter) {
@@ -295,6 +325,8 @@ public class CodeGenerationLaunchDelegate extends
 					return artifactCollector ;
 				}
 			});
+			
+			
 		}
 
 	private IPath getLocation(final IResource resource) {		

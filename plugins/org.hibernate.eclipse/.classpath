@@ -22,7 +22,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/oscache-2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/proxool-0.8.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/swarmcache-1.0rc2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/tools/hibernate-tools.jar"/>
+	<classpathentry exported="true" sourcepath="/hibernateext.tools" kind="lib" path="lib/tools/hibernate-tools.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/jtidy-r8-21122004.jar"/>
 	<classpathentry exported="true" sourcepath="/freemarker" kind="lib" path="lib/tools/freemarker.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/bsh-core-2.0b4.jar"/>
