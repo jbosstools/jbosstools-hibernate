@@ -112,6 +112,7 @@ public class ConsoleConfigurationTest extends TestCase {
 	public void testBuildConfiguration() {
 		
 		MockCCListener listener = new MockCCListener();
+		assertTrue(consoleCfg.getConsoleConfigurationListeners().length==1);
 		consoleCfg.addConsoleConfigurationListener(listener);
 		
 		consoleCfg.build();

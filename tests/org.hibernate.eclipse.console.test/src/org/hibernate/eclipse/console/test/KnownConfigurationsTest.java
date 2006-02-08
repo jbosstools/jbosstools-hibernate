@@ -53,6 +53,7 @@ public class KnownConfigurationsTest extends TestCase {
 		
 		
 		CCListener listener = new CCListener();
+		try {
 		knownConfigurations.addConsoleConfigurationListener(listener);
 		
 		assertEquals(0, listener.added.size());
@@ -133,7 +134,9 @@ public class KnownConfigurationsTest extends TestCase {
 		configurations = knownConfigurations.getConfigurations();
 		assertEquals(0,configurations.length);
 		assertEquals(listener.added.size(), 0);
-		
+		} finally {
+			KnownConfigurations.getInstance().removeConfigurationListener(listener);
+		}
 	}
 	
 }
