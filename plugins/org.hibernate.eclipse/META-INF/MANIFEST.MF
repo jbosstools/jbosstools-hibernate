@@ -403,3 +403,4 @@ Export-Package: EDU.oswego.cs.dl.util.concurrent,
  org.w3c.tidy.ant
 Require-Bundle: org.eclipse.core.runtime
 Eclipse-AutoStart: true
+Eclipse-BuddyPolicy: registered

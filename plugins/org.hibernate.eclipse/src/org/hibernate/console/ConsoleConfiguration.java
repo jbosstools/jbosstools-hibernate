@@ -331,6 +331,10 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	public void removeConsoleConfigurationListener(ConsoleConfigurationListener sfListener) {
 		consoleCfgListeners.remove(sfListener);		
 	}
+	
+	public ConsoleConfigurationListener[] getConsoleConfigurationListeners() {
+		return (ConsoleConfigurationListener[]) consoleCfgListeners.toArray(new ConsoleConfigurationListener[consoleCfgListeners.size()]);
+	}
 		
 	public void executeJavaQuery(final String text) {
 		execute(new ExecutionContext.Command() {
