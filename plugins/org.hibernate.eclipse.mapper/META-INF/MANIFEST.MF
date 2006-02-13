@@ -7,12 +7,17 @@ Bundle-ClassPath: org.hibernate.eclipse.mapper.jar
 Bundle-Activator: org.hibernate.eclipse.mapper.MapperPlugin
 Bundle-Vendor: Hibernate Team
 Bundle-Localization: plugin
-Export-Package: 
- org.hibernate.eclipse.mapper,
+Export-Package: org.hibernate.eclipse.mapper,
  org.hibernate.eclipse.mapper.editors,
+ org.hibernate.eclipse.mapper.editors.reveng,
+ org.hibernate.eclipse.mapper.editors.reveng.xpl,
+ org.hibernate.eclipse.mapper.editors.xpl,
  org.hibernate.eclipse.mapper.extractor,
+ org.hibernate.eclipse.mapper.factory,
+ org.hibernate.eclipse.mapper.model,
  org.hibernate.eclipse.mapper.modelhandler,
- org.hibernate.eclipse.mapper.registry
+ org.hibernate.eclipse.mapper.registry,
+ org.hibernate.eclipse.mapper.views.contentoutline
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.editors,

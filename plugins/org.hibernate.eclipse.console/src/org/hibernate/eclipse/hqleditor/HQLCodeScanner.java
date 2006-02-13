@@ -15,15 +15,11 @@ import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WhitespaceRule;
 import org.eclipse.jface.text.rules.WordRule;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
 
-/**
- * This class implements a RuleBaseScanner for HQL source code text.
- */
 public class HQLCodeScanner extends RuleBasedScanner {
 
-    /** Defines the HQL keywords. */
-    private static String[] fgKeywords = {
+    /** Defines the HQL keywords. Based on hql.g antlr grammer in 2005 ;) */
+    private static String[] hqlKeywords = {
     	"between", //$NON-NLS-1$
     	"class", //$NON-NLS-1$
     	"delete", //$NON-NLS-1$
@@ -87,199 +83,159 @@ public class HQLCodeScanner extends RuleBasedScanner {
         };
     
    
-    /** Defines the SQL built-in function names. */
-    private static String[] fgFunctions = {
-    	"log", //$NON-NLS-1$
-    	"roundmagic", //$NON-NLS-1$
-    	"rand", //$NON-NLS-1$
-    	"sign", //$NON-NLS-1$
-    	"char", //$NON-NLS-1$
-    	"curdate", //$NON-NLS-1$
-    	"radians", //$NON-NLS-1$
-    	"mod", //$NON-NLS-1$
-    	"pi", //$NON-NLS-1$
-    	"coalesce", //$NON-NLS-1$
-    	"ltrim", //$NON-NLS-1$
-    	"month", //$NON-NLS-1$
-    	"acos", //$NON-NLS-1$
-    	"day", //$NON-NLS-1$
-    	"current_time", //$NON-NLS-1$
-    	"curtime", //$NON-NLS-1$
-    	"hextoraw", //$NON-NLS-1$
-    	"cast", //$NON-NLS-1$
-    	"space", //$NON-NLS-1$
-    	"second", //$NON-NLS-1$
-    	"hour", //$NON-NLS-1$
-    	"lcase", //$NON-NLS-1$
-    	"avg", //$NON-NLS-1$
-    	"monthname", //$NON-NLS-1$
-    	"soundex", //$NON-NLS-1$
-    	"extract", //$NON-NLS-1$
-    	"rawtohex", //$NON-NLS-1$
-    	"quater", //$NON-NLS-1$
-    	"current_date", //$NON-NLS-1$
-    	"abs", //$NON-NLS-1$
-    	"trim", //$NON-NLS-1$
-    	"bit_length", //$NON-NLS-1$
-    	"nullif", //$NON-NLS-1$
-    	"ucase", //$NON-NLS-1$
-    	"cot", //$NON-NLS-1$
-    	"sqrt", //$NON-NLS-1$
-    	"max", //$NON-NLS-1$
-    	"week", //$NON-NLS-1$
-    	"now", //$NON-NLS-1$
-    	"atan", //$NON-NLS-1$
-    	"upper", //$NON-NLS-1$
-    	"lower", //$NON-NLS-1$
-    	"min", //$NON-NLS-1$
-    	"concat", //$NON-NLS-1$
-    	"ceiling", //$NON-NLS-1$
-    	"asin", //$NON-NLS-1$
-    	"degrees", //$NON-NLS-1$
-    	"sum", //$NON-NLS-1$
-    	"locate", //$NON-NLS-1$
-    	"user", //$NON-NLS-1$
-    	"sin", //$NON-NLS-1$
-    	"tan", //$NON-NLS-1$
-    	"substring", //$NON-NLS-1$
-    	"length", //$NON-NLS-1$
-    	"dayname", //$NON-NLS-1$
-    	"floor", //$NON-NLS-1$
-    	"dayofweek", //$NON-NLS-1$
-    	"dayofyear", //$NON-NLS-1$
-    	"str", //$NON-NLS-1$
-    	"dayofmonth", //$NON-NLS-1$
-    	"ascii", //$NON-NLS-1$
-    	"reverse", //$NON-NLS-1$
-    	"exp", //$NON-NLS-1$
-    	"cos", //$NON-NLS-1$
-    	"year", //$NON-NLS-1$
-    	"current_timestamp", //$NON-NLS-1$
-    	"log10", //$NON-NLS-1$
-    	"minute", //$NON-NLS-1$
-    	"rtrim", //$NON-NLS-1$
-    	"count", //$NON-NLS-1$
-    	"database", //$NON-NLS-1$
-        };
-    
-    /** Defines an array of arrays that combines all the HQL language elements defined previously. */ 
-    private static Object[] fgAllWords = { fgKeywords, fgFunctions };
+    /** built-in function names. Various normal builtin functions in SQL/HQL. Maybe sShould try and do this dynamically based on dialect */
+    private static String[] builtInFunctions = {
+		    // standard sql92 functions
+    		"substring",
+    		"locate",
+    		"trim",
+    		"length",
+    		"bit_length",
+    		"coalesce",
+    		"nullif",
+    		"abs",
+    		"mod",
+    		"sqrt",
+    		"upper",
+    		"lower",
+    		"cast",
+    		"extract",
+    		
+    		// time functions mapped to ansi extract
+    		"second",
+    		"minute",
+    		"hour",
+    		"day",
+    		"month",
+    		"year",
+    		
+    		"str",
+    		
+    		//    		 misc functions - based on oracle dialect
+    		"sign",
+    		"acos",
+    		"asin",
+    		"atan",
+    		"cos",
+    		"cosh",
+    		"exp",
+    		"ln",
+    		"sin",
+    		"sinh",
+    		"stddev",
+    		"sqrt",
+    		"tan",
+    		"tanh",
+    		"variance",
+    		
+    		"round",
+    		"trunc",
+    		"ceil",
+    		"floor",
+    		
+    		"chr",
+    		"initcap",
+    		"lower",
+    		"ltrim",
+    		"rtrim",
+    		"soundex",
+    		"upper",
+    		"ascii",
+    		"length",
+    		"to_char",
+    		"to_date",
+    		
+    		"current_date",
+    		"current_time",
+    		"current_timestamp",
+    		"lastday",
+    		"sysday",
+    		"systimestamp",
+    		"uid",
+    		"user",
+    		
+    		"rowid",
+    		"rownum",
+    		
+    		"concat",
+    		"instr",
+    		"instrb",
+    		"lpad",
+    		"replace",
+    		"rpad",
+    		"substr",
+    		"substrb",
+    		"translate",
+    		
+    		"substring",
+    		"locate",
+    		"bit_length",
+    		"coalesce",
+    		
+    		"atan2",
+    		"log",
+    		"mod",
+    		"nvl",
+    		"nvl2",
+    		"power",
+    		
+    		"add_months",
+    		"months_between",
+    		"next_day",
+    		
+           };
     
     static {
-    	Arrays.sort(fgFunctions);
-    	Arrays.sort(fgKeywords);
+    	// for performance in search.
+    	Arrays.sort(builtInFunctions);
+    	Arrays.sort(hqlKeywords);
     }
     
-    /**
-     * This class determines if a character is a whitespace character.
-     */
-    public class HQLWhiteSpaceDetector implements IWhitespaceDetector {
+    static public class HQLWhiteSpaceDetector implements IWhitespaceDetector {
 
         public boolean isWhitespace( char c ) {
             return Character.isWhitespace( c );
         }
 
-    } // end inner class
+    } 
     
-    /**
-     * Constructs an instance of this class using the given color provider.
-     */
-    public HQLCodeScanner( HQLColorProvider colorProvider ) {
-        // Define tokens for the SQL language elements.
-        IToken commentToken    = null;
-        IToken stringToken     = null;
-        IToken keywordToken    = null;
-        IToken functionToken   = null;
-//        IToken identifierToken = null;
-        IToken delimitedIdentifierToken = null;
-        IToken otherToken      = null;
+    public HQLCodeScanner( HQLColors colorProvider ) {
+        final IToken commentToken    = new Token( new TextAttribute( colorProvider.getColor( HQLColors.HQL_COMMENT_COLOR )));
+        final IToken stringToken     = new Token( new TextAttribute( colorProvider.getColor( HQLColors.HQL_QUOTED_LITERAL_COLOR )));
+        final IToken keywordToken    = new Token( new TextAttribute( colorProvider.getColor( HQLColors.HQL_KEYWORD_COLOR ), null, SWT.BOLD));
+        final IToken functionToken   = new Token( new TextAttribute( colorProvider.getColor( HQLColors.HQL_KEYWORD_COLOR )));
+        final IToken otherToken      = new Token( new TextAttribute( colorProvider.getColor( HQLColors.HQL_DEFAULT_COLOR )));
         
-        /* On "high contrast" displays the default text color (black) is a problem,
-         * since the normal high contrast background is black.  ("High contrast" is
-         * a Windows feature that helps vision-impaired people.)  When high contrast mode is enabled,
-         * use different colors that show up better against a black background.
-         */
-        if (Display.getDefault().getHighContrast() == true) {
-            commentToken    = new Token( new TextAttribute( colorProvider.getColor( HQLColorProvider.HQL_HC_COMMENT_COLOR )));
-            stringToken     = new Token( new TextAttribute( colorProvider.getColor( HQLColorProvider.HQL_HC_QUOTED_LITERAL_COLOR )));
-            keywordToken    = new Token( new TextAttribute( colorProvider.getColor( HQLColorProvider.HQL_HC_KEYWORD_COLOR )));
-            functionToken   = new Token( new TextAttribute( colorProvider.getColor( HQLColorProvider.HQL_HC_KEYWORD_COLOR )));
-            delimitedIdentifierToken = new Token( new TextAttribute( colorProvider.getColor( HQLColorProvider.HQL_HC_DELIMITED_IDENTIFIER_COLOR )));
-            otherToken      = new Token( new TextAttribute( colorProvider.getColor( HQLColorProvider.HQL_HC_DEFAULT_COLOR )));
-        }
-        else {
-            commentToken    = new Token( new TextAttribute( colorProvider.getColor( HQLColorProvider.HQL_COMMENT_COLOR )));
-            stringToken     = new Token( new TextAttribute( colorProvider.getColor( HQLColorProvider.HQL_QUOTED_LITERAL_COLOR )));
-            keywordToken    = new Token( new TextAttribute( colorProvider.getColor( HQLColorProvider.HQL_KEYWORD_COLOR ), null, SWT.BOLD));
-            functionToken   = new Token( new TextAttribute( colorProvider.getColor( HQLColorProvider.HQL_KEYWORD_COLOR )));
-            delimitedIdentifierToken = new Token( new TextAttribute( colorProvider.getColor( HQLColorProvider.HQL_DELIMITED_IDENTIFIER_COLOR )));
-            otherToken      = new Token( new TextAttribute( colorProvider.getColor( HQLColorProvider.HQL_DEFAULT_COLOR )));
-        }
-
         setDefaultReturnToken( otherToken );
 
         List rules = new ArrayList();
 
-        // Add rule for single-line comments.
         rules.add( new EndOfLineRule( "--", commentToken )); //$NON-NLS-1$
-
-        // Add rules for delimited identifiers and string literals.
         rules.add( new SingleLineRule( "'", "'", stringToken, '\\' )); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        rules.add( new SingleLineRule( "\"", "\"", delimitedIdentifierToken, '\\' )); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
-        // Add generic whitespace rule.
         rules.add( new WhitespaceRule( new HQLWhiteSpaceDetector() ));
 
-        // Define a word rule and add SQL keywords to it.
         WordRule wordRule = new WordRule( new HQLWordDetector(), otherToken );
-        String[] reservedWords = getHQLKeywords();
-        for (int i = 0; i < reservedWords.length; i++) {
-            wordRule.addWord( reservedWords[i], keywordToken );
-            wordRule.addWord( reservedWords[i].toLowerCase(), keywordToken );
-        }
+        addWordRules( keywordToken, wordRule, getHQLKeywords() );
+        addWordRules( functionToken, wordRule, getHQLFunctionNames() );
         
-        // Add the SQL function names to the word rule.
-        String[] functions = getHQLFunctionNames();
-        for (int i = 0; i< functions.length; i++) {
-            wordRule.addWord( functions[i], functionToken );
-            wordRule.addWord( functions[i].toLowerCase(), functionToken );
-        }
-        
-        // Add the word rule to the list of rules.
         rules.add( wordRule );
 
-        // Convert the list of rules to an array and return it.
-        IRule[] result = new IRule[ rules.size() ];
-        rules.toArray( result );
-        setRules( result );
+        setRules( (IRule[]) rules.toArray( new IRule[ rules.size() ] ) );
     }
 
-    /**
-     * Gets an array of HQL keywords
-     * 
-     * @return the HQL keywords
-     */
+	private void addWordRules(final IToken token, WordRule wordRule, String[] reservedWords) {
+		for (int i = 0; i < reservedWords.length; i++) {
+            wordRule.addWord( reservedWords[i], token );
+            wordRule.addWord( reservedWords[i].toLowerCase(), token );
+        }
+	}
+
     public static String[] getHQLKeywords() {
-        return fgKeywords;
+        return hqlKeywords;
     }
     
-    /**
-     * Gets an array of HQL function names 
-     * 
-     * @return the HQL function names
-     */
     public static String[] getHQLFunctionNames() {
-        return fgFunctions;
+        return builtInFunctions;
     }
-    
-    /**
-     * Gets an array of arrays containing all HQL words, including keywords
-     * and function names
-     * 
-     * @return the array of SQL words
-     */
-    public static Object[] getSQLAllWords() {
-        return fgAllWords;
-    }   
     
 } // end class

@@ -15,6 +15,7 @@ import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.hibernate.eclipse.console.model.IRevEngTable;
+import org.hibernate.eclipse.mapper.editors.reveng.xpl.FormTextEntry;
 
 public class TableDetailsPage extends RevEngDetailsPage implements IDetailsPage, PropertyChangeListener {
 

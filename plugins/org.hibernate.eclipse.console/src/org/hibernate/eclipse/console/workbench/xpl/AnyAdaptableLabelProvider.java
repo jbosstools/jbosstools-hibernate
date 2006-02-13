@@ -1,4 +1,15 @@
-package org.hibernate.eclipse.console.workbench;
+/*******************************************************************************
+ * Copyright (c) 2000, 2005, 2006 IBM Corporation, JBoss Inc. and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *     Max Rydahl Andersen, JBoss Inc. - Adapted to not be tied to WorkBenchAdaptable
+ *******************************************************************************/
+package org.hibernate.eclipse.console.workbench.xpl;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.Platform;
@@ -22,6 +33,12 @@ import org.eclipse.ui.internal.util.SWTResourceUtil;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.eclipse.ui.model.IWorkbenchAdapter2;
 
+/**
+ * LabelProvider based on WorkBenchLabelProvider that is not limited to WorkBench elements.
+ * 
+ * @author Max Rydahl Andersen
+ *
+ */
 public class AnyAdaptableLabelProvider extends LabelProvider implements
         IColorProvider, IFontProvider {
 

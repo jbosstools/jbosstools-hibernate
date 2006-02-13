@@ -1,4 +1,16 @@
-package org.hibernate.eclipse.mapper.editors.reveng;
+/*******************************************************************************
+ * Copyright (c) 2000, 2005, 2006 IBM Corporation, JBoss Inc. and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *     Max Rydahl Andersen, JBoss Inc. - added tooltip description support
+ *******************************************************************************/
+
+package org.hibernate.eclipse.mapper.editors.reveng.xpl;
 
 import java.text.BreakIterator;
 
@@ -21,11 +33,11 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.FormColors;
-import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
+import org.hibernate.eclipse.mapper.editors.reveng.IFormTextEntryListener;
 
 /**
  * Helper to have a label/text entry field in a Form.
@@ -47,50 +59,7 @@ public class FormTextEntry {
 	private String description;
 	private boolean dirty;
 	boolean ignoreModify = false;
-	private IFormTextEntryListener listener = new IFormTextEntryListener() {
-	
-		public void linkActivated(HyperlinkEvent e) {
-			// TODO Auto-generated method stub
-	
-		}
-	
-		public void linkExited(HyperlinkEvent e) {
-			// TODO Auto-generated method stub
-	
-		}
-	
-		public void linkEntered(HyperlinkEvent e) {
-			// TODO Auto-generated method stub
-	
-		}
-	
-		public void selectionChanged(FormTextEntry entry) {
-			// TODO Auto-generated method stub
-	
-		}
-	
-		public void browseButtonSelected(FormTextEntry entry) {
-			// TODO Auto-generated method stub
-	
-		}
-	
-		public void textValueChanged(FormTextEntry entry) {
-			// TODO Auto-generated method stub
-	
-		}
-	
-		public void textDirty(FormTextEntry entry) {
-			// TODO Auto-generated method stub
-	
-		}
-	
-		public void focusGained(FormTextEntry entry) {
-			// TODO Auto-generated method stub
-	
-		}
-	
-	};
-	
+	private IFormTextEntryListener listener;	
 	
 	/**
 	 * The default constructor. Call 'createControl' to make it.

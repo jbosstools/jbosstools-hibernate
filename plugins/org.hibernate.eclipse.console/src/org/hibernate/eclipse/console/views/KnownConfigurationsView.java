@@ -29,7 +29,7 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.node.BaseNode;
 import org.hibernate.eclipse.console.actions.EditConsoleConfiguration;
-import org.hibernate.eclipse.console.workbench.AnyAdaptableLabelProvider;
+import org.hibernate.eclipse.console.workbench.xpl.AnyAdaptableLabelProvider;
 
 
 /**

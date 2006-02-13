@@ -1,4 +1,15 @@
-package org.hibernate.eclipse;
+/*******************************************************************************
+ * Copyright (c) 2004, 2006 IBM Corporation, JBoss Inc. and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *     Max Rydahl Andersen, JBoss Inc. - made non-static for reuse instead of copy/paste.
+ *******************************************************************************/
+package org.hibernate.eclipse.logging.xpl;
 
 import java.util.StringTokenizer;
 
@@ -11,8 +22,7 @@ import org.osgi.framework.Bundle;
  * Non static implementation of the Logger in WST.
  * 
  * Small convenience class to log messages to plugin's log file and also, if
- * desired, the console. This class should only be used by classes in this
- * plugin. Other plugins should make their own copy, with appropriate ID.
+ * desired, the console. Other plugins should create a Logger with their own id.
  */
 public class EclipseLogger {
 	

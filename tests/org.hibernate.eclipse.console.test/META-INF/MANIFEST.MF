@@ -22,7 +22,9 @@ Require-Bundle: org.junit,
  org.hibernate.eclipse.help,
  org.hibernate.eclipse.mapper,
  org.eclipse.jface.text,
- org.hibernate.eclipse.console
+ org.hibernate.eclipse.console,
+ org.eclipse.wst.xml.core,
+ org.eclipse.wst.xml.ui
 Eclipse-AutoStart: true
 Bundle-Activator: org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin
 Eclipse-RegisterBuddy: org.hibernate.eclipse

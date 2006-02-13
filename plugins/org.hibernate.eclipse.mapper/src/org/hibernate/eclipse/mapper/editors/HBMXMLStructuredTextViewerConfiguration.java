@@ -1,7 +1,9 @@
 package org.hibernate.eclipse.mapper.editors;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.hyperlink.IHyperlinkDetector;
@@ -14,34 +16,44 @@ import org.eclipse.wst.xml.ui.internal.contentassist.NoRegionContentAssistProces
 
 public class HBMXMLStructuredTextViewerConfiguration extends StructuredTextViewerConfigurationXML {
 
+	static Map partitionToContentAssist = new HashMap();
+	static {
+		IContentAssistProcessor[] contentAssistProcessor = new IContentAssistProcessor[] { new HBMXMLContentAssistProcessor() };
+		partitionToContentAssist.put(IStructuredPartitionTypes.DEFAULT_PARTITION, contentAssistProcessor);
+		partitionToContentAssist.put(IXMLPartitions.XML_DEFAULT, contentAssistProcessor);
+		
+		contentAssistProcessor = new IContentAssistProcessor[] { new NoRegionContentAssistProcessor() };
+		partitionToContentAssist.put(IStructuredPartitionTypes.UNKNOWN_PARTITION, contentAssistProcessor );
+	}
+	
 	protected IContentAssistProcessor[] getContentAssistProcessors(ISourceViewer sourceViewer, String partitionType) {
-		IContentAssistProcessor[] processors = null;
-		
-		if ((partitionType == IStructuredPartitionTypes.DEFAULT_PARTITION) || (partitionType == IXMLPartitions.XML_DEFAULT)) {
-			processors = new IContentAssistProcessor[]{new HBMXMLContentAssistProcessor()}; // TODO: return cached one ?
-		}
-		else if (partitionType == IStructuredPartitionTypes.UNKNOWN_PARTITION) {
-			processors = new IContentAssistProcessor[]{new NoRegionContentAssistProcessor()};
-		}
-		
-		return processors;
+		return (IContentAssistProcessor[]) partitionToContentAssist.get(partitionType);
 	}
 	
 	
 	public IHyperlinkDetector[] getHyperlinkDetectors(ISourceViewer sourceViewer) {
-		if (sourceViewer == null || !fPreferenceStore.getBoolean(AbstractDecoratedTextEditorPreferenceConstants.EDITOR_HYPERLINKS_ENABLED) )
+		if (sourceViewer == null || hyperLinksEnabled() ) {
 			return null;
-		
-		List allDetectors = new ArrayList(0);
-		allDetectors.add(new HBMXMLHyperlinkDetector() );
-		
-		IHyperlinkDetector[] superDetectors =  super.getHyperlinkDetectors(sourceViewer);
-		for (int m = 0; m < superDetectors.length; m++) {
-			IHyperlinkDetector detector = superDetectors[m];
-			if (!allDetectors.contains(detector) ) {
-				allDetectors.add(detector);
-			}
 		}
-		return (IHyperlinkDetector[]) allDetectors.toArray(new IHyperlinkDetector[0]);
+		
+		IHyperlinkDetector[] baseDetectors =  super.getHyperlinkDetectors(sourceViewer);
+		HBMXMLHyperlinkDetector hyperlinkDetector = new HBMXMLHyperlinkDetector();
+		
+		if(baseDetectors==null || baseDetectors.length==0) {
+			return new IHyperlinkDetector[] { hyperlinkDetector };
+		} else {
+			IHyperlinkDetector[] result = new IHyperlinkDetector[baseDetectors.length+1];
+			result[0] = hyperlinkDetector;
+			for (int i = 0; i < baseDetectors.length; i++) {
+				result[i+1] = baseDetectors[i]; 
+			}
+			return result;
+		}
+		
+	}
+	
+
+	private boolean hyperLinksEnabled() {
+		return !fPreferenceStore.getBoolean(AbstractDecoratedTextEditorPreferenceConstants.EDITOR_HYPERLINKS_ENABLED);
 	}
 }

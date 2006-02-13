@@ -20,9 +20,9 @@ import org.hibernate.eclipse.console.wizards.TreeToTableComposite;
 import org.hibernate.eclipse.console.wizards.TypeMappingCellModifier;
 import org.hibernate.eclipse.console.wizards.TypeMappingContentProvider;
 import org.hibernate.eclipse.console.wizards.TypeMappingLabelProvider;
-import org.hibernate.eclipse.console.workbench.AnyAdaptableLabelProvider;
 import org.hibernate.eclipse.console.workbench.DeferredContentProvider;
 import org.hibernate.eclipse.console.workbench.LazyDatabaseSchema;
+import org.hibernate.eclipse.console.workbench.xpl.AnyAdaptableLabelProvider;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 

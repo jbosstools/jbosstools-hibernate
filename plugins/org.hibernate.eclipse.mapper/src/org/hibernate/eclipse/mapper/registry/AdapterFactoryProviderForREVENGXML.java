@@ -6,10 +6,6 @@ import org.hibernate.eclipse.mapper.modelhandler.ModelHandlerForREVENGXML;
 
 public class AdapterFactoryProviderForREVENGXML extends AdapterFactoryProviderForXML {
 	
-	public AdapterFactoryProviderForREVENGXML() {
-		
-	}
-	
 	public boolean isFor(IDocumentTypeHandler contentTypeDescription) {
 		return (contentTypeDescription instanceof ModelHandlerForREVENGXML);
 	}

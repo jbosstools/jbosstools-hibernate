@@ -29,6 +29,7 @@ import org.hibernate.eclipse.mapper.editors.reveng.RevEngOverviewPage;
 import org.hibernate.eclipse.mapper.editors.reveng.RevEngTableFilterPage;
 import org.hibernate.eclipse.mapper.editors.reveng.RevEngTablesPage;
 import org.hibernate.eclipse.mapper.editors.reveng.RevEngTypeMappingPage;
+import org.hibernate.eclipse.mapper.editors.xpl.XMLFormEditorPart;
 import org.hibernate.eclipse.mapper.model.DOMReverseEngineeringDefinition;
 import org.hibernate.eclipse.nature.HibernateNature;
 import org.w3c.dom.Document;

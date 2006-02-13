@@ -26,10 +26,10 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
-import org.hibernate.eclipse.EclipseLogger;
 import org.hibernate.eclipse.console.workbench.ConfigurationAdapterFactory;
 import org.hibernate.eclipse.hqleditor.HQLEditorInput;
 import org.hibernate.eclipse.hqleditor.HQLEditorStorage;
+import org.hibernate.eclipse.logging.xpl.EclipseLogger;
 import org.osgi.framework.BundleContext;
 
 /**

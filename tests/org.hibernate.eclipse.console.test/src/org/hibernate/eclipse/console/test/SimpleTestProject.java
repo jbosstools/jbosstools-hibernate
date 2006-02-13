@@ -80,12 +80,8 @@ public class SimpleTestProject {
 		project = buildNewProject(PROJECT_NAME);
 		javaProject = buildJavaProject(project);
 
-		IType primaryType = buildType(
-				buildPackage(PACKAGE_NAME, project, javaProject), FILE_NAME);
-
-		// v2 IFile file = buildTestClass(project);
-		// v2 ICompilationUnit cu = (ICompilationUnit) JavaCore.create(file);
-
+		buildType(buildPackage(PACKAGE_NAME, project, javaProject), FILE_NAME);
+		
 	}
 
 	private IProject buildNewProject(String projectName) {

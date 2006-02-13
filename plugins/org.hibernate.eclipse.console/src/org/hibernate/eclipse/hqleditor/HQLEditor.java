@@ -355,8 +355,8 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
      * 
      * @return the HQL color provider
      */
-    public HQLColorProvider getHQLColorProvider() {
-        return new HQLColorProvider();
+    public HQLColors getHQLColorProvider() {
+        return new HQLColors();
     }
 
     /**

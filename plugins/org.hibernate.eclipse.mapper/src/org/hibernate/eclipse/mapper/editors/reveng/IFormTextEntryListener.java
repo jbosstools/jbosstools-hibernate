@@ -1,6 +1,7 @@
 package org.hibernate.eclipse.mapper.editors.reveng;
 
 import org.eclipse.ui.forms.events.IHyperlinkListener;
+import org.hibernate.eclipse.mapper.editors.reveng.xpl.FormTextEntry;
 
 public interface IFormTextEntryListener extends IHyperlinkListener {
 /**

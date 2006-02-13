@@ -12,6 +12,7 @@ import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.hibernate.eclipse.console.model.IRevEngParameter;
+import org.hibernate.eclipse.mapper.editors.reveng.xpl.FormTextEntry;
 
 public class ParamDetailsPage extends RevEngDetailsPage implements IDetailsPage, PropertyChangeListener {
 

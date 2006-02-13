@@ -44,75 +44,9 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
  * @author max
  *
  */
-public class DialogSelectionHelper {
+public class DialogSelectionHelper extends org.hibernate.eclipse.console.utils.xpl.DialogSelectionHelper {
 
-	/**
-	 * 
-	 * Shows the UI to select new JAR or ZIP archive entries located in the workspace.
-	 * The dialog returns the selected entries or <code>null</code> if the dialog has
-	 * been cancelled. The dialog does not apply any changes.
-	 * @param shell The parent shell for the dialog.
-	 * @param initialSelection The path of the element (container or archive) to initially select or <code>null</code> to not select an entry. 
-	 * @param usedEntries An array of paths that are already on the classpath and therefore should not be
-	 * selected again.
-	 * @param fileExtensions An array of file extensions.
-	 * @param allowMultiple allow multiple selections.
-	 * @param allowFiles TODO
-	 * @param acceptedTypes TODO
-	 * 
-	 * @return Returns the new classpath container entry paths or <code>null</code> if the dialog has
-	 * been cancelled by the user.
-	 * 
-	 * Inspired by BuildPathDialogAccess.chooseJAREntries from jdt.ui.wizards 
-	 */
-	public static IPath[] chooseFileEntries(Shell shell, IPath initialSelection, IPath[] usedEntries, String title, String description, String[] fileExtensions, boolean allowMultiple, boolean allowDirectories, boolean allowFiles ) {
-		if (usedEntries == null) {
-			throw new IllegalArgumentException("used entries must be not-null");
-		}
-			
-		List clazzes = new ArrayList();
-		if(allowDirectories) {
-			clazzes.add(IFolder.class);
-			clazzes.add(IProject.class);
-		}
-		if(allowFiles) {
-			clazzes.add(IFile.class);
-		}
-		Class[] acceptedClasses = (Class[]) clazzes.toArray(new Class[clazzes.size()]);
-				
-		TypedElementSelectionValidator validator= new TypedElementSelectionValidator(acceptedClasses, true);
-		ArrayList usedFiles= new ArrayList(usedEntries.length);
-		IWorkspaceRoot root= ResourcesPlugin.getWorkspace().getRoot();
-		for (int i= 0; i < usedEntries.length; i++) {
-			IResource resource= root.findMember(usedEntries[i]);
-			if (resource instanceof IFile) {
-				usedFiles.add(resource);
-			}
-		}
-		IResource focus= initialSelection != null ? root.findMember(initialSelection) : null;
-		
-		ElementTreeSelectionDialog dialog= new ElementTreeSelectionDialog(shell, new WorkbenchLabelProvider(), new WorkbenchContentProvider() );
-		dialog.setValidator(validator);
-		dialog.setAllowMultiple(allowMultiple);
-		dialog.setTitle(title);
-		dialog.setMessage(description);
-		dialog.addFilter(new FileFilter(fileExtensions, usedFiles, true, allowDirectories) );
-		dialog.setInput(root);
-		dialog.setSorter(new ResourceSorter(ResourceSorter.NAME) );
-		dialog.setInitialSelection(focus);
-
-		if (dialog.open() == Window.OK) {
-			Object[] elements= dialog.getResult();
-			IPath[] res= new IPath[elements.length];
-			for (int i= 0; i < res.length; i++) {
-				IResource elem= (IResource)elements[i];
-				res[i]= elem.getFullPath();
-			}
-			return res;
-		}
-		return null;
-	}
-
+	
 	/**
 	 * Realize a Java Project selection dialog and return the first selected project,
 	 * or null if there was none.

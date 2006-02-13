@@ -10,7 +10,7 @@ public class AdapterFactoryProviderForHBMXML extends AdapterFactoryProviderForXM
 	 * @see AdapterFactoryProvider#isFor(ContentTypeDescription)
 	 */
 	public boolean isFor(IDocumentTypeHandler contentTypeDescription) {
-		if(contentTypeDescription.getId().equals(ModelHandlerForHBMXML.ModelHandlerID)) {
+		if(contentTypeDescription.getId().equals(ModelHandlerForHBMXML.MODELHANDLER_ID)) {
 			return true;
 		} else {
 			return false;

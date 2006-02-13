@@ -1,4 +1,14 @@
-package org.hibernate.eclipse.mapper.editors;
+/*****************************************************************************
+ * Copyright (c) 2004, 2006 IBM Corporation, JBoss Inc. and others. All rights reserved. 
+ * This program and the accompanying materials are made available under the terms
+ * of the Eclipse Public License v1.0 which accompanies this distribution, and
+ * is available at http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: 
+ *    IBM Corporation - initial API and implementation
+ *    Max Rydahl Andersen, JBoss Inc. - Adopted for usage in multipage editor.
+ ****************************************************************************/
+package org.hibernate.eclipse.mapper.editors.xpl;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -22,7 +32,6 @@ import org.eclipse.wst.xml.ui.internal.tabletree.IDesignViewer;
 import org.eclipse.wst.xml.ui.internal.tabletree.XMLEditorMessages;
 import org.eclipse.wst.xml.ui.internal.tabletree.XMLTableTreeHelpContextIds;
 import org.eclipse.wst.xml.ui.internal.tabletree.XMLTableTreeViewer;
-import org.hibernate.eclipse.mapper.MapperPlugin;
 
 public class XMLFormEditorPart extends FormEditor {
 
@@ -43,7 +52,6 @@ public class XMLFormEditorPart extends FormEditor {
 			connectDesignPage();
 		}
 		catch (PartInitException e) {
-			MapperPlugin.getDefault().logException(e);
 			throw new RuntimeException(e);
 		}
 	}
@@ -186,7 +194,6 @@ public class XMLFormEditorPart extends FormEditor {
 		catch (PartInitException exception) {
 			// dispose editor
 			dispose();
-			MapperPlugin.getDefault().logException(exception);
 			throw exception;
 		}
 	}

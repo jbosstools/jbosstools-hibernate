@@ -2,10 +2,6 @@ package org.hibernate.eclipse.hqleditor;
 
 import org.eclipse.jface.text.rules.IWordDetector;
 
-/**
- * This class determines whether a given character is valid as part of an HQL keyword 
- * in the current context.
- */
 public class HQLWordDetector implements IWordDetector {
 
     public boolean isWordStart( char c ) {

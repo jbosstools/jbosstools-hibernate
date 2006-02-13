@@ -16,7 +16,6 @@ public class ConsolePluginAllTests {
 		//$JUnit-BEGIN$
 		suite.addTestSuite( KnownConfigurationsTest.class );
 		suite.addTestSuite( QueryParametersTest.class );
-		suite.addTestSuite( PluginTest.class );
 		suite.addTestSuite( PerspectiveTest.class );
 		suite.addTestSuite( ConsoleConfigurationTest.class );
 		suite.addTestSuite( JavaFormattingTest.class );

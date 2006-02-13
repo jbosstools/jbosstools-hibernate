@@ -16,21 +16,14 @@ import org.eclipse.wst.xml.core.internal.modelhandler.XMLModelLoader;
  * Provides hbm.xml model handling. 
  */
 public class ModelHandlerForCFGXML extends AbstractModelHandler implements IModelHandler {
-	/**
-	 * Needs to match what's in plugin registry. In fact, can be overwritten
-	 * at run time with what's in registry! (so should never be 'final')
-	 */
-	static String AssociatedContentTypeID = "org.hibernate.eclipse.mapper.content-type.cfg.xml"; //$NON-NLS-1$
-	/**
-	 * Needs to match what's in plugin registry. In fact, can be overwritten
-	 * at run time with what's in registry! (so should never be 'final')
-	 */
-	private static String ModelHandlerID = "org.hibernate.eclipse.mapper.handler.cfg.xml"; //$NON-NLS-1$
+	
+	final static String CONTENTTYPE_ID = "org.hibernate.eclipse.mapper.content-type.cfg.xml"; //$NON-NLS-1$
+	final private static String MODELHANDLER_ID = "org.hibernate.eclipse.mapper.handler.cfg.xml"; //$NON-NLS-1$
 	
 	public ModelHandlerForCFGXML() {
 		super();
-		setId(ModelHandlerID);
-		setAssociatedContentTypeId(AssociatedContentTypeID);
+		setId(MODELHANDLER_ID);
+		setAssociatedContentTypeId(CONTENTTYPE_ID);
 	}
 
 	public IDocumentCharsetDetector getEncodingDetector() {
@@ -44,5 +37,4 @@ public class ModelHandlerForCFGXML extends AbstractModelHandler implements IMode
 	public IModelLoader getModelLoader() {
 		return new XMLModelLoader();
 	}
-
 }
