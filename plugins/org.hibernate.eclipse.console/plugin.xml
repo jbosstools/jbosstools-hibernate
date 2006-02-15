@@ -60,20 +60,17 @@
             id="hibernatewizards"/>
       <wizard
             category="hibernatewizards"
+            class="org.hibernate.eclipse.console.wizards.NewHibernateMappingFileWizard"
+            icon="icons/hibernate_small_icon.gif"
+            id="org.hibernate.eclipse.console.wizards.NewHibernateMappingFileWizard"
+            name="Hibernate XML Mapping file (hbm.xml)"/>
+      <wizard
+            category="hibernatewizards"
             class="org.hibernate.eclipse.console.wizards.NewConfigurationWizard"
             icon="icons/hibernate_small_icon.gif"
             id="org.hibernate.eclipse.console.wizards.NewConfigurationWizard"
             name="Hibernate Configuration File (cfg.xml)">
          <description>Create a new hibernate.cfg.xml file (Helping with the initial JDBC setup etc.)</description>
-      </wizard>
-      <wizard
-            canFinishEarly="false"
-            category="hibernatewizards"
-            class="org.hibernate.eclipse.console.wizards.NewReverseEngineeringFileWizard"
-            icon="icons/hibernate_small_icon.gif"
-            id="org.hibernate.eclipse.console.wizards.NewReverseEngineeringFileWizard"
-            name="Hibernate Reverse Engineering File (reveng.xml)">
-         <description>Create a new hibernate.reveng.xml (Helping with the initial table and type filtering)</description>
       </wizard>
       <wizard
             category="hibernatewizards"
@@ -84,8 +81,17 @@
             id="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"
             name="Hibernate Console Configuration"
             preferredPerspectives="org.hibernate.eclipse.console.HibernateConsolePerspective"
-            project="false">
+            project="true">
          <description>Creates a new Hibernate Console Configuration</description>
+      </wizard>
+      <wizard
+            canFinishEarly="false"
+            category="hibernatewizards"
+            class="org.hibernate.eclipse.console.wizards.NewReverseEngineeringFileWizard"
+            icon="icons/hibernate_small_icon.gif"
+            id="org.hibernate.eclipse.console.wizards.NewReverseEngineeringFileWizard"
+            name="Hibernate Reverse Engineering File (reveng.xml)">
+         <description>Create a new hibernate.reveng.xml (Helping with the initial table and type filtering)</description>
       </wizard>
    </extension>
    <extension
@@ -267,9 +273,10 @@
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension targetID="org.hibernate.eclipse.console.HibernateConsolePerspective">
+         <newWizardShortcut id="org.hibernate.eclipse.console.wizards.NewHibernateMappingFileWizard"/>
          <newWizardShortcut id="org.hibernate.eclipse.console.wizards.NewConfigurationWizard"/>
          <newWizardShortcut id="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"/>
-         <newWizardShortcut id="org.hibernate.eclipse.console.newWizardShortcut3"/>
+         <newWizardShortcut id="org.hibernate.eclipse.console.wizards.NewReverseEngineeringFileWizard"/>
          <viewShortcut id="org.hibernate.eclipse.console.views.KnownConfigurationsView"/>
          <viewShortcut id="org.hibernate.eclipse.graph.EntityGraphView"/>
          <viewShortcut id="org.hibernate.eclipse.console.views.QueryPageTabView"/>
