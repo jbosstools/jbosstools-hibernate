@@ -249,7 +249,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	}
 
 	private UpDownListComposite buildMappingFileTable(Composite parent) {
-		mappingFilesViewer = new UpDownListComposite(parent, SWT.NONE, "Mapping files") {
+		mappingFilesViewer = new UpDownListComposite(parent, SWT.NONE, "Additonal mapping files (not listed in cfg.xml)") {
 			protected Object[] handleAdd(int idx) {
 				TableItem[] items = getTable().getItems();
 				IPath[] exclude = new IPath[items.length];
