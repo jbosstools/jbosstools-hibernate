@@ -31,7 +31,6 @@ import org.eclipse.ui.forms.SectionPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.ui.internal.WorkbenchMessages;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.eclipse.console.model.IRevEngColumn;
 import org.hibernate.eclipse.console.model.IRevEngTable;
@@ -208,7 +207,7 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		        };
 		        selectButton.addSelectionListener(listener);
 		        Button deselectButton = createButton(buttonComposite,
-		                IDialogConstants.DESELECT_ALL_ID, WorkbenchMessages.CheckedTreeSelectionDialog_deselect_all,
+		                IDialogConstants.DESELECT_ALL_ID, "Deselect all",
 		                false);
 		        listener = new SelectionAdapter() {
 		            public void widgetSelected(SelectionEvent e) {
