@@ -98,7 +98,11 @@ public class HQLQueryPage extends AbstractQueryPage {
     
     		for (int i = 0; i < t.length; i++) {
     			Type type = t[i];
-    			l.add(type.getName() );
+    			if(type==null) {
+    			    l.add("<multiple types>");	
+    			} else {
+    				l.add(type.getName() );
+    			}
     		}
     		} else {
     			String[] t = query.getReturnAliases();
