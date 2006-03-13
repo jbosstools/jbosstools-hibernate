@@ -161,7 +161,7 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 		Configuration cfg = configuration.buildWith(new Configuration(), false);
 		Settings settings = configuration.getSettings(cfg);
 		
-		OverrideRepository repository = new OverrideRepository(null,null);///*settings.getDefaultCatalogName(),settings.getDefaultSchemaName()*/);
+		OverrideRepository repository = new OverrideRepository();///*settings.getDefaultCatalogName(),settings.getDefaultSchemaName()*/);
 		boolean hasIncludes = false;
 		for (int i = 0; i < tableFilters.length; i++) {
 			ITableFilter filter = tableFilters[i];
