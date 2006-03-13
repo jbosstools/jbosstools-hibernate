@@ -61,6 +61,8 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
     private SelectionButtonDialogField useOwnTemplates;
     private StringButtonDialogField templatedir;
     
+    private ExporterAttributes attributes;
+    
 	public CodeGenerationSettings() {
 		super();
 	}
@@ -374,38 +376,54 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
 		return reverseEngineeringStrategy.getText();
 	}   
 	
-	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {		
-		// TODO
+	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
+//	   try {
+//	      attributes = new ExporterAttributes(configuration);
+//       } catch (CoreException ce) {
+//          HibernateConsolePlugin.getDefault().logErrorMessage("Problem when setting up defaults for launch configuration", ce);
+//       }
 	}
 
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
-			consoleConfigurationName.setText(configuration.getAttribute(PREFIX + "configurationname",""));
-			preferRawCompositeIds.setSelection(configuration.getAttribute(PREFIX + "prefercompositeids", true));
-			outputdir.setText(configuration.getAttribute(PREFIX + "outputdir",""));
-			reverseengineer.setSelection(configuration.getAttribute(PREFIX + "schema2hbm", false));
-			reverseEngineeringSettings.setText(configuration.getAttribute(PREFIX + "revengfile", ""));
-			reverseEngineeringStrategy.setText(configuration.getAttribute(PREFIX + "revengstrategy", ""));
-			useOwnTemplates.setSelection(configuration.getAttribute(PREFIX + "templatepathenabled",false));		
-			packageName.setText(configuration.getAttribute(PREFIX + "package",""));
-			templatedir.setText(configuration.getAttribute(PREFIX + "templatepath",""));
+           attributes = new ExporterAttributes(configuration);
+           consoleConfigurationName.setText(attributes.getConsoleConfigurationName());
+           preferRawCompositeIds.setSelection(attributes.isPreferBasicCompositeIds());
+           outputdir.setText(safeText(attributes.getOutputPath()));
+           reverseengineer.setSelection(attributes.isReverseEngineer());
+           reverseEngineeringSettings.setText(safeText(attributes.getRevengSettings()));
+           reverseEngineeringStrategy.setText(safeText(attributes.getRevengStrategy()));
+           useOwnTemplates.setSelection(attributes.isUseOwnTemplates());
+           packageName.setText(safeText(attributes.getPackageName()));
+           templatedir.setText(safeText(attributes.getTemplatePath()));
 		} catch (CoreException ce) {
 			HibernateConsolePlugin.getDefault().logErrorMessage("Problem when reading hibernate tools launch configuration", ce);
 		} 		
 	}
 
-	static String PREFIX = "org.hibernate.tools.";
+	private String safeText(String text) {
+		return text==null?"":text;
+	}
+
+	private String strOrNull(String text) {
+		if(text==null || text.trim().length()==0) {
+			return null;
+		} else {
+			return text;
+		}
+	}
+	
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		
-		configuration.setAttribute(PREFIX + "outputdir", outputdir.getText());
-		configuration.setAttribute(PREFIX + "prefercompositeids", preferRawCompositeIds.isSelected());
-		configuration.setAttribute(PREFIX + "schema2hbm", isReverseEngineerEnabled());
-		configuration.setAttribute(PREFIX + "revengfile", reverseEngineeringSettings.getText());
-		configuration.setAttribute(PREFIX + "revengstrategy", reverseEngineeringStrategy.getText());
-		configuration.setAttribute(PREFIX + "templatepathenabled", useOwnTemplates.isSelected());		
-		configuration.setAttribute(PREFIX + "configurationname", getConfigurationName());
-		configuration.setAttribute(PREFIX + "package", getOutputPackage());
-		configuration.setAttribute(PREFIX + "templatepath", templatedir.getText());		
+		attributes.setOutputPath(strOrNull(outputdir.getText()));
+        attributes.setPreferBasicCompositeIds(preferRawCompositeIds.isSelected());
+        attributes.setReverseEngineer(isReverseEngineerEnabled());
+        attributes.setRevengSettings(strOrNull(reverseEngineeringSettings.getText()));
+        attributes.setRevengStrategy(strOrNull(reverseEngineeringStrategy.getText()));
+        attributes.setUseOwnTemplates(useOwnTemplates.isSelected());
+        attributes.setConsoleConfigurationName(getConfigurationName());
+        attributes.setPackageName(getOutputPackage());
+        attributes.setTemplatePath(strOrNull(templatedir.getText()));
+        attributes.save(configuration);
 	}
 
 	public String getName() {

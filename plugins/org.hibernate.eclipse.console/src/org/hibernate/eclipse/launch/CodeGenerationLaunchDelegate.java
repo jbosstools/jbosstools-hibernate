@@ -1,8 +1,9 @@
 package org.hibernate.eclipse.launch;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -11,18 +12,14 @@ import org.eclipse.core.filebuffers.ITextFileBuffer;
 import org.eclipse.core.filebuffers.manipulation.FileBufferOperationRunner;
 import org.eclipse.core.filebuffers.manipulation.MultiTextEditWithProgress;
 import org.eclipse.core.filebuffers.manipulation.TextFileBufferOperation;
-import org.eclipse.core.internal.resources.Workspace;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
@@ -31,12 +28,10 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.ToolFactory;
 import org.eclipse.jdt.core.formatter.CodeFormatter;
-import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.DocumentRewriteSessionType;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.text.edits.TextEdit;
-import org.eclipse.ui.actions.WorkspaceAction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
@@ -46,15 +41,11 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext.Command;
+import org.hibernate.eclipse.console.ExtensionManager;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.model.impl.ExporterDefinition;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
-import org.hibernate.tool.hbm2x.DAOExporter;
-import org.hibernate.tool.hbm2x.DocExporter;
 import org.hibernate.tool.hbm2x.Exporter;
-import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
-import org.hibernate.tool.hbm2x.HibernateMappingExporter;
-import org.hibernate.tool.hbm2x.POJOExporter;
-import org.hibernate.tool.hbm2x.seam.SeamExporter;
 import org.hibernate.util.ReflectHelper;
 
 public class CodeGenerationLaunchDelegate extends
@@ -95,40 +86,30 @@ public class CodeGenerationLaunchDelegate extends
 		}
 	}
 
-	private static final String PREFIX = "org.hibernate.tools."; // move to HibernateLaunchConstants
-
+    
 	public void launch(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		Assert.isNotNull(configuration);
 		Assert.isNotNull(monitor);
-		try {		
-			String consoleConfigurationName = configuration.getAttribute(PREFIX + "configurationname","");		
-			String outputdir = configuration.getAttribute(PREFIX + "outputdir","");
-			boolean reverseengineer = configuration.getAttribute(PREFIX + "schema2hbm", false);
-			String reverseEngineeringSettings = configuration.getAttribute(PREFIX + "revengfile", "");
-			String reverseEngineeringStrategy = configuration.getAttribute(PREFIX + "revengstrategy", "");
-			boolean useOwnTemplates = configuration.getAttribute(PREFIX + "templatepathenabled",false);		
-			boolean generatecfgfile = configuration.getAttribute(PREFIX + "hbm2cfgxml",false);
-			boolean enableJDK5 = configuration.getAttribute(PREFIX + "jdk5",false);
-			boolean enableEJB3annotations = configuration.getAttribute(PREFIX + "ejb3",false);
-			boolean generatedao = configuration.getAttribute(PREFIX + "hbm2dao",false);
-			boolean generatedocs = configuration.getAttribute(PREFIX + "hbm2doc",false);
-			boolean generateseam = configuration.getAttribute(PREFIX + "hbm2seam",false);
-			boolean generatejava = configuration.getAttribute(PREFIX + "hbm2java",false);
-			boolean generatemappings = configuration.getAttribute(PREFIX + "hbm2hbmxml",false);
-			String packageName = configuration.getAttribute(PREFIX + "package","");
-			String templatedir = configuration.getAttribute(PREFIX + "templatepath","");
-			boolean preferBasicCompositeIds = configuration.getAttribute(PREFIX + "prefercompositeids", true);
-			
-			if(!useOwnTemplates) {
-				templatedir = null;
+		try {
+		    ExporterAttributes attributes = new ExporterAttributes(configuration);
+            
+            ExporterDefinition exporters[] = ExtensionManager.findExporterDefinitions();
+            List exporterArray = new ArrayList();
+            for (int i = 0; i < exporters.length; i++)
+            {
+               if (exporters[i].isEnabled(configuration)) {
+                  exporterArray.add(exporters[i]);
+               }
+            }
+            
+            exporters = (ExporterDefinition []) exporterArray.toArray(new ExporterDefinition[exporterArray.size()]);
+            ArtifactCollector collector = runExporters(attributes, exporters, monitor);
+			refreshOutputDir( attributes.getOutputPath() );
+
+			if(collector==null) {
+				return;
 			}
-			
-			ArtifactCollector collector = runExporters(consoleConfigurationName, pathOrNull(outputdir), packageName, pathOrNull(reverseEngineeringSettings), reverseEngineeringStrategy, reverseengineer, generatejava, generatedao, generatemappings, generatecfgfile, monitor, preferBasicCompositeIds, pathOrNull(templatedir), enableEJB3annotations, enableJDK5, generatedocs, generateseam, monitor);
-
-			refreshOutputDir( outputdir );
-
-			if(collector==null) return;
 			
 			formatGeneratedCode( monitor, collector );
 			
@@ -168,7 +149,7 @@ public class CodeGenerationLaunchDelegate extends
 	}
 
 	private void refreshOutputDir(String outputdir) {
-		IResource bufferRes = ResourcesPlugin.getWorkspace().getRoot().findMember(pathOrNull(outputdir));
+		IResource bufferRes = findMember(ResourcesPlugin.getWorkspace().getRoot(), outputdir);
 		
 		if (bufferRes != null && bufferRes.isAccessible()) {
 			try {
@@ -187,48 +168,47 @@ public class CodeGenerationLaunchDelegate extends
 		}
 	}
 
-	private ArtifactCollector runExporters(
-			String configName, IPath output,
-	String outputPackage, IPath revengsettings, String reverseEngineeringStrategy, boolean reveng, final boolean genjava, final boolean gendao, final boolean genhbm, final boolean gencfg, final IProgressMonitor monitor, boolean preferBasicCompositeids, IPath templateDir, final boolean ejb3, final boolean generics, final boolean gendoc, final boolean generateseam, IProgressMonitor monitor2)
-			throws CoreException {
+	private ArtifactCollector runExporters (final ExporterAttributes attributes, final ExporterDefinition[] exporters, final IProgressMonitor monitor)
+	   throws CoreException
+    {
 			
-		 	monitor.beginTask("Generating code for " + configName, 10);
+		 	monitor.beginTask("Generating code for " + attributes.getConsoleConfigurationName(), exporters.length + 1);
 		
 			if (monitor.isCanceled())
 				return null;
 			
 			
 			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-			final IResource resource = root.findMember(output);
-	        final IResource templateres = root.findMember(templateDir);
-			final IResource revengres = revengsettings==null?null:root.findMember(revengsettings);
+			final IResource resource = findMember( root, attributes.getOutputPath() );
+	        final IResource templateres = findMember(root, attributes.getTemplatePath());
+			final IResource revengres = findMember( root, attributes.getRevengSettings());
 			/*if (!resource.exists() || !(resource instanceof IContainer) ) {
 				throwCoreException("Output directory \"" + configName + "\" does not exist.");
 			}*/
 			/*IContainer container = (IContainer) resource;*/
 
-			ConsoleConfiguration cc = KnownConfigurations.getInstance().find(configName);
+			ConsoleConfiguration cc = KnownConfigurations.getInstance().find(attributes.getConsoleConfigurationName());
 			ReverseEngineeringStrategy res = null;
-			if (reveng) {
+			if (attributes.isReverseEngineer()) {
 				monitor.subTask("reading jdbc metadata");
 						
 				DefaultReverseEngineeringStrategy configurableNamingStrategy = new DefaultReverseEngineeringStrategy();
-				configurableNamingStrategy.setPackageName(outputPackage);
+				configurableNamingStrategy.setPackageName(attributes.getPackageName());
 				
 				res = configurableNamingStrategy;
 				if(revengres!=null) {
 					/*Configuration configuration = cc.buildWith(new Configuration(), false);*/				
 					/*Settings settings = cc.getSettings(configuration);*/
 					File file = getLocation( revengres ).toFile();
-					OverrideRepository repository = new OverrideRepository(null,null);///*settings.getDefaultCatalogName(),settings.getDefaultSchemaName()*/);
+					OverrideRepository repository = new OverrideRepository();///*settings.getDefaultCatalogName(),settings.getDefaultSchemaName()*/);
 					repository.addFile(file);
 					res = repository.getReverseEngineeringStrategy(res);
 				}
 				
 			}
-			final Configuration cfg = buildConfiguration(reveng, reverseEngineeringStrategy, cc, res, preferBasicCompositeids);
+			final Configuration cfg = buildConfiguration(attributes.isReverseEngineer(), attributes.getRevengStrategy(), cc, res, attributes.isPreferBasicCompositeIds());
 			
-			monitor.worked(3);
+			monitor.worked(1);
 			
 			if (monitor.isCanceled())
 				return null;
@@ -245,71 +225,26 @@ public class CodeGenerationLaunchDelegate extends
 	                    templatePaths = new String[] { getLocation( templateres ).toOSString() }; // TODO: this should not be..should it ?
 	                }
 	                
+                    // Global properties
 	                Properties props = new Properties();
-	                
-					if(genhbm) {
-						monitor.subTask("mapping files");
-						final HibernateMappingExporter hbmExporter = new HibernateMappingExporter();
-						configureExporter( cfg, outputdir, templatePaths, props, hbmExporter );						               
-						hbmExporter.start();
-						monitor.worked(5);
-					}
-					
-					if(genjava) {
-						monitor.subTask("domain code");
-						final POJOExporter javaExporter = new POJOExporter(); // TODO: expose jdk5 as an option
-						configureExporter(cfg, outputdir, templatePaths, props, javaExporter);
-						
-						javaExporter.setEjb3(ejb3);
-						javaExporter.setJdk5(generics);
-											
-						javaExporter.start();
-						monitor.worked(6);
-					}
-	                
-	                if(gendao) {
-	                    monitor.subTask("DAO code");
-	                    final DAOExporter daoExporter = new DAOExporter();
-	                    configureExporter(cfg, outputdir, templatePaths, props, daoExporter);
-	                    
-	                    daoExporter.setEjb3(ejb3);
-	                    daoExporter.setJdk5(generics);
-	                    
-	                    daoExporter.start();
-	                    monitor.worked(7);
-	                }
-					
-					if(gencfg) {
-						monitor.subTask("hibernate configuration");
-						final HibernateConfigurationExporter cfgExporter = new HibernateConfigurationExporter();
-						configureExporter(cfg, outputdir, templatePaths, props, cfgExporter);
-						
-						cfgExporter.setEjb3(ejb3);
-						cfgExporter.start();
-						
-						monitor.worked(8);
-					}
-					
-					if(gendoc) {
-						monitor.subTask("hibernate doc");
-						Exporter docExporter = new DocExporter();
-						configureExporter(cfg, outputdir, templatePaths, props, docExporter);
-						docExporter.start();
-						monitor.worked(9);
-					}
-					
-					if(generateseam) {
-						monitor.subTask("Seam skeleton");
-						Exporter seamExporter = new SeamExporter();
-						Properties p = new Properties();
-						p.setProperty("seam_appname", "Seam Application");
-						p.setProperty("seam_shortname", "seamapp");
-						configureExporter(cfg, outputdir, templatePaths, props, seamExporter);
-						seamExporter.start();
-						monitor.worked(9);
-					}
-					
-					monitor.worked(10);
+	                props.put("ejb3", ""+attributes.isEJB3Enabled());
+                    props.put("jdk5", ""+attributes.isJDK5Enabled());
+                    
+                    for (int i = 0; i < exporters.length; i++)
+                    {
+                       monitor.subTask(exporters[i].getDescription());
+                       
+                       Properties exporterProperties = new Properties();
+                       exporterProperties.putAll(props);
+                       exporterProperties.putAll(exporters[i].getProperties());
+                       
+                       Exporter exporter = exporters[i].createExporterInstance();
+                       
+                       configureExporter (cfg, outputdir, templatePaths, exporterProperties, exporter);
+                       
+                       exporter.start();
+                       monitor.worked(1);
+                    }
 					return getArtififactCollector();
 				}
 
@@ -328,6 +263,12 @@ public class CodeGenerationLaunchDelegate extends
 			
 			
 		}
+
+	private IResource findMember(IWorkspaceRoot root, String path) {
+		Path pathOrNull = pathOrNull(path);
+		if(pathOrNull==null) return null;
+		return root.findMember(pathOrNull);
+	}
 
 	private IPath getLocation(final IResource resource) {		
 		if (resource.getRawLocation() == null) { 

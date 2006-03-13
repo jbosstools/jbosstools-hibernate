@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
+   <extension-point id="exporters" name="Hibernate Console Exporter" schema="schema/exporters.exsd"/>
 
      <extension
          point="org.eclipse.ui.perspectives">
@@ -334,6 +335,46 @@
             code="666"
             id="org.hibernate.eclipse.launch.GeneralExceptionStatusHandler"
             plugin="org.hibernate.eclipse.console"/>
+   </extension>
+   <extension
+         point="org.hibernate.eclipse.console.exporters">
+      <exporter
+            classname="org.hibernate.tool.hbm2x.POJOExporter"
+            description="POJO Exporter"
+            icon="icons/images/mapped_class.gif"
+            id="org.hibernate.tools.hbm2java"/>
+      <exporter
+            classname="org.hibernate.tool.hbm2x.HibernateMappingExporter"
+            description="Hibernate Mapping Exporter"
+            icon="icons/images/hibernate_mapping.gif"
+            id="org.hibernate.tools.hbm2hbmxml"/>
+      <exporter
+            classname="org.hibernate.tool.hbm2x.DAOExporter"
+            description="DAO Exporter"
+            icon="icons/hibernate_small_icon.gif"
+            id="org.hibernate.tools.hbm2dao"/>
+      <exporter
+            classname="org.hibernate.tool.hbm2x.HibernateConfigurationExporter"
+            description="Hibernate Configuration Exporter"
+            icon="icons/hibernate_small_icon.gif"
+            id="org.hibernate.tools.hbm2cfgxml"/>
+      <exporter
+            classname="org.hibernate.tool.hbm2x.DocExporter"
+            description="Schema Doc Exporter"
+            icon="icons/images/schema.gif"
+            id="org.hibernate.tools.hbm2doc"/>
+      <exporter
+            classname="org.hibernate.tool.hbm2x.seam.SeamExporter"
+            description="Seam Skeleton App Exporter"
+            icon="icons/hibernate_small_icon.gif"
+            id="org.hibernate.tools.hbm2seam">
+         <property
+               name="seam_appname"
+               value="Seam Application"/>
+         <property
+               name="seam_shortname"
+               value="seamapp"/>
+      </exporter>
    </extension>
   
 
