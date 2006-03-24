@@ -50,8 +50,7 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
 
 	private Button enableJDK5;
 
-	private ExporterAttributes attributes;
-
+	
 	private ExpansionListener expansionListener = new ExpansionListener();
 
 	private List selectedExporters;
@@ -353,7 +352,7 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
 
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
-			attributes = new ExporterAttributes( configuration );
+			ExporterAttributes attributes = new ExporterAttributes( configuration );
 			selectedExporters.clear();
 
 			enableEJB3annotations.setSelection( attributes.isEJB3Enabled() );
@@ -382,16 +381,14 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
 	}
 
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		attributes.setEnableEJB3( enableEJB3annotations.getSelection() );
-		attributes.setEnableJDK5( enableJDK5.getSelection() );
+		configuration.setAttribute(HibernateLaunchConstants.ATTR_ENABLE_EJB3_ANNOTATIONS, enableEJB3annotations.getSelection());
+		configuration.setAttribute(HibernateLaunchConstants.ATTR_ENABLE_JDK5, enableJDK5.getSelection() );
 
 		for (int i = 0; i < exporters.length; i++) {
 			ExporterDefinition exporterDefinition = exporters[i];
 			boolean enabled = selectedExporters.contains( exporterDefinition );
 			exporterDefinition.setEnabled( configuration, enabled );
 		}
-
-		attributes.save( configuration );
 	}
 
 	public String getName() {

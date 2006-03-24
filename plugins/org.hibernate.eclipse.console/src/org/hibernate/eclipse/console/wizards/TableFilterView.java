@@ -135,7 +135,16 @@ public abstract class TableFilterView extends TreeToTableComposite {
 															// schema!
 					TableContainer tc = (TableContainer) sel;
 					filter = revEngDef.createTableFilter();
-					filter.setMatchSchema( "".equals(tc.getName())?".*":tc.getName() );
+					String schema = tc.getName();
+					if(schema==null || "".equals(schema)) {
+						filter.setMatchCatalog(".*");
+						filter.setMatchSchema(".*");
+					} else { // fake catalog handling
+						String catalog = StringHelper.qualifier(schema);
+						schema = StringHelper.unqualify(schema);
+						filter.setMatchCatalog( "".equals(catalog)?".*":catalog );
+						filter.setMatchSchema( "".equals(schema)?".*":schema );
+					}
 					filter.setMatchName(".*");
 					filter.setExclude( Boolean.valueOf( exclude ) );
 				} else if ( sel instanceof Column ) {

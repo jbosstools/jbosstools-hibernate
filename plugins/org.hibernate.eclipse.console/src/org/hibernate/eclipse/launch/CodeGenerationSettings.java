@@ -61,7 +61,7 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
     private SelectionButtonDialogField useOwnTemplates;
     private StringButtonDialogField templatedir;
     
-    private ExporterAttributes attributes;
+    
     
 	public CodeGenerationSettings() {
 		super();
@@ -385,8 +385,8 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
 	}
 
 	public void initializeFrom(ILaunchConfiguration configuration) {
-		try {
-           attributes = new ExporterAttributes(configuration);
+		try {			
+           ExporterAttributes attributes = new ExporterAttributes(configuration);
            consoleConfigurationName.setText(attributes.getConsoleConfigurationName());
            preferRawCompositeIds.setSelection(attributes.isPreferBasicCompositeIds());
            outputdir.setText(safeText(attributes.getOutputPath()));
@@ -414,16 +414,18 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
 	}
 	
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		attributes.setOutputPath(strOrNull(outputdir.getText()));
-        attributes.setPreferBasicCompositeIds(preferRawCompositeIds.isSelected());
-        attributes.setReverseEngineer(isReverseEngineerEnabled());
-        attributes.setRevengSettings(strOrNull(reverseEngineeringSettings.getText()));
-        attributes.setRevengStrategy(strOrNull(reverseEngineeringStrategy.getText()));
-        attributes.setUseOwnTemplates(useOwnTemplates.isSelected());
-        attributes.setConsoleConfigurationName(getConfigurationName());
-        attributes.setPackageName(getOutputPackage());
-        attributes.setTemplatePath(strOrNull(templatedir.getText()));
-        attributes.save(configuration);
+		configuration.setAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR, strOrNull(outputdir.getText()));
+		configuration.setAttribute(HibernateLaunchConstants.ATTR_PREFER_BASIC_COMPOSITE_IDS, preferRawCompositeIds.isSelected());
+		configuration.setAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER, isReverseEngineerEnabled());
+		configuration.setAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_STRATEGY, strOrNull(reverseEngineeringStrategy.getText()));
+		configuration.setAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_SETTINGS, strOrNull(reverseEngineeringSettings.getText()));
+		
+		configuration.setAttribute(HibernateLaunchConstants.ATTR_USE_OWN_TEMPLATES, useOwnTemplates.isSelected());
+		configuration.setAttribute(HibernateLaunchConstants.ATTR_TEMPLATE_DIR, strOrNull(templatedir.getText()));
+		
+		configuration.setAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME, getConfigurationName());        
+		configuration.setAttribute(HibernateLaunchConstants.ATTR_PACKAGE_NAME, getOutputPackage());
+        
 	}
 
 	public String getName() {

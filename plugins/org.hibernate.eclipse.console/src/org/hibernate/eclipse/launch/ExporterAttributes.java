@@ -32,7 +32,7 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 // (and also to clean up CodeGenerationLaunchDelegate considerably)
 public class ExporterAttributes
 {
-   private boolean reverseEngineer, useOwnTemplates, enableJDK5, enableEJB3, preferBasicCompositeIds, enableTemplatePath;
+   private boolean reverseEngineer, useOwnTemplates, enableJDK5, enableEJB3, preferBasicCompositeIds;
    private String consoleConfigurationName;
    private String revengSettings;
    private String revengStrategy;
@@ -61,7 +61,6 @@ public class ExporterAttributes
          enableJDK5 = configuration.getAttribute(HibernateLaunchConstants.ATTR_ENABLE_JDK5,false);
          enableEJB3 = configuration.getAttribute(HibernateLaunchConstants.ATTR_ENABLE_EJB3_ANNOTATIONS,false);
          packageName = configuration.getAttribute(HibernateLaunchConstants.ATTR_PACKAGE_NAME,"");
-         enableTemplatePath = configuration.getAttribute(HibernateLaunchConstants.ATTR_ENABLE_TEMPLATE_DIR, false);
          templatePath = configuration.getAttribute(HibernateLaunchConstants.ATTR_TEMPLATE_DIR,"");
          preferBasicCompositeIds = configuration.getAttribute(HibernateLaunchConstants.ATTR_PREFER_BASIC_COMPOSITE_IDS, true);
          
@@ -74,21 +73,6 @@ public class ExporterAttributes
       }
    }
    
-   public void save (ILaunchConfigurationWorkingCopy configuration)
-   {
-      configuration.setAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME, consoleConfigurationName);        
-      configuration.setAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR, outputPath);
-      configuration.setAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER, reverseEngineer);
-      configuration.setAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_SETTINGS, revengSettings);
-      configuration.setAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_STRATEGY, revengStrategy);
-      configuration.setAttribute(HibernateLaunchConstants.ATTR_USE_OWN_TEMPLATES, useOwnTemplates);
-      configuration.setAttribute(HibernateLaunchConstants.ATTR_ENABLE_JDK5, enableJDK5);
-      configuration.setAttribute(HibernateLaunchConstants.ATTR_ENABLE_EJB3_ANNOTATIONS, enableEJB3);
-      configuration.setAttribute(HibernateLaunchConstants.ATTR_PACKAGE_NAME, packageName);
-      configuration.setAttribute(HibernateLaunchConstants.ATTR_ENABLE_TEMPLATE_DIR, enableTemplatePath);
-      configuration.setAttribute(HibernateLaunchConstants.ATTR_TEMPLATE_DIR, templatePath);
-      configuration.setAttribute(HibernateLaunchConstants.ATTR_PREFER_BASIC_COMPOSITE_IDS, preferBasicCompositeIds);      
-   }
    
     private Path pathOrNull(String p) {
         if(p==null || p.trim().length()==0) {
@@ -208,13 +192,7 @@ public class ExporterAttributes
       this.useOwnTemplates = useOwnTemplates;
    }
 
-   public boolean isEnableTemplatePath()
-   {
-      return enableTemplatePath;
-   }
+   
 
-   public void setEnableTemplatePath(boolean enableTemplatePath)
-   {
-      this.enableTemplatePath = enableTemplatePath;
-   }
+   
 }
