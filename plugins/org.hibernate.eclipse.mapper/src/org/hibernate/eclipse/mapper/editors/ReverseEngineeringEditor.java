@@ -13,6 +13,7 @@ import org.eclipse.ui.INestableKeyBindingService;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
+import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Settings;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
@@ -20,6 +21,7 @@ import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 import org.hibernate.eclipse.console.model.ITableFilter;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
@@ -151,53 +153,56 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 	}
 
 	public LazyDatabaseSchema getLazyDatabaseSchema() {
-
-		ConsoleConfiguration configuration = KnownConfigurations.getInstance().find( getConsoleConfigurationName() );
-		if(configuration==null) {
-			MessageDialog.openInformation(getContainer().getShell(), "No console configuration", "No console configuration found.\n Select a valid one on the overview page");
+		try {
+			ConsoleConfiguration configuration = KnownConfigurations.getInstance().find( getConsoleConfigurationName() );
+			if(configuration==null) {
+				MessageDialog.openInformation(getContainer().getShell(), "No console configuration", "No console configuration found.\n Select a valid one on the overview page");
+				return null;
+			}
+			ITableFilter[] tableFilters = getReverseEngineeringDefinition().getTableFilters();
+			Configuration cfg = configuration.buildWith(new Configuration(), false);
+			Settings settings = configuration.getSettings(cfg);
+			
+			OverrideRepository repository = new OverrideRepository();///*settings.getDefaultCatalogName(),settings.getDefaultSchemaName()*/);
+			boolean hasIncludes = false;
+			for (int i = 0; i < tableFilters.length; i++) {
+				ITableFilter filter = tableFilters[i];
+				TableFilter tf = new TableFilter();
+				tf.setExclude(filter.getExclude());
+				if(filter.getExclude()!=null && !filter.getExclude().booleanValue()) {
+					hasIncludes = true;
+				}
+				tf.setMatchCatalog(filter.getMatchCatalog());
+				tf.setMatchName(filter.getMatchName());
+				tf.setMatchSchema(filter.getMatchSchema());
+				repository.addTableFilter(tf);
+			}
+			TableFilter tf = new TableFilter();
+			tf.setExclude(Boolean.FALSE);
+			tf.setMatchCatalog(".*");
+			tf.setMatchSchema(".*");
+			tf.setMatchName(".*");
+			repository.addTableFilter(tf);
+			if(tableFilters.length==0) {
+				boolean b = MessageDialog.openQuestion(getContainer().getShell(), "No filters defined", "No filters has been defined.\n This can make the reading of the database schema very slow.\n Do you wish to continue reading the database schema ?");
+				if(!b) {
+					return null;
+				}
+			}
+			if(!hasIncludes && tableFilters.length>0) {
+				boolean b = MessageDialog.openQuestion(getContainer().getShell(), "Only exclude filters defined", "Only exclude filters has been defined.\n This will result in no tables being read from the database schema.\n Do you wish to continue reading the database schema ?");
+				if(!b) {
+					return null;
+				}
+			}
+			
+			LazyDatabaseSchema lazyDatabaseSchema = new LazyDatabaseSchema(configuration, repository.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy()));
+			
+			return lazyDatabaseSchema;
+		} catch(HibernateException he) {
+			HibernateConsolePlugin.getDefault().showError(getContainer().getShell(), "Error while refreshing database tree", he);
 			return null;
 		}
-		ITableFilter[] tableFilters = getReverseEngineeringDefinition().getTableFilters();
-		Configuration cfg = configuration.buildWith(new Configuration(), false);
-		Settings settings = configuration.getSettings(cfg);
-		
-		OverrideRepository repository = new OverrideRepository();///*settings.getDefaultCatalogName(),settings.getDefaultSchemaName()*/);
-		boolean hasIncludes = false;
-		for (int i = 0; i < tableFilters.length; i++) {
-			ITableFilter filter = tableFilters[i];
-			TableFilter tf = new TableFilter();
-			tf.setExclude(filter.getExclude());
-			if(filter.getExclude()!=null && !filter.getExclude().booleanValue()) {
-				hasIncludes = true;
-			}
-			tf.setMatchCatalog(filter.getMatchCatalog());
-			tf.setMatchName(filter.getMatchName());
-			tf.setMatchSchema(filter.getMatchSchema());
-			repository.addTableFilter(tf);
-		}
-		TableFilter tf = new TableFilter();
-		tf.setExclude(Boolean.FALSE);
-		tf.setMatchCatalog(".*");
-		tf.setMatchSchema(".*");
-		tf.setMatchName(".*");
-		repository.addTableFilter(tf);
-		if(tableFilters.length==0) {
-			boolean b = MessageDialog.openQuestion(getContainer().getShell(), "No filters defined", "No filters has been defined.\n This can make the reading of the database schema very slow.\n Do you wish to continue reading the database schema ?");
-			if(!b) {
-				return null;
-			}
-		}
-		if(!hasIncludes && tableFilters.length>0) {
-			boolean b = MessageDialog.openQuestion(getContainer().getShell(), "Only exclude filters defined", "Only exclude filters has been defined.\n This will result in no tables being read from the database schema.\n Do you wish to continue reading the database schema ?");
-			if(!b) {
-				return null;
-			}
-		}
-		
-		LazyDatabaseSchema lazyDatabaseSchema = new LazyDatabaseSchema(configuration, repository.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy()));
-
-		return lazyDatabaseSchema;
-		
 	}
 	
 }
