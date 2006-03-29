@@ -313,6 +313,10 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 		return (IRevEngColumn) factory.adapt((INodeNotifier) getDocument().createElement("column"));
 	}
 
+	public IRevEngColumn createKeyColumn() {
+		return (IRevEngColumn) factory.adapt((INodeNotifier) getDocument().createElement("key-column"));
+	}
+
 	public IRevEngPrimaryKey createPrimaryKey() {
 		return (IRevEngPrimaryKey) factory.adapt((INodeNotifier) getDocument().createElement("primary-key"));
 	}

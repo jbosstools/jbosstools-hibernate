@@ -124,4 +124,8 @@ public class ReverseEngineeringDefinitionImpl implements
 	public IRevEngColumn createColumn() {
 		return null;
 	}
+	
+	public IRevEngColumn createKeyColumn() {
+		return null;
+	}
 }

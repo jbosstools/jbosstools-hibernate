@@ -25,7 +25,8 @@ public class CFGXMLContentAssistProcessor extends HibernateContentAssistProcesso
 
 	
 	protected List getAttributeValueProposals(String attributeName, String matchString, int offset, ContentAssistRequest contentAssistRequest) {
-		if("property".equals(contentAssistRequest.getNode().getNodeName()) && "name".equals(attributeName)) {
+		String nodeName = contentAssistRequest.getNode().getNodeName();
+		if("property".equals(nodeName) && "name".equals(attributeName)) {
 			List types = this.extractor.findMatchingPropertyTypes(matchString);
 			
 			List proposals = new ArrayList(types.size() );		
@@ -35,6 +36,10 @@ public class CFGXMLContentAssistProcessor extends HibernateContentAssistProcesso
 			}
 			return proposals;
 		}
+		if("mapping".equals(nodeName) && "resource".equals(attributeName)) {
+			
+		}
+		
 		return Collections.EMPTY_LIST;
 	}
 

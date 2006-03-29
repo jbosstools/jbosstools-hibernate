@@ -52,7 +52,7 @@ public class ObserverAdapterFactory extends AbstractAdapterFactory {
 			result = new TypeMappingAdapter((Node) target, revEngDefinition);
 		} else if("table".equals(nodeName)) {
 			result = new RevEngTableAdapter((Node) target, revEngDefinition);
-		} else if("column".equals(nodeName)) {
+		} else if("column".equals(nodeName) || "key-column".equals(nodeName)) {
 			result = new RevEngColumnAdapter((Node) target, revEngDefinition);				
 		} else if("primary-key".equals(nodeName)) {
 			result = new RevEngPrimaryKeyAdapter((Node) target, revEngDefinition);

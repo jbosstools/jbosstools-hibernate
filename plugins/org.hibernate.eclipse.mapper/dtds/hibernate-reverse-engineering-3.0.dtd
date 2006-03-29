@@ -16,20 +16,33 @@ TODO: document the tags in the DTD
  -->
 
 <!ELEMENT hibernate-reverse-engineering (
-	type-mapping?,
+	(schema-selection)*, type-mapping?,
 	(table-filter)*, table*)>
 
 <!ELEMENT type-mapping ( sql-type+ ) >
 
 <!-- Defines a sql-type mapping. Will match on any combination of jdbc-type, length, precision and/or scale - first match will win. -->
-<!ELEMENT sql-type EMPTY >
+<!ELEMENT sql-type (hibernate-type?) >
 <!ATTLIST sql-type name CDATA #IMPLIED >
 <!ATTLIST sql-type jdbc-type CDATA #IMPLIED >
 <!ATTLIST sql-type length CDATA #IMPLIED >
 <!ATTLIST sql-type precision CDATA #IMPLIED >
 <!ATTLIST sql-type scale CDATA #IMPLIED >
 <!ATTLIST sql-type not-null (true|false) #IMPLIED >
-<!ATTLIST sql-type hibernate-type CDATA #REQUIRED >
+<!ATTLIST sql-type hibernate-type CDATA #IMPLIED >
+
+<!ELEMENT hibernate-type EMPTY>
+<!ATTLIST hibernate-type name CDATA #REQUIRED >
+
+<!-- Used to target the selection from the database schema. 
+Each schema-selection can be viewed as a "call" to DatabaseMetaData.getTables(). -->
+<!ELEMENT schema-selection EMPTY>
+<!-- Catalog pattern for the selection -->
+<!ATTLIST schema-selection match-catalog CDATA #IMPLIED >
+<!-- Schema for the for the selection -->
+<!ATTLIST schema-selection match-schema  CDATA #IMPLIED >
+<!-- Table pattern for the selection -->
+<!ATTLIST schema-selection match-table    CDATA #IMPLIED >
 
 <!ELEMENT table (primary-key?, column*, foreign-key*) >
 <!-- Catalog for the table -->
@@ -47,20 +60,31 @@ TODO: document the tags in the DTD
 <!ATTLIST column type           CDATA        #IMPLIED >
 <!ATTLIST column property       CDATA        #IMPLIED >
 <!ATTLIST column exclude        (true|false) "false" >
+<!-- too much flexibility to maintain; just use a foreign-key definition
 <!ATTLIST column foreign-catalog CDATA  #IMPLIED >
 <!ATTLIST column foreign-schema CDATA   #IMPLIED >
 <!ATTLIST column foreign-table  CDATA   #IMPLIED >
-<!ATTLIST column foreign-column CDATA   #IMPLIED >
+<!ATTLIST column foreign-column CDATA   #IMPLIED > -->
 
-<!ELEMENT primary-key (generator?, column*) >
+<!ELEMENT key-column EMPTY >
+<!ATTLIST key-column name           CDATA        #REQUIRED >
+<!ATTLIST key-column jdbc-type      CDATA        #IMPLIED >
+<!ATTLIST key-column type           CDATA        #IMPLIED >
+<!ATTLIST key-column property       CDATA        #IMPLIED >
+
+<!ELEMENT primary-key (generator?, key-column*) >
+<!-- Property name to use for this primary key -->
+<!ATTLIST primary-key property        CDATA        #IMPLIED >
+<!-- Class to use if primary-key is a composite -->
+<!ATTLIST primary-key composite-id-class CDATA        #IMPLIED >
 
 <!ELEMENT generator (param*)>
 <!ATTLIST generator class CDATA #REQUIRED>
 <!ELEMENT param (#PCDATA)>
 <!ATTLIST param name CDATA #REQUIRED>
 
-<!ELEMENT foreign-key (column-ref+) >
-<!ATTLIST foreign-key name          CDATA    #IMPLIED >
+<!ELEMENT foreign-key (column-ref+,many-to-one?,(set|bag)?) >
+<!ATTLIST foreign-key constraint-name        CDATA    #IMPLIED >
 <!ATTLIST foreign-key foreign-catalog CDATA  #IMPLIED >
 <!ATTLIST foreign-key foreign-schema CDATA   #IMPLIED >
 <!ATTLIST foreign-key foreign-table CDATA    #REQUIRED >
@@ -71,7 +95,14 @@ TODO: document the tags in the DTD
 <!ATTLIST column-ref local-column   CDATA    #REQUIRED >
 <!ATTLIST column-ref foreign-column CDATA    #IMPLIED >
 
+<!ELEMENT many-to-one EMPTY >
+<!ATTLIST many-to-one property CDATA #REQUIRED>
 
+<!ELEMENT set EMPTY >
+<!ATTLIST set property CDATA #REQUIRED>
+
+<!ELEMENT bag EMPTY >
+<!ATTLIST bag property CDATA #REQUIRED>
 
 <!-- a table-filter allows to explicitly exclude or include tables or complete catalog/schemas into the reverse engineering -->
 <!ELEMENT table-filter EMPTY >

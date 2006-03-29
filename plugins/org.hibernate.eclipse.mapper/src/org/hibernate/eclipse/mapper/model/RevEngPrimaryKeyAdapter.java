@@ -26,7 +26,7 @@ public class RevEngPrimaryKeyAdapter extends DOMAdapter implements
 	}
 
 	public IRevEngColumn[] getColumns() {
-		return (IRevEngColumn[]) getAdaptedElements((Element) getNode(), "column").toArray(new IRevEngColumn[0]);
+		return (IRevEngColumn[]) getAdaptedElements((Element) getNode(), "key-column").toArray(new IRevEngColumn[0]);
 	}
 
 	public void notifyChanged(INodeNotifier notifier, int eventType,
@@ -42,7 +42,7 @@ public class RevEngPrimaryKeyAdapter extends DOMAdapter implements
 	}
 
 	public void addColumn() {
-		RevEngColumnAdapter key = (RevEngColumnAdapter) getModel().createColumn();
+		RevEngColumnAdapter key = (RevEngColumnAdapter) getModel().createKeyColumn();
 		key.setName("column_" + (getColumns().length+1));
 		getNode().appendChild(key.getNode());
 		DOMModelUtil.formatNode(getNode().getParentNode());
