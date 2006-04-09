@@ -36,6 +36,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
+import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
@@ -189,11 +190,15 @@ public class CodeGenerationLaunchDelegate extends
 
 			ConsoleConfiguration cc = KnownConfigurations.getInstance().find(attributes.getConsoleConfigurationName());
 			ReverseEngineeringStrategy res = null;
+			
+			ReverseEngineeringSettings qqsettings = new ReverseEngineeringSettings().setDefaultPackageName(attributes.getPackageName());
+			
 			if (attributes.isReverseEngineer()) {
 				monitor.subTask("reading jdbc metadata");
 						
+				
 				DefaultReverseEngineeringStrategy configurableNamingStrategy = new DefaultReverseEngineeringStrategy();
-				configurableNamingStrategy.setPackageName(attributes.getPackageName());
+				configurableNamingStrategy.setSettings(qqsettings);
 				
 				res = configurableNamingStrategy;
 				if(revengres!=null) {
@@ -204,9 +209,9 @@ public class CodeGenerationLaunchDelegate extends
 					repository.addFile(file);
 					res = repository.getReverseEngineeringStrategy(res);
 				}
-				
+				res.setSettings(qqsettings);
 			}
-			final Configuration cfg = buildConfiguration(attributes.isReverseEngineer(), attributes.getRevengStrategy(), cc, res, attributes.isPreferBasicCompositeIds());
+			final Configuration cfg = buildConfiguration(attributes.isReverseEngineer(), attributes.getRevengStrategy(), cc, res, attributes.isPreferBasicCompositeIds(), qqsettings);
 			
 			monitor.worked(1);
 			
@@ -277,7 +282,7 @@ public class CodeGenerationLaunchDelegate extends
 		else return resource.getRawLocation();  
 	}
 
-	private Configuration buildConfiguration(boolean reveng, final String reverseEngineeringStrategy, ConsoleConfiguration cc, final ReverseEngineeringStrategy revEngStrategy, boolean preferBasicCompositeids) {
+	private Configuration buildConfiguration(boolean reveng, final String reverseEngineeringStrategy, ConsoleConfiguration cc, final ReverseEngineeringStrategy revEngStrategy, boolean preferBasicCompositeids, final ReverseEngineeringSettings settings) {
 		if(reveng) {
 			final JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
 			cc.buildWith(cfg,false);
@@ -290,6 +295,7 @@ public class CodeGenerationLaunchDelegate extends
 					
 					if(reverseEngineeringStrategy!=null && reverseEngineeringStrategy.trim().length()>0) {
 						ReverseEngineeringStrategy res = loadreverseEngineeringStrategy(reverseEngineeringStrategy, revEngStrategy);
+						res.setSettings(settings);
 						cfg.setReverseEngineeringStrategy(res);
 					} else {
 						cfg.setReverseEngineeringStrategy(revEngStrategy);
