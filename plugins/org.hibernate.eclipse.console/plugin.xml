@@ -156,6 +156,16 @@
             id="org.hibernate.eclipse.hqleditor.HQLEditor"
             name="HQL Editor">
       </editor>
+      <editor
+            class="org.hibernate.eclipse.criteriaeditor.CriteriaEditor"
+            contributorClass="org.hibernate.eclipse.criteriaeditor.CriteriaEditorActionContributor"
+            extensions="criteria"
+            icon="icons/images/hql_editor.gif"
+            id="org.hibernate.eclipse.criteriaeditor.CriteriaEditor"
+            name="Hibernate Criteria Editor"
+            symbolicFontName="org.eclipse.jdt.ui.editors.textfont">
+      </editor>
+      
    </extension>
     <extension
           point="org.eclipse.ui.actionSets">
@@ -340,32 +350,32 @@
          point="org.hibernate.eclipse.console.exporters">
       <exporter
             classname="org.hibernate.tool.hbm2x.POJOExporter"
-            description="POJO Exporter"
+            description="Domain code (.java)"
             icon="icons/images/mapped_class.gif"
             id="org.hibernate.tools.hbm2java"/>
       <exporter
             classname="org.hibernate.tool.hbm2x.HibernateMappingExporter"
-            description="Hibernate Mapping Exporter"
+            description="Hibernate Mappings (.hbm.xml)"
             icon="icons/images/hibernate_mapping.gif"
             id="org.hibernate.tools.hbm2hbmxml"/>
       <exporter
             classname="org.hibernate.tool.hbm2x.DAOExporter"
-            description="DAO Exporter"
+            description="DAO code (.java)"
             icon="icons/hibernate_small_icon.gif"
             id="org.hibernate.tools.hbm2dao"/>
       <exporter
             classname="org.hibernate.tool.hbm2x.HibernateConfigurationExporter"
-            description="Hibernate Configuration Exporter"
+            description="Hibernate Configuration (hibernate.cfg.xml)"
             icon="icons/hibernate_small_icon.gif"
             id="org.hibernate.tools.hbm2cfgxml"/>
       <exporter
             classname="org.hibernate.tool.hbm2x.DocExporter"
-            description="Schema Doc Exporter"
+            description="Schema html-documentation (.html)"
             icon="icons/images/schema.gif"
             id="org.hibernate.tools.hbm2doc"/>
       <exporter
             classname="org.hibernate.tool.hbm2x.seam.SeamExporter"
-            description="Seam Skeleton App Exporter"
+            description="JBoss Seam Skeleton Application"
             icon="icons/hibernate_small_icon.gif"
             id="org.hibernate.tools.hbm2seam">
          <property
