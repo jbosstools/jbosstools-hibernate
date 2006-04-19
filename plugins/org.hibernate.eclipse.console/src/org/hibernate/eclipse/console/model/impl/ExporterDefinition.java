@@ -21,14 +21,13 @@
  */
 package org.hibernate.eclipse.console.model.impl;
 
-import java.util.Properties;
+import java.util.HashMap;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.hibernate.tool.hbm2x.Exporter;
 
@@ -41,7 +40,7 @@ public class ExporterDefinition {
 
 	private ImageDescriptor iconDescriptor;
 
-	private Properties properties;
+	private HashMap properties;
 
 	public ExporterDefinition(IConfigurationElement element) {
 		this.classname = element.getAttribute( "classname" );
@@ -59,26 +58,41 @@ public class ExporterDefinition {
 	}
 
 	private void createProperties(IConfigurationElement element) {
-		properties = new Properties();
+		properties = new HashMap();
 
 		IConfigurationElement propertyElements[] = element
 				.getChildren( "property" );
 		for (int i = 0; i < propertyElements.length; i++) {
-			properties.put( propertyElements[i].getAttribute( "name" ),
-					propertyElements[i].getAttribute( "value" ) );
+			ExporterProperty property = new ExporterProperty(
+				propertyElements[i].getAttribute("name"),
+				propertyElements[i].getAttribute("description"),
+				propertyElements[i].getAttribute("value"),
+				Boolean.parseBoolean(propertyElements[i].getAttribute("required")));
+			properties.put(property, propertyElements[i].getAttribute("value"));
 		}
 	}
 
 	public Exporter createExporterInstance() {
-		Exporter exporter = null;
+	   Exporter exporter = null;
 
-		try {
-			Class exporterClass = Class.forName( classname );
-			exporter = (Exporter) exporterClass.newInstance();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+      try
+      {
+         Class exporterClass = Class.forName( classname );
+         exporter = (Exporter) exporterClass.newInstance();
+      }
+      catch (ClassNotFoundException e)
+      {
+         e.printStackTrace();
+      }
+      catch (InstantiationException e)
+      {
+         e.printStackTrace();
+      }
+      catch (IllegalAccessException e)
+      {
+         e.printStackTrace();
+      }
+
 
 		return exporter;
 	}
@@ -91,7 +105,7 @@ public class ExporterDefinition {
 		return iconDescriptor;
 	}
 
-	public Properties getProperties() {
+	public HashMap getProperties() {
 		return properties;
 	}
 
