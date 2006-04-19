@@ -61,7 +61,7 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
     private SelectionButtonDialogField useOwnTemplates;
     private StringButtonDialogField templatedir;
     
-    
+    private LaunchAttributes attributes;
     
 	public CodeGenerationSettings() {
 		super();
@@ -385,8 +385,8 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
 	}
 
 	public void initializeFrom(ILaunchConfiguration configuration) {
-		try {			
-           ExporterAttributes attributes = new ExporterAttributes(configuration);
+		try {
+           attributes = new LaunchAttributes(configuration);
            consoleConfigurationName.setText(attributes.getConsoleConfigurationName());
            preferRawCompositeIds.setSelection(attributes.isPreferBasicCompositeIds());
            outputdir.setText(safeText(attributes.getOutputPath()));
