@@ -28,7 +28,7 @@ public class PersistentClassEditPart extends GraphNodeEditPart  {
 	public void refreshVisuals() {
 		PersistentClassFigure myFigure = (PersistentClassFigure) getFigure();
 		
-		myFigure.getLabel().setText( getHeaderName() );
+		myFigure.refreshLabel( getHeaderName() );
 		
 		super.refreshVisuals();		
 	}
@@ -36,7 +36,7 @@ public class PersistentClassEditPart extends GraphNodeEditPart  {
 	protected IFigure createFigure() {
 		
 		String unqualify = getHeaderName();
-		return new PersistentClassFigure(new EditableLabel(unqualify));
+		return new PersistentClassFigure(unqualify);
 	}
 
 	private String getHeaderName() {

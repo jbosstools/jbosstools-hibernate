@@ -41,4 +41,5 @@ public class EclipseImages {
 		return getMap().getImageDescriptor(key);
 	}
 
+
 }
