@@ -369,10 +369,14 @@
             icon="icons/hibernate_small_icon.gif"
             id="org.hibernate.tools.hbm2seam">
          <property
+               description="Seam Application Name"
                name="seam_appname"
+               required="false"
                value="Seam Application"/>
          <property
+               description="Seam Application Short Name"
                name="seam_shortname"
+               required="false"
                value="seamapp"/>
       </exporter>
    </extension>
