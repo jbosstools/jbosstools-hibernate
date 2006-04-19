@@ -1,9 +1,8 @@
 package org.hibernate.eclipse.launch;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
@@ -16,14 +15,22 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.jdt.internal.ui.preferences.ScrolledPageContent;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jface.viewers.CheckStateChangedEvent;
-import org.eclipse.jface.viewers.CheckboxTableViewer;
-import org.eclipse.jface.viewers.ICheckStateListener;
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.ColumnWeightData;
+import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.TableLayout;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -36,13 +43,16 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.hibernate.console.ImageConstants;
-import org.hibernate.eclipse.console.ExtensionManager;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.model.impl.ExporterDefinition;
+import org.hibernate.eclipse.console.model.impl.ExporterInstance;
+import org.hibernate.eclipse.console.model.impl.ExporterProperty;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 
 public class ExporterSettings extends AbstractLaunchConfigurationTab {
@@ -50,19 +60,23 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
 
 	private Button enableJDK5;
 
-	
+	private LaunchAttributes attributes;
+
 	private ExpansionListener expansionListener = new ExpansionListener();
 
-	private List selectedExporters;
+	private ExporterInstance selectedExporter;
 
-	private CheckboxTableViewer exporterTable;
+	private TableViewer exporterTable, exporterProperties;
 
-	private ExporterDefinition[] exporters;
+	private Button addExporterButton;
 
-	private Button selectAll;
+	private Button removeExporterButton;
+    
+    private Button addPropertyButton, removePropertyButton;
 
-	private Button deselectAll;
-
+    private static final String COLUMN_PROPERTY_NAME = "propertyname";
+    private static final String COLUMN_PROPERTY_VALUE = "propertyvalue";
+    
 	/**
 	 * Constructor for SampleNewWizardPage.
 	 * 
@@ -76,9 +90,8 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
 	 * @see IDialogPage#createControl(Composite)
 	 */
 	public void createControl(Composite parent) {
-		selectedExporters = new ArrayList();
-		exporters = ExtensionManager.findExporterDefinitions();
-
+//		selectedExporters = new ArrayList();
+		
 		// initializeDialogUnits(parent);
 		ScrolledPageContent sc = new ScrolledPageContent( parent );
 		Composite container = sc.getBody();
@@ -105,7 +118,9 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
 				container, "General settings", true );
 		Composite exportersComposite = createExpandableComposite( container,
 				"Exporters", true );
-
+		Composite exporterPropertiesComposite = createExpandableComposite( container,
+				"Exporter Properties", true);
+		
 		enableJDK5 = new Button( generalSettingsComposite, SWT.CHECK );
 		enableJDK5.setText( "Use Java 5 syntax" );
 		enableJDK5.addSelectionListener( fieldlistener );
@@ -116,63 +131,182 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
 
 		Composite exporterOptions = new Composite( exportersComposite, SWT.NONE );
 		exporterOptions.setLayout( new GridLayout( 2, false ) );
-		
-		Table table = new Table( exporterOptions, SWT.CHECK | SWT.BORDER
+        exporterOptions.setLayoutData( new GridData( SWT.FILL, SWT.FILL,
+                true, true ) );
+        
+		Table table = new Table( exporterOptions, SWT.BORDER
 				| SWT.V_SCROLL );
-		exporterTable = new CheckboxTableViewer( table );
+		exporterTable = new TableViewer( table );
 		exporterTable.setContentProvider( new ExporterContentProvider() );
 		exporterTable.setLabelProvider( new ExporterLabelProvider() );
-		exporterTable.setInput( exporters );
 		exporterTable.getControl().setLayoutData(
 				new GridData( SWT.FILL, SWT.FILL, true, true ) );
 		exporterTable.setColumnProperties( new String[] { "", "Description" } );
-		exporterTable.addCheckStateListener( new ICheckStateListener() {
-			public void checkStateChanged(CheckStateChangedEvent event) {
-				ExporterDefinition definition = (ExporterDefinition) event
-						.getElement();
 
-				if ( !event.getChecked() && selectedExporters.contains( definition ) ) {
-					selectedExporters.remove( definition );
-				} else if ( event.getChecked() && !selectedExporters.contains( definition ) ) {
-					selectedExporters.add( definition );
-				}
-
-				dialogChanged();
-			}
-		} );
 
 		Composite listActionsComposite = new Composite( exporterOptions,
 				SWT.NONE );
 		listActionsComposite.setLayout( new GridLayout( 1, true ) );
 		listActionsComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL,
 				true, true ) );
+		
+        addExporterButton = new Button(listActionsComposite, SWT.PUSH);
+        addExporterButton.setText("Add Exporter...");
+        
+        removeExporterButton = new Button(listActionsComposite, SWT.PUSH);
+        removeExporterButton.setText("Remove Exporter");
 
-		selectAll = new Button( listActionsComposite, SWT.PUSH );
-		selectAll.setText( "Select All" );
-		selectAll.addSelectionListener( new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				exporterTable.setAllChecked( true );
-				dialogChanged();
-			}
-		} );
+        Composite propertyOptions = new Composite(exporterPropertiesComposite, SWT.NONE);
+        propertyOptions.setLayout( new GridLayout( 2, false ) );
+        propertyOptions.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        
+        Table exporterPropertiesTable = new Table(propertyOptions, SWT.SINGLE | SWT.FULL_SELECTION | SWT.BORDER);
+        TableLayout tableLayout = new TableLayout();
+        exporterPropertiesTable.setLayout(tableLayout);
+        
+        GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
+        data.widthHint = IDialogConstants.ENTRY_FIELD_WIDTH;
+        exporterPropertiesTable.setLayoutData(data);
+        
+        exporterProperties = new TableViewer(exporterPropertiesTable);
+        exporterProperties.setContentProvider(new ExporterContentProvider());
+        exporterProperties.setLabelProvider(new ExporterPropertiesLabelProvider());
+        exporterProperties.setColumnProperties(new String[] { COLUMN_PROPERTY_NAME, COLUMN_PROPERTY_VALUE } );
+        exporterProperties.setCellModifier(new ExporterPropertiesCellModifier(exporterProperties));
+        exporterProperties.setCellEditors(new CellEditor[] { new TextCellEditor(exporterPropertiesTable), new TextCellEditor(exporterPropertiesTable) } );
 
-		deselectAll = new Button( listActionsComposite, SWT.PUSH );
-		deselectAll.setText( "Deselect All" );
-		deselectAll.addSelectionListener( new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				exporterTable.setAllChecked( false );
-				dialogChanged();
-			}
-		} );
+        exporterPropertiesTable.setHeaderVisible(true);
+        exporterPropertiesTable.setLinesVisible(true);
+        exporterPropertiesTable.setEnabled(false);
+        
+        tableLayout.addColumnData(new ColumnWeightData(50));
+        TableColumn column = new TableColumn(exporterPropertiesTable, SWT.NONE, 0);
+        column.setText("Name");
+        column.setResizable(true);
+        
+        tableLayout.addColumnData(new ColumnWeightData(50));
+        column = new TableColumn(exporterPropertiesTable, SWT.NONE, 1);
+        column.setText("Value");
+        column.setResizable(true);
+        
+        tableLayout.layout(exporterPropertiesTable, true);
 
+        Composite propertyActionsComposite = new Composite(propertyOptions, SWT.NONE);
+        propertyActionsComposite.setLayout( new GridLayout( 1, true ) );
+        propertyActionsComposite.setLayoutData( new GridData( SWT.FILL, SWT.FILL,
+                true, true ) );
+        
+        addPropertyButton = new Button(propertyActionsComposite, SWT.PUSH);
+        addPropertyButton.setText("Add Property...");
+        addPropertyButton.setEnabled(false);
+        
+        removePropertyButton = new Button(propertyActionsComposite, SWT.PUSH);
+        removePropertyButton.setText("Remove Property");
+        removePropertyButton.setEnabled(false);
+        
+        addListeners();
 		dialogChanged();
 		setControl( sc );
 	}
+    
+    private void addListeners ()
+    {
+        exporterTable.addSelectionChangedListener(new ISelectionChangedListener () {
+           
+            public void  selectionChanged (SelectionChangedEvent e) {
+               IStructuredSelection selection = (IStructuredSelection) e.getSelection();
+               if (!selection.isEmpty())
+               {
+                  selectedExporter = (ExporterInstance) selection.getFirstElement();
+                  
+                  exporterProperties.setInput(selectedExporter.getProperties().keySet());
+               }
+               else {
+                  exporterProperties.getTable().clearAll();
+                  removePropertyButton.setEnabled(false);
+               }
+               
+               addPropertyButton.setEnabled(!selection.isEmpty());
+               exporterProperties.getTable().setEnabled(!selection.isEmpty());
+               dialogChanged();
+            }
+        } );
+        
+        exporterProperties.addSelectionChangedListener(new ISelectionChangedListener () {
+           public void selectionChanged (SelectionChangedEvent e) {
+              IStructuredSelection selection = (IStructuredSelection) e.getSelection();
+              removePropertyButton.setEnabled(!selection.isEmpty());
+           }
+        });
+        
+        addExporterButton.addSelectionListener( new SelectionAdapter () {
+           public void widgetSelected(SelectionEvent e)
+           {
+              ExporterSelectionDialog dialog = new ExporterSelectionDialog(getShell());
+              int response = dialog.open();
+              if (response == Dialog.OK)
+              {
+                addExporter((ExporterDefinition) dialog.getFirstResult());
+              }
+           }
+        });
+        
+        removeExporterButton.addSelectionListener( new SelectionAdapter () {
+           public void widgetSelected(SelectionEvent e)
+           {
+              IStructuredSelection selection = (IStructuredSelection) exporterTable.getSelection();
+              if (!selection.isEmpty())
+              {
+                 ExporterInstance exporter = (ExporterInstance) selection.getFirstElement();
+                 attributes.getExporterInstances().remove(exporter);
+                 exporterTable.refresh();
+                 
+                 exporterTable.getTable().deselectAll();
+              }
+           }
+        });
+        
+        addPropertyButton.addSelectionListener( new SelectionAdapter () {
+           public void widgetSelected(SelectionEvent e)
+           {
+              ExporterPropertyDialog dialog = new ExporterPropertyDialog(getShell(), selectedExporter);
+              int response = dialog.open();
+              if (response == Dialog.OK)
+              {
+                addProperty(dialog.getProperty(), dialog.getPropertyValue());
+              }
+           }
+        });
+        
+        removePropertyButton.addSelectionListener( new SelectionAdapter () {
+           public void widgetSelected(SelectionEvent e)
+           {
+              IStructuredSelection selection = (IStructuredSelection) exporterProperties.getSelection();
+              if (!selection.isEmpty())
+              {
+                 ExporterProperty property = (ExporterProperty) selection.getFirstElement();
+                 selectedExporter.getProperties().remove(property);
+                 exporterProperties.refresh();
+              }
+           }
+        });
+    }
 
 	private class ExporterContentProvider implements IStructuredContentProvider {
 
 		public Object[] getElements(Object inputElement) {
-			return (Object[]) inputElement;
+			if (inputElement instanceof Object[])
+			{
+				return (Object[]) inputElement;
+			}
+			
+			else if (inputElement instanceof Collection)
+			{
+				Collection collection = (Collection) inputElement;
+				return collection.toArray();
+			}
+			
+			else return new Object[0];
 		}
 
 		public void dispose() {
@@ -188,18 +322,18 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
 										// than having a finalize method.
 
 		public Image getColumnImage(Object element, int columnIndex) {
-			ExporterDefinition definition = (ExporterDefinition) element;
-			Image image = (Image) exp2img.get( definition.getId() );
+			ExporterInstance instance = (ExporterInstance) element;
+			Image image = (Image) exp2img.get( instance.getDefinition().getId() );
 			if ( image == null ) {
-				image = definition.getIconDescriptor().createImage();
-				exp2img.put( definition.getId(), image );
+				image = instance.getDefinition().getIconDescriptor().createImage();
+				exp2img.put( instance.getDefinition().getId(), image );
 			}
 			return image;
 		}
 
 		public String getColumnText(Object element, int columnIndex) {
-			ExporterDefinition definition = (ExporterDefinition) element;
-			return definition.getDescription();
+			ExporterInstance instance = (ExporterInstance) element;
+			return instance.getDefinition().getDescription();
 		}
 
 		public void addListener(ILabelProviderListener listener) {
@@ -224,6 +358,86 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
 		}
 
 	}
+	
+	private class ExporterPropertiesLabelProvider implements ITableLabelProvider
+	{
+		public Image getColumnImage(Object element, int columnIndex) {
+			return null;
+		}
+
+		public String getColumnText(Object element, int columnIndex) {
+			ExporterProperty property = (ExporterProperty) element;
+			
+			if (columnIndex == 0)
+			{
+				return property.getName();
+			}
+			else {
+				ExporterInstance exporter = selectedExporter;
+				if (exporter != null)
+				{
+					return exporter.getProperty(property);
+				}
+			}
+			
+			return null;
+		}
+
+		public void addListener(ILabelProviderListener listener) {}
+		public void dispose() {}
+		public boolean isLabelProperty(Object element, String property) {
+			return true;
+		}
+		public void removeListener(ILabelProviderListener listener) {}
+		
+	}
+    
+    private class ExporterPropertiesCellModifier implements ICellModifier
+    {
+      private TableViewer viewer;
+      public ExporterPropertiesCellModifier (TableViewer viewer)
+      {
+        this.viewer = viewer; 
+      }
+       
+      public boolean canModify(Object element, String property)
+      {
+         return true;
+      }
+
+      public Object getValue(Object element, String property)
+      {
+         ExporterProperty exporterProperty = (ExporterProperty) element;
+         if (property.equals(COLUMN_PROPERTY_NAME))
+         {
+            return exporterProperty.getName();
+         }
+         else
+         {
+            return selectedExporter.getProperty(exporterProperty);
+         }
+      }
+
+      public void modify(Object element, String property, Object value)
+      {
+         TableItem item = (TableItem) element;
+         ExporterProperty exporterProperty = (ExporterProperty) item.getData();
+         
+         if (property.equals(COLUMN_PROPERTY_NAME))
+         {
+            exporterProperty.setName(value.toString());
+         }
+         else if (property.equals(COLUMN_PROPERTY_VALUE))
+         {
+            selectedExporter.setProperty(exporterProperty, value.toString());
+         }
+         
+         viewer.refresh(exporterProperty);
+         setDirty(true);
+         updateLaunchConfigurationDialog();
+      }
+       
+    }
 
 	private Composite createExpandableComposite(Composite parent, String name,
 			boolean expanded) {
@@ -285,12 +499,31 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
 			return;
 		}
 
-		if ( selectedExporters.size() == 0 ) {
-			updateStatus( "At least one exporter option must be selected" );
-			return;
-		}
+//		if ( selectedExporters.size() == 0 ) {
+//			updateStatus( "At least one exporter option must be selected" );
+//			return;
+//		}
 		updateStatus( null );
 	}
+    
+    private void addExporter (ExporterDefinition exporter)
+    {
+       ExporterInstance instance = attributes.createExporterInstance(exporter);
+       attributes.getExporterInstances().add(instance);
+       exporterTable.refresh();
+       
+       setDirty(true);
+       updateLaunchConfigurationDialog();
+    }
+    
+    private void addProperty (ExporterProperty property, String value)
+    {
+       selectedExporter.setProperty(property, value);
+       exporterProperties.refresh();
+       
+       setDirty(true);
+       updateLaunchConfigurationDialog();
+    }
 
 	protected String checkDirectory(IPath path, String name) {
 		IResource res = ResourcesPlugin.getWorkspace().getRoot().findMember(
@@ -352,22 +585,12 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
 
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
-			ExporterAttributes attributes = new ExporterAttributes( configuration );
-			selectedExporters.clear();
+			attributes = new LaunchAttributes( configuration );
 
 			enableEJB3annotations.setSelection( attributes.isEJB3Enabled() );
-			enableJDK5.setSelection( attributes.isJDK5Enabled() );
+			enableJDK5.setSelection( attributes.isJDK5Enabled() );		
 
-			for (int i = 0; i < exporters.length; i++) {
-				if ( exporters[i].isEnabled( configuration ) ) {
-					exporterTable.setChecked( exporters[i], true );
-					selectedExporters.add( exporters[i] );
-				}
-				else {
-					exporterTable.setChecked( exporters[i], false );
-				}
-			}			
-
+			exporterTable.setInput(attributes.getExporterInstances());
 			dialogChanged();
 
 		}
@@ -381,14 +604,9 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
 	}
 
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(HibernateLaunchConstants.ATTR_ENABLE_EJB3_ANNOTATIONS, enableEJB3annotations.getSelection());
-		configuration.setAttribute(HibernateLaunchConstants.ATTR_ENABLE_JDK5, enableJDK5.getSelection() );
-
-		for (int i = 0; i < exporters.length; i++) {
-			ExporterDefinition exporterDefinition = exporters[i];
-			boolean enabled = selectedExporters.contains( exporterDefinition );
-			exporterDefinition.setEnabled( configuration, enabled );
-		}
+		attributes.setEnableEJB3( enableEJB3annotations.getSelection() );
+		attributes.setEnableJDK5( enableJDK5.getSelection() );
+		attributes.save( configuration );
 	}
 
 	public String getName() {
