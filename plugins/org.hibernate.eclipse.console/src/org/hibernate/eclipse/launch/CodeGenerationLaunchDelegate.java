@@ -2,7 +2,7 @@ package org.hibernate.eclipse.launch;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -42,9 +42,9 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext.Command;
-import org.hibernate.eclipse.console.ExtensionManager;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.eclipse.console.model.impl.ExporterDefinition;
+import org.hibernate.eclipse.console.model.impl.ExporterInstance;
+import org.hibernate.eclipse.console.model.impl.ExporterProperty;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.util.ReflectHelper;
@@ -93,18 +93,12 @@ public class CodeGenerationLaunchDelegate extends
 		Assert.isNotNull(configuration);
 		Assert.isNotNull(monitor);
 		try {
-		    ExporterAttributes attributes = new ExporterAttributes(configuration);
+		    LaunchAttributes attributes = new LaunchAttributes(configuration);
             
-            ExporterDefinition exporters[] = ExtensionManager.findExporterDefinitions();
-            List exporterArray = new ArrayList();
-            for (int i = 0; i < exporters.length; i++)
-            {
-               if (exporters[i].isEnabled(configuration)) {
-                  exporterArray.add(exporters[i]);
-               }
-            }
+            List exporterInstances = attributes.getExporterInstances();
+            ExporterInstance exporters[] = (ExporterInstance[]) exporterInstances.toArray(
+                  new ExporterInstance[exporterInstances.size()]);
             
-            exporters = (ExporterDefinition []) exporterArray.toArray(new ExporterDefinition[exporterArray.size()]);
             ArtifactCollector collector = runExporters(attributes, exporters, monitor);
 			refreshOutputDir( attributes.getOutputPath() );
 
@@ -169,7 +163,7 @@ public class CodeGenerationLaunchDelegate extends
 		}
 	}
 
-	private ArtifactCollector runExporters (final ExporterAttributes attributes, final ExporterDefinition[] exporters, final IProgressMonitor monitor)
+	private ArtifactCollector runExporters (final LaunchAttributes attributes, final ExporterInstance[] exporters, final IProgressMonitor monitor)
 	   throws CoreException
     {
 			
@@ -237,20 +231,24 @@ public class CodeGenerationLaunchDelegate extends
                     
                     for (int i = 0; i < exporters.length; i++)
                     {
-                       monitor.subTask(exporters[i].getDescription());
+                       monitor.subTask(exporters[i].getDefinition().getDescription());
                        
                        Properties exporterProperties = new Properties();
                        exporterProperties.putAll(props);
-                       exporterProperties.putAll(exporters[i].getProperties());
+                       for (Iterator iter = exporters[i].getProperties().keySet().iterator(); iter.hasNext(); )
+                       {
+                          ExporterProperty property = (ExporterProperty) iter.next();
+                          exporterProperties.put(property.getName(), exporters[i].getProperty(property));
+                       }
                        
-                       Exporter exporter = exporters[i].createExporterInstance();
+                       Exporter exporter = exporters[i].getDefinition().createExporterInstance();
                        
                        configureExporter (cfg, outputdir, templatePaths, exporterProperties, exporter);
                        
                        exporter.start();
                        monitor.worked(1);
                     }
-					return getArtififactCollector();
+					return getArtifactCollector();
 				}
 
 				private void configureExporter(final Configuration cfg, File outputdir, String[] templatePaths, Properties props, Exporter exporter) {
@@ -258,10 +256,10 @@ public class CodeGenerationLaunchDelegate extends
 					exporter.setOutputDirectory(outputdir);
 					exporter.setConfiguration(cfg);
 					exporter.setTemplatePath(templatePaths);
-					exporter.setArtifactCollector(getArtififactCollector());
+					exporter.setArtifactCollector(getArtifactCollector());
 				}
 
-				private ArtifactCollector getArtififactCollector() {
+				private ArtifactCollector getArtifactCollector() {
 					return artifactCollector ;
 				}
 			});
