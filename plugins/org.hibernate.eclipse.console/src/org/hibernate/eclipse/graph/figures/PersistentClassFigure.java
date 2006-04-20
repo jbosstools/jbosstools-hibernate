@@ -3,18 +3,12 @@ package org.hibernate.eclipse.graph.figures;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.LineBorder;
-import org.eclipse.draw2d.SchemeBorder;
-import org.eclipse.draw2d.SimpleLoweredBorder;
 import org.eclipse.draw2d.ToolbarLayout;
-import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.hibernate.console.ImageConstants;
-import org.hibernate.eclipse.console.utils.EclipseImages;
 
 public class PersistentClassFigure extends Figure {
 
@@ -69,4 +63,7 @@ public class PersistentClassFigure extends Figure {
 		super.paintBorder(graphics);
 	}
 	
+	public void setBounds(Rectangle rect) {		
+		super.setBounds( rect );
+	}
 }

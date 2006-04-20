@@ -27,6 +27,8 @@ import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.workbench.ConfigurationAdapterFactory;
+import org.hibernate.eclipse.criteriaeditor.CriteriaEditorInput;
+import org.hibernate.eclipse.criteriaeditor.CriteriaEditorStorage;
 import org.hibernate.eclipse.hqleditor.HQLEditorInput;
 import org.hibernate.eclipse.hqleditor.HQLEditorStorage;
 import org.hibernate.eclipse.logging.xpl.EclipseLogger;
@@ -217,6 +219,22 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 	}
 	
 	
+	public void openCriteriaEditor(String consoleName, String criteria) {
+		 try {
+		        final IWorkbenchWindow activeWorkbenchWindow =
+		            PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		        IWorkbenchPage page = activeWorkbenchWindow.getActivePage();
+		        
+		        
+		        CriteriaEditorStorage storage = new CriteriaEditorStorage(consoleName, "Critieria: " + consoleName, criteria==null?"":criteria);		        
+		        
+		        final CriteriaEditorInput editorInput = new CriteriaEditorInput(storage);
+		            page.openEditor(editorInput, "org.hibernate.eclipse.criteriaeditor.CriteriaEditor", true);
+		    } catch (PartInitException ex) {
+		        ex.printStackTrace();
+		    }
+	}
+	
 	public void openScratchHQLEditor(String consoleName, String hql) {
 		 try {
 		        final IWorkbenchWindow activeWorkbenchWindow =
@@ -229,7 +247,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 		        final HQLEditorInput editorInput = new HQLEditorInput(storage);
 		            page.openEditor(editorInput, "org.hibernate.eclipse.hqleditor.HQLEditor", true);
 		    } catch (PartInitException ex) {
-		        ex.printStackTrace();
+		        logErrorMessage("Could not open HQL editor for console:" + consoleName, ex);
 		    }
 	}
 
@@ -390,4 +408,6 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 	public static IWorkbenchWindow getActiveWorkbenchWindow() {
 		return getDefault().getWorkbench().getActiveWorkbenchWindow();
 	}
+
+	
 }

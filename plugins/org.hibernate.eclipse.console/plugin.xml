@@ -156,7 +156,7 @@
             id="org.hibernate.eclipse.hqleditor.HQLEditor"
             name="HQL Editor">
       </editor>
-      <editor
+<!--      <editor
             class="org.hibernate.eclipse.criteriaeditor.CriteriaEditor"
             contributorClass="org.hibernate.eclipse.criteriaeditor.CriteriaEditorActionContributor"
             extensions="criteria"
@@ -164,7 +164,7 @@
             id="org.hibernate.eclipse.criteriaeditor.CriteriaEditor"
             name="Hibernate Criteria Editor"
             symbolicFontName="org.eclipse.jdt.ui.editors.textfont">
-      </editor>
+      </editor> -->
       
    </extension>
     <extension

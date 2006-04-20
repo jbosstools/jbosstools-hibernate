@@ -240,11 +240,12 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
         } 
 
         if(packageName.isEnabled() && getOutputPackage().length()>0) {
-            IStatus val= JavaConventions.validatePackageName(getOutputPackage() );
+        	IStatus val= JavaConventions.validatePackageName(getOutputPackage() );
             if (val.getSeverity() == IStatus.ERROR || val.getSeverity() == IStatus.WARNING) {
                 updateStatus(val.getMessage() );
                 return;
             } 
+        	
         }
         
         if(reverseEngineeringSettings.getText().trim().length()>0) {

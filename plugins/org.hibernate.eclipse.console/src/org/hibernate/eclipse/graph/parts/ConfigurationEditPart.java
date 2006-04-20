@@ -14,6 +14,7 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.hibernate.eclipse.graph.layout.DelegatingLayoutManager;
+import org.hibernate.eclipse.graph.layout.GraphXYLayout;
 import org.hibernate.eclipse.graph.model.ConfigurationViewAdapter;
 import org.hibernate.eclipse.graph.model.GraphNode;
 import org.hibernate.eclipse.graph.policy.ConfigurationLayoutEditPolicy;
@@ -110,7 +111,7 @@ public class ConfigurationEditPart extends AbstractGraphicalEditPart implements 
 		
 	}
 
-	public boolean resetModelBounds() {
+	public boolean resetModelBounds(GraphXYLayout layout) {
 
 			List tableParts = getChildren();
 			
@@ -125,8 +126,11 @@ public class ConfigurationEditPart extends AbstractGraphicalEditPart implements 
 					continue;
 
 				Rectangle bounds = persistentClassFigure.getBounds().getCopy();
-				GraphNode table = classPart.getGraphNode();
-				table.setBounds(bounds);
+				GraphNode node = classPart.getGraphNode();
+				node.setBounds(bounds);
+				if(layout!=null) {
+					layout.setConstraint(persistentClassFigure, bounds);
+				}
 			}
 
 			return true;

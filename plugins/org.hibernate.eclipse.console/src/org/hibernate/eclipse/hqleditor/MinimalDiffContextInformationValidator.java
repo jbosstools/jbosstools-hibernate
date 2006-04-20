@@ -7,7 +7,7 @@ import org.eclipse.jface.text.contentassist.IContextInformationPresenter;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 
 /** Will validate context information that were generated within a certain offset. */
-class MinimalDiffContextInformationValidator implements IContextInformationValidator, IContextInformationPresenter {
+public class MinimalDiffContextInformationValidator implements IContextInformationValidator, IContextInformationPresenter {
     protected int basedOffset;
 	private final int minimal;
 

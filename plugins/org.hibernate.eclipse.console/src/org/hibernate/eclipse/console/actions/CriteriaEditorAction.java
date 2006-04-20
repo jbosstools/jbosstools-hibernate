@@ -9,11 +9,11 @@ import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 
-public class HQLScratchpadAction extends ConsoleConfigurationBasedAction {
-	public HQLScratchpadAction() {
-		super( "HQL Scratchpad" );
+public class CriteriaEditorAction extends ConsoleConfigurationBasedAction {
+	public CriteriaEditorAction() {
+		super( "Hibernate Criteria Editor" );
 		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.HQL_EDITOR));
-		setToolTipText("Open HQL Scratchpad");
+		setToolTipText("Open Hibernate Criteria Editor");
 		setEnabled(false);
 	}
 
@@ -27,10 +27,10 @@ public class HQLScratchpadAction extends ConsoleConfigurationBasedAction {
 				Object node = i.next();
 				if(node instanceof ConsoleConfiguration) {
 					final ConsoleConfiguration config = (ConsoleConfiguration) node;
-					HibernateConsolePlugin.getDefault().openScratchHQLEditor(config.getName(), "");
+					HibernateConsolePlugin.getDefault().openCriteriaEditor(config.getName(), "");
 				}
 			} catch(HibernateException he) {
-				HibernateConsolePlugin.getDefault().showError(null, "Exception while trying to open HQL editor", he);
+				HibernateConsolePlugin.getDefault().showError(null, "Exception while trying to start Criteria Editor", he);
 			}
 		} 
 					

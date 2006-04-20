@@ -19,9 +19,9 @@ public class GraphXYLayout extends FreeformLayout {
 		this.diagram = diagram;
 	}
 
-	public void layout(IFigure container) {
-		super.layout( container );
-		diagram.resetModelBounds();
+	public void layout(IFigure container) {		
+		diagram.resetModelBounds(this);
+		super.layout( container );				
 	}
 
 	public Object getConstraint(IFigure child) {
@@ -35,4 +35,10 @@ public class GraphXYLayout extends FreeformLayout {
 		}
 	}
 
+	public void setConstraint(IFigure figure, Object newConstraint) {
+		if(newConstraint!=null && newConstraint instanceof Rectangle) {
+			figure.setBounds((Rectangle) newConstraint);
+		}
+		super.setConstraint( figure, newConstraint );
+	}
 }

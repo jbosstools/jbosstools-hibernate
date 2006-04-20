@@ -43,17 +43,10 @@ public class DelegatingLayoutManager implements LayoutManager {
 	public void layout(IFigure container) {
 
 		if ( diagram.isManualLayoutActive() ) {
-
-			if ( activeLayoutManager != xyLayoutManager ) {
-
-				// yes we are okay to start populating the table bounds
+			// TODO: copy constraints on to xylayoutmanager constraints.
+			
 				setLayoutManager( container, xyLayoutManager );
 				activeLayoutManager.layout( container );
-			}
-			else {
-				setLayoutManager( container, xyLayoutManager );
-				activeLayoutManager.layout( container );
-			}
 		}
 		else {
 			setLayoutManager( container, graphLayoutManager );

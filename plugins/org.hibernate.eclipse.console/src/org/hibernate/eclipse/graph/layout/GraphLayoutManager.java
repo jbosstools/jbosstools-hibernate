@@ -44,7 +44,7 @@ public class GraphLayoutManager extends AbstractLayout
 			return;
 	
 		new DirectedGraphLayoutVisitor().layoutDiagram(diagram);
-		diagram.resetModelBounds();
+		diagram.resetModelBounds(null);
 
 	}
 	

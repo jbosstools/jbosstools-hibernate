@@ -11,6 +11,8 @@ import org.eclipse.jdt.internal.ui.text.java.JavaCompletionProposal;
 import org.eclipse.jdt.ui.text.java.CompletionProposalComparator;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
+import org.hibernate.eclipse.HibernatePlugin;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.hqleditor.HibernateResultCollector.Settings;
 
 public class CompletionHelper {
@@ -33,8 +35,7 @@ public class CompletionHelper {
 				// the smallest snippet possible
 				context.codeComplete(start, start.length(), rc);
 			} catch (JavaModelException jme) {
-				// TODO: handle/report!
-				jme.printStackTrace();
+				HibernateConsolePlugin.getDefault().logErrorMessage("Could not complete java types", jme);
 			}
 			IJavaCompletionProposal[] results = rc.getJavaCompletionProposals();
 			transpose(start, offset, results);
