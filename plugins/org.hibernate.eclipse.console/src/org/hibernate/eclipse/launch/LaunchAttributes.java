@@ -148,8 +148,11 @@ public class LaunchAttributes
 		   }
 	   }
        
-       if (exporterList.length() > 0)
+       if (exporterList.length() > 0) {
           configuration.setAttribute(HibernateLaunchConstants.ATTR_EXPORTER_LIST, exporterList);
+       } else {
+    	   configuration.setAttribute(HibernateLaunchConstants.ATTR_EXPORTER_LIST, (String)null);
+       }
 	}
    
    public void save (ILaunchConfigurationWorkingCopy configuration)

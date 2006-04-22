@@ -262,6 +262,7 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
                  exporterTable.refresh();
                  
                  exporterTable.getTable().deselectAll();
+                 dialogChanged();
               }
            }
         });
@@ -287,6 +288,7 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
                  ExporterProperty property = (ExporterProperty) selection.getFirstElement();
                  selectedExporter.getProperties().remove(property);
                  exporterProperties.refresh();
+                 dialogChanged();
               }
            }
         });
@@ -434,7 +436,7 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
          
          viewer.refresh(exporterProperty);
          setDirty(true);
-         updateLaunchConfigurationDialog();
+         dialogChanged();
       }
        
     }
@@ -499,10 +501,10 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
 			return;
 		}
 
-//		if ( selectedExporters.size() == 0 ) {
-//			updateStatus( "At least one exporter option must be selected" );
-//			return;
-//		}
+		/*if ( selectedExporters.size() == 0 ) {
+			updateStatus( "At least one exporter option must be selected" );
+			return;
+		}*/
 		updateStatus( null );
 	}
     
@@ -513,7 +515,7 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
        exporterTable.refresh();
        
        setDirty(true);
-       updateLaunchConfigurationDialog();
+       dialogChanged();
     }
     
     private void addProperty (ExporterProperty property, String value)
@@ -522,7 +524,7 @@ public class ExporterSettings extends AbstractLaunchConfigurationTab {
        exporterProperties.refresh();
        
        setDirty(true);
-       updateLaunchConfigurationDialog();
+       dialogChanged();
     }
 
 	protected String checkDirectory(IPath path, String name) {

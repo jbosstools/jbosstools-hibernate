@@ -42,9 +42,9 @@
             id="org.hibernate.eclipse.console.views.QueryPageTabView"/>
       <view
             category="hibernatecategory"
-            class="org.hibernate.eclipse.console.views.DynamicQueryTranslatorView"
+            class="org.hibernate.eclipse.console.views.DynamicSQLPreviewView"
             icon="icons/images/hibernate_small_icon.jpg"
-            id="org.hibernate.eclipse.console.views.DynamicQueryTranslatorView"
+            id="org.hibernate.eclipse.console.views.DynamicSQLPreviewView"
             name="Hibernate Dynamic Query Translator"/>
       <view
             category="hibernatecategory"

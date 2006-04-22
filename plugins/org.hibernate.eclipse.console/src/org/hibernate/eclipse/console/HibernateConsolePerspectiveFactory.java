@@ -21,7 +21,7 @@ public class HibernateConsolePerspectiveFactory implements IPerspectiveFactory {
 	private static final String ID_CONFIGURATION_VIEW = "org.hibernate.eclipse.console.views.KnownConfigurationsView";
 	private static final String ID_QUERYRESULTS_VIEW = "org.hibernate.eclipse.console.views.QueryPageTabView";
 	private static final String ID_PROPERTY_SHEET_VIEW = "org.eclipse.ui.views.PropertySheet";
-	private static final String ID_DYNAMIC_QUERY_TRANSLATOR_VIEW = "org.hibernate.eclipse.console.views.DynamicQueryTranslatorView";
+	private static final String ID_DYNAMIC_QUERY_TRANSLATOR_VIEW = "org.hibernate.eclipse.console.views.DynamicSQLPreviewView";
 	private static final String ID_ENTITY_MODEL_VIEW = "org.hibernate.eclipse.graph.EntityGraphView";
 	
 	private static final String ID_QUERY_PARAMETERS = "org.hibernate.eclipse.console.views.QueryParametersView";

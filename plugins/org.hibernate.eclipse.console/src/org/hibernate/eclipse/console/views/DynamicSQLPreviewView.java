@@ -36,7 +36,7 @@ import org.hibernate.impl.SessionFactoryImpl;
 import org.hibernate.type.Type;
 import org.hibernate.util.StringHelper;
 
-public class DynamicQueryTranslatorView extends ViewPart {
+public class DynamicSQLPreviewView extends ViewPart {
 
 	private IPartListener2 partListener = new IPartListener2() {
 	
