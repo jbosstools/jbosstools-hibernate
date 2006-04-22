@@ -61,7 +61,7 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
     private SelectionButtonDialogField useOwnTemplates;
     private StringButtonDialogField templatedir;
     
-    private LaunchAttributes attributes;
+    
     
 	public CodeGenerationSettings() {
 		super();
@@ -240,12 +240,11 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
         } 
 
         if(packageName.isEnabled() && getOutputPackage().length()>0) {
-        	IStatus val= JavaConventions.validatePackageName(getOutputPackage() );
+            IStatus val= JavaConventions.validatePackageName(getOutputPackage() );
             if (val.getSeverity() == IStatus.ERROR || val.getSeverity() == IStatus.WARNING) {
                 updateStatus(val.getMessage() );
                 return;
             } 
-        	
         }
         
         if(reverseEngineeringSettings.getText().trim().length()>0) {
@@ -386,8 +385,8 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
 	}
 
 	public void initializeFrom(ILaunchConfiguration configuration) {
-		try {
-           attributes = new LaunchAttributes(configuration);
+		try {			
+           ExporterAttributes attributes = new ExporterAttributes(configuration);
            consoleConfigurationName.setText(attributes.getConsoleConfigurationName());
            preferRawCompositeIds.setSelection(attributes.isPreferBasicCompositeIds());
            outputdir.setText(safeText(attributes.getOutputPath()));
