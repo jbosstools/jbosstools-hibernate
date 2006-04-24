@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate Console Test Plug-in
 Bundle-SymbolicName: org.hibernate.eclipse.console.test
-Bundle-Version: 3.1.0.beta4
+Bundle-Version: 3.1.0.beta5
 Bundle-ClassPath: org.hibernate.eclipse.console.test.test/,
  lib/hibernate-tools-tests.jar,
  lib/hsqldb.jar,
