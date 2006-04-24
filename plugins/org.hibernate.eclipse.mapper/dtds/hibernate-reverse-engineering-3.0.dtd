@@ -75,34 +75,36 @@ Each schema-selection can be viewed as a "call" to DatabaseMetaData.getTables().
 <!ELEMENT primary-key (generator?, key-column*) >
 <!-- Property name to use for this primary key -->
 <!ATTLIST primary-key property        CDATA        #IMPLIED >
-<!-- Class to use if primary-key is a composite -->
-<!ATTLIST primary-key composite-id-class CDATA        #IMPLIED >
+<!-- Class to use for representing the id -->
+<!ATTLIST primary-key id-class CDATA        #IMPLIED >
 
 <!ELEMENT generator (param*)>
 <!ATTLIST generator class CDATA #REQUIRED>
 <!ELEMENT param (#PCDATA)>
 <!ATTLIST param name CDATA #REQUIRED>
 
-<!ELEMENT foreign-key (column-ref+,many-to-one?,(set|bag)?) >
+<!-- A foreign-key has to have at least a constraint-name AND/OR foreign-table+column-ref's -->
+<!ELEMENT foreign-key (column-ref*,many-to-one?,(set)?) >
 <!ATTLIST foreign-key constraint-name        CDATA    #IMPLIED >
 <!ATTLIST foreign-key foreign-catalog CDATA  #IMPLIED >
 <!ATTLIST foreign-key foreign-schema CDATA   #IMPLIED >
-<!ATTLIST foreign-key foreign-table CDATA    #REQUIRED >
-<!--<!ATTLIST foreign-key cardinality   (many-to-one|one-to-many)    #REQUIRED >
-<!ATTLIST foreign-key direction     (bi|uni|none) #REQUIRED > -->
+<!ATTLIST foreign-key foreign-table CDATA    #IMPLIED >
 
 <!ELEMENT column-ref EMPTY >
 <!ATTLIST column-ref local-column   CDATA    #REQUIRED >
 <!ATTLIST column-ref foreign-column CDATA    #IMPLIED >
 
 <!ELEMENT many-to-one EMPTY >
-<!ATTLIST many-to-one property CDATA #REQUIRED>
+<!ATTLIST many-to-one property CDATA #IMPLIED>
+<!ATTLIST many-to-one exclude (true|false) #IMPLIED>
+
 
 <!ELEMENT set EMPTY >
-<!ATTLIST set property CDATA #REQUIRED>
+<!ATTLIST set property CDATA #IMPLIED>
+<!ATTLIST set exclude (true|false) #IMPLIED>
 
-<!ELEMENT bag EMPTY >
-<!ATTLIST bag property CDATA #REQUIRED>
+<!-- <!ELEMENT bag EMPTY >
+<!ATTLIST bag property CDATA #REQUIRED> -->
 
 <!-- a table-filter allows to explicitly exclude or include tables or complete catalog/schemas into the reverse engineering -->
 <!ELEMENT table-filter EMPTY >
