@@ -226,8 +226,15 @@
     <topic label="Detached queries and subqueries" href="html/reference/en/html/querycriteria.html#querycriteria-detachedqueries"/>
     <topic label="Queries by natural identifier" href="html/reference/en/html/querycriteria.html#query-criteria-naturalid"/></topic>
     <topic label="Native SQL" href="html/reference/en/html/querysql.html">
-    <topic label="Using a SQLQuery" href="html/reference/en/html/querysql.html#querysql-creating"/>
-    <topic label="Alias and property references" href="html/reference/en/html/querysql.html#querysql-aliasreferences"/>
+    <topic label="Using a SQLQuery" href="html/reference/en/html/querysql.html#querysql-creating">
+    <topic label="Scalar queries" href="html/reference/en/html/querysql.html#"/>
+    <topic label="Entity queries" href="html/reference/en/html/querysql.html#"/>
+    <topic label="Handling associations and collections" href="html/reference/en/html/querysql.html#"/>
+    <topic label="Returning multiple entities" href="html/reference/en/html/querysql.html#">
+    <topic label="Alias and property references" href="html/reference/en/html/querysql.html#querysql-aliasreferences"/></topic>
+    <topic label="Returning non-managed entities" href="html/reference/en/html/querysql.html#"/>
+    <topic label="Handling inheritance" href="html/reference/en/html/querysql.html#"/>
+    <topic label="Parameters" href="html/reference/en/html/querysql.html#"/></topic>
     <topic label="Named SQL queries" href="html/reference/en/html/querysql.html#querysql-namedqueries">
     <topic label="Using return-property to explicitly specify column/alias&#xA;      names" href="html/reference/en/html/querysql.html#propertyresults"/>
     <topic label="Using stored procedures for querying" href="html/reference/en/html/querysql.html#sp_query">
