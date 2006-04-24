@@ -142,7 +142,11 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 	 * @param message the error message to log
 	 */
 	public void logErrorMessage(String message, Throwable t) {
-		log(new MultiStatus(HibernateConsolePlugin.ID, IStatus.ERROR , new IStatus[] { throwableToStatus(t.getCause()) }, message, t) );
+		if(t==null) {
+			log(message);
+		} else {
+			log(new MultiStatus(HibernateConsolePlugin.ID, IStatus.ERROR , new IStatus[] { throwableToStatus(t.getCause()) }, message, t) );
+		}
 	}
 	
 	public static IStatus throwableToStatus(Throwable t, int code) {

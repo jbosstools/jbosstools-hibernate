@@ -32,7 +32,7 @@ public class HibernatePropertySourceProvider implements IPropertySourceProvider
 			//			 maybe we should be hooked up with the queryview to get this ?
 			Session currentSession = view.getSelectedQueryPage().getSession();
 			ExecutionContextHolder currentConfiguration = view.getSelectedQueryPage().getConsoleConfiguration();
-			if(currentSession.contains(object) ) {
+			if(currentSession.isOpen() && currentSession.contains(object) ) {
 				return new EntityPropertySource(object, currentSession, currentConfiguration);	
 			} else {
 				return null;

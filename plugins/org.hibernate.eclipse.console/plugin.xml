@@ -201,7 +201,7 @@
                menubarPath="org.eclipse.ui.run/HibernateToolsGroup" 
                id="org.hibernate.eclipse.launch.LaunchMenuDelegateMenu"> 
          </action> 
-         <action 
+<!-- TODO:         <action 
                label="Hibernate Code Generation..." 
                pulldown="true" 
                icon="icons/hibernate_small_icon.gif" 
@@ -209,7 +209,7 @@
                class="org.hibernate.eclipse.launch.LaunchMenuDelegate" 
                toolbarPath="org.eclipse.debug.ui.launchActionSet/hibernatetool" 
                id="org.hibernate.eclipse.launch.LaunchMenuDelegateToolBar"> 
-         </action> 
+         </action>  -->
          <action
                definitionId="org.hibernate.eclipse.launch.OpenHibernateToolsConfigurations"
                label="Hibernate Tools ..."
