@@ -7,22 +7,22 @@
 
 <project name="Hibernate Help" default="build" basedir=".">
 
-	<!-- Give user a chance to override without editing this file
-	     (and without typing -D each time it compiles it) -->
-	<property file="build.properties"/>
-	<property file="${user.home}/.ant.properties"/>
-
+	<property name="hibernate.root" location="../../../../../hibernate"/>
+	<available file="${hibernate.root}" property="hibernate.root.exists"/>
+	<fail unless="hibernate.root.exists">hibernate.root needs to be set to the root of the hibernate svn checkout. Currently it is ${hibernate.root} which does not exist.</fail>
+	
+	<import file="${hibernate.root}/HibernateExt/common/common-build.xml"/>
 
 	<!-- Name of project and version, used to create filenames -->
     <property name="Name" value="Hibernate Help"/>
     <property name="name" value="hibernatehelp"/>
-    <property name="version" value="3.1.0.beta1"/>
+    <property name="version" value="3.1.0.beta5"/>
 
     <property name="common-build.basedir" location="." />
 
     <!-- location of hibernate installation -->
     <property name="hibernate-core.home"
-          location="${common-build.basedir}/../../hibernate-3.1"/>
+          location="${hibernate.root}/../../hibernate-3.2"/>
 	
     <!-- take the api html (javadoc) files from here -->
     <property name="hibernate-core.doc.api"
@@ -51,7 +51,7 @@
 
         <!-- copy in the tool docs -->
         <copy todir="${tmpdir}/html/tools/ant">
-          <fileset dir="../tools/doc/reference/build"/>
+          <fileset dir="${hibernate.root}/HibernateExt/tools/doc/reference/build"/>
         </copy>
         
 		<!-- zip into single zip file (must be called 'doc.zip') -->
