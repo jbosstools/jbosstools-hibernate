@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate Console
 Bundle-SymbolicName: org.hibernate.eclipse.console; singleton:=true
-Bundle-Version: 3.1.0.beta4
+Bundle-Version: 3.1.0.beta5
 Bundle-ClassPath: org.hibernate.eclipse.console.jar
 Bundle-Activator: org.hibernate.eclipse.console.HibernateConsolePlugin
 Bundle-Vendor: Hibernate Team
