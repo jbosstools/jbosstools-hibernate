@@ -15,6 +15,7 @@ import org.hibernate.console.execution.ExecutionContextHolder;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
+import org.hibernate.proxy.HibernateProxyHelper;
 
 
 
@@ -32,7 +33,11 @@ public class EntityPropertySource implements IPropertySource2
 		this.currentSession = currentSession;
 		this.currentConfiguration = currentConfiguration;
 		reflectedObject = object;
-		classMetadata = currentSession.getSessionFactory().getClassMetadata( currentSession.getEntityName(reflectedObject) );
+		if(currentSession.isOpen()) {
+			classMetadata = currentSession.getSessionFactory().getClassMetadata( currentSession.getEntityName(reflectedObject) );
+		} else {
+			classMetadata = currentSession.getSessionFactory().getClassMetadata( HibernateProxyHelper.getClassWithoutInitializingProxy(reflectedObject));
+		}
 							
 	}
 	

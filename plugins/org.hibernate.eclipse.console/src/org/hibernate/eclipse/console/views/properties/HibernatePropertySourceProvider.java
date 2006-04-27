@@ -10,6 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.console.QueryPage;
 import org.hibernate.console.execution.ExecutionContextHolder;
 import org.hibernate.eclipse.console.views.QueryPageTabView;
+import org.hibernate.proxy.HibernateProxyHelper;
 
 public class HibernatePropertySourceProvider implements IPropertySourceProvider
 {	
@@ -32,7 +33,7 @@ public class HibernatePropertySourceProvider implements IPropertySourceProvider
 			//			 maybe we should be hooked up with the queryview to get this ?
 			Session currentSession = view.getSelectedQueryPage().getSession();
 			ExecutionContextHolder currentConfiguration = view.getSelectedQueryPage().getConsoleConfiguration();
-			if(currentSession.isOpen() && currentSession.contains(object) ) {
+			if((currentSession.isOpen() && currentSession.contains(object)) || hasMetaData( object, currentSession) ) {
 				return new EntityPropertySource(object, currentSession, currentConfiguration);	
 			} else {
 				return null;
@@ -40,5 +41,9 @@ public class HibernatePropertySourceProvider implements IPropertySourceProvider
 			
 		}
 		
+	}
+
+	private boolean hasMetaData(Object object, Session currentSession) {
+		return currentSession.getSessionFactory().getClassMetadata(HibernateProxyHelper.getClassWithoutInitializingProxy(object))!=null;
 	}
 }
