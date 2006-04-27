@@ -67,7 +67,7 @@ public class ExporterDefinition {
 				propertyElements[i].getAttribute("name"),
 				propertyElements[i].getAttribute("description"),
 				propertyElements[i].getAttribute("value"),
-				Boolean.parseBoolean(propertyElements[i].getAttribute("required")));
+				Boolean.valueOf(propertyElements[i].getAttribute("required")).booleanValue());
 			properties.put(property, propertyElements[i].getAttribute("value"));
 		}
 	}
