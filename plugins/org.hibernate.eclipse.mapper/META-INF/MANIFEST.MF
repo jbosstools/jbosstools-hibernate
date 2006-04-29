@@ -38,4 +38,4 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.wst.dtd.core,
  org.eclipse.wst.common.ui,
  org.eclipse.pde.core
-Eclipse-AutoStart: true
+Eclipse-LazyStart: true

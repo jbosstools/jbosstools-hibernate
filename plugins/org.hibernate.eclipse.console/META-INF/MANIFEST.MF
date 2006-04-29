@@ -53,4 +53,4 @@ Require-Bundle: org.hibernate.eclipse,
  org.eclipse.debug.core,
  org.eclipse.debug.ui,
  org.eclipse.ui.forms
-Eclipse-AutoStart: true
+Eclipse-LazyStart: true

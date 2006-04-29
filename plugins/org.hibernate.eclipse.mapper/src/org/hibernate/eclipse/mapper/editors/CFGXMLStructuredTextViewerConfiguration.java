@@ -25,6 +25,10 @@ import org.hibernate.eclipse.mapper.MapperPlugin;
 
 public class CFGXMLStructuredTextViewerConfiguration extends StructuredTextViewerConfigurationXML {
 	
+	public CFGXMLStructuredTextViewerConfiguration() {
+		super();
+	}
+	
 	static public IJavaProject findJavaProject(ITextViewer viewer) {
 		
 		if(viewer==null) return null;

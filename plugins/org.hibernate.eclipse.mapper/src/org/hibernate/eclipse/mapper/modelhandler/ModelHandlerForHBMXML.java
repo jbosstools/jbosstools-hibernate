@@ -13,7 +13,7 @@ import org.eclipse.wst.xml.core.internal.modelhandler.XMLModelLoader;
  * Provides hbm.xml model handling. 
  */
 public class ModelHandlerForHBMXML extends AbstractModelHandler implements IModelHandler {
-	public final static String CONTENTTYPE_ID = "org.hibernate.eclipse.mapper.content-type.hbm.xml"; //$NON-NLS-1$
+	public final static String CONTENTTYPE_ID = "org.hibernate.eclipse.mapper.hbmxmlsource"; //$NON-NLS-1$
 	public final static String MODELHANDLER_ID = "org.hibernate.eclipse.mapper.handler.hbm.xml"; //$NON-NLS-1$
 	
 	public ModelHandlerForHBMXML() {

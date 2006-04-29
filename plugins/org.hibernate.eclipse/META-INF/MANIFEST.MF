@@ -287,7 +287,6 @@ Export-Package: EDU.oswego.cs.dl.util.concurrent,
  org.hibernate.secure,
  org.hibernate.sql,
  org.hibernate.stat,
- org.hibernate.tool,
  org.hibernate.tool.ant,
  org.hibernate.tool.hbm2ddl,
  org.hibernate.tool.hbm2x,
@@ -295,7 +294,6 @@ Export-Package: EDU.oswego.cs.dl.util.concurrent,
  org.hibernate.tool.hbm2x.pojo,
  org.hibernate.tool.hbm2x.seam,
  org.hibernate.tool.hbm2x.visitor,
- org.hibernate.tool.instrument,
  org.hibernate.tool.instrument.cglib,
  org.hibernate.tool.instrument.javassist,
  org.hibernate.transaction,
@@ -428,5 +426,5 @@ Export-Package: EDU.oswego.cs.dl.util.concurrent,
  org.w3c.tidy,
  org.w3c.tidy.ant
 Require-Bundle: org.eclipse.core.runtime
-Eclipse-AutoStart: true
+Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: registered

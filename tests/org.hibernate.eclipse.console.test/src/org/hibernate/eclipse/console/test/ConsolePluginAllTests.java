@@ -3,8 +3,6 @@ package org.hibernate.eclipse.console.test;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.hibernate.tool.ToolAllTests;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
 

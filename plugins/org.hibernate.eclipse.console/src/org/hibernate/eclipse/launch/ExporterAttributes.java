@@ -22,10 +22,8 @@
 package org.hibernate.eclipse.launch;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 // This class was created to centralize launch configuration attribute loading/saving

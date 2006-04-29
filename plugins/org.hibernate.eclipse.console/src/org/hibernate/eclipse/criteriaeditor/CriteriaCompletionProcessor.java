@@ -13,11 +13,8 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
-import org.hibernate.eclipse.hqleditor.CompletionHelper;
 import org.hibernate.eclipse.hqleditor.DisplayStringProposalComparator;
-import org.hibernate.eclipse.hqleditor.HibernateResultCollector;
 import org.hibernate.eclipse.hqleditor.MinimalDiffContextInformationValidator;
-import org.hibernate.eclipse.hqleditor.HibernateResultCollector.Settings;
 
 public class CriteriaCompletionProcessor implements IContentAssistProcessor {
 

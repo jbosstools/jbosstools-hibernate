@@ -1,12 +1,11 @@
 package org.hibernate.eclipse.criteriaeditor;
 
-import org.eclipse.jdt.internal.ui.javaeditor.BasicEditorActionContributor;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.editors.text.TextEditorActionContributor;
 import org.eclipse.ui.part.EditorActionBarContributor;
+import org.eclipse.ui.texteditor.BasicTextEditorActionContributor;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 
@@ -14,7 +13,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 /**
  * This class installs and manages actions for the Criteria Editor. 
  */
-public class CriteriaEditorActionContributor extends BasicEditorActionContributor {
+public class CriteriaEditorActionContributor extends BasicTextEditorActionContributor {
 
     /**
      * Constructs an instance of this class.  This is the default constructor.

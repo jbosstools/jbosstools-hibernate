@@ -7,7 +7,6 @@ import java.util.List;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
 import org.hibernate.eclipse.console.workbench.HibernateWorkbenchHelper;
-import org.hibernate.eclipse.graph.figures.EditableLabel;
 import org.hibernate.eclipse.graph.figures.PersistentClassFigure;
 import org.hibernate.eclipse.graph.model.PersistentClassViewAdapter;
 import org.hibernate.eclipse.graph.model.PropertyViewAdapter;

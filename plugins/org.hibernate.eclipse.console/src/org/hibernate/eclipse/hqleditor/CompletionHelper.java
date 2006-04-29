@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+import org.eclipse.jdt.core.CompletionContext;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.eval.IEvaluationContext;
@@ -11,7 +12,6 @@ import org.eclipse.jdt.internal.ui.text.java.JavaCompletionProposal;
 import org.eclipse.jdt.ui.text.java.CompletionProposalComparator;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.hibernate.eclipse.HibernatePlugin;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.hqleditor.HibernateResultCollector.Settings;
 
@@ -27,6 +27,7 @@ public class CompletionHelper {
 			
 			
 			HibernateResultCollector rc = new HibernateResultCollector(javaProject);
+			rc.acceptContext(new CompletionContext());
 			//rc.reset(offset, javaProject, null);
 			rc.setAccepts(settings);
 			try {

@@ -3,6 +3,7 @@
  */
 package org.hibernate.eclipse.mapper.extractor;
 
+import org.eclipse.jdt.core.CompletionContext;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
@@ -47,6 +48,7 @@ class FieldPropertyHandler implements HBMInfoHandler {
 				IType type = project.findType(typename);
 				if(type==null) return new ICompletionProposal[0]; //nothing to look for then
 				rc = new HibernateResultCollector(project);
+				rc.acceptContext(new CompletionContext());
 				rc.setAccepts(false,false,false,false,true,false); // TODO: only handle properties ?
 				//rc.reset(offset, javaProject, null);
 				

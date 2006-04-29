@@ -72,7 +72,7 @@ public class CriteriaEditorInput implements IStorageEditorInput, IPersistableEle
     }
 
     public void setStorage( IStorage storage ) {
-        this.storage = (CriteriaEditorStorage) storage;
+        this.storage = storage;
     }
 
 	public IPersistableElement getPersistable() {

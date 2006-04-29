@@ -17,7 +17,6 @@ import org.eclipse.jface.text.Region;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.IndexedRegion;
 import org.eclipse.wst.sse.core.internal.provisional.StructuredModelManager;
-import org.eclipse.wst.sse.core.internal.util.StringUtils;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMAttr;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.w3c.dom.Attr;
@@ -48,7 +47,7 @@ public abstract class BaseXMLHyperlinkSupport {
 				int regOffset = att.getValueRegionStartOffset();
 				int regLength = att.getValueRegion().getTextLength();
 				String attValue = att.getValueRegionText();
-				if (StringUtils.isQuoted(attValue) ) {
+				if (org.eclipse.wst.sse.core.utils.StringUtils.isQuoted(attValue) ) {
 					regOffset = ++regOffset;
 					regLength = regLength - 2;
 				}

@@ -15,12 +15,10 @@ import org.eclipse.ui.actions.ActionGroup;
 import org.eclipse.ui.actions.SelectionListenerAction;
 import org.hibernate.eclipse.console.actions.AddConfigurationAction;
 import org.hibernate.eclipse.console.actions.BuildSessionFactoryAction;
-import org.hibernate.eclipse.console.actions.CriteriaEditorAction;
 import org.hibernate.eclipse.console.actions.DeleteConfigurationAction;
 import org.hibernate.eclipse.console.actions.EditConsoleConfiguration;
 import org.hibernate.eclipse.console.actions.HQLScratchpadAction;
 import org.hibernate.eclipse.console.actions.RefreshAction;
-import org.hibernate.eclipse.criteriaeditor.CriteriaEditorActionContributor;
 
 /**
  * @author max

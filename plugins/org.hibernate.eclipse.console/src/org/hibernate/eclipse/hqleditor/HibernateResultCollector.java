@@ -16,11 +16,11 @@ import org.eclipse.jdt.ui.text.java.CompletionProposalCollector;
 public class HibernateResultCollector extends CompletionProposalCollector {
 
     public HibernateResultCollector(ICompilationUnit cu) {
-		super(cu);	
+		super(cu);			
 	}
 	
 	public HibernateResultCollector(IJavaProject project) {
-		super(project);
+		super(project);		
 	}
 
 	public static class Settings {

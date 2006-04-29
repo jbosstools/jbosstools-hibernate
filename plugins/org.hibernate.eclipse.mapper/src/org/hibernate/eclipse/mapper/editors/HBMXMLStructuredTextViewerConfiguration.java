@@ -1,8 +1,6 @@
 package org.hibernate.eclipse.mapper.editors;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
@@ -16,6 +14,10 @@ import org.eclipse.wst.xml.ui.internal.contentassist.NoRegionContentAssistProces
 
 public class HBMXMLStructuredTextViewerConfiguration extends StructuredTextViewerConfigurationXML {
 
+	public HBMXMLStructuredTextViewerConfiguration() {
+		
+	}
+	
 	static Map partitionToContentAssist = new HashMap();
 	static {
 		IContentAssistProcessor[] contentAssistProcessor = new IContentAssistProcessor[] { new HBMXMLContentAssistProcessor() };

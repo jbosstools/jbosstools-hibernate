@@ -14,7 +14,7 @@ import org.eclipse.wst.xml.core.internal.modelhandler.XMLModelLoader;
  * Provides hbm.xml model handling. 
  */
 public class ModelHandlerForREVENGXML extends AbstractModelHandler implements IModelHandler {
-	final static String CONTENTTYPE_ID = "org.hibernate.eclipse.mapper.content-type.reveng.xml"; //$NON-NLS-1$
+	final static String CONTENTTYPE_ID = "org.hibernate.eclipse.mapper.revengxmlsource"; //$NON-NLS-1$
 	final static String MODELHANDLER_ID = "org.hibernate.eclipse.mapper.handler.reveng.xml"; //$NON-NLS-1$
 	
 	public ModelHandlerForREVENGXML() {
