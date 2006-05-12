@@ -33,13 +33,17 @@ public class JavaPage extends AbstractQueryPage {
     Criteria criteria = null;
 
     private Interpreter ip;
+
+	private final ConsoleQueryParameter[] queryParameters;
     
     /**
+     * @param queryParameters 
      * @param session2
      */
-    public JavaPage(ConsoleConfiguration cfg, String criteriaCode) {
+    public JavaPage(ConsoleConfiguration cfg, String criteriaCode, ConsoleQueryParameter[] queryParameters) {
 		super(cfg);
         this.criteriaCode =  criteriaCode;
+		this.queryParameters = queryParameters;
     }
 
     public void setSession(Session s) {
@@ -50,10 +54,9 @@ public class JavaPage extends AbstractQueryPage {
             // ugly! TODO: make un-ugly!
             if(o instanceof Criteria) {
                 criteria = (Criteria) o;
-            } if (o instanceof List) {
+            } else if (o instanceof List) {
                 list = (List) o;
-            } 
-            else {
+            } else {
                 list = new ArrayList();
                 list.add(o);   
             }                                                   
@@ -69,12 +72,12 @@ public class JavaPage extends AbstractQueryPage {
     private Interpreter setupInterpreter(Session session) throws EvalError, HibernateException {
         Interpreter interpreter = new Interpreter();
         interpreter.set("session", session);
-        
+        interpreter.setClassLoader( Thread.currentThread().getContextClassLoader() );
         SessionImplementor si = (SessionImplementor)session;
         Map map = si.getFactory().getAllClassMetadata();
         
         Iterator iterator = map.keySet().iterator();
-        
+        //TODO: filter non classes.
         String imports = new String();
         while (iterator.hasNext() ) {
             String element =  (String) iterator.next();
@@ -83,7 +86,7 @@ public class JavaPage extends AbstractQueryPage {
         
         imports += "import org.hibernate.criterion.*;\n";
         imports += "import org.hibernate.*;\n";
-        
+        // TODO: expose the parameters as values to be used in the code.
         interpreter.eval(imports);
         
         return interpreter;
@@ -100,12 +103,13 @@ public class JavaPage extends AbstractQueryPage {
             }
         } 
         catch (HibernateException e) {
+        	list = Collections.EMPTY_LIST;
             addException(e);
         } 
         return list;
     }
 
-    public List getPathNames() {
+	public List getPathNames() {
         List l = new ArrayList();
         l.add("<no info>");       
         return l;

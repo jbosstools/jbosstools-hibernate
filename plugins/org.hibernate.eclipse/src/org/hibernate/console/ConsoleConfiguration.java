@@ -297,7 +297,24 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			}
 		
 		});		
-	}	
+	}
+	
+	public QueryPage executeBSHQuery(final String queryString, final ConsoleQueryParameter[] queryParameters) {
+		return (QueryPage) executionContext.execute(new ExecutionContext.Command() {
+			
+			public Object execute() {
+				Session session = getSessionFactory().openSession();
+				QueryPage qp = new JavaPage(ConsoleConfiguration.this,queryString,queryParameters);
+				qp.setSession(session);
+				
+				qp.setId(++execcount);				
+				fireQueryPageCreated(qp);			
+				return qp;
+			}
+		
+		});	
+	}
+
 	
 	private void fireQueryPageCreated(QueryPage qp) {
 		Iterator i = consoleCfgListeners.iterator(); 
@@ -336,19 +353,6 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		return (ConsoleConfigurationListener[]) consoleCfgListeners.toArray(new ConsoleConfigurationListener[consoleCfgListeners.size()]);
 	}
 		
-	public void executeJavaQuery(final String text) {
-		execute(new ExecutionContext.Command() {
-			public Object execute() {
-				Session session = getSessionFactory().openSession();		        
-		        QueryPage qp = new JavaPage(ConsoleConfiguration.this,text);
-		        qp.setSession(session);
-		        qp.setId(++execcount);
-		        fireQueryPageCreated(qp);
-				return qp;
-			}
-		});
-		
-	}
 
 	public boolean isSessionFactoryCreated() {
 		return sessionFactory!=null;
@@ -384,7 +388,4 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		}); 
 	}
 
-	
-
-	
 }
