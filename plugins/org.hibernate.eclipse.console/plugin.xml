@@ -394,6 +394,10 @@
             class="org.hibernate.eclipse.criteriaeditor.CriteriaQuickAssistProcessor"
             id="org.hibernate.eclipse.criteriaeditor.quickAssistProcessor"
             name="Criteria Quick Assists"/>
+      <quickAssistProcessor
+            class="org.hibernate.eclipse.hqleditor.HQLQuickAssistProcessor"
+            id="org.hibernate.eclipse.hqleditor.quickAssistProcessor"
+            name="HQL Quick Assist"/>
    </extension>
   
 

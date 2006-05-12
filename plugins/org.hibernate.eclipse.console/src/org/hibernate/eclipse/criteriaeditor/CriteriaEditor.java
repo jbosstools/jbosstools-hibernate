@@ -12,8 +12,6 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.eval.IEvaluationContext;
 import org.eclipse.jdt.ui.PreferenceConstants;
-import org.eclipse.jdt.ui.text.IJavaPartitions;
-import org.eclipse.jdt.ui.text.JavaTextTools;
 import org.eclipse.jdt.ui.text.java.CompletionProposalCollector;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -36,8 +34,6 @@ import org.hibernate.console.QueryInputModel;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.Messages;
 import org.hibernate.eclipse.console.QueryEditor;
-import org.hibernate.eclipse.hqleditor.HQLEditorDocumentSetupParticipant;
-import org.hibernate.eclipse.hqleditor.HQLEditorStorage;
 import org.hibernate.mapping.PersistentClass;
 
 public class CriteriaEditor extends AbstractDecoratedTextEditor implements QueryEditor, IShowEditorInput {
@@ -174,7 +170,7 @@ public class CriteriaEditor extends AbstractDecoratedTextEditor implements Query
 		code= prefix + code;
 		IEvaluationContext e= getEvaluationContext(project);
 		if (e != null) {
-			e.codeComplete(code, prefix.length()-1+position, collector);
+			e.codeComplete(code, prefix.length()+position, collector);
 		}
 	}
 	

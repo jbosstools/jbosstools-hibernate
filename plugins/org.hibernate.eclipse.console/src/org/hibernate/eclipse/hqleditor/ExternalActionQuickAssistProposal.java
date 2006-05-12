@@ -1,5 +1,6 @@
-package org.hibernate.eclipse.criteriaeditor;
+package org.hibernate.eclipse.hqleditor;
 
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.ui.text.java.IInvocationContext;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jface.text.IDocument;
@@ -20,7 +21,7 @@ public class ExternalActionQuickAssistProposal implements
 	public ExternalActionQuickAssistProposal(String contents, Image image, String description, IInvocationContext context) {
 		this.contents = contents;
 		this.name = context.getCompilationUnit().getJavaProject().getProject().getName();
-		proposal = new CompletionProposal("",context.getSelectionLength(),0,context.getSelectionOffset()+context.getSelectionLength(), image, description, null,null);
+		proposal = new CompletionProposal("",context.getSelectionLength(),0,context.getSelectionOffset() + context.getSelectionLength(), image, description, null,null);
 	}
 	
 	public int getRelevance() {
@@ -28,7 +29,7 @@ public class ExternalActionQuickAssistProposal implements
 	}
 
 	public void apply(IDocument document) {
-		HibernateConsolePlugin.getDefault().openCriteriaEditor(name, contents);
+		HibernateConsolePlugin.getDefault().openScratchHQLEditor( name, contents);
 	}
 
 	public String getAdditionalProposalInfo() {

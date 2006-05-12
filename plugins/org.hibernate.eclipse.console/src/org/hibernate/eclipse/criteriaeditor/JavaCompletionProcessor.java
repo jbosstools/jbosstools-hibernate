@@ -69,7 +69,8 @@ public class JavaCompletionProcessor implements IContentAssistProcessor {
 				setErrorMessage( "No console configuration found" );
 				return new ICompletionProposal[0];
 			}
-			String prefix = "Session session;";
+			String prefix = "Session session;"; // has to do this because of https://bugs.eclipse.org/bugs/show_bug.cgi?id=141518
+			
 			try {
 				IJavaProject javaProject = ProjectUtils.findJavaProject( editor.getConsoleConfiguration().getName() );
 				collector = new CompletionProposalCollector( javaProject );
