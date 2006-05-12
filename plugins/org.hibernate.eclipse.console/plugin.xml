@@ -399,6 +399,16 @@
             id="org.hibernate.eclipse.hqleditor.quickAssistProcessor"
             name="HQL Quick Assist"/>
    </extension>
+  <extension
+          id="org.hibernate.eclipse.completioncategory"
+          name="Hibernate proposals"
+          point="org.eclipse.jdt.ui.javaCompletionProposalComputer">
+       <javaCompletionProposalComputer
+             activate="true"
+             categoryId="org.hibernate.eclipse.completioncategory"
+             class="org.hibernate.eclipse.hqleditor.HQLJavaCompletionProposalComputer"/>
+       <proposalCategory icon="icons/hibernate_small_icon.gif"/>
+    </extension> 
   
 
  

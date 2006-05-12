@@ -16,6 +16,7 @@ import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 /**
  * content assist processor for HQL code.
@@ -35,7 +36,7 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
     }
 
     public ICompletionProposal[] computeCompletionProposals( ITextViewer viewer, int documentOffset ) {
-        ICompletionProposal[] result = null;
+        ICompletionProposal[] result = new ICompletionProposal[0];
         
         try {
             IDocument doc = viewer.getDocument();
@@ -48,10 +49,15 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
             	partition = viewer.getDocument().getPartition( documentOffset );
             }
 
-            result = computeProposals( doc, partition, documentOffset );            
+            if(partition!=null) {
+            	result = computeProposals( doc, partition.getOffset(), documentOffset, editor.getConsoleConfiguration() );
+            }
         }
         catch (BadLocationException x) {
         }       
+        catch (RuntimeException re) {
+        	HibernateConsolePlugin.getDefault().logErrorMessage( "Error while performing HQL completion", re );
+        }
         
         if (result != null)
             result = sort( result );        
@@ -59,21 +65,21 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
         return result;
     }
 
-    private ICompletionProposal[] computeProposals(IDocument doc, ITypedRegion partition, final int currentOffset) {
+    ICompletionProposal[] computeProposals(IDocument doc, int lineStart, final int currentOffset, ConsoleConfiguration consoleConfiguration) {
     	ICompletionProposal[] result = null;
 
-    	if (doc != null && partition != null && currentOffset >= 0) {
+    	if (doc != null && currentOffset >= 0) {
     		
     		List proposalList = new ArrayList();
     		String startWord = null;
     		
-    		int startOffset = findNearestWhiteSpace( doc, currentOffset, partition.getOffset() );
+    		int startOffset = findNearestWhiteSpace( doc, currentOffset, lineStart );
     		
     		int wordLength = currentOffset - startOffset;
     		startWord = getWord( doc, startOffset, wordLength );            
     		
     		if(startWord!=null) {
-    			findMatchingEntities( currentOffset, proposalList, startWord, editor.getConsoleConfiguration() );
+    			findMatchingEntities( currentOffset, proposalList, startWord, consoleConfiguration );
     			findMatchingWords( currentOffset, proposalList, startWord, HQLCodeScanner.getHQLKeywords(), "keyword" );
     			findMatchingWords( currentOffset, proposalList, startWord, HQLCodeScanner.getHQLFunctionNames(), "function");
     		
@@ -152,7 +158,8 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
     	int tmpOffset = documentOffset - 1;
     	try {
     		while (loop && offset <= tmpOffset) {
-    			if(Character.isWhitespace(doc.getChar(tmpOffset))) {
+    			char c = doc.getChar(tmpOffset);
+				if(c=='"' || Character.isWhitespace(c)) {
     				loop = false;
     			} else {
     				tmpOffset--;
