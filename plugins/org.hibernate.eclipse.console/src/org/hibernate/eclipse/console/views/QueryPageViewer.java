@@ -70,6 +70,15 @@ public class QueryPageViewer {
 		public void removeListener(ILabelProviderListener listener) {
 		}
 	}
+
+
+	public static final Object NULL_VALUE = new Object() {
+	
+		public String toString() {
+			return "<null>";
+		}
+	
+	};
 	
 	// should map to our table model instead
 	class ContentProviderImpl implements IStructuredContentProvider {
@@ -78,7 +87,7 @@ public class QueryPageViewer {
 				QueryPage qp = ( (QueryPage) inputElement);
 				Object[] objects = qp.getList().toArray();
 				if(qp.getExceptions().isEmpty() ) {
-					return objects;
+					return ensureNotNull(objects);
 				} else {
 					Throwable[] throwables = (Throwable[])qp.getExceptions().toArray(new Throwable[0]);
 					HibernateConsolePlugin.getDefault().logErrorMessage("Exception while executing HQL Query", throwables);
@@ -87,6 +96,15 @@ public class QueryPageViewer {
 			} else {
 				return null;
 			}
+		}
+
+		private Object[] ensureNotNull(Object[] objects) {
+			for (int i = 0; i < objects.length; i++) {
+				if(objects[i]==null) {
+					objects[i] = NULL_VALUE;
+				}
+			}
+			return objects;
 		}
 
 		public void dispose() {

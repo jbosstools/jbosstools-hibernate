@@ -65,6 +65,10 @@ public class JavaCompletionProcessor implements IContentAssistProcessor {
 			int position) {
 		try {
 			setErrorMessage( null );
+			if(editor.getConsoleConfiguration()==null) {
+				setErrorMessage( "No console configuration found" );
+				return new ICompletionProposal[0];
+			}
 			String prefix = "Session session;";
 			try {
 				IJavaProject javaProject = ProjectUtils.findJavaProject( editor.getConsoleConfiguration().getName() );
@@ -90,8 +94,10 @@ public class JavaCompletionProcessor implements IContentAssistProcessor {
 			return results;
 		}
 		finally {
-			setErrorMessage( collector.getErrorMessage() );
-			collector = null;		
+			if(collector!=null) {
+				setErrorMessage( collector.getErrorMessage() );
+				collector = null;	
+			}
 		}		
 	}
 

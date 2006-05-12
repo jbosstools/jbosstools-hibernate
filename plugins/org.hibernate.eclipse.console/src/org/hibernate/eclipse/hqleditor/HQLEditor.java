@@ -47,7 +47,7 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
     /** The HQL code scanner, which is used for colorizing the edit text. */
     private HQLCodeScanner fHQLCodeScanner;
     /** The document setup participant object, which is used partition the edit text. */
-    private HQLEditorDocumentSetupParticipant fDocSetupParticipant;
+    private HQLEditorDocumentSetupParticipant docSetupParticipant;
     /** The projection (code folding) support object. */
     private ProjectionSupport fProjectionSupport;
 	final private QueryInputModel queryInputModel;
@@ -319,10 +319,10 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
      * @return the current document setup participant
      */
     public HQLEditorDocumentSetupParticipant getDocumentSetupParticipant() {
-        if (fDocSetupParticipant == null) {
-            fDocSetupParticipant = new HQLEditorDocumentSetupParticipant();
+        if (docSetupParticipant == null) {
+            docSetupParticipant = new HQLEditorDocumentSetupParticipant();
         }
-        return fDocSetupParticipant;
+        return docSetupParticipant;
     }
 
 
@@ -394,7 +394,7 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
      * @return the current document setup participant
      */
     public void setDocumentSetupParticipant( HQLEditorDocumentSetupParticipant docSetupParticipant ) {
-        fDocSetupParticipant = docSetupParticipant;
+        docSetupParticipant = docSetupParticipant;
     }
 
     /**
@@ -413,10 +413,8 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
 				doSetInput(editorInput);
 			}
 			catch (CoreException e) {
-				e.printStackTrace();
+				HibernateConsolePlugin.getDefault().logErrorMessage( "Could not show HQL editor input", e );
 			}
-			
-		
 	}
 
 	public String getQueryString() {		

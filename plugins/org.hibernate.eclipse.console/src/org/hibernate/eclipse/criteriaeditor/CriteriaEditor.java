@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IJavaProject;
@@ -21,6 +22,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IShowEditorInput;
 import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditor;
 import org.eclipse.ui.texteditor.ChainedPreferenceStore;
@@ -34,11 +36,14 @@ import org.hibernate.console.QueryInputModel;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.Messages;
 import org.hibernate.eclipse.console.QueryEditor;
+import org.hibernate.eclipse.hqleditor.HQLEditorDocumentSetupParticipant;
+import org.hibernate.eclipse.hqleditor.HQLEditorStorage;
 import org.hibernate.mapping.PersistentClass;
 
-public class CriteriaEditor extends AbstractDecoratedTextEditor implements QueryEditor {
+public class CriteriaEditor extends AbstractDecoratedTextEditor implements QueryEditor, IShowEditorInput {
 
 	final private QueryInputModel queryInputModel;
+	private CriteriaEditorDocumentSetupParticipant docSetupParticipant;
 	
 	public CriteriaEditor() {
 		super();
@@ -99,14 +104,27 @@ public class CriteriaEditor extends AbstractDecoratedTextEditor implements Query
 		
 		super.doSetInput( input );
 	
-		IDocumentProvider docProvider = getDocumentProvider();
-        IDocument doc = docProvider.getDocument( input );
-        if(doc!=null) {
-        	JavaTextTools tools= HibernateConsolePlugin.getDefault().getJavaTextTools();
-        	tools.setupJavaDocumentPartitioner(doc, IJavaPartitions.JAVA_PARTITIONING);
+		/* Make sure the document partitioner is set up. The document setup
+         * participant sets up document partitioning, which is used for text
+         * colorizing and other text features.
+         */
+        IDocumentProvider docProvider = this.getDocumentProvider();
+        if (docProvider != null) {
+            IDocument doc = docProvider.getDocument( input );
+            if (doc != null) {
+                CriteriaEditorDocumentSetupParticipant docSetupParticipant = getDocumentSetupParticipant();
+                docSetupParticipant.setup( doc );
+            }
         }
-        
+
 	}
+
+	private CriteriaEditorDocumentSetupParticipant getDocumentSetupParticipant() {
+        if (docSetupParticipant == null) {
+            docSetupParticipant = new CriteriaEditorDocumentSetupParticipant();
+        }
+        return docSetupParticipant;
+    }
 
 	public void executeQuery(ConsoleConfiguration cfg) {
 		cfg.executeBSHQuery(getQueryString(), getQueryInputModel().getQueryParametersForQuery() );
@@ -167,5 +185,18 @@ public class CriteriaEditor extends AbstractDecoratedTextEditor implements Query
 		hei.setQuery(getQueryString());
 		performSave(false, progressMonitor);
 	}
-	   
+
+	public void showEditorInput(IEditorInput editorInput) {
+		
+		CriteriaEditorInput hei = (CriteriaEditorInput)getEditorInput();
+		
+		IStorage storage = ((CriteriaEditorInput)editorInput).getStorage();
+		 if (storage instanceof CriteriaEditorStorage) {
+             CriteriaEditorStorage sqlEditorStorage = (CriteriaEditorStorage) storage;
+             getDocumentProvider().getDocument( hei ).set( sqlEditorStorage.getContentsString() );             
+         }		
+	}
+
+	
+
 }

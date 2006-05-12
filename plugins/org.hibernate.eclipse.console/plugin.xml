@@ -388,6 +388,13 @@
                value="seamapp"/>
       </exporter>
    </extension>
+   <extension
+         point="org.eclipse.jdt.ui.quickAssistProcessors">
+      <quickAssistProcessor
+            class="org.hibernate.eclipse.criteriaeditor.CriteriaQuickAssistProcessor"
+            id="org.hibernate.eclipse.criteriaeditor.quickAssistProcessor"
+            name="Criteria Quick Assists"/>
+   </extension>
   
 
  
