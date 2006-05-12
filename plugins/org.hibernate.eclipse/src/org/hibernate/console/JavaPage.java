@@ -48,7 +48,12 @@ public class JavaPage extends AbstractQueryPage {
 
     public void setSession(Session s) {
 		super.setSession(s);
-        try {        
+        try {
+        	if(criteriaCode.indexOf( "System.exit" )>=0) { // TODO: externalize run so we don't need this bogus check!
+        		list = Collections.EMPTY_LIST;
+        		addException( new IllegalArgumentException("System.exit not allowed!") );
+        		return;
+        	}
             ip = setupInterpreter(getSession() );
             Object o =  ip.eval(criteriaCode);
             // ugly! TODO: make un-ugly!
@@ -71,9 +76,11 @@ public class JavaPage extends AbstractQueryPage {
     
     private Interpreter setupInterpreter(Session session) throws EvalError, HibernateException {
         Interpreter interpreter = new Interpreter();
+        
         interpreter.set("session", session);
         interpreter.setClassLoader( Thread.currentThread().getContextClassLoader() );
         SessionImplementor si = (SessionImplementor)session;
+        
         Map map = si.getFactory().getAllClassMetadata();
         
         Iterator iterator = map.keySet().iterator();
