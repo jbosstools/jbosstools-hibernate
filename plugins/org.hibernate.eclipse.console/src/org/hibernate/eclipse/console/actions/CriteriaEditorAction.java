@@ -12,9 +12,10 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
 public class CriteriaEditorAction extends ConsoleConfigurationBasedAction {
 	public CriteriaEditorAction() {
 		super( "Hibernate Criteria Editor" );
-		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.HQL_EDITOR));
+		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.CRITERIA_EDITOR));
 		setToolTipText("Open Hibernate Criteria Editor");
-		setEnabled(false);
+		setEnabled( false );
+		setEnabledWhenNoSessionFactory( true );
 	}
 
 	public void runWithEvent(Event event) {

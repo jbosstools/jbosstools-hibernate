@@ -156,6 +156,13 @@
             id="org.hibernate.eclipse.hqleditor.HQLEditor"
             name="HQL Editor">
       </editor>
+      <editor
+            class="org.hibernate.eclipse.criteriaeditor.CriteriaEditor"
+            contributorClass="org.hibernate.eclipse.criteriaeditor.CriteriaEditorActionContributor"
+            extensions="crit"
+            icon="icons/images/criteria_editor.gif"
+            id="org.hibernate.eclipse.criteriaeditor.CriteriaEditor"
+            name="Criteria Editor"/>
    </extension>
     <extension
           point="org.eclipse.ui.actionSets">
@@ -239,6 +246,7 @@
  <extension point="org.eclipse.ui.actionSetPartAssociations">
   <actionSetPartAssociation targetID="org.hibernate.eclipse.console.actionSet">
    <part id="org.hibernate.eclipse.hqleditor.HQLEditor"/>
+   <part id="org.hibernate.eclipse.criteriaeditor.CriteriaEditor"/>
   </actionSetPartAssociation>
  </extension>
  <extension
@@ -269,6 +277,10 @@
          <factory 
             id ="org.hibernate.eclipse.hqleditor.HQLEditorInputFactory" 
             class="org.hibernate.eclipse.hqleditor.HQLEditorInputFactory"> 
+         </factory> 
+         <factory 
+            id ="org.hibernate.eclipse.criteriaeditor.CriteriaEditorInputFactory" 
+            class="org.hibernate.eclipse.criteriaeditor.CriteriaEditorInputFactory"> 
          </factory> 
    </extension>
    <extension

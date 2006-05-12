@@ -13,6 +13,7 @@ import org.eclipse.ui.part.EditorActionBarContributor;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.RetargetTextEditorAction;
 import org.hibernate.eclipse.console.Messages;
+import org.hibernate.eclipse.console.QueryEditor;
 import org.hibernate.eclipse.console.actions.ExecuteHQLAction;
 
 
@@ -86,8 +87,8 @@ public class HQLEditorActionContributor extends TextEditorActionContributor {
         contentAssistTipAction.setAction( getAction( textEditor, "ContentAssistTip" )); // $NON-NLS-1$
         contentFormatAction.setAction( getAction( textEditor, "ContentFormat" )); // $NON-NLS-1$
         
-        if(targetEditor instanceof HQLEditor) {
-        	executeHQLAction.setHQLEditor((HQLEditor) targetEditor);
+        if(targetEditor instanceof QueryEditor) {
+        	executeHQLAction.setHibernateQueryEditor( (QueryEditor) targetEditor);
         }        
     }
     

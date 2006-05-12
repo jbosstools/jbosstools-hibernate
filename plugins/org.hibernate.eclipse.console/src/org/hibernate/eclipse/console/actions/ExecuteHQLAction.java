@@ -23,7 +23,9 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.QueryEditor;
 import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.hibernate.eclipse.criteriaeditor.CriteriaEditor;
 import org.hibernate.eclipse.hqleditor.HQLEditor;
 
 /**
@@ -32,11 +34,12 @@ import org.hibernate.eclipse.hqleditor.HQLEditor;
  */
 public class ExecuteHQLAction extends Action implements IMenuCreator, IWorkbenchWindowPulldownDelegate2 {
 
-	private HQLEditor hqlEditor;
 
 	Menu dropDown = null;
 
 	private IWorkbenchWindow window;
+
+	private QueryEditor editor;
 	
 	public ExecuteHQLAction() {
 		
@@ -46,9 +49,9 @@ public class ExecuteHQLAction extends Action implements IMenuCreator, IWorkbench
 	}
 
 
-	public ExecuteHQLAction(HQLEditor editor) {
+	public ExecuteHQLAction(QueryEditor editor) {
 		this();
-		this.hqlEditor=editor;
+		setHibernateQueryEditor( editor );
 	}
 
 
@@ -78,8 +81,8 @@ public class ExecuteHQLAction extends Action implements IMenuCreator, IWorkbench
 	protected void fillMenu(Menu menu) {
 		ConsoleConfiguration lastUsed = HibernateConsolePlugin.getDefault().getLastUsedConfiguration();
 		
-		if(hqlEditor!=null) {
-			lastUsed = hqlEditor.getConsoleConfiguration();
+		if(editor!=null) {
+			lastUsed = editor.getConsoleConfiguration();
 		}
 		
 		if (lastUsed != null) {
@@ -100,8 +103,8 @@ public class ExecuteHQLAction extends Action implements IMenuCreator, IWorkbench
 		Action action = new Action() {
 			public void run() {
 				IEditorPart activeEditor = window.getActivePage().getActiveEditor();
-				if(activeEditor!=null && activeEditor instanceof HQLEditor) {
-					ExecuteHQLAction.this.execute(lastUsed, (HQLEditor) activeEditor);
+				if(activeEditor!=null && activeEditor instanceof QueryEditor) {
+					ExecuteHQLAction.this.execute(lastUsed, (QueryEditor) activeEditor);
 				}
 			}
 		};
@@ -113,25 +116,25 @@ public class ExecuteHQLAction extends Action implements IMenuCreator, IWorkbench
 	}
 
 	public void run() {
-		execute(hqlEditor.getConsoleConfiguration(), hqlEditor );
+		execute(editor.getConsoleConfiguration(), editor );
 	}
 	
 	public void runWithEvent(Event event) {
 		super.runWithEvent( event );
 	}
-	protected void execute(ConsoleConfiguration lastUsed, HQLEditor part) {
+	protected void execute(ConsoleConfiguration lastUsed, QueryEditor queryEditor) {
 		try {	
 			if(lastUsed!=null) {
 				if (!lastUsed.isSessionFactoryCreated()) {
-					if (part.askUserForConfiguration(lastUsed.getName())) {
+					if (queryEditor.askUserForConfiguration(lastUsed.getName())) {
 						if(lastUsed.getConfiguration()==null) {
 							lastUsed.build();
 						}
 						lastUsed.buildSessionFactory();
-						lastUsed.executeHQLQuery(part.getQuery(), part.getQueryInputModel().getQueryParametersForQuery() );
+						queryEditor.executeQuery(lastUsed);						
 					}
 				} else {
-					lastUsed.executeHQLQuery(part.getQuery(), part.getQueryInputModel().getQueryParametersForQuery() );
+					queryEditor.executeQuery(lastUsed);					
 				}
 			} 
 		}
@@ -151,10 +154,6 @@ public class ExecuteHQLAction extends Action implements IMenuCreator, IWorkbench
 		throw new IllegalStateException("should not be called!");
 	}
 
-	public void setHQLEditor(HQLEditor hqlEditor) {
-		this.hqlEditor = hqlEditor;		
-	}
-
 	public void setText(String text) {
 			super.setText( text );
 	}
@@ -168,6 +167,11 @@ public class ExecuteHQLAction extends Action implements IMenuCreator, IWorkbench
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {
+	}
+
+
+	public void setHibernateQueryEditor(QueryEditor editor) {
+		this.editor = editor;		
 	}
 
 

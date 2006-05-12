@@ -322,7 +322,7 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 			
 			model.clear();
 			
-			String queryString = editor.getQuery();
+			String queryString = editor.getQueryString();
 			
 			ConsoleQueryParameter cqp = null;
 			int[] positions = StringHelper.locateUnquoted( queryString, '?' );

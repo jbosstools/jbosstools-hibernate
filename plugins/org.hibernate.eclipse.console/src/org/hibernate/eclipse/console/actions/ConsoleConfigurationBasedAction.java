@@ -74,7 +74,7 @@ public abstract class ConsoleConfigurationBasedAction extends SelectionListenerA
 	 */
 	protected boolean updateState(ConsoleConfiguration consoleConfiguration) {
 		if(enabledWhenNoSessionFactory) {
-        	return !consoleConfiguration.isSessionFactoryCreated();
+        	return true;
         } else {
         	return consoleConfiguration.isSessionFactoryCreated();
         }

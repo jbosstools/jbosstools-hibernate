@@ -13,6 +13,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.ui.PreferenceConstants;
+import org.eclipse.jdt.ui.text.JavaTextTools;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
@@ -50,6 +52,8 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 	//Resource bundle.
 	private ResourceBundle resourceBundle;
 	private EclipseLogger logger;
+
+	private JavaTextTools javaTextTools;
 	
 	/**
 	 * The constructor.
@@ -233,9 +237,10 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 		        CriteriaEditorStorage storage = new CriteriaEditorStorage(consoleName, "Critieria: " + consoleName, criteria==null?"":criteria);		        
 		        
 		        final CriteriaEditorInput editorInput = new CriteriaEditorInput(storage);
-		            page.openEditor(editorInput, "org.hibernate.eclipse.criteriaeditor.CriteriaEditor", true);
+		        page.openEditor(editorInput, "org.hibernate.eclipse.criteriaeditor.CriteriaEditor", true);
+		        //page.openEditor(editorInput, "org.eclipse.jdt.ui.CompilationUnitEditor", true);
 		    } catch (PartInitException ex) {
-		        ex.printStackTrace();
+		    	logErrorMessage("Could not open Criteria editor for console:" + consoleName, ex);
 		    }
 	}
 	
@@ -411,6 +416,14 @@ public class HibernateConsolePlugin extends AbstractUIPlugin {
 	
 	public static IWorkbenchWindow getActiveWorkbenchWindow() {
 		return getDefault().getWorkbench().getActiveWorkbenchWindow();
+	}
+
+	public JavaTextTools getJavaTextTools() {
+		if (javaTextTools == null) {
+			javaTextTools = new JavaTextTools(PreferenceConstants.getPreferenceStore());
+		}
+		
+		return javaTextTools;
 	}
 
 	

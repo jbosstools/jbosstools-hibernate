@@ -4,23 +4,23 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.editors.text.TextEditorActionContributor;
 import org.eclipse.ui.part.EditorActionBarContributor;
-import org.eclipse.ui.texteditor.BasicTextEditorActionContributor;
 import org.eclipse.ui.texteditor.ITextEditor;
-
+import org.hibernate.eclipse.console.QueryEditor;
+import org.hibernate.eclipse.console.actions.ExecuteHQLAction;
 
 
 /**
  * This class installs and manages actions for the Criteria Editor. 
  */
-public class CriteriaEditorActionContributor extends BasicTextEditorActionContributor {
+public class CriteriaEditorActionContributor extends TextEditorActionContributor {
 
-    /**
-     * Constructs an instance of this class.  This is the default constructor.
-     */
+	private ExecuteHQLAction executeHQLAction;
+	
     public CriteriaEditorActionContributor() {
         super();
-        
+        executeHQLAction = new ExecuteHQLAction();    
     }
 
     /**
@@ -42,18 +42,17 @@ public class CriteriaEditorActionContributor extends BasicTextEditorActionContri
     public void setActiveEditor( IEditorPart targetEditor ) {
         super.setActiveEditor( targetEditor );
 
-        ITextEditor textEditor = null;
-        if (targetEditor instanceof ITextEditor) {
-            textEditor = (ITextEditor) targetEditor;
-        }
-        
+        if(targetEditor instanceof QueryEditor) {
+        	executeHQLAction.setHibernateQueryEditor((QueryEditor) targetEditor);
+        }            
                 
     }
     
     public void init(IActionBars bars, IWorkbenchPage page) {
     	super.init( bars, page );
     	
-    	bars.updateActionBars();
+    	bars.setGlobalActionHandler("org.hibernate.eclipse.console.actions.ExecuteHQLAction", executeHQLAction);
+        bars.updateActionBars();
     }
     
     

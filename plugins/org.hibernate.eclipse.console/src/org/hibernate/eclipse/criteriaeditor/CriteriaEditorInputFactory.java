@@ -1,14 +1,15 @@
-package org.hibernate.eclipse.hqleditor;
+package org.hibernate.eclipse.criteriaeditor;
 
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.IElementFactory;
 import org.eclipse.ui.IMemento;
 
-public class HQLEditorInputFactory implements IElementFactory {
+//TODO: align this with HQLEditorInputFactory
+public class CriteriaEditorInputFactory implements IElementFactory {
 
-    public final static String ID_FACTORY =  "org.hibernate.eclipse.hqleditor.HQLEditorInputFactory"; //$NON-NLS-1$
-    public final static String ID_STORAGE_EDITOR_INPUT = "HQLEditorStorageEditorInput"; //$NON-NLS-1$
+    public final static String ID_FACTORY =  "org.hibernate.eclipse.criteriaeditor.CriteriaEditorInputFactory"; //$NON-NLS-1$
+    public final static String ID_STORAGE_EDITOR_INPUT = "CriteriaEditorStorageEditorInput"; //$NON-NLS-1$
     
     public final static String KEY_CONFIGURATION_NAME = "configurationname"; //$NON-NLS-1$
     public final static String KEY_EDITOR_INPUT_TYPE = "editorInputType"; //$NON-NLS-1$ 
@@ -25,17 +26,17 @@ public class HQLEditorInputFactory implements IElementFactory {
         String contentName = memento.getString( KEY_STORAGE_NAME );
         String contentString = memento.getString( KEY_STORAGE_CONTENT );
         String configurationName = memento.getString(KEY_CONFIGURATION_NAME);
-        HQLEditorStorage storage = new HQLEditorStorage( configurationName, contentName, contentString );
+        CriteriaEditorStorage storage = new CriteriaEditorStorage( configurationName, contentName, contentString );
         
-        HQLEditorInput hqlStorageInput = new HQLEditorInput( storage );
+        CriteriaEditorInput criteriaStorageInput = new CriteriaEditorInput( storage );
         
                 
-        input = hqlStorageInput;        
+        input = criteriaStorageInput;        
 
         return input; 
     }
 
-    public static void saveState(IMemento memento, HQLEditorInput input) {
+    public static void saveState(IMemento memento, CriteriaEditorInput input) {
         // Save the editor input type.
         memento.putString( KEY_EDITOR_INPUT_TYPE, ID_STORAGE_EDITOR_INPUT );
         
@@ -45,8 +46,8 @@ public class HQLEditorInputFactory implements IElementFactory {
         IStorage storage = input.getStorage();
         if (storage != null) {
             storageName = storage.getName();            
-            if (storage instanceof HQLEditorStorage) {
-                HQLEditorStorage sqlEditorStorage = (HQLEditorStorage) storage;
+            if (storage instanceof CriteriaEditorStorage) {
+                CriteriaEditorStorage sqlEditorStorage = (CriteriaEditorStorage) storage;
                 storageContent = sqlEditorStorage.getContentsString();
                 configurationName = sqlEditorStorage.getConfigurationName();
             }

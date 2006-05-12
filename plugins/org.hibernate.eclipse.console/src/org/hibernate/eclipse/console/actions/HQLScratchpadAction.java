@@ -11,10 +11,11 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
 
 public class HQLScratchpadAction extends ConsoleConfigurationBasedAction {
 	public HQLScratchpadAction() {
-		super( "HQL Scratchpad" );
+		super( "HQL Editor" );
 		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.HQL_EDITOR));
-		setToolTipText("Open HQL Scratchpad");
-		setEnabled(false);
+		setToolTipText("Open HQL Editor");
+		setEnabledWhenNoSessionFactory( true );
+		setEnabled( false );
 	}
 
 	public void runWithEvent(Event event) {

@@ -115,7 +115,12 @@ public class DynamicSQLPreviewView extends ViewPart {
 				ConsoleConfiguration consoleConfiguration = editor.getConsoleConfiguration();
 				if(consoleConfiguration!=null) {
 					if(consoleConfiguration.isSessionFactoryCreated()) {
-						textViewer.getDocument().set(generateSQL(consoleConfiguration.getExecutionContext(), consoleConfiguration.getSessionFactory(), editor.getQuery()));
+						String generateSQL = generateSQL(consoleConfiguration.getExecutionContext(), consoleConfiguration.getSessionFactory(), editor.getQueryString());
+						if(StringHelper.isEmpty( generateSQL )) {
+							textViewer.getDocument().set( "HQL was valid, but no SQL generated. Your configuration most likely does not have any mappings defined." );
+						} else {
+							textViewer.getDocument().set(generateSQL);
+						}
 					} else {
 						textViewer.getDocument().set("Session factory not created for configuration: " + consoleConfiguration.getName());
 					}

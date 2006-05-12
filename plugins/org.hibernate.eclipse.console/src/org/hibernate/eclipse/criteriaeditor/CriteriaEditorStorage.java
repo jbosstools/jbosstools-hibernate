@@ -9,6 +9,7 @@ import java.io.Reader;
 
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 
 /**
  * Storage for Criteria editors without a file
@@ -79,7 +80,7 @@ public class CriteriaEditorStorage implements IStorage {
     }
     
     public IPath getFullPath() {
-        return null;
+        return new Path("/" + hashCode() + ".crit");
     }
 
     public String getName() {

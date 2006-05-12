@@ -32,6 +32,7 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.Messages;
+import org.hibernate.eclipse.console.QueryEditor;
 import org.hibernate.eclipse.console.views.IQueryParametersPage;
 import org.hibernate.eclipse.console.views.QueryParametersPage;
 
@@ -39,7 +40,7 @@ import org.hibernate.eclipse.console.views.QueryParametersPage;
 /**
  * HQL Editor
  */
-public class HQLEditor extends TextEditor implements IPropertyChangeListener, IShowEditorInput {
+public class HQLEditor extends TextEditor implements IPropertyChangeListener, IShowEditorInput, QueryEditor {
 	public static final String PLUGIN_NAME = HibernateConsolePlugin.ID;
 	public static final String HELP_CONTEXT_ID = PLUGIN_NAME + ".hqleditorhelp"; //$NON-NLS-1$
 	
@@ -418,7 +419,7 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
 		
 	}
 
-	public String getQuery() {		
+	public String getQueryString() {		
         IEditorInput editorInput = getEditorInput();
         IDocumentProvider docProvider = getDocumentProvider();
         IDocument doc = docProvider.getDocument( editorInput );
@@ -428,7 +429,7 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
    public void doSave(IProgressMonitor progressMonitor) { 
 	   //super.doSave(progressMonitor);
 	   HQLEditorInput hei = (HQLEditorInput)getEditorInput();
-	   hei.setQuery(getQuery());
+	   hei.setQuery(getQueryString());
 	   performSave(false, progressMonitor);
    }
    
@@ -454,4 +455,9 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
    public QueryInputModel getQueryInputModel() {
 	   return queryInputModel;
    }
+
+   public void executeQuery(ConsoleConfiguration cfg) {
+	   cfg.executeHQLQuery(getQueryString(), getQueryInputModel().getQueryParametersForQuery() );	
+   }
+
 } 

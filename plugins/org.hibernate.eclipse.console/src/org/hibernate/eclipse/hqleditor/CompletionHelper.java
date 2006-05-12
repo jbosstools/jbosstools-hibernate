@@ -57,6 +57,9 @@ public class CompletionHelper {
 				if(wanted==proposal.getReplacementOffset() ) { 
 					//System.out.println("NO TRANSPOSE!");
 				}
+				if(wanted<0) {
+					wanted = 0;
+				}
 				proposal.setReplacementOffset(wanted);
 			} else {
 				Class c = results[i].getClass();

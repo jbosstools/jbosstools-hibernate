@@ -27,13 +27,10 @@ public class CriteriaditorInputFactory implements IElementFactory {
         String configurationName = memento.getString(KEY_CONFIGURATION_NAME);
         CriteriaEditorStorage storage = new CriteriaEditorStorage( configurationName, contentName, contentString );
         
-        
-        
-        // Create a SQLEditorStorageEditorInput from the storage we just created.
-        CriteriaEditorInput hqlStorageInput = new CriteriaEditorInput( storage );
+        CriteriaEditorInput criteriaStorageInput = new CriteriaEditorInput( storage );
         
                 
-        input = hqlStorageInput;        
+        input = criteriaStorageInput;        
 
         return input; 
     }
@@ -49,9 +46,9 @@ public class CriteriaditorInputFactory implements IElementFactory {
         if (storage != null) {
             storageName = storage.getName();            
             if (storage instanceof CriteriaEditorStorage) {
-                CriteriaEditorStorage sqlEditorStorage = (CriteriaEditorStorage) storage;
-                storageContent = sqlEditorStorage.getContentsString();
-                configurationName = sqlEditorStorage.getConfigurationName();
+                CriteriaEditorStorage criteriaEditorStorage = (CriteriaEditorStorage) storage;
+                storageContent = criteriaEditorStorage.getContentsString();
+                configurationName = criteriaEditorStorage.getConfigurationName();
             }
         }
      
