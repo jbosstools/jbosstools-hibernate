@@ -482,7 +482,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 		
 		
 		if(getConfigurationName()==null || getConfigurationName().trim().length() == 0) {
-			updateStatus("A name must be specificed");
+			updateStatus("A name must be specified");
 			return;
 		} else {
 			if(oldConfiguaration==null && KnownConfigurations.getInstance().find(getConfigurationName() )!=null) {
