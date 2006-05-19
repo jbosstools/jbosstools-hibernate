@@ -6,22 +6,20 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.CompletionContext;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.ui.text.java.ContentAssistInvocationContext;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposalComputer;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
-import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.eclipse.jface.text.contentassist.IContextInformation;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.tool.ide.completion.HQLCodeAssist;
+import org.hibernate.tool.ide.completion.IHQLCodeAssist;
 
 public class HQLJavaCompletionProposalComputer implements IJavaCompletionProposalComputer {
 
@@ -49,9 +47,21 @@ public class HQLJavaCompletionProposalComputer implements IJavaCompletionProposa
 		if(coreContext!=null) {
 			 int kind = coreContext.getTokenKind();
 			 if(kind==CompletionContext.TOKEN_KIND_STRING_LITERAL) { 
-				 ConsoleConfiguration configuration = getConfiguration( ctx.getProject() );
-				 if(configuration!=null) {
-					 proposals = Arrays.asList( hqlProcessor.computeProposals( context.getDocument(), 0, context.getInvocationOffset(), configuration ));
+				 ConsoleConfiguration consoleConfiguration = getConfiguration( ctx.getProject() );
+				 if(consoleConfiguration!=null) {					 
+					 Configuration configuration = consoleConfiguration!=null?consoleConfiguration.getConfiguration():null;
+
+					 IHQLCodeAssist hqlEval = new HQLCodeAssist(configuration);
+					 
+					 String query = new String(coreContext.getToken());
+					 int stringStart = getStringStart( ctx.getDocument(), ctx.getInvocationOffset() );
+					 int stringEnd = getStringEnd( ctx.getDocument(), ctx.getInvocationOffset() );
+					 query = ctx.getDocument().get(stringStart, stringEnd-stringStart );
+					 EclipseHQLCompletionRequestor eclipseHQLCompletionCollector = new EclipseHQLCompletionRequestor(stringStart);
+					 hqlEval.codeComplete(query, coreContext.getOffset()-stringStart, eclipseHQLCompletionCollector);
+					 //errorMessage = eclipseHQLCompletionCollector.getLastErrorMessage();
+
+					 proposals = eclipseHQLCompletionCollector.getCompletionProposals();
 				 }
 			 } else {
 				 
@@ -60,7 +70,47 @@ public class HQLJavaCompletionProposalComputer implements IJavaCompletionProposa
 		} catch(RuntimeException re) {
 			HibernateConsolePlugin.getDefault().logErrorMessage( "Error while performing HQL completion in java", re );
 		}
+		catch (BadLocationException e) {
+			HibernateConsolePlugin.getDefault().logErrorMessage( "Error while performing HQL completion in java", e );
+		}
+		
 		return proposals;
+	}
+
+	public int getStringStart(IDocument document, int location) throws BadLocationException {
+
+		if (document == null) {
+			return -1;
+		}
+
+		int end = location;
+		int start = end;
+		while (--start >= 0) {
+			if ('"'==document.getChar(start)) {
+				break;
+			}
+		}
+		start++;
+	
+		return start;
+	}
+
+	public int getStringEnd(IDocument document, int location) throws BadLocationException {
+
+		if (document == null) {
+			return -1;
+		}
+
+		int end = document.getLength();
+		int start = location;
+		while (start < end) {
+			char c = document.getChar(start);
+			if ('"'==c) {
+				break;
+			}
+			start++;
+		}
+		return start;
 	}
 
 	public List computeContextInformation(ContentAssistInvocationContext context, IProgressMonitor monitor) {

@@ -132,35 +132,7 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
 		}
 	}
 
-	private void findMatchingEntities(int documentOffset, List proposalList, String startWord, ConsoleConfiguration lastUsedConfiguration) {
-		if(hasConfiguration(lastUsedConfiguration)) {
-			Configuration configuration = lastUsedConfiguration.getConfiguration();
-			Iterator iterator = configuration.getImports().keySet().iterator();
-			while ( iterator.hasNext() ) {
-				String entityName = (String) iterator.next();
-				if(entityName.startsWith(startWord)) {
-					proposalList.add(new CompletionProposal(entityName, documentOffset-startWord.length(), startWord.length(), entityName.length(), null, entityName, null, null));
-				}
-			}			
-		}		
-	}
-
-	private void findMatchingWords(int documentOffset, List proposalList, String startWord, String[] keywords, String prefix) {
-		int i = Arrays.binarySearch(keywords, startWord);
-		if(i<0) {
-			i = Math.abs(i+1);
-		}
-		
-		for (int cnt = i; cnt < keywords.length; cnt++) {
-			String string = keywords[cnt];
-			if(string.startsWith(startWord)) {
-				proposalList.add(new CompletionProposal(string, documentOffset-startWord.length(), startWord.length(), string.length(), null, string + " (" + prefix + ")", null, null));
-			} else {
-				break;
-			}
-		}
-	}
-
+	
     public IContextInformation[] computeContextInformation( ITextViewer viewer, int documentOffset ) { return null; }
 
     public char[] getCompletionProposalAutoActivationCharacters() { return autoActivationChars; }

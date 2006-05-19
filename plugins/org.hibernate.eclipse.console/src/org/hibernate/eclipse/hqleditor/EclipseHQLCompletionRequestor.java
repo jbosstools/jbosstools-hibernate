@@ -14,18 +14,23 @@ public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor {
 
 	private final List result = new ArrayList();
 	private String lastErrorMessage;
+	private final int virtualOffset;
 	
 	public EclipseHQLCompletionRequestor() {
-		
+		virtualOffset = 0;
 	}
 	
+	public EclipseHQLCompletionRequestor(int virtualOffset) {
+		this.virtualOffset = virtualOffset;
+	}
+
 	public List getCompletionProposals() {		
 		return result;
 	}
 
 	public boolean accept(HQLCompletionProposal proposal) {
 		result.add(new CompletionProposal(proposal.getCompletion(), // replacementString 
-										  proposal.getReplaceStart(), // replacementOffset 
+										  proposal.getReplaceStart()+virtualOffset, // replacementOffset 
 										  proposal.getReplaceEnd()-proposal.getReplaceStart(), // replacementLength
 										  proposal.getCompletion().length(), // cursorPosition (relativeTo replacementStart)
 										  getImage(proposal.getCompletionKind()), 
