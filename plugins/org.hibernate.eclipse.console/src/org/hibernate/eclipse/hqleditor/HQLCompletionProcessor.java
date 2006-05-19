@@ -17,6 +17,8 @@ import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.tool.ide.completion.HQLCodeAssist;
+import org.hibernate.tool.ide.completion.IHQLCodeAssist;
 
 /**
  * content assist processor for HQL code.
@@ -67,7 +69,7 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
 
     ICompletionProposal[] computeProposals(IDocument doc, int lineStart, final int currentOffset, ConsoleConfiguration consoleConfiguration) {
     	ICompletionProposal[] result = null;
-
+    	errorMessage = null;
     	if (doc != null && currentOffset >= 0) {
     		
     		List proposalList = new ArrayList();
@@ -79,20 +81,46 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
     		startWord = getWord( doc, startOffset, wordLength );            
     		
     		if(startWord!=null) {
-    			findMatchingEntities( currentOffset, proposalList, startWord, consoleConfiguration );
-    			findMatchingWords( currentOffset, proposalList, startWord, HQLCodeScanner.getHQLKeywords(), "keyword" );
-    			findMatchingWords( currentOffset, proposalList, startWord, HQLCodeScanner.getHQLFunctionNames(), "function");
-    		
+    			char[] cs = new char[0];
+				try {
+					cs = doc.get(0,doc.getLength()).toCharArray();
+				}
+				catch (BadLocationException e) {
+					errorMessage = "Could not get document contents";
+					return result;
+				}
+				
+				Configuration configuration = consoleConfiguration!=null?consoleConfiguration.getConfiguration():null;
+				
+				IHQLCodeAssist hqlEval = new HQLCodeAssist(configuration);
+				EclipseHQLCompletionRequestor eclipseHQLCompletionCollector = new EclipseHQLCompletionRequestor();
+				hqlEval.codeComplete(doc.get(), currentOffset, eclipseHQLCompletionCollector);
+				proposalList.addAll(eclipseHQLCompletionCollector.getCompletionProposals());
+				errorMessage = eclipseHQLCompletionCollector.getLastErrorMessage();
+    			//findMatchingWords( currentOffset, proposalList, startWord, HQLCodeScanner.getHQLKeywords(), "keyword" );
+    			//findMatchingWords( currentOffset, proposalList, startWord, HQLCodeScanner.getHQLFunctionNames(), "function");
+    			
     			result = (ICompletionProposal[]) proposalList.toArray(new ICompletionProposal[proposalList.size()]);
-    			if(result.length==0) {
-    				errorMessage = "No HQL completions avaialable.";
+    			if(result.length==0 && errorMessage==null) {
+    				errorMessage = "No HQL completions available.";
     			}
+    	
     		} else {
     			errorMessage = "No start word found.";
     		}
     	}
     	
     	return result;
+	}
+
+	private boolean hasConfiguration(ConsoleConfiguration config) {
+		if(config!=null) {
+			Configuration configuration = config.getConfiguration();
+			if(configuration!=null) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private String getWord(IDocument doc, int startOffset, int wordLength) {
@@ -105,17 +133,15 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
 	}
 
 	private void findMatchingEntities(int documentOffset, List proposalList, String startWord, ConsoleConfiguration lastUsedConfiguration) {
-		if(lastUsedConfiguration!=null) {
+		if(hasConfiguration(lastUsedConfiguration)) {
 			Configuration configuration = lastUsedConfiguration.getConfiguration();
-			if(configuration!=null) {
-				Iterator iterator = configuration.getImports().keySet().iterator();
-				while ( iterator.hasNext() ) {
-					String entityName = (String) iterator.next();
-					if(entityName.startsWith(startWord)) {
-						proposalList.add(new CompletionProposal(entityName, documentOffset-startWord.length(), startWord.length(), entityName.length(), null, entityName, null, null));
-					}
+			Iterator iterator = configuration.getImports().keySet().iterator();
+			while ( iterator.hasNext() ) {
+				String entityName = (String) iterator.next();
+				if(entityName.startsWith(startWord)) {
+					proposalList.add(new CompletionProposal(entityName, documentOffset-startWord.length(), startWord.length(), entityName.length(), null, entityName, null, null));
 				}
-			}
+			}			
 		}		
 	}
 

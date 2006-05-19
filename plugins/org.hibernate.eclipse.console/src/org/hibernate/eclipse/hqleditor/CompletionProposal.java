@@ -7,6 +7,7 @@ import org.eclipse.jface.text.contentassist.ICompletionProposalExtension;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 /**
  * Generic completion proposal to be used as is, or as base for other completion proposals.
@@ -148,8 +149,7 @@ public class CompletionProposal implements ICompletionProposal, ICompletionPropo
             documentOffset += document.getLength() - oldLen;
         }
         catch (BadLocationException e) {
-        	// TODO: where to report ?
-            e.printStackTrace();
+        	HibernateConsolePlugin.getDefault().log( e );
         }
     }
 

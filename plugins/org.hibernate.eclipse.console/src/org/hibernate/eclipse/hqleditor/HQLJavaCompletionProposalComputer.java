@@ -64,8 +64,7 @@ public class HQLJavaCompletionProposalComputer implements IJavaCompletionProposa
 	}
 
 	public List computeContextInformation(ContentAssistInvocationContext context, IProgressMonitor monitor) {
-		// TODO Auto-generated method stub
-		return null;
+		return Collections.EMPTY_LIST;
 	}
 
 	public String getErrorMessage() {

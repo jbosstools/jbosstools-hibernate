@@ -93,5 +93,6 @@ public interface ImageConstants {
 	public static final String LAYOUT = "LAYOUT";
 	public static final String LAYOUT_DISABLED = "LAYOUT_DISABLED";
 	public static final String CRITERIA_EDITOR = "images/criteria_editor.gif";
+	public static final String FUNCTION = "FUNCTION";
     
 }
