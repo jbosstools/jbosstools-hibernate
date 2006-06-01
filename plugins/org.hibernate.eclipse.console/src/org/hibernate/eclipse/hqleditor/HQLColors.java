@@ -14,7 +14,7 @@ public class HQLColors {
     public static final RGB HQL_MULTILINE_COMMENT_COLOR    = new RGB( 128, 0, 0 );  
     public static final RGB HQL_QUOTED_LITERAL_COLOR       = new RGB( 0, 0, 255 );  
     public static final RGB HQL_KEYWORD_COLOR              = new RGB( 128, 0, 0 );  
-    public static final RGB HQL_IDENTIFIER_COLOR           = new RGB( 0, 0, 128 );   
+    public static final RGB HQL_IDENTIFIER_COLOR           = new RGB( 0, 128, 128 );   
     public static final RGB HQL_DEFAULT_COLOR              = new RGB( 0, 0, 0 );    
         
     protected Map colorTable = new HashMap(10);

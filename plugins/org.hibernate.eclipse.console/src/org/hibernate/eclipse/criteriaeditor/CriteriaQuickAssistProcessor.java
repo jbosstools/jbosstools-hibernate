@@ -18,6 +18,7 @@ import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.hibernate.eclipse.nature.HibernateNature;
 
 
 public class CriteriaQuickAssistProcessor implements IQuickAssistProcessor {
@@ -52,11 +53,12 @@ public class CriteriaQuickAssistProcessor implements IQuickAssistProcessor {
 
 	public boolean hasAssists(IInvocationContext context) throws CoreException {
 		IJavaProject javaProject = context.getCompilationUnit().getJavaProject();
-		if(javaProject != null) {
-			String name = javaProject.getProject().getName();
-			return KnownConfigurations.getInstance().find( name )!=null;
+		HibernateNature nature = HibernateNature.getHibernateNature( javaProject );
+		if(nature!=null) {
+			return nature.getDefaultConsoleConfiguration()!=null;
+		} else {
+			return false;
 		}
-		return false;
 	}
 
 }

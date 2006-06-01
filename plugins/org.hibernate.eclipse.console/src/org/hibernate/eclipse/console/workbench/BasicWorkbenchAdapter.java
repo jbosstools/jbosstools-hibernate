@@ -62,11 +62,15 @@ public abstract class BasicWorkbenchAdapter implements IDeferredWorkbenchAdapter
 		return obj.toArray((Object[]) Array.newInstance(clazz, obj.size()));
 	}
 
+
+	public Object[] getChildren(Object o, final IProgressMonitor monitor) {
+		return getChildren(o);
+	}
 	
 	public void fetchDeferredChildren(Object object,
 			IElementCollector collector, IProgressMonitor monitor) {
 		try {
-			collector.add(getChildren(object), monitor);
+			collector.add(getChildren(object, monitor), monitor);
 			collector.done();
 		} catch(Exception e) {
 			handleError(collector,e);			

@@ -170,7 +170,6 @@ public class HibernateNature implements IProjectNature {
 	public Table getTable(TableIdentifier nearestTableName) { 
 		// TODO: can be made MUCH more efficient with proper indexing of the tables.
 		// TODO: handle catalog/schema properly
-		List result = new ArrayList();
 		Iterator tableMappings = getTables().iterator();
 		while (tableMappings.hasNext() ) {
 			Table table = (Table) tableMappings.next();
@@ -180,4 +179,19 @@ public class HibernateNature implements IProjectNature {
 		}
 		return null;
 	}
+	
+	/** return HibernateNature or null for a project **/
+	public static HibernateNature getHibernateNature(IJavaProject project) {
+		try {
+			if(project!=null && project.getProject().hasNature(HibernateNature.ID)) {
+				final HibernateNature nature = (HibernateNature) project.getProject().getNature(HibernateNature.ID);
+				return nature;
+			}
+		}
+		catch (CoreException e) {
+			HibernateConsolePlugin.getDefault().logErrorMessage( "Exception when trying to locate Hibernate Nature", e );
+		}		
+		return null;
+	}	
+
 }

@@ -408,8 +408,71 @@
              categoryId="org.hibernate.eclipse.completioncategory"
              class="org.hibernate.eclipse.hqleditor.HQLJavaCompletionProposalComputer"/>
        <proposalCategory icon="icons/hibernate_small_icon.gif"/>
-    </extension> 
+    </extension>
+  <extension
+        point="org.eclipse.wst.common.project.facet.core.facets">
+     <category id="org.hibernate.eclipse.facet.category">
+        <label>Hibernate Facet</label>
+     </category>
+     <project-facet id="org.hibernate.eclipse.facet.hibernate-core">
+        <label>Hibernate Core</label>
+        <description>Enables support for Hibernate</description>
+     </project-facet>
+     <project-facet-version
+           facet="org.hibernate.eclipse.facet.hibernate-core"
+           version="3.2.0.0">
+        <action type="install">
+           <delegate class="org.hibernate.eclipse.facet.HibernateCoreFacetInstallDelegate"/>
+        </action>
+     </project-facet-version>
+  </extension>
+  <extension
+        point="org.eclipse.wst.common.project.facet.core.runtimes">
+     <supported>
+        <facet id="org.hibernate.eclipse.facet.hibernate-core"/>
+        <runtime-component any="true"/>
+     </supported>
+  </extension>
   
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="false"
+            category="hibernatecategory"
+            class="org.hibernate.eclipse.console.views.navigator.KnownConfigurationsNaviagtor"
+            id="org.hibernate.eclipse.navigator.KnownConfigurationsViewer"
+            name="Hibernate Configurations"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.viewer">
+      <viewer viewerId="org.hibernate.eclipse.navigator.KnownConfigurationsViewer"/>
+      <viewerContentBinding viewerId="org.hibernate.eclipse.navigator.KnownConfigurationsViewer">
+         <includes>
+            <contentExtension
+                  isRoot="true"
+                  pattern="org.hibernate.eclipse.navigator.KnownConfigurationsContent"/>
+         </includes>
+      </viewerContentBinding>
+      <viewerContentBinding viewerId="org.eclipse.ui.navigator.ProjectExplorer">
+         <includes>
+            <contentExtension pattern="org.hibernate.eclipse.navigator.KnownConfigurationsContent"/>
+         </includes>
+      </viewerContentBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.navigatorContent">
+      <navigatorContent
+            activeByDefault="true"
+            contentProvider="org.hibernate.eclipse.console.views.NavigatorProvider"
+            id="org.hibernate.eclipse.navigator.KnownConfigurationsContent"
+            labelProvider="org.hibernate.eclipse.console.workbench.xpl.AnyAdaptableLabelProvider"
+            name="Hibernate Known Configurations">
+      <possibleChildren>
+         <instanceof value="java.lang.Object"/>
+      </possibleChildren>         
+      </navigatorContent>
+   </extension>
+
 
  
  <!--

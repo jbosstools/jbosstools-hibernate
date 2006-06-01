@@ -1,7 +1,6 @@
 package org.hibernate.eclipse.hqleditor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,11 +12,10 @@ import org.eclipse.jdt.ui.text.java.IJavaCompletionProposalComputer;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.nature.HibernateNature;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.IHQLCodeAssist;
 
@@ -32,8 +30,12 @@ public class HQLJavaCompletionProposalComputer implements IJavaCompletionProposa
 
 	ConsoleConfiguration getConfiguration(IJavaProject javaProject) {
 		if(javaProject != null) {
-			String name = javaProject.getProject().getName();
-			return KnownConfigurations.getInstance().find( name );
+			HibernateNature nature = HibernateNature.getHibernateNature( javaProject );
+			if(nature!=null) {
+				return nature.getDefaultConsoleConfiguration();
+			} else {
+				return null;
+			}
 		} else {
 			return null;
 		}

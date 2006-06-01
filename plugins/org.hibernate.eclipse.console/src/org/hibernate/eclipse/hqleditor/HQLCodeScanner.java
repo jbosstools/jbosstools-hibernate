@@ -205,6 +205,7 @@ public class HQLCodeScanner extends RuleBasedScanner {
         final IToken keywordToken    = new Token( new TextAttribute( colorProvider.getColor( HQLColors.HQL_KEYWORD_COLOR ), null, SWT.BOLD));
         final IToken functionToken   = new Token( new TextAttribute( colorProvider.getColor( HQLColors.HQL_KEYWORD_COLOR )));
         final IToken otherToken      = new Token( new TextAttribute( colorProvider.getColor( HQLColors.HQL_DEFAULT_COLOR )));
+        final IToken hqlToken        = new Token( new TextAttribute( colorProvider.getColor( HQLColors.HQL_IDENTIFIER_COLOR )));
         
         setDefaultReturnToken( otherToken );
 
@@ -214,6 +215,7 @@ public class HQLCodeScanner extends RuleBasedScanner {
         rules.add( new SingleLineRule( "'", "'", stringToken, '\\' )); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         rules.add( new WhitespaceRule( new HQLWhiteSpaceDetector() ));
 
+        rules.add( new HQLLexerRule( hqlToken ));
         WordRule wordRule = new WordRule( new HQLWordDetector(), otherToken );
         addWordRules( keywordToken, wordRule, getHQLKeywords() );
         addWordRules( functionToken, wordRule, getHQLFunctionNames() );
