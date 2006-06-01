@@ -3,7 +3,8 @@
       id="org.hibernate.eclipse.feature"
       label="Hibernate Tools"
       version="3.1.0.beta5"
-      provider-name="Hibernate Team">
+      provider-name="Hibernate Team"
+      plugin="org.hibernate.eclipse">
 
    <description url="http://tools.hibernate.org">
       Hibernate Tools Eclipse Plugin provides development wizards,
@@ -604,9 +605,16 @@ END OF TERMS AND CONDITIONS
          unpack="false"/>
 
    <plugin
-         id="hudson.freemarker_ide"
+         id="org.jboss.ide.eclipse.freemarker"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
+
+   <plugin
+         id="org.hibernate.eclipse.jdt.apt.ui"
+         download-size="0"
+         install-size="0"
+         version="3.1.0.beta5"
+         unpack="false"/>
 
 </feature>
