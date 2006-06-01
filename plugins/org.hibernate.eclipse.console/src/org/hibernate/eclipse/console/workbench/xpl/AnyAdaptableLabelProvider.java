@@ -181,7 +181,7 @@ public class AnyAdaptableLabelProvider extends LabelProvider implements
         	return (String) element;
         }
         if (adapter == null) {
-            return "Unknown: " + element.getClass().getName(); //$NON-NLS-1$
+            return "Unknown: " + element.getClass().getName() + "(" + element + ")"; //$NON-NLS-1$
         }
         String label = adapter.getLabel(element);
 
