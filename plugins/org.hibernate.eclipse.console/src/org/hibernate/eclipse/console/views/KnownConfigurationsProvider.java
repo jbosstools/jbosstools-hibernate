@@ -20,16 +20,23 @@ class KnownConfigurationsProvider extends DeferredContentProvider implements Kno
 
 	private TreeViewer tv;
 
+	public KnownConfigurationsProvider() {
+	}
+	
 	public void inputChanged(Viewer v, Object oldInput, Object newInput) {
 		super.inputChanged(v, oldInput, newInput);
 		tv = (TreeViewer) v;
-		KnownConfigurations old = (KnownConfigurations) oldInput;
-		if(old!=null) {
-			old.removeConfigurationListener(this);
+		if(oldInput!=null && oldInput instanceof KnownConfigurations) {
+			KnownConfigurations old = (KnownConfigurations) oldInput;
+			if(old!=null) {
+				old.removeConfigurationListener(this);
+			}
 		}
-		KnownConfigurations newz = (KnownConfigurations) newInput;
-		if(newz!=null) {
-			newz.addConsoleConfigurationListener(this);
+		if(newInput!=null && newInput instanceof KnownConfigurations) {
+			KnownConfigurations newz = (KnownConfigurations) newInput;
+			if(newz!=null) {
+				newz.addConsoleConfigurationListener(this);
+			}
 		}
 	}
 	
