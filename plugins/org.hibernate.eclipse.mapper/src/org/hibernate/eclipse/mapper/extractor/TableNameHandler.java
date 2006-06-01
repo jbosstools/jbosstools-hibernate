@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.nature.HibernateNature;
 import org.hibernate.mapping.Table;
 import org.w3c.dom.Attr;
@@ -24,14 +22,9 @@ public class TableNameHandler implements HBMInfoHandler {
 
 		List tables = new ArrayList(); 
 		
-		try {
-			if(javaProject.getProject().hasNature(HibernateNature.ID) ) {
-				HibernateNature nature = (HibernateNature) javaProject.getProject().getNature(HibernateNature.ID);
-				tables = nature.getMatchingTables(start);
-				
-			}
-		} catch (CoreException e) {
-			HibernateConsolePlugin.getDefault().logErrorMessage("Error while fetching table completions", e);
+		HibernateNature nature = HibernateNature.getHibernateNature( javaProject );
+		if(nature!=null) {
+			tables = nature.getMatchingTables(start);
 		}
 		
 		List proposals = new ArrayList();

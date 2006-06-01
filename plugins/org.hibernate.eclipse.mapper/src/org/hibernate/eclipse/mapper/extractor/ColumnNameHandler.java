@@ -31,27 +31,23 @@ public class ColumnNameHandler implements HBMInfoHandler {
 
 		List columns = new ArrayList(); 
 		
-		try {
-			if(javaProject.getProject().hasNature(HibernateNature.ID) ) {
-				HibernateNature nature = (HibernateNature) javaProject.getProject().getNature(HibernateNature.ID);
-				TableIdentifier nearestTableName = extractor.getNearestTableName(node);
-				if(nearestTableName!=null) {
-					Table table = nature.getTable(nearestTableName);
-					if (table!=null) {
-						Iterator tableMappings = table.getColumnIterator();
-						while (tableMappings.hasNext() ) {
-							Column column = (Column) tableMappings.next();
-							if(column.getName().toUpperCase().startsWith(start.toUpperCase()) ) {
-								columns.add(column);
-							}
+		HibernateNature nature = HibernateNature.getHibernateNature( javaProject );
+		if(nature!=null) {
+			TableIdentifier nearestTableName = extractor.getNearestTableName(node);
+			if(nearestTableName!=null) {
+				Table table = nature.getTable(nearestTableName);
+				if (table!=null) {
+					Iterator tableMappings = table.getColumnIterator();
+					while (tableMappings.hasNext() ) {
+						Column column = (Column) tableMappings.next();
+						if(column.getName().toUpperCase().startsWith(start.toUpperCase()) ) {
+							columns.add(column);
 						}
 					}
 				}
-			}
-		} catch (CoreException e) {
-			HibernateConsolePlugin.getDefault().logErrorMessage("Error while fetching table completions", e);
+			}			
 		}
-		
+
 		List proposals = new ArrayList();
 		for (Iterator iter = columns.iterator(); iter.hasNext();) {
 			Column element = (Column) iter.next();

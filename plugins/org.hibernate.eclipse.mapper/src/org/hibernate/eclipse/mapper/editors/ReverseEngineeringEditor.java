@@ -144,12 +144,10 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 	public HibernateNature getHibernateNature() throws CoreException {
 		if(getEditorInput()!=null) {
 			IJavaProject project = ProjectUtils.findJavaProject(getEditorInput());
-			if(project!=null && project.getProject().hasNature(HibernateNature.ID)) {
-				HibernateNature nature = (HibernateNature) project.getProject().getNature(HibernateNature.ID);
-				return nature;
-			}
+			return HibernateNature.getHibernateNature( project );
+		} else {
+			return null;
 		}
-		return null;
 	}
 
 	public LazyDatabaseSchema getLazyDatabaseSchema() {

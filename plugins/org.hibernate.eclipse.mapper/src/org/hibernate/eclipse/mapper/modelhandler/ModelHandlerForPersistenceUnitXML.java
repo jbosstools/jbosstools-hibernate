@@ -10,14 +10,14 @@ import org.eclipse.wst.xml.core.internal.encoding.XMLDocumentLoader;
 import org.eclipse.wst.xml.core.internal.modelhandler.XMLModelLoader;
 
 /**
- * Provides hbm.xml model handling. 
+ * Provides persistence unit model handling. 
  */
-public class ModelHandlerForCFGXML extends AbstractModelHandler implements IModelHandler {
+public class ModelHandlerForPersistenceUnitXML extends AbstractModelHandler implements IModelHandler {
 	
-	final static String CONTENTTYPE_ID = "org.hibernate.eclipse.mapper.cfgxmlsource"; //$NON-NLS-1$
-	final private static String MODELHANDLER_ID = "org.hibernate.eclipse.mapper.handler.cfg.xml"; //$NON-NLS-1$
+	final static String CONTENTTYPE_ID = "org.hibernate.eclipse.mapper.persistenceunitxml"; //$NON-NLS-1$
+	final private static String MODELHANDLER_ID = "org.hibernate.eclipse.mapper.handler.persistenceunitxml"; //$NON-NLS-1$
 	
-	public ModelHandlerForCFGXML() {
+	public ModelHandlerForPersistenceUnitXML() {
 		super();
 		setId(MODELHANDLER_ID);
 		setAssociatedContentTypeId(CONTENTTYPE_ID);
