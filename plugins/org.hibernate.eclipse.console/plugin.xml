@@ -203,7 +203,7 @@
          <action 
                label="Hibernate Code Generation..." 
                pulldown="true" 
-               icon="icons/hibernate_small_icon.gif" 
+               icon="icons/images/hibernate_launch.png" 
                class="org.hibernate.eclipse.launch.LaunchMenuDelegate" 
                menubarPath="org.eclipse.ui.run/HibernateToolsGroup" 
                id="org.hibernate.eclipse.launch.LaunchMenuDelegateMenu"> 
@@ -211,7 +211,7 @@
          <action 
                label="Hibernate Code Generation..." 
                pulldown="true" 
-               icon="icons/hibernate_small_icon.gif" 
+               icon="icons/images/hibernate_launch.png" 
                tooltip="Generate code via Hibernate Tools" 
                class="org.hibernate.eclipse.launch.LaunchMenuDelegate" 
                toolbarPath="org.eclipse.debug.ui.launchActionSet/hibernatetool" 
@@ -317,7 +317,7 @@
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTypeImages">
       <launchConfigurationTypeImage
-            icon="icons/hibernate_small_icon.gif"
+            icon="icons/images/hibernate_launch.png"
             configTypeID="org.hibernate.eclipse.launch.CodeGenerationLaunchConfigurationType"
             id="org.hibernate.eclipse.launch.CodeGenerationLaunchImage"/>
    </extension>
@@ -335,7 +335,7 @@
             bannerImage="icons/images/newhibernate_wiz.gif"
             category="org.hibernate.eclipse.launchcategory"
             id="org.hibernate.eclipse.launch.CodeGenerationLaunchGroup"
-            image="icons/hibernate_small_icon.gif"
+            image="icons/images/hibernate_launch.png"
             label="Hibernate Code Generation..."
             mode="run"
             title="Select or configure a code generation to run"/>

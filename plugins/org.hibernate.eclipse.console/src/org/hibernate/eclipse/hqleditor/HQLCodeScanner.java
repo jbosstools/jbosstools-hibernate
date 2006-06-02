@@ -215,7 +215,7 @@ public class HQLCodeScanner extends RuleBasedScanner {
         rules.add( new SingleLineRule( "'", "'", stringToken, '\\' )); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         rules.add( new WhitespaceRule( new HQLWhiteSpaceDetector() ));
 
-        rules.add( new HQLLexerRule( hqlToken ));
+        //rules.add( new HQLLexerRule( hqlToken )); // TODO: need to categorize tokens into types.
         WordRule wordRule = new WordRule( new HQLWordDetector(), otherToken );
         addWordRules( keywordToken, wordRule, getHQLKeywords() );
         addWordRules( functionToken, wordRule, getHQLFunctionNames() );

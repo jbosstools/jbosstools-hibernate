@@ -29,17 +29,17 @@ public class HQLLexerRule implements IRule {
 
 			public int read(char[] cbuf, int off, int len) throws IOException {
 				int pos = 0;
-				int lastRead = scanner.EOF;
-				while(pos<off && (lastRead=scanner.read())!=scanner.EOF) {
+				int lastRead = ICharacterScanner.EOF;
+				while(pos<off && (lastRead=scanner.read())!=ICharacterScanner.EOF) {
 					pos++;
 				}
 				
-				while(pos-off<len && (lastRead=scanner.read())!=scanner.EOF) {
+				while(pos-off<len && (lastRead=scanner.read())!=ICharacterScanner.EOF) {
 					cbuf[pos-off] = (char) lastRead;
 					pos++;
 				}
 				
-				if(lastRead==scanner.EOF) {
+				if(lastRead==ICharacterScanner.EOF) {
 					return -1;
 				} else {
 					return len;
