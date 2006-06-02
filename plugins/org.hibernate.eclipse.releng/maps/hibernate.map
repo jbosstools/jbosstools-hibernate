@@ -1,6 +1,0 @@
-feature@org.hibernate.eclipse.feature=HEAD,:pserver:anonymous@cvs.sourceforge.net:/cvsroot/hibernate,,HibernateExt/org.hibernate.eclipse.feature
-plugin@org.hibernate.eclipse=HEAD,:pserver:anonymous@cvs.sourceforge.net:/cvsroot/hibernate,,HibernateExt/org.hibernate.eclipse
-plugin@org.hibernate.eclipse.console=HEAD,:pserver:anonymous@cvs.sourceforge.net:/cvsroot/hibernate,,HibernateExt/org.hibernate.eclipse.console
-plugin@org.hibernate.eclipse.mapper=HEAD,:pserver:anonymous@cvs.sourceforge.net:/cvsroot/hibernate,,HibernateExt/org.hibernate.eclipse.mapper
-plugin@org.hibernate.eclipse.help=HEAD,:pserver:anonymous@cvs.sourceforge.net:/cvsroot/hibernate,,HibernateExt/org.hibernate.eclipse.help
-
