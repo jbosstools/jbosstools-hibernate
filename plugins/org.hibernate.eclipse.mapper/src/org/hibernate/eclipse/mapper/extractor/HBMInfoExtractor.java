@@ -110,6 +110,7 @@ public class HBMInfoExtractor {
 		// TODO: use eclipse java model to infer types of components property/fields
 		javaTypeProvider.put("composite-id", "class");
 		javaTypeProvider.put("component", "class");
+		javaTypeProvider.put("composite-element", "class");
 	}
 	
 	private void setupTableFinder() {

@@ -4,6 +4,7 @@ import java.net.URL;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 public class EclipseImages {
 
@@ -25,7 +26,7 @@ public class EclipseImages {
 
 	private static EclipseImageMap getMap() {
 		if(map==null) {
-			map = new EclipseImageMap();
+			map = new EclipseImageMap(HibernateConsolePlugin.getDefault());
 		}
 		return map;
 	}

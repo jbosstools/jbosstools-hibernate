@@ -3,7 +3,6 @@ package org.hibernate.eclipse.hqleditor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.text.BadLocationException;
@@ -111,16 +110,6 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
     	}
     	
     	return result;
-	}
-
-	private boolean hasConfiguration(ConsoleConfiguration config) {
-		if(config!=null) {
-			Configuration configuration = config.getConfiguration();
-			if(configuration!=null) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	private String getWord(IDocument doc, int startOffset, int wordLength) {

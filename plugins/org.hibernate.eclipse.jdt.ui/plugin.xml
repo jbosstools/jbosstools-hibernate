@@ -14,7 +14,7 @@
    </extension>
   <extension
           id="org.hibernate.eclipse.jdt.ui.completioncategory"
-          name="Hibernate proposals (jdt)"
+          name="Hibernate proposals"
           point="org.eclipse.jdt.ui.javaCompletionProposalComputer">
        <javaCompletionProposalComputer
              activate="true"
@@ -22,6 +22,6 @@
              class="org.hibernate.eclipse.jdt.ui.internal.HQLJavaCompletionProposalComputer">
           <partition type="__java_string"/>
        </javaCompletionProposalComputer>
-       <proposalCategory />
+       <proposalCategory icon="icons/hibernate_proposalcategory.png"/>
     </extension>
 </plugin>

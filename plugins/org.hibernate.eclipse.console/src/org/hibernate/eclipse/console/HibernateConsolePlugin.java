@@ -35,11 +35,12 @@ import org.hibernate.eclipse.hqleditor.HQLEditorInput;
 import org.hibernate.eclipse.hqleditor.HQLEditorStorage;
 import org.hibernate.eclipse.logging.xpl.EclipseLogger;
 import org.osgi.framework.BundleContext;
+import org.hibernate.eclipse.logging.PluginLogger;
 
 /**
  * The main plugin class to be used in the desktop.
  */
-public class HibernateConsolePlugin extends AbstractUIPlugin {
+public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLogger {
 	
 	public static final String ID = "org.hibernate.eclipse.console";
 	

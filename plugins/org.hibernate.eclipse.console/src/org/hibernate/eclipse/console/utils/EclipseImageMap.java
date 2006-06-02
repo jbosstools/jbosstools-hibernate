@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.runtime.Plugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
@@ -21,24 +22,20 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
  */
 public class EclipseImageMap extends ImageMap {
 
-	public EclipseImageMap() {
-
-		declareImages();
-	}
-	
-	/** Declare Common paths */
 	protected static URL ICON_BASE_URL = null;
-
-	static {
+	
+	public EclipseImageMap(Plugin plugin) {
 		String pathSuffix = "icons/";//$NON-NLS-1$
 
 		try {
-			ICON_BASE_URL = new URL(HibernateConsolePlugin.getDefault().getBundle().getEntry("/"), pathSuffix);//$NON-NLS-1$
+			ICON_BASE_URL = new URL(plugin.getBundle().getEntry("/"), pathSuffix);//$NON-NLS-1$
 		} catch (MalformedURLException e) {
 			// do nothing
 		}
+		
+		declareImages();
 	}
-
+	
 	/** A table of all the <code>ImageDescriptor</code>s. */
 	Map imageDescriptors = new HashMap();
 	
@@ -56,7 +53,7 @@ public class EclipseImageMap extends ImageMap {
 		imageDescriptors.put(key, desc);
 	}
 	
-	protected static URL makeIconFileURL(String iconPath)
+	protected URL makeIconFileURL(String iconPath)
 			throws MalformedURLException {
 		if (ICON_BASE_URL == null) {
 			throw new MalformedURLException();

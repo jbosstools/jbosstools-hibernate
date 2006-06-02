@@ -1,4 +1,4 @@
-package org.hibernate.eclipse.hqleditor;
+package org.hibernate.eclipse.jdt.ui.internal;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -388,28 +388,10 @@
                value="seamapp"/>
       </exporter>
    </extension>
-   <extension
-         point="org.eclipse.jdt.ui.quickAssistProcessors">
-      <quickAssistProcessor
-            class="org.hibernate.eclipse.criteriaeditor.CriteriaQuickAssistProcessor"
-            id="org.hibernate.eclipse.criteriaeditor.quickAssistProcessor"
-            name="Criteria Quick Assists"/>
-      <quickAssistProcessor
-            class="org.hibernate.eclipse.hqleditor.HQLQuickAssistProcessor"
-            id="org.hibernate.eclipse.hqleditor.quickAssistProcessor"
-            name="HQL Quick Assist"/>
-   </extension>
-  <extension
-          id="org.hibernate.eclipse.completioncategory"
-          name="Hibernate proposals"
-          point="org.eclipse.jdt.ui.javaCompletionProposalComputer">
-       <javaCompletionProposalComputer
-             activate="true"
-             categoryId="org.hibernate.eclipse.completioncategory"
-             class="org.hibernate.eclipse.hqleditor.HQLJavaCompletionProposalComputer"/>
-       <proposalCategory icon="icons/hibernate_small_icon.gif"/>
-    </extension>
-  <extension
+   
+ 
+<!-- Do not expose the facet before the id's are stable
+ <extension
         point="org.eclipse.wst.common.project.facet.core.facets">
      <category id="org.hibernate.eclipse.facet.category">
         <label>Hibernate Facet</label>
@@ -433,7 +415,7 @@
         <runtime-component any="true"/>
      </supported>
   </extension>
-  
+  -->
    <extension
          point="org.eclipse.ui.views">
       <view
