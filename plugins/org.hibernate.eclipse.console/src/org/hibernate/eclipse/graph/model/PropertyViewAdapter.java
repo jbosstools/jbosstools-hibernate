@@ -7,6 +7,7 @@ import java.util.Observable;
 
 import org.eclipse.swt.graphics.Image;
 import org.hibernate.HibernateException;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.workbench.HibernateWorkbenchHelper;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.OneToMany;
@@ -76,7 +77,7 @@ public class PropertyViewAdapter extends Observable {
 				target.addTargetAssociation( pava );
 			}
 		} catch(HibernateException he) {
-			System.out.println(he);
+			HibernateConsolePlugin.getDefault().log( he );
 		}
 		
 		}
