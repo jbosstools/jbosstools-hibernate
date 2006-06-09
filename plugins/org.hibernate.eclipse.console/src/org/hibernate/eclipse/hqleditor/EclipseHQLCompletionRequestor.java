@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.swt.graphics.Image;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.hibernate.eclipse.console.workbench.HibernateWorkbenchHelper;
 import org.hibernate.tool.ide.completion.HQLCompletionProposal;
 import org.hibernate.tool.ide.completion.IHQLCompletionRequestor;
 import org.hibernate.util.StringHelper;
@@ -33,7 +34,7 @@ public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor {
 										  proposal.getReplaceStart()+virtualOffset, // replacementOffset 
 										  proposal.getReplaceEnd()-proposal.getReplaceStart(), // replacementLength
 										  proposal.getCompletion().length(), // cursorPosition (relativeTo replacementStart)
-										  getImage(proposal.getCompletionKind()), 
+										  getImage(proposal), 
 										  getDisplayString(proposal), 
 										  null, 
 										  null));
@@ -84,16 +85,20 @@ public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor {
 		return buf.toString();
 	}
 
-	private Image getImage(int kind) {
+	private Image getImage(HQLCompletionProposal proposal) {
 		String key = null;
 		
-		switch(kind) {
+		switch(proposal.getCompletionKind()) {
 		case HQLCompletionProposal.ENTITY_NAME:
 		case HQLCompletionProposal.ALIAS_REF:
 			key = ImageConstants.MAPPEDCLASS;
 			break;
 		case HQLCompletionProposal.PROPERTY:
-			key = ImageConstants.PROPERTY;
+			if(proposal.getProperty()!=null) {
+				return HibernateWorkbenchHelper.getImage( proposal.getProperty() );
+			} else {
+				key = ImageConstants.PROPERTY;				
+			}
 			break;
 		case HQLCompletionProposal.KEYWORD:
 			key = null;
