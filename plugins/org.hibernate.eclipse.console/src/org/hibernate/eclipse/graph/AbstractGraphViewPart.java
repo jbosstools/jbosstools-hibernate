@@ -73,6 +73,7 @@ public abstract class AbstractGraphViewPart extends ViewPart {
 	    zoomLevels.add(ZoomManager.FIT_WIDTH);
 	    zoomLevels.add(ZoomManager.FIT_HEIGHT);
 	    root.getZoomManager().setZoomLevelContributions(zoomLevels);
+	    root.getZoomManager().setZoomLevels( new double[] {.067, .125, .25, .5, .75, 1.0, 1.5, 2.0, 2.5, 3, 4} );
 	    
 	}
 
