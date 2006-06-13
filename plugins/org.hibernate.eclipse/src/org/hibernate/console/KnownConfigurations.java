@@ -146,6 +146,7 @@ public class KnownConfigurations  {
 					listener.configurationRemoved(configuration);
 				}
 			});
+			oldConfig.reset();
 		}
 	}
 
