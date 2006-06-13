@@ -3,34 +3,35 @@ package org.hibernate.eclipse.console.workbench;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.node.BaseNode;
-import org.hibernate.console.node.ConfigurationEntitiesNode;
 import org.hibernate.console.node.NodeFactory;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 
 public class LazySessionFactoryAdapter extends BasicWorkbenchAdapter {
-
-	private ConfigurationEntitiesNode cfgNode;
-	String label = "Session Factory";
+	
+	
 	
 	public Object[] getChildren(Object o) {
-		if(cfgNode==null) {
-			LazySessionFactory lazySessionFactory = getLazySessionFactory(o);
+		LazySessionFactory lazySessionFactory = getLazySessionFactory(o);
+		String label = "Session Factory";
+		if(lazySessionFactory.getCfgNode()==null) {			
 			if(lazySessionFactory.getConsoleConfiguration().getSessionFactory()==null) { 
-			try {
-				lazySessionFactory.getConsoleConfiguration().buildSessionFactory();
-			} catch(Throwable t) {
-				label = "<Sessionfactory error: " + t.getMessage() + ">";
-				HibernateConsolePlugin.getDefault().logErrorMessage("Problems while creating sessionfactory", t);
+				try {
+					lazySessionFactory.getConsoleConfiguration().buildSessionFactory();
+				} catch(Throwable t) {
+					label = "<Sessionfactory error: " + t.getMessage() + ">";
+					HibernateConsolePlugin.getDefault().logErrorMessage("Problems while creating sessionfactory", t);
+				}
 			}
-			}
-			NodeFactory fac = new NodeFactory(lazySessionFactory.getConsoleConfiguration());
-			cfgNode = fac.createConfigurationEntitiesNode(label);				
+			if(lazySessionFactory.getConsoleConfiguration().isSessionFactoryCreated()) {
+				NodeFactory fac = new NodeFactory(lazySessionFactory.getConsoleConfiguration());
+				lazySessionFactory.setCfgNode( fac.createConfigurationEntitiesNode(label) );
+			}							
 		}
-		if(cfgNode!=null) {
-			return toArray(cfgNode.children(),BaseNode.class);	
+		if(lazySessionFactory.getCfgNode()!=null) {
+			return toArray(lazySessionFactory.getCfgNode().children(),BaseNode.class);	
 		} else {
-			return new Object[0];
+			return new Object[] { label };
 		}
 	}
 
@@ -43,7 +44,7 @@ public class LazySessionFactoryAdapter extends BasicWorkbenchAdapter {
 	}
 
 	public String getLabel(Object o) {
-		return "Session factory";
+		return "Session Factory";
 	}
 
 	public Object getParent(Object o) {		
