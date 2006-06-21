@@ -617,4 +617,11 @@ END OF TERMS AND CONDITIONS
          version="3.2.0.beta6"
          unpack="false"/>
 
+   <plugin
+         id="org.hibernate.eclipse.jdt.ui"
+         download-size="0"
+         install-size="0"
+         version="3.2.0.beta6"
+         unpack="false"/>
+
 </feature>
