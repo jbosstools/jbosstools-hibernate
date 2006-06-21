@@ -16,7 +16,7 @@
 	<!-- Name of project and version, used to create filenames -->
     <property name="Name" value="Hibernate Help"/>
     <property name="name" value="hibernatehelp"/>
-    <property name="version" value="3.1.0.beta5"/>
+    <property name="version" value="3.2.0.beta6"/>
 
     <property name="common-build.basedir" location="." />
 

@@ -59,7 +59,8 @@
     <topic label="Tuplizers" href="html/reference/en/html/persistent-classes.html#persistent-classes-tuplizers"/></topic>
     <topic label="Basic O/R Mapping" href="html/reference/en/html/mapping.html">
     <topic label="Mapping declaration" href="html/reference/en/html/mapping.html#mapping-declaration">
-    <topic label="Doctype" href="html/reference/en/html/mapping.html#mapping-declaration-doctype"/>
+    <topic label="Doctype" href="html/reference/en/html/mapping.html#mapping-declaration-doctype">
+    <topic label="EntityResolver" href="html/reference/en/html/mapping.html#mapping-declaration-entity-resolution"/></topic>
     <topic label="hibernate-mapping" href="html/reference/en/html/mapping.html#mapping-declaration-mapping"/>
     <topic label="class" href="html/reference/en/html/mapping.html#mapping-declaration-class"/>
     <topic label="id" href="html/reference/en/html/mapping.html#mapping-declaration-id">
