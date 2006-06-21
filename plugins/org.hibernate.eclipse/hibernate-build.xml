@@ -39,7 +39,7 @@
         <ant antfile="${hibernate.root}\HibernateExt\metadata\build.xml" inheritall="false" inheritrefs="false" target="copylib"/>        
         <copy preservelastmodified="true" file="${hibernate.root}\HibernateExt\metadata\target\hibernate-annotations\hibernate-annotations.jar" todir="${lib.annotations}"/>
         <copy preservelastmodified="true" file="${hibernate.root}\HibernateExt\metadata\target\hibernate-annotations\lib\ejb3-persistence.jar" todir="${lib.annotations}"/>
-        <copy preservelastmodified="true" file="${hibernate.root}\HibernateExt\metadata\target\hibernate-annotations\lib\lucene-1.4.3.jar" todir="${lib.annotations}"/>
+        <copy preservelastmodified="true" file="${hibernate.root}\HibernateExt\metadata\target\hibernate-annotations\lib\lucene-core-2.0.0.jar" todir="${lib.annotations}"/>
               
         <!-- we need to have the hibernateconsole stuff together with the core to fake DriverManager into allow loading drivers -->
 		<!-- <ant antfile="..\console\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
