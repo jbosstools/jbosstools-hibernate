@@ -556,25 +556,25 @@ END OF TERMS AND CONDITIONS
          id="org.hibernate.eclipse"
          download-size="0"
          install-size="0"
-         version="3.1.0.beta5"/>
+         version="3.2.0.beta6"/>
 
    <plugin
          id="org.hibernate.eclipse.console"
          download-size="0"
          install-size="0"
-         version="3.1.0.beta5"/>
+         version="3.2.0.beta6"/>
 
    <plugin
          id="org.hibernate.eclipse.help"
          download-size="0"
          install-size="0"
-         version="3.1.0.beta5"/>
+         version="3.2.0.beta6"/>
 
    <plugin
          id="org.hibernate.eclipse.mapper"
          download-size="0"
          install-size="0"
-         version="3.1.0.beta5"/>
+         version="3.2.0.beta6"/>
 
    <plugin
          id="org.eclipse.draw2d"
@@ -614,7 +614,7 @@ END OF TERMS AND CONDITIONS
          id="org.hibernate.eclipse.jdt.apt.ui"
          download-size="0"
          install-size="0"
-         version="3.1.0.beta5"
+         version="3.2.0.beta6"
          unpack="false"/>
 
 </feature>
