@@ -416,7 +416,7 @@
      </supported>
   </extension>
   -->
-   <extension
+<!--   <extension
          point="org.eclipse.ui.views">
       <view
             allowMultiple="false"
@@ -454,7 +454,7 @@
       </possibleChildren>         
       </navigatorContent>
    </extension>
-
+-->
 
  
  <!--
