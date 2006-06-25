@@ -21,6 +21,7 @@ import org.eclipse.jdt.core.IJavaModel;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.hibernate.console.HibernateConsoleRuntimeException;
 
 /**
  * @author max
@@ -85,10 +86,14 @@ public class ClassLoaderHelper {
 	}
 
 	private static File getRawLocationFile(IPath simplePath) {
-		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(simplePath);
+		IResource member = ResourcesPlugin.getWorkspace().getRoot().findMember(simplePath);
 		File file = null;
-		if(resource!=null) {
-			file = ResourcesPlugin.getWorkspace().getRoot().findMember(simplePath).getRawLocation().toFile();	
+		if(member!=null) {
+			IPath rawLocation = member.getRawLocation();
+			if(rawLocation==null) {
+				throw new HibernateConsoleRuntimeException("Could not determine physical location for " + simplePath);
+			}
+			file = rawLocation.toFile();	
 		} else {
 			file = simplePath.toFile();
 		}
