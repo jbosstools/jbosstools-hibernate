@@ -12,6 +12,7 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -91,7 +92,10 @@ public class ClassLoaderHelper {
 		if(member!=null) {
 			IPath rawLocation = member.getRawLocation();
 			if(rawLocation==null) {
-				throw new HibernateConsoleRuntimeException("Could not determine physical location for " + simplePath);
+				rawLocation = member.getLocation();
+				if(rawLocation==null) {
+					throw new HibernateConsoleRuntimeException("Could not determine physical location for " + simplePath);
+				}
 			}
 			file = rawLocation.toFile();	
 		} else {
