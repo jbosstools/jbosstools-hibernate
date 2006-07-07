@@ -22,7 +22,10 @@ public class HibernatePropertySourceProvider implements IPropertySourceProvider
 	}
 
 	public IPropertySource getPropertySource(Object object) {
-		if (object instanceof QueryPage)
+		if (object==null) {
+			return null;
+		}
+		else if (object instanceof QueryPage)
 		{
 			return new QueryPagePropertySource( (QueryPage)object);
 		}
