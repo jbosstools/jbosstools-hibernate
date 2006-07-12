@@ -139,6 +139,8 @@ public class CodeGenerationLaunchDelegate extends
 			
 		} catch(Exception e) {
 			throw new CoreException(HibernateConsolePlugin.throwableToStatus(e, 666)); 
+		} catch(NoClassDefFoundError e) {
+			throw new CoreException(HibernateConsolePlugin.throwableToStatus(new HibernateConsoleRuntimeException("Received a NoClassDefFoundError, probably the console configuration classpath is incomplete or contains conflicting versions of the same class",e), 666));
 		} finally {
 			monitor.done();
 		} 
