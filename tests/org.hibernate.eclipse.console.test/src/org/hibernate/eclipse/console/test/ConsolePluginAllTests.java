@@ -11,7 +11,7 @@ public class ConsolePluginAllTests {
 	public static Test suite() throws IOException {
 		TestSuite suite = new TestSuite(
 				"Test for org.hibernate.eclipse.console.test" );
-		//$JUnit-BEGIN$
+		
 		suite.addTestSuite( KnownConfigurationsTest.class );
 		suite.addTestSuite( QueryParametersTest.class );
 		suite.addTestSuite( PerspectiveTest.class );
@@ -25,11 +25,9 @@ public class ConsolePluginAllTests {
 		
 		System.getProperties().putAll(properties);
 		
-		suite.addTest(org.hibernate.tool.hbm2x.hbm2hbmxml.Cfg2HbmAllTests.suite() );
-		suite.addTest(org.hibernate.tool.test.jdbc2cfg.Jdbc2CfgAllTests.suite() );
-		suite.addTest(org.hibernate.tool.hbm2x.Hbm2XAllTests.suite() );
+		suite.addTest(org.hibernate.tool.ToolAllTests.suite() );
+		
 
-		//$JUnit-END$
 		return suite;
 	}
 

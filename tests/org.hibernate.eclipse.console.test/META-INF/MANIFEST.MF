@@ -24,7 +24,8 @@ Require-Bundle: org.junit,
  org.eclipse.jface.text,
  org.hibernate.eclipse.console,
  org.eclipse.wst.xml.core,
- org.eclipse.wst.xml.ui
+ org.eclipse.wst.xml.ui,
+ org.apache.ant
 Eclipse-LazyStart: true
 Bundle-Activator: org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin
 Eclipse-RegisterBuddy: org.hibernate.eclipse
