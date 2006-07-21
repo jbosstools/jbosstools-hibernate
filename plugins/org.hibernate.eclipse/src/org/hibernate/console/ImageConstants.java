@@ -111,5 +111,8 @@ public interface ImageConstants {
 	public static final String LAYOUT_DISABLED = "LAYOUT_DISABLED";
 	public static final String CRITERIA_EDITOR = "images/criteria_editor.gif";
 	public static final String FUNCTION = "FUNCTION";
+	
+	public static final String CHECKBOX_FULL = "images/xpl/complete_tsk.gif";
+	public static final String CHECKBOX_EMPTY = "images/xpl/incomplete_tsk.gif";
     
 }

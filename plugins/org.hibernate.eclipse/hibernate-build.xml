@@ -3,7 +3,7 @@
   HibernateTools ANT build script.
 -->
 
-<project name="org.hibernate.eclipse" basedir=".">
+<project name="org.hibernate.eclipse" basedir="." default="update">
 
 	<property name="hibernate.root" location="../../../../../hibernate"/>
 	<available file="${hibernate.root}" property="hibernate.root.exists"/>

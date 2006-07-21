@@ -35,6 +35,7 @@ import java.util.StringTokenizer;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.ILabelProviderListener;
@@ -70,6 +71,11 @@ import org.hibernate.type.Type;
 import org.hibernate.util.StringHelper;
 
 public class QueryParametersPage extends Page implements IQueryParametersPage {
+
+	private static final String NAME_PROPERTY = "name";
+	private static final String TYPE_PROPERTY = "type";
+	private static final String VALUE_PROPERTY = "value";
+	private static final String NULL_PROPERTY = "null_prop";
 
 	private Composite top = null;
 
@@ -154,12 +160,17 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 		nameColumn.setText( "Name" );
 		TableColumn typeColumn = new TableColumn( queryParametersTable,
 				SWT.NONE );
-		typeColumn.setWidth(100);
+		typeColumn.setWidth(75);
 		typeColumn.setText( "Type" );
 		TableColumn valueColumn = new TableColumn( queryParametersTable,
 				SWT.NONE );
 		valueColumn.setWidth( 100 );
 		valueColumn.setText( "Value" );
+		TableColumn nullColumn = new TableColumn( queryParametersTable,
+				SWT.NONE );
+		nullColumn.setWidth( 32 );
+		nullColumn.setText( "null?" );
+		
 		
 		tableViewer = new TableViewer( queryParametersTable );
 
@@ -195,10 +206,10 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 				TableItem item = (TableItem) element;
 				ConsoleQueryParameter cqp = (ConsoleQueryParameter) item
 						.getData();
-				if ( "name".equals( property ) ) {
+				if ( NAME_PROPERTY.equals( property ) ) {
 					cqp.setName( (String) value );
 				}
-				if ( "type".equals( property ) ) {
+				if ( TYPE_PROPERTY.equals( property ) ) {
 					Iterator iterator = possibleTypes.iterator();
 					int i = 0;
 					while(iterator.hasNext()) {
@@ -206,25 +217,32 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 						if(i==((Integer)value).intValue()) {
 							if(cqp.getType()!=type) {
 								cqp.setType(type);
-								cqp.setValue(ConsoleQueryParameter.NULL_MARKER); // have to reset to ensure it's working
+								cqp.setNull(); // have to reset to ensure it's working								 
 							}
 							break;
 						}
 						i++;
 					}
 				}
-				if ( "value".equals( property ) ) {
+				if ( VALUE_PROPERTY.equals( property ) ) {
 					cqp.setValueFromString((String) value);
+				}
+				if ( NULL_PROPERTY.equals( property ) ) {
+					if(cqp.isNull()) {
+						cqp.setValueFromString( "" ); // best attempt to "unnull"
+					} else {
+						cqp.setNull();
+					}					
 				}
 				tableViewer.refresh(cqp);
 			}
 
 			public Object getValue(Object element, String property) {
 				ConsoleQueryParameter cqp = (ConsoleQueryParameter) element;
-				if ( "name".equals( property ) ) {
+				if ( NAME_PROPERTY.equals( property ) ) {
 					return cqp.getName();
 				}
-				if ( "type".equals( property ) ) {
+				if ( TYPE_PROPERTY.equals( property ) ) {
 					Iterator iterator = possibleTypes.iterator();
 					NullableType type = cqp.getType();
 					int i = 0;
@@ -235,8 +253,11 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 						i++;
 					}
 				}
-				if ( "value".equals( property ) ) {
+				if ( VALUE_PROPERTY.equals( property ) ) {
 					return cqp.getValueAsString();
+				}
+				if ( NULL_PROPERTY.equals( property )) {					
+					return Boolean.valueOf(cqp.isNull());
 				}
 				return null;
 			}
@@ -259,7 +280,8 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 			}
 		} );
 
-		tableViewer.setColumnProperties( new String[] { "name", "type", "value" } );
+		String[] columnProperties = new String[] { NAME_PROPERTY, TYPE_PROPERTY, VALUE_PROPERTY, NULL_PROPERTY };
+		tableViewer.setColumnProperties( columnProperties );
 		
 		
 		String[] valueTypes = new String[possibleTypes.size()];
@@ -270,10 +292,11 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 			Type element = (Type) iterator.next();
 			valueTypes[i++] = element.getName();
 		}
-		CellEditor[] editors = new CellEditor[3];
+		CellEditor[] editors = new CellEditor[columnProperties.length];
 		editors[0] = new TextCellEditor( queryParametersTable );
 		editors[1] = new ComboBoxCellEditor( queryParametersTable, valueTypes );
 		editors[2] = new TextCellEditor( queryParametersTable );
+		editors[3] = new CheckboxCellEditor( queryParametersTable );
 		
 		tableViewer.setCellEditors( editors );
 
@@ -302,13 +325,20 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 					return cqp.getType().getName();
 				case 2:
 					return cqp.getValueAsString();
+				case 3:
+					return null; //cqp.isNull()?"X":"";
 				default:
 					return null;
 				}
 			}
 
 			public Image getColumnImage(Object element, int columnIndex) {
-				return null;
+				if(columnIndex==3) {
+					ConsoleQueryParameter cqp = (ConsoleQueryParameter) element;
+					return cqp.isNull()?EclipseImages.getImage( ImageConstants.CHECKBOX_FULL ):EclipseImages.getImage( ImageConstants.CHECKBOX_EMPTY );
+				} else {
+					return null;
+				}
 			}
 
 		} );

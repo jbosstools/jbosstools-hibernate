@@ -69,6 +69,8 @@ public abstract class ImageMap implements ImageConstants {
         declareRegistryImage(HIBERNATE_LOGO, "images/hibernate.gif");
         declareRegistryImage(JBOSS_LOGO, "images/jboss.gif");
         declareRegistryImage(FUNCTION, "images/function.gif");
+        declareRegistryImage(CHECKBOX_EMPTY, "images/xpl/incomplete_tsk.gif");
+        declareRegistryImage(CHECKBOX_FULL, "images/xpl/complete_tsk.gif");
 		
 	}
 

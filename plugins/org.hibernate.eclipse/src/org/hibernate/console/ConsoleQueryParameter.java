@@ -39,7 +39,7 @@ import org.hibernate.type.NullableType;
 
 public class ConsoleQueryParameter {
 
-	static public final Object NULL_MARKER = new Object() { public String toString() { return "[null]"; } };
+	static private final Object NULL_MARKER = null; //new Object() { public String toString() { return "[null]"; } };
 	
 	static final Map typeFormats = new HashMap();
 	static {
@@ -114,12 +114,12 @@ public class ConsoleQueryParameter {
 	}
 	
 	public void setValue(Object value) {
-		if(value == null) { throw new IllegalArgumentException("Value must not be set to null"); }
+		//if(value == null) { throw new IllegalArgumentException("Value must not be set to null"); }
 		this.value = value;
 	}
 	
 	public String getValueAsString() {
-		if(getValue()==NULL_MARKER) return "";
+		if(isNull()) return "";
 		return type.toString(getValue());
 	}
 	
@@ -128,7 +128,7 @@ public class ConsoleQueryParameter {
 			Object object = type.fromStringValue(value);
 			setValue(object);
 		} catch(Exception he) {
-			setValue(NULL_MARKER);
+			setNull();
 		}
 	}
 
@@ -145,5 +145,21 @@ public class ConsoleQueryParameter {
 
 	public static Set getPossibleTypes() {
 		return typeFormats.keySet();
+	}
+
+	public void setNull() {
+		setValue( NULL_MARKER );
+	}
+	
+	public boolean isNull() {
+		return getValue()==NULL_MARKER;
+	}
+
+	public Object getValueForQuery() {
+		if(isNull()) {
+			return null;
+		} else {
+			return getValue();
+		}	
 	}
 }
