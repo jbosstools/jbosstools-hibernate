@@ -40,10 +40,18 @@
  */
 package org.hibernate.eclipse.launch;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.hibernate.eclipse.console.ExtensionManager;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.model.impl.ExporterDefinition;
+import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 
 // This class was created to centralize launch configuration attribute loading/saving
 // (and also to clean up CodeGenerationLaunchDelegate considerably)
@@ -56,6 +64,7 @@ public class ExporterAttributes
    private String packageName;
    private String outputPath;
    private String templatePath;
+   private List exporterFactories;
    
    public ExporterAttributes () { }
 
@@ -84,7 +93,20 @@ public class ExporterAttributes
          if (!useOwnTemplates) {
         	 templatePath = null;
          }
-         
+   
+         ExporterDefinition[] exDefinitions = ExtensionManager.findExporterDefinitions();
+
+ 		exporterFactories = new ArrayList();
+ 		for (int i = 0; i < exDefinitions.length; i++) {
+ 			ExporterDefinition expDef = exDefinitions[i];
+ 			ExporterFactory exporterFactory = new ExporterFactory( expDef );
+ 			exporterFactory.isEnabled( configuration );
+			exporterFactories.add( exporterFactory );
+			Map props = configuration.getAttribute( exporterFactory.getId()
+					+ ".properties", new HashMap() );
+			exporterFactory.setProperties( props );
+ 		}
+ 		
       } catch (CoreException e) {
          throw new CoreException(HibernateConsolePlugin.throwableToStatus(e, 666)); 
       }
@@ -207,6 +229,10 @@ public class ExporterAttributes
    public void setUseOwnTemplates(boolean useOwnTemplates)
    {
       this.useOwnTemplates = useOwnTemplates;
+   }
+
+   public List getExporterFactories() {
+	   return exporterFactories;	
    }
 
    

@@ -102,14 +102,36 @@
          <attribute name="name" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  Name of the property, e.g. &quot;ejb3&quot;. It is also used as a unique id for properties.
                </documentation>
             </annotation>
          </attribute>
          <attribute name="value" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  The default value for this property.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="type" use="default" value="string">
+            <annotation>
+               <documentation>
+                  The type of the property. Used when editing the property to provide e.g. a proper field editor.
+               </documentation>
+            </annotation>
+            <simpleType>
+               <restriction base="string">
+                  <enumeration value="string">
+                  </enumeration>
+                  <enumeration value="boolean">
+                  </enumeration>
+               </restriction>
+            </simpleType>
+         </attribute>
+         <attribute name="description" type="string">
+            <annotation>
+               <documentation>
+                  Description to be used in e.g. property sheets instead of the name.
                </documentation>
             </annotation>
          </attribute>

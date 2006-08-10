@@ -49,8 +49,6 @@ public class JavaPage extends AbstractQueryPage {
 
     private Interpreter ip;
 
-	private final ConsoleQueryParameter[] queryParameters;
-    
     /**
      * @param queryParameters 
      * @param session2
@@ -58,7 +56,6 @@ public class JavaPage extends AbstractQueryPage {
     public JavaPage(ConsoleConfiguration cfg, String criteriaCode, ConsoleQueryParameter[] queryParameters) {
 		super(cfg);
         this.criteriaCode =  criteriaCode;
-		this.queryParameters = queryParameters;
     }
 
     public void setSession(Session s) {

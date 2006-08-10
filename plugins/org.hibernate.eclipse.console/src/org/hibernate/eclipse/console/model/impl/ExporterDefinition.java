@@ -41,6 +41,7 @@
 package org.hibernate.eclipse.console.model.impl;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -48,7 +49,9 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.tool.hbm2x.Exporter;
+import org.hibernate.util.ReflectHelper;
 
 public class ExporterDefinition {
 	final private String classname;
@@ -57,27 +60,37 @@ public class ExporterDefinition {
 
 	final private String id;
 
-	private ImageDescriptor iconDescriptor;
+	final private ImageDescriptor iconDescriptor;
 
-	private HashMap properties;
+	final private Map properties;
 
 	public ExporterDefinition(IConfigurationElement element) {
-		this.classname = element.getAttribute( "classname" );
-		this.description = element.getAttribute( "description" );
-		this.id = element.getAttribute( "id" );
-		createIcon( element );
-		createProperties( element );
+		this(element.getAttribute( "classname" ),
+			    element.getAttribute( "description" ),
+				element.getAttribute( "id" ),
+				createProperties( element ),
+				createIcon( element ));			
 	}
 
-	private void createIcon(IConfigurationElement element) {
+	public ExporterDefinition(String className, String description, String id, Map properties, ImageDescriptor icon) {
+		this.classname = className;
+		this.description = description;
+		this.id = id;
+		this.properties = properties;
+		this.iconDescriptor = icon;
+	}
+
+	static private ImageDescriptor createIcon(IConfigurationElement element) {
 		if ( element.getAttribute( "icon" ) != null ) {
-			this.iconDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(
+			return AbstractUIPlugin.imageDescriptorFromPlugin(
 					element.getNamespace(), element.getAttribute( "icon" ) );
+		} else {
+			return null;
 		}
 	}
 
-	private void createProperties(IConfigurationElement element) {
-		properties = new HashMap();
+	static private Map createProperties(IConfigurationElement element) {
+		Map properties = new HashMap();
 
 		IConfigurationElement propertyElements[] = element
 				.getChildren( "property" );
@@ -87,33 +100,27 @@ public class ExporterDefinition {
 				propertyElements[i].getAttribute("description"),
 				propertyElements[i].getAttribute("value"),
 				Boolean.valueOf(propertyElements[i].getAttribute("required")).booleanValue());
-			properties.put(property, propertyElements[i].getAttribute("value"));
+			properties.put(property.getName(),property);
 		}
+		return properties;
 	}
 
 	public Exporter createExporterInstance() {
 	   Exporter exporter = null;
 
-      try
-      {
-         Class exporterClass = Class.forName( classname );
-         exporter = (Exporter) exporterClass.newInstance();
-      }
-      catch (ClassNotFoundException e)
-      {
-         e.printStackTrace();
-      }
-      catch (InstantiationException e)
-      {
-         e.printStackTrace();
-      }
-      catch (IllegalAccessException e)
-      {
-         e.printStackTrace();
-      }
+	   try {
+		   exporter = (Exporter) ReflectHelper.classForName( classname ).newInstance();
+	   }
+	   catch (InstantiationException e) {
+		   throw new HibernateConsoleRuntimeException("Problem while creating exporter class " + classname);
+	   }
+	   catch (IllegalAccessException e) {
+		   throw new HibernateConsoleRuntimeException("Problem while creating exporter class " + classname);	}
+	   catch (ClassNotFoundException e) {
+		   throw new HibernateConsoleRuntimeException("Problem while creating exporter class " + classname);
+	   }         
 
-
-		return exporter;
+	   return exporter;
 	}
 
 	public String getDescription() {
@@ -124,7 +131,7 @@ public class ExporterDefinition {
 		return iconDescriptor;
 	}
 
-	public HashMap getProperties() {
+	public Map getProperties() {
 		return properties;
 	}
 
@@ -142,12 +149,7 @@ public class ExporterDefinition {
 
 		return enabled;
 	}
-
-	public void setEnabled(ILaunchConfigurationWorkingCopy configuration,
-			boolean enabled) {
-		configuration.setAttribute( id, enabled );
-	}
-
+	
 	public String getId() {
 		return id;
 	}

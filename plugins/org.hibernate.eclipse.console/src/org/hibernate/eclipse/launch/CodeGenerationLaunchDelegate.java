@@ -24,6 +24,7 @@ package org.hibernate.eclipse.launch;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -39,8 +40,10 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
@@ -66,9 +69,11 @@ import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.ExtensionManager;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.model.impl.ExporterDefinition;
+import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.util.ReflectHelper;
+import org.hibernate.util.StringHelper;
 
 public class CodeGenerationLaunchDelegate extends
 		LaunchConfigurationDelegate {
@@ -116,16 +121,15 @@ public class CodeGenerationLaunchDelegate extends
 		try {
 		    ExporterAttributes attributes = new ExporterAttributes(configuration);
             
-            ExporterDefinition exporters[] = ExtensionManager.findExporterDefinitions();
-            List exporterArray = new ArrayList();
-            for (int i = 0; i < exporters.length; i++)
-            {
-               if (exporters[i].isEnabled(configuration)) {
-                  exporterArray.add(exporters[i]);
-               }
-            }
+		    List exporterFactories = attributes.getExporterFactories();
+		    for (Iterator iter = exporterFactories.iterator(); iter.hasNext();) {
+				ExporterFactory exFactory = (ExporterFactory) iter.next();
+				if(!exFactory.isEnabled(configuration)) {
+					iter.remove();
+				}
+			}
             
-            exporters = (ExporterDefinition []) exporterArray.toArray(new ExporterDefinition[exporterArray.size()]);
+		    ExporterFactory[] exporters = (ExporterFactory[]) exporterFactories.toArray( new ExporterFactory[exporterFactories.size()] );
             ArtifactCollector collector = runExporters(attributes, exporters, monitor);
 			refreshOutputDir( attributes.getOutputPath() );
 
@@ -192,7 +196,7 @@ public class CodeGenerationLaunchDelegate extends
 		}
 	}
 
-	private ArtifactCollector runExporters (final ExporterAttributes attributes, final ExporterDefinition[] exporters, final IProgressMonitor monitor)
+	private ArtifactCollector runExporters (final ExporterAttributes attributes, final ExporterFactory[] exporters, final IProgressMonitor monitor)
 	   throws CoreException
     {
 			
@@ -260,13 +264,13 @@ public class CodeGenerationLaunchDelegate extends
                     
                     for (int i = 0; i < exporters.length; i++)
                     {
-                       monitor.subTask(exporters[i].getDescription());
+                       monitor.subTask(exporters[i].getExporterDefinition().getDescription());
                        
                        Properties exporterProperties = new Properties();
                        exporterProperties.putAll(props);
                        exporterProperties.putAll(exporters[i].getProperties());
                        
-                       Exporter exporter = exporters[i].createExporterInstance();
+                       Exporter exporter = exporters[i].getExporterDefinition().createExporterInstance();
                        
                        configureExporter (cfg, outputdir, templatePaths, exporterProperties, exporter);
                        
@@ -366,4 +370,28 @@ public class CodeGenerationLaunchDelegate extends
 			throw new HibernateConsoleRuntimeException("Could not create or find " + className + " with one argument delegate constructor", e);
 		} 
     }
+	
+	public boolean preLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
+		ExporterAttributes attributes = new ExporterAttributes(configuration);
+		
+		String configName = attributes.getConsoleConfigurationName();
+		if(StringHelper.isEmpty( configName )) {
+			abort("Console configuration name is empty in " + configuration.getName(), null, ICodeGenerationLaunchConstants.ERR_UNSPECIFIED_CONSOLE_CONFIGURATION);
+		}
+		
+		if(KnownConfigurations.getInstance().find( configName )==null) {
+			abort("Console configuration " + configName + " not found in " + configuration.getName(), null, ICodeGenerationLaunchConstants.ERR_CONSOLE_CONFIGURATION_NOTFOUND);
+		}
+		
+		if(StringHelper.isEmpty(attributes.getOutputPath())) {
+			abort("Output has to be specified in " + configuration.getName(), null, ICodeGenerationLaunchConstants.ERR_OUTPUT_PATH_NOTFOUND);
+		}
+		
+		return super.preLaunchCheck( configuration, mode, monitor );
+	}
+	
+	protected void abort(String message, Throwable exception, int code)
+	throws CoreException {
+		throw new CoreException(new Status(IStatus.ERROR, HibernateConsolePlugin.getDefault().ID, code, message, exception));
+	}
 }

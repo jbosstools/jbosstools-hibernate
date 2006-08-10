@@ -87,4 +87,11 @@ public class ExporterProperty
 	public void setRequired(boolean required) {
 		this.required = required;
 	}
+	public String getDescriptionForLabel() {
+		if(description==null) {
+			return name;
+		} else {
+			return description + " [" + name + "]";
+		}		
+	}
 }

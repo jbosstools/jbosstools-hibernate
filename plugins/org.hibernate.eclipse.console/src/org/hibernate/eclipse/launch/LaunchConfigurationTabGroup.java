@@ -38,7 +38,6 @@ public class LaunchConfigurationTabGroup extends
 		ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[] {
 				new CodeGenerationSettings(),
 				new ExporterSettings(),
-				//new ExporterProvidersTab(),
 				new RefreshTab(),
 				new CommonTab()
 			};

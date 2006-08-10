@@ -181,7 +181,7 @@ public class NodeFactory {
 			} else if (type.isComponentType() ) {
 				result = ImageConstants.COMPONENT;
 			} else if (type.isCollectionType() ) {
-				CollectionType pct = (CollectionType)type;
+				//CollectionType pct = (CollectionType)type;
 				result = ImageConstants.ONETOMANY; //could also be values/collecionts?
 			} else {
 				result = ImageConstants.PROPERTY;

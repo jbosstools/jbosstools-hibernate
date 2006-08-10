@@ -55,7 +55,7 @@ public class GenericPropertySource implements IPropertySource2 {
 	}
 
 	public Object getEditableValue() {
-		return null;
+		return real;
 	}
 
 	public IPropertyDescriptor[] getPropertyDescriptors() {
@@ -64,6 +64,8 @@ public class GenericPropertySource implements IPropertySource2 {
 	}
 
 	private IPropertyDescriptor[] buildPropertyDescriptors() {
+		if (real==null) return new IPropertyDescriptor[0];
+		
 		try {
 			BeanInfo beanInfo = Introspector.getBeanInfo( real.getClass(), Object.class );
 			PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();

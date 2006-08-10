@@ -354,7 +354,18 @@
             classname="org.hibernate.tool.hbm2x.POJOExporter"
             description="Domain code (.java)"
             icon="icons/images/mapped_class.gif"
-            id="org.hibernate.tools.hbm2java"/>
+            id="org.hibernate.tools.hbm2java">
+         <property
+               description="Generate EJB3 annotations"
+               name="ejb3"
+               type="boolean"
+               value="false"/>
+         <property
+               description="Generate Java 5 syntax"
+               name="jdk5"
+               type="boolean"
+               value="false"/>
+      </exporter>
       <exporter
             classname="org.hibernate.tool.hbm2x.HibernateMappingExporter"
             description="Hibernate XML Mappings (.hbm.xml)"
@@ -364,7 +375,19 @@
             classname="org.hibernate.tool.hbm2x.DAOExporter"
             description="DAO code (.java)"
             icon="icons/hibernate_small_icon.gif"
-            id="org.hibernate.tools.hbm2dao"/>
+            id="org.hibernate.tools.hbm2dao">
+         <property
+               description="Generate EJB3 annotations"
+               name="ejb3"
+               type="boolean"
+               value="false"/>
+         <property
+               description="Generate Java syntax"
+               name="jdk5"
+               type="boolean"
+               value="false"/>
+      </exporter>            
+            
       <exporter
             classname="org.hibernate.tool.hbm2x.HibernateConfigurationExporter"
             description="Hibernate XML Configuration (.cfg.xml)"
@@ -381,9 +404,11 @@
             icon="icons/hibernate_small_icon.gif"
             id="org.hibernate.tools.hbm2seam">
          <property
+               description="Application name"
                name="seam_appname"
                value="Seam Application"/>
          <property
+               description="Application short name"
                name="seam_shortname"
                value="seamapp"/>
       </exporter>

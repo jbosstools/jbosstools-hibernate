@@ -171,7 +171,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 		if(t==null) {
 			log(message);
 		} else {
-			log(new MultiStatus(HibernateConsolePlugin.ID, IStatus.ERROR , new IStatus[] { throwableToStatus(t.getCause()) }, message, t) );
+			log(new MultiStatus(HibernateConsolePlugin.ID, IStatus.ERROR , new IStatus[] { throwableToStatus(t) }, message, null) );
 		}
 	}
 	
