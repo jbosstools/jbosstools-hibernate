@@ -23,7 +23,6 @@ package org.hibernate.eclipse.launch;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -66,9 +65,7 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext.Command;
-import org.hibernate.eclipse.console.ExtensionManager;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.eclipse.console.model.impl.ExporterDefinition;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
@@ -218,7 +215,10 @@ public class CodeGenerationLaunchDelegate extends
 			ConsoleConfiguration cc = KnownConfigurations.getInstance().find(attributes.getConsoleConfigurationName());
 			ReverseEngineeringStrategy res = null;
 			
-			ReverseEngineeringSettings qqsettings = new ReverseEngineeringSettings().setDefaultPackageName(attributes.getPackageName());
+			ReverseEngineeringSettings qqsettings = new ReverseEngineeringSettings()
+									.setDefaultPackageName(attributes.getPackageName())
+									.setDetectManyToMany( attributes.detectManyToMany() )
+									.setDetectOptimisticLock( attributes.detectOptimisticLock() );
 			
 			if (attributes.isReverseEngineer()) {
 				monitor.subTask("reading jdbc metadata");

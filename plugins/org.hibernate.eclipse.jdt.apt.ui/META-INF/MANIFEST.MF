@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate APT
 Bundle-SymbolicName: org.hibernate.eclipse.jdt.apt.ui;singleton:=true
-Bundle-Version: 3.2.0.beta6
+Bundle-Version: 3.2.0.beta7
 Bundle-Activator: org.hibernate.eclipse.jdt.apt.ui.Activator
 Bundle-Vendor: Hibernate Team
 Bundle-Localization: plugin

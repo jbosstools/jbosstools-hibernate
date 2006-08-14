@@ -56,5 +56,7 @@ public class HibernateLaunchConstants
    public static final String ATTR_ENABLE_TEMPLATE_DIR = ATTR_PREFIX + "templatepathenabled";
    public static final String ATTR_TEMPLATE_DIR = ATTR_PREFIX + "templatepath";
    public static final String ATTR_PREFER_BASIC_COMPOSITE_IDS = ATTR_PREFIX + "prefercompositeids";
+   public static final String ATTR_AUTOMATIC_MANY_TO_MANY = ATTR_PREFIX + "reveng.detect_many_to_many";
+   public static final String ATTR_AUTOMATIC_VERSIONING = ATTR_PREFIX + "reveng.detect_optimistc_lock";
    
 }

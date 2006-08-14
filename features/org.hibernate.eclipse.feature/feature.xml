@@ -2,7 +2,7 @@
 <feature
       id="org.hibernate.eclipse.feature"
       label="Hibernate Tools"
-      version="3.1.0.beta5"
+      version="3.2.0.beta7"
       provider-name="Hibernate Team"
       plugin="org.hibernate.eclipse">
 
@@ -556,25 +556,25 @@ END OF TERMS AND CONDITIONS
          id="org.hibernate.eclipse"
          download-size="0"
          install-size="0"
-         version="3.2.0.beta6"/>
+         version="3.2.0.200608082231"/>
 
    <plugin
          id="org.hibernate.eclipse.console"
          download-size="0"
          install-size="0"
-         version="3.2.0.beta6"/>
+         version="3.2.0.200608082231"/>
 
    <plugin
          id="org.hibernate.eclipse.help"
          download-size="0"
          install-size="0"
-         version="3.2.0.beta6"/>
+         version="3.2.0.200608082231"/>
 
    <plugin
          id="org.hibernate.eclipse.mapper"
          download-size="0"
          install-size="0"
-         version="3.2.0.beta6"/>
+         version="3.2.0.200608082231"/>
 
    <plugin
          id="org.eclipse.draw2d"
@@ -608,20 +608,20 @@ END OF TERMS AND CONDITIONS
          id="org.jboss.ide.eclipse.freemarker"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="3.2.0.200608082231"/>
 
    <plugin
          id="org.hibernate.eclipse.jdt.apt.ui"
          download-size="0"
          install-size="0"
-         version="3.2.0.beta6"
+         version="3.2.0.200608082231"
          unpack="false"/>
 
    <plugin
          id="org.hibernate.eclipse.jdt.ui"
          download-size="0"
          install-size="0"
-         version="3.2.0.beta6"
+         version="3.2.0.200608082231"
          unpack="false"/>
 
    <plugin

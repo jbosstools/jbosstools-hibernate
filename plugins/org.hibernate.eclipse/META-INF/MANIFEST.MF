@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate Core Plugin
 Bundle-SymbolicName: org.hibernate.eclipse
-Bundle-Version: 3.2.0.beta6
+Bundle-Version: 3.2.0.beta7
 Bundle-ClassPath: org.hibernate.eclipse.jar,
  lib/hibernate/asm.jar,
  lib/hibernate/asm-attrs.jar,
@@ -305,6 +305,8 @@ Export-Package: EDU.oswego.cs.dl.util.concurrent,
  org.hibernate.transaction,
  org.hibernate.transform,
  org.hibernate.tuple,
+ org.hibernate.tuple.component,
+ org.hibernate.tuple.entity,
  org.hibernate.type,
  org.hibernate.usertype,
  org.hibernate.util,

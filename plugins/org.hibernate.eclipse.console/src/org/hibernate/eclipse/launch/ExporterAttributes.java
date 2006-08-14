@@ -65,6 +65,8 @@ public class ExporterAttributes
    private String outputPath;
    private String templatePath;
    private List exporterFactories;
+private boolean autoManyToManyDetection;
+private boolean autoVersioning;
    
    public ExporterAttributes () { }
 
@@ -89,6 +91,9 @@ public class ExporterAttributes
          packageName = configuration.getAttribute(HibernateLaunchConstants.ATTR_PACKAGE_NAME,"");
          templatePath = configuration.getAttribute(HibernateLaunchConstants.ATTR_TEMPLATE_DIR,"");
          preferBasicCompositeIds = configuration.getAttribute(HibernateLaunchConstants.ATTR_PREFER_BASIC_COMPOSITE_IDS, true);
+         autoManyToManyDetection = configuration.getAttribute( HibernateLaunchConstants.ATTR_AUTOMATIC_MANY_TO_MANY, true);
+         autoVersioning = configuration.getAttribute( HibernateLaunchConstants.ATTR_AUTOMATIC_VERSIONING, true);
+         
          
          if (!useOwnTemplates) {
         	 templatePath = null;
@@ -235,6 +240,13 @@ public class ExporterAttributes
 	   return exporterFactories;	
    }
 
+public boolean detectManyToMany() {
+	return autoManyToManyDetection;
+}
+
+    public boolean detectOptimisticLock() {
+    	return autoVersioning;
+    }
    
 
    

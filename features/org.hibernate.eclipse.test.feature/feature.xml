@@ -2,7 +2,7 @@
 <feature
       id="org.hibernate.eclipse.test.feature"
       label="org.hibernate.eclipse.test.feature"
-      version="3.1.0.beta5"
+      version="3.1.0.beta7"
       provider-name="Hibernate Team">
 
    <description url="http://www.example.com/description">

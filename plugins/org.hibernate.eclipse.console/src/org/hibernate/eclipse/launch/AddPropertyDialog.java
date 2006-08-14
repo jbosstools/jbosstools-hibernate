@@ -107,12 +107,12 @@ public class AddPropertyDialog extends TitleAreaDialog {
 				List values = new ArrayList(4);
 				while ( set.hasNext() ) {
 					Map.Entry element = (Map.Entry) set.next();
-					if(!localEf.hasLocalValueFor((String) element.getKey())) {
+					//if(!localEf.hasLocalValueFor((String) element.getKey())) {
 						ExporterProperty exporterProperty = localEf.getExporterProperty( (String) element.getKey() );
 						if(exporterProperty!=null) {
 							values.add(exporterProperty);
 						}
-					}			
+					//}			
 				}
 				return values.toArray( new ExporterProperty[values.size()] );
 			}		
