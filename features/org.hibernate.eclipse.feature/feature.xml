@@ -608,7 +608,7 @@ END OF TERMS AND CONDITIONS
          id="org.jboss.ide.eclipse.freemarker"
          download-size="0"
          install-size="0"
-         version="3.2.0.200608082231"/>
+         version="0.0.0"/>
 
    <plugin
          id="org.hibernate.eclipse.jdt.apt.ui"
