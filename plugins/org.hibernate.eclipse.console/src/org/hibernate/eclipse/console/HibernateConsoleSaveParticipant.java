@@ -47,16 +47,16 @@ public class HibernateConsoleSaveParticipant implements ISaveParticipant {
 	public void saving(ISaveContext context) throws CoreException {
 		switch (context.getKind() ) {
 		case ISaveContext.FULL_SAVE:
-			HibernateConsolePlugin myPluginInstance = HibernateConsolePlugin
-					.getDefault();
 			// save the plug-in state
 			int saveNumber = context.getSaveNumber();
 			String saveFileName = SAVENAME + "-" + Integer.toString(saveNumber);
-			File f = myPluginInstance.getStateLocation().append(saveFileName)
+			File f = HibernateConsolePlugin
+					.getDefault().getStateLocation().append(saveFileName)
 					.toFile();
 			// if we fail to write, an exception is thrown and we do not update
 			// the path
-			myPluginInstance.writeStateTo(f);
+			HibernateConsolePlugin
+					.getDefault().writeStateTo(f);
 			context.map(new Path(SAVENAME), new Path(saveFileName) );
 			context.needSaveNumber();
 			break;
@@ -80,7 +80,7 @@ public class HibernateConsoleSaveParticipant implements ISaveParticipant {
 
 		// delete the old saved state since it is not necessary anymore
 		int previousSaveNumber = context.getPreviousSaveNumber();
-		String oldFileName = "save-" + Integer.toString(previousSaveNumber);
+		String oldFileName = SAVENAME + "-" + Integer.toString(previousSaveNumber);
 		File f = myPluginInstance.getStateLocation().append(oldFileName)
 				.toFile();
 		//System.out.println("delete " + f);
@@ -94,7 +94,7 @@ public class HibernateConsoleSaveParticipant implements ISaveParticipant {
 		// since the save operation has failed, delete the saved state we have
 		// just written
 		int saveNumber = context.getSaveNumber();
-		String saveFileName = "save-" + Integer.toString(saveNumber);
+		String saveFileName = SAVENAME + "-" + Integer.toString(saveNumber);
 		File f = myPluginInstance.getStateLocation().append(saveFileName)
 				.toFile();
 		f.delete();

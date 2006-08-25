@@ -234,7 +234,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 	}
 
 	void writeStateTo(File f) {
-		System.out.println("write state to" + f);
+		//System.out.println("write state to" + f);
 		KnownConfigurations.getInstance().writeStateTo(f);
 	}
 
