@@ -36,6 +36,7 @@ import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
+import org.hibernate.eclipse.hqleditor.preferences.HQLPreferenceConstants;
 
 public class HQLSourceViewerConfiguration extends SourceViewerConfiguration {
 
@@ -100,11 +101,11 @@ public class HQLSourceViewerConfiguration extends SourceViewerConfiguration {
         reconciler.setDamager( dr, IDocument.DEFAULT_CONTENT_TYPE );
         reconciler.setRepairer( dr, IDocument.DEFAULT_CONTENT_TYPE );
         
-        dr = new DefaultDamagerRepairer( new SingleTokenScanner( new TextAttribute( colorProvider.getColor( HQLColors.HQL_COMMENT_COLOR ))));
+        dr = new DefaultDamagerRepairer( new SingleTokenScanner( new TextAttribute( colorProvider.getColor( HQLPreferenceConstants.HQL_COMMENT_COLOR ))));
         reconciler.setDamager( dr, HQLPartitionScanner.HQL_COMMENT );
         reconciler.setRepairer( dr, HQLPartitionScanner.HQL_COMMENT );
 
-        dr = new DefaultDamagerRepairer( new SingleTokenScanner( new TextAttribute( colorProvider.getColor( HQLColors.HQL_QUOTED_LITERAL_COLOR ))));
+        dr = new DefaultDamagerRepairer( new SingleTokenScanner( new TextAttribute( colorProvider.getColor( HQLPreferenceConstants.HQL_QUOTED_LITERAL_COLOR ))));
         reconciler.setDamager( dr, HQLPartitionScanner.HQL_QUOTED_LITERAL );
         reconciler.setRepairer( dr, HQLPartitionScanner.HQL_QUOTED_LITERAL );
 

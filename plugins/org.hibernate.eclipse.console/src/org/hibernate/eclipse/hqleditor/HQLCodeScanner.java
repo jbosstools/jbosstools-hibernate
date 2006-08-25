@@ -36,6 +36,7 @@ import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.rules.WhitespaceRule;
 import org.eclipse.jface.text.rules.WordRule;
 import org.eclipse.swt.SWT;
+import org.hibernate.eclipse.hqleditor.preferences.HQLPreferenceConstants;
 
 public class HQLCodeScanner extends RuleBasedScanner {
 
@@ -221,12 +222,16 @@ public class HQLCodeScanner extends RuleBasedScanner {
     } 
     
     public HQLCodeScanner( HQLColors colorProvider ) {
-        final IToken commentToken    = new Token( new TextAttribute( colorProvider.getColor( HQLColors.HQL_COMMENT_COLOR )));
-        final IToken stringToken     = new Token( new TextAttribute( colorProvider.getColor( HQLColors.HQL_QUOTED_LITERAL_COLOR )));
-        final IToken keywordToken    = new Token( new TextAttribute( colorProvider.getColor( HQLColors.HQL_KEYWORD_COLOR ), null, SWT.BOLD));
-        final IToken functionToken   = new Token( new TextAttribute( colorProvider.getColor( HQLColors.HQL_KEYWORD_COLOR )));
-        final IToken otherToken      = new Token( new TextAttribute( colorProvider.getColor( HQLColors.HQL_DEFAULT_COLOR )));
-        final IToken hqlToken        = new Token( new TextAttribute( colorProvider.getColor( HQLColors.HQL_IDENTIFIER_COLOR )));
+        final IToken commentToken    = new Token( new TextAttribute( colorProvider.getColor( HQLPreferenceConstants.HQL_COMMENT_COLOR )));
+        final IToken stringToken     = new Token( new TextAttribute( colorProvider.getColor( HQLPreferenceConstants.HQL_QUOTED_LITERAL_COLOR )));
+        final IToken keywordToken    = new Token( new TextAttribute( colorProvider.getColor( HQLPreferenceConstants.HQL_KEYWORD_COLOR ), null, SWT.BOLD)) {
+        	public Object getData() {
+        		// TODO Auto-generated method stub
+        		return super.getData();
+        	}
+        };
+        final IToken functionToken   = new Token( new TextAttribute( colorProvider.getColor( HQLPreferenceConstants.HQL_KEYWORD_COLOR )));
+        final IToken otherToken      = new Token( new TextAttribute( colorProvider.getColor( HQLPreferenceConstants.HQL_DEFAULT_COLOR )));        
         
         setDefaultReturnToken( otherToken );
 

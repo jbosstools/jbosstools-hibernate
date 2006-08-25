@@ -413,7 +413,43 @@
                value="seamapp"/>
       </exporter>
    </extension>
-   
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.hibernate.eclipse.hqleditor.preferences.HQLEditorPreferencePage"
+            id="org.hibernate.eclipse.hqleditor.preferences.HQLEditorPreferencePage"
+            name="HQL editor">
+         <keywordReference id="org.hibernate.eclipse.hqleditor.preferencekeywords"/>
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="org.hibernate.eclipse.hqleditor.preferences.PreferenceInitializer"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.keywords">
+      <keyword
+            id="org.hibernate.eclipse.hqleditor.preferencekeywords"
+            label="hql editor colors coloring highlighting query"/>
+   </extension>
+<!--   <extension
+         point="org.eclipse.ui.themes">
+      <themeElementCategory
+            id="org.hibernate.eclipse.presentation.hql"
+            label="HQL"/>
+            
+             <fontDefinition
+            label="HQL editor text font"
+            defaultsTo="org.eclipse.jface.textfont"
+            categoryId="org.hibernate.eclipse.presentation.hql"
+            id="org.hibernate.eclipse.presentation.hql.textfont">
+         <description>
+           The HQL editor text font is used by HQL editors.
+         </description>
+      </fontDefinition>
+            
+   </extension>
+   -->
  
 <!-- Do not expose the facet before the id's are stable
  <extension
