@@ -221,7 +221,7 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
         autoManyToMany.setDialogFieldListener(fieldlistener);
         
         autoVersioning = new SelectionButtonDialogField(SWT.CHECK);
-        autoVersioning.setLabelText("Dectect optimistic lock columns");
+        autoVersioning.setLabelText("Detect optimistic lock columns");
         autoVersioning.setSelection(true);
         autoVersioning.setDialogFieldListener(fieldlistener);
         
