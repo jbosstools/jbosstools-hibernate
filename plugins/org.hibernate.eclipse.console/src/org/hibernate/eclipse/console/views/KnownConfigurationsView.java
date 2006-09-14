@@ -47,6 +47,7 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.node.BaseNode;
 import org.hibernate.eclipse.console.actions.EditConsoleConfiguration;
 import org.hibernate.eclipse.console.workbench.xpl.AnyAdaptableLabelProvider;
+import org.hibernate.util.StringHelper;
 
 
 /**
@@ -146,7 +147,10 @@ public class KnownConfigurationsView extends ViewPart {
 					BaseNode node = (BaseNode) firstElement;
 					ConsoleConfiguration consoleConfiguration = node.getConsoleConfiguration();
 					if(consoleConfiguration.isSessionFactoryCreated() ) {
-						consoleConfiguration.executeHQLQuery(node.getHQL() );
+						String hql = node.getHQL();
+						if(StringHelper.isNotEmpty( hql )) {
+							consoleConfiguration.executeHQLQuery( hql );
+						}
 					}
 				}
 			}
