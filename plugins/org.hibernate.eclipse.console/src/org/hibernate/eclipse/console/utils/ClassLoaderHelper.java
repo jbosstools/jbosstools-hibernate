@@ -75,14 +75,7 @@ public class ClassLoaderHelper {
 					}
 				}
 			}
-			
-			/*IPath aopPaths[] = AopClasspathContainer.getAopJarPaths();
-			for (int i = 0; i < aopPaths.length; i++)
-			{
-				URL url = aopPaths[i].toFile().toURL();
-				pathElements.add(url);
-			}*/
-			
+					
 			IPath location = getProjectLocation(project.getProject() );
 			IPath outputPath = location.append(
 				project.getOutputLocation().removeFirstSegments(1) );

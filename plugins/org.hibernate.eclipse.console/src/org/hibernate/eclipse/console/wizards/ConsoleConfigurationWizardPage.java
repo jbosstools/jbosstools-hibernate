@@ -352,16 +352,28 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			Object obj = ssel.getFirstElement();
 			
 			IContainer container = null;
-			if (obj instanceof IJavaProject) {
-				v.javaProject = (IJavaProject) obj;
-				container = ( (IJavaProject)obj).getProject();
-			} else if (obj instanceof IResource) {
-				if (obj instanceof IContainer)
-					container = (IContainer)obj;
-				else
-					container = ( (IResource)obj).getParent();
+			if (obj instanceof IJavaElement) {
+				v.javaProject = ((IJavaElement) obj).getJavaProject();
+				if(v.javaProject!=null) {
+					container = v.javaProject.getProject();
+				}
+			} 
+			if (obj instanceof IResource) {
+				IResource res = (IResource) obj;
+				if (obj instanceof IContainer) {
+					container = (IContainer)res;
+				} else {
+					container = res.getParent();
+				}
+
+				if(res.getProject()!=null) {
+					IJavaProject project = JavaCore.create(res.getProject());
+					if(project.exists()) {
+						v.javaProject = project;
+					}
+				}
 			}
-			
+
 			if(container!=null) {
 				container.accept(v, IResource.NONE);
 				
