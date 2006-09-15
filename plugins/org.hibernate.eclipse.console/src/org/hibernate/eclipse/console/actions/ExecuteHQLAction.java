@@ -42,8 +42,6 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.QueryEditor;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.eclipse.criteriaeditor.CriteriaEditor;
-import org.hibernate.eclipse.hqleditor.HQLEditor;
 
 /**
  * @author max
