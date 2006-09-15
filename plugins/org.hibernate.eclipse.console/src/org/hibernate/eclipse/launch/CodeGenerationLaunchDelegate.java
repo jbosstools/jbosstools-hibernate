@@ -335,8 +335,8 @@ public class CodeGenerationLaunchDelegate extends
 			
 			return cfg;
 		} else {
-			final Configuration configuration = new Configuration();
-			cc.buildWith(configuration, true);
+			cc.build();
+			final Configuration configuration = cc.getConfiguration();
 			
 			cc.execute(new Command() {
 				public Object execute() {
