@@ -24,11 +24,14 @@ package org.hibernate.eclipse.console.properties;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.preferences.IScopeContext;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.preference.PreferencePage;
@@ -232,15 +235,26 @@ public class HibernatePropertyPage extends PropertyPage {
 		//ownerText.setText(DEFAULT_OWNER);
 	}
 	
+	private IProject getProject() {
+		IAdaptable adaptable= getElement();
+		if (adaptable != null) {
+			IJavaElement elem= (IJavaElement) adaptable.getAdapter(IJavaElement.class);
+			if (elem instanceof IJavaProject) {
+				return ((IJavaProject) elem).getProject();
+			}
+		}
+		return null;
+	}
+	
 	public void loadValues() {
-		IJavaProject prj = (IJavaProject) getElement();
-		IScopeContext scope = new ProjectScope(prj.getProject() );
+		IProject project = getProject();
+		IScopeContext scope = new ProjectScope(project);
 		
 		Preferences node = scope.getNode("org.hibernate.eclipse.console");
 		
 		if(node!=null) {
 			enableHibernate.setSelection(node.getBoolean("hibernate3.enabled", false) );
-			String cfg = node.get("default.configuration", prj.getProject().getName() );
+			String cfg = node.get("default.configuration", project.getName() );
 			ConsoleConfiguration configuration = KnownConfigurations.getInstance().find(cfg);
 			if(configuration==null) {
 				selectedConfiguration.setText("");
@@ -251,8 +265,8 @@ public class HibernatePropertyPage extends PropertyPage {
 		
 	}
 	public boolean performOk() {
-		IJavaProject prj = (IJavaProject) getElement();
-		IScopeContext scope = new ProjectScope(prj.getProject() );
+		IProject project = getProject();
+		IScopeContext scope = new ProjectScope(project);
 		
 		Preferences node = scope.getNode("org.hibernate.eclipse.console");
 		
@@ -271,12 +285,12 @@ public class HibernatePropertyPage extends PropertyPage {
 		
 		try {
 			if(enableHibernate.getSelection() ) {
-				ProjectUtils.addProjectNature(prj.getProject(), "org.hibernate.eclipse.console.hibernateNature", new NullProgressMonitor() );
+				ProjectUtils.addProjectNature(project, "org.hibernate.eclipse.console.hibernateNature", new NullProgressMonitor() );
 			} else {
-				ProjectUtils.removeProjectNature(prj.getProject(), "org.hibernate.eclipse.console.hibernateNature", new NullProgressMonitor() );
+				ProjectUtils.removeProjectNature(project, "org.hibernate.eclipse.console.hibernateNature", new NullProgressMonitor() );
 			}
 		} catch(CoreException ce) {
-			HibernateConsolePlugin.getDefault().logErrorMessage("Could not activate Hibernate nature on project " + prj.getProject().getName(), ce);
+			HibernateConsolePlugin.getDefault().logErrorMessage("Could not activate Hibernate nature on project " + project.getName(), ce);
 			HibernateConsolePlugin.getDefault().log(ce.getStatus() );
 		}
 		return true;

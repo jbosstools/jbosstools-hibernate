@@ -122,6 +122,16 @@
             name="Hibernate Settings"
             objectClass="org.eclipse.jdt.core.IJavaProject">
              </page>
+      <page
+            class="org.hibernate.eclipse.console.properties.HibernatePropertyPage"
+            id="org.hibernate.eclipse.console.properties.HibernatePropertyPage"
+            name="Hibernate Settings"
+            objectClass="org.eclipse.core.resources.IProject">
+         <filter
+               name="nature"
+               value="org.eclipse.jdt.core.javanature"/>
+             </page>
+
    </extension>
    <extension
         id="hibernateNature"
