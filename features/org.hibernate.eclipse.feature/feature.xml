@@ -418,8 +418,8 @@ END OF TERMS AND CONDITIONS
    </license>
 
    <url>
-      <discovery label="tools.hibernate.org" url="http://tools.hibernate.org"/>
-      <discovery label="hibernate.org" url="http://www.hibernate.org"/>
+      <discovery label="tools.hibernate.org" url="http://tools.hibernate.org" type="web"/>
+      <discovery label="hibernate.org" url="http://www.hibernate.org" type="web"/>
    </url>
 
    <requires>
