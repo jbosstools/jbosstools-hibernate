@@ -417,11 +417,7 @@ HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 END OF TERMS AND CONDITIONS
    </license>
 
-   <url>
-      <discovery label="tools.hibernate.org" url="http://tools.hibernate.org" type="web"/>
-      <discovery label="hibernate.org" url="http://www.hibernate.org" type="web"/>
-   </url>
-
+  
    <requires>
       <import plugin="org.eclipse.core.runtime" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.ui" version="0.0.0" match="greaterOrEqual"/>
