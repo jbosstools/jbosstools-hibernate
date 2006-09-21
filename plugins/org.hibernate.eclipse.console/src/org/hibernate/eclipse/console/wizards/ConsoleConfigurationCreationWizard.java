@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -112,10 +113,11 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 			if(realException instanceof CoreException) {
 				s = ( (CoreException)realException).getStatus();
 			} else {
-				s = new Status(IStatus.ERROR,HibernateConsolePlugin.ID, IStatus.OK, "Probably missing classes or errors with classloading", e);
+				IStatus se = HibernateConsolePlugin.throwableToStatus( e ); 
+				s = new MultiStatus(HibernateConsolePlugin.ID, IStatus.OK, new IStatus[] { se }, "Probably missing classes or errors with classloading", e);
 				
 			}
-			ErrorDialog.openError(container.getShell(), "Create Conscole Configuration Wizard", "Error while finishing Wizard", s);
+			HibernateConsolePlugin.getDefault().showError( container.getShell(), "Error while finishing Wizard", s );			
 			return false;
 		}
 		return true;
