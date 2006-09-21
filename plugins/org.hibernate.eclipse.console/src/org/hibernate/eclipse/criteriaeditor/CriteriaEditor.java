@@ -28,38 +28,35 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.eval.IEvaluationContext;
 import org.eclipse.jdt.ui.PreferenceConstants;
 import org.eclipse.jdt.ui.text.java.CompletionProposalCollector;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IShowEditorInput;
 import org.eclipse.ui.editors.text.EditorsUI;
-import org.eclipse.ui.texteditor.AbstractDecoratedTextEditor;
 import org.eclipse.ui.texteditor.ChainedPreferenceStore;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.TextOperationAction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.QueryInputModel;
+import org.hibernate.eclipse.console.AbstractQueryEditor;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.Messages;
-import org.hibernate.eclipse.console.QueryEditor;
 import org.hibernate.mapping.PersistentClass;
 
-public class CriteriaEditor extends AbstractDecoratedTextEditor implements QueryEditor, IShowEditorInput {
+public class CriteriaEditor extends AbstractQueryEditor {
 
-	final private QueryInputModel queryInputModel;
 	private CriteriaEditorDocumentSetupParticipant docSetupParticipant;
 	
 	public CriteriaEditor() {
@@ -78,7 +75,6 @@ public class CriteriaEditor extends AbstractDecoratedTextEditor implements Query
 		setEditorContextMenuId("#CriteraEditorContext"); //$NON-NLS-1$
 		setRulerContextMenuId("#CriteraRulerContext"); //$NON-NLS-1$
 		
-		queryInputModel = new QueryInputModel();
 	}
 	
 	protected void createActions() {
@@ -93,29 +89,6 @@ public class CriteriaEditor extends AbstractDecoratedTextEditor implements Query
 		return ResourceBundle.getBundle( Messages.BUNDLE_NAME );
 	}
 
-	public boolean askUserForConfiguration(String name) {
-		return MessageDialog.openQuestion(HibernateConsolePlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell(), "Open Session factory", "Do you want to open the session factory for " + name + " ?");        	
-	}
-
-	public ConsoleConfiguration getConsoleConfiguration() {
-		CriteriaEditorInput hei = (CriteriaEditorInput)getEditorInput();
-		return KnownConfigurations.getInstance().find(hei.getConsoleConfigurationName());
-	}
-
-	public QueryInputModel getQueryInputModel() {
-		   return queryInputModel;
-	}
-
-	public String getQueryString() {		
-        IEditorInput editorInput = getEditorInput();
-        IDocumentProvider docProvider = getDocumentProvider();
-        IDocument doc = docProvider.getDocument( editorInput );
-        return doc.get();
-	}
-
-	protected void initializeKeyBindingScopes() {
-		setKeyBindingScopes(new String[] { "org.hibernate.eclipse.console.hql" });  //$NON-NLS-1$
-	}
 
 	protected void doSetInput(IEditorInput input) throws CoreException {
 		
@@ -196,24 +169,29 @@ public class CriteriaEditor extends AbstractDecoratedTextEditor implements Query
 	}
 	
 
-	public void doSave(IProgressMonitor progressMonitor) { 
-		//super.doSave(progressMonitor);
-		CriteriaEditorInput hei = (CriteriaEditorInput)getEditorInput();
-		hei.setQuery(getQueryString());
-		performSave(false, progressMonitor);
-	}
-
 	public void showEditorInput(IEditorInput editorInput) {
 		
 		CriteriaEditorInput hei = (CriteriaEditorInput)getEditorInput();
-		
+		super.showEditorInput( editorInput );
 		IStorage storage = ((CriteriaEditorInput)editorInput).getStorage();
 		 if (storage instanceof CriteriaEditorStorage) {
              CriteriaEditorStorage sqlEditorStorage = (CriteriaEditorStorage) storage;
-             getDocumentProvider().getDocument( hei ).set( sqlEditorStorage.getContentsString() );             
+             IDocument document = getDocumentProvider().getDocument( hei );
+			document.set( sqlEditorStorage.getContentsString() );             
          }		
 	}
 
 	
+	public void createPartControl(Composite parent) {
+		parent.setLayout( new GridLayout(1,false) );
+    	
+    	createToolbar( parent );
+        
+		super.createPartControl( parent );
+		
+		Control control = parent.getChildren()[1];
+    	control.setLayoutData( new GridData( GridData.FILL_BOTH ) );
+    	
+	}
 
 }

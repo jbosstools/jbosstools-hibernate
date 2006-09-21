@@ -63,8 +63,8 @@ import org.eclipse.ui.part.Page;
 import org.hibernate.console.ConsoleQueryParameter;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.QueryInputModel;
+import org.hibernate.eclipse.console.QueryEditor;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.eclipse.hqleditor.HQLEditor;
 import org.hibernate.hql.classic.ParserHelper;
 import org.hibernate.type.NullableType;
 import org.hibernate.type.Type;
@@ -98,10 +98,10 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 		}
 	};
 
-	private final HQLEditor editor;
+	private final QueryEditor editor;
 
 		
-	public QueryParametersPage(HQLEditor editor) {
+	public QueryParametersPage(QueryEditor editor) {
 		this.editor = editor;
 		model = editor.getQueryInputModel();
 	}

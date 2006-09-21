@@ -21,14 +21,17 @@
  */
 package org.hibernate.eclipse.hqleditor;
 
+
 import java.util.ResourceBundle;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.action.ActionContributionItem;
+import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.source.ISourceViewer;
@@ -37,23 +40,36 @@ import org.eclipse.jface.text.source.projection.ProjectionSupport;
 import org.eclipse.jface.text.source.projection.ProjectionViewer;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IShowEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.texteditor.DefaultRangeIndicator;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.TextOperationAction;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+import org.hibernate.SessionFactory;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.KnownConfigurationsListener;
 import org.hibernate.console.QueryInputModel;
+import org.hibernate.eclipse.console.AbstractQueryEditor;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.Messages;
 import org.hibernate.eclipse.console.QueryEditor;
+import org.hibernate.eclipse.console.QueryEditorInput;
+import org.hibernate.eclipse.console.actions.ExecuteQueryAction;
 import org.hibernate.eclipse.console.views.IQueryParametersPage;
 import org.hibernate.eclipse.console.views.QueryParametersPage;
 
@@ -61,7 +77,9 @@ import org.hibernate.eclipse.console.views.QueryParametersPage;
 /**
  * HQL Editor
  */
-public class HQLEditor extends TextEditor implements IPropertyChangeListener, IShowEditorInput, QueryEditor {
+public class HQLEditor extends AbstractQueryEditor {
+	
+
 	public static final String PLUGIN_NAME = HibernateConsolePlugin.ID;
 	public static final String HELP_CONTEXT_ID = PLUGIN_NAME + ".hqleditorhelp"; //$NON-NLS-1$
 	
@@ -71,14 +89,14 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
     private HQLEditorDocumentSetupParticipant docSetupParticipant;
     /** The projection (code folding) support object. */
     private ProjectionSupport fProjectionSupport;
-	final private QueryInputModel queryInputModel;
+	
+	
     
     /**
      * Constructs an instance of this class. This is the default constructor.
      */
     public HQLEditor() {
         super();
-        queryInputModel = new QueryInputModel();
     }
 
     /**
@@ -110,7 +128,7 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
         setAction( "HQLEditor.disconnectAction", a ); //$NON-NLS-1$
         */
         
-//        a = new ExecuteHQLAction( this ); //$NON-NLS-1$
+//        a = new ExecuteQueryAction( this ); //$NON-NLS-1$
 //        setAction( "HQLEditor.runAction", a ); //$NON-NLS-1$
         
         /*a = new HQLSetStatementTerminatorAction( bundle, "HQLEditor.setStatementTerminatorAction." ); //$NON-NLS-1$
@@ -128,7 +146,16 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
      * @see org.eclipse.ui.texteditor.AbstractTextEditor#createPartControl(org.eclipse.swt.widgets.Composite)
      */
     public void createPartControl( Composite parent ) {
-        super.createPartControl( parent );
+    	parent.setLayout( new GridLayout(1,false) );
+    	    	
+    	createToolbar(parent);
+    	
+    	super.createPartControl( parent );
+    	
+    	// move to base class?
+    	Control control = parent.getChildren()[1];
+    	control.setLayoutData( new GridData( GridData.FILL_BOTH ) );
+    	
         setProjectionSupport( createProjectionSupport() );
         
         /* Now that we have enabled source folding, make sure everything is
@@ -139,7 +166,7 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
         
         /* Set a help context ID to enable F1 help. */
         getSite().getWorkbenchWindow().getWorkbench().getHelpSystem().setHelp( parent, HELP_CONTEXT_ID );
-               
+        
     }
 
     /**
@@ -181,27 +208,6 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
         
         return config;
     }
-
-    /**
-     * Dispose of resources held by this editor.
-     * 
-     * @see IWorkbenchPart#dispose()
-     */
-    public void dispose() {
-        super.dispose();
-    }
-
-    /**
-     * Abandons all modifications applied to this text editor's input element's
-     * textual presentation since the last save operation.
-     * 
-     * @see ITextEditor#doRevertToSaved()
-     */
-    public void doRevertToSaved() {
-        super.doRevertToSaved();
-        //updateOutlinePage();
-    }
-
  
     /**
      * Sets the input of the outline page after this class has set input.
@@ -225,41 +231,6 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
             }
         }
 
-        /* Determine if our input object is an instance of IHQLEditorInput.  If so,
-         * get all the information that it contains.
-         */
-        /*ConnectionInfo connInfo = null;
-        Database db = null;
-        String defaultSchemaName = null;
-        if (input instanceof IHQLEditorInput) {
-            IHQLEditorInput hqlInput = (IHQLEditorInput) input;
-            connInfo = hqlInput.getConnectionInfo();
-            db = sqlInput.getDatabase();
-            defaultSchemaName = sqlInput.getDefaultSchemaName();
-        }*/
-        
-        /* If we didn't get a database but we did get a connection, try to get
-         * the database from the connection.
-         */
-        /*if (connInfo != null && db == null) {
-            db = connInfo.getSharedDatabase();
-        }*/
-        
-        /* Save away the connection and the database information. */
-        //setConnectionInfo( connInfo );
-        //setDatabase( db );
-        //setDefaultSchemaName( defaultSchemaName );
-
-        /* Show the connection status in the status area at the bottom of the
-         * workbench window.
-         */
-        //refreshConnectionStatus();
-        
-        /* Pass the input along to the outline page. */
-        //HQLEditorContentOutlinePage outlinePage = getOutlinePage();
-        //if (outlinePage != null) {
-        //    outlinePage.setInput( input );
-        //}
     }
 
     /**
@@ -391,20 +362,6 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
         setSourceViewerConfiguration( createSourceViewerConfiguration() );
         setRangeIndicator( new DefaultRangeIndicator() );
     }
-    
-    /**
-     * Handles notifications to the object that a property has changed.
-     * 
-     * @param event the property change event object describing which property
-     *            changed and how
-     */
-    public void propertyChange( PropertyChangeEvent event ) {
-        /*if (event.getProperty().equals( HQLConnectAction.CONNECTION )) {
-            ConnectionInfo connInfo = (ConnectionInfo) event.getNewValue();
-            setConnectionInfo( connInfo );
-            refreshConnectionStatus();
-        }*/
-    }
 
   
     /**
@@ -415,7 +372,7 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
      * @return the current document setup participant
      */
     public void setDocumentSetupParticipant( HQLEditorDocumentSetupParticipant docSetupParticipant ) {
-        docSetupParticipant = docSetupParticipant;
+        this.docSetupParticipant = docSetupParticipant;
     }
 
     /**
@@ -428,55 +385,16 @@ public class HQLEditor extends TextEditor implements IPropertyChangeListener, IS
         fProjectionSupport = projSupport;
     }
 
-	public void showEditorInput(IEditorInput editorInput) {
-		
-			try {
-				doSetInput(editorInput);
-			}
-			catch (CoreException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage( "Could not show HQL editor input", e );
-			}
-	}
-
-	public String getQueryString() {		
-        IEditorInput editorInput = getEditorInput();
-        IDocumentProvider docProvider = getDocumentProvider();
-        IDocument doc = docProvider.getDocument( editorInput );
-        return doc.get();
-	}
-
-   public void doSave(IProgressMonitor progressMonitor) { 
-	   //super.doSave(progressMonitor);
-	   HQLEditorInput hei = (HQLEditorInput)getEditorInput();
-	   hei.setQuery(getQueryString());
-	   performSave(false, progressMonitor);
-   }
-   
- 
-
-   public ConsoleConfiguration getConsoleConfiguration() {
-	   HQLEditorInput hei = (HQLEditorInput)getEditorInput();
-	   return KnownConfigurations.getInstance().find(hei.getConsoleConfigurationName());
-   }
-
-   public boolean askUserForConfiguration(String name) {
-	   return MessageDialog.openQuestion(HibernateConsolePlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell(), "Open Session factory", "Do you want to open the session factory for " + name + " ?");        
-   }
-
+	
    public ITextViewer getTextViewer() {
 	   return getSourceViewer();
    }
    
-   protected void initializeKeyBindingScopes() {
-       setKeyBindingScopes(new String[] { "org.hibernate.eclipse.console.hql" });  //$NON-NLS-1$
-   }
-
-   public QueryInputModel getQueryInputModel() {
-	   return queryInputModel;
-   }
+   
 
    public void executeQuery(ConsoleConfiguration cfg) {
 	   cfg.executeHQLQuery(getQueryString(), getQueryInputModel().getQueryParametersForQuery() );	
    }
 
+  
 } 

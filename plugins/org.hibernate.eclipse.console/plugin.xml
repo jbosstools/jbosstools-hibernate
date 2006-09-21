@@ -187,13 +187,11 @@
           </menu>
           <action
                 allowLabelUpdate="true"
-                class="org.hibernate.eclipse.console.actions.ExecuteHQLAction"                
                 icon="icons/images/execute.gif"
-                id="org.hibernate.eclipse.console.actions.ExecuteHQLAction"
+                id="org.hibernate.eclipse.console.actions.ExecuteQueryAction"
                 definitionId="org.hibernate.eclipse.console.actions.ExecuteHQLActionCommand"
                 label="Run Query"
                 retarget="true"
-                style="pulldown"
                 toolbarPath="hqlGroup"
                 tooltip="Run HQL Query from current editor">
          </action>         		  

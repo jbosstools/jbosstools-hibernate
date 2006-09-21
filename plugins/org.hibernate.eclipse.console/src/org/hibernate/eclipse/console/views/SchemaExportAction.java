@@ -86,7 +86,7 @@ public class SchemaExportAction extends ConsoleConfigurationBasedAction {
 															cnt
 															- 1
 															+ " error(s) while performing SchemaExport, see Error Log for details",
-															null );
+															(Throwable)null );
 							}
 						}
 						return null;

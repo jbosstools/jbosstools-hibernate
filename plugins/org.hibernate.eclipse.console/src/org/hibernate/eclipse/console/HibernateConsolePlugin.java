@@ -248,7 +248,12 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 		 	      "Hibernate Console", message, warning);		
 	}
 	
-	
+	public void showError(Shell shell, String message, IStatus s) {
+		log(s);
+	 	   ErrorDialog.openError(shell, 
+	 	      "Hibernate Console", message, s);				
+	}
+
 	public void openCriteriaEditor(String consoleName, String criteria) {
 		 try {
 		        final IWorkbenchWindow activeWorkbenchWindow =
@@ -256,7 +261,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 		        IWorkbenchPage page = activeWorkbenchWindow.getActivePage();
 		        
 		        
-		        CriteriaEditorStorage storage = new CriteriaEditorStorage(consoleName, "Critieria: " + consoleName, criteria==null?"":criteria);		        
+		        CriteriaEditorStorage storage = new CriteriaEditorStorage(consoleName, criteria==null?"":criteria);		        
 		        
 		        final CriteriaEditorInput editorInput = new CriteriaEditorInput(storage);
 		        page.openEditor(editorInput, "org.hibernate.eclipse.criteriaeditor.CriteriaEditor", true);
@@ -273,7 +278,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 		        IWorkbenchPage page = activeWorkbenchWindow.getActivePage();
 		        
 		        
-		        HQLEditorStorage storage = new HQLEditorStorage(consoleName, "HQL: " + consoleName, hql==null?"":hql);		        
+		        HQLEditorStorage storage = new HQLEditorStorage(consoleName, hql==null?"":hql);		        
 		        
 		        final HQLEditorInput editorInput = new HQLEditorInput(storage);
 		            page.openEditor(editorInput, "org.hibernate.eclipse.hqleditor.HQLEditor", true);
@@ -282,7 +287,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 		    }
 	}
 
-	public ConsoleConfiguration getLastUsedConfiguration() {
+	/*public ConsoleConfiguration getLastUsedConfiguration() {
 		String lastUsedName = getDefault().getPreferenceStore().getString(HibernateConsolePlugin.LAST_USED_CONFIGURATION_PREFERENCE);
 		
 		ConsoleConfiguration lastUsed = (lastUsedName == null || lastUsedName.trim().length()==0) 
@@ -294,9 +299,9 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 	    }
 	    
 		return lastUsed;
-	}
+	}*/
 	
-	public void setLastUsedConfiguration(ConsoleConfiguration lastUsed) {
+	/*public void setLastUsedConfiguration(ConsoleConfiguration lastUsed) {
 		String name;
 		if(lastUsed==null) {
 			name = "";
@@ -306,7 +311,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 		
 		HibernateConsolePlugin.getDefault().getPreferenceStore().setValue(
 				LAST_USED_CONFIGURATION_PREFERENCE, name );
-	}
+	}*/
 	
 	/**
 	 * Convenience method for showing an error dialog 
@@ -448,5 +453,6 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 		return javaTextTools;
 	}
 
+	
 	
 }

@@ -24,6 +24,7 @@ package org.hibernate.eclipse.hqleditor;
 import java.util.ResourceBundle;
 
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
@@ -35,7 +36,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.RetargetTextEditorAction;
 import org.hibernate.eclipse.console.Messages;
 import org.hibernate.eclipse.console.QueryEditor;
-import org.hibernate.eclipse.console.actions.ExecuteHQLAction;
+import org.hibernate.eclipse.console.actions.ExecuteQueryAction;
 
 
 
@@ -48,7 +49,7 @@ public class HQLEditorActionContributor extends TextEditorActionContributor {
     protected RetargetTextEditorAction contentAssistTipAction;
     protected RetargetTextEditorAction contentFormatAction;
     
-    private ExecuteHQLAction executeHQLAction;
+    private ExecuteQueryAction executeHQLAction;
 	
 
     /**
@@ -61,7 +62,7 @@ public class HQLEditorActionContributor extends TextEditorActionContributor {
         contentAssistProposalAction = new RetargetTextEditorAction( bundle, "ContentAssistProposal." ); // $NON-NLS-1$
         contentAssistTipAction =  new RetargetTextEditorAction( bundle, "ContentAssistTip." ); // $NON-NLS-1$
         contentFormatAction = new RetargetTextEditorAction( bundle, "ContentFormat." ); // $NON-NLS-1$
-        executeHQLAction = new ExecuteHQLAction();
+        executeHQLAction = new ExecuteQueryAction();
         
     }
 
@@ -113,11 +114,18 @@ public class HQLEditorActionContributor extends TextEditorActionContributor {
         }        
     }
     
+    public void contributeToToolBar(IToolBarManager toolBarManager) {
+    	
+    	super.contributeToToolBar( toolBarManager );
+    	
+    	
+    }
+    
     public void init(IActionBars bars, IWorkbenchPage page) {
     	super.init( bars, page );
     	
 //    	bars.setGlobalActionHandler("org.hibernate.eclipse.console.actions.ClearHQLEditorAction", fClearHQLEditorAction);
-    	bars.setGlobalActionHandler("org.hibernate.eclipse.console.actions.ExecuteHQLAction", executeHQLAction);
+    	bars.setGlobalActionHandler("org.hibernate.eclipse.console.actions.ExecuteQueryAction", executeHQLAction);
     	bars.updateActionBars();
     }
     

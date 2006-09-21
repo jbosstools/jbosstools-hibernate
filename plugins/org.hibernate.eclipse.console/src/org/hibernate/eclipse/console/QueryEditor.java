@@ -36,4 +36,6 @@ public interface QueryEditor {
 
 	void executeQuery(ConsoleConfiguration cfg);
 
+	void setConsoleConfigurationName(String text);
+
 }

@@ -27,9 +27,8 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.editors.text.TextEditorActionContributor;
 import org.eclipse.ui.part.EditorActionBarContributor;
-import org.eclipse.ui.texteditor.ITextEditor;
 import org.hibernate.eclipse.console.QueryEditor;
-import org.hibernate.eclipse.console.actions.ExecuteHQLAction;
+import org.hibernate.eclipse.console.actions.ExecuteQueryAction;
 
 
 /**
@@ -37,11 +36,11 @@ import org.hibernate.eclipse.console.actions.ExecuteHQLAction;
  */
 public class CriteriaEditorActionContributor extends TextEditorActionContributor {
 
-	private ExecuteHQLAction executeHQLAction;
+	private ExecuteQueryAction executeHQLAction;
 	
     public CriteriaEditorActionContributor() {
         super();
-        executeHQLAction = new ExecuteHQLAction();    
+        executeHQLAction = new ExecuteQueryAction();    
     }
 
     /**
@@ -72,7 +71,7 @@ public class CriteriaEditorActionContributor extends TextEditorActionContributor
     public void init(IActionBars bars, IWorkbenchPage page) {
     	super.init( bars, page );
     	
-    	bars.setGlobalActionHandler("org.hibernate.eclipse.console.actions.ExecuteHQLAction", executeHQLAction);
+    	bars.setGlobalActionHandler("org.hibernate.eclipse.console.actions.ExecuteQueryAction", executeHQLAction);
         bars.updateActionBars();
     }
     
