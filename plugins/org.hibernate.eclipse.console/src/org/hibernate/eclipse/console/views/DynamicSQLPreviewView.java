@@ -47,6 +47,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.execution.ExecutionContext;
+import org.hibernate.eclipse.console.QueryEditor;
 import org.hibernate.eclipse.console.utils.QLFormatHelper;
 import org.hibernate.eclipse.hqleditor.HQLEditor;
 import org.hibernate.eclipse.hqleditor.HQLSourceViewer;
@@ -134,7 +135,9 @@ public class DynamicSQLPreviewView extends ViewPart {
 		if(textViewer!=null && textViewer.getDocument()!=null) {
 			if(editor!=null) {
 				ConsoleConfiguration consoleConfiguration = editor.getConsoleConfiguration();
-				if(consoleConfiguration!=null) {
+				if(StringHelper.isEmpty( editor.getQueryString() )) {
+					textViewer.getDocument().set( "Empty HQL query." );
+				} else if(consoleConfiguration!=null) {
 					if(consoleConfiguration.isSessionFactoryCreated()) {
 						String generateSQL = generateSQL(consoleConfiguration.getExecutionContext(), consoleConfiguration.getSessionFactory(), editor.getQueryString());
 						if(StringHelper.isEmpty( generateSQL )) {
