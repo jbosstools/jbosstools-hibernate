@@ -48,6 +48,6 @@ public class CriteriaEditorInput extends QueryEditorInput {
     }
 
     public void resetName() {
-    	setName( "Criteria: " + getConsoleConfigurationName()==null?"<None>":getConsoleConfigurationName() );    	
+    	setName( "Criteria: " + (getConsoleConfigurationName()==null?"<None>":getConsoleConfigurationName()) );    	
     }
 } 
