@@ -9,6 +9,7 @@
 	<available file="${hibernate.root}" property="hibernate.root.exists"/>
 	<fail unless="hibernate.root.exists">hibernate.root needs to be set to the root of the hibernate svn checkout. Currently it is ${hibernate.root} which does not exist.</fail>
 	
+	<property name="src.dir" location="src"/>
 	<import file="${hibernate.root}/HibernateExt/common/common-build.xml"/>
 	
 	<target name="update" depends="init">
@@ -35,12 +36,14 @@
 		<ant antfile="${hibernate-core.home}\..\hibernate3\build.xml" inheritall="false" inheritrefs="false" target="copylib"/>  
         -->
     
+		<!--
         <ant antfile="${hibernate.root}\HibernateExt\metadata\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
         <ant antfile="${hibernate.root}\HibernateExt\metadata\build.xml" inheritall="false" inheritrefs="false" target="copylib"/>        
         <copy preservelastmodified="true" file="${hibernate.root}\HibernateExt\metadata\target\hibernate-annotations\hibernate-annotations.jar" todir="${lib.annotations}"/>
         <copy preservelastmodified="true" file="${hibernate.root}\HibernateExt\metadata\target\hibernate-annotations\lib\ejb3-persistence.jar" todir="${lib.annotations}"/>
         <copy preservelastmodified="true" file="${hibernate.root}\HibernateExt\metadata\target\hibernate-annotations\lib\lucene-core-2.0.0.jar" todir="${lib.annotations}"/>
-              
+            -->
+		
         <!-- we need to have the hibernateconsole stuff together with the core to fake DriverManager into allow loading drivers -->
 		<!-- <ant antfile="..\console\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
 		<copy file="..\console\target\hibernateconsole\hibernateconsole.jar" todir="${lib.tools}"/> -->
@@ -49,11 +52,11 @@
         <ant antfile="${hibernate.root}\HibernateExt\tools\build.xml" inheritall="false" inheritrefs="false" target="copylib"/>        
 		<copy preservelastmodified="true" file="${hibernate.root}\HibernateExt\tools\target\hibernate-tools\hibernate-tools.jar" todir="${lib.tools}"/>
 		<copy preservelastmodified="true" file="${hibernate.root}\HibernateExt\tools\target\hibernate-tools\lib\freemarker.jar" todir="${lib.tools}"/>
-		<copy preservelastmodified="true" file="${hibernate.root}\HibernateExt\tools\target\hibernate-tools\lib\jtidy-r8-21122004.jar" todir="${lib.tools}"/>		
-		
+		<copy preservelastmodified="true" file="${hibernate.root}\HibernateExt\tools\target\hibernate-tools\lib\jtidy-r8-20060801.jar" todir="${lib.tools}"/>		
+
 		<property file="${hibernate-core.lib.dir}/version.properties" prefix="h3"/>
-		
-        <copy preservelastmodified="true" todir="${lib.hibernate}" >
+
+		<copy preservelastmodified="true" todir="${lib.hibernate}/doesnotexist">
 			<fileset dir="${hibernate-core.home}">
 				<include name="hibernate3.jar"/>	
         	</fileset>

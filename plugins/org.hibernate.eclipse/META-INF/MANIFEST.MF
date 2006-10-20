@@ -26,7 +26,6 @@ Bundle-ClassPath: org.hibernate.eclipse.jar,
  lib/hibernate/proxool-0.8.3.jar,
  lib/hibernate/swarmcache-1.0rc2.jar,
  lib/tools/hibernate-tools.jar,
- lib/tools/jtidy-r8-21122004.jar,
  lib/tools/bsh-2.0b1.jar,
  lib/tools/freemarker.jar,
  lib/bsh-core-2.0b4.jar,
@@ -36,7 +35,8 @@ Bundle-ClassPath: org.hibernate.eclipse.jar,
  lib/hibernate/jgroups-2.2.8.jar,
  lib/hibernate/antlr-2.7.6.jar,
  lib/hibernate/ehcache-1.2.jar,
- lib/annotations/lucene-core-2.0.0.jar
+ lib/annotations/lucene-core-2.0.0.jar,
+ lib/tools/jtidy-r8-20060801.jar
 Bundle-Activator: org.hibernate.eclipse.HibernatePlugin
 Bundle-Vendor: Hibernate Team
 Bundle-Localization: plugin
