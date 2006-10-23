@@ -109,8 +109,7 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 					additonal = JavaRuntime.computeDefaultRuntimeClassPath(project);
 				}
 				catch (CoreException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					throw new HibernateConsoleRuntimeException("Could not compute default classpath from project " + project );
 				}
 				
 			}
