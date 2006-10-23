@@ -79,8 +79,8 @@ public class UpDownListComposite extends Composite {
 
 	private void initialize() {
 		createGroup();
-		this.setLayout(new GridLayout());
-		setSize(new org.eclipse.swt.graphics.Point(588,291));
+		GridLayout gridLayout = new GridLayout();		
+		this.setLayout(gridLayout);
 	}
 
 	/**
@@ -92,7 +92,6 @@ public class UpDownListComposite extends Composite {
 		gridLayout.numColumns = 2;
 		GridData gridData = new org.eclipse.swt.layout.GridData();
 		gridData.grabExcessHorizontalSpace = true;
-		//gridData.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		gridData.grabExcessVerticalSpace = true;
 		gridData.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		gridData.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
@@ -112,15 +111,15 @@ public class UpDownListComposite extends Composite {
 		GridData gridData1 = new org.eclipse.swt.layout.GridData();
 		gridData1.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		gridData1.grabExcessHorizontalSpace = true;
-		gridData1.grabExcessVerticalSpace = false;
+		gridData1.grabExcessVerticalSpace = true;
 		gridData1.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		gridData1.heightHint = 20;
 		gridData1.widthHint = 20;
 		
-		table = new Table(group, SWT.FULL_SELECTION);
-		table.setHeaderVisible(true);
+		table = new Table(group, SWT.FULL_SELECTION | SWT.BORDER);
+		table.setHeaderVisible(false);
 		table.setLayoutData(gridData1);
-		table.setLinesVisible(true);
+		table.setLinesVisible(false);
 		createColumns(table);
 		
 		table.addSelectionListener(new SelectionListener() {
@@ -141,9 +140,9 @@ public class UpDownListComposite extends Composite {
 	}
 
 	protected void createColumns(Table table) {
-		TableColumn column = new TableColumn(table, SWT.NULL);
-		column.setText("Name");
-		column.setWidth(1000);
+		/*TableColumn column = new TableColumn(table, SWT.NULL);
+		column.setText("NXame");
+		column.setWidth(10);*/
 	}
 
 	/**

@@ -32,11 +32,15 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.launching.JavaRuntime;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.preferences.AbstractConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.utils.ClassLoaderHelper;
+import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -52,13 +56,15 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 	private IPath propertyFilename;
 	private IPath[] mappings;
 	private IPath[] customClasspath;
+	
 
-	public EclipseConsoleConfigurationPreferences(String configName, boolean annotations, String entityResolver, IPath cfgFile, IPath propertyFilename, IPath[] mappings, IPath[] classpaths) {
-		super(configName, annotations, entityResolver);		
+	public EclipseConsoleConfigurationPreferences(String configName, boolean annotations, String projectName, boolean useProjectClasspath, String entityResolver, IPath cfgFile, IPath propertyFilename, IPath[] mappings, IPath[] classpaths) {
+		super(configName, annotations, projectName, useProjectClasspath, entityResolver);		
 		this.cfgFile = cfgFile;
 		this.propertyFilename = propertyFilename;
 		this.mappings = mappings;
 		this.customClasspath = classpaths;		
+		
 	}
 
 	/**
@@ -93,9 +99,31 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 		
 	}
 
+	
 	public URL[] getCustomClassPathURLS() {
 		try {
-			return ClassLoaderHelper.getRawLocationsURLForResources(customClasspath);
+			IJavaProject project = ProjectUtils.findJavaProject( getProjectName() );
+			String[] additonal = new String[0];
+			if(useProjectClasspath() && project.exists()) {
+				try {
+					additonal = JavaRuntime.computeDefaultRuntimeClassPath(project);
+				}
+				catch (CoreException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+			URL[] rawLocationsURLForResources = ClassLoaderHelper.getRawLocationsURLForResources(customClasspath);
+			URL[] result = new URL[rawLocationsURLForResources.length+additonal.length];
+			for (int i = 0; i < rawLocationsURLForResources.length; i++) {
+				result[i] = rawLocationsURLForResources[i];				
+			}
+			for (int i = 0; i < additonal.length; i++) {
+				String url = additonal[i];
+				result[i+rawLocationsURLForResources.length] = new File(url).toURL();				
+			}
+			return result;
 		} catch (MalformedURLException mue) {
 			throw new HibernateConsoleRuntimeException("Could not resolve classpaths", mue);
 		}
@@ -138,13 +166,15 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 	}
 
 	public void writeStateTo(Element node) {
-		writeStateTo(node, getName(), getEntityResolverName(), useAnnotations(), cfgFile, propertyFilename, mappings, customClasspath);
+		writeStateTo(node, getName(), getEntityResolverName(), useAnnotations(), getProjectName(), useProjectClasspath(), cfgFile, propertyFilename, mappings, customClasspath);
 	}
 
 	protected void setConfigFile(String cfgFile) {
 		this.cfgFile = cfgFile==null?null:new Path(cfgFile);
 	}
 
+	
+	
 	protected void setPropertyFile(String cfgFile) {
 		this.propertyFilename = cfgFile==null?null:new Path(cfgFile);
 	}
@@ -159,7 +189,7 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 	protected void setCustomClassPath(String[] mappings) {
 		this.customClasspath = new IPath[mappings.length];
 		for (int i = 0; i < mappings.length; i++) {
-			String str = mappings[i];
+			//String str = mappings[i];
 			this.customClasspath[i] = new Path(mappings[i]);	
 		}
 	}
@@ -190,5 +220,10 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 			throw new HibernateConsoleRuntimeException("Errors while parsing " + f,e);		
 		}    
 	}
+
 	
+	
+	
+	
+
 }

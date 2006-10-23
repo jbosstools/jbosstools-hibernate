@@ -92,10 +92,12 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 		final boolean annotations = confPage.useAnnotations();
 		final IPath[] mappings = confPage.getMappingFiles();
 		final IPath[] classpaths = confPage.getClassPath();
+		final boolean useProjectClasspath = confPage.useProjectClassPath();
+		final String projectName = confPage.getProjectName();
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
-					createConsoleConfiguration(confPage.getOldConfiguration(), configName, annotations, entityResolver, propertyFile, fileName, mappings, classpaths, monitor);
+					createConsoleConfiguration(confPage.getOldConfiguration(), configName, annotations, projectName, useProjectClasspath, entityResolver, propertyFile, fileName, mappings, classpaths, monitor);
 				} catch (CoreException e) {
 					throw new InvocationTargetException(e);
 				} finally {
@@ -126,13 +128,14 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 	static private void createConsoleConfiguration(
 			EclipseConsoleConfiguration oldConfig,
 			String configName,
-			boolean annotations, String entityResolver, IPath propertyFilename,
+			boolean annotations, String projectName, boolean useProjectClasspath, String entityResolver, IPath propertyFilename,
 			IPath cfgFile, IPath[] mappings, IPath[] classpaths, IProgressMonitor monitor)
 		throws CoreException {
 
 		monitor.beginTask("Configuring Hibernate Console" + propertyFilename, IProgressMonitor.UNKNOWN);
 								
-		ConsoleConfigurationPreferences ccp = new EclipseConsoleConfigurationPreferences(configName, annotations, entityResolver, cfgFile, propertyFilename, mappings, classpaths);
+		ConsoleConfigurationPreferences ccp = new EclipseConsoleConfigurationPreferences(configName, annotations, projectName, useProjectClasspath, entityResolver, cfgFile, propertyFilename, mappings, classpaths);
+		
 		
 		final ConsoleConfiguration cfg = new EclipseConsoleConfiguration(ccp);
 			

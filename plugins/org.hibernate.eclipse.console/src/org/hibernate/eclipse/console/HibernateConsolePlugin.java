@@ -230,8 +230,10 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 		} catch(HibernateConsoleRuntimeException hcr) {
 			logErrorMessage("Error while reading console configuration", hcr);
 		}
-		
+	
 	}
+
+	
 
 	void writeStateTo(File f) {
 		//System.out.println("write state to" + f);

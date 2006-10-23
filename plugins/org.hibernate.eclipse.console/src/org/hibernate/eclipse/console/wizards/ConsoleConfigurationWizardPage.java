@@ -65,6 +65,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
@@ -73,6 +75,8 @@ import org.hibernate.eclipse.console.EclipseConsoleConfiguration;
 import org.hibernate.eclipse.console.EclipseConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
+import org.hibernate.eclipse.console.utils.ProjectUtils;
+import org.hibernate.util.StringHelper;
 import org.xml.sax.EntityResolver;
 
 /**
@@ -85,6 +89,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	private Text propertyFileText;
 	private Text configurationFileText;
 	private Text configurationNameText;
+	private Text projectNameText;
 	private EclipseConsoleConfiguration oldConfiguaration = null;
 	private Button enableAnnotations; 
 	
@@ -96,6 +101,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	private boolean configurationFileWillBeCreated;
 	private Button confbutton;
 	private Button entbutton;
+	private Button useProjectClassPath;
 	
 	/**
 	 * Constructor for SampleNewWizardPage.
@@ -112,14 +118,15 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	 * @see IDialogPage#createControl(Composite)
 	 */
 	public void createControl(Composite parent) {
-		Composite container = new Composite(parent, SWT.NULL);
+		TabFolder folder = new TabFolder(parent,SWT.TOP);
+		
+		//Composite container = new Composite(parent, SWT.NULL);
+				
 		GridLayout layout = new GridLayout();
-		container.setLayout(layout);
+		//container.setLayout(layout);
 		layout.numColumns = 3;
 		layout.verticalSpacing = 9;		
 		
-		Label label;
-		Button button;
 		GridData gd;
 		
 		ModifyListener modifyListener = new ModifyListener() {
@@ -128,6 +135,37 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			}
 		};
 		
+		
+		Composite general = createGeneral( folder, modifyListener );		
+		TabItem item = new TabItem(folder, SWT.NONE);
+		item.setControl( general );
+		item.setText( "General" );
+		
+		Composite composite = buildClassPathTable(folder);
+		item = new TabItem(folder, SWT.NONE);
+		item.setControl( composite );
+		item.setText( "Classpath" );
+		
+		composite = buildMappingFileTable(folder);
+		item = new TabItem(folder, SWT.NONE);
+		item.setControl( composite );
+		item.setText( "Mappings" );
+		
+		initialize();
+		dialogChanged();
+		setControl(folder);
+	}
+
+	private Composite createGeneral(Composite parent, ModifyListener modifyListener) {
+		Composite container = new Composite(parent, SWT.NULL);
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 3;
+		gridLayout.verticalSpacing = 9;		
+		
+		container.setLayout(gridLayout);
+		Label label;
+		Button button;
+		GridData gd;
 		label = new Label(container, SWT.NULL);
 		label.setText("&Name:");
 		
@@ -137,6 +175,25 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 		configurationNameText.setLayoutData(gd);		
 		configurationNameText.addModifyListener(modifyListener);
 				
+		label = new Label(container, SWT.NULL);
+		label.setText("Pro&ject:");
+		
+		projectNameText = new Text(container, SWT.BORDER | SWT.SINGLE);
+		gd = new GridData(GridData.FILL_HORIZONTAL);
+		projectNameText.setLayoutData(gd);
+		projectNameText.addModifyListener(modifyListener);
+		
+		
+		button = new Button(container, SWT.PUSH);
+		button.setText("Browse...");
+		button.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				handleProjectBrowse();
+			}
+		});
+		
+		
+		
 		label = new Label(container, SWT.NULL);
 		label.setText("&Property file:");
 		
@@ -199,17 +256,9 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			public void widgetSelected(SelectionEvent e) {
 				dialogChanged();		
 			}
-		});		
-				
-		UpDownListComposite composite = buildMappingFileTable(container);
-		gd = createGridData();
-		composite.setLayoutData(gd);
-		composite = buildClassPathTable(container);
-		gd = createGridData();
-		composite.setLayoutData(gd);
-		initialize();
-		dialogChanged();
-		setControl(container);
+		});
+		
+		return container;
 	}
 
 	protected void handleEntityResolverBrowse() {
@@ -230,8 +279,14 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	}
 	
 	
-	private UpDownListComposite buildClassPathTable(Composite parent) {
-		classPathViewer = new UpDownListComposite(parent, SWT.NONE, "Classpath (only add path for POJO and driver - No Hibernate jars!)") {
+	private Composite buildClassPathTable(Composite parent) {
+		Composite c = new Composite(parent, SWT.None);
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 1;
+		gridLayout.verticalSpacing = 9;
+		c.setLayout( gridLayout );
+		
+		classPathViewer = new UpDownListComposite(c, SWT.NONE, "Additional classpath (Hibernate jars not necessary!)") {
 			protected Object[] handleAdd(int idx) {
 
 				TableItem[] items = getTable().getItems();
@@ -261,7 +316,29 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			}
 			
 		};
-		return classPathViewer; 
+		GridData gd = new GridData();
+		gd.grabExcessHorizontalSpace = true;
+		gd.grabExcessVerticalSpace = true;
+		gd.verticalAlignment = GridData.FILL;
+		gd.horizontalAlignment = GridData.FILL;
+		classPathViewer.setLayoutData( gd );
+		
+		useProjectClassPath = new Button(c, SWT.CHECK);
+		useProjectClassPath.setSelection( true );
+		useProjectClassPath.setText("Include default classpath from project");
+		useProjectClassPath.addSelectionListener(new SelectionListener() {
+		
+			public void widgetDefaultSelected(SelectionEvent e) {
+				dialogChanged();
+			}
+		
+			public void widgetSelected(SelectionEvent e) {
+				dialogChanged();		
+			}
+		});
+		
+		
+		return c; 
 	}
 
 	private UpDownListComposite buildMappingFileTable(Composite parent) {
@@ -282,6 +359,14 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 				dialogChanged();
 			}
 		};
+		
+		GridData gd;
+		gd = new GridData(GridData.FILL_BOTH);
+		
+		gd.horizontalSpan = 3;
+		gd.verticalSpan = 1;
+		
+		mappingFilesViewer.setLayoutData( gd );
 		return mappingFilesViewer;
 	}
 	
@@ -325,8 +410,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			} else if(proxy.getType() == IResource.FOLDER) {
 				if(javaProject!=null) {
 					if(javaProject.getOutputLocation().isPrefixOf(fullPath) ) {
-						classpath.add(fullPath);
-						//System.out.println("SKIPPING " + proxy.getName() );
+						//classpath.add(fullPath);
 						return false; // skip output locations
 					}
 				}
@@ -382,28 +466,34 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
                     v.javaProject = JavaCore.create(project);
                 }
                 
-				if(v.javaProject!=null) configurationNameText.setText(v.javaProject.getElementName() );
+				if(v.javaProject!=null) {
+					configurationNameText.setText(v.javaProject.getElementName() );
+					projectNameText.setText(v.javaProject.getElementName());
+				}
 				if (v.propertyFile!=null) propertyFileText.setText(v.propertyFile.toOSString() );
 				if (v.configFile!=null) configurationFileText.setText(v.configFile.toOSString() );
 				if (!v.mappings.isEmpty() ) mappingFilesViewer.add(v.mappings.toArray(), false);
 				if (!v.classpath.isEmpty() ) classPathViewer.add(v.classpath.toArray(), false);
-
+				useProjectClassPath.setSelection( true );
                 
-				if(v.javaProject!=null) {
-					classPathViewer.add(locateTypes(v.javaProject).toArray(), false);				
-				}
+				//if(v.javaProject!=null) {
+					//classPathViewer.add(locateTypes(v.javaProject).toArray(), false);				
+				//}
 			} else if (obj instanceof EclipseConsoleConfiguration) {
 				// trying to edit an EXISTING consoleconfiguration
 				EclipseConsoleConfiguration cc = (EclipseConsoleConfiguration) obj;
 				EclipseConsoleConfigurationPreferences prefs = (EclipseConsoleConfigurationPreferences) cc.getPreferences();
 				
-				configurationNameText.setText(prefs.getName() );
+				configurationNameText.setText(prefs.getName() );			
+				if(prefs.getProjectName()!=null) projectNameText.setText( prefs.getProjectName() );
+				useProjectClassPath.setSelection( prefs.useProjectClasspath() );
 				if(prefs.getPropertyFilename()!=null) propertyFileText.setText(prefs.getPropertyFilename().toOSString() );
 				if(prefs.getCfgFile()!=null) configurationFileText.setText(prefs.getCfgFile().toOSString() );
 				if(prefs.getMappings()!=null) mappingFilesViewer.add(prefs.getMappings(),false);
 				if(prefs.getCustomClasspath()!=null) classPathViewer.add(prefs.getCustomClasspath(),false);
 				if(prefs.getEntityResolverName()!=null) entityResolverClassNameText.setText(prefs.getEntityResolverName());
 				enableAnnotations.setSelection(prefs.useAnnotations());
+				
 				
 				oldConfiguaration = cc;
 			}
@@ -487,11 +577,21 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	}
 
 	private void handlePropertyFileBrowse() {
-		IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  getPropertyFilePath(), new IPath[0], "Select property file", "Choose file to use as hibernate.properties", new String[] {"properties"}, false, false, true);
+		IPath[] paths = org.hibernate.eclipse.console.utils.xpl.DialogSelectionHelper.chooseFileEntries(getShell(),  getPropertyFilePath(), new IPath[0], "Select property file", "Choose file to use as hibernate.properties", new String[] {"properties"}, false, false, true);
 		if(paths!=null && paths.length==1) {
 			propertyFileText.setText( (paths[0]).toOSString() );
 		}
 	}
+	
+	private void handleProjectBrowse() {
+		IJavaProject paths = DialogSelectionHelper.chooseJavaProject( getShell(), ProjectUtils.findJavaProject( propertyFileText.getText() ), "Select java project", "The (optional) java project is used to determine the default classpath" );
+		if(paths!=null) {
+			projectNameText.setText( paths.getProject().getName() );
+		} else {
+			projectNameText.setText("");
+		}
+	}
+	
 	
 	private void handleConfigurationFileBrowse() {
 		IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  getConfigurationFilePath(), new IPath[0], "Select hibernate.cfg.xml file", "Choose file to use as hibernate.cfg.xml", new String[] {"cfg.xml"}, false, false, true);
@@ -519,6 +619,13 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			}
 		}
 		
+		if(getProjectName()!=null && StringHelper.isNotEmpty(getProjectName().trim())) {
+			IJavaProject findJavaProject = ProjectUtils.findJavaProject( getProjectName() );
+			if(findJavaProject==null || !findJavaProject.exists()) {
+				updateStatus("The Java project " + getProjectName() + " does not exist.");
+				return;
+			}
+		}
 		if (propertyFilename.length() == 0 && configurationFilename.trim().length() == 0) {
 			updateStatus("Property or Configuration file must be specified");
 			return;
@@ -547,6 +654,10 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 		}
 		
 		updateStatus(null);
+	}
+
+	String getProjectName() {
+		return projectNameText.getText();
 	}
 
 	String getConfigurationName() {
@@ -607,6 +718,10 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 
 	public boolean useAnnotations() {
 		return enableAnnotations.getSelection();
+	}
+	
+	public boolean useProjectClassPath() {
+		return useProjectClassPath.getSelection();
 	}
 
 }

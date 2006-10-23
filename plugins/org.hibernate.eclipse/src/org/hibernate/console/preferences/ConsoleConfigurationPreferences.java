@@ -40,7 +40,7 @@ public interface ConsoleConfigurationPreferences {
 	final String HIBERNATE_PROPERTIES_TAG = "hibernate-properties";
 	final String LOCATION_ATTRIB = "location";
 	final String HIBERNATE_CONFIG_XML_TAG = "hibernate-config-xml";
-	final String NAME_ATTRIB = "name";
+	final String NAME_ATTRIB = "name";	
 	final String CONFIGURATION_TAG = "configuration";
 	final String ANNOTATIONS_ATTRIB = "annotations";
 	final String ENTITYRESOLVER_ATTRIB = "entityresolver";

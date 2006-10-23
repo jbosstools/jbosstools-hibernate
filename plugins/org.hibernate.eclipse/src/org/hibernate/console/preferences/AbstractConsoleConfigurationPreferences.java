@@ -33,6 +33,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import sun.security.action.GetPropertyAction;
+
 /**
  * @author max
  *
@@ -40,19 +42,26 @@ import org.w3c.dom.NodeList;
 public abstract class AbstractConsoleConfigurationPreferences implements
 		ConsoleConfigurationPreferences {
 
+	static final String PROJECT_ATTRIB = "project";
+	static final String USE_PROJECT_CLASSPATH_ATTRIB = "use-project-classpath";
+	
+	private String projectName;
 
 	private String name = "<unknown>";
 	private boolean useAnnotations = false;
 	protected String entityResolverName = null;
+	private boolean useProjectClasspath;
 	
-	public AbstractConsoleConfigurationPreferences(String name, boolean annotations, String entityResolver) {
+	public AbstractConsoleConfigurationPreferences(String name, boolean annotations, String projectName, boolean useProjectclassPath, String entityResolver) {
 		setName(name);
 		useAnnotations = annotations;
 		entityResolverName = entityResolver;
+		this.projectName = projectName;
+		this.useProjectClasspath = useProjectclassPath;
 	}
 	
 	protected AbstractConsoleConfigurationPreferences() {
-			// hidden 	
+
 	}
 	
 	public boolean useAnnotations() {
@@ -86,7 +95,7 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 
 	/** generic xml dumper that just dumps the toString representation of the paramters 
 	 * @param useAnnotations */
-	protected static void writeStateTo(Node node, String name, String entityResolver, boolean useAnnotations, Object cfgFile, Object propertyFilename, Object[] mappings, Object[] customClasspath) {
+	protected static void writeStateTo(Node node, String name, String entityResolver, boolean useAnnotations, String projectName, boolean useProjectClasspath, Object cfgFile, Object propertyFilename, Object[] mappings, Object[] customClasspath) {
 		Document doc = node.getOwnerDocument();
 		Element n = createElementWithAttribute(doc, CONFIGURATION_TAG, NAME_ATTRIB, name);
 		if(useAnnotations) {
@@ -94,6 +103,14 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 		}
 		if(StringHelper.isNotEmpty(entityResolver)) {
 			n.setAttribute(ENTITYRESOLVER_ATTRIB, entityResolver);
+		}
+		
+		if(useProjectClasspath) {
+			n.setAttribute( USE_PROJECT_CLASSPATH_ATTRIB, "true" );
+		}
+		
+		if(StringHelper.isNotEmpty(projectName)) {
+			n.setAttribute(PROJECT_ATTRIB, projectName);
 		}
 		
 		node.appendChild(n);
@@ -127,6 +144,24 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 		}
 	}
 	
+	public boolean useProjectClasspath() {
+		return useProjectClasspath;
+	}
+	
+	protected void setUseProjectClasspath(boolean useProjectClasspath) {
+		this.useProjectClasspath = useProjectClasspath;
+	}
+	
+	
+	
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+	
+	public String getProjectName() {
+		return projectName;
+	}
+	
 	public void readStateFrom(Element node) {
 		    
 		String entityResolver = null;
@@ -135,11 +170,18 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 		String propFile = null;
 		String[] mappings = new String[0];
 		String[] classpath = new String[0];
-		
+					
 		cfgName = node.getAttribute(NAME_ATTRIB);
+		
 		
 		String attribute = node.getAttribute(ANNOTATIONS_ATTRIB);
 		useAnnotations = ((attribute != null) && attribute.equalsIgnoreCase("true"));
+		
+		attribute = node.getAttribute( PROJECT_ATTRIB );
+		setProjectName( attribute );
+		
+		attribute = node.getAttribute( USE_PROJECT_CLASSPATH_ATTRIB );
+		setUseProjectClasspath((attribute != null) && attribute.equalsIgnoreCase("true"));
 		
 		attribute = node.getAttribute(ENTITYRESOLVER_ATTRIB);
 		if(attribute!=null && attribute.trim().length()>0) {
@@ -156,8 +198,10 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 			propFile = ( (Element)elements.item(0) ).getAttribute(LOCATION_ATTRIB);
 		}
 		
+		
 		mappings = parseListOfLocations(node, MAPPINGS_TAG, MAPPING_TAG);		
 		classpath = parseListOfLocations(node, CLASSPATH_TAG, PATH_TAG);
+		
 		
 		setName(cfgName);
 		setEntityResolverName(entityResolver);
