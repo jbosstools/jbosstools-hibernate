@@ -222,6 +222,7 @@ public class KnownConfigurations  {
 
 	public ConsoleConfiguration find(String lastUsedName) {
 		if(configurations==null) return null;
+		if(lastUsedName==null) return null;
 		return (ConsoleConfiguration) configurations.get(lastUsedName);
 	}
 	

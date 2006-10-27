@@ -1,32 +1,32 @@
 package org.hibernate.eclipse.console;
 
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.ControlContribution;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.RowData;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IShowEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.texteditor.IDocumentProvider;
-import org.hibernate.SessionFactory;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.KnownConfigurationsListener;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.eclipse.console.actions.ExecuteQueryAction;
 
@@ -89,99 +89,6 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 		return doc.get();
 	}
 
-	protected final class ConfigurationCombo extends ControlContribution {
-		private KnownConfigurationsListener listener;
-
-		private SelectionAdapter selectionAdapter;
-
-		private Combo consoleSelection;
-
-		private QueryEditor editor;
-
-		protected ConfigurationCombo(String id, QueryEditor qe) {
-			super( id );
-			this.editor = qe;
-		}
-
-		protected Control createControl(Composite parent) {
-			Composite panel = new Composite( parent, SWT.NONE );
-			panel.setLayout( new RowLayout() );
-			consoleSelection = new Combo( panel, SWT.DROP_DOWN | SWT.READ_ONLY );
-			consoleSelection.setLayoutData( new RowData(100, SWT.DEFAULT) );
-			
-			populateCombo( consoleSelection );
-
-			selectionAdapter = new SelectionAdapter() {
-
-				public void widgetSelected(SelectionEvent e) {
-					editor.setConsoleConfigurationName( consoleSelection
-							.getText() );
-				}
-
-			};
-
-			consoleSelection.addSelectionListener( selectionAdapter );
-
-			listener = new KnownConfigurationsListener() {
-
-				public void sessionFactoryClosing(
-						ConsoleConfiguration configuration,
-						SessionFactory closingFactory) {
-				}
-
-				public void sessionFactoryBuilt(ConsoleConfiguration ccfg,
-						SessionFactory builtFactory) {
-				}
-
-				public void configurationRemoved(ConsoleConfiguration root) {
-					populateCombo( consoleSelection );
-				}
-
-				public void configurationAdded(ConsoleConfiguration root) {
-					populateCombo( consoleSelection );
-				}
-			};
-			KnownConfigurations.getInstance().addConsoleConfigurationListener(
-					listener );
-
-			return panel;
-		}
-
-		private void populateCombo(final Combo config) {
-			ConsoleConfiguration[] configurations = KnownConfigurations
-					.getInstance().getConfigurations();
-			final String[] names = new String[configurations.length];
-			for (int i = 0; i < configurations.length; i++) {
-				names[i] = configurations[i].getName();
-			}
-
-			final String name = getConsoleConfigurationName()==null?"":getConsoleConfigurationName();
-			
-			config.getDisplay().syncExec( new Runnable() {
-			
-				public void run() {
-					config.setItems( names );			
-					config.setText( name );
-				}
-			
-			} );
-			
-		}
-
-		public void dispose() {
-			if ( listener != null ) {
-				KnownConfigurations.getInstance().removeConfigurationListener(
-						listener );
-			}
-			if ( selectionAdapter != null ) {
-				if ( !consoleSelection.isDisposed() ) {
-					consoleSelection.removeSelectionListener( selectionAdapter );
-				}
-			}
-		}
-
-	}
-
 	/**
 	 * Dispose of resources held by this editor.
 	 * 
@@ -206,6 +113,78 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 		ControlContribution cc = new ConfigurationCombo( "hql-target", this );
 		tbm.add( cc );
 
+		tbm.add( new Separator() );
+		
+		cc = new ComboContribution("maxResults") {
+
+			SelectionAdapter selectionAdapter =	new SelectionAdapter() {
+
+				public void widgetSelected(SelectionEvent e) {
+					Integer maxResults = null;
+					
+					try {
+						maxResults = new Integer(getText());
+					}
+					catch (NumberFormatException e1) {
+						maxResults = null;
+					}
+					queryInputModel.setMaxResults( maxResults );
+				}
+
+			};
+			
+			protected Control createControl(Composite parent) {
+
+
+				Control control = super.createControl( parent );
+				
+				comboControl.addModifyListener( new ModifyListener() {
+				
+					public void modifyText(ModifyEvent e) {
+						Integer maxResults = null;
+						
+						try {
+							maxResults = new Integer(getText());
+						}
+						catch (NumberFormatException e1) {
+							maxResults = null;
+						}
+						queryInputModel.setMaxResults( maxResults );				
+					}				
+				} );
+				return control;
+			}
+			protected int getComboWidth() {
+				return 30;
+			}
+			protected String getLabelText() {
+				return "Max results:";
+			}
+			
+			protected boolean isReadOnly() {
+				return false;
+			}
+			
+			protected SelectionListener getSelectionAdapter() {
+				return selectionAdapter;				
+			}
+
+			void populateComboBox() {
+				comboControl.getDisplay().syncExec( new Runnable() {
+					
+					public void run() {
+						String[] items = new String[] { "", "10", "20", "30", "50"};
+						comboControl.setItems( items );
+					}
+				
+				} );
+			
+								
+			}
+			
+		};
+		tbm.add(cc);
+		
 		tbm.update( true );
 
 	}

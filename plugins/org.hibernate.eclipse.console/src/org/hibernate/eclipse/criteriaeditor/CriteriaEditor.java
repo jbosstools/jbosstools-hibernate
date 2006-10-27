@@ -117,7 +117,7 @@ public class CriteriaEditor extends AbstractQueryEditor {
     }
 
 	public void executeQuery(ConsoleConfiguration cfg) {
-		cfg.executeBSHQuery(getQueryString(), getQueryInputModel().getQueryParametersForQuery() );
+		cfg.executeBSHQuery(getQueryString(), getQueryInputModel().getCopyForQuery() );
 	}
 
 	protected IEvaluationContext getEvaluationContext(IJavaProject project) {

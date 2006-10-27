@@ -42,20 +42,22 @@ import bsh.Interpreter;
  */
 public class JavaPage extends AbstractQueryPage {
 
-    
     private String criteriaCode;    
 
     Criteria criteria = null;
 
     private Interpreter ip;
 
+	private QueryInputModel model;
+
     /**
-     * @param queryParameters 
+     * @param model 
      * @param session2
      */
-    public JavaPage(ConsoleConfiguration cfg, String criteriaCode, ConsoleQueryParameter[] queryParameters) {
+    public JavaPage(ConsoleConfiguration cfg, String criteriaCode, QueryInputModel model) {
 		super(cfg);
         this.criteriaCode =  criteriaCode;
+        this.model = model;
     }
 
     public void setSession(Session s) {
@@ -71,8 +73,14 @@ public class JavaPage extends AbstractQueryPage {
             // ugly! TODO: make un-ugly!
             if(o instanceof Criteria) {
                 criteria = (Criteria) o;
+                if(model.getMaxResults()!=null) {
+                	criteria.setMaxResults( model.getMaxResults().intValue() );
+                }
             } else if (o instanceof List) {
                 list = (List) o;
+                if(model.getMaxResults()!=null) {
+                	list = list.subList( 0, Math.min( list.size(), model.getMaxResults().intValue() ) );
+                }
             } else {
                 list = new ArrayList();
                 list.add(o);   

@@ -36,7 +36,8 @@ public class HQLQueryPage extends AbstractQueryPage {
 
 	private Query query;
 	private String queryString;
-	private final ConsoleQueryParameter[] queryParameters;
+	private QueryInputModel model;
+	
 	public List getList() {
 		if (query==null) return Collections.EMPTY_LIST;
 		if (list == null) {
@@ -44,7 +45,7 @@ public class HQLQueryPage extends AbstractQueryPage {
 				
 				//list = query.list();
 				list = new ArrayList();
-				setupParameters(query, queryParameters);
+				setupParameters(query, model);
 				Iterator iter = query.list().iterator(); // need to be user-controllable to toggle between iterate, scroll etc.
 				while (iter.hasNext() ) {
 					Object element = iter.next();
@@ -63,9 +64,15 @@ public class HQLQueryPage extends AbstractQueryPage {
 		return list;
 	}
 
-	private void setupParameters(Query query2, ConsoleQueryParameter[] queryParameters2) {
-		for (int i = 0; i < queryParameters2.length; i++) {
-			ConsoleQueryParameter parameter = queryParameters2[i];
+	private void setupParameters(Query query2, QueryInputModel model) {
+		
+		if(model.getMaxResults()!=null) {
+			query2.setMaxResults( model.getMaxResults().intValue() );
+		}
+		
+		ConsoleQueryParameter[] qp = model.getQueryParameters();
+		for (int i = 0; i < qp.length; i++) {
+			ConsoleQueryParameter parameter = qp[i];
 			try {
 				int pos = Integer.parseInt(parameter.getName());
 				query2.setParameter(pos, calcValue( parameter ), parameter.getType());
@@ -84,10 +91,10 @@ public class HQLQueryPage extends AbstractQueryPage {
 	 * @param string
 	 * @param queryParameters 
 	 */
-	public HQLQueryPage(ConsoleConfiguration cfg, String string, ConsoleQueryParameter[] queryParameters) {
+	public HQLQueryPage(ConsoleConfiguration cfg, String string, QueryInputModel model) {
 		super(cfg);
 		queryString = string;
-		this.queryParameters = queryParameters;
+		this.model = model;
 	}
 
 	public void setSession(Session s) {
@@ -96,7 +103,9 @@ public class HQLQueryPage extends AbstractQueryPage {
 			query = this.getSession().createQuery(queryString);
 		} catch (HibernateException e) {
 			addException(e);			
-		}
+		} catch (Exception e) {
+			addException( e );
+		} 
 	}
 	
     /**
@@ -111,8 +120,20 @@ public class HQLQueryPage extends AbstractQueryPage {
     
     	try {
     		if(query==null) return l;
-    		if(query.getReturnAliases()==null) {
-    		Type[] t = query.getReturnTypes();
+    		String[] returnAliases = null;
+    		try {
+    			returnAliases = query.getReturnAliases();
+    		} catch(NullPointerException e) {
+    			// ignore - http://opensource.atlassian.com/projects/hibernate/browse/HHH-2188
+    		}
+			if(returnAliases==null) {
+    		Type[] t;
+    		try {
+			t = query.getReturnTypes();
+    		} catch(NullPointerException npe) {
+    			t = new Type[] { null };
+    			// ignore - http://opensource.atlassian.com/projects/hibernate/browse/HHH-2188
+    		}
     		l = new ArrayList(t.length);
     
     		for (int i = 0; i < t.length; i++) {
@@ -124,7 +145,7 @@ public class HQLQueryPage extends AbstractQueryPage {
     			}
     		}
     		} else {
-    			String[] t = query.getReturnAliases();
+    			String[] t = returnAliases;
         		l = new ArrayList(t.length);
         
         		for (int i = 0; i < t.length; i++) {

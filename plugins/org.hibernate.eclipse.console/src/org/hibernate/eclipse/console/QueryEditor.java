@@ -26,6 +26,7 @@ import org.hibernate.console.QueryInputModel;
 
 public interface QueryEditor {
 
+	String getConsoleConfigurationName();
 	ConsoleConfiguration getConsoleConfiguration();
 
 	boolean askUserForConfiguration(String name);
@@ -37,5 +38,7 @@ public interface QueryEditor {
 	void executeQuery(ConsoleConfiguration cfg);
 
 	void setConsoleConfigurationName(String text);
+
+	
 
 }

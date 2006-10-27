@@ -296,10 +296,10 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	List consoleCfgListeners = new ArrayList();
 		
 	public QueryPage executeHQLQuery(final String hql) {
-		return executeHQLQuery(hql, new ConsoleQueryParameter[0]);
+		return executeHQLQuery(hql, new QueryInputModel());
 	}
 	
-	public QueryPage executeHQLQuery(final String hql, final ConsoleQueryParameter[] queryParameters) {
+	public QueryPage executeHQLQuery(final String hql, final QueryInputModel queryParameters) {
 		
 		return (QueryPage) executionContext.execute(new ExecutionContext.Command() {
 			
@@ -316,12 +316,12 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		});		
 	}
 	
-	public QueryPage executeBSHQuery(final String queryString, final ConsoleQueryParameter[] queryParameters) {
+	public QueryPage executeBSHQuery(final String queryString, final QueryInputModel model) {
 		return (QueryPage) executionContext.execute(new ExecutionContext.Command() {
 			
 			public Object execute() {
 				Session session = getSessionFactory().openSession();
-				QueryPage qp = new JavaPage(ConsoleConfiguration.this,queryString,queryParameters);
+				QueryPage qp = new JavaPage(ConsoleConfiguration.this,queryString,model);
 				qp.setSession(session);
 				
 				qp.setId(++execcount);				

@@ -22,6 +22,7 @@
 package org.hibernate.console;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -42,6 +43,8 @@ public class QueryInputModel extends Observable {
 
 	List parameters;
 	boolean ignoreParameters = false;
+	
+	private Integer maxResults;
 	
 	public QueryInputModel() {
 		parameters = new ArrayList();
@@ -66,6 +69,18 @@ public class QueryInputModel extends Observable {
 			ConsoleQueryParameter cqp=(ConsoleQueryParameter) iterator.next(); 
 			result[i++] = new ConsoleQueryParameter(cqp);
 		}
+		return result;
+	}
+	
+	public QueryInputModel getCopyForQuery() {
+		QueryInputModel result = new QueryInputModel();
+		
+		ConsoleQueryParameter[] queryParametersForQuery = getQueryParametersForQuery();
+		result.parameters = Arrays.asList( queryParametersForQuery );
+	
+		result.maxResults = getMaxResults();
+		result.ignoreParameters = ignoreParameters;
+		
 		return result;
 	}
 
@@ -149,4 +164,11 @@ public class QueryInputModel extends Observable {
 		notifyObservers("clear");		
 	}
 
+	public void setMaxResults(Integer maxResults) {
+		this.maxResults = maxResults;		
+	}
+
+	public Integer getMaxResults() {
+		return maxResults;
+	}
 }

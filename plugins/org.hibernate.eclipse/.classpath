@@ -9,7 +9,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/concurrent-1.3.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/connector.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/dom4j-1.6.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/hibernate/hibernate3.jar"/>
+	<classpathentry exported="true" sourcepath="/hibernate-3.2" kind="lib" path="lib/hibernate/hibernate3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/jboss-cache.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/jboss-common.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/jboss-jmx.jar"/>

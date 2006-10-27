@@ -371,7 +371,7 @@ public class HQLEditor extends AbstractQueryEditor {
    
 
    public void executeQuery(ConsoleConfiguration cfg) {
-	   cfg.executeHQLQuery(getQueryString(), getQueryInputModel().getQueryParametersForQuery() );	
+	   cfg.executeHQLQuery(getQueryString(), getQueryInputModel().getCopyForQuery() );	
    }
 
   
