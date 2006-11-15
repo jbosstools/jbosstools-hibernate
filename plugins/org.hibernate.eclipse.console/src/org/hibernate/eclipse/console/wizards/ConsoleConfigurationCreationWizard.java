@@ -42,6 +42,7 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
+import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.eclipse.console.EclipseConsoleConfiguration;
 import org.hibernate.eclipse.console.EclipseConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -89,7 +90,7 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 		final String entityResolver = confPage.getEntityResolverClassName();
 		final IPath propertyFile = confPage.getPropertyFilePath();
 		final IPath fileName = confPage.getConfigurationFilePath();
-		final boolean annotations = confPage.useAnnotations();
+		final ConfigurationMode annotations = confPage.getConfigurationMode();
 		final IPath[] mappings = confPage.getMappingFiles();
 		final IPath[] classpaths = confPage.getClassPath();
 		final boolean useProjectClasspath = confPage.useProjectClassPath();
@@ -128,13 +129,13 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 	static private void createConsoleConfiguration(
 			EclipseConsoleConfiguration oldConfig,
 			String configName,
-			boolean annotations, String projectName, boolean useProjectClasspath, String entityResolver, IPath propertyFilename,
+			ConfigurationMode cmode, String projectName, boolean useProjectClasspath, String entityResolver, IPath propertyFilename,
 			IPath cfgFile, IPath[] mappings, IPath[] classpaths, IProgressMonitor monitor)
 		throws CoreException {
 
 		monitor.beginTask("Configuring Hibernate Console" + propertyFilename, IProgressMonitor.UNKNOWN);
 								
-		ConsoleConfigurationPreferences ccp = new EclipseConsoleConfigurationPreferences(configName, annotations, projectName, useProjectClasspath, entityResolver, cfgFile, propertyFilename, mappings, classpaths);
+		ConsoleConfigurationPreferences ccp = new EclipseConsoleConfigurationPreferences(configName, cmode, projectName, useProjectClasspath, entityResolver, cfgFile, propertyFilename, mappings, classpaths);
 		
 		
 		final ConsoleConfiguration cfg = new EclipseConsoleConfiguration(ccp);

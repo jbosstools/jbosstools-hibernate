@@ -58,8 +58,8 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 	private IPath[] customClasspath;
 	
 
-	public EclipseConsoleConfigurationPreferences(String configName, boolean annotations, String projectName, boolean useProjectClasspath, String entityResolver, IPath cfgFile, IPath propertyFilename, IPath[] mappings, IPath[] classpaths) {
-		super(configName, annotations, projectName, useProjectClasspath, entityResolver);		
+	public EclipseConsoleConfigurationPreferences(String configName, ConfigurationMode cmode, String projectName, boolean useProjectClasspath, String entityResolver, IPath cfgFile, IPath propertyFilename, IPath[] mappings, IPath[] classpaths) {
+		super(configName, cmode, projectName, useProjectClasspath, entityResolver);		
 		this.cfgFile = cfgFile;
 		this.propertyFilename = propertyFilename;
 		this.mappings = mappings;
@@ -165,7 +165,7 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 	}
 
 	public void writeStateTo(Element node) {
-		writeStateTo(node, getName(), getEntityResolverName(), useAnnotations(), getProjectName(), useProjectClasspath(), cfgFile, propertyFilename, mappings, customClasspath);
+		writeStateTo(node, getName(), getEntityResolverName(), getConfigurationMode(), getProjectName(), useProjectClasspath(), cfgFile, propertyFilename, mappings, customClasspath);
 	}
 
 	protected void setConfigFile(String cfgFile) {

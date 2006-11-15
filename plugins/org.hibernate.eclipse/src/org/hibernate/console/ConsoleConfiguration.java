@@ -26,6 +26,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.sql.Driver;
@@ -41,6 +44,7 @@ import java.util.Properties;
 import org.dom4j.DocumentException;
 import org.dom4j.Node;
 import org.dom4j.io.DOMWriter;
+import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.Session;
@@ -53,6 +57,9 @@ import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.console.execution.ExecutionContextHolder;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
+import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
+import org.hibernate.tool.ant.JPAConfigurationTask;
+import org.hibernate.util.ConfigHelper;
 import org.hibernate.util.ReflectHelper;
 import org.hibernate.util.StringHelper;
 import org.hibernate.util.XMLHelper;
@@ -100,22 +107,44 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	}
 	
 	public void build() {
-		
-		if(prefs.useAnnotations()) {
-			try {
-				Class clazz = ReflectHelper
-						.classForName( "org.hibernate.cfg.AnnotationConfiguration" );
-				configuration = buildWith( (Configuration) clazz.newInstance(),
-						true );
+		configuration = buildWith(null, true);				
+	}
+
+	private Configuration buildJPAConfiguration(String persistenceUnit, Properties properties, String entityResolver) {
+		try {
+			Map overrides = new HashMap();
+			if(properties!=null) {
+				overrides.putAll( properties );
 			}
-			catch (Exception e) {
-				throw new HibernateConsoleRuntimeException("Could not load AnnotationConfiguration",e);
+			
+			Class clazz = ReflectHelper.classForName("org.hibernate.ejb.Ejb3Configuration", JPAConfigurationTask.class);
+			Object ejb3cfg = clazz.newInstance();
+			
+			if(StringHelper.isNotEmpty(entityResolver)) {
+				Class resolver = ReflectHelper.classForName(entityResolver, this.getClass());
+				Object object = resolver.newInstance();
+				Method method = clazz.getMethod("setEntityResolver", new Class[] { EntityResolver.class });
+				method.invoke(ejb3cfg, new Object[] { object } );
 			}
-		} else {
-			configuration = buildWith(new Configuration(),true);	
+			
+			Method method = clazz.getMethod("configure", new Class[] { String.class, Map.class });
+			if ( method.invoke(ejb3cfg, new Object[] { persistenceUnit, overrides } ) == null ) {
+				throw new HibernateConsoleRuntimeException("Persistence unit not found: '" + persistenceUnit + "'.");
+			}
+			
+			method = clazz.getMethod("getHibernateConfiguration", new Class[0]);
+			Configuration invoke = (Configuration) method.invoke(ejb3cfg, null);
+			return invoke;
 		}
-		
-		
+		catch (Exception e) {
+			throw new HibernateConsoleRuntimeException("Could not create JPA based Configuration",e);
+		}
+	}
+	private Configuration buildAnnotationConfiguration() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+		Class clazz = ReflectHelper
+				.classForName( "org.hibernate.cfg.AnnotationConfiguration" );
+		Configuration newInstance = (Configuration) clazz.newInstance();
+		return newInstance;
 	}
 	
 	/**
@@ -130,33 +159,26 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			
 				public Object execute() {
 					Configuration localCfg = cfg;
+
 					Properties properties = prefs.getProperties();
-					if(properties!=null) {
-						localCfg = localCfg.setProperties(properties);
+
+					if(localCfg==null) {
+						localCfg = buildConfiguration( properties, includeMappings );
+					} else {
+						// TODO: this is actually only for jdbc reveng...
+						localCfg = configureStandardConfiguration( includeMappings, localCfg, properties );						
 					}
-					EntityResolver entityResolver = XMLHelper.DEFAULT_DTD_RESOLVER;
-					if(StringHelper.isNotEmpty(prefs.getEntityResolverName())) {
-						try {
-							entityResolver = (EntityResolver) ReflectHelper.classForName(prefs.getEntityResolverName()).newInstance();
-						} catch (Exception c) {
-							throw new HibernateConsoleRuntimeException("Could not configure entity resolver " + prefs.getEntityResolverName(), c);
-						}
-					}
-					localCfg.setEntityResolver(entityResolver);
-					
-					if (prefs.getConfigXMLFile() != null) {
-						localCfg = loadConfigurationXML( localCfg, includeMappings, entityResolver );
-					}
-					
+
 					// here both setProperties and configxml have had their chance to tell which databasedriver is needed. 
-					registerFakeDriver(cfg.getProperty(Environment.DRIVER) );
+					registerFakeDriver(localCfg.getProperty(Environment.DRIVER) );
 					
+					// TODO: jpa configuration ?
 					if(includeMappings) {
 						File[] mappingFiles = prefs.getMappingFiles();
 						
 						for (int i = 0; i < mappingFiles.length; i++) {
 							File hbm = mappingFiles[i];
-							localCfg = cfg.addFile(hbm);
+							localCfg = localCfg.addFile(hbm);
 						}
 					}
 					
@@ -170,16 +192,23 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	}
 
 	private Configuration loadConfigurationXML(Configuration localCfg, boolean includeMappings, EntityResolver entityResolver) {
+		File configXMLFile = prefs.getConfigXMLFile();
 		if(!includeMappings) {
 			org.dom4j.Document doc;
-			XMLHelper xmlHelper = new XMLHelper();
-			String resourceName = prefs.getConfigXMLFile().toString();
+			XMLHelper xmlHelper = new XMLHelper();			
 			InputStream stream;
+			String resourceName = "<unknown>";
 			try {
-				stream = new FileInputStream( prefs.getConfigXMLFile() );
+				if(configXMLFile!=null) {
+					resourceName = configXMLFile.toString();
+					stream = new FileInputStream( configXMLFile );
+				} else {
+					resourceName = "/hibernate.cfg.xml";
+					stream = ConfigHelper.getResourceAsStream( resourceName ); // simulate hibernate's default look up
+				}
 			}
 			catch (FileNotFoundException e1) {
-				throw new HibernateConsoleRuntimeException("Could not access " + prefs.getConfigXMLFile(), e1);
+				throw new HibernateConsoleRuntimeException("Could not access " + configXMLFile, e1);
 			}
 			
 			try {
@@ -209,8 +238,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			}
 			catch (DocumentException e) {
 				throw new HibernateException(
-						"Could not parse configuration: " + resourceName,
-						e
+						"Could not parse configuration: " + resourceName, e
 				);
 			}
 			finally {
@@ -222,7 +250,11 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 				}
 			}
 		} else {
-			return localCfg.configure(prefs.getConfigXMLFile());
+			if(configXMLFile!=null) {
+				return localCfg.configure(configXMLFile);
+			} else {
+				return localCfg.configure();
+			}
 		}
 	}
 	
@@ -404,5 +436,51 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		
 		}); 
 	}
+
+	// TODO: delegate to some extension point
+	private Configuration buildConfiguration(Properties properties, boolean includeMappings) {
+		Configuration localCfg = null;		
+		if(prefs.getConfigurationMode().equals( ConfigurationMode.ANNOTATIONS )) {
+			try {
+				localCfg = buildAnnotationConfiguration();
+				localCfg = configureStandardConfiguration( includeMappings, localCfg, properties );
+			}
+			catch (Exception e) {
+				throw new HibernateConsoleRuntimeException("Could not load AnnotationConfiguration",e);
+			}
+		} else if(prefs.getConfigurationMode().equals( ConfigurationMode.JPA )) {
+			try {
+				localCfg = buildJPAConfiguration( null, properties, prefs.getEntityResolverName() );
+			}
+			catch (Exception e) {
+				throw new HibernateConsoleRuntimeException("Could not load JPA Configuration",e);
+			}
+		} else {
+			localCfg = new Configuration();			
+			localCfg = configureStandardConfiguration( includeMappings, localCfg, properties );
+		}	
+		return localCfg;
+	}
+
+	private Configuration configureStandardConfiguration(final boolean includeMappings, Configuration localCfg, Properties properties) {
+		if(properties!=null) {
+			localCfg = localCfg.setProperties(properties);
+		}
+		EntityResolver entityResolver = XMLHelper.DEFAULT_DTD_RESOLVER;
+		if(StringHelper.isNotEmpty(prefs.getEntityResolverName())) {
+			try {
+				entityResolver = (EntityResolver) ReflectHelper.classForName(prefs.getEntityResolverName()).newInstance();
+			} catch (Exception c) {
+				throw new HibernateConsoleRuntimeException("Could not configure entity resolver " + prefs.getEntityResolverName(), c);
+			}
+		}
+		localCfg.setEntityResolver(entityResolver);
+
+		localCfg = loadConfigurationXML( localCfg, includeMappings, entityResolver );
+		
+		return localCfg;
+	}
+	
+
 
 }

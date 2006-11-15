@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.hibernate.console.HibernateConsoleRuntimeException;
+import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.util.StringHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -45,16 +46,17 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 	static final String PROJECT_ATTRIB = "project";
 	static final String USE_PROJECT_CLASSPATH_ATTRIB = "use-project-classpath";
 	
+	
 	private String projectName;
 
 	private String name = "<unknown>";
-	private boolean useAnnotations = false;
 	protected String entityResolverName = null;
 	private boolean useProjectClasspath;
+	private ConfigurationMode configurationMode;
 	
-	public AbstractConsoleConfigurationPreferences(String name, boolean annotations, String projectName, boolean useProjectclassPath, String entityResolver) {
+	public AbstractConsoleConfigurationPreferences(String name, ConfigurationMode configurationMode, String projectName, boolean useProjectclassPath, String entityResolver) {
 		setName(name);
-		useAnnotations = annotations;
+		this.configurationMode = configurationMode;
 		entityResolverName = entityResolver;
 		this.projectName = projectName;
 		this.useProjectClasspath = useProjectclassPath;
@@ -64,8 +66,8 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 
 	}
 	
-	public boolean useAnnotations() {
-		return useAnnotations ;
+	public ConfigurationMode getConfigurationMode() {
+		return configurationMode;
 	}
 	
 	public void setName(String name) {
@@ -95,12 +97,14 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 
 	/** generic xml dumper that just dumps the toString representation of the paramters 
 	 * @param useAnnotations */
-	protected static void writeStateTo(Node node, String name, String entityResolver, boolean useAnnotations, String projectName, boolean useProjectClasspath, Object cfgFile, Object propertyFilename, Object[] mappings, Object[] customClasspath) {
+	protected static void writeStateTo(Node node, String name, String entityResolver, ConfigurationMode configurationMode, String projectName, boolean useProjectClasspath, Object cfgFile, Object propertyFilename, Object[] mappings, Object[] customClasspath) {
 		Document doc = node.getOwnerDocument();
 		Element n = createElementWithAttribute(doc, CONFIGURATION_TAG, NAME_ATTRIB, name);
-		if(useAnnotations) {
+		/*if(useAnnotations) {
 			n.setAttribute(ANNOTATIONS_ATTRIB, "true");
-		}
+		}*/
+		n.setAttribute(CONFIGURATION_MODE_ATTRIB, configurationMode.toString());
+		
 		if(StringHelper.isNotEmpty(entityResolver)) {
 			n.setAttribute(ENTITYRESOLVER_ATTRIB, entityResolver);
 		}
@@ -175,7 +179,18 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 		
 		
 		String attribute = node.getAttribute(ANNOTATIONS_ATTRIB);
-		useAnnotations = ((attribute != null) && attribute.equalsIgnoreCase("true"));
+		if(attribute!=null) {
+			boolean oldAnnotationFlag = ((attribute != null) && attribute.equalsIgnoreCase("true"));
+			if(oldAnnotationFlag) {
+				configurationMode = ConfigurationMode.ANNOTATIONS;
+			} else {
+				configurationMode = ConfigurationMode.CORE;
+			}
+		} else {
+			attribute = node.getAttribute(CONFIGURATION_MODE_ATTRIB);
+			configurationMode = ConfigurationMode.parse( attribute );
+		}
+		
 		
 		attribute = node.getAttribute( PROJECT_ATTRIB );
 		setProjectName( attribute );

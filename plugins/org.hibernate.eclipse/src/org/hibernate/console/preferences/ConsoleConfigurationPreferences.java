@@ -22,7 +22,10 @@
 package org.hibernate.console.preferences;
 
 import java.io.File;
+import java.io.Serializable;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.w3c.dom.Element;
@@ -33,20 +36,60 @@ import org.w3c.dom.Element;
  */
 public interface ConsoleConfigurationPreferences {
 	
-	final String PATH_TAG = "path";
-	final String CLASSPATH_TAG = "classpath";
-	final String MAPPING_TAG = "mapping";
-	final String MAPPINGS_TAG = "mappings";
-	final String HIBERNATE_PROPERTIES_TAG = "hibernate-properties";
-	final String LOCATION_ATTRIB = "location";
-	final String HIBERNATE_CONFIG_XML_TAG = "hibernate-config-xml";
-	final String NAME_ATTRIB = "name";	
-	final String CONFIGURATION_TAG = "configuration";
-	final String ANNOTATIONS_ATTRIB = "annotations";
-	final String ENTITYRESOLVER_ATTRIB = "entityresolver";
+	static final String PATH_TAG = "path";
+	static final String CLASSPATH_TAG = "classpath";
+	static final String MAPPING_TAG = "mapping";
+	static final String MAPPINGS_TAG = "mappings";
+	static final String HIBERNATE_PROPERTIES_TAG = "hibernate-properties";
+	static final String LOCATION_ATTRIB = "location";
+	static final String HIBERNATE_CONFIG_XML_TAG = "hibernate-config-xml";
+	static final String NAME_ATTRIB = "name";	
+	static final String CONFIGURATION_TAG = "configuration";
+	static final String ANNOTATIONS_ATTRIB = "annotations";
+	static final String ENTITYRESOLVER_ATTRIB = "entityresolver";
+	static final String CONFIGURATION_MODE_ATTRIB = "configuration-factory";
 	
+	// TODO: we should move this to some classhandler
+	static public class ConfigurationMode implements Serializable {
+
+		private static final Map INSTANCES = new HashMap();
+
+		public static final ConfigurationMode CORE = new ConfigurationMode( "CORE" );
+		public static final ConfigurationMode ANNOTATIONS = new ConfigurationMode( "ANNOTATIONS" );
+		public static final ConfigurationMode JPA = new ConfigurationMode( "JPA" );
+
+		static {
+			INSTANCES.put( CORE.name, CORE );
+			INSTANCES.put( ANNOTATIONS.name, ANNOTATIONS );
+			INSTANCES.put( JPA.name, JPA );
+		}
+
+		private final String name;
+
+		public ConfigurationMode(String name) {
+			this.name = name;
+		}
+
+		public String toString() {
+			return name;
+		}
+
+		private Object readResolve() {
+			return INSTANCES.get( name );
+		}
+
+		public static ConfigurationMode parse(String name) {
+			ConfigurationMode rtn = ( ConfigurationMode ) INSTANCES.get( name );
+			if ( rtn == null ) {
+				// default is POJO
+				rtn = CORE;
+			}
+			return rtn;
+		}
+	}
+
 	
-	public abstract boolean useAnnotations();
+	public abstract ConfigurationMode getConfigurationMode();
 	
 	public abstract String getName();
 

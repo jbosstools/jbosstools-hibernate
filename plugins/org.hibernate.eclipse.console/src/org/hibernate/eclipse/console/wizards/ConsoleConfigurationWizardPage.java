@@ -62,8 +62,10 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
@@ -71,6 +73,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.eclipse.console.EclipseConsoleConfiguration;
 import org.hibernate.eclipse.console.EclipseConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -91,7 +94,10 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	private Text configurationNameText;
 	private Text projectNameText;
 	private EclipseConsoleConfiguration oldConfiguaration = null;
-	private Button enableAnnotations; 
+	//private Button enableAnnotations;
+	Button coreMode;
+	Button jpaMode;
+	Button annotationsMode;
 	
 	private Text entityResolverClassNameText;
 	
@@ -182,8 +188,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		projectNameText.setLayoutData(gd);
 		projectNameText.addModifyListener(modifyListener);
-		
-		
+				
 		button = new Button(container, SWT.PUSH);
 		button.setText("Browse...");
 		button.addSelectionListener(new SelectionAdapter() {
@@ -192,7 +197,9 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			}
 		});
 		
-		
+		//label = new Label(container, SWT.NULL);
+		createConfigurationMode( container );
+				
 		
 		label = new Label(container, SWT.NULL);
 		label.setText("&Property file:");
@@ -243,9 +250,9 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 				handleEntityResolverBrowse();
 			}
 		});
-		
-		label = new Label(container, SWT.NULL);
-		enableAnnotations = new Button(container, SWT.CHECK);
+						
+		//configurationMode.
+		/*enableAnnotations = new Button(container, SWT.CHECK);
 		enableAnnotations.setText("Enable hibernate ejb3/annotations (requires running eclipse with a Java 5 runtime)");
 		enableAnnotations.addSelectionListener(new SelectionListener() {
 		
@@ -256,9 +263,34 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			public void widgetSelected(SelectionEvent e) {
 				dialogChanged();		
 			}
-		});
+		});*/
 		
 		return container;
+	}
+
+	private void createConfigurationMode(Composite container) {
+		SelectionListener sl = new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				dialogChanged();
+			}		
+		};
+		new Label(container, SWT.NULL).setText( "Type:" );
+		Group group = new Group( container, SWT.SHADOW_IN);
+		//group.setText("Choose Hibernate configuration");
+		group.setLayout( new RowLayout( SWT.HORIZONTAL ) );
+		coreMode = new Button(group, SWT.RADIO);
+		coreMode.setText("Core");
+		coreMode.addSelectionListener( sl );
+		coreMode.setSelection( true );
+		annotationsMode = new Button(group, SWT.RADIO);
+		annotationsMode.setText("Annotations (jdk 1.5+)");
+		annotationsMode.addSelectionListener( sl );
+		jpaMode = new Button(group, SWT.RADIO);
+		jpaMode.setText("JPA (jdk 1.5+)");
+		jpaMode.addSelectionListener( sl );
+		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd.horizontalSpan = 2;
+		group.setLayoutData( gd );
 	}
 
 	protected void handleEntityResolverBrowse() {
@@ -475,8 +507,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 				if (!v.mappings.isEmpty() ) mappingFilesViewer.add(v.mappings.toArray(), false);
 				if (!v.classpath.isEmpty() ) classPathViewer.add(v.classpath.toArray(), false);
 				useProjectClassPath.setSelection( true );
-                
-				//if(v.javaProject!=null) {
+                //if(v.javaProject!=null) {
 					//classPathViewer.add(locateTypes(v.javaProject).toArray(), false);				
 				//}
 			} else if (obj instanceof EclipseConsoleConfiguration) {
@@ -492,8 +523,9 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 				if(prefs.getMappings()!=null) mappingFilesViewer.add(prefs.getMappings(),false);
 				if(prefs.getCustomClasspath()!=null) classPathViewer.add(prefs.getCustomClasspath(),false);
 				if(prefs.getEntityResolverName()!=null) entityResolverClassNameText.setText(prefs.getEntityResolverName());
-				enableAnnotations.setSelection(prefs.useAnnotations());
-				
+				jpaMode.setSelection( prefs.getConfigurationMode().equals( ConfigurationMode.JPA ) );
+				coreMode.setSelection( prefs.getConfigurationMode().equals( ConfigurationMode.CORE ) );
+				annotationsMode.setSelection( prefs.getConfigurationMode().equals( ConfigurationMode.ANNOTATIONS ) );
 				
 				oldConfiguaration = cc;
 			}
@@ -608,6 +640,8 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 		String propertyFilename = propertyFileText.getText();
 		String configurationFilename = configurationFileText.getText();
 		
+		configurationFileText.setEnabled( !getConfigurationMode().equals( ConfigurationMode.JPA ) );
+		confbutton.setEnabled( !getConfigurationMode().equals( ConfigurationMode.JPA ) );
 		
 		if(getConfigurationName()==null || getConfigurationName().trim().length() == 0) {
 			updateStatus("A name must be specified");
@@ -626,10 +660,12 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 				return;
 			}
 		}
-		if (propertyFilename.length() == 0 && configurationFilename.trim().length() == 0) {
+		
+		/* TODO: warn about implicit behavior of loading /hibernate.cfg.xml, /hibernate.properties and /META-INF/persistence.xml
+		 * if (propertyFilename.length() == 0 && configurationFilename.trim().length() == 0) {
 			updateStatus("Property or Configuration file must be specified");
 			return;
-		} 
+		} */
 		
 		if (propertyFilename.length() > 0) {
 			IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(propertyFilename);
@@ -715,13 +751,19 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	public String getEntityResolverClassName() {
 		return entityResolverClassNameText.getText();
 	}
-
-	public boolean useAnnotations() {
-		return enableAnnotations.getSelection();
-	}
 	
 	public boolean useProjectClassPath() {
 		return useProjectClassPath.getSelection();
+	}
+
+	public ConfigurationMode getConfigurationMode() {
+		if(annotationsMode.getSelection()) {
+			return ConfigurationMode.ANNOTATIONS;
+		} else if(jpaMode.getSelection()) {
+			return ConfigurationMode.JPA;
+		} else {
+			return ConfigurationMode.CORE;
+		}
 	}
 
 }
