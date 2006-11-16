@@ -214,18 +214,14 @@ public class CodeGenerationLaunchDelegate extends
 
 			ConsoleConfiguration cc = KnownConfigurations.getInstance().find(attributes.getConsoleConfigurationName());
 			ReverseEngineeringStrategy res = null;
-			
-			ReverseEngineeringSettings qqsettings = new ReverseEngineeringSettings()
-									.setDefaultPackageName(attributes.getPackageName())
-									.setDetectManyToMany( attributes.detectManyToMany() )
-									.setDetectOptimisticLock( attributes.detectOptimisticLock() );
-			
+				
+			ReverseEngineeringSettings qqsettings = null;
 			if (attributes.isReverseEngineer()) {
 				monitor.subTask("reading jdbc metadata");
 						
-				
+				//todo: factor this setup of revengstrategy to core				
 				DefaultReverseEngineeringStrategy configurableNamingStrategy = new DefaultReverseEngineeringStrategy();
-				configurableNamingStrategy.setSettings(qqsettings);
+				//configurableNamingStrategy.setSettings(qqsettings);
 				
 				res = configurableNamingStrategy;
 				if(revengres!=null) {
@@ -236,6 +232,14 @@ public class CodeGenerationLaunchDelegate extends
 					repository.addFile(file);
 					res = repository.getReverseEngineeringStrategy(res);
 				}
+				
+
+				 qqsettings = new ReverseEngineeringSettings(res)
+				.setDefaultPackageName(attributes.getPackageName())
+				.setDetectManyToMany( attributes.detectManyToMany() )
+				.setDetectOptimisticLock( attributes.detectOptimisticLock() );
+
+				configurableNamingStrategy.setSettings( qqsettings );
 				res.setSettings(qqsettings);
 			}
 			final Configuration cfg = buildConfiguration(attributes.isReverseEngineer(), attributes.getRevengStrategy(), cc, res, attributes.isPreferBasicCompositeIds(), qqsettings);

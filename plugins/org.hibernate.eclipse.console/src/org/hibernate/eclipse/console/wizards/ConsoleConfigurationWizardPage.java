@@ -640,7 +640,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 		String propertyFilename = propertyFileText.getText();
 		String configurationFilename = configurationFileText.getText();
 		
-		configurationFileText.setEnabled( !getConfigurationMode().equals( ConfigurationMode.JPA ) );
+		configurationFileText.setEnabled( !configurationFileWillBeCreated && !getConfigurationMode().equals( ConfigurationMode.JPA ) );
 		confbutton.setEnabled( !getConfigurationMode().equals( ConfigurationMode.JPA ) );
 		
 		if(getConfigurationName()==null || getConfigurationName().trim().length() == 0) {
