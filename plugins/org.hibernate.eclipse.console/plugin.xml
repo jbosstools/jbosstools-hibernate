@@ -405,7 +405,13 @@
             classname="org.hibernate.tool.hbm2x.DocExporter"
             description="Schema Documentation (.html)"
             icon="icons/images/schema.gif"
-            id="org.hibernate.tools.hbm2doc"/>
+            id="org.hibernate.tools.hbm2doc">
+         <property
+               description="executable to run GraphViz"
+               name="dot.executable"
+               type="string"
+               value="dot.exe"/>
+      </exporter>
       <exporter
             classname="org.hibernate.tool.hbm2x.seam.SeamExporter"
             description="JBoss Seam Skeleton App [beta] (misc)"

@@ -47,6 +47,8 @@ public class HibernateConsoleSaveParticipant implements ISaveParticipant {
 	public void saving(ISaveContext context) throws CoreException {
 		switch (context.getKind() ) {
 		case ISaveContext.FULL_SAVE:
+		case ISaveContext.PROJECT_SAVE:
+		case ISaveContext.SNAPSHOT:
 			// save the plug-in state
 			int saveNumber = context.getSaveNumber();
 			String saveFileName = SAVENAME + "-" + Integer.toString(saveNumber);
@@ -60,16 +62,16 @@ public class HibernateConsoleSaveParticipant implements ISaveParticipant {
 			context.map(new Path(SAVENAME), new Path(saveFileName) );
 			context.needSaveNumber();
 			break;
-		case ISaveContext.PROJECT_SAVE:
+		//case ISaveContext.PROJECT_SAVE:
 			// get the project related to this save operation
-			IProject project = context.getProject();
+			//IProject project = context.getProject();
 			// save its information, if necessary
-			break;
-		case ISaveContext.SNAPSHOT:
+			//break;
+		//case ISaveContext.SNAPSHOT:
 			// This operation needs to be really fast because
 			// snapshots can be requested frequently by the
 			// workspace.
-			break;
+			//break;
 		}
 
 	}

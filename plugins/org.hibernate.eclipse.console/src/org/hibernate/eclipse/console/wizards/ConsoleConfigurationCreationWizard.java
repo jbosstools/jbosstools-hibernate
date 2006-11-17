@@ -23,6 +23,7 @@ package org.hibernate.eclipse.console.wizards;
 
 import java.lang.reflect.InvocationTargetException;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -145,7 +146,7 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 			KnownConfigurations.getInstance().removeConfiguration(oldConfig);
 		} 
 		KnownConfigurations.getInstance().addConfiguration(cfg, true);
-		
+		ResourcesPlugin.getWorkspace().save( false, monitor );
 		monitor.worked(1);
 	} 
 	
