@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.hibernate.eclipse.jdt.apt.ui;singleton:=true
 Bundle-Version: 3.2.0.beta8
 Bundle-Activator: org.hibernate.eclipse.jdt.apt.ui.Activator
 Bundle-Vendor: Hibernate Team
-Bundle-Localization: plugin
+Bundle-Localization: plugin 
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.jdt.apt.core,
