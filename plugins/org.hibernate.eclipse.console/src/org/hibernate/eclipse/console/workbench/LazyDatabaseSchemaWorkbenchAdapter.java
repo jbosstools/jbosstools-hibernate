@@ -83,7 +83,7 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 	}
 	
 	protected void readDatabaseSchema(final IProgressMonitor monitor, final DefaultDatabaseCollector db, ConsoleConfiguration consoleConfiguration, final ReverseEngineeringStrategy strategy) {
-		final Configuration configuration = consoleConfiguration.buildWith(new Configuration(), false);
+		final Configuration configuration = consoleConfiguration.buildWith(null, false);
 		
 		consoleConfiguration.getExecutionContext().execute(new ExecutionContext.Command() {
 			

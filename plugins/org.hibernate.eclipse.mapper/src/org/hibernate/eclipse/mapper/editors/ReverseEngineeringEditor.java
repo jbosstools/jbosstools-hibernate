@@ -179,7 +179,7 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 				return null;
 			}
 			ITableFilter[] tableFilters = getReverseEngineeringDefinition().getTableFilters();
-			Configuration cfg = configuration.buildWith(new Configuration(), false);
+			Configuration cfg = configuration.buildWith(null, false);
 			Settings settings = configuration.getSettings(cfg);
 			
 			OverrideRepository repository = new OverrideRepository();///*settings.getDefaultCatalogName(),settings.getDefaultSchemaName()*/);
@@ -208,12 +208,12 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 					return null;
 				}
 			}
-			if(!hasIncludes && tableFilters.length>0) {
-				boolean b = MessageDialog.openQuestion(getContainer().getShell(), "Only exclude filters defined", "Only exclude filters has been defined.\n This will result in no tables being read from the database schema.\n Do you wish to continue reading the database schema ?");
-				if(!b) {
-					return null;
-				}
-			}
+			//if(!hasIncludes && tableFilters.length>0) { // not true anymore since it is converted to a include everything...
+				//boolean b = MessageDialog.openQuestion(getContainer().getShell(), "Only exclude filters defined", "Only exclude filters has been defined.\n This will result in no tables being read from the database schema.\n Do you wish to continue reading the database schema ?");
+				//if(!b) {
+				//	return null;
+				//}
+			//}
 			
 			LazyDatabaseSchema lazyDatabaseSchema = new LazyDatabaseSchema(configuration, repository.getReverseEngineeringStrategy(new DefaultReverseEngineeringStrategy()));
 			

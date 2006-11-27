@@ -169,6 +169,8 @@ public class CodeGenerationLaunchDelegate extends
 			}
 			catch (CoreException e) {
 				HibernateConsolePlugin.getDefault().logErrorMessage("exception during java format", e);
+			} catch (Throwable e) { // full guard since the above operation seem to be able to fail with IllegalArugmentException and SWT Invalid thread access while users are editing. 
+				HibernateConsolePlugin.getDefault().logErrorMessage("exception during java format", e);
 			}
 		}
 	}
@@ -206,43 +208,17 @@ public class CodeGenerationLaunchDelegate extends
 			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 			final IResource resource = findMember( root, attributes.getOutputPath() );
 	        final IResource templateres = findMember(root, attributes.getTemplatePath());
-			final IResource revengres = findMember( root, attributes.getRevengSettings());
+			
 			/*if (!resource.exists() || !(resource instanceof IContainer) ) {
 				throwCoreException("Output directory \"" + configName + "\" does not exist.");
 			}*/
 			/*IContainer container = (IContainer) resource;*/
 
 			ConsoleConfiguration cc = KnownConfigurations.getInstance().find(attributes.getConsoleConfigurationName());
-			ReverseEngineeringStrategy res = null;
-				
-			ReverseEngineeringSettings qqsettings = null;
 			if (attributes.isReverseEngineer()) {
 				monitor.subTask("reading jdbc metadata");
-						
-				//todo: factor this setup of revengstrategy to core				
-				DefaultReverseEngineeringStrategy configurableNamingStrategy = new DefaultReverseEngineeringStrategy();
-				//configurableNamingStrategy.setSettings(qqsettings);
-				
-				res = configurableNamingStrategy;
-				if(revengres!=null) {
-					/*Configuration configuration = cc.buildWith(new Configuration(), false);*/				
-					/*Settings settings = cc.getSettings(configuration);*/
-					File file = getLocation( revengres ).toFile();
-					OverrideRepository repository = new OverrideRepository();///*settings.getDefaultCatalogName(),settings.getDefaultSchemaName()*/);
-					repository.addFile(file);
-					res = repository.getReverseEngineeringStrategy(res);
-				}
-				
-
-				 qqsettings = new ReverseEngineeringSettings(res)
-				.setDefaultPackageName(attributes.getPackageName())
-				.setDetectManyToMany( attributes.detectManyToMany() )
-				.setDetectOptimisticLock( attributes.detectOptimisticLock() );
-
-				configurableNamingStrategy.setSettings( qqsettings );
-				res.setSettings(qqsettings);
 			}
-			final Configuration cfg = buildConfiguration(attributes.isReverseEngineer(), attributes.getRevengStrategy(), cc, res, attributes.isPreferBasicCompositeIds(), qqsettings);
+			final Configuration cfg = buildConfiguration(attributes, cc, root);
 			
 			monitor.worked(1);
 			
@@ -313,9 +289,23 @@ public class CodeGenerationLaunchDelegate extends
 		else return resource.getRawLocation();  
 	}
 
-	private Configuration buildConfiguration(boolean reveng, final String reverseEngineeringStrategy, ConsoleConfiguration cc, final ReverseEngineeringStrategy revEngStrategy, boolean preferBasicCompositeids, final ReverseEngineeringSettings settings) {
+	private Configuration buildConfiguration(final ExporterAttributes attributes, ConsoleConfiguration cc, IWorkspaceRoot root) {
+		final boolean reveng = attributes.isReverseEngineer();		
+		final String reverseEngineeringStrategy = attributes.getRevengStrategy();
+		final boolean preferBasicCompositeids = attributes.isPreferBasicCompositeIds();
+		final IResource revengres = findMember( root, attributes.getRevengSettings());
+		
 		if(reveng) {
+			Configuration configuration = null;
+			if(cc.hasConfiguration()) {
+				configuration = cc.getConfiguration();
+			} else {
+				configuration = cc.buildWith( null, false );
+			}
+			
 			final JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
+			Properties properties = configuration.getProperties();
+			cfg.setProperties( properties );
 			cc.buildWith(cfg,false);
 			
 			cfg.setPreferBasicCompositeIds(preferBasicCompositeids);
@@ -323,14 +313,36 @@ public class CodeGenerationLaunchDelegate extends
 			cc.execute(new Command() { // need to execute in the consoleconfiguration to let it handle classpath stuff!
 
 				public Object execute() {
+			
 					
-					if(reverseEngineeringStrategy!=null && reverseEngineeringStrategy.trim().length()>0) {
-						ReverseEngineeringStrategy res = loadreverseEngineeringStrategy(reverseEngineeringStrategy, revEngStrategy);
-						res.setSettings(settings);
-						cfg.setReverseEngineeringStrategy(res);
-					} else {
-						cfg.setReverseEngineeringStrategy(revEngStrategy);
+					//todo: factor this setup of revengstrategy to core				
+					DefaultReverseEngineeringStrategy configurableNamingStrategy = new DefaultReverseEngineeringStrategy();
+					//configurableNamingStrategy.setSettings(qqsettings);
+					
+					ReverseEngineeringStrategy res = configurableNamingStrategy;
+					if(revengres!=null) {
+						/*Configuration configuration = cc.buildWith(new Configuration(), false);*/				
+						/*Settings settings = cc.getSettings(configuration);*/
+						File file = getLocation( revengres ).toFile();
+						OverrideRepository repository = new OverrideRepository();///*settings.getDefaultCatalogName(),settings.getDefaultSchemaName()*/);
+						repository.addFile(file);
+						res = repository.getReverseEngineeringStrategy(res);
 					}
+										 
+					if(reverseEngineeringStrategy!=null && reverseEngineeringStrategy.trim().length()>0) {
+						res = loadreverseEngineeringStrategy(reverseEngineeringStrategy, res);						
+					}
+					
+					ReverseEngineeringSettings qqsettings = new ReverseEngineeringSettings(res)
+					.setDefaultPackageName(attributes.getPackageName())
+					.setDetectManyToMany( attributes.detectManyToMany() )
+					.setDetectOptimisticLock( attributes.detectOptimisticLock() );
+
+					configurableNamingStrategy.setSettings( qqsettings );
+					res.setSettings(qqsettings);
+					
+					cfg.setReverseEngineeringStrategy( res );
+					
 					cfg.readFromJDBC();
                     cfg.buildMappings();
 					return null;

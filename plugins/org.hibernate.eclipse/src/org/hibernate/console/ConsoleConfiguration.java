@@ -166,7 +166,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 						localCfg = buildConfiguration( properties, includeMappings );
 					} else {
 						// TODO: this is actually only for jdbc reveng...
-						localCfg = configureStandardConfiguration( includeMappings, localCfg, properties );						
+						//localCfg = configureStandardConfiguration( includeMappings, localCfg, properties );						
 					}
 
 					// here both setProperties and configxml have had their chance to tell which databasedriver is needed. 

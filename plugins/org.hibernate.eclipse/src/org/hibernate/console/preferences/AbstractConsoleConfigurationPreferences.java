@@ -179,7 +179,7 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 		
 		
 		String attribute = node.getAttribute(ANNOTATIONS_ATTRIB);
-		if(attribute!=null) {
+		if(StringHelper.isNotEmpty( attribute )) {
 			boolean oldAnnotationFlag = ((attribute != null) && attribute.equalsIgnoreCase("true"));
 			if(oldAnnotationFlag) {
 				configurationMode = ConfigurationMode.ANNOTATIONS;
