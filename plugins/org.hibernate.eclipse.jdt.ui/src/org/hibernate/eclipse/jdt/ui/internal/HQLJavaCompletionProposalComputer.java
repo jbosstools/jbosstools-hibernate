@@ -145,7 +145,7 @@ public class HQLJavaCompletionProposalComputer implements IJavaCompletionProposa
 	}
 
 	public void sessionStarted() {
-		
+		System.out.println("...");
 	}
 
 }
