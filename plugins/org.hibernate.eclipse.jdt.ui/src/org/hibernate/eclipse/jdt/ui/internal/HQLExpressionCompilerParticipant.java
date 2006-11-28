@@ -97,7 +97,7 @@ public class HQLExpressionCompilerParticipant extends CompilationParticipant {
 	}
 	
 	public void cleanStarting(IJavaProject javaProject){
-		IProject p = javaProject.getProject();
+	/*	IProject p = javaProject.getProject();
 
 		//HibernateNature.getHibernateNature( javaProject);
 		try{
@@ -111,7 +111,7 @@ public class HQLExpressionCompilerParticipant extends CompilationParticipant {
 		}
 		catch(CoreException e){
 			HibernateConsolePlugin.getDefault().logErrorMessage( "Unable to delete batch hql markers", e); 
-		}
+		}*/
 		super.cleanStarting( javaProject );
 	}
 
