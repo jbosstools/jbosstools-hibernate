@@ -62,19 +62,24 @@ public class QueryPageViewer {
 			return null;
 		}
 		public String getColumnText(Object element, int columnIndex) {
-			Object value = element; //TODO: should just be a columnprovider per querypage....
-			if (element instanceof QueryPage) {
-				value = ( (QueryPage) element).getList().get(columnIndex);
-			}
-			
-			if (value.getClass().isArray() ) {
-				Object[] arr = (Object[]) value;
-				if (columnIndex > arr.length - 1) {
-					return "<Unknown value>";
+			try {
+				Object value = element; //TODO: should just be a columnprovider per querypage....
+				if (element instanceof QueryPage) {
+					value = ( (QueryPage) element).getList().get(columnIndex);
 				}
-				return "" + arr[columnIndex];
-			} else {
-			return value == null ? "" : value.toString();
+
+				if (value.getClass().isArray() ) {
+					Object[] arr = (Object[]) value;
+					if (columnIndex > arr.length - 1) {
+						return "<Unknown value>";
+					}
+					return "" + arr[columnIndex];
+				} else {
+					return value == null ? "" : value.toString();
+				}
+			}
+			catch (RuntimeException e) {				
+				return "<error: " + e.getMessage() + ">";
 			}
 		}
 		public void addListener(ILabelProviderListener listener) {
