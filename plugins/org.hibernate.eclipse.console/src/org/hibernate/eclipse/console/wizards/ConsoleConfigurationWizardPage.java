@@ -687,6 +687,16 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			//TODO: removed to provide a way to create a non-mapping base configuration
 			//updateStatus("Need to specify one or more mapping files");
 			//return;
+		} 
+		
+		if((useProjectClassPath() && StringHelper.isEmpty( getProjectName() )) && classPathViewer.getTable().getItemCount()==0) {
+			updateStatus( "Need to specify a project or setup a classpath" );
+			return;
+		}
+		
+		if((!useProjectClassPath() && classPathViewer.getTable().getItemCount()==0)) {
+			updateStatus( "Need to specify a classpath when not using a project classpath" );
+			return;
 		}
 		
 		updateStatus(null);

@@ -104,7 +104,7 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 		try {
 			IJavaProject project = ProjectUtils.findJavaProject( getProjectName() );
 			String[] additonal = new String[0];
-			if(useProjectClasspath() && project.exists()) {
+			if(project != null && useProjectClasspath() && project.exists()) {
 				try {
 					additonal = JavaRuntime.computeDefaultRuntimeClassPath(project);
 				}
