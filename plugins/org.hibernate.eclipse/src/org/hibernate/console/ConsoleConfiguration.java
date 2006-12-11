@@ -26,8 +26,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -44,7 +42,6 @@ import java.util.Properties;
 import org.dom4j.DocumentException;
 import org.dom4j.Node;
 import org.dom4j.io.DOMWriter;
-import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.Session;
@@ -153,7 +150,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	 */
 	public Configuration buildWith(final Configuration cfg, final boolean includeMappings) {
 			URL[] customClassPathURLS = prefs.getCustomClassPathURLS();
-			executionContext = new DefaultExecutionContext( new URLClassLoader( customClassPathURLS, getParentClassLoader() ) );							
+			executionContext = new DefaultExecutionContext( getName(), new URLClassLoader( customClassPathURLS, getParentClassLoader() ) );							
 			
 			Configuration result = (Configuration) executionContext.execute(new ExecutionContext.Command() {
 			

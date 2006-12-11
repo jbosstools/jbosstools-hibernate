@@ -22,7 +22,10 @@
 package org.hibernate.console;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -41,6 +44,11 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.eclipse.ui.console.ConsolePlugin;
+import org.eclipse.ui.console.IConsole;
+import org.eclipse.ui.console.IConsoleManager;
+import org.eclipse.ui.console.MessageConsole;
+import org.eclipse.ui.console.MessageConsoleStream;
 import org.hibernate.SessionFactory;
 import org.hibernate.console.node.BaseNode;
 import org.hibernate.console.node.ConfigurationListNode;
@@ -90,6 +98,8 @@ public class KnownConfigurations  {
 		}
 		return instance;
 	}
+	
+	
 	
 	private abstract class Notification {
 	
@@ -168,9 +178,13 @@ public class KnownConfigurations  {
 				}
 			});
 			oldConfig.reset();
+			removeLoggingStream( oldConfig );
 		}
+		
+		
 	}
 
+	
 	/**
 	 * Answer whether the provided configuration name is known by the provider or not.
 	 * The name string corresponds to the Strin returned by ConsoleConfiguration#getName()
@@ -220,6 +234,34 @@ public class KnownConfigurations  {
 		return rootNode;		
 	}
 
+	// TODO: decouple this logging from Eclipse platform!
+	private Map loggingStreams = new HashMap();
+	public MessageConsoleStream findLoggingStream(String name) {
+		Object[] console = (Object[]) loggingStreams.get(name); 
+		if(console==null) {
+			console = new Object[2];
+			String secondaryId = "Hibernate Log - " + (name==null?"<unknown>":name);
+        	console[0] = new MessageConsole(secondaryId, null);
+        	IConsoleManager consoleManager = ConsolePlugin.getDefault().getConsoleManager();
+        	consoleManager.addConsoles(new IConsole[] { (IConsole) console[0] });
+        	console[1] = ((MessageConsole)console[0]).newMessageStream();
+        	loggingStreams.put(name, console);
+		} 
+		return (MessageConsoleStream) console[1];
+	}
+	
+	private void removeLoggingStream(ConsoleConfiguration oldConfig) {
+		Object[] object = (Object[]) loggingStreams.remove( oldConfig.getName() );
+		if(object!=null) {
+			MessageConsole mc = (MessageConsole)object[0];
+			MessageConsoleStream stream = (MessageConsoleStream)object[1];
+			try { stream.close(); } catch(IOException ie) { /* ignore */ };
+			IConsoleManager consoleManager = ConsolePlugin.getDefault().getConsoleManager();
+			consoleManager.removeConsoles( new IConsole[] { mc } );			
+		}
+	}
+
+	
 	public ConsoleConfiguration find(String lastUsedName) {
 		if(configurations==null) return null;
 		if(lastUsedName==null) return null;
@@ -280,4 +322,6 @@ public class KnownConfigurations  {
 	public List getQueryParameterList() {
 		return queryParameters;
 	}	
+	
+	
 }

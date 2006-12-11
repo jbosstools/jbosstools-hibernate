@@ -21,6 +21,13 @@
  */
 package org.hibernate.eclipse.logging;
 
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.WeakHashMap;
+
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Level;
 import org.apache.log4j.Priority;
@@ -30,6 +37,12 @@ import org.apache.log4j.spi.ThrowableInformation;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.ui.console.ConsolePlugin;
+import org.eclipse.ui.console.IConsole;
+import org.eclipse.ui.console.IConsoleManager;
+import org.eclipse.ui.console.MessageConsole;
+import org.eclipse.ui.console.MessageConsoleStream;
+import org.hibernate.console.KnownConfigurations;
 
 /**
  * PluginLogAppender
@@ -38,8 +51,10 @@ import org.eclipse.core.runtime.Status;
  * @author Manoel Marques
  */
 public class PluginLogAppender extends AppenderSkeleton {
-
+	
 	private ILog pluginLog;
+	private Map streams = new HashMap();
+	
 	
 	/**
 	 * Sets the Eclipse log instance
@@ -74,7 +89,7 @@ public class PluginLogAppender extends AppenderSkeleton {
 			if (info != null)
 				thrown = info.getThrowable(); 
 		}
-				
+		/*		
 		Level level = event.getLevel();
 		int severity = IStatus.OK;
 		
@@ -87,11 +102,26 @@ public class PluginLogAppender extends AppenderSkeleton {
 		if (level.toInt() >= Priority.DEBUG_INT) 
 			severity = IStatus.INFO;
 			
+		
 		this.pluginLog.log(new Status(severity,
 		         this.pluginLog.getBundle().getSymbolicName(),
-				 level.toInt(),text,thrown));
-	}
-	
+				 level.toInt(),text,thrown));*/
+
+		Object peek = CurrentContext.peek();
+		MessageConsoleStream stream = KnownConfigurations.getInstance().findLoggingStream( (String)peek );
+		if(stream!=null) {
+			stream.println(text);
+			if(thrown!=null) {
+				StringWriter stringWriter = new StringWriter();
+				thrown.printStackTrace( new PrintWriter(stringWriter) );
+				stream.println(stringWriter.getBuffer().toString());
+			}
+		}
+		
+		}
+		
+    	
+		
 	/**
 	 * Closes this appender
 	 */	

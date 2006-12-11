@@ -465,6 +465,8 @@ Export-Package: EDU.oswego.cs.dl.util.concurrent,
  org.objectweb.asm.attrs,
  org.w3c.tidy,
  org.w3c.tidy.ant
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui.console,
+ org.eclipse.jface
 Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: registered
