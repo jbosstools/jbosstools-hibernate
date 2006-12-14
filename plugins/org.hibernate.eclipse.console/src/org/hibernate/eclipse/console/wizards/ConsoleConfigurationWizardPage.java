@@ -72,6 +72,7 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.eclipse.console.EclipseConsoleConfiguration;
@@ -81,6 +82,7 @@ import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.util.StringHelper;
 import org.xml.sax.EntityResolver;
+
 
 /**
  * @author max
@@ -93,6 +95,9 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	private Text configurationFileText;
 	private Text configurationNameText;
 	private Text projectNameText;
+	private Text persistenceUnitNameText;
+	
+	
 	private EclipseConsoleConfiguration oldConfiguaration = null;
 	//private Button enableAnnotations;
 	Button coreMode;
@@ -100,6 +105,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	Button annotationsMode;
 	
 	private Text entityResolverClassNameText;
+	private Text namingStrategyClassNameText;
 	
 	private ISelection selection;
 	private UpDownListComposite mappingFilesViewer;
@@ -108,6 +114,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	private Button confbutton;
 	private Button entbutton;
 	private Button useProjectClassPath;
+	private Button nambutton;
 	
 	/**
 	 * Constructor for SampleNewWizardPage.
@@ -235,6 +242,32 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 		});
 		
 		label = new Label(container, SWT.NULL);
+		label.setText("&Persistence unit:");
+		
+		persistenceUnitNameText = new Text(container, SWT.BORDER | SWT.SINGLE);
+		gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd.horizontalSpan = 2;
+		persistenceUnitNameText.setLayoutData(gd);
+		persistenceUnitNameText.addModifyListener(modifyListener);
+		
+		label = new Label(container, SWT.NULL);
+		label.setText("&Naming strategy:");
+		
+		namingStrategyClassNameText = new Text(container, SWT.BORDER | SWT.SINGLE);
+		gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd.horizontalSpan = 1;
+		namingStrategyClassNameText.setLayoutData(gd);		
+		namingStrategyClassNameText.addModifyListener(modifyListener);
+		
+		nambutton = new Button(container, SWT.PUSH);
+		nambutton.setText("Browse...");
+		nambutton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				handleNamingStrategyBrowse();
+			}
+		});
+	
+		label = new Label(container, SWT.NULL);
 		label.setText("&Entity resolver:");
 		
 		entityResolverClassNameText = new Text(container, SWT.BORDER | SWT.SINGLE);
@@ -242,7 +275,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 		gd.horizontalSpan = 1;
 		entityResolverClassNameText.setLayoutData(gd);		
 		entityResolverClassNameText.addModifyListener(modifyListener);
-		
+				
 		entbutton = new Button(container, SWT.PUSH);
 		entbutton.setText("Browse...");
 		entbutton.addSelectionListener(new SelectionAdapter() {
@@ -250,24 +283,12 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 				handleEntityResolverBrowse();
 			}
 		});
-						
-		//configurationMode.
-		/*enableAnnotations = new Button(container, SWT.CHECK);
-		enableAnnotations.setText("Enable hibernate ejb3/annotations (requires running eclipse with a Java 5 runtime)");
-		enableAnnotations.addSelectionListener(new SelectionListener() {
 		
-			public void widgetDefaultSelected(SelectionEvent e) {
-				dialogChanged();
-			}
-		
-			public void widgetSelected(SelectionEvent e) {
-				dialogChanged();		
-			}
-		});*/
-		
+							
 		return container;
 	}
 
+	
 	private void createConfigurationMode(Composite container) {
 		SelectionListener sl = new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -299,17 +320,14 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			entityResolverClassNameText.setText(string);
 		}
 	}
-
 	
-	private GridData createGridData() {
-		GridData gd;
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		
-		gd.horizontalSpan = 3;
-		gd.verticalSpan = 1;
-		return gd;
+	protected void handleNamingStrategyBrowse() {
+		String string = DialogSelectionHelper.chooseImplementation(NamingStrategy.class.getName(), namingStrategyClassNameText.getText(), "Select naming strategy class", getShell());
+		if(string!=null) {
+			namingStrategyClassNameText.setText(string);
+		}		
 	}
-	
+
 	
 	private Composite buildClassPathTable(Composite parent) {
 		Composite c = new Composite(parent, SWT.None);
@@ -523,6 +541,8 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 				if(prefs.getMappings()!=null) mappingFilesViewer.add(prefs.getMappings(),false);
 				if(prefs.getCustomClasspath()!=null) classPathViewer.add(prefs.getCustomClasspath(),false);
 				if(prefs.getEntityResolverName()!=null) entityResolverClassNameText.setText(prefs.getEntityResolverName());
+				if(prefs.getNamingStrategy() !=null) namingStrategyClassNameText.setText(prefs.getNamingStrategy());
+				if(prefs.getPersistenceUnitName()!=null) persistenceUnitNameText.setText( prefs.getPersistenceUnitName() );
 				jpaMode.setSelection( prefs.getConfigurationMode().equals( ConfigurationMode.JPA ) );
 				coreMode.setSelection( prefs.getConfigurationMode().equals( ConfigurationMode.CORE ) );
 				annotationsMode.setSelection( prefs.getConfigurationMode().equals( ConfigurationMode.ANNOTATIONS ) );
@@ -642,6 +662,8 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 		
 		configurationFileText.setEnabled( !configurationFileWillBeCreated && !getConfigurationMode().equals( ConfigurationMode.JPA ) );
 		confbutton.setEnabled( !getConfigurationMode().equals( ConfigurationMode.JPA ) );
+		
+		persistenceUnitNameText.setEnabled( getConfigurationMode().equals( ConfigurationMode.JPA) );
 		
 		if(getConfigurationName()==null || getConfigurationName().trim().length() == 0) {
 			updateStatus("A name must be specified");
@@ -775,6 +797,16 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			return ConfigurationMode.CORE;
 		}
 	}
+
+	public String getNamingStrategy() {
+		return namingStrategyClassNameText.getText();
+	}
+
+	public String getPersistenceUnitName() {
+		return persistenceUnitNameText.getText();
+	}
+	
+	
 
 }
 

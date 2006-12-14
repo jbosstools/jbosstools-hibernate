@@ -58,8 +58,8 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 	private IPath[] customClasspath;
 	
 
-	public EclipseConsoleConfigurationPreferences(String configName, ConfigurationMode cmode, String projectName, boolean useProjectClasspath, String entityResolver, IPath cfgFile, IPath propertyFilename, IPath[] mappings, IPath[] classpaths) {
-		super(configName, cmode, projectName, useProjectClasspath, entityResolver);		
+	public EclipseConsoleConfigurationPreferences(String configName, ConfigurationMode cmode, String projectName, boolean useProjectClasspath, String entityResolver, IPath cfgFile, IPath propertyFilename, IPath[] mappings, IPath[] classpaths, String persistenceUnitName, String namingStrategy) {
+		super(configName, cmode, projectName, useProjectClasspath, entityResolver, persistenceUnitName, namingStrategy);		
 		this.cfgFile = cfgFile;
 		this.propertyFilename = propertyFilename;
 		this.mappings = mappings;
@@ -219,6 +219,7 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 			throw new HibernateConsoleRuntimeException("Errors while parsing " + f,e);		
 		}    
 	}
+
 
 	
 	

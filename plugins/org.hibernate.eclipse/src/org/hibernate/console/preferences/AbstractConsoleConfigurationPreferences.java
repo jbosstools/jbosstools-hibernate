@@ -27,14 +27,11 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.hibernate.console.HibernateConsoleRuntimeException;
-import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.util.StringHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import sun.security.action.GetPropertyAction;
 
 /**
  * @author max
@@ -53,9 +50,13 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 	protected String entityResolverName = null;
 	private boolean useProjectClasspath;
 	private ConfigurationMode configurationMode;
+	private String persistenceUnitName;
+	private String namingStrategy;
 	
-	public AbstractConsoleConfigurationPreferences(String name, ConfigurationMode configurationMode, String projectName, boolean useProjectclassPath, String entityResolver) {
+	public AbstractConsoleConfigurationPreferences(String name, ConfigurationMode configurationMode, String projectName, boolean useProjectclassPath, String entityResolver, String persistenceUnitName, String namingStrategy) {
 		setName(name);
+		this.persistenceUnitName = persistenceUnitName;
+		this.namingStrategy = namingStrategy;
 		this.configurationMode = configurationMode;
 		entityResolverName = entityResolver;
 		this.projectName = projectName;
@@ -68,6 +69,14 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 	
 	public ConfigurationMode getConfigurationMode() {
 		return configurationMode;
+	}
+	
+	public String getPersistenceUnitName() {
+		return persistenceUnitName;
+	}
+	
+	public String getNamingStrategy() {
+		return namingStrategy;
 	}
 	
 	public void setName(String name) {

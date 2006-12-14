@@ -96,10 +96,12 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 		final IPath[] classpaths = confPage.getClassPath();
 		final boolean useProjectClasspath = confPage.useProjectClassPath();
 		final String projectName = confPage.getProjectName();
+		final String namingStrategy = confPage.getNamingStrategy();
+		final String persistenceUnitName = confPage.getPersistenceUnitName();
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
-					createConsoleConfiguration(confPage.getOldConfiguration(), configName, annotations, projectName, useProjectClasspath, entityResolver, propertyFile, fileName, mappings, classpaths, monitor);
+					createConsoleConfiguration(confPage.getOldConfiguration(), configName, annotations, projectName, useProjectClasspath, entityResolver, propertyFile, fileName, mappings, classpaths, persistenceUnitName, namingStrategy, monitor);
 				} catch (CoreException e) {
 					throw new InvocationTargetException(e);
 				} finally {
@@ -131,12 +133,15 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 			EclipseConsoleConfiguration oldConfig,
 			String configName,
 			ConfigurationMode cmode, String projectName, boolean useProjectClasspath, String entityResolver, IPath propertyFilename,
-			IPath cfgFile, IPath[] mappings, IPath[] classpaths, IProgressMonitor monitor)
+			IPath cfgFile, IPath[] mappings, IPath[] classpaths, String persistenceUnitName, String namingStrategy, IProgressMonitor monitor)
 		throws CoreException {
 
 		monitor.beginTask("Configuring Hibernate Console" + propertyFilename, IProgressMonitor.UNKNOWN);
 								
-		ConsoleConfigurationPreferences ccp = new EclipseConsoleConfigurationPreferences(configName, cmode, projectName, useProjectClasspath, entityResolver, cfgFile, propertyFilename, mappings, classpaths);
+		ConsoleConfigurationPreferences ccp = new EclipseConsoleConfigurationPreferences(
+				configName, cmode, projectName, useProjectClasspath,
+				entityResolver, cfgFile, propertyFilename, mappings, classpaths,
+				persistenceUnitName, namingStrategy);
 		
 		
 		final ConsoleConfiguration cfg = new EclipseConsoleConfiguration(ccp);

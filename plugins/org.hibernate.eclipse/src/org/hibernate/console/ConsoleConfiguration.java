@@ -48,6 +48,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
+import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.cfg.Settings;
 import org.hibernate.console.execution.DefaultExecutionContext;
 import org.hibernate.console.execution.ExecutionContext;
@@ -108,10 +109,16 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	}
 
 	private Configuration buildJPAConfiguration(String persistenceUnit, Properties properties, String entityResolver) {
+		if(StringHelper.isEmpty( persistenceUnit )) {
+			persistenceUnit = null;
+		}
 		try {
 			Map overrides = new HashMap();
 			if(properties!=null) {
 				overrides.putAll( properties );
+			}
+			if(StringHelper.isNotEmpty( prefs.getNamingStrategy())) {
+				overrides.put( "hibernate.ejb.naming_strategy", prefs.getNamingStrategy() );
 			}
 			
 			Class clazz = ReflectHelper.classForName("org.hibernate.ejb.Ejb3Configuration", JPAConfigurationTask.class);
@@ -447,7 +454,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			}
 		} else if(prefs.getConfigurationMode().equals( ConfigurationMode.JPA )) {
 			try {
-				localCfg = buildJPAConfiguration( null, properties, prefs.getEntityResolverName() );
+				localCfg = buildJPAConfiguration( getPreferences().getPersistenceUnitName(), properties, prefs.getEntityResolverName() );
 			}
 			catch (Exception e) {
 				throw new HibernateConsoleRuntimeException("Could not load JPA Configuration",e);
@@ -473,6 +480,15 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		}
 		localCfg.setEntityResolver(entityResolver);
 
+		if(StringHelper.isNotEmpty( prefs.getNamingStrategy())) {			
+			try {
+				NamingStrategy ns = (NamingStrategy) ReflectHelper.classForName(prefs.getNamingStrategy()).newInstance();
+				localCfg.setNamingStrategy( ns );
+			} catch (Exception c) {
+				throw new HibernateConsoleRuntimeException("Could not configure naming strategy " + prefs.getNamingStrategy(), c);
+			}
+		}
+		
 		localCfg = loadConfigurationXML( localCfg, includeMappings, entityResolver );
 		
 		return localCfg;

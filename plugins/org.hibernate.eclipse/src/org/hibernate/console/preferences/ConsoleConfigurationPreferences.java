@@ -116,4 +116,8 @@ public interface ConsoleConfigurationPreferences {
 	public abstract void setName(String name);
 
 	public abstract String getEntityResolverName();
+
+	public abstract String getPersistenceUnitName();
+	
+	public abstract String getNamingStrategy();
 }
