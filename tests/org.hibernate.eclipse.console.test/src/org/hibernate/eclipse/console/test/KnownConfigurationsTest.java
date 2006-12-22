@@ -113,6 +113,21 @@ public class KnownConfigurationsTest extends TestCase {
 				// TODO Auto-generated method stub
 				return null;
 			}
+
+			public ConfigurationMode getConfigurationMode() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			public String getNamingStrategy() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			public String getPersistenceUnitName() {
+				// TODO Auto-generated method stub
+				return null;
+			}
 		
 		};
 		ConsoleConfiguration configuration = new ConsoleConfiguration(preferences);

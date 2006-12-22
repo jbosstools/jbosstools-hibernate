@@ -75,12 +75,25 @@ public class ConsoleConfigurationTest extends TestCase {
 			return "fake prefs";
 		}
 	
-		public boolean useAnnotations() {
-			return false;
-		}
+		
 
 		public String getEntityResolverName() {			
 			return "";
+		}
+
+		public ConfigurationMode getConfigurationMode() {
+			
+			return null;
+		}
+
+		public String getNamingStrategy() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		public String getPersistenceUnitName() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 	
 	}
@@ -137,4 +150,19 @@ public class ConsoleConfigurationTest extends TestCase {
 		
 	}
 	
+	public void testCleanup() throws InterruptedException {
+		
+		for(int cnt=0;cnt<10000;cnt++) {
+			if(cnt%2==0) {
+				
+				System.out.println("Cnt " + cnt + " " + Runtime.getRuntime().freeMemory()/1000);
+				Thread.sleep( 2000 );
+			}
+			
+			consoleCfg.build();
+			consoleCfg.buildSessionFactory();
+			consoleCfg.reset();
+		}
+		
+	}
 }
