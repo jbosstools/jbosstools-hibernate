@@ -534,12 +534,6 @@
  
  <!--
  <extension
-       point="org.eclipse.ui.console.consoleFactories">
-    <consoleFactory
-          class="org.hibernate.eclipse.console.sql.ConsoleSQLLogFactory"
-          label="Hibernate SQL Log"/>
- </extension>
- <extension
        point="org.eclipse.ui.themes">
     <themeElementCategory
           id="org.hibernate.eclipse.console.theme.HQLColors"
