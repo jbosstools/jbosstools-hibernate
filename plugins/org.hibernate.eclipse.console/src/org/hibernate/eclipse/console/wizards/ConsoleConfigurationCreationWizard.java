@@ -29,13 +29,15 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
@@ -48,6 +50,9 @@ import org.hibernate.eclipse.console.EclipseConsoleConfiguration;
 import org.hibernate.eclipse.console.EclipseConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.hibernate.eclipse.console.utils.ProjectUtils;
+import org.hibernate.eclipse.nature.HibernateNature;
+import org.hibernate.util.StringHelper;
 
 /**
  * @author max
@@ -100,8 +105,8 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 		final String persistenceUnitName = confPage.getPersistenceUnitName();
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
-				try {
-					createConsoleConfiguration(confPage.getOldConfiguration(), configName, annotations, projectName, useProjectClasspath, entityResolver, propertyFile, fileName, mappings, classpaths, persistenceUnitName, namingStrategy, monitor);
+				try {					
+					createConsoleConfiguration(confPage.getShell(), confPage.getOldConfiguration(), configName, annotations, projectName, useProjectClasspath, entityResolver, propertyFile, fileName, mappings, classpaths, persistenceUnitName, namingStrategy, monitor);
 				} catch (CoreException e) {
 					throw new InvocationTargetException(e);
 				} finally {
@@ -130,13 +135,14 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 	}
 	
 	static private void createConsoleConfiguration(
-			EclipseConsoleConfiguration oldConfig,
-			String configName,
-			ConfigurationMode cmode, String projectName, boolean useProjectClasspath, String entityResolver, IPath propertyFilename,
+			final Shell shell,
+			final EclipseConsoleConfiguration oldConfig,
+			final String configName,
+			ConfigurationMode cmode, final String projectName, boolean useProjectClasspath, String entityResolver, IPath propertyFilename,
 			IPath cfgFile, IPath[] mappings, IPath[] classpaths, String persistenceUnitName, String namingStrategy, IProgressMonitor monitor)
 		throws CoreException {
 
-		monitor.beginTask("Configuring Hibernate Console" + propertyFilename, IProgressMonitor.UNKNOWN);
+		monitor.beginTask("Configuring Hibernate Console", IProgressMonitor.UNKNOWN);
 								
 		ConsoleConfigurationPreferences ccp = new EclipseConsoleConfigurationPreferences(
 				configName, cmode, projectName, useProjectClasspath,
@@ -151,8 +157,40 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 			KnownConfigurations.getInstance().removeConfiguration(oldConfig);
 		} 
 		KnownConfigurations.getInstance().addConfiguration(cfg, true);
+		
+		// force save changes to console config
 		ResourcesPlugin.getWorkspace().save( false, monitor );
-		monitor.worked(1);
+		Display.getDefault().syncExec(new Runnable() {
+            public void run() {
+            	if(StringHelper.isNotEmpty( projectName )) {
+        			IJavaProject project = ProjectUtils.findJavaProject( projectName );
+        			if(project.exists()) {				 
+        				HibernateNature hibernateNature = HibernateNature.getHibernateNature( project );
+        				if(hibernateNature==null) { // project not enabled at all
+        					if( MessageDialog.openConfirm( shell, "Enable Hibernate features for project", "The project named " + projectName + " does not have Hibernate features enabled. Should it be updated to use " + configName + " ?")) {
+        						ProjectUtils.toggleHibernateOnProject( project.getProject(), true, configName );
+        					}
+        				}
+        				else {
+        					String defaultConsoleConfigurationName = hibernateNature.getDefaultConsoleConfigurationName();
+        					
+        					if(oldConfig!=null && oldConfig.getName().equals(defaultConsoleConfigurationName)) { // an update so its just forced in there.
+        						ProjectUtils.toggleHibernateOnProject( project.getProject(), true, configName );
+        					} else if(defaultConsoleConfigurationName==null) {						
+        						if(MessageDialog.openConfirm( shell, "Enable Hibernate features for project", "The project named " + projectName + " does not have a default Hibernate configuration specified. Should it be updated to use " + configName + " ?")) {
+        							ProjectUtils.toggleHibernateOnProject( project.getProject(), true, configName );
+        						}
+        					} else { // hibernate enabled, but not this exact one
+        						if(MessageDialog.openConfirm( shell, "Enable Hibernate features for project", "The project named " + projectName + " have the " + defaultConsoleConfigurationName + " specified. Should it be updated to use " + configName + " ?")) {
+        							ProjectUtils.toggleHibernateOnProject( project.getProject(), true, configName );
+        						}
+        					} 
+        				}
+        			}		
+        		}
+ 
+            }});
+			monitor.worked(1);
 	} 
 	
 	

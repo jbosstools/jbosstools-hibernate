@@ -25,21 +25,58 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.util.StringHelper;
+import org.osgi.service.prefs.BackingStoreException;
+import org.osgi.service.prefs.Preferences;
 
 public class ProjectUtils {
 
 	private ProjectUtils() {
+		
+	}
+	
+	public static boolean toggleHibernateOnProject(IProject project, boolean enable,String defaultConsoleName) {
+		IScopeContext scope = new ProjectScope(project);
+		
+		Preferences node = scope.getNode("org.hibernate.eclipse.console");
+		
+		if(node!=null) {
+			node.putBoolean("hibernate3.enabled", enable );
+			node.put("default.configuration", defaultConsoleName );
+			try {
+				node.flush();
+			} catch (BackingStoreException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage("Could not save changes to preferences", e);
+				return false;
+			}
+		} else {
+			return false;
+		}
+		
+		try {
+			if(enable) {
+				return ProjectUtils.addProjectNature(project, "org.hibernate.eclipse.console.hibernateNature", new NullProgressMonitor() );
+			} else {
+				return ProjectUtils.removeProjectNature(project, "org.hibernate.eclipse.console.hibernateNature", new NullProgressMonitor() );
+			}
+		} catch(CoreException ce) {
+			HibernateConsolePlugin.getDefault().logErrorMessage("Could not activate Hibernate nature on project " + project.getName(), ce);
+			HibernateConsolePlugin.getDefault().log(ce.getStatus() );
+			return false;
+		}
 		
 	}
 	
