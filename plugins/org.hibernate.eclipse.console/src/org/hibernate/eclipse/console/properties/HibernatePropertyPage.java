@@ -60,8 +60,6 @@ import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
 public class HibernatePropertyPage extends PropertyPage {
-
-	private static final int TEXT_FIELD_WIDTH = 50;
 	
 	Control[] settings;
 
@@ -180,7 +178,7 @@ public class HibernatePropertyPage extends PropertyPage {
 
 		selectedConfiguration = new Combo(parent, SWT.DROP_DOWN);
 		GridData gd = new GridData();
-		gd.widthHint = convertWidthInCharsToPixels(TEXT_FIELD_WIDTH);
+		gd.widthHint = convertWidthInCharsToPixels(50);
 		selectedConfiguration.setLayoutData(gd);
 
 		// Populate owner text field
@@ -265,34 +263,7 @@ public class HibernatePropertyPage extends PropertyPage {
 		
 	}
 	public boolean performOk() {
-		IProject project = getProject();
-		IScopeContext scope = new ProjectScope(project);
-		
-		Preferences node = scope.getNode("org.hibernate.eclipse.console");
-		
-		if(node!=null) {
-			node.putBoolean("hibernate3.enabled", enableHibernate.getSelection() );
-			node.put("default.configuration", selectedConfiguration.getText() );
-			try {
-				node.flush();
-			} catch (BackingStoreException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("Could not save changes to preferences", e);
-				return false;
-			}
-		} else {
-			return false;
-		}
-		
-		try {
-			if(enableHibernate.getSelection() ) {
-				ProjectUtils.addProjectNature(project, "org.hibernate.eclipse.console.hibernateNature", new NullProgressMonitor() );
-			} else {
-				ProjectUtils.removeProjectNature(project, "org.hibernate.eclipse.console.hibernateNature", new NullProgressMonitor() );
-			}
-		} catch(CoreException ce) {
-			HibernateConsolePlugin.getDefault().logErrorMessage("Could not activate Hibernate nature on project " + project.getName(), ce);
-			HibernateConsolePlugin.getDefault().log(ce.getStatus() );
-		}
+		ProjectUtils.toggleHibernateOnProject( getProject(), enableHibernate.getSelection(), selectedConfiguration.getText() );
 		return true;
 	}
 
