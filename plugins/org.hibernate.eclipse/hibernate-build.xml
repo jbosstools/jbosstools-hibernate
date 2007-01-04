@@ -5,7 +5,7 @@
 
 <project name="org.hibernate.eclipse" basedir="." default="update">
 
-	<property name="hibernate.root" location="../../../../../hibernate"/>
+	<property name="hibernate.root" location="../../../../../hibernate/branch_3_2"/>
 	<available file="${hibernate.root}" property="hibernate.root.exists"/>
 	<fail unless="hibernate.root.exists">hibernate.root needs to be set to the root of the hibernate svn checkout. Currently it is ${hibernate.root} which does not exist.</fail>
 	
@@ -56,7 +56,7 @@
 
 		<property file="${hibernate-core.lib.dir}/version.properties" prefix="h3"/>
 
-		<copy preservelastmodified="true" todir="${lib.hibernate}/doesnotexist">
+		<copy preservelastmodified="true" todir="${lib.hibernate}">
 			<fileset dir="${hibernate-core.home}">
 				<include name="hibernate3.jar"/>	
         	</fileset>
@@ -71,6 +71,9 @@
 				<include name="${h3.commons-logging.lib}"/>
 				<include name="${h3.dom4j.lib}"/>
             	
+            	<!-- javassist -->
+				<include name="${h3.javassist.lib}"/>
+	
             	<!-- ehcache, required if no other cache provider is set -->
             	<include name="${h3.ehcache.lib}"/>
             	
