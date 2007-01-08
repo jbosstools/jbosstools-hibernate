@@ -39,6 +39,11 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabFolder2Adapter;
+import org.eclipse.swt.custom.CTabFolder2Listener;
+import org.eclipse.swt.custom.CTabFolderEvent;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
@@ -62,7 +67,7 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 	
 	public static final String ID = "org.hibernate.eclipse.console.views.QueryPageTabView";
 	
-	protected TabFolder tabs = null;
+	protected CTabFolder tabs = null;
 
 	private Set listeners = Collections.synchronizedSet(new HashSet() );
 	
@@ -141,13 +146,23 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 	}
 	
 	public void createPartControl(Composite parent) {
-		this.tabs = new TabFolder(parent, SWT.NONE);
-		this.tabs.addSelectionListener(new SelectionAdapter() {
+		tabs = new CTabFolder(parent, SWT.CLOSE | SWT.BOTTOM);
+		tabs.setSimple( false );
+		tabs.setUnselectedCloseVisible( false );
+		
+		tabs.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
 				fireSelectionChangedEvent();
 			}
 		});
+		tabs.addCTabFolder2Listener( new CTabFolder2Adapter() {
 		
+			public void close(CTabFolderEvent event) {
+				QueryPage qp = (QueryPage) event.item.getData();
+				KnownConfigurations.getInstance().getQueryPageModel().remove( qp );				
+			}
+		
+		});
 		rebuild();
 		
 		initActions();
@@ -220,7 +235,7 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 		} else {
 			int index = this.tabs.getSelectionIndex();
 			if (index >= 0) {
-				TabItem item = this.tabs.getItem(index);
+				CTabItem item = this.tabs.getItem(index);
 				for (Iterator i = this.pageViewers.iterator(); 
 				selection == null && i.hasNext();) {
 					QueryPageViewer viewer = (QueryPageViewer) i.next();

@@ -39,12 +39,12 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.hibernate.console.QueryPage;
@@ -140,7 +140,7 @@ public class QueryPageViewer {
 
 	private final QueryPage queryPage;
 	private TableViewer tableViewer;
-	private TabItem tabItem;
+	private CTabItem tabItem;
 	private final QueryPageTabView qrView;
 	
 	public QueryPageViewer(QueryPageTabView qrView, QueryPage queryPage) {
@@ -152,7 +152,7 @@ public class QueryPageViewer {
 		
 	}
 	
-	protected TabItem getTabItem() {
+	protected CTabItem getTabItem() {
 		return this.tabItem;
 	}
 	
@@ -161,8 +161,8 @@ public class QueryPageViewer {
 	}
 	
 	protected void createControl() {
-    	this.tabItem = new TabItem(this.qrView.tabs, SWT.NONE);
-    	
+    	this.tabItem = new CTabItem(this.qrView.tabs, SWT.NONE);
+    	this.tabItem.setData( this.queryPage );
     	int index = this.qrView.tabs.getItems().length;    	
     	Composite composite = new Composite(this.qrView.tabs, SWT.NONE);
 		GridLayout layout = new GridLayout();
