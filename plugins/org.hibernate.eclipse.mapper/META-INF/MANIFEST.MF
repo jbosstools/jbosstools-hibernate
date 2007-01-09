@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Mapper Plug-in
 Bundle-SymbolicName: org.hibernate.eclipse.mapper; singleton:=true
-Bundle-Version: 3.2.0.beta8
+Bundle-Version: 3.2.0.beta9
 Bundle-ClassPath: org.hibernate.eclipse.mapper.jar
 Bundle-Activator: org.hibernate.eclipse.mapper.MapperPlugin
 Bundle-Vendor: Hibernate Team
