@@ -7,7 +7,7 @@
 
 <project name="Hibernate Help" default="build" basedir=".">
 
-	<property name="hibernate.root" location="../../../../../hibernate"/>
+	<property name="hibernate.root" location="../../../../../hibernate/branch_3_2"/>
 	<available file="${hibernate.root}" property="hibernate.root.exists"/>
 	<fail unless="hibernate.root.exists">hibernate.root needs to be set to the root of the hibernate svn checkout. Currently it is ${hibernate.root} which does not exist.</fail>
 	
@@ -32,8 +32,8 @@
 	<target name="create-doc-zip">
 		
 		<!-- copy in the reference document -->
-	    <copy todir="${tmpdir}/html/reference">
-	       <fileset dir="${hibernate-core.home}/doc/reference" >
+	    <copy todir="${tmpdir}/html/reference/en">
+	       <fileset dir="${hibernate-core.home}/doc/reference/build/en" >
 	       		<include name="**/html/*"/>	
 	  	       	<include name="**/shared/images/*" />
 	        </fileset>

@@ -205,6 +205,7 @@
     <topic label="The from clause" href="html/reference/en/html/queryhql.html#queryhql-from"/>
     <topic label="Associations and joins" href="html/reference/en/html/queryhql.html#queryhql-joins"/>
     <topic label="Forms of join syntax" href="html/reference/en/html/queryhql.html#queryhql-joins-forms"/>
+    <topic label="Refering to identifier property" href="html/reference/en/html/queryhql.html#queryhql-identifier-property"/>
     <topic label="The select clause" href="html/reference/en/html/queryhql.html#queryhql-select"/>
     <topic label="Aggregate functions" href="html/reference/en/html/queryhql.html#queryhql-aggregation"/>
     <topic label="Polymorphic queries" href="html/reference/en/html/queryhql.html#queryhql-polymorphism"/>
@@ -215,7 +216,9 @@
     <topic label="Subqueries" href="html/reference/en/html/queryhql.html#queryhql-subqueries"/>
     <topic label="HQL examples" href="html/reference/en/html/queryhql.html#queryhql-examples"/>
     <topic label="Bulk update and delete" href="html/reference/en/html/queryhql.html#queryhql-bulk"/>
-    <topic label="Tips &amp; Tricks" href="html/reference/en/html/queryhql.html#queryhql-tipstricks"/></topic>
+    <topic label="Tips &amp; Tricks" href="html/reference/en/html/queryhql.html#queryhql-tipstricks"/>
+    <topic label="Components" href="html/reference/en/html/queryhql.html#queryhql-components"/>
+    <topic label="Row value constructor syntax" href="html/reference/en/html/queryhql.html#queryhql-tuple"/></topic>
     <topic label="Criteria Queries" href="html/reference/en/html/querycriteria.html">
     <topic label="Creating a Criteria instance" href="html/reference/en/html/querycriteria.html#querycriteria-creating"/>
     <topic label="Narrowing the result set" href="html/reference/en/html/querycriteria.html#querycriteria-narrowing"/>
