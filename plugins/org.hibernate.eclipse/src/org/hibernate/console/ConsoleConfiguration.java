@@ -56,7 +56,6 @@ import org.hibernate.console.execution.ExecutionContextHolder;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
-import org.hibernate.tool.ant.JPAConfigurationTask;
 import org.hibernate.util.ConfigHelper;
 import org.hibernate.util.ReflectHelper;
 import org.hibernate.util.StringHelper;
@@ -121,7 +120,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 				overrides.put( "hibernate.ejb.naming_strategy", prefs.getNamingStrategy() );
 			}
 			
-			Class clazz = ReflectHelper.classForName("org.hibernate.ejb.Ejb3Configuration", JPAConfigurationTask.class);
+			Class clazz = ReflectHelper.classForName("org.hibernate.ejb.Ejb3Configuration", ConsoleConfiguration.class);
 			Object ejb3cfg = clazz.newInstance();
 			
 			if(StringHelper.isNotEmpty(entityResolver)) {
