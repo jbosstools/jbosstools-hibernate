@@ -167,14 +167,15 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
         			if(project.exists()) {				 
         				HibernateNature hibernateNature = HibernateNature.getHibernateNature( project );
         				if(hibernateNature==null) { // project not enabled at all
-        					if( MessageDialog.openConfirm( shell, "Enable Hibernate features for project", "The project named " + projectName + " does not have Hibernate features enabled. Should it be updated to use " + configName + " ?")) {
+        					if( MessageDialog.openConfirm( shell, "Enable Hibernate features for project", "The project named '" + projectName + "' does not have Hibernate features enabled. Should it be updated to use " + configName + " ?")) {
         						ProjectUtils.toggleHibernateOnProject( project.getProject(), true, configName );
         					}
         				}
         				else {
         					String defaultConsoleConfigurationName = hibernateNature.getDefaultConsoleConfigurationName();
         					
-        					if(oldConfig!=null && oldConfig.getName().equals(defaultConsoleConfigurationName)) { // an update so its just forced in there.
+        					if((oldConfig!=null && oldConfig.getName().equals(defaultConsoleConfigurationName)) ||
+        							defaultConsoleConfigurationName.equals(hibernateNature.getDefaultConsoleConfigurationName())) { // an update so its just forced in there.
         						ProjectUtils.toggleHibernateOnProject( project.getProject(), true, configName );
         					} else if(defaultConsoleConfigurationName==null) {						
         						if(MessageDialog.openConfirm( shell, "Enable Hibernate features for project", "The project named " + projectName + " does not have a default Hibernate configuration specified. Should it be updated to use " + configName + " ?")) {

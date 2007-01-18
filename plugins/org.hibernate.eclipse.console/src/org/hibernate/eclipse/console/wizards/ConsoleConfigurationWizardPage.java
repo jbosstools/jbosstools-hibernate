@@ -433,6 +433,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 		
 		public IPath   propertyFile;
 		public IPath   configFile;
+		public IPath   persistencexml;
 		public IJavaProject javaProject;
 		public List    classpath = new ArrayList();
 		public List    mappings = new ArrayList();
@@ -450,10 +451,18 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 					configFile = fullPath;
 					mappings.clear(); // we prefer af cfg.xml over mappings
 					return false;
-				}				
+				}
+				
+				if("persistence.xml".equals( proxy.getName() )) {
+					if(javaProject!=null && javaProject.isOnClasspath( proxy.requestResource() )) {
+						persistencexml = fullPath;
+						mappings.clear();
+						return false;						
+					}
+				}
 				
 				// only add mappings if we don't have a config file.
-				if(configFile==null && proxy.getName().endsWith(".hbm.xml") ) {
+				if((configFile==null || persistencexml==null) && proxy.getName().endsWith(".hbm.xml") ) {
 					mappings.add(fullPath);
 					return false;
 				}
@@ -522,6 +531,12 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 				}
 				if (v.propertyFile!=null) propertyFileText.setText(v.propertyFile.toOSString() );
 				if (v.configFile!=null) configurationFileText.setText(v.configFile.toOSString() );
+				
+				if (v.persistencexml!=null) {
+					jpaMode.setSelection( true );
+					coreMode.setSelection( false );
+					annotationsMode.setSelection( false );
+				}
 				if (!v.mappings.isEmpty() ) mappingFilesViewer.add(v.mappings.toArray(), false);
 				if (!v.classpath.isEmpty() ) classPathViewer.add(v.classpath.toArray(), false);
 				useProjectClassPath.setSelection( true );
