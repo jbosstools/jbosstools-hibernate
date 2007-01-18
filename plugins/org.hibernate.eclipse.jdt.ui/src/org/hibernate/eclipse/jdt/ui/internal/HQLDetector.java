@@ -73,7 +73,7 @@ public class HQLDetector extends ASTVisitor {
 		return super.visit( node );
 	}	
 	
-	public boolean visit(MethodInvocation node) {	
+	public boolean visit(MethodInvocation node) {			
 		if(node.getName().getIdentifier().equals( "createQuery" )) {
 			if(node.arguments().size()==1) {
 				Object object = node.arguments().get(0);
@@ -89,7 +89,10 @@ public class HQLDetector extends ASTVisitor {
 			}			
 			return false;
 		} else {
-			return false;
+			//	have to return true since
+			//  List users = newEm.createQuery("select u from User u").getResultList();
+			// will start with .getResultList(); and if false then it will stop processing.
+			return true;  
 		}		
 	}
 
