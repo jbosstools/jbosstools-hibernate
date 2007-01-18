@@ -40,6 +40,7 @@ public class HibernateConsolePerspectiveFactory implements IPerspectiveFactory {
 	private static final String ID_PROPERTY_SHEET_VIEW = "org.eclipse.ui.views.PropertySheet";
 	private static final String ID_DYNAMIC_QUERY_TRANSLATOR_VIEW = "org.hibernate.eclipse.console.views.DynamicSQLPreviewView";
 	private static final String ID_ENTITY_MODEL_VIEW = "org.hibernate.eclipse.graph.EntityGraphView";
+	private static final String ID_CONSOLE_VIEW = "org.eclipse.ui.console.ConsoleView"; //TODO: could not find constant for it in eclipse 
 	
 	private static final String ID_QUERY_PARAMETERS = "org.hibernate.eclipse.console.views.QueryParametersView";
 	
@@ -64,6 +65,7 @@ public class HibernateConsolePerspectiveFactory implements IPerspectiveFactory {
 		outputfolder.addView(ID_QUERYRESULTS_VIEW);
 		outputfolder.addView(ID_DYNAMIC_QUERY_TRANSLATOR_VIEW);
 		outputfolder.addView(ID_ENTITY_MODEL_VIEW);
+		outputfolder.addView(ID_CONSOLE_VIEW);
 		outputfolder.addPlaceholder(IProgressConstants.PROGRESS_VIEW_ID);
 				
 		IFolderLayout outlines = layout.createFolder("outlines", IPageLayout.RIGHT, 0.75f, editorArea);
