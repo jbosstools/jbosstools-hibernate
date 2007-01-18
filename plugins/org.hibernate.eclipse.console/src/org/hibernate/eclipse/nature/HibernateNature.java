@@ -207,7 +207,7 @@ public class HibernateNature implements IProjectNature {
 	/** return HibernateNature or null for a project **/
 	public static HibernateNature getHibernateNature(IJavaProject project) {
 		try {
-			if(project!=null && project.getProject().hasNature(HibernateNature.ID)) {
+			if(project!=null && project.getProject().isOpen() && project.getProject().hasNature(HibernateNature.ID)) {
 				final HibernateNature nature = (HibernateNature) project.getProject().getNature(HibernateNature.ID);
 				return nature;
 			}
