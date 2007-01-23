@@ -55,6 +55,7 @@ import org.hibernate.eclipse.mapper.editors.reveng.RevEngTypeMappingPage;
 import org.hibernate.eclipse.mapper.editors.xpl.XMLFormEditorPart;
 import org.hibernate.eclipse.mapper.model.DOMReverseEngineeringDefinition;
 import org.hibernate.eclipse.nature.HibernateNature;
+import org.hibernate.util.StringHelper;
 import org.w3c.dom.Document;
 
 public class ReverseEngineeringEditor extends XMLFormEditorPart {
@@ -158,8 +159,13 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 	public IReverseEngineeringDefinition getReverseEngineeringDefinition() {
 		return definition;
 	}
+	
 	public String getConsoleConfigurationName() {
 		return overviewsPage.getConsoleConfigName();
+	}
+	
+	protected void setConsoleConfigurationName(String name) {
+		overviewsPage.setConsoleConfigName(name);
 	}
 	
 	public HibernateNature getHibernateNature() throws CoreException {
@@ -174,10 +180,15 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 	public LazyDatabaseSchema getLazyDatabaseSchema() {
 		try {
 			ConsoleConfiguration configuration = KnownConfigurations.getInstance().find( getConsoleConfigurationName() );
-			if(configuration==null) {
-				MessageDialog.openInformation(getContainer().getShell(), "No console configuration", "No console configuration found.\n Select a valid one on the overview page");
-				return null;
+			if(configuration == null) {
+				configuration = askForConsoleConfiguration();
+				if(configuration==null) {
+					return null;
+				} else {
+					setConsoleConfigurationName(configuration.getName());
+				}
 			}
+			 
 			ITableFilter[] tableFilters = getReverseEngineeringDefinition().getTableFilters();
 			Configuration cfg = configuration.buildWith(null, false);
 			Settings settings = configuration.getSettings(cfg);
@@ -222,6 +233,16 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 			HibernateConsolePlugin.getDefault().showError(getContainer().getShell(), "Error while refreshing database tree", he);
 			return null;
 		}
+	}
+
+	private ConsoleConfiguration askForConsoleConfiguration() {
+		ChooseConsoleConfigurationDialog dialog = new ChooseConsoleConfigurationDialog(getContainer().getShell(),null);
+		dialog.prompt();
+		if(dialog.getSelectedConfigurationName()==null) {
+			return null;
+		} else {
+			return KnownConfigurations.getInstance().find( dialog.getSelectedConfigurationName() ); // TODO: double check to see if an result is actually returned ?
+		}		
 	}
 	
 }

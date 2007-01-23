@@ -97,4 +97,8 @@ public class ConsoleConfigNamePart extends RevEngSectionPart {
 	String getConsoleConfigName() {
 		return text.getText();
 	}
+
+	public void setConsoleConfigName(String name) {
+		text.setText( name );		
+	}
 }

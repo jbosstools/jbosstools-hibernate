@@ -136,5 +136,9 @@ public class RevEngOverviewPage extends RevEngFormEditorPart {
 	public String getConsoleConfigName() {
 		return configNamePart.getConsoleConfigName();
 	}
+
+	public void setConsoleConfigName(String name) {
+		configNamePart.setConsoleConfigName(name);		
+	}
 	
 }
