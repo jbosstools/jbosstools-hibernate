@@ -102,7 +102,7 @@ public class ChooseConsoleConfigurationDialog extends TitleAreaDialog {
     }
 
     private void setInitialTextValues(Combo text) {
-        ConsoleConfiguration[] recentWorkspaces = KnownConfigurations.getInstance().getConfigurations();
+        ConsoleConfiguration[] recentWorkspaces = KnownConfigurations.getInstance().getConfigurationsSortedByName();
         for (int i = 0; i < recentWorkspaces.length; ++i) {
 				text.add(recentWorkspaces[i].getName());			
 		}

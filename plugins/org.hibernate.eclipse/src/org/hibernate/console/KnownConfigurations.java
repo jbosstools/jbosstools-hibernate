@@ -23,8 +23,9 @@ package org.hibernate.console;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -198,6 +199,26 @@ public class KnownConfigurations  {
 	 */
 	public ConsoleConfiguration[] getConfigurations() {
 		return (ConsoleConfiguration[])getRepositoriesMap().values().toArray(new ConsoleConfiguration[getRepositoriesMap().size()]);
+	}
+	
+	public ConsoleConfiguration[] getConfigurationsSortedByName() {
+		return getConfigurations(new Comparator() {
+			public boolean equals(Object obj) {
+				return this==obj;
+			}
+
+			public int compare(Object o1, Object o2) {
+				return ( (ConsoleConfiguration)o1).getName()
+					.compareTo(
+							( (ConsoleConfiguration)o2).getName() );
+			}
+		});
+	}
+	
+	public ConsoleConfiguration[] getConfigurations(Comparator c) {
+		ConsoleConfiguration[] configurations = getConfigurations();
+		Arrays.sort(configurations, c);
+		return configurations;
 	}
 	
 	private ConsoleConfiguration internalGetRepository(String location) {
