@@ -74,8 +74,6 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	private Configuration configuration;
 	private SessionFactory sessionFactory;
 	
-	
-	
 	/** Unique name for this configuration */
 	public String getName() {
 		return prefs.getName();
@@ -136,7 +134,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			}
 			
 			method = clazz.getMethod("getHibernateConfiguration", new Class[0]);
-			Configuration invoke = (Configuration) method.invoke(ejb3cfg, null);
+			Configuration invoke = (Configuration) method.invoke(ejb3cfg, (Object[])null);
 			return invoke;
 		}
 		catch (Exception e) {
@@ -156,7 +154,31 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	 */
 	public Configuration buildWith(final Configuration cfg, final boolean includeMappings) {
 			URL[] customClassPathURLS = prefs.getCustomClassPathURLS();
-			executionContext = new DefaultExecutionContext( getName(), new URLClassLoader( customClassPathURLS, getParentClassLoader() ) );							
+			executionContext = new DefaultExecutionContext( getName(), new URLClassLoader( customClassPathURLS, getParentClassLoader() ) {
+				protected Class findClass(String name) throws ClassNotFoundException {
+					try {
+					return super.findClass( name );
+					} catch(ClassNotFoundException cnfe) {
+						throw cnfe;
+					}
+				}
+				
+				protected synchronized Class loadClass(String name, boolean resolve) throws ClassNotFoundException {
+					try {
+						return super.loadClass( name, resolve );
+					} catch(ClassNotFoundException cnfe) {
+						throw cnfe;
+					}
+				}
+				
+				public Class loadClass(String name) throws ClassNotFoundException {
+					try {
+					return super.loadClass( name );
+					} catch(ClassNotFoundException cnfe) {
+						throw cnfe;
+					}
+				}
+			});							
 			
 			Configuration result = (Configuration) executionContext.execute(new ExecutionContext.Command() {
 			
@@ -164,7 +186,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 					Configuration localCfg = cfg;
 
 					Properties properties = prefs.getProperties();
-
+					
 					if(localCfg==null) {
 						localCfg = buildConfiguration( properties, includeMappings );
 					} else {
@@ -184,6 +206,9 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 							localCfg = localCfg.addFile(hbm);
 						}
 					}
+                    // TODO: HBX-
+					localCfg.setProperty( "hibernate.temp.use_jdbc_metadata_defaults", "false" );
+					localCfg.setProperty( Environment.HBM2DDL_AUTO, "false" );
 					
 					return localCfg;
 				}
