@@ -198,19 +198,16 @@
        </actionSet>
         <actionSet 
             label="Hibernate Code Generation" 
-            visible="true" 
             id="org.hibernate.eclipse.launch.actionset"> 
-         <menu 
-               label="Hibernate Code Generation..." 
-               path="additions" 
-               id="org.hibernate.eclipse.launch.generate"> 
-            <separator 
-                  name="HibernateToolsGroup"> 
-            </separator> 
-         </menu> 
+            <!-- the menu is here to stop eclipse complaining about a menu entry that might not yet have started (see HBX-863) -->
+           <menu 
+                id="org.eclipse.ui.run" 
+                label="&amp;Run"> 
+             <groupMarker name="HibernateToolsGroup"/> 
+          </menu>
          <action 
                label="Hibernate Code Generation..." 
-               pulldown="true" 
+               style="pulldown" 
                icon="icons/images/hibernate_launch.png" 
                class="org.hibernate.eclipse.launch.LaunchMenuDelegate" 
                menubarPath="org.eclipse.ui.run/HibernateToolsGroup" 
@@ -218,7 +215,7 @@
          </action> 
          <action 
                label="Hibernate Code Generation..." 
-               pulldown="true" 
+               style="pulldown" 
                icon="icons/images/hibernate_launch.png" 
                tooltip="Generate code via Hibernate Tools" 
                class="org.hibernate.eclipse.launch.LaunchMenuDelegate" 
@@ -238,7 +235,7 @@
     <extension
       point="org.eclipse.ui.commands">
    <command
-         category="org.eclipse.ui.category.edit"
+         categoryId="org.eclipse.ui.category.edit"
          id="org.hibernate.eclipse.console.actions.ExecuteHQLActionCommand"
          name="Run Query command"/>
 </extension>
@@ -291,12 +288,23 @@
             class="org.hibernate.eclipse.criteriaeditor.CriteriaEditorInputFactory"> 
          </factory> 
    </extension>
+   <!-- Only Show Hibernate Launch Action Set in the following perspectives (as well as the Hibernate Console perspective-->
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <actionSet id="org.hibernate.eclipse.launch.actionset"/>
+      </perspectiveExtension>
+      <perspectiveExtension targetID="org.eclipse.jdt.ui.JavaBrowsingPerspective">
+         <actionSet id="org.hibernate.eclipse.launch.actionset"/>
+      </perspectiveExtension>
+   </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension targetID="org.hibernate.eclipse.console.HibernateConsolePerspective">
+      	 <actionSet id="org.hibernate.eclipse.launch.actionset"/>
          <newWizardShortcut id="org.hibernate.eclipse.console.wizards.NewHibernateMappingFileWizard"/>
          <newWizardShortcut id="org.hibernate.eclipse.console.wizards.NewConfigurationWizard"/>
-         <newWizardShortcut id="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"/>
+<!--         <newWizardShortcut id="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"/> -->
          <newWizardShortcut id="org.hibernate.eclipse.console.wizards.NewReverseEngineeringFileWizard"/>
          <viewShortcut id="org.hibernate.eclipse.console.views.KnownConfigurationsView"/>
          <viewShortcut id="org.hibernate.eclipse.graph.EntityGraphView"/>
@@ -321,6 +329,12 @@
             modes="run"
             name="Hibernate Code Generation"
             public="true"/>
+      <launchConfigurationType
+            delegate="org.hibernate.eclipse.launch.ConsoleConfigurationLaunchDelegate"
+            id="org.hibernate.eclipse.launch.ConsoleConfigurationLaunchConfigurationType"
+            modes="run"
+            name="Hibernate Console Configuration"
+            public="true"/>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTypeImages">
@@ -328,6 +342,10 @@
             icon="icons/images/hibernate_launch.png"
             configTypeID="org.hibernate.eclipse.launch.CodeGenerationLaunchConfigurationType"
             id="org.hibernate.eclipse.launch.CodeGenerationLaunchImage"/>
+      <launchConfigurationTypeImage
+            icon="icons/images/hibernate_config.gif"
+            configTypeID="org.hibernate.eclipse.launch.ConsoleConfigurationLaunchConfigurationType"
+            id="org.hibernate.eclipse.launch.ConsoleConfiguraitonLaunchImage"/>            
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
@@ -336,7 +354,13 @@
             description="Select or configure a code generation"
             id="org.hibernate.eclipse.launch.CodeGenerationLaunchTabGroup"
             type="org.hibernate.eclipse.launch.CodeGenerationLaunchConfigurationType"/>
+      <launchConfigurationTabGroup
+            class="org.hibernate.eclipse.launch.ConsoleConfigurationTabGroup"
+            description="Select or configure a Console Configuration"
+            id="org.hibernate.eclipse.launch.ConsoleConfigurationLaunchTabGroup"
+            type="org.hibernate.eclipse.launch.ConsoleConfigurationLaunchConfigurationType"/>            
    </extension>
+
    <extension
          point="org.eclipse.debug.ui.launchGroups">
       <launchGroup
@@ -347,6 +371,14 @@
             label="Hibernate Code Generation..."
             mode="run"
             title="Select or configure a code generation to run"/>
+      <launchGroup
+            bannerImage="icons/images/newhibernate_wiz.gif"
+            category="org.hibernate.eclipse.launchcategory"
+            id="org.hibernate.eclipse.launch.ConsoleConfigurationLaunchGroup"
+            image="icons/images/hibernate_launch.png"
+            label="Hibernate Console Configuration..."
+            mode="run"
+            title="Select or configure a console configuration to run"/>
    </extension>
    <extension
          point="org.eclipse.debug.core.statusHandlers">

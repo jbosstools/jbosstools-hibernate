@@ -182,7 +182,7 @@ public class HibernatePropertyPage extends PropertyPage {
 		selectedConfiguration.setLayoutData(gd);
 
 		// Populate owner text field
-		ConsoleConfiguration[] configurations = KnownConfigurations.getInstance().getConfigurations();
+		ConsoleConfiguration[] configurations = KnownConfigurations.getInstance().getConfigurationsSortedByName();
 		for (int i = 0; i < configurations.length; i++) {
 			ConsoleConfiguration configuration = configurations[i];
 			selectedConfiguration.add(configuration.getName() );

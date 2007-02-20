@@ -29,7 +29,7 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.eclipse.console.EclipseConsoleConfigurationPreferences;
+import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 
 public class ConsoleConfigurationPropertySource implements IPropertySource {
 
@@ -61,23 +61,27 @@ public class ConsoleConfigurationPropertySource implements IPropertySource {
 	}
 
 	public Object getPropertyValue(Object id) {
+		try {
 		if("name".equals(id)) {
 			return cfg.getName();
 		}
-		// TODO: not nice that we need to downcast to get more friendly file names
-		EclipseConsoleConfigurationPreferences preferences = (EclipseConsoleConfigurationPreferences) cfg.getPreferences();
+		// TODO: bring back more eclipse friendly file names
+		ConsoleConfigurationPreferences preferences = cfg.getPreferences();
 		
 		if("hibernate.cfg.xml".equals(id)) {
-			return preferences.getCfgFile();
+			return preferences.getConfigXMLFile();
 		}
 		if("hibernate.properties".equals(id)) {
-			return preferences.getPropertyFilename();
+			return preferences.getPropertyFile();
 		}
 		if("mapping.files".equals(id)) {
-			return new Integer(preferences.getMappings().length);
+			return new Integer(preferences.getMappingFiles().length);
 		}
 		
 		return null;
+		} catch(RuntimeException e) {
+			return "Error: " + e.getMessage();
+		}
 	}
 
 	public boolean isPropertySet(Object id) {

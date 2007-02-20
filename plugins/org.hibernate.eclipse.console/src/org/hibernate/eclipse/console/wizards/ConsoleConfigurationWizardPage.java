@@ -53,6 +53,7 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -99,7 +100,6 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	
 	
 	private EclipseConsoleConfiguration oldConfiguaration = null;
-	//private Button enableAnnotations;
 	Button coreMode;
 	Button jpaMode;
 	Button annotationsMode;
@@ -164,7 +164,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 		item.setControl( composite );
 		item.setText( "Mappings" );
 		
-		initialize();
+		initialize(selection);
 		dialogChanged();
 		setControl(folder);
 	}
@@ -479,18 +479,13 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	}
 
 
-	/**
-	 * Tests if the current workbench selection is a suitable
-	 * container to use.
-	 * @throws 
-	 */
 	
-	private void initialize() {
+	public void initialize(ISelection currentSelection) {
 		try {
 			Visitor v = new Visitor();
 		// use selection to build configuration from it...
-		if (selection!=null && selection.isEmpty()==false && selection instanceof IStructuredSelection) {
-			IStructuredSelection ssel = (IStructuredSelection)selection;
+		if (currentSelection!=null && currentSelection.isEmpty()==false && currentSelection instanceof IStructuredSelection) {
+			IStructuredSelection ssel = (IStructuredSelection)currentSelection;
 			if (ssel.size()>1) return;
 			Object obj = ssel.getFirstElement();
 			
@@ -529,15 +524,20 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 					configurationNameText.setText(v.javaProject.getElementName() );
 					projectNameText.setText(v.javaProject.getElementName());
 				}
-				if (v.propertyFile!=null) propertyFileText.setText(v.propertyFile.toOSString() );
-				if (v.configFile!=null) configurationFileText.setText(v.configFile.toOSString() );
+				if (v.propertyFile!=null) {
+					propertyFileText.setText(v.propertyFile.toOSString() );
+				}
+				
+				if (v.configFile!=null) {
+					configurationFileText.setText(v.configFile.toOSString() );
+				}
 				
 				if (v.persistencexml!=null) {
 					jpaMode.setSelection( true );
 					coreMode.setSelection( false );
 					annotationsMode.setSelection( false );
 				}
-				if (!v.mappings.isEmpty() ) mappingFilesViewer.add(v.mappings.toArray(), false);
+				if (!v.mappings.isEmpty() && v.configFile==null && v.persistencexml==null) mappingFilesViewer.add(v.mappings.toArray(), false);
 				if (!v.classpath.isEmpty() ) classPathViewer.add(v.classpath.toArray(), false);
 				useProjectClassPath.setSelection( true );
                 //if(v.javaProject!=null) {
@@ -789,7 +789,11 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	}
 
 	public void setConfigurationFilePath(IPath containerFullPath) {
+		if(!configurationFileWillBeCreated) {
+			initialize( new StructuredSelection(containerFullPath) );
+		}
 		configurationFileText.setText(containerFullPath.toPortableString());
+		
 		configurationFileWillBeCreated = true;
 		configurationFileText.setEnabled(false);
 		confbutton.setEnabled(false);

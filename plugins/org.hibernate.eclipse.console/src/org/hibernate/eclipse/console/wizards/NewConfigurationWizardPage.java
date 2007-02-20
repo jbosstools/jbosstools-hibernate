@@ -70,7 +70,7 @@ public class NewConfigurationWizardPage extends WizardPage {
 
     private Combo urlCombo;
     
-    private Button createConsoleConfiguration;
+    private Button createConsoleConfiguration; 
     
     private ISelection selection;
 
@@ -229,8 +229,7 @@ public class NewConfigurationWizardPage extends WizardPage {
         gd = new GridData(GridData.FILL_HORIZONTAL);
         createConsoleConfiguration.setLayoutData(gd);        
         createConsoleConfiguration.setText("Create a console configuration");        
-        createConsoleConfiguration.addSelectionListener(selectionListener);
-                
+        createConsoleConfiguration.addSelectionListener(selectionListener);      
         
         initialize();
         dialogChanged();
@@ -417,6 +416,7 @@ public class NewConfigurationWizardPage extends WizardPage {
 	public boolean isCreateConsoleConfigurationEnabled() {
 		return createConsoleConfiguration.getSelection();
 	}
+    
 	public String getDefaultCatalog() {
 		return nullIfEmpty(defaultCatalogText.getText());
 	}

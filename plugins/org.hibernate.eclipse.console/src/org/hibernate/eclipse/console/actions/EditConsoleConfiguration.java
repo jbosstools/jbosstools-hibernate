@@ -23,6 +23,14 @@ package org.hibernate.eclipse.console.actions;
 
 import java.util.Iterator;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationType;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -75,12 +83,30 @@ public class EditConsoleConfiguration extends ConsoleConfigurationBasedAction {
 	}
 
 	private void edit(final ConsoleConfiguration config) {
-		ConsoleConfigurationCreationWizard wizard = new ConsoleConfigurationCreationWizard();
-		wizard.init(PlatformUI.getWorkbench(), new StructuredSelection(config) );
 		IWorkbenchWindow win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		
-		WizardDialog dialog = new WizardDialog(win.getShell(), wizard);
-		dialog.open(); // This opens a dialog
+		/*if(MessageDialog.openQuestion( null, "Use old dialog ?", "Use old dialog" )) {
+			ConsoleConfigurationCreationWizard wizard = new ConsoleConfigurationCreationWizard();
+			wizard.init(PlatformUI.getWorkbench(), new StructuredSelection(config) );
+			
+
+			WizardDialog dialog = new WizardDialog(win.getShell(), wizard);
+			dialog.open(); // This opens a dialog
+		} else {*/
+			try {
+				ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+
+				ILaunchConfigurationType launchConfigurationType = launchManager.getLaunchConfigurationType( "org.hibernate.eclipse.launch.ConsoleConfigurationLaunchConfigurationType" );
+				ILaunchConfiguration[] launchConfigurations = launchManager.getLaunchConfigurations( launchConfigurationType );
+				for (int i = 0; i < launchConfigurations.length; i++) { // can't believe there is no look up by name API
+					ILaunchConfiguration launchConfiguration = launchConfigurations[i];
+					if(launchConfiguration.getName().equals(config.getName())) {
+						DebugUITools.openLaunchConfigurationPropertiesDialog( win.getShell(), launchConfiguration, "org.eclipse.debug.ui.launchGroup.run" );
+					}
+				}								
+			} catch (CoreException ce) {
+				HibernateConsolePlugin.getDefault().showError( win.getShell(), "Problem adding a console configuration",  ce);
+			}
+		//}
 	}
 
 	protected boolean updateState(ConsoleConfiguration consoleConfiguration) {

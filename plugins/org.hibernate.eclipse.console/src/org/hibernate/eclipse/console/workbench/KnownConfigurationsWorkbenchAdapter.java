@@ -32,7 +32,7 @@ public class KnownConfigurationsWorkbenchAdapter implements IDeferredWorkbenchAd
 
 	public Object[] getChildren(Object o) {
 		KnownConfigurations kc = (KnownConfigurations) o;
-		return kc.getConfigurations();
+		return kc.getConfigurationsSortedByName();
 	}
 
 	public ImageDescriptor getImageDescriptor(Object object) {

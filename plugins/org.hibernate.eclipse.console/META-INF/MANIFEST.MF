@@ -60,5 +60,7 @@ Require-Bundle: org.hibernate.eclipse,
  org.eclipse.wst.common.project.facet.core,
  org.eclipse.wst.common.project.facet.ui,
  org.eclipse.ui.navigator,
- org.eclipse.jdt.launching
+ org.eclipse.jdt.launching,
+ org.eclipse.jdt.debug.ui,
+ org.eclipse.core.filesystem
 Eclipse-LazyStart: true

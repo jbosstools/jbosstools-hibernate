@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -35,12 +36,15 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.preferences.AbstractConsoleConfigurationPreferences;
+import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.utils.ClassLoaderHelper;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
+import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -54,8 +58,8 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 
 	private IPath cfgFile;
 	private IPath propertyFilename;
-	private IPath[] mappings;
-	private IPath[] customClasspath;
+	private IPath[] mappings = new IPath[0];
+	private IPath[] customClasspath = new IPath[0];
 	
 
 	public EclipseConsoleConfigurationPreferences(String configName, ConfigurationMode cmode, String projectName, boolean useProjectClasspath, String entityResolver, IPath cfgFile, IPath propertyFilename, IPath[] mappings, IPath[] classpaths, String persistenceUnitName, String namingStrategy) {
@@ -220,10 +224,4 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 		}    
 	}
 
-
-	
-	
-	
-	
-
-}
+	}

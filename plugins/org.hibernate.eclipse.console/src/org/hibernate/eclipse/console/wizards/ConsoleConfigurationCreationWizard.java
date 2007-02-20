@@ -22,6 +22,8 @@
 package org.hibernate.eclipse.console.wizards;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -29,7 +31,15 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationType;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
+import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
@@ -51,6 +61,7 @@ import org.hibernate.eclipse.console.EclipseConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
+import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 import org.hibernate.eclipse.nature.HibernateNature;
 import org.hibernate.util.StringHelper;
 
@@ -144,22 +155,58 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 
 		monitor.beginTask("Configuring Hibernate Console", IProgressMonitor.UNKNOWN);
 								
-		ConsoleConfigurationPreferences ccp = new EclipseConsoleConfigurationPreferences(
-				configName, cmode, projectName, useProjectClasspath,
-				entityResolver, cfgFile, propertyFilename, mappings, classpaths,
-				persistenceUnitName, namingStrategy);
+		//ConsoleConfigurationPreferences ccp = createOldConsoleConfiguration( configName, cmode, projectName, useProjectClasspath, entityResolver, propertyFilename, cfgFile, mappings, classpaths, persistenceUnitName, namingStrategy );
 		
-		
-		final ConsoleConfiguration cfg = new EclipseConsoleConfiguration(ccp);
-			
 		if(oldConfig!=null) {
-			oldConfig.reset(); // reset it no matter what.
-			KnownConfigurations.getInstance().removeConfiguration(oldConfig);
-		} 
-		KnownConfigurations.getInstance().addConfiguration(cfg, true);
+			KnownConfigurations.getInstance().removeConfiguration( oldConfig );
+		}
 		
-		// force save changes to console config
-		ResourcesPlugin.getWorkspace().save( false, monitor );
+		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+		ILaunchConfigurationType launchConfigurationType = launchManager.getLaunchConfigurationType( "org.hibernate.eclipse.launch.ConsoleConfigurationLaunchConfigurationType" );
+		String launchName = launchManager.generateUniqueLaunchConfigurationNameFrom(configName); 
+		ILaunchConfigurationWorkingCopy wc = launchConfigurationType.newInstance(null, launchName);
+		wc.setAttribute( IConsoleConfigurationLaunchConstants.CONFIGURATION_FACTORY, cmode.toString());
+		wc.setAttribute( IConsoleConfigurationLaunchConstants.PROJECT_NAME, projectName );
+		
+		wc.setAttribute( IConsoleConfigurationLaunchConstants.PROPERTY_FILE, safePathName(propertyFilename) );
+		wc.setAttribute( IConsoleConfigurationLaunchConstants.CFG_XML_FILE, safePathName(cfgFile) );
+		wc.setAttribute( IConsoleConfigurationLaunchConstants.PERSISTENCE_UNIT_NAME, persistenceUnitName );
+		
+		wc.setAttribute( IConsoleConfigurationLaunchConstants.NAMING_STRATEGY, namingStrategy );
+		wc.setAttribute( IConsoleConfigurationLaunchConstants.ENTITY_RESOLVER, entityResolver );
+		
+		IRuntimeClasspathEntry[] projectEntries = new IRuntimeClasspathEntry[0];
+		if(useProjectClasspath) {
+			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, true);
+			projectEntries = JavaRuntime.computeUnresolvedRuntimeClasspath(wc);
+			
+		}
+		
+		if(classpaths.length>0) {
+			List user = new ArrayList();
+			for (int i = 0; i < projectEntries.length; i++) {
+				user.add( projectEntries[i].getMemento() );			
+			}		
+			for (int i = 0; i < classpaths.length; i++) {
+				IPath entry = classpaths[i];
+				IRuntimeClasspathEntry userEntry = JavaRuntime.newArchiveRuntimeClasspathEntry( entry );
+				user.add( userEntry.getMemento() );
+			}
+			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, false);
+			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, user);
+		} else {			
+			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, true);
+			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, (String)null);
+		}
+		
+		List mappingFiles = new ArrayList();
+		for (int i = 0; i < mappings.length; i++) {
+			mappingFiles.add(mappings[i].toPortableString());			
+		}
+		wc.setAttribute( IConsoleConfigurationLaunchConstants.FILE_MAPPINGS, mappingFiles );
+				
+		wc.doSave();
+		
 		Display.getDefault().syncExec(new Runnable() {
             public void run() {
             	if(StringHelper.isNotEmpty( projectName )) {
@@ -171,7 +218,7 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
         						ProjectUtils.toggleHibernateOnProject( project.getProject(), true, configName );
         					}
         				}
-        				else {
+        				else { 
         					String defaultConsoleConfigurationName = hibernateNature.getDefaultConsoleConfigurationName();
         					
         					if((oldConfig!=null && oldConfig.getName().equals(defaultConsoleConfigurationName)) ||
@@ -192,8 +239,18 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
  
             }});
 			monitor.worked(1);
-	} 
+	}
+
+	private static String safePathName(IPath propertyFilename) {
+		if(propertyFilename==null) {
+			return null;
+		} else {
+			return propertyFilename.toOSString();
+		}
+	}
+
 	
+
 	
 	/**
 	 * We will accept the selection in the workbench to see if

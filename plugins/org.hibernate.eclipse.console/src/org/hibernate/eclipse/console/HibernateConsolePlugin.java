@@ -34,6 +34,11 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationListener;
+import org.eclipse.debug.core.ILaunchConfigurationType;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.ui.PreferenceConstants;
 import org.eclipse.jdt.ui.text.JavaTextTools;
 import org.eclipse.jface.dialogs.ErrorDialog;
@@ -54,6 +59,7 @@ import org.hibernate.eclipse.criteriaeditor.CriteriaEditorInput;
 import org.hibernate.eclipse.criteriaeditor.CriteriaEditorStorage;
 import org.hibernate.eclipse.hqleditor.HQLEditorInput;
 import org.hibernate.eclipse.hqleditor.HQLEditorStorage;
+import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
 import org.hibernate.eclipse.logging.xpl.EclipseLogger;
 import org.osgi.framework.BundleContext;
 import org.hibernate.eclipse.logging.PluginLogger;
@@ -76,6 +82,8 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 	private EclipseLogger logger;
 
 	private JavaTextTools javaTextTools;
+
+	private ILaunchConfigurationListener icl;
 	
 	/**
 	 * The constructor.
@@ -85,19 +93,109 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 		plugin = this;
 	}
 
+	
+	
 	/**
 	 * This method is called upon plug-in activation
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		logger=new EclipseLogger(context.getBundle());
-		HibernateConsoleSaveParticipant participant = new HibernateConsoleSaveParticipant();
-		participant.doStart(this);
+		//HibernateConsoleSaveParticipant participant = new HibernateConsoleSaveParticipant();
+		//participant.doStart(this);
 		
 		IAdapterManager adapterManager = Platform.getAdapterManager();
 		ConfigurationAdapterFactory fact =  new ConfigurationAdapterFactory();
 		fact.registerAdapters(adapterManager);
-				
+		
+		loadExistingConfigurations();
+		
+		listenForConfigurations();		
+		
+	}
+
+	private void listenForConfigurations() {
+		final ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+		
+		icl = new ILaunchConfigurationListener() {
+		
+			boolean isConsoleConfiguration(ILaunchConfiguration configuration) {
+				try {
+					return configuration.getType().getIdentifier().equals(ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID);
+				}
+				catch (CoreException e) {
+					HibernateConsolePlugin.getDefault().log( e );
+				}
+				return false;
+			}
+			
+			public void launchConfigurationRemoved(ILaunchConfiguration configuration) {				
+				ConsoleConfiguration cfg = KnownConfigurations.getInstance().find( configuration.getName() );
+				if(cfg!=null) {
+					KnownConfigurations.getInstance().removeConfiguration( cfg );
+				}
+			}
+		
+			public void launchConfigurationChanged(ILaunchConfiguration configuration) {
+				if(configuration.isWorkingCopy()) {
+					return;
+				}
+				if(isConsoleConfiguration( configuration )) {
+					KnownConfigurations instance = KnownConfigurations.getInstance();
+					ConsoleConfiguration oldcfg = instance.find( configuration.getName() );
+					if(oldcfg!=null) {
+						oldcfg.reset(); // reset it no matter what.
+						instance.removeConfiguration(oldcfg);
+						
+						ConsoleConfigurationPreferences adapter = buildConfigurationPreferences(configuration);
+						instance.addConfiguration(new ConsoleConfiguration(adapter), true);						
+					}
+				}
+			}
+		
+			private ConsoleConfigurationPreferences buildConfigurationPreferences(ILaunchConfiguration configuration) {
+				return new EclipseLaunchConsoleConfigurationPreferences(configuration);
+			}
+
+			public void launchConfigurationAdded(ILaunchConfiguration configuration) {
+				if(isConsoleConfiguration( configuration )) {
+					
+					ILaunchConfiguration movedFrom = launchManager.getMovedFrom( configuration );
+					if(movedFrom!=null && isConsoleConfiguration( movedFrom )) {
+						KnownConfigurations instance = KnownConfigurations.getInstance();
+						ConsoleConfiguration oldcfg = instance.find( movedFrom.getName() );
+						if(oldcfg!=null) {
+							oldcfg.reset(); // reset it no matter what.
+							instance.removeConfiguration(oldcfg);
+						}	
+					}
+					
+					KnownConfigurations instance = KnownConfigurations.getInstance();
+					ConsoleConfigurationPreferences adapter = buildConfigurationPreferences(configuration);
+					instance.addConfiguration(new ConsoleConfiguration(adapter), true);
+					
+					}
+				}		
+			};
+		launchManager.addLaunchConfigurationListener( icl ); 
+	}
+
+	private void stopListeningForConfigurations() {
+		final ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+		launchManager.removeLaunchConfigurationListener( icl );
+	}
+
+	
+
+	private void loadExistingConfigurations() throws CoreException {
+		final ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+		
+		ILaunchConfigurationType lct = launchManager.getLaunchConfigurationType( ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID );
+		ILaunchConfiguration[] launchConfigurations = launchManager.getLaunchConfigurations( lct );
+		for (int i = 0; i < launchConfigurations.length; i++) {
+			KnownConfigurations.getInstance().addConfiguration( 					
+					new ConsoleConfiguration(new EclipseLaunchConsoleConfigurationPreferences(launchConfigurations[i])), false );
+		}		
 	}
 
 	
@@ -106,9 +204,13 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 	 */
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
+		stopListeningForConfigurations();
 		plugin = null;
 		resourceBundle = null;
 	}
+
+	
+
 
 	/**
 	 * Returns the shared instance.

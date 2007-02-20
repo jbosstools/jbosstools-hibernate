@@ -65,7 +65,7 @@ final class ConfigurationCombo extends ComboContribution {
 
 	protected void populateComboBox() {
 		ConsoleConfiguration[] configurations = KnownConfigurations
-				.getInstance().getConfigurations();
+				.getInstance().getConfigurationsSortedByName();
 		final String[] names = new String[configurations.length];
 		for (int i = 0; i < configurations.length; i++) {
 			names[i] = configurations[i].getName();

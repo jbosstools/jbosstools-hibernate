@@ -244,7 +244,7 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	public boolean canFinish() {
 		if(!connectionInfoPage.isCreateConsoleConfigurationEnabled()) {
 			return connectionInfoPage.isPageComplete();
-		} 
+		}
 		return super.canFinish();
 	}
 }

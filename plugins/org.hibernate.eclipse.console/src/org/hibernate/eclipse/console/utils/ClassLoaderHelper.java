@@ -32,12 +32,16 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaModel;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
+import org.eclipse.jdt.launching.JavaRuntime;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 
 /**
@@ -136,4 +140,26 @@ public class ClassLoaderHelper {
 		}
 		return l;
 	}
+	
+	static public String[] getClasspath(ILaunchConfiguration configuration) throws CoreException {
+		IRuntimeClasspathEntry[] entries = JavaRuntime
+		.computeUnresolvedRuntimeClasspath(configuration);
+		entries = JavaRuntime.resolveRuntimeClasspath(entries, configuration);
+		List userEntries = new ArrayList(entries.length);
+		for (int i = 0; i < entries.length; i++) {
+			IRuntimeClasspathEntry runtimeClasspathEntry = entries[i];
+			if (runtimeClasspathEntry.getClasspathProperty() == IRuntimeClasspathEntry.USER_CLASSES) {
+				String location = runtimeClasspathEntry.getLocation();
+				if (location != null) {
+					userEntries.add(location);
+				} else {
+					System.out.println("No location: " + runtimeClasspathEntry.getMemento()); 
+				}
+			} else {
+				System.out.println("Ignored " + runtimeClasspathEntry.getMemento());
+			}
+		}
+		return (String[]) userEntries.toArray(new String[userEntries.size()]);
+	}
+	
 }

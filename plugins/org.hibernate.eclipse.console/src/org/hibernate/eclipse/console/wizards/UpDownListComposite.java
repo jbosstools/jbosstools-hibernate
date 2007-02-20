@@ -338,4 +338,8 @@ public class UpDownListComposite extends Composite {
 	public Table getTable() {
 		return tableView.getTable();
 	}
+
+	public void clear() {
+		tableView.getTable().removeAll();
+	}
 }

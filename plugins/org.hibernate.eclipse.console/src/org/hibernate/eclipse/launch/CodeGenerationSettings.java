@@ -103,7 +103,7 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
 		
 		consoleConfigurationName = new ComboDialogField(SWT.READ_ONLY);
 		consoleConfigurationName.setLabelText("Console &configuration:");
-		ConsoleConfiguration[] cfg = KnownConfigurations.getInstance().getConfigurations();
+		ConsoleConfiguration[] cfg = KnownConfigurations.getInstance().getConfigurationsSortedByName();
 		String[] names = new String[cfg.length];
 		for (int i = 0; i < cfg.length; i++) {
 			ConsoleConfiguration configuration = cfg[i];
