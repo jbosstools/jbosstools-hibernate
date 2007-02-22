@@ -124,7 +124,8 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 					return configuration.getType().getIdentifier().equals(ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID);
 				}
 				catch (CoreException e) {
-					HibernateConsolePlugin.getDefault().log( e );
+					//HibernateConsolePlugin.getDefault().log( e );
+					// ignore since it occurs on delete
 				}
 				return false;
 			}
