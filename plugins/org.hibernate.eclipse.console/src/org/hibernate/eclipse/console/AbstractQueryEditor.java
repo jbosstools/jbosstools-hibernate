@@ -60,6 +60,7 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 	final public void setConsoleConfigurationName(String name) {
 		QueryEditorInput hei = (QueryEditorInput) getEditorInput();
 		hei.setConsoleConfigurationName( name );
+		hei.setQuery( getQueryString() );
 		hei.resetName();
 		showEditorInput( hei );
 	}
