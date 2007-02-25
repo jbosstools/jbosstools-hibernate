@@ -254,7 +254,7 @@ public class HQLCodeScanner extends RuleBasedScanner {
 	private void addWordRules(final IToken token, WordRule wordRule, String[] reservedWords) {
 		for (int i = 0; i < reservedWords.length; i++) {
             wordRule.addWord( reservedWords[i], token );
-            wordRule.addWord( reservedWords[i].toLowerCase(), token );
+            wordRule.addWord( reservedWords[i].toUpperCase(), token );
         }
 	}
 
