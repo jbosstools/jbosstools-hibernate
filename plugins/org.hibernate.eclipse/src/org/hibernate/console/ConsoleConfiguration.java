@@ -38,6 +38,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Map.Entry;
 
 import org.dom4j.DocumentException;
 import org.dom4j.Node;
@@ -141,6 +142,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			throw new HibernateConsoleRuntimeException("Could not create JPA based Configuration",e);
 		}
 	}
+	
 	private Configuration buildAnnotationConfiguration() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 		Class clazz = ReflectHelper
 				.classForName( "org.hibernate.cfg.AnnotationConfiguration" );
@@ -187,6 +189,12 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 
 					Properties properties = prefs.getProperties();
 					
+					String str = properties.getProperty( "hibernate.transaction.manager_lookup_class" );
+					if(str.trim().length()==0) {
+						properties.setProperty( "hibernate.transaction.manager_lookup_class", "org.hibernate.console.FakeTransactionManagerLookup");
+					}
+					
+										
 					if(localCfg==null) {
 						localCfg = buildConfiguration( properties, includeMappings );
 					} else {
