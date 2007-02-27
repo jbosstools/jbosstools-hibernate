@@ -75,7 +75,11 @@ public class QueryPageViewer {
 					}
 					return "" + arr[columnIndex];
 				} else {
-					return value == null ? "" : value.toString();
+					if(columnIndex!=0) {
+						return "?";
+					} else {
+						return value == null ? "" : value.toString();
+					}
 				}
 			}
 			catch (RuntimeException e) {				
