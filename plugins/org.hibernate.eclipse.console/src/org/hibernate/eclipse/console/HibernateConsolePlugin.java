@@ -178,7 +178,9 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 					}
 				}		
 			};
-		launchManager.addLaunchConfigurationListener( icl ); 
+		launchManager.addLaunchConfigurationListener( icl );
+		
+		
 	}
 
 	private void stopListeningForConfigurations() {

@@ -63,7 +63,7 @@ import org.w3c.dom.Node;
  */
 public class KnownConfigurations  {
 
-	// TODO: is the best way for the querypage model ?
+	// TODO: is the best way for the querypage model ?	
 	private QueryPageModel queryPages = new QueryPageModel(); 
 	private List configurationListeners = new ArrayList();
 	private Map configurations;
@@ -80,7 +80,7 @@ public class KnownConfigurations  {
 		public void sessionFactoryBuilt(final ConsoleConfiguration ccfg, final SessionFactory builtSessionFactory) {
 			fireNotification(new Notification() {
 				public void notify(KnownConfigurationsListener listener) {
-					listener.sessionFactoryBuilt(ccfg, builtSessionFactory);
+					listener.sessionFactoryBuilt(ccfg, builtSessionFactory);					
 				}
 			});
 		}

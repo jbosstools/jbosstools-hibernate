@@ -189,9 +189,11 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 
 					Properties properties = prefs.getProperties();
 					
-					String str = properties.getProperty( "hibernate.transaction.manager_lookup_class" );
-					if(str.trim().length()==0) {
-						properties.setProperty( "hibernate.transaction.manager_lookup_class", "org.hibernate.console.FakeTransactionManagerLookup");
+					if(properties!=null) {
+						String str = properties.getProperty( "hibernate.transaction.manager_lookup_class" );
+						if(str.trim().length()==0) {
+							properties.setProperty( "hibernate.transaction.manager_lookup_class", "org.hibernate.console.FakeTransactionManagerLookup");
+						}
 					}
 					
 										

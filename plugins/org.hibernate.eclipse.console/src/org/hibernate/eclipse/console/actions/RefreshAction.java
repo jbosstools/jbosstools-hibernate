@@ -48,8 +48,6 @@ public class RefreshAction extends SelectionListenerAction {
 			Object element = iter.next();
 			viewer.refresh(element);	
 		}
-		
-		
 	}
 
 }
