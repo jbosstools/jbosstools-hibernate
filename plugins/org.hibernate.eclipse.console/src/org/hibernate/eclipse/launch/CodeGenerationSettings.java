@@ -208,7 +208,7 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
           
         useOwnTemplates = new SelectionButtonDialogField(SWT.CHECK);
         useOwnTemplates.setDialogFieldListener(fieldlistener);
-        useOwnTemplates.setLabelText("Use custom templates");
+        useOwnTemplates.setLabelText("Use custom templates (for custom file generation)");
        
         preferRawCompositeIds = new SelectionButtonDialogField(SWT.CHECK);
         preferRawCompositeIds.setLabelText("Generate basic typed composite ids");
