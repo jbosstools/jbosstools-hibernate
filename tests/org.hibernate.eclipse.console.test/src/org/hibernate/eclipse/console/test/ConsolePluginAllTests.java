@@ -20,12 +20,12 @@ public class ConsolePluginAllTests {
 		suite.addTestSuite( HibernateProjectTests.class );
 
 		// core tests
-		Properties properties = new Properties();
-		properties.load(ConsolePluginAllTests.class.getResourceAsStream("plugintest-hibernate.properties"));
+		//Properties properties = new Properties();
+		//properties.load(ConsolePluginAllTests.class.getResourceAsStream("plugintest-hibernate.properties"));
 		
-		System.getProperties().putAll(properties);
+		//System.getProperties().putAll(properties);
 		
-		suite.addTest(org.hibernate.tool.ToolAllTests.suite() );
+		//suite.addTest(org.hibernate.tool.ToolAllTests.suite() );
 		
 
 		return suite;
