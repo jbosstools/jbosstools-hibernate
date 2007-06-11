@@ -17,7 +17,7 @@ public class ConsolePluginAllTests {
 		suite.addTestSuite( PerspectiveTest.class );
 		suite.addTestSuite( ConsoleConfigurationTest.class );
 		suite.addTestSuite( JavaFormattingTest.class );
-		suite.addTestSuite( HibernateProjectTests.class );
+		
 
 		// core tests
 		//Properties properties = new Properties();

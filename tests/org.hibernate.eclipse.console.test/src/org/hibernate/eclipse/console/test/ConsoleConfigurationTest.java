@@ -82,8 +82,7 @@ public class ConsoleConfigurationTest extends TestCase {
 		}
 
 		public ConfigurationMode getConfigurationMode() {
-			
-			return null;
+			return ConfigurationMode.CORE;
 		}
 
 		public String getNamingStrategy() {
@@ -150,7 +149,7 @@ public class ConsoleConfigurationTest extends TestCase {
 		
 	}
 	
-	public void testCleanup() throws InterruptedException {
+	/*public void testCleanup() throws InterruptedException {
 		
 		for(int cnt=0;cnt<10000;cnt++) {
 			if(cnt%2==0) {
@@ -164,5 +163,5 @@ public class ConsoleConfigurationTest extends TestCase {
 			consoleCfg.reset();
 		}
 		
-	}
+	}*/
 }
