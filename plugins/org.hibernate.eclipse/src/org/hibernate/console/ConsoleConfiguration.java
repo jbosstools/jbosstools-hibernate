@@ -190,8 +190,9 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 					Properties properties = prefs.getProperties();
 					
 					if(properties!=null) {
+						// in case the transaction manager is empty then we need to inject a faketm since hibernate will still try and instantiate it.
 						String str = properties.getProperty( "hibernate.transaction.manager_lookup_class" );
-						if(StringHelper.isEmpty( str )) {
+						if(str != null && StringHelper.isEmpty( str )) {
 							properties.setProperty( "hibernate.transaction.manager_lookup_class", "org.hibernate.console.FakeTransactionManagerLookup");
 						}
 					}

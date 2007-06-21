@@ -43,8 +43,6 @@ Bundle-Vendor: Hibernate Team
 Bundle-Localization: plugin
 Export-Package: EDU.oswego.cs.dl.util.concurrent,
  META-INF,
- META-INF.maven.jtidy.jtidy,
- META-INF.services,
  antlr,
  antlr.ASdebug,
  antlr.actions.cpp,
