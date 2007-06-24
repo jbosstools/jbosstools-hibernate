@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><?eclipse version="3.0"?>
+<plugin>
+
+     <extension point="org.eclipse.ui.views">
+      <category id="web.views.category.id" name="Red Hat Developer Studio"/>
+      <view allowMultiple="false" category="web.views.category.id" class="org.jboss.tools.hibernate.view.views.ExplorerClass" icon="images/exdOrm16x16.gif" id="org.jboss.tools.hibernate.view.views.ExplorerClass" name="ORM Explorer">
+      </view>
+      <view allowMultiple="false" category="web.views.category.id" class="org.jboss.tools.hibernate.view.views.ExplorerBase" icon="images/exdDataPerspective1.gif" id="org.jboss.tools.hibernate.view.views.ExplorerBase" name="Relational Schema"/>
+   </extension>
+   <extension point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <showInPart id="org.jboss.tools.hibernate.view.views.ExplorerClass"/>
+         <viewShortcut id="org.jboss.tools.hibernate.view.views.ExplorerClass"/>
+         <viewShortcut id="org.jboss.tools.hibernate.view.views.ExplorerBase"/>
+         <view id="org.jboss.tools.hibernate.view.views.ExplorerClass" moveable="true" ratio="0.50" relationship="stack" relative="org.eclipse.jdt.ui.PackageExplorer" visible="true"/>
+         <view id="org.jboss.tools.hibernate.view.views.ExplorerBase" moveable="true" ratio="0.50" relationship="stack" relative="org.eclipse.ui.views.ContentOutline" visible="true"/>
+      </perspectiveExtension>
+      <perspectiveExtension targetID="org.jboss.tools.jst.web.ui.RedHat4WebPerspective">
+         <showInPart id="org.jboss.tools.hibernate.view.views.ExplorerClass"/>
+         <viewShortcut id="org.jboss.tools.hibernate.view.views.ExplorerClass"/>
+         <viewShortcut id="org.jboss.tools.hibernate.view.views.ExplorerBase"/>
+         <view id="org.jboss.tools.hibernate.view.views.ExplorerClass" moveable="true" ratio="0.50" relationship="stack" relative="org.eclipse.jdt.ui.PackageExplorer" visible="true"/>
+         <view id="org.jboss.tools.hibernate.view.views.ExplorerBase" moveable="true" ratio="0.50" relationship="stack" relative="org.eclipse.ui.views.ContentOutline" visible="true"/>
+      </perspectiveExtension>
+   </extension>
+   <extension point="org.eclipse.ui.popupMenus">
+      <objectContribution adaptable="true" id="org.jboss.tools.hibernate.view.project" objectClass="org.eclipse.core.resources.IProject">
+         <menu id="RedHat4Web" label="Red Hat Developer Studio" path="additions">
+            <separator name="a"/>
+            <separator name="b"/>
+            <separator name="c"/>
+            <separator name="d"/>
+         </menu>
+         <action class="org.jboss.tools.hibernate.view.AddOrmNatureActionDelegate" enablesFor="1" icon="images/exdOrm16x16.gif" id="org.jboss.tools.hibernate.view.AddOrmNatureAction" label="%popupMenus.action.addOrmNature" menubarPath="RedHat4Web/a">
+         </action>
+         <action class="org.jboss.tools.hibernate.view.RemoveOrmNatureActionDelegate" enablesFor="1" id="org.jboss.tools.hibernate.view.RemoveOrmNatureAction" label="%popupMenus.action.removeOrmNature" menubarPath="RedHat4Web/d">
+         </action>
+         <filter name="nature" value="org.eclipse.jdt.core.javanature"/>
+      </objectContribution>
+   </extension>
+   <extension point="org.eclipse.ui.decorators">
+      <decorator adaptable="false" class="org.jboss.tools.hibernate.view.decorator.LightWeightDecorator" id="org.jboss.tools.hibernate.view.orm2decorator" label="ORM2-Decorator" lightweight="true" location="TOP_LEFT" state="true">
+         <enablement>
+            <objectClass name="org.jboss.tools.hibernate.core.IOrmElement"/>
+         </enablement>
+      </decorator>
+   </extension>
+   <extension point="org.eclipse.ui.preferencePages">
+      <page category="org.jboss.tools.hibernate.view.ormpref" class="org.jboss.tools.hibernate.preference.AutoMappingSettingPrefPage" id="org.jboss.tools.hibernate.view.automappingsettingprefpage" name="Auto Mapping Setting"/>
+      <page category="org.jboss.tools.common.model.ui" class="org.jboss.tools.hibernate.preference.OrmPreferencesPage" id="org.jboss.tools.hibernate.view.ormpref" name="ORM"/>
+   </extension>
+
+</plugin>

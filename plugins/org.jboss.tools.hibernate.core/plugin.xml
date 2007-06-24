@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension-point id="codeRenderers" name="Red Hat Developer Studio POJO renderers" schema="schema/code_renderer.exsd"/>
+     <extension
+         id="OrmHibernateBuilder"
+         name="Hibernate Validation Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder hasNature="true">
+         <run class="org.jboss.tools.hibernate.internal.core.OrmBuilder"/>
+      </builder>
+   </extension>
+   <extension
+         id="OrmHibernateNature"
+         name="Orm Hibernate Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run class="org.jboss.tools.hibernate.internal.core.OrmHibernateNature"/>
+      </runtime>
+      <requires-nature id="org.eclipse.jdt.core.javanature"/>
+      <builder id="org.jboss.tools.hibernate.core.OrmHibernateBuilder"/>
+   </extension>
+   <extension
+         id="hibernateMappingProblem"
+         name="Hibernate mapping problem"
+         point="org.eclipse.core.resources.markers">
+      <attribute name="class"/>
+      <attribute name="id"/>
+      <attribute name="entity"/>
+      <attribute name="mapping"/>
+      <attribute name="storage"/>
+      <attribute name="marker.source.path"/>
+      <super type="org.eclipse.core.resources.problemmarker"/>
+      <persistent value="false"/>
+   </extension>
+   <extension
+         id="CoreUpdateByWizard"
+         name="Core Update By Wizard"
+         point="org.eclipse.core.resources.markers">
+      <persistent value="true"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.ide.markerResolution">
+      <markerResolutionGenerator
+            class="org.jboss.tools.hibernate.internal.core.hibernate.validation.HibernateResolutionGenerator"
+            markerType="org.jboss.tools.hibernate.core.hibernateMappingProblem">
+      </markerResolutionGenerator>
+   </extension>
+   <extension
+         point="org.eclipse.ui.ide.projectNatureImages">
+      <image
+            natureId="org.jboss.tools.hibernate.core.OrmHibernateNature"
+            icon="icons/test_ovr.gif"
+            id="org.jboss.tools.hibernate.core.OrmHibernateNatureImage"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.ide.markerImageProviders">
+      <imageprovider
+            markertype="org.jboss.tools.hibernate.core.hibernateMappingProblem"
+            icon="icons/error_tsk.gif"
+            id="org.jboss.tools.hibernate.core.problemProvider"/>
+   </extension>
+   <extension
+         point="org.eclipse.ltk.core.refactoring.renameParticipants">
+      <renameParticipant
+            class="org.jboss.tools.hibernate.internal.core.refactoring.RenameParticipant"
+            id="org.jboss.tools.hibernate.internal.core.refactoring.RenameParticipant"
+            name="ORM2-RenameClassParticipant">
+         <enablement>
+            <with variable="affectedNatures">
+               <iterate operator="or">
+                  <equals value="org.jboss.tools.hibernate.core.OrmHibernateNature"/>
+               </iterate>
+            </with>
+            <with variable="element">
+               <instanceof value="org.eclipse.jdt.core.IType"/>
+            </with>
+         </enablement>
+      </renameParticipant>
+      <renameParticipant
+            class="org.jboss.tools.hibernate.internal.core.refactoring.RenameParticipant"
+            id="org.jboss.tools.hibernate.internal.core.refactoring.RenameParticipant"
+            name="ORM2-RenameFieldParticipant">
+         <enablement>
+            <with variable="affectedNatures">
+               <iterate operator="or">
+                  <equals value="org.jboss.tools.hibernate.core.OrmHibernateNature"/>
+               </iterate>
+            </with>
+            <with variable="element">
+               <instanceof value="org.eclipse.jdt.core.IField"/>
+            </with>
+         </enablement>
+      </renameParticipant>
+      <renameParticipant
+            class="org.jboss.tools.hibernate.internal.core.refactoring.RenameParticipant"
+            id="org.jboss.tools.hibernate.internal.core.refactoring.RenameParticipant"
+            name="ORM2-RenameFieldParticipant">
+         <enablement>
+            <with variable="affectedNatures">
+               <iterate operator="or">
+                  <equals value="org.jboss.tools.hibernate.core.OrmHibernateNature"/>
+               </iterate>
+            </with>
+            <with variable="element">
+               <instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
+            </with>
+         </enablement>
+      </renameParticipant>
+   </extension>
+   <extension
+         point="org.eclipse.ltk.core.refactoring.moveParticipants">
+      <moveParticipant
+            class="org.jboss.tools.hibernate.internal.core.refactoring.MoveParticipant"
+            id="org.jboss.tools.hibernate.internal.core.refactoring.MoveParticipant"
+            name="ORM2-MovePerticipant">
+         <enablement>
+            <with variable="affectedNatures">
+               <iterate operator="or">
+                  <equals value="org.jboss.tools.hibernate.core.OrmHibernateNature"/>
+               </iterate>
+            </with>
+            <with variable="element">
+               <instanceof value="org.eclipse.jdt.core.IField"/>
+            </with>
+         </enablement>
+      </moveParticipant>
+      <moveParticipant
+            class="org.jboss.tools.hibernate.internal.core.refactoring.MoveParticipant"
+            id="org.jboss.tools.hibernate.internal.core.refactoring.MoveParticipant"
+            name="ORM2-MovePerticipant">
+         <enablement>
+            <with variable="affectedNatures">
+               <iterate operator="or">
+                  <equals value="org.jboss.tools.hibernate.core.OrmHibernateNature"/>
+               </iterate>
+            </with>
+            <with variable="element">
+               <instanceof value="org.eclipse.jdt.core.IType"/>
+            </with>
+         </enablement>
+      </moveParticipant>
+   </extension>
+   <extension
+         point="org.eclipse.ltk.core.refactoring.deleteParticipants">
+      <deleteParticipant
+            class="org.jboss.tools.hibernate.internal.core.refactoring.DeleteParticipant"
+            id="org.jboss.tools.hibernate.internal.core.refactoring.DeleteParticipant"
+            name="ORM2-DeleteParticipant">
+         <enablement>
+            <with variable="affectedNatures">
+               <iterate operator="or">
+                  <equals value="org.jboss.tools.hibernate.core.OrmHibernateNature"/>
+               </iterate>
+            </with>
+            <with variable="element">
+               <instanceof value="org.eclipse.jdt.core.IField"/>
+            </with>
+         </enablement>
+      </deleteParticipant>
+      <deleteParticipant
+            class="org.jboss.tools.hibernate.internal.core.refactoring.DeleteParticipant"
+            id="org.jboss.tools.hibernate.internal.core.refactoring.DeleteParticipant"
+            name="ORM2-DeleteParticipant">
+         <enablement>
+            <with variable="affectedNatures">
+               <iterate operator="or">
+                  <equals value="org.jboss.tools.hibernate.core.OrmHibernateNature"/>
+               </iterate>
+            </with>
+            <with variable="element">
+               <instanceof value="org.eclipse.jdt.core.IType"/>
+            </with>
+         </enablement>
+      </deleteParticipant>
+      <deleteParticipant
+            class="org.jboss.tools.hibernate.internal.core.refactoring.DeleteParticipant"
+            id="org.jboss.tools.hibernate.internal.core.refactoring.DeleteParticipant"
+            name="ORM2-DeleteParticipant">
+         <enablement>
+            <with variable="affectedNatures">
+               <iterate operator="or">
+                  <equals value="org.jboss.tools.hibernate.core.OrmHibernateNature"/>
+               </iterate>
+            </with>
+            <with variable="element">
+               <instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
+            </with>
+         </enablement>
+      </deleteParticipant>
+      <deleteParticipant
+            class="org.jboss.tools.hibernate.internal.core.refactoring.DeleteParticipant"
+            id="org.jboss.tools.hibernate.internal.core.refactoring.DeleteParticipant"
+            name="ORM2-DeleteParticipant">
+         <enablement>
+            <with variable="affectedNatures">
+               <iterate operator="or">
+                  <equals value="org.jboss.tools.hibernate.core.OrmHibernateNature"/>
+               </iterate>
+            </with>
+            <with variable="element">
+               <instanceof value="org.eclipse.core.resources.IFile"/>
+            </with>
+         </enablement>
+      </deleteParticipant>
+   </extension>
+   <extension
+         point="org.eclipse.wst.xml.core.catalogContributions">
+		<catalogContribution id="default">
+			<public
+				publicId="-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+				uri="platform:/plugin/org.jboss.tools.hibernate.core/dtd/hibernate-configuration-3.0.dtd" />
+			<public
+				publicId="-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+				uri="platform:/plugin/org.jboss.tools.hibernate.core/dtd/hibernate-mapping-3.0.dtd" />
+		</catalogContribution>
+   </extension>
+   <extension
+         point="org.jboss.tools.hibernate.core.codeRenderers">
+      <code_renderer
+            class="org.jboss.tools.hibernate.core.CodeRendererService"
+            id="org.jboss.tools.hibernate.core.defaultCodeRenderer"
+            name="Default Red Hat Developer Studio POJO renderer"/>
+   </extension>
+   <extension
+         point="org.eclipse.pde.core.source">
+      <location path="extsrc"/>
+   </extension>
+
+</plugin>

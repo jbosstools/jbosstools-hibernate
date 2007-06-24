@@ -1,0 +1,90 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/ 
+package org.jboss.tools.hibernate.veditor.editors.parts;
+
+import java.beans.PropertyChangeEvent;
+import java.util.List;
+
+import org.eclipse.draw2d.FocusBorder;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.ToolbarLayout;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
+import org.eclipse.swt.graphics.RGB;
+import org.jboss.tools.hibernate.veditor.editors.figures.ComponentFigure;
+import org.jboss.tools.hibernate.veditor.editors.figures.TitleFigure;
+import org.jboss.tools.hibernate.veditor.editors.figures.TitleLabel;
+import org.jboss.tools.hibernate.veditor.editors.model.ComponentShape;
+import org.jboss.tools.hibernate.veditor.editors.model.ExtendedShape;
+import org.jboss.tools.hibernate.veditor.editors.model.OrmDiagram;
+import org.jboss.tools.hibernate.veditor.editors.model.OrmShape;
+import org.jboss.tools.hibernate.veditor.editors.model.Shape;
+
+
+public class ComponentShapeEditPart extends ExtendedShapeEditPart {
+
+	protected IFigure createFigure() {
+		if (getModel() instanceof ComponentShape) {
+			IFigure figure = new ComponentFigure();
+			figure.setLayoutManager(new ToolbarLayout());
+			Label label = new Label();
+			label.setText(ormLabelProvider.getText(getCastedModel().getOrmElement()));	
+			label.setBackgroundColor(getColor());
+			label.setOpaque(true);
+			label.setIcon(ormLabelProvider.getImage(getCastedModel().getOrmElement()));
+			label.setLabelAlignment(PositionConstants.LEFT);
+			label.setBorder(new MarginBorder(1,2,1,2));
+			figure.add(label,-2);
+			figure.setBorder(new FocusBorder());
+			figure.setSize(-1,-1);
+			return figure;
+		} else {
+			throw new IllegalArgumentException();
+		}
+	}	
+	
+	public void performRequest(Request req) {
+		if(RequestConstants.REQ_OPEN.equals(req.getType()) && getModel() instanceof ComponentShape) {
+			((ComponentShape)getModel()).refreshChildsHiden(((OrmDiagram)getViewer().getContents().getModel()));
+		}
+	}
+	
+	public void propertyChange(PropertyChangeEvent evt) {
+		String prop = evt.getPropertyName();
+		if (ComponentShape.SET_CHILDS_HIDEN.equals(prop)) {
+			int i = figure.getPreferredSize().width;
+			((ComponentFigure)figure).setChildsHiden(((Boolean)evt.getNewValue()).booleanValue());
+			if(((Boolean)evt.getNewValue()).booleanValue())
+				figure.setSize(i,-1);
+			else
+				figure.setSize(-1,-1);
+
+			refresh();
+//					((OrmDiagram)getParent().getModel()).setDirty(true);
+		} else {
+			super.propertyChange(evt);
+		}
+	}
+
+	protected void refreshVisuals() {
+		Rectangle bounds = null;
+		if (getModel() instanceof ComponentShape) {
+			bounds = new Rectangle(new Point(0,0), getFigure().getSize());
+		}
+		if (bounds != null) ((GraphicalEditPart) getParent()).setLayoutConstraint(this, getFigure(), bounds);
+	}
+}

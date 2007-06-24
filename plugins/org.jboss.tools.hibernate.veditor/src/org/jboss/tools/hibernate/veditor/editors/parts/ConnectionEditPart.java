@@ -1,0 +1,110 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/ 
+package org.jboss.tools.hibernate.veditor.editors.parts;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.PolygonDecoration;
+import org.eclipse.draw2d.PolylineConnection;
+import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.editparts.AbstractConnectionEditPart;
+import org.eclipse.gef.editpolicies.SelectionEditPolicy;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
+import org.jboss.tools.hibernate.core.IDatabaseColumn;
+import org.jboss.tools.hibernate.core.IDatabaseTable;
+import org.jboss.tools.hibernate.core.IPersistentClass;
+import org.jboss.tools.hibernate.veditor.editors.figures.RoundPolylineConnection;
+import org.jboss.tools.hibernate.veditor.editors.model.Connection;
+import org.jboss.tools.hibernate.veditor.editors.model.ModelElement;
+
+
+
+/**
+ * @author Konstantin Mishin
+ *
+ */
+class ConnectionEditPart extends AbstractConnectionEditPart 
+implements PropertyChangeListener {
+	
+	public void activate() {
+		if (!isActive()) {
+			super.activate();
+			((ModelElement) getModel()).addPropertyChangeListener(this);
+		}
+	}
+	
+	protected void createEditPolicies() {
+		installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE,  new ShapesSelectionEditPolicy());
+	}
+	
+	protected IFigure createFigure() {
+		PolylineConnection connection = new RoundPolylineConnection();		
+		connection.setForegroundColor(getColor());	
+		connection.setTargetDecoration(new PolygonDecoration());		
+		connection.setVisible(!getCastedModel().isHiden());
+		return connection;
+	}
+	
+	public void deactivate() {
+		if (isActive()) {
+			super.deactivate();
+			((ModelElement) getModel()).removePropertyChangeListener(this);
+		}
+	}
+	
+	public void propertyChange(PropertyChangeEvent event) {
+		String property = event.getPropertyName();
+		if (Connection.SHOW_SELECTION.equals(property)) 
+			getFigure().setForegroundColor(getSelectionColor());			
+		else if (Connection.HIDE_SELECTION.equals(property))
+			getFigure().setForegroundColor(getColor());			
+		else if (Connection.SET_HIDEN.equals(property))
+				getFigure().setVisible(!((Boolean)event.getNewValue()).booleanValue());
+	}
+	
+	private Connection getCastedModel() {
+		return (Connection) getModel();
+	}
+
+	private Color getColor() {
+		if (getCastedModel().getTarget().getOrmElement() instanceof IPersistentClass) 
+			return ResourceManager.getInstance().getColor(new RGB(210,155,100));
+		else if (getCastedModel().getTarget().getOrmElement() instanceof IDatabaseColumn || getCastedModel().getTarget().getOrmElement() instanceof IDatabaseTable) 
+			return ResourceManager.getInstance().getColor(new RGB(160, 160, 160));
+		else
+			throw new IllegalArgumentException();
+	}
+
+	private Color getSelectionColor() {
+		if (getCastedModel().getTarget().getOrmElement() instanceof IPersistentClass) 
+			return ResourceManager.getInstance().getColor(new RGB(112,161,99));
+		else if (getCastedModel().getTarget().getOrmElement() instanceof IDatabaseColumn || getCastedModel().getTarget().getOrmElement() instanceof IDatabaseTable) 
+			return ResourceManager.getInstance().getColor(new RGB(66,173,247));
+		else
+			throw new IllegalArgumentException();
+	}
+	
+	private class ShapesSelectionEditPolicy extends SelectionEditPolicy {
+
+		protected void hideSelection() {
+			getCastedModel().hideSelection();
+		}
+
+		protected void showSelection() {
+			getCastedModel().showSelection();
+		}
+		
+	}
+
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension id="e" name="XML Editors" point="org.jboss.tools.common.model.ui.xmlEditor">
+      <xmlEditor class="org.jboss.tools.hibernate.ui.xml.editor.Hibernate3CompoundEditor" 
+            contributorClass="org.jboss.tools.common.model.ui.texteditors.MultiPageContributor" 
+            entities="FileHibernate3" 
+            icon="images/xstudio/editors/hibernate_file.gif" 
+            name="Hibernate 3.0 XML Editor">
+      </xmlEditor>
+      <xmlEditor class="org.jboss.tools.hibernate.ui.xml.editor.HibConfig3CompoundEditor" 
+            contributorClass="org.jboss.tools.common.model.ui.texteditors.MultiPageContributor" 
+            entities="FileHibConfig3" 
+            icon="images/xstudio/editors/hibernate_file.gif" 
+            name="Hibernate Configuration 3.0 XML Editor">
+      </xmlEditor>
+   </extension>
+   <extension
+         point="org.jboss.tools.common.model.resourceMapping">
+      <mapping
+          loader="org.jboss.tools.hibernate.xml.ui"
+          priority="2"
+          kind="class"
+          paths=".hibernate.ui.xml."
+      />
+   </extension>
+
+	<extension point="org.jboss.tools.common.model.classes">
+		<xclass id="org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+			class="org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"/>
+	</extension>
+</plugin>
