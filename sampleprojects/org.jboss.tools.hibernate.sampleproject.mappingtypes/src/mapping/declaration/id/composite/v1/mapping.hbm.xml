@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="mapping.declaration.id.composite.v1">
+  <class name="MappedClass" table="CompositeIdMappedClassTable">
+  	<composite-id>
+  		<key-property name="id" type="int" column="ID"/>
+  		<key-many-to-one name="key" class="KeyManyToOneClass" column="KeyID"/>
+  	</composite-id>
+  </class>
+</hibernate-mapping>
