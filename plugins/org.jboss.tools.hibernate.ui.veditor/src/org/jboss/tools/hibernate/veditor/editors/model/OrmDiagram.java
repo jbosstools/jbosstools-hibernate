@@ -317,7 +317,7 @@ public class OrmDiagram extends ModelElement {
 		if (valueType.isCollectionType()) {
 			Collection collection = (Collection)property.getValue();
 			Value component = collection.getElement();
-			if (valueType.isAssociationType()) {//valueType.isComponentType()
+			if (component instanceof Component) {//valueType.isComponentType()
 				OrmShape childShape = (OrmShape)elements.get(((Component)component).getComponentClassName());
 				if(childShape == null) childShape = getOrCreateComponentClass(property);
 				new Connection((Shape)(componentShape.getChildren().get(1)), childShape);
