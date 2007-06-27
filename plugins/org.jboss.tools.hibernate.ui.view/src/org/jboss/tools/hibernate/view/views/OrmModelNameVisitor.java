@@ -19,6 +19,7 @@ import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 
 /**
@@ -474,6 +475,31 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 		StringBuffer name = new StringBuffer();
 //		if (((OrmContentProvider) viewer.getContentProvider()).getTip() == OrmContentProvider.PACKAGE_CLASS_FIELD_CONTENT_PROVIDER) {
 			name.append(clazz.getClassName());
+//		} else {
+//			name.append(clazz.getClassName());
+//		}
+
+		//edit tau 24.04.2006
+		Table table = clazz.getTable(); // upd tau 06.06.2005
+		//IDatabaseTable table = HibernateAutoMappingHelper.getPrivateTable(classMapping); // upd tau 18.04.2005
+		if (table != null) {
+			String tableName = table.getName();
+			if (tableName != null) {
+				//name.append(" (");
+				name.append(POINTER);
+				name.append(tableName);
+				//name.append(")");						
+			}
+		}
+
+		return name.toString();
+	}
+
+	public Object visitPersistentClass(SingleTableSubclass clazz, Object argument) {
+
+		StringBuffer name = new StringBuffer();
+//		if (((OrmContentProvider) viewer.getContentProvider()).getTip() == OrmContentProvider.PACKAGE_CLASS_FIELD_CONTENT_PROVIDER) {
+			name.append(clazz.getEntityName());
 //		} else {
 //			name.append(clazz.getClassName());
 //		}

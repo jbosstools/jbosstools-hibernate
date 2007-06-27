@@ -32,6 +32,7 @@ import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
+import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 
 /**
@@ -104,6 +105,13 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 			} else {
 				return name;
 			}
+		} else if (element instanceof SingleTableSubclass) {
+				String name = (String)ormModelNameVisitor.visitPersistentClass((SingleTableSubclass)element, null);
+				if (name == null) {
+					return "OrmElement";
+				} else {
+					return name;
+				}
 		} else if (element instanceof Property) {
 			String name = (String)ormModelNameVisitor.visitPersistentField((Property)element, null);
 			if (name == null) {
