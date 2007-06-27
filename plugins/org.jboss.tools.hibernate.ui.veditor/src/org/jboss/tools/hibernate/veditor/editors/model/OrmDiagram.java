@@ -33,9 +33,11 @@ import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
+import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.type.EntityType;
@@ -162,11 +164,15 @@ public class OrmDiagram extends ModelElement {
 //			Property property = (Property)ormElement;
 //			elements.put(property.getPersistentClass().getEntityName() + "." + property.getName(), ormShape);
 			elements.put(specialRootClass.getClassName(), ormShape);
+		} else if (ormElement instanceof SingleTableSubclass) {
+			ormShape = new OrmShape(ormElement);
+			shapes.add(ormShape);
+			elements.put(((SingleTableSubclass)ormElement).getEntityName(), ormShape);
 		}
 		return ormShape;
 	}
 	
-	private OrmShape getOrCreatePersistentClass(RootClass persistentClass, Table componentClassDatabaseTable){
+	private OrmShape getOrCreatePersistentClass(PersistentClass persistentClass, Table componentClassDatabaseTable){
 		OrmShape classShape = null;
 		OrmShape shape = null;
 		if(persistentClass != null) {
@@ -203,11 +209,17 @@ public class OrmDiagram extends ModelElement {
 				tableShape = createShape(databaseTable);
 				Iterator iterator = getConfiguration().getClassMappings();
 				while (iterator.hasNext()) {
-					RootClass cls = (RootClass)iterator.next();
-					Table table = cls.getTable();
-					if (tableName.equals(table.getName() + "." + table.getName())) {
-						if (elements.get(cls.getClassName()) == null)
-							getOrCreatePersistentClass(cls, null);
+					Object clazz = iterator.next();
+					if (clazz instanceof RootClass) {
+						RootClass cls = (RootClass)clazz;
+						Table table = cls.getTable();
+						if (tableName.equals(table.getName() + "." + table.getName())) {
+							if (elements.get(cls.getClassName()) == null)
+								getOrCreatePersistentClass(cls, null);
+						}
+					} else if (clazz instanceof SingleTableSubclass) {
+						SingleTableSubclass singleTableSubclass = (SingleTableSubclass)clazz;
+						getOrCreatePersistentClass(singleTableSubclass, null);
 					}
 				}
 //				IPersistentClassMapping persistentClassMappings[] = databaseTable.getPersistentClassMappings();
@@ -305,7 +317,7 @@ public class OrmDiagram extends ModelElement {
 		if (valueType.isCollectionType()) {
 			Collection collection = (Collection)property.getValue();
 			Value component = collection.getElement();
-			if (valueType.isComponentType()) {
+			if (valueType.isAssociationType()) {//valueType.isComponentType()
 				OrmShape childShape = (OrmShape)elements.get(((Component)component).getComponentClassName());
 				if(childShape == null) childShape = getOrCreateComponentClass(property);
 				new Connection((Shape)(componentShape.getChildren().get(1)), childShape);

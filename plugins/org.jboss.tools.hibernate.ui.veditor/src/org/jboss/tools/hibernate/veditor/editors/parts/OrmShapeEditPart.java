@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Display;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
@@ -53,8 +54,8 @@ public class OrmShapeEditPart extends ExtendedShapeEditPart{
 			TitleLabel label = new TitleLabel();
 			String text = "";
 			Object element = getCastedModel().getOrmElement();
-			if (element instanceof RootClass) {
-				text = ormLabelProvider.getText((RootClass)element);
+			if (element instanceof PersistentClass) {
+				text = ormLabelProvider.getText((PersistentClass)element);
 			} else if (element instanceof Table) {
 				Table table = (Table)element; 
 				text = table.getSchema() + "." + table.getName();
@@ -119,7 +120,7 @@ public class OrmShapeEditPart extends ExtendedShapeEditPart{
 	protected Color getBackgroundColor() {
 		Object element = getCastedModel().getOrmElement();
 //R		if (getCastedModel().getOrmElement() instanceof IPersistentClass) 
-		if (element instanceof RootClass || element instanceof Component) 
+		if (element instanceof PersistentClass || element instanceof Component) 
 			return ResourceManager.getInstance().getColor(new RGB(0,0,0));
 //R		else if (getCastedModel().getOrmElement() instanceof IDatabaseTable) 
 		else if (element instanceof Table || element instanceof Property)

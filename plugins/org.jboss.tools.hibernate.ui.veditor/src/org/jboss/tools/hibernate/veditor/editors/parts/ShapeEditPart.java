@@ -36,6 +36,7 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.OneToMany;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
@@ -182,7 +183,7 @@ public class ShapeEditPart extends
 
 	protected Color getColor() {
 		Object element = getCastedModel().getOrmElement();
-		if (element instanceof RootClass || element instanceof Component) 
+		if (element instanceof PersistentClass || element instanceof Component) 
 			return ResourceManager.getInstance().getColor(new RGB(
 					Integer.parseInt(Messages.Colors_PersistentClassR),
 					Integer.parseInt(Messages.Colors_PersistentClassG),
@@ -222,7 +223,7 @@ public class ShapeEditPart extends
 
 	protected Color getSelectionColor() {
 //R		if (getCastedModel().getOrmElement() instanceof IPersistentClass || getCastedModel().getOrmElement() instanceof IPersistentField || getCastedModel().getOrmElement() instanceof IHibernateValueMapping) 
-		if (getCastedModel().getOrmElement() instanceof RootClass || 
+		if (getCastedModel().getOrmElement() instanceof PersistentClass || 
 				getCastedModel().getOrmElement() instanceof Property || 
 				getCastedModel().getOrmElement() instanceof Component || 
 				getCastedModel().getOrmElement() instanceof DependantValue) 

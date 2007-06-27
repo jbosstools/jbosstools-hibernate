@@ -19,6 +19,7 @@ import org.hibernate.mapping.Component;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
 
 /**
@@ -57,6 +58,19 @@ public class OrmShape extends ExtendedShape {
 			}
 
 			Iterator iterator = rootClass.getPropertyIterator();
+			while (iterator.hasNext()) {
+				Property field = (Property)iterator.next();
+				if (field.getValue().getType().isEntityType()) {
+					bodyOrmShape = new ExpandeableShape(field);
+				} else if (field.getValue().getType().isCollectionType()) {
+					bodyOrmShape = new ComponentShape(field);
+				} else {
+					bodyOrmShape = new Shape(field);
+				}
+				shapes.add(bodyOrmShape);
+			}
+		} else if (ormElement instanceof SingleTableSubclass) {
+			Iterator iterator = ((SingleTableSubclass)ormElement).getRootClass().getPropertyIterator();
 			while (iterator.hasNext()) {
 				Property field = (Property)iterator.next();
 				if (field.getValue().getType().isEntityType()) {
