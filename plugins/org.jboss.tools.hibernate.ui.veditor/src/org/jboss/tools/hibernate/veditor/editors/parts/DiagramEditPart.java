@@ -32,6 +32,7 @@ import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
@@ -54,7 +55,7 @@ import org.jboss.tools.hibernate.veditor.editors.model.SpecialRootClass;
  * @author Konstantin Mishin
  *
  */
-class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChangeListener{
+class DiagramEditPart extends OrmEditPart implements PropertyChangeListener{
 	
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.LAYOUT_ROLE,  new ShapesXYLayoutEditPolicy());
@@ -193,6 +194,13 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChang
 		}
 	}
 	
+	public void setToFront(EditPart ep){
+		int index = getChildren().indexOf(ep);
+		if(index == -1) return;
+		if(index != getChildren().size()-1)
+		  reorderChild(ep, getChildren().size()-1);
+	}
+
 	public void deactivate() {
 		if (isActive()) {
 			super.deactivate();

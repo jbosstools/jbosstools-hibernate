@@ -53,7 +53,7 @@ import org.jboss.tools.hibernate.view.views.OrmModelNameVisitor;
 
 
 public class ShapeEditPart extends
-		AbstractGraphicalEditPart implements PropertyChangeListener,  NodeEditPart {
+OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 
 	static protected OrmLabelProvider ormLabelProvider = 
 		new OrmLabelProvider(new OrmModelImageVisitor(), new OrmModelNameVisitor(null));
