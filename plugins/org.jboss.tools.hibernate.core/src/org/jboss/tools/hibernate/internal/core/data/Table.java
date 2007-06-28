@@ -32,7 +32,6 @@ import org.jboss.tools.hibernate.core.IMapping;
 import org.jboss.tools.hibernate.core.IOrmModelVisitor;
 import org.jboss.tools.hibernate.core.IPersistentClassMapping;
 import org.jboss.tools.hibernate.core.OrmCore;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.internal.core.UpdateMappingVisitor;
 import org.jboss.tools.hibernate.internal.core.util.StringUtils;
 
@@ -393,13 +392,13 @@ public class Table extends DataObject implements IDatabaseTable {
 				c.setOwnerTable(this);
 			}// while
 		} catch (Exception ex) {
-			ExceptionHandler.logThrowableError(ex, ex.getMessage().toString());
+			OrmCore.getPluginLog().logError(ex.getMessage(),ex);
 		} finally {
 			try {
 				if (columnsRS != null)
 					columnsRS.close();
 			} catch (SQLException ex) {
-				ExceptionHandler.logThrowableError(ex, ex.getMessage().toString());
+				OrmCore.getPluginLog().logError(ex.getMessage(), ex);
 			}
 		}
         columns.values().retainAll(processedColumns);
@@ -435,24 +434,28 @@ public class Table extends DataObject implements IDatabaseTable {
         // by Nick
         
         // added by Nick 06.06.2005
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logObjectPlugin(">>> Loaded - columns",
-                OrmCore.getDefault().getBundle().getSymbolicName(), this);
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo(">>> Loaded - columns");
+        }
         // by Nick
 		createPrimaryKey(md);
         // added by Nick 06.06.2005
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logObjectPlugin(">>> Loaded - PK",
-                OrmCore.getDefault().getBundle().getSymbolicName(), this);
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) { 
+        	OrmCore.getPluginLog().logInfo(">>> Loaded - PK");
+        }
         // by Nick
 		createForeignKey(imap, md);
         // added by Nick 06.06.2005
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logObjectPlugin(">>> Loaded - FK's",
-                OrmCore.getDefault().getBundle().getSymbolicName(), this);
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) { 
+        	OrmCore.getPluginLog().logInfo(">>> Loaded - FK's" );
+        }
         // by Nick
         //comment by akuzmin 29.06.2005
 		loadIndexes(md);
         // added by Nick 06.06.2005
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logObjectPlugin(">>> Loaded - indices",
-                OrmCore.getDefault().getBundle().getSymbolicName(), this);
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo(">>> Loaded - indices" );
+        }
         // by Nick
 	}
     //by Nick
@@ -490,12 +493,12 @@ public class Table extends DataObject implements IDatabaseTable {
 			    setPrimaryKey(prKey);
         
         }catch(SQLException ex) {
-			ExceptionHandler.logThrowableError(ex, ex.getMessage().toString());
+        	OrmCore.getPluginLog().logError(ex.getMessage(), ex);
 		}finally {
 			try{
 				if (rsPK != null) rsPK.close();
 			}catch(SQLException ex) {
-				ExceptionHandler.logThrowableError(ex, ex.getMessage().toString());
+				OrmCore.getPluginLog().logError(ex.getMessage(), ex);
 			}
 		}
 
@@ -573,12 +576,12 @@ public class Table extends DataObject implements IDatabaseTable {
 			foreignKeys.addAll(FKs.values());
 			
 		}catch(SQLException ex) {
-			ExceptionHandler.logThrowableError(ex, ex.getMessage().toString());
+			OrmCore.getPluginLog().logError(ex.getMessage(), ex);
 		}finally {
 			try{
 				if (rsEK != null) rsEK.close();
 			}catch(SQLException ex) {
-				ExceptionHandler.logThrowableError(ex, ex.getMessage().toString());
+				OrmCore.getPluginLog().logError(ex.getMessage(),ex);
 			}
 		}
 	}
@@ -669,16 +672,16 @@ public class Table extends DataObject implements IDatabaseTable {
 			}
 //			}
 		}catch(SQLException ex) {
-			ExceptionHandler.logThrowableError(ex, ex.getMessage());
+			OrmCore.getPluginLog().logError(ex.getMessage(),ex);
 		} catch (Exception e) {
-			ExceptionHandler.logThrowableError(e, null);			
+			OrmCore.getPluginLog().logError(e);			
 		}finally {
 			try{
 //				if (rs != null) rs.close();
 				if (rsInd != null) rsInd.close();
 				if (WSps != null) WSps.close();
 			}catch(SQLException ex) {
-				ExceptionHandler.logThrowableError(ex, ex.getMessage());
+				OrmCore.getPluginLog().logError(ex.getMessage(),ex);
 			}
 		}
 		
@@ -757,12 +760,12 @@ public class Table extends DataObject implements IDatabaseTable {
 				if("VIEW".equals(rs.getString("TABLE_TYPE"))) view=true;
 			}
 		} catch (SQLException ex){
-			ExceptionHandler.logThrowableError(ex, ex.getMessage().toString());
+			OrmCore.getPluginLog().logError(ex.getMessage(), ex);
 		}finally {
 			try{ 
 				if(rs!=null) rs.close();
 			}catch(SQLException ex) {
-				ExceptionHandler.logThrowableError(ex, ex.getMessage().toString());
+				OrmCore.getPluginLog().logError( ex.getMessage(), ex);
 			}
 		}
 	}

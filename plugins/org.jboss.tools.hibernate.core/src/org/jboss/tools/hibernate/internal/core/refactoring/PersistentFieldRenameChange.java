@@ -24,8 +24,6 @@ import org.jboss.tools.hibernate.core.IOrmProject;
 import org.jboss.tools.hibernate.core.IPersistentClass;
 import org.jboss.tools.hibernate.core.IPersistentField;
 import org.jboss.tools.hibernate.core.OrmCore;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
-
 
 public class PersistentFieldRenameChange extends Change {
 	
@@ -82,7 +80,7 @@ public class PersistentFieldRenameChange extends Change {
 			
 		} catch(Exception ex) {
 			pm.setCanceled(true);
-			ExceptionHandler.logThrowableError(ex,BUNDLE.getString("PersistentFieldRenameChange.renamePersistentField")+" "+field);
+			OrmCore.getPluginLog().logError(BUNDLE.getString("PersistentFieldRenameChange.renamePersistentField")+" "+field,ex);
 		}
 		return null;
 	}

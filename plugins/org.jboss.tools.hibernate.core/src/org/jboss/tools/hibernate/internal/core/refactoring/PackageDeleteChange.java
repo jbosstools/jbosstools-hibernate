@@ -27,8 +27,6 @@ import org.jboss.tools.hibernate.core.IMapping;
 import org.jboss.tools.hibernate.core.IOrmProject;
 import org.jboss.tools.hibernate.core.IPersistentClass;
 import org.jboss.tools.hibernate.core.OrmCore;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
-
 
 /**
  * @author Yan
@@ -103,7 +101,7 @@ public class PackageDeleteChange extends CompositeChange {
 
 	public Change perform(IProgressMonitor pm) throws CoreException {
 		Change ch=super.perform(pm);
-		ExceptionHandler.logInfo("========== PERFORM PACKAGE DELETE "+this);
+		OrmCore.getPluginLog().logInfo("========== PERFORM PACKAGE DELETE "+this);
 		if (mappingSet!=null) {
 			try {
 				for(Iterator it=mappingSet.iterator(); it.hasNext();) {
@@ -112,7 +110,7 @@ public class PackageDeleteChange extends CompositeChange {
 				}
 			} catch (Exception e) {
 				pm.setCanceled(true);
-				ExceptionHandler.logThrowableWarning(e,BUNDLE.getString("PackageDeleteChange.createChangeError")+" "+packageName);
+				OrmCore.getPluginLog().logError(BUNDLE.getString("PackageDeleteChange.createChangeError")+" "+packageName,e);
 			}
 		}
 		return ch;

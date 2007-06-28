@@ -33,8 +33,8 @@ import org.jboss.tools.hibernate.core.IPersistentClassMapping;
 import org.jboss.tools.hibernate.core.IPersistentField;
 import org.jboss.tools.hibernate.core.IPersistentFieldMapping;
 import org.jboss.tools.hibernate.core.IPersistentValueMapping;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.internal.core.hibernate.validation.HibernateValidationProblem;
+import org.jboss.tools.hibernate.view.ViewPlugin;
 
 
 /**
@@ -71,7 +71,7 @@ public class LightWeightDecoratorVisitor implements IOrmModelVisitor {
 //					} 
 //				}			
 			} catch (CoreException e) {
-				ExceptionHandler.logThrowableError(e, null);
+				ViewPlugin.getPluginLog().logError(e);			
 			}
 		}
 
@@ -136,7 +136,7 @@ public class LightWeightDecoratorVisitor implements IOrmModelVisitor {
 									}
 								}
 							} catch (CoreException e) {
-								ExceptionHandler.logThrowableError(e, null);
+								ViewPlugin.getPluginLog().logError(e);			
 							}							
 						}
 					}
@@ -168,7 +168,7 @@ public class LightWeightDecoratorVisitor implements IOrmModelVisitor {
 						HibernateValidationProblem.MARKER_TYPE, true,
 						IResource.DEPTH_ZERO);
 			} catch (CoreException e) {
-				ExceptionHandler.logThrowableError(e, null);
+				ViewPlugin.getPluginLog().logError(e);			
 			}
 		}
 		
@@ -219,7 +219,7 @@ public class LightWeightDecoratorVisitor implements IOrmModelVisitor {
 						HibernateValidationProblem.MARKER_TYPE, true,
 						IResource.DEPTH_ZERO);
 			} catch (CoreException e) {
-				ExceptionHandler.logThrowableError(e, null);
+				ViewPlugin.getPluginLog().logError(e);			
 			}
 		}
 		
@@ -330,7 +330,7 @@ public class LightWeightDecoratorVisitor implements IOrmModelVisitor {
 						}
 					}
 				} catch (CoreException e) {
-					ExceptionHandler.logThrowableError(e, null);
+					ViewPlugin.getPluginLog().logError(e);			
 				}
 			}
 		}

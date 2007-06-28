@@ -12,7 +12,7 @@ package org.jboss.tools.hibernate.internal.core.hibernate.descriptors;
 
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.jboss.tools.hibernate.core.IPersistentField;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
+import org.jboss.tools.hibernate.core.OrmCore;
 import org.jboss.tools.hibernate.internal.core.properties.DBTablePropertyDescriptor;
 import org.jboss.tools.hibernate.internal.core.properties.PropertyDescriptorsHolder;
 
@@ -41,10 +41,8 @@ public class CollectionMappingDescriptorsHolderWithTable extends
 		pd.setDescription(Messages.CollectionMappingDescriptorsHolderWithTable_CollectionTableD);
 		pd.setCategory(GENERAL_CATEGORY);
 		addPropertyDescriptor(pd);
-		}
-		else 
-		{
-			ExceptionHandler.logInfo("Field "+pfm.getName()+" hasn't owner class");	 //$NON-NLS-1$ //$NON-NLS-2$
+		} else {
+			OrmCore.getPluginLog().logInfo("Field "+pfm.getName()+" hasn't owner class");	 //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 	}

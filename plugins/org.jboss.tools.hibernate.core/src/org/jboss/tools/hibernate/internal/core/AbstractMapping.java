@@ -47,7 +47,6 @@ import org.jboss.tools.hibernate.core.IPersistentClass;
 import org.jboss.tools.hibernate.core.IPersistentClassMapping;
 import org.jboss.tools.hibernate.core.OrmCore;
 import org.jboss.tools.hibernate.core.OrmProgressMonitor;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.core.exception.NestableRuntimeException;
 import org.jboss.tools.hibernate.core.hibernate.ICollectionMapping;
 import org.jboss.tools.hibernate.core.hibernate.IHibernateKeyMapping;
@@ -163,10 +162,16 @@ public abstract class AbstractMapping extends AbstractOrmElement implements IMap
                 if (mapping != null)
                 {
                     try {
-                		if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("SAVE() start -> mapping = " + mapping.getName());                    	
+                		if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+                			OrmCore.getPluginLog().logInfo("SAVE() start -> mapping = " + mapping.getName());                    	
+                		}
+                		
                         mapping.getConfiguration().save();
                         mapping.getProperties().save();
-                		if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("SAVE() end -> mapping = " + mapping.getName());                        
+                        
+                		if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+                			OrmCore.getPluginLog().logInfo("SAVE() end -> mapping = " + mapping.getName());                        
+                		}
                     } catch (IOException e) {
                         throw new NestableRuntimeException(e);
                     }
@@ -248,9 +253,9 @@ public abstract class AbstractMapping extends AbstractOrmElement implements IMap
 			try {
 				reload(true);
 			} catch (IOException e) {
-				ExceptionHandler.logThrowableError(e, e.getMessage().toString());
+				OrmCore.getPluginLog().logError(e.getMessage(), e);
 			} catch (CoreException e) {
-				ExceptionHandler.logThrowableError(e, e.getMessage().toString());
+				OrmCore.getPluginLog().logError(e.getMessage(), e);
 			}			
 		}
 		return (IDatabaseSchema[])schemas.values().toArray(SCHEMAS);
@@ -265,9 +270,9 @@ public abstract class AbstractMapping extends AbstractOrmElement implements IMap
 			try {
 				reload(true);
 			} catch (IOException e) {
-				ExceptionHandler.logThrowableError(e, e.getMessage().toString());
+				OrmCore.getPluginLog().logError(e.getMessage(), e);
 			} catch (CoreException e) {
-				ExceptionHandler.logThrowableError(e, e.getMessage().toString());
+				OrmCore.getPluginLog().logError(e.getMessage(), e);
 			}			
 		}
 		return (IPackage[])packages.values().toArray(PACKAGES);
@@ -312,7 +317,7 @@ public abstract class AbstractMapping extends AbstractOrmElement implements IMap
 						+ fullyQualifiedName;
 			}
         } catch (CoreException e) {
-            ExceptionHandler.logThrowableError(e,e.getMessage());
+        	OrmCore.getPluginLog().logError(e.getMessage(),e);
         }
 
         // by Nick
@@ -438,9 +443,7 @@ public abstract class AbstractMapping extends AbstractOrmElement implements IMap
 				}
 
 			} catch (CoreException e) {
-				ExceptionHandler.logThrowableError(e,
-						"Exception adding persistent classes");
-				// OrmCore.log(e,"Exception adding persistent classes");
+				OrmCore.getPluginLog().logError("Exception adding persistent classes",e);
 			}
 			monitor.worked();
 		}
@@ -530,8 +533,7 @@ public abstract class AbstractMapping extends AbstractOrmElement implements IMap
 					}
 					monitor.worked();
 				} catch (Exception e) {
-					ExceptionHandler.logThrowableError(e, e.getMessage()
-							.toString());
+					OrmCore.getPluginLog().logError(e.getMessage(),e);
 				}
 			}
 
@@ -543,26 +545,20 @@ public abstract class AbstractMapping extends AbstractOrmElement implements IMap
 					res.fillTableFromDBase(this, md, saveNativeSQLTypes);
 
 					// added by Nick 06.06.2005
-					if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE)
-						ExceptionHandler
-								.logObjectPlugin(
+					if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE) {
+						OrmCore.getPluginLog().logInfo(
 										String.valueOf(i + 1)
 												+ " tables processed. Last processed table was: "
-												+ res.getName(), OrmCore
-												.getDefault().getBundle()
-												.getSymbolicName(), this);
+												+ res.getName());
+					}
 					monitor.worked();
 					// by Nick
 				} catch (Exception e) {
-					// changed by Nick 01.06.2005
-					ExceptionHandler.logThrowableError(e, e.getMessage());
-					// ExceptionHandler.log(e, e.getMessage().toString());
-					// by Nick
+					OrmCore.getPluginLog().logError(e.getMessage(),e);
 				}
 			}
 		} catch (SQLException e1) {
-			ExceptionHandler.logThrowableError(e1,
-					"Exception retreiving metadata");
+			OrmCore.getPluginLog().logError("Exception retreiving metadata",e1);
 		}
 		OrmProgressMonitor.getMonitor().setTaskName("Creating mappings");
 

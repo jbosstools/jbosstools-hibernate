@@ -45,7 +45,7 @@ public class ExceptionHandler {
 			IStatus.ERROR, 
 			message, 
 			e); 
-		OrmCore.log(status);
+		OrmCore.getPluginLog().logError(message,e);
         return status; 
 	}
 	
@@ -62,7 +62,6 @@ public class ExceptionHandler {
 			IStatus.WARNING, 
 			message, 
 			e); 
-		OrmCore.log(status);
         return status;
 	}
 	
@@ -74,7 +73,6 @@ public class ExceptionHandler {
 			IStatus.INFO, 
 			newMessage, 
 			null); 
-		OrmCore.log(status);
 		return status; // add tau 31.03.2005		
 	}
 	
@@ -86,7 +84,6 @@ public class ExceptionHandler {
 			IStatus.INFO, 
 			newMessage + " || " + object, 
 			null);
-		OrmCore.log(status);
 		return status;
 	}		
 
@@ -139,7 +136,6 @@ public class ExceptionHandler {
 
     protected void performCoreException(CoreException e, Shell shell, String title, String message) {
 		setLastException(e);
-		OrmCore.log(e, e.getStatus().getSeverity());
         IStatus status = e.getStatus();
         if (status != null) {
             ErrorDialog.openError(shell, title, message, status);
@@ -159,7 +155,6 @@ public class ExceptionHandler {
         	performException((Exception) target, shell, title, message, severity);        	
         } else {
 			setLastException(e);
-			OrmCore.log(e, severity);
             if (e.getMessage() != null && e.getMessage().length() > 0) {
                 displayMessageDialog(e, shell, title, message);
             } else {
@@ -171,7 +166,6 @@ public class ExceptionHandler {
     
     protected void performException(Exception e, Shell shell, String title, String message, int severity) {
 		setLastException(e);
-		OrmCore.log(e, severity);
 		displayMessageDialog(e, shell, title, message);
     }
 

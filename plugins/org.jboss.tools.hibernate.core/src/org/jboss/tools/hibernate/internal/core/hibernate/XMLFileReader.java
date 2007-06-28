@@ -37,7 +37,6 @@ import org.jboss.tools.hibernate.core.IPersistentClass;
 import org.jboss.tools.hibernate.core.IPersistentClassMapping;
 import org.jboss.tools.hibernate.core.IPersistentField;
 import org.jboss.tools.hibernate.core.OrmCore;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.core.hibernate.IHibernateClassMapping;
 import org.jboss.tools.hibernate.core.hibernate.IHibernateValueMapping;
 import org.jboss.tools.hibernate.core.hibernate.Type;
@@ -108,7 +107,9 @@ public class XMLFileReader extends BaseResourceReaderWriter{
 			InputStream content = ((IFile)resource).getContents(true);
 			org.dom4j.Document doc = readDocument(content);
 			rootBinder(doc, storage, Collections.EMPTY_MAP);
-			if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo(">> mapping loaded " + resource.getFullPath());
+			if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+				OrmCore.getPluginLog().logInfo(">> mapping loaded " + resource.getFullPath());
+			}
 		}
 	}
 
@@ -1043,7 +1044,7 @@ public class XMLFileReader extends BaseResourceReaderWriter{
 				if (propertyName == null) {
 					bindSimpleValue(subnode, id, false,	OrmConfiguration.DEFAULT_IDENTIFIER_COLUMN_NAME, storage);
 					if (!id.isTypeSpecified()) {
-						ExceptionHandler.logInfo("must specify an identifier type: " + persistentClass.getEntityName());
+						OrmCore.getPluginLog().logInfo("must specify an identifier type: " + persistentClass.getEntityName());
 					}
 				} else {
 					String className = persistentClass.getClassName();
@@ -1222,7 +1223,7 @@ public class XMLFileReader extends BaseResourceReaderWriter{
 			if (batchNode != null)
 				persistentClass.setBatchSize(Integer.parseInt(batchNode.getValue()));
 		} catch (NumberFormatException e) {
-			ExceptionHandler.logInfo("batch-size is not integer: " + batchNode.getValue());
+			OrmCore.getPluginLog().logError("batch-size is not integer: " + batchNode.getValue());
 		}
 		//XXX Slava(5) load all attributes and child elements such as (id,
 		// composite-id, discriminator etc.)
@@ -1841,10 +1842,10 @@ public class XMLFileReader extends BaseResourceReaderWriter{
 			}
 		} else {
 			if (node.elementIterator("column").hasNext()) {
-					ExceptionHandler.logInfo("column attribute may not be used together with <column> subelement in "+resource.getProjectRelativePath().toString() + ": " +node.getPath());
+				OrmCore.getPluginLog().logInfo("column attribute may not be used together with <column> subelement in "+resource.getProjectRelativePath().toString() + ": " +node.getPath());
 			}
 			if (node.elementIterator("formula").hasNext()) {
-					ExceptionHandler.logInfo("column attribute may not be used together with <formula> subelement in "+resource.getProjectRelativePath().toString() + ": " +node.getPath());
+				OrmCore.getPluginLog().logInfo("column attribute may not be used together with <formula> subelement in "+resource.getProjectRelativePath().toString() + ": " +node.getPath());
 			}
 
 			String columnname = columnAttribute.getValue();
@@ -2151,7 +2152,7 @@ public class XMLFileReader extends BaseResourceReaderWriter{
 		Attribute attrib = element.attribute( "callable" );
 		if ( attrib != null && "true".equals( attrib.getValue() ) ) {
 			if ( !supportsCallable ) {
-				ExceptionHandler.logInfo("callable attribute not supported yet!" );
+				OrmCore.getPluginLog().logInfo("callable attribute not supported yet!" );
 			}
 			return true;
 		}
@@ -2217,7 +2218,7 @@ public class XMLFileReader extends BaseResourceReaderWriter{
 			return OrmConfiguration.CHECK_NONE;
 		}
 		else {
-			ExceptionHandler.logInfo("Unsupported optimistic-lock style: " + olMode );
+			OrmCore.getPluginLog().logInfo("Unsupported optimistic-lock style: " + olMode );
 			return OrmConfiguration.CHECK_VERSION;			
 		}
 	}
@@ -2241,8 +2242,9 @@ public class XMLFileReader extends BaseResourceReaderWriter{
 			Element param = (Element)params.next();
 			String paramName = param.attributeValue("name");
 			String paramType = param.attributeValue("type");
-			if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) 
-				ExceptionHandler.logInfo("adding filter parameter : " + paramName + " -> " + paramType);
+			if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE )  {
+				OrmCore.getPluginLog().logInfo("adding filter parameter : " + paramName + " -> " + paramType);
+			}
 			// added by yk 19.10.2005
 			parameters.setProperty(paramName, paramType);
 			// added by yk 19.10.2005.

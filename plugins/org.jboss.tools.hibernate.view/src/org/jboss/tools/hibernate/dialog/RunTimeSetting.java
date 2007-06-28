@@ -22,8 +22,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.jboss.tools.hibernate.core.IMapping;
 import org.jboss.tools.hibernate.core.IMappingProperties;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.internal.core.properties.PropertySheetPageWithDescription;
+import org.jboss.tools.hibernate.view.ViewPlugin;
 
 /**
  * @author Gavrs
@@ -69,7 +69,7 @@ public class RunTimeSetting extends Dialog{
 	    try {
 		    mapProperty.reload();
 		} catch (Exception e) {
-			ExceptionHandler.handle(e, getShell(), null, null);
+			ViewPlugin.getPluginLog().logError(e);
 		}
 		// #added#
 		if(mapProperty!=null)
@@ -127,9 +127,9 @@ public class RunTimeSetting extends Dialog{
     		//jLogProp.save();
     		//log4JProp.save();
     		mapProperty.save();
-        	}catch(Exception  e){
-				ExceptionHandler.handle(e, getShell(), null, null);
-        		}	
+        	}catch(Exception  e) {
+    			ViewPlugin.getPluginLog().logError(e);
+        	}	
 	super.okPressed();
     }
    

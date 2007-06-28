@@ -48,7 +48,6 @@ import org.jboss.tools.hibernate.core.IPersistentFieldMapping;
 import org.jboss.tools.hibernate.core.IPersistentValueMapping;
 import org.jboss.tools.hibernate.core.OrmCore;
 import org.jboss.tools.hibernate.core.OrmProgressMonitor;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.core.hibernate.ICollectionMapping;
 import org.jboss.tools.hibernate.core.hibernate.IHibernateKeyMapping;
 import org.jboss.tools.hibernate.core.hibernate.IManyToManyMapping;
@@ -852,7 +851,9 @@ public class HibernateAutoMapping implements IAutoMappingService {
 		
         OrmProgressMonitor monitor = new OrmProgressMonitor(OrmProgressMonitor.getMonitor());
         
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("Starting reversing job. Have "+tables.length+" tables to reverse");
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo("Starting reversing job. Have "+tables.length+" tables to reverse");
+        }
         
         hamInit(settings);
 		
@@ -868,7 +869,7 @@ public class HibernateAutoMapping implements IAutoMappingService {
         try {
             thePackage = hamConfig.getPojoRenderer().getOrCreatePackage(config.getProject(),defaultPackageName);
         } catch (CoreException e) {
-            ExceptionHandler.logThrowableError(e,"Exception creating package");
+        	OrmCore.getPluginLog().logError("Exception creating package",e);
             return;
         }
  
@@ -894,7 +895,7 @@ public class HibernateAutoMapping implements IAutoMappingService {
                         try {
                             wc = unit.getWorkingCopy(null);
                         } catch (JavaModelException e) {
-                            ExceptionHandler.logThrowableError(e,e.getMessage());
+                        	OrmCore.getPluginLog().logError(e.getMessage(),e);
                         }
                     //by Nick
                     
@@ -903,13 +904,10 @@ public class HibernateAutoMapping implements IAutoMappingService {
                     
                     if (wc != null)
                     {
-                        try
-                        {
+                        try {
                             wc.discardWorkingCopy();
-                        }
-                        catch (JavaModelException e)
-                        {
-                            ExceptionHandler.logThrowableError(e,e.getMessage());
+                        } catch (JavaModelException e) {
+                        	OrmCore.getPluginLog().logError(e.getMessage(),e);
                         }
                     }
                     
@@ -933,8 +931,9 @@ public class HibernateAutoMapping implements IAutoMappingService {
         if (monitor != null)
             monitor.worked(5);
         
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logObjectPlugin("Package analysis finished. "+accessibleUnits.size()+" acceptable CU's found",
-                OrmCore.getDefault().getBundle().getSymbolicName(), this);
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo("Package analysis finished. "+accessibleUnits.size()+" acceptable CU's found");
+        }
         
         IPackageFragment defaultPackage = thePackage[0];
         
@@ -957,8 +956,9 @@ public class HibernateAutoMapping implements IAutoMappingService {
 		IDatabaseTable[] persistentTables = schemaProcessor.getPersistentTables();
 		final IPersistentClass[] pcArray = new IPersistentClass[persistentTables.length];
 
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logObjectPlugin("Tables processed. Found "+persistentTables.length+" persistent classes",
-                OrmCore.getDefault().getBundle().getSymbolicName(), this);
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo( "Tables processed. Found "+persistentTables.length+" persistent classes");
+        }
 
         
         //process found persistent tables
@@ -1033,8 +1033,9 @@ public class HibernateAutoMapping implements IAutoMappingService {
         createCUOperation.setOrmMonitor(monitor);
         sourcePropertyCreation.setJobPart(30);
         sourcePropertyCreation.setOrmMonitor(monitor);
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logObjectPlugin("New CU's created",
-                OrmCore.getDefault().getBundle().getSymbolicName(), this);
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo("New CU's created" );
+        }
 
         IProgressMonitor theMonitor = OrmProgressMonitor.getMonitor();
         theMonitor.setTaskName("Creating source files");
@@ -1059,12 +1060,14 @@ public class HibernateAutoMapping implements IAutoMappingService {
 		//
         
 
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logObjectPlugin("Persistent classes refreshed and have their identity filled",
-                OrmCore.getDefault().getBundle().getSymbolicName(), this);
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo("Persistent classes refreshed and have their identity filled");
+        }
 
         
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logObjectPlugin("Starting reversing/automapping",
-                OrmCore.getDefault().getBundle().getSymbolicName(), this);
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo("Starting reversing/automapping");
+        }
         
         ColumnMergingVisitor visitor = new ColumnMergingVisitor(mapping);
         MappingsFactory valueFactory = MappingsFactory.getFullFactory(hamConfig,visitor);
@@ -1319,9 +1322,10 @@ public class HibernateAutoMapping implements IAutoMappingService {
        
         //valueFactory.process();
 
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logObjectPlugin("Creating source properties in CU's",
-                OrmCore.getDefault().getBundle().getSymbolicName(), this);
-        
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo("Creating source properties in CU's");
+        }
+
         //create composite id compilation units
 
         for (int i = 0; i < pcArray.length; i++) {
@@ -1725,8 +1729,9 @@ public class HibernateAutoMapping implements IAutoMappingService {
                 if (monitor != null)
                     monitor.worked();
                 
-                if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logObjectPlugin("Class "+pc.getName()+" processed",
-                        OrmCore.getDefault().getBundle().getSymbolicName(), this);
+                if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+                	OrmCore.getPluginLog().logInfo("Class "+pc.getName()+" processed");
+                }
             }
         }
         
@@ -1768,19 +1773,22 @@ public class HibernateAutoMapping implements IAutoMappingService {
         
         MappingsFactory valueFactory = MappingsFactory.getFullFactory(hamConfig, new ColumnBuilderVisitor(mapping));
 
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logObjectPlugin("Starting automapping... Have "+classes.length+" to process",
-                OrmCore.getDefault().getBundle().getSymbolicName(), this);
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) { 
+        	OrmCore.getPluginLog().logInfo("Starting automapping... Have "+classes.length+" to process");
+        }
 
         processPCs(classes,settings,valueFactory,monitor,true);
         
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logObjectPlugin("Persistent fields analyzed. Now go and process them",
-                OrmCore.getDefault().getBundle().getSymbolicName(), this);
-        
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo("Persistent fields analyzed. Now go and process them");
+        }
+
         valueFactory.process();
 
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logObjectPlugin("Persistent fields fully processed. Running finalizing jobs",
-                OrmCore.getDefault().getBundle().getSymbolicName(), this);
-        
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo("Persistent fields fully processed. Running finalizing jobs");
+        }
+
         if (sourcePropertyCreation != null)
         {
             sourcePropertyCreation.setJobPart(5);
@@ -1793,9 +1801,10 @@ public class HibernateAutoMapping implements IAutoMappingService {
             		new SubProgressMonitor(OrmProgressMonitor.getMonitor(),5));            
         }
         
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logObjectPlugin("Automapping finished",
-                OrmCore.getDefault().getBundle().getSymbolicName(), this);
-
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo("Automapping finished");
+        }
+        
         processedPCs = null;
     }
     

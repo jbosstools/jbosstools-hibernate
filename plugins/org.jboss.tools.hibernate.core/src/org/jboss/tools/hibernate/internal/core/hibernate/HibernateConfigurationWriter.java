@@ -22,7 +22,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.hibernate.core.IMappingStorage;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
+import org.jboss.tools.hibernate.core.OrmCore;
 import org.jboss.tools.hibernate.core.exception.NestableRuntimeException;
 import org.jboss.tools.hibernate.internal.core.BaseResourceReaderWriter;
 import org.jboss.tools.hibernate.internal.core.util.ScanProject;
@@ -53,7 +53,7 @@ public class HibernateConfigurationWriter extends BaseResourceReaderWriter {
 					doc = readDocument(input);
 				}
 			} catch (Exception ex){
-				ExceptionHandler.logThrowableError(ex,null);
+				OrmCore.getPluginLog().logError(ex);
 			}
 			if(doc == null) doc = createDocument();
 			mergeHibernateConfiguration(doc, flagSaveMappingStorages);
@@ -211,7 +211,7 @@ public class HibernateConfigurationWriter extends BaseResourceReaderWriter {
 				}
 			// #added# by Konstantin Mishin on 2005/08/26 fixed for ORMIISTUD-681
 			} catch (Exception e){
-				ExceptionHandler.logThrowableWarning(e, null);
+				OrmCore.getPluginLog().logError(e);
 			}
 			// #added#
 		}

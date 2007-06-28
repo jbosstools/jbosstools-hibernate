@@ -10,18 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.hibernate.view.views;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.ResourceBundle;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.hibernate.mapping.Column;
-import org.jboss.tools.hibernate.view.ViewPlugin;
 
 
 /**

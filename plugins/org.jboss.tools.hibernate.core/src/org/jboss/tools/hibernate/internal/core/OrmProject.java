@@ -44,7 +44,6 @@ import org.jboss.tools.hibernate.core.IOrmProjectChangedListener;
 import org.jboss.tools.hibernate.core.OrmCore;
 import org.jboss.tools.hibernate.core.OrmProgressMonitor;
 import org.jboss.tools.hibernate.core.OrmProjectEvent;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.core.exception.NestableRuntimeException;
 import org.jboss.tools.hibernate.internal.core.hibernate.HibernateMapping;
 import org.jboss.tools.hibernate.internal.core.properties.PropertySourceWrapper;
@@ -129,11 +128,13 @@ public class OrmProject extends AbstractOrmElement implements IOrmProject{
 		
 		try {
 			synchronize();
-			if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE) ExceptionHandler.logInfo(project.getName()+"->.loadMappins()");
+			if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE) {
+				OrmCore.getPluginLog().logInfo(project.getName()+"->.loadMappins()");
+			}
 			flagLoadMappings = true;
 			scanHibernateMappings();
 		} catch (Exception e) {
-			ExceptionHandler.logThrowableError(e, null);
+			OrmCore.getPluginLog().logError(e);
 		}		
 		
 
@@ -208,7 +209,7 @@ public class OrmProject extends AbstractOrmElement implements IOrmProject{
                 mappings.put(mapping.getName(), mapping);
 
             } catch(Exception ex){
-				ExceptionHandler.logThrowableError(ex,"loading hibernate config");
+            	OrmCore.getPluginLog().logError("loading hibernate config",ex);
 			}
             monitor.worked();
 		}
@@ -380,7 +381,7 @@ public class OrmProject extends AbstractOrmElement implements IOrmProject{
 				((OrmConfiguration)ormConfiguration).setPropertyDescriptorsHolder(OrmPropertyDescriptorsHolder.getInstance(this));				
 				flagLoadOrmConfiguration = true;
 	        } catch(Exception e){
-	            ExceptionHandler.logThrowableError(e, null);
+	        	OrmCore.getPluginLog().logError(e);
 	        }
 		}		
 		
@@ -420,8 +421,9 @@ public class OrmProject extends AbstractOrmElement implements IOrmProject{
 	 * @see org.jboss.tools.hibernate.core.IOrmProject#addOrmModelEventListener(org.jboss.tools.hibernate.core.IOrmProjectListener)
 	 */
 	public void addChangedListener(IOrmProjectChangedListener listener) {
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) 
-            ExceptionHandler.logInfo("OrmProject.addChangedListener: " + listener);
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo("OrmProject.addChangedListener: " + listener);
+        }
         
         // tau 05.07.2005
 		//listeners.put(listener,listener);
@@ -435,7 +437,9 @@ public class OrmProject extends AbstractOrmElement implements IOrmProject{
 	
     // tau 09.11.2005
 	public void addBeforeChangeListener(IOrmProjectBeforeChangeListener listener) {
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("OrmProject.addBeforeListener: " + listener);
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo("OrmProject.addBeforeListener: " + listener);
+        }
 		Map<IOrmProjectBeforeChangeListener,IOrmProjectBeforeChangeListener> synchro_map = Collections.synchronizedMap(projectBeforeChangeListeners);
 		synchronized(synchro_map)
 		{
@@ -449,7 +453,9 @@ public class OrmProject extends AbstractOrmElement implements IOrmProject{
 	 * @see org.jboss.tools.hibernate.core.IOrmProject#removeOrmModelEventListener(org.jboss.tools.hibernate.core.IOrmProjectListener)
 	 */
 	public void removeChangedListener(IOrmProjectChangedListener listener) {
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE )  ExceptionHandler.logInfo("OrmProject.removeChangedListener: " + listener);
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE )  {
+        	OrmCore.getPluginLog().logInfo("OrmProject.removeChangedListener: " + listener);
+        }
         // tau 05.07.2005        
 		//listeners.remove(listener);
 		Map synchro_map = Collections.synchronizedMap(projectChangedListeners);
@@ -461,7 +467,9 @@ public class OrmProject extends AbstractOrmElement implements IOrmProject{
 	}
 	
 	public void removeBeforeChangeListener1(IOrmProjectBeforeChangeListener listener) {
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("OrmProject.removeBeforeListener: " + listener);
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) { 
+        	OrmCore.getPluginLog().logInfo("OrmProject.removeBeforeListener: " + listener);
+        }
 		Map synchro_map = Collections.synchronizedMap(projectBeforeChangeListeners);
 		synchronized(synchro_map)
 		{
@@ -476,7 +484,9 @@ public class OrmProject extends AbstractOrmElement implements IOrmProject{
 	}
 	
 	protected void fireOrmProjecChangedEvent(final OrmProjectEvent event, boolean flagUpdate){
-		if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("fireOrmProjecChangedtEvent() START, Source="+event.getSource().toString());		
+		if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+			OrmCore.getPluginLog().logInfo("fireOrmProjecChangedtEvent() START, Source="+event.getSource().toString());		
+		}
 		Map synchro_map = Collections.synchronizedMap(projectChangedListeners);
 		Set cl = synchro_map.keySet();
 		int i = 0;
@@ -486,8 +496,11 @@ public class OrmProject extends AbstractOrmElement implements IOrmProject{
 			while(it.hasNext()){
 				IOrmProjectChangedListener listener = (IOrmProjectChangedListener)it.next(); // edit 04.08.2005
 				i++;
-				if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("OrmProject.fireOrmProjecChangedtEvent()-> listener-" 
-																									+ i + " (" + listener.toString() + ")");
+				if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+					OrmCore.getPluginLog().logInfo("OrmProject.fireOrmProjecChangedtEvent()-> listener-" 
+							+ i + " (" + listener.toString() + ")");
+				}
+				
 				listener.projectChanged(event, flagUpdate);
 				
 											/* del tau 04.05.2008
@@ -506,7 +519,9 @@ public class OrmProject extends AbstractOrmElement implements IOrmProject{
 	
 	protected void NOfireOrmProjecBeforeChangedtEvent(final OrmProjectEvent event){
 		
-		if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("OrmProject.fireOrmProjecBeforeChangedtEvent() START, " + "Source="+event.getSource().toString());		
+		if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+			OrmCore.getPluginLog().logInfo("OrmProject.fireOrmProjecBeforeChangedtEvent() START, " + "Source="+event.getSource().toString());		
+		}
 		
 		Map<IOrmProjectBeforeChangeListener,IOrmProjectBeforeChangeListener> synchro_map = Collections.synchronizedMap(projectBeforeChangeListeners);
 		Set cl = synchro_map.keySet();
@@ -517,8 +532,9 @@ public class OrmProject extends AbstractOrmElement implements IOrmProject{
 				IOrmProjectBeforeChangeListener listener = (IOrmProjectBeforeChangeListener)it.next(); // edit 04.08.2005
 				
 				i++;
-				if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("OrmProject.fireOrmProjecBeforeChangedtEvent()-> listener-" 
-						+ i + " (" + listener.toString() + ")");				
+				if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+					OrmCore.getPluginLog().logInfo("OrmProject.fireOrmProjecBeforeChangedtEvent()-> listener-"					+ i + " (" + listener.toString() + ")");
+				}
 				listener.projectBeforeChange(event);
 			}
 		}		
@@ -549,8 +565,9 @@ public class OrmProject extends AbstractOrmElement implements IOrmProject{
     //added By Nick 19.05.2005
     public void resourcesChanged()
     {
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE )
-			ExceptionHandler.logInfo("OrmProject.resourceChanged");
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo("OrmProject.resourceChanged");
+        }
 		
         if (!initialized) return;
         
@@ -562,7 +579,7 @@ public class OrmProject extends AbstractOrmElement implements IOrmProject{
 			scanHibernateMappings();
 			
         } catch (Exception e1) {
-            ExceptionHandler.logThrowableError(e1,e1.getMessage());
+        	OrmCore.getPluginLog().logError(e1.getMessage(),e1);
         }
         IMapping[] mappings = this.getMappings();
         for (int i = 0; i < mappings.length; i++) {
@@ -581,11 +598,12 @@ public class OrmProject extends AbstractOrmElement implements IOrmProject{
             {
                 if (resource.getResource() != null && resource.getResource().isLocal(IResource.DEPTH_ZERO) && resource.resourceChanged())
                     try {
-				        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) 
-	                        ExceptionHandler.logInfo("Reloading resource: " + resource);
+				        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+				        	OrmCore.getPluginLog().logInfo("Reloading resource: " + resource);
+				        }
                         resource.reload();
                     } catch (Exception e) {
-                        ExceptionHandler.logThrowableError(e,"Exception refreshing resources...");
+                    	OrmCore.getPluginLog().logError("Exception refreshing resources...",e);
                 }
             }
         }
@@ -597,7 +615,9 @@ public class OrmProject extends AbstractOrmElement implements IOrmProject{
 // add by yk 08.06.2005 stop.
         
         // TODO (tau->tau) del? 27.01.2006        
-		if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("STOP? project.resourcesChanged()");        
+		if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+			OrmCore.getPluginLog().logInfo("STOP? project.resourcesChanged()");        
+		}
 		fireProjectChanged(this, false);
     }
     
@@ -644,7 +664,7 @@ public class OrmProject extends AbstractOrmElement implements IOrmProject{
                     }
                 }
             } catch (CoreException e) {
-                ExceptionHandler.logThrowableError(e,e.getMessage());
+            	OrmCore.getPluginLog().logError(e.getMessage(),e);
             }
         }
     }
@@ -673,7 +693,9 @@ public class OrmProject extends AbstractOrmElement implements IOrmProject{
     	boolean isSynchronized = project.isSynchronized(IResource.DEPTH_INFINITE);
     	//if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo(project.getName()+".synchronize() = " + isSynchronized);    	
 		if (!isSynchronized) {
-	        	if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("OrmProject.synchronize() -> project.refreshLocal(...)");			
+	        	if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+	        		OrmCore.getPluginLog().logInfo("OrmProject.synchronize() -> project.refreshLocal(...)");			
+	        	}
 				project.refreshLocal(IResource.DEPTH_INFINITE, null);
 		}
     }

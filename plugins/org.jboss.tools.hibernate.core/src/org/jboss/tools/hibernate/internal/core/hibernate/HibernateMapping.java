@@ -27,7 +27,6 @@ import org.jboss.tools.hibernate.core.IPersistentClass;
 import org.jboss.tools.hibernate.core.IPersistentClassMapping;
 import org.jboss.tools.hibernate.core.IValidationService;
 import org.jboss.tools.hibernate.core.OrmCore;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.internal.core.AbstractMapping;
 import org.jboss.tools.hibernate.internal.core.OrmConfiguration;
 import org.jboss.tools.hibernate.internal.core.OrmProject;
@@ -97,8 +96,7 @@ public class HibernateMapping extends AbstractMapping {
 			try{
 			 input=writer.write(false); // edit tau 14.02.2006 - or writer.write(true)? 
 			}catch (IOException e1) {
-				ExceptionHandler.logThrowableError(e1,"Hibernate Connection  Wizard:Finish ->"+e1.toString());
-				
+				OrmCore.getPluginLog().logError("Hibernate Connection  Wizard:Finish ->"+e1.toString(), e1);
 		 	}
 			
 			if(!rsrc.exists()) rsrc.create(null, IResource.NONE, null); //add  gavrs 4.03.05
@@ -123,7 +121,7 @@ public class HibernateMapping extends AbstractMapping {
 						try {
 							input.close();
 						} catch (IOException e) {
-							ExceptionHandler.logThrowableError(e,"Hibernate Connection  Wizard:Finish ->"+e.toString());
+							OrmCore.getPluginLog().logError("Hibernate Connection  Wizard:Finish ->"+e.toString(),e);
 						}
 		        }
 		//}
@@ -277,47 +275,67 @@ public class HibernateMapping extends AbstractMapping {
 		try{ 
 			properties.reload();
 		} catch (Exception ex){
-			ExceptionHandler.logThrowableError(ex, "loading mapping properties");
+			OrmCore.getPluginLog().logError("loading mapping properties",ex);
 		}
 		try{ 
 			config.reload();
 		} catch (Exception ex){
 			// edit tau 30.09.2005
-			ExceptionHandler.logThrowableWarning(ex, "Error in other to loading mapping configuration");
+			OrmCore.getPluginLog().logError("Error in other to loading mapping configuration",ex);
 		}
 	}
 
     //added By Nick 19.05.2005
     public void resourcesChanged()
     {
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("HibernateMapping.resourcesChanged() START");
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo("HibernateMapping.resourcesChanged() START");
+        }
         
         if (properties != null && properties.getResource() != null && properties.getResource().isLocal(IResource.DEPTH_ZERO) &&  properties.resourceChanged())
             try {
-                if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("HibernateMapping.resourcesChanged(),properties.reload():"+properties);            	
+                if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+                	OrmCore.getPluginLog().logInfo("HibernateMapping.resourcesChanged(),properties.reload():"+properties);            	
+                }
                 properties.reload();
-                if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("HibernateMapping.resourcesChanged(),properties.reload() END");                
+                if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+                	OrmCore.getPluginLog().logInfo("HibernateMapping.resourcesChanged(),properties.reload() END");                
+                }
             } catch (Exception e) {
-                ExceptionHandler.logThrowableError(e,"Exception refreshing resources...");
+            	OrmCore.getPluginLog().logError("Exception refreshing resources...", e);
             }
             
             if (config != null)
             {
                 if (config.getResource().isLocal(IResource.DEPTH_ZERO) && config.resourceChanged()){
                     try {
-                        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("HibernateMapping.resourcesChanged(),config.reload(): " + config);
+                        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+                        	OrmCore.getPluginLog().logInfo("HibernateMapping.resourcesChanged(),config.reload(): " + config);
+                        }
+                        
                         config.reload();
-                        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("HibernateMapping.resourcesChanged(),config.reload() END" + config);                        
+                        
+                        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) { 
+                        	OrmCore.getPluginLog().logInfo("HibernateMapping.resourcesChanged(),config.reload() END" + config);                        
+                        }
+                        
                         refresh(true, true); // do doMappingsUpdate - add tau 17.11.2005
-                        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("HibernateMapping.resourcesChanged(),refresh(true) END" + config);                        
+                        
+                        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+                        	OrmCore.getPluginLog().logInfo("HibernateMapping.resourcesChanged(),refresh(true) END" + config);                        
+                        }
                     } catch (Exception e1) {
-                        ExceptionHandler.logThrowableError(e1,"Exception refreshing resources...");
+                    	OrmCore.getPluginLog().logError("Exception refreshing resources...",e1);
                     }
                 }
-                if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("HibernateMapping.resourcesChanged(),config.resourcesChanged(): " + config);                
+                if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+                	OrmCore.getPluginLog().logInfo("HibernateMapping.resourcesChanged(),config.resourcesChanged(): " + config);                
+                }
 				config.resourcesChanged();
             }
-            if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("HibernateMapping.resourcesChanged() END");            
+            if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+            	OrmCore.getPluginLog().logInfo("HibernateMapping.resourcesChanged() END");            
+            }
     }
     //by Nick
 

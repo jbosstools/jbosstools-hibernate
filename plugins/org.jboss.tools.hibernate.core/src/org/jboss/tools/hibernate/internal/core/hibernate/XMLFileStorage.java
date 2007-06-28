@@ -31,7 +31,6 @@ import org.jboss.tools.hibernate.core.INamedQueryMapping;
 import org.jboss.tools.hibernate.core.IOrmModelVisitor;
 import org.jboss.tools.hibernate.core.IPersistentClassMapping;
 import org.jboss.tools.hibernate.core.OrmCore;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.internal.core.data.Schema;
 import org.jboss.tools.hibernate.internal.core.data.Table;
 import org.jboss.tools.hibernate.internal.core.hibernate.automapping.HibernateAutoMapping;
@@ -115,13 +114,13 @@ public class XMLFileStorage implements IMappingStorage {
 	public void addPersistentClassMapping(IPersistentClassMapping mapping) {
 		if(hc.getClassMapping(mapping.getName())!=null){ 
 			//class already loaded
-			ExceptionHandler.logThrowableWarning(null, "Duplicated class mapping ignored : " + mapping.getName());
+			OrmCore.getPluginLog().logInfo("Duplicated class mapping ignored : " + mapping.getName());
 			XMLFileStorageDublicate.set(mapping.getName());
 			return;
 		}
 		Object old	= classes.get(mapping.getName());
 		if(old!=null){
-			ExceptionHandler.logThrowableWarning(null, "Duplicated class mapping ignored: " + mapping.getName());
+			OrmCore.getPluginLog().logInfo("Duplicated class mapping ignored: " + mapping.getName());
 			return;
 		}
 		classes.put(mapping.getName(),mapping);
@@ -316,7 +315,7 @@ public class XMLFileStorage implements IMappingStorage {
 				reader.reload();
 			} catch (DocumentException ex){
 				//throw new NestableRuntimeException(ex);
-				ExceptionHandler.logThrowableWarning(ex,null); // add tau 19.06.2005 - for Alex
+				OrmCore.getPluginLog().logError(ex); // add tau 19.06.2005 - for Alex
 			} finally {
 	            //added 19.05.2005 by Nick
 	            timeStamp = refreshTimeStamp();
@@ -343,7 +342,7 @@ public class XMLFileStorage implements IMappingStorage {
                 result = resource.getLocalTimeStamp();
             } 
             catch (CoreException e) {
-                ExceptionHandler.logInfo("Exception refreshing resource timestamp..., "+ e.toString());            
+            	OrmCore.getPluginLog().logError("Exception refreshing resource timestamp..., "+ e.toString());            
             }
         }
         return result;
@@ -360,7 +359,9 @@ public class XMLFileStorage implements IMappingStorage {
 	public void addImport(String className, String rename){
 		//XXX toAlex: May be better use some exception instead logger.info ?
 		Object old = imports.put(rename, className);
-		if (old!=null ) ExceptionHandler.logInfo("duplicate import: " + rename);
+		if (old!=null ) {
+			OrmCore.getPluginLog().logInfo("duplicate import: " + rename);
+		}
 	}
 
 	public IDatabaseTable getTable(String schema, String catalog, String name){
@@ -383,7 +384,9 @@ public class XMLFileStorage implements IMappingStorage {
 	
 	public void save() throws IOException ,CoreException{
 		
-		if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("XMLFileStorage.save() for" + getName() + ", dirty= " + dirty );
+		if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+			OrmCore.getPluginLog().logInfo("XMLFileStorage.save() for" + getName() + ", dirty= " + dirty );
+		}
 		
 		if (!isDirty()) return;
 		
@@ -530,7 +533,9 @@ public class XMLFileStorage implements IMappingStorage {
         boolean isChanged = this.resourceChanged();    	
     	if (isChanged) {
     		try {
-    	        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("XMLFileStorage.isResourceChanged()->storage.reload():"+this.getName());
+    	        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+    	        	OrmCore.getPluginLog().logInfo("XMLFileStorage.isResourceChanged()->storage.reload():"+this.getName());
+    	        }
     	        
     	        /*
     	        if (this.getProjectMapping() instanceof AbstractMapping) {
@@ -596,9 +601,9 @@ public class XMLFileStorage implements IMappingStorage {
 				}
 				
 			} catch (CoreException e) {
-                ExceptionHandler.logThrowableError(e,"Exception refreshing resources...");
+				OrmCore.getPluginLog().logError("Exception refreshing resources...",e);
 			} catch (IOException e) {
-                ExceptionHandler.logThrowableError(e,"Exception refreshing resources...");
+				OrmCore.getPluginLog().logError("Exception refreshing resources...",e);
 			}
     	}
         return isChanged;

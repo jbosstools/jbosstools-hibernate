@@ -26,8 +26,6 @@ import org.jboss.tools.hibernate.core.IMapping;
 import org.jboss.tools.hibernate.core.IOrmProject;
 import org.jboss.tools.hibernate.core.IPersistentClass;
 import org.jboss.tools.hibernate.core.OrmCore;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
-
 
 /**
  * @author Yan
@@ -104,7 +102,7 @@ public class PackageRenameChange extends CompositeChange {
 				}
 			} catch (Exception e) {
 				pm.setCanceled(true);
-				ExceptionHandler.logThrowableWarning(e,BUNDLE.getString("PackageDeleteChange.createChangeError")+" "+packageName);
+				OrmCore.getPluginLog().logError(BUNDLE.getString("PackageDeleteChange.createChangeError")+" "+packageName,e);
 			}
 		}
 		return ch;

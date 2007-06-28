@@ -27,7 +27,6 @@ import org.jboss.tools.hibernate.core.IOrmProject;
 import org.jboss.tools.hibernate.core.IValidationService;
 import org.jboss.tools.hibernate.core.OrmCore;
 import org.jboss.tools.hibernate.core.OrmProgressMonitor;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.internal.core.hibernate.validation.HibernateValidationProblem;
 
 
@@ -48,7 +47,9 @@ public class OrmBuilder extends IncrementalProjectBuilder {
 	 */
 	protected IProject[] build(int kind, Map args, IProgressMonitor monitor) throws CoreException {
 
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("??? Build(...) -> Project = " + this.getProject().getName());
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo("??? Build(...) -> Project = " + this.getProject().getName());
+        }
 		
 		if (!getProject().hasNature(OrmCore.ORM2NATURE_ID)) return null;
 		
@@ -61,8 +62,10 @@ public class OrmBuilder extends IncrementalProjectBuilder {
 			IMarker marker = javaModelMarkers[i];
 			int severity = marker.getAttribute(IMarker.SEVERITY,IMarker.SEVERITY_INFO);
 			if (severity == IMarker.SEVERITY_ERROR) {
-		        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("initBuild(...) -> Project = " + this.getProject().getName() +
-        		" have JAVA_MODEL_PROBLEM_MARKER, severity=ERROR" );			
+		        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+		        	OrmCore.getPluginLog().logInfo("initBuild(...) -> Project = " + this.getProject().getName() +
+		        		" have JAVA_MODEL_PROBLEM_MARKER, severity=ERROR" );
+		        }
 				return null;
 			}
 		}
@@ -70,7 +73,9 @@ public class OrmBuilder extends IncrementalProjectBuilder {
 		// add tau 22.09.2005 
 		IOrmProject ormProject = OrmCore.getDefault().create(getProject());
 		
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("!!! Build(...) -> Project = " + this.getProject().getName());
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo("!!! Build(...) -> Project = " + this.getProject().getName());
+        }
         
         // edit tau 21.03.2006
         IResourceDelta delta = getDelta(getProject());        
@@ -85,7 +90,7 @@ public class OrmBuilder extends IncrementalProjectBuilder {
 				ormProject.fireProjectChanged(this, false);				
 			}
 		} catch (Exception e){
-               ExceptionHandler.logThrowableWarning(e,e.getMessage());				
+			OrmCore.getPluginLog().logError(e.getMessage(),e);				
 		} finally {
 			OrmCore.getDefault().updateListener();
 			OrmCore.getDefault().setLockResourceChangeListener(false);
@@ -144,7 +149,9 @@ public class OrmBuilder extends IncrementalProjectBuilder {
             return;
         
         // 27.05.2005 tau move this metod from HibernateValidationService.run()
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("deleteValidationMarkers on "+ormProject.getName());        
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo("deleteValidationMarkers on "+ormProject.getName());        
+        }
         HibernateValidationProblem.deleteMarkers(ormProject.getProject());
     
         //ormProject.refresh();
@@ -153,7 +160,9 @@ public class OrmBuilder extends IncrementalProjectBuilder {
         IProject[] refProjects = ormProject.getReferencedProjects();
         for (int i = 0; i < refProjects.length; i++) {
             IProject project = refProjects[i];
-            if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("deleteValidationMarkers of refProjects on "+project.getName());            
+            if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+            	OrmCore.getPluginLog().logInfo("deleteValidationMarkers of refProjects on "+project.getName());            
+            }
             HibernateValidationProblem.deleteMarkers(project);
         }
         // by Nick
@@ -195,7 +204,9 @@ public class OrmBuilder extends IncrementalProjectBuilder {
         monitor.subTask("->Invoking Hibernate Validation Builder on " +  ormProject.getName());
         monitor.worked(1);
 
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("!!! incrementalBuild on "+delta+","+delta.getResource().getName());        
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo("!!! incrementalBuild on "+delta+","+delta.getResource().getName());        
+        }
         
         delta.accept(new DeltaVisitor(ormProject, monitor));
         
@@ -216,8 +227,9 @@ public class OrmBuilder extends IncrementalProjectBuilder {
 
         IMapping  maps[]= ormProject.getMappings();
         
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE) 
-            ExceptionHandler.logInfo("OrmBuilder->visit->validation(...),maps[]= " + maps.length + ", " + resource.getFullPath());                    
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE) {
+        	OrmCore.getPluginLog().logInfo("OrmBuilder->visit->validation(...),maps[]= " + maps.length + ", " + resource.getFullPath());
+        }
         
         for(int i=0;i<maps.length;++i){
         	
@@ -225,12 +237,14 @@ public class OrmBuilder extends IncrementalProjectBuilder {
             if(validationService != null){
                 try {
                     
-                    if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("OrmBuilder->validation->validationService.incrementalRun, Service(" + maps[i].getName()+") for " + resource.getFullPath());
+                    if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+                    	OrmCore.getPluginLog().logInfo("OrmBuilder->validation->validationService.incrementalRun, Service(" + maps[i].getName()+") for " + resource.getFullPath());
+                    }
                     
                     validationService.incrementalRun(resource);
                     
                 } catch (Exception e) {
-                    ExceptionHandler.logThrowableError(e,null);
+                	OrmCore.getPluginLog().logError(e);
                 }
     
             }
@@ -244,7 +258,9 @@ public class OrmBuilder extends IncrementalProjectBuilder {
         
 		if (ormProject == null) return;
 		
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("!!! fullBuild -> Project = " + ormProject.getName());		
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo("!!! fullBuild -> Project = " + ormProject.getName());		
+        }
 		
 		// delete tau 14.09.2005
 		//* open tau 19.09.2005 for Nikola
@@ -258,7 +274,9 @@ public class OrmBuilder extends IncrementalProjectBuilder {
 			IMapping  maps[]= ormProject.getMappings();
 			
 			if (monitor != null) {
-		        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("fullBuild for Refresh F5");				
+		        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+		        	OrmCore.getPluginLog().logInfo("fullBuild for Refresh F5");				
+		        }
 				monitor.setTaskParameters(1, maps.length);
 			}
 			
@@ -267,7 +285,9 @@ public class OrmBuilder extends IncrementalProjectBuilder {
 				if(validationService != null){
 					try {
 						
-						if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("fullBuild, validationService.run for " + maps[i].getName());
+						if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+							OrmCore.getPluginLog().logInfo("fullBuild, validationService.run for " + maps[i].getName());
+						}
 						
 						validationService.run();
 						
@@ -277,7 +297,7 @@ public class OrmBuilder extends IncrementalProjectBuilder {
 						}
 						
 					} catch (Exception e) {
-						ExceptionHandler.logThrowableError(e,null);
+						OrmCore.getPluginLog().logError(e);
 					}
 		
 				}

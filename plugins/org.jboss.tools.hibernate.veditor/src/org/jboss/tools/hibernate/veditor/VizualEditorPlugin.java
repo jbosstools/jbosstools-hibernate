@@ -10,14 +10,16 @@
  ******************************************************************************/ 
 package org.jboss.tools.hibernate.veditor;
 
-import org.eclipse.ui.plugin.*;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.jboss.tools.common.log.BaseUIPlugin;
+import org.jboss.tools.common.log.IPluginLog;
 import org.osgi.framework.BundleContext;
 
 /**
  * The main plugin class to be used in the desktop.
  */
-public class VizualEditorPlugin extends AbstractUIPlugin {
+public class VizualEditorPlugin extends BaseUIPlugin {
 
 	public final static String PLUGIN_ID= "org.jboss.tools.hibernate.veditor";
 	
@@ -63,4 +65,12 @@ public class VizualEditorPlugin extends AbstractUIPlugin {
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
+	
+	/**
+	 * @return IPluginLog object
+	 */
+	public static IPluginLog getPluginLog() {
+		return getDefault();
+	}
+
 }

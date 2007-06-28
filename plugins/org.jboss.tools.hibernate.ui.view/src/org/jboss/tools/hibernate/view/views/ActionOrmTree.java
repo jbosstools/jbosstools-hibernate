@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.view.views;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.jboss.tools.hibernate.view.ViewPlugin;
 
 // tau 22.11.2005
 // edit tau 27.01.2006

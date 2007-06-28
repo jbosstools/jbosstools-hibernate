@@ -31,7 +31,6 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.jboss.tools.hibernate.core.IOrmConfiguration;
 import org.jboss.tools.hibernate.core.IOrmProject;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.internal.core.OrmConfiguration;
 import org.jboss.tools.hibernate.internal.core.OrmProject;
 import org.jboss.tools.hibernate.internal.core.properties.BeanPropertySourceBase;
@@ -109,7 +108,7 @@ public class AutoMappingSetting extends Dialog{
     	try {
     		ormConfiguration.reload();
     	} catch(Exception  e) {
-			ExceptionHandler.handle(e, getShell(), null, null);
+    		ViewPlugin.getPluginLog().logError(e);
    		}
     	super.cancelPressed();
 	}
@@ -118,7 +117,7 @@ public class AutoMappingSetting extends Dialog{
     	try {
     		ormConfiguration.save();
     	} catch(Exception  e) {
-			ExceptionHandler.handle(e, getShell(), null, null);    		
+    		ViewPlugin.getPluginLog().logError(e);
     	}
 		setReturnCode(OK);
 		close();

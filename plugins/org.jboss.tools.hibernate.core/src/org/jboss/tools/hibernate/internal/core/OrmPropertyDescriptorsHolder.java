@@ -28,8 +28,8 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.jboss.tools.hibernate.core.IMapping;
 import org.jboss.tools.hibernate.core.IPersistentClass;
+import org.jboss.tools.hibernate.core.OrmCore;
 import org.jboss.tools.hibernate.core.OrmProgressMonitor;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.internal.core.properties.EditableListPropertyDescriptor;
 import org.jboss.tools.hibernate.internal.core.properties.ListPropertyDescriptor;
 import org.jboss.tools.hibernate.internal.core.properties.PropertyDescriptorsHolder;
@@ -505,7 +505,7 @@ public class OrmPropertyDescriptorsHolder extends PropertyDescriptorsHolder {
 			try {
 				obj = javaProject.getAllPackageFragmentRoots();
 			} catch (JavaModelException e) {
-				ExceptionHandler.logThrowableWarning(e, null); // tau // 15.09.2005
+				OrmCore.getPluginLog().logError(e); // tau // 15.09.2005
 			}
 			
 			// add tau 19.03.2006
@@ -576,7 +576,7 @@ public class OrmPropertyDescriptorsHolder extends PropertyDescriptorsHolder {
 							}
 
 					} catch (JavaModelException e1) {
-						ExceptionHandler.logThrowableWarning(e1, null); // tau
+						OrmCore.getPluginLog().logError(e1); // tau
 						// 15.09.2005
 					}
 				}

@@ -29,7 +29,6 @@ import org.jboss.tools.hibernate.core.IPersistentField;
 import org.jboss.tools.hibernate.core.IPersistentFieldMapping;
 import org.jboss.tools.hibernate.core.IPersistentValueMapping;
 import org.jboss.tools.hibernate.core.OrmCore;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.core.hibernate.IAnyMapping;
 import org.jboss.tools.hibernate.core.hibernate.IArrayMapping;
 import org.jboss.tools.hibernate.core.hibernate.IBagMapping;
@@ -82,7 +81,9 @@ import org.jboss.tools.hibernate.internal.core.util.TypeUtils;
 	/**	 * update mapping for persistent classes	 * @param mappings - mappipngs of persistent classes 	 */	public void doMappingsUpdate(IPersistentClassMapping[] mappings) {
 
 		int mappingsLength = mappings.length;
-		if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("=>> UpdateMappingVisitor.doMappingsUpdate(...), IPersistentClassMapping[]= " + mappingsLength);		
+		if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+			OrmCore.getPluginLog().logInfo("=>> UpdateMappingVisitor.doMappingsUpdate(...), IPersistentClassMapping[]= " + mappingsLength);		
+		}
 		
 		
 // added by yk 08.09.2005
@@ -97,7 +98,7 @@ import org.jboss.tools.hibernate.internal.core.util.TypeUtils;
 	}
 	private void doUpdateClassMappings(IPersistentClassMapping[] mappings)	{		for(int i = 0; i < mappings.length; i++)		{
 			duplicate_fields.clear();			try{
-				mappings[i].accept(this, null);			}catch(Exception ex){				ExceptionHandler.logInfo("update failed for "+mappings[i].getName());			}		}	}
+				mappings[i].accept(this, null);			}catch(Exception ex){				OrmCore.getPluginLog().logInfo("update failed for "+mappings[i].getName());			}		}	}
 	private void doUpdateFieldMappings(IPersistentClassMapping[] mappings)	{		for(int i=0;i<mappings.length;++i)		{
 			try 			{
 				duplicate_fields.clear();
@@ -129,7 +130,7 @@ import org.jboss.tools.hibernate.internal.core.util.TypeUtils;
 					}
 				}
 // added by yk 14.07.2005 stop
-							}			catch (Exception ex)			{				ExceptionHandler.logInfo("update failed for "+mappings[i].getName());;			}
+							} catch (Exception ex) {				OrmCore.getPluginLog().logError("update failed for "+mappings[i].getName());;			}
 		}	}		private void updateComponent(IComponentMapping mapping){		if(mapping.isDynamic()) return;
 		try{		    String className=mapping.getComponentClassName();
 		    if(className==null)
@@ -176,7 +177,7 @@ import org.jboss.tools.hibernate.internal.core.util.TypeUtils;
 			{		removeUnmappedFields(pc);		}
 
 		} catch(Exception cex){
-			ExceptionHandler.logInfo("update failed for "+mapping.getComponentClassName());	
+			OrmCore.getPluginLog().logError("update failed for "+mapping.getComponentClassName());	
 		}
 	}
 

@@ -28,7 +28,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.hibernate.core.IPersistentClassMapping;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
+import org.jboss.tools.hibernate.core.OrmCore;
 import org.jboss.tools.hibernate.core.exception.NestableRuntimeException;
 import org.jboss.tools.hibernate.internal.core.BaseResourceReaderWriter;
 import org.jboss.tools.hibernate.internal.core.hibernate.query.NamedQueryDefinition;
@@ -67,7 +67,7 @@ public class XMLFileWriter extends BaseResourceReaderWriter {
 					doc = readDocument(input);
 				}
 			} catch (Exception ex){
-				ExceptionHandler.logThrowableError(ex,null);
+				OrmCore.getPluginLog().logError(ex);
 			}
 			if(doc==null) doc = createDocument();
 			mergeMapping(doc);

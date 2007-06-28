@@ -119,9 +119,9 @@ public class ColumnPropertyDialog extends Dialog{
 				//mod.save();
 				mod.saveMappingStorageForPersistentClassMapping(column.getOwnerTable().getPersistentClassMappings());				
 			} catch (IOException e) {
-				ExceptionHandler.handle(new InvocationTargetException(e), getShell(), null,	null);
+				ViewPlugin.getPluginLog().logError(e);
 			} catch (CoreException e) {
-				ExceptionHandler.handle(e, getShell(), null, null);
+				ViewPlugin.getPluginLog().logError(e);
 			} 
 		setReturnCode(OK);
 		close();
@@ -149,12 +149,11 @@ public class ColumnPropertyDialog extends Dialog{
 				mod.refresh(false, true);  // edit tau 17.11.2005			
 			}
 		} catch (IOException e) {
-			ExceptionHandler.handle(new InvocationTargetException(e), getShell(), null,	null);
+			ViewPlugin.getPluginLog().logError(e);
 		} catch (CoreException e) {
-			ExceptionHandler.handle(e, getShell(), null, null);			
+			ViewPlugin.getPluginLog().logError(e);
 		} catch (Throwable e) { 
-			ExceptionHandler.handle(new InvocationTargetException(e), getShell(), null,	null);			
-			//ExceptionHandler.logThrowableWarning(e,null); // tau 15.09.2005
+			ViewPlugin.getPluginLog().logError(e);
 		}
 
 		super.cancelPressed();

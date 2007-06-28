@@ -267,7 +267,7 @@ import org.jboss.tools.hibernate.internal.core.data.Table;
 				final IOrmProjectChangedListener listener = (IOrmProjectChangedListener)it.next();
 				Platform.run(new ISafeRunnable() {
 					public void handleException(Throwable exception) {
-						OrmCore.log(exception, "Exception occurred in listener of OrmProject events");
+			        	OrmCore.getPluginLog().logError("Exception occurred in listener of OrmProject events", exception);
 					}
 					public void run() throws Exception {
 						listener.projectChanged(event, false);

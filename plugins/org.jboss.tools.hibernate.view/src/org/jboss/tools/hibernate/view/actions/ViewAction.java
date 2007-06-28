@@ -24,7 +24,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.jboss.tools.hibernate.core.OrmCore;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
+import org.jboss.tools.hibernate.view.ViewPlugin;
 import org.jboss.tools.hibernate.view.views.ExplorerBase;
 import org.jboss.tools.hibernate.view.views.ExplorerClass;
 
@@ -57,14 +57,14 @@ public class ViewAction implements IWorkbenchWindowActionDelegate {
 			ExplorerClass explorer = (ExplorerClass) getPage().showView(ExplorerClass.getExplorerId(), null, IWorkbenchPage.VIEW_ACTIVATE);
 			explorer.setOrmProjects(OrmCore.getDefault().getOrmModel());
 		} catch (PartInitException e) {
-			ExceptionHandler.logThrowableError(e,null);			
+			ViewPlugin.getPluginLog().logError(e);			
 		}
 		
 		try {
 			ExplorerBase explorerBase = (ExplorerBase) getPage().showView(ExplorerBase.getExplorerId(),null, IWorkbenchPage.VIEW_VISIBLE);
 			explorerBase.setOrmProjects(OrmCore.getDefault().getOrmModel());
 		} catch (PartInitException e) {
-			ExceptionHandler.logThrowableError(e,null);        	
+			ViewPlugin.getPluginLog().logError(e);			
 		}
 	}
 

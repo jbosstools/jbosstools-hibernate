@@ -20,8 +20,6 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.hibernate.core.ICodeRendererService;
 import org.jboss.tools.hibernate.core.OrmCore;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
-
 
 /**
  * @author Nick - mailto:n.belaevski@exadel.com
@@ -54,7 +52,7 @@ public class ExtensionBinder {
                             list.add(element);
                         }
                     } catch (CoreException e) {
-                        ExceptionHandler.logThrowableWarning(e,e.getMessage());
+        				OrmCore.getPluginLog().logError(e.getMessage(),e);
                     }
                 }
             }
@@ -144,7 +142,7 @@ public class ExtensionBinder {
                             return (ICodeRendererService) obj;
                         }
                     } catch (CoreException e) {
-                        ExceptionHandler.logThrowableWarning(e,e.getMessage());
+                    	OrmCore.getPluginLog().logError(e.getMessage(),e);
                     }
                 }
             }

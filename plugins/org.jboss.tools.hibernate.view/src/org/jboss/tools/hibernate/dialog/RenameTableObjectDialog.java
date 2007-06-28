@@ -156,12 +156,11 @@ public class RenameTableObjectDialog extends Dialog{
 					//mod.save();
 					mod.saveMappingStorageForPersistentClassMapping(table.getPersistentClassMappings());					
 				} catch (IOException e) {
-	            	//TODO (tau-tau) for Exception					
-					ExceptionHandler.handle(new InvocationTargetException(e), getShell(), null,
-							null);
+	            	//TODO (tau-tau) for Exception
+					ViewPlugin.getPluginLog().logError(e);
 				} catch (CoreException e) {
 	            	//TODO (tau-tau) for Exception					
-					ExceptionHandler.handle(e, getShell(), null, null);
+					ViewPlugin.getPluginLog().logError(e);
 				} 
 			}
  			setReturnCode(OK);

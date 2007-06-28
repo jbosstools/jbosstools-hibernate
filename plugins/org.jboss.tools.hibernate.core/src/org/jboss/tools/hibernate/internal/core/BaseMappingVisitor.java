@@ -28,7 +28,7 @@ import org.jboss.tools.hibernate.core.IPersistentClassMapping;
 import org.jboss.tools.hibernate.core.IPersistentField;
 import org.jboss.tools.hibernate.core.IPersistentFieldMapping;
 import org.jboss.tools.hibernate.core.IPersistentValueMapping;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
+import org.jboss.tools.hibernate.core.OrmCore;
 import org.jboss.tools.hibernate.core.hibernate.IAnyMapping;
 import org.jboss.tools.hibernate.core.hibernate.IArrayMapping;
 import org.jboss.tools.hibernate.core.hibernate.IBagMapping;
@@ -192,13 +192,10 @@ public class BaseMappingVisitor implements IHibernateMappingVisitor {
             if(class1 == null) continue;
             if (class1.getPersistentClassMapping() != null)
             {
-                try
-                {
+                try {
                     class1.getPersistentClassMapping().accept(this,pakage);
-                }
-                catch (Exception ex)
-                {
-                    ExceptionHandler.logThrowableError(ex,ex.getMessage());
+                } catch (Exception ex) {
+                	OrmCore.getPluginLog().logError(ex.getMessage(),ex);
                 }
             }
         }
@@ -214,7 +211,7 @@ public class BaseMappingVisitor implements IHibernateMappingVisitor {
 				if(maps[i] != null)
 					maps[i].accept(this, mapping);
 			} catch(Exception ex){
-				ExceptionHandler.logThrowableError(ex,null);
+				OrmCore.getPluginLog().logError(ex);
 			}
 		}
 		return null;

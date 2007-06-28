@@ -25,7 +25,6 @@ import org.jboss.tools.hibernate.core.IPersistentClass;
 import org.jboss.tools.hibernate.core.IPersistentClassMapping;
 import org.jboss.tools.hibernate.core.IPersistentField;
 import org.jboss.tools.hibernate.core.IPersistentValueMapping;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.core.hibernate.ICollectionMapping;
 import org.jboss.tools.hibernate.core.hibernate.IComponentMapping;
 import org.jboss.tools.hibernate.core.hibernate.IHibernateClassMapping;
@@ -67,7 +66,7 @@ public class OrmDiagram extends ModelElement {
 					string += tempString;
 				} while (tempString != null);
 			} catch (CoreException e) {
-				ExceptionHandler.logThrowableError(e, e.getMessage());
+				VizualEditorPlugin.getPluginLog().logError(e.getMessage(),e);
 			}
 			childrenLocations = string.split("#");
 		} else
@@ -112,7 +111,7 @@ public class OrmDiagram extends ModelElement {
 				resource.setPersistentProperty((new QualifiedName(VizualEditorPlugin.PLUGIN_ID,qualifiedNameString+i)),
 						string.substring(2048*i));
 			} catch (CoreException e) {
-				ExceptionHandler.logThrowableError(e, e.getMessage());
+				VizualEditorPlugin.getPluginLog().logError(e.getMessage(),e);
 			}
 	}
 	

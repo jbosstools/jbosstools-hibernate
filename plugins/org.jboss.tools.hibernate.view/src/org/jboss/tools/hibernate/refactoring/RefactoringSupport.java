@@ -46,7 +46,7 @@ public class RefactoringSupport {
 			RenameSupport renameSupport=RenameSupport.create(cUnit,null,RenameSupport.UPDATE_REFERENCES);
 			renameSupport.openDialog(parent);
 		} catch (CoreException e) {
-            ExceptionHandler.handle(e,ViewPlugin.getActiveWorkbenchShell(),null, "Error in rename Persistent Class.");			
+			ViewPlugin.getPluginLog().logError("Error in rename Persistent Class.");			
 		}
 		
 	}
@@ -64,16 +64,15 @@ public class RefactoringSupport {
 		IJavaElement[] jes=null;
 		try {
 			jes=cUnit.getChildren();
-		} catch (JavaModelException e1) {
-        	//TODO (tau-tau) for Exception			
-			e1.printStackTrace();
+		} catch (JavaModelException e) {
+			ViewPlugin.getPluginLog().logError(e);
 		}
+		
 		try {
 			RenameSupport renameSupport=RenameSupport.create(cUnit,null,RenameSupport.UPDATE_REFERENCES);
 			renameSupport.openDialog(parent);
 		} catch (CoreException e) {
-        	//TODO (tau-tau) for Exception			
-			e.printStackTrace();
+			ViewPlugin.getPluginLog().logError(e);
 		}
 		
 	}
@@ -106,8 +105,7 @@ public class RefactoringSupport {
 										//clazz.getPersistentClassMapping().getStorage().save();									
 										clazz.getPersistentClassMapping().getStorage().save(true);										
 									} catch (IOException e) {
-						            	//TODO (tau-tau) for Exception										
-										ExceptionHandler.logThrowableError(e,e.getMessage());
+										ViewPlugin.getPluginLog().logError(e);
 									}
 								}
 							}
@@ -118,8 +116,7 @@ public class RefactoringSupport {
 				
 			}
 		} catch (CoreException e) {
-        	//TODO (tau-tau) for Exception			
-			e.printStackTrace();
+			ViewPlugin.getPluginLog().logError(e);
 		}
 	}
 	

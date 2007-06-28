@@ -10,14 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.hibernate.view.views;
 
-import java.util.Arrays;
-import java.text.Collator;
-import java.util.Comparator;
-
-import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -26,7 +20,6 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TreeItem;
-import org.jboss.tools.hibernate.view.ViewPlugin;
 
 
 /**

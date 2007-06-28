@@ -36,9 +36,6 @@ import org.jboss.tools.hibernate.core.IOrmProject;
 import org.jboss.tools.hibernate.core.IPersistentClass;
 import org.jboss.tools.hibernate.core.OrmCore;
 import org.jboss.tools.hibernate.core.OrmModelEvent;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
-
-
 
 /**
  * @author Tau from Minsk
@@ -87,7 +84,9 @@ public class OrmModel implements IOrmModel {
 		// edit tau 30.01.2006 ESORM-500
 		//if(root.remove(project)!=null)	fireOrmModelEvent(new OrmModelEvent(this, this, project, OrmModelEvent.RemoveProject));			
 		root.remove(project);
-    	if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("OrmModel.removeOrmProject-> " + project.getName());		
+    	if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+    		OrmCore.getPluginLog().logInfo("OrmModel.removeOrmProject-> " + project.getName());		
+    	}
 		fireOrmModelEvent(new OrmModelEvent(this, this, project, OrmModelEvent.RemoveProject));		
 	}
 
@@ -161,7 +160,9 @@ public class OrmModel implements IOrmModel {
 	protected void fireOrmModelEvent(final OrmModelEvent event){
 		if(listeners.size() == 0 )return;
 		
-		if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("OrmModel.fireOrmModelEvent()->Source="+event.getSource().toString());
+		if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+			OrmCore.getPluginLog().logInfo("OrmModel.fireOrmModelEvent()->Source="+event.getSource().toString());
+		}
 		
 		// add tau 05.07.2005
 		final Map synchro_map = Collections.synchronizedMap(listeners);
@@ -332,12 +333,16 @@ public class OrmModel implements IOrmModel {
     // edit tau 17.11.2005 - add synchronized 
     public synchronized void resourcesChanged(final IResourceDelta delta) {
     	
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("...DELTA START - OrmModel.resourcesChanged(...)");
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo("...DELTA START - OrmModel.resourcesChanged(...)");
+        }
         
     	final Map<IOrmElement,IOrmProject> ResourceChanged = new HashMap<IOrmElement,IOrmProject>(); 
     	try {
     		// add 23.11.2005 tau
-            if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("... DELTA lock(=" + OrmCore.lock.toString() + ").acquire(), Depth=" + OrmCore.lock.getDepth() + "- OrmModel.resourcesChanged(...)");    		
+            if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+            	OrmCore.getPluginLog().logInfo("... DELTA lock(=" + OrmCore.lock.toString() + ").acquire(), Depth=" + OrmCore.lock.getDepth() + "- OrmModel.resourcesChanged(...)");    		
+            }
 	        OrmCore.lock.acquire();
 				delta.accept(new IResourceDeltaVisitor() {
 				    public boolean visit(IResourceDelta delta) {
@@ -367,34 +372,39 @@ public class OrmModel implements IOrmModel {
 							*/
 							
 							if (((delta.getFlags() & IResourceDelta.OPEN) != 0)	&& project.isOpen()) {
-								if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE)
-									ExceptionHandler.logInfo("OrmModel.resourcesChanged(...),IResource.PROJECT - OPEN ");
+								if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE){
+									OrmCore.getPluginLog().logInfo("OrmModel.resourcesChanged(...),IResource.PROJECT - OPEN ");
+								}
 								try {
 									if (project.hasNature(OrmCore.ORM2NATURE_ID)) {
 										OrmCore.getDefault().create(project);
 									}
 								} catch (CoreException e) {
-									ExceptionHandler.logThrowableError(e, null);
+									OrmCore.getPluginLog().logError(e);
 								}
 								return false; // NO visit children
 							}
 	
 							if (((delta.getFlags() & IResourceDelta.OPEN) != 0) && !project.isOpen()) {
-								if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE)
-									ExceptionHandler.logInfo("OrmModel.resourcesChanged(...),IResource.PROJECT - CLOSE ");
+								if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE) {
+									OrmCore.getPluginLog().logInfo("OrmModel.resourcesChanged(...),IResource.PROJECT - CLOSE ");
+								}
 								return false; // NO visit children
 							}
 	
 							if (delta.getKind() == IResourceDelta.CHANGED) {
-								if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE)
-									ExceptionHandler.logInfo("OrmModel.resourcesChanged(...),IResource.PROJECT && IResourceDelta.CHANGED on "+ resource.getFullPath());
+								if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE) {
+									OrmCore.getPluginLog().logInfo("OrmModel.resourcesChanged(...),IResource.PROJECT && IResourceDelta.CHANGED on "+ resource.getFullPath());
+								}
 							} else if (delta.getKind() == IResourceDelta.ADDED) {
-								if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE)
-									ExceptionHandler.logInfo("OrmModel.resourcesChanged(...),IResource.PROJECT && IResourceDelta.ADDED on "+ resource.getFullPath());
+								if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE) {
+									OrmCore.getPluginLog().logInfo("OrmModel.resourcesChanged(...),IResource.PROJECT && IResourceDelta.ADDED on "+ resource.getFullPath());
+								}
 								return false; // NO visit children // tau 01.12.2005
 							} else if (delta.getKind() == IResourceDelta.OPEN) {
-								if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE)
-									ExceptionHandler.logInfo("OrmModel.resourcesChanged(...),IResource.PROJECT && IResourceDelta.OPEN on "+ resource.getFullPath());
+								if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE) {
+									OrmCore.getPluginLog().logInfo("OrmModel.resourcesChanged(...),IResource.PROJECT && IResourceDelta.OPEN on "+ resource.getFullPath());
+								}
 								return false; // NO visit children // tau 01.12.2005							
 							}
 							return true;
@@ -421,16 +431,24 @@ public class OrmModel implements IOrmModel {
 				        }
 				        
 				        
-				        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("OrmModel.resourcesChanged(...) on "+file.getFullPath() + " " + file.getLocalTimeStamp() + "/"+ file.getModificationStamp());
+				        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+				        	OrmCore.getPluginLog().logInfo("OrmModel.resourcesChanged(...) on "+file.getFullPath() + " " + file.getLocalTimeStamp() + "/"+ file.getModificationStamp());
+				        }
 				        
 				        //	only interested in changed resources (not added or removed)
 			               if (delta.getKind() == IResourceDelta.CHANGED) {
-						        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("OrmModel.resourcesChanged(...), IResourceDelta.CHANGED on "+file.getFullPath());
+						        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+						        	OrmCore.getPluginLog().logInfo("OrmModel.resourcesChanged(...), IResourceDelta.CHANGED on "+file.getFullPath());
+						        }
 			               } else if (delta.getKind() == IResourceDelta.ADDED) {
-						        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("OrmModel.resourcesChanged(...), IResourceDelta.ADDED on "+file.getFullPath());
+						        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+						        	OrmCore.getPluginLog().logInfo("OrmModel.resourcesChanged(...), IResourceDelta.ADDED on "+file.getFullPath());
+						        }
 						        return false;
 			               } else if (delta.getKind() == IResourceDelta.OPEN) {
-						        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("OrmModel.resourcesChanged(...), IResourceDelta.OPEN on "+file.getFullPath());
+						        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+						        	OrmCore.getPluginLog().logInfo("OrmModel.resourcesChanged(...), IResourceDelta.OPEN on "+file.getFullPath());
+						        }
 						        return false;	
 			               }
  
@@ -438,7 +456,9 @@ public class OrmModel implements IOrmModel {
 			               
 			            //only interested in content changes
 			               if ((delta.getFlags() & IResourceDelta.CONTENT) == 0) {
-			            	   if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("OrmModel.resourcesChanged(...), CONTENT NO CHANGED(->EXIT) on "+file.getFullPath());
+			            	   if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+			            		   OrmCore.getPluginLog().logInfo("OrmModel.resourcesChanged(...), CONTENT NO CHANGED(->EXIT) on "+file.getFullPath());
+			            	   }
 			            	   return false;
 			               }
 
@@ -468,7 +488,9 @@ public class OrmModel implements IOrmModel {
 				                    IResourceDelta refProjectDelta = delta.findMember(project.getProjectRelativePath());				                    
 				                    if(refProjectDelta != null){
 										ormProjectForDelta = ormProject;
-								        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("OrmModel.resourcesChanged(...)-> refProject= " + project.getName());										
+								        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+								        	OrmCore.getPluginLog().logInfo("OrmModel.resourcesChanged(...)-> refProject= " + project.getName());										
+								        }
 										break;
 				                    }
 				                }
@@ -488,7 +510,9 @@ public class OrmModel implements IOrmModel {
 										//mapping.resourcesChanged();
 										ResourceChanged.put(mapping, ormProjectForDelta);
 										flagResourceChanged = true;
-										if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("OrmModel.resourcesChanged(...), ResourceChanged.put <- " + mapping.getName() + ",ResourceChanged.size()="+ ResourceChanged.size());										
+										if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+											OrmCore.getPluginLog().logInfo("OrmModel.resourcesChanged(...), ResourceChanged.put <- " + mapping.getName() + ",ResourceChanged.size()="+ ResourceChanged.size());										
+										}
 								        break;
 									}
 						        }
@@ -503,7 +527,9 @@ public class OrmModel implements IOrmModel {
 											//flagResourceChanged = mappingStorage.isResourceChanged();
 											ResourceChanged.put(mappingStorage,ormProjectForDelta);
 											flagResourceChanged = true;
-									        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("OrmModel.resourcesChanged(...), ResourceChanged.put <- " + mappingStorage.getName() + ",ResourceChanged.size()="+ ResourceChanged.size());											
+									        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+									        	OrmCore.getPluginLog().logInfo("OrmModel.resourcesChanged(...), ResourceChanged.put <- " + mappingStorage.getName() + ",ResourceChanged.size()="+ ResourceChanged.size());											
+									        }
 									        break;
 										}
 									}
@@ -520,7 +546,9 @@ public class OrmModel implements IOrmModel {
 											//flagResourceChanged = clazz.isResourceChanged();
 											ResourceChanged.put(clazz, ormProjectForDelta);
 											flagResourceChanged = true;
-											if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("OrmModel.resourcesChanged(...), ResourceChanged.put <- " + clazz.getName() + ",ResourceChanged.size()="+ ResourceChanged.size());											
+											if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) { 
+												OrmCore.getPluginLog().logInfo("OrmModel.resourcesChanged(...), ResourceChanged.put <- " + clazz.getName() + ",ResourceChanged.size()="+ ResourceChanged.size());											
+											}
 									        break;
 										}
 									}
@@ -548,7 +576,9 @@ public class OrmModel implements IOrmModel {
 				    }
 				});
 
-			    if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("...DELTA - OrmModel.resourcesChanged(...), ResourceChanged.size()="+ ResourceChanged.size());
+			    if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+			    	OrmCore.getPluginLog().logInfo("...DELTA - OrmModel.resourcesChanged(...), ResourceChanged.size()="+ ResourceChanged.size());
+			    }
 				if (ResourceChanged.size() != 0 ){
 					Set setOrmProject = new HashSet();
 					Set ResourceChangedSet = ResourceChanged.entrySet();
@@ -570,7 +600,9 @@ public class OrmModel implements IOrmModel {
 						}
 						
 						if (flagChanged){
-					        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("OrmModel.resourcesChanged(...)=TRUE -> "+((IOrmElement) key).getName());							
+					        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+					        	OrmCore.getPluginLog().logInfo("OrmModel.resourcesChanged(...)=TRUE -> "+((IOrmElement) key).getName());							
+					        }
 							setOrmProject.add(element.getValue());
 						}
 					}
@@ -578,17 +610,20 @@ public class OrmModel implements IOrmModel {
 					for (Iterator iter = setOrmProject.iterator(); iter.hasNext();) {
 						IOrmProject ormProject = (IOrmProject)iter.next();
 						//ormProject.fireProjectBeforeChange(this);
-				        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo(
-				        		"OrmModel.resourcesChanged(...) ->->-> ormProject.fireProjectChanged(this)");						
+				        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+				        	OrmCore.getPluginLog().logInfo("OrmModel.resourcesChanged(...) ->->-> ormProject.fireProjectChanged(this)");
+				        }
 						ormProject.fireProjectChanged(this, false);
 					}
 				}
 		} catch (CoreException e) {
-               ExceptionHandler.logThrowableError(e, null);
+			OrmCore.getPluginLog().logError(e);
 		} finally {
     		// add 23.11.2005 tau
 	        OrmCore.lock.release();
-            if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("... DELTA lock(=" + OrmCore.lock.toString() + ").release(), Depth=" + OrmCore.lock.getDepth() + " - OrmModel.resourcesChanged(...)");	        
+            if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+            	OrmCore.getPluginLog().logInfo("... DELTA lock(=" + OrmCore.lock.toString() + ").release(), Depth=" + OrmCore.lock.getDepth() + " - OrmModel.resourcesChanged(...)");	        
+            }
 		}
 	    
 	    //WorkspaceJob job = new WorkspaceJob("Refreshing files for ORM Explorer") {
@@ -601,7 +636,9 @@ public class OrmModel implements IOrmModel {
 		*/
 	        
 		//return Status.OK_STATUS;
-		if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("...DELTA END  - OrmModel.resourcesChanged(...)");				
+		if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+			OrmCore.getPluginLog().logInfo("...DELTA END  - OrmModel.resourcesChanged(...)");				
+		}
 		return;
 		 /*		        
 			}
@@ -715,16 +752,20 @@ public class OrmModel implements IOrmModel {
 			IProject project = projects[i];
 
 			// edit Tau 28.04.2005
-			if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE )	ExceptionHandler.logInfo("Try initProject " + project.getName());
+			if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+				OrmCore.getPluginLog().logInfo("Try initProject " + project.getName());
+			}
 			
 			if (project.isAccessible()) {
 				try {
 					if (project.hasNature(OrmCore.ORM2NATURE_ID)) {
-						if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE )	ExceptionHandler.logInfo("project " + project.getName() + "is open and hasNature " + OrmCore.ORM2NATURE_ID);							
+						if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+							OrmCore.getPluginLog().logInfo("project " + project.getName() + "is open and hasNature " + OrmCore.ORM2NATURE_ID);							
+						}
 						OrmCore.getDefault().create(project);								
 					}
 				} catch (CoreException e) {
-					ExceptionHandler.logThrowableError(e, "init projects");
+					OrmCore.getPluginLog().logError("init projects",e);
 				}
 			}
 		}

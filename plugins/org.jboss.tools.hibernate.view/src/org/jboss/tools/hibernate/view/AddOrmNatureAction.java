@@ -59,7 +59,6 @@ import org.jboss.tools.hibernate.core.IOrmConfiguration;
 import org.jboss.tools.hibernate.core.IOrmProject;
 import org.jboss.tools.hibernate.core.OrmCore;
 import org.jboss.tools.hibernate.core.OrmProgressMonitor;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.dialog.ModelCheckedTreeSelectionDialog;
 import org.jboss.tools.hibernate.dialog.SelectAdditionPersClasses;
 import org.jboss.tools.hibernate.dialog.StatisticDialog;
@@ -161,7 +160,9 @@ public class AddOrmNatureAction {
 					}
 
 				}
-				if (ViewPlugin.TRACE || ViewPlugin.TRACE_VIEW) ExceptionHandler.logInfo("Ok addNatureToProject for " + project.getName());
+				if (ViewPlugin.TRACE || ViewPlugin.TRACE_VIEW) {
+					ViewPlugin.getPluginLog().logInfo("Ok addNatureToProject for " + project.getName());
+				}
 
 				//add tau 04.08.2005
 				if (ormMapping != null &&
@@ -178,11 +179,14 @@ public class AddOrmNatureAction {
 					}
 				}
 			} else {
-				if (ViewPlugin.TRACE || ViewPlugin.TRACE_VIEW)ExceptionHandler.logInfo("Cancel addNatureToProject for " + project.getName());
+				if (ViewPlugin.TRACE || ViewPlugin.TRACE_VIEW) {
+					ViewPlugin.getPluginLog().logInfo("Cancel addNatureToProject for " + project.getName());
+				}
+				
 				OrmCore.getDefault().getOrmModel().removeOrmProject(project);
 			}  
 		} catch (CoreException e) {
-			ExceptionHandler.handle(e,ViewPlugin.getActiveWorkbenchShell(),null, "Error in Add Hibernate capabilities!");
+			ViewPlugin.getPluginLog().logError("Error in Add Hibernate capabilities!",e);
 		} finally {
 			// edit tau 27.01.2006				
 			OrmCore.getDefault().updateListener();
@@ -234,7 +238,7 @@ public class AddOrmNatureAction {
 		try {
 			progress.run(false, true, operation);
 		} catch (InvocationTargetException e1) {
-			ExceptionHandler.handle(e1,ViewPlugin.getActiveWorkbenchShell(),null, "PersistentClasses was not created!");
+			ViewPlugin.getPluginLog().logError("PersistentClasses was not created!",e1);
 		} catch (InterruptedException e1) {
         	//TODO (tau-tau) for Exception			
 			// Cancelled.
@@ -284,7 +288,9 @@ public class AddOrmNatureAction {
 						throw new InvocationTargetException(e);						
 					}
 
-					if (ViewPlugin.TRACE || ViewPlugin.TRACE_VIEW)	ExceptionHandler.logInfo("addNatureToProject: for "	+ project.getName());
+					if (ViewPlugin.TRACE || ViewPlugin.TRACE_VIEW) {
+						ViewPlugin.getPluginLog().logInfo("addNatureToProject: for "	+ project.getName());
+					}
 
 				} finally {
 					monitor.done();
@@ -297,7 +303,7 @@ public class AddOrmNatureAction {
 		try {
 			progress.run(false, true, operationAddNature);
 		} catch (InvocationTargetException e1) {
-			ExceptionHandler.handle(e1,ViewPlugin.getActiveWorkbenchShell(),null, "Error in order to add Orm Nature");
+			ViewPlugin.getPluginLog().logError("Error in order to add Orm Nature",e1);
 		} catch (InterruptedException e1) {
         	//TODO (tau-tau) for Exception			
 			// Cancelled.
@@ -357,14 +363,18 @@ public class AddOrmNatureAction {
 							flagLib = true;								
 						}						
 						
-						if (ViewPlugin.TRACE || ViewPlugin.TRACE_VIEW)	ExceptionHandler.logInfo("folderLibPath= " + folderLibPath);						
+						if (ViewPlugin.TRACE || ViewPlugin.TRACE_VIEW) {
+							ViewPlugin.getPluginLog().logInfo("folderLibPath= " + folderLibPath);						
+						}
 						break;
 					}					
 				}
 			}
 		}
 		
-		if (ViewPlugin.TRACE || ViewPlugin.TRACE_VIEW)	ExceptionHandler.logInfo("folderLibPath= " + folderLibPath + ",flagLib= " + flagLib);		
+		if (ViewPlugin.TRACE || ViewPlugin.TRACE_VIEW) {
+			ViewPlugin.getPluginLog().logInfo("folderLibPath= " + folderLibPath + ",flagLib= " + flagLib);		
+		}
 		
 		if (folderLibPath == null){
 			for (int i = 0; i < classpathEntries.length; i++) {
@@ -389,7 +399,9 @@ public class AddOrmNatureAction {
 			}
 		}
 		
-		if (ViewPlugin.TRACE || ViewPlugin.TRACE_VIEW)	ExceptionHandler.logInfo("2 folderLibPath= " + folderLibPath + ",flagLib= " + flagLib);		
+		if (ViewPlugin.TRACE || ViewPlugin.TRACE_VIEW) {
+			ViewPlugin.getPluginLog().logInfo("2 folderLibPath= " + folderLibPath + ",flagLib= " + flagLib);		
+		}
 		
 		if (folderLibPath != null) {
 			if (folderLibPath.segmentCount() == 1){
@@ -403,7 +415,9 @@ public class AddOrmNatureAction {
 			folderLibPath = folderLib.getLocation();
 		}
 		
-		if (ViewPlugin.TRACE || ViewPlugin.TRACE_VIEW)	ExceptionHandler.logInfo("3 folderLibPath= " + folderLibPath + ",flagLib= " + flagLib);
+		if (ViewPlugin.TRACE || ViewPlugin.TRACE_VIEW) {
+			ViewPlugin.getPluginLog().logInfo("3 folderLibPath= " + folderLibPath + ",flagLib= " + flagLib);
+		}
 		
 		if (folderLibPath == null) {
 			for (int i = 0; i < libs.length; i++) {
@@ -455,7 +469,9 @@ public class AddOrmNatureAction {
 		
 		monitor.worked(1);
 		if (folderLib != null){
-			if (ViewPlugin.TRACE || ViewPlugin.TRACE_VIEW)	ExceptionHandler.logInfo("ref->" + folderLib);			
+			if (ViewPlugin.TRACE || ViewPlugin.TRACE_VIEW) {
+				ViewPlugin.getPluginLog().logInfo("ref->" + folderLib);			
+			}
 			folderLib.refreshLocal(IResource.DEPTH_ONE,new NullProgressMonitor());			
 		}
 		monitor.worked(1);		
@@ -503,7 +519,7 @@ public class AddOrmNatureAction {
 		try {
 			fileSource = getFileFromBundle("org.jboss.tools.hibernate.hblibs", new Path("/lib") );
 		} catch (IOException e) {
-			ExceptionHandler.handle(e, ViewPlugin.getActiveWorkbenchShell(), null, null);
+			ViewPlugin.getPluginLog().logError(e);
 			return false;
 		}		
 		

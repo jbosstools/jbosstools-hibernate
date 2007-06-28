@@ -38,7 +38,6 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.TextEdit;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.internal.core.util.ClassUtils;
 import org.jboss.tools.hibernate.internal.core.util.ScanProject;
 import org.jboss.tools.hibernate.internal.core.util.StringUtils;
@@ -113,7 +112,7 @@ public class CodeRendererService implements ICodeRendererService {
                                     className);
                         }
                     } catch (CoreException e) {
-                        ExceptionHandler.logThrowableError(e,e.getMessage());
+                    	OrmCore.getPluginLog().logError(e.getMessage(), e);
                     }
                 }
             }
@@ -560,10 +559,11 @@ public class CodeRendererService implements ICodeRendererService {
             if (te != null)
                 te.apply(doc,TextEdit.UPDATE_REGIONS);
         } catch (MalformedTreeException e) {
-            ExceptionHandler.logThrowableError(e, null);
+        	OrmCore.getPluginLog().logError(e);
         } catch (BadLocationException e) {
-            ExceptionHandler.logThrowableError(e, null);
+        	OrmCore.getPluginLog().logError(e);
         }
+        
         String newSource = doc.get();
         // update of the compilation unit
         unit.getBuffer().setContents(newSource);

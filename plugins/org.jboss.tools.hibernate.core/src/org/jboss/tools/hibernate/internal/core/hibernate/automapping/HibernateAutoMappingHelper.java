@@ -36,8 +36,8 @@ import org.jboss.tools.hibernate.core.IPersistentClassMapping;
 import org.jboss.tools.hibernate.core.IPersistentField;
 import org.jboss.tools.hibernate.core.IPersistentFieldMapping;
 import org.jboss.tools.hibernate.core.IPersistentValueMapping;
+import org.jboss.tools.hibernate.core.OrmCore;
 import org.jboss.tools.hibernate.core.PropertyInfoStructure;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.core.hibernate.IHibernateClassMapping;
 import org.jboss.tools.hibernate.core.hibernate.IHibernateKeyMapping;
 import org.jboss.tools.hibernate.core.hibernate.IManyToManyMapping;
@@ -223,10 +223,8 @@ public class HibernateAutoMappingHelper {
                 }
                 CodeRendererServiceWrapper.commitChanges(workType.getCompilationUnit());
                 CodeRendererServiceWrapper.saveChanges(workType.getCompilationUnit());
-            }
-            else
-            {
-                ExceptionHandler.logInfo("Working copy type does not exist!"); //$NON-NLS-1$
+            } else  {
+            	OrmCore.getPluginLog().logInfo("Working copy type does not exist!"); //$NON-NLS-1$
             }
             //screwed
             

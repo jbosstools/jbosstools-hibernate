@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.jboss.tools.hibernate.core.IOrmConfiguration;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
+import org.jboss.tools.hibernate.core.OrmCore;
 import org.jboss.tools.hibernate.core.hibernate.IRootClassMapping;
 import org.jboss.tools.hibernate.internal.core.OrmConfiguration;
 import org.jboss.tools.hibernate.internal.core.OrmProject;
@@ -34,7 +34,7 @@ public class DefaultPersistentClassFiller {
         try {
             result = Boolean.valueOf(propertyString).booleanValue();
         } catch (Exception e) {
-            ExceptionHandler.logThrowableWarning(e,"Exception parsing "+propertyName+" property");
+        	OrmCore.getPluginLog().logInfo("Exception parsing "+propertyName+" property",e);
             configuration.setProperty(propertyName,
             		(String)ormPropertyDescriptorsHolder.getDefaultPropertyValue(propertyName));
             save = true;
@@ -49,7 +49,7 @@ public class DefaultPersistentClassFiller {
         try {
             result = Integer.parseInt(propertyString);
         } catch (Exception e) {
-            ExceptionHandler.logThrowableWarning(e,"Exception parsing "+propertyName+" property");
+        	OrmCore.getPluginLog().logError("Exception parsing "+propertyName+" property",e);
             configuration.setProperty(propertyName,
             		(String)ormPropertyDescriptorsHolder.getDefaultPropertyValue(propertyName));
             save = true;
@@ -98,7 +98,7 @@ public class DefaultPersistentClassFiller {
         try {
             isLazy = Boolean.valueOf(lazyString);
         } catch (Exception e) {
-            ExceptionHandler.logThrowableWarning(e,"Exception parsing hibernate.lazy");
+        	OrmCore.getPluginLog().logError("Exception parsing hibernate.lazy",e);
             configuration.setProperty(OrmConfiguration.HIBERNATE_LAZY,
                     (String)ormPropertyDescriptorsHolder.getDefaultPropertyValue(OrmConfiguration.HIBERNATE_LAZY));
             save = true;
@@ -119,7 +119,7 @@ public class DefaultPersistentClassFiller {
         		configuration.save();
         		save=false;
         	} catch (Exception e) {
-        		ExceptionHandler.logThrowableWarning(e,e.getMessage());
+        		OrmCore.getPluginLog().logError(e.getMessage(),e);
         	}
     }
     

@@ -28,7 +28,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.hibernate.core.IPersistentClass;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
+import org.jboss.tools.hibernate.core.OrmCore;
 import org.jboss.tools.hibernate.internal.core.hibernate.HibernateConfiguration;
 import org.jboss.tools.hibernate.internal.core.util.ScanProject;
 
@@ -59,9 +59,9 @@ public class ContextFileWriter extends BaseResourceReaderWriter {
 			try {
 				doc = readDocument(res.getContents(true));
 			} catch (DocumentException e) {
-				ExceptionHandler.logThrowableError(e,null);
+				OrmCore.getPluginLog().logError(e);
 			} catch (CoreException e) {
-				ExceptionHandler.logThrowableError(e,null);
+				OrmCore.getPluginLog().logError(e);
 			}
 			if(doc == null)
 				doc = createDocument();
@@ -72,11 +72,11 @@ public class ContextFileWriter extends BaseResourceReaderWriter {
 				else
 					res.create(writeDocument(doc), IResource.NONE, null);				
 			} catch (UnsupportedEncodingException e) {
-				ExceptionHandler.logThrowableError(e,null);
+				OrmCore.getPluginLog().logError(e);
 			} catch (CoreException e) {
-				ExceptionHandler.logThrowableError(e,null);
+				OrmCore.getPluginLog().logError(e);
 			} catch (IOException e) {
-				ExceptionHandler.logThrowableError(e,null);
+				OrmCore.getPluginLog().logError(e);
 			}
 	}
 
@@ -146,7 +146,7 @@ public class ContextFileWriter extends BaseResourceReaderWriter {
 			try {
 				attributes.add(ScanProject.getRelativePath(classes[i].getPersistentClassMappingStorage().getResource()));
 			} catch (CoreException e) {
-				ExceptionHandler.logThrowableWarning(e, null);
+				OrmCore.getPluginLog().logError(e);
 			}					
 		}
 		addPropertyWithList(element, "mappingResources", attributes);

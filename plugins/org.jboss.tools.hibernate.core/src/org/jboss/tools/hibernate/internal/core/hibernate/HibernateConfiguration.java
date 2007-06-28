@@ -37,7 +37,6 @@ import org.jboss.tools.hibernate.core.IPackage;
 import org.jboss.tools.hibernate.core.IPersistentClass;
 import org.jboss.tools.hibernate.core.IPersistentClassMapping;
 import org.jboss.tools.hibernate.core.OrmCore;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.core.hibernate.IHibernateClassMapping;
 import org.jboss.tools.hibernate.core.hibernate.IHibernateConfiguration;
 import org.jboss.tools.hibernate.internal.core.OrmConfiguration;
@@ -597,8 +596,7 @@ public class HibernateConfiguration extends PropertySourceBase implements IHiber
                 result = resource.getLocalTimeStamp();
             } 
             catch (CoreException e) {
-                ExceptionHandler.logObjectPlugin("Exception refreshing resource timestamp...",
-                        OrmCore.getDefault().getBundle().getSymbolicName(), e);            
+            	OrmCore.getPluginLog().logError("Exception refreshing resource timestamp...",e);
             }
         }
         return result;
@@ -612,7 +610,9 @@ public class HibernateConfiguration extends PropertySourceBase implements IHiber
     }
     //by Nick
     public void resourcesChanged(){
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("HibernateConfiguration.resourcesChanged()");
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo("HibernateConfiguration.resourcesChanged()");
+        }
         
         // del tau 02.11.2005
         // added by yk 01.10.2005
@@ -623,7 +623,9 @@ public class HibernateConfiguration extends PropertySourceBase implements IHiber
         */
         clearErrorMarkers();
         // added by yk 01.10.2005.
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("HibernateConfiguration.resourcesChanged(), clearErrorMarkers() END");        
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo("HibernateConfiguration.resourcesChanged(), clearErrorMarkers() END");        
+        }
 
         IMappingStorage[] storages = getMappingStorages();
         boolean changed=false;
@@ -632,12 +634,14 @@ public class HibernateConfiguration extends PropertySourceBase implements IHiber
             
             if ( storage.getResource().isLocal(IResource.DEPTH_ZERO)&& storage.resourceChanged())
             {
-                if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("HibernateConfiguration.resourcesChanged():" + storage.getName());
+                if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+                	OrmCore.getPluginLog().logInfo("HibernateConfiguration.resourcesChanged():" + storage.getName());
+                }
                 try {
                     changed=true;
                     storage.reload();
                 } catch (Exception e) {
-                    ExceptionHandler.logThrowableError(e,"Exception refreshing resources...");
+                	OrmCore.getPluginLog().logError("Exception refreshing resources...",e);
                 }
             }
         }
@@ -645,7 +649,9 @@ public class HibernateConfiguration extends PropertySourceBase implements IHiber
         
         if(!changed){
             IPersistentClassMapping maps[]= getPersistentClassMappings();
-            if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("HibernateConfiguration.resourcesChanged() for maps[]:" + maps.length);            
+            if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+            	OrmCore.getPluginLog().logInfo("HibernateConfiguration.resourcesChanged() for maps[]:" + maps.length);            
+            }
             for(int i=0;i<maps.length;++i){
                 IPersistentClass pc=maps[i].getPersistentClass();
                 if(pc!=null && pc.isResourceChanged()) {
@@ -658,17 +664,21 @@ public class HibernateConfiguration extends PropertySourceBase implements IHiber
             //if(temp != null) errorMarkers.addAll(Arrays.asList(temp));
         }
         
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("HibernateConfiguration.hbMapping.refresh(false) START:" + hbMapping.getName());        
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo("HibernateConfiguration.hbMapping.refresh(false) START:" + hbMapping.getName());        
+        }
         if(changed) {
 			try {
 				hbMapping.refresh(false, true);
 			} catch (IOException e) {
-				ExceptionHandler.logThrowableError(e, e.getMessage().toString());
+				OrmCore.getPluginLog().logError(e.getMessage().toString(),e);
 			} catch (CoreException e) {
-				ExceptionHandler.logThrowableError(e, e.getMessage().toString());
+				OrmCore.getPluginLog().logError( e.getMessage().toString(),e);
 			} // do doMappingsUpdate - add tau 17.11.2005
         }
-        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("HibernateConfiguration.hbMapping.refresh(false) END:" + hbMapping.getName());        
+        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+        	OrmCore.getPluginLog().logInfo("HibernateConfiguration.hbMapping.refresh(false) END:" + hbMapping.getName());        
+        }
     }
 
     // added by yk 30.09.2005
@@ -689,9 +699,9 @@ public class HibernateConfiguration extends PropertySourceBase implements IHiber
 			try {
 				hbMapping.reload(true);
 			} catch (IOException e) {
-				ExceptionHandler.logThrowableError(e, e.getMessage().toString());
+				OrmCore.getPluginLog().logError(e.getMessage(),e);
 			} catch (CoreException e) {
-				ExceptionHandler.logThrowableError(e, e.getMessage().toString());
+				OrmCore.getPluginLog().logError(e.getMessage(),e);
 			}
 		}
 	}

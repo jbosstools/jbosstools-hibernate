@@ -21,7 +21,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.hibernate.core.IMappingStorage;
 import org.jboss.tools.hibernate.core.IPersistentClassMapping;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
+import org.jboss.tools.hibernate.core.OrmCore;
 import org.jboss.tools.hibernate.core.exception.NestableRuntimeException;
 import org.jboss.tools.hibernate.core.hibernate.ICollectionMapping;
 import org.jboss.tools.hibernate.core.hibernate.IHibernateClassMapping;
@@ -227,8 +227,7 @@ public class HibernateConfigurationReader extends BaseResourceReaderWriter {
                 	throw new Exception();
                 	}  
 			} catch(Exception ex){
-				ExceptionHandler.logInfo("Read resource failure: " + mappingResourceName);
-				//TODO notify user about exception by using ExceptionHandler.getLastException()
+				OrmCore.getPluginLog().logError("Read resource failure: " + mappingResourceName);
 			}
 		}
 	}

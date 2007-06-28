@@ -14,7 +14,6 @@ import java.util.HashMap;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
@@ -22,7 +21,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.internal.ObjectPluginAction;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.view.ViewPlugin;
 
 public class OpenDiagramActionDelegate implements IObjectActionDelegate {

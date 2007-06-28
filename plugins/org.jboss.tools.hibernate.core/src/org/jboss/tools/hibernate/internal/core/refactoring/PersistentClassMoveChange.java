@@ -23,8 +23,6 @@ import org.jboss.tools.hibernate.core.IMapping;
 import org.jboss.tools.hibernate.core.IOrmProject;
 import org.jboss.tools.hibernate.core.IPersistentClass;
 import org.jboss.tools.hibernate.core.OrmCore;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
-
 
 /**
  * @author Yan
@@ -103,7 +101,7 @@ public class PersistentClassMoveChange extends Change {
 			
 		} catch(Exception ex) {
 			pm.setCanceled(true);
-			ExceptionHandler.logThrowableError(ex,BUNDLE.getString("PersistentClassMoveChange.movePersistentClass")+" "+type);
+			OrmCore.getPluginLog().logError(BUNDLE.getString("PersistentClassMoveChange.movePersistentClass")+" "+type,ex);
 		}
 		return null;
 	}

@@ -13,7 +13,7 @@ package org.jboss.tools.hibernate.internal.core.hibernate.descriptors;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.jboss.tools.hibernate.core.IDatabaseTable;
 import org.jboss.tools.hibernate.core.IPersistentField;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
+import org.jboss.tools.hibernate.core.OrmCore;
 import org.jboss.tools.hibernate.internal.core.properties.DBTablePropertyDescriptor;
 import org.jboss.tools.hibernate.internal.core.properties.PropertyDescriptorsHolder;
 
@@ -35,16 +35,13 @@ public class PrimitiveArrayMappingDescriptorsHolderWithTable extends
 	protected PrimitiveArrayMappingDescriptorsHolderWithTable(IDatabaseTable table, IPersistentField pfm) {
 		super(table);
 		PropertyDescriptor pd;
-		if (pfm.getOwnerClass()!=null)
-		{
-		pd=new DBTablePropertyDescriptor("collectionTable",Messages.PrimitiveArrayMappingDescriptorsHolderWithTable_CollectionTableN,null,pfm.getOwnerClass().getPersistentClassMapping(),pfm); //$NON-NLS-1$
-		pd.setDescription(Messages.PrimitiveArrayMappingDescriptorsHolderWithTable_CollectionTableD);
-		pd.setCategory(GENERAL_CATEGORY);
-		addPropertyDescriptor(pd);
-		}
-		else 
-		{
-			ExceptionHandler.logInfo("Field "+pfm.getName()+" hasn't owner class");	 //$NON-NLS-1$ //$NON-NLS-2$
+		if (pfm.getOwnerClass()!=null) {
+			pd=new DBTablePropertyDescriptor("collectionTable",Messages.PrimitiveArrayMappingDescriptorsHolderWithTable_CollectionTableN,null,pfm.getOwnerClass().getPersistentClassMapping(),pfm); //$NON-NLS-1$
+			pd.setDescription(Messages.PrimitiveArrayMappingDescriptorsHolderWithTable_CollectionTableD);
+			pd.setCategory(GENERAL_CATEGORY);
+			addPropertyDescriptor(pd);
+		} else {
+			OrmCore.getPluginLog().logInfo("Field "+pfm.getName()+" hasn't owner class");	 //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
 	}

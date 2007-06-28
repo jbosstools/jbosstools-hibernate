@@ -22,7 +22,6 @@ import org.jboss.tools.hibernate.core.IMapping;
 import org.jboss.tools.hibernate.core.IMappingStorage;
 import org.jboss.tools.hibernate.core.IOrmProject;
 import org.jboss.tools.hibernate.core.OrmCore;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 
 
 /**
@@ -77,7 +76,9 @@ public class OrmFileDeleteChange extends Change {
 								projects[i].removeMapping(mappings[m]);
 								
 						        // TODO (tau->tau) del? 27.01.2006
-								if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) ExceptionHandler.logInfo("STOP? OrmFileDeleteChange.perform()");								
+								if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+									OrmCore.getPluginLog().logInfo("STOP? OrmFileDeleteChange.perform()");								
+								}
 								projects[i].fireProjectChanged(this, false);
 								return null;
 							}
@@ -127,7 +128,7 @@ public class OrmFileDeleteChange extends Change {
 			
 		} catch(Exception ex) {
 			pm.setCanceled(true);
-			ExceptionHandler.logThrowableError(ex,BUNDLE.getString("OrmFileDeleteChange.deleteOrmFile")+" "+ormFile);
+			OrmCore.getPluginLog().logError(BUNDLE.getString("OrmFileDeleteChange.deleteOrmFile")+" "+ormFile, ex);
 		}
 		return null;
 	}

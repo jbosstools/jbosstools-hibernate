@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.*;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.jboss.tools.hibernate.view.ViewPlugin;
 
 
 
@@ -52,9 +53,8 @@ public class HibernateDDLGenerator implements IHibernateDDLGenerator {
 				n = n.substring(0, n.length() - suffix.length());
 				if(n.length() > 0) l.add(n);
 			}
-		} catch (Throwable t) {
-        	//TODO (tau-tau) for Exception			
-			t.printStackTrace();
+		} catch (Throwable e) {
+			ViewPlugin.getPluginLog().logError(e);
 		}
 		return l.toArray(new String[0]);
 	}

@@ -35,7 +35,6 @@ import org.jboss.tools.hibernate.core.IPersistentClassMapping;
 import org.jboss.tools.hibernate.core.IPersistentField;
 import org.jboss.tools.hibernate.core.IPersistentFieldMapping;
 import org.jboss.tools.hibernate.core.OrmCore;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.internal.core.hibernate.PersistableProperty;
 import org.jboss.tools.hibernate.internal.core.util.ScanProject;
 import org.jboss.tools.hibernate.internal.core.util.TypeAnalyzer;
@@ -118,7 +117,7 @@ public class PersistentClass extends AbstractOrmElement implements IPersistentCl
 			try {
 				cu = ScanProject.findCompilationUnit(cuName, projectMapping.getProject().getProject());
 			} catch (CoreException e) {
-				ExceptionHandler.logThrowableError(e, "Update failed for "+getName());
+				OrmCore.getPluginLog().logError("Update failed for "+getName(),e);
 			}
 			if (cu == null) return null; // no cu
 			setSourceCode(cu);
@@ -398,10 +397,8 @@ public class PersistentClass extends AbstractOrmElement implements IPersistentCl
 	            try 
 	            {
 	            	persistentClassType = ScanProject.findClassInCU(unit,this.getShortName());
-	            } 
-	            catch (JavaModelException e) 
-	            {
-	                ExceptionHandler.logThrowableError(e,"Error finding persistent class type");
+	            } catch (JavaModelException e) {
+	            	OrmCore.getPluginLog().logError("Error finding persistent class type",e);
 	            }        		
         	}
     		returnType =  persistentClassType;        	
@@ -561,7 +558,7 @@ public class PersistentClass extends AbstractOrmElement implements IPersistentCl
 		}
 		catch (Exception ex)
 		{
-			ExceptionHandler.logThrowableError(ex, "Update failed for "+getName());
+			OrmCore.getPluginLog().logError("Update failed for "+getName(),ex);
 		}
 		finally{
 			timeStamp=refreshTimeStamp();
@@ -651,7 +648,7 @@ public class PersistentClass extends AbstractOrmElement implements IPersistentCl
 			if (classType != null) {
 				fullyQualifiedName = classType.getFullyQualifiedName();
 			}
-			ExceptionHandler.logInfo(this.getClass().getName() + body + fullyQualifiedName);
+			OrmCore.getPluginLog().logInfo(this.getClass().getName() + body + fullyQualifiedName);
 		}
 	}
 	
@@ -720,7 +717,7 @@ public class PersistentClass extends AbstractOrmElement implements IPersistentCl
 	                result = resource.getLocalTimeStamp();
 	        }
         }catch (CoreException e) {
-            ExceptionHandler.logInfo("Exception refreshing resource timestamp..., " + e.toString());            
+        	OrmCore.getPluginLog().logError("Exception refreshing resource timestamp..., " + e.toString());            
         }
         return result;
     }
@@ -729,18 +726,20 @@ public class PersistentClass extends AbstractOrmElement implements IPersistentCl
         long ts = refreshTimeStamp();
         boolean isChanged = (timeStamp != ts || ts == SOURCE_NOT_EXISTS);
         if (isChanged){
-	        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE )
-	        	ExceptionHandler.logInfo("PersistentClass.isResourceChanged()->class.refresh():"+
+	        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+	        	OrmCore.getPluginLog().logInfo("PersistentClass.isResourceChanged()->class.refresh():"+
 	        			this.getName()+ 
 	        			", oldTS= "+timeStamp+        	
 						", newTs= "+ts);	        
+	        }
             this.refresh();
         } else {
-	        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE )
-	        	ExceptionHandler.logInfo("PersistentClass.isResourceChanged()->class.NOrefresh():"+
+	        if (OrmCore.TRACE || OrmCore.TRACE_INT_CORE ) {
+	        	OrmCore.getPluginLog().logInfo("PersistentClass.isResourceChanged()->class.NOrefresh():"+
 	        			this.getName()+ 
 	        			", oldTS= "+timeStamp+        	
 						", newTs= "+ts);        	
+	        }
         }
         return isChanged;
     }

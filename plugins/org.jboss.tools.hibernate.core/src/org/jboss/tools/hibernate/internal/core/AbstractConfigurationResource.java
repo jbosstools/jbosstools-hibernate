@@ -23,7 +23,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.hibernate.core.IConfigurationResource;
 import org.jboss.tools.hibernate.core.OrmCore;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.internal.core.properties.PropertySourceBase;
 
 public abstract class AbstractConfigurationResource extends PropertySourceBase implements
@@ -49,9 +48,7 @@ public abstract class AbstractConfigurationResource extends PropertySourceBase i
 				resource.refreshLocal(IResource.DEPTH_ZERO, null);
 				result = resource.getLocalTimeStamp();
 			} catch (CoreException e) {
-				ExceptionHandler.logObjectPlugin(
-						"Exception refreshing resource timestamp...", OrmCore
-								.getDefault().getBundle().getSymbolicName(), e);
+				OrmCore.getPluginLog().logError("Exception refreshing resource timestamp...",  e);
 			}
 		}
 		return result;

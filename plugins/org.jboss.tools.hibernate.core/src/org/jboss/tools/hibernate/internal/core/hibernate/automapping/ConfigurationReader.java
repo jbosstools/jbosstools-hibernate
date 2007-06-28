@@ -24,8 +24,8 @@ import org.jboss.tools.hibernate.core.ICodeRendererService;
 import org.jboss.tools.hibernate.core.IDatabaseColumn;
 import org.jboss.tools.hibernate.core.IOrmConfiguration;
 import org.jboss.tools.hibernate.core.IOrmElement;
+import org.jboss.tools.hibernate.core.OrmCore;
 import org.jboss.tools.hibernate.core.IAutoMappingService.Settings;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.core.exception.NestableRuntimeException;
 import org.jboss.tools.hibernate.core.hibernate.Type;
 import org.jboss.tools.hibernate.internal.core.AbstractMapping;
@@ -174,7 +174,7 @@ public class ConfigurationReader {
                     
                }
             } catch (Exception e) {
-                ExceptionHandler.logThrowableWarning(e,e.getMessage());
+            	OrmCore.getPluginLog().logError(e.getMessage(),e);
                 instance.config.getOrmProject().getOrmConfiguration().setProperty(OrmConfiguration.REVTYPE_NUMERIC_X_Y,
                 		(String)ormPropertyDescriptorsHolder.getDefaultPropertyValue(OrmConfiguration.REVTYPE_NUMERIC_X_Y));
                 save = true;
@@ -279,7 +279,7 @@ public class ConfigurationReader {
             try {
                 instance.lazy = Boolean.valueOf(lazyString);
             } catch (Exception e) {
-                ExceptionHandler.logThrowableWarning(e,"Exception parsing hibernate.associations.lazy parameter");
+            	OrmCore.getPluginLog().logError("Exception parsing hibernate.associations.lazy parameter",e);
                 ormConfig.setProperty(OrmConfiguration.HIBERNATE_ASSOCIATIONS_LAZY,
                 		(String)ormPropertyDescriptorsHolder.getDefaultPropertyValue(OrmConfiguration.HIBERNATE_ASSOCIATIONS_LAZY));
                 save = true;
@@ -293,7 +293,7 @@ public class ConfigurationReader {
             if (bool != null)
                 instance.cascadeDeleteEnabled = bool.booleanValue();
         } catch (Exception e) {
-            ExceptionHandler.logThrowableWarning(e,"Exception parsing "+OrmConfiguration.HIBERNATE_KEY_ON_DELETE+" parameter");
+        	OrmCore.getPluginLog().logError("Exception parsing "+OrmConfiguration.HIBERNATE_KEY_ON_DELETE+" parameter",e);
             ormConfig.setProperty(OrmConfiguration.HIBERNATE_KEY_ON_DELETE,
             		(String)ormPropertyDescriptorsHolder.getDefaultPropertyValue(OrmConfiguration.HIBERNATE_KEY_ON_DELETE));
             save = true;
@@ -306,7 +306,7 @@ public class ConfigurationReader {
             if (bool != null)
                 instance.idGeneratorQuality = bool.booleanValue();
         } catch (Exception e) {
-            ExceptionHandler.logThrowableWarning(e,"Exception parsing "+OrmConfiguration.HIBERNATE_ID_GENERATOR_QUALITY+" parameter");
+        	OrmCore.getPluginLog().logError("Exception parsing "+OrmConfiguration.HIBERNATE_ID_GENERATOR_QUALITY+" parameter",e);
             ormConfig.setProperty(OrmConfiguration.HIBERNATE_ID_GENERATOR_QUALITY,
             		(String)ormPropertyDescriptorsHolder.getDefaultPropertyValue(OrmConfiguration.HIBERNATE_ID_GENERATOR_QUALITY));
             save = true;
@@ -325,7 +325,7 @@ public class ConfigurationReader {
         }
         catch (Exception e)
         {
-            ExceptionHandler.logThrowableWarning(e,"Exception parsing "+OrmConfiguration.HAM_QUERY_FUZZINESS+" parameter");
+        	OrmCore.getPluginLog().logError("Exception parsing "+OrmConfiguration.HAM_QUERY_FUZZINESS+" parameter",e);
             ormConfig.setProperty(OrmConfiguration.HAM_QUERY_FUZZINESS,
             		(String)ormPropertyDescriptorsHolder.getDefaultPropertyValue(OrmConfiguration.HAM_QUERY_FUZZINESS));
             save = true;
@@ -380,7 +380,7 @@ public class ConfigurationReader {
                 throw new NestableRuntimeException("Error parsing "+ OrmConfiguration.REVTYPE_NUMERIC_1_0 + " parameter");
             }
         } catch (Exception e) {
-            ExceptionHandler.logThrowableWarning(e,e.getMessage());
+        	OrmCore.getPluginLog().logError(e.getMessage(),e);
             ormConfig.setProperty(OrmConfiguration.REVTYPE_NUMERIC_1_0,
             		(String)ormPropertyDescriptorsHolder.getDefaultPropertyValue(OrmConfiguration.REVTYPE_NUMERIC_1_0));
             save = true;
@@ -391,7 +391,7 @@ public class ConfigurationReader {
         try {
             instance.convertNumericsToPrimitive = Boolean.valueOf(numeric_convert).booleanValue();
         } catch (Exception e) {
-            ExceptionHandler.logThrowableWarning(e,e.getMessage());
+        	OrmCore.getPluginLog().logError(e.getMessage(),e);
             ormConfig.setProperty(OrmConfiguration.REVTYPE_NUMERIC_CONVERT,
             		(String)ormPropertyDescriptorsHolder.getDefaultPropertyValue(OrmConfiguration.REVTYPE_NUMERIC_CONVERT));
             save = true;
@@ -402,7 +402,7 @@ public class ConfigurationReader {
         try {
             instance.preserveNativeSQLTypes = Boolean.valueOf(preserve_native_types).booleanValue();
         } catch (Exception e) {
-            ExceptionHandler.logThrowableWarning(e,e.getMessage());
+        	OrmCore.getPluginLog().logError(e.getMessage(),e);
             ormConfig.setProperty(OrmConfiguration.REVERSING_NATIVE_SQL_TYPES,
                     (String)ormPropertyDescriptorsHolder.getDefaultPropertyValue(OrmConfiguration.REVERSING_NATIVE_SQL_TYPES));
             save = true;
@@ -416,7 +416,7 @@ public class ConfigurationReader {
         try {
             instance.collectionLazy = Boolean.valueOf(collection_lazy).booleanValue();
         } catch (Exception e) {
-            ExceptionHandler.logThrowableWarning(e,e.getMessage());
+        	OrmCore.getPluginLog().logError(e.getMessage(),e);
             ormConfig.setProperty(OrmConfiguration.HIBERNATE_COLLECTIONS_LAZY,
             		(String)ormPropertyDescriptorsHolder.getDefaultPropertyValue(OrmConfiguration.HIBERNATE_COLLECTIONS_LAZY));
             save = true;
@@ -426,7 +426,7 @@ public class ConfigurationReader {
         try {
             instance.reversingBaseClass = ScanProject.findClass(baseClassName,mapping.getProject().getProject());
         } catch (CoreException e) {
-            ExceptionHandler.logThrowableWarning(e,e.getMessage());
+        	OrmCore.getPluginLog().logError(e.getMessage(),e);
             ormConfig.setProperty(OrmConfiguration.REVERSING_BASE_CLASS,
             		(String)ormPropertyDescriptorsHolder.getDefaultPropertyValue(OrmConfiguration.REVERSING_BASE_CLASS));
             save = true;
@@ -446,7 +446,7 @@ public class ConfigurationReader {
         try {
             instance.useFuzzySearch = Boolean.valueOf(fuzzyOnStr).booleanValue();
         } catch (Exception e) {
-            ExceptionHandler.logThrowableWarning(e,"Exception parsing "+OrmConfiguration.HAM_QUERY_FUZZY_ON+" parameter");
+        	OrmCore.getPluginLog().logError("Exception parsing "+OrmConfiguration.HAM_QUERY_FUZZY_ON+" parameter",e);
             ormConfig.setProperty(OrmConfiguration.HAM_QUERY_FUZZY_ON,
             		(String)ormPropertyDescriptorsHolder.getDefaultPropertyValue(OrmConfiguration.HAM_QUERY_FUZZY_ON));
             save = true;
@@ -460,22 +460,19 @@ public class ConfigurationReader {
             }
             instance.tablePrefixQuery = prefQuery;
         } catch (Exception e) {
-            ExceptionHandler.logThrowableWarning(e,"Exception parsing "+OrmConfiguration.TABLE_PREFIX_QUERY+" parameter");
+        	OrmCore.getPluginLog().logError("Exception parsing "+OrmConfiguration.TABLE_PREFIX_QUERY+" parameter",e);
             ormConfig.setProperty(OrmConfiguration.TABLE_PREFIX_QUERY,
                     (String)ormPropertyDescriptorsHolder.getDefaultPropertyValue(OrmConfiguration.TABLE_PREFIX_QUERY));
             save = true;
         }
         
         ICodeRendererService service = ExtensionBinder.getCodeRendererService(ormConfig.getProperty(OrmConfiguration.POJO_RENDERER));
-        if (service == null)
-        {
+        if (service == null) {
             instance.pojoRenderer = new CodeRendererServiceWrapper(new CodeRendererService());
             ormConfig.setProperty(OrmConfiguration.POJO_RENDERER,
                     (String)ormPropertyDescriptorsHolder.getDefaultPropertyValue(OrmConfiguration.POJO_RENDERER));
             save = true;
-        }
-        else
-        {
+        } else {
             instance.pojoRenderer = new CodeRendererServiceWrapper(service);
         }
 
@@ -484,7 +481,7 @@ public class ConfigurationReader {
         		ormConfig.save();
         		save=false;
         	} catch (Exception e) {
-        		ExceptionHandler.logThrowableError(e,e.getMessage());
+        		OrmCore.getPluginLog().logError(e.getMessage(),e);
         	}
         
         return instance;

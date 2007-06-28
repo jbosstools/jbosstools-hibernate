@@ -23,7 +23,6 @@ import org.jboss.tools.hibernate.core.IMapping;
 import org.jboss.tools.hibernate.core.IOrmProject;
 import org.jboss.tools.hibernate.core.IPersistentClass;
 import org.jboss.tools.hibernate.core.OrmCore;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.internal.core.util.ClassUtils;
 
 
@@ -110,7 +109,7 @@ public class PersistentClassDeleteChange extends Change {
 			
 		} catch(Exception ex) {
 			pm.setCanceled(true);
-			ExceptionHandler.logThrowableError(ex,BUNDLE.getString("PersistentClassDeleteChange.deletePersistentClass")+" "+type);
+			OrmCore.getPluginLog().logError(BUNDLE.getString("PersistentClassDeleteChange.deletePersistentClass")+" "+type,ex);
 		}
 		return null;
 	}

@@ -26,8 +26,8 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
+import org.jboss.tools.common.log.BaseUIPlugin;
+import org.jboss.tools.common.log.IPluginLog;
 import org.osgi.framework.BundleContext;
 
 
@@ -35,7 +35,7 @@ import org.osgi.framework.BundleContext;
 /**
  * The main plugin class to be used in the desktop.
  */
-public class ViewPlugin extends AbstractUIPlugin {
+public class ViewPlugin extends BaseUIPlugin {
 	//The shared instance.
 	private static ViewPlugin plugin;
 	//Resource bundle.
@@ -63,10 +63,6 @@ public class ViewPlugin extends AbstractUIPlugin {
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}
-		
-		if (TRACE || TRACE_VIEW ) 
-			ExceptionHandler.logObjectPlugin("ViewPlugin()",PLUGIN_ID, null);		
-		
 	}
 
 	public static ImageDescriptor getImageDescriptor(String name) {
@@ -166,9 +162,16 @@ public class ViewPlugin extends AbstractUIPlugin {
 			try {
 				properties.load(bain);
 			} catch (IOException e) {
-				ExceptionHandler.logThrowableError(e, null);
+				getPluginLog().logError(e);
 			}
 		}
 	}	
+	
+	/**
+	 * @return IPluginLog object
+	 */
+	public static IPluginLog getPluginLog() {
+		return getDefault();
+	}
 
 }

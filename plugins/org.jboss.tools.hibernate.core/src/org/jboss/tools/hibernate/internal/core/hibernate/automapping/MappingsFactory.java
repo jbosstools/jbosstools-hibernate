@@ -33,7 +33,7 @@ import org.jboss.tools.hibernate.core.IPersistentClassMapping;
 import org.jboss.tools.hibernate.core.IPersistentField;
 import org.jboss.tools.hibernate.core.IPersistentFieldMapping;
 import org.jboss.tools.hibernate.core.IPersistentValueMapping;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
+import org.jboss.tools.hibernate.core.OrmCore;
 import org.jboss.tools.hibernate.core.hibernate.ICollectionMapping;
 import org.jboss.tools.hibernate.core.hibernate.IComponentMapping;
 import org.jboss.tools.hibernate.core.hibernate.IHibernateKeyMapping;
@@ -229,7 +229,7 @@ public class MappingsFactory {
                     pField.setMapping(null);
                 }
             } catch (CoreException e) {
-                ExceptionHandler.logThrowableError(e,"Exception adding persistent field to mappings factory");
+            	OrmCore.getPluginLog().logError("Exception adding persistent field to mappings factory",e);
                 removeDeferredOnCrash(pField);
             } finally {
             }
@@ -731,7 +731,7 @@ public class MappingsFactory {
                     }
                 }
             } catch (JavaModelException e) {
-                ExceptionHandler.logThrowableError(e,e.getMessage());
+            	OrmCore.getPluginLog().logError(e.getMessage(),e);
             }
         }
     }
@@ -1316,7 +1316,7 @@ public class MappingsFactory {
                 // #added#
            }
             catch (CoreException e) {
-                ExceptionHandler.logThrowableError(e,"Exception processing deferred mappings");
+            	OrmCore.getPluginLog().logError("Exception processing deferred mappings",e);
             }
         }
         deferredProperties.clear();

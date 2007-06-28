@@ -29,10 +29,10 @@ import org.jboss.tools.hibernate.core.CodeGenerationService;
 import org.jboss.tools.hibernate.core.ICodeGenerationService;
 import org.jboss.tools.hibernate.core.IDAOGenerator;
 import org.jboss.tools.hibernate.core.IPersistentClass;
+import org.jboss.tools.hibernate.core.OrmCore;
 import org.jboss.tools.hibernate.core.OrmProgressMonitor;
 import org.jboss.tools.hibernate.core.PropertyInfoStructure;
 import org.jboss.tools.hibernate.core.IAutoMappingService.Settings;
-import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.core.hibernate.IHibernateClassMapping;
 import org.jboss.tools.hibernate.core.hibernate.IManyToOneMapping;
 import org.jboss.tools.hibernate.internal.core.CodeRendererServiceWrapper;
@@ -72,7 +72,7 @@ public class DAOGenerator implements IDAOGenerator {
         try {
             thePackage = hamConfig.getPojoRenderer().getOrCreatePackage(((HibernateConfiguration) mapping.getConfiguration()).getProject(),packageName);
         } catch (CoreException e) {
-            ExceptionHandler.logThrowableError(e,"Exception creating package");
+        	OrmCore.getPluginLog().logError("Exception creating package", e);
             return;
         }        
         
@@ -98,7 +98,7 @@ public class DAOGenerator implements IDAOGenerator {
 					if(classes[i].getType() != null && !Flags.isAbstract(classes[i].getType().getFlags()))
 						createTestCaseCUOperation.addNameToQueue(defPackage,getDAOTestCaseName(classes[i].getShortName()));
 				} catch (JavaModelException e) {
-					ExceptionHandler.logThrowableError(e,e.getMessage());
+					OrmCore.getPluginLog().logError(e.getMessage(), e);
 				}
         		
         }
@@ -210,7 +210,7 @@ public class DAOGenerator implements IDAOGenerator {
         	}
 
 		} catch (CoreException e) {
-			ExceptionHandler.logThrowableError(e,e.getMessage());
+			OrmCore.getPluginLog().logError(e.getMessage(),e);
 		}
 
 		
@@ -337,7 +337,7 @@ public class DAOGenerator implements IDAOGenerator {
         }
         else
         {
-            ExceptionHandler.logInfo("Working copy type does not exist!");
+        	OrmCore.getPluginLog().logInfo("Working copy type does not exist!");
         }
         //screwed
 		
@@ -425,7 +425,7 @@ public class DAOGenerator implements IDAOGenerator {
         }
         else
         {
-            ExceptionHandler.logInfo("Working copy type does not exist!");
+        	OrmCore.getPluginLog().logInfo("Working copy type does not exist!");
         }
         //screwed
 		
@@ -503,12 +503,10 @@ public class DAOGenerator implements IDAOGenerator {
 
         //screw away legacy auto-generated ctors		
         IType workType = CodeRendererServiceWrapper.getWorkingCopy(unit.findPrimaryType());
-        if (workType != null)
-        {
+        if (workType != null) {
             IMethod[] methods = workType.getMethods();
             
-            if (methods != null)
-            {
+            if (methods != null)  {
                 for (int i = 0; i < methods.length; i++) {
                     IMethod method = methods[i];
                     
@@ -520,10 +518,8 @@ public class DAOGenerator implements IDAOGenerator {
             }
             CodeRendererServiceWrapper.commitChanges(workType.getCompilationUnit());
             CodeRendererServiceWrapper.saveChanges(workType.getCompilationUnit());
-        }
-        else
-        {
-            ExceptionHandler.logInfo("Working copy type does not exist!");
+        } else {
+        	OrmCore.getPluginLog().logInfo("Working copy type does not exist!");
         }
         //screwed
 		
