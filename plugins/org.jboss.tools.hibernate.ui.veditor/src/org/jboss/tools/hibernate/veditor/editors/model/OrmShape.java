@@ -26,7 +26,7 @@ import org.hibernate.mapping.Table;
  * @author Konstantin Mishin
  *
  */
-public class OrmShape extends ExtendedShape {
+public class OrmShape extends ExpandeableShape {
 	public static final String SET_HIDEN = "set hiden";
 	
 	public static final String LOCATION_PROP = "OrmShape.Location";		

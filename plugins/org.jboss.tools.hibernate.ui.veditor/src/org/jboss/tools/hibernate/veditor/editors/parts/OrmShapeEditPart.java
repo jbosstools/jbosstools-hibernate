@@ -36,7 +36,6 @@ import org.jboss.tools.hibernate.veditor.editors.figures.RoundLineBorder;
 import org.jboss.tools.hibernate.veditor.editors.figures.TitleFigure;
 import org.jboss.tools.hibernate.veditor.editors.figures.TitleLabel;
 import org.jboss.tools.hibernate.veditor.editors.model.ExpandeableShape;
-import org.jboss.tools.hibernate.veditor.editors.model.ExtendedShape;
 import org.jboss.tools.hibernate.veditor.editors.model.OrmDiagram;
 import org.jboss.tools.hibernate.veditor.editors.model.OrmShape;
 
@@ -45,7 +44,7 @@ import org.jboss.tools.hibernate.veditor.editors.model.OrmShape;
  * @author Konstantin Mishin
  *
  */
-public class OrmShapeEditPart extends ExtendedShapeEditPart{
+public class OrmShapeEditPart extends ExpandeableShapeEditPart{
 
 	protected IFigure createFigure() {
 		if (getModel() instanceof OrmShape) {

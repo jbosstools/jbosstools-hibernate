@@ -235,7 +235,7 @@ public class OrmDiagram extends ModelElement {
 		return tableShape;
 	}
 	
-	private void createConnections(ExtendedShape persistentClass, ExtendedShape databaseTable){
+	private void createConnections(ExpandeableShape persistentClass, ExpandeableShape databaseTable){
 		int i = 0;
 		boolean check = (persistentClass.getOrmElement() instanceof SpecialRootClass);
 		Iterator persistentFields = persistentClass.getChildren().iterator();

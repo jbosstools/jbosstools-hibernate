@@ -15,7 +15,6 @@ import org.eclipse.gef.EditPartFactory;
 import org.jboss.tools.hibernate.veditor.editors.model.ComponentShape;
 import org.jboss.tools.hibernate.veditor.editors.model.Connection;
 import org.jboss.tools.hibernate.veditor.editors.model.ExpandeableShape;
-import org.jboss.tools.hibernate.veditor.editors.model.ExtendedShape;
 import org.jboss.tools.hibernate.veditor.editors.model.OrmDiagram;
 import org.jboss.tools.hibernate.veditor.editors.model.OrmShape;
 import org.jboss.tools.hibernate.veditor.editors.model.Shape;

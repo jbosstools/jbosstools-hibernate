@@ -24,7 +24,7 @@ import org.hibernate.mapping.Table;
  * @author Konstantin Mishin
  *
  */
-public class ComponentShape extends ExtendedShape {
+public class ComponentShape extends ExpandeableShape {
 	public static final String SET_CHILDS_HIDEN = "set childs hiden";
 
 	protected boolean childsHiden = true;

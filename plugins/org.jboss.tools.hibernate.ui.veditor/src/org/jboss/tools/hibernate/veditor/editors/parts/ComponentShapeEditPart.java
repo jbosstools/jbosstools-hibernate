@@ -29,13 +29,12 @@ import org.jboss.tools.hibernate.veditor.editors.figures.ComponentFigure;
 import org.jboss.tools.hibernate.veditor.editors.figures.TitleFigure;
 import org.jboss.tools.hibernate.veditor.editors.figures.TitleLabel;
 import org.jboss.tools.hibernate.veditor.editors.model.ComponentShape;
-import org.jboss.tools.hibernate.veditor.editors.model.ExtendedShape;
 import org.jboss.tools.hibernate.veditor.editors.model.OrmDiagram;
 import org.jboss.tools.hibernate.veditor.editors.model.OrmShape;
 import org.jboss.tools.hibernate.veditor.editors.model.Shape;
 
 
-public class ComponentShapeEditPart extends ExtendedShapeEditPart {
+public class ComponentShapeEditPart extends ExpandeableShapeEditPart {
 
 	protected IFigure createFigure() {
 		if (getModel() instanceof ComponentShape) {

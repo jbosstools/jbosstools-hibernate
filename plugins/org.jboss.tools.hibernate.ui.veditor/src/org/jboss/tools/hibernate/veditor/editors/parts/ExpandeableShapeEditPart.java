@@ -28,7 +28,6 @@ import org.jboss.tools.hibernate.veditor.editors.figures.TitleLabel;
 import org.jboss.tools.hibernate.veditor.editors.model.ComponentShape;
 import org.jboss.tools.hibernate.veditor.editors.model.Connection;
 import org.jboss.tools.hibernate.veditor.editors.model.ExpandeableShape;
-import org.jboss.tools.hibernate.veditor.editors.model.ExtendedShape;
 import org.jboss.tools.hibernate.veditor.editors.model.OrmShape;
 import org.jboss.tools.hibernate.veditor.editors.model.Shape;
 
@@ -43,7 +42,13 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 	
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
-		if (ExpandeableShape.SHOW_REFERENCES.equals(prop)) {
+		if (Shape.SHOW_SELECTION.equals(prop)) {
+			((IFigure)getFigure().getChildren().get(0)).setBackgroundColor(getSelectionColor());	
+			((IFigure)getFigure().getChildren().get(0)).setForegroundColor(ResourceManager.getInstance().getColor(new RGB(255,255,255)));			
+		} else if (Shape.HIDE_SELECTION.equals(prop)) {
+			((IFigure)getFigure().getChildren().get(0)).setBackgroundColor(getColor());		
+			((IFigure)getFigure().getChildren().get(0)).setForegroundColor(ResourceManager.getInstance().getColor(new RGB(0,0,0)));			
+		}else if (ExpandeableShape.SHOW_REFERENCES.equals(prop)) {
 //			((IFigure)getFigure().getChildren().get(0)).setBackgroundColor(getSelectionColor());	
 //			((IFigure)getFigure().getChildren().get(0)).setForegroundColor(ResourceManager.getInstance().getColor(new RGB(255,255,255)));
 		} else {
@@ -51,4 +56,7 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 		}
 	}
 	
+	protected List getModelChildren() {
+		return ((ExpandeableShape)getModel()).getChildren(); 
+	}
 }

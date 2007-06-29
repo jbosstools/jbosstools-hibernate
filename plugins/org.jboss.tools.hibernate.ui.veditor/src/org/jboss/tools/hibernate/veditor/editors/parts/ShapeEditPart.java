@@ -92,6 +92,7 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 			getViewer().select(this);
 			getViewer().reveal(this);
 		}
+		refresh();
 	}
 
 	public void performRequest(Request req) {
