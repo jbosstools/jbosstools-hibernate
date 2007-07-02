@@ -57,7 +57,6 @@ public class OrmDiagram extends ModelElement {
 	private	boolean dirty = false;
 	private String childrenLocations[];
 	private IResource resource = null;
-	private List<Shape> shapes = new ArrayList<Shape>();
 	private HashMap<String,OrmShape> elements = new HashMap<String,OrmShape>();
 	private RootClass  ormElement;
 	private Configuration configuration;
@@ -89,10 +88,6 @@ public class OrmDiagram extends ModelElement {
 
 	}
 	
-	public List getChildren() {
-		return shapes;
-	}
-	
 	public HashMap getCloneElements() {
 		return (HashMap)elements.clone();
 	}
@@ -103,7 +98,7 @@ public class OrmDiagram extends ModelElement {
 
 	public void refresh() {
 		saveHelper();
-		shapes.clear();
+		getChildren().clear();
 		elements.clear();
 //		if( ((IPersistentClass)ormElement).getProjectMapping().findClass(ormElement.getName()) != null)
 ///			getOrCreatePersistentClass((IPersistentClass)ormElement, null);
@@ -130,9 +125,9 @@ public class OrmDiagram extends ModelElement {
 	}
 	
 	private void saveHelper() {
-		childrenLocations = new String[shapes.size()];
-		for (int i = 0; i < shapes.size(); i++) {
-			OrmShape shape = (OrmShape) shapes.get(i);
+		childrenLocations = new String[getChildren().size()];
+		for (int i = 0; i < getChildren().size(); i++) {
+			OrmShape shape = (OrmShape) getChildren().get(i);
 			Object ormElement = shape.getOrmElement();
 			if (ormElement instanceof RootClass) {
 				childrenLocations[i] = ((RootClass)ormElement).getClassName() + "@";
@@ -149,24 +144,24 @@ public class OrmDiagram extends ModelElement {
 		OrmShape ormShape = null;
 		if (ormElement instanceof RootClass) {
 			ormShape = new OrmShape(ormElement);
-			shapes.add(ormShape);
+			getChildren().add(ormShape);
 			elements.put(((RootClass)ormElement).getClassName(), ormShape);
 		} else if (ormElement instanceof Table) {
 			ormShape = new OrmShape(ormElement);
-			shapes.add(ormShape);
+			getChildren().add(ormShape);
 			Table table = (Table)ormElement;
 			elements.put(table.getSchema() + "." + table.getName(), ormShape);
 		} else if (ormElement instanceof Property) {
 //			ormShape = new OrmShape(ormElement);
 			SpecialRootClass specialRootClass = new SpecialRootClass((Property)ormElement);
 			ormShape = new SpecialOrmShape(specialRootClass);
-			shapes.add(ormShape);
+			getChildren().add(ormShape);
 //			Property property = (Property)ormElement;
 //			elements.put(property.getPersistentClass().getEntityName() + "." + property.getName(), ormShape);
 			elements.put(specialRootClass.getClassName(), ormShape);
 		} else if (ormElement instanceof SingleTableSubclass) {
 			ormShape = new OrmShape(ormElement);
-			shapes.add(ormShape);
+			getChildren().add(ormShape);
 			elements.put(((SingleTableSubclass)ormElement).getEntityName(), ormShape);
 		}
 		return ormShape;
@@ -334,10 +329,10 @@ public class OrmDiagram extends ModelElement {
 			} else if (collection.isMap()) {
 				Map map = (Map)collection;
 				OrmShape childShape = getOrCreateDatabaseTable(map.getCollectionTable());
-				Shape keyShape = childShape.getChild(((DependantValue)componentShape.getChildren().get(0).getOrmElement()).getColumnIterator().next());
-				new Connection(componentShape.getChildren().get(0), keyShape);
-				Shape elementShape = childShape.getChild(((SimpleValue)componentShape.getChildren().get(1).getOrmElement()).getColumnIterator().next());
-				new Connection(componentShape.getChildren().get(1), elementShape);
+				Shape keyShape = childShape.getChild(((DependantValue)((Shape)componentShape.getChildren().get(0)).getOrmElement()).getColumnIterator().next());
+				new Connection((Shape)componentShape.getChildren().get(0), keyShape);
+				Shape elementShape = childShape.getChild(((SimpleValue)((Shape)componentShape.getChildren().get(1)).getOrmElement()).getColumnIterator().next());
+				new Connection((Shape)componentShape.getChildren().get(1), elementShape);
 			}
 			setDirty(true);
 			firePropertyChange(REFRESH, null, null);

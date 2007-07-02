@@ -46,7 +46,7 @@ public class OrmShape extends ExpandeableShape {
 			RootClass rootClass = (RootClass)getOrmElement();
 			Property identifierProperty = rootClass.getIdentifierProperty();
 			if (identifierProperty != null) {
-				shapes.add(new Shape(identifierProperty));
+				getChildren().add(new Shape(identifierProperty));
 			}
 
 			KeyValue identifier = rootClass.getIdentifier();
@@ -54,7 +54,7 @@ public class OrmShape extends ExpandeableShape {
 				Iterator iterator = ((Component)identifier).getPropertyIterator();
 				while (iterator.hasNext()) {
 					Property property = (Property) iterator.next();
-					shapes.add(new Shape(property));
+					getChildren().add(new Shape(property));
 				}
 			}
 
@@ -69,7 +69,7 @@ public class OrmShape extends ExpandeableShape {
 					} else {
 						bodyOrmShape = new Shape(field);
 					}
-					shapes.add(bodyOrmShape);
+					getChildren().add(bodyOrmShape);
 				} else {
 					Component component = (Component)field.getValue();
 					Iterator iter = component.getPropertyIterator();
@@ -82,7 +82,7 @@ public class OrmShape extends ExpandeableShape {
 						} else {
 							bodyOrmShape = new Shape(property);
 						}
-						shapes.add(bodyOrmShape);
+						getChildren().add(bodyOrmShape);
 					}
 				}
 			}
@@ -98,7 +98,7 @@ public class OrmShape extends ExpandeableShape {
 					} else {
 						bodyOrmShape = new Shape(field);
 					}
-					shapes.add(bodyOrmShape);
+					getChildren().add(bodyOrmShape);
 				} else {
 					Component component = (Component)field.getValue();
 					Iterator iter = component.getPropertyIterator();
@@ -111,7 +111,7 @@ public class OrmShape extends ExpandeableShape {
 						} else {
 							bodyOrmShape = new Shape(property);
 						}
-						shapes.add(bodyOrmShape);
+						getChildren().add(bodyOrmShape);
 					}
 				}
 			}
@@ -120,7 +120,7 @@ public class OrmShape extends ExpandeableShape {
 			while (iterator.hasNext()) {
 				Column column = (Column)iterator.next();
 				bodyOrmShape = new Shape(column);
-				shapes.add(bodyOrmShape);
+				getChildren().add(bodyOrmShape);
 			}
 		}
 	}
@@ -140,14 +140,14 @@ public class OrmShape extends ExpandeableShape {
 
 	protected void setHiden(boolean hiden) {
 		super.setHiden(hiden);
-		for (int i = 0; i < shapes.size(); i++)
-			((Shape)shapes.get(i)).setHiden(hiden);
+		for (int i = 0; i < getChildren().size(); i++)
+			((Shape)getChildren().get(i)).setHiden(hiden);
 	}
 
 	public void refreshHiden() {
 		hiden = !hiden;
-		for (int i = 0; i < shapes.size(); i++)
-			((Shape)shapes.get(i)).setHiden(hiden);
+		for (int i = 0; i < getChildren().size(); i++)
+			((Shape)getChildren().get(i)).setHiden(hiden);
 		firePropertyChange(SET_HIDEN, null, new Boolean(hiden));
 	}
 

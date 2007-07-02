@@ -36,22 +36,22 @@ public class ComponentShape extends ExpandeableShape {
 			Collection collection = (Collection)((Property)ioe).getValue();
 			bodyOrmShape = new Shape(collection.getKey());
 			bodyOrmShape.setIndent(20);
-			shapes.add(bodyOrmShape);
+			getChildren().add(bodyOrmShape);
 			bodyOrmShape = new Shape(collection.getElement());
 			bodyOrmShape.setIndent(20);
-			shapes.add(bodyOrmShape);
+			getChildren().add(bodyOrmShape);
 		}
 	}
 	
 	protected void setChildsHiden(boolean hiden) {
-		for (int i = 0; i < shapes.size(); i++)
-			((Shape)shapes.get(i)).setHiden(hiden);
+		for (int i = 0; i < getChildren().size(); i++)
+			((Shape)getChildren().get(i)).setHiden(hiden);
 	}
 
 	public void refreshChildsHiden(OrmDiagram ormDiagram) {
 		childsHiden = !childsHiden;
-		for (int i = 0; i < shapes.size(); i++)
-			((Shape)shapes.get(i)).setHiden(childsHiden);
+		for (int i = 0; i < getChildren().size(); i++)
+			((Shape)getChildren().get(i)).setHiden(childsHiden);
 		firePropertyChange(SET_CHILDS_HIDEN, null, new Boolean(childsHiden));
 		ormDiagram.refreshComponentReferences(this);
 	}

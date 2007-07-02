@@ -12,6 +12,8 @@ package org.jboss.tools.hibernate.veditor.editors.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Konstantin Mishin
@@ -37,6 +39,37 @@ public abstract class ModelElement{
 	public synchronized void removePropertyChangeListener(PropertyChangeListener l) {
 		if (l != null) {
 			pcsDelegate.removePropertyChangeListener(l);
+		}
+	}
+	
+	private List children = new OList();
+	private ModelElement parent;
+	
+	public List getChildren(){
+		return children;
+	}
+	
+	public ModelElement getParent(){
+		return parent;
+	}
+	
+	public void setParent(ModelElement element){
+		parent = element;
+	}
+	
+	class OList extends ArrayList{
+		public OList(){
+			
+		}
+		
+		public boolean add(Object item){
+			if(item instanceof ModelElement)((ModelElement)item).setParent(ModelElement.this);
+			return super.add(item);
+		}
+		
+		public boolean remove(Object item){
+			if(item instanceof ModelElement)((ModelElement)item).setParent(null);
+			return super.remove(item);
 		}
 	}
 

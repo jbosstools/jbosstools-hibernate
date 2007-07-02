@@ -27,11 +27,6 @@ public class ExpandeableShape extends Shape {
 	public static final String SHOW_REFERENCES = "show references";
 	
 	private boolean refHide = false;
-	protected List<Shape> shapes = new ArrayList<Shape>();
-
-	public List<Shape> getChildren() {
-		return shapes;
-	}
 
 	public ExpandeableShape(Object ioe) {
 		super(ioe);
