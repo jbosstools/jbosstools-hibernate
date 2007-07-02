@@ -146,9 +146,15 @@ public class OrmShape extends ExpandeableShape {
 
 	public void refreshHiden() {
 		hiden = !hiden;
-		for (int i = 0; i < getChildren().size(); i++)
-			((Shape)getChildren().get(i)).setHiden(hiden);
+		setElementHidden(this, hiden);
 		firePropertyChange(SET_HIDEN, null, new Boolean(hiden));
+	}
+	
+	private void setElementHidden(ModelElement element, boolean hidden){
+		for (int i = 0; i < element.getChildren().size(); i++){
+			((Shape)element.getChildren().get(i)).setHiden(hidden);
+			setElementHidden((ModelElement)element.getChildren().get(i), hidden);
+		}
 	}
 
 	public Point getLocation() {
