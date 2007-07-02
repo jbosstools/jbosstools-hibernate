@@ -186,6 +186,13 @@ public class OrmDiagram extends ModelElement {
 				createConnections(classShape, shape);
 				new Connection(classShape, shape);
 			}
+			RootClass rc = (RootClass)persistentClass;
+			Iterator iter = rc.getSubclassIterator();
+			while (iter.hasNext()) {
+				SingleTableSubclass singleTableSubclass = (SingleTableSubclass)iter.next();
+				classShape = elements.get(singleTableSubclass.getEntityPersisterClass().getCanonicalName());
+				if (classShape == null) classShape = createShape(singleTableSubclass);
+			}
 //			if (persistentClass.getPersistentClassMapping() != null) {
 //				Iterator iter =((IHibernateClassMapping)(persistentClass).getPersistentClassMapping()).getJoinIterator();			
 //				while ( iter.hasNext() ) {
@@ -217,9 +224,9 @@ public class OrmDiagram extends ModelElement {
 							if (elements.get(cls.getClassName()) == null)
 								getOrCreatePersistentClass(cls, null);
 						}
-					} else if (clazz instanceof SingleTableSubclass) {
-						SingleTableSubclass singleTableSubclass = (SingleTableSubclass)clazz;
-						getOrCreatePersistentClass(singleTableSubclass, null);
+//					} else if (clazz instanceof SingleTableSubclass) {
+//						SingleTableSubclass singleTableSubclass = (SingleTableSubclass)clazz;
+//						getOrCreatePersistentClass(singleTableSubclass, null);
 					}
 				}
 //				IPersistentClassMapping persistentClassMappings[] = databaseTable.getPersistentClassMappings();
