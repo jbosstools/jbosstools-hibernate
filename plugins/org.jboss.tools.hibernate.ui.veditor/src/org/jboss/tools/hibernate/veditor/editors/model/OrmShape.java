@@ -91,7 +91,7 @@ public class OrmShape extends ExpandeableShape {
 
 			Property identifierProperty = rootClass.getIdentifierProperty();
 			if (identifierProperty != null) {
-				shapes.add(new Shape(identifierProperty));
+				getChildren().add(new Shape(identifierProperty));
 			}
 
 			KeyValue identifier = rootClass.getIdentifier();
@@ -99,7 +99,7 @@ public class OrmShape extends ExpandeableShape {
 				Iterator iterator = ((Component)identifier).getPropertyIterator();
 				while (iterator.hasNext()) {
 					Property property = (Property) iterator.next();
-					shapes.add(new Shape(property));
+					getChildren().add(new Shape(property));
 				}
 			}
 
@@ -141,7 +141,7 @@ public class OrmShape extends ExpandeableShape {
 				} else {
 					bodyOrmShape = new Shape(property);
 				}
-				shapes.add(bodyOrmShape);
+				getChildren().add(bodyOrmShape);
 			}
 		} else if (ormElement instanceof Table) {
 			Iterator iterator = ((Table)getOrmElement()).getColumnIterator();

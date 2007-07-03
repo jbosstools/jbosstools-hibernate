@@ -185,8 +185,9 @@ public class OrmDiagram extends ModelElement {
 			Iterator iter = rc.getSubclassIterator();
 			while (iter.hasNext()) {
 				SingleTableSubclass singleTableSubclass = (SingleTableSubclass)iter.next();
-				classShape = elements.get(singleTableSubclass.getEntityPersisterClass().getCanonicalName());
-				if (classShape == null) classShape = createShape(singleTableSubclass);
+				OrmShape singleTableSubclassShape = elements.get(singleTableSubclass.getEntityPersisterClass().getCanonicalName());
+				if (singleTableSubclassShape == null) singleTableSubclassShape = createShape(singleTableSubclass);
+				new Connection(singleTableSubclassShape, shape);
 			}
 //			if (persistentClass.getPersistentClassMapping() != null) {
 //				Iterator iter =((IHibernateClassMapping)(persistentClass).getPersistentClassMapping()).getJoinIterator();			
@@ -201,7 +202,6 @@ public class OrmDiagram extends ModelElement {
 		}
 		return classShape;
 	}
-	
 	private OrmShape getOrCreateDatabaseTable(Table databaseTable){
 		OrmShape tableShape = null;
 		if(databaseTable != null) {
@@ -331,8 +331,13 @@ public class OrmDiagram extends ModelElement {
 				OrmShape childShape = getOrCreateDatabaseTable(map.getCollectionTable());
 				Shape keyShape = childShape.getChild(((DependantValue)((Shape)componentShape.getChildren().get(0)).getOrmElement()).getColumnIterator().next());
 				new Connection((Shape)componentShape.getChildren().get(0), keyShape);
-				Shape elementShape = childShape.getChild(((SimpleValue)((Shape)componentShape.getChildren().get(1)).getOrmElement()).getColumnIterator().next());
-				new Connection((Shape)componentShape.getChildren().get(1), elementShape);
+
+				Iterator iter = ((SimpleValue)((Shape)componentShape.getChildren().get(1)).getOrmElement()).getColumnIterator();
+				while (iter.hasNext()) {
+					Column col = (Column)iter.next();
+					Shape elementShape = childShape.getChild(col);
+					new Connection((Shape)componentShape.getChildren().get(1), elementShape);
+				}
 			}
 			setDirty(true);
 			firePropertyChange(REFRESH, null, null);
