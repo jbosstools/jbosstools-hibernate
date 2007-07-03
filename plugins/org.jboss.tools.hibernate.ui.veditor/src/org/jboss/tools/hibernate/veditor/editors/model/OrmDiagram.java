@@ -43,6 +43,9 @@ import org.hibernate.mapping.Value;
 import org.hibernate.type.EntityType;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.veditor.VizualEditorPlugin;
+import org.jboss.tools.hibernate.veditor.editors.autolayout.IItemInfo;
+import org.jboss.tools.hibernate.veditor.editors.autolayout.ILinkInfo;
+import org.jboss.tools.hibernate.veditor.editors.autolayout.IProcessInfo;
 
 
 /**
@@ -373,4 +376,158 @@ public class OrmDiagram extends ModelElement {
 		}
 		return classShape;
 	}
+	
+	class DiagramInfo implements IProcessInfo {
+
+		ArrayList items = new ArrayList();
+
+		/**
+		 * 
+		 * @param flow
+		 */
+		public DiagramInfo() {
+			IItemInfo item;
+
+			for (int i = 0; i < getChildren().size(); i++) {
+				item = new DiagramElementInfo((OrmShape) getChildren().get(i));
+				addItem(item);
+			}
+		}
+
+		/**
+		 * 
+		 */
+		public IItemInfo[] getItems() {
+			return (IItemInfo[]) items.toArray(new IItemInfo[0]);
+		}
+
+		/**
+		 * 
+		 * @param item
+		 */
+		public void addItem(IItemInfo item) {
+			items.add(item);
+		}
+	}
+	
+	class DiagramElementInfo implements IItemInfo {
+		OrmShape element;
+
+		ArrayList links = new ArrayList();
+
+		/**
+		 * 
+		 * @param element
+		 */
+		public DiagramElementInfo(OrmShape element) {
+			ILinkInfo link;
+			this.element = element;
+			for (int i = 0; i < element.getSourceConnections().size(); i++) {
+				link = new LinkInfo((Connection) element.getSourceConnections().get(i));
+				addLink(link);
+			}
+			Shape child;
+			for (int j = 0; j < element.getChildren().size(); j++) {
+				child = (Shape) element.getChildren().get(j);
+				if (child.getSourceConnections().size() == 0) {
+					link = new LinkInfo(getID());
+					addLink(link);
+				}
+				for (int i = 0; i < child.getSourceConnections().size(); i++) {
+					link = new LinkInfo((Connection) child.getSourceConnections().get(i));
+					addLink(link);
+				}
+			}
+		}
+
+		/**
+		 * 
+		 */
+		public String getID() {
+			return element.toString();
+		}
+
+		/**
+		 * 
+		 */
+		public boolean isComment() {
+				return false;
+		}
+
+		/**
+		 * 
+		 */
+		public int[] getShape() {
+			int[] shape = new int[4];
+			shape[0] = element.getLocation().x;
+			shape[1] = element.getLocation().y;
+			shape[2] = 100;
+			shape[3] = 100;
+			return shape;
+		}
+
+		/**
+		 * 
+		 */
+		public ILinkInfo[] getLinks() {
+			return (ILinkInfo[]) links.toArray(new ILinkInfo[0]);
+		}
+
+		/**
+		 * 
+		 * @param link
+		 */
+		public void addLink(ILinkInfo link) {
+			links.add(link);
+		}
+
+		/**
+		 * 
+		 */
+		public void setShape(int[] s) {
+			element.setLocation(new Point(s[0], s[1]));
+		}
+
+	}
+	
+	class LinkInfo implements ILinkInfo {
+		Connection link = null;
+
+		String id = null;
+
+		/**
+		 * 
+		 * @param link
+		 */
+		public LinkInfo(Connection link) {
+			this.link = link;
+		}
+
+		/**
+		 * 
+		 * @param id
+		 */
+		public LinkInfo(String id) {
+			this.id = id;
+		}
+
+		/**
+		 * 
+		 */
+		public String getTargetID() {
+			if (id != null)
+				return id;
+			if (link.getTarget() != null)
+				return link.getTarget().toString();
+			else
+				return "";
+		}
+
+		/**
+		 * 
+		 */
+		public void setLinkShape(int[] vs) {
+		}
+	}
+
 }
