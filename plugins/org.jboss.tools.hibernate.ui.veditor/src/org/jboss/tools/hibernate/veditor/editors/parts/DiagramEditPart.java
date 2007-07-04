@@ -363,12 +363,15 @@ class DiagramInfo implements IDiagramInfo {
 			int[] shape = new int[4];
 			shape[0] = element.getLocation().x;
 			shape[1] = element.getLocation().y;
-			//OrmShapeEditPart part = (OrmShapeEditPart)getViewer().getEditPartRegistry().get(element);
-			//if(part != null)
-			//	shape[2] = part.getFigure().getSize().width;
-			//else
+			OrmShapeEditPart part = (OrmShapeEditPart)getViewer().getEditPartRegistry().get(element);
+			if(part != null){
+				IFigure fig = part.getFigure();
+				shape[2] = fig.getPreferredSize().width;
+				shape[3] = fig.getPreferredSize().height;
+			}else{
 				shape[2] = 600;
-			shape[3] = 100;
+				shape[3] = 100;
+			}
 			return shape;
 		}
 
