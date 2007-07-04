@@ -10,6 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.veditor.editors.autolayout;
 
-public interface IProcessInfo {
+public interface IDiagramInfo {
 	IItemInfo[] getItems();
 }

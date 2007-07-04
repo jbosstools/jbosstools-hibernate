@@ -12,7 +12,7 @@ package org.jboss.tools.hibernate.veditor.editors.autolayout.impl;
 
 import org.jboss.tools.hibernate.veditor.editors.autolayout.IItemInfo;
 import org.jboss.tools.hibernate.veditor.editors.autolayout.ILinkInfo;
-import org.jboss.tools.hibernate.veditor.editors.autolayout.IProcessInfo;
+import org.jboss.tools.hibernate.veditor.editors.autolayout.IDiagramInfo;
 
 
 public class AutoLayoutImpl {
@@ -34,7 +34,7 @@ public class AutoLayoutImpl {
         items.setOverride(b);
     }
 
-    public void setProcess(IProcessInfo process) {
+    public void setProcess(IDiagramInfo process) {
 //		constants.update();
         items.setProcess(process);
         apply();

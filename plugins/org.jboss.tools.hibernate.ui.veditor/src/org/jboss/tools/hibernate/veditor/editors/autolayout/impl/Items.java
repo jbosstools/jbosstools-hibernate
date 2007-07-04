@@ -14,12 +14,12 @@ import java.util.*;
 
 import org.jboss.tools.hibernate.veditor.editors.autolayout.IItemInfo;
 import org.jboss.tools.hibernate.veditor.editors.autolayout.ILinkInfo;
-import org.jboss.tools.hibernate.veditor.editors.autolayout.IProcessInfo;
+import org.jboss.tools.hibernate.veditor.editors.autolayout.IDiagramInfo;
 
 
 public class Items {
 	protected LayuotConstants constants;
-    protected IProcessInfo process;
+    protected IDiagramInfo process;
     protected Item[] items;
     protected Map paths = new HashMap();
     protected Groups groups = new Groups();
@@ -36,7 +36,7 @@ public class Items {
         override = b;
     }
     
-    public void setProcess(IProcessInfo process) {
+    public void setProcess(IDiagramInfo process) {
         this.process = process;
         try { load(); } catch (Exception e) { e.printStackTrace(); }
     }

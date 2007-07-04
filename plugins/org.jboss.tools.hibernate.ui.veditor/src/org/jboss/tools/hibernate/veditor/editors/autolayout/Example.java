@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class Example {
 	
-	public static IProcessInfo generateRandomProcess(int nodeCount, int linkCount) {
+	public static IDiagramInfo generateRandomProcess(int nodeCount, int linkCount) {
 		ProcessInfoImpl process = new ProcessInfoImpl();
 		for (int i = 0; i < nodeCount; i++) {
 			ItemInfoImpl item = new ItemInfoImpl();
@@ -33,7 +33,7 @@ public class Example {
 		return process;
 	}
 	
-	static void printProcess(IProcessInfo process) {
+	static void printProcess(IDiagramInfo process) {
 		IItemInfo[] items = process.getItems();
 		for (int i = 0; i < items.length; i++) printItem(items[i]);
 	}
@@ -55,7 +55,7 @@ public class Example {
 	}
 
 	public static void main(String[] args) {
-		IProcessInfo process = generateRandomProcess(10, 17);
+		IDiagramInfo process = generateRandomProcess(10, 17);
 		System.out.println("Before Layout");
 		printProcess(process);
 		AutoLayout layout = new AutoLayout();
@@ -67,7 +67,7 @@ public class Example {
 	}
 }
 
-class ProcessInfoImpl implements IProcessInfo {
+class ProcessInfoImpl implements IDiagramInfo {
 	ArrayList items = new ArrayList();
 
 	public IItemInfo[] getItems() {

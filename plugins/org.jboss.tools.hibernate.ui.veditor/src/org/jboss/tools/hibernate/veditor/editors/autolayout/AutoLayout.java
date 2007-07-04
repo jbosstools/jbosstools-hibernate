@@ -37,7 +37,7 @@ public class AutoLayout {
     	engine.setOverride(b);
     }
 
-    public void setProcess(IProcessInfo process) {
+    public void setProcess(IDiagramInfo process) {
     	engine.setProcess(process);
     }
 
