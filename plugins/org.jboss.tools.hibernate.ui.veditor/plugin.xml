@@ -8,7 +8,7 @@
             contributorClass="org.jboss.tools.hibernate.veditor.editors.EditorActionContributor"
             icon="icons/sample.gif"
             id="org.jboss.tools.hibernate.veditor.editors.vizualeditor"
-            name="Vizual Editor">
+            name="Hibernate Diagram Viewer">
       </editor>
    </extension>
 
