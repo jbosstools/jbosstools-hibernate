@@ -32,6 +32,7 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.SelectionEditPolicy;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
+import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
@@ -223,11 +224,10 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 	}
 
 	protected Color getSelectionColor() {
-//R		if (getCastedModel().getOrmElement() instanceof IPersistentClass || getCastedModel().getOrmElement() instanceof IPersistentField || getCastedModel().getOrmElement() instanceof IHibernateValueMapping) 
-		if (getCastedModel().getOrmElement() instanceof PersistentClass || 
+	if (getCastedModel().getOrmElement() instanceof PersistentClass || 
 				getCastedModel().getOrmElement() instanceof Property || 
-				getCastedModel().getOrmElement() instanceof Component || 
-				getCastedModel().getOrmElement() instanceof DependantValue) 
+				getCastedModel().getOrmElement() instanceof SimpleValue ||
+				getCastedModel().getOrmElement() instanceof OneToMany) 
 			return ResourceManager.getInstance().getColor(new RGB(112,161,99));
 		else if (getCastedModel().getOrmElement() instanceof Table || getCastedModel().getOrmElement() instanceof Column) 
 			return ResourceManager.getInstance().getColor(new RGB(66,173,247));
