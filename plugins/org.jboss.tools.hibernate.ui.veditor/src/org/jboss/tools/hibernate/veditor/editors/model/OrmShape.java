@@ -153,13 +153,13 @@ public class OrmShape extends ExpandeableShape {
 		}
 	}
 	
-	public Shape getChild(Object ormElement) {
+	public Shape getChild(Column ormElement) {
 		Shape shape = null;
 		Iterator iter = getChildren().iterator();
 		while (iter.hasNext()) {
 			Shape child = (Shape)iter.next();
 			Object childElement = child.getOrmElement();
-			if (ormElement == childElement) {
+			if (childElement instanceof Column && ormElement.getName().equals(((Column)childElement).getName())) {
 				return child;
 			}
 		}
