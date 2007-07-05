@@ -1,14 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
- ******************************************************************************/ 
-package org.jboss.tools.hibernate.veditor.editors.parts;
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
+package org.jboss.tools.hibernate.ui.veditor.editors.parts;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -16,7 +16,6 @@ import java.beans.PropertyChangeListener;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
-import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editpolicies.SelectionEditPolicy;
@@ -28,16 +27,12 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
-import org.jboss.tools.hibernate.veditor.editors.figures.RoundPolylineConnection;
-import org.jboss.tools.hibernate.veditor.editors.model.Connection;
-import org.jboss.tools.hibernate.veditor.editors.model.ModelElement;
+import org.jboss.tools.hibernate.ui.veditor.editors.figures.RoundPolylineConnection;
+import org.jboss.tools.hibernate.ui.veditor.editors.model.Connection;
+import org.jboss.tools.hibernate.ui.veditor.editors.model.ModelElement;
 
 
 
-/**
- * @author Konstantin Mishin
- *
- */
 class ConnectionEditPart extends AbstractConnectionEditPart 
 implements PropertyChangeListener {
 	
@@ -83,10 +78,8 @@ implements PropertyChangeListener {
 
 	private Color getColor() {
 		Object element = getCastedModel().getTarget().getOrmElement();
-//R		if (getCastedModel().getTarget().getOrmElement() instanceof IPersistentClass) 
 		if (element instanceof RootClass || element instanceof SingleTableSubclass) 
 			return ResourceManager.getInstance().getColor(new RGB(210,155,100));
-//R		else if (getCastedModel().getTarget().getOrmElement() instanceof IDatabaseColumn || getCastedModel().getTarget().getOrmElement() instanceof IDatabaseTable) 
 		else if (element instanceof Column || element instanceof Table || element instanceof Property) 
 			return ResourceManager.getInstance().getColor(new RGB(160, 160, 160));
 		else

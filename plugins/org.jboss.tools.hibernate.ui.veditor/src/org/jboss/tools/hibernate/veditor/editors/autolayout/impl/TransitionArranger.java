@@ -8,11 +8,11 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.veditor.editors.autolayout.impl;
+package org.jboss.tools.hibernate.ui.veditor.editors.autolayout.impl;
 
 import java.util.ArrayList;
 
-import org.jboss.tools.hibernate.veditor.editors.autolayout.ILinkInfo;
+import org.jboss.tools.hibernate.ui.veditor.editors.autolayout.ILinkInfo;
 
 
 public class TransitionArranger {

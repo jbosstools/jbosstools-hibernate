@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.veditor.editors.autolayout.impl;
+package org.jboss.tools.hibernate.ui.veditor.editors.autolayout.impl;
 
 import java.util.*;
 

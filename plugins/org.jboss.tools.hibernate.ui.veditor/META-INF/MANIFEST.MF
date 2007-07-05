@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Eclipse-LazyStart: true
 Bundle-Name: %pluginName
 Bundle-ClassPath: orm2-veditor.jar
-Bundle-Activator: org.jboss.tools.hibernate.veditor.VizualEditorPlugin
+Bundle-Activator: org.jboss.tools.hibernate.ui.veditor.VisualEditorPlugin
 Bundle-Vendor: %providerName
 Bundle-ManifestVersion: 2
 Bundle-Localization: plugin
@@ -17,10 +17,10 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.hibernate.ui.view,
  org.jboss.tools.common
 Bundle-Version: 2.0.0
-Export-Package: org.jboss.tools.hibernate.veditor,
- org.jboss.tools.hibernate.veditor.editors,
- org.jboss.tools.hibernate.veditor.editors.command,
- org.jboss.tools.hibernate.veditor.editors.figures,
- org.jboss.tools.hibernate.veditor.editors.model,
- org.jboss.tools.hibernate.veditor.editors.parts
+Export-Package: org.jboss.tools.hibernate.ui.veditor,
+ org.jboss.tools.hibernate.ui.veditor.editors,
+ org.jboss.tools.hibernate.ui.veditor.editors.command,
+ org.jboss.tools.hibernate.ui.veditor.editors.figures,
+ org.jboss.tools.hibernate.ui.veditor.editors.model,
+ org.jboss.tools.hibernate.ui.veditor.editors.parts
 

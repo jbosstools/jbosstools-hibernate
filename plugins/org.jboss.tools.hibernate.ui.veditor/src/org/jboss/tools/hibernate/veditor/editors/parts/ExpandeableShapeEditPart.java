@@ -1,35 +1,24 @@
 /*******************************************************************************
- * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
- ******************************************************************************/ 
-package org.jboss.tools.hibernate.veditor.editors.parts;
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
+package org.jboss.tools.hibernate.ui.veditor.editors.parts;
 
 import java.beans.PropertyChangeEvent;
-import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.draw2d.FocusBorder;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.swt.graphics.RGB;
-import org.jboss.tools.hibernate.veditor.editors.figures.TitleFigure;
-import org.jboss.tools.hibernate.veditor.editors.figures.TitleLabel;
-import org.jboss.tools.hibernate.veditor.editors.model.ComponentShape;
-import org.jboss.tools.hibernate.veditor.editors.model.Connection;
-import org.jboss.tools.hibernate.veditor.editors.model.ExpandeableShape;
-import org.jboss.tools.hibernate.veditor.editors.model.OrmShape;
-import org.jboss.tools.hibernate.veditor.editors.model.Shape;
+import org.jboss.tools.hibernate.ui.veditor.editors.model.ExpandeableShape;
+import org.jboss.tools.hibernate.ui.veditor.editors.model.Shape;
 
 
 public class ExpandeableShapeEditPart extends ShapeEditPart {
