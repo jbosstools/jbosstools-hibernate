@@ -28,6 +28,7 @@ import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
+import org.hibernate.mapping.Formula;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
@@ -36,6 +37,7 @@ import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
@@ -207,7 +209,7 @@ public class OrmDiagram extends ModelElement {
 	private OrmShape getOrCreateDatabaseTable(Table databaseTable){
 		OrmShape tableShape = null;
 		if(databaseTable != null) {
-			String tableName = databaseTable.getName() + "." + databaseTable.getName();
+			String tableName = databaseTable.getSchema() + "." + databaseTable.getName();
 			tableShape = (OrmShape)elements.get(tableName);
 			if(tableShape == null) {
 				tableShape = createShape(databaseTable);
@@ -253,13 +255,16 @@ public class OrmDiagram extends ModelElement {
 				Value value = ((Property)element).getValue();
 				iterator = value.getColumnIterator();
 				while (iterator.hasNext()) {
-					Column databaseColumn = (Column) iterator.next();
-					for (int j = 0; j < databaseColumns.size(); j++) {
-						if (databaseColumn.getName().equals(((Column)((Shape)databaseColumns.get(j)).getOrmElement()).getName())) {
-							Shape databaseShape = (Shape)databaseColumns.remove(j);
-							new Connection(shape, databaseShape);
-							databaseColumns2.add(i++, databaseShape);
-						}						
+					Object o = iterator.next();
+					if (o instanceof Column) {
+						Column databaseColumn = (Column)o;
+						for (int j = 0; j < databaseColumns.size(); j++) {
+							if (databaseColumn.getName().equals(((Column)((Shape)databaseColumns.get(j)).getOrmElement()).getName())) {
+								Shape databaseShape = (Shape)databaseColumns.remove(j);
+								new Connection(shape, databaseShape);
+								databaseColumns2.add(i++, databaseShape);
+							}						
+						}
 					}
 				}
 			}
@@ -295,7 +300,12 @@ public class OrmDiagram extends ModelElement {
 				while (iterator.hasNext()) {
 					Connection connection = (Connection)iterator.next();
 					connection.setHiden(shape.getHide());
-					targets.put(((Column)connection.getTarget().getOrmElement()).getName(), connection.getTarget());
+					Object el = connection.getTarget().getOrmElement();
+					if (el instanceof Column) {
+						targets.put(((Column)el).getName(), connection.getTarget());
+					} else if (el instanceof RootClass) {
+						targets.put(((RootClass)el).getClassName(), connection.getTarget());
+					}
 				}
 				KeyValue id = rootClass.getIdentifier();
 				iterator = id.getColumnIterator();
@@ -328,10 +338,16 @@ public class OrmDiagram extends ModelElement {
 			} else if (collection.isOneToMany()) {
 				OrmShape childShape = getOrCreateAssociationClass(property);
 				new Connection((Shape)(componentShape.getChildren().get(1)), childShape);
-			} else if (collection.isMap()) {
-				Map map = (Map)collection;
-				OrmShape childShape = getOrCreateDatabaseTable(map.getCollectionTable());
-				Shape keyShape = childShape.getChild(((DependantValue)((Shape)componentShape.getChildren().get(0)).getOrmElement()).getColumnIterator().next());
+				OrmShape keyTableShape = getOrCreateDatabaseTable(collection.getKey().getTable());
+				Iterator iter = collection.getKey().getColumnIterator();
+				while (iter.hasNext()) {
+					Column col = (Column)iter.next();
+					Shape keyColumnShape = keyTableShape.getChild(col);
+					if (keyColumnShape != null) new Connection((Shape)(componentShape.getChildren().get(0)), keyColumnShape);
+				}
+			} else if (collection.isMap() || collection.isSet()) {
+				OrmShape childShape = getOrCreateDatabaseTable(collection.getCollectionTable());
+				Shape keyShape = childShape.getChild((Column)((DependantValue)((Shape)componentShape.getChildren().get(0)).getOrmElement()).getColumnIterator().next());
 				new Connection((Shape)componentShape.getChildren().get(0), keyShape);
 
 				Iterator iter = ((SimpleValue)((Shape)componentShape.getChildren().get(1)).getOrmElement()).getColumnIterator();
