@@ -1,14 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
- ******************************************************************************/ 
-package org.jboss.tools.hibernate.view.views;
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
+package org.jboss.tools.hibernate.ui.view.views;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -22,23 +22,16 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TreeItem;
 
 
-/**
- * @author Tau from Minsk
- */
 public class OrmContentProvider implements ITreeContentProvider/*, IOrmModelListener, IOrmProjectChangedListener*/  {
 
-	//ExplorerClass
 	protected static final int PACKAGE_CLASS_FIELD_CONTENT_PROVIDER = 1;	
 	protected static final int CLASS_FIELD_CONTENT_PROVIDER = 2;
 	protected static final int STORAGE_CLASS_FIELD_CONTENT_PROVIDER = 3;
 	
-	//ExplorerBase	
 	protected static final int SCHEMA_TABLE_COLUMN_CONTENT_PROVIDER = 4;
 	protected static final int TABLE_COLUMN_CONTENT_PROVIDER = 5;	
 	
 	protected TreeViewer viewer;
-//	protected IOrmProject ormProject;
-//	protected IOrmModel ormModel;
 	
 	private static final ContentProviderVisitor contentProviderVisitor = new ContentProviderVisitor();
 	private static final Object[] nullChildren = new Object[0];
@@ -46,15 +39,12 @@ public class OrmContentProvider implements ITreeContentProvider/*, IOrmModelList
 	private int tip;
 	private boolean sorting;
 	
-	// add 27.06.2005
 	private Object[] expandedElements = null;	
 	private ISelection selectionElements = null;
 	
-	// add 09.11.2005
 	private String[] beforeChangeElements = null;	
 	private String beforeChangeSelectionElementQualifiedName = null;
 
-	// add tau 05.12.2005
 	public boolean lockMenu = false;
 
 	
@@ -63,20 +53,7 @@ public class OrmContentProvider implements ITreeContentProvider/*, IOrmModelList
 		sorting = true; // default - sort
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
-	 */
-	// edit tau 07.03.2006
 	public Object[] getChildren(Object parentElement) {
-//		if (parentElement instanceof IOrmModel) {
-//			children = ((IOrmModel) parentElement).getOrmProjects();
-//		} else if (parentElement instanceof IOrmElement) {
-//			children = (Object[]) ((IOrmElement) parentElement).accept(contentProviderVisitor, viewer.getContentProvider());
-//		} else children = nullChildren;
-		
-		// add Tau 05.05.2005
 		if (children == null) 
 			children = nullChildren;
 
@@ -88,48 +65,6 @@ public class OrmContentProvider implements ITreeContentProvider/*, IOrmModelList
 		return children;
 	}
 	
-//	static protected Comparator<Object> comparator = new Comparator<Object>() {
-//		private Collator fCollator = Collator.getInstance();
-//
-//		public int compare(Object o1, Object o2) {
-//			
-//			String name1 = null;
-//			String name2 = null;
-//			if (o1 instanceof IOrmElement )
-//				name1 = ((IOrmElement) o1).getName();
-//			
-//			if (o2 instanceof IOrmElement  )
-//				name2 = ((IOrmElement) o2).getName();
-//			
-//			/* del tau 29.09.2005
-//			//akuzmin 21.08.2005
-//			if ((name1==null)&&(name2==null))
-//			{
-//				ExceptionHandler.logInfo("Error when compare element "+o1.toString()+" and "+o2.toString());
-//				name1="";
-//				name2="";
-//			}
-//			else
-//				if (name1==null)
-//				{
-//					ExceptionHandler.logInfo("Error when compare element null and "+name2);
-//					name1="";
-//				}
-//				else if (name2==null)
-//				{
-//					ExceptionHandler.logInfo("Error when compare element "+name1+" and null");
-//					name2="";
-//				}
-//			*/
-//			return fCollator.compare(name1, name2);
-//		}
-//	};	
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getParent(java.lang.Object)
-	 */
 	public Object getParent(Object element) {
 		
 		//if (ViewPlugin.TRACE || ViewPlugin.TRACE_VIEW )	ExceptionHandler.logInfo("!!! OrmContentProvider.getParent(Object element):" + element + ", tip="+tip);
@@ -137,11 +72,6 @@ public class OrmContentProvider implements ITreeContentProvider/*, IOrmModelList
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
-	 */
 	public boolean hasChildren(Object element) {
     	//TODO EXP 3d
 		//return getChildren(element).length > 0;
@@ -154,30 +84,14 @@ public class OrmContentProvider implements ITreeContentProvider/*, IOrmModelList
 			return true;		
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
-	 */
 	public Object[] getElements(Object inputElement) {
 		return getChildren(inputElement);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.viewers.IContentProvider#dispose()
-	 */
 	public void dispose() {
 		
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(org.eclipse.jface.viewers.Viewer,
-	 *      java.lang.Object, java.lang.Object)
-	 */
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 
 //		if (ViewPlugin.TRACE || ViewPlugin.TRACE_VIEW )	ExceptionHandler.logInfo("OrmContentProvider.inputChanged():"+", tip="+tip+", this= " + this);		

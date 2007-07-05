@@ -8,7 +8,7 @@
  * Contributors:
  *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
-package org.jboss.tools.hibernate.view;
+package org.jboss.tools.hibernate.ui.view;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
