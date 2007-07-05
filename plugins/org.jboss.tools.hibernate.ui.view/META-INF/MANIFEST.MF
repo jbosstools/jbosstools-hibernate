@@ -4,11 +4,11 @@ Bundle-Name: View Plug-in
 Bundle-SymbolicName: org.jboss.tools.hibernate.ui.view;singleton:=true
 Bundle-Version: 2.0.0
 Bundle-ClassPath: view.jar
-Bundle-Activator: org.jboss.tools.hibernate.view.ViewPlugin
+Bundle-Activator: org.jboss.tools.hibernate.ui.view.ViewPlugin
 Bundle-Vendor: RedHat
 Bundle-Localization: plugin
-Export-Package: org.jboss.tools.hibernate.view,
- org.jboss.tools.hibernate.view.views
+Export-Package: org.jboss.tools.hibernate.ui.view,
+ org.jboss.tools.hibernate.ui.view.views
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,

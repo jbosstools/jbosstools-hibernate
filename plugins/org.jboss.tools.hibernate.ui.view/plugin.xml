@@ -38,12 +38,12 @@
          <filter name="nature" value="org.eclipse.jdt.core.javanature"/>
       </objectContribution>
       <objectContribution id="diagramEditorAction" objectClass="org.hibernate.mapping.RootClass"> 
-         <menu id="org.jboss.tools.hibernate.view.openDiagram" label="Open Mapping Diagram" path="diagramEditorAction"/>
+         <menu id="org.jboss.tools.hibernate.ui.view.openDiagram" label="Open Mapping Diagram" path="diagramEditorAction"/>
          <action
             id="com.xyz.runXYZ" 
             label="Open Mapping Diagram" 
             icon="icons/runXYZ.gif" 
-            class="org.jboss.tools.hibernate.view.views.OpenDiagramActionDelegate"> 
+            class="org.jboss.tools.hibernate.ui.view.views.OpenDiagramActionDelegate"> 
          </action> 
       </objectContribution> 
    </extension>
