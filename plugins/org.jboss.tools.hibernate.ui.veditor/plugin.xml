@@ -4,10 +4,10 @@
     <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="org.jboss.tools.hibernate.veditor.editors.VizualEditor"
-            contributorClass="org.jboss.tools.hibernate.veditor.editors.EditorActionContributor"
+            class="org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor"
+            contributorClass="org.jboss.tools.hibernate.ui.veditor.editors.EditorActionContributor"
             icon="icons/sample.gif"
-            id="org.jboss.tools.hibernate.veditor.editors.vizualeditor"
+            id="org.jboss.tools.hibernate.ui.veditor.editors.visualeditor"
             name="Hibernate Diagram Viewer">
       </editor>
    </extension>
