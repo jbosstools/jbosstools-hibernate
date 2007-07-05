@@ -231,8 +231,9 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 			return ResourceManager.getInstance().getColor(new RGB(112,161,99));
 		else if (getCastedModel().getOrmElement() instanceof Table || getCastedModel().getOrmElement() instanceof Column) 
 			return ResourceManager.getInstance().getColor(new RGB(66,173,247));
-		else
-			throw new IllegalArgumentException();
+		//else
+			//throw new IllegalArgumentException();
+		return ResourceManager.getInstance().getColor(new RGB(190,190,190));
 	}
 	
 	private class ShapesSelectionEditPolicy extends SelectionEditPolicy {

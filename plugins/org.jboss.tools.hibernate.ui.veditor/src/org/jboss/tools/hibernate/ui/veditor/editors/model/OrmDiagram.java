@@ -254,7 +254,8 @@ public class OrmDiagram extends ModelElement {
 						for (int j = 0; j < databaseColumns.size(); j++) {
 							if (databaseColumn.getName().equals(((Column)((Shape)databaseColumns.get(j)).getOrmElement()).getName())) {
 								Shape databaseShape = (Shape)databaseColumns.remove(j);
-								new Connection(shape, databaseShape);
+								if(!isConnectionExist(shape, databaseShape))
+									new Connection(shape, databaseShape);
 								databaseColumns2.add(i++, databaseShape);
 							}						
 						}
@@ -264,7 +265,16 @@ public class OrmDiagram extends ModelElement {
 		}
 		databaseColumns.addAll(databaseColumns2);
 	}
-
+	
+	private boolean isConnectionExist(Shape source, Shape target){
+		Connection conn;
+		for(int i=0;i<source.getSourceConnections().size();i++){
+			conn = (Connection)source.getSourceConnections().get(i);
+			if(conn.getTarget().equals(target)) return true;
+		}
+		return false;
+	}
+	
 	public String[] getChildrenLocations() {
 		return childrenLocations;
 	}
