@@ -47,10 +47,13 @@ public class OrmShape extends ExpandeableShape {
 
 			KeyValue identifier = rootClass.getIdentifier();
 			if (identifier instanceof Component) {
-				Iterator iterator = ((Component)identifier).getPropertyIterator();
-				while (iterator.hasNext()) {
-					Property property = (Property) iterator.next();
-					getChildren().add(new Shape(property));
+				Component component = (Component)identifier;
+				if (component.isEmbedded()) {
+					Iterator iterator = ((Component)identifier).getPropertyIterator();
+					while (iterator.hasNext()) {
+						Property property = (Property) iterator.next();
+						getChildren().add(new Shape(property));
+					}
 				}
 			}
 

@@ -32,21 +32,28 @@ public class SpecialRootClass extends RootClass {
 
 	private void generate() {
 		if (property != null) {
-			Collection collection = (Collection)property.getValue();
-			Component component = (Component)collection.getElement();
-			setClassName(component.getComponentClassName());
-			PersistentClass ownerClass = collection.getOwner();
-			if (component.getParentProperty() != null) {
-				Property property = ownerClass.getProperty(component.getParentProperty());
-				if (property == null && ownerClass.getIdentifierProperty().getName().equals(component.getParentProperty())) {
-					property = ownerClass.getIdentifierProperty();
-				}
-				if (property != null) parentProperty = ownerClass.getIdentifierProperty();
+			Component component = null;
+			if (property.getValue() instanceof Collection) {
+				Collection collection = (Collection)property.getValue();
+				component = (Component)collection.getElement();
+			} else if (property.getValue() instanceof Component) {
+				component = (Component)property.getValue();
 			}
-			Iterator iterator = component.getPropertyIterator();
-			while (iterator.hasNext()) {
-				Property property = (Property)iterator.next();
-				if (property != null) addProperty(property);
+			if (component != null) {
+				setClassName(component.getComponentClassName());
+				PersistentClass ownerClass = component.getOwner();
+				if (component.getParentProperty() != null) {
+					Property property = ownerClass.getProperty(component.getParentProperty());
+					if (property == null && ownerClass.getIdentifierProperty().getName().equals(component.getParentProperty())) {
+						property = ownerClass.getIdentifierProperty();
+					}
+					if (property != null) parentProperty = ownerClass.getIdentifierProperty();
+				}
+				Iterator iterator = component.getPropertyIterator();
+				while (iterator.hasNext()) {
+					Property property = (Property)iterator.next();
+					if (property != null) addProperty(property);
+				}
 			}
 		}
 	}

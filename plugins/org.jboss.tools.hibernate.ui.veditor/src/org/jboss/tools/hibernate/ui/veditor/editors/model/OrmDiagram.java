@@ -188,16 +188,18 @@ public class OrmDiagram extends ModelElement {
 				if(!isConnectionExist(singleTableSubclassShape, shape))
 					new Connection(singleTableSubclassShape, shape);
 			}
-//			if (persistentClass.getPersistentClassMapping() != null) {
-//				Iterator iter =((IHibernateClassMapping)(persistentClass).getPersistentClassMapping()).getJoinIterator();			
-//				while ( iter.hasNext() ) {
-//					IJoinMapping jm =(IJoinMapping)iter.next();
-//					shape =  (OrmShape)elements.get(jm.getTable().getName());
-//					if(shape == null)
-//						shape = getOrCreateDatabaseTable(jm.getTable());
-//					createConnections(classShape, shape);
-//				}
-//			}
+
+			if (persistentClass.getIdentifier() instanceof Component) {
+				Component identifier = (Component)persistentClass.getIdentifier();
+				if (!identifier.getComponentClassName().equals(identifier.getOwner().getClassName())) {
+					OrmShape componentClassShape = elements.get(identifier.getComponentClassName());
+					if (componentClassShape == null && persistentClass instanceof RootClass) {
+						componentClassShape = getOrCreateComponentClass(((RootClass)persistentClass).getIdentifierProperty());
+						OrmShape tableShape = getOrCreateDatabaseTable(identifier.getTable());
+						createConnections(componentClassShape, tableShape);
+					}
+				}
+			}
 		}
 		return classShape;
 	}
@@ -223,14 +225,6 @@ public class OrmDiagram extends ModelElement {
 //						getOrCreatePersistentClass(singleTableSubclass, null);
 					}
 				}
-//				IPersistentClassMapping persistentClassMappings[] = databaseTable.getPersistentClassMappings();
-//				for (int j = 0; j < persistentClassMappings.length; j++) {
-//					if(persistentClassMappings[j].getPersistentClass() != null ) {
-//						OrmShape shape =  (OrmShape)elements.get(persistentClassMappings[j].getPersistentClass().getName());
-//						if(shape == null)
-//							getOrCreatePersistentClass(persistentClassMappings[j].getPersistentClass(), null);
-//					}
-//				}
 			}			
 		}
 		return tableShape;
@@ -372,20 +366,24 @@ public class OrmDiagram extends ModelElement {
 		}
 	}
 
-	private OrmShape getOrCreateComponentClass(Property property) {
+	public OrmShape getOrCreateComponentClass(Property property) {
 		OrmShape classShape = null;
-		Component component = (Component)((Collection)property.getValue()).getElement();
-		if (component != null) {
+		if (property.getValue() instanceof Collection) {
+			Component component = (Component)((Collection)property.getValue()).getElement();
+			if (component != null) {
+				classShape = createShape(property);
+				OrmShape tableShape = (OrmShape)elements.get(component.getTable().getSchema() + "." + component.getTable().getName());
+				if (tableShape == null) tableShape = getOrCreateDatabaseTable(component.getTable());
+					createConnections(classShape, tableShape);
+					if(!isConnectionExist(classShape, tableShape))
+						new Connection(classShape, tableShape);
+					Shape parentShape = ((SpecialOrmShape)classShape).getParentShape();
+					OrmShape parentClassShape = (OrmShape)elements.get(((Property)parentShape.getOrmElement()).getPersistentClass().getClassName());
+					if(!isConnectionExist(parentShape, parentClassShape))
+						new Connection(parentShape, parentClassShape);
+			}
+		} else if (property.getValue() instanceof Component) {
 			classShape = createShape(property);
-			OrmShape tableShape = (OrmShape)elements.get(component.getTable().getSchema() + "." + component.getTable().getName());
-			if (tableShape == null) tableShape = getOrCreateDatabaseTable(component.getTable());
-				createConnections(classShape, tableShape);
-				if(!isConnectionExist(classShape, tableShape))
-					new Connection(classShape, tableShape);
-				Shape parentShape = ((SpecialOrmShape)classShape).getParentShape();
-				OrmShape parentClassShape = (OrmShape)elements.get(((Property)parentShape.getOrmElement()).getPersistentClass().getClassName());
-				if(!isConnectionExist(parentShape, parentClassShape))
-					new Connection(parentShape, parentClassShape);
 		}
 		return classShape;
 	}
