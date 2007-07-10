@@ -10,20 +10,23 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.veditor.editors.model;
 
-import java.util.Iterator;
-
-import org.eclipse.draw2d.geometry.Point;
 import org.hibernate.mapping.Collection;
-import org.hibernate.mapping.Column;
-import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.Table;
 
 public class ComponentShape extends ExpandeableShape {
 	public static final String SET_CHILDS_HIDEN = "set childs hiden";
 
 	protected boolean childsHiden = true;
+	
+	private OrmShape reference=null;
+	
+	public void setReference(OrmShape reference){
+		this.reference = reference;
+	}
+	
+	public OrmShape getReference(){
+		return reference;
+	}
 
 	public ComponentShape(Object ioe) {	
 		super(ioe);
@@ -46,9 +49,15 @@ public class ComponentShape extends ExpandeableShape {
 
 	public void refreshChildsHiden(OrmDiagram ormDiagram) {
 		childsHiden = !childsHiden;
+		
 		for (int i = 0; i < getChildren().size(); i++)
 			((Shape)getChildren().get(i)).setHiden(childsHiden);
+		
+		if(!childsHiden)
+			ormDiagram.refreshComponentReferences(this);
+		else
+			ormDiagram.hideReferences(this);
+		
 		firePropertyChange(SET_CHILDS_HIDEN, null, new Boolean(childsHiden));
-		ormDiagram.refreshComponentReferences(this);
 	}
 }

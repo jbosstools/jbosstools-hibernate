@@ -18,26 +18,16 @@ import java.util.List;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
-import org.eclipse.draw2d.geometry.Point;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.ImageConstants;
-import org.hibernate.console.KnownConfigurations;
-import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
-import org.hibernate.mapping.Formula;
 import org.hibernate.mapping.KeyValue;
-import org.hibernate.mapping.ManyToOne;
-import org.hibernate.mapping.Map;
 import org.hibernate.mapping.OneToMany;
-import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Table;
@@ -45,8 +35,6 @@ import org.hibernate.mapping.Value;
 import org.hibernate.type.EntityType;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.ui.veditor.VisualEditorPlugin;
-import org.jboss.tools.hibernate.ui.veditor.editors.autolayout.IItemInfo;
-import org.jboss.tools.hibernate.ui.veditor.editors.autolayout.ILinkInfo;
 
 
 public class OrmDiagram extends ModelElement {
@@ -157,6 +145,22 @@ public class OrmDiagram extends ModelElement {
 			ormShape = new OrmShape(ormElement);
 			getChildren().add(ormShape);
 			elements.put(((SingleTableSubclass)ormElement).getEntityName(), ormShape);
+		}
+		return ormShape;
+	}
+
+	private OrmShape getShape(Object ormElement) {
+		OrmShape ormShape = null;
+		if (ormElement instanceof RootClass) {
+			ormShape = elements.get(((RootClass)ormElement).getClassName());
+		} else if (ormElement instanceof Table) {
+			Table table = (Table)ormElement;
+			ormShape = elements.get(table.getSchema() + "." + table.getName());
+		} else if (ormElement instanceof Property) {
+			SpecialRootClass specialRootClass = new SpecialRootClass((Property)ormElement);
+			ormShape = elements.get(specialRootClass.getClassName());
+		} else if (ormElement instanceof SingleTableSubclass) {
+			ormShape = elements.get(((SingleTableSubclass)ormElement).getEntityName());
 		}
 		return ormShape;
 	}
@@ -317,24 +321,86 @@ public class OrmDiagram extends ModelElement {
 			}
 		}
 	}
-
+	
 	protected Configuration getConfiguration() {
 		return configuration;
 	}
+	
+	protected void hideReferences(ComponentShape componentShape) {
+		OrmShape reference = componentShape.getReference();
+		if(reference != null){
+			Object element = reference.getOrmElement();
+			if(element instanceof RootClass){
+				RootClass rc = (RootClass)element;
+				Table table = rc.getTable();
+				OrmShape shape = getShape(table);
+				removeLinks(shape);
+				getChildren().remove(shape);
+				elements.remove(shape);
+			}
+			Property property = (Property)componentShape.getOrmElement();
+			Type valueType = property.getValue().getType();
+			if (valueType.isCollectionType()) {
+				Collection collection = (Collection)property.getValue();
+				Value component = collection.getElement();
+				if (component instanceof Component) {
+				} else if (collection.isOneToMany()) {
+					OneToMany comp = (OneToMany)((Collection)property.getValue()).getElement();
+					if (component != null){
+						Shape sh = elements.get(comp.getAssociatedClass().getTable().getSchema() + "." + comp.getAssociatedClass().getTable().getName());
+						removeLinks(sh);
+						elements.remove(comp.getAssociatedClass().getTable().getSchema() + "." + comp.getAssociatedClass().getTable().getName());
+						Shape sh2 = elements.get(comp.getAssociatedClass().getClassName());
+						removeLinks(sh2);
+						elements.remove(comp.getAssociatedClass().getClassName());
+					}
+				} else if (collection.isMap() || collection.isSet()) {
+					getOrCreateDatabaseTable(collection.getCollectionTable());
+				}
+			}
+			removeLinks(reference);
+			getChildren().remove(reference);
+			elements.remove(reference);
+			componentShape.setReference(null);
+		}
+		//setDirty(true);
+		firePropertyChange(REFRESH, null, null);
+	}
+	
+	protected void removeLinks(Shape shape){
+		Connection con;
+		for(int i=shape.getSourceConnections().size()-1;i>=0;i--){
+			con = shape.getSourceConnections().get(i);
+			con.getTarget().getTargetConnections().remove(con);
+			shape.getSourceConnections().remove(i);
+		}
+		for(int i=shape.getTargetConnections().size()-1;i>=0;i--){
+			con = shape.getTargetConnections().get(i);
+			con.getSource().getSourceConnections().remove(con);
+			shape.getTargetConnections().remove(i);
+		}
+		for(int i=shape.getChildren().size()-1;i>=0;i--){
+			removeLinks((Shape)shape.getChildren().get(i));
+		}
+		//if(shape.getParent() != null)shape.getParent().getChildren().remove(shape);
+		//elements.remove(shape);
+	}
 
 	protected void refreshComponentReferences(ComponentShape componentShape) {
+		OrmShape childShape = null;
 		Property property = (Property)componentShape.getOrmElement();
 		Type valueType = property.getValue().getType();
 		if (valueType.isCollectionType()) {
 			Collection collection = (Collection)property.getValue();
 			Value component = collection.getElement();
 			if (component instanceof Component) {//valueType.isComponentType()
-				OrmShape childShape = (OrmShape)elements.get(((Component)component).getComponentClassName());
+				childShape = (OrmShape)elements.get(((Component)component).getComponentClassName());
 				if(childShape == null) childShape = getOrCreateComponentClass(property);
 				if(!isConnectionExist((Shape)(componentShape.getChildren().get(1)), childShape))
 					new Connection((Shape)(componentShape.getChildren().get(1)), childShape);
+				
 			} else if (collection.isOneToMany()) {
-				OrmShape childShape = getOrCreateAssociationClass(property);
+				childShape = getOrCreateAssociationClass(property);
 				if(!isConnectionExist((Shape)(componentShape.getChildren().get(1)), childShape))
 					new Connection((Shape)(componentShape.getChildren().get(1)), childShape);
 				OrmShape keyTableShape = getOrCreateDatabaseTable(collection.getKey().getTable());
@@ -344,10 +410,9 @@ public class OrmDiagram extends ModelElement {
 					Shape keyColumnShape = keyTableShape.getChild(col);
 					if (keyColumnShape != null && !isConnectionExist((Shape)(componentShape.getChildren().get(0)), keyColumnShape)) new Connection((Shape)(componentShape.getChildren().get(0)), keyColumnShape);
 				}
+				
 			} else /*if (collection.isMap() || collection.isSet())*/ {
-				Table table = collection.getCollectionTable();
-				OrmShape childShape = getOrCreateDatabaseTable(table);
-//				childShape.getChild(((Shape)componentShape.getChildren().get(0)).getOrmElement());
+				childShape = getOrCreateDatabaseTable(collection.getCollectionTable());
 				Shape keyShape = childShape.getChild((Column)((DependantValue)((Shape)componentShape.getChildren().get(0)).getOrmElement()).getColumnIterator().next());
 				if(!isConnectionExist((Shape)componentShape.getChildren().get(0), keyShape))
 					new Connection((Shape)componentShape.getChildren().get(0), keyShape);
@@ -360,6 +425,7 @@ public class OrmDiagram extends ModelElement {
 						new Connection((Shape)componentShape.getChildren().get(1), elementShape);
 				}
 			}
+			componentShape.setReference(childShape);
 			setDirty(true);
 			firePropertyChange(REFRESH, null, null);
 		}
