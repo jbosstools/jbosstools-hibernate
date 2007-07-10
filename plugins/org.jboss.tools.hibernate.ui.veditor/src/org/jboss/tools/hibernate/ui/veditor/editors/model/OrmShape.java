@@ -61,7 +61,9 @@ public class OrmShape extends ExpandeableShape {
 			while (iterator.hasNext()) {
 				Property field = (Property)iterator.next();
 				if (!field.isComposite()) {
-					if (field.getValue().getType().isEntityType()) {
+					if (field.getValue().isSimpleValue() && !((SimpleValue)field.getValue()).isTypeSpecified()) {
+						bodyOrmShape = new Shape(field);
+					} else if (field.getValue().getType().isEntityType()) {
 						bodyOrmShape = new ExpandeableShape(field);
 					} else if (field.getValue().getType().isCollectionType()) {
 						bodyOrmShape = new ComponentShape(field);

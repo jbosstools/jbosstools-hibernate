@@ -149,12 +149,9 @@ public class OrmDiagram extends ModelElement {
 			Table table = (Table)ormElement;
 			elements.put(table.getSchema() + "." + table.getName(), ormShape);
 		} else if (ormElement instanceof Property) {
-//			ormShape = new OrmShape(ormElement);
 			SpecialRootClass specialRootClass = new SpecialRootClass((Property)ormElement);
 			ormShape = new SpecialOrmShape(specialRootClass);
 			getChildren().add(ormShape);
-//			Property property = (Property)ormElement;
-//			elements.put(property.getPersistentClass().getEntityName() + "." + property.getName(), ormShape);
 			elements.put(specialRootClass.getClassName(), ormShape);
 		} else if (ormElement instanceof SingleTableSubclass) {
 			ormShape = new OrmShape(ormElement);
@@ -347,8 +344,10 @@ public class OrmDiagram extends ModelElement {
 					Shape keyColumnShape = keyTableShape.getChild(col);
 					if (keyColumnShape != null && !isConnectionExist((Shape)(componentShape.getChildren().get(0)), keyColumnShape)) new Connection((Shape)(componentShape.getChildren().get(0)), keyColumnShape);
 				}
-			} else if (collection.isMap() || collection.isSet()) {
-				OrmShape childShape = getOrCreateDatabaseTable(collection.getCollectionTable());
+			} else /*if (collection.isMap() || collection.isSet())*/ {
+				Table table = collection.getCollectionTable();
+				OrmShape childShape = getOrCreateDatabaseTable(table);
+//				childShape.getChild(((Shape)componentShape.getChildren().get(0)).getOrmElement());
 				Shape keyShape = childShape.getChild((Column)((DependantValue)((Shape)componentShape.getChildren().get(0)).getOrmElement()).getColumnIterator().next());
 				if(!isConnectionExist((Shape)componentShape.getChildren().get(0), keyShape))
 					new Connection((Shape)componentShape.getChildren().get(0), keyShape);

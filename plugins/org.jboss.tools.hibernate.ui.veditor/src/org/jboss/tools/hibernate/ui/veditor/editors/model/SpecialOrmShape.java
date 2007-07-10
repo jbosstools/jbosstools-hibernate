@@ -35,7 +35,7 @@ public class SpecialOrmShape extends OrmShape {
 			parentShape = bodyOrmShape;
 		}
 		
-		Iterator iterator = (rootClass).getPropertyIterator();
+		Iterator iterator = rootClass.getPropertyIterator();
 		while (iterator.hasNext()) {
 			Property field = (Property)iterator.next();
 			if (field.getValue().getType().isEntityType()) {
