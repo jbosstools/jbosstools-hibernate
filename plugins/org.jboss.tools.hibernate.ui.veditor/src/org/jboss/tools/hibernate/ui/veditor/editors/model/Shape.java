@@ -43,11 +43,11 @@ public class Shape extends ModelElement {
 	
 	
 	public List<Connection> getSourceConnections() {
-		return new ArrayList<Connection>(sourceConnections);
+		return sourceConnections;
 	}
 	
 	public List<Connection> getTargetConnections() {
-		return new ArrayList<Connection>(targetConnections);
+		return targetConnections;
 	}
 	
 	public Object getOrmElement() {

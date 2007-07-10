@@ -344,6 +344,7 @@ public class OrmDiagram extends ModelElement {
 				Collection collection = (Collection)property.getValue();
 				Value component = collection.getElement();
 				if (component instanceof Component) {
+					getOrCreateComponentClass(property);
 				} else if (collection.isOneToMany()) {
 					OneToMany comp = (OneToMany)((Collection)property.getValue()).getElement();
 					if (component != null){
@@ -363,7 +364,7 @@ public class OrmDiagram extends ModelElement {
 			elements.remove(reference);
 			componentShape.setReference(null);
 		}
-		//setDirty(true);
+		removeLinks(componentShape);
 		firePropertyChange(REFRESH, null, null);
 	}
 	
@@ -372,18 +373,16 @@ public class OrmDiagram extends ModelElement {
 		for(int i=shape.getSourceConnections().size()-1;i>=0;i--){
 			con = shape.getSourceConnections().get(i);
 			con.getTarget().getTargetConnections().remove(con);
-			shape.getSourceConnections().remove(i);
+			shape.getSourceConnections().remove(con);
 		}
 		for(int i=shape.getTargetConnections().size()-1;i>=0;i--){
 			con = shape.getTargetConnections().get(i);
 			con.getSource().getSourceConnections().remove(con);
-			shape.getTargetConnections().remove(i);
+			shape.getTargetConnections().remove(con);
 		}
 		for(int i=shape.getChildren().size()-1;i>=0;i--){
 			removeLinks((Shape)shape.getChildren().get(i));
 		}
-		//if(shape.getParent() != null)shape.getParent().getChildren().remove(shape);
-		//elements.remove(shape);
 	}
 
 	protected void refreshComponentReferences(ComponentShape componentShape) {
