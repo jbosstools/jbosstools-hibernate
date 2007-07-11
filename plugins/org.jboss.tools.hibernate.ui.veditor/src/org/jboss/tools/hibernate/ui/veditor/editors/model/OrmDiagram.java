@@ -450,7 +450,8 @@ public class OrmDiagram extends ModelElement {
 						new Connection((Shape)componentShape.getChildren().get(1), elementShape);
 				}
 			}
-			componentShape.setReference(childShape);
+			if(!componentShape.getParent().equals(childShape))
+				componentShape.setReference(childShape);
 			setDirty(true);
 			firePropertyChange(REFRESH, null, null);
 		}
