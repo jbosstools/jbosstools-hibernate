@@ -60,8 +60,9 @@ public class OrmShape extends ExpandeableShape {
 			Iterator iterator = rootClass.getPropertyIterator();
 			while (iterator.hasNext()) {
 				Property field = (Property)iterator.next();
-				if (!field.isComposite()) {
-					if (field.getValue().isSimpleValue() && !((SimpleValue)field.getValue()).isTypeSpecified()) {
+					if (field.isComposite()) {
+						bodyOrmShape = new ExpandeableShape(field);
+					} else if (field.getValue().isSimpleValue() && !((SimpleValue)field.getValue()).isTypeSpecified()) {
 						bodyOrmShape = new Shape(field);
 					} else if (field.getValue().getType().isEntityType()) {
 						bodyOrmShape = new ExpandeableShape(field);
@@ -71,67 +72,67 @@ public class OrmShape extends ExpandeableShape {
 						bodyOrmShape = new Shape(field);
 					}
 					getChildren().add(bodyOrmShape);
-				} else {
-					Component component = (Component)field.getValue();
-					Iterator iter = component.getPropertyIterator();
-					while (iter.hasNext()) {
-						Property property = (Property)iter.next();
-						if (property.getValue().getType().isEntityType()) {
-							bodyOrmShape = new ExpandeableShape(property);
-						} else if (property.getValue().getType().isCollectionType()) {
-							bodyOrmShape = new ComponentShape(property);
-						} else {
-							bodyOrmShape = new Shape(property);
-						}
-						getChildren().add(bodyOrmShape);
-					}
-				}
+//				} else {
+//					Component component = (Component)field.getValue();
+//					Iterator iter = component.getPropertyIterator();
+//					while (iter.hasNext()) {
+//						Property property = (Property)iter.next();
+//						if (property.getValue().getType().isEntityType()) {
+//							bodyOrmShape = new ExpandeableShape(property);
+//						} else if (property.getValue().getType().isCollectionType()) {
+//							bodyOrmShape = new ComponentShape(property);
+//						} else {
+//							bodyOrmShape = new Shape(property);
+//						}
+//						getChildren().add(bodyOrmShape);
+//					}
+//				}
 			}
 		} else if (ormElement instanceof SingleTableSubclass) {
 			RootClass rootClass = ((SingleTableSubclass)ormElement).getRootClass();
 
-			Property identifierProperty = rootClass.getIdentifierProperty();
-			if (identifierProperty != null) {
-				getChildren().add(new Shape(identifierProperty));
-			}
+//			Property identifierProperty = rootClass.getIdentifierProperty();
+//			if (identifierProperty != null) {
+//				getChildren().add(new Shape(identifierProperty));
+//			}
 
-			KeyValue identifier = rootClass.getIdentifier();
-			if (identifier instanceof Component) {
-				Iterator iterator = ((Component)identifier).getPropertyIterator();
-				while (iterator.hasNext()) {
-					Property property = (Property) iterator.next();
-					getChildren().add(new Shape(property));
-				}
-			}
+//			KeyValue identifier = rootClass.getIdentifier();
+//			if (identifier instanceof Component) {
+//				Iterator iterator = ((Component)identifier).getPropertyIterator();
+//				while (iterator.hasNext()) {
+//					Property property = (Property) iterator.next();
+//					getChildren().add(new Shape(property));
+//				}
+//			}
 
-			Iterator iterator = rootClass.getPropertyIterator();
-			while (iterator.hasNext()) {
-				Property field = (Property)iterator.next();
-				if (!field.isComposite()) {
-					if (field.getValue().getType().isEntityType()) {
-						bodyOrmShape = new ExpandeableShape(field);
-					} else if (field.getValue().getType().isCollectionType()) {
-						bodyOrmShape = new ComponentShape(field);
-					} else {
-						bodyOrmShape = new Shape(field);
-					}
-					getChildren().add(bodyOrmShape);
-				} else {
-					Component component = (Component)field.getValue();
-					Iterator iter = component.getPropertyIterator();
-					while (iter.hasNext()) {
-						Property property = (Property)iter.next();
-						if (property.getValue().getType().isEntityType()) {
-							bodyOrmShape = new ExpandeableShape(property);
-						} else if (property.getValue().getType().isCollectionType()) {
-							bodyOrmShape = new ComponentShape(property);
-						} else {
-							bodyOrmShape = new Shape(property);
-						}
-						getChildren().add(bodyOrmShape);
-					}
-				}
-			}
+//			Iterator iterator = rootClass.getPropertyIterator();
+//			while (iterator.hasNext()) {
+//				Property field = (Property)iterator.next();
+//				if (!field.isComposite()) {
+//					if (field.getValue().getType().isEntityType()) {
+//						bodyOrmShape = new ExpandeableShape(field);
+//					} else if (field.getValue().getType().isCollectionType()) {
+//						bodyOrmShape = new ComponentShape(field);
+//					} else {
+//						bodyOrmShape = new Shape(field);
+//					}
+//					getChildren().add(bodyOrmShape);
+//				} else {
+//					Component component = (Component)field.getValue();
+//					Iterator iter = component.getPropertyIterator();
+//					while (iter.hasNext()) {
+//						Property property = (Property)iter.next();
+//						if (property.getValue().getType().isEntityType()) {
+//							bodyOrmShape = new ExpandeableShape(property);
+//						} else if (property.getValue().getType().isCollectionType()) {
+//							bodyOrmShape = new ComponentShape(property);
+//						} else {
+//							bodyOrmShape = new Shape(property);
+//						}
+//						getChildren().add(bodyOrmShape);
+//					}
+//				}
+//			}
 			Iterator iter = ((SingleTableSubclass)ormElement).getPropertyIterator();
 			while (iter.hasNext()) {
 				Property property = (Property)iter.next();
