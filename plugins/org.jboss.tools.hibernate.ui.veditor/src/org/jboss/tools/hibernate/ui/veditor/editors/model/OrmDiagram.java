@@ -395,6 +395,10 @@ public class OrmDiagram extends ModelElement {
 					}
 				}
 			}
+			for(int i = reference.getChildren().size()-1;i>=0;i--){
+				if(reference.getChildren().get(i) instanceof ComponentShape)
+					hideReferences((ComponentShape)reference.getChildren().get(i));
+			}
 			removeLinks(reference);
 			getChildren().remove(reference);
 			elements.remove(reference);
