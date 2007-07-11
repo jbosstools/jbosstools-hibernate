@@ -52,9 +52,11 @@ public class OrmModelImageVisitor implements /*IOrmModelVisitor, IHibernateMappi
 
 	public Object visitPersistentField(Property field, Object argument) {
 		if (field !=null){
-			if (field.getType().isCollectionType()) {
-				return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.PersistentFieldCollection")); //$NON-NLS-1$		
-			}
+			try {
+				if (field.getType().isCollectionType()) {
+					return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.PersistentFieldCollection")); //$NON-NLS-1$		
+				}
+			} catch (Exception e) {}
 		}
 		return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.PersistentFieldNot_mapped")); //$NON-NLS-1$		
 	}

@@ -595,7 +595,10 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 		StringBuffer name = new StringBuffer();
 		name.append(field.getName());
 		name.append(BUNDLE.getString("OrmModelNameVisitor.Colon"));
-		String typeString = field.getType().getReturnedClass().getName();
+		String typeString = "";
+		try {
+			typeString = field.getType().getReturnedClass().getName();
+		} catch (Exception e) {}
 		
 		if (typeString != null) {
 /*				IPersistentValueMapping value = null;
