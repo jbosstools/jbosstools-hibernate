@@ -29,6 +29,7 @@ import org.jboss.tools.hibernate.ui.veditor.editors.figures.ComponentFigure;
 import org.jboss.tools.hibernate.ui.veditor.editors.figures.TitleLabel;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.ComponentShape;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
+import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmShape;
 
 
 public class ComponentShapeEditPart extends ExpandeableShapeEditPart {
@@ -71,7 +72,7 @@ public class ComponentShapeEditPart extends ExpandeableShapeEditPart {
 				figure.setSize(-1,-1);
 
 			refresh();
-//					((OrmDiagram)getParent().getModel()).setDirty(true);
+			((OrmShape)getParent().getModel()).refreshReference();
 		} else {
 			super.propertyChange(evt);
 		}
