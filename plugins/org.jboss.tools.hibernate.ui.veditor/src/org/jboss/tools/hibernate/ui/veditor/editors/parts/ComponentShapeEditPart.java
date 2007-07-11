@@ -26,6 +26,7 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.swt.graphics.RGB;
 import org.jboss.tools.hibernate.ui.veditor.editors.figures.ComponentFigure;
+import org.jboss.tools.hibernate.ui.veditor.editors.figures.TitleLabel;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.ComponentShape;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
 
@@ -36,7 +37,7 @@ public class ComponentShapeEditPart extends ExpandeableShapeEditPart {
 		if (getModel() instanceof ComponentShape) {
 			IFigure figure = new ComponentFigure();
 			figure.setLayoutManager(new ToolbarLayout());
-			Label label = new Label();
+			Label label = new TitleLabel();
 			label.setText(ormLabelProvider.getText(getCastedModel().getOrmElement()));	
 			label.setBackgroundColor(getColor());
 			label.setOpaque(true);
@@ -63,6 +64,7 @@ public class ComponentShapeEditPart extends ExpandeableShapeEditPart {
 		if (ComponentShape.SET_CHILDS_HIDEN.equals(prop)) {
 			int i = figure.getPreferredSize().width;
 			((ComponentFigure)figure).setChildsHiden(((Boolean)evt.getNewValue()).booleanValue());
+			
 			if(((Boolean)evt.getNewValue()).booleanValue())
 				figure.setSize(i,-1);
 			else

@@ -344,10 +344,16 @@ public class OrmDiagram extends ModelElement {
 				Collection collection = (Collection)property.getValue();
 				Value component = collection.getElement();
 				if (component instanceof Component) {
-					getOrCreateComponentClass(property);
+					Component comp = (Component)((Collection)property.getValue()).getElement();
+					if (comp != null) {
+						OrmShape classShape = createShape(property);
+						OrmShape tableShape = (OrmShape)elements.get(component.getTable().getSchema() + "." + component.getTable().getName());
+						removeLinks(tableShape);
+						elements.remove(component.getTable().getSchema() + "." + component.getTable().getName());
+					}
 				} else if (collection.isOneToMany()) {
 					OneToMany comp = (OneToMany)((Collection)property.getValue()).getElement();
-					if (component != null){
+					if (comp != null){
 						Shape sh = elements.get(comp.getAssociatedClass().getTable().getSchema() + "." + comp.getAssociatedClass().getTable().getName());
 						removeLinks(sh);
 						elements.remove(comp.getAssociatedClass().getTable().getSchema() + "." + comp.getAssociatedClass().getTable().getName());
@@ -356,7 +362,27 @@ public class OrmDiagram extends ModelElement {
 						elements.remove(comp.getAssociatedClass().getClassName());
 					}
 				} else if (collection.isMap() || collection.isSet()) {
-					getOrCreateDatabaseTable(collection.getCollectionTable());
+					Table databaseTable = collection.getCollectionTable();
+					OrmShape tableShape = null;
+					if(databaseTable != null) {
+						String tableName = databaseTable.getSchema() + "." + databaseTable.getName();
+						tableShape = (OrmShape)elements.get(tableName);
+						if(tableShape != null) {
+							Iterator iterator = getConfiguration().getClassMappings();
+							while (iterator.hasNext()) {
+								Object clazz = iterator.next();
+								if (clazz instanceof RootClass) {
+									RootClass cls = (RootClass)clazz;
+									Table table = cls.getTable();
+									if (tableName.equals(table.getName() + "." + table.getName())) {
+										if (elements.get(cls.getClassName()) != null)
+											elements.remove(cls.getClassName());
+									}
+								}
+							}
+							elements.remove(tableName);
+						}			
+					}
 				}
 			}
 			removeLinks(reference);
