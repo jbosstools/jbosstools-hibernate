@@ -475,9 +475,9 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 
 		StringBuffer name = new StringBuffer();
 //		if (((OrmContentProvider) viewer.getContentProvider()).getTip() == OrmContentProvider.PACKAGE_CLASS_FIELD_CONTENT_PROVIDER) {
-			name.append(clazz.getClassName());
+			name.append(clazz.getEntityName() != null ? clazz.getEntityName() : clazz.getEntityName());
 //		} else {
-//			name.append(clazz.getClassName());
+//			name.append(clazz.getEntityName());
 //		}
 
 		//edit tau 24.04.2006
@@ -502,7 +502,7 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 //		if (((OrmContentProvider) viewer.getContentProvider()).getTip() == OrmContentProvider.PACKAGE_CLASS_FIELD_CONTENT_PROVIDER) {
 			name.append(clazz.getEntityName());
 //		} else {
-//			name.append(clazz.getClassName());
+//			name.append(clazz.getEntityName());
 //		}
 
 		//edit tau 24.04.2006
