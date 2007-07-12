@@ -32,6 +32,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
+import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.ui.veditor.editors.figures.RoundLineBorder;
 import org.jboss.tools.hibernate.ui.veditor.editors.figures.TitleFigure;
@@ -55,8 +56,8 @@ public class OrmShapeEditPart extends ExpandeableShapeEditPart{
 			} else if (element instanceof Table) {
 				Table table = (Table)element; 
 				text = table.getSchema() + "." + table.getName();
-			} else if (element instanceof SingleTableSubclass) {
-				text = ormLabelProvider.getText((SingleTableSubclass)element);
+			} else if (element instanceof Subclass) {
+				text = ormLabelProvider.getText((Subclass)element);
 			}
 			label.setText(text);
 			label.setIcon(ormLabelProvider.getImage(getCastedModel().getOrmElement()));

@@ -23,6 +23,7 @@ import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
+import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
@@ -30,6 +31,7 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
+import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.type.EntityType;
@@ -141,10 +143,10 @@ public class OrmDiagram extends ModelElement {
 			ormShape = new SpecialOrmShape(specialRootClass);
 			getChildren().add(ormShape);
 			elements.put(specialRootClass.getClassName(), ormShape);
-		} else if (ormElement instanceof SingleTableSubclass) {
+		} else if (ormElement instanceof Subclass) {
 			ormShape = new OrmShape(ormElement);
 			getChildren().add(ormShape);
-			elements.put(((SingleTableSubclass)ormElement).getEntityName(), ormShape);
+			elements.put(((Subclass)ormElement).getClassName(), ormShape);
 		}
 		return ormShape;
 	}
@@ -183,11 +185,23 @@ public class OrmDiagram extends ModelElement {
 			RootClass rc = (RootClass)persistentClass;
 			Iterator iter = rc.getSubclassIterator();
 			while (iter.hasNext()) {
-				SingleTableSubclass singleTableSubclass = (SingleTableSubclass)iter.next();
-				OrmShape singleTableSubclassShape = elements.get(singleTableSubclass.getEntityPersisterClass().getCanonicalName());
-				if (singleTableSubclassShape == null) singleTableSubclassShape = createShape(singleTableSubclass);
-				if(!isConnectionExist(singleTableSubclassShape, shape))
-					new Connection(singleTableSubclassShape, shape);
+				Object element = iter.next();
+				if (element instanceof Subclass) {
+					Subclass subclass = (Subclass)element;
+					OrmShape subclassShape = elements.get(subclass.getClassName());
+					if (subclassShape == null) subclassShape = createShape(subclass);
+					if (((Subclass)element).isJoinedSubclass()) {
+						Table jcTable = ((Subclass)element).getTable();
+						OrmShape jcTableShape = getOrCreateDatabaseTable(jcTable);
+						createConnections(subclassShape, jcTableShape);
+						if(!isConnectionExist(subclassShape, jcTableShape))
+							new Connection(subclassShape, jcTableShape);
+					} else {
+						createConnections(subclassShape, shape);
+						if(!isConnectionExist(subclassShape, shape))
+							new Connection(subclassShape, shape);
+					}
+				}
 			}
 
 			if (persistentClass.getIdentifier() instanceof Component) {
@@ -204,6 +218,7 @@ public class OrmDiagram extends ModelElement {
 		}
 		return classShape;
 	}
+
 	private OrmShape getOrCreateDatabaseTable(Table databaseTable){
 		OrmShape tableShape = null;
 		if(databaseTable != null) {
@@ -265,9 +280,11 @@ public class OrmDiagram extends ModelElement {
 	
 	private boolean isConnectionExist(Shape source, Shape target){
 		Connection conn;
-		for(int i=0;i<source.getSourceConnections().size();i++){
-			conn = (Connection)source.getSourceConnections().get(i);
-			if(conn.getTarget().equals(target)) return true;
+		if (source != null && source.getSourceConnections() != null) {
+			for(int i=0;i<source.getSourceConnections().size();i++){
+				conn = (Connection)source.getSourceConnections().get(i);
+				if(conn.getTarget().equals(target)) return true;
+			}
 		}
 		return false;
 	}
