@@ -117,7 +117,7 @@ public class OrmDiagram extends ModelElement {
 			OrmShape shape = (OrmShape) getChildren().get(i);
 			Object ormElement = shape.getOrmElement();
 			if (ormElement instanceof RootClass) {
-				childrenLocations[i] = ((RootClass)ormElement).getClassName() + "@";
+				childrenLocations[i] = ((RootClass)ormElement).getEntityName() + "@";
 			} else if (ormElement instanceof Table) {
 				childrenLocations[i] = ((Table)ormElement).getSchema() + "." + ((Table)ormElement).getName()+"@";
 //			} else if (ormElement instanceof Component) {
@@ -132,7 +132,7 @@ public class OrmDiagram extends ModelElement {
 		if (ormElement instanceof RootClass) {
 			ormShape = new OrmShape(ormElement);
 			getChildren().add(ormShape);
-			elements.put(((RootClass)ormElement).getClassName(), ormShape);
+			elements.put(((RootClass)ormElement).getEntityName(), ormShape);
 		} else if (ormElement instanceof Table) {
 			ormShape = new OrmShape(ormElement);
 			getChildren().add(ormShape);
@@ -142,11 +142,11 @@ public class OrmDiagram extends ModelElement {
 			SpecialRootClass specialRootClass = new SpecialRootClass((Property)ormElement);
 			ormShape = new SpecialOrmShape(specialRootClass);
 			getChildren().add(ormShape);
-			elements.put(specialRootClass.getClassName(), ormShape);
+			elements.put(specialRootClass.getEntityName(), ormShape);
 		} else if (ormElement instanceof Subclass) {
 			ormShape = new OrmShape(ormElement);
 			getChildren().add(ormShape);
-			elements.put(((Subclass)ormElement).getClassName(), ormShape);
+			elements.put(((Subclass)ormElement).getEntityName(), ormShape);
 		}
 		return ormShape;
 	}
@@ -154,13 +154,13 @@ public class OrmDiagram extends ModelElement {
 	private OrmShape getShape(Object ormElement) {
 		OrmShape ormShape = null;
 		if (ormElement instanceof RootClass) {
-			ormShape = elements.get(((RootClass)ormElement).getClassName());
+			ormShape = elements.get(((RootClass)ormElement).getEntityName());
 		} else if (ormElement instanceof Table) {
 			Table table = (Table)ormElement;
 			ormShape = elements.get(table.getSchema() + "." + table.getName());
 		} else if (ormElement instanceof Property) {
 			SpecialRootClass specialRootClass = new SpecialRootClass((Property)ormElement);
-			ormShape = elements.get(specialRootClass.getClassName());
+			ormShape = elements.get(specialRootClass.getEntityName());
 		} else if (ormElement instanceof SingleTableSubclass) {
 			ormShape = elements.get(((SingleTableSubclass)ormElement).getEntityName());
 		}
@@ -171,7 +171,7 @@ public class OrmDiagram extends ModelElement {
 		OrmShape classShape = null;
 		OrmShape shape = null;
 		if(persistentClass != null) {
-			classShape = elements.get(persistentClass.getClassName());
+			classShape = elements.get(persistentClass.getEntityName());
 			if (classShape == null) classShape = createShape(persistentClass);
 			if(componentClassDatabaseTable == null && persistentClass.getTable() != null)
 				componentClassDatabaseTable = persistentClass.getTable();
@@ -188,7 +188,7 @@ public class OrmDiagram extends ModelElement {
 				Object element = iter.next();
 				if (element instanceof Subclass) {
 					Subclass subclass = (Subclass)element;
-					OrmShape subclassShape = elements.get(subclass.getClassName());
+					OrmShape subclassShape = elements.get(subclass.getEntityName());
 					if (subclassShape == null) subclassShape = createShape(subclass);
 					if (((Subclass)element).isJoinedSubclass()) {
 						Table jcTable = ((Subclass)element).getTable();
@@ -206,7 +206,7 @@ public class OrmDiagram extends ModelElement {
 
 			if (persistentClass.getIdentifier() instanceof Component) {
 				Component identifier = (Component)persistentClass.getIdentifier();
-				if (!identifier.getComponentClassName().equals(identifier.getOwner().getClassName())) {
+				if (!identifier.getComponentClassName().equals(identifier.getOwner().getEntityName())) {
 					OrmShape componentClassShape = elements.get(identifier.getComponentClassName());
 					if (componentClassShape == null && persistentClass instanceof RootClass) {
 						componentClassShape = getOrCreateComponentClass(((RootClass)persistentClass).getIdentifierProperty());
@@ -233,7 +233,7 @@ public class OrmDiagram extends ModelElement {
 						RootClass cls = (RootClass)clazz;
 						Table table = cls.getTable();
 						if (tableName.equals(table.getName() + "." + table.getName())) {
-							if (elements.get(cls.getClassName()) == null)
+							if (elements.get(cls.getEntityName()) == null)
 								getOrCreatePersistentClass(cls, null);
 						}
 //					} else if (clazz instanceof SingleTableSubclass) {
@@ -325,7 +325,7 @@ public class OrmDiagram extends ModelElement {
 							if (el instanceof Column) {
 								targets.put(((Column)el).getName(), connection.getTarget());
 							} else if (el instanceof RootClass) {
-								targets.put(((RootClass)el).getClassName(), connection.getTarget());
+								targets.put(((RootClass)el).getEntityName(), connection.getTarget());
 							}
 						}
 						KeyValue id = rootClass.getIdentifier();
@@ -384,9 +384,9 @@ public class OrmDiagram extends ModelElement {
 						Shape sh = elements.get(comp.getAssociatedClass().getTable().getSchema() + "." + comp.getAssociatedClass().getTable().getName());
 						removeLinks(sh);
 						elements.remove(comp.getAssociatedClass().getTable().getSchema() + "." + comp.getAssociatedClass().getTable().getName());
-						Shape sh2 = elements.get(comp.getAssociatedClass().getClassName());
+						Shape sh2 = elements.get(comp.getAssociatedClass().getEntityName());
 						removeLinks(sh2);
-						elements.remove(comp.getAssociatedClass().getClassName());
+						elements.remove(comp.getAssociatedClass().getEntityName());
 					}
 				} else if (collection.isMap() || collection.isSet()) {
 					Table databaseTable = collection.getCollectionTable();
@@ -402,8 +402,8 @@ public class OrmDiagram extends ModelElement {
 									RootClass cls = (RootClass)clazz;
 									Table table = cls.getTable();
 									if (tableName.equals(table.getName() + "." + table.getName())) {
-										if (elements.get(cls.getClassName()) != null)
-											elements.remove(cls.getClassName());
+										if (elements.get(cls.getEntityName()) != null)
+											elements.remove(cls.getEntityName());
 									}
 								}
 							}
@@ -500,7 +500,7 @@ public class OrmDiagram extends ModelElement {
 					if(!isConnectionExist(classShape, tableShape))
 						new Connection(classShape, tableShape);
 					Shape parentShape = ((SpecialOrmShape)classShape).getParentShape();
-					OrmShape parentClassShape = (OrmShape)elements.get(((Property)parentShape.getOrmElement()).getPersistentClass().getClassName());
+					OrmShape parentClassShape = (OrmShape)elements.get(((Property)parentShape.getOrmElement()).getPersistentClass().getEntityName());
 					if(!isConnectionExist(parentShape, parentClassShape))
 						new Connection(parentShape, parentClassShape);
 			}
@@ -514,7 +514,7 @@ public class OrmDiagram extends ModelElement {
 		OrmShape classShape = null;
 		OneToMany component = (OneToMany)((Collection)property.getValue()).getElement();
 		if (component != null) {
-			classShape = (OrmShape)elements.get(component.getAssociatedClass().getClassName());
+			classShape = (OrmShape)elements.get(component.getAssociatedClass().getEntityName());
 			if (classShape == null) classShape = createShape(component.getAssociatedClass());
 			OrmShape tableShape = (OrmShape)elements.get(component.getAssociatedClass().getTable().getSchema() + "." + component.getAssociatedClass().getTable().getName());
 			if (tableShape == null) tableShape = getOrCreateDatabaseTable(component.getAssociatedClass().getTable());

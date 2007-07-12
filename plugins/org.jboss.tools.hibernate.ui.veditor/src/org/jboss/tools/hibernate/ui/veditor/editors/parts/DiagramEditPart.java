@@ -122,7 +122,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 			RootClass persistentClass = (RootClass) getCastedModel()
 					.getOrmElement();
 			ormShape = (OrmShape) hashMap
-					.remove(persistentClass.getClassName());
+					.remove(persistentClass.getEntityName());
 			if (ormShape != null) {
 				ormShape.setLocation(new Point(20, 20));
 				tempPoint = 40 + getChildrenFigurePreferredHeight(ormShape);

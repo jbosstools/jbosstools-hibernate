@@ -95,7 +95,7 @@ public class VisualEditor extends GraphicalEditor {
 		ObjectEditorInput objectEditorInput = (ObjectEditorInput)input;
 		Configuration configuration = objectEditorInput.getConfiguration();
 		RootClass rootClass = (RootClass)(objectEditorInput).getObject();
-		setPartName("Diagram for " + rootClass.getClassName());
+		setPartName("Diagram for " + rootClass.getEntityName());
 		ormDiagram = new OrmDiagram(configuration, rootClass);
 	}
 }
