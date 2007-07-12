@@ -20,6 +20,7 @@ import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
+import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 
 /**
@@ -495,7 +496,7 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 		return name.toString();
 	}
 
-	public Object visitPersistentClass(SingleTableSubclass clazz, Object argument) {
+	public Object visitPersistentClass(Subclass clazz, Object argument) {
 
 		StringBuffer name = new StringBuffer();
 //		if (((OrmContentProvider) viewer.getContentProvider()).getTip() == OrmContentProvider.PACKAGE_CLASS_FIELD_CONTENT_PROVIDER) {
