@@ -23,7 +23,16 @@ public class ExpandeableShape extends Shape {
 	public static final String SHOW_REFERENCES = "show references";
 	
 	private boolean refHide = false;
-
+	
+	private OrmShape reference=null;
+	
+	public void setReference(OrmShape reference){
+		this.reference = reference;
+	}
+	
+	public OrmShape getReference(){
+		return reference;
+	}
 	public ExpandeableShape(Object ioe) {
 		super(ioe);
 	}
@@ -31,7 +40,10 @@ public class ExpandeableShape extends Shape {
 	public void refreshReferences(Object model) {
 		refHide = !refHide;
 		if (model instanceof OrmDiagram) {
-			((OrmDiagram)model).processExpand(this);
+			if(refHide)
+				((OrmDiagram)model).processExpand(this);
+			else
+				((OrmDiagram)model).processCollapse(this);
 		}
 		firePropertyChange(SHOW_REFERENCES, null, new Boolean(refHide));
 	}

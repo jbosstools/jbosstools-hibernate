@@ -172,7 +172,7 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 		return anchor;
 	}
 	
-	private OrmShapeEditPart getOrmShapeEditPart() {
+	protected OrmShapeEditPart getOrmShapeEditPart() {
 		int i = 0;
 		EditPart part = this;
 		while (!((part instanceof OrmShapeEditPart))) {
@@ -268,7 +268,7 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 		
 	}
 
-	private Object getElement() {
+	protected Object getElement() {
 		Object element = getCastedModel().getOrmElement();
 		if (element instanceof SpecialRootClass) element = (RootClass)element;
 		return element;

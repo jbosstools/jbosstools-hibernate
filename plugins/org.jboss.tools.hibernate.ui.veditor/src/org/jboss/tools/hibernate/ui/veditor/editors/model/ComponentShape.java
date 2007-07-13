@@ -18,15 +18,7 @@ public class ComponentShape extends ExpandeableShape {
 
 	protected boolean childsHiden = true;
 	
-	private OrmShape reference=null;
 	
-	public void setReference(OrmShape reference){
-		this.reference = reference;
-	}
-	
-	public OrmShape getReference(){
-		return reference;
-	}
 
 	public ComponentShape(Object ioe) {	
 		super(ioe);

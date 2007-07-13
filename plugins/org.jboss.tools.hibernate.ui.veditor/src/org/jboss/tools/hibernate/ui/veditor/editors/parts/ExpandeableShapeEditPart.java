@@ -14,15 +14,34 @@ import java.beans.PropertyChangeEvent;
 import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.swt.graphics.RGB;
+import org.jboss.tools.hibernate.ui.veditor.editors.figures.TitleLabel;
+import org.jboss.tools.hibernate.ui.veditor.editors.figures.TopLineBorder;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.ExpandeableShape;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.Shape;
 
 
 public class ExpandeableShapeEditPart extends ShapeEditPart {
-
+	protected IFigure createFigure() {
+		if (getModel() instanceof Shape) {
+			Label label = new TitleLabel();
+			label.setText(ormLabelProvider.getText(getElement()));	
+			label.setBackgroundColor(getColor());
+			label.setIcon(ormLabelProvider.getImage(getElement()));
+			label.setLabelAlignment(PositionConstants.LEFT);
+			label.setOpaque(true);
+			TopLineBorder border = new TopLineBorder(1,2+getCastedModel().getIndent(),1,2);
+			border.setColor(getOrmShapeEditPart().getColor());
+			label.setBorder(border);
+			return label;
+		} else {
+			throw new IllegalArgumentException();
+		}
+	}
 	public void performRequest(Request req) {
 		if(RequestConstants.REQ_OPEN.equals(req.getType())) {
 			((ExpandeableShape)getModel()).refreshReferences(getViewer().getContents().getModel());
