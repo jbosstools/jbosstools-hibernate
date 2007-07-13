@@ -23,7 +23,6 @@ import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
-import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
@@ -161,12 +160,58 @@ public class OrmDiagram extends ModelElement {
 		} else if (ormElement instanceof Property) {
 			SpecialRootClass specialRootClass = new SpecialRootClass((Property)ormElement);
 			ormShape = elements.get(specialRootClass.getEntityName());
-		} else if (ormElement instanceof SingleTableSubclass) {
-			ormShape = elements.get(((SingleTableSubclass)ormElement).getEntityName());
+		} else if (ormElement instanceof Subclass) {
+			ormShape = elements.get(((Subclass)ormElement).getEntityName());
 		}
 		return ormShape;
 	}
 	
+	private OrmShape removePersistentClass(PersistentClass persistentClass){
+		Table componentClassDatabaseTable=null;
+		OrmShape classShape = null;
+		OrmShape shape = null;
+		if(persistentClass != null) {
+			classShape = elements.get(persistentClass.getClassName());
+			if (classShape == null) classShape = createShape(persistentClass);
+			if(componentClassDatabaseTable == null && persistentClass.getTable() != null)
+				componentClassDatabaseTable = persistentClass.getTable();
+			if(componentClassDatabaseTable != null) {
+				shape = elements.get(componentClassDatabaseTable.getSchema() + "." + componentClassDatabaseTable.getName());
+				if (shape != null){
+					removeLinks(shape);
+					getChildren().remove(shape);
+					elements.remove(componentClassDatabaseTable.getSchema() + "." + componentClassDatabaseTable.getName());
+				}
+			}
+			RootClass rc = (RootClass)persistentClass;
+			Iterator iter = rc.getSubclassIterator();
+			while (iter.hasNext()) {
+				SingleTableSubclass singleTableSubclass = (SingleTableSubclass)iter.next();
+				OrmShape singleTableSubclassShape = elements.get(singleTableSubclass.getEntityPersisterClass().getCanonicalName());
+				if (singleTableSubclassShape != null){
+					removeLinks(singleTableSubclassShape);
+					getChildren().remove(singleTableSubclassShape);
+					elements.remove(singleTableSubclass.getEntityPersisterClass().getCanonicalName());
+				}
+			}
+
+			if (persistentClass.getIdentifier() instanceof Component) {
+				Component identifier = (Component)persistentClass.getIdentifier();
+				if (!identifier.getComponentClassName().equals(identifier.getOwner().getClassName())) {
+					OrmShape componentClassShape = elements.get(identifier.getComponentClassName());
+					if (componentClassShape != null){
+						removeLinks(componentClassShape);
+						getChildren().remove(componentClassShape);
+						elements.remove(identifier.getComponentClassName());
+					}
+					String tableName = identifier.getTable().getSchema() + "." + identifier.getTable().getName();
+					elements.remove(tableName);
+				}
+			}
+		}
+		return classShape;
+	}
+
 	private OrmShape getOrCreatePersistentClass(PersistentClass persistentClass, Table componentClassDatabaseTable){
 		OrmShape classShape = null;
 		OrmShape shape = null;
@@ -218,7 +263,7 @@ public class OrmDiagram extends ModelElement {
 		}
 		return classShape;
 	}
-
+	
 	private OrmShape getOrCreateDatabaseTable(Table databaseTable){
 		OrmShape tableShape = null;
 		if(databaseTable != null) {
@@ -303,8 +348,56 @@ public class OrmDiagram extends ModelElement {
 			firePropertyChange(DIRTY, null, null);
 		}
 	}
+	
+	public void processCollapse(ExpandeableShape shape) {
+		Object element = shape.getOrmElement();
+		OrmShape reference = shape.getReference();
+		if(reference != null){
+		if(element instanceof RootClass){
+			RootClass rc = (RootClass)element;
+			Table table = rc.getTable();
+			OrmShape sh = getShape(table);
+			removeLinks(sh);
+			getChildren().remove(sh);
+			elements.remove(sh);
+		}
+		if (element instanceof Property) {
+			Property property = (Property)element;
+			if (!property.isComposite()) {
+				Type type = ((Property)element).getType();
+				if (type.isEntityType()) {
+					EntityType et = (EntityType) type;
+					Object clazz = getConfiguration().getClassMapping(et.getAssociatedEntityName());
+					if (clazz instanceof RootClass) {
+						RootClass rootClass = (RootClass)clazz;
+						
+						removePersistentClass(rootClass);
+					} else if (clazz instanceof SingleTableSubclass) {
+						removePersistentClass(((SingleTableSubclass)clazz).getRootClass());
+						
+					}
+				}
+			} else {
+				removePersistentClass(new SpecialRootClass(property));
+				
+			}
+				for(int i = reference.getChildren().size()-1;i>=0;i--){
+					if(reference.getChildren().get(i) instanceof ExpandeableShape)
+						processCollapse((ComponentShape)reference.getChildren().get(i));
+					if(reference.getChildren().get(i) instanceof ComponentShape)
+						hideReferences((ComponentShape)reference.getChildren().get(i));
+				}
+				removeLinks(reference);
+				getChildren().remove(reference);
+				elements.remove(reference);
+				shape.setReference(null);
+			}
+			firePropertyChange(REFRESH, null, null);
+		}
+	}
 
 	public void processExpand(ExpandeableShape shape) {
+		OrmShape s=null;
 		Object element = shape.getOrmElement();
 		if (element instanceof Property) {
 			Property property = (Property)element;
@@ -315,7 +408,7 @@ public class OrmDiagram extends ModelElement {
 					Object clazz = getConfiguration().getClassMapping(et.getAssociatedEntityName());
 					if (clazz instanceof RootClass) {
 						RootClass rootClass = (RootClass)clazz;
-						OrmShape s = getOrCreatePersistentClass(rootClass, null);
+						s = getOrCreatePersistentClass(rootClass, null);
 						HashMap targets = new HashMap();
 						Iterator iterator = shape.getSourceConnections().iterator();
 						while (iterator.hasNext()) {
@@ -339,18 +432,46 @@ public class OrmDiagram extends ModelElement {
 						if(!isConnectionExist(shape, s))
 							new Connection(shape, s);
 					} else if (clazz instanceof SingleTableSubclass) {
-						OrmShape s = getOrCreatePersistentClass(((SingleTableSubclass)clazz).getRootClass(), null);
+						s = getOrCreatePersistentClass(((SingleTableSubclass)clazz).getRootClass(), null);
 					}
 				}
 			} else {
-				OrmShape s = getOrCreatePersistentClass(new SpecialRootClass(property), null);
+				s = getOrCreatePersistentClass(new SpecialRootClass(property), null);
 			}
+			shape.setReference(s);
 			firePropertyChange(REFRESH, null, null);
 		}
 	}
 	
 	protected Configuration getConfiguration() {
 		return configuration;
+	}
+	
+	public void hideShapes(ExpandeableShape hidenShape){
+		OrmShape reference = hidenShape.getReference();
+		if(reference != null){
+			Object element = reference.getOrmElement();
+			if(element instanceof RootClass){
+				RootClass rc = (RootClass)element;
+				Table table = rc.getTable();
+				OrmShape shape = getShape(table);
+				removeLinks(shape);
+				getChildren().remove(shape);
+				elements.remove(shape);
+			}
+			for(int i = reference.getChildren().size()-1;i>=0;i--){
+				if(reference.getChildren().get(i) instanceof ComponentShape)
+					hideReferences((ComponentShape)reference.getChildren().get(i));
+				if(reference.getChildren().get(i) instanceof ExpandeableShape)
+					processCollapse((ComponentShape)reference.getChildren().get(i));
+			}
+			removeLinks(reference);
+			getChildren().remove(reference);
+			elements.remove(reference);
+			hidenShape.setReference(null);
+		}
+		removeLinks(hidenShape);
+		firePropertyChange(REFRESH, null, null);
 	}
 	
 	protected void hideReferences(ComponentShape componentShape) {
@@ -415,6 +536,8 @@ public class OrmDiagram extends ModelElement {
 			for(int i = reference.getChildren().size()-1;i>=0;i--){
 				if(reference.getChildren().get(i) instanceof ComponentShape)
 					hideReferences((ComponentShape)reference.getChildren().get(i));
+				if(reference.getChildren().get(i) instanceof ExpandeableShape)
+					processCollapse((ComponentShape)reference.getChildren().get(i));
 			}
 			removeLinks(reference);
 			getChildren().remove(reference);
