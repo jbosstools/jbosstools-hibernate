@@ -53,6 +53,16 @@ public abstract class ModelElement{
 		parent = element;
 	}
 	
+	public OrmDiagram getOrmDiagram(){
+		ModelElement element = this;
+		while(true){
+			if(element.getParent() == null)break;
+			if(element.getParent() instanceof OrmDiagram) return (OrmDiagram)element.getParent();
+			element = element.getParent();
+		}
+		return null;
+	}
+	
 	class OList extends ArrayList{
 		public OList(){
 			

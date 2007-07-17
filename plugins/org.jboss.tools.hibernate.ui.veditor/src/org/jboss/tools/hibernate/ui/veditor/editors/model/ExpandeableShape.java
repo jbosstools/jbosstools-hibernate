@@ -22,7 +22,8 @@ public class ExpandeableShape extends Shape {
 	
 	public static final String SHOW_REFERENCES = "show references";
 	
-	private boolean refHide = false;
+	protected boolean refHide = false;
+	protected boolean first=true;
 	
 	private OrmShape reference=null;
 	
@@ -33,6 +34,11 @@ public class ExpandeableShape extends Shape {
 	public OrmShape getReference(){
 		return reference;
 	}
+	
+	public boolean isReferenceVisible(){
+		return refHide;
+	}
+	
 	public ExpandeableShape(Object ioe) {
 		super(ioe);
 	}
@@ -40,10 +46,12 @@ public class ExpandeableShape extends Shape {
 	public void refreshReferences(Object model) {
 		refHide = !refHide;
 		if (model instanceof OrmDiagram) {
-			if(refHide)
-				((OrmDiagram)model).processExpand(this);
-			else
-				((OrmDiagram)model).processCollapse(this);
+			if(refHide){
+				if(first){
+					((OrmDiagram)model).processExpand(this);
+					first = false;
+				}
+			}
 		}
 		firePropertyChange(SHOW_REFERENCES, null, new Boolean(refHide));
 	}

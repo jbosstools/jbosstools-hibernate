@@ -16,12 +16,18 @@ import java.util.List;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.swt.graphics.RGB;
+import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.ui.veditor.editors.figures.TitleLabel;
 import org.jboss.tools.hibernate.ui.veditor.editors.figures.TopLineBorder;
+import org.jboss.tools.hibernate.ui.veditor.editors.model.ComponentShape;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.ExpandeableShape;
+import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
+import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmShape;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.Shape;
 
 
@@ -61,10 +67,55 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 				((IFigure)getFigure().getChildren().get(0)).setForegroundColor(ResourceManager.getInstance().getColor(new RGB(0,0,0)));
 			}
 		}else if (ExpandeableShape.SHOW_REFERENCES.equals(prop)) {
+			
+			refreshReference((ExpandeableShape)getCastedModel());
 //			((IFigure)getFigure().getChildren().get(0)).setBackgroundColor(getSelectionColor());	
 //			((IFigure)getFigure().getChildren().get(0)).setForegroundColor(ResourceManager.getInstance().getColor(new RGB(255,255,255)));
 		} else {
 			super.propertyChange(evt);
+		}
+	}
+	
+	protected void refreshReference(ExpandeableShape shape){
+		OrmShape refShape = shape.getReference();
+		if(refShape == null) return;
+		OrmEditPart refPart = (OrmEditPart)getViewer().getEditPartRegistry().get(refShape);
+		if(refPart != null){
+			refPart.getFigure().setVisible(shape.isReferenceVisible());
+			setLinksVisible(refPart, shape.isReferenceVisible());
+		}
+		Object element = refShape.getOrmElement();
+		if(element instanceof RootClass){
+			RootClass rc = (RootClass)element;
+			Table table = rc.getTable();
+			OrmShape tableShape = refShape.getOrmDiagram().getShape(table);
+			OrmEditPart tablePart = (OrmEditPart)getViewer().getEditPartRegistry().get(tableShape);
+			if(tablePart != null){
+				tablePart.getFigure().setVisible(shape.isReferenceVisible());
+				setLinksVisible(tablePart, shape.isReferenceVisible());
+			}
+		}
+		for(int i=0;i<refShape.getChildren().size();i++){
+			if(refShape.getChildren().get(i) instanceof ExpandeableShape){
+				refreshReference((ExpandeableShape)refShape.getChildren().get(i));
+			}
+		}
+	}
+	
+	private void setLinksVisible(OrmEditPart editPart, boolean flag){
+		ConnectionEditPart link;
+		OrmEditPart child;
+		for(int i=0;i<editPart.getSourceConnections().size();i++){
+			link = (ConnectionEditPart)editPart.getSourceConnections().get(i);
+			link.getFigure().setVisible(flag);
+		}
+		for(int i=0;i<editPart.getTargetConnections().size();i++){
+			link = (ConnectionEditPart)editPart.getTargetConnections().get(i);
+			link.getFigure().setVisible(flag);
+		}
+		for(int i=0;i<editPart.getChildren().size();i++){
+			child = (OrmEditPart)editPart.getChildren().get(i);
+			setLinksVisible(child, flag);
 		}
 	}
 	

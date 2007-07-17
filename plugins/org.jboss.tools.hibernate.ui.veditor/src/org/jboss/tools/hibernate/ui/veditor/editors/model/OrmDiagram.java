@@ -150,7 +150,7 @@ public class OrmDiagram extends ModelElement {
 		return ormShape;
 	}
 
-	private OrmShape getShape(Object ormElement) {
+	public OrmShape getShape(Object ormElement) {
 		OrmShape ormShape = null;
 		if (ormElement instanceof RootClass) {
 			ormShape = elements.get(((RootClass)ormElement).getEntityName());
@@ -166,51 +166,6 @@ public class OrmDiagram extends ModelElement {
 		return ormShape;
 	}
 	
-	private OrmShape removePersistentClass(PersistentClass persistentClass){
-		Table componentClassDatabaseTable=null;
-		OrmShape classShape = null;
-		OrmShape shape = null;
-		if(persistentClass != null) {
-			classShape = elements.get(persistentClass.getClassName());
-			if (classShape == null) classShape = createShape(persistentClass);
-			if(componentClassDatabaseTable == null && persistentClass.getTable() != null)
-				componentClassDatabaseTable = persistentClass.getTable();
-			if(componentClassDatabaseTable != null) {
-				shape = elements.get(componentClassDatabaseTable.getSchema() + "." + componentClassDatabaseTable.getName());
-				if (shape != null){
-					removeLinks(shape);
-					getChildren().remove(shape);
-					elements.remove(componentClassDatabaseTable.getSchema() + "." + componentClassDatabaseTable.getName());
-				}
-			}
-			RootClass rc = (RootClass)persistentClass;
-			Iterator iter = rc.getSubclassIterator();
-			while (iter.hasNext()) {
-				SingleTableSubclass singleTableSubclass = (SingleTableSubclass)iter.next();
-				OrmShape singleTableSubclassShape = elements.get(singleTableSubclass.getEntityPersisterClass().getCanonicalName());
-				if (singleTableSubclassShape != null){
-					removeLinks(singleTableSubclassShape);
-					getChildren().remove(singleTableSubclassShape);
-					elements.remove(singleTableSubclass.getEntityPersisterClass().getCanonicalName());
-				}
-			}
-
-			if (persistentClass.getIdentifier() instanceof Component) {
-				Component identifier = (Component)persistentClass.getIdentifier();
-				if (!identifier.getComponentClassName().equals(identifier.getOwner().getClassName())) {
-					OrmShape componentClassShape = elements.get(identifier.getComponentClassName());
-					if (componentClassShape != null){
-						removeLinks(componentClassShape);
-						getChildren().remove(componentClassShape);
-						elements.remove(identifier.getComponentClassName());
-					}
-					String tableName = identifier.getTable().getSchema() + "." + identifier.getTable().getName();
-					elements.remove(tableName);
-				}
-			}
-		}
-		return classShape;
-	}
 
 	private OrmShape getOrCreatePersistentClass(PersistentClass persistentClass, Table componentClassDatabaseTable){
 		OrmShape classShape = null;
@@ -349,53 +304,6 @@ public class OrmDiagram extends ModelElement {
 		}
 	}
 	
-	public void processCollapse(ExpandeableShape shape) {
-		Object element = shape.getOrmElement();
-		OrmShape reference = shape.getReference();
-		if(reference != null){
-		if(element instanceof RootClass){
-			RootClass rc = (RootClass)element;
-			Table table = rc.getTable();
-			OrmShape sh = getShape(table);
-			removeLinks(sh);
-			getChildren().remove(sh);
-			elements.remove(sh);
-		}
-		if (element instanceof Property) {
-			Property property = (Property)element;
-			if (!property.isComposite()) {
-				Type type = ((Property)element).getType();
-				if (type.isEntityType()) {
-					EntityType et = (EntityType) type;
-					Object clazz = getConfiguration().getClassMapping(et.getAssociatedEntityName());
-					if (clazz instanceof RootClass) {
-						RootClass rootClass = (RootClass)clazz;
-						
-						removePersistentClass(rootClass);
-					} else if (clazz instanceof SingleTableSubclass) {
-						removePersistentClass(((SingleTableSubclass)clazz).getRootClass());
-						
-					}
-				}
-			} else {
-				removePersistentClass(new SpecialRootClass(property));
-				
-			}
-				for(int i = reference.getChildren().size()-1;i>=0;i--){
-					if(reference.getChildren().get(i) instanceof ExpandeableShape)
-						processCollapse((ComponentShape)reference.getChildren().get(i));
-					if(reference.getChildren().get(i) instanceof ComponentShape)
-						hideReferences((ComponentShape)reference.getChildren().get(i));
-				}
-				removeLinks(reference);
-				getChildren().remove(reference);
-				elements.remove(reference);
-				shape.setReference(null);
-			}
-			firePropertyChange(REFRESH, null, null);
-		}
-	}
-
 	public void processExpand(ExpandeableShape shape) {
 		OrmShape s=null;
 		Object element = shape.getOrmElement();
@@ -438,7 +346,8 @@ public class OrmDiagram extends ModelElement {
 			} else {
 				s = getOrCreatePersistentClass(new SpecialRootClass(property), null);
 			}
-			shape.setReference(s);
+			if(!shape.getParent().equals(s))
+				shape.setReference(s);
 			firePropertyChange(REFRESH, null, null);
 		}
 	}
@@ -447,123 +356,6 @@ public class OrmDiagram extends ModelElement {
 		return configuration;
 	}
 	
-	public void hideShapes(ExpandeableShape hidenShape){
-		OrmShape reference = hidenShape.getReference();
-		if(reference != null){
-			Object element = reference.getOrmElement();
-			if(element instanceof RootClass){
-				RootClass rc = (RootClass)element;
-				Table table = rc.getTable();
-				OrmShape shape = getShape(table);
-				removeLinks(shape);
-				getChildren().remove(shape);
-				elements.remove(shape);
-			}
-			for(int i = reference.getChildren().size()-1;i>=0;i--){
-				if(reference.getChildren().get(i) instanceof ComponentShape)
-					hideReferences((ComponentShape)reference.getChildren().get(i));
-				if(reference.getChildren().get(i) instanceof ExpandeableShape)
-					processCollapse((ComponentShape)reference.getChildren().get(i));
-			}
-			removeLinks(reference);
-			getChildren().remove(reference);
-			elements.remove(reference);
-			hidenShape.setReference(null);
-		}
-		removeLinks(hidenShape);
-		firePropertyChange(REFRESH, null, null);
-	}
-	
-	protected void hideReferences(ComponentShape componentShape) {
-		OrmShape reference = componentShape.getReference();
-		if(reference != null){
-			Object element = reference.getOrmElement();
-			if(element instanceof RootClass){
-				RootClass rc = (RootClass)element;
-				Table table = rc.getTable();
-				OrmShape shape = getShape(table);
-				removeLinks(shape);
-				getChildren().remove(shape);
-				elements.remove(shape);
-			}
-			Property property = (Property)componentShape.getOrmElement();
-			Type valueType = property.getValue().getType();
-			if (valueType.isCollectionType()) {
-				Collection collection = (Collection)property.getValue();
-				Value component = collection.getElement();
-				if (component instanceof Component) {
-					Component comp = (Component)((Collection)property.getValue()).getElement();
-					if (comp != null) {
-						OrmShape classShape = createShape(property);
-						OrmShape tableShape = (OrmShape)elements.get(component.getTable().getSchema() + "." + component.getTable().getName());
-						removeLinks(tableShape);
-						elements.remove(component.getTable().getSchema() + "." + component.getTable().getName());
-					}
-				} else if (collection.isOneToMany()) {
-					OneToMany comp = (OneToMany)((Collection)property.getValue()).getElement();
-					if (comp != null){
-						Shape sh = elements.get(comp.getAssociatedClass().getTable().getSchema() + "." + comp.getAssociatedClass().getTable().getName());
-						removeLinks(sh);
-						elements.remove(comp.getAssociatedClass().getTable().getSchema() + "." + comp.getAssociatedClass().getTable().getName());
-						Shape sh2 = elements.get(comp.getAssociatedClass().getEntityName());
-						removeLinks(sh2);
-						elements.remove(comp.getAssociatedClass().getEntityName());
-					}
-				} else if (collection.isMap() || collection.isSet()) {
-					Table databaseTable = collection.getCollectionTable();
-					OrmShape tableShape = null;
-					if(databaseTable != null) {
-						String tableName = databaseTable.getSchema() + "." + databaseTable.getName();
-						tableShape = (OrmShape)elements.get(tableName);
-						if(tableShape != null) {
-							Iterator iterator = getConfiguration().getClassMappings();
-							while (iterator.hasNext()) {
-								Object clazz = iterator.next();
-								if (clazz instanceof RootClass) {
-									RootClass cls = (RootClass)clazz;
-									Table table = cls.getTable();
-									if (tableName.equals(table.getName() + "." + table.getName())) {
-										if (elements.get(cls.getEntityName()) != null)
-											elements.remove(cls.getEntityName());
-									}
-								}
-							}
-							elements.remove(tableName);
-						}			
-					}
-				}
-			}
-			for(int i = reference.getChildren().size()-1;i>=0;i--){
-				if(reference.getChildren().get(i) instanceof ComponentShape)
-					hideReferences((ComponentShape)reference.getChildren().get(i));
-				if(reference.getChildren().get(i) instanceof ExpandeableShape)
-					processCollapse((ComponentShape)reference.getChildren().get(i));
-			}
-			removeLinks(reference);
-			getChildren().remove(reference);
-			elements.remove(reference);
-			componentShape.setReference(null);
-		}
-		removeLinks(componentShape);
-		firePropertyChange(REFRESH, null, null);
-	}
-	
-	protected void removeLinks(Shape shape){
-		Connection con;
-		for(int i=shape.getSourceConnections().size()-1;i>=0;i--){
-			con = shape.getSourceConnections().get(i);
-			con.getTarget().getTargetConnections().remove(con);
-			shape.getSourceConnections().remove(con);
-		}
-		for(int i=shape.getTargetConnections().size()-1;i>=0;i--){
-			con = shape.getTargetConnections().get(i);
-			con.getSource().getSourceConnections().remove(con);
-			shape.getTargetConnections().remove(con);
-		}
-		for(int i=shape.getChildren().size()-1;i>=0;i--){
-			removeLinks((Shape)shape.getChildren().get(i));
-		}
-	}
 
 	protected void refreshComponentReferences(ComponentShape componentShape) {
 		OrmShape childShape = null;

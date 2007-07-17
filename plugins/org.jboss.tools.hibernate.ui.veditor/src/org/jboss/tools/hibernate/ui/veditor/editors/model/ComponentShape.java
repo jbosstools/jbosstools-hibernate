@@ -16,7 +16,7 @@ import org.hibernate.mapping.Property;
 public class ComponentShape extends ExpandeableShape {
 	public static final String SET_CHILDS_HIDEN = "set childs hiden";
 
-	protected boolean childsHiden = true;
+	//protected boolean childsHiden = true;
 	
 	
 
@@ -40,16 +40,18 @@ public class ComponentShape extends ExpandeableShape {
 	}
 
 	public void refreshChildsHiden(OrmDiagram ormDiagram) {
-		childsHiden = !childsHiden;
+		refHide = !refHide;
 		
 		for (int i = 0; i < getChildren().size(); i++)
-			((Shape)getChildren().get(i)).setHiden(childsHiden);
+			((Shape)getChildren().get(i)).setHiden(!refHide);
 		
-		if(!childsHiden)
-			ormDiagram.refreshComponentReferences(this);
-		else
-			ormDiagram.hideReferences(this);
+		if(refHide)
+			if(first){
+				ormDiagram.refreshComponentReferences(this);
+				first=false;
+			}
 		
-		firePropertyChange(SET_CHILDS_HIDEN, null, new Boolean(childsHiden));
+		
+		firePropertyChange(SET_CHILDS_HIDEN, null, new Boolean(!refHide));
 	}
 }
