@@ -11,6 +11,7 @@
 package org.jboss.tools.hibernate.ui.veditor.editors.parts;
 
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
@@ -68,6 +69,7 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 			}
 		}else if (ExpandeableShape.SHOW_REFERENCES.equals(prop)) {
 			
+			referenceList.add(getCastedModel().getParent());
 			refreshReference((ExpandeableShape)getCastedModel());
 //			((IFigure)getFigure().getChildren().get(0)).setBackgroundColor(getSelectionColor());	
 //			((IFigure)getFigure().getChildren().get(0)).setForegroundColor(ResourceManager.getInstance().getColor(new RGB(255,255,255)));
@@ -76,9 +78,12 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 		}
 	}
 	
+	private ArrayList referenceList = new ArrayList();
+	
 	protected void refreshReference(ExpandeableShape shape){
 		OrmShape refShape = shape.getReference();
 		if(refShape == null) return;
+		
 		OrmEditPart refPart = (OrmEditPart)getViewer().getEditPartRegistry().get(refShape);
 		if(refPart != null){
 			refPart.getFigure().setVisible(shape.isReferenceVisible());
@@ -95,11 +100,23 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 				setLinksVisible(tablePart, shape.isReferenceVisible());
 			}
 		}
-		for(int i=0;i<refShape.getChildren().size();i++){
-			if(refShape.getChildren().get(i) instanceof ExpandeableShape){
-				refreshReference((ExpandeableShape)refShape.getChildren().get(i));
+		if(isReferencesCorrect(refShape)){
+			referenceList.add(refShape);
+			for(int i=0;i<refShape.getChildren().size();i++){
+				if(refShape.getChildren().get(i) instanceof ExpandeableShape){
+					refreshReference((ExpandeableShape)refShape.getChildren().get(i));
+				}
 			}
+			referenceList.remove(refShape);
 		}
+	}
+	
+	private boolean isReferencesCorrect(OrmShape shape){
+		if(shape == null) return false;
+		for(int i=0;i < referenceList.size();i++){
+			if(shape.equals(referenceList.get(i))) return false;
+		}
+		return true;
 	}
 	
 	private void setLinksVisible(OrmEditPart editPart, boolean flag){
