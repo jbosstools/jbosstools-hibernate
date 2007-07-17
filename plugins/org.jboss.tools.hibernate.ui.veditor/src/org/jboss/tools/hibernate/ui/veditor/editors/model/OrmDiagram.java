@@ -201,6 +201,8 @@ public class OrmDiagram extends ModelElement {
 						if(!isConnectionExist(subclassShape, shape))
 							new Connection(subclassShape, shape);
 					}
+					OrmShape ownerTableShape = getOrCreateDatabaseTable(((Subclass)element).getRootTable());
+					createConnections(subclassShape, ownerTableShape);
 				}
 			}
 
@@ -317,29 +319,29 @@ public class OrmDiagram extends ModelElement {
 					if (clazz instanceof RootClass) {
 						RootClass rootClass = (RootClass)clazz;
 						s = getOrCreatePersistentClass(rootClass, null);
-						HashMap targets = new HashMap();
-						Iterator iterator = shape.getSourceConnections().iterator();
-						while (iterator.hasNext()) {
-							Connection connection = (Connection)iterator.next();
-							connection.setHiden(shape.getHide());
-							Object el = connection.getTarget().getOrmElement();
-							if (el instanceof Column) {
-								targets.put(((Column)el).getName(), connection.getTarget());
-							} else if (el instanceof RootClass) {
-								targets.put(((RootClass)el).getEntityName(), connection.getTarget());
-							}
-						}
-						KeyValue id = rootClass.getIdentifier();
-						iterator = id.getColumnIterator();
-						while (iterator.hasNext()) {
-							Column column = (Column)iterator.next();
-							if (targets.get(column.getName()) != null && !isConnectionExist(s, (Shape)targets.get(column.getName()))) {
-								new Connection(s, (Shape)targets.get(column.getName()));
-							}
-						}
+//						HashMap targets = new HashMap();
+//						Iterator iterator = shape.getSourceConnections().iterator();
+//						while (iterator.hasNext()) {
+//							Connection connection = (Connection)iterator.next();
+//							connection.setHiden(shape.getHide());
+//							Object el = connection.getTarget().getOrmElement();
+//							if (el instanceof Column) {
+//								targets.put(((Column)el).getName(), connection.getTarget());
+//							} else if (el instanceof RootClass) {
+//								targets.put(((RootClass)el).getEntityName(), connection.getTarget());
+//							}
+//						}
+//						KeyValue id = rootClass.getIdentifier();
+//						iterator = id.getColumnIterator();
+//						while (iterator.hasNext()) {
+//							Column column = (Column)iterator.next();
+//							if (targets.get(column.getName()) != null && !isConnectionExist(s, (Shape)targets.get(column.getName()))) {
+//								new Connection(s, (Shape)targets.get(column.getName()));
+//							}
+//						}
 						if(!isConnectionExist(shape, s))
 							new Connection(shape, s);
-					} else if (clazz instanceof SingleTableSubclass) {
+					} else if (clazz instanceof Subclass) {
 						s = getOrCreatePersistentClass(((SingleTableSubclass)clazz).getRootClass(), null);
 					}
 				}

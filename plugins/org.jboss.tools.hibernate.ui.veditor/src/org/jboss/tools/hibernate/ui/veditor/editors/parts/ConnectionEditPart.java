@@ -26,6 +26,7 @@ import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
+import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.ui.veditor.editors.figures.RoundPolylineConnection;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.Connection;
@@ -78,7 +79,7 @@ implements PropertyChangeListener {
 
 	private Color getColor() {
 		Object element = getCastedModel().getTarget().getOrmElement();
-		if (element instanceof RootClass || element instanceof SingleTableSubclass) 
+		if (element instanceof RootClass || element instanceof Subclass) 
 			return ResourceManager.getInstance().getColor(new RGB(210,155,100));
 		else if (element instanceof Column || element instanceof Table || element instanceof Property) 
 			return ResourceManager.getInstance().getColor(new RGB(160, 160, 160));
@@ -87,7 +88,8 @@ implements PropertyChangeListener {
 	}
 
 	private Color getSelectionColor() {
-		if (getCastedModel().getTarget().getOrmElement() instanceof RootClass) 
+		if (getCastedModel().getTarget().getOrmElement() instanceof RootClass ||
+				getCastedModel().getTarget().getOrmElement() instanceof Subclass) 
 			return ResourceManager.getInstance().getColor(new RGB(112,161,99));
 		else if (getCastedModel().getTarget().getOrmElement() instanceof Column || 
 				getCastedModel().getTarget().getOrmElement() instanceof Table || 

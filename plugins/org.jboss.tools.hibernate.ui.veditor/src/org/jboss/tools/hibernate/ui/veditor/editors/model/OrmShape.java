@@ -79,7 +79,9 @@ public class OrmShape extends ExpandeableShape {
 					Iterator iter = component.getPropertyIterator();
 					while (iter.hasNext()) {
 						Property property = (Property)iter.next();
-						if (property.getValue().getType().isEntityType()) {
+/*						if (property.getValue().isSimpleValue()) {
+							bodyOrmShape = new Shape(property);
+						} else */if (property.getValue().getType().isEntityType()) {
 							bodyOrmShape = new ExpandeableShape(property);
 						} else if (property.getValue().getType().isCollectionType()) {
 							bodyOrmShape = new ComponentShape(property);
@@ -111,7 +113,9 @@ public class OrmShape extends ExpandeableShape {
 			while (iterator.hasNext()) {
 				Property field = (Property)iterator.next();
 				if (!field.isComposite()) {
-					if (field.getValue().getType().isEntityType()) {
+					if (field.getValue().isSimpleValue()) {
+						bodyOrmShape = new Shape(field);
+					} else if (field.getValue().getType().isEntityType()) {
 						bodyOrmShape = new ExpandeableShape(field);
 					} else if (field.getValue().getType().isCollectionType()) {
 						bodyOrmShape = new ComponentShape(field);
