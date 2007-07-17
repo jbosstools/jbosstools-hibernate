@@ -475,7 +475,7 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 
 		StringBuffer name = new StringBuffer();
 //		if (((OrmContentProvider) viewer.getContentProvider()).getTip() == OrmContentProvider.PACKAGE_CLASS_FIELD_CONTENT_PROVIDER) {
-			name.append(clazz.getEntityName() != null ? clazz.getEntityName() : clazz.getEntityName());
+			name.append(clazz.getEntityName() != null ? clazz.getEntityName() : clazz.getClassName());
 //		} else {
 //			name.append(clazz.getEntityName());
 //		}
