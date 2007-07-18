@@ -73,7 +73,8 @@ public class ComponentShapeEditPart extends ExpandeableShapeEditPart {
 			else
 				figure.setSize(-1,-1);
 			
-			refreshReference((ExpandeableShape)getCastedModel());
+			referenceList.add((OrmShape)getCastedModel().getParent());
+			refreshReference((ExpandeableShape)getCastedModel(), ((ExpandeableShape)getCastedModel()).isReferenceVisible());
 			
 			
 			((OrmShape)getParent().getModel()).refreshReference();

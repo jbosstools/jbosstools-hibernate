@@ -69,8 +69,8 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 			}
 		}else if (ExpandeableShape.SHOW_REFERENCES.equals(prop)) {
 			
-			referenceList.add(getCastedModel().getParent());
-			refreshReference((ExpandeableShape)getCastedModel());
+			referenceList.add((OrmShape)getCastedModel().getParent());
+			refreshReference((ExpandeableShape)getCastedModel(), ((ExpandeableShape)getCastedModel()).isReferenceVisible());
 //			((IFigure)getFigure().getChildren().get(0)).setBackgroundColor(getSelectionColor());	
 //			((IFigure)getFigure().getChildren().get(0)).setForegroundColor(ResourceManager.getInstance().getColor(new RGB(255,255,255)));
 		} else {
@@ -78,16 +78,17 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 		}
 	}
 	
-	private ArrayList referenceList = new ArrayList();
+	protected ArrayList<OrmShape> referenceList = new ArrayList<OrmShape>();
 	
-	protected void refreshReference(ExpandeableShape shape){
+	protected void refreshReference(ExpandeableShape shape, boolean visible){
 		OrmShape refShape = shape.getReference();
 		if(refShape == null) return;
+		if(!isReferencesCorrect(refShape)) return;
 		
 		OrmEditPart refPart = (OrmEditPart)getViewer().getEditPartRegistry().get(refShape);
 		if(refPart != null){
-			refPart.getFigure().setVisible(shape.isReferenceVisible());
-			setLinksVisible(refPart, shape.isReferenceVisible());
+			refPart.getFigure().setVisible(visible);
+			setLinksVisible(refPart, visible);
 		}
 		Object element = refShape.getOrmElement();
 		if(element instanceof RootClass){
@@ -96,19 +97,18 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 			OrmShape tableShape = refShape.getOrmDiagram().getShape(table);
 			OrmEditPart tablePart = (OrmEditPart)getViewer().getEditPartRegistry().get(tableShape);
 			if(tablePart != null){
-				tablePart.getFigure().setVisible(shape.isReferenceVisible());
-				setLinksVisible(tablePart, shape.isReferenceVisible());
+				tablePart.getFigure().setVisible(visible);
+				setLinksVisible(tablePart, visible);
 			}
 		}
-		if(isReferencesCorrect(refShape)){
-			referenceList.add(refShape);
-			for(int i=0;i<refShape.getChildren().size();i++){
-				if(refShape.getChildren().get(i) instanceof ExpandeableShape){
-					refreshReference((ExpandeableShape)refShape.getChildren().get(i));
-				}
+	
+		referenceList.add(refShape);
+		for(int i=0;i<refShape.getChildren().size();i++){
+			if(refShape.getChildren().get(i) instanceof ExpandeableShape){
+				refreshReference((ExpandeableShape)refShape.getChildren().get(i), visible);
 			}
-			referenceList.remove(refShape);
 		}
+		referenceList.remove(refShape);
 	}
 	
 	private boolean isReferencesCorrect(OrmShape shape){
