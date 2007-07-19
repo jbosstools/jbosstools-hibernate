@@ -225,7 +225,8 @@ public class OrmDiagram extends ModelElement {
 					if (componentClassShape == null && persistentClass instanceof RootClass) {
 						componentClassShape = getOrCreateComponentClass(((RootClass)persistentClass).getIdentifierProperty());
 						OrmShape tableShape = getOrCreateDatabaseTable(identifier.getTable());
-						createConnections(componentClassShape, tableShape);
+						if (componentClassShape != null)
+							createConnections(componentClassShape, tableShape);
 					}
 				}
 			}
@@ -446,28 +447,30 @@ public class OrmDiagram extends ModelElement {
 
 	public OrmShape getOrCreateComponentClass(Property property) {
 		OrmShape classShape = null;
-		if (property.getValue() instanceof Collection) {
-			Component component = (Component)((Collection)property.getValue()).getElement();
-			if (component != null) {
+		if (property != null) {
+			if (property.getValue() instanceof Collection) {
+				Component component = (Component)((Collection)property.getValue()).getElement();
+				if (component != null) {
+					classShape = createShape(property);
+					OrmShape tableShape = (OrmShape)elements.get(component.getTable().getSchema() + "." + component.getTable().getName());
+					if (tableShape == null) tableShape = getOrCreateDatabaseTable(component.getTable());
+						createConnections(classShape, tableShape);
+						if(!isConnectionExist(classShape, tableShape)){
+							new Connection(classShape, tableShape);
+							classShape.firePropertyChange(REFRESH, null, null);
+							tableShape.firePropertyChange(REFRESH, null, null);
+						}
+						Shape parentShape = ((SpecialOrmShape)classShape).getParentShape();
+						OrmShape parentClassShape = (OrmShape)elements.get(((Property)parentShape.getOrmElement()).getPersistentClass().getEntityName());
+						if(!isConnectionExist(parentShape, parentClassShape)){
+							new Connection(parentShape, parentClassShape);
+							parentShape.firePropertyChange(REFRESH, null, null);
+							parentClassShape.firePropertyChange(REFRESH, null, null);
+						}
+				}
+			} else if (property.getValue() instanceof Component) {
 				classShape = createShape(property);
-				OrmShape tableShape = (OrmShape)elements.get(component.getTable().getSchema() + "." + component.getTable().getName());
-				if (tableShape == null) tableShape = getOrCreateDatabaseTable(component.getTable());
-					createConnections(classShape, tableShape);
-					if(!isConnectionExist(classShape, tableShape)){
-						new Connection(classShape, tableShape);
-						classShape.firePropertyChange(REFRESH, null, null);
-						tableShape.firePropertyChange(REFRESH, null, null);
-					}
-					Shape parentShape = ((SpecialOrmShape)classShape).getParentShape();
-					OrmShape parentClassShape = (OrmShape)elements.get(((Property)parentShape.getOrmElement()).getPersistentClass().getEntityName());
-					if(!isConnectionExist(parentShape, parentClassShape)){
-						new Connection(parentShape, parentClassShape);
-						parentShape.firePropertyChange(REFRESH, null, null);
-						parentClassShape.firePropertyChange(REFRESH, null, null);
-					}
 			}
-		} else if (property.getValue() instanceof Component) {
-			classShape = createShape(property);
 		}
 		return classShape;
 	}

@@ -62,13 +62,21 @@ public class OrmShape extends ExpandeableShape {
 			while (iterator.hasNext()) {
 				Property field = (Property)iterator.next();
 				if (!field.isComposite()) {
+					boolean typeIsAccessible = true;
+					if (field.getValue().isSimpleValue() && ((SimpleValue)field.getValue()).isTypeSpecified()) {
+						try {
+							field.getValue().getType();
+						} catch (Exception e) {
+							typeIsAccessible = false;
+						}
+					}
 /*					if (field.isComposite()) {
 						bodyOrmShape = new ExpandeableShape(field);
 					} else */if (field.getValue().isSimpleValue() && !((SimpleValue)field.getValue()).isTypeSpecified()) {
 						bodyOrmShape = new Shape(field);
-					} else if (field.getValue().getType().isEntityType()) {
+					} else if (typeIsAccessible && field.getValue().getType().isEntityType()) {
 						bodyOrmShape = new ExpandeableShape(field);
-					} else if (field.getValue().getType().isCollectionType()) {
+					} else if (typeIsAccessible && field.getValue().getType().isCollectionType()) {
 						bodyOrmShape = new ComponentShape(field);
 					} else {
 						bodyOrmShape = new Shape(field);
@@ -79,11 +87,13 @@ public class OrmShape extends ExpandeableShape {
 					Iterator iter = component.getPropertyIterator();
 					while (iter.hasNext()) {
 						Property property = (Property)iter.next();
-/*						if (property.getValue().isSimpleValue()) {
-							bodyOrmShape = new Shape(property);
-						} else */if (property.getValue().getType().isEntityType()) {
+						boolean typeIsAccesible = true;
+						try {property.getValue().getType();} catch (Exception e) {typeIsAccesible = false;}
+/*						if (property.isComposite()) {
 							bodyOrmShape = new ExpandeableShape(property);
-						} else if (property.getValue().getType().isCollectionType()) {
+						} else */if (typeIsAccesible && property.getValue().getType().isEntityType()) {
+							bodyOrmShape = new ExpandeableShape(property);
+						} else if (typeIsAccesible && property.getValue().getType().isCollectionType()) {
 							bodyOrmShape = new ComponentShape(property);
 						} else {
 							bodyOrmShape = new Shape(property);
