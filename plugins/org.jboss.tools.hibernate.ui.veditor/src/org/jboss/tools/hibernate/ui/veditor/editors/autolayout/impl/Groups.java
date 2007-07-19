@@ -175,6 +175,10 @@ public class Groups {
            if(c >= yDeltas.length) continue;
            int sz = items[i].outputs.length - 1;
            if(sz > yDeltas[c]) yDeltas[c] = sz;
+           int[] shape = items[i].getObject().getShape();
+           if(shape == null || shape.length < 4) continue;
+           int wi = (shape[3] - (constants.deltaY / 2)) / constants.incY;
+           if(wi > yDeltas[c])  yDeltas[c] = wi;
         }
        for (int i = 1; i < yDeltas.length; i++) yDeltas[i] += yDeltas[i - 1];
     }

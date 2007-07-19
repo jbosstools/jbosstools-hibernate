@@ -373,6 +373,10 @@ public class OrmDiagram extends ModelElement {
 		}
 	}
 	
+	public void update(){
+		firePropertyChange(REFRESH, null, null);
+	}
+	
 	protected Configuration getConfiguration() {
 		return configuration;
 	}

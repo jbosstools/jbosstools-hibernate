@@ -121,8 +121,8 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 		if (getCastedModel().getOrmElement() instanceof RootClass) {
 			RootClass persistentClass = (RootClass) getCastedModel()
 					.getOrmElement();
-			ormShape = (OrmShape) hashMap
-					.remove(persistentClass.getEntityName());
+			ormShape = (OrmShape) hashMap.remove(persistentClass
+					.getEntityName());
 			if (ormShape != null) {
 				ormShape.setLocation(new Point(20, 20));
 				tempPoint = 40 + getChildrenFigurePreferredHeight(ormShape);
@@ -272,36 +272,41 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 		}
 	}
 
+	class DiagramInfo implements IDiagramInfo {
 
-class DiagramInfo implements IDiagramInfo {
+		ArrayList items = new ArrayList();
+		OrmDiagram diagram;
 
-	ArrayList items = new ArrayList();
-	OrmDiagram diagram;
+		public DiagramInfo(OrmDiagram diagram) {
+			IItemInfo item;
+			this.diagram = diagram;
+			OrmShapeEditPart part;
 
-	public DiagramInfo(OrmDiagram diagram) {
-		IItemInfo item;
-		this.diagram = diagram;
-
-		for (int i = 0; i < diagram.getChildren().size(); i++) {
-			item = new DiagramElementInfo((OrmShape) diagram.getChildren().get(
-					i));
-			addItem(item);
+			for (int i = 0; i < diagram.getChildren().size(); i++) {
+				part = (OrmShapeEditPart) getViewer().getEditPartRegistry()
+						.get(diagram.getChildren().get(i));
+				if (part != null && part.getFigure().isVisible()) {
+					item = new DiagramElementInfo((OrmShape) diagram
+							.getChildren().get(i));
+					addItem(item);
+				}
+			}
 		}
-	}
 
-	/**
-	 * 
-	 */
-	public IItemInfo[] getItems() {
-		return (IItemInfo[]) items.toArray(new IItemInfo[0]);
-	}
+		/**
+		 * 
+		 */
+		public IItemInfo[] getItems() {
+			return (IItemInfo[]) items.toArray(new IItemInfo[0]);
+		}
 
-	/**
-	 * 
-	 * @param item
-	 */
-	public void addItem(IItemInfo item) {
-		items.add(item);
+		/**
+		 * 
+		 * @param item
+		 */
+		public void addItem(IItemInfo item) {
+			items.add(item);
+		}
 	}
 
 	class DiagramElementInfo implements IItemInfo {
@@ -357,14 +362,15 @@ class DiagramInfo implements IDiagramInfo {
 			int[] shape = new int[4];
 			shape[0] = element.getLocation().x;
 			shape[1] = element.getLocation().y;
-			OrmShapeEditPart part = (OrmShapeEditPart)getViewer().getEditPartRegistry().get(element);
-			if(part != null){
+			OrmShapeEditPart part = (OrmShapeEditPart) getViewer()
+					.getEditPartRegistry().get(element);
+			if (part != null) {
 				IFigure fig = part.getFigure();
 				shape[2] = fig.getPreferredSize().width;
 				shape[3] = fig.getPreferredSize().height;
-			}else{
-				shape[2] = 600;
-				shape[3] = 100;
+			} else {
+				shape[2] = 6000;
+				shape[3] = 1000;
 			}
 			return shape;
 		}
@@ -432,4 +438,4 @@ class DiagramInfo implements IDiagramInfo {
 		public void setLinkShape(int[] vs) {
 		}
 	}
-}}
+}

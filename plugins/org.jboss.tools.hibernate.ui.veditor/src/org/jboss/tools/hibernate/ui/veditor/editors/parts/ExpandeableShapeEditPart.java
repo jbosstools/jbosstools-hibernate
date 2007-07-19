@@ -109,6 +109,7 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 			}
 		}
 		referenceList.remove(refShape);
+		shape.getOrmDiagram().update();
 	}
 	
 	private boolean isReferencesCorrect(OrmShape shape){
