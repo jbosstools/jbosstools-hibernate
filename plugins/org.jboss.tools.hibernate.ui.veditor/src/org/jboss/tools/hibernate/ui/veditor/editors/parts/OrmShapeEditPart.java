@@ -95,8 +95,8 @@ public class OrmShapeEditPart extends ExpandeableShapeEditPart{
 			//((OrmDiagram)getParent().getModel()).setDirty(true);
 		} else if (OrmShape.SET_HIDEN.equals(prop)) {
 			int i = figure.getPreferredSize().width;
-			((TitleFigure)figure).setHiden(((Boolean)evt.getNewValue()).booleanValue());
-			((TitleLabel)figure.getChildren().get(0)).setHiden(((Boolean)evt.getNewValue()).booleanValue());
+			((TitleFigure)figure).setHidden(((Boolean)evt.getNewValue()).booleanValue());
+			((TitleLabel)figure.getChildren().get(0)).setHidden(((Boolean)evt.getNewValue()).booleanValue());
 			if(((Boolean)evt.getNewValue()).booleanValue())
 				figure.setSize(i,-1);
 			else

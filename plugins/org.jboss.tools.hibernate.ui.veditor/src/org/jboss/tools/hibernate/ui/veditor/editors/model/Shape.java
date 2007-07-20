@@ -74,10 +74,10 @@ public class Shape extends ModelElement {
 		this.indent = indent;
 	}
 	
-	protected void setHiden(boolean hiden) {
+	protected void setHidden(boolean hiden) {
 		for (int i = 0; i < sourceConnections.size(); i++)
-			((Connection)sourceConnections.get(i)).setHiden(hiden);
+			((Connection)sourceConnections.get(i)).setHidden(hiden);
 		for (int i = 0; i < targetConnections.size(); i++)
-			((Connection)targetConnections.get(i)).setHiden(hiden);
+			((Connection)targetConnections.get(i)).setHidden(hiden);
 	}
 }

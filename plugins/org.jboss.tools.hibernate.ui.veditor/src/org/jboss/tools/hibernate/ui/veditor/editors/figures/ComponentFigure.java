@@ -42,7 +42,7 @@ public class ComponentFigure extends Figure {
 		this.childsHiden = childsHiden;
 		for(int i=0;i<getChildren().size();i++){
 			if(getChildren().get(i) instanceof TitleLabel)
-				((TitleLabel)getChildren().get(i)).setHiden(childsHiden);
+				((TitleLabel)getChildren().get(i)).setHidden(childsHiden);
 		}
 	}
 }

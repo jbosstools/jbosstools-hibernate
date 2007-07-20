@@ -51,7 +51,7 @@ public class Connection extends ModelElement {
 		target.firePropertyChange(Shape.SHOW_SELECTION, null, null);
 	}
 	
-	public void setHiden(boolean hiden) {
+	public void setHidden(boolean hiden) {
 		if(hiden) {
 			needHide--;
 			if(needHide == 0)

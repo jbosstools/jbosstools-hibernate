@@ -37,7 +37,7 @@ public class TitleFigure extends Figure {
 			
 	}
 
-	public void setHiden(boolean hiden) {
+	public void setHidden(boolean hiden) {
 		this.hiden = hiden;
 	}
 }

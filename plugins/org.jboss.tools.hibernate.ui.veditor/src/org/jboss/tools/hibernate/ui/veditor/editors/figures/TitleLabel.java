@@ -39,7 +39,7 @@ public class TitleLabel extends Label {
 			graphics.drawImage(shevronUp, getBounds().x+getBounds().width-20, getBounds().y);
 	}
 	
-	public void setHiden(boolean hiden) {
+	public void setHidden(boolean hiden) {
 		this.hiden = hiden;
 		repaint();
 	}

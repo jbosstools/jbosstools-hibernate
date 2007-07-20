@@ -188,10 +188,10 @@ public class OrmShape extends ExpandeableShape {
 		return shape;
 	}
 
-	protected void setHiden(boolean hiden) {
-		super.setHiden(hiden);
+	protected void setHidden(boolean hiden) {
+		super.setHidden(hiden);
 		for (int i = 0; i < getChildren().size(); i++)
-			((Shape)getChildren().get(i)).setHiden(hiden);
+			((Shape)getChildren().get(i)).setHidden(hiden);
 	}
 
 	public void refreshHiden() {
@@ -206,7 +206,7 @@ public class OrmShape extends ExpandeableShape {
 	
 	private void setElementHidden(ModelElement element, boolean hidden){
 		for (int i = 0; i < element.getChildren().size(); i++){
-			((Shape)element.getChildren().get(i)).setHiden(hidden);
+			((Shape)element.getChildren().get(i)).setHidden(hidden);
 			setElementHidden((ModelElement)element.getChildren().get(i), hidden);
 		}
 	}
