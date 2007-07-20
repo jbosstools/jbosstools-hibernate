@@ -62,14 +62,14 @@
 		</property>
 		<property name="byte" column="byte_"/>
 		<property name="yesno" type="yes_no"/>
-		<property name="blob" type="org.hibernate.test.legacy.Foo$Struct" column="blobb_"/>
+		<property name="blob" type="mapping.legacy.Foo$Struct" column="blobb_"/>
 		<property name="nullBlob" type="serializable"/>
 		<property name="binary" column="bin_"/>
 		<property name="theLocale" access="field" column="`localeayzabc123`"/>
 
 		<property name="formula" formula="int_/2"/>
 
-		<property name="custom" type="org.hibernate.test.legacy.DoubleStringType" access="field">
+		<property name="custom" type="mapping.legacy.DoubleStringType" access="field">
 			<column name="first_name" length="66"/>
 			<column name="surname" length="66"/>
 		</property>
