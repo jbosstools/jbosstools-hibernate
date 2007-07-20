@@ -23,6 +23,7 @@ import org.eclipse.gef.RequestConstants;
 import org.eclipse.swt.graphics.RGB;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.ui.veditor.editors.figures.ComponentFigure;
 import org.jboss.tools.hibernate.ui.veditor.editors.figures.TitleLabel;
 import org.jboss.tools.hibernate.ui.veditor.editors.figures.TopLineBorder;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.ComponentShape;
@@ -71,6 +72,7 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 			
 			referenceList.add((OrmShape)getCastedModel().getParent());
 			refreshReference((ExpandeableShape)getCastedModel(), ((ExpandeableShape)getCastedModel()).isReferenceVisible());
+			((TitleLabel)getFigure()).setHiden(!((ExpandeableShape)getCastedModel()).isReferenceVisible());
 //			((IFigure)getFigure().getChildren().get(0)).setBackgroundColor(getSelectionColor());	
 //			((IFigure)getFigure().getChildren().get(0)).setForegroundColor(ResourceManager.getInstance().getColor(new RGB(255,255,255)));
 		} else {

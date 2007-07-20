@@ -41,5 +41,6 @@ public class TitleLabel extends Label {
 	
 	public void setHiden(boolean hiden) {
 		this.hiden = hiden;
+		repaint();
 	}
 }
