@@ -23,6 +23,7 @@ import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
+import org.hibernate.mapping.Join;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
@@ -215,6 +216,17 @@ public class OrmDiagram extends ModelElement {
 					}
 					OrmShape ownerTableShape = getOrCreateDatabaseTable(((Subclass)element).getRootTable());
 					createConnections(subclassShape, ownerTableShape);
+
+					Iterator joinIterator = subclass.getJoinIterator();
+					while (joinIterator.hasNext()) {
+						Join join = (Join)joinIterator.next();
+						Iterator iterator = join.getPropertyIterator();
+						while (iterator.hasNext()) {
+							Property property = (Property)iterator.next();
+							OrmShape tableShape =  getOrCreateDatabaseTable(property.getValue().getTable());
+							createConnections(subclassShape, tableShape);
+						}
+					}
 				}
 			}
 
@@ -228,6 +240,17 @@ public class OrmDiagram extends ModelElement {
 						if (componentClassShape != null)
 							createConnections(componentClassShape, tableShape);
 					}
+				}
+			}
+
+			Iterator joinIterator = persistentClass.getJoinIterator();
+			while (joinIterator.hasNext()) {
+				Join join = (Join)joinIterator.next();
+				Iterator iterator = join.getPropertyIterator();
+				while (iterator.hasNext()) {
+					Property property = (Property)iterator.next();
+					OrmShape tableShape =  getOrCreateDatabaseTable(property.getValue().getTable());
+					createConnections(classShape, tableShape);
 				}
 			}
 		}
@@ -362,7 +385,7 @@ public class OrmDiagram extends ModelElement {
 							s.firePropertyChange(REFRESH, null, null);
 						}
 					} else if (clazz instanceof Subclass) {
-						s = getOrCreatePersistentClass(((SingleTableSubclass)clazz).getRootClass(), null);
+						s = getOrCreatePersistentClass(((Subclass)clazz).getRootClass(), null);
 					}
 				}
 			} else {
