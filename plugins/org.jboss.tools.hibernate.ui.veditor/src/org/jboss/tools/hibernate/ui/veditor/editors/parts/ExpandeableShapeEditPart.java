@@ -97,8 +97,10 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 			OrmShape tableShape = refShape.getOrmDiagram().getShape(table);
 			OrmEditPart tablePart = (OrmEditPart)getViewer().getEditPartRegistry().get(tableShape);
 			if(tablePart != null){
-				tablePart.getFigure().setVisible(visible);
-				setLinksVisible(tablePart, visible);
+				if(isTableCanBeInvisible(tablePart, visible)){
+					tablePart.getFigure().setVisible(visible);
+					setLinksVisible(tablePart, visible);
+				}
 			}
 		}
 	
@@ -110,6 +112,16 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 		}
 		referenceList.remove(refShape);
 		shape.getOrmDiagram().update();
+	}
+	
+	private boolean isTableCanBeInvisible(OrmEditPart tablePart, boolean visible){
+		if(visible) return true;
+		ConnectionEditPart link;
+		for(int i=0;i<tablePart.getTargetConnections().size();i++){
+			link = (ConnectionEditPart)tablePart.getTargetConnections().get(i);
+			if(link.getFigure().isVisible()) return false;
+		}
+		return true;
 	}
 	
 	private boolean isReferencesCorrect(OrmShape shape){
