@@ -95,7 +95,7 @@ public class OrmDiagram extends ModelElement {
 	}
 	
 	public void save() {
-		String string = "";
+		/*String string = "";
 		saveHelper();
 		for (int i = 0; i < childrenLocations.length; i++)
 			string+=childrenLocations[i]+"#";
@@ -110,7 +110,7 @@ public class OrmDiagram extends ModelElement {
 						string.substring(2048*i));
 			} catch (CoreException e) {
 // ExceptionHandler.logThrowableError(e, e.getMessage());
-			}
+			}*/
 	}
 	
 	private void saveHelper() {

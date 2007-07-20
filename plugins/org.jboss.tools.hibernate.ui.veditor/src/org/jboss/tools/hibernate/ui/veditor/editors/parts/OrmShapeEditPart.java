@@ -92,7 +92,7 @@ public class OrmShapeEditPart extends ExpandeableShapeEditPart{
 		String prop = evt.getPropertyName();
 		if (OrmShape.LOCATION_PROP.equals(prop)) {
 			refreshVisuals();
-			((OrmDiagram)getParent().getModel()).setDirty(true);
+			//((OrmDiagram)getParent().getModel()).setDirty(true);
 		} else if (OrmShape.SET_HIDEN.equals(prop)) {
 			int i = figure.getPreferredSize().width;
 			((TitleFigure)figure).setHiden(((Boolean)evt.getNewValue()).booleanValue());
@@ -102,7 +102,7 @@ public class OrmShapeEditPart extends ExpandeableShapeEditPart{
 			else
 				figure.setSize(-1,-1);
 			refresh();
-			((OrmDiagram)getParent().getModel()).setDirty(true);
+			//((OrmDiagram)getParent().getModel()).setDirty(true);
 		} else {
 			super.propertyChange(evt);
 		}
