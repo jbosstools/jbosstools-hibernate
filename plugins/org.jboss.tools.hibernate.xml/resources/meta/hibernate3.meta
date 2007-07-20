@@ -199,7 +199,7 @@
     <Editor name="ListString"/>
    </XModelAttribute>
    <XModelAttribute PROPERTIES="category=advanced" default="true"
-    name="default-lazy" xmlname="auto-import">
+    name="default-lazy" xmlname="default-lazy">
     <Constraint loader="List">
      <value name="true"/>
      <value name="false"/>
