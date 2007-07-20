@@ -12,7 +12,7 @@ package org.jboss.tools.hibernate.xml.model;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.jboss.tools.common.model.loaders.EntityRecognizer;
-import org.jboss.tools.common.model.util.XMLEntityResolver;
+import org.jboss.tools.common.xml.XMLEntityResolver;
 
 public class HibernateRecognizer implements EntityRecognizer {
 	static {
