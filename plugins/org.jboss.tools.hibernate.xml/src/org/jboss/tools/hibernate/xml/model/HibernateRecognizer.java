@@ -10,7 +10,6 @@
  ******************************************************************************/ 
 package org.jboss.tools.hibernate.xml.model;
 
-import org.eclipse.core.runtime.FileLocator;
 import org.jboss.tools.common.model.loaders.EntityRecognizer;
 import org.jboss.tools.common.xml.XMLEntityResolver;
 
@@ -18,20 +17,16 @@ public class HibernateRecognizer implements EntityRecognizer {
 	static {
 		try {
 			XMLEntityResolver.registerPublicEntity(
-				HibernateConstants.DOC_PUBLICID_3_0, 
-				FileLocator.resolve(HibernateRecognizer.class.getResource("/meta/hibernate-mapping-3.0.dtd")).toString()
+				HibernateConstants.DOC_PUBLICID_3_0, HibernateRecognizer.class, "/meta/hibernate-mapping-3.0.dtd"
 			);
 			XMLEntityResolver.registerSystemEntity(
-				HibernateConstants.DOC_SYSTEMID_3_0, 
-				FileLocator.resolve(HibernateRecognizer.class.getResource("/meta/hibernate-mapping-3.0.dtd")).toString()
+				HibernateConstants.DOC_SYSTEMID_3_0, HibernateRecognizer.class, "/meta/hibernate-mapping-3.0.dtd"
 			);
 			XMLEntityResolver.registerPublicEntity(
-				HibernateConstants.CFG_DOC_PUBLICID_3_0, 
-				FileLocator.resolve(HibernateRecognizer.class.getResource("/meta/hibernate-configuration-3.0.dtd")).toString()
+				HibernateConstants.CFG_DOC_PUBLICID_3_0, HibernateRecognizer.class, "/meta/hibernate-configuration-3.0.dtd"
 			);
 			XMLEntityResolver.registerSystemEntity(
-				HibernateConstants.CFG_DOC_SYSTEMID_3_0, 
-				FileLocator.resolve(HibernateRecognizer.class.getResource("/meta/hibernate-configuration-3.0.dtd")).toString()
+				HibernateConstants.CFG_DOC_SYSTEMID_3_0, HibernateRecognizer.class, "/meta/hibernate-configuration-3.0.dtd"
 			);
 		} catch (Exception e) {}
 	}
