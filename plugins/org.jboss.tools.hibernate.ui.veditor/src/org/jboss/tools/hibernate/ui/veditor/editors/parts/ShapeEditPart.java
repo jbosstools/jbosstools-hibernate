@@ -220,7 +220,8 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 					Integer.parseInt(Messages.Colors_DatabaseTableG),
 					Integer.parseInt(Messages.Colors_DatabaseTableB)));
 		else
-			throw new IllegalArgumentException();
+			return ResourceManager.getInstance().getColor(new RGB(255, 0, 0));
+//			throw new IllegalArgumentException();
 	}
 
 	protected Color getSelectionColor() {

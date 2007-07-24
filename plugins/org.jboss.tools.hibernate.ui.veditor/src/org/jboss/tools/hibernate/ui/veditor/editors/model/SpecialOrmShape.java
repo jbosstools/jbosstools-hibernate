@@ -20,6 +20,7 @@ public class SpecialOrmShape extends OrmShape {
 
 	public SpecialOrmShape(SpecialRootClass ioe) {
 		super(ioe);
+//		generate();
 	}
 
 	protected void generate() {
