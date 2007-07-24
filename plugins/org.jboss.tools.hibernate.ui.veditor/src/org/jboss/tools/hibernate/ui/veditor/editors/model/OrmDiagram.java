@@ -339,10 +339,10 @@ public class OrmDiagram extends ModelElement {
 	}
 
 	public void setDirty(boolean dirty) {
-		if(this.dirty != dirty) {
+		/*if(this.dirty != dirty) {
 			this.dirty = dirty;
 			firePropertyChange(DIRTY, null, null);
-		}
+		}*/
 	}
 	
 	public void processExpand(ExpandeableShape shape) {
