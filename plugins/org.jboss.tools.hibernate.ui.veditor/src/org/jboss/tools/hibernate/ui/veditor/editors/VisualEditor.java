@@ -17,8 +17,11 @@ import org.eclipse.gef.dnd.TemplateTransferDropTargetListener;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.requests.SimpleFactory;
+import org.eclipse.gef.ui.actions.ActionRegistry;
+import org.eclipse.gef.ui.actions.PrintAction;
 import org.eclipse.gef.ui.actions.WorkbenchPartAction;
 import org.eclipse.gef.ui.parts.GraphicalEditor;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -54,6 +57,7 @@ public class VisualEditor extends GraphicalEditor {
 	}
 
 	protected void createActions() {
+		
 		getEditorSite().getActionBars().setGlobalActionHandler(ActionFactory.REFRESH.getId(),new WorkbenchPartAction(this){
 
 			protected boolean calculateEnabled() {
@@ -63,7 +67,10 @@ public class VisualEditor extends GraphicalEditor {
 				ormDiagram.refresh();
 			}
 		});
+		
 		super.createActions();
+		
+		getEditorSite().getActionBars().setGlobalActionHandler(ActionFactory.PRINT.getId(), getActionRegistry().getAction(ActionFactory.PRINT.getId()));
 	}
 		
 	private TransferDropTargetListener createTransferDropTargetListener() {
