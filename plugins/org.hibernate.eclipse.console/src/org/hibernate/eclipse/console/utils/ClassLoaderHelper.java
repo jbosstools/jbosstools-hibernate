@@ -60,7 +60,7 @@ public class ClassLoaderHelper {
 	
 	static public List getProjectClassPathURLs (IJavaProject project)
 	{
-		ArrayList pathElements = new ArrayList();
+		List pathElements = new ArrayList();
 		
 		try {
 			IClasspathEntry paths[] = project.getResolvedClasspath(true);
