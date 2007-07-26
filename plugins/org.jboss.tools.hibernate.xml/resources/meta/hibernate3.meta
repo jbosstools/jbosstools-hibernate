@@ -561,7 +561,7 @@
     <Editor name="List"/>
    </XModelAttribute>
    <XModelAttribute PROPERTIES="category=advanced" default="true"
-    name="update" xmlname="insert">
+    name="update" xmlname="update">
     <Constraint loader="List">
      <value name="true"/>
      <value name="false"/>
