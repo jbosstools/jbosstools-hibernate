@@ -56,24 +56,10 @@ public class OrmDiagram extends ModelElement {
 		ormElement = (RootClass)ioe;
 		if (ormElement instanceof RootClass) {
 			String string = "";
-// resource
-// =((RootClass)ormElement).getPersistentClassMapping().getStorage().getResource();
-// try {
-// int i = 0;
-// String tempString;
-// do {
-// tempString = resource.getPersistentProperty(new
-// QualifiedName(VisualEditorPlugin.PLUGIN_ID,qualifiedNameString+i++));
-// string += tempString;
-// } while (tempString != null);
-// } catch (CoreException e) {
-// // ExceptionHandler.logThrowableError(e, e.getMessage());
-// }
 			childrenLocations = string.split("#");
-		} // else
-// throw new IllegalArgumentException();
+		}
 		getOrCreatePersistentClass(ormElement, null);
-
+		expandModel(this);
 	}
 	
 	public HashMap getCloneElements() {
@@ -88,11 +74,18 @@ public class OrmDiagram extends ModelElement {
 		saveHelper();
 		getChildren().clear();
 		elements.clear();
-// if(
-// ((IPersistentClass)ormElement).getProjectMapping().findClass(ormElement.getName())
-// != null)
-// / getOrCreatePersistentClass((IPersistentClass)ormElement, null);
 		firePropertyChange(REFRESH, null, null);
+	}
+	
+	private void expandModel(ModelElement element){
+		if(element.getClass().equals(ExpandeableShape.class)){
+			processExpand((ExpandeableShape)element);
+		}else if(element.getClass().equals(ComponentShape.class)){
+			refreshComponentReferences((ComponentShape)element);
+		}
+		for(int i=0; i <element.getChildren().size(); i++){
+			expandModel((ModelElement)element.getChildren().get(i));
+		}
 	}
 	
 	public void save() {
@@ -358,27 +351,6 @@ public class OrmDiagram extends ModelElement {
 					if (clazz instanceof RootClass) {
 						RootClass rootClass = (RootClass)clazz;
 						s = getOrCreatePersistentClass(rootClass, null);
-// HashMap targets = new HashMap();
-// Iterator iterator = shape.getSourceConnections().iterator();
-// while (iterator.hasNext()) {
-// Connection connection = (Connection)iterator.next();
-// connection.setHiden(shape.getHide());
-// Object el = connection.getTarget().getOrmElement();
-// if (el instanceof Column) {
-// targets.put(((Column)el).getName(), connection.getTarget());
-// } else if (el instanceof RootClass) {
-// targets.put(((RootClass)el).getEntityName(), connection.getTarget());
-// }
-// }
-// KeyValue id = rootClass.getIdentifier();
-// iterator = id.getColumnIterator();
-// while (iterator.hasNext()) {
-// Column column = (Column)iterator.next();
-// if (targets.get(column.getName()) != null && !isConnectionExist(s,
-// (Shape)targets.get(column.getName()))) {
-// new Connection(s, (Shape)targets.get(column.getName()));
-// }
-// }
 						if(!isConnectionExist(shape, s)){
 							new Connection(shape, s);
 							shape.firePropertyChange(REFRESH, null, null);
