@@ -227,4 +227,15 @@
       <location path="extsrc"/>
    </extension>
 
+    <extension point="org.eclipse.wst.xml.core.catalogContributions">
+      <catalogContribution id="default">
+         <public 
+         	publicId="-//Hibernate/Hibernate Configuration DTD 3.0//EN" 
+         	uri="dtd/hibernate-configuration-3.0.dtd"/>
+         <public 
+         	publicId="-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+         	uri="dtd/hibernate-mapping-3.0.dtd"/>
+      </catalogContribution>
+  </extension>
+
 </plugin>
