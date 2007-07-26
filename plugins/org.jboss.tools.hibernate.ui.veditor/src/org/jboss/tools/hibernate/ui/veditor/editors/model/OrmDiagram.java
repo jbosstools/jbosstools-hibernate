@@ -390,6 +390,10 @@ public class OrmDiagram extends ModelElement {
 				}
 			} else {
 				s = getOrCreatePersistentClass(new SpecialRootClass(property), null);
+				new Connection(shape, s);
+				createConnections(s, getOrCreateDatabaseTable(property.getValue().getTable()));
+				shape.firePropertyChange(REFRESH, null, null);
+				s.firePropertyChange(REFRESH, null, null);
 			}
 			if(!shape.getParent().equals(s))
 				shape.setReference(s);
@@ -416,6 +420,21 @@ public class OrmDiagram extends ModelElement {
 			if (component instanceof Component) {// valueType.isComponentType()
 				childShape = (OrmShape)elements.get(((Component)component).getComponentClassName());
 				if(childShape == null) childShape = getOrCreateComponentClass(property);
+
+				
+				SimpleValue value = (SimpleValue)((Shape)componentShape.getChildren().get(0)).getOrmElement();
+				OrmShape tableShape = getOrCreateDatabaseTable(value.getTable());
+				Iterator iterator = value.getColumnIterator();
+				while (iterator.hasNext()) {
+					Column column = (Column)iterator.next();
+					Shape colShape = tableShape.getChild(column);
+					if(!isConnectionExist((Shape)(componentShape.getChildren().get(0)), colShape)){
+						new Connection((Shape)(componentShape.getChildren().get(0)), colShape);
+						((Shape)(componentShape.getChildren().get(0))).firePropertyChange(REFRESH, null, null);
+						childShape.firePropertyChange(REFRESH, null, null);
+					}
+				}
+				
 				if(!isConnectionExist((Shape)(componentShape.getChildren().get(1)), childShape)){
 					new Connection((Shape)(componentShape.getChildren().get(1)), childShape);
 					((Shape)(componentShape.getChildren().get(1))).firePropertyChange(REFRESH, null, null);
