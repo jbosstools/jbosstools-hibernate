@@ -14,6 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.PositionConstants;
@@ -69,7 +70,6 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 				((IFigure)getFigure().getChildren().get(0)).setForegroundColor(ResourceManager.getInstance().getColor(new RGB(0,0,0)));
 			}
 		}else if (ExpandeableShape.SHOW_REFERENCES.equals(prop)) {
-			
 			referenceList.add((OrmShape)getCastedModel().getParent());
 			refreshReference((ExpandeableShape)getCastedModel(), ((ExpandeableShape)getCastedModel()).isReferenceVisible());
 			((TitleLabel)getFigure()).setHidden(!((ExpandeableShape)getCastedModel()).isReferenceVisible());
@@ -137,19 +137,48 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 	private void setLinksVisible(OrmEditPart editPart, boolean flag){
 		ConnectionEditPart link;
 		OrmEditPart child;
+		
 		for(int i=0;i<editPart.getSourceConnections().size();i++){
 			link = (ConnectionEditPart)editPart.getSourceConnections().get(i);
-			link.getFigure().setVisible(flag);
+			if(isLinkCanBeVisible(link, flag))
+				link.getFigure().setVisible(flag);
 		}
 		for(int i=0;i<editPart.getTargetConnections().size();i++){
 			link = (ConnectionEditPart)editPart.getTargetConnections().get(i);
-			link.getFigure().setVisible(flag);
+			if(isLinkCanBeVisible(link, flag))
+				link.getFigure().setVisible(flag);
 		}
 		for(int i=0;i<editPart.getChildren().size();i++){
 			child = (OrmEditPart)editPart.getChildren().get(i);
 			setLinksVisible(child, flag);
 		}
 	}
+	
+	private boolean isLinkCanBeVisible(ConnectionEditPart link, boolean visible){
+		if(!visible) return true;
+		if(!((OrmEditPart)link.getSource()).getFigure().isVisible()) return false;
+		if(!((OrmEditPart)link.getTarget()).getFigure().isVisible()) return false;
+		if(!validateShape((Shape)((OrmEditPart)link.getSource()).getModel())) return false;
+		if(!validateShape((Shape)((OrmEditPart)link.getTarget()).getModel())) return false;
+		return true;
+	}
+	
+	private boolean validateShape(Shape shape){
+		if(!shape.getClass().equals(OrmShape.class)){
+			OrmShape ormShape = shape.getOrmShape();
+			if(ormShape != null){
+				if(ormShape.isHiden()) return false;
+			}
+		}
+		ExpandeableShape expanableShape = shape.getExtendeableShape();
+		if(expanableShape != null && !shape.equals(expanableShape) && !expanableShape.getClass().equals(OrmShape.class)){
+			if(!expanableShape.isReferenceVisible()) return false;
+		}
+		
+		
+		return true;
+	}
+	
 	
 	protected List getModelChildren() {
 		return ((ExpandeableShape)getModel()).getChildren(); 

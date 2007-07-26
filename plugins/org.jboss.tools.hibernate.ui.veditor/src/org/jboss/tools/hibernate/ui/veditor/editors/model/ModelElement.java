@@ -63,6 +63,26 @@ public abstract class ModelElement{
 		return null;
 	}
 	
+	public ExpandeableShape getExtendeableShape(){
+		ModelElement element = this;
+		while(true){
+			if(element.getParent() == null)break;
+			if(element.getParent() instanceof ExpandeableShape) return (ExpandeableShape)element.getParent();
+			element = element.getParent();
+		}
+		return null;
+	}
+	
+	public OrmShape getOrmShape(){
+		ModelElement element = this;
+		while(true){
+			if(element.getParent() == null)break;
+			if(element.getParent() instanceof OrmShape) return (OrmShape)element.getParent();
+			element = element.getParent();
+		}
+		return null;
+	}
+	
 	class OList extends ArrayList{
 		public OList(){
 			
