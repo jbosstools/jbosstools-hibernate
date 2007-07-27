@@ -28,6 +28,7 @@ import org.jboss.tools.hibernate.ui.veditor.editors.figures.ComponentFigure;
 import org.jboss.tools.hibernate.ui.veditor.editors.figures.TitleLabel;
 import org.jboss.tools.hibernate.ui.veditor.editors.figures.TopLineBorder;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.ComponentShape;
+import org.jboss.tools.hibernate.ui.veditor.editors.model.Connection;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.ExpandeableShape;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmShape;
@@ -70,8 +71,9 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 				((IFigure)getFigure().getChildren().get(0)).setForegroundColor(ResourceManager.getInstance().getColor(new RGB(0,0,0)));
 			}
 		}else if (ExpandeableShape.SHOW_REFERENCES.equals(prop)) {
-			referenceList.add((OrmShape)getCastedModel().getParent());
-			refreshReference((ExpandeableShape)getCastedModel(), ((ExpandeableShape)getCastedModel()).isReferenceVisible());
+			//referenceList.add((OrmShape)getCastedModel().getParent());
+			//refreshReference((ExpandeableShape)getCastedModel(), ((ExpandeableShape)getCastedModel()).isReferenceVisible());
+			refreshReferences((Shape)getCastedModel(), ((ExpandeableShape)getCastedModel()).isReferenceVisible());
 			((TitleLabel)getFigure()).setHidden(!((ExpandeableShape)getCastedModel()).isReferenceVisible());
 //			((IFigure)getFigure().getChildren().get(0)).setBackgroundColor(getSelectionColor());	
 //			((IFigure)getFigure().getChildren().get(0)).setForegroundColor(ResourceManager.getInstance().getColor(new RGB(255,255,255)));
@@ -116,12 +118,55 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 		shape.getOrmDiagram().update();
 	}
 	
+	protected void refreshReferences(Shape shape, boolean visible){
+		Connection link;
+		OrmShape refShape;
+		
+		OrmEditPart shapePart = (OrmEditPart)getViewer().getEditPartRegistry().get(shape);
+		
+		for(int i=0;i<shape.getSourceConnections().size();i++){
+			link = (Connection)shape.getSourceConnections().get(i);
+			refShape = (OrmShape)link.getTarget().getOrmShape();
+			if(refShape == null) continue;
+			if(!isReferencesCorrect(refShape)) continue;
+		
+			OrmEditPart refPart = (OrmEditPart)getViewer().getEditPartRegistry().get(refShape);
+			if(refPart != null){
+				if(isShapeCanBeInvisible(shapePart, refPart, visible)){
+					refPart.getFigure().setVisible(visible);
+					setLinksVisible(refPart, visible);
+				}
+			}
+			referenceList.add(shape.getOrmShape());
+			refreshReferences(refShape, visible);
+			referenceList.remove(shape.getOrmShape());
+		}
+	
+		referenceList.add(shape.getOrmShape());
+		
+		for(int i=0;i<shape.getChildren().size();i++){
+			refreshReferences((Shape)shape.getChildren().get(i), visible);
+		}
+		referenceList.remove(shape.getOrmShape());
+		shape.getOrmDiagram().update();
+	}
+	
 	private boolean isTableCanBeInvisible(OrmEditPart tablePart, boolean visible){
 		if(visible) return true;
 		ConnectionEditPart link;
 		for(int i=0;i<tablePart.getTargetConnections().size();i++){
 			link = (ConnectionEditPart)tablePart.getTargetConnections().get(i);
 			if(link.getFigure().isVisible()) return false;
+		}
+		return true;
+	}
+	
+	private boolean isShapeCanBeInvisible(OrmEditPart source, OrmEditPart target, boolean visible){
+		if(visible) return true;
+		ConnectionEditPart link;
+		for(int i=0;i<target.getTargetConnections().size();i++){
+			link = (ConnectionEditPart)target.getTargetConnections().get(i);
+			if(link.getFigure().isVisible() && link.getSource() != source) return false;
 		}
 		return true;
 	}

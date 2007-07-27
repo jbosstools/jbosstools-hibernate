@@ -56,8 +56,8 @@ public abstract class ModelElement{
 	public OrmDiagram getOrmDiagram(){
 		ModelElement element = this;
 		while(true){
+			if(element instanceof OrmDiagram) return (OrmDiagram)element;
 			if(element.getParent() == null)break;
-			if(element.getParent() instanceof OrmDiagram) return (OrmDiagram)element.getParent();
 			element = element.getParent();
 		}
 		return null;
@@ -66,6 +66,7 @@ public abstract class ModelElement{
 	public ExpandeableShape getExtendeableShape(){
 		ModelElement element = this;
 		while(true){
+			if(element instanceof ExpandeableShape) return (ExpandeableShape)element;
 			if(element.getParent() == null)break;
 			if(element.getParent() instanceof ExpandeableShape) return (ExpandeableShape)element.getParent();
 			element = element.getParent();
@@ -76,8 +77,8 @@ public abstract class ModelElement{
 	public OrmShape getOrmShape(){
 		ModelElement element = this;
 		while(true){
+			if(element instanceof OrmShape) return (OrmShape)element;
 			if(element.getParent() == null)break;
-			if(element.getParent() instanceof OrmShape) return (OrmShape)element.getParent();
 			element = element.getParent();
 		}
 		return null;
