@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.internal.resources.File;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
@@ -513,5 +515,74 @@ public class OrmDiagram extends ModelElement {
 				}
 		}
 		return classShape;
+	}
+	
+	HashMap<String, Boolean> states = new HashMap<String, Boolean>();
+	IFile file = null;
+	
+	public String getKey(Shape shape) {
+		Object element = shape.getOrmElement();
+		String key=null;
+		if (element instanceof RootClass) {
+			key = ((RootClass)ormElement).getEntityName();
+		} else if (element instanceof Table) {
+			Table table = (Table)element;
+			key = table.getSchema() + "." + table.getName();
+		} else if (element instanceof Property) {
+			SpecialRootClass specialRootClass = new SpecialRootClass((Property)element);
+			key = specialRootClass.getEntityName();
+		} else if (element instanceof Subclass) {
+			key = ((Subclass)element).getEntityName();
+		}
+		return key;
+	}
+	
+	public void stateInit(Shape shape){
+		for(int i=0;i<shape.getChildren().size();i++){
+			
+		}
+	}
+	
+	public void saveStates(){
+		Iterator<String> iter = states.keySet().iterator();
+		String key;
+		boolean value;
+		while(iter.hasNext()){
+			key = iter.next();
+			value = getState(key);
+			try{
+				file.setPersistentProperty(new QualifiedName("", key), ""+value);
+			}catch(Exception ex){
+				ex.printStackTrace();
+			}
+		}
+	}
+	
+	public void setState(String key, boolean value){
+		if(states.containsKey(key)){
+			states.remove(key);
+			states.put(key, new Boolean(value));
+		}else{
+			states.put(key, new Boolean(value));
+		}
+	}
+	
+	public boolean getState(String key){
+		Boolean value = states.get(key);
+		if(value == null){
+			try{
+				String str = file.getPersistentProperty(new QualifiedName("", key));
+				if(str != null){
+					value = new Boolean(str);
+					states.put(key, value);
+					return value.booleanValue();
+				}else 
+					return true;
+			}catch(Exception ex){
+				ex.printStackTrace();
+				return true;
+			}
+		}
+		return value.booleanValue();
 	}
 }
