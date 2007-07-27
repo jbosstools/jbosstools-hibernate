@@ -41,11 +41,10 @@ public class OpenDiagramActionDelegate implements IObjectActionDelegate {
 		try {
 			IDE.openEditor(ViewPlugin.getPage(),input ,"org.jboss.tools.hibernate.ui.veditor.editors.visualeditor");
 		} catch (PartInitException e) {
-//			ExceptionHandler.logThrowableError(e,"OpenEditor");              
+			ViewPlugin.getDefault().logError("Can't open mapping view.", e);
 		}
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {
 	}
-
 }

@@ -26,15 +26,13 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.jboss.tools.common.log.BaseUIPlugin;
 import org.osgi.framework.BundleContext;
-
-
 
 /**
  * The main plugin class to be used in the desktop.
  */
-public class ViewPlugin extends AbstractUIPlugin {
+public class ViewPlugin extends BaseUIPlugin {
 	//The shared instance.
 	private static ViewPlugin plugin;
 	//Resource bundle.
@@ -165,9 +163,8 @@ public class ViewPlugin extends AbstractUIPlugin {
 			try {
 				properties.load(bain);
 			} catch (IOException e) {
-//				ExceptionHandler.logThrowableError(e, null);
+				getDefault().logError("Can't load preference store propertyes", e);
 			}
 		}
 	}	
-
 }
