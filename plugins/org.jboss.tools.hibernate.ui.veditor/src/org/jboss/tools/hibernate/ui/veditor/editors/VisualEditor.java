@@ -27,6 +27,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.actions.ActionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
 import org.jboss.tools.hibernate.ui.veditor.editors.parts.OrmEditPartFactory;
@@ -100,9 +101,9 @@ public class VisualEditor extends GraphicalEditor {
 	protected void setInput(IEditorInput input) {
 		super.setInput(input);
 		ObjectEditorInput objectEditorInput = (ObjectEditorInput)input;
-		Configuration configuration = objectEditorInput.getConfiguration();
+		ConsoleConfiguration configuration = objectEditorInput.getConfiguration();
 		RootClass rootClass = (RootClass)(objectEditorInput).getObject();
 		setPartName("Diagram for " + rootClass.getEntityName());
-		ormDiagram = new OrmDiagram(configuration, rootClass);
+		ormDiagram = new OrmDiagram(configuration, rootClass, objectEditorInput.getJavaProject());
 	}
 }
