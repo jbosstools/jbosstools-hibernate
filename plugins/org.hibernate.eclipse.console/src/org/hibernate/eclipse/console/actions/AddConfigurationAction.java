@@ -23,17 +23,19 @@ package org.hibernate.eclipse.console.actions;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.DebugUITools;
-import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.PlatformUI;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard;
 
 /**
  * 
@@ -47,7 +49,7 @@ public class AddConfigurationAction extends Action {
 
 	public AddConfigurationAction(IViewPart part) {
 		this.part = part;
-		setText("Add Configuration");
+		setText("Add Configuration...");
 		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.ADD) );
 	}
 
@@ -59,16 +61,20 @@ public class AddConfigurationAction extends Action {
 		/*ConsoleConfigurationCreationWizard wizard = new ConsoleConfigurationCreationWizard();
 		wizard.init(PlatformUI.getWorkbench(), null); // initializes the wizard
 		WizardDialog dialog = new WizardDialog(part.getSite().getShell(), wizard);
-		dialog.open(); // This opens a dialog*/
+		dialog.open(); // This opens a dialog
+		*/
 		
 		try {
 			ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 
 			ILaunchConfigurationType launchConfigurationType = launchManager.getLaunchConfigurationType( "org.hibernate.eclipse.launch.ConsoleConfigurationLaunchConfigurationType" );
 			String launchName = launchManager.generateUniqueLaunchConfigurationNameFrom("hibernate"); 
-			ILaunchConfiguration[] launchConfigurations = launchManager.getLaunchConfigurations( launchConfigurationType );
+			//ILaunchConfiguration[] launchConfigurations = launchManager.getLaunchConfigurations( launchConfigurationType );
 			ILaunchConfigurationWorkingCopy wc = launchConfigurationType.newInstance(null, launchName);
 			int i = DebugUITools.openLaunchConfigurationPropertiesDialog( part.getSite().getShell(), wc, "org.eclipse.debug.ui.launchGroup.run" );
+			if(i==Window.OK) {
+				wc.doSave();
+			}
 			
 		} catch (CoreException ce) {
 			HibernateConsolePlugin.getDefault().showError( part.getSite().getShell(), "Problem adding a console configuration",  ce);

@@ -50,6 +50,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
@@ -273,10 +274,14 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 	 * @param message the error message to log
 	 */
 	public void logErrorMessage(String message, Throwable t) {
+		logMessage(IStatus.ERROR, message, t);
+	}
+	
+	public void logMessage(int lvl, String message, Throwable t) {
 		if(t==null) {
 			log(message);
 		} else {
-			log(new MultiStatus(HibernateConsolePlugin.ID, IStatus.ERROR , new IStatus[] { throwableToStatus(t) }, message, null) );
+			log(new MultiStatus(HibernateConsolePlugin.ID, lvl , new IStatus[] { throwableToStatus(t) }, message, null));
 		}
 	}
 	
@@ -558,6 +563,12 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 		}
 		
 		return javaTextTools;
+	}
+
+
+
+	public void logWarning(HibernateException he) {
+		logMessage(IStatus.WARNING, he==null?null:he.getMessage(), he);		
 	}
 
 	

@@ -98,7 +98,7 @@ public class PropertyViewAdapter extends Observable {
 				target.addTargetAssociation( pava );
 			}
 		} catch(HibernateException he) {
-			HibernateConsolePlugin.getDefault().log( he );
+			HibernateConsolePlugin.getDefault().logWarning( he );
 		}
 		
 		}

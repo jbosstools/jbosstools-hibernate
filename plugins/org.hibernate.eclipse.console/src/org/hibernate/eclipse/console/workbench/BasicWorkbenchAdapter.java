@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
 import org.eclipse.ui.progress.IElementCollector;
@@ -102,7 +103,7 @@ public abstract class BasicWorkbenchAdapter implements IDeferredWorkbenchAdapter
 	}
 
 	protected void handleError(IElementCollector collector, Exception e) {
-		HibernateConsolePlugin.getDefault().logErrorMessage(e.toString(), e);
+		HibernateConsolePlugin.getDefault().logMessage(IStatus.WARNING, e.toString(), e);
 		HibernateConsolePlugin.openError(null, "Lazy tree error", "Error while fetching children", e, HibernateConsolePlugin.PERFORM_SYNC_EXEC);		
 	}
 
