@@ -116,7 +116,7 @@ public class UpDownListComposite extends Composite {
 		gridData1.heightHint = 20;
 		gridData1.widthHint = 20;
 		
-		table = new Table(group, SWT.FULL_SELECTION | SWT.BORDER);
+		table = new Table(group, SWT.FULL_SELECTION | SWT.BORDER | SWT.MULTI );
 		table.setHeaderVisible(false);
 		table.setLayoutData(gridData1);
 		table.setLinesVisible(false);
