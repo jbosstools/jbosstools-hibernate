@@ -536,7 +536,6 @@ public class OrmDiagram extends ModelElement {
 	
 	public String getKey(Shape shape) {
 		Object element = shape.getOrmElement();
-		System.out.println("<<<<< +++++ Element - "+element);
 		String key=null;
 		if (element instanceof RootClass) {
 			key = ((RootClass)ormElement).getEntityName();
@@ -545,12 +544,10 @@ public class OrmDiagram extends ModelElement {
 			key = table.getSchema() + "." + table.getName();
 		} else if (element instanceof Property) {
 			SpecialRootClass specialRootClass = new SpecialRootClass((Property)element);
-			System.out.println("specialRootClass - "+specialRootClass.getClassName());
 			key = specialRootClass.getEntityName();
 		} else if (element instanceof Subclass) {
 			key = ((Subclass)element).getEntityName();
 		}
-		System.out.println("KEY - "+key);
 		
 		return key;
 	}

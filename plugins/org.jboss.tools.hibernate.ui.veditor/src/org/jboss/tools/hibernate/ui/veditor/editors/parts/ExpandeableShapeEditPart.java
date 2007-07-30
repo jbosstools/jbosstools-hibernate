@@ -52,6 +52,15 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 			throw new IllegalArgumentException();
 		}
 	}
+	
+	public void addNotify() {
+		super.addNotify();
+		if(!((ExpandeableShape)getModel()).isReferenceVisible()){
+			refreshReferences((Shape)getCastedModel(), ((ExpandeableShape)getCastedModel()).isReferenceVisible());
+			((TitleLabel)getFigure()).setHidden(!((ExpandeableShape)getCastedModel()).isReferenceVisible());
+		}
+	}
+	
 	public void performRequest(Request req) {
 		if(RequestConstants.REQ_OPEN.equals(req.getType())) {
 			((ExpandeableShape)getModel()).refreshReferences(getViewer().getContents().getModel());
