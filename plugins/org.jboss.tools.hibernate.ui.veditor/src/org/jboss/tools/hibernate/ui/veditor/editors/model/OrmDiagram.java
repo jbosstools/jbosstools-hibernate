@@ -10,19 +10,25 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.veditor.editors.model;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
-import org.eclipse.core.internal.resources.File;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.jdt.core.IJavaProject;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
@@ -69,6 +75,8 @@ public class OrmDiagram extends ModelElement {
 		}
 		getOrCreatePersistentClass(ormElement, null);
 		expandModel(this);
+		load();
+		dirty = false;
 	}
 	
 	public IFile createLayoutFile(InputStream source) {
@@ -114,25 +122,6 @@ public class OrmDiagram extends ModelElement {
 		for(int i=0; i <element.getChildren().size(); i++){
 			expandModel((ModelElement)element.getChildren().get(i));
 		}
-	}
-	
-	public void save() {
-		/*String string = "";
-		saveHelper();
-		for (int i = 0; i < childrenLocations.length; i++)
-			string+=childrenLocations[i]+"#";
-		if(resource.exists() && string.length() > 0)
-			try {
-				int i = 0;				
-				while(string.length() > 2048*(i+1)) {
-					resource.setPersistentProperty((new QualifiedName(VisualEditorPlugin.PLUGIN_ID,qualifiedNameString+i)),
-							string.substring(2048*i,2048*(i++)+2047));
-				}
-				resource.setPersistentProperty((new QualifiedName(VisualEditorPlugin.PLUGIN_ID,qualifiedNameString+i)),
-						string.substring(2048*i));
-			} catch (CoreException e) {
-// ExceptionHandler.logThrowableError(e, e.getMessage());
-			}*/
 	}
 	
 	private void saveHelper() {
@@ -360,10 +349,10 @@ public class OrmDiagram extends ModelElement {
 	}
 
 	public void setDirty(boolean dirty) {
-		/*if(this.dirty != dirty) {
+		if(this.dirty != dirty) {
 			this.dirty = dirty;
 			firePropertyChange(DIRTY, null, null);
-		}*/
+		}
 	}
 	
 	public void processExpand(ExpandeableShape shape) {
@@ -543,11 +532,11 @@ public class OrmDiagram extends ModelElement {
 		return classShape;
 	}
 	
-	HashMap<String, Boolean> states = new HashMap<String, Boolean>();
-	IFile file = null;
+	
 	
 	public String getKey(Shape shape) {
 		Object element = shape.getOrmElement();
+		System.out.println("<<<<< +++++ Element - "+element);
 		String key=null;
 		if (element instanceof RootClass) {
 			key = ((RootClass)ormElement).getEntityName();
@@ -556,59 +545,143 @@ public class OrmDiagram extends ModelElement {
 			key = table.getSchema() + "." + table.getName();
 		} else if (element instanceof Property) {
 			SpecialRootClass specialRootClass = new SpecialRootClass((Property)element);
+			System.out.println("specialRootClass - "+specialRootClass.getClassName());
 			key = specialRootClass.getEntityName();
 		} else if (element instanceof Subclass) {
 			key = ((Subclass)element).getEntityName();
 		}
+		System.out.println("KEY - "+key);
+		
 		return key;
 	}
 	
-	public void stateInit(Shape shape){
+	public void propertiesInit(Properties properties, ModelElement shape){
+		boolean state;
+		
+		if(shape instanceof OrmShape){
+			state = getState(properties, (Shape)shape);
+			if(state)
+				((OrmShape)shape).refreshHiden();
+			((OrmShape)shape).setLocation(getPosition(properties, (OrmShape)shape));
+		}else if(shape instanceof ExpandeableShape){
+			state = getState(properties, (Shape)shape);
+			if(!state)
+				((ExpandeableShape)shape).refreshReferences(this);
+		}
+
 		for(int i=0;i<shape.getChildren().size();i++){
-			
+			propertiesInit(properties, (ModelElement)shape.getChildren().get(i));
 		}
 	}
 	
-	public void saveStates(){
-		Iterator<String> iter = states.keySet().iterator();
-		String key;
-		boolean value;
-		while(iter.hasNext()){
-			key = iter.next();
-			value = getState(key);
-			try{
-				file.setPersistentProperty(new QualifiedName("", key), ""+value);
-			}catch(Exception ex){
-				ex.printStackTrace();
+	
+	
+	private void storeProperties(Properties properties, ModelElement shape){
+		boolean state;
+		if(shape instanceof OrmShape){
+			state = ((OrmShape)shape).hiden;
+			setState(properties, (Shape)shape, state);
+			setPosition(properties, (OrmShape)shape);
+		}else if(shape instanceof ExpandeableShape){
+			state = ((ExpandeableShape)shape).refHide;
+			setState(properties, (Shape)shape, state);
+		}
+		for(int i=0;i<shape.getChildren().size();i++){
+			storeProperties(properties, (Shape)shape.getChildren().get(i));
+		}
+	}
+	
+	public void save(){
+		Properties properties = new Properties();
+		storeProperties(properties, this);
+		try{
+			File file = new File("c:\\aaa.property");
+			if(!file.exists()){
+				file.createNewFile();
 			}
+			FileOutputStream fos = new FileOutputStream(file);
+			properties.store(fos, "");
+		}catch(Exception ex){
+			ex.printStackTrace();
 		}
 	}
 	
-	public void setState(String key, boolean value){
-		if(states.containsKey(key)){
-			states.remove(key);
-			states.put(key, new Boolean(value));
+	private boolean loadSuccessfull = false;
+	
+	public void load(){
+		Properties properties = new Properties();
+		try{
+			File file = new File("c:\\aaa.property");
+			if(file.exists()){
+				FileInputStream fis = new FileInputStream(file);
+				properties.load(fis);
+				propertiesInit(properties, this);
+				loadSuccessfull = true;
+			}
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public boolean isLoadSuccessfull(){
+		return loadSuccessfull;
+	}
+	
+		
+	private void setState(Properties properties,String key, boolean value){
+		if(properties.containsKey(key)){
+			properties.remove(key);
+			properties.put(key, new Boolean(value).toString());
 		}else{
-			states.put(key, new Boolean(value));
+			properties.put(key, new Boolean(value).toString());
 		}
 	}
 	
-	public boolean getState(String key){
-		Boolean value = states.get(key);
-		if(value == null){
-			try{
-				String str = file.getPersistentProperty(new QualifiedName("", key));
-				if(str != null){
-					value = new Boolean(str);
-					states.put(key, value);
-					return value.booleanValue();
-				}else 
-					return true;
-			}catch(Exception ex){
-				ex.printStackTrace();
-				return true;
-			}
-		}
-		return value.booleanValue();
+	public void setState(Properties properties,Shape shape, boolean value){
+		setState(properties, getKey(shape)+".state", value);
 	}
+	
+	private boolean getState(Properties properties, String key){
+		String str = properties.getProperty(key, "true");
+		
+		return new Boolean(str).booleanValue();
+	}
+	
+	private Point getPoint(Properties properties, String key){
+		Point point = new Point(0,0);
+		String str = properties.getProperty(key+".x","0");
+		point.x = new Integer(str).intValue();
+		String str2 = properties.getProperty(key+".y","0");
+		point.y = new Integer(str2).intValue();
+		return point;
+	}
+	
+	private void setPoint(Properties properties, String key, Point point){
+		String key1 = key+".x";
+		if(!properties.containsKey(key1)){
+			properties.remove(key1);
+			properties.put(key1, ""+point.x);
+		}else
+			properties.put(key1, ""+point.x);
+		String key2 = key+".y";
+		if(!properties.containsKey(key2)){
+			properties.remove(key2);
+			properties.put(key2, ""+point.y);
+		}else
+			properties.put(key2, ""+point.y);
+	}
+	
+	public void setPosition(Properties properties, OrmShape shape){
+		Point point = shape.getLocation();
+		setPoint(properties, getKey(shape), point);
+	}
+
+	public Point getPosition(Properties properties, OrmShape shape){
+		return getPoint(properties, getKey(shape));
+	}
+	
+	public boolean getState(Properties properties, Shape shape){
+		return getState(properties, getKey(shape)+".state");
+	}
+	
 }
