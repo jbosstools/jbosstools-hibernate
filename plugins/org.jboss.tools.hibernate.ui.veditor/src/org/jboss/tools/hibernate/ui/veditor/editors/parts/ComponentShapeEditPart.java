@@ -54,7 +54,23 @@ public class ComponentShapeEditPart extends ExpandeableShapeEditPart {
 		} else {
 			throw new IllegalArgumentException();
 		}
-	}	
+	}
+	
+	public void addNotify() {
+		super.addNotify();
+		if(!((ExpandeableShape)getModel()).isReferenceVisible()){
+			int i = figure.getPreferredSize().width;
+			((ComponentFigure)figure).setChildsHiden(true);
+			
+			figure.setSize(i,-1);
+			
+			referenceList.add((OrmShape)getCastedModel().getParent());
+			refreshReference((ExpandeableShape)getCastedModel(), ((ExpandeableShape)getCastedModel()).isReferenceVisible());
+			
+			
+			((OrmShape)getParent().getModel()).refreshReference();
+		}
+	}
 	
 	public void performRequest(Request req) {
 		if(RequestConstants.REQ_OPEN.equals(req.getType()) && getModel() instanceof ComponentShape) {
