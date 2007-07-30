@@ -25,24 +25,31 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
-import org.hibernate.mapping.Bag;
-import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.ui.veditor.editors.figures.RoundLineBorder;
 import org.jboss.tools.hibernate.ui.veditor.editors.figures.TitleFigure;
 import org.jboss.tools.hibernate.ui.veditor.editors.figures.TitleLabel;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.ExpandeableShape;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmShape;
 
 
 public class OrmShapeEditPart extends ExpandeableShapeEditPart{
+
+	public void addNotify() {
+		super.addNotify();
+		if(((OrmShape)getModel()).isHiden()){
+			int i = figure.getPreferredSize().width;
+			((TitleFigure)figure).setHidden(true);
+			((TitleLabel)figure.getChildren().get(0)).setHidden(true);
+			figure.setSize(i,-1);
+			refresh();
+		}
+	}
 
 	protected IFigure createFigure() {
 		if (getModel() instanceof OrmShape) {
@@ -92,7 +99,7 @@ public class OrmShapeEditPart extends ExpandeableShapeEditPart{
 		String prop = evt.getPropertyName();
 		if (OrmShape.LOCATION_PROP.equals(prop)) {
 			refreshVisuals();
-			//((OrmDiagram)getParent().getModel()).setDirty(true);
+			((OrmDiagram)getParent().getModel()).setDirty(true);
 		} else if (OrmShape.SET_HIDEN.equals(prop)) {
 			int i = figure.getPreferredSize().width;
 			((TitleFigure)figure).setHidden(((Boolean)evt.getNewValue()).booleanValue());
@@ -102,7 +109,7 @@ public class OrmShapeEditPart extends ExpandeableShapeEditPart{
 			else
 				figure.setSize(-1,-1);
 			refresh();
-			//((OrmDiagram)getParent().getModel()).setDirty(true);
+			((OrmDiagram)getParent().getModel()).setDirty(true);
 		} else {
 			super.propertyChange(evt);
 		}

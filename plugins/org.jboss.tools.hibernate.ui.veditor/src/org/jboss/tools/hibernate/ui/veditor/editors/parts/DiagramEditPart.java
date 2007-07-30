@@ -208,7 +208,8 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 		if (!isActive()) {
 			super.activate();
 			((ModelElement) getModel()).addPropertyChangeListener(this);
-			autolayout();
+			if(!getCastedModel().isLoadSuccessfull())
+				autolayout();
 			// restore();
 		}
 	}
