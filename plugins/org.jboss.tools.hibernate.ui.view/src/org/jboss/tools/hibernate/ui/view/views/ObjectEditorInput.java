@@ -10,24 +10,28 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.view.views;
 
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.console.ConsoleConfiguration;
 
 
 public class ObjectEditorInput implements IEditorInput{
 	
 	protected Object fObject;
-	protected Configuration configuration;
+	protected ConsoleConfiguration configuration;
+	protected IJavaProject javaProject;
 
 	public ObjectEditorInput(Object object) {
 		fObject = object;
 	}
 
-	public ObjectEditorInput(Configuration configuration, Object object) {
+	public ObjectEditorInput(ConsoleConfiguration configuration, Object object, IJavaProject proj) {
 		fObject = object;
 		this.configuration = configuration;
+		javaProject = proj;
 	}
 
 	public Object getObject() {
@@ -64,8 +68,12 @@ public class ObjectEditorInput implements IEditorInput{
 		return null;
 	}
 
-	public Configuration getConfiguration() {
+	public ConsoleConfiguration getConfiguration() {
 		return configuration;
+	}
+
+	public IJavaProject getJavaProject() {
+		return javaProject;
 	}
 
 }

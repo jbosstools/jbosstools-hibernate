@@ -22,5 +22,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface.text,
  org.jboss.tools.common,
  org.jboss.tools.common.model,
- org.hibernate.eclipse
+ org.hibernate.eclipse,
+ org.hibernate.eclipse.console,
+ org.eclipse.debug.core
 Eclipse-LazyStart: true
