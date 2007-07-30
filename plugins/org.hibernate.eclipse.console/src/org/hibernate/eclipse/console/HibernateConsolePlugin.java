@@ -51,9 +51,11 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.hibernate.HibernateException;
+import org.hibernate.SessionFactory;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.KnownConfigurationsListener;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.workbench.ConfigurationAdapterFactory;
 import org.hibernate.eclipse.criteriaeditor.CriteriaEditorInput;
@@ -85,6 +87,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 	private JavaTextTools javaTextTools;
 
 	private ILaunchConfigurationListener icl;
+	private KnownConfigurationsListener kcl;
 	
 	/**
 	 * The constructor.
@@ -117,6 +120,38 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 
 	private void listenForConfigurations() {
 		final ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+		
+		kcl = new KnownConfigurationsListener() {
+		
+			public void sessionFactoryClosing(ConsoleConfiguration configuration,
+					SessionFactory closingFactory) {
+				// TODO Auto-generated method stub
+		
+			}
+		
+			public void sessionFactoryBuilt(ConsoleConfiguration ccfg,
+					SessionFactory builtFactory) {
+				// TODO Auto-generated method stub
+		
+			}
+		
+			public void configurationRemoved(ConsoleConfiguration root) {
+				try {
+					removeConfiguration(root.getName());
+				} catch (CoreException e) {
+					logErrorMessage("Could not delete launch configuration for: " + root.getName(), e);
+				}
+		
+			}
+		
+			public void configurationAdded(ConsoleConfiguration root) {
+				// TODO Auto-generated method stub
+		
+			}
+		
+		};
+		
+		KnownConfigurations.getInstance().addConsoleConfigurationListener(kcl);
 		
 		icl = new ILaunchConfigurationListener() {
 		
@@ -187,6 +222,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 	private void stopListeningForConfigurations() {
 		final ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 		launchManager.removeLaunchConfigurationListener( icl );
+		KnownConfigurations.getInstance().removeConfigurationListener(kcl);
 	}
 
 	
@@ -203,6 +239,34 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 	}
 
 	
+	private void removeConfiguration(String name) throws CoreException {
+		ILaunchConfiguration findLaunchConfig = findLaunchConfig(name);
+		if (findLaunchConfig != null) {
+			findLaunchConfig.delete();
+		}
+	}
+
+	private ILaunchConfiguration findLaunchConfig(String name)
+			throws CoreException {
+		ILaunchManager launchManager = DebugPlugin.getDefault()
+				.getLaunchManager();
+		ILaunchConfigurationType launchConfigurationType = launchManager
+				.getLaunchConfigurationType(ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID);
+		ILaunchConfiguration[] launchConfigurations = launchManager
+				.getLaunchConfigurations(launchConfigurationType);
+
+		for (int i = 0; i < launchConfigurations.length; i++) { // can't believe
+																// there is no
+																// look up by
+																// name API
+			ILaunchConfiguration launchConfiguration = launchConfigurations[i];
+			if (launchConfiguration.getName().equals(name)) {
+				return launchConfiguration;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * This method is called when the plug-in is stopped
 	 */

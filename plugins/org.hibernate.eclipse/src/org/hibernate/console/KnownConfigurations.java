@@ -53,6 +53,7 @@ import org.eclipse.ui.console.MessageConsoleStream;
 import org.hibernate.SessionFactory;
 import org.hibernate.console.node.BaseNode;
 import org.hibernate.console.node.ConfigurationListNode;
+import org.hibernate.eclipse.HibernatePlugin;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -145,7 +146,7 @@ public class KnownConfigurations  {
 			// Cache the location instance for later retrieval
 			getRepositoriesMap().put(configuration.getName(), configuration);
 			configuration.addConsoleConfigurationListener(sfListener);			
-			//TODO: location.storePreferences();
+
 			existingConfiguration = configuration;
 		}
 		
@@ -180,6 +181,7 @@ public class KnownConfigurations  {
 			});
 			oldConfig.reset();
 			removeLoggingStream( oldConfig );
+			
 		}
 		
 		
