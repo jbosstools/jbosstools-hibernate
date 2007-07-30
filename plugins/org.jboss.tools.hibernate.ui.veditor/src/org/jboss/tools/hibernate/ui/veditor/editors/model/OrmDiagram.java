@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.veditor.editors.model;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -17,28 +18,29 @@ import java.util.List;
 
 import org.eclipse.core.internal.resources.File;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.QualifiedName;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.jdt.core.IJavaProject;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.Join;
-import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
-import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.type.EntityType;
 import org.hibernate.type.Type;
-import org.jboss.tools.hibernate.ui.veditor.VisualEditorPlugin;
 
 public class OrmDiagram extends ModelElement {
 	
@@ -51,11 +53,16 @@ public class OrmDiagram extends ModelElement {
 	private HashMap<String,OrmShape> elements = new HashMap<String,OrmShape>();
 	private RootClass  ormElement;
 	private Configuration configuration;
+	private ConsoleConfiguration consoleConfiguration;
+	private IJavaProject javaProject;
+	public static final String HIBERNATE_MAPPING_LAYOUT_FOLDER_NAME = "hibernateMapping";
 	
-	
-	public OrmDiagram(Configuration configuration, RootClass ioe) {
-		this.configuration = configuration;
+	public OrmDiagram(ConsoleConfiguration configuration, RootClass ioe, IJavaProject javaProject) {
+		consoleConfiguration = configuration;
+		this.configuration = configuration.getConfiguration();
 		ormElement = (RootClass)ioe;
+		this.javaProject = javaProject;
+
 		if (ormElement instanceof RootClass) {
 			String string = "";
 			childrenLocations = string.split("#");
@@ -64,6 +71,25 @@ public class OrmDiagram extends ModelElement {
 		expandModel(this);
 	}
 	
+	public IFile createLayoutFile(InputStream source) {
+		IFile file = null;
+		IPath path = javaProject.getProject().getLocation().append(".settings").append(HIBERNATE_MAPPING_LAYOUT_FOLDER_NAME);
+		IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(path);
+		if(!folder.exists()) {
+			try {
+				folder.create(true, true, null);
+
+				file = folder.getFile(consoleConfiguration.getName() + "_" + getOrmElement().getClassName());
+				if (!file.exists()) {
+					file.create(source, true, null);
+				}
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
+		}
+		return file;
+	}
+
 	public HashMap getCloneElements() {
 		return (HashMap)elements.clone();
 	}
