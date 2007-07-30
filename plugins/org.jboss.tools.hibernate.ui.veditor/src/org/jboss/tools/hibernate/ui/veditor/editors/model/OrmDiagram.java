@@ -13,6 +13,7 @@ package org.jboss.tools.hibernate.ui.veditor.editors.model;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,8 +27,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.jdt.core.IJavaProject;
 import org.hibernate.cfg.Configuration;
@@ -47,6 +46,8 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.type.EntityType;
 import org.hibernate.type.Type;
+import org.jboss.tools.common.model.util.EclipseResourceUtil;
+import org.jboss.tools.hibernate.ui.veditor.VisualEditorPlugin;
 
 public class OrmDiagram extends ModelElement {
 	
@@ -79,23 +80,16 @@ public class OrmDiagram extends ModelElement {
 		dirty = false;
 	}
 	
-	public IFile createLayoutFile(InputStream source) {
-		IFile file = null;
-		IPath path = javaProject.getProject().getLocation().append(".settings").append(HIBERNATE_MAPPING_LAYOUT_FOLDER_NAME);
-		IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(path);
-		if(!folder.exists()) {
-			try {
-				folder.create(true, true, null);
+	private IPath getStoreFolderPath() {
+		return javaProject.getProject().getLocation().append(".settings").append(HIBERNATE_MAPPING_LAYOUT_FOLDER_NAME);
+	}
 
-				file = folder.getFile(consoleConfiguration.getName() + "_" + getOrmElement().getClassName());
-				if (!file.exists()) {
-					file.create(source, true, null);
-				}
-			} catch (CoreException e) {
-				e.printStackTrace();
-			}
-		}
-		return file;
+	private IPath getStoreFilePath() {
+		return getStoreFolderPath().append(getStoreFileName());
+	}
+
+	private String getStoreFileName() {
+		return consoleConfiguration.getName() + "_" + getOrmElement().getClassName();
 	}
 
 	public HashMap getCloneElements() {
@@ -538,13 +532,13 @@ public class OrmDiagram extends ModelElement {
 		Object element = shape.getOrmElement();
 		String key=null;
 		if (element instanceof RootClass) {
-			key = ((RootClass)ormElement).getEntityName();
+			key = ((RootClass)element).getEntityName();
 		} else if (element instanceof Table) {
 			Table table = (Table)element;
 			key = table.getSchema() + "." + table.getName();
 		} else if (element instanceof Property) {
-			SpecialRootClass specialRootClass = new SpecialRootClass((Property)element);
-			key = specialRootClass.getEntityName();
+			Property property = (Property)element;
+			key = property.getPersistentClass().getEntityName() + "." + property.getName();
 		} else if (element instanceof Subclass) {
 			key = ((Subclass)element).getEntityName();
 		}
@@ -591,32 +585,55 @@ public class OrmDiagram extends ModelElement {
 	public void save(){
 		Properties properties = new Properties();
 		storeProperties(properties, this);
-		try{
-			File file = new File("c:\\aaa.property");
-			if(!file.exists()){
+		try {
+			File folder = new File(getStoreFolderPath().toOSString());
+			if(!folder.exists()) {
+				folder.mkdirs();
+			}
+			File file = new File(getStoreFilePath().toOSString());
+			if(!file.exists()) {
 				file.createNewFile();
 			}
 			FileOutputStream fos = new FileOutputStream(file);
 			properties.store(fos, "");
-		}catch(Exception ex){
-			ex.printStackTrace();
+		} catch (IOException e) {
+			VisualEditorPlugin.getDefault().logError("Can't save layout of mapping.", e);
 		}
 	}
-	
+
+	public IFile createLayoutFile(InputStream source) {
+		IFile file = null;
+		IPath path = javaProject.getProject().getLocation().append(".settings").append(HIBERNATE_MAPPING_LAYOUT_FOLDER_NAME);
+		IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(path);
+		if(!folder.exists()) {
+			try {
+				folder.create(true, true, null);
+
+				file = folder.getFile(consoleConfiguration.getName() + "_" + getOrmElement().getClassName());
+				if (!file.exists()) {
+					file.create(source, true, null);
+				}
+			} catch (CoreException e) {
+				VisualEditorPlugin.getDefault().logError(e);
+			}
+		}
+		return file;
+	}
+
 	private boolean loadSuccessfull = false;
 	
 	public void load(){
 		Properties properties = new Properties();
 		try{
-			File file = new File("c:\\aaa.property");
+			File file = new File(getStoreFilePath().toOSString());
 			if(file.exists()){
 				FileInputStream fis = new FileInputStream(file);
 				properties.load(fis);
 				propertiesInit(properties, this);
 				loadSuccessfull = true;
 			}
-		}catch(Exception ex){
-			ex.printStackTrace();
+		}catch(IOException ex){
+			VisualEditorPlugin.getDefault().logError("Can't load layout of mapping.", ex);
 		}
 	}
 	
