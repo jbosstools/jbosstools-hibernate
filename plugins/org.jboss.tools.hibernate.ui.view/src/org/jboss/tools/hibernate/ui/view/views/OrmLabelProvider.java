@@ -84,6 +84,13 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 			} else {
 				return name;
 			}
+		} else if (element instanceof Table) {
+			String name = (String)ormModelNameVisitor.visitTable((Table)element, null);
+			if (name == null) {
+				return "OrmElement";
+			} else {
+				return name;
+			}
 		} else if (element instanceof Subclass) {
 				String name = (String)ormModelNameVisitor.visitPersistentClass((Subclass)element, null);
 				if (name == null) {

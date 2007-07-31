@@ -13,6 +13,7 @@ package org.jboss.tools.hibernate.ui.view.views;
 import java.sql.Types;
 import java.util.ResourceBundle;
 import org.eclipse.jdt.core.Signature;
+import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.jface.viewers.ContentViewer;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -23,10 +24,6 @@ import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 
-/**
- * @author Tau from Minsk
- *
- */
 public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 	
 	private ContentViewer viewer;
@@ -484,7 +481,7 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 		Table table = clazz.getTable(); // upd tau 06.06.2005
 		//IDatabaseTable table = HibernateAutoMappingHelper.getPrivateTable(classMapping); // upd tau 18.04.2005
 		if (table != null) {
-			String tableName = table.getName();
+			String tableName = TextUtil.getTableName(table);
 			if (tableName != null) {
 				//name.append(" (");
 				name.append(POINTER);
@@ -493,6 +490,12 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 			}
 		}
 
+		return name.toString();
+	}
+
+	public Object visitTable(Table table, Object argument) {
+		StringBuffer name = new StringBuffer();
+		name.append(TextUtil.getTableName(table));
 		return name.toString();
 	}
 

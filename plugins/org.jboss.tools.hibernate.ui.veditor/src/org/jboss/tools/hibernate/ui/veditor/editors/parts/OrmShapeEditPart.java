@@ -61,8 +61,7 @@ public class OrmShapeEditPart extends ExpandeableShapeEditPart{
 			if (element instanceof RootClass) {
 				text = ormLabelProvider.getText((PersistentClass)element);
 			} else if (element instanceof Table) {
-				Table table = (Table)element; 
-				text = table.getSchema() + "." + table.getName();
+				text = ormLabelProvider.getText((Table)element);
 			} else if (element instanceof Subclass) {
 				text = ormLabelProvider.getText((Subclass)element);
 			}

@@ -54,6 +54,7 @@ import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmShape;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.Shape;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.SpecialOrmShape;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.SpecialRootClass;
+import org.jboss.tools.hibernate.ui.view.views.TextUtil;
 
 class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 
@@ -128,8 +129,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 				tempPoint = 40 + getChildrenFigurePreferredHeight(ormShape);
 			}
 			Table table = persistentClass.getTable();
-			ormShape = (OrmShape) hashMap.remove(table.getSchema() + "."
-					+ table.getName());
+			ormShape = (OrmShape) hashMap.remove(TextUtil.getTableName(table));
 			if (ormShape != null) {
 				ormShape.setLocation(new Point(pointX, 20));
 				point = 40 + getChildrenFigurePreferredHeight(ormShape);
