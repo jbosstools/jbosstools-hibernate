@@ -53,11 +53,13 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 		}
 	}
 	
-	public void addNotify() {
-		super.addNotify();
-		if(!((ExpandeableShape)getModel()).isReferenceVisible()){
-			refreshReferences((Shape)getCastedModel(), ((ExpandeableShape)getCastedModel()).isReferenceVisible());
-			((TitleLabel)getFigure()).setHidden(!((ExpandeableShape)getCastedModel()).isReferenceVisible());
+	public void activate() {
+		super.activate();
+		if(this.getClass().equals(ExpandeableShapeEditPart.class) && !((ExpandeableShape)getModel()).isReferenceVisible()){
+			((ExpandeableShape)getModel()).refHide = true;
+			((ExpandeableShape)getModel()).refreshReferences(getViewer().getContents().getModel());
+			//refreshReferences((Shape)getCastedModel(), ((ExpandeableShape)getCastedModel()).isReferenceVisible());
+			//((TitleLabel)getFigure()).setHidden(true);
 		}
 	}
 	
@@ -80,12 +82,8 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 				((IFigure)getFigure().getChildren().get(0)).setForegroundColor(ResourceManager.getInstance().getColor(new RGB(0,0,0)));
 			}
 		}else if (ExpandeableShape.SHOW_REFERENCES.equals(prop)) {
-			//referenceList.add((OrmShape)getCastedModel().getParent());
-			//refreshReference((ExpandeableShape)getCastedModel(), ((ExpandeableShape)getCastedModel()).isReferenceVisible());
 			refreshReferences((Shape)getCastedModel(), ((ExpandeableShape)getCastedModel()).isReferenceVisible());
 			((TitleLabel)getFigure()).setHidden(!((ExpandeableShape)getCastedModel()).isReferenceVisible());
-//			((IFigure)getFigure().getChildren().get(0)).setBackgroundColor(getSelectionColor());	
-//			((IFigure)getFigure().getChildren().get(0)).setForegroundColor(ResourceManager.getInstance().getColor(new RGB(255,255,255)));
 		} else {
 			super.propertyChange(evt);
 		}

@@ -56,10 +56,11 @@ public class ComponentShapeEditPart extends ExpandeableShapeEditPart {
 		}
 	}
 	
-	public void addNotify() {
-		super.addNotify();
-		if(!((ExpandeableShape)getModel()).isReferenceVisible()){
-			int i = figure.getPreferredSize().width;
+	public void activate() {
+		super.activate();
+		if(this.getClass().equals(ComponentShapeEditPart.class) && !((ExpandeableShape)getModel()).isReferenceVisible()){
+			((ComponentShape)getModel()).refreshChildsHiden(((OrmDiagram)getViewer().getContents().getModel()));
+			/*int i = figure.getPreferredSize().width;
 			((ComponentFigure)figure).setChildsHiden(true);
 			
 			figure.setSize(i,-1);
@@ -68,7 +69,7 @@ public class ComponentShapeEditPart extends ExpandeableShapeEditPart {
 			refreshReference((ExpandeableShape)getCastedModel(), ((ExpandeableShape)getCastedModel()).isReferenceVisible());
 			
 			
-			((OrmShape)getParent().getModel()).refreshReference();
+			((OrmShape)getParent().getModel()).refreshReference();*/
 		}
 	}
 	

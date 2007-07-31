@@ -22,7 +22,7 @@ public class ExpandeableShape extends Shape {
 	
 	public static final String SHOW_REFERENCES = "show references";
 	
-	protected boolean refHide = true;
+	public boolean refHide = true;
 	protected boolean first=false;
 	
 	private OrmShape reference=null;

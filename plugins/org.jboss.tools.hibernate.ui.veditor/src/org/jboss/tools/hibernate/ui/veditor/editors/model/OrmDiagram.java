@@ -557,7 +557,7 @@ public class OrmDiagram extends ModelElement {
 		}else if(shape instanceof ExpandeableShape){
 			state = getState(properties, (Shape)shape);
 			if(!state)
-				((ExpandeableShape)shape).refreshReferences(this);
+				((ExpandeableShape)shape).refHide = false;
 		}
 
 		for(int i=0;i<shape.getChildren().size();i++){
