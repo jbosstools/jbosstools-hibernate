@@ -59,17 +59,8 @@ public class ComponentShapeEditPart extends ExpandeableShapeEditPart {
 	public void activate() {
 		super.activate();
 		if(this.getClass().equals(ComponentShapeEditPart.class) && !((ExpandeableShape)getModel()).isReferenceVisible()){
+			((ComponentShape)getModel()).refHide = true;
 			((ComponentShape)getModel()).refreshChildsHiden(((OrmDiagram)getViewer().getContents().getModel()));
-			/*int i = figure.getPreferredSize().width;
-			((ComponentFigure)figure).setChildsHiden(true);
-			
-			figure.setSize(i,-1);
-			
-			referenceList.add((OrmShape)getCastedModel().getParent());
-			refreshReference((ExpandeableShape)getCastedModel(), ((ExpandeableShape)getCastedModel()).isReferenceVisible());
-			
-			
-			((OrmShape)getParent().getModel()).refreshReference();*/
 		}
 	}
 	

@@ -58,8 +58,6 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 		if(this.getClass().equals(ExpandeableShapeEditPart.class) && !((ExpandeableShape)getModel()).isReferenceVisible()){
 			((ExpandeableShape)getModel()).refHide = true;
 			((ExpandeableShape)getModel()).refreshReferences(getViewer().getContents().getModel());
-			//refreshReferences((Shape)getCastedModel(), ((ExpandeableShape)getCastedModel()).isReferenceVisible());
-			//((TitleLabel)getFigure()).setHidden(true);
 		}
 	}
 	
