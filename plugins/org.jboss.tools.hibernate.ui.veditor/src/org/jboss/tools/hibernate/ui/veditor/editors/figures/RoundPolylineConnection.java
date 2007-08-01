@@ -31,6 +31,21 @@ public class RoundPolylineConnection extends PolylineConnection {
 			super.outlineShape(g);
 			return;
 		}
+		if (Math.abs(points.getFirstPoint().y - points.getLastPoint().y) < 4) {
+			int delta = Math.abs(points.getFirstPoint().y - points.getLastPoint().y);
+			if(points.size() == 4){
+				Point point1 = points.getPoint(0);
+				Point point2 = points.getPoint(1);
+				point2.x -= delta/2;
+				Point point3 = points.getPoint(2);
+				point3.x += delta/2;
+				Point point4 = points.getPoint(3);
+				g.drawLine(point1, point2);
+				g.drawLine(point2, point3);
+				g.drawLine(point3, point4);
+				return;
+			}
+		}
 	
 		for (int i = 1; i < points.size(); i++) {
 			point = points.getPoint(i);
