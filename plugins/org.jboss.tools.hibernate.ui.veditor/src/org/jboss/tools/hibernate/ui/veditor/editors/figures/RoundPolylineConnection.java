@@ -36,10 +36,15 @@ public class RoundPolylineConnection extends PolylineConnection {
 			if(points.size() == 4){
 				Point point1 = points.getPoint(0);
 				Point point2 = points.getPoint(1);
-				point2.x -= delta/2;
 				Point point3 = points.getPoint(2);
-				point3.x += delta/2;
 				Point point4 = points.getPoint(3);
+				if(point1.x < point4.x){
+					point2.x -= delta/2;
+					point3.x += delta/2;
+				}else{
+					point2.x += delta/2;
+					point3.x -= delta/2;
+				}
 				g.drawLine(point1, point2);
 				g.drawLine(point2, point3);
 				g.drawLine(point3, point4);
