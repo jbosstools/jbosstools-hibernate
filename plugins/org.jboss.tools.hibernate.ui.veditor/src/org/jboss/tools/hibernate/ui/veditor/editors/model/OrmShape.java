@@ -17,6 +17,7 @@ import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.KeyValue;
+import org.hibernate.mapping.List;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
@@ -70,9 +71,7 @@ public class OrmShape extends ExpandeableShape {
 							typeIsAccessible = false;
 						}
 					}
-/*					if (field.isComposite()) {
-						bodyOrmShape = new ExpandeableShape(field);
-					} else */if (field.getValue().isSimpleValue() && !((SimpleValue)field.getValue()).isTypeSpecified()) {
+					if (field.getValue().isSimpleValue() && !((SimpleValue)field.getValue()).isTypeSpecified()) {
 						bodyOrmShape = new Shape(field);
 					} else if (typeIsAccessible && field.getValue().getType().isEntityType()) {
 						bodyOrmShape = new ExpandeableShape(field);
@@ -83,24 +82,8 @@ public class OrmShape extends ExpandeableShape {
 					}
 					getChildren().add(bodyOrmShape);
 				} else {
-//					Component component = (Component)field.getValue();
-//					Iterator iter = component.getPropertyIterator();
-//					while (iter.hasNext()) {
-//						Property property = (Property)iter.next();
-//						boolean typeIsAccesible = true;
-//						try {property.getValue().getType();} catch (Exception e) {typeIsAccesible = false;}
-///*						if (property.isComposite()) {
-//							bodyOrmShape = new ExpandeableShape(property);
-//						} else */if (typeIsAccesible && property.getValue().getType().isEntityType()) {
-//							bodyOrmShape = new ExpandeableShape(property);
-//						} else if (typeIsAccesible && property.getValue().getType().isCollectionType()) {
-//							bodyOrmShape = new ComponentShape(property);
-//						} else {
-//							bodyOrmShape = new Shape(property);
-//						}
-						bodyOrmShape = new ExpandeableShape(field);
-						getChildren().add(bodyOrmShape);
-//					}
+					bodyOrmShape = new ExpandeableShape(field);
+					getChildren().add(bodyOrmShape);
 				}
 			}
 		} else if (ormElement instanceof Subclass) {
@@ -135,20 +118,8 @@ public class OrmShape extends ExpandeableShape {
 					}
 					getChildren().add(bodyOrmShape);
 				} else {
-//					Component component = (Component)field.getValue();
-//					Iterator iter = component.getPropertyIterator();
-//					while (iter.hasNext()) {
-//						Property property = (Property)iter.next();
-//						if (property.getValue().getType().isEntityType()) {
-//							bodyOrmShape = new ExpandeableShape(property);
-//						} else if (property.getValue().getType().isCollectionType()) {
-//							bodyOrmShape = new ComponentShape(property);
-//						} else {
-//							bodyOrmShape = new Shape(property);
-//						}
-						bodyOrmShape = new ExpandeableShape(field);
-						getChildren().add(bodyOrmShape);
-//					}
+					bodyOrmShape = new ExpandeableShape(field);
+					getChildren().add(bodyOrmShape);
 				}
 			}
 			Iterator iter = ((Subclass)ormElement).getPropertyIterator();
@@ -184,6 +155,19 @@ public class OrmShape extends ExpandeableShape {
 			Shape child = (Shape)iter.next();
 			Object childElement = child.getOrmElement();
 			if (childElement instanceof Column && ormElement.getName().equals(((Column)childElement).getName())) {
+				return child;
+			}
+		}
+		return shape;
+	}
+
+	public Shape getChild(Property ormElement) {
+		Shape shape = null;
+		Iterator iter = getChildren().iterator();
+		while (iter.hasNext()) {
+			Shape child = (Shape)iter.next();
+			Object childElement = child.getOrmElement();
+			if (childElement instanceof Property && ormElement.getName().equals(((Property)childElement).getName())) {
 				return child;
 			}
 		}

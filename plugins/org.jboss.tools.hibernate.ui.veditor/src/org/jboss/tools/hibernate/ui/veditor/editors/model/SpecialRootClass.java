@@ -41,18 +41,12 @@ public class SpecialRootClass extends RootClass {
 			}
 			if (component != null) {
 				setClassName(component.getComponentClassName());
+				setEntityName(component.getComponentClassName());
 				PersistentClass ownerClass = component.getOwner();
 				if (component.getParentProperty() != null) {
 					parentProperty = new Property();
 					parentProperty.setName(component.getParentProperty());
 					parentProperty.setPersistentClass(ownerClass);
-//					Property property = null;
-//					try {
-//						property = ownerClass.getProperty(component.getParentProperty());
-//					} catch (Exception e) {
-//						property = ownerClass.getIdentifierProperty();
-//					}
-//					if (property != null) parentProperty = ownerClass.getIdentifierProperty();
 				}
 				Iterator iterator = component.getPropertyIterator();
 				while (iterator.hasNext()) {

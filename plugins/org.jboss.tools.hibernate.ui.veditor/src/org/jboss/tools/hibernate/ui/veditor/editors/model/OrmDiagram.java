@@ -228,6 +228,8 @@ public class OrmDiagram extends ModelElement {
 							Property property = (Property)iterator.next();
 							OrmShape tableShape =  getOrCreateDatabaseTable(property.getValue().getTable());
 							createConnections(subclassShape, tableShape);
+							subclassShape.firePropertyChange(REFRESH, null, null);
+							tableShape.firePropertyChange(REFRESH, null, null);
 						}
 					}
 				}
@@ -239,9 +241,20 @@ public class OrmDiagram extends ModelElement {
 					OrmShape componentClassShape = elements.get(identifier.getComponentClassName());
 					if (componentClassShape == null && persistentClass instanceof RootClass) {
 						componentClassShape = getOrCreateComponentClass(((RootClass)persistentClass).getIdentifierProperty());
+
+						Shape idPropertyShape = classShape.getChild(persistentClass.getIdentifierProperty());
+						if (idPropertyShape != null) {
+							new Connection(idPropertyShape, componentClassShape);
+							idPropertyShape.firePropertyChange(REFRESH, null, null);
+							componentClassShape.firePropertyChange(REFRESH, null, null);
+						}
+
 						OrmShape tableShape = getOrCreateDatabaseTable(identifier.getTable());
-						if (componentClassShape != null)
+						if (componentClassShape != null) {
 							createConnections(componentClassShape, tableShape);
+							componentClassShape.firePropertyChange(REFRESH, null, null);
+							tableShape.firePropertyChange(REFRESH, null, null);
+						}
 					}
 				}
 			}
@@ -254,6 +267,8 @@ public class OrmDiagram extends ModelElement {
 					Property property = (Property)iterator.next();
 					OrmShape tableShape =  getOrCreateDatabaseTable(property.getValue().getTable());
 					createConnections(classShape, tableShape);
+					classShape.firePropertyChange(REFRESH, null, null);
+					tableShape.firePropertyChange(REFRESH, null, null);
 				}
 			}
 		}
@@ -501,7 +516,8 @@ public class OrmDiagram extends ModelElement {
 						}
 				}
 			} else if (property.getValue() instanceof Component) {
-				classShape = createShape(property);
+				classShape = (OrmShape)elements.get(((Component)property.getValue()).getComponentClassName());
+				if (classShape == null) classShape = createShape(property);
 			}
 		}
 		return classShape;
