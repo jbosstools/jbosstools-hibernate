@@ -67,7 +67,7 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 			((ExpandeableShape)getModel()).refreshReferences(getViewer().getContents().getModel());
 		}
 	}
-	
+
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
 		if (Shape.SHOW_SELECTION.equals(prop)) {

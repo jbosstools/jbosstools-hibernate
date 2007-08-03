@@ -127,7 +127,7 @@ public class OrmDiagram extends ModelElement {
 			if (ormElement instanceof RootClass) {
 				childrenLocations[i] = ((RootClass)ormElement).getEntityName() + "@";
 			} else if (ormElement instanceof Table) {
-				childrenLocations[i] = ((Table)ormElement).getSchema() + "." + ((Table)ormElement).getName()+"@";
+				childrenLocations[i] = TextUtil.getTableName((Table)ormElement)+"@";
 // } else if (ormElement instanceof Component) {
 // childrenLocations[i] = ((Component)ormElement).getComponentClassName()+"@";
 			}
@@ -292,9 +292,6 @@ public class OrmDiagram extends ModelElement {
 							if (elements.get(cls.getEntityName()) == null)
 								getOrCreatePersistentClass(cls, null);
 						}
-// } else if (clazz instanceof SingleTableSubclass) {
-// SingleTableSubclass singleTableSubclass = (SingleTableSubclass)clazz;
-// getOrCreatePersistentClass(singleTableSubclass, null);
 					}
 				}
 			}			
@@ -497,7 +494,7 @@ public class OrmDiagram extends ModelElement {
 				Component component = (Component)((Collection)property.getValue()).getElement();
 				if (component != null) {
 					classShape = createShape(property);
-					OrmShape tableShape = (OrmShape)elements.get(component.getTable().getSchema() + "." + component.getTable().getName());
+					OrmShape tableShape = (OrmShape)elements.get(TextUtil.getTableName(component.getTable()));
 					if (tableShape == null) tableShape = getOrCreateDatabaseTable(component.getTable());
 						createConnections(classShape, tableShape);
 						if(!isConnectionExist(classShape, tableShape)){
@@ -527,9 +524,10 @@ public class OrmDiagram extends ModelElement {
 		OrmShape classShape = null;
 		OneToMany component = (OneToMany)((Collection)property.getValue()).getElement();
 		if (component != null) {
-			classShape = (OrmShape)elements.get(component.getAssociatedClass().getEntityName());
+//			classShape = (OrmShape)elements.get(component.getAssociatedClass().getEntityName());
+			classShape = getOrCreatePersistentClass(component.getAssociatedClass(), null);
 			if (classShape == null) classShape = createShape(component.getAssociatedClass());
-			OrmShape tableShape = (OrmShape)elements.get(component.getAssociatedClass().getTable().getSchema() + "." + component.getAssociatedClass().getTable().getName());
+			OrmShape tableShape = (OrmShape)elements.get(TextUtil.getTableName(component.getAssociatedClass().getTable()));
 			if (tableShape == null) tableShape = getOrCreateDatabaseTable(component.getAssociatedClass().getTable());
 				createConnections(classShape, tableShape);
 				if(!isConnectionExist(classShape, tableShape)){

@@ -152,8 +152,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 						.getOrmElement())).getProperty().getValue())
 						.getElement();
 				Table ownerTable = component.getOwner().getTable();
-				ormShape = (OrmShape) hashMap.remove(ownerTable.getSchema()
-						+ "." + ownerTable.getName());
+				ormShape = (OrmShape) hashMap.remove(TextUtil.getTableName(ownerTable));
 				// }
 				// if (ormShape != null ) {
 				// ormShape.setLocation(new Point(pointX,point));
