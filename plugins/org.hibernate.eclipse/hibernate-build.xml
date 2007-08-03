@@ -5,7 +5,7 @@
 
 <project name="org.hibernate.eclipse" basedir="." default="update">
 
-	<property name="hibernate.root" location="../../../../../hibernate/branch_3_2"/>
+	<property name="hibernate.root" location="/home/max/work/os/hibernate/branches/Branch_3_2"/>
 	<available file="${hibernate.root}" property="hibernate.root.exists"/>
 	<fail unless="hibernate.root.exists">hibernate.root needs to be set to the root of the hibernate svn checkout. Currently it is ${hibernate.root} which does not exist.</fail>
 	
