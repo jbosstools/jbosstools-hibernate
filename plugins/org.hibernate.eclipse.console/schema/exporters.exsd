@@ -6,14 +6,14 @@
          <meta.schema plugin="org.hibernate.eclipse.console" id="exporters" name="Exporters"/>
       </appInfo>
       <documentation>
-         [Enter description of this extension point.]
+         
       </documentation>
    </annotation>
 
    <element name="extension">
       <complexType>
          <sequence>
-            <element ref="exporter"/>
+            <element ref="exporter" minOccurs="1" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -52,7 +52,7 @@
          </documentation>
       </annotation>
       <complexType>
-         <sequence>
+         <sequence minOccurs="1" maxOccurs="unbounded">
             <element ref="property"/>
          </sequence>
          <attribute name="classname" type="string" use="required">

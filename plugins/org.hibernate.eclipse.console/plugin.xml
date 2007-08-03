@@ -22,7 +22,7 @@
             category="hibernatecategory"
             name="Hibernate Configurations"
             id="org.hibernate.eclipse.console.views.KnownConfigurationsView"/>
-      <view
+   <!--   <view
             category="hibernatecategory"
             class="org.hibernate.eclipse.graph.EntityGraphView"
             icon="icons/hibernate_small_icon.gif"
@@ -33,7 +33,7 @@
             class="org.hibernate.eclipse.graph.RelationalGraphView"
             icon="icons/hibernate_small_icon.gif"
             id="org.hibernate.eclipse.graph.RelationalGraphView"
-            name="Hibernate Relational Model"/>
+            name="Hibernate Relational Model"/> -->
       <view
             icon="icons/hibernate_small_icon.gif"
             class="org.hibernate.eclipse.console.views.QueryPageTabView"
@@ -444,7 +444,7 @@
                type="string"
                value="dot.exe"/>
       </exporter>
-      <exporter
+      <!-- <exporter
             classname="org.hibernate.tool.hbm2x.seam.SeamExporter"
             description="JBoss Seam Skeleton App [beta] (misc)"
             icon="icons/hibernate_small_icon.gif"
@@ -457,7 +457,7 @@
                description="Application short name"
                name="seam_shortname"
                value="seamapp"/>
-      </exporter>
+      </exporter> -->
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
