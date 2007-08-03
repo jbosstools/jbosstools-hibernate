@@ -5,5 +5,469 @@
 <hibernate-configuration>
     <session-factory>
 	    <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+
+
+<!--  
+    <mapping resource="mapping/declaration/id/MappedClassWithId.hbm.xml"/>
+    <mapping resource="mapping/declaration/id/MappedClassWithoutId.hbm.xml"/>
+    <mapping resource="mapping/declaration/id/composite/v1/KeyManyToOneClass.hbm.xml"/>
+    <mapping resource="mapping/declaration/id/composite/v1/mapping.hbm.xml"/>
+    <mapping resource="mapping/declaration/id/composite/v2/mapping.hbm.xml"/>
+    <mapping resource="mapping/value/type/collection/list/CollectionList.hbm.xml"/>
+    <mapping resource="mapping/value/type/collection/list/CollectionListItem.hbm.xml"/>
+    <mapping resource="mapping/value/type/collection/map/CollectionListMap.hbm.xml"/>
+    <mapping resource="mapping/value/type/collection/map/CollectionMap.hbm.xml"/>
+    <mapping resource="mapping/value/type/collection/map/CollectionMapMany.hbm.xml"/>
+    <mapping resource="mapping/value/type/collection/set/CollectionSet.hbm.xml"/>
+    <mapping resource="mapping/value/type/collection/set/CollectionSetItem.hbm.xml"/>
+
+	<mapping resource="mapping/abstractembeddedcomponents/cid/abstractembeddedcomponents.cid.hbm.xml"/>
+    <mapping resource="mapping/abstractembeddedcomponents/propertyref/Mappings.hbm.xml"/>
+
+    <mapping resource="mapping/any/Person.hbm.xml"/>
+    <mapping resource="mapping/any/Properties.hbm.xml"/>
+
+    <mapping resource="mapping/array/A.hbm.xml"/>
+
+    <mapping resource="mapping/batch/DataPoint.hbm.xml"/>
+
+    <mapping resource="mapping/batchfetch/ProductLine.hbm.xml"/>
+
+    <mapping resource="mapping/bidi/Auction.hbm.xml"/>
+    <mapping resource="mapping/bidi/Auction2.hbm.xml"/>
+
+    <mapping resource="mapping/bytecode/Bean.hbm.xml"/>
+
+    <mapping resource="mapping/cache/Item.hbm.xml"/>
+
+    <mapping resource="mapping/cascade/Job.hbm.xml"/>
+    <mapping resource="mapping/cascade/JobBatch.hbm.xml"/>
+
+    <mapping resource="mapping/cid/Customer.hbm.xml"/>
+    <mapping resource="mapping/cid/LineItem.hbm.xml"/>
+    <mapping resource="mapping/cid/Order.hbm.xml"/>
+    <mapping resource="mapping/cid/Product.hbm.xml"/>
+
+    <mapping resource="mapping/collection/bag/Mappings.hbm.xml"/>
+    <mapping resource="mapping/collection/idbag/Mappings.hbm.xml"/>
+    <mapping resource="mapping/collection/list/Mappings.hbm.xml"/>
+    <mapping resource="mapping/collection/map/Mappings.hbm.xml"/>
+    <mapping resource="mapping/collection/original/UserPermissions.hbm.xml"/>
+    <mapping resource="mapping/collection/set/Mappings.hbm.xml"/>
+
+    <mapping resource="mapping/component/basic/User.hbm.xml"/>
+    <mapping resource="mapping/component/cascading/collection/Mappings.hbm.xml"/>
+    <mapping resource="mapping/component/cascading/toone/Mappings.hbm.xml"/>
+
+    <mapping resource="mapping/compositeelement/Parent.hbm.xml"/>
+
+    <mapping resource="mapping/connections/Silly.hbm.xml"/>
+
+    <mapping resource="mapping/criteria/Enrolment.hbm.xml"/>
+
+    <mapping resource="mapping/cuk/Person.hbm.xml"/>
+    <mapping resource="mapping/cut/Transaction.hbm.xml"/>
+    <mapping resource="mapping/cut/types.hbm.xml"/>
+
+    <mapping resource="mapping/deletetransient/Person.hbm.xml"/>
+
+    <mapping resource="mapping/dialect/functional/cache/TestInterSystemsFunctionsClass.hbm.xml"/>
+
+    <mapping resource="mapping/discriminator/Person.hbm.xml"/>
+
+-->
+    <mapping resource="mapping/dynamicentity/interceptor/Customer.hbm.xml"/>
+<!--  
+    <mapping resource="mapping/dynamicentity/tuplizer/Customer.hbm.xml"/>
+
+    <mapping resource="mapping/ecid/Course.hbm.xml"/>
+
+    <mapping resource="mapping/entitymode/dom4j/many2one/Car.hbm.xml"/>
+
+    <mapping resource="mapping/entitymode/multi/Stock.hbm.xml"/>
+    <mapping resource="mapping/entitymode/multi/Valuation.hbm.xml"/>
+
+    <mapping resource="mapping/entitymode/dom4j/basic/AB.hbm.xml"/>
+    <mapping resource="mapping/entitymode/dom4j/basic/Account.hbm.xml"/>
+    <mapping resource="mapping/entitymode/dom4j/basic/Employer.hbm.xml"/>
+
+    <mapping resource="mapping/exception/Group.hbm.xml"/>
+    <mapping resource="mapping/exception/User.hbm.xml"/>
+
+    <mapping resource="mapping/extendshbm/allinone.hbm.xml"/>
+    <mapping resource="mapping/extendshbm/allseparateinone.hbm.xml"/>
+    <mapping resource="mapping/extendshbm/Customer.hbm.xml"/>
+    <mapping resource="mapping/extendshbm/Employee.hbm.xml"/>
+    <mapping resource="mapping/extendshbm/entitynames.hbm.xml"/>
+    <mapping resource="mapping/extendshbm/packageentitynames.hbm.xml"/>
+    <mapping resource="mapping/extendshbm/Person.hbm.xml"/>
+    <mapping resource="mapping/extendshbm/unionsubclass.hbm.xml"/>
+
+    <mapping resource="mapping/extralazy/UserGroup.hbm.xml"/>
+
+    <mapping resource="mapping/filter/Category.hbm.xml"/>
+    <mapping resource="mapping/filter/defs.hbm.xml"/>
+    <mapping resource="mapping/filter/Department.hbm.xml"/>
+    <mapping resource="mapping/filter/LineItem.hbm.xml"/>
+    <mapping resource="mapping/filter/Order.hbm.xml"/>
+    <mapping resource="mapping/filter/Product.hbm.xml"/>
+    <mapping resource="mapping/filter/Salesperson.hbm.xml"/>
+
+    <mapping resource="mapping/formulajoin/Master.hbm.xml"/>
+
+    <mapping resource="mapping/generated/ComponentOwner.hbm.xml"/>
+    <mapping resource="mapping/generated/GeneratedPropertyEntity.hbm.xml"/>
+    <mapping resource="mapping/generated/MSSQLGeneratedPropertyEntity.hbm.xml"/>
+
+    <mapping resource="mapping/generatedkeys/identity/MyEntity.hbm.xml"/>
+
+    <mapping resource="mapping/generatedkeys/select/MyEntity.hbm.xml"/>
+
+    <mapping resource="mapping/generatedkeys/seqidentity/MyEntity.hbm.xml"/>
+
+    <mapping resource="mapping/hql/Animal.hbm.xml"/>
+    <mapping resource="mapping/hql/BooleanLiteralEntity.hbm.xml"/>
+    <mapping resource="mapping/hql/ComponentContainer.hbm.xml"/>
+    <mapping resource="mapping/hql/CrazyIdFieldNames.hbm.xml"/>
+    <mapping resource="mapping/hql/WithCrazyCompositeKey.hbm.xml"/>
+    <mapping resource="mapping/hql/FooBarCopy.hbm.xml"/>
+    <mapping resource="mapping/hql/KeyManyToOneEntity.hbm.xml"/>
+    <mapping resource="mapping/hql/SimpleEntityWithAssociation.hbm.xml"/>
+    <mapping resource="mapping/hql/SimpleEntityWithAssociation.hbm.xml"/>
+    <mapping resource="mapping/hql/Vehicle.hbm.xml"/>
+    <mapping resource="mapping/hql/Versions.hbm.xml"/>
+
+    <mapping resource="mapping/id/Car.hbm.xml"/>
+    <mapping resource="mapping/id/Plane.hbm.xml"/>
+    <mapping resource="mapping/id/Product.hbm.xml"/>
+    <mapping resource="mapping/id/Radio.hbm.xml"/>
+
+    <mapping resource="mapping/idbag/UserGroup.hbm.xml"/>
+
+    <mapping resource="mapping/idclass\Customer.hbm.xml"/>
+
+    <mapping resource="mapping\idgen\enhanced\forcedtable\Basic.hbm.xml"/>
+    <mapping resource="mapping\idgen\enhanced\forcedtable\HiLo.hbm.xml"/>
+    <mapping resource="mapping\idgen\enhanced\forcedtable\Pooled.hbm.xml"/>
+
+    <mapping resource="mapping\idgen\enhanced\sequence\Basic.hbm.xml"/>
+    <mapping resource="mapping\idgen\enhanced\sequence\HiLo.hbm.xml"/>
+    <mapping resource="mapping\idgen\enhanced\sequence\Pooled.hbm.xml"/>
+
+    <mapping resource="mapping\idgen\enhanced\table\Basic.hbm.xml"/>
+    <mapping resource="mapping\idgen\enhanced\table\HiLo.hbm.xml"/>
+    <mapping resource="mapping\idgen\enhanced\table\Pooled.hbm.xml"/>
+
+    <mapping resource="mapping\idprops\Mapping.hbm.xml"/>
+
+    <mapping resource="mapping\immutable\ContractVariation.hbm.xml"/>
+
+    <mapping resource="mapping\insertordering\Mapping.hbm.xml"/>
+
+    <mapping resource="mapping\instrument\domain\Documents.hbm.xml"/>
+    <mapping resource="mapping\instrument\domain\Problematic.hbm.xml"/>
+
+    <mapping resource="mapping\interceptor\Image.hbm.xml"/>
+    <mapping resource="mapping\interceptor\User.hbm.xml"/>
+
+    <mapping resource="mapping\interfaceproxy\Item.hbm.xml"/>
+
+    <mapping resource="mapping\iterate\Item.hbm.xml"/>
+
+    <mapping resource="mapping\join\Person.hbm.xml"/>
+
+    <mapping resource="mapping\joinedsubclass\Person.hbm.xml"/>
+
+    <mapping resource="mapping\joinfetch\ItemBid.hbm.xml"/>
+    <mapping resource="mapping\joinfetch\UserGroup.hbm.xml"/>
+
+    <mapping resource="mapping\jpa\Item.hbm.xml"/>
+    <mapping resource="mapping\jpa\MyEntity.hbm.xml"/>
+    <mapping resource="mapping\jpa\Part.hbm.xml"/>
+
+    <mapping resource="mapping\jpa\cascade\ParentChild.hbm.xml"/>
+
+    <mapping resource="mapping\jpa\fetch\Person.hbm.xml"/>
+
+    <mapping resource="mapping\keymanytoone\bidir\component\EagerMapping.hbm.xml"/>
+    <mapping resource="mapping\keymanytoone\bidir\component\LazyMapping.hbm.xml"/>
+
+    <mapping resource="mapping\keymanytoone\bidir\embedded\Mapping.hbm.xml"/>
+
+    <mapping resource="mapping\lazycache\Documents.hbm.xml"/>
+
+    <mapping resource="mapping\lazyonetoone\Person.hbm.xml"/>
+
+
+
+
+
+
+    <mapping resource="mapping\legacy\ABC.hbm.xml"/>
+    <mapping resource="mapping\legacy\ABCExtends.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\ABCProxy.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\AltSimple.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\Baz.hbm.xml"/>
+    <mapping resource="mapping\legacy\FooBar.hbm.xml"/>
+    <mapping resource="mapping\legacy\Glarch.hbm.xml"/>
+    <mapping resource="mapping\legacy\Fee.hbm.xml"/>  java.lang.NullPointerException at org.hibernate.mapping.ManyToOne.createPropertyRefConstraints(ManyToOne.java:47) 
+    <mapping resource="mapping\legacy\Fum.hbm.xml"/>
+    <mapping resource="mapping\legacy\Qux.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\Blobber.hbm.xml"/>
+ 
+    <mapping resource="mapping\legacy\Broken.hbm.xml"/>
+ 
+    <mapping resource="mapping\legacy\Category.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\Circular.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\Commento.hbm.xml"/>
+    <mapping resource="mapping\legacy\Marelo.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\Componentizable.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\ComponentNotNullMaster.hbm.xml"/>  org.hibernate.MappingException: component class not found: mapping.legacy.ComponentNotNullMaster$ContainerInnerClass
+    <mapping resource="mapping\legacy\Many.hbm.xml"/>
+    <mapping resource="mapping\legacy\Simple.hbm.xml"/>
+    <mapping resource="mapping\legacy\One.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\CompositeIdId.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\Container.hbm.xml"/> org.hibernate.MappingException: java.lang.ClassNotFoundException: mapping.legacy.GlarchProxy
+    <mapping resource="mapping\legacy\Simple.hbm.xml"/>
+    <mapping resource="mapping\legacy\Holder.hbm.xml"/>
+    <mapping resource="mapping\legacy\Many.hbm.xml"/>
+    <mapping resource="mapping\legacy\One.hbm.xml"/>
+    <mapping resource="mapping\legacy\FooBar.hbm.xml"/>
+    <mapping resource="mapping\legacy\Glarch.hbm.xml"/>
+    <mapping resource="mapping\legacy\Baz.hbm.xml"/>
+    <mapping resource="mapping\legacy\Fee.hbm.xml"/>
+    <mapping resource="mapping\legacy\Qux.hbm.xml"/>
+    <mapping resource="mapping\legacy\Fum.hbm.xml"/>
+    <mapping resource="mapping\legacy\Simple.hbm.xml"/>
+    <mapping resource="mapping\legacy\Many.hbm.xml"/>
+    <mapping resource="mapping\legacy\One.hbm.xml"/>
+    <mapping resource="mapping\legacy\Glarch.hbm.xml"/>
+    <mapping resource="mapping\legacy\Fee.hbm.xml"/>
+    <mapping resource="mapping\legacy\Qux.hbm.xml"/>
+    <mapping resource="mapping\legacy\Fum.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\Custom.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\CustomSQL.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\Eye.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\Fo.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\Fumm.hbm.xml"/>
+    <mapping resource="mapping\legacy\Fum.hbm.xml"/>
+    <mapping resource="mapping\legacy\Qux.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\IJ.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\IJ2.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\Immutable.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\Location.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\Map.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\MasterDetail.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\Middle.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\MultiExtends.hbm.xml"/>
+    <mapping resource="mapping\legacy\Multi.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\Nameable.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\Object2.hbm.xml"/>
+    <mapping resource="mapping\legacy\MainObject.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\ParentChild.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\SingleSeveral.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\Stuff.hbm.xml"/>
+    <mapping resource="mapping\legacy\FooBar.hbm.xml"/>
+    <mapping resource="mapping\legacy\Glarch.hbm.xml"/>
+    <mapping resource="mapping\legacy\Baz.hbm.xml"/>
+    <mapping resource="mapping\legacy\Fee.hbm.xml"/>
+    <mapping resource="mapping\legacy\Qux.hbm.xml"/>
+    <mapping resource="mapping\legacy\Fum.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\UpDown.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\Vetoer.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\Wicked.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\WZ.hbm.xml"/>
+
+    <mapping resource="mapping\legacy\XY.hbm.xml"/>
+
+
+
+
+    <mapping resource="mapping\lob\LobMappings.hbm.xml"/>
+
+    <mapping resource="mapping\manytomany\UserGroup.hbm.xml"/>
+
+    <mapping resource="mapping\manytomany\ordered\UserGroup.hbm.xml"/>
+
+    <mapping resource="mapping\map\UserGroup.hbm.xml"/>
+
+    <mapping resource="mapping\mapcompelem\ProductPart.hbm.xml"/>
+
+    <mapping resource="mapping\mapelemformula\UserGroup.hbm.xml"/>
+
+    <mapping resource="mapping\mappingexception\InvalidMapping.hbm.xml"/>
+    <mapping resource="mapping\mappingexception\User.hbm.xml"/>
+
+    <mapping resource="mapping\mixed\Item.hbm.xml"/>
+
+    <mapping resource="mapping\naturalid\User.hbm.xml"/>
+
+    <mapping resource="mapping\ondelete\Person.hbm.xml"/>
+
+    <mapping resource="mapping\onetomany\Parent.hbm.xml"/>
+
+    <mapping resource="mapping\onetoone\formula\Person.hbm.xml"/>
+
+    <mapping resource="mapping\onetoone\joined\Person.hbm.xml"/>
+
+    <mapping resource="mapping\onetoone\link\Person.hbm.xml"/>
+
+    <mapping resource="mapping\onetoone\nopojo\Person.hbm.xml"/>
+
+    <mapping resource="mapping\onetoone\optional\Person.hbm.xml"/>
+
+    <mapping resource="mapping\onetoone\singletable\Person.hbm.xml"/>
+
+    <mapping resource="mapping\ops\Competition.hbm.xml"/>
+    <mapping resource="mapping\ops\Employer.hbm.xml"/>
+    <mapping resource="mapping\ops\Node.hbm.xml"/>
+    <mapping resource="mapping\ops\OneToOne.hbm.xml"/>
+    <mapping resource="mapping\ops\OptLockEntity.hbm.xml"/>
+
+    <mapping resource="mapping\optlock\Document.hbm.xml"/>
+
+    <mapping resource="mapping\ordered\Search.hbm.xml"/>
+
+    <mapping resource="mapping\orphan\Mail.hbm.xml"/>
+    <mapping resource="mapping\orphan\Product.hbm.xml"/>
+    <mapping resource="mapping\orphan\User.hbm.xml"/>
+
+    <mapping resource="mapping\pagination\DataPoint.hbm.xml"/>
+
+    <mapping resource="mapping\propertyref\basic\Person.hbm.xml"/>
+
+    <mapping resource="mapping\propertyref\component\complete\Mapping.hbm.xml"/>
+
+    <mapping resource="mapping\propertyref\component\partial\Mapping.hbm.xml"/>
+
+    <mapping resource="mapping\propertyref\inheritence\discrim\Person.hbm.xml"/>
+
+    <mapping resource="mapping\propertyref\inheritence\joined\Person.hbm.xml"/>
+
+    <mapping resource="mapping\propertyref\inheritence\union\Person.hbm.xml"/>
+
+    <mapping resource="mapping\proxy\DataPoint.hbm.xml"/>
+
+    <mapping resource="mapping\querycache\Item.hbm.xml"/>
+
+    <mapping resource="mapping\readonly\DataPoint.hbm.xml"/>
+
+    <mapping resource="mapping\reattachment\Mappings.hbm.xml"/>
+
+    <mapping resource="mapping\rowid\Point.hbm.xml"/>
+
+    <mapping resource="mapping\schemaupdate\1_Version.hbm.xml"/>
+    <mapping resource="mapping\schemaupdate\2_Version.hbm.xml"/>
+
+    <mapping resource="mapping\sorted\Search.hbm.xml"/>
+
+    <mapping resource="mapping\sql\check\oracle-mappings.hbm.xml"/>
+
+    <mapping resource="mapping\sql\hand\custom\datadirect\oracle\StoredProcedures.hbm.xml"/>
+
+    <mapping resource="mapping\stateless\Document.hbm.xml"/>
+
+    <mapping resource="mapping\stats\Continent.hbm.xml"/>
+    <mapping resource="mapping\stats\Continent2.hbm.xml"/>
+
+    <mapping resource="mapping\subclassfilter\discrim-subclass.hbm.xml"/>
+    <mapping resource="mapping\subclassfilter\joined-subclass.hbm.xml"/>
+    <mapping resource="mapping\subclassfilter\union-subclass.hbm.xml"/>
+
+    <mapping resource="mapping\subselect\Beings.hbm.xml"/>
+
+    <mapping resource="mapping\subselectfetch\ParentChild.hbm.xml"/>
+
+    <mapping resource="mapping\ternary\Ternary.hbm.xml"/>
+
+    <mapping resource="mapping\ternary\Ternary.hbm.xml"/>
+
+    <mapping resource="mapping\timestamp\User.hbm.xml"/>
+
+    <mapping resource="mapping\tm\Item.hbm.xml"/>
+
+    <mapping resource="mapping\tool\Team.hbm.xml"/>
+
+    <mapping resource="mapping\typedmanytoone\Customer.hbm.xml"/>
+
+    <mapping resource="mapping\typedonetoone\Customer.hbm.xml"/>
+
+    <mapping resource="mapping\typeparameters\Typedef.hbm.xml"/>
+    <mapping resource="mapping\typeparameters\Widget.hbm.xml"/>
+
+    <mapping resource="mapping\unconstrained\Person.hbm.xml"/>
+
+    <mapping resource="mapping\unidir\ParentChild.hbm.xml"/>
+
+    <mapping resource="mapping\unionsubclass\Beings.hbm.xml"/>
+
+    <mapping resource="mapping\unionsubclass2\Person.hbm.xml"/>
+
+    <mapping resource="mapping\usercollection\basic\UserPermissions.hbm.xml"/>
+
+    <mapping resource="mapping\usercollection\parameterized\Mapping.hbm.xml"/>
+
+    <mapping resource="mapping\util\dtd\Parent.hbm.xml"/>
+
+    <mapping resource="mapping\version\PersonThing.hbm.xml"/>
+
+    <mapping resource="mapping\version\db\User.hbm.xml"/>
+
+    <mapping resource="mapping\where\File.hbm.xml"/>
+ -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--  
+    <mapping resource="mapping/propertyref/inheritence/joined/Person.hbm.xml"/>
+-->
+
     </session-factory>
 </hibernate-configuration>
