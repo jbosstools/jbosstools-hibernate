@@ -78,7 +78,7 @@ public class OrmDiagram extends ModelElement {
 		getOrCreatePersistentClass(ormElement, null);
 		expandModel(this);
 		load();
-		dirty = false;
+		setDirty(false);
 	}
 	
 	private IPath getStoreFolderPath() {
