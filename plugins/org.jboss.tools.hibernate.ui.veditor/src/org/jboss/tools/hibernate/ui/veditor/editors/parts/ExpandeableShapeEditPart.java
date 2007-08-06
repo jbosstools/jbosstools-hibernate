@@ -74,11 +74,17 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 			if(getFigure().getChildren().size() > 0){
 				((IFigure)getFigure().getChildren().get(0)).setBackgroundColor(getSelectionColor());	
 				((IFigure)getFigure().getChildren().get(0)).setForegroundColor(ResourceManager.getInstance().getColor(new RGB(255,255,255)));
+			}else{
+				getFigure().setBackgroundColor(getSelectionColor());	
+				getFigure().setForegroundColor(ResourceManager.getInstance().getColor(new RGB(255,255,255)));
 			}
 		} else if (Shape.HIDE_SELECTION.equals(prop)) {
 			if(getFigure().getChildren().size() > 0){
 				((IFigure)getFigure().getChildren().get(0)).setBackgroundColor(getColor());		
 				((IFigure)getFigure().getChildren().get(0)).setForegroundColor(ResourceManager.getInstance().getColor(new RGB(0,0,0)));
+			}else{
+				getFigure().setBackgroundColor(getColor());		
+				getFigure().setForegroundColor(ResourceManager.getInstance().getColor(new RGB(0,0,0)));
 			}
 		}else if (ExpandeableShape.SHOW_REFERENCES.equals(prop)) {
 			refreshReferences((Shape)getCastedModel(), ((ExpandeableShape)getCastedModel()).isReferenceVisible());

@@ -216,9 +216,9 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 					Integer.parseInt(Messages.Colors_DatabaseTableB)));
 		else if (element instanceof OneToMany) 
 			return ResourceManager.getInstance().getColor(new RGB(
-					Integer.parseInt(Messages.Colors_DatabaseTableR),
-					Integer.parseInt(Messages.Colors_DatabaseTableG),
-					Integer.parseInt(Messages.Colors_DatabaseTableB)));
+					Integer.parseInt(Messages.Colors_PersistentFieldR),
+					Integer.parseInt(Messages.Colors_PersistentFieldG),
+					Integer.parseInt(Messages.Colors_PersistentFieldB)));
 		else
 			return ResourceManager.getInstance().getColor(new RGB(255, 0, 0));
 //			throw new IllegalArgumentException();
@@ -234,7 +234,7 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 			return ResourceManager.getInstance().getColor(new RGB(66,173,247));
 		//else
 			//throw new IllegalArgumentException();
-		return ResourceManager.getInstance().getColor(new RGB(190,190,190));
+		return ResourceManager.getInstance().getColor(new RGB(255,0,0));
 	}
 	
 	private class ShapesSelectionEditPolicy extends SelectionEditPolicy {
