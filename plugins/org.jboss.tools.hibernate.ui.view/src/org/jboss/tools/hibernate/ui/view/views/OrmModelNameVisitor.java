@@ -223,7 +223,7 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 		Table table = clazz.getTable(); // upd tau 06.06.2005
 		//IDatabaseTable table = HibernateAutoMappingHelper.getPrivateTable(classMapping); // upd tau 18.04.2005
 		if (table != null) {
-			String tableName = TextUtil.getTableName(table);
+			String tableName = HibernateUtils.getTableName(table);
 			if (tableName != null) {
 				//name.append(" (");
 				name.append(POINTER);
@@ -237,7 +237,7 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 
 	public Object visitTable(Table table, Object argument) {
 		StringBuffer name = new StringBuffer();
-		name.append(TextUtil.getTableName(table));
+		name.append(HibernateUtils.getTableName(table));
 		return name.toString();
 	}
 
@@ -248,7 +248,7 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 
 		Table table = clazz.getTable();
 		if (table != null) {
-			String tableName = TextUtil.getTableName(table);
+			String tableName = HibernateUtils.getTableName(table);
 			if (tableName != null) {
 				name.append(POINTER);
 				name.append(tableName);

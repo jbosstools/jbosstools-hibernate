@@ -10,11 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.view.views;
 
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
+import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.PersistentClassVisitor;
 import org.hibernate.mapping.Property;
@@ -24,6 +26,8 @@ import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.UnionSubclass;
 import org.jboss.tools.hibernate.ui.view.ViewPlugin;
+
+import sun.text.CompactShortArray;
 
 
 
@@ -46,10 +50,16 @@ public class OrmModelImageVisitor implements /*IOrmModelVisitor, IHibernateMappi
 	public Object visitDatabaseColumn(Column column) {
 		if(column.isUnique()) {
 			return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.DatabaseUniqueKeyColumn"));
+		}else if (HibernateUtils.isPrimaryKey(column)&& HibernateUtils.getTable(column) != null &&  HibernateUtils.isForeignKey(column)){
+			return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.DatabasePrimaryForeignKeysColumn"));
+		} else if (HibernateUtils.isPrimaryKey(column)){
+			return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.DatabasePrimaryKeyColumn")); //$NON-NLS-1$
+		} else if (HibernateUtils.getTable(column) != null &&  HibernateUtils.isForeignKey(column)){
+			return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.DatabaseForeignKeyColumn")); //$NON-NLS-1$
 		} else return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.DatabaseColumn")); //$NON-NLS-1$
 
 	}
-
+	
 	public Object visitPersistentField(Property field, Object argument) {
 		if (field !=null){
 			try {
