@@ -16,6 +16,8 @@ import java.beans.PropertyChangeListener;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartListener;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editpolicies.SelectionEditPolicy;
@@ -28,6 +30,7 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
+import org.jboss.tools.common.gef.edit.GEFRootEditPart;
 import org.jboss.tools.hibernate.ui.veditor.editors.figures.RoundPolylineConnection;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.Connection;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.ModelElement;
@@ -35,12 +38,13 @@ import org.jboss.tools.hibernate.ui.veditor.editors.model.ModelElement;
 
 
 class ConnectionEditPart extends AbstractConnectionEditPart 
-implements PropertyChangeListener {
+implements PropertyChangeListener, EditPartListener {
 	
 	public void activate() {
 		if (!isActive()) {
 			super.activate();
 			((ModelElement) getModel()).addPropertyChangeListener(this);
+			addEditPartListener(this);
 		}
 	}
 	
@@ -107,6 +111,30 @@ implements PropertyChangeListener {
 
 		protected void showSelection() {
 			getCastedModel().showSelection();
+		}
+		
+	}
+
+	public void childAdded(EditPart child, int index) {
+		
+	}
+
+	public void partActivated(EditPart editpart) {
+		
+	}
+
+	public void partDeactivated(EditPart editpart) {
+		
+	}
+
+	public void removingChild(EditPart child, int index) {
+		
+	}
+
+	public void selectedStateChanged(EditPart editpart) {
+		if (this.getSelected() == EditPart.SELECTED_PRIMARY) {
+			((GEFRootEditPart) getParent()).setToFront(this);
+
 		}
 		
 	}

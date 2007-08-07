@@ -17,18 +17,17 @@ import org.eclipse.gef.dnd.TemplateTransferDropTargetListener;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.requests.SimpleFactory;
-import org.eclipse.gef.ui.actions.ActionRegistry;
-import org.eclipse.gef.ui.actions.PrintAction;
 import org.eclipse.gef.ui.actions.WorkbenchPartAction;
 import org.eclipse.gef.ui.parts.GraphicalEditor;
-import org.eclipse.jface.action.IAction;
+import org.eclipse.gef.ui.parts.TreeViewer;
 import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.actions.ActionFactory;
-import org.hibernate.cfg.Configuration;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.mapping.RootClass;
+import org.jboss.tools.common.gef.edit.GEFRootEditPart;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
 import org.jboss.tools.hibernate.ui.veditor.editors.parts.OrmEditPartFactory;
 import org.jboss.tools.hibernate.ui.view.views.ObjectEditorInput;
@@ -52,7 +51,7 @@ public class VisualEditor extends GraphicalEditor {
 	protected void initializeGraphicalViewer() {
 		final GraphicalViewer viewer = getGraphicalViewer();
 		viewer.setEditPartFactory(new OrmEditPartFactory());
-		viewer.setRootEditPart(new ScalableFreeformRootEditPart());
+		viewer.setRootEditPart(new GEFRootEditPart());
 		viewer.addDropTargetListener(createTransferDropTargetListener());
 		viewer.setContents(ormDiagram);
 	}
@@ -105,5 +104,17 @@ public class VisualEditor extends GraphicalEditor {
 		RootClass rootClass = (RootClass)(objectEditorInput).getObject();
 		setPartName("Diagram for " + rootClass.getEntityName());
 		ormDiagram = new OrmDiagram(configuration, rootClass, objectEditorInput.getJavaProject());
+	}
+	
+	public Object getAdapter(Class type) {
+		if (type == IContentOutlinePage.class) {
+			DiagramContentOutlinePage outline = new DiagramContentOutlinePage(
+					new TreeViewer());
+			outline.setGraphicalViewer(getGraphicalViewer());
+			outline.setSelectionSynchronizer(getSelectionSynchronizer());
+			return outline;
+		}
+
+		return super.getAdapter(type);
 	}
 }
