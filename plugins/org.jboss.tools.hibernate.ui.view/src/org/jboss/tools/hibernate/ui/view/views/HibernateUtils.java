@@ -9,9 +9,9 @@ import org.hibernate.mapping.Table;
 public class HibernateUtils {
 	
 	public static String getTableName(Table table) {
-		String schema = table.getSchema();
 		String catalog = table.getCatalog();
-		return (schema != null ? schema + "." : "") + (catalog != null ? catalog + "." : "") + table.getName();
+		String schema = table.getSchema();
+		return (catalog != null ? catalog + "." : "") + (schema != null ? schema + "." : "") + table.getName();
 	}
 	
 	public static boolean isPrimaryKey(Column column){
