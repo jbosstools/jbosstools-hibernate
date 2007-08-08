@@ -39,14 +39,17 @@ public class SpecialOrmShape extends OrmShape {
 		Iterator iterator = rootClass.getPropertyIterator();
 		while (iterator.hasNext()) {
 			Property field = (Property)iterator.next();
-			if (field.getValue().getType().isEntityType()) {
-				bodyOrmShape = new ExpandeableShape(field);
-			} else if (field.getValue().getType().isCollectionType()) {
-				bodyOrmShape = new ComponentShape(field);
-			} else {
-				bodyOrmShape = new Shape(field);
+			try {
+				if (field.getValue().getType().isEntityType()) {
+					bodyOrmShape = new ExpandeableShape(field);
+				} else if (field.getValue().getType().isCollectionType()) {
+					bodyOrmShape = new ComponentShape(field);
+				} else {
+					bodyOrmShape = new Shape(field);
+				}
+				getChildren().add(bodyOrmShape);
+			} catch (Exception e) {
 			}
-			getChildren().add(bodyOrmShape);
 		}
 	}
 

@@ -41,6 +41,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
+import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
@@ -407,8 +408,8 @@ public class OrmDiagram extends ModelElement {
 	protected void refreshComponentReferences(ComponentShape componentShape) {
 		OrmShape childShape = null;
 		Property property = (Property)componentShape.getOrmElement();
-		Type valueType = property.getValue().getType();
-		if (valueType.isCollectionType()) {
+//		Type valueType = property.getValue().getType();
+		if (property.getValue() instanceof Collection) {
 			Collection collection = (Collection)property.getValue();
 			Value component = collection.getElement();
 			if (component instanceof Component) {// valueType.isComponentType()
@@ -437,6 +438,7 @@ public class OrmDiagram extends ModelElement {
 				
 			} else if (collection.isOneToMany()) {
 				childShape = getOrCreateAssociationClass(property);
+if (childShape == null) return;
 				if(!isConnectionExist((Shape)(componentShape.getChildren().get(1)), childShape)){
 					new Connection((Shape)(componentShape.getChildren().get(1)), childShape);
 					((Shape)(componentShape.getChildren().get(1))).firePropertyChange(REFRESH, null, null);
@@ -524,17 +526,18 @@ public class OrmDiagram extends ModelElement {
 		OrmShape classShape = null;
 		OneToMany component = (OneToMany)((Collection)property.getValue()).getElement();
 		if (component != null) {
-//			classShape = (OrmShape)elements.get(component.getAssociatedClass().getEntityName());
-			classShape = getOrCreatePersistentClass(component.getAssociatedClass(), null);
-			if (classShape == null) classShape = createShape(component.getAssociatedClass());
-			OrmShape tableShape = (OrmShape)elements.get(HibernateUtils.getTableName(component.getAssociatedClass().getTable()));
-			if (tableShape == null) tableShape = getOrCreateDatabaseTable(component.getAssociatedClass().getTable());
-				createConnections(classShape, tableShape);
-				if(!isConnectionExist(classShape, tableShape)){
-					new Connection(classShape, tableShape);
-					classShape.firePropertyChange(REFRESH, null, null);
-					tableShape.firePropertyChange(REFRESH, null, null);
-				}
+			if (component.getAssociatedClass() instanceof RootClass) {
+				classShape = getOrCreatePersistentClass(component.getAssociatedClass(), null);
+				if (classShape == null) classShape = createShape(component.getAssociatedClass());
+				OrmShape tableShape = (OrmShape)elements.get(HibernateUtils.getTableName(component.getAssociatedClass().getTable()));
+				if (tableShape == null) tableShape = getOrCreateDatabaseTable(component.getAssociatedClass().getTable());
+					createConnections(classShape, tableShape);
+					if(!isConnectionExist(classShape, tableShape)){
+						new Connection(classShape, tableShape);
+						classShape.firePropertyChange(REFRESH, null, null);
+						tableShape.firePropertyChange(REFRESH, null, null);
+					}
+			}
 		}
 		return classShape;
 	}

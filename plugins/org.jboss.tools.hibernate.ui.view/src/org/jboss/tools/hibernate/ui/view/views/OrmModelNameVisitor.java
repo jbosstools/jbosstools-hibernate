@@ -45,14 +45,12 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 	}
 
 	public Object visitDatabaseColumn(Column column, Object argument) {
-		// update tau 16.03.2005
 		StringBuffer name = new StringBuffer();
 		name.append(column.getName());
-		//by Nick 22.04.2005
 		
-        int length = -1;
+		int length = -1;
         int scale = -1;
-        
+
 //        if (!column.isNativeType())
 //        {
 //            int typeCode = column.getSqlTypeCode();
@@ -263,10 +261,13 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 		name.append(field.getName());
 		name.append(BUNDLE.getString("OrmModelNameVisitor.Colon"));
 		String typeString = null;
-		if (field.getType().isEntityType()) {
-			typeString =  ((EntityType)field.getType()).getAssociatedEntityName();
-		} else {
-			typeString = field.getType().getReturnedClass().getName();
+		try {
+			if (field.getType().isEntityType()) {
+				typeString =  ((EntityType)field.getType()).getAssociatedEntityName();
+			} else {
+				typeString = field.getType().getReturnedClass().getName();
+			}
+		} catch (Exception e) {
 		}
 		if (typeString != null) {
 			name.append(typeString);

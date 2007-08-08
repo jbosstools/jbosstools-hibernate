@@ -13,6 +13,7 @@ package org.jboss.tools.hibernate.ui.veditor.editors.model;
 import java.util.Iterator;
 
 import org.eclipse.draw2d.geometry.Point;
+import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -74,10 +75,10 @@ public class OrmShape extends ExpandeableShape {
 						}
 						if (field.getValue().isSimpleValue() && !((SimpleValue)field.getValue()).isTypeSpecified()) {
 							bodyOrmShape = new Shape(field);
+						} else if (typeIsAccessible && field.getValue() instanceof Collection) {
+							bodyOrmShape = new ComponentShape(field);
 						} else if (typeIsAccessible && field.getValue().getType().isEntityType()) {
 							bodyOrmShape = new ExpandeableShape(field);
-						} else if (typeIsAccessible && field.getValue().getType().isCollectionType()) {
-							bodyOrmShape = new ComponentShape(field);
 						} else {
 							bodyOrmShape = new Shape(field);
 						}
