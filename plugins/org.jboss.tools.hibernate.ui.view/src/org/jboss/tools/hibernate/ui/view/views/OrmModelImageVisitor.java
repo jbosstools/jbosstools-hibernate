@@ -10,13 +10,11 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.view.views;
 
-import java.util.Iterator;
 import java.util.ResourceBundle;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
-import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.PersistentClassVisitor;
 import org.hibernate.mapping.Property;
@@ -26,8 +24,6 @@ import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.UnionSubclass;
 import org.jboss.tools.hibernate.ui.view.ViewPlugin;
-
-import sun.text.CompactShortArray;
 
 
 
