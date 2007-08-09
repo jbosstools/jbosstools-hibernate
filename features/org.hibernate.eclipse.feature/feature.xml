@@ -417,7 +417,6 @@ HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 END OF TERMS AND CONDITIONS
    </license>
 
-  
    <requires>
       <import plugin="org.eclipse.core.runtime" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.ui" version="0.0.0" match="greaterOrEqual"/>
@@ -496,5 +495,17 @@ END OF TERMS AND CONDITIONS
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+
+   <plugin
+         id="org.jboss.tools.hibernate.ui.veditor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.jboss.tools.hibernate.ui.view"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 
 </feature>
