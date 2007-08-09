@@ -70,6 +70,8 @@
     <topic label="Identity columns and sequences" href="html/reference/en/html/mapping.html#mapping-declaration-id-sequences"/>
     <topic label="Assigned identifiers" href="html/reference/en/html/mapping.html#mapping-declaration-id-assigned"/>
     <topic label="Primary keys assigned by triggers" href="html/reference/en/html/mapping.html#mapping-declaration-id-select"/></topic>
+    <topic label="Enhanced identifier generators" href="html/reference/en/html/mapping.html#mapping-declaration-id-enhanced"/>
+    <topic label="Identifier generator optimization" href="html/reference/en/html/mapping.html#mapping-declaration-id-enhanced-optimizers"/>
     <topic label="composite-id" href="html/reference/en/html/mapping.html#mapping-declaration-compositeid"/>
     <topic label="discriminator" href="html/reference/en/html/mapping.html#mapping-declaration-discriminator"/>
     <topic label="version (optional)" href="html/reference/en/html/mapping.html#mapping-declaration-version"/>
