@@ -548,14 +548,14 @@ if (childShape == null) return;
 		Object element = shape.getOrmElement();
 		String key=null;
 		if (element instanceof RootClass) {
-			key = ((RootClass)element).getEntityName();
+			key = HibernateUtils.getPersistentClassName(((RootClass)element).getEntityName());
 		} else if (element instanceof Table) {
 			key = HibernateUtils.getTableName((Table)element);
 		} else if (element instanceof Property) {
 			Property property = (Property)element;
 			key = property.getPersistentClass().getEntityName() + "." + property.getName();
 		} else if (element instanceof Subclass) {
-			key = ((Subclass)element).getEntityName();
+			key = HibernateUtils.getPersistentClassName(((Subclass)element).getEntityName());
 		}
 		
 		return key;
