@@ -141,7 +141,7 @@ public class OrmDiagram extends ModelElement {
 		if (ormElement instanceof RootClass) {
 			ormShape = new OrmShape(ormElement);
 			getChildren().add(ormShape);
-			elements.put(((RootClass)ormElement).getEntityName(), ormShape);
+			elements.put(HibernateUtils.getPersistentClassName(((RootClass)ormElement).getEntityName()), ormShape);
 		} else if (ormElement instanceof Table) {
 			ormShape = new OrmShape(ormElement);
 			getChildren().add(ormShape);
@@ -150,11 +150,11 @@ public class OrmDiagram extends ModelElement {
 			SpecialRootClass specialRootClass = new SpecialRootClass((Property)ormElement);
 			ormShape = new SpecialOrmShape(specialRootClass);
 			getChildren().add(ormShape);
-			elements.put(specialRootClass.getEntityName(), ormShape);
+			elements.put(HibernateUtils.getPersistentClassName(specialRootClass.getEntityName()), ormShape);
 		} else if (ormElement instanceof Subclass) {
 			ormShape = new OrmShape(ormElement);
 			getChildren().add(ormShape);
-			elements.put(((Subclass)ormElement).getEntityName(), ormShape);
+			elements.put(HibernateUtils.getPersistentClassName(((Subclass)ormElement).getEntityName()), ormShape);
 		}
 		return ormShape;
 	}
@@ -162,14 +162,14 @@ public class OrmDiagram extends ModelElement {
 	public OrmShape getShape(Object ormElement) {
 		OrmShape ormShape = null;
 		if (ormElement instanceof RootClass) {
-			ormShape = elements.get(((RootClass)ormElement).getEntityName());
+			ormShape = elements.get(HibernateUtils.getPersistentClassName(((RootClass)ormElement).getEntityName()));
 		} else if (ormElement instanceof Table) {
 			ormShape = elements.get(HibernateUtils.getTableName((Table)ormElement));
 		} else if (ormElement instanceof Property) {
 			SpecialRootClass specialRootClass = new SpecialRootClass((Property)ormElement);
-			ormShape = elements.get(specialRootClass.getEntityName());
+			ormShape = elements.get(HibernateUtils.getPersistentClassName(specialRootClass.getEntityName()));
 		} else if (ormElement instanceof Subclass) {
-			ormShape = elements.get(((Subclass)ormElement).getEntityName());
+			ormShape = elements.get(HibernateUtils.getPersistentClassName(((Subclass)ormElement).getEntityName()));
 		}
 		return ormShape;
 	}
@@ -179,7 +179,7 @@ public class OrmDiagram extends ModelElement {
 		OrmShape classShape = null;
 		OrmShape shape = null;
 		if(persistentClass != null) {
-			classShape = elements.get(persistentClass.getEntityName());
+			classShape = elements.get(HibernateUtils.getPersistentClassName(persistentClass.getEntityName()));
 			if (classShape == null) classShape = createShape(persistentClass);
 			if(componentClassDatabaseTable == null && persistentClass.getTable() != null)
 				componentClassDatabaseTable = persistentClass.getTable();
@@ -199,7 +199,7 @@ public class OrmDiagram extends ModelElement {
 				Object element = iter.next();
 				if (element instanceof Subclass) {
 					Subclass subclass = (Subclass)element;
-					OrmShape subclassShape = elements.get(subclass.getEntityName());
+					OrmShape subclassShape = elements.get(HibernateUtils.getPersistentClassName(subclass.getEntityName()));
 					if (subclassShape == null) subclassShape = createShape(subclass);
 					if (((Subclass)element).isJoinedSubclass()) {
 						Table jcTable = ((Subclass)element).getTable();
@@ -290,7 +290,7 @@ public class OrmDiagram extends ModelElement {
 						RootClass cls = (RootClass)clazz;
 						Table table = cls.getTable();
 						if (tableName.equals(table.getName() + "." + table.getName())) {
-							if (elements.get(cls.getEntityName()) == null)
+							if (elements.get(HibernateUtils.getPersistentClassName(cls.getEntityName())) == null)
 								getOrCreatePersistentClass(cls, null);
 						}
 					}
@@ -506,7 +506,7 @@ if (childShape == null) return;
 						}
 						Shape parentShape = ((SpecialOrmShape)classShape).getParentShape();
 						if (parentShape != null) {
-							OrmShape parentClassShape = (OrmShape)elements.get(((Property)parentShape.getOrmElement()).getPersistentClass().getEntityName());
+							OrmShape parentClassShape = (OrmShape)elements.get(HibernateUtils.getPersistentClassName(((Property)parentShape.getOrmElement()).getPersistentClass().getEntityName()));
 							if(!isConnectionExist(parentShape, parentClassShape)){
 								new Connection(parentShape, parentClassShape);
 								parentShape.firePropertyChange(REFRESH, null, null);

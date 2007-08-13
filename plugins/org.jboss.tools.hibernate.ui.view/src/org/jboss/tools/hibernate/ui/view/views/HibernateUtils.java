@@ -4,6 +4,8 @@ import java.util.Iterator;
 
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
+import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 
 public class HibernateUtils {
@@ -12,6 +14,13 @@ public class HibernateUtils {
 		String catalog = table.getCatalog();
 		String schema = table.getSchema();
 		return (catalog != null ? catalog + "." : "") + (schema != null ? schema + "." : "") + table.getName();
+	}
+
+	public static String getPersistentClassName(String className) {
+		if (className.indexOf(".") < 0) {
+			return "default." + className;
+		}
+		return className;
 	}
 	
 	public static boolean isPrimaryKey(Column column){
