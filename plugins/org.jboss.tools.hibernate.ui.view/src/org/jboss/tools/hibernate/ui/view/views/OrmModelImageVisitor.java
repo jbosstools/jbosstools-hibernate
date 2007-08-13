@@ -28,6 +28,7 @@ import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Set;
+import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
@@ -107,6 +108,10 @@ public class OrmModelImageVisitor implements /*IOrmModelVisitor, IHibernateMappi
 		return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.PersistentFieldOne-to-many")); //$NON-NLS-1$		
 	}
 
+	public Object visitSimpleValueMapping(SimpleValue field) {
+		return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.PersistentFieldSimple")); //$NON-NLS-1$		
+	}
+
 	public Object visitComponentMapping(Component mapping) {
 		if (mapping != null){
 			return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.PersistentFieldComponent")); //$NON-NLS-1$			
@@ -118,7 +123,7 @@ public class OrmModelImageVisitor implements /*IOrmModelVisitor, IHibernateMappi
 		if (argument == ID){
 			return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.PersistentFieldComponent_id")); //$NON-NLS-1$				
 		}
-		return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.PersistentFieldNot_mapped")); //$NON-NLS-1$
+		return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.PersistentFieldSimple")); //$NON-NLS-1$
 	}
 
 	public Object visitDatabaseColumn(Column column, Object argument) {
