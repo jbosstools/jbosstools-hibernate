@@ -77,7 +77,7 @@ public class OrmModelImageVisitor implements /*IOrmModelVisitor, IHibernateMappi
 			if(field.getPersistentClass().getIdentifierProperty() == field){
 				return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.PersistentFieldSimple_id")); //$NON-NLS-1$
 			}
-			if (field.getType().isCollectionType()) {
+			if (field.getValue() != null && field.getType() != null && field.getType().isCollectionType()) {
 				if(field.getValue() instanceof PrimitiveArray)
 					return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.Collection_primitive_array"));
 				else if(field.getValue() instanceof Array)
