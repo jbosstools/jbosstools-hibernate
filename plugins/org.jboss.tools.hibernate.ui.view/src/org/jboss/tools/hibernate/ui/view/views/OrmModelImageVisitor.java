@@ -45,10 +45,6 @@ public class OrmModelImageVisitor implements /*IOrmModelVisitor, IHibernateMappi
 	
 	private ResourceBundle BUNDLE = ViewPlugin.BUNDLE_IMAGE;
 	
-	private static Integer ID = new Integer(1);
-	private static Integer VER = new Integer(2);	
-
-	
 	public Object visitDatabaseTable(Table table) {
 		return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.DatabaseTable")); //$NON-NLS-1$
 	}
@@ -66,7 +62,7 @@ public class OrmModelImageVisitor implements /*IOrmModelVisitor, IHibernateMappi
 
 	}
 	
-	public Object visitPersistentField(Property field, Object argument) {
+	public Object visitPersistentField(Property field) {
 		if (field !=null){
 			if(field.getValue() != null){
 				if(field.getValue() instanceof ManyToOne)
@@ -119,16 +115,13 @@ public class OrmModelImageVisitor implements /*IOrmModelVisitor, IHibernateMappi
 		return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.PersistentFieldNot_mapped")); //$NON-NLS-1$
 	}
 
-	public Object visitComponentKeyMapping(DependantValue mapping, Object argument) {
-		if (argument == ID){
+	public Object visitComponentKeyMapping(DependantValue mapping) {
+		if (mapping.getTable().getIdentifierValue() == mapping){
 			return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.PersistentFieldComponent_id")); //$NON-NLS-1$				
 		}
 		return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.PersistentFieldSimple")); //$NON-NLS-1$
 	}
 
-	public Object visitDatabaseColumn(Column column, Object argument) {
-		return null;
-	}
 
 	public Object accept(RootClass arg0) {
 		return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.PersistentClass"));  //$NON-NLS-1$

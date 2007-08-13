@@ -54,13 +54,13 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 		if (element instanceof RootClass) {
 			descriptor = (ImageDescriptor) ((RootClass) element).accept(ormModelImageVisitor);
 		} else if (element instanceof Property) {
-			descriptor = (ImageDescriptor)ormModelImageVisitor.visitPersistentField((Property) element, null);
+			descriptor = (ImageDescriptor)ormModelImageVisitor.visitPersistentField((Property) element);
 		} else if (element instanceof Table) {
 			descriptor = (ImageDescriptor)ormModelImageVisitor.visitDatabaseTable((Table) element);
 		} else if (element instanceof Column) {
 			descriptor = (ImageDescriptor)ormModelImageVisitor.visitDatabaseColumn((Column) element);
 		} else if (element instanceof DependantValue) {
-			descriptor = (ImageDescriptor)ormModelImageVisitor.visitComponentKeyMapping((DependantValue) element, null);
+			descriptor = (ImageDescriptor)ormModelImageVisitor.visitComponentKeyMapping((DependantValue) element);
 		} else if (element instanceof Component) {
 			descriptor = (ImageDescriptor)ormModelImageVisitor.visitComponentMapping((Component) element);
 		} else if (element instanceof ManyToOne) {
