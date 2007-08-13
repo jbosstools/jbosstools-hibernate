@@ -12,13 +12,22 @@ package org.jboss.tools.hibernate.ui.view.views;
 
 import java.util.ResourceBundle;
 
+import org.hibernate.mapping.Array;
+import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
+import org.hibernate.mapping.IdentifierBag;
 import org.hibernate.mapping.JoinedSubclass;
+import org.hibernate.mapping.List;
+import org.hibernate.mapping.ManyToOne;
+import org.hibernate.mapping.Map;
+import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClassVisitor;
+import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
@@ -58,14 +67,44 @@ public class OrmModelImageVisitor implements /*IOrmModelVisitor, IHibernateMappi
 	
 	public Object visitPersistentField(Property field, Object argument) {
 		if (field !=null){
+			if(field.getValue() != null){
+				if(field.getValue() instanceof ManyToOne)
+					return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.PersistentFieldMany-to-one")); //$NON-NLS-1$
+			}
+			if(field.getPersistentClass().getVersion() == field){
+				return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.PersistentFieldSimple_version")); //$NON-NLS-1$
+			}
 			if(field.getPersistentClass().getIdentifierProperty() == field){
 				return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.PersistentFieldSimple_id")); //$NON-NLS-1$
 			}
 			if (field.getType().isCollectionType()) {
-				return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.Collection_bag"));		
+				if(field.getValue() instanceof PrimitiveArray)
+					return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.Collection_primitive_array"));
+				else if(field.getValue() instanceof Array)
+					return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.Collection_array"));
+				else if(field.getValue() instanceof List)
+					return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.Collection_list"));
+				else if(field.getValue() instanceof Set)
+					return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.Collection_set"));
+				else if(field.getValue() instanceof Map)
+					return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.Collection_map"));
+				else if(field.getValue() instanceof Bag)
+					return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.Collection_bag"));
+				else if(field.getValue() instanceof IdentifierBag)
+					return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.Collection_idbag"));
+				else
+					return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.Collection"));		
 			}
 		}
 		return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.PersistentFieldSimple")); //$NON-NLS-1$		
+	}
+
+	public Object visitManyToOneMapping(ManyToOne field) {
+		return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.PersistentFieldMany-to-many")); //$NON-NLS-1$		
+	}
+
+	public Object visitOneToManyMapping(OneToMany field) {
+		return ViewPlugin.getImageDescriptor(BUNDLE.getString("OrmModelImageVisitor.PersistentFieldOne-to-many")); //$NON-NLS-1$		
 	}
 
 	public Object visitComponentMapping(Component mapping) {
