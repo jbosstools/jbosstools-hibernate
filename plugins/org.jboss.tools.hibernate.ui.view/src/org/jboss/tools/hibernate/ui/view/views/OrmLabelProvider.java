@@ -24,6 +24,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
+import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
@@ -67,10 +68,11 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 			descriptor = (ImageDescriptor)ormModelImageVisitor.visitManyToOneMapping((ManyToOne) element);
 		} else if (element instanceof OneToMany) {
 			descriptor = (ImageDescriptor)ormModelImageVisitor.visitOneToManyMapping((OneToMany) element);
+		} else if (element instanceof Any) {
+			descriptor = (ImageDescriptor)ormModelImageVisitor.visitAnyMapping((Any) element);
 		} else if (element instanceof SimpleValue) {
 			descriptor = (ImageDescriptor)ormModelImageVisitor.visitSimpleValueMapping((SimpleValue) element);
 		} else {
-			//throw unknownElement(element);
 			return null;			
 		}
 
