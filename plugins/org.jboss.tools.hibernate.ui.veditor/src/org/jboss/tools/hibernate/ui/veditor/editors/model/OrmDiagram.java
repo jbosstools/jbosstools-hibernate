@@ -23,7 +23,6 @@ import java.util.Properties;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -41,13 +40,11 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
-import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.type.EntityType;
 import org.hibernate.type.Type;
-import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.hibernate.ui.veditor.VisualEditorPlugin;
 import org.jboss.tools.hibernate.ui.view.views.HibernateUtils;
 
@@ -55,10 +52,8 @@ public class OrmDiagram extends ModelElement {
 	
 	public static final String REFRESH = "refresh";
 	public static final String DIRTY = "dirty";
-	private static final String qualifiedNameString = "OrmDiagramChildrenLocations";
 	private	boolean dirty = false;
 	private String childrenLocations[];
-	private IResource resource = null;
 	private HashMap<String,OrmShape> elements = new HashMap<String,OrmShape>();
 	private RootClass  ormElement;
 	private Configuration configuration;
