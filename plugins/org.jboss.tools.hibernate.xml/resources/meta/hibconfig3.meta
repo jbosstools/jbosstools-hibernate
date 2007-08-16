@@ -78,7 +78,7 @@
   ImplementationLoadingClass="org.jboss.tools.hibernate.xml.model.HibConfigLoader"
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.FileHibernateImpl"
   ObjectEditorClass="%XML%"
-  PROPERTIES="loaderKind=file;formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="loaderKind=file;formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="hibernate-configuration" name="FileHibConfig3">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="HibConfig3SessionFactory" required="yes"/>
@@ -264,7 +264,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Hibernate3OrderedFolder%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="HibConfig3CachesFolder">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="HibConfig3CachesFolder">
   <XChildrenEntities>
    <XChildEntity name="HibConfig3ClassCache"/>
    <XChildEntity name="HibConfig3CollectionCache"/>
@@ -452,7 +452,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Regular2%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="event" name="HibConfig3Event">
   <XChildrenEntities>
    <XChildEntity name="HibConfig3Listener"/>
@@ -540,7 +540,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Hibernate3OrderedFolder%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="HibConfig3EventsFolder">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="HibConfig3EventsFolder">
   <XChildrenEntities>
    <XChildEntity name="HibConfig3Event"/>
   </XChildrenEntities>
@@ -714,7 +714,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Hibernate3OrderedFolder%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="HibConfig3ListenersFolder">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="HibConfig3ListenersFolder">
   <XChildrenEntities>
    <XChildEntity name="HibConfig3Listener"/>
   </XChildrenEntities>
@@ -822,7 +822,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Hibernate3OrderedFolder%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="HibConfig3MappingsFolder">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="HibConfig3MappingsFolder">
   <XChildrenEntities>
    <XChildEntity name="HibConfig3Mapping"/>
   </XChildrenEntities>
@@ -865,7 +865,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Hibernate3OrderedFolder%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="HibConfig3PropertiesFolder">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="HibConfig3PropertiesFolder">
   <XChildrenEntities>
    <XChildEntity name="HibConfig3Property"/>
   </XChildrenEntities>
@@ -1016,7 +1016,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Ordered2%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="session-factory" name="HibConfig3SessionFactory">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="HibConfig3PropertiesFolder" required="yes"/>

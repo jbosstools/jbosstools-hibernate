@@ -121,7 +121,7 @@
   ImplementationLoadingClass="org.jboss.tools.hibernate.xml.model.HibernateLoader"
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.FileHibernateImpl"
   ObjectEditorClass="%XML%"
-  PROPERTIES="loaderKind=file;formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="loaderKind=file;formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="hibernate-mapping" name="FileHibernate3">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
@@ -433,7 +433,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibernateQueryFolderImpl"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3AllSubclassFolder">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3AllSubclassFolder">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3Join"/>
    <XChildEntity name="Hibernate3Subclass"/>
@@ -513,7 +513,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Ordered2%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="any" name="Hibernate3Any">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
@@ -651,7 +651,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibernateMapImpl"
-  PROPERTIES="collection=true;loaderKind=list;formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="collection=true;loaderKind=list;formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="array" name="Hibernate3Array">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
@@ -984,7 +984,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Hibernate3OrderedFolder%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3AttributesCFolder">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3AttributesCFolder">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3Property"/>
    <XChildEntity name="Hibernate3ManyToOne"/>
@@ -1163,7 +1163,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Hibernate3OrderedFolder%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3AttributesFolder">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3AttributesFolder">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3Property"/>
    <XChildEntity name="Hibernate3ManyToOne"/>
@@ -1328,7 +1328,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Hibernate3OrderedFolder%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3AttributesJFolder">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3AttributesJFolder">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3Property"/>
    <XChildEntity name="Hibernate3ManyToOne"/>
@@ -1418,7 +1418,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Hibernate3OrderedFolder%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3AttributesNestedFolder">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3AttributesNestedFolder">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3Property"/>
    <XChildEntity name="Hibernate3ManyToOne"/>
@@ -1495,7 +1495,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Hibernate3OrderedFolder%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3AttributesPFolder">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3AttributesPFolder">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3Property"/>
    <XChildEntity name="Hibernate3ManyToOne"/>
@@ -1573,7 +1573,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibernateMapImpl"
-  PROPERTIES="collection=true;loaderKind=set;formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="collection=true;loaderKind=set;formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="bag" name="Hibernate3Bag">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
@@ -1957,7 +1957,7 @@
  <XModelEntity
   AdoptManagerClass="org.jboss.tools.hibernate.xml.model.handlers.FolderOwnerAdopt"
   ImplementingClass="%Ordered2%"
-  PROPERTIES="loaderKind=class;formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="loaderKind=class;formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="class" name="Hibernate3Class">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
@@ -2379,7 +2379,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Hibernate3OrderedFolder%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3ClassFolder">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3ClassFolder">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3Class"/>
    <XChildEntity name="Hibernate3Subclass"/>
@@ -2456,7 +2456,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibernateIdImpl"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="collection-id" name="Hibernate3CollectionId">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
@@ -2715,7 +2715,7 @@
  <XModelEntity
   AdoptManagerClass="org.jboss.tools.hibernate.xml.model.handlers.FolderOwnerAdopt"
   ImplementingClass="%Regular2%"
-  PROPERTIES="loaderKind=component;formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="loaderKind=component;formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="component" name="Hibernate3Component">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
@@ -2901,7 +2901,7 @@
  <XModelEntity
   AdoptManagerClass="org.jboss.tools.hibernate.xml.model.handlers.FolderOwnerAdopt"
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibernateElementImpl"
-  PROPERTIES="presentationAttribute=class;loaderKind=element;formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="presentationAttribute=class;loaderKind=element;formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="composite-element" name="Hibernate3CompositeElement">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
@@ -2989,7 +2989,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibernateIdImpl"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="composite-id" name="Hibernate3CompositeId">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
@@ -3098,7 +3098,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Ordered2%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="composite-index" name="Hibernate3CompositeIndex">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3KeyProperty"/>
@@ -3175,7 +3175,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Ordered2%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="composite-map-key" name="Hibernate3CompositeMapKey">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3KeyProperty"/>
@@ -3253,7 +3253,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.DatabaseObjectImpl"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="database-object" name="Hibernate3DatabaseObjectCreateDrop">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3DialectScope"/>
@@ -3324,7 +3324,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.DatabaseObjectImpl"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="database-object" name="Hibernate3DatabaseObjectDef">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3DialectScope"/>
@@ -3389,7 +3389,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Hibernate3OrderedFolder%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3DatabaseObjectFolder">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3DatabaseObjectFolder">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3DatabaseObjectDef"/>
    <XChildEntity name="Hibernate3DatabaseObjectCreateDrop"/>
@@ -3584,7 +3584,7 @@
  <XModelEntity
   AdoptManagerClass="org.jboss.tools.hibernate.xml.model.handlers.FolderOwnerAdopt"
   ImplementingClass="%Regular2%"
-  PROPERTIES="loaderKind=component;formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="loaderKind=component;formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="dynamic-component" name="Hibernate3DynamicComponent">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3AttributesFolder" required="yes"/>
@@ -3741,7 +3741,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibernateElementImpl"
-  PROPERTIES="presentationAttribute=type;formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="presentationAttribute=type;formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="element" name="Hibernate3Element">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3Column"/>
@@ -3903,7 +3903,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Hibernate3OrderedFolder%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3FilterFolder">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3FilterFolder">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3Filter"/>
   </XChildrenEntities>
@@ -3994,7 +3994,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Regular2%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="filter-def" name="Hibernate3Filterdef">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3FilterParam"/>
@@ -4063,7 +4063,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Hibernate3OrderedFolder%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3FilterdefFolder">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3FilterdefFolder">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3Filterdef"/>
   </XChildrenEntities>
@@ -4106,7 +4106,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibernateFormulaImpl"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="formula" name="Hibernate3Formula">
   <XChildrenEntities/>
   <XEntityRenderer>
@@ -4670,7 +4670,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Hibernate3OrderedFolder%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3ImportFolder">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3ImportFolder">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3Import"/>
   </XChildrenEntities>
@@ -4712,7 +4712,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Ordered2%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="index" name="Hibernate3Index">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3Column"/>
@@ -4922,7 +4922,7 @@
  <XModelEntity
   AdoptManagerClass="org.jboss.tools.hibernate.xml.model.handlers.FolderOwnerAdopt"
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibernateClassImpl"
-  PROPERTIES="loaderKind=class;formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="loaderKind=class;formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="join" name="Hibernate3Join">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
@@ -5087,7 +5087,7 @@
  <XModelEntity
   AdoptManagerClass="org.jboss.tools.hibernate.xml.model.handlers.FolderOwnerAdopt"
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibernateClassImpl"
-  PROPERTIES="loaderKind=class;formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="loaderKind=class;formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="joined-subclass" name="Hibernate3JoinedSubclass">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
@@ -5435,7 +5435,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Regular2%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="key" name="Hibernate3Key">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3Column"/>
@@ -5539,7 +5539,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Ordered2%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="key-many-to-one" name="Hibernate3KeyManyToOne">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
@@ -5638,7 +5638,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Ordered2%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="key-property" name="Hibernate3KeyProperty">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
@@ -5730,7 +5730,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibernateMapImpl"
-  PROPERTIES="collection=true;loaderKind=list;formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="collection=true;loaderKind=list;formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="list" name="Hibernate3List">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
@@ -6068,7 +6068,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Regular2%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="list-index" name="Hibernate3ListIndex">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3Column"/>
@@ -6253,7 +6253,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibernateElementImpl"
-  PROPERTIES="presentationAttribute=id-type;formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="presentationAttribute=id-type;formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="many-to-any" name="Hibernate3ManyToAny">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3MetaValue"/>
@@ -6331,7 +6331,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibernateElementImpl"
-  PROPERTIES="presentationAttribute=class;formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="presentationAttribute=class;formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="many-to-many" name="Hibernate3ManyToMany">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
@@ -6490,7 +6490,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Regular2%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="many-to-one" name="Hibernate3ManyToOne">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
@@ -6695,7 +6695,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibernateMapImpl"
-  PROPERTIES="collection=true;loaderKind=set;formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="collection=true;loaderKind=set;formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="map" name="Hibernate3Map">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
@@ -7101,7 +7101,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Regular2%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="map-key" name="Hibernate3MapKey">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3Column"/>
@@ -7185,7 +7185,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Regular2%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="map-key-many-to-many" name="Hibernate3MapKeyManyToMany">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3Column"/>
@@ -7332,7 +7332,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Hibernate3OrderedFolder%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3MetaFolder">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3MetaFolder">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3Meta"/>
   </XChildrenEntities>
@@ -7517,7 +7517,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Regular2%"
-  PROPERTIES="loaderKind=element;formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="loaderKind=element;formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="nested-composite-element" name="Hibernate3NestedCompositeElement">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
@@ -7694,7 +7694,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Regular2%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="one-to-one" name="Hibernate3OneToOne">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
@@ -8215,7 +8215,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Ordered2%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="property" name="Hibernate3Property">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
@@ -8502,7 +8502,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibernateQueryFolderImpl"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3QueryFolder">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3QueryFolder">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3Query"/>
    <XChildEntity name="Hibernate3SQLQuery"/>
@@ -8706,7 +8706,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Regular2%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="resultset" name="Hibernate3ResultSet">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3ReturnScalar"/>
@@ -8802,7 +8802,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Hibernate3OrderedFolder%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3ResultSetFolder">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3ResultSetFolder">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3ResultSet"/>
   </XChildrenEntities>
@@ -9495,7 +9495,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Regular2%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="sql-query" name="Hibernate3SQLQuery">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3ReturnScalar"/>
@@ -9728,7 +9728,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibernateMapImpl"
-  PROPERTIES="collection=true;loaderKind=set;formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="collection=true;loaderKind=set;formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="set" name="Hibernate3Set">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
@@ -10054,7 +10054,7 @@
  <XModelEntity
   AdoptManagerClass="org.jboss.tools.hibernate.xml.model.handlers.FolderOwnerAdopt"
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibernateClassImpl"
-  PROPERTIES="loaderKind=subclass;formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="loaderKind=subclass;formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="subclass" name="Hibernate3Subclass">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
@@ -10307,7 +10307,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibernateQueryFolderImpl"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3SubclassFolder">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3SubclassFolder">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3Join"/>
    <XChildEntity name="Hibernate3Subclass"/>
@@ -10639,7 +10639,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Hibernate3OrderedFolder%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3TuplizerFolder">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3TuplizerFolder">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3Tuplizer"/>
   </XChildrenEntities>
@@ -10739,7 +10739,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Regular2%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="typedef" name="Hibernate3Typedef">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3Param"/>
@@ -10805,7 +10805,7 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Hibernate3OrderedFolder%"
-  PROPERTIES="formFactoryClassName=org.jboss.tools.common.model.ui.forms.LayouredFormFactory;formLayoutDataClassName=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3TypedefFolder">
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="Hibernate3TypedefFolder">
   <XChildrenEntities>
    <XChildEntity name="Hibernate3Typedef"/>
   </XChildrenEntities>
