@@ -89,7 +89,11 @@ public class OrmModelImageVisitor implements
 								.getString("OrmModelImageVisitor.PersistentFieldSimple_id"));
 			}
 			if (field.getValue() != null) {
-				if (field.getValue() instanceof OneToOne)
+				if (field.getValue() instanceof OneToMany)
+					return ViewPlugin
+							.getImageDescriptor(BUNDLE
+									.getString("OrmModelImageVisitor.PersistentFieldOne-to-many"));
+				else if (field.getValue() instanceof OneToOne)
 					return ViewPlugin
 							.getImageDescriptor(BUNDLE
 									.getString("OrmModelImageVisitor.PersistentFieldOne-to-one"));
@@ -137,6 +141,10 @@ public class OrmModelImageVisitor implements
 								.getString("OrmModelImageVisitor.Collection"));
 				}
 			}
+			if("parent".equals(field.getName()))
+				return ViewPlugin.getImageDescriptor(BUNDLE
+						.getString("OrmModelImageVisitor.PersistentFieldParent"));
+			
 		}
 		return ViewPlugin.getImageDescriptor(BUNDLE
 				.getString("OrmModelImageVisitor.PersistentFieldSimple"));
