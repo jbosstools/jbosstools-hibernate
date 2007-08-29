@@ -17,7 +17,9 @@ public class HibernateUtils {
 	}
 
 	public static String getPersistentClassName(String className) {
-		if (className.indexOf(".") < 0) {
+		if (className == null) {
+			return "";
+		} else if (className.indexOf(".") < 0) {
 			return "default." + className;
 		}
 		return className;

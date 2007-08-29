@@ -12,6 +12,7 @@ package org.jboss.tools.hibernate.ui.view.views;
 
 import java.util.ResourceBundle;
 
+import org.hibernate.MappingException;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -106,39 +107,44 @@ public class OrmModelImageVisitor implements
 							.getImageDescriptor(BUNDLE
 									.getString("OrmModelImageVisitor.PersistentFieldAny"));
 
-				if (field.getType() != null
-						&& field.getType().isCollectionType()) {
-					if (field.getValue() instanceof PrimitiveArray)
-						return ViewPlugin
-								.getImageDescriptor(BUNDLE
-										.getString("OrmModelImageVisitor.Collection_primitive_array"));
-					else if (field.getValue() instanceof Array)
-						return ViewPlugin
-								.getImageDescriptor(BUNDLE
-										.getString("OrmModelImageVisitor.Collection_array"));
-					else if (field.getValue() instanceof List)
-						return ViewPlugin
-								.getImageDescriptor(BUNDLE
-										.getString("OrmModelImageVisitor.Collection_list"));
-					else if (field.getValue() instanceof Set)
-						return ViewPlugin
-								.getImageDescriptor(BUNDLE
-										.getString("OrmModelImageVisitor.Collection_set"));
-					else if (field.getValue() instanceof Map)
-						return ViewPlugin
-								.getImageDescriptor(BUNDLE
-										.getString("OrmModelImageVisitor.Collection_map"));
-					else if (field.getValue() instanceof Bag)
-						return ViewPlugin
-								.getImageDescriptor(BUNDLE
-										.getString("OrmModelImageVisitor.Collection_bag"));
-					else if (field.getValue() instanceof IdentifierBag)
-						return ViewPlugin
-								.getImageDescriptor(BUNDLE
-										.getString("OrmModelImageVisitor.Collection_idbag"));
-					else
-						return ViewPlugin.getImageDescriptor(BUNDLE
-								.getString("OrmModelImageVisitor.Collection"));
+				try {
+					if (field.getType() != null
+							&& field.getType().isCollectionType()) {
+						if (field.getValue() instanceof PrimitiveArray)
+							return ViewPlugin
+									.getImageDescriptor(BUNDLE
+											.getString("OrmModelImageVisitor.Collection_primitive_array"));
+						else if (field.getValue() instanceof Array)
+							return ViewPlugin
+									.getImageDescriptor(BUNDLE
+											.getString("OrmModelImageVisitor.Collection_array"));
+						else if (field.getValue() instanceof List)
+							return ViewPlugin
+									.getImageDescriptor(BUNDLE
+											.getString("OrmModelImageVisitor.Collection_list"));
+						else if (field.getValue() instanceof Set)
+							return ViewPlugin
+									.getImageDescriptor(BUNDLE
+											.getString("OrmModelImageVisitor.Collection_set"));
+						else if (field.getValue() instanceof Map)
+							return ViewPlugin
+									.getImageDescriptor(BUNDLE
+											.getString("OrmModelImageVisitor.Collection_map"));
+						else if (field.getValue() instanceof Bag)
+							return ViewPlugin
+									.getImageDescriptor(BUNDLE
+											.getString("OrmModelImageVisitor.Collection_bag"));
+						else if (field.getValue() instanceof IdentifierBag)
+							return ViewPlugin
+									.getImageDescriptor(BUNDLE
+											.getString("OrmModelImageVisitor.Collection_idbag"));
+						else
+							return ViewPlugin.getImageDescriptor(BUNDLE
+									.getString("OrmModelImageVisitor.Collection"));
+					}
+				} catch (MappingException e) {
+					return ViewPlugin.getImageDescriptor(BUNDLE
+							.getString("OrmModelImageVisitor.PersistentFieldNot_mapped"));
 				}
 			}
 			if("parent".equals(field.getName()))
