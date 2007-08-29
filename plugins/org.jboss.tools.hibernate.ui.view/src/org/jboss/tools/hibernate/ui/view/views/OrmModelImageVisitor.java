@@ -79,12 +79,12 @@ public class OrmModelImageVisitor implements
 
 	public Object visitPersistentField(Property field) {
 		if (field != null) {
-			if (field.getPersistentClass().getVersion() == field) {
+			if (field.getPersistentClass() != null && field.getPersistentClass().getVersion() == field) {
 				return ViewPlugin
 						.getImageDescriptor(BUNDLE
 								.getString("OrmModelImageVisitor.PersistentFieldSimple_version"));
 			}
-			if (field.getPersistentClass().getIdentifierProperty() == field) {
+			if (field.getPersistentClass() != null && field.getPersistentClass().getIdentifierProperty() == field) {
 				return ViewPlugin
 						.getImageDescriptor(BUNDLE
 								.getString("OrmModelImageVisitor.PersistentFieldSimple_id"));
