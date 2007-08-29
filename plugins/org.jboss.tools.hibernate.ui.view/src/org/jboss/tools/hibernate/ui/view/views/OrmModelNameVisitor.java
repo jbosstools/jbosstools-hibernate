@@ -20,6 +20,7 @@ import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
@@ -268,6 +269,9 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 				typeString = field.getType().getReturnedClass().getName();
 			}
 		} catch (Exception e) {
+			if (field.getValue() instanceof Component) {
+				typeString = ((Component)field.getValue()).getComponentClassName();
+			}
 		}
 		if (typeString != null) {
 			name.append(typeString);
