@@ -98,7 +98,6 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 
 	public void performRequest(Request req) {
 		if(RequestConstants.REQ_OPEN.equals(req.getType())) {
-//			if (getCastedModel().getOrmElement() instanceof IDatabaseColumn) {
 			if (getCastedModel().getOrmElement() instanceof Column) {
 				if(getCastedModel().getTargetConnections().size() > 0)
 					((Connection)getCastedModel().getTargetConnections().get(0)).getSource().setFocus();
@@ -190,20 +189,16 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 					Integer.parseInt(Messages.Colors_PersistentClassR),
 					Integer.parseInt(Messages.Colors_PersistentClassG),
 					Integer.parseInt(Messages.Colors_PersistentClassB)));
-//R		if (getCastedModel().getOrmElement() instanceof IPersistentField || getCastedModel().getOrmElement() instanceof IHibernateValueMapping) 
 		else if (element instanceof Property || element instanceof SimpleValue) 
 			return ResourceManager.getInstance().getColor(new RGB(
 					Integer.parseInt(Messages.Colors_PersistentFieldR),
 					Integer.parseInt(Messages.Colors_PersistentFieldG),
 					Integer.parseInt(Messages.Colors_PersistentFieldB)));
-//R		else if (getCastedModel().getOrmElement() instanceof IDatabaseColumn) 
 		else if (element instanceof Column) 
 			return ResourceManager.getInstance().getColor(new RGB(
 					Integer.parseInt(Messages.Colors_DatabaseColumnR),
 					Integer.parseInt(Messages.Colors_DatabaseColumnG),
 					Integer.parseInt(Messages.Colors_DatabaseColumnB)));
-//R		else if (getCastedModel().getOrmElement() instanceof IPersistentClass) 
-//R		else if (getCastedModel().getOrmElement() instanceof IDatabaseTable) 
 		else if (element instanceof Table) 
 			return ResourceManager.getInstance().getColor(new RGB(
 					Integer.parseInt(Messages.Colors_DatabaseTableR),
@@ -221,7 +216,6 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 					Integer.parseInt(Messages.Colors_PersistentFieldB)));
 		else
 			return ResourceManager.getInstance().getColor(new RGB(255, 0, 0));
-//			throw new IllegalArgumentException();
 	}
 
 	protected Color getSelectionColor() {
@@ -232,8 +226,6 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 			return ResourceManager.getInstance().getColor(new RGB(112,161,99));
 		else if (getCastedModel().getOrmElement() instanceof Table || getCastedModel().getOrmElement() instanceof Column) 
 			return ResourceManager.getInstance().getColor(new RGB(66,173,247));
-		//else
-			//throw new IllegalArgumentException();
 		return ResourceManager.getInstance().getColor(new RGB(255,0,0));
 	}
 	

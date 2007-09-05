@@ -12,6 +12,7 @@ package org.jboss.tools.hibernate.ui.veditor.editors.autolayout.impl;
 
 import java.util.*;
 
+import org.jboss.tools.hibernate.ui.veditor.VisualEditorPlugin;
 import org.jboss.tools.hibernate.ui.veditor.editors.autolayout.IItemInfo;
 import org.jboss.tools.hibernate.ui.veditor.editors.autolayout.ILinkInfo;
 import org.jboss.tools.hibernate.ui.veditor.editors.autolayout.IDiagramInfo;
@@ -38,7 +39,7 @@ public class Items {
     
     public void setProcess(IDiagramInfo process) {
         this.process = process;
-        try { load(); } catch (Exception e) { e.printStackTrace(); }
+        try { load(); } catch (Exception e) { VisualEditorPlugin.getPluginLog().logError(e); }
     }
 
     private void load() {

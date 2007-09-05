@@ -36,7 +36,7 @@ public class ViewsAction {
 				try {
 					IDE.openEditor(ViewPlugin.getPage(),input ,"org.jboss.tools.hibernate.ui.veditor.editors.visualeditor");
 				} catch (PartInitException e) {
-//					ExceptionHandler.logThrowableError(e,"OpenEditor");              
+					ViewPlugin.getDefault().logError(e);
 				}
 			}
 		}; 

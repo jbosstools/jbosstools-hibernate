@@ -60,10 +60,6 @@ public class ViewPlugin extends BaseUIPlugin {
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}
-		
-//		if (TRACE || TRACE_VIEW ) 
-//			ExceptionHandler.logObjectPlugin("ViewPlugin()",PLUGIN_ID, null);		
-		
 	}
 
 	public static ImageDescriptor getImageDescriptor(String name) {
@@ -73,7 +69,6 @@ public class ViewPlugin extends BaseUIPlugin {
 			URL url = new URL(installURL, iconPath + name);
 			return ImageDescriptor.createFromURL(url);
 		} catch (MalformedURLException e) {
-			// should not happen
 			return ImageDescriptor.getMissingImageDescriptor();
 		}
 	}

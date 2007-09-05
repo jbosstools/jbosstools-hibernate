@@ -72,9 +72,6 @@ public class Item {
     }
 
     public void print() {
-//        StringBuffer sb = new StringBuffer();
-///        sb.append(object.getPathPart() + " " + n + " g = " + group + " ix = " + ix + " iy = " + iy);
-///        System.out.println(sb.toString());
     }
 
     public boolean isComment() {

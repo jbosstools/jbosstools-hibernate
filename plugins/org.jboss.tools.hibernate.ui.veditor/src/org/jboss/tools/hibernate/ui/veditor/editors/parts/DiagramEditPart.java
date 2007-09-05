@@ -41,6 +41,7 @@ import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.ui.veditor.VisualEditorPlugin;
 import org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor;
 import org.jboss.tools.hibernate.ui.veditor.editors.autolayout.AutoLayout;
 import org.jboss.tools.hibernate.ui.veditor.editors.autolayout.IItemInfo;
@@ -109,6 +110,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 							ormShape.setLocation(new Point(Integer
 									.parseInt(xy[0]), Integer.parseInt(xy[1])));
 						} catch (NumberFormatException e) {
+							VisualEditorPlugin.getPluginLog().logError(e);
 						}
 					if (xy.length > 2)
 						if ((new Boolean(xy[2])).booleanValue())

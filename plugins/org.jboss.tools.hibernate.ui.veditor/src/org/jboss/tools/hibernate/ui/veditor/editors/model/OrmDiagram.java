@@ -607,7 +607,7 @@ if (childShape == null) return;
 			FileOutputStream fos = new FileOutputStream(file);
 			properties.store(fos, "");
 		} catch (IOException e) {
-			VisualEditorPlugin.getDefault().logError("Can't save layout of mapping.", e);
+			VisualEditorPlugin.getPluginLog().logError("Can't save layout of mapping.", e);
 		}
 	}
 
@@ -624,7 +624,7 @@ if (childShape == null) return;
 					file.create(source, true, null);
 				}
 			} catch (CoreException e) {
-				VisualEditorPlugin.getDefault().logError(e);
+				VisualEditorPlugin.getPluginLog().logError(e);
 			}
 		}
 		return file;

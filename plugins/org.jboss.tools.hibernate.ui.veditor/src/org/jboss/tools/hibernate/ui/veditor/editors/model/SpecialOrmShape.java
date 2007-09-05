@@ -14,6 +14,7 @@ import java.util.Iterator;
 
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.jboss.tools.hibernate.ui.veditor.VisualEditorPlugin;
 
 public class SpecialOrmShape extends OrmShape {
 	private Shape parentShape;
@@ -49,6 +50,7 @@ public class SpecialOrmShape extends OrmShape {
 				}
 				getChildren().add(bodyOrmShape);
 			} catch (Exception e) {
+				VisualEditorPlugin.getPluginLog().logError(e);
 			}
 		}
 	}
