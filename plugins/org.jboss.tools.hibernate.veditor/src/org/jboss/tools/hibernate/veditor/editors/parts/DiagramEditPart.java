@@ -39,6 +39,7 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 import org.jboss.tools.hibernate.core.IDatabaseTable;
 import org.jboss.tools.hibernate.core.IPersistentClass;
+import org.jboss.tools.hibernate.veditor.VizualEditorPlugin;
 import org.jboss.tools.hibernate.veditor.editors.VizualEditor;
 import org.jboss.tools.hibernate.veditor.editors.command.ShapeSetConstraintCommand;
 import org.jboss.tools.hibernate.veditor.editors.model.ModelElement;
@@ -95,7 +96,9 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChang
 					if(xy.length>1)
 						try {
 							ormShape.setLocation(new Point(Integer.parseInt(xy[0]),Integer.parseInt(xy[1])));							
-						} catch (NumberFormatException  e) {}
+						} catch (NumberFormatException  e) {
+							VizualEditorPlugin.getPluginLog().logError(e.getMessage(),e);
+						}
 					if(xy.length>2)
 						if((new Boolean(xy[2])).booleanValue())
 							ormShape.refreshHiden();

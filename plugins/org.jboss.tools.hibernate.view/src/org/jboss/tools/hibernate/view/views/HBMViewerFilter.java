@@ -27,6 +27,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.jboss.tools.hibernate.core.IMappingStorage;
 import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
+import org.jboss.tools.hibernate.view.ViewPlugin;
 
 
 /**
@@ -71,7 +72,7 @@ public class HBMViewerFilter extends ViewerFilter {
 						fSrc.add(pfr[i].getPath().toString());
 				}
 			} catch (CoreException e) {
-				ExceptionHandler.logThrowableError(e, null);
+				ViewPlugin.getPluginLog().logError(e);
 			}
 
 		}
@@ -93,7 +94,7 @@ public class HBMViewerFilter extends ViewerFilter {
 				}
 			}
 		} catch (CoreException e) {
-			ExceptionHandler.logThrowableError(e, null);
+			ViewPlugin.getPluginLog().logError(e);
 		}
 		return added;
 	}

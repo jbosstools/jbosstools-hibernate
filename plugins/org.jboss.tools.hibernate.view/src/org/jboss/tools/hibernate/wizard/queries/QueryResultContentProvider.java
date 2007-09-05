@@ -28,6 +28,7 @@ import org.jboss.tools.hibernate.internal.core.BaseMappingVisitor;
 import org.jboss.tools.hibernate.internal.core.PersistentField;
 import org.jboss.tools.hibernate.internal.core.hibernate.PersistableProperty;
 import org.jboss.tools.hibernate.internal.core.util.*;
+import org.jboss.tools.hibernate.view.ViewPlugin;
 
 /**
  * @author yan
@@ -274,14 +275,14 @@ public class QueryResultContentProvider implements ITreeContentProvider {
 			if (!field.isAccessible()) field.setAccessible(true);
 			return field.get(src);
 		} catch (Exception e) {
-        	//TODO (tau-tau) for Exception			
+			ViewPlugin.getPluginLog().logError(e);			
 		}
 		try {
 			Method method=src.getClass().getDeclaredMethod("get"+name.substring(0,1).toUpperCase()+name.substring(1),new Class[0]);
 			if (!method.isAccessible()) method.setAccessible(true);
 			return method.invoke(src,(Object[])null);
 		} catch (Exception e) {
-        	//TODO (tau-tau) for Exception			
+			ViewPlugin.getPluginLog().logError(e);			
 		}
 		throw new NoSuchFieldException(name);
 	}

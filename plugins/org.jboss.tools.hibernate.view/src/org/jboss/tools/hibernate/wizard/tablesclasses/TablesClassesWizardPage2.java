@@ -45,6 +45,7 @@ import org.jboss.tools.hibernate.core.IMapping;
 import org.jboss.tools.hibernate.core.exception.ExceptionHandler;
 import org.jboss.tools.hibernate.dialog.AutoMappingSetting;
 import org.jboss.tools.hibernate.dialog.xpl.CreatePackageDialog;
+import org.jboss.tools.hibernate.view.ViewPlugin;
 
 
 /**
@@ -359,7 +360,7 @@ public boolean packageNameToLowerCase(){
 				}	
 			}
 		} catch (JavaModelException ex) {
-        	//TODO (tau-tau) for Exception			
+			ViewPlugin.getPluginLog().logError(ex);			
 		}
 	return result;
 }

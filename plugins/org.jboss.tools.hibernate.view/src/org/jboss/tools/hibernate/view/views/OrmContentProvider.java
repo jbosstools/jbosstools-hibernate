@@ -556,7 +556,7 @@ public class OrmContentProvider implements ITreeContentProvider, IOrmModelListen
 					}
 				}
 			} catch (CoreException e) {
-				ExceptionHandler.logThrowableError(e, "projectChanged");
+				ViewPlugin.getPluginLog().logError(e);
 			}
 		}
 		return flag;

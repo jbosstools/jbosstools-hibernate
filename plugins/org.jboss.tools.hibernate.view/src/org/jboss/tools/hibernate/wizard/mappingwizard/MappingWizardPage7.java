@@ -407,7 +407,6 @@ public class MappingWizardPage7 extends WizardPage {
 				((HibernateAutoMapping)mod.getAutoMappingService()).createVersionMapping((ClassMapping)mapping,(HibernateConfiguration)mod.getConfiguration(),SelectedField);
 			} catch (CoreException e) {
 				ExceptionHandler.handle(e, getShell(), null, null);
-				e.printStackTrace();
 			}
 			if (!isCreateField.getSelection())
 			{

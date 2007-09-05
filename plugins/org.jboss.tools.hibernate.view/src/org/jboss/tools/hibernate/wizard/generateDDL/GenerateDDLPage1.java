@@ -251,7 +251,7 @@ public class GenerateDDLPage1 extends WizardPage {
 		try {
 			generator = new HibernateDDLGenerator();
 		} catch (NoClassDefFoundError e) {
-			
+			ViewPlugin.getPluginLog().logError(e);
 		}
 	}
 

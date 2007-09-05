@@ -47,6 +47,7 @@ import org.jboss.tools.hibernate.internal.core.data.Table;
 import org.jboss.tools.hibernate.internal.core.hibernate.ComponentMapping;
 import org.jboss.tools.hibernate.internal.core.hibernate.PropertyMapping;
 import org.jboss.tools.hibernate.internal.core.hibernate.SimpleValueMapping;
+import org.jboss.tools.hibernate.view.ViewPlugin;
 
 
 /**
@@ -590,7 +591,7 @@ public class MappingWizardPage3 extends WizardPage {
 			try {
 				dlg.open();				
 			} catch (IllegalArgumentException e) {
-            	//TODO (tau-tau) for Exception				
+				ViewPlugin.getPluginLog().logError(e);				
 			}
 			// #changed#
 		}

@@ -69,6 +69,7 @@ import org.jboss.tools.hibernate.internal.core.properties.ColorManager;
 import org.jboss.tools.hibernate.internal.core.properties.ListPropertyDescriptor;
 import org.jboss.tools.hibernate.internal.core.properties.PropertyDescriptorsHolder;
 import org.jboss.tools.hibernate.internal.core.properties.QLConfiguration;
+import org.jboss.tools.hibernate.view.ViewPlugin;
 import org.jboss.tools.hibernate.wizard.classloader.DefaultClassLoaderFactory;
 import org.jboss.tools.hibernate.wizard.hibernateconnection.HibernateConnectionWizardPage2;
 
@@ -694,7 +695,9 @@ public class NamedQueryEditorPage extends WizardPage implements IRunnableWithPro
 			if (session.isConnected()) {
 				try {
 					session.disconnect();
-				} catch(HibernateException e) {}
+				} catch(HibernateException e) {
+					ViewPlugin.getPluginLog().logError(e);
+				}
 			}
 			if (session.isOpen()) {
 				session.close();
@@ -707,7 +710,7 @@ public class NamedQueryEditorPage extends WizardPage implements IRunnableWithPro
 				connection=null;
 			}
 		} catch (SQLException e) {
-        	//TODO (tau-tau) for Exception			
+			ViewPlugin.getPluginLog().logError(e);			
 		}
 	}
 	

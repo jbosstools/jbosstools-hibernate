@@ -299,7 +299,7 @@ public class ViewsAction {
                 try {
                     ViewPlugin.getDefault().getWorkbench().showPerspective("org.hibernate.eclipse.console.HibernateConsolePerspective",ViewPlugin.getActiveWorkbenchWindow());
                 } catch (WorkbenchException e) {
-                    ExceptionHandler.logThrowableWarning(e,"Show Hibernate Console");              
+    				ViewPlugin.getPluginLog().logError("Show Hibernate Console", e);
                 }
             }
         };
@@ -356,7 +356,7 @@ public class ViewsAction {
                 try {
                     project.getProject().getWorkspace().run(runnable, new NullProgressMonitor());
                 } catch (CoreException e) {
-                    ExceptionHandler.handle(e,ViewPlugin.getActiveWorkbenchShell(),null, "Error in Edit Field Mapping.");
+                	ViewPlugin.getPluginLog().logError("Error in Edit Field Mapping.", e);
                 }
 
                 // add tau 09.11.2005               
@@ -415,7 +415,7 @@ public class ViewsAction {
                 try {
                     project.getProject().getWorkspace().run(runnable, new NullProgressMonitor());
                 } catch (CoreException e) {
-                    ExceptionHandler.handle(e,ViewPlugin.getActiveWorkbenchShell(),null, "Error in New Field Mapping.");
+                	ViewPlugin.getPluginLog().logError("Error in New Field Mapping.", e);
                 }
                 
                 // add tau 09.11.2005               
@@ -1422,7 +1422,7 @@ public class ViewsAction {
                         } catch (InvocationTargetException e) {
                             ExceptionHandler.handle(e,ViewPlugin.getActiveWorkbenchShell(),packageAutoMappingAction.getText(), "Error in package Auto Mapping Action.");
                         } catch (InterruptedException e1) {
-                            // Cancelled.
+                        	ViewPlugin.getPluginLog().logError(e1);
                         }
                     }
                 };
@@ -1530,7 +1530,7 @@ public class ViewsAction {
                                     refreshMappingSchemaMappingAction.getText(),
                                     "Error in Refresh Mapping.");
                         } catch (InterruptedException e1) {
-                            // Cancelled.
+                        	ViewPlugin.getPluginLog().logError(e1);
                         }
                     }
                 };
@@ -1662,7 +1662,7 @@ public class ViewsAction {
                         } catch (InvocationTargetException e) {
                             ExceptionHandler.handle(e,ViewPlugin.getActiveWorkbenchShell(),null, "Error in Reload Mapping");
                         } catch (InterruptedException e1) {
-                            // Cancelled.
+                        	ViewPlugin.getPluginLog().logError(e1);
                         }
                     }
                 };
@@ -1722,7 +1722,7 @@ public class ViewsAction {
                         } catch (InvocationTargetException e) {
                             ExceptionHandler.handle(e,ViewPlugin.getActiveWorkbenchShell(),null, "Error in Refresh Project.");
                         } catch (InterruptedException e1) {
-                            // Cancelled.
+                        	ViewPlugin.getPluginLog().logError(e1);
                         }
                     }
                 };
@@ -1990,7 +1990,7 @@ public class ViewsAction {
                         } catch (InvocationTargetException e) {
                             ExceptionHandler.handle(e,ViewPlugin.getActiveWorkbenchShell(),null, "Error in remove hibernate configuration action.");
                         } catch (InterruptedException e1) {
-                            // Cancelled.
+                        	ViewPlugin.getPluginLog().logError(e1);
                         }
                     }
                 };

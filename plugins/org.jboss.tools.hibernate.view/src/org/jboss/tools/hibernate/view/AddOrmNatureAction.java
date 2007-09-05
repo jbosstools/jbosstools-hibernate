@@ -240,8 +240,7 @@ public class AddOrmNatureAction {
 		} catch (InvocationTargetException e1) {
 			ViewPlugin.getPluginLog().logError("PersistentClasses was not created!",e1);
 		} catch (InterruptedException e1) {
-        	//TODO (tau-tau) for Exception			
-			// Cancelled.
+			ViewPlugin.getPluginLog().logError(e1);
 		}
 	
 		if ( ormMapping == null) return false;
@@ -305,8 +304,7 @@ public class AddOrmNatureAction {
 		} catch (InvocationTargetException e1) {
 			ViewPlugin.getPluginLog().logError("Error in order to add Orm Nature",e1);
 		} catch (InterruptedException e1) {
-        	//TODO (tau-tau) for Exception			
-			// Cancelled.
+			ViewPlugin.getPluginLog().logError(e1);
 		}
 				
 		return true;

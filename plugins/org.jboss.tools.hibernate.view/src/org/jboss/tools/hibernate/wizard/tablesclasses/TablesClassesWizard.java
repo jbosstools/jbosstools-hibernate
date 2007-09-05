@@ -160,19 +160,16 @@ if (page instanceof TablesClassesWizardPage2)
 		     try {
 				doFinish( monitor);
 			} catch (Exception e) {
-            	//TODO (tau-tau) for Exception			
-				e.printStackTrace();
+				ViewPlugin.getPluginLog().logError(e);
 			}
 				monitor.done();
 				}};
 		try {
 		getContainer().run(true, false, op);
 	} catch (InvocationTargetException e) {
-    	//TODO (tau-tau) for Exception		
-		e.printStackTrace();
+		ViewPlugin.getPluginLog().logError(e);
 	} catch (InterruptedException e) {
-    	//TODO (tau-tau) for Exception		
-		e.printStackTrace();
+		ViewPlugin.getPluginLog().logError(e);
 	}
    	return true;
    	}
