@@ -208,6 +208,12 @@ public class CodeGenerationLaunchDelegate extends
 			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 			final IResource resource = findMember( root, attributes.getOutputPath() );
 	        final IResource templateres = findMember(root, attributes.getTemplatePath());
+	        String templatePath = null;
+	        
+	        if (new File(attributes.getTemplatePath()).exists())
+	        {
+	        	templatePath = attributes.getTemplatePath();
+	        }
 			
 			/*if (!resource.exists() || !(resource instanceof IContainer) ) {
 				throwCoreException("Output directory \"" + configName + "\" does not exist.");
@@ -225,6 +231,7 @@ public class CodeGenerationLaunchDelegate extends
 			if (monitor.isCanceled())
 				return null;
 			
+			final String finalTemplatePath = templatePath;
 			return (ArtifactCollector) cc.execute(new Command() {
 				private ArtifactCollector artifactCollector = new ArtifactCollector();
 
@@ -235,6 +242,8 @@ public class CodeGenerationLaunchDelegate extends
 	        
 	                if(templateres!=null) {
 	                    templatePaths = new String[] { getLocation( templateres ).toOSString() }; // TODO: this should not be..should it ?
+	                } else if (finalTemplatePath != null) {
+	                	templatePaths = new String[] { finalTemplatePath };
 	                }
 	                
                     // Global properties

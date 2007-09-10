@@ -21,6 +21,8 @@
  */
 package org.hibernate.eclipse.launch;
 
+import java.io.File;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -82,7 +84,7 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
     private SelectionButtonDialogField autoManyToMany;
 
     private SelectionButtonDialogField useOwnTemplates;
-    private StringButtonDialogField templatedir;
+    private DirectoryBrowseField templatedir;
     
     
     
@@ -98,7 +100,7 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
 		GridLayout layout = new GridLayout();
 		
 		container.setLayout(layout);
-		layout.numColumns = 3;
+		layout.numColumns = 4;
 		layout.verticalSpacing = 10;
 		
 		consoleConfigurationName = new ComboDialogField(SWT.READ_ONLY);
@@ -131,17 +133,11 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
 		outputdir.setLabelText("Output &directory:");
 		outputdir.setButtonLabel("&Browse...");
 		
-        templatedir = new StringButtonDialogField(new IStringButtonAdapter() {
-            public void changeControlPressed(DialogField field) {
-                IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  getTemplateDirectory(), new IPath[0], "Select template directory", "Choose directory containing custom templates", new String[0], false, true, false);
-                if(paths!=null && paths.length==1) {
-                    templatedir.setText( ( (paths[0]).toOSString() ) );
-                }                   
-            }
-        });
+        templatedir = new DirectoryBrowseField(null, null, "Select template directory", "Choose directory containing custom templates");
         templatedir.setDialogFieldListener(fieldlistener);
         templatedir.setLabelText("Template &directory:");
-        templatedir.setButtonLabel("&Browse...");
+        templatedir.setFilesystemBrowseLabel("&Filesystem...");
+        templatedir.setWorkspaceBrowseLabel("&Workspace...");
         
 		packageName = new StringDialogField();
         packageName.setDialogFieldListener(fieldlistener);
@@ -228,23 +224,23 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
 		useOwnTemplates.attachDialogField(templatedir);
         reverseengineer.attachDialogFields(new DialogField[] { packageName, preferRawCompositeIds, reverseEngineeringSettings, reverseEngineeringStrategy, autoManyToMany, autoVersioning });
        
-		consoleConfigurationName.doFillIntoGrid(container, 3);
-		Control[] controls = outputdir.doFillIntoGrid(container, 3);
+		consoleConfigurationName.doFillIntoGrid(container, 4);
+		Control[] controls = outputdir.doFillIntoGrid(container, 4);
 		// Hack to tell the text field to stretch!
 		( (GridData)controls[1].getLayoutData() ).grabExcessHorizontalSpace=true;
-		reverseengineer.doFillIntoGrid(container, 3);
-        packageName.doFillIntoGrid(container, 3);        
-		reverseEngineeringSettings.doFillIntoGrid(container, 3);
-		reverseEngineeringStrategy.doFillIntoGrid(container, 3);
+		reverseengineer.doFillIntoGrid(container, 4);
+        packageName.doFillIntoGrid(container, 4);
+		reverseEngineeringSettings.doFillIntoGrid(container, 4);
+		reverseEngineeringStrategy.doFillIntoGrid(container, 4);
 		
         fillLabel(container);
-        preferRawCompositeIds.doFillIntoGrid(container, 2);
+        preferRawCompositeIds.doFillIntoGrid(container, 3);
         fillLabel(container);
-        autoVersioning.doFillIntoGrid(container, 2);
+        autoVersioning.doFillIntoGrid(container, 3);
         fillLabel(container);
-        autoManyToMany.doFillIntoGrid(container, 2);
-		useOwnTemplates.doFillIntoGrid(container, 3);
-        controls = templatedir.doFillIntoGrid(container, 3);
+        autoManyToMany.doFillIntoGrid(container, 3);
+		useOwnTemplates.doFillIntoGrid(container, 4);
+        controls = templatedir.doFillIntoGrid(container, 4);
         // Hack to tell the text field to stretch!
         ( (GridData)controls[1].getLayoutData() ).grabExcessHorizontalSpace=true;
         
@@ -268,7 +264,7 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
 			return;
 		}
         
-        String msg = checkDirectory(getOutputDirectory(), "output directory");
+        String msg = checkDirectory(getOutputDirectory(), "output directory", false);
         
         if (msg!=null) {
             updateStatus(msg);
@@ -292,7 +288,7 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
         }
 
         if(useOwnTemplates.isSelected() ) {
-            msg = checkDirectory(getTemplateDirectory(), "template directory");
+            msg = checkDirectory(getTemplateDirectory(), "template directory", true);
             if (msg!=null) {
                 updateStatus(msg);
                 return;
@@ -331,7 +327,13 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
 
 
 
-    protected String checkDirectory(IPath path, String name) {
+    protected String checkDirectory(IPath path, String name, boolean checkFilesystem) {
+    	if (checkFilesystem) {
+    		if (path != null && new File(path.toOSString()).exists()) {
+    			return null;
+    		}
+    	}
+    	
         IResource res= ResourcesPlugin.getWorkspace().getRoot().findMember(path);
         if (res != null) {
             int resType= res.getType();
