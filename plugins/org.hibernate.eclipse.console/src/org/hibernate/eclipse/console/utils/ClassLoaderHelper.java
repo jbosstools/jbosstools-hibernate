@@ -153,10 +153,10 @@ public class ClassLoaderHelper {
 				if (location != null) {
 					userEntries.add(location);
 				} else {
-					System.out.println("No location: " + runtimeClasspathEntry.getMemento()); 
+					//System.out.println("No location: " + runtimeClasspathEntry.getMemento()); 
 				}
 			} else {
-				System.out.println("Ignored " + runtimeClasspathEntry.getMemento());
+				//System.out.println("Ignored " + runtimeClasspathEntry.getMemento());
 			}
 		}
 		return (String[]) userEntries.toArray(new String[userEntries.size()]);
