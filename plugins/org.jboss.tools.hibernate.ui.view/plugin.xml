@@ -11,5 +11,14 @@
             class="org.jboss.tools.hibernate.ui.view.views.OpenDiagramActionDelegate"> 
          </action> 
       </objectContribution> 
+      <objectContribution id="mappingEditorAction" objectClass="org.hibernate.mapping.RootClass"> 
+         <menu id="org.jboss.tools.hibernate.ui.view.openMapping" label="Open Mapping File" path="mappingEditorAction"/>
+         <action
+            id="com.xyz.runXYZ" 
+            label="Open Mapping File" 
+            icon="icons/runXYZ.gif" 
+            class="org.jboss.tools.hibernate.ui.view.views.OpenMappingActionDelegate"> 
+         </action> 
+      </objectContribution> 
    </extension>
 </plugin>

@@ -42,7 +42,6 @@ public class OpenDiagramActionDelegate implements IObjectActionDelegate {
     	ObjectPluginAction objectPluginAction = (ObjectPluginAction)action;
     	Object rootClass = ((TreeSelection)objectPluginAction.getSelection()).getFirstElement();
 		ObjectEditorInput input = (ObjectEditorInput)hashMap.get(rootClass);
-//		Configuration configuration = (Configuration)(((TreeSelection)objectPluginAction.getSelection()).getPaths()[0]).getSegment(1);
 		ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(((TreeSelection)objectPluginAction.getSelection()).getPaths()[0]).getSegment(0);
 		
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
