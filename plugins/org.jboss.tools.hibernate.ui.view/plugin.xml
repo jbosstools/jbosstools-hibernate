@@ -5,18 +5,18 @@
       <objectContribution id="diagramEditorAction" objectClass="org.hibernate.mapping.RootClass"> 
          <menu id="org.jboss.tools.hibernate.ui.view.openDiagram" label="Open Mapping Diagram" path="diagramEditorAction"/>
          <action
-            id="com.xyz.runXYZ" 
+            id="org.jboss.tools.hibernate.ui.view.openDiagramAction" 
             label="Open Mapping Diagram" 
-            icon="icons/runXYZ.gif" 
+            icon="icons/runOpenDiagram.gif" 
             class="org.jboss.tools.hibernate.ui.view.views.OpenDiagramActionDelegate"> 
          </action> 
       </objectContribution> 
       <objectContribution id="mappingEditorAction" objectClass="org.hibernate.mapping.RootClass"> 
          <menu id="org.jboss.tools.hibernate.ui.view.openMapping" label="Open Mapping File" path="mappingEditorAction"/>
          <action
-            id="com.xyz.runXYZ" 
+            id="org.jboss.tools.hibernate.ui.view.openMappingAction" 
             label="Open Mapping File" 
-            icon="icons/runXYZ.gif" 
+            icon="icons/runOpenMapping.gif" 
             class="org.jboss.tools.hibernate.ui.view.views.OpenMappingActionDelegate"> 
          </action> 
       </objectContribution> 
