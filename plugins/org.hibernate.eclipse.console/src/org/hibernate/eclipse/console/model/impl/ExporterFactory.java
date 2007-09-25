@@ -1,22 +1,24 @@
 package org.hibernate.eclipse.console.model.impl;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.lucene.util.StringHelper;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.variables.IStringVariableManager;
+import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.hibernate.eclipse.launch.PathHelper;
-
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.GenericExporter;
+import org.hibernate.util.StringHelper;
 
 /**
  * ExporterFactory is used in UI to hold additional configuration for Exporter definitions
@@ -146,8 +148,22 @@ public class ExporterFactory {
 		return inputProperties.containsKey( string );
 	}
 
-	public Exporter createConfiguredExporter(Configuration cfg, File outputdir,
-			String[] templatePaths, Properties globalProperties) {
+	/** Method that resolves an expression through eclipses built-in variable manager.  
+	 * @throws CoreException if expression could not be evaluated. */
+	private String resolve(String expression) throws CoreException  {
+		if(expression==null) return null;
+		IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
+		
+		return variableManager.performStringSubstitution(expression, false); 		
+	}
+	
+	/**
+	 * Creates exporter with the specified settings; also resolves any relevant properties via Eclipse VariablesPlugin.
+	 * @throws CoreException in case of resolve variables issues.
+	 */
+	public Exporter createConfiguredExporter(Configuration cfg, String defaultOutputDirectory,
+			String customTemplatePath, Properties globalProperties) throws CoreException {
+		
 		Exporter exporter = getExporterDefinition().createExporterInstance();
 		
 		Properties props = new Properties();
@@ -156,41 +172,41 @@ public class ExporterFactory {
 				
 		exporter.setProperties(props);
 		
-		exporter.setOutputDirectory(outputdir);
+		exporter.setOutputDirectory(new File(defaultOutputDirectory));
 		if(props.containsKey("outputdir")) {
-			String loc = PathHelper.getLocationAsStringPath(props.getProperty("outputdir"));
+			String resolvedOutputDir = resolve(props.getProperty("outputdir"));
+			String loc = PathHelper.getLocationAsStringPath(resolvedOutputDir);
 			if(loc==null) {
-				throw new HibernateConsoleRuntimeException("Output directory '" + props.getProperty("outputdir") + "' in " + getExporterDefinition().getDescription() + " does not exist.");
+				throw new HibernateConsoleRuntimeException("Output directory '" + resolvedOutputDir + "' in " + getExporterDefinition().getDescription() + " does not exist.");
 			}
 			props.remove("outputdir"); // done to avoid validation check in hibernate tools templates			
-			if(org.hibernate.util.StringHelper.isNotEmpty(loc)) { // only set if something valid found
+			if(StringHelper.isNotEmpty(loc)) { // only set if something valid found
 				exporter.setOutputDirectory(new File(loc));
 			} 
-		} else {
-				
-		}
+		} 
 		
 		exporter.setConfiguration(cfg);
 		
+		List templatePathList = new ArrayList();
 		if(props.containsKey("template_path")) {
-			String locationAsStringPath = PathHelper.getLocationAsStringPath(props.getProperty("template_path"));
+			String resolveTemplatePath = resolve(props.getProperty("template_path"));
+			String locationAsStringPath = PathHelper.getLocationAsStringPath(resolveTemplatePath);
 			if(locationAsStringPath==null) {
-				throw new HibernateConsoleRuntimeException("Template directory '" + props.getProperty("template_path") + "' in " + getExporterDefinition().getDescription() + " does not exist.");
-			}
-			
-			String[] newPath = new String[templatePaths.length+1];
-			System.arraycopy(templatePaths, 0, newPath, 0, templatePaths.length);
-			
-			newPath[templatePaths.length] = locationAsStringPath;
-			
-			exporter.setTemplatePath(newPath);
+				throw new HibernateConsoleRuntimeException("Template directory '" + resolveTemplatePath + "' in " + getExporterDefinition().getDescription() + " does not exist.");
+			} else {
+				templatePathList.add(locationAsStringPath);
+			}					
 			props.remove("template_path"); // done to avoid validation check in hibernate tools templates
-		} else {
-			exporter.setTemplatePath(templatePaths);
 		}
+		String resolvedCustomTemplatePath = resolve(customTemplatePath);
+		if(StringHelper.isNotEmpty(resolvedCustomTemplatePath)) {
+			templatePathList.add(resolvedCustomTemplatePath);
+		}
+		exporter.setTemplatePath((String[]) templatePathList.toArray(new String[templatePathList.size()]));
+		
 	
-		// special handling for GenericExporter (should be delegated via plugin.xml)
-		if(exporter instanceof GenericExporter) {
+		// special handling for GenericExporter (TODO: be delegated via plugin.xml)
+		if(getExporterDefinition().getId().equals("org.hibernate.tools.hbmtemplate")) {
 			GenericExporter ge = (GenericExporter) exporter;
 			
 			ge.setFilePattern(props.getProperty("file_pattern", null));

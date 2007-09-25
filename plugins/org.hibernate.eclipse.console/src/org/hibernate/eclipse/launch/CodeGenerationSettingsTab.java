@@ -28,6 +28,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.variables.IStringVariableManager;
+import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
@@ -121,7 +123,7 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 		
 		outputdir = new StringButtonDialogField(new IStringButtonAdapter() {
 			public void changeControlPressed(DialogField field) {
-				IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  getOutputDirectory(), new IPath[0], "Select output directory", "Choose directory in which the generated files will be stored", new String[] {"cfg.xml"}, false, true, false);
+				IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  PathHelper.pathOrNull(outputdir.getText()), new IPath[0], "Select output directory", "Choose directory in which the generated files will be stored", new String[] {"cfg.xml"}, false, true, false);
 				if(paths!=null && paths.length==1) {
 					outputdir.setText( ( (paths[0]).toOSString() ) );
 				}					
@@ -262,7 +264,7 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 			return;
 		}
         
-        String msg = PathHelper.checkDirectory(getOutputDirectory(), "output directory", false);
+        String msg = PathHelper.checkDirectory(outputdir.getText(), "output directory", false);
         
         if (msg!=null) {
             updateStatus(msg);
@@ -286,7 +288,7 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
         }
 
         if(useOwnTemplates.isSelected() ) {
-            msg = PathHelper.checkDirectory(getTemplateDirectory(), "template directory", true);
+            msg = PathHelper.checkDirectory(templatedir.getText(), "template directory", true);
             if (msg!=null) {
                 updateStatus(msg);
                 return;
@@ -357,15 +359,20 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 		return reverseengineer.isSelected();
 	}
 
-	public IPath getOutputDirectory() {
-		return PathHelper.pathOrNull(outputdir.getText() );
+	private String resolve(String expression)  {
+		if(expression==null) return null;
+		IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
+		
+		try {
+			return variableManager.performStringSubstitution(expression, false);
+		} catch (CoreException e) {
+			// ignore possible errors during substitution and just return the orginal expression
+			return expression;
+		} 		
 	}
-    
-    public IPath getTemplateDirectory() {
-        return PathHelper.pathOrNull(templatedir.getText() );
-    }
-
-    public String getOutputPackage() {
+	
+	    
+    String getOutputPackage() {
           return packageName.getText();
     }
 

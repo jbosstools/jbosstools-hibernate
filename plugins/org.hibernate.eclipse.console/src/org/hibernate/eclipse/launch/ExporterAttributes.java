@@ -161,7 +161,7 @@ private boolean autoVersioning;
 
    public static void saveExporterFactories(
 			ILaunchConfigurationWorkingCopy configuration,
-			List exporterFactories, List enabledExporters, Set deletedExporterIds) {
+			List exporterFactories, Set enabledExporters, Set deletedExporterIds) {
 		
 	   
 	   List names = new ArrayList();

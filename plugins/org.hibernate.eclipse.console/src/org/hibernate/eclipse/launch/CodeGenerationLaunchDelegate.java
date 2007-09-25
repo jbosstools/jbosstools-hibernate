@@ -197,7 +197,7 @@ public class CodeGenerationLaunchDelegate extends
 				return null;
 			
 			
-			final String outputPathRes = PathHelper.getLocationAsStringPath( attributes.getOutputPath() );
+			final String outputPathRes = PathHelper.getLocationAsStringPath(attributes.getOutputPath());
 	        
 	        final String templatePath = PathHelper.getLocationAsStringPath(attributes.getTemplatePath());
 	        
@@ -216,12 +216,11 @@ public class CodeGenerationLaunchDelegate extends
 				private ArtifactCollector artifactCollector = new ArtifactCollector();
 
 				public Object execute() {
-					File outputdir = new File( outputPathRes ); 
 					
-	                String[] templatePaths = new String[0];
-	                
-	                if(StringHelper.isNotEmpty(templatePath)) {
-	                	templatePaths = new String[] { templatePath };
+					String templatePaths = null;
+					
+					if(StringHelper.isNotEmpty(templatePath)) {
+	                	templatePaths = templatePath;
 	                }
 	                
                     // Global properties
@@ -236,7 +235,12 @@ public class CodeGenerationLaunchDelegate extends
                        Properties globalProperties = new Properties();
                        globalProperties.putAll(props);                       
                        
-                       Exporter exporter = exporterFactories[i].createConfiguredExporter(cfg, outputdir, templatePaths, globalProperties);
+                       Exporter exporter;
+					try {
+						exporter = exporterFactories[i].createConfiguredExporter(cfg, outputPathRes, templatePaths, globalProperties);
+					} catch (CoreException e) {
+						throw new HibernateConsoleRuntimeException("Error while setting up " + exporterFactories[i].getExporterDefinition(), e);
+					}
                        
                        exporter.start();
                        monitor.worked(1);

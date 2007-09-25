@@ -96,7 +96,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 
 	private Button enableJDK5;
 
-	private List selectedExporters;
+	private Set selectedExporters;
 	
 	private Set deletedExporterIds;
 
@@ -125,7 +125,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 	 * @see IDialogPage#createControl(Composite)
 	 */
 	public void createControl(Composite parent) {
-		selectedExporters = new ArrayList();		
+		selectedExporters = new HashSet();		
 		deletedExporterIds = new HashSet();
 		// ScrolledComposite scrolled = new ScrolledComposite(parent,
 		// SWT.V_SCROLL | SWT.H_SCROLL);
@@ -356,7 +356,9 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 				
 				ExporterFactory exporterFactory = new ExporterFactory( expDef, initialName );
 				observableFactoryList.add(exporterFactory);
+				selectedExporters.add(exporterFactory);
 				((CheckboxTableViewer)getTableViewer()).setChecked(exporterFactory, true);
+				
 			}
 
 			protected void handleRemove() {
@@ -720,7 +722,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 			String str = (String) ef.getProperties().get("outputdir");
 			String msg = null;
 			if(str!=null) {
-				msg = PathHelper.checkDirectory(PathHelper.pathOrNull(str), "Output directory for " + ef.getExporterDefinition().getDescription(), false);
+				msg = PathHelper.checkDirectory(str, "Output directory for " + ef.getExporterDefinition().getDescription(), false);
 				if(msg!=null) {
 					updateStatus(msg);
 					return;
@@ -729,7 +731,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 
 			str = (String) ef.getProperties().get("template_path");
 			if(str!=null) {				
-				msg = PathHelper.checkDirectory(PathHelper.pathOrNull(str), "Template directory for " + ef.getExporterDefinition().getDescription(), true);
+				msg = PathHelper.checkDirectory(str, "Template directory for " + ef.getExporterDefinition().getDescription(), true);
 				if(msg!=null) {
 					updateStatus(msg);
 					return;
