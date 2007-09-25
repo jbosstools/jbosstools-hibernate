@@ -8,7 +8,7 @@
       <perspective
             icon="icons/hibernate_small_icon.gif"
             class="org.hibernate.eclipse.console.HibernateConsolePerspectiveFactory"
-            name="Hibernate Console"
+            name="Hibernate"
             id="org.hibernate.eclipse.console.HibernateConsolePerspective"/>
    </extension>
    <extension
@@ -368,7 +368,7 @@
             category="org.hibernate.eclipse.launchcategory"
             id="org.hibernate.eclipse.launch.CodeGenerationLaunchGroup"
             image="icons/images/hibernate_launch.png"
-            label="Hibernate Code Generation..."
+            label="Hibernate Code Generation"
             mode="run"
             title="Select or configure a code generation to run"/>
       <launchGroup
@@ -376,7 +376,7 @@
             category="org.hibernate.eclipse.launchcategory"
             id="org.hibernate.eclipse.launch.ConsoleConfigurationLaunchGroup"
             image="icons/images/hibernate_launch.png"
-            label="Hibernate Console Configuration..."
+            label="Hibernate Console Configuration"
             mode="run"
             title="Select or configure a console configuration to run"/>
    </extension>
@@ -405,12 +405,33 @@
                name="jdk5"
                type="boolean"
                value="false"/>
+         <property
+               description="Output directory"
+               name="outputdir"
+               type="directory"
+               value=""/>
+         <property
+               description="Template directory"
+               name="template_path"
+               type="path"
+               value=""/>         
       </exporter>
       <exporter
             classname="org.hibernate.tool.hbm2x.HibernateMappingExporter"
             description="Hibernate XML Mappings (.hbm.xml)"
             icon="icons/images/hibernate_mapping.gif"
-            id="org.hibernate.tools.hbm2hbmxml"/>
+            id="org.hibernate.tools.hbm2hbmxml">
+            <property
+               description="Output directory"
+               name="outputdir"
+               type="directory"
+               value=""/>
+         <property
+               description="Template directory"
+               name="template_path"
+               type="path"
+               value=""/>
+            </exporter>
       <exporter
             classname="org.hibernate.tool.hbm2x.DAOExporter"
             description="DAO code (.java)"
@@ -426,13 +447,65 @@
                name="jdk5"
                type="boolean"
                value="false"/>
+               <property
+               description="Output directory"
+               name="outputdir"
+               type="directory"
+               value=""/>
+         <property
+               description="Template directory"
+               name="template_path"
+               type="path"
+               value=""/>                    
       </exporter>            
-            
+       <exporter
+            classname="org.hibernate.tool.hbm2x.GenericExporter"
+            description="Generic Exporter (&lt;hbmtemplate&gt;)"
+            icon="icons/images/hibernate_mapping.gif"
+            id="org.hibernate.tools.hbmtemplate">
+            <property
+               description="Output directory"
+               name="outputdir"
+               type="directory"
+               value=""/>
+            <property
+               description="Template directory"
+               name="template_path"
+               type="path"
+               value=""/>
+            <property
+               description="File pattern"
+               name="file_pattern"
+               type="string"
+               value="${package-name}/${class-name}.java"/>
+            <property
+               description="For each"
+               name="for_each"
+               type="string"
+               value="entity, component"/>  
+            <property
+               description="Template name"
+               name="template_name"
+               type="string"
+               value="pojo/Pojo.ftl"/>            
+         </exporter>
+                     
       <exporter
             classname="org.hibernate.tool.hbm2x.HibernateConfigurationExporter"
             description="Hibernate XML Configuration (.cfg.xml)"
             icon="icons/hibernate_small_icon.gif"
-            id="org.hibernate.tools.hbm2cfgxml"/>
+            id="org.hibernate.tools.hbm2cfgxml">
+            <property
+               description="Output directory"
+               name="outputdir"
+               type="directory"
+               value=""/>
+         <property
+               description="Template directory"
+               name="template_path"
+               type="path"
+               value=""/>
+            </exporter>
       <exporter
             classname="org.hibernate.tool.hbm2x.DocExporter"
             description="Schema Documentation (.html)"
@@ -443,6 +516,16 @@
                name="dot.executable"
                type="string"
                value="dot.exe"/>
+               <property
+               description="Output directory"
+               name="outputdir"
+               type="directory"
+               value=""/>
+         <property
+               description="Template directory"
+               name="template_path"
+               type="path"
+               value=""/>
       </exporter>
       <!-- <exporter
             classname="org.hibernate.tool.hbm2x.seam.SeamExporter"

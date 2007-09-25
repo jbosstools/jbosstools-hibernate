@@ -44,6 +44,9 @@ public class HibernateLaunchConstants
 {
    public static final String ATTR_PREFIX = "org.hibernate.tools.";
    
+   // attribute to list of id for exporters configured in a specific launchconfig.
+   public static final String ATTR_EXPORTERS = ATTR_PREFIX + "exporters";
+   
    public static final String ATTR_CONSOLE_CONFIGURATION_NAME = ATTR_PREFIX + "configurationname";
    public static final String ATTR_OUTPUT_DIR = ATTR_PREFIX + "outputdir";
    public static final String ATTR_REVERSE_ENGINEER = ATTR_PREFIX + "schema2hbm";

@@ -23,6 +23,9 @@ package org.hibernate.eclipse.console.wizards;
 
 import java.util.Iterator;
 
+import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.IBaseLabelProvider;
+import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
@@ -58,8 +61,12 @@ public class UpDownListComposite extends Composite {
 	private Button[] addButtons;
 
 	private TableViewer tableView;
-	private ILabelProvider provider = null;
+	private IBaseLabelProvider provider = null;
 	private final String title;
+
+	private final boolean checkboxInTable;
+
+	private IContentProvider contentProvider;
 	
 
 	public UpDownListComposite(Composite parent, int style) {
@@ -67,13 +74,15 @@ public class UpDownListComposite extends Composite {
 	}
 	
 	public UpDownListComposite(Composite parent, int style, String title) {
-		this( parent, style, title, null);
+		this( parent, style, title, false, null, null);
 	}
 
-	public UpDownListComposite(Composite parent, int style, String title, ILabelProvider provider) {
+	public UpDownListComposite(Composite parent, int style, String title, boolean checkboxInTable, IBaseLabelProvider provider, IContentProvider contentProvider) {
 		super( parent, style );
 		this.title = title;
+		this.checkboxInTable = checkboxInTable;
 		this.provider = provider;
+		this.contentProvider = contentProvider;
 		initialize();
 	}
 
@@ -116,7 +125,7 @@ public class UpDownListComposite extends Composite {
 		gridData1.heightHint = 20;
 		gridData1.widthHint = 20;
 		
-		table = new Table(group, SWT.FULL_SELECTION | SWT.BORDER | SWT.MULTI );
+		table = new Table(group, SWT.FULL_SELECTION | SWT.BORDER | SWT.MULTI | (checkboxInTable?SWT.CHECK:SWT.NONE));
 		table.setHeaderVisible(false);
 		table.setLayoutData(gridData1);
 		table.setLinesVisible(false);
@@ -134,8 +143,9 @@ public class UpDownListComposite extends Composite {
 		
 		});
 		
-		tableView = new TableViewer(table);
+		tableView = checkboxInTable?new CheckboxTableViewer(table):new TableViewer(table);
 		if(provider!=null) tableView.setLabelProvider(provider);
+		if(contentProvider!=null) tableView.setContentProvider(contentProvider);
 		
 	}
 
@@ -217,11 +227,11 @@ public class UpDownListComposite extends Composite {
 
 	private void handleButtonPressed(Button button) {
 		if (button == removeButton) {
-			handleRemoveButtonPressed(tableView);
+			handleRemove();
 		} else if (button == upButton) {
-			moveSelectionUp(tableView);
+			moveSelectionUp();
 		} else if (button == downButton) {
-			moveSelectionDown(tableView);
+			moveSelectionDown();
 		} else {
 			for (int i = 0; i < addButtons.length; i++) {
 				Button but = addButtons[i];
@@ -235,8 +245,8 @@ public class UpDownListComposite extends Composite {
 		
 	}
 
-	private void moveSelectionDown(TableViewer viewer) {
-		Table table = viewer.getTable();
+	protected void moveSelectionDown() {
+		Table table = tableView.getTable();
 		int indices[]= table.getSelectionIndices();
 		if (indices.length < 1) {
 			return;
@@ -246,25 +256,27 @@ public class UpDownListComposite extends Composite {
 		for (int i = indices.length - 1; i >= 0; i--) {
 			int index= indices[i];
 			if (index < max) {
-				move (viewer, table.getItem(index), index + 1);
+				move (tableView, table.getItem(index), index + 1);
 				newSelection[i]= index + 1;
 			}
 		}
 		table.setSelection(newSelection);
+		listChanged();
 	}
 
-	private void moveSelectionUp(TableViewer viewer) {
-		Table table = viewer.getTable();
+	protected void moveSelectionUp() {
+		Table table = tableView.getTable();
 		int indices[]= table.getSelectionIndices();
 		int newSelection[]= new int[indices.length];
 		for (int i = 0; i < indices.length; i++) {
 			int index= indices[i];
 			if (index > 0) {
-				move (viewer, table.getItem(index), index - 1);
+				move (tableView, table.getItem(index), index - 1);
 				newSelection[i]= index - 1;
 			}
 		}
 		table.setSelection(newSelection);
+		listChanged();
 	}
 
 	/**
@@ -276,19 +288,21 @@ public class UpDownListComposite extends Composite {
 		viewer.insert(data, index);
 	}
 	
-	private void handleRemoveButtonPressed(TableViewer viewer) {
-		IStructuredSelection selection = (IStructuredSelection) viewer.getSelection();
+	protected void handleRemove() {
+		IStructuredSelection selection = (IStructuredSelection) tableView.getSelection();
 		if (selection != null) {
 			int numSelected= selection.size();
 			
 			Iterator iterator= selection.iterator();
 			while (iterator.hasNext() ) {
 				Object item= iterator.next();
-				viewer.remove(item);
+				tableView.remove(item);
 			}
 			listChanged();
 		}		
 	}
+	
+	
 	
 	private void handleAddButtonPressed(int i) {
 		Object[] o = handleAdd(i);
@@ -320,7 +334,7 @@ public class UpDownListComposite extends Composite {
 		Table builderTable= tableView.getTable();
 		TableItem[] items = builderTable.getSelection();
 		boolean validSelection= items != null && items.length > 0;
-		boolean enableRemove= validSelection;
+		boolean enableRemove=validSelection;
 		boolean enableUp= validSelection;
 		boolean enableDown= validSelection;
 		if (validSelection) {
@@ -337,6 +351,10 @@ public class UpDownListComposite extends Composite {
 
 	public Table getTable() {
 		return tableView.getTable();
+	}
+	
+	public TableViewer getTableViewer() {
+		return tableView;
 	}
 
 	public void clear() {

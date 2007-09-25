@@ -125,6 +125,10 @@
                   </enumeration>
                   <enumeration value="boolean">
                   </enumeration>
+                  <enumeration value="directory">
+                  </enumeration>
+                  <enumeration value="path">
+                  </enumeration>
                </restriction>
             </simpleType>
          </attribute>

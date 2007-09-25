@@ -176,7 +176,7 @@ public class CodeGenerationLaunchDelegate extends
 	}
 
 	private void refreshOutputDir(String outputdir) {
-		IResource bufferRes = findMember(ResourcesPlugin.getWorkspace().getRoot(), outputdir);
+		IResource bufferRes = PathHelper.findMember(ResourcesPlugin.getWorkspace().getRoot(), outputdir);
 		
 		if (bufferRes != null && bufferRes.isAccessible()) {
 			try {
@@ -187,63 +187,41 @@ public class CodeGenerationLaunchDelegate extends
 		}
 	}
 	
-	private Path pathOrNull(String p) {
-		if(p==null || p.trim().length()==0) {
-			return null;
-		} else {
-			return new Path(p);
-		}
-	}
-
-	private ArtifactCollector runExporters (final ExporterAttributes attributes, final ExporterFactory[] exporters, final IProgressMonitor monitor)
+	private ArtifactCollector runExporters (final ExporterAttributes attributes, final ExporterFactory[] exporterFactories, final IProgressMonitor monitor)
 	   throws CoreException
     {
 			
-		 	monitor.beginTask("Generating code for " + attributes.getConsoleConfigurationName(), exporters.length + 1);
+		 	monitor.beginTask("Generating code for " + attributes.getConsoleConfigurationName(), exporterFactories.length + 1);
 		
 			if (monitor.isCanceled())
 				return null;
 			
 			
-			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-			final IResource resource = findMember( root, attributes.getOutputPath() );
-	        final IResource templateres = findMember(root, attributes.getTemplatePath());
-	        String templatePath = null;
+			final String outputPathRes = PathHelper.getLocationAsStringPath( attributes.getOutputPath() );
 	        
-	        if (new File(attributes.getTemplatePath()).exists())
-	        {
-	        	templatePath = attributes.getTemplatePath();
-	        }
-			
-			/*if (!resource.exists() || !(resource instanceof IContainer) ) {
-				throwCoreException("Output directory \"" + configName + "\" does not exist.");
-			}*/
-			/*IContainer container = (IContainer) resource;*/
-
+	        final String templatePath = PathHelper.getLocationAsStringPath(attributes.getTemplatePath());
+	        
 			ConsoleConfiguration cc = KnownConfigurations.getInstance().find(attributes.getConsoleConfigurationName());
 			if (attributes.isReverseEngineer()) {
 				monitor.subTask("reading jdbc metadata");
 			}
-			final Configuration cfg = buildConfiguration(attributes, cc, root);
+			final Configuration cfg = buildConfiguration(attributes, cc, ResourcesPlugin.getWorkspace().getRoot());
 			
 			monitor.worked(1);
 			
 			if (monitor.isCanceled())
 				return null;
-			
-			final String finalTemplatePath = templatePath;
+						
 			return (ArtifactCollector) cc.execute(new Command() {
 				private ArtifactCollector artifactCollector = new ArtifactCollector();
 
 				public Object execute() {
-					File outputdir = getLocation( resource ).toFile(); 
+					File outputdir = new File( outputPathRes ); 
 					
 	                String[] templatePaths = new String[0];
-	        
-	                if(templateres!=null) {
-	                    templatePaths = new String[] { getLocation( templateres ).toOSString() }; // TODO: this should not be..should it ?
-	                } else if (finalTemplatePath != null) {
-	                	templatePaths = new String[] { finalTemplatePath };
+	                
+	                if(StringHelper.isNotEmpty(templatePath)) {
+	                	templatePaths = new String[] { templatePath };
 	                }
 	                
                     // Global properties
@@ -251,30 +229,19 @@ public class CodeGenerationLaunchDelegate extends
 	                props.put("ejb3", ""+attributes.isEJB3Enabled());
                     props.put("jdk5", ""+attributes.isJDK5Enabled());
                     
-                    for (int i = 0; i < exporters.length; i++)
+                    for (int i = 0; i < exporterFactories.length; i++)
                     {
-                       monitor.subTask(exporters[i].getExporterDefinition().getDescription());
+                       monitor.subTask(exporterFactories[i].getExporterDefinition().getDescription());
                        
-                       Properties exporterProperties = new Properties();
-                       exporterProperties.putAll(props);
-                       exporterProperties.putAll(exporters[i].getProperties());
+                       Properties globalProperties = new Properties();
+                       globalProperties.putAll(props);                       
                        
-                       Exporter exporter = exporters[i].getExporterDefinition().createExporterInstance();
-                       
-                       configureExporter (cfg, outputdir, templatePaths, exporterProperties, exporter);
+                       Exporter exporter = exporterFactories[i].createConfiguredExporter(cfg, outputdir, templatePaths, globalProperties);
                        
                        exporter.start();
                        monitor.worked(1);
                     }
 					return getArtififactCollector();
-				}
-
-				private void configureExporter(final Configuration cfg, File outputdir, String[] templatePaths, Properties props, Exporter exporter) {
-					exporter.setProperties(props);
-					exporter.setOutputDirectory(outputdir);
-					exporter.setConfiguration(cfg);
-					exporter.setTemplatePath(templatePaths);
-					exporter.setArtifactCollector(getArtififactCollector());
 				}
 
 				private ArtifactCollector getArtififactCollector() {
@@ -285,24 +252,11 @@ public class CodeGenerationLaunchDelegate extends
 			
 		}
 
-	private IResource findMember(IWorkspaceRoot root, String path) {
-		Path pathOrNull = pathOrNull(path);
-		if(pathOrNull==null) return null;
-		return root.findMember(pathOrNull);
-	}
-
-	private IPath getLocation(final IResource resource) {		
-		if (resource.getRawLocation() == null) { 
-			return resource.getLocation(); 
-		} 
-		else return resource.getRawLocation();  
-	}
-
 	private Configuration buildConfiguration(final ExporterAttributes attributes, ConsoleConfiguration cc, IWorkspaceRoot root) {
 		final boolean reveng = attributes.isReverseEngineer();		
 		final String reverseEngineeringStrategy = attributes.getRevengStrategy();
 		final boolean preferBasicCompositeids = attributes.isPreferBasicCompositeIds();
-		final IResource revengres = findMember( root, attributes.getRevengSettings());
+		final IResource revengres = PathHelper.findMember( root, attributes.getRevengSettings());
 		
 		if(reveng) {
 			Configuration configuration = null;
@@ -332,7 +286,7 @@ public class CodeGenerationLaunchDelegate extends
 					if(revengres!=null) {
 						/*Configuration configuration = cc.buildWith(new Configuration(), false);*/				
 						/*Settings settings = cc.getSettings(configuration);*/
-						File file = getLocation( revengres ).toFile();
+						File file = PathHelper.getLocation( revengres ).toFile();
 						OverrideRepository repository = new OverrideRepository();///*settings.getDefaultCatalogName(),settings.getDefaultSchemaName()*/);
 						repository.addFile(file);
 						res = repository.getReverseEngineeringStrategy(res);

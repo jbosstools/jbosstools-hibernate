@@ -42,12 +42,16 @@ package org.hibernate.eclipse.launch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.eclipse.console.ExtensionManager;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.model.impl.ExporterDefinition;
@@ -99,24 +103,120 @@ private boolean autoVersioning;
         	 templatePath = null;
          }
    
-         ExporterDefinition[] exDefinitions = ExtensionManager.findExporterDefinitions();
-
- 		exporterFactories = new ArrayList();
- 		for (int i = 0; i < exDefinitions.length; i++) {
- 			ExporterDefinition expDef = exDefinitions[i];
- 			ExporterFactory exporterFactory = new ExporterFactory( expDef );
- 			exporterFactory.isEnabled( configuration );
-			exporterFactories.add( exporterFactory );
-			Map props = configuration.getAttribute( exporterFactory.getId()
-					+ ".properties", new HashMap() );
-			exporterFactory.setProperties( props );
- 		}
+         exporterFactories = readExporterFactories(configuration);
  		
       } catch (CoreException e) {
          throw new CoreException(HibernateConsolePlugin.throwableToStatus(e, 666)); 
       }
    }
+
+   static String getLaunchAttributePrefix(String exporterId) {
+	   	   return HibernateLaunchConstants.ATTR_EXPORTERS + "." + exporterId;
+   }
    
+   private List readExporterFactories(ILaunchConfiguration configuration) throws CoreException {
+
+	   List exporterNames = configuration.getAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, (List)null);
+	   
+	   if(exporterNames!=null) { 
+		   Map exDefinitions = ExtensionManager.findExporterDefinitionsAsMap();
+		   List factories = new ArrayList();
+
+		   for (Iterator iterator = exporterNames.iterator(); iterator.hasNext();) {
+			   String exporterId = (String) iterator.next();
+			   String extensionId = configuration.getAttribute(getLaunchAttributePrefix(exporterId) + ".extension_id", (String)null);
+
+			   ExporterDefinition expDef = (ExporterDefinition) exDefinitions.get(extensionId);
+			   if(expDef==null) {
+				   throw new HibernateConsoleRuntimeException("Could not locate exporter for '" + extensionId + "' in " + configuration.getName());							
+			   } else {
+				   ExporterFactory exporterFactory = new ExporterFactory( expDef, exporterId );
+				   exporterFactory.isEnabled( configuration );
+				   factories.add( exporterFactory );
+				   Map props = configuration.getAttribute( getLaunchAttributePrefix(exporterFactory.getId())
+						   + ".properties", new HashMap() );
+				   exporterFactory.setProperties( props );
+			   }			
+		   }
+		   return factories;
+		   
+	   } else { 
+		   // fall back to old way of reading if list of exporters does not exist.
+		   ExporterDefinition[] exDefinitions = ExtensionManager.findExporterDefinitions();
+		   List factories = new ArrayList();
+
+		   for (int i = 0; i < exDefinitions.length; i++) {
+			   ExporterDefinition expDef = exDefinitions[i];
+			   ExporterFactory exporterFactory = new ExporterFactory( expDef, expDef.getId() );
+			   exporterFactory.isEnabled( configuration );
+			   factories.add( exporterFactory );
+			   Map props = configuration.getAttribute( getLaunchAttributePrefix(exporterFactory.getId()) 
+					   + ".properties", new HashMap() );
+			   exporterFactory.setProperties( props );
+		   }
+		   
+		   return factories;
+	   } 
+   }
+
+   public static void saveExporterFactories(
+			ILaunchConfigurationWorkingCopy configuration,
+			List exporterFactories, List enabledExporters, Set deletedExporterIds) {
+		
+	   
+	   List names = new ArrayList();
+		for (Iterator iter = exporterFactories.iterator(); iter.hasNext();) {
+			ExporterFactory ef = (ExporterFactory) iter.next();
+			configuration.setAttribute(getLaunchAttributePrefix(ef.getId()) + ".extension_id", ef.getExporterDefinition().getId());
+			boolean enabled = enabledExporters.contains( ef );
+			String propertiesId = getLaunchAttributePrefix(ef.getId()) + ".properties";
+			names.add(ef.getId());
+			ef.setEnabled( configuration, enabled, false );
+				
+			HashMap map = new HashMap(ef.getProperties());
+
+			if(map.isEmpty()) {				
+				configuration.setAttribute( propertiesId, (Map)null );
+			} else {
+				configuration.setAttribute( propertiesId, map );
+			}			
+		}
+		
+		deletedExporterIds.removeAll(names);
+		
+		for (Iterator iterator = deletedExporterIds.iterator(); iterator.hasNext();) {
+			String deleted = (String) iterator.next();
+			
+			configuration.setAttribute( getLaunchAttributePrefix( deleted ), (String)null);
+			configuration.setAttribute(getLaunchAttributePrefix(deleted ) + ".extension_id", (String)null);						
+			configuration.setAttribute(getLaunchAttributePrefix(deleted), (String)null);
+		}
+		
+		configuration.setAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, names);
+	}
+
+	public static void oldSaveExporterFactories(
+			ILaunchConfigurationWorkingCopy configuration,
+			List exporterFactories, List enabledExporters) {
+		
+		
+		for (Iterator iter = exporterFactories.iterator(); iter.hasNext();) {
+			ExporterFactory ef = (ExporterFactory) iter.next();
+			boolean enabled = enabledExporters.contains( ef );
+			String propertiesId = ef.getId() + ".properties";
+			
+			ef.setEnabled( configuration, enabled, true );
+				
+			HashMap map = new HashMap(ef.getProperties());
+
+			if(map.isEmpty()) {				
+				configuration.setAttribute( propertiesId, (Map)null );
+			} else {
+				configuration.setAttribute( propertiesId, map );
+			}		
+		}
+	}
+
    
     private Path pathOrNull(String p) {
         if(p==null || p.trim().length()==0) {
@@ -247,6 +347,7 @@ public boolean detectManyToMany() {
     public boolean detectOptimisticLock() {
     	return autoVersioning;
     }
+
    
 
    

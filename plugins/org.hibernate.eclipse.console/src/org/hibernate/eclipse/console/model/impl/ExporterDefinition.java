@@ -40,8 +40,10 @@
  */
 package org.hibernate.eclipse.console.model.impl;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -49,11 +51,19 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
+import org.hibernate.eclipse.HibernatePlugin;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.util.ReflectHelper;
 
+/** 
+ * Represents what is specified in plugin.xml about possible exporters.
+ *
+ */
 public class ExporterDefinition {
+	
 	final private String classname;
 
 	final private String description;
@@ -105,6 +115,7 @@ public class ExporterDefinition {
 		return properties;
 	}
 
+	
 	public Exporter createExporterInstance() {
 	   Exporter exporter = null;
 
@@ -131,7 +142,7 @@ public class ExporterDefinition {
 		return iconDescriptor;
 	}
 
-	public Map getProperties() {
+	public Map getExporterProperties() {
 		return properties;
 	}
 
@@ -144,7 +155,9 @@ public class ExporterDefinition {
 			enabled = configuration.getAttribute( id, false );
 		}
 		catch (CoreException e) {
-			e.printStackTrace(); // TODO-marshall: bad!
+			// log and assume false
+			HibernateConsolePlugin.getDefault().log(e);
+			return false;
 		}
 
 		return enabled;
@@ -153,4 +166,6 @@ public class ExporterDefinition {
 	public String getId() {
 		return id;
 	}
+
+	
 }

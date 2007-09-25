@@ -36,8 +36,8 @@ public class LaunchConfigurationTabGroup extends
 
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
 		ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[] {
-				new CodeGenerationSettings(),
-				new ExporterSettings(),
+				new CodeGenerationSettingsTab(),
+				new ExporterSettingsTab(),
 				new RefreshTab(),
 				new CommonTab()
 			};

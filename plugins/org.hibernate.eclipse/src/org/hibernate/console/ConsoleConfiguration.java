@@ -194,6 +194,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 						String str = properties.getProperty( "hibernate.transaction.manager_lookup_class" );
 						if(str != null && StringHelper.isEmpty( str )) {
 							properties.setProperty( "hibernate.transaction.manager_lookup_class", "org.hibernate.console.FakeTransactionManagerLookup");
+							//properties.setProperty( "hibernate.transaction.factory_class", "");
 						}
 					}
 					
@@ -201,6 +202,9 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 					if(localCfg==null) {
 						localCfg = buildConfiguration( properties, includeMappings );
 					} else {
+						//Properties origProperties = cfg.getProperties();
+						//origProperties.putAll(properties);
+						//cfg.setProperties(origProperties);
 						// TODO: this is actually only for jdbc reveng...
 						//localCfg = configureStandardConfiguration( includeMappings, localCfg, properties );						
 					}

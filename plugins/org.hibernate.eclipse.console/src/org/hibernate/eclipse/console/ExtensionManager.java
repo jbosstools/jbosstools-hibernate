@@ -41,6 +41,8 @@
 package org.hibernate.eclipse.console;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -53,7 +55,7 @@ public class ExtensionManager
 {
    public static final String EXPORTERS_EXTENSION_ID = "org.hibernate.eclipse.console.exporters";
    
-   public static IExtension[] findExtensions (String extensionId)
+   private static IExtension[] findExtensions (String extensionId)
    {
       IExtensionRegistry registry = Platform.getExtensionRegistry();
       IExtensionPoint extensionPoint = registry.getExtensionPoint(extensionId);
@@ -76,5 +78,20 @@ public class ExtensionManager
       }
       
       return (ExporterDefinition[]) exporters.toArray(new ExporterDefinition[exporters.size()]);
+   }
+      
+   /**
+    * return map of ExporterDefinitions keyed by id
+    */ 
+   public static Map findExporterDefinitionsAsMap() {
+	   Map result = new HashMap();
+
+	   ExporterDefinition[] findExporterDefinitions = findExporterDefinitions();
+	   for (int i = 0; i < findExporterDefinitions.length; i++) {
+		   ExporterDefinition exporterDefinition = findExporterDefinitions[i];
+		   result.put(exporterDefinition.getId(), exporterDefinition);
+	   }
+
+	   return result;
    }
 }

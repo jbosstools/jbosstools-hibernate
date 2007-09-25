@@ -30,12 +30,12 @@ public class ExporterTest extends TestCase {
 								null);
 		
 		
-		factory = new ExporterFactory(definition);
+		factory = new ExporterFactory(definition, definition.getId());
 
 	}
 	public void testExporters() {
 		
-		Map properties = definition.getProperties();
+		Map properties = definition.getExporterProperties();
 		
 		assertEquals(properties, map);
 		

@@ -21,9 +21,7 @@
  */
 package org.hibernate.eclipse.launch;
 
-import java.io.File;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -63,7 +61,7 @@ import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.wizards.NewReverseEngineeringFileWizard;
 
-public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
+public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 
 	private ComboDialogField consoleConfigurationName;
 
@@ -88,7 +86,7 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
     
     
     
-	public CodeGenerationSettings() {
+	public CodeGenerationSettingsTab() {
 		super();
 	}
 
@@ -264,7 +262,7 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
 			return;
 		}
         
-        String msg = checkDirectory(getOutputDirectory(), "output directory", false);
+        String msg = PathHelper.checkDirectory(getOutputDirectory(), "output directory", false);
         
         if (msg!=null) {
             updateStatus(msg);
@@ -288,7 +286,7 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
         }
 
         if(useOwnTemplates.isSelected() ) {
-            msg = checkDirectory(getTemplateDirectory(), "template directory", true);
+            msg = PathHelper.checkDirectory(getTemplateDirectory(), "template directory", true);
             if (msg!=null) {
                 updateStatus(msg);
                 return;
@@ -327,30 +325,6 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
 
 
 
-    protected String checkDirectory(IPath path, String name, boolean checkFilesystem) {
-    	if (checkFilesystem) {
-    		if (path != null && new File(path.toOSString()).exists()) {
-    			return null;
-    		}
-    	}
-    	
-        IResource res= ResourcesPlugin.getWorkspace().getRoot().findMember(path);
-        if (res != null) {
-            int resType= res.getType();
-            if (resType == IResource.PROJECT || resType == IResource.FOLDER) {
-                IProject proj= res.getProject();
-                if (!proj.isOpen() ) {
-                    return "Project for " + name + " is closed";                    
-                }                               
-            } else {
-                return name + " has to be a folder or project";
-            }
-        } else {
-            return name + " does not exist";
-        }
-        return null;
-    }
-    
     protected String checkFile(IPath path, String name) {
         IResource res= ResourcesPlugin.getWorkspace().getRoot().findMember(path);
         if (res != null) {
@@ -374,14 +348,7 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
 		return consoleConfigurationName.getText();
 	}
 
-	private Path pathOrNull(String p) {
-		if(p==null || p.trim().length()==0) {
-			return null;
-		} else {
-			return new Path(p);
-		}
-	}
-
+	
 
 	/**
 	 * @return
@@ -391,11 +358,11 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
 	}
 
 	public IPath getOutputDirectory() {
-		return pathOrNull(outputdir.getText() );
+		return PathHelper.pathOrNull(outputdir.getText() );
 	}
     
     public IPath getTemplateDirectory() {
-        return pathOrNull(templatedir.getText() );
+        return PathHelper.pathOrNull(templatedir.getText() );
     }
 
     public String getOutputPackage() {
@@ -404,7 +371,7 @@ public class CodeGenerationSettings extends	AbstractLaunchConfigurationTab {
 
 
 	private IPath getReverseEngineeringSettingsFile() {
-		return pathOrNull(reverseEngineeringSettings.getText() );
+		return PathHelper.pathOrNull(reverseEngineeringSettings.getText() );
 	}    
     
 	private String getReverseEngineeringStrategy() {
