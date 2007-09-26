@@ -50,7 +50,7 @@ public class SpecialOrmShape extends OrmShape {
 				}
 				getChildren().add(bodyOrmShape);
 			} catch (Exception e) {
-				VisualEditorPlugin.getPluginLog().logError(e);
+				VisualEditorPlugin.getDefault().logError(e);
 			}
 		}
 	}

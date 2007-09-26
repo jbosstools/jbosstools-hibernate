@@ -110,7 +110,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 							ormShape.setLocation(new Point(Integer
 									.parseInt(xy[0]), Integer.parseInt(xy[1])));
 						} catch (NumberFormatException e) {
-							VisualEditorPlugin.getPluginLog().logError(e);
+							VisualEditorPlugin.getDefault().logError(e);
 						}
 					if (xy.length > 2)
 						if ((new Boolean(xy[2])).booleanValue())

@@ -27,8 +27,8 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.mapping.RootClass;
-import org.jboss.tools.common.gef.edit.GEFRootEditPart;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
+import org.jboss.tools.hibernate.ui.veditor.editors.parts.GEFRootEditPart;
 import org.jboss.tools.hibernate.ui.veditor.editors.parts.OrmEditPartFactory;
 import org.jboss.tools.hibernate.ui.view.views.ObjectEditorInput;
 

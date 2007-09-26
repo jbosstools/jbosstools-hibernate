@@ -12,9 +12,8 @@ package org.jboss.tools.hibernate.ui.veditor;
 
 import org.eclipse.ui.plugin.*;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.jboss.tools.hibernate.ui.view.BaseUIPlugin;
 import org.osgi.framework.BundleContext;
-import org.jboss.tools.common.log.BaseUIPlugin;
-import org.jboss.tools.common.log.IPluginLog;
 
 public class VisualEditorPlugin extends BaseUIPlugin {
 
@@ -43,9 +42,4 @@ public class VisualEditorPlugin extends BaseUIPlugin {
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
-	
-	public static IPluginLog getPluginLog() {
-		return getDefault();
-	}
-
 }

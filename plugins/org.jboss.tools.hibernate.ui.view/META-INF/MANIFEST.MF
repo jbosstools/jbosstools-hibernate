@@ -20,7 +20,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ltk.core.refactoring,
  org.eclipse.ui.editors,
  org.eclipse.jface.text,
- org.jboss.tools.common,
  org.hibernate.eclipse,
  org.hibernate.eclipse.console,
  org.eclipse.debug.core

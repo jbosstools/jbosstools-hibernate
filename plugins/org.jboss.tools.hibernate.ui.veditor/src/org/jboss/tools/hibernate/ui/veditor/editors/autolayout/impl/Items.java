@@ -39,7 +39,7 @@ public class Items {
     
     public void setProcess(IDiagramInfo process) {
         this.process = process;
-        try { load(); } catch (Exception e) { VisualEditorPlugin.getPluginLog().logError(e); }
+        try { load(); } catch (Exception e) { VisualEditorPlugin.getDefault().logError(e); }
     }
 
     private void load() {

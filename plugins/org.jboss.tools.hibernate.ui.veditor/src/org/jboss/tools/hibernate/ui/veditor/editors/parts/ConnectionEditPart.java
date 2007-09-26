@@ -30,7 +30,6 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
-import org.jboss.tools.common.gef.edit.GEFRootEditPart;
 import org.jboss.tools.hibernate.ui.veditor.editors.figures.RoundPolylineConnection;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.Connection;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.ModelElement;

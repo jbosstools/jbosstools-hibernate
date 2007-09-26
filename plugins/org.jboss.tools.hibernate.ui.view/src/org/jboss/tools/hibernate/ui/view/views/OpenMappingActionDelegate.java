@@ -34,6 +34,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
@@ -47,6 +48,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.eclipse.console.EclipseConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 import org.hibernate.mapping.RootClass;
@@ -54,12 +56,9 @@ import org.hibernate.util.XMLHelper;
 import org.jboss.tools.hibernate.ui.view.ViewPlugin;
 import org.xml.sax.InputSource;
 
-public class OpenMappingActionDelegate implements IObjectActionDelegate {
+public class OpenMappingActionDelegate extends OpenActionDelegate {
 	private static XMLHelper helper = new XMLHelper();
 	private HashMap map = new HashMap();
-
-	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-	}
 
 	public void run(IAction action) {
     	ObjectPluginAction objectPluginAction = (ObjectPluginAction)action;
@@ -70,11 +69,20 @@ public class OpenMappingActionDelegate implements IObjectActionDelegate {
 		Document doc = getDocument(consoleConfiguration, configXMLFile);
     	IResource resource = getResource(consoleConfiguration, proj, doc, configXMLFile, rootClass);
 
-        if (resource instanceof IFile){
+        if (resource == null) {
+    		String fullyQualifiedName = rootClass.getClassName();
+    		try {
+    			resource = proj.findType(fullyQualifiedName).getResource();
+    		} catch (JavaModelException e1) {
+    			e1.printStackTrace();
+    		}
+        }
+
+    	if (resource != null && resource instanceof IFile){
             try {
                 IDE.openEditor(ViewPlugin.getPage(), (IFile) resource);
             } catch (PartInitException e) {
-    			ViewPlugin.getDefault().logError("Can't open mapping file.", e);
+    			ViewPlugin.getDefault().logError("Can't open mapping or source file.", e);
             }               
         }
 	}
@@ -136,7 +144,6 @@ public class OpenMappingActionDelegate implements IObjectActionDelegate {
 	    			java.io.File file = files[i];
 					if (file != null) {
 						resource = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(file.getPath()));
-//						resource = proj.getProject().getFile(new Path(file.getPath()).removeFirstSegments(1));
 						if (classInResource(consoleConfiguration, resource, rootClass)) return resource;
 					}
 				}
@@ -175,29 +182,5 @@ public class OpenMappingActionDelegate implements IObjectActionDelegate {
 			}
 		}
 		return doc;
-	}
-	
-	private IJavaProject findJavaProject(ConsoleConfiguration consoleConfiguration) {
-		IJavaProject proj = null;
-		if (consoleConfiguration != null) {
-			ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
-			ILaunchConfigurationType launchConfigurationType = launchManager.getLaunchConfigurationType( "org.hibernate.eclipse.launch.ConsoleConfigurationLaunchConfigurationType" );
-			ILaunchConfiguration[] launchConfigurations;
-			try {
-				launchConfigurations = launchManager.getLaunchConfigurations( launchConfigurationType );
-				for (int i = 0; i < launchConfigurations.length; i++) { // can't believe there is no look up by name API
-					ILaunchConfiguration launchConfiguration = launchConfigurations[i];
-					if(launchConfiguration.getName().equals(consoleConfiguration.getName())) {
-						proj = ProjectUtils.findJavaProject(launchConfiguration.getAttribute(IConsoleConfigurationLaunchConstants.PROJECT_NAME, ""));
-					}
-				}								
-			} catch (CoreException e1) {
-				ViewPlugin.getDefault().logError("Can't find java project.", e1);
-			}
-		}
-		return proj;
-	}
-	
-	public void selectionChanged(IAction action, ISelection selection) {
 	}
 }
