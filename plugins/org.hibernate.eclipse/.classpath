@@ -8,7 +8,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/concurrent-1.3.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/connector.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/dom4j-1.6.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/hibernate/hibernate3.jar" sourcepath="/hibernate-3.2"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/hibernate3.jar" sourcepath="/Hibernate3"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/jboss-cache.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/jboss-common.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/jboss-jmx.jar"/>
@@ -20,7 +20,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/oscache-2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/proxool-0.8.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/swarmcache-1.0rc2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/tools/hibernate-tools.jar" sourcepath="/hibernateext.tools"/>
+	<classpathentry exported="true" kind="lib" path="lib/tools/hibernate-tools.jar" sourcepath="/HibernateExt/tools/src/java"/>
 	<classpathentry exported="true" kind="lib" path="lib/tools/freemarker.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/bsh-core-2.0b4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/annotations/ejb3-persistence.jar"/>
