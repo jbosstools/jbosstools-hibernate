@@ -34,7 +34,7 @@ public class FakeTransactionManagerLookup implements TransactionManagerLookup {
 	}
 
 	public String getUserTransactionName() {
-		throw new UnsupportedOperationException();
+		return null; //throw new UnsupportedOperationException();
 	}
 
 }
