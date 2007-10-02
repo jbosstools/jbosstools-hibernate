@@ -76,4 +76,11 @@ public class ObjectEditorInput implements IEditorInput{
 		return javaProject;
 	}
 
+	public boolean equals(Object obj) {
+		if (obj instanceof ObjectEditorInput && ((ObjectEditorInput)obj).fObject == fObject) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
