@@ -14,7 +14,6 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 
 
@@ -77,10 +76,6 @@ public class ObjectEditorInput implements IEditorInput{
 	}
 
 	public boolean equals(Object obj) {
-		if (obj instanceof ObjectEditorInput && ((ObjectEditorInput)obj).fObject == fObject) {
-			return true;
-		} else {
-			return false;
-		}
+		return (obj instanceof ObjectEditorInput && ((ObjectEditorInput)obj).fObject == fObject);
 	}
 }
