@@ -31,15 +31,7 @@ public abstract class ActionOrmTree extends Action {
 
 	public void run() {
 		try {
-//			if (ViewPlugin.TRACE || ViewPlugin.TRACE_VIEW ) ExceptionHandler.logInfo("!TRY ActionOrmTree.run() lock(=" + OrmCore.lock + ").acquire(), Depth=" + OrmCore.lock.getDepth());
-//			((OrmContentProvider)viewer.getContentProvider()).lockMenu = true; // add tau 06.12.2005			
-//			OrmCore.lock.acquire(); // add tau 05.12.2005
-//			if (ViewPlugin.TRACE || ViewPlugin.TRACE_VIEW ) ExceptionHandler.logInfo("!RUN ActionOrmTree.run() lock(=" + OrmCore.lock + ").acquire(), Depth=" + OrmCore.lock.getDepth());
-//			
-//			OrmCore.getDefault().setLockResourceChangeListener(true);
-			
 			this.rush();
-			
 		} finally {
 //	    	 OrmCore.lock.release();
 //			 ((OrmContentProvider)viewer.getContentProvider()).lockMenu = false; // add tau 06.12.2005

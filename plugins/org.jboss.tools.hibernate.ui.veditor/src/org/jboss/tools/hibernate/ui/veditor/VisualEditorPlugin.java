@@ -10,6 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.veditor;
 
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.*;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.jboss.tools.hibernate.ui.view.BaseUIPlugin;
@@ -41,5 +45,11 @@ public class VisualEditorPlugin extends BaseUIPlugin {
 
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, path);
+	}
+
+	public static IWorkbenchPage getPage(){
+	    IWorkbench workbench = PlatformUI.getWorkbench();
+	    IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
+	    return window.getActivePage();
 	}
 }

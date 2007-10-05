@@ -58,129 +58,31 @@ import org.xml.sax.InputSource;
 
 public class OpenMappingActionDelegate extends OpenActionDelegate {
 	private static XMLHelper helper = new XMLHelper();
-	private HashMap map = new HashMap();
 
 	public void run(IAction action) {
     	ObjectPluginAction objectPluginAction = (ObjectPluginAction)action;
     	RootClass rootClass = (RootClass)((TreeSelection)objectPluginAction.getSelection()).getFirstElement();
 		ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(((TreeSelection)objectPluginAction.getSelection()).getPaths()[0]).getSegment(0);
-		IJavaProject proj = findJavaProject(consoleConfiguration);
+		IJavaProject proj = OpenFileActionUtils.findJavaProject(consoleConfiguration);
 		java.io.File configXMLFile = consoleConfiguration.getPreferences().getConfigXMLFile();
-		Document doc = getDocument(consoleConfiguration, configXMLFile);
-    	IResource resource = getResource(consoleConfiguration, proj, doc, configXMLFile, rootClass);
+		Document doc = OpenFileActionUtils.getDocument(consoleConfiguration, configXMLFile);
+    	IResource resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, doc, configXMLFile, rootClass);
 
         if (resource == null) {
     		String fullyQualifiedName = rootClass.getClassName();
     		try {
     			resource = proj.findType(fullyQualifiedName).getResource();
-    		} catch (JavaModelException e1) {
-    			e1.printStackTrace();
+    		} catch (JavaModelException e) {
+    			ViewPlugin.getDefault().logError("Can't find mapping file.", e);
     		}
         }
 
     	if (resource != null && resource instanceof IFile){
             try {
-                IDE.openEditor(ViewPlugin.getPage(), (IFile) resource);
+            	OpenFileActionUtils.openEditor(ViewPlugin.getPage(), (IFile) resource);
             } catch (PartInitException e) {
     			ViewPlugin.getDefault().logError("Can't open mapping or source file.", e);
             }               
         }
-	}
-
-	private boolean classInResource(ConsoleConfiguration consoleConfiguration, IResource resource, RootClass rootClass) {
-		Document doc = getDocument(consoleConfiguration, resource.getLocation().toFile());
-		Element hmNode = doc.getRootElement();
-
-		Iterator rootChildren = hmNode.elementIterator();
-		while ( rootChildren.hasNext() ) {
-			Element element = (Element) rootChildren.next();
-			String elementName = element.getName();
-
-			if ( "class".equals( elementName ) ) {
-				Attribute classAttr = element.attribute( "name" );
-				if (classAttr != null) {
-					if (classAttr.getValue().equals(rootClass.getClassName())) {
-						if (map.get(rootClass.getClassName()) == null) map.put(rootClass.getClassName(), resource);
-						return true;
-					} else {
-						Attribute packNode = hmNode.attribute( "package" );
-						String packageName = null;
-						if ( packNode != null ) {
-							packageName = packNode.getValue();
-							String className = packageName + "." + classAttr.getValue();
-							if (className.equals(rootClass.getClassName())) {
-								if (map.get(rootClass.getClassName()) == null) map.put(rootClass.getClassName(), resource);
-								return true;
-							}
-						}
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	private IResource getResource(ConsoleConfiguration consoleConfiguration, IJavaProject proj, Document doc, java.io.File configXMLFile, RootClass rootClass) {
-		if (map.get(rootClass.getClassName()) != null) {
-			return (IResource)map.get(rootClass.getClassName());
-		} else {
-	    	IResource resource = null;
-	    	if (consoleConfiguration != null && proj != null && doc != null) {
-	        	Element sfNode = doc.getRootElement().element( "session-factory" );
-	    		Iterator elements = sfNode.elementIterator();
-	    		while ( elements.hasNext() ) {
-	    			Element subelement = (Element) elements.next();
-	    			String subelementName = subelement.getName();
-	    			if ( "mapping".equals( subelementName ) ) {
-	    				Attribute file = subelement.attribute( "resource" );
-	    				if (file != null) {
-	    					resource = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(configXMLFile.getParent()).append(file.getValue()));
-	    					if (classInResource(consoleConfiguration, resource, rootClass)) return resource;
-	    				}
-	    			}
-	    		}
-	    		java.io.File[] files = consoleConfiguration.getPreferences().getMappingFiles();
-	    		for (int i = 0; i < files.length; i++) {
-	    			java.io.File file = files[i];
-					if (file != null) {
-						resource = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(file.getPath()));
-						if (classInResource(consoleConfiguration, resource, rootClass)) return resource;
-					}
-				}
-	    	}
-	    	return null;
-		}
-	}
-
-	private Document getDocument(ConsoleConfiguration consoleConfiguration, java.io.File configXMLFile) {
-		Document doc = null;
-		if (consoleConfiguration != null && configXMLFile != null) {
-			InputStream stream = null;
-			try {
-				stream = new FileInputStream( configXMLFile );
-			} catch (FileNotFoundException e) {
-				ViewPlugin.getDefault().logError("Configuration file not found", e);
-			}
-			try {
-				List errors = new ArrayList();
-				doc = helper.createSAXReader( configXMLFile.getPath(), errors, consoleConfiguration.getConfiguration().getEntityResolver() )
-						.read( new InputSource( stream ) );
-				if ( errors.size() != 0 ) {
-	    			ViewPlugin.getDefault().logError("invalid configuration");
-				}
-			}
-			catch (DocumentException e) {
-				ViewPlugin.getDefault().logError("Could not parse configuration", e);
-			}
-			finally {
-				try {
-					stream.close();
-				}
-				catch (IOException ioe) {
-	    			ViewPlugin.getDefault().logError("could not close input stream for", ioe);
-				}
-			}
-		}
-		return doc;
 	}
 }

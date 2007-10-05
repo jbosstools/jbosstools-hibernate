@@ -18,6 +18,8 @@ import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -25,21 +27,20 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
 import org.osgi.framework.BundleContext;
 
 /**
  * The main plugin class to be used in the desktop.
  */
 public class ViewPlugin extends BaseUIPlugin {
-	//The shared instance.
 	private static ViewPlugin plugin;
-	//Resource bundle.
 	private ResourceBundle resourceBundle;
 	
 	public static final ResourceBundle BUNDLE_IMAGE = ResourceBundle.getBundle(ViewPlugin.class.getPackage().getName() + ".image");
 	
-	// add Tau 28.04.2005 for trace
 	public static boolean TRACE = false;
 	public static boolean TRACE_VIEW = false;	
 	public static boolean TRACE_WIZARD = false;
@@ -47,9 +48,6 @@ public class ViewPlugin extends BaseUIPlugin {
 	public static final String PLUGIN_ID = "org.jboss.tools.hibernate.view";
 	public static final String autoMappingSettingPrefPage = "autoMappingSettingPrefPage";	
 	
-	/**
-	 * The constructor.
-	 */
 	public ViewPlugin() {
 		super();
 		plugin = this;
@@ -72,31 +70,18 @@ public class ViewPlugin extends BaseUIPlugin {
 		}
 	}
 	
-	/**
-	 * This method is called upon plug-in activation
-	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 	}
 
-	/**
-	 * This method is called when the plug-in is stopped
-	 */
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
 	}
 
-	/**
-	 * Returns the shared instance.
-	 */
 	public static ViewPlugin getDefault() {
 		return plugin;
 	}
 
-	/**
-	 * Returns the string from the plugin's resource bundle,
-	 * or 'key' if not found.
-	 */
 	public static String getResourceString(String key) {
 		ResourceBundle bundle = ViewPlugin.getDefault().getResourceBundle();
 		try {
@@ -106,14 +91,10 @@ public class ViewPlugin extends BaseUIPlugin {
 		}
 	}
 
-	/**
-	 * Returns the plugin's resource bundle,
-	 */
 	public ResourceBundle getResourceBundle() {
 		return resourceBundle;
 	}
 	
-	// add tau 05.04.2005	
 	public static Shell getActiveWorkbenchShell() {
 		IWorkbenchWindow window = getActiveWorkbenchWindow();
 		if (window != null) {
@@ -122,19 +103,16 @@ public class ViewPlugin extends BaseUIPlugin {
 		return null;
 	}	
 
-	// add tau 05.04.2005	
 	public static IWorkbenchWindow getActiveWorkbenchWindow() {
 		return getDefault().getWorkbench().getActiveWorkbenchWindow();
 	}
 	
-	// add tau 19.04.2005	
 	public static IWorkbenchPage getPage(){
 	    IWorkbench workbench = PlatformUI.getWorkbench();
 	    IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
 	    return window.getActivePage();
 	}
 	
-	//	 add Tau 28.04.2005 for trace
 	static {
 		
 		String value = Platform.getDebugOption(PLUGIN_ID + "/debug");
@@ -148,7 +126,6 @@ public class ViewPlugin extends BaseUIPlugin {
 		
 	}
 	
-	// add tau 22.12.2005	
 	public static void loadPreferenceStoreProperties(Properties properties, String key){
 		IPreferenceStore preferenceStore = ViewPlugin.getDefault().getPreferenceStore();
 		String value = preferenceStore.getString(key);

@@ -124,8 +124,6 @@ public class OrmDiagram extends ModelElement {
 				childrenLocations[i] = ((RootClass)ormElement).getEntityName() + "@";
 			} else if (ormElement instanceof Table) {
 				childrenLocations[i] = HibernateUtils.getTableName((Table)ormElement)+"@";
-// } else if (ormElement instanceof Component) {
-// childrenLocations[i] = ((Component)ormElement).getComponentClassName()+"@";
 			}
 			childrenLocations[i] += shape.getLocation().x + ";" + shape.getLocation().y+";" + shape.isHiden();
 		}
@@ -707,5 +705,12 @@ if (childShape == null) return;
 	public boolean getState(Properties properties, Shape shape){
 		return getState(properties, getKey(shape)+".state");
 	}
-	
+
+	public IJavaProject getJavaProject() {
+		return javaProject;
+	}
+
+	public ConsoleConfiguration getConsoleConfiguration() {
+		return consoleConfiguration;
+	}
 }

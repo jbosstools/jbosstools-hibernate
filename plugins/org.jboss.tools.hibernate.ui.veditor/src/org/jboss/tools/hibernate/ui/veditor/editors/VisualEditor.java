@@ -10,26 +10,43 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.veditor.editors;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.dnd.TemplateTransferDropTargetListener;
-import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.requests.SimpleFactory;
+import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.WorkbenchPartAction;
 import org.eclipse.gef.ui.parts.GraphicalEditor;
 import org.eclipse.gef.ui.parts.TreeViewer;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.mapping.DependantValue;
+import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.ui.veditor.editors.actions.OpenMappingAction;
+import org.jboss.tools.hibernate.ui.veditor.editors.actions.OpenSourceAction;
+import org.jboss.tools.hibernate.ui.veditor.editors.model.ModelElement;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
+import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmShape;
+import org.jboss.tools.hibernate.ui.veditor.editors.model.Shape;
 import org.jboss.tools.hibernate.ui.veditor.editors.parts.GEFRootEditPart;
+import org.jboss.tools.hibernate.ui.veditor.editors.parts.OrmEditPart;
 import org.jboss.tools.hibernate.ui.veditor.editors.parts.OrmEditPartFactory;
+import org.jboss.tools.hibernate.ui.veditor.editors.popup.PopupMenuProvider;
 import org.jboss.tools.hibernate.ui.view.views.ObjectEditorInput;
 
 public class VisualEditor extends GraphicalEditor {
@@ -54,6 +71,10 @@ public class VisualEditor extends GraphicalEditor {
 		viewer.setRootEditPart(new GEFRootEditPart());
 		viewer.addDropTargetListener(createTransferDropTargetListener());
 		viewer.setContents(ormDiagram);
+
+		PopupMenuProvider provider = new PopupMenuProvider(viewer, getActionRegistry());
+		viewer.setContextMenu(provider);
+		getSite().registerContextMenu("FlowDiagramContextmenu", provider, viewer);
 	}
 
 	protected void createActions() {
@@ -71,6 +92,15 @@ public class VisualEditor extends GraphicalEditor {
 		super.createActions();
 		
 		getEditorSite().getActionBars().setGlobalActionHandler(ActionFactory.PRINT.getId(), getActionRegistry().getAction(ActionFactory.PRINT.getId()));
+
+		ActionRegistry registry = getActionRegistry();
+		IAction action;
+
+		action = new OpenMappingAction(this);
+		registry.registerAction(action);
+
+		action = new OpenSourceAction(this);
+		registry.registerAction(action);
 	}
 		
 	private TransferDropTargetListener createTransferDropTargetListener() {
@@ -116,5 +146,27 @@ public class VisualEditor extends GraphicalEditor {
 		}
 
 		return super.getAdapter(type);
+	}
+
+	public Set getSelectedElements() {
+		Set ret = new HashSet();
+		List selectedEditParts = getGraphicalViewer().getSelectedEditParts();
+		Iterator iterator = selectedEditParts.iterator();
+		while (iterator.hasNext()) {
+			Object elem = iterator.next();
+			if (elem instanceof OrmEditPart) {
+				Object model = ((OrmEditPart)elem).getModel();
+				ModelElement shape = (Shape)model;
+				while (!(shape instanceof OrmShape)) {
+					shape = shape.getParent();
+				}
+				ret.add(((OrmShape)shape).getOrmElement());
+			}
+		}
+		return ret;
+	}
+
+	public OrmDiagram getViewerContents() {
+		return ormDiagram;
 	}
 }

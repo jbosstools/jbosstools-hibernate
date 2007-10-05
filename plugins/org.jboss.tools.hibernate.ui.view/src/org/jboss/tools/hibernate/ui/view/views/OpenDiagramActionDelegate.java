@@ -12,36 +12,25 @@ package org.jboss.tools.hibernate.ui.view.views;
 
 import java.util.HashMap;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationType;
-import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
-import org.eclipse.ui.IObjectActionDelegate;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.internal.ObjectPluginAction;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.eclipse.console.utils.ProjectUtils;
-import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 import org.jboss.tools.hibernate.ui.view.ViewPlugin;
 
 public class OpenDiagramActionDelegate extends OpenActionDelegate {
+	private HashMap hashMap = new HashMap();
 
 	public void run(IAction action) {
-    	HashMap hashMap = new HashMap();
     	ObjectPluginAction objectPluginAction = (ObjectPluginAction)action;
     	Object rootClass = ((TreeSelection)objectPluginAction.getSelection()).getFirstElement();
 		ObjectEditorInput input = (ObjectEditorInput)hashMap.get(rootClass);
 		ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(((TreeSelection)objectPluginAction.getSelection()).getPaths()[0]).getSegment(0);
 		
-		IJavaProject proj = findJavaProject(consoleConfiguration);
+		IJavaProject proj = OpenFileActionUtils.findJavaProject(consoleConfiguration);
 			
 		if(input == null) {
 			input = new ObjectEditorInput(consoleConfiguration, rootClass, proj);
