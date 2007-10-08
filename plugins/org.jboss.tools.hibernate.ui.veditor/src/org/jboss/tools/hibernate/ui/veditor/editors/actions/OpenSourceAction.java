@@ -11,6 +11,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.ui.veditor.VisualEditorPlugin;
 import org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor;
@@ -38,10 +39,13 @@ public class OpenSourceAction extends SelectionAction {
 
 		Iterator iterator = selectedElements.iterator();
 		while (iterator.hasNext()) {
-			RootClass rootClass = (RootClass) iterator.next();
+			PersistentClass rootClass = (PersistentClass) iterator.next();
 
 			IResource resource = null;
 			String fullyQualifiedName = rootClass.getClassName();
+			if (fullyQualifiedName.indexOf("$") > 0) {
+				fullyQualifiedName = fullyQualifiedName.substring(0, fullyQualifiedName.indexOf("$"));
+			}
 			try {
 				resource = proj.findType(fullyQualifiedName).getResource();
 			} catch (JavaModelException e) {
@@ -64,7 +68,7 @@ public class OpenSourceAction extends SelectionAction {
 		Iterator iterator = selectedElements.iterator();
 		while (iterator.hasNext()) {
 			Object elem = iterator.next();
-			if (elem instanceof RootClass) return true; 
+			if (elem instanceof PersistentClass) return true; 
 		}
 		return false;
 	}

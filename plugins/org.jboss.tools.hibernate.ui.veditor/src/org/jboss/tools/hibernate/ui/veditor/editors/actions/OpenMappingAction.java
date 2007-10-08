@@ -12,6 +12,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.ui.veditor.VisualEditorPlugin;
 import org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor;
@@ -60,6 +61,9 @@ public class OpenMappingAction extends SelectionAction {
 				Table table = (Table)selectedElement;
 
 				resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, doc, configXMLFile, table);
+			} else if (selectedElement instanceof Subclass) {
+				Subclass rootClass = (Subclass)selectedElement;
+		    	resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, doc, configXMLFile, rootClass);
 			}
 
 			if (resource != null) {
