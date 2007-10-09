@@ -66,10 +66,11 @@ public class OpenMappingActionDelegate extends OpenActionDelegate {
 		IJavaProject proj = OpenFileActionUtils.findJavaProject(consoleConfiguration);
 		java.io.File configXMLFile = consoleConfiguration.getPreferences().getConfigXMLFile();
 		Document doc = OpenFileActionUtils.getDocument(consoleConfiguration, configXMLFile);
-    	IResource resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, doc, configXMLFile, rootClass);
+//    	IResource resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, doc, configXMLFile, rootClass);
+    	IResource resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, configXMLFile, rootClass);
 
         if (resource == null) {
-    		String fullyQualifiedName = rootClass.getClassName();
+    		String fullyQualifiedName = HibernateUtils.getPersistentClassName(rootClass.getClassName());
     		try {
     			resource = proj.findType(fullyQualifiedName).getResource();
     		} catch (JavaModelException e) {

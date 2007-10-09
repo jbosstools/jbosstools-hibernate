@@ -70,6 +70,11 @@ public class OpenFileActionUtils {
 		return proj;
 	}
 
+	public static boolean rootClassHasAnnotations(ConsoleConfiguration consoleConfiguration, java.io.File configXMLFile, RootClass rootClass) {
+		Document doc = getDocument(consoleConfiguration, configXMLFile);
+		return getElements(doc, HTConstants.HIBERNATE_TAG_MAPPING, HTConstants.HIBERNATE_TAG_CLASS, HibernateUtils.getPersistentClassName(rootClass.getClassName())).hasNext();
+	}
+
 	private static boolean elementInResource(ConsoleConfiguration consoleConfiguration, IResource resource, Object element) {
 		if (element instanceof RootClass) {
 			return rootClassInResource(consoleConfiguration, resource, (RootClass)element);
@@ -84,28 +89,44 @@ public class OpenFileActionUtils {
 
 	public static boolean rootClassInResource(ConsoleConfiguration consoleConfiguration, IResource resource, RootClass persistentClass) {
 		Document doc = getDocument(consoleConfiguration, resource.getLocation().toFile());
-		return getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, HTConstants.HIBERNATE_TAG_NAME, StringHelper.unqualify(persistentClass.getClassName())).hasNext() ||
-				getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, HTConstants.HIBERNATE_TAG_NAME, persistentClass.getClassName()).hasNext() ||
-				getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, StringHelper.unqualify(persistentClass.getClassName())).hasNext() ||
-				getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, persistentClass.getClassName()).hasNext();
+		return getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, HTConstants.HIBERNATE_TAG_NAME, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass.getClassName()))).hasNext() ||
+				getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, HTConstants.HIBERNATE_TAG_NAME, HibernateUtils.getPersistentClassName(persistentClass.getClassName())).hasNext() ||
+				getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass.getClassName()))).hasNext() ||
+				getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, HibernateUtils.getPersistentClassName(persistentClass.getClassName())).hasNext();
 	}
 
 	public static boolean subclassInResource(ConsoleConfiguration consoleConfiguration, IResource resource, Subclass persistentClass) {
 		Document doc = getDocument(consoleConfiguration, resource.getLocation().toFile());
-		return getElements(doc, HTConstants.HIBERNATE_TAG_SUBCLASS, HTConstants.HIBERNATE_TAG_NAME, StringHelper.unqualify(persistentClass.getClassName())).hasNext() ||
-				getElements(doc, HTConstants.HIBERNATE_TAG_SUBCLASS, HTConstants.HIBERNATE_TAG_NAME, persistentClass.getClassName()).hasNext();
+		return getElements(doc, HTConstants.HIBERNATE_TAG_SUBCLASS, HTConstants.HIBERNATE_TAG_NAME, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass.getClassName()))).hasNext() ||
+				getElements(doc, HTConstants.HIBERNATE_TAG_SUBCLASS, HTConstants.HIBERNATE_TAG_NAME, HibernateUtils.getPersistentClassName(persistentClass.getClassName())).hasNext();
 	}
 
 	public static boolean tableInResource(ConsoleConfiguration consoleConfiguration, IResource resource, Table table) {
 		Document doc = getDocument(consoleConfiguration, resource.getLocation().toFile());
 
-		if (getElements(doc, HTConstants.HIBERNATE_TAG_TABLE, HibernateUtils.getTableName(table)).hasNext()) {
-			return true;
-		}
-		
 		Iterator classes = getElements(doc, HTConstants.HIBERNATE_TAG_CLASS);
 		while (classes.hasNext()) {
 			Element element = (Element) classes.next();
+
+			Attribute tableAttr = element.attribute( HTConstants.HIBERNATE_TAG_TABLE );
+			if (tableAttr != null) {
+				Attribute catalogAttr = element.attribute( HTConstants.HIBERNATE_TAG_CATALOG );
+				if (catalogAttr == null) catalogAttr = doc.getRootElement().attribute(HTConstants.HIBERNATE_TAG_CATALOG);
+				Attribute schemaAttr = element.attribute( HTConstants.HIBERNATE_TAG_SCHEMA );
+				if (schemaAttr == null) schemaAttr = doc.getRootElement().attribute(HTConstants.HIBERNATE_TAG_SCHEMA);
+				if (HibernateUtils.
+						getTableName(
+							(catalogAttr != null ? catalogAttr.getValue() : null), 
+							(schemaAttr != null ? schemaAttr.getValue() : null), 
+							tableAttr.getValue()
+						).equals(HibernateUtils.getTableName(table))
+					) {
+					return true;
+				}
+
+				
+			}
+
 			Attribute classNameAttr = element.attribute( HTConstants.HIBERNATE_TAG_NAME );
 			String physicalTableName = consoleConfiguration.getConfiguration().getNamingStrategy().classToTableName(classNameAttr.getValue());
 			if (table.getName().equals(physicalTableName)) {
@@ -209,7 +230,8 @@ public class OpenFileActionUtils {
 		return doc;
 	}
 
-	public static IResource getResource(ConsoleConfiguration consoleConfiguration, IJavaProject proj, Document doc, java.io.File configXMLFile, Object element) {
+	public static IResource getResource(ConsoleConfiguration consoleConfiguration, IJavaProject proj, java.io.File configXMLFile, Object element) {
+		Document doc = getDocument(consoleConfiguration, configXMLFile);
     	IResource resource = null;
     	if (consoleConfiguration != null && proj != null && doc != null) {
         	Element sfNode = doc.getRootElement().element( HTConstants.HIBERNATE_TAG_SESSION_FACTORY );

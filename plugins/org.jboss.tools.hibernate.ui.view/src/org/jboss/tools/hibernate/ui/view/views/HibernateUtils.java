@@ -10,10 +10,12 @@ import org.hibernate.mapping.Table;
 
 public class HibernateUtils {
 	
+	public static String getTableName(String catalog, String schema, String name) {
+		return (catalog != null ? catalog + "." : "") + (schema != null ? schema + "." : "") + name;
+	}
+
 	public static String getTableName(Table table) {
-		String catalog = table.getCatalog();
-		String schema = table.getSchema();
-		return (catalog != null ? catalog + "." : "") + (schema != null ? schema + "." : "") + table.getName();
+		return getTableName(table.getCatalog(), table.getSchema(), table.getName());
 	}
 
 	public static String getPersistentClassName(String className) {

@@ -31,7 +31,7 @@ public class OpenSourceActionDelegate extends OpenActionDelegate {
 		IJavaProject proj = OpenFileActionUtils.findJavaProject(consoleConfiguration);
 
 		IResource resource = null;
-		String fullyQualifiedName = rootClass.getClassName();
+		String fullyQualifiedName = HibernateUtils.getPersistentClassName(rootClass.getClassName());
 		try {
 			resource = proj.findType(fullyQualifiedName).getResource();
 		} catch (JavaModelException e) {

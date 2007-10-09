@@ -17,6 +17,7 @@ import org.jboss.tools.hibernate.ui.veditor.VisualEditorPlugin;
 import org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
 import org.jboss.tools.hibernate.ui.view.ViewPlugin;
+import org.jboss.tools.hibernate.ui.view.views.HibernateUtils;
 import org.jboss.tools.hibernate.ui.view.views.ObjectEditorInput;
 import org.jboss.tools.hibernate.ui.view.views.OpenFileActionUtils;
 
@@ -42,7 +43,7 @@ public class OpenSourceAction extends SelectionAction {
 			PersistentClass rootClass = (PersistentClass) iterator.next();
 
 			IResource resource = null;
-			String fullyQualifiedName = rootClass.getClassName();
+			String fullyQualifiedName = HibernateUtils.getPersistentClassName(rootClass.getClassName());
 			if (fullyQualifiedName.indexOf("$") > 0) {
 				fullyQualifiedName = fullyQualifiedName.substring(0, fullyQualifiedName.indexOf("$"));
 			}
