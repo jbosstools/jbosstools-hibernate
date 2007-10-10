@@ -11,6 +11,8 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.Map;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
@@ -82,6 +84,18 @@ public class OpenMappingAction extends SelectionAction {
 				    		} catch (JavaModelException e) {
 				    			VisualEditorPlugin.getDefault().logInfo("Can't find mapping file", e);
 				    		}
+						}
+					}
+				}
+
+				if (resource == null) {
+					Iterator ñollectionMappingsIterator = consoleConfiguration.getConfiguration().getCollectionMappings();
+					while (ñollectionMappingsIterator.hasNext()) {
+						Collection elem = (Collection) ñollectionMappingsIterator.next();
+						Table collectionTable = elem.getCollectionTable();
+						if (HibernateUtils.getTableName(collectionTable).equals(HibernateUtils.getTableName(table))) {
+							PersistentClass owner = elem.getOwner();
+					    	resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, configXMLFile, owner);
 						}
 					}
 				}
