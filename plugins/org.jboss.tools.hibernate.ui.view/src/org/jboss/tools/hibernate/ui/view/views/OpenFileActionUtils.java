@@ -72,7 +72,7 @@ public class OpenFileActionUtils {
 
 	public static boolean rootClassHasAnnotations(ConsoleConfiguration consoleConfiguration, java.io.File configXMLFile, RootClass rootClass) {
 		Document doc = getDocument(consoleConfiguration, configXMLFile);
-		return getElements(doc, HTConstants.HIBERNATE_TAG_MAPPING, HTConstants.HIBERNATE_TAG_CLASS, HibernateUtils.getPersistentClassName(rootClass.getClassName())).hasNext();
+		return getElements(doc, HTConstants.HIBERNATE_TAG_MAPPING, HTConstants.HIBERNATE_TAG_CLASS, HibernateUtils.getPersistentClassName(rootClass)).hasNext();
 	}
 
 	private static boolean elementInResource(ConsoleConfiguration consoleConfiguration, IResource resource, Object element) {
@@ -89,16 +89,30 @@ public class OpenFileActionUtils {
 
 	public static boolean rootClassInResource(ConsoleConfiguration consoleConfiguration, IResource resource, RootClass persistentClass) {
 		Document doc = getDocument(consoleConfiguration, resource.getLocation().toFile());
-		return getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, HTConstants.HIBERNATE_TAG_NAME, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass.getClassName()))).hasNext() ||
-				getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, HTConstants.HIBERNATE_TAG_NAME, HibernateUtils.getPersistentClassName(persistentClass.getClassName())).hasNext() ||
-				getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass.getClassName()))).hasNext() ||
-				getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, HibernateUtils.getPersistentClassName(persistentClass.getClassName())).hasNext();
+		return getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, HTConstants.HIBERNATE_TAG_NAME, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass))).hasNext() ||
+				getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, HTConstants.HIBERNATE_TAG_NAME, HibernateUtils.getPersistentClassName(persistentClass)).hasNext() ||
+				getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass))).hasNext() ||
+				getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, HibernateUtils.getPersistentClassName(persistentClass)).hasNext() ||
+				getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, HTConstants.HIBERNATE_TAG_ENTITY_NAME, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass))).hasNext() ||
+				getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, HTConstants.HIBERNATE_TAG_ENTITY_NAME, HibernateUtils.getPersistentClassName(persistentClass)).hasNext();
 	}
 
 	public static boolean subclassInResource(ConsoleConfiguration consoleConfiguration, IResource resource, Subclass persistentClass) {
 		Document doc = getDocument(consoleConfiguration, resource.getLocation().toFile());
-		return getElements(doc, HTConstants.HIBERNATE_TAG_SUBCLASS, HTConstants.HIBERNATE_TAG_NAME, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass.getClassName()))).hasNext() ||
-				getElements(doc, HTConstants.HIBERNATE_TAG_SUBCLASS, HTConstants.HIBERNATE_TAG_NAME, HibernateUtils.getPersistentClassName(persistentClass.getClassName())).hasNext();
+		return getElements(doc, HTConstants.HIBERNATE_TAG_SUBCLASS, HTConstants.HIBERNATE_TAG_NAME, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass))).hasNext() ||
+				getElements(doc, HTConstants.HIBERNATE_TAG_SUBCLASS, HTConstants.HIBERNATE_TAG_NAME, HibernateUtils.getPersistentClassName(persistentClass)).hasNext() ||
+				getElements(doc, HTConstants.HIBERNATE_TAG_SUBCLASS, HTConstants.HIBERNATE_TAG_ENTITY_NAME, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass))).hasNext() ||
+				getElements(doc, HTConstants.HIBERNATE_TAG_SUBCLASS, HTConstants.HIBERNATE_TAG_ENTITY_NAME, HibernateUtils.getPersistentClassName(persistentClass)).hasNext() ||
+
+				getElements(doc, HTConstants.HIBERNATE_TAG_JOINED_SUBCLASS, HTConstants.HIBERNATE_TAG_NAME, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass))).hasNext() ||
+				getElements(doc, HTConstants.HIBERNATE_TAG_JOINED_SUBCLASS, HTConstants.HIBERNATE_TAG_NAME, HibernateUtils.getPersistentClassName(persistentClass)).hasNext() ||
+				getElements(doc, HTConstants.HIBERNATE_TAG_JOINED_SUBCLASS, HTConstants.HIBERNATE_TAG_ENTITY_NAME, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass))).hasNext() ||
+				getElements(doc, HTConstants.HIBERNATE_TAG_JOINED_SUBCLASS, HTConstants.HIBERNATE_TAG_ENTITY_NAME, HibernateUtils.getPersistentClassName(persistentClass)).hasNext() ||
+
+				getElements(doc, HTConstants.HIBERNATE_TAG_UNION_SUBCLASS, HTConstants.HIBERNATE_TAG_NAME, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass))).hasNext() ||
+				getElements(doc, HTConstants.HIBERNATE_TAG_UNION_SUBCLASS, HTConstants.HIBERNATE_TAG_NAME, HibernateUtils.getPersistentClassName(persistentClass)).hasNext() ||
+				getElements(doc, HTConstants.HIBERNATE_TAG_UNION_SUBCLASS, HTConstants.HIBERNATE_TAG_ENTITY_NAME, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass))).hasNext() ||
+				getElements(doc, HTConstants.HIBERNATE_TAG_UNION_SUBCLASS, HTConstants.HIBERNATE_TAG_ENTITY_NAME, HibernateUtils.getPersistentClassName(persistentClass)).hasNext();
 	}
 
 	public static boolean tableInResource(ConsoleConfiguration consoleConfiguration, IResource resource, Table table) {
@@ -128,8 +142,15 @@ public class OpenFileActionUtils {
 			}
 
 			Attribute classNameAttr = element.attribute( HTConstants.HIBERNATE_TAG_NAME );
-			String physicalTableName = consoleConfiguration.getConfiguration().getNamingStrategy().classToTableName(classNameAttr.getValue());
-			if (table.getName().equals(physicalTableName)) {
+			if (classNameAttr == null) classNameAttr = element.attribute( HTConstants.HIBERNATE_TAG_ENTITY_NAME);
+			if (classNameAttr != null) {
+				String physicalTableName = consoleConfiguration.getConfiguration().getNamingStrategy().classToTableName(classNameAttr.getValue());
+				if (table.getName().equals(physicalTableName)) {
+					return true;
+				}
+			}
+
+			if (getElements(doc, HTConstants.HIBERNATE_TAG_TABLE, table.getName()).hasNext()) {
 				return true;
 			}
 		}

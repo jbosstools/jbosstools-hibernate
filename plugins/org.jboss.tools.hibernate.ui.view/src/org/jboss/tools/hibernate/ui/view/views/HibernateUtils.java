@@ -18,6 +18,14 @@ public class HibernateUtils {
 		return getTableName(table.getCatalog(), table.getSchema(), table.getName());
 	}
 
+	public static String getPersistentClassName(PersistentClass rootClass) {
+		if (rootClass == null) {
+			return "";
+		} else { 
+			return rootClass.getEntityName() != null ? rootClass.getEntityName() : rootClass.getClassName();
+		}
+	}
+	
 	public static String getPersistentClassName(String className) {
 		if (className == null) {
 			return "";

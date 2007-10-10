@@ -7,7 +7,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.hibernate.console.ConsoleConfiguration;
@@ -43,12 +45,13 @@ public class OpenSourceAction extends SelectionAction {
 			PersistentClass rootClass = (PersistentClass) iterator.next();
 
 			IResource resource = null;
-			String fullyQualifiedName = HibernateUtils.getPersistentClassName(rootClass.getClassName());
+			String fullyQualifiedName = HibernateUtils.getPersistentClassName(rootClass);
 			if (fullyQualifiedName.indexOf("$") > 0) {
 				fullyQualifiedName = fullyQualifiedName.substring(0, fullyQualifiedName.indexOf("$"));
 			}
 			try {
-				resource = proj.findType(fullyQualifiedName).getResource();
+				IType type = proj.findType(fullyQualifiedName);
+				if (type != null) resource = type.getResource();
 			} catch (JavaModelException e) {
 				VisualEditorPlugin.getDefault().logError("Can't find source file.", e);
 			}
@@ -60,6 +63,9 @@ public class OpenSourceAction extends SelectionAction {
 	            	VisualEditorPlugin.getDefault().logError("Can't open source file.", e);
 	            }               
 	        }
+			if (resource == null) {
+				MessageDialog.openInformation(VisualEditorPlugin.getShell(), "Open Source File", "Source file for class '" + fullyQualifiedName + "' not found.");
+			}
 		}
 	}
 

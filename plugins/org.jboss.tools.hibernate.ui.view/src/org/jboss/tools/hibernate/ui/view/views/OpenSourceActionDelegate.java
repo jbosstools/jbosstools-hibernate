@@ -13,8 +13,10 @@ package org.jboss.tools.hibernate.ui.view.views;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.internal.ObjectPluginAction;
@@ -31,9 +33,10 @@ public class OpenSourceActionDelegate extends OpenActionDelegate {
 		IJavaProject proj = OpenFileActionUtils.findJavaProject(consoleConfiguration);
 
 		IResource resource = null;
-		String fullyQualifiedName = HibernateUtils.getPersistentClassName(rootClass.getClassName());
+		String fullyQualifiedName = HibernateUtils.getPersistentClassName(rootClass);
 		try {
-			resource = proj.findType(fullyQualifiedName).getResource();
+			IType type = proj.findType(fullyQualifiedName);
+			if (type != null) resource = type.getResource();
 		} catch (JavaModelException e) {
 			ViewPlugin.getDefault().logError("Can't find source file.", e);
 		}
@@ -45,5 +48,8 @@ public class OpenSourceActionDelegate extends OpenActionDelegate {
     			ViewPlugin.getDefault().logError("Can't open source file.", e);
             }               
         }
+		if (resource == null) {
+			MessageDialog.openInformation(ViewPlugin.getActiveWorkbenchShell(), "Open Source File", "Source file for class '" + fullyQualifiedName + "' not found.");
+		}
 	}
 }

@@ -53,7 +53,7 @@ public class OpenMappingAction extends SelectionAction {
 
 		        if (resource == null) {
 		        	if (OpenFileActionUtils.rootClassHasAnnotations(consoleConfiguration, configXMLFile, rootClass)) {
-			    		String fullyQualifiedName = HibernateUtils.getPersistentClassName(rootClass.getClassName());
+			    		String fullyQualifiedName = HibernateUtils.getPersistentClassName(rootClass);
 			    		try {
 			    			resource = proj.findType(fullyQualifiedName).getResource();
 			    		} catch (JavaModelException e) {
@@ -76,7 +76,7 @@ public class OpenMappingAction extends SelectionAction {
 					while (classMappingsIterator.hasNext()) {
 						PersistentClass elem = (PersistentClass) classMappingsIterator.next();
 						if (HibernateUtils.getTableName(elem.getTable()).equals(HibernateUtils.getTableName(table))) {
-				    		String fullyQualifiedName = HibernateUtils.getPersistentClassName(elem.getClassName());
+				    		String fullyQualifiedName = HibernateUtils.getPersistentClassName(elem);
 				    		try {
 				    			resource = proj.findType(fullyQualifiedName).getResource();
 				    		} catch (JavaModelException e) {

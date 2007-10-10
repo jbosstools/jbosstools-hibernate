@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.veditor;
 
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -51,5 +52,11 @@ public class VisualEditorPlugin extends BaseUIPlugin {
 	    IWorkbench workbench = PlatformUI.getWorkbench();
 	    IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
 	    return window.getActivePage();
+	}
+
+	public static Shell getShell(){
+	    IWorkbench workbench = PlatformUI.getWorkbench();
+	    IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
+	    return window.getShell();
 	}
 }

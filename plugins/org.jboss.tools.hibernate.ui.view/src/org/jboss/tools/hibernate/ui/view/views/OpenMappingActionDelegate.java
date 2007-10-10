@@ -70,7 +70,7 @@ public class OpenMappingActionDelegate extends OpenActionDelegate {
     	IResource resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, configXMLFile, rootClass);
 
         if (resource == null) {
-    		String fullyQualifiedName = HibernateUtils.getPersistentClassName(rootClass.getClassName());
+    		String fullyQualifiedName = HibernateUtils.getPersistentClassName(rootClass);
     		try {
     			resource = proj.findType(fullyQualifiedName).getResource();
     		} catch (JavaModelException e) {
