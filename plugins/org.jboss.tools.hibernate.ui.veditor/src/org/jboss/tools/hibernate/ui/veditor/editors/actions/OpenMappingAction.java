@@ -89,9 +89,9 @@ public class OpenMappingAction extends SelectionAction {
 				}
 
 				if (resource == null) {
-					Iterator ñollectionMappingsIterator = consoleConfiguration.getConfiguration().getCollectionMappings();
-					while (ñollectionMappingsIterator.hasNext()) {
-						Collection elem = (Collection) ñollectionMappingsIterator.next();
+					Iterator collectionMappingsIterator = consoleConfiguration.getConfiguration().getCollectionMappings();
+					while (collectionMappingsIterator.hasNext()) {
+						Collection elem = (Collection) collectionMappingsIterator.next();
 						Table collectionTable = elem.getCollectionTable();
 						if (HibernateUtils.getTableName(collectionTable).equals(HibernateUtils.getTableName(table))) {
 							PersistentClass owner = elem.getOwner();
