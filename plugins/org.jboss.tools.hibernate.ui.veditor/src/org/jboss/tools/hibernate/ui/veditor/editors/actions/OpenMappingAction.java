@@ -63,9 +63,11 @@ public class OpenMappingAction extends SelectionAction {
 			    		}
 		        	} else {
 		        		if (rootClass instanceof SpecialRootClass) {
-					    	resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, configXMLFile, 
-					    			((SpecialRootClass)rootClass).getProperty().getPersistentClass()
-					    			);
+		        			PersistentClass src = ((SpecialRootClass)rootClass).getProperty().getPersistentClass();
+		        			while (src instanceof SpecialRootClass) {
+			        			src = ((SpecialRootClass)src).getProperty().getPersistentClass();
+		        			}
+					    	resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, configXMLFile, src);
 		        		}
 		        	}
 		        }

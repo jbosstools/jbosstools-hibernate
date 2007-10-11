@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.veditor.editors;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -33,10 +32,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.mapping.DependantValue;
-import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.OpenMappingAction;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.OpenSourceAction;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.ModelElement;

@@ -149,10 +149,10 @@ public class OpenFileActionUtils {
 					return true;
 				}
 			}
+		}
 
-			if (getElements(doc, HTConstants.HIBERNATE_TAG_TABLE, table.getName()).hasNext()) {
-				return true;
-			}
+		if (getElements(doc, HTConstants.HIBERNATE_TAG_TABLE, table.getName()).hasNext()) {
+			return true;
 		}
 
 		return false;

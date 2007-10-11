@@ -170,12 +170,14 @@ public class OrmShape extends ExpandeableShape {
 
 	public Shape getChild(Property ormElement) {
 		Shape shape = null;
-		Iterator iter = getChildren().iterator();
-		while (iter.hasNext()) {
-			Shape child = (Shape)iter.next();
-			Object childElement = child.getOrmElement();
-			if (childElement instanceof Property && ormElement.getName().equals(((Property)childElement).getName())) {
-				return child;
+		if (ormElement != null) {
+			Iterator iter = getChildren().iterator();
+			while (iter.hasNext()) {
+				Shape child = (Shape)iter.next();
+				Object childElement = child.getOrmElement();
+				if (childElement instanceof Property && ormElement.getName().equals(((Property)childElement).getName())) {
+					return child;
+				}
 			}
 		}
 		return shape;
