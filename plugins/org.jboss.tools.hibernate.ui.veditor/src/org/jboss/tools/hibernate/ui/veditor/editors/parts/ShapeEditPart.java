@@ -57,7 +57,7 @@ public class ShapeEditPart extends
 OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 
 	static protected OrmLabelProvider ormLabelProvider = 
-		new OrmLabelProvider(new OrmModelImageVisitor(), new OrmModelNameVisitor(null));
+		new OrmLabelProvider(new OrmModelImageVisitor(), new OrmModelNameVisitor());
 	
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE,  new ShapesSelectionEditPolicy());

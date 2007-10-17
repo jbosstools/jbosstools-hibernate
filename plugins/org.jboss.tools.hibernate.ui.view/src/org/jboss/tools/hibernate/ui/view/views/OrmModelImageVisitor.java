@@ -142,7 +142,7 @@ public class OrmModelImageVisitor implements
 							return ViewPlugin.getImageDescriptor(BUNDLE
 									.getString("OrmModelImageVisitor.Collection"));
 					}
-				} catch (MappingException e) {
+				} catch (Exception e) {
 					return ViewPlugin.getImageDescriptor(BUNDLE
 							.getString("OrmModelImageVisitor.PersistentFieldNot_mapped"));
 				}

@@ -19,6 +19,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.internal.ObjectPluginAction;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.eclipse.console.views.KnownConfigurationsView;
 import org.jboss.tools.hibernate.ui.view.ViewPlugin;
 
 public class OpenDiagramActionDelegate extends OpenActionDelegate {
