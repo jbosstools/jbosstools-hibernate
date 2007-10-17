@@ -2,7 +2,7 @@
 <plugin>
 
      <extension point="org.eclipse.ui.views">
-      <category id="web.views.category.id" name="Red Hat Developer Studio"/>
+      <category id="web.views.category.id" name="JBoss Tools"/>
       <view allowMultiple="false" category="web.views.category.id" class="org.jboss.tools.hibernate.view.views.ExplorerClass" icon="images/exdOrm16x16.gif" id="org.jboss.tools.hibernate.view.views.ExplorerClass" name="ORM Explorer">
       </view>
       <view allowMultiple="false" category="web.views.category.id" class="org.jboss.tools.hibernate.view.views.ExplorerBase" icon="images/exdDataPerspective1.gif" id="org.jboss.tools.hibernate.view.views.ExplorerBase" name="Relational Schema"/>
@@ -25,7 +25,7 @@
    </extension>
    <extension point="org.eclipse.ui.popupMenus">
       <objectContribution adaptable="true" id="org.jboss.tools.hibernate.view.project" objectClass="org.eclipse.core.resources.IProject">
-         <menu id="RedHat4Web" label="Red Hat Developer Studio" path="additions">
+         <menu id="RedHat4Web" label="JBoss Tools" path="additions">
             <separator name="a"/>
             <separator name="b"/>
             <separator name="c"/>

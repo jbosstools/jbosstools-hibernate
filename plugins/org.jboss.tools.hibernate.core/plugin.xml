@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
-   <extension-point id="codeRenderers" name="Red Hat Developer Studio POJO renderers" schema="schema/code_renderer.exsd"/>
+   <extension-point id="codeRenderers" name="JBoss Tools POJO renderers" schema="schema/code_renderer.exsd"/>
      <extension
          id="OrmHibernateBuilder"
          name="Hibernate Validation Builder"
@@ -220,7 +220,7 @@
       <code_renderer
             class="org.jboss.tools.hibernate.core.CodeRendererService"
             id="org.jboss.tools.hibernate.core.defaultCodeRenderer"
-            name="Default Red Hat Developer Studio POJO renderer"/>
+            name="Default JBoss Tools Developer Studio POJO renderer"/>
    </extension>
    <extension
          point="org.eclipse.pde.core.source">
