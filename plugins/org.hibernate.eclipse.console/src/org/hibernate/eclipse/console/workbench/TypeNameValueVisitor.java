@@ -42,7 +42,7 @@ public class TypeNameValueVisitor implements ValueVisitor {
 	/** if true then only return the classname, not the fully qualified classname */
 	final boolean dequalify; 
 	
-	TypeNameValueVisitor(boolean dequalify) {
+	public TypeNameValueVisitor(boolean dequalify) {
 		this.dequalify=dequalify;
 	}
 	
