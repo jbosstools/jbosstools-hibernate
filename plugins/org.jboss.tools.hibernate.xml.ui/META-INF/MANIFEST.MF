@@ -24,6 +24,8 @@ Require-Bundle: org.eclipse.ui.ide,
  org.jboss.tools.common.kb,
  org.jboss.tools.common.model,
  org.jboss.tools.common.model.ui,
- org.jboss.tools.hibernate.xml
+ org.jboss.tools.hibernate.xml,
+ org.hibernate.eclipse.mapper,
+ org.eclipse.wst.xml.ui
 Bundle-Version: 2.0.0
 

@@ -10,9 +10,11 @@
  ******************************************************************************/ 
 package org.jboss.tools.hibernate.ui.xml.editor;
 
+import org.hibernate.eclipse.mapper.editors.CFGXMLStructuredTextViewerConfiguration;
 import org.jboss.tools.common.editor.TreeFormPage;
 import org.jboss.tools.common.model.ui.editor.EditorDescriptor;
 import org.jboss.tools.common.model.ui.editors.multipage.DefaultMultipageEditor;
+import org.jboss.tools.common.model.ui.texteditors.XMLTextEditorComponent;
 import org.jboss.tools.hibernate.ui.xml.HibernateUIXMLPlugin;
 import org.jboss.tools.hibernate.xml.model.FileHibernateFilteredTreeConstraint;
 
@@ -92,6 +94,11 @@ public class HibConfig3CompoundEditor extends DefaultMultipageEditor {
 				return new EditorDescriptor("HibernateConfiguration3.0");
 
 			return super.getAdapter(adapter);
+	}
+
+	protected XMLTextEditorComponent createTextEditorComponent() {
+		final CFGXMLStructuredTextViewerConfiguration svc = new CFGXMLStructuredTextViewerConfiguration(); 
+		return new XMLTextEditorComponent(svc);
 	}
 
 }
