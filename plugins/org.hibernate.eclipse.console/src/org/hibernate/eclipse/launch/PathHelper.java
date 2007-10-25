@@ -2,6 +2,7 @@ package org.hibernate.eclipse.launch;
 
 import java.io.File;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -32,7 +33,15 @@ public class PathHelper {
 	public static IResource findMember(IWorkspaceRoot root, String path) {
 		Path pathOrNull = PathHelper.pathOrNull(path);
 		if(pathOrNull==null) return null;
-		return root.findMember(pathOrNull);
+		
+		IResource findMember = root.findMember(pathOrNull);
+		if(findMember==null) {
+			IContainer[] findContainersForLocation = root.findContainersForLocation(pathOrNull);
+			if(findContainersForLocation.length>0) {
+				findMember = findContainersForLocation[0];
+			}
+		}		
+		return findMember;
 	}
 
 	public static IPath getLocation(final IResource resource) {		

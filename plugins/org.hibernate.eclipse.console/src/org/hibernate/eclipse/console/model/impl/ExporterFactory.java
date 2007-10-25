@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.variables.IStringVariableManager;
@@ -162,7 +163,7 @@ public class ExporterFactory {
 	 * @throws CoreException in case of resolve variables issues.
 	 */
 	public Exporter createConfiguredExporter(Configuration cfg, String defaultOutputDirectory,
-			String customTemplatePath, Properties globalProperties) throws CoreException {
+			String customTemplatePath, Properties globalProperties, Set outputDirectories) throws CoreException {
 		
 		Exporter exporter = getExporterDefinition().createExporterInstance();
 		
@@ -181,6 +182,7 @@ public class ExporterFactory {
 			}
 			props.remove("outputdir"); // done to avoid validation check in hibernate tools templates			
 			if(StringHelper.isNotEmpty(loc)) { // only set if something valid found
+				outputDirectories.add(loc);
 				exporter.setOutputDirectory(new File(loc));
 			} 
 		} 

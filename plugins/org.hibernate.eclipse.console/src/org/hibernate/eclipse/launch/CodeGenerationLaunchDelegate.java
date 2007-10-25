@@ -23,10 +23,12 @@ package org.hibernate.eclipse.launch;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBuffer;
@@ -36,6 +38,7 @@ import org.eclipse.core.filebuffers.manipulation.TextFileBufferOperation;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -53,7 +56,7 @@ import org.eclipse.jdt.core.ToolFactory;
 import org.eclipse.jdt.core.formatter.CodeFormatter;
 import org.eclipse.jface.text.DocumentRewriteSessionType;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.util.Assert;
+
 import org.eclipse.text.edits.TextEdit;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
@@ -67,6 +70,7 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
+import org.hibernate.tool.hbm2x.AbstractExporter;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.util.ReflectHelper;
@@ -126,15 +130,20 @@ public class CodeGenerationLaunchDelegate extends
 				}
 			}
             
+		    Set outputDirectories = new HashSet();
+		    outputDirectories.add((String)attributes.getOutputPath());
 		    ExporterFactory[] exporters = (ExporterFactory[]) exporterFactories.toArray( new ExporterFactory[exporterFactories.size()] );
-            ArtifactCollector collector = runExporters(attributes, exporters, monitor);
-			refreshOutputDir( attributes.getOutputPath() );
-
-			if(collector==null) {
-				return;
+            ArtifactCollector collector = runExporters(attributes, exporters, outputDirectories, monitor);
+            
+            if(collector!=null) {
+            	formatGeneratedCode( monitor, collector );
 			}
 			
-			formatGeneratedCode( monitor, collector );
+			Iterator iterator = outputDirectories.iterator();
+            while (iterator.hasNext()) {
+				String path = (String) iterator.next();
+				refreshOutputDir( path );	
+			}
 			
 			RefreshTab.refreshResources(configuration, monitor);
 			
@@ -187,7 +196,7 @@ public class CodeGenerationLaunchDelegate extends
 		}
 	}
 	
-	private ArtifactCollector runExporters (final ExporterAttributes attributes, final ExporterFactory[] exporterFactories, final IProgressMonitor monitor)
+	private ArtifactCollector runExporters (final ExporterAttributes attributes, final ExporterFactory[] exporterFactories, final Set outputDirectories, final IProgressMonitor monitor)
 	   throws CoreException
     {
 			
@@ -237,11 +246,11 @@ public class CodeGenerationLaunchDelegate extends
                        
                        Exporter exporter;
 					try {
-						exporter = exporterFactories[i].createConfiguredExporter(cfg, outputPathRes, templatePaths, globalProperties);
+						exporter = exporterFactories[i].createConfiguredExporter(cfg, outputPathRes, templatePaths, globalProperties, outputDirectories);
 					} catch (CoreException e) {
 						throw new HibernateConsoleRuntimeException("Error while setting up " + exporterFactories[i].getExporterDefinition(), e);
 					}
-                       
+					  
                        exporter.start();
                        monitor.worked(1);
                     }
