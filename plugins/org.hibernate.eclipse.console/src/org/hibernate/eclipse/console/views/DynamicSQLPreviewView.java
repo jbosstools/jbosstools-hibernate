@@ -50,6 +50,7 @@ import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.QueryEditor;
 import org.hibernate.eclipse.console.utils.QLFormatHelper;
 import org.hibernate.eclipse.hqleditor.HQLEditor;
+import org.hibernate.eclipse.hqleditor.HQLEditorDocumentSetupParticipant;
 import org.hibernate.eclipse.hqleditor.HQLSourceViewer;
 import org.hibernate.eclipse.hqleditor.HQLSourceViewerConfiguration;
 import org.hibernate.engine.query.HQLQueryPlan;
@@ -103,7 +104,8 @@ public class DynamicSQLPreviewView extends ViewPart {
 	private SourceViewer textViewer;
 	private HQLEditor currentEditor;
     private MonoReconciler reconciler;
-	
+    private HQLEditorDocumentSetupParticipant docSetupParticipant = new HQLEditorDocumentSetupParticipant();	
+
     private void hookIntoEditor(IWorkbenchPartReference partRef) {
     	if(partRef==null) {
     		setCurrentEditor(null);
@@ -230,7 +232,11 @@ public class DynamicSQLPreviewView extends ViewPart {
 	public void createPartControl(Composite parent) {
 		textViewer = new HQLSourceViewer( parent, new VerticalRuler(1), null, false, SWT.READ_ONLY | SWT.H_SCROLL | SWT.V_SCROLL );
 		//textViewer.setEditable(false);
-		textViewer.setDocument( new Document() );
+		IDocument doc = new Document();
+		textViewer.setDocument( doc );
+
+		docSetupParticipant.setup( doc );
+
 		textViewer.getDocument().set("No HQL Query editor selected");
 		textViewer.configure(new HQLSourceViewerConfiguration(null));
 		
@@ -276,6 +282,7 @@ public class DynamicSQLPreviewView extends ViewPart {
 			.getActiveWorkbenchWindow();
 		IPartService service = window.getPartService();		
 		service.removePartListener(partListener);
+		docSetupParticipant.unsetup();
 		super.dispose();		
 	}
 	

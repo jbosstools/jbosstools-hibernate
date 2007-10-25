@@ -32,6 +32,7 @@ import org.eclipse.jface.text.rules.DefaultPartitioner;
  * order to setup document partitioning for HQL documents.
  */
 public class HQLEditorDocumentSetupParticipant implements IDocumentSetupParticipant {
+	private IDocumentPartitioner partitioner;
 	
 	/**
      * Sets up the document to be ready for use by a text file buffer.
@@ -41,9 +42,13 @@ public class HQLEditorDocumentSetupParticipant implements IDocumentSetupParticip
 	public void setup( IDocument document ) {
 		if (document instanceof IDocumentExtension3) {
 			IDocumentExtension3 extension3 = (IDocumentExtension3) document;
-			IDocumentPartitioner partitioner = new DefaultPartitioner( new HQLPartitionScanner(), HQLPartitionScanner.HQL_PARTITION_TYPES );
+			partitioner = new DefaultPartitioner( new HQLPartitionScanner(), HQLPartitionScanner.HQL_PARTITION_TYPES );
             partitioner.connect( document );
 			extension3.setDocumentPartitioner( HQLSourceViewerConfiguration.HQL_PARTITIONING, partitioner );
 		}
+	}
+
+	public void unsetup() {
+		partitioner.disconnect();
 	}
 }
