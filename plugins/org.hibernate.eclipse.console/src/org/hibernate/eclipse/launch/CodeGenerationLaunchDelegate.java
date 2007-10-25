@@ -38,7 +38,6 @@ import org.eclipse.core.filebuffers.manipulation.TextFileBufferOperation;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -56,7 +55,7 @@ import org.eclipse.jdt.core.ToolFactory;
 import org.eclipse.jdt.core.formatter.CodeFormatter;
 import org.eclipse.jface.text.DocumentRewriteSessionType;
 import org.eclipse.jface.text.IDocument;
-
+import org.eclipse.jface.util.Assert;
 import org.eclipse.text.edits.TextEdit;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
@@ -70,7 +69,6 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
-import org.hibernate.tool.hbm2x.AbstractExporter;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.util.ReflectHelper;
@@ -139,6 +137,8 @@ public class CodeGenerationLaunchDelegate extends
             	formatGeneratedCode( monitor, collector );
 			}
 			
+			
+			
 			Iterator iterator = outputDirectories.iterator();
             while (iterator.hasNext()) {
 				String path = (String) iterator.next();
@@ -158,10 +158,11 @@ public class CodeGenerationLaunchDelegate extends
 	}
 
 	private void formatGeneratedCode(IProgressMonitor monitor, ArtifactCollector collector) {
-		final TextFileBufferOperation operation = new FormatGeneratedCode( "java-artifact-format" );
+		final TextFileBufferOperation operation = new FormatGeneratedCode( "Formate generated code" );
 
 		File[] javaFiles = collector.getFiles("java");
 		if(javaFiles.length>0) {
+			
 			IPath[] locations = new IPath[javaFiles.length];
 			
 			for (int i = 0; i < javaFiles.length; i++) {
@@ -182,6 +183,7 @@ public class CodeGenerationLaunchDelegate extends
 				HibernateConsolePlugin.getDefault().logErrorMessage("exception during java format", e);
 			}
 		}
+				
 	}
 
 	private void refreshOutputDir(String outputdir) {
@@ -222,9 +224,9 @@ public class CodeGenerationLaunchDelegate extends
 				return null;
 						
 			return (ArtifactCollector) cc.execute(new Command() {
-				private ArtifactCollector artifactCollector = new ArtifactCollector();
 
 				public Object execute() {
+					ArtifactCollector artifactCollector = new ArtifactCollector();
 					
 					String templatePaths = null;
 					
@@ -246,7 +248,7 @@ public class CodeGenerationLaunchDelegate extends
                        
                        Exporter exporter;
 					try {
-						exporter = exporterFactories[i].createConfiguredExporter(cfg, outputPathRes, templatePaths, globalProperties, outputDirectories);
+						exporter = exporterFactories[i].createConfiguredExporter(cfg, outputPathRes, templatePaths, globalProperties, outputDirectories, artifactCollector);
 					} catch (CoreException e) {
 						throw new HibernateConsoleRuntimeException("Error while setting up " + exporterFactories[i].getExporterDefinition(), e);
 					}
@@ -254,12 +256,9 @@ public class CodeGenerationLaunchDelegate extends
                        exporter.start();
                        monitor.worked(1);
                     }
-					return getArtififactCollector();
+					return artifactCollector;
 				}
 
-				private ArtifactCollector getArtififactCollector() {
-					return artifactCollector ;
-				}
 			});
 			
 			

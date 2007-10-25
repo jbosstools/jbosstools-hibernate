@@ -17,6 +17,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.hibernate.eclipse.launch.PathHelper;
+import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.util.StringHelper;
@@ -160,18 +161,21 @@ public class ExporterFactory {
 	
 	/**
 	 * Creates exporter with the specified settings; also resolves any relevant properties via Eclipse VariablesPlugin.
+	 * @param collector 
 	 * @throws CoreException in case of resolve variables issues.
 	 */
 	public Exporter createConfiguredExporter(Configuration cfg, String defaultOutputDirectory,
-			String customTemplatePath, Properties globalProperties, Set outputDirectories) throws CoreException {
+			String customTemplatePath, Properties globalProperties, Set outputDirectories, ArtifactCollector collector) throws CoreException {
 		
 		Exporter exporter = getExporterDefinition().createExporterInstance();
+		
 		
 		Properties props = new Properties();
 		props.putAll(globalProperties);
 		props.putAll(getProperties());
 				
 		exporter.setProperties(props);
+		exporter.setArtifactCollector(collector);
 		
 		exporter.setOutputDirectory(new File(defaultOutputDirectory));
 		if(props.containsKey("outputdir")) {
