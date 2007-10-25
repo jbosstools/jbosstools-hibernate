@@ -672,9 +672,9 @@ if (childShape == null) return;
 	private Point getPoint(Properties properties, String key){
 		Point point = new Point(0,0);
 		String str = properties.getProperty(key+".x","0");
-		point.x = new Integer(str).intValue();
+		point.x = Integer.parseInt(str);
 		String str2 = properties.getProperty(key+".y","0");
-		point.y = new Integer(str2).intValue();
+		point.y = Integer.parseInt(str2);
 		return point;
 	}
 	

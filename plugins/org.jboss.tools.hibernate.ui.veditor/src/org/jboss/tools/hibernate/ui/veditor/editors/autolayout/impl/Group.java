@@ -35,7 +35,7 @@ public class Group {
     public void expandGroup(int _item) {
     	Item item = allitems[_item];
         item.group = this;
-        itemList.add(new Integer(_item));
+        itemList.add(Integer.valueOf(_item));
 		int[] is = item.comments;
 		for (int i = 0; i < is.length; i++) {
 			Item item2 = allitems[is[i]];
@@ -219,7 +219,7 @@ public class Group {
    private void expandGroup2(int _item) {
 	   Item item = allitems[_item];
 	   item.group = this;
-	   itemList.add(new Integer(_item));
+	   itemList.add(Integer.valueOf(_item));
 	   int[] is = item.comments;
 	   for (int i = 0; i < is.length; i++) {
 		   expandGroup2(is[i]);
