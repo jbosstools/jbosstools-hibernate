@@ -41,8 +41,8 @@ public class DBTablePropertyDescriptor extends AutoChangeblePropertyDescriptor {
 	
 	public Object getEditValue(Object propertyValue){
 		for(int i=0;i<getPropertyValues().length;++i)
-			if(getPropertyValues()[i]==propertyValue || (propertyValue!=null && propertyValue.equals(getPropertyValues()[i])))return new Integer(i);
-		return new Integer(0);
+			if(getPropertyValues()[i]==propertyValue || (propertyValue!=null && propertyValue.equals(getPropertyValues()[i])))return Integer.valueOf(i);
+		return Integer.valueOf(0);
 	}
 	
 	public Object getPropertyValue(Object editValue){

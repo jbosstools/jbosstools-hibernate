@@ -119,7 +119,7 @@ public abstract class AbstractConfigurationResource extends PropertySourceBase i
 				StringTokenizer stringTokenizer1 = new StringTokenizer(out
 						.toString(), "\r\n");
 				while (stringTokenizer1.hasMoreTokens())
-					hm.put(new Integer(i++), stringTokenizer1.nextToken());
+					hm.put(Integer.valueOf(i++), stringTokenizer1.nextToken());
 				boolean[] flag = new boolean[hm.size()];
 				StringTokenizer stringTokenizer2 = new StringTokenizer(
 						new String(output.toByteArray()), "\r\n");
@@ -129,27 +129,27 @@ public abstract class AbstractConfigurationResource extends PropertySourceBase i
 					String str3 = stringTokenizer2.nextToken();
 					String str4 = (new StringTokenizer(str3, "=")).nextToken();
 					for (i = 0; i < hm.size(); i++) {
-						String str = (String) hm.get(new Integer(i));
+						String str = (String) hm.get(Integer.valueOf(i));
 						String str2 = str4;
 						if (str.startsWith(str2) && "\r\n".indexOf(str) == -1) {
-							hm.put(new Integer(i), str3);
+							hm.put(Integer.valueOf(i), str3);
 							flag[i] = true;
 							break;
 						}
 					}
 					if (i == hm.size())
-						hm2.put(new Integer(j++), str3);
+						hm2.put(Integer.valueOf(j++), str3);
 				}
 				i = j = 0;
 				String newStrOutput = new String();
 				while (hm.size() != 0) {
-					String str5 = (String) hm.remove(new Integer(i++)) + '\n';
+					String str5 = (String) hm.remove(Integer.valueOf(i++)) + '\n';
 					if (str5.startsWith("#") || str5.indexOf((int) '=') == -1
 							|| flag[i - 1])
 						newStrOutput += str5;
 				}
 				while (hm2.size() != 0)
-					newStrOutput += (String) hm2.remove(new Integer(j++)) + '\n';
+					newStrOutput += (String) hm2.remove(Integer.valueOf(j++)) + '\n';
 				res.setContents(new ByteArrayInputStream(newStrOutput
 						.getBytes()), IResource.NONE, null);
 				// #changed#

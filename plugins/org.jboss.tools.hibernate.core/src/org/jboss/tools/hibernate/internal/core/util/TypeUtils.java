@@ -230,7 +230,7 @@ public class TypeUtils {
 	
 	public static String SQLTypeToName(int jdbcType) {
 		// Return the JDBC type name
-		return (String)jdbcConstantsMap.get(new Integer(jdbcType));
+		return (String)jdbcConstantsMap.get(Integer.valueOf(jdbcType));
 	}
 //	akuzmin 09.06.2005
 	public static int getSQLTypeCodeToName(String fQTypeName)

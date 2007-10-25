@@ -351,7 +351,7 @@ public class OrmPropertyDescriptorsHolder extends PropertyDescriptorsHolder {
 		setDefaultPropertyValue(pd.getId(),OrmConfiguration.DEFAULT_SELECT_BEFORE_UPDATE);
 		
 //		pd=new TextPropertyDescriptor(OrmConfiguration.CLASS_BATCH_SIZE,"fetching \"batch size\"");
-		pd=new TextPropertyDescriptorWithType(OrmConfiguration.CLASS_BATCH_SIZE,Messages.OrmPropertyDescriptorsHolder_ClassBatchSizeN,true,true,false,new Integer(1),null);
+		pd=new TextPropertyDescriptorWithType(OrmConfiguration.CLASS_BATCH_SIZE,Messages.OrmPropertyDescriptorsHolder_ClassBatchSizeN,true,true,false,Integer.valueOf(1),null);
 		pd.setDescription(Messages.OrmPropertyDescriptorsHolder_ClassBatchSizeD);
 		addPropertyDescriptor(pd);
 		pd.setCategory(CLASS_MAPPING_CATEGORY);

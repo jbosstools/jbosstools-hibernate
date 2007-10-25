@@ -251,10 +251,10 @@ public class HibernateAutoMappingHelper {
         	
             String output=Messages.HibernateAutoMappingHelper_ReportString1+
             Messages.HibernateAutoMappingHelper_ReportString2+
-            Messages.HibernateAutoMappingHelper_ReportString3+(new Integer(tablesNumber-skippedTablesNumber-linkTablesNumber)).toString()+Messages.HibernateAutoMappingHelper_ReportString4+
+            Messages.HibernateAutoMappingHelper_ReportString3+(Integer.valueOf(tablesNumber-skippedTablesNumber-linkTablesNumber)).toString()+Messages.HibernateAutoMappingHelper_ReportString4+
             Messages.HibernateAutoMappingHelper_ReportString5+
-            Messages.HibernateAutoMappingHelper_ReportString6+(new Integer(skippedTablesNumber)).toString()+Messages.HibernateAutoMappingHelper_ReportString7+
-            Messages.HibernateAutoMappingHelper_ReportString8+(new Integer(linkTablesNumber)).toString()+Messages.HibernateAutoMappingHelper_ReportString9+
+            Messages.HibernateAutoMappingHelper_ReportString6+(Integer.valueOf(skippedTablesNumber)).toString()+Messages.HibernateAutoMappingHelper_ReportString7+
+            Messages.HibernateAutoMappingHelper_ReportString8+(Integer.valueOf(linkTablesNumber)).toString()+Messages.HibernateAutoMappingHelper_ReportString9+
             		Messages.HibernateAutoMappingHelper_ReportString10;
             InputStream input = new ByteArrayInputStream(output.getBytes());
             // edit tau 18.01.2006

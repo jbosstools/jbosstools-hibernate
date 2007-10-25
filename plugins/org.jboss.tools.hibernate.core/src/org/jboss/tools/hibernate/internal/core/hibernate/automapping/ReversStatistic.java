@@ -72,9 +72,9 @@ public class ReversStatistic {
 	public String[] getAllResults()
 	{
 		String[] res={
-				(new Integer(tablesNumber-skippedTablesNumber-linkTablesNumber)).toString(),
-				(new Integer(skippedTablesNumber)).toString(),
-				(new Integer(linkTablesNumber)).toString()
+				(Integer.valueOf(tablesNumber-skippedTablesNumber-linkTablesNumber)).toString(),
+				(Integer.valueOf(skippedTablesNumber)).toString(),
+				(Integer.valueOf(linkTablesNumber)).toString()
 				}; 
 
 		return res;

@@ -158,9 +158,9 @@ public class XMLFileReader extends BaseResourceReaderWriter{
 		boolean cacheable = "true".equals( subnode.attributeValue( "cacheable" ) );
 		String region = subnode.attributeValue( "cache-region" );
 		Attribute tAtt = subnode.attribute( "timeout" );
-		Integer timeout = tAtt == null ? null : new Integer( tAtt.getValue() );
+		Integer timeout = tAtt == null ? null : Integer.valueOf( tAtt.getValue() );
 		Attribute fsAtt = subnode.attribute( "fetch-size" );
-		Integer fetchSize = fsAtt == null ? null : new Integer( fsAtt.getValue() );
+		Integer fetchSize = fsAtt == null ? null : Integer.valueOf( fsAtt.getValue() );
 		String flushMode = subnode.attributeValue( "flush-mode" );
 
 		// edit tau - add storage in parametr for new NamedQueryDefinition(storage,...

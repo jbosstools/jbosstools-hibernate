@@ -43,11 +43,11 @@ public class ChangebleIntegerPropertyDescriptor extends
 			newvalue=((String)changedValue);
 				if ((techvalue==null)||(!(techvalue instanceof Integer))||(!isValidValue(techvalue)))
 					if (isValidValue(newvalue))
-						setTechvalue(new Integer(StringConverter.asInt(newvalue)));	
+						setTechvalue(Integer.valueOf(StringConverter.asInt(newvalue)));	
 					else if (StringConverter.asInt(newvalue)==defvalue)
 					{
-						newvalue=(new Integer(defvalue+1)).toString();
-						setTechvalue(new Integer(StringConverter.asInt(newvalue)));
+						newvalue=(Integer.valueOf(defvalue+1)).toString();
+						setTechvalue(Integer.valueOf(StringConverter.asInt(newvalue)));
 					}
 				
 		}
@@ -69,7 +69,7 @@ public class ChangebleIntegerPropertyDescriptor extends
         	if (!isValidValue(propertyValue))
         		if (newvalue!=null)
         			{
-        			setTechvalue(new Integer(StringConverter.asInt(newvalue)));
+        			setTechvalue(Integer.valueOf(StringConverter.asInt(newvalue)));
         			if (isValidValue(newvalue))
         				return newvalue;
         			else return "";
@@ -80,7 +80,7 @@ public class ChangebleIntegerPropertyDescriptor extends
         	{
         		if ((techvalue==null)||(!(techvalue instanceof Integer))||(!isValidValue(techvalue)))
     				if (isValidValue(propertyValue))
-    					setTechvalue(new Integer(StringConverter.asInt(propertyValue.toString())));	
+    					setTechvalue(Integer.valueOf(StringConverter.asInt(propertyValue.toString())));	
 
         		return super.getEditValue(propertyValue);
         	}
@@ -111,7 +111,7 @@ public class ChangebleIntegerPropertyDescriptor extends
 	 * @return Returns the defvalue.
 	 */
 	public Object getDefvalue() {
-		return new Integer(defvalue);
+		return Integer.valueOf(defvalue);
 	}
 
 	/**

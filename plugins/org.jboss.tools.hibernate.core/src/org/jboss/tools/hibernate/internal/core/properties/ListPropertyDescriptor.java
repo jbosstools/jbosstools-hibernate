@@ -38,8 +38,8 @@ public class ListPropertyDescriptor extends AdaptablePropertyDescriptor {
 	
 	public Object getEditValue(Object propertyValue){
 		for(int i=0;i<propertyValues.length;++i)
-			if(propertyValues[i]==propertyValue || (propertyValue!=null && propertyValue.equals(propertyValues[i])))return new Integer(i);
-		return new Integer(0);
+			if(propertyValues[i]==propertyValue || (propertyValue!=null && propertyValue.equals(propertyValues[i])))return Integer.valueOf(i);
+		return Integer.valueOf(0);
 	}
 	
 	public Object getPropertyValue(Object editValue){

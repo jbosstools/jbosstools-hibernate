@@ -144,7 +144,7 @@ public class BeanPropertySourceBase implements IPropertySource2 {
 				if (value==null || value.toString().length()==0) {
 		      	//akuzmin 
 					if(pd instanceof ChangebleIntegerPropertyDescriptor)
-						value=new Integer(-1);
+						value = Integer.valueOf(-1);
 					else
 						value=oldValue;
 		      	
