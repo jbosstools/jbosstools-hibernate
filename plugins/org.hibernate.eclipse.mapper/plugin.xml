@@ -42,7 +42,7 @@
                   value="hibernate-reverse-engineering"/>
          </describer>
       </content-type>      
-	  <content-type
+	  <!--<content-type
             base-type="org.eclipse.core.runtime.xml"
             file-extensions="xml"
             file-names="persistence.xml"
@@ -54,7 +54,7 @@
                   name="element"
                   value="persistence"/>
          </describer>
-      </content-type>      
+      </content-type>-->      
    </extension>
    <extension
          point="org.eclipse.wst.sse.core.modelHandler">
@@ -77,7 +77,7 @@
                id="org.hibernate.eclipse.mapper.handler.reveng.xml">
          </modelHandler>
          <modelHandler
-               associatedContentTypeId="org.hibernate.eclipse.mapper.persistenceunitxml"
+               associatedContentTypeId="org.eclipse.jpt.core.content.persistence"
                class="org.hibernate.eclipse.mapper.modelhandler.ModelHandlerForPersistenceUnitXML"
                default="false"
                id="org.hibernate.eclipse.mapper.handler.persistenceunit.xml">
@@ -106,13 +106,13 @@
             class="org.hibernate.eclipse.mapper.views.contentoutline.HibernateXMLContentOutlineConfiguration"            
             />
 	  <sourceViewerConfiguration
-            target="org.hibernate.eclipse.mapper.persistenceunitxml"
+            target="org.eclipse.jpt.core.content.persistence"
             class="org.hibernate.eclipse.mapper.editors.PersistenceUnitStructuredTextViewerConfiguration"
             />
-      <contentOutlineConfiguration
-            target="org.hibernate.eclipse.mapper.persistenceunitxml" 
+      <!--<contentOutlineConfiguration
+            target="org.eclipse.jpt.core.content.persistence" 
             class="org.hibernate.eclipse.mapper.views.contentoutline.HibernateXMLContentOutlineConfiguration"            
-            />                       
+            />-->                       
    </extension>
    <extension
          point="org.eclipse.ui.views">

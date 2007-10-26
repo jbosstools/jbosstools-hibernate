@@ -23,6 +23,7 @@ package org.hibernate.eclipse.mapper.extractor;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -39,6 +40,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.wst.sse.ui.internal.contentassist.CustomCompletionProposal;
+import org.eclipse.wst.xml.ui.internal.contentassist.ContentAssistRequest;
 import org.eclipse.wst.xml.ui.internal.contentassist.XMLRelevanceConstants;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.reveng.TableIdentifier;
@@ -63,10 +65,13 @@ public class HBMInfoExtractor {
 	final Map attributeHandlers = new HashMap(); // completes a possible package or classname
 
 	private String[] hibernatePropertyNames;
-
+	private Map hibernatePropertyValues;
+	
 	private HibernateTypeDescriptor[] generatorTypes;
 
 	private HibernateTypeDescriptor[] propertyAccessors;
+
+	
 	
 	public HBMInfoExtractor() {
 		setupTypeFinder();
@@ -92,8 +97,84 @@ public class HBMInfoExtractor {
 	}
 
 	
+	String[] TRUE_FALSE = new String[] { "true", "false" };
+	
 	private void setupHibernateProperties() {
 		hibernatePropertyNames = extractHibernateProperties();
+		hibernatePropertyValues = new HashMap();
+		
+		 hibernatePropertyValues.put("bytecode.provider", new String[] { "cglib", "javassist"} );
+		 hibernatePropertyValues.put("bytecode.use_reflection_optimizer", TRUE_FALSE );
+		 //hibernatePropertyValues.put("c3p0.acquire_increment", new String[] { } );
+		 //hibernatePropertyValues.put("c3p0.idle_test_period", new String[] { } );
+		 //hibernatePropertyValues.put("c3p0.max_size", new String[] { } );
+		 //hibernatePropertyValues.put("c3p0.max_statements", new String[] { } );
+		 //hibernatePropertyValues.put("c3p0.min_size", new String[] { } );
+		 //hibernatePropertyValues.put("c3p0.timeout", new String[] { } );
+		 //hibernatePropertyValues.put("cache.jndi", new String[] { } );
+		 //hibernatePropertyValues.put("cache.provider_class", new String[] { } );
+		 //hibernatePropertyValues.put("cache.provider_configuration_file_resource_path", new String[] { } );
+		 //hibernatePropertyValues.put("cache.query_cache_factory", new String[] { } );
+		 //hibernatePropertyValues.put("cache.region_prefix", new String[] { } );
+		 hibernatePropertyValues.put("cache.use_minimal_puts", TRUE_FALSE );
+		 hibernatePropertyValues.put("cache.use_query_cache", TRUE_FALSE );
+		 hibernatePropertyValues.put("cache.use_second_level_cache", TRUE_FALSE );
+		 hibernatePropertyValues.put("cache.use_structured_entries", TRUE_FALSE );
+		 //hibernatePropertyValues.put("connection", new String[] { } );
+		 hibernatePropertyValues.put("connection.autocommit", TRUE_FALSE );
+		 //hibernatePropertyValues.put("connection.datasource", new String[] { } );
+		 //hibernatePropertyValues.put("connection.driver_class", new String[] { } );
+
+		 hibernatePropertyValues.put("connection.isolation", new String[] { "0", "1", "2", "4", "8"} );
+		 //hibernatePropertyValues.put("connection.password", new String[] { } );
+		 //hibernatePropertyValues.put("connection.pool_size", new String[] { } );
+		 //hibernatePropertyValues.put("connection.provider_class", new String[] { } );
+		 //hibernatePropertyValues.put("connection.release_mode", new String[] { } );
+		 //hibernatePropertyValues.put("connection.url", new String[] { } );
+		 //hibernatePropertyValues.put("connection.username", new String[] { } );
+		 //hibernatePropertyValues.put("current_session_context_class", new String[] { } );
+		 //hibernatePropertyValues.put("default_batch_fetch_size", new String[] { } );
+		 //hibernatePropertyValues.put("default_catalog", new String[] { } );
+		 //hibernatePropertyValues.put("default_entity_mode", new String[] { } );
+		 //hibernatePropertyValues.put("default_schema", new String[] { } );
+		 //hibernatePropertyValues.put("dialect", new String[] { } );
+		 hibernatePropertyValues.put("format_sql", TRUE_FALSE );
+		 hibernatePropertyValues.put("generate_statistics", TRUE_FALSE );
+		 hibernatePropertyValues.put("hbm2ddl.auto", new String[] { "validate", "update", "create", "create-drop" } );
+		 //hibernatePropertyValues.put("jacc_context_id", new String[] { } );
+		 //hibernatePropertyValues.put("jdbc.batch_size", new String[] { } );
+		 hibernatePropertyValues.put("jdbc.batch_versioned_data", TRUE_FALSE );
+		 //hibernatePropertyValues.put("jdbc.factory_class", new String[] { } );
+		 //hibernatePropertyValues.put("jdbc.fetch_size", new String[] { } );
+		 //hibernatePropertyValues.put("jdbc.sql_exception_converter", new String[] { } );
+		 hibernatePropertyValues.put("jdbc.use_get_generated_keys", TRUE_FALSE );
+		 hibernatePropertyValues.put("jdbc.use_scrollable_resultset", TRUE_FALSE );
+		 hibernatePropertyValues.put("jdbc.use_streams_for_binary", TRUE_FALSE );
+		 hibernatePropertyValues.put("jdbc.wrap_result_sets", TRUE_FALSE );
+		 //hibernatePropertyValues.put("jndi", new String[] { } );
+		 //hibernatePropertyValues.put("jndi.class", new String[] { } );
+		 //hibernatePropertyValues.put("jndi.url", new String[] { } );
+		 //hibernatePropertyValues.put("max_fetch_depth", new String[] { } );
+		 hibernatePropertyValues.put("order_inserts", TRUE_FALSE );
+		 hibernatePropertyValues.put("order_updates", TRUE_FALSE );
+		 //hibernatePropertyValues.put("proxool", new String[] { } );
+		 //hibernatePropertyValues.put("proxool.existing_pool", new String[] { } );
+		 //hibernatePropertyValues.put("proxool.pool_alias", new String[] { } );
+		 //hibernatePropertyValues.put("proxool.properties", new String[] { } );
+		 //hibernatePropertyValues.put("proxool.xml", new String[] { } );
+		 //hibernatePropertyValues.put("query.factory_class", new String[] { } );
+		 hibernatePropertyValues.put("query.jpaql_strict_compliance", TRUE_FALSE );
+		 hibernatePropertyValues.put("query.startup_check", TRUE_FALSE );
+		 //hibernatePropertyValues.put("query.substitutions", new String[] { } );
+		 //hibernatePropertyValues.put("session_factory_name", new String[] { } );
+		 hibernatePropertyValues.put("show_sql", TRUE_FALSE );
+		 hibernatePropertyValues.put("transaction.auto_close_session", TRUE_FALSE );
+		 //hibernatePropertyValues.put("transaction.factory_class", new String[] { } );
+		 hibernatePropertyValues.put("transaction.flush_before_completion", TRUE_FALSE );
+		 //hibernatePropertyValues.put("transaction.manager_lookup_class", new String[] { } );
+		 hibernatePropertyValues.put("use_identifier_rollback", TRUE_FALSE );
+		 hibernatePropertyValues.put("use_sql_comments", TRUE_FALSE );
+		 //hibernatePropertyValues.put("xml.output_stylesheet]", new String[] { } );
 		
 	}
 
@@ -366,11 +447,6 @@ public class HBMInfoExtractor {
 
 
 	public List findMatchingPropertyTypes(String prefix) {
-		for (int i = 0; i < hibernatePropertyNames.length; i++) {
-			String ae = hibernatePropertyNames[i];
-			System.out.println(ae);
-			
-		}
 		List l = new ArrayList();
 		boolean foundFirst = false;
 		for (int i = 0; i < hibernatePropertyNames.length; i++) {
@@ -576,6 +652,32 @@ public class HBMInfoExtractor {
 
 	public List findMatchingAccessMethods(String start) {
 		return findInTypes(start, propertyAccessors);
+	}
+
+
+	public List findMatchingPropertyValues(String matchString, Node node) {
+		if(node==null) return Collections.EMPTY_LIST;
+		
+		NamedNodeMap attributes = node.getAttributes();
+		Node namedItem = attributes.getNamedItem("name");
+		String propName = namedItem.getNodeValue();
+		if(propName.startsWith("hibernate.")) {
+			propName = propName.substring("hibernate.".length());
+		}		
+		String[] strings = (String[]) hibernatePropertyValues.get(propName);
+		if(strings==null) { 
+			return Collections.EMPTY_LIST;
+		} else {
+			List matches = new ArrayList(strings.length);
+			for (int i = 0; i < strings.length; i++) {
+				String string = strings[i];
+				if(string.startsWith(matchString)) {
+					matches.add(string);
+				}		
+			}
+
+			return  matches;
+		}
 	}
 
 	}
