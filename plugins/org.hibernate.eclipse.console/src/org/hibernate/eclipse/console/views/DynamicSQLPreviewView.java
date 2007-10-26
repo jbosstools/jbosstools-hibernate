@@ -187,7 +187,7 @@ public class DynamicSQLPreviewView extends ViewPart {
 							
 						} else {
 							Type[] returnTypes = translator.getReturnTypes();						
-							str.append(i +": ");
+							str.append("Manipulation of " + i +": ");
 							for (int j = 0; j < returnTypes.length; j++) {
 								Type returnType = returnTypes[j];
 								str.append(returnType.getName());
