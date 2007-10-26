@@ -34,6 +34,11 @@ import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.jface.text.source.projection.ProjectionSupport;
 import org.eclipse.jface.text.source.projection.ProjectionViewer;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -145,6 +150,23 @@ public class HQLEditor extends AbstractQueryEditor {
         /* Set a help context ID to enable F1 help. */
         getSite().getWorkbenchWindow().getWorkbench().getHelpSystem().setHelp( parent, HELP_CONTEXT_ID );
         
+        // the following is needed to make sure the editor area gets focus when editing after query execution 
+        // TODO: find a better way since this is triggered on evey mouse click and key stroke in the editor area
+        StyledText textWidget = getSourceViewer().getTextWidget();
+		textWidget.addKeyListener(new KeyAdapter() {
+		
+			public void keyPressed(KeyEvent e) {
+				getSite().getPage().activate(HQLEditor.this);
+			}
+		
+		});
+		textWidget.addMouseListener(new MouseAdapter() {
+		
+			public void mouseDown(MouseEvent e) {
+				getSite().getPage().activate(HQLEditor.this);
+			}
+		
+		});
     }
 
     /**
