@@ -58,12 +58,16 @@ class FakeTransactionManager implements TransactionManager {
 	public void commit() throws RollbackException, HeuristicMixedException,
 			HeuristicRollbackException, SecurityException,
 			IllegalStateException, SystemException {
-		current.commit();
+		if(current!=null) current.commit();
 	}
 
 
 	public int getStatus() throws SystemException {
-		return current.getStatus();
+		if(current!=null) {
+			return current.getStatus();
+		} else {
+			return Status.STATUS_NO_TRANSACTION;
+		}
 	}
 
 	public Transaction getTransaction() throws SystemException {
@@ -72,17 +76,16 @@ class FakeTransactionManager implements TransactionManager {
 
 	public void resume(Transaction tx) throws InvalidTransactionException,
 			IllegalStateException, SystemException {
-		current = (FakeTransaction) tx;
+		current = (FakeTransaction) tx;		
 	}
 
 	public void rollback() throws IllegalStateException, SecurityException,
 			SystemException {
-		current.rollback();
-
+		if(current!=null) current.rollback();
 	}
 
 	public void setRollbackOnly() throws IllegalStateException, SystemException {
-		current.setRollbackOnly();
+		if(current!=null) current.setRollbackOnly();
 	}
 
 	public void setTransactionTimeout(int t) throws SystemException {
