@@ -35,6 +35,7 @@ Export-Package: org.hibernate.eclipse.builder,
  org.hibernate.eclipse.graph.parts,
  org.hibernate.eclipse.graph.policy,
  org.hibernate.eclipse.hqleditor,
+ org.hibernate.eclipse.hqleditor.preferences,
  org.hibernate.eclipse.launch,
  org.hibernate.eclipse.nature,
  org.hibernate.eclipse.util.xpl
