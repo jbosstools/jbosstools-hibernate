@@ -133,19 +133,19 @@ public class CodeGenerationLaunchDelegate extends
 		    ExporterFactory[] exporters = (ExporterFactory[]) exporterFactories.toArray( new ExporterFactory[exporterFactories.size()] );
             ArtifactCollector collector = runExporters(attributes, exporters, outputDirectories, monitor);
             
-            if(collector!=null) {
-            	formatGeneratedCode( monitor, collector );
-			}
-			
-			
-			
-			Iterator iterator = outputDirectories.iterator();
+            Iterator iterator = outputDirectories.iterator();
             while (iterator.hasNext()) {
 				String path = (String) iterator.next();
 				refreshOutputDir( path );	
 			}
 			
 			RefreshTab.refreshResources(configuration, monitor);
+			
+			// code formatting needs to happen *after* refresh to make sure eclipse will format the uptodate files!
+            if(collector!=null) {
+            	formatGeneratedCode( monitor, collector );
+			}
+			
 			
 		} catch(Exception e) {
 			throw new CoreException(HibernateConsolePlugin.throwableToStatus(e, 666)); 
