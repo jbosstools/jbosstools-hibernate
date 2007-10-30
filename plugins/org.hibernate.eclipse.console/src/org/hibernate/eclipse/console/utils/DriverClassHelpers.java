@@ -53,9 +53,9 @@ public class DriverClassHelpers {
         dialectNames.put("Firebird", "org.hibernate.dialect.FirebirdDialect");
         dialectNames.put("Mckoi SQL", "org.hibernate.dialect.MckoiDialect");
         dialectNames.put("MySQL", "org.hibernate.dialect.MySQLDialect");
-        dialectNames.put("MySQLInnoDB", "org.hibernate.dialect.MySQLInnoDBDialect");
-        dialectNames.put("MySQLISAMDB", "org.hibernate.dialect.MySQLISAMDBDialect");
-        dialectNames.put("Oracle9", "org.hibernate.dialect.Oracle9Dialect");
+        dialectNames.put("MySQL (InnoDB)", "org.hibernate.dialect.MySQLInnoDBDialect");
+        dialectNames.put("MySQL (ISAMDB)", "org.hibernate.dialect.MySQLISAMDBDialect");
+        dialectNames.put("Oracle 9", "org.hibernate.dialect.Oracle9Dialect");
         dialectNames.put("Oracle","org.hibernate.dialect.OracleDialect");
         dialectNames.put("Pointbase", "org.hibernate.dialect.PointbaseDialect");
         dialectNames.put("PostgreSQL", "org.hibernate.dialect.PostgreSQLDialect");
@@ -63,9 +63,9 @@ public class DriverClassHelpers {
         dialectNames.put("Progress", "org.hibernate.dialect.ProgressDialect");        
         dialectNames.put("SAP DB", "org.hibernate.dialect.SAPDBDialect");
         dialectNames.put("Sybase", "org.hibernate.dialect.SybaseDialect");
-        dialectNames.put("Sybase11", "org.hibernate.dialect.Sybase11Dialect");
-        dialectNames.put("SybaseAnywhere", "org.hibernate.dialect.SybaseAnywhereDialect");
-        dialectNames.put("SQLServer", "org.hibernate.dialect.SQLServerDialect");
+        dialectNames.put("Sybase 11", "org.hibernate.dialect.Sybase11Dialect");
+        dialectNames.put("Sybase Anywhere", "org.hibernate.dialect.SybaseAnywhereDialect");
+        dialectNames.put("SQL Server", "org.hibernate.dialect.SQLServerDialect");
 
         addDriverAndURLS("org.hibernate.dialect.HSQLDialect",
                          "org.hsqldb.jdbcDriver", 
