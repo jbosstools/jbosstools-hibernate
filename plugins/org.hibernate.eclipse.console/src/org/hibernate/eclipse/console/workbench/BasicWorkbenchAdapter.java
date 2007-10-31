@@ -95,16 +95,25 @@ public abstract class BasicWorkbenchAdapter implements IDeferredWorkbenchAdapter
 			collector.add(getChildren(object, monitor), monitor);
 			collector.done();
 		} catch(Exception e) {
-			handleError(collector,e);			
+			handleError(collector,object, e);			
 		} finally {
 			collector.done();
 			monitor.done();
 		}
 	}
 
-	protected void handleError(IElementCollector collector, Exception e) {
+	protected void handleError(IElementCollector collector, Object object, Exception e) {
 		HibernateConsolePlugin.getDefault().logMessage(IStatus.WARNING, e.toString(), e);
-		HibernateConsolePlugin.openError(null, "Lazy tree error", "Error while fetching children", e, HibernateConsolePlugin.PERFORM_SYNC_EXEC);		
+		HibernateConsolePlugin.openError(null, getDefaultErrorTitle(), getDefaultErrorMessage(object), e, HibernateConsolePlugin.PERFORM_SYNC_EXEC);		
+	}
+
+	private String getDefaultErrorMessage(Object object) {
+		return "Error while expanding " + getLabel(object);
+	}
+
+	
+	private String getDefaultErrorTitle() {
+		return "Hibernate Configuration error";
 	}
 
 	public boolean isContainer() {
