@@ -59,9 +59,9 @@ public class DriverClassHelpers {
         dialectNames.put("MySQL (MyISAM)", "org.hibernate.dialect.MySQLMyISAMDialect");
         dialectNames.put("MySQL 5", "org.hibernate.dialect.MySQL5Dialect");
         dialectNames.put("MySQL 5 (InnoDB)", "org.hibernate.dialect.MySQL5InnoDBDialect");
-        dialectNames.put("Oracle","org.hibernate.dialect.OracleDialect");
+        //dialectNames.put("Oracle","org.hibernate.dialect.OracleDialect");
         dialectNames.put("Oracle 8i","org.hibernate.dialect.Oracle8iDialect");
-        dialectNames.put("Oracle 9", "org.hibernate.dialect.Oracle9Dialect");
+        //dialectNames.put("Oracle 9", "org.hibernate.dialect.Oracle9Dialect");
         dialectNames.put("Oracle 9i", "org.hibernate.dialect.Oracle9iDialect");
         dialectNames.put("Oracle 10g", "org.hibernate.dialect.Oracle10gDialect");
         dialectNames.put("Pointbase", "org.hibernate.dialect.PointbaseDialect");
