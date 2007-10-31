@@ -26,7 +26,7 @@
 	
     <!-- take the api html (javadoc) files from here -->
     <property name="hibernate-core.doc.api"
-          location="${hibernate-core.home}/doc/api" />
+          location="${hibernate-core.home}/doc/api" /> 
 	
     <property name="tmpdir" location="tmp"/>	
 	<target name="create-doc-zip">
@@ -40,9 +40,9 @@
 	    </copy>
 
 		<!-- copy in the api javadoc output -->
-	    <copy todir="${tmpdir}/html/api">
+	    <!--<copy todir="${tmpdir}/html/api">
 	      <fileset dir="${hibernate-core.home}/doc/api"/>
-	    </copy>
+	    </copy>-->
 
         <!-- copy in the eclipse docs -->
         <copy todir="${tmpdir}/html/tools/eclipse">
@@ -105,6 +105,8 @@
             <arg value="${refdoc.toc.translation}"/>
         </java>
 
+    	<!-- API -->
+    	<!--
         <java classname="com.icl.saxon.StyleSheet" fork="true">
             <classpath refid="lib.classpath"/>
             <arg value="-o"/>
@@ -112,6 +114,7 @@
             <arg value="${hibernate.src.top}/build.xml"/>
             <arg value="${apiref.toc.translation}"/>
         </java>
+        -->
 
     </target>
 	

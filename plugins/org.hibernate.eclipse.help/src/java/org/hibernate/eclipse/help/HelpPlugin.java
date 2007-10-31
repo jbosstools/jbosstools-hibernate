@@ -88,7 +88,7 @@ public class HelpPlugin extends AbstractUIPlugin {
 	public ResourceBundle getResourceBundle() {
 		try {
 			if (resourceBundle == null)
-				resourceBundle = ResourceBundle.getBundle("org.hibernate.eclipse.help2.Help2PluginResources");
+				resourceBundle = ResourceBundle.getBundle("org.hibernate.eclipse.help.HelpPluginResources");
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}

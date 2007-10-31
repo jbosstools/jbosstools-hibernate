@@ -5,12 +5,12 @@
    <topic label="Reference Documentation">
       <link toc="tocreferencedocumentation.xml"/>
    </topic>
-   <topic label="API Reference">
+   <!-- <topic label="API Reference">
       <link toc="tocapireference.xml"/>
-   </topic>
-   <topic label="Quick Reference">
+   </topic> -->
+   <!-- <topic label="Quick Reference">
       <link toc="tocquickreference.xml"/>
-   </topic>
+   </topic> -->
    <topic label="Tools Documentation">
       <link toc="toctoolsreference.xml"/>
    </topic>
