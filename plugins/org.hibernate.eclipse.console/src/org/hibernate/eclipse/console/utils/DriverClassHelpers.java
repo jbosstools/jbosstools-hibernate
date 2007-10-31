@@ -45,21 +45,24 @@ public class DriverClassHelpers {
         dialectNames.put("DB2/400", "org.hibernate.dialect.DB2400Dialect");
         dialectNames.put("Derby", "org.hibernate.dialect.DerbyDialect");
         dialectNames.put("FrontBase", "org.hibernate.dialect.FrontBaseDialect");
-        dialectNames.put("Generic", "org.hibernate.dialect.GenericDialect");
+        //Not in 3.2 anymore dialectNames.put("Generic", "org.hibernate.dialect.GenericDialect");
         dialectNames.put("HSQL", "org.hibernate.dialect.HSQLDialect");
         dialectNames.put("Informix", "org.hibernate.dialect.InformixDialect");
         dialectNames.put("Ingres", "org.hibernate.dialect.IngresDialect");
         dialectNames.put("Interbase", "org.hibernate.dialect.InterbaseDialect");
         dialectNames.put("Firebird", "org.hibernate.dialect.FirebirdDialect");
         dialectNames.put("Mckoi SQL", "org.hibernate.dialect.MckoiDialect");
-        dialectNames.put("MySQL", "org.hibernate.dialect.MySQLDialect");
+        dialectNames.put("MySQL", "org.hibernate.dialect.MySQLDialect");        
         dialectNames.put("MySQL (InnoDB)", "org.hibernate.dialect.MySQLInnoDBDialect");
-        dialectNames.put("MySQL (MyISAM)", "org.hibernate.dialect.MySQLISAMDBDialect");
-        dialectNames.put("Oracle 9", "org.hibernate.dialect.Oracle9Dialect");
+        dialectNames.put("MySQL (MyISAM)", "org.hibernate.dialect.MySQLMyISAMDialect");
+        dialectNames.put("MySQL 5", "org.hibernate.dialect.MySQL5Dialect");
+        dialectNames.put("MySQL 5 (InnoDB)", "org.hibernate.dialect.MySQL5InnoDBDialect");
         dialectNames.put("Oracle","org.hibernate.dialect.OracleDialect");
+        dialectNames.put("Oracle 8i","org.hibernate.dialect.Oracle8iDialect");
+        dialectNames.put("Oracle 9", "org.hibernate.dialect.Oracle9Dialect");
+        dialectNames.put("Oracle 10g", "org.hibernate.dialect.Oracle10gDialect");
         dialectNames.put("Pointbase", "org.hibernate.dialect.PointbaseDialect");
         dialectNames.put("PostgreSQL", "org.hibernate.dialect.PostgreSQLDialect");
-        //dialectNames.put("Postgress", "org.hibernate.dialect.PostgressDialect");
         dialectNames.put("Progress", "org.hibernate.dialect.ProgressDialect");        
         dialectNames.put("SAP DB", "org.hibernate.dialect.SAPDBDialect");
         dialectNames.put("Sybase", "org.hibernate.dialect.SybaseDialect");
@@ -83,6 +86,20 @@ public class DriverClassHelpers {
                          );
         
         addDriverAndURLS("org.hibernate.dialect.Oracle9Dialect", 
+                "oracle.jdbc.driver.OracleDriver",
+                new String[] {
+                   "jdbc:oracle:thin:@localhost:1521:orcl",
+                   "jdbc:oracle:thin:@<host>:<port1521>:<sid>" }
+                );
+
+        addDriverAndURLS("org.hibernate.dialect.Oracle10gDialect", 
+                "oracle.jdbc.driver.OracleDriver",
+                new String[] {
+                   "jdbc:oracle:thin:@localhost:1521:orcl",
+                   "jdbc:oracle:thin:@<host>:<port1521>:<sid>" }
+                );
+
+        addDriverAndURLS("org.hibernate.dialect.Oracle8iDialect", 
                 "oracle.jdbc.driver.OracleDriver",
                 new String[] {
                    "jdbc:oracle:thin:@localhost:1521:orcl",
@@ -116,7 +133,7 @@ public class DriverClassHelpers {
                    );
         
 
-        addDriverAndURLS("org.hibernate.dialect.MySQLMyISAMDBDialect", 
+        addDriverAndURLS("org.hibernate.dialect.MySQLMyISAMDialect", 
                     "org.gjt.mm.mysql.Driver",
                     new String[] {
                        "jdbc:mysql://<hostname>/<database>",
@@ -124,6 +141,22 @@ public class DriverClassHelpers {
                        "jdbc:mysql:///<name>" }
                    );
         
+        addDriverAndURLS("org.hibernate.dialect.MySQL5Dialect", 
+                "org.gjt.mm.mysql.Driver",
+                new String[] {
+                   "jdbc:mysql://<hostname>/<database>",
+                   "jdbc:mysql:///test",
+                   "jdbc:mysql:///<name>" }
+               );
+    
+        addDriverAndURLS("org.hibernate.dialect.MySQL5InnoDBDialect", 
+                "org.gjt.mm.mysql.Driver",
+                new String[] {
+                   "jdbc:mysql://<hostname>/<database>",
+                   "jdbc:mysql:///test",
+                   "jdbc:mysql:///<name>" }
+               );
+    
         addDriverAndURLS("org.hibernate.dialect.PostgreSQLDialect", 
                 "org.postgresql.Driver",
                 new String[] {
