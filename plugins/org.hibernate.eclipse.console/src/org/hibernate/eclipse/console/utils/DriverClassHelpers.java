@@ -62,6 +62,7 @@ public class DriverClassHelpers {
         dialectNames.put("Oracle","org.hibernate.dialect.OracleDialect");
         dialectNames.put("Oracle 8i","org.hibernate.dialect.Oracle8iDialect");
         dialectNames.put("Oracle 9", "org.hibernate.dialect.Oracle9Dialect");
+        dialectNames.put("Oracle 9i", "org.hibernate.dialect.Oracle9iDialect");
         dialectNames.put("Oracle 10g", "org.hibernate.dialect.Oracle10gDialect");
         dialectNames.put("Pointbase", "org.hibernate.dialect.PointbaseDialect");
         dialectNames.put("PostgreSQL", "org.hibernate.dialect.PostgreSQLDialect");
