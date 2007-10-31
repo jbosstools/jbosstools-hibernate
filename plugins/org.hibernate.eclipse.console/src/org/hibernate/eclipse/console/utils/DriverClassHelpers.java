@@ -41,8 +41,8 @@ public class DriverClassHelpers {
     public DriverClassHelpers() {
         // externalize this!
         dialectNames.put("DB2", "org.hibernate.dialect.DB2Dialect");
-        dialectNames.put("DB2390", "org.hibernate.dialect.DB2390Dialect");
-        dialectNames.put("DB2400", "org.hibernate.dialect.DB2400Dialect");
+        dialectNames.put("DB2/390", "org.hibernate.dialect.DB2390Dialect");
+        dialectNames.put("DB2/400", "org.hibernate.dialect.DB2400Dialect");
         dialectNames.put("Derby", "org.hibernate.dialect.DerbyDialect");
         dialectNames.put("FrontBase", "org.hibernate.dialect.FrontBaseDialect");
         dialectNames.put("Generic", "org.hibernate.dialect.GenericDialect");
@@ -54,7 +54,7 @@ public class DriverClassHelpers {
         dialectNames.put("Mckoi SQL", "org.hibernate.dialect.MckoiDialect");
         dialectNames.put("MySQL", "org.hibernate.dialect.MySQLDialect");
         dialectNames.put("MySQL (InnoDB)", "org.hibernate.dialect.MySQLInnoDBDialect");
-        dialectNames.put("MySQL (ISAMDB)", "org.hibernate.dialect.MySQLISAMDBDialect");
+        dialectNames.put("MySQL (MyISAM)", "org.hibernate.dialect.MySQLISAMDBDialect");
         dialectNames.put("Oracle 9", "org.hibernate.dialect.Oracle9Dialect");
         dialectNames.put("Oracle","org.hibernate.dialect.OracleDialect");
         dialectNames.put("Pointbase", "org.hibernate.dialect.PointbaseDialect");
