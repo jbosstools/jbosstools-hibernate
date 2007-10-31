@@ -49,7 +49,7 @@ final class ConfigurationCombo extends ComboContribution {
 					SessionFactory builtFactory) {
 			}
 
-			public void configurationRemoved(ConsoleConfiguration root) {
+			public void configurationRemoved(ConsoleConfiguration root, boolean forUpdate) {
 				populateComboBox();
 			}
 

@@ -135,11 +135,13 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 		
 			}
 		
-			public void configurationRemoved(ConsoleConfiguration root) {
+			public void configurationRemoved(ConsoleConfiguration root, boolean forUpdate) {
 				try {
 					removeConfiguration(root.getName());
 				} catch (CoreException e) {
-					logErrorMessage("Could not delete launch configuration for: " + root.getName(), e);
+					if(!forUpdate) {
+						logErrorMessage("Could not delete launch configuration for: " + root.getName(), e);
+					}
 				}
 		
 			}
@@ -169,7 +171,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 			public void launchConfigurationRemoved(ILaunchConfiguration configuration) {				
 				ConsoleConfiguration cfg = KnownConfigurations.getInstance().find( configuration.getName() );
 				if(cfg!=null) {
-					KnownConfigurations.getInstance().removeConfiguration( cfg );
+					KnownConfigurations.getInstance().removeConfiguration( cfg, false );
 				}
 			}
 		
@@ -182,7 +184,8 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 					ConsoleConfiguration oldcfg = instance.find( configuration.getName() );
 					if(oldcfg!=null) {
 						oldcfg.reset(); // reset it no matter what.
-						instance.removeConfiguration(oldcfg);
+						
+						instance.removeConfiguration(oldcfg, true);
 						
 						ConsoleConfigurationPreferences adapter = buildConfigurationPreferences(configuration);
 						instance.addConfiguration(new ConsoleConfiguration(adapter), true);						
@@ -203,7 +206,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 						ConsoleConfiguration oldcfg = instance.find( movedFrom.getName() );
 						if(oldcfg!=null) {
 							oldcfg.reset(); // reset it no matter what.
-							instance.removeConfiguration(oldcfg);
+							instance.removeConfiguration(oldcfg, false);
 						}	
 					}
 					

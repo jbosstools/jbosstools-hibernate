@@ -158,7 +158,7 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 		//ConsoleConfigurationPreferences ccp = createOldConsoleConfiguration( configName, cmode, projectName, useProjectClasspath, entityResolver, propertyFilename, cfgFile, mappings, classpaths, persistenceUnitName, namingStrategy );
 		
 		if(oldConfig!=null) {
-			KnownConfigurations.getInstance().removeConfiguration( oldConfig );
+			KnownConfigurations.getInstance().removeConfiguration( oldConfig, false );
 		}
 		
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();

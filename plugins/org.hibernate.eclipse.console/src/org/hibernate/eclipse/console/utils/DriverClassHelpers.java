@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.runtime.IPath;
+
 /**
  * @author max
  */
@@ -275,5 +277,6 @@ public class DriverClassHelpers {
         } else {
             return new String[0];
         }
+        
     }
 }

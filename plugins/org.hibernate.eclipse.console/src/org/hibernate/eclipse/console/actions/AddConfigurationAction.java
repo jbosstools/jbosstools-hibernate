@@ -23,6 +23,7 @@ package org.hibernate.eclipse.console.actions;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
@@ -71,10 +72,11 @@ public class AddConfigurationAction extends Action {
 			String launchName = launchManager.generateUniqueLaunchConfigurationNameFrom("hibernate"); 
 			//ILaunchConfiguration[] launchConfigurations = launchManager.getLaunchConfigurations( launchConfigurationType );
 			ILaunchConfigurationWorkingCopy wc = launchConfigurationType.newInstance(null, launchName);
-			int i = DebugUITools.openLaunchConfigurationPropertiesDialog( part.getSite().getShell(), wc, "org.eclipse.debug.ui.launchGroup.run" );
-			if(i==Window.OK) {
-				wc.doSave();
-			}
+			ILaunchConfiguration saved = wc.doSave();
+			int i = DebugUITools.openLaunchConfigurationPropertiesDialog( part.getSite().getShell(), saved, "org.eclipse.debug.ui.launchGroup.run" );
+			if(i!=Window.OK) {
+				saved.delete();
+			} 
 			
 		} catch (CoreException ce) {
 			HibernateConsolePlugin.getDefault().showError( part.getSite().getShell(), "Problem adding a console configuration",  ce);

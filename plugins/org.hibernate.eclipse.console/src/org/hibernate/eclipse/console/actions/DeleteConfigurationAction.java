@@ -46,7 +46,7 @@ public class DeleteConfigurationAction extends SelectionListenerAction {
 		Iterator iter = selectedNonResources.iterator();
 		while (iter.hasNext() ) {
 			ConsoleConfiguration element = (ConsoleConfiguration) iter.next();
-			KnownConfigurations.getInstance().removeConfiguration(element);
+			KnownConfigurations.getInstance().removeConfiguration(element, false);
 		}
 	}	
 	

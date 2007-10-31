@@ -74,7 +74,7 @@ class KnownConfigurationsProvider extends DeferredContentProvider implements Kno
 		tv.getControl().getDisplay().syncExec(runnable);
 	}
 
-	public void configurationRemoved(ConsoleConfiguration root) {
+	public void configurationRemoved(ConsoleConfiguration root, boolean forUpdate) {
 		refreshTree();		
 	}
 	
