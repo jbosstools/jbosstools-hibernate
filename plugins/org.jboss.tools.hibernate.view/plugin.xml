@@ -15,7 +15,7 @@
          <view id="org.jboss.tools.hibernate.view.views.ExplorerClass" moveable="true" ratio="0.50" relationship="stack" relative="org.eclipse.jdt.ui.PackageExplorer" visible="true"/>
          <view id="org.jboss.tools.hibernate.view.views.ExplorerBase" moveable="true" ratio="0.50" relationship="stack" relative="org.eclipse.ui.views.ContentOutline" visible="true"/>
       </perspectiveExtension>
-      <perspectiveExtension targetID="org.jboss.tools.jst.web.ui.RedHat4WebPerspective">
+      <perspectiveExtension targetID="org.jboss.tools.jst.web.ui.WebDevelopmentPerspective">
          <showInPart id="org.jboss.tools.hibernate.view.views.ExplorerClass"/>
          <viewShortcut id="org.jboss.tools.hibernate.view.views.ExplorerClass"/>
          <viewShortcut id="org.jboss.tools.hibernate.view.views.ExplorerBase"/>
