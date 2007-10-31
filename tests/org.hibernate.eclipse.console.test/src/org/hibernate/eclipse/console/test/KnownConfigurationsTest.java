@@ -37,7 +37,7 @@ public class KnownConfigurationsTest extends TestCase {
 			fail("no sf should be closed!");
 		}
 
-		public void configurationRemoved(ConsoleConfiguration root) {
+		public void configurationRemoved(ConsoleConfiguration root, boolean forUpdate) {
 			if(!added.remove(root)) {
 				fail("trying to remove a non existing console");
 			}
