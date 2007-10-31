@@ -164,19 +164,20 @@ public class KnownConfigurations  {
 		ConsoleConfiguration[] cfgs = getConfigurations();
 		for (int i = 0; i < cfgs.length; i++) {
 			ConsoleConfiguration configuration = cfgs[i];
-			removeConfiguration(configuration);
+			removeConfiguration(configuration, false);
 		}
 		
 	}
 	
-	public void removeConfiguration(final ConsoleConfiguration configuration) {
+	// added forUpdate as a workaround for letting listeners know it is done to update the configuration so they don't cause removal issues.
+	public void removeConfiguration(final ConsoleConfiguration configuration, final boolean forUpdate) {
 		
 		ConsoleConfiguration oldConfig = (ConsoleConfiguration) getRepositoriesMap().remove(configuration.getName() );
 		if (oldConfig != null) {
 			oldConfig.removeConsoleConfigurationListener(sfListener);
 			fireNotification(new Notification() {
 				public void notify(KnownConfigurationsListener listener) {
-					listener.configurationRemoved(configuration);
+					listener.configurationRemoved(configuration, forUpdate);
 				}
 			});
 			oldConfig.reset();

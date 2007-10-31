@@ -31,5 +31,5 @@ public interface KnownConfigurationsListener {
 	
 	public void sessionFactoryClosing(ConsoleConfiguration configuration, SessionFactory closingFactory);
 	
-	public void configurationRemoved(ConsoleConfiguration root);
+	public void configurationRemoved(ConsoleConfiguration root, boolean forUpdate);
 }
