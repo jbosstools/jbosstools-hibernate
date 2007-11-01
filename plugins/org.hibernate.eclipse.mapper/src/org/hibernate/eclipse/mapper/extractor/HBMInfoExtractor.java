@@ -213,6 +213,14 @@ public class HBMInfoExtractor {
 		javaTypeProvider.put("composite-id", "class");
 		javaTypeProvider.put("component", "class");
 		javaTypeProvider.put("composite-element", "class");
+		
+		javaTypeProvider.put("many-to-one", "class");
+		javaTypeProvider.put("one-to-many", "class");
+		javaTypeProvider.put("many-to-many", "class");
+		javaTypeProvider.put("composite-element", "class");
+		javaTypeProvider.put("composite-id", "class");
+		javaTypeProvider.put("key-many-to-one", "class");
+		javaTypeProvider.put("one-to-many", "class");
 	}
 	
 	private void setupTableFinder() {
