@@ -32,12 +32,18 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.preferences.IScopeContext;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationType;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
+import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 import org.hibernate.util.StringHelper;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
@@ -163,5 +169,25 @@ public class ProjectUtils {
 			return null;
 		}
 	}
-	
+
+	public static IJavaProject findJavaProject(ConsoleConfiguration consoleConfiguration) {
+		IJavaProject proj = null;
+		if (consoleConfiguration != null) {
+			ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+			ILaunchConfigurationType launchConfigurationType = launchManager.getLaunchConfigurationType( "org.hibernate.eclipse.launch.ConsoleConfigurationLaunchConfigurationType" );
+			ILaunchConfiguration[] launchConfigurations;
+			try {
+				launchConfigurations = launchManager.getLaunchConfigurations( launchConfigurationType );
+				for (int i = 0; i < launchConfigurations.length; i++) { // can't believe there is no look up by name API
+					ILaunchConfiguration launchConfiguration = launchConfigurations[i];
+					if(launchConfiguration.getName().equals(consoleConfiguration.getName())) {
+						proj = ProjectUtils.findJavaProject(launchConfiguration.getAttribute(IConsoleConfigurationLaunchConstants.PROJECT_NAME, ""));
+					}
+				}								
+			} catch (CoreException e1) {
+				HibernateConsolePlugin.getDefault().log(e1);
+			}
+		}
+		return proj;
+	}
 }
