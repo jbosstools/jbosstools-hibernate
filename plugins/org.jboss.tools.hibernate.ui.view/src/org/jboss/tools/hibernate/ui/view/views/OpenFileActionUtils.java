@@ -5,35 +5,23 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
-import org.dom4j.Node;
-import org.dom4j.Visitor;
 import org.dom4j.VisitorSupport;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationType;
-import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.eclipse.console.utils.ProjectUtils;
-import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
@@ -47,27 +35,6 @@ public class OpenFileActionUtils {
 
 	public static void openEditor(IWorkbenchPage page, IResource resource) throws PartInitException {
         IDE.openEditor(page, (IFile) resource);
-	}
-
-	public static IJavaProject findJavaProject(ConsoleConfiguration consoleConfiguration) {
-		IJavaProject proj = null;
-		if (consoleConfiguration != null) {
-			ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
-			ILaunchConfigurationType launchConfigurationType = launchManager.getLaunchConfigurationType( "org.hibernate.eclipse.launch.ConsoleConfigurationLaunchConfigurationType" );
-			ILaunchConfiguration[] launchConfigurations;
-			try {
-				launchConfigurations = launchManager.getLaunchConfigurations( launchConfigurationType );
-				for (int i = 0; i < launchConfigurations.length; i++) { // can't believe there is no look up by name API
-					ILaunchConfiguration launchConfiguration = launchConfigurations[i];
-					if(launchConfiguration.getName().equals(consoleConfiguration.getName())) {
-						proj = ProjectUtils.findJavaProject(launchConfiguration.getAttribute(IConsoleConfigurationLaunchConstants.PROJECT_NAME, ""));
-					}
-				}								
-			} catch (CoreException e1) {
-				ViewPlugin.getDefault().logError("Can't find java project.", e1);
-			}
-		}
-		return proj;
 	}
 
 	public static boolean rootClassHasAnnotations(ConsoleConfiguration consoleConfiguration, java.io.File configXMLFile, RootClass rootClass) {

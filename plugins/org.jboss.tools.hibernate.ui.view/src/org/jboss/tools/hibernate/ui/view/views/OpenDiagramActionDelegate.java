@@ -19,7 +19,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.internal.ObjectPluginAction;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.eclipse.console.views.KnownConfigurationsView;
+import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.jboss.tools.hibernate.ui.view.ViewPlugin;
 
 public class OpenDiagramActionDelegate extends OpenActionDelegate {
@@ -31,7 +31,7 @@ public class OpenDiagramActionDelegate extends OpenActionDelegate {
 		ObjectEditorInput input = (ObjectEditorInput)hashMap.get(rootClass);
 		ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(((TreeSelection)objectPluginAction.getSelection()).getPaths()[0]).getSegment(0);
 		
-		IJavaProject proj = OpenFileActionUtils.findJavaProject(consoleConfiguration);
+		IJavaProject proj = ProjectUtils.findJavaProject(consoleConfiguration);
 			
 		if(input == null) {
 			input = new ObjectEditorInput(consoleConfiguration, rootClass, proj);

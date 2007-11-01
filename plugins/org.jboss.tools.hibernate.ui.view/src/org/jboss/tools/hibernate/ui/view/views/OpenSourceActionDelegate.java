@@ -21,6 +21,7 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.internal.ObjectPluginAction;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.ui.view.ViewPlugin;
 
@@ -30,7 +31,7 @@ public class OpenSourceActionDelegate extends OpenActionDelegate {
     	ObjectPluginAction objectPluginAction = (ObjectPluginAction)action;
     	RootClass rootClass = (RootClass)((TreeSelection)objectPluginAction.getSelection()).getFirstElement();
 		ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(((TreeSelection)objectPluginAction.getSelection()).getPaths()[0]).getSegment(0);
-		IJavaProject proj = OpenFileActionUtils.findJavaProject(consoleConfiguration);
+		IJavaProject proj = ProjectUtils.findJavaProject(consoleConfiguration);
 
 		IResource resource = null;
 		String fullyQualifiedName = HibernateUtils.getPersistentClassName(rootClass);
