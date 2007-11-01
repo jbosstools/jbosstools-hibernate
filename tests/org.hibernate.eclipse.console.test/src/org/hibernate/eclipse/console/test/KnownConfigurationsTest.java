@@ -144,7 +144,7 @@ public class KnownConfigurationsTest extends TestCase {
 		assertEquals(1,configurations.length);		
 		assertEquals(listener.added.size(), 1);
 		
-		knownConfigurations.removeConfiguration(configuration);
+		knownConfigurations.removeConfiguration(configuration,false);
 		
 		configurations = knownConfigurations.getConfigurations();
 		assertEquals(0,configurations.length);
