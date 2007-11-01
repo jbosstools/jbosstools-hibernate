@@ -2344,7 +2344,9 @@
   <XDependencies/>
  </XModelEntity>
  <XModelEntity ImplementingClass="%Regular2%" XMLSUBPATH="column" name="Hibernate3Column">
-  <XChildrenEntities/>
+  <XChildrenEntities>
+   <XChildEntity maxCount="1" name="Hibernate3Comment"/>
+  </XChildrenEntities>
   <XEntityRenderer>
    <ICONS>
     <ICON info="main.hibernate.column" type="main"/>
@@ -2413,6 +2415,17 @@
    </XModelAttribute>
   </XModelAttributes>
   <XActionItem kind="list">
+   <XActionItem ICON="action.empty" displayName="New" group="1"
+    kind="list" name="CreateActions">
+    <XActionItem HandlerClassName="%Hibernate3Replace%"
+     ICON="main.hibernate.comment"
+     PROPERTIES="significanceMessageClass=%Replace%;child=comment"
+     WizardClassName="%Default%" displayName="Comment..." kind="action" name="AddComment">
+     <EntityData EntityName="Hibernate3Comment">
+      <AttributeData AttributeName="value" Mandatory="no"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
    <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
     <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
      ICON="action.cut" displayName="Cut" kind="action" name="Cut"/>
