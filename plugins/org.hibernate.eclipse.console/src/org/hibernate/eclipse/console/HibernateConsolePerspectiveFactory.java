@@ -21,6 +21,7 @@
  */
 package org.hibernate.eclipse.console;
 
+import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
@@ -59,6 +60,7 @@ public class HibernateConsolePerspectiveFactory implements IPerspectiveFactory {
 		IFolderLayout propertiesFolder= layout.createFolder("leftBottom", IPageLayout.BOTTOM, (float)0.75, "left"); //$NON-NLS-1$
 		propertiesFolder.addView(ID_PROPERTY_SHEET_VIEW);
 				
+		layout.addActionSet(IDebugUIConstants.LAUNCH_ACTION_SET);
 		
 		IFolderLayout outputfolder= layout.createFolder("bottom", IPageLayout.BOTTOM, (float)0.75, editorArea); //$NON-NLS-1$
 		outputfolder.addView("org.eclipse.pde.runtime.LogView");
