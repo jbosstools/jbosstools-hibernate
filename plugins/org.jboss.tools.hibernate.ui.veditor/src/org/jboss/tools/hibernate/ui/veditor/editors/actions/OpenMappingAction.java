@@ -93,7 +93,7 @@ public class OpenMappingAction extends SelectionAction {
 				if (resource == null) {
 					Iterator collectionMappingsIterator = consoleConfiguration.getConfiguration().getCollectionMappings();
 					while (collectionMappingsIterator.hasNext()) {
-						Collection elem = (Collection) collectionMappingsIterator.next();
+						Collection elem = (Collection)collectionMappingsIterator.next();
 						Table collectionTable = elem.getCollectionTable();
 						if (HibernateUtils.getTableName(collectionTable).equals(HibernateUtils.getTableName(table))) {
 							PersistentClass owner = elem.getOwner();
