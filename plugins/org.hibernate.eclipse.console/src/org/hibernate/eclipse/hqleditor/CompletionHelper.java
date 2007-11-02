@@ -83,6 +83,7 @@ public class CompletionHelper {
 				}
 				proposal.setReplacementOffset(wanted);
 			} else {
+				// Workaround for Eclipse 3.x changes.
 				Class c = results[i].getClass();
 				try {
 					Method setMethod = c.getMethod("setReplacementOffset", new Class[] { int.class });
@@ -93,19 +94,19 @@ public class CompletionHelper {
 					setMethod.invoke(results[i], new Object[] { new Integer(wanted) });
 				} catch (SecurityException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					//e.printStackTrace();
 				} catch (NoSuchMethodException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					//e.printStackTrace();
 				} catch (IllegalArgumentException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					//e.printStackTrace();
 				} catch (IllegalAccessException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					//e.printStackTrace();
 				} catch (InvocationTargetException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 				// M7
 //				LazyJavaCompletionProposal proposal = (LazyJavaCompletionProposal) results[i]; // TODO: eclipse bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=84998
