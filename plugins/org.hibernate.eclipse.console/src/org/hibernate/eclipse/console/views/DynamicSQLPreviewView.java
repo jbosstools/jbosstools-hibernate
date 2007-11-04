@@ -177,7 +177,7 @@ public class DynamicSQLPreviewView extends ViewPart {
 					for (int i = 0; i < translators.length; i++) {
 						QueryTranslator translator = translators[i];
 						if(translator.isManipulationStatement()) {
-							str.append(i + ":");
+							str.append("Manipulation of " + i + ":");
 							Iterator iterator = translator.getQuerySpaces().iterator();
 							while ( iterator.hasNext() ) {
 								Object qspace = iterator.next();
@@ -187,7 +187,7 @@ public class DynamicSQLPreviewView extends ViewPart {
 							
 						} else {
 							Type[] returnTypes = translator.getReturnTypes();						
-							str.append("Manipulation of " + i +": ");
+							str.append(i +": ");
 							for (int j = 0; j < returnTypes.length; j++) {
 								Type returnType = returnTypes[j];
 								str.append(returnType.getName());
