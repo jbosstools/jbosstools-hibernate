@@ -36,6 +36,9 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 	private ToolBarManager tbm;
 	final private QueryInputModel queryInputModel;
 	
+	// to enable execution of queries from files - hack for HBX-744
+	private String consoleConfigurationName;
+	
 	public AbstractQueryEditor() {
 		queryInputModel = new QueryInputModel();
 	}
@@ -53,16 +56,24 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 	}
 
 	final public String getConsoleConfigurationName() {
-		QueryEditorInput hei = (QueryEditorInput) getEditorInput();
-		return hei.getConsoleConfigurationName();
+		//TODO: these should be stored as resource info
+		if(getEditorInput() instanceof QueryEditorInput) {
+			QueryEditorInput hei = (QueryEditorInput) getEditorInput();
+			return hei.getConsoleConfigurationName();
+		} else {
+			return consoleConfigurationName; 
+		}
 	}
 
 	final public void setConsoleConfigurationName(String name) {
-		QueryEditorInput hei = (QueryEditorInput) getEditorInput();
-		hei.setConsoleConfigurationName( name );
-		hei.setQuery( getQueryString() );
-		hei.resetName();
-		showEditorInput( hei );
+		if(getEditorInput() instanceof QueryEditorInput) {
+			QueryEditorInput hei = (QueryEditorInput) getEditorInput();
+			hei.setConsoleConfigurationName( name );
+			hei.setQuery( getQueryString() );
+			hei.resetName();
+		}
+		this.consoleConfigurationName = name;
+		showEditorInput( getEditorInput() );
 	}
 
 	public void showEditorInput(IEditorInput editorInput) {
@@ -78,9 +89,15 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 
 	final public void doSave(IProgressMonitor progressMonitor) {
 		// super.doSave(progressMonitor);
-		QueryEditorInput hei = (QueryEditorInput) getEditorInput();
-		hei.setQuery( getQueryString() );
+		if(getEditorInput() instanceof QueryEditorInput) {
+			QueryEditorInput hei = (QueryEditorInput) getEditorInput();
+			hei.setQuery( getQueryString() );
+		}
 		performSave( false, progressMonitor );
+	}
+	
+	protected void doSetInput(IEditorInput input) throws CoreException {
+		super.doSetInput(input);		
 	}
 
 	final public String getQueryString() {
