@@ -173,7 +173,7 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 				return control;
 			}
 			protected int getComboWidth() {
-				return 30;
+				return 75;
 			}
 			protected String getLabelText() {
 				return "Max results:";

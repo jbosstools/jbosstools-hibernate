@@ -39,15 +39,17 @@ public abstract class ComboContribution extends ControlContribution {
 			gd.horizontalAlignment = GridData.END;
 		}
 		comboControl = new Combo( panel, SWT.DROP_DOWN | (isReadOnly()?SWT.READ_ONLY:SWT.NONE) );
-		
+		populateComboBox();
+		comboControl.pack();
 		GridData gd = new GridData();
 		gd.grabExcessHorizontalSpace = true;
+		gd.verticalIndent = -8;
 		gd.widthHint = getComboWidth();
 		gd.verticalAlignment = GridData.CENTER;
 		gd.horizontalAlignment = GridData.END;
 		comboControl.setLayoutData( gd );
 		
-		populateComboBox();
+		
 
 		if(getSelectionAdapter()!=null) {
 			comboControl.addSelectionListener( getSelectionAdapter() );
