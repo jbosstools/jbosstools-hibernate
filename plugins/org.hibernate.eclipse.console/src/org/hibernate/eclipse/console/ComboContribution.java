@@ -1,5 +1,6 @@
 package org.hibernate.eclipse.console;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
@@ -33,6 +34,8 @@ public abstract class ComboContribution extends ControlContribution {
 		gridLayout.verticalSpacing = 1;
 		gridLayout.marginHeight=0;
 		gridLayout.marginWidth=0;
+		gridLayout.marginTop=0;
+		gridLayout.marginBottom=0;
 		//gridLayout.
 		panel.setLayout( gridLayout );
 		
@@ -49,10 +52,10 @@ public abstract class ComboContribution extends ControlContribution {
 		comboControl.pack();
 		GridData gd = new GridData();
 		gd.grabExcessHorizontalSpace = true;
-		//gd.verticalIndent = -8;
 		gd.widthHint = getComboWidth();
-		gd.verticalAlignment = GridData.CENTER;
-		gd.horizontalAlignment = GridData.END;
+		gd.verticalAlignment = GridData.VERTICAL_ALIGN_FILL;
+		gd.horizontalAlignment = GridData.HORIZONTAL_ALIGN_FILL;
+		if(Platform.getOS().equals(Platform.OS_MACOSX)) gd.verticalIndent=-9;
 		comboControl.setLayoutData( gd );
 		
 		
@@ -61,6 +64,7 @@ public abstract class ComboContribution extends ControlContribution {
 			comboControl.addSelectionListener( getSelectionAdapter() );
 		}
 
+		panel.pack();
 		return panel;
 	}
 
