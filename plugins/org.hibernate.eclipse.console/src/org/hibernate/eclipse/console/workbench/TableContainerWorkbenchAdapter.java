@@ -21,6 +21,8 @@
  */
 package org.hibernate.eclipse.console.workbench;
 
+import java.util.Comparator;
+
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
@@ -30,7 +32,14 @@ public class TableContainerWorkbenchAdapter extends BasicWorkbenchAdapter {
 
 	public Object[] getChildren(Object o) {
 		TableContainer tc = getTableContainer( o );
-		return toArray(tc.getTables().iterator(), Table.class);
+		return toArray(tc.getTables().iterator(), Table.class, new Comparator() {
+		
+			public int compare(Object arg0, Object arg1) {
+				
+				return ((Table)arg0).getName().compareTo(((Table)arg1).getName());
+			}
+		
+		});
 	}
 
 	private TableContainer getTableContainer(Object o) {

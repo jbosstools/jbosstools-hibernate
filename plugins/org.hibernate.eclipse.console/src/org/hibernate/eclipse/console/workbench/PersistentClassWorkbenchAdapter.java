@@ -44,7 +44,7 @@ public class PersistentClassWorkbenchAdapter extends BasicWorkbenchAdapter {
 		}
 		
 		Iterator propertyClosureIterator = new JoinedIterator(properties.iterator(), pc.getPropertyClosureIterator());
-		return toArray(propertyClosureIterator, Property.class);
+		return toArray(propertyClosureIterator, Property.class, null);
 	}
 
 	

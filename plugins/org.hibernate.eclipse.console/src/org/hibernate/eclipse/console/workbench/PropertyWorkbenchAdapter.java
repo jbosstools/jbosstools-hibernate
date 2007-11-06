@@ -58,7 +58,7 @@ public class PropertyWorkbenchAdapter extends BasicWorkbenchAdapter implements
 			}
 		
 			public Object accept(Component component) {
-				return toArray(component.getPropertyIterator(), Property.class);				
+				return toArray(component.getPropertyIterator(), Property.class, null);				
 			}
 		
 			public Object accept(DependantValue value) {

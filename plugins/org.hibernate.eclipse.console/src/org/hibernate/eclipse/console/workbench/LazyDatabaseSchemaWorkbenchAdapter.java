@@ -22,6 +22,7 @@
 package org.hibernate.eclipse.console.workbench;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +64,14 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 			Map.Entry entry = (Map.Entry) qualifierEntries.next();
 			result.add(new TableContainer((String) entry.getKey(),(List)entry.getValue()));
 		}
-		return toArray(result.iterator(), TableContainer.class);
+		return toArray(result.iterator(), TableContainer.class, new Comparator() {
+		
+			public int compare(Object arg0, Object arg1) {
+				
+				return ((TableContainer)arg0).getName().compareTo(((TableContainer)arg1).getName());
+			}
+		
+		});
 	}
 
 	private LazyDatabaseSchema getLazyDatabaseSchema(Object o) {

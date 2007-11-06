@@ -23,6 +23,8 @@ package org.hibernate.eclipse.console.workbench;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -63,9 +65,15 @@ public abstract class BasicWorkbenchAdapter implements IDeferredWorkbenchAdapter
 
 	final static Object[] NO_CHILDREN = new Object[0];
 	
-	protected Object[] toArray(Iterator iterator, Class clazz) {
+	
+	protected Object[] toArray(Iterator iterator, Class clazz, Comparator comparator) {
 		List obj = toList( iterator );
-		return obj.toArray((Object[]) Array.newInstance(clazz, obj.size()));		
+		Object[] array = obj.toArray((Object[]) Array.newInstance(clazz, obj.size()));
+		
+		if(comparator!=null) {
+			Arrays.sort(array, comparator);
+		}
+		return array;
 	}
 
 	private List toList(Iterator iterator) {
