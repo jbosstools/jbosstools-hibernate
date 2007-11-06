@@ -28,7 +28,13 @@ public abstract class ComboContribution extends ControlContribution {
 	
 	protected Control createControl(Composite parent) {
 		Composite panel = new Composite( parent, SWT.NONE );
-		panel.setLayout( new GridLayout(2,false) );
+		GridLayout gridLayout = new GridLayout(2,false);
+		gridLayout.horizontalSpacing = 1;
+		gridLayout.verticalSpacing = 1;
+		gridLayout.marginHeight=0;
+		gridLayout.marginWidth=0;
+		//gridLayout.
+		panel.setLayout( gridLayout );
 		
 		if(getLabelText()!=null) {
 			Label label = new Label(panel, SWT.None);
@@ -43,7 +49,7 @@ public abstract class ComboContribution extends ControlContribution {
 		comboControl.pack();
 		GridData gd = new GridData();
 		gd.grabExcessHorizontalSpace = true;
-		gd.verticalIndent = -8;
+		//gd.verticalIndent = -8;
 		gd.widthHint = getComboWidth();
 		gd.verticalAlignment = GridData.CENTER;
 		gd.horizontalAlignment = GridData.END;
@@ -62,6 +68,10 @@ public abstract class ComboContribution extends ControlContribution {
 		return 100;
 	}
 
+	protected int computeWidth(Control control) {
+		return super.computeWidth(control);
+	}
+	
 	protected boolean isReadOnly() {
 		return true;
 	}
