@@ -13,6 +13,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.eclipse.console.actions.OpenFileActionUtils;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.ui.veditor.VisualEditorPlugin;
@@ -21,7 +22,7 @@ import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
 import org.jboss.tools.hibernate.ui.view.ViewPlugin;
 import org.jboss.tools.hibernate.ui.view.views.HibernateUtils;
 import org.jboss.tools.hibernate.ui.view.views.ObjectEditorInput;
-import org.jboss.tools.hibernate.ui.view.views.OpenFileActionUtils;
+import org.hibernate.eclipse.console.actions.OpenFileActionUtils;
 
 public class OpenSourceAction extends SelectionAction {
 	public static String ACTION_ID = "org.jboss.tools.hibernate.ui.veditor.editors.actions.open.source";

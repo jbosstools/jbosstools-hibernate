@@ -19,6 +19,7 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 
+// TODO: What is this ? And why is it extending mapping classes ?!
 public class SpecialRootClass extends RootClass {
 
 	private Property property;

@@ -133,6 +133,26 @@
              </page>
 
    </extension>
+   
+   <extension point="org.eclipse.ui.popupMenus">
+      <objectContribution id="mappingEditorAction" objectClass="org.hibernate.mapping.RootClass"> 
+         <menu id="org.hibernate.eclipse.console.actions.openMappingMenu" label="Open Mapping File" path="mappingEditorAction"/>
+         <action
+            id="org.hibernate.eclipse.console.actions.openMappingAction" 
+            label="Open Mapping File" 
+            class="org.hibernate.eclipse.console.actions.OpenMappingActionDelegate"> 
+         </action> 
+      </objectContribution> 
+      <objectContribution id="sourceEditorAction" objectClass="org.hibernate.mapping.RootClass"> 
+         <menu id="org.hibernate.eclipse.console.actions.openSourceMenu" label="Open Source File" path="sourceEditorAction"/>
+         <action
+            id="org.hibernate.eclipse.console.actions.openSourceAction" 
+            label="Open Source File" 
+            class="org.hibernate.eclipse.console.actions.OpenSourceActionDelegate"> 
+         </action> 
+      </objectContribution> 
+   </extension>
+   
    <extension
         id="hibernateNature"
         name="Hibernate Nature"

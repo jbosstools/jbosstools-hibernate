@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.view.views;
+package org.hibernate.eclipse.console.actions;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -21,9 +21,9 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.internal.ObjectPluginAction;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.mapping.RootClass;
-import org.jboss.tools.hibernate.ui.view.ViewPlugin;
 
 public class OpenSourceActionDelegate extends OpenActionDelegate {
 
@@ -34,23 +34,23 @@ public class OpenSourceActionDelegate extends OpenActionDelegate {
 		IJavaProject proj = ProjectUtils.findJavaProject(consoleConfiguration);
 
 		IResource resource = null;
-		String fullyQualifiedName = HibernateUtils.getPersistentClassName(rootClass);
+		String fullyQualifiedName = OpenFileActionUtils.getPersistentClassName(rootClass);
 		try {
 			IType type = proj.findType(fullyQualifiedName);
 			if (type != null) resource = type.getResource();
 		} catch (JavaModelException e) {
-			ViewPlugin.getDefault().logError("Can't find source file.", e);
+			HibernateConsolePlugin.getDefault().logErrorMessage("Can't find source file.", e);
 		}
 		
 		if (resource instanceof IFile){
             try {
-            	OpenFileActionUtils.openEditor(ViewPlugin.getPage(), (IFile) resource);
+            	OpenFileActionUtils.openEditor(HibernateConsolePlugin.getDefault().getActiveWorkbenchWindow().getActivePage(), (IFile) resource);
             } catch (PartInitException e) {
-    			ViewPlugin.getDefault().logError("Can't open source file.", e);
+    			HibernateConsolePlugin.getDefault().logErrorMessage("Can't open source file.", e);
             }               
         }
 		if (resource == null) {
-			MessageDialog.openInformation(ViewPlugin.getActiveWorkbenchShell(), "Open Source File", "Source file for class '" + fullyQualifiedName + "' not found.");
+			MessageDialog.openInformation(HibernateConsolePlugin.getDefault().getShell(), "Open Source File", "Source file for class '" + fullyQualifiedName + "' not found.");
 		}
 	}
 }

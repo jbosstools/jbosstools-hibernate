@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.ui.view.views;
+package org.hibernate.eclipse.console.actions;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,26 +22,58 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.util.StringHelper;
 import org.hibernate.util.XMLHelper;
-import org.jboss.tools.hibernate.ui.view.ViewPlugin;
 import org.xml.sax.InputSource;
 
 public class OpenFileActionUtils {
 	private static XMLHelper helper = new XMLHelper();
+	
+	private static final String HIBERNATE_TAG_CLASS = "class";
+	private static final String HIBERNATE_TAG_TABLE = "table"; 
+	private static final String HIBERNATE_TAG_SUBCLASS = "subclass";
+	private static final String HIBERNATE_TAG_JOINED_SUBCLASS = "joined-subclass";
+	private static final String HIBERNATE_TAG_UNION_SUBCLASS = "union-subclass";
+	private static final String HIBERNATE_TAG_NAME = "name"; 
+	private static final String HIBERNATE_TAG_ENTITY_NAME = "entity-name";
+	private static final String HIBERNATE_TAG_SESSION_FACTORY = "session-factory";
+	private static final String HIBERNATE_TAG_MAPPING = "mapping";
+	private static final String HIBERNATE_TAG_RESOURCE = "resource";
+	private static final String HIBERNATE_TAG_CATALOG = "catalog";
+	private static final String HIBERNATE_TAG_SCHEMA = "schema";
 
 	public static void openEditor(IWorkbenchPage page, IResource resource) throws PartInitException {
         IDE.openEditor(page, (IFile) resource);
 	}
+	
 
 	public static boolean rootClassHasAnnotations(ConsoleConfiguration consoleConfiguration, java.io.File configXMLFile, RootClass rootClass) {
 		if (configXMLFile == null) return true;
 		Document doc = getDocument(consoleConfiguration, configXMLFile);
-		return getElements(doc, HTConstants.HIBERNATE_TAG_MAPPING, HTConstants.HIBERNATE_TAG_CLASS, HibernateUtils.getPersistentClassName(rootClass)).hasNext();
+		return getElements(doc, HIBERNATE_TAG_MAPPING, HIBERNATE_TAG_CLASS, getPersistentClassName(rootClass)).hasNext();
 	}
+	
+	static String getPersistentClassName(PersistentClass rootClass) {
+		if (rootClass == null) {
+			return "";
+		} else { 
+			return rootClass.getEntityName() != null ? rootClass.getEntityName() : rootClass.getClassName();
+		}
+	}
+	
+	private static String getTableName(String catalog, String schema, String name) {
+		return (catalog != null ? catalog + "." : "") + (schema != null ? schema + "." : "") + name;
+	}
+
+	private static String getTableName(Table table) {
+		return getTableName(table.getCatalog(), table.getSchema(), table.getName());
+	}
+
 
 	private static boolean elementInResource(ConsoleConfiguration consoleConfiguration, IResource resource, Object element) {
 		if (element instanceof RootClass) {
@@ -55,53 +87,53 @@ public class OpenFileActionUtils {
 		}
 	}
 
-	public static boolean rootClassInResource(ConsoleConfiguration consoleConfiguration, IResource resource, RootClass persistentClass) {
+	private static boolean rootClassInResource(ConsoleConfiguration consoleConfiguration, IResource resource, RootClass persistentClass) {
 		Document doc = getDocument(consoleConfiguration, resource.getLocation().toFile());
-		return getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, HTConstants.HIBERNATE_TAG_NAME, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass))).hasNext() ||
-				getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, HTConstants.HIBERNATE_TAG_NAME, HibernateUtils.getPersistentClassName(persistentClass)).hasNext() ||
-				getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass))).hasNext() ||
-				getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, HibernateUtils.getPersistentClassName(persistentClass)).hasNext() ||
-				getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, HTConstants.HIBERNATE_TAG_ENTITY_NAME, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass))).hasNext() ||
-				getElements(doc, HTConstants.HIBERNATE_TAG_CLASS, HTConstants.HIBERNATE_TAG_ENTITY_NAME, HibernateUtils.getPersistentClassName(persistentClass)).hasNext();
+		return getElements(doc, OpenFileActionUtils.HIBERNATE_TAG_CLASS, HIBERNATE_TAG_NAME, StringHelper.unqualify(getPersistentClassName(persistentClass))).hasNext() ||
+				getElements(doc, OpenFileActionUtils.HIBERNATE_TAG_CLASS, HIBERNATE_TAG_NAME, getPersistentClassName(persistentClass)).hasNext() ||
+				getElements(doc, OpenFileActionUtils.HIBERNATE_TAG_CLASS, StringHelper.unqualify(getPersistentClassName(persistentClass))).hasNext() ||
+				getElements(doc, OpenFileActionUtils.HIBERNATE_TAG_CLASS, getPersistentClassName(persistentClass)).hasNext() ||
+				getElements(doc, OpenFileActionUtils.HIBERNATE_TAG_CLASS, HIBERNATE_TAG_ENTITY_NAME, StringHelper.unqualify(getPersistentClassName(persistentClass))).hasNext() ||
+				getElements(doc, OpenFileActionUtils.HIBERNATE_TAG_CLASS, HIBERNATE_TAG_ENTITY_NAME, getPersistentClassName(persistentClass)).hasNext();
 	}
 
-	public static boolean subclassInResource(ConsoleConfiguration consoleConfiguration, IResource resource, Subclass persistentClass) {
+	private static boolean subclassInResource(ConsoleConfiguration consoleConfiguration, IResource resource, Subclass persistentClass) {
 		Document doc = getDocument(consoleConfiguration, resource.getLocation().toFile());
-		return getElements(doc, HTConstants.HIBERNATE_TAG_SUBCLASS, HTConstants.HIBERNATE_TAG_NAME, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass))).hasNext() ||
-				getElements(doc, HTConstants.HIBERNATE_TAG_SUBCLASS, HTConstants.HIBERNATE_TAG_NAME, HibernateUtils.getPersistentClassName(persistentClass)).hasNext() ||
-				getElements(doc, HTConstants.HIBERNATE_TAG_SUBCLASS, HTConstants.HIBERNATE_TAG_ENTITY_NAME, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass))).hasNext() ||
-				getElements(doc, HTConstants.HIBERNATE_TAG_SUBCLASS, HTConstants.HIBERNATE_TAG_ENTITY_NAME, HibernateUtils.getPersistentClassName(persistentClass)).hasNext() ||
+		return getElements(doc, HIBERNATE_TAG_SUBCLASS, HIBERNATE_TAG_NAME, StringHelper.unqualify(getPersistentClassName(persistentClass))).hasNext() ||
+				getElements(doc, HIBERNATE_TAG_SUBCLASS, HIBERNATE_TAG_NAME, getPersistentClassName(persistentClass)).hasNext() ||
+				getElements(doc, HIBERNATE_TAG_SUBCLASS, HIBERNATE_TAG_ENTITY_NAME, StringHelper.unqualify(getPersistentClassName(persistentClass))).hasNext() ||
+				getElements(doc, HIBERNATE_TAG_SUBCLASS, HIBERNATE_TAG_ENTITY_NAME, getPersistentClassName(persistentClass)).hasNext() ||
 
-				getElements(doc, HTConstants.HIBERNATE_TAG_JOINED_SUBCLASS, HTConstants.HIBERNATE_TAG_NAME, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass))).hasNext() ||
-				getElements(doc, HTConstants.HIBERNATE_TAG_JOINED_SUBCLASS, HTConstants.HIBERNATE_TAG_NAME, HibernateUtils.getPersistentClassName(persistentClass)).hasNext() ||
-				getElements(doc, HTConstants.HIBERNATE_TAG_JOINED_SUBCLASS, HTConstants.HIBERNATE_TAG_ENTITY_NAME, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass))).hasNext() ||
-				getElements(doc, HTConstants.HIBERNATE_TAG_JOINED_SUBCLASS, HTConstants.HIBERNATE_TAG_ENTITY_NAME, HibernateUtils.getPersistentClassName(persistentClass)).hasNext() ||
+				getElements(doc, HIBERNATE_TAG_JOINED_SUBCLASS, HIBERNATE_TAG_NAME, StringHelper.unqualify(getPersistentClassName(persistentClass))).hasNext() ||
+				getElements(doc, HIBERNATE_TAG_JOINED_SUBCLASS, HIBERNATE_TAG_NAME, getPersistentClassName(persistentClass)).hasNext() ||
+				getElements(doc, HIBERNATE_TAG_JOINED_SUBCLASS, HIBERNATE_TAG_ENTITY_NAME, StringHelper.unqualify(getPersistentClassName(persistentClass))).hasNext() ||
+				getElements(doc, HIBERNATE_TAG_JOINED_SUBCLASS, HIBERNATE_TAG_ENTITY_NAME, getPersistentClassName(persistentClass)).hasNext() ||
 
-				getElements(doc, HTConstants.HIBERNATE_TAG_UNION_SUBCLASS, HTConstants.HIBERNATE_TAG_NAME, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass))).hasNext() ||
-				getElements(doc, HTConstants.HIBERNATE_TAG_UNION_SUBCLASS, HTConstants.HIBERNATE_TAG_NAME, HibernateUtils.getPersistentClassName(persistentClass)).hasNext() ||
-				getElements(doc, HTConstants.HIBERNATE_TAG_UNION_SUBCLASS, HTConstants.HIBERNATE_TAG_ENTITY_NAME, StringHelper.unqualify(HibernateUtils.getPersistentClassName(persistentClass))).hasNext() ||
-				getElements(doc, HTConstants.HIBERNATE_TAG_UNION_SUBCLASS, HTConstants.HIBERNATE_TAG_ENTITY_NAME, HibernateUtils.getPersistentClassName(persistentClass)).hasNext();
+				getElements(doc, HIBERNATE_TAG_UNION_SUBCLASS, HIBERNATE_TAG_NAME, StringHelper.unqualify(getPersistentClassName(persistentClass))).hasNext() ||
+				getElements(doc, HIBERNATE_TAG_UNION_SUBCLASS, HIBERNATE_TAG_NAME, getPersistentClassName(persistentClass)).hasNext() ||
+				getElements(doc, HIBERNATE_TAG_UNION_SUBCLASS, HIBERNATE_TAG_ENTITY_NAME, StringHelper.unqualify(getPersistentClassName(persistentClass))).hasNext() ||
+				getElements(doc, HIBERNATE_TAG_UNION_SUBCLASS, HIBERNATE_TAG_ENTITY_NAME, getPersistentClassName(persistentClass)).hasNext();
 	}
 
-	public static boolean tableInResource(ConsoleConfiguration consoleConfiguration, IResource resource, Table table) {
+	private static boolean tableInResource(ConsoleConfiguration consoleConfiguration, IResource resource, Table table) {
 		Document doc = getDocument(consoleConfiguration, resource.getLocation().toFile());
 
-		Iterator classes = getElements(doc, HTConstants.HIBERNATE_TAG_CLASS);
+		Iterator classes = getElements(doc, OpenFileActionUtils.HIBERNATE_TAG_CLASS);
 		while (classes.hasNext()) {
 			Element element = (Element) classes.next();
 
-			Attribute tableAttr = element.attribute( HTConstants.HIBERNATE_TAG_TABLE );
+			Attribute tableAttr = element.attribute( HIBERNATE_TAG_TABLE );
 			if (tableAttr != null) {
-				Attribute catalogAttr = element.attribute( HTConstants.HIBERNATE_TAG_CATALOG );
-				if (catalogAttr == null) catalogAttr = doc.getRootElement().attribute(HTConstants.HIBERNATE_TAG_CATALOG);
-				Attribute schemaAttr = element.attribute( HTConstants.HIBERNATE_TAG_SCHEMA );
-				if (schemaAttr == null) schemaAttr = doc.getRootElement().attribute(HTConstants.HIBERNATE_TAG_SCHEMA);
-				if (HibernateUtils.
+				Attribute catalogAttr = element.attribute( HIBERNATE_TAG_CATALOG );
+				if (catalogAttr == null) catalogAttr = doc.getRootElement().attribute(HIBERNATE_TAG_CATALOG);
+				Attribute schemaAttr = element.attribute( HIBERNATE_TAG_SCHEMA );
+				if (schemaAttr == null) schemaAttr = doc.getRootElement().attribute(HIBERNATE_TAG_SCHEMA);
+				if (
 						getTableName(
 							(catalogAttr != null ? catalogAttr.getValue() : null), 
 							(schemaAttr != null ? schemaAttr.getValue() : null), 
 							tableAttr.getValue()
-						).equals(HibernateUtils.getTableName(table))
+						).equals(getTableName(table))
 					) {
 					return true;
 				}
@@ -109,8 +141,8 @@ public class OpenFileActionUtils {
 				
 			}
 
-			Attribute classNameAttr = element.attribute( HTConstants.HIBERNATE_TAG_NAME );
-			if (classNameAttr == null) classNameAttr = element.attribute( HTConstants.HIBERNATE_TAG_ENTITY_NAME);
+			Attribute classNameAttr = element.attribute( HIBERNATE_TAG_NAME );
+			if (classNameAttr == null) classNameAttr = element.attribute( HIBERNATE_TAG_ENTITY_NAME);
 			if (classNameAttr != null) {
 				String physicalTableName = consoleConfiguration.getConfiguration().getNamingStrategy().classToTableName(classNameAttr.getValue());
 				if (table.getName().equals(physicalTableName)) {
@@ -119,7 +151,7 @@ public class OpenFileActionUtils {
 			}
 		}
 
-		if (getElements(doc, HTConstants.HIBERNATE_TAG_TABLE, table.getName()).hasNext()) {
+		if (getElements(doc, HIBERNATE_TAG_TABLE, table.getName()).hasNext()) {
 			return true;
 		}
 
@@ -194,25 +226,25 @@ public class OpenFileActionUtils {
 			try {
 				stream = new FileInputStream( configXMLFile );
 			} catch (FileNotFoundException e) {
-				ViewPlugin.getDefault().logError("Configuration file not found", e);
+				HibernateConsolePlugin.getDefault().logErrorMessage("Configuration file not found", e);
 			}
 			try {
 				List errors = new ArrayList();
 				doc = helper.createSAXReader( configXMLFile.getPath(), errors, consoleConfiguration.getConfiguration().getEntityResolver() )
 						.read( new InputSource( stream ) );
 				if ( errors.size() != 0 ) {
-	    			ViewPlugin.getDefault().logError("invalid configuration");
+	    			HibernateConsolePlugin.getDefault().logErrorMessage("invalid configuration", (Throwable)null);
 				}
 			}
 			catch (DocumentException e) {
-				ViewPlugin.getDefault().logError("Could not parse configuration", e);
+				HibernateConsolePlugin.getDefault().logErrorMessage("Could not parse configuration", e);
 			}
 			finally {
 				try {
 					stream.close();
 				}
 				catch (IOException ioe) {
-	    			ViewPlugin.getDefault().logError("could not close input stream for", ioe);
+	    			HibernateConsolePlugin.getDefault().logErrorMessage("could not close input stream for", ioe);
 				}
 			}
 		}
@@ -223,11 +255,11 @@ public class OpenFileActionUtils {
 		Document doc = getDocument(consoleConfiguration, configXMLFile);
     	IResource resource = null;
     	if (consoleConfiguration != null && proj != null && doc != null) {
-        	Element sfNode = doc.getRootElement().element( HTConstants.HIBERNATE_TAG_SESSION_FACTORY );
-    		Iterator elements = sfNode.elements(HTConstants.HIBERNATE_TAG_MAPPING).iterator();
+        	Element sfNode = doc.getRootElement().element( HIBERNATE_TAG_SESSION_FACTORY );
+    		Iterator elements = sfNode.elements(HIBERNATE_TAG_MAPPING).iterator();
     		while ( elements.hasNext() ) {
     			Element subelement = (Element) elements.next();
-				Attribute file = subelement.attribute( HTConstants.HIBERNATE_TAG_RESOURCE );
+				Attribute file = subelement.attribute( HIBERNATE_TAG_RESOURCE );
 				if (file != null) {
 					resource = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(configXMLFile.getParent()).append(file.getValue()));
 					if (elementInResource(consoleConfiguration, resource, element)) return resource;
@@ -245,4 +277,6 @@ public class OpenFileActionUtils {
     	}
     	return null;
 	}
+
+	
 }

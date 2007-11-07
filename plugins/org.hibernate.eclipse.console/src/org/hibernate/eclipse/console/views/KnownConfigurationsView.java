@@ -31,6 +31,7 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -39,6 +40,7 @@ import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.actions.ActionContext;
 import org.eclipse.ui.actions.ActionGroup;
+import org.eclipse.ui.internal.ObjectPluginAction;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheetPage;
@@ -46,7 +48,10 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.node.BaseNode;
 import org.hibernate.eclipse.console.actions.EditConsoleConfiguration;
+import org.hibernate.eclipse.console.actions.OpenMappingActionDelegate;
 import org.hibernate.eclipse.console.workbench.xpl.AnyAdaptableLabelProvider;
+import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.RootClass;
 import org.hibernate.util.StringHelper;
 
 
@@ -152,6 +157,9 @@ public class KnownConfigurationsView extends ViewPart {
 							consoleConfiguration.executeHQLQuery( hql );
 						}
 					}
+				} else if (firstElement instanceof RootClass) {
+					ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)((TreeSelection)selection).getPaths()[0].getSegment(0);
+					OpenMappingActionDelegate.openMapping((RootClass) firstElement, consoleConfiguration);
 				}
 			}
 		};

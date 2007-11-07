@@ -11,23 +11,5 @@
             class="org.jboss.tools.hibernate.ui.view.views.OpenDiagramActionDelegate"> 
          </action> 
       </objectContribution> 
-      <objectContribution id="mappingEditorAction" objectClass="org.hibernate.mapping.RootClass"> 
-         <menu id="org.jboss.tools.hibernate.ui.view.openMapping" label="Open Mapping File" path="mappingEditorAction"/>
-         <action
-            id="org.jboss.tools.hibernate.ui.view.openMappingAction" 
-            label="Open Mapping File" 
-            icon="icons/runOpenMapping.gif" 
-            class="org.jboss.tools.hibernate.ui.view.views.OpenMappingActionDelegate"> 
-         </action> 
-      </objectContribution> 
-      <objectContribution id="sourceEditorAction" objectClass="org.hibernate.mapping.RootClass"> 
-         <menu id="org.jboss.tools.hibernate.ui.view.openSource" label="Open Source File" path="sourceEditorAction"/>
-         <action
-            id="org.jboss.tools.hibernate.ui.view.openSourceAction" 
-            label="Open Source File" 
-            icon="icons/runOpenSource.gif" 
-            class="org.jboss.tools.hibernate.ui.view.views.OpenSourceActionDelegate"> 
-         </action> 
-      </objectContribution> 
    </extension>
 </plugin>
