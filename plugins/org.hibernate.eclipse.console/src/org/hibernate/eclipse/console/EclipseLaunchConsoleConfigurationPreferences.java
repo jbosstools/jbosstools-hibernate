@@ -16,9 +16,13 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationType;
+import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
+import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.utils.ClassLoaderHelper;
+import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 import org.w3c.dom.Element;
 
@@ -30,6 +34,7 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 		this.launchConfiguration = configuration;
 	}
 
+  
 	private File strToFile(String epath) {
 		if(epath==null) return null;
 		IPath path = new Path(epath);
@@ -154,6 +159,9 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 	public void writeStateTo(Element node) {
 		throw new IllegalStateException("Cannot write to xml");		
 	}
+
+
+	
 	
 	
 		

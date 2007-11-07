@@ -114,5 +114,6 @@ public interface ImageConstants {
 	
 	public static final String CHECKBOX_FULL = "images/xpl/complete_tsk.gif";
 	public static final String CHECKBOX_EMPTY = "images/xpl/incomplete_tsk.gif";
+	public static final String RELOAD = "images/reload.gif";
     
 }

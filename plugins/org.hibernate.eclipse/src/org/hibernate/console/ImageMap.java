@@ -71,6 +71,7 @@ public abstract class ImageMap implements ImageConstants {
         declareRegistryImage(FUNCTION, "images/function.gif");
         declareRegistryImage(CHECKBOX_EMPTY, "images/xpl/incomplete_tsk.gif");
         declareRegistryImage(CHECKBOX_FULL, "images/xpl/complete_tsk.gif");
+        declareRegistryImage(RELOAD, "images/reload.gif");
 		
 	}
 

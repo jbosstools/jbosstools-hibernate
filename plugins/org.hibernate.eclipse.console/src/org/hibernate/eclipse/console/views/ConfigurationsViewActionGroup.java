@@ -31,7 +31,6 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.ActionGroup;
 import org.eclipse.ui.actions.SelectionListenerAction;
 import org.hibernate.eclipse.console.actions.AddConfigurationAction;
-import org.hibernate.eclipse.console.actions.BuildSessionFactoryAction;
 import org.hibernate.eclipse.console.actions.CriteriaEditorAction;
 import org.hibernate.eclipse.console.actions.DeleteConfigurationAction;
 import org.hibernate.eclipse.console.actions.EditConsoleConfiguration;
@@ -47,11 +46,12 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 	private Action addConfigurationAction;
 	private SelectionListenerAction deleteConfigurationAction;
 	private SelectionListenerAction refreshAction;
-	private SelectionListenerAction connectAction;
+	//private SelectionListenerAction connectAction;
+	private SelectionListenerAction reloadConfigurationAction;
 	private SelectionListenerAction schemaExportAction;
 	private EditConsoleConfiguration editConfigurationAction;
 	private final StructuredViewer selectionProvider;
-	private SelectionListenerAction scratchpadAction;
+	private SelectionListenerAction hqlEditorAction;
 	private CriteriaEditorAction criteriaEditorAction;
 
 	public ConfigurationsViewActionGroup(IViewPart part, StructuredViewer selectionProvider) {
@@ -68,9 +68,12 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 		   
 		refreshAction = new RefreshAction(selectionProvider);
 		selectionProvider.addSelectionChangedListener(refreshAction);
-		
-		connectAction = new BuildSessionFactoryAction(selectionProvider);
-		selectionProvider.addSelectionChangedListener(connectAction);
+
+		reloadConfigurationAction = new ReloadConfigurationAction(selectionProvider);
+		selectionProvider.addSelectionChangedListener(reloadConfigurationAction);
+
+		//connectAction = new BuildSessionFactoryAction(selectionProvider);
+		//selectionProvider.addSelectionChangedListener(connectAction);
 		/*IMenuManager manager = part.getViewSite().getActionBars().getMenuManager();
 		manager.add(addConfigurationAction);*/
 		
@@ -80,8 +83,8 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 		editConfigurationAction = new EditConsoleConfiguration();
 		selectionProvider.addSelectionChangedListener(editConfigurationAction);
 		
-		scratchpadAction = new HQLScratchpadAction();
-		selectionProvider.addSelectionChangedListener(scratchpadAction);
+		hqlEditorAction = new HQLScratchpadAction();
+		selectionProvider.addSelectionChangedListener(hqlEditorAction);
 		
 		criteriaEditorAction = new CriteriaEditorAction();
 		selectionProvider.addSelectionChangedListener(criteriaEditorAction);
@@ -91,20 +94,20 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 		super.dispose();
 		selectionProvider.removeSelectionChangedListener(deleteConfigurationAction);
 		selectionProvider.removeSelectionChangedListener(refreshAction);
-		selectionProvider.removeSelectionChangedListener(connectAction);
+		selectionProvider.removeSelectionChangedListener(reloadConfigurationAction);
 		selectionProvider.removeSelectionChangedListener(schemaExportAction);
 		selectionProvider.removeSelectionChangedListener(editConfigurationAction);
-		selectionProvider.removeSelectionChangedListener(scratchpadAction);
+		selectionProvider.removeSelectionChangedListener(hqlEditorAction);
 		selectionProvider.removeSelectionChangedListener(criteriaEditorAction);
 	}
 	
 	public void fillContextMenu(IMenuManager menu) {
 	
-		menu.add(connectAction);
-		menu.add(scratchpadAction);
+		menu.add(hqlEditorAction);
 		menu.add(criteriaEditorAction);
 		menu.add(new Separator() );
 		menu.add(addConfigurationAction);
+		menu.add(reloadConfigurationAction);
 		menu.add(editConfigurationAction);
 		menu.add(deleteConfigurationAction);
 		menu.add(new Separator() );
@@ -115,8 +118,9 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 	
 	public void fillActionBars(IActionBars actionBars) {
 		
+		actionBars.getToolBarManager().add(reloadConfigurationAction);
 		actionBars.getToolBarManager().add(addConfigurationAction);
-		actionBars.getToolBarManager().add(scratchpadAction);
+		actionBars.getToolBarManager().add(hqlEditorAction);
 		actionBars.getToolBarManager().add(criteriaEditorAction);
 	}
 	
