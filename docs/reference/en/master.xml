@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3CR3//EN"
+"../../resources/support/docbook-dtd/docbookx.dtd" [
+<!ENTITY setup SYSTEM "modules/setup.xml">
+<!ENTITY codegenarchitecture SYSTEM "modules/codegenarchitecture.xml">
+<!ENTITY plugins SYSTEM "modules/plugins.xml">
+<!ENTITY ant SYSTEM "modules/ant.xml">
+<!ENTITY reveng SYSTEM "modules/reverseengineering.xml">
+<!ENTITY codegen SYSTEM "modules/codegen.xml">
+]>
+<book lang="en">
+  <bookinfo>
+    <title>Hibernate Tools</title>
+
+    <subtitle>Reference Guide</subtitle>
+
+    <releaseinfo>3.2.0.CR1</releaseinfo>
+ 
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="images/hibernate_logo_a.png" format="PNG" />
+      </imageobject>
+    </mediaobject>
+  </bookinfo>
+
+  <toc></toc>
+
+  <preface>
+    <title>Preface</title>
+
+    <para>Hibernate Tools is a toolset for Hibernate 3 and related projects.
+    The tools provide Ant tasks and Eclipse plugins for performing reverse
+    engineering, code generation, visualization and interaction with
+    Hibernate.</para>
+  </preface>
+
+  &setup;
+
+  &codegenarchitecture;
+
+  &plugins;
+
+  &ant;
+
+  &reveng;
+
+  &codegen;
+</book>

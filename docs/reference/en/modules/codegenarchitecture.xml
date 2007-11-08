@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="codegenarchitecture">
+  <title>Code generation architecture</title>
+
+  <para>The code generation mechanism in the Hibernate Tools consists of a few
+  core concepts. This section explains their overall structure which are the
+  same for the Ant and Eclipse tools.</para>
+
+  <section>
+    <title>Hibernate Meta Model</title>
+
+    <para>The meta model is the model used by Hibernate core to perform its
+    object relational mapping. The model includes information about tables,
+    columns, classes, properties, components, values, collections etc. The API
+    is in <literal>org.hibernate.mapping</literal> and its main entry point is
+    the <literal>Configuration</literal> class, the same class that is used to
+    build a session factory.</para>
+
+    <para>The model represented by the <literal>Configuration</literal> class
+    can be build in many ways. The following list the currently supported ones
+    in Hibernate Tools. </para>
+
+    <para><itemizedlist>
+        <listitem>
+          <para>A <emphasis>Core configuration</emphasis> uses Hibernate Core
+          and supports reading hbm.xml files, requires a hibernate.cfg.xml.
+          Named core in Eclipse and <literal>&lt;configuration&gt;</literal>
+          in ant.</para>
+        </listitem>
+
+        <listitem>
+          <para>A <emphasis>Annotation configuration</emphasis> uses Hibernate
+          Annotations and supports hbm.xml and annotated classes, requires a
+          hibernate.cfg.xml. Named annotations in Eclipse and
+          <literal>&lt;annotationconfiguration&gt;</literal> in ant.</para>
+        </listitem>
+
+        <listitem>
+          <para>A <emphasis>JPA configuration</emphasis> uses a Hibernate
+          EntityManager and supports hbm.xml and annotated classes requires
+          that the project has a META-INF/persistence.xml in its classpath.
+          Named JPA in Eclipse and <literal>&lt;jpaconfiguration&gt;</literal>
+          in ant.</para>
+        </listitem>
+
+        <listitem>
+          <para>A <emphasis>JDBC configuration</emphasis> uses Hibernate Tools
+          reverse engineering and reads its mappings via JDBC metadata +
+          additional reverse engineering files (reveng.xml). Automatically
+          used in Eclipse when doing reverse engineering from JDBC and named
+          <literal>&lt;jdbcconfiguration&gt;</literal> in ant.</para>
+        </listitem>
+      </itemizedlist></para>
+
+    <para>In most projects you will normally use only one of the Core,
+    Annotation or JPA configuration and possibly the JDBC configuration if you
+    are using the reverse engineering facilities of Hibernate Tools. The
+    important thing to note is that no matter which Hibnerate Configuration
+    type you are using Hibernate Tools supports them.</para>
+
+    <para>The following drawing illustrates the core concepts:</para>
+
+    <para><mediaobject>
+        <imageobject role="fo">
+          <imagedata fileref="images/architecture.png" format="PNG" />
+        </imageobject>
+
+        <imageobject role="html">
+          <imagedata align="center"
+                     fileref="../shared/images/architecture.png" format="PNG" />
+        </imageobject>
+      </mediaobject></para>
+
+    <para>The code generation is done based on the Configuration model no
+    matter which type of configuration have been used to create the meta
+    model, and thus the code generation is independent on the source of the
+    meta model and represented via Exporters.</para>
+  </section>
+
+  <section>
+    <title>Exporters</title>
+
+    <para>Code generation is done in so called Exporters. An
+    <literal>Exporter</literal> is handed a Hibernate Meta Model represented
+    as a <literal>Configuration</literal> instance and it is then the job of
+    the exporter to generate a set of code artifacts.</para>
+
+    <para>The tools provides a default set of Exporter's which can be used in
+    both Ant and the Eclipse UI. Documentation for these Exporters is in the
+    Ant and Eclipse sections.</para>
+
+    <para>Users can provide their own customer Exporter's, either by custom
+    classes implementing the Exporter interface or simply be providing custom
+    templates. This is documented at <xref linkend="hbmtemplate" /></para>
+  </section>
+</chapter>
