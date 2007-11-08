@@ -87,16 +87,16 @@ public class OpenFileActionUtils {
 		}
 	}
 
+	// TODO: this is *extremely* inefficient - no need to scan the whole tree again and again.
 	private static boolean rootClassInResource(ConsoleConfiguration consoleConfiguration, IResource resource, RootClass persistentClass) {
 		Document doc = getDocument(consoleConfiguration, resource.getLocation().toFile());
 		return getElements(doc, OpenFileActionUtils.HIBERNATE_TAG_CLASS, HIBERNATE_TAG_NAME, StringHelper.unqualify(getPersistentClassName(persistentClass))).hasNext() ||
 				getElements(doc, OpenFileActionUtils.HIBERNATE_TAG_CLASS, HIBERNATE_TAG_NAME, getPersistentClassName(persistentClass)).hasNext() ||
-				getElements(doc, OpenFileActionUtils.HIBERNATE_TAG_CLASS, StringHelper.unqualify(getPersistentClassName(persistentClass))).hasNext() ||
-				getElements(doc, OpenFileActionUtils.HIBERNATE_TAG_CLASS, getPersistentClassName(persistentClass)).hasNext() ||
 				getElements(doc, OpenFileActionUtils.HIBERNATE_TAG_CLASS, HIBERNATE_TAG_ENTITY_NAME, StringHelper.unqualify(getPersistentClassName(persistentClass))).hasNext() ||
 				getElements(doc, OpenFileActionUtils.HIBERNATE_TAG_CLASS, HIBERNATE_TAG_ENTITY_NAME, getPersistentClassName(persistentClass)).hasNext();
 	}
 
+	// TODO: this is *extremely* inefficient - no need to scan the whole tree again and again.
 	private static boolean subclassInResource(ConsoleConfiguration consoleConfiguration, IResource resource, Subclass persistentClass) {
 		Document doc = getDocument(consoleConfiguration, resource.getLocation().toFile());
 		return getElements(doc, HIBERNATE_TAG_SUBCLASS, HIBERNATE_TAG_NAME, StringHelper.unqualify(getPersistentClassName(persistentClass))).hasNext() ||
@@ -107,7 +107,7 @@ public class OpenFileActionUtils {
 				getElements(doc, HIBERNATE_TAG_JOINED_SUBCLASS, HIBERNATE_TAG_NAME, StringHelper.unqualify(getPersistentClassName(persistentClass))).hasNext() ||
 				getElements(doc, HIBERNATE_TAG_JOINED_SUBCLASS, HIBERNATE_TAG_NAME, getPersistentClassName(persistentClass)).hasNext() ||
 				getElements(doc, HIBERNATE_TAG_JOINED_SUBCLASS, HIBERNATE_TAG_ENTITY_NAME, StringHelper.unqualify(getPersistentClassName(persistentClass))).hasNext() ||
-				getElements(doc, HIBERNATE_TAG_JOINED_SUBCLASS, HIBERNATE_TAG_ENTITY_NAME, getPersistentClassName(persistentClass)).hasNext() ||
+			    getElements(doc, HIBERNATE_TAG_JOINED_SUBCLASS, HIBERNATE_TAG_ENTITY_NAME, getPersistentClassName(persistentClass)).hasNext() ||
 
 				getElements(doc, HIBERNATE_TAG_UNION_SUBCLASS, HIBERNATE_TAG_NAME, StringHelper.unqualify(getPersistentClassName(persistentClass))).hasNext() ||
 				getElements(doc, HIBERNATE_TAG_UNION_SUBCLASS, HIBERNATE_TAG_NAME, getPersistentClassName(persistentClass)).hasNext() ||
