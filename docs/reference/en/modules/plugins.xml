@@ -64,7 +64,7 @@
 
       <imageobject role="html">
         <imagedata align="center"
-                   fileref="../shared/images/hibernatecfgwizard.png"
+                   fileref="images/hibernatecfgwizard.png"
                    format="PNG" />
       </imageobject>
     </mediaobject>
@@ -114,7 +114,7 @@
 
       <imageobject role="html">
         <imagedata align="center"
-                   fileref="../shared/images/consolecfgwizard.png"
+                   fileref="images/consolecfgwizard.png"
                    format="PNG" />
       </imageobject>
 
@@ -238,7 +238,7 @@
 
       <imageobject role="html">
         <imagedata align="center"
-                   fileref="../shared/images/consolecfgclasspath.png"
+                   fileref="images/consolecfgclasspath.png"
                    format="PNG" />
       </imageobject>
 
@@ -301,7 +301,7 @@
 
         <imageobject role="html">
           <imagedata align="center"
-                     fileref="../shared/images/consolecfgmappings.png"
+                     fileref="images/consolecfgmappings.png"
                      format="PNG" />
         </imageobject>
 
@@ -355,7 +355,7 @@
 
       <imageobject role="html">
         <imagedata align="center"
-                   fileref="../shared/images/consoleoutline-before-reveng.png"
+                   fileref="images/consoleoutline-before-reveng.png"
                    format="PNG" />
       </imageobject>
 
@@ -391,7 +391,7 @@
 
         <imageobject role="html">
           <imagedata align="center"
-                     fileref="../shared/images/codegendropdown.gif"
+                     fileref="images/codegendropdown.gif"
                      format="GIF" />
         </imageobject>
       </mediaobject>
@@ -405,7 +405,7 @@
 
         <imageobject role="html">
           <imagedata align="center"
-                     fileref="../shared/images/codegenmaintab.png"
+                     fileref="images/codegenmaintab.png"
                      format="PNG" />
         </imageobject>
       </mediaobject>
@@ -566,7 +566,7 @@
 
         <imageobject role="html">
           <imagedata align="center"
-                     fileref="../shared/images/codegenexporters.png"
+                     fileref="images/codegenexporters.png"
                      format="PNG" />
         </imageobject>
       </mediaobject>
@@ -731,7 +731,7 @@
 
       <imageobject role="html">
         <imagedata align="center"
-                   fileref="../shared/images/hbmxmlcompletion.gif"
+                   fileref="images/hbmxmlcompletion.gif"
                    format="GIF" />
       </imageobject>
     </mediaobject>
@@ -753,7 +753,7 @@
 
           <imageobject role="html">
             <imagedata align="center"
-                       fileref="../shared/images/hbmxml-typecompletion.png"
+                       fileref="images/hbmxml-typecompletion.png"
                        format="PNG" />
           </imageobject>
         </mediaobject><mediaobject>
@@ -763,7 +763,7 @@
 
           <imageobject role="html">
             <imagedata align="center"
-                       fileref="../shared/images/hbmxml-namecompletion.PNG"
+                       fileref="images/hbmxml-namecompletion.PNG"
                        format="PNG" />
           </imageobject>
         </mediaobject></para>
@@ -791,7 +791,7 @@
 
           <imageobject role="html">
             <imagedata align="center"
-                       fileref="../shared/images/hbmxml-tablecompletion.png"
+                       fileref="images/hbmxml-tablecompletion.png"
                        format="PNG" />
           </imageobject>
         </mediaobject></para>
@@ -824,7 +824,7 @@
 
           <imageobject role="html">
             <imagedata align="center"
-                       fileref="../shared/images/cfgxml-propertycomplete.png"
+                       fileref="images/cfgxml-propertycomplete.png"
                        format="PNG" />
           </imageobject>
         </mediaobject></para>
@@ -864,7 +864,7 @@
 
         <imageobject role="html">
           <imagedata align="center"
-                     fileref="../shared/images/revengxml_overview.png"
+                     fileref="images/revengxml_overview.png"
                      format="PNG" />
         </imageobject>
       </mediaobject></para>
@@ -880,7 +880,7 @@
 
         <imageobject role="html">
           <imagedata align="center"
-                     fileref="../shared/images/revengxml_tablefilters.png"
+                     fileref="images/revengxml_tablefilters.png"
                      format="PNG" />
         </imageobject>
       </mediaobject></para>
@@ -896,7 +896,7 @@
 
         <imageobject role="html">
           <imagedata align="center"
-                     fileref="../shared/images/revengxml_typemappings.png"
+                     fileref="images/revengxml_typemappings.png"
                      format="PNG" />
         </imageobject>
       </mediaobject></para>
@@ -912,7 +912,7 @@
 
         <imageobject role="html">
           <imagedata align="center"
-                     fileref="../shared/images/revengxml_tablescolumn.png"
+                     fileref="images/revengxml_tablescolumn.png"
                      format="PNG" />
         </imageobject>
       </mediaobject></para>
@@ -942,7 +942,7 @@
 
           <imageobject role="html">
             <imagedata align="center"
-                       fileref="../shared/images/queryconsole.png" />
+                       fileref="images/queryconsole.png" />
           </imageobject>
         </mediaobject> Hibernate Console perspective showing entity structure,
       query editor and result</para>
@@ -960,7 +960,7 @@
 
           <imageobject role="html">
             <imagedata align="center"
-                       fileref="../shared/images/entitymodel.png" />
+                       fileref="images/entitymodel.png" />
           </imageobject>
         </mediaobject>
 
@@ -1010,7 +1010,7 @@
 
           <imageobject role="html">
             <imagedata align="center"
-                       fileref="../shared/images/dynamicquerytranslation.png"
+                       fileref="images/dynamicquerytranslation.png"
                        format="PNG" />
           </imageobject>
         </mediaobject>
@@ -1034,7 +1034,7 @@
 
           <imageobject role="html">
             <imagedata align="center"
-                       fileref="../shared/images/properties.png" format="PNG" />
+                       fileref="images/properties.png" format="PNG" />
           </imageobject>
         </mediaobject></para>
     </section>

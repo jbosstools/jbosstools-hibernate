@@ -67,7 +67,7 @@
 
         <imageobject role="html">
           <imagedata align="center"
-                     fileref="../shared/images/architecture.png" format="PNG" />
+                     fileref="images/architecture.png" format="PNG" />
         </imageobject>
       </mediaobject></para>
 
