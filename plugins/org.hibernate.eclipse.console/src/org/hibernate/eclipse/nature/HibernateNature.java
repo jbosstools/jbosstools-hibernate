@@ -59,7 +59,7 @@ public class HibernateNature implements IProjectNature {
 	private IProject project;
 
 	public void configure() throws CoreException {
-		HibernateConsolePlugin.getDefault().log("Configuring " + project + " as a Hibernate project");
+		//HibernateConsolePlugin.getDefault().log("Configuring " + project + " as a Hibernate project");
 		
 		IProjectDescription desc = project.getDescription();
 		   ICommand[] commands = desc.getBuildSpec();
@@ -84,7 +84,7 @@ public class HibernateNature implements IProjectNature {
 	}
 
 	public void deconfigure() throws CoreException {
-		HibernateConsolePlugin.getDefault().log("Deconfiguring " + project + " as a Hibernate project");
+		//HibernateConsolePlugin.getDefault().log("Deconfiguring " + project + " as a Hibernate project");
 	}
 
 	public IProject getProject() {
