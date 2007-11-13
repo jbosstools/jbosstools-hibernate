@@ -225,8 +225,8 @@
     <!-- Generate the TOCs for named components only -->
     <xsl:param name="generate.toc"> book toc,title</xsl:param>
     <!-- ,figure,table,equation -->
-    <!-- Show only Sections up to level 3 in the TOCs -->
-    <xsl:param name="toc.section.depth">3</xsl:param>
+    <!-- Show only Sections up to level 5 in the TOCs -->
+    <xsl:param name="toc.section.depth">5</xsl:param>
     <!-- Dot and Whitespace as separator in TOC between Label and Title-->
     <xsl:param name="autotoc.label.separator" select="'.  '"/>
     

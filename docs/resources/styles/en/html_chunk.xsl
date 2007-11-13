@@ -54,8 +54,8 @@
         book   toc
     </xsl:param>
     
-    <!-- Show only Sections up to level 3 in the TOCs -->
-    <xsl:param name="toc.section.depth">3</xsl:param>
+    <!-- Show only Sections up to level 5 in the TOCs -->
+    <xsl:param name="toc.section.depth">5</xsl:param>
 
 <!--###################################################
                          Labels
