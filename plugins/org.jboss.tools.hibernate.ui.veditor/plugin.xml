@@ -6,7 +6,7 @@
       <editor
             class="org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor"
             contributorClass="org.jboss.tools.hibernate.ui.veditor.editors.EditorActionContributor"
-            icon="icons/sample.gif"
+            icon="icons/hibernate_small_icon.gif"
             id="org.jboss.tools.hibernate.ui.veditor.editors.visualeditor"
             name="Hibernate Diagram Viewer">
       </editor>
