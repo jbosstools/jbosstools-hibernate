@@ -23,9 +23,7 @@
                 xmlns="http://www.w3.org/TR/xhtml1/transitional"
                 exclude-result-prefixes="#default">
                 
-<!-- <xsl:import href="&db_xsl_path;/html/chunk.xsl"/>   -->
-
-<xsl:import href="http://docbook.sourceforge.net/release/xsl/current/html/chunk.xsl"/>
+<xsl:import href="&db_xsl_path;/html/chunk.xsl"/>
 
 <xsl:include href="./collapsing-navigation.xsl"></xsl:include>
 <xsl:include href="./highlight.xsl"></xsl:include>
