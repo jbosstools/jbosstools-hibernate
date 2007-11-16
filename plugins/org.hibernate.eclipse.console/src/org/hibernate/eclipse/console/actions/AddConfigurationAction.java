@@ -21,6 +21,8 @@
  */
 package org.hibernate.eclipse.console.actions;
 
+import java.util.Map;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -36,7 +38,9 @@ import org.eclipse.ui.PlatformUI;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard;
+import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
 
 /**
  * 
@@ -68,11 +72,11 @@ public class AddConfigurationAction extends Action {
 		try {
 			ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 
-			ILaunchConfigurationType launchConfigurationType = launchManager.getLaunchConfigurationType( "org.hibernate.eclipse.launch.ConsoleConfigurationLaunchConfigurationType" );
+			ILaunchConfigurationType launchConfigurationType = launchManager.getLaunchConfigurationType( ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID );
 			String launchName = launchManager.generateUniqueLaunchConfigurationNameFrom("hibernate"); 
 			//ILaunchConfiguration[] launchConfigurations = launchManager.getLaunchConfigurations( launchConfigurationType );
 			ILaunchConfigurationWorkingCopy wc = launchConfigurationType.newInstance(null, launchName);
-			ILaunchConfiguration saved = wc.doSave();
+			ILaunchConfiguration saved = wc.doSave();			
 			int i = DebugUITools.openLaunchConfigurationPropertiesDialog( part.getSite().getShell(), saved, "org.eclipse.debug.ui.launchGroup.run" );
 			if(i!=Window.OK) {
 				saved.delete();

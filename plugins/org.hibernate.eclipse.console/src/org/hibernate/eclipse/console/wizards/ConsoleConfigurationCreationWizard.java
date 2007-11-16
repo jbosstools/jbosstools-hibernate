@@ -61,6 +61,7 @@ import org.hibernate.eclipse.console.EclipseConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
+import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 import org.hibernate.eclipse.nature.HibernateNature;
 import org.hibernate.util.StringHelper;
@@ -162,7 +163,7 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 		}
 		
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
-		ILaunchConfigurationType launchConfigurationType = launchManager.getLaunchConfigurationType( "org.hibernate.eclipse.launch.ConsoleConfigurationLaunchConfigurationType" );
+		ILaunchConfigurationType launchConfigurationType = launchManager.getLaunchConfigurationType( ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID );
 		String launchName = launchManager.generateUniqueLaunchConfigurationNameFrom(configName); 
 		ILaunchConfigurationWorkingCopy wc = launchConfigurationType.newInstance(null, launchName);
 		wc.setAttribute( IConsoleConfigurationLaunchConstants.CONFIGURATION_FACTORY, cmode.toString());

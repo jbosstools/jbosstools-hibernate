@@ -184,11 +184,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 					ConsoleConfiguration oldcfg = instance.find( configuration.getName() );
 					if(oldcfg!=null) {
 						oldcfg.reset(); // reset it no matter what.
-						
-						instance.removeConfiguration(oldcfg, true);
-						
-						ConsoleConfigurationPreferences adapter = buildConfigurationPreferences(configuration);
-						instance.addConfiguration(new ConsoleConfiguration(adapter), true);						
+												
 					}
 				}
 			}

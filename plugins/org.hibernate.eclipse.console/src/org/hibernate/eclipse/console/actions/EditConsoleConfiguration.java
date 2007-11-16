@@ -39,6 +39,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard;
+import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
 
 /**
  * @author max
@@ -95,14 +96,16 @@ public class EditConsoleConfiguration extends ConsoleConfigurationBasedAction {
 			try {
 				ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 
-				ILaunchConfigurationType launchConfigurationType = launchManager.getLaunchConfigurationType( "org.hibernate.eclipse.launch.ConsoleConfigurationLaunchConfigurationType" );
+				ILaunchConfigurationType launchConfigurationType = launchManager.getLaunchConfigurationType( ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID );
 				ILaunchConfiguration[] launchConfigurations = launchManager.getLaunchConfigurations( launchConfigurationType );
 				for (int i = 0; i < launchConfigurations.length; i++) { // can't believe there is no look up by name API
 					ILaunchConfiguration launchConfiguration = launchConfigurations[i];
 					if(launchConfiguration.getName().equals(config.getName())) {
 						DebugUITools.openLaunchConfigurationPropertiesDialog( win.getShell(), launchConfiguration, "org.eclipse.debug.ui.launchGroup.run" );
+						return;
 					}
-				}								
+				}				
+				HibernateConsolePlugin.getDefault().showError(win.getShell(), "Could not find launch configuration for '" + config.getName() + "'", new IllegalStateException("No launch configuration matched the configuration named " + config.getName()));
 			} catch (CoreException ce) {
 				HibernateConsolePlugin.getDefault().showError( win.getShell(), "Problem adding a console configuration",  ce);
 			}

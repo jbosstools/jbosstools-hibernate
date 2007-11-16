@@ -59,7 +59,7 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 		this.selectionProvider = selectionProvider;
 		addConfigurationAction = new AddConfigurationAction(part);
 		
-		deleteConfigurationAction = new DeleteConfigurationAction();
+		deleteConfigurationAction = new DeleteConfigurationAction(selectionProvider);
 		selectionProvider.addSelectionChangedListener(deleteConfigurationAction);
 		IActionBars actionBars= part.getViewSite().getActionBars();
 		   actionBars.setGlobalActionHandler(

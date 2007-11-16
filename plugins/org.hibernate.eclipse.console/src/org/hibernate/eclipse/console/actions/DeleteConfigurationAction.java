@@ -25,6 +25,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredViewer;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.actions.SelectionListenerAction;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
@@ -35,9 +37,12 @@ import org.hibernate.console.KnownConfigurations;
  */
 public class DeleteConfigurationAction extends SelectionListenerAction {
 	
-	public DeleteConfigurationAction() {
+	private StructuredViewer part;
+
+	public DeleteConfigurationAction(StructuredViewer selectionProvider) {
 		super("Delete Configuration");
 		setEnabled(false);
+		this.part = selectionProvider;
 	}
 
 	public void run() {
@@ -48,6 +53,8 @@ public class DeleteConfigurationAction extends SelectionListenerAction {
 			ConsoleConfiguration element = (ConsoleConfiguration) iter.next();
 			KnownConfigurations.getInstance().removeConfiguration(element, false);
 		}
+		
+		part.refresh();
 	}	
 	
 	protected boolean updateSelection(IStructuredSelection selection) {
