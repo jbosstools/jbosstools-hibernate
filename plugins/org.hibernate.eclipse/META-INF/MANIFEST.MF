@@ -19,7 +19,6 @@ Bundle-ClassPath: org.hibernate.eclipse.jar,
  lib/hibernate/jdbc2_0-stdext.jar,
  lib/hibernate/jta.jar,
  lib/hibernate/jaas.jar,
- lib/hibernate/log4j-1.2.11.jar,
  lib/hibernate/oscache-2.1.jar,
  lib/hibernate/proxool-0.8.3.jar,
  lib/hibernate/swarmcache-1.0rc2.jar,
@@ -40,7 +39,8 @@ Bundle-ClassPath: org.hibernate.eclipse.jar,
  lib/annotations/hibernate-commons-annotations.jar,
  lib/annotations/hibernate-validator.jar,
  lib/annotations/hibernate-search.jar,
- lib/annotations/lucene-core-2.2.0.jar
+ lib/annotations/lucene-core-2.2.0.jar,
+ lib/hibernate/log4j-1.2.15.jar
 Bundle-Activator: org.hibernate.eclipse.HibernatePlugin
 Bundle-Vendor: Hibernate Team
 Bundle-Localization: plugin

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate/log4j-1.2.15.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/annotations/hibernate-search.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/annotations/lucene-core-2.2.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/asm.jar"/>
@@ -18,7 +19,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/jdbc2_0-stdext.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/jta.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/jaas.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/hibernate/log4j-1.2.11.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/oscache-2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/proxool-0.8.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate/swarmcache-1.0rc2.jar"/>
