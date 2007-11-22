@@ -14,7 +14,10 @@
 
     <subtitle>Reference Guide</subtitle>
 
-    <releaseinfo>3.2.0.CR1</releaseinfo>
+           <releaseinfo>
+<para>Version: 1.0.0.GA</para>
+</releaseinfo>
+    </bookinfo>
  
     <mediaobject>
       <imageobject>
