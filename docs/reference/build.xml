@@ -1,9 +1,12 @@
 <project name="Documentation" default="all.doc" basedir=".">
 
     <!-- Set the following property to generate the doco in the output folder -->
-    <property name="build.dir" value="${basedir}/../build/reference"/>
+	<property name="modulename" value="hibernatetools"></property>
+	<condition property="build.dir" value="${doc-root}/${modulename}" else="{basedir}/../build/reference">
+		<isset property="doc-root"/>
+	</condition>
 
-    <property name="pdf.name"              value="hibernate_tools.pdf" />
+    <property name="pdf.name" value="hibernate_tools.pdf" />
     <import file="../resources/support.xml" />
 
     <target name="all.doc" depends="clean">
