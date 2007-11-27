@@ -7,11 +7,11 @@
 
 <project name="Hibernate Help" default="build" basedir=".">
 
-	<property name="hibernate.root" location="../../../../../hibernate/branch_3_2"/>
+	<property name="hibernate.root" location="/home/max/work/os/hibernate/branches/Branch_3_2"/>
 	<available file="${hibernate.root}" property="hibernate.root.exists"/>
 	<fail unless="hibernate.root.exists">hibernate.root needs to be set to the root of the hibernate svn checkout. Currently it is ${hibernate.root} which does not exist.</fail>
 	
-	<import file="${hibernate.root}/HibernateExt/common/common-build.xml"/>
+	<import file="${hibernate.root}/HibernateExt/common/common-build.xml"/> 
 
 	<!-- Name of project and version, used to create filenames -->
     <property name="Name" value="Hibernate Help"/>
@@ -45,14 +45,14 @@
 	    </copy>-->
 
         <!-- copy in the eclipse docs -->
-        <copy todir="${tmpdir}/html/tools/eclipse">
+        <!-- <copy todir="${tmpdir}/html/tools/eclipse">
           <fileset dir="../org.hibernate.eclipse.console/doc"/>
-        </copy>
+        </copy> -->
 
         <!-- copy in the tool docs -->
-        <copy todir="${tmpdir}/html/tools/ant">
-          <fileset dir="${hibernate.root}/HibernateExt/tools/doc/reference/build"/>
-        </copy>
+        <!-- <copy todir="${tmpdir}/html/tools/ant/en/html_single">
+          <fileset dir="/home/max/work/os/jbosstools/trunk/hibernatetools/build/reference/en/html_single"/>
+        </copy>--> 
         
 		<!-- zip into single zip file (must be called 'doc.zip') -->
 		<zip destfile="doc.zip" basedir="tmp"/>

@@ -11,8 +11,8 @@
    <!-- <topic label="Quick Reference">
       <link toc="tocquickreference.xml"/>
    </topic> -->
-   <topic label="Tools Documentation">
+   <!-- <topic label="Tools Documentation">
       <link toc="toctoolsreference.xml"/>
-   </topic>
+   </topic> -->
    
 </toc>
