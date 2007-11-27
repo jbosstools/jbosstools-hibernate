@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<welcomePage title="Hibernate Tools for Eclipse" format="wrap">
+
+<intro><p>This page will help familiarize you with the Hibernate Tools for Eclipse plugin.
+To get started, read the sections below and click on the related links.</p></intro>
+
+<item><b>Creating a Hibernate Console Configuration</b>
+<p>To be able to use Hibernate Tools optimally you need to create a "Hibernate Console Configuration".
+Such a configuration tells Hibernate Tools which hibernate configuration (cfg.xml), mapping files
+and classpath it should use to build up a Hibernate Configuration.
+</p></item>
+
+<item><b>Opening the Hibernate Console Perspective</b>
+<p>Select ...</p></item>
+
+<item><b>Learn More</b>
+<p>To learn more about Hibernate Tools you can read the <topic id="/org.hibernate.eclipse.help/toc.xml">Hibernate Tools Help</topic> or visit
+<a href="http://tools.hibernate.org">Hibernate Tools Website</a></p>
+</item>
+
+</welcomePage>
