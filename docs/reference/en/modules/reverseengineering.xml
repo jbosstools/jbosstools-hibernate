@@ -2,16 +2,20 @@
 <chapter id="reverseengineering">
   <title>Controlling reverse engineering</title>
 
-  <para>When using the &lt;jdbcconfiguration&gt; the ant task will read the
+  <para>When using the <emphasis>
+    <property>&lt;jdbcconfiguration&gt;</property></emphasis> the ant task will read the
   database metadata and from that perform a reverse engineering of the
   database schema into a normal Hibernate Configuration. It is from this
-  object e.g. &gt;hbm2java&lt; can generate other artifacts such as .java,
-  .hbm.xml etc.</para>
+  object e.g. <emphasis>
+    <property>&lt;hbm2java&gt;</property></emphasis>can generate other artifacts such as <emphasis>
+      <property>.java</property></emphasis>,
+    <emphasis>
+      <property>.hbm.xml</property></emphasis> etc.</para>
 
-  <para>To govern this process Hibernate uses a reverse engineering strategy.
+  <para>To govern this process <property>Hibernate</property> uses a reverse engineering strategy.
   A reverse engineering strategy is mainly called to provide more java like
   names for tables, column and foreignkeys into classes, properties and
-  associations. It also used to provide mappings from SQL types to Hibernate
+  associations. It also used to provide mappings from SQL types to <property>Hibernate</property>
   types. The strategy can be customized by the user. The user can even provide
   its own custom reverse engineering strategy if the provided strategy is not
   enough, or simply just provide a small part of the strategy and delegate the
@@ -22,24 +26,28 @@
 
     <para>The default strategy uses some rules for mapping JDBC artifact names
     to java artifact names. It also provide basic typemappings from JDBC types
-    to Hibernate types. It is the default strategy that uses the packagename
+    to 
+      <property>Hibernate</property>
+      types. It is the default strategy that uses the packagename
     attribute to convert a table name to a fully qualified classname.</para>
   </section>
 
   <section id="hibernaterevengxmlfile">
     <title>hibernate.reveng.xml file</title>
 
-    <para>To have fine control over the process a hibernate.reveng.xml file
+    <para>To have fine control over the process a <emphasis>
+      <property>hibernate.reveng.xml</property></emphasis> file
     can be provided. In this file you can specify type mappings and table
     filtering. This file can be created by hand (its just basic XML) or you
     can use the Hibernate plugins which have a specialized editor.</para>
 
-    <para>Note: many databases is case-sensitive with their names and thus if
+    <note><para>Many databases is case-sensitive with their names and thus if
     you cannot make some table match and you are sure it is not excluded by a
-    &lt;table-filter&gt; then check if the case matches; most databases stores
-    table names in uppercase.</para>
+    &lt;table-filter&gt;then check if the case matches; most databases stores
+    table names in uppercase.</para></note>
 
-    <para>The following is an example of a reveng.xml. Following the example
+    <para>The following is an example of a <emphasis>
+      <property>reveng.xml</property></emphasis>. Following the example
     is more details about the format.</para>
 
     <programlisting><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
@@ -93,23 +101,31 @@
     <section>
       <title>Schema Selection (&lt;schema-selection&gt;)</title>
 
-      <para><literal>&lt;schema-selection&gt;</literal> is used to drive which
-      schema's the reverse engineering will try and process.</para>
+      <para><emphasis>
+        <property>&lt;schema-selection&gt;</property></emphasis> is used to drive which
+      schema&apos;s the reverse engineering will try and process.</para>
 
       <para>By default the reverse engineering will read all schemas and then
-      use <literal>&lt;table-filter&gt;</literal> to decide which tables get
+        use <emphasis>
+          <property>&lt;table-filter&gt;</property></emphasis> to decide which tables get
       reverse engineered and which do not; this makes it easy to get started
       but can be inefficient on databases with many schemas.</para>
 
-      <para>With <literal>&lt;schema-selection&gt;</literal> it is thus
+      <para>With <emphasis>
+        <property>&lt;schema-selection&gt;</property></emphasis> it is thus
       possible to limit the actual processed schemas and thus significantly
       speed-up the reverse engineering.
-      <literal>&lt;table-filter&gt;</literal> is still used to then decide
+        <emphasis>
+          <property>&lt;table-filter&gt;</property></emphasis> is still used to then decide
       which tables will be included/excluded.</para>
 
-      <para>Note: If no <literal>&lt;schema-selection&gt;</literal> is
+     <note> <para>If no <literal>&lt;schema-selection&gt;</literal> is
       specified, the reverse engineering works as if all schemas should be
-      processed. This is equal to:</para>
+      processed. </para></note>
+      
+      
+      
+      <para>This is equal to:</para>
 
       <programlisting><![CDATA[<schema-selection/>]]></programlisting>
 
@@ -120,15 +136,19 @@
       <section>
         <title>Examples</title>
 
-        <para>The following will process all tables from MY_SCHEMA.</para>
+        <para>The following will process all tables from <emphasis>
+          <property>&quot;MY_SCHEMA&quot;</property></emphasis>.</para>
 
         <programlisting><![CDATA[<schema-selection match-schema="MY_SCHEMA"/>]]></programlisting>
 
         <para>It is possible to have multiple
         <literal>schema-selection</literal>'s to support multi-schema reading
         or simply to limit the processing to very specific tables. The
-        following example process all tables in MY_SCHEMA, a specific CITY
-        table plus all tables that starts with CODES_ in COMMON_SCHEMA.</para>
+        following example process all tables in <emphasis>
+          <property>&quot;MY_SCHEMA&quot;</property></emphasis>, a specific <emphasis>
+            <property>&quot;CITY&quot;</property></emphasis>
+          table plus all tables that starts with <emphasis>
+            <property>&quot;CODES_ in COMMON_SCHEMA&quot;</property></emphasis>.</para>
 
         <programlisting><![CDATA[<schema-selection match-schema="MY_SCHEMA"/>
 <schema-selection match-schema="COMMON_SCHEMA" match-table="CITY"/>
@@ -139,12 +159,13 @@
     <section>
       <title>Type mappings (&lt;type-mapping&gt;)</title>
 
-      <para>The <literal>&lt;type-mapping&gt;</literal> section specifies how
-      the JDBC types found in the database should be mapped to Hibernate
+      <para>The <emphasis>
+        <property>&lt;type-mapping&gt;</property></emphasis> section specifies how
+        the JDBC types found in the database should be mapped to Hibernate
       types. e.g. java.sql.Types.VARCHAR with a length of 1 should be mapped
       to the Hibernate type <literal>yes_no</literal> or
       java.sql.Types.NUMERIC should generally just be converted to the
-      Hibernate type <literal>long</literal>.</para>
+        Hibernate type <literal>long</literal>.</para>
 
       <programlisting><![CDATA[<type-mapping>
  <sql-type
@@ -158,7 +179,7 @@
 </type-mapping>]]></programlisting>
 
       <para>The number of attributes specificed and the sequence of the
-      <literal>sql-type</literal>'s is important. Meaning that Hibernate will
+        <literal>sql-type</literal>'s is important. Meaning that <property>Hibernate</property> will
       search for the most specific first, and if no specific match is found it
       will seek from top to bottom when trying to resolve a type
       mapping.</para>
@@ -334,7 +355,8 @@
     <section>
       <title>Table filters (&lt;table-filter&gt;)</title>
 
-      <para>The &lt;table-filter&gt; let you specifcy matching rules for
+      <para>The <emphasis>
+        <property>&lt;table-filter&gt;</property></emphasis> let you specifcy matching rules for
       performing general filtering/setup for tables, e.g. let you include or
       exclude specific tables based on the schema or even a specifc
       prefix.</para>
@@ -392,7 +414,8 @@
     <section>
       <title>Specific table configuration (&lt;table&gt;)</title>
 
-      <para><literal>&lt;table&gt;</literal> allows you to provide explicit
+      <para><emphasis>
+        <property>&lt;table&gt;</property></emphasis> allows you to provide explicit
       configuration on how a table should be reverse engineered. Amongst other
       things it allow control over the naming of a class for the table,
       specify which identifier generator should be used for the primary key
@@ -443,7 +466,8 @@
       <section>
         <title>&lt;primary-key&gt;</title>
 
-        <para>A <literal>&lt;primary-key&gt;</literal> allows you to define a
+        <para>A <emphasis>
+          <property>&lt;primary-key&gt;</property></emphasis> allows you to define a
         primary-key for tables that does not have such defined in the
         database, and probably more importantly it allows you to define which
         identifier strategy that should be used (even for already existing
@@ -491,9 +515,10 @@
       <section>
         <title>&lt;column&gt;</title>
 
-        <para>With a &lt;column&gt; it is possible to explicitly name the
+        <para>With a <emphasis>
+          <property>&lt;column&gt;</property></emphasis> it is possible to explicitly name the
         resulting property for a column. It is also possible to redefine what
-        jdbc and/or hibernate type a column should be processed and finally it
+        jdbc and/or Hibernate type a column should be processed and finally it
         is possible to completely exclude a column from processing.</para>
 
         <para><programlistingco>
@@ -549,7 +574,8 @@
       <section>
         <title>&lt;foreign-key&gt;</title>
 
-        <para>The &lt;foreign-key&gt; has two purposes. One for allowing to
+        <para>The <emphasis>
+          <property>&lt;foreign-key&gt;</property></emphasis> has two purposes. One for allowing to
         define foreign-keys in databases that does not support them or does
         not have them defined in their schema. Secondly, to allow defining the
         name of the resulting properties (many-to-one and
@@ -645,15 +671,16 @@
     <title>Custom strategy</title>
 
     <para>It is possible to implement a user strategy. Such strategy must
-    implement org.hibernate.cfg.reveng.ReverseEngineeringStrategy. It is
-    recommended that one uses the DelegatingReverseEngineeringStrategy and
+      implement <emphasis>
+        <property>org.hibernate.cfg.reveng.ReverseEngineeringStrategy</property></emphasis>. It is
+    recommended that one uses the <property>DelegatingReverseEngineeringStrategy</property> and
     provide a public constructor which takes another
-    ReverseEngineeringStrategy as argument. This will allow you to only
+      <property>ReverseEngineeringStrategy </property> as argument. This will allow you to only
     implement the relevant methods and provide a fallback strategy. Example of
     custom delegating strategy which converts all column names that ends with
-    "PK" into a property named "id".</para>
-
-    <para></para>
+      <emphasis>
+        <property>&quot;PK&quot;</property></emphasis> into a property named <emphasis>
+          <property>&quot;id&quot;</property></emphasis>.</para>
 
     <programlisting><![CDATA[public class ExampleStrategy extends DelegatingReverseEngineeringStrategy {
 
@@ -675,16 +702,19 @@
     <title>Custom Database Metadata</title>
 
     <para>By default the reverse engineering is performed by reading using the
-    JDBC database metadata API. This is done via the class
-    <literal>org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect</literal>
+  JDBC database metadata API. This is done via the class
+      <emphasis>
+        <property>org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect</property></emphasis>
     which is an implementation of
-    <literal>org.hibernate.cfg.reveng.dialect.MetaDataDialect</literal>.</para>
+      <emphasis>
+        <property>org.hibernate.cfg.reveng.dialect.MetaDataDialect</property></emphasis>.</para>
 
     <para>The default implementation can be replaced with an alternative
     implementation by setting the property
-    <literal>hibernatetool.metadatadialect</literal> to a fully qualified
+      <emphasis>
+        <property>hibernatetool.metadatadialect</property></emphasis> to a fully qualified
     classname for a class that implements
-    <literal>JDBCMetaDataDialect</literal>.</para>
+      <property>JDBCMetaDataDialect</property>.</para>
 
     <para>This can be used to provide database specific optimized metadata
     reading. If you create an optimized/better metadata reading for your
