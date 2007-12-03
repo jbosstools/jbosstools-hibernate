@@ -10,27 +10,24 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.view.views;
 
-import java.sql.Types;
 import java.util.ResourceBundle;
 
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jdt.core.Signature;
-import org.eclipse.jface.text.TextUtilities;
-import org.eclipse.jface.viewers.ContentViewer;
-import org.hibernate.cfg.reveng.JDBCToHibernateTypeHelper;
+import org.hibernate.HibernateException;
+import org.hibernate.cfg.Environment;
+import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.dialect.Dialect;
 import org.hibernate.eclipse.console.workbench.TypeNameValueVisitor;
+import org.hibernate.engine.Mapping;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
-import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
-import org.hibernate.type.EntityType;
-import org.hibernate.type.ManyToOneType;
+import org.jboss.tools.hibernate.ui.view.ViewPlugin;
 
 public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 	
@@ -40,17 +37,49 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 	private ResourceBundle BUNDLE = ResourceBundle
 			.getBundle(OrmModelNameVisitor.class.getPackage().getName()
 					+ ".views");
-
+	
 	public OrmModelNameVisitor() {
 		super();
 	}
 
 	public Object visitDatabaseColumn(Column column, Object argument) {
+
+		ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration) argument;
+		Mapping mapping = consoleConfiguration.getConfiguration()
+				.buildMapping();
+
+		String dialectName = null;
+		Dialect dialect = null;
+
+		String type = null;
+		try {
+			dialectName = consoleConfiguration.getConfiguration().getProperty(
+					Environment.DIALECT);
+			dialect = (Dialect) Class.forName(dialectName).newInstance();
+			type = column.getSqlType(dialect, mapping);
+		} catch (HibernateException e) {
+			ViewPlugin.getDefault().logError(e);
+			// ViewPlugin.getDefault().showError("Error", e);
+		} catch (InstantiationException e) {
+			ViewPlugin.getDefault().logError(e);
+		} catch (IllegalAccessException e) {
+			ViewPlugin.getDefault().logError(e);
+		} catch (ClassNotFoundException e) {
+			ViewPlugin.getDefault().logError(e);
+		}
+
 		StringBuffer name = new StringBuffer();
 		name.append(column.getName());
 
-//		String s = JDBCToHibernateTypeHelper.getJDBCTypeName(column.getSqlTypeCode().intValue());
-		
+		name.append(" [");
+		name.append(type != null ? type.toUpperCase() : "");
+		name.append(column.isNullable() ? " Nullable" : "");
+		name.append(HibernateUtils.getTable(column) != null
+				&& HibernateUtils.isPrimaryKey(column) ? " PK" : "");
+		name.append(HibernateUtils.getTable(column) != null
+				&& HibernateUtils.isForeignKey(column) ? " FK" : "");
+		name.append("]");
+
 		return name.toString();
 
 	}

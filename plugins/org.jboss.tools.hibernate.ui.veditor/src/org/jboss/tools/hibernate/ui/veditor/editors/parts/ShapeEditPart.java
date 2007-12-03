@@ -28,11 +28,10 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
-import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.SelectionEditPolicy;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
-import org.hibernate.mapping.Any;
+import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
@@ -46,6 +45,7 @@ import org.jboss.tools.hibernate.ui.veditor.editors.figures.TitleFigure;
 import org.jboss.tools.hibernate.ui.veditor.editors.figures.TopLineBorder;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.Connection;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.ModelElement;
+import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.Shape;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.SpecialRootClass;
 import org.jboss.tools.hibernate.ui.view.views.OrmLabelProvider;
@@ -67,7 +67,15 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 	protected IFigure createFigure() {
 		if (getModel() instanceof Shape) {
 			Label label = new Label();
-			label.setText(ormLabelProvider.getText(getElement()));	
+			ModelElement model = (ModelElement) getModel();
+			while (model.getParent() != null) {
+				model = model.getParent();
+			}
+			ConsoleConfiguration consoleConfiguration = null;
+			if (model instanceof OrmDiagram) {
+				consoleConfiguration = ((OrmDiagram) model).getConsoleConfiguration();
+			}
+			label.setText(ormLabelProvider.getText(getElement(), consoleConfiguration));	
 			label.setBackgroundColor(getColor());
 			label.setIcon(ormLabelProvider.getImage(getElement()));
 			label.setLabelAlignment(PositionConstants.LEFT);
