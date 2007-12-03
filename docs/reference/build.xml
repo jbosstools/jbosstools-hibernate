@@ -2,7 +2,7 @@
 
     <!-- Set the following property to generate the doco in the output folder -->
 	<property name="modulename" value="hibernatetools"></property>
-	<condition property="build.dir" value="${doc-root}/${modulename}" else="${basedir}/../../build/reference">
+	<condition property="build.dir" value="${doc-root}/${modulename}" else="${basedir}/../build/reference">
 		<isset property="doc-root"/>
 	</condition>
 
