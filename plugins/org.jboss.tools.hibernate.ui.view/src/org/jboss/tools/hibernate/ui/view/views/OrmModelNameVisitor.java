@@ -10,11 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.view.views;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.hibernate.HibernateException;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
-import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.eclipse.console.workbench.TypeNameValueVisitor;
 import org.hibernate.engine.Mapping;
@@ -33,7 +35,7 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 	
 	static private String SPACE = " ";
 	static private String POINTER = " -> ";
-
+	
 	private ResourceBundle BUNDLE = ResourceBundle
 			.getBundle(OrmModelNameVisitor.class.getPackage().getName()
 					+ ".views");
@@ -41,44 +43,61 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 	public OrmModelNameVisitor() {
 		super();
 	}
+	
+	private Map mappings = new HashMap();
+	private Map dialects = new HashMap();
 
 	public Object visitDatabaseColumn(Column column, Object argument) {
 
-		ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration) argument;
-		Mapping mapping = consoleConfiguration.getConfiguration()
-				.buildMapping();
-
-		String dialectName = null;
+		Configuration cfg = null;
+		Mapping mapping = null;
 		Dialect dialect = null;
 
-		String type = null;
-		try {
-			dialectName = consoleConfiguration.getConfiguration().getProperty(
-					Environment.DIALECT);
-			dialect = (Dialect) Class.forName(dialectName).newInstance();
-			type = column.getSqlType(dialect, mapping);
-		} catch (HibernateException e) {
-			ViewPlugin.getDefault().logError(e);
-			// ViewPlugin.getDefault().showError("Error", e);
-		} catch (InstantiationException e) {
-			ViewPlugin.getDefault().logError(e);
-		} catch (IllegalAccessException e) {
-			ViewPlugin.getDefault().logError(e);
-		} catch (ClassNotFoundException e) {
-			ViewPlugin.getDefault().logError(e);
+		if (argument instanceof Configuration) {
+			
+			cfg = (Configuration) argument;
+			
+			if (mappings.containsKey(cfg)) {
+				mapping = (Mapping) mappings.get(cfg);
+			} else {
+				mapping = cfg.buildMapping();
+				mappings.put(cfg, mapping);
+			}
+
+			try {
+				String dialectName = cfg.getProperty(Environment.DIALECT);
+				if (dialects.containsKey(dialectName)) {
+					dialect = (Dialect) dialects.get(dialectName);
+				} else {
+					dialect = (Dialect) Class.forName(dialectName).newInstance();
+					dialects.put(dialectName, dialect);
+				}
+			} catch (HibernateException e) {
+				ViewPlugin.getDefault().logError(e);
+			} catch (InstantiationException e) {
+				ViewPlugin.getDefault().logError(e);
+			} catch (IllegalAccessException e) {
+				ViewPlugin.getDefault().logError(e);
+			} catch (ClassNotFoundException e) {
+				ViewPlugin.getDefault().logError(e);
+			}
 		}
+
+		String type = column.getSqlType(dialect, mapping);
 
 		StringBuffer name = new StringBuffer();
 		name.append(column.getName());
 
-		name.append(" [");
-		name.append(type != null ? type.toUpperCase() : "");
-		name.append(column.isNullable() ? " Nullable" : "");
-		name.append(HibernateUtils.getTable(column) != null
-				&& HibernateUtils.isPrimaryKey(column) ? " PK" : "");
-		name.append(HibernateUtils.getTable(column) != null
-				&& HibernateUtils.isForeignKey(column) ? " FK" : "");
-		name.append("]");
+		if (type != null) {
+			name.append(" [");
+			name.append(type != null ? type.toUpperCase() : "");
+			name.append(column.isNullable() ? " Nullable" : "");
+			name.append(HibernateUtils.getTable(column) != null
+					&& HibernateUtils.isPrimaryKey(column) ? " PK" : "");
+			name.append(HibernateUtils.getTable(column) != null
+					&& HibernateUtils.isForeignKey(column) ? " FK" : "");
+			name.append("]");
+		}
 
 		return name.toString();
 

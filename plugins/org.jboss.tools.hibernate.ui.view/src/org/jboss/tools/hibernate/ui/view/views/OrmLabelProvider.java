@@ -15,7 +15,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -25,7 +24,6 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -35,7 +33,6 @@ import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
-import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 
@@ -86,7 +83,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 		return image;
 	}
 
-	public String getText(Object element, ConsoleConfiguration consoleConfiguration) {
+	public String getText(Object element, Configuration cfg) {
 		if (element instanceof RootClass) {
 			String name = (String)ormModelNameVisitor.visitPersistentClass((RootClass)element, null);
 			if (name == null) {
@@ -116,7 +113,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 				return name;
 			}
 		} else if (element instanceof Column) {
-			String name = (String)ormModelNameVisitor.visitDatabaseColumn((Column)element, consoleConfiguration);
+			String name = (String)ormModelNameVisitor.visitDatabaseColumn((Column)element, cfg);
 			if (name == null) {
 				return "OrmElement";
 			} else {
