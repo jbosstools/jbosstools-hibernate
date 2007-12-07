@@ -59,12 +59,14 @@ public class OrmDiagram extends ModelElement {
 	private Configuration configuration;
 	private ConsoleConfiguration consoleConfiguration;
 	private IJavaProject javaProject;
+	private String entityName;
 	public static final String HIBERNATE_MAPPING_LAYOUT_FOLDER_NAME = "hibernateMapping";
 	
 	public OrmDiagram(ConsoleConfiguration configuration, RootClass ioe, IJavaProject javaProject) {
 		consoleConfiguration = configuration;
 		this.configuration = configuration.getConfiguration();
 		ormElement = (RootClass)ioe;
+		entityName = ioe.getEntityName();
 		this.javaProject = javaProject;
 
 		if (ormElement instanceof RootClass) {
@@ -98,9 +100,16 @@ public class OrmDiagram extends ModelElement {
 	}
 
 	public void refresh() {
+		RootClass newOrmElement = (RootClass) consoleConfiguration
+				.getConfiguration().getClassMapping(entityName);
+		if (ormElement.equals(newOrmElement)) return;
+		ormElement = newOrmElement;
 		saveHelper();
 		getChildren().clear();
 		elements.clear();
+		getOrCreatePersistentClass(ormElement, null);
+		expandModel(this);
+		load();
 		firePropertyChange(REFRESH, null, null);
 	}
 	
