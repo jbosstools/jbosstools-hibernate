@@ -1,24 +1,17 @@
 package org.jboss.tools.hibernate.ui.veditor.editors.popup;
 
-import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.ContextMenuProvider;
-import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.actions.ActionFactory;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.OpenMappingAction;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.OpenSourceAction;
@@ -32,6 +25,9 @@ public class PopupMenuProvider extends ContextMenuProvider {
 	}
 
 	public void buildContextMenu(IMenuManager menu) {
+		// Add standard action groups to the menu
+		GEFActionConstants.addStandardActionGroups(menu);
+
 		menu.add(new Separator(GEFActionConstants.MB_ADDITIONS));
 
 		IAction action = getActionRegistry().getAction(OpenSourceAction.ACTION_ID);
@@ -41,6 +37,18 @@ public class PopupMenuProvider extends ContextMenuProvider {
 		action = getActionRegistry().getAction(OpenMappingAction.ACTION_ID);
 		appendToGroup(GEFActionConstants.MB_ADDITIONS, action);
 		createMenuItem(getMenu(), action);
+
+		// Add actions to the menu
+		menu.appendToGroup(
+				GEFActionConstants.GROUP_UNDO, // target group id
+				getAction(ActionFactory.UNDO.getId())); // action to add
+		menu.appendToGroup(
+				GEFActionConstants.GROUP_UNDO, 
+				getAction(ActionFactory.REDO.getId()));
+	}
+
+	private IAction getAction(String actionId) {
+		return actionRegistry.getAction(actionId);
 	}
 
 	public void createMenuItem(Menu menu, IAction action) {

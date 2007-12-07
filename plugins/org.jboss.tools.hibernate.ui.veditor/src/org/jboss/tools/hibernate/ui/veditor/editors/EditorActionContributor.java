@@ -11,6 +11,8 @@
 package org.jboss.tools.hibernate.ui.veditor.editors;
 
 import org.eclipse.gef.ui.actions.ActionBarContributor;
+import org.eclipse.gef.ui.actions.RedoRetargetAction;
+import org.eclipse.gef.ui.actions.UndoRetargetAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
@@ -23,10 +25,14 @@ public class EditorActionContributor extends ActionBarContributor {
 		workbenchAction.setImageDescriptor(ViewPlugin.getImageDescriptor(ViewPlugin.BUNDLE_IMAGE.getString("Explorer.refreshOrmGef"))); //$NON-NLS-1$
 		workbenchAction.setToolTipText(Messages.EditorActionContributor_Refresh_Visual_Mapping);
 		addAction(workbenchAction);
+		addRetargetAction(new UndoRetargetAction());
+		addRetargetAction(new RedoRetargetAction());
 	}
 	
 	public void contributeToToolBar(IToolBarManager toolBarManager) {
 		toolBarManager.add(getAction(ActionFactory.REFRESH.getId()));
+		toolBarManager.add(getAction(ActionFactory.UNDO.getId()));
+		toolBarManager.add(getAction(ActionFactory.REDO.getId()));
 	}
 	
 	protected void declareGlobalActionKeys() {
