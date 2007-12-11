@@ -20,6 +20,8 @@ import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.internal.ObjectPluginAction;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
+import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Subclass;
 import org.jboss.tools.hibernate.ui.view.ViewPlugin;
 
 public class OpenDiagramActionDelegate extends OpenActionDelegate {
@@ -27,7 +29,13 @@ public class OpenDiagramActionDelegate extends OpenActionDelegate {
 
 	public void run(IAction action) {
     	ObjectPluginAction objectPluginAction = (ObjectPluginAction)action;
-    	Object rootClass = ((TreeSelection)objectPluginAction.getSelection()).getFirstElement();
+    	Object persClass = ((TreeSelection)objectPluginAction.getSelection()).getFirstElement();
+    	Object rootClass = null;
+    	if (persClass instanceof RootClass) {
+			rootClass = (RootClass) persClass;			
+		} else if (persClass instanceof Subclass) {
+			rootClass = ((Subclass) persClass).getRootClass();			
+		}
 		ObjectEditorInput input = (ObjectEditorInput)hashMap.get(rootClass);
 		ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(((TreeSelection)objectPluginAction.getSelection()).getPaths()[0]).getSegment(0);
 		

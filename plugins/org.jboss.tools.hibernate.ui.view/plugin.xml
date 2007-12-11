@@ -2,7 +2,7 @@
 <plugin>
 
    <extension point="org.eclipse.ui.popupMenus">
-      <objectContribution id="diagramEditorAction" objectClass="org.hibernate.mapping.RootClass"> 
+      <objectContribution id="diagramEditorAction" objectClass="org.hibernate.mapping.PersistentClass"> 
          <menu id="org.jboss.tools.hibernate.ui.view.openDiagram" label="Open Mapping Diagram" path="diagramEditorAction"/>
          <action
             id="org.jboss.tools.hibernate.ui.view.openDiagramAction" 
