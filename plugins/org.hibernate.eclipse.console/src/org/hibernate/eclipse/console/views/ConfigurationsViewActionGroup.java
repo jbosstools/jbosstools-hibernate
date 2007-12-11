@@ -139,14 +139,14 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 		menu.add(new Separator() );
 		if (first instanceof RootClass
 				//|| first instanceof Property
-				|| first instanceof Subclass){
+				|| first instanceof Subclass){			
+			menu.appendToGroup("deagramEditorAction", openSourceAction);
 			menu.add(openMappingAction);
-			menu.add(openSourceAction);
 		}
 		if (first instanceof Property
 				&& ((Property)first).getPersistentClass() != null){
-			menu.add(openMappingAction);
 			menu.add(openSourceAction);
+			menu.add(openMappingAction);			
 		}
 	}
 	

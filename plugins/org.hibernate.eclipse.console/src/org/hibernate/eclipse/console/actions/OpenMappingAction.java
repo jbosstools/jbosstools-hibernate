@@ -31,6 +31,9 @@ import org.hibernate.tool.hbm2x.Cfg2HbmTool;
  */
 
 public class OpenMappingAction extends SelectionListenerAction {
+	
+	private static final String HIBERNATE_TAG_NAME = "name"; 
+	private static final String HIBERNATE_TAG_ENTITY_NAME = "entity-name";
 
 	public OpenMappingAction() {
 		super("Open Mapping File");
@@ -97,8 +100,8 @@ public class OpenMappingAction extends SelectionListenerAction {
 	
 	public static IRegion findSelection(Property property, FindReplaceDocumentAdapter findAdapter) {
 		Assert.isNotNull(property.getPersistentClass());
-		try {					
-			IRegion classRegion = findAdapter.find(0, generatePattern(property.getPersistentClass()), true, true, false, true);
+		try {
+			IRegion classRegion = findSelection(property.getPersistentClass(), findAdapter);
 			if (classRegion == null) return null;
 			IRegion finalRegion = findAdapter.find(classRegion.getOffset()+classRegion.getLength(), "</class", true, true, false, false);
 			IRegion propRegion  = findAdapter.find(classRegion.getOffset()+classRegion.getLength(), generatePattern(property), true, true, false, true);
@@ -118,7 +121,11 @@ public class OpenMappingAction extends SelectionListenerAction {
 	public static IRegion findSelection(PersistentClass persClass,
 			FindReplaceDocumentAdapter findAdapter) {
 		try {
-			IRegion classRegion = findAdapter.find(0, generatePattern(persClass), true, true, false, true);
+			String[] classPatterns = generatePatterns(persClass);
+			IRegion classRegion = null;
+			for (int i = 0; (classRegion == null) && (i < classPatterns.length); i++){
+				classRegion = findAdapter.find(0, classPatterns[i], true, true, false, true);
+			}
 			if (classRegion == null) return null;
 			int length = persClass.getNodeName().length();
 			int offset = classRegion.getOffset() + classRegion.getLength() - length - 1;			
@@ -128,19 +135,67 @@ public class OpenMappingAction extends SelectionListenerAction {
 		}
 	}
 	
-	private static String generatePattern(Object sel){
-		Cfg2HbmTool tool = new Cfg2HbmTool();
-		String name = null;
-		StringBuilder pattern = new StringBuilder("<");
-		if (sel instanceof PersistentClass) {
-			pattern.append(tool.getTag((PersistentClass)sel));
-			name = ((PersistentClass)sel).getNodeName();
-		} else if (sel instanceof Property){
-			pattern.append(tool.getTag((Property)sel));	
-			name = ((Property)sel).getNodeName();
+	private static String[] generatePatterns(PersistentClass persClass){
+		String fullClassName = null;
+		if (persClass.getEntityName() != null){
+			fullClassName = persClass.getEntityName();
+		} else {
+			fullClassName = persClass.getClassName();
 		}
-		pattern.append("[\\s]+[.[^>]]*name[\\s]*=[\\s]*\"");
-		pattern.append(name).append("\"");	
+		
+		Cfg2HbmTool tool = new Cfg2HbmTool();
+		String[] patterns = new String[4];
+		StringBuilder pattern = new StringBuilder("<");
+		pattern.append(tool.getTag(persClass));
+		pattern.append("[\\s]+[.[^>]]*");
+		pattern.append(HIBERNATE_TAG_NAME);
+		pattern.append("[\\s]*=[\\s]*\"");
+		pattern.append(persClass.getNodeName());
+		pattern.append('\"');
+		patterns[0] = pattern.toString();
+		
+		pattern = new StringBuilder("<");
+		pattern.append(tool.getTag(persClass));
+		pattern.append("[\\s]+[.[^>]]*");
+		pattern.append(HIBERNATE_TAG_NAME);
+		pattern.append("[\\s]*=[\\s]*\"");
+		pattern.append(fullClassName);
+		pattern.append('\"');
+		patterns[1] = pattern.toString();
+		
+		pattern = new StringBuilder("<");
+		pattern.append(tool.getTag(persClass));
+		pattern.append("[\\s]+[.[^>]]*");
+		pattern.append(HIBERNATE_TAG_ENTITY_NAME);
+		pattern.append("[\\s]*=[\\s]*\"");
+		pattern.append(persClass.getNodeName());
+		pattern.append('\"');
+		patterns[2] = pattern.toString();
+		
+		pattern = new StringBuilder("<");
+		pattern.append(tool.getTag(persClass));
+		pattern.append("[\\s]+[.[^>]]*");
+		pattern.append(HIBERNATE_TAG_ENTITY_NAME);
+		pattern.append("[\\s]*=[\\s]*\"");
+		pattern.append(fullClassName);
+		pattern.append('\"');
+		patterns[3] = pattern.toString();
+		return patterns;
+	}
+	
+	private static String generatePattern(Property property){
+		Cfg2HbmTool tool = new Cfg2HbmTool();
+		StringBuilder pattern = new StringBuilder("<");
+		if(property.getPersistentClass().getIdentifierProperty()==property) {
+			pattern.append("id");
+		} else{
+			pattern.append(tool.getTag(property));
+		}
+		pattern.append("[\\s]+[.[^>]]*");
+		pattern.append(HIBERNATE_TAG_NAME);
+		pattern.append("[\\s]*=[\\s]*\"");
+		pattern.append(property.getNodeName());
+		pattern.append('\"');	
 		return pattern.toString();
 	}
 	
