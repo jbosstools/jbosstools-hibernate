@@ -135,7 +135,7 @@
    </extension>
    
    <extension point="org.eclipse.ui.popupMenus">
-      <objectContribution id="mappingEditorAction" objectClass="org.hibernate.mapping.RootClass"> 
+      <!--objectContribution id="mappingEditorAction" objectClass="org.hibernate.mapping.RootClass"> 
          <menu id="org.hibernate.eclipse.console.actions.openMappingMenu" label="Open Mapping File" path="mappingEditorAction"/>
          <action
             id="org.hibernate.eclipse.console.actions.openMappingAction" 
@@ -143,6 +143,14 @@
             class="org.hibernate.eclipse.console.actions.OpenMappingActionDelegate"> 
          </action> 
       </objectContribution> 
+      <objectContribution id="mappingEditorAction2" objectClass="org.hibernate.mapping.Property"> 
+         <menu id="org.hibernate.eclipse.console.actions.openMappingMenu" label="Open Mapping File" path="mappingEditorAction"/>
+         <action
+            id="org.hibernate.eclipse.console.actions.openMappingAction" 
+            label="Open Mapping File" 
+            class="org.hibernate.eclipse.console.actions.OpenMappingActionDelegate"> 
+         </action> 
+      </objectContribution>
       <objectContribution id="sourceEditorAction" objectClass="org.hibernate.mapping.RootClass"> 
          <menu id="org.hibernate.eclipse.console.actions.openSourceMenu" label="Open Source File" path="sourceEditorAction"/>
          <action
@@ -151,6 +159,14 @@
             class="org.hibernate.eclipse.console.actions.OpenSourceActionDelegate"> 
          </action> 
       </objectContribution> 
+       <objectContribution id="sourceEditorAction2" objectClass="org.hibernate.mapping.Property"> 
+         <menu id="org.hibernate.eclipse.console.actions.openSourceMenu" label="Open Source File" path="sourceEditorAction"/>
+         <action
+            id="org.hibernate.eclipse.console.actions.openSourceAction" 
+            label="Open Source File" 
+            class="org.hibernate.eclipse.console.actions.OpenSourceActionDelegate"> 
+         </action> 
+      </objectContribution--> 
    </extension>
    
    <extension

@@ -40,7 +40,6 @@ import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.actions.ActionContext;
 import org.eclipse.ui.actions.ActionGroup;
-import org.eclipse.ui.internal.ObjectPluginAction;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheetPage;
@@ -48,10 +47,11 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.node.BaseNode;
 import org.hibernate.eclipse.console.actions.EditConsoleConfiguration;
-import org.hibernate.eclipse.console.actions.OpenMappingActionDelegate;
+import org.hibernate.eclipse.console.actions.OpenMappingAction;
 import org.hibernate.eclipse.console.workbench.xpl.AnyAdaptableLabelProvider;
-import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Subclass;
 import org.hibernate.util.StringHelper;
 
 
@@ -157,9 +157,13 @@ public class KnownConfigurationsView extends ViewPart {
 							consoleConfiguration.executeHQLQuery( hql );
 						}
 					}
-				} else if (firstElement instanceof RootClass) {
+				} else if (firstElement instanceof RootClass
+						|| firstElement instanceof Subclass
+						|| (firstElement instanceof Property
+							&& ((Property)firstElement).getPersistentClass() != null)) {
 					ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)((TreeSelection)selection).getPaths()[0].getSegment(0);
-					OpenMappingActionDelegate.openMapping((RootClass) firstElement, consoleConfiguration);
+					//OpenMappingActionDelegate.openMapping((RootClass) firstElement, consoleConfiguration);
+					new OpenMappingAction().run(firstElement, consoleConfiguration);
 				}
 			}
 		};

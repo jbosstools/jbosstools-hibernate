@@ -18,6 +18,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
@@ -47,8 +48,8 @@ public class OpenFileActionUtils {
 	private static final String HIBERNATE_TAG_CATALOG = "catalog";
 	private static final String HIBERNATE_TAG_SCHEMA = "schema";
 
-	public static void openEditor(IWorkbenchPage page, IResource resource) throws PartInitException {
-        IDE.openEditor(page, (IFile) resource);
+	public static IEditorPart openEditor(IWorkbenchPage page, IResource resource) throws PartInitException {
+        return IDE.openEditor(page, (IFile) resource);
 	}
 	
 
