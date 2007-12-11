@@ -1,7 +1,6 @@
 package org.hibernate.eclipse.console.test;
 
 import java.io.IOException;
-import java.util.Properties;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -17,6 +16,7 @@ public class ConsolePluginAllTests {
 		suite.addTestSuite( PerspectiveTest.class );
 		suite.addTestSuite( ConsoleConfigurationTest.class );
 		suite.addTestSuite( JavaFormattingTest.class );
+		suite.addTestSuite( OpenMappingTests.class );
 		
 
 		// core tests
