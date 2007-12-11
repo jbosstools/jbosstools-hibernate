@@ -25,6 +25,11 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.mapping.RootClass;
 
+/**
+ * @author Dmitry Geraskov
+ * @deprecated - Can't shine selected element in the Editor.
+ * 				Use OpenSourceAction instead of this.
+ */
 public class OpenSourceActionDelegate extends OpenActionDelegate {
 
 	public void run(IAction action) {

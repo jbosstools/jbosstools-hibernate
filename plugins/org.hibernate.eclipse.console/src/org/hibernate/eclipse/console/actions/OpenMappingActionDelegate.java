@@ -25,6 +25,12 @@ import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.util.XMLHelper;
 
+/**
+ * @author Dmitry Geraskov
+ * @deprecated - Can't shine selected element in the Editor.
+ * 				Use OpenMappingAction instead of this.
+ */
+
 public class OpenMappingActionDelegate extends OpenActionDelegate {
 	private static XMLHelper helper = new XMLHelper();
 
