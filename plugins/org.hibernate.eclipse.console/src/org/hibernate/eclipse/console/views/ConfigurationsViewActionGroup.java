@@ -40,6 +40,7 @@ import org.hibernate.eclipse.console.actions.HQLScratchpadAction;
 import org.hibernate.eclipse.console.actions.OpenMappingAction;
 import org.hibernate.eclipse.console.actions.OpenSourceAction;
 import org.hibernate.eclipse.console.actions.RefreshAction;
+import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
@@ -137,16 +138,10 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 			menu.add(schemaExportAction);
 		}
 		menu.add(new Separator() );
-		if (first instanceof RootClass
-				//|| first instanceof Property
-				|| first instanceof Subclass){			
+		if (first instanceof PersistentClass
+				|| first instanceof Property){			
 			menu.add(openSourceAction);
 			menu.add(openMappingAction);
-		}
-		if (first instanceof Property
-				&& ((Property)first).getPersistentClass() != null){
-			menu.add(openSourceAction);
-			menu.add(openMappingAction);			
 		}
 	}
 	

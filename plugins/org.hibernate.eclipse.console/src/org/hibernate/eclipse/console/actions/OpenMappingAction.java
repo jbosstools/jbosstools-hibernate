@@ -46,11 +46,31 @@ public class OpenMappingAction extends SelectionListenerAction {
 		if (sel instanceof TreeSelection){
 			TreePath path = ((TreeSelection)sel).getPaths()[0];
 			ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(path.getSegment(0));
-			run(path.getLastSegment(), consoleConfiguration);
-		}    	
+			run(path, consoleConfiguration);
+		}
 	}
 	
-	public void run(Object selection, ConsoleConfiguration consoleConfiguration) {
+	public static void run(TreePath path, ConsoleConfiguration consoleConfiguration) {
+		boolean isPropertySel = (path.getLastSegment() instanceof Property);
+		if (isPropertySel){
+			Property propertySel = (Property)path.getLastSegment();
+			PersistentClass persClass = propertySel.getPersistentClass();
+			if ( persClass == null 
+					|| (RootClass.class.isAssignableFrom(persClass.getClass())
+					&& persClass.getClass() != RootClass.class)){
+				Property parentProp = (Property)path.getParentPath().getLastSegment();
+				run(propertySel, parentProp, consoleConfiguration);
+				return;
+			}
+		}
+		run(path.getLastSegment(), consoleConfiguration);
+	}
+	
+	/**
+	 * @param selection
+	 * @param consoleConfiguration
+	 */
+	public static void run(Object selection, ConsoleConfiguration consoleConfiguration) {
 		IEditorPart editorPart = null;
 		if (selection instanceof Property){
 			Property p = (Property)selection;
@@ -60,12 +80,43 @@ public class OpenMappingAction extends SelectionListenerAction {
 		} else {
 			editorPart = openMapping(selection, consoleConfiguration);
 		}
-		
+		applySelectionToEditor(selection, editorPart);
+	}
+	
+	/**
+	 * @param compositeProperty
+	 * @param parentProperty
+	 * @param consoleConfiguration
+	 */
+	public static void run(Property compositeProperty, Property parentProperty, ConsoleConfiguration consoleConfiguration) {
+		if (parentProperty.getPersistentClass() == null) return;
+		IEditorPart editorPart = openMapping(parentProperty.getPersistentClass(), consoleConfiguration);
+		ITextEditor textEditor = getTextEditor(editorPart);
+		if (textEditor == null) return;
+		textEditor.selectAndReveal(0, 0);
+		FindReplaceDocumentAdapter findAdapter = getFindDocAdapter(textEditor);
+		IRegion parentRegion = findSelection(parentProperty, findAdapter);
+		if (parentRegion == null) return;
+		try {
+			IRegion propRegion  = findAdapter.find(parentRegion.getOffset()+parentRegion.getLength(), generatePattern(compositeProperty), true, true, false, true);
+			if (propRegion != null){
+				textEditor.selectAndReveal(propRegion.getOffset(), propRegion.getLength());
+			}
+		} catch (BadLocationException e) {
+			return;
+		}
+	}
+
+	/**
+	 * @param selection
+	 * @param editorPart
+	 */
+	static public void applySelectionToEditor(Object selection, IEditorPart editorPart) {
 		Assert.isNotNull(editorPart);
 		ITextEditor textEditor = getTextEditor(editorPart);
 		if (textEditor == null) return;
-		IDocument document = textEditor.getDocumentProvider().getDocument(textEditor.getEditorInput());		
-		FindReplaceDocumentAdapter findAdapter = new FindReplaceDocumentAdapter(document);		
+		textEditor.selectAndReveal(0, 0);
+		FindReplaceDocumentAdapter findAdapter = getFindDocAdapter(textEditor);		
 		IRegion selectRegion = null;		
 
 		if (selection instanceof RootClass
@@ -78,6 +129,17 @@ public class OpenMappingAction extends SelectionListenerAction {
 		if (selectRegion != null){
 			textEditor.selectAndReveal(selectRegion.getOffset(), selectRegion.getLength());
 		}
+	}
+
+	/**
+	 * @param textEditor
+	 * @return
+	 */
+	private static FindReplaceDocumentAdapter getFindDocAdapter(
+			ITextEditor textEditor) {
+		IDocument document = textEditor.getDocumentProvider().getDocument(textEditor.getEditorInput());		
+		FindReplaceDocumentAdapter findAdapter = new FindReplaceDocumentAdapter(document);
+		return findAdapter;
 	}
 
 	static public IEditorPart openMapping(Object selElement,
@@ -186,7 +248,8 @@ public class OpenMappingAction extends SelectionListenerAction {
 	private static String generatePattern(Property property){
 		Cfg2HbmTool tool = new Cfg2HbmTool();
 		StringBuilder pattern = new StringBuilder("<");
-		if(property.getPersistentClass().getIdentifierProperty()==property) {
+		if(property.getPersistentClass() != null &&
+				property.getPersistentClass().getIdentifierProperty()==property) {
 			pattern.append("id");
 		} else{
 			pattern.append(tool.getTag(property));
@@ -199,7 +262,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 		return pattern.toString();
 	}
 	
-	private ITextEditor getTextEditor(IEditorPart editorPart) {
+	private static ITextEditor getTextEditor(IEditorPart editorPart) {
 		/*
 		 * if EditorPart is MultiPageEditorPart then get ITextEditor from it.
 		 */
@@ -216,4 +279,5 @@ public class OpenMappingAction extends SelectionListenerAction {
 		}
 		return null;
 	}
+	
 }

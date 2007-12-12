@@ -31,6 +31,7 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
@@ -157,13 +158,10 @@ public class KnownConfigurationsView extends ViewPart {
 							consoleConfiguration.executeHQLQuery( hql );
 						}
 					}
-				} else if (firstElement instanceof RootClass
-						|| firstElement instanceof Subclass
-						|| (firstElement instanceof Property
-							&& ((Property)firstElement).getPersistentClass() != null)) {
-					ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)((TreeSelection)selection).getPaths()[0].getSegment(0);
-					//OpenMappingActionDelegate.openMapping((RootClass) firstElement, consoleConfiguration);
-					new OpenMappingAction().run(firstElement, consoleConfiguration);
+				} else if (selection instanceof TreeSelection){
+					TreePath path = ((TreeSelection)selection).getPaths()[0];
+					ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(path.getSegment(0));
+					OpenMappingAction.run(path, consoleConfiguration);
 				}
 			}
 		};
