@@ -49,6 +49,28 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 
 	public Object visitDatabaseColumn(Column column, Object argument) {
 
+		String type = getColumnSqlType(column, argument);
+
+		StringBuffer name = new StringBuffer();
+		name.append(column.getName());
+
+		if (type != null) {
+			name.append(" [");
+			name.append(type != null ? type.toUpperCase() : "");
+			name.append(column.isNullable() ? " Nullable" : "");
+			name.append(HibernateUtils.getTable(column) != null
+					&& HibernateUtils.isPrimaryKey(column) ? " PK" : "");
+			name.append(HibernateUtils.getTable(column) != null
+					&& HibernateUtils.isForeignKey(column) ? " FK" : "");
+			name.append("]");
+		}
+
+		return name.toString();
+
+	}
+	
+	public String getColumnSqlType(Column column, Object argument) {
+		
 		Configuration cfg = null;
 		Mapping mapping = null;
 		Dialect dialect = null;
@@ -83,24 +105,7 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 			}
 		}
 
-		String type = column.getSqlType(dialect, mapping);
-
-		StringBuffer name = new StringBuffer();
-		name.append(column.getName());
-
-		if (type != null) {
-			name.append(" [");
-			name.append(type != null ? type.toUpperCase() : "");
-			name.append(column.isNullable() ? " Nullable" : "");
-			name.append(HibernateUtils.getTable(column) != null
-					&& HibernateUtils.isPrimaryKey(column) ? " PK" : "");
-			name.append(HibernateUtils.getTable(column) != null
-					&& HibernateUtils.isForeignKey(column) ? " FK" : "");
-			name.append("]");
-		}
-
-		return name.toString();
-
+		return column.getSqlType(dialect, mapping);
 	}
 
 	public Object visitPersistentClass(RootClass clazz, Object argument) {
@@ -167,8 +172,6 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 			name.append(typeString);
 		}
 		
-//		return name.toString();
-
 		Value value = field.getValue();
 		String typeName = (String) value.accept(new TypeNameValueVisitor(false));
 		

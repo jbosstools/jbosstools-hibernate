@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.ui.view.views;
 
 import java.util.ResourceBundle;
 
-import org.hibernate.MappingException;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -42,8 +41,7 @@ import org.jboss.tools.hibernate.ui.view.ViewPlugin;
  * @author Tau
  * 
  */
-public class OrmModelImageVisitor implements
-		/* IOrmModelVisitor, IHibernateMappingVisitor, */PersistentClassVisitor {
+public class OrmModelImageVisitor implements PersistentClassVisitor {
 
 	private ResourceBundle BUNDLE = ViewPlugin.BUNDLE_IMAGE;
 
@@ -202,19 +200,23 @@ public class OrmModelImageVisitor implements
 	}
 
 	public Object accept(UnionSubclass arg0) {
-		return null;
+		return ViewPlugin.getImageDescriptor(BUNDLE
+				.getString("OrmModelImageVisitor.PersistentClass")); //$NON-NLS-1$
 	}
 
 	public Object accept(SingleTableSubclass arg0) {
-		return null;
+		return ViewPlugin.getImageDescriptor(BUNDLE
+				.getString("OrmModelImageVisitor.PersistentClass")); //$NON-NLS-1$
 	}
 
 	public Object accept(JoinedSubclass arg0) {
-		return null;
+		return ViewPlugin.getImageDescriptor(BUNDLE
+				.getString("OrmModelImageVisitor.PersistentClass")); //$NON-NLS-1$
 	}
 
 	public Object accept(Subclass arg0) {
-		return null;
+		return ViewPlugin.getImageDescriptor(BUNDLE
+				.getString("OrmModelImageVisitor.PersistentClass")); //$NON-NLS-1$
 	}
 
 }

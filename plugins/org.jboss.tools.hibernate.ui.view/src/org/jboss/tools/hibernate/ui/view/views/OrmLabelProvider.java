@@ -28,13 +28,16 @@ import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
+import org.hibernate.mapping.JoinedSubclass;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
+import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
+import org.hibernate.mapping.UnionSubclass;
 
 public class OrmLabelProvider extends LabelProvider implements IColorProvider, IFontProvider {
 
@@ -53,6 +56,14 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 		
 		if (element instanceof RootClass) {
 			descriptor = (ImageDescriptor) ((RootClass) element).accept(ormModelImageVisitor);
+		} else if (element instanceof UnionSubclass) {
+			descriptor = (ImageDescriptor) ((UnionSubclass) element).accept(ormModelImageVisitor);
+		} else if (element instanceof SingleTableSubclass) {
+			descriptor = (ImageDescriptor) ((SingleTableSubclass) element).accept(ormModelImageVisitor);
+		} else if (element instanceof JoinedSubclass) {
+			descriptor = (ImageDescriptor) ((JoinedSubclass) element).accept(ormModelImageVisitor);
+		} else if (element instanceof Subclass) {
+			descriptor = (ImageDescriptor) ((Subclass) element).accept(ormModelImageVisitor);
 		} else if (element instanceof Property) {
 			descriptor = (ImageDescriptor)ormModelImageVisitor.visitPersistentField((Property) element);
 		} else if (element instanceof Table) {
