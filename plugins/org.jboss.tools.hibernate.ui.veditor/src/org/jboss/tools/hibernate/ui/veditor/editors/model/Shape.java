@@ -16,7 +16,9 @@ import java.util.List;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.ui.view.views.HibernateUtils;
 import org.jboss.tools.hibernate.ui.view.views.OrmModelNameVisitor;
 
@@ -179,6 +181,8 @@ public class Shape extends ModelElement {
 		}
 		else if (PROPERTY_TYPE.equals(propertyId)) {
 			if (getOrmElement() instanceof Property) {
+				Value value = ((Property) getOrmElement()).getValue();
+				if (value instanceof Component) return ((Property) getOrmElement()).getValue().toString();
 				return ((Property) getOrmElement()).getType().getReturnedClass().getName();
 			}
 			else if (getOrmElement() instanceof Column) {
