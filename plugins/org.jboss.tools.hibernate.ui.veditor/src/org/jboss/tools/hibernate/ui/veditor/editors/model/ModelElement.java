@@ -15,7 +15,13 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ModelElement{
+import org.eclipse.ui.views.properties.IPropertyDescriptor;
+import org.eclipse.ui.views.properties.IPropertySource;
+
+public abstract class ModelElement implements IPropertySource {
+
+	/** An empty property descriptor. */
+	private static final IPropertyDescriptor[] EMPTY_ARRAY = new IPropertyDescriptor[0];
 
 	private transient PropertyChangeSupport pcsDelegate = new PropertyChangeSupport(this);
 
@@ -84,6 +90,45 @@ public abstract class ModelElement{
 		return null;
 	}
 	
+	public Object getEditableValue() {
+		return this;
+	}
+
+	/**
+	 * Children should override this. The default implementation returns an empty array.
+	 */
+	public IPropertyDescriptor[] getPropertyDescriptors() {
+		return EMPTY_ARRAY;
+	}
+
+	/**
+	 * Children should override this. The default implementation returns null.
+	 */
+	public Object getPropertyValue(Object id) {
+		return null;
+	}
+
+	/**
+	 * Children should override this. The default implementation returns false.
+	 */
+	public boolean isPropertySet(Object id) {
+		return false;
+	}
+
+	/**
+	 * Children should override this. The default implementation does nothing.
+	 */
+	public void resetPropertyValue(Object id) {
+		// do nothing
+	}
+
+	/**
+	 * Children should override this. The default implementation does nothing.
+	 */
+	public void setPropertyValue(Object id, Object value) {
+		// do nothing
+	}
+
 	class OList extends ArrayList{
 		public OList(){
 			

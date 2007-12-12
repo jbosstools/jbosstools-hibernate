@@ -138,6 +138,8 @@ public class VisualEditor extends GraphicalEditor {
 					new TreeViewer());
 			outline.setGraphicalViewer(getGraphicalViewer());
 			outline.setSelectionSynchronizer(getSelectionSynchronizer());
+			outline.setOrmDiagram(ormDiagram);
+			outline.setEditor(this);
 			return outline;
 		}
 
@@ -165,4 +167,9 @@ public class VisualEditor extends GraphicalEditor {
 	public OrmDiagram getViewerContents() {
 		return ormDiagram;
 	}
+	
+	public DefaultEditDomain getDefaultEditDomain() {
+		return getEditDomain();
+	}
+	
 }

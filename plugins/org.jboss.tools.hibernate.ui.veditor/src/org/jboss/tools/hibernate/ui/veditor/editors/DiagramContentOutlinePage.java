@@ -21,25 +21,40 @@ import org.eclipse.gef.*;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.ui.parts.*;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.PageBook;
+import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
+import org.jboss.tools.hibernate.ui.veditor.editors.parts.TreePartFactory;
 
 
 public class DiagramContentOutlinePage extends ContentOutlinePage implements
 		IAdaptable {
+	
 	private GraphicalViewer graphicalViewer;
+	
+	private VisualEditor editor;
+	
+	private OrmDiagram ormDiagram;
 
 	private SelectionSynchronizer selectionSynchronizer;
 
 	private PageBook pageBook;
 
+	private Control outline;
 	/*
 	 * surface for drawing 
 	 */
 	private Canvas overview;
+
+	private IAction showOutlineAction, showOverviewAction;
 
 	static final int ID_OUTLINE = 0;
 
@@ -118,7 +133,26 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 	 * 
 	 */
 	protected void configureOutlineViewer() {
-		showPage(ID_OUTLINE);
+		getViewer().setEditDomain(editor.getDefaultEditDomain());
+		getViewer().setEditPartFactory(new TreePartFactory());
+		IToolBarManager tbm = getSite().getActionBars().getToolBarManager();
+		showOutlineAction = new Action() {
+			public void run() {
+				showPage(ID_OUTLINE);
+			}
+		};
+		showOutlineAction.setImageDescriptor(ImageDescriptor.createFromFile(
+				VisualEditor.class,"icons/outline.gif")); //$NON-NLS-1$
+		tbm.add(showOutlineAction);
+		showOverviewAction = new Action() {
+			public void run() {
+				showPage(ID_OVERVIEW);
+			}
+		};
+		showOverviewAction.setImageDescriptor(ImageDescriptor.createFromFile(
+				VisualEditor.class,"icons/overview.gif")); //$NON-NLS-1$
+		tbm.add(showOverviewAction);
+		showPage(ID_OVERVIEW);
 	}
 
 	
@@ -127,9 +161,9 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 	 */
 	public void createControl(Composite parent) {
 		pageBook = new PageBook(parent, SWT.NONE);
-
+		outline = getViewer().createControl(pageBook);
 		overview = new Canvas(pageBook, SWT.NONE);
-		pageBook.showPage(overview);
+		pageBook.showPage(outline);
 		configureOutlineViewer();
 		hookOutlineViewer();
 		initializeOutlineViewer();
@@ -141,8 +175,10 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 	 */
 	public void dispose() {
 		unhookOutlineViewer();
-		if (thumbnail != null)
+		if (thumbnail != null) {
 			thumbnail.deactivate();
+			thumbnail = null;
+		}
 		super.dispose();
 	}
 
@@ -177,9 +213,12 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 	 * 
 	 */
 	protected void initializeOutlineViewer() {
+		setContents(getOrmDiagram());
 	}
 
 	
+	private DisposeListener disposeListener;
+
 	/**
 	 * 
 	 */
@@ -199,15 +238,29 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 		}
 	}
 
+	public void setContents(Object contents) {
+		getViewer().setContents(contents);
+	}
+
 	/**
 	 * @param id
 	 */
 	protected void showPage(int id) {
 
-		if (thumbnail == null)
-			initializeOverview();
-		pageBook.showPage(overview);
-		thumbnail.setVisible(true);
+		if (id == ID_OUTLINE) {
+			showOutlineAction.setChecked(true);
+			showOverviewAction.setChecked(false);
+			pageBook.showPage(outline);
+			if (thumbnail != null)
+				thumbnail.setVisible(false);
+		} else if (id == ID_OVERVIEW) {
+			if (thumbnail == null)
+				initializeOverview();
+			showOutlineAction.setChecked(false);
+			showOverviewAction.setChecked(true);
+			pageBook.showPage(overview);
+			thumbnail.setVisible(true);
+		}
 
 	}
 
@@ -236,6 +289,28 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 			getViewer().removeSelectionChangedListener(l);
 			graphicalViewer.addSelectionChangedListener(l);
 		}
+	}
+
+	/**
+	 * @return the ormDiagram
+	 */
+	public OrmDiagram getOrmDiagram() {
+		return ormDiagram;
+	}
+
+	/**
+	 * @param ormDiagram the ormDiagram to set
+	 */
+	public void setOrmDiagram(OrmDiagram ormDiagram) {
+		this.ormDiagram = ormDiagram;
+	}
+
+	public VisualEditor getEditor() {
+		return editor;
+	}
+
+	public void setEditor(VisualEditor editor) {
+		this.editor = editor;
 	}
 
 }
