@@ -32,6 +32,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.OpenMappingAction;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.OpenSourceAction;
@@ -145,8 +146,8 @@ public class VisualEditor extends GraphicalEditor {
 
 		return super.getAdapter(type);
 	}
-
-	public Set getSelectedElements() {
+	
+	public Set getSelectedElements_old() {
 		Set ret = new HashSet();
 		List selectedEditParts = getGraphicalViewer().getSelectedEditParts();
 		Iterator iterator = selectedEditParts.iterator();
@@ -159,6 +160,24 @@ public class VisualEditor extends GraphicalEditor {
 					shape = shape.getParent();
 				}
 				ret.add(((OrmShape)shape).getOrmElement());
+			}
+		}
+		return ret;
+	}
+
+	public Set getSelectedElements() {
+		Set ret = new HashSet();
+		List selectedEditParts = getGraphicalViewer().getSelectedEditParts();
+		Iterator iterator = selectedEditParts.iterator();
+		while (iterator.hasNext()) {
+			Object elem = iterator.next();
+			if (elem instanceof OrmEditPart) {
+				Shape shape = (Shape)((OrmEditPart)elem).getModel();
+				Object ormElement = shape.getOrmElement();
+				if (ormElement instanceof Column){
+					shape = (Shape) shape.getParent();
+				}
+				ret.add(shape.getOrmElement());
 			}
 		}
 		return ret;

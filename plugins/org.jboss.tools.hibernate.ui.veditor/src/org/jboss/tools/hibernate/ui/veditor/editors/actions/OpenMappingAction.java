@@ -3,25 +3,20 @@ package org.jboss.tools.hibernate.ui.veditor.editors.actions;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.eclipse.core.resources.IResource;
 import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.PartInitException;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.eclipse.console.actions.OpenFileActionUtils;
-import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.Subclass;
-import org.hibernate.mapping.Table;
-import org.jboss.tools.hibernate.ui.veditor.VisualEditorPlugin;
+import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.SpecialRootClass;
-import org.jboss.tools.hibernate.ui.view.views.HibernateUtils;
 import org.jboss.tools.hibernate.ui.view.views.ObjectEditorInput;
 
+/**
+ * @author Dmitry Geraskov
+ *
+ */
 public class OpenMappingAction extends SelectionAction {
 	public static String ACTION_ID = "org.jboss.tools.hibernate.ui.veditor.editors.actions.open.mapping";
 
@@ -34,17 +29,30 @@ public class OpenMappingAction extends SelectionAction {
 	public void run() {
 		ObjectEditorInput objectEditorInput = (ObjectEditorInput)((VisualEditor)getWorkbenchPart()).getEditorInput();
 		ConsoleConfiguration consoleConfiguration = objectEditorInput.getConfiguration();
-		java.io.File configXMLFile = consoleConfiguration.getPreferences().getConfigXMLFile();
-		IJavaProject proj = objectEditorInput.getJavaProject();
+		//java.io.File configXMLFile = consoleConfiguration.getPreferences().getConfigXMLFile();
+		//IJavaProject proj = objectEditorInput.getJavaProject();
 
 		VisualEditor part = (VisualEditor)getWorkbenchPart();
 		Set selectedElements = part.getSelectedElements();
 
 		Iterator iterator = selectedElements.iterator();
 		while (iterator.hasNext()) {
-			Object selectedElement = iterator.next();
-
-	    	IResource resource = null;
+			Object selection = iterator.next();
+			if (selection instanceof Property
+					&& ((Property)selection).getPersistentClass() instanceof SpecialRootClass){
+				Property compositSel = ((Property)selection);
+				Property parentProperty = ((SpecialRootClass)((Property)selection).getPersistentClass()).getProperty();
+				org.hibernate.eclipse.console.actions.OpenMappingAction.run(compositSel, parentProperty, consoleConfiguration);
+				continue;
+			}
+			if (selection instanceof SpecialRootClass) {
+    			selection = ((SpecialRootClass)selection).getProperty();
+			}
+			org.hibernate.eclipse.console.actions.OpenMappingAction.run(selection, consoleConfiguration);
+						
+			
+	    	/*IResource resource = null;
+	    	Object selectedElement = selection;
 			if (selectedElement instanceof RootClass) {
 				RootClass rootClass = (RootClass)selectedElement;
 
@@ -105,11 +113,16 @@ public class OpenMappingAction extends SelectionAction {
 
 			if (resource != null) {
 				try {
-					OpenFileActionUtils.openEditor(VisualEditorPlugin.getPage(), resource);
-				} catch (PartInitException e) {
+					IEditorPart editorPart = OpenFileActionUtils.openEditor(VisualEditorPlugin.getPage(), resource);
+					if (selectedElement instanceof PersistentClass
+							|| (selectedElement instanceof Property
+									&& ((Property)selectedElement).getPersistentClass() != null)){
+						org.hibernate.eclipse.console.actions.OpenMappingAction.applySelectionToEditor(selectedElement, editorPart);						
+					}
+					} catch (PartInitException e) {
 	    			VisualEditorPlugin.getDefault().logInfo("Can't open mapping file", e);
 				}
-			}
+			}*/
 		} 
 	}
 
