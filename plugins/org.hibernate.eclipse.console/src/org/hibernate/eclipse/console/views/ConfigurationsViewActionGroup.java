@@ -140,7 +140,7 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 		if (first instanceof RootClass
 				//|| first instanceof Property
 				|| first instanceof Subclass){			
-			menu.appendToGroup("deagramEditorAction", openSourceAction);
+			menu.add(openSourceAction);
 			menu.add(openMappingAction);
 		}
 		if (first instanceof Property
