@@ -34,6 +34,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.RootClass;
+import org.jboss.tools.hibernate.ui.veditor.editors.actions.ExportImageAction;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.OpenMappingAction;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.OpenSourceAction;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.ModelElement;
@@ -73,7 +74,11 @@ public class VisualEditor extends GraphicalEditor {
 		viewer.setContextMenu(provider);
 		getSite().registerContextMenu("FlowDiagramContextmenu", provider, viewer);
 	}
-
+	
+	public GraphicalViewer getEditPartViewer() {
+		return getGraphicalViewer();
+	}
+	
 	protected void createActions() {
 		
 		getEditorSite().getActionBars().setGlobalActionHandler(ActionFactory.REFRESH.getId(),new WorkbenchPartAction(this){
@@ -98,6 +103,10 @@ public class VisualEditor extends GraphicalEditor {
 
 		action = new OpenSourceAction(this);
 		registry.registerAction(action);
+
+		action = new ExportImageAction(this);
+		registry.registerAction(action);
+	
 	}
 		
 	private TransferDropTargetListener createTransferDropTargetListener() {

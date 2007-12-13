@@ -13,6 +13,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.ui.actions.ActionFactory;
+import org.jboss.tools.hibernate.ui.veditor.editors.actions.ExportImageAction;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.OpenMappingAction;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.OpenSourceAction;
 
@@ -35,6 +36,10 @@ public class PopupMenuProvider extends ContextMenuProvider {
 		createMenuItem(getMenu(), action);
 
 		action = getActionRegistry().getAction(OpenMappingAction.ACTION_ID);
+		appendToGroup(GEFActionConstants.MB_ADDITIONS, action);
+		createMenuItem(getMenu(), action);
+
+		action = getActionRegistry().getAction(ExportImageAction.ACTION_ID);
 		appendToGroup(GEFActionConstants.MB_ADDITIONS, action);
 		createMenuItem(getMenu(), action);
 
