@@ -7,15 +7,23 @@ import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.ui.actions.ActionFactory;
+import org.hibernate.mapping.Column;
+import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Property;
+import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.ExportImageAction;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.OpenMappingAction;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.OpenSourceAction;
+import org.jboss.tools.hibernate.ui.veditor.editors.model.Shape;
+import org.jboss.tools.hibernate.ui.veditor.editors.parts.OrmEditPart;
 
 public class PopupMenuProvider extends ContextMenuProvider {
 	private ActionRegistry actionRegistry;
@@ -31,14 +39,28 @@ public class PopupMenuProvider extends ContextMenuProvider {
 
 		menu.add(new Separator(GEFActionConstants.MB_ADDITIONS));
 
-		IAction action = getActionRegistry().getAction(OpenSourceAction.ACTION_ID);
-		appendToGroup(GEFActionConstants.MB_ADDITIONS, action);
-		createMenuItem(getMenu(), action);
+		IAction action = null;
 
-		action = getActionRegistry().getAction(OpenMappingAction.ACTION_ID);
-		appendToGroup(GEFActionConstants.MB_ADDITIONS, action);
-		createMenuItem(getMenu(), action);
-
+		if (getViewer().getSelection() instanceof StructuredSelection){
+			IStructuredSelection selection = (IStructuredSelection) getViewer().getSelection();
+			if (selection != null &&  selection.getFirstElement() instanceof OrmEditPart) {
+				Shape shape = (Shape)((OrmEditPart)selection.getFirstElement()).getModel();
+				Object first = shape.getOrmElement();
+				if (first instanceof PersistentClass
+						|| first instanceof Property
+						|| first instanceof Table
+						|| first instanceof Column){		
+					action = getActionRegistry().getAction(OpenSourceAction.ACTION_ID);
+					appendToGroup(GEFActionConstants.MB_ADDITIONS, action);
+					createMenuItem(getMenu(), action);
+					
+					action = getActionRegistry().getAction(OpenMappingAction.ACTION_ID);
+					appendToGroup(GEFActionConstants.MB_ADDITIONS, action);
+					createMenuItem(getMenu(), action);					
+				} 
+			}			
+		}
+		
 		action = getActionRegistry().getAction(ExportImageAction.ACTION_ID);
 		appendToGroup(GEFActionConstants.MB_ADDITIONS, action);
 		createMenuItem(getMenu(), action);
