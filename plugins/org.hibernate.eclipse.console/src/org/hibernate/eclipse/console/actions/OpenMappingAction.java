@@ -72,15 +72,42 @@ public class OpenMappingAction extends SelectionListenerAction {
 	 */
 	public static void run(Object selection, ConsoleConfiguration consoleConfiguration) {
 		IEditorPart editorPart = null;
+		IJavaProject proj = ProjectUtils.findJavaProject(consoleConfiguration);
+		java.io.File configXMLFile = consoleConfiguration.getPreferences().getConfigXMLFile();
+		IResource resource = null;
 		if (selection instanceof Property){
 			Property p = (Property)selection;
 			if (p.getPersistentClass() == null) return;
 			//use PersistentClass to open editor
-			editorPart = openMapping(p.getPersistentClass(), consoleConfiguration);
+			resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, configXMLFile, p.getPersistentClass());
+			//editorPart = openMapping(p.getPersistentClass(), consoleConfiguration);
 		} else {
-			editorPart = openMapping(selection, consoleConfiguration);
+			resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, configXMLFile, selection);
+			//editorPart = openMapping(selection, consoleConfiguration);
 		}
-		applySelectionToEditor(selection, editorPart);
+		if (resource != null){
+			editorPart = openMapping(resource);
+			if (editorPart != null){
+				applySelectionToEditor(selection, editorPart);				
+			}
+			return;
+		} 
+		
+		//try to find hibernate-annotations		
+		PersistentClass rootClass = null;
+		if (selection instanceof PersistentClass) {
+			rootClass = (PersistentClass)selection;
+	    } else if (selection instanceof Property) {
+    		Property p = (Property)selection;
+    		if (p.getPersistentClass() == null) return;
+    		rootClass = (PersistentClass)p.getPersistentClass();    			
+	    }
+		if (rootClass != null){
+			if (OpenFileActionUtils.rootClassHasAnnotations(consoleConfiguration, configXMLFile, rootClass)) {
+				String fullyQualifiedName = OpenFileActionUtils.getPersistentClassName(rootClass);
+				new OpenSourceAction().run(selection, proj, fullyQualifiedName);
+			}
+		}
 	}
 	
 	/**
@@ -90,7 +117,11 @@ public class OpenMappingAction extends SelectionListenerAction {
 	 */
 	public static void run(Property compositeProperty, Property parentProperty, ConsoleConfiguration consoleConfiguration) {
 		if (parentProperty.getPersistentClass() == null) return;
-		IEditorPart editorPart = openMapping(parentProperty.getPersistentClass(), consoleConfiguration);
+		IJavaProject proj = ProjectUtils.findJavaProject(consoleConfiguration);
+		java.io.File configXMLFile = consoleConfiguration.getPreferences().getConfigXMLFile();
+		IResource resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, configXMLFile, parentProperty.getPersistentClass());
+
+		IEditorPart editorPart = openMapping(resource);
 		ITextEditor textEditor = getTextEditor(editorPart);
 		if (textEditor == null) return;
 		textEditor.selectAndReveal(0, 0);
@@ -112,7 +143,6 @@ public class OpenMappingAction extends SelectionListenerAction {
 	 * @param editorPart
 	 */
 	static public void applySelectionToEditor(Object selection, IEditorPart editorPart) {
-		Assert.isNotNull(editorPart);
 		ITextEditor textEditor = getTextEditor(editorPart);
 		if (textEditor == null) return;
 		textEditor.selectAndReveal(0, 0);
@@ -141,8 +171,21 @@ public class OpenMappingAction extends SelectionListenerAction {
 		FindReplaceDocumentAdapter findAdapter = new FindReplaceDocumentAdapter(document);
 		return findAdapter;
 	}
+	
+	static public IEditorPart openMapping(IResource resource) {
+		if (resource != null && resource instanceof IFile){
+            try {
+            	return OpenFileActionUtils.openEditor(HibernateConsolePlugin.getDefault().getActiveWorkbenchWindow().getActivePage(), (IFile) resource);
+            } catch (PartInitException e) {
+            	HibernateConsolePlugin.getDefault().logErrorMessage("Can't open mapping or source file.", e);
+            }               
+        } else {
+        	HibernateConsolePlugin.getDefault().log("Can't open mapping file " + resource);
+        }
+		return null;
+	}
 
-	static public IEditorPart openMapping(Object selElement,
+	/*static public IEditorPart openMapping(Object selElement,
 			ConsoleConfiguration consoleConfiguration) {
 		IJavaProject proj = ProjectUtils.findJavaProject(consoleConfiguration);
 		java.io.File configXMLFile = consoleConfiguration.getPreferences().getConfigXMLFile();
@@ -158,7 +201,7 @@ public class OpenMappingAction extends SelectionListenerAction {
         	HibernateConsolePlugin.getDefault().log("Can't open mapping file for " + selElement);
         }
 		return null;
-	}
+	}*/
 	
 	public static IRegion findSelection(Property property, FindReplaceDocumentAdapter findAdapter) {
 		Assert.isNotNull(property.getPersistentClass());

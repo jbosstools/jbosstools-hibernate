@@ -53,7 +53,7 @@ public class OpenFileActionUtils {
 	}
 	
 
-	public static boolean rootClassHasAnnotations(ConsoleConfiguration consoleConfiguration, java.io.File configXMLFile, RootClass rootClass) {
+	public static boolean rootClassHasAnnotations(ConsoleConfiguration consoleConfiguration, java.io.File configXMLFile, PersistentClass rootClass) {
 		if (configXMLFile == null) return true;
 		Document doc = getDocument(consoleConfiguration, configXMLFile);
 		return getElements(doc, HIBERNATE_TAG_MAPPING, HIBERNATE_TAG_CLASS, getPersistentClassName(rootClass)).hasNext();
