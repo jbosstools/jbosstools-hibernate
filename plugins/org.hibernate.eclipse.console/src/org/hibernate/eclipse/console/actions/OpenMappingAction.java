@@ -20,6 +20,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
+import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
@@ -142,10 +143,10 @@ public class OpenMappingAction extends SelectionListenerAction {
 			return;
 		} 
 				
-   		if (parentProperty.getPersistentClass() != null){
+   		if (parentProperty.getPersistentClass() != null && parentProperty.isComposite()){   			
    			PersistentClass rootClass = parentProperty.getPersistentClass();
 			if (OpenFileActionUtils.rootClassHasAnnotations(consoleConfiguration, configXMLFile, rootClass)) {
-				String fullyQualifiedName = OpenFileActionUtils.getPersistentClassName(rootClass);
+				String fullyQualifiedName =((Component)((Property) parentProperty).getValue()).getComponentClassName();
 				new OpenSourceAction().run(compositeProperty, proj, fullyQualifiedName);
 			}
 	    }	
