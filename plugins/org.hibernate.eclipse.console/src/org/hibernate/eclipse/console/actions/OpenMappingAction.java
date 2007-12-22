@@ -121,21 +121,34 @@ public class OpenMappingAction extends SelectionListenerAction {
 		java.io.File configXMLFile = consoleConfiguration.getPreferences().getConfigXMLFile();
 		IResource resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, configXMLFile, parentProperty.getPersistentClass());
 
-		IEditorPart editorPart = openMapping(resource);
-		ITextEditor textEditor = getTextEditor(editorPart);
-		if (textEditor == null) return;
-		textEditor.selectAndReveal(0, 0);
-		FindReplaceDocumentAdapter findAdapter = getFindDocAdapter(textEditor);
-		IRegion parentRegion = findSelection(parentProperty, findAdapter);
-		if (parentRegion == null) return;
-		try {
-			IRegion propRegion  = findAdapter.find(parentRegion.getOffset()+parentRegion.getLength(), generatePattern(compositeProperty), true, true, false, true);
-			if (propRegion != null){
-				textEditor.selectAndReveal(propRegion.getOffset(), propRegion.getLength());
+		IEditorPart editorPart = null;
+		if (resource != null){
+			editorPart = openMapping(resource);
+			if (editorPart != null){
+				ITextEditor textEditor = getTextEditor(editorPart);
+				if (textEditor == null) return;
+				textEditor.selectAndReveal(0, 0);
+				FindReplaceDocumentAdapter findAdapter = getFindDocAdapter(textEditor);
+				IRegion parentRegion = findSelection(parentProperty, findAdapter);
+				if (parentRegion == null) return;
+				try {
+					IRegion propRegion  = findAdapter.find(parentRegion.getOffset()+parentRegion.getLength(), generatePattern(compositeProperty), true, true, false, true);
+					if (propRegion != null){
+						textEditor.selectAndReveal(propRegion.getOffset(), propRegion.getLength());
+					}
+				} catch (BadLocationException e) {
+				}
 			}
-		} catch (BadLocationException e) {
 			return;
-		}
+		} 
+				
+   		if (parentProperty.getPersistentClass() != null){
+   			PersistentClass rootClass = parentProperty.getPersistentClass();
+			if (OpenFileActionUtils.rootClassHasAnnotations(consoleConfiguration, configXMLFile, rootClass)) {
+				String fullyQualifiedName = OpenFileActionUtils.getPersistentClassName(rootClass);
+				new OpenSourceAction().run(compositeProperty, proj, fullyQualifiedName);
+			}
+	    }	
 	}
 
 	/**
