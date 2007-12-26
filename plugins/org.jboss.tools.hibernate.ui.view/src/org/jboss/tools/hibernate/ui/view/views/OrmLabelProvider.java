@@ -23,7 +23,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -94,7 +94,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 		return image;
 	}
 
-	public String getText(Object element, Configuration cfg) {
+	public String getText(Object element, ConsoleConfiguration cfg) {
 		if (element instanceof RootClass) {
 			String name = (String)ormModelNameVisitor.visitPersistentClass((RootClass)element, null);
 			if (name == null) {

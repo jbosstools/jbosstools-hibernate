@@ -12,11 +12,13 @@ package org.jboss.tools.hibernate.ui.view.views;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 import org.hibernate.HibernateException;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
+import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.eclipse.console.workbench.TypeNameValueVisitor;
 import org.hibernate.engine.Mapping;
@@ -69,25 +71,27 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 
 	}
 	
-	public String getColumnSqlType(Column column, Object argument) {
+	public String getColumnSqlType(final Column column, Object argument) {
 		
-		Configuration cfg = null;
+		ConsoleConfiguration cfg = null;
 		Mapping mapping = null;
 		Dialect dialect = null;
+		
+		String type = null;
 
-		if (argument instanceof Configuration) {
+		if (argument instanceof ConsoleConfiguration) {
 			
-			cfg = (Configuration) argument;
+			cfg = (ConsoleConfiguration) argument;
 			
-			if (mappings.containsKey(cfg)) {
+			if (mappings.containsKey(cfg.getConfiguration())) {
 				mapping = (Mapping) mappings.get(cfg);
 			} else {
-				mapping = cfg.buildMapping();
+				mapping = cfg.getConfiguration().buildMapping();
 				mappings.put(cfg, mapping);
 			}
 
 			try {
-				String dialectName = cfg.getProperty(Environment.DIALECT);
+				String dialectName = cfg.getConfiguration().getProperty(Environment.DIALECT);
 				if (dialects.containsKey(dialectName)) {
 					dialect = (Dialect) dialects.get(dialectName);
 				} else {
@@ -103,9 +107,35 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 			} catch (ClassNotFoundException e) {
 				ViewPlugin.getDefault().logError(e);
 			}
+			
+			final Mapping fMapping = mapping;
+			final Dialect fDialect = dialect;
+			
+			try {	
+			type = (String)cfg.execute( new Command() {
+				public Object execute() {
+					return column.getSqlType(fDialect, fMapping);
+				}});
+			} catch(Exception e){
+			}
 		}
-
-		return column.getSqlType(dialect, mapping);
+		
+		//if (type != null) {
+			return type;
+		/*} else {
+			if (column.getValue() instanceof SimpleValue) {
+				SimpleValue sValue = (SimpleValue) column.getValue();
+				Properties p = sValue.getTypeParameters();
+				if (p == null)
+					return null;
+				String propType = p.getProperty( "type" );
+				if ( propType != null ) {
+					int sqlType = Integer.decode( propType ).intValue();
+					return dialect.getTypeName( sqlType, column.getLength(), column.getPrecision(), column.getScale() );
+				}
+			} 
+			return null;
+		}	*/	
 	}
 
 	public Object visitPersistentClass(RootClass clazz, Object argument) {
@@ -151,6 +181,7 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 	public Object visitPersistentField(Property field, Object argument) {
 		StringBuffer name = new StringBuffer();
 		name.append(field.getName());
+		name.append(" ");
 		name.append(BUNDLE.getString("OrmModelNameVisitor.Colon"));
 		String typeString = null;
 		
@@ -159,26 +190,26 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 		} catch (Exception e) {
 			if (field.getValue() instanceof Component) {
 				typeString = ((Component)field.getValue()).getComponentClassName();
-			} else if (field.getValue().isSimpleValue()) {
+			} else if (field.getValue()!= null && field.getValue().isSimpleValue()) {
 				typeString = ((SimpleValue)field.getValue()).getTypeName();
 			}
 		}
-		
-		
-		
+				
 		if (typeString != null) {
 			typeString = correctTypeString(typeString);
 			name.append(SPACE);
 			name.append(typeString);
+			return name.toString();
 		}
 		
 		Value value = field.getValue();
-		String typeName = (String) value.accept(new TypeNameValueVisitor(false));
-		
-		if (typeName!=null) {
-			return field.getName() + " : " + typeName;
-		}
-		
+		String typeName = null;
+		if (value != null){
+			typeName = (String) value.accept(new TypeNameValueVisitor(false));
+			if (typeName!=null) {
+				return field.getName() + " : " + typeName;
+			}	
+		}			
 		return field.getName(); 
 	}
 
