@@ -32,6 +32,7 @@ import org.eclipse.gef.editpolicies.SelectionEditPolicy;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
@@ -71,9 +72,9 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 			while (model.getParent() != null) {
 				model = model.getParent();
 			}
-			Configuration cfg = null;
+			ConsoleConfiguration cfg = null;
 			if (model instanceof OrmDiagram) {
-				cfg = ((OrmDiagram) model).getConsoleConfiguration().getConfiguration();
+				cfg = ((OrmDiagram) model).getConsoleConfiguration();
 			}
 			label.setText(ormLabelProvider.getText(getElement(), cfg));	
 			label.setBackgroundColor(getColor());

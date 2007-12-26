@@ -5,7 +5,7 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Tree;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.console.ConsoleConfiguration;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.ExpandeableShape;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.Shape;
 import org.jboss.tools.hibernate.ui.view.views.OrmLabelProvider;
@@ -62,8 +62,7 @@ public class ExpandeableShapeTreeEditPart extends
 		Shape model = (Shape) getModel();
 
 		Object element = model.getOrmElement();
-		Configuration cfg = model.getOrmDiagram().getConsoleConfiguration()
-				.getConfiguration();
+		ConsoleConfiguration cfg = model.getOrmDiagram().getConsoleConfiguration();
 
 		setWidgetImage(ormLabelProvider.getImage(element));
 		setWidgetText(ormLabelProvider.getText(element, cfg));

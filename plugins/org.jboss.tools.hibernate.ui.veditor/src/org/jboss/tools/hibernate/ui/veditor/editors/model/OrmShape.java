@@ -13,16 +13,13 @@ package org.jboss.tools.hibernate.ui.veditor.editors.model;
 import java.util.Iterator;
 
 import org.eclipse.draw2d.geometry.Point;
-import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.KeyValue;
-import org.hibernate.mapping.List;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
-import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 
@@ -111,11 +108,22 @@ public class OrmShape extends ExpandeableShape {
 				Property field = (Property)iterator.next();
 				if (!field.isBackRef()) {
 					if (!field.isComposite()) {
-						if (field.getValue().isSimpleValue()) {
+						
+						
+						boolean typeIsAccessible = true;
+						if (field.getValue().isSimpleValue() && ((SimpleValue)field.getValue()).isTypeSpecified()) {
+							try {
+								field.getValue().getType();
+							} catch (Exception e) {
+								typeIsAccessible = false;
+							}
+						}
+						
+						if (typeIsAccessible && field.getValue().isSimpleValue()) {
 							bodyOrmShape = new Shape(field);
-						} else if (field.getValue().getType().isEntityType()) {
+						} else if (typeIsAccessible && field.getValue().getType().isEntityType()) {
 							bodyOrmShape = new ExpandeableShape(field);
-						} else if (field.getValue().getType().isCollectionType()) {
+						} else if (typeIsAccessible && field.getValue().getType().isCollectionType()) {
 							bodyOrmShape = new ComponentShape(field);
 						} else {
 							bodyOrmShape = new Shape(field);
@@ -132,9 +140,19 @@ public class OrmShape extends ExpandeableShape {
 				Property property = (Property)iter.next();
 				if (!property.isBackRef()) {
 					if (!property.isComposite()) {
-						if (property.getValue().getType().isEntityType()) {
+						
+						boolean typeIsAccessible = true;
+						if (property.getValue().isSimpleValue() && ((SimpleValue)property.getValue()).isTypeSpecified()) {
+							try {
+								property.getValue().getType();
+							} catch (Exception e) {
+								typeIsAccessible = false;
+							}
+						}						
+						
+						if (typeIsAccessible && property.getValue().getType().isEntityType()) {
 							bodyOrmShape = new ExpandeableShape(property);
-						} else if (property.getValue().getType().isCollectionType()) {
+						} else if (typeIsAccessible && property.getValue().getType().isCollectionType()) {
 							bodyOrmShape = new ComponentShape(property);
 						} else {
 							bodyOrmShape = new Shape(property);
