@@ -96,7 +96,7 @@ public class MappingTestProject{
 		IPath resourcePath = new Path(RESOURCE_PATH);
 		File resourceFolder = resourcePath.toFile();
 		if (!resourceFolder.exists()) 
-			throw new RuntimeException("Folder " + RESOURCE_PATH + " not found!");
+			throw new RuntimeException("Folder " + RESOURCE_PATH + " does not found!");
 				
 		IPackageFragmentRoot sourceFolder = buildSourceFolder(project, javaProject);
 		recursiveCopyFiles(resourceFolder, (IFolder) sourceFolder.getResource());
