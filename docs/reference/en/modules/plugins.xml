@@ -65,11 +65,11 @@
       <title>Hibernate Configuration File Wizard</title>
       <mediaobject>
         <imageobject role="fo">
-          <imagedata contentwidth="5cm" fileref="images/hibernatecfgwizard.png" format="PNG"/>
+          <imagedata contentwidth="5cm" fileref="images/plugins/plugins_1.png" format="PNG"/>
         </imageobject>
 
         <imageobject role="html">
-          <imagedata align="center" fileref="images/hibernatecfgwizard.png" format="PNG"/>
+          <imagedata align="center" fileref="images/plugins/plugins_1.png" format="PNG"/>
         </imageobject>
       </mediaobject>
     </figure>
@@ -80,7 +80,7 @@
     </note>
 
     <para>Enter your configuration information in this dialog. Details about the configuration
-      options can be found in <property>Hibernate</property> reference documentation.</para>
+      options can be found in <property>Hibernate reference documentation</property>.</para>
 
     <para>Press <emphasis>
         <property>Finish</property>
@@ -121,11 +121,11 @@
       <title> Creating Hibernate Console Configuration</title>
       <mediaobject>
         <imageobject role="fo">
-          <imagedata fileref="images/consolecfgwizard.png" format="PNG"/>
+          <imagedata fileref="images/plugins/plugins_2.png" format="PNG"/>
         </imageobject>
 
         <imageobject role="html">
-          <imagedata align="center" fileref="images/consolecfgwizard.png" format="PNG"/>
+          <imagedata align="center" fileref="images/plugins/plugins_2.png" format="PNG"/>
         </imageobject>
       </mediaobject>
 
@@ -304,11 +304,11 @@
       <title>Specifying Classpath in Hibernate Console Configuration</title>
       <mediaobject>
         <imageobject role="fo">
-          <imagedata align="center" fileref="images/consolecfgclasspath.png" format="PNG"/>
+          <imagedata align="center" fileref="images/plugins/plugins_3.png" format="PNG"/>
         </imageobject>
 
         <imageobject role="html">
-          <imagedata align="center" fileref="images/consolecfgclasspath.png" format="PNG"/>
+          <imagedata align="center" fileref="images/plugins/plugins_3.png" format="PNG"/>
         </imageobject>
 
       </mediaobject>
@@ -384,11 +384,11 @@
         <title>Specifying additional Mappings in Hibernate Console Configuration</title>
         <mediaobject>
           <imageobject role="fo">
-            <imagedata align="center" fileref="images/consolecfgmappings.png" format="PNG"/>
+            <imagedata align="center" fileref="images/plugins/plugins_4.png" format="PNG"/>
           </imageobject>
 
           <imageobject role="html">
-            <imagedata align="center" fileref="images/consolecfgmappings.png" format="PNG"/>
+            <imagedata align="center" fileref="images/plugins/plugins_4.png" format="PNG"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -452,11 +452,11 @@
       <title>Console Overview</title>
       <mediaobject>
         <imageobject role="fo">
-          <imagedata align="center" fileref="images/consoleoutline-before-reveng.png" format="PNG"/>
+          <imagedata align="center" fileref="images/plugins/plugins_5.png" format="PNG"/>
         </imageobject>
 
         <imageobject role="html">
-          <imagedata align="center" fileref="images/consoleoutline-before-reveng.png" format="PNG"/>
+          <imagedata align="center" fileref="images/plugins/plugins_5.png" format="PNG"/>
         </imageobject>
 
       </mediaobject>
@@ -484,7 +484,7 @@
       <title>Code Generation Launcher</title>
 
       <para>When you click on <emphasis>
-          <property>Hibernate Code Generation...</property>
+          <property>Open Hibernate Code Generation Dialog...</property>
         </emphasis> the standard Eclipse launcher dialog will appear. In this dialog you can create,
         edit and delete named Hibernate code generation "launchers".</para>
 
@@ -492,11 +492,11 @@
         <title>Getting Hibernate Code Generation Wizard</title>
         <mediaobject>
           <imageobject role="fo">
-            <imagedata fileref="images/codegendropdown.gif" format="GIF"/>
+            <imagedata fileref="images/plugins/plugins_6.png" format="PNG"/>
           </imageobject>
 
           <imageobject role="html">
-            <imagedata align="center" fileref="images/codegendropdown.gif" format="GIF"/>
+            <imagedata align="center" fileref="images/plugins/plugins_6.png" format="PNG"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -507,11 +507,11 @@
         <title>Hibernate Code Generation Wizard</title>
         <mediaobject>
           <imageobject role="fo">
-            <imagedata fileref="images/codegenmaintab.png" format="PNG"/>
+            <imagedata fileref="images/plugins/plugins_7.png" format="PNG"/>
           </imageobject>
 
           <imageobject role="html">
-            <imagedata align="center" fileref="images/codegenmaintab.png" format="PNG"/>
+            <imagedata align="center" fileref="images/plugins/plugins_7.png" format="PNG"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -521,7 +521,7 @@
           <property>New_Generation</property>
         </emphasis> will be used.</para>
 
-      <note>
+      <note><title>Tip:</title>
         <para>The &quot;At least one exporter option must be selected&quot; is just a
           warning stating that for this launch to work you need to select an exporter on the
           Exporter tab. When an exporter has been selected the warning will disappear.</para>
@@ -656,17 +656,17 @@
             </row>
 
             <row>
-              <entry>Detect optimistic lock columns</entry>
+              <entry><para>Detect optimistic lock columns</para></entry>
 
-              <entry>Automatically detect optimistic lock columns. Controllable via reveng.
-                strategy; the current default is to use columns named VERSION or TIMESTAMP.</entry>
+              <entry><para>Automatically detect optimistic lock columns. Controllable via reveng.
+                strategy; the current default is to use columns named VERSION or TIMESTAMP.</para></entry>
             </row>
 
             <row>
-              <entry>Detect many-to-many tables</entry>
+              <entry><para>Detect many-to-many tables</para></entry>
 
-              <entry>Automatically detect many-to-many tables. Controllable via reveng.
-              strategy.</entry>
+              <entry><para>Automatically detect many-to-many tables. Controllable via reveng.
+              strategy.</para></entry>
             </row>
 
             <row>
@@ -708,11 +708,11 @@
         <title>Selecting Exporters</title>
         <mediaobject>
           <imageobject role="fo">
-            <imagedata fileref="images/codegenexporters.png" format="PNG"/>
+            <imagedata fileref="images/plugins/plugins_8.png" format="PNG"/>
           </imageobject>
 
           <imageobject role="html">
-            <imagedata align="center" fileref="images/codegenexporters.png" format="PNG"/>
+            <imagedata align="center" fileref="images/plugins/plugins_8.png" format="PNG"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -1052,11 +1052,11 @@
         <title>Property Completion</title>
         <mediaobject>
           <imageobject role="fo">
-            <imagedata fileref="images/cfgxml-propertycomplete.png" format="PNG"/>
+            <imagedata fileref="images/plugins/plugins_12.png" format="PNG"/>
           </imageobject>
 
           <imageobject role="html">
-            <imagedata align="center" fileref="images/cfgxml-propertycomplete.png" format="PNG"/>
+            <imagedata align="center" fileref="images/plugins/plugins_12.png" format="PNG"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -1074,7 +1074,7 @@
       configure the reverse engineering process.</para>
 
     <para>The editor is intended to allow easy definition of type mappings, table include/excludes
-      and specific override settings for columns, e.g. define a explicit name for a column when the
+      and specific override settings for columns, e.g. define an explicit name for a column when the
       default naming rules is not applicable.</para>
 
     <para>Note that not all the features of the <emphasis>
@@ -1189,7 +1189,7 @@
         
       </figure>
       
-      <para><property>Hibernate Console</property> perspective showing entity structure, query editor and
+      <para><property>Hibernate Console</property> perspective shows entity structure, query editor and
         result</para>
         
 
