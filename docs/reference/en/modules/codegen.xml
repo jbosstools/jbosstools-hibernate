@@ -177,7 +177,7 @@ public class Person implements Serializable, IAuditable {
           <row>
             <entry><literal>default-value</literal></entry>
 
-            <entry>default initializatioin value for a field</entry>
+            <entry>default initialization value for a field</entry>
           </row>
 
           <row>
@@ -192,7 +192,7 @@ public class Person implements Serializable, IAuditable {
 
             <entry>include this property in the <literal>equals()</literal>
             and <literal>hashCode()</literal> method. If no use-in-equals is
-            specificed, no equals/hashcode will be generated.</entry>
+            specified, no equals/hashcode will be generated.</entry>
           </row>
 
           <row>
@@ -265,7 +265,7 @@ public class Person implements Serializable, IAuditable {
         <property>&quot;class-scope&quot;</property></emphasis>  to the current class, not the subclasses.</para>
 
     <section>
-      <title>Recomendations</title>
+      <title>Recommendations</title>
 
       <para>The following are some good practices when using
         <emphasis>
@@ -408,7 +408,7 @@ public class Person implements Serializable, IAuditable {
 
         <para>With an <emphasis>
           &lt;meta attribute="class-code"&gt;</emphasis>,
-        you can add addional methods on a given class, nevertheless such
+        you can add additional methods on a given class, nevertheless such
           <emphasis>
             <property>&lt;meta&gt;</property></emphasis> attribute can not be used at property
         scope level and <property>Hibernate Tools</property> does not provide such
@@ -416,7 +416,7 @@ public class Person implements Serializable, IAuditable {
             <property>&lt;meta&gt;</property></emphasis> attributes.</para>
 
         <para>A possibly solution for this is to modify the freemarker
-        templates responsable for generating the POJO's. If you look inside
+        templates responsible for generating the POJO's. If you look inside
           <emphasis>
             <property>hibernate-tools.jar</property></emphasis>, you can find the template:
           <emphasis>
@@ -474,7 +474,7 @@ public class Person implements Serializable, IAuditable {
         contents will be generated into the body of the relevant
         <literal>set</literal> method.</para>
 
-        <para>As an examlpe let us add a pre-condition for property
+        <para>As an example let us add a pre-condition for property
         <literal>name</literal> preventing no <literal>Person</literal> can
         have an empty name. So we have to modify the
           <emphasis>

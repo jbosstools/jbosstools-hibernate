@@ -201,10 +201,10 @@
 
     <para>Each have in common that they are able to build up a Hibernate
       <literal>Configuration</literal> object from which a set of exporters can be run to generate
-      various output. Note: output can be anything, e.g. specific files, statments execution against
+      various output. Note: output can be anything, e.g. specific files, statements execution against
       a database, error reporting or anything else that can be done in java code.</para>
 
-    <para>The following section decribes what the the various configuration can do, plus list the
+    <para>The following section describes what the various configuration can do, plus list the
       individual settings they have.</para>
 
     <section>
@@ -265,7 +265,7 @@
             </callout>
 
             <callout arearefs="cfg5">
-              <para>A standard Ant fileset. Used to include hibernate mapping files.Remember that if
+              <para>A standard Ant fileset. Used to include hibernate mapping files. Remember that if
                 mappings are already specified in the hibernate.cfg.xml then it should not be
                 included via the fileset as it will result in duplicate import exceptions.</para>
             </callout>
@@ -461,8 +461,8 @@
                 tables and has no other columns.</para>
             </callout>
             <callout arearefs="xcfg5">
-              <para>detectOptimisticLock (efault:true): If true columns named VERSION or TIMESTAMP
-                with appropriate types will be mapped with the apropriate optimistic locking
+              <para>detectOptimisticLock (default:true): If true columns named VERSION or TIMESTAMP
+                with appropriate types will be mapped with the appropriate optimistic locking
                 corresponding to <literal>&lt;version&gt;</literal> or
                   <literal>&lt;timestamp&gt;</literal></para>
             </callout>
@@ -493,7 +493,7 @@
   <section>
     <title>Exporters</title>
 
-    <para>Exporters is the parts that does the actual job of converting the hibernate metamodel into
+    <para>Exporters are the parts that does the actual job of converting the hibernate metamodel into
       various artifacts, mainly code. The following section describes the current supported set of
       exporters in the <property>Hibernate Tool</property> distribution. It is also possible for userdefined exporters,
       that is done through the <emphasis>
@@ -568,7 +568,7 @@
             </callout>
 
             <callout arearefs="ycfg6">
-              <para>delimiter (default: ";"): What delimter to use to separate statements</para>
+              <para>delimiter (default: ";"): What delimiter to use to separate statements</para>
             </callout>
 
             <callout arearefs="ycfg7">
@@ -602,8 +602,8 @@
       <title>POJO java code exporter (<literal>&lt;hbm2java&gt;</literal>)</title>
 
       <para><emphasis>
-        <property>&lt;hbm2java&gt;</property></emphasis> is a java codegenerator. Options for controlling wether JDK 5
-        syntax can be used and wether the POJO should be annotated with EJB3/Hibernate Annotations.</para>
+        <property>&lt;hbm2java&gt;</property></emphasis> is a java codegenerator. Options for controlling whether JDK 5
+        syntax can be used and whether the POJO should be annotated with EJB3/Hibernate Annotations.</para>
 
       <para>
         <programlistingco>
@@ -837,7 +837,7 @@
   <section>
     <title>Using properties to configure Exporters</title>
 
-    <para>Exporters can be controlled by user properties. The user properties is specificed via
+    <para>Exporters can be controlled by user properties. The user properties are specified via
       <emphasis>
         <property>&lt;property&gt;</property></emphasis> or
       <emphasis>
@@ -860,7 +860,7 @@
         <property><literal>&lt;property&gt;</literal></property></emphasis> is enough for specifying
         the properties needed for the exporters. Still the ant tools supports the notion of
         <emphasis>
-          <property><literal>&lt;propertyset&gt;</literal></property></emphasis>. The functionallity of
+          <property><literal>&lt;propertyset&gt;</literal></property></emphasis>. The functionality of
         <emphasis>
           <property><literal>&lt;propertyset&gt;</literal></property></emphasis> is explained in detail in the Ant task
         manual.</para>
@@ -881,7 +881,7 @@
         <emphasis>
           <property><literal>&lt;hibernatetool&gt;</literal></property></emphasis> or inside any exporter will automatically
         create an instance of <literal>x.y.z.NameOfToolClass</literal> and it will be available in
-        the templates as <literal>$sometool</literal>. This is usefull to delegate logic and code
+        the templates as <literal>$sometool</literal>. This is useful to delegate logic and code
         generation to java code instead of placing such logic in the templates.</para>
 
       <section>

@@ -41,7 +41,7 @@
     filtering. This file can be created by hand (its just basic XML) or you
     can use the Hibernate plugins which have a specialized editor.</para>
 
-    <note><para>Many databases is case-sensitive with their names and thus if
+    <note><para>Many databases are case-sensitive with their names and thus if
     you cannot make some table match and you are sure it is not excluded by a
     &lt;table-filter&gt;then check if the case matches; most databases stores
     table names in uppercase.</para></note>
@@ -178,7 +178,7 @@
  />
 </type-mapping>]]></programlisting>
 
-      <para>The number of attributes specificed and the sequence of the
+      <para>The number of attributes specified and the sequence of the
         <literal>sql-type</literal>'s is important. Meaning that <property>Hibernate</property> will
       search for the most specific first, and if no specific match is found it
       will seek from top to bottom when trying to resolve a type
@@ -290,7 +290,7 @@
                 <entry>char</entry>
 
                 <entry>Even though there is a generic match for VARCHAR, the
-                more specifc type-mapping for VARCHAR with not-null="false" is
+                more specific type-mapping for VARCHAR with not-null="false" is
                 chosen. The first VARCHAR sql-type matches in length but has
                 no value for not-null and thus is not considered.</entry>
               </row>
@@ -356,9 +356,9 @@
       <title>Table filters (&lt;table-filter&gt;)</title>
 
       <para>The <emphasis>
-        <property>&lt;table-filter&gt;</property></emphasis> let you specifcy matching rules for
+        <property>&lt;table-filter&gt;</property></emphasis> let you specify matching rules for
       performing general filtering/setup for tables, e.g. let you include or
-      exclude specific tables based on the schema or even a specifc
+      exclude specific tables based on the schema or even a specific
       prefix.</para>
 
       <programlistingco>
@@ -493,7 +493,7 @@
             <callout arearefs="pk-generatorclass">
               <para>generator/class (Optional): defines which identifier
               generator should be used. The class name is any hibernate short
-              hand name or fully quailfied class name for an identifier
+              hand name or fully qualified class name for an identifier
               strategy.</para>
             </callout>
 

@@ -85,7 +85,7 @@
     <para>Press <emphasis>
         <property>Finish</property>
       </emphasis> to create the configuration file, after optionally creating a Console
-      onfiguration, the <emphasis>
+      configuration, the <emphasis>
         <property>hibernate.cfg.xml</property>
       </emphasis> will be automatically opened in an editor. The last option <emphasis>
         <property>Create Console Configuration</property>
@@ -101,7 +101,7 @@
       should configure <property>Hibernate</property> and what configuration files, including which
       classpath is needed to load the POJO's, JDBC drivers etc. It is required to make usage of
       query prototyping, reverse engineering and code generation. You can have multiple named
-      console configurations. Normally you would just need one per project, but more is definitly
+      console configurations. Normally you would just need one per project, but more is definitely
       possible.</para>
 
     <para>You create a console configuration by running the Console Configuration wizard, shown in
@@ -137,7 +137,7 @@
         <property>Classpath</property>
       </emphasis> for classpath and <emphasis>
         <property>Mappings</property>
-      </emphasis> for additional mappings. The two latter ones is normally not required if you
+      </emphasis> for additional mappings. The two latter ones are normally not required if you
       specify a project and it has <emphasis>
         <property>
           <literal> /hibernate.cfg.xml </literal>
@@ -516,7 +516,7 @@
         </mediaobject>
       </figure>
 
-      <para>The first time you create a code generation launcher you should give it a meaningfull
+      <para>The first time you create a code generation launcher you should give it a meaningful
         name, otherwise the default prefix <emphasis>
           <property>New_Generation</property>
         </emphasis> will be used.</para>
@@ -633,7 +633,7 @@
               <entry>
                 <para>If reveng.xml does not provide enough customization you can provide your own
                   implementation of an ReverseEngineeringStrategy. The class need to be in the
-                  claspath of the Console Configuration, otherwise you will get class not found
+                  classpath of the Console Configuration, otherwise you will get class not found
                   exceptions. See <xref linkend="custom-reveng-strategy"/> for details and an
                   example of a custom strategy.</para>
               </entry>
@@ -778,7 +778,7 @@
               </entry>
 
               <entry>
-                <para>Generate a hibernate.cfg.xml file. Used to keep the hibernate.cfg.xml uptodate
+                <para>Generate a hibernate.cfg.xml file. Used to keep the hibernate.cfg.xml update
                   with any new found mapping files.</para>
               </entry>
             </row>
@@ -812,7 +812,7 @@
       <para>Each Exporter listens to certain properties and these can be setup in the <emphasis>
           <property>Properties</property>
         </emphasis> section where you can add/remove predefined or customer properties for each of
-        the exporters. The following table lists the time of writing pre-defined properties:</para>
+        the exporters. The following table lists the time of writing predefined properties:</para>
 
       <para>
         <table>
@@ -937,7 +937,7 @@
         <property>hbm.xml </property>
       </emphasis> and <emphasis>
         <property>cfg.xml</property>
-      </emphasis> files. The editor is based on the Eclipse WTP tools and extend its functionallity
+      </emphasis> files. The editor is based on the Eclipse WTP tools and extend its functionality
       to provide Hibernate specific code completion.</para>
 
     <figure>
@@ -968,7 +968,7 @@
         </emphasis> files to the relevant class/field in java code.</para>
 
       <figure>
-        <title>Navigation Functionallity</title>
+        <title>Navigation Functionality</title>
         <para>
           <mediaobject>
             <imageobject role="fo">
@@ -991,7 +991,7 @@
         </para>
       </figure>
 
-      <para>This is done via the standard hyperlink navigation functionallity in Eclipse; per
+      <para>This is done via the standard hyperlink navigation functionality in Eclipse; per
         default it is done by pressing F3 while the cursor is on a class/field or by pressing <emphasis>
           <property>Ctrl</property>
         </emphasis> and the mouse button to perform the same navigation.</para>
@@ -1079,7 +1079,7 @@
 
     <para>Note that not all the features of the <emphasis>
       <property>.reveng.xml</property></emphasis> file is exposed or fully implemented in
-      the editor, but the main functionallity is there. To understand the full flexibility of the
+      the editor, but the main functionality is there. To understand the full flexibility of the
       <emphasis>
         <property>reveng.xml</property></emphasis>, please see <xref linkend="hibernaterevengxmlfile"/></para>
 
@@ -1090,7 +1090,7 @@
           <property>Ctrl+N</property></emphasis> or via the code generation
       launcher.</para>
 
-    <para>The following screentshot shows the <emphasis>
+    <para>The following screenshot shows the <emphasis>
       <property>Overview</property></emphasis> page where the wanted console configuration
       is selected (auto-detected if Hibernate 3 support is enabled for the project)</para>
 
@@ -1239,7 +1239,7 @@
 
       <para>Errors during creation of the <literal>SessionFactory</literal> or running the queries
         (e.g. if your configuration or query is incorrect) will be shown in a message dialog or
-        inlined in the view that detected the error, you may get more information about the error in
+        inclined in the view that detected the error, you may get more information about the error in
         the Error Log view on the right pane.</para>
 
       <para>Results of a query will be shown in the Query result view and details of possible errors
