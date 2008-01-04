@@ -69,11 +69,7 @@
         <property>hibernate-tools.jar</property>
       </emphasis> and associated libraries. The libraries are included in the distribution from the
       Hibernate website and the Eclipse updatesite. The libraries are located in the eclipse plugins
-      directory at  <emphasis>
-        <property>
-          <literal>/plugins/org.hibernate.eclipse.x.x.x/lib/tools/.</literal>
-        </property>
-      </emphasis>These libraries are 100% independent from the eclipse platform. How to use these
-      via ant tasks are described in the Ant chapter.</para>
+      directory at  /plugins/org.hibernate.eclipse.x.x.x/lib/tools/. These libraries are 100% independent from the eclipse platform. How to use these
+      via ant tasks are described in the <link linkend="ant">Ant Tools</link> chapter.</para>
   </section>
 </chapter>
