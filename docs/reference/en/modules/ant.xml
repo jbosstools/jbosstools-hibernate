@@ -12,11 +12,10 @@
       from tools.hibernate.org The <emphasis>
         <property>hibernate-tools.jar</property>
       </emphasis> is located in your eclipse plugins directory at <emphasis>
-        <property>/plugins/org.hibernate.eclipse.x.x.x/lib/tools/hibernate-tools.jar
-        </property>
-      </emphasis></para>
-      <para>. This jar is 100% independent from the eclipse platform and can thus be used
-      independently of eclipse.</para>
+        <property>/plugins/org.hibernate.eclipse.x.x.x/lib/tools/hibernate-tools.jar </property>
+      </emphasis>.</para>
+    <para>This jar is 100% independent from the eclipse platform and can thus be used independently
+      of eclipse.</para>
 
     <note>
       <para>There might be incapabilities with respect to the Hibernate3.jar bundled with the tools
@@ -28,13 +27,14 @@
   </section>
 
   <section>
-    <title>The <literal>&lt;hibernatetool&gt;</literal> ant Task</title>
+    <title>The &lt;hibernatetool&gt; Ant Task</title>
 
-    <para>To use the ant tasks you need to have the hibernatetool task defined. That is done in your <emphasis>
+    <para>To use the ant tasks you need to have the <emphasis>
+        <property>hibernatetool</property>
+      </emphasis> task defined. That is done in your <emphasis>
         <property>build.xml</property>
       </emphasis> by inserting the following xml (assuming the jars are in the
-      <literal>lib</literal> directory): 
-      <programlisting><![CDATA[<path id="toolslib">
+      <literal>lib</literal> directory): <programlisting><![CDATA[<path id="toolslib">
  <path location="lib/hibernate-tools.jar" />
  <path location="lib/hibernate3.jar" />
  <path location="lib/freemarker.jar" />
@@ -51,9 +51,7 @@
           <literal>&lt;taskdef&gt;</literal>
         </property>
       </emphasis> defines an Ant task called <emphasis>
-        <property>
-          <literal>&lt;hibernatetool&gt;</literal>
-        </property>
+        <property> hibernatetool </property>
       </emphasis> which now can be used anywhere in your ant <emphasis>
         <property>build.xml</property>
       </emphasis> files. It is important to include all the <property>Hibernate Tools</property>
@@ -65,9 +63,7 @@
     <para/>
 
     <para>When using the <emphasis>
-        <property>
-          <literal>&lt;hibernatetool&gt; </literal>
-        </property>
+        <property> hibernatetool </property>
       </emphasis> task you have to specify one or more of the following:</para>
 
     <para>
@@ -140,9 +136,9 @@
           <property>
             <literal>hibernate.cfg.xml</literal>
           </property>
-          </emphasis>. The output will be put in the <emphasis>
-            <property>${build.dir}/generated</property></emphasis>
-        directory.</para>
+        </emphasis>. The output will be put in the <emphasis>
+          <property>${build.dir}/generated</property>
+        </emphasis> directory.</para>
 
       <para>
         <programlisting><![CDATA[<hibernatetool destdir="${build.dir}/generated">
@@ -157,8 +153,8 @@
         </emphasis> and finally runs a custom code generation via <emphasis>
           <property>&lt;hbmtemplate&gt;</property>
         </emphasis>. This is again from a normal <emphasis>
-          <property>hibernate.cfg.xml</property></emphasis> and the output
-        is still put in the <emphasis>
+          <property>hibernate.cfg.xml</property>
+        </emphasis> and the output is still put in the <emphasis>
           <property>
             <literal>${build.dir}/generated</literal>
           </property>
@@ -201,8 +197,12 @@
 
     <para>Each have in common that they are able to build up a Hibernate
       <literal>Configuration</literal> object from which a set of exporters can be run to generate
-      various output. Note: output can be anything, e.g. specific files, statements execution against
-      a database, error reporting or anything else that can be done in java code.</para>
+      various output. 
+      
+     <note>Output can be anything, e.g. specific files, statements execution
+      against a database, error reporting or anything else that can be done in java code.
+     </note>
+    </para>
 
     <para>The following section describes what the various configuration can do, plus list the
       individual settings they have.</para>
@@ -265,8 +265,8 @@
             </callout>
 
             <callout arearefs="cfg5">
-              <para>A standard Ant fileset. Used to include hibernate mapping files. Remember that if
-                mappings are already specified in the hibernate.cfg.xml then it should not be
+              <para>A standard Ant fileset. Used to include hibernate mapping files. Remember that
+                if mappings are already specified in the hibernate.cfg.xml then it should not be
                 included via the fileset as it will result in duplicate import exceptions.</para>
             </callout>
           </calloutlist>
@@ -277,15 +277,18 @@
         <title>Example</title>
 
         <para>This example shows an example where no <emphasis>
-          <property><literal>hibernate.cfg.xml</literal></property></emphasis> exists,
-          and a <emphasis>
-            <property><literal>hibernate.properties</literal></property></emphasis> + fileset is used instead. 
-        </para>
+            <property>
+              <literal>hibernate.cfg.xml</literal>
+            </property>
+          </emphasis> exists, and a <emphasis>
+            <property>
+              <literal>hibernate.properties</literal>
+            </property>
+          </emphasis> + fileset is used instead. </para>
         <note>
-          <para>
-          Hibernate will still read any global <literal>/hibernate.properties</literal> available in
-          the classpath, but the specified properties file here will override those values for any
-          non-global property.</para>
+          <para> Hibernate will still read any global <literal>/hibernate.properties</literal>
+            available in the classpath, but the specified properties file here will override those
+            values for any non-global property.</para>
         </note>
 
         <para>
@@ -308,18 +311,20 @@
       <title>Annotation based Configuration (&lt;annotationconfiguration&gt;)</title>
 
       <para>An <emphasis>
-        <property>&lt;annotationconfiguration&gt;</property></emphasis> is used when you want to
-        read the metamodel from EJB3/Hibernate Annotations based POJO's. To use it remember to put
-        the jars file needed for using hibernate annotations in the classpath of the
-        <emphasis>
-          <property>&lt;taskdef&gt;</property></emphasis>.</para>
+          <property>&lt;annotationconfiguration&gt;</property>
+        </emphasis> is used when you want to read the metamodel from EJB3/Hibernate Annotations
+        based POJO's. To use it remember to put the jars file needed for using hibernate annotations
+        in the classpath of the <emphasis>
+          <property>&lt;taskdef&gt;</property>
+        </emphasis>.</para>
 
       <para>The <emphasis>
-        <property>&lt;annotationconfiguration&gt;</property></emphasis> supports the same attributes as a
-        <emphasis>
-          <property>&lt;configuration&gt;</property></emphasis> except that the configurationfile attribute is now required as
-        that is from where an <literal>AnnotationConfiguration</literal> gets the list of
-        classes/packages it should load.</para>
+          <property>&lt;annotationconfiguration&gt;</property>
+        </emphasis> supports the same attributes as a <emphasis>
+          <property>&lt;configuration&gt;</property>
+        </emphasis> except that the configurationfile attribute is now required as that is from
+        where an <literal>AnnotationConfiguration</literal> gets the list of classes/packages it
+        should load.</para>
 
       <para>Thus the minimal usage is:</para>
 
@@ -339,29 +344,31 @@
       <title>JPA based configuration (&lt;jpaconfiguration&gt;)</title>
 
       <para>A <emphasis>
-        <property>&lt;jpaconfiguration&gt;</property></emphasis> is used when you want to read the metamodel from
-        JPA/Hibernate Annotation where you want to use the auto-scan configuration as defined in the
-        JPA spec (part of EJB3). In other words, when you do not have a
-        <emphasis>
-          <property>hibernate.cfg.xml</property></emphasis>, but instead have a setup where you use a
-        <emphasis>
-          <property>persistence.xml</property></emphasis> packaged in a JPA compliant manner.</para>
+          <property>&lt;jpaconfiguration&gt;</property>
+        </emphasis> is used when you want to read the metamodel from JPA/Hibernate Annotation where
+        you want to use the auto-scan configuration as defined in the JPA spec (part of EJB3). In
+        other words, when you do not have a <emphasis>
+          <property>hibernate.cfg.xml</property>
+        </emphasis>, but instead have a setup where you use a <emphasis>
+          <property>persistence.xml</property>
+        </emphasis> packaged in a JPA compliant manner.</para>
 
       <para><literal>&lt;jpaconfiguration&gt;</literal> will simply just try and
-        auto-configure it self based on the available classpath, e.g. look for
-        <emphasis>
-          <property>META-INF/persistence.xml</property></emphasis>.</para>
+        auto-configure it self based on the available classpath, e.g. look for <emphasis>
+          <property>META-INF/persistence.xml</property>
+        </emphasis>.</para>
 
       <para>The <literal>persistenceunit</literal> attribute can be used to select a specific
         persistence unit. If no persistenceunit is specified it will automatically search for one
-        and if an unique one is found use it, but if multiple persistence units are available it will
-        error.</para>
+        and if an unique one is found use it, but if multiple persistence units are available it
+        will error.</para>
 
       <para>To use a <emphasis>
-        <property>&lt;jpaconfiguration&gt;</property></emphasis> you will need to specify some additional jars
-        from Hibernate EntityManager in the <emphasis>
-          <property>&lt;taskdef&gt;</property></emphasis> of the hibernatetool. The
-        following shows a full setup:</para>
+          <property>&lt;jpaconfiguration&gt;</property>
+        </emphasis> you will need to specify some additional jars from Hibernate EntityManager in
+        the <emphasis>
+          <property>&lt;taskdef&gt;</property>
+        </emphasis> of the hibernatetool. The following shows a full setup:</para>
 
       <programlisting><![CDATA[<path id="ejb3toolslib">
  <path refid="jpatoolslib"/> <!-- ref to previously defined toolslib -->
@@ -389,11 +396,12 @@
 </hibernatetool>
 ]]></programlisting>
 
-      
-      <note><para><literal>ejb3configuration</literal> were the name used in previous versions. It
-        still works but will emit a warning telling you to use <literal>jpaconfiguration</literal>
-        instead.</para>
-        </note>
+
+      <note>
+        <para><literal>ejb3configuration</literal> were the name used in previous versions. It still
+          works but will emit a warning telling you to use <literal>jpaconfiguration</literal>
+          instead.</para>
+      </note>
 
     </section>
 
@@ -401,15 +409,22 @@
       <title>JDBC Configuration for reverse engineering (&lt;jdbcconfiguration&gt;)</title>
 
       <para>A <emphasis>
-        <property><literal>&lt;jdbcconfiguration&gt;</literal></property></emphasis> is used to perform reverse
-        engineering of the database from a JDBC connection.</para>
+          <property>
+            <literal>&lt;jdbcconfiguration&gt;</literal>
+          </property>
+        </emphasis> is used to perform reverse engineering of the database from a JDBC connection.</para>
 
       <para>This configuration works by reading the connection properties from</para>
 
       <para>The <emphasis>
-        <property><literal>&lt;jdbcconfiguration&gt;</literal></property></emphasis> has the same attributes as a
-        <emphasis>
-          <property><literal>&lt;configuration&gt;</literal></property></emphasis> plus the following additional attributes:</para>
+          <property>
+            <literal>&lt;jdbcconfiguration&gt;</literal>
+          </property>
+        </emphasis> has the same attributes as a <emphasis>
+          <property>
+            <literal>&lt;configuration&gt;</literal>
+          </property>
+        </emphasis> plus the following additional attributes:</para>
 
       <para>
         <programlistingco>
@@ -474,12 +489,17 @@
         <title>Example</title>
 
         <para>Here is an example of using <emphasis>
-          <property><literal>&lt;jdbcconfiguration&gt;</literal></property></emphasis> to
-          generate Hibernate xml mappings via <literal>&lt;hbm2hbmxml&gt;</literal>. The
-          connection settings is here read from a <emphasis>
-            <property><literal>hibernate.properties</literal></property></emphasis> file but
-          could just as well have been read from a <emphasis>
-            <property>hibernate.cfg.xml</property></emphasis>.</para>
+            <property>
+              <literal>&lt;jdbcconfiguration&gt;</literal>
+            </property>
+          </emphasis> to generate Hibernate xml mappings via
+          <literal>&lt;hbm2hbmxml&gt;</literal>. The connection settings is here read from a <emphasis>
+            <property>
+              <literal>hibernate.properties</literal>
+            </property>
+          </emphasis> file but could just as well have been read from a <emphasis>
+            <property>hibernate.cfg.xml</property>
+          </emphasis>.</para>
 
         <programlisting><![CDATA[<hibernatetool>
  <jdbcconfiguration propertyfile="etc/hibernate.properties" />
@@ -493,20 +513,24 @@
   <section>
     <title>Exporters</title>
 
-    <para>Exporters are the parts that does the actual job of converting the hibernate metamodel into
-      various artifacts, mainly code. The following section describes the current supported set of
-      exporters in the <property>Hibernate Tool</property> distribution. It is also possible for userdefined exporters,
-      that is done through the <emphasis>
-        <property><literal>&lt;hbmtemplate&gt;</literal></property></emphasis> exporter.</para>
+    <para>Exporters are the parts that does the actual job of converting the hibernate metamodel
+      into various artifacts, mainly code. The following section describes the current supported set
+      of exporters in the <property>Hibernate Tool</property> distribution. It is also possible for
+      userdefined exporters, that is done through the <emphasis>
+        <property>
+          <literal>&lt;hbmtemplate&gt;</literal>
+        </property>
+      </emphasis> exporter.</para>
 
     <section>
       <title>Database schema exporter (&lt;hbm2ddl&gt;)</title>
 
       <para><emphasis>
-        <property>&lt;hbm2ddl&gt;</property></emphasis> lets you run schemaexport and schemaupdate which generates the
-        appropriate SQL DDL and allow you to store the result in a file or export it directly to the
-        database. Remember that if a custom naming strategy is needed it is placed on the
-        configuration element.</para>
+          <property>&lt;hbm2ddl&gt;</property>
+        </emphasis> lets you run schemaexport and schemaupdate which generates the appropriate SQL
+        DDL and allow you to store the result in a file or export it directly to the database.
+        Remember that if a custom naming strategy is needed it is placed on the configuration
+        element.</para>
 
       <para>
         <programlistingco>
@@ -545,11 +569,12 @@
             </callout>
 
             <callout arearefs="ycfg2">
-              <para>update(default: false): Try and create an update script representing the &quot;delta&quot;
-                between what is in the database and what the mappings specify. Ignores create/update
-                attributes. (<emphasis>Do *not* use against production databases, no guarantees at
-                  all that the proper delta can be generated nor that the underlying database can
-                  actually execute the needed operations</emphasis>)</para>
+              <para>update(default: false): Try and create an update script representing the
+                &quot;delta&quot; between what is in the database and what the mappings
+                specify. Ignores create/update attributes. (<emphasis>Do *not* use against
+                  production databases, no guarantees at all that the proper delta can be generated
+                  nor that the underlying database can actually execute the needed
+                operations</emphasis>)</para>
             </callout>
 
             <callout arearefs="ycfg3">
@@ -587,9 +612,11 @@
         <title>Example</title>
 
         <para>Basic example of using <emphasis>
-          <property>&lt;hbm2ddl&gt;</property></emphasis>, which does not export to the database
-          but simply dumps the sql to a file named <emphasis>
-            <property>sql.ddl</property></emphasis>.</para>
+            <property>&lt;hbm2ddl&gt;</property>
+          </emphasis>, which does not export to the database but simply dumps the sql to a file
+          named <emphasis>
+            <property>sql.ddl</property>
+          </emphasis>.</para>
 
         <programlisting><![CDATA[<hibernatetool destdir="${build.dir}/generated">
  <configuration configurationfile="hibernate.cfg.xml"/>
@@ -602,8 +629,9 @@
       <title>POJO java code exporter (<literal>&lt;hbm2java&gt;</literal>)</title>
 
       <para><emphasis>
-        <property>&lt;hbm2java&gt;</property></emphasis> is a java codegenerator. Options for controlling whether JDK 5
-        syntax can be used and whether the POJO should be annotated with EJB3/Hibernate Annotations.</para>
+          <property>&lt;hbm2java&gt;</property>
+        </emphasis> is a java codegenerator. Options for controlling whether JDK 5 syntax can be
+        used and whether the POJO should be annotated with EJB3/Hibernate Annotations.</para>
 
       <para>
         <programlistingco>
@@ -636,8 +664,8 @@
         <title>Example</title>
 
         <para>Basic example of using <emphasis>
-          <property>&lt;hbm2java&gt;</property></emphasis> to generate POJO's that utilize jdk5
-          constructs.</para>
+            <property>&lt;hbm2java&gt;</property>
+          </emphasis> to generate POJO's that utilize jdk5 constructs.</para>
 
         <programlisting><![CDATA[<hibernatetool destdir="${build.dir}/generated">
  <configuration configurationfile="hibernate.cfg.xml"/>
@@ -650,12 +678,13 @@
       <title>Hibernate Mapping files exporter (<literal>&lt;hbm2hbmxml&gt;</literal>)</title>
 
       <para><emphasis>
-        <property>&lt;hbm2hbmxml&gt;</property></emphasis> generates a set of .hbm files. Intended to be used together
-        with a <emphasis>
-          <property>&lt;jdbcconfiguration&gt;</property></emphasis> when performing reverse engineering, but can be
-        used with any kind of configuration. e.g. to convert from annotation based pojo's to
-        <emphasis>
-          <property>hbm.xml</property></emphasis>. Note that not every possible mapping transformation is possible/implemented
+          <property>&lt;hbm2hbmxml&gt;</property>
+        </emphasis> generates a set of .hbm files. Intended to be used together with a <emphasis>
+          <property>&lt;jdbcconfiguration&gt;</property>
+        </emphasis> when performing reverse engineering, but can be used with any kind of
+        configuration. e.g. to convert from annotation based pojo's to <emphasis>
+          <property>hbm.xml</property>
+        </emphasis>. Note that not every possible mapping transformation is possible/implemented
         (contributions welcome) so some hand editing might be necessary.</para>
 
       <programlisting><![CDATA[<hbm2hbmxml/>]]></programlisting>
@@ -663,8 +692,9 @@
       <section>
         <title>Example</title>
 
-                <para>Basic usage of <emphasis>
-          <property>&lt;hbm2hbmxml&gt;</property></emphasis>.</para>
+        <para>Basic usage of <emphasis>
+            <property>&lt;hbm2hbmxml&gt;</property>
+          </emphasis>.</para>
 
         <programlisting><![CDATA[<hibernatetool destdir="${build.dir}/generated">
  <configuration configurationfile="hibernate.cfg.xml"/>
@@ -672,18 +702,19 @@
 </hibernatetool>]]></programlisting>
 
         <para><emphasis>
-          <property>&lt;hbm2hbmxml&gt;</property>
-        </emphasis> is normally used with a <emphasis>
-          <property>&lt;jdbcconfiguration&gt;</property>
-          </emphasis>
-          like in the above example, but any other configuration can also be used to convert between
-          the different ways of performing mappings. Here is an example of that, using an
-          <emphasis>
-            <property>&lt;annotationconfiguration&gt;</property></emphasis>.</para>
-          
-        <note><para>Not all conversions is implemented
-        (contributions welcome), so some hand editing might be necessary.</para>
-          </note>
+            <property>&lt;hbm2hbmxml&gt;</property>
+          </emphasis> is normally used with a <emphasis>
+            <property>&lt;jdbcconfiguration&gt;</property>
+          </emphasis> like in the above example, but any other configuration can also be used to
+          convert between the different ways of performing mappings. Here is an example of that,
+          using an <emphasis>
+            <property>&lt;annotationconfiguration&gt;</property>
+          </emphasis>.</para>
+
+        <note>
+          <para>Not all conversions is implemented (contributions welcome), so some hand editing
+            might be necessary.</para>
+        </note>
 
         <para>
           <programlisting><![CDATA[<hibernatetool destdir="${build.dir}/generated">
@@ -698,13 +729,15 @@
       <title>Hibernate Configuration file exporter (<literal>&lt;hbm2cfgxml&gt;</literal>)</title>
 
       <para><emphasis>
-        <property>&lt;hbm2cfgxml&gt;</property></emphasis> generates a <emphasis>
-          <property>hibernate.cfg.xml</property></emphasis>. Intended to be used together
-        with a <emphasis>
-          <property>&lt;jdbcconfiguration&gt;</property></emphasis> when performing reverse engineering, but can be
-        used with any kind of configuration. The <emphasis>
-          <property>&lt;hbm2cfgxml&gt;</property></emphasis> will contain the
-        properties used and adds mapping entries for each mapped class.</para>
+          <property>&lt;hbm2cfgxml&gt;</property>
+        </emphasis> generates a <emphasis>
+          <property>hibernate.cfg.xml</property>
+        </emphasis>. Intended to be used together with a <emphasis>
+          <property>&lt;jdbcconfiguration&gt;</property>
+        </emphasis> when performing reverse engineering, but can be used with any kind of
+        configuration. The <emphasis>
+          <property>&lt;hbm2cfgxml&gt;</property>
+        </emphasis> will contain the properties used and adds mapping entries for each mapped class.</para>
 
       <para>
         <programlistingco>
@@ -732,8 +765,8 @@
       <title>Documentation exporter (<literal>&lt;hbm2doc&gt;</literal>)</title>
 
       <para><emphasis>
-        <property>&lt;hbm2doc&gt;</property></emphasis> generates html documentation a'la javadoc for the database
-        schema et.al.</para>
+          <property>&lt;hbm2doc&gt;</property>
+        </emphasis> generates html documentation a'la javadoc for the database schema et.al.</para>
 
       <programlisting><![CDATA[<hbm2doc/>]]></programlisting>
     </section>
@@ -742,8 +775,9 @@
       <title>Query exporter (&lt;query&gt;)</title>
 
       <para><emphasis>
-        <property>&lt;query&gt;</property></emphasis> is used to execute a HQL query statements and optionally send the
-        output to a file. Can be used for verifying the mappings and for basic data extraction.</para>
+          <property>&lt;query&gt;</property>
+        </emphasis> is used to execute a HQL query statements and optionally send the output to a
+        file. Can be used for verifying the mappings and for basic data extraction.</para>
 
       <programlisting><![CDATA[<query
  destfile="filename">
@@ -761,8 +795,9 @@
         <title>Examples</title>
 
         <para>Simplest usage of <emphasis>
-          <property>&lt;query&gt;</property></emphasis> will just execute the query without dumping to
-          a file. This can be used to verify that queries can actually be performed.</para>
+            <property>&lt;query&gt;</property>
+          </emphasis> will just execute the query without dumping to a file. This can be used to
+          verify that queries can actually be performed.</para>
 
         <programlisting><![CDATA[<hibernatetool>
  <configuration configurationfile="hibernate.cfg.xml"/>
@@ -770,13 +805,14 @@
 </hibernatetool>]]></programlisting>
 
         <para>Multiple queries can be executed by nested <emphasis>
-          <property>&lt;hql&gt;</property></emphasis> elements. In this
-          example we also let the output be dumped to <emphasis>
-            <property>queryresult.txt</property></emphasis>. </para>
-          
-          <note><para>
-          Currently the dump is simply a call to toString on each element.</para>
-            </note>
+            <property>&lt;hql&gt;</property>
+          </emphasis> elements. In this example we also let the output be dumped to <emphasis>
+            <property>queryresult.txt</property>
+          </emphasis>. </para>
+
+        <note>
+          <para> Currently the dump is simply a call to toString on each element.</para>
+        </note>
 
         <para>
           <programlisting><![CDATA[<hibernatetool>
@@ -800,18 +836,19 @@
  exporterclass="Exporter classname"
 />]]></programlisting>
 
-      <note><para>Previous versions of the tools used Velocity. We are now using Freemarker which
-      provides us much better exception and error handling.</para>
-        </note>
+      <note>
+        <para>Previous versions of the tools used Velocity. We are now using Freemarker which
+          provides us much better exception and error handling.</para>
+      </note>
 
       <section>
         <title>Exporter via <literal>&lt;hbmtemplate&gt;</literal></title>
 
-        <para>The following is an example of reverse engineering via
-          <emphasis>
-            <property>&lt;jdbcconfiguration&gt;</property></emphasis> and use a custom Exporter via the
-          <emphasis>
-            <property>&lt;hbmtemplate&gt;</property></emphasis>.</para>
+        <para>The following is an example of reverse engineering via <emphasis>
+            <property>&lt;jdbcconfiguration&gt;</property>
+          </emphasis> and use a custom Exporter via the <emphasis>
+            <property>&lt;hbmtemplate&gt;</property>
+          </emphasis>.</para>
 
         <para>
           <programlisting><![CDATA[ <hibernatetool destdir="${destdir}">
@@ -837,63 +874,78 @@
   <section>
     <title>Using properties to configure Exporters</title>
 
-    <para>Exporters can be controlled by user properties. The user properties are specified via
-      <emphasis>
-        <property>&lt;property&gt;</property></emphasis> or
-      <emphasis>
-        <property><literal>&lt;propertyset&gt;</literal></property></emphasis> and each exporter will have access to them
-      directly in the templates and via <literal>Exporter.setProperties()</literal>.</para>
+    <para>Exporters can be controlled by user properties. The user properties are specified via <emphasis>
+        <property>&lt;property&gt;</property>
+      </emphasis> or <emphasis>
+        <property>
+          <literal>&lt;propertyset&gt;</literal>
+        </property>
+      </emphasis> and each exporter will have access to them directly in the templates and via
+        <literal>Exporter.setProperties()</literal>.</para>
 
     <section>
       <title><literal>&lt;property&gt;</literal> and
         <literal>&lt;propertyset&gt;</literal></title>
 
       <para>The <emphasis>
-        <property>&lt;property&gt;</property></emphasis> allows you bind a string value to a key. The value will be
-        available in the templates via $&lt;key&gt;. The following example will assign the
-        string value <emphasis>
-          <property>&quot;true&quot;</property></emphasis> to the variable <literal>$descriptors.</literal></para>
+          <property>&lt;property&gt;</property>
+        </emphasis> allows you bind a string value to a key. The value will be available in the
+        templates via $&lt;key&gt;. The following example will assign the string value <emphasis>
+          <property>&quot;true&quot;</property>
+        </emphasis> to the variable <literal>$descriptors.</literal></para>
 
       <programlisting><![CDATA[<property key="descriptors" value="true"/>]]></programlisting>
 
       <para>Most times using <emphasis>
-        <property><literal>&lt;property&gt;</literal></property></emphasis> is enough for specifying
-        the properties needed for the exporters. Still the ant tools supports the notion of
-        <emphasis>
-          <property><literal>&lt;propertyset&gt;</literal></property></emphasis>. The functionality of
-        <emphasis>
-          <property><literal>&lt;propertyset&gt;</literal></property></emphasis> is explained in detail in the Ant task
-        manual.</para>
+          <property>
+            <literal>&lt;property&gt;</literal>
+          </property>
+        </emphasis> is enough for specifying the properties needed for the exporters. Still the ant
+        tools supports the notion of <emphasis>
+          <property>
+            <literal>&lt;propertyset&gt;</literal>
+          </property>
+        </emphasis>. The functionality of <emphasis>
+          <property>
+            <literal>&lt;propertyset&gt;</literal>
+          </property>
+        </emphasis> is explained in detail in the Ant task manual.</para>
     </section>
 
     <section>
       <title>Getting access to user specific classes</title>
 
-      <para>If the templates need to access some user class it is possible by specifying a
-        <emphasis>
-          <property>&quot;toolclass&quot;</property></emphasis> in the properties.</para>
+      <para>If the templates need to access some user class it is possible by specifying a <emphasis>
+          <property>&quot;toolclass&quot;</property>
+        </emphasis> in the properties.</para>
 
       <programlisting><![CDATA[<property key="hibernatetool.sometool.toolclass" value="x.y.z.NameOfToolClass"/>
 ]]></programlisting>
 
       <para>Placing the above <emphasis>
-        <property><literal>&lt;property&gt;</literal></property></emphasis> tag in
-        <emphasis>
-          <property><literal>&lt;hibernatetool&gt;</literal></property></emphasis> or inside any exporter will automatically
-        create an instance of <literal>x.y.z.NameOfToolClass</literal> and it will be available in
-        the templates as <literal>$sometool</literal>. This is useful to delegate logic and code
-        generation to java code instead of placing such logic in the templates.</para>
+          <property>
+            <literal>&lt;property&gt;</literal>
+          </property>
+        </emphasis> tag in <emphasis>
+          <property>
+            <literal>&lt;hibernatetool&gt;</literal>
+          </property>
+        </emphasis> or inside any exporter will automatically create an instance of
+          <literal>x.y.z.NameOfToolClass</literal> and it will be available in the templates as
+          <literal>$sometool</literal>. This is useful to delegate logic and code generation to java
+        code instead of placing such logic in the templates.</para>
 
       <section>
         <title>Example</title>
 
         <para>Here is an example that uses <emphasis>
-          <property>&lt;hbmtemplate&gt;</property></emphasis> together with
-          <emphasis>
-            <property>&lt;property&gt;</property></emphasis> which will be available to the templates/exporter. </para>
-          <note><para> This
-          example actually simulates what &lt;hbm2java&gt; actually does.</para>
-            </note>
+            <property>&lt;hbmtemplate&gt;</property>
+          </emphasis> together with <emphasis>
+            <property>&lt;property&gt;</property>
+          </emphasis> which will be available to the templates/exporter. </para>
+        <note>
+          <para> This example actually simulates what &lt;hbm2java&gt; actually does.</para>
+        </note>
 
         <programlisting><![CDATA[<hibernatetool destdir="${build.dir}/generated">
 <configuration 
