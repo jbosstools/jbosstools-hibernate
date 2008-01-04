@@ -367,7 +367,7 @@
 
               <entry>
                 <para>When enabled the project classpath will be appended to the classpath specified
-                  above.</para>
+                  above</para>
               </entry>
 
               <entry>
@@ -569,7 +569,7 @@
 
               <entry>
                 <para>The name of the console configuration which should be used when code
-                  generating.</para>
+                  generating</para>
               </entry>
             </row>
 
@@ -606,7 +606,7 @@
 
               <entry>
                 <para>The package name here is used as the default package name for any entities
-                  found when reverse engineering.</para>
+                  found when reverse engineering</para>
               </entry>
             </row>
 
@@ -687,7 +687,7 @@
               </entry>
 
               <entry>
-                <para>A path to a directory with custom templates.</para>
+                <para>A path to a directory with custom templates</para>
               </entry>
             </row>
           </tbody>
@@ -768,7 +768,7 @@
               </entry>
 
               <entry>
-                <para>Generate mapping (hbm.xml) files for each entity</para>
+                <para>Generate mapping (hbm.xml) files for each entity.</para>
               </entry>
             </row>
 
@@ -907,7 +907,7 @@
 
                 <entry>
                   <para>Pattern to use for the generated files, relatively for the output dir.
-                    Example: {package-name}/{class-name}.java</para>
+                    Example: {package-name}/{class-name}.java .</para>
                 </entry>
               </row>
 
@@ -919,7 +919,7 @@
                 </entry>
 
                 <entry>
-                  <para>executable to run GraphViz (only relevant, but optional for Schema
+                  <para>Executable to run GraphViz (only relevant, but optional for Schema
                     documentation)</para>
                 </entry>
               </row>
@@ -1068,7 +1068,7 @@
     <title>Reveng.xml editor</title>
 
     <para>A <emphasis>
-      <property>reveng.xml</property></emphasis>
+      <property>reveng.xml </property></emphasis>
          file is used to customize and control how reverse engineering is performed by
       the tools. The plugins provide and editor to ease the editing of this file and hence used to
       configure the reverse engineering process.</para>
@@ -1078,15 +1078,15 @@
       default naming rules is not applicable.</para>
 
     <para>Note that not all the features of the <emphasis>
-      <property>.reveng.xml</property></emphasis> file is exposed or fully implemented in
+      <property>.reveng.xml </property></emphasis> file is exposed or fully implemented in
       the editor, but the main functionality is there. To understand the full flexibility of the
       <emphasis>
         <property>reveng.xml</property></emphasis>, please see <xref linkend="hibernaterevengxmlfile"/></para>
 
     <para>The editor is activated as soon as an <emphasis>
-      <property>.reveng.xml</property></emphasis> file is opened. To get an initial
+      <property>.reveng.xml </property></emphasis> file is opened. To get an initial
       <emphasis>
-        <property>reveng.xml</property></emphasis> file the reveng.xml wizard can be started via <emphasis>
+        <property>reveng.xml </property></emphasis> file the reveng.xml wizard can be started via <emphasis>
           <property>Ctrl+N</property></emphasis> or via the code generation
       launcher.</para>
 
@@ -1190,7 +1190,7 @@
       </figure>
       
       <para><property>Hibernate Console</property> perspective shows entity structure, query editor and
-        result</para>
+        result.</para>
         
 
       <para>The console configuration does not dynamically adjust to changes done in mappings and
@@ -1202,7 +1202,7 @@
         <title>Mapping Diagram</title>
 
         <para>A mapping diagram for entities are available by right clicking on the entity you want
-          an mapping diagram for and then choose <emphasis>
+          a mapping diagram for and then choose <emphasis>
             <property>Open Mapping Diagram</property></emphasis></para>
 
         <figure>

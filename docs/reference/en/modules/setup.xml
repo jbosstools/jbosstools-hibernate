@@ -3,8 +3,8 @@
   <title>Download and install Hibernate Tools</title>
 
   <para><property>Hibernate Tools</property> can be used &quot;standalone&quot; via Ant
-    1.6.x or fully integrated into a Eclipse 3.3.x + WTP 2.x based IDE, such as <property>JBoss
-      Tools</property> or an default Eclipse 3.3.x + WTP 2.x installation. The following describes
+    1.6.x or fully integrated into an Eclipse 3.3.x + WTP 2.x based IDE, such as <property>JBoss
+      Tools</property> or a default Eclipse 3.3.x + WTP 2.x installation. The following describes
     the install steps in these environments.</para>
 
   <section>
@@ -69,7 +69,7 @@
         <property>hibernate-tools.jar</property>
       </emphasis> and associated libraries. The libraries are included in the distribution from the
       Hibernate website and the Eclipse updatesite. The libraries are located in the eclipse plugins
-      directory at <emphasis>
+      directory at  <emphasis>
         <property>
           <literal>/plugins/org.hibernate.eclipse.x.x.x/lib/tools/.</literal>
         </property>

@@ -288,7 +288,7 @@ public class Person implements Serializable, IAuditable {
   &lt;/class&gt;
 &lt;/hibernate-mapping&gt;</programlisting>
 
-        <para>and for <emphasis>
+        <para>And for <emphasis>
           <property>Event.hbm</property></emphasis> file:</para>
 
         <programlisting>&lt;hibernate-mapping&gt;              
@@ -317,7 +317,7 @@ public class Person implements Serializable, IAuditable {
         will include the other part (if at all) in the
         <literal>toString()/equals()</literal> methods. Therefore it is not a
         good practice to put at class scope such meta attributes, unless you
-        are defining a class without bi-directional associations</para>
+        are defining a class without bi-directional associations.</para>
 
         <para>We recomend instead to add the <literal>meta</literal>
         attributes at the property level:</para>
@@ -426,7 +426,7 @@ public class Person implements Serializable, IAuditable {
         accessors for pojo's.</para>
 
         <para>Extract the <emphasis>
-          <property>PojoPropertyAccessor.ftl</property></emphasis> into a
+          <property>PojoPropertyAccessor.ftl</property></emphasis>  into a
           local folder i.e. <emphasis>
             <property>${hbm.template.path}</property></emphasis>, respecting
         the whole path, for example:
@@ -495,9 +495,9 @@ public class Person implements Serializable, IAuditable {
 &lt;/class&gt;
 &lt;/hibernate-mapping&gt;</programlisting>
 
-       <note> <para>i) If you don'&apos; use <literal>&lt;[[CDATA[]]&gt;</literal>
+       <note> <para>I) If you don'&apos; use <literal>&lt;[[CDATA[]]&gt;</literal>
         you have to scape the &amp; symbol, i.e.: &amp;amp; </para>
-        <para>ii). Note that we
+        <para>II). Note that we
         are referring to "firstName" directly and this is the parameter name
         not the actual field name. If you want to refer the field you have to
         use "this.firstName" instead. </para>
@@ -532,7 +532,7 @@ public class Person implements Serializable, IAuditable {
         <para>Invoking the target <emphasis>
           <property>&lt;hbm2java&gt;</property></emphasis> will
           generate on the <emphasis>
-            <property>${hbm2java.dest.dir}</property></emphasis> the file:
+            <property>${hbm2java.dest.dir}</property></emphasis> the file
         <property>Person.java</property>:</para>
 
         <programlisting>// default package

@@ -12,17 +12,17 @@
       from tools.hibernate.org The <emphasis>
         <property>hibernate-tools.jar</property>
       </emphasis> is located in your eclipse plugins directory at <emphasis>
-        <property>/plugins/org.hibernate.eclipse.x.x.x/lib/tools/hibernate-tools.jar.
+        <property>/plugins/org.hibernate.eclipse.x.x.x/lib/tools/hibernate-tools.jar
         </property>
       </emphasis></para>
-      <para>This jar is 100% independent from the eclipse platform and can thus be used
+      <para>. This jar is 100% independent from the eclipse platform and can thus be used
       independently of eclipse.</para>
 
     <note>
-      <para>There might be incompabilities with respect to the Hibernate3.jar bundled with the tools
+      <para>There might be incapabilities with respect to the Hibernate3.jar bundled with the tools
         and your own jar. Thus to avoid any confusion it is recommended to use the hibernate3.jar
         &amp; hibernate-annotations.jar bundled with the tools when you want to use the Ant
-        tasks. Do not worry about using e.g. Hibernate 3.2 jar's with e.g. an Hibernate 3.1 project
+        tasks. Do not worry about using e.g. Hibernate 3.2 jar's with e.g. a Hibernate 3.1 project
         since the output generated will work with previous Hibernate 3 versions. </para>
     </note>
   </section>
@@ -46,11 +46,11 @@
          classpathref="toolslib" />
 ]]></programlisting></para>
 
-    <para>this <emphasis>
+    <para>This <emphasis>
         <property>
           <literal>&lt;taskdef&gt;</literal>
         </property>
-      </emphasis> defines a Ant task called <emphasis>
+      </emphasis> defines an Ant task called <emphasis>
         <property>
           <literal>&lt;hibernatetool&gt;</literal>
         </property>
@@ -101,12 +101,12 @@
         <calloutlist>
           <callout arearefs="ht1">
             <para><literal>destdir</literal> (required): destination directory for files generated
-              with exporters.</para>
+              with exporters</para>
           </callout>
 
           <callout arearefs="ht2">
             <para><literal>templatepath</literal> (optional): A path to be used to look up
-              user-edited templates.</para>
+              user-edited templates</para>
           </callout>
 
           <callout arearefs="ht3">
@@ -122,7 +122,7 @@
 
           <callout arearefs="ht5">
             <para>One of 4 different ways of configuring the Hibernate Meta Model must be
-            specified.</para>
+            specified</para>
           </callout>
 
           <callout arearefs="ht6">
@@ -138,9 +138,9 @@
       <para>The following example shows the most basic setup for generating pojo's via
           <literal>hbm2java</literal> from a normal <emphasis>
           <property>
-            <literal>hibernate.cfg.xml.</literal>
+            <literal>hibernate.cfg.xml</literal>
           </property>
-          </emphasis> The output will be put in the <emphasis>
+          </emphasis>. The output will be put in the <emphasis>
             <property>${build.dir}/generated</property></emphasis>
         directory.</para>
 
@@ -188,7 +188,7 @@
   <section>
     <title>Hibernate Configurations</title>
 
-    <para><literal>hibernatetool</literal> supports four different Hibernate configurations: A
+    <para><literal>Hibernatetool</literal> supports four different Hibernate configurations: A
       standard Hibernate configuration (<emphasis>
         <property>&lt;configuration&gt;</property>
       </emphasis>), Annotation based configuration (<emphasis>
@@ -315,7 +315,7 @@
           <property>&lt;taskdef&gt;</property></emphasis>.</para>
 
       <para>The <emphasis>
-        <property>&lt;annotationconfiguration&gt;</property></emphasis> supports the same attributes as an
+        <property>&lt;annotationconfiguration&gt;</property></emphasis> supports the same attributes as a
         <emphasis>
           <property>&lt;configuration&gt;</property></emphasis> except that the configurationfile attribute is now required as
         that is from where an <literal>AnnotationConfiguration</literal> gets the list of
@@ -338,14 +338,14 @@
     <section>
       <title>JPA based configuration (&lt;jpaconfiguration&gt;)</title>
 
-      <para>An <emphasis>
+      <para>A <emphasis>
         <property>&lt;jpaconfiguration&gt;</property></emphasis> is used when you want to read the metamodel from
         JPA/Hibernate Annotation where you want to use the auto-scan configuration as defined in the
         JPA spec (part of EJB3). In other words, when you do not have a
         <emphasis>
           <property>hibernate.cfg.xml</property></emphasis>, but instead have a setup where you use a
         <emphasis>
-          <property>persistence.xml</property></emphasis> packaged in an JPA compliant manner.</para>
+          <property>persistence.xml</property></emphasis> packaged in a JPA compliant manner.</para>
 
       <para><literal>&lt;jpaconfiguration&gt;</literal> will simply just try and
         auto-configure it self based on the available classpath, e.g. look for
@@ -354,10 +354,10 @@
 
       <para>The <literal>persistenceunit</literal> attribute can be used to select a specific
         persistence unit. If no persistenceunit is specified it will automatically search for one
-        and if a unique one is found use it, but if multiple persistence units are available it will
+        and if an unique one is found use it, but if multiple persistence units are available it will
         error.</para>
 
-      <para>To use an <emphasis>
+      <para>To use a <emphasis>
         <property>&lt;jpaconfiguration&gt;</property></emphasis> you will need to specify some additional jars
         from Hibernate EntityManager in the <emphasis>
           <property>&lt;taskdef&gt;</property></emphasis> of the hibernatetool. The
@@ -721,7 +721,7 @@
             <callout arearefs="qcfg1">
               <para>ejb3 (default: false): the generated cfg.xml will have &lt;mapping
                 class=".."/&gt;, opposed to &lt;mapping resource="..."/&gt; for each
-                mapping.</para>
+                mapping</para>
             </callout>
           </calloutlist>
         </programlistingco>
@@ -792,7 +792,7 @@
     <section id="hbmtemplate">
       <title>Generic Hibernate metamodel exporter (<literal>&lt;hbmtemplate&gt;</literal>)</title>
 
-      <para>Generic exporter that can be controlled by a user provided template or class.</para>
+      <para>Generic exporter that can be controlled by an user provided template or class.</para>
 
       <programlisting><![CDATA[<hbmtemplate
  filepattern="{package-name}/{class-name}.ftl"
@@ -852,7 +852,7 @@
         <property>&lt;property&gt;</property></emphasis> allows you bind a string value to a key. The value will be
         available in the templates via $&lt;key&gt;. The following example will assign the
         string value <emphasis>
-          <property>&quot;true&quot;</property></emphasis> to the variable <literal>$descriptors</literal></para>
+          <property>&quot;true&quot;</property></emphasis> to the variable <literal>$descriptors.</literal></para>
 
       <programlisting><![CDATA[<property key="descriptors" value="true"/>]]></programlisting>
 

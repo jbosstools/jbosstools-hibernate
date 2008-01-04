@@ -129,7 +129,7 @@
 
       <programlisting><![CDATA[<schema-selection/>]]></programlisting>
 
-      <para>which in turn is equal to:</para>
+      <para>Which in turn is equal to:</para>
 
       <programlisting><![CDATA[<schema-selection match-catalog=".*" match-schema=".*" match-table=".*"/>]]></programlisting>
 
@@ -309,7 +309,7 @@
                 <entry>java.lang.Character</entry>
 
                 <entry>The most specific VARCHAR with not-null="true" is
-                selected.</entry>
+                selected</entry>
               </row>
 
               <row>
@@ -445,11 +445,11 @@
 
         <calloutlist>
           <callout arearefs="tablefilter-matchcatalog">
-            <para>catalog (Optional): Catalog name for table. Has to be specified if you are reverse engineering multiple catalogs or if it is not equal to <literal>hiberante.default_catalog</literal></para>
+            <para>catalog (Optional): Catalog name for table. Has to be specified if you are reverse engineering multiple catalogs or if it is not equal to <literal>hiberante.default_catalog. </literal></para>
           </callout>
 
           <callout arearefs="tablefilter-matchschema">
-            <para>schema (Optional): Schema name for table. Has to be specified if you are reverse engineering multiple schemas or if it is not equal to <literal>hiberante.default_schema</literal></para>
+            <para>schema (Optional): Schema name for table. Has to be specified if you are reverse engineering multiple schemas or if it is not equal to <literal>hiberante.default_schema.</literal></para>
           </callout>
 
           <callout arearefs="tablefilter-matchname">
@@ -555,17 +555,17 @@
 
               <callout arearefs="column-type">
                 <para>type (Optional): Which hibernate-type to use for this
-                specific column.</para>
+                specific column</para>
               </callout>
 
               <callout arearefs="column-propertytype">
                 <para>property (Optional): What property name will be
-                generated for this column.</para>
+                generated for this column</para>
               </callout>
 
               <callout arearefs="column-exclude">
                 <para>exclude (default: false): set to true if this column
-                should be ignored.</para>
+                should be ignored</para>
               </callout>
             </calloutlist>
           </programlistingco></para>
@@ -581,7 +581,7 @@
         name of the resulting properties (many-to-one and
         one-to-many's).</para>
 
-        <para>Note</para>
+        <para>Note:</para>
 
         <para><programlistingco>
             <areaspec>
@@ -626,26 +626,26 @@
               <callout arearefs="foreignkey-catalog">
                 <para>foreign-catalog (Optional): Name of the foreign table's
                 catalog. (Only relevant if you want to explicitly define a
-                foreign key)</para>
+                foreign key).</para>
               </callout>
 
               <callout arearefs="foreignkey-schema">
                 <para>foreign-schema (Optional): Name of the foreign table's
                 schema. (Only relevant if you want to explicitly define a
-                foreign key)</para>
+                foreign key).</para>
               </callout>
 
               <callout arearefs="foreignkey-table">
                 <para>foreign-table (Optional): Name of the foreign table.
                 (Only relevant if you want to explicitly define a foreign
-                key)</para>
+                key).</para>
               </callout>
 
               <callout arearefs="foreignkey-columnref">
                 <para>column-ref (Optional): Defines that the foreign-key
                 constraint between a local-column and foreign-column name.
                 (Only relevant if you want to explicitly define a foreign
-                key)</para>
+                key).</para>
               </callout>
 
               <callout arearefs="foreignkey-manytoone">
@@ -670,7 +670,7 @@
   <section id="custom-reveng-strategy">
     <title>Custom strategy</title>
 
-    <para>It is possible to implement a user strategy. Such strategy must
+    <para>It is possible to implement an user strategy. Such strategy must
       implement <emphasis>
         <property>org.hibernate.cfg.reveng.ReverseEngineeringStrategy</property></emphasis>. It is
     recommended that one uses the <property>DelegatingReverseEngineeringStrategy</property> and

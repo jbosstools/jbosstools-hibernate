@@ -33,7 +33,7 @@
         </listitem>
 
         <listitem>
-          <para>A <emphasis>
+          <para>An <emphasis>
               <property>Annotation configuration</property>
             </emphasis> uses Hibernate Annotations and supports <emphasis>
               <property>hbm.xml</property>
