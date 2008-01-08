@@ -21,7 +21,8 @@
 
     <para>You can use the  <emphasis>
       <property>&lt;meta&gt;</property></emphasis> tag to e.g. tell
-      <literal>hbm2java</literal> to only generate  <emphasis>
+      <emphasis>
+        <property>&lt;hbm2java&gt;</property></emphasis> to only generate  <emphasis>
         <property>&quot;protected&quot;</property></emphasis> setters, have
     classes always implement a certain set of interfaces or even have them
     extend a certain base class and even more.</para>

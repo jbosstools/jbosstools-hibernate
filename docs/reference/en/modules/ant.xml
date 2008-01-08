@@ -9,20 +9,19 @@
         <property>hibernate-tools.jar</property>
       </emphasis> contains the core for the <property>Hibernate Tools</property>. It is used as the
       basis for both the Ant tasks described in this document and the eclipse plugins both available
-      from tools.hibernate.org The <emphasis>
+      from tools.hibernate.org. The <emphasis>
         <property>hibernate-tools.jar</property>
-      </emphasis> is located in your eclipse plugins directory at <emphasis>
-        <property>/plugins/org.hibernate.eclipse.x.x.x/lib/tools/hibernate-tools.jar </property>
-      </emphasis>.</para>
+      </emphasis> is located in your eclipse plugins directory at
+      /plugins/org.hibernate.eclipse.x.x.x/lib/tools/hibernate-tools.jar.</para>
     <para>This jar is 100% independent from the eclipse platform and can thus be used independently
       of eclipse.</para>
 
     <note>
       <para>There might be incapabilities with respect to the Hibernate3.jar bundled with the tools
         and your own jar. Thus to avoid any confusion it is recommended to use the hibernate3.jar
-        &amp; hibernate-annotations.jar bundled with the tools when you want to use the Ant
-        tasks. Do not worry about using e.g. Hibernate 3.2 jar's with e.g. a Hibernate 3.1 project
-        since the output generated will work with previous Hibernate 3 versions. </para>
+        and hibernate-annotations.jar bundled with the tools when you want to use the Ant tasks. Do
+        not worry about using e.g. Hibernate 3.2 jar's with e.g. a Hibernate 3.1 project since the
+        output generated will work with previous Hibernate 3 versions. </para>
     </note>
   </section>
 
@@ -106,8 +105,8 @@
           </callout>
 
           <callout arearefs="ht3">
-            <para><literal>classpath</literal> (optional): A classpath to be used to resolve
-              resources, such as mappings and usertypes. Optional, but very often required.</para>
+            <para>classpath (optional): A classpath to be used to resolve resources, such as
+              mappings and usertypes. Optional, but very often required.</para>
           </callout>
 
           <callout arearefs="ht4">
@@ -131,8 +130,9 @@
     <section>
       <title>Basic examples</title>
 
-      <para>The following example shows the most basic setup for generating pojo's via
-          <literal>hbm2java</literal> from a normal <emphasis>
+      <para>The following example shows the most basic setup for generating pojo's via <emphasis>
+          <property>&lt;hbm2java&gt;</property>
+        </emphasis> from a normal <emphasis>
           <property>
             <literal>hibernate.cfg.xml</literal>
           </property>
@@ -148,7 +148,9 @@
       </para>
 
       <para>The following example is similar, but now we are performing multiple exports from the
-        same configuration. We are exporting the schema via hbm2dll, generates some DAO code via <emphasis>
+        same configuration. We are exporting the schema via <emphasis>
+          <property>&lt;hbm2dll&gt;</property>
+        </emphasis>, generates some DAO code via <emphasis>
           <property>&lt;hbm2dao&gt;</property>
         </emphasis> and finally runs a custom code generation via <emphasis>
           <property>&lt;hbmtemplate&gt;</property>
@@ -197,11 +199,10 @@
 
     <para>Each have in common that they are able to build up a Hibernate
       <literal>Configuration</literal> object from which a set of exporters can be run to generate
-      various output. 
-      
-     <note>Output can be anything, e.g. specific files, statements execution
-      against a database, error reporting or anything else that can be done in java code.
-     </note>
+      various output. <note>
+        <para>Output can be anything, e.g. specific files, statements execution against a database,
+          error reporting or anything else that can be done in java code.</para>
+      </note>
     </para>
 
     <para>The following section describes what the various configuration can do, plus list the
@@ -353,13 +354,17 @@
           <property>persistence.xml</property>
         </emphasis> packaged in a JPA compliant manner.</para>
 
-      <para><literal>&lt;jpaconfiguration&gt;</literal> will simply just try and
-        auto-configure it self based on the available classpath, e.g. look for <emphasis>
+      <para>The <emphasis>
+          <property>&lt;jpaconfiguration&gt;</property>
+        </emphasis> will simply just try and auto-configure it self based on the available
+        classpath, e.g. look for <emphasis>
           <property>META-INF/persistence.xml</property>
         </emphasis>.</para>
 
-      <para>The <literal>persistenceunit</literal> attribute can be used to select a specific
-        persistence unit. If no persistenceunit is specified it will automatically search for one
+      <para>The <emphasis>
+        <property>persistenceunit</property></emphasis> attribute can be used to select a specific
+        persistence unit. If no <emphasis>
+          <property>persistenceunit</property></emphasis> is specified it will automatically search for one
         and if an unique one is found use it, but if multiple persistence units are available it
         will error.</para>
 
@@ -493,7 +498,8 @@
               <literal>&lt;jdbcconfiguration&gt;</literal>
             </property>
           </emphasis> to generate Hibernate xml mappings via
-          <literal>&lt;hbm2hbmxml&gt;</literal>. The connection settings is here read from a <emphasis>
+          <emphasis>
+            <property>&lt;hbm2hbmxml&gt;</property></emphasis>. The connection settings is here read from a <emphasis>
             <property>
               <literal>hibernate.properties</literal>
             </property>
@@ -712,7 +718,7 @@
           </emphasis>.</para>
 
         <note>
-          <para>Not all conversions is implemented (contributions welcome), so some hand editing
+          <para>Not all conversions are implemented (contributions welcome), so some hand editing
             might be necessary.</para>
         </note>
 
@@ -811,6 +817,7 @@
           </emphasis>. </para>
 
         <note>
+          <title>Tip:</title>
           <para> Currently the dump is simply a call to toString on each element.</para>
         </note>
 
