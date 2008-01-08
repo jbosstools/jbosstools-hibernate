@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.hibernate.ui.veditor.editors.popup;
 
 import org.eclipse.gef.ContextMenuProvider;
@@ -44,19 +54,22 @@ public class PopupMenuProvider extends ContextMenuProvider {
 		if (getViewer().getSelection() instanceof StructuredSelection){
 			IStructuredSelection selection = (IStructuredSelection) getViewer().getSelection();
 			if (selection != null &&  selection.getFirstElement() instanceof OrmEditPart) {
-				Shape shape = (Shape)((OrmEditPart)selection.getFirstElement()).getModel();
-				Object first = shape.getOrmElement();
-				if (first instanceof PersistentClass
-						|| first instanceof Property
-						|| first instanceof Table
-						|| first instanceof Column){		
-					action = getActionRegistry().getAction(OpenSourceAction.ACTION_ID);
-					appendToGroup(GEFActionConstants.MB_ADDITIONS, action);
-					createMenuItem(getMenu(), action);
-					
-					action = getActionRegistry().getAction(OpenMappingAction.ACTION_ID);
-					appendToGroup(GEFActionConstants.MB_ADDITIONS, action);
-					createMenuItem(getMenu(), action);					
+				Object obj = ((OrmEditPart)selection.getFirstElement()).getModel();
+				if (null != obj && obj instanceof Shape) {
+					Shape shape = (Shape)obj;
+					Object first = shape.getOrmElement();
+					if (first instanceof PersistentClass
+							|| first instanceof Property
+							|| first instanceof Table
+							|| first instanceof Column){		
+						action = getActionRegistry().getAction(OpenSourceAction.ACTION_ID);
+						appendToGroup(GEFActionConstants.MB_ADDITIONS, action);
+						createMenuItem(getMenu(), action);
+						
+						action = getActionRegistry().getAction(OpenMappingAction.ACTION_ID);
+						appendToGroup(GEFActionConstants.MB_ADDITIONS, action);
+						createMenuItem(getMenu(), action);					
+					} 
 				} 
 			}			
 		}
