@@ -24,7 +24,7 @@ public class TestSet{
 	
 	
 	private static void addTestsPackSetUp(TestSuite suite){
-		//suite.addTestSuite( UpdateConfigurationTest.class );
+		suite.addTestSuite( UpdateConfigurationTest.class );
 	}
 	
 	private static void addPackTests(TestSuite suite){
