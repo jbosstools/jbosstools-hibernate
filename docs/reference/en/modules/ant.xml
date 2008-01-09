@@ -142,6 +142,10 @@
 
       <para>
         <programlisting><![CDATA[<hibernatetool destdir="${build.dir}/generated">
+ <classpath>
+  <path location="${build.dir}/classes"/>
+ </classpath>
+ 
  <configuration configurationfile="hibernate.cfg.xml"/>
  <hbm2java/>
 </hibernatetool>]]></programlisting>
