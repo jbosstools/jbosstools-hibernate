@@ -34,6 +34,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.RootClass;
+import org.jboss.tools.hibernate.ui.veditor.editors.actions.AutoLayoutAction;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.ExportImageAction;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.OpenMappingAction;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.OpenSourceAction;
@@ -105,6 +106,9 @@ public class VisualEditor extends GraphicalEditor {
 		registry.registerAction(action);
 
 		action = new ExportImageAction(this);
+		registry.registerAction(action);
+
+		action = new AutoLayoutAction(this);
 		registry.registerAction(action);
 	
 	}

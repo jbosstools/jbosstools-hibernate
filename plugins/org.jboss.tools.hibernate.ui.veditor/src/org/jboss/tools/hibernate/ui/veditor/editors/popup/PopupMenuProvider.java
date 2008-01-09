@@ -29,6 +29,7 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.ui.veditor.editors.actions.AutoLayoutAction;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.ExportImageAction;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.OpenMappingAction;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.OpenSourceAction;
@@ -73,6 +74,10 @@ public class PopupMenuProvider extends ContextMenuProvider {
 				} 
 			}			
 		}
+		
+		action = getActionRegistry().getAction(AutoLayoutAction.ACTION_ID);
+		appendToGroup(GEFActionConstants.GROUP_VIEW, action);
+		createMenuItem(getMenu(), action);
 		
 		action = getActionRegistry().getAction(ExportImageAction.ACTION_ID);
 		appendToGroup(GEFActionConstants.MB_ADDITIONS, action);
