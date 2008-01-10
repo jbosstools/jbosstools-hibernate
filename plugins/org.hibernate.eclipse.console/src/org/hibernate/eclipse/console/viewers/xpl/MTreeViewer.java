@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.hibernate.eclipse.console.viewers;
+package org.hibernate.eclipse.console.viewers.xpl;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -22,13 +22,32 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.Widget;
 
+/**
+ * TreeViewer has the next lack design to work with the objects as TreeItem id:
+ * internalFindItems always return array of size <= 1
+ * cause doFindItems & internalFindItem returns FIRST proper item which it find
+ * but in common case this is not the TRUTH - so TreeViewer add method doesn't work
+ * as we expected.
+ * 
+ * So MTreeViewer fix the problem.
+ * It redefine add method taking into account what for one parentElementOrTreePath as id
+ * could exist several ( >= 0 ) widgets.
+ * doFindItems & internalFindItem returns ALL proper items which it find.
+ * 
+ * We expect what TreeViewer developers fix the bug in future versions,
+ * but we can't wait it.
+ * 
+ * more info is here http://jira.jboss.com/jira/browse/JBIDE-1482
+ * 
+ * @author Vitali
+ */
 public class MTreeViewer extends TreeViewer {
 
 	public MTreeViewer(Composite parent, int style) {
 		super(parent, style);
 	}
 
-	// some little hack
+	// some little hack - cause TreeViewer has lack design for extensions
 	public boolean isBusy() {
 		
 		Object obj = null;

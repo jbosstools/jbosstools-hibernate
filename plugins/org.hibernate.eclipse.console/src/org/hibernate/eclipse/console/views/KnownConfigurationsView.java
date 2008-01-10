@@ -49,7 +49,7 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.node.BaseNode;
 import org.hibernate.eclipse.console.actions.EditConsoleConfiguration;
 import org.hibernate.eclipse.console.actions.OpenMappingAction;
-import org.hibernate.eclipse.console.viewers.MTreeViewer;
+import org.hibernate.eclipse.console.viewers.xpl.MTreeViewer;
 import org.hibernate.eclipse.console.workbench.xpl.AnyAdaptableLabelProvider;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
