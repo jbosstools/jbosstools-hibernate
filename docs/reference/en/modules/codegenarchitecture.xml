@@ -62,8 +62,10 @@
 
     <para>In most projects you will normally use only one of the Core, Annotation or JPA
       configuration and possibly the JDBC configuration if you are using the reverse engineering
-      facilities of <property>Hibernate Tools</property>. The important thing to note is that no matter which Hibernate
-      Configuration type you are using <property>Hibernate Tools</property> supports them.</para>
+      facilities of <property>Hibernate Tools</property>. </para>
+      
+      <note><para>No matter which Hibernate
+      Configuration type you are using <property>Hibernate Tools</property> supports them.</para></note>
 
     <para>The following drawing illustrates the core concepts:</para>
 

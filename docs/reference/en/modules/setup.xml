@@ -47,7 +47,7 @@
     <section>
       <title>Usage of Eclipse WTP</title>
 
-      <para>The <property>Hibernate Tools</property> plugins currently uses <property>WTP
+      <para>The <property>Hibernate Tools</property> plugins currently use <property>WTP
         2.x</property> which at this time is the latest stable release from the Eclipse Webtools
         project.</para>
 

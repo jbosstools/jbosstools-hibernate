@@ -80,7 +80,8 @@
     </note>
 
     <para>Enter your configuration information in this dialog. Details about the configuration
-      options can be found in <property>Hibernate reference documentation</property>.</para>
+      options can be found in <ulink url="http://docs.jboss.org/ejb3/app-server/Hibernate3/reference/en/html_single"
+        >Hibernate Reference Documentation</ulink>.</para>
 
     <para>Press <emphasis>
         <property>Finish</property>
@@ -89,7 +90,7 @@
         <property>hibernate.cfg.xml</property>
       </emphasis> will be automatically opened in an editor. The last option <emphasis>
         <property>Create Console Configuration</property>
-      </emphasis> is enabled by default and when enabled i will automatically use the <emphasis>
+      </emphasis> is enabled by default and when enabled it will automatically use the <emphasis>
         <property>hibernate.cfg.xml</property>
       </emphasis> for the basis of a Console Configuration.</para>
   </section>
@@ -97,9 +98,9 @@
   <section>
     <title>Creating a Hibernate Console configuration</title>
 
-    <para>A Console Configuration describes to the <property>Hibernate</property> plugin how it
+    <para>A Console Configuration describes how the <property>Hibernate</property> plugin 
       should configure <property>Hibernate</property> and what configuration files, including which
-      classpath is needed to load the POJO's, JDBC drivers etc. It is required to make usage of
+      classpath are needed to load the POJO's, JDBC drivers etc. It is required to make usage of
       query prototyping, reverse engineering and code generation. You can have multiple named
       console configurations. Normally you would just need one per project, but more is definitely
       possible.</para>
@@ -930,14 +931,14 @@
     </section>
   </section>
 
-  <section>
+  <section id="map_config_editor">
     <title>Hibernate Mapping and Configuration File Editor</title>
 
     <para>The Hibernate Mapping file editor provides XML editing functionality for the <emphasis>
         <property>hbm.xml </property>
       </emphasis> and <emphasis>
         <property>cfg.xml</property>
-      </emphasis> files. The editor is based on the Eclipse WTP tools and extend its functionality
+      </emphasis> files. The editor is based on the Eclipse WTP tools and extends its functionality
       to provide Hibernate specific code completion.</para>
 
     <figure>

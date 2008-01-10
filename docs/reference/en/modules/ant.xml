@@ -17,7 +17,7 @@
       of eclipse.</para>
 
     <note>
-      <para>There might be incapabilities with respect to the Hibernate3.jar bundled with the tools
+      <para>There might be incompatibilities with respect to the Hibernate3.jar bundled with the tools
         and your own jar. Thus to avoid any confusion it is recommended to use the hibernate3.jar
         and hibernate-annotations.jar bundled with the tools when you want to use the Ant tasks. Do
         not worry about using e.g. Hibernate 3.2 jar's with e.g. a Hibernate 3.1 project since the

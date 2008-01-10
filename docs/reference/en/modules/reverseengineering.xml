@@ -96,8 +96,7 @@
 
 </hibernate-reverse-engineering>]]></programlisting>
 
-    <para></para>
-
+    
     <section>
       <title>Schema Selection (&lt;schema-selection&gt;)</title>
 
@@ -148,7 +147,8 @@
           <property>&quot;MY_SCHEMA&quot;</property></emphasis>, a specific <emphasis>
             <property>&quot;CITY&quot;</property></emphasis>
           table plus all tables that starts with <emphasis>
-            <property>&quot;CODES_ in COMMON_SCHEMA&quot;</property></emphasis>.</para>
+            <property>&quot;CODES_&quot;</property></emphasis> in <emphasis>
+              <property>COMMON_SCHEMA&quot;</property></emphasis>.</para>
 
         <programlisting><![CDATA[<schema-selection match-schema="MY_SCHEMA"/>
 <schema-selection match-schema="COMMON_SCHEMA" match-table="CITY"/>
