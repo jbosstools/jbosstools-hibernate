@@ -1,14 +1,25 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.hibernate.eclipse.console.test.mappingproject;
-
-import java.util.Iterator;
 
 import org.apache.tools.ant.filters.StringInputStream;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IType;
+import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
+import org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard;
 import org.hibernate.mapping.PersistentClass;
 
 /**
@@ -23,15 +34,15 @@ public class ProjectUtil {
 													.append("\"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd\">\n");
 	
 	private static final StringBuilder XML_CFG_START = new StringBuilder("<hibernate-configuration>\n")
-													.append("<session-factory>\n")
-													.append("<property name=\"hibernate.dialect\">\n")
-													.append("org.hibernate.dialect.SQLServerDialect</property>\n");
+													.append("<session-factory>\n");
 	
 	private static final StringBuilder XML_CFG_END = new StringBuilder("</session-factory>\n")
 													.append("</hibernate-configuration>\n");	
 	
 	
 	public static final String CFG_FILE_NAME = "hibernate.cfg.xml";
+	
+	public static final String ConsoleCFGName = "testConfigName";
 	
 	public static void customizeCFGFileForPack(IPackageFragment pack) throws CoreException{
 		IFolder srcFolder = (IFolder) pack.getParent().getResource();
@@ -75,6 +86,22 @@ public class ProjectUtil {
 			return "";
 		} else { 
 			return persClass.getEntityName() != null ? persClass.getEntityName() : persClass.getClassName();
+		}
+	}
+	
+	public static void createConsoleCFG() throws CoreException{
+		new ConsoleConfigurationCreationWizard2().run();
+	}
+	
+	private static class ConsoleConfigurationCreationWizard2 extends ConsoleConfigurationCreationWizard{
+		
+		public void run() throws CoreException {
+			IPath cfgFilePath = new Path(MappingTestProject.PROJECT_NAME + "/" + 
+					MappingTestProject.SRC_FOLDER + "/" + ProjectUtil.CFG_FILE_NAME);
+			createConsoleConfiguration(null, null, ConsoleCFGName, ConsoleConfigurationPreferences.ConfigurationMode.CORE, 
+					MappingTestProject.PROJECT_NAME, true, "",
+					null, cfgFilePath, new Path[0], new Path[0], "", "", new NullProgressMonitor());
+
 		}
 	}
 

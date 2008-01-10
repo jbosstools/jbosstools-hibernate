@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.hibernate.eclipse.console.test.mappingproject;
 
 import junit.framework.TestCase;
@@ -17,6 +27,7 @@ import org.eclipse.ui.part.FileEditorInput;
 
 /**
  * @author Dmitry Geraskov
+ * @deprecated - never used
  * just to test that our external Unit tests work right with MappingTestProject
  */
 public class OpenJavaEditors extends TestCase {
@@ -40,7 +51,7 @@ public class OpenJavaEditors extends TestCase {
 							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(input, JavaUI.ID_CU_EDITOR );
 						} catch (PartInitException e) {
 							fail("Error opening CompilationUnit: " + e.getMessage());
-						}						
+						}
 					}
 				}
 			}		

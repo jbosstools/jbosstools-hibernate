@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.hibernate.eclipse.console.test.mappingproject;
 
 import junit.framework.TestSuite;
@@ -28,11 +38,12 @@ public class TestSet{
 	}
 	
 	private static void addPackTests(TestSuite suite){
-		
+		suite.addTestSuite( OpenSourceFileTest.class );
+		suite.addTestSuite( OpenMappingFileTest.class );
 	}
 	
 	private static void addTestsPackTearDown(TestSuite suite){
-		//suite.addTestSuite( CloaseAllEditorsTest.class );
+		suite.addTestSuite( CloaseAllEditorsTest.class );
 	}
 
 }

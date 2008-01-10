@@ -1,15 +1,20 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.hibernate.eclipse.console.test.mappingproject;
 
-import java.util.Enumeration;
-
-import junit.framework.AssertionFailedError;
 import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestFailure;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
@@ -21,6 +26,7 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.hibernate.eclipse.console.HibernateConsolePerspectiveFactory;
 
 public class HibernateAllMappingTests extends TestCase {
 
@@ -38,9 +44,6 @@ public class HibernateAllMappingTests extends TestCase {
 		super.setUp();
 		this.project = MappingTestProject.getTestProject();
 
-		//PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closeAllPerspectives(false, true);
-		
-		
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().setPerspective(
 				PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId("org.eclipse.ui.resourcePerspective"));
 		
@@ -54,8 +57,14 @@ public class HibernateAllMappingTests extends TestCase {
 		
 		packageExplorer.selectAndReveal(project.getIJavaProject());
 		
+		PlatformUI.getWorkbench()
+		.getActiveWorkbenchWindow().getActivePage().setPerspective(
+				PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId(HibernateConsolePerspectiveFactory.ID_CONSOLE_PERSPECTIVE));
+
+		
 		waitForJobs();
 		runTestsAfterSetup();
+		ProjectUtil.createConsoleCFG();
 	}
 
 	private void runTestsAfterSetup() {
@@ -139,22 +148,28 @@ public class HibernateAllMappingTests extends TestCase {
 	}	
 	
 	public void testEachPackWithTestSet() throws JavaModelException {
-		/*if (result.failureCount() > 0 || result.errorCount() > 0){
-			// we have failed tests after setup
-			fail("One or more setup test failed.");
-		}*/
+	   /*
+	    * (1) All test runs show as one
+		* Comment this and uncomment (2) if you want to see each test run independent
+		*/
 		TestSuite suite = TestSet.getTests();
 		IPackageFragmentRoot[] roots = project.getIJavaProject().getAllPackageFragmentRoots();	
 		for (int i = 0; i < roots.length; i++) {
 	    	if (roots[i].getClass() != PackageFragmentRoot.class) continue;
 			PackageFragmentRoot packageFragmentRoot = (PackageFragmentRoot) roots[i];
-			IJavaElement[] els = packageFragmentRoot.getChildren();//.getCompilationUnits();
+			IJavaElement[] els = packageFragmentRoot.getChildren();
 			for (int j = 0; j < els.length; j++) {
 				IJavaElement javaElement = els[j];
 				if (javaElement instanceof IPackageFragment){
 					IPackageFragment pack = (IPackageFragment) javaElement;
 					// use packages only with compilation units
 					if (pack.getCompilationUnits().length == 0) continue;
+					
+					/*	
+					 * (2) Each test run shows independent
+					 * 	Comment this and uncomment (1) if you want to see all test runs as one
+					 * 	TestSuite suite = TestSet.getTests();
+					 */
 					
 					activePackage = pack;
 					//==============================					
@@ -166,10 +181,13 @@ public class HibernateAllMappingTests extends TestCase {
 					}
 					//==============================
 				}
-			}		
+				waitForJobs();
+				delay(15000);
+			}
+			
 		}
 		waitForJobs();
-		//delay(2000);
+		delay(10000);
 	}
 
 	/**

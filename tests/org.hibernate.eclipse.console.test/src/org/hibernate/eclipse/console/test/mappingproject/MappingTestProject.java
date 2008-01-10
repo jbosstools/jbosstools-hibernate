@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.hibernate.eclipse.console.test.mappingproject;
 
 import java.io.File;
@@ -35,6 +45,8 @@ import org.eclipse.jdt.internal.core.PackageFragmentRoot;
  */
 public class MappingTestProject{
 	
+	public static final String SRC_FOLDER = "src";
+
 	private static MappingTestProject singleton= null;
 	
 	private static final Path JRE_CONTAINER = new Path("org.eclipse.jdt.launching.JRE_CONTAINER");
@@ -99,7 +111,7 @@ public class MappingTestProject{
 			throw new RuntimeException("Folder " + RESOURCE_PATH + " does not found!");
 				
 		IPackageFragmentRoot sourceFolder = buildSourceFolder(project, javaProject);
-		recursiveCopyFiles(resourceFolder, (IFolder) sourceFolder.getResource());
+		recursiveCopyFiles(resourceFolder, (IFolder) sourceFolder.getResource());		
 		project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, new NullProgressMonitor());
 	}
 	
@@ -185,7 +197,7 @@ public class MappingTestProject{
 
 	private IPackageFragmentRoot buildSourceFolder(IProject project,
 			IJavaProject javaProject) throws CoreException {
-		IFolder folder = project.getFolder("src");
+		IFolder folder = project.getFolder(SRC_FOLDER);
 		if (!folder.exists()){
 			folder.create(false, true, null);
 			IPackageFragmentRoot root = javaProject.getPackageFragmentRoot(folder);
