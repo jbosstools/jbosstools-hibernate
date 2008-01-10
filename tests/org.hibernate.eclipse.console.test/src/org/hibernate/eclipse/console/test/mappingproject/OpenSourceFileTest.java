@@ -31,7 +31,7 @@ public class OpenSourceFileTest extends TestCase {
 	public void testOpenSourceFileTest(){
 		//fail("test fail");
 		KnownConfigurations knownConfigurations = KnownConfigurations.getInstance();
-		final ConsoleConfiguration consCFG = knownConfigurations.find(CreateConsoleConfigTest.ConsoleCFGName);
+		final ConsoleConfiguration consCFG = null;//knownConfigurations.find(CreateConsoleConfigTest.ConsoleCFGName);
 		assertNotNull(consCFG);
 		consCFG.reset();
 		Object[] configs = new ConsoleConfigurationWorkbenchAdapter().getChildren(consCFG);
