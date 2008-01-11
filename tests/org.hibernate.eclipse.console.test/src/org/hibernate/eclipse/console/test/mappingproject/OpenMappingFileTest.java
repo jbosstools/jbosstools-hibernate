@@ -28,7 +28,7 @@ import org.hibernate.mapping.PersistentClass;
 public class OpenMappingFileTest extends TestCase {
 	public void testOpenMappingFileTest(){
 		KnownConfigurations knownConfigurations = KnownConfigurations.getInstance();
-		final ConsoleConfiguration consCFG = null; //knownConfigurations.find(CreateConsoleConfigTest.ConsoleCFGName);
+		final ConsoleConfiguration consCFG = knownConfigurations.find(ProjectUtil.ConsoleCFGName);
 		assertNotNull(consCFG);
 		consCFG.reset();
 		Object[] configs = new ConsoleConfigurationWorkbenchAdapter().getChildren(consCFG);
