@@ -53,10 +53,10 @@ public class MTreeViewer extends TreeViewer {
 		Object obj = null;
 		Class clazz = org.eclipse.jface.viewers.ColumnViewer.class;
 		try {
-			Method hiddenMethod = clazz.getDeclaredMethod("isBusy");
+			Method hiddenMethod = clazz.getDeclaredMethod("isBusy", new Class[0]);
 			if (null != hiddenMethod) {
 				hiddenMethod.setAccessible(true);
-				obj = hiddenMethod.invoke(this);
+				obj = hiddenMethod.invoke(this, new Object[0]);
 			}
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
@@ -168,9 +168,9 @@ public class MTreeViewer extends TreeViewer {
 	 *            the element
 	 * @return Widget
 	 */
-	protected ArrayList<Widget> internalFindItem(Item parent, Object element) {
+	protected ArrayList internalFindItem(Item parent, Object element) {
 
-		ArrayList<Widget> ret = new ArrayList<Widget>();
+		ArrayList ret = new ArrayList();
 		// compare with node
 		Object data = parent.getData();
 		if (data != null) {
@@ -183,7 +183,7 @@ public class MTreeViewer extends TreeViewer {
 		Item[] items = getChildren(parent);
 		for (int i = 0; i < items.length; i++) {
 			Item item = items[i];
-			ArrayList<Widget> o = internalFindItem(item, element);
+			ArrayList o = internalFindItem(item, element);
 			if (null != o) {
 				ret.addAll(o);
 			}
@@ -198,17 +198,17 @@ public class MTreeViewer extends TreeViewer {
 		if (null == root) {
 			return ret;
 		}
-		ArrayList<Widget> res = new ArrayList<Widget>();
+		ArrayList res = new ArrayList();
 		Item[] items = getChildren(getControl());
 		if (items != null) {
 			for (int i = 0; i < items.length; i++) {
-				ArrayList<Widget> o = internalFindItem(items[i], element);
+				ArrayList o = internalFindItem(items[i], element);
 				if (null != o) {
 					res.addAll(o);
 				}
 			}
 		}
-		ret = res.toArray(ret);
+		ret = (Widget[])res.toArray(new Widget[0]);
 		return ret;
 	}
 

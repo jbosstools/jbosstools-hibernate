@@ -264,7 +264,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 		
 		Cfg2HbmTool tool = new Cfg2HbmTool();
 		String[] patterns = new String[4];
-		StringBuilder pattern = new StringBuilder("<");
+		StringBuffer pattern = new StringBuffer("<");
 		pattern.append(tool.getTag(persClass));
 		pattern.append("[\\s]+[.[^>]]*");
 		pattern.append(HIBERNATE_TAG_NAME);
@@ -273,7 +273,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 		pattern.append('\"');
 		patterns[0] = pattern.toString();
 		
-		pattern = new StringBuilder("<");
+		pattern = new StringBuffer("<");
 		pattern.append(tool.getTag(persClass));
 		pattern.append("[\\s]+[.[^>]]*");
 		pattern.append(HIBERNATE_TAG_NAME);
@@ -282,7 +282,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 		pattern.append('\"');
 		patterns[1] = pattern.toString();
 		
-		pattern = new StringBuilder("<");
+		pattern = new StringBuffer("<");
 		pattern.append(tool.getTag(persClass));
 		pattern.append("[\\s]+[.[^>]]*");
 		pattern.append(HIBERNATE_TAG_ENTITY_NAME);
@@ -291,7 +291,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 		pattern.append('\"');
 		patterns[2] = pattern.toString();
 		
-		pattern = new StringBuilder("<");
+		pattern = new StringBuffer("<");
 		pattern.append(tool.getTag(persClass));
 		pattern.append("[\\s]+[.[^>]]*");
 		pattern.append(HIBERNATE_TAG_ENTITY_NAME);
@@ -304,7 +304,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 	
 	private static String generatePattern(Property property){
 		Cfg2HbmTool tool = new Cfg2HbmTool();
-		StringBuilder pattern = new StringBuilder("<");
+		StringBuffer pattern = new StringBuffer("<");
 		if(property.getPersistentClass() != null &&
 				property.getPersistentClass().getIdentifierProperty()==property) {
 			pattern.append("id");
