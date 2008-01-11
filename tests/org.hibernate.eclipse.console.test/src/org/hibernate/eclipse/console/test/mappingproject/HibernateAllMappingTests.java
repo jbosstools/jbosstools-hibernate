@@ -182,12 +182,12 @@ public class HibernateAllMappingTests extends TestCase {
 					//==============================
 				}
 				waitForJobs();
-				delay(15000);
+				//delay(15000);
 			}
 			
 		}
 		waitForJobs();
-		delay(10000);
+		//delay(10000);
 	}
 
 	/**
