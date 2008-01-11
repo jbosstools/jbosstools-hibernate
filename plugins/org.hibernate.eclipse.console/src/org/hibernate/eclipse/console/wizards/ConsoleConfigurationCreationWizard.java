@@ -146,7 +146,7 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 		return true;
 	}
 	
-	static public void createConsoleConfiguration(
+	static protected void createConsoleConfiguration(
 			final Shell shell,
 			final EclipseConsoleConfiguration oldConfig,
 			final String configName,
