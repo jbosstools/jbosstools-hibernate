@@ -92,11 +92,13 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 
 			try {
 				String dialectName = cfg.getConfiguration().getProperty(Environment.DIALECT);
-				if (dialects.containsKey(dialectName)) {
-					dialect = (Dialect) dialects.get(dialectName);
-				} else {
-					dialect = (Dialect) Class.forName(dialectName).newInstance();
-					dialects.put(dialectName, dialect);
+				if (dialectName != null) {
+					if (dialects.containsKey(dialectName)) {
+						dialect = (Dialect) dialects.get(dialectName);
+					} else {
+						dialect = (Dialect) Class.forName(dialectName).newInstance();
+						dialects.put(dialectName, dialect);
+					}
 				}
 			} catch (HibernateException e) {
 				ViewPlugin.getDefault().logError(e);
