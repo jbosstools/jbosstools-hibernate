@@ -3,52 +3,52 @@
   <title>Controlling reverse engineering</title>
 
   <para>When using the <emphasis>
-    <property>&lt;jdbcconfiguration&gt;</property></emphasis> the ant task will read the
-  database metadata and from that perform a reverse engineering of the
-  database schema into a normal Hibernate Configuration. It is from this
-  object e.g. <emphasis>
-    <property>&lt;hbm2java&gt;</property></emphasis>can generate other artifacts such as <emphasis>
-      <property>.java</property></emphasis>,
-    <emphasis>
-      <property>.hbm.xml</property></emphasis> etc.</para>
+      <property>&lt;jdbcconfiguration&gt;</property>
+    </emphasis> the ant task will read the database metadata and from that will perform a reverse
+    engineering of the database schema into a normal Hibernate Configuration. It is from this object
+    e.g. <emphasis>
+      <property>&lt;hbm2java&gt;</property>
+    </emphasis>can generate other artifacts such as <emphasis>
+      <property>.java</property>
+    </emphasis>, <emphasis>
+      <property>.hbm.xml</property>
+    </emphasis> etc.</para>
 
-  <para>To govern this process <property>Hibernate</property> uses a reverse engineering strategy.
-  A reverse engineering strategy is mainly called to provide more java like
-  names for tables, column and foreignkeys into classes, properties and
-  associations. It also used to provide mappings from SQL types to <property>Hibernate</property>
-  types. The strategy can be customized by the user. The user can even provide
-  its own custom reverse engineering strategy if the provided strategy is not
-  enough, or simply just provide a small part of the strategy and delegate the
-  rest to the default strategy.</para>
+  <para>To govern this process <property>Hibernate</property> uses a reverse engineering strategy. A
+    reverse engineering strategy is mainly called to provide more java like names for tables, column
+    and foreignkeys into classes, properties and associations. It also used to provide mappings from
+    SQL types to <property>Hibernate</property> types. The strategy can be customized by a user. The
+    user can even provide its own custom reverse engineering strategy if the provided strategy is
+    not enough, or simply just provide a small part of the strategy and delegate the rest to the
+    default strategy.</para>
 
   <section>
     <title>Default reverse engineering strategy</title>
 
-    <para>The default strategy uses some rules for mapping JDBC artifact names
-    to java artifact names. It also provide basic typemappings from JDBC types
-    to 
-      <property>Hibernate</property>
-      types. It is the default strategy that uses the packagename
-    attribute to convert a table name to a fully qualified classname.</para>
+    <para>The default strategy uses some rules for mapping JDBC artifact names to java artifact
+      names. It also provide basic typemappings from JDBC types to <property>Hibernate</property>
+      types. It is the default strategy that uses the packagename attribute to convert a table name
+      to a fully qualified classname.</para>
   </section>
 
   <section id="hibernaterevengxmlfile">
     <title>hibernate.reveng.xml file</title>
 
     <para>To have fine control over the process a <emphasis>
-      <property>hibernate.reveng.xml</property></emphasis> file
-    can be provided. In this file you can specify type mappings and table
-    filtering. This file can be created by hand (its just basic XML) or you
-    can use the Hibernate plugins which have a specialized editor.</para>
+        <property>hibernate.reveng.xml</property>
+      </emphasis> file can be provided. In this file you can specify type mappings and table
+      filtering. This file can be created by hand (it&apos;s just basic XML) or you can use the
+      Hibernate plugins which have a specialized editor.</para>
 
-    <note><para>Many databases are case-sensitive with their names and thus if
-    you cannot make some table match and you are sure it is not excluded by a
-    &lt;table-filter&gt;then check if the case matches; most databases stores
-    table names in uppercase.</para></note>
+    <note>
+      <para>Many databases are case-sensitive with their names and thus if you cannot make some
+        table match and you are sure it is not excluded by a &lt;table-filter&gt;then check
+        if the case matches; most databases stores table names in uppercase.</para>
+    </note>
 
     <para>The following is an example of a <emphasis>
-      <property>reveng.xml</property></emphasis>. Following the example
-    is more details about the format.</para>
+        <property>reveng.xml</property>
+      </emphasis>. Following the example gives you more details about the format.</para>
 
     <programlisting><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-reverse-engineering 
@@ -96,59 +96,55 @@
 
 </hibernate-reverse-engineering>]]></programlisting>
 
-    
+
     <section>
       <title>Schema Selection (&lt;schema-selection&gt;)</title>
 
       <para><emphasis>
-        <property>&lt;schema-selection&gt;</property></emphasis> is used to drive which
-      schema&apos;s the reverse engineering will try and process.</para>
+          <property>&lt;schema-selection&gt;</property>
+        </emphasis> is used to drive which schema&apos;s the reverse engineering will try and
+        process.</para>
 
-      <para>By default the reverse engineering will read all schemas and then
-        use <emphasis>
-          <property>&lt;table-filter&gt;</property></emphasis> to decide which tables get
-      reverse engineered and which do not; this makes it easy to get started
-      but can be inefficient on databases with many schemas.</para>
+      <para>By default the reverse engineering will read all schemas and then use <emphasis>
+          <property>&lt;table-filter&gt;</property>
+        </emphasis> to decide which tables get reverse engineered and which do not; this makes it
+        easy to get started but can be inefficient on databases with many schemas.</para>
 
       <para>With <emphasis>
-        <property>&lt;schema-selection&gt;</property></emphasis> it is thus
-      possible to limit the actual processed schemas and thus significantly
-      speed-up the reverse engineering.
-        <emphasis>
-          <property>&lt;table-filter&gt;</property></emphasis> is still used to then decide
-      which tables will be included/excluded.</para>
+          <property>&lt;schema-selection&gt;</property>
+        </emphasis> it is thus possible to limit the actual processed schemas and thus significantly
+        speed-up the reverse engineering. <emphasis>
+          <property>&lt;table-filter&gt;</property>
+        </emphasis> is still used to then decide which tables will be included/excluded.</para>
 
-     <note> <para>If no <literal>&lt;schema-selection&gt;</literal> is
-      specified, the reverse engineering works as if all schemas should be
-      processed. </para></note>
-      
-      
-      
-      <para>This is equal to:</para>
-
-      <programlisting><![CDATA[<schema-selection/>]]></programlisting>
-
-      <para>Which in turn is equal to:</para>
-
-      <programlisting><![CDATA[<schema-selection match-catalog=".*" match-schema=".*" match-table=".*"/>]]></programlisting>
+      <note>
+        <para>If no <literal>&lt;schema-selection&gt;</literal> is specified, the reverse
+          engineering works as if all schemas should be processed. This is equal to:
+          <![CDATA[<schema-selection/>]]>. Which in turn is equal
+          to:
+          <![CDATA[<schema-selection match-catalog=".*" match-schema=".*" match-table=".*"/>]]></para>
+      </note>
 
       <section>
         <title>Examples</title>
 
         <para>The following will process all tables from <emphasis>
-          <property>&quot;MY_SCHEMA&quot;</property></emphasis>.</para>
+            <property>&quot;MY_SCHEMA&quot;</property>
+          </emphasis>.</para>
 
         <programlisting><![CDATA[<schema-selection match-schema="MY_SCHEMA"/>]]></programlisting>
 
-        <para>It is possible to have multiple
-        <literal>schema-selection</literal>'s to support multi-schema reading
-        or simply to limit the processing to very specific tables. The
-        following example process all tables in <emphasis>
-          <property>&quot;MY_SCHEMA&quot;</property></emphasis>, a specific <emphasis>
-            <property>&quot;CITY&quot;</property></emphasis>
-          table plus all tables that starts with <emphasis>
-            <property>&quot;CODES_&quot;</property></emphasis> in <emphasis>
-              <property>COMMON_SCHEMA&quot;</property></emphasis>.</para>
+        <para>It is possible to have multiple <literal>schema-selection</literal>'s to support
+          multi-schema reading or simply to limit the processing to very specific tables. The
+          following example processes all tables in <emphasis>
+            <property>&quot;MY_SCHEMA&quot;</property>
+          </emphasis>, a specific <emphasis>
+            <property>&quot;CITY&quot;</property>
+          </emphasis> table plus all tables that starts with <emphasis>
+            <property>&quot;CODES_&quot;</property>
+          </emphasis> in <emphasis>
+            <property>COMMON_SCHEMA&quot;</property>
+          </emphasis>.</para>
 
         <programlisting><![CDATA[<schema-selection match-schema="MY_SCHEMA"/>
 <schema-selection match-schema="COMMON_SCHEMA" match-table="CITY"/>
@@ -160,12 +156,11 @@
       <title>Type mappings (&lt;type-mapping&gt;)</title>
 
       <para>The <emphasis>
-        <property>&lt;type-mapping&gt;</property></emphasis> section specifies how
-        the JDBC types found in the database should be mapped to Hibernate
-      types. e.g. java.sql.Types.VARCHAR with a length of 1 should be mapped
-      to the Hibernate type <literal>yes_no</literal> or
-      java.sql.Types.NUMERIC should generally just be converted to the
-        Hibernate type <literal>long</literal>.</para>
+          <property>&lt;type-mapping&gt;</property>
+        </emphasis> section specifies how the JDBC types found in the database should be mapped to
+        Hibernate types. e.g. java.sql.Types.VARCHAR with a length of 1 should be mapped to the
+        Hibernate type <literal>yes_no</literal> or java.sql.Types.NUMERIC should generally just be
+        converted to the Hibernate type <literal>long</literal>.</para>
 
       <programlisting><![CDATA[<type-mapping>
  <sql-type
@@ -178,18 +173,16 @@
  />
 </type-mapping>]]></programlisting>
 
-      <para>The number of attributes specified and the sequence of the
-        <literal>sql-type</literal>'s is important. Meaning that <property>Hibernate</property> will
-      search for the most specific first, and if no specific match is found it
-      will seek from top to bottom when trying to resolve a type
-      mapping.</para>
+      <para>The number of attributes specified and the sequence of the <literal>sql-type</literal>'s
+        is important. Meaning that <property>Hibernate</property> will search for the most specific
+        first, and if no specific match is found it will seek from top to bottom when trying to
+        resolve a type mapping.</para>
 
       <section>
         <title>Example</title>
 
-        <para>The following is an example of a type-mapping which shows the
-        flexibility and the importance of ordering of the type
-        mappings.</para>
+        <para>The following is an example of a type-mapping which shows the flexibility and the
+          importance of ordering of the type mappings.</para>
 
         <programlisting><![CDATA[<type-mapping>
  <sql-type jdbc-type="NUMERIC" precision="15" hibernate-type="big_decimal"/>
@@ -201,26 +194,25 @@
  <sql-type jdbc-type="VARCHAR" hibernate-type="string"/>
 </type-mapping>]]></programlisting>
 
-        <para>The following table shows how this affects an example table
-        named CUSTOMER:</para>
+        <para>The following table shows how this affects an example table named CUSTOMER:</para>
 
         <table frame="topbot">
           <title>sql-type examples</title>
 
           <tgroup cols="7">
-            <colspec colwidth="0.5*" />
+            <colspec colwidth="0.5*"/>
 
-            <colspec colwidth="0.5*" />
+            <colspec colwidth="0.5*"/>
 
-            <colspec colwidth="0.2*" />
+            <colspec colwidth="0.2*"/>
 
-            <colspec colwidth="0.2*" />
+            <colspec colwidth="0.2*"/>
 
-            <colspec colwidth="0.2*" />
+            <colspec colwidth="0.2*"/>
 
-            <colspec colwidth="0.5*" />
+            <colspec colwidth="0.5*"/>
 
-            <colspec colwidth="1.0*" />
+            <colspec colwidth="1.0*"/>
 
             <thead>
               <row>
@@ -246,7 +238,7 @@
 
                 <entry>INTEGER</entry>
 
-                <entry></entry>
+                <entry/>
 
                 <entry>10</entry>
 
@@ -254,8 +246,7 @@
 
                 <entry>int</entry>
 
-                <entry>Nothing defined for INTEGER. Falling back to default
-                behavior.</entry>
+                <entry>Nothing is defined for INTEGER. Falling back to default behavior.</entry>
               </row>
 
               <row>
@@ -265,15 +256,15 @@
 
                 <entry>30</entry>
 
-                <entry></entry>
+                <entry/>
 
                 <entry>false</entry>
 
                 <entry>your.package.TrimStringUserType</entry>
 
-                <entry>No type-mapping matches length=30 and not-null=false,
-                but type-mapping matches the 2 mappings which only specifies
-                VARCHAR. The type-mapping that comes first is chosen.</entry>
+                <entry>No type-mapping matches length=30 and not-null=false, but type-mapping
+                  matches the 2 mappings which only specifies VARCHAR. The type-mapping that comes
+                  first is chosen.</entry>
               </row>
 
               <row>
@@ -283,16 +274,16 @@
 
                 <entry>1</entry>
 
-                <entry></entry>
+                <entry/>
 
                 <entry>false</entry>
 
                 <entry>char</entry>
 
-                <entry>Even though there is a generic match for VARCHAR, the
-                more specific type-mapping for VARCHAR with not-null="false" is
-                chosen. The first VARCHAR sql-type matches in length but has
-                no value for not-null and thus is not considered.</entry>
+                <entry>Even though there is a generic match for VARCHAR, the more specific
+                  type-mapping for VARCHAR with not-null="false" is chosen. The first VARCHAR
+                  sql-type matches in length but has no value for not-null and thus is not
+                  considered.</entry>
               </row>
 
               <row>
@@ -302,14 +293,13 @@
 
                 <entry>1</entry>
 
-                <entry></entry>
+                <entry/>
 
                 <entry>true</entry>
 
                 <entry>java.lang.Character</entry>
 
-                <entry>The most specific VARCHAR with not-null="true" is
-                selected</entry>
+                <entry>The most specific VARCHAR with not-null="true" is selected</entry>
               </row>
 
               <row>
@@ -317,7 +307,7 @@
 
                 <entry>NUMERIC</entry>
 
-                <entry></entry>
+                <entry/>
 
                 <entry>15</entry>
 
@@ -325,8 +315,7 @@
 
                 <entry>big_decimal</entry>
 
-                <entry>There is a precise match for NUMERIC with precision
-                15</entry>
+                <entry>There is a precise match for NUMERIC with precision 15</entry>
               </row>
 
               <row>
@@ -334,7 +323,7 @@
 
                 <entry>NUMERIC</entry>
 
-                <entry></entry>
+                <entry/>
 
                 <entry>3</entry>
 
@@ -348,7 +337,7 @@
           </tgroup>
         </table>
 
-        <para></para>
+        <para/>
       </section>
     </section>
 
@@ -356,22 +345,22 @@
       <title>Table filters (&lt;table-filter&gt;)</title>
 
       <para>The <emphasis>
-        <property>&lt;table-filter&gt;</property></emphasis> let you specify matching rules for
-      performing general filtering/setup for tables, e.g. let you include or
-      exclude specific tables based on the schema or even a specific
-      prefix.</para>
+          <property>&lt;table-filter&gt;</property>
+        </emphasis> let you specify matching rules for performing general filtering/setup for
+        tables, e.g. let you include or exclude specific tables based on the schema or even a
+        specific prefix.</para>
 
       <programlistingco>
         <areaspec>
-          <area coords="2 55" id="tablefilter-matchcatalog" />
+          <area coords="2 55" id="tablefilter-matchcatalog"/>
 
-          <area coords="3 55" id="tablefilter-matchschema" />
+          <area coords="3 55" id="tablefilter-matchschema"/>
 
-          <area coords="4 55" id="tablefilter-matchname" />
+          <area coords="4 55" id="tablefilter-matchname"/>
 
-          <area coords="5 55" id="tablefilter-exclude" />
+          <area coords="5 55" id="tablefilter-exclude"/>
 
-          <area coords="6 55" id="tablefilter-package" />
+          <area coords="6 55" id="tablefilter-package"/>
         </areaspec>
 
         <programlisting><![CDATA[<table-filter
@@ -384,28 +373,25 @@
 
         <calloutlist>
           <callout arearefs="tablefilter-matchcatalog">
-            <para>match-catalog (default: .*): Pattern for matching catalog
-            part of the table</para>
+            <para>match-catalog (default: .*): Pattern for matching catalog part of the table</para>
           </callout>
 
           <callout arearefs="tablefilter-matchschema">
-            <para>match-schema (default: .*): Pattern for matching schema part
-            of the table</para>
+            <para>match-schema (default: .*): Pattern for matching schema part of the table</para>
           </callout>
 
           <callout arearefs="tablefilter-matchname">
-            <para>match-table (default: .*): Pattern for matching table part
-            of the table</para>
+            <para>match-table (default: .*): Pattern for matching table part of the table</para>
           </callout>
 
           <callout arearefs="tablefilter-exclude">
-            <para>exclude (default: false): if true the table will not be part
-            of the reverse engineering</para>
+            <para>exclude (default: false): if true the table will not be part of the reverse
+              engineering</para>
           </callout>
 
           <callout arearefs="tablefilter-package">
-            <para>package (default: ""): The default package name to use for
-            classes based on tables matched by this table-filter</para>
+            <para>package (default: ""): The default package name to use for classes based on tables
+              matched by this table-filter</para>
           </callout>
         </calloutlist>
       </programlistingco>
@@ -415,21 +401,20 @@
       <title>Specific table configuration (&lt;table&gt;)</title>
 
       <para><emphasis>
-        <property>&lt;table&gt;</property></emphasis> allows you to provide explicit
-      configuration on how a table should be reverse engineered. Amongst other
-      things it allow control over the naming of a class for the table,
-      specify which identifier generator should be used for the primary key
-      etc.</para>
+          <property>&lt;table&gt;</property>
+        </emphasis> allows you to provide explicit configuration on how a table should be reverse
+        engineered. Amongst other things it allows controlling over the naming of a class for the table,
+        specifying which identifier generator should be used for the primary key etc.</para>
 
       <programlistingco>
         <areaspec>
-          <area coords="2 55" id="table-catalog" />
+          <area coords="2 55" id="table-catalog"/>
 
-          <area coords="3 55" id="table-schema" />
+          <area coords="3 55" id="table-schema"/>
 
-          <area coords="4 55" id="table-name" />
+          <area coords="4 55" id="table-name"/>
 
-          <area coords="5 55" id="table-class" />
+          <area coords="5 55" id="table-class"/>
         </areaspec>
 
         <programlisting><![CDATA[<table 
@@ -445,20 +430,24 @@
 
         <calloutlist>
           <callout arearefs="tablefilter-matchcatalog">
-            <para>catalog (Optional): Catalog name for table. Has to be specified if you are reverse engineering multiple catalogs or if it is not equal to <literal>hiberante.default_catalog. </literal></para>
+            <para>catalog (Optional): Catalog name for a table. It has to be specified if you are reverse
+              engineering multiple catalogs or if it is not equal to
+                <literal>hiberante.default_catalog. </literal></para>
           </callout>
 
           <callout arearefs="tablefilter-matchschema">
-            <para>schema (Optional): Schema name for table. Has to be specified if you are reverse engineering multiple schemas or if it is not equal to <literal>hiberante.default_schema.</literal></para>
+            <para>schema (Optional): Schema name for a table. It has to be specified if you are reverse
+              engineering multiple schemas or if it is not equal to
+                <literal>hiberante.default_schema.</literal></para>
           </callout>
 
           <callout arearefs="tablefilter-matchname">
-            <para>name (Required): Name for table</para>
+            <para>name (Required): Name for a table</para>
           </callout>
 
           <callout arearefs="tablefilter-exclude">
-            <para>clase (Optional): The class name for table. Default name is
-            camelcase version of the table name.</para>
+            <para>clase (Optional): The class name for a table. Default name is a camelcase version of
+              the table name.</para>
           </callout>
         </calloutlist>
       </programlistingco>
@@ -467,19 +456,18 @@
         <title>&lt;primary-key&gt;</title>
 
         <para>A <emphasis>
-          <property>&lt;primary-key&gt;</property></emphasis> allows you to define a
-        primary-key for tables that does not have such defined in the
-        database, and probably more importantly it allows you to define which
-        identifier strategy that should be used (even for already existing
-        primary-key's).</para>
+            <property>&lt;primary-key&gt;</property>
+          </emphasis> allows you to define a primary-key for tables that don&apos;t have such defined
+          in the database, and probably more importantly it allows you to define which identifier
+          strategy should be used (even for already existing primary-key's).</para>
 
         <programlistingco>
           <areaspec>
-            <area coords="2 55" id="pk-generatorclass" />
+            <area coords="2 55" id="pk-generatorclass"/>
 
-            <area coords="3 55" id="pk-generatorparam" />
+            <area coords="3 55" id="pk-generatorparam"/>
 
-            <area coords="5 55" id="pk-keycolumn" />
+            <area coords="5 55" id="pk-keycolumn"/>
           </areaspec>
 
           <programlisting><![CDATA[<primary-key
@@ -491,22 +479,19 @@
 
           <calloutlist>
             <callout arearefs="pk-generatorclass">
-              <para>generator/class (Optional): defines which identifier
-              generator should be used. The class name is any hibernate short
-              hand name or fully qualified class name for an identifier
-              strategy.</para>
+              <para>generator/class (Optional): defines which identifier generator should be used.
+                The class name is any hibernate short hand name or fully qualified class name for an
+                identifier strategy.</para>
             </callout>
 
             <callout arearefs="pk-generatorparam">
-              <para>generator/param (Optional): Allows to specify which
-              parameter with name and value should be passed to the identifier
-              generator</para>
+              <para>generator/param (Optional): Allows to specify which parameter with a name and
+                value should be passed to the identifier generator</para>
             </callout>
 
             <callout arearefs="pk-keycolumn">
-              <para>key-column (Optional): Specifies which column(s ) the
-              primary-key consists of. A key-column is same as column, but
-              does not have the exclude property.</para>
+              <para>key-column (Optional): Specifies which column(s ) the primary-key consists of. A
+                key-column is same as column, but does not have the exclude property.</para>
             </callout>
           </calloutlist>
         </programlistingco>
@@ -516,22 +501,23 @@
         <title>&lt;column&gt;</title>
 
         <para>With a <emphasis>
-          <property>&lt;column&gt;</property></emphasis> it is possible to explicitly name the
-        resulting property for a column. It is also possible to redefine what
-        jdbc and/or Hibernate type a column should be processed and finally it
-        is possible to completely exclude a column from processing.</para>
+            <property>&lt;column&gt;</property>
+          </emphasis> it is possible to explicitly name the resulting property for a column. It is
+          also possible to redefine what jdbc and/or Hibernate type a column should be processed as and
+          finally it is possible to completely exclude a column from processing.</para>
 
-        <para><programlistingco>
+        <para>
+          <programlistingco>
             <areaspec>
-              <area coords="2 55" id="column-name" />
+              <area coords="2 55" id="column-name"/>
 
-              <area coords="3 55" id="column-jdbctype" />
+              <area coords="3 55" id="column-jdbctype"/>
 
-              <area coords="4 55" id="column-type" />
+              <area coords="4 55" id="column-type"/>
 
-              <area coords="5 55" id="column-propertytype" />
+              <area coords="5 55" id="column-propertytype"/>
 
-              <area coords="6 55" id="column-exclude" />
+              <area coords="6 55" id="column-exclude"/>
             </areaspec>
 
             <programlisting><![CDATA[<column
@@ -548,56 +534,55 @@
               </callout>
 
               <callout arearefs="column-jdbctype">
-                <para>jdbc-type (Optional): Which jdbc-type this column should
-                be processed as. A value from java.sql.Types, either numerical
-                (93) or the constant name (TIMESTAMP).</para>
+                <para>jdbc-type (Optional): Which jdbc-type this column should be processed as. A
+                  value from java.sql.Types, either numerical (93) or the constant name
+                (TIMESTAMP).</para>
               </callout>
 
               <callout arearefs="column-type">
-                <para>type (Optional): Which hibernate-type to use for this
-                specific column</para>
+                <para>type (Optional): Which hibernate-type to use for this specific column</para>
               </callout>
 
               <callout arearefs="column-propertytype">
-                <para>property (Optional): What property name will be
-                generated for this column</para>
+                <para>property (Optional): What property name will be generated for this
+                column</para>
               </callout>
 
               <callout arearefs="column-exclude">
-                <para>exclude (default: false): set to true if this column
-                should be ignored</para>
+                <para>exclude (default: false): set to true if this column should be ignored</para>
               </callout>
             </calloutlist>
-          </programlistingco></para>
+          </programlistingco>
+        </para>
       </section>
 
       <section>
         <title>&lt;foreign-key&gt;</title>
 
         <para>The <emphasis>
-          <property>&lt;foreign-key&gt;</property></emphasis> has two purposes. One for allowing to
-        define foreign-keys in databases that does not support them or does
-        not have them defined in their schema. Secondly, to allow defining the
-        name of the resulting properties (many-to-one and
-        one-to-many's).</para>
+            <property>&lt;foreign-key&gt;</property>
+          </emphasis> has two purposes. One for allowing to define foreign-keys in databases that
+          does not support them or does not have them defined in their schema. Secondly, to allow
+          defining the name of the resulting properties (many-to-one and one-to-many's).</para>
 
         <para>Note:</para>
 
-        <para><programlistingco>
+        <para>
+          <programlistingco>
             <areaspec>
-              <area coords="2 55" id="foreignkey-name" />
+              <area coords="2 55" id="foreignkey-name"/>
 
-              <area coords="3 55" id="foreignkey-catalog" />
+              <area coords="3 55" id="foreignkey-catalog"/>
 
-              <area coords="4 55" id="foreignkey-schema" />
+              <area coords="4 55" id="foreignkey-schema"/>
 
-              <area coords="5 55" id="foreignkey-table" />
+              <area coords="5 55" id="foreignkey-table"/>
 
-              <area coords="7 55" id="foreignkey-columnref" />
+              <area coords="7 55" id="foreignkey-columnref"/>
 
-              <area coords="8 55" id="foreignkey-manytoone" />
+              <area coords="8 55" id="foreignkey-manytoone"/>
 
-              <area coords="10 55" id="foreignkey-set" />
+              <area coords="10 55" id="foreignkey-set"/>
             </areaspec>
 
             <programlisting><![CDATA[<foreign-key
@@ -617,52 +602,46 @@
 
             <calloutlist>
               <callout arearefs="foreignkey-name">
-                <para>constraint-name (Required): Name of the foreign key
-                constraint. Important when naming many-to-one and set. It is
-                the constraint-name that is used to link the processed
-                foreign-keys with the resulting property names.</para>
+                <para>constraint-name (Required): Name of the foreign key constraint. Important when
+                  naming many-to-one and set. It is the constraint-name that is used to link the
+                  processed foreign-keys with the resulting property names.</para>
               </callout>
 
               <callout arearefs="foreignkey-catalog">
-                <para>foreign-catalog (Optional): Name of the foreign table's
-                catalog. (Only relevant if you want to explicitly define a
-                foreign key).</para>
+                <para>foreign-catalog (Optional): Name of the foreign table's catalog. (Only
+                  relevant if you want to explicitly define a foreign key).</para>
               </callout>
 
               <callout arearefs="foreignkey-schema">
-                <para>foreign-schema (Optional): Name of the foreign table's
-                schema. (Only relevant if you want to explicitly define a
-                foreign key).</para>
+                <para>foreign-schema (Optional): Name of the foreign table's schema. (Only relevant
+                  if you want to explicitly define a foreign key).</para>
               </callout>
 
               <callout arearefs="foreignkey-table">
-                <para>foreign-table (Optional): Name of the foreign table.
-                (Only relevant if you want to explicitly define a foreign
-                key).</para>
+                <para>foreign-table (Optional): Name of the foreign table. (Only relevant if you
+                  want to explicitly define a foreign key).</para>
               </callout>
 
               <callout arearefs="foreignkey-columnref">
-                <para>column-ref (Optional): Defines that the foreign-key
-                constraint between a local-column and foreign-column name.
-                (Only relevant if you want to explicitly define a foreign
-                key).</para>
+                <para>column-ref (Optional): Defines that the foreign-key constraint between a
+                  local-column and foreign-column name. (Only relevant if you want to explicitly
+                  define a foreign key).</para>
               </callout>
 
               <callout arearefs="foreignkey-manytoone">
-                <para>many-to-one (Optional): Defines that a many-to-one
-                should be created and the property attribute specifies the
-                name of the resulting property. Exclude can be used to
-                explicitly define that it should be created or not.</para>
+                <para>many-to-one (Optional): Defines that a many-to-one should be created and the
+                  property attribute specifies the name of the resulting property. Exclude can be
+                  used to explicitly define that it should be created or not.</para>
               </callout>
 
               <callout arearefs="foreignkey-set">
-                <para>set (Optional): Defines that a set should be created
-                based on this foreign-key and the property attribute specifies
-                the name of the resulting (set) property. Exclude can be used
-                to explicitly define that it should be created or not.</para>
+                <para>set (Optional): Defines that a set should be created based on this foreign-key
+                  and the property attribute specifies the name of the resulting (set) property.
+                  Exclude can be used to explicitly define that it should be created or not.</para>
               </callout>
             </calloutlist>
-          </programlistingco></para>
+          </programlistingco>
+        </para>
       </section>
     </section>
   </section>
@@ -670,17 +649,17 @@
   <section id="custom-reveng-strategy">
     <title>Custom strategy</title>
 
-    <para>It is possible to implement an user strategy. Such strategy must
-      implement <emphasis>
-        <property>org.hibernate.cfg.reveng.ReverseEngineeringStrategy</property></emphasis>. It is
-    recommended that one uses the <property>DelegatingReverseEngineeringStrategy</property> and
-    provide a public constructor which takes another
-      <property>ReverseEngineeringStrategy </property> as argument. This will allow you to only
-    implement the relevant methods and provide a fallback strategy. Example of
-    custom delegating strategy which converts all column names that ends with
-      <emphasis>
-        <property>&quot;PK&quot;</property></emphasis> into a property named <emphasis>
-          <property>&quot;id&quot;</property></emphasis>.</para>
+    <para>It is possible to implement an user strategy. Such strategy must implement <emphasis>
+        <property>org.hibernate.cfg.reveng.ReverseEngineeringStrategy</property>
+      </emphasis>. It is recommended that one uses the
+        <property>DelegatingReverseEngineeringStrategy</property> and provide a public constructor
+      which takes another <property>ReverseEngineeringStrategy </property> as argument. This will
+      allow you to only implement the relevant methods and provide a fallback strategy. Example of
+      custom delegating strategy which converts all column names that ends with <emphasis>
+        <property>&quot;PK&quot;</property>
+      </emphasis> into a property named <emphasis>
+        <property>&quot;id&quot;</property>
+      </emphasis>.</para>
 
     <programlisting><![CDATA[public class ExampleStrategy extends DelegatingReverseEngineeringStrategy {
 
@@ -701,23 +680,21 @@
   <section>
     <title>Custom Database Metadata</title>
 
-    <para>By default the reverse engineering is performed by reading using the
-  JDBC database metadata API. This is done via the class
-      <emphasis>
-        <property>org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect</property></emphasis>
-    which is an implementation of
-      <emphasis>
-        <property>org.hibernate.cfg.reveng.dialect.MetaDataDialect</property></emphasis>.</para>
+    <para>By default the reverse engineering is performed by reading using the JDBC database
+      metadata API. This is done via the class <emphasis>
+        <property>org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect</property>
+      </emphasis> which is an implementation of <emphasis>
+        <property>org.hibernate.cfg.reveng.dialect.MetaDataDialect</property>
+      </emphasis>.</para>
 
-    <para>The default implementation can be replaced with an alternative
-    implementation by setting the property
-      <emphasis>
-        <property>hibernatetool.metadatadialect</property></emphasis> to a fully qualified
-    classname for a class that implements
-      <property>JDBCMetaDataDialect</property>.</para>
+    <para>The default implementation can be replaced with an alternative implementation by setting
+      the property <emphasis>
+        <property>hibernatetool.metadatadialect</property>
+      </emphasis> to a fully qualified classname for a class that implements
+        <property>JDBCMetaDataDialect</property>.</para>
 
-    <para>This can be used to provide database specific optimized metadata
-    reading. If you create an optimized/better metadata reading for your
-    database it will be a very welcome contribution.</para>
+    <para>This can be used to provide database specific optimized metadata reading. If you create an
+      optimized/better metadata reading for your database it will be a very welcome
+    contribution.</para>
   </section>
 </chapter>

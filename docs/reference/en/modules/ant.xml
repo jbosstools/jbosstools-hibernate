@@ -744,7 +744,7 @@
           <property>hibernate.cfg.xml</property>
         </emphasis>. Intended to be used together with a <emphasis>
           <property>&lt;jdbcconfiguration&gt;</property>
-        </emphasis> when performing reverse engineering, but can be used with any kind of
+        </emphasis> when performing reverse engineering, but it can be used with any kind of
         configuration. The <emphasis>
           <property>&lt;hbm2cfgxml&gt;</property>
         </emphasis> will contain the properties used and adds mapping entries for each mapped class.</para>
@@ -786,8 +786,8 @@
 
       <para><emphasis>
           <property>&lt;query&gt;</property>
-        </emphasis> is used to execute a HQL query statements and optionally send the output to a
-        file. Can be used for verifying the mappings and for basic data extraction.</para>
+        </emphasis> is used to execute a HQL query statements and optionally sends the output to a
+        file. It can be used for verifying the mappings and for basic data extraction.</para>
 
       <programlisting><![CDATA[<query
  destfile="filename">
@@ -797,14 +797,14 @@
 
       <para>Currently one session is opened and used for all queries and the query is executed via
         the list() method. In the future more options might become available, like performing
-        executeUpdate(), use named queries etc.</para>
+        executeUpdate(), use named queries and etc.</para>
 
       <para/>
 
       <section>
         <title>Examples</title>
 
-        <para>Simplest usage of <emphasis>
+        <para>The simplest usage of <emphasis>
             <property>&lt;query&gt;</property>
           </emphasis> will just execute the query without dumping to a file. This can be used to
           verify that queries can actually be performed.</para>
@@ -839,7 +839,7 @@
     <section id="hbmtemplate">
       <title>Generic Hibernate metamodel exporter (<literal>&lt;hbmtemplate&gt;</literal>)</title>
 
-      <para>Generic exporter that can be controlled by an user provided template or class.</para>
+      <para>Generic exporter that can be controlled by an user provides a template or class.</para>
 
       <programlisting><![CDATA[<hbmtemplate
  filepattern="{package-name}/{class-name}.ftl"
@@ -857,7 +857,7 @@
 
         <para>The following is an example of reverse engineering via <emphasis>
             <property>&lt;jdbcconfiguration&gt;</property>
-          </emphasis> and use a custom Exporter via the <emphasis>
+          </emphasis> and usage of a custom Exporter via the <emphasis>
             <property>&lt;hbmtemplate&gt;</property>
           </emphasis>.</para>
 
@@ -916,17 +916,17 @@
           <property>
             <literal>&lt;propertyset&gt;</literal>
           </property>
-        </emphasis>. The functionality of <emphasis>
+        </emphasis> that is used for grouping a set of properties. More about the functionality of <emphasis>
           <property>
             <literal>&lt;propertyset&gt;</literal>
           </property>
-        </emphasis> is explained in detail in the Ant task manual.</para>
+        </emphasis> is explained in detail in the <ulink url="http://ant.apache.org/manual/">Ant manual</ulink>.</para>
     </section>
 
     <section>
       <title>Getting access to user specific classes</title>
 
-      <para>If the templates need to access some user class it is possible by specifying a <emphasis>
+      <para>If the templates need to access some user class it becomes possible by specifying a <emphasis>
           <property>&quot;toolclass&quot;</property>
         </emphasis> in the properties.</para>
 
