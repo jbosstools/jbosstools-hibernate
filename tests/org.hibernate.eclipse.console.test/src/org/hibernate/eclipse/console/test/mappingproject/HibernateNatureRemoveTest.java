@@ -23,7 +23,7 @@ import org.osgi.service.prefs.BackingStoreException;
  *
  */
 public class HibernateNatureRemoveTest extends TestCase {
-	public void testEnableHibernateNature() throws BackingStoreException, CoreException {
+	public void testHibernateNatureRemove() throws BackingStoreException, CoreException {
 		MappingTestProject project = MappingTestProject.getTestProject();
 		IJavaProject prj = project.getIJavaProject();
 		ProjectUtils.removeProjectNature(prj.getProject(), "org.hibernate.eclipse.console.hibernateNature", new NullProgressMonitor() );

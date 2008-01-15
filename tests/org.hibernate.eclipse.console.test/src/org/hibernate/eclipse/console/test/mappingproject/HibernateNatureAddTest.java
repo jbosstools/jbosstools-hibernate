@@ -26,7 +26,7 @@ import junit.framework.TestCase;
  *
  */
 public class HibernateNatureAddTest extends TestCase {
-	public void testEnableHibernateNature() throws BackingStoreException, CoreException {
+	public void testHibernateNatureAdd() throws BackingStoreException, CoreException {
 		MappingTestProject project = MappingTestProject.getTestProject();
 		IJavaProject prj = project.getIJavaProject();
 		IScopeContext scope = new ProjectScope(prj.getProject() );

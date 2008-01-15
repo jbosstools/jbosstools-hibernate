@@ -33,13 +33,14 @@ public class TestSet{
 	}
 	
 	
-	private static void addTestsPackSetUp(TestSuite suite){
+	private static void addTestsPackSetUp(TestSuite suite){		
 		suite.addTestSuite( UpdateConfigurationTest.class );
 	}
 	
 	private static void addPackTests(TestSuite suite){
 		suite.addTestSuite( OpenSourceFileTest.class );
 		suite.addTestSuite( OpenMappingFileTest.class );
+		suite.addTestSuite( OpenMappingDiagrammTest.class );
 	}
 	
 	private static void addTestsPackTearDown(TestSuite suite){

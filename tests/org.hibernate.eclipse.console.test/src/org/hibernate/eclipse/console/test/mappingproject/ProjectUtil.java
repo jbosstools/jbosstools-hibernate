@@ -10,14 +10,20 @@
  ******************************************************************************/
 package org.hibernate.eclipse.console.test.mappingproject;
 
+import java.lang.reflect.Field;
+
 import org.apache.tools.ant.filters.StringInputStream;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.internal.ErrorEditorPart;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard;
 import org.hibernate.mapping.PersistentClass;
@@ -34,7 +40,9 @@ public class ProjectUtil {
 													.append("\"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd\">\n");
 	
 	private static final StringBuilder XML_CFG_START = new StringBuilder("<hibernate-configuration>\n")
-													.append("<session-factory>\n");
+													.append("<session-factory>\n")
+													.append("<property name=\"hibernate.dialect\">")
+													.append("org.hibernate.dialect.PostgreSQLDialect</property>");
 	
 	private static final StringBuilder XML_CFG_END = new StringBuilder("</session-factory>\n")
 													.append("</hibernate-configuration>\n");	
@@ -102,6 +110,43 @@ public class ProjectUtil {
 					MappingTestProject.PROJECT_NAME, true, "",
 					null, cfgFilePath, new Path[0], new Path[0], "", "", new NullProgressMonitor());
 
+		}
+	}
+	/**
+	 * Sometimes we have exceptions while opening editors.
+	 * IDE catches this exceptions and opens ErrorEditorPart instead of 
+	 * our editor. To be sure that editor opened without exception use this method.
+	 * It gets occurred exception from the editor if it was and passes it up.
+	 *  
+	 * @param editor
+	 * @throws Throwable
+	 */
+	public static void throwExceptionIfItOccured(IEditorPart editor) throws Throwable {
+		if (editor instanceof ErrorEditorPart){
+			Class<ErrorEditorPart> clazz = ErrorEditorPart.class;
+			Field field;
+			try {
+				field = clazz.getDeclaredField("error");
+			
+				field.setAccessible(true);
+		
+				Object error = field.get(editor);
+				if (error instanceof IStatus) {
+					IStatus err_status = (IStatus) error;
+					if (err_status.getSeverity() == Status.ERROR){
+						throw err_status.getException();
+					}
+				}
+			// catch close means that exception occurred but we can't get it
+			} catch (SecurityException e) {
+				throw new RuntimeException("Can't get exception from ErrorEditorPart. " + e.getMessage());
+			} catch (NoSuchFieldException e) {
+				throw new RuntimeException("Can't get error field from ErrorEditorPart. " + e.getMessage());
+			} catch (IllegalArgumentException e) {
+				throw new RuntimeException("Can't get error field from ErrorEditorPart. " + e.getMessage());
+			} catch (IllegalAccessException e) {
+				throw new RuntimeException("Can't get error field from ErrorEditorPart. " + e.getMessage());
+			}
 		}
 	}
 

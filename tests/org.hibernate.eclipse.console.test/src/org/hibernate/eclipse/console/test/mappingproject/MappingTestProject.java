@@ -15,6 +15,7 @@ import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -46,6 +47,8 @@ import org.eclipse.jdt.internal.core.PackageFragmentRoot;
 public class MappingTestProject{
 	
 	public static final String SRC_FOLDER = "src";
+	
+	public static final String LIB_FOLDER = "lib";
 
 	private static MappingTestProject singleton= null;
 	
@@ -53,6 +56,7 @@ public class MappingTestProject{
 	
 	public static String PROJECT_NAME = "MappingTestProject";
 	public static String RESOURCE_PATH = "res/project/";
+	public static String RES_LIB_FNAME = ".lib";
 	
 	private static FileFilter fileFilter = new FileFilter(){
 		public boolean accept(File pathname) {
@@ -65,6 +69,11 @@ public class MappingTestProject{
 				if (pathname.getName().charAt(0) == '.') return false;
 				return pathname.isDirectory();
 			}};
+			
+	private static FileFilter jarFilter = new FileFilter(){
+		public boolean accept(File pathname) {
+			return !pathname.isDirectory() || pathname.getName().endsWith(".jar");
+		}};
 	
 	private IProject project;
 	private IJavaProject javaProject;
@@ -108,13 +117,15 @@ public class MappingTestProject{
 		IPath resourcePath = new Path(RESOURCE_PATH);
 		File resourceFolder = resourcePath.toFile();
 		if (!resourceFolder.exists()) 
-			throw new RuntimeException("Folder " + RESOURCE_PATH + " does not found!");
+			throw new RuntimeException("Folder " + RESOURCE_PATH + " not found!");
 				
-		IPackageFragmentRoot sourceFolder = buildSourceFolder(project, javaProject);
-		recursiveCopyFiles(resourceFolder, (IFolder) sourceFolder.getResource());		
+		IPackageFragmentRoot sourceFolder = createSourceFolder(project, javaProject);
+		recursiveCopyFiles(resourceFolder, (IFolder) sourceFolder.getResource());
+		List<IPath> libs = copyLibs(resourceFolder);
+		generateClassPath(libs, sourceFolder);
 		project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, new NullProgressMonitor());
-	}
-	
+	}	
+
 	private void recursiveCopyFiles(File src, IFolder dst){
 		File[] files = src.listFiles(fileFilter);
 		for (int i = 0; i < files.length; i++) {
@@ -145,6 +156,47 @@ public class MappingTestProject{
 				continue;
 			}
 		}		
+	}
+	
+	private List<IPath> copyLibs(File res) throws CoreException {		
+		IFolder dst = project.getFolder(LIB_FOLDER);
+		if (!dst.exists()){
+			dst.create(false, true, null);
+			javaProject.getPackageFragmentRoot(dst);
+		}
+				
+		File libFolder = new File(res.getAbsolutePath()+"/" + RES_LIB_FNAME);
+		if ( !libFolder.exists() )
+			throw new RuntimeException("Folder " + RESOURCE_PATH + RES_LIB_FNAME + " not found!");
+		
+		
+		List<IPath> libs = new ArrayList<IPath>();
+		
+		File[] files = libFolder.listFiles(jarFilter);
+		for (int i = 0; i < files.length; i++) {
+			File file = files[i];
+			if (!file.exists()) continue;
+			IFile iFile = dst.getFile(file.getName());
+			try {
+				iFile.create(new FileInputStream(file), true, null);				
+				libs.add(iFile.getFullPath());
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				continue;
+			}			
+		}		
+		return libs;
+	}
+	
+	private void generateClassPath(List<IPath> libs, IPackageFragmentRoot sourceFolder) throws JavaModelException{
+		List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>();
+		//entries.addAll(Arrays.asList(javaProject.getRawClasspath()));
+		for (IPath lib_path : libs) {
+			entries.add(JavaCore.newLibraryEntry(lib_path, null, null));
+		}
+		entries.add(JavaCore.newSourceEntry(sourceFolder.getPath()));
+		entries.add(JavaCore.newContainerEntry(JRE_CONTAINER));
+		javaProject.setRawClasspath(entries.toArray(new IClasspathEntry[0]), null);
 	}
 	
 
@@ -195,16 +247,16 @@ public class MappingTestProject{
 	}
 
 
-	private IPackageFragmentRoot buildSourceFolder(IProject project,
+	private IPackageFragmentRoot createSourceFolder(IProject project,
 			IJavaProject javaProject) throws CoreException {
 		IFolder folder = project.getFolder(SRC_FOLDER);
 		if (!folder.exists()){
 			folder.create(false, true, null);
 			IPackageFragmentRoot root = javaProject.getPackageFragmentRoot(folder);
-			IClasspathEntry[] newEntries = { JavaCore
+			/*IClasspathEntry[] newEntries = { JavaCore
 				.newSourceEntry(root.getPath()) , JavaCore
 				.newContainerEntry(JRE_CONTAINER)};
-			javaProject.setRawClasspath(newEntries, null);
+			javaProject.setRawClasspath(newEntries, null);*/
 			return root;
 		}
 		return javaProject.getPackageFragmentRoot(folder);
