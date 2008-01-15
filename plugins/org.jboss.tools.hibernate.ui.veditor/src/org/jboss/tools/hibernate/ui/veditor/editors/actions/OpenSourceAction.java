@@ -1,13 +1,17 @@
 package org.jboss.tools.hibernate.ui.veditor.editors.actions;
 
+import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PartInitException;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor;
@@ -47,11 +51,19 @@ public class OpenSourceAction extends SelectionAction {
 			} else continue;
 			
 			IResource resource = null;
-			String fullyQualifiedName = HibernateUtils.getPersistentClassName(rootClass);
-			if (fullyQualifiedName.indexOf("$") > 0) {
+			String fullyQualifiedName = rootClass.getClassName();//HibernateUtils.getPersistentClassName(rootClass);
+			/*if (fullyQualifiedName.indexOf("$") > 0) {
 				fullyQualifiedName = fullyQualifiedName.substring(0, fullyQualifiedName.indexOf("$"));
+			}*/
+			try {
+				new org.hibernate.eclipse.console.actions.OpenSourceAction().run(selection, proj, fullyQualifiedName);
+			} catch (PartInitException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage("Can't open source file.", e);
+			} catch (JavaModelException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage("Can't find source file.", e);
+			} catch (FileNotFoundException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage("Can't find source file.", e);
 			}
-			new org.hibernate.eclipse.console.actions.OpenSourceAction().run(selection, proj, fullyQualifiedName);
 		}
 	}
 

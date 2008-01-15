@@ -1,13 +1,25 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.hibernate.ui.veditor.editors.actions;
 
 import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.gef.ui.actions.SelectionAction;
-import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PartInitException;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.mapping.PersistentClass;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.SpecialRootClass;
@@ -42,14 +54,21 @@ public class OpenMappingAction extends SelectionAction {
 					&& ((Property)selection).getPersistentClass() instanceof SpecialRootClass){
 				Property compositSel = ((Property)selection);
 				Property parentProperty = ((SpecialRootClass)((Property)selection).getPersistentClass()).getProperty();
-				org.hibernate.eclipse.console.actions.OpenMappingAction.run(compositSel, parentProperty, consoleConfiguration);
+				try {
+					org.hibernate.eclipse.console.actions.OpenMappingAction.run(compositSel, parentProperty, consoleConfiguration);
+				} catch (Exception e) {
+					HibernateConsolePlugin.getDefault().logErrorMessage("Can't find or open mapping file.", e);
+				}
 				continue;
 			}
 			if (selection instanceof SpecialRootClass) {
     			selection = ((SpecialRootClass)selection).getProperty();
 			}
-			org.hibernate.eclipse.console.actions.OpenMappingAction.run(selection, consoleConfiguration);
-						
+			try {
+				org.hibernate.eclipse.console.actions.OpenMappingAction.run(selection, consoleConfiguration);
+			} catch (Exception e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage("Can't find or open mapping file.", e);
+			}		
 			
 	    	/*IResource resource = null;
 	    	Object selectedElement = selection;
