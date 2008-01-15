@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.hibernate.eclipse.console.test.mappingproject;
 
+import java.util.regex.Pattern;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestResult;
@@ -72,10 +74,6 @@ public class HibernateAllMappingTests extends TestCase {
 		for (int i = 0; i < suite.testCount(); i++) {
 			Test test = suite.testAt(i);
 			test.run(result);
-			/*if (result.failureCount() > 0 || result.errorCount() > 0){
-				// we have failed tests after setup
-				fail(((Throwable)result.failures().nextElement()).getMessage());
-			}*/
 		}
 	}
 
@@ -88,12 +86,13 @@ public class HibernateAllMappingTests extends TestCase {
 		super.run(result);
 	}	
 	
-	public void tearDown() throws Exception {
+	public void tearDown() throws Exception {		
 		waitForJobs();
-		runTestsBeforeTearDown();
+		runTestsBeforeTearDown();		
 		waitForJobs();
-		this.project.deleteIProject();
-		waitForJobs();
+		delay(1000);
+		//this.project.deleteIProject();
+		//waitForJobs();
 		super.tearDown();
 	}
 
@@ -112,6 +111,7 @@ public class HibernateAllMappingTests extends TestCase {
 	 *            the number of milliseconds
 	 */
 	protected void delay(long waitTimeMillis) {
+		if (waitTimeMillis <= 0) return;
 		Display display = Display.getCurrent();
 
 		// If this is the UI thread,
@@ -148,11 +148,9 @@ public class HibernateAllMappingTests extends TestCase {
 	}	
 	
 	public void testEachPackWithTestSet() throws JavaModelException {
-	   /*
-	    * (1) All test runs show as one
-		* Comment this and uncomment (2) if you want to see each test run independent
-		*/
+	   	long start_time = System.currentTimeMillis();
 		TestSuite suite = TestSet.getTests();
+		int pack_count = 0;
 		IPackageFragmentRoot[] roots = project.getIJavaProject().getAllPackageFragmentRoots();	
 		for (int i = 0; i < roots.length; i++) {
 	    	if (roots[i].getClass() != PackageFragmentRoot.class) continue;
@@ -164,13 +162,17 @@ public class HibernateAllMappingTests extends TestCase {
 					IPackageFragment pack = (IPackageFragment) javaElement;
 					// use packages only with compilation units
 					if (pack.getCompilationUnits().length == 0) continue;
+					if (Customization.U_TEST_PACKS_PATTERN &&
+						!Pattern.matches(Customization.TEST_PACKS_PATTERN, javaElement.getElementName())){
+						continue;
+					}
 					
-					/*	
-					 * (2) Each test run shows independent
-					 * 	Comment this and uncomment (1) if you want to see all test runs as one
-					 * 	TestSuite suite = TestSet.getTests();
-					 */
-					
+					long st_pack_time = System.currentTimeMillis();	
+					int prev_failCount = result.failureCount();	
+					int prev_errCount = result.errorCount();
+
+					if (Customization.SHOW_EACH_TEST) suite = TestSet.getTests();
+				
 					activePackage = pack;
 					//==============================					
 					//run all tests for package
@@ -180,14 +182,35 @@ public class HibernateAllMappingTests extends TestCase {
 						waitForJobs();
 					}
 					//==============================
-				}
-				waitForJobs();
-				//delay(15000);
-			}
-			
+					pack_count++;
+					if (Customization.USE_CONSOLE_OUTPUT){
+						System.out.print( result.errorCount() - prev_errCount + " errors. \t");
+						System.out.print( result.failureCount() - prev_failCount + " fails.\t");						
+						long period = System.currentTimeMillis() - st_pack_time;
+						String time = period / 1000 + "." + (period % 1000) / 100;
+						System.out.println( time +" sec. " + javaElement.getElementName());						
+					}
+					waitForJobs();
+					delay(Customization.EACTH_PACK_TEST_DELAY);
+								
+					if (Customization.STOP_AFTER_MISSING_PACK){
+						if (result.failureCount() > prev_failCount) break;
+					}
+					prev_failCount = result.failureCount();
+					prev_errCount = result.errorCount();
+				}				
+			}			
 		}
-		waitForJobs();
-		//delay(10000);
+		if (Customization.USE_CONSOLE_OUTPUT){
+			System.out.println( "=====================================================");
+			System.out.print( result.errorCount() + " errors. \t");
+			System.out.print( result.failureCount() + " fails.\t");						
+			System.out.print(( System.currentTimeMillis() - start_time ) / 1000 + " seconds.\t" );	
+			System.out.println( pack_count + " packages tested." );
+		}
+		waitForJobs();		
+		
+		delay(Customization.AFTER_ALL_PACKS_DELAY);
 	}
 
 	/**
