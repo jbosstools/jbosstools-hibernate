@@ -42,7 +42,7 @@ public class ProjectUtil {
 	private static final StringBuilder XML_CFG_START = new StringBuilder("<hibernate-configuration>\n")
 													.append("<session-factory>\n")
 													.append("<property name=\"hibernate.dialect\">")
-													.append("org.hibernate.dialect.PostgreSQLDialect</property>");
+													.append("org.hibernate.dialect.HSQLDialect</property>");
 	
 	private static final StringBuilder XML_CFG_END = new StringBuilder("</session-factory>\n")
 													.append("</hibernate-configuration>\n");	
