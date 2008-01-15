@@ -12,6 +12,9 @@ package org.hibernate.eclipse.console.test.mappingproject;
 
 import junit.framework.TestCase;
 
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.PartInitException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
@@ -26,7 +29,8 @@ import org.hibernate.mapping.PersistentClass;
  *
  */
 public class OpenMappingFileTest extends TestCase {
-	public void testOpenMappingFileTest(){
+	
+	public void testOpenMappingFileTest() throws Throwable{
 		KnownConfigurations knownConfigurations = KnownConfigurations.getInstance();
 		final ConsoleConfiguration consCFG = knownConfigurations.find(ProjectUtil.ConsoleCFGName);
 		assertNotNull(consCFG);
@@ -38,8 +42,10 @@ public class OpenMappingFileTest extends TestCase {
 			for (int i = 0; i < persClasses.length; i++) {
 				assertTrue(persClasses[0] instanceof PersistentClass);
 				PersistentClass persClass = (PersistentClass) persClasses[i];
-				OpenMappingAction.run(persClass, consCFG);
-			}			
+				IEditorPart editor = OpenMappingAction.run(persClass, consCFG);
+				if (editor == null) fail("Editor not opened.");
+				ProjectUtil.throwExceptionIfItOccured(editor);
+			}
 		}
 		//close all editors
 	}

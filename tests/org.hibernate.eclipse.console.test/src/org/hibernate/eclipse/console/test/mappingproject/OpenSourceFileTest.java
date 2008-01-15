@@ -10,6 +10,9 @@
  ******************************************************************************/
 package org.hibernate.eclipse.console.test.mappingproject;
 
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.PartInitException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
@@ -28,7 +31,7 @@ import junit.framework.TestCase;
  */
 public class OpenSourceFileTest extends TestCase {
 	
-	public void testOpenSourceFileTest(){
+	public void testOpenSourceFileTest() throws Throwable{
 		//fail("test fail");
 		KnownConfigurations knownConfigurations = KnownConfigurations.getInstance();
 		final ConsoleConfiguration consCFG = knownConfigurations.find(ProjectUtil.ConsoleCFGName);
@@ -41,8 +44,10 @@ public class OpenSourceFileTest extends TestCase {
 			for (int i = 0; i < persClasses.length; i++) {
 				assertTrue(persClasses[0] instanceof PersistentClass);
 				PersistentClass persClass = (PersistentClass) persClasses[i];
-				new OpenSourceAction().run(persClass, MappingTestProject.getTestProject().getIJavaProject(), 
-						ProjectUtil.getPersistentClassName(persClass));
+				IEditorPart editor = new OpenSourceAction().run(persClass, MappingTestProject.getTestProject().getIJavaProject(), 
+						persClass.getClassName());
+				if (editor == null) fail("Editor not opened.");
+				ProjectUtil.throwExceptionIfItOccured(editor);
 			}			
 		}
 		//close all editors
