@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="mapping.value.type.collection.map">
+	<class name="CollectionMapMany" table="COLLECTION_MAP_MANY">
+		<composite-id>
+			<key-property name="collectionMapId"
+				column="COLLECTION_MAP_ID" />
+			<key-property name="collectionMapItemId"
+				column="COLLECTION_MAP_ITEM_ID" />
+		</composite-id>
+	</class>
+</hibernate-mapping>
