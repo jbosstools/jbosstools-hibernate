@@ -56,7 +56,6 @@ public class MappingTestProject{
 	
 	public static String PROJECT_NAME = "MappingTestProject";
 	public static String RESOURCE_PATH = "res/project/";
-	public static String RES_LIB_FNAME = ".lib";
 	
 	private static FileFilter fileFilter = new FileFilter(){
 		public boolean accept(File pathname) {
@@ -67,6 +66,7 @@ public class MappingTestProject{
 			public boolean accept(File pathname) {
 				//exclude ".svn" and other unnessesary folders
 				if (pathname.getName().charAt(0) == '.') return false;
+				if (LIB_FOLDER.equals(pathname.getName())) return false;
 				return pathname.isDirectory();
 			}};
 			
@@ -165,9 +165,9 @@ public class MappingTestProject{
 			javaProject.getPackageFragmentRoot(dst);
 		}
 				
-		File libFolder = new File(res.getAbsolutePath()+"/" + RES_LIB_FNAME);
+		File libFolder = new File(res.getAbsolutePath()+"/" + LIB_FOLDER);
 		if ( !libFolder.exists() )
-			throw new RuntimeException("Folder " + RESOURCE_PATH + RES_LIB_FNAME + " not found!");
+			throw new RuntimeException("Folder " + RESOURCE_PATH + "/" + LIB_FOLDER + " not found!");
 		
 		
 		List<IPath> libs = new ArrayList<IPath>();
