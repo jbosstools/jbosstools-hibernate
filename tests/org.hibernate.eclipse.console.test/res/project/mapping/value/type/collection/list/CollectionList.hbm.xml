@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="mapping.value.type.collection.list">
+	<class name="CollectionList" table="COLLECTION_LISTS">
+		<id name="id" column="ID" />
+		<list name="items">
+			<key column="COLLECTION_LIST_ID" />
+			<list-index column="COLLECTION_LIST_ITEM_INDEX" />
+			<one-to-many class="CollectionListItem" />
+		</list>
+	</class>
+</hibernate-mapping>
