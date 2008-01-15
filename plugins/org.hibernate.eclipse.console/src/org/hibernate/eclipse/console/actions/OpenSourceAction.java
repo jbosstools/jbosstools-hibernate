@@ -1,4 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.hibernate.eclipse.console.actions;
+
+import java.io.FileNotFoundException;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -7,7 +19,6 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.ui.javaeditor.JavaEditor;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
@@ -20,8 +31,6 @@ import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.Subclass;
 
 /**
  * @author Dmitry Geraskov
@@ -44,7 +53,7 @@ public class OpenSourceAction extends SelectionListenerAction {
 			ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(path.getSegment(0));
 			IJavaProject proj = ProjectUtils.findJavaProject(consoleConfiguration);
 			
-			String fullyQualifiedName = OpenFileActionUtils.getPersistentClassName(persClass);
+			String fullyQualifiedName = persClass.getClassName();
 			if (fullyQualifiedName.length() == 0
 					&& lastSegment instanceof Property){
 				Object prevSegment = path.getParentPath().getLastSegment();
@@ -53,8 +62,15 @@ public class OpenSourceAction extends SelectionListenerAction {
 					fullyQualifiedName =((Component)((Property) prevSegment).getValue()).getComponentClassName();
 				}
 			}
-
-			run(lastSegment, proj, fullyQualifiedName);
+			try {
+				run(lastSegment, proj, fullyQualifiedName);
+			} catch (JavaModelException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage("Can't find source file.", e);
+			} catch (PartInitException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage("Can't open source file.", e);
+			} catch (FileNotFoundException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage("Can't find source file.", e);
+			}
 		}
 	}
 
@@ -62,22 +78,19 @@ public class OpenSourceAction extends SelectionListenerAction {
 	 * @param selection
 	 * @param proj
 	 * @param fullyQualifiedName
+	 * @throws JavaModelException 
+	 * @throws PartInitException 
+	 * @throws FileNotFoundException 
 	 */
-	public void run(Object selection, IJavaProject proj,
-			String fullyQualifiedName) {
+	public IEditorPart run(Object selection, IJavaProject proj,
+			String fullyQualifiedName) throws JavaModelException, PartInitException, FileNotFoundException {
 		IResource resource = null;			
-		IType type = null;
-		try {
-			type = proj.findType(fullyQualifiedName);
-			if (type != null) resource = type.getResource();
+		IType type = proj.findType(fullyQualifiedName);
+		if (type != null) resource = type.getResource();	
 		
-		} catch (JavaModelException e) {
-			HibernateConsolePlugin.getDefault().logErrorMessage("Can't find source file.", e);
-		}
-		
+		IEditorPart editorPart = null;
 		if (resource instanceof IFile){
-		try {
-			IEditorPart editorPart = OpenFileActionUtils.openEditor(HibernateConsolePlugin.getDefault().getActiveWorkbenchWindow().getActivePage(), (IFile) resource);
+			editorPart = OpenFileActionUtils.openEditor(HibernateConsolePlugin.getDefault().getActiveWorkbenchWindow().getActivePage(), (IFile) resource);
 			if (editorPart instanceof JavaEditor) {
 				IJavaElement jElement = null;
 				if (selection instanceof Property){
@@ -88,14 +101,13 @@ public class OpenSourceAction extends SelectionListenerAction {
 				JavaEditor jEditor = (JavaEditor) editorPart;
 				selectionToEditor(jElement, jEditor);				
 			}        	
-		} catch (PartInitException e) {
-			HibernateConsolePlugin.getDefault().logErrorMessage("Can't open source file.", e);
 		}               
-		}
 		
-		if (resource == null) {
-			MessageDialog.openInformation(HibernateConsolePlugin.getDefault().getShell(), "Open Source File", "Source file for class '" + fullyQualifiedName + "' not found.");
+		if (editorPart == null) {
+			throw new FileNotFoundException("Source file for class '" + fullyQualifiedName + "' not found.");
 		}
+		return editorPart;
+		
 	}
 	
 	private PersistentClass getPersistentClass(Object selection){

@@ -1,9 +1,23 @@
+/*******************************************************************************
+ * Copyright (c) 2007 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.hibernate.eclipse.console.actions;
+
+import java.io.FileNotFoundException;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.FindReplaceDocumentAdapter;
 import org.eclipse.jface.text.IDocument;
@@ -47,11 +61,19 @@ public class OpenMappingAction extends SelectionListenerAction {
 		if (sel instanceof TreeSelection){
 			TreePath path = ((TreeSelection)sel).getPaths()[0];
 			ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(path.getSegment(0));
-			run(path, consoleConfiguration);
+			try {
+				run(path, consoleConfiguration);
+			} catch (JavaModelException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage("Can't find mapping file.", e);
+			} catch (PartInitException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage("Can't open mapping file.", e);
+			} catch (FileNotFoundException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage("Can't find mapping file.", e);
+			} 
 		}
 	}
 	
-	public static void run(TreePath path, ConsoleConfiguration consoleConfiguration) {
+	public static void run(TreePath path, ConsoleConfiguration consoleConfiguration) throws PartInitException, JavaModelException, FileNotFoundException {
 		boolean isPropertySel = (path.getLastSegment() instanceof Property);
 		if (isPropertySel){
 			Property propertySel = (Property)path.getLastSegment();
@@ -70,15 +92,19 @@ public class OpenMappingAction extends SelectionListenerAction {
 	/**
 	 * @param selection
 	 * @param consoleConfiguration
+	 * @throws JavaModelException 
+	 * @throws PartInitException 
+	 * @throws PresistanceClassNotFoundException 
+	 * @throws FileNotFoundException 
 	 */
-	public static void run(Object selection, ConsoleConfiguration consoleConfiguration) {
+	public static IEditorPart run(Object selection, ConsoleConfiguration consoleConfiguration) throws PartInitException, JavaModelException, FileNotFoundException {
 		IEditorPart editorPart = null;
 		IJavaProject proj = ProjectUtils.findJavaProject(consoleConfiguration);
 		java.io.File configXMLFile = consoleConfiguration.getPreferences().getConfigXMLFile();
 		IResource resource = null;
 		if (selection instanceof Property){
 			Property p = (Property)selection;
-			if (p.getPersistentClass() == null) return;
+			if (p.getPersistentClass() == null) return null;
 			//use PersistentClass to open editor
 			resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, configXMLFile, p.getPersistentClass());
 			//editorPart = openMapping(p.getPersistentClass(), consoleConfiguration);
@@ -91,7 +117,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 			if (editorPart != null){
 				applySelectionToEditor(selection, editorPart);				
 			}
-			return;
+			return editorPart;
 		} 
 		
 		//try to find hibernate-annotations		
@@ -100,23 +126,31 @@ public class OpenMappingAction extends SelectionListenerAction {
 			rootClass = (PersistentClass)selection;
 	    } else if (selection instanceof Property) {
     		Property p = (Property)selection;
-    		if (p.getPersistentClass() == null) return;
+    		if (p.getPersistentClass() == null) return null;
     		rootClass = (PersistentClass)p.getPersistentClass();    			
 	    }
 		if (rootClass != null){
 			if (OpenFileActionUtils.rootClassHasAnnotations(consoleConfiguration, configXMLFile, rootClass)) {
-				String fullyQualifiedName = OpenFileActionUtils.getPersistentClassName(rootClass);
-				new OpenSourceAction().run(selection, proj, fullyQualifiedName);
+				String fullyQualifiedName = rootClass.getClassName();
+				editorPart =  new OpenSourceAction().run(selection, proj, fullyQualifiedName);
+				return editorPart;
 			}
+		} else {
+			throw new FileNotFoundException("Mapping for " + selection + " not found.");
 		}
+		return null;		
 	}
 	
 	/**
 	 * @param compositeProperty
 	 * @param parentProperty
 	 * @param consoleConfiguration
+	 * @throws JavaModelException 
+	 * @throws PartInitException 
+	 * @throws FileNotFoundException 
+	 * @throws BadLocationException 
 	 */
-	public static void run(Property compositeProperty, Property parentProperty, ConsoleConfiguration consoleConfiguration) {
+	public static void run(Property compositeProperty, Property parentProperty, ConsoleConfiguration consoleConfiguration) throws PartInitException, JavaModelException, FileNotFoundException{
 		if (parentProperty.getPersistentClass() == null) return;
 		IJavaProject proj = ProjectUtils.findJavaProject(consoleConfiguration);
 		java.io.File configXMLFile = consoleConfiguration.getPreferences().getConfigXMLFile();
@@ -132,12 +166,15 @@ public class OpenMappingAction extends SelectionListenerAction {
 				FindReplaceDocumentAdapter findAdapter = getFindDocAdapter(textEditor);
 				IRegion parentRegion = findSelection(parentProperty, findAdapter);
 				if (parentRegion == null) return;
+
+				IRegion propRegion = null;
 				try {
-					IRegion propRegion  = findAdapter.find(parentRegion.getOffset()+parentRegion.getLength(), generatePattern(compositeProperty), true, true, false, true);
-					if (propRegion != null){
-						textEditor.selectAndReveal(propRegion.getOffset(), propRegion.getLength());
-					}
+					propRegion = findAdapter.find(parentRegion.getOffset()+parentRegion.getLength(), generatePattern(compositeProperty), true, true, false, true);
 				} catch (BadLocationException e) {
+					HibernateConsolePlugin.getDefault().logErrorMessage("Selection not found.", e);
+				}
+				if (propRegion != null){
+					textEditor.selectAndReveal(propRegion.getOffset(), propRegion.getLength());
 				}
 			}
 			return;
@@ -191,7 +228,7 @@ public class OpenMappingAction extends SelectionListenerAction {
             try {
             	return OpenFileActionUtils.openEditor(HibernateConsolePlugin.getDefault().getActiveWorkbenchWindow().getActivePage(), (IFile) resource);
             } catch (PartInitException e) {
-            	HibernateConsolePlugin.getDefault().logErrorMessage("Can't open mapping or source file.", e);
+            	
             }               
         } else {
         	HibernateConsolePlugin.getDefault().log("Can't open mapping file " + resource);
@@ -224,7 +261,8 @@ public class OpenMappingAction extends SelectionListenerAction {
 			if (classRegion == null) return null;
 			IRegion finalRegion = findAdapter.find(classRegion.getOffset()+classRegion.getLength(), "</class", true, true, false, false);
 			IRegion propRegion  = findAdapter.find(classRegion.getOffset()+classRegion.getLength(), generatePattern(property), true, true, false, true);
-			if (propRegion != null && finalRegion != null 
+			if (propRegion == null) return null;
+			if (finalRegion != null 
 					&& propRegion.getOffset() > finalRegion.getOffset()){
 				return null;
 			} else {
