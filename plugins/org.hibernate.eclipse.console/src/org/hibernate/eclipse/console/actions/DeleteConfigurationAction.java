@@ -24,12 +24,14 @@ package org.hibernate.eclipse.console.actions;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.actions.SelectionListenerAction;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.eclipse.console.utils.ProjectUtils;
 
 /**
  * @author max
@@ -47,14 +49,23 @@ public class DeleteConfigurationAction extends SelectionListenerAction {
 
 	public void run() {
 		List selectedNonResources = getSelectedNonResources();
-		
-		Iterator iter = selectedNonResources.iterator();
-		while (iter.hasNext() ) {
-			ConsoleConfiguration element = (ConsoleConfiguration) iter.next();
-			KnownConfigurations.getInstance().removeConfiguration(element, false);
+		String question =  "Do you wish to delete the selected console configuration";
+		String title = "Delete console configuration";
+		if (selectedNonResources.size() > 1){
+			question += "s";
+			title += "s";
 		}
+		question += "?";		
 		
-		part.refresh();
+		if( MessageDialog.openConfirm( null, title, question)) {		
+			Iterator iter = selectedNonResources.iterator();
+			while (iter.hasNext() ) {
+				ConsoleConfiguration element = (ConsoleConfiguration) iter.next();
+				KnownConfigurations.getInstance().removeConfiguration(element, false);
+			}
+			
+			part.refresh();
+		}
 	}	
 	
 	protected boolean updateSelection(IStructuredSelection selection) {
