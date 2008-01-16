@@ -25,7 +25,7 @@ public class Customization {
 	/**
 	 * packages name pattern
 	 */
-	public static final String TEST_PACKS_PATTERN = ".*\\.optlock.*";
+	public static final String TEST_PACKS_PATTERN = ".*\\.bidi";
 	
 	/**
 	 * is stop after missing package or run further
@@ -45,12 +45,18 @@ public class Customization {
 	/**
 	 * Delay in milliseconds before closing workspace
 	 */
-	public static final long AFTER_ALL_PACKS_DELAY = 20000;
+	public static final long AFTER_ALL_PACKS_DELAY = 1000;
 	
 	/**
 	 * Use time profiler
 	 */
 	public static final boolean USE_CONSOLE_OUTPUT = true;
+	
+	/**
+	 * Hibernate Dialect
+	 */
+	public static final String HIBERNATE_DIALECT = "org.hibernate.dialect.HSQLDialect";
+	
 	
 
 }
