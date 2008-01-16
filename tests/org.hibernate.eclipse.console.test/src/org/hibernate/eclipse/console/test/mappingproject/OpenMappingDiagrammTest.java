@@ -10,15 +10,12 @@
  ******************************************************************************/
 package org.hibernate.eclipse.console.test.mappingproject;
 
-import java.lang.reflect.Field;
-
 import junit.framework.TestCase;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.internal.ErrorEditorPart;
+import org.hibernate.InvalidMappingException;
+import org.hibernate.MappingException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
@@ -32,25 +29,37 @@ import org.jboss.tools.hibernate.ui.view.views.OpenDiagramActionDelegate;
  *
  */
 public class OpenMappingDiagrammTest extends TestCase {
-	public void testOpenMappingDiagramm() throws Throwable{
+	public void testOpenMappingDiagramm() {
 		KnownConfigurations knownConfigurations = KnownConfigurations.getInstance();
 		final ConsoleConfiguration consCFG = knownConfigurations.find(ProjectUtil.ConsoleCFGName);
 		assertNotNull(consCFG);
 		consCFG.reset();
-		Object[] configs = new ConsoleConfigurationWorkbenchAdapter().getChildren(consCFG);
-		assertTrue(configs[0] instanceof Configuration);
-		Object[] persClasses = new ConfigurationWorkbenchAdapter().getChildren(configs[0]);
+		Object[] configs = null;
+		Object[] persClasses = null;
+		try {
+			configs = new ConsoleConfigurationWorkbenchAdapter().getChildren(consCFG);
+			assertTrue(configs[0] instanceof Configuration);
+			persClasses = new ConfigurationWorkbenchAdapter().getChildren(configs[0]);
+		} catch (InvalidMappingException ex){
+			fail("Mapping Diagramms for package " + HibernateAllMappingTests.getActivePackage().getElementName()
+					+ " can't be opened:\n " + ex.getMessage());
+		}
+		
 		if (persClasses.length > 0){
 			for (int i = 0; i < persClasses.length; i++) {
 				assertTrue(persClasses[0] instanceof PersistentClass);
 				PersistentClass persClass = (PersistentClass) persClasses[i];
+		
+				IEditorPart editor = null;
+				Throwable ex = null;
 				try {
-					IEditorPart editor = new OpenDiagramActionDelegate().openEditor(persClass, consCFG);
-					ProjectUtil.throwExceptionIfItOccured(editor);
+					editor = new OpenDiagramActionDelegate().openEditor(persClass, consCFG);
 				} catch (PartInitException e) {
-					fail("Error opening Mapping Diagramm for class " + persClass.getNodeName()
-							+ ".\n"+ e.getMessage());
-				}
+					ex = e;
+				} 				
+				if (ex == null ) ex = ProjectUtil.getExceptionIfItOccured(editor);				
+				if (ex != null) fail("Mapping Diagramm for " + persClass.getClassName()
+						+ " not opened:\n" + ex.getMessage());
 			}			
 		}
 		//close all editors

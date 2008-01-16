@@ -10,20 +10,21 @@
  ******************************************************************************/
 package org.hibernate.eclipse.console.test.mappingproject;
 
+import java.io.FileNotFoundException;
+
+import junit.framework.TestCase;
+
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
+import org.hibernate.InvalidMappingException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.execution.ExecutionContext;
-import org.hibernate.eclipse.console.actions.OpenFileActionUtils;
 import org.hibernate.eclipse.console.actions.OpenSourceAction;
 import org.hibernate.eclipse.console.workbench.ConfigurationWorkbenchAdapter;
 import org.hibernate.eclipse.console.workbench.ConsoleConfigurationWorkbenchAdapter;
 import org.hibernate.mapping.PersistentClass;
-
-import junit.framework.TestCase;
 
 /**
  * @author Dmitry Geraskov
@@ -31,23 +32,41 @@ import junit.framework.TestCase;
  */
 public class OpenSourceFileTest extends TestCase {
 	
-	public void testOpenSourceFileTest() throws Throwable{
+	public void testOpenSourceFileTest() {
 		//fail("test fail");
 		KnownConfigurations knownConfigurations = KnownConfigurations.getInstance();
 		final ConsoleConfiguration consCFG = knownConfigurations.find(ProjectUtil.ConsoleCFGName);
 		assertNotNull(consCFG);
 		consCFG.reset();
-		Object[] configs = new ConsoleConfigurationWorkbenchAdapter().getChildren(consCFG);
-		assertTrue(configs[0] instanceof Configuration);
-		Object[] persClasses = new ConfigurationWorkbenchAdapter().getChildren(configs[0]);
+		Object[] configs = null;
+		Object[] persClasses = null;
+		try {
+			configs = new ConsoleConfigurationWorkbenchAdapter().getChildren(consCFG);
+			assertTrue(configs[0] instanceof Configuration);
+			persClasses = new ConfigurationWorkbenchAdapter().getChildren(configs[0]);
+		} catch (InvalidMappingException ex){
+			fail("Source files for package " + HibernateAllMappingTests.getActivePackage().getElementName()
+					+ " can't be opened:\n " + ex.getMessage());
+		}
 		if (persClasses.length > 0){
 			for (int i = 0; i < persClasses.length; i++) {
 				assertTrue(persClasses[0] instanceof PersistentClass);
 				PersistentClass persClass = (PersistentClass) persClasses[i];
-				IEditorPart editor = new OpenSourceAction().run(persClass, MappingTestProject.getTestProject().getIJavaProject(), 
-						persClass.getClassName());
-				if (editor == null) fail("Editor not opened.");
-				ProjectUtil.throwExceptionIfItOccured(editor);
+				IEditorPart editor = null;
+				Throwable ex = null;
+				try {
+					editor = new OpenSourceAction().run(persClass, MappingTestProject.getTestProject().getIJavaProject(), 
+							persClass.getClassName());
+				} catch (PartInitException e) {
+					ex = e;
+				} catch (JavaModelException e) {
+					ex = e;
+				} catch (FileNotFoundException e) {
+					ex = e;
+				}				
+				if (ex == null ) ex = ProjectUtil.getExceptionIfItOccured(editor);
+				if (ex != null) fail("Source file for " + persClass.getClassName()
+						+ " not opened:\n" + ex.getMessage());
 			}			
 		}
 		//close all editors

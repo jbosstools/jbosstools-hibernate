@@ -119,9 +119,10 @@ public class ProjectUtil {
 	 * It gets occurred exception from the editor if it was and passes it up.
 	 *  
 	 * @param editor
+	 * @return 
 	 * @throws Throwable
 	 */
-	public static void throwExceptionIfItOccured(IEditorPart editor) throws Throwable {
+	public static Throwable getExceptionIfItOccured(IEditorPart editor){
 		if (editor instanceof ErrorEditorPart){
 			Class<ErrorEditorPart> clazz = ErrorEditorPart.class;
 			Field field;
@@ -134,20 +135,21 @@ public class ProjectUtil {
 				if (error instanceof IStatus) {
 					IStatus err_status = (IStatus) error;
 					if (err_status.getSeverity() == Status.ERROR){
-						throw err_status.getException();
+						return err_status.getException();
 					}
 				}
 			// catch close means that exception occurred but we can't get it
 			} catch (SecurityException e) {
-				throw new RuntimeException("Can't get exception from ErrorEditorPart. " + e.getMessage());
+				return new RuntimeException("Can't get exception from ErrorEditorPart. " + e.getMessage());
 			} catch (NoSuchFieldException e) {
-				throw new RuntimeException("Can't get error field from ErrorEditorPart. " + e.getMessage());
+				return new RuntimeException("Can't get error field from ErrorEditorPart. " + e.getMessage());
 			} catch (IllegalArgumentException e) {
-				throw new RuntimeException("Can't get error field from ErrorEditorPart. " + e.getMessage());
+				return new RuntimeException("Can't get error field from ErrorEditorPart. " + e.getMessage());
 			} catch (IllegalAccessException e) {
-				throw new RuntimeException("Can't get error field from ErrorEditorPart. " + e.getMessage());
+				return new RuntimeException("Can't get error field from ErrorEditorPart. " + e.getMessage());
 			}
 		}
+		return null;
 	}
 
 }
