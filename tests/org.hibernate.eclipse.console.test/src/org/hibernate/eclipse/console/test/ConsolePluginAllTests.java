@@ -2,6 +2,8 @@ package org.hibernate.eclipse.console.test;
 
 import java.io.IOException;
 
+import org.hibernate.eclipse.console.test.mappingproject.HibernateAllMappingTests;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -18,6 +20,7 @@ public class ConsolePluginAllTests {
 		suite.addTestSuite( JavaFormattingTest.class );
 		suite.addTestSuite( OpenMappingTests.class );
 		
+		suite.addTestSuite( HibernateAllMappingTests.class );
 
 		// core tests
 		//Properties properties = new Properties();
