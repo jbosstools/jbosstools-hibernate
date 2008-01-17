@@ -11,7 +11,8 @@ Bundle-Vendor: Hibernate Team
 Bundle-Localization: plugin
 Export-Package: org.hibernate.eclipse.console.test,
  org.hibernate.eclipse.console.test.mapping,
- org.hibernate.eclipse.console.test.mappingproject
+ org.hibernate.eclipse.console.test.mappingproject,
+ org.hibernate.eclipse.console.test.xpl
 Require-Bundle: org.junit,
  org.eclipse.jdt.core,
  org.eclipse.core.resources,

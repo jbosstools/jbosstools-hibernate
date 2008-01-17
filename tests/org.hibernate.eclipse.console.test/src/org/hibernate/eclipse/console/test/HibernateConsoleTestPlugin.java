@@ -1,8 +1,16 @@
 package org.hibernate.eclipse.console.test;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -81,5 +89,15 @@ public class HibernateConsoleTestPlugin extends AbstractUIPlugin {
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return AbstractUIPlugin.imageDescriptorFromPlugin("org.hibernate.eclipse.console.test.test", path);
+	}
+	
+	public File getFileInPlugin(IPath path) throws CoreException {
+		try {
+			URL installURL= new URL(getBundle().getEntry("/"), path.toString());
+			URL localURL= FileLocator.toFileURL(installURL);
+			return new File(localURL.getFile());
+		} catch (IOException e) {
+			throw new CoreException(new Status(IStatus.ERROR, "org.hibernate.eclipse.console.test", IStatus.ERROR, e.getMessage(), e));
+		}
 	}
 }

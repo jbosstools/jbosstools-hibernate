@@ -1,5 +1,7 @@
 package org.hibernate.eclipse.console.test;
 
+import java.io.IOException;
+
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -22,13 +24,20 @@ public class SimpleTestProject {
 	IProject project;
 	IJavaProject javaProject;
 	
-	public static String PROJECT_NAME = "HibernateToolsTestProject";
+	final private String projectName;
+	
 	public static String PACKAGE_NAME = "test";
 	public static String TYPE_NAME = "TestClass";
 	public static String FILE_NAME = "TestClass.java";
 	
 	
+	public SimpleTestProject(String projectName) {
+		this.projectName=projectName;
+		initialize();
+	}
+	
 	public SimpleTestProject() {
+		projectName  = "HibernateToolsTestProject";
 		initialize();
 	}
 
@@ -76,8 +85,8 @@ public class SimpleTestProject {
 
 	}
 	
-	private void buildSimpleTestProject() throws JavaModelException, CoreException {
-		project = buildNewProject(PROJECT_NAME);
+	protected void buildSimpleTestProject() throws JavaModelException, CoreException, IOException {
+		project = buildNewProject(projectName);
 		javaProject = buildJavaProject(project);
 
 		buildType(buildPackage(PACKAGE_NAME, project, javaProject), FILE_NAME);
@@ -151,7 +160,7 @@ public class SimpleTestProject {
 		return sourceFolder.createPackageFragment(name, false, null);
 	}
 
-	private IType buildType(IPackageFragment pack, String cuName)
+	protected IType buildType(IPackageFragment pack, String cuName)
 			throws JavaModelException {
 		
 		//create empty ICompilationUnit

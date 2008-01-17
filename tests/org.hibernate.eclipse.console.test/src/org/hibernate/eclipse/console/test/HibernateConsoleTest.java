@@ -24,8 +24,9 @@ public abstract class HibernateConsoleTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.project = new SimpleTestProject();
+		this.project = createTestProject();
 
+		
 		waitForJobs();
 		PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().setPerspective(
@@ -49,6 +50,10 @@ public abstract class HibernateConsoleTest extends TestCase {
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(input, JavaUI.ID_CU_EDITOR );
 		
 		delay(2000);
+	}
+
+	protected SimpleTestProject createTestProject() {
+		return new SimpleTestProject();
 	}
 	
 	protected void tearDown() throws Exception {
