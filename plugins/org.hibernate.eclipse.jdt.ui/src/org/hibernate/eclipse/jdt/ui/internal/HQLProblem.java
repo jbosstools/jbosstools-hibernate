@@ -5,7 +5,7 @@ import org.eclipse.jdt.core.compiler.CategorizedProblem;
 import org.eclipse.jdt.core.compiler.IProblem;
 import org.hibernate.eclipse.jdt.ui.Activator;
 
-class HQLProblem extends CategorizedProblem implements IProblem 
+public class HQLProblem extends CategorizedProblem implements IProblem 
 {	
 	private int startingOffset;
 	private int endingOffset;

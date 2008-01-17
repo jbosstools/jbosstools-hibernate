@@ -43,7 +43,7 @@ public class HQLDetector extends ASTVisitor {
 					if(value instanceof StringLiteral) {
 						StringLiteral sl = (StringLiteral)value;
 						try {
-							checkQuery( consoleConfiguration, sl.getLiteralValue() );
+							checkQuery( consoleConfiguration, sl.getLiteralValue(), true );
 						} catch(RuntimeException re) {
 							problems.add(new HQLProblem(re.getLocalizedMessage(), true, resource, sl.getStartPosition(), sl.getStartPosition()+sl.getLength()-1, getLineNumber(sl.getStartPosition())));
 						}
@@ -81,7 +81,7 @@ public class HQLDetector extends ASTVisitor {
 					StringLiteral sl = (StringLiteral) object;
 					String literalValue = sl.getLiteralValue();
 					try {
-						checkQuery( consoleConfiguration, literalValue );
+						checkQuery( consoleConfiguration, literalValue, true );
 					} catch(RuntimeException re) {
 						problems.add(new HQLProblem(re.getLocalizedMessage(), true, resource, sl.getStartPosition(), sl.getStartPosition()+sl.getLength()-1, getLineNumber( sl.getStartPosition() )));
 					}
@@ -96,14 +96,25 @@ public class HQLDetector extends ASTVisitor {
 		}		
 	}
 
-	private void checkQuery(ConsoleConfiguration cc, String query) {
+	/**
+	 * Given a ConsoleConfiguration and a query this method validates the query through hibernate if  a sessionfactory is available.
+	 * @param cc
+	 * @param query
+	 * @param allowEL if true, EL syntax will be replaced as a named variable
+	 * @throws HibernteException if something is wrong with the query
+	 */
+	public static void checkQuery(ConsoleConfiguration cc, String query, boolean allowEL) {
 		if(cc!=null && cc.isSessionFactoryCreated()) {
+			if(allowEL) {
+				query = ELTransformer.removeEL(query);
+			}
 			new HQLQueryPlan(query, false, Collections.EMPTY_MAP, (SessionFactoryImpl)cc.getSessionFactory());
 		} else {											
 			//messager.printWarning( annoValue.getPosition(), "Could not verify syntax. SessionFactory not created." );
 		}		
 	}
 
+	
 	public List getProblems() {
 		return problems;
 	}

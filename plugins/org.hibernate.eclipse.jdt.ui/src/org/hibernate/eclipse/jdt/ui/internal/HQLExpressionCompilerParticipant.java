@@ -1,9 +1,5 @@
 package org.hibernate.eclipse.jdt.ui.internal;
 
-import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.compiler.BuildContext;
@@ -15,15 +11,13 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
-import org.hibernate.eclipse.jdt.ui.Activator;
 import org.hibernate.eclipse.nature.HibernateNature;
 
 public class HQLExpressionCompilerParticipant extends CompilationParticipant {
 
 	public HQLExpressionCompilerParticipant() {
-		// TODO Auto-generated constructor stub
+ 
 	}
 
 	protected CompilationUnit parse(ICompilationUnit unit) {
