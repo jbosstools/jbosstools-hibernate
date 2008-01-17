@@ -13,8 +13,6 @@ package org.hibernate.eclipse.console.test.mappingproject;
 import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jdt.core.IJavaProject;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.osgi.service.prefs.BackingStoreException;
 
@@ -25,7 +23,6 @@ import org.osgi.service.prefs.BackingStoreException;
 public class HibernateNatureRemoveTest extends TestCase {
 	public void testHibernateNatureRemove() throws BackingStoreException, CoreException {
 		MappingTestProject project = MappingTestProject.getTestProject();
-		IJavaProject prj = project.getIJavaProject();
-		ProjectUtils.removeProjectNature(prj.getProject(), "org.hibernate.eclipse.console.hibernateNature", new NullProgressMonitor() );
+		ProjectUtils.toggleHibernateOnProject(project.getIProject(), true, "testcfg");
 	}
 }
