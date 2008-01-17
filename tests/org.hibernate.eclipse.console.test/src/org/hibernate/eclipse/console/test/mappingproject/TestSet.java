@@ -44,7 +44,7 @@ public class TestSet{
 	}
 	
 	private static void addTestsPackTearDown(TestSuite suite){
-		suite.addTestSuite( CloaseAllEditorsTest.class );
+		suite.addTestSuite( CloseAllEditorsTest.class );
 	}
 
 }

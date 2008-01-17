@@ -18,7 +18,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Dmitry Geraskov
  *
  */
-public class CloaseAllEditorsTest extends TestCase {
+public class CloseAllEditorsTest extends TestCase {
 	
 	public void testCloseAllEditors(){
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closeAllEditors(false);
