@@ -126,7 +126,7 @@ public class HQLQueryValidatorTest extends HibernateConsoleTest {
 	@Override
 	protected void tearDown() throws Exception {
 		ccfg.reset();
-		//super.tearDown();
+		super.tearDown();
 	}
 	public void testHQLDetector() throws JavaModelException {
 
