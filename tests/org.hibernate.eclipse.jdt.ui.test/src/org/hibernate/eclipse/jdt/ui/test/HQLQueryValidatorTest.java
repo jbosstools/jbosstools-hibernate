@@ -10,28 +10,23 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.eclipse.console.EclipseConsoleConfiguration;
 import org.hibernate.eclipse.console.EclipseConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.test.HibernateConsoleTest;
-import org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin;
 import org.hibernate.eclipse.console.test.SimpleTestProject;
 import org.hibernate.eclipse.console.test.xpl.JavaProjectHelper;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
@@ -131,7 +126,7 @@ public class HQLQueryValidatorTest extends HibernateConsoleTest {
 	@Override
 	protected void tearDown() throws Exception {
 		ccfg.reset();
-		super.tearDown();
+		//super.tearDown();
 	}
 	public void testHQLDetector() throws JavaModelException {
 

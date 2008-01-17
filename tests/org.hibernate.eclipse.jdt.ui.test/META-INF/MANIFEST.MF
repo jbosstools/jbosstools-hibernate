@@ -7,11 +7,11 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.hibernate.eclipse.console.test,
  org.hibernate.eclipse.console,
- org.hibernate.eclipse.jdt.ui,
  org.hibernate.eclipse,
  org.junit,
  org.eclipse.core.resources,
  org.eclipse.jdt.core,
+ org.hibernate.eclipse.jdt.ui,
  org.eclipse.jdt.launching
 Eclipse-LazyStart: true
 Export-Package: org.hibernate.eclipse.jdt.ui.test

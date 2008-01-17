@@ -13,6 +13,6 @@ public class ELTransformerTest extends TestCase {
 		assertEquals("from Test where t.x = #{customer.id", ELTransformer.removeEL("from Test where t.x = #{customer.id"));
 		assertEquals("from Test where t.x = :_customer_id_ and x = :_id_ ", ELTransformer.removeEL("from Test where t.x = #{customer.id} and x = #{id} "));
 		assertEquals("from Test where t.x = :_customer_id_and_x_____id_ ", ELTransformer.removeEL("from Test where t.x = #{customer.id and x = #{id} "));
-		assertEquals("from Test where t.x = :_id_______", ELTransformer.removeEL("from Test where t.x = #{id+-&*()}"));
+		assertEquals("from Test where t.x = :_id_____", ELTransformer.removeEL("from Test where t.x = #{id+-&*()}"));
 	}
 }

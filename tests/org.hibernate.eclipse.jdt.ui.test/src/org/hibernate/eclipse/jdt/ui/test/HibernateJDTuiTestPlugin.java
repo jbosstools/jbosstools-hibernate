@@ -65,4 +65,5 @@ public class HibernateJDTuiTestPlugin extends AbstractUIPlugin {
 			throw new CoreException(new Status(IStatus.ERROR, getBundle().getSymbolicName(), IStatus.ERROR, e.getMessage(), e));
 		}
 	}
+
 }
