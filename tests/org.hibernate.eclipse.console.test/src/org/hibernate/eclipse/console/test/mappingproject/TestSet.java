@@ -40,7 +40,7 @@ public class TestSet{
 	private static void addPackTests(TestSuite suite){
 		suite.addTestSuite( OpenSourceFileTest.class );
 		suite.addTestSuite( OpenMappingFileTest.class );
-		suite.addTestSuite( OpenMappingDiagrammTest.class );
+		suite.addTestSuite( OpenMappingDiagramTest.class );
 	}
 	
 	private static void addTestsPackTearDown(TestSuite suite){

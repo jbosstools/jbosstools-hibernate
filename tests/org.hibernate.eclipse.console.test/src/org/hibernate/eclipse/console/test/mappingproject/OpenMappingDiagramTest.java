@@ -28,8 +28,8 @@ import org.jboss.tools.hibernate.ui.view.views.OpenDiagramActionDelegate;
  * @author Dmitry Geraskov
  *
  */
-public class OpenMappingDiagrammTest extends TestCase {
-	public void testOpenMappingDiagramm() {
+public class OpenMappingDiagramTest extends TestCase {
+	public void testOpenMappingDiagram() {
 		KnownConfigurations knownConfigurations = KnownConfigurations.getInstance();
 		final ConsoleConfiguration consCFG = knownConfigurations.find(ProjectUtil.ConsoleCFGName);
 		assertNotNull(consCFG);
