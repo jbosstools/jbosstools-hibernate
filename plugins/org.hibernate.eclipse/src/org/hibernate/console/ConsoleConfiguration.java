@@ -106,7 +106,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		configuration = buildWith(null, true);				
 	}
 
-	private Configuration buildJPAConfiguration(String persistenceUnit, Properties properties, String entityResolver) {
+	private Configuration buildJPAConfiguration(String persistenceUnit, Properties properties, String entityResolver, boolean includeMappings) {
 		if(StringHelper.isEmpty( persistenceUnit )) {
 			persistenceUnit = null;
 		}
@@ -117,6 +117,10 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			}
 			if(StringHelper.isNotEmpty( prefs.getNamingStrategy())) {
 				overrides.put( "hibernate.ejb.naming_strategy", prefs.getNamingStrategy() );
+			}
+
+			if(!includeMappings) {
+				overrides.put( "hibernate.archive.autodetection", "none" );
 			}
 			
 			Class clazz = ReflectHelper.classForName("org.hibernate.ejb.Ejb3Configuration", ConsoleConfiguration.class);
@@ -493,7 +497,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			}
 		} else if(prefs.getConfigurationMode().equals( ConfigurationMode.JPA )) {
 			try {
-				localCfg = buildJPAConfiguration( getPreferences().getPersistenceUnitName(), properties, prefs.getEntityResolverName() );
+				localCfg = buildJPAConfiguration( getPreferences().getPersistenceUnitName(), properties, prefs.getEntityResolverName(), includeMappings );
 			}
 			catch (Exception e) {
 				throw new HibernateConsoleRuntimeException("Could not load JPA Configuration",e);
