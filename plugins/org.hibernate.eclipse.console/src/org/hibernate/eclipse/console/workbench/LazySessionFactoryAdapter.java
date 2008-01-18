@@ -50,9 +50,7 @@ public class LazySessionFactoryAdapter extends BasicWorkbenchAdapter {
 			}							
 		}
 		if(lazySessionFactory.getCfgNode()!=null) {
-			Object[] res = toArray(lazySessionFactory.getCfgNode().children(),BaseNode.class);
-			lazySessionFactory.setChildren(res);
-			return res;
+			return toArray(lazySessionFactory.getCfgNode().children(),BaseNode.class);	
 		} else {
 			return new Object[] { label };
 		}

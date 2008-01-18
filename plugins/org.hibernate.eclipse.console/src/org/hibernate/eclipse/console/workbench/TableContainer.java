@@ -23,9 +23,7 @@ package org.hibernate.eclipse.console.workbench;
 
 import java.util.List;
 
-import org.hibernate.console.model.IParentElImpl;
-
-public class TableContainer extends IParentElImpl {
+public class TableContainer {
 
 	private final List tables;
 	private final String name;

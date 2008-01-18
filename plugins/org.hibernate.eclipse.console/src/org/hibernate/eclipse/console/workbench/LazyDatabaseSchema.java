@@ -24,9 +24,8 @@ package org.hibernate.eclipse.console.workbench;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.model.IParentElImpl;
 
-public class LazyDatabaseSchema extends IParentElImpl {
+public class LazyDatabaseSchema {
 
 	private final ConsoleConfiguration ccfg;
 	private final ReverseEngineeringStrategy res;
@@ -46,4 +45,5 @@ public class LazyDatabaseSchema extends IParentElImpl {
 	public ReverseEngineeringStrategy getReverseEngineeringStrategy() {
 		return res;
 	}
+		
 }

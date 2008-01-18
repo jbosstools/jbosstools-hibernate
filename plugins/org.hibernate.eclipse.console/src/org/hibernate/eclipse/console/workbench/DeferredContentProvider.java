@@ -29,7 +29,6 @@ import org.eclipse.ui.model.BaseWorkbenchContentProvider;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.eclipse.ui.progress.DeferredTreeContentManager;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
-import org.hibernate.console.model.IParentEl;
 
 public class DeferredContentProvider extends BaseWorkbenchContentProvider {
 
@@ -56,10 +55,6 @@ public class DeferredContentProvider extends BaseWorkbenchContentProvider {
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
 	 */
 	public boolean hasChildren(Object element) {
-		// if we could check simple check it without DeferredTreeContentManager
-		if (element instanceof IParentEl) {
-			return ((IParentEl)element).hasChildren();
-		}
 		// the + box will always appear, but then disappear
 		// if not needed after you first click on it.
 		if (manager != null) {
@@ -74,13 +69,6 @@ public class DeferredContentProvider extends BaseWorkbenchContentProvider {
 	 * @see org.eclipse.ui.model.WorkbenchContentProvider#getChildren(java.lang.Object)
 	 */
 	public Object[] getChildren(Object element) {
-		// if we could get children simple get it without DeferredTreeContentManager
-		if (element instanceof IParentEl) {
-			Object[] children = ((IParentEl)element).getChildren();
-			if (null != children) {
-				return children;
-			}
-		}
 		if (manager != null) {
 			Object[] children = manager.getChildren(element);
 			if(children != null) {
