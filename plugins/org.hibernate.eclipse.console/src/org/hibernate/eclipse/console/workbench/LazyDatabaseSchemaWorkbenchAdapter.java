@@ -64,7 +64,7 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 			Map.Entry entry = (Map.Entry) qualifierEntries.next();
 			result.add(new TableContainer((String) entry.getKey(),(List)entry.getValue()));
 		}
-		return toArray(result.iterator(), TableContainer.class, new Comparator() {
+		Object[] res = toArray(result.iterator(), TableContainer.class, new Comparator() {
 		
 			public int compare(Object arg0, Object arg1) {
 				
@@ -72,6 +72,8 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 			}
 		
 		});
+		dbs.setChildren(res);
+		return res;
 	}
 
 	private LazyDatabaseSchema getLazyDatabaseSchema(Object o) {

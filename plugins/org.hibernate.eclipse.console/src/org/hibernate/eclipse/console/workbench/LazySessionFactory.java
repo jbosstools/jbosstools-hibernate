@@ -22,9 +22,10 @@
 package org.hibernate.eclipse.console.workbench;
 
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.model.IParentElImpl;
 import org.hibernate.console.node.ConfigurationEntitiesNode;
 
-public class LazySessionFactory {
+public class LazySessionFactory extends IParentElImpl {
 
 	private final ConsoleConfiguration ccfg;
 	private ConfigurationEntitiesNode cfgNode;

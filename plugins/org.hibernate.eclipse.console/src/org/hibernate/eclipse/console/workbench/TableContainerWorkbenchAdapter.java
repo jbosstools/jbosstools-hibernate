@@ -32,7 +32,7 @@ public class TableContainerWorkbenchAdapter extends BasicWorkbenchAdapter {
 
 	public Object[] getChildren(Object o) {
 		TableContainer tc = getTableContainer( o );
-		return toArray(tc.getTables().iterator(), Table.class, new Comparator() {
+		Object[] res = toArray(tc.getTables().iterator(), Table.class, new Comparator() {
 		
 			public int compare(Object arg0, Object arg1) {
 				
@@ -40,6 +40,8 @@ public class TableContainerWorkbenchAdapter extends BasicWorkbenchAdapter {
 			}
 		
 		});
+		tc.setChildren(res);
+		return res;
 	}
 
 	private TableContainer getTableContainer(Object o) {

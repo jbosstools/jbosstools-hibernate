@@ -75,7 +75,9 @@ public class ConsoleConfigurationWorkbenchAdapter extends BasicWorkbenchAdapter 
 			o2 = sfError;			
 		}*/
 		
-		return new Object[] { o1, new LazySessionFactory(ccfg), new LazyDatabaseSchema(ccfg) };
+		Object[] res = new Object[] { o1, new LazySessionFactory(ccfg), new LazyDatabaseSchema(ccfg) };
+		ccfg.setChildren(res);
+		return res;
 	}
 
 	private ConsoleConfiguration getConsoleConfiguration(Object o) {
