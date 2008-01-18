@@ -21,10 +21,15 @@ import org.hibernate.InvalidMappingException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.eclipse.console.actions.OpenMappingAction;
 import org.hibernate.eclipse.console.actions.OpenSourceAction;
 import org.hibernate.eclipse.console.workbench.ConfigurationWorkbenchAdapter;
 import org.hibernate.eclipse.console.workbench.ConsoleConfigurationWorkbenchAdapter;
+import org.hibernate.eclipse.console.workbench.PersistentClassWorkbenchAdapter;
+import org.hibernate.eclipse.console.workbench.PropertyWorkbenchAdapter;
+import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Property;
 
 /**
  * @author Dmitry Geraskov
@@ -40,6 +45,7 @@ public class OpenSourceFileTest extends TestCase {
 		consCFG.reset();
 		Object[] configs = null;
 		Object[] persClasses = null;
+		Object[] fields = null;
 		try {
 			configs = new ConsoleConfigurationWorkbenchAdapter().getChildren(consCFG);
 			assertTrue(configs[0] instanceof Configuration);
@@ -52,24 +58,49 @@ public class OpenSourceFileTest extends TestCase {
 			for (int i = 0; i < persClasses.length; i++) {
 				assertTrue(persClasses[0] instanceof PersistentClass);
 				PersistentClass persClass = (PersistentClass) persClasses[i];
-				IEditorPart editor = null;
-				Throwable ex = null;
-				try {
-					editor = new OpenSourceAction().run(persClass, MappingTestProject.getTestProject().getIJavaProject(), 
-							persClass.getClassName());
-				} catch (PartInitException e) {
-					ex = e;
-				} catch (JavaModelException e) {
-					ex = e;
-				} catch (FileNotFoundException e) {
-					ex = e;
-				}				
-				if (ex == null ) ex = ProjectUtil.getExceptionIfItOccured(editor);
-				if (ex != null) fail("Source file for " + persClass.getClassName()
-						+ " not opened:\n" + ex.getMessage());
-			}			
+				String fullyQualifiedName = persClass.getClassName();
+				// test PersistentClasses
+				openTest(persClass, consCFG, fullyQualifiedName);
+				fields =  new PersistentClassWorkbenchAdapter().getChildren(persClass);
+				for (int j = 0; j < fields.length; j++) {
+					if (fields[j].getClass() != Property.class) continue;
+					fullyQualifiedName = persClass.getClassName();
+					// test Properties
+					openTest(fields[j], consCFG, fullyQualifiedName);
+					if (fields[j] instanceof Property
+						&& ((Property)fields[j]).isComposite()) {
+						fullyQualifiedName =((Component)((Property) fields[j]).getValue()).getComponentClassName();
+						
+						Object[] compProperties = new PropertyWorkbenchAdapter().getChildren(fields[j]);
+						for (int k = 0; k < compProperties.length; k++) {
+							if (compProperties[k].getClass() != Property.class) continue;
+							//test Composite properties
+							openTest(compProperties[k], consCFG, fullyQualifiedName);
+						}
+					}
+				}
+			}
 		}
 		//close all editors
+	}
+
+	
+	private void openTest(Object selection, ConsoleConfiguration consCFG, String fullyQualifiedName){
+		IEditorPart editor = null;
+		Throwable ex = null;
+		try {
+			editor = new OpenSourceAction().run(selection, MappingTestProject.getTestProject().getIJavaProject(), 
+					fullyQualifiedName);
+		} catch (PartInitException e) {
+			ex = e;
+		} catch (JavaModelException e) {
+			ex = e;
+		} catch (FileNotFoundException e) {
+			ex = e;
+		}				
+		if (ex == null ) ex = ProjectUtil.getExceptionIfItOccured(editor);
+		if (ex != null) fail("Mapping file for " + fullyQualifiedName/*.getClassName()*/
+				+ " not opened:\n" + ex.getMessage());
 	}
 	
 	

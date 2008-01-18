@@ -61,6 +61,7 @@ public class OpenMappingTests extends TestCase{
 		    	Iterator properties = type.getPropertyIterator();
 		    	while (properties.hasNext()) {
 					Property prop = (Property) properties.next();
+					if (prop.getClass() != Property.class) continue;
 					assertNotNull(OpenMappingAction.findSelection(prop, findAdapter));
 				}
 			}
