@@ -55,7 +55,6 @@ import org.hibernate.console.execution.DefaultExecutionContext;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.console.execution.ExecutionContextHolder;
 import org.hibernate.console.execution.ExecutionContext.Command;
-import org.hibernate.console.model.IParentElImpl;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.util.ConfigHelper;
@@ -66,7 +65,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
-public class ConsoleConfiguration extends IParentElImpl implements ExecutionContextHolder {
+public class ConsoleConfiguration implements ExecutionContextHolder {
 
 	private ExecutionContext executionContext;
 	

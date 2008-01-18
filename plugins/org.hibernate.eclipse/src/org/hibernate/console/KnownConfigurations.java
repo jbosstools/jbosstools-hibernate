@@ -51,7 +51,6 @@ import org.eclipse.ui.console.IConsoleManager;
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.hibernate.SessionFactory;
-import org.hibernate.console.model.IParentEl;
 import org.hibernate.console.node.BaseNode;
 import org.hibernate.console.node.ConfigurationListNode;
 import org.hibernate.eclipse.HibernatePlugin;
@@ -63,7 +62,7 @@ import org.w3c.dom.Node;
  * This class keeps track of the Hibernate Configurations that are known to
  * the Hibernate Console plugin.
  */
-public class KnownConfigurations implements IParentEl {
+public class KnownConfigurations  {
 
 	// TODO: is the best way for the querypage model ?	
 	private QueryPageModel queryPages = new QueryPageModel(); 
@@ -346,43 +345,7 @@ public class KnownConfigurations implements IParentEl {
 	
 	public List getQueryParameterList() {
 		return queryParameters;
-	}
-
-	public Object[] getChildren() {
-		return getConfigurationsSortedByName();
-	}
-
-	public boolean hasChildren() {
-		if (null == configurations) {
-			return true;
-		}
-		return( configurations.size() > 0 );
 	}	
-
-	public void setChildren(Object[] children) {
-		for (int i = 0; i < children.length; i++) {
-			if (!(children[i] instanceof ConsoleConfiguration)) {
-				continue;
-			}
-			ConsoleConfiguration configuration = (ConsoleConfiguration)children[i];
-			addConfiguration(configuration, true);
-		}
-	}
-
-	public void addChild(Object child) {
-		if (!(child instanceof ConsoleConfiguration)) {
-			return;
-		}
-		ConsoleConfiguration configuration = (ConsoleConfiguration)child;
-		addConfiguration(configuration, true);
-	}
-
-	public void removeChild(Object child) {
-		if (!(child instanceof ConsoleConfiguration)) {
-			return;
-		}
-		ConsoleConfiguration configuration = (ConsoleConfiguration)child;
-		removeConfiguration(configuration, true);
-	}
+	
 	
 }
