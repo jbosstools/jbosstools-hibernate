@@ -71,6 +71,10 @@ div.book .title {
 	text-align: center;
 }
 
+div.book .subtitle {
+	text-align: center;
+}
+
 .mediaobject{
 	padding : 5px 10px 5px 35px;
 }
@@ -108,8 +112,8 @@ text-align:left;
 }
 
 DIV.note{
-	BORDER: #CECECE 1px solid; PADDING: 3px 10px 10px 50px; line-height : 14px;   MARGIN: 10px 0px 10px 0px; FONT-SIZE: 11px; WIDTH: 500px; BACKGROUND-COLOR: #FFFDD3;
-	background-image : url('Images/ico_note.gif'); background-repeat : no-repeat; background-position :top left;
+	BORDER: #CECECE 1px solid; PADDING: 3px 10px 10px 50px; line-height : 14px;   MARGIN: 10px 0px 10px 0px; FONT-SIZE: 11px; WIDTH: 500px; BACKGROUND-COLOR: #cfe3ff;
+	background-image : url('../images/ico_note.gif'); background-repeat : no-repeat; background-position :top left;
 }
 
 DIV.note *{
@@ -123,8 +127,8 @@ DIV.note *{
 	MARGIN-TOP: 0px; MARGIN-BOTTOM: 1em; PADDING-BOTTOM: 0px; PADDING-TOP: 0px
 }
 DIV.important {
-	BORDER: #CECECE  1px solid; PADDING: 3px 10px 10px 50px; line-height : 14px;   MARGIN: 10px 0px 10px 0px; FONT-SIZE: 11px; WIDTH: 500px; BACKGROUND-COLOR: #CFE3FF;
-	background-image : url('Images/ico_important.gif'); background-repeat : no-repeat; background-position :top left; 
+	BORDER: #CECECE  1px solid; PADDING: 3px 10px 10px 50px; line-height : 14px;   MARGIN: 10px 0px 10px 0px; FONT-SIZE: 11px; WIDTH: 500px; BACKGROUND-COLOR: #fee3d9;
+	background-image : url('../images/ico_important.gif'); background-repeat : no-repeat; background-position :top left; 
 }
 
 DIV.important *{
@@ -136,6 +140,18 @@ PADDING: 1px 1px 1px 10px;
 
 }
 
+DIV.tip {
+	BORDER: #CECECE  1px solid; PADDING: 3px 10px 10px 50px; line-height : 14px;   MARGIN: 10px 0px 10px 0px; FONT-SIZE: 11px; WIDTH: 500px; BACKGROUND-COLOR: #CFE3FF; background-repeat : no-repeat; background-position :top left; background-image : url('../images/ico_tip.gif');
+}
+
+DIV.tip *{
+	line-height : 14px;
+}
+
+.tip pre.XML {
+PADDING: 1px 1px 1px 10px;
+
+}
 
 TABLE {
 	BORDER: #cccccc 1px solid; FONT-SIZE: 11px; BORDER-COLLAPSE: collapse;  border-spacing: 0; empty-cells: hide; margin-bottom : 10px;
@@ -148,7 +164,7 @@ table *{
 
 .table TH {
 	WHITE-SPACE: nowrap; BACKGROUND-COLOR: #EEF5FF; TEXT-ALIGN: center;   BORDER-BOTTOM: #CAE1FF 2px solid; PADDING: 2px 8px 2px 8px;
-	background-image : url('Images/bg_table.gif'); background-repeat : repeat-x; background-position :top left;
+	background-image : url('../images/bg_table.gif'); background-repeat : repeat-x; background-position :top left;
 }
 TD {
 	PADDING: 4px 8px 4px 8px; BORDER-BOTTOM: #cccccc 1px dotted;  BORDER-right: #cccccc 1px dotted;
@@ -343,4 +359,51 @@ SPAN.java16 {
 	cursor: pointer;
 }
 
-
+pre.CSS, pre.css {
+	line-height:0px;
+	margin-bottom:0em;
+}
+.css_normal {
+	line-height:0px;
+	color:#000000;
+}
+.css_colon {
+color:#000000;
+}
+.css_semi_colon {
+color:#000000;
+}
+.css_curly_brace {
+color:#000000;
+}
+.css_comment {
+color:#939393;
+}
+.css_error {
+color:#BF3F3F;
+}
+.css_selector {
+color:#008cca;
+}
+.css_null {
+color:#008cca;
+}
+.css_property_name {
+color:#000000;
+font-weight:bold;
+}
+.css_property_value {
+color:#ff6600;
+}
+.css_uri {
+color:#2A00FF;
+}
+.css_atmark_rule {
+color:#3F7F7F;
+}
+.css_media {
+color:#336699;
+}
+.css_string {
+color:#336699;
+}
