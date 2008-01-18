@@ -53,15 +53,18 @@ public class OpenSourceAction extends SelectionListenerAction {
 			ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(path.getSegment(0));
 			IJavaProject proj = ProjectUtils.findJavaProject(consoleConfiguration);
 			
-			String fullyQualifiedName = persClass.getClassName();
-			if (fullyQualifiedName.length() == 0
-					&& lastSegment instanceof Property){
+			String fullyQualifiedName = null;
+			if (lastSegment instanceof Property){
 				Object prevSegment = path.getParentPath().getLastSegment();
 				if (prevSegment instanceof Property
 						&& ((Property)prevSegment).isComposite()){
 					fullyQualifiedName =((Component)((Property) prevSegment).getValue()).getComponentClassName();
 				}
 			}
+			if (fullyQualifiedName == null && persClass != null){
+				fullyQualifiedName = persClass.getClassName();
+			}
+
 			try {
 				run(lastSegment, proj, fullyQualifiedName);
 			} catch (JavaModelException e) {
@@ -84,8 +87,23 @@ public class OpenSourceAction extends SelectionListenerAction {
 	 */
 	public IEditorPart run(Object selection, IJavaProject proj,
 			String fullyQualifiedName) throws JavaModelException, PartInitException, FileNotFoundException {
+		if (fullyQualifiedName == null) return null;
+		String remainder = null;
+		IType type = null;
+		if (fullyQualifiedName.indexOf("$") > 0) {
+			remainder = fullyQualifiedName.substring(fullyQualifiedName.indexOf("$") + 1);
+			fullyQualifiedName = fullyQualifiedName.substring(0, fullyQualifiedName.indexOf("$"));
+			type = proj.findType(fullyQualifiedName);
+			while ( remainder.indexOf("$") > 0 ){
+				String subtype = remainder.substring(0, fullyQualifiedName.indexOf("$"));
+				type = type.getType(subtype);
+				remainder = remainder.substring(fullyQualifiedName.indexOf("$") + 1);
+			}
+			type = type.getType(remainder);
+		} else {
+			type = proj.findType(fullyQualifiedName);
+		}
 		IResource resource = null;			
-		IType type = proj.findType(fullyQualifiedName);
 		if (type != null) resource = type.getResource();	
 		
 		IEditorPart editorPart = null;
@@ -125,5 +143,6 @@ public class OpenSourceAction extends SelectionListenerAction {
 			jEditor.setSelection(jElement);
 		}
 	}
+
 
 }

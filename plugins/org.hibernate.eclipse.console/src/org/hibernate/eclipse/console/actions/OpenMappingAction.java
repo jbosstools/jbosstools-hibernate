@@ -77,7 +77,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 	}
 	
 	public static void run(TreePath path, ConsoleConfiguration consoleConfiguration) throws PartInitException, JavaModelException, FileNotFoundException {
-		boolean isPropertySel = (path.getLastSegment() instanceof Property);
+		boolean isPropertySel = (path.getLastSegment().getClass() == Property.class);
 		if (isPropertySel){
 			Property propertySel = (Property)path.getLastSegment();
 			PersistentClass persClass = propertySel.getPersistentClass();
@@ -153,8 +153,8 @@ public class OpenMappingAction extends SelectionListenerAction {
 	 * @throws FileNotFoundException 
 	 * @throws BadLocationException 
 	 */
-	public static boolean run(Property compositeProperty, Property parentProperty, ConsoleConfiguration consoleConfiguration) throws PartInitException, JavaModelException, FileNotFoundException{
-		if (parentProperty.getPersistentClass() == null) return false;
+	public static IEditorPart run(Property compositeProperty, Property parentProperty, ConsoleConfiguration consoleConfiguration) throws PartInitException, JavaModelException, FileNotFoundException{
+		if (parentProperty.getPersistentClass() == null) return null;
 		IJavaProject proj = ProjectUtils.findJavaProject(consoleConfiguration);
 		java.io.File configXMLFile = consoleConfiguration.getPreferences().getConfigXMLFile();
 		IResource resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, configXMLFile, parentProperty.getPersistentClass());
@@ -164,7 +164,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 			editorPart = openMapping(resource);
 			if (editorPart != null){
 				ITextEditor[] textEditors = getTextEditors(editorPart);
-				if (textEditors.length == 0) return false;
+				if (textEditors.length == 0) return editorPart;
 				textEditors[0].selectAndReveal(0, 0);
 				FindReplaceDocumentAdapter findAdapter = null;
 				ITextEditor textEditor = null;
@@ -172,22 +172,36 @@ public class OpenMappingAction extends SelectionListenerAction {
 					textEditor = textEditors[i];
 					findAdapter = getFindDocAdapter(textEditor);					
 				}
-				if (findAdapter == null) return false;
+				if (findAdapter == null) return null;
 				
 				IRegion parentRegion = findSelection(parentProperty, findAdapter);
-				if (parentRegion == null) return false;
+				if (parentRegion == null) return editorPart;
 				IRegion propRegion = null;
 				try {
 					propRegion = findAdapter.find(parentRegion.getOffset()+parentRegion.getLength(), generatePattern(compositeProperty), true, true, false, true);
+					if (propRegion == null){
+						// try to use key-property
+						String pattern = generatePattern(compositeProperty).replaceFirst("property", "key-property");	
+						propRegion = findAdapter.find(parentRegion.getOffset()+parentRegion.getLength(), pattern, true, true, false, true);
+					}
+					/*if (propRegion == null){
+						// try to find name = "<name>"
+						String pattern = HIBERNATE_TAG_NAME + "[\\s]*=[\\s]*\"" + property.getNodeName() + '\"';	
+						propRegion = findAdapter.find(parentRegion.getOffset()+parentRegion.getLength(), pattern, true, true, false, true);
+					}*/
 				} catch (BadLocationException e) {
 					HibernateConsolePlugin.getDefault().logErrorMessage("Selection not found.", e);
-				}
+				}				
+				
 				if (propRegion != null){
+					int length = compositeProperty.getNodeName().length();
+					int offset = propRegion.getOffset() + propRegion.getLength() - length - 1;			
+					propRegion = new Region(offset, length);
 					textEditor.selectAndReveal(propRegion.getOffset(), propRegion.getLength());
-					return true;
+					return editorPart;
 				}
 			}
-			return false;
+			return editorPart;
 		} 
 				
    		if (parentProperty.getPersistentClass() != null && parentProperty.isComposite()){   			
@@ -195,10 +209,13 @@ public class OpenMappingAction extends SelectionListenerAction {
 			if (OpenFileActionUtils.rootClassHasAnnotations(consoleConfiguration, configXMLFile, rootClass)) {
 				String fullyQualifiedName =((Component)((Property) parentProperty).getValue()).getComponentClassName();
 				IEditorPart editor = new OpenSourceAction().run(compositeProperty, proj, fullyQualifiedName);
-				if (editor != null) return true;
+				return editor;
 			}
 	    }
-   		return false;
+   		if (editorPart == null) {
+			throw new FileNotFoundException("Mapping file for property '" + compositeProperty.getNodeName() + "' not found.");
+		}
+   		return null;
 	}
 
 	/**
@@ -369,7 +386,11 @@ public class OpenMappingAction extends SelectionListenerAction {
 		StringBuffer pattern = new StringBuffer("<");
 		if(property.getPersistentClass() != null &&
 				property.getPersistentClass().getIdentifierProperty()==property) {
-			pattern.append("id");
+			if (property.isComposite()){
+				pattern.append("composite-id");
+			} else {
+				pattern.append("id");
+			}
 		} else{
 			pattern.append(tool.getTag(property));
 		}
@@ -387,7 +408,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 	 * @param editorPart
 	 * @return
 	 */	
-	private static ITextEditor[] getTextEditors(IEditorPart editorPart) {
+	public static ITextEditor[] getTextEditors(IEditorPart editorPart) {
 		/*
 		 * if EditorPart is MultiPageEditorPart then get ITextEditor from it.
 		 */

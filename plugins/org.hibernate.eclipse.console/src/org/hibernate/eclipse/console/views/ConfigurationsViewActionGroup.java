@@ -139,7 +139,7 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 		}
 		menu.add(new Separator() );
 		if (first instanceof PersistentClass
-				|| first instanceof Property){			
+				|| first.getClass() == Property.class){			
 			menu.add(openSourceAction);
 			menu.add(openMappingAction);
 		}
