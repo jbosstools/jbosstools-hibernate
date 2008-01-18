@@ -60,7 +60,7 @@ public class PopupMenuProvider extends ContextMenuProvider {
 					Shape shape = (Shape)obj;
 					Object first = shape.getOrmElement();
 					if (first instanceof PersistentClass
-							|| first instanceof Property
+							|| first.getClass() == Property.class
 							|| first instanceof Table
 							|| first instanceof Column){		
 						action = getActionRegistry().getAction(OpenSourceAction.ACTION_ID);
