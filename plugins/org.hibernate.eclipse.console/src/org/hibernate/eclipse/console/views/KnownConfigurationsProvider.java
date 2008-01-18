@@ -21,10 +21,13 @@
  */
 package org.hibernate.eclipse.console.views;
 
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.hibernate.SessionFactory;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
@@ -63,18 +66,24 @@ class KnownConfigurationsProvider extends DeferredContentProvider implements Kno
 	}
 
 	private void refreshTree() {
-		tv.getTree().setRedraw(false);
 		Runnable runnable = new Runnable() {
 			public void run() {
 				tv.refresh();
 			}
 		};
-		tv.getControl().getDisplay().asyncExec(runnable);
-		tv.getTree().setRedraw(true);
+		tv.getControl().getDisplay().syncExec(runnable);
 	}
 
 	public void configurationRemoved(ConsoleConfiguration root, boolean forUpdate) {
 		refreshTree();		
+	}
+	
+	protected IWorkbenchAdapter getAdapter(Object o) {
+	    if (o instanceof IAdaptable) {
+        	return (IWorkbenchAdapter) ((IAdaptable) o).getAdapter(IWorkbenchAdapter.class);
+        } else {
+        	return (IWorkbenchAdapter) Platform.getAdapterManager().getAdapter(o, IWorkbenchAdapter.class);
+        }
 	}
 
 	public void sessionFactoryBuilt(final ConsoleConfiguration ccfg, SessionFactory builtFactory) {
