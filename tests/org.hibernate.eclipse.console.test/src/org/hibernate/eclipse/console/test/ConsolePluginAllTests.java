@@ -18,7 +18,6 @@ public class ConsolePluginAllTests {
 		suite.addTestSuite( PerspectiveTest.class );
 		suite.addTestSuite( ConsoleConfigurationTest.class );
 		suite.addTestSuite( JavaFormattingTest.class );
-		suite.addTestSuite( OpenMappingTests.class );
 		
 		suite.addTestSuite( HibernateAllMappingTests.class );
 
