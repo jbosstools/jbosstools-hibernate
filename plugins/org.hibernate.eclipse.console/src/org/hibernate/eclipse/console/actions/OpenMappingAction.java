@@ -335,11 +335,13 @@ public class OpenMappingAction extends SelectionListenerAction {
 	
 	private static String[] generatePatterns(PersistentClass persClass){
 		String fullClassName = null;
+		String shortClassName = null;
 		if (persClass.getEntityName() != null){
 			fullClassName = persClass.getEntityName();
 		} else {
 			fullClassName = persClass.getClassName();
 		}
+		shortClassName = fullClassName.substring(fullClassName.lastIndexOf('.') + 1);
 		
 		Cfg2HbmTool tool = new Cfg2HbmTool();
 		String[] patterns = new String[4];
@@ -348,7 +350,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 		pattern.append("[\\s]+[.[^>]]*");
 		pattern.append(HIBERNATE_TAG_NAME);
 		pattern.append("[\\s]*=[\\s]*\"");
-		pattern.append(persClass.getNodeName());
+		pattern.append(shortClassName);
 		pattern.append('\"');
 		patterns[0] = pattern.toString();
 		
@@ -366,7 +368,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 		pattern.append("[\\s]+[.[^>]]*");
 		pattern.append(HIBERNATE_TAG_ENTITY_NAME);
 		pattern.append("[\\s]*=[\\s]*\"");
-		pattern.append(persClass.getNodeName());
+		pattern.append(shortClassName);
 		pattern.append('\"');
 		patterns[2] = pattern.toString();
 		
