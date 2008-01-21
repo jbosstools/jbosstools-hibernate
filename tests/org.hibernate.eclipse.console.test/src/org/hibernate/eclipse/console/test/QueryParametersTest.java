@@ -20,7 +20,8 @@ public class QueryParametersTest extends TestCase {
 		
 		TestConsoleConfigurationPreferences cfgprefs = new TestConsoleConfigurationPreferences();
 		consoleCfg = new ConsoleConfiguration(cfgprefs);
-		KnownConfigurations.getInstance().addConfiguration(consoleCfg, true);
+		KnownConfigurations.getInstance().setBroadcast(true);
+		KnownConfigurations.getInstance().addConfiguration(consoleCfg);
 	}
 	
 	protected void tearDown() throws Exception {

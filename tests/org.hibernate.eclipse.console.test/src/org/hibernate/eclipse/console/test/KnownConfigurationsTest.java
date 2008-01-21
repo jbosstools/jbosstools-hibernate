@@ -37,10 +37,13 @@ public class KnownConfigurationsTest extends TestCase {
 			fail("no sf should be closed!");
 		}
 
-		public void configurationRemoved(ConsoleConfiguration root, boolean forUpdate) {
+		public void configurationRemoved(ConsoleConfiguration root) {
 			if(!added.remove(root)) {
 				fail("trying to remove a non existing console");
 			}
+		}
+
+		public void configurationRefreshAll() {
 		}
 	}
 	
@@ -130,21 +133,102 @@ public class KnownConfigurationsTest extends TestCase {
 			}
 		
 		};
-		ConsoleConfiguration configuration = new ConsoleConfiguration(preferences);
 		
-		knownConfigurations.addConfiguration(configuration, false);
+		ConsoleConfigurationPreferences preferences2 = new ConsoleConfigurationPreferences() {
+			
+			String name = "new test";
+			
+			public void setName(String name) {
+				this.name = name;
+			}
+		
+			public void readStateFrom(Element element) {
+				// TODO Auto-generated method stub
+		
+			}
+		
+			public void writeStateTo(Element node) {
+				// TODO Auto-generated method stub
+		
+			}
+		
+			public File getPropertyFile() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		
+			public File getConfigXMLFile() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		
+			public Properties getProperties() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		
+			public File[] getMappingFiles() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		
+			public URL[] getCustomClassPathURLS() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		
+			public String getName() {
+				return name;
+			}
+		
+			public boolean useAnnotations() {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			public String getEntityResolverName() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			public ConfigurationMode getConfigurationMode() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			public String getNamingStrategy() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			public String getPersistenceUnitName() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		
+		};
+
+		ConsoleConfiguration configuration = new ConsoleConfiguration(preferences);
+		ConsoleConfiguration configuration2 = new ConsoleConfiguration(preferences2);
+		
+		KnownConfigurations.getInstance().setBroadcast(false);
+		knownConfigurations.addConfiguration(configuration);
+		knownConfigurations.addConfiguration(configuration2);
 		
 		configurations = knownConfigurations.getConfigurations();
-		assertEquals(1,configurations.length);
+		assertEquals(2,configurations.length);
 		assertEquals(listener.added.size(), 0);
 		
-		knownConfigurations.addConfiguration(configuration, true);
+		KnownConfigurations.getInstance().setBroadcast(true);
+		knownConfigurations.addConfiguration(configuration);
+		knownConfigurations.addConfiguration(configuration2);
 		
 		configurations = knownConfigurations.getConfigurations();
-		assertEquals(1,configurations.length);		
-		assertEquals(listener.added.size(), 1);
+		assertEquals(2,configurations.length);		
+		assertEquals(listener.added.size(), 2);
 		
-		knownConfigurations.removeConfiguration(configuration,false);
+		knownConfigurations.removeConfiguration(configuration);
+		knownConfigurations.removeConfiguration(configuration2);
 		
 		configurations = knownConfigurations.getConfigurations();
 		assertEquals(0,configurations.length);
