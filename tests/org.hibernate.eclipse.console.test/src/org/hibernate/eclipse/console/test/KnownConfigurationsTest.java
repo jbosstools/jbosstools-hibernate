@@ -37,13 +37,10 @@ public class KnownConfigurationsTest extends TestCase {
 			fail("no sf should be closed!");
 		}
 
-		public void configurationRemoved(ConsoleConfiguration root) {
+		public void configurationRemoved(ConsoleConfiguration root, boolean forUpdate) {
 			if(!added.remove(root)) {
 				fail("trying to remove a non existing console");
 			}
-		}
-
-		public void configurationRefreshAll() {
 		}
 	}
 	
@@ -211,24 +208,22 @@ public class KnownConfigurationsTest extends TestCase {
 		ConsoleConfiguration configuration = new ConsoleConfiguration(preferences);
 		ConsoleConfiguration configuration2 = new ConsoleConfiguration(preferences2);
 		
-		KnownConfigurations.getInstance().setBroadcast(false);
-		knownConfigurations.addConfiguration(configuration);
-		knownConfigurations.addConfiguration(configuration2);
+		knownConfigurations.addConfiguration(configuration, false);
+		knownConfigurations.addConfiguration(configuration2, false);
 		
 		configurations = knownConfigurations.getConfigurations();
 		assertEquals(2,configurations.length);
 		assertEquals(listener.added.size(), 0);
 		
-		KnownConfigurations.getInstance().setBroadcast(true);
-		knownConfigurations.addConfiguration(configuration);
-		knownConfigurations.addConfiguration(configuration2);
+		knownConfigurations.addConfiguration(configuration, true);
+		knownConfigurations.addConfiguration(configuration2, true);
 		
 		configurations = knownConfigurations.getConfigurations();
 		assertEquals(2,configurations.length);		
 		assertEquals(listener.added.size(), 2);
 		
-		knownConfigurations.removeConfiguration(configuration);
-		knownConfigurations.removeConfiguration(configuration2);
+		knownConfigurations.removeConfiguration(configuration, false);
+		knownConfigurations.removeConfiguration(configuration2, false);
 		
 		configurations = knownConfigurations.getConfigurations();
 		assertEquals(0,configurations.length);
