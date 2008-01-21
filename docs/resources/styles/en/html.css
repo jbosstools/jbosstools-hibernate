@@ -112,8 +112,8 @@ text-align:left;
 }
 
 DIV.note{
-	BORDER: #CECECE 1px solid; PADDING: 3px 10px 10px 50px; line-height : 14px;   MARGIN: 10px 0px 10px 0px; FONT-SIZE: 11px; WIDTH: 500px; BACKGROUND-COLOR: #cfe3ff;
-	background-image : url('../images/ico_note.gif'); background-repeat : no-repeat; background-position :top left;
+	BORDER: #CECECE 1px solid; PADDING: 3px 10px 10px 50px; line-height : 14px;   MARGIN: 10px 0px 10px 0px; FONT-SIZE: 11px; WIDTH: 500px; BACKGROUND-COLOR: #FFFDD3;
+	background-image : url('images/ico_note.gif'); background-repeat : no-repeat; background-position :top left;
 }
 
 DIV.note *{
@@ -128,7 +128,7 @@ DIV.note *{
 }
 DIV.important {
 	BORDER: #CECECE  1px solid; PADDING: 3px 10px 10px 50px; line-height : 14px;   MARGIN: 10px 0px 10px 0px; FONT-SIZE: 11px; WIDTH: 500px; BACKGROUND-COLOR: #fee3d9;
-	background-image : url('../images/ico_important.gif'); background-repeat : no-repeat; background-position :top left; 
+	background-image : url('images/ico_important.gif'); background-repeat : no-repeat; background-position :top left; 
 }
 
 DIV.important *{
@@ -141,7 +141,7 @@ PADDING: 1px 1px 1px 10px;
 }
 
 DIV.tip {
-	BORDER: #CECECE  1px solid; PADDING: 3px 10px 10px 50px; line-height : 14px;   MARGIN: 10px 0px 10px 0px; FONT-SIZE: 11px; WIDTH: 500px; BACKGROUND-COLOR: #CFE3FF; background-repeat : no-repeat; background-position :top left; background-image : url('../images/ico_tip.gif');
+	BORDER: #CECECE  1px solid; PADDING: 3px 10px 10px 50px; line-height : 14px;   MARGIN: 10px 0px 10px 0px; FONT-SIZE: 11px; WIDTH: 500px; BACKGROUND-COLOR: #CFE3FF; background-repeat : no-repeat; background-position :top left; background-image : url('images/ico_tip.gif');
 }
 
 DIV.tip *{
@@ -164,7 +164,7 @@ table *{
 
 .table TH {
 	WHITE-SPACE: nowrap; BACKGROUND-COLOR: #EEF5FF; TEXT-ALIGN: center;   BORDER-BOTTOM: #CAE1FF 2px solid; PADDING: 2px 8px 2px 8px;
-	background-image : url('../images/bg_table.gif'); background-repeat : repeat-x; background-position :top left;
+	background-image : url('images/bg_table.gif'); background-repeat : repeat-x; background-position :top left;
 }
 TD {
 	PADDING: 4px 8px 4px 8px; BORDER-BOTTOM: #cccccc 1px dotted;  BORDER-right: #cccccc 1px dotted;
