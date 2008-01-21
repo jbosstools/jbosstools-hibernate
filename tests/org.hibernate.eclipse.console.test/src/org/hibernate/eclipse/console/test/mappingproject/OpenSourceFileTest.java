@@ -21,7 +21,6 @@ import org.hibernate.InvalidMappingException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.eclipse.console.actions.OpenMappingAction;
 import org.hibernate.eclipse.console.actions.OpenSourceAction;
 import org.hibernate.eclipse.console.workbench.ConfigurationWorkbenchAdapter;
 import org.hibernate.eclipse.console.workbench.ConsoleConfigurationWorkbenchAdapter;
@@ -91,6 +90,8 @@ public class OpenSourceFileTest extends TestCase {
 		try {
 			editor = new OpenSourceAction().run(selection, MappingTestProject.getTestProject().getIJavaProject(), 
 					fullyQualifiedName);
+			boolean highlighted = ProjectUtil.checkHighlighting(editor);
+			if (!highlighted) fail("Highlighted region for " + selection + " is empty.");
 		} catch (PartInitException e) {
 			ex = e;
 		} catch (JavaModelException e) {

@@ -11,6 +11,8 @@
 package org.hibernate.eclipse.console.test.mappingproject;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.tools.ant.filters.StringInputStream;
 import org.eclipse.core.resources.IFile;
@@ -22,8 +24,12 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jface.text.TextSelection;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.internal.ErrorEditorPart;
+import org.eclipse.ui.part.MultiPageEditorPart;
+import org.eclipse.ui.texteditor.ITextEditor;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard;
 import org.hibernate.mapping.PersistentClass;
@@ -151,6 +157,42 @@ public class ProjectUtil {
 			}
 		}
 		return null;
+	}
+	
+	public static boolean checkHighlighting(IEditorPart editor){
+		ITextEditor[] tEditors = getTextEditors(editor);
+		boolean highlighted = false;
+		for (int i = 0; i < tEditors.length && !highlighted; i++) {
+			ITextEditor textEditor = tEditors[i];
+			ISelection selection = textEditor.getSelectionProvider().getSelection();
+			if (selection instanceof TextSelection){
+				TextSelection tSelection = (TextSelection)selection;
+				highlighted = tSelection.getLength() > 0;
+			}
+		}
+		return highlighted;
+	}
+	
+	
+	/**
+	 * Should be identical with OpenMappingAction.getTextEditors()
+	 * @param editorPart
+	 * @return
+	 */
+	public static ITextEditor[] getTextEditors(IEditorPart editorPart) {
+		if (editorPart instanceof MultiPageEditorPart) {
+			List testEditors = new ArrayList();			
+    		IEditorPart[] editors = ((MultiPageEditorPart) editorPart).findEditors(editorPart.getEditorInput());
+    		for (int i = 0; i < editors.length; i++) {
+				if (editors[i] instanceof ITextEditor){
+					testEditors.add(editors[i]);
+				}
+			}
+    		return (ITextEditor[])testEditors.toArray(new ITextEditor[0]);
+		} else if (editorPart instanceof ITextEditor){
+			return new ITextEditor[]{(ITextEditor) editorPart};
+		}
+		return new ITextEditor[0];
 	}
 
 }

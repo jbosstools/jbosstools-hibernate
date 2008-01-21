@@ -11,12 +11,18 @@
 package org.hibernate.eclipse.console.test.mappingproject;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.TestCase;
 
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jface.text.TextSelection;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.part.MultiPageEditorPart;
+import org.eclipse.ui.texteditor.ITextEditor;
 import org.hibernate.InvalidMappingException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
@@ -77,6 +83,8 @@ public class OpenMappingFileTest extends TestCase {
 		Throwable ex = null;
 		try {
 			editor = OpenMappingAction.run(compositeProperty, parentProperty, consCFG);
+			boolean highlighted = ProjectUtil.checkHighlighting(editor);
+			if (!highlighted) fail("Highlighted region for " + compositeProperty.getNodeName() + " is empty.");
 			Object[] compProperties = new PropertyWorkbenchAdapter().getChildren(compositeProperty);
 			for (int k = 0; k < compProperties.length; k++) {
 				//test Composite properties
@@ -101,7 +109,8 @@ public class OpenMappingFileTest extends TestCase {
 		Throwable ex = null;
 		try {
 			editor = OpenMappingAction.run(selection, consCFG);
-			//checkSelectionMade(editor);
+			boolean highlighted = ProjectUtil.checkHighlighting(editor);
+			if (!highlighted) fail("Highlighted region for " + selection + " is empty.");
 		} catch (PartInitException e) {
 			ex = e;
 		} catch (JavaModelException e) {
@@ -113,6 +122,8 @@ public class OpenMappingFileTest extends TestCase {
 		if (ex != null) fail("Mapping file for " + selection/*.getClassName()*/
 				+ " not opened:\n" + ex.getMessage());
 	}
+	
+	
 
 
 }
