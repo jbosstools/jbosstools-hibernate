@@ -64,9 +64,6 @@ import org.w3c.dom.Node;
  */
 public class KnownConfigurations  {
 
-	// flag broadcast updates to all listeners - true by default
-	// for prevent broadcasting set this flag into false
-	private boolean broadcastFlag = true; 
 	// TODO: is the best way for the querypage model ?	
 	private QueryPageModel queryPages = new QueryPageModel(); 
 	private List configurationListeners = new ArrayList();
@@ -141,7 +138,7 @@ public class KnownConfigurations  {
 	 * Add the repository to the receiver's list of known configurations. Doing this will enable
 	 * 
 	 */
-	public ConsoleConfiguration addConfiguration(final ConsoleConfiguration configuration) {
+	public ConsoleConfiguration addConfiguration(final ConsoleConfiguration configuration, boolean broadcast) {
 		// Check the cache for an equivalent instance and if there is one, just update the cache
 		ConsoleConfiguration existingConfiguration = internalGetRepository(configuration.getName() );
 		if (existingConfiguration == null) {
@@ -153,7 +150,7 @@ public class KnownConfigurations  {
 			existingConfiguration = configuration;
 		}
 		
-		if (broadcastFlag) {
+		if (broadcast) {
 			fireNotification(new Notification() {
 				public void notify(KnownConfigurationsListener listener) {
 					listener.configurationAdded(configuration);
@@ -167,24 +164,22 @@ public class KnownConfigurations  {
 		ConsoleConfiguration[] cfgs = getConfigurations();
 		for (int i = 0; i < cfgs.length; i++) {
 			ConsoleConfiguration configuration = cfgs[i];
-			removeConfiguration(configuration);
+			removeConfiguration(configuration, false);
 		}
 		
 	}
 	
 	// added forUpdate as a workaround for letting listeners know it is done to update the configuration so they don't cause removal issues.
-	public void removeConfiguration(final ConsoleConfiguration configuration) {
+	public void removeConfiguration(final ConsoleConfiguration configuration, final boolean forUpdate) {
 		
 		ConsoleConfiguration oldConfig = (ConsoleConfiguration) getRepositoriesMap().remove(configuration.getName() );
 		if (oldConfig != null) {
 			oldConfig.removeConsoleConfigurationListener(sfListener);
-			if (broadcastFlag) {
-				fireNotification(new Notification() {
-					public void notify(KnownConfigurationsListener listener) {
-						listener.configurationRemoved(configuration);
-					}
-				});
-			}
+			fireNotification(new Notification() {
+				public void notify(KnownConfigurationsListener listener) {
+					listener.configurationRemoved(configuration, forUpdate);
+				}
+			});
 			oldConfig.reset();
 			removeLoggingStream( oldConfig );
 			
@@ -352,19 +347,5 @@ public class KnownConfigurations  {
 		return queryParameters;
 	}	
 	
-	public boolean getBroadcast() {
-		return this.broadcastFlag;
-	}
-	
-	public void setBroadcast(boolean broadcastFlag) {
-		this.broadcastFlag = broadcastFlag;
-		if (broadcastFlag) {
-			fireNotification(new Notification() {
-				public void notify(KnownConfigurationsListener listener) {
-					listener.configurationRefreshAll();
-				}
-			});
-		}
-	}	
 	
 }
