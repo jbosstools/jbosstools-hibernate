@@ -52,7 +52,11 @@ public class ConfigurationListNode extends BaseNode {
 				childrenCreated=false;
 			}
 
-			public void configurationRemoved(ConsoleConfiguration root, boolean forUpdate) {
+			public void configurationRemoved(ConsoleConfiguration root) {
+				markChildrenForReload();
+			}
+
+			public void configurationRefreshAll() {
 				markChildrenForReload();
 			}
 
