@@ -30,6 +30,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.eval.IEvaluationContext;
 import org.eclipse.jdt.internal.ui.text.java.JavaCompletionProposal;
+import org.eclipse.jdt.internal.ui.text.java.LazyJavaCompletionProposal;
 import org.eclipse.jdt.ui.text.java.CompletionProposalComparator;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
@@ -82,39 +83,18 @@ public class CompletionHelper {
 					wanted = 0;
 				}
 				proposal.setReplacementOffset(wanted);
-			} else {
-				// Workaround for Eclipse 3.x changes.
-				Class c = results[i].getClass();
-				try {
-					Method setMethod = c.getMethod("setReplacementOffset", new Class[] { int.class });
-					Method GetMethod = c.getMethod("getReplacementOffset", new Class[0]);
-					
-					Integer offsetx = (Integer) GetMethod.invoke(results[i], null);
-					int wanted = offsetx.intValue() + (offset /*- start.length()*/);
-					setMethod.invoke(results[i], new Object[] { new Integer(wanted) });
-				} catch (SecurityException e) {
-					// TODO Auto-generated catch block
-					//e.printStackTrace();
-				} catch (NoSuchMethodException e) {
-					// TODO Auto-generated catch block
-					//e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
-					//e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					//e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					//e.printStackTrace();
+			} else if (results[i] instanceof LazyJavaCompletionProposal) {
+				LazyJavaCompletionProposal proposal = (LazyJavaCompletionProposal) results[i]; // TODO: eclipse bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=84998
+				int wanted = proposal.getReplacementOffset() + (offset /*- start.length()*/);
+				if(wanted==proposal.getReplacementOffset() ) { 
+					//System.out.println("NO TRANSPOSE!");
 				}
-				// M7
-//				LazyJavaCompletionProposal proposal = (LazyJavaCompletionProposal) results[i]; // TODO: eclipse bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=84998
-//				int wanted = proposal.getReplacementOffset() + (offset /*- start.length()*/);
-//				if(wanted==proposal.getReplacementOffset() ) { 
-//					System.out.println("NO TRANSPOSE!");
-//				}
-//				proposal.setReplacementOffset(proposal.getReplacementOffset() + (offset /*- start.length()*/) ); 
+				if(wanted<0) {
+					wanted = 0;
+				}
+				proposal.setReplacementOffset(proposal.getReplacementOffset() + (offset /*- start.length()*/) ); 
+			} else {
+				HibernateConsolePlugin.getDefault().log("ERROR: unknown CompletionProposal class.");
 			}
 		}
 		Arrays.sort(results, new CompletionProposalComparator() );		
