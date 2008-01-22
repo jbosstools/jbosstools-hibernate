@@ -57,6 +57,7 @@ import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.KnownConfigurationsListener;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
+import org.hibernate.eclipse.console.actions.AddConfigurationAction;
 import org.hibernate.eclipse.console.workbench.ConfigurationAdapterFactory;
 import org.hibernate.eclipse.criteriaeditor.CriteriaEditorInput;
 import org.hibernate.eclipse.criteriaeditor.CriteriaEditorStorage;
@@ -176,15 +177,17 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 			}
 		
 			public void launchConfigurationChanged(ILaunchConfiguration configuration) {
-				if(configuration.isWorkingCopy()) {
+				if(configuration.isWorkingCopy() || isTemporary(configuration)) {
 					return;
 				}
 				if(isConsoleConfiguration( configuration )) {
 					KnownConfigurations instance = KnownConfigurations.getInstance();
 					ConsoleConfiguration oldcfg = instance.find( configuration.getName() );
 					if(oldcfg!=null) {
-						oldcfg.reset(); // reset it no matter what.
-												
+						oldcfg.reset(); // reset it no matter what.											
+					} else { // A new one!
+						ConsoleConfigurationPreferences adapter = buildConfigurationPreferences(configuration);
+						instance.addConfiguration(new ConsoleConfiguration(adapter), true);
 					}
 				}
 			}
@@ -208,10 +211,24 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 					
 					KnownConfigurations instance = KnownConfigurations.getInstance();
 					ConsoleConfigurationPreferences adapter = buildConfigurationPreferences(configuration);
-					instance.addConfiguration(new ConsoleConfiguration(adapter), true);
+					boolean temporary = isTemporary(configuration); 
+					
+					if(!temporary) {
+						instance.addConfiguration(new ConsoleConfiguration(adapter), true);
+					}
 					
 					}
-				}		
+				}
+
+			private boolean isTemporary(ILaunchConfiguration configuration) {
+				boolean temporary = true;
+				try {
+					temporary = configuration.getAttribute(AddConfigurationAction.TEMPORARY_CONFIG_FLAG, false);
+				} catch (CoreException e) {
+					HibernateConsolePlugin.getDefault().showError( getShell(), "Problem to get flag",  e);
+				}
+				return temporary;
+			}		
 			};
 		launchManager.addLaunchConfigurationListener( icl );
 		

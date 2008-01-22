@@ -75,7 +75,9 @@ class KnownConfigurationsProvider extends DeferredContentProvider implements Kno
 	}
 
 	public void configurationRemoved(ConsoleConfiguration root, boolean forUpdate) {
-		refreshTree();		
+		if (forUpdate) {
+			refreshTree();
+		}
 	}
 	
 	protected IWorkbenchAdapter getAdapter(Object o) {

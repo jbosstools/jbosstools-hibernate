@@ -36,9 +36,11 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
 import org.hibernate.console.ImageConstants;
+import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.utils.LaunchHelper;
+import org.hibernate.eclipse.console.views.KnownConfigurationsView;
 import org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard;
 import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
 
@@ -50,6 +52,10 @@ import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
  */
 public class AddConfigurationAction extends Action {
 
+	/** Constant used to avoid unnecessary broadcast which is caused by the workaround for having the ClassPathTab not throwing
+	 *  and exception on unsaved configurations */
+	public static final String TEMPORARY_CONFIG_FLAG = "_TEMPORARY_CONFIG_";
+	
 	private final IViewPart part;
 
 	public AddConfigurationAction(IViewPart part) {
@@ -76,11 +82,15 @@ public class AddConfigurationAction extends Action {
 			String launchName = launchManager.generateUniqueLaunchConfigurationNameFrom("hibernate"); 
 			//ILaunchConfiguration[] launchConfigurations = launchManager.getLaunchConfigurations( launchConfigurationType );
 			ILaunchConfigurationWorkingCopy wc = launchConfigurationType.newInstance(null, launchName);
+			wc.setAttribute(TEMPORARY_CONFIG_FLAG, true); 
 			ILaunchConfiguration saved = wc.doSave();			
 			int i = DebugUITools.openLaunchConfigurationPropertiesDialog( part.getSite().getShell(), saved, "org.eclipse.debug.ui.launchGroup.run" );
 			if(i!=Window.OK) {
 				saved.delete();
-			} 
+			} else { 
+				wc.setAttribute(TEMPORARY_CONFIG_FLAG, (String)null); // Must be set to null since it should never be in the actual saved configuration!
+				wc.doSave();
+			}
 			
 		} catch (CoreException ce) {
 			HibernateConsolePlugin.getDefault().showError( part.getSite().getShell(), "Problem adding a console configuration",  ce);
