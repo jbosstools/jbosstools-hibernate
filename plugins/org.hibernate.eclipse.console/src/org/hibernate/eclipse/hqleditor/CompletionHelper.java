@@ -29,6 +29,7 @@ import org.eclipse.jdt.core.CompletionContext;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.eval.IEvaluationContext;
+import org.eclipse.jdt.internal.ui.text.java.AbstractJavaCompletionProposal;
 import org.eclipse.jdt.internal.ui.text.java.JavaCompletionProposal;
 import org.eclipse.jdt.internal.ui.text.java.LazyJavaCompletionProposal;
 import org.eclipse.jdt.ui.text.java.CompletionProposalComparator;
@@ -46,7 +47,6 @@ public class CompletionHelper {
 			if(packageName!=null) {
 				context.setPackageName(packageName);
 			}
-			
 			
 			HibernateResultCollector rc = new HibernateResultCollector(javaProject);
 			rc.acceptContext(new CompletionContext());
@@ -73,30 +73,24 @@ public class CompletionHelper {
 		// we move the replacementoffset on every proposol to fit nicely
 		// into our non-java code
 		for (int i = 0; i < results.length; i++) {
-			if(results[i] instanceof JavaCompletionProposal) {
-				JavaCompletionProposal proposal = (JavaCompletionProposal) results[i]; // TODO: eclipse bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=84998			
-				int wanted = proposal.getReplacementOffset() + (offset /*- start.length()*/);
-				if(wanted==proposal.getReplacementOffset() ) { 
-					//System.out.println("NO TRANSPOSE!");
-				}
-				if(wanted<0) {
-					wanted = 0;
-				}
-				proposal.setReplacementOffset(wanted);
-			} else if (results[i] instanceof LazyJavaCompletionProposal) {
-				LazyJavaCompletionProposal proposal = (LazyJavaCompletionProposal) results[i]; // TODO: eclipse bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=84998
-				int wanted = proposal.getReplacementOffset() + (offset /*- start.length()*/);
-				if(wanted==proposal.getReplacementOffset() ) { 
-					//System.out.println("NO TRANSPOSE!");
-				}
-				if(wanted<0) {
-					wanted = 0;
-				}
-				proposal.setReplacementOffset(proposal.getReplacementOffset() + (offset /*- start.length()*/) ); 
+			if(results[i] instanceof AbstractJavaCompletionProposal) {
+				AbstractJavaCompletionProposal proposal = (AbstractJavaCompletionProposal) results[i]; // TODO: eclipse bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=84998			
+				transpose(offset, proposal);
 			} else {
 				HibernateConsolePlugin.getDefault().log("ERROR: unknown CompletionProposal class.");
 			}
 		}
 		Arrays.sort(results, new CompletionProposalComparator() );		
+	}
+
+	private static void transpose(int offset, AbstractJavaCompletionProposal proposal) {
+		int wanted = proposal.getReplacementOffset() + (offset /*- start.length()*/);
+		if(wanted==proposal.getReplacementOffset() ) { 
+			//System.out.println("NO TRANSPOSE!");
+		}
+		if(wanted<0) {
+			wanted = 0;
+		}
+		proposal.setReplacementOffset(wanted);
 	}
 }
