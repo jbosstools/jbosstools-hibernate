@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.hibernate.eclipse.mapper.editors.xpl;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -58,16 +57,7 @@ public abstract class BaseXMLContentAssistProcessor extends XMLContentAssistProc
 		if (nameRegion != null) {
 			String attributeName = open.getText(nameRegion);
 			
-			List attributeValueProposals = new ArrayList();
-			if (0 == matchString.length()) {
-				for (char ch = 'a'; ch <= 'z'; ch++) {
-					String matchStrTmp = String.valueOf(ch);
-					attributeValueProposals.addAll(getAttributeValueProposals(attributeName, matchStrTmp, offset, contentAssistRequest));
-				}
-			}
-			else {
-				attributeValueProposals.addAll(getAttributeValueProposals(attributeName, matchString, offset, contentAssistRequest));
-			}
+			List attributeValueProposals = getAttributeValueProposals(attributeName, matchString, offset, contentAssistRequest);
 			if(attributeValueProposals!=null) {
 				for (Iterator iter = attributeValueProposals.iterator(); iter.hasNext();) {
 					ICompletionProposal element = (ICompletionProposal) iter.next();				
