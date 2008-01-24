@@ -28,6 +28,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.hibernate.eclipse.hqleditor.CompletionHelper;
 import org.hibernate.eclipse.hqleditor.HibernateResultCollector.Settings;
+import org.hibernate.util.StringHelper;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Node;
 
@@ -51,7 +52,12 @@ public class JavaTypeHandler implements HBMInfoHandler {
         settings.setAcceptInterfaces(true);
         settings.setAcceptPackages(true);
         settings.setAcceptTypes(true);
-	    return CompletionHelper.completeOnJavaTypes(project, settings,this.extractor.getPackageName(node), start, offset);            
+	    String packageName = this.extractor.getPackageName(node);
+	    if(StringHelper.isEmpty(start) && StringHelper.isNotEmpty(packageName)) {
+	    	// In case of an empty string we try and code complete the relevant package
+	    	start = packageName + ".";
+	    }
+		return CompletionHelper.completeOnJavaTypes(project, settings,packageName, start, offset);            
 	}
 	
 	
