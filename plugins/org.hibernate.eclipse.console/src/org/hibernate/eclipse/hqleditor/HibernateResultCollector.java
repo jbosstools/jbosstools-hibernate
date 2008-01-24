@@ -24,7 +24,6 @@ package org.hibernate.eclipse.hqleditor;
 import org.eclipse.jdt.core.CompletionProposal;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.compiler.CharOperation;
 import org.eclipse.jdt.ui.text.java.CompletionProposalCollector;
 
 /**
@@ -215,26 +214,5 @@ public class HibernateResultCollector extends CompletionProposalCollector {
 	
 	public void accept(CompletionProposal proposal) {
 		super.accept(proposal);
-	}
-
-	protected String filterPackage = null;
-
-	public void setFilterPackage(String filterPackage) {
-		this.filterPackage = filterPackage;
-	}
-
-	protected char[] getProposalPackage(CompletionProposal proposal) {
-		//return proposal.getPackageName();
-		return proposal.getDeclarationSignature();
-	}
-	
-	protected boolean isFiltered(CompletionProposal proposal) {
-		boolean res = super.isFiltered(proposal);
-		if (!res && null != filterPackage) {
-			if (!CharOperation.equals(getProposalPackage(proposal), filterPackage.toCharArray())) {
-				res = true;
-			}
-		}
-		return res;
 	}
 }

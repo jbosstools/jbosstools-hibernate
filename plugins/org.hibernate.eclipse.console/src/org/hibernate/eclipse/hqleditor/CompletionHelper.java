@@ -49,7 +49,6 @@ public class CompletionHelper {
 			}
 			
 			HibernateResultCollector rc = new HibernateResultCollector(javaProject);
-			rc.setFilterPackage(packageName);
 			rc.acceptContext(new CompletionContext());
 			//rc.reset(offset, javaProject, null);
 			rc.setAccepts(settings);
