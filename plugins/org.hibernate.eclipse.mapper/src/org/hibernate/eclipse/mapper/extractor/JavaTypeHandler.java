@@ -42,7 +42,7 @@ public class JavaTypeHandler implements HBMInfoHandler {
 	/**
 	 * @param extractor
 	 */
-	JavaTypeHandler(HBMInfoExtractor extractor) {
+	public JavaTypeHandler(HBMInfoExtractor extractor) {
 		this.extractor = extractor;
 	}
 

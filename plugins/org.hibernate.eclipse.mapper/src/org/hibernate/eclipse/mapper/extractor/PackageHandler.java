@@ -28,7 +28,7 @@ import org.hibernate.eclipse.hqleditor.HibernateResultCollector.Settings;
 import org.hibernate.util.StringHelper;
 import org.w3c.dom.Node;
 
-class PackageHandler extends JavaTypeHandler {
+public class PackageHandler extends JavaTypeHandler {
 	
 	public PackageHandler(HBMInfoExtractor extractor) {
 		super(extractor);					

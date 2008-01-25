@@ -477,7 +477,7 @@ public class HBMInfoExtractor {
 	 * @param root TODO
 	 * @return nearest package attribute, null if none found. 
 	 */
-	String getPackageName(Node root) {
+	protected String getPackageName(Node root) {
 		if(root!=null) {
 			while(!"hibernate-mapping".equals(root.getNodeName() ) ) {
 				root = root.getParentNode();
