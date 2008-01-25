@@ -64,13 +64,13 @@ public class OpenMappingFileTest extends TestCase {
 				openTest(persClass, consCFG);
 				props =  new PersistentClassWorkbenchAdapter().getChildren(persClass);
 				for (int j = 0; j < props.length; j++) {
-					if (props.getClass() != Property.class) continue;
+					if (props[j].getClass() != Property.class) continue;
 					openTest(props[j], consCFG);
 					Object[] compProperties = new PropertyWorkbenchAdapter().getChildren(props[j]);
 					for (int k = 0; k < compProperties.length; k++) {
 						//test Composite properties
 						if (compProperties[k].getClass() != Property.class) continue;
-						openPropertyTest((Property) props[j], (Property)compProperties[k], consCFG);
+						openPropertyTest((Property)compProperties[k], (Property) props[j], consCFG);
 					}
 				}
 			}
@@ -84,7 +84,9 @@ public class OpenMappingFileTest extends TestCase {
 		try {
 			editor = OpenMappingAction.run(compositeProperty, parentProperty, consCFG);
 			boolean highlighted = ProjectUtil.checkHighlighting(editor);
-			if (!highlighted) fail("Highlighted region for " + compositeProperty.getNodeName() + " is empty.");
+			if (!highlighted) 
+				fail("Highlighted region for property" + compositeProperty.getNodeName() + " is empty. (package " 
+				+ HibernateAllMappingTests.getActivePackage().getElementName() + ")");
 			Object[] compProperties = new PropertyWorkbenchAdapter().getChildren(compositeProperty);
 			for (int k = 0; k < compProperties.length; k++) {
 				//test Composite properties
@@ -100,8 +102,8 @@ public class OpenMappingFileTest extends TestCase {
 			ex = e;
 		}				
 		if (ex == null ) ex = ProjectUtil.getExceptionIfItOccured(editor);
-		if (ex != null) fail("Mapping file for " + compositeProperty.getNodeName()
-				+ " not opened:\n" + ex.getMessage());
+		if (ex != null) fail("Mapping file for property" + compositeProperty.getNodeName() + " not opened: (package " 
+				+ HibernateAllMappingTests.getActivePackage().getElementName() + ")\n" + ex.getMessage());
 	}
 	
 	private void openTest(Object selection, ConsoleConfiguration consCFG){
@@ -110,7 +112,9 @@ public class OpenMappingFileTest extends TestCase {
 		try {
 			editor = OpenMappingAction.run(selection, consCFG);
 			boolean highlighted = ProjectUtil.checkHighlighting(editor);
-			if (!highlighted) fail("Highlighted region for " + selection + " is empty.");
+			if (!highlighted) 
+				fail("Highlighted region for " + selection + " is empty. (package " 
+				+ HibernateAllMappingTests.getActivePackage().getElementName() + ")");
 		} catch (PartInitException e) {
 			ex = e;
 		} catch (JavaModelException e) {
@@ -119,8 +123,8 @@ public class OpenMappingFileTest extends TestCase {
 			ex = e;
 		}		
 		if (ex == null ) ex = ProjectUtil.getExceptionIfItOccured(editor);
-		if (ex != null) fail("Mapping file for " + selection/*.getClassName()*/
-				+ " not opened:\n" + ex.getMessage());
+		if (ex != null) fail("Mapping file for " + selection + " not opened (package " 
+				+ HibernateAllMappingTests.getActivePackage().getElementName() + ") :\n" + ex.getMessage());
 	}
 	
 	
