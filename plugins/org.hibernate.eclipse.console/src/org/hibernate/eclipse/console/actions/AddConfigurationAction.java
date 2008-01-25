@@ -88,6 +88,7 @@ public class AddConfigurationAction extends Action {
 			if(i!=Window.OK) {
 				saved.delete();
 			} else { 
+				wc = saved.getWorkingCopy();
 				wc.setAttribute(TEMPORARY_CONFIG_FLAG, (String)null); // Must be set to null since it should never be in the actual saved configuration!
 				wc.doSave();
 			}
