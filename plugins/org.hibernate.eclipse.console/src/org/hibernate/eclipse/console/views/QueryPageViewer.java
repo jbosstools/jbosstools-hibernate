@@ -176,6 +176,7 @@ public class QueryPageViewer {
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH) );
 
 		this.tabItem.setText(this.queryPage.getQueryString().replace('\n', ' ').replace('\r', ' ') );
+		this.tabItem.setToolTipText(this.queryPage.getQueryString());
 		/* different icon dependent on java/hql etc.
 		if (this.queryPage.getEntity() == null) {
 			this.tabItem.setImage(ImageStore.getImage(ImageStore.SCRIPT) );

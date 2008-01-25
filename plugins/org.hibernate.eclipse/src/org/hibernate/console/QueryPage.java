@@ -79,4 +79,6 @@ public interface QueryPage {
 	
     public void addException(Throwable he);
     
+    /** Return result size if known, -1 if not */ 
+    public int getResultSize();
 }

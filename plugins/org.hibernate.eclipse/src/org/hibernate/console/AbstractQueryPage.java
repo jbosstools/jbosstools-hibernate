@@ -51,6 +51,14 @@ public abstract class AbstractQueryPage implements QueryPage {
     	id = i;    
     }
 
+    public int getResultSize() {
+		if(list==null) { 
+			return -1;
+		} else {
+			return list.size();
+		}
+	}
+
 	public AbstractQueryPage(ConsoleConfiguration cfg) {
 		this.cfg = cfg;
 	}

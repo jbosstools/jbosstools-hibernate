@@ -63,7 +63,8 @@ public class HQLQueryPage extends AbstractQueryPage {
 		}
 		return list;
 	}
-
+		
+	
 	private void setupParameters(Query query2, QueryInputModel model) {
 		
 		if(model.getMaxResults()!=null) {

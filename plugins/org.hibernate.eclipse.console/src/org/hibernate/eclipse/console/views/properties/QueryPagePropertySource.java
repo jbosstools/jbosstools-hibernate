@@ -37,23 +37,32 @@ public class QueryPagePropertySource implements IPropertySource2
 
 	private static final Object CONFIGURATION_TEXT = "QueryPage.consoleConfiguration";
 	
+	private static final String QUERY_SIZE = "QueryPage.size";
+	
 	static {
-		descriptors = new IPropertyDescriptor[2];
+		descriptors = new IPropertyDescriptor[3];
         PropertyDescriptor descriptor;
 
         // query string
         descriptor = new TextPropertyDescriptor(QUERY_TEXT,
                 "Query string");
-        descriptor.setAlwaysIncompatible(true);
+        descriptor.setAlwaysIncompatible(false);
         //descriptor.setCategory(IResourcePropertyConstants.P_FILE_SYSTEM_CATEGORY);
         descriptors[0] = descriptor;
         
         // configuration name
         descriptor = new TextPropertyDescriptor(CONFIGURATION_TEXT,
                 "Console configuration");
-        descriptor.setAlwaysIncompatible(true);
+        descriptor.setAlwaysIncompatible(false);
         //descriptor.setCategory(IResourcePropertyConstants.P_FILE_SYSTEM_CATEGORY);
         descriptors[1] = descriptor;
+        
+        // number of items
+        descriptor = new TextPropertyDescriptor(QUERY_SIZE,
+                "Query size");
+        descriptor.setAlwaysIncompatible(false);
+        //descriptor.setCategory(IResourcePropertyConstants.P_FILE_SYSTEM_CATEGORY);
+        descriptors[2] = descriptor;
     }
 	
 	public QueryPagePropertySource (QueryPage page) {
@@ -78,6 +87,10 @@ public class QueryPagePropertySource implements IPropertySource2
 		}
 		if(QUERY_TEXT.equals(id) ) {
 			return page.getQueryString();
+		}
+		if(QUERY_SIZE.equals(id) ) {
+			int resultSize = page.getResultSize();
+			return resultSize==-1?"(unknown)":resultSize;
 		}
 		
 		return null;		
