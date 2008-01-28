@@ -40,6 +40,7 @@ public abstract class AbstractQueryPage implements QueryPage {
     private Session session;
 	private final ConsoleConfiguration cfg;
     protected List list;
+    protected long queryTime = -1;				//shows how long query runs
     List pathNames;
     protected boolean sticky = true;
     private List exceptions = new ArrayList();
@@ -138,5 +139,9 @@ public abstract class AbstractQueryPage implements QueryPage {
 
 	public ConsoleConfiguration getConsoleConfiguration() {
 		return cfg;
+	}
+	
+	public long getQueryTime(){
+		return queryTime;
 	}
 }

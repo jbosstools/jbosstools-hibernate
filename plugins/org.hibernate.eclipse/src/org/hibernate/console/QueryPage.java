@@ -31,6 +31,11 @@ import org.hibernate.Session;
  *
  */
 public interface QueryPage {
+	/**
+	 * Returns query run time in milliseconds
+	 * @return 
+	 */
+	public abstract long getQueryTime();
 		
     public abstract List getList();
     /**

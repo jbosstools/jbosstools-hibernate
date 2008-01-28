@@ -123,7 +123,9 @@ public class JavaPage extends AbstractQueryPage {
         if(list!=null) return list;
         try {
             if(criteria!=null) {
+            	long startTime = System.currentTimeMillis();				
                 list = criteria.list();
+                queryTime = System.currentTimeMillis() - startTime;
             } 
             else {
                 return Collections.EMPTY_LIST;

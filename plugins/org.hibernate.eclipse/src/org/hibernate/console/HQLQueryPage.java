@@ -46,7 +46,9 @@ public class HQLQueryPage extends AbstractQueryPage {
 				//list = query.list();
 				list = new ArrayList();
 				setupParameters(query, model);
+				long startTime = System.currentTimeMillis();
 				Iterator iter = query.list().iterator(); // need to be user-controllable to toggle between iterate, scroll etc.
+				queryTime = System.currentTimeMillis() - startTime;
 				while (iter.hasNext() ) {
 					Object element = iter.next();
 					list.add(element);
