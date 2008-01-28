@@ -39,8 +39,10 @@ public class QueryPagePropertySource implements IPropertySource2
 	
 	private static final String QUERY_SIZE = "QueryPage.size";
 	
+	private static final String QUERY_TIME = "QueryPage.time";
+	
 	static {
-		descriptors = new IPropertyDescriptor[3];
+		descriptors = new IPropertyDescriptor[4];
         PropertyDescriptor descriptor;
 
         // query string
@@ -63,6 +65,12 @@ public class QueryPagePropertySource implements IPropertySource2
         descriptor.setAlwaysIncompatible(false);
         //descriptor.setCategory(IResourcePropertyConstants.P_FILE_SYSTEM_CATEGORY);
         descriptors[2] = descriptor;
+        
+     // time of query running
+        descriptor = new TextPropertyDescriptor(QUERY_TIME,
+                "Query run time");
+        descriptor.setAlwaysIncompatible(false);
+        descriptors[3] = descriptor;
     }
 	
 	public QueryPagePropertySource (QueryPage page) {
@@ -91,6 +99,12 @@ public class QueryPagePropertySource implements IPropertySource2
 		if(QUERY_SIZE.equals(id) ) {
 			int resultSize = page.getResultSize();
 			return resultSize==-1?"(unknown)":resultSize;
+		}
+		if(QUERY_TIME.equals(id) ) {
+			long resultTime = page.getQueryTime();
+			if (resultTime==-1) return"(unknown)";
+			if (resultTime > 1000) return (resultTime / 1000) + "." + (resultTime / 100) % 10 +" sec";
+			return resultTime + " millisec";
 		}
 		
 		return null;		
