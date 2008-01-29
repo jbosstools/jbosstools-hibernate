@@ -101,9 +101,8 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
     		startWord = getWord( doc, startOffset, wordLength );            
     		
     		if(startWord!=null) {
-    			char[] cs = new char[0];
 				try {
-					cs = doc.get(0,doc.getLength()).toCharArray();
+					doc.get(0,doc.getLength()).toCharArray();
 				}
 				catch (BadLocationException e) {
 					errorMessage = "Could not get document contents";
@@ -111,7 +110,10 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
 				}
 				
 				Configuration configuration = consoleConfiguration!=null?consoleConfiguration.getConfiguration():null;
-				
+				if(configuration == null && consoleConfiguration!=null) {
+					errorMessage = "Configuration not opened";
+					return new ICompletionProposal[]{ new LoadConsoleCFGCompletionProposal(consoleConfiguration) };				
+				}
 				IHQLCodeAssist hqlEval = new HQLCodeAssist(configuration);
 				EclipseHQLCompletionRequestor eclipseHQLCompletionCollector = new EclipseHQLCompletionRequestor();
 				hqlEval.codeComplete(doc.get(), currentOffset, eclipseHQLCompletionCollector);
