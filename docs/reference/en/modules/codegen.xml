@@ -5,8 +5,10 @@
   <para>When using <emphasis>
       <property>&lt;hbm2java&gt;</property>
     </emphasis> or the eclipse plugin to generate POJO java code you have the possibility to control
-    certain aspects of the code generation. This is primarily done through the &lt;meta&gt;
-    tag in the mapping files. The following section describes the possible meta tags and their use.</para>
+    certain aspects of the code generation. This is primarily done through the <emphasis>
+      <property>&lt;meta&gt;</property></emphasis>
+    tag in the mapping files. The following section describes the possible <emphasis>
+      <property>&lt;meta&gt;</property></emphasis> tags and their use.</para>
 
   <section>
     <title>The <literal>&lt;meta&gt;</literal> attribute</title>
