@@ -287,11 +287,12 @@
             </property>
           </emphasis> exists, and a <emphasis>
             <property>
-              <literal>hibernate.properties</literal>
+              hibernate.properties
             </property>
           </emphasis> + fileset is used instead. </para>
         <note>
-          <para> Hibernate will still read any global <literal>/hibernate.properties</literal>
+          <title>Tip:</title>
+          <para> Hibernate will still read any global <emphasis><property>hibernate.properties</property></emphasis>
             available in the classpath, but the specified properties file here will override those
             values for any non-global property.</para>
         </note>
@@ -318,10 +319,15 @@
       <para>An <emphasis>
           <property>&lt;annotationconfiguration&gt;</property>
         </emphasis> is used when you want to read the metamodel from EJB3/Hibernate Annotations
-        based POJO's. To use it remember to put the jars file needed for using hibernate annotations
-        in the classpath of the <emphasis>
-          <property>&lt;taskdef&gt;</property>
-        </emphasis>.</para>
+        based POJO's.</para>
+      
+      <note>
+        <title>Tip:</title>
+        <para>To use it remember to put the jar files needed for using hibernate annotations
+          in the classpath of the <emphasis>
+            <property>&lt;taskdef&gt;</property>
+          </emphasis>, i. e. hibernate-annotations.jar and hibernate-commons-annotations.jar.</para>
+      </note>
 
       <para>The <emphasis>
           <property>&lt;annotationconfiguration&gt;</property>
@@ -423,7 +429,9 @@
           </property>
         </emphasis> is used to perform reverse engineering of the database from a JDBC connection.</para>
 
-      <para>This configuration works by reading the connection properties from</para>
+      <para>This configuration works by reading the connection properties either from <emphasis>
+        <property>hibernate.cfg.xml</property></emphasis> or <emphasis>
+          <property>hibernate.properties</property></emphasis> with a fileset.</para>
 
       <para>The <emphasis>
           <property>
@@ -518,9 +526,7 @@
 ]]></programlisting>
       </section>
     </section>
-  </section>
-
-  <section>
+  </section><section>
     <title>Exporters</title>
 
     <para>Exporters are the parts that does the actual job of converting the hibernate metamodel
@@ -882,6 +888,8 @@
     </section>
   </section>
 
+  
+
   <section>
     <title>Using properties to configure Exporters</title>
 
@@ -892,7 +900,7 @@
           <literal>&lt;propertyset&gt;</literal>
         </property>
       </emphasis> and each exporter will have access to them directly in the templates and via
-        <literal>Exporter.setProperties()</literal>.</para>
+      <property>Exporter.setProperties()</property>.</para>
 
     <section>
       <title><literal>&lt;property&gt;</literal> and
@@ -901,9 +909,11 @@
       <para>The <emphasis>
           <property>&lt;property&gt;</property>
         </emphasis> allows you bind a string value to a key. The value will be available in the
-        templates via $&lt;key&gt;. The following example will assign the string value <emphasis>
+        templates via <emphasis>
+          <property>$&lt;key&gt;</property></emphasis>. The following example will assign the string value <emphasis>
           <property>&quot;true&quot;</property>
-        </emphasis> to the variable <literal>$descriptors.</literal></para>
+          </emphasis> to the variable <emphasis>
+            <property>$descriptors</property></emphasis>.</para>
 
       <programlisting><![CDATA[<property key="descriptors" value="true"/>]]></programlisting>
 
