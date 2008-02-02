@@ -19,6 +19,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.ui.javaeditor.JavaEditor;
+import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
@@ -103,24 +104,19 @@ public class OpenSourceAction extends SelectionListenerAction {
 		} else {
 			type = proj.findType(fullyQualifiedName);
 		}
-		IResource resource = null;			
-		if (type != null) resource = type.getResource();	
 		
-		IEditorPart editorPart = null;
-		if (resource instanceof IFile){
-			editorPart = OpenFileActionUtils.openEditor(HibernateConsolePlugin.getDefault().getActiveWorkbenchWindow().getActivePage(), (IFile) resource);
-			if (editorPart instanceof JavaEditor) {
-				IJavaElement jElement = null;
-				if (selection instanceof Property){
-					jElement = type.getField(((Property)selection).getName());
-				} else {
-					jElement = type;
-				}        		
-				JavaEditor jEditor = (JavaEditor) editorPart;
-				selectionToEditor(jElement, jEditor);				
-			}        	
-		}               
-		
+		IEditorPart editorPart = JavaUI.openInEditor(type);
+		if (editorPart instanceof JavaEditor) {
+			IJavaElement jElement = null;
+			if (selection instanceof Property){
+				jElement = type.getField(((Property)selection).getName());
+			} else {
+				jElement = type;
+			}        		
+			JavaEditor jEditor = (JavaEditor) editorPart;
+			selectionToEditor(jElement, jEditor);				
+		}        	
+
 		if (editorPart == null) {
 			throw new FileNotFoundException("Source file for class '" + fullyQualifiedName + "' not found.");
 		}
