@@ -15,8 +15,10 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 
 /**
@@ -37,7 +39,11 @@ public class LoadConsoleCFGCompletionProposal implements ICompletionProposal {
 	public void apply(IDocument document) {
 		//load console configuration
 		if(consoleConfiguration.getConfiguration()==null) {
-			consoleConfiguration.build();
+			try {
+				consoleConfiguration.build();
+			} catch (HibernateException he) {
+				HibernateConsolePlugin.getDefault().showError(HibernateConsolePlugin.getDefault().getShell(), "Could not load configuration " + consoleConfiguration.getName(), he);
+			}
 		} 		
 	}
 
@@ -45,7 +51,7 @@ public class LoadConsoleCFGCompletionProposal implements ICompletionProposal {
 	 * @see org.eclipse.jface.text.contentassist.ICompletionProposal#getAdditionalProposalInfo()
 	 */
 	public String getAdditionalProposalInfo() {
-		return "Additional Info";
+		return "No open console configuration found.\nThis will attempt to open the console configuration\nto enable better code completion.";
 	}
 
 	/* (non-Javadoc)

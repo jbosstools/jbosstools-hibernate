@@ -75,6 +75,8 @@ public class HQLSourceViewerConfiguration extends SourceViewerConfiguration {
         assistant.setAutoActivationDelay( 500 );
         assistant.setProposalPopupOrientation( IContentAssistant.PROPOSAL_STACKED );        
         
+        assistant.setInformationControlCreator(getInformationControlCreator(sourceViewer));
+        
         return assistant;
     }
 

@@ -110,15 +110,16 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
 				}
 				
 				Configuration configuration = consoleConfiguration!=null?consoleConfiguration.getConfiguration():null;
-				if(configuration == null && consoleConfiguration!=null) {
-					errorMessage = "Configuration not opened";
-					return new ICompletionProposal[]{ new LoadConsoleCFGCompletionProposal(consoleConfiguration) };				
-				}
 				IHQLCodeAssist hqlEval = new HQLCodeAssist(configuration);
 				EclipseHQLCompletionRequestor eclipseHQLCompletionCollector = new EclipseHQLCompletionRequestor();
 				hqlEval.codeComplete(doc.get(), currentOffset, eclipseHQLCompletionCollector);
 				proposalList.addAll(eclipseHQLCompletionCollector.getCompletionProposals());
 				errorMessage = eclipseHQLCompletionCollector.getLastErrorMessage();
+				
+				if(configuration == null && consoleConfiguration!=null) {
+					proposalList.add(new LoadConsoleCFGCompletionProposal(consoleConfiguration));				
+				}
+				
     			//findMatchingWords( currentOffset, proposalList, startWord, HQLCodeScanner.getHQLKeywords(), "keyword" );
     			//findMatchingWords( currentOffset, proposalList, startWord, HQLCodeScanner.getHQLFunctionNames(), "function");
     			
@@ -149,7 +150,7 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
 
     public char[] getCompletionProposalAutoActivationCharacters() { return autoActivationChars; }
 
-    public char[] getContextInformationAutoActivationCharacters() { return new char[0]; }
+    public char[] getContextInformationAutoActivationCharacters() { return null; }
 
     public IContextInformationValidator getContextInformationValidator() { return validator; }
 
