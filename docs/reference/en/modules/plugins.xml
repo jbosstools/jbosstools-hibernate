@@ -65,7 +65,7 @@
       <title>Hibernate Configuration File Wizard</title>
       <mediaobject>
         <imageobject role="fo">
-          <imagedata contentwidth="5cm" fileref="images/plugins/plugins_1.png" format="PNG"/>
+          <imagedata contentwidth="5cm" fileref="images/plugins/plugins_1.png" format="PNG" scale="80"/>
         </imageobject>
 
         <imageobject role="html">
@@ -934,7 +934,7 @@
   <section id="map_config_editor">
     <title>Hibernate Mapping and Configuration File Editor</title>
 
-    <para>The Hibernate Mapping file editor provides XML editing functionality for the <emphasis>
+    <para>The <property>Hibernate Mapping File editor</property> provides XML editing functionality for the <emphasis>
         <property>hbm.xml </property>
       </emphasis> and <emphasis>
         <property>cfg.xml</property>
@@ -945,11 +945,11 @@
       <title>XML Editing Functionality</title>
       <mediaobject>
         <imageobject role="fo">
-          <imagedata fileref="images/hbmxmlcompletion.gif" format="GIF"/>
+          <imagedata fileref="images/plugins/plugins_9.png" format="PNG" scale="80"/>
         </imageobject>
 
         <imageobject role="html">
-          <imagedata align="center" fileref="images/hbmxmlcompletion.gif" format="GIF"/>
+          <imagedata align="center" fileref="images/plugins/plugins_9.png" format="PNG"/>
         </imageobject>
       </mediaobject>
     </figure>
@@ -971,24 +971,37 @@
       <figure>
         <title>Navigation Functionality</title>
         <para>
+          
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="images/hbmxml-typecompletion.png" format="PNG"/>
+              <imagedata fileref="images/plugins/plugins_10.png" format="PNG" scale="80"/>
+            </imageobject>
+            
+            <imageobject role="html">
+              <imagedata align="center" fileref="images/plugins/plugins_10.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+          
+          
+        <!--  <mediaobject>
+            <imageobject role="fo">
+              <imagedata fileref="images/plugins/plugins_10a.png" format="PNG"/>
             </imageobject>
 
             <imageobject role="html">
-              <imagedata align="center" fileref="images/hbmxml-typecompletion.png" format="PNG"/>
+              <imagedata align="center" fileref="images/plugins/plugins_10a.png" format="PNG"/>
             </imageobject>
           </mediaobject>
+          
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="images/hbmxml-namecompletion.png" format="PNG"/>
+              <imagedata fileref="images/images/plugins/plugins_10b.png" format="PNG"/>
             </imageobject>
 
             <imageobject role="html">
-              <imagedata align="center" fileref="images/hbmxml-namecompletion.PNG" format="PNG"/>
+              <imagedata align="center" fileref="images/plugins/plugins_10b.png" format="PNG"/>
             </imageobject>
-          </mediaobject>
+          </mediaobject>   -->
         </para>
       </figure>
 
@@ -1013,11 +1026,11 @@
         <title>Table and Column Completion</title>
         <mediaobject>
           <imageobject role="fo">
-            <imagedata fileref="images/hbmxml-tablecompletion.png" format="PNG"/>
+            <imagedata fileref="images/plugins/plugins_11.png" format="PNG" />
           </imageobject>
 
           <imageobject role="html">
-            <imagedata align="center" fileref="images/hbmxml-tablecompletion.png" format="PNG"/>
+            <imagedata align="center" fileref="images/plugins/plugins_11.png" format="PNG"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -1053,7 +1066,7 @@
         <title>Property Completion</title>
         <mediaobject>
           <imageobject role="fo">
-            <imagedata fileref="images/plugins/plugins_12.png" format="PNG"/>
+            <imagedata fileref="images/plugins/plugins_12.png" format="PNG" />
           </imageobject>
 
           <imageobject role="html">
