@@ -1065,7 +1065,7 @@
      kind="action" name="AddClassCache"/>
     <XActionItem HandlerClassName="%Redirect%" ICON="main.hibernate.any"
      PROPERTIES="sourcepath=Caches;actionpath=CreateActions/AddCollectionCache"
-     WizardClassName="%Default%" displayName="Class Cache..."
+     WizardClassName="%Default%" displayName="Collection Cache..."
      kind="action" name="AddCollectionCache"/>
     <XActionItem HandlerClassName="%Redirect%" ICON="main.hibernate.any"
      PROPERTIES="sourcepath=Events;actionpath=CreateActions/AddEvent"
