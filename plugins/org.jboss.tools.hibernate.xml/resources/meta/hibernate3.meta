@@ -108,7 +108,7 @@
   AdoptManagerClass="org.jboss.tools.hibernate.xml.model.handlers.FolderOwnerAdopt"
   ImplementationLoadingClass="org.jboss.tools.hibernate.xml.model.HibernateLoader"
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.FileHibernateImpl"
-  ObjectEditorClass="%XML%"
+  ObjectEditorClass="org.jboss.tools.hibernate.ui.xml.editor.Hibernate3CompoundEditor"
   PROPERTIES="loaderKind=file;formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="hibernate-mapping" name="FileHibernate3">
   <XChildrenEntities>
