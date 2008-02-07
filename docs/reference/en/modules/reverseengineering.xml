@@ -152,7 +152,7 @@
       </section>
     </section>
 
-    <section id="type_map">
+    <section>
       <title>Type mappings (&lt;type-mapping&gt;)</title>
 
       <para>The <emphasis>
@@ -188,7 +188,8 @@
  <sql-type jdbc-type="NUMERIC" precision="15" hibernate-type="big_decimal"/>
  <sql-type jdbc-type="NUMERIC" not-null="true" hibernate-type="long" />
  <sql-type jdbc-type="NUMERIC" not-null="false" hibernate-type="java.lang.Long" />
- <sql-type jdbc-type="VARCHAR" length="1" not-null="true" hibernate-type="java.lang.Character"/>
+ <sql-type jdbc-type="VARCHAR" length="1" not-null="true" 
+       hibernate-type="java.lang.Character"/>
  <sql-type jdbc-type="VARCHAR" hibernate-type="your.package.TrimStringUserType"/>
  <sql-type jdbc-type="VARCHAR" length="1" hibernate-type="char"/>
  <sql-type jdbc-type="VARCHAR" hibernate-type="string"/>
@@ -397,7 +398,7 @@
       </programlistingco>
     </section>
 
-    <section id="tab_and_col">
+    <section>
       <title>Specific table configuration (&lt;table&gt;)</title>
 
       <para><emphasis>

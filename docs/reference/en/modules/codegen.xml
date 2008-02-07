@@ -463,11 +463,15 @@ public class Person implements Serializable, IAuditable {
         <para>The contents of the file is something like this:</para>
 
         <programlisting>&lt;#foreach property in pojo.getAllPropertiesIterator()&gt;
-    ${pojo.getPropertyGetModifiers(property)} ${pojo.getJavaTypeName(property, jdk5)} ${pojo.getGetterSignature(property)}() {
+    ${pojo.getPropertyGetModifiers(property)} 
+    ${pojo.getJavaTypeName(property, jdk5)} 
+    ${pojo.getGetterSignature(property)}() {
         return this.${property.name};
     }
     
-    ${pojo.getPropertySetModifiers(property)} void set${pojo.getPropertyName(property)}(${pojo.getJavaTypeName(property, jdk5)} ${property.name}) {
+    ${pojo.getPropertySetModifiers(property)} void set${pojo.getPropertyName(property)}
+        (${pojo.getJavaTypeName(property, jdk5)} ${property.name}) 
+    {
         this.${property.name} = ${property.name};
     }
 &lt;/#foreach&gt;</programlisting>
@@ -476,11 +480,16 @@ public class Person implements Serializable, IAuditable {
           generation just adding a little Freemarker syntax to the above source code:</para>
 
         <programlisting>&lt;#foreach property in pojo.getAllPropertiesIterator()&gt;
-    ${pojo.getPropertyGetModifiers(property)} ${pojo.getJavaTypeName(property, jdk5)} ${pojo.getGetterSignature(property)}() {
+    ${pojo.getPropertyGetModifiers(property)} 
+    ${pojo.getJavaTypeName(property, jdk5)} 
+    ${pojo.getGetterSignature(property)}()
+    {
         return this.${property.name};
     }
     
-    ${pojo.getPropertySetModifiers(property)} void set${pojo.getPropertyName(property)}(${pojo.getJavaTypeName(property, jdk5)} ${property.name}) {
+    ${pojo.getPropertySetModifiers(property)} void set${pojo.getPropertyName(property)}
+        (${pojo.getJavaTypeName(property, jdk5)} ${property.name}) 
+        {
       &lt;#if pojo.hasMetaAttribute(property, "pre-cond")&gt; 
        ${c2j.getMetaAsString(property, "pre-cond","\n")} 
       &lt;/#if&gt;      
