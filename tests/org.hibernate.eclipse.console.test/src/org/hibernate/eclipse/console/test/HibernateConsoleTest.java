@@ -93,7 +93,7 @@ public abstract class HibernateConsoleTest extends TestCase {
 				if (!display.readAndDispatch())
 					display.sleep();
 			}
-			display.update();
+			//display.update();
 		}
 
 		// Otherwise, perform a simple sleep.
@@ -110,8 +110,8 @@ public abstract class HibernateConsoleTest extends TestCase {
 	 * Wait until all background tasks are complete.
 	 */
 	public void waitForJobs() {
-		while (noMoreJobs())
-			delay(1000);
+		while (Platform.getJobManager().currentJob() != null)
+			delay(2000);
 	}
 	
 	public boolean noMoreJobs() {
