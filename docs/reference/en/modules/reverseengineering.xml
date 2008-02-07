@@ -152,7 +152,7 @@
       </section>
     </section>
 
-    <section>
+    <section id="type_map">
       <title>Type mappings (&lt;type-mapping&gt;)</title>
 
       <para>The <emphasis>
@@ -397,7 +397,7 @@
       </programlistingco>
     </section>
 
-    <section>
+    <section id="tab_and_col">
       <title>Specific table configuration (&lt;table&gt;)</title>
 
       <para><emphasis>
