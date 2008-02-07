@@ -99,7 +99,7 @@
       </emphasis> for the basis of a Console configuration.</para>
   </section>
 
-  <section>
+  <section id="console_conf">
     <title>Creating a Hibernate Console Configuration</title>
 
     <para>A Console configuration describes how the <property>Hibernate plugin</property> should
@@ -1076,7 +1076,7 @@
       <para>In <emphasis>
           <property>cfg.xml</property>
         </emphasis> code completion for the value of <emphasis>
-          <property>&lt;property&gt;  name</property>
+          <property>&lt;property&gt; name</property>
         </emphasis> attributes is available.</para>
 
 
@@ -1139,9 +1139,10 @@
       </mediaobject>
     </figure>
 
-    <para>Or you can get it via the <property>Code Generation Launcher</property> by checking the proper
-      section in the 
-      <emphasis><property>Main</property></emphasis> tab of the <link linkend="hib_code_gen">Hibernate Code Generation Wizard</link>.</para>
+    <para>Or you can get it via the <property>Code Generation Launcher</property> by checking the
+      proper section in the <emphasis>
+        <property>Main</property>
+      </emphasis> tab of the <link linkend="hib_code_gen">Hibernate Code Generation Wizard</link>.</para>
 
     <para>The following screenshot shows the <emphasis>
         <property>Overview</property>
@@ -1182,8 +1183,12 @@
 
     <para>The <emphasis>
         <property>Type Mappings</property>
-      </emphasis> page is used for specifying type mappings from jdbc types to any Hibernate type
-      (including usertypes) if the default rules are not applicable.</para>
+      </emphasis> page is used for specifying type mappings from JBDS types to any Hibernate type
+      (including usertypes) if the default rules are not applicable. Here again to see the database
+      tables press <emphasis>
+        <property>Refresh</property>
+      </emphasis> button underneath. More about type mappings you can find further in the <link
+        linkend="type_map">Type Mappings</link> section.</para>
 
     <figure>
       <title>Type Mappings Page</title>
@@ -1201,7 +1206,9 @@
     <para>The <emphasis>
         <property>Table and Columns</property>
       </emphasis> page allow the user to explicit set e.g. which hibernatetype and propertyname that
-      should be used in the reverse engineered model.</para>
+      should be used in the reverse engineered model. For more details on how to configure the
+      tables while reverse engineering read the <link linkend="tab_and_col">Specific table
+        configuration</link> section.</para>
 
     <figure>
       <title>Table and Columns Page</title>
@@ -1215,64 +1222,64 @@
         </imageobject>
       </mediaobject>
     </figure>
+    
+    
   </section>
 
   <section>
-    <title>Hibernate Console perspective</title>
+    <title>Hibernate Console Perspective</title>
 
     <para>The <property>Hibernate Console</property> perspective combines a set of views which allow
       you to see the structure of your mapped entities/classes, edit HQL queries, execute the
-      queries, and see the results. To use this perspective you need to create a console
-      configuration.</para>
+      queries, and see the results. To use this perspective you need to create a <link linkend="console_conf">Console
+      configuration</link>.</para>
 
     <section>
       <title>Viewing the entity structure</title>
 
-      <para>To view your new configuration and entity/class structure, expand the
-          <property>Hibernate Console</property> configuration by clicking on the + icon.</para>
-
-      <para>Clicking on the small <literal>+</literal> symbol allows you to browse the class/entity
+      <para>To view your new configuration and entity/class structure, switch to
+        <property>Hibernate Configurations View</property>. Expanding the tree allows you to browse the class/entity
         structure and see the relationships.</para>
 
       <figure>
         <title>Hibernate Console Perspective</title>
         <mediaobject>
           <imageobject role="fo">
-            <imagedata fileref="images/queryconsole.png"/>
+            <imagedata fileref="images/plugins/plugins_17.png"/>
           </imageobject>
 
           <imageobject role="html">
-            <imagedata align="center" fileref="images/queryconsole.png"/>
+            <imagedata align="center" fileref="images/plugins/plugins_17.png"/>
           </imageobject>
         </mediaobject>
 
       </figure>
 
-      <para><property>Hibernate Console</property> perspective shows entity structure, query editor
+      <para><property>Hibernate Console Perspective</property> shows entity structure, query editor
         and result.</para>
 
 
-      <para>The console configuration does not dynamically adjust to changes done in mappings and
-        java code; to reload the configuration select the configuration and click the <emphasis>
+      <para>The <property>Console Configuration</property> does not dynamically adjust to changes done in mappings and
+        java code. To reload the configuration select the configuration and click the <emphasis>
           <property>Reload</property>
         </emphasis> button in the view toolbar or in the context menu.</para>
       <section>
         <title>Mapping Diagram</title>
 
-        <para>A mapping diagram for entities are available by right clicking on the entity you want
+        <para>A <property>Mapping Diagram</property> for entities are available by right clicking on the entity you want
           a mapping diagram for and then choose <emphasis>
             <property>Open Mapping Diagram</property>
-          </emphasis></para>
+          </emphasis>.</para>
 
         <figure>
           <title>Mapping Diagram</title>
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="images/entitymodel.png"/>
+              <imagedata fileref="images/plugins/plugins_18.png"/>
             </imageobject>
 
             <imageobject role="html">
-              <imagedata align="center" fileref="images/entitymodel.png"/>
+              <imagedata align="center" fileref="images/plugins/plugins_18.png"/>
             </imageobject>
           </mediaobject>
         </figure>
