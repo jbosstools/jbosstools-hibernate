@@ -597,6 +597,63 @@
             id="org.hibernate.eclipse.hqleditor.preferencekeywords"
             label="hql editor colors coloring highlighting query"/>
    </extension>
+   <extension
+         point="org.eclipse.ltk.core.refactoring.renameParticipants">
+      <!--renameParticipant
+            class="org.hibernate.eclipse.launch.core.refactoring.RenameProjectParticipant"
+            id="org.hibernate.eclipse.launch.core.refactoring.RenameProjectParticipant"
+            name="Launch Configurations projectrename updates">
+         <enablement>
+            <with variable="element">
+                   <instanceof value="org.eclipse.jdt.core.IJavaProject"/>
+            </with>
+         </enablement>
+      </renameParticipant>
+      <renameParticipant
+            class="org.hibernate.eclipse.launch.core.refactoring.RenamePackageParticipant"
+            id="org.hibernate.eclipse.launch.core.refactoring.RenamePackageParticipant"
+            name="Launch Configurations package rename updates">
+            <enablement>
+            <with variable="element">
+                   <instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
+            </with>
+         </enablement>
+      </renameParticipant-->
+      <renameParticipant
+            class="org.hibernate.eclipse.launch.core.refactoring.RenameResourceParticipant"
+            id="org.hibernate.eclipse.launch.core.refactoring.RenameResourceParticipant"
+            name="Launch Configurations resource rename updates">
+           <enablement>
+            <with variable="element">
+                   <instanceof value="org.eclipse.core.resources.IResource"/>
+            </with>
+         </enablement>
+      </renameParticipant>
+   </extension>
+   <extension
+         point="org.eclipse.ltk.core.refactoring.moveParticipants">
+      <moveParticipant
+            class="org.hibernate.eclipse.launch.core.refactoring.MoveResourceParticipant"
+            id="org.hibernate.eclipse.launch.core.refactoring.MoveResourceParticipant"
+            name="Launch Configurations resource move updates">
+            <enablement>
+            <with variable="element">
+                   <instanceof value="org.eclipse.core.resources.IResource"/>
+            </with>
+         </enablement>
+      </moveParticipant>
+      <!--moveParticipant
+            class="org.hibernate.eclipse.launch.core.refactoring.MovePackageParticipant"
+            id="org.hibernate.eclipse.launch.core.refactoring.MovePackageParticipant"
+            name="Launch Configurations resource move updates">
+            <enablement>
+            <with variable="element">
+                   <instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
+            </with>
+         </enablement>
+      </moveParticipant-->
+      
+   </extension>
 <!--   <extension
          point="org.eclipse.ui.themes">
       <themeElementCategory
