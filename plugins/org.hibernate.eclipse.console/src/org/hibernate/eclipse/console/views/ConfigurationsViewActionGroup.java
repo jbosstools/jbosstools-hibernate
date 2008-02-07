@@ -138,8 +138,8 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 			menu.add(schemaExportAction);
 		}
 		menu.add(new Separator() );
-		if (first instanceof PersistentClass
-				|| first.getClass() == Property.class){			
+		// TODO: shouldn't these and maybe the others not be defined via menu extension points ?
+		if (first != null && (first instanceof PersistentClass || first.getClass() == Property.class)) {			
 			menu.add(openSourceAction);
 			menu.add(openMappingAction);
 		}
