@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +29,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -38,6 +41,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.PackageFragmentRoot;
+import org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin;
 
 
 /**
@@ -109,13 +113,16 @@ public class MappingTestProject{
 		project.delete(true, true, null);
 	}
 	
-	private void buildBigTestProject() throws JavaModelException, CoreException {
+	private void buildBigTestProject() throws JavaModelException, CoreException, IOException {
 		project = buildNewProject(PROJECT_NAME);
 		javaProject = buildJavaProject(project);
 		
-		
 		IPath resourcePath = new Path(RESOURCE_PATH);
 		File resourceFolder = resourcePath.toFile();
+		URL entry = HibernateConsoleTestPlugin.getDefault().getBundle().getEntry(RESOURCE_PATH);
+		URL resProject = FileLocator.resolve(entry);
+		String tplPrjLcStr= FileLocator.resolve(resProject).getFile();
+		resourceFolder = new File(tplPrjLcStr);
 		if (!resourceFolder.exists()) 
 			throw new RuntimeException("Folder " + RESOURCE_PATH + " not found!");
 				
@@ -340,7 +347,7 @@ public class MappingTestProject{
 			StringWriter writer = new StringWriter();
 			int bytes_read;
 			while ((bytes_read = reader.read(buffer)) != -1)
-			{
+			{resourceFolder.exists()
 				writer.write(buffer, 0, bytes_read);
 			}
 			return (writer.toString());

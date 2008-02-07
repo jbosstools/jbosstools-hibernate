@@ -1,9 +1,13 @@
 package org.hibernate.eclipse.console.test;
 
+import java.util.logging.Logger;
+
 import junit.framework.TestCase;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.jobs.IJobManager;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.ui.IPackagesViewPart;
 import org.eclipse.jdt.ui.JavaUI;
@@ -106,8 +110,19 @@ public abstract class HibernateConsoleTest extends TestCase {
 	 * Wait until all background tasks are complete.
 	 */
 	public void waitForJobs() {
-		while (Platform.getJobManager().currentJob() != null)
+		while (noMoreJobs())
 			delay(1000);
+	}
+	
+	public boolean noMoreJobs() {
+		Job[] queuedJobs= Job.getJobManager().find(null);
+		for (int i= 0; i < queuedJobs.length; i++) {
+			Job entry= queuedJobs[i];
+			if (entry.getState() == Job.RUNNING || entry.getState() == Job.WAITING) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	protected SimpleTestProject getProject() {

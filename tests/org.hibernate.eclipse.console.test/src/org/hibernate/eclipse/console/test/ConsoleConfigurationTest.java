@@ -1,11 +1,14 @@
 package org.hibernate.eclipse.console.test;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
 
 import junit.framework.TestCase;
 
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Platform;
 import org.hibernate.SessionFactory;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ConsoleConfigurationListener;
@@ -13,6 +16,7 @@ import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryPage;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
+import org.osgi.framework.Bundle;
 import org.w3c.dom.Element;
 
 public class ConsoleConfigurationTest extends TestCase {
@@ -54,7 +58,15 @@ public class ConsoleConfigurationTest extends TestCase {
 		}
 	
 		public File getConfigXMLFile() {
-			return null;
+			File xmlConfig = null;
+			Bundle bundle = HibernateConsoleTestPlugin.getDefault().getBundle();
+			try {
+				URL url = FileLocator.resolve(bundle.getEntry("/res/project/hibernate.cfg.xml"));
+				xmlConfig = new File(url.getFile());
+			} catch (IOException e) {
+				fail("Cannot find /res/project/hibernate.cfg.xml file");
+			}
+			return xmlConfig;
 		}
 	
 		public Properties getProperties() {
