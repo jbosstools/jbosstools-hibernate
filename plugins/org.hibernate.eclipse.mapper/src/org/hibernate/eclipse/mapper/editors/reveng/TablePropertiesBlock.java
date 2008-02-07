@@ -87,7 +87,7 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		FormToolkit toolkit = managedForm.getToolkit();
 		Section section = toolkit.createSection( parent, Section.DESCRIPTION );
 		section.setText( "Tables && Columns" );
-		section.setDescription( "Explicitly control settings for table && columns for which the defaults is not applicable. Click Add, select the relevant tables && columns and adjust their settings here." );
+		section.setDescription( "Explicitly control settings for table & columns for which the defaults is not applicable. Click Add, select the relevant tables & columns and adjust their settings here." );
 		section.marginWidth = 10;
 		section.marginHeight = 5;
 		toolkit.createCompositeSeparator( section );
