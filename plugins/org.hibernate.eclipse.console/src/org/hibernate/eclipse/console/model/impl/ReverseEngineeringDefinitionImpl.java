@@ -54,7 +54,7 @@ public class ReverseEngineeringDefinitionImpl implements
 	}
 
 	public ITableFilter createTableFilter() {		
-		return new TableFilterImpl();
+		return new TableFilterImpl(this);
 	}
 
 	List tableFilters = new ArrayList();
@@ -69,8 +69,17 @@ public class ReverseEngineeringDefinitionImpl implements
 		pcs.firePropertyChange(property, old, newValue);
 	}
 
+	protected void updateTableFilter(ITableFilter updated) {
+		firePropertyChange("tableFilter", null, updated);		
+	}
+	
 	public ITableFilter[] getTableFilters() {
 		return (ITableFilter[]) tableFilters.toArray(new ITableFilter[tableFilters.size()]);
+	}
+
+	public void removeAllTableFilters() {
+		tableFilters.clear();
+		firePropertyChange(TABLEFILTER_STRUCTURE, null, null);
 	}
 
 	public void removeTableFilter(ITableFilter item) {

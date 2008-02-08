@@ -27,25 +27,35 @@ import org.hibernate.eclipse.console.model.ITableFilter;
 public class TableFilterImpl implements ITableFilter {
 
 	TableFilter tf = new TableFilter();
+	private final ReverseEngineeringDefinitionImpl revModel;
 	
+	protected TableFilterImpl(
+			ReverseEngineeringDefinitionImpl reverseEngineeringDefinitionImpl) {
+				this.revModel = reverseEngineeringDefinitionImpl;		
+	}
+
 	public void setExclude(Boolean exclude) {
 		tf.setExclude(exclude);
+		revModel.updateTableFilter(this);
 	}
 
 	public void setMatchCatalog(String catalog) {
 		tf.setMatchCatalog(catalog);
+		revModel.updateTableFilter(this);
 	}
 
 	public void setMatchSchema(String schema) {
 		tf.setMatchSchema(schema);
+		revModel.updateTableFilter(this);
 	}
 
 	public void setMatchName(String name) {
 		tf.setMatchName(name);
+		revModel.updateTableFilter(this);
 	}
 
 	public Boolean getExclude() {
-		return tf.getExclude();
+		return tf.getExclude();		
 	}
 
 	public String getMatchCatalog() {

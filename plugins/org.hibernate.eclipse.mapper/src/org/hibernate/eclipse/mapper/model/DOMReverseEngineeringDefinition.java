@@ -31,6 +31,7 @@ import org.eclipse.wst.sse.core.internal.provisional.INodeAdapterFactory;
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
+import org.hibernate.dialect.FirebirdDialect;
 import org.hibernate.eclipse.console.model.IRevEngColumn;
 import org.hibernate.eclipse.console.model.IRevEngGenerator;
 import org.hibernate.eclipse.console.model.IRevEngPrimaryKey;
@@ -97,7 +98,7 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 	public ITableFilter createTableFilter() {		
 		return (ITableFilter) factory.adapt((INodeNotifier) getDocument().createElement("table-filter"));
 	}
-
+	
 	public void addTableFilter(ITableFilter filter) {
 		if ( filter instanceof TableFilterAdapter ) {
 			TableFilterAdapter tf = (TableFilterAdapter) filter;
@@ -149,6 +150,14 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 
 	public ITableFilter[] getTableFilters() {
 		return (ITableFilter[]) getTableFiltersList().toArray(new ITableFilter[0]);
+	}
+
+	public void removeAllTableFilters() {
+		List list = getTableFiltersList();
+		for (java.util.Iterator it = list.iterator(); it.hasNext(); ) {
+			ITableFilter filter = (ITableFilter)it.next();
+			removeTableFilter(filter);
+		}
 	}
 
 	public void removeTableFilter(ITableFilter filter) {
@@ -346,5 +355,4 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 		return (IRevEngGenerator) factory.adapt((INodeNotifier) getDocument().createElement("generator"));
 	}
 
-	
 }

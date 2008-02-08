@@ -37,11 +37,14 @@ public interface IReverseEngineeringDefinition {
 	
 	ITableFilter createTableFilter();
 	void addTableFilter(ITableFilter filter);
+	
 	ITableFilter[] getTableFilters();
+	void removeAllTableFilters();
 	void removeTableFilter(ITableFilter item);
 	void moveTableFilterDown(ITableFilter item);
 	void moveTableFilterUp(ITableFilter item);
-
+    
+	
 	ITypeMapping[] getTypeMappings();
 	ITypeMapping createTypeMapping();
 	void removeTypeMapping(ITypeMapping item);

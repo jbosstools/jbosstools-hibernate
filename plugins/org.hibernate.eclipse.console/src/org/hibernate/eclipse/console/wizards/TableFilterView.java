@@ -21,11 +21,17 @@
  */
 package org.hibernate.eclipse.console.wizards;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
+import org.eclipse.jface.viewers.ICellEditorListener;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
@@ -38,6 +44,7 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 import org.hibernate.eclipse.console.model.ITableFilter;
+import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.eclipse.console.workbench.DeferredContentProvider;
 import org.hibernate.eclipse.console.workbench.LazyDatabaseSchema;
 import org.hibernate.eclipse.console.workbench.TableContainer;
@@ -201,6 +208,12 @@ public abstract class TableFilterView extends TreeToTableComposite {
 			break;
 		default:
 			throw new IllegalArgumentException( i + " not a known button" );
+		}
+	}
+
+	protected void doRemoveAll() {
+		if(MessageDialog.openQuestion( getShell(), "Remove all filters" , "Do you want to remove all filters ?")) {
+			revEngDef.removeAllTableFilters();
 		}
 	}
 

@@ -236,9 +236,9 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 	}
 
 	private ConsoleConfiguration askForConsoleConfiguration() {
-		ChooseConsoleConfigurationDialog dialog = new ChooseConsoleConfigurationDialog(getContainer().getShell(),null);
+		ChooseConsoleConfigurationDialog dialog = new ChooseConsoleConfigurationDialog(getContainer().getShell(),"");
 		dialog.prompt();
-		if(dialog.getSelectedConfigurationName()==null) {
+		if(StringHelper.isEmpty(dialog.getSelectedConfigurationName())) {
 			return null;
 		} else {
 			return KnownConfigurations.getInstance().find( dialog.getSelectedConfigurationName() ); // TODO: double check to see if an result is actually returned ?

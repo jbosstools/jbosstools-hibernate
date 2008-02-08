@@ -21,7 +21,13 @@
  */
 package org.hibernate.eclipse.console.wizards;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.ComboDialogField;
+import org.eclipse.jdt.internal.ui.wizards.dialogfields.DialogField;
+import org.eclipse.jdt.internal.ui.wizards.dialogfields.IDialogFieldListener;
+import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -29,6 +35,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 import org.hibernate.eclipse.console.model.ITableFilter;
 import org.hibernate.eclipse.console.model.impl.ReverseEngineeringDefinitionImpl;
 
@@ -70,6 +77,13 @@ public class TableFilterWizardPage extends WizardPage {
 		consoleConfigurationName.setItems(names);
 		
 		consoleConfigurationName.doFillIntoGrid(container, 3);
+
+		IDialogFieldListener fieldlistener = new IDialogFieldListener() {
+			public void dialogFieldChanged(DialogField field) {
+				dialogChanged();
+			}
+		};
+		consoleConfigurationName.setDialogFieldListener(fieldlistener);
 		
 		TreeToTableComposite tfc = createTableFilterPart( container );
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -81,7 +95,42 @@ public class TableFilterWizardPage extends WizardPage {
 		if(selectedConfiguratonName!=null) {
 			consoleConfigurationName.setText(selectedConfiguratonName);			
 		}
-	}
+		dialogChanged();
+	}    
+
+    private void updateWarningStatus(String message) {
+        setMessage(message, IMessageProvider.WARNING);
+    }
+
+    /**
+     * Ensures that contents is ok.
+     */
+    private void dialogChanged() {
+    
+    	if (hasDuplicates()) {
+        	updateWarningStatus("Table filters contains duplicates.");
+            return;
+        }
+
+    	updateWarningStatus(null);
+    }
+    
+    protected boolean hasDuplicates() {
+    	boolean res = false; 
+    	ITableFilter[] filters = getTableFilters();
+    	for (int i = 1; i < filters.length; i++) {
+        	for (int j = 0; j < i; j++) {
+        		if (filters[i].getExclude().equals(filters[j].getExclude()) &&
+        			filters[i].getMatchCatalog().equals(filters[j].getMatchCatalog()) &&
+        			filters[i].getMatchSchema().equals(filters[j].getMatchSchema()) &&
+        			filters[i].getMatchName().equals(filters[j].getMatchName())) {
+        			res = true;
+        			break;
+        		}
+        	}
+    	}
+    	return res;
+    }
 
 	private TreeToTableComposite createTableFilterPart(Composite container) {
 		tfc = new TableFilterView(container, SWT.NULL){
@@ -91,7 +140,14 @@ public class TableFilterWizardPage extends WizardPage {
 			}
 		
 		}; 
-		tfc.setModel(new ReverseEngineeringDefinitionImpl());
+		
+		IReverseEngineeringDefinition model = new ReverseEngineeringDefinitionImpl();
+		model.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				dialogChanged();
+			}
+		});
+		tfc.setModel(model);
 		return tfc;
 	}
 
