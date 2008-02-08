@@ -37,6 +37,7 @@ Export-Package: org.hibernate.eclipse.builder,
  org.hibernate.eclipse.hqleditor,
  org.hibernate.eclipse.hqleditor.preferences,
  org.hibernate.eclipse.launch,
+ org.hibernate.eclipse.launch.core.refactoring,
  org.hibernate.eclipse.nature,
  org.hibernate.eclipse.util.xpl
 Require-Bundle: org.hibernate.eclipse,
@@ -64,5 +65,6 @@ Require-Bundle: org.hibernate.eclipse,
  org.eclipse.jdt.launching,
  org.eclipse.jdt.debug.ui,
  org.eclipse.core.filesystem,
- org.eclipse.core.variables
+ org.eclipse.core.variables,
+ org.eclipse.ltk.core.refactoring
 Eclipse-LazyStart: true
