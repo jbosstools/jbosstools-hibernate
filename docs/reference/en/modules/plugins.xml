@@ -1222,8 +1222,8 @@
         </imageobject>
       </mediaobject>
     </figure>
-    
-    
+
+
   </section>
 
   <section>
@@ -1231,14 +1231,14 @@
 
     <para>The <property>Hibernate Console</property> perspective combines a set of views which allow
       you to see the structure of your mapped entities/classes, edit HQL queries, execute the
-      queries, and see the results. To use this perspective you need to create a <link linkend="console_conf">Console
-      configuration</link>.</para>
+      queries, and see the results. To use this perspective you need to create a <link
+        linkend="console_conf">Console configuration</link>.</para>
 
     <section>
       <title>Viewing the entity structure</title>
 
-      <para>To view your new configuration and entity/class structure, switch to
-        <property>Hibernate Configurations View</property>. Expanding the tree allows you to browse the class/entity
+      <para>To view your new configuration and entity/class structure, switch to <property>Hibernate
+          Configurations View</property>. Expanding the tree allows you to browse the class/entity
         structure and see the relationships.</para>
 
       <figure>
@@ -1259,15 +1259,17 @@
         and result.</para>
 
 
-      <para>The <property>Console Configuration</property> does not dynamically adjust to changes done in mappings and
-        java code. To reload the configuration select the configuration and click the <emphasis>
+      <para>The <property>Console Configuration</property> does not dynamically adjust to changes
+        done in mappings and java code. To reload the configuration select the configuration and
+        click the <emphasis>
           <property>Reload</property>
         </emphasis> button in the view toolbar or in the context menu.</para>
       <section>
         <title>Mapping Diagram</title>
 
-        <para>A <property>Mapping Diagram</property> for entities are available by right clicking on the entity you want
-          a mapping diagram for and then choose <emphasis>
+        <para>To get a visual feel on how entities are related and view their structure a
+            <property>Mapping Diagram</property> is provided. It is available by right clicking on
+          the entity you want a mapping diagram for and then choose <emphasis>
             <property>Open Mapping Diagram</property>
           </emphasis>.</para>
 
@@ -1290,27 +1292,47 @@
     <section>
       <title>Prototyping Queries</title>
 
-      <para>Queries can be prototyped by entering them in the HQL or Criteria editor. The query
-        editors are opened by right-clicking the Console configuration and selecting either <emphasis>
-          <property>HQL Editor</property>
-        </emphasis> or <emphasis>
-          <property>Criteria Editor</property>
-        </emphasis>.</para>
+      <para>Queries can be prototyped by entering them in the <property>HQL</property> or
+          <property>Criteria Editor</property>. The query editors are opened by right-clicking the
+          <property>Console Configuration</property> and selecting either <property>HQL
+        Editor</property> or <property>Hibernate Criteria Editor</property>. The editors
+        automatically detect the chosen configuration.</para>
+      
+      <para>If the menu item is disabled then you need at first to create an <property>Session
+          Factory</property>. That is done by simply expanding the <property>Session
+        Factory</property> node.</para>
 
-      <para>If the menu item is disabled then you need to first create an SessionFactory. That is
-        done by simply expanding the Session Factory node.</para>
+      <para>Not to enter manually simple queries like &apos;<emphasis>from
+        Customer</emphasis>&apos; or like on the figure below, you can do it with the editors
+        help by brining up the context menu for a necessary item and choosing <emphasis><property>HQL
+          Editor</property></emphasis> or <emphasis><property>Hibernate Criteria Editor</property></emphasis>.</para>
+
+      <figure>
+        <title>Entering Simple Queries</title>
+        <mediaobject>
+          <imageobject role="fo">
+            <imagedata fileref="images/plugins/plugins_19.png" format="PNG"/>
+          </imageobject>
+
+          <imageobject role="html">
+            <imagedata align="center" fileref="images/plugins/plugins_19.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
 
       <para>Executing the query is done by clicking the green run button in the toolbar or pressing <emphasis>
           <property>Ctrl+Enter</property>
         </emphasis>.</para>
 
-      <para>Errors during creation of the <literal>SessionFactory</literal> or running the queries
-        (e.g. if your configuration or query is incorrect) will be shown in a message dialog or
-        inclined in the view that detected the error, you may get more information about the error
-        in the Error Log view on the right pane.</para>
+      <para>Errors during creation of the <property>Session Factory</property> or running the
+        queries (e.g. if your configuration or query is incorrect) will be shown in a message dialog
+        or inclined in the view that detected the error, you may get more information about the
+        error in the <property>Error Log View</property> on the right pane.</para>
 
-      <para>Results of a query will be shown in the Query result view and details of possible errors
-        (syntax errors, database errors, etc.) can be seen in the Error Log view.</para>
+      <para>Results of a query will be shown in the <property>Hibernate Query Result View</property>
+        and details of possible errors (syntax errors, database errors, etc.) can be seen in the
+          <property>Error Log View</property>.</para>
+
 
       <note>
         <para>HQL queries are executed by default using <literal>list()</literal> thus without any
@@ -1322,46 +1344,44 @@
       <section>
         <title>Dynamic Query Translator</title>
 
-        <para>If the <emphasis>
-            <property>Hibernate Dynamic Query Translator</property>
-          </emphasis> view is visible while writing in the HQL editor it will show the generated SQL
-          for a HQL query.</para>
+        <para>If the <property>Hibernate Dynamic Query Translator View</property> is visible while
+          writing in the <property>HQL Editor</property> it will show the generated SQL for a HQL
+          query.</para>
 
         <figure>
           <title>Hibernate Dynamic Query Translator View</title>
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="images/dynamicquerytranslation.png" format="PNG"/>
+              <imagedata fileref="images/plugins/plugins_20.png" format="PNG"/>
             </imageobject>
 
             <imageobject role="html">
-              <imagedata align="center" fileref="images/dynamicquerytranslation.png" format="PNG"/>
+              <imagedata align="center" fileref="images/plugins/plugins_20.png" format="PNG"/>
             </imageobject>
           </mediaobject>
         </figure>
 
-        <para>The translation is done each time you stop typing into the editor, if there are an
-          error in the HQL the parse exception will be shown embedded in the view.</para>
+        <para>The translation is done each time you stop typing into the editor, if there are errors
+          in the HQL the parse exception will be shown embedded in the view.</para>
       </section>
     </section>
 
     <section>
-      <title>Properties view</title>
+      <title>Properties View</title>
 
-      <para>The <emphasis>
-          <property>Properties</property>
-        </emphasis> view shows the structure of any selected persistent object in the results view.
-        Editing is not yet supported.</para>
+      <para>The <property>Properties View</property> shows the structure of any selected persistent
+        object in the <property>Hibernate Query Results View</property>. Editing is not yet
+        supported.</para>
 
       <figure>
         <title>Properties View</title>
         <mediaobject>
           <imageobject role="fo">
-            <imagedata fileref="images/properties.png" format="PNG"/>
+            <imagedata fileref="images/plugins/plugins_21.png" format="PNG"/>
           </imageobject>
 
           <imageobject role="html">
-            <imagedata align="center" fileref="images/properties.png" format="PNG"/>
+            <imagedata align="center" fileref="images/plugins/plugins_21.png" format="PNG"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -1372,9 +1392,7 @@
     <title>Enable debug logging in the plugins</title>
 
     <para>It is possible to configure the eclipse plugin to route all logging made by the plugins
-      and hibernate code it self to the <emphasis>
-        <property>Error log</property>
-      </emphasis> view in Eclipse.</para>
+      and hibernate code it self to the <property>Error Log View</property> in Eclipse.</para>
 
     <para>This is done by editing the <emphasis>
         <property>hibernate-log4j.properties</property>
@@ -1382,8 +1400,14 @@
         <property>org.hibernate.eclipse/ directory/jar</property>
       </emphasis>. This file includes a default configuration that only logs WARN and above to a set
       of custom appenders (PluginFileAppender and PluginLogAppender). You can change these settings
-      to be as verbose or silent as you please - see hibernate documentation for interesting
-      categories and log4j documentation for how to configure logging via a log4j property
-    file.</para>
+      to be as verbose or silent as you please - see <ulink url="http://www.hibernate.org/5.html"
+        >Hibernate Documentation</ulink> for interesting categories and Log4j documentation.</para>
+
+    <section>
+      <title>Relevant Resources Links</title>
+      <para>Find more on how to configure logging via a log4j property file in <ulink
+          url="http://supportweb.cs.bham.ac.uk/docs/tutorials/docsystem/build/tutorials/log4j/log4j.html"
+          >Log4j documentation</ulink>.</para>
+    </section>
   </section>
 </chapter>
