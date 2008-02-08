@@ -54,7 +54,7 @@ public class HibernateRefactoringUtil {
 		IConsoleConfigurationLaunchConstants.FILE_MAPPINGS,	
 	};
 	
-	static boolean isConfigurationChanged(ILaunchConfiguration config, IPath oldPath) throws CoreException{
+	public static boolean isConfigurationChanged(ILaunchConfiguration config, IPath oldPath) throws CoreException{
 		String attrib = null;
 		for (int i = 0; i < stringAttribs.length; i++) {
 			attrib = config.getAttribute(stringAttribs[i], (String)null);
