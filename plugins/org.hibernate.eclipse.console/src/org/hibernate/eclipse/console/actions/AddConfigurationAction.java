@@ -21,6 +21,8 @@
  */
 package org.hibernate.eclipse.console.actions;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
@@ -84,13 +86,25 @@ public class AddConfigurationAction extends Action {
 			ILaunchConfigurationWorkingCopy wc = launchConfigurationType.newInstance(null, launchName);
 			wc.setAttribute(TEMPORARY_CONFIG_FLAG, true); 
 			ILaunchConfiguration saved = wc.doSave();			
-			int i = DebugUITools.openLaunchConfigurationPropertiesDialog( part.getSite().getShell(), saved, "org.eclipse.debug.ui.launchGroup.run" );
-			if(i!=Window.OK) {
-				saved.delete();
-			} else { 
-				wc = saved.getWorkingCopy();
-				wc.setAttribute(TEMPORARY_CONFIG_FLAG, (String)null); // Must be set to null since it should never be in the actual saved configuration!
-				wc.doSave();
+			int res = DebugUITools.openLaunchConfigurationPropertiesDialog( part.getSite().getShell(), saved, "org.eclipse.debug.ui.launchGroup.run" );
+			List<ILaunchConfiguration> listTempConfigs = new ArrayList<ILaunchConfiguration>(); 
+			ILaunchConfiguration[] configs = launchManager.getLaunchConfigurations(launchConfigurationType);
+			for (int i = 0; i < configs.length; i++) {
+				boolean temporary = configs[i].getAttribute(AddConfigurationAction.TEMPORARY_CONFIG_FLAG, false);
+				if (temporary) {
+					listTempConfigs.add(configs[i]);
+				}
+			}
+			if (res != Window.OK) {
+				for (int i = 0; i < listTempConfigs.size(); i++) {
+					listTempConfigs.get(i).delete();
+				}
+			} else {
+				for (int i = 0; i < listTempConfigs.size(); i++) {
+					wc = listTempConfigs.get(i).getWorkingCopy();
+					wc.setAttribute(TEMPORARY_CONFIG_FLAG, (String)null); // Must be set to null since it should never be in the actual saved configuration!
+					wc.doSave();
+				}
 			}
 			
 		} catch (CoreException ce) {
