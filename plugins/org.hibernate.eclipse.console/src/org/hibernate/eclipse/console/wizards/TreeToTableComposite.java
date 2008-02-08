@@ -144,6 +144,7 @@ public class TreeToTableComposite extends Composite {
 	private Button upButton = null;
 	private Button downButton = null;
 	private Button removeButton = null;
+	private Button removeAllButton = null;
 	private Label fillLabel = null;
 	private Composite composite = null;
 	private Label label = null;
@@ -261,12 +262,19 @@ public class TreeToTableComposite extends Composite {
 		removeButton = new Button(manipulationGroup, SWT.NONE);
 		removeButton.setText("Remove");
 		removeButton.setLayoutData(gridData3);
-		removeButton
-				.addSelectionListener( new org.eclipse.swt.events.SelectionAdapter() {
-					public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-						doRemove();
-					}
-				} );
+		removeButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				doRemove();
+			}
+		});
+		removeAllButton = new Button(manipulationGroup, SWT.NONE);
+		removeAllButton.setText("Remove All");
+		removeAllButton.setLayoutData(gridData3);
+		removeAllButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
+			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
+				doRemoveAll();
+			}
+		});
 	}
 
 	private void createAddButtons(Composite parent) {
@@ -298,6 +306,11 @@ public class TreeToTableComposite extends Composite {
 	}
 
 	protected void doRemove() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	protected void doRemoveAll() {
 		// TODO Auto-generated method stub
 		
 	}
@@ -392,6 +405,16 @@ public class TreeToTableComposite extends Composite {
 	protected void doRefreshTree() {
 
 		
+	}
+		
+	public void setEnabled(boolean enabled) {
+		upButton.setEnabled(enabled);
+		downButton.setEnabled(enabled);
+		removeButton.setEnabled(enabled);
+		refreshButton.setEnabled(enabled);
+		for (int i = 0; i < addButtons.length; i++) {
+			addButtons[i].setEnabled(enabled);
+		}
 	}
 
 }  //  @jve:decl-index=0:visual-constraint="10,10"
