@@ -262,7 +262,7 @@ set       toc,title
 <xsl:param name="index.term.separator"/>
 <xsl:param name="index.range.separator"/>
 <xsl:param name="index.prefer.titleabbrev" select="0"/>
-<xsl:param name="ignore.image.scaling" select="0"/>
+<xsl:param name="ignore.image.scaling" select="1"/>
 <xsl:param name="inherit.keywords" select="1"/>
 <xsl:param name="insert.xref.page.number">no</xsl:param>
 <xsl:param name="javahelp.encoding">iso-8859-1</xsl:param>

@@ -112,7 +112,7 @@
         <xsl:variable name="Version">
             <xsl:choose>
                 <xsl:when test="//releaseinfo">
-                    <xsl:text>JBoss </xsl:text>
+                    <xsl:text></xsl:text>
                     <xsl:value-of select="//releaseinfo"/>
                 </xsl:when>
                 <xsl:otherwise>
@@ -215,7 +215,7 @@
 
     <xsl:param name="tablecolumns.extension">0</xsl:param>
     <!-- FOP provide only PDF Bookmarks at the moment -->
-    <xsl:param name="fop.extensions">1</xsl:param>
+    <xsl:param name="fop1.extensions">1</xsl:param>
     
     
     

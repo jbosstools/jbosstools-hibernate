@@ -37,6 +37,15 @@
         </fileset>
     </path>
 
+    <property name="fop.home" value="${support.dir}/lib"/>
+    
+    <taskdef name="fop" 
+        classname="org.apache.fop.tools.anttasks.Fop">
+        <classpath refid="lib.classpath">
+            
+        </classpath>
+    </taskdef>
+
     <!-- ################################################################## -->
 
     <target name="all.doc" depends="clean">
@@ -141,14 +150,24 @@
         </xslt>
 -->
         <!-- Create a PDF from the XSL/FO. -->
-        <java classname="org.apache.fop.apps.Fop" 
+        
+        <fop format="application/pdf"
+            basedir="${build.dir}/${lang}/pdf"
+            outfile="${build.dir}/${lang}/pdf/${pdf.name}"
+            fofile="${build.dir}/${lang}/pdf/docbook_fop.tmp"
+            messagelevel="debug">
+            
+        </fop>
+        
+<!--        <java classname="org.apache.fop.cli.Main" 
 	      maxmemory="${maxmem}"
               fork="true" dir="${basedir}" failonerror="true">
             <classpath refid="lib.classpath"/>
+            <sysproperty key="fop.home" path="${support.dir}/lib"/>
             <arg value="${build.dir}/${lang}/pdf/docbook_fop.tmp"/>
             <arg value="${build.dir}/${lang}/pdf/${pdf.name}"/>
         </java>
-
+-->
         <!-- Delete temporary files. -->
         <delete file="${build.dir}/${lang}/pdf/docbook_fop.tmp"/>
         <delete dir="${build.dir}/${lang}/pdf/images"/>
