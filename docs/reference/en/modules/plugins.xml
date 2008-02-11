@@ -67,8 +67,7 @@
       <title>Hibernate Configuration File Wizard</title>
       <mediaobject>
         <imageobject role="fo">
-          <imagedata contentwidth="5cm" fileref="images/plugins/plugins_1.png" format="PNG"
-            scale="80"/>
+          <imagedata align="center" fileref="images/plugins/plugins_1.png" format="PNG"/>
         </imageobject>
 
         <imageobject role="html">
@@ -127,7 +126,7 @@
       <title> Creating Hibernate Console Configuration</title>
       <mediaobject>
         <imageobject role="fo">
-          <imagedata fileref="images/plugins/plugins_2.png" format="PNG"/>
+          <imagedata align="center" fileref="images/plugins/plugins_2.png" format="PNG"/>
         </imageobject>
 
         <imageobject role="html">
@@ -514,7 +513,8 @@
         <title>Hibernate Code Generation Wizard</title>
         <mediaobject>
           <imageobject role="fo">
-            <imagedata fileref="images/plugins/plugins_7.png" format="PNG"/>
+            <imagedata align="center" scale="80" fileref="images/plugins/plugins_7.png" format="PNG"
+            />
           </imageobject>
 
           <imageobject role="html">
@@ -724,7 +724,8 @@
         <title>Selecting Exporters</title>
         <mediaobject>
           <imageobject role="fo">
-            <imagedata fileref="images/plugins/plugins_8.png" format="PNG"/>
+            <imagedata align="center" scale="80" fileref="images/plugins/plugins_8.png" format="PNG"
+            />
           </imageobject>
 
           <imageobject role="html">
@@ -878,9 +879,9 @@
                 </entry>
 
                 <entry>
-                  <para>Specifies which type of model elements the exporter should create a file and
-                    run through the templates. Possible values are: entity, component,
-                  configuration</para>
+                  <para>Specifies for which type of model elements the exporter should create a file
+                    and run through the templates. Possible values are: entity, component,
+                    configuration</para>
                 </entry>
               </row>
 
@@ -961,7 +962,7 @@
       <title>XML Editing Functionality</title>
       <mediaobject>
         <imageobject role="fo">
-          <imagedata fileref="images/plugins/plugins_9.png" format="PNG" scale="80"/>
+          <imagedata align="center" scale="80" fileref="images/plugins/plugins_9.png" format="PNG"/>
         </imageobject>
 
         <imageobject role="html">
@@ -990,34 +991,14 @@
 
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="images/plugins/plugins_10.png" format="PNG" scale="80"/>
+              <imagedata align="center" fileref="images/plugins/plugins_10.png" format="PNG"
+                scale="80"/>
             </imageobject>
 
             <imageobject role="html">
               <imagedata align="center" fileref="images/plugins/plugins_10.png" format="PNG"/>
             </imageobject>
           </mediaobject>
-
-
-          <!--  <mediaobject>
-            <imageobject role="fo">
-              <imagedata fileref="images/plugins/plugins_10a.png" format="PNG"/>
-            </imageobject>
-
-            <imageobject role="html">
-              <imagedata align="center" fileref="images/plugins/plugins_10a.png" format="PNG"/>
-            </imageobject>
-          </mediaobject>
-          
-          <mediaobject>
-            <imageobject role="fo">
-              <imagedata fileref="images/images/plugins/plugins_10b.png" format="PNG"/>
-            </imageobject>
-
-            <imageobject role="html">
-              <imagedata align="center" fileref="images/plugins/plugins_10b.png" format="PNG"/>
-            </imageobject>
-          </mediaobject>   -->
         </para>
       </figure>
 
@@ -1042,7 +1023,8 @@
         <title>Table and Column Completion</title>
         <mediaobject>
           <imageobject role="fo">
-            <imagedata fileref="images/plugins/plugins_11.png" format="PNG"/>
+            <imagedata align="center" scale="80" fileref="images/plugins/plugins_11.png"
+              format="PNG"/>
           </imageobject>
 
           <imageobject role="html">
@@ -1084,7 +1066,8 @@
         <title>Property Completion</title>
         <mediaobject>
           <imageobject role="fo">
-            <imagedata fileref="images/plugins/plugins_12.png" format="PNG"/>
+            <imagedata align="center" scale="80" fileref="images/plugins/plugins_12.png"
+              format="PNG"/>
           </imageobject>
 
           <imageobject role="html">
@@ -1130,7 +1113,8 @@
       <title>Overview Page</title>
       <mediaobject>
         <imageobject role="fo">
-          <imagedata fileref="images/plugins/plugins_13a.png" format="PNG"/>
+          <imagedata align="center" scale="80" fileref="images/plugins/plugins_13a.png" format="PNG"
+          />
         </imageobject>
 
         <imageobject role="html">
@@ -1153,7 +1137,8 @@
       <title>Overview Page</title>
       <mediaobject>
         <imageobject role="fo">
-          <imagedata fileref="images/plugins/plugins_13.png" format="PNG"/>
+          <imagedata align="center" scale="80" fileref="images/plugins/plugins_13.png" format="PNG"
+          />
         </imageobject>
 
         <imageobject role="html">
@@ -1172,7 +1157,8 @@
       <title>Table Filters Page</title>
       <mediaobject>
         <imageobject role="fo">
-          <imagedata fileref="images/plugins/plugins_14.png" format="PNG"/>
+          <imagedata align="center" scale="80" fileref="images/plugins/plugins_14.png" format="PNG"
+          />
         </imageobject>
 
         <imageobject role="html">
@@ -1194,7 +1180,8 @@
       <title>Type Mappings Page</title>
       <mediaobject>
         <imageobject role="fo">
-          <imagedata fileref="images/plugins/plugins_15.png" format="PNG"/>
+          <imagedata align="center" scale="80" fileref="images/plugins/plugins_15.png" format="PNG"
+          />
         </imageobject>
 
         <imageobject role="html">
@@ -1214,7 +1201,8 @@
       <title>Table and Columns Page</title>
       <mediaobject>
         <imageobject role="fo">
-          <imagedata fileref="images/plugins/plugins_16.png" format="PNG"/>
+          <imagedata align="center" scale="80" fileref="images/plugins/plugins_16.png" format="PNG"
+          />
         </imageobject>
 
         <imageobject role="html">
@@ -1223,13 +1211,14 @@
       </mediaobject>
     </figure>
 
-
+    <para>Now that you have configured all necessary parts, you can learn how to work with
+        <property>Hibernate Console Perspective</property>.</para>
   </section>
 
   <section>
     <title>Hibernate Console Perspective</title>
 
-    <para>The <property>Hibernate Console</property> perspective combines a set of views which allow
+    <para>The <property>Hibernate Console Perspective</property>  combines a set of views which allow
       you to see the structure of your mapped entities/classes, edit HQL queries, execute the
       queries, and see the results. To use this perspective you need to create a <link
         linkend="console_conf">Console configuration</link>.</para>
@@ -1245,7 +1234,7 @@
         <title>Hibernate Console Perspective</title>
         <mediaobject>
           <imageobject role="fo">
-            <imagedata fileref="images/plugins/plugins_17.png"/>
+            <imagedata align="center" scale="80" fileref="images/plugins/plugins_17.png"/>
           </imageobject>
 
           <imageobject role="html">
@@ -1277,7 +1266,7 @@
           <title>Mapping Diagram</title>
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="images/plugins/plugins_18.png"/>
+              <imagedata align="center" scale="80" fileref="images/plugins/plugins_18.png"/>
             </imageobject>
 
             <imageobject role="html">
@@ -1297,21 +1286,25 @@
           <property>Console Configuration</property> and selecting either <property>HQL
         Editor</property> or <property>Hibernate Criteria Editor</property>. The editors
         automatically detect the chosen configuration.</para>
-      
+
       <para>If the menu item is disabled then you need at first to create an <property>Session
           Factory</property>. That is done by simply expanding the <property>Session
         Factory</property> node.</para>
 
       <para>Not to enter manually simple queries like &apos;<emphasis>from
         Customer</emphasis>&apos; or like on the figure below, you can do it with the editors
-        help by brining up the context menu for a necessary item and choosing <emphasis><property>HQL
-          Editor</property></emphasis> or <emphasis><property>Hibernate Criteria Editor</property></emphasis>.</para>
+        help by brining up the context menu for a necessary item and choosing <emphasis>
+          <property>HQL Editor</property>
+        </emphasis> or <emphasis>
+          <property>Hibernate Criteria Editor</property>
+        </emphasis>.</para>
 
       <figure>
         <title>Entering Simple Queries</title>
         <mediaobject>
           <imageobject role="fo">
-            <imagedata fileref="images/plugins/plugins_19.png" format="PNG"/>
+            <imagedata align="center" scale="80" fileref="images/plugins/plugins_19.png"
+              format="PNG"/>
           </imageobject>
 
           <imageobject role="html">
@@ -1352,7 +1345,8 @@
           <title>Hibernate Dynamic Query Translator View</title>
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="images/plugins/plugins_20.png" format="PNG"/>
+              <imagedata align="center" scale="80" fileref="images/plugins/plugins_20.png"
+                format="PNG"/>
             </imageobject>
 
             <imageobject role="html">
@@ -1377,7 +1371,8 @@
         <title>Properties View</title>
         <mediaobject>
           <imageobject role="fo">
-            <imagedata fileref="images/plugins/plugins_21.png" format="PNG"/>
+            <imagedata align="center" scale="80" fileref="images/plugins/plugins_21.png"
+              format="PNG"/>
           </imageobject>
 
           <imageobject role="html">
