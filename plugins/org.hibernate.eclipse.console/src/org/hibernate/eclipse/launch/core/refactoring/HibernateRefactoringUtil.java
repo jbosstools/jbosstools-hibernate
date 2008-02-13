@@ -27,6 +27,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -139,7 +140,11 @@ public class HibernateRefactoringUtil {
 		
 		//classpath
 		try {
-			updateClasspathEntries(config, oldPath, newPath, wc);
+			IRuntimeClasspathEntry[] entries = JavaRuntime.computeUnresolvedRuntimeClasspath(config);
+			List oldMementos = config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, Collections.EMPTY_LIST);
+			List<String> newMementos = new ArrayList<String>();
+			boolean isChanged = updateClasspathEntries(entries, oldMementos, newMementos, oldPath, newPath);
+			if (isChanged) wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, newMementos);
 		}
 		catch (CoreException e) {
 			HibernateConsolePlugin.getDefault().log( e );
@@ -152,17 +157,18 @@ public class HibernateRefactoringUtil {
 			return config;
 		}
 	}
-
-	private static void updateClasspathEntries(ILaunchConfiguration config,
-			IPath oldPath, IPath newPath,
-			final ILaunchConfigurationWorkingCopy wc)
+	
+	/*
+	 * Use  IRuntimeClasspathEntry[] and oldMementos instead of entries[i].getMemento(), because
+	 * when resource renamed instead of internalArchive you can have externalArchive.
+	 */
+	public static boolean updateClasspathEntries(IRuntimeClasspathEntry[] entries, List<String> oldMementos, List<String> newMementos, IPath oldPath, IPath newPath)
 			throws CoreException {
+		Assert.isNotNull(newMementos);
+		Assert.isNotNull(entries.length == oldMementos.size());
 		boolean isChanged = false;
 		String attrib;
 		String projName;
-		IRuntimeClasspathEntry[] entries = JavaRuntime.computeUnresolvedRuntimeClasspath(config);
-		List<String> oldMementos = config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, Collections.EMPTY_LIST);
-		List<String> newMementos = new ArrayList<String>(entries.length);
 		for (int i = 0; i < entries.length; i++) {
 			IRuntimeClasspathEntry entry = entries[i];
 			attrib = entry.getPath() == null ? null
@@ -181,10 +187,10 @@ public class HibernateRefactoringUtil {
 				newMementos.add(entries[i].getMemento());
 			}			
 		}
-		if (isChanged) wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, newMementos);
+		return isChanged;
 	}
 	
-	public static String getUpdatedMemento(String memento, IPath newPath, IPath oldPath) throws CoreException{
+	private static String getUpdatedMemento(String memento, IPath newPath, IPath oldPath) throws CoreException{
 		String error_mess = "Error occured while updating classpath.";
 		DocumentBuilder builder;
 		try {
@@ -214,7 +220,7 @@ public class HibernateRefactoringUtil {
 								if (attrNames[j].equals("projectName") || attrNames[j].equals("javaProject")){
 									changedNode.setNodeValue(newPath.lastSegment());
 								} else {
-									changedNode.setNodeValue(getUpdatedPath(changedNode.getNodeValue(), oldPath, newPath).toString());
+									changedNode.setNodeValue(newPath.toString());
 								}
 							}
 						}
@@ -261,22 +267,6 @@ public class HibernateRefactoringUtil {
 			throw new CoreException(status);
 		}
 	}
-
-	/*public static IRuntimeClasspathEntry getUpdatedEntry(IPath oldPath,
-			IPath newPath, IRuntimeClasspathEntry entry) {
-		String attrib = getUpdatedPath(entry.getPath().toString(), oldPath, newPath);
-		IPath p = new Path(attrib).makeAbsolute();
-		
-		switch (entry.getClasspathEntry().getEntryKind()) {
-		case IClasspathEntry.CPE_PROJECT:
-			entry = new RuntimeClasspathEntry( JavaCore.newProjectEntry(p));
-			break;
-		default:
-			entry = JavaRuntime.newArchiveRuntimeClasspathEntry(p);
-			break;
-		}
-		return entry;
-	}*/
 
 	private static void updateAttributes(IPath oldPath, IPath newPath,
 			final ILaunchConfigurationWorkingCopy wc) throws CoreException {
