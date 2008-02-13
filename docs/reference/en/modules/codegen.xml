@@ -6,9 +6,10 @@
       <property>&lt;hbm2java&gt;</property>
     </emphasis> or the eclipse plugin to generate POJO java code you have the possibility to control
     certain aspects of the code generation. This is primarily done through the <emphasis>
-      <property>&lt;meta&gt;</property></emphasis>
-    tag in the mapping files. The following section describes the possible <emphasis>
-      <property>&lt;meta&gt;</property></emphasis> tags and their use.</para>
+      <property>&lt;meta&gt;</property>
+    </emphasis> tag in the mapping files. The following section describes the possible <emphasis>
+      <property>&lt;meta&gt;</property>
+    </emphasis> tags and their use.</para>
 
   <section>
     <title>The <literal>&lt;meta&gt;</literal> attribute</title>
@@ -33,27 +34,27 @@
         <property>&lt;meta&gt;</property>
       </emphasis> attributes and the resulting java code.</para>
 
-    <programlisting>&lt;class name="Person"&gt;
-    &lt;meta attribute="class-description"&gt;
+    <programlisting role="XML"><![CDATA[<class name="Person">
+    <meta attribute="class-description">
         Javadoc for the Person class
         @author Frodo
-    &lt;/meta&gt;
-    &lt;meta attribute="implements"&gt;IAuditable&lt;/meta&gt;
-    &lt;id name="id" type="long"&gt;
-        &lt;meta attribute="scope-set"&gt;protected&lt;/meta&gt;
-        &lt;generator class="increment"/&gt;
-    &lt;/id&gt;
-    &lt;property name="name" type="string"&gt;
-        &lt;meta attribute="field-description"&gt;The name of the person&lt;/meta&gt;
-    &lt;/property&gt;
-&lt;/class&gt;</programlisting>
+    </meta>
+    <meta attribute="implements">IAuditable</meta>
+    <id name="id" type="long">
+        <meta attribute="scope-set">protected</meta>
+        <generator class="increment"/>
+    </id>
+    <property name="name" type="string">
+        <meta attribute="field-description">The name of the person</meta>
+    </property>
+</class>]]></programlisting>
 
     <para>The above <emphasis>
         <property>hbm.xml</property>
       </emphasis> will produce something like the following (code shortened for better
       understanding). Notice the Javadoc comment and the protected set methods:</para>
 
-    <programlisting>// default package
+    <programlisting role="JAVA"><![CDATA[// default package
 
 import java.io.Serializable;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -96,13 +97,13 @@ public class Person implements Serializable, IAuditable {
         this.name = name;
     }
 
-}</programlisting>
+}]]></programlisting>
 
     <table frame="topbot">
       <title>Supported meta tags</title>
 
       <tgroup cols="2">
-        <colspec colwidth="1.5*"/>
+        <colspec colwidth="1.0*"/>
 
         <colspec colwidth="2*"/>
 
@@ -270,8 +271,8 @@ public class Person implements Serializable, IAuditable {
         attribute="implements"&gt;IAuditable&lt;/meta&gt;</emphasis> in the top of the <emphasis>
         <property>hbm.xml</property>
       </emphasis> file, just after <emphasis>
-        <property>&lt;hibernate-mapping&gt;</property>
-      </emphasis>. Now all classes defined in that <emphasis>
+        <property>&lt;hibernate-mapping&gt;</property>. </emphasis> Now all classes defined
+      in that <emphasis>
         <property>hbm.xml</property>
       </emphasis> file will implement <literal>IAuditable</literal>!</para>
 
@@ -306,48 +307,47 @@ public class Person implements Serializable, IAuditable {
 
         <para>If we have two entities with a bi-directional association between them and define at
           class scope level the meta attributes: <emphasis>
-            <property>use-in-string</property>
-          </emphasis>, <emphasis>
-            <property>use-in-equals</property>
-          </emphasis>:</para>
+            <property>use-in-string</property>, </emphasis>
+          <emphasis>
+            <property>use-in-equals</property>: </emphasis></para>
 
-        <programlisting>&lt;hibernate-mapping&gt;
-  &lt;class name="Person"&gt;
-    &lt;meta attribute="use-in-tostring"&gt;true&lt;/meta&gt;
-    &lt;meta attribute="use-in-equals"&gt;true&lt;/meta&gt;
+        <programlisting role="XML"><![CDATA[<hibernate-mapping>
+  <class name="Person">
+    <meta attribute="use-in-tostring">true</meta>
+    <meta attribute="use-in-equals">true</meta>
     ...
-  &lt;/class&gt;
-&lt;/hibernate-mapping&gt;</programlisting>
+  </class>
+</hibernate-mapping>]]></programlisting>
 
         <para>And for <emphasis>
             <property>Event.hbm</property>
           </emphasis> file:</para>
 
-        <programlisting>&lt;hibernate-mapping&gt;              
-  &lt;class name="events.Event" table="EVENTS"&gt;
-    &lt;meta attribute="use-in-tostring"&gt;true&lt;/meta&gt;
-    &lt;meta attribute="use-in-equals"&gt;true&lt;/meta&gt;                  
-    &lt;id name="id" column="EVENT_ID"&gt;
-        &lt;generator class="native"/&gt;
-    &lt;/id&gt;
-    &lt;property name="date" type="timestamp" column="EVENT_DATE"/&gt;
-    &lt;property name="title"/&gt;
-    &lt;set name="participants" table="PERSON_EVENT" inverse="true"&gt;
-        &lt;key column="EVENT_ID"/&gt;
-        &lt;many-to-many column="PERSON_ID" class="events.Person"/&gt;
-    &lt;/set&gt;                    
-  &lt;/class&gt;
-&lt;/hibernate-mapping&gt;</programlisting>
+        <programlisting role="XML"><![CDATA[<hibernate-mapping>              
+  <class name="events.Event" table="EVENTS">
+    <meta attribute="use-in-tostring">true</meta>
+    <meta attribute="use-in-equals">true</meta>                  
+    <id name="id" column="EVENT_ID">
+        <generator class="native"/>
+    </id>
+    <property name="date" type="timestamp" column="EVENT_DATE"/>
+    <property name="title"/>
+    <set name="participants" table="PERSON_EVENT" inverse="true">
+        <key column="EVENT_ID"/>
+        <many-to-many column="PERSON_ID" class="events.Person"/>
+    </set>                    
+  </class>
+</hibernate-mapping>]]></programlisting>
 
         <para>Then <emphasis>
             <property>&lt;hbm2java&gt;</property>
           </emphasis> will assume you want to include all properties and collections in the
-            <property>toString()</property>/<property>equals()</property> methods and this can
-          result in infinite recursive calls.</para>
+            <property>toString()/equals()</property> methods and this can result in infinite
+          recursive calls.</para>
 
         <para>To remedy this you have to decide which side of the association will include the other
-          part (if at all) in the <property>toString()/equals()</property>
-          methods. Therefore it is not a good practice to put at class scope such <emphasis>
+          part (if at all) in the <property>toString()/equals()</property> methods. Therefore it is
+          not a good practice to put at class scope such <emphasis>
             <property>meta</property>
           </emphasis> attributes, unless you are defining a class without bi-directional
           associations.</para>
@@ -356,54 +356,54 @@ public class Person implements Serializable, IAuditable {
             <property>meta</property>
           </emphasis> attributes at the property level:</para>
 
-        <programlisting>&lt;hibernate-mapping&gt;              
-  &lt;class name="events.Event" table="EVENTS"&gt;                  
-    &lt;id name="id" column="EVENT_ID"&gt;
-        &lt;meta attribute="use-in-tostring"&gt;true&lt;/meta&gt;
-        &lt;generator class="native"/&gt;
-    &lt;/id&gt;
-    &lt;property name="date" type="timestamp" column="EVENT_DATE"/&gt;
-    &lt;property name="title"&gt;
-      &lt;meta attribute="use-in-tostring"&gt;true&lt;/meta&gt;
-      &lt;meta attribute="use-in-equals"&gt;true&lt;/meta&gt;      
-    &lt;/property&gt;
-    &lt;set name="participants" table="PERSON_EVENT" inverse="true"&gt;
-        &lt;key column="EVENT_ID"/&gt;
-        &lt;many-to-many column="PERSON_ID" class="events.Person"/&gt;
-    &lt;/set&gt;                    
-  &lt;/class&gt;
-&lt;/hibernate-mapping&gt;</programlisting>
+        <programlisting role="XML"><![CDATA[<hibernate-mapping>             
+  <class name="events.Event" table="EVENTS">                  
+    <id name="id" column="EVENT_ID">
+        <meta attribute="use-in-tostring">true</meta>
+        <generator class="native"/>
+    </id>
+    <property name="date" type="timestamp" column="EVENT_DATE"/>
+    <property name="title">
+      <meta attribute="use-in-tostring">true</meta>
+      <meta attribute="use-in-equals">true</meta>      
+    </property>
+    <set name="participants" table="PERSON_EVENT" inverse="true">
+        <key column="EVENT_ID"/>
+        <many-to-many column="PERSON_ID" class="events.Person"/>
+    </set>                    
+  </class>
+</hibernate-mapping>]]></programlisting>
 
-        <para>and now for <literal>Person</literal>:</para>
+        <para>and now for <property>Person</property>:</para>
 
-        <programlisting>&lt;hibernate-mapping&gt;
-    &lt;class name="Person"&gt;
-    &lt;meta attribute="class-description"&gt;
+        <programlisting role="XML"><![CDATA[<hibernate-mapping>
+    <class name="Person">
+    <meta attribute="class-description">
         Javadoc for the Person class
         @author Frodo
-    &lt;/meta&gt;
-    &lt;meta attribute="implements"&gt;IAuditable&lt;/meta&gt;
-    &lt;id name="id" type="long"&gt;
-        &lt;meta attribute="scope-set"&gt;protected&lt;/meta&gt;
-        &lt;meta attribute="use-in-tostring"&gt;true&lt;/meta&gt;        
-        &lt;generator class="increment"/&gt;
-    &lt;/id&gt;
-    &lt;property name="name" type="string"&gt;
-        &lt;meta attribute="field-description"&gt;The name of the person&lt;/meta&gt;
-        &lt;meta attribute="use-in-tostring"&gt;true&lt;/meta&gt;
-    &lt;/property&gt;
-  &lt;/class&gt;
-&lt;/hibernate-mapping&gt;</programlisting>
+    </meta>
+    <meta attribute="implements">IAuditable</meta>
+    <id name="id" type="long">
+        <meta attribute="scope-set">protected</meta>
+        <meta attribute="use-in-tostring">true</meta>        
+        <generator class="increment"/>
+    </id>
+    <property name="name" type="string">
+        <meta attribute="field-description">The name of the person</meta>
+        <meta attribute="use-in-tostring">true</meta>
+    </property>
+  </class>
+</hibernate-mapping>]]></programlisting>
       </section>
 
       <section>
         <title>Be aware of putting at class scope level <literal>&lt;meta&gt;</literal>
           attribute <literal>use-in-equals</literal></title>
 
-        <para>For <property>equal()/hashCode()</property> method generation,
-          you have to take into account that the attributes that participate on such method
-          definition, should take into account only attributes with business meaning (the name,
-          social security number, etc, but no generated id's, for example).</para>
+        <para>For <property>equal()/hashCode()</property> method generation, you have to take into
+          account that the attributes that participate on such method definition, should take into
+          account only attributes with business meaning (the name, social security number, etc, but
+          no generated id's, for example).</para>
 
         <para>This is important because Java's hashbased collections, such as
             <property>java.util.Set</property> relies on <property>equals()</property> and
@@ -411,19 +411,21 @@ public class Person implements Serializable, IAuditable {
           this can be a problem if the id gets assigned for an object after you inserted it into a
           set.</para>
 
-        <para>Therefore automatically configuration the generation of
-          <property>equals()/hashCode()</property> methods specifying at class scope level the <emphasis>
+        <para>Therefore automatically configuration of the generation of
+            <property>equals()/hashCode()</property> methods specifying at class scope level the <emphasis>
             <property>&lt;meta&gt;</property>
-          </emphasis> attribute <emphasis><property>use-in-equals</property></emphasis> could be a dangerous decision that
-          could produce non expected side-effect.</para>
+          </emphasis> attribute <emphasis>
+            <property>use-in-equals</property>
+          </emphasis> could be a dangerous decision that could produce non expected side-effect.</para>
 
         <para><ulink url="http://www.hibernate.org/109.html">Here</ulink> you can get more in-depth
-          explanation on the subject of <property>equals()</property> and <property>hashcode()</property>.</para>
+          explanation on the subject of <property>equals()</property> and
+          <property>hashcode()</property>.</para>
       </section>
     </section>
 
     <section>
-      <title>Advanced <emphasis><property>&lt;meta&gt;</property></emphasis> attribute examples</title>
+      <title>Advanced &lt;meta&gt; attribute examples</title>
 
       <para>This section shows an example for using meta attributes (including userspecific
         attributes) together with the code generation features in <property>Hibernate
@@ -438,15 +440,14 @@ public class Person implements Serializable, IAuditable {
         <para>With an <emphasis> &lt;meta attribute="class-code"&gt;</emphasis>, you can add
           additional methods on a given class, nevertheless such <emphasis>
             <property>&lt;meta&gt;</property>
-          </emphasis> attribute can not be used at property scope level and <property>Hibernate
+          </emphasis> attribute can not be used at a property scope level and <property>Hibernate
             Tools</property> does not provide such <emphasis>
             <property>&lt;meta&gt;</property>
           </emphasis> attributes.</para>
 
         <para>A possibly solution for this is to modify the freemarker templates responsible for
           generating the POJO's. If you look inside <emphasis>
-            <property>hibernate-tools.jar</property>
-          </emphasis>, you can find the template: <emphasis>
+            <property>hibernate-tools.jar</property>, </emphasis> you can find the template: <emphasis>
             <property>pojo/PojoPropertyAccessor.ftl</property>
           </emphasis></para>
 
@@ -455,14 +456,14 @@ public class Person implements Serializable, IAuditable {
         <para>Extract the <emphasis>
             <property>PojoPropertyAccessor.ftl</property>
           </emphasis> into a local folder i.e. <emphasis>
-            <property>${hbm.template.path}</property>
-          </emphasis>, respecting the whole path, for example: <emphasis>
+            <property>${hbm.template.path}</property>, </emphasis> respecting the whole path, for
+          example: <emphasis>
             <property>${hbm.template.path}/pojo/PojoPropertyAccessor.ftl</property>
           </emphasis></para>
 
         <para>The contents of the file is something like this:</para>
 
-        <programlisting>&lt;#foreach property in pojo.getAllPropertiesIterator()&gt;
+        <programlisting role="XML"><![CDATA[<#foreach property in pojo.getAllPropertiesIterator()>
     ${pojo.getPropertyGetModifiers(property)} 
     ${pojo.getJavaTypeName(property, jdk5)} 
     ${pojo.getGetterSignature(property)}() {
@@ -474,12 +475,12 @@ public class Person implements Serializable, IAuditable {
     {
         this.${property.name} = ${property.name};
     }
-&lt;/#foreach&gt;</programlisting>
+</#foreach>]]></programlisting>
 
         <para>We can add conditionally pre/post-conditions on our <literal>set</literal> method
           generation just adding a little Freemarker syntax to the above source code:</para>
 
-        <programlisting>&lt;#foreach property in pojo.getAllPropertiesIterator()&gt;
+        <programlisting role="XML"><![CDATA[<#foreach property in pojo.getAllPropertiesIterator()>
     ${pojo.getPropertyGetModifiers(property)} 
     ${pojo.getJavaTypeName(property, jdk5)} 
     ${pojo.getGetterSignature(property)}()
@@ -490,84 +491,87 @@ public class Person implements Serializable, IAuditable {
     ${pojo.getPropertySetModifiers(property)} void set${pojo.getPropertyName(property)}
         (${pojo.getJavaTypeName(property, jdk5)} ${property.name}) 
         {
-      &lt;#if pojo.hasMetaAttribute(property, "pre-cond")&gt; 
+      <#if pojo.hasMetaAttribute(property, "pre-cond")> 
        ${c2j.getMetaAsString(property, "pre-cond","\n")} 
-      &lt;/#if&gt;      
+      </#if>      
       this.${property.name} = ${property.name};
-      &lt;#if pojo.hasMetaAttribute(property, "post-cond")&gt; 
+      <#if pojo.hasMetaAttribute(property, "post-cond")> 
        ${c2j.getMetaAsString(property, "post-cond","\n")} 
-      &lt;/#if&gt;        
+      </#if>        
 }
-&lt;/#foreach&gt;
+</#foreach>]]>
 </programlisting>
 
         <para>Now if in any <emphasis>
-            <property>*hbm.xml</property>
+            <property>.hbm.xml</property>
           </emphasis> file we define the <emphasis>
             <property>&lt;meta&gt;</property>
           </emphasis> attributes: <literal>pre-cond</literal> or <literal>post-cond</literal>, their
           contents will be generated into the body of the relevant <literal>set</literal> method.</para>
 
         <para>As an example let us add a pre-condition for property <literal>name</literal>
-          preventing no <literal>Person</literal> can have an empty name. So we have to modify the <emphasis>
+          preventing no <property>Person</property> can have an empty name. So we have to modify the <emphasis>
             <property>Person.hbm.xml</property>
           </emphasis> file like this:</para>
 
-        <programlisting>&lt;hibernate-mapping&gt;
-  &lt;class name="Person"&gt;
-  &lt;id name="id" type="long"&gt;        
-      &lt;generator class="increment"/&gt;
-  &lt;/id&gt;
-  &lt;property name="firstName" type="string"&gt;
-      &lt;meta attribute="pre-cond"&gt;&lt;![CDATA[
+        <programlisting role="XML"><![CDATA[<hibernate-mapping>
+  <class name="Person">
+  <id name="id" type="long">        
+      <generator class="increment"/>
+  </id>
+  <property name="firstName" type="string">
+      <meta attribute="pre-cond">
       if ((firstName != null) &amp;&amp; (firstName.length() == 0) ) {
         throw new IllegalArgumentException("firstName can not be an empty String");
-      }]]&gt;
-      &lt;/meta&gt;
-  &lt;/property&gt;
-&lt;/class&gt;
-&lt;/hibernate-mapping&gt;</programlisting>
+      }
+      </meta>
+  </property>
+</class>
+</hibernate-mapping>]]></programlisting>
 
         <note>
-          <para>I) If you don'&apos; use <literal>&lt;[[CDATA[]]&gt;</literal> you have
-            to scape the &amp; symbol, i.e.: &amp;amp; </para>
-          <para>II). Note that we are referring to "firstName" directly and this is the parameter
+          <para>I) To scape the &amp; symbol we put &amp;amp;. You can use
+            &lt;![CDATA[]]&gt; instead.</para>
+          <para>II) Note that we are referring to "firstName" directly and this is the parameter
             name not the actual field name. If you want to refer the field you have to use
             "this.firstName" instead. </para>
         </note>
 
-        <para>Finally we have to generate the <property>Person.java</property> class, for this we
-          can use both Eclipse and Ant as long as you remember to set or fill in the templatepath
-          setting. For Ant we configure <emphasis>
+        <para>Finally we have to generate the <emphasis>
+            <property>Person.java</property>
+          </emphasis> class, for this we can use both Eclipse and Ant as long as you remember to set
+          or fill in the templatepath setting. For Ant we configure <emphasis>
             <property>&lt;hibernatetool&gt;</property>
           </emphasis> task via <literal>the templatepath</literal> attribute as in:</para>
 
-        <programlisting>
-    &lt;target name="hbm2java"&gt;
-        &lt;taskdef name="hibernatetool"
+        <programlisting role="XML"><![CDATA[
+    <target name="hbm2java">
+        <taskdef name="hibernatetool"
           classname="org.hibernate.tool.ant.HibernateToolTask"
-          classpathref="lib.classpath"/&gt;
-        &lt;hibernatetool destdir="${hbm2java.dest.dir}"
-          templatepath="${hbm.template.path}"&gt;
-          &lt;classpath&gt;
-            &lt;path refid="pojo.classpath"/&gt;
-          &lt;/classpath&gt;        
-          &lt;configuration&gt;
-            &lt;fileset dir="${hbm2java.src.dir}"&gt;
-              &lt;include name="**/*.hbm.xml"/&gt;
-            &lt;/fileset&gt;
-          &lt;/configuration&gt;
-          &lt;hbm2java/&gt;
-        &lt;/hibernatetool&gt;
-    &lt;/target&gt;</programlisting>
+          classpathref="lib.classpath"/>
+        <hibernatetool destdir="${hbm2java.dest.dir}"
+          templatepath="${hbm.template.path}">
+          <classpath>
+            <path refid="pojo.classpath"/>
+          </classpath>        
+          <configuration>
+            <fileset dir="${hbm2java.src.dir}">
+              <include name="**/*.hbm.xml"/>
+            </fileset>
+          </configuration>
+          <hbm2java/>
+        </hibernatetool>
+    </target>]]></programlisting>
 
         <para>Invoking the target <emphasis>
             <property>&lt;hbm2java&gt;</property>
           </emphasis> will generate on the <emphasis>
             <property>${hbm2java.dest.dir}</property>
-          </emphasis> the file <property>Person.java</property>:</para>
+          </emphasis> the file <emphasis>
+            <property>Person.java</property>
+          </emphasis>:</para>
 
-        <programlisting>// default package
+        <programlisting role="JAVA"><![CDATA[// default package
 import java.io.Serializable;
 public class Person implements Serializable {
 
@@ -600,10 +604,13 @@ public class Person implements Serializable {
         }
         this.name = name;
     }
-}</programlisting>
+}]]></programlisting>
 
         <para/>
       </section>
     </section>
   </section>
+  <para>To find additional information about <property>Hibernate Tools</property> we suggest that you
+    visit our <ulink url="http://www.hibernate.org/255.html">website</ulink>. If you have questions, you are always welcome in our
+    <ulink url="http://forum.hibernate.org/viewforum.php?f=6">forum</ulink>.</para>
 </chapter>
