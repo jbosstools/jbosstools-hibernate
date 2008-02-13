@@ -10,6 +10,7 @@
   ******************************************************************************/
 package org.hibernate.eclipse.console.test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -123,7 +124,12 @@ public class RefactoringTest extends TestCase {
 					try {
 						IPath newPath = generateNewPathForSegment(i);
 						String oldMemento = runtimeClasspathEntries[j].getMemento();
-						String newMemento = HibernateRefactoringUtil.getUpdatedMemento(oldMemento, newPath, oldPathPart);
+						List<String> oldMementos = new ArrayList<String>();
+						List<String> newMementos = new ArrayList<String>();
+						oldMementos.add(runtimeClasspathEntries[j].getMemento());
+						boolean isChanged = HibernateRefactoringUtil.updateClasspathEntries(new IRuntimeClasspathEntry[]{runtimeClasspathEntries[j]}, oldMementos, newMementos, oldPathPart, newPath);
+						assertTrue(isChanged);
+						String newMemento = newMementos.get(0);
 						checkMementoChanged(oldMemento, newMemento, oldPathPart, newPath);
 					} catch (CoreException e) {
 						fail("CoreException occured when try to work with memento." + e.getMessage());
