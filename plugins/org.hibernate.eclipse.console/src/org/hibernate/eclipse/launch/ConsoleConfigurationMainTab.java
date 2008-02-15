@@ -13,6 +13,11 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.IWizardPage;
+import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -25,12 +30,17 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
+import org.hibernate.eclipse.console.wizards.NewConfigurationWizard;
+import org.hibernate.eclipse.console.wizards.NewConfigurationWizardPage;
 import org.hibernate.util.StringHelper;
 
 public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
@@ -101,8 +111,13 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 	}
 	
 	private void createPropertyFileEditor(Composite parent) {
-		Group group = createGroup( parent, "Property file:" );
+		Group group = createGroup( parent, "Property file:", 3 );
 		propertyFileText = createBrowseEditor( parent, group);
+		createNewFileButton( group, new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				handlePropertyFileCreate();
+			}
+		} );
 		createBrowseButton( group, new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				handlePropertyFileBrowse();
@@ -112,8 +127,13 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 	
 
 	private void createConfigurationFileEditor(Composite parent) {
-		Group group = createGroup( parent, "Configuration file:" );
+		Group group = createGroup( parent, "Configuration file:", 3 );
 		configurationFileText = createBrowseEditor( parent, group);
+		createNewFileButton( group, new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				handleConfigurationFileCreate();
+			}
+		} );
 		confbutton = createBrowseButton( group, new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				handleConfigurationFileBrowse();
@@ -157,16 +177,14 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		}
 		catch (CoreException e) {
 			HibernateConsolePlugin.getDefault().log( e );
-		}
-		
+		}		
 	}
 	
-	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {		
-		
-	}
+	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {}
 	
 	private void handlePropertyFileBrowse() {
-		IPath[] paths = org.hibernate.eclipse.console.utils.xpl.DialogSelectionHelper.chooseFileEntries(getShell(),  getPropertyFilePath(), new IPath[0], "Select property file", "Choose file to use as hibernate.properties", new String[] {"properties"}, false, false, true);
+		IPath initialPath = getPropertyFilePath() != null ? getPropertyFilePath() : new Path(getProjectName());
+		IPath[] paths = org.hibernate.eclipse.console.utils.xpl.DialogSelectionHelper.chooseFileEntries(getShell(),  initialPath, new IPath[0], "Select property file", "Choose file to use as hibernate.properties", new String[] {"properties"}, false, false, true);
 		if(paths!=null && paths.length==1) {
 			propertyFileText.setText( (paths[0]).toOSString() );
 		}
@@ -181,11 +199,84 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		}
 	}
 	
+	private IJavaProject findJavaProject(){
+		IPath path = pathOrNull(projectNameText.getText());
+		if (path != null && path.segmentCount() >= 1){
+			String projectName = path.segment(0);
+			return ProjectUtils.findJavaProject( projectName );
+		}
+		return null;
+	}
+	
+	private void handlePropertyFileCreate() {
+		Wizard wizard = new Wizard(){
+			
+			String pageName = "Create Property File";
+			
+			WizardNewFileCreationPage cPage = null;
+			
+			@Override
+			public void addPages() {
+				StructuredSelection selection = null;
+				IJavaProject project = findJavaProject();
+				if (project != null){
+					selection = new StructuredSelection(project);
+				} else {
+					selection = StructuredSelection.EMPTY;
+				}
+				cPage = new WizardNewFileCreationPage(pageName, selection);
+				cPage.setTitle( "Create Hibernate Properties file (.properties)" );
+			    cPage.setDescription( "Create a new properties file" );
+			    cPage.setFileName("hibernate.properties");
+			    addPage( cPage ); 
+			}
+
+			@Override
+			public boolean performFinish() {
+				final IFile file = cPage.createNewFile();
+				propertyFileText.setText( file.getFullPath().toOSString() );
+				return true;
+			}};
+			
+			IWorkbenchWindow win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+			WizardDialog wdialog = new WizardDialog(win.getShell(), wizard);
+			wdialog.open();
+	}
+	
 	
 	private void handleConfigurationFileBrowse() {
-		IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  getConfigurationFilePath(), new IPath[0], "Select hibernate.cfg.xml file", "Choose file to use as hibernate.cfg.xml", new String[] {"cfg.xml"}, false, false, true);
+		IPath initialPath = getConfigurationFilePath() != null ? getConfigurationFilePath() : new Path(getProjectName());
+		IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  initialPath, new IPath[0], "Select hibernate.cfg.xml file", "Choose file to use as hibernate.cfg.xml", new String[] {"cfg.xml"}, false, false, true);
 		if(paths!=null && paths.length==1) {
 			configurationFileText.setText( (paths[0]).toOSString() );
+		}
+	}
+	
+	private void handleConfigurationFileCreate() {
+		StructuredSelection selection = null;
+		IJavaProject project = findJavaProject();
+		if (project != null){
+			selection = new StructuredSelection(project);
+		} else {
+			selection = StructuredSelection.EMPTY;
+		}
+		NewConfigurationWizard wizard = new NewConfigurationWizard();
+		wizard.init(PlatformUI.getWorkbench(), selection );
+		IWorkbenchWindow win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		
+		WizardDialog wdialog = new WizardDialog(win.getShell(), wizard);
+		wdialog.create();
+		IWizardPage configPage = wizard.getPage("wizardPage");
+		if (configPage != null && configPage instanceof NewConfigurationWizardPage){
+			((NewConfigurationWizardPage)configPage).setCreateConsoleConfigurationVisible(false);
+		}		
+		// This opens a dialog
+		if (wdialog.open() == Window.OK){
+			WizardNewFileCreationPage createdFilePath = ((WizardNewFileCreationPage)wizard.getStartingPage());
+			if(createdFilePath!=null) {
+				// createNewFile() does not creates new file if it was created by wizard (OK was pressed)
+				configurationFileText.setText(createdFilePath.createNewFile().getFullPath().toOSString());
+			}
 		}
 	}
 	

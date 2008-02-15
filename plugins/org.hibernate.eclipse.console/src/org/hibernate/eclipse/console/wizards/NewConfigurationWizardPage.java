@@ -77,7 +77,6 @@ public class NewConfigurationWizardPage extends WizardPage {
     private final WizardNewFileCreationPage fileCreation;
 
     private boolean beenShown = false;
-
 	
     /**
      * Constructor for SampleNewWizardPage.
@@ -229,7 +228,7 @@ public class NewConfigurationWizardPage extends WizardPage {
         gd = new GridData(GridData.FILL_HORIZONTAL);
         createConsoleConfiguration.setLayoutData(gd);        
         createConsoleConfiguration.setText("Create a console configuration");        
-        createConsoleConfiguration.addSelectionListener(selectionListener);      
+        createConsoleConfiguration.addSelectionListener(selectionListener);
         
         initialize();
         dialogChanged();
@@ -415,6 +414,13 @@ public class NewConfigurationWizardPage extends WizardPage {
 
 	public boolean isCreateConsoleConfigurationEnabled() {
 		return createConsoleConfiguration.getSelection();
+	}
+	
+	public void setCreateConsoleConfigurationVisible(boolean isVisible) {
+		// update visibility if button was created
+		if (createConsoleConfiguration != null){
+			createConsoleConfiguration.setVisible(isVisible);
+		}
 	}
     
 	public String getDefaultCatalog() {

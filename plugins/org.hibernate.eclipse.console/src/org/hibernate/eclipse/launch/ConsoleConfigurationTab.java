@@ -40,15 +40,25 @@ abstract public class ConsoleConfigurationTab extends AbstractLaunchConfiguratio
 		button.addSelectionListener(selectionListener);
 		return button;
 	}
+	
+	protected Button createNewFileButton(Group group, SelectionListener selectionListener) {
+		Button button = createPushButton(group, "Create New", null); 
+		button.addSelectionListener(selectionListener);
+		return button;
+	}
 
 	protected Group createGroup(Composite parent, String title) {
+		return createGroup(parent, title, 2);
+	}
+	
+	protected Group createGroup(Composite parent, String title, int columns) {
 		Font font = parent.getFont();
 		Group group= new Group(parent, SWT.NONE);
 		group.setText(title); 
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		group.setLayoutData(gd);
 		GridLayout layout = new GridLayout();
-		layout.numColumns = 2;
+		layout.numColumns = columns;
 		group.setLayout(layout);
 		group.setFont(font);
 		return group;
