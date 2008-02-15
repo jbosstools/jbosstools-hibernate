@@ -191,7 +191,7 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 	}
 	
 	private void handleProjectBrowse() {
-		IJavaProject paths = DialogSelectionHelper.chooseJavaProject( getShell(), ProjectUtils.findJavaProject( propertyFileText.getText() ), "Select java project", "The (optional) java project is used to determine the default classpath" );
+		IJavaProject paths = DialogSelectionHelper.chooseJavaProject( getShell(), findJavaProject(), "Select java project", "The (optional) java project is used to determine the default classpath" );
 		if(paths!=null) {
 			projectNameText.setText( paths.getProject().getName() );
 		} else {
@@ -200,7 +200,7 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 	}
 	
 	private IJavaProject findJavaProject(){
-		IPath path = pathOrNull(projectNameText.getText());
+		IPath path = pathOrNull(getProjectName());
 		if (path != null && path.segmentCount() >= 1){
 			String projectName = path.segment(0);
 			return ProjectUtils.findJavaProject( projectName );
@@ -310,6 +310,11 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		persistenceUnitNameText.setEnabled( getConfigurationMode().equals( ConfigurationMode.JPA) );
 		
 		if(getProjectName()!=null && StringHelper.isNotEmpty(getProjectName().trim())) {
+			Path projectPath = new Path(getProjectName());
+			if (projectPath.segmentCount() > 1){
+				setErrorMessage("Path for project must have only one segment.");
+				return false;
+			}
 			IJavaProject findJavaProject = ProjectUtils.findJavaProject( getProjectName() );
 			if(findJavaProject==null || !findJavaProject.exists()) {
 				setErrorMessage("The Java project " + getProjectName() + " does not exist.");
