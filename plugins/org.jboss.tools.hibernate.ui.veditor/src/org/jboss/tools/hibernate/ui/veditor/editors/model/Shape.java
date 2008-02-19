@@ -212,7 +212,10 @@ public class Shape extends ModelElement {
 		}
 		else if (PROPERTY_CLASS.equals(propertyId)) {
 			if (getOrmElement() instanceof Property) {
-				return ((Property) getOrmElement()).getPersistentClass().getClassName();
+				if (((Property) getOrmElement()).getPersistentClass() != null)
+					return ((Property) getOrmElement()).getPersistentClass().getClassName();
+				else 
+					return null;
 			}
 		}
 		else if (PROPERTY_SELECT.equals(propertyId)) {
