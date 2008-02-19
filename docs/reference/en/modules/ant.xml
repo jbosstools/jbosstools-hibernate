@@ -2,6 +2,9 @@
 <chapter id="ant">
   <title>Ant Tools</title>
 
+  <para>Maybe somebody will find it more preferable to use Ant for generation purposes. Thus, this
+    chapter is intended to get you ready to start using Hibernate Tools via Ant tasks.</para>
+
   <section>
     <title>Introduction</title>
 
@@ -11,18 +14,17 @@
       basis for both the Ant tasks described in this document and the eclipse plugins both available
       from tools.hibernate.org. The <emphasis>
         <property>hibernate-tools.jar</property>
-      </emphasis> is located in your eclipse plugins directory at
-      <emphasis>
+      </emphasis> is located in your eclipse plugins directory at <emphasis>
         <property>/plugins/org.hibernate.eclipse.x.x.x/lib/tools/hibernate-tools.jar</property>.</emphasis></para>
     <para>This jar is 100% independent from the eclipse platform and can thus be used independently
       of eclipse.</para>
 
     <note>
-      <para>There might be incompatibilities with respect to the Hibernate3.jar bundled with the tools
-        and your own jar. Thus to avoid any confusion it is recommended to use the hibernate3.jar
-        and hibernate-annotations.jar bundled with the tools when you want to use the Ant tasks. Do
-        not worry about using e.g. Hibernate 3.2 jar's with e.g. a Hibernate 3.1 project since the
-        output generated will work with previous Hibernate 3 versions. </para>
+      <para>There might be incompatibilities with respect to the Hibernate3.jar bundled with the
+        tools and your own jar. Thus to avoid any confusion it is recommended to use the
+        hibernate3.jar and hibernate-annotations.jar bundled with the tools when you want to use the
+        Ant tasks. Do not worry about using e.g. Hibernate 3.2 jar's with e.g. a Hibernate 3.1
+        project since the output generated will work with previous Hibernate 3 versions. </para>
     </note>
   </section>
 
@@ -35,8 +37,8 @@
         <property>build.xml</property>
       </emphasis> by inserting the following xml (assuming the jars are in the
       <literal>lib</literal> directory): </para>
-      
-      <programlisting role="XML"><![CDATA[<path id="toolslib">
+
+    <programlisting role="XML"><![CDATA[<path id="toolslib">
  <path location="lib/hibernate-tools.jar" />
  <path location="lib/hibernate3.jar" />
  <path location="lib/freemarker.jar" />
@@ -68,7 +70,7 @@
         <property> hibernatetool </property>
       </emphasis> task you have to specify one or more of the following:</para>
 
-        <programlisting role="XML"><![CDATA[<hibernatetool
+    <programlisting role="XML"><![CDATA[<hibernatetool
   destdir="defaultDestinationDirectory"
   templatepath="defaultTemplatePath"
 >
@@ -82,87 +84,121 @@
 
     <table frame="topbot">
       <title>Hibernatetool attributes</title>
-      
+
       <tgroup cols="3">
-        
-        <colspec colwidth="0.3*"/>            
-        
-        <colspec colwidth="1.0*"/>
-        
+
         <colspec colwidth="0.3*"/>
-        
-        
+
+        <colspec colwidth="1.0*"/>
+
+        <colspec colwidth="0.3*"/>
+
+
         <thead>
           <row>
             <entry>Attribute name</entry>
-            
+
             <entry>Definition</entry>
-            
+
             <entry>Attribute use</entry>
           </row>
         </thead>
-        
+
         <tbody>
           <row>
-            <entry><para>destdir</para></entry>
-            
-            <entry><para>Destination directory for files generated
-              with exporters.</para></entry>
-            
-            <entry><para>Required</para></entry>
+            <entry>
+              <para>destdir</para>
+            </entry>
+
+            <entry>
+              <para>Destination directory for files generated with exporters</para>
+            </entry>
+
+            <entry>
+              <para>Required</para>
+            </entry>
           </row>
-          
+
           <row>
-            <entry><para>templatepath</para></entry>
-            
-            <entry><para>A path to be used to look up
-              user-edited templates.</para></entry>
-            
-            <entry><para>Optional</para></entry>
+            <entry>
+              <para>templatepath</para>
+            </entry>
+
+            <entry>
+              <para>A path to be used to look up user-edited templates</para>
+            </entry>
+
+            <entry>
+              <para>Optional</para>
+            </entry>
           </row>
-          
+
           <row>
-            <entry><para>classpath</para></entry>
-            
-            <entry><para>A classpath to be used to resolve resources, such as
-              mappings and usertypes.</para></entry>
-            
-            <entry><para>Optional, but very often required</para></entry>
+            <entry>
+              <para>classpath</para>
+            </entry>
+
+            <entry>
+              <para>A classpath to be used to resolve resources, such as mappings and
+              usertypes</para>
+            </entry>
+
+            <entry>
+              <para>Optional, but very often required</para>
+            </entry>
           </row>
-          
-          
+
+
           <row>
-            <entry><para>property (and propertyset)</para></entry>
-            
-            <entry><para>Used to set properties to
-              control the exporters. Mostly relevant for providing custom properties to user defined
-              templates.</para></entry>
-            
-            <entry><para>Optional</para></entry>
+            <entry>
+              <para>property (and propertyset)</para>
+            </entry>
+
+            <entry>
+              <para>Used to set properties to control the exporters. Mostly relevant for providing
+                custom properties to user defined templates</para>
+            </entry>
+
+            <entry>
+              <para>Optional</para>
+            </entry>
           </row>
-          
+
           <row>
-            <entry><para>configuration (annotationconfiguration, jpaconfiguration, jdbcconfiguration)</para></entry>
-            
-            <entry><para>One of four different ways of configuring the Hibernate Meta Model must be
-              specified.</para></entry>
-            
-            <entry><para></para></entry>
+            <entry>
+              <para>configuration (annotationconfiguration, jpaconfiguration,
+              jdbcconfiguration)</para>
+            </entry>
+
+            <entry>
+              <para>One of four different ways of configuring the Hibernate Meta Model must be
+                specified</para>
+            </entry>
+
+            <entry>
+              <para/>
+            </entry>
           </row>
-          
+
           <row>
-            <entry><para>hbm2java (hbm2cfgxml, hbmtemplate, etc.)</para></entry>
-            
-            <entry><para>One or more of the exporters must be specified.</para></entry>
-            
-            <entry><para></para></entry>
+            <entry>
+              <para>hbm2java (hbm2cfgxml, hbmtemplate, etc.)</para>
+            </entry>
+
+            <entry>
+              <para>One or more of the exporters must be specified</para>
+            </entry>
+
+            <entry>
+              <para/>
+            </entry>
           </row>
-         
+
         </tbody>
-        
+
       </tgroup>
-    </table>   
-  
+    </table>
+
     <section>
       <title>Basic examples</title>
 
@@ -171,12 +207,11 @@
         </emphasis> from a normal <emphasis>
           <property>
             <literal>hibernate.cfg.xml</literal>
-          </property>.
-        </emphasis> The output will be put in the <emphasis>
+          </property>. </emphasis> The output will be put in the <emphasis>
           <property>${build.dir}/generated</property>
         </emphasis> directory.</para>
 
-        <programlisting role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
+      <programlisting role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
  <classpath>
   <path location="${build.dir}/classes"/>
  </classpath>
@@ -184,16 +219,14 @@
  <configuration configurationfile="hibernate.cfg.xml"/>
  <hbm2java/>
 </hibernatetool>]]></programlisting>
- 
+
 
       <para>The following example is similar, but now we are performing multiple exports from the
         same configuration. We are exporting the schema via <emphasis>
-          <property>&lt;hbm2dll&gt;</property>,
-        </emphasis> generates some DAO code via <emphasis>
+          <property>&lt;hbm2dll&gt;</property>, </emphasis> generates some DAO code via <emphasis>
           <property>&lt;hbm2dao&gt;</property>
         </emphasis> and finally runs a custom code generation via <emphasis>
-          <property>&lt;hbmtemplate&gt;</property>.
-        </emphasis> This is again from a normal <emphasis>
+          <property>&lt;hbmtemplate&gt;</property>. </emphasis> This is again from a normal <emphasis>
           <property>hibernate.cfg.xml</property>
         </emphasis> and the output is still put in the <emphasis>
           <property>
@@ -203,7 +236,7 @@
         when you e.g. have custom usertypes or some mappings that is needed to be looked up as a
         classpath resource.</para>
 
-        <programlisting role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
+      <programlisting role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
  <classpath>
   <path location="${build.dir}/classes"/>
  </classpath>
@@ -226,25 +259,22 @@
 
     <para><literal>Hibernatetool</literal> supports four different Hibernate configurations: A
       standard Hibernate configuration <emphasis>
-        (<property>&lt;configuration&gt;</property>),
-      </emphasis> Annotation based configuration <emphasis>
-        (<property>&lt;annotationconfiguration&gt;</property>),
+        (<property>&lt;configuration&gt;</property>), </emphasis> Annotation based
+      configuration <emphasis> (<property>&lt;annotationconfiguration&gt;</property>),
       </emphasis> JPA persistence based configuration <emphasis>
-        (<property>&lt;jpaconfiguration&gt;</property>)
-      </emphasis> and a JDBC based configuration <emphasis>
-        (<property>&lt;jdbcconfiguration&gt;</property>)
-      </emphasis> for use when reverse engineering.</para>
+          (<property>&lt;jpaconfiguration&gt;</property>) </emphasis> and a JDBC based
+      configuration <emphasis> (<property>&lt;jdbcconfiguration&gt;</property>) </emphasis>
+      for use when reverse engineering.</para>
 
-    <para>Each have in common that they are able to build up a Hibernate
-      Configuration object from which a set of exporters can be run to generate
-      various output.  </para>
-      
-      <note>
-        <para>Output can be anything, e.g. specific files, statements execution against a database,
-          error reporting or anything else that can be done in java code.</para>
-      </note>
-   
-    <para>The following section describes what the various configuration can do, plus list the
+    <para>Each have in common that they are able to build up a Hibernate Configuration object from
+      which a set of exporters can be run to generate various output. </para>
+
+    <note>
+      <para>Output can be anything, e.g. specific files, statements execution against a database,
+        error reporting or anything else that can be done in java code.</para>
+    </note>
+
+    <para>The following sections describe what the various configurations can do, plus lists the
       individual settings they have.</para>
 
     <section>
@@ -257,7 +287,7 @@
           <property>cfg.xml</property>
         </emphasis> and/or a fileset.</para>
 
-          <programlisting role="XML"><![CDATA[<configuration
+      <programlisting role="XML"><![CDATA[<configuration
   configurationfile="hibernate.cfg.xml"
   propertyfile="hibernate.properties"
   entityresolver="EntityResolver classname"
@@ -266,83 +296,110 @@
   <fileset...>
   
   </configuration>]]></programlisting>
-      
+
       <table frame="topbot">
         <title>Configuration attributes</title>
-        
+
         <tgroup cols="3">
-          
-          <colspec colwidth="0.3*"/>            
-          
-          <colspec colwidth="1.0*"/>
-          
+
           <colspec colwidth="0.3*"/>
-          
-          
+
+          <colspec colwidth="1.0*"/>
+
+          <colspec colwidth="0.3*"/>
+
+
           <thead>
             <row>
               <entry>Attribute name</entry>
-              
+
               <entry>Definition</entry>
-              
+
               <entry>Attribute use</entry>
             </row>
           </thead>
-          
+
           <tbody>
             <row>
-              <entry><para>configurationfile</para></entry>
-              
-              <entry><para>The name of a Hibernate
-                configuration file, e.g. "hibernate.cfg.xml"</para></entry>
-              
-              <entry><para>Optional</para></entry>
+              <entry>
+                <para>configurationfile</para>
+              </entry>
+
+              <entry>
+                <para>The name of a Hibernate configuration file, e.g. "hibernate.cfg.xml"</para>
+              </entry>
+
+              <entry>
+                <para>Optional</para>
+              </entry>
             </row>
-            
+
             <row>
-              <entry><para>propertyfile</para></entry>
-              
-              <entry><para>The name of a property file, e.g.
-                "hibernate.properties".</para></entry>
-              
-              <entry><para>Optional</para></entry>
+              <entry>
+                <para>propertyfile</para>
+              </entry>
+
+              <entry>
+                <para>The name of a property file, e.g. "hibernate.properties"</para>
+              </entry>
+
+              <entry>
+                <para>Optional</para>
+              </entry>
             </row>
-            
+
             <row>
-              <entry><para>entity-resolver</para></entry>
-              
-              <entry><para>Name of a class that implements
-                org.xml.sax.EntityResolver. Used if the mapping files require custom entity
-                resolver.</para></entry>
-              
-              <entry><para>Optional</para></entry>
+              <entry>
+                <para>entity-resolver</para>
+              </entry>
+
+              <entry>
+                <para>Name of a class that implements org.xml.sax.EntityResolver. Used if the
+                  mapping files require custom entity resolver</para>
+              </entry>
+
+              <entry>
+                <para>Optional</para>
+              </entry>
             </row>
-            
-            
+
+
             <row>
-              <entry><para>namingstrategy</para></entry>
-              
-              <entry><para>Name of a class that implements
-                org.hibernate.cfg.NamingStrategy. Used for setting up the naming strategy in
-                Hibernate which controls the automatic naming of tables and columns.</para></entry>
-              
-              <entry><para>Optional</para></entry>
+              <entry>
+                <para>namingstrategy</para>
+              </entry>
+
+              <entry>
+                <para>Name of a class that implements org.hibernate.cfg.NamingStrategy. Used for
+                  setting up the naming strategy in Hibernate which controls the automatic naming of
+                  tables and columns.</para>
+              </entry>
+
+              <entry>
+                <para>Optional</para>
+              </entry>
             </row>
-            
+
             <row>
-              <entry><para>fileset</para></entry>
-              
-              <entry><para>A standard Ant fileset. Used to include hibernate mapping files. Remember that
-                if mappings are already specified in the hibernate.cfg.xml then it should not be
-                included via the fileset as it will result in duplicate import exceptions.</para></entry>
-              
-              <entry><para></para></entry>
+              <entry>
+                <para>fileset</para>
+              </entry>
+
+              <entry>
+                <para>A standard Ant fileset. Used to include hibernate mapping files. Remember that
+                  if mappings are already specified in the hibernate.cfg.xml then it should not be
+                  included via the fileset as it will result in duplicate import exceptions.</para>
+              </entry>
+
+              <entry>
+                <para/>
+              </entry>
             </row>
-                      
+
           </tbody>
-          
+
         </tgroup>
-      </table>   
+      </table>
 
       <section>
         <title>Example</title>
@@ -352,19 +409,18 @@
               <literal>hibernate.cfg.xml</literal>
             </property>
           </emphasis> exists, and a <emphasis>
-            <property>
-              hibernate.properties
-            </property>
-          </emphasis> and  fileset is used instead. </para>
-        
+            <property> hibernate.properties </property>
+          </emphasis> and fileset is used instead. </para>
+
         <note>
           <title>Tip:</title>
-          <para> Hibernate will still read any global <emphasis><property>hibernate.properties</property></emphasis>
-            available in the classpath, but the specified properties file here will override those
-            values for any non-global property.</para>
+          <para> Hibernate will still read any global <emphasis>
+              <property>hibernate.properties</property>
+            </emphasis> available in the classpath, but the specified properties file here will
+            override those values for any non-global property.</para>
         </note>
 
-          <programlisting role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
+        <programlisting role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
  <configuration propertyfile="{etc.dir}/hibernate.properties">
    <fileset dir="${src.dir}">
    <include name="**/*.hbm.xml"/>
@@ -386,13 +442,13 @@
           <property>&lt;annotationconfiguration&gt;</property>
         </emphasis> is used when you want to read the metamodel from EJB3/Hibernate Annotations
         based POJO's.</para>
-      
+
       <note>
         <title>Tip:</title>
-        <para>To use it remember to put the jar files needed for using hibernate annotations
-          in the classpath of the <emphasis>
-            <property>&lt;taskdef&gt;</property>,
-          </emphasis> i. e. hibernate-annotations.jar and hibernate-commons-annotations.jar.</para>
+        <para>To use it remember to put the jar files needed for using hibernate annotations in the
+          classpath of the <emphasis>
+            <property>&lt;taskdef&gt;</property>, </emphasis> i. e.
+          hibernate-annotations.jar and hibernate-commons-annotations.jar.</para>
       </note>
 
       <para>The <emphasis>
@@ -405,7 +461,7 @@
 
       <para>Thus the minimal usage is:</para>
 
-        <programlisting role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
+      <programlisting role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
  <annotationconfiguration
   configurationfile="hibernate.cfg.xml"/>
 
@@ -424,8 +480,8 @@
         </emphasis> is used when you want to read the metamodel from JPA/Hibernate Annotation where
         you want to use the auto-scan configuration as defined in the JPA spec (part of EJB3). In
         other words, when you do not have a <emphasis>
-          <property>hibernate.cfg.xml</property>,
-        </emphasis> but instead have a setup where you use a <emphasis>
+          <property>hibernate.cfg.xml</property>, </emphasis> but instead have a setup where you use
+        a <emphasis>
           <property>persistence.xml</property>
         </emphasis> packaged in a JPA compliant manner.</para>
 
@@ -433,15 +489,14 @@
           <property>&lt;jpaconfiguration&gt;</property>
         </emphasis> will simply just try and auto-configure it self based on the available
         classpath, e.g. look for <emphasis>
-          <property>META-INF/persistence.xml</property>.
-        </emphasis></para>
+          <property>META-INF/persistence.xml</property>. </emphasis></para>
 
       <para>The <emphasis>
-        <property>persistenceunit</property></emphasis> attribute can be used to select a specific
-        persistence unit. If no <emphasis>
-          <property>persistenceunit</property></emphasis> is specified it will automatically search for one
-        and if an unique one is found use it, but if multiple persistence units are available it
-        will error.</para>
+          <property>persistenceunit</property>
+        </emphasis> attribute can be used to select a specific persistence unit. If no <emphasis>
+          <property>persistenceunit</property>
+        </emphasis> is specified it will automatically search for one and if a unique one is found,
+        use it, but if multiple persistence units are available it will error.</para>
 
       <para>To use a <emphasis>
           <property>&lt;jpaconfiguration&gt;</property>
@@ -478,9 +533,8 @@
 
 
       <note>
-        <para>ejb3configuration were the name used in previous versions. It still
-          works but will emit a warning telling you to use <literal>jpaconfiguration</literal>
-          instead.</para>
+        <para>ejb3configuration was the name used in previous versions. It still works but will emit
+          a warning telling you to use <literal>jpaconfiguration</literal> instead.</para>
       </note>
 
     </section>
@@ -495,8 +549,10 @@
         </emphasis> is used to perform reverse engineering of the database from a JDBC connection.</para>
 
       <para>This configuration works by reading the connection properties either from <emphasis>
-        <property>hibernate.cfg.xml</property></emphasis> or <emphasis>
-          <property>hibernate.properties</property></emphasis> with a fileset.</para>
+          <property>hibernate.cfg.xml</property>
+        </emphasis> or <emphasis>
+          <property>hibernate.properties</property>
+        </emphasis> with a fileset.</para>
 
       <para>The <emphasis>
           <property>
@@ -507,8 +563,8 @@
             <literal>&lt;configuration&gt;</literal>
           </property>
         </emphasis> plus the following additional attributes:</para>
-   
-          <programlisting role="XML"><![CDATA[<jdbcconfiguration
+
+      <programlisting role="XML"><![CDATA[<jdbcconfiguration
   ...
   packagename="package.name"
   revengfile="hibernate.reveng.xml"
@@ -518,88 +574,114 @@
 >
   ...
   </jdbcconfiguration>]]></programlisting>
-      
+
       <table frame="topbot">
         <title>Jdbcconfiguration attributes</title>
-        
+
         <tgroup cols="3">
-          
-          <colspec colwidth="0.3*"/>            
-          
-          <colspec colwidth="1.0*"/>
-          
+
           <colspec colwidth="0.3*"/>
-          
-          
+
+          <colspec colwidth="1.0*"/>
+
+          <colspec colwidth="0.3*"/>
+
+
           <thead>
             <row>
               <entry>Attribute name</entry>
-              
+
               <entry>Definition</entry>
-              
+
               <entry>Attribute use</entry>
             </row>
           </thead>
-          
+
           <tbody>
             <row>
-              <entry><para>packagename</para></entry>
-              
-              <entry><para>The default package name to use when
-                mappings for classes is created.</para></entry>
-              
-              <entry><para>Optional</para></entry>
+              <entry>
+                <para>packagename</para>
+              </entry>
+
+              <entry>
+                <para>The default package name to use when mappings for classes are created.</para>
+              </entry>
+
+              <entry>
+                <para>Optional</para>
+              </entry>
             </row>
-            
+
             <row>
-              <entry><para>revengfile</para></entry>
-              
-              <entry><para>The name of a property file, e.g.
-                "hibernate.properties".</para></entry>
-              
-              <entry><para>Optional</para></entry>
+              <entry>
+                <para>revengfile</para>
+              </entry>
+
+              <entry>
+                <para>The name of a property file, e.g. "hibernate.properties".</para>
+              </entry>
+
+              <entry>
+                <para>Optional</para>
+              </entry>
             </row>
-            
+
             <row>
-              <entry><para>reversestrategy</para></entry>
-              
-              <entry><para>Name of a class that implements
-                org.hibernate.cfg.reveng.ReverseEngineeringStrategy. Used for
-                setting up the strategy the tools will use to control the reverse engineering, e.g.
-                naming of properties, which tables to include/exclude etc. Using a class instead of
-                (or as addition to) a reveng.xml file gives you full programmatic control of the
-                reverse engineering.</para></entry>
-              
-              <entry><para>Optional</para></entry>
+              <entry>
+                <para>reversestrategy</para>
+              </entry>
+
+              <entry>
+                <para>Name of a class that implements
+                  org.hibernate.cfg.reveng.ReverseEngineeringStrategy. Used for setting up the
+                  strategy the tools will use to control the reverse engineering, e.g. naming of
+                  properties, which tables to include/exclude etc. Using a class instead of (or as
+                  addition to) a reveng.xml file gives you full programmatic control of the reverse
+                  engineering.</para>
+              </entry>
+
+              <entry>
+                <para>Optional</para>
+              </entry>
             </row>
-            
-            
+
+
             <row>
-              <entry><para>detectManytoMany</para></entry>
-              
-              <entry><para>If true tables which are pure
-                many-to-many link tables will be mapped as such. A pure many-to-many table is one
-                which primary-key contains has exactly two foreign-keys pointing to other entity
-                tables and has no other columns.</para></entry>
-              
-              <entry><para>Default: true</para></entry>
+              <entry>
+                <para>detectManytoMany</para>
+              </entry>
+
+              <entry>
+                <para>If true, tables which are pure many-to-many link tables will be mapped as
+                  such. A pure many-to-many table is one which primary-key contains exactly two
+                  foreign-keys pointing to other entity tables and has no other columns.</para>
+              </entry>
+
+              <entry>
+                <para>Default: true</para>
+              </entry>
             </row>
-            
+
             <row>
-              <entry><para>detectOptimisticLock</para></entry>
-              
-              <entry><para>If true columns named VERSION or TIMESTAMP
-                with appropriate types will be mapped with the appropriate optimistic locking
-                corresponding to &lt;version&gt; or
-                &lt;timestamp&gt;.</para></entry>
-              
-              <entry><para>Default: true</para></entry>
+              <entry>
+                <para>detectOptimisticLock</para>
+              </entry>
+
+              <entry>
+                <para>If true, columns named VERSION or TIMESTAMP with appropriate types will be
+                  mapped with the appropriate optimistic locking corresponding to
+                  &lt;version&gt; or &lt;timestamp&gt;.</para>
+              </entry>
+
+              <entry>
+                <para>Default: true</para>
+              </entry>
             </row>
-            
+
           </tbody>
-          
+
         </tgroup>
-      </table>   
+      </table>
 
       <section>
         <title>Example</title>
@@ -608,15 +690,12 @@
             <property>
               <literal>&lt;jdbcconfiguration&gt;</literal>
             </property>
-          </emphasis> to generate Hibernate xml mappings via
-          <emphasis>
-            <property>&lt;hbm2hbmxml&gt;</property>.</emphasis> The connection settings is here read from a <emphasis>
-            <property>
-              hibernate.properties
-            </property>
+          </emphasis> to generate Hibernate xml mappings via <emphasis>
+            <property>&lt;hbm2hbmxml&gt;</property>.</emphasis> The connection settings here
+          is read from a <emphasis>
+            <property> hibernate.properties </property>
           </emphasis> file but could just as well have been read from a <emphasis>
-            <property>hibernate.cfg.xml</property>.
-          </emphasis></para>
+            <property>hibernate.cfg.xml</property>. </emphasis></para>
 
         <programlisting role="XML"><![CDATA[<hibernatetool>
  <jdbcconfiguration propertyfile="etc/hibernate.properties" />
@@ -626,13 +705,13 @@
       </section>
     </section>
   </section>
-  
+
   <section>
     <title>Exporters</title>
 
-    <para>Exporters are the parts that does the actual job of converting the hibernate metamodel
-      into various artifacts, mainly code. The following section describes the current supported set
-      of exporters in the <property>Hibernate Tool</property> distribution. It is also possible for
+    <para>Exporters are the parts that do the actual job of converting the hibernate metamodel into
+      various artifacts, mainly code. The following section describes the current supported set of
+      exporters in the <property>Hibernate Tool</property> distribution. It is also possible for
       userdefined exporters, that is done through the <emphasis>
         <property>
           <literal>&lt;hbmtemplate&gt;</literal>
@@ -649,7 +728,7 @@
         Remember that if a custom naming strategy is needed it is placed on the configuration
         element.</para>
 
-          <programlisting role="XML"><![CDATA[<hbm2ddl
+      <programlisting role="XML"><![CDATA[<hbm2ddl
  export="true|false"
  update="true|false"
  drop="true|false"
@@ -659,118 +738,160 @@
  format="true|false"
  haltonerror="true|false"
  >]]></programlisting>
-      
+
       <table frame="topbot">
         <title>Hbm2ddl exporter attributes</title>
-        
+
         <tgroup cols="3">
-          
-          <colspec colwidth="0.3*"/>            
-          
-          <colspec colwidth="1.0*"/>
-          
+
           <colspec colwidth="0.3*"/>
-          
-          
+
+          <colspec colwidth="1.0*"/>
+
+          <colspec colwidth="0.3*"/>
+
+
           <thead>
             <row>
               <entry>Attribute name</entry>
-              
+
               <entry>Definition</entry>
-              
+
               <entry>Attribute use</entry>
             </row>
           </thead>
-          
+
           <tbody>
             <row>
-              <entry><para>export</para></entry>
-              
-              <entry><para>Execute the generated statements against the
-                database.</para></entry>
-              
-              <entry><para>Default: true</para></entry>
+              <entry>
+                <para>export</para>
+              </entry>
+
+              <entry>
+                <para>Executes the generated statements against the database</para>
+              </entry>
+
+              <entry>
+                <para>Default: true</para>
+              </entry>
             </row>
-            
+
             <row>
-              <entry><para>update</para></entry>
-              
-              <entry><para>Try and create an update script representing the
-                &quot;delta&quot; between what is in the database and what the mappings
-                specify. Ignores create/update attributes. (<emphasis>Do *not* use against
-                  production databases, no guarantees at all that the proper delta can be generated
-                  nor that the underlying database can actually execute the needed
-                  operations</emphasis>).</para></entry>
-              
-              <entry><para>Default: false</para></entry>
+              <entry>
+                <para>update</para>
+              </entry>
+
+              <entry>
+                <para>Try and create an update script representing the &quot;delta&quot;
+                  between what is in the database and what the mappings specify. Ignores
+                  create/update attributes. (<emphasis>Do *not* use against production databases, no
+                    guarantees at all that the proper delta can be generated nor that the underlying
+                    database can actually execute the needed operations</emphasis>).</para>
+              </entry>
+
+              <entry>
+                <para>Default: false</para>
+              </entry>
             </row>
-            
+
             <row>
-              <entry><para>drop</para></entry>
-              
-              <entry><para>Output will contain drop statements for the tables,
-                indices and constraints.</para></entry>
-              
-              <entry><para>Default: false</para></entry>
+              <entry>
+                <para>drop</para>
+              </entry>
+
+              <entry>
+                <para>Output will contain drop statements for the tables, indices and
+                constraints</para>
+              </entry>
+
+              <entry>
+                <para>Default: false</para>
+              </entry>
             </row>
-            
-            
+
+
             <row>
-              <entry><para>create</para></entry>
-              
-              <entry><para>Output will contain create statements for the tables,
-                indices and constraints.</para></entry>
-              
-              <entry><para>Default: true</para></entry>
+              <entry>
+                <para>create</para>
+              </entry>
+
+              <entry>
+                <para>Output will contain create statements for the tables, indices and
+                constraints</para>
+              </entry>
+
+              <entry>
+                <para>Default: true</para>
+              </entry>
             </row>
-            
+
             <row>
-              <entry><para>outputfilename</para></entry>
-              
-              <entry><para>If specified the statements will be dumped to this
-                file.</para></entry>
-              
-              <entry><para>Optional</para></entry>
+              <entry>
+                <para>outputfilename</para>
+              </entry>
+
+              <entry>
+                <para>If specified the statements will be dumped to this file</para>
+              </entry>
+
+              <entry>
+                <para>Optional</para>
+              </entry>
             </row>
-            
+
             <row>
-              <entry><para>delimiter</para></entry>
-              
-              <entry><para>If specified the statements will be dumped to this
-                file.</para></entry>
-              
-              <entry><para>Default: &quot;;&quot;</para></entry>
+              <entry>
+                <para>delimiter</para>
+              </entry>
+
+              <entry>
+                <para>If specified the statements will be dumped to this file</para>
+              </entry>
+
+              <entry>
+                <para>Default: &quot;;&quot;</para>
+              </entry>
             </row>
-            
+
             <row>
-              <entry><para>format</para></entry>
-              
-              <entry><para>Apply basic formatting to the statements.</para></entry>
-              
-              <entry><para>Default: false</para></entry>
+              <entry>
+                <para>format</para>
+              </entry>
+
+              <entry>
+                <para>Apply basic formatting to the statements</para>
+              </entry>
+
+              <entry>
+                <para>Default: false</para>
+              </entry>
             </row>
-            
+
             <row>
-              <entry><para>haltonerror</para></entry>
-              
-              <entry><para>Halt build process if an error occurs.</para></entry>
-              
-              <entry><para>Default: false</para></entry>
+              <entry>
+                <para>haltonerror</para>
+              </entry>
+
+              <entry>
+                <para>Halt build process if an error occurs</para>
+              </entry>
+
+              <entry>
+                <para>Default: false</para>
+              </entry>
             </row>
           </tbody>
-          
+
         </tgroup>
-      </table>   
-        
+      </table>
+
       <section>
         <title>Example</title>
 
         <para>Basic example of using <emphasis>
-            <property>&lt;hbm2ddl&gt;</property>,
-          </emphasis> which does not export to the database but simply dumps the sql to a file
-          named <emphasis>
-            <property>sql.ddl</property>.
-          </emphasis></para>
+            <property>&lt;hbm2ddl&gt;</property>, </emphasis> which does not export to the
+          database but simply dumps the sql to a file named <emphasis>
+            <property>sql.ddl</property>. </emphasis></para>
 
         <programlisting role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
  <configuration configurationfile="hibernate.cfg.xml"/>
@@ -787,57 +908,68 @@
         </emphasis> is a java codegenerator. Options for controlling whether JDK 5 syntax can be
         used and whether the POJO should be annotated with EJB3/Hibernate Annotations.</para>
 
-          <programlisting role="XML"><![CDATA[<hbm2java
+      <programlisting role="XML"><![CDATA[<hbm2java
  jdk5="true|false"
  ejb3="true|false"
 >]]></programlisting>
 
       <table frame="topbot">
         <title>Hbm2java exporter attributes</title>
-        
+
         <tgroup cols="3">
-          
-          <colspec colwidth="0.3*"/>            
-          
-          <colspec colwidth="1.0*"/>
-          
+
           <colspec colwidth="0.3*"/>
-          
-          
+
+          <colspec colwidth="1.0*"/>
+
+          <colspec colwidth="0.3*"/>
+
+
           <thead>
             <row>
               <entry>Attribute name</entry>
-              
+
               <entry>Definition</entry>
-              
+
               <entry>Default value</entry>
             </row>
           </thead>
-          
+
           <tbody>
             <row>
-              <entry><para>jdk</para></entry>
-              
-              <entry><para>Code will contain JDK 5 constructs such as generics and
-                static imports.</para></entry>
-              
-              <entry><para>False</para></entry>
+              <entry>
+                <para>jdk</para>
+              </entry>
+
+              <entry>
+                <para>Code will contain JDK 5 constructs such as generics and static imports.</para>
+              </entry>
+
+              <entry>
+                <para>False</para>
+              </entry>
             </row>
-            
+
             <row>
-              <entry><para>ejb3</para></entry>
-              
-              <entry><para>Code will contain EJB 3 features, e.g. using annotations
-                from javax.persistence and org.hibernate.annotations.</para></entry>
-              
-              <entry><para>False</para></entry>
+              <entry>
+                <para>ejb3</para>
+              </entry>
+
+              <entry>
+                <para>Code will contain EJB 3 features, e.g. using annotations from
+                  javax.persistence and org.hibernate.annotations.</para>
+              </entry>
+
+              <entry>
+                <para>False</para>
+              </entry>
             </row>
-            
+
           </tbody>
-          
+
         </tgroup>
-      </table>   
-      
+      </table>
+
       <section>
         <title>Example</title>
 
@@ -861,9 +993,12 @@
           <property>&lt;jdbcconfiguration&gt;</property>
         </emphasis> when performing reverse engineering, but can be used with any kind of
         configuration. e.g. to convert from annotation based pojo's to <emphasis>
-          <property>hbm.xml</property>.
-        </emphasis> Note that not every possible mapping transformation is possible/implemented
-        (contributions welcome) so some hand editing might be necessary.</para>
+          <property>hbm.xml</property>. </emphasis></para>
+
+      <note>
+        <para>Not every possible mapping transformation is possible/implemented (contributions
+          welcome) so some hand editing might be necessary.</para>
+      </note>
 
       <programlisting role="XML"><![CDATA[<hbm2hbmxml/>]]></programlisting>
 
@@ -871,8 +1006,7 @@
         <title>Example</title>
 
         <para>Basic usage of <emphasis>
-            <property>&lt;hbm2hbmxml&gt;</property>.
-          </emphasis></para>
+            <property>&lt;hbm2hbmxml&gt;</property>. </emphasis></para>
 
         <programlisting role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
  <configuration configurationfile="hibernate.cfg.xml"/>
@@ -894,7 +1028,7 @@
             might be necessary.</para>
         </note>
 
-          <programlisting role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
+        <programlisting role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
  <annotationconfiguration configurationfile="hibernate.cfg.xml"/>
  <hbm2hbmxml/>
 </hibernatetool>]]></programlisting>
@@ -907,58 +1041,62 @@
       <para><emphasis>
           <property>&lt;hbm2cfgxml&gt;</property>
         </emphasis> generates a <emphasis>
-          <property>hibernate.cfg.xml</property>.
-        </emphasis> Intended to be used together with a <emphasis>
+          <property>hibernate.cfg.xml</property>. </emphasis> Intended to be used together with a <emphasis>
           <property>&lt;jdbcconfiguration&gt;</property>
         </emphasis> when performing reverse engineering, but it can be used with any kind of
         configuration. The <emphasis>
           <property>&lt;hbm2cfgxml&gt;</property>
         </emphasis> will contain the properties used and adds mapping entries for each mapped class.</para>
 
-          <programlisting role="XML"><![CDATA[<hbm2cfgxml
+      <programlisting role="XML"><![CDATA[<hbm2cfgxml
   ejb3="true|false"
 />
 ]]></programlisting>
-      
+
       <table frame="topbot">
         <title>Hbm2cfgxml exporter attribute</title>
-        
+
         <tgroup cols="3">
-          
-          <colspec colwidth="0.3*"/>            
-          
-          <colspec colwidth="1.0*"/>
-          
+
           <colspec colwidth="0.3*"/>
-          
-          
+
+          <colspec colwidth="1.0*"/>
+
+          <colspec colwidth="0.3*"/>
+
+
           <thead>
             <row>
               <entry>Attribute name</entry>
-              
+
               <entry>Definition</entry>
-              
+
               <entry>Default value</entry>
             </row>
           </thead>
-          
+
           <tbody>
-            
+
             <row>
-              <entry><para>ejb3</para></entry>
-              
-              <entry><para>The generated cfg.xml will have &lt;mapping
-                class=".."/&gt;, opposed to &lt;mapping resource="..."/&gt; for each
-                mapping.</para></entry>
-              
-              <entry><para>False</para></entry>
+              <entry>
+                <para>ejb3</para>
+              </entry>
+
+              <entry>
+                <para>The generated cfg.xml will have &lt;mapping class=".."/&gt;, opposed
+                  to &lt;mapping resource="..."/&gt; for each mapping.</para>
+              </entry>
+
+              <entry>
+                <para>False</para>
+              </entry>
             </row>
-            
+
           </tbody>
-          
+
         </tgroup>
-      </table>   
-      
+      </table>
+
     </section>
 
     <section>
@@ -1007,15 +1145,14 @@
         <para>Multiple queries can be executed by nested <emphasis>
             <property>&lt;hql&gt;</property>
           </emphasis> elements. In this example we also let the output be dumped to <emphasis>
-            <property>queryresult.txt</property>.
-          </emphasis></para>
+            <property>queryresult.txt</property>. </emphasis></para>
 
         <note>
           <title>Tip:</title>
           <para> Currently the dump is simply a call to toString on each element.</para>
         </note>
 
-          <programlisting role="XML"><![CDATA[<hibernatetool>
+        <programlisting role="XML"><![CDATA[<hibernatetool>
  <configuration configurationfile="hibernate.cfg.xml"/>
  <query destfile="queryresult.txt">
    <hql>select c.name from Customer c where c.age > 42</hql>
@@ -1028,7 +1165,7 @@
     <section id="hbmtemplate">
       <title>Generic Hibernate metamodel exporter (<literal>&lt;hbmtemplate&gt;</literal>)</title>
 
-      <para>Generic exporter that can be controlled by an user provides a template or class.</para>
+      <para>Generic exporter that can be controlled by a user provides a template or class.</para>
 
       <programlisting role="XML"><![CDATA[<hbmtemplate
  filepattern="{package-name}/{class-name}.ftl"
@@ -1050,7 +1187,7 @@
             <property>&lt;hbmtemplate&gt;</property>
           </emphasis>.</para>
 
-          <programlisting role="XML"><![CDATA[ <hibernatetool destdir="${destdir}">
+        <programlisting role="XML"><![CDATA[ <hibernatetool destdir="${destdir}">
   <jdbcconfiguration 
      configurationfile="hibernate.cfg.xml" 
      packagename="my.model"/>   
@@ -1067,10 +1204,19 @@
 ]]></programlisting>
 
       </section>
+      <section>
+        <title>Relevant Resources Links</title>
+
+        <para>Read more about <ulink url="http://velocity.apache.org/">Velocity</ulink> and <ulink
+            url="http://freemarker.org/">Freemarker</ulink> to find out why using the last is better
+          or refer to Max Andersen discussion on the topic in <ulink
+            url="http://in.relation.to/2110.lace;jsessionid=3462F47B17556604C15DF1B96572E940"
+            >&quot;A story about FreeMarker and Velocity&quot;</ulink>.</para>
+      </section>
     </section>
   </section>
 
-  
+
 
   <section>
     <title>Using properties to configure Exporters</title>
@@ -1082,7 +1228,7 @@
           <literal>&lt;propertyset&gt;</literal>
         </property>
       </emphasis> and each exporter will have access to them directly in the templates and via
-      <property>Exporter.setProperties()</property>.</para>
+        <property>Exporter.setProperties()</property>.</para>
 
     <section>
       <title><literal>&lt;property&gt;</literal> and
@@ -1092,10 +1238,12 @@
           <property>&lt;property&gt;</property>
         </emphasis> allows you bind a string value to a key. The value will be available in the
         templates via <emphasis>
-          <property>$&lt;key&gt;</property></emphasis>. The following example will assign the string value <emphasis>
+          <property>$&lt;key&gt;</property>
+        </emphasis>. The following example will assign the string value <emphasis>
           <property>&quot;true&quot;</property>
-          </emphasis> to the variable <emphasis>
-            <property>$descriptors</property></emphasis>.</para>
+        </emphasis> to the variable <emphasis>
+          <property>$descriptors</property>
+        </emphasis>.</para>
 
       <programlisting role="XML"><![CDATA[<property key="descriptors" value="true"/>]]></programlisting>
 
@@ -1112,7 +1260,8 @@
           <property>
             <literal>&lt;propertyset&gt;</literal>
           </property>
-        </emphasis> is explained in detail in the <ulink url="http://ant.apache.org/manual/">Ant manual</ulink>.</para>
+        </emphasis> is explained in detail in the <ulink url="http://ant.apache.org/manual/">Ant
+          manual</ulink>.</para>
     </section>
 
     <section>
@@ -1147,6 +1296,7 @@
             <property>&lt;property&gt;</property>
           </emphasis> which will be available to the templates/exporter. </para>
         <note>
+          <title>Tip:</title>
           <para> This example actually simulates what &lt;hbm2java&gt; actually does.</para>
         </note>
 
