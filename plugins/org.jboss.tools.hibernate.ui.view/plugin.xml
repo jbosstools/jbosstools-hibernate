@@ -7,7 +7,7 @@
          <action
             id="org.jboss.tools.hibernate.ui.view.openDiagramAction" 
             label="Open Mapping Diagram" 
-            icon="icons/runOpenDiagram.gif" 
+            icon="images/hibernate_small_icon.gif" 
             class="org.jboss.tools.hibernate.ui.view.views.OpenDiagramActionDelegate"> 
          </action> 
       </objectContribution> 
