@@ -21,6 +21,7 @@ import org.eclipse.ui.PartInitException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.Property;
+import org.jboss.tools.hibernate.ui.veditor.VisualEditorPlugin;
 import org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.SpecialRootClass;
 import org.jboss.tools.hibernate.ui.view.views.ObjectEditorInput;
@@ -36,6 +37,7 @@ public class OpenMappingAction extends SelectionAction {
 		super(part);
 		setId(ACTION_ID);
 		setText("Open Mapping File");
+		setImageDescriptor(VisualEditorPlugin.getImageDescriptor("icons/open_mapping.gif"));
 	}
 
 	public void run() {

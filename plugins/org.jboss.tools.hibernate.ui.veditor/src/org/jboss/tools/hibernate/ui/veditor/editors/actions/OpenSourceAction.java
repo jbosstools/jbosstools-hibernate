@@ -14,8 +14,8 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
+import org.jboss.tools.hibernate.ui.veditor.VisualEditorPlugin;
 import org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor;
-import org.jboss.tools.hibernate.ui.view.views.HibernateUtils;
 import org.jboss.tools.hibernate.ui.view.views.ObjectEditorInput;
 
 /**
@@ -29,6 +29,7 @@ public class OpenSourceAction extends SelectionAction {
 		super(part);
 		setId(ACTION_ID);
 		setText("Open Source File");
+		setImageDescriptor(VisualEditorPlugin.getImageDescriptor("icons/open_source.gif"));
 	}
 
 	public void run() {
