@@ -9,6 +9,8 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.ITextListener;
+import org.eclipse.jface.text.TextEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -21,6 +23,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.IShowEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.editors.text.TextEditor;
@@ -34,6 +37,7 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 		QueryEditor, IShowEditorInput {
 
 	private ToolBarManager tbm;
+	private ExecuteQueryAction execAction = null;
 	final private QueryInputModel queryInputModel;
 	
 	// to enable execution of queries from files - hack for HBX-744
@@ -73,6 +77,7 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 			hei.resetName();
 		}
 		this.consoleConfigurationName = name;
+		execAction.setEnabled(name.trim().length() != 0);
 		showEditorInput( getEditorInput() );
 	}
 
@@ -123,8 +128,16 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 		bar.setLayoutData( new GridData( GridData.FILL_HORIZONTAL ) );
 
 		tbm = new ToolBarManager( bar );
+		execAction = new ExecuteQueryAction( this );
+		//getDocumentProvider().addElementStateListener(listener)
+		/*getSourceViewer().addTextListener(new ITextListener(){
+
+			public void textChanged(TextEvent event) {
+				System.out.println(event.getText());
+				
+			}});*/
 		ActionContributionItem item = new ActionContributionItem(
-				new ExecuteQueryAction( this ) );
+				execAction );
 
 		tbm.add( item );
 
