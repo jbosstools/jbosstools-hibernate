@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.ui.actions.SelectionListenerAction;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 /**
  * @author max
@@ -34,10 +35,12 @@ import org.eclipse.ui.actions.SelectionListenerAction;
 public class RefreshAction extends SelectionListenerAction {
 
 	private final StructuredViewer viewer;
+	private String imageFilePath = "icons/images/refresh_run.gif";
 
 	public RefreshAction(StructuredViewer viewer) {
 		super("Refresh");
 		this.viewer = viewer;
+		setImageDescriptor(HibernateConsolePlugin.getImageDescriptor(imageFilePath  ));
 	}
 	
 	public void run() {

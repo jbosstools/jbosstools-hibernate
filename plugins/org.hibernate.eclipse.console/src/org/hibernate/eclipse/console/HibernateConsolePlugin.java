@@ -43,6 +43,7 @@ import org.eclipse.jdt.ui.PreferenceConstants;
 import org.eclipse.jdt.ui.text.JavaTextTools;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
@@ -645,7 +646,9 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 		return javaTextTools;
 	}
 
-
+	public static ImageDescriptor getImageDescriptor(String path) {
+		return AbstractUIPlugin.imageDescriptorFromPlugin(ID, path);
+	}
 
 	public void logWarning(HibernateException he) {
 		logMessage(IStatus.WARNING, he==null?null:he.getMessage(), he);		
