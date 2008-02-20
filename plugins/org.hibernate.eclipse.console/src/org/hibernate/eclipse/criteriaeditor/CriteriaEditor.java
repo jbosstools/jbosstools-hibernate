@@ -36,7 +36,9 @@ import org.eclipse.jdt.ui.text.java.CompletionProposalCollector;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.ITextListener;
 import org.eclipse.jface.text.ITextSelection;
+import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -188,6 +190,13 @@ public class CriteriaEditor extends AbstractQueryEditor {
     	createToolbar( parent );
         
 		super.createPartControl( parent );
+		if (getSourceViewer() != null ){
+			getSourceViewer().addTextListener(new ITextListener(){
+
+				public void textChanged(TextEvent event) {
+					updateExecButton();
+				}});
+		}
 		
 		Control control = parent.getChildren()[1];
     	control.setLayoutData( new GridData( GridData.FILL_BOTH ) );

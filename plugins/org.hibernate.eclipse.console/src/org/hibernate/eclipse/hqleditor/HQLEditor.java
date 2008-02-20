@@ -29,7 +29,9 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.ITextListener;
 import org.eclipse.jface.text.ITextViewer;
+import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.jface.text.source.projection.ProjectionSupport;
@@ -134,6 +136,14 @@ public class HQLEditor extends AbstractQueryEditor {
     	createToolbar(parent);
     	
     	super.createPartControl( parent );
+    	
+    	if (getSourceViewer() != null ){
+			getSourceViewer().addTextListener(new ITextListener(){
+
+				public void textChanged(TextEvent event) {
+					updateExecButton();
+				}});
+		}
     	
     	// move to base class?
     	Control control = parent.getChildren()[1];

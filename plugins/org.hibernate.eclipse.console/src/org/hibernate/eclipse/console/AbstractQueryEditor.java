@@ -77,14 +77,24 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 			hei.resetName();
 		}
 		this.consoleConfigurationName = name;
-		execAction.setEnabled(name.trim().length() != 0);
+		
 		showEditorInput( getEditorInput() );
+	}
+	
+	protected void updateExecButton(){
+		if (getSourceViewer() != null ){
+			execAction.setEnabled(getConsoleConfigurationName().trim().length() != 0 
+					&& getSourceViewer().getDocument().get().trim().length() > 0);
+		} else {
+			execAction.setEnabled(false);
+		}
 	}
 
 	public void showEditorInput(IEditorInput editorInput) {
 
 		try {
 			doSetInput( editorInput );
+			updateExecButton();
 		}
 		catch (CoreException e) {
 			HibernateConsolePlugin.getDefault().logErrorMessage(
