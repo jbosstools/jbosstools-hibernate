@@ -51,6 +51,7 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 	private Button jpaMode;
 	private Button annotationsMode;
 	private Button confbutton;
+	private Button createconfbutton;
 	
 	private Text propertyFileText;
 	private Text configurationFileText;
@@ -129,7 +130,7 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 	private void createConfigurationFileEditor(Composite parent) {
 		Group group = createGroup( parent, "Configuration file:", 3 );
 		configurationFileText = createBrowseEditor( parent, group);
-		createNewFileButton( group, new SelectionAdapter() {
+		createconfbutton = createNewFileButton( group, new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				handleConfigurationFileCreate();
 			}
@@ -306,6 +307,7 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		
 		configurationFileText.setEnabled( /* TODO !configurationFileWillBeCreated && */ !getConfigurationMode().equals( ConfigurationMode.JPA ) );
 		confbutton.setEnabled( !getConfigurationMode().equals( ConfigurationMode.JPA ) );
+		createconfbutton.setEnabled(confbutton.isEnabled());
 		
 		persistenceUnitNameText.setEnabled( getConfigurationMode().equals( ConfigurationMode.JPA) );
 		
