@@ -11,9 +11,12 @@
     <title>JBoss Tools</title>
 
     <para><property>JBoss Tools 2.x</property> includes <property>Hibernate Tools</property> and
-      thus nothing is required besides downloading and installing <property>JBoss Tools</property>.
-      If you need to update to a newer version of the <property>Hibernate Tools</property> just
-      follow the instructions in the Eclipse IDE section.</para>
+      thus nothing is required besides <ulink url="http://labs.jboss.com/tools/download/index.html"
+        >downloading</ulink> and <ulink
+        url="http://www.redhat.com/developer_studio/guides/GettingStartedGuide/html_single/#JBossToolsInstall"
+        >installing JBoss Tools</ulink>. If you need to update to a newer version of the
+        <property>Hibernate Tools</property> just follow the instructions in the Eclipse IDE
+      section.</para>
   </section>
 
   <section>
@@ -21,9 +24,10 @@
 
     <para>To install into any <property>Eclipse 3.3.x</property> based Eclipse IDE you can either
       download the <property>Hibernate Tools</property> distribution from the <ulink
-        url="http://tools.hibernate.org">Hibernate website</ulink> or use the <property>JBoss
-      Tools</property> update site (see also <ulink url="http://tools.hibernate.org"
-        >http://tools.hibernate.org</ulink> for links to the update site).</para>
+        url="http://www.hibernate.org/6.html">Hibernate website</ulink> or use the <ulink
+        url="http://download.jboss.org/jbosstools/updates/stable/">JBoss Tools Update Site</ulink>
+      (see also <ulink url="http://tools.hibernate.org">http://tools.hibernate.org</ulink> for links
+      to the update site).</para>
 
     <para>If you download the <property>Hibernate Tools</property> distribution you need to place
       the <emphasis>
@@ -40,8 +44,8 @@
         then check out <ulink url="https://eclipse-tutorial.dev.java.net/"
           >https://eclipse-tutorial.dev.java.net/</ulink> and especially <ulink
           url="https://eclipse-tutorial.dev.java.net/visual-tutorials/updatemanager.html"
-            >https://eclipse-tutorial.dev.java.net/visual-tutorials/updatemanager.html</ulink> which covers
-        using the update manager.</para>
+          >https://eclipse-tutorial.dev.java.net/visual-tutorials/updatemanager.html</ulink> which
+        covers using the update manager.</para>
     </note>
 
     <section>
@@ -51,13 +55,11 @@
         2.x</property> which at this time is the latest stable release from the Eclipse Webtools
         project.</para>
 
-      <para>Because the WTP project not always have had proper versioning of
-        their plugins there might exist WTP plugins in your existing eclipse
-        directory from other Eclipse based projects that are from an earlier
-        WTP release but has either the same version number or higher. It is
-        thus recommended that if you have issues with WTP provided features to
-        try and install the plugins on a clean install of eclipse to ensure there are no version
-        collisions.</para>
+      <para>Because the WTP project not always have had proper versioning of their plugins there
+        might exist WTP plugins in your existing eclipse directory from other Eclipse based projects
+        that are from an earlier WTP release but has either the same version number or higher. It is
+        thus recommended that if you have issues with WTP provided features to try and install the
+        plugins on a clean install of eclipse to ensure there are no version collisions.</para>
 
     </section>
   </section>
@@ -69,7 +71,9 @@
         <property>hibernate-tools.jar</property>
       </emphasis> and associated libraries. The libraries are included in the distribution from the
       Hibernate website and the Eclipse updatesite. The libraries are located in the eclipse plugins
-      directory at  /plugins/org.hibernate.eclipse.x.x.x/lib/tools/. These libraries are 100% independent from the eclipse platform. How to use these
-      via ant tasks are described in the <link linkend="ant">Ant Tools</link> chapter.</para>
+      directory at <emphasis>
+        <property>/plugins/org.hibernate.eclipse.x.x.x/lib/tools/</property></emphasis>. These libraries are 100%
+      independent from the eclipse platform. How to use these via ant tasks are described in the
+        <link linkend="ant">Ant Tools</link> chapter.</para>
   </section>
 </chapter>

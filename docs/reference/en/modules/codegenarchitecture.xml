@@ -26,8 +26,10 @@
             </emphasis> files, requires a <emphasis>
               <property>hibernate.cfg.xml</property>
             </emphasis>. Named core in Eclipse and <emphasis>
-              <property><literal>&lt;configuration&gt;</literal></property></emphasis>
-            in ant.</para>
+              <property>
+                <literal>&lt;configuration&gt;</literal>
+              </property>
+            </emphasis> in ant.</para>
         </listitem>
 
         <listitem>
@@ -35,9 +37,11 @@
               <property>hbm.xml</property>
             </emphasis> and annotated classes, requires a <emphasis>
               <property>hibernate.cfg.xml</property>
-            </emphasis>. Named annotations in Eclipse and
-            <emphasis>
-              <property><literal>&lt;annotationconfiguration&gt;</literal></property></emphasis> in ant.</para>
+            </emphasis>. Named annotations in Eclipse and <emphasis>
+              <property>
+                <literal>&lt;annotationconfiguration&gt;</literal>
+              </property>
+            </emphasis> in ant.</para>
         </listitem>
 
         <listitem>
@@ -45,17 +49,22 @@
               <property>hbm.xml</property>
             </emphasis> and annotated classes requires that the project has a <emphasis>
               <property>META-INF/persistence.xml</property>
-            </emphasis> in its classpath. Named JPA in Eclipse and
-            <emphasis>
-              <property><literal>&lt;jpaconfiguration&gt;</literal></property></emphasis> in ant.</para>
+            </emphasis> in its classpath. Named JPA in Eclipse and <emphasis>
+              <property>
+                <literal>&lt;jpaconfiguration&gt;</literal>
+              </property>
+            </emphasis> in ant.</para>
         </listitem>
 
         <listitem>
-          <para>A JDBC configuration uses <property>Hibernate Tools</property> reverse engineering and reads its
-            mappings via JDBC metadata + additional reverse engineering files (reveng.xml).
-            Automatically used in Eclipse when doing reverse engineering from JDBC and named
-            <emphasis>
-              <property><literal>&lt;jdbcconfiguration&gt;</literal></property></emphasis> in ant.</para>
+          <para>A JDBC configuration uses <property>Hibernate Tools</property> reverse engineering
+            and reads its mappings via JDBC metadata + additional reverse engineering files
+            (reveng.xml). Automatically used in Eclipse when doing reverse engineering from JDBC and
+            named <emphasis>
+              <property>
+                <literal>&lt;jdbcconfiguration&gt;</literal>
+              </property>
+            </emphasis> in ant.</para>
         </listitem>
       </itemizedlist>
     </para>
@@ -63,26 +72,28 @@
     <para>In most projects you will normally use only one of the Core, Annotation or JPA
       configuration and possibly the JDBC configuration if you are using the reverse engineering
       facilities of <property>Hibernate Tools</property>. </para>
-      
-      <note><para>No matter which Hibernate
-      Configuration type you are using <property>Hibernate Tools</property> supports them.</para></note>
+
+    <note>
+      <para>No matter which Hibernate Configuration type you are using <property>Hibernate
+        Tools</property> supports them.</para>
+    </note>
 
     <para>The following drawing illustrates the core concepts:</para>
 
     <para>
       <figure>
         <title>Hibernate Core Concepts</title>
-      <mediaobject>
-        <imageobject role="fo">
-          <imagedata fileref="images/architecture.png" format="PNG"/>
-        </imageobject>
+        <mediaobject>
+          <imageobject role="fo">
+            <imagedata fileref="images/architecture.png" format="PNG"/>
+          </imageobject>
 
-        <imageobject role="html">
-          
-          <imagedata align="center" fileref="images/architecture.png" format="PNG"/>
-        </imageobject>
-      </mediaobject>
-        </figure>
+          <imageobject role="html">
+
+            <imagedata align="center" fileref="images/architecture.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
     </para>
 
     <para>The code generation is done based on the Configuration model no matter which type of
@@ -98,7 +109,8 @@
       the job of the exporter to generate a set of code artifacts.</para>
 
     <para>The tools provides a default set of Exporter's which can be used in both Ant and the
-      Eclipse UI. Documentation for these Exporters is in the Ant and Eclipse sections.</para>
+      Eclipse UI. Documentation for these Exporters is in the <link linkend="ant">Ant Tools</link>
+      and <link linkend="plugins">Eclipse Plugins</link> chapters.</para>
 
     <para>Users can provide their own customer Exporter's, either by custom classes implementing the
       Exporter interface or simply be providing custom templates. This is documented at <xref

@@ -2,10 +2,12 @@
 <chapter id="plugins">
   <title>Eclipse Plugins</title>
 
+  <para>This chapter will introduce you to the functionality that <property>Hibernate
+    Tools</property> provide within Eclipse. That is a set of wizards and editors for simplifying
+    the work with <property>Hibernate</property>.</para>
+
   <section>
     <title>Introduction</title>
-
-    <para/>
 
     <para>The following features are available in the <property>Hibernate Tools</property> Eclipse
       plugins:</para>
@@ -33,11 +35,14 @@
       Tools</property> will add problem markers if your queries are not valid against the console
       configuration associated with the project.</para>
 
-    <para>Please note that these tools do not try to hide any functionality of
-      <property>Hibernate</property>. The tools make working with <property>Hibernate</property>
-      easier, but you are still encouraged/required to read the documentation for Hibernate to fully
-      utilize <property>Hibernate Tools</property> and especially <property>Hibernate</property> it
-      self.</para>
+    <note>
+      <para>Please note that these tools do not try to hide any functionality of
+        <property>Hibernate</property>. The tools make working with <property>Hibernate</property>
+        easier, but you are still encouraged/required to read the <ulink
+          url="http://www.hibernate.org/5.html">Hibernate Documentation</ulink> to fully utilize
+          <property>Hibernate Tools</property> and especially <property>Hibernate</property> it
+        self.</para>
+    </note>
   </section>
 
   <section>
@@ -319,7 +324,6 @@
       </mediaobject>
     </figure>
 
-    <para>
       <table>
         <title>Hibernate Console Configuration Classpath</title>
 
@@ -361,7 +365,7 @@
               </entry>
 
               <entry>
-                <para>empty</para>
+                <para>Empty</para>
               </entry>
             </row>
 
@@ -382,7 +386,6 @@
           </tbody>
         </tgroup>
       </table>
-    </para>
 
     <para>
       <figure>
@@ -398,7 +401,7 @@
         </mediaobject>
       </figure>
 
-
+      <para>Parameters of the Mappings tab in the <property>Hibernate Console Configuration wizard</property> are explained below:</para>
       <table>
         <title>Hibernate Console Configuration Mappings</title>
 
@@ -587,7 +590,7 @@
               </entry>
 
               <entry>
-                <para>Path to a directory into where all output will be written by default. Be aware
+                <para>Path to a directory where all output will be written by default. Be aware
                   that existing files will be overwritten, so be sure to specify the correct
                   directory.</para>
               </entry>
@@ -599,9 +602,9 @@
               </entry>
 
               <entry>
-                <para>If enabled the tools will reverse engineer the database available via the
+                <para>If enabled, the tools will reverse engineer the database available via the
                   connection information in the selected Hibernate Console Configuration and
-                  generate code based on the database schema. If not enabled the code generation
+                  generate code based on the database schema. If not enabled, the code generation
                   will just be based on the mappings already specified in the Hibernate Console
                   configuration.</para>
               </entry>
@@ -806,7 +809,7 @@
               </entry>
 
               <entry>
-                <para>Generates set of html pages that documents the database schema and some of the
+                <para>Generates a set of html pages that documents the database schema and some of the
                   mappings.</para>
               </entry>
             </row>
@@ -1218,7 +1221,7 @@
   <section>
     <title>Hibernate Console Perspective</title>
 
-    <para>The <property>Hibernate Console Perspective</property>  combines a set of views which allow
+    <para>The <property>Hibernate Console Perspective</property> combines a set of views which allow
       you to see the structure of your mapped entities/classes, edit HQL queries, execute the
       queries, and see the results. To use this perspective you need to create a <link
         linkend="console_conf">Console configuration</link>.</para>
