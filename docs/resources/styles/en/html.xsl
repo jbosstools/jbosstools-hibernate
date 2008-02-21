@@ -25,7 +25,7 @@
 
 <xsl:import href="&db_xsl_path;/html/docbook.xsl"/>
 <xsl:include href="./collapsing-navigation.xsl"></xsl:include>
-<xsl:include href="./highlight.xsl"></xsl:include>
+<xsl:include href="./code-highlight.xsl"></xsl:include>
 
 
 <!--###################################################
