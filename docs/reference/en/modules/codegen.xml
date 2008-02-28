@@ -5,7 +5,7 @@
   <para>When using <emphasis>
       <property>&lt;hbm2java&gt;</property>
     </emphasis> or the eclipse plugin to generate POJO java code you have the possibility to control
-    certain aspects of the code generation. This is primarily done through the <emphasis>
+    certain aspects of the code generation. This is primarily done with the <emphasis>
       <property>&lt;meta&gt;</property>
     </emphasis> tag in the mapping files. The following section describes the possible <emphasis>
       <property>&lt;meta&gt;</property>
@@ -137,7 +137,7 @@ public class Person implements Serializable, IAuditable {
               <literal>interface</literal>
             </entry>
 
-            <entry>If true an interface is generated instead of an class.</entry>
+            <entry>If true, an interface is generated instead of an class.</entry>
           </row>
 
           <row>
@@ -153,7 +153,7 @@ public class Person implements Serializable, IAuditable {
               <literal>extends</literal>
             </entry>
 
-            <entry>class the class should extend (ignored for subclasses)</entry>
+            <entry>class that the current class should extend (ignored for subclasses)</entry>
           </row>
 
           <row>
@@ -437,7 +437,7 @@ public class Person implements Serializable, IAuditable {
       <section>
         <title>Generate pre/post-conditions for methods</title>
 
-        <para>With an <emphasis> &lt;meta attribute="class-code"&gt;</emphasis>, you can add
+        <para>With a <emphasis> &lt;meta attribute="class-code"&gt;</emphasis>, you can add
           additional methods on a given class, nevertheless such <emphasis>
             <property>&lt;meta&gt;</property>
           </emphasis> attribute can not be used at a property scope level and <property>Hibernate
@@ -445,13 +445,13 @@ public class Person implements Serializable, IAuditable {
             <property>&lt;meta&gt;</property>
           </emphasis> attributes.</para>
 
-        <para>A possibly solution for this is to modify the freemarker templates responsible for
+        <para>A possible solution for this is to modify the freemarker templates responsible for
           generating the POJO's. If you look inside <emphasis>
             <property>hibernate-tools.jar</property>, </emphasis> you can find the template: <emphasis>
             <property>pojo/PojoPropertyAccessor.ftl</property>
           </emphasis></para>
 
-        <para>This file is as the named indicates used to generate property accessors for pojo's.</para>
+        <para>This file is as the name indicates used to generate property accessors for pojo's.</para>
 
         <para>Extract the <emphasis>
             <property>PojoPropertyAccessor.ftl</property>
@@ -510,7 +510,7 @@ public class Person implements Serializable, IAuditable {
           contents will be generated into the body of the relevant <literal>set</literal> method.</para>
 
         <para>As an example let us add a pre-condition for property <literal>name</literal>
-          preventing no <property>Person</property> can have an empty name. So we have to modify the <emphasis>
+          preventing no <property>Person</property> can have an empty name. Hence we have to modify the <emphasis>
             <property>Person.hbm.xml</property>
           </emphasis> file like this:</para>
 
@@ -530,7 +530,7 @@ public class Person implements Serializable, IAuditable {
 </hibernate-mapping>]]></programlisting>
 
         <note>
-          <para>I) To scape the &amp; symbol we put &amp;amp;. You can use
+          <para>I) To escape the &amp; symbol we put &amp;amp;. You can use
             &lt;![CDATA[]]&gt; instead.</para>
           <para>II) Note that we are referring to "firstName" directly and this is the parameter
             name not the actual field name. If you want to refer the field you have to use

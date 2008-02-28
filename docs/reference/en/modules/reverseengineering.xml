@@ -80,7 +80,7 @@
 <table-filter match-catalog="BAD" match-schema="SCHEMA" match-name=".*" exclude="true" /> 
 
 <!-- table allows you to override/define how reverse engineering 
-     are done for a specific table -->
+     is done for a specific table -->
 <table name="ORDERS"> 
  <primary-key>
    <!-- setting up a specific id generator for a table -->
@@ -154,7 +154,7 @@
       </section>
     </section>
 
-    <section>
+    <section id="type_map">
       <title>Type mappings (&lt;type-mapping&gt;)</title>
 
       <para>The <emphasis>
@@ -436,7 +436,7 @@
        
     </section>
 
-    <section>
+    <section id="tab_and_col">
       <title>Specific table configuration (&lt;table&gt;)</title>
 
       <para><emphasis>
@@ -638,7 +638,7 @@
               <row>
                 <entry><para>name</para></entry>
                 
-                <entry><para>Column name.</para></entry>
+                <entry><para>Column name</para></entry>
                 
                 <entry><para>Required</para></entry>
               </row>
@@ -656,7 +656,7 @@
               <row>
                 <entry><para>type</para></entry>
                 
-                <entry><para>Which hibernate-type to use for this specific column.</para></entry>
+                <entry><para>Which hibernate-type to use for this specific column</para></entry>
                 
                 <entry><para>Optional</para></entry>
               </row>
@@ -666,7 +666,7 @@
                 <entry><para>property</para></entry>
                 
                 <entry><para>What property name will be generated for this
-                  column.</para></entry>
+                  column</para></entry>
                 
                 <entry><para>Optional</para></entry>
               </row>
@@ -674,7 +674,7 @@
               <row>
                 <entry><para>exclude</para></entry>
                 
-                <entry><para>Set to true if this column should be ignored.</para></entry>
+                <entry><para>Set to true if this column should be ignored</para></entry>
                 
                 <entry><para>default: false</para></entry>
               </row>

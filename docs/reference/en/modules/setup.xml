@@ -36,8 +36,10 @@
         <property>/feature</property>
       </emphasis> directory into your eclipse directory or eclipse extensions directory. Sometimes
       Eclipse does not automatically detect new plugins and thus the tools will not be activated. To
-      ensure eclipse sees these changes run eclipse with the -clean option. E.g. <literal>eclipse
-        -clean</literal> Using the updatesite does not require any additional steps.</para>
+      ensure eclipse sees these changes just clean up the cached plugin information by running eclipse with the <emphasis>
+        <property>-clean</property></emphasis> option, e.g. <emphasis>
+          <property>eclipse
+        -clean</property>.</emphasis> Using the updatesite does not require any additional steps.</para>
 
     <note>
       <para>If you need more basic instructions on installing plugins and general usage of eclipse

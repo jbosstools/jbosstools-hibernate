@@ -98,7 +98,7 @@
         <property>hibernate.cfg.xml</property>
       </emphasis> will be automatically opened in an editor. The last option <emphasis>
         <property>Create Console Configuration</property>
-      </emphasis> is enabled by default and when enabled it will automatically use the <emphasis>
+      </emphasis> is enabled by default and when enabled, it will automatically use the <emphasis>
         <property>hibernate.cfg.xml</property>
       </emphasis> for the basis of a Console configuration.</para>
   </section>
@@ -111,7 +111,7 @@
       classpath are needed to load the POJO's, JDBC drivers etc. It is required to make usage of
       query prototyping, reverse engineering and code generation. You can have multiple named
       console configurations. Normally you would just need one per project, but more is definitely
-      possible.</para>
+      possible if your project requires this.</para>
 
     <para>You create a console configuration by running the <property>Console Configuration
       Wizard</property>, shown in the following screenshot. The same wizard will also be used if you
@@ -323,6 +323,8 @@
 
       </mediaobject>
     </figure>
+    
+    <para>The fallowing table specifies the parameters of the Classpath tab of the wizard.</para>
 
       <table>
         <title>Hibernate Console Configuration Classpath</title>
@@ -1037,7 +1039,7 @@
       </figure>
 
       <important>
-        <para>Note that it requires a proper configured hibernate console configuration and this
+        <para>Table/Column completion requires a proper configured hibernate console configuration and this
           configuration should be the default for the project where the <emphasis>
             <property>hbm.xml</property>
           </emphasis> resides.</para>
@@ -1093,15 +1095,17 @@
 
     <para>The editor is intended to allow easy definition of type mappings, table include/excludes
       and specific override settings for columns, e.g. define an explicit name for a column when the
-      default naming rules is not applicable.</para>
+      default naming rules are not applicable.</para>
 
-    <para>Note that not all the features of the <emphasis>
+    <note><para>
+      Not all the features of the <emphasis>
         <property>.reveng.xml </property>
-      </emphasis> file is exposed or fully implemented in the editor, but the main functionality is
+      </emphasis> file are exposed or fully implemented in the editor, but the main functionality is
       there. To understand the full flexibility of the <emphasis>
         <property>reveng.xml</property>
-      </emphasis>, please see <xref linkend="hibernaterevengxmlfile"/></para>
-
+      </emphasis>, please see <xref linkend="hibernaterevengxmlfile"/> </para>   
+    </note>
+    
     <para>The editor is activated as soon as an <emphasis>
         <property>.reveng.xml </property>
       </emphasis> file is opened. To get an initial <emphasis>
@@ -1172,7 +1176,7 @@
 
     <para>The <emphasis>
         <property>Type Mappings</property>
-      </emphasis> page is used for specifying type mappings from JBDS types to any Hibernate type
+      </emphasis> page is used for specifying type mappings from JBDC types to any Hibernate type
       (including usertypes) if the default rules are not applicable. Here again to see the database
       tables press <emphasis>
         <property>Refresh</property>
@@ -1195,7 +1199,7 @@
 
     <para>The <emphasis>
         <property>Table and Columns</property>
-      </emphasis> page allow the user to explicit set e.g. which hibernatetype and propertyname that
+      </emphasis> page allows you to explicit set e.g. which hibernatetype and propertyname that
       should be used in the reverse engineered model. For more details on how to configure the
       tables while reverse engineering read the <link linkend="tab_and_col">Specific table
         configuration</link> section.</para>
@@ -1259,7 +1263,7 @@
       <section>
         <title>Mapping Diagram</title>
 
-        <para>To get a visual feel on how entities are related and view their structure a
+        <para>In order to get a visual feel on how entities are related as well as view their structures, a
             <property>Mapping Diagram</property> is provided. It is available by right clicking on
           the entity you want a mapping diagram for and then choose <emphasis>
             <property>Open Mapping Diagram</property>
@@ -1290,7 +1294,7 @@
         Editor</property> or <property>Hibernate Criteria Editor</property>. The editors
         automatically detect the chosen configuration.</para>
 
-      <para>If the menu item is disabled then you need at first to create an <property>Session
+      <para>If the menu item is disabled then you need at first to create a <property>Session
           Factory</property>. That is done by simply expanding the <property>Session
         Factory</property> node.</para>
 

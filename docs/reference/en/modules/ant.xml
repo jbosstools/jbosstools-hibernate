@@ -604,7 +604,7 @@
               </entry>
 
               <entry>
-                <para>The default package name to use when mappings for classes are created.</para>
+                <para>The default package name to use when mappings for classes are created</para>
               </entry>
 
               <entry>
@@ -618,7 +618,7 @@
               </entry>
 
               <entry>
-                <para>The name of a property file, e.g. "hibernate.properties".</para>
+                <para>The name of a property file, e.g. "hibernate.properties"</para>
               </entry>
 
               <entry>
@@ -942,7 +942,7 @@
               </entry>
 
               <entry>
-                <para>Code will contain JDK 5 constructs such as generics and static imports.</para>
+                <para>Code will contain JDK 5 constructs such as generics and static imports</para>
               </entry>
 
               <entry>
@@ -957,7 +957,7 @@
 
               <entry>
                 <para>Code will contain EJB 3 features, e.g. using annotations from
-                  javax.persistence and org.hibernate.annotations.</para>
+                  javax.persistence and org.hibernate.annotations</para>
               </entry>
 
               <entry>
