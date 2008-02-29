@@ -57,6 +57,10 @@ public interface ImageConstants {
 	public static final String CLOSE_PATH = "images/close.gif";
 
 	public static final String CLOSE_DISABLED_PATH = "images/close_disabled.gif";
+	
+	public static final String CLOSE_ALL_PATH = "images/removeall.gif";
+
+	public static final String CLOSE_ALL_DISABLED_PATH = "images/removeall_disabled.gif";
 
 	public static final String IDPROPERTY_PATH = "images/idproperty.gif";
 
@@ -87,6 +91,10 @@ public interface ImageConstants {
 	public static final String CLOSE = "CLOSE";
 
 	public static final String CLOSE_DISABLED = "CLOSE_DISABLED";
+	
+	public static final String CLOSE_ALL = "CLOSE_ALL";
+
+	public static final String CLOSE_ALL_DISABLED = "CLOSE_ALL_DISABLED";
 
 	public static final String IDPROPERTY = "IDPROPERTY";
 

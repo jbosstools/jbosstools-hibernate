@@ -47,6 +47,8 @@ public abstract class ImageMap implements ImageConstants {
 		declareRegistryImage(EXECUTE, EXECUTE_PATH);
 		declareRegistryImage(CLOSE, CLOSE_PATH);
 		declareRegistryImage(CLOSE_DISABLED, CLOSE_DISABLED_PATH);
+		declareRegistryImage(CLOSE_ALL, CLOSE_ALL_PATH);
+		declareRegistryImage(CLOSE_ALL_DISABLED, CLOSE_ALL_DISABLED_PATH);
 		declareRegistryImage(CLEAR, CLEAR_PATH);
 		declareRegistryImage(CONFIGURATION, "images/hibernate_config.gif");
 		declareRegistryImage(ADD, "images/treeplus.gif");
