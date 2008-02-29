@@ -26,6 +26,7 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.actions.ActionGroup;
+import org.hibernate.eclipse.console.actions.CloseAllQueryPageAction;
 import org.hibernate.eclipse.console.actions.CloseQueryPageAction;
 
 /**
@@ -36,13 +37,17 @@ public class QueryPageTabViewActionGroup extends ActionGroup {
 
 	Action closeAction;
 	
+	Action closeAllAction;
+	
 	public QueryPageTabViewActionGroup(IViewPart part, ISelectionProvider provider) {
 
-		closeAction = new CloseQueryPageAction(provider);
+		closeAction = new CloseQueryPageAction(provider);		
+		closeAllAction = new CloseAllQueryPageAction();
 		
 	}
 	
-	public void fillActionBars(IActionBars actionBars) {
+	public void fillActionBars(IActionBars actionBars) {		
 		actionBars.getToolBarManager().add(closeAction);
+		actionBars.getToolBarManager().add(closeAllAction);
 	}
 }
