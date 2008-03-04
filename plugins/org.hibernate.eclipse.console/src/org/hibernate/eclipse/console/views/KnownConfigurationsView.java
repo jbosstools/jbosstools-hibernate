@@ -52,6 +52,8 @@ import org.hibernate.eclipse.console.actions.EditConsoleConfiguration;
 import org.hibernate.eclipse.console.actions.OpenMappingAction;
 import org.hibernate.eclipse.console.viewers.xpl.MTreeViewer;
 import org.hibernate.eclipse.console.workbench.xpl.AnyAdaptableLabelProvider;
+import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Property;
 import org.hibernate.util.StringHelper;
 
 
@@ -160,12 +162,15 @@ public class KnownConfigurationsView extends ViewPart {
 					}
 				} else if (selection instanceof TreeSelection){
 					TreePath path = ((TreeSelection)selection).getPaths()[0];
+					Object first = path.getFirstSegment();
 					ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(path.getSegment(0));
-					try {
-						OpenMappingAction.run(path, consoleConfiguration);
-					} catch (Exception e) {
-						HibernateConsolePlugin.getDefault().logErrorMessage("Can't find mapping file.", e);
-					} 
+					if (first instanceof PersistentClass || first.getClass() == Property.class){
+						try {
+							OpenMappingAction.run(path, consoleConfiguration);
+						} catch (Exception e) {
+							HibernateConsolePlugin.getDefault().logErrorMessage("Can't find mapping file.", e);
+						} 
+					}					
 				}
 			}
 		};
