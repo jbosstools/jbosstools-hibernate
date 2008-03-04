@@ -16,8 +16,12 @@ import org.dom4j.VisitorSupport;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.internal.core.PackageFragmentRoot;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -262,8 +266,22 @@ public class OpenFileActionUtils {
     			Element subelement = (Element) elements.next();
 				Attribute file = subelement.attribute( HIBERNATE_TAG_RESOURCE );
 				if (file != null) {
-					resource = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(configXMLFile.getParent()).append(file.getValue()));
-					if (elementInResource(consoleConfiguration, resource, element)) return resource;
+					IPackageFragmentRoot[] packageFragmentRoots;
+					try {
+						packageFragmentRoots = proj.getAllPackageFragmentRoots();						
+						for (int i = 0; i < packageFragmentRoots.length && resource == null; i++) {
+							//search in source folders.
+							if (packageFragmentRoots[i].getClass() == PackageFragmentRoot.class) {
+								IPackageFragmentRoot packageFragmentRoot = packageFragmentRoots[i];
+								IPath path = packageFragmentRoot.getPath().append(file.getValue());
+								resource = ResourcesPlugin.getWorkspace().getRoot().getFile(path);							
+							}
+						}
+						if (resource != null &&
+								elementInResource(consoleConfiguration, resource, element)) return resource;
+					} catch (JavaModelException e) {
+						HibernateConsolePlugin.getDefault().logErrorMessage("Problems while getting project package fragment roots", e);						
+					}
 				}
     		}
 
@@ -272,7 +290,8 @@ public class OpenFileActionUtils {
     			java.io.File file = files[i];
 				if (file != null) {
 					resource = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(file.getPath()));
-					if (OpenFileActionUtils.elementInResource(consoleConfiguration, resource, element)) return resource;
+					if (resource != null &&
+							OpenFileActionUtils.elementInResource(consoleConfiguration, resource, element)) return resource;
 				}
 			}
     	}
