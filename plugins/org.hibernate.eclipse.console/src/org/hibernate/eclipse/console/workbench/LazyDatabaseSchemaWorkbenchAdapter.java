@@ -55,23 +55,29 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 		final DefaultDatabaseCollector db = new DefaultDatabaseCollector();
 		
 		ConsoleConfiguration consoleConfiguration = dbs.getConsoleConfiguration();
-		readDatabaseSchema(monitor, db, consoleConfiguration, dbs.getReverseEngineeringStrategy());
-				
-		List result = new ArrayList();
-		
-		Iterator qualifierEntries = db.getQualifierEntries();
-		while ( qualifierEntries.hasNext() ) {
-			Map.Entry entry = (Map.Entry) qualifierEntries.next();
-			result.add(new TableContainer((String) entry.getKey(),(List)entry.getValue()));
-		}
-		return toArray(result.iterator(), TableContainer.class, new Comparator() {
-		
-			public int compare(Object arg0, Object arg1) {
-				
-				return ((TableContainer)arg0).getName().compareTo(((TableContainer)arg1).getName());
+		try{
+			readDatabaseSchema(monitor, db, consoleConfiguration, dbs.getReverseEngineeringStrategy());
+			
+			List result = new ArrayList();
+			
+			Iterator qualifierEntries = db.getQualifierEntries();
+			while ( qualifierEntries.hasNext() ) {
+				Map.Entry entry = (Map.Entry) qualifierEntries.next();
+				result.add(new TableContainer((String) entry.getKey(),(List)entry.getValue()));
 			}
+			return toArray(result.iterator(), TableContainer.class, new Comparator() {
+			
+				public int compare(Object arg0, Object arg1) {
+					
+					return ((TableContainer)arg0).getName().compareTo(((TableContainer)arg1).getName());
+				}
+			
+			});
+		} catch (HibernateException e){
+			HibernateConsolePlugin.getDefault().logErrorMessage("Problems while reading database schema", e);			
+			return new Object[]{"<Reading schema error: " + e.getMessage() + ">"};
+		}
 		
-		});
 	}
 
 	private LazyDatabaseSchema getLazyDatabaseSchema(Object o) {
