@@ -35,6 +35,7 @@ import org.eclipse.core.filebuffers.ITextFileBuffer;
 import org.eclipse.core.filebuffers.manipulation.FileBufferOperationRunner;
 import org.eclipse.core.filebuffers.manipulation.MultiTextEditWithProgress;
 import org.eclipse.core.filebuffers.manipulation.TextFileBufferOperation;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -42,6 +43,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -208,9 +210,23 @@ public class CodeGenerationLaunchDelegate extends
 				return null;
 			
 			
-			final String outputPathRes = PathHelper.getLocationAsStringPath(attributes.getOutputPath());
+			String outputPathRes = PathHelper.getLocationAsStringPath(attributes.getOutputPath());			
+			if (outputPathRes == null){
+				IFolder folder = (IFolder) PathHelper.getOrCreateFolder(attributes.getOutputPath());
+				if (folder != null) {
+					outputPathRes = PathHelper.getLocation( folder ).toOSString();
+				}
+			}			
+			final String fOutputPathRes = outputPathRes;
 	        
-	        final String templatePath = PathHelper.getLocationAsStringPath(attributes.getTemplatePath());
+	        String templatePath = PathHelper.getLocationAsStringPath(attributes.getTemplatePath());	       
+	        if (templatePath == null){
+	        	IFolder folder = (IFolder) PathHelper.getOrCreateFolder(attributes.getTemplatePath());
+				if (folder != null) {
+					templatePath = PathHelper.getLocation( folder ).toOSString();
+				}
+			}
+	        final String fTemplatePath = templatePath;
 	        
 			ConsoleConfiguration cc = KnownConfigurations.getInstance().find(attributes.getConsoleConfigurationName());
 			if (attributes.isReverseEngineer()) {
@@ -230,8 +246,8 @@ public class CodeGenerationLaunchDelegate extends
 					
 					String templatePaths = null;
 					
-					if(StringHelper.isNotEmpty(templatePath)) {
-	                	templatePaths = templatePath;
+					if(StringHelper.isNotEmpty(fTemplatePath)) {
+	                	templatePaths = fTemplatePath;
 	                }
 	                
                     // Global properties
@@ -248,7 +264,7 @@ public class CodeGenerationLaunchDelegate extends
                        
                        Exporter exporter;
 					try {
-						exporter = exporterFactories[i].createConfiguredExporter(cfg, outputPathRes, templatePaths, globalProperties, outputDirectories, artifactCollector);
+						exporter = exporterFactories[i].createConfiguredExporter(cfg, fOutputPathRes, templatePaths, globalProperties, outputDirectories, artifactCollector);
 					} catch (CoreException e) {
 						throw new HibernateConsoleRuntimeException("Error while setting up " + exporterFactories[i].getExporterDefinition(), e);
 					}

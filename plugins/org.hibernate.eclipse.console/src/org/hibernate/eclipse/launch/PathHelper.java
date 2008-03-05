@@ -3,17 +3,38 @@ package org.hibernate.eclipse.launch;
 import java.io.File;
 
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 // TODO: move to internal.
 public class PathHelper {
+	
+	public static IFolder getOrCreateFolder(IPath path) {
+		if (path == null) return null;
+		IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(path);
+		if (!folder.exists()) {
+			try {
+				folder.create(false, true,
+						new NullProgressMonitor());
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		return folder;
+	}
+	
+	public static IFolder getOrCreateFolder(String path) {
+		if (path == null) return null;
+		return getOrCreateFolder(pathOrNull(path));
+	}
 
 	public static String getLocationAsStringPath(String path) {
 		if(path==null) return null;
