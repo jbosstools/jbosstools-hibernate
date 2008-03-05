@@ -134,9 +134,15 @@ public class ReverseEngineeringDefinitionImpl implements
 	public void moveTypeMappingUp(ITypeMapping item) {
 		move(item, -1, typeMappings, TYPEMAPPING_STRUCTURE);		
 	}
+	
+	public void removeAllTypeMappings() {
+		typeMappings.clear();
+		firePropertyChange(TYPEMAPPING_STRUCTURE, null, null);
+	}
 
 	public void removeTypeMapping(ITypeMapping item) {
-		typeMappings.remove(item);		
+		typeMappings.remove(item);	
+		firePropertyChange(TYPEMAPPING_STRUCTURE, item, null);		
 	}
 
 	public IRevEngTable[] getTables() {

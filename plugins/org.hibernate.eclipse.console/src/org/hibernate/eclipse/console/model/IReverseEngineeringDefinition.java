@@ -47,6 +47,7 @@ public interface IReverseEngineeringDefinition {
 	
 	ITypeMapping[] getTypeMappings();
 	ITypeMapping createTypeMapping();
+	void removeAllTypeMappings();
 	void removeTypeMapping(ITypeMapping item);
 	void addTypeMapping(ITypeMapping typeMapping);
 	void moveTypeMappingDown(ITypeMapping item);
