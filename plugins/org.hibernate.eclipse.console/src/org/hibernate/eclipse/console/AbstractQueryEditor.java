@@ -82,12 +82,14 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 	}
 	
 	protected void updateExecButton(){
-		if (getSourceViewer() != null ){
+		/*if (getSourceViewer() != null ){
 			execAction.setEnabled(getConsoleConfigurationName().trim().length() != 0 
 					&& getSourceViewer().getDocument().get().trim().length() > 0);
 		} else {
 			execAction.setEnabled(false);
-		}
+		}*/
+		execAction.setEnabled(getQueryString().trim().length() > 0
+				&& getConsoleConfigurationName().length() != 0);
 	}
 
 	public void showEditorInput(IEditorInput editorInput) {
