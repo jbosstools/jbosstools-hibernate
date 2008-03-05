@@ -23,6 +23,7 @@ package org.hibernate.eclipse.mapper.editors.reveng;
 
 import java.util.Iterator;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -201,6 +202,12 @@ public abstract class TypeMappingView extends TreeToTableComposite {
 		}
 		rightTable
 				.setSelection( Math.min( sel, rightTable.getItemCount() - 1 ) );
+	}
+	
+	protected void doRemoveAll() {
+		if(MessageDialog.openQuestion( getShell(), "Remove all mappings" , "Do you want to remove all mappings?")) {
+			revEngDef.removeAllTypeMappings();
+		}
 	}
 
 	protected void doMoveDown() {

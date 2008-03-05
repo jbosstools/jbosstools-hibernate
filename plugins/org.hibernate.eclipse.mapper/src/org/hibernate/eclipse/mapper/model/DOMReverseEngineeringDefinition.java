@@ -287,6 +287,14 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 			}
 		}
 	}
+	
+	public void removeAllTypeMappings() {
+		List list = getTypeMappingsList();
+		for (java.util.Iterator it = list.iterator(); it.hasNext(); ) {
+			ITypeMapping filter = (ITypeMapping)it.next();
+			removeTypeMapping(filter);
+		}
+	}
 
 	public void removeTypeMapping(ITypeMapping item) {
 		if ( item instanceof TypeMappingAdapter) {
