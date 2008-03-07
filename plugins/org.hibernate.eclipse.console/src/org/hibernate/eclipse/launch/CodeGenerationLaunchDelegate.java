@@ -212,7 +212,7 @@ public class CodeGenerationLaunchDelegate extends
 			
 			
 			String outputPathRes = PathHelper.getLocationAsStringPath(attributes.getOutputPath());			
-			if (outputPathRes == null){
+			if (outputPathRes == null && StringHelper.isNotEmpty(attributes.getOutputPath())){
 				ContainerCreator cc = new ContainerCreator(ResourcesPlugin.getWorkspace(), PathHelper.pathOrNull(attributes.getOutputPath()));
 				IFolder folder = (IFolder) cc.createContainer(new NullProgressMonitor());
 				if (folder != null) {
@@ -222,7 +222,7 @@ public class CodeGenerationLaunchDelegate extends
 			final String fOutputPathRes = outputPathRes;
 	        
 	        String templatePath = PathHelper.getLocationAsStringPath(attributes.getTemplatePath());	       
-	        if (templatePath == null){
+	        if (templatePath == null && StringHelper.isNotEmpty(attributes.getTemplatePath())){
 				ContainerCreator cc = new ContainerCreator(ResourcesPlugin.getWorkspace(), PathHelper.pathOrNull(attributes.getTemplatePath()));
 				IFolder folder = (IFolder) cc.createContainer(new NullProgressMonitor());
 				if (folder != null) {
