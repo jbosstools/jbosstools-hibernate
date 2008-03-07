@@ -654,6 +654,22 @@
       </moveParticipant-->
       
    </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.hibernate.eclipse.console.commands.openHQLHandler"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+4">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.hibernate.eclipse.console.commands.OpenHQLHandler"
+            id="org.hibernate.eclipse.console.commands.openHQLHandler"
+            name="org.hibernate.eclipse.console.openHQLHandler">
+      </command>
+   </extension>
 <!--   <extension
          point="org.eclipse.ui.themes">
       <themeElementCategory
