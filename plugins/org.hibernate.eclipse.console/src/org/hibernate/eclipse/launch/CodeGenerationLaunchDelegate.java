@@ -32,6 +32,7 @@ import java.util.Set;
 
 import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBuffer;
+import org.eclipse.core.filebuffers.manipulation.ContainerCreator;
 import org.eclipse.core.filebuffers.manipulation.FileBufferOperationRunner;
 import org.eclipse.core.filebuffers.manipulation.MultiTextEditWithProgress;
 import org.eclipse.core.filebuffers.manipulation.TextFileBufferOperation;
@@ -212,7 +213,8 @@ public class CodeGenerationLaunchDelegate extends
 			
 			String outputPathRes = PathHelper.getLocationAsStringPath(attributes.getOutputPath());			
 			if (outputPathRes == null){
-				IFolder folder = (IFolder) PathHelper.getOrCreateFolder(attributes.getOutputPath());
+				ContainerCreator cc = new ContainerCreator(ResourcesPlugin.getWorkspace(), PathHelper.pathOrNull(outputPathRes));
+				IFolder folder = (IFolder) cc.createContainer(new NullProgressMonitor());
 				if (folder != null) {
 					outputPathRes = PathHelper.getLocation( folder ).toOSString();
 				}
@@ -221,7 +223,8 @@ public class CodeGenerationLaunchDelegate extends
 	        
 	        String templatePath = PathHelper.getLocationAsStringPath(attributes.getTemplatePath());	       
 	        if (templatePath == null){
-	        	IFolder folder = (IFolder) PathHelper.getOrCreateFolder(attributes.getTemplatePath());
+				ContainerCreator cc = new ContainerCreator(ResourcesPlugin.getWorkspace(), PathHelper.pathOrNull(templatePath));
+				IFolder folder = (IFolder) cc.createContainer(new NullProgressMonitor());
 				if (folder != null) {
 					templatePath = PathHelper.getLocation( folder ).toOSString();
 				}
