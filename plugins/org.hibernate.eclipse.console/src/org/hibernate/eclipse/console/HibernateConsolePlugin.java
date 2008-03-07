@@ -44,8 +44,12 @@ import org.eclipse.jdt.ui.text.JavaTextTools;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IDocumentExtension3;
+import org.eclipse.jface.text.IDocumentPartitioner;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
@@ -65,9 +69,9 @@ import org.hibernate.eclipse.criteriaeditor.CriteriaEditorStorage;
 import org.hibernate.eclipse.hqleditor.HQLEditorInput;
 import org.hibernate.eclipse.hqleditor.HQLEditorStorage;
 import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
+import org.hibernate.eclipse.logging.PluginLogger;
 import org.hibernate.eclipse.logging.xpl.EclipseLogger;
 import org.osgi.framework.BundleContext;
-import org.hibernate.eclipse.logging.PluginLogger;
 
 /**
  * The main plugin class to be used in the desktop.
@@ -464,19 +468,17 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 		    }
 	}
 	
-	public void openScratchHQLEditor(String consoleName, String hql) {
+	public IEditorPart openScratchHQLEditor(String consoleName, String hql) {
 		 try {
-		        final IWorkbenchWindow activeWorkbenchWindow =
-		            PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		        IWorkbenchPage page = activeWorkbenchWindow.getActivePage();
-		        
+		        IWorkbenchPage page = getActiveWorkbenchWindow().getActivePage();		        
 		        
 		        HQLEditorStorage storage = new HQLEditorStorage(consoleName, hql==null?"":hql);		        
 		        
 		        final HQLEditorInput editorInput = new HQLEditorInput(storage);
-		            page.openEditor(editorInput, "org.hibernate.eclipse.hqleditor.HQLEditor", true);
+		            return page.openEditor(editorInput, "org.hibernate.eclipse.hqleditor.HQLEditor", true);
 		    } catch (PartInitException ex) {
 		        logErrorMessage("Could not open HQL editor for console:" + consoleName, ex);
+		        return null;
 		    }
 	}
 
@@ -640,7 +642,20 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 
 	public JavaTextTools getJavaTextTools() {
 		if (javaTextTools == null) {
-			javaTextTools = new JavaTextTools(PreferenceConstants.getPreferenceStore());
+			javaTextTools = new JavaTextTools(PreferenceConstants.getPreferenceStore()){
+				public void setupJavaDocumentPartitioner(IDocument document, String partitioning) {
+					IDocumentPartitioner partitioner= createDocumentPartitioner();
+					if (document instanceof IDocumentExtension3) {
+						IDocumentExtension3 extension3= (IDocumentExtension3) document;
+						partitioner.connect(document);
+						extension3.setDocumentPartitioner(partitioning, partitioner);
+					} else {
+						document.setDocumentPartitioner(partitioner);
+						partitioner.connect(document);
+					}	
+					
+				}
+			};
 		}
 		
 		return javaTextTools;
