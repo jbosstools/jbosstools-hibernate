@@ -15,7 +15,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.editors,
  org.eclipse.core.resources,
  org.jboss.tools.hibernate.core
-Bundle-Version: 2.0.0
+Bundle-Version: 2.0.1
 Export-Package: org.jboss.tools.hibernate.veditor,
  org.jboss.tools.hibernate.veditor.editors,
  org.jboss.tools.hibernate.veditor.editors.command,

@@ -57,5 +57,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.filebuffers,
  org.hibernate.eclipse,
  org.jboss.tools.common
-Bundle-Version: 2.0.0
+Bundle-Version: 2.0.1
 

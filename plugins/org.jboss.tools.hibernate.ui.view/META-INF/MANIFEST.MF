@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: View Plug-in
 Bundle-SymbolicName: org.jboss.tools.hibernate.ui.view;singleton:=true
-Bundle-Version: 2.0.0
+Bundle-Version: 2.0.1
 Bundle-ClassPath: view.jar
 Bundle-Activator: org.jboss.tools.hibernate.ui.view.ViewPlugin
 Bundle-Vendor: Red Hat, Inc
