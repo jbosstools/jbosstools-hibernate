@@ -1,0 +1,106 @@
+<!--
+
+  HibernateTools ANT build script.
+-->
+
+<project name="org.hibernate.eclipse" basedir="." default="update">
+
+	<property name="hibernate.root" location="/home/max/work/os/hibernate/branches/Branch_3_2"/>
+	<available file="${hibernate.root}" property="hibernate.root.exists"/>
+	<fail unless="hibernate.root.exists">hibernate.root needs to be set to the root of the hibernate svn checkout. Currently it is ${hibernate.root} which does not exist.</fail>
+	
+	<property name="src.dir" location="src"/>
+	<import file="${hibernate.root}/HibernateExt/common/common-build.xml"/>
+	
+	<target name="update" depends="init">
+         
+        <delete failonerror="no">
+	     <fileset dir="lib">
+               <exclude name="bsh-core-2.0b4.jar"/>     
+               <exclude name="annotations/*"/>
+               <exclude name=".svn"/>
+            <include name="**/*"/>
+    	 </fileset>
+        </delete>
+        
+        <property name="lib.hibernate" location="lib/hibernate"/>
+        <property name="lib.tools" location="lib/tools"/>      
+        <property name="lib.annotations" location="lib/annotations"/>            
+
+        <mkdir dir="${lib.hibernate}"/>      
+        <mkdir dir="${lib.tools}"/>      
+        <mkdir dir="${lib.annotations}"/>      
+                      
+		<!-- DONT BUILD H3 unless you have to use new features from the core. use the released binary if you can! -->
+<!--		<ant antfile="${hibernate-core.home}\..\hibernate3\build.xml" inheritall="false" inheritrefs="false" target="jar"/> 
+		<ant antfile="${hibernate-core.home}\..\hibernate3\build.xml" inheritall="false" inheritrefs="false" target="copylib"/>  
+        -->
+    
+		<!--
+        <ant antfile="${hibernate.root}\HibernateExt\metadata\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
+        <ant antfile="${hibernate.root}\HibernateExt\metadata\build.xml" inheritall="false" inheritrefs="false" target="copylib"/>        
+        <copy preservelastmodified="true" file="${hibernate.root}\HibernateExt\metadata\target\hibernate-annotations\hibernate-annotations.jar" todir="${lib.annotations}"/>
+        <copy preservelastmodified="true" file="${hibernate.root}\HibernateExt\metadata\target\hibernate-annotations\lib\ejb3-persistence.jar" todir="${lib.annotations}"/>
+        <copy preservelastmodified="true" file="${hibernate.root}\HibernateExt\metadata\target\hibernate-annotations\lib\lucene-core-2.0.0.jar" todir="${lib.annotations}"/>
+            -->
+		
+        <!-- we need to have the hibernateconsole stuff together with the core to fake DriverManager into allow loading drivers -->
+		<!-- <ant antfile="..\console\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
+		<copy file="..\console\target\hibernateconsole\hibernateconsole.jar" todir="${lib.tools}"/> -->
+
+		<ant antfile="${hibernate.root}\HibernateExt\tools\build.xml" inheritall="false" inheritrefs="false" target="jar"/>
+        <ant antfile="${hibernate.root}\HibernateExt\tools\build.xml" inheritall="false" inheritrefs="false" target="copylib"/>        
+		<copy preservelastmodified="true" file="${hibernate.root}\HibernateExt\tools\target\hibernate-tools\hibernate-tools.jar" todir="${lib.tools}"/>
+		<copy preservelastmodified="true" file="${hibernate.root}\HibernateExt\tools\target\hibernate-tools\lib\freemarker.jar" todir="${lib.tools}"/>
+		<copy preservelastmodified="true" file="${hibernate.root}\HibernateExt\tools\target\hibernate-tools\lib\jtidy-r8-20060801.jar" todir="${lib.tools}"/>		
+
+		<property file="${hibernate-core.lib.dir}/version.properties" prefix="h3"/>
+
+		<copy preservelastmodified="true" todir="${lib.hibernate}">
+			<fileset dir="${hibernate-core.home}">
+				<include name="hibernate3.jar"/>	
+        	</fileset>
+        	    	
+            <fileset dir="${hibernate-core.lib.dir}">
+            	<include name="${h3.antlr.lib}"/>
+            	<include name="${h3.c3p0.lib}"/>
+		    	<include name="${h3.cglib.lib}"/>
+		    	<include name="${h3.asm.lib}"/>
+                <include name="${h3.asm-attrs.lib}"/>		    	
+		    	<include name="${h3.commons-collections.lib}"/>
+				<include name="${h3.commons-logging.lib}"/>
+				<include name="${h3.dom4j.lib}"/>
+            	
+            	<!-- javassist -->
+				<include name="${h3.javassist.lib}"/>
+	
+            	<!-- ehcache, required if no other cache provider is set -->
+            	<include name="${h3.ehcache.lib}"/>
+            	
+            	<!-- optionals (required when outside app container)-->
+            	<include name="${h3.connector.lib}"/>
+            	<include name="${h3.jdbc-stdext.lib}"/>
+            	<include name="${h3.jta.lib}"/>
+
+            	<!-- replicated caches -->
+            	<include name="${h3.jgroups.lib}"/>
+            	
+            	<!-- Treecache deps -->
+				<include name="${h3.concurrent.lib}"/>            	
+            	<include name="${h3.jboss-cache.lib}"/>            	
+            	<include name="${h3.jboss-common.lib}"/>            	
+            	<include name="${h3.jboss-jmx.lib}"/>            	
+            	<include name="${h3.jboss-system.lib}"/>            	
+				<!-- Treecache deps end -->
+            	
+            	<!-- unclassified -->
+            	<include name="${h3.commons-collections.lib}"/>
+            	<include name="${h3.jaas.lib}"/>
+            	<include name="${h3.log4j.lib}"/>
+               	<include name="${h3.oscache.lib}"/>
+            	<include name="${h3.proxool.lib}"/>
+            	<include name="${h3.swarmcache.lib}"/>
+            </fileset>
+        </copy>
+	</target>
+</project>

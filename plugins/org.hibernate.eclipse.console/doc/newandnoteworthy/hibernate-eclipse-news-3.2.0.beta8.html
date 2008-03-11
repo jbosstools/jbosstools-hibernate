@@ -1,0 +1,90 @@
+<html>
+
+<head>
+<link rel="stylesheet" href="default_.css">
+<title>Hibernate Eclipse Tools 3.2.0.beta8 News</title>
+</head>
+
+<body>
+
+<h1>Hibernate Tools 3.2.0.beta8 - New and Noteworthy</h1>
+
+  <p>Previous <a href="hibernate-eclipse-news-3.2.0.beta7.html">new and noteworthy for 3.1.0.beta7</a></p>
+  <p><a href="http://opensource.atlassian.com/projects/hibernate/secure/IssueNavigator.jspa?reset=true&pid=10030&fixfor=10610">Release notes</a></p>
+<table border="0" cellpadding="10" cellspacing="0" width="80%">
+    <tr>
+    <td colspan="2">
+      <hr>
+      <h3>General</h3>
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Bugfixing</b></td>
+    <td valign="top">
+      <p>Another release with more bugfixing and improvements, see <a href="http://opensource.atlassian.com/projects/hibernate/secure/ReleaseNote.jspa?projectId=10030&styleName=Html&version=10610">JIRA release notes</a></p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr>
+      <h3>Query editing</h3>
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Query toolbar inside Query editor</b></td>
+    <td valign="top">
+      <p>The HQL and Criteria editor now has their own toolbar with
+      "Run Query" and a console configuration combobox. Makes it
+      easier to mange the execution of the queries and allow users to
+      quickly change between configurations.<p>
+
+      <p><img src="embeddedruninqueryeditor.png"/></p>
+
+      <p>At the same time you can now hahttp://opensource.atlassian.com/projects/hibernate/browse/HHH-1207ve multiple query editors per
+      console configuration as opposed to before where only one per
+      console configuration were possible.</p>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Open HQL & Criteria editor</b></td>
+    <td valign="top">
+      <p>Previously the Open HQL and Criteria buttons were only enabled if a Configuration was selected. They are now always enabled, hopefully making it easier for users to find.</p>
+
+      <p><img src="alwaysactiveopenquery.png"/></p>
+      </td> 
+ 
+
+    <tr>
+  <tr>
+    <td colspan="2">
+      <hr>
+      <h3>Reverse Engineering</h3>
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>OracleMetaDataDialect</b></td>
+    <td valign="top">
+      <p>Oracle drivers apparently cannot handle large operations via the standard JDBC MetaData API and thus users can risk getting a "Maximum cursors exceeded" even though every resultset from the metadata API is closed.
+      </p>
+      <p>To remedy this we now have a Oracle specific implementation for the reading of database metadata. It is still considered experimental so it is not enabled by default for Oracle. To enable add the following property to your hibernate.properties or hibernate.cfg.xml: </p>
+	<p><code>hibernatetool.metadatadialect=org.hibernate.cfg.reveng.dialect.OracleMetaDataDialect</code></p>
+    </td>
+  </tr>
+</table>
+
+</body>
+
+</html>
+
+

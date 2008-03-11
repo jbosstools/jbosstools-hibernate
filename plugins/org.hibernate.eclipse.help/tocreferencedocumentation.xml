@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?><toc label="Reference Documentation">
+    <topic label="Table of Contents" href="html/reference/en/html/index.html"/>
+    <topic label="Preface" href="html/reference/en/html/preface.html"/>
+    <topic label="Introduction to Hibernate" href="html/reference/en/html/tutorial.html">
+    <topic label="Preface" href="html/reference/en/html/tutorial.html#tutorial-intro"/>
+    <topic label="Part 1 - The first Hibernate Application" href="html/reference/en/html/tutorial.html#tutorial-firstapp">
+    <topic label="The first class" href="html/reference/en/html/tutorial.html#tutorial-firstapp-firstclass"/>
+    <topic label="The mapping file" href="html/reference/en/html/tutorial.html#tutorial-firstapp-mapping"/>
+    <topic label="Hibernate configuration" href="html/reference/en/html/tutorial.html#tutorial-firstapp-configuration"/>
+    <topic label="Building with Ant" href="html/reference/en/html/tutorial.html#tutorial-firstapp-ant"/>
+    <topic label="Startup and helpers" href="html/reference/en/html/tutorial.html#tutorial-firstapp-helpers"/>
+    <topic label="Loading and storing objects" href="html/reference/en/html/tutorial.html#tutorial-firstapp-workingpersistence"/></topic>
+    <topic label="Part 2 - Mapping associations" href="html/reference/en/html/tutorial.html#tutorial-associations">
+    <topic label="Mapping the Person class" href="html/reference/en/html/tutorial.html#tutorial-associations-mappinguser"/>
+    <topic label="A unidirectional Set-based association" href="html/reference/en/html/tutorial.html#tutorial-associations-unidirset"/>
+    <topic label="Working the association" href="html/reference/en/html/tutorial.html#tutorial-associations-working"/>
+    <topic label="Collection of values" href="html/reference/en/html/tutorial.html#tutorial-associations-valuecollections"/>
+    <topic label="Bi-directional associations" href="html/reference/en/html/tutorial.html#tutorial-associations-bidirectional"/>
+    <topic label="Working bi-directional links" href="html/reference/en/html/tutorial.html#tutorial-associations-usingbidir"/></topic>
+    <topic label="Part 3 - The EventManager web application" href="html/reference/en/html/tutorial.html#tutorial-webapp">
+    <topic label="Writing the basic servlet" href="html/reference/en/html/tutorial.html#tutorial-webapp-servlet"/>
+    <topic label="Processing and rendering" href="html/reference/en/html/tutorial.html#tutorial-webapp-processing"/>
+    <topic label="Deploying and testing" href="html/reference/en/html/tutorial.html#tutorial-webapp-deploy"/></topic>
+    <topic label="Summary" href="html/reference/en/html/tutorial.html#tutorial-summary"/></topic>
+    <topic label="Architecture" href="html/reference/en/html/architecture.html">
+    <topic label="Overview" href="html/reference/en/html/architecture.html#architecture-overview"/>
+    <topic label="Instance states" href="html/reference/en/html/architecture.html#architecture-states"/>
+    <topic label="JMX Integration" href="html/reference/en/html/architecture.html#architecture-jmx"/>
+    <topic label="JCA Support" href="html/reference/en/html/architecture.html#architecture-jca"/>
+    <topic label="Contextual Sessions" href="html/reference/en/html/architecture.html#architecture-current-session"/></topic>
+    <topic label="Configuration" href="html/reference/en/html/session-configuration.html">
+    <topic label="Programmatic configuration" href="html/reference/en/html/session-configuration.html#configuration-programmatic"/>
+    <topic label="Obtaining a SessionFactory" href="html/reference/en/html/session-configuration.html#configuration-sessionfactory"/>
+    <topic label="JDBC connections" href="html/reference/en/html/session-configuration.html#configuration-hibernatejdbc"/>
+    <topic label="Optional configuration properties" href="html/reference/en/html/session-configuration.html#configuration-optional">
+    <topic label="SQL Dialects" href="html/reference/en/html/session-configuration.html#configuration-optional-dialects"/>
+    <topic label="Outer Join Fetching" href="html/reference/en/html/session-configuration.html#configuration-optional-outerjoin"/>
+    <topic label="Binary Streams" href="html/reference/en/html/session-configuration.html#configuration-optional-binarystreams"/>
+    <topic label="Second-level and query cache" href="html/reference/en/html/session-configuration.html#configuration-optional-cacheprovider"/>
+    <topic label="Query Language Substitution" href="html/reference/en/html/session-configuration.html#configuration-optional-querysubstitution"/>
+    <topic label="Hibernate statistics" href="html/reference/en/html/session-configuration.html#configuration-optional-statistics"/></topic>
+    <topic label="Logging" href="html/reference/en/html/session-configuration.html#configuration-logging"/>
+    <topic label="Implementing a NamingStrategy" href="html/reference/en/html/session-configuration.html#configuration-namingstrategy"/>
+    <topic label="XML configuration file" href="html/reference/en/html/session-configuration.html#configuration-xmlconfig"/>
+    <topic label="J2EE Application Server integration" href="html/reference/en/html/session-configuration.html#configuration-j2ee">
+    <topic label="Transaction strategy configuration" href="html/reference/en/html/session-configuration.html#configuration-optional-transactionstrategy"/>
+    <topic label="JNDI-bound SessionFactory" href="html/reference/en/html/session-configuration.html#configuration-optional-jndi"/>
+    <topic label="Current Session context management with JTA" href="html/reference/en/html/session-configuration.html#configuration-j2ee-currentsession"/>
+    <topic label="JMX deployment" href="html/reference/en/html/session-configuration.html#configuration-j2ee-jmx"/></topic></topic>
+    <topic label="Persistent Classes" href="html/reference/en/html/persistent-classes.html">
+    <topic label="A simple POJO example" href="html/reference/en/html/persistent-classes.html#persistent-classes-pojo">
+    <topic label="Implement a no-argument constructor" href="html/reference/en/html/persistent-classes.html#persistent-classes-pojo-constructor"/>
+    <topic label="Provide an identifier property (optional)" href="html/reference/en/html/persistent-classes.html#persistent-classes-pojo-identifier"/>
+    <topic label="Prefer non-final classes (optional)" href="html/reference/en/html/persistent-classes.html#persistent-classes-pojo-final"/>
+    <topic label="Declare accessors and mutators for persistent fields (optional)" href="html/reference/en/html/persistent-classes.html#persistent-classes-pojo-accessors"/></topic>
+    <topic label="Implementing inheritance" href="html/reference/en/html/persistent-classes.html#persistent-classes-inheritance"/>
+    <topic label="Implementing equals() and hashCode()" href="html/reference/en/html/persistent-classes.html#persistent-classes-equalshashcode"/>
+    <topic label="Dynamic models" href="html/reference/en/html/persistent-classes.html#persistent-classes-dynamicmodels"/>
+    <topic label="Tuplizers" href="html/reference/en/html/persistent-classes.html#persistent-classes-tuplizers"/></topic>
+    <topic label="Basic O/R Mapping" href="html/reference/en/html/mapping.html">
+    <topic label="Mapping declaration" href="html/reference/en/html/mapping.html#mapping-declaration">
+    <topic label="Doctype" href="html/reference/en/html/mapping.html#mapping-declaration-doctype">
+    <topic label="EntityResolver" href="html/reference/en/html/mapping.html#mapping-declaration-entity-resolution"/></topic>
+    <topic label="hibernate-mapping" href="html/reference/en/html/mapping.html#mapping-declaration-mapping"/>
+    <topic label="class" href="html/reference/en/html/mapping.html#mapping-declaration-class"/>
+    <topic label="id" href="html/reference/en/html/mapping.html#mapping-declaration-id">
+    <topic label="Generator" href="html/reference/en/html/mapping.html#mapping-declaration-id-generator"/>
+    <topic label="Hi/lo algorithm" href="html/reference/en/html/mapping.html#mapping-declaration-id-hilo"/>
+    <topic label="UUID algorithm" href="html/reference/en/html/mapping.html#mapping-declaration-id-uuid"/>
+    <topic label="Identity columns and sequences" href="html/reference/en/html/mapping.html#mapping-declaration-id-sequences"/>
+    <topic label="Assigned identifiers" href="html/reference/en/html/mapping.html#mapping-declaration-id-assigned"/>
+    <topic label="Primary keys assigned by triggers" href="html/reference/en/html/mapping.html#mapping-declaration-id-select"/></topic>
+    <topic label="Enhanced identifier generators" href="html/reference/en/html/mapping.html#mapping-declaration-id-enhanced"/>
+    <topic label="Identifier generator optimization" href="html/reference/en/html/mapping.html#mapping-declaration-id-enhanced-optimizers"/>
+    <topic label="composite-id" href="html/reference/en/html/mapping.html#mapping-declaration-compositeid"/>
+    <topic label="discriminator" href="html/reference/en/html/mapping.html#mapping-declaration-discriminator"/>
+    <topic label="version (optional)" href="html/reference/en/html/mapping.html#mapping-declaration-version"/>
+    <topic label="timestamp (optional)" href="html/reference/en/html/mapping.html#mapping-declaration-timestamp"/>
+    <topic label="property" href="html/reference/en/html/mapping.html#mapping-declaration-property"/>
+    <topic label="many-to-one" href="html/reference/en/html/mapping.html#mapping-declaration-manytoone"/>
+    <topic label="one-to-one" href="html/reference/en/html/mapping.html#mapping-declaration-onetoone"/>
+    <topic label="natural-id" href="html/reference/en/html/mapping.html#mapping-declaration-naturalid"/>
+    <topic label="component, dynamic-component" href="html/reference/en/html/mapping.html#mapping-declaration-component"/>
+    <topic label="properties" href="html/reference/en/html/mapping.html#mapping-declaration-properties"/>
+    <topic label="subclass" href="html/reference/en/html/mapping.html#mapping-declaration-subclass"/>
+    <topic label="joined-subclass" href="html/reference/en/html/mapping.html#mapping-declaration-joinedsubclass"/>
+    <topic label="union-subclass" href="html/reference/en/html/mapping.html#mapping-declaration-unionsubclass"/>
+    <topic label="join" href="html/reference/en/html/mapping.html#mapping-declaration-join"/>
+    <topic label="key" href="html/reference/en/html/mapping.html#mapping-declaration-key"/>
+    <topic label="column and formula elements" href="html/reference/en/html/mapping.html#mapping-column"/>
+    <topic label="import" href="html/reference/en/html/mapping.html#mapping-declaration-import"/>
+    <topic label="any" href="html/reference/en/html/mapping.html#mapping-types-anymapping"/></topic>
+    <topic label="Hibernate Types" href="html/reference/en/html/mapping.html#mapping-types">
+    <topic label="Entities and values" href="html/reference/en/html/mapping.html#mapping-types-entitiesvalues"/>
+    <topic label="Basic value types" href="html/reference/en/html/mapping.html#mapping-types-basictypes"/>
+    <topic label="Custom value types" href="html/reference/en/html/mapping.html#mapping-types-custom"/></topic>
+    <topic label="Mapping a class more than once" href="html/reference/en/html/mapping.html#mapping-entityname"/>
+    <topic label="SQL quoted identifiers" href="html/reference/en/html/mapping.html#mapping-quotedidentifiers"/>
+    <topic label="Metadata alternatives" href="html/reference/en/html/mapping.html#mapping-alternatives">
+    <topic label="Using XDoclet markup" href="html/reference/en/html/mapping.html#mapping-xdoclet"/>
+    <topic label="Using JDK 5.0 Annotations" href="html/reference/en/html/mapping.html#mapping-annotations"/></topic>
+    <topic label="Generated Properties" href="html/reference/en/html/mapping.html#mapping-generated"/>
+    <topic label="Auxiliary Database Objects" href="html/reference/en/html/mapping.html#mapping-database-object"/></topic>
+    <topic label="Collection Mapping" href="html/reference/en/html/collections.html">
+    <topic label="Persistent collections" href="html/reference/en/html/collections.html#collections-persistent"/>
+    <topic label="Collection mappings" href="html/reference/en/html/collections.html#collections-mapping">
+    <topic label="Collection foreign keys" href="html/reference/en/html/collections.html#collections-foreignkeys"/>
+    <topic label="Collection elements" href="html/reference/en/html/collections.html#collections-elements"/>
+    <topic label="Indexed collections" href="html/reference/en/html/collections.html#collections-indexed"/>
+    <topic label="Collections of values and many-to-many associations" href="html/reference/en/html/collections.html#collections-ofvalues"/>
+    <topic label="One-to-many associations" href="html/reference/en/html/collections.html#collections-onetomany"/></topic>
+    <topic label="Advanced collection mappings" href="html/reference/en/html/collections.html#collections-advancedmappings">
+    <topic label="Sorted collections" href="html/reference/en/html/collections.html#collections-sorted"/>
+    <topic label="Bidirectional associations" href="html/reference/en/html/collections.html#collections-bidirectional"/>
+    <topic label="Bidirectional associations with indexed collections" href="html/reference/en/html/collections.html#collections-indexedbidirectional"/>
+    <topic label="Ternary associations" href="html/reference/en/html/collections.html#collections-ternary"/>
+    <topic label="Using an &lt;idbag&gt;" href="html/reference/en/html/collections.html#collections-idbag"/></topic>
+    <topic label="Collection examples" href="html/reference/en/html/collections.html#collections-example"/></topic>
+    <topic label="Association Mappings" href="html/reference/en/html/associations.html">
+    <topic label="Introduction" href="html/reference/en/html/associations.html#assoc-intro"/>
+    <topic label="Unidirectional associations" href="html/reference/en/html/associations.html#assoc-unidirectional">
+    <topic label="many to one" href="html/reference/en/html/associations.html#assoc-unidirectional-m21"/>
+    <topic label="one to one" href="html/reference/en/html/associations.html#assoc-unidirectional-121"/>
+    <topic label="one to many" href="html/reference/en/html/associations.html#assoc-unidirectional-12m"/></topic>
+    <topic label="Unidirectional associations with join tables" href="html/reference/en/html/associations.html#assoc-unidirectional-join">
+    <topic label="one to many" href="html/reference/en/html/associations.html#assoc-unidirectional-join-12m"/>
+    <topic label="many to one" href="html/reference/en/html/associations.html#assoc-unidirectional-join-m21"/>
+    <topic label="one to one" href="html/reference/en/html/associations.html#assoc-unidirectional-join-121"/>
+    <topic label="many to many" href="html/reference/en/html/associations.html#assoc-unidirectional-join-m2m"/></topic>
+    <topic label="Bidirectional associations" href="html/reference/en/html/associations.html#assoc-bidirectional">
+    <topic label="one to many / many to one" href="html/reference/en/html/associations.html#assoc-bidirectional-m21"/>
+    <topic label="one to one" href="html/reference/en/html/associations.html#assoc-bidirectional-121"/></topic>
+    <topic label="Bidirectional associations with join tables" href="html/reference/en/html/associations.html#assoc-bidirectional-join">
+    <topic label="one to many / many to one" href="html/reference/en/html/associations.html#assoc-bidirectional-join-12m"/>
+    <topic label="one to one" href="html/reference/en/html/associations.html#assoc-bidirectional-join-121"/>
+    <topic label="many to many" href="html/reference/en/html/associations.html#assoc-bidirectional-join-m2m"/></topic>
+    <topic label="More complex association mappings" href="html/reference/en/html/associations.html#assoc-complex"/></topic>
+    <topic label="Component Mapping" href="html/reference/en/html/components.html">
+    <topic label="Dependent objects" href="html/reference/en/html/components.html#components-dependentobjects"/>
+    <topic label="Collections of dependent objects" href="html/reference/en/html/components.html#components-incollections"/>
+    <topic label="Components as Map indices" href="html/reference/en/html/components.html#components-asmapindex"/>
+    <topic label="Components as composite identifiers" href="html/reference/en/html/components.html#components-compositeid"/>
+    <topic label="Dynamic components" href="html/reference/en/html/components.html#components-dynamic"/></topic>
+    <topic label="Inheritance Mapping" href="html/reference/en/html/inheritance.html">
+    <topic label="The Three Strategies" href="html/reference/en/html/inheritance.html#inheritance-strategies">
+    <topic label="Table per class hierarchy" href="html/reference/en/html/inheritance.html#inheritance-tableperclass"/>
+    <topic label="Table per subclass" href="html/reference/en/html/inheritance.html#inheritance-tablepersubclass"/>
+    <topic label="Table per subclass, using a discriminator" href="html/reference/en/html/inheritance.html#inheritance-tablepersubclass-discriminator"/>
+    <topic label="Mixing table per class hierarchy with table per subclass" href="html/reference/en/html/inheritance.html#inheritance-mixing-tableperclass-tablepersubclass"/>
+    <topic label="Table per concrete class" href="html/reference/en/html/inheritance.html#inheritance-tableperconcrete"/>
+    <topic label="Table per concrete class, using implicit polymorphism" href="html/reference/en/html/inheritance.html#inheritance-tableperconcreate-polymorphism"/>
+    <topic label="Mixing implicit polymorphism with other inheritance mappings" href="html/reference/en/html/inheritance.html#inheritace-mixingpolymorphism"/></topic>
+    <topic label="Limitations" href="html/reference/en/html/inheritance.html#inheritance-limitations"/></topic>
+    <topic label="Working with objects" href="html/reference/en/html/objectstate.html">
+    <topic label="Hibernate object states" href="html/reference/en/html/objectstate.html#objectstate-overview"/>
+    <topic label="Making objects persistent" href="html/reference/en/html/objectstate.html#objectstate-makingpersistent"/>
+    <topic label="Loading an object" href="html/reference/en/html/objectstate.html#objectstate-loading"/>
+    <topic label="Querying" href="html/reference/en/html/objectstate.html#objectstate-querying">
+    <topic label="Executing queries" href="html/reference/en/html/objectstate.html#objectstate-querying-executing">
+    <topic label="Iterating results" href="html/reference/en/html/objectstate.html#objectstate-querying-executing-iterate"/>
+    <topic label="Queries that return tuples" href="html/reference/en/html/objectstate.html#objectstate-querying-executing-tuples"/>
+    <topic label="Scalar results" href="html/reference/en/html/objectstate.html#objectstate-querying-executing-scalar"/>
+    <topic label="Bind parameters" href="html/reference/en/html/objectstate.html#objectstate-querying-executing-parameters"/>
+    <topic label="Pagination" href="html/reference/en/html/objectstate.html#objectstate-querying-executing-pagination"/>
+    <topic label="Scrollable iteration" href="html/reference/en/html/objectstate.html#objectstate-querying-executing-scrolling"/>
+    <topic label="Externalizing named queries" href="html/reference/en/html/objectstate.html#objectstate-querying-executing-named"/></topic>
+    <topic label="Filtering collections" href="html/reference/en/html/objectstate.html#objectstate-filtering"/>
+    <topic label="Criteria queries" href="html/reference/en/html/objectstate.html#objecstate-querying-criteria"/>
+    <topic label="Queries in native SQL" href="html/reference/en/html/objectstate.html#objectstate-querying-nativesql"/></topic>
+    <topic label="Modifying persistent objects" href="html/reference/en/html/objectstate.html#objectstate-modifying"/>
+    <topic label="Modifying detached objects" href="html/reference/en/html/objectstate.html#objectstate-detached"/>
+    <topic label="Automatic state detection" href="html/reference/en/html/objectstate.html#objectstate-saveorupdate"/>
+    <topic label="Deleting persistent objects" href="html/reference/en/html/objectstate.html#objectstate-deleting"/>
+    <topic label="Replicating object between two different datastores" href="html/reference/en/html/objectstate.html#objectstate-replicating"/>
+    <topic label="Flushing the Session" href="html/reference/en/html/objectstate.html#objectstate-flushing"/>
+    <topic label="Transitive persistence" href="html/reference/en/html/objectstate.html#objectstate-transitive"/>
+    <topic label="Using metadata" href="html/reference/en/html/objectstate.html#objectstate-metadata"/></topic>
+    <topic label="Transactions And Concurrency" href="html/reference/en/html/transactions.html">
+    <topic label="Session and transaction scopes" href="html/reference/en/html/transactions.html#transactions-basics">
+    <topic label="Unit of work" href="html/reference/en/html/transactions.html#transactions-basics-uow"/>
+    <topic label="Long conversations" href="html/reference/en/html/transactions.html#transactions-basics-apptx"/>
+    <topic label="Considering object identity" href="html/reference/en/html/transactions.html#transactions-basics-identity"/>
+    <topic label="Common issues" href="html/reference/en/html/transactions.html#transactions-basics-issues"/></topic>
+    <topic label="Database transaction demarcation" href="html/reference/en/html/transactions.html#transactions-demarcation">
+    <topic label="Non-managed environment" href="html/reference/en/html/transactions.html#transactions-demarcation-nonmanaged"/>
+    <topic label="Using JTA" href="html/reference/en/html/transactions.html#transactions-demarcation-jta"/>
+    <topic label="Exception handling" href="html/reference/en/html/transactions.html#transactions-demarcation-exceptions"/>
+    <topic label="Transaction timeout" href="html/reference/en/html/transactions.html#transactions-demarcation-timeout"/></topic>
+    <topic label="Optimistic concurrency control" href="html/reference/en/html/transactions.html#transactions-optimistic">
+    <topic label="Application version checking" href="html/reference/en/html/transactions.html#transactions-optimistic-manual"/>
+    <topic label="Extended session and automatic versioning" href="html/reference/en/html/transactions.html#transactions-optimistic-longsession"/>
+    <topic label="Detached objects and automatic versioning" href="html/reference/en/html/transactions.html#transactions-optimistic-detached"/>
+    <topic label="Customizing automatic versioning" href="html/reference/en/html/transactions.html#transactions-optimistic-customizing"/></topic>
+    <topic label="Pessimistic Locking" href="html/reference/en/html/transactions.html#transactions-locking"/>
+    <topic label="Connection Release Modes" href="html/reference/en/html/transactions.html#transactions-connection-release"/></topic>
+    <topic label="Interceptors and events" href="html/reference/en/html/events.html">
+    <topic label="Interceptors" href="html/reference/en/html/events.html#objectstate-interceptors"/>
+    <topic label="Event system" href="html/reference/en/html/events.html#objectstate-events"/>
+    <topic label="Hibernate declarative security" href="html/reference/en/html/events.html#objectstate-decl-security"/></topic>
+    <topic label="Batch processing" href="html/reference/en/html/batch.html">
+    <topic label="Batch inserts" href="html/reference/en/html/batch.html#batch-inserts"/>
+    <topic label="Batch updates" href="html/reference/en/html/batch.html#batch-update"/>
+    <topic label="The StatelessSession interface" href="html/reference/en/html/batch.html#batch-statelesssession"/>
+    <topic label="DML-style operations" href="html/reference/en/html/batch.html#batch-direct"/></topic>
+    <topic label="HQL: The Hibernate Query Language" href="html/reference/en/html/queryhql.html">
+    <topic label="Case Sensitivity" href="html/reference/en/html/queryhql.html#queryhql-casesensitivity"/>
+    <topic label="The from clause" href="html/reference/en/html/queryhql.html#queryhql-from"/>
+    <topic label="Associations and joins" href="html/reference/en/html/queryhql.html#queryhql-joins"/>
+    <topic label="Forms of join syntax" href="html/reference/en/html/queryhql.html#queryhql-joins-forms"/>
+    <topic label="Refering to identifier property" href="html/reference/en/html/queryhql.html#queryhql-identifier-property"/>
+    <topic label="The select clause" href="html/reference/en/html/queryhql.html#queryhql-select"/>
+    <topic label="Aggregate functions" href="html/reference/en/html/queryhql.html#queryhql-aggregation"/>
+    <topic label="Polymorphic queries" href="html/reference/en/html/queryhql.html#queryhql-polymorphism"/>
+    <topic label="The where clause" href="html/reference/en/html/queryhql.html#queryhql-where"/>
+    <topic label="Expressions" href="html/reference/en/html/queryhql.html#queryhql-expressions"/>
+    <topic label="The order by clause" href="html/reference/en/html/queryhql.html#queryhql-ordering"/>
+    <topic label="The group by clause" href="html/reference/en/html/queryhql.html#queryhql-grouping"/>
+    <topic label="Subqueries" href="html/reference/en/html/queryhql.html#queryhql-subqueries"/>
+    <topic label="HQL examples" href="html/reference/en/html/queryhql.html#queryhql-examples"/>
+    <topic label="Bulk update and delete" href="html/reference/en/html/queryhql.html#queryhql-bulk"/>
+    <topic label="Tips &amp; Tricks" href="html/reference/en/html/queryhql.html#queryhql-tipstricks"/>
+    <topic label="Components" href="html/reference/en/html/queryhql.html#queryhql-components"/>
+    <topic label="Row value constructor syntax" href="html/reference/en/html/queryhql.html#queryhql-tuple"/></topic>
+    <topic label="Criteria Queries" href="html/reference/en/html/querycriteria.html">
+    <topic label="Creating a Criteria instance" href="html/reference/en/html/querycriteria.html#querycriteria-creating"/>
+    <topic label="Narrowing the result set" href="html/reference/en/html/querycriteria.html#querycriteria-narrowing"/>
+    <topic label="Ordering the results" href="html/reference/en/html/querycriteria.html#querycriteria-ordering"/>
+    <topic label="Associations" href="html/reference/en/html/querycriteria.html#querycriteria-associations"/>
+    <topic label="Dynamic association fetching" href="html/reference/en/html/querycriteria.html#querycriteria-dynamicfetching"/>
+    <topic label="Example queries" href="html/reference/en/html/querycriteria.html#querycriteria-examples"/>
+    <topic label="Projections, aggregation and grouping" href="html/reference/en/html/querycriteria.html#querycriteria-projection"/>
+    <topic label="Detached queries and subqueries" href="html/reference/en/html/querycriteria.html#querycriteria-detachedqueries"/>
+    <topic label="Queries by natural identifier" href="html/reference/en/html/querycriteria.html#query-criteria-naturalid"/></topic>
+    <topic label="Native SQL" href="html/reference/en/html/querysql.html">
+    <topic label="Using a SQLQuery" href="html/reference/en/html/querysql.html#querysql-creating">
+    <topic label="Scalar queries" href="html/reference/en/html/querysql.html#"/>
+    <topic label="Entity queries" href="html/reference/en/html/querysql.html#"/>
+    <topic label="Handling associations and collections" href="html/reference/en/html/querysql.html#"/>
+    <topic label="Returning multiple entities" href="html/reference/en/html/querysql.html#">
+    <topic label="Alias and property references" href="html/reference/en/html/querysql.html#querysql-aliasreferences"/></topic>
+    <topic label="Returning non-managed entities" href="html/reference/en/html/querysql.html#"/>
+    <topic label="Handling inheritance" href="html/reference/en/html/querysql.html#"/>
+    <topic label="Parameters" href="html/reference/en/html/querysql.html#"/></topic>
+    <topic label="Named SQL queries" href="html/reference/en/html/querysql.html#querysql-namedqueries">
+    <topic label="Using return-property to explicitly specify column/alias&#xA;      names" href="html/reference/en/html/querysql.html#propertyresults"/>
+    <topic label="Using stored procedures for querying" href="html/reference/en/html/querysql.html#sp_query">
+    <topic label="Rules/limitations for using stored procedures" href="html/reference/en/html/querysql.html#querysql-limits-storedprocedures"/></topic></topic>
+    <topic label="Custom SQL for create, update and delete" href="html/reference/en/html/querysql.html#querysql-cud"/>
+    <topic label="Custom SQL for loading" href="html/reference/en/html/querysql.html#querysql-load"/></topic>
+    <topic label="Filtering data" href="html/reference/en/html/filters.html">
+    <topic label="Hibernate filters" href="html/reference/en/html/filters.html#objectstate-filters"/></topic>
+    <topic label="XML Mapping" href="html/reference/en/html/xml.html">
+    <topic label="Working with XML data" href="html/reference/en/html/xml.html#xml-intro">
+    <topic label="Specifying XML and class mapping together" href="html/reference/en/html/xml.html#xml-intro-mapping"/>
+    <topic label="Specifying only an XML mapping" href="html/reference/en/html/xml.html#xml-onlyxml"/></topic>
+    <topic label="XML mapping metadata" href="html/reference/en/html/xml.html#xml-mapping"/>
+    <topic label="Manipulating XML data" href="html/reference/en/html/xml.html#xml-manipulation"/></topic>
+    <topic label="Improving performance" href="html/reference/en/html/performance.html">
+    <topic label="Fetching strategies" href="html/reference/en/html/performance.html#performance-fetching">
+    <topic label="Working with lazy associations" href="html/reference/en/html/performance.html#performance-fetching-lazy"/>
+    <topic label="Tuning fetch strategies" href="html/reference/en/html/performance.html#performance-fetching-custom"/>
+    <topic label="Single-ended association proxies" href="html/reference/en/html/performance.html#performance-fetching-proxies"/>
+    <topic label="Initializing collections and proxies" href="html/reference/en/html/performance.html#performance-fetching-initialization"/>
+    <topic label="Using batch fetching" href="html/reference/en/html/performance.html#performance-fetching-batch"/>
+    <topic label="Using subselect fetching" href="html/reference/en/html/performance.html#performance-fetching-subselect"/>
+    <topic label="Using lazy property fetching" href="html/reference/en/html/performance.html#performance-fetching-lazyproperties"/></topic>
+    <topic label="The Second Level Cache" href="html/reference/en/html/performance.html#performance-cache">
+    <topic label="Cache mappings" href="html/reference/en/html/performance.html#performance-cache-mapping"/>
+    <topic label="Strategy: read only" href="html/reference/en/html/performance.html#performance-cache-readonly"/>
+    <topic label="Strategy: read/write" href="html/reference/en/html/performance.html#performance-cache-readwrite"/>
+    <topic label="Strategy: nonstrict read/write" href="html/reference/en/html/performance.html#performance-cache-nonstrict"/>
+    <topic label="Strategy: transactional" href="html/reference/en/html/performance.html#performance-cache-transactional"/></topic>
+    <topic label="Managing the caches" href="html/reference/en/html/performance.html#performance-sessioncache"/>
+    <topic label="The Query Cache" href="html/reference/en/html/performance.html#performance-querycache"/>
+    <topic label="Understanding Collection performance" href="html/reference/en/html/performance.html#performance-collections">
+    <topic label="Taxonomy" href="html/reference/en/html/performance.html#performance-collections-taxonomy"/>
+    <topic label="Lists, maps, idbags and sets are the most efficient collections to update" href="html/reference/en/html/performance.html#performance-collections-mostefficientupdate"/>
+    <topic label="Bags and lists are the most efficient inverse collections" href="html/reference/en/html/performance.html#performance-collections-mostefficentinverse"/>
+    <topic label="One shot delete" href="html/reference/en/html/performance.html#performance-collections-oneshotdelete"/></topic>
+    <topic label="Monitoring performance" href="html/reference/en/html/performance.html#performance-monitoring">
+    <topic label="Monitoring a SessionFactory" href="html/reference/en/html/performance.html#performance-monitoring-sf"/>
+    <topic label="Metrics" href="html/reference/en/html/performance.html#performance-monitoring-metrics"/></topic></topic>
+    <topic label="Toolset Guide" href="html/reference/en/html/toolsetguide.html">
+    <topic label="Automatic schema generation" href="html/reference/en/html/toolsetguide.html#toolsetguide-s1">
+    <topic label="Customizing the schema" href="html/reference/en/html/toolsetguide.html#toolsetguide-s1-2"/>
+    <topic label="Running the tool" href="html/reference/en/html/toolsetguide.html#toolsetguide-s1-3"/>
+    <topic label="Properties" href="html/reference/en/html/toolsetguide.html#toolsetguide-s1-4"/>
+    <topic label="Using Ant" href="html/reference/en/html/toolsetguide.html#toolsetguide-s1-5"/>
+    <topic label="Incremental schema updates" href="html/reference/en/html/toolsetguide.html#toolsetguide-s1-6"/>
+    <topic label="Using Ant for incremental schema updates" href="html/reference/en/html/toolsetguide.html#toolsetguide-s1-7"/>
+    <topic label="Schema validation" href="html/reference/en/html/toolsetguide.html#toolsetguide-s1-8"/>
+    <topic label="Using Ant for schema validation" href="html/reference/en/html/toolsetguide.html#toolsetguide-s1-9"/></topic></topic>
+    <topic label="Example: Parent/Child" href="html/reference/en/html/example-parentchild.html">
+    <topic label="A note about collections" href="html/reference/en/html/example-parentchild.html#example-parentchild-collections"/>
+    <topic label="Bidirectional one-to-many" href="html/reference/en/html/example-parentchild.html#example-parentchild-bidir"/>
+    <topic label="Cascading lifecycle" href="html/reference/en/html/example-parentchild.html#example-parentchild-cascades"/>
+    <topic label="Cascades and unsaved-value" href="html/reference/en/html/example-parentchild.html#example-parentchild-update"/>
+    <topic label="Conclusion" href="html/reference/en/html/example-parentchild.html#example-parentchild-conclusion"/></topic>
+    <topic label="Example: Weblog Application" href="html/reference/en/html/example-weblog.html">
+    <topic label="Persistent Classes" href="html/reference/en/html/example-weblog.html#example-weblog-classes"/>
+    <topic label="Hibernate Mappings" href="html/reference/en/html/example-weblog.html#example-weblog-mappings"/>
+    <topic label="Hibernate Code" href="html/reference/en/html/example-weblog.html#example-weblog-code"/></topic>
+    <topic label="Example: Various Mappings" href="html/reference/en/html/example-mappings.html">
+    <topic label="Employer/Employee" href="html/reference/en/html/example-mappings.html#example-mappings-emp"/>
+    <topic label="Author/Work" href="html/reference/en/html/example-mappings.html#example-mappings-authorwork"/>
+    <topic label="Customer/Order/Product" href="html/reference/en/html/example-mappings.html#example-mappings-customerorderproduct"/>
+    <topic label="Miscellaneous example mappings" href="html/reference/en/html/example-mappings.html#misc">
+    <topic label="&#34;Typed&#34; one-to-one association" href="html/reference/en/html/example-mappings.html#example-mappings-typed-onetone"/>
+    <topic label="Composite key example" href="html/reference/en/html/example-mappings.html#example-mappings-composite-key"/>
+    <topic label="Many-to-many with shared composite key attribute" href="html/reference/en/html/example-mappings.html#example-mappings-composite-key-manytomany"/>
+    <topic label="Content based discrimination" href="html/reference/en/html/example-mappings.html#example-mappings-content-discrimination"/>
+    <topic label="Associations on alternate keys" href="html/reference/en/html/example-mappings.html#example-mappings-association-alternatekeys"/></topic></topic>
+    <topic label="Best Practices" href="html/reference/en/html/best-practices.html"/></toc>
