@@ -32,11 +32,9 @@ import java.util.Set;
 
 import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBuffer;
-import org.eclipse.core.filebuffers.manipulation.ContainerCreator;
 import org.eclipse.core.filebuffers.manipulation.FileBufferOperationRunner;
 import org.eclipse.core.filebuffers.manipulation.MultiTextEditWithProgress;
 import org.eclipse.core.filebuffers.manipulation.TextFileBufferOperation;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -44,7 +42,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -132,7 +129,6 @@ public class CodeGenerationLaunchDelegate extends
 			}
             
 		    Set outputDirectories = new HashSet();
-		    outputDirectories.add((String)attributes.getOutputPath());
 		    ExporterFactory[] exporters = (ExporterFactory[]) exporterFactories.toArray( new ExporterFactory[exporterFactories.size()] );
             ArtifactCollector collector = runExporters(attributes, exporters, outputDirectories, monitor);
             
@@ -210,27 +206,6 @@ public class CodeGenerationLaunchDelegate extends
 			if (monitor.isCanceled())
 				return null;
 			
-			
-			String outputPathRes = PathHelper.getLocationAsStringPath(attributes.getOutputPath());			
-			if (outputPathRes == null && StringHelper.isNotEmpty(attributes.getOutputPath())){
-				ContainerCreator cc = new ContainerCreator(ResourcesPlugin.getWorkspace(), PathHelper.pathOrNull(attributes.getOutputPath()));
-				IFolder folder = (IFolder) cc.createContainer(new NullProgressMonitor());
-				if (folder != null) {
-					outputPathRes = PathHelper.getLocation( folder ).toOSString();
-				}
-			}			
-			final String fOutputPathRes = outputPathRes;
-	        
-	        String templatePath = PathHelper.getLocationAsStringPath(attributes.getTemplatePath());	       
-	        if (templatePath == null && StringHelper.isNotEmpty(attributes.getTemplatePath())){
-				ContainerCreator cc = new ContainerCreator(ResourcesPlugin.getWorkspace(), PathHelper.pathOrNull(attributes.getTemplatePath()));
-				IFolder folder = (IFolder) cc.createContainer(new NullProgressMonitor());
-				if (folder != null) {
-					templatePath = PathHelper.getLocation( folder ).toOSString();
-				}
-			}
-	        final String fTemplatePath = templatePath;
-	        
 			ConsoleConfiguration cc = KnownConfigurations.getInstance().find(attributes.getConsoleConfigurationName());
 			if (attributes.isReverseEngineer()) {
 				monitor.subTask("reading jdbc metadata");
@@ -246,12 +221,6 @@ public class CodeGenerationLaunchDelegate extends
 
 				public Object execute() {
 					ArtifactCollector artifactCollector = new ArtifactCollector();
-					
-					String templatePaths = null;
-					
-					if(StringHelper.isNotEmpty(fTemplatePath)) {
-	                	templatePaths = fTemplatePath;
-	                }
 	                
                     // Global properties
 	                Properties props = new Properties();
@@ -267,7 +236,7 @@ public class CodeGenerationLaunchDelegate extends
                        
                        Exporter exporter;
 					try {
-						exporter = exporterFactories[i].createConfiguredExporter(cfg, fOutputPathRes, templatePaths, globalProperties, outputDirectories, artifactCollector);
+						exporter = exporterFactories[i].createConfiguredExporter(cfg, attributes.getOutputPath(), attributes.getTemplatePath(), globalProperties, outputDirectories, artifactCollector);
 					} catch (CoreException e) {
 						throw new HibernateConsoleRuntimeException("Error while setting up " + exporterFactories[i].getExporterDefinition(), e);
 					}

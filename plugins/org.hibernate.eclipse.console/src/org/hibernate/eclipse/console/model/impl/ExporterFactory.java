@@ -178,18 +178,26 @@ public class ExporterFactory {
 		exporter.setArtifactCollector(collector);
 		
 		exporter.setOutputDirectory(new File(defaultOutputDirectory));
+		String outputPath = defaultOutputDirectory;
 		if(props.containsKey("outputdir")) {
-			String resolvedOutputDir = resolve(props.getProperty("outputdir"));
-			String loc = PathHelper.getLocationAsStringPath(resolvedOutputDir);
-			if(loc==null) {
-				throw new HibernateConsoleRuntimeException("Output directory '" + resolvedOutputDir + "' in " + getExporterDefinition().getDescription() + " does not exist.");
-			}
-			props.remove("outputdir"); // done to avoid validation check in hibernate tools templates			
-			if(StringHelper.isNotEmpty(loc)) { // only set if something valid found
-				outputDirectories.add(loc);
-				exporter.setOutputDirectory(new File(loc));
-			} 
-		} 
+			outputPath = props.getProperty("outputdir");
+			props.remove("outputdir"); // done to avoid validation check in hibernate tools templates	
+		}
+		
+		if (outputPath == null){
+			throw new HibernateConsoleRuntimeException("Output directory is not specified in " + getExporterDefinition().getDescription() );
+		}
+		
+		String resolvedOutputDir = resolve(outputPath);
+		String loc = PathHelper.getLocationAsStringPath(resolvedOutputDir);
+		if(loc==null) {
+			throw new HibernateConsoleRuntimeException("Output directory '" + resolvedOutputDir + "' in " + getExporterDefinition().getDescription() + " does not exist.");
+		}
+				
+		if(StringHelper.isNotEmpty(loc)) { // only set if something valid found
+			outputDirectories.add(loc);
+			exporter.setOutputDirectory(new File(loc));
+		}
 		
 		exporter.setConfiguration(cfg);
 		
@@ -204,10 +212,16 @@ public class ExporterFactory {
 			}					
 			props.remove("template_path"); // done to avoid validation check in hibernate tools templates
 		}
-		String resolvedCustomTemplatePath = resolve(customTemplatePath);
-		if(StringHelper.isNotEmpty(resolvedCustomTemplatePath)) {
-			templatePathList.add(resolvedCustomTemplatePath);
+		if (StringHelper.isNotEmpty(customTemplatePath)){
+			String resolvedCustomTemplatePath = resolve(customTemplatePath);
+			String locationAsStringPath = PathHelper.getLocationAsStringPath(resolvedCustomTemplatePath);
+			if(locationAsStringPath != null) {
+				templatePathList.add(locationAsStringPath);
+			} else {
+				throw new HibernateConsoleRuntimeException("Template directory '" + resolvedCustomTemplatePath + "' in " + getExporterDefinition().getDescription() + " does not exist.");				
+			}
 		}
+		
 		exporter.setTemplatePath((String[]) templatePathList.toArray(new String[templatePathList.size()]));
 		
 	
