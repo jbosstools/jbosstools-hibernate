@@ -27,12 +27,14 @@ import java.util.Map;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IKeyBindingService;
 import org.eclipse.ui.INestableKeyBindingService;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
+import org.eclipse.wst.xml.core.internal.provisional.IXMLPreferenceNames;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
@@ -118,7 +120,10 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 		pageNameToIndex.put(RevEngTablesPage.PART_ID, new Integer(i));
 		i++;
 		
-	//	setActivePage( 0 );
+		int activePageIndex = getPreferenceStore().getInt(IXMLPreferenceNames.LAST_ACTIVE_PAGE);
+		if ((activePageIndex >= 0) && (activePageIndex < getPageCount())) {
+			setActivePage(activePageIndex);
+		}
 	}
 
 	/*public void setActivePage(String string) {
@@ -153,6 +158,7 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
                 nestableService.activateKeyBindingService(null);
             }	        
 		}
+		saveLastActivePageIndex(newPageIndex);
 		super.pageChange(newPageIndex);
 	}
 	
@@ -243,6 +249,15 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 		} else {
 			return KnownConfigurations.getInstance().find( dialog.getSelectedConfigurationName() ); // TODO: double check to see if an result is actually returned ?
 		}		
+	}
+	
+	private void saveLastActivePageIndex(int newPageIndex) {
+		// save the last active page index to preference store
+		getPreferenceStore().setValue(IXMLPreferenceNames.LAST_ACTIVE_PAGE, newPageIndex);
+	}
+	
+	private IPreferenceStore getPreferenceStore() {
+		return MapperPlugin.getDefault().getPreferenceStore();
 	}
 	
 }
