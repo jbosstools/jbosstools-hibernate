@@ -145,6 +145,8 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		Map columns = new HashMap();
 		
 		if(lds!=null) {
+			dialog.setTitle("Add Tables & Columns");
+			dialog.setMessage("Select tables and columns");
 			dialog.setInput(lds);
 			dialog.setContainerMode(true);
 			dialog.open();
