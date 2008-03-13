@@ -33,10 +33,15 @@ import org.eclipse.jdt.ui.text.java.IProblemLocation;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.texteditor.ITextEditor;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.actions.OpenMappingAction;
 import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.hibernate.eclipse.jdt.ui.Activator;
 
 
 public class CriteriaQuickAssistProcessor extends BasicQuickAssistProcessor  {
@@ -50,10 +55,16 @@ public class CriteriaQuickAssistProcessor extends BasicQuickAssistProcessor  {
 		IDocument document = getDocument( context.getCompilationUnit() );
 		try {
 			String contents = document.get( context.getSelectionOffset(), context.getSelectionLength() );
+			// position of selection
+			final Point position = new Point( context.getSelectionOffset(), context.getSelectionLength() );
 			result = new IJavaCompletionProposal[1];			
 			result[0] = new ExternalActionQuickAssistProposal(contents, EclipseImages.getImage(ImageConstants.CRITERIA_EDITOR), "Copy to Criteria Editor", context) {
 				public void apply(IDocument target) {
-					HibernateConsolePlugin.getDefault().openCriteriaEditor(getName(), getContents());
+					//IEditorPart editorPart = HibernateConsolePlugin.getDefault().openCriteriaEditor(getName(), getContents());
+					IEditorPart editorPart = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+					ITextEditor[] textEditors = OpenMappingAction.getTextEditors(editorPart);
+					if (textEditors.length == 0) return;
+					new SaveQueryEditorListener(textEditors[0], getName(), getContents(), position, SaveQueryEditorListener.CriteriaEditor);
 				}
 			};
 		}

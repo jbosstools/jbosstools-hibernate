@@ -28,13 +28,17 @@ import org.eclipse.jdt.ui.text.java.IInvocationContext;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jdt.ui.text.java.IProblemLocation;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.texteditor.ITextEditor;
 import org.hibernate.console.ImageConstants;
-import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.actions.OpenMappingAction;
 import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.hibernate.eclipse.jdt.ui.Activator;
 
 public class HQLQuickAssistProcessor extends BasicQuickAssistProcessor {
 
-	public IJavaCompletionProposal[] getAssists(IInvocationContext context,
+	public IJavaCompletionProposal[] getAssists(final IInvocationContext context,
 			IProblemLocation[] locations) throws CoreException {
 		
 		IJavaCompletionProposal[] result = new IJavaCompletionProposal[0];
@@ -45,16 +49,19 @@ public class HQLQuickAssistProcessor extends BasicQuickAssistProcessor {
 			return result;
 		}
 		
-		StringLiteral stringLiteral= (StringLiteral) coveringNode;
+		final StringLiteral stringLiteral= (StringLiteral) coveringNode;
 		String contents= stringLiteral.getLiteralValue();
 		result = new IJavaCompletionProposal[1];			
 		result[0] = new ExternalActionQuickAssistProposal(contents, EclipseImages.getImage(ImageConstants.HQL_EDITOR), "Copy to HQL Editor", context) {
 			public void apply(IDocument document) {
-				HibernateConsolePlugin.getDefault().openScratchHQLEditor( getName(), getContents() );				
+				IEditorPart editorPart = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+				ITextEditor[] textEditors = OpenMappingAction.getTextEditors(editorPart);
+				if (textEditors.length == 0) return;
+				Point position = new Point(stringLiteral.getStartPosition() + 1, stringLiteral.getLength() - 2);
+				new SaveQueryEditorListener(textEditors[0], getName(), getContents(), position, SaveQueryEditorListener.HQLEditor);
 			}
 		};
 		
 		return result;
 	}
-		
 }
