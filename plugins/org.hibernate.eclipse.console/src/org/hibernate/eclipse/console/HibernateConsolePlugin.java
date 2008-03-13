@@ -53,7 +53,6 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
@@ -424,8 +423,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 			}
 		} catch(HibernateConsoleRuntimeException hcr) {
 			logErrorMessage("Error while reading console configuration", hcr);
-		}
-	
+		}	
 	}
 
 	
@@ -451,20 +449,19 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 	 	      "Hibernate Console", message, s);				
 	}
 
-	public void openCriteriaEditor(String consoleName, String criteria) {
+	public IEditorPart openCriteriaEditor(String consoleName, String criteria) {
 		 try {
-		        final IWorkbenchWindow activeWorkbenchWindow =
-		            PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		        IWorkbenchPage page = activeWorkbenchWindow.getActivePage();
+			 	IWorkbenchPage page = getActiveWorkbenchWindow().getActivePage();
 		        
 		        
 		        CriteriaEditorStorage storage = new CriteriaEditorStorage(consoleName, criteria==null?"":criteria);		        
 		        
 		        final CriteriaEditorInput editorInput = new CriteriaEditorInput(storage);
-		        page.openEditor(editorInput, "org.hibernate.eclipse.criteriaeditor.CriteriaEditor", true);
+		        return page.openEditor(editorInput, "org.hibernate.eclipse.criteriaeditor.CriteriaEditor", true);
 		        //page.openEditor(editorInput, "org.eclipse.jdt.ui.CompilationUnitEditor", true);
 		    } catch (PartInitException ex) {
 		    	logErrorMessage("Could not open Criteria editor for console:" + consoleName, ex);
+		    	return null;
 		    }
 	}
 	
