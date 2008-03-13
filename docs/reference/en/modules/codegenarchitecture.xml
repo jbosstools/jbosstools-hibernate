@@ -85,12 +85,12 @@
         <title>Hibernate Core Concepts</title>
         <mediaobject>
           <imageobject role="fo">
-            <imagedata fileref="images/architecture.png" format="PNG"/>
+            <imagedata fileref="images/code_generation/code_generation_1.png" format="PNG"/>
           </imageobject>
 
           <imageobject role="html">
 
-            <imagedata align="center" fileref="images/architecture.png" format="PNG"/>
+            <imagedata align="center" fileref="images/code_generation/code_generation_1.png" format="PNG"/>
           </imageobject>
         </mediaobject>
       </figure>

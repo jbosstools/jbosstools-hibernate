@@ -1120,12 +1120,12 @@
       <title>Overview Page</title>
       <mediaobject>
         <imageobject role="fo">
-          <imagedata align="center" scale="80" fileref="images/plugins/plugins_13a.png" format="PNG"
+          <imagedata align="center" scale="80" fileref="images/plugins/plugins_22.png" format="PNG"
           />
         </imageobject>
 
         <imageobject role="html">
-          <imagedata align="center" fileref="images/plugins/plugins_13a.png" format="PNG"/>
+          <imagedata align="center" fileref="images/plugins/plugins_22.png" format="PNG"/>
         </imageobject>
       </mediaobject>
     </figure>
