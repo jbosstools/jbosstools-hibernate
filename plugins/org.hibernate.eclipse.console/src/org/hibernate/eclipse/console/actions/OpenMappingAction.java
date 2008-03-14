@@ -24,7 +24,6 @@ import org.eclipse.jface.text.FindReplaceDocumentAdapter;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
-import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
@@ -32,7 +31,6 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.SelectionListenerAction;
 import org.eclipse.ui.part.MultiPageEditorPart;
-import org.eclipse.ui.texteditor.AbstractTextEditor;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -106,6 +104,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 		IEditorPart editorPart = null;
 		IJavaProject proj = ProjectUtils.findJavaProject(consoleConfiguration);
 		java.io.File configXMLFile = consoleConfiguration.getPreferences().getConfigXMLFile();
+		if (configXMLFile == null) return null;
 		IResource resource = null;
 		if (selection instanceof Property){
 			Property p = (Property)selection;
@@ -159,6 +158,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 		if (parentProperty.getPersistentClass() == null) return null;
 		IJavaProject proj = ProjectUtils.findJavaProject(consoleConfiguration);
 		java.io.File configXMLFile = consoleConfiguration.getPreferences().getConfigXMLFile();
+		if (configXMLFile == null) return null;
 		IResource resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, configXMLFile, parentProperty.getPersistentClass());
 
 		IEditorPart editorPart = null;
