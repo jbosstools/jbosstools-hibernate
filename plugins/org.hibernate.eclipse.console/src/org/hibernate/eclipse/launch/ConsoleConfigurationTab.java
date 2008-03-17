@@ -41,6 +41,12 @@ abstract public class ConsoleConfigurationTab extends AbstractLaunchConfiguratio
 		return button;
 	}
 	
+	protected Button createSetupButton(Group group, SelectionListener selectionListener) {
+		Button button = createPushButton(group, "Setup...", null); 
+		button.addSelectionListener(selectionListener);
+		return button;
+	}
+	
 	protected Button createNewFileButton(Group group, SelectionListener selectionListener) {
 		Button button = createPushButton(group, "Create New", null); 
 		button.addSelectionListener(selectionListener);

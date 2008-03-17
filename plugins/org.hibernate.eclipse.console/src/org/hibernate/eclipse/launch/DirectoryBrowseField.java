@@ -94,7 +94,7 @@ public class DirectoryBrowseField extends StringDialogField {
 	
 	protected void browseWorkspace ()
 	{
-		IPath[] paths = DialogSelectionHelper.chooseFileEntries(filesystemBrowse.getShell(),  initialWorkspacePath, new IPath[0], dialogTitle, dialogDescription, new String[0], false, true, false);
+		IPath[] paths = DialogSelectionHelper.chooseFolderEntries(filesystemBrowse.getShell(),  initialWorkspacePath, dialogTitle, dialogDescription, false);
         if(paths!=null && paths.length==1) {
         	setText(paths[0].toOSString());
         }

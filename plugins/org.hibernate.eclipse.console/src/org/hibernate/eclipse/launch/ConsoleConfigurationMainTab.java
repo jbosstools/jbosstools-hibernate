@@ -13,6 +13,8 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -51,7 +53,6 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 	private Button jpaMode;
 	private Button annotationsMode;
 	private Button confbutton;
-	private Button createconfbutton;
 	
 	private Text propertyFileText;
 	private Text configurationFileText;
@@ -112,32 +113,22 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 	}
 	
 	private void createPropertyFileEditor(Composite parent) {
-		Group group = createGroup( parent, "Property file:", 3 );
+		Group group = createGroup( parent, "Property file:" );
 		propertyFileText = createBrowseEditor( parent, group);
-		createNewFileButton( group, new SelectionAdapter() {
+		createSetupButton( group, new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				handlePropertyFileCreate();
-			}
-		} );
-		createBrowseButton( group, new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				handlePropertyFileBrowse();
+				handlePropertyFileSetup();
 			}
 		} );		
 	}
 	
 
 	private void createConfigurationFileEditor(Composite parent) {
-		Group group = createGroup( parent, "Configuration file:", 3 );
+		Group group = createGroup( parent, "Configuration file:" );
 		configurationFileText = createBrowseEditor( parent, group);
-		createconfbutton = createNewFileButton( group, new SelectionAdapter() {
+		confbutton = createSetupButton( group, new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				handleConfigurationFileCreate();
-			}
-		} );
-		confbutton = createBrowseButton( group, new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				handleConfigurationFileBrowse();
+				handleConfigurationFileSetup();
 			}
 		});
 	}
@@ -182,6 +173,24 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 	}
 	
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {}
+	
+	private void handlePropertyFileSetup() {
+		int defaultChoice = 0;
+		IPath initialPath = getPropertyFilePath() != null ? getPropertyFilePath() : null;
+    	
+		if(initialPath!=null) {
+    		defaultChoice = 1;
+    	}
+		MessageDialog dialog = createSetupDialog("Setup property file", "Do you want to create a new property file or use an existing one ?", defaultChoice);
+
+		int answer = dialog.open();
+		if(answer==0) { // create new
+			handlePropertyFileCreate();	
+		} else if (answer==1) { // use existing
+			handlePropertyFileBrowse();		
+		} 
+	}
+	
 	
 	private void handlePropertyFileBrowse() {
 		IPath initialPath = getPropertyFilePath() != null ? getPropertyFilePath() : new Path(getProjectName());
@@ -244,6 +253,31 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 			wdialog.open();
 	}
 	
+	private MessageDialog createSetupDialog(String title, String question, int defaultChoice){
+		return new MessageDialog(getShell(), 
+				title, 
+				null, 
+				question, 
+				MessageDialog.QUESTION, 
+				new String[] { "Create &new...", "Use &existing...", IDialogConstants.CANCEL_LABEL}, 
+				defaultChoice);
+	}
+	
+	private void handleConfigurationFileSetup() {
+		int defaultChoice = 0;
+		IPath initialPath = getConfigurationFilePath() != null ? getConfigurationFilePath() : null;
+		
+		if(initialPath!=null) {
+    		defaultChoice = 1;
+    	}
+		MessageDialog dialog = createSetupDialog("Setup configuration file", "Do you want to create a new *.cfg.xml or use an existing one ?", defaultChoice);
+		int answer = dialog.open();
+		if(answer==0) { // create new
+			handleConfigurationFileCreate();	
+		} else if (answer==1) { // use existing
+			handleConfigurationFileBrowse();		
+		}  
+	}
 	
 	private void handleConfigurationFileBrowse() {
 		IPath initialPath = getConfigurationFilePath() != null ? getConfigurationFilePath() : new Path(getProjectName());
@@ -307,7 +341,6 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		
 		configurationFileText.setEnabled( /* TODO !configurationFileWillBeCreated && */ !getConfigurationMode().equals( ConfigurationMode.JPA ) );
 		confbutton.setEnabled( !getConfigurationMode().equals( ConfigurationMode.JPA ) );
-		createconfbutton.setEnabled(confbutton.isEnabled());
 		
 		persistenceUnitNameText.setEnabled( getConfigurationMode().equals( ConfigurationMode.JPA) );
 		

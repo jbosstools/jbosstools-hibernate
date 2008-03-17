@@ -22,6 +22,7 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.internal.ui.wizards.TypedElementSelectionValidator;
+import org.eclipse.jdt.internal.ui.wizards.buildpaths.FolderSelectionDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
@@ -77,12 +78,47 @@ public class DialogSelectionHelper {
 		}
 		IResource focus= initialSelection != null ? root.findMember(initialSelection) : null;
 		
-		ElementTreeSelectionDialog dialog= new ElementTreeSelectionDialog(shell, new WorkbenchLabelProvider(), new WorkbenchContentProvider() );
+		ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(shell, new WorkbenchLabelProvider(), new WorkbenchContentProvider() );
 		dialog.setValidator(validator);
 		dialog.setAllowMultiple(allowMultiple);
 		dialog.setTitle(title);
 		dialog.setMessage(description);
 		dialog.addFilter(new FileFilter(fileExtensions, usedFiles, true, allowDirectories) );
+		dialog.setInput(root);
+		dialog.setSorter(new ResourceSorter(ResourceSorter.NAME) );
+		dialog.setInitialSelection(focus);
+
+		if (dialog.open() == Window.OK) {
+			Object[] elements= dialog.getResult();
+			IPath[] res= new IPath[elements.length];
+			for (int i= 0; i < res.length; i++) {
+				IResource elem= (IResource)elements[i];
+				res[i]= elem.getFullPath();
+			}
+			return res;
+		}
+		return null;
+	}
+	
+	public static IPath[] chooseFolderEntries(Shell shell, IPath initialSelection, String title, String description, boolean allowMultiple) {
+		List clazzes = new ArrayList();
+		clazzes.add(IFolder.class);
+		clazzes.add(IProject.class);
+
+		Class[] acceptedClasses = (Class[]) clazzes.toArray(new Class[clazzes.size()]);
+				
+		TypedElementSelectionValidator validator= new TypedElementSelectionValidator(acceptedClasses, true);
+		IWorkspaceRoot root= ResourcesPlugin.getWorkspace().getRoot();
+		IResource focus= initialSelection != null ? root.findMember(initialSelection) : null;
+		
+		ElementTreeSelectionDialog dialog= null;
+		dialog = new FolderSelectionDialog(shell, new WorkbenchLabelProvider(), new WorkbenchContentProvider() );
+		//	dialog = new FileFolderSelectionDialog(shell, allowMultiple, allowDirectories ? IResource.FOLDER : IResource.FILE );
+		
+		dialog.setValidator(validator);
+		dialog.setAllowMultiple(allowMultiple);
+		dialog.setTitle(title);
+		dialog.setMessage(description);
 		dialog.setInput(root);
 		dialog.setSorter(new ResourceSorter(ResourceSorter.NAME) );
 		dialog.setInitialSelection(focus);
