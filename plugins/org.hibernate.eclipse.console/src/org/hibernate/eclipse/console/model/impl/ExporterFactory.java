@@ -177,20 +177,15 @@ public class ExporterFactory {
 		exporter.setProperties(props);
 		exporter.setArtifactCollector(collector);
 		
-		exporter.setOutputDirectory(new File(defaultOutputDirectory));
 		String outputPath = defaultOutputDirectory;
 		if(props.containsKey("outputdir")) {
 			outputPath = props.getProperty("outputdir");
 			props.remove("outputdir"); // done to avoid validation check in hibernate tools templates	
 		}
 		
-		if (outputPath == null){
-			throw new HibernateConsoleRuntimeException("Output directory is not specified in " + getExporterDefinition().getDescription() );
-		}
-		
 		String resolvedOutputDir = resolve(outputPath);
 		String loc = PathHelper.getLocationAsStringPath(resolvedOutputDir);
-		if(loc==null) {
+		if(outputPath != null && loc == null) {
 			throw new HibernateConsoleRuntimeException("Output directory '" + resolvedOutputDir + "' in " + getExporterDefinition().getDescription() + " does not exist.");
 		}
 				
