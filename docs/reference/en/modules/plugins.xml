@@ -46,6 +46,51 @@
   </section>
 
   <section>
+    <title>Creating a Hibernate Mapping File</title>
+
+    <para>For creating a skeleton mapping file, i. e. <emphasis>
+        <property>.hbm.xml</property>
+      </emphasis>, Hibernate Tools provide a basic wizard which you can bring up by navigating <emphasis>
+        <property>New > Hibernate XML mapping file</property>.</emphasis></para>
+
+    <figure>
+      <title>Hibernate XML Mapping File Wizard</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/plugins/plugins_0.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>At first you&apos;ll be asked to specify the location and the name for a new mapping
+    file. On the next dialog you should type or browse the class to map.</para>
+    <figure>
+      <title>Specifying the Class to Map</title>
+      
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/plugins/plugins_0_a.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>Pressing finish creates the file and opens it in the editor.</para>
+    
+    <para> If you start the wizard from the selected class, all values will be detected  there automatically.</para>
+    
+      <figure>
+      <title>Creating Mapping File for Selected Class</title>
+      
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/plugins/plugins_0_b.png"/>
+        </imageobject>
+      </mediaobject>
+      </figure>
+    
+  </section>
+
+  <section>
     <title>Creating a Hibernate Configuration File</title>
 
     <para>To be able to reverse engineer, prototype queries, and of course to simply use
@@ -323,71 +368,71 @@
 
       </mediaobject>
     </figure>
-    
+
     <para>The fallowing table specifies the parameters of the Classpath tab of the wizard.</para>
 
-      <table>
-        <title>Hibernate Console Configuration Classpath</title>
+    <table>
+      <title>Hibernate Console Configuration Classpath</title>
 
-        <tgroup cols="3">
-          <colspec colnum="1" colwidth="1*"/>
+      <tgroup cols="3">
+        <colspec colnum="1" colwidth="1*"/>
 
-          <colspec colnum="2" colwidth="3*"/>
+        <colspec colnum="2" colwidth="3*"/>
 
-          <colspec colnum="3" colwidth="1*"/>
+        <colspec colnum="3" colwidth="1*"/>
 
-          <thead>
-            <row>
-              <entry align="center">
-                <para>Parameter</para>
-              </entry>
+        <thead>
+          <row>
+            <entry align="center">
+              <para>Parameter</para>
+            </entry>
 
-              <entry align="center">
-                <para>Description</para>
-              </entry>
+            <entry align="center">
+              <para>Description</para>
+            </entry>
 
-              <entry align="center">
-                <para>Auto detected value</para>
-              </entry>
-            </row>
-          </thead>
+            <entry align="center">
+              <para>Auto detected value</para>
+            </entry>
+          </row>
+        </thead>
 
-          <tbody>
-            <row>
-              <entry>
-                <para>Classpath</para>
-              </entry>
+        <tbody>
+          <row>
+            <entry>
+              <para>Classpath</para>
+            </entry>
 
-              <entry>
-                <para>The classpath for loading POJO and JDBC drivers; only needed if the default
-                  classpath of the Project does not contain the required classes. Do not add
-                  Hibernate core libraries or dependencies, they are already included. If you get
-                  ClassNotFound errors then check this list for possible missing or redundant
-                  directories/jars.</para>
-              </entry>
+            <entry>
+              <para>The classpath for loading POJO and JDBC drivers; only needed if the default
+                classpath of the Project does not contain the required classes. Do not add Hibernate
+                core libraries or dependencies, they are already included. If you get ClassNotFound
+                errors then check this list for possible missing or redundant
+              directories/jars.</para>
+            </entry>
 
-              <entry>
-                <para>Empty</para>
-              </entry>
-            </row>
+            <entry>
+              <para>Empty</para>
+            </entry>
+          </row>
 
-            <row>
-              <entry>
-                <para>Include default classpath from project</para>
-              </entry>
+          <row>
+            <entry>
+              <para>Include default classpath from project</para>
+            </entry>
 
-              <entry>
-                <para>When enabled the project classpath will be appended to the classpath specified
-                  above</para>
-              </entry>
+            <entry>
+              <para>When enabled the project classpath will be appended to the classpath specified
+                above</para>
+            </entry>
 
-              <entry>
-                <para>Enabled</para>
-              </entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
+            <entry>
+              <para>Enabled</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
 
     <para>
       <figure>
@@ -403,7 +448,8 @@
         </mediaobject>
       </figure>
 
-      <para>Parameters of the Mappings tab in the <property>Hibernate Console Configuration wizard</property> are explained below:</para>
+      <para>Parameters of the Mappings tab in the <property>Hibernate Console Configuration
+        wizard</property> are explained below:</para>
       <table>
         <title>Hibernate Console Configuration Mappings</title>
 
@@ -592,9 +638,9 @@
               </entry>
 
               <entry>
-                <para>Path to a directory where all output will be written by default. Be aware
-                  that existing files will be overwritten, so be sure to specify the correct
-                  directory.</para>
+                <para>Path to a directory where all output will be written by default. Be aware that
+                  existing files will be overwritten, so be sure to specify the correct
+                directory.</para>
               </entry>
             </row>
 
@@ -811,8 +857,8 @@
               </entry>
 
               <entry>
-                <para>Generates a set of html pages that documents the database schema and some of the
-                  mappings.</para>
+                <para>Generates a set of html pages that documents the database schema and some of
+                  the mappings.</para>
               </entry>
             </row>
 
@@ -1039,8 +1085,8 @@
       </figure>
 
       <important>
-        <para>Table/Column completion requires a proper configured hibernate console configuration and this
-          configuration should be the default for the project where the <emphasis>
+        <para>Table/Column completion requires a proper configured hibernate console configuration
+          and this configuration should be the default for the project where the <emphasis>
             <property>hbm.xml</property>
           </emphasis> resides.</para>
       </important>
@@ -1097,15 +1143,16 @@
       and specific override settings for columns, e.g. define an explicit name for a column when the
       default naming rules are not applicable.</para>
 
-    <note><para>
-      Not all the features of the <emphasis>
-        <property>.reveng.xml </property>
-      </emphasis> file are exposed or fully implemented in the editor, but the main functionality is
-      there. To understand the full flexibility of the <emphasis>
-        <property>reveng.xml</property>
-      </emphasis>, please see <xref linkend="hibernaterevengxmlfile"/> </para>   
+    <note>
+      <para> Not all the features of the <emphasis>
+          <property>.reveng.xml </property>
+        </emphasis> file are exposed or fully implemented in the editor, but the main functionality
+        is there. To understand the full flexibility of the <emphasis>
+          <property>reveng.xml</property>
+        </emphasis>, please see <xref linkend="hibernaterevengxmlfile"/>
+      </para>
     </note>
-    
+
     <para>The editor is activated as soon as an <emphasis>
         <property>.reveng.xml </property>
       </emphasis> file is opened. To get an initial <emphasis>
@@ -1251,23 +1298,38 @@
 
       </figure>
 
-      <para><property>Hibernate Console Perspective</property> shows entity structure, query editor
-        and result.</para>
-
-
       <para>The <property>Console Configuration</property> does not dynamically adjust to changes
         done in mappings and java code. To reload the configuration select the configuration and
         click the <emphasis>
           <property>Reload</property>
         </emphasis> button in the view toolbar or in the context menu.</para>
+
+      <para>Besides, it&apos;s possible to open source and mapping files for objects showed in
+          <property>Hibernate Configurations View</property>. Just bring up the context menu for a
+        necessary object and select <emphasis>
+          <property>Open Source File</property>
+        </emphasis> to see appropriate Java class or <emphasis>
+          <property>Open Mapping File</property>
+        </emphasis> to open a proper <emphasis>
+          <property>.hbm.xml</property>.</emphasis></para>
+
+      <figure>
+        <title>Opening Source for Objects</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/plugins/plugins_17_a.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+
       <section>
         <title>Mapping Diagram</title>
 
-        <para>In order to get a visual feel on how entities are related as well as view their structures, a
-            <property>Mapping Diagram</property> is provided. It is available by right clicking on
-          the entity you want a mapping diagram for and then choose <emphasis>
-            <property>Open Mapping Diagram</property>
-          </emphasis>.</para>
+        <para>In order to get a visual feel on how entities are related as well as view their
+          structures, a <property>Mapping Diagram</property> is provided. It is available by right
+          clicking on the entity you want a mapping diagram for and then choosing <emphasis>
+            <property>Open Mapping Diagram</property>.</emphasis></para>
 
         <figure>
           <title>Mapping Diagram</title>
@@ -1278,6 +1340,34 @@
 
             <imageobject role="html">
               <imagedata align="center" fileref="images/plugins/plugins_18.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <para>For better navigating on the Diagram use Outline view.</para>
+
+        <figure>
+          <title>Navigating on the Diagram</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/plugins/plugins_18_a.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <para>As in <property>Hibernate Configurations View</property> in <property>Mapping
+          Diagram</property> it&apos;s also possible to open source/mapping file for a chosen
+          object by selecting appropriate option in the context menu. If you ask to open
+          source/mapping file by right clicking on any entity element, this element will be
+          highlighted in the open file.</para>
+
+        <figure>
+          <title>Opening Source for Object</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/plugins/plugins_18_b.png"/>
             </imageobject>
           </mediaobject>
         </figure>
