@@ -87,10 +87,10 @@ public class HQLJavaCompletionProposalComputer implements IJavaCompletionProposa
 					 proposals = eclipseHQLCompletionCollector.getCompletionProposals();
 				 }
 		} catch(RuntimeException re) {
-			HibernateConsolePlugin.getDefault().logErrorMessage( "Error while performing HQL completion in java", re );
+			HibernateConsolePlugin.getDefault().logErrorMessage( JdtUIMessages.HQLJavaCompletionProposalComputer_errorMessage, re );
 		}
 		catch (BadLocationException e) {
-			HibernateConsolePlugin.getDefault().logErrorMessage( "Error while performing HQL completion in java", e );
+			HibernateConsolePlugin.getDefault().logErrorMessage( JdtUIMessages.HQLJavaCompletionProposalComputer_errorMessage, e );
 		}
 		
 		return proposals;

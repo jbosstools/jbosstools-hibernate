@@ -69,7 +69,7 @@ public class CriteriaQuickAssistProcessor extends BasicQuickAssistProcessor  {
 			};
 		}
 		catch (BadLocationException e) {
-			HibernateConsolePlugin.getDefault().logErrorMessage( "Could not get document contents for CriteriaQuickAssist", e );
+			HibernateConsolePlugin.getDefault().logErrorMessage( JdtUIMessages.CriteriaQuickAssistProcessor_errorMessage, e );
 		}
 		return result;
 	}

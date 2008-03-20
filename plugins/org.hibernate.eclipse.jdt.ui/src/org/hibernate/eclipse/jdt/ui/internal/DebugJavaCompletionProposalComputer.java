@@ -86,7 +86,7 @@ public class DebugJavaCompletionProposalComputer implements IJavaCompletionPropo
 		}
 
 		public String getDisplayString() {
-			return "I wanna show a dialog!";
+			return JdtUIMessages.DebugJavaCompletionProposalComputer_displayString;
 		}
 
 		public Image getImage() {
