@@ -1,6 +1,5 @@
 package org.hibernate.eclipse.console;
 
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.ActionContributionItem;
@@ -9,21 +8,19 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.ITextListener;
-import org.eclipse.jface.text.TextEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IPropertyListener;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IShowEditorInput;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.editors.text.TextEditor;
@@ -39,6 +36,11 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 	private ToolBarManager tbm;
 	private ExecuteQueryAction execAction = null;
 	final private QueryInputModel queryInputModel;
+	
+	private String defPartName;
+	private Image defTitleImage;
+	private Image connectedTitleImage;
+	private String connectedImageFilePath =  "icons/images/connected.gif";
 	
 	// to enable execution of queries from files - hack for HBX-744
 	private String consoleConfigurationName;
@@ -238,5 +240,25 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 
 	public QueryInputModel getQueryInputModel() {
 		return queryInputModel;
+	}
+	
+	public void showConnected(IEditorPart editor){
+		defPartName = getPartName();
+		defTitleImage = getTitleImage();
+		setPartName(defPartName + "->" + editor.getTitle());
+		if (connectedTitleImage == null){
+			connectedTitleImage = HibernateConsolePlugin.getImageDescriptor(connectedImageFilePath).createImage();
+		}
+		setTitleImage(connectedTitleImage);
+	}
+	
+	public void showDisconnected(){
+		setPartName(defPartName);
+		if (defTitleImage != null && !defTitleImage.isDisposed()){
+			setTitleImage(defTitleImage);
+		} else {
+			setTitleImage(null);
+		}
+		connectedTitleImage.dispose();
 	}
 }
