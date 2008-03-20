@@ -12,13 +12,10 @@ package org.hibernate.eclipse.console.actions;
 
 import java.io.FileNotFoundException;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.internal.debug.ui.JavaDebugImages;
 import org.eclipse.jdt.internal.ui.javaeditor.JavaEditor;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -28,11 +25,8 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.SelectionListenerAction;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
@@ -44,7 +38,7 @@ import org.hibernate.mapping.Property;
 
 public class OpenSourceAction extends SelectionListenerAction {
 
-	private String imageFilePath = "icons/images/open_source.gif";
+	private String imageFilePath = "icons/images/java.gif";
 
 	public OpenSourceAction() { 
 		super("Open Source File");

@@ -50,7 +50,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 	
 	private static final String HIBERNATE_TAG_NAME = "name"; 
 	private static final String HIBERNATE_TAG_ENTITY_NAME = "entity-name";
-	private String imageFilePath =  "icons/images/open_mapping.gif";
+	private String imageFilePath =  "icons/images/mapping.gif";
 
 	public OpenMappingAction() {
 		super("Open Mapping File");
