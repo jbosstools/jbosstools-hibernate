@@ -14,10 +14,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.gef.ui.actions.SelectionAction;
-import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.PartInitException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.Property;
@@ -37,7 +34,7 @@ public class OpenMappingAction extends SelectionAction {
 		super(part);
 		setId(ACTION_ID);
 		setText("Open Mapping File");
-		setImageDescriptor(VisualEditorPlugin.getImageDescriptor("icons/open_mapping.gif"));
+		setImageDescriptor(VisualEditorPlugin.getImageDescriptor("icons/mapping.gif"));
 	}
 
 	public void run() {

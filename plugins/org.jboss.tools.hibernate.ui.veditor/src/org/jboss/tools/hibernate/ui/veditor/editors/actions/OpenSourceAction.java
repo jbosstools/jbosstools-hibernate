@@ -29,7 +29,7 @@ public class OpenSourceAction extends SelectionAction {
 		super(part);
 		setId(ACTION_ID);
 		setText("Open Source File");
-		setImageDescriptor(VisualEditorPlugin.getImageDescriptor("icons/open_source.gif"));
+		setImageDescriptor(VisualEditorPlugin.getImageDescriptor("icons/java.gif"));
 	}
 
 	public void run() {
