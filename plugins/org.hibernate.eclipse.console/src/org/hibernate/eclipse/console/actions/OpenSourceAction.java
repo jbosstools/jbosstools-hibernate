@@ -50,33 +50,35 @@ public class OpenSourceAction extends SelectionListenerAction {
 	public void run() {
 		IStructuredSelection sel = getStructuredSelection();
 		if (sel instanceof TreeSelection){
-			TreePath path = ((TreeSelection)sel).getPaths()[0];
-			Object lastSegment = path.getLastSegment();
-	    	PersistentClass persClass = getPersistentClass(lastSegment);
-			ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(path.getSegment(0));
-			IJavaProject proj = ProjectUtils.findJavaProject(consoleConfiguration);
-			
-			String fullyQualifiedName = null;
-			if (lastSegment instanceof Property){
-				Object prevSegment = path.getParentPath().getLastSegment();
-				if (prevSegment instanceof Property
-						&& ((Property)prevSegment).isComposite()){
-					fullyQualifiedName =((Component)((Property) prevSegment).getValue()).getComponentClassName();
+			for (int i = 0; i < ((TreeSelection)sel).getPaths().length; i++) {
+				TreePath path = ((TreeSelection)sel).getPaths()[i];
+				Object lastSegment = path.getLastSegment();
+		    	PersistentClass persClass = getPersistentClass(lastSegment);
+				ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(path.getSegment(0));
+				IJavaProject proj = ProjectUtils.findJavaProject(consoleConfiguration);
+				
+				String fullyQualifiedName = null;
+				if (lastSegment instanceof Property){
+					Object prevSegment = path.getParentPath().getLastSegment();
+					if (prevSegment instanceof Property
+							&& ((Property)prevSegment).isComposite()){
+						fullyQualifiedName =((Component)((Property) prevSegment).getValue()).getComponentClassName();
+					}
 				}
-			}
-			if (fullyQualifiedName == null && persClass != null){
-				fullyQualifiedName = persClass.getClassName();
-			}
+				if (fullyQualifiedName == null && persClass != null){
+					fullyQualifiedName = persClass.getClassName();
+				}
 
-			try {
-				run(lastSegment, proj, fullyQualifiedName);
-			} catch (JavaModelException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("Can't find source file.", e);
-			} catch (PartInitException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("Can't open source file.", e);
-			} catch (FileNotFoundException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("Can't find source file.", e);
-			}
+				try {
+					run(lastSegment, proj, fullyQualifiedName);
+				} catch (JavaModelException e) {
+					HibernateConsolePlugin.getDefault().logErrorMessage("Can't find source file.", e);
+				} catch (PartInitException e) {
+					HibernateConsolePlugin.getDefault().logErrorMessage("Can't open source file.", e);
+				} catch (FileNotFoundException e) {
+					HibernateConsolePlugin.getDefault().logErrorMessage("Can't find source file.", e);
+				}
+			}			
 		}
 	}
 

@@ -61,18 +61,20 @@ public class OpenMappingAction extends SelectionListenerAction {
 
 	public void run() {
 		IStructuredSelection sel = getStructuredSelection();
-		if (sel instanceof TreeSelection){
-			TreePath path = ((TreeSelection)sel).getPaths()[0];
-			ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(path.getSegment(0));
-			try {
-				run(path, consoleConfiguration);
-			} catch (JavaModelException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("Can't find mapping file.", e);
-			} catch (PartInitException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("Can't open mapping file.", e);
-			} catch (FileNotFoundException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("Can't find mapping file.", e);
-			} 
+		if (sel instanceof TreeSelection){			
+			for (int i = 0; i < ((TreeSelection)sel).getPaths().length; i++) {
+				TreePath path = ((TreeSelection)sel).getPaths()[i];
+				ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(path.getSegment(0));
+				try {
+					run(path, consoleConfiguration);
+				} catch (JavaModelException e) {
+					HibernateConsolePlugin.getDefault().logErrorMessage("Can't find mapping file.", e);
+				} catch (PartInitException e) {
+					HibernateConsolePlugin.getDefault().logErrorMessage("Can't open mapping file.", e);
+				} catch (FileNotFoundException e) {
+					HibernateConsolePlugin.getDefault().logErrorMessage("Can't find mapping file.", e);
+				} 
+			}			
 		}
 	}
 	
