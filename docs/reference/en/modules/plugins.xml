@@ -47,8 +47,10 @@
 
   <section>
     <title>Creating a Hibernate Mapping File</title>
+    
+    <para>Hibernate mapping files are used to specify how your objects are related to database tables.</para>
 
-    <para>For creating a skeleton mapping file, i. e. <emphasis>
+    <para>For creating a skeleton mapping file, i. e. any <emphasis>
         <property>.hbm.xml</property>
       </emphasis>, Hibernate Tools provide a basic wizard which you can bring up by navigating <emphasis>
         <property>New > Hibernate XML mapping file</property>.</emphasis></para>
@@ -64,30 +66,32 @@
     </figure>
 
     <para>At first you&apos;ll be asked to specify the location and the name for a new mapping
-    file. On the next dialog you should type or browse the class to map.</para>
+      file. On the next dialog you should type or browse the class to map.</para>
     <figure>
       <title>Specifying the Class to Map</title>
-      
+
       <mediaobject>
         <imageobject>
           <imagedata fileref="images/plugins/plugins_0_a.png"/>
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Pressing finish creates the file and opens it in the editor.</para>
-    
-    <para> If you start the wizard from the selected class, all values will be detected  there automatically.</para>
-    
-      <figure>
+    <para>Pressing finish creates the file and opens it in the <link
+        linkend="map_config_struct_editor">structured hbm.xml editor</link>.</para>
+
+    <para> If you start the wizard from the selected class, all values will be detected there
+      automatically.</para>
+
+    <figure>
       <title>Creating Mapping File for Selected Class</title>
-      
+
       <mediaobject>
         <imageobject>
           <imagedata fileref="images/plugins/plugins_0_b.png"/>
         </imageobject>
       </mediaobject>
-      </figure>
-    
+    </figure>
+
   </section>
 
   <section>
@@ -101,7 +105,7 @@
       </emphasis> file is needed. The <property>Hibernate Tools</property> provide a wizard for
       generating the <emphasis>
         <property>hibernate.cfg.xml</property>
-      </emphasis> file if you do not already have such file.</para>
+      </emphasis> file if you do not already have such one.</para>
 
     <para>Start the wizard by clicking <emphasis>
         <property>New > Other (Ctrl+N)</property>
@@ -1128,6 +1132,41 @@
       </figure>
 
     </section>
+  </section>
+
+  <section id="map_config_struct_editor">
+    <title>Structured Hibernate Mapping and Configuration File Editor</title>
+    <para>The structured editor represents the file in the tree form. It also allows to modify the
+      structure of the file and its elements with the help of tables provided on the right-hand
+      area.</para>
+
+    <para>To open any mapping file in the editor, choose <emphasis>
+      <property>Open With > Hibernate 3.0 XML Editor</property></emphasis> option
+      from the context menu of the file. The editor should look as follows:</para>
+    
+    <figure>
+      <title>Structured hbm.xml Editor</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/plugins/plugins_12_a.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>For the configuration file you should choose <emphasis>
+      <property>Open With > Hibernate Configuration 3.0 XML Editor</property></emphasis>option.</para>
+    
+    <figure>
+      <title>Structured cfg.xml Editor</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/plugins/plugins_12_b.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
   </section>
 
   <section>
