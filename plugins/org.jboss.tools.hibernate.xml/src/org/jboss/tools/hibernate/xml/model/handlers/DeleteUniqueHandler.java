@@ -14,19 +14,20 @@ import java.util.Properties;
 
 import org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler;
 import org.jboss.tools.common.meta.action.impl.handlers.DefaultRemoveHandler;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.undo.XTransactionUndo;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 
 public class DeleteUniqueHandler extends DefaultRemoveHandler {
 
-	public void executeHandler(XModelObject object, Properties p) throws Exception {
+	public void executeHandler(XModelObject object, Properties p) throws XModelException {
 		if(!isEnabled(object)) return;
 		String transactionName = "delete " + DefaultCreateHandler.title(object, false);
 		executeInTransaction(object, p, transactionName, XTransactionUndo.REMOVE);
 	}
 
-	protected void transaction(XModelObject object, Properties p) throws Exception {
+	protected void transaction(XModelObject object, Properties p) throws XModelException {
 		XModelObject parent = object.getParent();
 		removeFromParent(object);
 		String entity = action.getProperty("entity");

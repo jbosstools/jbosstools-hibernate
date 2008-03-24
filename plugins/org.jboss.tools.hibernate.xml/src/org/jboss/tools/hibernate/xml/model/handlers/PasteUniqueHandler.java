@@ -16,12 +16,13 @@ import org.jboss.tools.common.meta.XChild;
 import org.jboss.tools.common.meta.action.impl.handlers.DefaultRemoveHandler;
 import org.jboss.tools.common.meta.action.impl.handlers.PasteHandler;
 import org.jboss.tools.common.model.XModelBuffer;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ServiceDialog;
 
 public class PasteUniqueHandler extends PasteHandler {
 
-	protected void execute(XModelObject parent, int sourceIndex, boolean isDrop, Properties p) throws Exception {
+	protected void execute(XModelObject parent, int sourceIndex, boolean isDrop, Properties p) throws XModelException {
 		XModelBuffer buffer = parent.getModel().getModelBuffer();
 		boolean isParent = isParent(parent, buffer.copy(sourceIndex));
 		if(isParent) {
