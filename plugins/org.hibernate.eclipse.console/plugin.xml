@@ -669,9 +669,9 @@
             id="org.hibernate.eclipse.console.objectContribution2"
             objectClass="org.hibernate.mapping.Table">
          <action
-               class="org.hibernate.eclipse.console.GenerateSeamEntities"
+               class="org.hibernate.eclipse.console.GenerateEntitiesAction"
                id="org.hibernate.eclipse.console.action1"
-               label="Generate Seam Entities">
+               label="%GenerateEntities">
          </action>
       </objectContribution>
       <!--objectContribution

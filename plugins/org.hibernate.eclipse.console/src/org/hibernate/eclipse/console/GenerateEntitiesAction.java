@@ -39,7 +39,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 
-public class GenerateSeamEntities implements IObjectActionDelegate {
+public class GenerateEntitiesAction implements IObjectActionDelegate {
 
 	private TreeSelection selection;
 	
