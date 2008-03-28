@@ -654,6 +654,36 @@
       </moveParticipant-->
       
    </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <!--objectContribution
+            id="org.hibernate.eclipse.console.objectContribution1"
+            objectClass="org.eclipse.datatools.connectivity.sqm.core.rte.jdbc.JDBCTable">
+         <action
+               class="org.hibernate.eclipse.console.GenerateSeamEntities3"
+               id="org.hibernate.eclipse.console.action2"
+               label="Generate Seam Entities">
+         </action>
+      </objectContribution-->
+      <objectContribution
+            id="org.hibernate.eclipse.console.objectContribution2"
+            objectClass="org.hibernate.mapping.Table">
+         <action
+               class="org.hibernate.eclipse.console.GenerateSeamEntities"
+               id="org.hibernate.eclipse.console.action1"
+               label="Generate Seam Entities">
+         </action>
+      </objectContribution>
+      <!--objectContribution
+            id="org.hibernate.eclipse.console.objectContribution2"
+            objectClass="org.hibernate.eclipse.console.workbench.TableContainer">
+         <action
+               class="org.hibernate.eclipse.console.GenerateSeamEntities"
+               id="org.hibernate.eclipse.console.action1"
+               label="Generate Seam Entities">
+         </action>
+      </objectContribution-->
+   </extension>
    <!--   <extension
          point="org.eclipse.ui.themes">
       <themeElementCategory

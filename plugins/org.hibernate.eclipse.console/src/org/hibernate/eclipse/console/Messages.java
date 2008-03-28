@@ -34,6 +34,8 @@ public class Messages {
 	public static String find_replace_action_tooltip;
 	public static String find_replace_action_image;
 	public static String find_replace_action_description;
+	public static String GenerateSeamEntities_dialog_title;
+	public static String GenerateSeamEntities_dialog_message; 
 
 	private Messages() { 
 		// noop		
