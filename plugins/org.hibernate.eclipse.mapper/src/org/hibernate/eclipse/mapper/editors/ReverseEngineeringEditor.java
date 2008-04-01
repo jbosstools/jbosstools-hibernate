@@ -121,6 +121,8 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 		i++;
 		
 		int activePageIndex = getPreferenceStore().getInt(IXMLPreferenceNames.LAST_ACTIVE_PAGE);
+		// firstly init overview page with configuration
+		setActivePage(0);
 		if ((activePageIndex >= 0) && (activePageIndex < getPageCount())) {
 			setActivePage(activePageIndex);
 		}
