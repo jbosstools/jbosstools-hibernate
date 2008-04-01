@@ -85,8 +85,9 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,true));
 		final ScrolledForm form = managedForm.getForm();
 		FormToolkit toolkit = managedForm.getToolkit();
-		Section section = toolkit.createSection( parent, Section.DESCRIPTION );
-		section.setText( "Tables && Columns" );
+		Section section = toolkit.createSection( parent, Section.DESCRIPTION | 
+				Section.FOCUS_TITLE | Section.TWISTIE | Section.EXPANDED);
+		section.setText( "Tables & Columns" );
 		section.setDescription( "Explicitly control settings for table & columns for which the defaults is not applicable. Click Add, select the relevant tables & columns and adjust their settings here." );
 		section.marginWidth = 10;
 		section.marginHeight = 5;
