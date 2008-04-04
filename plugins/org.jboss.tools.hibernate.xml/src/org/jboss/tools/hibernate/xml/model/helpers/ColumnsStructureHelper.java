@@ -18,6 +18,7 @@ import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.XModelEntity;
 import org.jboss.tools.common.meta.action.impl.handlers.DefaultCreateHandler;
 import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 
 public class ColumnsStructureHelper {
@@ -126,7 +127,7 @@ public class ColumnsStructureHelper {
 		return c;
 	}
 	
-	public static void mergeColumnDataToAttribute(XModelObject attribute, XModelObject column) {
+	public static void mergeColumnDataToAttribute(XModelObject attribute, XModelObject column) throws XModelException {
 		if(column == null || attribute == null) return; 
 		if(column.isActive() && attribute.isActive()) column = column.copy();
 		XAttribute[] as = column.getModelEntity().getAttributes();
@@ -180,12 +181,12 @@ public class ColumnsStructureHelper {
 //		return dc;
 //	}
 	
-	public static void replaceColumnDeclarationWithChild(XModelObject attrReference, Properties p) {
+	public static void replaceColumnDeclarationWithChild(XModelObject attrReference, Properties p) throws XModelException {
 		XModelObject c = newColumn(attrReference.getModel(), p);
 		replaceColumnDeclarationWithChild(attrReference, c);
 	}
 
-	public static void replaceColumnDeclarationWithChild(XModelObject attrReference, XModelObject column) {
+	public static void replaceColumnDeclarationWithChild(XModelObject attrReference, XModelObject column) throws XModelException {
 		DefaultCreateHandler.addCreatedObject(attrReference, column, -1);
 		XModelObject c = newColumn(attrReference.getModel(), attrReference.getAttributeValue("name"));
 		mergeColumnDataToAttribute(attrReference, c);

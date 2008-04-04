@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.jboss.tools.common.model.ServiceDialog;
 import org.jboss.tools.common.model.XModel;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.engines.impl.EnginesLoader;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
@@ -71,7 +72,7 @@ public class IdStructureHelper {
 		}
 	}
 	
-	public static XModelObject[] getAsAttributes(XModelObject id) {
+	public static XModelObject[] getAsAttributes(XModelObject id) throws XModelException {
 		String name = id.getAttributeValue("name");
 		if(name.length() == 0) return new XModelObject[0];
 		String entity = id.getModelEntity().getName();
@@ -104,7 +105,7 @@ public class IdStructureHelper {
 		return new XModelObject[0];
 	}
 	
-	public static XModelObject getAsAttribute(XModelObject key) {
+	public static XModelObject getAsAttribute(XModelObject key) throws XModelException {
 		String ec = key.getModelEntity().getName();
 		String er = ("HibernateKeyProperty".equals(ec))	? "HibernateProperty" 
 		    : ("HibernateKeyManyToOne".equals(ec)) ? "HibernateManyToOne"
@@ -115,7 +116,7 @@ public class IdStructureHelper {
 		return a;
 	}
 	
-	public static List getAsColumns(XModelObject id) {
+	public static List getAsColumns(XModelObject id) throws XModelException {
 		List<XModelObject> list = new ArrayList<XModelObject>();
 //		String name = id.getAttributeValue("name");
 //		if(name.length() == 0) return list;
@@ -132,7 +133,7 @@ public class IdStructureHelper {
 		return list;
 	}
 	
-	private static void addColumnsToList(XModelObject o, List<XModelObject> list) {
+	private static void addColumnsToList(XModelObject o, List<XModelObject> list) throws XModelException {
 		XModelObject[] cs = o.getChildren("HibernateColumn");
 		if(cs.length > 0) {
 			for (int i = 0; i < cs.length; i++) list.add(cs[i].copy());

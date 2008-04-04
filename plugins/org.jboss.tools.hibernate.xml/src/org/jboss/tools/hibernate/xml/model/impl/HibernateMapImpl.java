@@ -13,6 +13,7 @@ package org.jboss.tools.hibernate.xml.model.impl;
 import java.util.Properties;
 
 import org.jboss.tools.common.meta.action.XActionInvoker;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 
 public class HibernateMapImpl extends OrderedObject2Impl {
@@ -38,7 +39,7 @@ public class HibernateMapImpl extends OrderedObject2Impl {
 		return super.setAttributeValue(name, value);
 	}
 
-	protected void onAttributeValueEdit(String name, String oldValue, String newValue) {
+	protected void onAttributeValueEdit(String name, String oldValue, String newValue) throws XModelException {
 		if(newValue == null || newValue.equals(oldValue)) return;
 		if("index".equals(name)) {
 			String actionName = 

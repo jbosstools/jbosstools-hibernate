@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 
@@ -128,7 +129,7 @@ public class HibernateTypeHelper {
 		return result;	
 	}
 
-	public static void mergeAttributes(XModelObject destination, XModelObject source) {
+	public static void mergeAttributes(XModelObject destination, XModelObject source) throws XModelException {
 		XModelObjectLoaderUtil.mergeAttributes(destination, source);
 		
 		if (destination.getModelEntity().getAttribute("type") != null &&

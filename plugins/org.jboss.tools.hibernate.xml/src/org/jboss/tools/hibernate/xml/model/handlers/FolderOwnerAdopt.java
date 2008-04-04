@@ -16,6 +16,7 @@ import org.jboss.tools.common.meta.XAdoptManager;
 import org.jboss.tools.common.meta.XChild;
 import org.jboss.tools.common.meta.XModelEntity;
 import org.jboss.tools.common.meta.action.XActionInvoker;
+import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 
 public class FolderOwnerAdopt implements XAdoptManager {
@@ -25,7 +26,7 @@ public class FolderOwnerAdopt implements XAdoptManager {
 		return false;
 	}
 
-	public void adopt(XModelObject target, XModelObject object, Properties p) {
+	public void adopt(XModelObject target, XModelObject object, Properties p) throws XModelException {
 		if(isAdoptableGrandChild(target, object)) {
 			XModelObject folder = getFolderForChild(target, object);
 			if(folder == null) return;
