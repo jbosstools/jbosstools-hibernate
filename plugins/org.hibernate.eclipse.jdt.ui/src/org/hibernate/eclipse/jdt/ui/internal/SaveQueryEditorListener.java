@@ -35,7 +35,7 @@ import org.hibernate.eclipse.jdt.ui.Activator;
  */
 public class SaveQueryEditorListener implements IPropertyListener {
 	
-	public static final String id = "AbstractQueryEditor.ReplaceString";
+	public static final String id = "AbstractQueryEditor.ReplaceString";	//$NON-NLS-1$
 	
 	public static final int HQLEditor = 0;
 	
@@ -95,24 +95,6 @@ public class SaveQueryEditorListener implements IPropertyListener {
 		String editorTitle = fromEditorPart.getTitle();		
 		
 		if (IEditorPart.PROP_DIRTY == propId && !editor.isDirty()){
-			String newQuery = editor.getQueryString();
-			String question = NLS.bind(JdtUIMessages.SaveQueryEditorListener_replaceQuestion, new String[]{query, editorTitle, newQuery});
-
-			int ans = OptionalMessageDialog.open(id, null, JdtUIMessages.SaveQueryEditorListener_replaceTitle, null, question, 
-							MessageDialog.QUESTION, new String[] { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 0);
-			if (OptionalMessageDialog.NOT_SHOWN != ans){
-				//write previous answer
-				IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-				store.setValue(id, ans == Window.OK);
-			} else {
-				//read previous answer
-				IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-				if (!store.getBoolean(id)) return;					
-			}
-			if (Window.CANCEL == ans){
-				return;
-			}
-				
 			IDocumentProvider docProvider = fromEditorPart.getDocumentProvider();
 
 			IDocument doc = docProvider.getDocument( fromEditorPart.getEditorInput() );
@@ -128,6 +110,24 @@ public class SaveQueryEditorListener implements IPropertyListener {
 			if (isDocChanged){
 				String confirm_changed = NLS.bind(JdtUIMessages.SaveQueryEditorListener_replaceQuestion_confirm, query, editorTitle);
 				MessageDialog.openConfirm( null, JdtUIMessages.SaveQueryEditorListener_replaceTitle_confirm, confirm_changed);
+				return;
+			}
+			
+			String newQuery = editor.getQueryString();
+			String question = NLS.bind(JdtUIMessages.SaveQueryEditorListener_replaceQuestion, new String[]{query, editorTitle, newQuery});
+
+			int ans = OptionalMessageDialog.open(id, null, JdtUIMessages.SaveQueryEditorListener_replaceTitle, null, question, 
+							MessageDialog.QUESTION, new String[] { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 0);
+			if (OptionalMessageDialog.NOT_SHOWN != ans){
+				//write previous answer
+				IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+				store.setValue(id, ans == Window.OK);
+			} else {
+				//read previous answer
+				IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+				if (!store.getBoolean(id)) return;					
+			}
+			if (Window.CANCEL == ans){
 				return;
 			}
 			
