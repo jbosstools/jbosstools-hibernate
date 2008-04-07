@@ -8,7 +8,7 @@
     <artifactId>hibernatetools-ref-guide-${translation}</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jdocbook</packaging>
-    <name>Hibernatetools_Reference_Guide_(${translation})</name>
+    <name>Hibernatetools_Reference_Guide</name>
 
     <build>
         <plugins>
