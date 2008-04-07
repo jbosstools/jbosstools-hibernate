@@ -14,6 +14,7 @@ import java.util.HashMap;
 
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
@@ -22,8 +23,6 @@ import org.eclipse.ui.internal.ObjectPluginAction;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.Subclass;
 import org.jboss.tools.hibernate.ui.view.ViewPlugin;
 
 public class OpenDiagramActionDelegate extends OpenActionDelegate {
@@ -31,17 +30,20 @@ public class OpenDiagramActionDelegate extends OpenActionDelegate {
 
 	public void run(IAction action) {
     	ObjectPluginAction objectPluginAction = (ObjectPluginAction)action;
-    	Object first_el = ((TreeSelection)objectPluginAction.getSelection()).getFirstElement();
-    	if (first_el instanceof PersistentClass) {
-			PersistentClass persClass = (PersistentClass) first_el;
-			ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(((TreeSelection)objectPluginAction.getSelection()).getPaths()[0]).getSegment(0);
-	    	
-	    	try {
-	    		openEditor(persClass, consoleConfiguration);
-	    	} catch (PartInitException e) {
-				ViewPlugin.getDefault().logError("Can't open mapping view.", e);
-			} 
-		}    	
+    	TreePath[] paths = ((TreeSelection)objectPluginAction.getSelection()).getPaths();
+    	for (int i = 0; i < paths.length; i++) {
+    		Object last_el = paths[i].getLastSegment();
+        	if (last_el instanceof PersistentClass) {
+    			PersistentClass persClass = (PersistentClass) last_el;
+    			ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(paths[i].getFirstSegment());
+    	    	
+    	    	try {
+    	    		openEditor(persClass, consoleConfiguration);
+    	    	} catch (PartInitException e) {
+    				ViewPlugin.getDefault().logError("Can't open mapping view.", e);		//$NON-NLS-1$
+    			} 
+    		}    
+		}    		
 	}
 
 	public IEditorPart openEditor(PersistentClass persClass,
@@ -56,6 +58,6 @@ public class OpenDiagramActionDelegate extends OpenActionDelegate {
 			hashMap.put(persClass.getRootClass(), input);
 		}
 
-		return IDE.openEditor(ViewPlugin.getPage(),input ,"org.jboss.tools.hibernate.ui.veditor.editors.visualeditor");		
+		return IDE.openEditor(ViewPlugin.getPage(),input ,"org.jboss.tools.hibernate.ui.veditor.editors.visualeditor");		//$NON-NLS-1$
 	}
 }
