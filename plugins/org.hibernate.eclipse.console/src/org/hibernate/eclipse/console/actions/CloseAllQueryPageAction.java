@@ -10,10 +10,9 @@
   ******************************************************************************/
 package org.hibernate.eclipse.console.actions;
 
-import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryPage;
@@ -29,13 +28,14 @@ public class CloseAllQueryPageAction extends Action {
 		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.CLOSE_ALL) );
 		setDisabledImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.CLOSE_ALL_DISABLED) );
 		
-		setToolTipText("Close all query pages");
+		setToolTipText("Close all query pages");		//$NON-NLS-1$
 	}
 
 	@Override
 	public void run() {
-		for (Iterator i = KnownConfigurations.getInstance().getQueryPageModel().getPages(); i.hasNext(); ) {
-			KnownConfigurations.getInstance().getQueryPageModel().remove( (QueryPage) i.next() );
+		List pages = KnownConfigurations.getInstance().getQueryPageModel().getPagesAsList();
+		for (int i = 0; i < pages.size(); i++ ) {
+			KnownConfigurations.getInstance().getQueryPageModel().remove( (QueryPage) pages.get(i) );
 		}
 	}
 
