@@ -63,7 +63,7 @@ import org.hibernate.util.StringHelper;
  */
 public class KnownConfigurationsView extends ViewPart {
 
-	public static final String ID = "org.hibernate.eclipse.console.views.KnownConfigurationsView";
+	public static final String ID = "org.hibernate.eclipse.console.views.KnownConfigurationsView";	//$NON-NLS-1$
 
 	TreeViewer viewer;
 	
@@ -110,7 +110,7 @@ public class KnownConfigurationsView extends ViewPart {
 
 	private void createContextMenu ()
     {
-		MenuManager menuMgr = new MenuManager("#PopupMenu");
+		MenuManager menuMgr = new MenuManager("#PopupMenu");	//$NON-NLS-1$
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
@@ -162,13 +162,13 @@ public class KnownConfigurationsView extends ViewPart {
 					}
 				} else if (selection instanceof TreeSelection){
 					TreePath path = ((TreeSelection)selection).getPaths()[0];
-					Object first = path.getFirstSegment();
+					Object last = path.getLastSegment();
 					ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(path.getSegment(0));
-					if (first instanceof PersistentClass || first.getClass() == Property.class){
+					if (last instanceof PersistentClass || last.getClass() == Property.class){
 						try {
 							OpenMappingAction.run(path, consoleConfiguration);
 						} catch (Exception e) {
-							HibernateConsolePlugin.getDefault().logErrorMessage("Can't find mapping file.", e);
+							HibernateConsolePlugin.getDefault().logErrorMessage("Can't find mapping file.", e);	//$NON-NLS-1$
 						} 
 					}					
 				}
