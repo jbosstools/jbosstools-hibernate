@@ -39,18 +39,18 @@ import org.xml.sax.InputSource;
 public class OpenFileActionUtils {
 	private static XMLHelper helper = new XMLHelper();
 	
-	private static final String HIBERNATE_TAG_CLASS = "class";
-	private static final String HIBERNATE_TAG_TABLE = "table"; 
-	private static final String HIBERNATE_TAG_SUBCLASS = "subclass";
-	private static final String HIBERNATE_TAG_JOINED_SUBCLASS = "joined-subclass";
-	private static final String HIBERNATE_TAG_UNION_SUBCLASS = "union-subclass";
-	private static final String HIBERNATE_TAG_NAME = "name"; 
-	private static final String HIBERNATE_TAG_ENTITY_NAME = "entity-name";
-	private static final String HIBERNATE_TAG_SESSION_FACTORY = "session-factory";
-	private static final String HIBERNATE_TAG_MAPPING = "mapping";
-	private static final String HIBERNATE_TAG_RESOURCE = "resource";
-	private static final String HIBERNATE_TAG_CATALOG = "catalog";
-	private static final String HIBERNATE_TAG_SCHEMA = "schema";
+	private static final String HIBERNATE_TAG_CLASS = "class";							//$NON-NLS-1$
+	private static final String HIBERNATE_TAG_TABLE = "table"; 							//$NON-NLS-1$
+	private static final String HIBERNATE_TAG_SUBCLASS = "subclass";					//$NON-NLS-1$
+	private static final String HIBERNATE_TAG_JOINED_SUBCLASS = "joined-subclass";		//$NON-NLS-1$
+	private static final String HIBERNATE_TAG_UNION_SUBCLASS = "union-subclass";		//$NON-NLS-1$
+	private static final String HIBERNATE_TAG_NAME = "name"; 							//$NON-NLS-1$
+	private static final String HIBERNATE_TAG_ENTITY_NAME = "entity-name";				//$NON-NLS-1$
+	private static final String HIBERNATE_TAG_SESSION_FACTORY = "session-factory";		//$NON-NLS-1$
+	private static final String HIBERNATE_TAG_MAPPING = "mapping";						//$NON-NLS-1$
+	private static final String HIBERNATE_TAG_RESOURCE = "resource";					//$NON-NLS-1$
+	private static final String HIBERNATE_TAG_CATALOG = "catalog";						//$NON-NLS-1$
+	private static final String HIBERNATE_TAG_SCHEMA = "schema";						//$NON-NLS-1$
 
 	public static IEditorPart openEditor(IWorkbenchPage page, IResource resource) throws PartInitException {
         return IDE.openEditor(page, (IFile) resource);
@@ -65,14 +65,14 @@ public class OpenFileActionUtils {
 	
 	static String getPersistentClassName(PersistentClass rootClass) {
 		if (rootClass == null) {
-			return "";
+			return "";																	//$NON-NLS-1$
 		} else { 
 			return rootClass.getEntityName() != null ? rootClass.getEntityName() : rootClass.getClassName();
 		}
 	}
 	
 	private static String getTableName(String catalog, String schema, String name) {
-		return (catalog != null ? catalog + "." : "") + (schema != null ? schema + "." : "") + name;
+		return (catalog != null ? catalog + '.' : "") + (schema != null ? schema + '.' : "") + name;	//$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	private static String getTableName(Table table) {
@@ -231,25 +231,25 @@ public class OpenFileActionUtils {
 			try {
 				stream = new FileInputStream( configXMLFile );
 			} catch (FileNotFoundException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("Configuration file not found", e);
+				HibernateConsolePlugin.getDefault().logErrorMessage("Configuration file not found", e);				//$NON-NLS-1$
 			}
 			try {
 				List errors = new ArrayList();
 				doc = helper.createSAXReader( configXMLFile.getPath(), errors, consoleConfiguration.getConfiguration().getEntityResolver() )
 						.read( new InputSource( stream ) );
 				if ( errors.size() != 0 ) {
-	    			HibernateConsolePlugin.getDefault().logErrorMessage("invalid configuration", (Throwable)null);
+	    			HibernateConsolePlugin.getDefault().logErrorMessage("invalid configuration", (Throwable)null);	//$NON-NLS-1$
 				}
 			}
 			catch (DocumentException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("Could not parse configuration", e);
+				HibernateConsolePlugin.getDefault().logErrorMessage("Could not parse configuration", e);			//$NON-NLS-1$
 			}
 			finally {
 				try {
 					stream.close();
 				}
 				catch (IOException ioe) {
-	    			HibernateConsolePlugin.getDefault().logErrorMessage("could not close input stream for", ioe);
+	    			HibernateConsolePlugin.getDefault().logErrorMessage("could not close input stream for", ioe);	//$NON-NLS-1$
 				}
 			}
 		}
@@ -279,6 +279,7 @@ public class OpenFileActionUtils {
 						}
 						if (resource != null &&
 								elementInResource(consoleConfiguration, resource, element)) return resource;
+						resource = null;
 					} catch (JavaModelException e) {
 						HibernateConsolePlugin.getDefault().logErrorMessage("Problems while getting project package fragment roots", e);						
 					}
