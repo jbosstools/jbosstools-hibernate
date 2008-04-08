@@ -202,5 +202,9 @@ public class CriteriaEditor extends AbstractQueryEditor {
     	control.setLayoutData( new GridData( GridData.FILL_BOTH ) );
     	
 	}
-
+	
+	@Override
+	protected String getConnectedImageFilePath() {
+		return 	"icons/images/criteria_editor_connect.gif";		//$NON-NLS-1$
+	}	
 }

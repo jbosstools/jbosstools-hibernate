@@ -40,7 +40,6 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 	private String defPartName;
 	private Image defTitleImage;
 	private Image connectedTitleImage;
-	private String connectedImageFilePath =  "icons/images/connected.gif";
 	
 	// to enable execution of queries from files - hack for HBX-744
 	private String consoleConfigurationName;
@@ -247,7 +246,7 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 		defTitleImage = getTitleImage();
 		setPartName(defPartName + "->" + editor.getTitle());
 		if (connectedTitleImage == null){
-			connectedTitleImage = HibernateConsolePlugin.getImageDescriptor(connectedImageFilePath).createImage();
+			connectedTitleImage = HibernateConsolePlugin.getImageDescriptor(getConnectedImageFilePath()).createImage();
 		}
 		setTitleImage(connectedTitleImage);
 	}
@@ -261,4 +260,6 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 		}
 		connectedTitleImage.dispose();
 	}
+	
+	protected abstract String getConnectedImageFilePath();
 }
