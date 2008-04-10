@@ -55,25 +55,49 @@ public class OrmDiagram extends ModelElement {
 	private	boolean dirty = false;
 	private String childrenLocations[];
 	private HashMap<String,OrmShape> elements = new HashMap<String,OrmShape>();
-	private RootClass  ormElement;
+	private RootClass[] ormElements;
 	private Configuration configuration;
 	private ConsoleConfiguration consoleConfiguration;
 	private IJavaProject javaProject;
-	private String entityName;
+	private String[] entityNames;
 	public static final String HIBERNATE_MAPPING_LAYOUT_FOLDER_NAME = "hibernateMapping";
 	
 	public OrmDiagram(ConsoleConfiguration configuration, RootClass ioe, IJavaProject javaProject) {
 		consoleConfiguration = configuration;
 		this.configuration = configuration.getConfiguration();
-		ormElement = (RootClass)ioe;
-		entityName = ioe.getEntityName();
+		ormElements = new RootClass[1];
+		ormElements[0] = ioe;
+		entityNames = new String[1];
+		entityNames[0] = ioe.getEntityName();
 		this.javaProject = javaProject;
 
-		if (ormElement instanceof RootClass) {
+		if (ioe instanceof RootClass) {
 			String string = "";
 			childrenLocations = string.split("#");
 		}
-		getOrCreatePersistentClass(ormElement, null);
+		getOrCreatePersistentClass(ormElements[0], null);
+		expandModel(this);
+		load();
+		setDirty(false);
+	}
+	
+	public OrmDiagram(ConsoleConfiguration configuration, RootClass[] ioe, IJavaProject javaProject) {
+		consoleConfiguration = configuration;
+		this.configuration = configuration.getConfiguration();
+		ormElements = new RootClass[ioe.length];
+		System.arraycopy(ioe, 0, ormElements, 0, ioe.length);
+		entityNames = new String[ioe.length];
+		for (int i = 0; i < ormElements.length; i++) {
+			entityNames[i] = ormElements[i].getEntityName();
+		}
+		this.javaProject = javaProject;
+		if (ioe instanceof RootClass[]) {
+			String string = "";
+			childrenLocations = string.split("#");
+		}
+		for (int i = 0; i < ormElements.length; i++) {
+			getOrCreatePersistentClass(ormElements[i], null);
+		}
 		expandModel(this);
 		load();
 		setDirty(false);
@@ -88,26 +112,48 @@ public class OrmDiagram extends ModelElement {
 	}
 
 	private String getStoreFileName() {
-		return consoleConfiguration.getName() + "_" + getOrmElement().getClassName();
+		String name = ormElements.length > 0 ? ormElements[0].getClassName() : "";
+		for (int i = 1; i < ormElements.length; i++) {
+			name += "_" + ormElements[i].getClassName();
+		}
+		return consoleConfiguration.getName() + "_" + name;
 	}
 
 	public HashMap getCloneElements() {
 		return (HashMap)elements.clone();
 	}
 
-	public RootClass getOrmElement() {
-		return ormElement;
+	public RootClass getOrmElement(int idx) {
+		if (0 > idx || idx >= ormElements.length) {
+			return null;
+		}
+		return ormElements[idx];
+	}
+
+	public RootClass[] getOrmElements() {
+		return ormElements;
 	}
 
 	public void refresh() {
-		RootClass newOrmElement = (RootClass) consoleConfiguration
-				.getConfiguration().getClassMapping(entityName);
-		if (ormElement.equals(newOrmElement)) return;
-		ormElement = newOrmElement;
+		boolean bRefresh = false;
+		for (int i = 0; i < ormElements.length; i++) {
+			RootClass newOrmElement = (RootClass) consoleConfiguration
+				.getConfiguration().getClassMapping(entityNames[i]);
+			if (ormElements[i].equals(newOrmElement)) {
+				continue;
+			}
+			ormElements[i] = newOrmElement;
+			bRefresh = true;
+		}
+		if (!bRefresh) {
+			return;
+		}
 		saveHelper();
 		getChildren().clear();
 		elements.clear();
-		getOrCreatePersistentClass(ormElement, null);
+		for (int i = 0; i < ormElements.length; i++) {
+			getOrCreatePersistentClass(ormElements[i], null);
+		}
 		expandModel(this);
 		load();
 		firePropertyChange(REFRESH, null, null);
@@ -141,22 +187,38 @@ public class OrmDiagram extends ModelElement {
 	private OrmShape createShape(Object ormElement) {
 		OrmShape ormShape = null;
 		if (ormElement instanceof RootClass) {
-			ormShape = new OrmShape(ormElement);
-			getChildren().add(ormShape);
-			elements.put(HibernateUtils.getPersistentClassName(((RootClass)ormElement).getEntityName()), ormShape);
+			String key = HibernateUtils.getPersistentClassName(((RootClass)ormElement).getEntityName());
+			ormShape = (OrmShape)elements.get(key);
+			if (null == ormShape) {
+				ormShape = new OrmShape(ormElement);
+				getChildren().add(ormShape);
+				elements.put(key, ormShape);
+			}
 		} else if (ormElement instanceof Table) {
-			ormShape = new OrmShape(ormElement);
-			getChildren().add(ormShape);
-			elements.put(HibernateUtils.getTableName((Table)ormElement), ormShape);
+			String key = HibernateUtils.getTableName((Table)ormElement);
+			ormShape = (OrmShape)elements.get(key);
+			if (null == ormShape) {
+				ormShape = new OrmShape(ormElement);
+				getChildren().add(ormShape);
+				elements.put(key, ormShape);
+			}
 		} else if (ormElement instanceof Property) {
 			SpecialRootClass specialRootClass = new SpecialRootClass((Property)ormElement);
-			ormShape = new SpecialOrmShape(specialRootClass);
-			getChildren().add(ormShape);
-			elements.put(HibernateUtils.getPersistentClassName(specialRootClass.getEntityName()), ormShape);
+			String key = HibernateUtils.getPersistentClassName(specialRootClass.getEntityName());
+			ormShape = (OrmShape)elements.get(key);
+			if (null == ormShape) {
+				ormShape = new SpecialOrmShape(specialRootClass);
+				getChildren().add(ormShape);
+				elements.put(key, ormShape);
+			}
 		} else if (ormElement instanceof Subclass) {
-			ormShape = new OrmShape(ormElement);
-			getChildren().add(ormShape);
-			elements.put(HibernateUtils.getPersistentClassName(((Subclass)ormElement).getEntityName()), ormShape);
+			String key = HibernateUtils.getPersistentClassName(((Subclass)ormElement).getEntityName());
+			ormShape = (OrmShape)elements.get(key);
+			if (null == ormShape) {
+				ormShape = new OrmShape(ormElement);
+				getChildren().add(ormShape);
+				elements.put(key, ormShape);
+			}
 		}
 		return ormShape;
 	}
@@ -246,7 +308,7 @@ public class OrmDiagram extends ModelElement {
 						componentClassShape = getOrCreateComponentClass(((RootClass)persistentClass).getIdentifierProperty());
 
 						Shape idPropertyShape = classShape.getChild(persistentClass.getIdentifierProperty());
-						if (idPropertyShape != null) {
+						if (idPropertyShape != null && !isConnectionExist(idPropertyShape, componentClassShape)) {
 							new Connection(idPropertyShape, componentClassShape);
 							idPropertyShape.firePropertyChange(REFRESH, null, null);
 							componentClassShape.firePropertyChange(REFRESH, null, null);
@@ -440,7 +502,7 @@ public class OrmDiagram extends ModelElement {
 				
 			} else if (collection.isOneToMany()) {
 				childShape = getOrCreateAssociationClass(property);
-if (childShape == null) return;
+				if (childShape == null) return;
 				if(!isConnectionExist((Shape)(componentShape.getChildren().get(1)), childShape)){
 					new Connection((Shape)(componentShape.getChildren().get(1)), childShape);
 					((Shape)(componentShape.getChildren().get(1))).firePropertyChange(REFRESH, null, null);
@@ -626,7 +688,7 @@ if (childShape == null) return;
 			try {
 				folder.create(true, true, null);
 
-				file = folder.getFile(consoleConfiguration.getName() + "_" + getOrmElement().getClassName());
+				file = folder.getFile(getStoreFileName());
 				if (!file.exists()) {
 					file.create(source, true, null);
 				}

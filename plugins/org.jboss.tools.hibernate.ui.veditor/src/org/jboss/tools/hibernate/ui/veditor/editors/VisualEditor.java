@@ -141,9 +141,21 @@ public class VisualEditor extends GraphicalEditor {
 		super.setInput(input);
 		ObjectEditorInput objectEditorInput = (ObjectEditorInput)input;
 		ConsoleConfiguration configuration = objectEditorInput.getConfiguration();
-		RootClass rootClass = (RootClass)(objectEditorInput).getObject();
-		setPartName("Diagram for " + rootClass.getEntityName());
-		ormDiagram = new OrmDiagram(configuration, rootClass, objectEditorInput.getJavaProject());
+		Object obj = objectEditorInput.getObject();
+		if (obj instanceof RootClass) {
+			RootClass rootClass = (RootClass)obj;
+			setPartName("Diagram for " + rootClass.getEntityName());
+			ormDiagram = new OrmDiagram(configuration, rootClass, objectEditorInput.getJavaProject());
+		}
+		else if (obj instanceof RootClass[]) {
+			RootClass[] rootClasses = (RootClass[])obj;
+			String name = rootClasses.length > 0 ? rootClasses[0].getEntityName() : "";
+			for (int i = 1; i < rootClasses.length; i++) {
+				name += " & " + rootClasses[i].getEntityName();
+			}
+			setPartName("Diagram for " + name);
+			ormDiagram = new OrmDiagram(configuration, rootClasses, objectEditorInput.getJavaProject());
+		}
 	}
 	
 	public Object getAdapter(Class type) {

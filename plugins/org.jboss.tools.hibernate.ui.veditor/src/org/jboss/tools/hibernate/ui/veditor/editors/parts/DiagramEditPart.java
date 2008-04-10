@@ -95,7 +95,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 		int point = 1;
 		int pointX = calculateTableLocation();
 		String string, xy[];
-		for (int i = 0; i < childrenLocations.length; i++)
+		for (int i = 0; i < childrenLocations.length; i++) {
 			if (childrenLocations[i].indexOf('@') != -1
 					&& childrenLocations[i].indexOf(';') != -1) {
 				string = childrenLocations[i].substring(0, childrenLocations[i]
@@ -121,9 +121,10 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 						point = tempPoint;
 				}
 			}
-		if (getCastedModel().getOrmElement() instanceof RootClass) {
-			RootClass persistentClass = (RootClass) getCastedModel()
-					.getOrmElement();
+		}
+		RootClass[] ormElements = getCastedModel().getOrmElements();
+		for (int i = 0; i < childrenLocations.length; i++) {
+			RootClass persistentClass = ormElements[i];
 			ormShape = (OrmShape) hashMap.remove(persistentClass
 					.getEntityName());
 			if (ormShape != null) {
