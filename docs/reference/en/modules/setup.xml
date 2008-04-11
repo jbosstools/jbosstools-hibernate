@@ -13,7 +13,7 @@
     <para><property>JBoss Tools 2.x</property> includes <property>Hibernate Tools</property> and
       thus nothing is required besides <ulink url="http://labs.jboss.com/tools/download/index.html"
         >downloading</ulink> and <ulink
-        url="http://www.redhat.com/developer_studio/guides/GettingStartedGuide/html_single/#JBossToolsInstall"
+          url="../../GettingStartedGuide/html_single/index.html#JBossToolsInstall"
         >installing JBoss Tools</ulink>. If you need to update to a newer version of the
         <property>Hibernate Tools</property> just follow the instructions in the Eclipse IDE
       section.</para>
