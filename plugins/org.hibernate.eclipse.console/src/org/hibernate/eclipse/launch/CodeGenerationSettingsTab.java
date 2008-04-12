@@ -265,7 +265,7 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 			return;
 		}
         
-        String msg = PathHelper.checkDirectory(outputdir.getText(), "output directory", false);
+        String msg = PathHelper.checkDirectory(outputdir.getText(), "Output directory", false);
         
         if (msg!=null) {
             updateStatus(msg);

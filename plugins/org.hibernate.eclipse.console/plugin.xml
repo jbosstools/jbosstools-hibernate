@@ -563,20 +563,62 @@
                type="path"
                value=""/>
       </exporter>
-      <!-- <exporter
-            classname="org.hibernate.tool.hbm2x.seam.SeamExporter"
-            description="JBoss Seam Skeleton App [beta] (misc)"
-            icon="icons/hibernate_small_icon.gif"
-            id="org.hibernate.tools.hbm2seam">
+      <exporter
+            classname="org.hibernate.tool.hbm2x.Hbm2DDLExporter"
+            description="Schema Export (.ddl)"
+            icon="icons/images/schema.gif"
+            id="org.hibernate.tools.hbm2ddl">
          <property
-               description="Application name"
-               name="seam_appname"
-               value="Seam Application"/>
+               description="Output directory"
+               name="outputdir"
+               type="directory"
+               value=""/>
          <property
-               description="Application short name"
-               name="seam_shortname"
-               value="seamapp"/>
-      </exporter> -->
+               description="Output file name"
+               name="outputFileName"
+               type="string"
+               value="schema.sql"/>
+         <property
+               description="Export to database"
+               name="exportToDatabase"
+               type="boolean"
+               value="true"/> <!-- we set this to false in the ui to avoid users to delete their databases with a single click -->
+         <property
+               description="Script to console"
+               name="scriptToConsole"
+               type="boolean"
+               value="true"/>
+         <property
+               description="Update schema"
+               name="schemaUpdate"
+               type="boolean"
+               value="false"/>
+         <property
+               description="Delimiter used in output file"
+               name="delimiter"
+               type="string"
+               value=";"/>
+         <property
+               description="Generate Drop statements"
+               name="drop"
+               type="boolean"
+               value="false"/>
+         <property
+               description="Generate Create statements"
+               name="create"
+               type="boolean"
+               value="true"/>
+         <property
+               description="Format generated SQL"
+               name="format"
+               type="boolean"
+               value="false"/>
+         <property
+               description="Halt on error"
+               name="haltOnError"
+               type="boolean"
+               value="false"/>
+      </exporter>      
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">

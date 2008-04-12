@@ -229,8 +229,8 @@ public class HibernatePropertyPage extends PropertyPage {
 	}
 
 	protected void performDefaults() {
-		// Populate the owner text field with the default value
-		//ownerText.setText(DEFAULT_OWNER);
+		enableHibernate.setSelection(false);
+		selectedConfiguration.setText("");
 	}
 	
 	private IProject getProject() {
@@ -243,6 +243,7 @@ public class HibernatePropertyPage extends PropertyPage {
 		}
 		return null;
 	}
+	
 	
 	public void loadValues() {
 		IProject project = getProject();
@@ -267,6 +268,7 @@ public class HibernatePropertyPage extends PropertyPage {
 		return true;
 	}
 
+	
 	private void enableSettings(boolean selection) {
 		for (int i = 0; i < settings.length; i++) {
 			Control comp = settings[i];

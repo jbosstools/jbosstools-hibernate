@@ -57,6 +57,7 @@ import org.eclipse.jface.text.DocumentRewriteSessionType;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.util.Assert;
 import org.eclipse.text.edits.TextEdit;
+import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.JDBCMetaDataConfiguration;
 import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
@@ -240,8 +241,12 @@ public class CodeGenerationLaunchDelegate extends
 					} catch (CoreException e) {
 						throw new HibernateConsoleRuntimeException("Error while setting up " + exporterFactories[i].getExporterDefinition(), e);
 					}
-					  
+					 
+					try {
                        exporter.start();
+					} catch(HibernateException he) {
+						throw new HibernateConsoleRuntimeException("Error while running  " + exporterFactories[i].getExporterDefinition().getDescription(), he);
+					}
                        monitor.worked(1);
                     }
 					return artifactCollector;
