@@ -47,8 +47,9 @@
 
   <section>
     <title>Creating a Hibernate Mapping File</title>
-    
-    <para>Hibernate mapping files are used to specify how your objects are related to database tables.</para>
+
+    <para>Hibernate mapping files are used to specify how your objects are related to database
+      tables.</para>
 
     <para>For creating a skeleton mapping file, i. e. any <emphasis>
         <property>.hbm.xml</property>
@@ -1141,9 +1142,9 @@
       area.</para>
 
     <para>To open any mapping file in the editor, choose <emphasis>
-      <property>Open With > Hibernate 3.0 XML Editor</property></emphasis> option
-      from the context menu of the file. The editor should look as follows:</para>
-    
+        <property>Open With > Hibernate 3.0 XML Editor</property>
+      </emphasis> option from the context menu of the file. The editor should look as follows:</para>
+
     <figure>
       <title>Structured hbm.xml Editor</title>
 
@@ -1155,8 +1156,9 @@
     </figure>
 
     <para>For the configuration file you should choose <emphasis>
-      <property>Open With > Hibernate Configuration 3.0 XML Editor</property></emphasis>option.</para>
-    
+        <property>Open With > Hibernate Configuration 3.0 XML Editor</property>
+      </emphasis>option.</para>
+
     <figure>
       <title>Structured cfg.xml Editor</title>
 
@@ -1383,10 +1385,10 @@
           </mediaobject>
         </figure>
 
-        <para>For better navigating on the Diagram use Outline view.</para>
-
+        <para>For better navigating on the Diagram use <property>Outline view</property> which is
+          available in the structural and graphical modes.</para>
         <figure>
-          <title>Navigating on the Diagram</title>
+          <title>Navigating in the Structural Mode</title>
 
           <mediaobject>
             <imageobject>
@@ -1395,18 +1397,42 @@
           </mediaobject>
         </figure>
 
+        <para>To switch over between the modes use the buttons in the top-right corner of the
+          Outline view.</para>
+
+        <figure>
+          <title>Navigating in the Graphical Mode</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/plugins/plugins_18_b.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+
         <para>As in <property>Hibernate Configurations View</property> in <property>Mapping
           Diagram</property> it&apos;s also possible to open source/mapping file for a chosen
-          object by selecting appropriate option in the context menu. If you ask to open
-          source/mapping file by right clicking on any entity element, this element will be
-          highlighted in the open file.</para>
+          object by selecting appropriate option in the context menu. </para>
+
+        <figure>
+          <title>Navigating on the Diagram</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/plugins/plugins_18_c.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <para>If you ask to open source/mapping file by right clicking on any entity element, this
+          element will be highlighted in the open file.</para>
 
         <figure>
           <title>Opening Source for Object</title>
 
           <mediaobject>
             <imageobject>
-              <imagedata fileref="images/plugins/plugins_18_b.png"/>
+              <imagedata fileref="images/plugins/plugins_18_d.png"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -1427,13 +1453,12 @@
           Factory</property>. That is done by simply expanding the <property>Session
         Factory</property> node.</para>
 
-      <para>Not to enter manually simple queries like &apos;<emphasis>from
-        Customer</emphasis>&apos; or like on the figure below, you can do it with the editors
-        help by brining up the context menu for a necessary item and choosing <emphasis>
+      <para>By brining up the context menu for a chosen entity or property in the <property>Console
+          Configuration</property> and opening <emphasis>
           <property>HQL Editor</property>
         </emphasis> or <emphasis>
           <property>Hibernate Criteria Editor</property>
-        </emphasis>.</para>
+        </emphasis> you&apos;ll get a prefill query.</para>
 
       <figure>
         <title>Entering Simple Queries</title>
@@ -1499,20 +1524,37 @@
     <section>
       <title>Properties View</title>
 
-      <para>The <property>Properties View</property> shows the structure of any selected persistent
-        object in the <property>Hibernate Query Results View</property>. Editing is not yet
-        supported.</para>
+      <para>As you can see on the figure, <property>Properties view</property> shows the number of
+        query results as well as the time of executing.</para>
 
       <figure>
         <title>Properties View</title>
         <mediaobject>
           <imageobject role="fo">
-            <imagedata align="center" scale="80" fileref="images/plugins/plugins_21.png"
+            <imagedata align="center" scale="80" fileref="images/plugins/plugins_21_a.png"
               format="PNG"/>
           </imageobject>
 
           <imageobject role="html">
-            <imagedata align="center" fileref="images/plugins/plugins_21.png" format="PNG"/>
+            <imagedata align="center" fileref="images/plugins/plugins_21_a.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>It also displays the structure of any persistent
+        object selected in the <property>Hibernate Query Results View</property>. Editing is not yet
+        supported.</para>
+
+      <figure>
+        <title>Properties View for Selected Object</title>
+        <mediaobject>
+          <imageobject role="fo">
+            <imagedata align="center" scale="80" fileref="images/plugins/plugins_21_b.png"
+              format="PNG"/>
+          </imageobject>
+
+          <imageobject role="html">
+            <imagedata align="center" fileref="images/plugins/plugins_21_b.png" format="PNG"/>
           </imageobject>
         </mediaobject>
       </figure>
