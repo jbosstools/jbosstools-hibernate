@@ -1398,7 +1398,7 @@
         </figure>
 
         <para>To switch over between the modes use the buttons in the top-right corner of the
-          Outline view.</para>
+          <property>Outline view</property>.</para>
 
         <figure>
           <title>Navigating in the Graphical Mode</title>
@@ -1437,6 +1437,32 @@
           </mediaobject>
         </figure>
 
+        <para>Finally, if you need to have your Diagram exported as <property>
+            <emphasis>.png</emphasis>
+          </property>, <property>
+            <emphasis>.jpeg</emphasis>
+          </property> or <property>
+            <emphasis>.bmp</emphasis>
+          </property>, you should right-click anywhere in the <property>Mapping Diagram
+          editor</property> and select <property><emphasis>Export as Image</emphasis>.</property></para>
+
+        <figure>
+          <title>Mapping Diagram Export</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/plugins/plugins_18_e.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <para>As you can see on the figure above, <property>
+            <emphasis>Undo</emphasis>,
+          </property> <property>
+            <emphasis>Redo</emphasis>
+          </property> and <property>
+            <emphasis>Auto layout</emphasis>
+          </property> options are also available through the context menu.</para>
       </section>
     </section>
 
@@ -1470,6 +1496,31 @@
 
           <imageobject role="html">
             <imagedata align="center" fileref="images/plugins/plugins_19.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <para>To copy a portion of code from .java file into a HQL or Criteria editor, make use of the
+        Quick Fix option (Ctrl + 1).</para>
+
+      <figure>
+        <title>Quick Fix Option Demonstration</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/plugins/plugins_19_b.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <para>You can also update the original java code according to changes in the HQL or Criteria
+        editor. For that you should save your HQL/Criteria query and submit the replacing in
+        appeared confirmation dialog.</para>
+
+      <figure>
+        <title>Updating Java Code</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/plugins/plugins_19_c.png"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -1541,9 +1592,8 @@
         </mediaobject>
       </figure>
 
-      <para>It also displays the structure of any persistent
-        object selected in the <property>Hibernate Query Results View</property>. Editing is not yet
-        supported.</para>
+      <para>It also displays the structure of any persistent object selected in the
+          <property>Hibernate Query Results View</property>. Editing is not yet supported.</para>
 
       <figure>
         <title>Properties View for Selected Object</title>
