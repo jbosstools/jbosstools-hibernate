@@ -10,7 +10,6 @@
   ******************************************************************************/
 package org.hibernate.eclipse.jdt.ui.internal;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
@@ -36,10 +35,12 @@ import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.editors.text.TextFileDocumentProvider;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.hibernate.eclipse.console.AbstractQueryEditor;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.hqleditor.HQLEditor;
 
 /**
  * @author Dmitry Geraskov
@@ -104,8 +105,6 @@ public class SaveQueryEditorListener implements IPropertyListener {
 	 */
 	public void propertyChanged(Object source, int propId) {
 		
-		String editorTitle = fromEditorPart.getTitle();		
-		
 		if (IEditorPart.PROP_DIRTY == propId && !editor.isDirty()){
 			IDocumentProvider docProvider = fromEditorPart.getDocumentProvider();
 
@@ -119,15 +118,22 @@ public class SaveQueryEditorListener implements IPropertyListener {
 				//document changed and we can get the exception
 			}
 			
+			final String editorTitle = fromEditorPart.getTitle();
+			
+			final String editor_name = editor instanceof HQLEditor 
+									? JdtUIMessages.SaveQueryEditorListener_hql_editor 
+									: JdtUIMessages.SaveQueryEditorListener_cri_editor;
+			
 			if (isDocChanged){
-				String confirm_changed = NLS.bind(JdtUIMessages.SaveQueryEditorListener_replaceQuestion_confirm, query, editorTitle);
-				MessageDialog.openConfirm( null, JdtUIMessages.SaveQueryEditorListener_replaceTitle_confirm, confirm_changed);
+				String information_message = NLS.bind(JdtUIMessages.SaveQueryEditorListener_replaceQuestion_confirm, editorTitle);
+				MessageDialog.openInformation(null, JdtUIMessages.SaveQueryEditorListener_replaceTitle_info, information_message);
 				return;
 			}
 			
 			String newQuery = editor.getQueryString();
 			
-			final DocumentChange change = new DocumentChange(JdtUIMessages.SaveQueryEditorListener_Change_Name, doc);
+			String change_name = NLS.bind(JdtUIMessages.SaveQueryEditorListener_Change_Name, editor_name, editorTitle);
+			final DocumentChange change = new DocumentChange(change_name, doc);
 			TextEdit replaceEdit = new ReplaceEdit(position.x, position.y, newQuery);
 			change.setEdit(replaceEdit);
 			
@@ -135,22 +141,21 @@ public class SaveQueryEditorListener implements IPropertyListener {
 
 				@Override
 				public RefactoringStatus checkFinalConditions(
-						IProgressMonitor pm) throws CoreException,
-						OperationCanceledException {
+						IProgressMonitor pm) throws OperationCanceledException {
 					return RefactoringStatus.create(Status.OK_STATUS);
 				}
 
 				@Override
 				public RefactoringStatus checkInitialConditions(
-						IProgressMonitor pm) throws CoreException,
-						OperationCanceledException {
+						IProgressMonitor pm) throws OperationCanceledException {
 					return RefactoringStatus.create(Status.OK_STATUS);
 				}
 
 				@Override
 				public Change createChange(IProgressMonitor pm)
-						throws CoreException, OperationCanceledException {
-					CompositeChange cc = new CompositeChange(JdtUIMessages.SaveQueryEditorListener_Composite_Change_Name);
+						throws OperationCanceledException {
+					String cc_name = NLS.bind(JdtUIMessages.SaveQueryEditorListener_Composite_Change_Name, editor_name);
+					CompositeChange cc = new CompositeChange(cc_name);
 					cc.add(change);
 					return cc;
 				}
@@ -165,13 +170,20 @@ public class SaveQueryEditorListener implements IPropertyListener {
 				@Override
 				protected void addUserInputPages() {}
 			};
-				
+			
+			String wizard_title = NLS.bind(JdtUIMessages.SaveQueryEditorListener_refactoringTitle, editor_name);
+			wizard.setWindowTitle(wizard_title);
+			
 			IWorkbenchWindow win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 			try {
-				if ( new RefactoringStarter().activate(ref, wizard, win.getShell(), "", RefactoringSaveHelper.SAVE_ALL)){ //$NON-NLS-1$
+				if ( new RefactoringStarter().activate(ref, wizard, win.getShell(), wizard_title, RefactoringSaveHelper.SAVE_ALL)){ //$NON-NLS-1$
 					query = newQuery;
 					position.y = query.length();
 					fromEditorPart.doSave(null);
+				} else {
+					if (editor.getDocumentProvider() instanceof TextFileDocumentProvider){
+						((TextFileDocumentProvider)editor.getDocumentProvider()).setCanSaveDocument(editor.getEditorInput());
+					}					
 				}
 			} catch (JavaModelException e) {
 				HibernateConsolePlugin.getDefault().log(e);
