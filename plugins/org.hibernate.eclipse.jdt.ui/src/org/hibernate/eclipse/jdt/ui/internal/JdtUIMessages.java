@@ -20,6 +20,10 @@ public class JdtUIMessages extends NLS {
 	
 	private static final String BUNDLE_NAME= "org.hibernate.eclipse.jdt.ui.internal.JdtUIMessages";//$NON-NLS-1$
 
+	public static String SaveQueryEditorListener_Composite_Change_Name;
+
+	public static String SaveQueryEditorListener_Change_Name;
+
 	public static String SaveQueryEditorListener_replaceQuestion;
 	
 	public static String SaveQueryEditorListener_replaceTitle;
@@ -34,7 +38,7 @@ public class JdtUIMessages extends NLS {
 	
 	public static String HQLJavaCompletionProposalComputer_errorMessage;
 	
-	
+	public static String SaveQueryEditorListener_errorMessage;
 	
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, JdtUIMessages.class);

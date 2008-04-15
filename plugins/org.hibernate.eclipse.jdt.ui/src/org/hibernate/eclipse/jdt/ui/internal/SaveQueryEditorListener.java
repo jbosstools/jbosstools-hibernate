@@ -10,24 +10,36 @@
   ******************************************************************************/
 package org.hibernate.eclipse.jdt.ui.internal;
 
-import org.eclipse.jdt.internal.ui.dialogs.OptionalMessageDialog;
-import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.internal.ui.refactoring.RefactoringSaveHelper;
+import org.eclipse.jdt.internal.ui.refactoring.actions.RefactoringStarter;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.window.Window;
+import org.eclipse.ltk.core.refactoring.Change;
+import org.eclipse.ltk.core.refactoring.CompositeChange;
+import org.eclipse.ltk.core.refactoring.DocumentChange;
+import org.eclipse.ltk.core.refactoring.Refactoring;
+import org.eclipse.ltk.core.refactoring.RefactoringStatus;
+import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.text.edits.ReplaceEdit;
+import org.eclipse.text.edits.TextEdit;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.hibernate.eclipse.console.AbstractQueryEditor;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.eclipse.jdt.ui.Activator;
 
 /**
  * @author Dmitry Geraskov
@@ -74,8 +86,8 @@ public class SaveQueryEditorListener implements IPropertyListener {
 				if (fromWorkbenchPart == part){
 					fromEditorPart.getEditorSite().getPage().removePartListener(this);
 					editor.removePropertyListener(SaveQueryEditorListener.this);
-					editor.showDisconnected();	
-				}							
+					editor.showDisconnected();
+				}
 			}
 
 			public void partDeactivated(IWorkbenchPart part) {}
@@ -114,29 +126,54 @@ public class SaveQueryEditorListener implements IPropertyListener {
 			}
 			
 			String newQuery = editor.getQueryString();
-			String question = NLS.bind(JdtUIMessages.SaveQueryEditorListener_replaceQuestion, new String[]{query, editorTitle, newQuery});
-
-			int ans = OptionalMessageDialog.open(id, null, JdtUIMessages.SaveQueryEditorListener_replaceTitle, null, question, 
-							MessageDialog.QUESTION, new String[] { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 0);
-			if (OptionalMessageDialog.NOT_SHOWN != ans){
-				//write previous answer
-				IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-				store.setValue(id, ans == Window.OK);
-			} else {
-				//read previous answer
-				IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-				if (!store.getBoolean(id)) return;					
-			}
-			if (Window.CANCEL == ans){
-				return;
-			}
 			
+			final DocumentChange change = new DocumentChange(JdtUIMessages.SaveQueryEditorListener_Change_Name, doc);
+			TextEdit replaceEdit = new ReplaceEdit(position.x, position.y, newQuery);
+			change.setEdit(replaceEdit);
+			
+			Refactoring ref = new Refactoring(){
+
+				@Override
+				public RefactoringStatus checkFinalConditions(
+						IProgressMonitor pm) throws CoreException,
+						OperationCanceledException {
+					return RefactoringStatus.create(Status.OK_STATUS);
+				}
+
+				@Override
+				public RefactoringStatus checkInitialConditions(
+						IProgressMonitor pm) throws CoreException,
+						OperationCanceledException {
+					return RefactoringStatus.create(Status.OK_STATUS);
+				}
+
+				@Override
+				public Change createChange(IProgressMonitor pm)
+						throws CoreException, OperationCanceledException {
+					CompositeChange cc = new CompositeChange(JdtUIMessages.SaveQueryEditorListener_Composite_Change_Name);
+					cc.add(change);
+					return cc;
+				}
+
+				@Override
+				public String getName() {
+					return JdtUIMessages.SaveQueryEditorListener_Composite_Change_Name; 
+				}				
+			};
+			
+			RefactoringWizard wizard = new RefactoringWizard(ref, RefactoringWizard.WIZARD_BASED_USER_INTERFACE){
+				@Override
+				protected void addUserInputPages() {}
+			};
+				
+			IWorkbenchWindow win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 			try {
-				// replace old string with new one and change positions
-				doc.replace(position.x, position.y, newQuery);
-				position.y = newQuery.length();
-				query = newQuery;
-			} catch (BadLocationException e) {
+				if ( new RefactoringStarter().activate(ref, wizard, win.getShell(), "", RefactoringSaveHelper.SAVE_ALL)){ //$NON-NLS-1$
+					query = newQuery;
+					position.y = query.length();
+					fromEditorPart.doSave(null);
+				}
+			} catch (JavaModelException e) {
 				HibernateConsolePlugin.getDefault().log(e);
 			}
 		}			
