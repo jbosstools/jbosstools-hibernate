@@ -11,7 +11,6 @@
 package org.hibernate.eclipse.jdt.ui.internal;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.ui.refactoring.RefactoringSaveHelper;
@@ -25,8 +24,13 @@ import org.eclipse.ltk.core.refactoring.DocumentChange;
 import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
+import org.eclipse.ltk.ui.refactoring.UserInputWizardPage;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.text.edits.TextEdit;
 import org.eclipse.ui.IEditorPart;
@@ -108,7 +112,7 @@ public class SaveQueryEditorListener implements IPropertyListener {
 		if (IEditorPart.PROP_DIRTY == propId && !editor.isDirty()){
 			IDocumentProvider docProvider = fromEditorPart.getDocumentProvider();
 
-			IDocument doc = docProvider.getDocument( fromEditorPart.getEditorInput() );
+			final IDocument doc = docProvider.getDocument( fromEditorPart.getEditorInput() );
 			boolean isDocChanged = true;
 			try {
 				if (query.equals(doc.get(position.x, position.y))){
@@ -130,32 +134,29 @@ public class SaveQueryEditorListener implements IPropertyListener {
 				return;
 			}
 			
-			String newQuery = editor.getQueryString();
-			
-			String change_name = NLS.bind(JdtUIMessages.SaveQueryEditorListener_Change_Name, editor_name, editorTitle);
-			final DocumentChange change = new DocumentChange(change_name, doc);
-			TextEdit replaceEdit = new ReplaceEdit(position.x, position.y, newQuery);
-			change.setEdit(replaceEdit);
+			final String newQuery = editor.getQueryString();			
 			
 			Refactoring ref = new Refactoring(){
 
 				@Override
-				public RefactoringStatus checkFinalConditions(
-						IProgressMonitor pm) throws OperationCanceledException {
+				public RefactoringStatus checkFinalConditions(IProgressMonitor pm){
 					return RefactoringStatus.create(Status.OK_STATUS);
 				}
 
 				@Override
-				public RefactoringStatus checkInitialConditions(
-						IProgressMonitor pm) throws OperationCanceledException {
+				public RefactoringStatus checkInitialConditions(IProgressMonitor pm) {
 					return RefactoringStatus.create(Status.OK_STATUS);
 				}
 
 				@Override
-				public Change createChange(IProgressMonitor pm)
-						throws OperationCanceledException {
+				public Change createChange(IProgressMonitor pm){
+					String change_name = NLS.bind(JdtUIMessages.SaveQueryEditorListener_Change_Name, editor_name, editorTitle);
+					DocumentChange change = new DocumentChange(change_name, doc);
+					TextEdit replaceEdit = new ReplaceEdit(position.x, position.y, newQuery);
+					change.setEdit(replaceEdit);
+					
 					String cc_name = NLS.bind(JdtUIMessages.SaveQueryEditorListener_Composite_Change_Name, editor_name);
-					CompositeChange cc = new CompositeChange(cc_name);
+					final CompositeChange cc = new CompositeChange(cc_name);
 					cc.add(change);
 					return cc;
 				}
@@ -168,7 +169,22 @@ public class SaveQueryEditorListener implements IPropertyListener {
 			
 			RefactoringWizard wizard = new RefactoringWizard(ref, RefactoringWizard.WIZARD_BASED_USER_INTERFACE){
 				@Override
-				protected void addUserInputPages() {}
+				protected void addUserInputPages() {
+					UserInputWizardPage page = new UserInputWizardPage(""){	//$NON-NLS-1$
+
+						public void createControl(Composite parent) {
+							Composite container = new Composite(parent, SWT.NULL);
+					        GridLayout layout = new GridLayout();
+					        container.setLayout(layout);
+					        layout.numColumns = 1;
+					        layout.verticalSpacing = 9;
+					        Label label = new Label(container, SWT.NULL);
+					        label.setText(NLS.bind(JdtUIMessages.SaveQueryEditorListener_replaceQuestion, editor_name, editorTitle ));
+					        setControl(container);
+						}						
+					};
+					addPage(page);
+				}
 			};
 			
 			String wizard_title = NLS.bind(JdtUIMessages.SaveQueryEditorListener_refactoringTitle, editor_name);
