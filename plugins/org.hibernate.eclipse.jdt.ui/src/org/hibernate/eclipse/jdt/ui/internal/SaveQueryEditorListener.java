@@ -134,7 +134,9 @@ public class SaveQueryEditorListener implements IPropertyListener {
 				return;
 			}
 			
-			final String newQuery = editor.getQueryString();			
+			final String newQuery = editor.getQueryString();	
+			
+			final String wizard_title = NLS.bind(JdtUIMessages.SaveQueryEditorListener_refactoringTitle, editor_name);
 			
 			Refactoring ref = new Refactoring(){
 
@@ -167,10 +169,10 @@ public class SaveQueryEditorListener implements IPropertyListener {
 				}				
 			};
 			
-			RefactoringWizard wizard = new RefactoringWizard(ref, RefactoringWizard.WIZARD_BASED_USER_INTERFACE){
+			RefactoringWizard wizard = new RefactoringWizard(ref, RefactoringWizard.DIALOG_BASED_USER_INTERFACE){
 				@Override
 				protected void addUserInputPages() {
-					UserInputWizardPage page = new UserInputWizardPage(""){	//$NON-NLS-1$
+					UserInputWizardPage page = new UserInputWizardPage(wizard_title){
 
 						public void createControl(Composite parent) {
 							Composite container = new Composite(parent, SWT.NULL);
@@ -187,8 +189,8 @@ public class SaveQueryEditorListener implements IPropertyListener {
 				}
 			};
 			
-			String wizard_title = NLS.bind(JdtUIMessages.SaveQueryEditorListener_refactoringTitle, editor_name);
 			wizard.setWindowTitle(wizard_title);
+			wizard.setDefaultPageTitle(wizard_title);
 			
 			IWorkbenchWindow win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 			try {
