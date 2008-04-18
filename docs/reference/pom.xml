@@ -9,14 +9,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jdocbook</packaging>
     <name>Hibernatetools_Reference_Guide</name>
-    <dependencies>
-    <dependency>
-        <groupId>org.jboss</groupId>
-        <artifactId>jbossorg-jdocbook-style</artifactId>
-        <version>1.1.0-SNAPSHOT</version>
-        <type>jdocbook-style</type>
-    </dependency>
-    </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -31,9 +24,10 @@
                         <version>1.1.0-SNAPSHOT</version>
                     </dependency>
                     <dependency>
-                      <groupId>org.richfaces.docs</groupId>
-                      <artifactId>highlight</artifactId>
-                      <version>3.1.4.GA</version>
+                        <groupId>org.jboss</groupId>
+                        <artifactId>jbossorg-jdocbook-style</artifactId>
+                        <version>1.1.0-SNAPSHOT</version>
+                        <type>jdocbook-style</type>
                     </dependency>
                 </dependencies>
                 <configuration>
@@ -51,22 +45,22 @@
                     <formats>
                         <format>
                             <formatName>pdf</formatName>
-                            <stylesheetResource>classpath:/xslt/org/jboss/main-pdf.xsl</stylesheetResource>
+                            <stylesheetResource>classpath:/xslt/org/jboss/pdf.xsl</stylesheetResource>
                             <finalName>${pom.name}.pdf</finalName>
                         </format>
                         <format>
                             <formatName>html</formatName>
-                            <stylesheetResource>classpath:/xslt/org/jboss/main-html.xsl</stylesheetResource>
+                            <stylesheetResource>classpath:/xslt/org/jboss/xhtml.xsl</stylesheetResource>
                             <finalName>index.html</finalName>
                         </format>
                         <format>
                             <formatName>html_single</formatName>
-                            <stylesheetResource>classpath:/xslt/org/jboss/nochunk-html.xsl</stylesheetResource>
+                            <stylesheetResource>classpath:/xslt/org/jboss/xhtml-single.xsl</stylesheetResource>
                             <finalName>index.html</finalName>
                         </format>
                         <format>
                             <formatName>eclipse</formatName>
-                            <stylesheetResource>classpath:/xslt/org/jboss/main-eclipse.xsl</stylesheetResource>
+                            <stylesheetResource>classpath:/xslt/org/jboss/eclipse.xsl</stylesheetResource>
                             <finalName>index.html</finalName>
                         </format>
                     </formats>
