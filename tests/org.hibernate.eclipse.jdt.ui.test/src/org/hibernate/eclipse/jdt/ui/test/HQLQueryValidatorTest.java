@@ -44,7 +44,7 @@ public class HQLQueryValidatorTest extends HibernateConsoleTest {
 	
 	@Override
 	protected SimpleTestProject createTestProject() {
-		return new SimpleTestProject("hqlquerytest") {
+		return new SimpleTestProject("hqlquerytest-" + System.currentTimeMillis()) { // the currentTime Millis can be removed once the classloader stop hanging on to the jars. see JBIDE-1012
 			
 			@Override
 			protected void buildSimpleTestProject() throws JavaModelException,
