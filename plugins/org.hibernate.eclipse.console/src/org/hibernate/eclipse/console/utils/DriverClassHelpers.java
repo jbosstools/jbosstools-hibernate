@@ -49,6 +49,7 @@ public class DriverClassHelpers {
         dialectNames.put("FrontBase", "org.hibernate.dialect.FrontBaseDialect");
         //Not in 3.2 anymore dialectNames.put("Generic", "org.hibernate.dialect.GenericDialect");
         dialectNames.put("HSQL", "org.hibernate.dialect.HSQLDialect");
+        dialectNames.put("H2", "org.hibernate.dialect.H2Dialect");
         dialectNames.put("Informix", "org.hibernate.dialect.InformixDialect");
         dialectNames.put("Ingres", "org.hibernate.dialect.IngresDialect");
         dialectNames.put("Interbase", "org.hibernate.dialect.InterbaseDialect");
@@ -80,6 +81,16 @@ public class DriverClassHelpers {
                             "jdbc:hsqldb:<dbname>",
                             "jdbc:hsqldb:." }
                          );
+
+        addDriverAndURLS("org.hibernate.dialect.H2Dialect",
+                "org.h2.Driver", 
+                new String[] {
+                   "jdbc:h2:<filename>",
+                   "jdbc:h2:mem:",
+                   "jdbc:h2:mem:<databaseName>",
+                   "jdbc:h2:tcp://<server>[:<port>]/<databaseName>"                   
+                   }
+                );
 
         addDriverAndURLS("org.hibernate.dialect.OracleDialect", 
                          "oracle.jdbc.driver.OracleDriver",
