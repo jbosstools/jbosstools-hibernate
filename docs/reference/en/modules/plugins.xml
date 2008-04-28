@@ -1150,7 +1150,7 @@
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="images/plugins/plugins_12_a.png"/>
+          <imagedata fileref="images/plugins/plugins_12_a.png" scale="80"/>
         </imageobject>
       </mediaobject>
     </figure>
@@ -1164,7 +1164,7 @@
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="images/plugins/plugins_12_b.png"/>
+          <imagedata fileref="images/plugins/plugins_12_b.png" scale="80"/>
         </imageobject>
       </mediaobject>
     </figure>
@@ -1359,7 +1359,7 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="images/plugins/plugins_17_a.png"/>
+            <imagedata fileref="images/plugins/plugins_17_a.png" scale="80"/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -1392,7 +1392,7 @@
 
           <mediaobject>
             <imageobject>
-              <imagedata fileref="images/plugins/plugins_18_a.png"/>
+              <imagedata fileref="images/plugins/plugins_18_a.png" scale="80"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -1405,7 +1405,7 @@
 
           <mediaobject>
             <imageobject>
-              <imagedata fileref="images/plugins/plugins_18_b.png"/>
+              <imagedata fileref="images/plugins/plugins_18_b.png" scale="80"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -1490,7 +1490,7 @@
         <title>Entering Simple Queries</title>
         <mediaobject>
           <imageobject role="fo">
-            <imagedata align="center" scale="80" fileref="images/plugins/plugins_19.png"
+            <imagedata align="center" scale="90" fileref="images/plugins/plugins_19.png"
               format="PNG"/>
           </imageobject>
 
