@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension point="org.jboss.tools.common.model.meta">
+      <meta path="meta/hibernate3.meta">
+      </meta>
+      <meta path="meta/hibconfig3.meta">
+      </meta>
+   </extension>
+   <extension point="org.jboss.tools.common.model.keys">
+      <keys path="help/keys-hibernate3.properties">
+      </keys>
+   </extension>
+   <extension
+         point="org.jboss.tools.common.model.resourceMapping">
+      <mapping
+          loader="org.jboss.tools.hibernate.xml"
+          priority="2"
+          kind="class"
+          paths=".hibernate.xml."
+      />
+   </extension>
+   <extension
+         point="org.jboss.tools.common.model.resourceMapping">
+      <mapping
+          loader="org.jboss.tools.hibernate.xml.HibernateXMLPlugin"
+          priority="0"
+          kind="image"
+          paths="/orm2/"
+      />
+   </extension>
+
+	<extension point="org.jboss.tools.common.model.classes">
+		<xclass id="org.jboss.tools.hibernate.xml.model.FileHibernateFilteredTreeConstraint"
+			class="org.jboss.tools.hibernate.xml.model.FileHibernateFilteredTreeConstraint"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.HibConfigLoader"
+			class="org.jboss.tools.hibernate.xml.model.HibConfigLoader"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.HibernateLoader"
+			class="org.jboss.tools.hibernate.xml.model.HibernateLoader"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.HibernateRecognizer"
+			class="org.jboss.tools.hibernate.xml.model.HibernateRecognizer"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.handlers.AddHibernateAnyHandler"
+			class="org.jboss.tools.hibernate.xml.model.handlers.AddHibernateAnyHandler"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.handlers.AddHibernateCollectionHandler"
+			class="org.jboss.tools.hibernate.xml.model.handlers.AddHibernateCollectionHandler"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.handlers.AddHibernateManyToAnyHandler"
+			class="org.jboss.tools.hibernate.xml.model.handlers.AddHibernateManyToAnyHandler"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.handlers.AddSubclassHandler"
+			class="org.jboss.tools.hibernate.xml.model.handlers.AddSubclassHandler"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.handlers.DeleteUniqueHandler"
+			class="org.jboss.tools.hibernate.xml.model.handlers.DeleteUniqueHandler"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.handlers.FolderOwnerAdopt"
+			class="org.jboss.tools.hibernate.xml.model.handlers.FolderOwnerAdopt"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.handlers.OpenSourceHandler"
+			class="org.jboss.tools.hibernate.xml.model.handlers.OpenSourceHandler"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.handlers.PasteUniqueHandler"
+			class="org.jboss.tools.hibernate.xml.model.handlers.PasteUniqueHandler"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.handlers.SimpleAddClassHandler"
+			class="org.jboss.tools.hibernate.xml.model.handlers.SimpleAddClassHandler"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.impl.DatabaseObjectImpl"
+			class="org.jboss.tools.hibernate.xml.model.impl.DatabaseObjectImpl"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.impl.FileHibernateImpl"
+			class="org.jboss.tools.hibernate.xml.model.impl.FileHibernateImpl"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.impl.HibConfigCacheImpl"
+			class="org.jboss.tools.hibernate.xml.model.impl.HibConfigCacheImpl"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.impl.HibConfigMappingImpl"
+			class="org.jboss.tools.hibernate.xml.model.impl.HibConfigMappingImpl"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.impl.HibernateAuxFolderImpl"
+			class="org.jboss.tools.hibernate.xml.model.impl.HibernateAuxFolderImpl"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.impl.HibernateClassImpl"
+			class="org.jboss.tools.hibernate.xml.model.impl.HibernateClassImpl"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.impl.HibernateElementImpl"
+			class="org.jboss.tools.hibernate.xml.model.impl.HibernateElementImpl"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.impl.HibernateFormulaImpl"
+			class="org.jboss.tools.hibernate.xml.model.impl.HibernateFormulaImpl"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.impl.HibernateIdImpl"
+			class="org.jboss.tools.hibernate.xml.model.impl.HibernateIdImpl"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.impl.HibernateMapImpl"
+			class="org.jboss.tools.hibernate.xml.model.impl.HibernateMapImpl"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.impl.HibernateMetaImpl"
+			class="org.jboss.tools.hibernate.xml.model.impl.HibernateMetaImpl"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.impl.HibernateQueryFolderImpl"
+			class="org.jboss.tools.hibernate.xml.model.impl.HibernateQueryFolderImpl"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.impl.HibernateVersionImpl"
+			class="org.jboss.tools.hibernate.xml.model.impl.HibernateVersionImpl"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.impl.OrderedObject2Impl"
+			class="org.jboss.tools.hibernate.xml.model.impl.OrderedObject2Impl"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.impl.RegularObject2Impl"
+			class="org.jboss.tools.hibernate.xml.model.impl.RegularObject2Impl"/>
+
+		<xclass id="org.jboss.tools.hibernate.xml.model.impl.ContextPackageProvider"
+			class="org.jboss.tools.hibernate.xml.model.impl.ContextPackageProvider"/>
+   </extension>
+
+</plugin>

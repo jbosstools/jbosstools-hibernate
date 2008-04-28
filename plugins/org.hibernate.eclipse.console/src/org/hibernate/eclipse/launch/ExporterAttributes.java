@@ -1,0 +1,354 @@
+/*
+ * JBoss, Home of Professional Open Source
+ * Copyright 2005, JBoss Inc., and individual contributors as indicated
+ * by the @authors tag. See the copyright.txt in the distribution for a
+ * full listing of individual contributors.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http:/*
+ * JBoss, Home of Professional Open Source
+ * Copyright 2005, JBoss Inc., and individual contributors as indicated
+ * by the @authors tag. See the copyright.txt in the distribution for a
+ * full listing of individual contributors.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
+package org.hibernate.eclipse.launch;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.hibernate.console.HibernateConsoleRuntimeException;
+import org.hibernate.eclipse.console.ExtensionManager;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.model.impl.ExporterDefinition;
+import org.hibernate.eclipse.console.model.impl.ExporterFactory;
+
+// This class was created to centralize launch configuration attribute loading/saving
+// (and also to clean up CodeGenerationLaunchDelegate considerably)
+public class ExporterAttributes
+{
+   private boolean reverseEngineer, useOwnTemplates, enableJDK5, enableEJB3, preferBasicCompositeIds;
+   private String consoleConfigurationName;
+   private String revengSettings;
+   private String revengStrategy;
+   private String packageName;
+   private String outputPath;
+   private String templatePath;
+   private List exporterFactories;
+private boolean autoManyToManyDetection;
+private boolean autoVersioning;
+   
+   public ExporterAttributes () { }
+
+   public ExporterAttributes (ILaunchConfiguration configuration)
+      throws CoreException
+   {
+      initialize(configuration);
+   }
+   
+   public void initialize (ILaunchConfiguration configuration)
+      throws CoreException
+   {
+      try {
+         consoleConfigurationName = configuration.getAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME,"");        
+         outputPath = configuration.getAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR,"");
+         reverseEngineer = configuration.getAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER, false);
+         revengSettings = configuration.getAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_SETTINGS, "");
+         revengStrategy = configuration.getAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_STRATEGY, "");
+         useOwnTemplates = configuration.getAttribute(HibernateLaunchConstants.ATTR_USE_OWN_TEMPLATES,false);
+         enableJDK5 = configuration.getAttribute(HibernateLaunchConstants.ATTR_ENABLE_JDK5,false);
+         enableEJB3 = configuration.getAttribute(HibernateLaunchConstants.ATTR_ENABLE_EJB3_ANNOTATIONS,false);
+         packageName = configuration.getAttribute(HibernateLaunchConstants.ATTR_PACKAGE_NAME,"");
+         templatePath = configuration.getAttribute(HibernateLaunchConstants.ATTR_TEMPLATE_DIR,"");
+         preferBasicCompositeIds = configuration.getAttribute(HibernateLaunchConstants.ATTR_PREFER_BASIC_COMPOSITE_IDS, true);
+         autoManyToManyDetection = configuration.getAttribute( HibernateLaunchConstants.ATTR_AUTOMATIC_MANY_TO_MANY, true);
+         autoVersioning = configuration.getAttribute( HibernateLaunchConstants.ATTR_AUTOMATIC_VERSIONING, true);
+         
+         
+         if (!useOwnTemplates) {
+        	 templatePath = null;
+         }
+   
+         exporterFactories = readExporterFactories(configuration);
+ 		
+      } catch (CoreException e) {
+         throw new CoreException(HibernateConsolePlugin.throwableToStatus(e, 666)); 
+      }
+   }
+
+   static String getLaunchAttributePrefix(String exporterId) {
+	   	   return HibernateLaunchConstants.ATTR_EXPORTERS + "." + exporterId;
+   }
+   
+   private List readExporterFactories(ILaunchConfiguration configuration) throws CoreException {
+
+	   List exporterNames = configuration.getAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, (List)null);
+	   
+	   if(exporterNames!=null) { 
+		   Map exDefinitions = ExtensionManager.findExporterDefinitionsAsMap();
+		   List factories = new ArrayList();
+
+		   for (Iterator iterator = exporterNames.iterator(); iterator.hasNext();) {
+			   String exporterId = (String) iterator.next();
+			   String extensionId = configuration.getAttribute(getLaunchAttributePrefix(exporterId) + ".extension_id", (String)null);
+
+			   ExporterDefinition expDef = (ExporterDefinition) exDefinitions.get(extensionId);
+			   if(expDef==null) {
+				   throw new HibernateConsoleRuntimeException("Could not locate exporter for '" + extensionId + "' in " + configuration.getName());							
+			   } else {
+				   ExporterFactory exporterFactory = new ExporterFactory( expDef, exporterId );
+				   exporterFactory.isEnabled( configuration );
+				   factories.add( exporterFactory );
+				   Map props = configuration.getAttribute( getLaunchAttributePrefix(exporterFactory.getId())
+						   + ".properties", new HashMap() );
+				   exporterFactory.setProperties( props );
+			   }			
+		   }
+		   return factories;
+		   
+	   } else { 
+		   // fall back to old way of reading if list of exporters does not exist.
+		   ExporterDefinition[] exDefinitions = ExtensionManager.findExporterDefinitions();
+		   List factories = new ArrayList();
+
+		   for (int i = 0; i < exDefinitions.length; i++) {
+			   ExporterDefinition expDef = exDefinitions[i];
+			   ExporterFactory exporterFactory = new ExporterFactory( expDef, expDef.getId() );
+			   exporterFactory.isEnabled( configuration );
+			   factories.add( exporterFactory );
+			   Map props = configuration.getAttribute( getLaunchAttributePrefix(exporterFactory.getId()) 
+					   + ".properties", new HashMap() );
+			   exporterFactory.setProperties( props );
+		   }
+		   
+		   return factories;
+	   } 
+   }
+
+   public static void saveExporterFactories(
+			ILaunchConfigurationWorkingCopy configuration,
+			List exporterFactories, Set enabledExporters, Set deletedExporterIds) {
+		
+	   
+	   List names = new ArrayList();
+		for (Iterator iter = exporterFactories.iterator(); iter.hasNext();) {
+			ExporterFactory ef = (ExporterFactory) iter.next();
+			configuration.setAttribute(getLaunchAttributePrefix(ef.getId()) + ".extension_id", ef.getExporterDefinition().getId());
+			boolean enabled = enabledExporters.contains( ef );
+			String propertiesId = getLaunchAttributePrefix(ef.getId()) + ".properties";
+			names.add(ef.getId());
+			ef.setEnabled( configuration, enabled, false );
+				
+			HashMap map = new HashMap(ef.getProperties());
+
+			if(map.isEmpty()) {				
+				configuration.setAttribute( propertiesId, (Map)null );
+			} else {
+				configuration.setAttribute( propertiesId, map );
+			}			
+		}
+		
+		deletedExporterIds.removeAll(names);
+		
+		for (Iterator iterator = deletedExporterIds.iterator(); iterator.hasNext();) {
+			String deleted = (String) iterator.next();
+			
+			configuration.setAttribute( getLaunchAttributePrefix( deleted ), (String)null);
+			configuration.setAttribute(getLaunchAttributePrefix(deleted ) + ".extension_id", (String)null);						
+			configuration.setAttribute(getLaunchAttributePrefix(deleted), (String)null);
+		}
+		
+		configuration.setAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, names);
+	}
+
+	public static void oldSaveExporterFactories(
+			ILaunchConfigurationWorkingCopy configuration,
+			List exporterFactories, List enabledExporters) {
+		
+		
+		for (Iterator iter = exporterFactories.iterator(); iter.hasNext();) {
+			ExporterFactory ef = (ExporterFactory) iter.next();
+			boolean enabled = enabledExporters.contains( ef );
+			String propertiesId = ef.getId() + ".properties";
+			
+			ef.setEnabled( configuration, enabled, true );
+				
+			HashMap map = new HashMap(ef.getProperties());
+
+			if(map.isEmpty()) {				
+				configuration.setAttribute( propertiesId, (Map)null );
+			} else {
+				configuration.setAttribute( propertiesId, map );
+			}		
+		}
+	}
+
+   
+    private Path pathOrNull(String p) {
+        if(p==null || p.trim().length()==0) {
+            return null;
+        } else {
+            return new Path(p);
+        }
+    }
+
+   public String getOutputPath()
+   {
+      return outputPath;
+   }
+
+   public void setOutputPath(String outputPath)
+   {
+      this.outputPath = outputPath;
+   }
+
+   public String getPackageName()
+   {
+      return packageName;
+   }
+
+   public void setPackageName(String packageName)
+   {
+      this.packageName = packageName;
+   }
+
+   public String getRevengSettings()
+   {
+      return revengSettings;
+   }
+
+   public void setRevengSettings(String revengSettings)
+   {
+      this.revengSettings = revengSettings;
+   }
+
+   public String getRevengStrategy()
+   {
+      return revengStrategy;
+   }
+
+   public void setRevengStrategy(String revengStrategy)
+   {
+      this.revengStrategy = revengStrategy;
+   }
+
+   public String getTemplatePath()
+   {
+      return templatePath;
+   }
+
+   public void setTemplatePath(String templatePath)
+   {
+      this.templatePath = templatePath;
+   }
+
+   public String getConsoleConfigurationName()
+   {
+      return consoleConfigurationName;
+   }
+
+   public void setConsoleConfigurationName(String consoleConfigurationName)
+   {
+      this.consoleConfigurationName = consoleConfigurationName;
+   }
+
+   public boolean isEJB3Enabled()
+   {
+      return enableEJB3;
+   }
+
+   public void setEnableEJB3(boolean enableEJB3)
+   {
+      this.enableEJB3 = enableEJB3;
+   }
+
+   public boolean isJDK5Enabled()
+   {
+      return enableJDK5;
+   }
+
+   public void setEnableJDK5(boolean enableJDK5)
+   {
+      this.enableJDK5 = enableJDK5;
+   }
+
+   public boolean isPreferBasicCompositeIds()
+   {
+      return preferBasicCompositeIds;
+   }
+
+   public void setPreferBasicCompositeIds(boolean preferBasicCompositeIds)
+   {
+      this.preferBasicCompositeIds = preferBasicCompositeIds;
+   }
+
+   public boolean isReverseEngineer()
+   {
+      return reverseEngineer;
+   }
+
+   public void setReverseEngineer(boolean reverseEngineer)
+   {
+      this.reverseEngineer = reverseEngineer;
+   }
+
+   public boolean isUseOwnTemplates()
+   {
+      return useOwnTemplates;
+   }
+
+   public void setUseOwnTemplates(boolean useOwnTemplates)
+   {
+      this.useOwnTemplates = useOwnTemplates;
+   }
+
+   public List getExporterFactories() {
+	   return exporterFactories;	
+   }
+
+public boolean detectManyToMany() {
+	return autoManyToManyDetection;
+}
+
+    public boolean detectOptimisticLock() {
+    	return autoVersioning;
+    }
+
+   
+
+   
+}

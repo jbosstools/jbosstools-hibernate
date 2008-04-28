@@ -1,0 +1,1636 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="plugins">
+  <title>Eclipse Plugins</title>
+
+  <para>This chapter will introduce you to the functionality that <property>Hibernate
+    Tools</property> provide within Eclipse. That is a set of wizards and editors for simplifying
+    the work with <property>Hibernate</property>.</para>
+
+  <section>
+    <title>Introduction</title>
+
+    <para>The following features are available in the <property>Hibernate Tools</property> Eclipse
+      plugins:</para>
+
+    <para><emphasis role="bold">Mapping Editor</emphasis>: An editor for Hibernate XML mapping
+      files, supporting auto-completion and syntax highlighting. It also supports semantic
+      auto-completion for class names and property/field names, making it much more versatile than a
+      normal XML editor.</para>
+
+    <para><emphasis role="bold">Hibernate Console</emphasis>: The console is a new perspective in
+      Eclipse. It provides an overview of your Hibernate Console configurations, were you also can
+      get an interactive view of your persistent classes and their relationships. The console allows
+      you to execute HQL queries against your database and browse the result directly in Eclipse.</para>
+
+    <para><emphasis role="bold">Configuration Wizards and Code generation</emphasis>: A set of
+      wizards are provided with the Hibernate Eclipse tools; you can use a wizard to quickly
+      generate common Hibernate configuration (cfg.xml) files, and from these you can code generate
+      a series of various artifacts, there is even support for completely reverse engineer an
+      existing database schema and use the code generation to generate POJO source files and
+      Hibernate mapping files.</para>
+
+    <para><emphasis role="bold">Eclipse JDT integration</emphasis>: <property>Hibernate
+      Tools</property> integrates into the Java code completion and build support of Java in
+      Eclipse. This gives you codecompletion of HQL inside Java code plus <property>Hibernate
+      Tools</property> will add problem markers if your queries are not valid against the console
+      configuration associated with the project.</para>
+
+    <note>
+      <para>Please note that these tools do not try to hide any functionality of
+        <property>Hibernate</property>. The tools make working with <property>Hibernate</property>
+        easier, but you are still encouraged/required to read the <ulink
+          url="http://www.hibernate.org/5.html">Hibernate Documentation</ulink> to fully utilize
+          <property>Hibernate Tools</property> and especially <property>Hibernate</property> it
+        self.</para>
+    </note>
+  </section>
+
+  <section>
+    <title>Creating a Hibernate Mapping File</title>
+
+    <para>Hibernate mapping files are used to specify how your objects are related to database
+      tables.</para>
+
+    <para>For creating a skeleton mapping file, i. e. any <emphasis>
+        <property>.hbm.xml</property>
+      </emphasis>, Hibernate Tools provide a basic wizard which you can bring up by navigating <emphasis>
+        <property>New > Hibernate XML mapping file</property>.</emphasis></para>
+
+    <figure>
+      <title>Hibernate XML Mapping File Wizard</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/plugins/plugins_0.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>At first you&apos;ll be asked to specify the location and the name for a new mapping
+      file. On the next dialog you should type or browse the class to map.</para>
+    <figure>
+      <title>Specifying the Class to Map</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/plugins/plugins_0_a.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>Pressing finish creates the file and opens it in the <link
+        linkend="map_config_struct_editor">structured hbm.xml editor</link>.</para>
+
+    <para> If you start the wizard from the selected class, all values will be detected there
+      automatically.</para>
+
+    <figure>
+      <title>Creating Mapping File for Selected Class</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/plugins/plugins_0_b.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+  </section>
+
+  <section>
+    <title>Creating a Hibernate Configuration File</title>
+
+    <para>To be able to reverse engineer, prototype queries, and of course to simply use
+        <property>Hibernate Core</property> a <emphasis>
+        <property>hibernate.properties</property>
+      </emphasis> or <emphasis>
+        <property>hibernate.cfg.xml</property>
+      </emphasis> file is needed. The <property>Hibernate Tools</property> provide a wizard for
+      generating the <emphasis>
+        <property>hibernate.cfg.xml</property>
+      </emphasis> file if you do not already have such one.</para>
+
+    <para>Start the wizard by clicking <emphasis>
+        <property>New > Other (Ctrl+N)</property>
+      </emphasis>, then <emphasis>
+        <property>Hibernate > Hibernate Configuration File (cfg.xml)</property>
+      </emphasis> and press <emphasis>
+        <property>Next</property>
+      </emphasis>. After selecting the wanted location for the <emphasis>
+        <property>hibernate.cfg.xml</property>
+      </emphasis> file, you will see the following page:</para>
+
+    <figure>
+      <title>Hibernate Configuration File Wizard</title>
+      <mediaobject>
+        <imageobject role="fo">
+          <imagedata align="center" fileref="images/plugins/plugins_1.png" format="PNG"/>
+        </imageobject>
+
+        <imageobject role="html">
+          <imagedata align="center" fileref="images/plugins/plugins_1.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <note>
+      <para>The contents in the combo boxes for the JDBC driver class and JDBC URL change
+        automatically, depending on the Dialect and actual driver you have chosen.</para>
+    </note>
+
+    <para>Enter your configuration information in this dialog. Details about the configuration
+      options can be found in <ulink
+        url="http://docs.jboss.org/ejb3/app-server/Hibernate3/reference/en/html_single">Hibernate
+        Reference Documentation</ulink>.</para>
+
+    <para>Press <emphasis>
+        <property>Finish</property>
+      </emphasis> to create the configuration file, after optionally creating a Console
+      configuration, the <emphasis>
+        <property>hibernate.cfg.xml</property>
+      </emphasis> will be automatically opened in an editor. The last option <emphasis>
+        <property>Create Console Configuration</property>
+      </emphasis> is enabled by default and when enabled, it will automatically use the <emphasis>
+        <property>hibernate.cfg.xml</property>
+      </emphasis> for the basis of a Console configuration.</para>
+  </section>
+
+  <section id="console_conf">
+    <title>Creating a Hibernate Console Configuration</title>
+
+    <para>A Console configuration describes how the <property>Hibernate plugin</property> should
+      configure <property>Hibernate</property> and what configuration files, including which
+      classpath are needed to load the POJO's, JDBC drivers etc. It is required to make usage of
+      query prototyping, reverse engineering and code generation. You can have multiple named
+      console configurations. Normally you would just need one per project, but more is definitely
+      possible if your project requires this.</para>
+
+    <para>You create a console configuration by running the <property>Console Configuration
+      Wizard</property>, shown in the following screenshot. The same wizard will also be used if you
+      are coming from the <emphasis>
+        <property>hibernate.cfg.xml</property>
+      </emphasis> wizard and had enabled <emphasis>
+        <property>Create Console Configuration</property>
+      </emphasis>.</para>
+
+    <note>
+      <para>The wizard will look at the current selection in the IDE and try and auto-detect the
+        settings which you then can just approve or modify to suit your needs.</para>
+    </note>
+    <para/>
+
+    <figure>
+      <title> Creating Hibernate Console Configuration</title>
+      <mediaobject>
+        <imageobject role="fo">
+          <imagedata align="center" fileref="images/plugins/plugins_2.png" format="PNG"/>
+        </imageobject>
+
+        <imageobject role="html">
+          <imagedata align="center" fileref="images/plugins/plugins_2.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+
+    </figure>
+
+    <para>The dialog consists of three tabs, <emphasis>
+        <property>General</property>
+      </emphasis> for the basic/required settings, <emphasis>
+        <property>Classpath</property>
+      </emphasis> for classpath and <emphasis>
+        <property>Mappings</property>
+      </emphasis> for additional mappings. The two latter ones are normally not required if you
+      specify a project and it has <emphasis>
+        <property>
+          <literal> /hibernate.cfg.xml </literal>
+        </property>
+      </emphasis> or <emphasis>
+        <property>
+          <literal>/META-INF/persistence.xml</literal>
+        </property>
+      </emphasis> in its project classpath.</para>
+
+    <para>The following table describes the available settings. The wizard can automatically detect
+      default values for most of these if you started the wizard with the relevant java project or
+      resource selected.</para>
+
+    <table>
+      <title>Hibernate Console Configuration Parameters</title>
+
+      <tgroup cols="3">
+        <colspec colnum="1" colwidth="1*"/>
+
+        <colspec colnum="2" colwidth="3*"/>
+
+        <colspec colnum="3" colwidth="1*"/>
+
+        <thead>
+          <row>
+            <entry align="center">
+              <para>Parameter</para>
+            </entry>
+
+            <entry align="center">
+              <para>Description</para>
+            </entry>
+
+            <entry align="center">
+              <para>Auto detected value</para>
+            </entry>
+          </row>
+        </thead>
+
+        <tbody>
+          <row>
+            <entry>
+              <para>Name</para>
+            </entry>
+
+            <entry>
+              <para>The unique name of the console configuration</para>
+            </entry>
+
+            <entry>
+              <para>Name of the selected project</para>
+            </entry>
+          </row>
+
+          <row>
+            <entry>
+              <para>Project</para>
+            </entry>
+
+            <entry>
+              <para>The name of a java project which classpath should be used in the console
+                configuration</para>
+            </entry>
+
+            <entry>
+              <para>Name of the selected project</para>
+            </entry>
+          </row>
+
+          <row>
+            <entry>
+              <para>Type</para>
+            </entry>
+
+            <entry>
+              <para>Choose between &quot;Core&quot;, &quot;Annotations&quot; and
+                &quot;JPA&quot;. Note that the two latter requires running Eclipse IDE with
+                a JDK 5 runtime, otherwise you will get classloading and/or version errors.</para>
+            </entry>
+
+            <entry>
+              <para>No default value</para>
+            </entry>
+          </row>
+
+          <row>
+            <entry>
+              <para>Property file</para>
+            </entry>
+
+            <entry>
+              <para>Path to a hibernate.properties file</para>
+            </entry>
+
+            <entry>
+              <para>First hibernate.properties file found in the selected project</para>
+            </entry>
+          </row>
+
+          <row>
+            <entry>
+              <para>Configuration file</para>
+            </entry>
+
+            <entry>
+              <para>Path to a hibernate.cfg.xml file</para>
+            </entry>
+
+            <entry>
+              <para>First hibernate.cfg.xml file found in the selected project</para>
+            </entry>
+          </row>
+
+          <row>
+            <entry>
+              <para>Persistence unit</para>
+            </entry>
+
+            <entry>
+              <para>Name of the persistence unit to use</para>
+            </entry>
+
+            <entry>
+              <para>No default value (lets Hibernate Entity Manager find the persistence
+              unit)</para>
+            </entry>
+          </row>
+
+          <row>
+            <entry>
+              <para>Naming strategy</para>
+            </entry>
+
+            <entry>
+              <para>Fully qualified classname of a custom NamingStrategy. Only required if you use a
+                special naming strategy.</para>
+            </entry>
+
+            <entry>
+              <para>No default value</para>
+            </entry>
+          </row>
+
+          <row>
+            <entry>
+              <para>Entity resolver</para>
+            </entry>
+
+            <entry>
+              <para>Fully qualified classname of a custom EntityResolver. Only required if you have
+                special xml entity includes in your mapping files.</para>
+            </entry>
+
+            <entry>
+              <para>No default value</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+
+    <figure>
+      <title>Specifying Classpath in Hibernate Console Configuration</title>
+      <mediaobject>
+        <imageobject role="fo">
+          <imagedata align="center" fileref="images/plugins/plugins_3.png" format="PNG"/>
+        </imageobject>
+
+        <imageobject role="html">
+          <imagedata align="center" fileref="images/plugins/plugins_3.png" format="PNG"/>
+        </imageobject>
+
+      </mediaobject>
+    </figure>
+
+    <para>The fallowing table specifies the parameters of the Classpath tab of the wizard.</para>
+
+    <table>
+      <title>Hibernate Console Configuration Classpath</title>
+
+      <tgroup cols="3">
+        <colspec colnum="1" colwidth="1*"/>
+
+        <colspec colnum="2" colwidth="3*"/>
+
+        <colspec colnum="3" colwidth="1*"/>
+
+        <thead>
+          <row>
+            <entry align="center">
+              <para>Parameter</para>
+            </entry>
+
+            <entry align="center">
+              <para>Description</para>
+            </entry>
+
+            <entry align="center">
+              <para>Auto detected value</para>
+            </entry>
+          </row>
+        </thead>
+
+        <tbody>
+          <row>
+            <entry>
+              <para>Classpath</para>
+            </entry>
+
+            <entry>
+              <para>The classpath for loading POJO and JDBC drivers; only needed if the default
+                classpath of the Project does not contain the required classes. Do not add Hibernate
+                core libraries or dependencies, they are already included. If you get ClassNotFound
+                errors then check this list for possible missing or redundant
+              directories/jars.</para>
+            </entry>
+
+            <entry>
+              <para>Empty</para>
+            </entry>
+          </row>
+
+          <row>
+            <entry>
+              <para>Include default classpath from project</para>
+            </entry>
+
+            <entry>
+              <para>When enabled the project classpath will be appended to the classpath specified
+                above</para>
+            </entry>
+
+            <entry>
+              <para>Enabled</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+
+    <para>
+      <figure>
+        <title>Specifying additional Mappings in Hibernate Console Configuration</title>
+        <mediaobject>
+          <imageobject role="fo">
+            <imagedata align="center" fileref="images/plugins/plugins_4.png" format="PNG"/>
+          </imageobject>
+
+          <imageobject role="html">
+            <imagedata align="center" fileref="images/plugins/plugins_4.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>Parameters of the Mappings tab in the <property>Hibernate Console Configuration
+        wizard</property> are explained below:</para>
+      <table>
+        <title>Hibernate Console Configuration Mappings</title>
+
+        <tgroup cols="3">
+          <colspec colnum="1" colwidth="1*"/>
+
+          <colspec colnum="2" colwidth="3*"/>
+
+          <colspec colnum="3" colwidth="1*"/>
+
+          <thead>
+            <row>
+              <entry align="center">
+                <para>Parameter</para>
+              </entry>
+
+              <entry align="center">
+                <para>Description</para>
+              </entry>
+
+              <entry align="center">
+                <para>Auto detected value</para>
+              </entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry>
+                <para>Mapping files </para>
+              </entry>
+
+              <entry>
+                <para>List of additional mapping files that should be loaded. Note: A
+                  hibernate.cfg.xml or persistence.xml can also contain mappings. Thus if these are
+                  duplicated here, you will get "Duplicate mapping" errors when using the console
+                  configuration.</para>
+              </entry>
+
+              <entry>
+                <para>empty</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </para>
+
+    <para>Clicking <emphasis>
+        <property>Finish</property>
+      </emphasis> creates the configuration and shows it in the <property>Hibernate Configurations
+        View</property>.</para>
+
+    <figure>
+      <title>Console Overview</title>
+      <mediaobject>
+        <imageobject role="fo">
+          <imagedata align="center" fileref="images/plugins/plugins_5.png" format="PNG"/>
+        </imageobject>
+
+        <imageobject role="html">
+          <imagedata align="center" fileref="images/plugins/plugins_5.png" format="PNG"/>
+        </imageobject>
+
+      </mediaobject>
+    </figure>
+
+  </section>
+
+  <section>
+    <title>Reverse Engineering and Code Generation</title>
+
+    <para>A "click-and-generate" reverse engineering and code generation facility is available. This
+      facility allows you to generate a range of artifacts based on database or an already existing
+      Hibernate configuration, be that mapping files or annotated classes. Some of these are POJO
+      Java source file, Hibernate <emphasis>
+        <property>.hbm.xml</property>
+      </emphasis>, <emphasis>
+        <property>hibernate.cfg.xml</property>
+      </emphasis> generation and schema documentation.</para>
+
+    <para>To start working with this process, start the <property>Hibernate Code
+      Generation</property> which is available in the toolbar via the <property>Hibernate</property>
+      icon or via the <emphasis>
+        <property>Run > Hibernate Code Generation</property>
+      </emphasis> menu item.</para>
+
+    <section>
+      <title>Code Generation Launcher</title>
+
+      <para>When you click on <emphasis>
+          <property>Open Hibernate Code Generation Dialog...</property>
+        </emphasis> the standard Eclipse launcher dialog will appear. In this dialog you can create,
+        edit and delete named Hibernate code generation "launchers".</para>
+
+      <figure id="hib_code_gen">
+        <title>Getting Hibernate Code Generation Wizard</title>
+        <mediaobject>
+          <imageobject role="fo">
+            <imagedata fileref="images/plugins/plugins_6.png" format="PNG"/>
+          </imageobject>
+
+          <imageobject role="html">
+            <imagedata align="center" fileref="images/plugins/plugins_6.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para/>
+
+      <figure>
+        <title>Hibernate Code Generation Wizard</title>
+        <mediaobject>
+          <imageobject role="fo">
+            <imagedata align="center" scale="80" fileref="images/plugins/plugins_7.png" format="PNG"
+            />
+          </imageobject>
+
+          <imageobject role="html">
+            <imagedata align="center" fileref="images/plugins/plugins_7.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>The first time you create a code generation launcher you should give it a meaningful
+        name, otherwise the default prefix <emphasis>
+          <property>New_Generation</property>
+        </emphasis> will be used.</para>
+
+      <note>
+        <title>Tip:</title>
+        <para>The &quot;At least one exporter option must be selected&quot; is just a
+          warning stating that for this launch to work you need to select an exporter on the
+          Exporter tab. When an exporter has been selected the warning will disappear.</para>
+      </note>
+
+      <para>The dialog also have the standard tabs <emphasis>
+          <property>Refresh</property>
+        </emphasis> and <emphasis>
+          <property>Common</property>
+        </emphasis> that can be used to configure which directories should be automatically
+        refreshed and various general settings launchers, such as saving them in a project for
+        sharing the launcher within a team.</para>
+
+      <para>On the <emphasis>
+          <property>Main</property>
+        </emphasis> tab you see the following fields:</para>
+
+      <table>
+        <title>Code generation "Main" tab fields</title>
+
+        <tgroup cols="2">
+          <colspec colnum="1" colwidth="1*"/>
+
+          <colspec colnum="2" colwidth="3*"/>
+
+          <colspec colnum="3" colwidth="0.5*"/>
+
+          <thead>
+            <row>
+              <entry align="center">
+                <para>Field</para>
+              </entry>
+
+              <entry align="center">
+                <para>Description</para>
+              </entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry>
+                <para>Console Configuration</para>
+              </entry>
+
+              <entry>
+                <para>The name of the console configuration which should be used when code
+                  generating</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>Output directory</para>
+              </entry>
+
+              <entry>
+                <para>Path to a directory where all output will be written by default. Be aware that
+                  existing files will be overwritten, so be sure to specify the correct
+                directory.</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>Reverse engineer from JDBC Connection</para>
+              </entry>
+
+              <entry>
+                <para>If enabled, the tools will reverse engineer the database available via the
+                  connection information in the selected Hibernate Console Configuration and
+                  generate code based on the database schema. If not enabled, the code generation
+                  will just be based on the mappings already specified in the Hibernate Console
+                  configuration.</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>Package</para>
+              </entry>
+
+              <entry>
+                <para>The package name here is used as the default package name for any entities
+                  found when reverse engineering</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>reveng.xml</para>
+              </entry>
+
+              <entry>
+                <para>Path to a reveng.xml file. A reveng.xml file allows you to control certain
+                  aspects of the reverse engineering. e.g. how jdbc types are mapped to hibernate
+                  types and especially important which tables are included/excluded from the
+                  process. Clicking "setup" allows you to select an existing reveng.xml file or
+                  create a new one. See more details about the reveng.xml file in <xref
+                    linkend="reverseengineering"/>.</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>reveng. strategy</para>
+              </entry>
+
+              <entry>
+                <para>If reveng.xml does not provide enough customization you can provide your own
+                  implementation of an ReverseEngineeringStrategy. The class needs to be in the
+                  classpath of the Console Configuration, otherwise you will get class not found
+                  exceptions. See <xref linkend="custom-reveng-strategy"/> for details and an
+                  example of a custom strategy.</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>Generate basic typed composite ids</para>
+              </entry>
+
+              <entry>
+                <para>A table that has a multi-colum primary key a &lt;composite-id&gt;
+                  mapping will always be created. If this option is enabled and there are matching
+                  foreign-keys each key column is still considered a 'basic' scalar (string, long,
+                  etc.) instead of a reference to an entity. If you disable this option a
+                  &lt;key-many-to-one&gt; instead. Note: a &lt;many-to-one&gt;
+                  property is still created, but is simply marked as non-updatable and
+                  non-insertable.</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>Detect optimistic lock columns</para>
+              </entry>
+
+              <entry>
+                <para>Automatically detect optimistic lock columns. Controllable via reveng.
+                  strategy; the current default is to use columns named VERSION or TIMESTAMP.</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>Detect many-to-many tables</para>
+              </entry>
+
+              <entry>
+                <para>Automatically detect many-to-many tables. Controllable via reveng.
+                strategy.</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>Use custom templates</para>
+              </entry>
+
+              <entry>
+                <para>If enabled, the Template directory will be searched first when looking up the
+                  templates, allowing you to redefine how the individual templates process the
+                  hibernate mapping model.</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>Template directory</para>
+              </entry>
+
+              <entry>
+                <para>A path to a directory with custom templates</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+
+    <section>
+      <title>Exporters</title>
+
+      <para>The <emphasis>
+          <property>Exporters</property>
+        </emphasis> tab is used to specify which type of code that should be generated. Each
+        selection represents an Exporter that is responsible for generating the code, hence the
+        name.</para>
+
+      <figure>
+        <title>Selecting Exporters</title>
+        <mediaobject>
+          <imageobject role="fo">
+            <imagedata align="center" scale="80" fileref="images/plugins/plugins_8.png" format="PNG"
+            />
+          </imageobject>
+
+          <imageobject role="html">
+            <imagedata align="center" fileref="images/plugins/plugins_8.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>The following table describes in short the various exporters. Remember you can
+        add/remove any Exporters depending on your needs.</para>
+
+      <table>
+        <title>Code generation "Exporter" tab fields</title>
+
+        <tgroup cols="2">
+          <colspec colnum="1" colwidth="1*"/>
+
+          <colspec colnum="2" colwidth="3*"/>
+
+          <thead>
+            <row>
+              <entry align="center">
+                <para>Field</para>
+              </entry>
+
+              <entry align="center">
+                <para>Description</para>
+              </entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry>
+                <para>Domain code</para>
+              </entry>
+
+              <entry>
+                <para>Generates POJO's for all the persistent classes and components found in the
+                  given Hibernate configuration.</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>DAO code</para>
+              </entry>
+
+              <entry>
+                <para>Generates a set of DAO's for each entity found.</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>Hibernate XML Mappings</para>
+              </entry>
+
+              <entry>
+                <para>Generate mapping (hbm.xml) files for each entity.</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>Hibernate XML Configuration</para>
+              </entry>
+
+              <entry>
+                <para>Generate a hibernate.cfg.xml file. Used to keep the hibernate.cfg.xml update
+                  with any new found mapping files.</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>Schema Documentation (.html)</para>
+              </entry>
+
+              <entry>
+                <para>Generates a set of html pages that documents the database schema and some of
+                  the mappings.</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>Generic Exporter (hbmtemplate)</para>
+              </entry>
+
+              <entry>
+                <para>Fully customizable exporter which can be used to perform custom
+                generation.</para>
+              </entry>
+            </row>
+
+          </tbody>
+        </tgroup>
+      </table>
+
+      <para>Each Exporter listens to certain properties and these can be setup in the <emphasis>
+          <property>Properties</property>
+        </emphasis> section where you can add/remove predefined or customer properties for each of
+        the exporters. The following table lists the time of writing predefined properties:</para>
+
+      <para>
+        <table>
+          <title>Exporter Properties</title>
+
+          <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*"/>
+
+            <colspec colnum="2" colwidth="3*"/>
+
+            <thead>
+              <row>
+                <entry align="center">
+                  <para>Name</para>
+                </entry>
+
+                <entry align="center">
+                  <para>Description</para>
+                </entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>
+                  <para>jdk5</para>
+                </entry>
+
+                <entry>
+                  <para>Generate Java 5 syntax</para>
+                </entry>
+              </row>
+
+              <row>
+                <entry>
+                  <para>ejb3</para>
+                </entry>
+
+                <entry>
+                  <para>Generate EJB 3 annotations</para>
+                </entry>
+              </row>
+
+              <row>
+                <entry>
+                  <para>for_each</para>
+                </entry>
+
+                <entry>
+                  <para>Specifies for which type of model elements the exporter should create a file
+                    and run through the templates. Possible values are: entity, component,
+                    configuration</para>
+                </entry>
+              </row>
+
+              <row>
+                <entry>
+                  <para>template_path</para>
+                </entry>
+
+                <entry>
+                  <para>Custom template directory for this specific exporter. You can use Eclipse
+                    variables.</para>
+                </entry>
+              </row>
+
+              <row>
+                <entry>
+                  <para>template_name</para>
+                </entry>
+
+                <entry>
+                  <para>Name for template relative to the template path</para>
+                </entry>
+              </row>
+
+              <row>
+                <entry>
+                  <para>outputdir</para>
+                </entry>
+
+                <entry>
+                  <para>Custom output directory for this specific exporter. You can use Eclipse
+                    variables.</para>
+                </entry>
+              </row>
+
+              <row>
+                <entry>
+                  <para>file_pattern</para>
+                </entry>
+
+                <entry>
+                  <para>Pattern to use for the generated files, relatively for the output dir.
+                    Example: {package-name}/{class-name}.java .</para>
+                </entry>
+              </row>
+
+
+
+              <row>
+                <entry>
+                  <para>dot.executable</para>
+                </entry>
+
+                <entry>
+                  <para>Executable to run GraphViz (only relevant, but optional for Schema
+                    documentation)</para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </para>
+    </section>
+  </section>
+
+  <section id="map_config_editor">
+    <title>Hibernate Mapping and Configuration File Editor</title>
+
+    <para>The <property>Hibernate Mapping File editor</property> provides XML editing functionality
+      for the <emphasis>
+        <property>hbm.xml </property>
+      </emphasis> and <emphasis>
+        <property>cfg.xml</property>
+      </emphasis> files. The editor is based on the Eclipse WTP tools and extends its functionality
+      to provide Hibernate specific code completion.</para>
+
+    <figure>
+      <title>XML Editing Functionality</title>
+      <mediaobject>
+        <imageobject role="fo">
+          <imagedata align="center" scale="80" fileref="images/plugins/plugins_9.png" format="PNG"/>
+        </imageobject>
+
+        <imageobject role="html">
+          <imagedata align="center" fileref="images/plugins/plugins_9.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <section>
+      <title>Java property/class completion</title>
+
+      <para>Package, class, and field completion is enabled for relevant XML attributes. The
+        auto-completion detects its context and limits the completion for e.g. <emphasis>
+          <property>&lt;property&gt;</property>
+        </emphasis> and only shows the properties/fields available in the enclosing <emphasis>
+          <property>&lt;class&gt;</property>
+        </emphasis>, <emphasis>
+          <property>&lt;subclass&gt;</property>
+        </emphasis> etc. It is also possible to navigate from the <emphasis>
+          <property>hbm.xml</property>
+        </emphasis> files to the relevant class/field in java code.</para>
+
+      <figure>
+        <title>Navigation Functionality</title>
+        <para>
+
+          <mediaobject>
+            <imageobject role="fo">
+              <imagedata align="center" fileref="images/plugins/plugins_10.png" format="PNG"
+                scale="80"/>
+            </imageobject>
+
+            <imageobject role="html">
+              <imagedata align="center" fileref="images/plugins/plugins_10.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </para>
+      </figure>
+
+      <para>This is done via the standard hyperlink navigation functionality in Eclipse; per default
+        it is done by pressing F3 while the cursor is on a class/field or by pressing <emphasis>
+          <property>Ctrl</property>
+        </emphasis> and the mouse button to perform the same navigation.</para>
+
+      <para>For java completion and navigation to work the file needs to reside inside an Eclipse
+        Java project, otherwise no completion will occur.</para>
+      <note>
+        <para>Java completion does not require a Hibernate console configuration to be used.</para>
+      </note>
+    </section>
+
+    <section>
+      <title>Table/Column completion</title>
+
+      <para>Table and column completion is also available for all table and column attributes. </para>
+
+      <figure>
+        <title>Table and Column Completion</title>
+        <mediaobject>
+          <imageobject role="fo">
+            <imagedata align="center" scale="80" fileref="images/plugins/plugins_11.png"
+              format="PNG"/>
+          </imageobject>
+
+          <imageobject role="html">
+            <imagedata align="center" fileref="images/plugins/plugins_11.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <important>
+        <para>Table/Column completion requires a proper configured hibernate console configuration
+          and this configuration should be the default for the project where the <emphasis>
+            <property>hbm.xml</property>
+          </emphasis> resides.</para>
+      </important>
+
+      <para>You can check which console configuration is selected under the Properties of a project
+        and look under the <emphasis>
+          <property>Hibernate Settings</property>
+        </emphasis> page. When a proper configuration is selected it will be used to fetch the
+        table/column names in the background.</para>
+
+      <note>
+        <para>Currently it is not recommended to use this feature on large databases since it does
+          not fetch the information iteratively. It will be improved in future versions.</para>
+      </note>
+    </section>
+
+    <section>
+      <title>Configuration property completion</title>
+
+      <para>In <emphasis>
+          <property>cfg.xml</property>
+        </emphasis> code completion for the value of <emphasis>
+          <property>&lt;property&gt; name</property>
+        </emphasis> attributes is available.</para>
+
+
+      <figure>
+        <title>Property Completion</title>
+        <mediaobject>
+          <imageobject role="fo">
+            <imagedata align="center" scale="80" fileref="images/plugins/plugins_12.png"
+              format="PNG"/>
+          </imageobject>
+
+          <imageobject role="html">
+            <imagedata align="center" fileref="images/plugins/plugins_12.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+    </section>
+  </section>
+
+  <section id="map_config_struct_editor">
+    <title>Structured Hibernate Mapping and Configuration File Editor</title>
+    <para>The structured editor represents the file in the tree form. It also allows to modify the
+      structure of the file and its elements with the help of tables provided on the right-hand
+      area.</para>
+
+    <para>To open any mapping file in the editor, choose <emphasis>
+        <property>Open With > Hibernate 3.0 XML Editor</property>
+      </emphasis> option from the context menu of the file. The editor should look as follows:</para>
+
+    <figure>
+      <title>Structured hbm.xml Editor</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/plugins/plugins_12_a.png" scale="80"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>For the configuration file you should choose <emphasis>
+        <property>Open With > Hibernate Configuration 3.0 XML Editor</property>
+      </emphasis>option.</para>
+
+    <figure>
+      <title>Structured cfg.xml Editor</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/plugins/plugins_12_b.png" scale="80"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+  </section>
+
+  <section>
+    <title>Reveng.xml Editor</title>
+
+    <para>A <emphasis>
+        <property>reveng.xml </property>
+      </emphasis> file is used to customize and control how reverse engineering is performed by the
+      tools. The plugins provide an editor to ease the editing of this file and hence used to
+      configure the reverse engineering process.</para>
+
+    <para>The editor is intended to allow easy definition of type mappings, table include/excludes
+      and specific override settings for columns, e.g. define an explicit name for a column when the
+      default naming rules are not applicable.</para>
+
+    <note>
+      <para> Not all the features of the <emphasis>
+          <property>.reveng.xml </property>
+        </emphasis> file are exposed or fully implemented in the editor, but the main functionality
+        is there. To understand the full flexibility of the <emphasis>
+          <property>reveng.xml</property>
+        </emphasis>, please see <xref linkend="hibernaterevengxmlfile"/>
+      </para>
+    </note>
+
+    <para>The editor is activated as soon as an <emphasis>
+        <property>.reveng.xml </property>
+      </emphasis> file is opened. To get an initial <emphasis>
+        <property>reveng.xml </property>
+      </emphasis> file the <property>Reverse Engineering File Wizard</property> can be started via <emphasis>
+        <property>Ctrl+N</property>
+      </emphasis> and <emphasis>
+        <property>Hibernate > Hibernate Reverse Engineering File (reveng.xml)</property>
+      </emphasis> then.</para>
+
+    <figure>
+      <title>Overview Page</title>
+      <mediaobject>
+        <imageobject role="fo">
+          <imagedata align="center" scale="80" fileref="images/plugins/plugins_22.png" format="PNG"
+          />
+        </imageobject>
+
+        <imageobject role="html">
+          <imagedata align="center" fileref="images/plugins/plugins_22.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>Or you can get it via the <property>Code Generation Launcher</property> by checking the
+      proper section in the <emphasis>
+        <property>Main</property>
+      </emphasis> tab of the <link linkend="hib_code_gen">Hibernate Code Generation Wizard</link>.</para>
+
+    <para>The following screenshot shows the <emphasis>
+        <property>Overview</property>
+      </emphasis> page where the wanted console configuration is selected (auto-detected if
+      Hibernate 3 support is enabled for the project)</para>
+
+    <figure>
+      <title>Overview Page</title>
+      <mediaobject>
+        <imageobject role="fo">
+          <imagedata align="center" scale="80" fileref="images/plugins/plugins_13.png" format="PNG"
+          />
+        </imageobject>
+
+        <imageobject role="html">
+          <imagedata align="center" fileref="images/plugins/plugins_13.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>The <emphasis>
+        <property>Table Filter</property>
+      </emphasis> page allows you to specify which tables to include and exclude. Pressing <emphasis>
+        <property>Refresh</property>
+      </emphasis> shows the tables from the database that have not yet been excluded.</para>
+
+    <figure>
+      <title>Table Filters Page</title>
+      <mediaobject>
+        <imageobject role="fo">
+          <imagedata align="center" scale="80" fileref="images/plugins/plugins_14.png" format="PNG"
+          />
+        </imageobject>
+
+        <imageobject role="html">
+          <imagedata align="center" fileref="images/plugins/plugins_14.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>The <emphasis>
+        <property>Type Mappings</property>
+      </emphasis> page is used for specifying type mappings from JBDC types to any Hibernate type
+      (including usertypes) if the default rules are not applicable. Here again to see the database
+      tables press <emphasis>
+        <property>Refresh</property>
+      </emphasis> button underneath. More about type mappings you can find further in the <link
+        linkend="type_map">Type Mappings</link> section.</para>
+
+    <figure>
+      <title>Type Mappings Page</title>
+      <mediaobject>
+        <imageobject role="fo">
+          <imagedata align="center" scale="80" fileref="images/plugins/plugins_15.png" format="PNG"
+          />
+        </imageobject>
+
+        <imageobject role="html">
+          <imagedata align="center" fileref="images/plugins/plugins_15.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>The <emphasis>
+        <property>Table and Columns</property>
+      </emphasis> page allows you to explicit set e.g. which hibernatetype and propertyname that
+      should be used in the reverse engineered model. For more details on how to configure the
+      tables while reverse engineering read the <link linkend="tab_and_col">Specific table
+        configuration</link> section.</para>
+
+    <figure>
+      <title>Table and Columns Page</title>
+      <mediaobject>
+        <imageobject role="fo">
+          <imagedata align="center" scale="80" fileref="images/plugins/plugins_16.png" format="PNG"
+          />
+        </imageobject>
+
+        <imageobject role="html">
+          <imagedata align="center" fileref="images/plugins/plugins_16.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>Now that you have configured all necessary parts, you can learn how to work with
+        <property>Hibernate Console Perspective</property>.</para>
+  </section>
+
+  <section>
+    <title>Hibernate Console Perspective</title>
+
+    <para>The <property>Hibernate Console Perspective</property> combines a set of views which allow
+      you to see the structure of your mapped entities/classes, edit HQL queries, execute the
+      queries, and see the results. To use this perspective you need to create a <link
+        linkend="console_conf">Console configuration</link>.</para>
+
+    <section>
+      <title>Viewing the entity structure</title>
+
+      <para>To view your new configuration and entity/class structure, switch to <property>Hibernate
+          Configurations View</property>. Expanding the tree allows you to browse the class/entity
+        structure and see the relationships.</para>
+
+      <figure>
+        <title>Hibernate Console Perspective</title>
+        <mediaobject>
+          <imageobject role="fo">
+            <imagedata align="center" scale="80" fileref="images/plugins/plugins_17.png"/>
+          </imageobject>
+
+          <imageobject role="html">
+            <imagedata align="center" fileref="images/plugins/plugins_17.png"/>
+          </imageobject>
+        </mediaobject>
+
+      </figure>
+
+      <para>The <property>Console Configuration</property> does not dynamically adjust to changes
+        done in mappings and java code. To reload the configuration select the configuration and
+        click the <emphasis>
+          <property>Reload</property>
+        </emphasis> button in the view toolbar or in the context menu.</para>
+
+      <para>Besides, it&apos;s possible to open source and mapping files for objects showed in
+          <property>Hibernate Configurations View</property>. Just bring up the context menu for a
+        necessary object and select <emphasis>
+          <property>Open Source File</property>
+        </emphasis> to see appropriate Java class or <emphasis>
+          <property>Open Mapping File</property>
+        </emphasis> to open a proper <emphasis>
+          <property>.hbm.xml</property>.</emphasis></para>
+
+      <figure>
+        <title>Opening Source for Objects</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/plugins/plugins_17_a.png" scale="80"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <section>
+        <title>Mapping Diagram</title>
+
+        <para>In order to get a visual feel on how entities are related as well as view their
+          structures, a <property>Mapping Diagram</property> is provided. It is available by right
+          clicking on the entity you want a mapping diagram for and then choosing <emphasis>
+            <property>Open Mapping Diagram</property>.</emphasis></para>
+
+        <figure>
+          <title>Mapping Diagram</title>
+          <mediaobject>
+            <imageobject role="fo">
+              <imagedata align="center" scale="80" fileref="images/plugins/plugins_18.png"/>
+            </imageobject>
+
+            <imageobject role="html">
+              <imagedata align="center" fileref="images/plugins/plugins_18.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <para>For better navigating on the Diagram use <property>Outline view</property> which is
+          available in the structural and graphical modes.</para>
+        <figure>
+          <title>Navigating in the Structural Mode</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/plugins/plugins_18_a.png" scale="80"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <para>To switch over between the modes use the buttons in the top-right corner of the
+          <property>Outline view</property>.</para>
+
+        <figure>
+          <title>Navigating in the Graphical Mode</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/plugins/plugins_18_b.png" scale="80"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <para>As in <property>Hibernate Configurations View</property> in <property>Mapping
+          Diagram</property> it&apos;s also possible to open source/mapping file for a chosen
+          object by selecting appropriate option in the context menu. </para>
+
+        <figure>
+          <title>Navigating on the Diagram</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/plugins/plugins_18_c.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <para>If you ask to open source/mapping file by right clicking on any entity element, this
+          element will be highlighted in the open file.</para>
+
+        <figure>
+          <title>Opening Source for Object</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/plugins/plugins_18_d.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <para>Finally, if you need to have your Diagram exported as <property>
+            <emphasis>.png</emphasis>
+          </property>, <property>
+            <emphasis>.jpeg</emphasis>
+          </property> or <property>
+            <emphasis>.bmp</emphasis>
+          </property>, you should right-click anywhere in the <property>Mapping Diagram
+          editor</property> and select <property><emphasis>Export as Image</emphasis>.</property></para>
+
+        <figure>
+          <title>Mapping Diagram Export</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/plugins/plugins_18_e.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <para>As you can see on the figure above, <property>
+            <emphasis>Undo</emphasis>,
+          </property> <property>
+            <emphasis>Redo</emphasis>
+          </property> and <property>
+            <emphasis>Auto layout</emphasis>
+          </property> options are also available through the context menu.</para>
+      </section>
+    </section>
+
+    <section>
+      <title>Prototyping Queries</title>
+
+      <para>Queries can be prototyped by entering them in the <property>HQL</property> or
+          <property>Criteria Editor</property>. The query editors are opened by right-clicking the
+          <property>Console Configuration</property> and selecting either <property>HQL
+        Editor</property> or <property>Hibernate Criteria Editor</property>. The editors
+        automatically detect the chosen configuration.</para>
+
+      <para>If the menu item is disabled then you need at first to create a <property>Session
+          Factory</property>. That is done by simply expanding the <property>Session
+        Factory</property> node.</para>
+
+      <para>By brining up the context menu for a chosen entity or property in the <property>Console
+          Configuration</property> and opening <emphasis>
+          <property>HQL Editor</property>
+        </emphasis> or <emphasis>
+          <property>Hibernate Criteria Editor</property>
+        </emphasis> you&apos;ll get a prefill query.</para>
+
+      <figure>
+        <title>Entering Simple Queries</title>
+        <mediaobject>
+          <imageobject role="fo">
+            <imagedata align="center" scale="90" fileref="images/plugins/plugins_19.png"
+              format="PNG"/>
+          </imageobject>
+
+          <imageobject role="html">
+            <imagedata align="center" fileref="images/plugins/plugins_19.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <para>To copy a portion of code from .java file into a HQL or Criteria editor, make use of the
+        Quick Fix option (Ctrl + 1).</para>
+
+      <figure>
+        <title>Quick Fix Option Demonstration</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/plugins/plugins_19_b.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <para>You can also update the original java code according to changes in the HQL or Criteria
+        editor. For that you should save your HQL/Criteria query and submit the replacing in
+        appeared confirmation dialog.</para>
+
+      <figure>
+        <title>Updating Java Code</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/plugins/plugins_19_c.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>Executing the query is done by clicking the green run button in the toolbar or pressing <emphasis>
+          <property>Ctrl+Enter</property>
+        </emphasis>.</para>
+
+      <para>Errors during creation of the <property>Session Factory</property> or running the
+        queries (e.g. if your configuration or query is incorrect) will be shown in a message dialog
+        or inclined in the view that detected the error, you may get more information about the
+        error in the <property>Error Log View</property> on the right pane.</para>
+
+      <para>Results of a query will be shown in the <property>Hibernate Query Result View</property>
+        and details of possible errors (syntax errors, database errors, etc.) can be seen in the
+          <property>Error Log View</property>.</para>
+
+
+      <note>
+        <para>HQL queries are executed by default using <literal>list()</literal> thus without any
+          limit of the size of the output the query could return a large result set. You might run
+          out of memory. To avoid this you can put a value in the Max results field to reduce the
+          number of elements returned.</para>
+      </note>
+
+      <section>
+        <title>Dynamic Query Translator</title>
+
+        <para>If the <property>Hibernate Dynamic Query Translator View</property> is visible while
+          writing in the <property>HQL Editor</property> it will show the generated SQL for a HQL
+          query.</para>
+
+        <figure>
+          <title>Hibernate Dynamic Query Translator View</title>
+          <mediaobject>
+            <imageobject role="fo">
+              <imagedata align="center" scale="80" fileref="images/plugins/plugins_20.png"
+                format="PNG"/>
+            </imageobject>
+
+            <imageobject role="html">
+              <imagedata align="center" fileref="images/plugins/plugins_20.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <para>The translation is done each time you stop typing into the editor, if there are errors
+          in the HQL the parse exception will be shown embedded in the view.</para>
+      </section>
+    </section>
+
+    <section>
+      <title>Properties View</title>
+
+      <para>As you can see on the figure, <property>Properties view</property> shows the number of
+        query results as well as the time of executing.</para>
+
+      <figure>
+        <title>Properties View</title>
+        <mediaobject>
+          <imageobject role="fo">
+            <imagedata align="center" scale="80" fileref="images/plugins/plugins_21_a.png"
+              format="PNG"/>
+          </imageobject>
+
+          <imageobject role="html">
+            <imagedata align="center" fileref="images/plugins/plugins_21_a.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>It also displays the structure of any persistent object selected in the
+          <property>Hibernate Query Results View</property>. Editing is not yet supported.</para>
+
+      <figure>
+        <title>Properties View for Selected Object</title>
+        <mediaobject>
+          <imageobject role="fo">
+            <imagedata align="center" scale="80" fileref="images/plugins/plugins_21_b.png"
+              format="PNG"/>
+          </imageobject>
+
+          <imageobject role="html">
+            <imagedata align="center" fileref="images/plugins/plugins_21_b.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </section>
+  </section>
+
+  <section>
+    <title>Enable debug logging in the plugins</title>
+
+    <para>It is possible to configure the eclipse plugin to route all logging made by the plugins
+      and hibernate code it self to the <property>Error Log View</property> in Eclipse.</para>
+
+    <para>This is done by editing the <emphasis>
+        <property>hibernate-log4j.properties</property>
+      </emphasis> in <emphasis>
+        <property>org.hibernate.eclipse/ directory/jar</property>
+      </emphasis>. This file includes a default configuration that only logs WARN and above to a set
+      of custom appenders (PluginFileAppender and PluginLogAppender). You can change these settings
+      to be as verbose or silent as you please - see <ulink url="http://www.hibernate.org/5.html"
+        >Hibernate Documentation</ulink> for interesting categories and Log4j documentation.</para>
+
+    <section>
+      <title>Relevant Resources Links</title>
+      <para>Find more on how to configure logging via a log4j property file in <ulink
+          url="http://supportweb.cs.bham.ac.uk/docs/tutorials/docsystem/build/tutorials/log4j/log4j.html"
+          >Log4j documentation</ulink>.</para>
+    </section>
+  </section>
+</chapter>

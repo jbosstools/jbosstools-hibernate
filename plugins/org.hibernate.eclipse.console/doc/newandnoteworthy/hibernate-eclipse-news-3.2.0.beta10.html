@@ -1,0 +1,100 @@
+<html>
+
+<head>
+<link rel="stylesheet" href="default_.css">
+<title>Hibernate Eclipse Tools 3.2.0.beta10 News</title>
+</head>
+
+<body>
+
+<h1>Hibernate Tools 3.2.0.beta10 - New and Noteworthy</h1>
+
+  <p>Previous <a href="hibernate-eclipse-news-3.2.0.beta9.html">new and noteworthy for 3.2.0.beta9</a></p>
+  <p><a href="http://opensource.atlassian.com/projects/hibernate/secure/IssueNavigator.jspa?reset=true&pid=10030&fixfor=10640">Release notes</a></p>
+<table border="0" cellpadding="10" cellspacing="0" width="80%">
+    <tr>
+    <td colspan="2">
+      <hr>
+      <h3>General</h3>
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Eclipse 3.3 and Java 5</b></td>
+    <td valign="top">
+      <p>This release is compatible with Eclipse 3.2/WTP 1.5 and Eclipse 3.3/WTP 2.0. Remember to use Java 5 VM when running Eclipse 3/WTP 2.0.</p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Seam 0.x templates removed</b></td>
+    <td valign="top">
+      <p>The Seam templates were getting to much out of date and have now been removed to avoid confusion.</p>
+      <p>Use seam-gen or JBoss Seam Tools to get proper Seam application generation (both of these tools uses hibernate tools to implement their functionallity)</p>
+    </td>
+  </tr>
+   <tr>
+    <td colspan="2">
+      <hr>
+      <h3>Reverse Engineering</h3>
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Auto-detection of identification strategy</b></td>
+    <td valign="top">
+      <p>Previously the default identifier strategy was always "assigned" and if users wanted it differently had to be explicit about what strategy they want to use. The core can now detect the default identifier strategy if the MetaDataDialect supports the underlying database.</p>
+<p>Support for MySQL and H2 is included in this version.</p>
+
+<p>If you want to see your database added (or improve the existing
+ones) then
+visit <a href="http://opensource.atlassian.com/projects/hibernate/browse/HBX-935">HBX-935</a>
+and add a jira task with details/patch on what meta data to read to detect
+the identifcation strategy.</p>
+  </tr>
+   <tr>
+    <td colspan="2">
+      <hr>
+      <h3>Configuration</h3>
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>JPA auto detected</b></td>
+    <td valign="top">
+      <p>If a META-INF/persistence.xml exist in the selected project when a new Hibernate Console Configuration is created JPA is now assumed.</p>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Properties always overrides</b></td>
+    <td valign="top">
+      <p>The Ant and Eclipse setup were not always in sync on when the properties found in the properties files or custom properties would take effect.</p>
+<p>In this release if a user points to a property file it is *always*
+used for overriding any settings found in /hibernate.properties,
+hibernate.cfg.xml's and persistence.xml; this allow you to use the
+existing configuration but only override the really different parts;
+e.g. specify JDBC connection properties to override the datasource
+which neither eclipse nor ant can reference.</p>
+    </td>
+  </tr>
+
+</table>
+
+</body>
+
+</html>
+
+

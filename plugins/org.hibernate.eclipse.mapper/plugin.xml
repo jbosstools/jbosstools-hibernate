@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+     <extension
+         point="org.eclipse.core.runtime.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.xml"
+            file-extensions="xml"
+            id="hbmxmlsource"
+            name="Hibernate Mapping Content-Type"
+            priority="normal">
+         <describer class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
+            <parameter
+                  name="element"
+                  value="hibernate-mapping"/>
+         </describer>
+      </content-type>
+      <content-type
+            base-type="org.eclipse.core.runtime.xml"
+            file-extensions="xml"
+            file-names="hibernate.cfg.xml"
+            id="cfgxmlsource"
+            name="Hibernate Configuration Content-type"
+            priority="low">
+            <describer class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
+            <parameter
+                  name="element"
+                  value="hibernate-configuration"/>
+         </describer>
+      </content-type>
+	  <content-type
+            base-type="org.eclipse.core.runtime.xml"
+            file-extensions="xml"
+            file-names="hibernate.reveng.xml"
+            id="revengxmlsource"
+            name="Hibernate Reverse Engineering Override Content-type"
+            priority="normal">
+            <describer class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
+            <parameter
+                  name="element"
+                  value="hibernate-reverse-engineering"/>
+         </describer>
+      </content-type>      
+	  <!--<content-type
+            base-type="org.eclipse.core.runtime.xml"
+            file-extensions="xml"
+            file-names="persistence.xml"
+            id="persistenceunitxml"
+            name="Java Persistence Unit Content-Type"
+            priority="low">
+            <describer class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
+            <parameter
+                  name="element"
+                  value="persistence"/>
+         </describer>
+      </content-type>-->      
+   </extension>
+   <extension
+         point="org.eclipse.wst.sse.core.modelHandler">
+         <modelHandler
+               associatedContentTypeId="org.hibernate.eclipse.mapper.hbmxmlsource"
+               class="org.hibernate.eclipse.mapper.modelhandler.ModelHandlerForHBMXML"
+               default="false"
+               id="org.hibernate.eclipse.mapper.handler.hbm.xml">
+         </modelHandler>
+         <modelHandler
+               associatedContentTypeId="org.hibernate.eclipse.mapper.cfgxmlsource"
+               class="org.hibernate.eclipse.mapper.modelhandler.ModelHandlerForCFGXML"
+               default="false"
+               id="org.hibernate.eclipse.mapper.handler.cfg.xml">
+         </modelHandler>
+         <modelHandler
+               associatedContentTypeId="org.hibernate.eclipse.mapper.revengxmlsource"
+               class="org.hibernate.eclipse.mapper.modelhandler.ModelHandlerForREVENGXML"
+               default="false"
+               id="org.hibernate.eclipse.mapper.handler.reveng.xml">
+         </modelHandler>
+         <modelHandler
+               associatedContentTypeId="org.eclipse.jpt.core.content.persistence"
+               class="org.hibernate.eclipse.mapper.modelhandler.ModelHandlerForPersistenceUnitXML"
+               default="false"
+               id="org.hibernate.eclipse.mapper.handler.persistenceunit.xml">
+         </modelHandler>
+   </extension>
+   <extension
+         point="org.eclipse.wst.sse.ui.editorConfiguration">
+      <sourceViewerConfiguration
+            target="org.hibernate.eclipse.mapper.hbmxmlsource"
+            class="org.hibernate.eclipse.mapper.editors.HBMXMLStructuredTextViewerConfiguration"
+            />
+      <contentOutlineConfiguration
+            target="org.hibernate.eclipse.mapper.hbmxmlsource" 
+            class="org.hibernate.eclipse.mapper.views.contentoutline.HibernateXMLContentOutlineConfiguration"            
+            />                      
+	  <sourceViewerConfiguration
+            target="org.hibernate.eclipse.mapper.cfgxmlsource"
+            class="org.hibernate.eclipse.mapper.editors.CFGXMLStructuredTextViewerConfiguration"
+            />
+      <contentOutlineConfiguration
+            target="org.hibernate.eclipse.mapper.cfgxmlsource" 
+            class="org.hibernate.eclipse.mapper.views.contentoutline.HibernateXMLContentOutlineConfiguration"            
+            />                       
+      <contentOutlineConfiguration
+            target="org.hibernate.eclipse.mapper.revengxmlsource" 
+            class="org.hibernate.eclipse.mapper.views.contentoutline.HibernateXMLContentOutlineConfiguration"            
+            />
+	  <sourceViewerConfiguration
+            target="org.eclipse.jpt.core.content.persistence"
+            class="org.hibernate.eclipse.mapper.editors.PersistenceUnitStructuredTextViewerConfiguration"
+            />
+      <!--<contentOutlineConfiguration
+            target="org.eclipse.jpt.core.content.persistence" 
+            class="org.hibernate.eclipse.mapper.views.contentoutline.HibernateXMLContentOutlineConfiguration"            
+            />-->                       
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor"
+            contributorClass="org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditorContributor"
+            icon="icons/hibernate_small_icon.gif"
+            id="org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor"
+            name="Hibernate reverse engineering editor">
+         <contentTypeBinding contentTypeId="org.hibernate.eclipse.mapper.revengxmlsource"/>
+      </editor>
+   </extension>
+  
+    <extension point = "org.eclipse.wst.xml.core.catalogContributions">
+     <catalogContribution>
+	        <public publicId="-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+				uri="jar:platform:/plugin/org.hibernate.eclipse/lib/hibernate/hibernate3.jar!/org/hibernate/hibernate-mapping-3.0.dtd"
+				webURL="http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"/>
+           <public publicId="-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+               uri="jar:platform:/plugin/org.hibernate.eclipse/lib/hibernate/hibernate3.jar!/org/hibernate/hibernate-configuration-3.0.dtd"
+               webURL="http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd"/>
+           <public
+               publicId="-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN"
+               uri="jar:platform:/plugin/org.hibernate.eclipse/lib/tools/hibernate-tools.jar!/org/hibernate/hibernate-reverse-engineering-3.0.dtd"/>
+     </catalogContribution>
+    </extension>   
+    
+    <extension
+		point="org.eclipse.wst.sse.ui.adapterFactoryDescription">
+		<adapterFactoryDescription
+			class="org.hibernate.eclipse.mapper.registry.AdapterFactoryProviderForHBMXML">
+		</adapterFactoryDescription>
+		<adapterFactoryDescription
+			class="org.hibernate.eclipse.mapper.registry.AdapterFactoryProviderForCFGXML">
+		</adapterFactoryDescription>
+		<adapterFactoryDescription
+			class="org.hibernate.eclipse.mapper.registry.AdapterFactoryProviderForREVENGXML">
+		</adapterFactoryDescription>
+	</extension>
+  
+      <extension
+        point="org.eclipse.ui.decorators">
+     <decorator
+           adaptable="true"
+           icon="icons/images/hibernate_overlay.gif"
+           id="org.hibernate.eclipse.decorators.HibernateDecorator"
+           label="Hibernate Decorator"
+           lightweight="true"
+           location="BOTTOM_LEFT"
+           state="true">
+        <enablement>
+           <and>
+              <objectClass name="org.eclipse.core.resources.IResource"/>
+              <or>
+                    <objectState
+                    name="contentTypeId"
+                    value="org.hibernate.eclipse.mapper.hbmxmlsource"/>
+                    <objectState
+                    name="contentTypeId"
+                    value="org.hibernate.eclipse.mapper.cfgxmlsource"/>
+                    <objectState
+                    name="contentTypeId"
+                    value="org.hibernate.eclipse.mapper.revengxmlsource"/>              
+              </or>
+           </and>
+        </enablement>
+     </decorator>
+  </extension> 
+    
+</plugin>
