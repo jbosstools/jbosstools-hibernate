@@ -2,6 +2,7 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3CR3//EN"
 "http://www.oasis-open.org/docbook/xml/4.3CR3/docbookx.dtd"
 [
+<!ENTITY preface SYSTEM "modules/preface.xml">
 <!ENTITY setup SYSTEM "modules/setup.xml">
 <!ENTITY codegenarchitecture SYSTEM "modules/codegenarchitecture.xml">
 <!ENTITY plugins SYSTEM "modules/plugins.xml">
@@ -34,12 +35,14 @@
     </mediaobject>
   </bookinfo>
   <toc/>
-  <preface>
-    <title>Preface</title>
-
-    <para>Hibernate Tools is a toolset for <ulink url="http://www.hibernate.org/6.html">Hibernate
-      3</ulink> and <ulink url="http://www.hibernate.org/27.html">related projects</ulink>. The
-      tools provide Ant tasks and Eclipse plugins for performing reverse engineering, code
-      generation, visualization and interaction with Hibernate.</para>
-  </preface> &setup; &codegenarchitecture; &plugins; &ant; &reveng;
-  &codegen; </book>
+  
+  &preface;
+  &setup; 
+  &codegenarchitecture;
+  &plugins; 
+  &ant;
+  &reveng;
+  &codegen;                   
+  
+  
+  </book>
