@@ -17,20 +17,17 @@
 
         <table>
             <title>Key Functionality for Hibernate Tools</title>
-
-            <tgroup cols="2">
+            <tgroup cols="3">
+                
                 <colspec colnum="1" colwidth="1*"/>
-                <colspec colnum="2" colwidth="3*"/>
-
+                <colspec colnum="2" colwidth="5*"/>
+                <colspec colnum="3" colwidth="1*"/>
+                
                 <thead>
                     <row>
-                        <entry align="center">
-                            <para>Feature</para>
-                        </entry>
-
-                        <entry align="center">
-                            <para>Benefit</para>
-                        </entry>
+                        <entry>Feature</entry>
+                        <entry>Benefit</entry>
+                        <entry>Chapter</entry>
                     </row>
                 </thead>
 
@@ -38,23 +35,22 @@
 
                     <row>
                         <entry>
-                            <para>Code Generation through <link linkend="ant">Ant Task</link></para>
+                            <para>Code Generation through Ant Task</para>
                         </entry>
-
                         <entry>
                             <para>Allows to execute mapping or Java code generation from reverse
                                 engineering, schema generation and generation of other artifacts
                                 during the build process.</para>
-                        </entry>
+                        </entry>     
+                        <entry><link linkend="ant">ant task</link></entry>
                     </row>
 
                     <row>
                         <entry>
-                            <para><link linkend="map_file_wizard">Wizards for creation
-                                purposes</link> and <link linkend="code_gen">code
-                            generation</link></para>
+                            <para>Wizards for creation
+                                purposes and code
+                            generation</para>
                         </entry>
-
                         <entry>
                             <para> A set of wizards are provided with the Hibernate Eclipse tools to
                                 quickly create common Hibernate files such as configuration
@@ -62,6 +58,10 @@
                                 Generation wizard helps to generate a series of various artifacts,
                                 there is even support for completely reverse engineer an existing
                                 database schema.</para>
+                        </entry>                   
+                        <entry> <link linkend="map_file_wizard">hibernate mapping file</link>
+                                       <link linkend="hib_config_file">hibernate configuration file</link>
+                                       <link linkend="code_gen">code generation</link>                                     
                         </entry>
                     </row>
 
@@ -69,40 +69,37 @@
                     <row>
                         <entry>
                             <para>
-                                <link linkend="map_config_editor">Mapping and Configuration files
-                                    Editors</link>
+                               Mapping and Configuration files
+                                    Editors
                             </para>
                         </entry>
-
                         <entry>
                             <para>Support auto-completion and syntax highlighting. Editors also
                                 support semantic auto-completion for class names and property/field
                                 names, making it much more versatile than a normal XML
                             editor.</para>
                         </entry>
+                        <entry> <link linkend="map_config_editor">mapping and configuration files editors</link></entry>
                     </row>
 
                     <row>
                         <entry>
-                            <para>Tools for <link linkend="code_gen">organizing</link> and <link linkend="rev_xml_editor"
-                                    >controlling Reverse Engineering</link></para>
+                            <para>Tools for organizing and controlling Reverse Engineering</para>
                         </entry>
-
                         <entry>
                             <para>Code Generation wizard provides powerful functionality for
                                 generating a series of various artifacts like domain model classes,
                                 mapping files, annotated EJB3 entity beans, etc. and reveng.xml file
                                 editor allows to control this processes.</para>
                         </entry>
+                        <entry><link linkend="code_gen">code generation</link> 
+                            <link linkend="rev_xml_editor">reveng.xml editor</link></entry>
                     </row>
 
                     <row>
                         <entry>
-                            <para>
-                                <link linkend="hib_console">Hibernate Console</link>
-                            </para>
+                            <para>Hibernate Console</para>
                         </entry>
-
                         <entry>
                             <para>It is a new perspective in Eclipse which provides an overview of
                                 your Hibernate Console configurations, were you also can get an
@@ -110,19 +107,18 @@
                                 The console allows you to execute HQL queries against your database
                                 and browse the result directly in Eclipse.</para>
                         </entry>
+                        <entry><link linkend="hib_console">hibernate console</link></entry>
                     </row>
 
                     <row>
                         <entry>
-                            <para>
-                                <link linkend="map_diagram">Functional Mapping Diagram</link>
-                            </para>
+                            <para>Functional Mapping Diagram</para>
                         </entry>
-
                         <entry>
                             <para>Makes possible to visualize structure of entities and
                                 relationships between them.</para>
-                        </entry>
+                        </entry>                      
+                        <entry><link linkend="map_diagram">mapping diagram</link></entry>
                     </row>
 
 
@@ -130,7 +126,6 @@
                         <entry>
                             <para>Eclipse JDT integration</para>
                         </entry>
-
                         <entry>
                             <para>Hibernate Tools integrates into the Java code completion and build
                                 support of Java in Eclipse. This gives you code completion of HQL
