@@ -9,31 +9,12 @@
   <section>
     <title>Introduction</title>
 
-    <para>The following features are available in the <property>Hibernate Tools</property> Eclipse
-      plugins:</para>
-
-    <para><emphasis role="bold">Mapping Editor</emphasis>: An editor for Hibernate XML mapping
-      files, supporting auto-completion and syntax highlighting. It also supports semantic
-      auto-completion for class names and property/field names, making it much more versatile than a
-      normal XML editor.</para>
-
-    <para><emphasis role="bold">Hibernate Console</emphasis>: The console is a new perspective in
-      Eclipse. It provides an overview of your Hibernate Console configurations, were you also can
-      get an interactive view of your persistent classes and their relationships. The console allows
-      you to execute HQL queries against your database and browse the result directly in Eclipse.</para>
-
-    <para><emphasis role="bold">Configuration Wizards and Code generation</emphasis>: A set of
-      wizards are provided with the Hibernate Eclipse tools; you can use a wizard to quickly
-      generate common Hibernate configuration (cfg.xml) files, and from these you can code generate
-      a series of various artifacts, there is even support for completely reverse engineer an
-      existing database schema and use the code generation to generate POJO source files and
-      Hibernate mapping files.</para>
-
-    <para><emphasis role="bold">Eclipse JDT integration</emphasis>: <property>Hibernate
-      Tools</property> integrates into the Java code completion and build support of Java in
-      Eclipse. This gives you codecompletion of HQL inside Java code plus <property>Hibernate
-      Tools</property> will add problem markers if your queries are not valid against the console
-      configuration associated with the project.</para>
+    <para>Hibernate Eclipse Tools include wizards for creating Hibernate mapping files,
+      configuration files (.cfg.xml), revenge.xml as well as wizards for adjusting Console
+      Configuration and Code Generation. Special structured and XML editors, editors for executing
+      HQL and Criteria queries are also provided Hibernate Console. Refer to <link
+        linkend="hibernate_key_features">Key Features</link> section to find all benefits that you
+      can take advantage of while using the tools within Eclipse.</para>
 
     <note>
       <para>Please note that these tools do not try to hide any functionality of
@@ -45,7 +26,7 @@
     </note>
   </section>
 
-  <section>
+  <section id="map_file_wizard">
     <title>Creating a Hibernate Mapping File</title>
 
     <para>Hibernate mapping files are used to specify how your objects are related to database
@@ -542,7 +523,7 @@
         <property>Run > Hibernate Code Generation</property>
       </emphasis> menu item.</para>
 
-    <section>
+    <section id="code_gen">
       <title>Code Generation Launcher</title>
 
       <para>When you click on <emphasis>
@@ -1150,7 +1131,7 @@
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="images/plugins/plugins_12_a.png" scale="80"/>
+          <imagedata fileref="images/plugins/plugins_12_a.png"/>
         </imageobject>
       </mediaobject>
     </figure>
@@ -1164,14 +1145,14 @@
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="images/plugins/plugins_12_b.png" scale="80"/>
+          <imagedata fileref="images/plugins/plugins_12_b.png"/>
         </imageobject>
       </mediaobject>
     </figure>
 
   </section>
 
-  <section>
+  <section id="rev_xml_editor">
     <title>Reveng.xml Editor</title>
 
     <para>A <emphasis>
@@ -1310,7 +1291,7 @@
         <property>Hibernate Console Perspective</property>.</para>
   </section>
 
-  <section>
+  <section id="hib_console">
     <title>Hibernate Console Perspective</title>
 
     <para>The <property>Hibernate Console Perspective</property> combines a set of views which allow
@@ -1359,12 +1340,12 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="images/plugins/plugins_17_a.png" scale="80"/>
+            <imagedata fileref="images/plugins/plugins_17_a.png"/>
           </imageobject>
         </mediaobject>
       </figure>
 
-      <section>
+      <section id="map_diagram">
         <title>Mapping Diagram</title>
 
         <para>In order to get a visual feel on how entities are related as well as view their
@@ -1392,20 +1373,20 @@
 
           <mediaobject>
             <imageobject>
-              <imagedata fileref="images/plugins/plugins_18_a.png" scale="80"/>
+              <imagedata fileref="images/plugins/plugins_18_a.png"/>
             </imageobject>
           </mediaobject>
         </figure>
 
         <para>To switch over between the modes use the buttons in the top-right corner of the
-          <property>Outline view</property>.</para>
+            <property>Outline view</property>.</para>
 
         <figure>
           <title>Navigating in the Graphical Mode</title>
 
           <mediaobject>
             <imageobject>
-              <imagedata fileref="images/plugins/plugins_18_b.png" scale="80"/>
+              <imagedata fileref="images/plugins/plugins_18_b.png"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -1457,8 +1438,8 @@
         </figure>
 
         <para>As you can see on the figure above, <property>
-            <emphasis>Undo</emphasis>,
-          </property> <property>
+            <emphasis>Undo</emphasis>, </property>
+          <property>
             <emphasis>Redo</emphasis>
           </property> and <property>
             <emphasis>Auto layout</emphasis>
@@ -1490,7 +1471,7 @@
         <title>Entering Simple Queries</title>
         <mediaobject>
           <imageobject role="fo">
-            <imagedata align="center" scale="90" fileref="images/plugins/plugins_19.png"
+            <imagedata align="center" scale="80" fileref="images/plugins/plugins_19.png"
               format="PNG"/>
           </imageobject>
 
