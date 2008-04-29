@@ -12,7 +12,7 @@
     <para>Hibernate Eclipse Tools include wizards for creating Hibernate mapping files,
       configuration files (.cfg.xml), revenge.xml as well as wizards for adjusting Console
       Configuration and Code Generation. Special structured and XML editors, editors for executing
-      HQL and Criteria queries are also provided Hibernate Console. Refer to <link
+      HQL and Criteria queries are also provided in Hibernate Console. Refer to <link
         linkend="hibernate_key_features">Key Features</link> section to find all benefits that you
       can take advantage of while using the tools within Eclipse.</para>
 
@@ -76,7 +76,7 @@
 
   </section>
 
-  <section>
+  <section id="hib_config_file">
     <title>Creating a Hibernate Configuration File</title>
 
     <para>To be able to reverse engineer, prototype queries, and of course to simply use
