@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="preface">
+
+    <title>Preface</title>
+
+    <para><property>Hibernate Tools</property> is a toolset for <ulink
+            url="http://www.hibernate.org/6.html">Hibernate 3</ulink> and <ulink
+            url="http://www.hibernate.org/27.html">related projects</ulink>. The tools provide Ant
+        tasks and Eclipse plugins for performing reverse engineering, code generation, visualization
+        and interaction with Hibernate.</para>
+
+    <section id="hibernate_key_features">
+        <title>Key Features</title>
+
+        <para>First, we propose to look through the list of key features that you can benefit from
+            if you start using <property>Hibernate Tools</property>.</para>
+
+        <table>
+            <title>Key Functionality for Hibernate Tools</title>
+
+            <tgroup cols="2">
+                <colspec colnum="1" colwidth="1*"/>
+                <colspec colnum="2" colwidth="3*"/>
+
+                <thead>
+                    <row>
+                        <entry align="center">
+                            <para>Feature</para>
+                        </entry>
+
+                        <entry align="center">
+                            <para>Benefit</para>
+                        </entry>
+                    </row>
+                </thead>
+
+                <tbody>
+
+                    <row>
+                        <entry>
+                            <para>Code Generation through <link linkend="ant">Ant Task</link></para>
+                        </entry>
+
+                        <entry>
+                            <para>Allows to execute mapping or Java code generation from reverse
+                                engineering, schema generation and generation of other artifacts
+                                during the build process.</para>
+                        </entry>
+                    </row>
+
+                    <row>
+                        <entry>
+                            <para><link linkend="map_file_wizard">Wizards for creation
+                                purposes</link> and <link linkend="code_gen">code
+                            generation</link></para>
+                        </entry>
+
+                        <entry>
+                            <para> A set of wizards are provided with the Hibernate Eclipse tools to
+                                quickly create common Hibernate files such as configuration
+                                (cfg.xml) files, mapping files and revenge.xml as well. Code
+                                Generation wizard helps to generate a series of various artifacts,
+                                there is even support for completely reverse engineer an existing
+                                database schema.</para>
+                        </entry>
+                    </row>
+
+
+                    <row>
+                        <entry>
+                            <para>
+                                <link linkend="map_config_editor">Mapping and Configuration files
+                                    Editors</link>
+                            </para>
+                        </entry>
+
+                        <entry>
+                            <para>Support auto-completion and syntax highlighting. Editors also
+                                support semantic auto-completion for class names and property/field
+                                names, making it much more versatile than a normal XML
+                            editor.</para>
+                        </entry>
+                    </row>
+
+                    <row>
+                        <entry>
+                            <para>Tools for <link linkend="code_gen">organizing</link> and <link linkend="rev_xml_editor"
+                                    >controlling Reverse Engineering</link></para>
+                        </entry>
+
+                        <entry>
+                            <para>Code Generation wizard provides powerful functionality for
+                                generating a series of various artifacts like domain model classes,
+                                mapping files, annotated EJB3 entity beans, etc. and reveng.xml file
+                                editor allows to control this processes.</para>
+                        </entry>
+                    </row>
+
+                    <row>
+                        <entry>
+                            <para>
+                                <link linkend="hib_console">Hibernate Console</link>
+                            </para>
+                        </entry>
+
+                        <entry>
+                            <para>It is a new perspective in Eclipse which provides an overview of
+                                your Hibernate Console configurations, were you also can get an
+                                interactive view of your persistent classes and their relationships.
+                                The console allows you to execute HQL queries against your database
+                                and browse the result directly in Eclipse.</para>
+                        </entry>
+                    </row>
+
+                    <row>
+                        <entry>
+                            <para>
+                                <link linkend="map_diagram">Functional Mapping Diagram</link>
+                            </para>
+                        </entry>
+
+                        <entry>
+                            <para>Makes possible to visualize structure of entities and
+                                relationships between them.</para>
+                        </entry>
+                    </row>
+
+
+                    <row>
+                        <entry>
+                            <para>Eclipse JDT integration</para>
+                        </entry>
+
+                        <entry>
+                            <para>Hibernate Tools integrates into the Java code completion and build
+                                support of Java in Eclipse. This gives you code completion of HQL
+                                inside Java code. Additionally, Hibernate Tools will add problem
+                                markers if your queries are not valid against the console
+                                configuration associated with the project.</para>
+                        </entry>
+                    </row>
+
+                </tbody>
+            </tgroup>
+        </table>
+    </section>
+
+</chapter>
