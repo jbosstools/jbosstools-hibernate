@@ -20,6 +20,8 @@ import org.hibernate.eclipse.console.HibernateConsolePerspectiveFactory;
 
 public abstract class HibernateConsoleTest extends TestCase {
 
+	private static final long MAX_IDLE = 5*60*1000L;
+	
 	private SimpleTestProject project;
 
 	public HibernateConsoleTest(String name) {
@@ -109,9 +111,19 @@ public abstract class HibernateConsoleTest extends TestCase {
 	/**
 	 * Wait until all background tasks are complete.
 	 */
-	public void waitForJobs() {
+	/*public void waitForJobs() {
 		while (Platform.getJobManager().currentJob() != null)
 			delay(2000);
+	}*/
+	
+	public void waitForJobs() {
+		long start = System.currentTimeMillis();
+		while (!Job.getJobManager().isIdle()) {
+			delay(500);
+			if ( (System.currentTimeMillis()-start) > MAX_IDLE ) 
+				throw new RuntimeException("A long running task detected");
+		}
+		delay(1000);
 	}
 	
 	public boolean noMoreJobs() {
