@@ -18,7 +18,7 @@
 <!ENTITY jbpmlink "../../../../jbpm/publish/en-US/html_single/index.html">
 <!ENTITY jsflink "../../../../jsf/publish/en-US/html_single/index.html">
 <!ENTITY jsfreflink "../../../../jsf_tools_ref_guide/publish/en-US/html_single/index.html">
-<!ENTITY jsftutorialseamlink "../../../../jsf_tools_tutorial/publish/en-US/html_single/index.html">
+<!ENTITY jsftutoriallink "../../../../jsf_tools_tutorial/publish/en-US/html_single/index.html">
 <!ENTITY strutsreflink "../../../../struts_tools_ref_guide/publish/en-US/html_single/index.html">
 <!ENTITY strutstutoriallink "../../../../struts_tools_tutorial/publish/en-US/html_single/index.html">                         
 
