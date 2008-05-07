@@ -132,13 +132,12 @@ public class HibernateErrorsTest2 extends HibernateConsoleTest {
 	@Override
 	protected void tearDown() throws Exception {
 		ccfg.reset();
+		KnownConfigurations.getInstance().removeAllConfigurations();
 		//super.tearDown();
 		waitForJobs();
 
-		IEditorPart editorPart = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				.closeEditor(editorPart, false);
+				.closeAllEditors( false);
 
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.setPerspective(
