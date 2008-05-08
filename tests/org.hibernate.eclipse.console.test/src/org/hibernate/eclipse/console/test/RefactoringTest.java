@@ -285,14 +285,12 @@ public class RefactoringTest extends TestCase {
 				return parent;
 			}
 
-			@Override
 			public boolean hasAttribute(String attributeName)
 					throws CoreException {
 				fail("Method doesn't tested");
 				return false;
 			}
 			
-			@Override
 			public Object removeAttribute(String attributeName) {
 				fail("Method doesn't tested");
 				return null;
@@ -518,7 +516,6 @@ public class RefactoringTest extends TestCase {
 				}
 			}
 
-			@Override
 			public boolean hasAttribute(String attributeName)
 					throws CoreException {
 				return attributes.containsKey(attributeName);
