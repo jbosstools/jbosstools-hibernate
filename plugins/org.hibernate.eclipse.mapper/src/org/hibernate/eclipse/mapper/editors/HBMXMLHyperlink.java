@@ -58,9 +58,6 @@ public class HBMXMLHyperlink implements IHyperlink {
 			if(part!=null) {
 				EditorUtility.revealInEditor(part, element);
 			}
-		} catch (JavaModelException e) {
-			// ignore...TODO?	
-			e.printStackTrace();
 		} catch (PartInitException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -285,6 +285,18 @@ public class RefactoringTest extends TestCase {
 				return parent;
 			}
 
+			@Override
+			public boolean hasAttribute(String attributeName)
+					throws CoreException {
+				fail("Method doesn't tested");
+				return false;
+			}
+			
+			@Override
+			public Object removeAttribute(String attributeName) {
+				fail("Method doesn't tested");
+				return null;
+			}
 			public ILaunchConfiguration getOriginal() {			
 				return parent;
 			}
@@ -506,6 +518,12 @@ public class RefactoringTest extends TestCase {
 				}
 			}
 
+			@Override
+			public boolean hasAttribute(String attributeName)
+					throws CoreException {
+				return attributes.containsKey(attributeName);
+			}
+			
 			public int getAttribute(String attributeName, int defaultValue)
 					throws CoreException {
 				if (attributes.containsKey(attributeName)){
@@ -630,7 +648,10 @@ public class RefactoringTest extends TestCase {
 
 			public Object getAdapter(Class adapter) {
 				return null;
-			}};
+			}
+		 
+			
+		};
 }
 
 

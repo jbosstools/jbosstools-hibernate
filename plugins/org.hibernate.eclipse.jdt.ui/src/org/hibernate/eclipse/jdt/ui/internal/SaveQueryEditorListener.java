@@ -193,19 +193,15 @@ public class SaveQueryEditorListener implements IPropertyListener {
 			wizard.setDefaultPageTitle(wizard_title);
 			
 			IWorkbenchWindow win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-			try {
-				if ( new RefactoringStarter().activate(ref, wizard, win.getShell(), wizard_title, RefactoringSaveHelper.SAVE_ALL)){ //$NON-NLS-1$
-					query = newQuery;
-					position.y = query.length();
-					fromEditorPart.doSave(null);
-				} else {
-					if (editor.getDocumentProvider() instanceof TextFileDocumentProvider){
-						((TextFileDocumentProvider)editor.getDocumentProvider()).setCanSaveDocument(editor.getEditorInput());
-					}					
-				}
-			} catch (JavaModelException e) {
-				HibernateConsolePlugin.getDefault().log(e);
-			}
+			if ( new RefactoringStarter().activate(wizard, win.getShell(), wizard_title, RefactoringSaveHelper.SAVE_ALL)){ //$NON-NLS-1$
+				query = newQuery;
+				position.y = query.length();
+				fromEditorPart.doSave(null);
+			} else {
+				if (editor.getDocumentProvider() instanceof TextFileDocumentProvider){
+					((TextFileDocumentProvider)editor.getDocumentProvider()).setCanSaveDocument(editor.getEditorInput());
+				}					
+			}			
 		}			
 	}
 

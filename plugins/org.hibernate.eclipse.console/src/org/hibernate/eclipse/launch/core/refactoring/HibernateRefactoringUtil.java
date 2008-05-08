@@ -251,7 +251,8 @@ public class HibernateRefactoringUtil {
 		    transformer = tf.newTransformer();
 		    transformer.transform(domSource, result);
 			return writer.toString();*/
-			String newMemento = LaunchingPlugin.serializeDocument(doc);
+			
+			String newMemento = DebugPlugin.serializeDocument(doc);
 			return newMemento;
 		} catch (ParserConfigurationException e) {
 			IStatus status = new Status(IStatus.ERROR, HibernateConsolePlugin.ID, error_mess, e); 
