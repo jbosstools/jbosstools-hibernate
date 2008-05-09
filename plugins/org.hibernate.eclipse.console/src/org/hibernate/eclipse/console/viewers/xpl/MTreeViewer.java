@@ -47,34 +47,6 @@ public class MTreeViewer extends TreeViewer {
 		super(parent, style);
 	}
 
-	// some little hack - cause TreeViewer has lack design for extensions
-	public boolean isBusy() {
-		
-		Object obj = null;
-		Class clazz = org.eclipse.jface.viewers.ColumnViewer.class;
-		try {
-			Method hiddenMethod = clazz.getDeclaredMethod("isBusy", new Class[0]);
-			if (null != hiddenMethod) {
-				hiddenMethod.setAccessible(true);
-				obj = hiddenMethod.invoke(this, new Object[0]);
-			}
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		}
-		if (obj instanceof Boolean) {
-			return ((Boolean)obj).booleanValue();
-		}
-		return false;
-	}
-
 	/**
 	 * Adds the given child elements to this viewer as children of the given
 	 * parent element. If this viewer does not have a sorter, the elements are
