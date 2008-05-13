@@ -26,7 +26,7 @@
     </note>
   </section>
 
-  <section id="map_file_wizard">
+  <section id="map_file_wizard"> <!-- mark as new -->
     <title>Creating a Hibernate Mapping File</title>
 
     <para>Hibernate mapping files are used to specify how your objects are related to database
@@ -1116,7 +1116,7 @@
     </section>
   </section>
 
-  <section id="map_config_struct_editor">
+  <section id="map_config_struct_editor"> <!-- mark as new -->
     <title>Structured Hibernate Mapping and Configuration File Editor</title>
     <para>The structured editor represents the file in the tree form. It also allows to modify the
       structure of the file and its elements with the help of tables provided on the right-hand
@@ -1447,7 +1447,7 @@
       </section>
     </section>
 
-    <section>
+    <section> <!-- mark as updated -->
       <title>Prototyping Queries</title>
 
       <para>Queries can be prototyped by entering them in the <property>HQL</property> or
