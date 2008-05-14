@@ -157,6 +157,10 @@ public class ReverseEngineeringDefinitionImpl implements
 		
 	}
 
+	public void removeTable(IRevEngTable retable) {
+
+	}
+
 	public IRevEngColumn createColumn() {
 		return null;
 	}
