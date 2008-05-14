@@ -347,6 +347,23 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 		}	
 	}
 
+	public void removeTable(IRevEngTable retable) {
+		if ( retable instanceof RevEngTableAdapter) {
+			RevEngTableAdapter tf = (RevEngTableAdapter) retable;
+			Node parentNode = tf.getNode().getParentNode();
+			Node previousSibling = tf.getNode().getPreviousSibling();
+			if(DOMModelUtil.isWhiteSpace(previousSibling)) {
+				parentNode.removeChild(previousSibling);
+			}
+			parentNode.removeChild(tf.getNode());
+			DOMModelUtil.formatNode(parentNode);
+			if(parentNode.getChildNodes().getLength()==0) {
+				Node parentNode2 = parentNode.getParentNode();
+				parentNode2.removeChild(parentNode);
+			}
+		}
+	}
+
 	public IRevEngColumn createColumn() {
 		return (IRevEngColumn) factory.adapt((INodeNotifier) getDocument().createElement("column"));
 	}

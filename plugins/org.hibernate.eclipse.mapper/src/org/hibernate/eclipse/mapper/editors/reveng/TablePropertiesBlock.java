@@ -30,9 +30,11 @@ import java.util.Map;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
@@ -44,6 +46,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.dialogs.CheckedTreeSelectionDialog;
 import org.eclipse.ui.forms.DetailsPart;
 import org.eclipse.ui.forms.IManagedForm;
@@ -102,10 +105,12 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		GridData gd = new GridData( GridData.FILL_BOTH );
 		gd.heightHint = 20;
 		gd.widthHint = 100;
+		gd.verticalSpan = 2;
 		t.setLayoutData( gd );
 		toolkit.paintBordersFor( client );
-		Button b = toolkit.createButton( client, "Add...", SWT.PUSH );
-		b.addSelectionListener(new SelectionAdapter() {
+		
+		Button btnAdd = toolkit.createButton( client, "Add...", SWT.PUSH );
+		btnAdd.addSelectionListener(new SelectionAdapter() {
 		
 			public void widgetSelected(SelectionEvent e) {
 				doAdd();
@@ -113,7 +118,19 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		
 		});
 		gd = new GridData( GridData.VERTICAL_ALIGN_BEGINNING );
-		b.setLayoutData( gd );
+		btnAdd.setLayoutData( gd );
+		
+		Button btnDel = toolkit.createButton( client, "Delete", SWT.PUSH );
+		btnDel.addSelectionListener(new SelectionAdapter() {
+		
+			public void widgetSelected(SelectionEvent e) {
+				doDelete();
+			}
+		
+		});
+		gd = new GridData( GridData.VERTICAL_ALIGN_BEGINNING );
+		btnDel.setLayoutData( gd );
+		
 		section.setClient( client );
 		final SectionPart spart = new SectionPart( section ) {
 			public boolean setFormInput(Object input) {
@@ -201,6 +218,34 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		}
 		
 		
+	}
+
+	protected void doDelete() {
+		ISelection sel = viewer.getSelection();
+		if (sel.isEmpty() || !(sel instanceof TreeSelection)) {
+			return;
+		}
+		boolean updateSelection = false;
+		TreeSelection ts = (TreeSelection)sel;
+		List list = ts.toList();
+		for (Iterator it = list.iterator(); it.hasNext();) {
+			Object obj = it.next();
+			if (!(obj instanceof IRevEngTable)) {
+				continue;
+			}
+			IRevEngTable retable = (IRevEngTable)obj;
+			if (retable instanceof RevEngTableAdapter) {
+				updateSelection = true;
+			}
+			editor.getReverseEngineeringDefinition().removeTable(retable);
+		}
+		if (updateSelection) {
+			// if it possible select first item
+			TreeItem[] treeItems = viewer.getTree().getItems();
+			if (treeItems.length > 0) {
+				viewer.getTree().setSelection(treeItems[0]);
+			}
+		}
 	}
 
 	private CheckedTreeSelectionDialog createTreeSelectionDialog() {
