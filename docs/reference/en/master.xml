@@ -25,10 +25,12 @@
 ]>
 <book lang="en">
   <bookinfo>
-    <title>Hibernate Tools</title>
+    <title>Hibernate Tools Reference Guide</title>
 
-    <subtitle>Reference Guide</subtitle>
-
+    <author><firstname>Max</firstname><surname>Andersen</surname><email>max.andersen@jboss.com</email></author>
+    <author><firstname>Olga</firstname><surname>Chikvina</surname></author>
+    <author><firstname>Svetlana</firstname><surname>Mukhina</surname><email>smukhina@exadel.com</email></author>   
+    
     <pubdate>April 2008</pubdate>
     <copyright>
       <year>2007</year>
