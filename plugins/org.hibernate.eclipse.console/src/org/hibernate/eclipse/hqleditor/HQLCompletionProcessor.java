@@ -37,6 +37,7 @@ import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.QueryEditor;
 import org.hibernate.tool.ide.completion.HQLCodeAssist;
 import org.hibernate.tool.ide.completion.IHQLCodeAssist;
 
@@ -48,12 +49,13 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
     private char[] autoActivationChars = { '.' };
     protected IContextInformationValidator validator = new MinimalDiffContextInformationValidator(5);
     private final Comparator completionComparator;
-	private final HQLEditor editor;
+	//private final HQLEditor editor;
+    private QueryEditor hqlEditor;
 	private String errorMessage;
 
-    public HQLCompletionProcessor(HQLEditor editor) {
+    public HQLCompletionProcessor(QueryEditor editor) {
         super();
-		this.editor = editor;
+		this.hqlEditor = editor;
         completionComparator = DisplayStringProposalComparator.INSTANCE;
     }
 
@@ -72,7 +74,7 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
             }
 
             if(partition!=null) {
-            	result = computeProposals( doc, partition.getOffset(), documentOffset, editor.getConsoleConfiguration() );
+            	result = computeProposals( doc, partition.getOffset(), documentOffset, hqlEditor.getConsoleConfiguration() );
             }
         }
         catch (BadLocationException x) {

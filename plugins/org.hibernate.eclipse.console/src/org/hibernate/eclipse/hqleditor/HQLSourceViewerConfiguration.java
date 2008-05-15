@@ -36,13 +36,16 @@ import org.eclipse.jface.text.rules.DefaultDamagerRepairer;
 import org.eclipse.jface.text.rules.Token;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
+import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.eclipse.console.QueryEditor;
 import org.hibernate.eclipse.hqleditor.preferences.HQLPreferenceConstants;
 
 public class HQLSourceViewerConfiguration extends SourceViewerConfiguration {
 
 	public final static String HQL_PARTITIONING= "__hql_partitioning";   //$NON-NLS-1$
 	private HQLCompletionProcessor completionProcessor;
-	private HQLEditor hqlEditor;
+	//private HQLEditor hqlEditor;
+	private QueryEditor hqlEditor;
     
     static class SingleTokenScanner extends BufferedRuleBasedScanner {
         public SingleTokenScanner( TextAttribute attribute ) {
@@ -50,13 +53,9 @@ public class HQLSourceViewerConfiguration extends SourceViewerConfiguration {
         }
     }
 
-    public HQLSourceViewerConfiguration(HQLEditor editor) {
-    	hqlEditor = editor;
+    public HQLSourceViewerConfiguration(QueryEditor editor) {
+    	this.hqlEditor = editor;
         completionProcessor = new HQLCompletionProcessor(editor); 
-    }
-    
-    public HQLEditor getHQLEditor() {
-    	return hqlEditor;
     }
        
     public String getConfiguredDocumentPartitioning( ISourceViewer sourceViewer ) {
