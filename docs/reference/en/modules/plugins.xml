@@ -1024,7 +1024,6 @@
 
       <figure>
         <title>Navigation Functionality</title>
-        <para>
 
           <mediaobject>
             <imageobject role="fo">
@@ -1036,7 +1035,7 @@
               <imagedata align="center" fileref="images/plugins/plugins_10.png" format="PNG"/>
             </imageobject>
           </mediaobject>
-        </para>
+
       </figure>
 
       <para>This is done via the standard hyperlink navigation functionality in Eclipse; per default
@@ -1418,14 +1417,14 @@
           </mediaobject>
         </figure>
 
-        <para>Finally, if you need to have your Diagram exported as <property>
-            <emphasis>.png</emphasis>
-          </property>, <property>
-            <emphasis>.jpeg</emphasis>
-          </property> or <property>
-            <emphasis>.bmp</emphasis>
-          </property>, you should right-click anywhere in the <property>Mapping Diagram
-          editor</property> and select <property><emphasis>Export as Image</emphasis>.</property></para>
+        <para>Finally, if you need to have your Diagram exported as 
+          <emphasis><property>.png
+          </property>,</emphasis> 
+          <emphasis><property>.jpeg</property></emphasis>
+           or 
+          <emphasis><property>.bmp </property>,</emphasis>
+          you should right-click anywhere in the <property>Mapping Diagram
+            editor</property> and select <emphasis><property>Export as Image</property></emphasis>.</para>
 
         <figure>
           <title>Mapping Diagram Export</title>
@@ -1437,13 +1436,13 @@
           </mediaobject>
         </figure>
 
-        <para>As you can see on the figure above, <property>
-            <emphasis>Undo</emphasis>, </property>
-          <property>
-            <emphasis>Redo</emphasis>
-          </property> and <property>
-            <emphasis>Auto layout</emphasis>
-          </property> options are also available through the context menu.</para>
+        <para>As you can see on the figure above, 
+          <emphasis><property>Undo</property>, </emphasis>
+          
+          <emphasis><property>Redo</property></emphasis>
+           and 
+          <emphasis><property>Auto layout </property></emphasis>
+          options are also available through the context menu.</para>
       </section>
     </section>
 
