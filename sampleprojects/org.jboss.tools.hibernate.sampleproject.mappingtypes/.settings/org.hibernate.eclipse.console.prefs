@@ -1,0 +1,5 @@
+#Tue Jun 26 14:58:21 CEST 2007
+default.configuration=org.jboss.tools.hibernate.sampleproject.mappingtypes
+eclipse.preferences.version=1
+hibernate3.enabled=true
+instance/org.eclipse.core.net/org.eclipse.core.net.hasMigrated=true

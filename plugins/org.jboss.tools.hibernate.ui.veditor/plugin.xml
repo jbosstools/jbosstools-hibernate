@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+    <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor"
+            contributorClass="org.jboss.tools.hibernate.ui.veditor.editors.EditorActionContributor"
+            icon="icons/hibernate_small_icon.gif"
+            id="org.jboss.tools.hibernate.ui.veditor.editors.visualeditor"
+            name="Hibernate Diagram Viewer">
+      </editor>
+   </extension>
+
+</plugin>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.3CR3//EN"
+"http://www.oasis-open.org/docbook/xml/4.3CR3/docbookx.dtd"
+[
+<!ENTITY preface SYSTEM "modules/preface.xml">
+<!ENTITY setup SYSTEM "modules/setup.xml">
+<!ENTITY codegenarchitecture SYSTEM "modules/codegenarchitecture.xml">
+<!ENTITY plugins SYSTEM "modules/plugins.xml">
+<!ENTITY ant SYSTEM "modules/ant.xml">
+<!ENTITY reveng SYSTEM "modules/reverseengineering.xml">
+<!ENTITY codegen SYSTEM "modules/codegen.xml">
+
+<!ENTITY seamlink "../../../../seam/html_single/index.html">
+<!ENTITY aslink "../../../../as/html_single/index.html">
+<!ENTITY esblink "../../../../esb_ref_guide/html_single/index.html">
+<!ENTITY gsglink "../../../../GettingStartedGuide/html_single/index.html">
+<!ENTITY hibernatelink "../../../../hibernatetools/html_single/index.html">
+<!ENTITY jbpmlink "../../../../jbpm/html_single/index.html">
+<!ENTITY jsflink "../../../../jsf/html_single/index.html">
+<!ENTITY jsfreflink "../../../../jsf_tools_ref_guide/html_single/index.html">
+<!ENTITY jsftutoriallink "../../../../jsf_tools_tutorial/html_single/index.html">
+<!ENTITY strutsreflink "../../../../struts_tools_ref_guide/html_single/index.html">
+<!ENTITY strutstutoriallink "../../../../struts_tools_tutorial/html_single/index.html">                         
+
+]>
+<book lang="en">
+  <bookinfo>
+    <title>Hibernate Tools Reference Guide</title>
+
+    <author><firstname>Max</firstname><surname>Andersen</surname><email>max.andersen@jboss.com</email></author>
+    <author><firstname>Olga</firstname><surname>Chikvina</surname></author>
+    <author><firstname>Svetlana</firstname><surname>Mukhina</surname><email>smukhina@exadel.com</email></author>   
+    
+    <pubdate>April 2008</pubdate>
+    <copyright>
+      <year>2007</year>
+      <year>2008</year>
+      <holder>JBoss, a division of Red Hat Inc.</holder>
+    </copyright>
+
+    <releaseinfo>
+      Version: 3.2.1.CR1
+    </releaseinfo>
+
+
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="images/hibernate_logo_a.png" format="PNG"/>
+      </imageobject>
+    </mediaobject>
+  </bookinfo>
+  <toc/>
+  
+  &preface;
+  &setup; 
+  &codegenarchitecture;
+  &plugins; 
+  &ant;
+  &reveng;
+  &codegen;                   
+  
+  
+  </book>

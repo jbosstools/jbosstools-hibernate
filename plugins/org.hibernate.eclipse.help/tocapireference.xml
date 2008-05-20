@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<toc label="API Reference">
+      <topic label="Core API">
+            <topic label="org.hibernate" href="html/api/org/hibernate/package-summary.html"/>
+            <topic label="org.hibernate.classic" href="html/api/org/hibernate/classic/package-summary.html"/>
+            <topic label="org.hibernate.criterion" href="html/api/org/hibernate/criterion/package-summary.html"/>
+            <topic label="org.hibernate.metadata" href="html/api/org/hibernate/metadata/package-summary.html"/>
+            <topic label="org.hibernate.cfg" href="html/api/org/hibernate/cfg/package-summary.html"/>
+            <topic label="org.hibernate.usertype" href="html/api/org/hibernate/usertype/package-summary.html"/>
+      </topic>
+      <topic label="Extension API">
+            <topic label="org.hibernate.id" href="html/api/org/hibernate/id/package-summary.html"/>
+            <topic label="org.hibernate.connection" href="html/api/org/hibernate/connection/package-summary.html"/>
+            <topic label="org.hibernate.transaction" href="html/api/org/hibernate/transaction/package-summary.html"/>
+            <topic label="org.hibernate.type" href="html/api/org/hibernate/type/package-summary.html"/>
+            <topic label="org.hibernate.dialect" href="html/api/org/hibernate/dialect/package-summary.html"/>
+            <topic label="org.hibernate.cache" href="html/api/org/hibernate/cache/package-summary.html"/>
+            <topic label="org.hibernate.event" href="html/api/org/hibernate/event/package-summary.html"/>
+            <topic label="org.hibernate.action" href="html/api/org/hibernate/action/package-summary.html"/>
+            <topic label="org.hibernate.property" href="html/api/org/hibernate/property/package-summary.html"/>
+            <topic label="org.hibernate.loader" href="html/api/org/hibernate/loader/package-summary.html"/>
+            <topic label="org.hibernate.persister" href="html/api/org/hibernate/persister/package-summary.html"/>
+            <topic label="org.hibernate.proxy" href="html/api/org/hibernate/proxy/package-summary.html"/>
+            <topic label="org.hibernate.tuple" href="html/api/org/hibernate/tuple/package-summary.html"/>
+            <topic label="org.hibernate.transform" href="html/api/org/hibernate/transform/package-summary.html"/>
+            <topic label="org.hibernate.collection" href="html/api/org/hibernate/collection/package-summary.html"/>
+            <topic label="org.hibernate.jdbc" href="html/api/org/hibernate/jdbc/package-summary.html"/>
+      </topic>
+      <topic label="Miscellaneous API">
+            <topic label="org.hibernate.stat" href="html/api/org/hibernate/stat/package-summary.html"/>
+            <topic label="org.hibernate.tool.hbm2ddl" href="html/api/org/hibernate/tool/hbm2ddl/package-summary.html"/>
+            <topic label="org.hibernate.jmx" href="html/api/org/hibernate/jmx/package-summary.html"/>
+            <topic label="org.hibernate.mapping" href="html/api/org/hibernate/mapping/package-summary.html"/>
+            <topic label="org.hibernate.tool.instrument" href="html/api/org/hibernate/tool/instrument/package-summary.html"/>
+      </topic>
+      <topic label="Internal Implementation">
+            <topic label="org.hibernate.engine" href="html/api/org/hibernate/engine/package-summary.html"/>
+            <topic label="org.hibernate.impl" href="html/api/org/hibernate/impl/package-summary.html"/>
+            <topic label="org.hibernate.sql" href="html/api/org/hibernate/sql/package-summary.html"/>
+            <topic label="org.hibernate.lob" href="html/api/org/hibernate/lob/package-summary.html"/>
+            <topic label="org.hibernate.util" href="html/api/org/hibernate/util/package-summary.html"/>
+            <topic label="org.hibernate.exception" href="html/api/org/hibernate/exception/package-summary.html"/>
+            <topic label="org.hibernate.hql" href="html/api/org/hibernate/hql/package-summary.html"/>
+            <topic label="org.hibernate.hql.ast" href="html/api/org/hibernate/hql/ast/package-summary.html"/>
+            <topic label="org.hibernate.hql.antlr" href="html/api/org/hibernate/hql/antlr/package-summary.html"/>
+            <topic label="org.hibernate.hql.classic" href="html/api/org/hibernate/hql/classic/package-summary.html"/>
+            <topic label="org.hibernate.intercept" href="html/api/org/hibernate/intercept/package-summary.html"/>
+            <topic label="org.hibernate.secure" href="html/api/org/hibernate/secure/package-summary.html"/>
+            <topic label="org.hibernate.pretty" href="html/api/org/hibernate/pretty/package-summary.html"/>
+      </topic>
+</toc>
