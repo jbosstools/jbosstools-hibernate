@@ -1,0 +1,210 @@
+<html>
+
+<head>
+<link rel="stylesheet" href="default_.css">
+<title>Hibernate Eclipse Tools 3.2.0.beta9 News</title>
+</head>
+
+<body>
+
+<h1>Hibernate Tools 3.2.0.beta9 - New and Noteworthy</h1>
+
+  <p>Previous <a href="hibernate-eclipse-news-3.2.0.beta8.html">new and noteworthy for 3.1.0.beta8</a></p>
+  <p><a href="http://opensource.atlassian.com/projects/hibernate/secure/IssueNavigator.jspa?reset=true&pid=10030&fixfor=10623">Release notes</a></p>
+<table border="0" cellpadding="10" cellspacing="0" width="80%">
+    <tr>
+    <td colspan="2">
+      <hr>
+      <h3>General</h3>
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Easier setup & full JPA support</b></td>
+    <td valign="top">
+      <p>A Console configuration can now be associcated with a Java
+      project from which the plugin will read the classpath. This
+      removes the requirement for users to specify an alternative
+	classpath.</p>
+
+	<p>Furthermore the user is no longer required to specify a
+	  <code>hibernate.cfg.xml</code> nor <code>hibernate.properties</code> since both can now
+	be looked up via the default project classpath.</p>
+
+	  <p>The UI have also been simplified, so now the only thing
+	  required now is to name the console configuration; and even
+	  that will be automatically filled out if you start the
+	  wizard on some resource.</p>
+
+	  <p><img src="easysetup.png"/></p>
+
+	    <p>Furthermore JPA/EJB 3 entity classes is now fully
+	      supported by simply choosing JPA as the configuration
+	      type and optionally enter a persistence unit name.
+	      Hibernate EntityManager will then be used to
+	      automatically scan the classpath for entities according
+	      to the setup in a <code>META-INF/persistence.xml</code></p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Console logs per Configuration</b></td>
+    <td valign="top">
+      <p>The Error log could get flooded by error messages reported
+      from Hibernate during normal usage; e.g. syntax errors in the
+      entered HQL. The error log should now only show an error if it
+      is an error situation in the Hibernate plugin.</p>
+
+	<p>The other "normal usage" logging is now sent to a seperate Eclipse Console log per Configuration; instead of one big log.</p>
+
+	  <p><img src="consolelog.png"/></p>
+
+	  <p>Since this log is just what Hibernate normally logs you
+	  can adjust what gets logged to these consoles by configuring
+	  the log4j configuration
+	  (<code>org.hibernate.eclipse/hibernate-log4j.properties</code>)
+	  in the plugins directory.</p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr>
+      <h3>Query editing</h3>
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Max results support</b></td>
+    <td valign="top">
+      <p>Previously HQL and Criteria execution were done unbounded; meaning it could result in OutOfMemoryError's on large data set. To remedy this the query editors now have a "Max results" field which can be filled in to limit the amount of data being queried for.
+      <p><img src="hqleditorsetmaxresults.png"/></p>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr>
+      <h3>Reverse Engineering</h3>
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Oracle improvements</b></td>
+    <td valign="top">
+      <p>The OracleMetaDataDialect is now enabled by default for Oracle related dialects. The Oracle specific handling have also been improved greatly so now it is much faster than normal JDBC MetaData API.</p>
+      <p>If you experience issues with the OracleMetaDataDialect you can fall back to using the JDBC MetaData API by adding the following property to your hibernate.properties or hibernate.cfg.xml: </p>
+	<p><code>hibernatetool.metadatadialect=org.hibernate.cfg.rveng.dialect.JDBCMetaDataDialect</code></p>	
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Automatic handling of identifier casing</b></td>
+    <td valign="top">
+      <p>Previously we performed lookups for tables, columns etc. verbatim even though the database might not support mixed case lookups e.g. "Category" instead of "CATEGORY" when a database stores identifiers in uppercase.</p>
+      <p>This could result in some issues with respect to overrides specified in reveng.xml would not take effect because the casing did not match.</p>
+
+	<p>To remedy this the JDBCMetaDataDialect now perform lookups and comparisons according to what the <code>java.sql.DatabaseMetaData</code> reports with respect to casing of identifiers.</p>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr>
+      <h3>Schema documentation</h3>
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>hbm2doc improvements</b></td>
+    <td valign="top">
+      <p>hbm2doc got a major overhaul for this release, thanks to Mark Hobson. The long list of improvements contain amongst other things: pure XHTML to allow it to be rendered correctly in all major browsers; better support for subclassed models and inner classes and in general a much cleaner layout.</p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Table and class diagrams</b></td>
+    <td valign="top">
+      <p>hbm2doc will now generate a two diagrams with GraphViz. A single class diagram for all entities and their associations and a single table diagram with the tables and the foreign key constraints.</p>
+
+      <p><img src="hbm2docwithgraph.jpg"/></p>
+
+	<p>To enable this GraphViz needs to be available and the <code>dot.executable</code> property set to the GraphViz dot executable when running hbm2doc from Ant or Eclipse</p>
+
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr>
+      <h3>Code generation</h3>
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Java formatting via Ant</b></td>
+    <td valign="top">
+      <p>When generating Java code from inside Eclipse we always formatted the source according to the current Java project; with Ant no such formatting took place.</p>
+	<p>This is now possible by using the Ant java formatter which utilizes Eclipses code formatter. See <a href="">HBX-811</a> for the details.</p>
+
+	  <code>
+	    &lt;taskdef name="javaformatter" classname="org.hibernate.tool.ant.JavaFormatterTask" classpathref="tasks.classpath"/&gt;<br>
+	    &lt;javaformatter configurationfile="optional-eclipse-formatting-settings"&gt;<br>
+	    &nbsp;&lt;fileset dir="${build.dir}"&gt;<br>
+	    &nbsp;&nbsp;&lt;include name="**/*.java"/&gt;<br>
+	    &nbsp;&lt;/fileset&gt;<br>
+	    &lt;/javaformatter&gt; <br>
+	  </code>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Better &lt;meta&gt attributes</b></td>
+    <td valign="top">
+      <p>Multiple issues with respect to meta attributes have been
+      fixed; especially inherited meta attributes are not broken
+      anymore (HBX-793) plus meta attributes are now possible to
+      specify in reveng.xml (HBX-575) for better customization of the
+      resulting java code from a reverse engineered database.
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>More control in hbmtemplate</b></td>
+    <td valign="top">
+      <p>hbmtemplate can now control which elements should actually be passed into the template. Allowing you to e.g. only process entities and not any components/composite-id's.</p>
+	<p><code>&lt;hbmtemplate ... foreach="entity"/&gt;</code></p>
+
+	  <p>The foreach attribute supports a comma seperated list of the following values: configuration, entity and component.</p>
+  </tr>
+
+</table>
+
+</body>
+
+</html>
+
+
