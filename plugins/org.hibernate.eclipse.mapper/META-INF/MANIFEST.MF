@@ -1,0 +1,41 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Mapper Plug-in
+Bundle-SymbolicName: org.hibernate.eclipse.mapper; singleton:=true
+Bundle-Version: 3.2.0.beta9
+Bundle-ClassPath: org.hibernate.eclipse.mapper.jar
+Bundle-Activator: org.hibernate.eclipse.mapper.MapperPlugin
+Bundle-Vendor: Hibernate Team
+Bundle-Localization: plugin
+Export-Package: org.hibernate.eclipse.mapper,
+ org.hibernate.eclipse.mapper.editors,
+ org.hibernate.eclipse.mapper.editors.reveng,
+ org.hibernate.eclipse.mapper.editors.reveng.xpl,
+ org.hibernate.eclipse.mapper.editors.xpl,
+ org.hibernate.eclipse.mapper.extractor,
+ org.hibernate.eclipse.mapper.factory,
+ org.hibernate.eclipse.mapper.model,
+ org.hibernate.eclipse.mapper.modelhandler,
+ org.hibernate.eclipse.mapper.registry,
+ org.hibernate.eclipse.mapper.views.contentoutline
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.editors,
+ org.eclipse.jface.text,
+ org.eclipse.jdt.ui,
+ org.eclipse.jdt.core,
+ org.eclipse.core.resources,
+ org.eclipse.ui.ide,
+ org.eclipse.wst.xml.core,
+ org.eclipse.wst.sse.core,
+ org.eclipse.wst.xml.ui,
+ org.eclipse.wst.sse.ui,
+ org.eclipse.ui.views,
+ org.hibernate.eclipse,
+ org.eclipse.ui.forms,
+ org.eclipse.ui.workbench.texteditor,
+ org.hibernate.eclipse.console,
+ org.eclipse.wst.dtd.core,
+ org.eclipse.wst.common.ui,
+ org.eclipse.pde.core
+Eclipse-LazyStart: true

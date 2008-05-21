@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="mapping.value.type.collection.list">
+	<class name="CollectionListItem" table="COLLECTION_LIST_ITEMS"
+		schema="dbo">
+		<id name="id" column="ID" type="integer" />
+		<property name="collectionListId" column="COLLECTION_LIST_ID"
+			type="integer" />
+		<property name="itemIndex" column="COLLECTION_LIST_ITEM_INDEX"
+			type="integer" />
+		<property name="item" column="COLLECTION_LIST_ITEM"
+			type="character" />
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,184 @@
+<html>
+
+<head>
+<link rel="stylesheet" href="default_.css">
+<title>Hibernate Eclipse Tools 3.2.0.beta6 News</title>
+</head>
+
+<body>
+
+<h1>Hibernate Tools 3.2.0.beta6 - New and Noteworthy</h1>
+
+  <p>Previous <a href="hibernate-eclipse-news-3.1.0.beta5.html">new and noteworthy for 3.1.0.beta5</a></p>
+  <p><a href="http://opensource.atlassian.com/projects/hibernate/secure/ReleaseNote.jspa?version=10520&styleName=Html&projectId=10030">Release notes</a></p>
+<table border="0" cellpadding="10" cellspacing="0" width="80%">
+  <tr>
+    <td colspan="2">
+      <hr>
+      <h3>General</h3>
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Eclipse 3.2 & WTP 1.5</b></td>
+    <td valign="top">
+      <p>This version brings runs on the latest and greatest Eclipse dependencies.</p>
+
+        <p>This also has the consequence that the plugins can not run
+        on Eclipse 3.1 and WTP 1.0 since some of the new API have
+        already been utilized and some previous internal API is now
+        public API in Eclipse 3.2/WTP 1.5</p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr>
+      <h3>Query editing</h3>
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Criteria Editor</b></td>
+    <td valign="top">
+      <p>After being away too long, the Criteria Editor is back. This
+      editor allow you to enter Criteria's and afterwards execute them
+        and introspect the result; just like with the HQL Query editor.<p>
+
+        <p>The Criteria Editor has syntax highlighting and code
+      completion and a predefined "session" variable you can use to
+      built up a criteria and execute it.</p>
+
+          <p><img src="criteriaeditor.png"/></p>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr/>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Improved HQL code completion</b></td>
+    <td valign="top">
+      <p>The HQL code completion now supports code completion against alias and properties, making it even more easy to enter HQL queries.</p>
+
+        <p><img src="hqlpropertycodecompletion.png"/></p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr/>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Java Inline HQL editing</b></td>
+    <td valign="top">
+      <p>HQL code completion is now made available inside java editor
+      strings, including inside @NamedQuery annotations.</p>
+
+               <p><img src="completeinsidejava.png"></p>        
+
+          <p>This feature is only enabled on projects that has
+          enabled Hibernate 3 support in the project properties. The
+          related console configuration should also be expanded so the
+          SessionFactory is built. We will make this more automatic in
+          a future release</p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr/>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Java Inline HQL validation</b></td>
+    <td valign="top">
+      <p>HQL code inside @NamedQuery annotations will now be validated
+      for syntax errors. If a query cannot be validated the query will
+      be listed in the Problems view and get a red "squiggly"
+      underline to show highlight the "bad" query.</p>
+
+               <p><img src="inlinequeryvalidation.png"></p>        
+
+          <p>Validation unfortunatly currently also require a bit more
+          manual setup than it should. Something that will be fixed in
+          a future release.
+          </p>
+
+          <p>
+            To enable validation you will need to run Eclipse with JDK
+            1.5 and enable Java Compiler/Annotation Processing and the
+            Factory Path should include
+            "org.hibernate.eclipse.jdt.apt.ui" before it will be
+            activated.
+          </p>
+
+          <p><img src="enableannotationvalidation.png"/></p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr/>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Quick navigation from Java code to HQL/Criteria editor</b></td>
+    <td valign="top">
+      <p>Pressing Ctrl+1 on top of a java string or when a selection
+      is highlighted provides a "quick navigation" from the java
+      editor to the HQL or Criteria editor with the string or selected
+      code.</p>
+
+        <p><img src="hqlcriteriaquicknavigation.png"/></p>
+    </td>
+  </tr>
+  <tr>
+  <tr>
+    <td colspan="2">
+      <hr>
+        <h3>Mapping/Configuration file editing</h3>
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Icon overlay for Hibernate Tools content types</b></td>
+    <td valign="top">
+      <p>Files that Hibernate Tools provide some support for now has a small Hibernate icon overlay.</p>
+
+        <p>Normally the file icon for Hibernate related files is the
+          generic XML icon provided by the WTP editor; with this
+          change it should be easier to find Hibernate related files
+          and see if the Hibernate Tools plugins is configured/loaded
+          properly</p>
+
+          <p><img src="overlaycontenttypes.png"/></p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Basic completion support for persistence.xml</b></td>
+    <td valign="top">
+      <p>Added basic (experimental) code completion for <code>persistence.xml</code>
+      files. It is basically the same as provided for
+        <code>hibernate.cfg.xml</code> completion.</p>
+
+          <p><img src="persistencexmlcompletion.png"/></p>bb
+    </td>
+  </tr>
+</table>
+
+</body>
+
+</html>
+
+

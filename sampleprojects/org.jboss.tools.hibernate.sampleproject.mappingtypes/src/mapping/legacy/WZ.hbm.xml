@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-lazy="false">
+
+	<class name="mapping.legacy.Z">
+		<id name="id" unsaved-value="0" column="zid">
+			<generator class="hilo"/>
+		</id>
+		<many-to-one name="w" 
+			cascade="save-update"
+			class="mapping.legacy.W" 
+			insert="true" 
+			update="false" 
+			not-null="true"/>
+	</class>
+
+	<class name="mapping.legacy.W" 
+		discriminator-value="0" 
+		proxy="mapping.legacy.W">
+		
+		<id name="id" unsaved-value="0" column="wid">
+			<generator class="hilo"/>
+		</id>
+		<!--<set name="zeds" lazy="true">
+			<key column="w"/>
+			<one-to-many class="mapping.legacy.Z"/>
+		</set>-->
+	</class>
+	
+</hibernate-mapping>

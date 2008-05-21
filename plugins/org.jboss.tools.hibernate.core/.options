@@ -1,0 +1,3 @@
+org.jboss.tools.hibernate.core/debug=false
+org.jboss.tools.hibernate.core/debug/ormcore=false
+org.jboss.tools.hibernate.core/debug/validation=false
