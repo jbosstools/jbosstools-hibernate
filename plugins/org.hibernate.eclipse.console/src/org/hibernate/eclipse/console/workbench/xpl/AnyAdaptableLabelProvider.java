@@ -13,7 +13,12 @@ package org.hibernate.eclipse.console.workbench.xpl;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.resource.ColorDescriptor;
+import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.LocalResourceManager;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
@@ -25,11 +30,9 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorRegistry;
 import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.internal.util.SWTResourceUtil;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.eclipse.ui.model.IWorkbenchAdapter2;
 
@@ -67,12 +70,14 @@ public class AnyAdaptableLabelProvider extends LabelProvider implements
 			}
 		}
 	};
+	private ResourceManager resourceManager;
 
     /**
      * Creates a new workbench label provider.
      */
     public AnyAdaptableLabelProvider() {
     	PlatformUI.getWorkbench().getEditorRegistry().addPropertyListener(editorRegistryListener);
+    	this.resourceManager = new LocalResourceManager(JFaceResources.getResources());
     }
 
     /**
@@ -113,6 +118,8 @@ public class AnyAdaptableLabelProvider extends LabelProvider implements
      */
     public void dispose() {
     	PlatformUI.getWorkbench().getEditorRegistry().removePropertyListener(editorRegistryListener);
+    	resourceManager.dispose();
+    	resourceManager = null;
     	super.dispose();
     }
     
@@ -163,12 +170,7 @@ public class AnyAdaptableLabelProvider extends LabelProvider implements
         //add any annotations to the image descriptor
         descriptor = decorateImage(descriptor, element);
 
-        Image image = (Image) SWTResourceUtil.getImageTable().get(descriptor);
-        if (image == null) {
-            image = descriptor.createImage();
-            SWTResourceUtil.getImageTable().put(descriptor, image);
-        }
-        return image;
+        return resourceManager.createImage(descriptor);
     }
 
     /* (non-Javadoc)
@@ -217,12 +219,7 @@ public class AnyAdaptableLabelProvider extends LabelProvider implements
             return null;
         }
 
-        Font font = (Font) SWTResourceUtil.getFontTable().get(descriptor);
-        if (font == null) {
-            font = new Font(Display.getCurrent(), descriptor);
-            SWTResourceUtil.getFontTable().put(descriptor, font);
-        }
-        return font;
+        return resourceManager.createFont(FontDescriptor.createFrom(descriptor));
     }
 
     private Color getColor(Object element, boolean forground) {
@@ -236,11 +233,6 @@ public class AnyAdaptableLabelProvider extends LabelProvider implements
             return null;
         }
 
-        Color color = (Color) SWTResourceUtil.getColorTable().get(descriptor);
-        if (color == null) {
-            color = new Color(Display.getCurrent(), descriptor);
-            SWTResourceUtil.getColorTable().put(descriptor, color);
-        }
-        return color;
+        return resourceManager.createColor(ColorDescriptor.createFrom(descriptor));
     }
 }
