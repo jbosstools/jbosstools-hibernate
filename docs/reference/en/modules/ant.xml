@@ -20,6 +20,7 @@
       of eclipse.</para>
 
     <note>
+      <title>Note:</title>
       <para>There might be incompatibilities with respect to the Hibernate3.jar bundled with the
         tools and your own jar. Thus to avoid any confusion it is recommended to use the
         hibernate3.jar and hibernate-annotations.jar bundled with the tools when you want to use the
@@ -270,6 +271,7 @@
       which a set of exporters can be run to generate various output. </para>
 
     <note>
+      <title>Note:</title>
       <para>Output can be anything, e.g. specific files, statements execution against a database,
         error reporting or anything else that can be done in java code.</para>
     </note>
@@ -413,7 +415,7 @@
           </emphasis> and fileset is used instead. </para>
 
         <note>
-          <title>Tip:</title>
+          <title>Note:</title>
           <para> Hibernate will still read any global <emphasis>
               <property>hibernate.properties</property>
             </emphasis> available in the classpath, but the specified properties file here will
@@ -443,13 +445,13 @@
         </emphasis> is used when you want to read the metamodel from EJB3/Hibernate Annotations
         based POJO's.</para>
 
-      <note>
-        <title>Tip:</title>
+      <important>
+        <title>Important:</title>
         <para>To use it remember to put the jar files needed for using hibernate annotations in the
           classpath of the <emphasis>
             <property>&lt;taskdef&gt;</property>, </emphasis> i. e.
           hibernate-annotations.jar and hibernate-commons-annotations.jar.</para>
-      </note>
+      </important>
 
       <para>The <emphasis>
           <property>&lt;annotationconfiguration&gt;</property>
@@ -533,6 +535,7 @@
 
 
       <note>
+        <title>Note:</title>
         <para>ejb3configuration was the name used in previous versions. It still works but will emit
           a warning telling you to use <literal>jpaconfiguration</literal> instead.</para>
       </note>
@@ -996,6 +999,7 @@
           <property>hbm.xml</property>. </emphasis></para>
 
       <note>
+        <title>Note:</title>
         <para>Not every possible mapping transformation is possible/implemented (contributions
           welcome) so some hand editing might be necessary.</para>
       </note>
@@ -1024,6 +1028,7 @@
           </emphasis>.</para>
 
         <note>
+          <title>Note:</title>
           <para>Not all conversions are implemented (contributions welcome), so some hand editing
             might be necessary.</para>
         </note>
@@ -1148,7 +1153,7 @@
             <property>queryresult.txt</property>. </emphasis></para>
 
         <note>
-          <title>Tip:</title>
+          <title>Note:</title>
           <para> Currently the dump is simply a call to toString on each element.</para>
         </note>
 
@@ -1174,6 +1179,7 @@
 />]]></programlisting>
 
       <note>
+        <title>Note:</title>
         <para>Previous versions of the tools used Velocity. We are now using Freemarker which
           provides us much better exception and error handling.</para>
       </note>
@@ -1296,7 +1302,7 @@
             <property>&lt;property&gt;</property>
           </emphasis> which will be available to the templates/exporter. </para>
         <note>
-          <title>Tip:</title>
+          <title>Note:</title>
           <para> This example actually simulates what &lt;hbm2java&gt; actually does.</para>
         </note>
 

@@ -74,6 +74,7 @@
       facilities of <property>Hibernate Tools</property>. </para>
 
     <note>
+      <title>Note:</title>
       <para>No matter which Hibernate Configuration type you are using <property>Hibernate
         Tools</property> supports them.</para>
     </note>

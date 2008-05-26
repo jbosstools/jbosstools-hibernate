@@ -44,6 +44,7 @@
       specialized editor.</para>
 
     <note>
+      <title>Note:</title>
       <para>Many databases are case-sensitive with their names and thus if you cannot make some
         table match and you are sure it is not excluded by a &lt;table-filter&gt; then check
         if the case matches; most databases stores table names in uppercase.</para>
@@ -121,6 +122,7 @@
         </emphasis> is still used to then decide which tables will be included/excluded.</para>
 
       <note>
+        <title>Note:</title>
         <para>If no <literal>&lt;schema-selection&gt;</literal> is specified, the reverse
           engineering works as if all schemas should be processed. This is equal to:
           <![CDATA[<schema-selection/>]]>. Which in turn is equal to:
@@ -694,10 +696,8 @@
           </emphasis> has two purposes. One for allowing to define foreign-keys in databases that
           does not support them or does not have them defined in their schema. Secondly, to allow
           defining the name of the resulting properties (many-to-one and one-to-many's).</para>
-
-        <para>Note:</para>
-
-            <programlisting role="XML"><![CDATA[<foreign-key
+         
+          <para><programlisting role="XML"><![CDATA[<foreign-key
   constraint-name="foreignKeyName"
   foreign-catalog="catalogName"
   foreign-schema="schemaName"
@@ -710,8 +710,7 @@
  <set 
    property="aCollectionName"
    exclude="true|false"/>
-   </foreign-key>]]></programlisting>
-        
+   </foreign-key>]]></programlisting></para>
         <table frame="topbot">
           <title>Foreign-key attributes</title>
           

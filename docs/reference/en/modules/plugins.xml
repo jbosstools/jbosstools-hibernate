@@ -17,6 +17,7 @@
       can take advantage of while using the tools within Eclipse.</para>
 
     <note>
+      <title>Note:</title>
       <para>Please note that these tools do not try to hide any functionality of
         <property>Hibernate</property>. The tools make working with <property>Hibernate</property>
         easier, but you are still encouraged/required to read the <ulink
@@ -113,6 +114,7 @@
     </figure>
 
     <note>
+      <title>Note:</title>
       <para>The contents in the combo boxes for the JDBC driver class and JDBC URL change
         automatically, depending on the Dialect and actual driver you have chosen.</para>
     </note>
@@ -153,6 +155,7 @@
       </emphasis>.</para>
 
     <note>
+      <title>Note:</title>
       <para>The wizard will look at the current selection in the IDE and try and auto-detect the
         settings which you then can just approve or modify to suit your needs.</para>
     </note>
@@ -565,12 +568,12 @@
           <property>New_Generation</property>
         </emphasis> will be used.</para>
 
-      <note>
+      <tip>
         <title>Tip:</title>
         <para>The &quot;At least one exporter option must be selected&quot; is just a
           warning stating that for this launch to work you need to select an exporter on the
           Exporter tab. When an exporter has been selected the warning will disappear.</para>
-      </note>
+      </tip>
 
       <para>The dialog also have the standard tabs <emphasis>
           <property>Refresh</property>
@@ -1046,6 +1049,7 @@
       <para>For java completion and navigation to work the file needs to reside inside an Eclipse
         Java project, otherwise no completion will occur.</para>
       <note>
+        <title>Note:</title>
         <para>Java completion does not require a Hibernate console configuration to be used.</para>
       </note>
     </section>
@@ -1070,6 +1074,7 @@
       </figure>
 
       <important>
+        <title>Important:</title>
         <para>Table/Column completion requires a proper configured hibernate console configuration
           and this configuration should be the default for the project where the <emphasis>
             <property>hbm.xml</property>
@@ -1083,6 +1088,7 @@
         table/column names in the background.</para>
 
       <note>
+        <title>Note:</title>
         <para>Currently it is not recommended to use this feature on large databases since it does
           not fetch the information iteratively. It will be improved in future versions.</para>
       </note>
@@ -1165,6 +1171,7 @@
       default naming rules are not applicable.</para>
 
     <note>
+      <title>Note:</title>
       <para> Not all the features of the <emphasis>
           <property>.reveng.xml </property>
         </emphasis> file are exposed or fully implemented in the editor, but the main functionality
@@ -1520,6 +1527,7 @@
 
 
       <note>
+        <title>Note:</title>
         <para>HQL queries are executed by default using <literal>list()</literal> thus without any
           limit of the size of the output the query could return a large result set. You might run
           out of memory. To avoid this you can put a value in the Max results field to reduce the
