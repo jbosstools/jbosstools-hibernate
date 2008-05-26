@@ -277,6 +277,7 @@ public class Person implements Serializable, IAuditable {
       </emphasis> file will implement <literal>IAuditable</literal>!</para>
 
     <note>
+      <title>Note:</title>
       <para>This applies to <emphasis>all</emphasis>
         <literal>&lt;meta&gt;</literal>-tags. Thus it can also e.g. be used to specify that
         all fields should be declare protected, instead of the default private. This is done by
@@ -530,6 +531,7 @@ public class Person implements Serializable, IAuditable {
 </hibernate-mapping>]]></programlisting>
 
         <note>
+          <title>Note:</title>
           <para>I) To escape the &amp; symbol we put &amp;amp;. You can use
             &lt;![CDATA[]]&gt; instead.</para>
           <para>II) Note that we are referring to "firstName" directly and this is the parameter

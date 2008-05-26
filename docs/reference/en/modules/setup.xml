@@ -42,6 +42,7 @@
         -clean</property>.</emphasis> Using the updatesite does not require any additional steps.</para>
 
     <note>
+      <title>Note:</title>
       <para>If you need more basic instructions on installing plugins and general usage of eclipse
         then check out <ulink url="https://eclipse-tutorial.dev.java.net/"
           >https://eclipse-tutorial.dev.java.net/</ulink> and especially <ulink
