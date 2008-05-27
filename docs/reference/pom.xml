@@ -15,7 +15,8 @@
             <plugin>
                 <groupId>org.jboss.maven.plugins</groupId>
                 <artifactId>maven-jdocbook-plugin</artifactId>
-                <version>2.1.0</version>
+                <version>2.1.0-200803311251UTC-MPJDOCBOOK-8</version>
+                
                 <extensions>true</extensions>
                 <dependencies>
                     <dependency>
@@ -39,31 +40,34 @@
                             <include>images/**/*</include>
                         </includes>
                     </imageResource>
-                    <!--<cssResource>
-                        <directory>src/main/css</directory>
-                        </cssResource>-->
+                    <cssResource>
+                        <directory>${pom.basedir}/${cssdir}</directory>
+                    </cssResource>
+                    
                     <formats>
                         <format>
-                            <formatName>pdf</formatName>
-                            <stylesheetResource>classpath:/xslt/org/jboss/pdf.xsl</stylesheetResource>
+                            <formatName>pdf</formatName>              
+                            <stylesheetResource>file:${pom.basedir}/${stylesdir}/xslt/org/jboss/tools/pdf.xsl</stylesheetResource>
                             <finalName>${pom.name}.pdf</finalName>
                         </format>
                         <format>
                             <formatName>html</formatName>
-                            <stylesheetResource>classpath:/xslt/org/jboss/xhtml.xsl</stylesheetResource>
+                            <stylesheetResource>file:${pom.basedir}/${stylesdir}/xslt/org/jboss/tools/xhtml.xsl</stylesheetResource>
                             <finalName>index.html</finalName>
                         </format>
                         <format>
                             <formatName>html_single</formatName>
-                            <stylesheetResource>classpath:/xslt/org/jboss/xhtml-single.xsl</stylesheetResource>
+                            <stylesheetResource>file:${pom.basedir}/${stylesdir}/xslt/org/jboss/tools/xhtml-single.xsl</stylesheetResource>
                             <finalName>index.html</finalName>
                         </format>
                         <format>
                             <formatName>eclipse</formatName>
-                            <stylesheetResource>classpath:/xslt/org/jboss/eclipse.xsl</stylesheetResource>
+                            <stylesheetResource>file:${pom.basedir}/${stylesdir}/xslt/org/jboss/tools/eclipse.xsl</stylesheetResource>
                             <finalName>index.html</finalName>
                         </format>
                     </formats>
+                    
+                    
                     <options>
                         <xincludeSupported>true</xincludeSupported>
                         <xmlTransformerType>saxon</xmlTransformerType>
@@ -92,8 +96,9 @@
     </distributionManagement>
     
     <properties>
+        <stylesdir>../../../documentation/jbosstools-docbook-xslt/src/main/resources/</stylesdir>
+        <cssdir>../../../documentation/jbosstools-jdocbook-style/src/main/org/css/</cssdir>
         <translation>en-US</translation>
     </properties> 
-
 
 </project>
