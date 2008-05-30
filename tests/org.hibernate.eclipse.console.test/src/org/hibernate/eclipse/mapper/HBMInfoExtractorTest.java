@@ -25,7 +25,7 @@ public class HBMInfoExtractorTest extends TestCase {
 	private HBMInfoExtractorStub sourceLocator = new HBMInfoExtractorStub();
 
 	public void executeJavaTypeHandlerTest(String start, String attributeName) {
-		sourceLocator.setPackageName("org");
+		sourceLocator.setPackageName("org"); //$NON-NLS-1$
 	    MappingTestProject testProj = MappingTestProject.getTestProject();
 	    IJavaProject project = testProj.getIJavaProject();
 		JavaTypeHandler javaTypeHandler = new JavaTypeHandler(sourceLocator);
@@ -37,23 +37,23 @@ public class HBMInfoExtractorTest extends TestCase {
 	}
 
 	public void testJavaTypeHandler1() {
-		executeJavaTypeHandlerTest("a", "name");
+		executeJavaTypeHandlerTest("a", "name");  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 	public void testJavaTypeHandler2() {
-		executeJavaTypeHandlerTest("", "name");
+		executeJavaTypeHandlerTest("", "name");  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 	public void testJavaTypeHandler3() {
-		executeJavaTypeHandlerTest("a", "class");
+		executeJavaTypeHandlerTest("a", "class"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void testJavaTypeHandler4() {
-		executeJavaTypeHandlerTest("", "class");
+		executeJavaTypeHandlerTest("", "class"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	public void executePackageHandlerTest(String start, String attributeName) {
-		sourceLocator.setPackageName("org");
+		sourceLocator.setPackageName("org"); //$NON-NLS-1$
 	    MappingTestProject testProj = MappingTestProject.getTestProject();
 	    IJavaProject project = testProj.getIJavaProject();
 	    PackageHandler packageHandler = new PackageHandler(sourceLocator);
@@ -65,11 +65,11 @@ public class HBMInfoExtractorTest extends TestCase {
 	}
 
 	public void testPackageHandler1() {
-		executePackageHandlerTest("o", "package");
+		executePackageHandlerTest("o", "package");  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 	public void testPackageHandler2() {
-		executePackageHandlerTest("", "package");
+		executePackageHandlerTest("", "package"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 }
