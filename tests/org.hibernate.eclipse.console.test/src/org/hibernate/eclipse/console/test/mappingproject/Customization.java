@@ -25,7 +25,7 @@ public class Customization {
 	/**
 	 * packages name pattern
 	 */
-	public static final String TEST_PACKS_PATTERN = ".*\\.bidi";
+	public static final String TEST_PACKS_PATTERN = ".*\\.bidi"; //$NON-NLS-1$
 	
 	/**
 	 * is stop after missing package or run further
@@ -55,7 +55,7 @@ public class Customization {
 	/**
 	 * Hibernate Dialect
 	 */
-	public static final String HIBERNATE_DIALECT = "org.hibernate.dialect.HSQLDialect";
+	public static final String HIBERNATE_DIALECT = "org.hibernate.dialect.HSQLDialect"; //$NON-NLS-1$
 	
 	
 

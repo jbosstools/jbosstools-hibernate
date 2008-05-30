@@ -8,7 +8,7 @@ public class BeanShellIntegrationTest extends TestCase {
 
 	public static class CallBack {
 		public void line(int number) {
-			System.out.println(number + ":");
+			System.out.println(number + ":"); //$NON-NLS-1$
 		}	
 	}
 	
@@ -17,18 +17,18 @@ public class BeanShellIntegrationTest extends TestCase {
 		Interpreter bsh = new Interpreter();
 		
 		try {
-			bsh.set("callback", new CallBack());
+			bsh.set("callback", new CallBack()); //$NON-NLS-1$
 			
 			StringBuffer buf = new StringBuffer();
-			buf.append( "int i = 25;\r\n" );
-			buf.append( "callback.line(1);\r\n" );
-			buf.append( "int j = 23;\r\n" );
-			buf.append( "callback.line(2);\r\n" );
-			buf.append( "i+j;" );
-			buf.append( "callback.line(3);" );
+			buf.append( "int i = 25;\r\n" ); //$NON-NLS-1$
+			buf.append( "callback.line(1);\r\n" ); //$NON-NLS-1$
+			buf.append( "int j = 23;\r\n" ); //$NON-NLS-1$
+			buf.append( "callback.line(2);\r\n" ); //$NON-NLS-1$
+			buf.append( "i+j;" ); //$NON-NLS-1$
+			buf.append( "callback.line(3);" ); //$NON-NLS-1$
 			Object object = bsh.eval( buf.toString() );
 			
-			System.out.println("Result: " + object);
+			System.out.println(Messages.BEANSHELLINTEGRATIONTEST_RESULT + object);
 				
 		}
 		catch (EvalError e) {

@@ -22,10 +22,10 @@ public class ExporterTest extends TestCase {
 		super.setUp();
 		
 		map = new HashMap();
-		map.put("ejb3", new ExporterProperty("ejb3", "Use ejb3 syntax", "true", true));
-		definition = new ExporterDefinition("exporterClass", 
-								"exporterDescription",
-								"exporterId",
+		map.put("ejb3", new ExporterProperty("ejb3", "Use ejb3 syntax", "true", true)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		definition = new ExporterDefinition("exporterClass",  //$NON-NLS-1$
+								"exporterDescription", //$NON-NLS-1$
+								"exporterId", //$NON-NLS-1$
 								map,
 								null);
 		
@@ -45,27 +45,27 @@ public class ExporterTest extends TestCase {
 		
 		
 		// pure local manipulation 
-		assertNull(factory.setProperty("localValue", "true"));
-		assertEquals("true", factory.getPropertyValue("localValue"));
-		assertTrue(factory.hasLocalValueFor("localValue"));
-		factory.removeProperty( "localValue" );
-		assertNull(factory.getPropertyValue( "localValue" ));
-		assertFalse(factory.hasLocalValueFor("localValue"));
+		assertNull(factory.setProperty("localValue", "true")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("true", factory.getPropertyValue("localValue"));  //$NON-NLS-1$//$NON-NLS-2$
+		assertTrue(factory.hasLocalValueFor("localValue")); //$NON-NLS-1$
+		factory.removeProperty( "localValue" ); //$NON-NLS-1$
+		assertNull(factory.getPropertyValue( "localValue" )); //$NON-NLS-1$
+		assertFalse(factory.hasLocalValueFor("localValue")); //$NON-NLS-1$
 		
 	}
 	
 	public void testDefaultValues() {
 		
-		assertEquals("true", factory.getPropertyValue( "ejb3" ));
+		assertEquals("true", factory.getPropertyValue( "ejb3" ));  //$NON-NLS-1$//$NON-NLS-2$
 		
-		assertFalse(factory.hasLocalValueFor("ejb3"));
+		assertFalse(factory.hasLocalValueFor("ejb3")); //$NON-NLS-1$
 		
-		factory.setProperty( "ejb3", "false");
-		assertEquals("false", factory.getPropertyValue( "ejb3" ));
+		factory.setProperty( "ejb3", "false");  //$NON-NLS-1$//$NON-NLS-2$
+		assertEquals("false", factory.getPropertyValue( "ejb3" ));  //$NON-NLS-1$//$NON-NLS-2$
 		
-		factory.removeProperty( "ejb3" );
+		factory.removeProperty( "ejb3" ); //$NON-NLS-1$
 		
-		assertEquals("true", factory.getPropertyValue( "ejb3" ));
+		assertEquals("true", factory.getPropertyValue( "ejb3" ));  //$NON-NLS-1$//$NON-NLS-2$
 	}
 	
 	public void testExporterEnablement() {
@@ -87,7 +87,7 @@ public class ExporterTest extends TestCase {
 		
 		assertEquals(0, propertyDescriptors.length);
 		
-		factory.setProperty( "something", "true" );
+		factory.setProperty( "something", "true" ); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		propertyDescriptors = ips.getPropertyDescriptors();
 		

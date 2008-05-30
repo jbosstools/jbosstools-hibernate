@@ -41,8 +41,8 @@ public class OpenMappingDiagramTest extends TestCase {
 			assertTrue(configs[0] instanceof Configuration);
 			persClasses = new ConfigurationWorkbenchAdapter().getChildren(configs[0]);
 		} catch (InvalidMappingException ex){
-			fail("Mapping Diagramms for package " + HibernateAllMappingTests.getActivePackage().getElementName()
-					+ " can't be opened:\n " + ex.getMessage());
+			fail(Messages.OPENMAPPINGDIAGRAMTEST_MAPPING_DIAGRAMMS_FOR_PACKAGE + HibernateAllMappingTests.getActivePackage().getElementName()
+					+ Messages.OPENMAPPINGDIAGRAMTEST_CANNOT_BE_OPENED + ex.getMessage());
 		}
 		
 		if (persClasses.length > 0){
@@ -58,8 +58,8 @@ public class OpenMappingDiagramTest extends TestCase {
 					ex = e;
 				} 				
 				if (ex == null ) ex = ProjectUtil.getExceptionIfItOccured(editor);				
-				if (ex != null) fail("Mapping Diagramm for " + persClass.getClassName()
-						+ " not opened:\n" + ex.getMessage());
+				if (ex != null) fail(Messages.OPENMAPPINGDIAGRAMTEST_MAPPING_DIAGRAMM_FOR + persClass.getClassName()
+						+ Messages.OPENMAPPINGDIAGRAMTEST_NOT_OPENED + ex.getMessage());
 			}			
 		}
 		//close all editors

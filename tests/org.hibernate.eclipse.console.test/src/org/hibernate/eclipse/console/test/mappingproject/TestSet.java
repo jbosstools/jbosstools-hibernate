@@ -23,7 +23,7 @@ public class TestSet{
 	 * @return
 	 */
 	public static TestSuite getTests(){
-		TestSuite suite = new TestSuite("Test for MappingTestProject" );
+		TestSuite suite = new TestSuite(Messages.TESTSET_TEST_FOR_MAPPINGTESTPROJECT );
 	
 		addTestsPackSetUp( suite );
 		addPackTests( suite );

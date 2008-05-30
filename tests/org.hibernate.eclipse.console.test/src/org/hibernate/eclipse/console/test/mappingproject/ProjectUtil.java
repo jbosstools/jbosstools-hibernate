@@ -40,24 +40,24 @@ import org.hibernate.mapping.PersistentClass;
  */
 public class ProjectUtil {
 	
-	private static final StringBuilder XML_HEADER = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
-													.append("<!DOCTYPE hibernate-configuration PUBLIC\n")
-													.append("\"-//Hibernate/Hibernate Configuration DTD 3.0//EN\"\n")
-													.append("\"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd\">\n");
+	private static final StringBuilder XML_HEADER = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n") //$NON-NLS-1$
+													.append("<!DOCTYPE hibernate-configuration PUBLIC\n") //$NON-NLS-1$
+													.append("\"-//Hibernate/Hibernate Configuration DTD 3.0//EN\"\n") //$NON-NLS-1$
+													.append("\"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd\">\n"); //$NON-NLS-1$
 	
-	private static final StringBuilder XML_CFG_START = new StringBuilder("<hibernate-configuration>\n")
-													.append("<session-factory>\n")
-													.append("<property name=\"hibernate.dialect\">")
+	private static final StringBuilder XML_CFG_START = new StringBuilder("<hibernate-configuration>\n") //$NON-NLS-1$
+													.append("<session-factory>\n") //$NON-NLS-1$
+													.append("<property name=\"hibernate.dialect\">") //$NON-NLS-1$
 													.append(Customization.HIBERNATE_DIALECT)
-													.append("</property>");
+													.append("</property>"); //$NON-NLS-1$
 	
-	private static final StringBuilder XML_CFG_END = new StringBuilder("</session-factory>\n")
-													.append("</hibernate-configuration>\n");	
+	private static final StringBuilder XML_CFG_END = new StringBuilder("</session-factory>\n") //$NON-NLS-1$
+													.append("</hibernate-configuration>\n");	 //$NON-NLS-1$
 	
 	
-	public static final String CFG_FILE_NAME = "hibernate.cfg.xml";
+	public static final String CFG_FILE_NAME = "hibernate.cfg.xml"; //$NON-NLS-1$
 	
-	public static final String ConsoleCFGName = "testConfigName";
+	public static final String ConsoleCFGName = "testConfigName"; //$NON-NLS-1$
 	
 	public static void customizeCFGFileForPack(IPackageFragment pack) throws CoreException{
 		IFolder srcFolder = (IFolder) pack.getParent().getResource();
@@ -65,14 +65,14 @@ public class ProjectUtil {
 		if (iFile.exists()) {
 			iFile.delete(true, null);
 		}
-		String file_boby = XML_HEADER.toString() + XML_CFG_START.toString();
+		String file_body = XML_HEADER.toString() + XML_CFG_START.toString();
 		if (pack.getNonJavaResources().length > 0){
 			Object[] ress = pack.getNonJavaResources();
 			for (int i = 0; i < ress.length; i++) {
 				if (ress[i] instanceof IFile){
 					IFile res = (IFile)ress[i];
-					if (res.getName().endsWith(".hbm.xml")){
-						file_boby += "<mapping resource=\"" + pack.getElementName().replace('.', '/') + '/' + res.getName() + "\"/>\n";
+					if (res.getName().endsWith(".hbm.xml")){ //$NON-NLS-1$
+						file_body += "<mapping resource=\"" + pack.getElementName().replace('.', '/') + '/' + res.getName() + "\"/>\n";  //$NON-NLS-1$//$NON-NLS-2$
 					}
 				}
 			}
@@ -91,14 +91,14 @@ public class ProjectUtil {
 			}
 		}*/
 
-		file_boby += XML_CFG_END.toString();
-		iFile.create(new StringInputStream(file_boby),
+		file_body += XML_CFG_END.toString();
+		iFile.create(new StringInputStream(file_body),
 				   true, null);
 	}
 	
 	public static String getPersistentClassName(PersistentClass persClass) {
 		if (persClass == null) {
-			return "";
+			return ""; //$NON-NLS-1$
 		} else { 
 			return persClass.getEntityName() != null ? persClass.getEntityName() : persClass.getClassName();
 		}
@@ -111,11 +111,11 @@ public class ProjectUtil {
 	private static class ConsoleConfigurationCreationWizard2 extends ConsoleConfigurationCreationWizard{
 		
 		public void run() throws CoreException {
-			IPath cfgFilePath = new Path(MappingTestProject.PROJECT_NAME + "/" + 
-					MappingTestProject.SRC_FOLDER + "/" + ProjectUtil.CFG_FILE_NAME);
+			IPath cfgFilePath = new Path(MappingTestProject.PROJECT_NAME + "/" +  //$NON-NLS-1$
+					MappingTestProject.SRC_FOLDER + "/" + ProjectUtil.CFG_FILE_NAME); //$NON-NLS-1$
 			createConsoleConfiguration(null, null, ConsoleCFGName, ConsoleConfigurationPreferences.ConfigurationMode.CORE, 
-					MappingTestProject.PROJECT_NAME, true, "",
-					null, cfgFilePath, new Path[0], new Path[0], "", "", new NullProgressMonitor());
+					MappingTestProject.PROJECT_NAME, true, "", //$NON-NLS-1$
+					null, cfgFilePath, new Path[0], new Path[0], "", "", new NullProgressMonitor());  //$NON-NLS-1$//$NON-NLS-2$
 
 		}
 	}
@@ -134,7 +134,7 @@ public class ProjectUtil {
 			Class<ErrorEditorPart> clazz = ErrorEditorPart.class;
 			Field field;
 			try {
-				field = clazz.getDeclaredField("error");
+				field = clazz.getDeclaredField("error"); //$NON-NLS-1$
 			
 				field.setAccessible(true);
 		
@@ -147,13 +147,13 @@ public class ProjectUtil {
 				}
 			// catch close means that exception occurred but we can't get it
 			} catch (SecurityException e) {
-				return new RuntimeException("Can't get exception from ErrorEditorPart. " + e.getMessage());
+				return new RuntimeException(Messages.PROJECTUTIL_CANNOT_GET_EXCEPTION_FROM_ERROREDITORPART + e.getMessage());
 			} catch (NoSuchFieldException e) {
-				return new RuntimeException("Can't get error field from ErrorEditorPart. " + e.getMessage());
+				return new RuntimeException(Messages.PROJECTUTIL_CANNOT_GET_ERROR_FIELD_FROM_ERROREDITORPART + e.getMessage());
 			} catch (IllegalArgumentException e) {
-				return new RuntimeException("Can't get error field from ErrorEditorPart. " + e.getMessage());
+				return new RuntimeException(Messages.PROJECTUTIL_CANNOT_GET_ERROR_FIELD_FROM_ERROREDITORPART + e.getMessage()); //$NON-NLS-1$
 			} catch (IllegalAccessException e) {
-				return new RuntimeException("Can't get error field from ErrorEditorPart. " + e.getMessage());
+				return new RuntimeException(Messages.PROJECTUTIL_CANNOT_GET_ERROR_FIELD_FROM_ERROREDITORPART + e.getMessage()); //$NON-NLS-1$
 			}
 		}
 		return null;

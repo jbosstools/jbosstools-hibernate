@@ -69,7 +69,7 @@ public abstract class HibernateConsoleTest extends TestCase {
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closeEditor(editorPart, false);
 
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().setPerspective(
-				PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId("org.eclipse.ui.resourcePerspective"));
+				PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId("org.eclipse.ui.resourcePerspective")); //$NON-NLS-1$
 
 
 		this.project.deleteIProject();
@@ -121,7 +121,7 @@ public abstract class HibernateConsoleTest extends TestCase {
 		while (!Job.getJobManager().isIdle()) {
 			delay(500);
 			if ( (System.currentTimeMillis()-start) > MAX_IDLE ) 
-				throw new RuntimeException("A long running task detected");
+				throw new RuntimeException(Messages.HIBERNATECONSOLETEST_LONG_RUNNING_TASK_DETECTED);
 		}
 		delay(1000);
 	}

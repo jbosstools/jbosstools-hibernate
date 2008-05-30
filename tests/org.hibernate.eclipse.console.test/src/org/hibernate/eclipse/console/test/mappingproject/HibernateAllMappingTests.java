@@ -47,7 +47,7 @@ public class HibernateAllMappingTests extends TestCase {
 		this.project = MappingTestProject.getTestProject();
 
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().setPerspective(
-				PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId("org.eclipse.ui.resourcePerspective"));
+				PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId("org.eclipse.ui.resourcePerspective")); //$NON-NLS-1$
 		
 		IPackagesViewPart packageExplorer = null;		
 		try {
@@ -184,11 +184,11 @@ public class HibernateAllMappingTests extends TestCase {
 					//==============================
 					pack_count++;
 					if (Customization.USE_CONSOLE_OUTPUT){
-						System.out.print( result.errorCount() - prev_errCount + " errors. \t");
-						System.out.print( result.failureCount() - prev_failCount + " fails.\t");						
+						System.out.print( result.errorCount() - prev_errCount + Messages.HIBERNATEALLMAPPINGTESTS_ERRORS + " \t"); //$NON-NLS-1$
+						System.out.print( result.failureCount() - prev_failCount + Messages.HIBERNATEALLMAPPINGTESTS_FAILS + "\t");						 //$NON-NLS-1$
 						long period = System.currentTimeMillis() - st_pack_time;
-						String time = period / 1000 + "." + (period % 1000) / 100;
-						System.out.println( time +" sec. " + javaElement.getElementName());						
+						String time = period / 1000 + "." + (period % 1000) / 100; //$NON-NLS-1$
+						System.out.println( time +Messages.HIBERNATEALLMAPPINGTESTS_SECONDS + javaElement.getElementName());						
 					}
 					waitForJobs();
 					delay(Customization.EACTH_PACK_TEST_DELAY);
@@ -202,11 +202,11 @@ public class HibernateAllMappingTests extends TestCase {
 			}			
 		}
 		if (Customization.USE_CONSOLE_OUTPUT){
-			System.out.println( "=====================================================");
-			System.out.print( result.errorCount() + " errors. \t");
-			System.out.print( result.failureCount() + " fails.\t");						
-			System.out.print(( System.currentTimeMillis() - start_time ) / 1000 + " seconds.\t" );	
-			System.out.println( pack_count + " packages tested." );
+			System.out.println( "====================================================="); //$NON-NLS-1$
+			System.out.print( result.errorCount() + Messages.HIBERNATEALLMAPPINGTESTS_ERRORS + " \t"); //$NON-NLS-1$
+			System.out.print( result.failureCount() + Messages.HIBERNATEALLMAPPINGTESTS_FAILS + "\t");						 //$NON-NLS-1$
+			System.out.print(( System.currentTimeMillis() - start_time ) / 1000 + Messages.HIBERNATEALLMAPPINGTESTS_SECONDS + "\t" );	 //$NON-NLS-1$
+			System.out.println( pack_count + Messages.HIBERNATEALLMAPPINGTESTS_PACKAGES_TESTED );
 		}
 		waitForJobs();		
 		

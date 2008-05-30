@@ -30,16 +30,16 @@ public class KnownConfigurationsTest extends TestCase {
 		}
 
 		public void sessionFactoryBuilt(ConsoleConfiguration ccfg, SessionFactory builtFactory) {
-			fail("no sf should be built!");
+			fail(Messages.KNOWNCONFIGURATIONSTEST_NO_SF_SHOULD_BE_BUILD);
 		}
 
 		public void sessionFactoryClosing(ConsoleConfiguration configuration, SessionFactory closingFactory) {
-			fail("no sf should be closed!");
+			fail(Messages.KNOWNCONFIGURATIONSTEST_NO_SF_SHOULD_BE_CLOSED);
 		}
 
 		public void configurationRemoved(ConsoleConfiguration root, boolean forUpdate) {
 			if(!added.remove(root)) {
-				fail("trying to remove a non existing console");
+				fail(Messages.KNOWNCONFIGURATIONSTEST_TRYING_REMOVE_NON_EXISTING_CONSOLE);
 			}
 		}
 	}
@@ -101,7 +101,7 @@ public class KnownConfigurationsTest extends TestCase {
 			}
 		
 			public String getName() {
-				return "fake prefs";
+				return Messages.KNOWNCONFIGURATIONSTEST_FAKE_PREFS;
 			}
 		
 			public boolean useAnnotations() {
@@ -133,7 +133,7 @@ public class KnownConfigurationsTest extends TestCase {
 		
 		ConsoleConfigurationPreferences preferences2 = new ConsoleConfigurationPreferences() {
 			
-			String name = "new test";
+			String name = Messages.KNOWNCONFIGURATIONSTEST_NEW_TEST;
 			
 			public void setName(String name) {
 				this.name = name;

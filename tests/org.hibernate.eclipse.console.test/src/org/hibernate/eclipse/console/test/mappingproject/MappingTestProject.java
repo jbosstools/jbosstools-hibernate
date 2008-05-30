@@ -50,16 +50,16 @@ import org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin;
  */
 public class MappingTestProject{
 	
-	public static final String SRC_FOLDER = "src";
+	public static final String SRC_FOLDER = "src"; //$NON-NLS-1$
 	
-	public static final String LIB_FOLDER = "lib";
+	public static final String LIB_FOLDER = "lib"; //$NON-NLS-1$
 
 	private static MappingTestProject singleton= null;
 	
-	private static final Path JRE_CONTAINER = new Path("org.eclipse.jdt.launching.JRE_CONTAINER");
+	private static final Path JRE_CONTAINER = new Path("org.eclipse.jdt.launching.JRE_CONTAINER"); //$NON-NLS-1$
 	
-	public static String PROJECT_NAME = "MappingTestProject";
-	public static String RESOURCE_PATH = "res/project/";
+	public static String PROJECT_NAME = "MappingTestProject"; //$NON-NLS-1$
+	public static String RESOURCE_PATH = "res/project/"; //$NON-NLS-1$
 	
 	private static FileFilter fileFilter = new FileFilter(){
 		public boolean accept(File pathname) {
@@ -76,7 +76,7 @@ public class MappingTestProject{
 			
 	private static FileFilter jarFilter = new FileFilter(){
 		public boolean accept(File pathname) {
-			return !pathname.isDirectory() || pathname.getName().endsWith(".jar");
+			return !pathname.isDirectory() || pathname.getName().endsWith(".jar"); //$NON-NLS-1$
 		}};
 	
 	private IProject project;
@@ -124,7 +124,7 @@ public class MappingTestProject{
 		String tplPrjLcStr= FileLocator.resolve(resProject).getFile();
 		resourceFolder = new File(tplPrjLcStr);
 		if (!resourceFolder.exists()) 
-			throw new RuntimeException("Folder " + RESOURCE_PATH + " not found!");
+			throw new RuntimeException(Messages.MAPPINGTESTPROJECT_FOLDER + RESOURCE_PATH + Messages.MAPPINGTESTPROJECT_NOT_FOUND);
 				
 		IPackageFragmentRoot sourceFolder = createSourceFolder(project, javaProject);
 		recursiveCopyFiles(resourceFolder, (IFolder) sourceFolder.getResource());
@@ -172,9 +172,9 @@ public class MappingTestProject{
 			javaProject.getPackageFragmentRoot(dst);
 		}
 				
-		File libFolder = new File(res.getAbsolutePath()+"/" + LIB_FOLDER);
+		File libFolder = new File(res.getAbsolutePath()+"/" + LIB_FOLDER); //$NON-NLS-1$
 		if ( !libFolder.exists() )
-			throw new RuntimeException("Folder " + RESOURCE_PATH + "/" + LIB_FOLDER + " not found!");
+			throw new RuntimeException(Messages.MAPPINGTESTPROJECT_FOLDER + RESOURCE_PATH + "/" + LIB_FOLDER + Messages.MAPPINGTESTPROJECT_NOT_FOUND);  //$NON-NLS-1$
 		
 		
 		List<IPath> libs = new ArrayList<IPath>();

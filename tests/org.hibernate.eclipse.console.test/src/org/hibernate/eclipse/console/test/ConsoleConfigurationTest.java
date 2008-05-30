@@ -8,7 +8,6 @@ import java.util.Properties;
 import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Platform;
 import org.hibernate.SessionFactory;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ConsoleConfigurationListener;
@@ -61,17 +60,17 @@ public class ConsoleConfigurationTest extends TestCase {
 			File xmlConfig = null;
 			Bundle bundle = HibernateConsoleTestPlugin.getDefault().getBundle();
 			try {
-				URL url = FileLocator.resolve(bundle.getEntry("/res/project/hibernate.cfg.xml"));
+				URL url = FileLocator.resolve(bundle.getEntry("/res/project/hibernate.cfg.xml")); //$NON-NLS-1$
 				xmlConfig = new File(url.getFile());
 			} catch (IOException e) {
-				fail("Cannot find /res/project/hibernate.cfg.xml file");
+				fail("Cannot find /res/project/hibernate.cfg.xml file"); //$NON-NLS-1$
 			}
 			return xmlConfig;
 		}
 	
 		public Properties getProperties() {
 			Properties p = new Properties();
-			p.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
+			p.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect"); //$NON-NLS-1$ //$NON-NLS-2$
 			return p;
 		}
 	
@@ -84,13 +83,13 @@ public class ConsoleConfigurationTest extends TestCase {
 		}
 	
 		public String getName() {
-			return "fake prefs";
+			return Messages.CONSOLECONFIGTEST_FAKE_PREFS;
 		}
 	
 		
 
 		public String getEntityResolverName() {			
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 
 		public ConfigurationMode getConfigurationMode() {
@@ -147,12 +146,12 @@ public class ConsoleConfigurationTest extends TestCase {
 		
 		try {
 			consoleCfg.buildSessionFactory();
-			fail("Should throw an exception because a factory already exists!");
+			fail(Messages.CONSOLECONFIGTEST_FACTORY_ALREADY_EXISTS);
 		} catch (HibernateConsoleRuntimeException hcre) {
 			
 		}
 		
-		QueryPage qp = consoleCfg.executeHQLQuery("from java.lang.Object");
+		QueryPage qp = consoleCfg.executeHQLQuery("from java.lang.Object"); //$NON-NLS-1$
 		assertEquals(1, listener.queryCreated);
 		
 		consoleCfg.closeSessionFactory();		

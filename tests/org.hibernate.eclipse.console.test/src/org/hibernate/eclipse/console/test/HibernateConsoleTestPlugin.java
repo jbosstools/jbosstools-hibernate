@@ -73,7 +73,7 @@ public class HibernateConsoleTestPlugin extends AbstractUIPlugin {
 	public ResourceBundle getResourceBundle() {
 		try {
 			if (resourceBundle == null)
-				resourceBundle = ResourceBundle.getBundle("org.hibernate.eclipse.console.test.test.HibernateConsoleTestPluginResources");
+				resourceBundle = ResourceBundle.getBundle("org.hibernate.eclipse.console.test.test.HibernateConsoleTestPluginResources"); //$NON-NLS-1$
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}
@@ -88,16 +88,16 @@ public class HibernateConsoleTestPlugin extends AbstractUIPlugin {
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin("org.hibernate.eclipse.console.test.test", path);
+		return AbstractUIPlugin.imageDescriptorFromPlugin("org.hibernate.eclipse.console.test.test", path); //$NON-NLS-1$
 	}
 	
 	public File getFileInPlugin(IPath path) throws CoreException {
 		try {
-			URL installURL= new URL(getBundle().getEntry("/"), path.toString());
+			URL installURL= new URL(getBundle().getEntry("/"), path.toString()); //$NON-NLS-1$
 			URL localURL= FileLocator.toFileURL(installURL);
 			return new File(localURL.getFile());
 		} catch (IOException e) {
-			throw new CoreException(new Status(IStatus.ERROR, "org.hibernate.eclipse.console.test", IStatus.ERROR, e.getMessage(), e));
+			throw new CoreException(new Status(IStatus.ERROR, "org.hibernate.eclipse.console.test", IStatus.ERROR, e.getMessage(), e)); //$NON-NLS-1$
 		}
 	}
 }

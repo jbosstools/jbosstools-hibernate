@@ -45,7 +45,7 @@ public class JavaFormattingTest extends TestCase {
 		
 		Map codeFormatterOptions = null;
 		CodeFormatter codeFormatter = ToolFactory.createCodeFormatter(codeFormatterOptions);
-		String contents = "java.lang.String str; System.out.println();";
+		String contents = "java.lang.String str; System.out.println();"; //$NON-NLS-1$
 		IDocument doc = new Document(contents);
 		TextEdit edit = codeFormatter.format(CodeFormatter.K_UNKNOWN, doc.get(), 0, doc.get().length(), 0, null);
 		

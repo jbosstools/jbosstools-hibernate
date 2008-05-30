@@ -29,8 +29,8 @@ public class UpdateConfigurationTest extends TestCase {
 		try {
 			ProjectUtil.customizeCFGFileForPack(pack);
 		} catch (CoreException e) {
-			fail("Error customising " + ProjectUtil.CFG_FILE_NAME + " file for package " 
-					+ pack.getPath() + ".\n" + e.getMessage());
+			fail(Messages.UPDATECONFIGURATIONTEST_ERROR_CUSTOMISING + ProjectUtil.CFG_FILE_NAME + Messages.UPDATECONFIGURATIONTEST_FILE_FOR_PACKAGE 
+					+ pack.getPath() + ".\n" + e.getMessage()); //$NON-NLS-1$
 		}
 	}
 }

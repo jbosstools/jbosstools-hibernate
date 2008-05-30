@@ -26,6 +26,6 @@ public class HibernateNatureAddTest extends TestCase {
 		MappingTestProject project = MappingTestProject.getTestProject();
 		IJavaProject prj = project.getIJavaProject();
 		
-		ProjectUtils.toggleHibernateOnProject(project.getIProject(), true, "testcfg");		
+		ProjectUtils.toggleHibernateOnProject(project.getIProject(), true, "testcfg");		 //$NON-NLS-1$
 	}
 }

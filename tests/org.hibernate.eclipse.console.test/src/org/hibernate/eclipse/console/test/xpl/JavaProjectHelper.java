@@ -217,7 +217,7 @@ public class JavaProjectHelper {
 		
 				IResource[] resources= jproject.getProject().members();
 				for (int i= 0; i < resources.length; i++) {
-					if (!resources[i].getName().startsWith(".")) {
+					if (!resources[i].getName().startsWith(".")) { //$NON-NLS-1$
 						resources[i].delete(true, null);
 					}
 				}
@@ -231,7 +231,7 @@ public class JavaProjectHelper {
 		new SearchEngine().searchAllTypeNames(
 				null,
 				SearchPattern.R_EXACT_MATCH,
-				"XXXXXXXXX".toCharArray(), // make sure we search a concrete name. This is faster according to Kent 
+				"XXXXXXXXX".toCharArray(),  //$NON-NLS-1$ // make sure we search a concrete name. This is faster according to Kent 
 				SearchPattern.R_EXACT_MATCH | SearchPattern.R_CASE_SENSITIVE,
 				IJavaSearchConstants.CLASS,
 				SearchEngine.createJavaSearchScope(new IJavaElement[0]),
@@ -582,7 +582,7 @@ public class JavaProjectHelper {
 		while (entryPaths.hasMoreElements()) {
 			String path= (String) entryPaths.nextElement();
 			IPath name= new Path(path.substring(bundleSourcePath.length()));
-			if (path.endsWith("/")) {
+			if (path.endsWith("/")) { //$NON-NLS-1$
 				IFolder folder= importTarget.getFolder(name);
 				folder.create(false, true, null);
 				importResources(folder, path);

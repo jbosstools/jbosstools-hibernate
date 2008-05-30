@@ -11,7 +11,7 @@ public class ConsolePluginAllTests {
 
 	public static Test suite() throws IOException {
 		TestSuite suite = new TestSuite(
-				"Test for org.hibernate.eclipse.console.test" );
+				Messages.CONSOLEPLUGINALLTESTS_TEST_FOR );
 		
 		suite.addTestSuite( KnownConfigurationsTest.class );
 		suite.addTestSuite( QueryParametersTest.class );

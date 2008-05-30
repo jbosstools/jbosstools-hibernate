@@ -14,7 +14,7 @@ public class PerspectiveTest extends HibernateConsoleTest {
 		IPerspectiveDescriptor perspective = PlatformUI.getWorkbench()
 		.getActiveWorkbenchWindow().getActivePage().getPerspective();
 
-		assertEquals(perspective.getLabel(), "Hibernate");		
+		assertEquals(perspective.getLabel(), Messages.PERSPECTIVETEST_HIBERNATE);		
 	}
 
 }

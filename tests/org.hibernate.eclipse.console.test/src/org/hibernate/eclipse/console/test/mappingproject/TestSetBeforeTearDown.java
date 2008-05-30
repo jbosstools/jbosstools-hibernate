@@ -18,7 +18,7 @@ import junit.framework.TestSuite;
  */
 public class TestSetBeforeTearDown {
 	public static TestSuite getTests(){
-		TestSuite suite = new TestSuite("Test for MappingTestProject" );
+		TestSuite suite = new TestSuite(Messages.TESTSET_TEST_FOR_MAPPINGTESTPROJECT );
 		suite.addTestSuite( HibernateNatureRemoveTest.class );
 		
 		return suite;

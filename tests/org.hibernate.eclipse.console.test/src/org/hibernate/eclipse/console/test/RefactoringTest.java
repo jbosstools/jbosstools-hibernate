@@ -45,8 +45,8 @@ import org.hibernate.eclipse.launch.core.refactoring.HibernateRefactoringUtil;
  */
 public class RefactoringTest extends TestCase {
 	
-	private final String[] oldPathElements = new String[]{"oldPrj","oldSrc", "oldPack", "oldHibernate.cfg.xml"};	
-	private final String[] newPathElements = new String[]{"newPrj","newSrc", "newPack", "newHibernate.cfg.xml"};
+	private final String[] oldPathElements = new String[]{"oldPrj","oldSrc", "oldPack", "oldHibernate.cfg.xml"};	  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	private final String[] newPathElements = new String[]{"newPrj","newSrc", "newPack", "newHibernate.cfg.xml"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	
 	SimpleTestProject project = null;
 			
@@ -65,8 +65,8 @@ public class RefactoringTest extends TestCase {
 		oldPathStr = oldPathElements[0];
 		String notChangedPathStr = oldPathElements[0] + 1;
 		for (int i = 1; i < oldPathElements.length; i++) {
-			oldPathStr += "/" + oldPathElements[i];
-			notChangedPathStr += "/" + oldPathElements[i] + 1;
+			oldPathStr += "/" + oldPathElements[i]; //$NON-NLS-1$
+			notChangedPathStr += "/" + oldPathElements[i] + 1; //$NON-NLS-1$
 		}
 		Map<String, Object> testStrAttr = new HashMap<String, Object>();
 		Map<String, Object> testStrListAttr = new HashMap<String, Object>();
@@ -110,7 +110,7 @@ public class RefactoringTest extends TestCase {
 				assertTrue(HibernateRefactoringUtil.isConfigurationAffected(testStrListConfig, oldPathPart));
 				assertFalse(HibernateRefactoringUtil.isConfigurationAffected(testNotChangedConfig, oldPathPart));
 			} catch (CoreException e) {
-				fail("Exception while FindChanged launch configurations processing!" + e.getMessage());
+				fail(Messages.REFACTORINGTEST_EXCEPTION_WHILE_FINDCHANGE_LAUNCH_CONFIG_PROCESSING + e.getMessage());
 			}			
 		}
 	}
@@ -132,7 +132,7 @@ public class RefactoringTest extends TestCase {
 						String newMemento = newMementos.get(0);
 						checkMementoChanged(oldMemento, newMemento, oldPathPart, newPath);
 					} catch (CoreException e) {
-						fail("CoreException occured when try to work with memento." + e.getMessage());
+						fail(Messages.REFACTORINGTEST_COREEXCEPTION_OCCURED_WORK_WITH_MEMENTO + e.getMessage());
 					}
 				} else {
 					assertFalse(HibernateRefactoringUtil.isRuntimeClassPathEntriesAffected(new IRuntimeClasspathEntry[]{runtimeClasspathEntries[j]}, oldPathPart));
@@ -147,7 +147,7 @@ public class RefactoringTest extends TestCase {
 			updatePaths(generateOldPathForSegment(segmentNum), generateNewPathForSegment(segmentNum));
 			checkPaths(generateTruePathForSegment(segmentNum));
 		} catch (CoreException e) {
-			fail("Exception while ProjectNameChange refactor processing!");
+			fail(Messages.REFACTORINGTEST_EXCEPTION_WHILE_PROJNAMECHANGE_REFACTOR);
 		}
 	}
 	
@@ -157,7 +157,7 @@ public class RefactoringTest extends TestCase {
 			updatePaths(generateOldPathForSegment(segmentNum), generateNewPathForSegment(segmentNum));
 			checkPaths(generateTruePathForSegment(segmentNum));
 		} catch (CoreException e) {
-			fail("Exception while SrcNameChange refactor processing!");
+			fail(Messages.REFACTORINGTEST_EXCEPTION_WHILE_SRCNAMECHANGE_REFACTOR);
 		}
 	}
 	
@@ -167,7 +167,7 @@ public class RefactoringTest extends TestCase {
 			updatePaths(generateOldPathForSegment(segmentNum), generateNewPathForSegment(segmentNum));
 			checkPaths(generateTruePathForSegment(segmentNum));
 		} catch (CoreException e) {
-			fail("Exception while PackNameChange refactor processing!");
+			fail(Messages.REFACTORINGTEST_EXCEPTION_WHILE_PACKNAMECHANGE_REFACTOR);
 		}
 	}
 	
@@ -177,7 +177,7 @@ public class RefactoringTest extends TestCase {
 			updatePaths(generateOldPathForSegment(segmentNum), generateNewPathForSegment(segmentNum));
 			checkPaths(generateTruePathForSegment(segmentNum));
 		} catch (CoreException e) {
-			fail("Exception while FileNameChange refactor processing!");
+			fail(Messages.REFACTORINGTEST_EXCEPTION_WHILE_FILENAMECHANGE_REFACTOR);
 		}
 	}
 	
@@ -199,14 +199,14 @@ public class RefactoringTest extends TestCase {
 		 * /myProj/mySrc, \myProj\mySrc, myProj/mySrc, myProj\mySrc, myProj/mySrc/, myProj\mySrc\
 		 * mean the same path and should be represented as myProj[\\\\,/]mySrc regular expression
 		 */
-		String oldPathStr = oldPathPart.toOSString().replaceAll("\\\\", "/"); //replace all "\" on "/"
-		String newPathStr = newPath.toOSString().replaceAll("\\\\", "/");
+		String oldPathStr = oldPathPart.toOSString().replaceAll("\\\\", "/"); //replace all "\" on "/" //$NON-NLS-1$ //$NON-NLS-2$
+		String newPathStr = newPath.toOSString().replaceAll("\\\\", "/"); //$NON-NLS-1$ //$NON-NLS-2$
 		if (oldPathStr.charAt(0) == '/') oldPathStr = oldPathStr.substring(1); //remove first slash
 		if (newPathStr.charAt(0) == '/') newPathStr = newPathStr.substring(1);
 		if (oldPathStr.charAt(oldPathStr.length() - 1) == '/') oldPathStr = oldPathStr.substring(0, oldPathStr.length() - 1); //remove last slash
 		if (newPathStr.charAt(newPathStr.length() - 1) == '/') newPathStr = newPathStr.substring(0 , newPathStr.length() - 1);
-		oldPathStr = oldPathStr.replaceAll("/", "[\\\\,/]?");
-		newPathStr = newPathStr.replaceAll("/", "[\\\\,/]?");
+		oldPathStr = oldPathStr.replaceAll("/", "[\\\\,/]?"); //$NON-NLS-1$ //$NON-NLS-2$
+		newPathStr = newPathStr.replaceAll("/", "[\\\\,/]?");  //$NON-NLS-1$//$NON-NLS-2$
 		
 		int count_old = 0;
 		int count_new = 0;
@@ -237,32 +237,32 @@ public class RefactoringTest extends TestCase {
 	}
 	
 	private Path generateNewPathForSegment(int segmentNum){
-		assertTrue("SegmentNum is too mach.", segmentNum < oldPathElements.length);
-		String newPath = "";
+		assertTrue(Messages.REFACTORINGTEST_SEGMENTNUM_TOO_MATCH, segmentNum < oldPathElements.length);
+		String newPath = ""; //$NON-NLS-1$
 		for (int i = 0; i < segmentNum; i++) {
-			newPath += oldPathElements[i] + "/";
+			newPath += oldPathElements[i] + "/"; //$NON-NLS-1$
 		}
 		newPath += newPathElements[segmentNum];
 		return new Path(newPath);
 	}
 	
 	private Path generateOldPathForSegment(int segmentNum){
-		assertTrue("SegmentNum is too mach.", segmentNum < oldPathElements.length);
-		String oldPathPart = "";
+		assertTrue(Messages.REFACTORINGTEST_SEGMENTNUM_TOO_MATCH, segmentNum < oldPathElements.length);
+		String oldPathPart = ""; //$NON-NLS-1$
 		for (int i = 0; i <= segmentNum; i++) {
-			oldPathPart += oldPathElements[i] + "/";
+			oldPathPart += oldPathElements[i] + "/"; //$NON-NLS-1$
 		}
 		return new Path(oldPathPart);
 	}
 	
 	private Path generateTruePathForSegment(int segmentNum){
-		assertTrue("SegmentNum is too mach.", segmentNum < oldPathElements.length);
-		String newPath = "";
+		assertTrue(Messages.REFACTORINGTEST_SEGMENTNUM_TOO_MATCH, segmentNum < oldPathElements.length);
+		String newPath = ""; //$NON-NLS-1$
 		for (int i = 0; i < oldPathElements.length; i++) {
 			if (i != segmentNum){
-				newPath += oldPathElements[i] + "/";
+				newPath += oldPathElements[i] + "/"; //$NON-NLS-1$
 			} else
-				newPath += newPathElements[i] + "/";
+				newPath += newPathElements[i] + "/"; //$NON-NLS-1$
 		}
 		return new Path(newPath);
 	}
@@ -287,12 +287,12 @@ public class RefactoringTest extends TestCase {
 
 			public boolean hasAttribute(String attributeName)
 					throws CoreException {
-				fail("Method doesn't tested");
+				fail(Messages.REFACTORINGTEST_METHOD_NOT_TESTED);
 				return false;
 			}
 			
 			public Object removeAttribute(String attributeName) {
-				fail("Method doesn't tested");
+				fail(Messages.REFACTORINGTEST_METHOD_NOT_TESTED);
 				return null;
 			}
 			public ILaunchConfiguration getOriginal() {			
@@ -321,19 +321,19 @@ public class RefactoringTest extends TestCase {
 				attributes.put(attributeName, value);
 			}
 
-			public void setAttribute(String attributeName, Map value) {fail("Method doesn't tested");}
+			public void setAttribute(String attributeName, Map value) {fail(Messages.REFACTORINGTEST_METHOD_NOT_TESTED);}
 
-			public void setAttribute(String attributeName, boolean value) {fail("Method doesn't tested");}
+			public void setAttribute(String attributeName, boolean value) {fail(Messages.REFACTORINGTEST_METHOD_NOT_TESTED);}
 
-			public void setAttributes(Map attributes) {	fail("Method doesn't tested");}
+			public void setAttributes(Map attributes) {	fail(Messages.REFACTORINGTEST_METHOD_NOT_TESTED);}
 
-			public void setContainer(IContainer container) {fail("Method doesn't tested");}
+			public void setContainer(IContainer container) {fail(Messages.REFACTORINGTEST_METHOD_NOT_TESTED);}
 
-			public void setMappedResources(IResource[] resources) {fail("Method doesn't tested");}
+			public void setMappedResources(IResource[] resources) {fail(Messages.REFACTORINGTEST_METHOD_NOT_TESTED);}
 
-			public void setModes(Set modes) {fail("Method doesn't tested");}
+			public void setModes(Set modes) {fail(Messages.REFACTORINGTEST_METHOD_NOT_TESTED);}
 
-			public void setPreferredLaunchDelegate(Set modes, String delegateId) {fail("Method doesn't tested");}
+			public void setPreferredLaunchDelegate(Set modes, String delegateId) {fail(Messages.REFACTORINGTEST_METHOD_NOT_TESTED);}
 
 			public boolean contentsEqual(ILaunchConfiguration configuration) {			
 				return false;
@@ -341,7 +341,7 @@ public class RefactoringTest extends TestCase {
 
 			public ILaunchConfigurationWorkingCopy copy(String name)
 					throws CoreException {
-				fail("Method doesn't tested");
+				fail(Messages.REFACTORINGTEST_METHOD_NOT_TESTED);
 				return null;
 			}
 
@@ -358,7 +358,7 @@ public class RefactoringTest extends TestCase {
 
 			public int getAttribute(String attributeName, int defaultValue)
 					throws CoreException {	
-				fail("Method doesn't tested");
+				fail(Messages.REFACTORINGTEST_METHOD_NOT_TESTED);
 				return 0;
 			}
 
@@ -369,13 +369,13 @@ public class RefactoringTest extends TestCase {
 
 			public Set getAttribute(String attributeName, Set defaultValue)
 					throws CoreException {	
-				fail("Method doesn't tested");
+				fail(Messages.REFACTORINGTEST_METHOD_NOT_TESTED);
 				return null;
 			}
 
 			public Map getAttribute(String attributeName, Map defaultValue)
 					throws CoreException {	
-				fail("Method doesn't tested");
+				fail(Messages.REFACTORINGTEST_METHOD_NOT_TESTED);
 				return null;
 			}
 
@@ -563,7 +563,7 @@ public class RefactoringTest extends TestCase {
 			}
 
 			public String getCategory() throws CoreException {
-				return "Categiry";
+				return Messages.REFACTORINGTEST_CATEGORY;
 			}
 
 			public IFile getFile() {
@@ -587,7 +587,7 @@ public class RefactoringTest extends TestCase {
 			}
 
 			public String getName() {
-				return "Test Launch Config";
+				return Messages.REFACTORINGTEST_TEST_LAUNCH_CONFIG;
 			}
 
 			public ILaunchDelegate getPreferredDelegate(Set modes)

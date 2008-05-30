@@ -26,9 +26,9 @@ public class SimpleTestProject {
 	
 	final private String projectName;
 	
-	public static String PACKAGE_NAME = "test";
-	public static String TYPE_NAME = "TestClass";
-	public static String FILE_NAME = "TestClass.java";
+	public static String PACKAGE_NAME = "test"; //$NON-NLS-1$
+	public static String TYPE_NAME = "TestClass"; //$NON-NLS-1$
+	public static String FILE_NAME = "TestClass.java"; //$NON-NLS-1$
 	
 	
 	public SimpleTestProject(String projectName) {
@@ -37,7 +37,7 @@ public class SimpleTestProject {
 	}
 	
 	public SimpleTestProject() {
-		projectName  = "HibernateToolsTestProject";
+		projectName  = "HibernateToolsTestProject"; //$NON-NLS-1$
 		initialize();
 	}
 
@@ -58,7 +58,7 @@ public class SimpleTestProject {
 	}
 	
 	public String getFullyQualifiedTestClassName(){
-		return PACKAGE_NAME + "." + TYPE_NAME;
+		return PACKAGE_NAME + "." + TYPE_NAME; //$NON-NLS-1$
 	}
 	
 	public IType getTestClassType() {
@@ -73,7 +73,7 @@ public class SimpleTestProject {
 	}
 	
 	public IField getTestClassField() {
-		return getTestClassType().getField("testField");
+		return getTestClassType().getField("testField"); //$NON-NLS-1$
 	}
 	
 	public void deleteIProject() {
@@ -144,7 +144,7 @@ public class SimpleTestProject {
 
 	private IPackageFragmentRoot buildSourceFolder(IProject project,
 			IJavaProject javaProject) throws CoreException {
-		IFolder folder = project.getFolder("src");
+		IFolder folder = project.getFolder("src"); //$NON-NLS-1$
 		folder.create(false, true, null);
 		IPackageFragmentRoot root = javaProject.getPackageFragmentRoot(folder);
 		IClasspathEntry[] newEntries = { JavaCore
@@ -166,13 +166,13 @@ public class SimpleTestProject {
 		//create empty ICompilationUnit
 		
 		ICompilationUnit cu = pack.createCompilationUnit(cuName,
-				"", false, null);
+				"", false, null); //$NON-NLS-1$
 		
 		cu.createPackageDeclaration(pack.getElementName(),null);
-		IType type = cu.createType("public class " + TYPE_NAME + " {}",null,false,null);
-		type.createField("private String testField;",null,false,null);
-		type.createMethod("public String getTestField() {return this.testField;}",null,false,null);
-		type.createMethod("public void setTestField(String testField) {this.testField = testField;}",null,false,null);
+		IType type = cu.createType("public class " + TYPE_NAME + " {}",null,false,null);  //$NON-NLS-1$//$NON-NLS-2$
+		type.createField("private String testField;",null,false,null); //$NON-NLS-1$
+		type.createMethod("public String getTestField() {return this.testField;}",null,false,null); //$NON-NLS-1$
+		type.createMethod("public void setTestField(String testField) {this.testField = testField;}",null,false,null); //$NON-NLS-1$
 		return type;
 	}
 

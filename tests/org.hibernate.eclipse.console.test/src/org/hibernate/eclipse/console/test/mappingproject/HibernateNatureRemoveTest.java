@@ -23,6 +23,6 @@ import org.osgi.service.prefs.BackingStoreException;
 public class HibernateNatureRemoveTest extends TestCase {
 	public void testHibernateNatureRemove() throws BackingStoreException, CoreException {
 		MappingTestProject project = MappingTestProject.getTestProject();
-		ProjectUtils.toggleHibernateOnProject(project.getIProject(), true, "testcfg");
+		ProjectUtils.toggleHibernateOnProject(project.getIProject(), true, "testcfg"); //$NON-NLS-1$
 	}
 }

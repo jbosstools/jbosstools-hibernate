@@ -19,7 +19,7 @@ import junit.framework.TestSuite;
  */
 public class TestSetAfterSetup {
 	public static TestSuite getTests(){
-		TestSuite suite = new TestSuite("Test for MappingTestProject" );
+		TestSuite suite = new TestSuite(Messages.TESTSET_TEST_FOR_MAPPINGTESTPROJECT );
 		suite.addTestSuite( HibernateNatureAddTest.class );
 		//suite.addTestSuite( CreateConsoleConfigTest.class );
 		return suite;

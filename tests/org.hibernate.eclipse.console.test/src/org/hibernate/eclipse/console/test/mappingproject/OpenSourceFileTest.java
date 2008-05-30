@@ -50,8 +50,8 @@ public class OpenSourceFileTest extends TestCase {
 			assertTrue(configs[0] instanceof Configuration);
 			persClasses = new ConfigurationWorkbenchAdapter().getChildren(configs[0]);
 		} catch (InvalidMappingException ex){
-			fail("Source files for package " + HibernateAllMappingTests.getActivePackage().getElementName()
-					+ " can't be opened:\n " + ex.getMessage());
+			fail(Messages.OPENSOURCEFILETEST_SOURCE_FILES_FOR_PACKAGE + HibernateAllMappingTests.getActivePackage().getElementName()
+					+ Messages.OPENSOURCEFILETEST_CANNOT_BE_OPENED + ex.getMessage());
 		}
 		if (persClasses.length > 0){
 			for (int i = 0; i < persClasses.length; i++) {
@@ -91,7 +91,7 @@ public class OpenSourceFileTest extends TestCase {
 			editor = new OpenSourceAction().run(selection, MappingTestProject.getTestProject().getIJavaProject(), 
 					fullyQualifiedName);
 			boolean highlighted = ProjectUtil.checkHighlighting(editor);
-			if (!highlighted) fail("Highlighted region for " + selection + " is empty.");
+			if (!highlighted) fail(Messages.OPENSOURCEFILETEST_HIGHLIGHTED_REGION_FOR + selection + Messages.OPENSOURCEFILETEST_IS_EMPTY);
 		} catch (PartInitException e) {
 			ex = e;
 		} catch (JavaModelException e) {
@@ -100,8 +100,8 @@ public class OpenSourceFileTest extends TestCase {
 			ex = e;
 		}				
 		if (ex == null ) ex = ProjectUtil.getExceptionIfItOccured(editor);
-		if (ex != null) fail("Mapping file for " + fullyQualifiedName/*.getClassName()*/
-				+ " not opened:\n" + ex.getMessage());
+		if (ex != null) fail(Messages.OPENSOURCEFILETEST_MAPPING_FILE_FOR + fullyQualifiedName/*.getClassName()*/
+				+ Messages.OPENSOURCEFILETEST_NOT_OPENED + ex.getMessage());
 	}
 	
 	

@@ -50,7 +50,7 @@ public class OpenJavaEditors extends TestCase {
 						try {
 							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(input, JavaUI.ID_CU_EDITOR );
 						} catch (PartInitException e) {
-							fail("Error opening CompilationUnit: " + e.getMessage());
+							fail(Messages.OPENJAVAEDITORS_ERROR_OPENNING_COMPILATIONUNIT + e.getMessage());
 						}
 					}
 				}
