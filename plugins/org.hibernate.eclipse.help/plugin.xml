@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+     <extension
+         point="org.eclipse.help.toc">
+      <toc
+            file="toc.xml"
+            primary="true">
+      </toc>
+      <toc
+      		file="tocreferencedocumentation.xml">
+      </toc>
+      <toc
+            file="tocapireference.xml">
+      </toc>
+      <toc
+            file="toctoolsreference.xml">
+      </toc>
+   </extension>
+     <extension
+           point="org.eclipse.help.ui.searchEngine">
+            <engine
+           		 enabled="true"
+                 engineTypeId="org.eclipse.help.ui.web"
+            id="org.hibernate.eclipse.help.HibernateWiki"
+            label="Hibernate Wiki">
+      		<description>
+	      		Search on Hibernate Wiki
+      		</description>
+      		<param 
+      			name="url" 
+      			value="http://hibernate.org/?cmd=srchdoc&amp;q={expression}">
+      		</param>
+      </engine>
+     </extension>
+
+</plugin>

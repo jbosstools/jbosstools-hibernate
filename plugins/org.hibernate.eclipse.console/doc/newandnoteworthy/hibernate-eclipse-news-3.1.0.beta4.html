@@ -1,0 +1,106 @@
+<html>
+
+<head>
+<link rel="stylesheet" href="default_.css">
+<title>Hibernate Eclipse Tools 3.1.0.beta4 News</title>
+</head>
+
+<body>
+
+<h1>Hibernate Tools 3.1.0.beta4 - New and Noteworthy</h1>
+
+  <p>Previous <a href="hibernate-eclipse-news-3.1.0.beta3.html">new and noteworthy for 3.1.0beta3</a></p>
+  <p><a href="http://opensource2.atlassian.com/projects/hibernate/secure/ReleaseNote.jspa?projectId=10030&styleName=Html&version=10371">Release notes</a></p>
+<table border="0" cellpadding="10" cellspacing="0" width="80%">
+  <tr>
+    <td colspan="2">
+      <hr>
+      <h3>General</h3>
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Bug fixes and alignment with dependent projects</b></td>
+    <td valign="top">
+      <p>This release is mainly a bug fix release and a release that now includes and works with the latest versions of Hibernate Annotations/EJB3 and JBoss Seam.</p>
+      <p>Note: Since the Hibernate Annotations have been updated to align with the current EJB3 spec the tools will not work with beans that are annotated according to the previous draft versions.</p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Documentation</b></td>
+    <td valign="top">
+      <p>The documentation have been updated substantially, now includes examples of many of the various features. Still a work in progress, but comments/patches are very welcome.</p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr/>
+        <h3>Reverse engineering</h3>
+          <hr/>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>not-null control</b></td>
+    <td valign="top">
+      <p>The core reverse engineering now uses the nullablility of a column to decide wether a type should be a primitive or a wrapper.</p>
+      <p>This is also now possible to control via reveng.xml and the UI.</p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr/>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Reverse Engineering Strategy in Eclipse UI</b></td>
+    <td valign="top">
+      <p>It is now possible to specify a custom ReverseEngineeringStrategy in the Eclipse UI. This have been available in the Ant tasks for a while, and now also in the UI</p>
+       <p><img src="revengstrategyinui.png"></p>        
+       <p>Note: There were a bug in the previous release regarding this feature. That is now fixed.</p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr/>
+        <h3>Code Generation</h3>
+          <hr/>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>Updated various exporters</b></td>
+    <td valign="top">
+      <p>Various updates to the code generation to align with the new changes/addition in EJB3 and JBoss Seam.</p>        
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <hr/>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" align="left">
+      <p align="right"><b>hbm2doc</b></td>
+    <td valign="top">
+      <p>hbm2doc now generates a "Entities" pages as an addition to the "Tables" pages.</p>        
+    </td>
+  </tr>
+  <tr>
+
+</table>
+
+
+</body>
+
+</html>
+
+

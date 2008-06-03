@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="codegenarchitecture">
+  <title>Code generation architecture</title>
+
+  <para>The code generation mechanism in the <property>Hibernate Tools</property> consists of a few
+    core concepts. This section explains their overall structure which are the same for the Ant and
+    Eclipse tools.</para>
+
+  <section>
+    <title>Hibernate Meta Model</title>
+
+    <para>The meta model is the model used by Hibernate Core to perform its object relational
+      mapping. The model includes information about tables, columns, classes, properties,
+      components, values, collections etc. The API is in <literal>org.hibernate.mapping</literal>
+      and its main entry point is the <literal>Configuration</literal> class, the same class that is
+      used to build a session factory.</para>
+
+    <para>The model represented by the <literal>Configuration</literal> class can be build in many
+      ways. The following list the currently supported ones in <property>Hibernate Tools</property>. </para>
+
+    <para>
+      <itemizedlist>
+        <listitem>
+          <para>A Core configuration uses Hibernate Core and supports reading <emphasis>
+              <property>hbm.xml</property>
+            </emphasis> files, requires a <emphasis>
+              <property>hibernate.cfg.xml</property>
+            </emphasis>. Named core in Eclipse and <emphasis>
+              <property>
+                <literal>&lt;configuration&gt;</literal>
+              </property>
+            </emphasis> in ant.</para>
+        </listitem>
+
+        <listitem>
+          <para>An Annotation configuration uses Hibernate Annotations and supports <emphasis>
+              <property>hbm.xml</property>
+            </emphasis> and annotated classes, requires a <emphasis>
+              <property>hibernate.cfg.xml</property>
+            </emphasis>. Named annotations in Eclipse and <emphasis>
+              <property>
+                <literal>&lt;annotationconfiguration&gt;</literal>
+              </property>
+            </emphasis> in ant.</para>
+        </listitem>
+
+        <listitem>
+          <para>A JPA configuration uses a Hibernate EntityManager and supports <emphasis>
+              <property>hbm.xml</property>
+            </emphasis> and annotated classes requires that the project has a <emphasis>
+              <property>META-INF/persistence.xml</property>
+            </emphasis> in its classpath. Named JPA in Eclipse and <emphasis>
+              <property>
+                <literal>&lt;jpaconfiguration&gt;</literal>
+              </property>
+            </emphasis> in ant.</para>
+        </listitem>
+
+        <listitem>
+          <para>A JDBC configuration uses <property>Hibernate Tools</property> reverse engineering
+            and reads its mappings via JDBC metadata + additional reverse engineering files
+            (reveng.xml). Automatically used in Eclipse when doing reverse engineering from JDBC and
+            named <emphasis>
+              <property>
+                <literal>&lt;jdbcconfiguration&gt;</literal>
+              </property>
+            </emphasis> in ant.</para>
+        </listitem>
+      </itemizedlist>
+    </para>
+
+    <para>In most projects you will normally use only one of the Core, Annotation or JPA
+      configuration and possibly the JDBC configuration if you are using the reverse engineering
+      facilities of <property>Hibernate Tools</property>. </para>
+
+    <note>
+      <title>Note:</title>
+      <para>No matter which Hibernate Configuration type you are using <property>Hibernate
+        Tools</property> supports them.</para>
+    </note>
+
+    <para>The following drawing illustrates the core concepts:</para>
+
+    <para>
+      <figure>
+        <title>Hibernate Core Concepts</title>
+        <mediaobject>
+          <imageobject role="fo">
+            <imagedata fileref="images/code_generation/code_generation_1.png" format="PNG"/>
+          </imageobject>
+
+          <imageobject role="html">
+
+            <imagedata align="center" fileref="images/code_generation/code_generation_1.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </para>
+
+    <para>The code generation is done based on the Configuration model no matter which type of
+      configuration have been used to create the meta model, and thus the code generation is
+      independent on the source of the meta model and represented via Exporters.</para>
+  </section>
+
+  <section>
+    <title>Exporters</title>
+
+    <para>Code generation is done in so called Exporters. An <literal>Exporter</literal> is handed a
+      Hibernate Meta Model represented as a <literal>Configuration</literal> instance and it is then
+      the job of the exporter to generate a set of code artifacts.</para>
+
+    <para>The tools provides a default set of Exporter's which can be used in both Ant and the
+      Eclipse UI. Documentation for these Exporters is in the <link linkend="ant">Ant Tools</link>
+      and <link linkend="plugins">Eclipse Plugins</link> chapters.</para>
+
+    <para>Users can provide their own customer Exporter's, either by custom classes implementing the
+      Exporter interface or simply be providing custom templates. This is documented at <xref
+        linkend="hbmtemplate"/></para>
+  </section>
+</chapter>

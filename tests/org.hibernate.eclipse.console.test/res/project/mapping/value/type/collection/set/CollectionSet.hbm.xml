@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+		<hibernate-mapping package="mapping.value.type.collection.set">
+		<class name="CollectionSet" table="COLLECTION_SETS">
+		  	<id name="id" column="ID"/>	
+		  	<set name="items">
+		  	 <key column="COLLECTION_SET_ID"/>
+		  	  <one-to-many class="CollectionSetItem"/> 
+	</set>
+  </class>
+</hibernate-mapping>

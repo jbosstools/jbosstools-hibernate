@@ -1,0 +1,94 @@
+/*
+ * JBoss, Home of Professional Open Source
+ * Copyright 2005, JBoss Inc., and individual contributors as indicated
+ * by the @authors tag. See the copyright.txt in the distribution for a
+ * full listing of individual contributors.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
+package org.hibernate.console.node;
+
+import java.util.Arrays;
+import java.util.Comparator;
+
+import org.hibernate.SessionFactory;
+import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.KnownConfigurationsListener;
+
+/**
+ * @author max
+ *
+ */
+public class ConfigurationListNode extends BaseNode {
+
+	private boolean childrenCreated;
+	private final KnownConfigurations kc;
+
+	public ConfigurationListNode(KnownConfigurations kc) {
+		super(null,null);
+		this.kc = kc;
+		
+		kc.addConsoleConfigurationListener(new KnownConfigurationsListener() {
+			public void configurationAdded(ConsoleConfiguration root) {
+				markChildrenForReload();				
+			}
+
+			private void markChildrenForReload() {
+				children.clear();
+				childrenCreated=false;
+			}
+
+			public void configurationRemoved(ConsoleConfiguration root, boolean forUpdate) {
+				markChildrenForReload();
+			}
+
+			public void sessionFactoryClosing(ConsoleConfiguration configuration, SessionFactory closingFactory) {
+			}
+
+			public void sessionFactoryBuilt(ConsoleConfiguration ccfg, SessionFactory builtFactory) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+	
+	protected void checkChildren() {
+		if(!childrenCreated) {
+			ConsoleConfiguration[] configurations = kc.getConfigurations();
+			Arrays.sort(configurations, new Comparator() {
+				public boolean equals(Object obj) {
+					return this==obj;
+				}
+
+				public int compare(Object o1, Object o2) {
+					return ( (ConsoleConfiguration)o1).getName()
+						.compareTo(
+								( (ConsoleConfiguration)o2).getName() );
+				}
+			});
+			for (int i = 0; i < configurations.length; i++) {
+				children.add(new ConfigurationNode(this, configurations[i]) );	
+			}
+			childrenCreated = true;
+		}
+	}
+
+	public String getHQL() {
+		return null;
+	}
+
+}

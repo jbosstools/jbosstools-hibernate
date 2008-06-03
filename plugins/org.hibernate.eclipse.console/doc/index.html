@@ -1,0 +1,436 @@
+<html>
+<head>
+<title>Hibernate3 Tools</title>
+<style type="text/css" media="screen">
+<!--
+  body {
+    font-family: Sans-serif, Arial, Helvetica;
+  }
+
+  pre, tt {
+    font-size: 90%;
+    font-family: monospace;
+    color: #000000;
+  }
+
+  .code {
+    font-size: 95%;
+    font-family: monospace;
+    padding: 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #CCCCCC;
+    background-color: #eeeeee;
+  }
+
+  #toc {
+    float: right;
+    font-size: 80%;
+    border: 1px solid #CCCCCC;
+    margin: 0px 0px 20px 20px;
+    padding: 5px;
+    background: #eeeeee;
+  }
+  #toc .level2 { margin-left: 1em; }
+  #toc .level3 { margin-left: 2em; }
+  #toc .level4 { margin-left: 3em; }
+  #toc .level5 { margin-left: 4em; }
+  #toc .level6 { margin-left: 5em; }
+
+-->
+</style>
+<script><!--
+function H_getText(el) {
+  return el.firstChild.data;
+}
+function TOC_EL(el, text, level) {
+  this.element = el;
+  this.text = text;
+  this.level = level;
+}
+function getHeadlines(el) {
+  var l = new Array;
+  var rx = /[hH]([1-6])/;
+  // internal recursive function that scans the DOM tree
+  var rec = function (el) {
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+        if (rx.exec(i.tagName))
+          l[l.length] = new TOC_EL(i, H_getText(i), parseInt(RegExp.$1));
+        rec(i);
+      }
+    }
+  }
+  rec(el);
+  return l;
+}
+function generate_TOC(parentElementId) {
+  var parent = document.getElementById(parentElementId);
+  var hs = getHeadlines(document.getElementsByTagName("body")[0]);
+  for (var i = 0; i < hs.length; ++i) {
+    var hi = hs[i];
+    var d = document.createElement("div");
+    if (hi.element.id == "")
+      hi.element.id = "gen" + i;
+    var a = document.createElement("a");
+    a.href = "#" + hi.element.id;
+    a.appendChild(document.createTextNode(hi.text));
+    d.appendChild(a);
+    d.className = "level" + hi.level;
+    parent.appendChild(d);
+  }
+}
+// --></script>
+</head>
+
+<body onload="generate_TOC('toc')">
+
+<h1>Hibernate Tools</h1>
+<b><big>Reverse engineering and code generation with Eclipse plugins and a hbm.xml editor</big></b>
+<br/>
+<br/>
+<b>Version:</b> 3.1 beta 1, 14. October 2005
+
+<hr>
+
+<div id="toc"></div>
+
+<p><i>Please note that this release is a preview release and considered alpha
+quality. The presented functionality (reverse engineering, code generation, etc.)
+is also be available outside of Eclipse, ie. as Ant tasks. 
+
+See the <a href="http://tools.hibernate.org">Hibernate Tools website</a> for more
+information about the road map.</i></p>
+
+
+<h2>1. Introduction</h2>
+
+<p>We have made significant improvements to the Hibernate toolset for Hibernate3. This is however work in progress and we'll continue to implement new ideas and features as the third generation of the Hibernate3 object persistence stack evolves.
+</p>
+
+<p>The first set of tools we offer are plugins for the Eclipse IDE. The following features are available:</p>
+
+<p><b>Mapping Editor:</b> An editor for Hibernate XML mapping files, supporting auto-completion and syntax highlighting. It also supports semantic auto-completion for class names and property/field names, making it much more versatile than a normal XML editor.</p>
+
+<p><b>Console:</b> The console is a new view in Eclipse. In addition to a tree overview of your console configurations, you also get an interactive view of your persistent classes and their relationships. The console allows you to execute HQL queries against your database and browse the result directly in Eclipse.</p>
+
+<p><b>Development Wizards:</b> Several wizards are provided with the Hibernate Eclipse tools; you can use a wizard to quickly generate Hibernate configuration (cfg.xml) files, or you may even completely reverse engineer an existing database schema into POJO source files and Hibernate mapping files. The reverse engineering wizard supports customizable templates.</p>
+
+<h2>2. Requirements</h2>
+
+<p>
+  <ol>
+    <li>Install Eclipse 3.1 (<a href="http://www.eclipse.org/">http://www.eclipse.org</a>)</li>
+  </ol>
+</p>
+
+<p>After you have downloaded the Hibernate Tools for Eclipse, unpack and copy the plugins to your Eclipse plugins directory. 
+Sometimes Eclipse does not automatically detect new plugins and thus the tools will not be activated. To ensure eclipse sees
+these changes run eclipse with the -clean option. E.g. <code>eclipse -clean</code>
+</p>
+
+<p>You will also need JDBC drivers for your database available to use the reverse engineering and querying support.</p>
+
+<p>
+  Please note that these tools do not try to hide any functionality of Hibernate. The tools make working with
+  Hibernate easier, but you are still encouraged/required to read the documentation for Hibernate to fully
+  utilize Hibernate.
+</p>
+
+<h2>3. Creating a Hibernate configuration file</h2>
+
+  <p>
+    To be able to reverse engineer, prototype queries, and of course to
+    simply use Hibernate a hibernate.properties or hibernate.cfg.xml
+    file is needed. The Hibernate Tools provide a wizard for generating
+    the hibernate.cfg.xml file.
+  </p>
+
+  <p>
+    Start the wizard by clicking "New Wizard" (Ctrl+N), select the Hibernate/Hibernate Configuration file (cfg.xml)
+    wizard and press "Next". After selecting the location for the hibernate.cfg.xml file, you will see the following page: 
+  </p>
+  <img src="hibernatecfgwizard.jpg" border="1"/>
+  <br><b>Creating hibernate.cfg.xml</b></br><br>
+
+    <p>
+      Enter your configuration information in this dialog. Details about the configuration options can be found
+      in Hibernate reference documentation. Press "Finish" to create the configuration file, it will be
+      automatically opened in an editor.
+    </p>
+
+    <p>
+      Tip: The contents in the combo boxes for the JDBC driver class and JDBC URL change automatically, depending
+      on the Dialect and actual driver you have chosen.
+    </p>
+
+<h2>4. XML Mapping Editor</h2>
+
+<p>The XML mapping editor provides basic XML editing functionality as well as package, class, and field
+completion for relevant XML attributes. The auto-completion detects it's context and limits the completion for e.g.
+&lt;property&gt; and only shows the properties/fields available in the
+  enclosing &lt;class&gt;, &lt;subclass&gt; etc.</p>
+
+  <img src="hbmxmlcompletion.jpg" border="1"/>
+  <br><b>Context dependent code completion in the XML mapping editor</b></br><br>
+    
+<h2>5. Hibernate Console perspective</h2>
+
+<p>The Hibernate Console perspective combines a set of views which allow
+  you to see the structure of your mapped entities/classes, edit HQL queries, execute
+  the queries, and see the results. To use this perspective you need to create a console configuration.
+</p>
+
+<h3>5.1 Creating a console configuration</h3>
+
+  <p>
+    You create a console configuration by running the Console Configuration wizard, shown in the following screenshot:
+  </p>
+    
+  <img src="consolecfgwizard.jpg" border="1"/>
+  <br><b>Creating a Hibernate Console configuration</b></br><br>
+
+    <p>
+      The following table describes the available settings. The wizard can automatically detect default values.
+    </p>
+
+      <table width="100%" border="1">
+        <th>Parameter</th><th>Description</th><th>Autodetect</th>
+          <tr>
+            <td>Name</td><td>The unique name of the configuration</td><td>Name of the Java project</td>
+            </tr>
+            <tr>
+            <td>Property file</td><td>Path to a hibernate.properties file/td><td>First hibernate.properties file found in the project</td>
+            </tr>
+            <tr>
+            <td nowrap="true">Configuration file</td><td>Path to a hibernate.cfg.xml</td><td>First hibernate.cfg.xml found in the project</td>
+            </tr>
+            <tr>
+            <td>Mapping files</td><td>List of additional mapping files that should be loaded. Note: A hibernate.cfg.xml can also contain mappings, avoid duplication.</td><td>All hbm.xml files found in the project</td>
+            </tr>
+            <tr>
+            <td>Classpath</td><td>The classpath for loading POJO and JDBC drivers. Don't add Hibernate core libraries or
+dependencies, they are already included.</td><td>The default build output directory and any JARs with a class implementing java.sql.Driver</td>
+          </tr>
+      </table>
+    </p>
+
+    <p>
+      Clicking "Finish" creates the configuration and shows it in the Console overview.
+    </p>
+
+<h3>5.2 Viewing the entity structure</h3>
+
+<p>
+  To view your new configuration and entity/class structure, right click the
+configuration in the list and select "Create SessionFactory". This will create a
+standard Hibernate <tt>SessionFactory</tt> using your settings.</p>
+
+<p>Clicking on the small <tt>+</tt> symbol allows you to browse the class/entity structure
+and see the relationships.</p>
+
+<p>Errors during creation of the <tt>SessionFactory</tt> (e.g. if your configuration is incorrect) will
+be shown in a message dialog, you may get more information about the error in the Error Log view on the
+right pane.
+</p>
+
+  <img src="queryconsole.jpg" border="1"/>
+  <br><b>Hibernate Console perspective showing entity structure, query editor and result</b></br><br>
+
+<h3>5.3 Prototyping Queries</h3>
+
+<p>Queries can be executed in two ways: by double clicking on entity
+  names in the tree or by entering HQL in the HQL editor and pressing
+    the green execute button.</p>
+
+    <p>Results of a query will be shown in the Query result view and
+    details of possible errors (syntax errors, database errors, etc.) can
+    be seen in the Error Log view.</p>
+
+<p>Tip: HQL queries are executed using <tt>list()</tt> and
+without any limit of the size of the output. Be careful if you
+execute a query on a large result set. You might run out of memory. This
+will be improved in a future version.</p>
+
+<h3>5.4 Properties view</h3>
+
+<p>The properties view shows the structure of any selected persistent object in the results view. Editing is not yet supported.</p>
+
+<p>The properties view is still very experimental, thus if you experience issues while having it visible then close it to be able
+to work with the remaining functionallity</p>
+
+
+<h2>6. Reverse engineering and code generation</h2>
+
+<p>A very simple "click-and-generate" reverse engineering and code generation facility is
+also available. The reverse engineering internally creates a Hibernate meta model. On this meta-model
+a set of (velocity) templates are applied, generating a set of artifacts. Currently supported are
+POJO Java source file, Hibernate *.hbm.xml, and hibernate.cfg.xml generation. To start this process,
+choose the "Hibernate Artifact Generation Wizard".</p>
+
+  <img src="codegenwizard.jpg" border="1"/>
+  <br><b>Artifact Generation Wizard</b></br><br>
+
+    <p>
+      First select which Console configuration should be used and the target directory for
+code and mapping file generation. Note: Generation will generate files, and overwrite
+      possibly existing files in this location. 
+    </p>
+
+   <p>Now choose from the following list of options:</p>
+
+    <p>
+      <h3>6.1 Reverse engineering</h3>
+
+        <p>
+          Reverse engineering will connect to your database and read the JDBC metadata of your
+	database schema.  The basic rules for the conversion is that each table/view
+          found is mapped to a POJO class, and each column is mapped to a
+          property. The package name controls the "root" package of the
+          generated classes.
+        </p>
+
+        <p>
+          For each found foreign key, a &lt;many-to-one&gt; and a corresponding
+          &lt;one-to-many&gt; mapping, using a <tt>Set</tt>, will be created. 
+        </p>
+        
+        <p>
+          The flag "Generate 'raw' composite ids" turns on special handling of
+	composite primary keys. A &lt;composite-id&gt; mapping will always be
+	created, and if there are matching
+          foreign-keys, a &lt;key-many-to-one&gt; will be created as well.
+          If you choose to active the 'raw' composite ids, then
+          each composite key column is considered a 'raw' scalar
+          (string, long, etc.) instead of a reference to an
+          entity. Note: a &lt;many-to-one&gt; property is still
+          created, but is simply marked as non-updatable and
+          non-insertable.
+        </p>
+
+      <h3>6.2 POJO code generation</h3>
+        
+        <p>
+          The code generation will generate all the persistent classes
+          and components found in the given Hibernate configuration.</p>
+	  You can
+          use the code generation on your own handwritten or reverse-engineered
+	mapping files.
+        </p>
+
+          <p>
+            This "EJB3/JSR-220 annotations" option will activate usage of the
+            EJB3 sections in the javaclass.vm template. This is considered
+	experimental and currently incomplete. Updates to the template are
+expected, you can even write (and hopefully
+            contribute) more powerful templates.
+          </p>
+
+        <p>
+          The Java code generation is based on a a complete
+          rewrite of the hbm2java found in the Hibernate 2.x toolset.  This
+          means that feature-wise they should be equal, but
+          there might be some exotic &lt;meta&gt; features
+          not fully implemented so far. Please report any bugs or missing
+	code generation features via our issue tracking system.
+        </p>
+        
+        <p>
+          Consult the Hibernate documentation for the various code generation
+	tags you can use in your mapping files.
+        </p>
+
+      <h3>6.3 Hibernate Mapping file generation</h3>   
+
+        <p>
+          This creates a hbm.xml for each class declared in the
+          configuration (and their persistent subclasses). Each
+          &lt;subclass&gt; or &lt;joined-subclass&gt; will be written 
+          to a separate mapping file, an <tt>extends</tt> attribute is used.
+        </p>
+
+        <p>
+          The mapping file generation feature currently supports only basic
+	generation, completing the reverse engineering functionality. More
+	features will be added in the future.
+        </p>
+
+        <h3>6.4 Hibernate configuration file generation</h3>
+
+          <p>
+            This option writes a hibernate.cfg.xml with all relevant
+            properties and with a &lt;mapping&gt; reference
+            for each persistent class          </p>
+
+      <h3>6.5 Custom templates</h3>
+
+        <p>
+          All of the generated code is controlled via templates (except
+          the hibernate.cfg.xml). The wizard searches
+          for the templates in the classpath of the plugin, by default.
+        </p>
+
+        <p>
+          You can customize templates by placing
+          your own .vm files in a directory and naming the directory
+	in the wizard dialog.
+          You can override existing templates by using the same file names.
+The built-in templates can be found in the hibernate-tools.jar in
+          the org.hibernate.eclipse plugin directory.
+        </p>
+
+        <p>
+         You may use a pre-defined set of variables and properties in templates,
+	as shown in the following table.
+          </p>
+
+          <table border=1 width='100%'>
+            <th>Name</th><th>Contents</th><th>Availability</th>
+              <tr>
+                <td>$cfg</td><td>The current Hibernate Configuration object. See Hibernate3 javadocs for available properties/methods.</td><td>Anywhere</td>
+                </tr>
+                <tr>
+                <td>$c2h</td><td>A Cfg2HbmTool. Contains a set of helper methods related to cfg to hbm conversion. See sourcecode and existing templates for available properties/methods.</td><td>Anywhere</td>
+                </tr>
+                <tr>
+                <td>$c2j</td><td>A Cfg2JavaTool. Contains a set of helper methods related to cfg to java conversion. See sourcecode and existing templates for available properties/methods.</td><td>Anywhere</td>
+                </tr>
+                <tr>
+                <td>$clazz</td><td>A reference to the current PersistentClass or Component being processed.</td><td>In any class related template</td>
+                </tr>
+                <tr>
+                <td>$property</td><td>A reference to the current Property being processed</td><td>In any property related template</td>
+              </tr>
+          </table>
+
+          <p>
+            Note that some of these properties are only available in
+            a certain context (e.g. $property is not available at the
+            Class level, but only fo rproperties).
+            If you need to look up some information, you have full
+            access to Hibernate's own meta-model, the <tt>Configuration</tt> via $cfg.
+            This combined with the power of velocity templates should
+            give you virtually unlimited flexibility and possibilities
+            for code generation.
+          </p>
+	
+	<p>
+          Note that we expect significant changes to the structure and
+	organization of the built-in templates in one of the next releases.
+	</p>
+	<h2>7. Enable debug logging</h2>
+	
+	<p>It is possible to configure the eclipse plugin to route all logging made
+	by the plugins and hibernate code it self to the "Error log" view in Eclipse.</p>
+	
+	<p>
+	This is done by editing the "hibernate-log4j.properties" in org.hibernate.eclipse/ directory/jar.
+	This file includes a default configuration that only logs WARN and above to a set of custom
+	appenders (PluginFileAppender and PluginLogAppender). You can change these settings to be as verbose
+	or silent as you please - see hibernate documentation for interesting categories and log4j documentation
+	for how to configure logging via a log4j property file.
+	</p>
+-- 
+
+</body>
+</html>
