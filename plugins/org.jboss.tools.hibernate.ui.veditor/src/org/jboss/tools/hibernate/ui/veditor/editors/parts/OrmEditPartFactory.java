@@ -49,8 +49,8 @@ public class OrmEditPartFactory implements EditPartFactory {
 			return new ConnectionEditPart();
 		}
 		throw new RuntimeException(
-				"Can't create part for model element: "
-				+ ((modelElement != null) ? modelElement.getClass().getName() : "null"));
+				Messages.ORMEDITPARTFACTORY_CANOT_CREATE_PART_FOR_MODEL_ELEMENT
+				+ ((modelElement != null) ? modelElement.getClass().getName() : Messages.ORMEDITPARTFACTORY_NULL));
 	}
 	
 }

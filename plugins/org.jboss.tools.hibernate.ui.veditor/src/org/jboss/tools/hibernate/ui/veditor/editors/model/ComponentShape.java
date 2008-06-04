@@ -14,7 +14,7 @@ import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Property;
 
 public class ComponentShape extends ExpandeableShape {
-	public static final String SET_CHILDS_HIDEN = "set childs hiden";
+	public static final String SET_CHILDS_HIDEN = "set childs hiden"; //$NON-NLS-1$
 
 	//protected boolean childsHiden = true;
 	

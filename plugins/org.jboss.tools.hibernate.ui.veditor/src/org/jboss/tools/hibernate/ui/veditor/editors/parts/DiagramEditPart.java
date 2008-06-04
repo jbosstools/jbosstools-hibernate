@@ -104,7 +104,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 				if (ormShape != null) {
 					string = childrenLocations[i]
 							.substring(childrenLocations[i].indexOf('@') + 1);
-					xy = string.split(";");
+					xy = string.split(";"); //$NON-NLS-1$
 					if (xy.length > 1)
 						try {
 							ormShape.setLocation(new Point(Integer
@@ -221,7 +221,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 	public void autolayout() {
 		IDiagramInfo process = new DiagramInfo(getCastedModel());
 		AutoLayout layout = new AutoLayout();
-		layout.setGridStep("" + 5);
+		layout.setGridStep("" + 5); //$NON-NLS-1$
 		layout.setOverride(true);
 		layout.setProcess(process);
 	}
@@ -434,7 +434,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 			if (link.getTarget() != null)
 				return link.getTarget().toString();
 			else
-				return "";
+				return ""; //$NON-NLS-1$
 		}
 
 		/**

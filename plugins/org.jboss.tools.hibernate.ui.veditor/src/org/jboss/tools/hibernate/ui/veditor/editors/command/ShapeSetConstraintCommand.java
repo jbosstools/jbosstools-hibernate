@@ -33,7 +33,7 @@ public class ShapeSetConstraintCommand extends Command {
 		this.shape = shape;
 		this.request = req;
 		this.newLocation = newLocation.getCopy();
-		setLabel("move");
+		setLabel(Messages.SHAPESETCONSTRAINTCOMMAND_MOVE);
 	}
 	
 	public boolean canExecute() {

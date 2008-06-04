@@ -29,9 +29,9 @@ public class Shape extends ModelElement {
 	private List<Connection> sourceConnections = new ArrayList<Connection>();
 	private List<Connection> targetConnections = new ArrayList<Connection>();
 	
-	public static final String HIDE_SELECTION = "hide selection";
-	public static final String SHOW_SELECTION = "show selection";
-	public static final String SET_FOCUS = "set focus";
+	public static final String HIDE_SELECTION = "hide selection"; //$NON-NLS-1$
+	public static final String SHOW_SELECTION = "show selection"; //$NON-NLS-1$
+	public static final String SET_FOCUS = "set focus"; //$NON-NLS-1$
 	
 	private Object  ormElement;
 	
@@ -43,21 +43,21 @@ public class Shape extends ModelElement {
 	/**
 	 * Property set
 	 */
-	private static final String PROPERTY_NAME = "name";
-	private static final String PROPERTY_TYPE = "type";
-	private static final String PROPERTY_CLASS = "persistanceClass";
-	private static final String PROPERTY_VALUE = "value";
-	private static final String PROPERTY_SELECT = "selectable";
-	private static final String PROPERTY_INSERT = "insertable";
-	private static final String PROPERTY_UPDATE = "updateable";
-	private static final String PROPERTY_CASCADE = "cascade";
-	private static final String PROPERTY_LAZY = "lazy";
-	private static final String PROPERTY_OPTIONAL = "optional";
-	private static final String PROPERTY_NATURAL_IDENTIFIER = "naturalIdentifier";
-	private static final String PROPERTY_NODE_NAME = "nodeName";
-	private static final String PROPERTY_OPTIMISTIC_LOCKED = "optimisticLocked";
-	private static final String PROPERTY_NULLABLE = "nullable";
-	private static final String PROPERTY_UNIQUE = "unique";
+	private static final String PROPERTY_NAME = "name"; //$NON-NLS-1$
+	private static final String PROPERTY_TYPE = "type"; //$NON-NLS-1$
+	private static final String PROPERTY_CLASS = "persistanceClass"; //$NON-NLS-1$
+	private static final String PROPERTY_VALUE = "value"; //$NON-NLS-1$
+	private static final String PROPERTY_SELECT = "selectable"; //$NON-NLS-1$
+	private static final String PROPERTY_INSERT = "insertable"; //$NON-NLS-1$
+	private static final String PROPERTY_UPDATE = "updateable"; //$NON-NLS-1$
+	private static final String PROPERTY_CASCADE = "cascade"; //$NON-NLS-1$
+	private static final String PROPERTY_LAZY = "lazy"; //$NON-NLS-1$
+	private static final String PROPERTY_OPTIONAL = "optional"; //$NON-NLS-1$
+	private static final String PROPERTY_NATURAL_IDENTIFIER = "naturalIdentifier"; //$NON-NLS-1$
+	private static final String PROPERTY_NODE_NAME = "nodeName"; //$NON-NLS-1$
+	private static final String PROPERTY_OPTIMISTIC_LOCKED = "optimisticLocked"; //$NON-NLS-1$
+	private static final String PROPERTY_NULLABLE = "nullable"; //$NON-NLS-1$
+	private static final String PROPERTY_UNIQUE = "unique"; //$NON-NLS-1$
 
 	static {
 		
@@ -192,11 +192,11 @@ public class Shape extends ModelElement {
 				StringBuffer name = new StringBuffer();
 
 				if (type != null) {
-					name.append(type != null ? type.toUpperCase() : "");
+					name.append(type != null ? type.toUpperCase() : ""); //$NON-NLS-1$
 					name.append(HibernateUtils.getTable(column) != null
-							&& HibernateUtils.isPrimaryKey(column) ? " PK" : "");
+							&& HibernateUtils.isPrimaryKey(column) ? " PK" : ""); //$NON-NLS-1$  //$NON-NLS-2$
 					name.append(HibernateUtils.getTable(column) != null
-							&& HibernateUtils.isForeignKey(column) ? " FK" : "");
+							&& HibernateUtils.isForeignKey(column) ? " FK" : ""); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 
 				return name.toString();

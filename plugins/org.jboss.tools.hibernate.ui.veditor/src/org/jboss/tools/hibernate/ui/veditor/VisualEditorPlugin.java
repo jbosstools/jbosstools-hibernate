@@ -22,7 +22,7 @@ import org.osgi.framework.BundleContext;
 
 public class VisualEditorPlugin extends BaseUIPlugin {
 
-	public final static String PLUGIN_ID= "org.jboss.tools.hibernate.ui.veditor";
+	public final static String PLUGIN_ID= "org.jboss.tools.hibernate.ui.veditor"; //$NON-NLS-1$
 	
 	//The shared instance.
 	private static VisualEditorPlugin plugin;

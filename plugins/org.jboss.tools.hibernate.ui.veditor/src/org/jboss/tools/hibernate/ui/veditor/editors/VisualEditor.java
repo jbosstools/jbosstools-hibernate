@@ -73,7 +73,7 @@ public class VisualEditor extends GraphicalEditor {
 
 		PopupMenuProvider provider = new PopupMenuProvider(viewer, getActionRegistry());
 		viewer.setContextMenu(provider);
-		getSite().registerContextMenu("FlowDiagramContextmenu", provider, viewer);
+		getSite().registerContextMenu("FlowDiagramContextmenu", provider, viewer); //$NON-NLS-1$
 	}
 	
 	public GraphicalViewer getEditPartViewer() {
@@ -144,16 +144,16 @@ public class VisualEditor extends GraphicalEditor {
 		Object obj = objectEditorInput.getObject();
 		if (obj instanceof RootClass) {
 			RootClass rootClass = (RootClass)obj;
-			setPartName("Diagram for " + rootClass.getEntityName());
+			setPartName(Messages.VISUALEDITOR_DIAGRAM_FOR + rootClass.getEntityName());
 			ormDiagram = new OrmDiagram(configuration, rootClass, objectEditorInput.getJavaProject());
 		}
 		else if (obj instanceof RootClass[]) {
 			RootClass[] rootClasses = (RootClass[])obj;
-			String name = rootClasses.length > 0 ? rootClasses[0].getEntityName() : "";
+			String name = rootClasses.length > 0 ? rootClasses[0].getEntityName() : ""; //$NON-NLS-1$
 			for (int i = 1; i < rootClasses.length; i++) {
-				name += " & " + rootClasses[i].getEntityName();
+				name += " & " + rootClasses[i].getEntityName(); //$NON-NLS-1$
 			}
-			setPartName("Diagram for " + name);
+			setPartName(Messages.VISUALEDITOR_DIAGRAM_FOR + name);
 			ormDiagram = new OrmDiagram(configuration, rootClasses, objectEditorInput.getJavaProject());
 		}
 	}

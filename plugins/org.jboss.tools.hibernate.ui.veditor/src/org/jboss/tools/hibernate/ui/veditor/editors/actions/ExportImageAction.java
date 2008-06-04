@@ -23,7 +23,7 @@ import org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor;
 
 public class ExportImageAction extends Action {
 
-	public static final String ACTION_ID = "Export as Image";
+	public static final String ACTION_ID = Messages.EXPORTIMAGEACTION_EXPORT_AS_IMAGE;
 
 	private VisualEditor editor;
 
@@ -32,7 +32,7 @@ public class ExportImageAction extends Action {
 		setId(ACTION_ID);
 		setText(ACTION_ID);
 		setImageDescriptor(ImageDescriptor.createFromFile(
-				VisualEditor.class,"icons/export.png"));
+				VisualEditor.class,"icons/export.png")); //$NON-NLS-1$
 	}
 
 	public void run() {
@@ -40,9 +40,9 @@ public class ExportImageAction extends Action {
 		FileDialog saveDialog = new FileDialog(
 				this.editor.getSite().getShell(), SWT.SAVE);
 		saveDialog
-				.setFilterExtensions(new String[] { "*.png", "*.jpg", "*.bmp" });
-		saveDialog.setFilterNames(new String[] { "PNG format (*.png)",
-				"JPEG format (*.jpg)", "Bitmap format (*.bmp)" });
+				.setFilterExtensions(new String[] { "*.png", "*.jpg", "*.bmp" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		saveDialog.setFilterNames(new String[] { Messages.EXPORTIMAGEACTION_PNG_FORMAT,
+				Messages.EXPORTIMAGEACTION_JPG_FORMAT, Messages.EXPORTIMAGEACTION_BMP_FORMAT });
 
 		String filePath = saveDialog.open();
 		if (filePath == null || filePath.trim().length() == 0) {
@@ -54,9 +54,9 @@ public class ExportImageAction extends Action {
 				.getLayer(LayerConstants.PRINTABLE_LAYERS);
 		try {
 			int imageType = SWT.IMAGE_BMP;
-			if (filePath.toLowerCase().endsWith(".jpg")) {
+			if (filePath.toLowerCase().endsWith(".jpg")) { //$NON-NLS-1$
 				imageType = SWT.IMAGE_JPEG;
-			} else if (filePath.toLowerCase().endsWith(".png")) {
+			} else if (filePath.toLowerCase().endsWith(".png")) { //$NON-NLS-1$
 				imageType = SWT.IMAGE_PNG;
 			}
 
@@ -67,7 +67,7 @@ public class ExportImageAction extends Action {
 			outStream.close();
 		} catch (Throwable e) {
 			MessageDialog.openInformation(this.editor.getSite().getShell(),
-					"Error", "Failed to export image: " + e.getMessage());
+					Messages.EXPORTIMAGEACTION_ERROR, Messages.EXPORTIMAGEACTION_FAILED_TO_EXPORT_IMAGE + e.getMessage());
 			return;
 		}
 	}

@@ -11,9 +11,9 @@
 package org.jboss.tools.hibernate.ui.veditor.editors.model;
 
 public class Connection extends ModelElement {
-	public static final String HIDE_SELECTION = "hide selection";
-	public static final String SHOW_SELECTION = "show selection";
-	public static final String SET_HIDEN = "set hiden";
+	public static final String HIDE_SELECTION = "hide selection"; //$NON-NLS-1$
+	public static final String SHOW_SELECTION = "show selection"; //$NON-NLS-1$
+	public static final String SET_HIDEN = "set hiden"; //$NON-NLS-1$
 	
 	private Shape source;
 	private Shape target;

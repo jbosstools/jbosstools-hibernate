@@ -46,5 +46,13 @@ public class Messages extends NLS {
 	public static String Colors_DatabaseColumnG;
 	
 	public static String Colors_DatabaseColumnB;
+
+	public static String ORMEDITPARTFACTORY_CANOT_CREATE_PART_FOR_MODEL_ELEMENT;
+
+	public static String ORMEDITPARTFACTORY_NULL;
+
+	public static String TREEPARTFACTORY_CANOT_CREATE_PART_FOR_MODEL_ELEMENT;
+
+	public static String TREEPARTFACTORY_NULL;
 	
 }

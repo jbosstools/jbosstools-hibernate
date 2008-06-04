@@ -18,9 +18,9 @@ public class TreePartFactory implements EditPartFactory {
 		if (modelElement instanceof Shape) {
 			return new ShapeTreeEditPart(modelElement);
 		}
-		throw new RuntimeException("Can't create part for model element: "
+		throw new RuntimeException(Messages.TREEPARTFACTORY_CANOT_CREATE_PART_FOR_MODEL_ELEMENT
 				+ ((modelElement != null) ? modelElement.getClass().getName()
-						: "null"));
+						: Messages.TREEPARTFACTORY_NULL));
 	}
 
 }

@@ -13,7 +13,7 @@ package org.jboss.tools.hibernate.ui.veditor.editors;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "org.jboss.tools.hibernate.ui.veditor.editors.messages";
+	private static final String BUNDLE_NAME = "org.jboss.tools.hibernate.ui.veditor.editors.messages"; //$NON-NLS-1$
 
 	private Messages() {
 	}
@@ -23,4 +23,5 @@ public class Messages extends NLS {
 	}
 
 	public static String EditorActionContributor_Refresh_Visual_Mapping;
+	public static String VISUALEDITOR_DIAGRAM_FOR;
 }

@@ -50,8 +50,8 @@ import org.jboss.tools.hibernate.ui.view.views.HibernateUtils;
 
 public class OrmDiagram extends ModelElement {
 	
-	public static final String REFRESH = "refresh";
-	public static final String DIRTY = "dirty";
+	public static final String REFRESH = "refresh"; //$NON-NLS-1$
+	public static final String DIRTY = "dirty"; //$NON-NLS-1$
 	private	boolean dirty = false;
 	private String childrenLocations[];
 	private HashMap<String,OrmShape> elements = new HashMap<String,OrmShape>();
@@ -60,7 +60,7 @@ public class OrmDiagram extends ModelElement {
 	private ConsoleConfiguration consoleConfiguration;
 	private IJavaProject javaProject;
 	private String[] entityNames;
-	public static final String HIBERNATE_MAPPING_LAYOUT_FOLDER_NAME = "hibernateMapping";
+	public static final String HIBERNATE_MAPPING_LAYOUT_FOLDER_NAME = "hibernateMapping"; //$NON-NLS-1$
 	
 	public OrmDiagram(ConsoleConfiguration configuration, RootClass ioe, IJavaProject javaProject) {
 		consoleConfiguration = configuration;
@@ -72,8 +72,8 @@ public class OrmDiagram extends ModelElement {
 		this.javaProject = javaProject;
 
 		if (ioe instanceof RootClass) {
-			String string = "";
-			childrenLocations = string.split("#");
+			String string = ""; //$NON-NLS-1$
+			childrenLocations = string.split("#"); //$NON-NLS-1$
 		}
 		getOrCreatePersistentClass(ormElements[0], null);
 		expandModel(this);
@@ -92,8 +92,8 @@ public class OrmDiagram extends ModelElement {
 		}
 		this.javaProject = javaProject;
 		if (ioe instanceof RootClass[]) {
-			String string = "";
-			childrenLocations = string.split("#");
+			String string = ""; //$NON-NLS-1$
+			childrenLocations = string.split("#"); //$NON-NLS-1$
 		}
 		for (int i = 0; i < ormElements.length; i++) {
 			getOrCreatePersistentClass(ormElements[i], null);
@@ -104,7 +104,7 @@ public class OrmDiagram extends ModelElement {
 	}
 	
 	private IPath getStoreFolderPath() {
-		return javaProject.getProject().getLocation().append(".settings").append(HIBERNATE_MAPPING_LAYOUT_FOLDER_NAME);
+		return javaProject.getProject().getLocation().append(".settings").append(HIBERNATE_MAPPING_LAYOUT_FOLDER_NAME); //$NON-NLS-1$
 	}
 
 	private IPath getStoreFilePath() {
@@ -112,11 +112,11 @@ public class OrmDiagram extends ModelElement {
 	}
 
 	private String getStoreFileName() {
-		String name = ormElements.length > 0 ? ormElements[0].getClassName() : "";
+		String name = ormElements.length > 0 ? ormElements[0].getClassName() : ""; //$NON-NLS-1$
 		for (int i = 1; i < ormElements.length; i++) {
-			name += "_" + ormElements[i].getClassName();
+			name += "_" + ormElements[i].getClassName(); //$NON-NLS-1$
 		}
-		return consoleConfiguration.getName() + "_" + name;
+		return consoleConfiguration.getName() + "_" + name; //$NON-NLS-1$
 	}
 
 	public HashMap getCloneElements() {
@@ -176,11 +176,11 @@ public class OrmDiagram extends ModelElement {
 			OrmShape shape = (OrmShape) getChildren().get(i);
 			Object ormElement = shape.getOrmElement();
 			if (ormElement instanceof RootClass) {
-				childrenLocations[i] = ((RootClass)ormElement).getEntityName() + "@";
+				childrenLocations[i] = ((RootClass)ormElement).getEntityName() + "@"; //$NON-NLS-1$
 			} else if (ormElement instanceof Table) {
-				childrenLocations[i] = HibernateUtils.getTableName((Table)ormElement)+"@";
+				childrenLocations[i] = HibernateUtils.getTableName((Table)ormElement)+"@"; //$NON-NLS-1$
 			}
-			childrenLocations[i] += shape.getLocation().x + ";" + shape.getLocation().y+";" + shape.isHiden();
+			childrenLocations[i] += shape.getLocation().x + ";" + shape.getLocation().y+";" + shape.isHiden(); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 	
@@ -353,7 +353,7 @@ public class OrmDiagram extends ModelElement {
 					if (clazz instanceof RootClass) {
 						RootClass cls = (RootClass)clazz;
 						Table table = cls.getTable();
-						if (tableName.equals(table.getName() + "." + table.getName())) {
+						if (tableName.equals(table.getName() + "." + table.getName())) { //$NON-NLS-1$
 							if (elements.get(HibernateUtils.getPersistentClassName(cls.getEntityName())) == null)
 								getOrCreatePersistentClass(cls, null);
 						}
@@ -617,7 +617,7 @@ public class OrmDiagram extends ModelElement {
 			key = HibernateUtils.getTableName((Table)element);
 		} else if (element instanceof Property) {
 			Property property = (Property)element;
-			key = property.getPersistentClass().getEntityName() + "." + property.getName();
+			key = property.getPersistentClass().getEntityName() + "." + property.getName(); //$NON-NLS-1$
 		} else if (element instanceof Subclass) {
 			key = HibernateUtils.getPersistentClassName(((Subclass)element).getEntityName());
 		}
@@ -674,15 +674,15 @@ public class OrmDiagram extends ModelElement {
 				file.createNewFile();
 			}
 			FileOutputStream fos = new FileOutputStream(file);
-			properties.store(fos, "");
+			properties.store(fos, ""); //$NON-NLS-1$
 		} catch (IOException e) {
-			VisualEditorPlugin.getDefault().logError("Can't save layout of mapping.", e);
+			VisualEditorPlugin.getDefault().logError("Can't save layout of mapping.", e); //$NON-NLS-1$
 		}
 	}
 
 	public IFile createLayoutFile(InputStream source) {
 		IFile file = null;
-		IPath path = javaProject.getProject().getLocation().append(".settings").append(HIBERNATE_MAPPING_LAYOUT_FOLDER_NAME);
+		IPath path = javaProject.getProject().getLocation().append(".settings").append(HIBERNATE_MAPPING_LAYOUT_FOLDER_NAME); //$NON-NLS-1$
 		IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(path);
 		if(!folder.exists()) {
 			try {
@@ -712,7 +712,7 @@ public class OrmDiagram extends ModelElement {
 				loadSuccessfull = true;
 			}
 		}catch(IOException ex){
-			VisualEditorPlugin.getDefault().logError("Can't load layout of mapping.", ex);
+			VisualEditorPlugin.getDefault().logError("Can't load layout of mapping.", ex); //$NON-NLS-1$
 		}
 	}
 	
@@ -731,37 +731,37 @@ public class OrmDiagram extends ModelElement {
 	}
 	
 	public void setState(Properties properties,Shape shape, boolean value){
-		setState(properties, getKey(shape)+".state", value);
+		setState(properties, getKey(shape)+".state", value); //$NON-NLS-1$
 	}
 	
 	private boolean getState(Properties properties, String key){
-		String str = properties.getProperty(key, "true");
+		String str = properties.getProperty(key, "true"); //$NON-NLS-1$
 		
 		return new Boolean(str).booleanValue();
 	}
 	
 	private Point getPoint(Properties properties, String key){
 		Point point = new Point(0,0);
-		String str = properties.getProperty(key+".x","0");
+		String str = properties.getProperty(key+".x","0"); //$NON-NLS-1$ //$NON-NLS-2$
 		point.x = Integer.parseInt(str);
-		String str2 = properties.getProperty(key+".y","0");
+		String str2 = properties.getProperty(key+".y","0"); //$NON-NLS-1$ //$NON-NLS-2$
 		point.y = Integer.parseInt(str2);
 		return point;
 	}
 	
 	private void setPoint(Properties properties, String key, Point point){
-		String key1 = key+".x";
+		String key1 = key+".x"; //$NON-NLS-1$
 		if(!properties.containsKey(key1)){
 			properties.remove(key1);
-			properties.put(key1, ""+point.x);
+			properties.put(key1, ""+point.x); //$NON-NLS-1$
 		}else
-			properties.put(key1, ""+point.x);
-		String key2 = key+".y";
+			properties.put(key1, ""+point.x); //$NON-NLS-1$
+		String key2 = key+".y"; //$NON-NLS-1$
 		if(!properties.containsKey(key2)){
 			properties.remove(key2);
-			properties.put(key2, ""+point.y);
+			properties.put(key2, ""+point.y); //$NON-NLS-1$
 		}else
-			properties.put(key2, ""+point.y);
+			properties.put(key2, ""+point.y); //$NON-NLS-1$
 	}
 	
 	public void setPosition(Properties properties, OrmShape shape){
@@ -774,7 +774,7 @@ public class OrmDiagram extends ModelElement {
 	}
 	
 	public boolean getState(Properties properties, Shape shape){
-		return getState(properties, getKey(shape)+".state");
+		return getState(properties, getKey(shape)+".state"); //$NON-NLS-1$
 	}
 
 	public IJavaProject getJavaProject() {

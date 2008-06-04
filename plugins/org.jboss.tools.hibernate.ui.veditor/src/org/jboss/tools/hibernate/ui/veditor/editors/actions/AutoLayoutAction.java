@@ -15,7 +15,7 @@ import org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor;
 
 public class AutoLayoutAction extends Action {
 
-	public static final String ACTION_ID = "Auto layout";
+	public static final String ACTION_ID = "Auto layout"; //$NON-NLS-1$
 
 	private VisualEditor editor;
 

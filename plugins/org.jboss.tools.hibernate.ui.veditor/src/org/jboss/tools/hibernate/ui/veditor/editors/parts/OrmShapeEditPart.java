@@ -56,7 +56,7 @@ public class OrmShapeEditPart extends ExpandeableShapeEditPart{
 			TitleFigure figure = new TitleFigure();
 			figure.setLayoutManager(new ToolbarLayout());
 			TitleLabel label = new TitleLabel();
-			String text = "";
+			String text = ""; //$NON-NLS-1$
 			Object element = getCastedModel().getOrmElement();
 			if (element instanceof RootClass) {
 				text = ormLabelProvider.getText((PersistentClass)element);

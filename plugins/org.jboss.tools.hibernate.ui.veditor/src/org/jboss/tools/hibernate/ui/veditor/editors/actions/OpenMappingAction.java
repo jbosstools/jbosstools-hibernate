@@ -28,13 +28,13 @@ import org.jboss.tools.hibernate.ui.view.views.ObjectEditorInput;
  *
  */
 public class OpenMappingAction extends SelectionAction {
-	public static String ACTION_ID = "org.jboss.tools.hibernate.ui.veditor.editors.actions.open.mapping";
+	public static String ACTION_ID = "org.jboss.tools.hibernate.ui.veditor.editors.actions.open.mapping"; //$NON-NLS-1$
 
 	public OpenMappingAction(IWorkbenchPart part) {
 		super(part);
 		setId(ACTION_ID);
-		setText("Open Mapping File");
-		setImageDescriptor(VisualEditorPlugin.getImageDescriptor("icons/mapping.gif"));
+		setText(Messages.OPENMAPPINGACTION_OPEN_MAPPING_FILE);
+		setImageDescriptor(VisualEditorPlugin.getImageDescriptor("icons/mapping.gif")); //$NON-NLS-1$
 	}
 
 	public void run() {
@@ -56,7 +56,7 @@ public class OpenMappingAction extends SelectionAction {
 				try {
 					org.hibernate.eclipse.console.actions.OpenMappingAction.run(compositSel, parentProperty, consoleConfiguration);
 				} catch (Exception e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage("Can't find or open mapping file.", e);
+					HibernateConsolePlugin.getDefault().logErrorMessage(Messages.OPENMAPPINGACTION_CANOT_FIND_OR_OPEN_MAPPING_FILE, e);
 				}
 				continue;
 			}
@@ -66,7 +66,7 @@ public class OpenMappingAction extends SelectionAction {
 			try {
 				org.hibernate.eclipse.console.actions.OpenMappingAction.run(selection, consoleConfiguration);
 			} catch (Exception e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("Can't find or open mapping file.", e);
+				HibernateConsolePlugin.getDefault().logErrorMessage(Messages.OPENMAPPINGACTION_OPEN_MAPPING_FILE, e);
 			}		
 			
 	    	/*IResource resource = null;

@@ -23,13 +23,13 @@ import org.jboss.tools.hibernate.ui.view.views.ObjectEditorInput;
  *
  */
 public class OpenSourceAction extends SelectionAction {
-	public static String ACTION_ID = "org.jboss.tools.hibernate.ui.veditor.editors.actions.open.source";
+	public static String ACTION_ID = "org.jboss.tools.hibernate.ui.veditor.editors.actions.open.source"; //$NON-NLS-1$
 
 	public OpenSourceAction(IWorkbenchPart part) {
 		super(part);
 		setId(ACTION_ID);
-		setText("Open Source File");
-		setImageDescriptor(VisualEditorPlugin.getImageDescriptor("icons/java.gif"));
+		setText(Messages.OPENSOURCEACTION_OPEN_SOURCE_FILE);
+		setImageDescriptor(VisualEditorPlugin.getImageDescriptor("icons/java.gif")); //$NON-NLS-1$
 	}
 
 	public void run() {
@@ -59,11 +59,11 @@ public class OpenSourceAction extends SelectionAction {
 			try {
 				new org.hibernate.eclipse.console.actions.OpenSourceAction().run(selection, proj, fullyQualifiedName);
 			} catch (PartInitException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("Can't open source file.", e);
+				HibernateConsolePlugin.getDefault().logErrorMessage(Messages.OPENSOURCEACTION_CANOT_OPEN_SOURCE_FILE, e);
 			} catch (JavaModelException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("Can't find source file.", e);
+				HibernateConsolePlugin.getDefault().logErrorMessage(Messages.OPENSOURCEACTION_CANOT_FIND_SOURCE_FILE, e);
 			} catch (FileNotFoundException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("Can't find source file.", e);
+				HibernateConsolePlugin.getDefault().logErrorMessage(Messages.OPENSOURCEACTION_CANOT_FIND_SOURCE_FILE, e);
 			}
 		}
 	}

@@ -10,17 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.veditor.editors.model;
 
-import java.beans.PropertyChangeEvent;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.eclipse.swt.graphics.RGB;
-import org.jboss.tools.hibernate.ui.veditor.editors.parts.ResourceManager;
-
 public class ExpandeableShape extends Shape {
 	
-	public static final String SHOW_REFERENCES = "show references";
+	public static final String SHOW_REFERENCES = "show references"; //$NON-NLS-1$
 	
 	public boolean refHide = true;
 	protected boolean first=false;

@@ -24,9 +24,9 @@ import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 
 public class OrmShape extends ExpandeableShape {
-	public static final String SET_HIDEN = "set hiden";
+	public static final String SET_HIDEN = "set hiden"; //$NON-NLS-1$
 	
-	public static final String LOCATION_PROP = "OrmShape.Location";		
+	public static final String LOCATION_PROP = "OrmShape.Location";		 //$NON-NLS-1$
 	private Point location = new Point(0, 0);
 	protected boolean hiden = false;
 	
