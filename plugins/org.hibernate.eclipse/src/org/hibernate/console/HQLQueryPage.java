@@ -53,7 +53,7 @@ public class HQLQueryPage extends AbstractQueryPage {
 					Object element = iter.next();
 					list.add(element);
 				}
-				pcs.firePropertyChange("list", null, list);
+				pcs.firePropertyChange("list", null, list); //$NON-NLS-1$
 			} 
 			catch (HibernateException e) {
 				list = Collections.EMPTY_LIST;
@@ -142,7 +142,7 @@ public class HQLQueryPage extends AbstractQueryPage {
     		for (int i = 0; i < t.length; i++) {
     			Type type = t[i];
     			if(type==null) {
-    			    l.add("<multiple types>");	
+    			    l.add("<multiple types>");	 //$NON-NLS-1$
     			} else {
     				l.add(type.getName() );
     			}

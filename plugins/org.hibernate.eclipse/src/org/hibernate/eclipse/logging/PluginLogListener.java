@@ -96,16 +96,16 @@ class PluginLogListener implements ILogListener {
 	    StringBuffer message = new StringBuffer();
 		if (plugin != null) {
 		    message.append(plugin);
-			message.append(" - ");
+			message.append(" - "); //$NON-NLS-1$
 		}    
 		if (statusPlugin != null &&
 		    (plugin == null || !statusPlugin.equals(plugin))) {
 		    message.append(statusPlugin);
-		   	message.append(" - ");
+		   	message.append(" - "); //$NON-NLS-1$
 		}	
 		message.append(status.getCode());
 		if (statusMessage != null) {
-		    message.append(" - ");
+		    message.append(" - "); //$NON-NLS-1$
 		    message.append(statusMessage);
 		}   				
 		this.logger.log(level,message.toString(),status.getException());		

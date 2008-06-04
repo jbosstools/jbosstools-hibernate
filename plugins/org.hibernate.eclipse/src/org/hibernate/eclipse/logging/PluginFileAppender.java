@@ -121,7 +121,7 @@ public class PluginFileAppender extends RollingFileAppender {
 	 */	
 	public void setFile(String fileName,boolean append,boolean bufferedIO,int bufferSize) throws IOException {
 		if (this.stateLocation == null) 
-			throw new IOException("Missing Plugin State Location.");			
+			throw new IOException(Messages.PLUGINFILEAPPENDER_MISSING_PLUGIN_STATE_LOCATION);			
 		
 		fileName = (this.translatePath) ?  getTranslatedFileName(fileName) : fileName;		
 		super.setFile(fileName,append,bufferedIO,bufferSize);

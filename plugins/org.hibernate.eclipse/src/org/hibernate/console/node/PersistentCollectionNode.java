@@ -72,7 +72,7 @@ public class PersistentCollectionNode extends BaseNode {
 		try {
 			collectionObject = md.getPropertyValue(baseObject, name, EntityMode.POJO);
 		} catch (HibernateException e) {
-			IllegalArgumentException iae = new IllegalArgumentException("Could not access property value");
+			IllegalArgumentException iae = new IllegalArgumentException(Messages.PERSISTENTCOLLECTIONNODE_COULD_NOT_ACCESS_PROPERTY_VALUE);
 			iae.initCause(e);
 			throw iae;
 		}
@@ -80,7 +80,7 @@ public class PersistentCollectionNode extends BaseNode {
 	}
 
 	public String getHQL() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 	
 	public TreeNode getChildAt(int childIndex) {
@@ -150,7 +150,7 @@ public class PersistentCollectionNode extends BaseNode {
 	}
 
 	public String renderLabel(boolean b) {
-		return getLabel(getName(),b) + " : " + getLabel(type.getReturnedClass().getName(),b) + "<" + getLabel(elementType.getReturnedClass().getName(),b) + ">";
+		return getLabel(getName(),b) + " : " + getLabel(type.getReturnedClass().getName(),b) + "<" + getLabel(elementType.getReturnedClass().getName(),b) + ">";  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 	}
 	
 	public Type getType() {		

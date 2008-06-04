@@ -40,13 +40,13 @@ import org.w3c.dom.NodeList;
 public abstract class AbstractConsoleConfigurationPreferences implements
 		ConsoleConfigurationPreferences {
 
-	static final String PROJECT_ATTRIB = "project";
-	static final String USE_PROJECT_CLASSPATH_ATTRIB = "use-project-classpath";
+	static final String PROJECT_ATTRIB = "project"; //$NON-NLS-1$
+	static final String USE_PROJECT_CLASSPATH_ATTRIB = "use-project-classpath"; //$NON-NLS-1$
 	
 	
 	private String projectName;
 
-	private String name = "<unknown>";
+	private String name = Messages.ACCP_UNKNOWN;
 	protected String entityResolverName = null;
 	private boolean useProjectClasspath;
 	private ConfigurationMode configurationMode;
@@ -81,7 +81,7 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 	
 	public void setName(String name) {
 		if(name==null || name.trim().length()==0) {
-			throw new IllegalArgumentException("Name cannot be null or empty");
+			throw new IllegalArgumentException(Messages.ACCP_NAME_NOT_NULL_OR_EMPTY);
 		}
 		
 		this.name = name;
@@ -100,7 +100,7 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 			return p; 
 		} 
 		catch(IOException io) {
-			throw new HibernateConsoleRuntimeException("Could not load property file " + propFile, io);
+			throw new HibernateConsoleRuntimeException(Messages.ACCP_COULD_NOT_LOAD_PROP_FILE + propFile, io);
 		}
 	}
 
@@ -119,7 +119,7 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 		}
 		
 		if(useProjectClasspath) {
-			n.setAttribute( USE_PROJECT_CLASSPATH_ATTRIB, "true" );
+			n.setAttribute( USE_PROJECT_CLASSPATH_ATTRIB, "true" ); //$NON-NLS-1$
 		}
 		
 		if(StringHelper.isNotEmpty(projectName)) {
@@ -189,7 +189,7 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 		
 		String attribute = node.getAttribute(ANNOTATIONS_ATTRIB);
 		if(StringHelper.isNotEmpty( attribute )) {
-			boolean oldAnnotationFlag = ((attribute != null) && attribute.equalsIgnoreCase("true"));
+			boolean oldAnnotationFlag = ((attribute != null) && attribute.equalsIgnoreCase("true")); //$NON-NLS-1$
 			if(oldAnnotationFlag) {
 				configurationMode = ConfigurationMode.ANNOTATIONS;
 			} else {
@@ -205,7 +205,7 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 		setProjectName( attribute );
 		
 		attribute = node.getAttribute( USE_PROJECT_CLASSPATH_ATTRIB );
-		setUseProjectClasspath((attribute != null) && attribute.equalsIgnoreCase("true"));
+		setUseProjectClasspath((attribute != null) && attribute.equalsIgnoreCase("true")); //$NON-NLS-1$
 		
 		attribute = node.getAttribute(ENTITYRESOLVER_ATTRIB);
 		if(attribute!=null && attribute.trim().length()>0) {

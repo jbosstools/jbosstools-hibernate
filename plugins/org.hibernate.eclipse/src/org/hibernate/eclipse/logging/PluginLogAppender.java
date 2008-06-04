@@ -66,7 +66,7 @@ public class PluginLogAppender extends AppenderSkeleton {
 	public void append(LoggingEvent event) {
 		
 		if (this.layout == null) {
-			this.errorHandler.error("Missing layout for appender " + 
+			this.errorHandler.error(Messages.PLUGINLOGAPPENDER_MISSING_LAYOUT_FOR_APPENDER + 
 			       this.name,null,ErrorCode.MISSING_LAYOUT); 
 			return;
 		}

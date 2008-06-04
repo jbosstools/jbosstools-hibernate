@@ -72,7 +72,7 @@ public class StandAloneConsoleConfigurationPreferences extends AbstractConsoleCo
 				result[i] = file.toURL();
 			} 
 			catch (MalformedURLException mue) {
-				throw new HibernateConsoleRuntimeException("Could not resolve classpaths", mue);
+				throw new HibernateConsoleRuntimeException(Messages.STANDALONECONSOLECONFIGURATIONPREFERENCES_COULD_NOT_RESOLVE_CLASSPATHS, mue);
 			}
 		}
 		return result;
@@ -142,13 +142,13 @@ public class StandAloneConsoleConfigurationPreferences extends AbstractConsoleCo
 			return result;
 		} 
 		catch(SAXException sa) {
-			throw new HibernateConsoleRuntimeException("Errors while parsing " + f,sa);
+			throw new HibernateConsoleRuntimeException(Messages.STANDALONECONSOLECONFIGURATIONPREFERENCES_ERRORS_WHILE_PARSING + f,sa);
 		} 
 		catch (ParserConfigurationException e) {
-			throw new HibernateConsoleRuntimeException("Errors while parsing " + f,e);
+			throw new HibernateConsoleRuntimeException(Messages.STANDALONECONSOLECONFIGURATIONPREFERENCES_ERRORS_WHILE_PARSING + f,e);
 		} 
 		catch (IOException e) {
-			throw new HibernateConsoleRuntimeException("Errors while parsing " + f,e);		
+			throw new HibernateConsoleRuntimeException(Messages.STANDALONECONSOLECONFIGURATIONPREFERENCES_ERRORS_WHILE_PARSING + f,e);		
 		}    
 	}
 

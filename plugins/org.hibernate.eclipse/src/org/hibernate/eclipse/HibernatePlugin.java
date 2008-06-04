@@ -40,13 +40,13 @@ public class HibernatePlugin extends Plugin {
 		super.start(context);
 		configureLog4jHooks();
 		Log log = LogFactory.getLog(HibernatePlugin.class);
-		log.info("HibernatePlugin Started");		
+		log.info("HibernatePlugin Started");		 //$NON-NLS-1$
 	}
 	
 	private void configureLog4jHooks() {
-		URL entry = getBundle().getEntry("hibernate-log4j.xml");
+		URL entry = getBundle().getEntry("hibernate-log4j.xml"); //$NON-NLS-1$
 		if(entry==null) {
-			entry = getBundle().getEntry("hibernate-log4j.properties");	
+			entry = getBundle().getEntry("hibernate-log4j.properties");	 //$NON-NLS-1$
 		}
 		
 		if(entry==null) {

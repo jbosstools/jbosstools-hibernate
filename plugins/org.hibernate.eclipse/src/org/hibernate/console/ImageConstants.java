@@ -27,101 +27,101 @@ package org.hibernate.console;
  */
 public interface ImageConstants {
 	
-	public static final String HIBERNATE_LOGO = "images/hibernate.gif";
-	public static final String MINI_HIBERNATE = "images/hicon.gif";
-	public static final String JBOSS_LOGO = "images/jboss.gif";
+	public static final String HIBERNATE_LOGO = "images/hibernate.gif"; //$NON-NLS-1$
+	public static final String MINI_HIBERNATE = "images/hicon.gif"; //$NON-NLS-1$
+	public static final String JBOSS_LOGO = "images/jboss.gif"; //$NON-NLS-1$
 	
-	public static final String FORMAT_QL = "images/format.gif";
-	public static final String MAPPEDCLASS_PATH = "images/mapped_class.gif";
+	public static final String FORMAT_QL = "images/format.gif"; //$NON-NLS-1$
+	public static final String MAPPEDCLASS_PATH = "images/mapped_class.gif"; //$NON-NLS-1$
 
-	public static final String UNMAPPEDCLASS_PATH = "images/unmapped_class.gif";
+	public static final String UNMAPPEDCLASS_PATH = "images/unmapped_class.gif"; //$NON-NLS-1$
 
-	public static final String PROPERTY_PATH = "images/property.gif";
+	public static final String PROPERTY_PATH = "images/property.gif"; //$NON-NLS-1$
 
-	public static final String ONETOMANY_PATH = "images/1tonproperty.gif";
+	public static final String ONETOMANY_PATH = "images/1tonproperty.gif"; //$NON-NLS-1$
 
-	public static final String CONFIGURATION = "images/configuration.gif";
-	public static final String ADD = "ADD";
-	public static final String REMOVE = "REMOVE";
+	public static final String CONFIGURATION = "images/configuration.gif"; //$NON-NLS-1$
+	public static final String ADD = "ADD"; //$NON-NLS-1$
+	public static final String REMOVE = "REMOVE"; //$NON-NLS-1$
 
-	public static final String MANYTOONE_PATH = "images/mto1property.gif";
+	public static final String MANYTOONE_PATH = "images/mto1property.gif"; //$NON-NLS-1$
 
-	public static final String ONETOONE_PATH = "images/1to1property.gif";
+	public static final String ONETOONE_PATH = "images/1to1property.gif"; //$NON-NLS-1$
 
-	public static final String ANY_PATH = "images/anyproperty.gif";
+	public static final String ANY_PATH = "images/anyproperty.gif"; //$NON-NLS-1$
 
-	public static final String CLEAR_PATH = "images/clear.gif";
+	public static final String CLEAR_PATH = "images/clear.gif"; //$NON-NLS-1$
 
-	public static final String COMPONENT_PATH = "images/componentproperty.gif";
+	public static final String COMPONENT_PATH = "images/componentproperty.gif"; //$NON-NLS-1$
 
-	public static final String CLOSE_PATH = "images/close.gif";
+	public static final String CLOSE_PATH = "images/close.gif"; //$NON-NLS-1$
 
-	public static final String CLOSE_DISABLED_PATH = "images/close_disabled.gif";
+	public static final String CLOSE_DISABLED_PATH = "images/close_disabled.gif"; //$NON-NLS-1$
 	
-	public static final String CLOSE_ALL_PATH = "images/xpl/removeall.gif";
+	public static final String CLOSE_ALL_PATH = "images/xpl/removeall.gif"; //$NON-NLS-1$
 
-	public static final String CLOSE_ALL_DISABLED_PATH = "images/xpl/removeall_disabled.gif";
+	public static final String CLOSE_ALL_DISABLED_PATH = "images/xpl/removeall_disabled.gif"; //$NON-NLS-1$
 
-	public static final String IDPROPERTY_PATH = "images/idproperty.gif";
+	public static final String IDPROPERTY_PATH = "images/idproperty.gif"; //$NON-NLS-1$
 
-	public static final String TYPES_PATH = "images/types.gif";
+	public static final String TYPES_PATH = "images/types.gif"; //$NON-NLS-1$
 
-	public static final String UNKNOWNPROPERTY_PATH = "images/unknowntypeproperty.gif";
+	public static final String UNKNOWNPROPERTY_PATH = "images/unknowntypeproperty.gif"; //$NON-NLS-1$
 
-	public static final String EXECUTE_PATH = "images/execute.gif";
+	public static final String EXECUTE_PATH = "images/execute.gif"; //$NON-NLS-1$
 
-	public static final String MAPPEDCLASS = "MAPPEDCLASS";
+	public static final String MAPPEDCLASS = "MAPPEDCLASS"; //$NON-NLS-1$
 
-	public static final String UNMAPPEDCLASS = "UNMAPPEDCLASS";
+	public static final String UNMAPPEDCLASS = "UNMAPPEDCLASS"; //$NON-NLS-1$
 
-	public static final String PROPERTY = "PROPERTY";
+	public static final String PROPERTY = "PROPERTY"; //$NON-NLS-1$
 
-	public static final String ONETOMANY = "ONETOMANY";
+	public static final String ONETOMANY = "ONETOMANY"; //$NON-NLS-1$
 
-	public static final String MANYTOONE = "MANYTOONE";
+	public static final String MANYTOONE = "MANYTOONE"; //$NON-NLS-1$
 
-	public static final String ONETOONE = "ONETOONE";
+	public static final String ONETOONE = "ONETOONE"; //$NON-NLS-1$
 
-	public static final String ANY = "ANY";
+	public static final String ANY = "ANY"; //$NON-NLS-1$
 
-	public static final String CLEAR = "CLEAR";
+	public static final String CLEAR = "CLEAR"; //$NON-NLS-1$
 
-	public static final String COMPONENT = "COMPONENT";
+	public static final String COMPONENT = "COMPONENT"; //$NON-NLS-1$
 
-	public static final String CLOSE = "CLOSE";
+	public static final String CLOSE = "CLOSE"; //$NON-NLS-1$
 
-	public static final String CLOSE_DISABLED = "CLOSE_DISABLED";
+	public static final String CLOSE_DISABLED = "CLOSE_DISABLED"; //$NON-NLS-1$
 	
-	public static final String CLOSE_ALL = "CLOSE_ALL";
+	public static final String CLOSE_ALL = "CLOSE_ALL"; //$NON-NLS-1$
 
-	public static final String CLOSE_ALL_DISABLED = "CLOSE_ALL_DISABLED";
+	public static final String CLOSE_ALL_DISABLED = "CLOSE_ALL_DISABLED"; //$NON-NLS-1$
 
-	public static final String IDPROPERTY = "IDPROPERTY";
+	public static final String IDPROPERTY = "IDPROPERTY"; //$NON-NLS-1$
 
-	public static final String TYPES = "TYPES";
+	public static final String TYPES = "TYPES"; //$NON-NLS-1$
 
-	public static final String UNKNOWNPROPERTY = "UNKNOWNPROPERTY";
+	public static final String UNKNOWNPROPERTY = "UNKNOWNPROPERTY"; //$NON-NLS-1$
 
-	public static final String EXECUTE = "EXECUTE";
+	public static final String EXECUTE = "EXECUTE"; //$NON-NLS-1$
     
-    public static final String NEW_WIZARD = "NEW_WIZARD";
+    public static final String NEW_WIZARD = "NEW_WIZARD"; //$NON-NLS-1$
     
-    public static final String COLUMN = "COLUMN";
-    public static final String TABLE = "TABLE";
-    public static final String SCHEMA = "SCHEMA";
-    public static final String CATALOG = "CATALOG";
-    public static final String DATABASE = "DATABASE";
-    public static final String HQL_EDITOR = "HQL_EDITOR";
-    public static final String PARAMETER = "PARAMETER";
-    public static final String NEW_PARAMETER = "NEW_PARAMETER";
-    public static final String IGNORE_PARAMETER = "IGNORE_PARAMETER";
-	public static final String LAYOUT = "LAYOUT";
-	public static final String LAYOUT_DISABLED = "LAYOUT_DISABLED";
-	public static final String CRITERIA_EDITOR = "images/criteria_editor.gif";
-	public static final String FUNCTION = "FUNCTION";
+    public static final String COLUMN = "COLUMN"; //$NON-NLS-1$
+    public static final String TABLE = "TABLE"; //$NON-NLS-1$
+    public static final String SCHEMA = "SCHEMA"; //$NON-NLS-1$
+    public static final String CATALOG = "CATALOG"; //$NON-NLS-1$
+    public static final String DATABASE = "DATABASE"; //$NON-NLS-1$
+    public static final String HQL_EDITOR = "HQL_EDITOR"; //$NON-NLS-1$
+    public static final String PARAMETER = "PARAMETER"; //$NON-NLS-1$
+    public static final String NEW_PARAMETER = "NEW_PARAMETER"; //$NON-NLS-1$
+    public static final String IGNORE_PARAMETER = "IGNORE_PARAMETER"; //$NON-NLS-1$
+	public static final String LAYOUT = "LAYOUT"; //$NON-NLS-1$
+	public static final String LAYOUT_DISABLED = "LAYOUT_DISABLED"; //$NON-NLS-1$
+	public static final String CRITERIA_EDITOR = "images/criteria_editor.gif"; //$NON-NLS-1$
+	public static final String FUNCTION = "FUNCTION"; //$NON-NLS-1$
 	
-	public static final String CHECKBOX_FULL = "images/xpl/complete_tsk.gif";
-	public static final String CHECKBOX_EMPTY = "images/xpl/incomplete_tsk.gif";
-	public static final String RELOAD = "images/reload.gif";
+	public static final String CHECKBOX_FULL = "images/xpl/complete_tsk.gif"; //$NON-NLS-1$
+	public static final String CHECKBOX_EMPTY = "images/xpl/incomplete_tsk.gif"; //$NON-NLS-1$
+	public static final String RELOAD = "images/reload.gif"; //$NON-NLS-1$
     
 }

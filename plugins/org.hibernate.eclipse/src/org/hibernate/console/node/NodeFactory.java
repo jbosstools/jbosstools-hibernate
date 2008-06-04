@@ -149,7 +149,7 @@ public class NodeFactory {
 			}
 			
 			public String getName() {
-				return "Unknown -> " + clazz;
+				return Messages.NODEFACTORY_UNKNOWN + clazz;
 			}
 			
 			protected void checkChildren() {

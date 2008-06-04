@@ -45,6 +45,6 @@ public class ConfigurationEntitiesNode extends BaseNode {
 	}
 	
 	public String getHQL() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 }

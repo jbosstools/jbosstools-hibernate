@@ -102,7 +102,7 @@ public class PluginLogManager {
 				return hierarchy;
 			}
 		
-		}, "hibernate-tools");
+		}, "hibernate-tools"); //$NON-NLS-1$
 		OptionConverter.selectAndConfigure(log4jUrl, null, this.hierarchy);
 		this.helper = helper;
 		helper.addLogManager(this); 

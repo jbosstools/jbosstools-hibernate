@@ -134,7 +134,7 @@ public abstract class AbstractQueryPage implements QueryPage {
 	public void addException(Throwable e) {
 		exceptions.add(e);
 		release();
-		pcs.firePropertyChange("exceptions", null, exceptions);
+		pcs.firePropertyChange("exceptions", null, exceptions); //$NON-NLS-1$
 	}
 
 	public ConsoleConfiguration getConsoleConfiguration() {

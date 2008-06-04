@@ -63,7 +63,7 @@ public class ConfigurationNode extends BaseNode {
 		if(!childrenCreated) {
 			if(configuration.isSessionFactoryCreated() ) {
 				NodeFactory fac = new NodeFactory(configuration);
-				children.add(fac.createConfigurationEntitiesNode("Mapped entities") );
+				children.add(fac.createConfigurationEntitiesNode(Messages.CONFIGURATIONNODE_MAPPED_ENTITIES) );
 				childrenCreated=true;
 				
 				/*Configuration cfg = configuration.getConfiguration();

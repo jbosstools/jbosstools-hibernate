@@ -40,7 +40,7 @@ public class TypeNode extends ClassNode {
 
 	
 	public String renderLabel(boolean b) {
-		return super.renderLabel(b) + " : " + getLabel(type.getReturnedClass().getName(),b);
+		return super.renderLabel(b) + " : " + getLabel(type.getReturnedClass().getName(),b); //$NON-NLS-1$
 	}
 
 	/**

@@ -22,12 +22,10 @@
 package org.hibernate.console.execution;
 
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import org.apache.log4j.NDC;
+import org.eclipse.osgi.util.NLS;
 import org.hibernate.eclipse.logging.CurrentContext;
 
 public class DefaultExecutionContext implements ExecutionContext {
@@ -79,7 +77,8 @@ public class DefaultExecutionContext implements ExecutionContext {
 		if(installs==0) {
 			ClassLoader cl = (ClassLoader) previousLoaders.get(Thread.currentThread() );
 			if(configurationClassLoader!=null && Thread.currentThread().getContextClassLoader() != configurationClassLoader) {
-				throw new IllegalStateException("Existing classloader is not equal to the previously installed classloader! Existing=" + Thread.currentThread().getContextClassLoader() + " Previous=" + configurationClassLoader);
+				String out = NLS.bind(Messages.DEFAULTEXECUTIONCONTEXT_EXISTING_CLASSLOADER, Thread.currentThread().getContextClassLoader(), configurationClassLoader);
+				throw new IllegalStateException(out);
 			}
 			
 			if(cl!=null) {

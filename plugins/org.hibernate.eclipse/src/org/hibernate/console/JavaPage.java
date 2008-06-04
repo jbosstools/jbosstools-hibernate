@@ -63,9 +63,9 @@ public class JavaPage extends AbstractQueryPage {
     public void setSession(Session s) {
 		super.setSession(s);
         try {
-        	if(criteriaCode.indexOf( "System.exit" )>=0) { // TODO: externalize run so we don't need this bogus check!
+        	if(criteriaCode.indexOf( "System.exit" )>=0) { // TODO: externalize run so we don't need this bogus check! //$NON-NLS-1$
         		list = Collections.EMPTY_LIST;
-        		addException( new IllegalArgumentException("System.exit not allowed!") );
+        		addException( new IllegalArgumentException(Messages.JAVAPAGE_NOT_ALLOWED) );
         		return;
         	}
             ip = setupInterpreter(getSession() );
@@ -97,7 +97,7 @@ public class JavaPage extends AbstractQueryPage {
     private Interpreter setupInterpreter(Session session) throws EvalError, HibernateException {
         Interpreter interpreter = new Interpreter();
         
-        interpreter.set("session", session);
+        interpreter.set("session", session); //$NON-NLS-1$
         interpreter.setClassLoader( Thread.currentThread().getContextClassLoader() );
         SessionImplementor si = (SessionImplementor)session;
         
@@ -108,11 +108,11 @@ public class JavaPage extends AbstractQueryPage {
         String imports = new String();
         while (iterator.hasNext() ) {
             String element =  (String) iterator.next();
-            imports += "import " + element + ";\n";
+            imports += "import " + element + ";\n"; //$NON-NLS-1$ //$NON-NLS-2$
         }
         
-        imports += "import org.hibernate.criterion.*;\n";
-        imports += "import org.hibernate.*;\n";
+        imports += "import org.hibernate.criterion.*;\n"; //$NON-NLS-1$
+        imports += "import org.hibernate.*;\n"; //$NON-NLS-1$
         // TODO: expose the parameters as values to be used in the code.
         interpreter.eval(imports);
         
@@ -140,7 +140,7 @@ public class JavaPage extends AbstractQueryPage {
 
 	public List getPathNames() {
         List l = new ArrayList();
-        l.add("<no info>");       
+        l.add(Messages.JAVAPAGE_NO_INFO);       
         return l;
     }
 

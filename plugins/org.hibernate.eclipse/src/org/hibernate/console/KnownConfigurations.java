@@ -264,7 +264,7 @@ public class KnownConfigurations  {
 		Object[] console = (Object[]) loggingStreams.get(name); 
 		if(console==null) {
 			console = new Object[2];
-			String secondaryId = "Hibernate Log - " + (name==null?"<unknown>":name);
+			String secondaryId = Messages.KNOWNCONFIGURATIONS_HIBERNATE_LOG + (name==null?Messages.KNOWNCONFIGURATIONS_UNKNOWN:name);
         	console[0] = new MessageConsole(secondaryId, null);
         	IConsoleManager consoleManager = ConsolePlugin.getDefault().getConsoleManager();
         	consoleManager.addConsoles(new IConsole[] { (IConsole) console[0] });
@@ -302,7 +302,7 @@ public class KnownConfigurations  {
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			Document document = builder.newDocument();
 			
-			Element element = document.createElement("hibernate-console");
+			Element element = document.createElement("hibernate-console"); //$NON-NLS-1$
 			Node node = document.appendChild(element);
 			
 			ConsoleConfiguration[] configs = getConfigurations();
@@ -314,13 +314,13 @@ public class KnownConfigurations  {
 			writeXml(document, f);
 		} 
 		catch (TransformerConfigurationException e) {
-			throw new HibernateConsoleRuntimeException("Could not write state",e);
+			throw new HibernateConsoleRuntimeException(Messages.KNOWNCONFIGURATIONS_COULD_NOT_WRITE_STATE,e);
 		} 
 		catch (TransformerException e) {
-			throw new HibernateConsoleRuntimeException("Could not write state",e);
+			throw new HibernateConsoleRuntimeException(Messages.KNOWNCONFIGURATIONS_COULD_NOT_WRITE_STATE,e);
 		} 
 		catch (ParserConfigurationException e) {
-			throw new HibernateConsoleRuntimeException("Could not write state",e);
+			throw new HibernateConsoleRuntimeException(Messages.KNOWNCONFIGURATIONS_COULD_NOT_WRITE_STATE,e);
 		}
 	}
 
@@ -333,7 +333,7 @@ public class KnownConfigurations  {
    
 		// Write the DOM document to the file
 		Transformer xformer = TransformerFactory.newInstance().newTransformer();
-		xformer.setOutputProperty(OutputKeys.INDENT, "true");
+		xformer.setOutputProperty(OutputKeys.INDENT, "true"); //$NON-NLS-1$
 		xformer.transform(source, result);
 	}
 

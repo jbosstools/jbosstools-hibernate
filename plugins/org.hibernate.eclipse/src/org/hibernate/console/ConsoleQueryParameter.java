@@ -60,8 +60,8 @@ public class ConsoleQueryParameter {
 		addTypeFormat(Hibernate.FLOAT, new Float(42.42));
 		addTypeFormat(Hibernate.LOCALE, Locale.getDefault());
 		addTypeFormat(Hibernate.LONG, new Long(42));
-		addTypeFormat(Hibernate.STRING, "a string");
-		addTypeFormat(Hibernate.TEXT, "a text");
+		addTypeFormat(Hibernate.STRING, "a string"); //$NON-NLS-1$
+		addTypeFormat(Hibernate.TEXT, "a text"); //$NON-NLS-1$
 		addTypeFormat(Hibernate.TIME, new Date());
 		addTypeFormat(Hibernate.TIMESTAMP, new Date());
 		addTypeFormat(Hibernate.TIMEZONE, TimeZone.getDefault());
@@ -119,7 +119,7 @@ public class ConsoleQueryParameter {
 	}
 	
 	public String getValueAsString() {
-		if(isNull()) return "";
+		if(isNull()) return ""; //$NON-NLS-1$
 		return type.toString(getValue());
 	}
 	
@@ -140,7 +140,7 @@ public class ConsoleQueryParameter {
 				return object.toString();
 			}
 		}
-		return "<unknown>";				
+		return "<unknown>";				 //$NON-NLS-1$
 	}
 
 	public static Set getPossibleTypes() {

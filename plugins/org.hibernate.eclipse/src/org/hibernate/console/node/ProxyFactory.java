@@ -35,7 +35,7 @@ import org.hibernate.console.execution.ExecutionContextHolder;
 
 public class ProxyFactory {
 
-	private static final String GET_EXECUTION_CONTEXT = "getExecutionContext";
+	private static final String GET_EXECUTION_CONTEXT = "getExecutionContext"; //$NON-NLS-1$
 
 	private static final MethodInterceptor EXECUTIONCONTEXTHOLDER_METHOD_INTERCEPTOR = new MethodInterceptor() {
 		public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {

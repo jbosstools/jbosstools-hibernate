@@ -109,17 +109,17 @@ public class ClassNode extends BaseNode {
         // currentParent is the root
         String cname = ( (ClassNode)currentParent).md.getMappedClass(EntityMode.POJO).getName();
         
-		if (cname.lastIndexOf(".") != -1) {
-			cname = cname.substring(cname.lastIndexOf(".") + 1);
+		if (cname.lastIndexOf(".") != -1) { //$NON-NLS-1$
+			cname = cname.substring(cname.lastIndexOf(".") + 1); //$NON-NLS-1$
 		}
 		String alias = cname.toLowerCase();
 
-		String path = "";
+		String path = ""; //$NON-NLS-1$
 		for (int i = parents.size()-2; i >= 0; i--) {
-			path += "." + ( (BaseNode) parents.get(i) ).getName();
+			path += "." + ( (BaseNode) parents.get(i) ).getName(); //$NON-NLS-1$
 		}
 
-		return "select " + alias + path + " from " + cname + " as " + alias;
+		return "select " + alias + path + " from " + cname + " as " + alias; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 	
 	public ClassMetadata getClassMetadata() {
@@ -130,9 +130,9 @@ public class ClassNode extends BaseNode {
 		if(objectGraph) {
 			Object o = getValue();
 			if(Hibernate.isInitialized(o) ) {
-				return super.renderLabel(fullyQualifiedNames) + " = " + o;	
+				return super.renderLabel(fullyQualifiedNames) + " = " + o;	 //$NON-NLS-1$
 			} else {
-				return super.renderLabel(fullyQualifiedNames) + " = " + "(uninitialized proxy)";
+				return super.renderLabel(fullyQualifiedNames) + " = " + Messages.CLASSNODE_UNINITIALIZED_PROXY; //$NON-NLS-1$
 			}
 			  
 		} else {

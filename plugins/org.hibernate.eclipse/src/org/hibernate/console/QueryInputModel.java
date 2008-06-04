@@ -87,13 +87,13 @@ public class QueryInputModel extends Observable {
 	public void addParameter(ConsoleQueryParameter cqp) {
 		parameters.add(cqp);
 		setChanged();
-		notifyObservers("addParameter");
+		notifyObservers("addParameter"); //$NON-NLS-1$
 	}
 	
 	public void removeParameter(ConsoleQueryParameter cqp) {
 		parameters.remove(cqp);
 		setChanged();
-		notifyObservers("removeParameter");
+		notifyObservers("removeParameter"); //$NON-NLS-1$
 	}
 	
 	public void moveUp(ConsoleQueryParameter cqp) {
@@ -114,13 +114,13 @@ public class QueryInputModel extends Observable {
 			}
 		}
 		setChanged();
-		notifyObservers("move");
+		notifyObservers("move"); //$NON-NLS-1$
 	}
 
 	/** create a parameter which does not collide with any other parameter */
 	public ConsoleQueryParameter createUniqueParameter(String paramName) {
 		if(parameters.isEmpty()) {
-			return new ConsoleQueryParameter(paramName, Hibernate.STRING, "");
+			return new ConsoleQueryParameter(paramName, Hibernate.STRING, ""); //$NON-NLS-1$
 		} else {
 			ConsoleQueryParameter cqp = (ConsoleQueryParameter) parameters.get(parameters.size()-1);
 			ConsoleQueryParameter c = new ConsoleQueryParameter(cqp);
@@ -141,7 +141,7 @@ public class QueryInputModel extends Observable {
         
         while( uniqueNames.contains(propertyName) ) { 
             cnt++;
-            propertyName = originalPropertyName + "-" + cnt;
+            propertyName = originalPropertyName + "-" + cnt; //$NON-NLS-1$
         }
         
         return propertyName;                                
@@ -161,7 +161,7 @@ public class QueryInputModel extends Observable {
 	public void clear() {
 		parameters.clear();
 		setChanged();
-		notifyObservers("clear");		
+		notifyObservers("clear");		 //$NON-NLS-1$
 	}
 
 	public void setMaxResults(Integer maxResults) {

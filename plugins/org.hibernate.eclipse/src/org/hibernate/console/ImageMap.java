@@ -50,30 +50,30 @@ public abstract class ImageMap implements ImageConstants {
 		declareRegistryImage(CLOSE_ALL, CLOSE_ALL_PATH);
 		declareRegistryImage(CLOSE_ALL_DISABLED, CLOSE_ALL_DISABLED_PATH);
 		declareRegistryImage(CLEAR, CLEAR_PATH);
-		declareRegistryImage(CONFIGURATION, "images/hibernate_config.gif");
-		declareRegistryImage(ADD, "images/treeplus.gif");
-		declareRegistryImage(REMOVE, "images/treeminus.gif");
-        declareRegistryImage(NEW_WIZARD, "images/newhibernate_wiz.gif");
-        declareRegistryImage(TABLE, "images/table.gif");
-        declareRegistryImage(COLUMN, "images/columns.gif");
-        declareRegistryImage(SCHEMA, "images/schema.gif");
-        declareRegistryImage(CATALOG, "images/catalog.gif");
-        declareRegistryImage(DATABASE, "images/database.gif");
-        declareRegistryImage(FORMAT_QL, "images/format.gif");
-        declareRegistryImage(HQL_EDITOR, "images/hql_editor.gif");
-        declareRegistryImage(CRITERIA_EDITOR, "images/criteria_editor.gif");
-        declareRegistryImage(PARAMETER, "images/parameter.gif");
-        declareRegistryImage(NEW_PARAMETER, "images/new_param.gif");
-        declareRegistryImage(IGNORE_PARAMETER, "images/ignoreparameter.gif");
-        declareRegistryImage(LAYOUT, "images/layout.gif");
-        declareRegistryImage(LAYOUT_DISABLED, "images/layout_disabled.gif");
-        declareRegistryImage(MINI_HIBERNATE, "images/hicon.gif");
-        declareRegistryImage(HIBERNATE_LOGO, "images/hibernate.gif");
-        declareRegistryImage(JBOSS_LOGO, "images/jboss.gif");
-        declareRegistryImage(FUNCTION, "images/function.gif");
-        declareRegistryImage(CHECKBOX_EMPTY, "images/xpl/incomplete_tsk.gif");
-        declareRegistryImage(CHECKBOX_FULL, "images/xpl/complete_tsk.gif");
-        declareRegistryImage(RELOAD, "images/reload.gif");
+		declareRegistryImage(CONFIGURATION, "images/hibernate_config.gif"); //$NON-NLS-1$
+		declareRegistryImage(ADD, "images/treeplus.gif"); //$NON-NLS-1$
+		declareRegistryImage(REMOVE, "images/treeminus.gif"); //$NON-NLS-1$
+        declareRegistryImage(NEW_WIZARD, "images/newhibernate_wiz.gif"); //$NON-NLS-1$
+        declareRegistryImage(TABLE, "images/table.gif"); //$NON-NLS-1$
+        declareRegistryImage(COLUMN, "images/columns.gif"); //$NON-NLS-1$
+        declareRegistryImage(SCHEMA, "images/schema.gif"); //$NON-NLS-1$
+        declareRegistryImage(CATALOG, "images/catalog.gif"); //$NON-NLS-1$
+        declareRegistryImage(DATABASE, "images/database.gif"); //$NON-NLS-1$
+        declareRegistryImage(FORMAT_QL, "images/format.gif"); //$NON-NLS-1$
+        declareRegistryImage(HQL_EDITOR, "images/hql_editor.gif"); //$NON-NLS-1$
+        declareRegistryImage(CRITERIA_EDITOR, "images/criteria_editor.gif"); //$NON-NLS-1$
+        declareRegistryImage(PARAMETER, "images/parameter.gif"); //$NON-NLS-1$
+        declareRegistryImage(NEW_PARAMETER, "images/new_param.gif"); //$NON-NLS-1$
+        declareRegistryImage(IGNORE_PARAMETER, "images/ignoreparameter.gif"); //$NON-NLS-1$
+        declareRegistryImage(LAYOUT, "images/layout.gif"); //$NON-NLS-1$
+        declareRegistryImage(LAYOUT_DISABLED, "images/layout_disabled.gif"); //$NON-NLS-1$
+        declareRegistryImage(MINI_HIBERNATE, "images/hicon.gif"); //$NON-NLS-1$
+        declareRegistryImage(HIBERNATE_LOGO, "images/hibernate.gif"); //$NON-NLS-1$
+        declareRegistryImage(JBOSS_LOGO, "images/jboss.gif"); //$NON-NLS-1$
+        declareRegistryImage(FUNCTION, "images/function.gif"); //$NON-NLS-1$
+        declareRegistryImage(CHECKBOX_EMPTY, "images/xpl/incomplete_tsk.gif"); //$NON-NLS-1$
+        declareRegistryImage(CHECKBOX_FULL, "images/xpl/complete_tsk.gif"); //$NON-NLS-1$
+        declareRegistryImage(RELOAD, "images/reload.gif"); //$NON-NLS-1$
 		
 	}
 

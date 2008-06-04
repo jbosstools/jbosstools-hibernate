@@ -36,27 +36,27 @@ import org.w3c.dom.Element;
  */
 public interface ConsoleConfigurationPreferences {
 	
-	static final String PATH_TAG = "path";
-	static final String CLASSPATH_TAG = "classpath";
-	static final String MAPPING_TAG = "mapping";
-	static final String MAPPINGS_TAG = "mappings";
-	static final String HIBERNATE_PROPERTIES_TAG = "hibernate-properties";
-	static final String LOCATION_ATTRIB = "location";
-	static final String HIBERNATE_CONFIG_XML_TAG = "hibernate-config-xml";
-	static final String NAME_ATTRIB = "name";	
-	static final String CONFIGURATION_TAG = "configuration";
-	static final String ANNOTATIONS_ATTRIB = "annotations";
-	static final String ENTITYRESOLVER_ATTRIB = "entityresolver";
-	static final String CONFIGURATION_MODE_ATTRIB = "configuration-factory";
+	static final String PATH_TAG = "path"; //$NON-NLS-1$
+	static final String CLASSPATH_TAG = "classpath"; //$NON-NLS-1$
+	static final String MAPPING_TAG = "mapping"; //$NON-NLS-1$
+	static final String MAPPINGS_TAG = "mappings"; //$NON-NLS-1$
+	static final String HIBERNATE_PROPERTIES_TAG = "hibernate-properties"; //$NON-NLS-1$
+	static final String LOCATION_ATTRIB = "location"; //$NON-NLS-1$
+	static final String HIBERNATE_CONFIG_XML_TAG = "hibernate-config-xml"; //$NON-NLS-1$
+	static final String NAME_ATTRIB = "name";	 //$NON-NLS-1$
+	static final String CONFIGURATION_TAG = "configuration"; //$NON-NLS-1$
+	static final String ANNOTATIONS_ATTRIB = "annotations"; //$NON-NLS-1$
+	static final String ENTITYRESOLVER_ATTRIB = "entityresolver"; //$NON-NLS-1$
+	static final String CONFIGURATION_MODE_ATTRIB = "configuration-factory"; //$NON-NLS-1$
 	
 	// TODO: we should move this to some classhandler
 	static public class ConfigurationMode implements Serializable {
 
 		private static final Map INSTANCES = new HashMap();
 
-		public static final ConfigurationMode CORE = new ConfigurationMode( "CORE" );
-		public static final ConfigurationMode ANNOTATIONS = new ConfigurationMode( "ANNOTATIONS" );
-		public static final ConfigurationMode JPA = new ConfigurationMode( "JPA" );
+		public static final ConfigurationMode CORE = new ConfigurationMode( "CORE" ); //$NON-NLS-1$
+		public static final ConfigurationMode ANNOTATIONS = new ConfigurationMode( "ANNOTATIONS" ); //$NON-NLS-1$
+		public static final ConfigurationMode JPA = new ConfigurationMode( "JPA" ); //$NON-NLS-1$
 
 		static {
 			INSTANCES.put( CORE.name, CORE );
