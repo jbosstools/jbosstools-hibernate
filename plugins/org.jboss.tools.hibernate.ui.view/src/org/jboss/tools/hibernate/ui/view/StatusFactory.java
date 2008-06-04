@@ -16,8 +16,8 @@ import org.eclipse.core.runtime.Status;
 public class StatusFactory {
 	public final static int UNDEFINED_ERROR = 0;
 	public final static String UNSPECIFIED_MESSAGE = null;
-	public final static String EMPTY_MESSAGE = "";
-	public final static String EMPTY_PLUGIN = "";
+	public final static String EMPTY_MESSAGE = ""; //$NON-NLS-1$
+	public final static String EMPTY_PLUGIN = ""; //$NON-NLS-1$
 	
 	public static IStatus getInstance(int severity, String pluginId,
 									int code, String message, Throwable t) {

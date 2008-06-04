@@ -98,42 +98,42 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 		if (element instanceof RootClass) {
 			String name = (String)ormModelNameVisitor.visitPersistentClass((RootClass)element, null);
 			if (name == null) {
-				return "OrmElement";
+				return Messages.ORMLABELPROVIDER_ORM_ELEMENT;
 			} else {
 				return name;
 			}
 		} else if (element instanceof Table) {
 			String name = (String)ormModelNameVisitor.visitTable((Table)element, null);
 			if (name == null) {
-				return "OrmElement";
+				return Messages.ORMLABELPROVIDER_ORM_ELEMENT;
 			} else {
 				return name;
 			}
 		} else if (element instanceof Subclass) {
 				String name = (String)ormModelNameVisitor.visitPersistentClass((Subclass)element, null);
 				if (name == null) {
-					return "OrmElement";
+					return Messages.ORMLABELPROVIDER_ORM_ELEMENT;
 				} else {
 					return name;
 				}
 		} else if (element instanceof Property) {
 			String name = (String)ormModelNameVisitor.visitPersistentField((Property)element, null);
 			if (name == null) {
-				return "OrmElement";
+				return Messages.ORMLABELPROVIDER_ORM_ELEMENT;
 			} else {
 				return name;
 			}
 		} else if (element instanceof Column) {
 			String name = (String)ormModelNameVisitor.visitDatabaseColumn((Column)element, cfg);
 			if (name == null) {
-				return "OrmElement";
+				return Messages.ORMLABELPROVIDER_ORM_ELEMENT;
 			} else {
 				return name;
 			}
 		} else if (element instanceof OneToMany || element instanceof ManyToOne) {
-			String name = "element";
+			String name = Messages.ORMLABELPROVIDER_ELEMENT;
 			if (name == null) {
-				return "OrmElement";
+				return Messages.ORMLABELPROVIDER_ORM_ELEMENT;
 			} else {
 				return name;
 			}
@@ -141,19 +141,19 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 			if (element instanceof DependantValue) {
 				String name = (String)ormModelNameVisitor.visitCollectionKeyMapping((DependantValue)element, null);
 				if (name == null) {
-					return "OrmElement";
+					return Messages.ORMLABELPROVIDER_ORM_ELEMENT;
 				} else {
 					return name;
 				}
 			} else if (element instanceof Component) {
 				String name = (String)ormModelNameVisitor.visitComponentMapping((Component)element, null);
 				if (name == null) {
-					return "OrmElement";
+					return Messages.ORMLABELPROVIDER_ORM_ELEMENT;
 				} else {
 					return name;
 				}
 			} else {
-				return "element";
+				return Messages.ORMLABELPROVIDER_ELEMENT;
 //				throw unknownElement(element);
 			}
 		} else if (element instanceof String){
@@ -166,8 +166,8 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 
 	protected RuntimeException unknownElement(Object element) {
 		if (element != null && element.getClass() != null )
-			return new RuntimeException("Unknown type of element in tree of type: " + element.getClass().getName());
-		else return new RuntimeException("Unknown type of element in tree of type: " + element);
+			return new RuntimeException(Messages.ORMLABELPROVIDER_UNKNOWN_TYPE_OF_ELEMENT_IN_TREE_OF_TYPE + element.getClass().getName());
+		else return new RuntimeException(Messages.ORMLABELPROVIDER_UNKNOWN_TYPE_OF_ELEMENT_IN_TREE_OF_TYPE + element);
 		
 	}
 	

@@ -19,7 +19,7 @@ public class ContentProviderVisitor {
 	
 	private static final Object[] nullChildren = new Object[0];
 
-    private ResourceBundle BUNDLE = ResourceBundle.getBundle(ContentProviderVisitor.class.getPackage().getName() + ".views");
+    private ResourceBundle BUNDLE = ResourceBundle.getBundle(ContentProviderVisitor.class.getPackage().getName() + ".views"); //$NON-NLS-1$
 	
 	public Object visitDatabaseColumn(Column column, Object argument) {
 		return null;

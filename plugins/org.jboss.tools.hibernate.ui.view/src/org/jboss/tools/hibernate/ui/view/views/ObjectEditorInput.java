@@ -50,7 +50,7 @@ public class ObjectEditorInput implements IEditorInput{
 
 
 	public String getName() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 
@@ -60,7 +60,7 @@ public class ObjectEditorInput implements IEditorInput{
 
 
 	public String getToolTipText() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 

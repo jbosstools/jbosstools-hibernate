@@ -21,8 +21,7 @@ import org.jboss.tools.hibernate.ui.view.ViewPlugin;
 public class ViewsAction {
     static  ActionOrmTree openEditorAction;
 
-    static private ResourceBundle BUNDLE_IMAGE = ViewPlugin.BUNDLE_IMAGE;
-    static private ResourceBundle BUNDLE = ResourceBundle.getBundle(ViewsAction.class.getPackage().getName() + ".views");
+    static private ResourceBundle BUNDLE = ResourceBundle.getBundle(ViewsAction.class.getPackage().getName() + ".views"); //$NON-NLS-1$
 
     static {
         openEditorAction = new ActionOrmTree() { 
@@ -34,13 +33,13 @@ public class ViewsAction {
 					hashMap.put(this.getViewer().getTree().getSelection()[0].getData(), input);
 				}
 				try {
-					IDE.openEditor(ViewPlugin.getPage(),input ,"org.jboss.tools.hibernate.ui.veditor.editors.visualeditor");
+					IDE.openEditor(ViewPlugin.getPage(),input ,"org.jboss.tools.hibernate.ui.veditor.editors.visualeditor"); //$NON-NLS-1$
 				} catch (PartInitException e) {
 					ViewPlugin.getDefault().logError(e);
 				}
 			}
 		}; 
-		openEditorAction.setText(BUNDLE.getString("Explorer.OpenEditorActionName"));
-		openEditorAction.setToolTipText(BUNDLE.getString("Explorer.OpenEditorActionToolTipText"));
+		openEditorAction.setText(BUNDLE.getString("Explorer.OpenEditorActionName")); //$NON-NLS-1$
+		openEditorAction.setToolTipText(BUNDLE.getString("Explorer.OpenEditorActionToolTipText")); //$NON-NLS-1$
     }
 }

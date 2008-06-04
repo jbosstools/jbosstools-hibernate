@@ -35,12 +35,12 @@ import org.jboss.tools.hibernate.ui.view.ViewPlugin;
 
 public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 	
-	static private String SPACE = " ";
-	static private String POINTER = " -> ";
+	static private String SPACE = " "; //$NON-NLS-1$
+	static private String POINTER = " -> "; //$NON-NLS-1$
 	
 	private ResourceBundle BUNDLE = ResourceBundle
 			.getBundle(OrmModelNameVisitor.class.getPackage().getName()
-					+ ".views");
+					+ ".views"); //$NON-NLS-1$
 	
 	public OrmModelNameVisitor() {
 		super();
@@ -57,14 +57,14 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 		name.append(column.getName());
 
 		if (type != null) {
-			name.append(" [");
-			name.append(type != null ? type.toUpperCase() : "");
-			name.append(column.isNullable() ? " Nullable" : "");
+			name.append(" ["); //$NON-NLS-1$
+			name.append(type != null ? type.toUpperCase() : ""); //$NON-NLS-1$
+			name.append(column.isNullable() ? " Nullable" : ""); //$NON-NLS-1$ //$NON-NLS-2$
 			name.append(HibernateUtils.getTable(column) != null
-					&& HibernateUtils.isPrimaryKey(column) ? " PK" : "");
+					&& HibernateUtils.isPrimaryKey(column) ? " PK" : ""); //$NON-NLS-1$ //$NON-NLS-2$
 			name.append(HibernateUtils.getTable(column) != null
-					&& HibernateUtils.isForeignKey(column) ? " FK" : "");
-			name.append("]");
+					&& HibernateUtils.isForeignKey(column) ? " FK" : ""); //$NON-NLS-1$ //$NON-NLS-2$
+			name.append("]"); //$NON-NLS-1$
 		}
 
 		return name.toString();
@@ -183,8 +183,8 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 	public Object visitPersistentField(Property field, Object argument) {
 		StringBuffer name = new StringBuffer();
 		name.append(field.getName());
-		name.append(" ");
-		name.append(BUNDLE.getString("OrmModelNameVisitor.Colon"));
+		name.append(" "); //$NON-NLS-1$
+		name.append(BUNDLE.getString("OrmModelNameVisitor.Colon")); //$NON-NLS-1$
 		String typeString = null;
 		
 		try {
@@ -209,7 +209,7 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 		if (value != null){
 			typeName = (String) value.accept(new TypeNameValueVisitor(false));
 			if (typeName!=null) {
-				return field.getName() + " : " + typeName;
+				return field.getName() + " : " + typeName; //$NON-NLS-1$
 			}	
 		}			
 		return field.getName(); 
@@ -217,28 +217,28 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 
 	private String correctTypeString(String str) {
 		String ret = str;
-		while (ret.startsWith("[")) {
-			ret = ret.substring(1).concat("[]");
+		while (ret.startsWith("[")) { //$NON-NLS-1$
+			ret = ret.substring(1).concat("[]"); //$NON-NLS-1$
 		}
 		switch (ret.toCharArray()[0]) {
-		case 'Z': ret = "boolean".concat(ret.substring(1));break;
-		case 'B': ret = "byte".concat(ret.substring(1));break;
-		case 'C': ret = "char".concat(ret.substring(1));break;
+		case 'Z': ret = "boolean".concat(ret.substring(1));break; //$NON-NLS-1$
+		case 'B': ret = "byte".concat(ret.substring(1));break; //$NON-NLS-1$
+		case 'C': ret = "char".concat(ret.substring(1));break; //$NON-NLS-1$
 		case 'L': ret = ret.substring(1);break;
-		case 'D': ret = "double".concat(ret.substring(1));break;
-		case 'F': ret = "float".concat(ret.substring(1));break;
-		case 'I': ret = "int".concat(ret.substring(1));break;
-		case 'J': ret = "long".concat(ret.substring(1));break;
-		case 'S': ret = "short".concat(ret.substring(1));break;
+		case 'D': ret = "double".concat(ret.substring(1));break; //$NON-NLS-1$
+		case 'F': ret = "float".concat(ret.substring(1));break; //$NON-NLS-1$
+		case 'I': ret = "int".concat(ret.substring(1));break; //$NON-NLS-1$
+		case 'J': ret = "long".concat(ret.substring(1));break; //$NON-NLS-1$
+		case 'S': ret = "short".concat(ret.substring(1));break; //$NON-NLS-1$
 		}
 		return ret;
 	}
 
 	public Object visitCollectionKeyMapping(DependantValue mapping,	Object argument) {
-		return "key";
+		return "key"; //$NON-NLS-1$
 	}
 
 	public Object visitComponentMapping(Component mapping,	Object argument) {
-		return "element";
+		return "element"; //$NON-NLS-1$
 	}
 }

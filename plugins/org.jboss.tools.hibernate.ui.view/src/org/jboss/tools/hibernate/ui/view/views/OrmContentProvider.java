@@ -168,7 +168,7 @@ public class OrmContentProvider implements ITreeContentProvider/*, IOrmModelList
 	}
 	
 	private String saveSelection() {
-		String selectionElementQualifiedName = "";	
+		String selectionElementQualifiedName = "";	 //$NON-NLS-1$
 		ISelection selection = viewer.getSelection();
 		if (!selection.isEmpty()) {
 			TreeItem[] selectionTreeItems =  viewer.getTree().getSelection();

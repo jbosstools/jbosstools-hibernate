@@ -65,6 +65,6 @@ public class BaseUIPlugin extends AbstractUIPlugin {
 		logError(message, t);
 		Shell shell = Display.getDefault().getActiveShell();
 		IStatus s = StatusFactory.getInstance(IStatus.ERROR, this.getBundle().getSymbolicName(), message, t);
-		ErrorDialog.openError(shell, "Hibernate Console", message, s);				
+		ErrorDialog.openError(shell, Messages.BASEUIPLUGIN_HIBERNATE_CONSOLE, message, s);				
 	}
 }

@@ -39,30 +39,30 @@ public class ViewPlugin extends BaseUIPlugin {
 	private static ViewPlugin plugin;
 	private ResourceBundle resourceBundle;
 	
-	public static final ResourceBundle BUNDLE_IMAGE = ResourceBundle.getBundle(ViewPlugin.class.getPackage().getName() + ".image");
+	public static final ResourceBundle BUNDLE_IMAGE = ResourceBundle.getBundle(ViewPlugin.class.getPackage().getName() + ".image"); //$NON-NLS-1$
 	
 	public static boolean TRACE = false;
 	public static boolean TRACE_VIEW = false;	
 	public static boolean TRACE_WIZARD = false;
 	
-	public static final String PLUGIN_ID = "org.jboss.tools.hibernate.view";
-	public static final String autoMappingSettingPrefPage = "autoMappingSettingPrefPage";	
+	public static final String PLUGIN_ID = "org.jboss.tools.hibernate.view"; //$NON-NLS-1$
+	public static final String autoMappingSettingPrefPage = "autoMappingSettingPrefPage";	 //$NON-NLS-1$
 	
 	public ViewPlugin() {
 		super();
 		plugin = this;
 		
 		try {
-			resourceBundle = ResourceBundle.getBundle(PLUGIN_ID + ".EditPluginResources");
+			resourceBundle = ResourceBundle.getBundle(PLUGIN_ID + ".EditPluginResources"); //$NON-NLS-1$
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}
 	}
 
 	public static ImageDescriptor getImageDescriptor(String name) {
-		String iconPath = "images/";
+		String iconPath = "images/"; //$NON-NLS-1$
 		try {
-			URL installURL = getDefault().getBundle().getEntry("/");;
+			URL installURL = getDefault().getBundle().getEntry("/");; //$NON-NLS-1$
 			URL url = new URL(installURL, iconPath + name);
 			return ImageDescriptor.createFromURL(url);
 		} catch (MalformedURLException e) {
@@ -115,14 +115,14 @@ public class ViewPlugin extends BaseUIPlugin {
 	
 	static {
 		
-		String value = Platform.getDebugOption(PLUGIN_ID + "/debug");
-		if (value != null && value.equalsIgnoreCase("true")) TRACE = true;
+		String value = Platform.getDebugOption(PLUGIN_ID + "/debug"); //$NON-NLS-1$
+		if (value != null && value.equalsIgnoreCase("true")) TRACE = true; //$NON-NLS-1$
 		
-		value = Platform.getDebugOption(PLUGIN_ID + "/debug/view");
-		if (value != null && value.equalsIgnoreCase("true")) TRACE_VIEW = true;
+		value = Platform.getDebugOption(PLUGIN_ID + "/debug/view"); //$NON-NLS-1$
+		if (value != null && value.equalsIgnoreCase("true")) TRACE_VIEW = true; //$NON-NLS-1$
 		
-		value = Platform.getDebugOption(PLUGIN_ID + "/debug/view/wizard");
-		if (value != null && value.equalsIgnoreCase("true")) TRACE_WIZARD = true;		
+		value = Platform.getDebugOption(PLUGIN_ID + "/debug/view/wizard"); //$NON-NLS-1$
+		if (value != null && value.equalsIgnoreCase("true")) TRACE_WIZARD = true;		 //$NON-NLS-1$
 		
 	}
 	
@@ -134,7 +134,7 @@ public class ViewPlugin extends BaseUIPlugin {
 			try {
 				properties.load(bain);
 			} catch (IOException e) {
-				getDefault().logError("Can't load preference store propertyes", e);
+				getDefault().logError(Messages.VIEWPLUGIN_CANOT_LOAD_PREFERENCE_STORE_PROPERTIES, e);
 			}
 		}
 	}	

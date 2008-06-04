@@ -84,12 +84,12 @@ public class OpenDiagramActionDelegate extends OpenActionDelegate {
 		}
 		
 		RootClass[] rcArr = new RootClass[setPC.size()];
-		String id = "";
+		String id = ""; //$NON-NLS-1$
 		PersistentClass persClass = null;
 		int i = 0;
     	for (Iterator it = setPC.iterator(); it.hasNext(); ) {
     		persClass = (PersistentClass)it.next();
-    		id += "@" + persClass.toString();
+    		id += "@" + persClass.toString(); //$NON-NLS-1$
     		rcArr[i++] = persClass.getRootClass();
     	}
 		
