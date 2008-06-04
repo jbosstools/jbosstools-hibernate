@@ -40,7 +40,7 @@ public class NumericTrueFalseType extends BooleanType {
 	}
 
 	public String objectToSQLString(Object value, Dialect dialect) throws Exception {
-		return ( ( Boolean ) value ).booleanValue() ? "1" : "0";
+		return ( ( Boolean ) value ).booleanValue() ? "1" : "0"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public int sqlType() {
@@ -48,6 +48,6 @@ public class NumericTrueFalseType extends BooleanType {
 	}
 
 	public String getName() {
-		return "numeric_boolean";
+		return "numeric_boolean"; //$NON-NLS-1$
 	}
 }

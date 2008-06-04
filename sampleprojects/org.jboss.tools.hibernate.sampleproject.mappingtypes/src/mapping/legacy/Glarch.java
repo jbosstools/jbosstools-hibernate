@@ -101,14 +101,14 @@ public class Glarch extends Super implements GlarchProxy, Lifecycle, Named, Seri
 	}
 
 	public void onLoad(Session s, Serializable id) {
-		if ( ! ( ( (String) id ).length()==32 ) ) throw new RuntimeException("id problem");
+		if ( ! ( ( (String) id ).length()==32 ) ) throw new RuntimeException("id problem"); //$NON-NLS-1$
 	}
 
 	public boolean onSave(Session s) throws CallbackException {
 		dynaBean = new HashMap();
-		dynaBean.put("foo", "foo");
-		dynaBean.put("bar", new Integer(66));
-		immutable="never changes!";
+		dynaBean.put("foo", "foo"); //$NON-NLS-1$ //$NON-NLS-2$
+		dynaBean.put("bar", new Integer(66)); //$NON-NLS-1$
+		immutable="never changes!"; //$NON-NLS-1$
 		return NO_VETO;
 	}
 

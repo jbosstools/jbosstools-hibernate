@@ -56,7 +56,7 @@ public class SimpleEntityWithAssociation {
 			association.unbindFromCurrentOwner();
 		}
 		else {
-			throw new IllegalArgumentException( "SimpleAssociatedEntity [" + association + "] not currently bound to this [" + this + "]" );
+			throw new IllegalArgumentException( "SimpleAssociatedEntity [" + association + "] not currently bound to this [" + this + "]" ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 

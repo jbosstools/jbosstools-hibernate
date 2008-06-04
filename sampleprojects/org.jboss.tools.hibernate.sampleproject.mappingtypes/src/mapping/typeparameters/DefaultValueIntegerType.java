@@ -73,7 +73,7 @@ public class DefaultValueIntegerType implements UserType, ParameterizedType, Ser
 	}
 
 	public void setParameterValues(Properties parameters) {
-		this.defaultValue = Integer.valueOf((String) parameters.get("default"));
+		this.defaultValue = Integer.valueOf((String) parameters.get("default")); //$NON-NLS-1$
 	}
 
 }

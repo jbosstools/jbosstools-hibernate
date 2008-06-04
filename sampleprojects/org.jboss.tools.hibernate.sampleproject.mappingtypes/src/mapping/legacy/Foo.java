@@ -85,12 +85,12 @@ public class Foo implements Lifecycle, FooProxy, Serializable {
 	}
 
 	public boolean onSave(Session db) throws CallbackException {
-		_string = "a string";
+		_string = "a string"; //$NON-NLS-1$
 		_date = new Date(123);
 		_timestamp = new Date( System.currentTimeMillis() );
 		_integer = new Integer( -666 );
 		_long = new Long( 696969696969696969l - count++ );
-		_short = new Short("42");
+		_short = new Short("42"); //$NON-NLS-1$
 		_float = new Float( 6666.66f );
 		//_double = new Double( 1.33e-69 );  // this double is too big for the sap db jdbc driver
 		_double = new Double( 1.12e-36 );
@@ -100,15 +100,15 @@ public class Foo implements Lifecycle, FooProxy, Serializable {
 		_char = '@';
 		_bytes = _string.getBytes();
 		Struct s = new Struct();
-		s.name="name";
+		s.name="name"; //$NON-NLS-1$
 		s.count = 69;
 		blob = s;
-		binary = ( _string + "yada yada yada" ).getBytes();
-		custom = new String[] { "foo", "bar" };
-		component = new FooComponent("foo", 12, new Date[] { _date, _timestamp, null, new Date() }, new FooComponent("bar", 666, new Date[] { new Date(123456l), null }, null ) );
+		binary = ( _string + "yada yada yada" ).getBytes(); //$NON-NLS-1$
+		custom = new String[] { "foo", "bar" }; //$NON-NLS-1$ //$NON-NLS-2$
+		component = new FooComponent("foo", 12, new Date[] { _date, _timestamp, null, new Date() }, new FooComponent("bar", 666, new Date[] { new Date(123456l), null }, null ) ); //$NON-NLS-1$ //$NON-NLS-2$
 		component.setGlarch( new Glarch() );
 		dependent = new Fee();
-		dependent.setFi( "belongs to foo # " + getKey() );
+		dependent.setFi( "belongs to foo # " + getKey() ); //$NON-NLS-1$
 		theLocale = Locale.getDefault();
 		return NO_VETO;
 	}
@@ -239,7 +239,7 @@ public class Foo implements Lifecycle, FooProxy, Serializable {
 	}
 
 	public String toString() {
-		return this.getClass().getName() + ": " + key;
+		return this.getClass().getName() + ": " + key; //$NON-NLS-1$
 	}
 
 	public void disconnect() {
@@ -330,7 +330,7 @@ public class Foo implements Lifecycle, FooProxy, Serializable {
 		return null;
 	}
 	public void setNullComponent(FooComponent fc) throws Exception {
-		if (fc!=null) throw new Exception("Null component");
+		if (fc!=null) throw new Exception("Null component"); //$NON-NLS-1$
 	}
 
 	public Character getChar() {

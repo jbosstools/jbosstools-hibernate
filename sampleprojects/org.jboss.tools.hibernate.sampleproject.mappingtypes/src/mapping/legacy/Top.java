@@ -16,8 +16,8 @@ public class Top {
 	public Top() {}
 	
 	public void init() {
-		name="Someone With Along Name";
-		address="1234 Some Street, Some City, Victoria, 3000, Austraya";
+		name="Someone With Along Name"; //$NON-NLS-1$
+		address="1234 Some Street, Some City, Victoria, 3000, Austraya"; //$NON-NLS-1$
 		count=69;
 		date=new java.sql.Date(666);
 	}

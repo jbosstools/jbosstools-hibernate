@@ -14,10 +14,10 @@ public class Master implements Serializable, Named {
 	private Set moreDetails = new HashSet();
 	private Set incoming = new HashSet();
 	private Set outgoing = new HashSet();
-	private String name="master";
+	private String name="master"; //$NON-NLS-1$
 	private Date stamp;
 	private int version;
-	private BigDecimal bigDecimal = new BigDecimal("1234.123");
+	private BigDecimal bigDecimal = new BigDecimal("1234.123"); //$NON-NLS-1$
 	private int x;
 	private Collection allDetails;
 	

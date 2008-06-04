@@ -16,7 +16,7 @@ import org.hibernate.usertype.CompositeUserType;
 public class MultiplicityType implements CompositeUserType {
 
 	private static final String[] PROP_NAMES = new String[] {
-		"count", "glarch"
+		"count", "glarch" //$NON-NLS-1$ //$NON-NLS-2$
 	};
 	private static final int[] SQL_TYPES = new int[] {
 		Hibernate.INTEGER.sqlType(), Hibernate.STRING.sqlType()

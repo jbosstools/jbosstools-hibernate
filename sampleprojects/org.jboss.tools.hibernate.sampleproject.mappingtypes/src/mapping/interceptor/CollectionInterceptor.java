@@ -9,12 +9,12 @@ import org.hibernate.type.Type;
 public class CollectionInterceptor extends EmptyInterceptor {
 
 	public boolean onFlushDirty(Object entity, Serializable id, Object[] currentState, Object[] previousState, String[] propertyNames, Type[] types) {
-		( (User) entity ).getActions().add("updated");
+		( (User) entity ).getActions().add("updated"); //$NON-NLS-1$
 		return false;
 	}
 
 	public boolean onSave(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
-		( (User) entity ).getActions().add("created");
+		( (User) entity ).getActions().add("created"); //$NON-NLS-1$
 		return false;
 	}
 

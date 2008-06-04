@@ -3,7 +3,7 @@ package mapping.legacy;
 
 public class Bar extends Abstract implements BarProxy, Named {
 	private String barString;
-	private FooComponent barComponent = new FooComponent("bar", 69, null, null);
+	private FooComponent barComponent = new FooComponent("bar", 69, null, null); //$NON-NLS-1$
 	private Baz baz;
 	private int x;
 	private Object object;
@@ -39,7 +39,7 @@ public class Bar extends Abstract implements BarProxy, Named {
 		this.baz = baz;
 	}
 	
-	private String name = "bar";
+	private String name = "bar"; //$NON-NLS-1$
 	
 	public String getName() {
 		return name;

@@ -30,7 +30,7 @@ public class ComplexPropertyValue implements PropertyValue {
 	}
 
 	public String asString() {
-		return "complex[" + keyString() + "]";
+		return "complex[" + keyString() + "]"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	private String keyString() {
@@ -39,7 +39,7 @@ public class ComplexPropertyValue implements PropertyValue {
 		while ( itr.hasNext() ) {
 			buff.append( itr.next() );
 			if ( itr.hasNext() ) {
-				buff.append( ", " );
+				buff.append( ", " ); //$NON-NLS-1$
 			}
 		}
 		return buff.toString();

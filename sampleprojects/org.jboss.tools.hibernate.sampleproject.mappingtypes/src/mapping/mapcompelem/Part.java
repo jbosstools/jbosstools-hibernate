@@ -32,6 +32,6 @@ public class Part {
 		return name.hashCode();
 	}
 	public String toString() {
-		return name + ":" + description;
+		return name + ":" + description; //$NON-NLS-1$
 	}
 }

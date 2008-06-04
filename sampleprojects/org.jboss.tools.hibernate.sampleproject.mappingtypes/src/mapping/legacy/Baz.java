@@ -102,12 +102,12 @@ public class Baz implements Named, Serializable, Comparable {
 	
 	public void setDefaults() {
 		SortedSet set = new TreeSet();
-		set.add("foo"); set.add("bar"); set.add("baz");
+		set.add("foo"); set.add("bar"); set.add("baz");  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		setStringSet(set);
 		Map map = new TreeMap();
-		map.put( "now", new Date() );
-		map.put( "never", null );
-		map.put( "big bang", new Date(0) );
+		map.put( "now", new Date() ); //$NON-NLS-1$
+		map.put( "never", null ); //$NON-NLS-1$
+		map.put( "big bang", new Date(0) ); //$NON-NLS-1$
 		setStringDateMap(map);
 		List list = new ArrayList();
 		list.addAll(set);
@@ -116,45 +116,45 @@ public class Baz implements Named, Serializable, Comparable {
 		setFooArray( new Foo[0] );
 		setStringArray( (String[]) list.toArray( new String[0] ) );
 		customs = new ArrayList();
-		customs.add( new String[] { "foo", "bar" } );
-		customs.add( new String[] { "A", "B" } );
-		customs.add( new String[] { "1", "2" } );
+		customs.add( new String[] { "foo", "bar" } );  //$NON-NLS-1$ //$NON-NLS-2$
+		customs.add( new String[] { "A", "B" } );  //$NON-NLS-1$ //$NON-NLS-2$
+		customs.add( new String[] { "1", "2" } ); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		fooSet = new HashSet();
 		components = new FooComponent[] {
-			new FooComponent("foo", 42, null, null),
-			new FooComponent("bar", 88, null, new FooComponent("sub", 69, null, null) )
+			new FooComponent("foo", 42, null, null), //$NON-NLS-1$
+			new FooComponent("bar", 88, null, new FooComponent("sub", 69, null, null) )  //$NON-NLS-1$ //$NON-NLS-2$
 		};
 		timeArray = new Date[] { new Date(), new Date(), null, new Date(0) };
 		TreeSet x = new TreeSet();
-		x.add("w"); x.add("x"); x.add("y"); x.add("z");
+		x.add("w"); x.add("x"); x.add("y"); x.add("z");  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		TreeSet a = new TreeSet();
-		a.add("a"); a.add("b"); a.add("d"); a.add("c");
+		a.add("a"); a.add("b"); a.add("d"); a.add("c");  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		
 		count = 667;
-		name="Bazza";
+		name="Bazza"; //$NON-NLS-1$
 		topComponents = new ArrayList();
-		topComponents.add( new FooComponent("foo", 11, new Date[] { new Date(), new Date(123) }, null) );
-		topComponents.add( new FooComponent("bar", 22, new Date[] { new Date(7), new Date(456) }, null) );
+		topComponents.add( new FooComponent("foo", 11, new Date[] { new Date(), new Date(123) }, null) ); //$NON-NLS-1$
+		topComponents.add( new FooComponent("bar", 22, new Date[] { new Date(7), new Date(456) }, null) ); //$NON-NLS-1$
 		topComponents.add( null );
 		bag = new ArrayList();
-		bag.add("duplicate");
-		bag.add("duplicate");
-		bag.add("duplicate");
-		bag.add("unique");
+		bag.add("duplicate"); //$NON-NLS-1$
+		bag.add("duplicate"); //$NON-NLS-1$
+		bag.add("duplicate"); //$NON-NLS-1$
+		bag.add("unique"); //$NON-NLS-1$
 		cached = new TreeSet();
 		CompositeElement ce = new CompositeElement();
-		ce.setFoo("foo");
-		ce.setBar("bar");
+		ce.setFoo("foo"); //$NON-NLS-1$
+		ce.setBar("bar"); //$NON-NLS-1$
 		CompositeElement ce2 = new CompositeElement();
-		ce2.setFoo("fooxxx");
-		ce2.setBar("barxxx");
+		ce2.setFoo("fooxxx"); //$NON-NLS-1$
+		ce2.setBar("barxxx"); //$NON-NLS-1$
 		cached.add(ce);
 		cached.add(ce2);
 		cachedMap = new TreeMap();
 		cachedMap.put(this, ce);
 		
-		text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+		text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"; //$NON-NLS-1$
 		for (int i=0; i<10; i++) text+=text;
 		
 	}

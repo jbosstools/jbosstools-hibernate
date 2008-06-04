@@ -43,7 +43,7 @@ public class Qux implements Lifecycle {
 		catch (Exception e) {
 			throw new CallbackException(e);
 		}
-		foo.setString("child of a qux");
+		foo.setString("child of a qux"); //$NON-NLS-1$
 		return NO_VETO;
 	}
 

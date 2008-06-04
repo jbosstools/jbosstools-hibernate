@@ -73,6 +73,6 @@ public class Bean {
 	}
 
 	public void throwException() throws ParseException {
-		throw new ParseException( "you asked for it...", 0 );
+		throw new ParseException( "you asked for it...", 0 ); //$NON-NLS-1$
 	}
 }

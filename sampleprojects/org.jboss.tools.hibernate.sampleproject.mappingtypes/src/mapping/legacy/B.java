@@ -6,7 +6,7 @@ import java.util.Map;
 public class B extends A {
 	private int count;
 	private Map map;
-	private String bName = "B Name";
+	private String bName = "B Name"; //$NON-NLS-1$
 	
 	public int getCount() {
 		return count;

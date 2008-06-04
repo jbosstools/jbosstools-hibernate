@@ -20,7 +20,7 @@ public class MyListType implements UserCollectionType {
 
 	public PersistentCollection wrap(SessionImplementor session, Object collection) {
 		if ( session.getEntityMode()==EntityMode.DOM4J ) {
-			throw new IllegalStateException("dom4j not supported");
+			throw new IllegalStateException("dom4j not supported"); //$NON-NLS-1$
 		}
 		else {
 			return new PersistentMyList( session, (IMyList) collection );

@@ -11,6 +11,6 @@ public class Address {
 	public String zip;
 	
 	public String toString() {
-		return this.getClass() + ":" + street;
+		return this.getClass() + ":" + street; //$NON-NLS-1$
 	}
 }

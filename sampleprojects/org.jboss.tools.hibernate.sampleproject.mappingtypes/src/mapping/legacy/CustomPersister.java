@@ -55,7 +55,7 @@ public class CustomPersister implements EntityPersister {
 
 	private void checkEntityMode(EntityMode entityMode) {
 		if ( EntityMode.POJO != entityMode ) {
-			throw new IllegalArgumentException( "Unhandled EntityMode : " + entityMode );
+			throw new IllegalArgumentException( "Unhandled EntityMode : " + entityMode ); //$NON-NLS-1$
 		}
 	}
 
@@ -380,7 +380,7 @@ public class CustomPersister implements EntityPersister {
 	}
 
 	private static final Type[] TYPES = new Type[] { Hibernate.STRING };
-	private static final String[] NAMES = new String[] { "name" };
+	private static final String[] NAMES = new String[] { "name" }; //$NON-NLS-1$
 	private static final boolean[] MUTABILITY = new boolean[] { true };
 	private static final boolean[] GENERATION = new boolean[] { false };
 
@@ -416,7 +416,7 @@ public class CustomPersister implements EntityPersister {
 	 * @see EntityPersister#getIdentifierPropertyName()
 	 */
 	public String getIdentifierPropertyName() {
-		return "id";
+		return "id"; //$NON-NLS-1$
 	}
 
 	/**
@@ -437,15 +437,15 @@ public class CustomPersister implements EntityPersister {
 	 * @see EntityPersister#getRootEntityName()
 	 */
 	public String getRootEntityName() {
-		return "CUSTOMS";
+		return "CUSTOMS"; //$NON-NLS-1$
 	}
 
 	public Serializable[] getPropertySpaces() {
-		return new String[] { "CUSTOMS" };
+		return new String[] { "CUSTOMS" }; //$NON-NLS-1$
 	}
 
 	public Serializable[] getQuerySpaces() {
-		return new String[] { "CUSTOMS" };
+		return new String[] { "CUSTOMS" }; //$NON-NLS-1$
 	}
 
 	/**
@@ -490,7 +490,7 @@ public class CustomPersister implements EntityPersister {
 
 	public Object createProxy(Serializable id, SessionImplementor session)
 		throws HibernateException {
-		throw new UnsupportedOperationException("no proxy for this class");
+		throw new UnsupportedOperationException("no proxy for this class"); //$NON-NLS-1$
 	}
 
 	public Object getCurrentVersion(

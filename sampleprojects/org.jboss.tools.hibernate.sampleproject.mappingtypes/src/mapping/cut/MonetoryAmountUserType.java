@@ -20,7 +20,7 @@ import org.hibernate.usertype.CompositeUserType;
 public class MonetoryAmountUserType implements CompositeUserType {
 
 	public String[] getPropertyNames() {
-		return new String[] { "amount", "currency" };
+		return new String[] { "amount", "currency" };  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 	public Type[] getPropertyTypes() {

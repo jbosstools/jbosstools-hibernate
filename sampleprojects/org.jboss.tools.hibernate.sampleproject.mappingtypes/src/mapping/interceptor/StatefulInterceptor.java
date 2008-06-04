@@ -18,14 +18,14 @@ public class StatefulInterceptor extends EmptyInterceptor {
 	
 	public boolean onSave(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
 		if ( !(entity instanceof Log) ) {
-			list.add( new Log( "insert", (String) id, entity.getClass().getName() ) );
+			list.add( new Log( "insert", (String) id, entity.getClass().getName() ) ); //$NON-NLS-1$
 		}
 		return false;
 	}
 
 	public boolean onFlushDirty(Object entity, Serializable id, Object[] currentState, Object[] previousState, String[] propertyNames, Type[] types) {
 		if ( !(entity instanceof Log) ) {
-			list.add( new Log( "update", (String) id, entity.getClass().getName() ) );
+			list.add( new Log( "update", (String) id, entity.getClass().getName() ) ); //$NON-NLS-1$
 		}
 		return false;
 	}

@@ -25,16 +25,16 @@ public class FooComponent implements Serializable {
 	}
 	
 	public String toString() {
-		String result = "FooComponent: " + name + "=" + count;
-		result+="; dates=[";
+		String result = "FooComponent: " + name + "=" + count; //$NON-NLS-1$ //$NON-NLS-2$
+		result+="; dates=["; //$NON-NLS-1$
 		if ( importantDates!=null) {
 			for ( int i=0; i<importantDates.length; i++ ) {
-				result+=(i==0 ?"":", ") + importantDates[i];
+				result+=(i==0 ?"":", ") + importantDates[i]; //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
-		result+="]";
+		result+="]"; //$NON-NLS-1$
 		if ( subcomponent!=null ) {
-			result+= " (" + subcomponent + ")";
+			result+= " (" + subcomponent + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return result;
 	}
@@ -88,7 +88,7 @@ public class FooComponent implements Serializable {
 		return null;
 	}
 	private void setNull(String str) throws Exception {
-		if (str!=null) throw new Exception("null component property");
+		if (str!=null) throw new Exception("null component property"); //$NON-NLS-1$
 	}
 	public Fee getFee() {
 		return fee;

@@ -31,7 +31,7 @@ public class Image {
 	}
 
 	public String toString() {
-		return "Image/" + ( details == null ? "no details" : details.toString() );
+		return "Image/" + ( details == null ? "no details" : details.toString() ); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public static class Details {
@@ -55,7 +55,7 @@ public class Image {
 		}
 
 		public String toString() {
-			return "Details=" + perm1;
+			return "Details=" + perm1; //$NON-NLS-1$
 		}
 	}
 

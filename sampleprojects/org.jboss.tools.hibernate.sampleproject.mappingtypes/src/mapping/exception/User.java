@@ -40,7 +40,7 @@ public class User {
 
 	public void addMembership(Group membership) {
 		if (membership == null) {
-			throw new IllegalArgumentException("Membership to add cannot be null");
+			throw new IllegalArgumentException("Membership to add cannot be null"); //$NON-NLS-1$
 		}
 
 		this.memberships.add(membership);

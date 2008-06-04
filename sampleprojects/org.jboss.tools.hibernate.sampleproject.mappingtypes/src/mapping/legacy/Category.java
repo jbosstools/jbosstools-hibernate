@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class Category {
 	
-	public static final String ROOT_CATEGORY = "/";
+	public static final String ROOT_CATEGORY = "/"; //$NON-NLS-1$
 	public static final int ROOT_ID = 42;
 
 	private long id;
@@ -73,7 +73,7 @@ public class Category {
 	}
 	
 	public String toString() {
-		return id + ":" + name;
+		return id + ":" + name; //$NON-NLS-1$
 	}
 
 }

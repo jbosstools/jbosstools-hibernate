@@ -39,7 +39,7 @@ public class Group {
 
 	public void addMember(User member) {
 		if (member == null) {
-			throw new IllegalArgumentException("Member to add cannot be null");
+			throw new IllegalArgumentException("Member to add cannot be null"); //$NON-NLS-1$
 		}
 
 		this.members.add(member);

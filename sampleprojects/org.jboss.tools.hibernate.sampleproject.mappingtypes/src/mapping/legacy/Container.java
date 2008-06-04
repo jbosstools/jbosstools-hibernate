@@ -40,10 +40,10 @@ public class Container {
 		}
 		
 		public String toString() {
-			return name + " = " 
-			+ (simple==null ? "nil" : Integer.toString( simple.getCount() ) )
-			+ "/" + ( one==null ? "nil" : one.getKey().toString() )
-			+ "/" + ( many==null ? "nil" : many.getKey().toString() );
+			return name + " = "  //$NON-NLS-1$
+			+ (simple==null ? "nil" : Integer.toString( simple.getCount() ) ) //$NON-NLS-1$
+			+ "/" + ( one==null ? "nil" : one.getKey().toString() ) //$NON-NLS-1$ //$NON-NLS-2$
+			+ "/" + ( many==null ? "nil" : many.getKey().toString() ); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
 		

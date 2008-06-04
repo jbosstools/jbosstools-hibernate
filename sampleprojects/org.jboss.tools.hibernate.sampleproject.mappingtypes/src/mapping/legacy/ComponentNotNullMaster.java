@@ -60,9 +60,9 @@ public class ComponentNotNullMaster {
 		}
 		
 		public String toString() {
-			return name +  " = " + simple.getCount() +
-			 "/"  + ( one==null ? "nil" : one.getKey().toString() ) +
-			 "/"  + ( many==null ? "nil" : many.getKey().toString() );
+			return name +  " = " + simple.getCount() + //$NON-NLS-1$
+			 "/"  + ( one==null ? "nil" : one.getKey().toString() ) + //$NON-NLS-1$ //$NON-NLS-2$
+			 "/"  + ( many==null ? "nil" : many.getKey().toString() ); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
 		public One getOne() {

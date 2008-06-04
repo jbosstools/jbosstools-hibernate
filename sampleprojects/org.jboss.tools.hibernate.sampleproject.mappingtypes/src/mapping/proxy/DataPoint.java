@@ -72,6 +72,6 @@ public class DataPoint implements Serializable {
 	}
 	
 	void exception() throws Exception {
-		throw new Exception("foo");
+		throw new Exception("foo"); //$NON-NLS-1$
 	}
 }

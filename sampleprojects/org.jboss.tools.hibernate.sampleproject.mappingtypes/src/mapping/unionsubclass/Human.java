@@ -20,7 +20,7 @@ public class Human extends Being {
 		this.sex = sex;
 	}
 	public String getSpecies() {
-		return "human";
+		return "human"; //$NON-NLS-1$
 	}
 
 }

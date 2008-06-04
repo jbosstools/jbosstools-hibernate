@@ -10,8 +10,8 @@ import java.util.HashMap;
  */
 public class Classification implements Serializable, Comparable {
 
-	public static final Classification COOL = new Classification( "COOL", 0 );
-	public static final Classification LAME = new Classification( "LAME", 1 );
+	public static final Classification COOL = new Classification( "COOL", 0 ); //$NON-NLS-1$
+	public static final Classification LAME = new Classification( "LAME", 1 ); //$NON-NLS-1$
 
 	private static final HashMap INSTANCES = new HashMap();
 	static {
@@ -72,7 +72,7 @@ public class Classification implements Serializable, Comparable {
 		switch ( ordinal.intValue() ) {
 			case 0: return COOL;
 			case 1: return LAME;
-			default: throw new IllegalArgumentException( "unknown classification ordinal [" + ordinal + "]" );
+			default: throw new IllegalArgumentException( "unknown classification ordinal [" + ordinal + "]" ); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 }

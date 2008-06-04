@@ -59,7 +59,7 @@ public class Problematic {
 		}
 
 		public String toString() {
-			String result = "";
+			String result = ""; //$NON-NLS-1$
 			for ( int i = 0; i < bytes.length; i++ ) {
 				result += bytes[i];
 			}

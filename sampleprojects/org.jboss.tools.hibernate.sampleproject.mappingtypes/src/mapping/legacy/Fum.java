@@ -35,10 +35,10 @@ public class Fum implements Lifecycle, Serializable {
 		FumCompositeID fid = new FumCompositeID();
 		fid.setDate( new Date() );
 		fid.setShort( (short) ( id.short_ + 33 ) );
-		fid.setString( id.string_ + "dd" );
+		fid.setString( id.string_ + "dd" ); //$NON-NLS-1$
 		Fum f = new Fum();
 		f.id = fid;
-		f.fum="FRIEND";
+		f.fum="FRIEND"; //$NON-NLS-1$
 		friends.add(f);
 	}
 	public String getFum() {

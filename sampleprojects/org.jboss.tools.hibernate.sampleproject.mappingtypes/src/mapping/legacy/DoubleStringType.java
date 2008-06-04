@@ -66,7 +66,7 @@ public class DoubleStringType implements CompositeUserType {
 	}
 
 	public String[] getPropertyNames() {
-		return new String[] { "s1", "s2" };
+		return new String[] { "s1", "s2" }; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public Type[] getPropertyTypes() {
