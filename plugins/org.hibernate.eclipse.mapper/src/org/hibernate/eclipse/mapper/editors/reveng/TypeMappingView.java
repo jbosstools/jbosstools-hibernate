@@ -79,8 +79,8 @@ public abstract class TypeMappingView extends TreeToTableComposite {
 	private TableViewer createTypeMappingViewer() {
 		TableViewer result = new TableViewer( rightTable );
 		result.setUseHashlookup( true );
-		result.setColumnProperties( new String[] { "jdbctype", "hibernatetype",
-				"length", "scale", "precision", "not-null" } );
+		result.setColumnProperties( new String[] { "jdbctype", "hibernatetype",  //$NON-NLS-1$//$NON-NLS-2$
+				"length", "scale", "precision", "not-null" } );   //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$
 
 		CellEditor[] editors = new CellEditor[result.getColumnProperties().length];
 		editors[0] = new NullableTextCellEditor( result.getTable() );//new ComboBoxCellEditor( result.getTable(), JDBCToHibernateTypeHelper.getJDBCTypes() );
@@ -172,15 +172,15 @@ public abstract class TypeMappingView extends TreeToTableComposite {
 
 	private void createDefaultSqlTypeMapping() {
 		ITypeMapping createTypeMapping = revEngDef.createTypeMapping();
-		createTypeMapping.setJDBCType("VARCHAR");
-		createTypeMapping.setHibernateType("string");
+		createTypeMapping.setJDBCType("VARCHAR"); //$NON-NLS-1$
+		createTypeMapping.setHibernateType("string"); //$NON-NLS-1$
 		revEngDef.addTypeMapping(createTypeMapping);
 	}
 
 	
 
 	protected String[] getAddButtonLabels() {
-		return new String[] { "Add..." };
+		return new String[] { Messages.TYPEMAPPINGVIEW_ADD };
 	}
 
 	protected void handleAddButtonPressed(int i) {
@@ -189,7 +189,7 @@ public abstract class TypeMappingView extends TreeToTableComposite {
 			doAdd();
 			break;
 		default:
-			throw new IllegalArgumentException( i + " not a known button" );
+			throw new IllegalArgumentException( i + Messages.TYPEMAPPINGVIEW_NOT_KNOWN_BUTTON );
 		}
 	}
 
@@ -205,7 +205,7 @@ public abstract class TypeMappingView extends TreeToTableComposite {
 	}
 	
 	protected void doRemoveAll() {
-		if(MessageDialog.openQuestion( getShell(), "Remove all mappings" , "Do you want to remove all mappings?")) {
+		if(MessageDialog.openQuestion( getShell(), Messages.TYPEMAPPINGVIEW_REMOVE_ALL_MAPPINGS , Messages.TYPEMAPPINGVIEW_DO_YOU_WANT_TO_REMOVE_ALL_MAPPINGS)) {
 			revEngDef.removeAllTypeMappings();
 		}
 	}
@@ -228,36 +228,36 @@ public abstract class TypeMappingView extends TreeToTableComposite {
 	
 	protected void createTableColumns(org.eclipse.swt.widgets.Table table) {
 		TableColumn column = new TableColumn(table, SWT.CENTER, 0);		
-		column.setText("JDBC Type");
+		column.setText(Messages.TYPEMAPPINGVIEW_JDBC_TYPE);
 		column.setWidth(100);
 		
 		column = new TableColumn(table, SWT.LEFT, 1);
-		column.setText("Hibernate Type");
+		column.setText(Messages.TYPEMAPPINGVIEW_HIBERNATE_TYPE);
 		column.setWidth(150);
 		
 		column = new TableColumn(table, SWT.LEFT, 2);
-		column.setText("Length");
+		column.setText(Messages.TYPEMAPPINGVIEW_LENGTH);
 		column.setWidth(100);
 
 		column = new TableColumn(table, SWT.LEFT, 3);
-		column.setText("Scale");
+		column.setText(Messages.TYPEMAPPINGVIEW_SCALE);
 		column.setWidth(100);
 		
 		column = new TableColumn(table, SWT.LEFT, 4);
-		column.setText("Precision");
+		column.setText(Messages.TYPEMAPPINGVIEW_PRECISION);
 		column.setWidth(100);
 		
 		column = new TableColumn(table, SWT.LEFT, 5);
-		column.setText("Not-Null");
+		column.setText(Messages.TYPEMAPPINGVIEW_NOT_NULL);
 		column.setWidth(75);
 	}
 
 	protected String getTableTitle() {
-		return "Type mappings:";
+		return Messages.TYPEMAPPINGVIEW_TYPE_MAPPINGS;
 	}
 	
 	protected String getTreeTitle() {
-		return "Database schema:";
+		return Messages.TYPEMAPPINGVIEW_DATABASE_SCHEMA;
 	}
 	
 }

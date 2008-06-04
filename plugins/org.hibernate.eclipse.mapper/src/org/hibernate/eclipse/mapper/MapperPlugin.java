@@ -97,7 +97,7 @@ public class MapperPlugin extends AbstractUIPlugin {
 	public ResourceBundle getResourceBundle() {
 		try {
 			if (resourceBundle == null)
-				resourceBundle = ResourceBundle.getBundle("org.hibernate.eclipse.mapper.MapperPluginResources");
+				resourceBundle = ResourceBundle.getBundle("org.hibernate.eclipse.mapper.MapperPluginResources"); //$NON-NLS-1$
 		} catch (MissingResourceException x) {
 			resourceBundle = null;
 		}

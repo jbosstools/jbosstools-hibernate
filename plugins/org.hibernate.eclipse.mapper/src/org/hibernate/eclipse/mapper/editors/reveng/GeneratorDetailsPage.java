@@ -43,10 +43,10 @@ public class GeneratorDetailsPage extends RevEngDetailsPage implements IDetailsP
 	private IRevEngGenerator generator;
 	
 	protected void buildContents(FormToolkit toolkit, Section section, Composite client) {
-		section.setText("Id Generator details");
-		section.setDescription("Set the properties of the selected generator.");
+		section.setText(Messages.GENERATORDETAILSPAGE_ID_GENERATOR_DETAILS);
+		section.setDescription(Messages.GENERATORDETAILSPAGE_SET_THE_PROPERTIES_OF_THE_SELECTED_GENERATOR);
 				
-		nameEntry = new FormTextEntry(client, toolkit, "Class:", SWT.NULL);
+		nameEntry = new FormTextEntry(client, toolkit, Messages.GENERATORDETAILSPAGE_CLASS, SWT.NULL);
 		nameEntry.setFormEntryListener(new FormTextEntryListenerAdapter() {
 			public void textValueChanged(FormTextEntry entry) {
 				generator.setGeneratorClassName(entry.getValue());

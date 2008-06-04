@@ -49,18 +49,18 @@ public class ColumnDetailsPage extends RevEngDetailsPage implements IDetailsPage
 	private IRevEngColumn column;
 
 	public void buildContents(FormToolkit toolkit, Section section, Composite client) {
-		section.setText("Column Details");
-		section.setDescription("Set the properties of the selected column.");
+		section.setText(Messages.COLUMNDETAILSPAGE_COLUMN_DETAILS);
+		section.setDescription(Messages.COLUMNDETAILSPAGE_SET_PROPERTIES_OF_SELECTED_COLUMN);
 		
-		nameEntry = new FormTextEntry(client, toolkit, "Name:", SWT.NULL);
-		nameEntry.setDescription("The name of the column");
+		nameEntry = new FormTextEntry(client, toolkit, Messages.COLUMNDETAILSPAGE_NAME, SWT.NULL);
+		nameEntry.setDescription(Messages.COLUMNDETAILSPAGE_THE_NAME_OF_THE_COLUMN);
 		nameEntry.setFormEntryListener(new FormTextEntryListenerAdapter() {
 			public void textValueChanged(FormTextEntry entry) {
 				column.setName(entry.getValue());
 			}
 		});
 		
-		excluded = toolkit.createButton(client, "Exclude column from reverse engineering", SWT.CHECK);
+		excluded = toolkit.createButton(client, Messages.COLUMNDETAILSPAGE_EXCLUDE_COLUMNS_FROM_REVERSE_ENGINEERING, SWT.CHECK);
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true,false);
 		gridData.horizontalSpan = 3;
 		excluded.setLayoutData(gridData);
@@ -72,23 +72,23 @@ public class ColumnDetailsPage extends RevEngDetailsPage implements IDetailsPage
 		
 		});
 		
-		jdbcTypeEntry = new FormTextEntry(client, toolkit, "JDBC Type:", SWT.NULL);
-		jdbcTypeEntry.setDescription("Which JDBC Type this column should have (overriding the type read from the database)");
+		jdbcTypeEntry = new FormTextEntry(client, toolkit, Messages.COLUMNDETAILSPAGE_JDBC_TYPE, SWT.NULL);
+		jdbcTypeEntry.setDescription(Messages.COLUMNDETAILSPAGE_WHICH_JDBC_TYPE_THIS_COLUMN_SHOULD_HAVE);
 		jdbcTypeEntry.setFormEntryListener(new FormTextEntryListenerAdapter() {
 			public void textValueChanged(FormTextEntry entry) {
 				column.setJDBCType(entry.getValue());
 			}
 		});
-		propertyEntry = new FormTextEntry(client, toolkit, "Property name:", SWT.NULL);
-		propertyEntry.setDescription("The property name which must be used for this column when used as a property");
+		propertyEntry = new FormTextEntry(client, toolkit, Messages.COLUMNDETAILSPAGE_PROPERTY_NAME, SWT.NULL);
+		propertyEntry.setDescription(Messages.COLUMNDETAILSPAGE_THE_PROPERTY_NAME_WHICH_MUST_BE_USED_FOR);
 		propertyEntry.setFormEntryListener(new FormTextEntryListenerAdapter() {
 			public void textValueChanged(FormTextEntry entry) {
 				column.setPropertyName(entry.getValue());
 			}
 		});
 		
-		typeEntry = new FormTextEntry(client, toolkit, "Hibernate Type:", SWT.NULL);
-		typeEntry.setDescription("The hibernate type which should be used for this colum when used as a property");
+		typeEntry = new FormTextEntry(client, toolkit, Messages.COLUMNDETAILSPAGE_HIBERNATE_TYPE, SWT.NULL);
+		typeEntry.setDescription(Messages.COLUMNDETAILSPAGE_THE_HIBERNATE_TYPE);
 		typeEntry.setFormEntryListener(new FormTextEntryListenerAdapter() {
 			public void textValueChanged(FormTextEntry entry) {
 				column.setType(entry.getValue());

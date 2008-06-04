@@ -44,17 +44,17 @@ public class ParamDetailsPage extends RevEngDetailsPage implements IDetailsPage,
 	private IRevEngParameter param;
 	
 	protected void buildContents(FormToolkit toolkit, Section section, Composite client) {
-		section.setText("Generator parameter details");
-		section.setDescription("Set the properties of the selected parameter.");
+		section.setText(Messages.PARAMDETAILSPAGE_GENERATOR_PARAMETER_DETAILS);
+		section.setDescription(Messages.PARAMDETAILSPAGE_SET_THE_PROPERTIES_OF_THE_SELECTED_PARAMETER);
 				
-		nameEntry = new FormTextEntry(client, toolkit, "Name:", SWT.NULL);
+		nameEntry = new FormTextEntry(client, toolkit, Messages.PARAMDETAILSPAGE_NAME, SWT.NULL);
 		nameEntry.setFormEntryListener(new FormTextEntryListenerAdapter() {
 			public void textValueChanged(FormTextEntry entry) {
 				param.setName(entry.getValue());
 			}
 		});
 		
-		valueEntry = new FormTextEntry(client, toolkit, "Value:", SWT.NULL);
+		valueEntry = new FormTextEntry(client, toolkit, Messages.PARAMDETAILSPAGE_VALUE, SWT.NULL);
 		valueEntry.setFormEntryListener(new FormTextEntryListenerAdapter() {
 			public void textValueChanged(FormTextEntry entry) {
 				param.setValue(entry.getValue());

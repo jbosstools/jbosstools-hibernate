@@ -50,37 +50,37 @@ public class TableDetailsPage extends RevEngDetailsPage implements IDetailsPage,
 	private IRevEngTable table;
 	
 	protected void buildContents(FormToolkit toolkit, Section section, Composite client) {
-		section.setText("Table details");
-		section.setDescription("Set the properties of the selected table.");
+		section.setText(Messages.TABLEDETAILSPAGE_TABLE_DETAILS);
+		section.setDescription(Messages.TABLEDETAILSPAGE_SET_PROPERTIES_OF_SELECTED_TABLE);
 		
-		catalogEntry = new FormTextEntry(client, toolkit, "Catalog:", SWT.NULL);
+		catalogEntry = new FormTextEntry(client, toolkit, Messages.TABLEDETAILSPAGE_CATALOG, SWT.NULL);
 		catalogEntry.setFormEntryListener(new FormTextEntryListenerAdapter() {
 			public void textValueChanged(FormTextEntry entry) {
 				table.setCatalog(entry.getValue());
 			}
 		});
-		schemaEntry = new FormTextEntry(client, toolkit, "Schema:", SWT.NULL);
+		schemaEntry = new FormTextEntry(client, toolkit, Messages.TABLEDETAILSPAGE_SCHEMA, SWT.NULL);
 		schemaEntry.setFormEntryListener(new FormTextEntryListenerAdapter() {
 			public void textValueChanged(FormTextEntry entry) {
 				table.setSchema(entry.getValue());
 			}
 		});
 
-		nameEntry = new FormTextEntry(client, toolkit, "Name:", SWT.NULL);
+		nameEntry = new FormTextEntry(client, toolkit, Messages.TABLEDETAILSPAGE_NAME, SWT.NULL);
 		nameEntry.setFormEntryListener(new FormTextEntryListenerAdapter() {
 			public void textValueChanged(FormTextEntry entry) {
 				table.setName(entry.getValue());
 			}
 		});
 		
-		classEntry = new FormTextEntry(client, toolkit, "Class name:", SWT.NULL);
+		classEntry = new FormTextEntry(client, toolkit, Messages.TABLEDETAILSPAGE_CLASS_NAME, SWT.NULL);
 		classEntry.setFormEntryListener(new FormTextEntryListenerAdapter() {
 			public void textValueChanged(FormTextEntry entry) {
 				table.setClassname(entry.getValue());
 			}
 		});
 		
-		Button button = toolkit.createButton(client, "Add primary key", SWT.NULL);
+		Button button = toolkit.createButton(client, Messages.TABLEDETAILSPAGE_ADD_PRIMARY_KEY, SWT.NULL);
 		button.addSelectionListener(new SelectionAdapter() {
 		
 			public void widgetSelected(SelectionEvent e) {

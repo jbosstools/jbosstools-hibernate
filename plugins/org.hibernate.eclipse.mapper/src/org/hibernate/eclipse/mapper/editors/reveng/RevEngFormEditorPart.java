@@ -41,7 +41,7 @@ public class RevEngFormEditorPart extends FormPage {
 		super.createPartControl( parent );
 	}
 	protected void createFormContent(IManagedForm managedForm) {
-		throw new IllegalStateException("Need to override formcontent in " + this.getClass().getName());
+		throw new IllegalStateException(Messages.REVENGFORMEDITORPART_NEED_TO_OVERRIDE_FORMCONTENT_IN + this.getClass().getName());
 	}
 		
 	ReverseEngineeringEditor getReverseEngineeringEditor() {

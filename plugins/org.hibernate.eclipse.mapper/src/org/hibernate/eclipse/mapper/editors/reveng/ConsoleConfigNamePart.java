@@ -49,13 +49,13 @@ public class ConsoleConfigNamePart extends RevEngSectionPart {
 
 	public boolean setFormInput(IReverseEngineeringDefinition def) {
 		if(StringHelper.isEmpty(text.getText())) {
-			String initialConfg = "";
+			String initialConfg = ""; //$NON-NLS-1$
 			try {
 				if (re.getHibernateNature()!=null) {
 					initialConfg = re.getHibernateNature().getDefaultConsoleConfigurationName();
 				}
 			} catch (CoreException e) {
-				MapperPlugin.getDefault().getLogger().logException("Problem when trying to Hibernate Project information",e);
+				MapperPlugin.getDefault().getLogger().logException(Messages.CONSOLECONFIGNAMEPART_PROBLEM_WHEN_TRYING_TO_HIBERNATE_PROJECT_INFO,e);
 			}
 			
 			text.setText(initialConfg);
@@ -87,11 +87,11 @@ public class ConsoleConfigNamePart extends RevEngSectionPart {
 	}
 	
 	protected String getSectionDescription() {
-		return "Select Console configuration to be used for editing the reverse engineering settings";
+		return Messages.CONSOLECONFIGNAMEPART_SELECT_CONSOLE_CONFIGURATION;
 	}
 	
 	protected String getSectionTitle() {
-		return "Console Configuration";
+		return Messages.CONSOLECONFIGNAMEPART_CONSOLE_CONFIGURATION;
 	}
 	
 	String getConsoleConfigName() {

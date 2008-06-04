@@ -32,22 +32,22 @@ public class TypeMappingAdapter extends DOMAdapter implements ITypeMapping {
 	}
 
 	public String getJDBCType() {
-		Node type = getNode().getAttributes().getNamedItem("jdbc-type");
+		Node type = getNode().getAttributes().getNamedItem("jdbc-type"); //$NON-NLS-1$
 		return type == null ? null : type.getNodeValue();
 	}
 
 	public String getHibernateType() {
-		Node type = getNode().getAttributes().getNamedItem("hibernate-type");
+		Node type = getNode().getAttributes().getNamedItem("hibernate-type"); //$NON-NLS-1$
 		return type == null ? null : type.getNodeValue();
 	}
 
 	public Integer getLength() {
-		String name = "length";
+		String name = "length"; //$NON-NLS-1$
 		return getInteger( name );
 	}
 
 	public Boolean getNullable() {
-		return getBoolean("not-null");
+		return getBoolean("not-null"); //$NON-NLS-1$
 	}
 	
 	private Integer getInteger(String name) {
@@ -75,35 +75,35 @@ public class TypeMappingAdapter extends DOMAdapter implements ITypeMapping {
 	}
 
 	public Integer getPrecision() {
-		return getInteger( "precision" );
+		return getInteger( "precision" ); //$NON-NLS-1$
 	}
 
 	public Integer getScale() {
-		return getInteger( "scale" );
+		return getInteger( "scale" ); //$NON-NLS-1$
 	}
 
 	public void setJDBCType(String string) {
-		setAttribute("jdbc-type", string, null);
+		setAttribute("jdbc-type", string, null); //$NON-NLS-1$
 	}
 
 	public void setLength(Integer length) {
-		setAttribute("length", length==null?null:length.toString(), null);
+		setAttribute("length", length==null?null:length.toString(), null); //$NON-NLS-1$
 	}
 
 	public void setHibernateType(String type) {
-		setAttribute("hibernate-type", type, "");
+		setAttribute("hibernate-type", type, ""); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void setPrecision(Integer precision) {
-		setAttribute("precision", precision==null?null:precision.toString(), null);
+		setAttribute("precision", precision==null?null:precision.toString(), null); //$NON-NLS-1$
 	}
 
 	public void setScale(Integer scale) {
-		setAttribute("scale", scale==null?null:scale.toString(), null);
+		setAttribute("scale", scale==null?null:scale.toString(), null); //$NON-NLS-1$
 	}
 
 	public void setNullable(Boolean value) {
-		setAttribute("not-null", value==null?null:value.toString(), null);		
+		setAttribute("not-null", value==null?null:value.toString(), null);		 //$NON-NLS-1$
 	}
 	
 	public void notifyChanged(INodeNotifier notifier, int eventType, Object changedFeature, Object oldValue, Object newValue, int pos) {

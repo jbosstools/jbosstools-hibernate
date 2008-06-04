@@ -35,11 +35,11 @@ public class RevEngGeneratorAdapter extends DOMAdapter implements
 	}
 
 	public String getGeneratorClassName() {
-		return getNodeValue("class", "");
+		return getNodeValue("class", ""); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public IRevEngParameter[] getParameters() {
-		return (IRevEngParameter[]) getAdaptedElements((Element) getNode(), "param").toArray(new IRevEngParameter[0]);
+		return (IRevEngParameter[]) getAdaptedElements((Element) getNode(), "param").toArray(new IRevEngParameter[0]); //$NON-NLS-1$
 	}
 
 	public void notifyChanged(INodeNotifier notifier, int eventType,
@@ -48,7 +48,7 @@ public class RevEngGeneratorAdapter extends DOMAdapter implements
 	}
 
 	public void setGeneratorClassName(String value) {
-		setAttribute("class", value, null);		
+		setAttribute("class", value, null);		 //$NON-NLS-1$
 	}
 
 }

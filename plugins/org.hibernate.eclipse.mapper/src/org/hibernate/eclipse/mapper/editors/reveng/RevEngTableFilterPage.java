@@ -29,10 +29,10 @@ import org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor;
 
 public class RevEngTableFilterPage extends RevEngFormEditorPart {
 	
-	public final static String PART_ID = "tablefilter";
+	public final static String PART_ID = "tablefilter"; //$NON-NLS-1$
 	
 	public RevEngTableFilterPage(ReverseEngineeringEditor reditor) {
-		super(reditor, PART_ID, "Table filters");
+		super(reditor, PART_ID, Messages.REVENGTABLEFILTERPAGE_TABLE_FILTERS);
 	}	
 
 	protected void createFormContent(IManagedForm managedForm) {

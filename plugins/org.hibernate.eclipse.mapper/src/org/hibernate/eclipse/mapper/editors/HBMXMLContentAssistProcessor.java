@@ -45,7 +45,7 @@ public class HBMXMLContentAssistProcessor extends HibernateContentAssistProcesso
 		Node node = contentAssistRequest.getNode();
 		List proposals = new ArrayList();
 		
-		String path = node.getNodeName() + ">" + attributeName;
+		String path = node.getNodeName() + ">" + attributeName; //$NON-NLS-1$
         HBMInfoHandler handler = sourceLocator.getAttributeHandler(path);
 		if (handler != null) {
 			proposals.addAll(Arrays.asList(handler.attributeCompletionProposals(getJavaProject(contentAssistRequest), node, attributeName, start, offset) ) );
@@ -55,7 +55,7 @@ public class HBMXMLContentAssistProcessor extends HibernateContentAssistProcesso
 			String string = contentAssistRequest.getDocumentRegion().getText();
 			string = string.replace('<', '[');
 			string = string.replace('>', ']');
-			CompletionProposal completionProposal = new CompletionProposal("[" + start + "],[" + path + "],[" + offset + "]", offset, 1, 4, null, null, null, string);
+			CompletionProposal completionProposal = new CompletionProposal("[" + start + "],[" + path + "],[" + offset + "]", offset, 1, 4, null, null, null, string);  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$
 			
 			proposals.add(completionProposal);
 		}

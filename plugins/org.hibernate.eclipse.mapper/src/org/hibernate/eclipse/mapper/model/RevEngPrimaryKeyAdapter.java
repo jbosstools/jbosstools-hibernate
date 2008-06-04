@@ -38,7 +38,7 @@ public class RevEngPrimaryKeyAdapter extends DOMAdapter implements
 	}
 
 	public IRevEngGenerator getGenerator() {
-		List adaptedElements = getAdaptedElements((Element) getNode(), "generator");
+		List adaptedElements = getAdaptedElements((Element) getNode(), "generator"); //$NON-NLS-1$
 		if(adaptedElements.isEmpty()) {
 			return null;
 		} else {
@@ -47,7 +47,7 @@ public class RevEngPrimaryKeyAdapter extends DOMAdapter implements
 	}
 
 	public IRevEngColumn[] getColumns() {
-		return (IRevEngColumn[]) getAdaptedElements((Element) getNode(), "key-column").toArray(new IRevEngColumn[0]);
+		return (IRevEngColumn[]) getAdaptedElements((Element) getNode(), "key-column").toArray(new IRevEngColumn[0]); //$NON-NLS-1$
 	}
 
 	public void notifyChanged(INodeNotifier notifier, int eventType,
@@ -57,14 +57,14 @@ public class RevEngPrimaryKeyAdapter extends DOMAdapter implements
 
 	public void addGenerator() {
 		RevEngGeneratorAdapter key = (RevEngGeneratorAdapter) getModel().createGenerator();
-		key.setGeneratorClassName("assigned");
+		key.setGeneratorClassName("assigned"); //$NON-NLS-1$
 		getNode().insertBefore(key.getNode(), getNode().getFirstChild());
 		DOMModelUtil.formatNode(getNode().getParentNode());
 	}
 
 	public void addColumn() {
 		RevEngColumnAdapter key = (RevEngColumnAdapter) getModel().createKeyColumn();
-		key.setName("column_" + (getColumns().length+1));
+		key.setName(Messages.REVENGPRIMARYKEYADAPTER_COLUMN + (getColumns().length+1));
 		getNode().appendChild(key.getNode());
 		DOMModelUtil.formatNode(getNode().getParentNode());
 	}

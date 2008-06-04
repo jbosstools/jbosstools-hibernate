@@ -65,7 +65,7 @@ public class HBMXMLHyperlink implements IHyperlink {
 	}
 	
 	public String toString() {
-		return "HBMXML hyperlink: " + element; 
+		return "HBMXML hyperlink: " + element;  //$NON-NLS-1$
 	}
 
 	

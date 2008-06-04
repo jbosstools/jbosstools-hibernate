@@ -45,7 +45,7 @@ public class HibernateCfgXmlEditor extends XMLMultiPageEditorPart {
 			initSourcePage();
 		} catch (PartInitException pe) {
 			MapperPlugin.getDefault().getLogger().logException(
-					"Could not create form part for hibernate.cfg.xml editor", pe );
+					Messages.HIBERNATECFGXMLEDITOR_COULD_NOT_CREATE_FORM_PART, pe );
 		}
 	}
 
@@ -64,7 +64,7 @@ public class HibernateCfgXmlEditor extends XMLMultiPageEditorPart {
 		configurationForm = new HibernateConfigurationForm();
         configurationForm.createPartControl(getContainer());
         configurationPageNo = addPage(configurationForm.getControl());
-        setPageText(configurationPageNo, "Configuration");
+        setPageText(configurationPageNo, Messages.HIBERNATECFGXMLEDITOR_CONFIGURATION);
         setActivePage( 0 );
 	}
 	

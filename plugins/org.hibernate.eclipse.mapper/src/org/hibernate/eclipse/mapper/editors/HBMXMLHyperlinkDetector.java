@@ -65,7 +65,7 @@ public class HBMXMLHyperlinkDetector extends BaseXMLHyperlinkSupport implements 
 				Attr currentAttrNode = getCurrentAttrNode(currentNode, region.getOffset() );
 				
 				if(currentAttrNode!=null) {
-					String path = currentNode.getNodeName() + ">" + currentAttrNode.getName();
+					String path = currentNode.getNodeName() + ">" + currentAttrNode.getName(); //$NON-NLS-1$
 			        HBMInfoHandler handler = infoExtractor.getAttributeHandler(path);
 					if(handler!=null) {
 						IJavaProject project = CFGXMLStructuredTextViewerConfiguration.findJavaProject(document);

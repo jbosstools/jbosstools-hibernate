@@ -55,35 +55,35 @@ public class ObserverAdapterFactory extends AbstractAdapterFactory {
 			
 		Object key = DOMAdapter.class;
 		
-		if("hibernate-reverse-engineering".equals(nodeName)) {
+		if("hibernate-reverse-engineering".equals(nodeName)) { //$NON-NLS-1$
 			result = new UnknownNodeAdapter(key, revEngDefinition) {
 				public void notifyChanged(INodeNotifier notifier, int eventType, Object changedFeature, Object oldValue, Object newValue, int pos) {
 					observer.hibernateMappingChanged();
 				}
 			};
-		} else if("table-filter".equals(nodeName)) {
+		} else if("table-filter".equals(nodeName)) { //$NON-NLS-1$
 			result = new TableFilterAdapter((Node) target, revEngDefinition);
-		} else if("type-mapping".equals(nodeName)) {
+		} else if("type-mapping".equals(nodeName)) { //$NON-NLS-1$
 			result = new UnknownNodeAdapter(key, revEngDefinition) {
 				public void notifyChanged(INodeNotifier notifier, int eventType, Object changedFeature, Object oldValue, Object newValue, int pos) {
 					observer.typeMappingChanged(notifier);
 				}
 			};
-		} else if("sql-type".equals(nodeName)) {
+		} else if("sql-type".equals(nodeName)) { //$NON-NLS-1$
 			result = new TypeMappingAdapter((Node) target, revEngDefinition);
-		} else if("table".equals(nodeName)) {
+		} else if("table".equals(nodeName)) { //$NON-NLS-1$
 			result = new RevEngTableAdapter((Node) target, revEngDefinition);
-		} else if("column".equals(nodeName) || "key-column".equals(nodeName)) {
+		} else if("column".equals(nodeName) || "key-column".equals(nodeName)) { //$NON-NLS-1$ //$NON-NLS-2$
 			result = new RevEngColumnAdapter((Node) target, revEngDefinition);				
-		} else if("primary-key".equals(nodeName)) {
+		} else if("primary-key".equals(nodeName)) { //$NON-NLS-1$
 			result = new RevEngPrimaryKeyAdapter((Node) target, revEngDefinition);
-		} else if("generator".equals(nodeName)) { 
+		} else if("generator".equals(nodeName)) {  //$NON-NLS-1$
 			result = new RevEngGeneratorAdapter((Node) target, revEngDefinition);
-		} else if("param".equals(nodeName)) { 
+		} else if("param".equals(nodeName)) {  //$NON-NLS-1$
 			result = new RevEngParamAdapter((Node) target, revEngDefinition);
 		}
-		else if("foreign-key".equals(nodeName) 
-				|| "column-ref".equals(nodeName) 
+		else if("foreign-key".equals(nodeName)  //$NON-NLS-1$
+				|| "column-ref".equals(nodeName)  //$NON-NLS-1$
 				) {
 			result = new UnknownNodeAdapter(key, revEngDefinition) {
 				public void notifyChanged(INodeNotifier notifier, int eventType, Object changedFeature, Object oldValue, Object newValue, int pos) {

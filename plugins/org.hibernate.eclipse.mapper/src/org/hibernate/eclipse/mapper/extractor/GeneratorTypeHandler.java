@@ -55,20 +55,20 @@ public class GeneratorTypeHandler implements HBMInfoHandler {
 			List proposals = new ArrayList(types.size() );		
 			for (Iterator iter = types.iterator(); iter.hasNext();) {
 				HibernateTypeDescriptor element = (HibernateTypeDescriptor) iter.next();
-				String extendedinfo = "<b>Generator type</b>: " + element.getName();
+				String extendedinfo = Messages.GENERATORTYPEHANDLER_GENERATOR_TYPE + element.getName();
 				if(element.getReturnClass()!=null) {
-					extendedinfo += "<br><b>Return class</b>: " + element.getReturnClass();				
+					extendedinfo += Messages.GENERATORTYPEHANDLER_RETURN_CLASS + element.getReturnClass();				
 				}
 				proposals.add(new CompletionProposal(element.getName(), offset, start.length(), element.getName().length(), null, null, null, extendedinfo) );
 			}
 			
 			try {
-				IType typeInterface = project.findType("org.hibernate.id.IdentifierGenerator");
+				IType typeInterface = project.findType("org.hibernate.id.IdentifierGenerator"); //$NON-NLS-1$
 				Set alreadyFound = new HashSet();			
 				if (typeInterface != null) {
 					ITypeHierarchy hier = typeInterface.newTypeHierarchy(project, new NullProgressMonitor() );
 					IType[] classes = hier.getAllSubtypes(typeInterface); // TODO: cache these results ?
-					this.extractor.generateTypeProposals(start, offset, proposals, alreadyFound, classes, "org.hibernate.id");				
+					this.extractor.generateTypeProposals(start, offset, proposals, alreadyFound, classes, "org.hibernate.id");				 //$NON-NLS-1$
 				}
 			} catch (CoreException e) {
 				throw new RuntimeException(e); // TODO: log as error!

@@ -36,7 +36,7 @@ public class TablePropertiesLabelProvider extends LabelProvider {
 	public String getText(Object element) {
 		String internalText = getInternalText( element );
 		if(internalText==null) {
-			return "<n/a>";
+			return "<n/a>"; //$NON-NLS-1$
 		} else {
 			return internalText;
 		}
@@ -49,7 +49,7 @@ public class TablePropertiesLabelProvider extends LabelProvider {
 		} else if(element instanceof IRevEngColumn) {
 			return ((IRevEngColumn)element).getName();
 		} else if(element instanceof IRevEngPrimaryKey) {
-			return "Primary key";
+			return Messages.TABLEPROPERTIESLABELPROVIDER_PRIMARY_KEY;
 		} else if(element instanceof IRevEngGenerator) {
 			return ((IRevEngGenerator)element).getGeneratorClassName();
 		} else if ( element instanceof IRevEngParameter ) {
@@ -66,12 +66,12 @@ public class TablePropertiesLabelProvider extends LabelProvider {
 		}
 
 		if(table.getSchema()!=null) {
-			if(res.length()!=0) res.append(".");
+			if(res.length()!=0) res.append("."); //$NON-NLS-1$
 			res.append(table.getSchema());
 		}
 		
 		if(table.getName()!=null) {
-			if(res.length()!=0) res.append(".");
+			if(res.length()!=0) res.append("."); //$NON-NLS-1$
 			res.append(table.getName());
 		}
 		return res.toString();

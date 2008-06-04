@@ -47,7 +47,7 @@ public class CounterFormPart extends RevEngSectionPart {
 		listener = new PropertyChangeListener() {
 			int cnt = 0;
 			public void propertyChange(PropertyChangeEvent evt) {
-				text.setText("" + cnt++);		
+				text.setText("" + cnt++);		 //$NON-NLS-1$
 			}
 		
 		};
@@ -63,15 +63,15 @@ public class CounterFormPart extends RevEngSectionPart {
 		FormToolkit toolkit = form.getToolkit();
 		Composite composite = toolkit.createComposite(getSection());
 		composite.setLayout(new FillLayout());
-		text = toolkit.createText(composite, "Zero");
+		text = toolkit.createText(composite, Messages.COUNTERFORMPART_ZERO);
 		return composite;
 	}
 	
 	protected String getSectionDescription() {
-		return "debug counter for property changes";
+		return Messages.COUNTERFORMPART_DEBUG_COUNTER_FOR_PROPERTY_CHANGES;
 	}
 	
 	protected String getSectionTitle() {
-		return "Debug counter";
+		return Messages.COUNTERFORMPART_DEBUG_COUNTER;
 	}
 }

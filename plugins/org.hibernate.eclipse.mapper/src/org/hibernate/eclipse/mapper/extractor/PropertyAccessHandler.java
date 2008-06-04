@@ -52,20 +52,20 @@ public class PropertyAccessHandler implements HBMInfoHandler {
 		List proposals = new ArrayList(types.size() );		
 		for (Iterator iter = types.iterator(); iter.hasNext();) {
 			HibernateTypeDescriptor element = (HibernateTypeDescriptor) iter.next();
-			String extendedinfo = "<b>Access method</b>: " + element.getName();
+			String extendedinfo = Messages.PROPERTYACCESSHANDLER_ACCESS_METHOD + element.getName();
 			if(element.getReturnClass()!=null) {
-				extendedinfo += "<br><b>Description</b>: " + element.getReturnClass();				
+				extendedinfo += Messages.PROPERTYACCESSHANDLER_DESCRIPTION + element.getReturnClass();				
 			}
 			proposals.add(new CompletionProposal(element.getName(), offset, start.length(), element.getName().length(), null, null, null, extendedinfo) );
 		}
 		
 		try {
-			IType typeInterface = project.findType("org.hibernate.property.PropertyAccessor");
+			IType typeInterface = project.findType("org.hibernate.property.PropertyAccessor"); //$NON-NLS-1$
 			Set alreadyFound = new HashSet();			
 			if (typeInterface != null) {
 				ITypeHierarchy hier = typeInterface.newTypeHierarchy(project, new NullProgressMonitor() );
 				IType[] classes = hier.getAllSubtypes(typeInterface); // TODO: cache these results ?
-				this.extractor.generateTypeProposals(start, offset, proposals, alreadyFound, classes, "org.hibernate.property");				
+				this.extractor.generateTypeProposals(start, offset, proposals, alreadyFound, classes, "org.hibernate.property");				 //$NON-NLS-1$
 			}
 		} catch (CoreException e) {
 			throw new RuntimeException(e); // TODO: log as error!

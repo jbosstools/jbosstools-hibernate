@@ -43,11 +43,11 @@ public class TableFilterFormPart extends RevEngSectionPart {
 	}
 
 	protected String getSectionTitle() {
-		return "Table filters";
+		return Messages.TABLEFILTERFORMPART_TABLE_FILTERS;
 	}
 	
 	protected String getSectionDescription() {
-		return "Table filters defines which tables/views are included when performing reverse engineering.";
+		return Messages.TABLEFILTERFORMPART_TABLE_FILTERS_DEFINES_WHICH_TABLE_INCLUDED;
 	}
 	
 	public Control createClient(IManagedForm form) {		

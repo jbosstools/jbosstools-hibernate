@@ -71,7 +71,7 @@ public class HibernateConfigurationForm {
 	public void createPartControl(Composite cotainer) {
 		this.container = cotainer;
 		managedForm = new ManagedForm( container );
-		getForm().setText( "Hibernate Configuration" );
+		getForm().setText( Messages.HIBERNATECONFIGURATIONFORM_HIBERNATE_CONFIGURATION );
 
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 2;

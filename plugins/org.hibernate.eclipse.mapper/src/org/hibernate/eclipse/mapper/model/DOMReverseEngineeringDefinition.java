@@ -26,6 +26,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.sse.core.internal.provisional.IModelStateListener;
 import org.eclipse.wst.sse.core.internal.provisional.INodeAdapterFactory;
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
@@ -96,7 +97,7 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 	}
 
 	public ITableFilter createTableFilter() {		
-		return (ITableFilter) factory.adapt((INodeNotifier) getDocument().createElement("table-filter"));
+		return (ITableFilter) factory.adapt((INodeNotifier) getDocument().createElement("table-filter")); //$NON-NLS-1$
 	}
 	
 	public void addTableFilter(ITableFilter filter) {
@@ -104,11 +105,11 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 			TableFilterAdapter tf = (TableFilterAdapter) filter;
 			factory.adapt((INodeNotifier) tf.getNode());
 			
-			List lastChild = DOMModelUtil.getChildrenByTagName(getDocument().getDocumentElement(),"table-filter");
+			List lastChild = DOMModelUtil.getChildrenByTagName(getDocument().getDocumentElement(),"table-filter"); //$NON-NLS-1$
 			if(lastChild==null || lastChild.isEmpty()) {
-				List typeMapping = DOMModelUtil.getChildrenByTagName(getDocument().getDocumentElement(),"type-mapping");
+				List typeMapping = DOMModelUtil.getChildrenByTagName(getDocument().getDocumentElement(),"type-mapping"); //$NON-NLS-1$
 				if(typeMapping==null || typeMapping.isEmpty()) {
-					List tableMapping = DOMModelUtil.getChildrenByTagName(getDocument().getDocumentElement(),"table");
+					List tableMapping = DOMModelUtil.getChildrenByTagName(getDocument().getDocumentElement(),"table"); //$NON-NLS-1$
 					if(tableMapping==null || tableMapping.isEmpty()) {
 						getDocument().getDocumentElement().appendChild(tf.getNode());
 					} else {
@@ -176,7 +177,7 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 	public void moveTableFilterDown(ITableFilter item) {
 		if ( item instanceof TableFilterAdapter ) {
 			TableFilterAdapter tfe = (TableFilterAdapter) item;
-			Node nextSibling = DOMModelUtil.getNextNamedSibling( tfe.getNode(), "table-filter" );
+			Node nextSibling = DOMModelUtil.getNextNamedSibling( tfe.getNode(), "table-filter" ); //$NON-NLS-1$
 			if(nextSibling!=null) {
 				DOMModelUtil.addElementBefore(tfe.getNode().getParentNode(), nextSibling, tfe.getNode());			
 			}
@@ -188,7 +189,7 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 		if ( item instanceof TableFilterAdapter ) {
 			TableFilterAdapter tfe = (TableFilterAdapter) item;
 			
-			Node sibling = DOMModelUtil.getPreviousNamedSibling( tfe.getNode(), "table-filter");
+			Node sibling = DOMModelUtil.getPreviousNamedSibling( tfe.getNode(), "table-filter"); //$NON-NLS-1$
 			if(sibling!=null) {
 				DOMModelUtil.addElementBefore(tfe.getNode().getParentNode(), tfe.getNode(), sibling);			
 			}
@@ -197,11 +198,12 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 	}
 	
 	private List getTableFiltersList() {
-		return DOMModelUtil.getAdaptedElements(getDocument().getDocumentElement(), "table-filter", factory);
+		return DOMModelUtil.getAdaptedElements(getDocument().getDocumentElement(), "table-filter", factory); //$NON-NLS-1$
 	}
 
 	public void unknownNotifyChanged(INodeNotifier notifier, int eventType, Object changedFeature, Object oldValue, Object newValue, int pos) {
-		System.out.println("Unknown change: " + notifier + " " + INodeNotifier.EVENT_TYPE_STRINGS[eventType]);
+		String out = NLS.bind(Messages.DOMREVERSEENGINEERINGDEFINITION_UNKNOWN_CHANGE, notifier, INodeNotifier.EVENT_TYPE_STRINGS[eventType]);
+		System.out.println(out);
 	}
 
 	public void hibernateMappingChanged() {
@@ -220,10 +222,10 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 
 	private List getTypeMappingsList() {
 		List result = new ArrayList();
-		List list = DOMModelUtil.getChildrenByTagName(getDocument().getDocumentElement(),"type-mapping");
+		List list = DOMModelUtil.getChildrenByTagName(getDocument().getDocumentElement(),"type-mapping"); //$NON-NLS-1$
 		for (int i = 0; i < list.size(); i++) {
 			Element item = (Element) list.get(i);
-			List sqllist = DOMModelUtil.getChildrenByTagName(item, "sql-type");
+			List sqllist = DOMModelUtil.getChildrenByTagName(item, "sql-type"); //$NON-NLS-1$
 			for (int j = 0; j < sqllist.size(); j++) {
 				Element item2 = (Element) sqllist.get(j);
 				result.add(factory.adapt((INodeNotifier) item2));
@@ -233,17 +235,17 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 	}
 
 	public ITypeMapping createTypeMapping() {
-		return (ITypeMapping) factory.adapt((INodeNotifier)getDocument().createElement("sql-type"));
+		return (ITypeMapping) factory.adapt((INodeNotifier)getDocument().createElement("sql-type")); //$NON-NLS-1$
 	}
 
 	public void addTypeMapping(ITypeMapping typeMapping) {
 		if ( typeMapping instanceof TypeMappingAdapter ) {
 			TypeMappingAdapter tf = (TypeMappingAdapter) typeMapping;
 			
-			List parentList = DOMModelUtil.getChildrenByTagName(getDocument().getDocumentElement(),"type-mapping");
+			List parentList = DOMModelUtil.getChildrenByTagName(getDocument().getDocumentElement(),"type-mapping"); //$NON-NLS-1$
 			Element parent;
 			if(parentList.isEmpty()) {
-				parent = getDocument().createElement("type-mapping");
+				parent = getDocument().createElement("type-mapping"); //$NON-NLS-1$
 				factory.adapt((INodeNotifier)parent);
 				Node firstChild = getDocument().getDocumentElement().getFirstChild();
 				if(firstChild==null) {
@@ -270,7 +272,7 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 	public void moveTypeMappingDown(ITypeMapping item) {
 		if ( item instanceof TypeMappingAdapter ) {
 			TypeMappingAdapter tfe = (TypeMappingAdapter) item;
-			Node nextSibling = DOMModelUtil.getNextNamedSibling( tfe.getNode(), "sql-type" );
+			Node nextSibling = DOMModelUtil.getNextNamedSibling( tfe.getNode(), "sql-type" ); //$NON-NLS-1$
 			if(nextSibling!=null) {
 				DOMModelUtil.addElementBefore(tfe.getNode().getParentNode(), nextSibling, tfe.getNode());			
 			}			
@@ -281,7 +283,7 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 		if ( item instanceof TypeMappingAdapter ) {
 			TypeMappingAdapter tfe = (TypeMappingAdapter) item;
 			
-			Node sibling = DOMModelUtil.getPreviousNamedSibling( tfe.getNode(), "sql-type");
+			Node sibling = DOMModelUtil.getPreviousNamedSibling( tfe.getNode(), "sql-type"); //$NON-NLS-1$
 			if(sibling!=null) {
 				DOMModelUtil.addElementBefore(tfe.getNode().getParentNode(), tfe.getNode(), sibling);			
 			}
@@ -318,7 +320,7 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 	}
 
 	private List getTablesList() {
-		return DOMModelUtil.getAdaptedElements(getDocument().getDocumentElement(), "table",factory);		
+		return DOMModelUtil.getAdaptedElements(getDocument().getDocumentElement(), "table",factory);		 //$NON-NLS-1$
 	}
 
 	public void tablesChanged(INodeNotifier notifier) {
@@ -334,7 +336,7 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 	}
 
 	public IRevEngTable createTable() {
-		return (IRevEngTable) factory.adapt((INodeNotifier) getDocument().createElement("table"));
+		return (IRevEngTable) factory.adapt((INodeNotifier) getDocument().createElement("table")); //$NON-NLS-1$
 	}
 
 	public void addTable(IRevEngTable retable) {
@@ -365,19 +367,19 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 	}
 
 	public IRevEngColumn createColumn() {
-		return (IRevEngColumn) factory.adapt((INodeNotifier) getDocument().createElement("column"));
+		return (IRevEngColumn) factory.adapt((INodeNotifier) getDocument().createElement("column")); //$NON-NLS-1$
 	}
 
 	public IRevEngColumn createKeyColumn() {
-		return (IRevEngColumn) factory.adapt((INodeNotifier) getDocument().createElement("key-column"));
+		return (IRevEngColumn) factory.adapt((INodeNotifier) getDocument().createElement("key-column")); //$NON-NLS-1$
 	}
 
 	public IRevEngPrimaryKey createPrimaryKey() {
-		return (IRevEngPrimaryKey) factory.adapt((INodeNotifier) getDocument().createElement("primary-key"));
+		return (IRevEngPrimaryKey) factory.adapt((INodeNotifier) getDocument().createElement("primary-key")); //$NON-NLS-1$
 	}
 
 	public IRevEngGenerator createGenerator() {
-		return (IRevEngGenerator) factory.adapt((INodeNotifier) getDocument().createElement("generator"));
+		return (IRevEngGenerator) factory.adapt((INodeNotifier) getDocument().createElement("generator")); //$NON-NLS-1$
 	}
 
 }

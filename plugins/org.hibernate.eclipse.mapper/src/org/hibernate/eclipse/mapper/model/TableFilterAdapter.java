@@ -32,39 +32,39 @@ public class TableFilterAdapter extends DOMAdapter implements ITableFilter {
 	}
 	
 	public void setExclude(Boolean exclude) {
-		setAttribute("exclude", exclude==null?"false":exclude.toString(), "false");					
+		setAttribute("exclude", exclude==null?"false":exclude.toString(), "false");					 //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	public void setMatchCatalog(String catalog) {
-		setAttribute( "match-catalog", catalog, ".*" );
+		setAttribute( "match-catalog", catalog, ".*" ); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void setMatchSchema(String schema) {
-		setAttribute("match-schema", schema, ".*");		
+		setAttribute("match-schema", schema, ".*");		 //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void setMatchName(String name) {
-		setAttribute("match-name", name, null);		
+		setAttribute("match-name", name, null);		 //$NON-NLS-1$
 	}
 
 	public Boolean getExclude() {
-		Node type = getNode().getAttributes().getNamedItem("exclude");
+		Node type = getNode().getAttributes().getNamedItem("exclude"); //$NON-NLS-1$
 		return type == null ? Boolean.FALSE : Boolean.valueOf(type.getNodeValue());
 	}
 
 	public String getMatchCatalog() {
-		Node type = getNode().getAttributes().getNamedItem("match-catalog");
-		return type == null ? ".*" : type.getNodeValue();
+		Node type = getNode().getAttributes().getNamedItem("match-catalog"); //$NON-NLS-1$
+		return type == null ? ".*" : type.getNodeValue(); //$NON-NLS-1$
 	}
 
 	public String getMatchSchema() {
-		Node type = getNode().getAttributes().getNamedItem("match-schema");
-		return type == null ? ".*" : type.getNodeValue();
+		Node type = getNode().getAttributes().getNamedItem("match-schema"); //$NON-NLS-1$
+		return type == null ? ".*" : type.getNodeValue(); //$NON-NLS-1$
 	}
 
 	public String getMatchName() {
-		Node type = getNode().getAttributes().getNamedItem("match-name");
-		return type == null ? ".*" : type.getNodeValue();	
+		Node type = getNode().getAttributes().getNamedItem("match-name"); //$NON-NLS-1$
+		return type == null ? ".*" : type.getNodeValue();	 //$NON-NLS-1$
 	}
 	
 	public void notifyChanged(INodeNotifier notifier, int eventType, Object changedFeature, Object oldValue, Object newValue, int pos) {

@@ -28,10 +28,10 @@ import org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor;
 
 public class RevEngTablesPage extends RevEngFormEditorPart {
 
-	public final static String PART_ID = "tables";
+	public final static String PART_ID = "tables"; //$NON-NLS-1$
 	
 	public RevEngTablesPage(ReverseEngineeringEditor reditor) {
-		super(reditor, PART_ID, "Tables & Columns");			
+		super(reditor, PART_ID, Messages.REVENGTABLESPAGE_TABLES_AND_COLUMNS);			
 	}	
 
 	protected void createFormContent(IManagedForm managedForm) {

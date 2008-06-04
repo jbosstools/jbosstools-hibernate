@@ -32,11 +32,11 @@ public class RevEngParamAdapter extends DOMAdapter implements IRevEngParameter {
 	}
 
 	public String getName() {
-		return getNodeValue("name", "");
+		return getNodeValue("name", "");  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 	public String getValue() {
-		return getNodeValue("value", "");		
+		return getNodeValue("value", "");		  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 	public void notifyChanged(INodeNotifier notifier, int eventType,
@@ -45,11 +45,11 @@ public class RevEngParamAdapter extends DOMAdapter implements IRevEngParameter {
 	}
 
 	public void setName(String value) {
-		setAttribute("name", value, "");		
+		setAttribute("name", value, "");		 //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void setValue(String value) {
-		setAttribute("value", value, "");		
+		setAttribute("value", value, "");		  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 }

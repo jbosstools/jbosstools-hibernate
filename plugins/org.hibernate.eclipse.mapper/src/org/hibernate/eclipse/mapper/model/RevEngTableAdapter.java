@@ -37,25 +37,25 @@ public class RevEngTableAdapter extends DOMAdapter implements IRevEngTable {
 	}
 
 	public String getCatalog() {
-		String attrib = "catalog";
+		String attrib = "catalog"; //$NON-NLS-1$
 		String nullValue = null;		
 		return getNodeValue( attrib, nullValue );
 	}
 
 	public String getSchema() {
-		return getNodeValue("schema", null);
+		return getNodeValue("schema", null); //$NON-NLS-1$
 	}
 
 	public String getClassname() {
-		return getNodeValue("class", null);
+		return getNodeValue("class", null); //$NON-NLS-1$
 	}
 	
 	public String getName() {
-		return getNodeValue("name", null);
+		return getNodeValue("name", null); //$NON-NLS-1$
 	}
 
 	public IRevEngPrimaryKey getPrimaryKey() {
-		String elementName = "primary-key";
+		String elementName = "primary-key"; //$NON-NLS-1$
 		return (IRevEngPrimaryKey) getAdaptedElement( elementName );
 	}
 
@@ -73,32 +73,32 @@ public class RevEngTableAdapter extends DOMAdapter implements IRevEngTable {
 	}
 	
 	private List getColumnList() {
-		return getAdaptedElements( (Element) getNode(), "column" );
+		return getAdaptedElements( (Element) getNode(), "column" ); //$NON-NLS-1$
 	}
 
 	public void notifyChanged(INodeNotifier notifier, int eventType, Object changedFeature, Object oldValue, Object newValue, int pos) {
 		getModel().tablesChanged(notifier);
 		if(changedFeature==null) {
-			firePropertyChange("unknown-changed-feature", oldValue, newValue);
+			firePropertyChange("unknown-changed-feature", oldValue, newValue); //$NON-NLS-1$
 		} else {
 			firePropertyChange(((Node)changedFeature).getNodeName(), oldValue, newValue);
 		}
 	}
 
 	public void setName(String value) {
-		setAttribute("name", value, "");
+		setAttribute("name", value, ""); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void setClassname(String value) {
-		setAttribute("class", value, "");
+		setAttribute("class", value, "");  //$NON-NLS-1$//$NON-NLS-2$
 	}
 	
 	public void setCatalog(String value) {	
-		setAttribute("catalog", value, null);
+		setAttribute("catalog", value, null); //$NON-NLS-1$
 	}
 
 	public void setSchema(String value) {
-		setAttribute("schema", value, null);		
+		setAttribute("schema", value, null);		 //$NON-NLS-1$
 	}
 	
 	public void addColumn(IRevEngColumn revCol) {

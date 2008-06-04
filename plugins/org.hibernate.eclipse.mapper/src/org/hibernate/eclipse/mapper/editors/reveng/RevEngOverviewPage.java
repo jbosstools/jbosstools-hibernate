@@ -39,10 +39,10 @@ import org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor;
 
 public class RevEngOverviewPage extends RevEngFormEditorPart {
 
-	public static final String PART_ID = "overview";
+	public static final String PART_ID = "overview"; //$NON-NLS-1$
 	
 	public RevEngOverviewPage(ReverseEngineeringEditor reditor) {
-		super(reditor, PART_ID, "Overview");
+		super(reditor, PART_ID, Messages.REVENGOVERVIEWPAGE_OVERVIEW);
 		this.reditor = reditor;
 	}
 	
@@ -85,7 +85,7 @@ public class RevEngOverviewPage extends RevEngFormEditorPart {
 	
 	private void createContentsSection() {
 		String sectionTitle;
-		sectionTitle = "Contents";
+		sectionTitle = Messages.REVENGOVERVIEWPAGE_CONTENTS;
 		Section section = createStaticSection(
 							getManagedForm().getToolkit(), 
 							getManagedForm().getForm().getBody(), 
@@ -97,7 +97,7 @@ public class RevEngOverviewPage extends RevEngFormEditorPart {
 		container.setLayout(layout);
 		container.setLayoutData(new TableWrapData(TableWrapData.FILL_GRAB));
 		
-		FormText text = createClient(container, "<form><p>The content of the reveng.xml is made up of three sections:</p><li style=\"image\" value=\"page\" bindent=\"5\"><a href=\"typemappings\">Type Mappings</a>: lists the mappings from a JDBC/SQL type to Hibernate type.</li><li style=\"image\" value=\"page\" bindent=\"5\"><a href=\"tablefilter\">Table filters</a>: lists which tables that should be included or excluded during reverse engineering.</li><li style=\"image\" value=\"page\" bindent=\"5\"><a href=\"tables\">Tables &amp; Columns</a>: explicitly set properties for tables and columns.</li></form>", getManagedForm().getToolkit());
+		FormText text = createClient(container, Messages.REVENGOVERVIEWPAGE_THE_CONTENT, getManagedForm().getToolkit());
 		//text.setImage("page", EclipseImages.getImage(ImageConstants.)); //$NON-NLS-1$
 		
 		section.setClient(container);

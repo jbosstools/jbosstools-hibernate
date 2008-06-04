@@ -77,16 +77,16 @@ public class HibernateXMLContentOutlineConfiguration extends
 		static Map nameToMap = new HashMap();
 		static {
 			//TODO: this will affect any xml provided by hibernatetools...should be configured by contenttype instead.
-			nameToMap.put("many-to-one", ImageConstants.MANYTOONE);
-			nameToMap.put("one-to-many", ImageConstants.ONETOMANY);
-			nameToMap.put("property", ImageConstants.PROPERTY);	
-			nameToMap.put("class", ImageConstants.MAPPEDCLASS);
-			nameToMap.put("subclass", ImageConstants.MAPPEDCLASS);
-			nameToMap.put("joined-subclass", ImageConstants.MAPPEDCLASS);
-			nameToMap.put("union-subclass", ImageConstants.MAPPEDCLASS);
-			nameToMap.put("id", ImageConstants.IDPROPERTY);
-			nameToMap.put("one-to-one", ImageConstants.ONETOONE);
-			nameToMap.put("component", ImageConstants.ONETOONE);
+			nameToMap.put("many-to-one", ImageConstants.MANYTOONE); //$NON-NLS-1$
+			nameToMap.put("one-to-many", ImageConstants.ONETOMANY); //$NON-NLS-1$
+			nameToMap.put("property", ImageConstants.PROPERTY);	 //$NON-NLS-1$
+			nameToMap.put("class", ImageConstants.MAPPEDCLASS); //$NON-NLS-1$
+			nameToMap.put("subclass", ImageConstants.MAPPEDCLASS); //$NON-NLS-1$
+			nameToMap.put("joined-subclass", ImageConstants.MAPPEDCLASS); //$NON-NLS-1$
+			nameToMap.put("union-subclass", ImageConstants.MAPPEDCLASS); //$NON-NLS-1$
+			nameToMap.put("id", ImageConstants.IDPROPERTY); //$NON-NLS-1$
+			nameToMap.put("one-to-one", ImageConstants.ONETOONE); //$NON-NLS-1$
+			nameToMap.put("component", ImageConstants.ONETOONE); //$NON-NLS-1$
 		}
 		
 		public Image getImage(Object element) {
@@ -104,8 +104,8 @@ public class HibernateXMLContentOutlineConfiguration extends
 			if(element instanceof Node) {
 				Node node = (Node) element;
 				String nodeName = node.getNodeName();
-				if(node.getNodeType()==Node.PROCESSING_INSTRUCTION_NODE && "xml".equals(nodeName)) {
-					return "xml (Hibernate Tools)";
+				if(node.getNodeType()==Node.PROCESSING_INSTRUCTION_NODE && "xml".equals(nodeName)) { //$NON-NLS-1$
+					return Messages.XML_HIBERNATE_TOOLS;
 				}
 			}
 			return delegate.getText( element );

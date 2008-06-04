@@ -59,7 +59,7 @@ public class JFaceNodeAdapterForXML extends JFaceNodeAdapter {
 		if(attributes!=null) {
 			Node firstAttribute = attributes.item(0);
 			if(firstAttribute!=null) {
-				return result + " " + firstAttribute.getNodeName() + "=\"" + firstAttribute.getNodeValue() + "\"";
+				return result + " " + firstAttribute.getNodeName() + "=\"" + firstAttribute.getNodeValue() + "\"";  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 			} 
 		} 
 		
@@ -69,8 +69,8 @@ public class JFaceNodeAdapterForXML extends JFaceNodeAdapter {
 	private String getNodeName(Object object) {
 		Node node = (Node) object;
 		String nodeName = node.getNodeName();
-		if(node.getNodeType()==Node.PROCESSING_INSTRUCTION_NODE && "xml".equals(nodeName)) {
-			return "xml (Hibernate Tools)";
+		if(node.getNodeType()==Node.PROCESSING_INSTRUCTION_NODE && "xml".equals(nodeName)) { //$NON-NLS-1$
+			return Messages.XML_HIBERNATE_TOOLS;
 		}
 		return nodeName;
 	}
@@ -96,16 +96,16 @@ public class JFaceNodeAdapterForXML extends JFaceNodeAdapter {
 		
 	static Map nameToMap = new HashMap();
 	static {
-		nameToMap.put("many-to-one", ImageConstants.MANYTOONE);
-		nameToMap.put("one-to-many", ImageConstants.ONETOMANY);
-		nameToMap.put("property", ImageConstants.PROPERTY);	
-		nameToMap.put("class", ImageConstants.MAPPEDCLASS);
-		nameToMap.put("subclass", ImageConstants.MAPPEDCLASS);
-		nameToMap.put("joined-subclass", ImageConstants.MAPPEDCLASS);
-		nameToMap.put("union-subclass", ImageConstants.MAPPEDCLASS);
-		nameToMap.put("id", ImageConstants.IDPROPERTY);
-		nameToMap.put("one-to-one", ImageConstants.ONETOONE);
-		nameToMap.put("component", ImageConstants.ONETOONE);
+		nameToMap.put("many-to-one", ImageConstants.MANYTOONE); //$NON-NLS-1$
+		nameToMap.put("one-to-many", ImageConstants.ONETOMANY); //$NON-NLS-1$
+		nameToMap.put("property", ImageConstants.PROPERTY);	 //$NON-NLS-1$
+		nameToMap.put("class", ImageConstants.MAPPEDCLASS); //$NON-NLS-1$
+		nameToMap.put("subclass", ImageConstants.MAPPEDCLASS); //$NON-NLS-1$
+		nameToMap.put("joined-subclass", ImageConstants.MAPPEDCLASS); //$NON-NLS-1$
+		nameToMap.put("union-subclass", ImageConstants.MAPPEDCLASS); //$NON-NLS-1$
+		nameToMap.put("id", ImageConstants.IDPROPERTY); //$NON-NLS-1$
+		nameToMap.put("one-to-one", ImageConstants.ONETOONE); //$NON-NLS-1$
+		nameToMap.put("component", ImageConstants.ONETOONE); //$NON-NLS-1$
 	}
 	
 	protected Image createImage(Object object) {

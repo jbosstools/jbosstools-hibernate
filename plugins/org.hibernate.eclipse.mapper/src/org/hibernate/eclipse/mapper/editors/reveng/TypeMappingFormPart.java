@@ -42,11 +42,11 @@ public class TypeMappingFormPart extends RevEngSectionPart {
 	}
 
 	protected String getSectionDescription() {
-		return "Type mappings allows you to define which Hibernate type to use for specific JDBC types.";
+		return Messages.TYPEMAPPINGFORMPART_TYPE_MAPPINGS_ALLOWS_YOU_DEFINE_WHICH_HIBERNATE_TYPE;
 	}
 
 	protected String getSectionTitle() {
-		return "Type mappings";
+		return Messages.TYPEMAPPINGFORMPART_TYPE_MAPPINGS;
 	}
 
 	public Control createClient(IManagedForm form) {

@@ -49,7 +49,7 @@ public class CFGXMLContentAssistProcessor extends HibernateContentAssistProcesso
 	
 	protected List getAttributeValueProposals(String attributeName, String matchString, int offset, ContentAssistRequest contentAssistRequest) {
 		String nodeName = contentAssistRequest.getNode().getNodeName();
-		if("property".equals(nodeName) && "name".equals(attributeName)) {
+		if("property".equals(nodeName) && "name".equals(attributeName)) { //$NON-NLS-1$ //$NON-NLS-2$
 			List types = this.extractor.findMatchingPropertyTypes(matchString);
 			
 			List proposals = new ArrayList(types.size() );		
@@ -59,7 +59,7 @@ public class CFGXMLContentAssistProcessor extends HibernateContentAssistProcesso
 			}
 			return proposals;
 		}
-		if("property".equals(nodeName) && "value".equals(attributeName)) {
+		if("property".equals(nodeName) && "value".equals(attributeName)) {  //$NON-NLS-1$//$NON-NLS-2$
 			List types = this.extractor.findMatchingPropertyValues(matchString, contentAssistRequest.getNode());
 			
 			List proposals = new ArrayList(types.size() );		
@@ -70,7 +70,7 @@ public class CFGXMLContentAssistProcessor extends HibernateContentAssistProcesso
 			return proposals;
 		}
 
-		if("mapping".equals(nodeName) && "resource".equals(attributeName)) {
+		if("mapping".equals(nodeName) && "resource".equals(attributeName)) { //$NON-NLS-1$ //$NON-NLS-2$
 
 		}
 		

@@ -55,7 +55,7 @@ public class JavaTypeHandler implements HBMInfoHandler {
 	    String packageName = this.extractor.getPackageName(node);
 	    if(StringHelper.isEmpty(start) && StringHelper.isNotEmpty(packageName)) {
 	    	// In case of an empty string we try and code complete the relevant package
-	    	start = packageName + ".";
+	    	start = packageName + "."; //$NON-NLS-1$
 	    }
 		return CompletionHelper.completeOnJavaTypes(project, settings,packageName, start, offset);            
 	}

@@ -89,7 +89,7 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 		}
 		catch (PartInitException e) {
 			MapperPlugin.getDefault().getLogger().logException(
-					"Could not create graphical viewer", e );
+					Messages.REVERSEENGINEERINGEDITOR_COULD_NOT_CREATE_GRAPHICAL_VIEWER, e );
 		}
 	}
 
@@ -97,26 +97,26 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 		int i = 0;
 		overviewsPage = new RevEngOverviewPage(this);
 		addPage( i, overviewsPage);
-		setPageText(i, "Overview");
+		setPageText(i, Messages.REVERSEENGINEERINGEDITOR_OVERVIEW);
 		pageNameToIndex.put(RevEngOverviewPage.PART_ID, new Integer(i));
 		i++;
 		
 		typeMappingsPage = new RevEngTypeMappingPage( this );
 		addPage( i, typeMappingsPage);
-		setPageText( i, "Type Mappings" );
+		setPageText( i, Messages.REVERSEENGINEERINGEDITOR_TYPE_MAPPINGS );
 		pageNameToIndex.put(RevEngTypeMappingPage.PART_ID, new Integer(i));
 		i++;
 		
 
 		tableFilterPage = new RevEngTableFilterPage( this );
 		addPage( i, tableFilterPage);
-		setPageText( i, "Table Filters" );
+		setPageText( i, Messages.REVERSEENGINEERINGEDITOR_TABLE_FILTERS );
 		pageNameToIndex.put(RevEngTableFilterPage.PART_ID, new Integer(i));		
 		i++;
 		
 		tableProperties = new RevEngTablesPage(this );
 		addPage( i, tableProperties);
-		setPageText(i, "Table && Columns");
+		setPageText(i, Messages.REVERSEENGINEERINGEDITOR_TABLE_COLUMN);
 		pageNameToIndex.put(RevEngTablesPage.PART_ID, new Integer(i));
 		i++;
 		
@@ -217,12 +217,12 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 			}
 			TableFilter tf = new TableFilter();
 			tf.setExclude(Boolean.FALSE);
-			tf.setMatchCatalog(".*");
-			tf.setMatchSchema(".*");
-			tf.setMatchName(".*");
+			tf.setMatchCatalog(".*"); //$NON-NLS-1$
+			tf.setMatchSchema(".*"); //$NON-NLS-1$
+			tf.setMatchName(".*"); //$NON-NLS-1$
 			repository.addTableFilter(tf);
 			if(tableFilters.length==0) {
-				boolean b = MessageDialog.openQuestion(getContainer().getShell(), "No filters defined", "No filters has been defined.\n This can make the reading of the database schema very slow.\n Do you wish to continue reading the database schema ?");
+				boolean b = MessageDialog.openQuestion(getContainer().getShell(), Messages.REVERSEENGINEERINGEDITOR_NO_FILTERS_DEFINED, Messages.REVERSEENGINEERINGEDITOR_NO_FILTERS_HAS_BEEN_DEFINED);
 				if(!b) {
 					return null;
 				}
@@ -238,13 +238,13 @@ public class ReverseEngineeringEditor extends XMLFormEditorPart {
 			
 			return lazyDatabaseSchema;
 		} catch(HibernateException he) {
-			HibernateConsolePlugin.getDefault().showError(getContainer().getShell(), "Error while refreshing database tree", he);
+			HibernateConsolePlugin.getDefault().showError(getContainer().getShell(), Messages.REVERSEENGINEERINGEDITOR_ERROR_WHILE_REFRESHING_DATABASETREE, he);
 			return null;
 		}
 	}
 
 	private ConsoleConfiguration askForConsoleConfiguration() {
-		ChooseConsoleConfigurationDialog dialog = new ChooseConsoleConfigurationDialog(getContainer().getShell(),"");
+		ChooseConsoleConfigurationDialog dialog = new ChooseConsoleConfigurationDialog(getContainer().getShell(),""); //$NON-NLS-1$
 		dialog.prompt();
 		if(StringHelper.isEmpty(dialog.getSelectedConfigurationName())) {
 			return null;

@@ -46,10 +46,10 @@ public class PrimaryKeyDetailsPage extends RevEngDetailsPage implements
 	private IRevEngPrimaryKey primaryKey;
 	
 	protected void buildContents(FormToolkit toolkit, Section section, Composite client) {
-		section.setText("Primary key details");
-		section.setDescription("A primary key can define a generator strategy and alternative columns");
+		section.setText(Messages.PRIMARYKEYDETAILSPAGE_PRIMARY_KEY_DETAILS);
+		section.setDescription(Messages.PRIMARYKEYDETAILSPAGE_PRIMARY_KEY_CAN_DEFINE_GENERATOR_STRATEGY_AND_ALTERNATIVE_COLUMNS);
 				
-		Button createGenerator = toolkit.createButton(client, "Add generator", SWT.NONE);
+		Button createGenerator = toolkit.createButton(client, Messages.PRIMARYKEYDETAILSPAGE_ADD_GENERATOR, SWT.NONE);
 		createGenerator.addSelectionListener(new SelectionAdapter() {
 		
 			public void widgetSelected(SelectionEvent e) {
@@ -57,7 +57,7 @@ public class PrimaryKeyDetailsPage extends RevEngDetailsPage implements
 			}		
 		});
 		
-		Button createColumn = toolkit.createButton(client, "Add column", SWT.NONE);
+		Button createColumn = toolkit.createButton(client, Messages.PRIMARYKEYDETAILSPAGE_ADD_COLUMN, SWT.NONE);
 		createColumn.addSelectionListener(new SelectionAdapter() {
 		
 			public void widgetSelected(SelectionEvent e) {

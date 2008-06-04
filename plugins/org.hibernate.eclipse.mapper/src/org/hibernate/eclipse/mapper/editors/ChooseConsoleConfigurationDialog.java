@@ -42,7 +42,7 @@ public class ChooseConsoleConfigurationDialog extends TitleAreaDialog {
 
     protected Control createDialogArea(Composite parent) {
         Composite composite = (Composite) super.createDialogArea(parent);
-        setTitle("Select a console configuration");
+        setTitle(Messages.CHOOSCONSOLECONFIGURATIONDIALOG_SELECT_CONSOLE_CONFIGURATION);
         //setMessage("");
 
         if (getTitleImageLabel() != null) {
@@ -56,7 +56,7 @@ public class ChooseConsoleConfigurationDialog extends TitleAreaDialog {
 
     protected void configureShell(Shell shell) {
         super.configureShell(shell);
-        shell.setText("Select a console configuration");
+        shell.setText(Messages.CHOOSCONSOLECONFIGURATIONDIALOG_SELECT_CONSOLE_CONFIGURATION);
     }
 
     protected void okPressed() {
@@ -82,7 +82,7 @@ public class ChooseConsoleConfigurationDialog extends TitleAreaDialog {
         panel.setFont(parent.getFont());
 
         Label label = new Label(panel, SWT.NONE);
-        label.setText("Console configuration:");
+        label.setText(Messages.CHOOSCONSOLECONFIGURATIONDIALOG_CONSOLE_CONFIGURATION);
 
         text = new Combo(panel, SWT.BORDER | SWT.LEAD | SWT.DROP_DOWN | SWT.READ_ONLY);
         
@@ -93,7 +93,7 @@ public class ChooseConsoleConfigurationDialog extends TitleAreaDialog {
         	public void modifyText(ModifyEvent e) {
         		Button okButton = getButton(Window.OK);
         		if(okButton != null && !okButton.isDisposed()) {
-        			okButton.setEnabled(!"".equals(text.getText()));
+        			okButton.setEnabled(!"".equals(text.getText())); //$NON-NLS-1$
         		}
         	}
         });

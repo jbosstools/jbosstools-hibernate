@@ -37,12 +37,12 @@ public class SQLTypeContentProvider implements IStructuredContentProvider {
 		
 		if(im instanceof IDOMModel) {
 			IDOMModel model = (IDOMModel)im;
-			List childNodes = DOMModelUtil.getChildrenByTagName(model.getDocument(), "hibernate-reverse-engineering");
+			List childNodes = DOMModelUtil.getChildrenByTagName(model.getDocument(), "hibernate-reverse-engineering"); //$NON-NLS-1$
 			if(childNodes.size()>=1) {
 				Element l = (Element)childNodes.get(0);
-				childNodes = DOMModelUtil.getChildrenByTagName(l, "type-mapping");
+				childNodes = DOMModelUtil.getChildrenByTagName(l, "type-mapping"); //$NON-NLS-1$
 				if(childNodes.size()>=1) {
-					childNodes = DOMModelUtil.getChildrenByTagName(l, "sql-type");
+					childNodes = DOMModelUtil.getChildrenByTagName(l, "sql-type"); //$NON-NLS-1$
 					Object[] o = new Object[childNodes.size()];
 					for (int i = 0; i < childNodes.size(); i++) {
 						o[i] = childNodes.get(i);					

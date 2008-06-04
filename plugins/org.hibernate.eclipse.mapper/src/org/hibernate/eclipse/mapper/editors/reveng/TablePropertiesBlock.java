@@ -90,8 +90,8 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		FormToolkit toolkit = managedForm.getToolkit();
 		Section section = toolkit.createSection( parent, Section.DESCRIPTION | 
 				Section.FOCUS_TITLE | Section.TWISTIE | Section.EXPANDED);
-		section.setText( "Tables & Columns" );
-		section.setDescription( "Explicitly control settings for table & columns for which the defaults is not applicable. Click Add, select the relevant tables & columns and adjust their settings here." );
+		section.setText( Messages.TABLEPROPERTIESBLOCK_TABLES_COLUMNS );
+		section.setDescription( Messages.TABLEPROPERTIESBLOCK_EXPLICITLY_CONTROL_SETTINGS_FOR_TABLE_COLUMNS );
 		section.marginWidth = 10;
 		section.marginHeight = 5;
 		toolkit.createCompositeSeparator( section );
@@ -109,7 +109,7 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		t.setLayoutData( gd );
 		toolkit.paintBordersFor( client );
 		
-		Button btnAdd = toolkit.createButton( client, "Add...", SWT.PUSH );
+		Button btnAdd = toolkit.createButton( client, Messages.TABLEPROPERTIESBLOCK_ADD, SWT.PUSH );
 		btnAdd.addSelectionListener(new SelectionAdapter() {
 		
 			public void widgetSelected(SelectionEvent e) {
@@ -120,7 +120,7 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		gd = new GridData( GridData.VERTICAL_ALIGN_BEGINNING );
 		btnAdd.setLayoutData( gd );
 		
-		Button btnDel = toolkit.createButton( client, "Delete", SWT.PUSH );
+		Button btnDel = toolkit.createButton( client, Messages.TABLEPROPERTIESBLOCK_DELETE, SWT.PUSH );
 		btnDel.addSelectionListener(new SelectionAdapter() {
 		
 			public void widgetSelected(SelectionEvent e) {
@@ -163,8 +163,8 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		Map columns = new HashMap();
 		
 		if(lds!=null) {
-			dialog.setTitle("Add Tables & Columns");
-			dialog.setMessage("Select tables and columns");
+			dialog.setTitle(Messages.TABLEPROPERTIESBLOCK_ADD_TABLES_COLUMNS);
+			dialog.setMessage(Messages.TABLEPROPERTIESBLOCK_SELECT_TABLES_COLUMNS);
 			dialog.setInput(lds);
 			dialog.setContainerMode(true);
 			dialog.open();
@@ -262,7 +262,7 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		        data.grabExcessHorizontalSpace = true;
 		        composite.setData(data);
 		        Button selectButton = createButton(buttonComposite,
-		                IDialogConstants.SELECT_ALL_ID, "Select all children",
+		                IDialogConstants.SELECT_ALL_ID, Messages.TABLEPROPERTIESBLOCK_SELECT_ALL_CHILDREN,
 		                false);
 		        SelectionListener listener = new SelectionAdapter() {
 		            public void widgetSelected(SelectionEvent e) {
@@ -276,7 +276,7 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		        };
 		        selectButton.addSelectionListener(listener);
 		        Button deselectButton = createButton(buttonComposite,
-		                IDialogConstants.DESELECT_ALL_ID, "Deselect all",
+		                IDialogConstants.DESELECT_ALL_ID, Messages.TABLEPROPERTIESBLOCK_DESELECT_ALL,
 		                false);
 		        listener = new SelectionAdapter() {
 		            public void widgetSelected(SelectionEvent e) {
@@ -295,22 +295,22 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 	protected void createToolBarActions(IManagedForm managedForm) {
 		final ScrolledForm form = managedForm.getForm();
 
-		Action haction = new Action( "hor", IAction.AS_RADIO_BUTTON ) {
+		Action haction = new Action( "hor", IAction.AS_RADIO_BUTTON ) { //$NON-NLS-1$
 			public void run() {
 				sashForm.setOrientation( SWT.HORIZONTAL );
 				form.reflow( true );
 			}
 		};
 		haction.setChecked( true );
-		haction.setToolTipText( "Horizontal orientation" );
-		Action vaction = new Action( "ver", IAction.AS_RADIO_BUTTON ) {
+		haction.setToolTipText( Messages.TABLEPROPERTIESBLOCK_HORIZONTAL_ORIENTATION );
+		Action vaction = new Action( "ver", IAction.AS_RADIO_BUTTON ) { //$NON-NLS-1$
 			public void run() {
 				sashForm.setOrientation( SWT.VERTICAL );
 				form.reflow( true );
 			}
 		};
 		vaction.setChecked( false );
-		vaction.setToolTipText( "Vertical orientation" );
+		vaction.setToolTipText( Messages.TABLEPROPERTIESBLOCK_VERTICAL_ORIENTATION );
 		form.getToolBarManager().add( haction );
 		form.getToolBarManager().add( vaction );
 	}

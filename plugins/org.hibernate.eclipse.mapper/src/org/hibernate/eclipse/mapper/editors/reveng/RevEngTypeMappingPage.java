@@ -30,10 +30,10 @@ import org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor;
 
 public class RevEngTypeMappingPage extends RevEngFormEditorPart {
 	
-	public final static String PART_ID = "typemappings";
+	public final static String PART_ID = "typemappings"; //$NON-NLS-1$
 	
 	public RevEngTypeMappingPage(ReverseEngineeringEditor reditor) {
-		super(reditor, PART_ID, "Type Mappings");		
+		super(reditor, PART_ID, Messages.REVENGTYPEMAPPINGPAGE_TYPE_MAPPINGS);		
 	}	
 
 	public void createFormContent(IManagedForm mform) {

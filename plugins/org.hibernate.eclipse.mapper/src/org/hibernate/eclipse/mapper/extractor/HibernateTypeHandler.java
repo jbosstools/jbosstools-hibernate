@@ -55,18 +55,18 @@ public class HibernateTypeHandler implements HBMInfoHandler {
 		List proposals = new ArrayList(types.size() );		
 		for (Iterator iter = types.iterator(); iter.hasNext();) {
 			HibernateTypeDescriptor element = (HibernateTypeDescriptor) iter.next();
-			String extendedinfo = "<b>Hibernate type</b>: " + element.getName();
+			String extendedinfo = Messages.HIBERANTETYPEHANDLER_HIBERNATE_TYPE + element.getName();
 			if(element.getReturnClass()!=null) {
-				extendedinfo += "<br><b>Return class</b>: " + element.getReturnClass();				
+				extendedinfo += Messages.HIBERANTETYPEHANDLER_RETURN_CLASS + element.getReturnClass();				
 			}
 			if(element.getPrimitiveClass()!=null) {
-				extendedinfo += "<br><b>Return primitive</b>: " + element.getPrimitiveClass();
+				extendedinfo += Messages.HIBERANTETYPEHANDLER_RETURN_PRIMITIVE + element.getPrimitiveClass();
 			}
 			proposals.add(new CompletionProposal(element.getName(), offset, start.length(), element.getName().length(), null, null, null, extendedinfo) );
 		}
 		
 		try {
-			IType typeInterface = project.findType("org.hibernate.usertype.CompositeUserType");
+			IType typeInterface = project.findType("org.hibernate.usertype.CompositeUserType"); //$NON-NLS-1$
 			Set alreadyFound = new HashSet();			
 			if (typeInterface != null) {
 				ITypeHierarchy hier = typeInterface.newTypeHierarchy(project, new NullProgressMonitor() );
@@ -74,7 +74,7 @@ public class HibernateTypeHandler implements HBMInfoHandler {
 				this.extractor.generateTypeProposals(start, offset, proposals, alreadyFound, classes,null);				
 			}
 			
-			typeInterface = project.findType("org.hibernate.usertype.UserType");
+			typeInterface = project.findType("org.hibernate.usertype.UserType"); //$NON-NLS-1$
 			if (typeInterface != null) {
 				ITypeHierarchy hier = typeInterface.newTypeHierarchy(project, new NullProgressMonitor() );
 				IType[] classes = hier.getAllSubtypes(typeInterface); // TODO: cache these results ?

@@ -32,28 +32,28 @@ public class RevEngColumnAdapter extends DOMAdapter implements IRevEngColumn {
 	}
 
 	public String getJDBCType() {
-		return getNodeValue("jdbc-type", null);
+		return getNodeValue("jdbc-type", null); //$NON-NLS-1$
 	}
 
 	public String getType() {
-		return getNodeValue("type", null);
+		return getNodeValue("type", null); //$NON-NLS-1$
 	}
 
 	public String getPropertyName() {
-		return getNodeValue("property", null);
+		return getNodeValue("property", null); //$NON-NLS-1$
 	}
 
 	public boolean getExclude() {
-		String nodeValue = getNodeValue("exclude", "false");
+		String nodeValue = getNodeValue("exclude", "false"); //$NON-NLS-1$ //$NON-NLS-2$
 		return nodeValue==null ? false : Boolean.valueOf(nodeValue).booleanValue();
 	}
 
 	public String getName() {
-		return getNodeValue("name", null);
+		return getNodeValue("name", null); //$NON-NLS-1$
 	}
 
 	public void setName(String value) {
-		setAttribute("name", value, "");		
+		setAttribute("name", value, "");		  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 	public void notifyChanged(INodeNotifier notifier, int eventType, Object changedFeature, Object oldValue, Object newValue, int pos) {
@@ -62,19 +62,19 @@ public class RevEngColumnAdapter extends DOMAdapter implements IRevEngColumn {
 	}
 
 	public void setPropertyName(String value) {
-		setAttribute("property", value, "");		
+		setAttribute("property", value, "");		  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 	public void setJDBCType(String value) {
-		setAttribute("jdbc-type", value, "");		
+		setAttribute("jdbc-type", value, "");		  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 	public void setType(String value) {
-		setAttribute("type", value, "");		
+		setAttribute("type", value, "");		 //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void setExcluded(boolean selection) {
-		setAttribute("exclude", ""+selection, "false");		
+		setAttribute("exclude", ""+selection, "false");		  //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
 	}
 
 }
