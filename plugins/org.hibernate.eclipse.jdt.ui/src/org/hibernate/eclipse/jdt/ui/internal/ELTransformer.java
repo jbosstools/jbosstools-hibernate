@@ -8,18 +8,18 @@ public class ELTransformer {
 	 * @return
 	 */
 	static public String removeEL(String hql) {
-		int elStart = hql.indexOf("#{");
-		int next = hql.indexOf("}", elStart);
+		int elStart = hql.indexOf("#{"); //$NON-NLS-1$
+		int next = hql.indexOf("}", elStart); //$NON-NLS-1$
 		
 		while(elStart!=-1 && next!=-1) {
 		  	String result = hql.substring(0, elStart);
-		  	result += ":_" + hql.substring(elStart+2, next).replaceAll("[^\\p{javaJavaIdentifierStart}]","_") + "_";
+		  	result += ":_" + hql.substring(elStart+2, next).replaceAll("[^\\p{javaJavaIdentifierStart}]","_") + "_"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		  	result += hql.substring(next+1); 
 		  	
 		  	hql = result;
 		  	
-			elStart = hql.indexOf("#{");
-			next = hql.indexOf("}", elStart);
+			elStart = hql.indexOf("#{"); //$NON-NLS-1$
+			next = hql.indexOf("}", elStart); //$NON-NLS-1$
 		}
 		
 		return hql;

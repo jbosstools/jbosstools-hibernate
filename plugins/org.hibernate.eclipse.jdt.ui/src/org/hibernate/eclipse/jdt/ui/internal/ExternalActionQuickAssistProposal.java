@@ -47,7 +47,7 @@ public abstract class ExternalActionQuickAssistProposal implements
 			name = null;
 		}
 		
-		proposal = new CompletionProposal("",context.getSelectionLength(),0,context.getSelectionOffset()+context.getSelectionLength(), image, description, null,null);
+		proposal = new CompletionProposal("",context.getSelectionLength(),0,context.getSelectionOffset()+context.getSelectionLength(), image, description, null,null); //$NON-NLS-1$
 	}
 	
 	public String getContents() {

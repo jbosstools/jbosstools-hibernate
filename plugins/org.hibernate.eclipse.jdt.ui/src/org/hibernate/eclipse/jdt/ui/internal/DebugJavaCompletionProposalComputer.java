@@ -48,7 +48,7 @@ public class DebugJavaCompletionProposalComputer implements IJavaCompletionPropo
 	public List computeCompletionProposals(ContentAssistInvocationContext context, IProgressMonitor monitor) {
 		List proposals = new ArrayList();
 		
-		proposals.add( new CompletionProposal("hibernate tools", context.getInvocationOffset(), 7, context.getInvocationOffset()) );
+		proposals.add( new CompletionProposal( "hibernate tools", context.getInvocationOffset(), 7, context.getInvocationOffset()) ); //$NON-NLS-1$
 		CharSequence computeIdentifierPrefix = null;
 		try {
 			computeIdentifierPrefix = context.computeIdentifierPrefix();
@@ -57,13 +57,13 @@ public class DebugJavaCompletionProposalComputer implements IJavaCompletionPropo
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		proposals.add( new CompletionProposal("ctxid: [" + computeIdentifierPrefix + "]", context.getInvocationOffset(), 7, context.getInvocationOffset()) );
-		proposals.add( new CompletionProposal("Class: " + context.getClass(), context.getInvocationOffset() ,7, context.getInvocationOffset()) );
+		proposals.add( new CompletionProposal("ctxid: [" + computeIdentifierPrefix + "]", context.getInvocationOffset(), 7, context.getInvocationOffset()) );  //$NON-NLS-1$//$NON-NLS-2$
+		proposals.add( new CompletionProposal("Class: " + context.getClass(), context.getInvocationOffset() ,7, context.getInvocationOffset()) ); //$NON-NLS-1$
 		if(context instanceof JavaContentAssistInvocationContext) {
 			JavaContentAssistInvocationContext jcaic = (JavaContentAssistInvocationContext) context;
-			proposals.add( new CompletionProposal("Cu: " + jcaic.getCompilationUnit(), context.getInvocationOffset() ,7, context.getInvocationOffset()) );
-			proposals.add( new CompletionProposal("Corectx: " + jcaic.getCoreContext(), context.getInvocationOffset() ,7, context.getInvocationOffset()) );
-			proposals.add( new CompletionProposal("type: " + jcaic.getExpectedType(), context.getInvocationOffset() ,7, context.getInvocationOffset()) );
+			proposals.add( new CompletionProposal("Cu: " + jcaic.getCompilationUnit(), context.getInvocationOffset() ,7, context.getInvocationOffset()) ); //$NON-NLS-1$
+			proposals.add( new CompletionProposal("Corectx: " + jcaic.getCoreContext(), context.getInvocationOffset() ,7, context.getInvocationOffset()) ); //$NON-NLS-1$
+			proposals.add( new CompletionProposal("type: " + jcaic.getExpectedType(), context.getInvocationOffset() ,7, context.getInvocationOffset()) ); //$NON-NLS-1$
 		}
 		
 		proposals.add( new MyCompletionProposal() );
@@ -73,8 +73,8 @@ public class DebugJavaCompletionProposalComputer implements IJavaCompletionPropo
 	public static class MyCompletionProposal implements ICompletionProposal {
 
 		public void apply(IDocument document) {
-			ErrorDialog.openError( null, "My Loce", "Can't get", new Status(Status.ERROR, "bla", 3, "sdfsdf", null) );
-			new CompletionProposal("Test", 2 ,7, 3).apply(document);			
+			ErrorDialog.openError( null, "My Loce", "Can't get", new Status(Status.ERROR, "bla", 3, "sdfsdf", null) );   //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$
+			new CompletionProposal("Test", 2 ,7, 3).apply(document);			 //$NON-NLS-1$
 		}
 
 		public String getAdditionalProposalInfo() {
@@ -86,7 +86,7 @@ public class DebugJavaCompletionProposalComputer implements IJavaCompletionPropo
 		}
 
 		public String getDisplayString() {
-			return JdtUIMessages.DebugJavaCompletionProposalComputer_displayString;
+			return Messages.DEBUGJAVACOMPLETIONPROPOSALCOMPUTER_DISPLAYSTRING;
 		}
 
 		public Image getImage() {

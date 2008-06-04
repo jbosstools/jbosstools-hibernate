@@ -125,18 +125,18 @@ public class SaveQueryEditorListener implements IPropertyListener {
 			final String editorTitle = fromEditorPart.getTitle();
 			
 			final String editor_name = editor instanceof HQLEditor 
-									? JdtUIMessages.SaveQueryEditorListener_hql_editor 
-									: JdtUIMessages.SaveQueryEditorListener_cri_editor;
+									? Messages.SAVEQUERYEDITORLISTENER_HQL_EDITOR 
+									: Messages.SAVEQUERYEDITORLISTENER_CRI_EDITOR;
 			
 			if (isDocChanged){
-				String information_message = NLS.bind(JdtUIMessages.SaveQueryEditorListener_replaceQuestion_confirm, editorTitle);
-				MessageDialog.openInformation(null, JdtUIMessages.SaveQueryEditorListener_replaceTitle_info, information_message);
+				String information_message = NLS.bind(Messages.SAVEQUERYEDITORLISTENER_REPLACEQUESTION_CONFIRM, editorTitle);
+				MessageDialog.openInformation(null, Messages.SAVEQUERYEDITORLISTENER_REPLACETITLE_INFO, information_message);
 				return;
 			}
 			
 			final String newQuery = editor.getQueryString();	
 			
-			final String wizard_title = NLS.bind(JdtUIMessages.SaveQueryEditorListener_refactoringTitle, editor_name);
+			final String wizard_title = NLS.bind(Messages.SAVEQUERYEDITORLISTENER_REFACTORINGTITLE, editor_name);
 			
 			Refactoring ref = new Refactoring(){
 
@@ -152,12 +152,12 @@ public class SaveQueryEditorListener implements IPropertyListener {
 
 				@Override
 				public Change createChange(IProgressMonitor pm){
-					String change_name = NLS.bind(JdtUIMessages.SaveQueryEditorListener_Change_Name, editor_name, editorTitle);
+					String change_name = NLS.bind(Messages.SAVEQUERYEDITORLISTENER_CHANGE_NAME, editor_name, editorTitle);
 					DocumentChange change = new DocumentChange(change_name, doc);
 					TextEdit replaceEdit = new ReplaceEdit(position.x, position.y, newQuery);
 					change.setEdit(replaceEdit);
 					
-					String cc_name = NLS.bind(JdtUIMessages.SaveQueryEditorListener_Composite_Change_Name, editor_name);
+					String cc_name = NLS.bind(Messages.SAVEQUERYEDITORLISTENER_COMPOSITE_CHANGE_NAME, editor_name);
 					final CompositeChange cc = new CompositeChange(cc_name);
 					cc.add(change);
 					return cc;
@@ -165,7 +165,7 @@ public class SaveQueryEditorListener implements IPropertyListener {
 
 				@Override
 				public String getName() {
-					return JdtUIMessages.SaveQueryEditorListener_Composite_Change_Name; 
+					return Messages.SAVEQUERYEDITORLISTENER_COMPOSITE_CHANGE_NAME; 
 				}				
 			};
 			
@@ -181,7 +181,7 @@ public class SaveQueryEditorListener implements IPropertyListener {
 					        layout.numColumns = 1;
 					        layout.verticalSpacing = 9;
 					        Label label = new Label(container, SWT.NULL);
-					        label.setText(NLS.bind(JdtUIMessages.SaveQueryEditorListener_replaceQuestion, editor_name, editorTitle ));
+					        label.setText(NLS.bind(Messages.SAVEQUERYEDITORLISTENER_REPLACEQUESTION, editor_name, editorTitle ));
 					        setControl(container);
 						}						
 					};

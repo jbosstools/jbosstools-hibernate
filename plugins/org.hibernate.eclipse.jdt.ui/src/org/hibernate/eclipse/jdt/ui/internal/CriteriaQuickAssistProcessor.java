@@ -58,7 +58,7 @@ public class CriteriaQuickAssistProcessor extends BasicQuickAssistProcessor  {
 			// position of selection
 			final Point position = new Point( context.getSelectionOffset(), context.getSelectionLength() );
 			result = new IJavaCompletionProposal[1];			
-			result[0] = new ExternalActionQuickAssistProposal(contents, EclipseImages.getImage(ImageConstants.CRITERIA_EDITOR), "Copy to Criteria Editor", context) {
+			result[0] = new ExternalActionQuickAssistProposal(contents, EclipseImages.getImage(ImageConstants.CRITERIA_EDITOR), Messages.CRITERIAQUICKASSISTPROCESSOR_COPY_TO_CRITERIA_EDITOR, context) {
 				public void apply(IDocument target) {
 					//IEditorPart editorPart = HibernateConsolePlugin.getDefault().openCriteriaEditor(getName(), getContents());
 					IEditorPart editorPart = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
@@ -69,7 +69,7 @@ public class CriteriaQuickAssistProcessor extends BasicQuickAssistProcessor  {
 			};
 		}
 		catch (BadLocationException e) {
-			HibernateConsolePlugin.getDefault().logErrorMessage( JdtUIMessages.CriteriaQuickAssistProcessor_errorMessage, e );
+			HibernateConsolePlugin.getDefault().logErrorMessage( Messages.CRITERIAQUICKASSISTPROCESSOR_ERRORMESSAGE, e );
 		}
 		return result;
 	}

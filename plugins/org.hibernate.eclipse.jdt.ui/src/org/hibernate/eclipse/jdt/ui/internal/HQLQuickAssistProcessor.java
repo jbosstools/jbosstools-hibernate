@@ -52,7 +52,7 @@ public class HQLQuickAssistProcessor extends BasicQuickAssistProcessor {
 		final StringLiteral stringLiteral= (StringLiteral) coveringNode;
 		String contents= stringLiteral.getLiteralValue();
 		result = new IJavaCompletionProposal[1];			
-		result[0] = new ExternalActionQuickAssistProposal(contents, EclipseImages.getImage(ImageConstants.HQL_EDITOR), "Copy to HQL Editor", context) {
+		result[0] = new ExternalActionQuickAssistProposal(contents, EclipseImages.getImage(ImageConstants.HQL_EDITOR), Messages.HQLQUICKASSISTPROCESSOR_COPY_TO_HQL_EDITOR, context) {
 			public void apply(IDocument document) {
 				IEditorPart editorPart = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 				ITextEditor[] textEditors = OpenMappingAction.getTextEditors(editorPart);

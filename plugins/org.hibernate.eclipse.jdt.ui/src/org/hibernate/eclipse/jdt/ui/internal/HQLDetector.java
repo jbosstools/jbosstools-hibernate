@@ -34,11 +34,11 @@ public class HQLDetector extends ASTVisitor {
 	}
 
 	public boolean visit(NormalAnnotation node) {
-		if(node.getTypeName().getFullyQualifiedName().endsWith( "NamedQuery" )) {
+		if(node.getTypeName().getFullyQualifiedName().endsWith( "NamedQuery" )) { //$NON-NLS-1$
 			Iterator iterator = node.values().iterator();
 			while ( iterator.hasNext() ) {
 				MemberValuePair element = (MemberValuePair) iterator.next();
-				if(element.getName().getIdentifier().equals("query")) {
+				if(element.getName().getIdentifier().equals("query")) { //$NON-NLS-1$
 					Expression value = element.getValue();
 					if(value instanceof StringLiteral) {
 						StringLiteral sl = (StringLiteral)value;
@@ -74,7 +74,7 @@ public class HQLDetector extends ASTVisitor {
 	}	
 	
 	public boolean visit(MethodInvocation node) {			
-		if(node.getName().getIdentifier().equals( "createQuery" )) {
+		if(node.getName().getIdentifier().equals( "createQuery" )) { //$NON-NLS-1$
 			if(node.arguments().size()==1) {
 				Object object = node.arguments().get(0);
 				if(object instanceof StringLiteral) {

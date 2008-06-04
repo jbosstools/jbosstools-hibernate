@@ -76,7 +76,7 @@ public class HQLJavaCompletionProposalComputer implements IJavaCompletionProposa
 
 					 IHQLCodeAssist hqlEval = new HQLCodeAssist(configuration);
 					 
-					 String query = "";
+					 String query = ""; //$NON-NLS-1$
 					 int stringStart = getStringStart( ctx.getDocument(), ctx.getInvocationOffset() );
 					 int stringEnd = getStringEnd( ctx.getDocument(), ctx.getInvocationOffset() );
 					 query = ctx.getDocument().get(stringStart, stringEnd-stringStart );
@@ -87,10 +87,10 @@ public class HQLJavaCompletionProposalComputer implements IJavaCompletionProposa
 					 proposals = eclipseHQLCompletionCollector.getCompletionProposals();
 				 }
 		} catch(RuntimeException re) {
-			HibernateConsolePlugin.getDefault().logErrorMessage( JdtUIMessages.HQLJavaCompletionProposalComputer_errorMessage, re );
+			HibernateConsolePlugin.getDefault().logErrorMessage( Messages.HQLJAVACOMPLETIONPROPOSALCOMPUTER_ERRORMESSAGE, re );
 		}
 		catch (BadLocationException e) {
-			HibernateConsolePlugin.getDefault().logErrorMessage( JdtUIMessages.HQLJavaCompletionProposalComputer_errorMessage, e );
+			HibernateConsolePlugin.getDefault().logErrorMessage( Messages.HQLJAVACOMPLETIONPROPOSALCOMPUTER_ERRORMESSAGE, e );
 		}
 		
 		return proposals;
