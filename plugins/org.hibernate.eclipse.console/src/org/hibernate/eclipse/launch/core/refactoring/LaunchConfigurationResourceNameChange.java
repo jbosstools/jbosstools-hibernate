@@ -10,10 +10,15 @@
   ******************************************************************************/
 package org.hibernate.eclipse.launch.core.refactoring;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
@@ -71,6 +76,24 @@ public class LaunchConfigurationResourceNameChange extends Change {
 	 * @see org.eclipse.ltk.core.refactoring.Change#perform(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	public Change perform(IProgressMonitor pm) throws CoreException {
+		if (!fLaunchConfiguration.exists()){
+			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+			IWorkspaceRoot root = workspace.getRoot();
+			IPath rootLoacation = root.getLocation();
+			IPath oldConfigLocation = fLaunchConfiguration.getLocation();
+			int matchSegment = oldConfigLocation.matchingFirstSegments(rootLoacation);
+			IPath relativePath = oldConfigLocation.removeFirstSegments(matchSegment);
+			relativePath = relativePath.setDevice(null).makeAbsolute();
+			
+			if (HibernateRefactoringUtil.isAttributeChanged(relativePath.toOSString(), fOldPath)){
+				matchSegment = relativePath.matchingFirstSegments(fOldPath);
+				IPath newLaunchPath = fNewPath.append(relativePath.removeFirstSegments(matchSegment));
+				IFile[] files = root.findFilesForLocation(rootLoacation.append(newLaunchPath));
+				if (files.length > 0){
+					fLaunchConfiguration = DebugPlugin.getDefault().getLaunchManager().getLaunchConfiguration(files[0]);
+				} 
+			} 
+		}
 		fLaunchConfiguration = HibernateRefactoringUtil.updateLaunchConfig(fLaunchConfiguration, fOldPath, fNewPath);			
 		return new LaunchConfigurationResourceNameChange(fLaunchConfiguration, fNewPath, fOldPath);
 	}
