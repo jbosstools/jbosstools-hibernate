@@ -51,19 +51,19 @@ import org.hibernate.eclipse.hqleditor.HQLEditor;
  *
  */
 public class SaveQueryEditorListener implements IPropertyListener {
-	
+
 	public static final String id = "AbstractQueryEditor.ReplaceString";	//$NON-NLS-1$
-	
+
 	public static final int HQLEditor = 0;
-	
+
 	public static final int CriteriaEditor = 1;
-	
+
 	private ITextEditor fromEditorPart;
-	private AbstractQueryEditor editor;	
+	private AbstractQueryEditor editor;
 	private String query;
 	private Point position;
-	
-	public SaveQueryEditorListener(final ITextEditor fromEditorPart, String consoleName, 
+
+	public SaveQueryEditorListener(final ITextEditor fromEditorPart, String consoleName,
 			String query, Point position, int editorNum){
 		this.fromEditorPart = fromEditorPart;
 		this.query = query;
@@ -98,17 +98,17 @@ public class SaveQueryEditorListener implements IPropertyListener {
 			public void partDeactivated(IWorkbenchPart part) {}
 
 			public void partOpened(IWorkbenchPart part) {}
-			
+
 		};
 		fromEditorPart.getEditorSite().getPage().addPartListener(pl);
 	}
-	
+
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IPropertyListener#propertyChanged(java.lang.Object, int)
 	 */
 	public void propertyChanged(Object source, int propId) {
-		
+
 		if (IEditorPart.PROP_DIRTY == propId && !editor.isDirty()){
 			IDocumentProvider docProvider = fromEditorPart.getDocumentProvider();
 
@@ -121,23 +121,23 @@ public class SaveQueryEditorListener implements IPropertyListener {
 			} catch (BadLocationException e1) {
 				//document changed and we can get the exception
 			}
-			
+
 			final String editorTitle = fromEditorPart.getTitle();
-			
-			final String editor_name = editor instanceof HQLEditor 
-									? Messages.SAVEQUERYEDITORLISTENER_HQL_EDITOR 
-									: Messages.SAVEQUERYEDITORLISTENER_CRI_EDITOR;
-			
+
+			final String editor_name = editor instanceof HQLEditor
+									? JdtUiMessages.SaveQueryEditorListener_hql_editor
+									: JdtUiMessages.SaveQueryEditorListener_cri_editor;
+
 			if (isDocChanged){
-				String information_message = NLS.bind(Messages.SAVEQUERYEDITORLISTENER_REPLACEQUESTION_CONFIRM, editorTitle);
-				MessageDialog.openInformation(null, Messages.SAVEQUERYEDITORLISTENER_REPLACETITLE_INFO, information_message);
+				String information_message = NLS.bind(JdtUiMessages.SaveQueryEditorListener_replacequestion_confirm, editorTitle);
+				MessageDialog.openInformation(null, JdtUiMessages.SaveQueryEditorListener_replacetitle_info, information_message);
 				return;
 			}
-			
-			final String newQuery = editor.getQueryString();	
-			
-			final String wizard_title = NLS.bind(Messages.SAVEQUERYEDITORLISTENER_REFACTORINGTITLE, editor_name);
-			
+
+			final String newQuery = editor.getQueryString();
+
+			final String wizard_title = NLS.bind(JdtUiMessages.SaveQueryEditorListener_refactoringtitle, editor_name);
+
 			Refactoring ref = new Refactoring(){
 
 				@Override
@@ -152,12 +152,12 @@ public class SaveQueryEditorListener implements IPropertyListener {
 
 				@Override
 				public Change createChange(IProgressMonitor pm){
-					String change_name = NLS.bind(Messages.SAVEQUERYEDITORLISTENER_CHANGE_NAME, editor_name, editorTitle);
+					String change_name = NLS.bind(JdtUiMessages.SaveQueryEditorListener_change_name, editor_name, editorTitle);
 					DocumentChange change = new DocumentChange(change_name, doc);
 					TextEdit replaceEdit = new ReplaceEdit(position.x, position.y, newQuery);
 					change.setEdit(replaceEdit);
-					
-					String cc_name = NLS.bind(Messages.SAVEQUERYEDITORLISTENER_COMPOSITE_CHANGE_NAME, editor_name);
+
+					String cc_name = NLS.bind(JdtUiMessages.SaveQueryEditorListener_composite_change_name, editor_name);
 					final CompositeChange cc = new CompositeChange(cc_name);
 					cc.add(change);
 					return cc;
@@ -165,10 +165,10 @@ public class SaveQueryEditorListener implements IPropertyListener {
 
 				@Override
 				public String getName() {
-					return Messages.SAVEQUERYEDITORLISTENER_COMPOSITE_CHANGE_NAME; 
-				}				
+					return JdtUiMessages.SaveQueryEditorListener_composite_change_name;
+				}
 			};
-			
+
 			RefactoringWizard wizard = new RefactoringWizard(ref, RefactoringWizard.DIALOG_BASED_USER_INTERFACE){
 				@Override
 				protected void addUserInputPages() {
@@ -181,17 +181,17 @@ public class SaveQueryEditorListener implements IPropertyListener {
 					        layout.numColumns = 1;
 					        layout.verticalSpacing = 9;
 					        Label label = new Label(container, SWT.NULL);
-					        label.setText(NLS.bind(Messages.SAVEQUERYEDITORLISTENER_REPLACEQUESTION, editor_name, editorTitle ));
+					        label.setText(NLS.bind(JdtUiMessages.SaveQueryEditorListener_replacequestion, editor_name, editorTitle ));
 					        setControl(container);
-						}						
+						}
 					};
 					addPage(page);
 				}
 			};
-			
+
 			wizard.setWindowTitle(wizard_title);
 			wizard.setDefaultPageTitle(wizard_title);
-			
+
 			IWorkbenchWindow win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 			if ( new RefactoringStarter().activate(wizard, win.getShell(), wizard_title, RefactoringSaveHelper.SAVE_ALL)){ //$NON-NLS-1$
 				query = newQuery;
@@ -200,9 +200,9 @@ public class SaveQueryEditorListener implements IPropertyListener {
 			} else {
 				if (editor.getDocumentProvider() instanceof TextFileDocumentProvider){
 					((TextFileDocumentProvider)editor.getDocumentProvider()).setCanSaveDocument(editor.getEditorInput());
-				}					
-			}			
-		}			
+				}
+			}
+		}
 	}
 
 }

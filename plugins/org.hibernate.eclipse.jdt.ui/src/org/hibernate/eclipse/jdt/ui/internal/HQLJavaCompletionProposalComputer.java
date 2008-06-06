@@ -45,7 +45,7 @@ public class HQLJavaCompletionProposalComputer implements IJavaCompletionProposa
 
 	HQLCompletionProcessor hqlProcessor;
 	private String errorMessage;
-	
+
 	public HQLJavaCompletionProposalComputer() {
 		super();
 		hqlProcessor = new HQLCompletionProcessor(null);
@@ -66,16 +66,16 @@ public class HQLJavaCompletionProposalComputer implements IJavaCompletionProposa
 	public List computeCompletionProposals(ContentAssistInvocationContext context, IProgressMonitor monitor) {
 		List proposals = new ArrayList();
 		errorMessage = null;
-		
+
 		JavaContentAssistInvocationContext ctx = (JavaContentAssistInvocationContext)context;
-		
+
 		try {
 				 ConsoleConfiguration consoleConfiguration = getConfiguration( ctx.getProject() );
-				 if(consoleConfiguration!=null) {					 
+				 if(consoleConfiguration!=null) {
 					 Configuration configuration = consoleConfiguration!=null?consoleConfiguration.getConfiguration():null;
 
 					 IHQLCodeAssist hqlEval = new HQLCodeAssist(configuration);
-					 
+
 					 String query = ""; //$NON-NLS-1$
 					 int stringStart = getStringStart( ctx.getDocument(), ctx.getInvocationOffset() );
 					 int stringEnd = getStringEnd( ctx.getDocument(), ctx.getInvocationOffset() );
@@ -87,12 +87,12 @@ public class HQLJavaCompletionProposalComputer implements IJavaCompletionProposa
 					 proposals = eclipseHQLCompletionCollector.getCompletionProposals();
 				 }
 		} catch(RuntimeException re) {
-			HibernateConsolePlugin.getDefault().logErrorMessage( Messages.HQLJAVACOMPLETIONPROPOSALCOMPUTER_ERRORMESSAGE, re );
+			HibernateConsolePlugin.getDefault().logErrorMessage( JdtUiMessages.HQLJavaCompletionProposalComputer_errormessage, re );
 		}
 		catch (BadLocationException e) {
-			HibernateConsolePlugin.getDefault().logErrorMessage( Messages.HQLJAVACOMPLETIONPROPOSALCOMPUTER_ERRORMESSAGE, e );
+			HibernateConsolePlugin.getDefault().logErrorMessage( JdtUiMessages.HQLJavaCompletionProposalComputer_errormessage, e );
 		}
-		
+
 		return proposals;
 	}
 
@@ -110,7 +110,7 @@ public class HQLJavaCompletionProposalComputer implements IJavaCompletionProposa
 			}
 		}
 		start++;
-	
+
 		return start;
 	}
 
@@ -136,16 +136,16 @@ public class HQLJavaCompletionProposalComputer implements IJavaCompletionProposa
 		return Collections.EMPTY_LIST;
 	}
 
-	public String getErrorMessage() {	
+	public String getErrorMessage() {
 		return errorMessage;
 	}
 
 	public void sessionEnded() {
-		
+
 	}
 
 	public void sessionStarted() {
-		
+
 	}
 
 }

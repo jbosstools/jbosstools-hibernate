@@ -48,17 +48,17 @@ public class CriteriaQuickAssistProcessor extends BasicQuickAssistProcessor  {
 
 	public IJavaCompletionProposal[] getAssists(IInvocationContext context,
 			IProblemLocation[] locations) throws CoreException {
-		
+
 		IJavaCompletionProposal[] result = new IJavaCompletionProposal[0];
 		if(!hasAssists( context )) return result;
-		
+
 		IDocument document = getDocument( context.getCompilationUnit() );
 		try {
 			String contents = document.get( context.getSelectionOffset(), context.getSelectionLength() );
 			// position of selection
 			final Point position = new Point( context.getSelectionOffset(), context.getSelectionLength() );
-			result = new IJavaCompletionProposal[1];			
-			result[0] = new ExternalActionQuickAssistProposal(contents, EclipseImages.getImage(ImageConstants.CRITERIA_EDITOR), Messages.CRITERIAQUICKASSISTPROCESSOR_COPY_TO_CRITERIA_EDITOR, context) {
+			result = new IJavaCompletionProposal[1];
+			result[0] = new ExternalActionQuickAssistProposal(contents, EclipseImages.getImage(ImageConstants.CRITERIA_EDITOR), JdtUiMessages.CriteriaQuickAssistProcessor_copy_to_criteria_editor, context) {
 				public void apply(IDocument target) {
 					//IEditorPart editorPart = HibernateConsolePlugin.getDefault().openCriteriaEditor(getName(), getContents());
 					IEditorPart editorPart = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
@@ -69,11 +69,11 @@ public class CriteriaQuickAssistProcessor extends BasicQuickAssistProcessor  {
 			};
 		}
 		catch (BadLocationException e) {
-			HibernateConsolePlugin.getDefault().logErrorMessage( Messages.CRITERIAQUICKASSISTPROCESSOR_ERRORMESSAGE, e );
+			HibernateConsolePlugin.getDefault().logErrorMessage( JdtUiMessages.CriteriaQuickAssistProcessor_errormessage, e );
 		}
 		return result;
 	}
-	
+
 	private IDocument getDocument(ICompilationUnit cu) throws JavaModelException {
 		IFile file= (IFile) cu.getResource();
 		IDocument document= JavaUI.getDocumentProvider().getDocument(new FileEditorInput(file));

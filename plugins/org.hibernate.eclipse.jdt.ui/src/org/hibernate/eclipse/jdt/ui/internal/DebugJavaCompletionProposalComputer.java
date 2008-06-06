@@ -47,7 +47,7 @@ public class DebugJavaCompletionProposalComputer implements IJavaCompletionPropo
 
 	public List computeCompletionProposals(ContentAssistInvocationContext context, IProgressMonitor monitor) {
 		List proposals = new ArrayList();
-		
+
 		proposals.add( new CompletionProposal( "hibernate tools", context.getInvocationOffset(), 7, context.getInvocationOffset()) ); //$NON-NLS-1$
 		CharSequence computeIdentifierPrefix = null;
 		try {
@@ -65,7 +65,7 @@ public class DebugJavaCompletionProposalComputer implements IJavaCompletionPropo
 			proposals.add( new CompletionProposal("Corectx: " + jcaic.getCoreContext(), context.getInvocationOffset() ,7, context.getInvocationOffset()) ); //$NON-NLS-1$
 			proposals.add( new CompletionProposal("type: " + jcaic.getExpectedType(), context.getInvocationOffset() ,7, context.getInvocationOffset()) ); //$NON-NLS-1$
 		}
-		
+
 		proposals.add( new MyCompletionProposal() );
 		return proposals;
 	}
@@ -86,7 +86,7 @@ public class DebugJavaCompletionProposalComputer implements IJavaCompletionPropo
 		}
 
 		public String getDisplayString() {
-			return Messages.DEBUGJAVACOMPLETIONPROPOSALCOMPUTER_DISPLAYSTRING;
+			return JdtUiMessages.DebugJavaCompletionProposalComputer_displaystring;
 		}
 
 		public Image getImage() {
@@ -98,7 +98,7 @@ public class DebugJavaCompletionProposalComputer implements IJavaCompletionPropo
 		}
 
 	}
-	
+
 	public List computeContextInformation(ContentAssistInvocationContext context, IProgressMonitor monitor) {
 		// TODO Auto-generated method stub
 		return Collections.EMPTY_LIST;
@@ -111,12 +111,12 @@ public class DebugJavaCompletionProposalComputer implements IJavaCompletionPropo
 
 	public void sessionEnded() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void sessionStarted() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

@@ -40,19 +40,19 @@ public class HQLQuickAssistProcessor extends BasicQuickAssistProcessor {
 
 	public IJavaCompletionProposal[] getAssists(final IInvocationContext context,
 			IProblemLocation[] locations) throws CoreException {
-		
+
 		IJavaCompletionProposal[] result = new IJavaCompletionProposal[0];
 		if(!hasAssists( context )) return result;
-		
+
 		ASTNode coveringNode = context.getCoveringNode();
 		if(!(coveringNode instanceof StringLiteral)) {
 			return result;
 		}
-		
+
 		final StringLiteral stringLiteral= (StringLiteral) coveringNode;
 		String contents= stringLiteral.getLiteralValue();
-		result = new IJavaCompletionProposal[1];			
-		result[0] = new ExternalActionQuickAssistProposal(contents, EclipseImages.getImage(ImageConstants.HQL_EDITOR), Messages.HQLQUICKASSISTPROCESSOR_COPY_TO_HQL_EDITOR, context) {
+		result = new IJavaCompletionProposal[1];
+		result[0] = new ExternalActionQuickAssistProposal(contents, EclipseImages.getImage(ImageConstants.HQL_EDITOR), JdtUiMessages.HQLQuickAssistProcessor_copy_to_hql_editor, context) {
 			public void apply(IDocument document) {
 				IEditorPart editorPart = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 				ITextEditor[] textEditors = OpenMappingAction.getTextEditors(editorPart);
@@ -61,7 +61,7 @@ public class HQLQuickAssistProcessor extends BasicQuickAssistProcessor {
 				new SaveQueryEditorListener(textEditors[0], getName(), getContents(), position, SaveQueryEditorListener.HQLEditor);
 			}
 		};
-		
+
 		return result;
 	}
 }
