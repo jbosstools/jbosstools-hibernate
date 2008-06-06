@@ -38,6 +38,7 @@ import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.UnionSubclass;
+import org.jboss.tools.hibernate.ui.view.UIViewMessages;
 
 public class OrmLabelProvider extends LabelProvider implements IColorProvider, IFontProvider {
 
@@ -48,12 +49,12 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 	public OrmLabelProvider(OrmModelImageVisitor imageVisitor, OrmModelNameVisitor nameVisitor) {
 		super();
 		ormModelImageVisitor = imageVisitor;
-		ormModelNameVisitor = nameVisitor;		
+		ormModelNameVisitor = nameVisitor;
 	}
-	
+
 	public Image getImage(Object element) {
 		ImageDescriptor descriptor = null;
-		
+
 		if (element instanceof RootClass) {
 			descriptor = (ImageDescriptor) ((RootClass) element).accept(ormModelImageVisitor);
 		} else if (element instanceof UnionSubclass) {
@@ -83,7 +84,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 		} else if (element instanceof SimpleValue) {
 			descriptor = (ImageDescriptor)ormModelImageVisitor.visitSimpleValueMapping((SimpleValue) element);
 		} else {
-			return null;			
+			return null;
 		}
 
 		Image image = (Image) imageCache.get(descriptor);
@@ -98,42 +99,42 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 		if (element instanceof RootClass) {
 			String name = (String)ormModelNameVisitor.visitPersistentClass((RootClass)element, null);
 			if (name == null) {
-				return Messages.ORMLABELPROVIDER_ORM_ELEMENT;
+				return UIViewMessages.OrmLabelProvider_orm_element;
 			} else {
 				return name;
 			}
 		} else if (element instanceof Table) {
 			String name = (String)ormModelNameVisitor.visitTable((Table)element, null);
 			if (name == null) {
-				return Messages.ORMLABELPROVIDER_ORM_ELEMENT;
+				return UIViewMessages.OrmLabelProvider_orm_element;
 			} else {
 				return name;
 			}
 		} else if (element instanceof Subclass) {
 				String name = (String)ormModelNameVisitor.visitPersistentClass((Subclass)element, null);
 				if (name == null) {
-					return Messages.ORMLABELPROVIDER_ORM_ELEMENT;
+					return UIViewMessages.OrmLabelProvider_orm_element;
 				} else {
 					return name;
 				}
 		} else if (element instanceof Property) {
 			String name = (String)ormModelNameVisitor.visitPersistentField((Property)element, null);
 			if (name == null) {
-				return Messages.ORMLABELPROVIDER_ORM_ELEMENT;
+				return UIViewMessages.OrmLabelProvider_orm_element;
 			} else {
 				return name;
 			}
 		} else if (element instanceof Column) {
 			String name = (String)ormModelNameVisitor.visitDatabaseColumn((Column)element, cfg);
 			if (name == null) {
-				return Messages.ORMLABELPROVIDER_ORM_ELEMENT;
+				return UIViewMessages.OrmLabelProvider_orm_element;
 			} else {
 				return name;
 			}
 		} else if (element instanceof OneToMany || element instanceof ManyToOne) {
-			String name = Messages.ORMLABELPROVIDER_ELEMENT;
+			String name = UIViewMessages.OrmLabelProvider_element;
 			if (name == null) {
-				return Messages.ORMLABELPROVIDER_ORM_ELEMENT;
+				return UIViewMessages.OrmLabelProvider_orm_element;
 			} else {
 				return name;
 			}
@@ -141,19 +142,19 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 			if (element instanceof DependantValue) {
 				String name = (String)ormModelNameVisitor.visitCollectionKeyMapping((DependantValue)element, null);
 				if (name == null) {
-					return Messages.ORMLABELPROVIDER_ORM_ELEMENT;
+					return UIViewMessages.OrmLabelProvider_orm_element;
 				} else {
 					return name;
 				}
 			} else if (element instanceof Component) {
 				String name = (String)ormModelNameVisitor.visitComponentMapping((Component)element, null);
 				if (name == null) {
-					return Messages.ORMLABELPROVIDER_ORM_ELEMENT;
+					return UIViewMessages.OrmLabelProvider_orm_element;
 				} else {
 					return name;
 				}
 			} else {
-				return Messages.ORMLABELPROVIDER_ELEMENT;
+				return UIViewMessages.OrmLabelProvider_element;
 //				throw unknownElement(element);
 			}
 		} else if (element instanceof String){
@@ -161,16 +162,16 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 		} else {
 			throw unknownElement(element);
 		}
-		
+
 	}
 
 	protected RuntimeException unknownElement(Object element) {
 		if (element != null && element.getClass() != null )
-			return new RuntimeException(Messages.ORMLABELPROVIDER_UNKNOWN_TYPE_OF_ELEMENT_IN_TREE_OF_TYPE + element.getClass().getName());
-		else return new RuntimeException(Messages.ORMLABELPROVIDER_UNKNOWN_TYPE_OF_ELEMENT_IN_TREE_OF_TYPE + element);
-		
+			return new RuntimeException(UIViewMessages.OrmLabelProvider_unknown_type_of_element_in_tree_of_type + element.getClass().getName());
+		else return new RuntimeException(UIViewMessages.OrmLabelProvider_unknown_type_of_element_in_tree_of_type + element);
+
 	}
-	
+
 	public void dispose() {
 		for (Iterator i = imageCache.values().iterator(); i.hasNext();) {
 			((Image) i.next()).dispose();
@@ -184,7 +185,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 		} else if (element instanceof Property) {
 			return Display.getCurrent().getSystemColor(SWT.COLOR_DARK_BLUE);
 		}
-		
+
 		return null;
 	}
 
@@ -197,6 +198,6 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 			return JFaceResources.getFontRegistry().getBold(JFaceResources.getTextFont().getFontData()[0].getName());
 		}*/
 		return null;
-	}	
+	}
 
 }

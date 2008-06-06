@@ -7,7 +7,7 @@
  *
  * Contributors:
  *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
- ******************************************************************************/ 
+ ******************************************************************************/
 package org.jboss.tools.hibernate.ui.view;
 
 import org.eclipse.core.runtime.IStatus;
@@ -18,11 +18,11 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
  * Provides an easy way to log status of events.
- * 
+ *
  * NOTE: It is useful to make the static method getPluginLog()
  * which provides the interface IPluginLog for using it in your code
  * in future
- *  
+ *
  * @author Sergey Vasilyev
  *
  */
@@ -44,7 +44,7 @@ public class BaseUIPlugin extends AbstractUIPlugin {
 	public void logInfo(String message, Throwable t) {
 		LogHelper.logInfo(this, message, t);
 	}
-	
+
 	public void logInfo(String message) {
 		LogHelper.logInfo(this, message);
 	}
@@ -65,6 +65,6 @@ public class BaseUIPlugin extends AbstractUIPlugin {
 		logError(message, t);
 		Shell shell = Display.getDefault().getActiveShell();
 		IStatus s = StatusFactory.getInstance(IStatus.ERROR, this.getBundle().getSymbolicName(), message, t);
-		ErrorDialog.openError(shell, Messages.BASEUIPLUGIN_HIBERNATE_CONSOLE, message, s);				
+		ErrorDialog.openError(shell, UIViewMessages.BaseUIPlugin_hibernate_console, message, s);
 	}
 }

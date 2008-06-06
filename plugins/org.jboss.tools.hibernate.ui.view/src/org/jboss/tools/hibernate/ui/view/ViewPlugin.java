@@ -38,20 +38,20 @@ import org.osgi.framework.BundleContext;
 public class ViewPlugin extends BaseUIPlugin {
 	private static ViewPlugin plugin;
 	private ResourceBundle resourceBundle;
-	
+
 	public static final ResourceBundle BUNDLE_IMAGE = ResourceBundle.getBundle(ViewPlugin.class.getPackage().getName() + ".image"); //$NON-NLS-1$
-	
+
 	public static boolean TRACE = false;
-	public static boolean TRACE_VIEW = false;	
+	public static boolean TRACE_VIEW = false;
 	public static boolean TRACE_WIZARD = false;
-	
+
 	public static final String PLUGIN_ID = "org.jboss.tools.hibernate.view"; //$NON-NLS-1$
 	public static final String autoMappingSettingPrefPage = "autoMappingSettingPrefPage";	 //$NON-NLS-1$
-	
+
 	public ViewPlugin() {
 		super();
 		plugin = this;
-		
+
 		try {
 			resourceBundle = ResourceBundle.getBundle(PLUGIN_ID + ".EditPluginResources"); //$NON-NLS-1$
 		} catch (MissingResourceException x) {
@@ -69,7 +69,7 @@ public class ViewPlugin extends BaseUIPlugin {
 			return ImageDescriptor.getMissingImageDescriptor();
 		}
 	}
-	
+
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 	}
@@ -94,48 +94,48 @@ public class ViewPlugin extends BaseUIPlugin {
 	public ResourceBundle getResourceBundle() {
 		return resourceBundle;
 	}
-	
+
 	public static Shell getActiveWorkbenchShell() {
 		IWorkbenchWindow window = getActiveWorkbenchWindow();
 		if (window != null) {
 			return window.getShell();
 		}
 		return null;
-	}	
+	}
 
 	public static IWorkbenchWindow getActiveWorkbenchWindow() {
 		return getDefault().getWorkbench().getActiveWorkbenchWindow();
 	}
-	
+
 	public static IWorkbenchPage getPage(){
 	    IWorkbench workbench = PlatformUI.getWorkbench();
 	    IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
 	    return window.getActivePage();
 	}
-	
+
 	static {
-		
+
 		String value = Platform.getDebugOption(PLUGIN_ID + "/debug"); //$NON-NLS-1$
 		if (value != null && value.equalsIgnoreCase("true")) TRACE = true; //$NON-NLS-1$
-		
+
 		value = Platform.getDebugOption(PLUGIN_ID + "/debug/view"); //$NON-NLS-1$
 		if (value != null && value.equalsIgnoreCase("true")) TRACE_VIEW = true; //$NON-NLS-1$
-		
+
 		value = Platform.getDebugOption(PLUGIN_ID + "/debug/view/wizard"); //$NON-NLS-1$
 		if (value != null && value.equalsIgnoreCase("true")) TRACE_WIZARD = true;		 //$NON-NLS-1$
-		
+
 	}
-	
+
 	public static void loadPreferenceStoreProperties(Properties properties, String key){
 		IPreferenceStore preferenceStore = ViewPlugin.getDefault().getPreferenceStore();
 		String value = preferenceStore.getString(key);
 		if (value.length() != 0){
-			ByteArrayInputStream bain = new ByteArrayInputStream(value.getBytes());		
+			ByteArrayInputStream bain = new ByteArrayInputStream(value.getBytes());
 			try {
 				properties.load(bain);
 			} catch (IOException e) {
-				getDefault().logError(Messages.VIEWPLUGIN_CANOT_LOAD_PREFERENCE_STORE_PROPERTIES, e);
+				getDefault().logError(UIViewMessages.ViewPlugin_canot_load_preference_store_properties, e);
 			}
 		}
-	}	
+	}
 }
