@@ -29,6 +29,7 @@ import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 import org.hibernate.eclipse.console.workbench.LazyDatabaseSchema;
+import org.hibernate.eclipse.mapper.MapperMessages;
 import org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor;
 
 public class TypeMappingFormPart extends RevEngSectionPart {
@@ -42,11 +43,11 @@ public class TypeMappingFormPart extends RevEngSectionPart {
 	}
 
 	protected String getSectionDescription() {
-		return Messages.TYPEMAPPINGFORMPART_TYPE_MAPPINGS_ALLOWS_YOU_DEFINE_WHICH_HIBERNATE_TYPE;
+		return MapperMessages.TypeMappingFormPart_type_mappings_allows_you_define_which_hibernate_type;
 	}
 
 	protected String getSectionTitle() {
-		return Messages.TYPEMAPPINGFORMPART_TYPE_MAPPINGS;
+		return MapperMessages.TypeMappingFormPart_type_mappings;
 	}
 
 	public Control createClient(IManagedForm form) {
@@ -61,13 +62,13 @@ public class TypeMappingFormPart extends RevEngSectionPart {
 
 			protected String getConsoleConfigurationName() {
 				return configNamePart.getConsoleConfigurationName();
-			}			
+			}
 		};
-				
+
 		GridData gd = new GridData(SWT.FILL,SWT.FILL);
 		gd.heightHint = 400;
 		composite.setLayoutData(gd);
-		
+
 		adaptRecursively( toolkit, composite);
 
 		return composite;

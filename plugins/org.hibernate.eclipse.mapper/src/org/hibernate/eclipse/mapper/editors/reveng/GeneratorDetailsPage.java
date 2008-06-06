@@ -33,38 +33,39 @@ import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.hibernate.eclipse.console.model.IRevEngGenerator;
+import org.hibernate.eclipse.mapper.MapperMessages;
 import org.hibernate.eclipse.mapper.editors.reveng.xpl.FormTextEntry;
 
 public class GeneratorDetailsPage extends RevEngDetailsPage implements IDetailsPage, PropertyChangeListener {
 
 	//private Label label;
 	private FormTextEntry nameEntry;
-	
+
 	private IRevEngGenerator generator;
-	
+
 	protected void buildContents(FormToolkit toolkit, Section section, Composite client) {
-		section.setText(Messages.GENERATORDETAILSPAGE_ID_GENERATOR_DETAILS);
-		section.setDescription(Messages.GENERATORDETAILSPAGE_SET_THE_PROPERTIES_OF_THE_SELECTED_GENERATOR);
-				
-		nameEntry = new FormTextEntry(client, toolkit, Messages.GENERATORDETAILSPAGE_CLASS, SWT.NULL);
+		section.setText(MapperMessages.GeneratorDetailsPage_id_generator_details);
+		section.setDescription(MapperMessages.GeneratorDetailsPage_set_the_properties_of_the_selected_generator);
+
+		nameEntry = new FormTextEntry(client, toolkit, MapperMessages.GeneratorDetailsPage_class, SWT.NULL);
 		nameEntry.setFormEntryListener(new FormTextEntryListenerAdapter() {
 			public void textValueChanged(FormTextEntry entry) {
 				generator.setGeneratorClassName(entry.getValue());
 			}
 		});
-			
+
 	}
 
 	public void selectionChanged(IFormPart part, ISelection selection) {
 		IRevEngGenerator newTable = (IRevEngGenerator) ((IStructuredSelection)selection).getFirstElement();
 		if(generator!=null) {
-			generator.removePropertyChangeListener(this);			
+			generator.removePropertyChangeListener(this);
 		}
 		if(newTable!=null) {
 			newTable.addPropertyChangeListener(this);
 		}
 		generator = newTable;
-		
+
 		update();
 	}
 
@@ -73,7 +74,7 @@ public class GeneratorDetailsPage extends RevEngDetailsPage implements IDetailsP
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {
-		update();		
+		update();
 	}
 
 }

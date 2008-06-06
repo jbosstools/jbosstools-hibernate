@@ -31,6 +31,7 @@ import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.core.internal.provisional.model.IModelStateListenerProposed;
 import org.eclipse.wst.sse.core.internal.provisional.model.IStructuredModelEvent;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMModel;
+import org.hibernate.eclipse.mapper.MapperMessages;
 import org.w3c.dom.Document;
 
 public class HibernateConfigurationForm {
@@ -71,7 +72,7 @@ public class HibernateConfigurationForm {
 	public void createPartControl(Composite cotainer) {
 		this.container = cotainer;
 		managedForm = new ManagedForm( container );
-		getForm().setText( Messages.HIBERNATECONFIGURATIONFORM_HIBERNATE_CONFIGURATION );
+		getForm().setText( MapperMessages.HibernateConfigurationForm_hibernate_configuration );
 
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 2;

@@ -17,19 +17,20 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.eclipse.mapper.MapperMessages;
 
 public class ChooseConsoleConfigurationDialog extends TitleAreaDialog {
-	
+
 	private Combo text;
 
 	String initialDefault;
 	String selectedConfigurationName;
-	
+
 	public ChooseConsoleConfigurationDialog(Shell shell, String initialDefault) {
 		super(shell);
 		this.initialDefault = initialDefault;
 	}
-	
+
     public void prompt() {
     	open();
 
@@ -42,7 +43,7 @@ public class ChooseConsoleConfigurationDialog extends TitleAreaDialog {
 
     protected Control createDialogArea(Composite parent) {
         Composite composite = (Composite) super.createDialogArea(parent);
-        setTitle(Messages.CHOOSCONSOLECONFIGURATIONDIALOG_SELECT_CONSOLE_CONFIGURATION);
+        setTitle(MapperMessages.ChooseConsoleConfigurationDialog_select_console_configuration);
         //setMessage("");
 
         if (getTitleImageLabel() != null) {
@@ -56,7 +57,7 @@ public class ChooseConsoleConfigurationDialog extends TitleAreaDialog {
 
     protected void configureShell(Shell shell) {
         super.configureShell(shell);
-        shell.setText(Messages.CHOOSCONSOLECONFIGURATIONDIALOG_SELECT_CONSOLE_CONFIGURATION);
+        shell.setText(MapperMessages.ChooseConsoleConfigurationDialog_select_console_configuration);
     }
 
     protected void okPressed() {
@@ -82,10 +83,10 @@ public class ChooseConsoleConfigurationDialog extends TitleAreaDialog {
         panel.setFont(parent.getFont());
 
         Label label = new Label(panel, SWT.NONE);
-        label.setText(Messages.CHOOSCONSOLECONFIGURATIONDIALOG_CONSOLE_CONFIGURATION);
+        label.setText(MapperMessages.ChooseConsoleConfigurationDialog_console_configuration);
 
         text = new Combo(panel, SWT.BORDER | SWT.LEAD | SWT.DROP_DOWN | SWT.READ_ONLY);
-        
+
         text.setFocus();
         text.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
                 | GridData.FILL_HORIZONTAL));
@@ -98,13 +99,13 @@ public class ChooseConsoleConfigurationDialog extends TitleAreaDialog {
         	}
         });
         setInitialTextValues(text);
-        
+
     }
 
     private void setInitialTextValues(Combo text) {
         ConsoleConfiguration[] recentWorkspaces = KnownConfigurations.getInstance().getConfigurationsSortedByName();
         for (int i = 0; i < recentWorkspaces.length; ++i) {
-				text.add(recentWorkspaces[i].getName());			
+				text.add(recentWorkspaces[i].getName());
 		}
 
         text.setText(text.getItemCount() > 0 ? text.getItem(0) : initialDefault);

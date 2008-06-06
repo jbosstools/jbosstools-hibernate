@@ -35,78 +35,79 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.forms.widgets.TableWrapData;
 import org.eclipse.ui.forms.widgets.TableWrapLayout;
+import org.hibernate.eclipse.mapper.MapperMessages;
 import org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor;
 
 public class RevEngOverviewPage extends RevEngFormEditorPart {
 
 	public static final String PART_ID = "overview"; //$NON-NLS-1$
-	
+
 	public RevEngOverviewPage(ReverseEngineeringEditor reditor) {
-		super(reditor, PART_ID, Messages.REVENGOVERVIEWPAGE_OVERVIEW);
+		super(reditor, PART_ID, MapperMessages.RevEngOverviewPage_overview);
 		this.reditor = reditor;
 	}
-	
+
 	private final ReverseEngineeringEditor reditor;
 	private ConsoleConfigNamePart configNamePart;
-	
+
 	public void createFormContent(IManagedForm parent) {
 		ScrolledForm form = parent.getForm();
-				
+
 		ColumnLayout layout = new ColumnLayout();
 		layout.maxNumColumns = 2;
-		
+
 		form.getBody().setLayout(layout);
-		
+
 		createConsoleConfigName();
 		createContentsSection();
-		
+
 		getManagedForm().setInput(reditor.getReverseEngineeringDefinition());
-				
+
 	}
 
 	private void createConsoleConfigName() {
 		Composite parent = getManagedForm().getForm().getBody();
-				
+
 		configNamePart = new ConsoleConfigNamePart(parent, getManagedForm(), reditor);
-		
+
 		//GridData gd = new GridData(GridData.FILL_HORIZONTAL|GridData.VERTICAL_ALIGN_BEGINNING);
 		//configNamePart.getSection().setLayoutData(gd);
-		
+
 		getManagedForm().addPart(configNamePart);
-			
+
 	}
-	
+
 	private Section createStaticSection(FormToolkit toolkit, Composite parent, String text) {
 		Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR);
 		section.clientVerticalSpacing = 4;
 		section.setText(text);
 		return section;
 	}
-	
+
 	private void createContentsSection() {
 		String sectionTitle;
-		sectionTitle = Messages.REVENGOVERVIEWPAGE_CONTENTS;
+		sectionTitle = MapperMessages.RevEngOverviewPage_contents;
 		Section section = createStaticSection(
-							getManagedForm().getToolkit(), 
-							getManagedForm().getForm().getBody(), 
+							getManagedForm().getToolkit(),
+							getManagedForm().getForm().getBody(),
 							sectionTitle);
-	
+
 		Composite container = getManagedForm().getToolkit().createComposite(section, SWT.NONE);
 		TableWrapLayout layout = new TableWrapLayout();
 		layout.leftMargin = layout.rightMargin = layout.topMargin = layout.bottomMargin = 0;
 		container.setLayout(layout);
 		container.setLayoutData(new TableWrapData(TableWrapData.FILL_GRAB));
-		
-		FormText text = createClient(container, Messages.REVENGOVERVIEWPAGE_THE_CONTENT, getManagedForm().getToolkit());
+
+		FormText text = createClient(container, MapperMessages.RevEngOverviewPage_the_content, getManagedForm().getToolkit());
 		//text.setImage("page", EclipseImages.getImage(ImageConstants.)); //$NON-NLS-1$
-		
+
 		section.setClient(container);
 		//section.setLayoutData(new TableWrapData(TableWrapData.FILL_GRAB));
 		//section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL,GridData.FILL_VERTICAL));
-	
-		//getManagedForm().addPart(s);		
+
+		//getManagedForm().addPart(s);
 	}
-	
+
 	private FormText createClient(Composite section, String content, FormToolkit toolkit) {
 		FormText text = toolkit.createFormText(section, true);
 		try {
@@ -116,14 +117,14 @@ public class RevEngOverviewPage extends RevEngFormEditorPart {
 		}
 		section.setLayoutData(new TableWrapData(TableWrapData.FILL_GRAB));
 		text.addHyperlinkListener(new IHyperlinkListener() {
-		
+
 			public void linkEntered(HyperlinkEvent e) {}
 
 			public void linkExited(HyperlinkEvent e) {}
 
 			public void linkActivated(HyperlinkEvent e) {
 				String href = (String) e.getHref();
-				getEditor().setActivePage(href);				
+				getEditor().setActivePage(href);
 			}
 		});
 		return text;
@@ -138,7 +139,7 @@ public class RevEngOverviewPage extends RevEngFormEditorPart {
 	}
 
 	public void setConsoleConfigName(String name) {
-		configNamePart.setConsoleConfigName(name);		
+		configNamePart.setConsoleConfigName(name);
 	}
-	
+
 }

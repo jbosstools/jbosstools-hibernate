@@ -31,13 +31,14 @@ import org.eclipse.wst.xml.ui.internal.contentoutline.JFaceNodeAdapter;
 import org.eclipse.wst.xml.ui.internal.contentoutline.JFaceNodeAdapterFactory;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.hibernate.eclipse.mapper.MapperMessages;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 
 /**
  * For xml files in general.
- * 
+ *
  * Adapts a DOM node to a JFace viewer.
  */
 public class JFaceNodeAdapterForXML extends JFaceNodeAdapter {
@@ -54,15 +55,15 @@ public class JFaceNodeAdapterForXML extends JFaceNodeAdapter {
 	 */
 	public String getLabelText(Object object) {
 		String result = getNodeName(object);
-		Node node = (Node) object;		
+		Node node = (Node) object;
 		NamedNodeMap attributes = node.getAttributes();
 		if(attributes!=null) {
 			Node firstAttribute = attributes.item(0);
 			if(firstAttribute!=null) {
 				return result + " " + firstAttribute.getNodeName() + "=\"" + firstAttribute.getNodeValue() + "\"";  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-			} 
-		} 
-		
+			}
+		}
+
 		return result;
 	}
 
@@ -70,7 +71,7 @@ public class JFaceNodeAdapterForXML extends JFaceNodeAdapter {
 		Node node = (Node) object;
 		String nodeName = node.getNodeName();
 		if(node.getNodeType()==Node.PROCESSING_INSTRUCTION_NODE && "xml".equals(nodeName)) { //$NON-NLS-1$
-			return Messages.XML_HIBERNATE_TOOLS;
+			return MapperMessages.xml_hibernate_tools;
 		}
 		return nodeName;
 	}
@@ -92,8 +93,8 @@ public class JFaceNodeAdapterForXML extends JFaceNodeAdapter {
 	public boolean isAdapterForType(Object type) {
 		return type.equals(ADAPTER_KEY);
 	}
-	
-		
+
+
 	static Map nameToMap = new HashMap();
 	static {
 		nameToMap.put("many-to-one", ImageConstants.MANYTOONE); //$NON-NLS-1$
@@ -107,7 +108,7 @@ public class JFaceNodeAdapterForXML extends JFaceNodeAdapter {
 		nameToMap.put("one-to-one", ImageConstants.ONETOONE); //$NON-NLS-1$
 		nameToMap.put("component", ImageConstants.ONETOONE); //$NON-NLS-1$
 	}
-	
+
 	protected Image createImage(Object object) {
 		Node node = (Node) object;
 		if(node.getNodeType()==Node.ELEMENT_NODE) {

@@ -44,65 +44,66 @@ import org.eclipse.wst.xml.ui.internal.contentassist.ContentAssistRequest;
 import org.eclipse.wst.xml.ui.internal.contentassist.XMLRelevanceConstants;
 import org.hibernate.cfg.Environment;
 import org.hibernate.cfg.reveng.TableIdentifier;
+import org.hibernate.eclipse.mapper.MapperMessages;
 import org.hibernate.util.StringHelper;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 /**
  * Helper class that can extract information about a hbm.xml document based on e.g. DOM Nodes.
- * 
+ *
  * @author max
  *
  */
 public class HBMInfoExtractor {
 
 	HibernateTypeDescriptor[] hibernateTypes;
-	
+
 	final Map javaTypeProvider = new HashMap(); // key: element name, value: attribute which contains javaType
 	final Map tableProvider = new HashMap(); // key: element name, value: attribute which contains table
-	
-	/** set of "tagname>attribname", used to decide which attributes we should react to */	
+
+	/** set of "tagname>attribname", used to decide which attributes we should react to */
 	final Map attributeHandlers = new HashMap(); // completes a possible package or classname
 
 	private String[] hibernatePropertyNames;
 	private Map hibernatePropertyValues;
-	
+
 	private HibernateTypeDescriptor[] generatorTypes;
 
 	private HibernateTypeDescriptor[] propertyAccessors;
 
-	
-	
+
+
 	public HBMInfoExtractor() {
 		setupTypeFinder();
 		setupTableFinder();
-		
+
         setupJavaTypeHandlers();
-		
+
         setupPackageHandlers();
-    
+
 		setupFieldsPropertyHandlers();
-		
+
 		setupHibernateTypeHandlers();
-		
+
 		setupHibernateTypeDescriptors();
-		
+
 		setupTableNameHandlers();
 		setupColumnNameHandlers();
 		setupHibernateProperties();
-		
+
 		setupGeneratorClassHandlers();
-		
+
 		setupAccessHandlers();
 	}
 
-	
+
 	String[] TRUE_FALSE = new String[] { "true", "false" }; //$NON-NLS-1$ //$NON-NLS-2$
-	
+
 	private void setupHibernateProperties() {
 		hibernatePropertyNames = extractHibernateProperties();
 		hibernatePropertyValues = new HashMap();
-		
+
 		 hibernatePropertyValues.put("bytecode.provider", new String[] { "cglib", "javassist"} );  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 		 hibernatePropertyValues.put("bytecode.use_reflection_optimizer", TRUE_FALSE ); //$NON-NLS-1$
 		 //hibernatePropertyValues.put("c3p0.acquire_increment", new String[] { } ); //$NON-NLS-1$
@@ -175,7 +176,7 @@ public class HBMInfoExtractor {
 		 hibernatePropertyValues.put("use_identifier_rollback", TRUE_FALSE ); //$NON-NLS-1$
 		 hibernatePropertyValues.put("use_sql_comments", TRUE_FALSE ); //$NON-NLS-1$
 		 //hibernatePropertyValues.put("xml.output_stylesheet]", new String[] { } ); //$NON-NLS-1$
-		
+
 	}
 
 	private String[] extractHibernateProperties() {
@@ -186,7 +187,7 @@ public class HBMInfoExtractor {
 			Field[] fields = cl.getFields();
 			for (int i = 0; i < fields.length; i++) {
 				Field field = fields[i];
-				if(Modifier.isStatic(field.getModifiers() ) && 
+				if(Modifier.isStatic(field.getModifiers() ) &&
 						field.getType().equals(String.class) ) {
 					String str = (String) field.get(cl);
 					if(str.startsWith("hibernate.") ) { //$NON-NLS-1$
@@ -199,7 +200,7 @@ public class HBMInfoExtractor {
 			return propertyNames;
 		} catch (IllegalAccessException iae) {
 			// ignore
-			return new String[0]; 
+			return new String[0];
 		}
 	}
 
@@ -213,7 +214,7 @@ public class HBMInfoExtractor {
 		javaTypeProvider.put("composite-id", "class"); //$NON-NLS-1$ //$NON-NLS-2$
 		javaTypeProvider.put("component", "class"); //$NON-NLS-1$ //$NON-NLS-2$
 		javaTypeProvider.put("composite-element", "class"); //$NON-NLS-1$ //$NON-NLS-2$
-		
+
 		javaTypeProvider.put("many-to-one", "class"); //$NON-NLS-1$ //$NON-NLS-2$
 		javaTypeProvider.put("one-to-many", "class"); //$NON-NLS-1$ //$NON-NLS-2$
 		javaTypeProvider.put("many-to-many", "class"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -222,7 +223,7 @@ public class HBMInfoExtractor {
 		javaTypeProvider.put("key-many-to-one", "class"); //$NON-NLS-1$ //$NON-NLS-2$
 		javaTypeProvider.put("one-to-many", "class"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
-	
+
 	private void setupTableFinder() {
 		tableProvider.put("class", "table"); //$NON-NLS-1$ //$NON-NLS-2$
 		tableProvider.put("join", "table"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -287,7 +288,7 @@ public class HBMInfoExtractor {
 		Collections.sort(types);
 		generatorTypes = (HibernateTypeDescriptor[]) types.toArray(new HibernateTypeDescriptor[types.size()]);
 	}
-	
+
 	private void setupHibernateTypeHandlers() {
 		HBMInfoHandler hibernateTypeFinder = new HibernateTypeHandler(this);
 		attributeHandlers.put("filter-param>type", hibernateTypeFinder); //$NON-NLS-1$
@@ -320,7 +321,7 @@ public class HBMInfoExtractor {
 		attributeHandlers.put("primitive-array>table", hih); //$NON-NLS-1$
 		attributeHandlers.put("synchronize>table", hih);	 //$NON-NLS-1$
 	}
-	
+
 	private void setupColumnNameHandlers() {
 		HBMInfoHandler hih = new ColumnNameHandler(this);
 		attributeHandlers.put("id>column", hih); //$NON-NLS-1$
@@ -347,15 +348,15 @@ public class HBMInfoExtractor {
 		attributeHandlers.put("return-scalar>column", hih); //$NON-NLS-1$
 
 	}
-	
+
 	private void setupAccessHandlers() {
 		List types = new ArrayList();
-		addType("property", Messages.HBMINFOEXTRACTOR_USE_JAVABEAN_ACCESSOR_METHODS, null, types); //$NON-NLS-1$
-		addType("field", Messages.HBMINFOEXTRACTOR_ACCESS_FIELDS_DIRECTLY, null, types); //$NON-NLS-1$
-		addType("noop", Messages.HBMINFOEXTRACTOR_DO_NOT_PERFORM_ANY_ACCESS, null, types); //$NON-NLS-1$
+		addType("property", MapperMessages.HBMInfoExtractor_use_javabean_accessor_methods, null, types); //$NON-NLS-1$
+		addType("field", MapperMessages.HBMInfoExtractor_access_fields_directly, null, types); //$NON-NLS-1$
+		addType("noop", MapperMessages.HBMInfoExtractor_do_not_perform_any_access, null, types); //$NON-NLS-1$
 		Collections.sort(types);
 		propertyAccessors = (HibernateTypeDescriptor[]) types.toArray(new HibernateTypeDescriptor[types.size()]);
-		
+
 		HBMInfoHandler hih = new PropertyAccessHandler(this);
 		attributeHandlers.put("hibernate-mapping>default-access", hih); //$NON-NLS-1$
 		attributeHandlers.put("id>access", hih); //$NON-NLS-1$
@@ -380,9 +381,9 @@ public class HBMInfoExtractor {
 		attributeHandlers.put("nested-composite-element>access", hih); //$NON-NLS-1$
 	}
 
-	
+
 	private void setupFieldsPropertyHandlers() {
-		
+
 		HBMInfoHandler fieldsFinder = new FieldPropertyHandler(this);
 		attributeHandlers.put("version>name", fieldsFinder); //$NON-NLS-1$
 		attributeHandlers.put("timestamp>name", fieldsFinder); //$NON-NLS-1$
@@ -429,7 +430,7 @@ public class HBMInfoExtractor {
 		attributeHandlers.put("composite-id>class", classFinder); //$NON-NLS-1$
 		attributeHandlers.put("key-many-to-one>class", classFinder); //$NON-NLS-1$
 	}
-	
+
 	List findMatchingHibernateTypes(String item) {
 		return findInTypes( item, hibernateTypes );
 	}
@@ -448,7 +449,7 @@ public class HBMInfoExtractor {
 		}
 		return l;
 	}
-	
+
 	public List findMatchingGenerators(String start) {
 		return findInTypes(start, generatorTypes);
 	}
@@ -475,7 +476,7 @@ public class HBMInfoExtractor {
 	/**
 	 * @param holder
 	 * @param root TODO
-	 * @return nearest package attribute, null if none found. 
+	 * @return nearest package attribute, null if none found.
 	 */
 	protected String getPackageName(Node root) {
 		if(root!=null) {
@@ -488,10 +489,10 @@ public class HBMInfoExtractor {
 				Node att = attributes.item(count);
 				if("package".equals(att.getNodeName() ) ) { //$NON-NLS-1$
 					return att.getNodeValue();
-				}	
-			}			
+				}
+			}
 		}
-		return null;		
+		return null;
 	}
 
 	protected boolean beginsWith(String aString, String prefix) {
@@ -505,11 +506,11 @@ public class HBMInfoExtractor {
 	void generateTypeProposals(String matchString, int offset, List proposals, Set alreadyFound, IType[] classes, String filterPackage) throws JavaModelException {
 		for (int j = 0; j < classes.length; j++) {
 			IType type = classes[j];
-			if (!Flags.isAbstract(type.getFlags() ) && (filterPackage==null || !type.getFullyQualifiedName().startsWith(filterPackage)) ) {				
+			if (!Flags.isAbstract(type.getFlags() ) && (filterPackage==null || !type.getFullyQualifiedName().startsWith(filterPackage)) ) {
 				String fullName = type.getFullyQualifiedName();
 				String shortName = type.getElementName();
 				if(alreadyFound.contains(fullName) ) {
-					continue;							
+					continue;
 				} else {
 					alreadyFound.add(fullName);
 				}
@@ -524,7 +525,7 @@ public class HBMInfoExtractor {
 	}
 
 
-	
+
 	private void addType(String name, String returnClass, String primitiveClass, Collection hibernateTypes) {
 		hibernateTypes.add(new HibernateTypeDescriptor(name, returnClass, primitiveClass) );
 	}
@@ -541,40 +542,40 @@ public class HBMInfoExtractor {
 
 	/**
 	 * @param node
-	 * @return the name of the nearest type from the node or null if none found. 
+	 * @return the name of the nearest type from the node or null if none found.
 	 */
 	private String getNearestType(Node node) {
 		Map map = javaTypeProvider;
-		
+
 		if(node==null) return null;
-		
+
 		while(!map.containsKey(node.getNodeName() ) ) {
-			node = node.getParentNode();			
+			node = node.getParentNode();
 			if(node==null) return null;
 		}
-		
+
 		String attributeName = (String) map.get(node.getNodeName() );
 		NamedNodeMap attributes = node.getAttributes();
-		
+
 		Node att = attributes.getNamedItem(attributeName);
 		if(att!=null && attributeName.equals(att.getNodeName() ) ) {
 			String typename = att.getNodeValue();
 			if(typename!=null && typename.indexOf('.')<0) {
 				String packageName = getPackageName(node);
 				if(packageName!=null) {
-					typename = packageName + "." + typename; //$NON-NLS-1$					
+					typename = packageName + "." + typename; //$NON-NLS-1$
 				}
 			}
 			return typename;
 		}
-				
+
 		return null;
 	}
 
 	public String getNearestType(IJavaProject project, Node parentNode) {
 		String typename = getNearestType(parentNode);
 		if(typename!=null) return typename;
-		
+
 		try {
 			if("component".equals(parentNode.getNodeName())) { // probably need to integrate this into extractor? //$NON-NLS-1$
 				Node componentPropertyNodeName = parentNode.getAttributes().getNamedItem("name"); //$NON-NLS-1$
@@ -591,13 +592,13 @@ public class HBMInfoExtractor {
 							if(!StringHelper.isEmpty(qualifier)) {
 								simpleName = Signature.toQualifiedName(new String[] { qualifier, simpleName });
 							}
-							
+
 							String[][] possibleTypes = null;
-							possibleTypes = parentType.resolveType(simpleName);								
+							possibleTypes = parentType.resolveType(simpleName);
 							if(possibleTypes != null && possibleTypes.length>0) {
 								typename = Signature.toQualifiedName(possibleTypes[0]);
 							}
-							
+
 						}
 					}
 				}
@@ -611,39 +612,39 @@ public class HBMInfoExtractor {
 
 	public TableIdentifier getNearestTableName(Node node) {
 		Map map = tableProvider;
-		
+
 		if(node==null) return null;
-		
+
 		while(!map.containsKey(node.getNodeName() ) ) {
-			node = node.getParentNode();			
+			node = node.getParentNode();
 			if(node==null) return null;
 		}
-		
+
 		String attributeName = (String) map.get(node.getNodeName() );
 		NamedNodeMap attributes = node.getAttributes();
-		
+
 		Node att = attributes.getNamedItem(attributeName);
 		if(att!=null && attributeName.equals(att.getNodeName() ) ) {
 			String typename = att.getNodeValue();
 			String catalog = null;
 			String schema = null;
-			
+
 			Node namedItem = attributes.getNamedItem("catalog"); //$NON-NLS-1$
 			if(namedItem!=null) {
 				catalog = namedItem.getNodeValue();
 			}
-			
+
 			namedItem = attributes.getNamedItem("schema"); //$NON-NLS-1$
 			if(namedItem!=null) {
 				schema = namedItem.getNodeValue();
 			}
-			
+
 			return new TableIdentifier(catalog,schema,typename);
 		}
-				
+
 		return null;
 	}
-	
+
 	public IType getNearestTypeJavaElement(IJavaProject project, Node currentNode) {
 		String nearestType = getNearestType(project, currentNode);
 		if(nearestType!=null) {
@@ -665,15 +666,15 @@ public class HBMInfoExtractor {
 
 	public List findMatchingPropertyValues(String matchString, Node node) {
 		if(node==null) return Collections.EMPTY_LIST;
-		
+
 		NamedNodeMap attributes = node.getAttributes();
 		Node namedItem = attributes.getNamedItem("name"); //$NON-NLS-1$
 		String propName = namedItem.getNodeValue();
 		if(propName.startsWith("hibernate.")) { //$NON-NLS-1$
 			propName = propName.substring("hibernate.".length()); //$NON-NLS-1$
-		}		
+		}
 		String[] strings = (String[]) hibernatePropertyValues.get(propName);
-		if(strings==null) { 
+		if(strings==null) {
 			return Collections.EMPTY_LIST;
 		} else {
 			List matches = new ArrayList(strings.length);
@@ -681,7 +682,7 @@ public class HBMInfoExtractor {
 				String string = strings[i];
 				if(string.startsWith(matchString)) {
 					matches.add(string);
-				}		
+				}
 			}
 
 			return  matches;

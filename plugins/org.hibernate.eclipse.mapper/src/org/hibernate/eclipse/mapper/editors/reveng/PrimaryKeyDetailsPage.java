@@ -36,38 +36,39 @@ import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.hibernate.eclipse.console.model.IRevEngPrimaryKey;
+import org.hibernate.eclipse.mapper.MapperMessages;
 
 public class PrimaryKeyDetailsPage extends RevEngDetailsPage implements
 		IDetailsPage, PropertyChangeListener {
 
 
 	//	private Label label;
-	
+
 	private IRevEngPrimaryKey primaryKey;
-	
+
 	protected void buildContents(FormToolkit toolkit, Section section, Composite client) {
-		section.setText(Messages.PRIMARYKEYDETAILSPAGE_PRIMARY_KEY_DETAILS);
-		section.setDescription(Messages.PRIMARYKEYDETAILSPAGE_PRIMARY_KEY_CAN_DEFINE_GENERATOR_STRATEGY_AND_ALTERNATIVE_COLUMNS);
-				
-		Button createGenerator = toolkit.createButton(client, Messages.PRIMARYKEYDETAILSPAGE_ADD_GENERATOR, SWT.NONE);
+		section.setText(MapperMessages.PrimaryKeyDetailsPage_primary_key_details);
+		section.setDescription(MapperMessages.PrimaryKeyDetailsPage_primary_key_can_define_generator_strategy_and_alternative_columns);
+
+		Button createGenerator = toolkit.createButton(client, MapperMessages.PrimaryKeyDetailsPage_add_generator, SWT.NONE);
 		createGenerator.addSelectionListener(new SelectionAdapter() {
-		
+
 			public void widgetSelected(SelectionEvent e) {
 				handleAddGenerator();
-			}		
+			}
 		});
-		
-		Button createColumn = toolkit.createButton(client, Messages.PRIMARYKEYDETAILSPAGE_ADD_COLUMN, SWT.NONE);
+
+		Button createColumn = toolkit.createButton(client, MapperMessages.PrimaryKeyDetailsPage_add_column, SWT.NONE);
 		createColumn.addSelectionListener(new SelectionAdapter() {
-		
+
 			public void widgetSelected(SelectionEvent e) {
 				handleAddColumn();
-			}		
+			}
 		});
 	}
 
 	protected void handleAddColumn() {
-		primaryKey.addColumn();		
+		primaryKey.addColumn();
 	}
 
 	protected void handleAddGenerator() {
@@ -79,23 +80,23 @@ public class PrimaryKeyDetailsPage extends RevEngDetailsPage implements
 	public void selectionChanged(IFormPart part, ISelection selection) {
 		IRevEngPrimaryKey newParam = (IRevEngPrimaryKey) ((IStructuredSelection)selection).getFirstElement();
 		if(primaryKey!=null) {
-			primaryKey.removePropertyChangeListener(this);			
+			primaryKey.removePropertyChangeListener(this);
 		}
 		if(newParam!=null) {
 			newParam.addPropertyChangeListener(this);
 		}
-		
+
 		primaryKey = newParam;
-		
+
 		update();
 	}
 
 	private void update() {
-		
+
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {
-		update();		
+		update();
 	}
 
 }

@@ -32,6 +32,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
+import org.hibernate.eclipse.mapper.MapperMessages;
 import org.hibernate.eclipse.mapper.MapperPlugin;
 import org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor;
 import org.hibernate.util.StringHelper;
@@ -40,8 +41,8 @@ public class ConsoleConfigNamePart extends RevEngSectionPart {
 
 	private CCombo text;
 	private ReverseEngineeringEditor re;
-	
-	
+
+
 	public ConsoleConfigNamePart(Composite parent, IManagedForm form, ReverseEngineeringEditor re) {
 		super(parent,form);
 		this.re = re;
@@ -55,18 +56,18 @@ public class ConsoleConfigNamePart extends RevEngSectionPart {
 					initialConfg = re.getHibernateNature().getDefaultConsoleConfigurationName();
 				}
 			} catch (CoreException e) {
-				MapperPlugin.getDefault().getLogger().logException(Messages.CONSOLECONFIGNAMEPART_PROBLEM_WHEN_TRYING_TO_HIBERNATE_PROJECT_INFO,e);
+				MapperPlugin.getDefault().getLogger().logException(MapperMessages.ConsoleConfigNamePart_problem_when_trying_to_hibernate_project_info,e);
 			}
-			
+
 			text.setText(initialConfg);
 		}
 		return false;
 	}
-	
+
 	public void dispose() {
-		
+
 	}
-	
+
 	Control createClient(IManagedForm form) {
 		FormToolkit toolkit = form.getToolkit();
 		Composite composite = toolkit.createComposite(getSection());
@@ -74,31 +75,31 @@ public class ConsoleConfigNamePart extends RevEngSectionPart {
 		text = new CCombo(composite, SWT.FLAT);
 		text.setEditable(false);
 		adaptRecursively(toolkit, text);
-		
+
 		ConsoleConfiguration[] cfg = KnownConfigurations.getInstance().getConfigurationsSortedByName();
 		String[] names = new String[cfg.length];
 		for (int i = 0; i < cfg.length; i++) {
 			ConsoleConfiguration configuration = cfg[i];
 			names[i] = configuration.getName();
 		}
-		text.setItems(names);		
-		
+		text.setItems(names);
+
 		return composite;
 	}
-	
+
 	protected String getSectionDescription() {
-		return Messages.CONSOLECONFIGNAMEPART_SELECT_CONSOLE_CONFIGURATION;
+		return MapperMessages.ConsoleConfigNamePart_select_console_configuration;
 	}
-	
+
 	protected String getSectionTitle() {
-		return Messages.CONSOLECONFIGNAMEPART_CONSOLE_CONFIGURATION;
+		return MapperMessages.ConsoleConfigNamePart_console_configuration;
 	}
-	
+
 	String getConsoleConfigName() {
 		return text.getText();
 	}
 
 	public void setConsoleConfigName(String name) {
-		text.setText( name );		
+		text.setText( name );
 	}
 }

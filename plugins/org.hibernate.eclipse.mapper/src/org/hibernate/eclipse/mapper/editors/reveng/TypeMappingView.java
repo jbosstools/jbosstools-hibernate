@@ -45,6 +45,7 @@ import org.hibernate.eclipse.console.wizards.TypeMappingLabelProvider;
 import org.hibernate.eclipse.console.workbench.DeferredContentProvider;
 import org.hibernate.eclipse.console.workbench.LazyDatabaseSchema;
 import org.hibernate.eclipse.console.workbench.xpl.AnyAdaptableLabelProvider;
+import org.hibernate.eclipse.mapper.MapperMessages;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
 
@@ -59,7 +60,7 @@ public abstract class TypeMappingView extends TreeToTableComposite {
 	private TableViewer tableViewer;
 
 	private IReverseEngineeringDefinition revEngDef;
-	
+
 	public void setModel(IReverseEngineeringDefinition revEngDef) {
 		this.revEngDef = revEngDef;
 		tableViewer.setInput( revEngDef );
@@ -94,8 +95,8 @@ public abstract class TypeMappingView extends TreeToTableComposite {
 		result.setCellModifier( new TypeMappingCellModifier( result ) );
 		result.setLabelProvider( new TypeMappingLabelProvider() );
 		result.setContentProvider( new TypeMappingContentProvider( result ) );
-		
-		
+
+
 		return result;
 	}
 
@@ -132,7 +133,7 @@ public abstract class TypeMappingView extends TreeToTableComposite {
 					while ( iter.hasNext() ) {
 						Column column = (Column) iter.next();
 						createTypeMapping(column, column.getSqlTypeCode());
-					}					
+					}
 				} else {
 					createDefaultSqlTypeMapping();
 				}
@@ -145,7 +146,7 @@ public abstract class TypeMappingView extends TreeToTableComposite {
 	private void createTypeMapping(Column col, Integer sqlTypeCode) {
 		if(sqlTypeCode!=null) {
 			ITypeMapping typeMapping = revEngDef.createTypeMapping();
-			
+
 			typeMapping.setJDBCType(JDBCToHibernateTypeHelper.getJDBCTypeName(sqlTypeCode.intValue()));
 			int length = col.getLength();
 			int precision = col.getPrecision();
@@ -154,9 +155,9 @@ public abstract class TypeMappingView extends TreeToTableComposite {
 			typeMapping.setHibernateType(JDBCToHibernateTypeHelper.getPreferredHibernateType(sqlTypeCode.intValue(), length, precision, scale, nullability, false));
 			if(JDBCToHibernateTypeHelper.typeHasLength(sqlTypeCode.intValue())) {
 				if(length!=0 && Column.DEFAULT_LENGTH!=length) {
-					typeMapping.setLength(new Integer(length));		
+					typeMapping.setLength(new Integer(length));
 				}
-			} 
+			}
 			if(JDBCToHibernateTypeHelper.typeHasScaleAndPrecision(sqlTypeCode.intValue())) {
 				if(precision!=0 && Column.DEFAULT_PRECISION!=precision) {
 					typeMapping.setPrecision(new Integer(precision));
@@ -177,10 +178,10 @@ public abstract class TypeMappingView extends TreeToTableComposite {
 		revEngDef.addTypeMapping(createTypeMapping);
 	}
 
-	
+
 
 	protected String[] getAddButtonLabels() {
-		return new String[] { Messages.TYPEMAPPINGVIEW_ADD };
+		return new String[] { MapperMessages.TypeMappingView_add };
 	}
 
 	protected void handleAddButtonPressed(int i) {
@@ -189,7 +190,7 @@ public abstract class TypeMappingView extends TreeToTableComposite {
 			doAdd();
 			break;
 		default:
-			throw new IllegalArgumentException( i + Messages.TYPEMAPPINGVIEW_NOT_KNOWN_BUTTON );
+			throw new IllegalArgumentException( i + MapperMessages.TypeMappingView_not_known_button );
 		}
 	}
 
@@ -203,9 +204,9 @@ public abstract class TypeMappingView extends TreeToTableComposite {
 		rightTable
 				.setSelection( Math.min( sel, rightTable.getItemCount() - 1 ) );
 	}
-	
+
 	protected void doRemoveAll() {
-		if(MessageDialog.openQuestion( getShell(), Messages.TYPEMAPPINGVIEW_REMOVE_ALL_MAPPINGS , Messages.TYPEMAPPINGVIEW_DO_YOU_WANT_TO_REMOVE_ALL_MAPPINGS)) {
+		if(MessageDialog.openQuestion( getShell(), MapperMessages.TypeMappingView_remove_all_mappings, MapperMessages.TypeMappingView_do_you_want_to_remove_all_mappings)) {
 			revEngDef.removeAllTypeMappings();
 		}
 	}
@@ -225,39 +226,39 @@ public abstract class TypeMappingView extends TreeToTableComposite {
 			revEngDef.moveTypeMappingUp( item );
 		}
 	}
-	
+
 	protected void createTableColumns(org.eclipse.swt.widgets.Table table) {
-		TableColumn column = new TableColumn(table, SWT.CENTER, 0);		
-		column.setText(Messages.TYPEMAPPINGVIEW_JDBC_TYPE);
+		TableColumn column = new TableColumn(table, SWT.CENTER, 0);
+		column.setText(MapperMessages.TypeMappingView_jdbc_type);
 		column.setWidth(100);
-		
+
 		column = new TableColumn(table, SWT.LEFT, 1);
-		column.setText(Messages.TYPEMAPPINGVIEW_HIBERNATE_TYPE);
+		column.setText(MapperMessages.TypeMappingView_hibernate_type);
 		column.setWidth(150);
-		
+
 		column = new TableColumn(table, SWT.LEFT, 2);
-		column.setText(Messages.TYPEMAPPINGVIEW_LENGTH);
+		column.setText(MapperMessages.TypeMappingView_length);
 		column.setWidth(100);
 
 		column = new TableColumn(table, SWT.LEFT, 3);
-		column.setText(Messages.TYPEMAPPINGVIEW_SCALE);
+		column.setText(MapperMessages.TypeMappingView_scale);
 		column.setWidth(100);
-		
+
 		column = new TableColumn(table, SWT.LEFT, 4);
-		column.setText(Messages.TYPEMAPPINGVIEW_PRECISION);
+		column.setText(MapperMessages.TypeMappingView_precision);
 		column.setWidth(100);
-		
+
 		column = new TableColumn(table, SWT.LEFT, 5);
-		column.setText(Messages.TYPEMAPPINGVIEW_NOT_NULL);
+		column.setText(MapperMessages.TypeMappingView_not_null);
 		column.setWidth(75);
 	}
 
 	protected String getTableTitle() {
-		return Messages.TYPEMAPPINGVIEW_TYPE_MAPPINGS;
+		return MapperMessages.TypeMappingView_type_mappings;
 	}
-	
+
 	protected String getTreeTitle() {
-		return Messages.TYPEMAPPINGVIEW_DATABASE_SCHEMA;
+		return MapperMessages.TypeMappingView_database_schema;
 	}
-	
+
 }

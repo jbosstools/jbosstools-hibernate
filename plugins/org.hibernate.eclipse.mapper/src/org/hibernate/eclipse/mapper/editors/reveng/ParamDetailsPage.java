@@ -33,6 +33,7 @@ import org.eclipse.ui.forms.IFormPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.hibernate.eclipse.console.model.IRevEngParameter;
+import org.hibernate.eclipse.mapper.MapperMessages;
 import org.hibernate.eclipse.mapper.editors.reveng.xpl.FormTextEntry;
 
 public class ParamDetailsPage extends RevEngDetailsPage implements IDetailsPage, PropertyChangeListener {
@@ -40,40 +41,40 @@ public class ParamDetailsPage extends RevEngDetailsPage implements IDetailsPage,
 	//	private Label label;
 	private FormTextEntry nameEntry;
 	private FormTextEntry valueEntry;
-	
+
 	private IRevEngParameter param;
-	
+
 	protected void buildContents(FormToolkit toolkit, Section section, Composite client) {
-		section.setText(Messages.PARAMDETAILSPAGE_GENERATOR_PARAMETER_DETAILS);
-		section.setDescription(Messages.PARAMDETAILSPAGE_SET_THE_PROPERTIES_OF_THE_SELECTED_PARAMETER);
-				
-		nameEntry = new FormTextEntry(client, toolkit, Messages.PARAMDETAILSPAGE_NAME, SWT.NULL);
+		section.setText(MapperMessages.ParamDetailsPage_generator_parameter_details);
+		section.setDescription(MapperMessages.ParamDetailsPage_set_the_properties_of_the_selected_parameter);
+
+		nameEntry = new FormTextEntry(client, toolkit, MapperMessages.ParamDetailsPage_name, SWT.NULL);
 		nameEntry.setFormEntryListener(new FormTextEntryListenerAdapter() {
 			public void textValueChanged(FormTextEntry entry) {
 				param.setName(entry.getValue());
 			}
 		});
-		
-		valueEntry = new FormTextEntry(client, toolkit, Messages.PARAMDETAILSPAGE_VALUE, SWT.NULL);
+
+		valueEntry = new FormTextEntry(client, toolkit, MapperMessages.ParamDetailsPage_value, SWT.NULL);
 		valueEntry.setFormEntryListener(new FormTextEntryListenerAdapter() {
 			public void textValueChanged(FormTextEntry entry) {
 				param.setValue(entry.getValue());
 			}
 		});
-		
+
 	}
 
 	public void selectionChanged(IFormPart part, ISelection selection) {
 		IRevEngParameter newParam = (IRevEngParameter) ((IStructuredSelection)selection).getFirstElement();
 		if(param!=null) {
-			param.removePropertyChangeListener(this);			
+			param.removePropertyChangeListener(this);
 		}
 		if(newParam!=null) {
 			newParam.addPropertyChangeListener(this);
 		}
-		
+
 		param = newParam;
-		
+
 		update();
 	}
 
@@ -83,7 +84,7 @@ public class ParamDetailsPage extends RevEngDetailsPage implements IDetailsPage,
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {
-		update();		
+		update();
 	}
 
 }

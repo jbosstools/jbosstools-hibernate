@@ -29,6 +29,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 import org.hibernate.eclipse.console.wizards.TableFilterView;
 import org.hibernate.eclipse.console.workbench.LazyDatabaseSchema;
+import org.hibernate.eclipse.mapper.MapperMessages;
 import org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor;
 
 public class TableFilterFormPart extends RevEngSectionPart {
@@ -43,14 +44,14 @@ public class TableFilterFormPart extends RevEngSectionPart {
 	}
 
 	protected String getSectionTitle() {
-		return Messages.TABLEFILTERFORMPART_TABLE_FILTERS;
+		return MapperMessages.TableFilterFormPart_table_filters;
 	}
-	
+
 	protected String getSectionDescription() {
-		return Messages.TABLEFILTERFORMPART_TABLE_FILTERS_DEFINES_WHICH_TABLE_INCLUDED;
+		return MapperMessages.TableFilterFormPart_table_filters_defines_which_table_included;
 	}
-	
-	public Control createClient(IManagedForm form) {		
+
+	public Control createClient(IManagedForm form) {
 		FormToolkit toolkit = form.getToolkit();
 		composite = new TableFilterView(getSection(), SWT.NULL) {
 
@@ -62,10 +63,10 @@ public class TableFilterFormPart extends RevEngSectionPart {
 			}
 			protected String getConsoleConfigurationName() {
 				return configNamePart.getConsoleConfigurationName();
-			}			
+			}
 
 		};
-			
+
 		adaptRecursively( toolkit, composite );
 
 		return composite;
@@ -75,7 +76,7 @@ public class TableFilterFormPart extends RevEngSectionPart {
 		composite.setModel(reveng);
 		return true;
 	}
-	
+
 	public void dispose() {
 		composite.dispose();
 	}

@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
+import org.hibernate.eclipse.mapper.MapperMessages;
 
 public class CounterFormPart extends RevEngSectionPart {
 
@@ -49,29 +50,29 @@ public class CounterFormPart extends RevEngSectionPart {
 			public void propertyChange(PropertyChangeEvent evt) {
 				text.setText("" + cnt++);		 //$NON-NLS-1$
 			}
-		
+
 		};
 		def.addPropertyChangeListener(listener);
 		return true;
 	}
-	
+
 	public void dispose() {
 		def.removePropertyChangeListener(listener);
 	}
-	
+
 	Control createClient(IManagedForm form) {
 		FormToolkit toolkit = form.getToolkit();
 		Composite composite = toolkit.createComposite(getSection());
 		composite.setLayout(new FillLayout());
-		text = toolkit.createText(composite, Messages.COUNTERFORMPART_ZERO);
+		text = toolkit.createText(composite, MapperMessages.CounterFormPart_zero);
 		return composite;
 	}
-	
+
 	protected String getSectionDescription() {
-		return Messages.COUNTERFORMPART_DEBUG_COUNTER_FOR_PROPERTY_CHANGES;
+		return MapperMessages.CounterFormPart_debug_counter_for_property_changes;
 	}
-	
+
 	protected String getSectionTitle() {
-		return Messages.COUNTERFORMPART_DEBUG_COUNTER;
+		return MapperMessages.CounterFormPart_debug_counter;
 	}
 }

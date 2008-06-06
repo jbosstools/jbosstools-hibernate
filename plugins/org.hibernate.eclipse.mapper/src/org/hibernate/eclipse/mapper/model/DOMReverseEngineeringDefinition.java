@@ -40,6 +40,7 @@ import org.hibernate.eclipse.console.model.IRevEngTable;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 import org.hibernate.eclipse.console.model.ITableFilter;
 import org.hibernate.eclipse.console.model.ITypeMapping;
+import org.hibernate.eclipse.mapper.MapperMessages;
 import org.hibernate.eclipse.mapper.factory.ObserverAdapterFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -48,63 +49,63 @@ import org.w3c.dom.Node;
 public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefinition {
 
 	private IModelStateListener listener = new IModelStateListener() {
-	
+
 		public void modelReinitialized(IStructuredModel structuredModel) {
-			//System.out.println("reinit" + structuredModel);	
+			//System.out.println("reinit" + structuredModel);
 		}
-	
+
 		public void modelAboutToBeReinitialized(IStructuredModel structuredModel) {
-			//System.out.println("about to be reinit" + structuredModel);	
+			//System.out.println("about to be reinit" + structuredModel);
 		}
-	
+
 		public void modelResourceMoved(IStructuredModel oldModel,
 				IStructuredModel newModel) {
-			//System.out.println("res moved" + oldModel);	
+			//System.out.println("res moved" + oldModel);
 		}
-	
+
 		public void modelResourceDeleted(IStructuredModel model) {
-			//System.out.println("deleted" + model);	
+			//System.out.println("deleted" + model);
 		}
-	
+
 		public void modelDirtyStateChanged(IStructuredModel model, boolean isDirty) {
 			//System.out.println("dirty changed " + model + " to " + isDirty);
-	
+
 		}
-	
+
 		int cnt = 0;
 		public void modelChanged(IStructuredModel model) {
 			//System.out.println("model changed" + cnt++);
 			//pcs.firePropertyChange(null, null, null);
 		}
-	
+
 		public void modelAboutToBeChanged(IStructuredModel model) {
 			//System.out.println("about to be changed" + cnt++);
-	
+
 		}
-	
+
 	};
-	
+
 	private ObserverAdapterFactory factory;
 
 	private IDOMDocument document;
 
 	public DOMReverseEngineeringDefinition(IDOMDocument document) {
 		this.document = document;
-		factory = new ObserverAdapterFactory(this); 
-		
+		factory = new ObserverAdapterFactory(this);
+
 		document.getModel().addModelStateListener(listener);
 		factory.adapt(document);
 	}
 
-	public ITableFilter createTableFilter() {		
+	public ITableFilter createTableFilter() {
 		return (ITableFilter) factory.adapt((INodeNotifier) getDocument().createElement("table-filter")); //$NON-NLS-1$
 	}
-	
+
 	public void addTableFilter(ITableFilter filter) {
 		if ( filter instanceof TableFilterAdapter ) {
 			TableFilterAdapter tf = (TableFilterAdapter) filter;
 			factory.adapt((INodeNotifier) tf.getNode());
-			
+
 			List lastChild = DOMModelUtil.getChildrenByTagName(getDocument().getDocumentElement(),"table-filter"); //$NON-NLS-1$
 			if(lastChild==null || lastChild.isEmpty()) {
 				List typeMapping = DOMModelUtil.getChildrenByTagName(getDocument().getDocumentElement(),"type-mapping"); //$NON-NLS-1$
@@ -114,7 +115,7 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 						getDocument().getDocumentElement().appendChild(tf.getNode());
 					} else {
 						Element e = (Element) tableMapping.get(tableMapping.size()-1);
-						getDocument().getDocumentElement().insertBefore(tf.getNode(),e);	
+						getDocument().getDocumentElement().insertBefore(tf.getNode(),e);
 					}
 				} else {
 					Element e = (Element) typeMapping.get(typeMapping.size()-1);
@@ -122,16 +123,16 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 				}
 			}  else {
 				Element e = (Element) lastChild.get(lastChild.size()-1);
-				getDocument().getDocumentElement().insertBefore(tf.getNode(), e.getNextSibling());			
+				getDocument().getDocumentElement().insertBefore(tf.getNode(), e.getNextSibling());
 			}
-			
+
 			DOMModelUtil.formatNode(tf.getNode().getParentNode());
 		}
-		
+
 	}
 
 	PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-	
+
 	public void addPropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.addPropertyChangeListener(pcl);
 	}
@@ -139,9 +140,9 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 	public void removePropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.removePropertyChangeListener(pcl);
 	}
-	
+
 	public void addPropertyChangeListener(String property, PropertyChangeListener pcl) {
-		pcs.addPropertyChangeListener(property, pcl);		
+		pcs.addPropertyChangeListener(property, pcl);
 	}
 
 	public void removePropertyChangeListener(String property, PropertyChangeListener pcl) {
@@ -179,7 +180,7 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 			TableFilterAdapter tfe = (TableFilterAdapter) item;
 			Node nextSibling = DOMModelUtil.getNextNamedSibling( tfe.getNode(), "table-filter" ); //$NON-NLS-1$
 			if(nextSibling!=null) {
-				DOMModelUtil.addElementBefore(tfe.getNode().getParentNode(), nextSibling, tfe.getNode());			
+				DOMModelUtil.addElementBefore(tfe.getNode().getParentNode(), nextSibling, tfe.getNode());
 			}
 			pcs.firePropertyChange(TABLEFILTER_STRUCTURE,null, null);
 		}
@@ -188,26 +189,26 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 	public void moveTableFilterUp(ITableFilter item) {
 		if ( item instanceof TableFilterAdapter ) {
 			TableFilterAdapter tfe = (TableFilterAdapter) item;
-			
+
 			Node sibling = DOMModelUtil.getPreviousNamedSibling( tfe.getNode(), "table-filter"); //$NON-NLS-1$
 			if(sibling!=null) {
-				DOMModelUtil.addElementBefore(tfe.getNode().getParentNode(), tfe.getNode(), sibling);			
+				DOMModelUtil.addElementBefore(tfe.getNode().getParentNode(), tfe.getNode(), sibling);
 			}
 			pcs.firePropertyChange(TABLEFILTER_STRUCTURE,null, null);
 		}
 	}
-	
+
 	private List getTableFiltersList() {
 		return DOMModelUtil.getAdaptedElements(getDocument().getDocumentElement(), "table-filter", factory); //$NON-NLS-1$
 	}
 
 	public void unknownNotifyChanged(INodeNotifier notifier, int eventType, Object changedFeature, Object oldValue, Object newValue, int pos) {
-		String out = NLS.bind(Messages.DOMREVERSEENGINEERINGDEFINITION_UNKNOWN_CHANGE, notifier, INodeNotifier.EVENT_TYPE_STRINGS[eventType]);
+		String out = NLS.bind(MapperMessages.DOMReverseEngineeringDefinition_unknown_change, notifier, INodeNotifier.EVENT_TYPE_STRINGS[eventType]);
 		System.out.println(out);
 	}
 
 	public void hibernateMappingChanged() {
-		pcs.firePropertyChange(TABLEFILTER_STRUCTURE,null,null);		
+		pcs.firePropertyChange(TABLEFILTER_STRUCTURE,null,null);
 		pcs.firePropertyChange(TYPEMAPPING_STRUCTURE,null,null);
 		pcs.firePropertyChange(TABLES_STRUCTURE,null,null);
 	}
@@ -241,7 +242,7 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 	public void addTypeMapping(ITypeMapping typeMapping) {
 		if ( typeMapping instanceof TypeMappingAdapter ) {
 			TypeMappingAdapter tf = (TypeMappingAdapter) typeMapping;
-			
+
 			List parentList = DOMModelUtil.getChildrenByTagName(getDocument().getDocumentElement(),"type-mapping"); //$NON-NLS-1$
 			Element parent;
 			if(parentList.isEmpty()) {
@@ -258,15 +259,15 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 			}
 			parent.appendChild(tf.getNode());
 			DOMModelUtil.formatNode(tf.getNode().getParentNode());
-		}		
+		}
 	}
 
 	public void typeMappingChanged(INodeNotifier notifier) {
-		pcs.firePropertyChange(TYPEMAPPING_STRUCTURE, null,null);		
+		pcs.firePropertyChange(TYPEMAPPING_STRUCTURE, null,null);
 	}
 
 	public void sqlTypeChanged(INodeNotifier notifier) {
-		pcs.firePropertyChange(TYPEMAPPING_STRUCTURE, null,null);		
+		pcs.firePropertyChange(TYPEMAPPING_STRUCTURE, null,null);
 	}
 
 	public void moveTypeMappingDown(ITypeMapping item) {
@@ -274,22 +275,22 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 			TypeMappingAdapter tfe = (TypeMappingAdapter) item;
 			Node nextSibling = DOMModelUtil.getNextNamedSibling( tfe.getNode(), "sql-type" ); //$NON-NLS-1$
 			if(nextSibling!=null) {
-				DOMModelUtil.addElementBefore(tfe.getNode().getParentNode(), nextSibling, tfe.getNode());			
-			}			
-		}		
+				DOMModelUtil.addElementBefore(tfe.getNode().getParentNode(), nextSibling, tfe.getNode());
+			}
+		}
 	}
 
 	public void moveTypeMappingUp(ITypeMapping item) {
 		if ( item instanceof TypeMappingAdapter ) {
 			TypeMappingAdapter tfe = (TypeMappingAdapter) item;
-			
+
 			Node sibling = DOMModelUtil.getPreviousNamedSibling( tfe.getNode(), "sql-type"); //$NON-NLS-1$
 			if(sibling!=null) {
-				DOMModelUtil.addElementBefore(tfe.getNode().getParentNode(), tfe.getNode(), sibling);			
+				DOMModelUtil.addElementBefore(tfe.getNode().getParentNode(), tfe.getNode(), sibling);
 			}
 		}
 	}
-	
+
 	public void removeAllTypeMappings() {
 		List list = getTypeMappingsList();
 		for (java.util.Iterator it = list.iterator(); it.hasNext(); ) {
@@ -324,7 +325,7 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 	}
 
 	public void tablesChanged(INodeNotifier notifier) {
-		pcs.firePropertyChange(TABLES_STRUCTURE, null,null);		
+		pcs.firePropertyChange(TABLES_STRUCTURE, null,null);
 	}
 
 	public INodeAdapterFactory getNodeFactory() {
@@ -342,11 +343,11 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 	public void addTable(IRevEngTable retable) {
 		if ( retable instanceof RevEngTableAdapter ) {
 			RevEngTableAdapter tf = (RevEngTableAdapter) retable;
-			
+
 			getDocument().getDocumentElement().appendChild(tf.getNode());
-			
+
 			DOMModelUtil.formatNode(tf.getNode().getParentNode());
-		}	
+		}
 	}
 
 	public void removeTable(IRevEngTable retable) {

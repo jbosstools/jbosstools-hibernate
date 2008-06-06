@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.forms.editor.FormPage;
+import org.hibernate.eclipse.mapper.MapperMessages;
 import org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor;
 
 public class RevEngFormEditorPart extends FormPage {
@@ -35,15 +36,15 @@ public class RevEngFormEditorPart extends FormPage {
 
 	public RevEngFormEditorPart(FormEditor editor, String id, String title) {
 		super( editor, id, title );
-		
+
 	}
 	public void createPartControl(Composite parent) {
 		super.createPartControl( parent );
 	}
 	protected void createFormContent(IManagedForm managedForm) {
-		throw new IllegalStateException(Messages.REVENGFORMEDITORPART_NEED_TO_OVERRIDE_FORMCONTENT_IN + this.getClass().getName());
+		throw new IllegalStateException(MapperMessages.RevEngFormEditorPart_need_to_override_formcontent_in + this.getClass().getName());
 	}
-		
+
 	ReverseEngineeringEditor getReverseEngineeringEditor() {
 		return (ReverseEngineeringEditor) getEditor();
 	}

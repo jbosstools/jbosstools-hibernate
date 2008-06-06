@@ -62,6 +62,7 @@ import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 import org.hibernate.eclipse.console.workbench.DeferredContentProvider;
 import org.hibernate.eclipse.console.workbench.LazyDatabaseSchema;
 import org.hibernate.eclipse.console.workbench.xpl.AnyAdaptableLabelProvider;
+import org.hibernate.eclipse.mapper.MapperMessages;
 import org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor;
 import org.hibernate.eclipse.mapper.model.RevEngColumnAdapter;
 import org.hibernate.eclipse.mapper.model.RevEngGeneratorAdapter;
@@ -72,26 +73,26 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Table;
 
 public class TablePropertiesBlock extends MasterDetailsBlock {
-	
+
 	private TreeViewer viewer;
 	private final ReverseEngineeringEditor editor;
 
 	public TablePropertiesBlock(ReverseEngineeringEditor editor) {
-		this.editor = editor;		
+		this.editor = editor;
 	}
 
 	public SashForm getComposite() {
 		return sashForm;
 	}
-	
+
 	protected void createMasterPart(final IManagedForm managedForm,	Composite parent) {
 		sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,true));
 		final ScrolledForm form = managedForm.getForm();
 		FormToolkit toolkit = managedForm.getToolkit();
-		Section section = toolkit.createSection( parent, Section.DESCRIPTION | 
+		Section section = toolkit.createSection( parent, Section.DESCRIPTION |
 				Section.FOCUS_TITLE | Section.TWISTIE | Section.EXPANDED);
-		section.setText( Messages.TABLEPROPERTIESBLOCK_TABLES_COLUMNS );
-		section.setDescription( Messages.TABLEPROPERTIESBLOCK_EXPLICITLY_CONTROL_SETTINGS_FOR_TABLE_COLUMNS );
+		section.setText( MapperMessages.TablePropertiesBlock_tables_columns );
+		section.setDescription( MapperMessages.TablePropertiesBlock_explicitly_control_settings_for_table_columns );
 		section.marginWidth = 10;
 		section.marginHeight = 5;
 		toolkit.createCompositeSeparator( section );
@@ -108,36 +109,36 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		gd.verticalSpan = 2;
 		t.setLayoutData( gd );
 		toolkit.paintBordersFor( client );
-		
-		Button btnAdd = toolkit.createButton( client, Messages.TABLEPROPERTIESBLOCK_ADD, SWT.PUSH );
+
+		Button btnAdd = toolkit.createButton( client, MapperMessages.TablePropertiesBlock_add, SWT.PUSH );
 		btnAdd.addSelectionListener(new SelectionAdapter() {
-		
+
 			public void widgetSelected(SelectionEvent e) {
 				doAdd();
 			}
-		
+
 		});
 		gd = new GridData( GridData.VERTICAL_ALIGN_BEGINNING );
 		btnAdd.setLayoutData( gd );
-		
-		Button btnDel = toolkit.createButton( client, Messages.TABLEPROPERTIESBLOCK_DELETE, SWT.PUSH );
+
+		Button btnDel = toolkit.createButton( client, MapperMessages.TablePropertiesBlock_delete, SWT.PUSH );
 		btnDel.addSelectionListener(new SelectionAdapter() {
-		
+
 			public void widgetSelected(SelectionEvent e) {
 				doDelete();
 			}
-		
+
 		});
 		gd = new GridData( GridData.VERTICAL_ALIGN_BEGINNING );
 		btnDel.setLayoutData( gd );
-		
+
 		section.setClient( client );
 		final SectionPart spart = new SectionPart( section ) {
 			public boolean setFormInput(Object input) {
 				if(input instanceof IReverseEngineeringDefinition) {
 					viewer.setInput(input);
 					return true;
-				} 
+				}
 				return false;
 			}
 		};
@@ -150,27 +151,27 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		} );
 		viewer.setLabelProvider( new TablePropertiesLabelProvider() );
 		TablePropertiesContentProvider tablePropertiesContentProvider = new TablePropertiesContentProvider();
-		viewer.setContentProvider( tablePropertiesContentProvider );		
+		viewer.setContentProvider( tablePropertiesContentProvider );
 	}
 
 	protected void doAdd() {
 		CheckedTreeSelectionDialog dialog = createTreeSelectionDialog();
-		
-		
+
+
 		LazyDatabaseSchema lds = editor.getLazyDatabaseSchema();
-		
+
 		Map tables = new HashMap();
 		Map columns = new HashMap();
-		
+
 		if(lds!=null) {
-			dialog.setTitle(Messages.TABLEPROPERTIESBLOCK_ADD_TABLES_COLUMNS);
-			dialog.setMessage(Messages.TABLEPROPERTIESBLOCK_SELECT_TABLES_COLUMNS);
+			dialog.setTitle(MapperMessages.TablePropertiesBlock_add_tables_columns);
+			dialog.setMessage(MapperMessages.TablePropertiesBlock_select_tables_columns);
 			dialog.setInput(lds);
 			dialog.setContainerMode(true);
 			dialog.open();
 			Object[] result = dialog.getResult();
 			TableIdentifier lastTable = null;
-			if(result!=null) { 
+			if(result!=null) {
 				for (int i = 0; i < result.length; i++) {
 					Object object = result[i];
 					if(object instanceof Table) {
@@ -181,17 +182,17 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 						List existing = (List) columns.get(lastTable);
 						if(existing==null) {
 							existing = new ArrayList();
-							columns.put(lastTable,existing);							
+							columns.put(lastTable,existing);
 						}
-						existing.add(object);						
+						existing.add(object);
 					}
 				}
 			}
-			
+
 			Iterator iterator = tables.entrySet().iterator();
 			while ( iterator.hasNext() ) {
 				Map.Entry element = (Map.Entry) iterator.next();
-				Table table = (Table) element.getValue(); 
+				Table table = (Table) element.getValue();
 				IRevEngTable retable = null;
 				//	editor.getReverseEngineeringDefinition().findTable(TableIdentifier.create(table));
 				if(retable==null) {
@@ -201,7 +202,7 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 					retable.setName(table.getName());
 					editor.getReverseEngineeringDefinition().addTable(retable);
 				}
-				
+
 				List columnList = (List) columns.get(element.getKey());
 				if(columnList!=null) {
 					Iterator colIterator = columnList.iterator();
@@ -216,8 +217,8 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 			}
 			//editor.getReverseEngineeringDefinition();
 		}
-		
-		
+
+
 	}
 
 	protected void doDelete() {
@@ -250,7 +251,7 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 
 	private CheckedTreeSelectionDialog createTreeSelectionDialog() {
 		return new CheckedTreeSelectionDialog(getComposite().getShell(), new AnyAdaptableLabelProvider(), new DeferredContentProvider()) {
-			
+
 			protected Composite createSelectionButtons(Composite composite) {
 		        Composite buttonComposite = new Composite(composite, SWT.RIGHT);
 		        GridLayout layout = new GridLayout();
@@ -262,7 +263,7 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		        data.grabExcessHorizontalSpace = true;
 		        composite.setData(data);
 		        Button selectButton = createButton(buttonComposite,
-		                IDialogConstants.SELECT_ALL_ID, Messages.TABLEPROPERTIESBLOCK_SELECT_ALL_CHILDREN,
+		                IDialogConstants.SELECT_ALL_ID, MapperMessages.TablePropertiesBlock_select_all_children,
 		                false);
 		        SelectionListener listener = new SelectionAdapter() {
 		            public void widgetSelected(SelectionEvent e) {
@@ -270,13 +271,13 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		                Iterator iterator = viewerElements.iterator();
 		                while(iterator.hasNext()) {
 		                	getTreeViewer().setSubtreeChecked(iterator.next(), true);
-		                }	                            
+		                }
 		                updateOKStatus();
 		            }
 		        };
 		        selectButton.addSelectionListener(listener);
 		        Button deselectButton = createButton(buttonComposite,
-		                IDialogConstants.DESELECT_ALL_ID, Messages.TABLEPROPERTIESBLOCK_DESELECT_ALL,
+		                IDialogConstants.DESELECT_ALL_ID, MapperMessages.TablePropertiesBlock_deselect_all,
 		                false);
 		        listener = new SelectionAdapter() {
 		            public void widgetSelected(SelectionEvent e) {
@@ -288,7 +289,7 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		        return buttonComposite;
 		    }
 
-			
+
 		};
 	}
 
@@ -302,7 +303,7 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 			}
 		};
 		haction.setChecked( true );
-		haction.setToolTipText( Messages.TABLEPROPERTIESBLOCK_HORIZONTAL_ORIENTATION );
+		haction.setToolTipText( MapperMessages.TablePropertiesBlock_horizontal_orientation );
 		Action vaction = new Action( "ver", IAction.AS_RADIO_BUTTON ) { //$NON-NLS-1$
 			public void run() {
 				sashForm.setOrientation( SWT.VERTICAL );
@@ -310,7 +311,7 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 			}
 		};
 		vaction.setChecked( false );
-		vaction.setToolTipText( Messages.TABLEPROPERTIESBLOCK_VERTICAL_ORIENTATION );
+		vaction.setToolTipText( MapperMessages.TablePropertiesBlock_vertical_orientation );
 		form.getToolBarManager().add( haction );
 		form.getToolBarManager().add( vaction );
 	}

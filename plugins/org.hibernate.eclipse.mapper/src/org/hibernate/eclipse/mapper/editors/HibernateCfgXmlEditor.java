@@ -25,6 +25,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
 import org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart;
+import org.hibernate.eclipse.mapper.MapperMessages;
 import org.hibernate.eclipse.mapper.MapperPlugin;
 import org.hibernate.eclipse.mapper.editors.reveng.HibernateConfigurationForm;
 
@@ -33,7 +34,7 @@ public class HibernateCfgXmlEditor extends XMLMultiPageEditorPart {
 	private HibernateConfigurationForm configurationForm;
 	private int configurationPageNo;
 	private StructuredTextEditor sourcePage;
-	
+
 	public HibernateCfgXmlEditor() {
 		super();
 	}
@@ -45,7 +46,7 @@ public class HibernateCfgXmlEditor extends XMLMultiPageEditorPart {
 			initSourcePage();
 		} catch (PartInitException pe) {
 			MapperPlugin.getDefault().getLogger().logException(
-					Messages.HIBERNATECFGXMLEDITOR_COULD_NOT_CREATE_FORM_PART, pe );
+					MapperMessages.HibernateCfgXmlEditor_could_not_create_form_part, pe );
 		}
 	}
 
@@ -53,10 +54,10 @@ public class HibernateCfgXmlEditor extends XMLMultiPageEditorPart {
 		int pageCount = getPageCount();
 		for (int i = 0; i < pageCount; i++) {
 			if ( getEditor( i ) instanceof StructuredTextEditor ) {
-				sourcePage = (StructuredTextEditor) getEditor( i );							
+				sourcePage = (StructuredTextEditor) getEditor( i );
 			}
 		}
-		
+
 		configurationForm.setModel(getStructuredModel());
 	}
 
@@ -64,13 +65,13 @@ public class HibernateCfgXmlEditor extends XMLMultiPageEditorPart {
 		configurationForm = new HibernateConfigurationForm();
         configurationForm.createPartControl(getContainer());
         configurationPageNo = addPage(configurationForm.getControl());
-        setPageText(configurationPageNo, Messages.HIBERNATECFGXMLEDITOR_CONFIGURATION);
+        setPageText(configurationPageNo, MapperMessages.HibernateCfgXmlEditor_configuration);
         setActivePage( 0 );
 	}
-	
+
 	IStructuredModel getStructuredModel() {
 		//TODO:how to get it without usage of deprecated methods ?
 		return sourcePage.getModel();
 	}
-	
+
 }

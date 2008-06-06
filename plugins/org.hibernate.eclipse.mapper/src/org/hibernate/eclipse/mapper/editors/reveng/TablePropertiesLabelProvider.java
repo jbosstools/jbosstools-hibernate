@@ -30,6 +30,7 @@ import org.hibernate.eclipse.console.model.IRevEngParameter;
 import org.hibernate.eclipse.console.model.IRevEngPrimaryKey;
 import org.hibernate.eclipse.console.model.IRevEngTable;
 import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.hibernate.eclipse.mapper.MapperMessages;
 
 public class TablePropertiesLabelProvider extends LabelProvider {
 
@@ -45,11 +46,11 @@ public class TablePropertiesLabelProvider extends LabelProvider {
 	private String getInternalText(Object element) {
 		if(element instanceof IRevEngTable) {
 			IRevEngTable table = (IRevEngTable)element;
-			return getLabel( table );			
+			return getLabel( table );
 		} else if(element instanceof IRevEngColumn) {
 			return ((IRevEngColumn)element).getName();
 		} else if(element instanceof IRevEngPrimaryKey) {
-			return Messages.TABLEPROPERTIESLABELPROVIDER_PRIMARY_KEY;
+			return MapperMessages.TablePropertiesLabelProvider_primary_key;
 		} else if(element instanceof IRevEngGenerator) {
 			return ((IRevEngGenerator)element).getGeneratorClassName();
 		} else if ( element instanceof IRevEngParameter ) {
@@ -69,17 +70,17 @@ public class TablePropertiesLabelProvider extends LabelProvider {
 			if(res.length()!=0) res.append("."); //$NON-NLS-1$
 			res.append(table.getSchema());
 		}
-		
+
 		if(table.getName()!=null) {
 			if(res.length()!=0) res.append("."); //$NON-NLS-1$
 			res.append(table.getName());
 		}
 		return res.toString();
 	}
-	
+
 	public Image getImage(Object element) {
 		if(element instanceof IRevEngTable) {
-			return EclipseImages.getImage(ImageConstants.TABLE);			
+			return EclipseImages.getImage(ImageConstants.TABLE);
 		} else if(element instanceof IRevEngColumn) {
 			return EclipseImages.getImage(ImageConstants.COLUMN);
 		} else if(element instanceof IRevEngParameter) {

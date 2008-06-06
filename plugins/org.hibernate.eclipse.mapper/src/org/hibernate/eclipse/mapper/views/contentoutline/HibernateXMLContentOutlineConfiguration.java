@@ -31,6 +31,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.wst.xml.ui.views.contentoutline.XMLContentOutlineConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.hibernate.eclipse.mapper.MapperMessages;
 import org.w3c.dom.Node;
 
 public class HibernateXMLContentOutlineConfiguration extends
@@ -40,25 +41,25 @@ public class HibernateXMLContentOutlineConfiguration extends
 	private JFaceNodeAdapterFactoryForXML myFactory;
 
 	protected IJFaceNodeAdapterFactory getFactory() {
-		
+
 		if(myFactory==null) {
 			IJFaceNodeAdapterFactory realFactory = super.getFactory();
-			
+
 			myFactory = new JFaceNodeAdapterFactoryForXML(realFactory);
 		}
 		return myFactory;
 	}*/
-	
-	
+
+
 	private HibernateToolsLabelProvider labelProvider;
 
 	public ILabelProvider getLabelProvider(TreeViewer viewer) {
 		if(labelProvider==null) {
 			labelProvider = new HibernateToolsLabelProvider(super.getLabelProvider(viewer));
-		} 
+		}
 		return labelProvider;
 	}
-	
+
 	static class HibernateToolsLabelProvider implements ILabelProvider {
 		ILabelProvider delegate;
 
@@ -88,7 +89,7 @@ public class HibernateXMLContentOutlineConfiguration extends
 			nameToMap.put("one-to-one", ImageConstants.ONETOONE); //$NON-NLS-1$
 			nameToMap.put("component", ImageConstants.ONETOONE); //$NON-NLS-1$
 		}
-		
+
 		public Image getImage(Object element) {
 			Node node = (Node) element;
 			if(node.getNodeType()==Node.ELEMENT_NODE) {
@@ -105,7 +106,7 @@ public class HibernateXMLContentOutlineConfiguration extends
 				Node node = (Node) element;
 				String nodeName = node.getNodeName();
 				if(node.getNodeType()==Node.PROCESSING_INSTRUCTION_NODE && "xml".equals(nodeName)) { //$NON-NLS-1$
-					return Messages.XML_HIBERNATE_TOOLS;
+					return MapperMessages.xml_hibernate_tools;
 				}
 			}
 			return delegate.getText( element );
@@ -119,5 +120,5 @@ public class HibernateXMLContentOutlineConfiguration extends
 			delegate.removeListener( listener );
 		}
 	}
-	
+
 }
