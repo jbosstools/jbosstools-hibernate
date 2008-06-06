@@ -57,14 +57,14 @@ import org.jboss.tools.hibernate.ui.view.views.OrmModelNameVisitor;
 public class ShapeEditPart extends
 OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 
-	static protected OrmLabelProvider ormLabelProvider = 
+	static protected OrmLabelProvider ormLabelProvider =
 		new OrmLabelProvider(new OrmModelImageVisitor(), new OrmModelNameVisitor());
-	
+
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE,  new ShapesSelectionEditPolicy());
 	}
 
-	
+
 	protected IFigure createFigure() {
 		if (getModel() instanceof Shape) {
 			Label label = new Label();
@@ -76,7 +76,7 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 			if (model instanceof OrmDiagram) {
 				cfg = ((OrmDiagram) model).getConsoleConfiguration();
 			}
-			label.setText(ormLabelProvider.getText(getElement(), cfg));	
+			label.setText(ormLabelProvider.getText(getElement(), cfg));
 			label.setBackgroundColor(getColor());
 			label.setIcon(ormLabelProvider.getImage(getElement()));
 			label.setLabelAlignment(PositionConstants.LEFT);
@@ -93,11 +93,11 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
 		if (Shape.SHOW_SELECTION.equals(prop)) {
-			getFigure().setBackgroundColor(getSelectionColor());	
-			getFigure().setForegroundColor(ResourceManager.getInstance().getColor(new RGB(255,255,255)));			
+			getFigure().setBackgroundColor(getSelectionColor());
+			getFigure().setForegroundColor(ResourceManager.getInstance().getColor(new RGB(255,255,255)));
 		} else if (Shape.HIDE_SELECTION.equals(prop)) {
-			getFigure().setBackgroundColor(getColor());		
-			getFigure().setForegroundColor(ResourceManager.getInstance().getColor(new RGB(0,0,0)));			
+			getFigure().setBackgroundColor(getColor());
+			getFigure().setForegroundColor(ResourceManager.getInstance().getColor(new RGB(0,0,0)));
 		} else if (Shape.SET_FOCUS.equals(prop)) {
 			getViewer().select(this);
 			getViewer().reveal(this);
@@ -123,14 +123,14 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 			((ModelElement) getModel()).addPropertyChangeListener(this);
 		}
 	}
-	
+
 	public void deactivate() {
 		if (isActive()) {
 			super.deactivate();
 			((ModelElement) getModel()).removePropertyChangeListener(this);
 		}
 	}
-	
+
 	protected Shape getCastedModel() {
 		return (Shape) getModel();
 	}
@@ -138,7 +138,7 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 	protected List getModelSourceConnections() {
 		return getCastedModel().getSourceConnections();
 	}
-	
+
 	protected List getModelTargetConnections() {
 		return getCastedModel().getTargetConnections();
 	}
@@ -146,19 +146,19 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
 		return getConnectionAnchor();
 	}
-	
+
 	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
 		return getConnectionAnchor();
 	}
-	
+
 	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
 		return getConnectionAnchor();
 	}
-	
+
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
 		return getConnectionAnchor();
 	}
-	
+
 	protected ConnectionAnchor getConnectionAnchor() {
 		ChopboxAnchor anchor = new ChopboxAnchor(getFigure()){
 			public Point getLocation(Point reference) {
@@ -170,16 +170,16 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 				}
 				OrmShapeEditPart part = getOrmShapeEditPart();
 				Point p = r.getCenter();
-				if (reference.x < p.x) 
+				if (reference.x < p.x)
 					p.x-=part.getFigure().getBounds().width/2;
-				 else 
-					p.x+=part.getFigure().getBounds().width/2;					
+				 else
+					p.x+=part.getFigure().getBounds().width/2;
 				return p;
 			}
 		};
 		return anchor;
 	}
-	
+
 	protected OrmShapeEditPart getOrmShapeEditPart() {
 		int i = 0;
 		EditPart part = this;
@@ -193,81 +193,81 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 
 	protected Color getColor() {
 		Object element = getCastedModel().getOrmElement();
-		if (element instanceof PersistentClass || element instanceof Component) 
+		if (element instanceof PersistentClass || element instanceof Component)
 			return ResourceManager.getInstance().getColor(new RGB(
-					Integer.parseInt(Messages.Colors_PersistentClassR),
-					Integer.parseInt(Messages.Colors_PersistentClassG),
-					Integer.parseInt(Messages.Colors_PersistentClassB)));
-		else if (element instanceof Property || element instanceof SimpleValue) 
+					Integer.parseInt(ColorConstants.Colors_PersistentClassR),
+					Integer.parseInt(ColorConstants.Colors_PersistentClassG),
+					Integer.parseInt(ColorConstants.Colors_PersistentClassB)));
+		else if (element instanceof Property || element instanceof SimpleValue)
 			return ResourceManager.getInstance().getColor(new RGB(
-					Integer.parseInt(Messages.Colors_PersistentFieldR),
-					Integer.parseInt(Messages.Colors_PersistentFieldG),
-					Integer.parseInt(Messages.Colors_PersistentFieldB)));
-		else if (element instanceof Column) 
+					Integer.parseInt(ColorConstants.Colors_PersistentFieldR),
+					Integer.parseInt(ColorConstants.Colors_PersistentFieldG),
+					Integer.parseInt(ColorConstants.Colors_PersistentFieldB)));
+		else if (element instanceof Column)
 			return ResourceManager.getInstance().getColor(new RGB(
-					Integer.parseInt(Messages.Colors_DatabaseColumnR),
-					Integer.parseInt(Messages.Colors_DatabaseColumnG),
-					Integer.parseInt(Messages.Colors_DatabaseColumnB)));
-		else if (element instanceof Table) 
+					Integer.parseInt(ColorConstants.Colors_DatabaseColumnR),
+					Integer.parseInt(ColorConstants.Colors_DatabaseColumnG),
+					Integer.parseInt(ColorConstants.Colors_DatabaseColumnB)));
+		else if (element instanceof Table)
 			return ResourceManager.getInstance().getColor(new RGB(
-					Integer.parseInt(Messages.Colors_DatabaseTableR),
-					Integer.parseInt(Messages.Colors_DatabaseTableG),
-					Integer.parseInt(Messages.Colors_DatabaseTableB)));
-		else if (element instanceof DependantValue) 
+					Integer.parseInt(ColorConstants.Colors_DatabaseTableR),
+					Integer.parseInt(ColorConstants.Colors_DatabaseTableG),
+					Integer.parseInt(ColorConstants.Colors_DatabaseTableB)));
+		else if (element instanceof DependantValue)
 			return ResourceManager.getInstance().getColor(new RGB(
-					Integer.parseInt(Messages.Colors_DatabaseTableR),
-					Integer.parseInt(Messages.Colors_DatabaseTableG),
-					Integer.parseInt(Messages.Colors_DatabaseTableB)));
-		else if (element instanceof OneToMany) 
+					Integer.parseInt(ColorConstants.Colors_DatabaseTableR),
+					Integer.parseInt(ColorConstants.Colors_DatabaseTableG),
+					Integer.parseInt(ColorConstants.Colors_DatabaseTableB)));
+		else if (element instanceof OneToMany)
 			return ResourceManager.getInstance().getColor(new RGB(
-					Integer.parseInt(Messages.Colors_PersistentFieldR),
-					Integer.parseInt(Messages.Colors_PersistentFieldG),
-					Integer.parseInt(Messages.Colors_PersistentFieldB)));
+					Integer.parseInt(ColorConstants.Colors_PersistentFieldR),
+					Integer.parseInt(ColorConstants.Colors_PersistentFieldG),
+					Integer.parseInt(ColorConstants.Colors_PersistentFieldB)));
 		else
 			return ResourceManager.getInstance().getColor(new RGB(255, 0, 0));
 	}
 
 	protected Color getSelectionColor() {
-	if (getCastedModel().getOrmElement() instanceof PersistentClass || 
-				getCastedModel().getOrmElement() instanceof Property || 
+	if (getCastedModel().getOrmElement() instanceof PersistentClass ||
+				getCastedModel().getOrmElement() instanceof Property ||
 				getCastedModel().getOrmElement() instanceof SimpleValue ||
-				getCastedModel().getOrmElement() instanceof OneToMany) 
+				getCastedModel().getOrmElement() instanceof OneToMany)
 			return ResourceManager.getInstance().getColor(new RGB(112,161,99));
-		else if (getCastedModel().getOrmElement() instanceof Table || getCastedModel().getOrmElement() instanceof Column) 
+		else if (getCastedModel().getOrmElement() instanceof Table || getCastedModel().getOrmElement() instanceof Column)
 			return ResourceManager.getInstance().getColor(new RGB(66,173,247));
 		return ResourceManager.getInstance().getColor(new RGB(255,0,0));
 	}
-	
+
 	private class ShapesSelectionEditPolicy extends SelectionEditPolicy {
 
 		protected void hideSelection() {
 			getCastedModel().hideSelection();
-			Iterator iter  = getCastedModel().getSourceConnections().iterator();	
+			Iterator iter  = getCastedModel().getSourceConnections().iterator();
 			while (iter.hasNext()) {
 				Connection element = (Connection) iter.next();
-				element.hideSelection();				
+				element.hideSelection();
 			}
-			iter = getCastedModel().getTargetConnections().iterator();	
+			iter = getCastedModel().getTargetConnections().iterator();
 			while (iter.hasNext()) {
 				Connection element = (Connection) iter.next();
-				element.hideSelection();				
+				element.hideSelection();
 			}
 		}
 
 		protected void showSelection() {
 			getCastedModel().showSelection();
-			Iterator iter  = getCastedModel().getSourceConnections().iterator();	
+			Iterator iter  = getCastedModel().getSourceConnections().iterator();
 			while (iter.hasNext()) {
 				Connection element = (Connection) iter.next();
-				element.showSelection();				
+				element.showSelection();
 			}
-			iter = getCastedModel().getTargetConnections().iterator();	
+			iter = getCastedModel().getTargetConnections().iterator();
 			while (iter.hasNext()) {
 				Connection element = (Connection) iter.next();
-				element.showSelection();				
+				element.showSelection();
 			}
 		}
-		
+
 	}
 
 	protected Object getElement() {

@@ -14,6 +14,7 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
+import org.jboss.tools.hibernate.ui.veditor.UIVEditorMessages;
 import org.jboss.tools.hibernate.ui.veditor.VisualEditorPlugin;
 import org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor;
 import org.jboss.tools.hibernate.ui.view.views.ObjectEditorInput;
@@ -28,7 +29,7 @@ public class OpenSourceAction extends SelectionAction {
 	public OpenSourceAction(IWorkbenchPart part) {
 		super(part);
 		setId(ACTION_ID);
-		setText(Messages.OPENSOURCEACTION_OPEN_SOURCE_FILE);
+		setText(UIVEditorMessages.OpenSourceAction_open_source_file);
 		setImageDescriptor(VisualEditorPlugin.getImageDescriptor("icons/java.gif")); //$NON-NLS-1$
 	}
 
@@ -46,11 +47,11 @@ public class OpenSourceAction extends SelectionAction {
 			Object selection = iterator.next();
 			PersistentClass rootClass = null;
 			if (selection instanceof PersistentClass) {
-				rootClass = (PersistentClass) selection;				
+				rootClass = (PersistentClass) selection;
 			} else if (selection instanceof Property) {
-				rootClass = ((Property) selection).getPersistentClass();				
+				rootClass = ((Property) selection).getPersistentClass();
 			} else continue;
-			
+
 			IResource resource = null;
 			String fullyQualifiedName = rootClass.getClassName();//HibernateUtils.getPersistentClassName(rootClass);
 			/*if (fullyQualifiedName.indexOf("$") > 0) {
@@ -59,11 +60,11 @@ public class OpenSourceAction extends SelectionAction {
 			try {
 				new org.hibernate.eclipse.console.actions.OpenSourceAction().run(selection, proj, fullyQualifiedName);
 			} catch (PartInitException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage(Messages.OPENSOURCEACTION_CANOT_OPEN_SOURCE_FILE, e);
+				HibernateConsolePlugin.getDefault().logErrorMessage(UIVEditorMessages.OpenSourceAction_canot_open_source_file, e);
 			} catch (JavaModelException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage(Messages.OPENSOURCEACTION_CANOT_FIND_SOURCE_FILE, e);
+				HibernateConsolePlugin.getDefault().logErrorMessage(UIVEditorMessages.OpenSourceAction_canot_find_source_file, e);
 			} catch (FileNotFoundException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage(Messages.OPENSOURCEACTION_CANOT_FIND_SOURCE_FILE, e);
+				HibernateConsolePlugin.getDefault().logErrorMessage(UIVEditorMessages.OpenSourceAction_canot_find_source_file, e);
 			}
 		}
 	}
@@ -75,7 +76,7 @@ public class OpenSourceAction extends SelectionAction {
 		while (iterator.hasNext()) {
 			Object elem = iterator.next();
 			if (elem instanceof PersistentClass
-					|| elem instanceof Property) return true; 
+					|| elem instanceof Property) return true;
 		}
 		return false;
 	}

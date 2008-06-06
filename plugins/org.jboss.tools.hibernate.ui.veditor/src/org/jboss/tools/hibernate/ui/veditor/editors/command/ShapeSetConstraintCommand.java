@@ -15,6 +15,7 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
+import org.jboss.tools.hibernate.ui.veditor.UIVEditorMessages;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmShape;
 
 
@@ -22,10 +23,10 @@ public class ShapeSetConstraintCommand extends Command {
 	private final Point newLocation;
 	private Point oldLocation;
 	private final ChangeBoundsRequest request;
-	
+
 	private final OrmShape shape;
-	
-	public ShapeSetConstraintCommand(OrmShape shape, ChangeBoundsRequest req, 
+
+	public ShapeSetConstraintCommand(OrmShape shape, ChangeBoundsRequest req,
 			Point newLocation) {
 		if (shape == null || req == null || newLocation == null) {
 			throw new IllegalArgumentException();
@@ -33,24 +34,24 @@ public class ShapeSetConstraintCommand extends Command {
 		this.shape = shape;
 		this.request = req;
 		this.newLocation = newLocation.getCopy();
-		setLabel(Messages.SHAPESETCONSTRAINTCOMMAND_MOVE);
+		setLabel(UIVEditorMessages.ShapeSetConstraintCommand_move);
 	}
-	
+
 	public boolean canExecute() {
 		Object type = request.getType();
 		return (RequestConstants.REQ_MOVE.equals(type)
-				|| RequestConstants.REQ_MOVE_CHILDREN.equals(type)); 
+				|| RequestConstants.REQ_MOVE_CHILDREN.equals(type));
 	}
-	
+
 	public void execute() {
 		oldLocation = shape.getLocation();
 		redo();
 	}
-	
+
 	public void redo() {
 		shape.setLocation(newLocation);
 	}
-	
+
 	public void undo() {
 		shape.setLocation(oldLocation);
 	}

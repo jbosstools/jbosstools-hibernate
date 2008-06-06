@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.ui.veditor.editors.parts;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
+import org.jboss.tools.hibernate.ui.veditor.UIVEditorMessages;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.ExpandeableShape;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.Shape;
@@ -18,9 +19,9 @@ public class TreePartFactory implements EditPartFactory {
 		if (modelElement instanceof Shape) {
 			return new ShapeTreeEditPart(modelElement);
 		}
-		throw new RuntimeException(Messages.TREEPARTFACTORY_CANOT_CREATE_PART_FOR_MODEL_ELEMENT
+		throw new RuntimeException(UIVEditorMessages.PartFactory_canot_create_part_for_model_element
 				+ ((modelElement != null) ? modelElement.getClass().getName()
-						: Messages.TREEPARTFACTORY_NULL));
+						: UIVEditorMessages.PartFactory_null));
 	}
 
 }

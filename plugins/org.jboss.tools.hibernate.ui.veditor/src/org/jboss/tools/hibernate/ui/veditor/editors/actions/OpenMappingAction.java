@@ -18,6 +18,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.Property;
+import org.jboss.tools.hibernate.ui.veditor.UIVEditorMessages;
 import org.jboss.tools.hibernate.ui.veditor.VisualEditorPlugin;
 import org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.SpecialRootClass;
@@ -33,7 +34,7 @@ public class OpenMappingAction extends SelectionAction {
 	public OpenMappingAction(IWorkbenchPart part) {
 		super(part);
 		setId(ACTION_ID);
-		setText(Messages.OPENMAPPINGACTION_OPEN_MAPPING_FILE);
+		setText(UIVEditorMessages.OpenMappingAction_open_mapping_file);
 		setImageDescriptor(VisualEditorPlugin.getImageDescriptor("icons/mapping.gif")); //$NON-NLS-1$
 	}
 
@@ -56,7 +57,7 @@ public class OpenMappingAction extends SelectionAction {
 				try {
 					org.hibernate.eclipse.console.actions.OpenMappingAction.run(compositSel, parentProperty, consoleConfiguration);
 				} catch (Exception e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage(Messages.OPENMAPPINGACTION_CANOT_FIND_OR_OPEN_MAPPING_FILE, e);
+					HibernateConsolePlugin.getDefault().logErrorMessage(UIVEditorMessages.OpenMappingAction_canot_find_or_open_mapping_file, e);
 				}
 				continue;
 			}
@@ -66,9 +67,9 @@ public class OpenMappingAction extends SelectionAction {
 			try {
 				org.hibernate.eclipse.console.actions.OpenMappingAction.run(selection, consoleConfiguration);
 			} catch (Exception e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage(Messages.OPENMAPPINGACTION_OPEN_MAPPING_FILE, e);
-			}		
-			
+				HibernateConsolePlugin.getDefault().logErrorMessage(UIVEditorMessages.OpenMappingAction_open_mapping_file, e);
+			}
+
 	    	/*IResource resource = null;
 	    	Object selectedElement = selection;
 			if (selectedElement instanceof RootClass) {
@@ -135,13 +136,13 @@ public class OpenMappingAction extends SelectionAction {
 					if (selectedElement instanceof PersistentClass
 							|| (selectedElement instanceof Property
 									&& ((Property)selectedElement).getPersistentClass() != null)){
-						org.hibernate.eclipse.console.actions.OpenMappingAction.applySelectionToEditor(selectedElement, editorPart);						
+						org.hibernate.eclipse.console.actions.OpenMappingAction.applySelectionToEditor(selectedElement, editorPart);
 					}
 					} catch (PartInitException e) {
 	    			VisualEditorPlugin.getDefault().logInfo("Can't open mapping file", e);
 				}
 			}*/
-		} 
+		}
 	}
 
 	protected boolean calculateEnabled() {

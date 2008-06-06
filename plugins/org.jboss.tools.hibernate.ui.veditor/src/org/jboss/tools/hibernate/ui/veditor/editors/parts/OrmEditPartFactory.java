@@ -12,6 +12,7 @@ package org.jboss.tools.hibernate.ui.veditor.editors.parts;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
+import org.jboss.tools.hibernate.ui.veditor.UIVEditorMessages;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.ComponentShape;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.Connection;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.ExpandeableShape;
@@ -21,14 +22,14 @@ import org.jboss.tools.hibernate.ui.veditor.editors.model.Shape;
 
 
 public class OrmEditPartFactory implements EditPartFactory {
-	
-	
+
+
 	public EditPart createEditPart(EditPart context, Object modelElement) {
 		EditPart part = getPartForElement(modelElement);
 		part.setModel(modelElement);
 		return part;
 	}
-	
+
 	private EditPart getPartForElement(Object modelElement) {
 		if (modelElement instanceof OrmDiagram) {
 			return new DiagramEditPart();
@@ -49,8 +50,8 @@ public class OrmEditPartFactory implements EditPartFactory {
 			return new ConnectionEditPart();
 		}
 		throw new RuntimeException(
-				Messages.ORMEDITPARTFACTORY_CANOT_CREATE_PART_FOR_MODEL_ELEMENT
-				+ ((modelElement != null) ? modelElement.getClass().getName() : Messages.ORMEDITPARTFACTORY_NULL));
+				UIVEditorMessages.PartFactory_canot_create_part_for_model_element
+				+ ((modelElement != null) ? modelElement.getClass().getName() : UIVEditorMessages.PartFactory_null));
 	}
-	
+
 }

@@ -86,14 +86,14 @@ public class OrmShapeEditPart extends ExpandeableShapeEditPart{
 		} else {
 			throw new IllegalArgumentException();
 		}
-	}	
-		
+	}
+
 	public void performRequest(Request req) {
 		if(RequestConstants.REQ_OPEN.equals(req.getType()) && getModel() instanceof OrmShape) {
 			((OrmShape)getModel()).refreshHiden();
 		}
 	}
-	
+
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
 		if (OrmShape.LOCATION_PROP.equals(prop)) {
@@ -121,16 +121,16 @@ public class OrmShapeEditPart extends ExpandeableShapeEditPart{
 		}
 		if (bounds != null) ((GraphicalEditPart) getParent()).setLayoutConstraint(this, getFigure(), bounds);
 	}
-	
+
 	protected Color getBackgroundColor() {
 		Object element = getCastedModel().getOrmElement();
-		if (element instanceof PersistentClass || element instanceof Component) 
+		if (element instanceof PersistentClass || element instanceof Component)
 			return ResourceManager.getInstance().getColor(new RGB(0,0,0));
 		else if (element instanceof Table || element instanceof Property)
 			return ResourceManager.getInstance().getColor(new RGB(
-					Integer.parseInt(Messages.Colors_DatabaseColumnR),
-					Integer.parseInt(Messages.Colors_DatabaseColumnG),
-					Integer.parseInt(Messages.Colors_DatabaseColumnB)));
+					Integer.parseInt(ColorConstants.Colors_DatabaseColumnR),
+					Integer.parseInt(ColorConstants.Colors_DatabaseColumnG),
+					Integer.parseInt(ColorConstants.Colors_DatabaseColumnB)));
 		else
 			throw new IllegalArgumentException();
 	}

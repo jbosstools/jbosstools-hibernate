@@ -34,6 +34,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.RootClass;
+import org.jboss.tools.hibernate.ui.veditor.UIVEditorMessages;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.AutoLayoutAction;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.ExportImageAction;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.OpenMappingAction;
@@ -49,18 +50,18 @@ import org.jboss.tools.hibernate.ui.veditor.editors.popup.PopupMenuProvider;
 import org.jboss.tools.hibernate.ui.view.views.ObjectEditorInput;
 
 public class VisualEditor extends GraphicalEditor {
-	
+
 	private OrmDiagram ormDiagram = null;
-	
+
 	public VisualEditor() {
 		setEditDomain(new DefaultEditDomain(this));
 	}
-		
+
 	public void doSave(IProgressMonitor monitor) {
 		ormDiagram.save();
 		ormDiagram.setDirty(false);
 	}
-	
+
 	public void doSaveAs() {
 	}
 
@@ -75,13 +76,13 @@ public class VisualEditor extends GraphicalEditor {
 		viewer.setContextMenu(provider);
 		getSite().registerContextMenu("FlowDiagramContextmenu", provider, viewer); //$NON-NLS-1$
 	}
-	
+
 	public GraphicalViewer getEditPartViewer() {
 		return getGraphicalViewer();
 	}
-	
+
 	protected void createActions() {
-		
+
 		getEditorSite().getActionBars().setGlobalActionHandler(ActionFactory.REFRESH.getId(),new WorkbenchPartAction(this){
 
 			protected boolean calculateEnabled() {
@@ -91,9 +92,9 @@ public class VisualEditor extends GraphicalEditor {
 				ormDiagram.refresh();
 			}
 		});
-		
+
 		super.createActions();
-		
+
 		getEditorSite().getActionBars().setGlobalActionHandler(ActionFactory.PRINT.getId(), getActionRegistry().getAction(ActionFactory.PRINT.getId()));
 
 		ActionRegistry registry = getActionRegistry();
@@ -110,9 +111,9 @@ public class VisualEditor extends GraphicalEditor {
 
 		action = new AutoLayoutAction(this);
 		registry.registerAction(action);
-	
+
 	}
-		
+
 	private TransferDropTargetListener createTransferDropTargetListener() {
 		return new TemplateTransferDropTargetListener(getGraphicalViewer()) {
 			protected CreationFactory getFactory(Object template) {
@@ -120,23 +121,23 @@ public class VisualEditor extends GraphicalEditor {
 			}
 		};
 	}
-	
+
 	public boolean isSaveAsAllowed() {
 		return false;
 	}
-	
+
 	public boolean isSaveOnCloseNeeded() {
 		return true;
 	}
-		
+
 	public void refreshDirty() {
 		firePropertyChange(IEditorPart.PROP_DIRTY);
 	}
-	
+
 	public boolean isDirty() {
 		return ormDiagram.isDirty();
 	}
-	
+
 	protected void setInput(IEditorInput input) {
 		super.setInput(input);
 		ObjectEditorInput objectEditorInput = (ObjectEditorInput)input;
@@ -144,7 +145,7 @@ public class VisualEditor extends GraphicalEditor {
 		Object obj = objectEditorInput.getObject();
 		if (obj instanceof RootClass) {
 			RootClass rootClass = (RootClass)obj;
-			setPartName(Messages.VISUALEDITOR_DIAGRAM_FOR + rootClass.getEntityName());
+			setPartName(UIVEditorMessages.VisualEditor_diagram_for + rootClass.getEntityName());
 			ormDiagram = new OrmDiagram(configuration, rootClass, objectEditorInput.getJavaProject());
 		}
 		else if (obj instanceof RootClass[]) {
@@ -153,11 +154,11 @@ public class VisualEditor extends GraphicalEditor {
 			for (int i = 1; i < rootClasses.length; i++) {
 				name += " & " + rootClasses[i].getEntityName(); //$NON-NLS-1$
 			}
-			setPartName(Messages.VISUALEDITOR_DIAGRAM_FOR + name);
+			setPartName(UIVEditorMessages.VisualEditor_diagram_for + name);
 			ormDiagram = new OrmDiagram(configuration, rootClasses, objectEditorInput.getJavaProject());
 		}
 	}
-	
+
 	public Object getAdapter(Class type) {
 		if (type == IContentOutlinePage.class) {
 			DiagramContentOutlinePage outline = new DiagramContentOutlinePage(
@@ -171,7 +172,7 @@ public class VisualEditor extends GraphicalEditor {
 
 		return super.getAdapter(type);
 	}
-	
+
 	public Set getSelectedElements_old() {
 		Set ret = new HashSet();
 		List selectedEditParts = getGraphicalViewer().getSelectedEditParts();
@@ -211,9 +212,9 @@ public class VisualEditor extends GraphicalEditor {
 	public OrmDiagram getViewerContents() {
 		return ormDiagram;
 	}
-	
+
 	public DefaultEditDomain getDefaultEditDomain() {
 		return getEditDomain();
 	}
-	
+
 }

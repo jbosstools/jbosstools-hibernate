@@ -19,11 +19,12 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.widgets.FileDialog;
+import org.jboss.tools.hibernate.ui.veditor.UIVEditorMessages;
 import org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor;
 
 public class ExportImageAction extends Action {
 
-	public static final String ACTION_ID = Messages.EXPORTIMAGEACTION_EXPORT_AS_IMAGE;
+	public static final String ACTION_ID = "Export as Image"; //$NON-NLS-1$
 
 	private VisualEditor editor;
 
@@ -41,8 +42,8 @@ public class ExportImageAction extends Action {
 				this.editor.getSite().getShell(), SWT.SAVE);
 		saveDialog
 				.setFilterExtensions(new String[] { "*.png", "*.jpg", "*.bmp" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		saveDialog.setFilterNames(new String[] { Messages.EXPORTIMAGEACTION_PNG_FORMAT,
-				Messages.EXPORTIMAGEACTION_JPG_FORMAT, Messages.EXPORTIMAGEACTION_BMP_FORMAT });
+		saveDialog.setFilterNames(new String[] { UIVEditorMessages.ExportImageAction_png_format,
+				UIVEditorMessages.ExportImageAction_jpg_format, UIVEditorMessages.ExportImageAction_bmp_format });
 
 		String filePath = saveDialog.open();
 		if (filePath == null || filePath.trim().length() == 0) {
@@ -67,7 +68,7 @@ public class ExportImageAction extends Action {
 			outStream.close();
 		} catch (Throwable e) {
 			MessageDialog.openInformation(this.editor.getSite().getShell(),
-					Messages.EXPORTIMAGEACTION_ERROR, Messages.EXPORTIMAGEACTION_FAILED_TO_EXPORT_IMAGE + e.getMessage());
+					UIVEditorMessages.ExportImageAction_error, UIVEditorMessages.ExportImageAction_failed_to_export_image + e.getMessage());
 			return;
 		}
 	}
