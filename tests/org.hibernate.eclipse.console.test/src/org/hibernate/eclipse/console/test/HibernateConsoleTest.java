@@ -21,7 +21,7 @@ import org.hibernate.eclipse.console.HibernateConsolePerspectiveFactory;
 public abstract class HibernateConsoleTest extends TestCase {
 
 	private static final long MAX_IDLE = 5*60*1000L;
-	
+
 	private SimpleTestProject project;
 
 	public HibernateConsoleTest(String name) {
@@ -32,13 +32,13 @@ public abstract class HibernateConsoleTest extends TestCase {
 		super.setUp();
 		this.project = createTestProject();
 
-		
+
 		waitForJobs();
 		PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().setPerspective(
 						PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId(HibernateConsolePerspectiveFactory.ID_CONSOLE_PERSPECTIVE));
 
-		
+
 		IPackagesViewPart packageExplorer = null;
 		try {
 			packageExplorer = (IPackagesViewPart) PlatformUI.getWorkbench()
@@ -46,22 +46,22 @@ public abstract class HibernateConsoleTest extends TestCase {
 		} catch (PartInitException e) {
 			throw new RuntimeException(e);
 		}
-		
+
 		IType type = this.project.getTestClassType();
 		packageExplorer.selectAndReveal(type);
-		
-		
+
+
 		FileEditorInput input = new FileEditorInput((IFile) type.getCompilationUnit().getCorrespondingResource());
-		
+
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(input, JavaUI.ID_CU_EDITOR );
-		
+
 		delay(2000);
 	}
 
 	protected SimpleTestProject createTestProject() {
 		return new SimpleTestProject();
 	}
-	
+
 	protected void tearDown() throws Exception {
 		waitForJobs();
 
@@ -76,11 +76,11 @@ public abstract class HibernateConsoleTest extends TestCase {
 
 		super.tearDown();
 	}
-	
+
 
 	/**
 	 * Process UI input but do not return for the specified time interval.
-	 * 
+	 *
 	 * @param waitTimeMillis
 	 *            the number of milliseconds
 	 */
@@ -115,17 +115,17 @@ public abstract class HibernateConsoleTest extends TestCase {
 		while (Platform.getJobManager().currentJob() != null)
 			delay(2000);
 	}*/
-	
+
 	public void waitForJobs() {
 		long start = System.currentTimeMillis();
 		while (!Job.getJobManager().isIdle()) {
 			delay(500);
-			if ( (System.currentTimeMillis()-start) > MAX_IDLE ) 
-				throw new RuntimeException(Messages.HIBERNATECONSOLETEST_LONG_RUNNING_TASK_DETECTED);
+			if ( (System.currentTimeMillis()-start) > MAX_IDLE )
+				throw new RuntimeException(ConsoleTestMessages.HibernateConsoleTest_long_running_task_detected);
 		}
 		delay(1000);
 	}
-	
+
 	public boolean noMoreJobs() {
 		Job[] queuedJobs= Job.getJobManager().find(null);
 		for (int i= 0; i < queuedJobs.length; i++) {
@@ -136,10 +136,9 @@ public abstract class HibernateConsoleTest extends TestCase {
 		}
 		return true;
 	}
-	
+
 	protected SimpleTestProject getProject() {
 		return this.project;
 	}
-	
+
 }
- 

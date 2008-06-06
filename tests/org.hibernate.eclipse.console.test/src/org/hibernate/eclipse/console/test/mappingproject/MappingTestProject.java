@@ -41,6 +41,8 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.PackageFragmentRoot;
+import org.eclipse.osgi.util.NLS;
+import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin;
 
 
@@ -49,23 +51,23 @@ import org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin;
  *
  */
 public class MappingTestProject{
-	
+
 	public static final String SRC_FOLDER = "src"; //$NON-NLS-1$
-	
+
 	public static final String LIB_FOLDER = "lib"; //$NON-NLS-1$
 
 	private static MappingTestProject singleton= null;
-	
+
 	private static final Path JRE_CONTAINER = new Path("org.eclipse.jdt.launching.JRE_CONTAINER"); //$NON-NLS-1$
-	
+
 	public static String PROJECT_NAME = "MappingTestProject"; //$NON-NLS-1$
 	public static String RESOURCE_PATH = "res/project/"; //$NON-NLS-1$
-	
+
 	private static FileFilter fileFilter = new FileFilter(){
 		public boolean accept(File pathname) {
 			return !pathname.isDirectory();
 		}};
-		
+
 	private	static FileFilter dirFilter = new FileFilter(){
 			public boolean accept(File pathname) {
 				//exclude ".svn" and other unnessesary folders
@@ -73,22 +75,22 @@ public class MappingTestProject{
 				if (LIB_FOLDER.equals(pathname.getName())) return false;
 				return pathname.isDirectory();
 			}};
-			
+
 	private static FileFilter jarFilter = new FileFilter(){
 		public boolean accept(File pathname) {
 			return !pathname.isDirectory() || pathname.getName().endsWith(".jar"); //$NON-NLS-1$
 		}};
-	
+
 	private IProject project;
 	private IJavaProject javaProject;
-	
+
 	public static MappingTestProject getTestProject(){
 		if (singleton == null){
 			singleton = new MappingTestProject();
 		}
 		return singleton;
-	}		
-	
+	}
+
 	private MappingTestProject() {
 		initialize();
 	}
@@ -96,7 +98,7 @@ public class MappingTestProject{
 	private void initialize(){
 		try{
 			buildBigTestProject();
-		}catch(Exception e){ 
+		}catch(Exception e){
 			throw new RuntimeException(e);
 		}
 	}
@@ -104,34 +106,37 @@ public class MappingTestProject{
 	public IProject getIProject(){
 		return this.project;
 	}
-	
+
 	public IJavaProject getIJavaProject(){
 		return this.javaProject;
 	}
-	
+
 	public void deleteIProject() throws CoreException {
 		project.delete(true, true, null);
 	}
-	
+
 	private void buildBigTestProject() throws JavaModelException, CoreException, IOException {
 		project = buildNewProject(PROJECT_NAME);
 		javaProject = buildJavaProject(project);
-		
+
 		IPath resourcePath = new Path(RESOURCE_PATH);
 		File resourceFolder = resourcePath.toFile();
 		URL entry = HibernateConsoleTestPlugin.getDefault().getBundle().getEntry(RESOURCE_PATH);
 		URL resProject = FileLocator.resolve(entry);
 		String tplPrjLcStr= FileLocator.resolve(resProject).getFile();
 		resourceFolder = new File(tplPrjLcStr);
-		if (!resourceFolder.exists()) 
-			throw new RuntimeException(Messages.MAPPINGTESTPROJECT_FOLDER + RESOURCE_PATH + Messages.MAPPINGTESTPROJECT_NOT_FOUND);
-				
+		if (!resourceFolder.exists()) {
+			String out = NLS.bind(ConsoleTestMessages.MappingTestProject_folder_not_found,
+					RESOURCE_PATH);
+			throw new RuntimeException(out);
+		}
+
 		IPackageFragmentRoot sourceFolder = createSourceFolder(project, javaProject);
 		recursiveCopyFiles(resourceFolder, (IFolder) sourceFolder.getResource());
 		List<IPath> libs = copyLibs(resourceFolder);
 		generateClassPath(libs, sourceFolder);
 		project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, new NullProgressMonitor());
-	}	
+	}
 
 	private void recursiveCopyFiles(File src, IFolder dst){
 		File[] files = src.listFiles(fileFilter);
@@ -147,9 +152,9 @@ public class MappingTestProject{
 			} catch (CoreException e) {
 				e.printStackTrace();
 				continue;
-			}			
+			}
 		}
-		
+
 		File[] dirs = src.listFiles(dirFilter);
 		for (int i = 0; i < dirs.length; i++) {
 			File dir = dirs[i];
@@ -162,39 +167,42 @@ public class MappingTestProject{
 				e.printStackTrace();
 				continue;
 			}
-		}		
+		}
 	}
-	
-	private List<IPath> copyLibs(File res) throws CoreException {		
+
+	private List<IPath> copyLibs(File res) throws CoreException {
 		IFolder dst = project.getFolder(LIB_FOLDER);
 		if (!dst.exists()){
 			dst.create(false, true, null);
 			javaProject.getPackageFragmentRoot(dst);
 		}
-				
+
 		File libFolder = new File(res.getAbsolutePath()+"/" + LIB_FOLDER); //$NON-NLS-1$
-		if ( !libFolder.exists() )
-			throw new RuntimeException(Messages.MAPPINGTESTPROJECT_FOLDER + RESOURCE_PATH + "/" + LIB_FOLDER + Messages.MAPPINGTESTPROJECT_NOT_FOUND);  //$NON-NLS-1$
-		
-		
+		if ( !libFolder.exists() ) {
+			String out = NLS.bind(ConsoleTestMessages.MappingTestProject_folder_not_found,
+					RESOURCE_PATH + "/" + LIB_FOLDER);  //$NON-NLS-1$
+			throw new RuntimeException(out);
+		}
+
+
 		List<IPath> libs = new ArrayList<IPath>();
-		
+
 		File[] files = libFolder.listFiles(jarFilter);
 		for (int i = 0; i < files.length; i++) {
 			File file = files[i];
 			if (!file.exists()) continue;
 			IFile iFile = dst.getFile(file.getName());
 			try {
-				iFile.create(new FileInputStream(file), true, null);				
+				iFile.create(new FileInputStream(file), true, null);
 				libs.add(iFile.getFullPath());
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 				continue;
-			}			
-		}		
+			}
+		}
 		return libs;
 	}
-	
+
 	private void generateClassPath(List<IPath> libs, IPackageFragmentRoot sourceFolder) throws JavaModelException{
 		List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>();
 		//entries.addAll(Arrays.asList(javaProject.getRawClasspath()));
@@ -205,7 +213,7 @@ public class MappingTestProject{
 		entries.add(JavaCore.newContainerEntry(JRE_CONTAINER));
 		javaProject.setRawClasspath(entries.toArray(new IClasspathEntry[0]), null);
 	}
-	
+
 
 	private IProject buildNewProject(String projectName) {
 		// get a project handle
@@ -240,7 +248,7 @@ public class MappingTestProject{
 		} catch (CoreException ce) {
 			throw new RuntimeException(ce);
 		}
-		
+
 		javaProject.setOption(JavaCore.COMPILER_COMPLIANCE, JavaCore.VERSION_1_5);
 		javaProject.setOption(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, JavaCore.VERSION_1_5);
 		javaProject.setOption(JavaCore.COMPILER_SOURCE, JavaCore.VERSION_1_5);
@@ -268,8 +276,8 @@ public class MappingTestProject{
 		}
 		return javaProject.getPackageFragmentRoot(folder);
 	}
-	
-	
+
+
 
 	/*private boolean removePackage(String name, IProject project,
 			IJavaProject javaProject) {
@@ -283,17 +291,17 @@ public class MappingTestProject{
 				return false;
 			}
 			return true;
-		} 
+		}
 		return false;
 	}
-	
+
 	/*private IPackageFragment buildPackage(String name, IProject project,
 			IJavaProject javaProject) throws CoreException {
 		IPackageFragmentRoot sourceFolder = buildSourceFolder(project,
 				javaProject);
 		return sourceFolder.createPackageFragment(name, false, null);
 	}
-	
+
 	private IType[] buildTypes(IProject project, IJavaProject javaProject, CompilationPack compPack) throws CoreException
 	/*throws CoreException*/ //{
 
@@ -302,9 +310,9 @@ public class MappingTestProject{
 		/*IPackageFragment jPack = buildPackage(compPack.getPack(), project, javaProject);
 		ICompilationUnit cu = null;//jPack.createCompilationUnit(cuName,
 				//"", false, null);
-				
+
 		List<IType> result = new ArrayList<IType>();
-		
+
 		InputStream is;
 		try {
 			File[] files = compPack.getFiles();
@@ -313,31 +321,31 @@ public class MappingTestProject{
 					is = new FileInputStream(files[i]);
 					String fileBody = getStringFromStream(is);
 
-					//ASTParser parser = ASTParser.newParser(AST.JLS3);  
-					//parser.setSource(fileBody.toCharArray());					
+					//ASTParser parser = ASTParser.newParser(AST.JLS3);
+					//parser.setSource(fileBody.toCharArray());
 					//CompilationUnit cu2 = (CompilationUnit) parser.createAST(null);
 					String cuName = files[i].getName();
-					
+
 					try {
 						cu = jPack.createCompilationUnit(cuName, fileBody, false, null);
 						result.addAll(Arrays.asList(cu.getAllTypes()));
-					} catch (JavaModelException e) {						
+					} catch (JavaModelException e) {
 						e.printStackTrace();
 						System.out.println("Error compiling file " + files[i].getAbsolutePath());
-					}					
-				}				
+					}
+				}
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} 
+		}
 		for (int i = 0; i < result.size(); i++) {
 			System.out.println(((IType)result.get(i)).getElementName());
-		}		
+		}
 		return (IType[])result.toArray(new IType[0]);
-	}	
-	
+	}
+
 	public static String getStringFromStream (InputStream is)
 	throws IOException
 	{
@@ -356,28 +364,28 @@ public class MappingTestProject{
 			if (null != is) is.close();
 		}
 	}
-	
+
 	private void createCompilationPacks(File pack, List<CompilationPack> compPacks, String packName){
 		if (pack.isDirectory()){
 			if (packName.length() != 0)	packName += '.';
 			packName += pack.getName();
-			
+
 			File[] files = pack.listFiles(fileFilter);
 			if (files.length > 0) compPacks.add(new CompilationPack(packName, files));
-			
+
 			File[] dirs = pack.listFiles(dirFilter);
 			for (int i = 0; i < dirs.length; i++) {
 				createCompilationPacks(dirs[i], compPacks, packName);
 			}
 		}
 	}
-	
+
 	public class CompilationPack {
-		
+
 		private String pack = null;
-		
+
 		private File[] files = null;
-		
+
 		CompilationPack (String pack, File[] files){
 			this.pack = pack;
 			this.files = files;
@@ -389,7 +397,7 @@ public class MappingTestProject{
 
 		public File[] getFiles() {
 			return files;
-		}		
+		}
 	}*/
 
 }

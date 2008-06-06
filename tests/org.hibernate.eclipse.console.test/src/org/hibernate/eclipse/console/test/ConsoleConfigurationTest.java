@@ -25,37 +25,37 @@ public class ConsoleConfigurationTest extends TestCase {
 	public ConsoleConfigurationTest(String name) {
 		super( name );
 	}
-	
+
 	protected void setUp() throws Exception {
 		super.setUp();
-		
+
 		TestConsoleConfigurationPreferences cfgprefs = new TestConsoleConfigurationPreferences();
 		consoleCfg = new ConsoleConfiguration(cfgprefs);
 		KnownConfigurations.getInstance().addConfiguration(consoleCfg, true);
 	}
-	
+
 	protected void tearDown() throws Exception {
 		KnownConfigurations.getInstance().removeAllConfigurations();
 	}
-	
+
 	static class TestConsoleConfigurationPreferences implements ConsoleConfigurationPreferences {
-		
-		public void setName(String name) {			
+
+		public void setName(String name) {
 			fail();
 		}
-	
+
 		public void readStateFrom(Element element) {
-			fail();	
+			fail();
 		}
-	
+
 		public void writeStateTo(Element node) {
-			fail();	
+			fail();
 		}
-	
+
 		public File getPropertyFile() {
 			return null;
 		}
-	
+
 		public File getConfigXMLFile() {
 			File xmlConfig = null;
 			Bundle bundle = HibernateConsoleTestPlugin.getDefault().getBundle();
@@ -67,28 +67,28 @@ public class ConsoleConfigurationTest extends TestCase {
 			}
 			return xmlConfig;
 		}
-	
+
 		public Properties getProperties() {
 			Properties p = new Properties();
 			p.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect"); //$NON-NLS-1$ //$NON-NLS-2$
 			return p;
 		}
-	
+
 		public File[] getMappingFiles() {
 			return new File[0];
 		}
-	
+
 		public URL[] getCustomClassPathURLS() {
 			return new URL[0];
 		}
-	
-		public String getName() {
-			return Messages.CONSOLECONFIGTEST_FAKE_PREFS;
-		}
-	
-		
 
-		public String getEntityResolverName() {			
+		public String getName() {
+			return ConsoleTestMessages.ConsoleConfigurationTest_fake_prefs;
+		}
+
+
+
+		public String getEntityResolverName() {
 			return ""; //$NON-NLS-1$
 		}
 
@@ -105,74 +105,74 @@ public class ConsoleConfigurationTest extends TestCase {
 			// TODO Auto-generated method stub
 			return null;
 		}
-	
+
 	}
-	
-	
+
+
 	static class MockCCListener implements ConsoleConfigurationListener {
 		int factoryBuilt = 0;
 		int factoryClosing = 0;
 		public int queryCreated;
-		
+
 		public void sessionFactoryClosing(ConsoleConfiguration configuration,
 				SessionFactory aboutToCloseFactory) {
-			factoryClosing++;		
+			factoryClosing++;
 		}
-			
+
 		public void sessionFactoryBuilt(ConsoleConfiguration ccfg,
 				SessionFactory builtSessionFactory) {
-			factoryBuilt++;	
+			factoryBuilt++;
 		}
 
 		public void queryPageCreated(QueryPage qp) {
 			queryCreated++;
 		}
-		
-		
-	
+
+
+
 	}
-	
+
 	public void testBuildConfiguration() {
-		
+
 		MockCCListener listener = new MockCCListener();
 		assertTrue(consoleCfg.getConsoleConfigurationListeners().length==1);
 		consoleCfg.addConsoleConfigurationListener(listener);
-		
+
 		consoleCfg.build();
-		
+
 		assertEquals(0, listener.factoryBuilt);
 		consoleCfg.buildSessionFactory();
 		assertEquals(1, listener.factoryBuilt);
-		
+
 		try {
 			consoleCfg.buildSessionFactory();
-			fail(Messages.CONSOLECONFIGTEST_FACTORY_ALREADY_EXISTS);
+			fail(ConsoleTestMessages.ConsoleConfigurationTest_factory_already_exists);
 		} catch (HibernateConsoleRuntimeException hcre) {
-			
+
 		}
-		
+
 		QueryPage qp = consoleCfg.executeHQLQuery("from java.lang.Object"); //$NON-NLS-1$
 		assertEquals(1, listener.queryCreated);
-		
-		consoleCfg.closeSessionFactory();		
+
+		consoleCfg.closeSessionFactory();
 		assertEquals(1, listener.factoryClosing);
-		
-		
+
+
 	}
-	
+
 	/*public void testCleanup() throws InterruptedException {
-		
+
 		for(int cnt=0;cnt<10000;cnt++) {
 			if(cnt%2==0) {
-				
+
 				System.out.println("Cnt " + cnt + " " + Runtime.getRuntime().freeMemory()/1000);
 				Thread.sleep( 2000 );
 			}
-			
+
 			consoleCfg.build();
 			consoleCfg.buildSessionFactory();
 			consoleCfg.reset();
 		}
-		
+
 	}*/
 }

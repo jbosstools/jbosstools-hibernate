@@ -12,6 +12,7 @@ package org.hibernate.eclipse.console.test.mappingproject;
 
 import junit.framework.TestCase;
 
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
 import org.hibernate.InvalidMappingException;
@@ -19,6 +20,7 @@ import org.hibernate.MappingException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.workbench.ConfigurationWorkbenchAdapter;
 import org.hibernate.eclipse.console.workbench.ConsoleConfigurationWorkbenchAdapter;
 import org.hibernate.mapping.PersistentClass;
@@ -41,29 +43,33 @@ public class OpenMappingDiagramTest extends TestCase {
 			assertTrue(configs[0] instanceof Configuration);
 			persClasses = new ConfigurationWorkbenchAdapter().getChildren(configs[0]);
 		} catch (InvalidMappingException ex){
-			fail(Messages.OPENMAPPINGDIAGRAMTEST_MAPPING_DIAGRAMMS_FOR_PACKAGE + HibernateAllMappingTests.getActivePackage().getElementName()
-					+ Messages.OPENMAPPINGDIAGRAMTEST_CANNOT_BE_OPENED + ex.getMessage());
+			String out = NLS.bind(ConsoleTestMessages.OpenMappingDiagramTest_mapping_diagrams_for_package_cannot_be_opened,
+					new Object[]{HibernateAllMappingTests.getActivePackage().getElementName(), ex.getMessage()});
+			fail(out);
 		}
-		
+
 		if (persClasses.length > 0){
 			for (int i = 0; i < persClasses.length; i++) {
 				assertTrue(persClasses[0] instanceof PersistentClass);
 				PersistentClass persClass = (PersistentClass) persClasses[i];
-		
+
 				IEditorPart editor = null;
 				Throwable ex = null;
 				try {
 					editor = new OpenDiagramActionDelegate().openEditor(persClass, consCFG);
 				} catch (PartInitException e) {
 					ex = e;
-				} 				
-				if (ex == null ) ex = ProjectUtil.getExceptionIfItOccured(editor);				
-				if (ex != null) fail(Messages.OPENMAPPINGDIAGRAMTEST_MAPPING_DIAGRAMM_FOR + persClass.getClassName()
-						+ Messages.OPENMAPPINGDIAGRAMTEST_NOT_OPENED + ex.getMessage());
-			}			
+				}
+				if (ex == null ) ex = ProjectUtil.getExceptionIfItOccured(editor);
+				if (ex != null) {
+					String out = NLS.bind(ConsoleTestMessages.OpenMappingDiagramTest_mapping_diagram_for_not_opened,
+							new Object[]{persClass.getClassName(), ex.getMessage()});
+					fail(out);
+				}
+			}
 		}
 		//close all editors
 	}
 
-	
+
 }

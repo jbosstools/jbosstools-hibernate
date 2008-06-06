@@ -31,6 +31,7 @@ import org.eclipse.ui.internal.ErrorEditorPart;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
+import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard;
 import org.hibernate.mapping.PersistentClass;
 
@@ -39,26 +40,26 @@ import org.hibernate.mapping.PersistentClass;
  *
  */
 public class ProjectUtil {
-	
+
 	private static final StringBuilder XML_HEADER = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n") //$NON-NLS-1$
 													.append("<!DOCTYPE hibernate-configuration PUBLIC\n") //$NON-NLS-1$
 													.append("\"-//Hibernate/Hibernate Configuration DTD 3.0//EN\"\n") //$NON-NLS-1$
 													.append("\"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd\">\n"); //$NON-NLS-1$
-	
+
 	private static final StringBuilder XML_CFG_START = new StringBuilder("<hibernate-configuration>\n") //$NON-NLS-1$
 													.append("<session-factory>\n") //$NON-NLS-1$
 													.append("<property name=\"hibernate.dialect\">") //$NON-NLS-1$
 													.append(Customization.HIBERNATE_DIALECT)
 													.append("</property>"); //$NON-NLS-1$
-	
+
 	private static final StringBuilder XML_CFG_END = new StringBuilder("</session-factory>\n") //$NON-NLS-1$
 													.append("</hibernate-configuration>\n");	 //$NON-NLS-1$
-	
-	
+
+
 	public static final String CFG_FILE_NAME = "hibernate.cfg.xml"; //$NON-NLS-1$
-	
+
 	public static final String ConsoleCFGName = "testConfigName"; //$NON-NLS-1$
-	
+
 	public static void customizeCFGFileForPack(IPackageFragment pack) throws CoreException{
 		IFolder srcFolder = (IFolder) pack.getParent().getResource();
 		IFile iFile = srcFolder.getFile(CFG_FILE_NAME);
@@ -76,7 +77,7 @@ public class ProjectUtil {
 					}
 				}
 			}
-		}		
+		}
 		/*if (pack.getCompilationUnits().length > 0){
 			ICompilationUnit[] comps = pack.getCompilationUnits();
 			for (int i = 0; i < comps.length; i++) {
@@ -95,25 +96,25 @@ public class ProjectUtil {
 		iFile.create(new StringInputStream(file_body),
 				   true, null);
 	}
-	
+
 	public static String getPersistentClassName(PersistentClass persClass) {
 		if (persClass == null) {
 			return ""; //$NON-NLS-1$
-		} else { 
+		} else {
 			return persClass.getEntityName() != null ? persClass.getEntityName() : persClass.getClassName();
 		}
 	}
-	
+
 	public static void createConsoleCFG() throws CoreException{
 		new ConsoleConfigurationCreationWizard2().run();
 	}
-	
+
 	private static class ConsoleConfigurationCreationWizard2 extends ConsoleConfigurationCreationWizard{
-		
+
 		public void run() throws CoreException {
 			IPath cfgFilePath = new Path(MappingTestProject.PROJECT_NAME + "/" +  //$NON-NLS-1$
 					MappingTestProject.SRC_FOLDER + "/" + ProjectUtil.CFG_FILE_NAME); //$NON-NLS-1$
-			createConsoleConfiguration(null, null, ConsoleCFGName, ConsoleConfigurationPreferences.ConfigurationMode.CORE, 
+			createConsoleConfiguration(null, null, ConsoleCFGName, ConsoleConfigurationPreferences.ConfigurationMode.CORE,
 					MappingTestProject.PROJECT_NAME, true, "", //$NON-NLS-1$
 					null, cfgFilePath, new Path[0], new Path[0], "", "", new NullProgressMonitor());  //$NON-NLS-1$//$NON-NLS-2$
 
@@ -121,12 +122,12 @@ public class ProjectUtil {
 	}
 	/**
 	 * Sometimes we have exceptions while opening editors.
-	 * IDE catches this exceptions and opens ErrorEditorPart instead of 
+	 * IDE catches this exceptions and opens ErrorEditorPart instead of
 	 * our editor. To be sure that editor opened without exception use this method.
 	 * It gets occurred exception from the editor if it was and passes it up.
-	 *  
+	 *
 	 * @param editor
-	 * @return 
+	 * @return
 	 * @throws Throwable
 	 */
 	public static Throwable getExceptionIfItOccured(IEditorPart editor){
@@ -135,9 +136,9 @@ public class ProjectUtil {
 			Field field;
 			try {
 				field = clazz.getDeclaredField("error"); //$NON-NLS-1$
-			
+
 				field.setAccessible(true);
-		
+
 				Object error = field.get(editor);
 				if (error instanceof IStatus) {
 					IStatus err_status = (IStatus) error;
@@ -147,18 +148,18 @@ public class ProjectUtil {
 				}
 			// catch close means that exception occurred but we can't get it
 			} catch (SecurityException e) {
-				return new RuntimeException(Messages.PROJECTUTIL_CANNOT_GET_EXCEPTION_FROM_ERROREDITORPART + e.getMessage());
+				return new RuntimeException(ConsoleTestMessages.ProjectUtil_cannot_get_exception_from_erroreditorpart + e.getMessage());
 			} catch (NoSuchFieldException e) {
-				return new RuntimeException(Messages.PROJECTUTIL_CANNOT_GET_ERROR_FIELD_FROM_ERROREDITORPART + e.getMessage());
+				return new RuntimeException(ConsoleTestMessages.ProjectUtil_cannot_get_error_field_from_erroreditorpart + e.getMessage());
 			} catch (IllegalArgumentException e) {
-				return new RuntimeException(Messages.PROJECTUTIL_CANNOT_GET_ERROR_FIELD_FROM_ERROREDITORPART + e.getMessage()); //$NON-NLS-1$
+				return new RuntimeException(ConsoleTestMessages.ProjectUtil_cannot_get_error_field_from_erroreditorpart + e.getMessage());
 			} catch (IllegalAccessException e) {
-				return new RuntimeException(Messages.PROJECTUTIL_CANNOT_GET_ERROR_FIELD_FROM_ERROREDITORPART + e.getMessage()); //$NON-NLS-1$
+				return new RuntimeException(ConsoleTestMessages.ProjectUtil_cannot_get_error_field_from_erroreditorpart + e.getMessage());
 			}
 		}
 		return null;
 	}
-	
+
 	public static boolean checkHighlighting(IEditorPart editor){
 		ITextEditor[] tEditors = getTextEditors(editor);
 		boolean highlighted = false;
@@ -172,8 +173,8 @@ public class ProjectUtil {
 		}
 		return highlighted;
 	}
-	
-	
+
+
 	/**
 	 * Should be identical with OpenMappingAction.getTextEditors()
 	 * @param editorPart
@@ -181,7 +182,7 @@ public class ProjectUtil {
 	 */
 	public static ITextEditor[] getTextEditors(IEditorPart editorPart) {
 		if (editorPart instanceof MultiPageEditorPart) {
-			List testEditors = new ArrayList();			
+			List testEditors = new ArrayList();
     		IEditorPart[] editors = ((MultiPageEditorPart) editorPart).findEditors(editorPart.getEditorInput());
     		for (int i = 0; i < editors.length; i++) {
 				if (editors[i] instanceof ITextEditor){

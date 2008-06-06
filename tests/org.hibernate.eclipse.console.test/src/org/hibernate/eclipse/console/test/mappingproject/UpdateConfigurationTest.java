@@ -15,13 +15,15 @@ import junit.framework.TestCase;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.osgi.util.NLS;
+import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 
 /**
  * @author Dmitry Geraskov
  *
  */
 public class UpdateConfigurationTest extends TestCase {
-	
+
 	public void testUpdateConfiguration() throws JavaModelException{
 		//fail("test fail");
 		IPackageFragment pack = HibernateAllMappingTests.getActivePackage();
@@ -29,8 +31,9 @@ public class UpdateConfigurationTest extends TestCase {
 		try {
 			ProjectUtil.customizeCFGFileForPack(pack);
 		} catch (CoreException e) {
-			fail(Messages.UPDATECONFIGURATIONTEST_ERROR_CUSTOMISING + ProjectUtil.CFG_FILE_NAME + Messages.UPDATECONFIGURATIONTEST_FILE_FOR_PACKAGE 
-					+ pack.getPath() + ".\n" + e.getMessage()); //$NON-NLS-1$
+			String out = NLS.bind(ConsoleTestMessages.UpdateConfigurationTest_error_customising_file_for_package,
+					new Object[] { ProjectUtil.CFG_FILE_NAME, pack.getPath(), e.getMessage() } );
+			fail(out);
 		}
 	}
 }

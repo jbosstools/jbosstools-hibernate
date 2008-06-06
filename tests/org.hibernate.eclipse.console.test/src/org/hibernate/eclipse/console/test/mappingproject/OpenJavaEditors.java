@@ -24,6 +24,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
+import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 
 /**
  * @author Dmitry Geraskov
@@ -31,11 +32,11 @@ import org.eclipse.ui.part.FileEditorInput;
  * just to test that our external Unit tests work right with MappingTestProject
  */
 public class OpenJavaEditors extends TestCase {
-	
+
 	public void testOpenJavaEditor() throws JavaModelException {
 		MappingTestProject mapProject = MappingTestProject.getTestProject();
-		
-		IPackageFragmentRoot[] roots = mapProject.getIJavaProject().getAllPackageFragmentRoots();	
+
+		IPackageFragmentRoot[] roots = mapProject.getIJavaProject().getAllPackageFragmentRoots();
 	    for (int i = 0; i < roots.length; i++) {
 	    	if (roots[i].getClass() != PackageFragmentRoot.class) continue;
 			PackageFragmentRoot packageFragmentRoot = (PackageFragmentRoot) roots[i];
@@ -46,15 +47,15 @@ public class OpenJavaEditors extends TestCase {
 					ICompilationUnit[] cus = ((IPackageFragment)javaElement).getCompilationUnits();
 					for (int k = 0; k < cus.length; k++) {
 						ICompilationUnit compilationUnit = cus[k];
-						FileEditorInput input = new FileEditorInput((IFile) compilationUnit.getCorrespondingResource());						
+						FileEditorInput input = new FileEditorInput((IFile) compilationUnit.getCorrespondingResource());
 						try {
 							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().openEditor(input, JavaUI.ID_CU_EDITOR );
 						} catch (PartInitException e) {
-							fail(Messages.OPENJAVAEDITORS_ERROR_OPENNING_COMPILATIONUNIT + e.getMessage());
+							fail(ConsoleTestMessages.OpenJavaEditors_error_openning_compilationunit + e.getMessage());
 						}
 					}
 				}
-			}		
+			}
 		}
 
 		//PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closeAllEditors(false);

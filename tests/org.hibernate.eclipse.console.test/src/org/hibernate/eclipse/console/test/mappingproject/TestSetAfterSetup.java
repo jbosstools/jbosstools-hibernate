@@ -11,6 +11,8 @@
 
 package org.hibernate.eclipse.console.test.mappingproject;
 
+import org.hibernate.eclipse.console.test.ConsoleTestMessages;
+
 import junit.framework.TestSuite;
 
 /**
@@ -19,7 +21,7 @@ import junit.framework.TestSuite;
  */
 public class TestSetAfterSetup {
 	public static TestSuite getTests(){
-		TestSuite suite = new TestSuite(Messages.TESTSET_TEST_FOR_MAPPINGTESTPROJECT );
+		TestSuite suite = new TestSuite(ConsoleTestMessages.TestSet_test_for_mappingtestproject);
 		suite.addTestSuite( HibernateNatureAddTest.class );
 		//suite.addTestSuite( CreateConsoleConfigTest.class );
 		return suite;

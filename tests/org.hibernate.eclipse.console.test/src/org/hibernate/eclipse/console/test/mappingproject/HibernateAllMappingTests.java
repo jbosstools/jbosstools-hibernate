@@ -29,17 +29,18 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.hibernate.eclipse.console.HibernateConsolePerspectiveFactory;
+import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 
 public class HibernateAllMappingTests extends TestCase {
 
 	private MappingTestProject project;
-	
+
 	private static IPackageFragment activePackage;
 
 	public HibernateAllMappingTests(String name) {
 		super(name);
 	}
-	
+
 	private TestResult result = null;
 
 	protected void setUp() throws Exception {
@@ -48,22 +49,22 @@ public class HibernateAllMappingTests extends TestCase {
 
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().setPerspective(
 				PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId("org.eclipse.ui.resourcePerspective")); //$NON-NLS-1$
-		
-		IPackagesViewPart packageExplorer = null;		
+
+		IPackagesViewPart packageExplorer = null;
 		try {
 			packageExplorer = (IPackagesViewPart) PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage().showView(JavaUI.ID_PACKAGES);
 		} catch (PartInitException e) {
 			throw new RuntimeException(e);
 		}
-		
+
 		packageExplorer.selectAndReveal(project.getIJavaProject());
-		
+
 		PlatformUI.getWorkbench()
 		.getActiveWorkbenchWindow().getActivePage().setPerspective(
 				PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId(HibernateConsolePerspectiveFactory.ID_CONSOLE_PERSPECTIVE));
 
-		
+
 		waitForJobs();
 		runTestsAfterSetup();
 		ProjectUtil.createConsoleCFG();
@@ -82,13 +83,13 @@ public class HibernateAllMappingTests extends TestCase {
 	 */
 	@Override
 	public void run(TestResult result) {
-		this.result = result;		
+		this.result = result;
 		super.run(result);
-	}	
-	
-	public void tearDown() throws Exception {		
+	}
+
+	public void tearDown() throws Exception {
 		waitForJobs();
-		runTestsBeforeTearDown();		
+		runTestsBeforeTearDown();
 		waitForJobs();
 		delay(1000);
 		//this.project.deleteIProject();
@@ -100,13 +101,13 @@ public class HibernateAllMappingTests extends TestCase {
 		TestSuite suite = TestSetBeforeTearDown.getTests();
 		for (int i = 0; i < suite.testCount(); i++) {
 			Test test = suite.testAt(i);
-			test.run(result);	
-		}		
+			test.run(result);
+		}
 	}
 
 	/**
 	 * Process UI input but do not return for the specified time interval.
-	 * 
+	 *
 	 * @param waitTimeMillis
 	 *            the number of milliseconds
 	 */
@@ -142,16 +143,16 @@ public class HibernateAllMappingTests extends TestCase {
 		while (Platform.getJobManager().currentJob() != null)
 			delay(1000);
 	}
-	
+
 	protected MappingTestProject getProject() {
 		return this.project;
-	}	
-	
+	}
+
 	public void testEachPackWithTestSet() throws JavaModelException {
 	   	long start_time = System.currentTimeMillis();
 		TestSuite suite = TestSet.getTests();
 		int pack_count = 0;
-		IPackageFragmentRoot[] roots = project.getIJavaProject().getAllPackageFragmentRoots();	
+		IPackageFragmentRoot[] roots = project.getIJavaProject().getAllPackageFragmentRoots();
 		for (int i = 0; i < roots.length; i++) {
 	    	if (roots[i].getClass() != PackageFragmentRoot.class) continue;
 			PackageFragmentRoot packageFragmentRoot = (PackageFragmentRoot) roots[i];
@@ -166,15 +167,15 @@ public class HibernateAllMappingTests extends TestCase {
 						!Pattern.matches(Customization.TEST_PACKS_PATTERN, javaElement.getElementName())){
 						continue;
 					}
-					
-					long st_pack_time = System.currentTimeMillis();	
-					int prev_failCount = result.failureCount();	
+
+					long st_pack_time = System.currentTimeMillis();
+					int prev_failCount = result.failureCount();
 					int prev_errCount = result.errorCount();
 
 					if (Customization.SHOW_EACH_TEST) suite = TestSet.getTests();
-				
+
 					activePackage = pack;
-					//==============================					
+					//==============================
 					//run all tests for package
 					for (int k = 0; k < suite.testCount(); k++) {
 						Test test = suite.testAt(k);
@@ -184,32 +185,32 @@ public class HibernateAllMappingTests extends TestCase {
 					//==============================
 					pack_count++;
 					if (Customization.USE_CONSOLE_OUTPUT){
-						System.out.print( result.errorCount() - prev_errCount + Messages.HIBERNATEALLMAPPINGTESTS_ERRORS + " \t"); //$NON-NLS-1$
-						System.out.print( result.failureCount() - prev_failCount + Messages.HIBERNATEALLMAPPINGTESTS_FAILS + "\t");						 //$NON-NLS-1$
+						System.out.print( result.errorCount() - prev_errCount + ConsoleTestMessages.HibernateAllMappingTests_errors + " \t"); //$NON-NLS-1$
+						System.out.print( result.failureCount() - prev_failCount + ConsoleTestMessages.HibernateAllMappingTests_fails + "\t");						 //$NON-NLS-1$
 						long period = System.currentTimeMillis() - st_pack_time;
 						String time = period / 1000 + "." + (period % 1000) / 100; //$NON-NLS-1$
-						System.out.println( time +Messages.HIBERNATEALLMAPPINGTESTS_SECONDS + javaElement.getElementName());						
+						System.out.println( time +ConsoleTestMessages.HibernateAllMappingTests_seconds + javaElement.getElementName());
 					}
 					waitForJobs();
 					delay(Customization.EACTH_PACK_TEST_DELAY);
-								
+
 					if (Customization.STOP_AFTER_MISSING_PACK){
 						if (result.failureCount() > prev_failCount) break;
 					}
 					prev_failCount = result.failureCount();
 					prev_errCount = result.errorCount();
-				}				
-			}			
+				}
+			}
 		}
 		if (Customization.USE_CONSOLE_OUTPUT){
 			System.out.println( "====================================================="); //$NON-NLS-1$
-			System.out.print( result.errorCount() + Messages.HIBERNATEALLMAPPINGTESTS_ERRORS + " \t"); //$NON-NLS-1$
-			System.out.print( result.failureCount() + Messages.HIBERNATEALLMAPPINGTESTS_FAILS + "\t");						 //$NON-NLS-1$
-			System.out.print(( System.currentTimeMillis() - start_time ) / 1000 + Messages.HIBERNATEALLMAPPINGTESTS_SECONDS + "\t" );	 //$NON-NLS-1$
-			System.out.println( pack_count + Messages.HIBERNATEALLMAPPINGTESTS_PACKAGES_TESTED );
+			System.out.print( result.errorCount() + ConsoleTestMessages.HibernateAllMappingTests_errors + " \t"); //$NON-NLS-1$
+			System.out.print( result.failureCount() + ConsoleTestMessages.HibernateAllMappingTests_fails + "\t");						 //$NON-NLS-1$
+			System.out.print(( System.currentTimeMillis() - start_time ) / 1000 + ConsoleTestMessages.HibernateAllMappingTests_seconds + "\t" );	 //$NON-NLS-1$
+			System.out.println( pack_count + ConsoleTestMessages.HibernateAllMappingTests_packages_tested );
 		}
-		waitForJobs();		
-		
+		waitForJobs();
+
 		delay(Customization.AFTER_ALL_PACKS_DELAY);
 	}
 
@@ -220,4 +221,3 @@ public class HibernateAllMappingTests extends TestCase {
 		return activePackage;
 	}
 }
- 
