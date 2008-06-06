@@ -32,6 +32,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.mapping.Table;
 import org.hibernate.metadata.ClassMetadata;
@@ -50,15 +51,15 @@ public class NodeFactory {
 	private Map collectionMetaData;
 	private ConsoleConfiguration consoleConfiguration;
 
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * @param c
 	 */
 	public NodeFactory(ConsoleConfiguration c) throws HibernateException {
-		setConsoleConfiguration(c);		
+		setConsoleConfiguration(c);
 	}
 
 	private void setConsoleConfiguration(ConsoleConfiguration c) {
@@ -73,11 +74,11 @@ public class NodeFactory {
 
     public ConfigurationEntitiesNode createConfigurationEntitiesNode(String name) {
     	Enhancer e = ProxyFactory.createEnhancer(ConfigurationEntitiesNode.class);
-        
-        return (ConfigurationEntitiesNode) e.create(new Class[] { String.class, NodeFactory.class, List.class }, 
+
+        return (ConfigurationEntitiesNode) e.create(new Class[] { String.class, NodeFactory.class, List.class },
         				new Object[] { name, this, classes });
-        
-        //return new RootNode(this, classes);        
+
+        //return new RootNode(this, classes);
     }
 
     public BaseNode createObjectNode(Session session, Object o) throws HibernateException {
@@ -92,10 +93,10 @@ public class NodeFactory {
 	}
 
 	private ClassNode internalCreateClassNode(BaseNode node, String clazz,ClassMetadata md, Object o, boolean objectGraph) {
-		
+
 		Enhancer e = ProxyFactory.createEnhancer(ClassNode.class);
-        
-        return (ClassNode) e.create(new Class[] { NodeFactory.class, BaseNode.class, String.class, ClassMetadata.class, Object.class, boolean.class}, 
+
+        return (ClassNode) e.create(new Class[] { NodeFactory.class, BaseNode.class, String.class, ClassMetadata.class, Object.class, boolean.class},
        		 new Object[] { this, node, clazz, md,o, Boolean.valueOf(objectGraph) } );
 	}
 
@@ -109,17 +110,17 @@ public class NodeFactory {
 	}
 
      public CollectionMetadata getCollectionMetaData(String role) {
-        return (CollectionMetadata) collectionMetaData.get(role);        
+        return (CollectionMetadata) collectionMetaData.get(role);
      }
-     
+
 	public BaseNode createPropertyNode(BaseNode parent, int idx, ClassMetadata metadata) {
 		return createPropertyNode(parent, idx, metadata, null,false);
 	}
-		
+
 	public BaseNode createPropertyNode(BaseNode node, int i, ClassMetadata md, Object baseObject, boolean objectGraph) {
 		Enhancer e = ProxyFactory.createEnhancer(PropertyNode.class);
-        
-        return (BaseNode) e.create(new Class[] { NodeFactory.class, BaseNode.class, int.class, ClassMetadata.class, Object.class, boolean.class}, 
+
+        return (BaseNode) e.create(new Class[] { NodeFactory.class, BaseNode.class, int.class, ClassMetadata.class, Object.class, boolean.class},
         		 new Object[] { this, node, new Integer(i),md,baseObject,Boolean.valueOf(objectGraph) } );
 	}
 
@@ -131,8 +132,8 @@ public class NodeFactory {
 	 */
 	public IdentifierNode createIdentifierNode(BaseNode parent, ClassMetadata md) {
 		Enhancer e = ProxyFactory.createEnhancer(IdentifierNode.class);
-        
-        return (IdentifierNode) e.create(new Class[] { NodeFactory.class, BaseNode.class, ClassMetadata.class}, 
+
+        return (IdentifierNode) e.create(new Class[] { NodeFactory.class, BaseNode.class, ClassMetadata.class},
         		 new Object[] { this, parent, md } );
 		//return new IdentifierNode(this, parent, md);
 	}
@@ -140,29 +141,29 @@ public class NodeFactory {
 	public BaseNode createNode(BaseNode parent, final Class clazz) {
 		ClassMetadata metadata = getMetaData(clazz);
 		if(metadata!=null) {
-			return createClassNode(parent, clazz.getName() );			
+			return createClassNode(parent, clazz.getName() );
 		}
-		
+
 		return new BaseNode(this, parent) {
 			public String getHQL() {
 				return null;
 			}
-			
+
 			public String getName() {
-				return Messages.NODEFACTORY_UNKNOWN + clazz;
+				return ConsoleMessages.NodeFactory_unknown + clazz;
 			}
-			
+
 			protected void checkChildren() {
 				// TODO Auto-generated method stub
 			}
 		};
-	}		
-	
+	}
+
 	public PersistentCollectionNode createPersistentCollectionNode(ClassNode node, String name, ClassMetadata md, CollectionType type, Object baseObject, boolean objectGraph) {
 		Enhancer e = ProxyFactory.createEnhancer(PersistentCollectionNode.class);
-        
+
         return (PersistentCollectionNode) e.create(
-        		 new Class[] { NodeFactory.class, BaseNode.class, String.class, CollectionType.class, ClassMetadata.class, CollectionMetadata.class, Object.class, boolean.class}, 
+        		 new Class[] { NodeFactory.class, BaseNode.class, String.class, CollectionType.class, ClassMetadata.class, CollectionMetadata.class, Object.class, boolean.class},
         		 new Object[] { this, node, name, type,  md, getCollectionMetaData(type.getRole() ), baseObject, Boolean.valueOf(objectGraph) } );
 		//return new PersistentCollectionNode(this, node, name, type,  md, getCollectionMetaData(type.getRole() ), baseObject, objectGraph);
 	}
@@ -172,7 +173,7 @@ public class NodeFactory {
 			if(type.isEntityType() ) {
 				EntityType et = (EntityType) type;
 				if(!et.isOneToOne() ) {
-					result = ImageConstants.MANYTOONE;        		
+					result = ImageConstants.MANYTOONE;
 				} else {
 					result = ImageConstants.ONETOONE;
 				}
@@ -186,11 +187,11 @@ public class NodeFactory {
 			} else {
 				result = ImageConstants.PROPERTY;
 			}
-			
+
 			return result;
 		}
-	
-		
+
+
 		public ConsoleConfiguration getConsoleConfiguration() {
 			return consoleConfiguration;
 		}

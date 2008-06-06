@@ -69,42 +69,42 @@ import org.xml.sax.InputSource;
 public class ConsoleConfiguration implements ExecutionContextHolder {
 
 	private ExecutionContext executionContext;
-	
+
 	private Map fakeDrivers = new HashMap();
-	
-	/* TODO: move this out to the actual users of the configuraiton/sf ? */ 
+
+	/* TODO: move this out to the actual users of the configuraiton/sf ? */
 	private Configuration configuration;
 	private SessionFactory sessionFactory;
-	
+
 	/** Unique name for this configuration */
 	public String getName() {
 		return prefs.getName();
 	}
-	
+
 	public ConsoleConfiguration(ConsoleConfigurationPreferences config) {
 		prefs = config;
 	}
-	
+
 	public Object execute(Command c) {
 		return executionContext.execute(c);
 	}
-	
-	
+
+
 	public ConsoleConfigurationPreferences prefs = null;
-	
-	
+
+
 	/**
 	 * Reset so a new configuration or sessionfactory is needed.
 	 *
 	 */
 	public void reset() {
-		// reseting state 
+		// reseting state
 		configuration = null;
 		closeSessionFactory();
 	}
-	
+
 	public void build() {
-		configuration = buildWith(null, true);				
+		configuration = buildWith(null, true);
 	}
 
 	private Configuration buildJPAConfiguration(String persistenceUnit, Properties properties, String entityResolver, boolean includeMappings) {
@@ -123,42 +123,42 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			if(!includeMappings) {
 				overrides.put( "hibernate.archive.autodetection", "none" );  //$NON-NLS-1$//$NON-NLS-2$
 			}
-			
+
 			Class clazz = ReflectHelper.classForName("org.hibernate.ejb.Ejb3Configuration", ConsoleConfiguration.class); //$NON-NLS-1$
 			Object ejb3cfg = clazz.newInstance();
-			
+
 			if(StringHelper.isNotEmpty(entityResolver)) {
 				Class resolver = ReflectHelper.classForName(entityResolver, this.getClass());
 				Object object = resolver.newInstance();
 				Method method = clazz.getMethod("setEntityResolver", new Class[] { EntityResolver.class });//$NON-NLS-1$
 				method.invoke(ejb3cfg, new Object[] { object } );
 			}
-			
+
 			Method method = clazz.getMethod("configure", new Class[] { String.class, Map.class }); //$NON-NLS-1$
 			if ( method.invoke(ejb3cfg, new Object[] { persistenceUnit, overrides } ) == null ) {
-				String out = NLS.bind(Messages.CONSOLECONFIGURATION_PERSISTENCE_UNIT_NOT_FOUND, persistenceUnit);
+				String out = NLS.bind(ConsoleMessages.ConsoleConfiguration_persistence_unit_not_found, persistenceUnit);
 				throw new HibernateConsoleRuntimeException(out);
 			}
-			
+
 			method = clazz.getMethod("getHibernateConfiguration", new Class[0]);//$NON-NLS-1$
 			Configuration invoke = (Configuration) method.invoke(ejb3cfg, (Object[])null);
 			return invoke;
 		}
 		catch (Exception e) {
-			throw new HibernateConsoleRuntimeException(Messages.CONSOLECONFIGURATION_COULD_NOT_CREATE_JPA_BASED_CONFIGURATION,e);
+			throw new HibernateConsoleRuntimeException(ConsoleMessages.ConsoleConfiguration_could_not_create_jpa_based_configuration,e);
 		}
 	}
-	
+
 	private Configuration buildAnnotationConfiguration() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 		Class clazz = ReflectHelper
 				.classForName( "org.hibernate.cfg.AnnotationConfiguration" ); //$NON-NLS-1$
 		Configuration newInstance = (Configuration) clazz.newInstance();
 		return newInstance;
 	}
-	
+
 	/**
 	 * @return
-	 * 
+	 *
 	 */
 	public Configuration buildWith(final Configuration cfg, final boolean includeMappings) {
 			URL[] customClassPathURLS = prefs.getCustomClassPathURLS();
@@ -170,7 +170,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 						throw cnfe;
 					}
 				}
-				
+
 				protected synchronized Class loadClass(String name, boolean resolve) throws ClassNotFoundException {
 					try {
 						return super.loadClass( name, resolve );
@@ -178,7 +178,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 						throw cnfe;
 					}
 				}
-				
+
 				public Class loadClass(String name) throws ClassNotFoundException {
 					try {
 					return super.loadClass( name );
@@ -186,15 +186,15 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 						throw cnfe;
 					}
 				}
-			});							
-			
+			});
+
 			Configuration result = (Configuration) executionContext.execute(new ExecutionContext.Command() {
-			
+
 				public Object execute() {
 					Configuration localCfg = cfg;
 
 					Properties properties = prefs.getProperties();
-					
+
 					if(properties!=null) {
 						// in case the transaction manager is empty then we need to inject a faketm since hibernate will still try and instantiate it.
 						String str = properties.getProperty( "hibernate.transaction.manager_lookup_class" ); //$NON-NLS-1$
@@ -203,8 +203,8 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 							//properties.setProperty( "hibernate.transaction.factory_class", "");
 						}
 					}
-					
-										
+
+
 					if(localCfg==null) {
 						localCfg = buildConfiguration( properties, includeMappings );
 					} else {
@@ -212,16 +212,16 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 						//origProperties.putAll(properties);
 						//cfg.setProperties(origProperties);
 						// TODO: this is actually only for jdbc reveng...
-						//localCfg = configureStandardConfiguration( includeMappings, localCfg, properties );						
+						//localCfg = configureStandardConfiguration( includeMappings, localCfg, properties );
 					}
 
-					// here both setProperties and configxml have had their chance to tell which databasedriver is needed. 
+					// here both setProperties and configxml have had their chance to tell which databasedriver is needed.
 					registerFakeDriver(localCfg.getProperty(Environment.DRIVER) );
-					
+
 					// TODO: jpa configuration ?
 					if(includeMappings) {
 						File[] mappingFiles = prefs.getMappingFiles();
-						
+
 						for (int i = 0; i < mappingFiles.length; i++) {
 							File hbm = mappingFiles[i];
 							localCfg = localCfg.addFile(hbm);
@@ -230,13 +230,13 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
                     // TODO: HBX-
 					localCfg.setProperty( "hibernate.temp.use_jdbc_metadata_defaults", "false" );  //$NON-NLS-1$//$NON-NLS-2$
 					localCfg.setProperty( Environment.HBM2DDL_AUTO, "false" ); //$NON-NLS-1$
-					
+
 					return localCfg;
 				}
-			
+
 			});
-			
-		
+
+
 		return result;
 	}
 
@@ -244,7 +244,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		File configXMLFile = prefs.getConfigXMLFile();
 		if(!includeMappings) {
 			org.dom4j.Document doc;
-			XMLHelper xmlHelper = new XMLHelper();			
+			XMLHelper xmlHelper = new XMLHelper();
 			InputStream stream;
 			String resourceName = "<unknown>"; //$NON-NLS-1$
 			try {
@@ -257,37 +257,37 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 				}
 			}
 			catch (FileNotFoundException e1) {
-				throw new HibernateConsoleRuntimeException(Messages.CONSOLECONFIGURATION_COULD_NOT_ACCESS + configXMLFile, e1);
+				throw new HibernateConsoleRuntimeException(ConsoleMessages.ConsoleConfiguration_could_not_access + configXMLFile, e1);
 			}
-			
+
 			try {
 				List errors = new ArrayList();
-				
+
 				doc = xmlHelper.createSAXReader( resourceName, errors, entityResolver )
 				.read( new InputSource( stream ) );
 				if ( errors.size() != 0 ) {
 					throw new MappingException(
-							Messages.CONSOLECONFIGURATION_INVALID_CONFIGURATION,
+							ConsoleMessages.ConsoleConfiguration_invalid_configuration,
 							(Throwable) errors.get( 0 )
 					);
 				}
-				
-				
+
+
 				List list = doc.getRootElement().element("session-factory").elements("mapping");  //$NON-NLS-1$ //$NON-NLS-2$
 				Iterator iterator = list.iterator();
 				while ( iterator.hasNext() ) {
 					Node element = (Node) iterator.next();
-					element.getParent().remove(element);				
+					element.getParent().remove(element);
 				}
-				
+
 				DOMWriter dw = new DOMWriter();
 				Document document = dw.write(doc);
 				return localCfg.configure( document );
-		
+
 			}
 			catch (DocumentException e) {
 				throw new HibernateException(
-						Messages.CONSOLECONFIGURATION_COULD_NOT_PARSE_CONFIGURATION + resourceName, e
+						ConsoleMessages.ConsoleConfiguration_could_not_parse_configuration + resourceName, e
 				);
 			}
 			finally {
@@ -306,14 +306,14 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			}
 		}
 	}
-	
+
 	/**
 	 * DriverManager checks what classloader a class is loaded from thus
-	 * we register a FakeDriver that we know is loaded "properly" which delegates all it class 
+	 * we register a FakeDriver that we know is loaded "properly" which delegates all it class
 	 * to the real driver.
-	 * 
+	 *
 	 * By doing so we can convince DriverManager that we can use any dynamically loaded driver.
-	 * 
+	 *
 	 * @param driverClassName
 	 */
 	private void registerFakeDriver(String driverClassName) {
@@ -326,22 +326,22 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 					DriverManager.registerDriver(fakeDelegatingDriver);
 					fakeDrivers.put(driverClassName,fakeDelegatingDriver);
 				}
-			} 
+			}
 			catch (ClassNotFoundException e) {
-				String out = NLS.bind(Messages.CONSOLECONFIGURATION_PROBLEMS_WHILE_LOADING_DATABASE_DRIVERCLASS, driverClassName);
-				throw new HibernateConsoleRuntimeException(out, e);					
-			} 
+				String out = NLS.bind(ConsoleMessages.ConsoleConfiguration_problems_while_loading_database_driverclass, driverClassName);
+				throw new HibernateConsoleRuntimeException(out, e);
+			}
 			catch (InstantiationException e) {
-				String out = NLS.bind(Messages.CONSOLECONFIGURATION_PROBLEMS_WHILE_LOADING_DATABASE_DRIVERCLASS, driverClassName);
+				String out = NLS.bind(ConsoleMessages.ConsoleConfiguration_problems_while_loading_database_driverclass, driverClassName);
 				throw new HibernateConsoleRuntimeException(out, e);
-			} 
+			}
 			catch (IllegalAccessException e) {
-				String out = NLS.bind(Messages.CONSOLECONFIGURATION_PROBLEMS_WHILE_LOADING_DATABASE_DRIVERCLASS, driverClassName);
+				String out = NLS.bind(ConsoleMessages.ConsoleConfiguration_problems_while_loading_database_driverclass, driverClassName);
 				throw new HibernateConsoleRuntimeException(out, e);
-			} 
+			}
 			catch (SQLException e) {
-				String out = NLS.bind(Messages.CONSOLECONFIGURATION_PROBLEMS_WHILE_LOADING_DATABASE_DRIVERCLASS, driverClassName);
-				throw new HibernateConsoleRuntimeException(out, e);	
+				String out = NLS.bind(ConsoleMessages.ConsoleConfiguration_problems_while_loading_database_driverclass, driverClassName);
+				throw new HibernateConsoleRuntimeException(out, e);
 			}
 		}
 	}
@@ -362,7 +362,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		execute(new ExecutionContext.Command() {
 			public Object execute() {
 				if(sessionFactory!=null) {
-					throw new HibernateConsoleRuntimeException(Messages.CONSOLECONFIGURATION_FACTORY_NOT_CLOSED_BEFORE_BUILD_NEW_FACTORY);
+					throw new HibernateConsoleRuntimeException(ConsoleMessages.ConsoleConfiguration_factory_not_closed_before_build_new_factory);
 				}
 				sessionFactory = getConfiguration().buildSessionFactory();
 				fireFactoryBuilt();
@@ -370,62 +370,62 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			}
 		});
 	}
-	
+
 	public SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
-	
-	
+
+
 	int execcount;
 	List queryListeners = new ArrayList();
 	List consoleCfgListeners = new ArrayList();
-		
+
 	public QueryPage executeHQLQuery(final String hql) {
 		return executeHQLQuery(hql, new QueryInputModel());
 	}
-	
+
 	public QueryPage executeHQLQuery(final String hql, final QueryInputModel queryParameters) {
-		
+
 		return (QueryPage) executionContext.execute(new ExecutionContext.Command() {
-			
+
 			public Object execute() {
 				Session session = getSessionFactory().openSession();
 				QueryPage qp = new HQLQueryPage(ConsoleConfiguration.this,hql,queryParameters);
 				qp.setSession(session);
-				
-				qp.setId(++execcount);				
-				fireQueryPageCreated(qp);			
+
+				qp.setId(++execcount);
+				fireQueryPageCreated(qp);
 				return qp;
 			}
-		
-		});		
+
+		});
 	}
-	
+
 	public QueryPage executeBSHQuery(final String queryString, final QueryInputModel model) {
 		return (QueryPage) executionContext.execute(new ExecutionContext.Command() {
-			
+
 			public Object execute() {
 				Session session = getSessionFactory().openSession();
 				QueryPage qp = new JavaPage(ConsoleConfiguration.this,queryString,model);
 				qp.setSession(session);
-				
-				qp.setId(++execcount);				
-				fireQueryPageCreated(qp);			
+
+				qp.setId(++execcount);
+				fireQueryPageCreated(qp);
 				return qp;
 			}
-		
-		});	
+
+		});
 	}
 
-	
+
 	private void fireQueryPageCreated(QueryPage qp) {
-		Iterator i = consoleCfgListeners.iterator(); 
+		Iterator i = consoleCfgListeners.iterator();
 		while (i.hasNext() ) {
 			ConsoleConfigurationListener view = (ConsoleConfigurationListener) i.next();
 			view.queryPageCreated(qp);
-		}		
+		}
 	}
-	
+
 
 	private void fireFactoryBuilt() {
 		Iterator i = consoleCfgListeners.iterator();
@@ -444,17 +444,17 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	}
 
 	public void addConsoleConfigurationListener(ConsoleConfigurationListener v) {
-		consoleCfgListeners.add(v);		
+		consoleCfgListeners.add(v);
 	}
-	
+
 	public void removeConsoleConfigurationListener(ConsoleConfigurationListener sfListener) {
-		consoleCfgListeners.remove(sfListener);		
+		consoleCfgListeners.remove(sfListener);
 	}
-	
+
 	public ConsoleConfigurationListener[] getConsoleConfigurationListeners() {
 		return (ConsoleConfigurationListener[]) consoleCfgListeners.toArray(new ConsoleConfigurationListener[consoleCfgListeners.size()]);
 	}
-		
+
 
 	public boolean isSessionFactoryCreated() {
 		return sessionFactory!=null;
@@ -462,8 +462,8 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 
 	public ConsoleConfigurationPreferences getPreferences() {
 		return prefs;
-	}	
-	
+	}
+
 	public String toString() {
 		return getClass().getName() + ":" + getName(); //$NON-NLS-1$
 	}
@@ -475,43 +475,43 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	public void closeSessionFactory() {
 		if(sessionFactory!=null) {
 			fireFactoryClosing(sessionFactory);
-			sessionFactory.close();			
+			sessionFactory.close();
 			sessionFactory = null;
-		}		
+		}
 	}
 
 	public Settings getSettings(final Configuration cfg) {
 		return (Settings) execute(new Command() {
-		
+
 			public Object execute() {
 				return cfg.buildSettings();
 			}
-		
-		}); 
+
+		});
 	}
 
 	// TODO: delegate to some extension point
 	private Configuration buildConfiguration(Properties properties, boolean includeMappings) {
-		Configuration localCfg = null;		
+		Configuration localCfg = null;
 		if(prefs.getConfigurationMode().equals( ConfigurationMode.ANNOTATIONS )) {
 			try {
 				localCfg = buildAnnotationConfiguration();
 				localCfg = configureStandardConfiguration( includeMappings, localCfg, properties );
 			}
 			catch (Exception e) {
-				throw new HibernateConsoleRuntimeException(Messages.CONSOLECONFIGURATION_COULD_NOT_LOAD_ANNOTATIONCONFIGURATION,e);
+				throw new HibernateConsoleRuntimeException(ConsoleMessages.ConsoleConfiguration_could_not_load_annotationconfiguration,e);
 			}
 		} else if(prefs.getConfigurationMode().equals( ConfigurationMode.JPA )) {
 			try {
 				localCfg = buildJPAConfiguration( getPreferences().getPersistenceUnitName(), properties, prefs.getEntityResolverName(), includeMappings );
 			}
 			catch (Exception e) {
-				throw new HibernateConsoleRuntimeException(Messages.CONSOLECONFIGURATION_COULD_NOT_LOAD_JPA_CONFIGURATION,e);
+				throw new HibernateConsoleRuntimeException(ConsoleMessages.ConsoleConfiguration_could_not_load_jpa_configuration,e);
 			}
 		} else {
-			localCfg = new Configuration();			
+			localCfg = new Configuration();
 			localCfg = configureStandardConfiguration( includeMappings, localCfg, properties );
-		}	
+		}
 		return localCfg;
 	}
 
@@ -524,25 +524,25 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			try {
 				entityResolver = (EntityResolver) ReflectHelper.classForName(prefs.getEntityResolverName()).newInstance();
 			} catch (Exception c) {
-				throw new HibernateConsoleRuntimeException(Messages.CONSOLECONFIGURATION_COULD_NOT_CONFIGURE_ENTITY_RESOLVER + prefs.getEntityResolverName(), c);
+				throw new HibernateConsoleRuntimeException(ConsoleMessages.ConsoleConfiguration_could_not_configure_entity_resolver + prefs.getEntityResolverName(), c);
 			}
 		}
 		localCfg.setEntityResolver(entityResolver);
 
-		if(StringHelper.isNotEmpty( prefs.getNamingStrategy())) {			
+		if(StringHelper.isNotEmpty( prefs.getNamingStrategy())) {
 			try {
 				NamingStrategy ns = (NamingStrategy) ReflectHelper.classForName(prefs.getNamingStrategy()).newInstance();
 				localCfg.setNamingStrategy( ns );
 			} catch (Exception c) {
-				throw new HibernateConsoleRuntimeException(Messages.CONSOLECONFIGURATION_COULD_NOT_CONFIGURE_NAMING_STRATEGY + prefs.getNamingStrategy(), c);
+				throw new HibernateConsoleRuntimeException(ConsoleMessages.ConsoleConfiguration_could_not_configure_naming_strategy + prefs.getNamingStrategy(), c);
 			}
 		}
-		
+
 		localCfg = loadConfigurationXML( localCfg, includeMappings, entityResolver );
-		
+
 		return localCfg;
 	}
-	
+
 
 
 }

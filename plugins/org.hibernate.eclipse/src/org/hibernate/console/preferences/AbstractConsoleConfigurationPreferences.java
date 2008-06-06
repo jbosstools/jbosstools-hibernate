@@ -26,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.util.StringHelper;
 import org.w3c.dom.Document;
@@ -42,17 +43,17 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 
 	static final String PROJECT_ATTRIB = "project"; //$NON-NLS-1$
 	static final String USE_PROJECT_CLASSPATH_ATTRIB = "use-project-classpath"; //$NON-NLS-1$
-	
-	
+
+
 	private String projectName;
 
-	private String name = Messages.ACCP_UNKNOWN;
+	private String name = ConsoleMessages.AbstractConsoleConfigurationPreferences_unknown;
 	protected String entityResolverName = null;
 	private boolean useProjectClasspath;
 	private ConfigurationMode configurationMode;
 	private String persistenceUnitName;
 	private String namingStrategy;
-	
+
 	public AbstractConsoleConfigurationPreferences(String name, ConfigurationMode configurationMode, String projectName, boolean useProjectclassPath, String entityResolver, String persistenceUnitName, String namingStrategy) {
 		setName(name);
 		this.persistenceUnitName = persistenceUnitName;
@@ -62,28 +63,28 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 		this.projectName = projectName;
 		this.useProjectClasspath = useProjectclassPath;
 	}
-	
+
 	protected AbstractConsoleConfigurationPreferences() {
 
 	}
-	
+
 	public ConfigurationMode getConfigurationMode() {
 		return configurationMode;
 	}
-	
+
 	public String getPersistenceUnitName() {
 		return persistenceUnitName;
 	}
-	
+
 	public String getNamingStrategy() {
 		return namingStrategy;
 	}
-	
+
 	public void setName(String name) {
 		if(name==null || name.trim().length()==0) {
-			throw new IllegalArgumentException(Messages.ACCP_NAME_NOT_NULL_OR_EMPTY);
+			throw new IllegalArgumentException(ConsoleMessages.AbstractConsoleConfigurationPreferences_name_not_null_or_empty);
 		}
-		
+
 		this.name = name;
 	}
 
@@ -97,14 +98,14 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 		try {
 			Properties p = new Properties();
 			p.load(new FileInputStream(propFile) );
-			return p; 
-		} 
+			return p;
+		}
 		catch(IOException io) {
-			throw new HibernateConsoleRuntimeException(Messages.ACCP_COULD_NOT_LOAD_PROP_FILE + propFile, io);
+			throw new HibernateConsoleRuntimeException(ConsoleMessages.AbstractConsoleConfigurationPreferences_could_not_load_prop_file + propFile, io);
 		}
 	}
 
-	/** generic xml dumper that just dumps the toString representation of the paramters 
+	/** generic xml dumper that just dumps the toString representation of the paramters
 	 * @param useAnnotations */
 	protected static void writeStateTo(Node node, String name, String entityResolver, ConfigurationMode configurationMode, String projectName, boolean useProjectClasspath, Object cfgFile, Object propertyFilename, Object[] mappings, Object[] customClasspath) {
 		Document doc = node.getOwnerDocument();
@@ -113,80 +114,80 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 			n.setAttribute(ANNOTATIONS_ATTRIB, "true");
 		}*/
 		n.setAttribute(CONFIGURATION_MODE_ATTRIB, configurationMode.toString());
-		
+
 		if(StringHelper.isNotEmpty(entityResolver)) {
 			n.setAttribute(ENTITYRESOLVER_ATTRIB, entityResolver);
 		}
-		
+
 		if(useProjectClasspath) {
 			n.setAttribute( USE_PROJECT_CLASSPATH_ATTRIB, "true" ); //$NON-NLS-1$
 		}
-		
+
 		if(StringHelper.isNotEmpty(projectName)) {
 			n.setAttribute(PROJECT_ATTRIB, projectName);
 		}
-		
+
 		node.appendChild(n);
-		
+
 		if(cfgFile!=null) {
 			n.appendChild(createElementWithAttribute(doc, HIBERNATE_CONFIG_XML_TAG, LOCATION_ATTRIB, cfgFile.toString() ) );
 		}
-		
+
 		if(propertyFilename!=null) {
 			n.appendChild(createElementWithAttribute(doc, HIBERNATE_PROPERTIES_TAG, LOCATION_ATTRIB, propertyFilename.toString() ) );
 		}
-		
+
 		if(mappings.length>0) {
 			Element cc = createElementWithAttribute(doc, MAPPINGS_TAG, null, null);
 			n.appendChild(cc);
-			
+
 			for (int i = 0; i < mappings.length; i++) {
 				Object path = mappings[i];
 				cc.appendChild(createElementWithAttribute(doc, MAPPING_TAG, LOCATION_ATTRIB, path.toString() ) );
 			}
 		}
-		
+
 		if(customClasspath.length>0) {
 			Element cc = createElementWithAttribute(doc, CLASSPATH_TAG, null, null);
 			n.appendChild(cc);
-			
+
 			for (int i = 0; i < customClasspath.length; i++) {
 				Object path = customClasspath[i];
 				cc.appendChild(createElementWithAttribute(doc, PATH_TAG, LOCATION_ATTRIB, path.toString() ) );
 			}
 		}
 	}
-	
+
 	public boolean useProjectClasspath() {
 		return useProjectClasspath;
 	}
-	
+
 	protected void setUseProjectClasspath(boolean useProjectClasspath) {
 		this.useProjectClasspath = useProjectClasspath;
 	}
-	
-	
-	
+
+
+
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
 	}
-	
+
 	public String getProjectName() {
 		return projectName;
 	}
-	
+
 	public void readStateFrom(Element node) {
-		    
+
 		String entityResolver = null;
 		String cfgName = null;
 		String cfgFile = null;
 		String propFile = null;
 		String[] mappings = new String[0];
 		String[] classpath = new String[0];
-					
+
 		cfgName = node.getAttribute(NAME_ATTRIB);
-		
-		
+
+
 		String attribute = node.getAttribute(ANNOTATIONS_ATTRIB);
 		if(StringHelper.isNotEmpty( attribute )) {
 			boolean oldAnnotationFlag = ((attribute != null) && attribute.equalsIgnoreCase("true")); //$NON-NLS-1$
@@ -199,46 +200,46 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 			attribute = node.getAttribute(CONFIGURATION_MODE_ATTRIB);
 			configurationMode = ConfigurationMode.parse( attribute );
 		}
-		
-		
+
+
 		attribute = node.getAttribute( PROJECT_ATTRIB );
 		setProjectName( attribute );
-		
+
 		attribute = node.getAttribute( USE_PROJECT_CLASSPATH_ATTRIB );
 		setUseProjectClasspath((attribute != null) && attribute.equalsIgnoreCase("true")); //$NON-NLS-1$
-		
+
 		attribute = node.getAttribute(ENTITYRESOLVER_ATTRIB);
 		if(attribute!=null && attribute.trim().length()>0) {
 			entityResolver = attribute;
 		}
-			
+
 		NodeList elements = node.getElementsByTagName(HIBERNATE_CONFIG_XML_TAG);
 		if(elements.getLength()==1) {
 			cfgFile = ( (Element)elements.item(0) ).getAttribute(LOCATION_ATTRIB);
 		}
-		
+
 		elements = node.getElementsByTagName(HIBERNATE_PROPERTIES_TAG);
 		if(elements.getLength()==1) {
 			propFile = ( (Element)elements.item(0) ).getAttribute(LOCATION_ATTRIB);
 		}
-		
-		
-		mappings = parseListOfLocations(node, MAPPINGS_TAG, MAPPING_TAG);		
+
+
+		mappings = parseListOfLocations(node, MAPPINGS_TAG, MAPPING_TAG);
 		classpath = parseListOfLocations(node, CLASSPATH_TAG, PATH_TAG);
-		
-		
+
+
 		setName(cfgName);
 		setEntityResolverName(entityResolver);
 		setConfigFile(cfgFile);
 		setPropertyFile(propFile);
 		setMappings(mappings);
 		setCustomClassPath(classpath);
-		
+
 	}
 
 	private void setEntityResolverName(String entityResolver) {
 		this.entityResolverName = entityResolver;
-		
+
 	}
 
 	private String[] parseListOfLocations(Element node, String parenttag, String elementag) {
@@ -256,19 +257,19 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 		return result;
 	}
 
-	/** 
+	/**
 	 * generic XML handling. Ugly like hell - but done to reduce jar requirements and code duplication.
-	 * TODO: make better ;) 
+	 * TODO: make better ;)
 	 **/
-	
+
 	public String getEntityResolverName() { return entityResolverName; };
-	
+
 	protected abstract void setConfigFile(String cfgFile);
 	protected abstract void setPropertyFile(String cfgFile);
 	protected abstract void setMappings(String[] mappings);
 	protected abstract void setCustomClassPath(String[] mappings);
-	
-	
+
+
 	protected static Element createElementWithAttribute(Document doc, String tagName, String attribName, String attributValue) {
 		Element n;
 		n = doc.createElement(tagName);

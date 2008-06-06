@@ -38,11 +38,11 @@ import bsh.Interpreter;
 /**
  * @author MAX
  *
- * 
+ *
  */
 public class JavaPage extends AbstractQueryPage {
 
-    private String criteriaCode;    
+    private String criteriaCode;
 
     Criteria criteria = null;
 
@@ -51,7 +51,7 @@ public class JavaPage extends AbstractQueryPage {
 	private QueryInputModel model;
 
     /**
-     * @param model 
+     * @param model
      * @param session2
      */
     public JavaPage(ConsoleConfiguration cfg, String criteriaCode, QueryInputModel model) {
@@ -65,7 +65,7 @@ public class JavaPage extends AbstractQueryPage {
         try {
         	if(criteriaCode.indexOf( "System.exit" )>=0) { // TODO: externalize run so we don't need this bogus check! //$NON-NLS-1$
         		list = Collections.EMPTY_LIST;
-        		addException( new IllegalArgumentException(Messages.JAVAPAGE_NOT_ALLOWED) );
+        		addException( new IllegalArgumentException(ConsoleMessages.JavaPage_not_allowed) );
         		return;
         	}
             ip = setupInterpreter(getSession() );
@@ -83,26 +83,26 @@ public class JavaPage extends AbstractQueryPage {
                 }
             } else {
                 list = new ArrayList();
-                list.add(o);   
-            }                                                   
-        } 
+                list.add(o);
+            }
+        }
         catch (EvalError e) {
-            addException(e);            
-        } 
+            addException(e);
+        }
         catch (HibernateException e) {
-        	addException(e);            
-        }                    
+        	addException(e);
+        }
 	}
-    
+
     private Interpreter setupInterpreter(Session session) throws EvalError, HibernateException {
         Interpreter interpreter = new Interpreter();
-        
+
         interpreter.set("session", session); //$NON-NLS-1$
         interpreter.setClassLoader( Thread.currentThread().getContextClassLoader() );
         SessionImplementor si = (SessionImplementor)session;
-        
+
         Map map = si.getFactory().getAllClassMetadata();
-        
+
         Iterator iterator = map.keySet().iterator();
         //TODO: filter non classes.
         String imports = new String();
@@ -110,12 +110,12 @@ public class JavaPage extends AbstractQueryPage {
             String element =  (String) iterator.next();
             imports += "import " + element + ";\n"; //$NON-NLS-1$ //$NON-NLS-2$
         }
-        
+
         imports += "import org.hibernate.criterion.*;\n"; //$NON-NLS-1$
         imports += "import org.hibernate.*;\n"; //$NON-NLS-1$
         // TODO: expose the parameters as values to be used in the code.
         interpreter.eval(imports);
-        
+
         return interpreter;
     }
 
@@ -123,24 +123,24 @@ public class JavaPage extends AbstractQueryPage {
         if(list!=null) return list;
         try {
             if(criteria!=null) {
-            	long startTime = System.currentTimeMillis();				
+            	long startTime = System.currentTimeMillis();
                 list = criteria.list();
                 queryTime = System.currentTimeMillis() - startTime;
-            } 
+            }
             else {
                 return Collections.EMPTY_LIST;
             }
-        } 
+        }
         catch (HibernateException e) {
         	list = Collections.EMPTY_LIST;
             addException(e);
-        } 
+        }
         return list;
     }
 
 	public List getPathNames() {
         List l = new ArrayList();
-        l.add(Messages.JAVAPAGE_NO_INFO);       
+        l.add(ConsoleMessages.JavaPage_no_info);
         return l;
     }
 
@@ -149,7 +149,7 @@ public class JavaPage extends AbstractQueryPage {
     }
 
     public void release() {
-        
+
         super.release();
     }
 }

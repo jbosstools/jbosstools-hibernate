@@ -64,12 +64,12 @@ import org.w3c.dom.Node;
  */
 public class KnownConfigurations  {
 
-	// TODO: is the best way for the querypage model ?	
-	private QueryPageModel queryPages = new QueryPageModel(); 
+	// TODO: is the best way for the querypage model ?
+	private QueryPageModel queryPages = new QueryPageModel();
 	private List configurationListeners = new ArrayList();
 	private Map configurations;
 	private ConsoleConfigurationListener sfListener = new ConsoleConfigurationListener() {
-	
+
 		public void sessionFactoryClosing(final ConsoleConfiguration configuration, final SessionFactory closingFactory) {
 			fireNotification(new Notification() {
 				public void notify(KnownConfigurationsListener listener) {
@@ -77,34 +77,34 @@ public class KnownConfigurations  {
 				}
 			});
 		}
-			
+
 		public void sessionFactoryBuilt(final ConsoleConfiguration ccfg, final SessionFactory builtSessionFactory) {
 			fireNotification(new Notification() {
 				public void notify(KnownConfigurationsListener listener) {
-					listener.sessionFactoryBuilt(ccfg, builtSessionFactory);					
+					listener.sessionFactoryBuilt(ccfg, builtSessionFactory);
 				}
 			});
 		}
 
 		public void queryPageCreated(QueryPage qp) {
-			queryPages.add(qp); 						
+			queryPages.add(qp);
 		}
-	
+
 	};
 
 	private static KnownConfigurations instance;
-	
+
 	public static synchronized KnownConfigurations getInstance() {
 		if (instance == null) {
 			instance = new KnownConfigurations();
 		}
 		return instance;
 	}
-	
-	
-	
+
+
+
 	private abstract class Notification {
-	
+
 		public void run(KnownConfigurationsListener listener) {
 			notify(listener);
 		}
@@ -115,16 +115,16 @@ public class KnownConfigurations  {
 		 */
 		protected abstract void notify(KnownConfigurationsListener listener);
 	}
-	
+
 	/**
 	 * Register to receive notification of repository creation and disposal
 	 */
 	public void addConsoleConfigurationListener(KnownConfigurationsListener listener) {
 		synchronized(configurationListeners) {
-			configurationListeners.add(listener);			
+			configurationListeners.add(listener);
 		}
 	}
-	
+
 	/**
 	 * De-register a listener
 	 */
@@ -136,7 +136,7 @@ public class KnownConfigurations  {
 
 	/**
 	 * Add the repository to the receiver's list of known configurations. Doing this will enable
-	 * 
+	 *
 	 */
 	public ConsoleConfiguration addConfiguration(final ConsoleConfiguration configuration, boolean broadcast) {
 		// Check the cache for an equivalent instance and if there is one, just update the cache
@@ -145,11 +145,11 @@ public class KnownConfigurations  {
 			// Store the location
 			// Cache the location instance for later retrieval
 			getRepositoriesMap().put(configuration.getName(), configuration);
-			configuration.addConsoleConfigurationListener(sfListener);			
+			configuration.addConsoleConfigurationListener(sfListener);
 
 			existingConfiguration = configuration;
 		}
-		
+
 		if (broadcast) {
 			fireNotification(new Notification() {
 				public void notify(KnownConfigurationsListener listener) {
@@ -159,19 +159,19 @@ public class KnownConfigurations  {
 		}
 		return existingConfiguration;
 	}
-	
+
 	public void removeAllConfigurations() {
 		ConsoleConfiguration[] cfgs = getConfigurations();
 		for (int i = 0; i < cfgs.length; i++) {
 			ConsoleConfiguration configuration = cfgs[i];
 			removeConfiguration(configuration, false);
 		}
-		
+
 	}
-	
+
 	// added forUpdate as a workaround for letting listeners know it is done to update the configuration so they don't cause removal issues.
 	public void removeConfiguration(final ConsoleConfiguration configuration, final boolean forUpdate) {
-		
+
 		ConsoleConfiguration oldConfig = (ConsoleConfiguration) getRepositoriesMap().remove(configuration.getName() );
 		if (oldConfig != null) {
 			oldConfig.removeConsoleConfigurationListener(sfListener);
@@ -182,13 +182,13 @@ public class KnownConfigurations  {
 			});
 			oldConfig.reset();
 			removeLoggingStream( oldConfig );
-			
+
 		}
-		
-		
+
+
 	}
 
-	
+
 	/**
 	 * Answer whether the provided configuration name is known by the provider or not.
 	 * The name string corresponds to the Strin returned by ConsoleConfiguration#getName()
@@ -197,13 +197,13 @@ public class KnownConfigurations  {
 		return internalGetRepository(name) != null;
 	}
 
-	/** 
+	/**
 	 * Return a list of the know repository locations
 	 */
 	public ConsoleConfiguration[] getConfigurations() {
 		return (ConsoleConfiguration[])getRepositoriesMap().values().toArray(new ConsoleConfiguration[getRepositoriesMap().size()]);
 	}
-	
+
 	public ConsoleConfiguration[] getConfigurationsSortedByName() {
 		return getConfigurations(new Comparator() {
 			public boolean equals(Object obj) {
@@ -217,31 +217,31 @@ public class KnownConfigurations  {
 			}
 		});
 	}
-	
+
 	public ConsoleConfiguration[] getConfigurations(Comparator c) {
 		ConsoleConfiguration[] configurations = getConfigurations();
 		Arrays.sort(configurations, c);
 		return configurations;
 	}
-	
+
 	private ConsoleConfiguration internalGetRepository(String location) {
 		return (ConsoleConfiguration) getRepositoriesMap().get(location);
 	}
-	
-	
+
+
 	private Map getRepositoriesMap() {
 		if (configurations == null) {
 			configurations = new TreeMap();
 		}
 		return configurations;
 	}
-	
+
 	private KnownConfigurationsListener[] getListeners() {
 		synchronized(configurationListeners) {
 			return (KnownConfigurationsListener[]) configurationListeners.toArray(new KnownConfigurationsListener[configurationListeners.size()]);
 		}
 	}
-	
+
 	private void fireNotification(Notification notification) {
 		// Get a snapshot of the listeners so the list doesn't change while we're firing
 		KnownConfigurationsListener[] listeners = getListeners();
@@ -253,27 +253,27 @@ public class KnownConfigurations  {
 	}
 
 	BaseNode rootNode = new ConfigurationListNode(this);
-			
+
 	public BaseNode getRootNode() {
-		return rootNode;		
+		return rootNode;
 	}
 
 	// TODO: decouple this logging from Eclipse platform!
 	private Map loggingStreams = new HashMap();
 	public MessageConsoleStream findLoggingStream(String name) {
-		Object[] console = (Object[]) loggingStreams.get(name); 
+		Object[] console = (Object[]) loggingStreams.get(name);
 		if(console==null) {
 			console = new Object[2];
-			String secondaryId = Messages.KNOWNCONFIGURATIONS_HIBERNATE_LOG + (name==null?Messages.KNOWNCONFIGURATIONS_UNKNOWN:name);
+			String secondaryId = ConsoleMessages.KnownConfigurations_hibernate_log + (name==null?ConsoleMessages.KnownConfigurations_unknown:name);
         	console[0] = new MessageConsole(secondaryId, null);
         	IConsoleManager consoleManager = ConsolePlugin.getDefault().getConsoleManager();
         	consoleManager.addConsoles(new IConsole[] { (IConsole) console[0] });
         	console[1] = ((MessageConsole)console[0]).newMessageStream();
         	loggingStreams.put(name, console);
-		} 
+		}
 		return (MessageConsoleStream) console[1];
 	}
-	
+
 	private void removeLoggingStream(ConsoleConfiguration oldConfig) {
 		Object[] object = (Object[]) loggingStreams.remove( oldConfig.getName() );
 		if(object!=null) {
@@ -281,17 +281,17 @@ public class KnownConfigurations  {
 			MessageConsoleStream stream = (MessageConsoleStream)object[1];
 			try { stream.close(); } catch(IOException ie) { /* ignore */ };
 			IConsoleManager consoleManager = ConsolePlugin.getDefault().getConsoleManager();
-			consoleManager.removeConsoles( new IConsole[] { mc } );			
+			consoleManager.removeConsoles( new IConsole[] { mc } );
 		}
 	}
 
-	
+
 	public ConsoleConfiguration find(String lastUsedName) {
 		if(configurations==null) return null;
 		if(lastUsedName==null) return null;
 		return (ConsoleConfiguration) configurations.get(lastUsedName);
 	}
-	
+
 	public QueryPageModel getQueryPageModel() {
 		return queryPages;
 	}
@@ -301,36 +301,36 @@ public class KnownConfigurations  {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			Document document = builder.newDocument();
-			
+
 			Element element = document.createElement("hibernate-console"); //$NON-NLS-1$
 			Node node = document.appendChild(element);
-			
+
 			ConsoleConfiguration[] configs = getConfigurations();
 			for (int i = 0; i < configs.length; i++) {
 				ConsoleConfiguration cfg = configs[i];
 				cfg.getPreferences().writeStateTo(element);
 			}
-			
+
 			writeXml(document, f);
-		} 
+		}
 		catch (TransformerConfigurationException e) {
-			throw new HibernateConsoleRuntimeException(Messages.KNOWNCONFIGURATIONS_COULD_NOT_WRITE_STATE,e);
-		} 
+			throw new HibernateConsoleRuntimeException(ConsoleMessages.KnownConfigurations_could_not_write_state,e);
+		}
 		catch (TransformerException e) {
-			throw new HibernateConsoleRuntimeException(Messages.KNOWNCONFIGURATIONS_COULD_NOT_WRITE_STATE,e);
-		} 
+			throw new HibernateConsoleRuntimeException(ConsoleMessages.KnownConfigurations_could_not_write_state,e);
+		}
 		catch (ParserConfigurationException e) {
-			throw new HibernateConsoleRuntimeException(Messages.KNOWNCONFIGURATIONS_COULD_NOT_WRITE_STATE,e);
+			throw new HibernateConsoleRuntimeException(ConsoleMessages.KnownConfigurations_could_not_write_state,e);
 		}
 	}
 
 	private void writeXml(Document document, File f) throws TransformerConfigurationException, TransformerFactoryConfigurationError, TransformerException {
 		// Prepare the DOM document for writing
 		Source source = new DOMSource(document);
-   
+
 		// Prepare the output file
 		Result result = new StreamResult(f);
-   
+
 		// Write the DOM document to the file
 		Transformer xformer = TransformerFactory.newInstance().newTransformer();
 		xformer.setOutputProperty(OutputKeys.INDENT, "true"); //$NON-NLS-1$
@@ -338,14 +338,14 @@ public class KnownConfigurations  {
 	}
 
 	List queryParameters = new ArrayList();
-	
+
 	public ConsoleQueryParameter[] getQueryParameters() {
 		return (ConsoleQueryParameter[]) queryParameters.toArray(new ConsoleQueryParameter[queryParameters.size()]);
 	}
-	
+
 	public List getQueryParameterList() {
 		return queryParameters;
-	}	
-	
-	
+	}
+
+
 }

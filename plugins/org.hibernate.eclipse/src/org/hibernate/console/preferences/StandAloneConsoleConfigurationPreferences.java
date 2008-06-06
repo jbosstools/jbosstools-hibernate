@@ -30,6 +30,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -42,58 +43,58 @@ public class StandAloneConsoleConfigurationPreferences extends AbstractConsoleCo
 	private File cfgFile;
 	private File propertyFilename;
 	private File[] mappings;
-	private File[] customClasspath;	
+	private File[] customClasspath;
 
 	public StandAloneConsoleConfigurationPreferences(String name, File xmlconfig, File propertiesFile, File[] mappingFiles, File[] customClasspath) {
 		super(name, ConfigurationMode.CORE, null, false, null, null, null);
 		this.cfgFile = xmlconfig;
 		this.propertyFilename = propertiesFile;
 		this.mappings = mappingFiles;
-		this.customClasspath = customClasspath;			
+		this.customClasspath = customClasspath;
 	}
 
 	protected StandAloneConsoleConfigurationPreferences() {
 		// hidden for others
 	}
-	
+
 	protected StandAloneConsoleConfigurationPreferences(String name) {
 		this(name,null,null,new File[0],new File[0]);
 	}
-	
+
 	/**
 	 * @return return non-null array of URLs for a customclasspath
 	 */
 	public URL[] getCustomClassPathURLS() {
 		URL[] result = new URL[customClasspath.length];
-		
+
 		for (int i = 0; i < customClasspath.length; i++) {
 			File file = customClasspath[i];
 			try {
 				result[i] = file.toURL();
-			} 
+			}
 			catch (MalformedURLException mue) {
-				throw new HibernateConsoleRuntimeException(Messages.STANDALONECONSOLECONFIGURATIONPREFERENCES_COULD_NOT_RESOLVE_CLASSPATHS, mue);
+				throw new HibernateConsoleRuntimeException(ConsoleMessages.StandAloneConsoleConfigurationPreferences_could_not_resolve_classpaths, mue);
 			}
 		}
 		return result;
 	}
-	
+
 	/**
 	 * @return return non-null array of URLs for mapping files
 	 */
 	public File[] getMappingFiles() {
 		return mappings;
 	}
-	
+
 	public File getConfigXMLFile() {
 		return cfgFile;
 	}
 
 	public void writeStateTo(Element node) {
-		writeStateTo(node, getName(), getEntityResolverName(), getConfigurationMode(), null, false, cfgFile, propertyFilename, mappings, customClasspath);		
+		writeStateTo(node, getName(), getEntityResolverName(), getConfigurationMode(), null, false, cfgFile, propertyFilename, mappings, customClasspath);
 	}
 
-	
+
 	public File getPropertyFile() {
 		return propertyFilename;
 	}
@@ -111,7 +112,7 @@ public class StandAloneConsoleConfigurationPreferences extends AbstractConsoleCo
 		this.mappings = new File[mappings.length];
 		for (int i = 0; i < mappings.length; i++) {
 			String str = mappings[i];
-			this.mappings[i] = new File(str);	
+			this.mappings[i] = new File(str);
 		}
 	}
 
@@ -119,37 +120,37 @@ public class StandAloneConsoleConfigurationPreferences extends AbstractConsoleCo
 		this.customClasspath = new File[mappings.length];
 		for (int i = 0; i < mappings.length; i++) {
 			String str = mappings[i];
-			this.customClasspath[i] = new File(str);	
+			this.customClasspath[i] = new File(str);
 		}
-	}	
+	}
 	public static StandAloneConsoleConfigurationPreferences[] readStateFrom(File f) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder parser;
 		try {
 			parser = factory.newDocumentBuilder();
-			
+
 			Document doc = parser.parse(f);
-			
+
 			Element root = doc.getDocumentElement();
-			
+
 			NodeList elementsByTagName = root.getElementsByTagName(CONFIGURATION_TAG);
 			StandAloneConsoleConfigurationPreferences[] result = new StandAloneConsoleConfigurationPreferences[elementsByTagName.getLength()];
-			
+
 			for(int i = 0; i < elementsByTagName.getLength(); i++) {
 				result[i] = new StandAloneConsoleConfigurationPreferences();
 				result[i].readStateFrom( (Element)elementsByTagName.item(i) );
 			}
 			return result;
-		} 
+		}
 		catch(SAXException sa) {
-			throw new HibernateConsoleRuntimeException(Messages.STANDALONECONSOLECONFIGURATIONPREFERENCES_ERRORS_WHILE_PARSING + f,sa);
-		} 
+			throw new HibernateConsoleRuntimeException(ConsoleMessages.StandAloneConsoleConfigurationPreferences_errors_while_parsing + f,sa);
+		}
 		catch (ParserConfigurationException e) {
-			throw new HibernateConsoleRuntimeException(Messages.STANDALONECONSOLECONFIGURATIONPREFERENCES_ERRORS_WHILE_PARSING + f,e);
-		} 
+			throw new HibernateConsoleRuntimeException(ConsoleMessages.StandAloneConsoleConfigurationPreferences_errors_while_parsing + f,e);
+		}
 		catch (IOException e) {
-			throw new HibernateConsoleRuntimeException(Messages.STANDALONECONSOLECONFIGURATIONPREFERENCES_ERRORS_WHILE_PARSING + f,e);		
-		}    
+			throw new HibernateConsoleRuntimeException(ConsoleMessages.StandAloneConsoleConfigurationPreferences_errors_while_parsing + f,e);
+		}
 	}
 
 }

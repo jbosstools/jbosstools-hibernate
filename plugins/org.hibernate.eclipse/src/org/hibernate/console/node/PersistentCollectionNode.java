@@ -28,6 +28,7 @@ import javax.swing.tree.TreeNode;
 
 import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
+import org.hibernate.console.ConsoleMessages;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.type.CollectionType;
@@ -45,7 +46,7 @@ public class PersistentCollectionNode extends BaseNode {
 	private boolean objectGraph;
 	private Object baseObject;
 	private Object collectionObject;
-	
+
 	boolean childrenCreated = false;
 	private ClassMetadata md;
 	public PersistentCollectionNode(NodeFactory factory, BaseNode parent, String name, CollectionType type, ClassMetadata md, CollectionMetadata metadata, Object baseObject, boolean objectGraph) {
@@ -55,9 +56,9 @@ public class PersistentCollectionNode extends BaseNode {
 		this.name = name;
 		this.baseObject = baseObject;
 		this.objectGraph = objectGraph;
-		
-		
-		
+
+
+
 		iconName = factory.getIconNameForType(type);
 		this.elementType = metadata.getElementType();
 		if(objectGraph) {
@@ -66,13 +67,13 @@ public class PersistentCollectionNode extends BaseNode {
 			virtualNode = factory.createNode(null, elementType.getReturnedClass() );
 		}
 	}
-	
+
 	Object initCollectionObject() {
 		if(collectionObject!=null) return collectionObject;
 		try {
 			collectionObject = md.getPropertyValue(baseObject, name, EntityMode.POJO);
 		} catch (HibernateException e) {
-			IllegalArgumentException iae = new IllegalArgumentException(Messages.PERSISTENTCOLLECTIONNODE_COULD_NOT_ACCESS_PROPERTY_VALUE);
+			IllegalArgumentException iae = new IllegalArgumentException(ConsoleMessages.PersistentCollectionNode_could_not_access_property_value);
 			iae.initCause(e);
 			throw iae;
 		}
@@ -82,7 +83,7 @@ public class PersistentCollectionNode extends BaseNode {
 	public String getHQL() {
 		return ""; //$NON-NLS-1$
 	}
-	
+
 	public TreeNode getChildAt(int childIndex) {
 		checkChildren();
 		if(objectGraph) {
@@ -125,24 +126,24 @@ public class PersistentCollectionNode extends BaseNode {
 			int idx = 0;
 			if(!type.isArrayType() ) {
 				Iterator i = ( (Collection)collectionObject).iterator();
-				
+
 				while (i.hasNext() ) {
 					Object element = i.next();
-					
+
 					children.add(createNode(idx++,element, elementType) );
 				}
 			} else {
 				Object[] os = (Object[]) collectionObject;
 				for (int i = 0; i < os.length; i++) {
 					Object element = os[i];
-					children.add(createNode(idx++, element, elementType) );	
+					children.add(createNode(idx++, element, elementType) );
 				}
-				
+
 			}
-			
+
 			childrenCreated = true;
 		}
-		
+
 	}
 
 	private Object createNode(int idx, Object element, Type type) { // TODO: use a common way to create these darn nodes!
@@ -152,8 +153,8 @@ public class PersistentCollectionNode extends BaseNode {
 	public String renderLabel(boolean b) {
 		return getLabel(getName(),b) + " : " + getLabel(type.getReturnedClass().getName(),b) + "<" + getLabel(elementType.getReturnedClass().getName(),b) + ">";  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 	}
-	
-	public Type getType() {		
+
+	public Type getType() {
 		return type;
 	}
 }

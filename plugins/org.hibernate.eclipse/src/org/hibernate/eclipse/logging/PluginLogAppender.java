@@ -32,28 +32,29 @@ import org.apache.log4j.spi.LoggingEvent;
 import org.apache.log4j.spi.ThrowableInformation;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.ui.console.MessageConsoleStream;
+import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.KnownConfigurations;
 
 /**
  * PluginLogAppender
- * This class is a custom Log4J appender that sends Log4J events to 
+ * This class is a custom Log4J appender that sends Log4J events to
  * the Eclipse plug-in log.
  * @author Manoel Marques
  */
 public class PluginLogAppender extends AppenderSkeleton {
-	
+
 	private ILog pluginLog;
 	private Map streams = new HashMap();
-	
-	
+
+
 	/**
 	 * Sets the Eclipse log instance
 	 * @param log plug-in log
-	 */	
+	 */
 	void setLog(ILog pluginLog) {
 		this.pluginLog = pluginLog;
 	}
-	
+
 	/**
 	 * Log event happened.
 	 * Translates level to status instance codes:
@@ -62,37 +63,37 @@ public class PluginLogAppender extends AppenderSkeleton {
 	 * level > Level.DEBUG - Status.INFO
 	 * default - Status.OK
 	 * @param event LoggingEvent instance
-	 */	
+	 */
 	public void append(LoggingEvent event) {
-		
+
 		if (this.layout == null) {
-			this.errorHandler.error(Messages.PLUGINLOGAPPENDER_MISSING_LAYOUT_FOR_APPENDER + 
-			       this.name,null,ErrorCode.MISSING_LAYOUT); 
+			this.errorHandler.error(ConsoleMessages.PluginLogAppender_missing_layout_for_appender +
+			       this.name,null,ErrorCode.MISSING_LAYOUT);
 			return;
 		}
-		
+
 		String text = this.layout.format(event);
-		
+
 		Throwable thrown = null;
 		if (this.layout.ignoresThrowable()) {
 			ThrowableInformation info = event.getThrowableInformation();
 			if (info != null)
-				thrown = info.getThrowable(); 
+				thrown = info.getThrowable();
 		}
-		/*		
+		/*
 		Level level = event.getLevel();
 		int severity = IStatus.OK;
-		
-		if (level.toInt() >= Priority.ERROR_INT) 
+
+		if (level.toInt() >= Priority.ERROR_INT)
 			severity = IStatus.ERROR;
 		else
 		if (level.toInt() >= Priority.WARN_INT)
 			severity = IStatus.WARNING;
 		else
-		if (level.toInt() >= Priority.DEBUG_INT) 
+		if (level.toInt() >= Priority.DEBUG_INT)
 			severity = IStatus.INFO;
-			
-		
+
+
 		this.pluginLog.log(new Status(severity,
 		         this.pluginLog.getBundle().getSymbolicName(),
 				 level.toInt(),text,thrown));*/
@@ -107,22 +108,22 @@ public class PluginLogAppender extends AppenderSkeleton {
 				stream.println(stringWriter.getBuffer().toString());
 			}
 		}
-		
+
 		}
-		
-    	
-		
+
+
+
 	/**
 	 * Closes this appender
-	 */	
+	 */
 	public void close() {
-		this.closed = true; 
+		this.closed = true;
 	}
-	
+
 	/**
 	 * Checks if this appender requires layout
 	 * @return true if layout is required.
-	 */	
+	 */
 	public boolean requiresLayout() {
 		return true;
 	}

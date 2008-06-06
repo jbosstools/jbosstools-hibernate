@@ -26,16 +26,17 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import org.eclipse.osgi.util.NLS;
+import org.hibernate.console.ConsoleMessages;
 import org.hibernate.eclipse.logging.CurrentContext;
 
 public class DefaultExecutionContext implements ExecutionContext {
 
-	final private URLClassLoader configurationClassLoader;	
+	final private URLClassLoader configurationClassLoader;
 	private volatile int installs;
 	private Map previousLoaders = new WeakHashMap();
 
 	final String key;
-	
+
 	public DefaultExecutionContext(String key, URLClassLoader loader) {
 		configurationClassLoader = loader;
 		this.key = key;
@@ -49,10 +50,10 @@ public class DefaultExecutionContext implements ExecutionContext {
 		if(configurationClassLoader!=null && Thread.currentThread().getContextClassLoader() != configurationClassLoader) {
 			previousLoaders.put(Thread.currentThread(), Thread.currentThread().getContextClassLoader() );
 			Thread.currentThread().setContextClassLoader(configurationClassLoader);
-		}		
-		
+		}
+
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.hibernate.console.IExecutionContext#execute(org.hibernate.console.ExecutionContext.Command)
 	 */
@@ -61,31 +62,31 @@ public class DefaultExecutionContext implements ExecutionContext {
 			CurrentContext.push( key );
 			installLoader();
 			return c.execute();
-		} 
+		}
 		finally {
 			uninstallLoader();
 			CurrentContext.pop();
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.hibernate.console.IExecutionContext#uninstallLoader()
 	 */
 	public void uninstallLoader() {
 		installs--; // TODO: make more safe (synchronized) bookkeeping of the classloader installation.
-		
+
 		if(installs==0) {
 			ClassLoader cl = (ClassLoader) previousLoaders.get(Thread.currentThread() );
 			if(configurationClassLoader!=null && Thread.currentThread().getContextClassLoader() != configurationClassLoader) {
-				String out = NLS.bind(Messages.DEFAULTEXECUTIONCONTEXT_EXISTING_CLASSLOADER, Thread.currentThread().getContextClassLoader(), configurationClassLoader);
+				String out = NLS.bind(ConsoleMessages.DefaultExecutionContext_existing_classloader, Thread.currentThread().getContextClassLoader(), configurationClassLoader);
 				throw new IllegalStateException(out);
 			}
-			
+
 			if(cl!=null) {
 				previousLoaders.remove(Thread.currentThread() );
 				Thread.currentThread().setContextClassLoader(cl);
-			}		
-		}				
+			}
+		}
 	}
-	
+
 }
