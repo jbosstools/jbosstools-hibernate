@@ -3,6 +3,7 @@ package org.hibernate.eclipse.console.test;
 import java.io.IOException;
 
 import org.hibernate.eclipse.console.test.mappingproject.HibernateAllMappingTests;
+import org.hibernate.eclipse.hqleditor.preferences.HQLEditorPreferencePageTest;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -19,17 +20,18 @@ public class ConsolePluginAllTests {
 		suite.addTestSuite( ConsoleConfigurationTest.class );
 		suite.addTestSuite( JavaFormattingTest.class );
 		suite.addTestSuite( RefactoringTest.class );
-
+		
 		suite.addTestSuite( HibernateAllMappingTests.class );
+		suite.addTestSuite(HQLEditorPreferencePageTest.class);
 
 		// core tests
 		//Properties properties = new Properties();
 		//properties.load(ConsolePluginAllTests.class.getResourceAsStream("plugintest-hibernate.properties"));
-
+		
 		//System.getProperties().putAll(properties);
-
+		
 		//suite.addTest(org.hibernate.tool.ToolAllTests.suite() );
-
+		
 
 		return suite;
 	}
