@@ -724,7 +724,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 			String str = (String) ef.getProperties().get("outputdir"); //$NON-NLS-1$
 			String msg = null;
 			if(str!=null) {
-				msg = PathHelper.checkDirectory(str, HibernateConsoleMessages.ExporterSettingsTab_output_directory_for + ef.getExporterDefinition().getDescription(), false);
+				msg = PathHelper.checkDirectory(str, HibernateConsoleMessages.ExporterSettingsTab_output_directory_for + " " + ef.getExporterDefinition().getDescription(), false); //$NON-NLS-1$
 				if(msg!=null) {
 					updateStatus(msg);
 					return;
@@ -733,7 +733,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 
 			str = (String) ef.getProperties().get("template_path"); //$NON-NLS-1$
 			if(str!=null) {
-				msg = PathHelper.checkDirectory(str, HibernateConsoleMessages.ExporterSettingsTab_template_directory_for + ef.getExporterDefinition().getDescription(), true);
+				msg = PathHelper.checkDirectory(str, HibernateConsoleMessages.ExporterSettingsTab_template_directory_for + " " + ef.getExporterDefinition().getDescription(), true); //$NON-NLS-1$
 				if(msg!=null) {
 					updateStatus(msg);
 					return;
