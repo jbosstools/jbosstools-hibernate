@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.ui.actions.SelectionListenerAction;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 /**
@@ -35,21 +36,21 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 public class RefreshAction extends SelectionListenerAction {
 
 	private final StructuredViewer viewer;
-	private String imageFilePath = "icons/images/refresh_run.gif";
+	private String imageFilePath = "icons/images/refresh_run.gif"; //$NON-NLS-1$
 
 	public RefreshAction(StructuredViewer viewer) {
-		super("Refresh");
+		super(HibernateConsoleMessages.RefreshAction_refresh);
 		this.viewer = viewer;
 		setImageDescriptor(HibernateConsolePlugin.getImageDescriptor(imageFilePath  ));
 	}
-	
+
 	public void run() {
 		List selectedNonResources = getSelectedNonResources();
-		
+
 		Iterator iter = selectedNonResources.iterator();
 		while (iter.hasNext() ) {
 			Object element = iter.next();
-			viewer.refresh(element);	
+			viewer.refresh(element);
 		}
 	}
 

@@ -38,6 +38,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.Widget;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 
 public class TreeToTableComposite extends Composite {
 
@@ -47,7 +48,7 @@ public class TreeToTableComposite extends Composite {
 		}
 
 		protected void doSetValue(Object value) {
-			if(value==null) { value=""; }
+			if(value==null) { value=""; } //$NON-NLS-1$
 			super.doSetValue( value );
 		}
 
@@ -58,23 +59,23 @@ public class TreeToTableComposite extends Composite {
 			} else {
 				return super.doGetValue();
 			}
-		}		
+		}
 	}
-	
+
 
 	static public class MultiStateCellEditor extends CellEditor {
-		
+
 		private int value;
 		private final int maxStates;
-		
+
 		public MultiStateCellEditor(Composite parent, int stateCount, int initialValue) {
 			super(parent);
-			if(stateCount < 1) throw new IllegalArgumentException("incorrect state count");
+			if(stateCount < 1) throw new IllegalArgumentException(HibernateConsoleMessages.TreeToTableComposite_incorrect_state_count);
 			maxStates= stateCount;
-			
-			if(!(initialValue >= 0 && initialValue < stateCount)) throw new IllegalArgumentException("incorrect initial value");
+
+			if(!(initialValue >= 0 && initialValue < stateCount)) throw new IllegalArgumentException(HibernateConsoleMessages.TreeToTableComposite_incorrect_initial_value);
 			value= initialValue;
-			
+
 			setValueValid(true);
 		}
 
@@ -82,10 +83,10 @@ public class TreeToTableComposite extends Composite {
 			value= getNextValue(maxStates, value);
 			fireApplyEditorValue();
 		}
-		
+
 		public static int getNextValue(int stateCount, int currentValue){
-			if(!(stateCount > 1)) throw new IllegalStateException("incorrect state count");
-			if(!(currentValue >= 0 && currentValue < stateCount)) throw new IllegalStateException("incorrect initial value"); 
+			if(!(stateCount > 1)) throw new IllegalStateException(HibernateConsoleMessages.TreeToTableComposite_incorrect_state_count);
+			if(!(currentValue >= 0 && currentValue < stateCount)) throw new IllegalStateException(HibernateConsoleMessages.TreeToTableComposite_incorrect_initial_value);
 			return (currentValue + 1) % stateCount;
 		}
 
@@ -103,12 +104,12 @@ public class TreeToTableComposite extends Composite {
 		protected void doSetValue(Object value) {
 			this.value = ((Integer) value).intValue();
 			if(!(this.value >= 0 && this.value < maxStates)) {
-				throw new IllegalStateException("invalid value");
+				throw new IllegalStateException(HibernateConsoleMessages.TreeToTableComposite_invalid_value);
 			}
 		}
 	}
 
-	
+
 	/** CellEditor that works like a texteditor, but returns/accepts Integer values. If the entered string is not parsable it returns null */
 	static protected final class IntegerCellEditor extends NullableTextCellEditor {
 		public IntegerCellEditor(Composite parent) {
@@ -118,7 +119,7 @@ public class TreeToTableComposite extends Composite {
 		protected void doSetValue(Object value) {
 			if(value!=null && value instanceof Integer) {
 				value = ((Integer)value).toString();
-			}			
+			}
 			super.doSetValue( value );
 		}
 
@@ -135,7 +136,7 @@ public class TreeToTableComposite extends Composite {
 			}
 		}
 	}
-	
+
 	private Group dbgroup = null;
 	private Composite manipulationGroup = null;
 	protected Tree tree = null;
@@ -158,7 +159,7 @@ public class TreeToTableComposite extends Composite {
 				Button but = addButtons[i];
 				if(button == but) {
 				 handleAddButtonPressed(i);
-				}				
+				}
 			}
 		}
 	};;
@@ -169,7 +170,7 @@ public class TreeToTableComposite extends Composite {
 	}
 
 	protected void handleAddButtonPressed(int i) {
-				
+
 	}
 
 
@@ -182,11 +183,11 @@ public class TreeToTableComposite extends Composite {
 		createTableFiltersGroup();
 		createComposite();
 		setSize(new org.eclipse.swt.graphics.Point(913,358));
-		label = new Label(this, SWT.NONE);		
+		label = new Label(this, SWT.NONE);
 	}
 
 	/**
-	 * This method initializes dbgroup	
+	 * This method initializes dbgroup
 	 *
 	 */
 	private void createDbgroup() {
@@ -204,11 +205,11 @@ public class TreeToTableComposite extends Composite {
 	}
 
 	protected String getTreeTitle() {
-		return "Database schema:";
+		return HibernateConsoleMessages.TreeToTableComposite_database_schema;
 	}
 
 	/**
-	 * This method initializes includeExcludeGroup	
+	 * This method initializes includeExcludeGroup
 	 *
 	 */
 	private void createIncludeExcludeGroup() {
@@ -241,10 +242,10 @@ public class TreeToTableComposite extends Composite {
 		manipulationGroup.setLayout(gridLayout1);
 		createAddButtons(manipulationGroup);
 		fillLabel = new Label(manipulationGroup, SWT.NONE);
-		fillLabel.setText("");
+		fillLabel.setText(""); //$NON-NLS-1$
 		fillLabel.setLayoutData(gridData6);
 		upButton = new Button(manipulationGroup, SWT.NONE);
-		upButton.setText("Up");
+		upButton.setText(HibernateConsoleMessages.TreeToTableComposite_up);
 		upButton.setLayoutData(gridData5);
 		upButton.addSelectionListener( new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -252,7 +253,7 @@ public class TreeToTableComposite extends Composite {
 			}
 		} );
 		downButton = new Button(manipulationGroup, SWT.NONE);
-		downButton.setText("Down");
+		downButton.setText(HibernateConsoleMessages.TreeToTableComposite_down);
 		downButton.setLayoutData(gridData4);
 		downButton.addSelectionListener( new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -260,7 +261,7 @@ public class TreeToTableComposite extends Composite {
 			}
 		} );
 		removeButton = new Button(manipulationGroup, SWT.NONE);
-		removeButton.setText("Remove");
+		removeButton.setText(HibernateConsoleMessages.TreeToTableComposite_remove);
 		removeButton.setLayoutData(gridData3);
 		removeButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -268,7 +269,7 @@ public class TreeToTableComposite extends Composite {
 			}
 		});
 		removeAllButton = new Button(manipulationGroup, SWT.NONE);
-		removeAllButton.setText("Remove All");
+		removeAllButton.setText(HibernateConsoleMessages.TreeToTableComposite_remove_all);
 		removeAllButton.setLayoutData(gridData3);
 		removeAllButton.addSelectionListener(new org.eclipse.swt.events.SelectionAdapter() {
 			public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
@@ -278,12 +279,12 @@ public class TreeToTableComposite extends Composite {
 	}
 
 	private void createAddButtons(Composite parent) {
-		
+
 		String[] addButtonLabels = getAddButtonLabels();
 		addButtons = new Button[addButtonLabels.length];
 		for (int i = 0; i < addButtonLabels.length; i++) {
 			String label = addButtonLabels[i];
-			addButtons[i] = createButton(parent, label); 
+			addButtons[i] = createButton(parent, label);
 			addButtons[i].setEnabled(true);
 		}
 	}
@@ -292,7 +293,7 @@ public class TreeToTableComposite extends Composite {
 		Button button = new Button(parent, SWT.PUSH);
 		GridData data = new GridData();
 		data.horizontalAlignment = GridData.FILL;
-		
+
 		button.setLayoutData(data);
 		button.setFont(parent.getFont() );
 		button.setText(label);
@@ -302,31 +303,31 @@ public class TreeToTableComposite extends Composite {
 	}
 
 	protected String[] getAddButtonLabels() {
-		return new String[] { "Include...", "Exclude..."};
+		return new String[] { HibernateConsoleMessages.TreeToTableComposite_include, HibernateConsoleMessages.TreeToTableComposite_exclude};
 	}
 
 	protected void doRemove() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	protected void doRemoveAll() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	protected void doMoveDown() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	protected void doMoveUp() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	/**
-	 * This method initializes tree	
+	 * This method initializes tree
 	 *
 	 */
 	private void createTree() {
@@ -334,7 +335,7 @@ public class TreeToTableComposite extends Composite {
 	}
 
 	/**
-	 * This method initializes tableFiltersGroup	
+	 * This method initializes tableFiltersGroup
 	 *
 	 */
 	private void createTableFiltersGroup() {
@@ -352,18 +353,18 @@ public class TreeToTableComposite extends Composite {
 	}
 
 	protected String getTableTitle() {
-		return "Table filters:";
+		return HibernateConsoleMessages.TreeToTableComposite_table_filters;
 	}
 
 	/**
-	 * This method initializes tableFilters	
+	 * This method initializes tableFilters
 	 *
 	 */
 	private void createTableFilters() {
 		rightTable = new Table(tableFiltersGroup, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION );
 		rightTable.setHeaderVisible(true);
 		rightTable.setLinesVisible(true);
-				
+
 		createTableColumns(rightTable);
 
 	}
@@ -372,7 +373,7 @@ public class TreeToTableComposite extends Composite {
 	}
 
 	/**
-	 * This method initializes composite	
+	 * This method initializes composite
 	 *
 	 */
 	private void createComposite() {
@@ -390,23 +391,23 @@ public class TreeToTableComposite extends Composite {
 		composite.setLayoutData(gridData8);
 		composite.setLayout(gridLayout2);
 		emptyLabel = new Label(composite, SWT.NONE);
-		emptyLabel.setText("");
+		emptyLabel.setText(""); //$NON-NLS-1$
 		emptyLabel.setLayoutData(gridData9);
 		refreshButton = new Button(composite, SWT.NONE);
-		refreshButton.setText("Refresh");
+		refreshButton.setText(HibernateConsoleMessages.TreeToTableComposite_refresh);
 		refreshButton
 				.addSelectionListener( new org.eclipse.swt.events.SelectionAdapter() {
 					public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
-						doRefreshTree();					
+						doRefreshTree();
 					}
 				} );
 	}
 
 	protected void doRefreshTree() {
 
-		
+
 	}
-		
+
 	public void setEnabled(boolean enabled) {
 		upButton.setEnabled(enabled);
 		downButton.setEnabled(enabled);

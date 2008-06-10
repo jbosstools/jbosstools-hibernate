@@ -58,7 +58,7 @@ public class PersistentClassViewAdapter extends GraphNode {
 	}
 
 	public String toString() {
-		return "PersistentClassAdapter: " + persistentClass;
+		return "PersistentClassAdapter: " + persistentClass; //$NON-NLS-1$
 	}
 
 	public void createAssociations() {

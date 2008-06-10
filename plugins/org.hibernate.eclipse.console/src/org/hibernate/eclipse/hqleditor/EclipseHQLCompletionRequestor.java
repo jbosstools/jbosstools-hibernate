@@ -69,28 +69,28 @@ public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor {
 		case HQLCompletionProposal.ENTITY_NAME:
 			if(proposal.getEntityName()!=null && 
 					  !(proposal.getSimpleName().equals( proposal.getEntityName()))) {
-				buf.append(" - ");
+				buf.append(" - "); //$NON-NLS-1$
 				buf.append(StringHelper.qualifier( proposal.getEntityName() ));
 			} else if(proposal.getShortEntityName()!=null &&
 					!(proposal.getSimpleName().equals( proposal.getEntityName()))) {
-				buf.append( " - " + proposal.getShortEntityName() );
+				buf.append( " - " + proposal.getShortEntityName() ); //$NON-NLS-1$
 			} 
 			break;
 		case HQLCompletionProposal.ALIAS_REF:
 			if(proposal.getShortEntityName()!=null) {
-				buf.append( " - " + proposal.getShortEntityName() );
+				buf.append( " - " + proposal.getShortEntityName() ); //$NON-NLS-1$
 			} else if(proposal.getEntityName()!=null) {
-				buf.append( " - " + proposal.getEntityName() );
+				buf.append( " - " + proposal.getEntityName() ); //$NON-NLS-1$
 			}
 			break;
 		case HQLCompletionProposal.PROPERTY:
 			if(proposal.getShortEntityName()!=null) {
-				buf.append( " - " + proposal.getShortEntityName() );
+				buf.append( " - " + proposal.getShortEntityName() ); //$NON-NLS-1$
 			} else if(proposal.getEntityName()!=null) {
-				if(proposal.getEntityName().indexOf( "." )>=0) {
-					buf.append( " - " + StringHelper.unqualify( proposal.getEntityName() ));
+				if(proposal.getEntityName().indexOf( "." )>=0) { //$NON-NLS-1$
+					buf.append( " - " + StringHelper.unqualify( proposal.getEntityName() )); //$NON-NLS-1$
 				} else {
-					buf.append( " - " + proposal.getEntityName() );
+					buf.append( " - " + proposal.getEntityName() ); //$NON-NLS-1$
 				}
 			}
 			break;

@@ -28,6 +28,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.mapping.PersistentClass;
 
@@ -37,7 +38,7 @@ public class ConfigurationWorkbenchAdapter extends BasicWorkbenchAdapter {
 		Configuration cfg = (Configuration) o;
 		Iterator classMappings = cfg.getClassMappings();
 		return toArray(classMappings, PersistentClass.class, new Comparator() {
-		
+
 			public int compare(Object arg0, Object arg1) {
 				PersistentClass p0 = (PersistentClass) arg0;
 				PersistentClass p1 = (PersistentClass) arg1;
@@ -45,7 +46,7 @@ public class ConfigurationWorkbenchAdapter extends BasicWorkbenchAdapter {
 				String label1 = HibernateWorkbenchHelper.getLabelForClassName(p1.getEntityName());
 				return label0.compareTo(label1);
 			}
-		
+
 		});
 	}
 
@@ -54,7 +55,7 @@ public class ConfigurationWorkbenchAdapter extends BasicWorkbenchAdapter {
 	}
 
 	public String getLabel(Object o) {
-		return "Configuration";
+		return HibernateConsoleMessages.ConfigurationWorkbenchAdapter_configuration;
 	}
 
 	public Object getParent(Object o) {
@@ -64,7 +65,7 @@ public class ConfigurationWorkbenchAdapter extends BasicWorkbenchAdapter {
 	public boolean isContainer() {
 		return true;
 	}
-	
-	
+
+
 
 }

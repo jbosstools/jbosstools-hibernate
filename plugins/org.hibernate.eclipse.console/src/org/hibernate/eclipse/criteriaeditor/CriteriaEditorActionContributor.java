@@ -71,7 +71,7 @@ public class CriteriaEditorActionContributor extends TextEditorActionContributor
     public void init(IActionBars bars, IWorkbenchPage page) {
     	super.init( bars, page );
     	
-    	bars.setGlobalActionHandler("org.hibernate.eclipse.console.actions.ExecuteQueryAction", executeHQLAction);
+    	bars.setGlobalActionHandler("org.hibernate.eclipse.console.actions.ExecuteQueryAction", executeHQLAction); //$NON-NLS-1$
         bars.updateActionBars();
     }
     

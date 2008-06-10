@@ -44,7 +44,7 @@ public class PropertyAssociationViewAdapter extends AssociationViewAdapter {
 	}
 	
 	public String toString() {
-		return "Property " + property.getProperty().getName() + " " + super.toString();
+		return "Property " + property.getProperty().getName() + " " + super.toString(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public String getAssociationName() {

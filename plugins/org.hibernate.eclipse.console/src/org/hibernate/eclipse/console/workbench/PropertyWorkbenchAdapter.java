@@ -121,7 +121,7 @@ public class PropertyWorkbenchAdapter extends BasicWorkbenchAdapter implements
 		String typeName = (String) value.accept(new TypeNameValueVisitor(true));
 		
 		if (typeName!=null) {
-			return property.getName() + " : " + typeName;
+			return property.getName() + " : " + typeName; //$NON-NLS-1$
 		}
 		
 		return property.getName(); 

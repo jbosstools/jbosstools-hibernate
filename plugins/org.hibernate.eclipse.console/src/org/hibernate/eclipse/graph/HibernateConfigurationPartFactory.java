@@ -23,6 +23,7 @@ package org.hibernate.eclipse.graph;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.graph.model.AssociationViewAdapter;
 import org.hibernate.eclipse.graph.model.ConfigurationViewAdapter;
 import org.hibernate.eclipse.graph.model.PersistentClassViewAdapter;
@@ -48,8 +49,8 @@ public class HibernateConfigurationPartFactory implements EditPartFactory {
 		} else if ( model instanceof TableViewAdapter ) {
 			return new TableEditPart( (TableViewAdapter) model);
 		}
-		
-		throw new IllegalArgumentException(model.getClass() + " not known by factory");
+
+		throw new IllegalArgumentException(model.getClass() + HibernateConsoleMessages.HibernateConfigurationPartFactory_not_known_by_factory);
 	}
 
 }

@@ -23,7 +23,6 @@ package org.hibernate.eclipse.console.actions;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
@@ -34,20 +33,15 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.PlatformUI;
 import org.hibernate.console.ImageConstants;
-import org.hibernate.console.KnownConfigurations;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.eclipse.console.utils.LaunchHelper;
-import org.hibernate.eclipse.console.views.KnownConfigurationsView;
-import org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard;
 import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
 
 /**
- * 
+ *
  * Action that creates a ConsoleConfiguration
  * @author max
  *
@@ -56,38 +50,38 @@ public class AddConfigurationAction extends Action {
 
 	/** Constant used to avoid unnecessary broadcast which is caused by the workaround for having the ClassPathTab not throwing
 	 *  and exception on unsaved configurations */
-	public static final String TEMPORARY_CONFIG_FLAG = "_TEMPORARY_CONFIG_";
-	
+	public static final String TEMPORARY_CONFIG_FLAG = "_TEMPORARY_CONFIG_"; //$NON-NLS-1$
+
 	private final IViewPart part;
 
 	public AddConfigurationAction(IViewPart part) {
 		this.part = part;
-		setText("Add Configuration...");
+		setText(HibernateConsoleMessages.AddConfigurationAction_add_config);
 		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.ADD) );
 	}
 
 	public void run() {
 		doAddConfiguration();
 	}
-	
+
 	protected void doAddConfiguration() {
 		/*ConsoleConfigurationCreationWizard wizard = new ConsoleConfigurationCreationWizard();
 		wizard.init(PlatformUI.getWorkbench(), null); // initializes the wizard
 		WizardDialog dialog = new WizardDialog(part.getSite().getShell(), wizard);
 		dialog.open(); // This opens a dialog
 		*/
-		
+
 		try {
 			ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 
 			ILaunchConfigurationType launchConfigurationType = launchManager.getLaunchConfigurationType( ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID );
-			String launchName = launchManager.generateUniqueLaunchConfigurationNameFrom("hibernate"); 
+			String launchName = launchManager.generateUniqueLaunchConfigurationNameFrom(HibernateConsoleMessages.AddConfigurationAction_hibernate);
 			//ILaunchConfiguration[] launchConfigurations = launchManager.getLaunchConfigurations( launchConfigurationType );
 			ILaunchConfigurationWorkingCopy wc = launchConfigurationType.newInstance(null, launchName);
-			wc.setAttribute(TEMPORARY_CONFIG_FLAG, true); 
-			ILaunchConfiguration saved = wc.doSave();			
-			int res = DebugUITools.openLaunchConfigurationPropertiesDialog( part.getSite().getShell(), saved, "org.eclipse.debug.ui.launchGroup.run" );
-			List<ILaunchConfiguration> listTempConfigs = new ArrayList<ILaunchConfiguration>(); 
+			wc.setAttribute(TEMPORARY_CONFIG_FLAG, true);
+			ILaunchConfiguration saved = wc.doSave();
+			int res = DebugUITools.openLaunchConfigurationPropertiesDialog( part.getSite().getShell(), saved, "org.eclipse.debug.ui.launchGroup.run" ); //$NON-NLS-1$
+			List<ILaunchConfiguration> listTempConfigs = new ArrayList<ILaunchConfiguration>();
 			ILaunchConfiguration[] configs = launchManager.getLaunchConfigurations(launchConfigurationType);
 			for (int i = 0; i < configs.length; i++) {
 				boolean temporary = configs[i].getAttribute(AddConfigurationAction.TEMPORARY_CONFIG_FLAG, false);
@@ -106,11 +100,11 @@ public class AddConfigurationAction extends Action {
 					wc.doSave();
 				}
 			}
-			
+
 		} catch (CoreException ce) {
-			HibernateConsolePlugin.getDefault().showError( part.getSite().getShell(), "Problem adding a console configuration",  ce);
+			HibernateConsolePlugin.getDefault().showError( part.getSite().getShell(), HibernateConsoleMessages.AddConfigurationAction_problem_add_console_config,  ce);
 		}
 
-		
+
 	}
 }

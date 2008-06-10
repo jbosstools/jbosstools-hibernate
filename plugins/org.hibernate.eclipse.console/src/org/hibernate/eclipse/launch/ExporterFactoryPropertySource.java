@@ -66,7 +66,7 @@ public class ExporterFactoryPropertySource implements IPropertySource {
 	public Object getPropertyValue(Object id) {
 		String propertyValue = factory.getPropertyValue( id.toString() );
 		if(propertyValue==null) {
-			return "";
+			return ""; //$NON-NLS-1$
 		} else {
 			return propertyValue;
 		}		

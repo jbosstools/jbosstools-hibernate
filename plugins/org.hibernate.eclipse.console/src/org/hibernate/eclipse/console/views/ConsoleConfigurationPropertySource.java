@@ -30,24 +30,25 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 
 public class ConsoleConfigurationPropertySource implements IPropertySource {
 
 	private final ConsoleConfiguration cfg;
 
-	
+
 	static IPropertyDescriptor[] pd;
 	static {
 		List l = new ArrayList();
-		l.add(new TextPropertyDescriptor("name", "Name"));
-		l.add(new PropertyDescriptor("hibernate.cfg.xml", "Configuration file"));
-		l.add(new PropertyDescriptor("hibernate.properties", "Properties file"));
-		l.add(new PropertyDescriptor("mapping.files", "Additonal mapping files"));
-		
-		
+		l.add(new TextPropertyDescriptor("name", HibernateConsoleMessages.ConsoleConfigurationPropertySource_name)); //$NON-NLS-1$
+		l.add(new PropertyDescriptor("hibernate.cfg.xml", HibernateConsoleMessages.ConsoleConfigurationPropertySource_config_file)); //$NON-NLS-1$
+		l.add(new PropertyDescriptor("hibernate.properties", HibernateConsoleMessages.ConsoleConfigurationPropertySource_properties_file)); //$NON-NLS-1$
+		l.add(new PropertyDescriptor("mapping.files", HibernateConsoleMessages.ConsoleConfigurationPropertySource_additional_mapping_files)); //$NON-NLS-1$
+
+
 		pd = (IPropertyDescriptor[]) l.toArray( new IPropertyDescriptor[l.size()] );
 	}
-	
+
 	public ConsoleConfigurationPropertySource(ConsoleConfiguration cfg) {
 		this.cfg = cfg;
 	}
@@ -62,25 +63,25 @@ public class ConsoleConfigurationPropertySource implements IPropertySource {
 
 	public Object getPropertyValue(Object id) {
 		try {
-		if("name".equals(id)) {
+		if("name".equals(id)) { //$NON-NLS-1$
 			return cfg.getName();
 		}
 		// TODO: bring back more eclipse friendly file names
 		ConsoleConfigurationPreferences preferences = cfg.getPreferences();
-		
-		if("hibernate.cfg.xml".equals(id)) {
+
+		if("hibernate.cfg.xml".equals(id)) { //$NON-NLS-1$
 			return preferences.getConfigXMLFile();
 		}
-		if("hibernate.properties".equals(id)) {
+		if("hibernate.properties".equals(id)) { //$NON-NLS-1$
 			return preferences.getPropertyFile();
 		}
-		if("mapping.files".equals(id)) {
+		if("mapping.files".equals(id)) { //$NON-NLS-1$
 			return new Integer(preferences.getMappingFiles().length);
 		}
-		
+
 		return null;
 		} catch(RuntimeException e) {
-			return "Error: " + e.getMessage();
+			return HibernateConsoleMessages.ConsoleConfigurationPropertySource_error + e.getMessage();
 		}
 	}
 

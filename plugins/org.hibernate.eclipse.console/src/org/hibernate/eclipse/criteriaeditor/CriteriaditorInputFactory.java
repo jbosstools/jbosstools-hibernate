@@ -62,7 +62,7 @@ public class CriteriaditorInputFactory implements IElementFactory {
         
         String storageName = null;
         String storageContent = ""; //$NON-NLS-1$
-        String configurationName = "";
+        String configurationName = ""; //$NON-NLS-1$
         IStorage storage = input.getStorage();
         if (storage != null) {
             storageName = storage.getName();            

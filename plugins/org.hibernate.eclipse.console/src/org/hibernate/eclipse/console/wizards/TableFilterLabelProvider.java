@@ -31,8 +31,8 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
 public class TableFilterLabelProvider extends LabelProvider implements ITableLabelProvider {
 
 	//		 Names of images used to represent checkboxes	
-	public static final String CHECKED_IMAGE 	= "checked";
-	public static final String UNCHECKED_IMAGE  = "unchecked";
+	public static final String CHECKED_IMAGE 	= "checked"; //$NON-NLS-1$
+	public static final String UNCHECKED_IMAGE  = "unchecked"; //$NON-NLS-1$
 	
 	
 	public Image getColumnImage(Object element, int columnIndex) {
@@ -52,7 +52,7 @@ public class TableFilterLabelProvider extends LabelProvider implements ITableLab
 	
 	public String getColumnText(Object element, int columnIndex) {
 		ITableFilter tf = (ITableFilter) element;
-		String result = "";
+		String result = ""; //$NON-NLS-1$
 		
 		switch (columnIndex) {
 		case 0:

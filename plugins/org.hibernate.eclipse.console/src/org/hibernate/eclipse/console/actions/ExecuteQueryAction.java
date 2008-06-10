@@ -26,6 +26,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Event;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.QueryEditor;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 
@@ -36,8 +37,8 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
 public class ExecuteQueryAction extends Action {
 
 	private QueryEditor editor;
-	
-	public ExecuteQueryAction() {		
+
+	public ExecuteQueryAction() {
 		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.EXECUTE) );
 		initTextAndToolTip();
 	}
@@ -51,7 +52,7 @@ public class ExecuteQueryAction extends Action {
 	public void run() {
 		execute(editor );
 	}
-	
+
 	public void runWithEvent(Event event) {
 		super.runWithEvent( event );
 	}
@@ -66,22 +67,22 @@ public class ExecuteQueryAction extends Action {
 							cfg.build();
 						}
 						cfg.buildSessionFactory();
-						queryEditor.executeQuery(cfg);						
+						queryEditor.executeQuery(cfg);
 					}
 				} else {
-					queryEditor.executeQuery(cfg);					
+					queryEditor.executeQuery(cfg);
 				}
-			} 
+			}
 		}
-		finally {			
+		finally {
 			initTextAndToolTip();
 		}
-		
+
 	}
 
 	private void initTextAndToolTip() {
-		setText("Run HQL");
-		setToolTipText("Run HQL");
+		setText(HibernateConsoleMessages.ExecuteQueryAction_run_hql);
+		setToolTipText(HibernateConsoleMessages.ExecuteQueryAction_run_hql);
 	}
 
 	public void run(IAction action) {
@@ -89,7 +90,7 @@ public class ExecuteQueryAction extends Action {
 	}
 
 	public void setHibernateQueryEditor(QueryEditor editor) {
-		this.editor = editor;		
+		this.editor = editor;
 	}
 
 }

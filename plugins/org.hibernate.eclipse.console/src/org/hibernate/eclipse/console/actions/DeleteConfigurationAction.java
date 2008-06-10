@@ -31,6 +31,7 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.actions.SelectionListenerAction;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 
 /**
@@ -38,36 +39,36 @@ import org.hibernate.eclipse.console.utils.ProjectUtils;
  *
  */
 public class DeleteConfigurationAction extends SelectionListenerAction {
-	
+
 	private StructuredViewer part;
 
 	public DeleteConfigurationAction(StructuredViewer selectionProvider) {
-		super("Delete Configuration");
+		super(HibernateConsoleMessages.DeleteConfigurationAction_delete_config);
 		setEnabled(false);
 		this.part = selectionProvider;
 	}
 
 	public void run() {
 		List selectedNonResources = getSelectedNonResources();
-		String question =  "Do you wish to delete the selected console configuration";
-		String title = "Delete console configuration";
+		String question =  HibernateConsoleMessages.DeleteConfigurationAction_do_you_wish_del_selected_config;
+		String title = HibernateConsoleMessages.DeleteConfigurationAction_delete_console_config;
 		if (selectedNonResources.size() > 1){
-			question += "s";
-			title += "s";
+			question += HibernateConsoleMessages.DeleteConfigurationAction_str_1;
+			title += HibernateConsoleMessages.DeleteConfigurationAction_str_2;
 		}
-		question += "?";		
-		
-		if( MessageDialog.openConfirm( null, title, question)) {		
+		question += HibernateConsoleMessages.DeleteConfigurationAction_str_3;
+
+		if( MessageDialog.openConfirm( null, title, question)) {
 			Iterator iter = selectedNonResources.iterator();
 			while (iter.hasNext() ) {
 				ConsoleConfiguration element = (ConsoleConfiguration) iter.next();
 				KnownConfigurations.getInstance().removeConfiguration(element, false);
 			}
-			
+
 			part.refresh();
 		}
-	}	
-	
+	}
+
 	protected boolean updateSelection(IStructuredSelection selection) {
 		if(!selection.isEmpty() ) {
 			Iterator iter = getSelectedNonResources().iterator();

@@ -51,8 +51,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.osgi.util.NLS;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.eclipse.console.ExtensionManager;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.model.impl.ExporterDefinition;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
@@ -71,7 +73,7 @@ public class ExporterAttributes
    private List exporterFactories;
 private boolean autoManyToManyDetection;
 private boolean autoVersioning;
-   
+
    public ExporterAttributes () { }
 
    public ExporterAttributes (ILaunchConfiguration configuration)
@@ -79,68 +81,69 @@ private boolean autoVersioning;
    {
       initialize(configuration);
    }
-   
+
    public void initialize (ILaunchConfiguration configuration)
       throws CoreException
    {
       try {
-         consoleConfigurationName = configuration.getAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME,"");        
-         outputPath = configuration.getAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR,"");
+         consoleConfigurationName = configuration.getAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME,"");         //$NON-NLS-1$
+         outputPath = configuration.getAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR,""); //$NON-NLS-1$
          reverseEngineer = configuration.getAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER, false);
-         revengSettings = configuration.getAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_SETTINGS, "");
-         revengStrategy = configuration.getAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_STRATEGY, "");
+         revengSettings = configuration.getAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_SETTINGS, ""); //$NON-NLS-1$
+         revengStrategy = configuration.getAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_STRATEGY, ""); //$NON-NLS-1$
          useOwnTemplates = configuration.getAttribute(HibernateLaunchConstants.ATTR_USE_OWN_TEMPLATES,false);
          enableJDK5 = configuration.getAttribute(HibernateLaunchConstants.ATTR_ENABLE_JDK5,false);
          enableEJB3 = configuration.getAttribute(HibernateLaunchConstants.ATTR_ENABLE_EJB3_ANNOTATIONS,false);
-         packageName = configuration.getAttribute(HibernateLaunchConstants.ATTR_PACKAGE_NAME,"");
-         templatePath = configuration.getAttribute(HibernateLaunchConstants.ATTR_TEMPLATE_DIR,"");
+         packageName = configuration.getAttribute(HibernateLaunchConstants.ATTR_PACKAGE_NAME,""); //$NON-NLS-1$
+         templatePath = configuration.getAttribute(HibernateLaunchConstants.ATTR_TEMPLATE_DIR,""); //$NON-NLS-1$
          preferBasicCompositeIds = configuration.getAttribute(HibernateLaunchConstants.ATTR_PREFER_BASIC_COMPOSITE_IDS, true);
          autoManyToManyDetection = configuration.getAttribute( HibernateLaunchConstants.ATTR_AUTOMATIC_MANY_TO_MANY, true);
          autoVersioning = configuration.getAttribute( HibernateLaunchConstants.ATTR_AUTOMATIC_VERSIONING, true);
-         
-         
+
+
          if (!useOwnTemplates) {
         	 templatePath = null;
          }
-   
+
          exporterFactories = readExporterFactories(configuration);
- 		
+
       } catch (CoreException e) {
-         throw new CoreException(HibernateConsolePlugin.throwableToStatus(e, 666)); 
+         throw new CoreException(HibernateConsolePlugin.throwableToStatus(e, 666));
       }
    }
 
    static String getLaunchAttributePrefix(String exporterId) {
-	   	   return HibernateLaunchConstants.ATTR_EXPORTERS + "." + exporterId;
+	   	   return HibernateLaunchConstants.ATTR_EXPORTERS + "." + exporterId; //$NON-NLS-1$
    }
-   
+
    private List readExporterFactories(ILaunchConfiguration configuration) throws CoreException {
 
 	   List exporterNames = configuration.getAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, (List)null);
-	   
-	   if(exporterNames!=null) { 
+
+	   if(exporterNames!=null) {
 		   Map exDefinitions = ExtensionManager.findExporterDefinitionsAsMap();
 		   List factories = new ArrayList();
 
 		   for (Iterator iterator = exporterNames.iterator(); iterator.hasNext();) {
 			   String exporterId = (String) iterator.next();
-			   String extensionId = configuration.getAttribute(getLaunchAttributePrefix(exporterId) + ".extension_id", (String)null);
+			   String extensionId = configuration.getAttribute(getLaunchAttributePrefix(exporterId) + ".extension_id", (String)null); //$NON-NLS-1$
 
 			   ExporterDefinition expDef = (ExporterDefinition) exDefinitions.get(extensionId);
 			   if(expDef==null) {
-				   throw new HibernateConsoleRuntimeException("Could not locate exporter for '" + extensionId + "' in " + configuration.getName());							
+				   String out = NLS.bind(HibernateConsoleMessages.ExporterAttributes_could_not_locate_exporter_for_in, extensionId, configuration.getName());
+				   throw new HibernateConsoleRuntimeException(out);
 			   } else {
 				   ExporterFactory exporterFactory = new ExporterFactory( expDef, exporterId );
 				   exporterFactory.isEnabled( configuration );
 				   factories.add( exporterFactory );
 				   Map props = configuration.getAttribute( getLaunchAttributePrefix(exporterFactory.getId())
-						   + ".properties", new HashMap() );
+						   + ".properties", new HashMap() ); //$NON-NLS-1$
 				   exporterFactory.setProperties( props );
-			   }			
+			   }
 		   }
 		   return factories;
-		   
-	   } else { 
+
+	   } else {
 		   // fall back to old way of reading if list of exporters does not exist.
 		   ExporterDefinition[] exDefinitions = ExtensionManager.findExporterDefinitions();
 		   List factories = new ArrayList();
@@ -150,74 +153,74 @@ private boolean autoVersioning;
 			   ExporterFactory exporterFactory = new ExporterFactory( expDef, expDef.getId() );
 			   exporterFactory.isEnabled( configuration );
 			   factories.add( exporterFactory );
-			   Map props = configuration.getAttribute( getLaunchAttributePrefix(exporterFactory.getId()) 
-					   + ".properties", new HashMap() );
+			   Map props = configuration.getAttribute( getLaunchAttributePrefix(exporterFactory.getId())
+					   + ".properties", new HashMap() ); //$NON-NLS-1$
 			   exporterFactory.setProperties( props );
 		   }
-		   
+
 		   return factories;
-	   } 
+	   }
    }
 
    public static void saveExporterFactories(
 			ILaunchConfigurationWorkingCopy configuration,
 			List exporterFactories, Set enabledExporters, Set deletedExporterIds) {
-		
-	   
+
+
 	   List names = new ArrayList();
 		for (Iterator iter = exporterFactories.iterator(); iter.hasNext();) {
 			ExporterFactory ef = (ExporterFactory) iter.next();
-			configuration.setAttribute(getLaunchAttributePrefix(ef.getId()) + ".extension_id", ef.getExporterDefinition().getId());
+			configuration.setAttribute(getLaunchAttributePrefix(ef.getId()) + ".extension_id", ef.getExporterDefinition().getId()); //$NON-NLS-1$
 			boolean enabled = enabledExporters.contains( ef );
-			String propertiesId = getLaunchAttributePrefix(ef.getId()) + ".properties";
+			String propertiesId = getLaunchAttributePrefix(ef.getId()) + ".properties"; //$NON-NLS-1$
 			names.add(ef.getId());
 			ef.setEnabled( configuration, enabled, false );
-				
+
 			HashMap map = new HashMap(ef.getProperties());
 
-			if(map.isEmpty()) {				
+			if(map.isEmpty()) {
 				configuration.setAttribute( propertiesId, (Map)null );
 			} else {
 				configuration.setAttribute( propertiesId, map );
-			}			
+			}
 		}
-		
+
 		deletedExporterIds.removeAll(names);
-		
+
 		for (Iterator iterator = deletedExporterIds.iterator(); iterator.hasNext();) {
 			String deleted = (String) iterator.next();
-			
+
 			configuration.setAttribute( getLaunchAttributePrefix( deleted ), (String)null);
-			configuration.setAttribute(getLaunchAttributePrefix(deleted ) + ".extension_id", (String)null);						
+			configuration.setAttribute(getLaunchAttributePrefix(deleted ) + ".extension_id", (String)null);						 //$NON-NLS-1$
 			configuration.setAttribute(getLaunchAttributePrefix(deleted), (String)null);
 		}
-		
+
 		configuration.setAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, names);
 	}
 
 	public static void oldSaveExporterFactories(
 			ILaunchConfigurationWorkingCopy configuration,
 			List exporterFactories, List enabledExporters) {
-		
-		
+
+
 		for (Iterator iter = exporterFactories.iterator(); iter.hasNext();) {
 			ExporterFactory ef = (ExporterFactory) iter.next();
 			boolean enabled = enabledExporters.contains( ef );
-			String propertiesId = ef.getId() + ".properties";
-			
+			String propertiesId = ef.getId() + ".properties"; //$NON-NLS-1$
+
 			ef.setEnabled( configuration, enabled, true );
-				
+
 			HashMap map = new HashMap(ef.getProperties());
 
-			if(map.isEmpty()) {				
+			if(map.isEmpty()) {
 				configuration.setAttribute( propertiesId, (Map)null );
 			} else {
 				configuration.setAttribute( propertiesId, map );
-			}		
+			}
 		}
 	}
 
-   
+
     private Path pathOrNull(String p) {
         if(p==null || p.trim().length()==0) {
             return null;
@@ -337,7 +340,7 @@ private boolean autoVersioning;
    }
 
    public List getExporterFactories() {
-	   return exporterFactories;	
+	   return exporterFactories;
    }
 
 public boolean detectManyToMany() {
@@ -348,7 +351,7 @@ public boolean detectManyToMany() {
     	return autoVersioning;
     }
 
-   
 
-   
+
+
 }

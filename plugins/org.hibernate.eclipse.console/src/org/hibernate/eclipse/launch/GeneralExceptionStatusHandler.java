@@ -24,6 +24,7 @@ package org.hibernate.eclipse.launch;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.debug.core.IStatusHandler;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 public class GeneralExceptionStatusHandler implements IStatusHandler {
@@ -32,8 +33,8 @@ public class GeneralExceptionStatusHandler implements IStatusHandler {
 			throws CoreException {
 		final boolean[] result = new boolean[1];
 		HibernateConsolePlugin.getDefault().log( status );
-		HibernateConsolePlugin.openError(null, "Generating code", "Exception while generating code", status.getException(), HibernateConsolePlugin.PERFORM_SYNC_EXEC);
-		return new Boolean(result[0]);		
+		HibernateConsolePlugin.openError(null, HibernateConsoleMessages.GeneralExceptionStatusHandler_generating_code, HibernateConsoleMessages.GeneralExceptionStatusHandler_exception_while_generating_code, status.getException(), HibernateConsolePlugin.PERFORM_SYNC_EXEC);
+		return new Boolean(result[0]);
 	}
 
 }

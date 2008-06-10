@@ -25,6 +25,7 @@ import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.mapping.PersistentClass;
@@ -32,34 +33,34 @@ import org.hibernate.mapping.Property;
 
 public class CriteriaEditorAction extends OpenQueryEditorAction {
 	public CriteriaEditorAction() {
-		super( "Hibernate Criteria Editor" );
+		super( HibernateConsoleMessages.CriteriaEditorAction_hibernate_criteria_editor );
 		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.CRITERIA_EDITOR));
-		setToolTipText("Open Hibernate Criteria Editor");
-		setEnabled( true );		
+		setToolTipText(HibernateConsoleMessages.CriteriaEditorAction_open_hibernate_criteria_editor);
+		setEnabled( true );
 	}
 
 	protected void openQueryEditor(ConsoleConfiguration config, String query) {
 		HibernateConsolePlugin.getDefault().openCriteriaEditor( config==null?null:config.getName(), query );
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.hibernate.eclipse.console.actions.OpenQueryEditorAction#generateQuery(org.eclipse.jface.viewers.TreePath)
 	 */
 	protected String generateQuery(TreePath path) {
-		final String criteria = ".createCriteria({0})";
-		final String alias = "\n.createCriteria(\"{0}\", \"{1}\")";
-		final String projection = "\n.setProjection( Property.forName(\"{0}\").as(\"{0}\"))";
-		final String sess = "session";
-		String enCriteria = "";
-		String propCriteria = "";
-		String enName = "";
-		Object node = path.getLastSegment();		
+		final String criteria = ".createCriteria({0})"; //$NON-NLS-1$
+		final String alias = "\n.createCriteria(\"{0}\", \"{1}\")"; //$NON-NLS-1$
+		final String projection = "\n.setProjection( Property.forName(\"{0}\").as(\"{0}\"))"; //$NON-NLS-1$
+		final String sess = "session"; //$NON-NLS-1$
+		String enCriteria = ""; //$NON-NLS-1$
+		String propCriteria = ""; //$NON-NLS-1$
+		String enName = ""; //$NON-NLS-1$
+		Object node = path.getLastSegment();
 		if (node instanceof PersistentClass){
 			enName = ((PersistentClass)node).getEntityName();
 			enName = enName.substring(enName.lastIndexOf('.') + 1);
 		} else if (node instanceof Property){
-			Property prop = (Property)node;	
-			String prName = prop.getName();			
+			Property prop = (Property)node;
+			String prName = prop.getName();
 			PersistentClass pClass = ((Property)node).getPersistentClass();
 			if (pClass != null){
 				enName = pClass.getEntityName();
@@ -74,7 +75,7 @@ public class CriteriaEditorAction extends OpenQueryEditorAction {
 				for (int i = path.getSegmentCount() - 1; i > 0; i--) {
 					if (path.getSegment(i) instanceof PersistentClass){
 						enName = ((PersistentClass)path.getSegment(i)).getEntityName();
-						enName = enName.substring(enName.lastIndexOf('.') + 1);						
+						enName = enName.substring(enName.lastIndexOf('.') + 1);
 					} else if (path.getSegment(i) instanceof Property){
 						prName = ((Property)path.getSegment(i)).getName();
 						if (prop.getValue().isSimpleValue()) {
@@ -83,13 +84,13 @@ public class CriteriaEditorAction extends OpenQueryEditorAction {
 							propCriteria += NLS.bind(alias, prName, prName.charAt(0));
 						}
 						//propCriteria += NLS.bind(projection, prName);
-					}					
+					}
 				}
 			}
 		} else {
-		  return "";
+		  return ""; //$NON-NLS-1$
 		}
-		enCriteria = NLS.bind(criteria, enName + ".class");
-		return sess + enCriteria + propCriteria + "\n.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP)";
+		enCriteria = NLS.bind(criteria, enName + ".class"); //$NON-NLS-1$
+		return sess + enCriteria + propCriteria + "\n.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP)"; //$NON-NLS-1$
 	}
 }

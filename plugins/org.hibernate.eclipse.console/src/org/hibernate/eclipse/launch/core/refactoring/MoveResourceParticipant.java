@@ -12,9 +12,10 @@ import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.participants.CheckConditionsContext;
 import org.eclipse.ltk.core.refactoring.participants.MoveParticipant;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 
 public class MoveResourceParticipant extends MoveParticipant {
-	
+
 	private IResource fResource;
 
 	public RefactoringStatus checkConditions(IProgressMonitor pm,
@@ -25,8 +26,8 @@ public class MoveResourceParticipant extends MoveParticipant {
 	public Change createChange(IProgressMonitor pm) throws CoreException,
 			OperationCanceledException {
 		ILaunchConfiguration[] configs = HibernateRefactoringUtil.getAffectedLaunchConfigurations(fResource.getFullPath());
-		
-		List<Change> changes = new ArrayList<Change>();		
+
+		List<Change> changes = new ArrayList<Change>();
 		LaunchConfigurationResourceNameChange change = null;
 		for (int i= 0; i < configs.length; i++) {
 			change = new LaunchConfigurationResourceNameChange(configs[i], fResource.getFullPath(), ((IResource)getArguments().getDestination()).getFullPath().append(fResource.getName()));
@@ -37,10 +38,10 @@ public class MoveResourceParticipant extends MoveParticipant {
 	}
 
 	public String getName() {
-		return "Launch Configurations updates";
+		return HibernateConsoleMessages.MoveResourceParticipant_launch_configurations_updates;
 	}
 
-	protected boolean initialize(Object element) {		
+	protected boolean initialize(Object element) {
 		fResource = (IResource) element;
 		return true;
 	}

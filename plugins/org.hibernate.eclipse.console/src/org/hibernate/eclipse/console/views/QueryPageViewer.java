@@ -38,6 +38,7 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Image;
@@ -48,6 +49,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.hibernate.console.QueryPage;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 
@@ -71,19 +73,20 @@ public class QueryPageViewer {
 				if (value.getClass().isArray() ) {
 					Object[] arr = (Object[]) value;
 					if (columnIndex > arr.length - 1) {
-						return "<Unknown value>";
+						return HibernateConsoleMessages.QueryPageViewer_unknown_value;
 					}
-					return "" + arr[columnIndex];
+					return "" + arr[columnIndex]; //$NON-NLS-1$
 				} else {
 					if(columnIndex!=0) {
-						return "?";
+						return "?"; //$NON-NLS-1$
 					} else {
-						return value == null ? "" : value.toString();
+						return value == null ? "" : value.toString(); //$NON-NLS-1$
 					}
 				}
 			}
-			catch (RuntimeException e) {				
-				return "<error: " + e.getMessage() + ">";
+			catch (RuntimeException e) {
+				String out = NLS.bind(HibernateConsoleMessages.QueryPageViewer_error, e.getMessage());
+				return out;
 			}
 		}
 		public void addListener(ILabelProviderListener listener) {
@@ -99,13 +102,13 @@ public class QueryPageViewer {
 
 
 	public static final Object NULL_VALUE = new Object() {
-	
+
 		public String toString() {
-			return "<null>";
+			return "<null>"; //$NON-NLS-1$
 		}
-	
+
 	};
-	
+
 	// should map to our table model instead
 	class ContentProviderImpl implements IStructuredContentProvider {
 		public Object[] getElements(Object inputElement) {
@@ -116,8 +119,8 @@ public class QueryPageViewer {
 					return ensureNotNull(objects);
 				} else {
 					Throwable[] throwables = (Throwable[])qp.getExceptions().toArray(new Throwable[0]);
-					HibernateConsolePlugin.getDefault().logErrorMessage("Exception while executing HQL Query", throwables);
-					return throwables; // TODO: provide actual error page					
+					HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.QueryPageViewer_exception_while_executing_hql_query, throwables);
+					return throwables; // TODO: provide actual error page
 				}
 			} else {
 				return null;
@@ -138,36 +141,36 @@ public class QueryPageViewer {
 
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		}
-		
+
 	}
-	
+
 
 	private final QueryPage queryPage;
 	private TableViewer tableViewer;
 	private CTabItem tabItem;
 	private final QueryPageTabView qrView;
-	
+
 	public QueryPageViewer(QueryPageTabView qrView, QueryPage queryPage) {
 		this.qrView = qrView;
 		this.queryPage = queryPage;
-		
+
 		createControl();
-		
-		
+
+
 	}
-	
+
 	protected CTabItem getTabItem() {
 		return this.tabItem;
 	}
-	
+
 	public Table getTable() {
 		return this.tableViewer.getTable();
 	}
-	
+
 	protected void createControl() {
     	this.tabItem = new CTabItem(this.qrView.tabs, SWT.NONE);
     	this.tabItem.setData( this.queryPage );
-    	int index = this.qrView.tabs.getItems().length;    	
+    	int index = this.qrView.tabs.getItems().length;
     	Composite composite = new Composite(this.qrView.tabs, SWT.NONE);
 		GridLayout layout = new GridLayout();
 		layout.marginWidth = 5;
@@ -184,16 +187,16 @@ public class QueryPageViewer {
 			this.tabItem.setToolTipText(this.queryPage.getQuery() );
 		} else if (this.queryPage.isMetaData() ) {
 			this.tabItem.setImage(ImageStore.getImage(ImageStore.TABLE_DETAILS) );
-			this.tabItem.setText(this.queryPage.getBookmark().getName() + ":" + 
+			this.tabItem.setText(this.queryPage.getBookmark().getName() + ":" +
 					this.queryPage.getEntity().getQualifiedName() );
 			tabItem.setToolTipText(this.queryPage.getEntity().getQualifiedName() );
 		} else {
 			this.tabItem.setImage(ImageStore.getImage(ImageStore.TABLE) );
-			this.tabItem.setText(this.queryPage.getBookmark().getName() + ":" + 
+			this.tabItem.setText(this.queryPage.getBookmark().getName() + ":" +
 					this.queryPage.getEntity().getQualifiedName() );
 			this.tabItem.setToolTipText(this.queryPage.getEntity().getQualifiedName() );
 		}*/
-		
+
 		createTable(composite);
 		this.tabItem.setControl(composite);
 		initializePopUpMenu();
@@ -222,7 +225,7 @@ public class QueryPageViewer {
 				tableDoubleClicked();
 			}
 		});
-		
+
 		this.tableViewer.addSelectionChangedListener(new ISelectionChangedListener () {
 			public void selectionChanged(SelectionChangedEvent event) {
 				tableDoubleClicked();
@@ -239,7 +242,7 @@ public class QueryPageViewer {
 			qrView.fireSelectionChangedEvent(selection);
 		}
 	}
-		
+
 	/**
 	 * @param table
 	 */
@@ -266,9 +269,9 @@ public class QueryPageViewer {
 	}
 
 	public void propertyChange(PropertyChangeEvent event) {
-		if ("rows".equals(event.getPropertyName() ) ) {
+		if ("rows".equals(event.getPropertyName() ) ) { //$NON-NLS-1$
 			this.tableViewer.refresh();
-		} else if ("columns".equals(event.getPropertyName() ) ) {
+		} else if ("columns".equals(event.getPropertyName() ) ) { //$NON-NLS-1$
 			Table table = this.tableViewer.getTable();
 			TableColumn[] columns = table.getColumns();
 			for (int i = 0, length = columns == null ? 0 : columns.length; i < length; i++) {
@@ -281,7 +284,7 @@ public class QueryPageViewer {
 		}
 	//	updateStatusLine();
 	}
-	
+
 	public void dispose() {
 		//this.queryPage.removePropertyChangeListener(this);
 		this.tabItem.dispose();
@@ -290,7 +293,7 @@ public class QueryPageViewer {
 	protected QueryPage getQueryPage() {
 		return this.queryPage;
 	}
-	
+
 	private void initializePopUpMenu() {
         MenuManager manager = new MenuManager();
         manager.setRemoveAllWhenShown(true);
@@ -301,13 +304,13 @@ public class QueryPageViewer {
         });
         Menu contextMenu = manager.createContextMenu(this.tableViewer.getControl() );
         this.tableViewer.getControl().setMenu(contextMenu);
-        // register the menu to the site so that we can allow 
+        // register the menu to the site so that we can allow
         // actions to be plugged in
         //this.tableView.getSite().registerContextMenu(manager, this.tableView);
 	}
 
-	
-	
+
+
 	protected ISelection getSelection() {
 		return this.tableViewer.getSelection();
 	}

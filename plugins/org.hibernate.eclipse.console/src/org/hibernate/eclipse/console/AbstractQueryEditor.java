@@ -8,6 +8,7 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -36,23 +37,23 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 	private ToolBarManager tbm;
 	private ExecuteQueryAction execAction = null;
 	final private QueryInputModel queryInputModel;
-	
+
 	private String defPartName;
 	private Image defTitleImage;
 	private Image connectedTitleImage;
-	
+
 	// to enable execution of queries from files - hack for HBX-744
 	private String consoleConfigurationName;
-	
+
 	public AbstractQueryEditor() {
 		queryInputModel = new QueryInputModel();
 	}
-	
+
 	final public boolean askUserForConfiguration(String name) {
+		String out = NLS.bind(HibernateConsoleMessages.AbstractQueryEditor_do_you_want_open_session_factory, name);
 		return MessageDialog.openQuestion( HibernateConsolePlugin.getDefault()
 				.getWorkbench().getActiveWorkbenchWindow().getShell(),
-				"Open Session factory",
-				"Do you want to open the session factory for " + name + " ?" );
+				HibernateConsoleMessages.AbstractQueryEditor_open_session_factory, out );
 	}
 
 	final public ConsoleConfiguration getConsoleConfiguration() {
@@ -66,7 +67,7 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 			QueryEditorInput hei = (QueryEditorInput) getEditorInput();
 			return hei.getConsoleConfigurationName();
 		} else {
-			return consoleConfigurationName; 
+			return consoleConfigurationName;
 		}
 	}
 
@@ -78,13 +79,13 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 			hei.resetName();
 		}
 		this.consoleConfigurationName = name;
-		
+
 		showEditorInput( getEditorInput() );
 	}
-	
+
 	protected void updateExecButton(){
 		/*if (getSourceViewer() != null ){
-			execAction.setEnabled(getConsoleConfigurationName().trim().length() != 0 
+			execAction.setEnabled(getConsoleConfigurationName().trim().length() != 0
 					&& getSourceViewer().getDocument().get().trim().length() > 0);
 		} else {
 			execAction.setEnabled(false);
@@ -101,7 +102,7 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 		}
 		catch (CoreException e) {
 			HibernateConsolePlugin.getDefault().logErrorMessage(
-					"Could not show query editor input", e );
+					HibernateConsoleMessages.AbstractQueryEditor_could_not_show_query_editor_input, e );
 		}
 	}
 
@@ -113,9 +114,9 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 		}
 		performSave( false, progressMonitor );
 	}
-	
+
 	protected void doSetInput(IEditorInput input) throws CoreException {
-		super.doSetInput(input);		
+		super.doSetInput(input);
 	}
 
 	final public String getQueryString() {
@@ -127,7 +128,7 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 
 	/**
 	 * Dispose of resources held by this editor.
-	 * 
+	 *
 	 * @see IWorkbenchPart#dispose()
 	 */
 	final public void dispose() {
@@ -147,25 +148,25 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 
 			public void textChanged(TextEvent event) {
 				System.out.println(event.getText());
-				
+
 			}});*/
 		ActionContributionItem item = new ActionContributionItem(
 				execAction );
 
 		tbm.add( item );
 
-		ControlContribution cc = new ConfigurationCombo( "hql-target", this );
+		ControlContribution cc = new ConfigurationCombo( "hql-target", this ); //$NON-NLS-1$
 		tbm.add( cc );
 
 		tbm.add( new Separator() );
-		
-		cc = new ComboContribution("maxResults") {
+
+		cc = new ComboContribution("maxResults") { //$NON-NLS-1$
 
 			SelectionAdapter selectionAdapter =	new SelectionAdapter() {
 
 				public void widgetSelected(SelectionEvent e) {
 					Integer maxResults = null;
-					
+
 					try {
 						maxResults = new Integer(getText());
 					}
@@ -176,25 +177,25 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 				}
 
 			};
-			
+
 			protected Control createControl(Composite parent) {
 
 
 				Control control = super.createControl( parent );
-				
+
 				comboControl.addModifyListener( new ModifyListener() {
-				
+
 					public void modifyText(ModifyEvent e) {
 						Integer maxResults = null;
-						
+
 						try {
 							maxResults = new Integer(getText());
 						}
 						catch (NumberFormatException e1) {
 							maxResults = null;
 						}
-						queryInputModel.setMaxResults( maxResults );				
-					}				
+						queryInputModel.setMaxResults( maxResults );
+					}
 				} );
 				return control;
 			}
@@ -202,37 +203,37 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 				return 75;
 			}
 			protected String getLabelText() {
-				return "Max results:";
+				return HibernateConsoleMessages.AbstractQueryEditor_max_results;
 			}
-			
+
 			protected boolean isReadOnly() {
 				return false;
 			}
-			
+
 			protected SelectionListener getSelectionAdapter() {
-				return selectionAdapter;				
+				return selectionAdapter;
 			}
 
 			void populateComboBox() {
 				comboControl.getDisplay().syncExec( new Runnable() {
-					
+
 					public void run() {
-						String[] items = new String[] { "", "10", "20", "30", "50"};
+						String[] items = new String[] { "", "10", "20", "30", "50"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 						comboControl.setItems( items );
 					}
-				
+
 				} );
-			
-								
+
+
 			}
-			
+
 		};
 		tbm.add(cc);
-		
+
 		tbm.update( true );
 
 	}
-	
+
 	protected void initializeKeyBindingScopes() {
 	       setKeyBindingScopes(new String[] { "org.hibernate.eclipse.console.hql" });  //$NON-NLS-1$
 	   }
@@ -240,17 +241,17 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 	public QueryInputModel getQueryInputModel() {
 		return queryInputModel;
 	}
-	
+
 	public void showConnected(IEditorPart editor){
 		defPartName = getPartName();
 		defTitleImage = getTitleImage();
-		setPartName(defPartName + "->" + editor.getTitle());
+		setPartName(defPartName + "->" + editor.getTitle()); //$NON-NLS-1$
 		if (connectedTitleImage == null){
 			connectedTitleImage = HibernateConsolePlugin.getImageDescriptor(getConnectedImageFilePath()).createImage();
 		}
 		setTitleImage(connectedTitleImage);
 	}
-	
+
 	public void showDisconnected(){
 		setPartName(defPartName);
 		if (defTitleImage != null && !defTitleImage.isDisposed()){
@@ -260,6 +261,6 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 		}
 		connectedTitleImage.dispose();
 	}
-	
+
 	protected abstract String getConnectedImageFilePath();
 }

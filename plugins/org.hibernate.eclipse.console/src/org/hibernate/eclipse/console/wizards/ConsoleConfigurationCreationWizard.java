@@ -46,6 +46,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.INewWizard;
@@ -58,6 +59,7 @@ import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.eclipse.console.EclipseConsoleConfiguration;
 import org.hibernate.eclipse.console.EclipseConsoleConfigurationPreferences;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
@@ -83,7 +85,7 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
         setDefaultPageImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.NEW_WIZARD) );
 		setNeedsProgressMonitor(true);
 	}
-	
+
 	/**
 	 * Adding the page to the wizard.
 	 */
@@ -117,7 +119,7 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 		final String persistenceUnitName = confPage.getPersistenceUnitName();
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
-				try {					
+				try {
 					createConsoleConfiguration(confPage.getShell(), confPage.getOldConfiguration(), configName, annotations, projectName, useProjectClasspath, entityResolver, propertyFile, fileName, mappings, classpaths, persistenceUnitName, namingStrategy, monitor);
 				} catch (CoreException e) {
 					throw new InvocationTargetException(e);
@@ -131,21 +133,21 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 		} catch (InterruptedException e) {
 			return false;
 		} catch (InvocationTargetException e) {
-			Throwable realException = e.getTargetException();			
+			Throwable realException = e.getTargetException();
 			IStatus s = null;
 			if(realException instanceof CoreException) {
 				s = ( (CoreException)realException).getStatus();
 			} else {
-				IStatus se = HibernateConsolePlugin.throwableToStatus( e ); 
-				s = new MultiStatus(HibernateConsolePlugin.ID, IStatus.OK, new IStatus[] { se }, "Probably missing classes or errors with classloading", e);
-				
+				IStatus se = HibernateConsolePlugin.throwableToStatus( e );
+				s = new MultiStatus(HibernateConsolePlugin.ID, IStatus.OK, new IStatus[] { se }, HibernateConsoleMessages.ConsoleConfigurationCreationWizard_missing_classes, e);
+
 			}
-			HibernateConsolePlugin.getDefault().showError( container.getShell(), "Error while finishing Wizard", s );			
+			HibernateConsolePlugin.getDefault().showError( container.getShell(), HibernateConsoleMessages.ConsoleConfigurationCreationWizard_error_finishing, s );
 			return false;
 		}
 		return true;
 	}
-	
+
 	static protected void createConsoleConfiguration(
 			final Shell shell,
 			final EclipseConsoleConfiguration oldConfig,
@@ -154,40 +156,40 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 			IPath cfgFile, IPath[] mappings, IPath[] classpaths, String persistenceUnitName, String namingStrategy, IProgressMonitor monitor)
 		throws CoreException {
 
-		monitor.beginTask("Configuring Hibernate Console", IProgressMonitor.UNKNOWN);
-								
+		monitor.beginTask(HibernateConsoleMessages.ConsoleConfigurationCreationWizard_configuring_hibernate_console, IProgressMonitor.UNKNOWN);
+
 		//ConsoleConfigurationPreferences ccp = createOldConsoleConfiguration( configName, cmode, projectName, useProjectClasspath, entityResolver, propertyFilename, cfgFile, mappings, classpaths, persistenceUnitName, namingStrategy );
-		
+
 		if(oldConfig!=null) {
 			KnownConfigurations.getInstance().removeConfiguration( oldConfig, false );
 		}
-		
+
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 		ILaunchConfigurationType launchConfigurationType = launchManager.getLaunchConfigurationType( ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID );
-		String launchName = launchManager.generateUniqueLaunchConfigurationNameFrom(configName); 
+		String launchName = launchManager.generateUniqueLaunchConfigurationNameFrom(configName);
 		ILaunchConfigurationWorkingCopy wc = launchConfigurationType.newInstance(null, launchName);
 		wc.setAttribute( IConsoleConfigurationLaunchConstants.CONFIGURATION_FACTORY, cmode.toString());
 		wc.setAttribute( IConsoleConfigurationLaunchConstants.PROJECT_NAME, projectName );
-		
+
 		wc.setAttribute( IConsoleConfigurationLaunchConstants.PROPERTY_FILE, safePathName(propertyFilename) );
 		wc.setAttribute( IConsoleConfigurationLaunchConstants.CFG_XML_FILE, safePathName(cfgFile) );
 		wc.setAttribute( IConsoleConfigurationLaunchConstants.PERSISTENCE_UNIT_NAME, persistenceUnitName );
-		
+
 		wc.setAttribute( IConsoleConfigurationLaunchConstants.NAMING_STRATEGY, namingStrategy );
 		wc.setAttribute( IConsoleConfigurationLaunchConstants.ENTITY_RESOLVER, entityResolver );
-		
+
 		IRuntimeClasspathEntry[] projectEntries = new IRuntimeClasspathEntry[0];
 		if(useProjectClasspath) {
 			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, true);
 			projectEntries = JavaRuntime.computeUnresolvedRuntimeClasspath(wc);
-			
+
 		}
-		
+
 		if(classpaths.length>0) {
 			List user = new ArrayList();
 			for (int i = 0; i < projectEntries.length; i++) {
-				user.add( projectEntries[i].getMemento() );			
-			}		
+				user.add( projectEntries[i].getMemento() );
+			}
 			for (int i = 0; i < classpaths.length; i++) {
 				IPath entry = classpaths[i];
 				IRuntimeClasspathEntry userEntry = JavaRuntime.newArchiveRuntimeClasspathEntry( entry );
@@ -195,49 +197,52 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 			}
 			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, false);
 			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, user);
-		} else {			
+		} else {
 			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, true);
 			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, (String)null);
 		}
-		
+
 		List mappingFiles = new ArrayList();
 		for (int i = 0; i < mappings.length; i++) {
-			mappingFiles.add(mappings[i].toPortableString());			
+			mappingFiles.add(mappings[i].toPortableString());
 		}
 		wc.setAttribute( IConsoleConfigurationLaunchConstants.FILE_MAPPINGS, mappingFiles );
-				
+
 		wc.doSave();
-		
+
 		Display.getDefault().syncExec(new Runnable() {
             public void run() {
             	if(StringHelper.isNotEmpty( projectName )) {
         			IJavaProject project = ProjectUtils.findJavaProject( projectName );
-        			if(project.exists()) {				 
+        			if(project.exists()) {
         				HibernateNature hibernateNature = HibernateNature.getHibernateNature( project );
         				if(hibernateNature==null) { // project not enabled at all
-        					if( MessageDialog.openConfirm( shell, "Enable Hibernate features for project", "The project named '" + projectName + "' does not have Hibernate features enabled. Should it be updated to use " + configName + " ?")) {
+        					String out = NLS.bind(HibernateConsoleMessages.ConsoleConfigurationCreationWizard_the_project, projectName, configName);
+        					if( MessageDialog.openConfirm( shell, HibernateConsoleMessages.ConsoleConfigurationCreationWizard_enable_hibernate_features, out)) {
         						ProjectUtils.toggleHibernateOnProject( project.getProject(), true, configName );
         					}
         				}
-        				else { 
+        				else {
         					String defaultConsoleConfigurationName = hibernateNature.getDefaultConsoleConfigurationName();
-        					
+
         					if((oldConfig!=null && oldConfig.getName().equals(defaultConsoleConfigurationName)) ||
         							defaultConsoleConfigurationName.equals(hibernateNature.getDefaultConsoleConfigurationName())) { // an update so its just forced in there.
         						ProjectUtils.toggleHibernateOnProject( project.getProject(), true, configName );
-        					} else if(defaultConsoleConfigurationName==null) {						
-        						if(MessageDialog.openConfirm( shell, "Enable Hibernate features for project", "The project named " + projectName + " does not have a default Hibernate configuration specified. Should it be updated to use " + configName + " ?")) {
+        					} else if(defaultConsoleConfigurationName==null) {
+            					String out = NLS.bind(HibernateConsoleMessages.ConsoleConfigurationCreationWizard_the_project_named, projectName, configName);
+        						if(MessageDialog.openConfirm( shell, HibernateConsoleMessages.ConsoleConfigurationCreationWizard_enable_hibernate_features, out)) {
         							ProjectUtils.toggleHibernateOnProject( project.getProject(), true, configName );
         						}
         					} else { // hibernate enabled, but not this exact one
-        						if(MessageDialog.openConfirm( shell, "Enable Hibernate features for project", "The project named " + projectName + " have the " + defaultConsoleConfigurationName + " specified. Should it be updated to use " + configName + " ?")) {
+            					String out = NLS.bind(HibernateConsoleMessages.ConsoleConfigurationCreationWizard_the_project_named_have, new Object[]{ projectName, defaultConsoleConfigurationName, configName });
+        						if(MessageDialog.openConfirm( shell, HibernateConsoleMessages.ConsoleConfigurationCreationWizard_enable_hibernate_features, out)) {
         							ProjectUtils.toggleHibernateOnProject( project.getProject(), true, configName );
         						}
-        					} 
+        					}
         				}
-        			}		
+        			}
         		}
- 
+
             }});
 			monitor.worked(1);
 	}
@@ -250,9 +255,9 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 		}
 	}
 
-	
 
-	
+
+
 	/**
 	 * We will accept the selection in the workbench to see if
 	 * we can initialize from it.

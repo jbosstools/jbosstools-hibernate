@@ -34,12 +34,13 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
 import org.eclipse.ui.progress.IElementCollector;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 public abstract class BasicWorkbenchAdapter implements IDeferredWorkbenchAdapter {
 
 	static class MutexRule implements ISchedulingRule {
-		
+
 		private final Object mutex;
 
 		public MutexRule(Object mutex) {
@@ -60,16 +61,16 @@ public abstract class BasicWorkbenchAdapter implements IDeferredWorkbenchAdapter
 			} else {
 				return false;
 			}
-		}	
+		}
 	}
 
 	final static Object[] NO_CHILDREN = new Object[0];
-	
-	
+
+
 	protected Object[] toArray(Iterator iterator, Class clazz, Comparator comparator) {
 		List obj = toList( iterator );
 		Object[] array = obj.toArray((Object[]) Array.newInstance(clazz, obj.size()));
-		
+
 		if(comparator!=null) {
 			Arrays.sort(array, comparator);
 		}
@@ -83,7 +84,7 @@ public abstract class BasicWorkbenchAdapter implements IDeferredWorkbenchAdapter
 		}
 		return obj;
 	}
-	
+
 	protected Object[] toArray(Enumeration enumeration, Class clazz) {
 		List obj = new ArrayList();
 		while ( enumeration.hasMoreElements() ) {
@@ -96,14 +97,14 @@ public abstract class BasicWorkbenchAdapter implements IDeferredWorkbenchAdapter
 	public Object[] getChildren(Object o, final IProgressMonitor monitor) {
 		return getChildren(o);
 	}
-	
+
 	public void fetchDeferredChildren(Object object,
 			IElementCollector collector, IProgressMonitor monitor) {
 		try {
 			collector.add(getChildren(object, monitor), monitor);
 			collector.done();
 		} catch(Exception e) {
-			handleError(collector,object, e);			
+			handleError(collector,object, e);
 		} finally {
 			collector.done();
 			monitor.done();
@@ -112,27 +113,27 @@ public abstract class BasicWorkbenchAdapter implements IDeferredWorkbenchAdapter
 
 	protected void handleError(IElementCollector collector, Object object, Exception e) {
 		HibernateConsolePlugin.getDefault().logMessage(IStatus.WARNING, e.toString(), e);
-		HibernateConsolePlugin.openError(null, getDefaultErrorTitle(), getDefaultErrorMessage(object), e, HibernateConsolePlugin.PERFORM_SYNC_EXEC);		
+		HibernateConsolePlugin.openError(null, getDefaultErrorTitle(), getDefaultErrorMessage(object), e, HibernateConsolePlugin.PERFORM_SYNC_EXEC);
 	}
 
 	private String getDefaultErrorMessage(Object object) {
-		return "Error while expanding " + getLabel(object);
+		return HibernateConsoleMessages.BasicWorkbenchAdapter_error_while_expanding + getLabel(object);
 	}
 
-	
+
 	private String getDefaultErrorTitle() {
-		return "Hibernate Configuration error";
+		return HibernateConsoleMessages.BasicWorkbenchAdapter_hibernate_configuration_error;
 	}
 
 	public boolean isContainer() {
 		return true;
 	}
-	
+
 	final public ISchedulingRule getRule(Object object) {
 		//return new MutexRule(object);
 		return null;
 	}
 
-	
+
 
 }

@@ -26,63 +26,64 @@ import org.eclipse.ui.views.properties.IPropertySource2;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.console.QueryPage;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 
 public class QueryPagePropertySource implements IPropertySource2
-{	
+{
 	private final QueryPage page;
 
 	static IPropertyDescriptor[] descriptors;
 
-	private static final String QUERY_TEXT = "QueryPage.queryString";
+	private static final String QUERY_TEXT = "QueryPage.queryString"; //$NON-NLS-1$
 
-	private static final Object CONFIGURATION_TEXT = "QueryPage.consoleConfiguration";
-	
-	private static final String QUERY_SIZE = "QueryPage.size";
-	
-	private static final String QUERY_TIME = "QueryPage.time";
-	
+	private static final Object CONFIGURATION_TEXT = "QueryPage.consoleConfiguration"; //$NON-NLS-1$
+
+	private static final String QUERY_SIZE = "QueryPage.size"; //$NON-NLS-1$
+
+	private static final String QUERY_TIME = "QueryPage.time"; //$NON-NLS-1$
+
 	static {
 		descriptors = new IPropertyDescriptor[4];
         PropertyDescriptor descriptor;
 
         // query string
         descriptor = new TextPropertyDescriptor(QUERY_TEXT,
-                "Query string");
+                HibernateConsoleMessages.QueryPagePropertySource_query_string);
         descriptor.setAlwaysIncompatible(false);
         //descriptor.setCategory(IResourcePropertyConstants.P_FILE_SYSTEM_CATEGORY);
         descriptors[0] = descriptor;
-        
+
         // configuration name
         descriptor = new TextPropertyDescriptor(CONFIGURATION_TEXT,
-                "Console configuration");
+                HibernateConsoleMessages.QueryPagePropertySource_console_configuration);
         descriptor.setAlwaysIncompatible(false);
         //descriptor.setCategory(IResourcePropertyConstants.P_FILE_SYSTEM_CATEGORY);
         descriptors[1] = descriptor;
-        
+
         // number of items
         descriptor = new TextPropertyDescriptor(QUERY_SIZE,
-                "Query size");
+                HibernateConsoleMessages.QueryPagePropertySource_query_size);
         descriptor.setAlwaysIncompatible(false);
         //descriptor.setCategory(IResourcePropertyConstants.P_FILE_SYSTEM_CATEGORY);
         descriptors[2] = descriptor;
-        
+
      // time of query running
         descriptor = new TextPropertyDescriptor(QUERY_TIME,
-                "Query run time");
+                HibernateConsoleMessages.QueryPagePropertySource_query_run_time);
         descriptor.setAlwaysIncompatible(false);
         descriptors[3] = descriptor;
     }
-	
+
 	public QueryPagePropertySource (QueryPage page) {
-		this.page = page;			
+		this.page = page;
 	}
 
-	public boolean isPropertyResettable(Object id) {		
+	public boolean isPropertyResettable(Object id) {
 		return false;
 	}
 
 	public Object getEditableValue() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	public IPropertyDescriptor[] getPropertyDescriptors() {
@@ -98,28 +99,28 @@ public class QueryPagePropertySource implements IPropertySource2
 		}
 		if(QUERY_SIZE.equals(id) ) {
 			int resultSize = page.getResultSize();
-			return resultSize==-1?"(unknown)":resultSize;
+			return resultSize==-1?HibernateConsoleMessages.QueryPagePropertySource_unknown:resultSize;
 		}
 		if(QUERY_TIME.equals(id) ) {
 			long resultTime = page.getQueryTime();
-			if (resultTime==-1) return"(unknown)";
-			if (resultTime > 1000) return (resultTime / 1000) + "." + (resultTime / 100) % 10 +" sec";
-			return resultTime + " millisec";
+			if (resultTime==-1) return HibernateConsoleMessages.QueryPagePropertySource_unknown;
+			if (resultTime > 1000) return (resultTime / 1000) + "." + (resultTime / 100) % 10 +HibernateConsoleMessages.QueryPagePropertySource_sec; //$NON-NLS-1$
+			return resultTime + HibernateConsoleMessages.QueryPagePropertySource_millisec;
 		}
-		
-		return null;		
+
+		return null;
 	}
 
 	public boolean isPropertySet(Object id) {
 		return false;
 	}
 
-	public void resetPropertyValue(Object id) {			
-		
+	public void resetPropertyValue(Object id) {
+
 	}
 
 	public void setPropertyValue(Object id, Object value) {
-		
-		
+
+
 	}
 }

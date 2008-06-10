@@ -25,9 +25,9 @@ import java.beans.PropertyChangeListener;
 
 public interface IReverseEngineeringDefinition {
 
-	public static final String TABLEFILTER_STRUCTURE = "tableFilterStructure";
-	public static final String TYPEMAPPING_STRUCTURE = "typeMappingStructure";
-	public static final String TABLES_STRUCTURE = "tablesStructure";
+	public static final String TABLEFILTER_STRUCTURE = "tableFilterStructure"; //$NON-NLS-1$
+	public static final String TYPEMAPPING_STRUCTURE = "typeMappingStructure"; //$NON-NLS-1$
+	public static final String TABLES_STRUCTURE = "tablesStructure"; //$NON-NLS-1$
 	
 
 	void addPropertyChangeListener(PropertyChangeListener pcl);

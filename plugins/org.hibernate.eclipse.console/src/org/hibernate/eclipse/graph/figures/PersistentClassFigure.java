@@ -36,14 +36,14 @@ public class PersistentClassFigure extends Figure {
 	//public static Color classColor = new Color(null, 188, 174, 121); // hibernate brown
 	//public static Color classColor = new Color(null, 179, 202, 227); // opera tab blue
 	public static Color classColor = new Color(null, 212, 229, 254); // skype says	
-	static Font classHeaderFont = new Font(null, "Arial", 12, SWT.BOLD);
+	static Font classHeaderFont = new Font(null, "Arial", 12, SWT.BOLD); //$NON-NLS-1$
 	
 	
 	private PropertiesFigure propertiesFigure;
 	private NodeHeaderFigure header;
 
 	public PersistentClassFigure(String name) {
-		header = new NodeHeaderFigure(name, "Class", ImageConstants.MAPPEDCLASS, false);
+		header = new NodeHeaderFigure(name, "Class", ImageConstants.MAPPEDCLASS, false); //$NON-NLS-1$
 		
 		ToolbarLayout layout = new ToolbarLayout();
 		layout.setVertical(true);

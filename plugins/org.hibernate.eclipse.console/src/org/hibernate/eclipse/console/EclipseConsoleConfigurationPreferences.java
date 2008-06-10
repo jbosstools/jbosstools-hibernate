@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Collections;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -39,6 +38,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.osgi.util.NLS;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.preferences.AbstractConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
@@ -52,7 +52,7 @@ import org.xml.sax.SAXException;
 
 /**
  * @author max
- *  
+ *
  */
 public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfigurationPreferences {
 
@@ -60,15 +60,15 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 	private IPath propertyFilename;
 	private IPath[] mappings = new IPath[0];
 	private IPath[] customClasspath = new IPath[0];
-	
+
 
 	public EclipseConsoleConfigurationPreferences(String configName, ConfigurationMode cmode, String projectName, boolean useProjectClasspath, String entityResolver, IPath cfgFile, IPath propertyFilename, IPath[] mappings, IPath[] classpaths, String persistenceUnitName, String namingStrategy) {
-		super(configName, cmode, projectName, useProjectClasspath, entityResolver, persistenceUnitName, namingStrategy);		
+		super(configName, cmode, projectName, useProjectClasspath, entityResolver, persistenceUnitName, namingStrategy);
 		this.cfgFile = cfgFile;
 		this.propertyFilename = propertyFilename;
 		this.mappings = mappings;
-		this.customClasspath = classpaths;		
-		
+		this.customClasspath = classpaths;
+
 	}
 
 	/**
@@ -77,33 +77,33 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 	public IPath getCfgFile() {
 		return cfgFile;
 	}
-	
+
 	/**
 	 * @return Returns the propertyFilename.
 	 */
 	public IPath getPropertyFilename() {
 		return propertyFilename;
 	}
-	
+
 	/**
 	 * @return Returns the mappings.
 	 */
 	public IPath[] getMappings() {
 		return mappings;
 	}
-	
+
 	/**
 	 * @return Returns the customClasspath.
 	 */
 	public IPath[] getCustomClasspath() {
 		return customClasspath;
 	}
-	
+
 	protected EclipseConsoleConfigurationPreferences() {
-		
+
 	}
 
-	
+
 	public URL[] getCustomClassPathURLS() {
 		try {
 			IJavaProject project = ProjectUtils.findJavaProject( getProjectName() );
@@ -113,31 +113,31 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 					additonal = JavaRuntime.computeDefaultRuntimeClassPath(project);
 				}
 				catch (CoreException e) {
-					throw new HibernateConsoleRuntimeException("Could not compute default classpath from project " + project );
+					throw new HibernateConsoleRuntimeException(HibernateConsoleMessages.EclipseConsoleConfigurationPreferences_could_not_compute_def_classpath + project );
 				}
-				
+
 			}
 			URL[] rawLocationsURLForResources = ClassLoaderHelper.getRawLocationsURLForResources(customClasspath);
 			URL[] result = new URL[rawLocationsURLForResources.length+additonal.length];
 			for (int i = 0; i < rawLocationsURLForResources.length; i++) {
-				result[i] = rawLocationsURLForResources[i];				
+				result[i] = rawLocationsURLForResources[i];
 			}
 			for (int i = 0; i < additonal.length; i++) {
 				String url = additonal[i];
-				result[i+rawLocationsURLForResources.length] = new File(url).toURL();				
+				result[i+rawLocationsURLForResources.length] = new File(url).toURL();
 			}
 			return result;
 		} catch (MalformedURLException mue) {
-			throw new HibernateConsoleRuntimeException("Could not resolve classpaths", mue);
+			throw new HibernateConsoleRuntimeException(HibernateConsoleMessages.EclipseConsoleConfigurationPreferences_could_not_resolve_classpaths, mue);
 		}
 	}
 
 	public File[] getMappingFiles() {
-		File[] files = new File[mappings.length]; 
+		File[] files = new File[mappings.length];
 		for (int i = 0; i < mappings.length; i++) {
 			IPath path = mappings[i];
 			files[i] = pathToFile(path);
-			
+
 		}
 		return files;
 	}
@@ -145,7 +145,7 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 	private File pathToFile(IPath path) {
 		if(path==null) return null;
 		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
-		
+
 		return pathToFile(path.toString(), resource);
 	}
 
@@ -156,8 +156,8 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 				return rawLocation.toFile();
 			}
 		}
-
-		throw new HibernateConsoleRuntimeException("Could not resolve " + path + " to a file");
+		String out = NLS.bind(HibernateConsoleMessages.EclipseConsoleConfigurationPreferences_could_not_resolve_to_file, path);
+		throw new HibernateConsoleRuntimeException(out);
 	}
 
 	public File getConfigXMLFile() {
@@ -165,7 +165,7 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 	}
 
 	public File getPropertyFile() {
-		return pathToFile(propertyFilename);	
+		return pathToFile(propertyFilename);
 	}
 
 	public void writeStateTo(Element node) {
@@ -176,8 +176,8 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 		this.cfgFile = cfgFile==null?null:new Path(cfgFile);
 	}
 
-	
-	
+
+
 	protected void setPropertyFile(String cfgFile) {
 		this.propertyFilename = cfgFile==null?null:new Path(cfgFile);
 	}
@@ -185,7 +185,7 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 		this.mappings = new IPath[mappings.length];
 		for (int i = 0; i < mappings.length; i++) {
 			String str = mappings[i];
-			this.mappings[i] = new Path(mappings[i]);	
+			this.mappings[i] = new Path(mappings[i]);
 		}
 	}
 
@@ -193,35 +193,35 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 		this.customClasspath = new IPath[mappings.length];
 		for (int i = 0; i < mappings.length; i++) {
 			//String str = mappings[i];
-			this.customClasspath[i] = new Path(mappings[i]);	
+			this.customClasspath[i] = new Path(mappings[i]);
 		}
 	}
-	
+
 	public static EclipseConsoleConfigurationPreferences[] readStateFrom(File f) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder parser;
 		try {
 			parser = factory.newDocumentBuilder();
-			
+
 			Document doc = parser.parse(f);
-			
+
 			Element root = doc.getDocumentElement();
-			
+
 			NodeList elementsByTagName = root.getElementsByTagName(CONFIGURATION_TAG); //TODO: only get nearest children.
 			EclipseConsoleConfigurationPreferences[] result = new EclipseConsoleConfigurationPreferences[elementsByTagName.getLength()];
-			
+
 			for(int i = 0; i < elementsByTagName.getLength(); i++) {
 				result[i] = new EclipseConsoleConfigurationPreferences();
 				result[i].readStateFrom( (Element)elementsByTagName.item(i) );
 			}
 			return result;
 		} catch(SAXException sa) {
-			throw new HibernateConsoleRuntimeException("Errors while parsing " + f,sa);
+			throw new HibernateConsoleRuntimeException(HibernateConsoleMessages.EclipseConsoleConfigurationPreferences_errors_while_parsing + f,sa);
 		} catch (ParserConfigurationException e) {
-			throw new HibernateConsoleRuntimeException("Errors while parsing " + f,e);
+			throw new HibernateConsoleRuntimeException(HibernateConsoleMessages.EclipseConsoleConfigurationPreferences_errors_while_parsing + f,e);
 		} catch (IOException e) {
-			throw new HibernateConsoleRuntimeException("Errors while parsing " + f,e);		
-		}    
+			throw new HibernateConsoleRuntimeException(HibernateConsoleMessages.EclipseConsoleConfigurationPreferences_errors_while_parsing + f,e);
+		}
 	}
 
 	}

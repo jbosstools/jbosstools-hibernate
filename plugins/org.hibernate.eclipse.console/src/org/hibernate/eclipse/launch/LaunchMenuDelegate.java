@@ -36,7 +36,7 @@ public class LaunchMenuDelegate extends AbstractLaunchToolbarAction {
 	 * Creates the action delegate
 	 */
 	public LaunchMenuDelegate() {
-		super("org.hibernate.eclipse.launch.CodeGenerationLaunchGroup");
+		super("org.hibernate.eclipse.launch.CodeGenerationLaunchGroup"); //$NON-NLS-1$
 	}
 	
 	/* (non-Javadoc)

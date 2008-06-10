@@ -21,23 +21,24 @@
  */
 package org.hibernate.eclipse.hqleditor;
 
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.QueryEditorStorage;
 
 /**
  * Storage for HQL editors without a file
  */
 public class HQLEditorStorage extends QueryEditorStorage {
-    
+
     public HQLEditorStorage( String source ) {
         super(source);
     }
 
     public HQLEditorStorage( String configurationName, String name, String source ) {
-        super(configurationName,name, source);        
+        super(configurationName,name, source);
     }
-    
+
     public HQLEditorStorage(String consoleName, String string) {
-		super(consoleName, "HQL: " + (consoleName==null?"<None>":consoleName), string);
+		super(consoleName, "HQL: " + (consoleName==null?HibernateConsoleMessages.HQLEditorStorage_none:consoleName), string); //$NON-NLS-1$
 	}
 
 }

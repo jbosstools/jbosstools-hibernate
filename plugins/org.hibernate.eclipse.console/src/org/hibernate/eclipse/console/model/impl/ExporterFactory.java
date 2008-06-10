@@ -13,8 +13,10 @@ import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.osgi.util.NLS;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.hibernate.eclipse.launch.PathHelper;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
@@ -36,7 +38,7 @@ public class ExporterFactory {
 	private boolean enabled = true;
 
 	private final String exporterId;
-	
+
 	public ExporterFactory(ExporterDefinition definition, String exporterId) {
 		this.definition = definition;
 		this.exporterId = exporterId;
@@ -46,10 +48,10 @@ public class ExporterFactory {
 	public Map getDefaultExporterProperties() {
 		return definition.getExporterProperties();
 	}
-	
+
 
 	public String setProperty(String key, String value) {
-		return (String) inputProperties.put( key, value );		
+		return (String) inputProperties.put( key, value );
 	}
 
 	public void removeProperty(String propertyName) {
@@ -66,7 +68,7 @@ public class ExporterFactory {
 			} else {
 				return null;
 			}
-		} 
+		}
 	}
 
 	public boolean isEnabled() {
@@ -74,7 +76,7 @@ public class ExporterFactory {
 	}
 
 	public void setEnabled(boolean b) {
-		enabled = b;		
+		enabled = b;
 	}
 
 	public ExporterDefinition getExporterDefinition() {
@@ -83,7 +85,7 @@ public class ExporterFactory {
 
 	// todo: move to ExporterAttributes together with isEnabled functionallity...
 	String getLaunchAttributePrefix(String exporterId) {
-		return HibernateLaunchConstants.ATTR_EXPORTERS + "." + exporterId;
+		return HibernateLaunchConstants.ATTR_EXPORTERS + "." + exporterId; //$NON-NLS-1$
 	}
 
 	public boolean isEnabled(ILaunchConfiguration configuration) {
@@ -91,7 +93,7 @@ public class ExporterFactory {
 
 		try {
 		if(configuration.getAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, (List)null)==null) {
-				enabled = configuration.getAttribute( getId(), false );			
+				enabled = configuration.getAttribute( getId(), false );
 		} else {
 			enabled = configuration.getAttribute( getLaunchAttributePrefix( getId() ), false );
 		}
@@ -99,7 +101,7 @@ public class ExporterFactory {
 			// ignore; assume false
 			enabled=false;
 		}
-		
+
 		setEnabled( enabled );
 		return isEnabled();
 	}
@@ -112,9 +114,9 @@ public class ExporterFactory {
 			configuration.setAttribute( getLaunchAttributePrefix( getId() ), isEnabled());
 		}
 	}
-	
+
 	public void setEnabled(ILaunchConfigurationWorkingCopy configuration, boolean enabled) {
-		
+
 		boolean oldSettings = true;
 		try {
 		if(configuration.getAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, (List)null)==null) {
@@ -139,7 +141,7 @@ public class ExporterFactory {
 
 	public void setProperties(Map props) {
 		inputProperties.clear();
-		inputProperties.putAll( props );				
+		inputProperties.putAll( props );
 	}
 
 	public ExporterProperty getExporterProperty(String key) {
@@ -150,62 +152,67 @@ public class ExporterFactory {
 		return inputProperties.containsKey( string );
 	}
 
-	/** Method that resolves an expression through eclipses built-in variable manager.  
+	/** Method that resolves an expression through eclipses built-in variable manager.
 	 * @throws CoreException if expression could not be evaluated. */
 	private String resolve(String expression) throws CoreException  {
 		if(expression==null) return null;
 		IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
-		
-		return variableManager.performStringSubstitution(expression, false); 		
+
+		return variableManager.performStringSubstitution(expression, false);
 	}
-	
+
 	/**
 	 * Creates exporter with the specified settings; also resolves any relevant properties via Eclipse VariablesPlugin.
-	 * @param collector 
+	 * @param collector
 	 * @throws CoreException in case of resolve variables issues.
 	 */
 	public Exporter createConfiguredExporter(Configuration cfg, String defaultOutputDirectory,
 			String customTemplatePath, Properties globalProperties, Set outputDirectories, ArtifactCollector collector) throws CoreException {
-		
+
 		Exporter exporter = getExporterDefinition().createExporterInstance();
-		
-		
+
+
 		Properties props = new Properties();
 		props.putAll(globalProperties);
 		props.putAll(getProperties());
-				
+
 		exporter.setProperties(props);
 		exporter.setArtifactCollector(collector);
-		
+
 		String outputPath = defaultOutputDirectory;
-		if(props.containsKey("outputdir")) {
-			outputPath = props.getProperty("outputdir");
-			props.remove("outputdir"); // done to avoid validation check in hibernate tools templates	
+		if(props.containsKey("outputdir")) { //$NON-NLS-1$
+			outputPath = props.getProperty("outputdir"); //$NON-NLS-1$
+			// done to avoid validation check in hibernate tools templates
+			props.remove("outputdir");	 //$NON-NLS-1$
 		}
-		
+
 		String resolvedOutputDir = resolve(outputPath);
 		String loc = PathHelper.getLocationAsStringPath(resolvedOutputDir);
 		if(outputPath != null && loc == null) {
-			throw new HibernateConsoleRuntimeException("Output directory '" + resolvedOutputDir + "' in " + getExporterDefinition().getDescription() + " does not exist.");
+			String out = NLS.bind(HibernateConsoleMessages.ExporterFactory_output_dir_in_does_not_exist,
+					resolvedOutputDir, getExporterDefinition().getDescription());
+			throw new HibernateConsoleRuntimeException(out);
 		}
-				
+
 		if(StringHelper.isNotEmpty(loc)) { // only set if something valid found
 			outputDirectories.add(loc);
 			exporter.setOutputDirectory(new File(loc));
 		}
-		
+
 		exporter.setConfiguration(cfg);
-		
+
 		List templatePathList = new ArrayList();
-		if(props.containsKey("template_path")) {
-			String resolveTemplatePath = resolve(props.getProperty("template_path"));
+		if(props.containsKey("template_path")) { //$NON-NLS-1$
+			String resolveTemplatePath = resolve(props.getProperty("template_path")); //$NON-NLS-1$
 			String locationAsStringPath = PathHelper.getLocationAsStringPath(resolveTemplatePath);
 			if(locationAsStringPath==null) {
-				throw new HibernateConsoleRuntimeException("Template directory '" + resolveTemplatePath + "' in " + getExporterDefinition().getDescription() + " does not exist.");
+				String out = NLS.bind(HibernateConsoleMessages.ExporterFactory_output_dir_in_does_not_exist,
+						resolvedOutputDir, getExporterDefinition().getDescription());
+				throw new HibernateConsoleRuntimeException(out);
 			} else {
 				templatePathList.add(locationAsStringPath);
-			}					
-			props.remove("template_path"); // done to avoid validation check in hibernate tools templates
+			}
+			props.remove("template_path"); // done to avoid validation check in hibernate tools templates //$NON-NLS-1$
 		}
 		if (StringHelper.isNotEmpty(customTemplatePath)){
 			String resolvedCustomTemplatePath = resolve(customTemplatePath);
@@ -213,24 +220,26 @@ public class ExporterFactory {
 			if(locationAsStringPath != null) {
 				templatePathList.add(locationAsStringPath);
 			} else {
-				throw new HibernateConsoleRuntimeException("Template directory '" + resolvedCustomTemplatePath + "' in " + getExporterDefinition().getDescription() + " does not exist.");				
+				String out = NLS.bind(HibernateConsoleMessages.ExporterFactory_template_dir_in_does_not_exist,
+						resolvedCustomTemplatePath, getExporterDefinition().getDescription());
+				throw new HibernateConsoleRuntimeException(out);
 			}
 		}
-		
+
 		exporter.setTemplatePath((String[]) templatePathList.toArray(new String[templatePathList.size()]));
-		
-	
+
+
 		// special handling for GenericExporter (TODO: be delegated via plugin.xml)
-		if(getExporterDefinition().getId().equals("org.hibernate.tools.hbmtemplate")) {
+		if(getExporterDefinition().getId().equals("org.hibernate.tools.hbmtemplate")) { //$NON-NLS-1$
 			GenericExporter ge = (GenericExporter) exporter;
-			
-			ge.setFilePattern(props.getProperty("file_pattern", null));
-			props.remove("file_pattern");
-			ge.setTemplateName(props.getProperty("template_name",null));
-			props.remove("template_name");
-			ge.setForEach(props.getProperty("for_each",null));
-			props.remove("for_each");
-			
+
+			ge.setFilePattern(props.getProperty("file_pattern", null)); //$NON-NLS-1$
+			props.remove("file_pattern"); //$NON-NLS-1$
+			ge.setTemplateName(props.getProperty("template_name",null)); //$NON-NLS-1$
+			props.remove("template_name"); //$NON-NLS-1$
+			ge.setForEach(props.getProperty("for_each",null)); //$NON-NLS-1$
+			props.remove("for_each"); //$NON-NLS-1$
+
 		}
 		return exporter;
 	}

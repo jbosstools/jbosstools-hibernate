@@ -27,26 +27,27 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 
 public class ConsoleConfigurationWorkbenchAdapter extends BasicWorkbenchAdapter {
-	
+
 	public Object[] getChildren(Object o) {
 		final ConsoleConfiguration ccfg = getConsoleConfiguration( o );
 		//String sfError = null;
 		if(ccfg.getConfiguration()==null) {
 			ccfg.build();
 			ccfg.execute( new ExecutionContext.Command() {
-			
+
 				public Object execute() {
 					if(ccfg.hasConfiguration()) {
 						ccfg.getConfiguration().buildMappings();
 					}
 					return ccfg;
-				}			
+				}
 			} );
-		} 
-		
+		}
+
 		/*if(ccfg.getSessionFactory()==null) { // initialize later?
 			try {
 				ccfg.buildSessionFactory();
@@ -55,26 +56,26 @@ public class ConsoleConfigurationWorkbenchAdapter extends BasicWorkbenchAdapter 
 				HibernateConsolePlugin.getDefault().logErrorMessage("Problems while creating sessionfactory", t);
 			}
 		}*/
-		
-		
+
+
 		Configuration configuration = ccfg.getConfiguration();
 		Object o1;
 		if(configuration!=null) {
 			o1 = configuration;
 		} else {
-			o1 = "<Empty Configuration>";
+			o1 = HibernateConsoleMessages.ConsoleConfigurationWorkbenchAdapter_empty_configuration;
 		}
-		
+
 		/*Object o2;
-		
+
 		if(sfError==null) {
 			NodeFactory fac = new NodeFactory(ccfg);
 			ConfigurationEntitiesNode cfgNode = fac.createConfigurationEntitiesNode("Session factory");
-			o2 = cfgNode;			
+			o2 = cfgNode;
 		} else {
-			o2 = sfError;			
+			o2 = sfError;
 		}*/
-		
+
 		return new Object[] { o1, new LazySessionFactory(ccfg), new LazyDatabaseSchema(ccfg) };
 	}
 

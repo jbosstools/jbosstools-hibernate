@@ -46,6 +46,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.ide.IDE;
 import org.hibernate.console.ImageConstants;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.model.ITableFilter;
 import org.hibernate.eclipse.console.utils.EclipseImages;
@@ -60,7 +61,7 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
 	private TableFilterWizardPage tableFilterWizardPage;
 	private IPath createdFile;
 	private String selectedConfiguratonName;
-	
+
 	/**
 	 * Constructor for NewConfigurationWizard.
 	 */
@@ -75,7 +76,7 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
 
         public ExtendedWizardNewFileCreationPage(String pageName, IStructuredSelection selection) {
             super(pageName, selection);
-            setContainerFullPath(new Path("/")); // TODO: make it based on the selection which should be available when doing the launch!
+            setContainerFullPath(new Path("/")); // TODO: make it based on the selection which should be available when doing the launch! //$NON-NLS-1$
         }
 
         boolean firstTime = true;
@@ -90,20 +91,20 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
 	/**
 	 * Adding the page to the wizard.
 	 */
-	
+
 	public void addPages() {
-	    cPage = new ExtendedWizardNewFileCreationPage( "Ccfgxml", selection );
-	    cPage.setTitle( "Create Hibernate Reverse Engineering file (reveng.xml)" );
-	    cPage.setDescription( "Create a new hibernate.reveng.xml." );
-	    cPage.setFileName("hibernate.reveng.xml");
-	    addPage( cPage );  
-	    
-	    tableFilterWizardPage = new TableFilterWizardPage( "revengtable", selectedConfiguratonName );
+	    cPage = new ExtendedWizardNewFileCreationPage( "Ccfgxml", selection ); //$NON-NLS-1$
+	    cPage.setTitle( HibernateConsoleMessages.NewReverseEngineeringFileWizard_create_hibernate_reverse_engineering_file );
+	    cPage.setDescription( HibernateConsoleMessages.NewReverseEngineeringFileWizard_create_new_hibernate_reveng_xml );
+	    cPage.setFileName("hibernate.reveng.xml"); //$NON-NLS-1$
+	    addPage( cPage );
+
+	    tableFilterWizardPage = new TableFilterWizardPage( "revengtable", selectedConfiguratonName ); //$NON-NLS-1$
 		addPage( tableFilterWizardPage );
-	    
+
 	}
-    
-    
+
+
 
 	/**
 	 * This method is called when 'Finish' button is pressed in
@@ -130,12 +131,12 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
 			return false;
 		} catch (InvocationTargetException e) {
 			Throwable realException = e.getTargetException();
-			HibernateConsolePlugin.getDefault().showError(getShell(), "Error", realException);
+			HibernateConsolePlugin.getDefault().showError(getShell(), HibernateConsoleMessages.NewReverseEngineeringFileWizard_error, realException);
 			return false;
 		}
 		return true;
 	}
-	
+
 	/**
      * @param props
      * @param dialect
@@ -151,28 +152,28 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
 	 * The worker method. It will find the container, create the
 	 * file if missing or just replace its contents, and open
 	 * the editor on the newly created file.
-     * @param file 
-     * @param props 
+     * @param file
+     * @param props
 	 */
 
 	private void doFinish(
 		final IFile file, IProgressMonitor monitor)
 		throws CoreException {
 		// create a sample file
-		monitor.beginTask("Creating " + file.getName(), 2);		
+		monitor.beginTask(HibernateConsoleMessages.NewReverseEngineeringFileWizard_creating + file.getName(), 2);
 		try {
 			InputStream stream = openContentStream();
 			if (file.exists() ) {
-                file.setContents(stream, true, true, monitor);                
+                file.setContents(stream, true, true, monitor);
 			} else {
-				file.create(stream, true, monitor);				
+				file.create(stream, true, monitor);
 			}
 			stream.close();
 		} catch (IOException e) {
-			
+
 		}
 		monitor.worked(1);
-		monitor.setTaskName("Opening file for editing...");
+		monitor.setTaskName(HibernateConsoleMessages.NewReverseEngineeringFileWizard_opening_file_for_editing);
 		getShell().getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				IWorkbenchPage page =
@@ -185,35 +186,35 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
 		});
 		monitor.worked(1);
 	}
-	
+
 	private InputStream openContentStream() {
         StringWriter sw = new StringWriter();
-        sw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
-        		"<!DOCTYPE hibernate-reverse-engineering PUBLIC \"-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN\" \"http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd\" >\r\n" + 
-        		"\r\n" + 
-        		"<hibernate-reverse-engineering>\r\n");
+        sw.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +  //$NON-NLS-1$
+        		"<!DOCTYPE hibernate-reverse-engineering PUBLIC \"-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN\" \"http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd\" >\r\n" +  //$NON-NLS-1$
+        		"\r\n" +  //$NON-NLS-1$
+        		"<hibernate-reverse-engineering>\r\n"); //$NON-NLS-1$
         ITableFilter[] filters = tableFilterWizardPage.getTableFilters();
         for (int i = 0; i < filters.length; i++) {
 			ITableFilter filter = filters[i];
-			sw.write("  <table-filter");
-			if(!".*".equals(filter.getMatchCatalog())) {
-				sw.write(" match-catalog=\"" + filter.getMatchCatalog() + "\"");
+			sw.write("  <table-filter"); //$NON-NLS-1$
+			if(!".*".equals(filter.getMatchCatalog())) { //$NON-NLS-1$
+				sw.write(" match-catalog=\"" + filter.getMatchCatalog() + "\"");  //$NON-NLS-1$//$NON-NLS-2$
 			}
-			if(!".*".equals(filter.getMatchSchema())) {
-				sw.write(" match-schema=\"" + filter.getMatchSchema() + "\"");
+			if(!".*".equals(filter.getMatchSchema())) { //$NON-NLS-1$
+				sw.write(" match-schema=\"" + filter.getMatchSchema() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			sw.write(" match-name=\"" + filter.getMatchName() + "\"");
+			sw.write(" match-name=\"" + filter.getMatchName() + "\"");  //$NON-NLS-1$//$NON-NLS-2$
 			if(filter.getExclude().booleanValue()) {
-				sw.write(" exclude=\"" + filter.getExclude().booleanValue() + "\"");
+				sw.write(" exclude=\"" + filter.getExclude().booleanValue() + "\""); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			sw.write("/>\r\n");
+			sw.write("/>\r\n"); //$NON-NLS-1$
 		}
-    	
-        sw.write("</hibernate-reverse-engineering>");
+
+        sw.write("</hibernate-reverse-engineering>"); //$NON-NLS-1$
 		try {
-            return new ByteArrayInputStream(sw.toString().getBytes("UTF-8") );
+            return new ByteArrayInputStream(sw.toString().getBytes("UTF-8") ); //$NON-NLS-1$
         } catch (UnsupportedEncodingException uec) {
-            HibernateConsolePlugin.getDefault().logErrorMessage("Problems converting to UTF-8", uec);
+            HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.NewReverseEngineeringFileWizard_problems_converting_to_utf8, uec);
             return new ByteArrayInputStream(sw.toString().getBytes() );
         }
 	}
@@ -225,9 +226,9 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
 	 */
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		this.selection = selection;
-		
+
 	}
-	
+
 	public IPath getCreatedFilePath() {
 		return createdFile;
 	}
@@ -235,6 +236,6 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
 
 
 	public void setSelectConfiguration(String configurationName) {
-		this.selectedConfiguratonName = configurationName;				
+		this.selectedConfiguratonName = configurationName;
 	}
 }

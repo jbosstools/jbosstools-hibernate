@@ -55,8 +55,8 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
 // Based on what was found in JBPM GPD 19/4/2006 04:34 AM
 public class NodeHeaderFigure extends Figure {
 	
-	private static final Font NAMEFONT = new Font(null, "Arial", 9, SWT.BOLD);
-	private static final Font TYPEFONT = new Font(null, "Arial", 9, SWT.ITALIC);
+	private static final Font NAMEFONT = new Font(null, "Arial", 9, SWT.BOLD); //$NON-NLS-1$
+	private static final Font TYPEFONT = new Font(null, "Arial", 9, SWT.ITALIC); //$NON-NLS-1$
 	
 	private Figure embeddedFigure;
 	private Figure typeAndLabelColumn;
@@ -110,7 +110,7 @@ public class NodeHeaderFigure extends Figure {
 		typeLabel.setBorder(new MarginBorder(2));
 		typeLabel.setForegroundColor(ColorConstants.darkGray);
 		typeLabel.setFont(TYPEFONT);
-		typeLabel.setText("<<" + nodeType + ">>");
+		typeLabel.setText("<<" + nodeType + ">>"); //$NON-NLS-1$ //$NON-NLS-2$
 		typeAndLabelColumn.add(typeLabel);
 	}
 

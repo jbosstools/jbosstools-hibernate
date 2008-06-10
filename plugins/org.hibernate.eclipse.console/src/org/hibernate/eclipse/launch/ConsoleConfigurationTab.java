@@ -14,41 +14,42 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.util.StringHelper;
 
 abstract public class ConsoleConfigurationTab extends AbstractLaunchConfigurationTab {
 
 	protected class ChangeListener implements ModifyListener, SelectionListener {
-		
+
 		public void modifyText(ModifyEvent e) {
 			updateLaunchConfigurationDialog();
 		}
-		
+
 		public void widgetDefaultSelected(SelectionEvent e) {/*do nothing*/}
-		
+
 		public void widgetSelected(SelectionEvent e) {
 			// can use e.getSource() to handle button selection
-			updateLaunchConfigurationDialog();			
+			updateLaunchConfigurationDialog();
 		}
 	}
 
 	ChangeListener changeListener = new ChangeListener();
 	private ILaunchConfiguration currentLaunchConfig;
-	
+
 	protected Button createBrowseButton(Group group, SelectionListener selectionListener) {
-		Button button = createPushButton(group, "Browse...", null); 
+		Button button = createPushButton(group, HibernateConsoleMessages.ConsoleConfigurationTab_browse, null);
 		button.addSelectionListener(selectionListener);
 		return button;
 	}
-	
+
 	protected Button createSetupButton(Group group, SelectionListener selectionListener) {
-		Button button = createPushButton(group, "Setup...", null); 
+		Button button = createPushButton(group, HibernateConsoleMessages.ConsoleConfigurationTab_setup, null);
 		button.addSelectionListener(selectionListener);
 		return button;
 	}
-	
+
 	protected Button createNewFileButton(Group group, SelectionListener selectionListener) {
-		Button button = createPushButton(group, "Create New", null); 
+		Button button = createPushButton(group, HibernateConsoleMessages.ConsoleConfigurationTab_create_new, null);
 		button.addSelectionListener(selectionListener);
 		return button;
 	}
@@ -56,11 +57,11 @@ abstract public class ConsoleConfigurationTab extends AbstractLaunchConfiguratio
 	protected Group createGroup(Composite parent, String title) {
 		return createGroup(parent, title, 2);
 	}
-	
+
 	protected Group createGroup(Composite parent, String title, int columns) {
 		Font font = parent.getFont();
 		Group group= new Group(parent, SWT.NONE);
-		group.setText(title); 
+		group.setText(title);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		group.setLayoutData(gd);
 		GridLayout layout = new GridLayout();
@@ -77,11 +78,11 @@ abstract public class ConsoleConfigurationTab extends AbstractLaunchConfiguratio
 	protected Text createBrowseEditor(Composite parent, Group group) {
 		Text text = new Text(group, SWT.SINGLE | SWT.BORDER);
 		Font font=parent.getFont();
-		GridData gd;				
+		GridData gd;
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		text.setLayoutData(gd);
 		text.setFont(font);
-		text.addModifyListener(getChangeListener());		
+		text.addModifyListener(getChangeListener());
 		return text;
 	}
 
@@ -95,7 +96,7 @@ abstract public class ConsoleConfigurationTab extends AbstractLaunchConfiguratio
 		} else {
 			return str.trim();
 		}
-	}	
-	
-		
+	}
+
+
 }

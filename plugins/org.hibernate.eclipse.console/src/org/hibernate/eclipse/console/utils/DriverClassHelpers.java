@@ -42,190 +42,190 @@ public class DriverClassHelpers {
     
     public DriverClassHelpers() {
         // externalize this!
-        dialectNames.put("DB2", "org.hibernate.dialect.DB2Dialect");
-        dialectNames.put("DB2/390", "org.hibernate.dialect.DB2390Dialect");
-        dialectNames.put("DB2/400", "org.hibernate.dialect.DB2400Dialect");
-        dialectNames.put("Derby", "org.hibernate.dialect.DerbyDialect");
-        dialectNames.put("FrontBase", "org.hibernate.dialect.FrontBaseDialect");
-        //Not in 3.2 anymore dialectNames.put("Generic", "org.hibernate.dialect.GenericDialect");
-        dialectNames.put("HSQL", "org.hibernate.dialect.HSQLDialect");
-        dialectNames.put("H2", "org.hibernate.dialect.H2Dialect");
-        dialectNames.put("Informix", "org.hibernate.dialect.InformixDialect");
-        dialectNames.put("Ingres", "org.hibernate.dialect.IngresDialect");
-        dialectNames.put("Interbase", "org.hibernate.dialect.InterbaseDialect");
-        dialectNames.put("Firebird", "org.hibernate.dialect.FirebirdDialect");
-        dialectNames.put("Mckoi SQL", "org.hibernate.dialect.MckoiDialect");
-        dialectNames.put("MySQL", "org.hibernate.dialect.MySQLDialect");        
-        dialectNames.put("MySQL (InnoDB)", "org.hibernate.dialect.MySQLInnoDBDialect");
-        dialectNames.put("MySQL (MyISAM)", "org.hibernate.dialect.MySQLMyISAMDialect");
-        dialectNames.put("MySQL 5", "org.hibernate.dialect.MySQL5Dialect");
-        dialectNames.put("MySQL 5 (InnoDB)", "org.hibernate.dialect.MySQL5InnoDBDialect");
-        //dialectNames.put("Oracle","org.hibernate.dialect.OracleDialect");
-        dialectNames.put("Oracle 8i","org.hibernate.dialect.Oracle8iDialect");
-        //dialectNames.put("Oracle 9", "org.hibernate.dialect.Oracle9Dialect");
-        dialectNames.put("Oracle 9i", "org.hibernate.dialect.Oracle9iDialect");
-        dialectNames.put("Oracle 10g", "org.hibernate.dialect.Oracle10gDialect");
-        dialectNames.put("Pointbase", "org.hibernate.dialect.PointbaseDialect");
-        dialectNames.put("PostgreSQL", "org.hibernate.dialect.PostgreSQLDialect");
-        dialectNames.put("Progress", "org.hibernate.dialect.ProgressDialect");        
-        dialectNames.put("SAP DB", "org.hibernate.dialect.SAPDBDialect");
-        dialectNames.put("Sybase", "org.hibernate.dialect.SybaseDialect");
-        dialectNames.put("Sybase 11", "org.hibernate.dialect.Sybase11Dialect");
-        dialectNames.put("Sybase Anywhere", "org.hibernate.dialect.SybaseAnywhereDialect");
-        dialectNames.put("SQL Server", "org.hibernate.dialect.SQLServerDialect");
+        dialectNames.put("DB2", "org.hibernate.dialect.DB2Dialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("DB2/390", "org.hibernate.dialect.DB2390Dialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("DB2/400", "org.hibernate.dialect.DB2400Dialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("Derby", "org.hibernate.dialect.DerbyDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("FrontBase", "org.hibernate.dialect.FrontBaseDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        //Not in 3.2 anymore dialectNames.put("Generic", "org.hibernate.dialect.GenericDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("HSQL", "org.hibernate.dialect.HSQLDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("H2", "org.hibernate.dialect.H2Dialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("Informix", "org.hibernate.dialect.InformixDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("Ingres", "org.hibernate.dialect.IngresDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("Interbase", "org.hibernate.dialect.InterbaseDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("Firebird", "org.hibernate.dialect.FirebirdDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("Mckoi SQL", "org.hibernate.dialect.MckoiDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("MySQL", "org.hibernate.dialect.MySQLDialect");         //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("MySQL (InnoDB)", "org.hibernate.dialect.MySQLInnoDBDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("MySQL (MyISAM)", "org.hibernate.dialect.MySQLMyISAMDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("MySQL 5", "org.hibernate.dialect.MySQL5Dialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("MySQL 5 (InnoDB)", "org.hibernate.dialect.MySQL5InnoDBDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        //dialectNames.put("Oracle","org.hibernate.dialect.OracleDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("Oracle 8i","org.hibernate.dialect.Oracle8iDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        //dialectNames.put("Oracle 9", "org.hibernate.dialect.Oracle9Dialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("Oracle 9i", "org.hibernate.dialect.Oracle9iDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("Oracle 10g", "org.hibernate.dialect.Oracle10gDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("Pointbase", "org.hibernate.dialect.PointbaseDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("PostgreSQL", "org.hibernate.dialect.PostgreSQLDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("Progress", "org.hibernate.dialect.ProgressDialect"); //$NON-NLS-1$ //$NON-NLS-2$        
+        dialectNames.put("SAP DB", "org.hibernate.dialect.SAPDBDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("Sybase", "org.hibernate.dialect.SybaseDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("Sybase 11", "org.hibernate.dialect.Sybase11Dialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("Sybase Anywhere", "org.hibernate.dialect.SybaseAnywhereDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("SQL Server", "org.hibernate.dialect.SQLServerDialect"); //$NON-NLS-1$ //$NON-NLS-2$
 
-        addDriverAndURLS("org.hibernate.dialect.HSQLDialect",
-                         "org.hsqldb.jdbcDriver", 
+        addDriverAndURLS("org.hibernate.dialect.HSQLDialect", //$NON-NLS-1$
+                         "org.hsqldb.jdbcDriver",  //$NON-NLS-1$
                          new String[] {
-                            "jdbc:hsqldb:hsql://<host>", 
-                            "jdbc:hsqldb:<dbname>",
-                            "jdbc:hsqldb:." }
+                            "jdbc:hsqldb:hsql://<host>",  //$NON-NLS-1$
+                            "jdbc:hsqldb:<dbname>", //$NON-NLS-1$
+                            "jdbc:hsqldb:." } //$NON-NLS-1$
                          );
 
-        addDriverAndURLS("org.hibernate.dialect.H2Dialect",
-                "org.h2.Driver", 
+        addDriverAndURLS("org.hibernate.dialect.H2Dialect", //$NON-NLS-1$
+                "org.h2.Driver", //$NON-NLS-1$ 
                 new String[] {
-                   "jdbc:h2:<filename>",
-                   "jdbc:h2:mem:",
-                   "jdbc:h2:mem:<databaseName>",
-                   "jdbc:h2:tcp://<server>[:<port>]/<databaseName>"                   
+                   "jdbc:h2:<filename>", //$NON-NLS-1$
+                   "jdbc:h2:mem:", //$NON-NLS-1$
+                   "jdbc:h2:mem:<databaseName>", //$NON-NLS-1$
+                   "jdbc:h2:tcp://<server>[:<port>]/<databaseName>" //$NON-NLS-1$                   
                    }
                 );
 
-        addDriverAndURLS("org.hibernate.dialect.OracleDialect", 
-                         "oracle.jdbc.driver.OracleDriver",
+        addDriverAndURLS("org.hibernate.dialect.OracleDialect",  //$NON-NLS-1$
+                         "oracle.jdbc.driver.OracleDriver", //$NON-NLS-1$
                          new String[] {
-                            "jdbc:oracle:thin:@localhost:1521:orcl",
-                            "jdbc:oracle:thin:@<host>:<port1521>:<sid>" }
+                            "jdbc:oracle:thin:@localhost:1521:orcl", //$NON-NLS-1$
+                            "jdbc:oracle:thin:@<host>:<port1521>:<sid>" } //$NON-NLS-1$
                          );
         
-        addDriverAndURLS("org.hibernate.dialect.Oracle9Dialect", 
-                "oracle.jdbc.driver.OracleDriver",
+        addDriverAndURLS("org.hibernate.dialect.Oracle9Dialect", //$NON-NLS-1$ 
+                "oracle.jdbc.driver.OracleDriver", //$NON-NLS-1$
                 new String[] {
-                   "jdbc:oracle:thin:@localhost:1521:orcl",
-                   "jdbc:oracle:thin:@<host>:<port1521>:<sid>" }
+                   "jdbc:oracle:thin:@localhost:1521:orcl", //$NON-NLS-1$
+                   "jdbc:oracle:thin:@<host>:<port1521>:<sid>" } //$NON-NLS-1$
                 );
 
-        addDriverAndURLS("org.hibernate.dialect.Oracle10gDialect", 
-                "oracle.jdbc.driver.OracleDriver",
+        addDriverAndURLS("org.hibernate.dialect.Oracle10gDialect",  //$NON-NLS-1$
+                "oracle.jdbc.driver.OracleDriver", //$NON-NLS-1$
                 new String[] {
-                   "jdbc:oracle:thin:@localhost:1521:orcl",
-                   "jdbc:oracle:thin:@<host>:<port1521>:<sid>" }
+                   "jdbc:oracle:thin:@localhost:1521:orcl", //$NON-NLS-1$
+                   "jdbc:oracle:thin:@<host>:<port1521>:<sid>" } //$NON-NLS-1$
                 );
 
-        addDriverAndURLS("org.hibernate.dialect.Oracle8iDialect", 
-                "oracle.jdbc.driver.OracleDriver",
+        addDriverAndURLS("org.hibernate.dialect.Oracle8iDialect",  //$NON-NLS-1$
+                "oracle.jdbc.driver.OracleDriver", //$NON-NLS-1$
                 new String[] {
-                   "jdbc:oracle:thin:@localhost:1521:orcl",
-                   "jdbc:oracle:thin:@<host>:<port1521>:<sid>" }
+                   "jdbc:oracle:thin:@localhost:1521:orcl", //$NON-NLS-1$
+                   "jdbc:oracle:thin:@<host>:<port1521>:<sid>" } //$NON-NLS-1$
                 );
 
-        addDriverAndURLS("org.hibernate.dialect.MySQLDialect", 
-                         "org.gjt.mm.mysql.Driver",
+        addDriverAndURLS("org.hibernate.dialect.MySQLDialect",  //$NON-NLS-1$
+                         "org.gjt.mm.mysql.Driver", //$NON-NLS-1$
                          new String[] {
-                            "jdbc:mysql://<hostname>/<database>",
-                            "jdbc:mysql:///test",
-                            "jdbc:mysql:///<name>",
+                            "jdbc:mysql://<hostname>/<database>", //$NON-NLS-1$
+                            "jdbc:mysql:///test", //$NON-NLS-1$
+                            "jdbc:mysql:///<name>", //$NON-NLS-1$
                              }
                         );
 
-        addDriverAndURLS("org.hibernate.dialect.MySQLDialect", 
-                "com.mysql.jdbc.Driver",
+        addDriverAndURLS("org.hibernate.dialect.MySQLDialect",  //$NON-NLS-1$
+                "com.mysql.jdbc.Driver", //$NON-NLS-1$
                 new String[] {        		
-                   "jdbc:mysql://<hostname>/<database>",
-                   "jdbc:mysql:///test",
-                   "jdbc:mysql:///<name>",
-                   "jdbc:mysql://<host><:port>/<database>"
+                   "jdbc:mysql://<hostname>/<database>", //$NON-NLS-1$
+                   "jdbc:mysql:///test", //$NON-NLS-1$
+                   "jdbc:mysql:///<name>", //$NON-NLS-1$
+                   "jdbc:mysql://<host><:port>/<database>" //$NON-NLS-1$
                     }
                );
-        addDriverAndURLS("org.hibernate.dialect.MySQLInnoDBDialect", 
-                    "org.gjt.mm.mysql.Driver",
+        addDriverAndURLS("org.hibernate.dialect.MySQLInnoDBDialect", //$NON-NLS-1$ 
+                    "org.gjt.mm.mysql.Driver", //$NON-NLS-1$
                     new String[] {
-                       "jdbc:mysql://<hostname>/<database>",
-                       "jdbc:mysql:///test",
-                       "jdbc:mysql:///<name>" }
+                       "jdbc:mysql://<hostname>/<database>", //$NON-NLS-1$
+                       "jdbc:mysql:///test", //$NON-NLS-1$
+                       "jdbc:mysql:///<name>" } //$NON-NLS-1$
                    );
         
 
-        addDriverAndURLS("org.hibernate.dialect.MySQLMyISAMDialect", 
-                    "org.gjt.mm.mysql.Driver",
+        addDriverAndURLS("org.hibernate.dialect.MySQLMyISAMDialect",  //$NON-NLS-1$
+                    "org.gjt.mm.mysql.Driver", //$NON-NLS-1$
                     new String[] {
-                       "jdbc:mysql://<hostname>/<database>",
-                       "jdbc:mysql:///test",
-                       "jdbc:mysql:///<name>" }
+                       "jdbc:mysql://<hostname>/<database>", //$NON-NLS-1$
+                       "jdbc:mysql:///test", //$NON-NLS-1$
+                       "jdbc:mysql:///<name>" } //$NON-NLS-1$
                    );
         
-        addDriverAndURLS("org.hibernate.dialect.MySQL5Dialect", 
-                "org.gjt.mm.mysql.Driver",
+        addDriverAndURLS("org.hibernate.dialect.MySQL5Dialect", //$NON-NLS-1$ 
+                "org.gjt.mm.mysql.Driver", //$NON-NLS-1$
                 new String[] {
-                   "jdbc:mysql://<hostname>/<database>",
-                   "jdbc:mysql:///test",
-                   "jdbc:mysql:///<name>" }
+                   "jdbc:mysql://<hostname>/<database>", //$NON-NLS-1$
+                   "jdbc:mysql:///test", //$NON-NLS-1$
+                   "jdbc:mysql:///<name>" } //$NON-NLS-1$
                );
     
-        addDriverAndURLS("org.hibernate.dialect.MySQL5InnoDBDialect", 
-                "org.gjt.mm.mysql.Driver",
+        addDriverAndURLS("org.hibernate.dialect.MySQL5InnoDBDialect", //$NON-NLS-1$ 
+                "org.gjt.mm.mysql.Driver", //$NON-NLS-1$
                 new String[] {
-                   "jdbc:mysql://<hostname>/<database>",
-                   "jdbc:mysql:///test",
-                   "jdbc:mysql:///<name>" }
+                   "jdbc:mysql://<hostname>/<database>", //$NON-NLS-1$
+                   "jdbc:mysql:///test", //$NON-NLS-1$
+                   "jdbc:mysql:///<name>" } //$NON-NLS-1$
                );
     
-        addDriverAndURLS("org.hibernate.dialect.PostgreSQLDialect", 
-                "org.postgresql.Driver",
+        addDriverAndURLS("org.hibernate.dialect.PostgreSQLDialect",  //$NON-NLS-1$
+                "org.postgresql.Driver", //$NON-NLS-1$
                 new String[] {
-                   "jdbc:postgresql:template1",
-                   "jdbc:postgresql:<name>" }
+                   "jdbc:postgresql:template1", //$NON-NLS-1$
+                   "jdbc:postgresql:<name>" } //$NON-NLS-1$
                );
         
-        addDriverAndURLS("org.hibernate.dialect.ProgressDialect", 
-                "com.progress.sql.jdbc.JdbcProgressDriver",
+        addDriverAndURLS("org.hibernate.dialect.ProgressDialect", //$NON-NLS-1$ 
+                "com.progress.sql.jdbc.JdbcProgressDriver", //$NON-NLS-1$
                 new String[] {
-                   "jdbc:JdbcProgress:T:host:port:dbname;WorkArounds=536870912",
+                   "jdbc:JdbcProgress:T:host:port:dbname;WorkArounds=536870912", //$NON-NLS-1$
                    }
                );
         
-        addDriverAndURLS("org.hibernate.dialect.DB2Dialect", "COM.ibm.db2.jdbc.app.DB2Driver",
-                          new String[] { "jdbc:db2:test", "jdbc:db2:<name>" });
+        addDriverAndURLS("org.hibernate.dialect.DB2Dialect", "COM.ibm.db2.jdbc.app.DB2Driver", //$NON-NLS-1$  //$NON-NLS-2$
+                          new String[] { "jdbc:db2:test", "jdbc:db2:<name>" }); //$NON-NLS-1$  //$NON-NLS-2$
         
-        addDriverAndURLS("org.hibernate.dialect.DB2400Dialect", "com.ibm.as400.access.AS400JDBCDriver",
-                new String[] { "jdbc:as400://<systemname>", "jdbc:db2:<name>" });
+        addDriverAndURLS("org.hibernate.dialect.DB2400Dialect", "com.ibm.as400.access.AS400JDBCDriver", //$NON-NLS-1$  //$NON-NLS-2$
+                new String[] { "jdbc:as400://<systemname>", "jdbc:db2:<name>" }); //$NON-NLS-1$  //$NON-NLS-2$
         
-        addDriverAndURLS("org.hibernate.dialect.DerbyDialect", "org.apache.derby.jdbc.EmbeddedDriver",
-                new String[] { "jdbc:derby:/test;create=true" });
+        addDriverAndURLS("org.hibernate.dialect.DerbyDialect", "org.apache.derby.jdbc.EmbeddedDriver", //$NON-NLS-1$  //$NON-NLS-2$
+                new String[] { "jdbc:derby:/test;create=true" }); //$NON-NLS-1$
         
-        addDriverAndURLS("org.hibernate.dialect.SybaseDialect", "com.sybase.jdbc2.jdbc.SybDriver",
-                new String[] { "jdbc:sybase:Tds:co3061835-a:5000/tempdb" });
+        addDriverAndURLS("org.hibernate.dialect.SybaseDialect", "com.sybase.jdbc2.jdbc.SybDriver", //$NON-NLS-1$  //$NON-NLS-2$
+                new String[] { "jdbc:sybase:Tds:co3061835-a:5000/tempdb" }); //$NON-NLS-1$
         
-        addDriverAndURLS("org.hibernate.dialect.MckoiDialect", "com.mckoi.JDBCDriver",
-                new String[] { "jdbc:mckoi:///", "jdbc:mckoi:local://C:/mckoi1.00/db.conf" });
+        addDriverAndURLS("org.hibernate.dialect.MckoiDialect", "com.mckoi.JDBCDriver", //$NON-NLS-1$  //$NON-NLS-2$
+                new String[] { "jdbc:mckoi:///", "jdbc:mckoi:local://C:/mckoi1.00/db.conf" }); //$NON-NLS-1$  //$NON-NLS-2$
         
-        addDriverAndURLS("org.hibernate.dialect.SAPDBDialect", "com.sap.dbtech.jdbc.DriverSapDB",
-                new String[] { "jdbc:sapdb://localhost/TST" });
+        addDriverAndURLS("org.hibernate.dialect.SAPDBDialect", "com.sap.dbtech.jdbc.DriverSapDB", //$NON-NLS-1$  //$NON-NLS-2$
+                new String[] { "jdbc:sapdb://localhost/TST" }); //$NON-NLS-1$
         
-        addDriverAndURLS("org.hibernate.dialect.SQLServerDialect", "com.jnetdirect.jsql.JSQLDriver",
-                new String[] { "jdbc:JSQLConnect://1E1/test" });
+        addDriverAndURLS("org.hibernate.dialect.SQLServerDialect", "com.jnetdirect.jsql.JSQLDriver", //$NON-NLS-1$  //$NON-NLS-2$
+                new String[] { "jdbc:JSQLConnect://1E1/test" }); //$NON-NLS-1$
 
-        addDriverAndURLS("org.hibernate.dialect.SQLServerDialect", "com.newatlanta.jturbo.driver.Driver",
-                new String[] { "jdbc:JTurbo://1E1:1433/test" });
+        addDriverAndURLS("org.hibernate.dialect.SQLServerDialect", "com.newatlanta.jturbo.driver.Driver", //$NON-NLS-1$  //$NON-NLS-2$
+                new String[] { "jdbc:JTurbo://1E1:1433/test" }); //$NON-NLS-1$
         
-        addDriverAndURLS("org.hibernate.dialect.SQLServerDialect", "weblogic.jdbc.mssqlserver4.Driver",
-                new String[] { "jdbc:weblogic:mssqlserver4:1E1:1433" });
+        addDriverAndURLS("org.hibernate.dialect.SQLServerDialect", "weblogic.jdbc.mssqlserver4.Driver", //$NON-NLS-1$  //$NON-NLS-2$
+                new String[] { "jdbc:weblogic:mssqlserver4:1E1:1433" }); //$NON-NLS-1$
         
-        addDriverAndURLS("org.hibernate.dialect.SQLServerDialect", "com.microsoft.jdbc.sqlserver.SQLServerDriver",
-                new String[] { "jdbc:microsoft:sqlserver://1E1;DatabaseName=test;SelectMethod=cursor" });
+        addDriverAndURLS("org.hibernate.dialect.SQLServerDialect", "com.microsoft.jdbc.sqlserver.SQLServerDriver", //$NON-NLS-1$  //$NON-NLS-2$
+                new String[] { "jdbc:microsoft:sqlserver://1E1;DatabaseName=test;SelectMethod=cursor" }); //$NON-NLS-1$
         
-        addDriverAndURLS("org.hibernate.dialect.SQLServerDialect", "net.sourceforge.jtds.jdbc.Driver",
-                new String[] { "jdbc:jtds:sqlserver://1E1/test" });
+        addDriverAndURLS("org.hibernate.dialect.SQLServerDialect", "net.sourceforge.jtds.jdbc.Driver", //$NON-NLS-1$  //$NON-NLS-2$
+                new String[] { "jdbc:jtds:sqlserver://1E1/test" }); //$NON-NLS-1$
         
-        addDriverAndURLS("org.hibernate.dialect.InterbaseDialect", "interbase.interclient.Driver",
-                new String[] { "jdbc:interbase://localhost:3060/C:/firebird/test.gdb" });
+        addDriverAndURLS("org.hibernate.dialect.InterbaseDialect", "interbase.interclient.Driver", //$NON-NLS-1$  //$NON-NLS-2$
+                new String[] { "jdbc:interbase://localhost:3060/C:/firebird/test.gdb" }); //$NON-NLS-1$ 
         
-        addDriverAndURLS("org.hibernate.dialect.InterbaseDialect", "org.firebirdsql.jdbc.FBDriver",
-                new String[] { "jdbc:interbase://localhost:3060/C:/firebird/test.gdb" });
+        addDriverAndURLS("org.hibernate.dialect.InterbaseDialect", "org.firebirdsql.jdbc.FBDriver", //$NON-NLS-1$  //$NON-NLS-2$
+                new String[] { "jdbc:interbase://localhost:3060/C:/firebird/test.gdb" }); //$NON-NLS-1$
         
-        addDriverAndURLS("org.hibernate.dialect.PointbaseDialect", "com.pointbase.jdbc.jdbcUniversalDriver",
-                new String[] { "jdbc:pointbase:embedded:sample" });
+        addDriverAndURLS("org.hibernate.dialect.PointbaseDialect", "com.pointbase.jdbc.jdbcUniversalDriver", //$NON-NLS-1$  //$NON-NLS-2$
+                new String[] { "jdbc:pointbase:embedded:sample" }); //$NON-NLS-1$
     }
 
     /**

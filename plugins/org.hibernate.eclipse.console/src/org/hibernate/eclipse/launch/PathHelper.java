@@ -12,6 +12,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
+import org.eclipse.osgi.util.NLS;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 // TODO: move to internal.
 public class PathHelper {
 
@@ -27,46 +29,46 @@ public class PathHelper {
 	        }
 		}  else {
 	        	return PathHelper.getLocation( member ).toOSString();
-	    }		
+	    }
 	}
 
 	public static IResource findMember(IWorkspaceRoot root, String path) {
 		Path pathOrNull = PathHelper.pathOrNull(path);
 		if(pathOrNull==null) return null;
-		
+
 		IResource findMember = root.findMember(pathOrNull);
 		if(findMember==null) {
 			IContainer[] findContainersForLocation = root.findContainersForLocation(pathOrNull);
 			if(findContainersForLocation.length>0) {
 				findMember = findContainersForLocation[0];
 			}
-		}		
+		}
 		return findMember;
 	}
 
-	public static IPath getLocation(final IResource resource) {		
-		if (resource.getRawLocation() == null) { 
-			return resource.getLocation(); 
-		} 
-		else return resource.getRawLocation();  
+	public static IPath getLocation(final IResource resource) {
+		if (resource.getRawLocation() == null) {
+			return resource.getLocation();
+		}
+		else return resource.getRawLocation();
 	}
 
-	
+
 	static private String resolve(String expression) {
 		if(expression==null) return null;
 		IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
-		
+
 		try {
 			return variableManager.performStringSubstitution(expression, false);
 		} catch (CoreException e) {
 			return expression;
 		}
 	}
-	
+
 	public static Path pathOrNull(String p) {
 		return pathOrNull(p, false);
 	}
-	
+
 	public static Path pathOrNull(String p, boolean resolveVariables) {
 		if(resolveVariables && p!=null) {
 			p  = resolve(p);
@@ -77,11 +79,11 @@ public class PathHelper {
 			return new Path(p);
 		}
 	}
-	
+
 	/**
 	 * Checks if directory exists.
 	 * Handles variables replacement too.
-	 * 
+	 *
 	 * @param strpath
 	 * @param name
 	 * @param checkFilesystem
@@ -94,31 +96,35 @@ public class PathHelper {
 				manager.validateStringVariables(strpath);
 			}
 			catch (CoreException e) {
-				return name + " has invalid variable references [" + e.getMessage() + "]";				
+				String out = NLS.bind(HibernateConsoleMessages.PathHelper_has_invalid_variable_references, name, e.getMessage());
+				return out;
 			}
-		} 
-		
+		}
+
 		IPath path = pathOrNull(resolve(strpath));
-		
+
 		if (checkFilesystem) {
 			if (path != null && new File(path.toOSString()).exists()) {
 				return null;
 			}
 		}
-				
+
 	    IResource res= ResourcesPlugin.getWorkspace().getRoot().findMember(path);
 	    if (res != null) {
 	        int resType= res.getType();
 	        if (resType == IResource.PROJECT || resType == IResource.FOLDER) {
 	            IProject proj= res.getProject();
 	            if (!proj.isOpen() ) {
-	                return "Project for " + name + " is closed [" + path + "]";                    
-	            }                               
+	            	String out = NLS.bind(HibernateConsoleMessages.PathHelper_project_for_is_closed, name, path);
+	                return out;
+	            }
 	        } else {
-	            return name + " has to be a folder or project [" + path + "]";
+	        	String out = NLS.bind(HibernateConsoleMessages.PathHelper_has_to_be_folder_or_project, name, path);
+	            return out;
 	        }
-	    } else {	    		    	
-	        return name + " does not exist [" + path + "]";
+	    } else {
+        	String out = NLS.bind(HibernateConsoleMessages.PathHelper_does_not_exist, name, path);
+	        return out;
 	    }
 	    return null;
 	}

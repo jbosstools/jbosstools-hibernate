@@ -96,7 +96,7 @@ public class BeanPropertyDescriptor implements IPropertyDescriptor {
 			}
 		
 			public String getText(Object element) {
-				return "" + element; 
+				return "" + element;  //$NON-NLS-1$
 			}
 		
 			public Image getImage(Object element) {

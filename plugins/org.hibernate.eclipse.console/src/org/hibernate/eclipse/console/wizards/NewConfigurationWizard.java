@@ -47,6 +47,7 @@ import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.ide.IDE;
 import org.hibernate.cfg.Environment;
 import org.hibernate.console.ImageConstants;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
@@ -60,7 +61,7 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	private ISelection selection;
     private WizardNewFileCreationPage cPage;
 	private ConsoleConfigurationWizardPage confPage;
-	
+
 	/**
 	 * Constructor for NewConfigurationWizard.
 	 */
@@ -92,21 +93,21 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 
 	public void addPages() {
         cPage =
-        new ExtendedWizardNewFileCreationPage( "Ccfgxml", (IStructuredSelection) selection );
-        cPage.setTitle( "Create Hibernate Configuration file (cfg.xml)" );
-        cPage.setDescription( "Create a new hibernate.cfg.xml." );
-        cPage.setFileName("hibernate.cfg.xml");
-        addPage( cPage );        
-        
-        
+        new ExtendedWizardNewFileCreationPage( "Ccfgxml", (IStructuredSelection) selection ); //$NON-NLS-1$
+        cPage.setTitle( HibernateConsoleMessages.NewConfigurationWizard_create_hibernate_cfg_file );
+        cPage.setDescription( HibernateConsoleMessages.NewConfigurationWizard_create_new_hibernate_cfg_xml );
+        cPage.setFileName("hibernate.cfg.xml"); //$NON-NLS-1$
+        addPage( cPage );
+
+
         connectionInfoPage = new NewConfigurationWizardPage(selection, cPage);
 		addPage(connectionInfoPage);
-		
+
 		confPage = new ConsoleConfigurationWizardPage(selection);
-		addPage(confPage);		
+		addPage(confPage);
 	}
-    
-    
+
+
 
 	/**
 	 * This method is called when 'Finish' button is pressed in
@@ -114,7 +115,7 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 * using wizard as execution context.
 	 */
 	public boolean performFinish() {
-		
+
 		final Properties props = new Properties();
         putIfNotNull(props, Environment.SESSION_FACTORY_NAME, connectionInfoPage.getSessionFactoryName() );
         putIfNotNull(props, Environment.DIALECT, connectionInfoPage.getDialect() );
@@ -125,7 +126,7 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
         putIfNotNull(props, Environment.DEFAULT_CATALOG, connectionInfoPage.getDefaultCatalog() );
         putIfNotNull(props, Environment.DEFAULT_SCHEMA, connectionInfoPage.getDefaultSchema() );
         final IFile file = cPage.createNewFile();
-                
+
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
@@ -143,17 +144,17 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 			return false;
 		} catch (InvocationTargetException e) {
 			Throwable realException = e.getTargetException();
-			HibernateConsolePlugin.getDefault().showError(getShell(), "Error", realException);
+			HibernateConsolePlugin.getDefault().showError(getShell(), HibernateConsoleMessages.NewConfigurationWizard_error, realException);
 			return false;
 		}
-		
+
 		if(connectionInfoPage.isCreateConsoleConfigurationEnabled()) {
         	ConsoleConfigurationCreationWizard.createConsoleConfiguration(getContainer(), confPage);
         }
-        
+
 		return true;
 	}
-	
+
 	/**
      * @param props
      * @param dialect
@@ -169,19 +170,19 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 * The worker method. It will find the container, create the
 	 * file if missing or just replace its contents, and open
 	 * the editor on the newly created file.
-     * @param file 
-     * @param props 
+     * @param file
+     * @param props
 	 */
 
 	private void createHibernateCfgXml(
 		final IFile file, Properties props, IProgressMonitor monitor)
 		throws CoreException {
 		// create a sample file
-		monitor.beginTask("Creating " + file.getName(), 2);		
+		monitor.beginTask(HibernateConsoleMessages.NewConfigurationWizard_creating + file.getName(), 2);
 		try {
 			InputStream stream = openContentStream(props);
 			if (file.exists() ) {
-                file.setContents(stream, true, true, monitor);                
+                file.setContents(stream, true, true, monitor);
 			} else {
 				file.create(stream, true, monitor);
 			}
@@ -189,7 +190,7 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 		} catch (IOException e) {
 		}
 		monitor.worked(1);
-		monitor.setTaskName("Opening file for editing...");
+		monitor.setTaskName(HibernateConsoleMessages.NewConfigurationWizard_open_file_for_editing);
 		getShell().getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				IWorkbenchPage page =
@@ -202,10 +203,10 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 		});
 		monitor.worked(1);
 	}
-	
+
 	/**
 	 * We will initialize file contents with a sample text.
-	 * @throws UnsupportedEncodingException 
+	 * @throws UnsupportedEncodingException
 	 */
 
 	private InputStream openContentStream(Properties props) {
@@ -213,11 +214,11 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
         HibernateConfigurationExporter hce = new HibernateConfigurationExporter();
 		hce.setCustomProperties(props);
 		hce.setOutput(stringWriter);
-        hce.start();       
+        hce.start();
         try {
-            return new ByteArrayInputStream(stringWriter.toString().getBytes("UTF-8") );
+            return new ByteArrayInputStream(stringWriter.toString().getBytes("UTF-8") ); //$NON-NLS-1$
         } catch (UnsupportedEncodingException uec) {
-            HibernateConsolePlugin.getDefault().logErrorMessage("Problems converting to UTF-8", uec);
+            HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.NewConfigurationWizard_problems_converting_to_utf8, uec);
             return new ByteArrayInputStream(stringWriter.toString().getBytes() );
         }
 	}
@@ -228,19 +229,19 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
 	 */
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		this.selection = selection;        
+		this.selection = selection;
 	}
-	
+
 	public IWizardPage getNextPage(IWizardPage page) {
 		if(page==connectionInfoPage) {
 			if(!connectionInfoPage.isCreateConsoleConfigurationEnabled()) {
 				return null;
-			} 
+			}
 			confPage.setConfigurationFilePath(cPage.getContainerFullPath().append(cPage.getFileName()));
-		}				
+		}
 		return super.getNextPage( page );
 	}
-	
+
 	public boolean canFinish() {
 		if(!connectionInfoPage.isCreateConsoleConfigurationEnabled()) {
 			return connectionInfoPage.isPageComplete();

@@ -53,49 +53,49 @@ import org.eclipse.ui.texteditor.TextOperationAction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.AbstractQueryEditor;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.eclipse.console.Messages;
 import org.hibernate.mapping.PersistentClass;
 
 public class CriteriaEditor extends AbstractQueryEditor {
 
 	private CriteriaEditorDocumentSetupParticipant docSetupParticipant;
-	
+
 	public CriteriaEditor() {
 		super();
 		//setDocumentProvider(JDIDebugUIPlugin.getDefault().getSnippetDocumentProvider());
 		// TODO: setup document
 		// JavaTextTools tools= JDIDebugUIPlugin.getDefault().getJavaTextTools();
 		//tools.setupJavaDocumentPartitioner(document, IJavaPartitions.JAVA_PARTITIONING);
-		
+
 		IPreferenceStore store = new ChainedPreferenceStore(new IPreferenceStore[] {
 				PreferenceConstants.getPreferenceStore(),
 				EditorsUI.getPreferenceStore()});
-		
-		setSourceViewerConfiguration(new JavaViewerConfiguration(HibernateConsolePlugin.getDefault().getJavaTextTools(), store, this));		
+
+		setSourceViewerConfiguration(new JavaViewerConfiguration(HibernateConsolePlugin.getDefault().getJavaTextTools(), store, this));
 		setPreferenceStore(store);
 		setEditorContextMenuId("#CriteraEditorContext"); //$NON-NLS-1$
 		setRulerContextMenuId("#CriteraRulerContext"); //$NON-NLS-1$
-		
+
 	}
-	
+
 	protected void createActions() {
 		super.createActions();
 		Action action = new TextOperationAction(getResourceBundle(), "ContentAssistProposal.", this, ISourceViewer.CONTENTASSIST_PROPOSALS); //$NON-NLS-1$
 		action.setActionDefinitionId(ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS);
 		setAction("ContentAssistProposal", action);//$NON-NLS-1$
-		
+
 	}
-	
+
 	private ResourceBundle getResourceBundle() {
-		return ResourceBundle.getBundle( Messages.BUNDLE_NAME );
+		return ResourceBundle.getBundle( HibernateConsoleMessages.BUNDLE_NAME );
 	}
 
 
 	protected void doSetInput(IEditorInput input) throws CoreException {
-		
+
 		super.doSetInput( input );
-	
+
 		/* Make sure the document partitioner is set up. The document setup
          * participant sets up document partitioning, which is used for text
          * colorizing and other text features.
@@ -128,19 +128,19 @@ public class CriteriaEditor extends AbstractQueryEditor {
 			evalCtx = project.newEvaluationContext();
 		}
 		if (evalCtx  != null) {
-			evalCtx.setImports(getImports());				
+			evalCtx.setImports(getImports());
 		}
 		return evalCtx ;
 	}
-	
+
 	private String[] getImports() {
-		
+
 		ConsoleConfiguration consoleConfiguration = getConsoleConfiguration();
-		
+
 		if(consoleConfiguration.getConfiguration()==null) {
 			consoleConfiguration.build();
-		} 
-		
+		}
+
 		Set imports = new HashSet();
 		Configuration configuration = consoleConfiguration.getConfiguration();
 		if(configuration!=null) {
@@ -150,45 +150,45 @@ public class CriteriaEditor extends AbstractQueryEditor {
 				String className = clazz.getClassName();
 				if(className!=null) {
 					imports.add( className );
-				}				
+				}
 			}
 		}
-		
-		imports.add("org.hibernate.*");
-		imports.add("org.hibernate.criterion.*");
-		
+
+		imports.add("org.hibernate.*"); //$NON-NLS-1$
+		imports.add("org.hibernate.criterion.*"); //$NON-NLS-1$
+
 		return (String[]) imports.toArray( new String[imports.size()] );
 	}
 
-	public void codeComplete(String prefix, CompletionProposalCollector collector, int position, IJavaProject project) throws JavaModelException {		
+	public void codeComplete(String prefix, CompletionProposalCollector collector, int position, IJavaProject project) throws JavaModelException {
 		ITextSelection selection= (ITextSelection)getSelectionProvider().getSelection();
-		String code= getSourceViewer().getDocument().get();			
+		String code= getSourceViewer().getDocument().get();
 		code= prefix + code;
 		IEvaluationContext e= getEvaluationContext(project);
 		if (e != null) {
 			e.codeComplete(code, prefix.length()+position, collector);
 		}
 	}
-	
+
 
 	public void showEditorInput(IEditorInput editorInput) {
-		
+
 		CriteriaEditorInput hei = (CriteriaEditorInput)getEditorInput();
 		super.showEditorInput( editorInput );
 		IStorage storage = ((CriteriaEditorInput)editorInput).getStorage();
 		 if (storage instanceof CriteriaEditorStorage) {
              CriteriaEditorStorage sqlEditorStorage = (CriteriaEditorStorage) storage;
              IDocument document = getDocumentProvider().getDocument( hei );
-			document.set( sqlEditorStorage.getContentsString() );             
-         }		
+			document.set( sqlEditorStorage.getContentsString() );
+         }
 	}
 
-	
+
 	public void createPartControl(Composite parent) {
 		parent.setLayout( new GridLayout(1,false) );
-    	
+
     	createToolbar( parent );
-        
+
 		super.createPartControl( parent );
 		if (getSourceViewer() != null ){
 			getSourceViewer().addTextListener(new ITextListener(){
@@ -197,14 +197,14 @@ public class CriteriaEditor extends AbstractQueryEditor {
 					updateExecButton();
 				}});
 		}
-		
+
 		Control control = parent.getChildren()[1];
     	control.setLayoutData( new GridData( GridData.FILL_BOTH ) );
-    	
+
 	}
-	
+
 	@Override
 	protected String getConnectedImageFilePath() {
 		return 	"icons/images/criteria_editor_connect.gif";		//$NON-NLS-1$
-	}	
+	}
 }

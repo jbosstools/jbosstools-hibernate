@@ -35,22 +35,22 @@ final class TableFilterCellModifier implements ICellModifier {
 
 	public void modify(Object element, String property, Object value) {
 		ITableFilter tf = (ITableFilter) ((TableItem)element).getData();
-		if("inclusion".equals(property)) {
+		if("inclusion".equals(property)) { //$NON-NLS-1$
 			if(!value.equals(tf.getExclude())) {
 				tf.setExclude((Boolean) value);
 			}
 		}
-		if("catalog".equals(property)) {
+		if("catalog".equals(property)) { //$NON-NLS-1$
 			if(!value.equals(tf.getMatchCatalog())) {
 				tf.setMatchCatalog((String) value);
 			}
 		}
-		if("schema".equals(property)) {
+		if("schema".equals(property)) { //$NON-NLS-1$
 			if(!value.equals(tf.getMatchSchema())) {
 				tf.setMatchSchema((String) value);
 			}
 		}
-		if("name".equals(property)) {
+		if("name".equals(property)) { //$NON-NLS-1$
 			if(!value.equals(tf.getMatchName())) {
 				tf.setMatchName((String) value);
 			}
@@ -60,16 +60,16 @@ final class TableFilterCellModifier implements ICellModifier {
 
 	public Object getValue(Object element, String property) {
 		ITableFilter tf = (ITableFilter) element;
-		if("inclusion".equals(property)) {
+		if("inclusion".equals(property)) { //$NON-NLS-1$
 			return tf.getExclude();
 		}
-		if("catalog".equals(property)) {
+		if("catalog".equals(property)) { //$NON-NLS-1$
 			return tf.getMatchCatalog();
 		}
-		if("schema".equals(property)) {
+		if("schema".equals(property)) { //$NON-NLS-1$
 			return tf.getMatchSchema();
 		}
-		if("name".equals(property)) {
+		if("name".equals(property)) { //$NON-NLS-1$
 			return tf.getMatchName();
 		}		
 		return null;

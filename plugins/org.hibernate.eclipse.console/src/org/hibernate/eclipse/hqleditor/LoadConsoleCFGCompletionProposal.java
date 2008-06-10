@@ -18,6 +18,7 @@ import org.eclipse.swt.graphics.Point;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 
@@ -26,13 +27,13 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
  *
  */
 public class LoadConsoleCFGCompletionProposal implements ICompletionProposal {
-	
+
 	private ConsoleConfiguration consoleConfiguration;
 
 	public LoadConsoleCFGCompletionProposal(ConsoleConfiguration consoleConfiguration){
 		this.consoleConfiguration = consoleConfiguration;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.text.contentassist.ICompletionProposal#apply(org.eclipse.jface.text.IDocument)
 	 */
@@ -42,16 +43,16 @@ public class LoadConsoleCFGCompletionProposal implements ICompletionProposal {
 			try {
 				consoleConfiguration.build();
 			} catch (HibernateException he) {
-				HibernateConsolePlugin.getDefault().showError(HibernateConsolePlugin.getDefault().getShell(), "Could not load configuration " + consoleConfiguration.getName(), he);
+				HibernateConsolePlugin.getDefault().showError(HibernateConsolePlugin.getDefault().getShell(), HibernateConsoleMessages.LoadConsoleCFGCompletionProposal_could_not_load_configuration + consoleConfiguration.getName(), he);
 			}
-		} 		
+		}
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.text.contentassist.ICompletionProposal#getAdditionalProposalInfo()
 	 */
 	public String getAdditionalProposalInfo() {
-		return "No open console configuration found.\nThis will attempt to open the console configuration\nto enable better code completion.";
+		return HibernateConsoleMessages.LoadConsoleCFGCompletionProposal_no_open_console_cfg_found;
 	}
 
 	/* (non-Javadoc)
@@ -65,7 +66,7 @@ public class LoadConsoleCFGCompletionProposal implements ICompletionProposal {
 	 * @see org.eclipse.jface.text.contentassist.ICompletionProposal#getDisplayString()
 	 */
 	public String getDisplayString() {
-		return "Load Console Configuration";
+		return HibernateConsoleMessages.LoadConsoleCFGCompletionProposal_load_console_cfg;
 	}
 
 	/* (non-Javadoc)

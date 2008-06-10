@@ -27,18 +27,15 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.DebugUITools;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard;
 import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
 
 /**
@@ -48,12 +45,12 @@ import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
 public class EditConsoleConfiguration extends ConsoleConfigurationBasedAction {
 
 	ConsoleConfiguration cfg = null;
-	
+
 	/**
 	 * @param text
 	 */
 	public EditConsoleConfiguration() {
-		super("Edit Configuration");
+		super(HibernateConsoleMessages.EditConsoleConfiguration_edit_config);
 	}
 
 	public EditConsoleConfiguration(ConsoleConfiguration configuration) {
@@ -71,15 +68,15 @@ public class EditConsoleConfiguration extends ConsoleConfigurationBasedAction {
 						edit( config );
 					}
 				} catch(HibernateException he) {
-					HibernateConsolePlugin.getDefault().showError(null, "Exception while trying to edit configuration", he);
+					HibernateConsolePlugin.getDefault().showError(null, HibernateConsoleMessages.EditConsoleConfiguration_exception_while_edit_config, he);
 				}
-			} 
+			}
 		} else {
 			try {
-				edit(cfg);    	
+				edit(cfg);
 			} catch(HibernateException he) {
-				HibernateConsolePlugin.getDefault().showError(null, "Exception while trying to edit configuration", he);
-			}        
+				HibernateConsolePlugin.getDefault().showError(null, HibernateConsoleMessages.EditConsoleConfiguration_exception_while_edit_config, he);
+			}
 		}
 	}
 
@@ -88,7 +85,7 @@ public class EditConsoleConfiguration extends ConsoleConfigurationBasedAction {
 		/*if(MessageDialog.openQuestion( null, "Use old dialog ?", "Use old dialog" )) {
 			ConsoleConfigurationCreationWizard wizard = new ConsoleConfigurationCreationWizard();
 			wizard.init(PlatformUI.getWorkbench(), new StructuredSelection(config) );
-			
+
 
 			WizardDialog dialog = new WizardDialog(win.getShell(), wizard);
 			dialog.open(); // This opens a dialog
@@ -101,13 +98,14 @@ public class EditConsoleConfiguration extends ConsoleConfigurationBasedAction {
 				for (int i = 0; i < launchConfigurations.length; i++) { // can't believe there is no look up by name API
 					ILaunchConfiguration launchConfiguration = launchConfigurations[i];
 					if(launchConfiguration.getName().equals(config.getName())) {
-						DebugUITools.openLaunchConfigurationPropertiesDialog( win.getShell(), launchConfiguration, "org.eclipse.debug.ui.launchGroup.run" );
+						DebugUITools.openLaunchConfigurationPropertiesDialog( win.getShell(), launchConfiguration, "org.eclipse.debug.ui.launchGroup.run" ); //$NON-NLS-1$
 						return;
 					}
-				}				
-				HibernateConsolePlugin.getDefault().showError(win.getShell(), "Could not find launch configuration for '" + config.getName() + "'", new IllegalStateException("No launch configuration matched the configuration named " + config.getName()));
+				}
+				String out = NLS.bind(HibernateConsoleMessages.EditConsoleConfiguration_could_not_find_launch_cfg, config.getName());
+				HibernateConsolePlugin.getDefault().showError(win.getShell(), out, new IllegalStateException(HibernateConsoleMessages.EditConsoleConfiguration_no_launch_cfg_matched + config.getName()));
 			} catch (CoreException ce) {
-				HibernateConsolePlugin.getDefault().showError( win.getShell(), "Problem adding a console configuration",  ce);
+				HibernateConsolePlugin.getDefault().showError( win.getShell(), HibernateConsoleMessages.EditConsoleConfiguration_problem_adding_console_cfg,  ce);
 			}
 		//}
 	}

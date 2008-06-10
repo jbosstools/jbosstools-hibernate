@@ -63,6 +63,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -85,6 +86,7 @@ import org.eclipse.ui.views.properties.PropertySheetEntry;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.ExtensionManager;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.model.impl.ExporterDefinition;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
@@ -97,7 +99,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 	private Button enableJDK5;
 
 	private Set selectedExporters;
-	
+
 	private Set deletedExporterIds;
 
 	//private CheckboxTableViewer exporterTable;
@@ -114,7 +116,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 
 	/**
 	 * Constructor for SampleNewWizardPage.
-	 * 
+	 *
 	 * @param pageName
 	 */
 	public ExporterSettingsTab() {
@@ -125,7 +127,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 	 * @see IDialogPage#createControl(Composite)
 	 */
 	public void createControl(Composite parent) {
-		selectedExporters = new HashSet();		
+		selectedExporters = new HashSet();
 		deletedExporterIds = new HashSet();
 		// ScrolledComposite scrolled = new ScrolledComposite(parent,
 		// SWT.V_SCROLL | SWT.H_SCROLL);
@@ -151,7 +153,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 	}
 
 	private void createExporterProperties(Composite parent) {
-		Composite exportersComposite = createComposite( parent, "Properties:" );
+		Composite exportersComposite = createComposite( parent, HibernateConsoleMessages.ExporterSettingsTab_properties );
 
 		exportersComposite.setLayout( new GridLayout( 2, false ) );
 
@@ -160,29 +162,29 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 		exportersComposite.setLayoutData( gd );
 
 		Group gr = new Group(exportersComposite, SWT.NONE);
-		
+
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.marginHeight = 0;
 		gridLayout.marginWidth = 0;
-		
-		gr.setLayout( gridLayout );		
+
+		gr.setLayout( gridLayout );
 		gd = new GridData( SWT.FILL, SWT.FILL, true, true );
-		gd.verticalSpan = 2;		
+		gd.verticalSpan = 2;
 		gr.setLayoutData( gd );
 
 		Control sheet = createPropertySheet( gr );
-		gd = new GridData( SWT.FILL, SWT.FILL, true, true );		
+		gd = new GridData( SWT.FILL, SWT.FILL, true, true );
 		sheet.setLayoutData( gd );
-		
+
 		add = new Button( exportersComposite, SWT.PUSH );
 		add.setEnabled( false );
-		add.setText( "Add..." );
+		add.setText( HibernateConsoleMessages.ExporterSettingsTab_add );
 		gd = new GridData( GridData.HORIZONTAL_ALIGN_FILL
 				| GridData.VERTICAL_ALIGN_BEGINNING );
 		gd.horizontalIndent = 5;
 		add.setLayoutData( gd );
 		add.addSelectionListener( new SelectionAdapter() {
-		
+
 			public void widgetSelected(SelectionEvent e) {
 				IStructuredSelection ss = (IStructuredSelection) getExporterTable().getSelection();
 				ExporterFactory ef = (ExporterFactory) ss.getFirstElement();
@@ -191,19 +193,19 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 					AddPropertyDialog dialog = new AddPropertyDialog(getShell(), ef);
 					if(dialog.open()==Dialog.OK) {
 						ef.setProperty( dialog.getPropertyName(), dialog.getPropertyValue() );
-						dialogChanged();	
+						dialogChanged();
 						refreshPropertySheet();
 					}
 				}
 			}
-		
+
 		} );
 
 		remove = new Button( exportersComposite, SWT.PUSH );
-		remove.setText( "Remove..." );
+		remove.setText( HibernateConsoleMessages.ExporterSettingsTab_remove );
 		remove.setEnabled( false );
 		remove.addSelectionListener( new SelectionAdapter() {
-		
+
 			public void widgetSelected(SelectionEvent e) {
 				if(currentDescriptor!=null) {
 					IStructuredSelection ss = (IStructuredSelection) getExporterTable().getSelection();
@@ -211,11 +213,11 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 					ef.removeProperty( (String) currentDescriptor.getId() );
 					dialogChanged();
 					refreshPropertySheet();
-				}				
+				}
 			}
-		
+
 		} );
-		
+
 		gd = new GridData( GridData.HORIZONTAL_ALIGN_FILL
 				| GridData.VERTICAL_ALIGN_BEGINNING );
 		gd.horizontalIndent = 5;
@@ -224,16 +226,16 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 	}
 
 	public class MyPropertySheetEntry extends PropertySheetEntry {
-		
+
 		public IPropertyDescriptor getMyDescriptor() {
 			return super.getDescriptor();
 		}
-		
+
 		protected PropertySheetEntry createChildEntry() {
 			return new MyPropertySheetEntry();
 		}
 	}
-	
+
 	// currently selected in the propertysheet
 	private IPropertyDescriptor currentDescriptor;
 
@@ -241,11 +243,11 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 
 	private ObservableFactoryList observableFactoryList;
 
-	
-	
+
+
 	private Control createPropertySheet(Composite exportersComposite) {
 		propertySheet = new PropertySheetPage() {
-			
+
 
 			public void handleEntrySelection(ISelection selection) {
 				super.handleEntrySelection( selection );
@@ -258,7 +260,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 				}
 			}
 		};
-		
+
 		propertySheet.createControl( exportersComposite );
 
 		final PropertySheetEntry propertySheetEntry = new MyPropertySheetEntry();
@@ -283,7 +285,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 				} );
 		propertySheet.setRootEntry( propertySheetEntry );
 		// propertySheetEntry.setValues( new Object[] { this });
-		
+
 		getExporterTable()
 				.addSelectionChangedListener( new ISelectionChangedListener() {
 
@@ -292,14 +294,14 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 						.getSelection();
 						if(s.isEmpty()) {
 							if(add!=null) add.setEnabled( false );
-							if(remove!=null) remove.setEnabled( false );	
-							
+							if(remove!=null) remove.setEnabled( false );
+
 							propertySheetEntry.setValues(new Object[0]);
-					
+
 						} else {
 							if(add!=null) add.setEnabled( true );
-							if(remove!=null) remove.setEnabled( true );		
-					
+							if(remove!=null) remove.setEnabled( true );
+
 							ExporterFactory ep = (ExporterFactory) s
 							.getFirstElement();
 							propertySheetEntry.setValues( new Object[] { ep } );
@@ -313,18 +315,18 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 	}
 
 	private void createExporterTable(Composite parent) {
-		exporterUpDown = new UpDownListComposite(parent, SWT.NONE, "Exporters:", true, new ExporterLabelProvider(), new ExporterContentProvider()) {
-			
+		exporterUpDown = new UpDownListComposite(parent, SWT.NONE, HibernateConsoleMessages.ExporterSettingsTab_exporters, true, new ExporterLabelProvider(), new ExporterContentProvider()) {
+
 			protected Object[] handleAdd(int idx) {
-				
+
 				switch (idx) {
 				case 0:
-					Object[] selectExporters = selectExporters(getShell(), "Add exporter", "Select the exporter(s) you want to add");
+					Object[] selectExporters = selectExporters(getShell(), HibernateConsoleMessages.ExporterSettingsTab_add_exporter, HibernateConsoleMessages.ExporterSettingsTab_select_exporter_you_want_to_add);
 					for (int i = 0; i < selectExporters.length; i++) {
 						ExporterDefinition exporterDefinition = (ExporterDefinition) selectExporters[i];
-						addDef(exporterDefinition);						
+						addDef(exporterDefinition);
 					}
-					return new Object[0];// { exporterFactory };	
+					return new Object[0];// { exporterFactory };
 				case 1:
 					getExporterTable().setAllChecked( true );
 					break;
@@ -343,29 +345,29 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 				do {
 					duplicate = false;
 					initialCount++;
-					Iterator iterator = observableFactoryList.getList().iterator();					
+					Iterator iterator = observableFactoryList.getList().iterator();
 					while(iterator.hasNext()) {
-						ExporterFactory def = (ExporterFactory) iterator.next();						
-						if(def.getId().equals(""+initialCount)) {
-							duplicate = true;						     
-						}						
+						ExporterFactory def = (ExporterFactory) iterator.next();
+						if(def.getId().equals(""+initialCount)) { //$NON-NLS-1$
+							duplicate = true;
+						}
 					}
 				} while(duplicate);
-				
-				String initialName = "" + initialCount;
-				
+
+				String initialName = "" + initialCount; //$NON-NLS-1$
+
 				ExporterFactory exporterFactory = new ExporterFactory( expDef, initialName );
 				observableFactoryList.add(exporterFactory);
 				selectedExporters.add(exporterFactory);
 				((CheckboxTableViewer)getTableViewer()).setChecked(exporterFactory, true);
-				
+
 			}
 
 			protected void handleRemove() {
 					IStructuredSelection selection = (IStructuredSelection) getTableViewer().getSelection();
 					if (selection != null) {
 						int numSelected= selection.size();
-						
+
 						Iterator iterator= selection.iterator();
 						while (iterator.hasNext() ) {
 							Object item= iterator.next();
@@ -374,9 +376,9 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 						}
 						//getTableViewer().setSelection(StructuredSelection.EMPTY);
 						listChanged();
-					}		
+					}
 			}
-			
+
 			protected void moveSelectionDown() {
 				Table table = getTableViewer().getTable();
 				int indices[]= table.getSelectionIndices();
@@ -388,8 +390,8 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 				for (int i = indices.length - 1; i >= 0; i--) {
 					int index= indices[i];
 					if (index < max) {
-						ExporterFactory data = (ExporterFactory) getTableViewer().getElementAt(index);						
-						observableFactoryList.moveTo(index + 1, (ExporterFactory)data);						
+						ExporterFactory data = (ExporterFactory) getTableViewer().getElementAt(index);
+						observableFactoryList.moveTo(index + 1, (ExporterFactory)data);
 						newSelection[i]= index + 1;
 					}
 				}
@@ -404,8 +406,8 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 				for (int i = 0; i < indices.length; i++) {
 					int index= indices[i];
 					if (index > 0) {
-						ExporterFactory data = (ExporterFactory) getTableViewer().getElementAt(index);						
-						observableFactoryList.moveTo(index - 1, (ExporterFactory)data);						
+						ExporterFactory data = (ExporterFactory) getTableViewer().getElementAt(index);
+						observableFactoryList.moveTo(index - 1, (ExporterFactory)data);
 						newSelection[i]= index - 1;
 					}
 				}
@@ -414,7 +416,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 			}
 
 			protected String[] getAddButtonLabels() {
-				return new String[] { "Add...", "Select all", "Deselect all" };				
+				return new String[] { HibernateConsoleMessages.ExporterSettingsTab_add, HibernateConsoleMessages.ExporterSettingsTab_select_all, HibernateConsoleMessages.ExporterSettingsTab_deselect_all };
 			}
 			protected void listChanged() {
 				dialogChanged();
@@ -446,9 +448,9 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 		gd.horizontalAlignment = GridData.FILL;
 		exporterUpDown.setLayoutData( gd );
 	}
-	
+
 	private void createOldExporterTable(Composite parent) {
-		Composite exporterOptions = createComposite( parent, "Exporters:" );
+		Composite exporterOptions = createComposite( parent, HibernateConsoleMessages.ExporterSettingsTab_exporters );
 
 		GridData gd = new GridData( SWT.FILL, SWT.FILL, true, true );
 		gd.minimumHeight = 100;
@@ -461,10 +463,10 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 		//setExporterTable(new CheckboxTableViewer( table ));
 		getExporterTable().setContentProvider( new ExporterContentProvider() );
 		getExporterTable().setLabelProvider( new ExporterLabelProvider() );
-		
+
 		// exporterTable.getControl().setLayoutData(
 		// new GridData( SWT.FILL, SWT.FILL, true, true ) );
-		getExporterTable().setColumnProperties( new String[] { "", "Description" } );
+		getExporterTable().setColumnProperties( new String[] { "", HibernateConsoleMessages.ExporterSettingsTab_description } ); //$NON-NLS-1$
 		getExporterTable().addCheckStateListener( new ICheckStateListener() {
 			public void checkStateChanged(CheckStateChangedEvent event) {
 
@@ -489,7 +491,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 		table.setLayoutData( gd );
 
 		selectAll = new Button( exporterOptions, SWT.PUSH );
-		selectAll.setText( "Select All" );
+		selectAll.setText( HibernateConsoleMessages.ExporterSettingsTab_select_all );
 		selectAll.addSelectionListener( new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				getExporterTable().setAllChecked( true );
@@ -502,7 +504,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 		selectAll.setLayoutData( gd );
 
 		deselectAll = new Button( exporterOptions, SWT.PUSH );
-		deselectAll.setText( "Deselect All" );
+		deselectAll.setText( HibernateConsoleMessages.ExporterSettingsTab_deselect_all );
 		deselectAll.addSelectionListener( new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				getExporterTable().setAllChecked( false );
@@ -529,16 +531,16 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 			}
 		};
 		Composite generalSettingsComposite = createComposite( parent,
-				"General settings:" );
+				HibernateConsoleMessages.ExporterSettingsTab_general_settings );
 		generalSettingsComposite.setLayoutData( new GridData( SWT.BEGINNING,
 				SWT.BEGINNING, false, false ) );
 
 		enableJDK5 = new Button( generalSettingsComposite, SWT.CHECK );
-		enableJDK5.setText( "Use Java 5 syntax" );
+		enableJDK5.setText( HibernateConsoleMessages.ExporterSettingsTab_use_java5_syntax );
 		enableJDK5.addSelectionListener( fieldlistener );
 
 		enableEJB3annotations = new Button( generalSettingsComposite, SWT.CHECK );
-		enableEJB3annotations.setText( "Generate EJB3 annotations" );
+		enableEJB3annotations.setText( HibernateConsoleMessages.ExporterSettingsTab_generate_ejb3annotations );
 		enableEJB3annotations.addSelectionListener( fieldlistener );
 	}
 
@@ -557,40 +559,40 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 			this.viewer = (AbstractTableViewer) viewer;
 			ObservableFactoryList ol = (ObservableFactoryList) oldInput;
 			ObservableFactoryList newList = (ObservableFactoryList) newInput;
-			
+
 			if(ol!=null) {
 				ol.removePropertyChangeListener(this);
 			}
-			
+
 			if(newList!=null) {
 				newList.addPropertyChangeListener(this);
 			}
 		}
 
 		public void propertyChange(PropertyChangeEvent evt) {
-			
-			if("addElement".equals(evt.getPropertyName())) {
+
+			if("addElement".equals(evt.getPropertyName())) { //$NON-NLS-1$
 				viewer.add(evt.getNewValue());
 			}
-			
-			if("removeElement".equals(evt.getPropertyName())) {
+
+			if("removeElement".equals(evt.getPropertyName())) { //$NON-NLS-1$
 				viewer.remove(evt.getOldValue());
 			}
-			
-			if("insertElement".equals(evt.getPropertyName())) {
+
+			if("insertElement".equals(evt.getPropertyName())) { //$NON-NLS-1$
 				viewer.insert(evt.getNewValue(), ((Integer)evt.getOldValue()).intValue());
 			}
 		}
 
 	}
-	
-	// Complete hack to get table to work with arbitrary exporters quickly. 
+
+	// Complete hack to get table to work with arbitrary exporters quickly.
 	private class ObservableFactoryList {
-		
+
 		List underlyingList = new ArrayList();
-		
+
 		PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-		
+
 		public ObservableFactoryList(List exporterFactories) {
 			underlyingList = exporterFactories;
 		}
@@ -599,14 +601,14 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 			underlyingList.remove((ExporterFactory) data);
 			remove(data);
 			underlyingList.add(i, data);
-			pcs.firePropertyChange("insertElement", new Integer(i), data);
-			
+			pcs.firePropertyChange("insertElement", new Integer(i), data); //$NON-NLS-1$
+
 		}
 
 		void addPropertyChangeListener(PropertyChangeListener pcl) {
-			pcs.addPropertyChangeListener(pcl);		
+			pcs.addPropertyChangeListener(pcl);
 		}
-		
+
 		public List getList() {
 			return Collections.unmodifiableList(underlyingList);
 		}
@@ -614,20 +616,20 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 		void removePropertyChangeListener(PropertyChangeListener pcl) {
 			pcs.removePropertyChangeListener(pcl);
 		}
-		
+
 		boolean add(ExporterFactory o) {
 			boolean changed = underlyingList.add(o);
-			pcs.firePropertyChange("addElement", null, o);
+			pcs.firePropertyChange("addElement", null, o); //$NON-NLS-1$
 			return changed;
 		}
 
 		boolean remove(ExporterFactory o) {
 			boolean changed = underlyingList.remove(o);
-			pcs.firePropertyChange("removeElement", o, null);
+			pcs.firePropertyChange("removeElement", o, null); //$NON-NLS-1$
 			return changed;
 		}
-		
-		
+
+
 	}
 
 	static private class ExporterLabelProvider implements ITableLabelProvider, ILabelProvider {
@@ -650,7 +652,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 				return ef.getExporterDefinition();
 			} else {
 				return (ExporterDefinition) element;
-			}			
+			}
 		}
 
 		public String getColumnText(Object element, int columnIndex) {
@@ -705,39 +707,39 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 		// ...getConfigurationName().length()==0;
 
 		if ( !configSelected ) {
-			updateStatus( "Console configuration must be specified" );
+			updateStatus( HibernateConsoleMessages.ExporterSettingsTab_console_configuration_must_be_specified );
 			return;
 		}
 
 		if ( selectedExporters.size() == 0 ) {
-			updateStatus( "At least one exporter option must be selected" );
+			updateStatus( HibernateConsoleMessages.ExporterSettingsTab_at_least_one_exporter_option_must_be_selected );
 			return;
 		}
-		
-		
+
+
 		// hard-coded checks: this should be delegated to extension point that knows about the different exporters.
 		Iterator iterator = observableFactoryList.getList().iterator();
 		while (iterator.hasNext()) {
 			ExporterFactory ef = (ExporterFactory) iterator.next();
-			String str = (String) ef.getProperties().get("outputdir");
+			String str = (String) ef.getProperties().get("outputdir"); //$NON-NLS-1$
 			String msg = null;
 			if(str!=null) {
-				msg = PathHelper.checkDirectory(str, "Output directory for " + ef.getExporterDefinition().getDescription(), false);
+				msg = PathHelper.checkDirectory(str, HibernateConsoleMessages.ExporterSettingsTab_output_directory_for + ef.getExporterDefinition().getDescription(), false);
 				if(msg!=null) {
 					updateStatus(msg);
 					return;
 				}
 			}
 
-			str = (String) ef.getProperties().get("template_path");
-			if(str!=null) {				
-				msg = PathHelper.checkDirectory(str, "Template directory for " + ef.getExporterDefinition().getDescription(), true);
+			str = (String) ef.getProperties().get("template_path"); //$NON-NLS-1$
+			if(str!=null) {
+				msg = PathHelper.checkDirectory(str, HibernateConsoleMessages.ExporterSettingsTab_template_directory_for + ef.getExporterDefinition().getDescription(), true);
 				if(msg!=null) {
 					updateStatus(msg);
 					return;
 				}
 			}
-			
+
 		}
 		updateStatus( null );
 	}
@@ -750,15 +752,16 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 			if ( resType == IResource.PROJECT || resType == IResource.FOLDER ) {
 				IProject proj = res.getProject();
 				if ( !proj.isOpen() ) {
-					return "Project for " + name + " is closed";
+					String out = NLS.bind(HibernateConsoleMessages.ExporterSettingsTab_project_for_is_closed, name);
+					return out;
 				}
 			}
 			else {
-				return name + " has to be a folder or project";
+				return name + HibernateConsoleMessages.ExporterSettingsTab_has_to_be_folder_or_project;
 			}
 		}
 		else {
-			return name + " does not exist";
+			return name + HibernateConsoleMessages.ExporterSettingsTab_does_not_exist;
 		}
 		return null;
 	}
@@ -772,11 +775,11 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 				return null;
 			}
 			else {
-				return name + " must be a file";
+				return name + HibernateConsoleMessages.ExporterSettingsTab_must_be_file;
 			}
 		}
 		else {
-			return name + " does not exist";
+			return name + HibernateConsoleMessages.ExporterSettingsTab_does_not_exist;
 		}
 	}
 
@@ -824,7 +827,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 			}
 
 			refreshPropertySheet();
-			
+
 			dialogChanged();
 
 		}
@@ -832,7 +835,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 			HibernateConsolePlugin
 					.getDefault()
 					.logErrorMessage(
-							"Problem when reading hibernate tools launch configuration",
+							HibernateConsoleMessages.ExporterSettingsTab_problem_when_reading_hibernate_tools_launch_configuration,
 							ce );
 		}
 	}
@@ -850,14 +853,14 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 
 		List exporterFactories = ((ObservableFactoryList)getExporterTable().getInput()).getList();
 		ExporterAttributes.saveExporterFactories(configuration, exporterFactories, selectedExporters, deletedExporterIds);
-				
+
 		deletedExporterIds.clear();
 	}
 
-	
+
 
 	public String getName() {
-		return "Exporters";
+		return HibernateConsoleMessages.ExporterSettingsTab_exporters_2;
 	}
 
 	public Image getImage() {
@@ -872,13 +875,13 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 		ILabelProvider labelProvider= new ExporterLabelProvider();
 		ElementListSelectionDialog dialog= new ElementListSelectionDialog(shell, labelProvider);
 		dialog.setTitle(title);
-		dialog.setMessage(description); 
+		dialog.setMessage(description);
 		dialog.setElements(ExtensionManager.findExporterDefinitionsAsMap().values().toArray());
 		dialog.setMultipleSelection(true);
-		
-		if (dialog.open() == Window.OK) {			
+
+		if (dialog.open() == Window.OK) {
 			return dialog.getResult();
-		} else {			
+		} else {
 			return new ExporterDefinition[0];
 		}
 	}

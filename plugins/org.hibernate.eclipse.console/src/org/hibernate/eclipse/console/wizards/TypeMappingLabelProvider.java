@@ -34,7 +34,7 @@ public class TypeMappingLabelProvider extends LabelProvider implements ITableLab
 
 	public String getColumnText(Object element, int columnIndex) {
 		ITypeMapping tf = (ITypeMapping) element;
-		String result = "";
+		String result = ""; //$NON-NLS-1$
 		
 		switch (columnIndex) {
 		case 0:
@@ -55,7 +55,7 @@ public class TypeMappingLabelProvider extends LabelProvider implements ITableLab
 	}
 
 	private String safeToString(Object length) {
-		if(length==null) return "";
+		if(length==null) return ""; //$NON-NLS-1$
 		return length.toString();
 	}
 }

@@ -26,6 +26,6 @@ import org.hibernate.pretty.Formatter;
 public class QLFormatHelper {
 
 	static public String formatForScreen(String query) {
-		return new Formatter(query).setInitialString("").setIndentString(" ").format();
+		return new Formatter(query).setInitialString("").setIndentString(" ").format(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

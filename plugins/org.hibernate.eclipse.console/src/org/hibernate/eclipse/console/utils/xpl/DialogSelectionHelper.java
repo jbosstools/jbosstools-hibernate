@@ -30,33 +30,34 @@ import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.views.navigator.ResourceSorter;
 import org.hibernate.eclipse.console.FileFilter;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 
 public class DialogSelectionHelper {
 
 	/**
-	 * 
+	 *
 	 * Shows the UI to select new JAR or ZIP archive entries located in the workspace.
 	 * The dialog returns the selected entries or <code>null</code> if the dialog has
 	 * been cancelled. The dialog does not apply any changes.
 	 * @param shell The parent shell for the dialog.
-	 * @param initialSelection The path of the element (container or archive) to initially select or <code>null</code> to not select an entry. 
+	 * @param initialSelection The path of the element (container or archive) to initially select or <code>null</code> to not select an entry.
 	 * @param usedEntries An array of paths that are already on the classpath and therefore should not be
 	 * selected again.
 	 * @param fileExtensions An array of file extensions.
 	 * @param allowMultiple allow multiple selections.
 	 * @param allowFiles TODO
 	 * @param acceptedTypes TODO
-	 * 
+	 *
 	 * @return Returns the new classpath container entry paths or <code>null</code> if the dialog has
 	 * been cancelled by the user.
-	 * 
-	 * Inspired by BuildPathDialogAccess.chooseJAREntries from jdt.ui.wizards 
+	 *
+	 * Inspired by BuildPathDialogAccess.chooseJAREntries from jdt.ui.wizards
 	 */
 	public static IPath[] chooseFileEntries(Shell shell, IPath initialSelection, IPath[] usedEntries, String title, String description, String[] fileExtensions, boolean allowMultiple, boolean allowDirectories, boolean allowFiles ) {
 		if (usedEntries == null) {
-			throw new IllegalArgumentException("used entries must be not-null");
+			throw new IllegalArgumentException(HibernateConsoleMessages.DialogSelectionHelper_used_entries_must_be_notnull);
 		}
-			
+
 		List clazzes = new ArrayList();
 		if(allowDirectories) {
 			clazzes.add(IFolder.class);
@@ -66,7 +67,7 @@ public class DialogSelectionHelper {
 			clazzes.add(IFile.class);
 		}
 		Class[] acceptedClasses = (Class[]) clazzes.toArray(new Class[clazzes.size()]);
-				
+
 		TypedElementSelectionValidator validator= new TypedElementSelectionValidator(acceptedClasses, true);
 		ArrayList usedFiles= new ArrayList(usedEntries.length);
 		IWorkspaceRoot root= ResourcesPlugin.getWorkspace().getRoot();
@@ -77,7 +78,7 @@ public class DialogSelectionHelper {
 			}
 		}
 		IResource focus= initialSelection != null ? root.findMember(initialSelection) : null;
-		
+
 		ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(shell, new WorkbenchLabelProvider(), new WorkbenchContentProvider() );
 		dialog.setValidator(validator);
 		dialog.setAllowMultiple(allowMultiple);
@@ -99,22 +100,22 @@ public class DialogSelectionHelper {
 		}
 		return null;
 	}
-	
+
 	public static IPath[] chooseFolderEntries(Shell shell, IPath initialSelection, String title, String description, boolean allowMultiple) {
 		List clazzes = new ArrayList();
 		clazzes.add(IFolder.class);
 		clazzes.add(IProject.class);
 
 		Class[] acceptedClasses = (Class[]) clazzes.toArray(new Class[clazzes.size()]);
-				
+
 		TypedElementSelectionValidator validator= new TypedElementSelectionValidator(acceptedClasses, true);
 		IWorkspaceRoot root= ResourcesPlugin.getWorkspace().getRoot();
 		IResource focus= initialSelection != null ? root.findMember(initialSelection) : null;
-		
+
 		ElementTreeSelectionDialog dialog= null;
 		dialog = new FolderSelectionDialog(shell, new WorkbenchLabelProvider(), new WorkbenchContentProvider() );
 		//	dialog = new FileFolderSelectionDialog(shell, allowMultiple, allowDirectories ? IResource.FOLDER : IResource.FILE );
-		
+
 		dialog.setValidator(validator);
 		dialog.setAllowMultiple(allowMultiple);
 		dialog.setTitle(title);

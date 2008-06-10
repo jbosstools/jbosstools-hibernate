@@ -29,14 +29,15 @@ import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 /**
  * This class represents a preference page that
- * is contributed to the Preferences dialog. By 
+ * is contributed to the Preferences dialog. By
  * subclassing <samp>FieldEditorPreferencePage</samp>, we
  * can use the field support built into JFace that allows
- * us to create a page that is small and knows how to 
+ * us to create a page that is small and knows how to
  * save, restore and apply itself.
  * <p>
  * This page is used to modify preferences only. They
@@ -49,15 +50,15 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 public class HibernateConsolePreferencePage
 	extends FieldEditorPreferencePage
 	implements IWorkbenchPreferencePage {
-	public static final String P_PATH = "pathPreference";
-	public static final String P_BOOLEAN = "booleanPreference";
-	public static final String P_CHOICE = "choicePreference";
-	public static final String P_STRING = "stringPreference";
+	public static final String P_PATH = "pathPreference"; //$NON-NLS-1$
+	public static final String P_BOOLEAN = "booleanPreference"; //$NON-NLS-1$
+	public static final String P_CHOICE = "choicePreference"; //$NON-NLS-1$
+	public static final String P_STRING = "stringPreference"; //$NON-NLS-1$
 
 	public HibernateConsolePreferencePage() {
 		super(GRID);
 		setPreferenceStore(HibernateConsolePlugin.getDefault().getPreferenceStore() );
-		setDescription("A demonstration of a preference page implementation");
+		setDescription(HibernateConsoleMessages.HibernateConsolePreferencePage_demo_of_pref_page_impl);
 		initializeDefaults();
 	}
 /**
@@ -66,10 +67,10 @@ public class HibernateConsolePreferencePage
 	private void initializeDefaults() {
 		IPreferenceStore store = getPreferenceStore();
 		store.setDefault(P_BOOLEAN, true);
-		store.setDefault(P_CHOICE, "choice2");
-		store.setDefault(P_STRING, "Default value");
+		store.setDefault(P_CHOICE, HibernateConsoleMessages.HibernateConsolePreferencePage_choice2);
+		store.setDefault(P_STRING, HibernateConsoleMessages.HibernateConsolePreferencePage_def_value);
 	}
-	
+
 /**
  * Creates the field editors. Field editors are abstractions of
  * the common GUI blocks needed to manipulate various types
@@ -78,25 +79,25 @@ public class HibernateConsolePreferencePage
  */
 
 	public void createFieldEditors() {
-		addField(new DirectoryFieldEditor(P_PATH, 
-				"&Directory preference:", getFieldEditorParent() ) );
+		addField(new DirectoryFieldEditor(P_PATH,
+				HibernateConsoleMessages.HibernateConsolePreferencePage_dir_preference, getFieldEditorParent() ) );
 		addField(
 			new BooleanFieldEditor(
 				P_BOOLEAN,
-				"&An example of a boolean preference",
+				HibernateConsoleMessages.HibernateConsolePreferencePage_example_of_bool_pref,
 				getFieldEditorParent() ) );
 
 		addField(new RadioGroupFieldEditor(
 			P_CHOICE,
-			"An example of a multiple-choice preference",
+			HibernateConsoleMessages.HibernateConsolePreferencePage_example_of_multichoise_pref,
 			1,
-			new String[][] { { "&Choice 1", "choice1" }, {
-				"C&hoice 2", "choice2" }
+			new String[][] { { HibernateConsoleMessages.HibernateConsolePreferencePage_choice_1, HibernateConsoleMessages.HibernateConsolePreferencePage_choice1 }, {
+				HibernateConsoleMessages.HibernateConsolePreferencePage_choice_2, HibernateConsoleMessages.HibernateConsolePreferencePage_choice2 }
 		}, getFieldEditorParent() ) );
 		addField(
-			new StringFieldEditor(P_STRING, "A &text preference:", getFieldEditorParent() ) );
+			new StringFieldEditor(P_STRING, HibernateConsoleMessages.HibernateConsolePreferencePage_text_pref, getFieldEditorParent() ) );
 	}
-	
+
 	public void init(IWorkbench workbench) {
 	}
 }

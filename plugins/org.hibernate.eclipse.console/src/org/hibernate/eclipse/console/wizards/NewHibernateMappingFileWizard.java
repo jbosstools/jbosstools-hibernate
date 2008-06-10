@@ -43,6 +43,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.ide.IDE;
 import org.hibernate.console.ImageConstants;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.utils.xpl.SelectionHelper;
@@ -52,8 +53,8 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard 
 	private NewHibernateMappingFilePage mappingFileInfoPage;
 	private ISelection selection;
     private WizardNewFileCreationPage cPage;
-	
-	
+
+
 	/**
 	 * Constructor for NewConfigurationWizard.
 	 */
@@ -85,24 +86,24 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard 
 
 	public void addPages() {
         cPage =
-        new ExtendedWizardNewFileCreationPage( "Chbmxml", (IStructuredSelection) selection );
-        cPage.setTitle( "Create Hibernate XML Mapping file (hbm.xml)" );
-        cPage.setDescription( "Create a new XML Mapping file." );
+        new ExtendedWizardNewFileCreationPage( "Chbmxml", (IStructuredSelection) selection ); //$NON-NLS-1$
+        cPage.setTitle( HibernateConsoleMessages.NewHibernateMappingFileWizard_create_hibernate_xml_mapping_file );
+        cPage.setDescription( HibernateConsoleMessages.NewHibernateMappingFileWizard_create_new_xml_mapping_file );
         IType initialJavaElement = SelectionHelper.getClassFromElement(SelectionHelper.getInitialJavaElement(selection));
 		if(initialJavaElement!=null) {
-			cPage.setFileName(initialJavaElement.getElementName() + ".hbm.xml");
+			cPage.setFileName(initialJavaElement.getElementName() + ".hbm.xml"); //$NON-NLS-1$
 		} else {
-			cPage.setFileName("NewMapping.hbm.xml");
+			cPage.setFileName("NewMapping.hbm.xml"); //$NON-NLS-1$
 		}
-        addPage( cPage );        
-        
-        
+        addPage( cPage );
+
+
         mappingFileInfoPage = new NewHibernateMappingFilePage(selection, cPage);
 		addPage(mappingFileInfoPage);
-						
+
 	}
-    
-    
+
+
 
 	/**
 	 * This method is called when 'Finish' button is pressed in
@@ -112,7 +113,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard 
 	public boolean performFinish() {
 		final IFile file = cPage.createNewFile();
 		final String classToMapText = mappingFileInfoPage.getClassToMapText();
-		
+
 		IRunnableWithProgress op = new IRunnableWithProgress() {
 			public void run(IProgressMonitor monitor) throws InvocationTargetException {
 				try {
@@ -135,25 +136,25 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard 
 		}
 		return true;
 	}
-	
+
 
     /**
 	 * The worker method. It will find the container, create the
 	 * file if missing or just replace its contents, and open
 	 * the editor on the newly created file.
-     * @param file 
-     * @param props 
+     * @param file
+     * @param props
 	 */
 
 	private void createFile(
 		final IFile file, String classToMapText, IProgressMonitor monitor)
 		throws CoreException {
 		// create a sample file
-		monitor.beginTask("Creating " + file.getName(), 2);		
+		monitor.beginTask(HibernateConsoleMessages.NewHibernateMappingFileWizard_creating + file.getName(), 2);
 		try {
 			InputStream stream = openContentStream(classToMapText);
 			if (file.exists() ) {
-                file.setContents(stream, true, true, monitor);                
+                file.setContents(stream, true, true, monitor);
 			} else {
 				file.create(stream, true, monitor);
 			}
@@ -161,7 +162,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard 
 		} catch (IOException e) {
 		}
 		monitor.worked(1);
-		monitor.setTaskName("Opening file for editing...");
+		monitor.setTaskName(HibernateConsoleMessages.NewHibernateMappingFileWizard_opening_file_for_editing);
 		getShell().getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				IWorkbenchPage page =
@@ -174,40 +175,40 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard 
 		});
 		monitor.worked(1);
 	}
-	
+
 	/**
 	 * We will initialize file contents with a sample text.
 	 */
-	
-	private InputStream openContentStream(String classToMapText) {		
-		
+
+	private InputStream openContentStream(String classToMapText) {
+
 		String classname = null;
 		String packagename = null;
-		
+
 		if(StringHelper.isNotEmpty(classToMapText)) {
 			classname = StringHelper.unqualify(classToMapText);
 			packagename = StringHelper.qualifier(classToMapText);
 		}
 		String contents =
-			"<?xml version=\"1.0\"?>\n" + 
-			"<!DOCTYPE hibernate-mapping PUBLIC\n" + 
-			"	\"-//Hibernate/Hibernate Mapping DTD 3.0//EN\"\n" + 
-			"	\"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd\">\n" + 
-			"<hibernate-mapping";
-		
+			"<?xml version=\"1.0\"?>\n" +  //$NON-NLS-1$
+			"<!DOCTYPE hibernate-mapping PUBLIC\n" +  //$NON-NLS-1$
+			"	\"-//Hibernate/Hibernate Mapping DTD 3.0//EN\"\n" +  //$NON-NLS-1$
+			"	\"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd\">\n" +  //$NON-NLS-1$
+			"<hibernate-mapping"; //$NON-NLS-1$
+
 		if(StringHelper.isNotEmpty(packagename)) {
-			contents +=" package=\"" + packagename + "\">";
+			contents +=" package=\"" + packagename + "\">";  //$NON-NLS-1$//$NON-NLS-2$
 		} else {
-			contents +=">\n";
+			contents +=">\n"; //$NON-NLS-1$
 		}
-		
+
 		if(StringHelper.isNotEmpty(classname)) {
-			contents +="\n  <class name=\"" + classname + "\">\n" +
-					"  </class>";
-		} 
-		
-		contents += "\n</hibernate-mapping>";
-		
+			contents +="\n  <class name=\"" + classname + "\">\n" + //$NON-NLS-1$ //$NON-NLS-2$
+					"  </class>"; //$NON-NLS-1$
+		}
+
+		contents += "\n</hibernate-mapping>"; //$NON-NLS-1$
+
 		return new ByteArrayInputStream(contents.getBytes());
 	}
 
@@ -217,8 +218,8 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard 
 	 * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
 	 */
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		this.selection = selection;        
+		this.selection = selection;
 	}
-	
-	
+
+
 }

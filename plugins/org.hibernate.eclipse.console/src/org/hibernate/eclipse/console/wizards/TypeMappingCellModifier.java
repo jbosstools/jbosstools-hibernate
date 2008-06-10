@@ -36,32 +36,32 @@ final public class TypeMappingCellModifier implements ICellModifier {
 
 	public void modify(Object element, String property, Object value) {
 		ITypeMapping tf = (ITypeMapping) ((TableItem)element).getData();
-		if("jdbctype".equals(property)) {
+		if("jdbctype".equals(property)) { //$NON-NLS-1$
 			if(!safeEquals( value, tf.getJDBCType() )) {
 				tf.setJDBCType((String) value);
 			}
 		}
-		if("hibernatetype".equals(property)) {
+		if("hibernatetype".equals(property)) { //$NON-NLS-1$
 			if(!safeEquals( value, tf.getHibernateType())) {
 				tf.setHibernateType((String) value);
 			}
 		}
-		if("length".equals(property)) {
+		if("length".equals(property)) { //$NON-NLS-1$
 			if(!safeEquals(value, tf.getLength())) {
 				tf.setLength((Integer) value);
 			}
 		}
-		if("precision".equals(property)) {
+		if("precision".equals(property)) { //$NON-NLS-1$
 			if(!safeEquals(value, tf)) {
 				tf.setPrecision((Integer) value);
 			}
 		}
-		if("scale".equals(property)) {
+		if("scale".equals(property)) { //$NON-NLS-1$
 			if(!safeEquals(value,tf.getScale())) {
 				tf.setScale((Integer) value);
 			}
 		}
-		if("not-null".equals(property)) {
+		if("not-null".equals(property)) { //$NON-NLS-1$
 			Boolean integerToBoolean = notnullToNullable((Integer) value);
 			if(!safeEquals(integerToBoolean,tf.getNullable())) {
 				tf.setNullable(integerToBoolean);
@@ -85,24 +85,24 @@ final public class TypeMappingCellModifier implements ICellModifier {
 
 	public Object getValue(Object element, String property) {
 		ITypeMapping tf = (ITypeMapping) element;
-		if("precision".equals(property)) {
+		if("precision".equals(property)) { //$NON-NLS-1$
 			return tf.getPrecision();
 		}
-		if("jdbctype".equals(property)) {
+		if("jdbctype".equals(property)) { //$NON-NLS-1$
 			return tf.getJDBCType();
 		}
-		if("hibernatetype".equals(property)) {
+		if("hibernatetype".equals(property)) { //$NON-NLS-1$
 			return tf.getHibernateType();
 		}
-		if("scale".equals(property)) {
+		if("scale".equals(property)) { //$NON-NLS-1$
 			return tf.getScale();
 		}		
 
-		if("length".equals(property)) {
+		if("length".equals(property)) { //$NON-NLS-1$
 			return tf.getLength();
 		}
 		
-		if("not-null".equals(property)) {
+		if("not-null".equals(property)) { //$NON-NLS-1$
 			if(tf.getNullable()==null) {
 				return new Integer(2);
 			}

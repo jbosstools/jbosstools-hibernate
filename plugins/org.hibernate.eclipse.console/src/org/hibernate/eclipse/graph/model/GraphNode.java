@@ -35,7 +35,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public abstract class GraphNode extends Observable {
 
-	public static final String ASSOCIATONS = "ASSOCIATIONS";
+	public static final String ASSOCIATONS = "ASSOCIATIONS"; //$NON-NLS-1$
 	private Rectangle bounds = new Rectangle( 0, 0, -1, -1 );
 	protected List targetAssociations;
 	protected List sourceAssociations;

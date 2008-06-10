@@ -25,6 +25,7 @@ import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.LabelProviderChangedEvent;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -35,10 +36,11 @@ import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.eclipse.ui.model.IWorkbenchAdapter2;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 
 /**
  * LabelProvider based on WorkBenchLabelProvider that is not limited to WorkBench elements.
- * 
+ *
  * @author Max Rydahl Andersen
  *
  */
@@ -48,7 +50,7 @@ public class AnyAdaptableLabelProvider extends LabelProvider implements
     /**
      * Returns a workbench label provider that is hooked up to the decorator
      * mechanism.
-     * 
+     *
      * @return a new <code>DecoratingLabelProvider</code> which wraps a <code>
      *   new <code>WorkbenchLabelProvider</code>
      */
@@ -57,7 +59,7 @@ public class AnyAdaptableLabelProvider extends LabelProvider implements
                 PlatformUI.getWorkbench().getDecoratorManager()
                         .getLabelDecorator());
     }
-    
+
     /**
      * Listener that tracks changes to the editor registry and does a full update
      * when it changes, since many workbench adapters derive their icon from the file
@@ -87,7 +89,7 @@ public class AnyAdaptableLabelProvider extends LabelProvider implements
      *
      * Subclasses may reimplement this method to decorate an object's
      * image.
-     * 
+     *
      * @param input The base image to decorate.
      * @param element The element used to look up decorations.
      * @return the resuling ImageDescriptor.
@@ -122,13 +124,13 @@ public class AnyAdaptableLabelProvider extends LabelProvider implements
     	resourceManager = null;
     	super.dispose();
     }
-    
+
     /**
      * Returns the implementation of IWorkbenchAdapter for the given
-     * object.  
+     * object.
      * @param o the object to look up.
      * @return IWorkbenchAdapter or<code>null</code> if the adapter is not defined or the
-     * object is not adaptable. 
+     * object is not adaptable.
      */
     protected final IWorkbenchAdapter getAdapter(Object o) {
         if (o instanceof IAdaptable) {
@@ -140,10 +142,10 @@ public class AnyAdaptableLabelProvider extends LabelProvider implements
 
     /**
      * Returns the implementation of IWorkbenchAdapter2 for the given
-     * object.  
+     * object.
      * @param o the object to look up.
      * @return IWorkbenchAdapter2 or<code>null</code> if the adapter is not defined or the
-     * object is not adaptable. 
+     * object is not adaptable.
      */
     protected final IWorkbenchAdapter2 getAdapter2(Object o) {
     	if (o instanceof IAdaptable) {
@@ -183,7 +185,8 @@ public class AnyAdaptableLabelProvider extends LabelProvider implements
         	return (String) element;
         }
         if (adapter == null) {
-            return "Unknown: " + element.getClass().getName() + "(" + element + ")"; //$NON-NLS-1$
+        	String out = NLS.bind(HibernateConsoleMessages.AnyAdaptableLabelProvider_unknown, element.getClass().getName(), element);
+            return out;
         }
         String label = adapter.getLabel(element);
 

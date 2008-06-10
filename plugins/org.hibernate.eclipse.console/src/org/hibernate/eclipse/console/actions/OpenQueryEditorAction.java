@@ -7,6 +7,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.actions.SelectionListenerAction;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
@@ -25,7 +26,7 @@ public abstract class OpenQueryEditorAction extends SelectionListenerAction {
 			showed = doRun(paths);
 		}
 		if(!showed) {
-			openQueryEditor( null, "" );			
+			openQueryEditor( null, "" );			 //$NON-NLS-1$
 		}
 	}
 
@@ -38,14 +39,14 @@ public abstract class OpenQueryEditorAction extends SelectionListenerAction {
 			  openQueryEditor( config, generateQuery(path) );
 			  showed = true;
 			} catch(HibernateException he) {
-				HibernateConsolePlugin.getDefault().showError(null, "Exception while trying to open HQL editor", he);
+				HibernateConsolePlugin.getDefault().showError(null, HibernateConsoleMessages.OpenQueryEditorAction_exception_open_hql_editor, he);
 			}
 		}
-		return showed;							
+		return showed;
 	}
 
 	protected abstract void openQueryEditor(final ConsoleConfiguration config, String query);
-	
+
 	/**
 	 * Generates default query for selected element.
 	 * @param selection

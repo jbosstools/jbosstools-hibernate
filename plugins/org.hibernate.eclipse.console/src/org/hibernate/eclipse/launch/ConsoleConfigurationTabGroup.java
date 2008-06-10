@@ -11,6 +11,7 @@ import org.eclipse.jdt.internal.debug.ui.classpath.ClasspathModel;
 import org.eclipse.jdt.internal.debug.ui.classpath.IClasspathEntry;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 public class ConsoleConfigurationTabGroup extends
@@ -20,18 +21,18 @@ public class ConsoleConfigurationTabGroup extends
 
 	}
 
-	
+
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
 		ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[] {
 				new ConsoleConfigurationMainTab(),
 				new ConsoleConfigurationOptionsTab(),
 				new JavaClasspathTab() {
-				
+
 					public boolean isShowBootpath() {
 						return false;
 					}
-				
-					public boolean isValid(ILaunchConfiguration launchConfig) {						
+
+					public boolean isValid(ILaunchConfiguration launchConfig) {
 						if(super.isValid( launchConfig )) {
 							setErrorMessage( null );
 							setMessage( null );
@@ -44,32 +45,32 @@ public class ConsoleConfigurationTabGroup extends
 										return true;
 									}
 								}
-								
+
 							}
 							catch (CoreException e) {
 								HibernateConsolePlugin.getDefault().log( e );
 							}
-							setErrorMessage( "Classpath must be set or restored to default" );
-							return false;													
-						} 
-						return false;						
+							setErrorMessage( HibernateConsoleMessages.ConsoleConfigurationTabGroup_classpath_must_be_set_or_restored_to_default );
+							return false;
+						}
+						return false;
 					}
-					
+
 					public void initializeFrom(ILaunchConfiguration configuration) {
-						
+
 						super.initializeFrom( configuration );
 					}
-					
+
 					public boolean canSave() {
 						return super.canSave();
 					}
 				},
 				new ConsoleConfigurationMappingsTab(),
 				new CommonTab(),
-				
+
 			};
-			
-			this.setTabs(tabs);		
+
+			this.setTabs(tabs);
 	}
 
 }

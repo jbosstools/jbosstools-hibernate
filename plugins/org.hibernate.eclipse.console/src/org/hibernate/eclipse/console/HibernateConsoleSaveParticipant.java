@@ -37,7 +37,7 @@ import org.eclipse.core.runtime.Path;
  */
 public class HibernateConsoleSaveParticipant implements ISaveParticipant {
 
-	static final String SAVENAME = "hibernate-console.xml";
+	static final String SAVENAME = "hibernate-console.xml"; //$NON-NLS-1$
 	
 	public void prepareToSave(ISaveContext context) throws CoreException {
 
@@ -50,7 +50,7 @@ public class HibernateConsoleSaveParticipant implements ISaveParticipant {
 		case ISaveContext.SNAPSHOT:
 			// save the plug-in state
 			int saveNumber = context.getSaveNumber();
-			String saveFileName = SAVENAME + "-" + Integer.toString(saveNumber);
+			String saveFileName = SAVENAME + "-" + Integer.toString(saveNumber); //$NON-NLS-1$
 			File f = HibernateConsolePlugin
 					.getDefault().getStateLocation().append(saveFileName)
 					.toFile();
@@ -81,7 +81,7 @@ public class HibernateConsoleSaveParticipant implements ISaveParticipant {
 
 		// delete the old saved state since it is not necessary anymore
 		int previousSaveNumber = context.getPreviousSaveNumber();
-		String oldFileName = SAVENAME + "-" + Integer.toString(previousSaveNumber);
+		String oldFileName = SAVENAME + "-" + Integer.toString(previousSaveNumber); //$NON-NLS-1$
 		File f = myPluginInstance.getStateLocation().append(oldFileName)
 				.toFile();
 		//System.out.println("delete " + f);
@@ -95,7 +95,7 @@ public class HibernateConsoleSaveParticipant implements ISaveParticipant {
 		// since the save operation has failed, delete the saved state we have
 		// just written
 		int saveNumber = context.getSaveNumber();
-		String saveFileName = SAVENAME + "-" + Integer.toString(saveNumber);
+		String saveFileName = SAVENAME + "-" + Integer.toString(saveNumber); //$NON-NLS-1$
 		File f = myPluginInstance.getStateLocation().append(saveFileName)
 				.toFile();
 		f.delete();

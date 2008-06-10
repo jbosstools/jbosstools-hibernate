@@ -27,6 +27,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
 import org.eclipse.ui.progress.IElementCollector;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 
 public class KnownConfigurationsWorkbenchAdapter implements IDeferredWorkbenchAdapter {
 
@@ -40,7 +41,7 @@ public class KnownConfigurationsWorkbenchAdapter implements IDeferredWorkbenchAd
 	}
 
 	public String getLabel(Object o) {
-		return "Configurations";
+		return HibernateConsoleMessages.KnownConfigurationsWorkbenchAdapter_configurations;
 	}
 
 	public Object getParent(Object o) {

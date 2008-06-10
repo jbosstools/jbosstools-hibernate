@@ -37,7 +37,7 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
  */
 public class HibernateBuilder extends IncrementalProjectBuilder {
 
-	public static final String BUILDER_ID = HibernateConsolePlugin.ID + ".hibernateBuilder";
+	public static final String BUILDER_ID = HibernateConsolePlugin.ID + ".hibernateBuilder"; //$NON-NLS-1$
 	
     protected IProject[] build(int kind, Map args, final IProgressMonitor monitor)
             throws CoreException {

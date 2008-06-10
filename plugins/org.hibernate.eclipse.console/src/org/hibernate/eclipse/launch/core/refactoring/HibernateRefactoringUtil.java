@@ -42,6 +42,7 @@ import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
@@ -59,33 +60,33 @@ import org.xml.sax.SAXException;
  *
  */
 public class HibernateRefactoringUtil {
-	
-	private static final String ERROR_MESS = "Error during refactoring";
-	
+
+	private static final String ERROR_MESS = HibernateConsoleMessages.HibernateRefactoringUtil_error_during_refactoring;
+
 	private static String[] pathKeys = new String[]{
 		IConsoleConfigurationLaunchConstants.CFG_XML_FILE,
 		IConsoleConfigurationLaunchConstants.PROPERTY_FILE,
 		HibernateLaunchConstants.ATTR_TEMPLATE_DIR,
 		HibernateLaunchConstants.ATTR_OUTPUT_DIR,
-		HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_SETTINGS,		
+		HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_SETTINGS,
 		};
-	
+
 	private static String[] pathListKeys = new String[]{
-		IConsoleConfigurationLaunchConstants.FILE_MAPPINGS,	
+		IConsoleConfigurationLaunchConstants.FILE_MAPPINGS,
 	};
-	
+
 	public static boolean isConfigurationAffected(ILaunchConfiguration config, IPath oldPath) throws CoreException{
 		return isAttributesAffected(config, oldPath) || isClassPathAffected(config, oldPath);
 	}
-	
+
 	private static boolean isAttributesAffected(ILaunchConfiguration config, IPath oldPath) throws CoreException{
 		String attrib = null;
 		for (int i = 0; i < pathKeys.length; i++) {
 			attrib = config.getAttribute(pathKeys[i], (String)null);
-			if (isAttributeChanged(attrib, oldPath)) 
-				return true;			
+			if (isAttributeChanged(attrib, oldPath))
+				return true;
 		}
-		
+
 		for (int i = 0; i < pathListKeys.length; i++) {
 			List<String> list = config.getAttribute(pathListKeys[i], Collections.EMPTY_LIST);
 			List<String> newMappings = new ArrayList<String>();
@@ -100,7 +101,7 @@ public class HibernateRefactoringUtil {
 		}
 		return false;
 	}
-	
+
 	private static boolean isClassPathAffected(ILaunchConfiguration config, IPath oldPath) throws CoreException{
 		IRuntimeClasspathEntry[] entries;
 		try {
@@ -110,9 +111,9 @@ public class HibernateRefactoringUtil {
 		catch (CoreException e) {
 			HibernateConsolePlugin.getDefault().log( e );
 			return false;
-		}		
+		}
 	}
-	
+
 	public static boolean isRuntimeClassPathEntriesAffected(IRuntimeClasspathEntry[] entries, IPath oldPath){
 		String attrib = null;
 		String projName = null;
@@ -128,16 +129,16 @@ public class HibernateRefactoringUtil {
 		}
 		return false;
 	}
-	
+
 	public static boolean isAttributeChanged(String attrib, IPath path){
 		if (attrib == null || path == null) return false;
 		return path.isPrefixOf(new Path(attrib));
 	}
-	
+
 	public static ILaunchConfiguration updateLaunchConfig(ILaunchConfiguration config, IPath oldPath, IPath newPath) throws CoreException{
 		final ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
 		updateAttributes(oldPath, newPath, wc);
-		
+
 		//classpath
 		try {
 			IRuntimeClasspathEntry[] entries = JavaRuntime.computeUnresolvedRuntimeClasspath(config);
@@ -149,15 +150,15 @@ public class HibernateRefactoringUtil {
 		catch (CoreException e) {
 			HibernateConsolePlugin.getDefault().log( e );
 		}
-		
-		//JavaMigrationDelegate.updateResourceMapping(wc);		
+
+		//JavaMigrationDelegate.updateResourceMapping(wc);
 		if (wc.isDirty()) {
 			return wc.doSave();
 		} else {
 			return config;
 		}
 	}
-	
+
 	/*
 	 * Use  IRuntimeClasspathEntry[] and oldMementos instead of entries[i].getMemento(), because
 	 * when resource renamed instead of internalArchive you can have externalArchive.
@@ -185,13 +186,13 @@ public class HibernateRefactoringUtil {
 				newMementos.add(memento);
 			} else {
 				newMementos.add(entries[i].getMemento());
-			}			
+			}
 		}
 		return isChanged;
 	}
-	
+
 	private static String getUpdatedMemento(String memento, IPath newPath, IPath oldPath) throws CoreException{
-		String error_mess = "Error occured while updating classpath.";
+		String error_mess = HibernateConsoleMessages.HibernateRefactoringUtil_error_occured_while_updating_classpath;
 		DocumentBuilder builder;
 		try {
 			builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -202,22 +203,22 @@ public class HibernateRefactoringUtil {
 			TransformerFactory tf = TransformerFactory.newInstance();
 			Transformer transformer = tf.newTransformer();
 			transformer.transform(domSource, result);
-				
-			org.w3c.dom.NodeList nodeList = doc.getElementsByTagName("runtimeClasspathEntry");
-				
+
+			org.w3c.dom.NodeList nodeList = doc.getElementsByTagName("runtimeClasspathEntry"); //$NON-NLS-1$
+
 			for (int i = 0; i < nodeList.getLength(); i++) {
 				org.w3c.dom.Node node = nodeList.item(i);
 				NamedNodeMap map = node.getAttributes();
 				Node changedNode = null;
 				//if (entry instanceof RuntimeClasspathEntry){
-					String[] attrNames = new String[]{"projectName", "externalArchive", "internalArchive", 
-							"containerPath", "javaProject"};
+					String[] attrNames = new String[]{"projectName", "externalArchive", "internalArchive",  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							"containerPath", "javaProject"}; //$NON-NLS-1$ //$NON-NLS-2$
 					for (int j = 0; j < attrNames.length; j++) {
 						changedNode = map.getNamedItem(attrNames[j]);
 						if (changedNode != null){
 							Path attrPath = new Path(changedNode.getNodeValue());
 							if (oldPath.isPrefixOf(attrPath)){
-								if (attrNames[j].equals("projectName") || attrNames[j].equals("javaProject")){
+								if (attrNames[j].equals("projectName") || attrNames[j].equals("javaProject")){  //$NON-NLS-1$//$NON-NLS-2$
 									changedNode.setNodeValue(newPath.lastSegment());
 								} else {
 									changedNode.setNodeValue(newPath.toString());
@@ -229,11 +230,11 @@ public class HibernateRefactoringUtil {
 					if (node.getNodeType() == Node.ELEMENT_NODE)
 					{
 						Element element = (Element) node;
-						NodeList mementoList = element.getElementsByTagName("memento");
+						NodeList mementoList = element.getElementsByTagName("memento"); //$NON-NLS-1$
 						for(int j=0; j < mementoList.getLength(); j++)
 						{
 							map = mementoList.item(j).getAttributes();
-							changedNode = map.getNamedItem("project");							
+							changedNode = map.getNamedItem("project");							 //$NON-NLS-1$
 							if (changedNode != null){
 								Path attrPath = new Path(changedNode.getNodeValue());
 								if (oldPath.isPrefixOf(attrPath)){
@@ -251,20 +252,20 @@ public class HibernateRefactoringUtil {
 		    transformer = tf.newTransformer();
 		    transformer.transform(domSource, result);
 			return writer.toString();*/
-			
+
 			String newMemento = DebugPlugin.serializeDocument(doc);
 			return newMemento;
 		} catch (ParserConfigurationException e) {
-			IStatus status = new Status(IStatus.ERROR, HibernateConsolePlugin.ID, error_mess, e); 
+			IStatus status = new Status(IStatus.ERROR, HibernateConsolePlugin.ID, error_mess, e);
 			throw new CoreException(status);
 		} catch (SAXException e) {
-			IStatus status = new Status(IStatus.ERROR, HibernateConsolePlugin.ID, error_mess, e); 
+			IStatus status = new Status(IStatus.ERROR, HibernateConsolePlugin.ID, error_mess, e);
 			throw new CoreException(status);
 		} catch (IOException e) {
-			IStatus status = new Status(IStatus.ERROR, HibernateConsolePlugin.ID, error_mess, e); 
+			IStatus status = new Status(IStatus.ERROR, HibernateConsolePlugin.ID, error_mess, e);
 			throw new CoreException(status);
 		} catch (TransformerException e) {
-			IStatus status = new Status(IStatus.ERROR, HibernateConsolePlugin.ID, error_mess, e); 
+			IStatus status = new Status(IStatus.ERROR, HibernateConsolePlugin.ID, error_mess, e);
 			throw new CoreException(status);
 		}
 	}
@@ -279,7 +280,7 @@ public class HibernateRefactoringUtil {
 				wc.setAttribute(pathKeys[i], attrib);
 			}
 		}
-		
+
 		boolean isChanged = false;
 		for (int i = 0; i < pathListKeys.length; i++) {
 			List<String> list = wc.getAttribute(pathListKeys[i], Collections.EMPTY_LIST);
@@ -297,10 +298,10 @@ public class HibernateRefactoringUtil {
 			if (isChanged) wc.setAttribute(pathListKeys[i], newMappings);
 		}
 	}
-	
+
 	private static String getUpdatedPath(String attrib, IPath oldPath, IPath newPath){
 		IPath attribPath = new Path(attrib);
-		IPath newAttribPath = new Path("/");
+		IPath newAttribPath = new Path("/"); //$NON-NLS-1$
 		for (int j = 0; j < attribPath.segmentCount(); j++){
 			if (!oldPath.isPrefixOf(attribPath.removeFirstSegments(j))){
 				//add prefix
@@ -314,7 +315,7 @@ public class HibernateRefactoringUtil {
 		}
 		return newAttribPath.toOSString();
 	}
-	
+
 	public static ILaunchConfiguration[] getAffectedLaunchConfigurations(IPath path){
 		ILaunchConfiguration[] configs = null;
 		try {
@@ -330,10 +331,10 @@ public class HibernateRefactoringUtil {
 			configs = new ILaunchConfiguration[0];
 			HibernateConsolePlugin.getDefault().logErrorMessage( ERROR_MESS, e );
 		}
-		
+
 		return configs;
 	}
-	
+
 	/**
 	 * @param changes - List of Change objects
 	 * @return

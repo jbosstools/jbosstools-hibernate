@@ -119,9 +119,9 @@ public class HQLPartitionScanner extends RuleBasedPartitionScanner {
         List rules= new ArrayList();
 
         // Add rules for comments, quoted literals, and delimited identifiers.
-        rules.add( new EndOfLineRule( "--", new Token( HQL_COMMENT )));
-        rules.add( new SingleLineRule( "'", "'", new Token( HQL_QUOTED_LITERAL ), '\\' ));
-        rules.add( new SingleLineRule( "\"", "\"", new Token( HQL_DELIMITED_IDENTIFIER ), '\\' ));
+        rules.add( new EndOfLineRule( "--", new Token( HQL_COMMENT ))); //$NON-NLS-1$
+        rules.add( new SingleLineRule( "'", "'", new Token( HQL_QUOTED_LITERAL ), '\\' ));  //$NON-NLS-1$//$NON-NLS-2$
+        rules.add( new SingleLineRule( "\"", "\"", new Token( HQL_DELIMITED_IDENTIFIER ), '\\' ));  //$NON-NLS-1$//$NON-NLS-2$
 
         IPredicateRule[] result= new IPredicateRule[ rules.size() ];
         rules.toArray( result );

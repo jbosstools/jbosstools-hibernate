@@ -22,17 +22,18 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 
 /**
  * @author Dmitry Geraskov
  *
  */
 public class LaunchConfigurationResourceNameChange extends Change {
-	
+
 	private ILaunchConfiguration fLaunchConfiguration;
 	private IPath fOldPath;
 	private IPath fNewPath;
-	
+
 	/**
 	 * LaunchConfigurationResourceMoveChange constructor.
 	 * @param launchConfiguration the launch configuration to modify
@@ -56,7 +57,7 @@ public class LaunchConfigurationResourceNameChange extends Change {
 	 * @see org.eclipse.ltk.core.refactoring.Change#getName()
 	 */
 	public String getName() {
-		return "Update resource path in launch configuration " + fLaunchConfiguration.getName();
+		return HibernateConsoleMessages.LaunchConfigurationResourceNameChange_update_resource_path_in_launch_cfg + fLaunchConfiguration.getName();
 	}
 
 	/* (non-Javadoc)
@@ -84,17 +85,17 @@ public class LaunchConfigurationResourceNameChange extends Change {
 			int matchSegment = oldConfigLocation.matchingFirstSegments(rootLoacation);
 			IPath relativePath = oldConfigLocation.removeFirstSegments(matchSegment);
 			relativePath = relativePath.setDevice(null).makeAbsolute();
-			
+
 			if (HibernateRefactoringUtil.isAttributeChanged(relativePath.toOSString(), fOldPath)){
 				matchSegment = relativePath.matchingFirstSegments(fOldPath);
 				IPath newLaunchPath = fNewPath.append(relativePath.removeFirstSegments(matchSegment));
 				IFile[] files = root.findFilesForLocation(rootLoacation.append(newLaunchPath));
 				if (files.length > 0){
 					fLaunchConfiguration = DebugPlugin.getDefault().getLaunchManager().getLaunchConfiguration(files[0]);
-				} 
-			} 
+				}
+			}
 		}
-		fLaunchConfiguration = HibernateRefactoringUtil.updateLaunchConfig(fLaunchConfiguration, fOldPath, fNewPath);			
+		fLaunchConfiguration = HibernateRefactoringUtil.updateLaunchConfig(fLaunchConfiguration, fOldPath, fNewPath);
 		return new LaunchConfigurationResourceNameChange(fLaunchConfiguration, fNewPath, fOldPath);
 	}
 }

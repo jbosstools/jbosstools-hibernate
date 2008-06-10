@@ -3,14 +3,15 @@ package org.hibernate.eclipse.hqleditor.preferences;
 import org.eclipse.jface.preference.*;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 /**
  * This class represents a preference page that
- * is contributed to the Preferences dialog. By 
+ * is contributed to the Preferences dialog. By
  * subclassing <samp>FieldEditorPreferencePage</samp>, we
  * can use the field support built into JFace that allows
- * us to create a page that is small and knows how to 
+ * us to create a page that is small and knows how to
  * save, restore and apply itself.
  * <p>
  * This page is used to modify preferences only. They
@@ -26,9 +27,9 @@ public class HQLEditorPreferencePage
 	public HQLEditorPreferencePage() {
 		super(GRID);
 		setPreferenceStore(HibernateConsolePlugin.getDefault().getPreferenceStore());
-		setDescription("Colors for HQL editor syntax highlighting");
+		setDescription(HibernateConsoleMessages.HQLEditorPreferencePage_colors_for_hql_editor_highlighting);
 	}
-	
+
 	/**
 	 * Creates the field editors. Field editors are abstractions of
 	 * the common GUI blocks needed to manipulate various types
@@ -36,14 +37,14 @@ public class HQLEditorPreferencePage
 	 * restore itself.
 	 */
 	public void createFieldEditors() {
-		addField(new ColorFieldEditor(HQLPreferenceConstants.HQL_DEFAULT_COLOR, 
-				"Default:", getFieldEditorParent())); 
-		addField(new ColorFieldEditor(HQLPreferenceConstants.HQL_IDENTIFIER_COLOR, 
-				"Identifier:", getFieldEditorParent()));
-		addField(new ColorFieldEditor(HQLPreferenceConstants.HQL_KEYWORD_COLOR, 
-				"Keyword:", getFieldEditorParent()));
-		addField(new ColorFieldEditor(HQLPreferenceConstants.HQL_QUOTED_LITERAL_COLOR, 
-				"String literal:", getFieldEditorParent()));
+		addField(new ColorFieldEditor(HQLPreferenceConstants.HQL_DEFAULT_COLOR,
+				HibernateConsoleMessages.HQLEditorPreferencePage_default, getFieldEditorParent()));
+		addField(new ColorFieldEditor(HQLPreferenceConstants.HQL_IDENTIFIER_COLOR,
+				HibernateConsoleMessages.HQLEditorPreferencePage_identifier, getFieldEditorParent()));
+		addField(new ColorFieldEditor(HQLPreferenceConstants.HQL_KEYWORD_COLOR,
+				HibernateConsoleMessages.HQLEditorPreferencePage_keyword, getFieldEditorParent()));
+		addField(new ColorFieldEditor(HQLPreferenceConstants.HQL_QUOTED_LITERAL_COLOR,
+				HibernateConsoleMessages.HQLEditorPreferencePage_string_literal, getFieldEditorParent()));
 		}
 
 	/* (non-Javadoc)
@@ -51,5 +52,5 @@ public class HQLEditorPreferencePage
 	 */
 	public void init(IWorkbench workbench) {
 	}
-	
+
 }

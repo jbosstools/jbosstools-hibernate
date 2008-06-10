@@ -54,16 +54,17 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.eclipse.HibernatePlugin;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.util.ReflectHelper;
 
-/** 
+/**
  * Represents what is specified in plugin.xml about possible exporters.
  *
  */
 public class ExporterDefinition {
-	
+
 	final private String classname;
 
 	final private String description;
@@ -75,11 +76,11 @@ public class ExporterDefinition {
 	final private Map properties;
 
 	public ExporterDefinition(IConfigurationElement element) {
-		this(element.getAttribute( "classname" ),
-			    element.getAttribute( "description" ),
-				element.getAttribute( "id" ),
+		this(element.getAttribute( "classname" ), //$NON-NLS-1$
+			    element.getAttribute( "description" ), //$NON-NLS-1$
+				element.getAttribute( "id" ), //$NON-NLS-1$
 				createProperties( element ),
-				createIcon( element ));			
+				createIcon( element ));
 	}
 
 	public ExporterDefinition(String className, String description, String id, Map properties, ImageDescriptor icon) {
@@ -91,9 +92,9 @@ public class ExporterDefinition {
 	}
 
 	static private ImageDescriptor createIcon(IConfigurationElement element) {
-		if ( element.getAttribute( "icon" ) != null ) {
+		if ( element.getAttribute( "icon" ) != null ) { //$NON-NLS-1$
 			return AbstractUIPlugin.imageDescriptorFromPlugin(
-					element.getNamespace(), element.getAttribute( "icon" ) );
+					element.getNamespace(), element.getAttribute( "icon" ) ); //$NON-NLS-1$
 		} else {
 			return null;
 		}
@@ -103,19 +104,19 @@ public class ExporterDefinition {
 		Map properties = new HashMap();
 
 		IConfigurationElement propertyElements[] = element
-				.getChildren( "property" );
+				.getChildren( "property" ); //$NON-NLS-1$
 		for (int i = 0; i < propertyElements.length; i++) {
 			ExporterProperty property = new ExporterProperty(
-				propertyElements[i].getAttribute("name"),
-				propertyElements[i].getAttribute("description"),
-				propertyElements[i].getAttribute("value"),
-				Boolean.valueOf(propertyElements[i].getAttribute("required")).booleanValue());
+				propertyElements[i].getAttribute("name"), //$NON-NLS-1$
+				propertyElements[i].getAttribute("description"), //$NON-NLS-1$
+				propertyElements[i].getAttribute("value"), //$NON-NLS-1$
+				Boolean.valueOf(propertyElements[i].getAttribute("required")).booleanValue()); //$NON-NLS-1$
 			properties.put(property.getName(),property);
 		}
 		return properties;
 	}
 
-	
+
 	public Exporter createExporterInstance() {
 	   Exporter exporter = null;
 
@@ -123,13 +124,13 @@ public class ExporterDefinition {
 		   exporter = (Exporter) ReflectHelper.classForName( classname ).newInstance();
 	   }
 	   catch (InstantiationException e) {
-		   throw new HibernateConsoleRuntimeException("Problem while creating exporter class " + classname);
+		   throw new HibernateConsoleRuntimeException(HibernateConsoleMessages.ExporterDefinition_problem_creating_exporter_class + classname);
 	   }
 	   catch (IllegalAccessException e) {
-		   throw new HibernateConsoleRuntimeException("Problem while creating exporter class " + classname);	}
+		   throw new HibernateConsoleRuntimeException(HibernateConsoleMessages.ExporterDefinition_problem_creating_exporter_class + classname);	}
 	   catch (ClassNotFoundException e) {
-		   throw new HibernateConsoleRuntimeException("Problem while creating exporter class " + classname);
-	   }         
+		   throw new HibernateConsoleRuntimeException(HibernateConsoleMessages.ExporterDefinition_problem_creating_exporter_class + classname);
+	   }
 
 	   return exporter;
 	}
@@ -162,10 +163,10 @@ public class ExporterDefinition {
 
 		return enabled;
 	}
-	
+
 	public String getId() {
 		return id;
 	}
 
-	
+
 }

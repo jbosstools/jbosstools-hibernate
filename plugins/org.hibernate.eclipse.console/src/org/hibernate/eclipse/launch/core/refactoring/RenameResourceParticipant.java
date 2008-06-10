@@ -22,13 +22,14 @@ import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.participants.CheckConditionsContext;
 import org.eclipse.ltk.core.refactoring.participants.RenameParticipant;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 
 /**
  * @author Dmitry Geraskov
  *
  */
 public class RenameResourceParticipant extends RenameParticipant {
-	
+
 	private IResource fResource;
 
 	/* (non-Javadoc)
@@ -45,31 +46,31 @@ public class RenameResourceParticipant extends RenameParticipant {
 	public Change createChange(IProgressMonitor pm) throws CoreException,
 			OperationCanceledException {
 		ILaunchConfiguration[] configs = HibernateRefactoringUtil.getAffectedLaunchConfigurations(fResource.getFullPath());
-		
-		List<Change> changes = new ArrayList<Change>();		
+
+		List<Change> changes = new ArrayList<Change>();
 		LaunchConfigurationResourceNameChange change = null;
 		for (int i= 0; i < configs.length; i++) {
-			change = new LaunchConfigurationResourceNameChange(configs[i], fResource.getFullPath(), 
+			change = new LaunchConfigurationResourceNameChange(configs[i], fResource.getFullPath(),
 					fResource.getParent().getFullPath().append(getArguments().getNewName()));
 			changes.add(change);
 		}
 
 		return HibernateRefactoringUtil.createChangesFromList(changes, getName());
 	}
-	
-	
-	
+
+
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.ltk.core.refactoring.participants.RefactoringParticipant#getName()
 	 */
 	public String getName() {
-		return "Launch Configurations updates";
+		return HibernateConsoleMessages.RenameResourceParticipant_launch_configurations_updates;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.ltk.core.refactoring.participants.RefactoringParticipant#initialize(java.lang.Object)
 	 */
-	protected boolean initialize(Object element) {		
+	protected boolean initialize(Object element) {
 		fResource = (IResource) element;
 		return true;
 	}

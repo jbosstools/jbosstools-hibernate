@@ -65,7 +65,7 @@ import org.hibernate.eclipse.console.views.properties.HibernatePropertySourcePro
 
 public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 	
-	public static final String ID = "org.hibernate.eclipse.console.views.QueryPageTabView";
+	public static final String ID = "org.hibernate.eclipse.console.views.QueryPageTabView"; //$NON-NLS-1$
 	
 	protected CTabFolder tabs = null;
 

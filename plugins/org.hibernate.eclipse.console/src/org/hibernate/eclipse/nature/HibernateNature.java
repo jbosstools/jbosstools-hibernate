@@ -48,19 +48,20 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.builder.HibernateBuilder;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.Table;
 import org.osgi.service.prefs.Preferences;
 
 public class HibernateNature implements IProjectNature {
 
-	final public static String ID = "org.hibernate.eclipse.console.hibernateNature";
-	
+	final public static String ID = "org.hibernate.eclipse.console.hibernateNature"; //$NON-NLS-1$
+
 	private IProject project;
 
 	public void configure() throws CoreException {
 		//HibernateConsolePlugin.getDefault().log("Configuring " + project + " as a Hibernate project");
-		
+
 		IProjectDescription desc = project.getDescription();
 		   ICommand[] commands = desc.getBuildSpec();
 		   boolean found = false;
@@ -71,7 +72,7 @@ public class HibernateNature implements IProjectNature {
 		         break;
 		      }
 		   }
-		   if (!found) { 
+		   if (!found) {
 		      //add builder to project
 		      ICommand command = desc.newCommand();
 		      command.setBuilderName(HibernateBuilder.BUILDER_ID);
@@ -91,38 +92,38 @@ public class HibernateNature implements IProjectNature {
 		return project;
 	}
 
-	public void setProject(IProject project) {		
+	public void setProject(IProject project) {
 		this.project = project;
 	}
 
 	public ConsoleConfiguration getDefaultConsoleConfiguration() {
 			String cfg = getDefaultConsoleConfigurationName();
 			ConsoleConfiguration configuration = KnownConfigurations.getInstance().find(cfg);
-			return configuration;								
+			return configuration;
 	}
-	
+
 	public String getDefaultConsoleConfigurationName() {
 		IJavaProject prj = JavaCore.create(project);
 		IScopeContext scope = new ProjectScope(prj.getProject() );
-		
-		Preferences node = scope.getNode("org.hibernate.eclipse.console");
-		
+
+		Preferences node = scope.getNode("org.hibernate.eclipse.console"); //$NON-NLS-1$
+
 		if(node!=null) {
-			String cfg = node.get("default.configuration", prj.getProject().getName() );
-			return cfg;						
+			String cfg = node.get("default.configuration", prj.getProject().getName() ); //$NON-NLS-1$
+			return cfg;
 		} else {
 			return null;
 		}
 	}
-	
+
 	List tables = null;
 
 	private ReadDatabaseMetaData job;
-	
+
 	public List getTables() {
 		ConsoleConfiguration ccfg = getDefaultConsoleConfiguration();
 		if(ccfg==null) return Collections.EMPTY_LIST;
-		
+
 		if(tables!=null) {
 			return tables;
 		} else {
@@ -136,21 +137,21 @@ public class HibernateNature implements IProjectNature {
 			return Collections.EMPTY_LIST;
 		}
 	}
-	
+
 	public class ReadDatabaseMetaData extends Job {
-		
+
 		private ConsoleConfiguration ccfg;
 
 		public ReadDatabaseMetaData(ConsoleConfiguration ccfg) {
-			super("Reading database metadata for " + getProject().getName() );
+			super(HibernateConsoleMessages.HibernateNature_reading_database_metadata_for + getProject().getName() );
 			this.ccfg = ccfg;
 		}
-		
+
 		protected IStatus run(IProgressMonitor monitor) {
 			Configuration cfg = ccfg.buildWith(null, false);
 			final JDBCMetaDataConfiguration jcfg = new JDBCMetaDataConfiguration();
 			jcfg.setProperties(cfg.getProperties());
-			monitor.beginTask("Reading database metadata", IProgressMonitor.UNKNOWN);
+			monitor.beginTask(HibernateConsoleMessages.HibernateNature_reading_database_metadata, IProgressMonitor.UNKNOWN);
 			try {
 				ccfg.execute(new Command() {
 					public Object execute() {
@@ -158,24 +159,24 @@ public class HibernateNature implements IProjectNature {
 						return null;
 					}
 				});
-				
-				
+
+
 				List result = new ArrayList();
 				Iterator tabs = jcfg.getTableMappings();
-				
+
 				while (tabs.hasNext() ) {
 					Table table = (Table) tabs.next();
 					monitor.subTask(table.getName() );
 					result.add(table);
 				}
-				
+
 				tables = result;
 				monitor.done();
 				return Status.OK_STATUS;
 			} catch(Throwable t) {
-				return new Status(IStatus.ERROR, HibernateConsolePlugin.ID, 1, "Error while performing background reading of database schema", t); 
+				return new Status(IStatus.ERROR, HibernateConsolePlugin.ID, 1, HibernateConsoleMessages.HibernateNature_error_while_performing_background_reading_of_database_schema, t);
 			}
-		}			
+		}
 
 	}
 
@@ -191,7 +192,7 @@ public class HibernateNature implements IProjectNature {
 		return result;
 	}
 
-	public Table getTable(TableIdentifier nearestTableName) { 
+	public Table getTable(TableIdentifier nearestTableName) {
 		// TODO: can be made MUCH more efficient with proper indexing of the tables.
 		// TODO: handle catalog/schema properly
 		Iterator tableMappings = getTables().iterator();
@@ -203,7 +204,7 @@ public class HibernateNature implements IProjectNature {
 		}
 		return null;
 	}
-	
+
 	/** return HibernateNature or null for a project **/
 	public static HibernateNature getHibernateNature(IJavaProject project) {
 		try {
@@ -213,9 +214,9 @@ public class HibernateNature implements IProjectNature {
 			}
 		}
 		catch (CoreException e) {
-			HibernateConsolePlugin.getDefault().logErrorMessage( "Exception when trying to locate Hibernate Nature", e );
-		}		
+			HibernateConsolePlugin.getDefault().logErrorMessage( HibernateConsoleMessages.HibernateNature_exception_when_trying_to_locate_hibernate_nature, e );
+		}
 		return null;
-	}	
+	}
 
 }

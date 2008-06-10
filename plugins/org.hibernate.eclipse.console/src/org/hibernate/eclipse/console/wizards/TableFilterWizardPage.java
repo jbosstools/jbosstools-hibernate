@@ -35,6 +35,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 import org.hibernate.eclipse.console.model.ITableFilter;
 import org.hibernate.eclipse.console.model.impl.ReverseEngineeringDefinitionImpl;
@@ -42,32 +43,32 @@ import org.hibernate.eclipse.console.model.impl.ReverseEngineeringDefinitionImpl
 
 public class TableFilterWizardPage extends WizardPage {
 	// TODO: clean this up to use a shared wizard model
-	
+
 	ComboDialogField consoleConfigurationName;
 	private TableFilterView tfc;
 	private final String selectedConfiguratonName;
-	
-	protected TableFilterWizardPage(String pageName, String selectedConfiguratonName) {		
+
+	protected TableFilterWizardPage(String pageName, String selectedConfiguratonName) {
 		super( pageName );
 		this.selectedConfiguratonName = selectedConfiguratonName;
-		setTitle("Configure Table filters");
-		setDescription("Specify which catalog/schema/tables should be included or excluded from the reverse engineering.");
+		setTitle(HibernateConsoleMessages.TableFilterWizardPage_configure_table_filters);
+		setDescription(HibernateConsoleMessages.TableFilterWizardPage_specify_which_catalog);
 	}
 
 	public void createControl(Composite parent) {
 		initializeDialogUnits(parent);
-		
+
 		Composite container = new Composite(parent, SWT.NULL);
 		//container.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_CYAN));
-        
+
 		GridLayout layout = new GridLayout();
-		
+
 		container.setLayout(layout);
 		layout.numColumns = 3;
 		layout.verticalSpacing = 10;
-		
+
 		consoleConfigurationName = new ComboDialogField(SWT.READ_ONLY);
-		consoleConfigurationName.setLabelText("Console &configuration:");
+		consoleConfigurationName.setLabelText(HibernateConsoleMessages.TableFilterWizardPage_console_configuration);
 		ConsoleConfiguration[] cfg = KnownConfigurations.getInstance().getConfigurationsSortedByName();
 		String[] names = new String[cfg.length];
 		for (int i = 0; i < cfg.length; i++) {
@@ -75,7 +76,7 @@ public class TableFilterWizardPage extends WizardPage {
 			names[i] = configuration.getName();
 		}
 		consoleConfigurationName.setItems(names);
-		
+
 		consoleConfigurationName.doFillIntoGrid(container, 3);
 
 		IDialogFieldListener fieldlistener = new IDialogFieldListener() {
@@ -84,19 +85,19 @@ public class TableFilterWizardPage extends WizardPage {
 			}
 		};
 		consoleConfigurationName.setDialogFieldListener(fieldlistener);
-		
+
 		TreeToTableComposite tfc = createTableFilterPart( container );
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		gd.horizontalSpan=3;
 		tfc.setLayoutData(gd);
-						
+
 		setControl(container);
 
 		if(selectedConfiguratonName!=null) {
-			consoleConfigurationName.setText(selectedConfiguratonName);			
+			consoleConfigurationName.setText(selectedConfiguratonName);
 		}
 		dialogChanged();
-	}    
+	}
 
     private void updateWarningStatus(String message) {
         setMessage(message, IMessageProvider.WARNING);
@@ -106,17 +107,17 @@ public class TableFilterWizardPage extends WizardPage {
      * Ensures that contents is ok.
      */
     private void dialogChanged() {
-    
+
     	if (hasDuplicates()) {
-        	updateWarningStatus("Table filters contains duplicates.");
+        	updateWarningStatus(HibernateConsoleMessages.TableFilterWizardPage_table_filters_contains_duplicates);
             return;
         }
 
     	updateWarningStatus(null);
     }
-    
+
     protected boolean hasDuplicates() {
-    	boolean res = false; 
+    	boolean res = false;
     	ITableFilter[] filters = getTableFilters();
     	for (int i = 1; i < filters.length; i++) {
         	for (int j = 0; j < i; j++) {
@@ -134,13 +135,13 @@ public class TableFilterWizardPage extends WizardPage {
 
 	private TreeToTableComposite createTableFilterPart(Composite container) {
 		tfc = new TableFilterView(container, SWT.NULL){
-		
+
 			protected String getConsoleConfigurationName() {
 				return consoleConfigurationName.getText();
 			}
-		
-		}; 
-		
+
+		};
+
 		IReverseEngineeringDefinition model = new ReverseEngineeringDefinitionImpl();
 		model.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -154,5 +155,5 @@ public class TableFilterWizardPage extends WizardPage {
 	public ITableFilter[] getTableFilters() {
 		return tfc.getTableFilterList();
 	}
-	
+
 }

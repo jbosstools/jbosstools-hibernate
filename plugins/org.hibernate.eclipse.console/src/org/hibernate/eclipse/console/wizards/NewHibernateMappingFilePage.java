@@ -51,6 +51,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.xpl.SelectionHelper;
 
@@ -75,27 +76,27 @@ public class NewHibernateMappingFilePage extends WizardPage {
 
 	/**
 	 * Constructor for SampleNewWizardPage.
-	 * @param page 
-	 * 
+	 * @param page
+	 *
 	 * @param pageName
 	 */
 	public NewHibernateMappingFilePage(ISelection selection, WizardNewFileCreationPage page) {
-		super("wizardPage");
+		super("wizardPage"); //$NON-NLS-1$
 		this.fileCreation = page;
-		setTitle("Hibernate XML Mapping file");
-		setDescription("This wizard creates a new Hibernate XML Mapping file");
+		setTitle(HibernateConsoleMessages.NewHibernateMappingFilePage_hibernate_xml_mapping_file);
+		setDescription(HibernateConsoleMessages.NewHibernateMappingFilePage_this_wizard_creates);
 		this.selection = selection;
 	}
 
-	public void setVisible(boolean visible) {       
+	public void setVisible(boolean visible) {
         containerText.setText(fileCreation.getContainerFullPath().toPortableString() );
-        fileText.setText(fileCreation.getFileName() );        
+        fileText.setText(fileCreation.getFileName() );
         super.setVisible(visible);
         if(visible) {
             classToMap.setFocus();
         }
-        beenShown = true;        
-        dialogChanged();               
+        beenShown = true;
+        dialogChanged();
     }
 
 	/**
@@ -109,27 +110,27 @@ public class NewHibernateMappingFilePage extends WizardPage {
 		layout.verticalSpacing = 9;
 
 		Label label = new Label(container, SWT.NULL);
-		label.setText("&Container:");
+		label.setText(HibernateConsoleMessages.NewHibernateMappingFilePage_container);
 
 		containerText = new Label(container, SWT.BORDER | SWT.SINGLE);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		containerText.setLayoutData(gd);
 
 		label = new Label(container, SWT.NULL);
-		label.setText("");
+		label.setText(""); //$NON-NLS-1$
 
 		label = new Label(container, SWT.NULL);
-		label.setText("&File name:");
+		label.setText(HibernateConsoleMessages.NewHibernateMappingFilePage_file_name);
 
 		fileText = new Label(container, SWT.BORDER | SWT.SINGLE);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		fileText.setLayoutData(gd);
-		
+
 		label = new Label(container, SWT.NULL);
-		label.setText("");
-		
+		label.setText(""); //$NON-NLS-1$
+
 		label = new Label(container, SWT.NULL);
-		label.setText("Class to &map:");
+		label.setText(HibernateConsoleMessages.NewHibernateMappingFilePage_class_to_map);
 
 		classToMap = new Text(container, SWT.BORDER | SWT.SINGLE);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -142,13 +143,13 @@ public class NewHibernateMappingFilePage extends WizardPage {
 		//TODO (internal api!): ControlContentAssistHelper.createTextContentAssistant(classToMap, aCompletionProcessor);
 
 		Button button = new Button(container, SWT.PUSH);
-		button.setText("Browse...");
+		button.setText(HibernateConsoleMessages.NewHibernateMappingFilePage_browse);
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				handleClassToMapBrowse();
 			}
 		});
-		
+
 		initialize();
 		dialogChanged();
 		setControl(container);
@@ -162,7 +163,7 @@ public class NewHibernateMappingFilePage extends WizardPage {
 		IType initialJavaElement = SelectionHelper.getClassFromElement(SelectionHelper.getInitialJavaElement(selection));
 		if(initialJavaElement!=null) {
 			classToMap.setText(initialJavaElement.getFullyQualifiedName('.'));
-		}					
+		}
 	}
 
 	/**
@@ -173,7 +174,7 @@ public class NewHibernateMappingFilePage extends WizardPage {
 	private void handleBrowse() {
 		ContainerSelectionDialog dialog = new ContainerSelectionDialog(
 				getShell(), ResourcesPlugin.getWorkspace().getRoot(), false,
-				"Select new file container");
+				HibernateConsoleMessages.NewHibernateMappingFilePage_select_new_file_container);
 		if (dialog.open() == ContainerSelectionDialog.OK) {
 			Object[] result = dialog.getResult();
 			if (result.length == 1) {
@@ -181,7 +182,7 @@ public class NewHibernateMappingFilePage extends WizardPage {
 			}
 		}
 	}
-	
+
 	private void handleClassToMapBrowse() {
 		IType type = findClassToMap();
 		if(type!=null) {
@@ -191,16 +192,16 @@ public class NewHibernateMappingFilePage extends WizardPage {
 
 	IType findClassToMap() {
 		IJavaProject root= getRootJavaProject();
-		if (root == null) 
+		if (root == null)
 			return null;
 
 		IJavaElement[] elements= new IJavaElement[] { root };
 		IJavaSearchScope scope= SearchEngine.createJavaSearchScope(elements);
-		
-		try {		
+
+		try {
 			SelectionDialog dialog= JavaUI.createTypeDialog(getShell(), getWizard().getContainer(), scope, IJavaElementSearchConstants.CONSIDER_CLASSES, false, getClassToMapText());
-			dialog.setTitle("Select class to map"); 
-			dialog.setMessage("The class will be used when generating the hbm.xml file"); 
+			dialog.setTitle(HibernateConsoleMessages.NewHibernateMappingFilePage_select_class_to_map);
+			dialog.setMessage(HibernateConsoleMessages.NewHibernateMappingFilePage_the_class_will_be_used_when);
 			if (dialog.open() == Window.OK) {
 				Object[] resultArray= dialog.getResult();
 				if (resultArray != null && resultArray.length > 0)
@@ -211,7 +212,7 @@ public class NewHibernateMappingFilePage extends WizardPage {
 		}
 		return null;
 	}
-	
+
 	private IJavaProject getRootJavaProject() {
 		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(containerText.getText());
 		if(resource!=null) {
@@ -237,27 +238,27 @@ public class NewHibernateMappingFilePage extends WizardPage {
 		String fileName = getFileName();
 
 		if (getContainerName().length() == 0) {
-			updateStatus("File container must be specified");
+			updateStatus(HibernateConsoleMessages.NewHibernateMappingFilePage_file_container_must_be_specified);
 			return;
 		}
 		if (container == null
 				|| (container.getType() & (IResource.PROJECT | IResource.FOLDER)) == 0) {
-			updateStatus("File container must exist");
+			updateStatus(HibernateConsoleMessages.NewHibernateMappingFilePage_file_container_must_exist);
 			return;
 		}
 		if (!container.isAccessible()) {
-			updateStatus("Project must be writable");
+			updateStatus(HibernateConsoleMessages.NewHibernateMappingFilePage_project_must_be_writable);
 			return;
 		}
 		if (fileName.length() == 0) {
-			updateStatus("File name must be specified");
+			updateStatus(HibernateConsoleMessages.NewHibernateMappingFilePage_file_name_must_be_specified);
 			return;
 		}
 		if (fileName.replace('\\', '/').indexOf('/', 1) > 0) {
-			updateStatus("File name must be valid");
+			updateStatus(HibernateConsoleMessages.NewHibernateMappingFilePage_file_name_must_be_valid);
 			return;
 		}
-		
+
 		updateStatus(null);
 	}
 

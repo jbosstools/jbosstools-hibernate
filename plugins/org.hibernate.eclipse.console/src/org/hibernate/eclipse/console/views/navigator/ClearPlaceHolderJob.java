@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:/*
  * JBoss, Home of Professional Open Source
  * Copyright 2005, JBoss Inc., and individual contributors as indicated
@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.ui.progress.UIJob;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.views.navigator.PendingJob.NonConflictingRule;
 
 public class ClearPlaceHolderJob extends UIJob {
@@ -43,14 +44,14 @@ public class ClearPlaceHolderJob extends UIJob {
 	private Object parent;
 
 	public ClearPlaceHolderJob(AbstractTreeViewer viewer, PendingNode placeHolder, Object parent, Object[] children) {
-		super("Removing place holder for pending node");
+		super(HibernateConsoleMessages.ClearPlaceHolderJob_removing_place_holder);
 		this.viewer = viewer;
-		this.placeHolder = placeHolder; 
+		this.placeHolder = placeHolder;
 		this.parent = parent;
 		this.children = children;
 		setRule(NonConflictingRule.INSTANCE);
 	}
-	
+
 	public IStatus runInUIThread(IProgressMonitor monitor) {
 		viewer.remove(placeHolder);
 		viewer.add(parent, children);

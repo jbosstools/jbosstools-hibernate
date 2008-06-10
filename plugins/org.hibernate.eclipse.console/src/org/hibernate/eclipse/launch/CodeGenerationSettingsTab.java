@@ -58,6 +58,7 @@ import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 import org.hibernate.eclipse.console.utils.EclipseImages;
@@ -70,13 +71,13 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 	private IStructuredSelection selection;
 
 	private SelectionButtonDialogField reverseengineer;
-	
+
 	private StringButtonDialogField outputdir;
-	
+
 	private StringButtonDialogField reverseEngineeringSettings;
-	
+
 	private StringButtonDialogField reverseEngineeringStrategy;
-    
+
     private StringDialogField packageName;
 
     private SelectionButtonDialogField preferRawCompositeIds;
@@ -85,26 +86,26 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 
     private SelectionButtonDialogField useOwnTemplates;
     private DirectoryBrowseField templatedir;
-    
-    
-    
+
+
+
 	public CodeGenerationSettingsTab() {
 		super();
 	}
 
     public void createControl(Composite parent) {
-		
+
 		//initializeDialogUnits(parent);
-		
+
 		Composite container = new Composite(parent, SWT.NULL);
 		GridLayout layout = new GridLayout();
-		
+
 		container.setLayout(layout);
 		layout.numColumns = 4;
 		layout.verticalSpacing = 10;
-		
+
 		consoleConfigurationName = new ComboDialogField(SWT.READ_ONLY);
-		consoleConfigurationName.setLabelText("Console &configuration:");
+		consoleConfigurationName.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_console_configuration);
 		ConsoleConfiguration[] cfg = KnownConfigurations.getInstance().getConfigurationsSortedByName();
 		String[] names = new String[cfg.length];
 		for (int i = 0; i < cfg.length; i++) {
@@ -112,67 +113,67 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 			names[i] = configuration.getName();
 		}
 		consoleConfigurationName.setItems(names);
-		
+
 		IDialogFieldListener fieldlistener = new IDialogFieldListener() {
 			public void dialogFieldChanged(DialogField field) {
 				dialogChanged();
 			}
 		};
-        
+
         consoleConfigurationName.setDialogFieldListener(fieldlistener);
-		
+
 		outputdir = new StringButtonDialogField(new IStringButtonAdapter() {
 			public void changeControlPressed(DialogField field) {
 				//IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  PathHelper.pathOrNull(outputdir.getText()), new IPath[0], "Select output directory", "Choose directory in which the generated files will be stored", new String[] {"cfg.xml"}, false, true, false);
-				IPath[] paths = DialogSelectionHelper.chooseFolderEntries(getShell(),  PathHelper.pathOrNull(outputdir.getText()), "Select output directory", "Choose directory in which the generated files will be stored", false);
+				IPath[] paths = DialogSelectionHelper.chooseFolderEntries(getShell(),  PathHelper.pathOrNull(outputdir.getText()), HibernateConsoleMessages.CodeGenerationSettingsTab_select_output_dir, HibernateConsoleMessages.CodeGenerationSettingsTab_choose_dir_for_generated_files, false);
 				if(paths!=null && paths.length==1) {
 					outputdir.setText( ( (paths[0]).toOSString() ) );
-				}					
+				}
 			}
 		});
         outputdir.setDialogFieldListener(fieldlistener);
-		outputdir.setLabelText("Output &directory:");
-		outputdir.setButtonLabel("&Browse...");
-		
-        templatedir = new DirectoryBrowseField(null, null, "Select template directory", "Choose directory containing custom templates");
+		outputdir.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_output_dir);
+		outputdir.setButtonLabel(HibernateConsoleMessages.CodeGenerationSettingsTab_browse);
+
+        templatedir = new DirectoryBrowseField(null, null, HibernateConsoleMessages.CodeGenerationSettingsTab_select_template_dir, HibernateConsoleMessages.CodeGenerationSettingsTab_choose_dir_custom_templates);
         templatedir.setDialogFieldListener(fieldlistener);
-        templatedir.setLabelText("Template &directory:");
-        templatedir.setFilesystemBrowseLabel("&Filesystem...");
-        templatedir.setWorkspaceBrowseLabel("&Workspace...");
-        
+        templatedir.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_template_directory);
+        templatedir.setFilesystemBrowseLabel(HibernateConsoleMessages.CodeGenerationSettingsTab_filesystem);
+        templatedir.setWorkspaceBrowseLabel(HibernateConsoleMessages.CodeGenerationSettingsTab_workspace);
+
 		packageName = new StringDialogField();
         packageName.setDialogFieldListener(fieldlistener);
-        packageName.setLabelText("&Package:");
-        
+        packageName.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_package);
+
         reverseEngineeringStrategy = new StringButtonDialogField(new IStringButtonAdapter() {
-		
+
 			public void changeControlPressed(DialogField field) {
-				String string = DialogSelectionHelper.chooseImplementation(ReverseEngineeringStrategy.class.getName(), reverseEngineeringStrategy.getText(), "Choose a reverse engineering strategy", getShell());
+				String string = DialogSelectionHelper.chooseImplementation(ReverseEngineeringStrategy.class.getName(), reverseEngineeringStrategy.getText(), HibernateConsoleMessages.CodeGenerationSettingsTab_choose_reverse_engineering_strategy, getShell());
 				if(string!=null) {
 					reverseEngineeringStrategy.setText(string);
-				}		
-			}	
+				}
+			}
 		});
         reverseEngineeringStrategy.setDialogFieldListener(fieldlistener);
-        reverseEngineeringStrategy.setLabelText("reveng. s&trategy:");
-        reverseEngineeringStrategy.setButtonLabel("&Browse...");
-		
+        reverseEngineeringStrategy.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_reveng_strategy);
+        reverseEngineeringStrategy.setButtonLabel(HibernateConsoleMessages.CodeGenerationSettingsTab_browse);
+
 		reverseEngineeringSettings= new StringButtonDialogField(new IStringButtonAdapter() {
             public void changeControlPressed(DialogField field) {
             	int defaultChoice = 0;
             	IPath reverseEngineeringSettingsFile = getReverseEngineeringSettingsFile();
-            	
+
 				if(reverseEngineeringSettingsFile==null) {
             		defaultChoice = 0;
             	} else {
             		defaultChoice = 1;
             	}
-				MessageDialog dialog = new MessageDialog(getShell(), 
-						"Setup reverse engineering", 
-						null, 
-						"Do you want to create a new reveng.xml or use an existing file ?", 
-						MessageDialog.QUESTION, 
-						new String[] { "Create &new...", "Use &existing...", IDialogConstants.CANCEL_LABEL}, 
+				MessageDialog dialog = new MessageDialog(getShell(),
+						HibernateConsoleMessages.CodeGenerationSettingsTab_setup_reverse_engineering,
+						null,
+						HibernateConsoleMessages.CodeGenerationSettingsTab_do_you_want_create_reveng_xml,
+						MessageDialog.QUESTION,
+						new String[] { HibernateConsoleMessages.CodeGenerationSettingsTab_create_new, HibernateConsoleMessages.CodeGenerationSettingsTab_use_existing, IDialogConstants.CANCEL_LABEL},
 						defaultChoice);
 				int answer = dialog.open();
 				if(answer==0) { // create new
@@ -180,7 +181,7 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 					wizard.init(PlatformUI.getWorkbench(), selection );
 					wizard.setSelectConfiguration(getConfigurationName());
 					IWorkbenchWindow win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-					
+
 					WizardDialog wdialog = new WizardDialog(win.getShell(), wizard);
 					wdialog.open(); // This opens a dialog
 					IPath createdFilePath = wizard.getCreatedFilePath();
@@ -188,43 +189,43 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 						reverseEngineeringSettings.setText(createdFilePath.toOSString());
 					}
 				} else if (answer==1) { // use existing
-					IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  reverseEngineeringSettingsFile, new IPath[0], "Select reverse engineering settings file", "Choose file from which settings for the reverse engineering will be read", new String[] {"reveng.xml"}, false, false, true);
+					IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  reverseEngineeringSettingsFile, new IPath[0], HibernateConsoleMessages.CodeGenerationSettingsTab_select_reverse_engineering_settings_file, HibernateConsoleMessages.CodeGenerationSettingsTab_choose_file_read_reverse_settings, new String[] {HibernateConsoleMessages.CodeGenerationSettingsTab_reveng_xml_1}, false, false, true);
 					if(paths!=null && paths.length==1) {
 						reverseEngineeringSettings.setText( ( (paths[0]).toOSString() ) );
-					}		
-				}                                	
+					}
+				}
             }
         });
 		reverseEngineeringSettings.setDialogFieldListener(fieldlistener);
-        reverseEngineeringSettings.setLabelText("reveng.&xml:");
-        reverseEngineeringSettings.setButtonLabel("&Setup...");
-		        
+        reverseEngineeringSettings.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_reveng_xml_2);
+        reverseEngineeringSettings.setButtonLabel(HibernateConsoleMessages.CodeGenerationSettingsTab_setup);
+
 		reverseengineer = new SelectionButtonDialogField(SWT.CHECK);
-		reverseengineer.setLabelText("Reverse engineer from JDBC Connection");
+		reverseengineer.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_reverse_engineer_from_jdbc_connection);
 		reverseengineer.setDialogFieldListener(fieldlistener);
-          
+
         useOwnTemplates = new SelectionButtonDialogField(SWT.CHECK);
         useOwnTemplates.setDialogFieldListener(fieldlistener);
-        useOwnTemplates.setLabelText("Use custom templates (for custom file generation)");
-       
+        useOwnTemplates.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_use_custom_templates);
+
         preferRawCompositeIds = new SelectionButtonDialogField(SWT.CHECK);
-        preferRawCompositeIds.setLabelText("Generate basic typed composite ids");
+        preferRawCompositeIds.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_generate_basic_typed_composite_ids);
         preferRawCompositeIds.setSelection(true);
         preferRawCompositeIds.setDialogFieldListener(fieldlistener);
-        
+
         autoManyToMany = new SelectionButtonDialogField(SWT.CHECK);
-        autoManyToMany.setLabelText("Detect many-to-many tables");
+        autoManyToMany.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_detect_many_to_many_tables);
         autoManyToMany.setSelection(true);
         autoManyToMany.setDialogFieldListener(fieldlistener);
-        
+
         autoVersioning = new SelectionButtonDialogField(SWT.CHECK);
-        autoVersioning.setLabelText("Detect optimistic lock columns");
+        autoVersioning.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_detect_optimistic_lock_columns);
         autoVersioning.setSelection(true);
         autoVersioning.setDialogFieldListener(fieldlistener);
-        
+
 		useOwnTemplates.attachDialogField(templatedir);
         reverseengineer.attachDialogFields(new DialogField[] { packageName, preferRawCompositeIds, reverseEngineeringSettings, reverseEngineeringStrategy, autoManyToMany, autoVersioning });
-       
+
 		consoleConfigurationName.doFillIntoGrid(container, 4);
 		Control[] controls = outputdir.doFillIntoGrid(container, 4);
 		// Hack to tell the text field to stretch!
@@ -233,7 +234,7 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
         packageName.doFillIntoGrid(container, 4);
 		reverseEngineeringSettings.doFillIntoGrid(container, 4);
 		reverseEngineeringStrategy.doFillIntoGrid(container, 4);
-		
+
         fillLabel(container);
         preferRawCompositeIds.doFillIntoGrid(container, 3);
         fillLabel(container);
@@ -244,7 +245,7 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
         controls = templatedir.doFillIntoGrid(container, 4);
         // Hack to tell the text field to stretch!
         ( (GridData)controls[1].getLayoutData() ).grabExcessHorizontalSpace=true;
-        
+
 		dialogChanged();
 		setControl(container);
 	}
@@ -259,29 +260,29 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 		outputdir.setEnabled(!configSelected);
 		reverseengineer.setEnabled(!configSelected);
 		useOwnTemplates.setEnabled(!configSelected);
-		
+
 		if (configSelected) {
-			updateStatus("Console configuration must be specified");
+			updateStatus(HibernateConsoleMessages.CodeGenerationSettingsTab_console_cfg_must_be_specified);
 			return;
 		}
-        
-        String msg = PathHelper.checkDirectory(outputdir.getText(), "Output directory", false);
-        
+
+        String msg = PathHelper.checkDirectory(outputdir.getText(), HibernateConsoleMessages.CodeGenerationSettingsTab_output_directory, false);
+
         if (msg!=null) {
             updateStatus(msg);
             return;
-        } 
+        }
 
         if(packageName.isEnabled() && getOutputPackage().length()>0) {
             IStatus val= JavaConventions.validatePackageName(getOutputPackage() );
             if (val.getSeverity() == IStatus.ERROR || val.getSeverity() == IStatus.WARNING) {
                 updateStatus(val.getMessage() );
                 return;
-            } 
+            }
         }
-        
+
         if(reverseEngineeringSettings.getText().trim().length()>0) {
-        	msg = checkFile(getReverseEngineeringSettingsFile(), "reveng.xml");
+        	msg = checkFile(getReverseEngineeringSettingsFile(), HibernateConsoleMessages.CodeGenerationSettingsTab_reveng_xml_3);
         	if(msg!=null) {
         		updateStatus(msg);
         		return;
@@ -289,7 +290,7 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
         }
 
         if(useOwnTemplates.isSelected() ) {
-            msg = PathHelper.checkDirectory(templatedir.getText(), "template directory", true);
+            msg = PathHelper.checkDirectory(templatedir.getText(), HibernateConsoleMessages.CodeGenerationSettingsTab_template_dir, true);
             if (msg!=null) {
                 updateStatus(msg);
                 return;
@@ -298,21 +299,21 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
                 /*IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(getTemplateDirectory() );
                 IResource[] files = new IFile[0];
                 boolean found = false;
-                
+
                 if(resource.getType() == IResource.FOLDER) {
                     try {
                         found = ( (IFolder)resource).accept(new IResourceProxyVisitor() {
-						
-							public boolean visit(IResourceProxy proxy) throws CoreException {								
+
+							public boolean visit(IResourceProxy proxy) throws CoreException {
 								return false;
 							}
-						
+
 						});
                     } catch (CoreException e) {
                         // noop
                     }
                 }
-                
+
                 if(!found) {
                     setMessage("No templates (*.vm) found in template directory", IMessageProvider.WARNING);
                 } else {
@@ -322,7 +323,7 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
         } else {
             setMessage(null);
         }
-        
+
 		updateStatus(null);
 	}
 
@@ -335,23 +336,23 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
             if (resType == IResource.FILE) {
                 return null;
             } else {
-            	return name + " must be a file";
+            	return name + HibernateConsoleMessages.CodeGenerationSettingsTab_must_be_file;
             }
         } else {
-            return name + " does not exist";
+            return name + HibernateConsoleMessages.CodeGenerationSettingsTab_does_not_exist;
         }
     }
-    
+
     private void updateStatus(String message) {
         setErrorMessage(message);
         updateLaunchConfigurationDialog();
     }
-    
+
 	public String getConfigurationName() {
 		return consoleConfigurationName.getText();
 	}
 
-	
+
 
 	/**
 	 * @return
@@ -363,16 +364,16 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 	private String resolve(String expression)  {
 		if(expression==null) return null;
 		IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
-		
+
 		try {
 			return variableManager.performStringSubstitution(expression, false);
 		} catch (CoreException e) {
 			// ignore possible errors during substitution and just return the orginal expression
 			return expression;
-		} 		
+		}
 	}
-	
-	    
+
+
     String getOutputPackage() {
           return packageName.getText();
     }
@@ -380,12 +381,12 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 
 	private IPath getReverseEngineeringSettingsFile() {
 		return PathHelper.pathOrNull(reverseEngineeringSettings.getText() );
-	}    
-    
+	}
+
 	private String getReverseEngineeringStrategy() {
 		return reverseEngineeringStrategy.getText();
-	}   
-	
+	}
+
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 //	   try {
 //	      attributes = new ExporterAttributes(configuration);
@@ -395,7 +396,7 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 	}
 
 	public void initializeFrom(ILaunchConfiguration configuration) {
-		try {			
+		try {
            ExporterAttributes attributes = new ExporterAttributes(configuration);
            consoleConfigurationName.setText(attributes.getConsoleConfigurationName());
            preferRawCompositeIds.setSelection(attributes.isPreferBasicCompositeIds());
@@ -409,8 +410,8 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
            packageName.setText(safeText(attributes.getPackageName()));
            templatedir.setText(safeText(attributes.getTemplatePath()));
 		} catch (CoreException ce) {
-			HibernateConsolePlugin.getDefault().logErrorMessage("Problem when reading hibernate tools launch configuration", ce);
-		} 		
+			HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.CodeGenerationSettingsTab_problems_when_reading, ce);
+		}
 	}
 
 	private String safeText(String text) {
@@ -424,7 +425,7 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 			return text;
 		}
 	}
-	
+
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR, strOrNull(outputdir.getText()));
 		configuration.setAttribute(HibernateLaunchConstants.ATTR_PREFER_BASIC_COMPOSITE_IDS, preferRawCompositeIds.isSelected());
@@ -433,23 +434,23 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 		configuration.setAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER, isReverseEngineerEnabled());
 		configuration.setAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_STRATEGY, strOrNull(reverseEngineeringStrategy.getText()));
 		configuration.setAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_SETTINGS, strOrNull(reverseEngineeringSettings.getText()));
-		
-		
+
+
 		configuration.setAttribute(HibernateLaunchConstants.ATTR_USE_OWN_TEMPLATES, useOwnTemplates.isSelected());
 		configuration.setAttribute(HibernateLaunchConstants.ATTR_TEMPLATE_DIR, strOrNull(templatedir.getText()));
-		
-		configuration.setAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME, getConfigurationName());        
+
+		configuration.setAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME, getConfigurationName());
 		configuration.setAttribute(HibernateLaunchConstants.ATTR_PACKAGE_NAME, getOutputPackage());
-        
+
 	}
 
 	public String getName() {
-		return "Main";
+		return HibernateConsoleMessages.CodeGenerationSettingsTab_main;
 	}
-	
+
 	public Image getImage() {
 		return EclipseImages.getImage(ImageConstants.MINI_HIBERNATE);
 	}
 
-	
+
 }

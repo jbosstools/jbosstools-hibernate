@@ -35,19 +35,20 @@ import org.eclipse.jdt.internal.ui.text.java.LazyJavaCompletionProposal;
 import org.eclipse.jdt.ui.text.java.CompletionProposalComparator;
 import org.eclipse.jdt.ui.text.java.IJavaCompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.hqleditor.HibernateResultCollector.Settings;
 
 public class CompletionHelper {
 
 	static public ICompletionProposal[] completeOnJavaTypes(IJavaProject javaProject, Settings settings, String packageName, String start, int offset) {
-		
+
 		if (javaProject != null) {
-			IEvaluationContext context = javaProject.newEvaluationContext();                
+			IEvaluationContext context = javaProject.newEvaluationContext();
 			if(packageName!=null) {
 				context.setPackageName(packageName);
 			}
-			
+
 			HibernateResultCollector rc = new HibernateResultCollector(javaProject);
 			rc.acceptContext(new CompletionContext());
 			//rc.reset(offset, javaProject, null);
@@ -58,7 +59,7 @@ public class CompletionHelper {
 				// the smallest snippet possible
 				context.codeComplete(start, start.length(), rc);
 			} catch (JavaModelException jme) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("Could not complete java types", jme);
+				HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.CompletionHelper_could_not_complete_java_types, jme);
 			}
 			IJavaCompletionProposal[] results = rc.getJavaCompletionProposals();
 			transpose(start, offset, results);
@@ -66,7 +67,7 @@ public class CompletionHelper {
 		}
 		return new ICompletionProposal[0];
 	}
-	
+
 	static public void transpose(String start, int offset, IJavaCompletionProposal[] results) {
 		// As all completions have made with the assumption on a empty
 		// (or almost empty) string
@@ -74,18 +75,18 @@ public class CompletionHelper {
 		// into our non-java code
 		for (int i = 0; i < results.length; i++) {
 			if(results[i] instanceof AbstractJavaCompletionProposal) {
-				AbstractJavaCompletionProposal proposal = (AbstractJavaCompletionProposal) results[i]; // TODO: eclipse bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=84998			
+				AbstractJavaCompletionProposal proposal = (AbstractJavaCompletionProposal) results[i]; // TODO: eclipse bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=84998
 				transpose(offset, proposal);
 			} else {
-				HibernateConsolePlugin.getDefault().log("ERROR: unknown CompletionProposal class.");
+				HibernateConsolePlugin.getDefault().log(HibernateConsoleMessages.CompletionHelper_error_unknown_completion_proposal_class);
 			}
 		}
-		Arrays.sort(results, new CompletionProposalComparator() );		
+		Arrays.sort(results, new CompletionProposalComparator() );
 	}
 
 	private static void transpose(int offset, AbstractJavaCompletionProposal proposal) {
 		int wanted = proposal.getReplacementOffset() + (offset /*- start.length()*/);
-		if(wanted==proposal.getReplacementOffset() ) { 
+		if(wanted==proposal.getReplacementOffset() ) {
 			//System.out.println("NO TRANSPOSE!");
 		}
 		if(wanted<0) {

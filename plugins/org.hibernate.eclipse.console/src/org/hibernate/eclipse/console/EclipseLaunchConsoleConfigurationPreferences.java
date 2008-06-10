@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
+import org.eclipse.osgi.util.NLS;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
@@ -27,27 +28,27 @@ import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 import org.w3c.dom.Element;
 
 public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConfigurationPreferences {
-	
+
 	private final ILaunchConfiguration launchConfiguration;
 
 	public EclipseLaunchConsoleConfigurationPreferences(ILaunchConfiguration configuration) {
 		this.launchConfiguration = configuration;
 	}
 
-  
+
 	private File strToFile(String epath) {
 		if(epath==null) return null;
 		IPath path = new Path(epath);
 		return pathToFile( path );
 	}
-	
+
 	private File pathToFile(IPath path) {
 		if(path==null) return null;
 		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
-		
+
 		return pathToFile(path.toString(), resource);
 	}
-	
+
 	private File pathToFile(String path, IResource resource) {
 		if(resource != null) {
 			IPath rawLocation = resource.getRawLocation();
@@ -55,8 +56,8 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 				return rawLocation.toFile();
 			}
 		}
-
-		throw new HibernateConsoleRuntimeException("Could not resolve " + path + " to a file");
+		String out = NLS.bind(HibernateConsoleMessages.EclipseLaunchConsoleConfigurationPreferences_could_not_resolve_to_file, path);
+		throw new HibernateConsoleRuntimeException(out);
 	}
 
 
@@ -69,14 +70,14 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 			throw new HibernateConsoleRuntimeException(e);
 		}
 	}
-	
+
 	public File getConfigXMLFile() {
 		String file = getAttribute( IConsoleConfigurationLaunchConstants.CFG_XML_FILE, null );
-		return strToFile( file );				
+		return strToFile( file );
 	}
 
 	public ConfigurationMode getConfigurationMode() {
-		return ConfigurationMode.parse( getAttribute( IConsoleConfigurationLaunchConstants.CONFIGURATION_FACTORY, "" ) );		
+		return ConfigurationMode.parse( getAttribute( IConsoleConfigurationLaunchConstants.CONFIGURATION_FACTORY, "" ) );		 //$NON-NLS-1$
 	}
 
 	public URL[] getCustomClassPathURLS() {
@@ -87,17 +88,17 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 				String str = classpath[i];
 				cp[i] = new File(str).toURL();
 			}
-			return cp;			
+			return cp;
 		}
 		catch (CoreException e) {
-			throw new HibernateConsoleRuntimeException("Could not compute classpath", e);
+			throw new HibernateConsoleRuntimeException(HibernateConsoleMessages.EclipseLaunchConsoleConfigurationPreferences_could_not_compute_classpath, e);
 		}
 		catch (MalformedURLException e) {
-			throw new HibernateConsoleRuntimeException("Could not compute classpath", e);
-		}		
+			throw new HibernateConsoleRuntimeException(HibernateConsoleMessages.EclipseLaunchConsoleConfigurationPreferences_could_not_compute_classpath, e);
+		}
 	}
 
-	
+
 	public String getEntityResolverName() {
 		return getAttribute( IConsoleConfigurationLaunchConstants.ENTITY_RESOLVER, null );
 	}
@@ -110,13 +111,13 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 			Iterator iter = mappings.iterator();
 			while ( iter.hasNext() ) {
 				String element = (String) iter.next();
-				result[i++] = strToFile( element );				
+				result[i++] = strToFile( element );
 			}
 			return result;
 		}
 		catch (CoreException e) {
 			throw new HibernateConsoleRuntimeException(e);
-		}		
+		}
 	}
 
 	public String getName() {
@@ -137,10 +138,10 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 		try {
 			Properties p = new Properties();
 			p.load(new FileInputStream(propFile) );
-			return p; 
-		} 
+			return p;
+		}
 		catch(IOException io) {
-			throw new HibernateConsoleRuntimeException("Could not load property file " + propFile, io);
+			throw new HibernateConsoleRuntimeException(HibernateConsoleMessages.EclipseLaunchConsoleConfigurationPreferences_could_not_load_property_file + propFile, io);
 		}
 	}
 
@@ -149,20 +150,20 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 	}
 
 	public void readStateFrom(Element element) {
-		throw new IllegalStateException("Cannot read from xml");
+		throw new IllegalStateException(HibernateConsoleMessages.EclipseLaunchConsoleConfigurationPreferences_cannot_read_from_xml);
 	}
 
 	public void setName(String name) {
-		throw new IllegalStateException(getName() + " cannot be renamed");
+		throw new IllegalStateException(getName() + HibernateConsoleMessages.EclipseLaunchConsoleConfigurationPreferences_cannot_be_renamed);
 	}
 
 	public void writeStateTo(Element node) {
-		throw new IllegalStateException("Cannot write to xml");		
+		throw new IllegalStateException(HibernateConsoleMessages.EclipseLaunchConsoleConfigurationPreferences_cannot_write_to_xml);
 	}
 
 
-	
-	
-	
-		
+
+
+
+
 }

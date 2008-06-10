@@ -59,7 +59,7 @@ public class ClearHQLEditorAction extends EditorActionDelegate {
 	public void run(IAction action) {
 		IDocument document = getDocument();
 		if(document!=null) {
-			document.set("");
+			document.set(""); //$NON-NLS-1$
 		}
 		
 	}

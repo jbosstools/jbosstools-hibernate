@@ -42,6 +42,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 
 public class UpDownListComposite extends Composite {
 
@@ -50,7 +51,7 @@ public class UpDownListComposite extends Composite {
 			handleButtonPressed( (Button) e.widget);
 		}
 	};
-	
+
 	private Group group = null;
 	private Table table = null;
 	private Composite buttons = null;
@@ -67,12 +68,12 @@ public class UpDownListComposite extends Composite {
 	private final boolean checkboxInTable;
 
 	private IContentProvider contentProvider;
-	
+
 
 	public UpDownListComposite(Composite parent, int style) {
-		this( parent, style, "");		
+		this( parent, style, "");		 //$NON-NLS-1$
 	}
-	
+
 	public UpDownListComposite(Composite parent, int style, String title) {
 		this( parent, style, title, false, null, null);
 	}
@@ -88,12 +89,12 @@ public class UpDownListComposite extends Composite {
 
 	private void initialize() {
 		createGroup();
-		GridLayout gridLayout = new GridLayout();		
+		GridLayout gridLayout = new GridLayout();
 		this.setLayout(gridLayout);
 	}
 
 	/**
-	 * This method initializes group	
+	 * This method initializes group
 	 *
 	 */
 	private void createGroup() {
@@ -113,7 +114,7 @@ public class UpDownListComposite extends Composite {
 	}
 
 	/**
-	 * This method initializes table	
+	 * This method initializes table
 	 *
 	 */
 	private void createTable() {
@@ -124,29 +125,29 @@ public class UpDownListComposite extends Composite {
 		gridData1.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		gridData1.heightHint = 20;
 		gridData1.widthHint = 20;
-		
+
 		table = new Table(group, SWT.FULL_SELECTION | SWT.BORDER | SWT.MULTI | (checkboxInTable?SWT.CHECK:SWT.NONE));
 		table.setHeaderVisible(false);
 		table.setLayoutData(gridData1);
 		table.setLinesVisible(false);
 		createColumns(table);
-		
+
 		table.addSelectionListener(new SelectionListener() {
-		
+
 			public void widgetDefaultSelected(SelectionEvent e) {
-				handleTableSelectionChanged();		
+				handleTableSelectionChanged();
 			}
-		
+
 			public void widgetSelected(SelectionEvent e) {
-				handleTableSelectionChanged();		
+				handleTableSelectionChanged();
 			}
-		
+
 		});
-		
+
 		tableView = checkboxInTable?new CheckboxTableViewer(table):new TableViewer(table);
 		if(provider!=null) tableView.setLabelProvider(provider);
 		if(contentProvider!=null) tableView.setContentProvider(contentProvider);
-		
+
 	}
 
 	protected void createColumns(Table table) {
@@ -156,7 +157,7 @@ public class UpDownListComposite extends Composite {
 	}
 
 	/**
-	 * This method initializes buttons	
+	 * This method initializes buttons
 	 *
 	 */
 	private void createButtons() {
@@ -180,33 +181,33 @@ public class UpDownListComposite extends Composite {
 		buttons = new Composite( group, SWT.NONE );
 		buttons.setLayout(new GridLayout());
 		buttons.setLayoutData(gridData2);
-		
+
 		String[] addButtonLabels = getAddButtonLabels();
 		addButtons = new Button[addButtonLabels.length];
 		for (int i = 0; i < addButtonLabels.length; i++) {
 			String label = addButtonLabels[i];
-			addButtons[i] = createButton(buttons, label); 
+			addButtons[i] = createButton(buttons, label);
 			addButtons[i].setEnabled(true);
 		}
 		removeButton = new Button(buttons, SWT.NONE);
-		removeButton.setText("Remove");
+		removeButton.setText(HibernateConsoleMessages.UpDownListComposite_remove);
 		removeButton.setLayoutData(gridData3);
 		removeButton.addSelectionListener(buttonListener);
 		fillLabel = new Label(buttons, SWT.NONE);
-		fillLabel.setText("");
+		fillLabel.setText(""); //$NON-NLS-1$
 		fillLabel.setLayoutData(gridData6);
 		upButton = new Button(buttons, SWT.NONE);
-		upButton.setText("Up");
+		upButton.setText(HibernateConsoleMessages.UpDownListComposite_up);
 		upButton.setLayoutData(gridData4);
 		upButton.addSelectionListener(buttonListener);
 		downButton = new Button(buttons, SWT.NONE);
-		downButton.setText("Down");
+		downButton.setText(HibernateConsoleMessages.UpDownListComposite_down);
 		downButton.setLayoutData(gridData5);
 		downButton.addSelectionListener(buttonListener);
 	}
 
-	protected String[] getAddButtonLabels() {		
-		return new String[] { "Add..." };
+	protected String[] getAddButtonLabels() {
+		return new String[] { HibernateConsoleMessages.UpDownListComposite_add };
 	}
 
 	private Button createButton(Composite parent, String label) {
@@ -216,7 +217,7 @@ public class UpDownListComposite extends Composite {
 		//data.grabExcessVerticalSpace = true;
 		data.horizontalAlignment = GridData.FILL;
 		//data.verticalAlignment = GridData.FILL;
-		
+
 		button.setLayoutData(data);
 		button.setFont(parent.getFont() );
 		button.setText(label);
@@ -237,12 +238,12 @@ public class UpDownListComposite extends Composite {
 				Button but = addButtons[i];
 				if(button == but) {
 				 handleAddButtonPressed(i);
-				}				
-			}						 
+				}
+			}
 		}
 		handleTableSelectionChanged();
 		tableView.getTable().setFocus();
-		
+
 	}
 
 	protected void moveSelectionDown() {
@@ -287,23 +288,23 @@ public class UpDownListComposite extends Composite {
 		item.dispose();
 		viewer.insert(data, index);
 	}
-	
+
 	protected void handleRemove() {
 		IStructuredSelection selection = (IStructuredSelection) tableView.getSelection();
 		if (selection != null) {
 			int numSelected= selection.size();
-			
+
 			Iterator iterator= selection.iterator();
 			while (iterator.hasNext() ) {
 				Object item= iterator.next();
 				tableView.remove(item);
 			}
 			listChanged();
-		}		
+		}
 	}
-	
-	
-	
+
+
+
 	private void handleAddButtonPressed(int i) {
 		Object[] o = handleAdd(i);
 		if(o!=null) {
@@ -320,7 +321,7 @@ public class UpDownListComposite extends Composite {
 	}
 
 	protected Object[] handleAdd(int i) {
-		return new Object[] { " test " };
+		return new Object[] { HibernateConsoleMessages.UpDownListComposite_test };
 	}
 
 	/**
@@ -352,7 +353,7 @@ public class UpDownListComposite extends Composite {
 	public Table getTable() {
 		return tableView.getTable();
 	}
-	
+
 	public TableViewer getTableViewer() {
 		return tableView;
 	}

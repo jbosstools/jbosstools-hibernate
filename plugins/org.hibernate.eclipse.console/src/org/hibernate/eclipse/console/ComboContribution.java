@@ -21,7 +21,7 @@ public abstract class ComboContribution extends ControlContribution {
 
 	String getText() {
 		if(comboControl.isDisposed()) {
-			return "";
+			return ""; //$NON-NLS-1$
 		} else {
 			return comboControl.getText();
 		}

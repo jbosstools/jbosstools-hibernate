@@ -27,6 +27,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
@@ -38,7 +39,7 @@ import org.xml.sax.InputSource;
 
 public class OpenFileActionUtils {
 	private static XMLHelper helper = new XMLHelper();
-	
+
 	private static final String HIBERNATE_TAG_CLASS = "class";							//$NON-NLS-1$
 	private static final String HIBERNATE_TAG_TABLE = "table"; 							//$NON-NLS-1$
 	private static final String HIBERNATE_TAG_SUBCLASS = "subclass";					//$NON-NLS-1$
@@ -55,22 +56,22 @@ public class OpenFileActionUtils {
 	public static IEditorPart openEditor(IWorkbenchPage page, IResource resource) throws PartInitException {
         return IDE.openEditor(page, (IFile) resource);
 	}
-	
+
 
 	public static boolean rootClassHasAnnotations(ConsoleConfiguration consoleConfiguration, java.io.File configXMLFile, PersistentClass rootClass) {
 		if (configXMLFile == null) return true;
 		Document doc = getDocument(consoleConfiguration, configXMLFile);
 		return getElements(doc, HIBERNATE_TAG_MAPPING, HIBERNATE_TAG_CLASS, getPersistentClassName(rootClass)).hasNext();
 	}
-	
+
 	static String getPersistentClassName(PersistentClass rootClass) {
 		if (rootClass == null) {
 			return "";																	//$NON-NLS-1$
-		} else { 
+		} else {
 			return rootClass.getEntityName() != null ? rootClass.getEntityName() : rootClass.getClassName();
 		}
 	}
-	
+
 	private static String getTableName(String catalog, String schema, String name) {
 		return (catalog != null ? catalog + '.' : "") + (schema != null ? schema + '.' : "") + name;	//$NON-NLS-1$ //$NON-NLS-2$
 	}
@@ -135,15 +136,15 @@ public class OpenFileActionUtils {
 				if (schemaAttr == null) schemaAttr = doc.getRootElement().attribute(HIBERNATE_TAG_SCHEMA);
 				if (
 						getTableName(
-							(catalogAttr != null ? catalogAttr.getValue() : null), 
-							(schemaAttr != null ? schemaAttr.getValue() : null), 
+							(catalogAttr != null ? catalogAttr.getValue() : null),
+							(schemaAttr != null ? schemaAttr.getValue() : null),
 							tableAttr.getValue()
 						).equals(getTableName(table))
 					) {
 					return true;
 				}
 
-				
+
 			}
 
 			Attribute classNameAttr = element.attribute( HIBERNATE_TAG_NAME );
@@ -178,11 +179,11 @@ public class OpenFileActionUtils {
 	}
 
 	static class LVS extends VisitorSupport {
-		private String nodeName; 
-		private String attrName; 
+		private String nodeName;
+		private String attrName;
 		private String attrValue;
 		private List ret = new ArrayList();
-		
+
 		public LVS(String nodeName, String attrName, String attrValue) {
 			super();
 			this.nodeName = nodeName;
@@ -194,21 +195,21 @@ public class OpenFileActionUtils {
 			if (nodeName == null) {
 				if (attrName != null && attrValue != null) {
 					if (attrIsCorrect(element, attrName, attrValue)) {
-			        	ret.add(element);  
+			        	ret.add(element);
 					}
 				}
 			} else {
 				if (nodeName.equals(element.getName())) {
 					if (attrName != null) {
 						if (attrIsCorrect(element, attrName, attrValue)) {
-				        	ret.add(element);  
+				        	ret.add(element);
 						}
 					} else {
-			        	ret.add(element);  
+			        	ret.add(element);
 					}
 				}
 			}
-			
+
 		}
 
 		public Iterator iterator() {
@@ -268,20 +269,20 @@ public class OpenFileActionUtils {
 				if (file != null) {
 					IPackageFragmentRoot[] packageFragmentRoots;
 					try {
-						packageFragmentRoots = proj.getAllPackageFragmentRoots();						
+						packageFragmentRoots = proj.getAllPackageFragmentRoots();
 						for (int i = 0; i < packageFragmentRoots.length && resource == null; i++) {
 							//search in source folders.
 							if (packageFragmentRoots[i].getClass() == PackageFragmentRoot.class) {
 								IPackageFragmentRoot packageFragmentRoot = packageFragmentRoots[i];
 								IPath path = packageFragmentRoot.getPath().append(file.getValue());
-								resource = ResourcesPlugin.getWorkspace().getRoot().getFile(path);							
+								resource = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
 							}
 						}
 						if (resource != null &&
 								elementInResource(consoleConfiguration, resource, element)) return resource;
 						resource = null;
 					} catch (JavaModelException e) {
-						HibernateConsolePlugin.getDefault().logErrorMessage("Problems while getting project package fragment roots", e);						
+						HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenFileActionUtils_problems_while_get_project_package_fragment_roots, e);
 					}
 				}
     		}
@@ -299,5 +300,5 @@ public class OpenFileActionUtils {
     	return null;
 	}
 
-	
+
 }

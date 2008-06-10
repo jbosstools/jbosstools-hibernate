@@ -27,6 +27,7 @@ import org.eclipse.draw2d.ManhattanConnectionRouter;
 import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.RotatableDecoration;
 import org.eclipse.draw2d.geometry.PointList;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 
 public class InheritanceViewAdapter extends AssociationViewAdapter {
 
@@ -34,13 +35,13 @@ public class InheritanceViewAdapter extends AssociationViewAdapter {
 	private final PersistentClassViewAdapter superclass;
 
 	public InheritanceViewAdapter(PersistentClassViewAdapter subclass, PersistentClassViewAdapter superclass) {
-		if(subclass==superclass) throw new IllegalArgumentException("subclass must not be equal to superclass");
-		if(subclass==null) throw new IllegalArgumentException("subclass must not null");
-		if(superclass==null) throw new IllegalArgumentException("superclass must not null");
+		if(subclass==superclass) throw new IllegalArgumentException(HibernateConsoleMessages.InheritanceViewAdapter_subclass_must_not_be_equal_to_superclass);
+		if(subclass==null) throw new IllegalArgumentException(HibernateConsoleMessages.InheritanceViewAdapter_subclass_must_not_null);
+		if(superclass==null) throw new IllegalArgumentException(HibernateConsoleMessages.InheritanceViewAdapter_superclass_must_not_null);
 		this.subclass = subclass;
 		this.superclass = superclass;
 	}
-	
+
 	public RotatableDecoration getTargetDecoration() {
 		PolygonDecoration decoration = new PolygonDecoration();
 		PointList decorationPointList = new PointList();
@@ -56,9 +57,9 @@ public class InheritanceViewAdapter extends AssociationViewAdapter {
 	public ConnectionRouter getConnectionRouter() {
 		return new ManhattanConnectionRouter();
 	}
-	
+
 	public String toString() {
-		return "Inheritance " + super.toString(); 
+		return HibernateConsoleMessages.InheritanceViewAdapter_inheritance + super.toString();
 	}
 
 	public String getSourceName() {
@@ -68,5 +69,5 @@ public class InheritanceViewAdapter extends AssociationViewAdapter {
 	public String getTargetName() {
 		return superclass.getPersistentClass().getEntityName();
 	}
-	
+
 }

@@ -30,6 +30,7 @@ import org.hibernate.EntityMode;
 import org.hibernate.Session;
 import org.hibernate.console.execution.ExecutionContextHolder;
 import org.hibernate.console.execution.ExecutionContext.Command;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
 import org.hibernate.proxy.HibernateProxyHelper;
@@ -40,11 +41,11 @@ public class EntityPropertySource implements IPropertySource2
 {
 	private Object reflectedObject;
 	private IPropertyDescriptor[] propertyDescriptors;
-	
+
 	private final ExecutionContextHolder currentConfiguration;
 	private final Session currentSession;
 	private ClassMetadata classMetadata;
-	
+
 	public EntityPropertySource (final Object object, final Session currentSession, ExecutionContextHolder currentConfiguration)
 	{
 		this.currentSession = currentSession;
@@ -55,92 +56,92 @@ public class EntityPropertySource implements IPropertySource2
 		} else {
 			classMetadata = currentSession.getSessionFactory().getClassMetadata( HibernateProxyHelper.getClassWithoutInitializingProxy(reflectedObject));
 		}
-							
+
 	}
-	
-	
+
+
 	public Object getEditableValue() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
-	
+
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		if(propertyDescriptors==null) {
 			currentConfiguration.getExecutionContext().execute(new Command() {
-			
+
 				public Object execute() {
-					
+
 					propertyDescriptors = initializePropertyDescriptors(classMetadata);
 					return null;
 				}
-			
+
 			});
 		}
 		return propertyDescriptors;
 	}
-		
+
 	static protected IPropertyDescriptor[] initializePropertyDescriptors(ClassMetadata classMetadata) {
-		
+
 		String[] propertyNames = classMetadata.getPropertyNames();
 		int length = propertyNames.length;
-		
+
 		PropertyDescriptor identifier = null;
-		
-		if(classMetadata.hasIdentifierProperty() ) {			
+
+		if(classMetadata.hasIdentifierProperty() ) {
 			identifier = new PropertyDescriptor(classMetadata.getIdentifierPropertyName(), classMetadata.getIdentifierPropertyName());
-			identifier.setCategory("Identifier");
+			identifier.setCategory(HibernateConsoleMessages.EntityPropertySource_identifier);
 			length++;
 		}
-		
+
 		PropertyDescriptor[] properties = new PropertyDescriptor[length];
-		
+
 		int idx = 0;
 		if(identifier!=null) {
-			properties[idx++] = identifier; 
+			properties[idx++] = identifier;
 		}
-		
+
 		for (int i = 0; i < propertyNames.length; i++) {
 			 PropertyDescriptor prop = new PropertyDescriptor(propertyNames[i],propertyNames[i]);
-			 prop.setCategory("Properties");
-			 properties[i+idx] = prop;			
+			 prop.setCategory(HibernateConsoleMessages.EntityPropertySource_properties);
+			 properties[i+idx] = prop;
 		}
-		
+
 		return properties;
 	}
 
 
 	public Object getPropertyValue(Object id) {
 		Object propertyValue;
-		
+
 		if(id.equals(classMetadata.getIdentifierPropertyName())) {
-			propertyValue = classMetadata.getIdentifier(reflectedObject, EntityMode.POJO);			
+			propertyValue = classMetadata.getIdentifier(reflectedObject, EntityMode.POJO);
 		} else {
-			propertyValue = classMetadata.getPropertyValue(reflectedObject, (String)id, EntityMode.POJO);	
-		} 
-		
+			propertyValue = classMetadata.getPropertyValue(reflectedObject, (String)id, EntityMode.POJO);
+		}
+
 		if (propertyValue instanceof Collection) {
-			CollectionMetadata collectionMetadata = currentSession.getSessionFactory().getCollectionMetadata(classMetadata.getEntityName() + "." + id);
+			CollectionMetadata collectionMetadata = currentSession.getSessionFactory().getCollectionMetadata(classMetadata.getEntityName() + "." + id); //$NON-NLS-1$
 			if(collectionMetadata!=null) {
 				propertyValue = new CollectionPropertySource((Collection) propertyValue,currentSession,currentConfiguration, collectionMetadata);
 			}
 		}
 		return propertyValue;
 	}
-	
-	public boolean isPropertySet(Object id) {		
+
+	public boolean isPropertySet(Object id) {
 		return false; // we can not decide this at the given point.
 	}
-	
+
 	public void resetPropertyValue(Object id) {
-		
+
 	}
-	
+
 	public void setPropertyValue(Object id, Object value) {
 		// lets not support editing in the raw properties view - to flakey ui.
 		//classMetadata.setPropertyValue(reflectedObject, (String) id, value, EntityMode.POJO);
 	}
-	
+
 	public boolean isPropertyResettable(Object id) {
 		return false;
 	}
-	
+
 }

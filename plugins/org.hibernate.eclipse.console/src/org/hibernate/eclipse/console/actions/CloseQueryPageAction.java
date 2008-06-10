@@ -29,6 +29,7 @@ import org.eclipse.ui.actions.SelectionListenerAction;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryPage;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 
 /**
@@ -38,24 +39,24 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
 public class CloseQueryPageAction extends SelectionListenerAction {
 
 	private final ISelectionProvider selectionProvider;
-	
+
 	/**
 	 * @param text
 	 */
 	public CloseQueryPageAction(ISelectionProvider selectionProvider) {
-		super("");
+		super(""); //$NON-NLS-1$
 		this.selectionProvider = selectionProvider;
 		this.selectionProvider.addSelectionChangedListener(this);
 		setEnabled(!this.selectionProvider.getSelection().isEmpty() );
-		
+
 		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.CLOSE) );
 		setDisabledImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.CLOSE_DISABLED) );
-		
-		setToolTipText("Close query page");
+
+		setToolTipText(HibernateConsoleMessages.CloseQueryPageAction_close_query_page);
 	}
 
 	public void run() {
-		IStructuredSelection selection = 
+		IStructuredSelection selection =
 			(IStructuredSelection) this.selectionProvider.getSelection();
 		if (!selection.isEmpty() ) {
 			for (Iterator i = selection.iterator(); i.hasNext(); ) {

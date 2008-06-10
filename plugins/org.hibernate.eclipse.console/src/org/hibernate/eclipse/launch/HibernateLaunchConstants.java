@@ -42,24 +42,24 @@ package org.hibernate.eclipse.launch;
 
 public class HibernateLaunchConstants
 {
-   public static final String ATTR_PREFIX = "org.hibernate.tools.";
+   public static final String ATTR_PREFIX = "org.hibernate.tools."; //$NON-NLS-1$
    
    // attribute to list of id for exporters configured in a specific launchconfig.
-   public static final String ATTR_EXPORTERS = ATTR_PREFIX + "exporters";
+   public static final String ATTR_EXPORTERS = ATTR_PREFIX + "exporters"; //$NON-NLS-1$
    
-   public static final String ATTR_CONSOLE_CONFIGURATION_NAME = ATTR_PREFIX + "configurationname";
-   public static final String ATTR_OUTPUT_DIR = ATTR_PREFIX + "outputdir";
-   public static final String ATTR_REVERSE_ENGINEER = ATTR_PREFIX + "schema2hbm";
-   public static final String ATTR_REVERSE_ENGINEER_SETTINGS = ATTR_PREFIX + "revengfile";
-   public static final String ATTR_REVERSE_ENGINEER_STRATEGY = ATTR_PREFIX + "revengstrategy";
-   public static final String ATTR_USE_OWN_TEMPLATES = ATTR_PREFIX + "useOwnTemplates";
-   public static final String ATTR_ENABLE_EJB3_ANNOTATIONS = ATTR_PREFIX + "ejb3";
-   public static final String ATTR_ENABLE_JDK5 = ATTR_PREFIX + "jdk5";
-   public static final String ATTR_PACKAGE_NAME = ATTR_PREFIX + "package";
-   public static final String ATTR_ENABLE_TEMPLATE_DIR = ATTR_PREFIX + "templatepathenabled";
-   public static final String ATTR_TEMPLATE_DIR = ATTR_PREFIX + "templatepath";
-   public static final String ATTR_PREFER_BASIC_COMPOSITE_IDS = ATTR_PREFIX + "prefercompositeids";
-   public static final String ATTR_AUTOMATIC_MANY_TO_MANY = ATTR_PREFIX + "reveng.detect_many_to_many";
-   public static final String ATTR_AUTOMATIC_VERSIONING = ATTR_PREFIX + "reveng.detect_optimistc_lock";
+   public static final String ATTR_CONSOLE_CONFIGURATION_NAME = ATTR_PREFIX + "configurationname"; //$NON-NLS-1$
+   public static final String ATTR_OUTPUT_DIR = ATTR_PREFIX + "outputdir"; //$NON-NLS-1$
+   public static final String ATTR_REVERSE_ENGINEER = ATTR_PREFIX + "schema2hbm"; //$NON-NLS-1$
+   public static final String ATTR_REVERSE_ENGINEER_SETTINGS = ATTR_PREFIX + "revengfile"; //$NON-NLS-1$
+   public static final String ATTR_REVERSE_ENGINEER_STRATEGY = ATTR_PREFIX + "revengstrategy"; //$NON-NLS-1$
+   public static final String ATTR_USE_OWN_TEMPLATES = ATTR_PREFIX + "useOwnTemplates"; //$NON-NLS-1$
+   public static final String ATTR_ENABLE_EJB3_ANNOTATIONS = ATTR_PREFIX + "ejb3"; //$NON-NLS-1$
+   public static final String ATTR_ENABLE_JDK5 = ATTR_PREFIX + "jdk5"; //$NON-NLS-1$
+   public static final String ATTR_PACKAGE_NAME = ATTR_PREFIX + "package"; //$NON-NLS-1$
+   public static final String ATTR_ENABLE_TEMPLATE_DIR = ATTR_PREFIX + "templatepathenabled"; //$NON-NLS-1$
+   public static final String ATTR_TEMPLATE_DIR = ATTR_PREFIX + "templatepath"; //$NON-NLS-1$
+   public static final String ATTR_PREFER_BASIC_COMPOSITE_IDS = ATTR_PREFIX + "prefercompositeids"; //$NON-NLS-1$
+   public static final String ATTR_AUTOMATIC_MANY_TO_MANY = ATTR_PREFIX + "reveng.detect_many_to_many"; //$NON-NLS-1$
+   public static final String ATTR_AUTOMATIC_VERSIONING = ATTR_PREFIX + "reveng.detect_optimistc_lock"; //$NON-NLS-1$
    
 }

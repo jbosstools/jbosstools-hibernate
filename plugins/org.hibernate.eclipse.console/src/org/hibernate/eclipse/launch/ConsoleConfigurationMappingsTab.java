@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.hibernate.console.ImageConstants;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 import org.hibernate.eclipse.console.utils.EclipseImages;
@@ -25,43 +26,43 @@ import org.hibernate.eclipse.console.wizards.UpDownListComposite;
 public class ConsoleConfigurationMappingsTab extends ConsoleConfigurationTab {
 
 	private UpDownListComposite mappingFilesViewer;
-	
+
 	public void createControl(Composite parent) {
 		Composite composite = buildMappingFileTable(parent);
 		setControl( composite );
 	}
 
 	private UpDownListComposite buildMappingFileTable(Composite parent) {
-		mappingFilesViewer = new UpDownListComposite(parent, SWT.NONE, "Additonal mapping files (not listed in cfg.xml)") {
+		mappingFilesViewer = new UpDownListComposite(parent, SWT.NONE, HibernateConsoleMessages.ConsoleConfigurationMappingsTab_additional_mapping_files) {
 			protected Object[] handleAdd(int idx) {
 				TableItem[] items = getTable().getItems();
 				IPath[] exclude = new IPath[items.length];
-				
+
 				for (int i = 0; i < items.length; i++) {
 					TableItem item = items[i];
-					exclude[i] = (IPath) item.getData();			
+					exclude[i] = (IPath) item.getData();
 				}
-				
-				return DialogSelectionHelper.chooseFileEntries(getShell(), null, exclude, "Add hbm.xml file", "Add a Hibernate Mapping file", new String[] { "hbm.xml" }, true, false, true);
+
+				return DialogSelectionHelper.chooseFileEntries(getShell(), null, exclude, HibernateConsoleMessages.ConsoleConfigurationMappingsTab_add_hbm_xml_file, HibernateConsoleMessages.ConsoleConfigurationMappingsTab_add_hibernate_mapping_file, new String[] { "hbm.xml" }, true, false, true); //$NON-NLS-1$
 			}
 
 			protected void listChanged() {
 				updateLaunchConfigurationDialog();
 			}
 		};
-		
+
 		GridData gd;
 		gd = new GridData(GridData.FILL_BOTH);
-		
+
 		gd.horizontalSpan = 3;
 		gd.verticalSpan = 1;
-		
+
 		mappingFilesViewer.setLayoutData( gd );
 		return mappingFilesViewer;
 	}
 
 	public String getName() {
-		return "Mappings";
+		return HibernateConsoleMessages.ConsoleConfigurationMappingsTab_mappings;
 	}
 
 	private IPath[] getMappings() {
@@ -71,7 +72,7 @@ public class ConsoleConfigurationMappingsTab extends ConsoleConfigurationTab {
 		for (int i = 0; i < items.length; i++) {
 			TableItem item = items[i];
 			IPath path = (IPath) item.getData();
-			str[i] = path;			
+			str[i] = path;
 		}
 		return str;
 	}
@@ -90,7 +91,7 @@ public class ConsoleConfigurationMappingsTab extends ConsoleConfigurationTab {
 		}
 		catch (CoreException e) {
 			HibernateConsolePlugin.getDefault().log( e );
-		}		
+		}
 	}
 
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
@@ -104,11 +105,11 @@ public class ConsoleConfigurationMappingsTab extends ConsoleConfigurationTab {
 	}
 
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
-		
+
 	}
 
 	public Image getImage() {
 		return EclipseImages.getImage( ImageConstants.MAPPEDCLASS );
 	}
-	
+
 }

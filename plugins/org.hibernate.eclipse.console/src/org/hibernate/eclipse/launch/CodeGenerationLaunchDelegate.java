@@ -56,6 +56,7 @@ import org.eclipse.jdt.core.formatter.CodeFormatter;
 import org.eclipse.jface.text.DocumentRewriteSessionType;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.util.Assert;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.text.edits.TextEdit;
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
@@ -68,6 +69,7 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext.Command;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
@@ -90,37 +92,37 @@ public class CodeGenerationLaunchDelegate extends
 		protected MultiTextEditWithProgress computeTextEdit(
 				ITextFileBuffer textFileBuffer, IProgressMonitor progressMonitor)
 		throws CoreException, OperationCanceledException {
-			
+
 			IResource bufferRes = ResourcesPlugin.getWorkspace().getRoot().findMember(textFileBuffer.getLocation());
 			Map options = null;
 			if(bufferRes!=null) {
 				IJavaProject project = JavaCore.create(bufferRes.getProject());
-				options = project.getOptions(true);																	
+				options = project.getOptions(true);
 			}
-			
+
 			CodeFormatter codeFormatter = ToolFactory.createCodeFormatter(options);
-			
+
 			IDocument document = textFileBuffer.getDocument();
 			String string = document.get();
 			TextEdit edit = codeFormatter.format(CodeFormatter.K_COMPILATION_UNIT, string, 0, string.length(), 0, null);
 			MultiTextEditWithProgress multiTextEditWithProgress = new MultiTextEditWithProgress(getOperationName());
 			if(edit==null) {
 				//HibernateConsolePlugin.getDefault().log("empty format for " + textFileBuffer.getLocation().toOSString());
-			} else {														
+			} else {
 				multiTextEditWithProgress.addChild(edit);
 			}
 			return multiTextEditWithProgress;
 		}
 	}
 
-    
+
 	public void launch(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		Assert.isNotNull(configuration);
 		Assert.isNotNull(monitor);
 		try {
 		    ExporterAttributes attributes = new ExporterAttributes(configuration);
-            
+
 		    List exporterFactories = attributes.getExporterFactories();
 		    for (Iterator iter = exporterFactories.iterator(); iter.hasNext();) {
 				ExporterFactory exFactory = (ExporterFactory) iter.next();
@@ -128,67 +130,67 @@ public class CodeGenerationLaunchDelegate extends
 					iter.remove();
 				}
 			}
-            
+
 		    Set outputDirectories = new HashSet();
 		    ExporterFactory[] exporters = (ExporterFactory[]) exporterFactories.toArray( new ExporterFactory[exporterFactories.size()] );
             ArtifactCollector collector = runExporters(attributes, exporters, outputDirectories, monitor);
-            
+
             Iterator iterator = outputDirectories.iterator();
             while (iterator.hasNext()) {
 				String path = (String) iterator.next();
-				refreshOutputDir( path );	
+				refreshOutputDir( path );
 			}
-			
+
 			RefreshTab.refreshResources(configuration, monitor);
-			
+
 			// code formatting needs to happen *after* refresh to make sure eclipse will format the uptodate files!
             if(collector!=null) {
             	formatGeneratedCode( monitor, collector );
 			}
-			
-			
+
+
 		} catch(Exception e) {
-			throw new CoreException(HibernateConsolePlugin.throwableToStatus(e, 666)); 
+			throw new CoreException(HibernateConsolePlugin.throwableToStatus(e, 666));
 		} catch(NoClassDefFoundError e) {
-			throw new CoreException(HibernateConsolePlugin.throwableToStatus(new HibernateConsoleRuntimeException("Received a NoClassDefFoundError, probably the console configuration classpath is incomplete or contains conflicting versions of the same class",e), 666));
+			throw new CoreException(HibernateConsolePlugin.throwableToStatus(new HibernateConsoleRuntimeException(HibernateConsoleMessages.CodeGenerationLaunchDelegate_received_noclassdeffounderror,e), 666));
 		} finally {
 			monitor.done();
-		} 
-		
+		}
+
 	}
 
 	private void formatGeneratedCode(IProgressMonitor monitor, ArtifactCollector collector) {
-		final TextFileBufferOperation operation = new FormatGeneratedCode( "Formate generated code" );
+		final TextFileBufferOperation operation = new FormatGeneratedCode( HibernateConsoleMessages.CodeGenerationLaunchDelegate_formate_generated_code );
 
-		File[] javaFiles = collector.getFiles("java");
+		File[] javaFiles = collector.getFiles("java"); //$NON-NLS-1$
 		if(javaFiles.length>0) {
-			
+
 			IPath[] locations = new IPath[javaFiles.length];
-			
+
 			for (int i = 0; i < javaFiles.length; i++) {
 				File file = javaFiles[i];
 				locations[i] = new Path(file.getPath());
 			}
-			
+
 			FileBufferOperationRunner runner= new FileBufferOperationRunner(FileBuffers.getTextFileBufferManager(), HibernateConsolePlugin.getShell());
 			try {
 				runner.execute(locations, operation, monitor);
 			}
 			catch (OperationCanceledException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("java format cancelled", e);
+				HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.CodeGenerationLaunchDelegate_java_format_cancelled, e);
 			}
 			catch (CoreException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("exception during java format", e);
-			} catch (Throwable e) { // full guard since the above operation seem to be able to fail with IllegalArugmentException and SWT Invalid thread access while users are editing. 
-				HibernateConsolePlugin.getDefault().logErrorMessage("exception during java format", e);
+				HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.CodeGenerationLaunchDelegate_exception_during_java_format, e);
+			} catch (Throwable e) { // full guard since the above operation seem to be able to fail with IllegalArugmentException and SWT Invalid thread access while users are editing.
+				HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.CodeGenerationLaunchDelegate_exception_during_java_format, e);
 			}
 		}
-				
+
 	}
 
 	private void refreshOutputDir(String outputdir) {
 		IResource bufferRes = PathHelper.findMember(ResourcesPlugin.getWorkspace().getRoot(), outputdir);
-		
+
 		if (bufferRes != null && bufferRes.isAccessible()) {
 			try {
 				bufferRes.refreshLocal(IResource.DEPTH_INFINITE, null);
@@ -197,55 +199,55 @@ public class CodeGenerationLaunchDelegate extends
 			}
 		}
 	}
-	
+
 	private ArtifactCollector runExporters (final ExporterAttributes attributes, final ExporterFactory[] exporterFactories, final Set outputDirectories, final IProgressMonitor monitor)
 	   throws CoreException
     {
-			
-		 	monitor.beginTask("Generating code for " + attributes.getConsoleConfigurationName(), exporterFactories.length + 1);
-		
+
+		 	monitor.beginTask(HibernateConsoleMessages.CodeGenerationLaunchDelegate_generating_code_for + attributes.getConsoleConfigurationName(), exporterFactories.length + 1);
+
 			if (monitor.isCanceled())
 				return null;
-			
+
 			ConsoleConfiguration cc = KnownConfigurations.getInstance().find(attributes.getConsoleConfigurationName());
 			if (attributes.isReverseEngineer()) {
-				monitor.subTask("reading jdbc metadata");
+				monitor.subTask(HibernateConsoleMessages.CodeGenerationLaunchDelegate_reading_jdbc_metadata);
 			}
 			final Configuration cfg = buildConfiguration(attributes, cc, ResourcesPlugin.getWorkspace().getRoot());
-			
+
 			monitor.worked(1);
-			
+
 			if (monitor.isCanceled())
 				return null;
-						
+
 			return (ArtifactCollector) cc.execute(new Command() {
 
 				public Object execute() {
 					ArtifactCollector artifactCollector = new ArtifactCollector();
-	                
+
                     // Global properties
 	                Properties props = new Properties();
-	                props.put("ejb3", ""+attributes.isEJB3Enabled());
-                    props.put("jdk5", ""+attributes.isJDK5Enabled());
-                    
+	                props.put("ejb3", ""+attributes.isEJB3Enabled()); //$NON-NLS-1$ //$NON-NLS-2$
+                    props.put("jdk5", ""+attributes.isJDK5Enabled());  //$NON-NLS-1$//$NON-NLS-2$
+
                     for (int i = 0; i < exporterFactories.length; i++)
                     {
                        monitor.subTask(exporterFactories[i].getExporterDefinition().getDescription());
-                       
+
                        Properties globalProperties = new Properties();
-                       globalProperties.putAll(props);                       
-                       
+                       globalProperties.putAll(props);
+
                        Exporter exporter;
 					try {
 						exporter = exporterFactories[i].createConfiguredExporter(cfg, attributes.getOutputPath(), attributes.getTemplatePath(), globalProperties, outputDirectories, artifactCollector);
 					} catch (CoreException e) {
-						throw new HibernateConsoleRuntimeException("Error while setting up " + exporterFactories[i].getExporterDefinition(), e);
+						throw new HibernateConsoleRuntimeException(HibernateConsoleMessages.CodeGenerationLaunchDelegate_error_while_setting_up + exporterFactories[i].getExporterDefinition(), e);
 					}
-					 
+
 					try {
                        exporter.start();
 					} catch(HibernateException he) {
-						throw new HibernateConsoleRuntimeException("Error while running  " + exporterFactories[i].getExporterDefinition().getDescription(), he);
+						throw new HibernateConsoleRuntimeException(HibernateConsoleMessages.CodeGenerationLaunchDelegate_error_while_running + exporterFactories[i].getExporterDefinition().getDescription(), he);
 					}
                        monitor.worked(1);
                     }
@@ -253,16 +255,16 @@ public class CodeGenerationLaunchDelegate extends
 				}
 
 			});
-			
-			
+
+
 		}
 
 	private Configuration buildConfiguration(final ExporterAttributes attributes, ConsoleConfiguration cc, IWorkspaceRoot root) {
-		final boolean reveng = attributes.isReverseEngineer();		
+		final boolean reveng = attributes.isReverseEngineer();
 		final String reverseEngineeringStrategy = attributes.getRevengStrategy();
 		final boolean preferBasicCompositeids = attributes.isPreferBasicCompositeIds();
 		final IResource revengres = PathHelper.findMember( root, attributes.getRevengSettings());
-		
+
 		if(reveng) {
 			Configuration configuration = null;
 			if(cc.hasConfiguration()) {
@@ -270,37 +272,37 @@ public class CodeGenerationLaunchDelegate extends
 			} else {
 				configuration = cc.buildWith( null, false );
 			}
-			
+
 			final JDBCMetaDataConfiguration cfg = new JDBCMetaDataConfiguration();
 			Properties properties = configuration.getProperties();
 			cfg.setProperties( properties );
 			cc.buildWith(cfg,false);
-			
+
 			cfg.setPreferBasicCompositeIds(preferBasicCompositeids);
-            
+
 			cc.execute(new Command() { // need to execute in the consoleconfiguration to let it handle classpath stuff!
 
 				public Object execute() {
-			
-					
-					//todo: factor this setup of revengstrategy to core				
+
+
+					//todo: factor this setup of revengstrategy to core
 					DefaultReverseEngineeringStrategy configurableNamingStrategy = new DefaultReverseEngineeringStrategy();
 					//configurableNamingStrategy.setSettings(qqsettings);
-					
+
 					ReverseEngineeringStrategy res = configurableNamingStrategy;
 					if(revengres!=null) {
-						/*Configuration configuration = cc.buildWith(new Configuration(), false);*/				
+						/*Configuration configuration = cc.buildWith(new Configuration(), false);*/
 						/*Settings settings = cc.getSettings(configuration);*/
 						File file = PathHelper.getLocation( revengres ).toFile();
 						OverrideRepository repository = new OverrideRepository();///*settings.getDefaultCatalogName(),settings.getDefaultSchemaName()*/);
 						repository.addFile(file);
 						res = repository.getReverseEngineeringStrategy(res);
 					}
-										 
+
 					if(reverseEngineeringStrategy!=null && reverseEngineeringStrategy.trim().length()>0) {
-						res = loadreverseEngineeringStrategy(reverseEngineeringStrategy, res);						
+						res = loadreverseEngineeringStrategy(reverseEngineeringStrategy, res);
 					}
-					
+
 					ReverseEngineeringSettings qqsettings = new ReverseEngineeringSettings(res)
 					.setDefaultPackageName(attributes.getPackageName())
 					.setDetectManyToMany( attributes.detectManyToMany() )
@@ -308,25 +310,25 @@ public class CodeGenerationLaunchDelegate extends
 
 					configurableNamingStrategy.setSettings( qqsettings );
 					res.setSettings(qqsettings);
-					
+
 					cfg.setReverseEngineeringStrategy( res );
-					
+
 					cfg.readFromJDBC();
                     cfg.buildMappings();
 					return null;
 				}
-			});	
-			
+			});
+
 			return cfg;
 		} else {
 			cc.build();
 			final Configuration configuration = cc.getConfiguration();
-			
+
 			cc.execute(new Command() {
 				public Object execute() {
-					
+
 					configuration.buildMappings();
-					return configuration;		
+					return configuration;
 				}
 			});
 			return configuration;
@@ -336,44 +338,47 @@ public class CodeGenerationLaunchDelegate extends
 	// TODO: merge with revstrategy load in JDBCConfigurationTask
 	private ReverseEngineeringStrategy loadreverseEngineeringStrategy(final String className, ReverseEngineeringStrategy delegate) {
         try {
-            Class clazz = ReflectHelper.classForName(className);			
+            Class clazz = ReflectHelper.classForName(className);
 			Constructor constructor = clazz.getConstructor(new Class[] { ReverseEngineeringStrategy.class });
-            return (ReverseEngineeringStrategy) constructor.newInstance(new Object[] { delegate }); 
-        } 
+            return (ReverseEngineeringStrategy) constructor.newInstance(new Object[] { delegate });
+        }
         catch (NoSuchMethodException e) {
 			try {
-				Class clazz = ReflectHelper.classForName(className);						
+				Class clazz = ReflectHelper.classForName(className);
 				ReverseEngineeringStrategy rev = (ReverseEngineeringStrategy) clazz.newInstance();
 				return rev;
-			} 
-			catch (Exception eq) {
-				throw new HibernateConsoleRuntimeException("Could not create or find " + className + " with default no-arg constructor", eq);
 			}
-		} 
+			catch (Exception eq) {
+				String out = NLS.bind(HibernateConsoleMessages.CodeGenerationLaunchDelegate_could_not_create_or_find_with_default_noarg_constructor, className);
+				throw new HibernateConsoleRuntimeException(out, eq);
+			}
+		}
         catch (Exception e) {
-			throw new HibernateConsoleRuntimeException("Could not create or find " + className + " with one argument delegate constructor", e);
-		} 
+			String out = NLS.bind(HibernateConsoleMessages.CodeGenerationLaunchDelegate_could_not_create_or_find_with_one_argument_delegate_constructor, className);
+			throw new HibernateConsoleRuntimeException(out, e);
+		}
     }
-	
+
 	public boolean preLaunchCheck(ILaunchConfiguration configuration, String mode, IProgressMonitor monitor) throws CoreException {
 		ExporterAttributes attributes = new ExporterAttributes(configuration);
-		
+
 		String configName = attributes.getConsoleConfigurationName();
 		if(StringHelper.isEmpty( configName )) {
-			abort("Console configuration name is empty in " + configuration.getName(), null, ICodeGenerationLaunchConstants.ERR_UNSPECIFIED_CONSOLE_CONFIGURATION);
+			abort(HibernateConsoleMessages.CodeGenerationLaunchDelegate_console_configuration_name_is_empty_in + configuration.getName(), null, ICodeGenerationLaunchConstants.ERR_UNSPECIFIED_CONSOLE_CONFIGURATION);
 		}
-		
+
 		if(KnownConfigurations.getInstance().find( configName )==null) {
-			abort("Console configuration " + configName + " not found in " + configuration.getName(), null, ICodeGenerationLaunchConstants.ERR_CONSOLE_CONFIGURATION_NOTFOUND);
+			String out = NLS.bind(HibernateConsoleMessages.CodeGenerationLaunchDelegate_console_configuration_not_found_in, configName, configuration.getName());
+			abort(out, null, ICodeGenerationLaunchConstants.ERR_CONSOLE_CONFIGURATION_NOTFOUND);
 		}
-		
+
 		if(StringHelper.isEmpty(attributes.getOutputPath())) {
-			abort("Output has to be specified in " + configuration.getName(), null, ICodeGenerationLaunchConstants.ERR_OUTPUT_PATH_NOTFOUND);
+			abort(HibernateConsoleMessages.CodeGenerationLaunchDelegate_output_has_to_be_specified_in + configuration.getName(), null, ICodeGenerationLaunchConstants.ERR_OUTPUT_PATH_NOTFOUND);
 		}
-		
+
 		return super.preLaunchCheck( configuration, mode, monitor );
 	}
-	
+
 	protected void abort(String message, Throwable exception, int code)
 	throws CoreException {
 		throw new CoreException(new Status(IStatus.ERROR, HibernateConsolePlugin.getDefault().ID, code, message, exception));

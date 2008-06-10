@@ -34,16 +34,16 @@ import org.eclipse.ui.progress.IProgressConstants;
  */
 public class HibernateConsolePerspectiveFactory implements IPerspectiveFactory {
 
-	static public final String ID_CONSOLE_PERSPECTIVE = "org.hibernate.eclipse.console.HibernateConsolePerspective";
+	static public final String ID_CONSOLE_PERSPECTIVE = "org.hibernate.eclipse.console.HibernateConsolePerspective"; //$NON-NLS-1$
 	//	Folders
-	private static final String ID_CONFIGURATION_VIEW = "org.hibernate.eclipse.console.views.KnownConfigurationsView";
-	private static final String ID_QUERYRESULTS_VIEW = "org.hibernate.eclipse.console.views.QueryPageTabView";
-	private static final String ID_PROPERTY_SHEET_VIEW = "org.eclipse.ui.views.PropertySheet";
-	private static final String ID_DYNAMIC_QUERY_TRANSLATOR_VIEW = "org.hibernate.eclipse.console.views.DynamicSQLPreviewView";
+	private static final String ID_CONFIGURATION_VIEW = "org.hibernate.eclipse.console.views.KnownConfigurationsView"; //$NON-NLS-1$
+	private static final String ID_QUERYRESULTS_VIEW = "org.hibernate.eclipse.console.views.QueryPageTabView"; //$NON-NLS-1$
+	private static final String ID_PROPERTY_SHEET_VIEW = "org.eclipse.ui.views.PropertySheet"; //$NON-NLS-1$
+	private static final String ID_DYNAMIC_QUERY_TRANSLATOR_VIEW = "org.hibernate.eclipse.console.views.DynamicSQLPreviewView"; //$NON-NLS-1$
 	//private static final String ID_ENTITY_MODEL_VIEW = "org.hibernate.eclipse.graph.EntityGraphView";
-	private static final String ID_CONSOLE_VIEW = "org.eclipse.ui.console.ConsoleView"; //TODO: could not find constant for it in eclipse 
+	private static final String ID_CONSOLE_VIEW = "org.eclipse.ui.console.ConsoleView"; //TODO: could not find constant for it in eclipse  //$NON-NLS-1$
 	
-	private static final String ID_QUERY_PARAMETERS = "org.hibernate.eclipse.console.views.QueryParametersView";
+	private static final String ID_QUERY_PARAMETERS = "org.hibernate.eclipse.console.views.QueryParametersView"; //$NON-NLS-1$
 	
 	
 	/* (non-Javadoc)
@@ -57,20 +57,20 @@ public class HibernateConsolePerspectiveFactory implements IPerspectiveFactory {
 		folder.addView(JavaUI.ID_PACKAGES);
 		folder.addPlaceholder(IPageLayout.ID_RES_NAV);
 		
-		IFolderLayout propertiesFolder= layout.createFolder("leftBottom", IPageLayout.BOTTOM, (float)0.75, "left"); //$NON-NLS-1$
+		IFolderLayout propertiesFolder= layout.createFolder("leftBottom", IPageLayout.BOTTOM, (float)0.75, "left"); //$NON-NLS-1$ //$NON-NLS-2$
 		propertiesFolder.addView(ID_PROPERTY_SHEET_VIEW);
 				
 		layout.addActionSet(IDebugUIConstants.LAUNCH_ACTION_SET);
 		
 		IFolderLayout outputfolder= layout.createFolder("bottom", IPageLayout.BOTTOM, (float)0.75, editorArea); //$NON-NLS-1$
-		outputfolder.addView("org.eclipse.pde.runtime.LogView");
+		outputfolder.addView("org.eclipse.pde.runtime.LogView"); //$NON-NLS-1$
 		outputfolder.addView(ID_QUERYRESULTS_VIEW);
 		outputfolder.addView(ID_DYNAMIC_QUERY_TRANSLATOR_VIEW);
 		//outputfolder.addView(ID_ENTITY_MODEL_VIEW);
 		outputfolder.addView(ID_CONSOLE_VIEW);
 		outputfolder.addPlaceholder(IProgressConstants.PROGRESS_VIEW_ID);
 				
-		IFolderLayout outlines = layout.createFolder("outlines", IPageLayout.RIGHT, 0.75f, editorArea);
+		IFolderLayout outlines = layout.createFolder("outlines", IPageLayout.RIGHT, 0.75f, editorArea); //$NON-NLS-1$
 		outlines.addView(ID_QUERY_PARAMETERS);
 		outlines.addView(IPageLayout.ID_OUTLINE);
 		

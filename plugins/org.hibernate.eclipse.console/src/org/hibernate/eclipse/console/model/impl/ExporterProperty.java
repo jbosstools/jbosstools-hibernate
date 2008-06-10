@@ -21,18 +21,20 @@
  */
 package org.hibernate.eclipse.console.model.impl;
 
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
+
 public class ExporterProperty
 {
 	private static ExporterProperty[] globalProperties = new ExporterProperty[] {
-		new ExporterProperty ("jdk5", "Use Java 5 syntax", "false", false),
-		new ExporterProperty ("ejb3", "Generate EJB3 annotations", "false", false)
+		new ExporterProperty ("jdk5", HibernateConsoleMessages.ExporterProperty_use_java5_syntax, "false", false), //$NON-NLS-1$ //$NON-NLS-2$
+		new ExporterProperty ("ejb3", HibernateConsoleMessages.ExporterProperty_generate_ejb3_annotations, "false", false) //$NON-NLS-1$ //$NON-NLS-2$
 	};
-	
+
 	private String defaultValue;
 	private String description;
 	private String name;
 	private boolean required;
-	
+
 	public ExporterProperty () { }
 	public ExporterProperty (String name, String description, String defaultValue, boolean required)
 	{
@@ -41,7 +43,7 @@ public class ExporterProperty
 		this.defaultValue = defaultValue;
 		this.required = required;
 	}
-	
+
 	public String getDefaultValue() {
 		return defaultValue;
 	}
@@ -65,12 +67,12 @@ public class ExporterProperty
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public static ExporterProperty[] getGlobalProperties ()
 	{
 		return globalProperties;
 	}
-	
+
 	public boolean equals(Object object) {
 		if (object instanceof ExporterProperty)
 		{
@@ -79,11 +81,11 @@ public class ExporterProperty
 		}
 		return false;
 	}
-	
+
 	public boolean isRequired() {
 		return required;
 	}
-	
+
 	public void setRequired(boolean required) {
 		this.required = required;
 	}
@@ -91,7 +93,7 @@ public class ExporterProperty
 		if(description==null) {
 			return name;
 		} else {
-			return description + " [" + name + "]";
-		}		
+			return description + " [" + name + "]";  //$NON-NLS-1$//$NON-NLS-2$
+		}
 	}
 }

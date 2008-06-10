@@ -47,27 +47,27 @@ public class TypeNameValueVisitor implements ValueVisitor {
 	}
 	
 	public Object accept(Bag bag) {
-		return "Bag <" + bag.getElement().accept(this) + ">";
+		return "Bag <" + bag.getElement().accept(this) + ">";  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 	public Object accept(IdentifierBag bag) {
-		return "IdBag <" + bag.getElement().accept(this) + ">";
+		return "IdBag <" + bag.getElement().accept(this) + ">";  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 	public Object accept(List list) {
-		return "List <" + list.getElement().accept(this) + ">";
+		return "List <" + list.getElement().accept(this) + ">"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public Object accept(PrimitiveArray primitiveArray) {
-		return primitiveArray.getElement().accept(this) + "[]";
+		return primitiveArray.getElement().accept(this) + "[]"; //$NON-NLS-1$
 	}
 
 	public Object accept(Array list) {
-		return list.getElement().accept(this) + "[]";
+		return list.getElement().accept(this) + "[]"; //$NON-NLS-1$
 	}
 
 	public Object accept(Map map) {
-		return "Map<" + map.getElement().accept(this) + ">";
+		return "Map<" + map.getElement().accept(this) + ">"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public Object accept(OneToMany many) {
@@ -75,18 +75,18 @@ public class TypeNameValueVisitor implements ValueVisitor {
 	}
 
 	private String dequalify(String referencedEntityName) {
-		if(dequalify && referencedEntityName!=null && referencedEntityName.indexOf(".")>=0) {			
+		if(dequalify && referencedEntityName!=null && referencedEntityName.indexOf(".")>=0) {			 //$NON-NLS-1$
 			return referencedEntityName.substring(referencedEntityName.lastIndexOf('.')+1);
 		}
 		return referencedEntityName;
 	}
 
 	public Object accept(Set set) {
-		return "Set<" + set.getElement().accept(this) + ">";
+		return "Set<" + set.getElement().accept(this) + ">"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public Object accept(Any any) {
-		return "Any";
+		return "Any"; //$NON-NLS-1$
 	}
 
 	public Object accept(SimpleValue value) {

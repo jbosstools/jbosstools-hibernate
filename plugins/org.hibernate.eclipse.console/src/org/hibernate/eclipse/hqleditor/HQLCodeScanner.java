@@ -81,8 +81,8 @@ public class HQLCodeScanner extends RuleBasedScanner {
     	"update", //$NON-NLS-1$
     	"versioned", //$NON-NLS-1$
     	"where", //$NON-NLS-1$
-    	"and",
-    	"or",
+    	"and", //$NON-NLS-1$
+    	"or", //$NON-NLS-1$
 
    		// -- SQL tokens --
    		// These aren't part of HQL, but usefull when you have SQL in the editor
@@ -108,102 +108,102 @@ public class HQLCodeScanner extends RuleBasedScanner {
     /** built-in function names. Various normal builtin functions in SQL/HQL. Maybe sShould try and do this dynamically based on dialect */
     private static String[] builtInFunctions = {
 		    // standard sql92 functions
-    		"substring",
-    		"locate",
-    		"trim",
-    		"length",
-    		"bit_length",
-    		"coalesce",
-    		"nullif",
-    		"abs",
-    		"mod",
-    		"sqrt",
-    		"upper",
-    		"lower",
-    		"cast",
-    		"extract",
+    		"substring", //$NON-NLS-1$
+    		"locate", //$NON-NLS-1$
+    		"trim", //$NON-NLS-1$
+    		"length", //$NON-NLS-1$
+    		"bit_length", //$NON-NLS-1$
+    		"coalesce", //$NON-NLS-1$
+    		"nullif", //$NON-NLS-1$
+    		"abs", //$NON-NLS-1$
+    		"mod", //$NON-NLS-1$
+    		"sqrt", //$NON-NLS-1$
+    		"upper", //$NON-NLS-1$
+    		"lower", //$NON-NLS-1$
+    		"cast", //$NON-NLS-1$
+    		"extract", //$NON-NLS-1$
     		
     		// time functions mapped to ansi extract
-    		"second",
-    		"minute",
-    		"hour",
-    		"day",
-    		"month",
-    		"year",
+    		"second", //$NON-NLS-1$
+    		"minute", //$NON-NLS-1$
+    		"hour", //$NON-NLS-1$
+    		"day", //$NON-NLS-1$
+    		"month", //$NON-NLS-1$
+    		"year", //$NON-NLS-1$
     		
-    		"str",
+    		"str", //$NON-NLS-1$
     		
     		//    		 misc functions - based on oracle dialect
-    		"sign",
-    		"acos",
-    		"asin",
-    		"atan",
-    		"cos",
-    		"cosh",
-    		"exp",
-    		"ln",
-    		"sin",
-    		"sinh",
-    		"stddev",
-    		"sqrt",
-    		"tan",
-    		"tanh",
-    		"variance",
+    		"sign", //$NON-NLS-1$
+    		"acos", //$NON-NLS-1$
+    		"asin", //$NON-NLS-1$
+    		"atan", //$NON-NLS-1$
+    		"cos", //$NON-NLS-1$
+    		"cosh", //$NON-NLS-1$
+    		"exp", //$NON-NLS-1$
+    		"ln", //$NON-NLS-1$
+    		"sin", //$NON-NLS-1$
+    		"sinh", //$NON-NLS-1$
+    		"stddev", //$NON-NLS-1$
+    		"sqrt", //$NON-NLS-1$
+    		"tan", //$NON-NLS-1$
+    		"tanh", //$NON-NLS-1$
+    		"variance", //$NON-NLS-1$
     		
-    		"round",
-    		"trunc",
-    		"ceil",
-    		"floor",
+    		"round", //$NON-NLS-1$
+    		"trunc", //$NON-NLS-1$
+    		"ceil", //$NON-NLS-1$
+    		"floor", //$NON-NLS-1$
     		
-    		"chr",
-    		"initcap",
-    		"lower",
-    		"ltrim",
-    		"rtrim",
-    		"soundex",
-    		"upper",
-    		"ascii",
-    		"length",
-    		"to_char",
-    		"to_date",
+    		"chr", //$NON-NLS-1$
+    		"initcap", //$NON-NLS-1$
+    		"lower", //$NON-NLS-1$
+    		"ltrim", //$NON-NLS-1$
+    		"rtrim", //$NON-NLS-1$
+    		"soundex", //$NON-NLS-1$
+    		"upper", //$NON-NLS-1$
+    		"ascii", //$NON-NLS-1$
+    		"length", //$NON-NLS-1$
+    		"to_char", //$NON-NLS-1$
+    		"to_date", //$NON-NLS-1$
     		
-    		"current_date",
-    		"current_time",
-    		"current_timestamp",
-    		"lastday",
-    		"sysday",
-    		"systimestamp",
-    		"uid",
-    		"user",
+    		"current_date", //$NON-NLS-1$
+    		"current_time", //$NON-NLS-1$
+    		"current_timestamp", //$NON-NLS-1$
+    		"lastday", //$NON-NLS-1$
+    		"sysday", //$NON-NLS-1$
+    		"systimestamp", //$NON-NLS-1$
+    		"uid", //$NON-NLS-1$
+    		"user", //$NON-NLS-1$
     		
-    		"rowid",
-    		"rownum",
+    		"rowid", //$NON-NLS-1$
+    		"rownum", //$NON-NLS-1$
     		
-    		"concat",
-    		"instr",
-    		"instrb",
-    		"lpad",
-    		"replace",
-    		"rpad",
-    		"substr",
-    		"substrb",
-    		"translate",
+    		"concat", //$NON-NLS-1$
+    		"instr", //$NON-NLS-1$
+    		"instrb", //$NON-NLS-1$
+    		"lpad", //$NON-NLS-1$
+    		"replace", //$NON-NLS-1$
+    		"rpad", //$NON-NLS-1$
+    		"substr", //$NON-NLS-1$
+    		"substrb", //$NON-NLS-1$
+    		"translate", //$NON-NLS-1$
     		
-    		"substring",
-    		"locate",
-    		"bit_length",
-    		"coalesce",
+    		"substring", //$NON-NLS-1$
+    		"locate", //$NON-NLS-1$
+    		"bit_length", //$NON-NLS-1$
+    		"coalesce", //$NON-NLS-1$
     		
-    		"atan2",
-    		"log",
-    		"mod",
-    		"nvl",
-    		"nvl2",
-    		"power",
+    		"atan2", //$NON-NLS-1$
+    		"log", //$NON-NLS-1$
+    		"mod", //$NON-NLS-1$
+    		"nvl", //$NON-NLS-1$
+    		"nvl2", //$NON-NLS-1$
+    		"power", //$NON-NLS-1$
     		
-    		"add_months",
-    		"months_between",
-    		"next_day",
+    		"add_months", //$NON-NLS-1$
+    		"months_between", //$NON-NLS-1$
+    		"next_day", //$NON-NLS-1$
     		
            };
     

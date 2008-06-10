@@ -15,16 +15,17 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
 import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 import org.xml.sax.EntityResolver;
 
 public class ConsoleConfigurationOptionsTab extends ConsoleConfigurationTab {
 
-	
+
 	private Text entityResolverClassNameText;
 	private Text namingStrategyClassNameText;
-	
+
 	public void createControl(Composite parent) {
 		Font font = parent.getFont();
 		Composite comp = new Composite(parent, SWT.NONE);
@@ -33,73 +34,73 @@ public class ConsoleConfigurationOptionsTab extends ConsoleConfigurationTab {
 		layout.verticalSpacing = 0;
 		comp.setLayout(layout);
 		comp.setFont(font);
-	
+
 		createNamingStrategyClassNameEditor( comp );
 		createEntityResolverClassNameEditor( comp );
-		
+
 	}
-	
+
 	private void createNamingStrategyClassNameEditor(Composite parent) {
-		Group group = createGroup( parent, "Naming strategy:" );
+		Group group = createGroup( parent, HibernateConsoleMessages.ConsoleConfigurationOptionsTab_naming_strategy );
 		namingStrategyClassNameText = createBrowseEditor( parent, group);
 		createBrowseButton( group, new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				handleNamingStrategyBrowse();
 			}
-		});	 		
+		});
 	}
 
 	private void createEntityResolverClassNameEditor(Composite parent) {
-		Group group = createGroup( parent, "Entity resolver:" );
+		Group group = createGroup( parent, HibernateConsoleMessages.ConsoleConfigurationOptionsTab_entity_resolver );
 		entityResolverClassNameText = createBrowseEditor( parent, group);
 		createBrowseButton( group, new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				handleEntityResolverBrowse();
 			}
-		});	 		
+		});
 	}
 
 
 	public String getName() {
-		return "Options";
+		return HibernateConsoleMessages.ConsoleConfigurationOptionsTab_options;
 	}
 
 	public Image getImage() {
 		return DebugUITools.getImage(IInternalDebugUIConstants.IMG_OBJS_COMMON_TAB);
 	}
-	
+
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
-			namingStrategyClassNameText.setText( configuration.getAttribute( IConsoleConfigurationLaunchConstants.NAMING_STRATEGY, "" ) );
-			entityResolverClassNameText.setText( configuration.getAttribute( IConsoleConfigurationLaunchConstants.ENTITY_RESOLVER, "" ) );
+			namingStrategyClassNameText.setText( configuration.getAttribute( IConsoleConfigurationLaunchConstants.NAMING_STRATEGY, "" ) ); //$NON-NLS-1$
+			entityResolverClassNameText.setText( configuration.getAttribute( IConsoleConfigurationLaunchConstants.ENTITY_RESOLVER, "" ) ); //$NON-NLS-1$
 		}
 		catch (CoreException e) {
 			HibernateConsolePlugin.getDefault().log(e);
-		}			
+		}
 	}
 
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute( IConsoleConfigurationLaunchConstants.NAMING_STRATEGY, nonEmptyTrimOrNull( namingStrategyClassNameText ) );
-		configuration.setAttribute( IConsoleConfigurationLaunchConstants.ENTITY_RESOLVER, nonEmptyTrimOrNull( entityResolverClassNameText ) );		
+		configuration.setAttribute( IConsoleConfigurationLaunchConstants.ENTITY_RESOLVER, nonEmptyTrimOrNull( entityResolverClassNameText ) );
 	}
 
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
-		
+
 	}
 
-	
+
 	private void handleEntityResolverBrowse() {
-		String string = DialogSelectionHelper.chooseImplementation(EntityResolver.class.getName(), entityResolverClassNameText.getText(), "Select entity resolver class", getShell());
+		String string = DialogSelectionHelper.chooseImplementation(EntityResolver.class.getName(), entityResolverClassNameText.getText(), HibernateConsoleMessages.ConsoleConfigurationOptionsTab_select_entity_resolver_class, getShell());
 		if(string!=null) {
 			entityResolverClassNameText.setText(string);
 		}
 	}
-	
+
 	private void handleNamingStrategyBrowse() {
-		String string = DialogSelectionHelper.chooseImplementation(NamingStrategy.class.getName(), namingStrategyClassNameText.getText(), "Select naming strategy class", getShell());
+		String string = DialogSelectionHelper.chooseImplementation(NamingStrategy.class.getName(), namingStrategyClassNameText.getText(), HibernateConsoleMessages.ConsoleConfigurationOptionsTab_select_naming_strategy_class, getShell());
 		if(string!=null) {
 			namingStrategyClassNameText.setText(string);
-		}		
+		}
 	}
 
 }

@@ -42,6 +42,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 import org.hibernate.eclipse.console.model.ITableFilter;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
@@ -86,8 +87,8 @@ public abstract class TableFilterView extends TreeToTableComposite {
 	private TableViewer createTableFilterViewer() {
 		TableViewer result = new TableViewer( rightTable );
 		result.setUseHashlookup( true );
-		result.setColumnProperties( new String[] { "inclusion", "catalog",
-				"schema", "name" } );
+		result.setColumnProperties( new String[] { "inclusion", "catalog",  //$NON-NLS-1$//$NON-NLS-2$
+				"schema", "name" } ); //$NON-NLS-1$ //$NON-NLS-2$
 
 		/*
 		 * AutoResizeTableLayout autoResizeTableLayout = new
@@ -161,16 +162,16 @@ public abstract class TableFilterView extends TreeToTableComposite {
 					TableContainer tc = (TableContainer) sel;
 					filter = revEngDef.createTableFilter();
 					String schema = tc.getName();
-					if(schema==null || "".equals(schema)) {
-						filter.setMatchCatalog(".*");
-						filter.setMatchSchema(".*");
+					if(schema==null || "".equals(schema)) { //$NON-NLS-1$
+						filter.setMatchCatalog(".*"); //$NON-NLS-1$
+						filter.setMatchSchema(".*"); //$NON-NLS-1$
 					} else { // fake catalog handling
 						String catalog = StringHelper.qualifier(schema);
 						schema = StringHelper.unqualify(schema);
-						filter.setMatchCatalog( "".equals(catalog)?".*":catalog );
-						filter.setMatchSchema( "".equals(schema)?".*":schema );
+						filter.setMatchCatalog( "".equals(catalog)?".*":catalog ); //$NON-NLS-1$ //$NON-NLS-2$
+						filter.setMatchSchema( "".equals(schema)?".*":schema ); //$NON-NLS-1$ //$NON-NLS-2$
 					}
-					filter.setMatchName(".*");
+					filter.setMatchName(".*"); //$NON-NLS-1$
 					filter.setExclude( Boolean.valueOf( exclude ) );
 				} else if ( sel instanceof Column ) {
 					// we ignore column since at the moment we dont know which table is there.
@@ -184,7 +185,7 @@ public abstract class TableFilterView extends TreeToTableComposite {
 			}
 		} else {
 			ITableFilter filter = revEngDef.createTableFilter();
-			filter.setMatchName(".*");
+			filter.setMatchName(".*"); //$NON-NLS-1$
 			filter.setExclude( Boolean.valueOf( exclude ) );
 			revEngDef.addTableFilter( filter );
 		}
@@ -195,7 +196,7 @@ public abstract class TableFilterView extends TreeToTableComposite {
 	}
 
 	protected String[] getAddButtonLabels() {
-		return new String[] { "Include...", "Exclude..." };
+		return new String[] { HibernateConsoleMessages.TableFilterView_include, HibernateConsoleMessages.TableFilterView_exclude };
 	}
 
 	protected void handleAddButtonPressed(int i) {
@@ -207,12 +208,12 @@ public abstract class TableFilterView extends TreeToTableComposite {
 			doExclusion();
 			break;
 		default:
-			throw new IllegalArgumentException( i + " not a known button" );
+			throw new IllegalArgumentException( i + HibernateConsoleMessages.TableFilterView_not_known_button );
 		}
 	}
 
 	protected void doRemoveAll() {
-		if(MessageDialog.openQuestion( getShell(), "Remove all filters" , "Do you want to remove all filters ?")) {
+		if(MessageDialog.openQuestion( getShell(), HibernateConsoleMessages.TableFilterView_remove_all_filters , HibernateConsoleMessages.TableFilterView_do_you_want_to_remove_all_filters)) {
 			revEngDef.removeAllTableFilters();
 		}
 	}
@@ -243,26 +244,26 @@ public abstract class TableFilterView extends TreeToTableComposite {
 			revEngDef.moveTableFilterUp( item );
 		}
 	}
-	
+
 	protected void createTableColumns(org.eclipse.swt.widgets.Table table) {
-		TableColumn column = new TableColumn(table, SWT.CENTER, 0);		
-		column.setText("!");
+		TableColumn column = new TableColumn(table, SWT.CENTER, 0);
+		column.setText(HibernateConsoleMessages.TableFilterView_sign);
 		column.setWidth(20);
-		
+
 		column = new TableColumn(table, SWT.LEFT, 1);
-		column.setText("Catalog");
+		column.setText(HibernateConsoleMessages.TableFilterView_catalog);
 		column.setWidth(100);
-		
+
 		column = new TableColumn(table, SWT.LEFT, 2);
-		column.setText("Schema");
+		column.setText(HibernateConsoleMessages.TableFilterView_schema);
 		column.setWidth(100);
 
 		column = new TableColumn(table, SWT.LEFT, 3);
-		column.setText("Table");
+		column.setText(HibernateConsoleMessages.TableFilterView_table);
 		column.setWidth(100);
 	}
-	
-	public void dispose() {		
+
+	public void dispose() {
 		super.dispose();
 	}
 }

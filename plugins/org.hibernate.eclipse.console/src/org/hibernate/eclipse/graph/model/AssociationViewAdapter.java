@@ -24,11 +24,13 @@ package org.hibernate.eclipse.graph.model;
 import org.eclipse.draw2d.ConnectionRouter;
 import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.RotatableDecoration;
+import org.eclipse.osgi.util.NLS;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 
 public abstract class AssociationViewAdapter {
-	
+
 	public abstract String getSourceName();
-	
+
 	public abstract String getTargetName();
 
 	public RotatableDecoration getTargetDecoration() {
@@ -40,7 +42,8 @@ public abstract class AssociationViewAdapter {
 	}
 
 	public String toString() {
-		return "Association target: " + getSourceName() + " source: " + getTargetName(); 
+		String out = NLS.bind(HibernateConsoleMessages.AssociationViewAdapter_association_target_source, getTargetName(), getSourceName());
+		return out;
 	}
 
 	public String getAssociationName() {

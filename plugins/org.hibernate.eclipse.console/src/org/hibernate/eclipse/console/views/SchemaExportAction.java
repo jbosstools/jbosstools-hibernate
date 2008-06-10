@@ -25,16 +25,18 @@ import java.util.Iterator;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.StructuredViewer;
+import org.eclipse.osgi.util.NLS;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.execution.ExecutionContext.Command;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.actions.ConsoleConfigurationBasedAction;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
 /**
  * @author max
- * 
+ *
  */
 public class SchemaExportAction extends ConsoleConfigurationBasedAction {
 
@@ -51,7 +53,7 @@ public class SchemaExportAction extends ConsoleConfigurationBasedAction {
 	 * @param selectionProvider
 	 */
 	public SchemaExportAction(StructuredViewer selectionProvider) {
-		super( "Run SchemaExport" );
+		super( HibernateConsoleMessages.SchemaExportAction_run_schemaexport );
 		this.viewer = selectionProvider;
 	}
 
@@ -63,11 +65,11 @@ public class SchemaExportAction extends ConsoleConfigurationBasedAction {
 				final ConsoleConfiguration config = (ConsoleConfiguration) node;
 				config.execute( new Command() {
 					public Object execute() {
-						if ( config.getConfiguration() != null 
+						String out = NLS.bind(HibernateConsoleMessages.SchemaExportAction_sure_run_schemaexport, config.getName());
+						if ( config.getConfiguration() != null
 								&& MessageDialog.openConfirm( viewer.getControl().getShell(),
-										"Run SchemaExport",
-										"Are you sure you want to run SchemaExport on '"
-												+ config.getName() + "'?" ) ) {
+										HibernateConsoleMessages.SchemaExportAction_run_schemaexport,
+										out ) ) {
 							SchemaExport export = new SchemaExport( config
 									.getConfiguration() );
 							export.create( false, true );
@@ -77,15 +79,13 @@ public class SchemaExportAction extends ConsoleConfigurationBasedAction {
 								int cnt = 1;
 								while ( iterator.hasNext() ) {
 									Throwable element = (Throwable) iterator.next();
-									HibernateConsolePlugin.getDefault().logErrorMessage("Error #"
-															+ cnt++
-															+ " while performing SchemaExport",
-															element );
+									String outStr = NLS.bind(HibernateConsoleMessages.SchemaExportAction_errornum_while_performing_schemaexport, cnt++);
+									HibernateConsolePlugin.getDefault().logErrorMessage(outStr, element );
 								}
 								HibernateConsolePlugin.getDefault().showError(viewer.getControl().getShell(),
 															cnt
 															- 1
-															+ " error(s) while performing SchemaExport, see Error Log for details",
+															+ HibernateConsoleMessages.SchemaExportAction_error_while_performing_schemaexport,
 															(Throwable)null );
 							}
 						}
@@ -100,14 +100,14 @@ public class SchemaExportAction extends ConsoleConfigurationBasedAction {
 			catch (HibernateException he) {
 				HibernateConsolePlugin.getDefault().showError(
 						viewer.getControl().getShell(),
-						"Exception while running SchemaExport", he );
+						HibernateConsoleMessages.SchemaExportAction_exception_running_schemaexport, he );
 			}
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.hibernate.eclipse.console.actions.SessionFactoryBasedAction#updateState(org.hibernate.console.ConsoleConfiguration)
 	 */
 	protected boolean updateState(ConsoleConfiguration consoleConfiguration) {

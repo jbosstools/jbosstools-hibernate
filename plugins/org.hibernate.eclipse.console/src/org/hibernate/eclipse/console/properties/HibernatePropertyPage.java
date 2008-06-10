@@ -53,6 +53,7 @@ import org.eclipse.ui.dialogs.PropertyPage;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
@@ -60,13 +61,13 @@ import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
 public class HibernatePropertyPage extends PropertyPage {
-	
+
 	Control[] settings;
 
 	private Button enableHibernate;
 
 	private Combo selectedConfiguration;
-	
+
 
 	/**
 	 * Constructor for SamplePropertyPage.
@@ -82,28 +83,28 @@ public class HibernatePropertyPage extends PropertyPage {
 		composite.setLayout(layout);
 
 		GridData data = new GridData(SWT.END,SWT.END, true, true);
-		
+
 		composite.setLayoutData(data);
 
 
 		createLogoButtons(composite);
 	}
-	
+
 	private void addFirstSection(Composite parent) {
 		Composite composite = createDefaultComposite(parent,2);
 
 		enableHibernate = new Button(composite, SWT.CHECK);
-		enableHibernate.setText("Enable Hibernate 3 support");
+		enableHibernate.setText(HibernateConsoleMessages.HibernatePropertyPage_enable_hibernate3_support);
 		enableHibernate.addSelectionListener(new SelectionAdapter() {
-		
+
 			public void widgetSelected(SelectionEvent e) {
 				boolean selection = enableHibernate.getSelection();
-				enableSettings(selection);			
+				enableSettings(selection);
 			}
 		});
-		
-		
-		
+
+
+
 	}
 
 	private void createLogoButtons(Composite composite) {
@@ -111,15 +112,15 @@ public class HibernatePropertyPage extends PropertyPage {
 		hibernateLogoButton.setImage(EclipseImages.getImage(ImageConstants.HIBERNATE_LOGO));
 		hibernateLogoButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				openBrowser("http://tools.hibernate.org");
+				openBrowser("http://tools.hibernate.org"); //$NON-NLS-1$
 			}
 		});
-		
+
 		Button jbossLogoButton = new Button(composite, SWT.NULL);
 		jbossLogoButton.setImage(EclipseImages.getImage(ImageConstants.JBOSS_LOGO));
 		jbossLogoButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				openBrowser("http://www.jboss.org/products/jbosside");
+				openBrowser("http://www.jboss.org/products/jbosside"); //$NON-NLS-1$
 			}
 		});
 	}
@@ -135,21 +136,21 @@ public class HibernatePropertyPage extends PropertyPage {
 		}
 		catch (PartInitException e) {
 			openWebBrowserError(href, e);
-		}	
+		}
 	}
-	
+
     private void openWebBrowserError(final String href, final Throwable t) {
         getShell().getDisplay().asyncExec(new Runnable() {
             public void run() {
-				String title = "Open URL";
-				String msg = "Unable to open webbrowser for url: " + href;
+				String title = HibernateConsoleMessages.HibernatePropertyPage_open_url;
+				String msg = HibernateConsoleMessages.HibernatePropertyPage_unable_open_webbrowser_for_url + href;
 				IStatus status = HibernateConsolePlugin.throwableToStatus(t);
                 ErrorDialog.openError(getShell(), title, msg, status);
             }
         });
     }
 
-	
+
 	private String urlEncode(char[] input) {
 	       StringBuffer retu = new StringBuffer(input.length);
 	       for (int i = 0; i < input.length; i++) {
@@ -171,10 +172,10 @@ public class HibernatePropertyPage extends PropertyPage {
 
 	private void addSecondSection(Composite parent) {
 		Composite settingsPart = createDefaultComposite(parent,2);
-		
+
 		// Label for owner field
 		Label ownerLabel = new Label(settingsPart, SWT.NONE);
-		ownerLabel.setText("Default Hibernate Console configuration:");
+		ownerLabel.setText(HibernateConsoleMessages.HibernatePropertyPage_default_hibernate_console_config);
 
 		selectedConfiguration = new Combo(parent, SWT.DROP_DOWN);
 		GridData gd = new GridData();
@@ -187,9 +188,9 @@ public class HibernatePropertyPage extends PropertyPage {
 			ConsoleConfiguration configuration = configurations[i];
 			selectedConfiguration.add(configuration.getName() );
 		}
-		
+
 		settings = new Control[] { ownerLabel, selectedConfiguration };
-		
+
 	}
 
 	/**
@@ -210,7 +211,7 @@ public class HibernatePropertyPage extends PropertyPage {
 		addLogoSection(composite);
 		loadValues();
 		enableSettings(enableHibernate.getSelection() );
-		
+
 		return composite;
 	}
 
@@ -230,9 +231,9 @@ public class HibernatePropertyPage extends PropertyPage {
 
 	protected void performDefaults() {
 		enableHibernate.setSelection(false);
-		selectedConfiguration.setText("");
+		selectedConfiguration.setText(""); //$NON-NLS-1$
 	}
-	
+
 	private IProject getProject() {
 		IAdaptable adaptable= getElement();
 		if (adaptable != null) {
@@ -243,32 +244,32 @@ public class HibernatePropertyPage extends PropertyPage {
 		}
 		return null;
 	}
-	
-	
+
+
 	public void loadValues() {
 		IProject project = getProject();
 		IScopeContext scope = new ProjectScope(project);
-		
-		Preferences node = scope.getNode("org.hibernate.eclipse.console");
-		
+
+		Preferences node = scope.getNode("org.hibernate.eclipse.console"); //$NON-NLS-1$
+
 		if(node!=null) {
-			enableHibernate.setSelection(node.getBoolean("hibernate3.enabled", false) );
-			String cfg = node.get("default.configuration", project.getName() );
+			enableHibernate.setSelection(node.getBoolean("hibernate3.enabled", false) ); //$NON-NLS-1$
+			String cfg = node.get("default.configuration", project.getName() ); //$NON-NLS-1$
 			ConsoleConfiguration configuration = KnownConfigurations.getInstance().find(cfg);
 			if(configuration==null) {
-				selectedConfiguration.setText("");
+				selectedConfiguration.setText(""); //$NON-NLS-1$
 			} else {
 				selectedConfiguration.setText(cfg);
-			}			
-		} 
-		
+			}
+		}
+
 	}
 	public boolean performOk() {
 		ProjectUtils.toggleHibernateOnProject( getProject(), enableHibernate.getSelection(), selectedConfiguration.getText() );
 		return true;
 	}
 
-	
+
 	private void enableSettings(boolean selection) {
 		for (int i = 0; i < settings.length; i++) {
 			Control comp = settings[i];

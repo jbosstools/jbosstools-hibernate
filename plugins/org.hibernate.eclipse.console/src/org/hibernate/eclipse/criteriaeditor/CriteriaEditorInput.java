@@ -23,6 +23,7 @@ package org.hibernate.eclipse.criteriaeditor;
 
 import org.eclipse.core.resources.IStorage;
 import org.eclipse.ui.IMemento;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.QueryEditorInput;
 
 /**
@@ -36,8 +37,8 @@ public class CriteriaEditorInput extends QueryEditorInput {
 
     public CriteriaEditorInput( IStorage storage ) {
 		super(storage);
-    }    
-	
+    }
+
 
     public String getFactoryId() {
         return CriteriaditorInputFactory.ID_FACTORY;
@@ -48,6 +49,6 @@ public class CriteriaEditorInput extends QueryEditorInput {
     }
 
     public void resetName() {
-    	setName( "Criteria: " + (getConsoleConfigurationName()==null?"<None>":getConsoleConfigurationName()) );    	
+    	setName( HibernateConsoleMessages.CriteriaEditorInput_criteria + (getConsoleConfigurationName()==null?HibernateConsoleMessages.CriteriaEditorInput_none:getConsoleConfigurationName()) );
     }
-} 
+}

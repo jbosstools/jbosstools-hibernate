@@ -29,6 +29,6 @@ import org.eclipse.debug.ui.actions.OpenLaunchDialogAction;
 public class OpenHibernateToolsConfigurations extends OpenLaunchDialogAction {
 
 	public OpenHibernateToolsConfigurations() {
-		super("org.hibernate.eclipse.launch.CodeGenerationLaunchGroup");
+		super("org.hibernate.eclipse.launch.CodeGenerationLaunchGroup"); //$NON-NLS-1$
 	}
 }

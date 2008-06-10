@@ -71,7 +71,7 @@ final class ConfigurationCombo extends ComboContribution {
 			names[i] = configurations[i].getName();
 		}
 
-		final String name = editor.getConsoleConfigurationName()==null?"":editor.getConsoleConfigurationName();
+		final String name = editor.getConsoleConfigurationName()==null?"":editor.getConsoleConfigurationName(); //$NON-NLS-1$
 		
 		comboControl.getDisplay().syncExec( new Runnable() {
 		

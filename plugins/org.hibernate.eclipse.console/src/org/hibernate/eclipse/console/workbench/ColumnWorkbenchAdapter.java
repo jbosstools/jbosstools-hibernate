@@ -45,7 +45,7 @@ public class ColumnWorkbenchAdapter extends BasicWorkbenchAdapter {
 	static String getColumnLabel(Column c) {
 		String label = c.getName();
 		if(c.getSqlTypeCode()!=null) {
-			label += " : " + JDBCToHibernateTypeHelper.getJDBCTypeName(c.getSqlTypeCode().intValue());
+			label += " : " + JDBCToHibernateTypeHelper.getJDBCTypeName(c.getSqlTypeCode().intValue()); //$NON-NLS-1$
 		}
 		return label;
 	}

@@ -36,6 +36,7 @@ import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 import org.eclipse.swt.widgets.Shell;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.eclipse.hqleditor.CompletionHelper;
@@ -81,22 +82,22 @@ public class JavaCompletionProcessor implements IContentAssistProcessor {
 			int offset) {
 		return null;
 	}
-	
+
 	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer,
 			int position) {
 		try {
 			setErrorMessage( null );
 			if(editor.getConsoleConfiguration()==null) {
-				setErrorMessage( "No console configuration found" );
+				setErrorMessage( HibernateConsoleMessages.JavaCompletionProcessor_no_console_configuration_found );
 				return new ICompletionProposal[0];
 			}
-			String prefix = "Session session;"; // has to do this because of https://bugs.eclipse.org/bugs/show_bug.cgi?id=141518
-			
+			String prefix = HibernateConsoleMessages.JavaCompletionProcessor_session_session; // has to do this because of https://bugs.eclipse.org/bugs/show_bug.cgi?id=141518
+
 			try {
 				IJavaProject javaProject = ProjectUtils.findJavaProject( editor.getConsoleConfiguration() );
 				collector = new CompletionProposalCollector( javaProject );
 				collector.acceptContext( new CompletionContext() );
-				
+
 				editor.codeComplete( prefix, collector, position, javaProject );
 			}
 			catch (JavaModelException x) {
@@ -104,7 +105,7 @@ public class JavaCompletionProcessor implements IContentAssistProcessor {
 				ErrorDialog
 						.openError(
 								shell,
-								"Error", "Error while performing code completion", x.getStatus() ); 
+								HibernateConsoleMessages.JavaCompletionProcessor_error, HibernateConsoleMessages.JavaCompletionProcessor_error_while_performing_code_completion, x.getStatus() );
 				HibernateConsolePlugin.getDefault().log( x );
 			}
 
@@ -118,9 +119,9 @@ public class JavaCompletionProcessor implements IContentAssistProcessor {
 		finally {
 			if(collector!=null) {
 				setErrorMessage( collector.getErrorMessage() );
-				collector = null;	
+				collector = null;
 			}
-		}		
+		}
 	}
 
 	public char[] getCompletionProposalAutoActivationCharacters() {

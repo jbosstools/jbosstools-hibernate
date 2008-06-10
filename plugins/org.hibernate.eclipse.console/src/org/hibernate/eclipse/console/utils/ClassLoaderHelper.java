@@ -43,6 +43,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.hibernate.console.HibernateConsoleRuntimeException;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 
 /**
  * @author max
@@ -54,46 +55,46 @@ public class ClassLoaderHelper {
 	{
 		List pathElements = getProjectClassPathURLs(project);
 		URL urlPaths[] = (URL[]) pathElements.toArray(new URL[pathElements.size()]);
-		
+
 		return new URLClassLoader(urlPaths, Thread.currentThread().getContextClassLoader() );
 	}
-	
+
 	static public List getProjectClassPathURLs (IJavaProject project)
 	{
 		List pathElements = new ArrayList();
-		
+
 		try {
 			IClasspathEntry paths[] = project.getResolvedClasspath(true);
-			
+
 			if (paths != null)
 			{
 				for (int i = 0; i < paths.length; i++)
 				{
-					IClasspathEntry path = paths[i];					
+					IClasspathEntry path = paths[i];
 					if (path.getEntryKind() == IClasspathEntry.CPE_LIBRARY)
 					{
 						IPath simplePath = path.getPath();
 						URL url = getRawLocationURL(simplePath);
-						
+
 						pathElements.add(url);
 					}
 				}
 			}
-					
+
 			IPath location = getProjectLocation(project.getProject() );
 			IPath outputPath = location.append(
 				project.getOutputLocation().removeFirstSegments(1) );
-			
+
 			pathElements.add(outputPath.toFile().toURL() );
 		} catch (JavaModelException e) {
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return pathElements;
 	}
-	
+
 	private static URL getRawLocationURL(IPath simplePath) throws MalformedURLException {
 		File file = getRawLocationFile(simplePath);
 		return file.toURL();
@@ -107,10 +108,10 @@ public class ClassLoaderHelper {
 			if(rawLocation==null) {
 				rawLocation = member.getLocation();
 				if(rawLocation==null) {
-					throw new HibernateConsoleRuntimeException("Could not determine physical location for " + simplePath);
+					throw new HibernateConsoleRuntimeException(HibernateConsoleMessages.ClassLoaderHelper_could_not_determine_physical_location_for + simplePath);
 				}
 			}
-			file = rawLocation.toFile();	
+			file = rawLocation.toFile();
 		} else {
 			file = simplePath.toFile();
 		}
@@ -140,7 +141,7 @@ public class ClassLoaderHelper {
 		}
 		return l;
 	}
-	
+
 	static public String[] getClasspath(ILaunchConfiguration configuration) throws CoreException {
 		IRuntimeClasspathEntry[] entries = JavaRuntime
 		.computeUnresolvedRuntimeClasspath(configuration);
@@ -153,7 +154,7 @@ public class ClassLoaderHelper {
 				if (location != null) {
 					userEntries.add(location);
 				} else {
-					//System.out.println("No location: " + runtimeClasspathEntry.getMemento()); 
+					//System.out.println("No location: " + runtimeClasspathEntry.getMemento());
 				}
 			} else {
 				//System.out.println("Ignored " + runtimeClasspathEntry.getMemento());
@@ -161,5 +162,5 @@ public class ClassLoaderHelper {
 		}
 		return (String[]) userEntries.toArray(new String[userEntries.size()]);
 	}
-	
+
 }

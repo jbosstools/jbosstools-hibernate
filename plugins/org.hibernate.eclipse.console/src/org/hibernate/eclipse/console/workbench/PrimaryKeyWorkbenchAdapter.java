@@ -23,6 +23,7 @@ package org.hibernate.eclipse.console.workbench;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.hibernate.console.ImageConstants;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PrimaryKey;
@@ -31,7 +32,7 @@ public class PrimaryKeyWorkbenchAdapter extends BasicWorkbenchAdapter {
 
 	public Object[] getChildren(Object o) {
 		PrimaryKey t = getPrimaryKey( o );
-		
+
 		if(t.getColumnSpan()==1) {
 			return NO_CHILDREN;
 		} else {
@@ -52,7 +53,7 @@ public class PrimaryKeyWorkbenchAdapter extends BasicWorkbenchAdapter {
 		if(table.getColumnSpan()==1) {
 			return ColumnWorkbenchAdapter.getColumnLabel(table.getColumn(0));
 		} else {
-			return "Composite primary key";
+			return HibernateConsoleMessages.PrimaryKeyWorkbenchAdapter_composite_primary_key;
 		}
 	}
 

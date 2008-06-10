@@ -28,21 +28,22 @@ import org.eclipse.ui.part.IPageBookViewPage;
 import org.eclipse.ui.part.MessagePage;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.PageBookView;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.hqleditor.HQLEditor;
 
 public class QueryParametersView extends PageBookView {
 
-		
+
 	public QueryParametersView() {
 		super();
 	}
-	
+
 	protected IPage createDefaultPage(PageBook book) {
 		MessagePage page = new MessagePage();
         initPage(page);
         page.createControl(book);
-        page.setMessage("No HQL editor open");
-        return page;		
+        page.setMessage(HibernateConsoleMessages.QueryParametersView_no_hql_editor_open);
+        return page;
 	}
 
 	protected PageRec doCreatePage(IWorkbenchPart part) {
@@ -55,7 +56,7 @@ public class QueryParametersView extends PageBookView {
             return new PageRec(part, page);
         }
         // There is no query parameters to outline
-        return null;		
+        return null;
 	}
 
 	protected void doDestroyPage(IWorkbenchPart part, PageRec pageRecord) {

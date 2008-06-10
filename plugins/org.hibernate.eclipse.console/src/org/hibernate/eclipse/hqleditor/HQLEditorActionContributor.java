@@ -34,41 +34,41 @@ import org.eclipse.ui.editors.text.TextEditorActionContributor;
 import org.eclipse.ui.part.EditorActionBarContributor;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.RetargetTextEditorAction;
-import org.hibernate.eclipse.console.Messages;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.QueryEditor;
 import org.hibernate.eclipse.console.actions.ExecuteQueryAction;
 
 
 
 /**
- * This class installs and manages actions for the HQL Editor. 
+ * This class installs and manages actions for the HQL Editor.
  */
 public class HQLEditorActionContributor extends TextEditorActionContributor {
 
     protected RetargetTextEditorAction contentAssistProposalAction;
     protected RetargetTextEditorAction contentAssistTipAction;
     protected RetargetTextEditorAction contentFormatAction;
-    
+
     private ExecuteQueryAction executeHQLAction;
-	
+
 
     /**
      * Constructs an instance of this class.  This is the default constructor.
      */
     public HQLEditorActionContributor() {
         super();
-        ResourceBundle bundle = ResourceBundle.getBundle(Messages.BUNDLE_NAME);
+        ResourceBundle bundle = ResourceBundle.getBundle(HibernateConsoleMessages.BUNDLE_NAME);
 
-        contentAssistProposalAction = new RetargetTextEditorAction( bundle, "ContentAssistProposal." ); // $NON-NLS-1$
-        contentAssistTipAction =  new RetargetTextEditorAction( bundle, "ContentAssistTip." ); // $NON-NLS-1$
-        contentFormatAction = new RetargetTextEditorAction( bundle, "ContentFormat." ); // $NON-NLS-1$
+        contentAssistProposalAction = new RetargetTextEditorAction( bundle, "ContentAssistProposal." );//$NON-NLS-1$
+        contentAssistTipAction =  new RetargetTextEditorAction( bundle, "ContentAssistTip." ); //$NON-NLS-1$
+        contentFormatAction = new RetargetTextEditorAction( bundle, "ContentFormat." ); //$NON-NLS-1$
         executeHQLAction = new ExecuteQueryAction();
-        
+
     }
 
     /**
      * Contributes items to the Workbench Edit menu.
-     * 
+     *
      * @param mm the MenuManager to use
      */
     public void contributeToMenu( IMenuManager mm ) {
@@ -85,11 +85,11 @@ public class HQLEditorActionContributor extends TextEditorActionContributor {
             hqlMenu.add( fContentAssistTipAction );
         }*/
     }
-    
+
     /**
      * Sets the active editor to this contributor.
      * This updates the actions to reflect the current editor.
-     * 
+     *
      * @see org.eclipse.ui.part.EditorActionBarContributor#setActiveEditor(org.eclipse.ui.IEditorPart)
      * @see EditorActionBarContributor#editorChanged
      */
@@ -100,34 +100,34 @@ public class HQLEditorActionContributor extends TextEditorActionContributor {
         if (targetEditor instanceof ITextEditor) {
             textEditor = (ITextEditor) targetEditor;
         }
-        
+
         // Set up the standard text editor actions.  These actions each have an
         // "retargetable action" associated with them.  The action needs to be
         // "retargeted" to associate it with the active editor whenever the active
         // editor changes.
-        contentAssistProposalAction.setAction( getAction( textEditor, "ContentAssistProposal" )); // $NON-NLS-1$
-        contentAssistTipAction.setAction( getAction( textEditor, "ContentAssistTip" )); // $NON-NLS-1$
-        contentFormatAction.setAction( getAction( textEditor, "ContentFormat" )); // $NON-NLS-1$
-        
+        contentAssistProposalAction.setAction( getAction( textEditor, "ContentAssistProposal" )); //$NON-NLS-1$
+        contentAssistTipAction.setAction( getAction( textEditor, "ContentAssistTip" )); //$NON-NLS-1$
+        contentFormatAction.setAction( getAction( textEditor, "ContentFormat" )); //$NON-NLS-1$
+
         if(targetEditor instanceof QueryEditor) {
         	executeHQLAction.setHibernateQueryEditor( (QueryEditor) targetEditor);
-        }        
+        }
     }
-    
+
     public void contributeToToolBar(IToolBarManager toolBarManager) {
-    	
+
     	super.contributeToToolBar( toolBarManager );
-    	
-    	
+
+
     }
-    
+
     public void init(IActionBars bars, IWorkbenchPage page) {
     	super.init( bars, page );
-    	
+
 //    	bars.setGlobalActionHandler("org.hibernate.eclipse.console.actions.ClearHQLEditorAction", fClearHQLEditorAction);
-    	bars.setGlobalActionHandler("org.hibernate.eclipse.console.actions.ExecuteQueryAction", executeHQLAction);
+    	bars.setGlobalActionHandler("org.hibernate.eclipse.console.actions.ExecuteQueryAction", executeHQLAction); //$NON-NLS-1$
     	bars.updateActionBars();
     }
-    
-    
-} 
+
+
+}

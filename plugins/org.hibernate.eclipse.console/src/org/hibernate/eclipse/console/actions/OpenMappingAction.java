@@ -27,12 +27,14 @@ import org.eclipse.jface.text.Region;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.SelectionListenerAction;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.mapping.Component;
@@ -47,43 +49,43 @@ import org.hibernate.tool.hbm2x.Cfg2HbmTool;
  */
 
 public class OpenMappingAction extends SelectionListenerAction {
-	
-	private static final String HIBERNATE_TAG_NAME = "name"; 
-	private static final String HIBERNATE_TAG_ENTITY_NAME = "entity-name";
-	private String imageFilePath =  "icons/images/mapping.gif";
+
+	private static final String HIBERNATE_TAG_NAME = "name";  //$NON-NLS-1$
+	private static final String HIBERNATE_TAG_ENTITY_NAME = "entity-name"; //$NON-NLS-1$
+	private String imageFilePath =  "icons/images/mapping.gif"; //$NON-NLS-1$
 
 	public OpenMappingAction() {
-		super("Open Mapping File");
-		setToolTipText("Open Mapping File");
+		super(HibernateConsoleMessages.OpenMappingAction_open_mapping_file);
+		setToolTipText(HibernateConsoleMessages.OpenMappingAction_open_mapping_file);
 		setEnabled( true );
 		setImageDescriptor(HibernateConsolePlugin.getImageDescriptor(imageFilePath ));
 	}
 
 	public void run() {
 		IStructuredSelection sel = getStructuredSelection();
-		if (sel instanceof TreeSelection){			
+		if (sel instanceof TreeSelection){
 			for (int i = 0; i < ((TreeSelection)sel).getPaths().length; i++) {
 				TreePath path = ((TreeSelection)sel).getPaths()[i];
 				ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(path.getSegment(0));
 				try {
 					run(path, consoleConfiguration);
 				} catch (JavaModelException e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage("Can't find mapping file.", e);
+					HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenMappingAction_cannot_find_mapping_file, e);
 				} catch (PartInitException e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage("Can't open mapping file.", e);
+					HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenMappingAction_cannot_open_mapping_file, e);
 				} catch (FileNotFoundException e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage("Can't find mapping file.", e);
-				} 
-			}			
+					HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenMappingAction_cannot_find_mapping_file, e);
+				}
+			}
 		}
 	}
-	
+
 	public static void run(TreePath path, ConsoleConfiguration consoleConfiguration) throws PartInitException, JavaModelException, FileNotFoundException {
 		boolean isPropertySel = (path.getLastSegment().getClass() == Property.class);
 		if (isPropertySel){
 			Property propertySel = (Property)path.getLastSegment();
 			PersistentClass persClass = propertySel.getPersistentClass();
-			if ( persClass == null 
+			if ( persClass == null
 					|| (RootClass.class.isAssignableFrom(persClass.getClass())
 					&& persClass.getClass() != RootClass.class)){
 				Property parentProp = (Property)path.getParentPath().getLastSegment();
@@ -93,14 +95,14 @@ public class OpenMappingAction extends SelectionListenerAction {
 		}
 		run(path.getLastSegment(), consoleConfiguration);
 	}
-	
+
 	/**
 	 * @param selection
 	 * @param consoleConfiguration
-	 * @throws JavaModelException 
-	 * @throws PartInitException 
-	 * @throws PresistanceClassNotFoundException 
-	 * @throws FileNotFoundException 
+	 * @throws JavaModelException
+	 * @throws PartInitException
+	 * @throws PresistanceClassNotFoundException
+	 * @throws FileNotFoundException
 	 */
 	public static IEditorPart run(Object selection, ConsoleConfiguration consoleConfiguration) throws PartInitException, JavaModelException, FileNotFoundException {
 		IEditorPart editorPart = null;
@@ -121,19 +123,19 @@ public class OpenMappingAction extends SelectionListenerAction {
 		if (resource != null){
 			editorPart = openMapping(resource);
 			if (editorPart != null){
-				applySelectionToEditor(selection, editorPart);				
+				applySelectionToEditor(selection, editorPart);
 			}
 			return editorPart;
-		} 
-		
-		//try to find hibernate-annotations		
+		}
+
+		//try to find hibernate-annotations
 		PersistentClass rootClass = null;
 		if (selection instanceof PersistentClass) {
 			rootClass = (PersistentClass)selection;
 	    } else if (selection instanceof Property) {
     		Property p = (Property)selection;
     		if (p.getPersistentClass() == null) return null;
-    		rootClass = (PersistentClass)p.getPersistentClass();    			
+    		rootClass = (PersistentClass)p.getPersistentClass();
 	    }
 		if (rootClass != null){
 			if (OpenFileActionUtils.rootClassHasAnnotations(consoleConfiguration, configXMLFile, rootClass)) {
@@ -142,19 +144,20 @@ public class OpenMappingAction extends SelectionListenerAction {
 				return editorPart;
 			}
 		} else {
-			throw new FileNotFoundException("Mapping for " + selection + " not found.");
+			String out = NLS.bind(HibernateConsoleMessages.OpenMappingAction_mapping_for_not_found, selection);
+			throw new FileNotFoundException(out);
 		}
-		return null;		
+		return null;
 	}
-	
+
 	/**
 	 * @param compositeProperty
 	 * @param parentProperty
 	 * @param consoleConfiguration
-	 * @throws JavaModelException 
-	 * @throws PartInitException 
-	 * @throws FileNotFoundException 
-	 * @throws BadLocationException 
+	 * @throws JavaModelException
+	 * @throws PartInitException
+	 * @throws FileNotFoundException
+	 * @throws BadLocationException
 	 */
 	public static IEditorPart run(Property compositeProperty, Property parentProperty, ConsoleConfiguration consoleConfiguration) throws PartInitException, JavaModelException, FileNotFoundException{
 		if (parentProperty.getPersistentClass() == null) return null;
@@ -174,10 +177,10 @@ public class OpenMappingAction extends SelectionListenerAction {
 				ITextEditor textEditor = null;
 				for (int i = 0; i < textEditors.length && findAdapter == null; i++) {
 					textEditor = textEditors[i];
-					findAdapter = getFindDocAdapter(textEditor);					
+					findAdapter = getFindDocAdapter(textEditor);
 				}
 				if (findAdapter == null) return null;
-				
+
 				IRegion parentRegion = findSelection(parentProperty, findAdapter);
 				if (parentRegion == null) return editorPart;
 				IRegion propRegion = null;
@@ -185,30 +188,30 @@ public class OpenMappingAction extends SelectionListenerAction {
 					propRegion = findAdapter.find(parentRegion.getOffset()+parentRegion.getLength(), generatePattern(compositeProperty), true, true, false, true);
 					if (propRegion == null){
 						// try to use key-property
-						String pattern = generatePattern(compositeProperty).replaceFirst("property", "key-property");	
+						String pattern = generatePattern(compositeProperty).replaceFirst("property", "key-property");	 //$NON-NLS-1$ //$NON-NLS-2$
 						propRegion = findAdapter.find(parentRegion.getOffset()+parentRegion.getLength(), pattern, true, true, false, true);
 					}
 					/*if (propRegion == null){
 						// try to find name = "<name>"
-						String pattern = HIBERNATE_TAG_NAME + "[\\s]*=[\\s]*\"" + property.getNodeName() + '\"';	
+						String pattern = HIBERNATE_TAG_NAME + "[\\s]*=[\\s]*\"" + property.getNodeName() + '\"';
 						propRegion = findAdapter.find(parentRegion.getOffset()+parentRegion.getLength(), pattern, true, true, false, true);
 					}*/
 				} catch (BadLocationException e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage("Selection not found.", e);
-				}				
-				
+					HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenMappingAction_selection_not_found, e);
+				}
+
 				if (propRegion != null){
 					int length = compositeProperty.getNodeName().length();
-					int offset = propRegion.getOffset() + propRegion.getLength() - length - 1;			
+					int offset = propRegion.getOffset() + propRegion.getLength() - length - 1;
 					propRegion = new Region(offset, length);
 					textEditor.selectAndReveal(propRegion.getOffset(), propRegion.getLength());
 					return editorPart;
 				}
 			}
 			return editorPart;
-		} 
-				
-   		if (parentProperty.getPersistentClass() != null && parentProperty.isComposite()){   			
+		}
+
+   		if (parentProperty.getPersistentClass() != null && parentProperty.isComposite()){
    			PersistentClass rootClass = parentProperty.getPersistentClass();
 			if (OpenFileActionUtils.rootClassHasAnnotations(consoleConfiguration, configXMLFile, rootClass)) {
 				String fullyQualifiedName =((Component)((Property) parentProperty).getValue()).getComponentClassName();
@@ -217,7 +220,8 @@ public class OpenMappingAction extends SelectionListenerAction {
 			}
 	    }
    		if (editorPart == null) {
-			throw new FileNotFoundException("Mapping file for property '" + compositeProperty.getNodeName() + "' not found.");
+   			String out = NLS.bind(HibernateConsoleMessages.OpenMappingAction_mapping_file_for_property_not_found, compositeProperty.getNodeName());
+			throw new FileNotFoundException(out);
 		}
    		return null;
 	}
@@ -234,10 +238,10 @@ public class OpenMappingAction extends SelectionListenerAction {
 		ITextEditor textEditor = null;
 		for (int i = 0; i < textEditors.length && findAdapter == null; i++) {
 			textEditor = textEditors[i];
-			findAdapter = getFindDocAdapter(textEditor);					
+			findAdapter = getFindDocAdapter(textEditor);
 		}
-		if (findAdapter == null) return false;		
-		IRegion selectRegion = null;		
+		if (findAdapter == null) return false;
+		IRegion selectRegion = null;
 
 		if (selection instanceof RootClass
 				|| selection instanceof Subclass){
@@ -245,7 +249,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 		} else if (selection instanceof Property){
 			selectRegion = findSelection((Property)selection, findAdapter);
 		}
-		
+
 		if (selectRegion != null){
 			textEditor.selectAndReveal(selectRegion.getOffset(), selectRegion.getLength());
 			return true;
@@ -267,16 +271,16 @@ public class OpenMappingAction extends SelectionListenerAction {
 		FindReplaceDocumentAdapter findAdapter = new FindReplaceDocumentAdapter(document);
 		return findAdapter;
 	}
-	
+
 	static public IEditorPart openMapping(IResource resource) {
 		if (resource != null && resource instanceof IFile){
             try {
             	return OpenFileActionUtils.openEditor(HibernateConsolePlugin.getDefault().getActiveWorkbenchWindow().getActivePage(), (IFile) resource);
             } catch (PartInitException e) {
-            	
-            }               
+
+            }
         } else {
-        	HibernateConsolePlugin.getDefault().log("Can't open mapping file " + resource);
+        	HibernateConsolePlugin.getDefault().log(HibernateConsoleMessages.OpenMappingAction_cannot_open_mapping_file + resource);
         }
 		return null;
 	}
@@ -292,22 +296,22 @@ public class OpenMappingAction extends SelectionListenerAction {
             	return OpenFileActionUtils.openEditor(HibernateConsolePlugin.getDefault().getActiveWorkbenchWindow().getActivePage(), (IFile) resource);
             } catch (PartInitException e) {
             	HibernateConsolePlugin.getDefault().logErrorMessage("Can't open mapping or source file.", e);
-            }               
+            }
         } else {
         	HibernateConsolePlugin.getDefault().log("Can't open mapping file for " + selElement);
         }
 		return null;
 	}*/
-	
+
 	public static IRegion findSelection(Property property, FindReplaceDocumentAdapter findAdapter) {
 		Assert.isNotNull(property.getPersistentClass());
 		try {
 			IRegion classRegion = findSelection(property.getPersistentClass(), findAdapter);
 			if (classRegion == null) return null;
-			IRegion finalRegion = findAdapter.find(classRegion.getOffset()+classRegion.getLength(), "</class", true, true, false, false);
+			IRegion finalRegion = findAdapter.find(classRegion.getOffset()+classRegion.getLength(), "</class", true, true, false, false); //$NON-NLS-1$
 			IRegion propRegion  = findAdapter.find(classRegion.getOffset()+classRegion.getLength(), generatePattern(property), true, true, false, true);
 			if (propRegion == null) return null;
-			if (finalRegion != null 
+			if (finalRegion != null
 					&& propRegion.getOffset() > finalRegion.getOffset()){
 				return null;
 			} else {
@@ -318,7 +322,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 		} catch (BadLocationException e) {
 			return null;
 		}
-		
+
 	}
 	public static IRegion findSelection(PersistentClass persClass,
 			FindReplaceDocumentAdapter findAdapter) {
@@ -330,13 +334,13 @@ public class OpenMappingAction extends SelectionListenerAction {
 			}
 			if (classRegion == null) return null;
 			int length = persClass.getNodeName().length();
-			int offset = classRegion.getOffset() + classRegion.getLength() - length - 1;			
+			int offset = classRegion.getOffset() + classRegion.getLength() - length - 1;
 			return new Region(offset, length);
 		} catch (BadLocationException e) {
 			return null;
 		}
 	}
-	
+
 	private static String[] generatePatterns(PersistentClass persClass){
 		String fullClassName = null;
 		String shortClassName = null;
@@ -346,80 +350,80 @@ public class OpenMappingAction extends SelectionListenerAction {
 			fullClassName = persClass.getClassName();
 		}
 		shortClassName = fullClassName.substring(fullClassName.lastIndexOf('.') + 1);
-		
+
 		Cfg2HbmTool tool = new Cfg2HbmTool();
 		String[] patterns = new String[4];
-		StringBuffer pattern = new StringBuffer("<");
+		StringBuffer pattern = new StringBuffer("<"); //$NON-NLS-1$
 		pattern.append(tool.getTag(persClass));
-		pattern.append("[\\s]+[.[^>]]*");
+		pattern.append("[\\s]+[.[^>]]*"); //$NON-NLS-1$
 		pattern.append(HIBERNATE_TAG_NAME);
-		pattern.append("[\\s]*=[\\s]*\"");
+		pattern.append("[\\s]*=[\\s]*\""); //$NON-NLS-1$
 		pattern.append(shortClassName);
 		pattern.append('\"');
 		patterns[0] = pattern.toString();
-		
-		pattern = new StringBuffer("<");
+
+		pattern = new StringBuffer("<"); //$NON-NLS-1$
 		pattern.append(tool.getTag(persClass));
-		pattern.append("[\\s]+[.[^>]]*");
+		pattern.append("[\\s]+[.[^>]]*"); //$NON-NLS-1$
 		pattern.append(HIBERNATE_TAG_NAME);
-		pattern.append("[\\s]*=[\\s]*\"");
+		pattern.append("[\\s]*=[\\s]*\""); //$NON-NLS-1$
 		pattern.append(fullClassName);
 		pattern.append('\"');
 		patterns[1] = pattern.toString();
-		
-		pattern = new StringBuffer("<");
+
+		pattern = new StringBuffer("<"); //$NON-NLS-1$
 		pattern.append(tool.getTag(persClass));
-		pattern.append("[\\s]+[.[^>]]*");
+		pattern.append("[\\s]+[.[^>]]*"); //$NON-NLS-1$
 		pattern.append(HIBERNATE_TAG_ENTITY_NAME);
-		pattern.append("[\\s]*=[\\s]*\"");
+		pattern.append("[\\s]*=[\\s]*\""); //$NON-NLS-1$
 		pattern.append(shortClassName);
 		pattern.append('\"');
 		patterns[2] = pattern.toString();
-		
-		pattern = new StringBuffer("<");
+
+		pattern = new StringBuffer("<"); //$NON-NLS-1$
 		pattern.append(tool.getTag(persClass));
-		pattern.append("[\\s]+[.[^>]]*");
+		pattern.append("[\\s]+[.[^>]]*"); //$NON-NLS-1$
 		pattern.append(HIBERNATE_TAG_ENTITY_NAME);
-		pattern.append("[\\s]*=[\\s]*\"");
+		pattern.append("[\\s]*=[\\s]*\""); //$NON-NLS-1$
 		pattern.append(fullClassName);
 		pattern.append('\"');
 		patterns[3] = pattern.toString();
 		return patterns;
 	}
-	
+
 	private static String generatePattern(Property property){
 		Cfg2HbmTool tool = new Cfg2HbmTool();
-		StringBuffer pattern = new StringBuffer("<");
+		StringBuffer pattern = new StringBuffer("<"); //$NON-NLS-1$
 		if(property.getPersistentClass() != null &&
 				property.getPersistentClass().getIdentifierProperty()==property) {
 			if (property.isComposite()){
-				pattern.append("composite-id");
+				pattern.append("composite-id"); //$NON-NLS-1$
 			} else {
-				pattern.append("id");
+				pattern.append("id"); //$NON-NLS-1$
 			}
 		} else{
 			pattern.append(tool.getTag(property));
 		}
-		pattern.append("[\\s]+[.[^>]]*");
+		pattern.append("[\\s]+[.[^>]]*"); //$NON-NLS-1$
 		pattern.append(HIBERNATE_TAG_NAME);
-		pattern.append("[\\s]*=[\\s]*\"");
+		pattern.append("[\\s]*=[\\s]*\""); //$NON-NLS-1$
 		pattern.append(property.getNodeName());
-		pattern.append('\"');	
+		pattern.append('\"');
 		return pattern.toString();
 	}
-	
+
 	/**
 	 * Method gets all ITextEditors from IEditorPart.
 	 * Never returns null.
 	 * @param editorPart
 	 * @return
-	 */	
+	 */
 	public static ITextEditor[] getTextEditors(IEditorPart editorPart) {
 		/*
 		 * if EditorPart is MultiPageEditorPart then get ITextEditor from it.
 		 */
 		if (editorPart instanceof MultiPageEditorPart) {
-			List testEditors = new ArrayList();			
+			List testEditors = new ArrayList();
     		IEditorPart[] editors = ((MultiPageEditorPart) editorPart).findEditors(editorPart.getEditorInput());
     		for (int i = 0; i < editors.length; i++) {
 				if (editors[i] instanceof ITextEditor){
@@ -431,5 +435,5 @@ public class OpenMappingAction extends SelectionListenerAction {
 			return new ITextEditor[]{(ITextEditor) editorPart};
 		}
 		return new ITextEditor[0];
-	}	
+	}
 }

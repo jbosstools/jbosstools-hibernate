@@ -70,7 +70,7 @@ public class ReverseEngineeringDefinitionImpl implements
 	}
 
 	protected void updateTableFilter(ITableFilter updated) {
-		firePropertyChange("tableFilter", null, updated);		
+		firePropertyChange("tableFilter", null, updated);		 //$NON-NLS-1$
 	}
 	
 	public ITableFilter[] getTableFilters() {

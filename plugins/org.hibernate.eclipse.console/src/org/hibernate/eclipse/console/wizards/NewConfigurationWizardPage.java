@@ -42,6 +42,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.DriverClassHelpers;
 
 /**
@@ -64,31 +65,31 @@ public class NewConfigurationWizardPage extends WizardPage {
     private Text usernameText;
 
     private Text passwordText;
-    
+
     private Text defaultSchemaText;
     private Text defaultCatalogText;
 
     private Combo urlCombo;
-    
-    private Button createConsoleConfiguration; 
-    
+
+    private Button createConsoleConfiguration;
+
     private ISelection selection;
 
     private final WizardNewFileCreationPage fileCreation;
 
     private boolean beenShown = false;
-	
+
     /**
      * Constructor for SampleNewWizardPage.
-     * @param page 
-     * 
+     * @param page
+     *
      * @param pageName
      */
     public NewConfigurationWizardPage(ISelection selection, WizardNewFileCreationPage page) {
-        super("wizardPage");
+        super("wizardPage"); //$NON-NLS-1$
         this.fileCreation = page;
-        setTitle("Hibernate Configuration File (cfg.xml)");
-        setDescription("This wizard creates a new configuration file to use with Hibernate.");
+        setTitle(HibernateConsoleMessages.NewConfigurationWizardPage_hibernate_config_file);
+        setDescription(HibernateConsoleMessages.NewConfigurationWizardPage_this_wizard_creates);
         this.selection = selection;
     }
 
@@ -104,47 +105,47 @@ public class NewConfigurationWizardPage extends WizardPage {
         };
 
         SelectionListener selectionListener = new SelectionListener() {
-    		
+
 			public void widgetDefaultSelected(SelectionEvent e) {
 				dialogChanged();
 				getContainer().updateButtons();
 			}
-		
+
 			public void widgetSelected(SelectionEvent e) {
 				dialogChanged();
 				getContainer().updateButtons();
 			}
-		
+
 		};
-		
+
         Composite container = new Composite(parent, SWT.NULL);
         GridLayout layout = new GridLayout();
         container.setLayout(layout);
         layout.numColumns = 2;
         layout.verticalSpacing = 9;
         Label label = new Label(container, SWT.NULL);
-        label.setText("&Container:");
+        label.setText(HibernateConsoleMessages.NewConfigurationWizardPage_container);
 
         containerText = new Label(container, SWT.BORDER | SWT.SINGLE);
-        GridData gd = new GridData(GridData.FILL_HORIZONTAL);        
-        containerText.setLayoutData(gd);        
-        
+        GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+        containerText.setLayoutData(gd);
+
         label = new Label(container, SWT.NULL);
-        label.setText("&File name:");
+        label.setText(HibernateConsoleMessages.NewConfigurationWizardPage_file_name);
 
         fileText = new Label(container, SWT.BORDER | SWT.SINGLE);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         fileText.setLayoutData(gd);
-             
+
         label = new Label(container, SWT.NULL);
-        label.setText("&Session factory name:");
+        label.setText(HibernateConsoleMessages.NewConfigurationWizardPage_session_factory_name);
         sessionFactoryNameText = new Text(container, SWT.BORDER | SWT.SINGLE);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         sessionFactoryNameText.setLayoutData(gd);
         sessionFactoryNameText.addModifyListener(listener);
-        
+
         label = new Label(container, SWT.NULL);
-        label.setText("&Database dialect:");
+        label.setText(HibernateConsoleMessages.NewConfigurationWizardPage_database_dialect);
         dialectCombo = new Combo(container, SWT.NULL);
         fillHerUp(dialectCombo, helper.getDialectNames() );
         dialectCombo.select(0);
@@ -159,15 +160,15 @@ public class NewConfigurationWizardPage extends WizardPage {
                 dialogChanged();
             }
         });
-        
+
         gd = new GridData(GridData.BEGINNING, GridData.CENTER, false,false);
         gd.horizontalAlignment = SWT.TOP;
         gd.verticalAlignment = SWT.TOP;
         label.setLayoutData(gd);
-        
+
         Composite driverManagerTabContainer = container;
         label = new Label(driverManagerTabContainer, SWT.NULL);
-        label.setText("&Driver class:");
+        label.setText(HibernateConsoleMessages.NewConfigurationWizardPage_driver_class);
         driver_classCombo = new Combo(driverManagerTabContainer, SWT.NULL);
         driver_classCombo.select(0);
         gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -181,59 +182,59 @@ public class NewConfigurationWizardPage extends WizardPage {
                 dialogChanged();
             }
         });
-        
+
         label = new Label(driverManagerTabContainer, SWT.NULL);
-        label.setText("Connection &URL:");
+        label.setText(HibernateConsoleMessages.NewConfigurationWizardPage_connection_url);
         urlCombo = new Combo(driverManagerTabContainer, SWT.NULL);
         urlCombo.select(0);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         gd.grabExcessHorizontalSpace = true;
         urlCombo.setLayoutData(gd);
         urlCombo.addModifyListener(listener);
-        
+
         label = new Label(driverManagerTabContainer, SWT.NULL);
-        label.setText("Default Schema:");
+        label.setText(HibernateConsoleMessages.NewConfigurationWizardPage_default_schema);
         defaultSchemaText = new Text(driverManagerTabContainer, SWT.BORDER | SWT.SINGLE);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         defaultSchemaText.setLayoutData(gd);
         defaultSchemaText.addModifyListener(listener);
-        
+
         label = new Label(driverManagerTabContainer, SWT.NULL);
-        label.setText("Default Catalog:");
+        label.setText(HibernateConsoleMessages.NewConfigurationWizardPage_default_catalog);
         defaultCatalogText = new Text(driverManagerTabContainer, SWT.BORDER | SWT.SINGLE);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         defaultCatalogText.setLayoutData(gd);
         defaultCatalogText.addModifyListener(listener);
-        
+
         label = new Label(driverManagerTabContainer, SWT.NULL);
-        label.setText("User&name:");
+        label.setText(HibernateConsoleMessages.NewConfigurationWizardPage_user_name);
         usernameText = new Text(driverManagerTabContainer, SWT.BORDER | SWT.SINGLE);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         usernameText.setLayoutData(gd);
         usernameText.addModifyListener(listener);
-        
+
         label = new Label(driverManagerTabContainer, SWT.NULL);
-        label.setText("&Password:");
+        label.setText(HibernateConsoleMessages.NewConfigurationWizardPage_password);
         passwordText = new Text(driverManagerTabContainer, SWT.BORDER | SWT.SINGLE);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         passwordText.setLayoutData(gd);
         passwordText.addModifyListener(listener);
-        
+
         fillLabel(container);
         fillLabel(container);
-        
+
         fillLabel(container);
-        
+
         createConsoleConfiguration = new Button(container, SWT.CHECK);
         gd = new GridData(GridData.FILL_HORIZONTAL);
-        createConsoleConfiguration.setLayoutData(gd);        
-        createConsoleConfiguration.setText("Create a console configuration");        
+        createConsoleConfiguration.setLayoutData(gd);
+        createConsoleConfiguration.setText(HibernateConsoleMessages.NewConfigurationWizardPage_create_console_configuration);
         createConsoleConfiguration.addSelectionListener(selectionListener);
-        
+
         initialize();
         dialogChanged();
-        
-        setControl(container);        
+
+        setControl(container);
     }
 
     /**
@@ -293,39 +294,39 @@ public class NewConfigurationWizardPage extends WizardPage {
         String fileName = getFileName();
 
         if (getContainerName().length() == 0) {
-            updateStatus("File container must be specified");
+            updateStatus(HibernateConsoleMessages.NewConfigurationWizardPage_file_container_must_be_specified);
             return;
         }
         if (container == null
                 || (container.getType() & (IResource.PROJECT | IResource.FOLDER) ) == 0) {
-            updateStatus("File container must exist");
-            return;
-        }        
-        
-        if (!container.isAccessible() ) {
-            updateStatus("Project must be writable");
+            updateStatus(HibernateConsoleMessages.NewConfigurationWizardPage_file_container_must_exist);
             return;
         }
-                
+
+        if (!container.isAccessible() ) {
+            updateStatus(HibernateConsoleMessages.NewConfigurationWizardPage_project_must_be_writable);
+            return;
+        }
+
         if (fileName.length() == 0) {
-            updateStatus("File name must be specified");
+            updateStatus(HibernateConsoleMessages.NewConfigurationWizardPage_file_name_must_be_specified);
             return;
         }
         if (fileName.replace('\\', '/').indexOf('/', 1) > 0) {
-            updateStatus("File name must be valid");
+            updateStatus(HibernateConsoleMessages.NewConfigurationWizardPage_file_name_must_be_valid);
             return;
         }
-        if (!fileName.endsWith(".cfg.xml") ) {
-            updateStatus("File extension must be \"cfg.xml\"");
+        if (!fileName.endsWith(".cfg.xml") ) { //$NON-NLS-1$
+            updateStatus(HibernateConsoleMessages.NewConfigurationWizardPage_file_extension_must_be_cfgxml);
             return;
         }
 
         IFile file = ( (IContainer) container).getFile(new Path(fileName) );
         if(file.exists() ) {
-            updateStatus("File already exists");
+            updateStatus(HibernateConsoleMessages.NewConfigurationWizardPage_file_already_exist);
             return;
         }
-                
+
         // TODO: check for driver class availability.
         updateStatus(null);
     }
@@ -399,30 +400,30 @@ public class NewConfigurationWizardPage extends WizardPage {
     /* (non-Javadoc)
      * @see org.eclipse.jface.dialogs.DialogPage#setVisible(boolean)
      */
-    public void setVisible(boolean visible) {       
+    public void setVisible(boolean visible) {
         containerText.setText(fileCreation.getContainerFullPath().toPortableString() );
-        fileText.setText(fileCreation.getFileName() );        
+        fileText.setText(fileCreation.getFileName() );
         super.setVisible(visible);
         if(visible) {
             sessionFactoryNameText.setFocus();
         }
-        beenShown = true;        
-        dialogChanged();               
+        beenShown = true;
+        dialogChanged();
     }
 
-	
+
 
 	public boolean isCreateConsoleConfigurationEnabled() {
 		return createConsoleConfiguration.getSelection();
 	}
-	
+
 	public void setCreateConsoleConfigurationVisible(boolean isVisible) {
 		// update visibility if button was created
 		if (createConsoleConfiguration != null){
 			createConsoleConfiguration.setVisible(isVisible);
 		}
 	}
-    
+
 	public String getDefaultCatalog() {
 		return nullIfEmpty(defaultCatalogText.getText());
 	}

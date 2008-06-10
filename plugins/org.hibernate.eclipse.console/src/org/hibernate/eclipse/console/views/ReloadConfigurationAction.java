@@ -6,6 +6,7 @@ import org.eclipse.jface.viewers.StructuredViewer;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.ImageConstants;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.actions.ConsoleConfigurationBasedAction;
 import org.hibernate.eclipse.console.utils.EclipseImages;
@@ -15,7 +16,7 @@ public class ReloadConfigurationAction extends ConsoleConfigurationBasedAction {
 	private StructuredViewer viewer;
 
 	protected ReloadConfigurationAction(StructuredViewer sv) {
-		super("Rebuild configuration");
+		super(HibernateConsoleMessages.ReloadConfigurationAction_rebuild_configuration);
 		setEnabledWhenNoSessionFactory(true);
 		viewer = sv;
 		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.RELOAD) );
@@ -34,13 +35,13 @@ public class ReloadConfigurationAction extends ConsoleConfigurationBasedAction {
 			} catch (HibernateConsoleRuntimeException he) {
 				HibernateConsolePlugin.getDefault().showError(
 						viewer.getControl().getShell(),
-						"Exception while connecting/starting Hibernate", he);
+						HibernateConsoleMessages.ReloadConfigurationAction_exception_while_start_hibernate, he);
 			} catch (UnsupportedClassVersionError ucve) {
 				HibernateConsolePlugin
 						.getDefault()
 						.showError(
 								viewer.getControl().getShell(),
-								"Starting Hibernate resulted in a UnsupportedClassVersionError.\nThis can occur if you are running eclipse with JDK 1.4 and your domain classes require JDK 1.5. \n\nResolution: Run eclipse with JDK 1.5.",
+								HibernateConsoleMessages.ReloadConfigurationAction_starting_hibernate_resulted_exception,
 								ucve);
 			}
 		}

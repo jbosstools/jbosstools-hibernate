@@ -22,10 +22,12 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.SelectionListenerAction;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.mapping.Component;
@@ -38,15 +40,15 @@ import org.hibernate.mapping.Property;
 
 public class OpenSourceAction extends SelectionListenerAction {
 
-	private String imageFilePath = "icons/images/java.gif";
+	private String imageFilePath = "icons/images/java.gif"; //$NON-NLS-1$
 
-	public OpenSourceAction() { 
-		super("Open Source File");
-		setToolTipText("Open Source File");
+	public OpenSourceAction() {
+		super(HibernateConsoleMessages.OpenSourceAction_open_source_file);
+		setToolTipText(HibernateConsoleMessages.OpenSourceAction_open_source_file);
 		setEnabled( true );
 		setImageDescriptor(HibernateConsolePlugin.getImageDescriptor(imageFilePath));
 	}
-	
+
 	public void run() {
 		IStructuredSelection sel = getStructuredSelection();
 		if (sel instanceof TreeSelection){
@@ -56,7 +58,7 @@ public class OpenSourceAction extends SelectionListenerAction {
 		    	PersistentClass persClass = getPersistentClass(lastSegment);
 				ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(path.getSegment(0));
 				IJavaProject proj = ProjectUtils.findJavaProject(consoleConfiguration);
-				
+
 				String fullyQualifiedName = null;
 				if (lastSegment instanceof Property){
 					Object prevSegment = path.getParentPath().getLastSegment();
@@ -72,13 +74,13 @@ public class OpenSourceAction extends SelectionListenerAction {
 				try {
 					run(lastSegment, proj, fullyQualifiedName);
 				} catch (JavaModelException e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage("Can't find source file.", e);
+					HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenSourceAction_cannot_find_source_file, e);
 				} catch (PartInitException e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage("Can't open source file.", e);
+					HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenSourceAction_cannot_open_source_file, e);
 				} catch (FileNotFoundException e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage("Can't find source file.", e);
+					HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenSourceAction_cannot_find_source_file, e);
 				}
-			}			
+			}
 		}
 	}
 
@@ -86,29 +88,29 @@ public class OpenSourceAction extends SelectionListenerAction {
 	 * @param selection
 	 * @param proj
 	 * @param fullyQualifiedName
-	 * @throws JavaModelException 
-	 * @throws PartInitException 
-	 * @throws FileNotFoundException 
+	 * @throws JavaModelException
+	 * @throws PartInitException
+	 * @throws FileNotFoundException
 	 */
 	public IEditorPart run(Object selection, IJavaProject proj,
 			String fullyQualifiedName) throws JavaModelException, PartInitException, FileNotFoundException {
 		if (fullyQualifiedName == null) return null;
 		String remainder = null;
 		IType type = null;
-		if (fullyQualifiedName.indexOf("$") > 0) {
-			remainder = fullyQualifiedName.substring(fullyQualifiedName.indexOf("$") + 1);
-			fullyQualifiedName = fullyQualifiedName.substring(0, fullyQualifiedName.indexOf("$"));
+		if (fullyQualifiedName.indexOf("$") > 0) { //$NON-NLS-1$
+			remainder = fullyQualifiedName.substring(fullyQualifiedName.indexOf("$") + 1); //$NON-NLS-1$
+			fullyQualifiedName = fullyQualifiedName.substring(0, fullyQualifiedName.indexOf("$")); //$NON-NLS-1$
 			type = proj.findType(fullyQualifiedName);
-			while ( remainder.indexOf("$") > 0 ){
-				String subtype = remainder.substring(0, fullyQualifiedName.indexOf("$"));
+			while ( remainder.indexOf("$") > 0 ){ //$NON-NLS-1$
+				String subtype = remainder.substring(0, fullyQualifiedName.indexOf("$")); //$NON-NLS-1$
 				type = type.getType(subtype);
-				remainder = remainder.substring(fullyQualifiedName.indexOf("$") + 1);
+				remainder = remainder.substring(fullyQualifiedName.indexOf("$") + 1); //$NON-NLS-1$
 			}
 			type = type.getType(remainder);
 		} else {
 			type = proj.findType(fullyQualifiedName);
 		}
-		
+
 		IEditorPart editorPart = JavaUI.openInEditor(type);
 		if (editorPart instanceof JavaEditor) {
 			IJavaElement jElement = null;
@@ -116,18 +118,19 @@ public class OpenSourceAction extends SelectionListenerAction {
 				jElement = type.getField(((Property)selection).getName());
 			} else {
 				jElement = type;
-			}        		
+			}
 			JavaEditor jEditor = (JavaEditor) editorPart;
-			selectionToEditor(jElement, jEditor);				
-		}        	
+			selectionToEditor(jElement, jEditor);
+		}
 
 		if (editorPart == null) {
-			throw new FileNotFoundException("Source file for class '" + fullyQualifiedName + "' not found.");
+			String out = NLS.bind(HibernateConsoleMessages.OpenSourceAction_source_file_for_class_not_found, fullyQualifiedName);
+			throw new FileNotFoundException(out);
 		}
 		return editorPart;
-		
+
 	}
-	
+
 	private PersistentClass getPersistentClass(Object selection){
     	if (selection instanceof Property){
     		return ((Property)selection).getPersistentClass();
@@ -144,7 +147,7 @@ public class OpenSourceAction extends SelectionListenerAction {
 		}
 	}
 
-	/* 
+	/*
 	 * @see org.eclipse.jface.action.Action#getImageDescriptor()
 	 */
 	@Override

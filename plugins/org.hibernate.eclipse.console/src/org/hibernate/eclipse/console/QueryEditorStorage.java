@@ -17,7 +17,7 @@ public class QueryEditorStorage implements IStorage {
 	private String configurationName;
 
     public QueryEditorStorage( String source ) {
-        this( "", source, source );
+        this( "", source, source ); //$NON-NLS-1$
     }
 
     public QueryEditorStorage( String configurationName, String name, String source ) {
@@ -44,7 +44,7 @@ public class QueryEditorStorage implements IStorage {
      * @return contents as a string
      */
     public String getContentsString() {
-        String contentsString = ""; 
+        String contentsString = "";  //$NON-NLS-1$
         
         InputStream contentsStream = getContents();
         

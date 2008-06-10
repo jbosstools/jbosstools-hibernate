@@ -42,6 +42,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
@@ -52,51 +53,51 @@ import org.osgi.service.prefs.Preferences;
 public class ProjectUtils {
 
 	private ProjectUtils() {
-		
+
 	}
-	
+
 	public static boolean toggleHibernateOnProject(IProject project, boolean enable,String defaultConsoleName) {
 		IScopeContext scope = new ProjectScope(project);
-		
-		Preferences node = scope.getNode("org.hibernate.eclipse.console");
-		
+
+		Preferences node = scope.getNode("org.hibernate.eclipse.console"); //$NON-NLS-1$
+
 		if(node!=null) {
-			node.putBoolean("hibernate3.enabled", enable );
-			node.put("default.configuration", defaultConsoleName );
+			node.putBoolean("hibernate3.enabled", enable ); //$NON-NLS-1$
+			node.put("default.configuration", defaultConsoleName ); //$NON-NLS-1$
 			try {
 				node.flush();
 			} catch (BackingStoreException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("Could not save changes to preferences", e);
+				HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.ProjectUtils_could_not_save_changes_to_preferences, e);
 				return false;
 			}
 		} else {
 			return false;
 		}
-		
+
 		try {
 			if(enable) {
-				return ProjectUtils.addProjectNature(project, "org.hibernate.eclipse.console.hibernateNature", new NullProgressMonitor() );
+				return ProjectUtils.addProjectNature(project, "org.hibernate.eclipse.console.hibernateNature", new NullProgressMonitor() ); //$NON-NLS-1$
 			} else {
-				return ProjectUtils.removeProjectNature(project, "org.hibernate.eclipse.console.hibernateNature", new NullProgressMonitor() );
+				return ProjectUtils.removeProjectNature(project, "org.hibernate.eclipse.console.hibernateNature", new NullProgressMonitor() ); //$NON-NLS-1$
 			}
 		} catch(CoreException ce) {
-			HibernateConsolePlugin.getDefault().logErrorMessage("Could not activate Hibernate nature on project " + project.getName(), ce);
+			HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.ProjectUtils_could_not_activate_hibernate_nature_on_project + project.getName(), ce);
 			HibernateConsolePlugin.getDefault().log(ce.getStatus() );
 			return false;
 		}
-		
+
 	}
-	
+
 	/**
 	 * Add the given project nature to the given project (if it isn't already added).
 	 * @return true if nature where added, false if not
-	 * @throws OperationCanceledException if job were cancelled or CoreException if something went wrong. 
+	 * @throws OperationCanceledException if job were cancelled or CoreException if something went wrong.
 	 */
 	public static boolean addProjectNature(IProject project, String nature, IProgressMonitor monitor) throws CoreException {
 		if (monitor != null && monitor.isCanceled() ) {
 			throw new OperationCanceledException();
 		}
-		
+
 		if (!project.hasNature(nature) ) {
 			IProjectDescription description = project.getDescription();
 			String[] prevNatures= description.getNatureIds();
@@ -116,10 +117,10 @@ public class ProjectUtils {
 		if (monitor != null && monitor.isCanceled() ) {
 			throw new OperationCanceledException();
 		}
-		
+
 		if (project.hasNature(nature) ) {
 			IProjectDescription description = project.getDescription();
-			
+
 			String[] natures = description.getNatureIds();
 	        String[] newNatures = new String[natures.length - 1];
 	        for(int i = 0; i < natures.length; i++) {
@@ -145,18 +146,18 @@ public class ProjectUtils {
 	         IFile file = null;
 	         IProject project = null;
 	         IJavaProject jProject = null;
-	         
+
 	         IFileEditorInput fileInput = (IFileEditorInput) input;
 	         file = fileInput.getFile();
 	         project = file.getProject();
 	         jProject = JavaCore.create(project);
-	
+
 	         return jProject;
 	      }
-	
+
 		return null;
-	}	
-	
+	}
+
 	static public IJavaProject findJavaProject(String name) {
 		if(StringHelper.isEmpty( name )) {
 			return null;
@@ -182,9 +183,9 @@ public class ProjectUtils {
 				for (int i = 0; i < launchConfigurations.length; i++) { // can't believe there is no look up by name API
 					ILaunchConfiguration launchConfiguration = launchConfigurations[i];
 					if(launchConfiguration.getName().equals(consoleConfiguration.getName())) {
-						proj = ProjectUtils.findJavaProject(launchConfiguration.getAttribute(IConsoleConfigurationLaunchConstants.PROJECT_NAME, ""));
+						proj = ProjectUtils.findJavaProject(launchConfiguration.getAttribute(IConsoleConfigurationLaunchConstants.PROJECT_NAME, "")); //$NON-NLS-1$
 					}
-				}								
+				}
 			} catch (CoreException e1) {
 				HibernateConsolePlugin.getDefault().log(e1);
 			}

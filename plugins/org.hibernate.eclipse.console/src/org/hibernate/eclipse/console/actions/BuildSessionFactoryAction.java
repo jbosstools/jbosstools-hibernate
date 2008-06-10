@@ -26,6 +26,7 @@ import java.util.Iterator;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 /**
@@ -37,11 +38,11 @@ public class BuildSessionFactoryAction extends ConsoleConfigurationBasedAction {
 	private final StructuredViewer viewer;
 
 	public BuildSessionFactoryAction(StructuredViewer viewer) {
-		super("Build SessionFactory");
+		super(HibernateConsoleMessages.BuildSessionFactoryAction_build_session_factory);
 		this.viewer = viewer;
 		setEnabledWhenNoSessionFactory(true);
 	}
-	
+
 	protected void doRun() {
 		for (Iterator i = getSelectedNonResources().iterator(); i.hasNext();) {
         	try {
@@ -49,18 +50,18 @@ public class BuildSessionFactoryAction extends ConsoleConfigurationBasedAction {
             if(node instanceof ConsoleConfiguration) {
             	ConsoleConfiguration config = (ConsoleConfiguration) node;
             	if(config.isSessionFactoryCreated() ) {
-            		config.reset();            		
+            		config.reset();
             	} else {
             		config.build();
             		config.buildSessionFactory();
             	}
             	updateState(config);
             }
-			                     
+
         	} catch(HibernateConsoleRuntimeException he) {
-        		 HibernateConsolePlugin.getDefault().showError(viewer.getControl().getShell(), "Exception while connecting/starting Hibernate",he);
+        		 HibernateConsolePlugin.getDefault().showError(viewer.getControl().getShell(), HibernateConsoleMessages.BuildSessionFactoryAction_exception_while_start_hibernate,he);
         	} catch(UnsupportedClassVersionError ucve) {
-				 HibernateConsolePlugin.getDefault().showError(viewer.getControl().getShell(), "Starting Hibernate resulted in a UnsupportedClassVersionError.\nThis can occur if you are running eclipse with JDK 1.4 and your domain classes require JDK 1.5. \n\nResolution: Run eclipse with JDK 1.5.",ucve);
+				 HibernateConsolePlugin.getDefault().showError(viewer.getControl().getShell(), HibernateConsoleMessages.BuildSessionFactoryAction_start_hibernate_resulted,ucve);
         	}
         }
 	}
@@ -71,9 +72,9 @@ public class BuildSessionFactoryAction extends ConsoleConfigurationBasedAction {
 	protected boolean updateState(ConsoleConfiguration config) {
 		setEnabledWhenNoSessionFactory(!config.isSessionFactoryCreated() );
 		if(enabledWhenNoSessionFactory) {
-			setText("Create SessionFactory");
+			setText(HibernateConsoleMessages.BuildSessionFactoryAction_create_sessionfactory);
 		} else {
-			setText("Close SessionFactory");
+			setText(HibernateConsoleMessages.BuildSessionFactoryAction_close_sessionfactory);
 		}
 		return super.updateState(config);
 	}

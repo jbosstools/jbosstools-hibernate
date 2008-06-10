@@ -24,9 +24,11 @@ package org.hibernate.eclipse.console.actions;
 import java.util.Iterator;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.actions.SelectionListenerAction;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 /**
@@ -42,14 +44,14 @@ public abstract class ConsoleConfigurationBasedAction extends SelectionListenerA
 			boolean enabledWhenNoSessionFactory) {
 		this.enabledWhenNoSessionFactory = enabledWhenNoSessionFactory;
 	}
-	
+
 	/**
 	 * @param supportMultiple The supportMultiple to set.
 	 */
 	public void setSupportMultiple(boolean supportMultiple) {
 		this.supportMultiple = supportMultiple;
 	}
-	
+
 	/**
 	 * @param text
 	 */
@@ -58,19 +60,20 @@ public abstract class ConsoleConfigurationBasedAction extends SelectionListenerA
 	}
 
 	final public void run() {
-		
+
 		try {
 			doRun();
 		} catch(HibernateException he) {
-			HibernateConsolePlugin.getDefault().showError(null, "Problem while executing " + getText() + "(" + he + ")", he);
-		}      		
+			String out = NLS.bind(HibernateConsoleMessages.ConsoleConfigurationBasedAction_problem_while_executing, getText(), he);
+			HibernateConsolePlugin.getDefault().showError(null, out, he);
+		}
 	}
-	
+
 	abstract protected void doRun();
 
 	final protected boolean updateSelection(IStructuredSelection selection) {
 		   boolean enabled = false;
-		   if(!supportMultiple && selection.size()>1) return false; 
+		   if(!supportMultiple && selection.size()>1) return false;
 	        for (Iterator i = selection.iterator();
 	            i.hasNext();
 	            ) {
@@ -78,7 +81,7 @@ public abstract class ConsoleConfigurationBasedAction extends SelectionListenerA
 	            if (object instanceof ConsoleConfiguration) {
 	                ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration) object;
 	                enabled |= updateState(consoleConfiguration);
-					
+
 	            } else {
 	                enabled = false;
 	            }

@@ -24,8 +24,8 @@ package org.hibernate.eclipse.console;
 
 public interface ConsolePreferencesConstants {
 
-	String PREFIX = HibernateConsolePlugin.ID + ".";
+	String PREFIX = HibernateConsolePlugin.ID + "."; //$NON-NLS-1$
 
-	String ENTITY_MODEL_LAYOUT = PREFIX + "view.entitygraph.manuallayout";
+	String ENTITY_MODEL_LAYOUT = PREFIX + "view.entitygraph.manuallayout"; //$NON-NLS-1$
 
 }
