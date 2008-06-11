@@ -36,7 +36,6 @@ public class HibernateConsoleMessages extends NLS {
 	public static String HibernateConsolePlugin_no_message_1;
 	public static String HibernateConsolePlugin_no_message_2;
 	public static String HibernateConsolePlugin_problem_to_get_flag;
-	public static String HibernateConsolePlugin_could_not_open_hibernate_properties_editor;
 	//
 	public static String AddConfigurationAction_add_config;
 	public static String AddConfigurationAction_hibernate;
@@ -63,9 +62,6 @@ public class HibernateConsoleMessages extends NLS {
 	public static String EditConsoleConfiguration_no_launch_cfg_matched;
 	public static String EditConsoleConfiguration_problem_adding_console_cfg;
 	public static String ExecuteQueryAction_run_hql;
-	public static String HibernatePropertiesAction_hibernate_properties_editor;
-	public static String HibernatePropertiesAction_open_hibernate_properties_editor;
-	public static String HibernatePropertiesAction_exception_while_trying_to_open_hibernate_properties_editor;
 	public static String HQLScratchpadAction_hql_editor;
 	public static String HQLScratchpadAction_open_hql_editor;
 	public static String JTidyFormatAction_do_you_want_format_xml_files_with_jtidy;
@@ -242,11 +238,6 @@ public class HibernateConsoleMessages extends NLS {
 	public static String NewConfigurationWizardPage_session_factory_name;
 	public static String NewConfigurationWizardPage_this_wizard_creates;
 	public static String NewConfigurationWizardPage_user_name;
-	public static String NewConfigurationWizardPage_test_connection;
-	public static String NewConfigurationWizardPage_error;
-	public static String NewConfigurationWizardPage_ping_failed;
-	public static String NewConfigurationWizardPage_success;
-	public static String NewConfigurationWizardPage_ping_succeeded;
 	public static String NewHibernateMappingFilePage_browse;
 	public static String NewHibernateMappingFilePage_class_to_map;
 	public static String NewHibernateMappingFilePage_container;
@@ -420,8 +411,6 @@ public class HibernateConsoleMessages extends NLS {
 	public static String CodeGenerationSettingsTab_use_existing;
 	public static String CodeGenerationSettingsTab_workspace;
 	public static String ConsoleConfigurationLaunchDelegate_direct_launch_not_supported;
-	public static String ConnectionProfileCtrl_new;
-	public static String ConnectionProfileCtrl_edit;
 	public static String ConsoleConfigurationMainTab_annotations;
 	public static String ConsoleConfigurationMainTab_cfg_xml;
 	public static String ConsoleConfigurationMainTab_choose_file_to_use_as_hibernate_cfg_xml;
@@ -455,10 +444,6 @@ public class HibernateConsoleMessages extends NLS {
 	public static String ConsoleConfigurationMainTab_type;
 	public static String ConsoleConfigurationMainTab_use_existing;
 	public static String ConsoleConfigurationMainTab_wizard_page;
-	public static String ConsoleConfigurationMainTab_connection_profile;
-	public static String ConsoleConfigurationMainTab_import_db_connection;
-	public static String ConsoleConfigurationMainTab_use_jpa_project_setting;
-	public static String ConsoleConfigurationMainTab_use_connection_profile;
 	public static String ConsoleConfigurationMappingsTab_add_hbm_xml_file;
 	public static String ConsoleConfigurationMappingsTab_add_hibernate_mapping_file;
 	public static String ConsoleConfigurationMappingsTab_additional_mapping_files;
@@ -514,15 +499,6 @@ public class HibernateConsoleMessages extends NLS {
 	public static String HibernateNature_exception_when_trying_to_locate_hibernate_nature;
 	public static String HibernateNature_reading_database_metadata;
 	public static String HibernateNature_reading_database_metadata_for;
-	public static String HibernateNature_reading_database_table_column_names_for;
-	public static String HibernateNature_reading_database_table_column_names;
-	//
-	public static String HibernatePropertiesEditor_source;
-	public static String HibernatePropertiesEditor_properties;
-	public static String HibernatePropertiesFileDocumentProvider_this_is_auto_generated_header_do_not_edit_it;
-	public static String HibernatePropertiesFileDocumentProvider_could_not_store_properties_into_output_stream;
-	public static String HibernatePropertiesFileDocumentProvider_could_not_load_file;
-	public static String HibernatePropertiesFileDocumentProvider_could_not_load_stream;
 	//
 	static {
 		// initialize resource bundle
