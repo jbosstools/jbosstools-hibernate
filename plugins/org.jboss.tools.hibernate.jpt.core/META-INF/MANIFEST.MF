@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Hibernate Jdt Core
+Bundle-SymbolicName: org.jboss.tools.hibernate.jpt.core;singleton:=true
+Bundle-Version: 1.0.0
+Require-Bundle: 
+ org.eclipse.core.runtime,
+ org.eclipse.jpt.core,
+ org.eclipse.wst.validation,
+ org.eclipse.core.resources,
+ org.eclipse.emf.ecore,
+ org.eclipse.jpt.eclipselink.core;bundle-version="1.0.0",
+ org.eclipse.jpt.eclipselink.ui;bundle-version="1.0.0",
+ org.eclipse.jpt.utility;bundle-version="1.2.0"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Vendor: Hibernate Team
+
+
