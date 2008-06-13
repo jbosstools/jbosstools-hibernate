@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Hibernate Jdt UI
+Bundle-SymbolicName: org.jboss.tools.hibernate.jpt.ui;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Activator: org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.jpt.ui
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Vendor: Hibernate Team
