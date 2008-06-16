@@ -10,6 +10,9 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.platform;
 
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.ui.internal.platform.base.EntitiesGenerator;
 import org.eclipse.jpt.ui.internal.platform.generic.GenericPlatformUi;
 
 /**
@@ -17,5 +20,13 @@ import org.eclipse.jpt.ui.internal.platform.generic.GenericPlatformUi;
  *
  */
 public class HibernatePlatformUI extends GenericPlatformUi {
+	
+	/**
+	 * Change method realization to provide other entities generation.
+	 */
+	@Override
+	public void generateEntities(JpaProject project, IStructuredSelection selection) {
+		EntitiesGenerator.generate(project, selection);
+	}
 
 }
