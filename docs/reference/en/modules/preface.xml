@@ -19,7 +19,7 @@
             <title>Key Functionality for Hibernate Tools</title>
             <tgroup cols="3">
                 
-                <colspec colnum="1" colwidth="1*"/>
+                <colspec colnum="1" align="left" colwidth="1*"/>
                 <colspec colnum="2" colwidth="5*"/>
                 <colspec colnum="3" colwidth="1*"/>
                 

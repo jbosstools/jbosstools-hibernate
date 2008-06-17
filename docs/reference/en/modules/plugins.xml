@@ -200,7 +200,7 @@
       <title>Hibernate Console Configuration Parameters</title>
 
       <tgroup cols="3">
-        <colspec colnum="1" colwidth="1*"/>
+        <colspec colnum="1" align="left" colwidth="1*"/>
 
         <colspec colnum="2" colwidth="3*"/>
 
@@ -364,7 +364,7 @@
       <title>Hibernate Console Configuration Classpath</title>
 
       <tgroup cols="3">
-        <colspec colnum="1" colwidth="1*"/>
+        <colspec colnum="1" align="left" colwidth="1*"/>
 
         <colspec colnum="2" colwidth="3*"/>
 
@@ -443,7 +443,7 @@
         <title>Hibernate Console Configuration Mappings</title>
 
         <tgroup cols="3">
-          <colspec colnum="1" colwidth="1*"/>
+          <colspec colnum="1" align="left" colwidth="1*"/>
 
           <colspec colnum="2" colwidth="3*"/>
 
@@ -591,7 +591,7 @@
         <title>Code generation "Main" tab fields</title>
 
         <tgroup cols="2">
-          <colspec colnum="1" colwidth="1*"/>
+          <colspec colnum="1" align="left" colwidth="1*"/>
 
           <colspec colnum="2" colwidth="3*"/>
 
@@ -781,7 +781,7 @@
         <title>Code generation "Exporter" tab fields</title>
 
         <tgroup cols="2">
-          <colspec colnum="1" colwidth="1*"/>
+          <colspec colnum="1" align="left" colwidth="1*"/>
 
           <colspec colnum="2" colwidth="3*"/>
 
@@ -876,7 +876,7 @@
           <title>Exporter Properties</title>
 
           <tgroup cols="2">
-            <colspec colnum="1" colwidth="1*"/>
+            <colspec colnum="1" align="left" colwidth="1*"/>
 
             <colspec colnum="2" colwidth="3*"/>
 
