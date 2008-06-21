@@ -7,7 +7,7 @@
 		
 		<jpaPlatform
         class="org.jboss.tools.hibernate.jpt.core.internal.HibernatePlatform"
-        default="true"
+        default="false"
         id="hibernate"
         label="Hibernate"/>		
 	</extension>
