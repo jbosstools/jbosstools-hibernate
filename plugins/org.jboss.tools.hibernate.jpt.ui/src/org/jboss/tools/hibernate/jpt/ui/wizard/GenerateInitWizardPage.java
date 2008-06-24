@@ -26,21 +26,25 @@ import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
+import org.hibernate.util.StringHelper;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class EntitiesInitWizardPage extends WizardPage {
+public class GenerateInitWizardPage extends WizardPage {
 	
 	private ComboDialogField connectionProfileName;
 	
@@ -48,11 +52,19 @@ public class EntitiesInitWizardPage extends WizardPage {
 	
 	private ComboDialogField consoleConfigurationName;
 	
+	private Button selectMethod;
+	
 	private Group dbGroup;
 
 	private JpaProject jpaProject;
 	
-	public EntitiesInitWizardPage(JpaProject jpaProject){
+	private IDialogFieldListener fieldlistener = new IDialogFieldListener() {
+		public void dialogFieldChanged(DialogField field) {
+			dialogChanged();
+		}
+	};
+	
+	public GenerateInitWizardPage(JpaProject jpaProject){
 		super("", "", null);
 		this.jpaProject = jpaProject;
 	}
@@ -68,11 +80,25 @@ public class EntitiesInitWizardPage extends WizardPage {
 
 		container.setLayout(layout);
 		layout.numColumns = numColumns;
-		layout.verticalSpacing = 10;
+		layout.verticalSpacing = 10;		
 		
-		createDBGroup(container, numColumns);
+		selectMethod = new Button(container, SWT.CHECK);
+		selectMethod.setText("Use Console Configuration");
+		selectMethod.setSelection(true);
+		selectMethod.addSelectionListener(new SelectionListener(){
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+				widgetSelected(e);				
+			}
+
+			public void widgetSelected(SelectionEvent e) {
+				dialogChanged();				
+			}});
+		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd.horizontalSpan = numColumns;
+		selectMethod.setLayoutData(gd);
 		
-		ComboDialogField consoleConfigurationName = new ComboDialogField(SWT.READ_ONLY);
+		consoleConfigurationName = new ComboDialogField(SWT.READ_ONLY);
 		consoleConfigurationName.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_console_configuration);
 		ConsoleConfiguration[] cfg = KnownConfigurations.getInstance().getConfigurationsSortedByName();
 		String[] names = new String[cfg.length];
@@ -82,17 +108,15 @@ public class EntitiesInitWizardPage extends WizardPage {
 		}
 		consoleConfigurationName.setItems(names);
 		
-		IDialogFieldListener fieldlistener = new IDialogFieldListener() {
-			public void dialogFieldChanged(DialogField field) {
-				dialogChanged();
-			}
-		};
+		
 
         consoleConfigurationName.setDialogFieldListener(fieldlistener);
         consoleConfigurationName.doFillIntoGrid(container, numColumns);
+        
+        createDBGroup(container, numColumns);
 		
 		setControl(container);
-		setPageComplete( false);
+		setPageComplete( false );
 	}
 
 	/**
@@ -112,9 +136,10 @@ public class EntitiesInitWizardPage extends WizardPage {
 		dbGroup.setLayoutData(gd);
 		dbGroup.setText(JptUiMessages.DatabaseReconnectWizardPage_database);		
 		
+		//****************************connection profile*****************
 		connectionProfileName = new ComboDialogField(SWT.READ_ONLY);
 		connectionProfileName.setLabelText(JptUiMessages.DatabaseReconnectWizardPage_connection);		
-		
+				
 		List<String> list = dtpConnectionProfileNames();
 		connectionProfileName.setItems((String[]) list.toArray(new String[list.size()]));
 
@@ -123,7 +148,9 @@ public class EntitiesInitWizardPage extends WizardPage {
 			connectionProfileName.selectItem(connectionName);
 		}
 		connectionProfileName.doFillIntoGrid(dbGroup, numColumns);
-		
+		connectionProfileName.setDialogFieldListener(fieldlistener);
+		connectionProfileName.setEnabled(!selectMethod.getSelection());		
+		//****************************schema*****************
 		schemaName = new StringButtonDialogField(new IStringButtonAdapter(){
 			public void changeControlPressed(DialogField field) {
 				// TODO Auto-generated method stub
@@ -133,16 +160,38 @@ public class EntitiesInitWizardPage extends WizardPage {
 		schemaName.setButtonLabel("Refresh");
 		Control[] controls = schemaName.doFillIntoGrid(dbGroup, numColumns);
 		// Hack to tell the text field to stretch!
-		( (GridData)controls[1].getLayoutData() ).grabExcessHorizontalSpace = true;
+		( (GridData)controls[1].getLayoutData() ).grabExcessHorizontalSpace = true;		
+		schemaName.setEnabled(!selectMethod.getSelection());
 	}
 
-	/**
-	 * 
-	 */
+	
 	protected void dialogChanged() {
-		// TODO Auto-generated method stub
+		consoleConfigurationName.setEnabled(selectMethod.getSelection());
+		connectionProfileName.setEnabled(!selectMethod.getSelection());
+		schemaName.setEnabled(!selectMethod.getSelection());
 		
+		if (selectMethod.getSelection() && (StringHelper.isEmpty(getConfigurationName()))){
+			setPageComplete(false);
+			setErrorMessage("Please, select console configuration");
+			return;
+		}
+		if (!selectMethod.getSelection() && (StringHelper.isEmpty(getConnectionProfileName()))){
+			setPageComplete(false);
+			setErrorMessage("Please, select connection profile");
+			return;
+		}
+		setPageComplete(true);
+		setErrorMessage(null);		
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.wizard.WizardPage#isPageComplete()
+	 */
+	/*@Override
+	public boolean isPageComplete() {
+		return (selectMethod.getSelection() && (StringHelper.isNotEmpty(getConfigurationName())))
+			||(!selectMethod.getSelection() && (StringHelper.isNotEmpty(getConnectionProfileName())));
+	}*/
 	
 	private List<String> dtpConnectionProfileNames() {
 		List<String> list = new ArrayList<String>();
@@ -155,5 +204,12 @@ public class EntitiesInitWizardPage extends WizardPage {
 	private String getProjectConnectionProfileName() {
 		return jpaProject.getDataSource().getConnectionProfileName();
 	}
-
+	
+	public String getConfigurationName() {
+		return consoleConfigurationName.getText();
+	}
+	
+	public String getConnectionProfileName() {
+		return connectionProfileName.getText();
+	}
 }

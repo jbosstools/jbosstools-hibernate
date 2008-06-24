@@ -10,8 +10,8 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.wizard;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.core.IPackageFragment;
@@ -20,14 +20,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.db.ConnectionProfile;
-import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.gen.internal.EntityGenerator;
-import org.eclipse.jpt.gen.internal.PackageGenerator;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.ui.internal.wizards.DatabaseReconnectWizardPage;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.jboss.tools.hibernate.jpt.ui.internal.platform.HibernatePlatformUI;
 
@@ -35,17 +28,18 @@ import org.jboss.tools.hibernate.jpt.ui.internal.platform.HibernatePlatformUI;
  * @author Dmitry Geraskov
  *
  */
-public class GenerateEntitiesWizard extends Wizard {
+public class GenerateDdlWizard extends Wizard {	
 
 	private JpaProject jpaProject;
 
-	private IStructuredSelection selection;	
+	private IStructuredSelection selection;
 	
 	private GenerateInitWizardPage initPage;
 	
-	private GenerateEntitiesWizardPage page2; 
+	private GenerateDdlWizardPage page2; 
 	
-	public GenerateEntitiesWizard( JpaProject jpaProject, IStructuredSelection selection) {
+	
+	public GenerateDdlWizard(JpaProject jpaProject, IStructuredSelection selection) {
 		super();
 		this.jpaProject = jpaProject;
 		this.selection = selection;
@@ -56,7 +50,7 @@ public class GenerateEntitiesWizard extends Wizard {
 	public void addPages() {
 		super.addPages();
 		initPage = new GenerateInitWizardPage(jpaProject);
-		page2 = new GenerateEntitiesWizardPage("");
+		page2 = new GenerateDdlWizardPage("");
 		addPage(initPage);
 		addPage(page2);
 	}
@@ -66,22 +60,19 @@ public class GenerateEntitiesWizard extends Wizard {
 		String projectName = jpaProject.getName();
 		ILaunchConfigurationWorkingCopy wc = HibernatePlatformUI.createDefaultLaunchConfig(projectName);
 		if (wc != null) {
-			// SHOULD PRESENT THE CONFIGURATION!!!
-			//unknown - ccname, outputdir, packagename
+			// Main
+			//unknown - ccname, outputdir, filename
 			wc.setAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME, initPage.getConfigurationName());
-
 			wc.setAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR, page2.getOutputDir()); //$NON-NLS-1$
 
-			wc.setAttribute(HibernateLaunchConstants.ATTR_PACKAGE_NAME, page2.getPackageName());
-			wc.setAttribute(HibernateLaunchConstants.ATTR_PREFER_BASIC_COMPOSITE_IDS, true);
-			wc.setAttribute(HibernateLaunchConstants.ATTR_AUTOMATIC_MANY_TO_MANY, true);
-			wc.setAttribute(HibernateLaunchConstants.ATTR_AUTOMATIC_VERSIONING, true);
+			Map<String, String> prop = new HashMap<String, String>();
+			prop.put("outputFileName", page2.getFilename());
+			//prop.put("outputdir", project.getName() + "\\src");
+			prop.put("format", "true");
+			prop.put("scriptToConsole", "false");
 
-			wc.setAttribute(HibernateLaunchConstants.ATTR_ENABLE_JDK5, true);
-			wc.setAttribute(HibernateLaunchConstants.ATTR_ENABLE_EJB3_ANNOTATIONS, true);
-
-			wc.setAttribute(HibernateLaunchConstants.ATTR_EXPORTERS + '.' + HibernatePlatformUI.exporter_id + ".extension_id", 
-						HibernateLaunchConstants.ATTR_PREFIX + "hbm2java"); //$NON-NLS-1$ //$NON-NLS-2$
+			wc.setAttribute(HibernatePlatformUI.full_exporter_id + ".properties", prop);
+			wc.setAttribute(HibernatePlatformUI.full_exporter_id + ".extension_id", HibernateLaunchConstants.ATTR_PREFIX + "hbm2ddl"); //$NON-NLS-1$ //$NON-NLS-2$
 			HibernatePlatformUI.runLaunchConfiguration(wc);
 		}
 		return true;

@@ -35,6 +35,7 @@ import org.eclipse.jpt.gen.internal.EntityGenerator;
 import org.eclipse.jpt.gen.internal.PackageGenerator;
 import org.eclipse.jpt.ui.internal.platform.generic.GenericPlatformUi;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
+import org.jboss.tools.hibernate.jpt.ui.wizard.GenerateDdlWizard;
 import org.jboss.tools.hibernate.jpt.ui.wizard.GenerateEntitiesWizard;
 
 /**
@@ -45,8 +46,8 @@ public class HibernatePlatformUI extends GenericPlatformUi {
 
 	public static final String LaunchConfigurationType_ID = "org.hibernate.eclipse.launch.CodeGenerationLaunchConfigurationType";
 
-	private static String exporter_id = "hbmexporter";
-	private static String full_exporter_id = HibernateLaunchConstants.ATTR_EXPORTERS + '.' + "hbmexporter";
+	public static String exporter_id = "hbmexporter";
+	public static String full_exporter_id = HibernateLaunchConstants.ATTR_EXPORTERS + '.' + "hbmexporter";
 
 	@Override
 	public void generateEntities(JpaProject project, IStructuredSelection selection) {
@@ -54,8 +55,8 @@ public class HibernatePlatformUI extends GenericPlatformUi {
 		
 		WizardDialog dialog = new WizardDialog(null, wizard);
 		dialog.create();
-		int returnCode = dialog.open();
-		if (returnCode == Window.OK) {
+		/*int returnCode = */dialog.open();
+		/*if (returnCode == Window.OK) {
 			ILaunchConfigurationWorkingCopy wc = createDefaultLaunchConfig(project.getName());
 			if (wc != null) {
 				// SHOULD PRESENT THE CONFIGURATION!!!
@@ -75,34 +76,39 @@ public class HibernatePlatformUI extends GenericPlatformUi {
 				wc.setAttribute(HibernateLaunchConstants.ATTR_EXPORTERS + '.' + exporter_id + ".extension_id", 
 							HibernateLaunchConstants.ATTR_PREFIX + "hbm2java"); //$NON-NLS-1$ //$NON-NLS-2$
 				runLaunchConfiguration(wc);
-			}			
-		}
-		
-		
+			}
+		}	*/	
 	}
 
 	@Override
 	public void generateDDL(JpaProject project, IStructuredSelection selection) {
-		ILaunchConfigurationWorkingCopy wc = createDefaultLaunchConfig(project.getName());
-		if (wc != null) {
-			// Main
-			//unknown - ccname, outputdir, filename
-			wc.setAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME, project.getName());
-			wc.setAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR, project.getName() + "\\src"); //$NON-NLS-1$
+		GenerateDdlWizard wizard = new GenerateDdlWizard(project, selection);
+		
+		WizardDialog dialog = new WizardDialog(null, wizard);
+		dialog.create();
+		/*int returnCode = */dialog.open();
+		/*if (returnCode == Window.OK) {
+			ILaunchConfigurationWorkingCopy wc = createDefaultLaunchConfig(project.getName());
+			if (wc != null) {
+				// Main
+				//unknown - ccname, outputdir, filename
+				wc.setAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME, project.getName());
+				wc.setAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR, project.getName() + "\\src"); //$NON-NLS-1$
 
-			Map<String, String> prop = new HashMap<String, String>();
-			prop.put("outputFileName", "schema.ddl");
-			//prop.put("outputdir", project.getName() + "\\src");
-			prop.put("format", "true");
-			prop.put("scriptToConsole", "false");
+				Map<String, String> prop = new HashMap<String, String>();
+				prop.put("outputFileName", "schema.ddl");
+				//prop.put("outputdir", project.getName() + "\\src");
+				prop.put("format", "true");
+				prop.put("scriptToConsole", "false");
 
-			wc.setAttribute(full_exporter_id + ".properties", prop);
-			wc.setAttribute(full_exporter_id + ".extension_id", HibernateLaunchConstants.ATTR_PREFIX + "hbm2ddl"); //$NON-NLS-1$ //$NON-NLS-2$
-			runLaunchConfiguration(wc);
-		}
+				wc.setAttribute(full_exporter_id + ".properties", prop);
+				wc.setAttribute(full_exporter_id + ".extension_id", HibernateLaunchConstants.ATTR_PREFIX + "hbm2ddl"); //$NON-NLS-1$ //$NON-NLS-2$
+				runLaunchConfiguration(wc);
+			}
+		}*/		
 	}
 
-	private ILaunchConfigurationWorkingCopy createDefaultLaunchConfig(String projectName) {
+	public static ILaunchConfigurationWorkingCopy createDefaultLaunchConfig(String projectName) {
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 		ILaunchConfigurationType launchConfigurationType = launchManager
 				.getLaunchConfigurationType(LaunchConfigurationType_ID); //$NON-NLS-1$
@@ -123,7 +129,7 @@ public class HibernatePlatformUI extends GenericPlatformUi {
 		return wc;
 	}
 
-	private void runLaunchConfiguration(ILaunchConfiguration configuration) {
+	public static void runLaunchConfiguration(ILaunchConfiguration configuration) {
 		try {
 			DebugPlugin.getDefault().getLaunchManager().addLaunch(configuration.launch(ILaunchManager.RUN_MODE, null));
 		} catch (CoreException e) {
