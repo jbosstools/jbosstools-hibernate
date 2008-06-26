@@ -1,0 +1,36 @@
+<!--
+
+  HibernateTools ANT build script.
+-->
+
+<project name="org.hibernate.eclipse" basedir="." default="update">
+
+	<property name="hibernate.root" location="../../../../../hibernate"/>
+	<available file="${hibernate.root}" property="hibernate.root.exists"/>
+	<fail unless="hibernate.root.exists">hibernate.root needs to be set to the root of the hibernate svn checkout. Currently it is ${hibernate.root} which does not exist.</fail>
+	
+	<import file="${hibernate.root}/HibernateExt/common/common-build.xml"/>
+	
+	<target name="update" depends="init">
+         
+        <delete failonerror="no">
+	     <fileset dir="lib">
+	     	<exclude name="hsqldb.jar"/>
+               <exclude name="CVS"/>
+            <include name="**/*"/>
+    	 </fileset>
+        </delete>
+                              
+		<ant antfile="${hibernate.root}\HibernateExt\tools\build.xml" inheritall="false" inheritrefs="false" target="jartest"/>
+		<copy preservelastmodified="true" file="${hibernate.root}\HibernateExt\tools\target\hibernate-tools\hibernate-tools-tests.jar" todir="lib"/>
+		
+		<property file="${hibernate-core.lib.dir}/version.properties" prefix="h3"/>
+				
+        <copy preservelastmodified="true" todir="lib" >
+            <fileset dir="${hibernate-core.lib.dir}">
+            	<include name="${h3.jaxen.lib}"/>
+            </fileset>
+        </copy>
+
+	</target>
+</project>

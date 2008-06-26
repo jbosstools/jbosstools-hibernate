@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="mapping.value.type.collection.map">
+	<class name="CollectionMap" table="COLLECTION_MAPS">
+		<id name="id" column="ID" />
+		<map name="items" table="COLLECTION_MAP_ITEMS">
+			<key column="COLLECTION_MAP_ID" />
+			<map-key column="COLLECTION_MAP_ITEM_KEY" type="integer" />
+			<element column="COLLECTION_MAP_ITEM" type="character"></element>
+		</map>
+		<map name="itemsOfClass"
+			table="COLLECTION_MAP_ITEMS_OF_CLASS">
+			<key column="COLLECTION_MAP_ID" />
+			<map-key column="COLLECTION_MAP_ITEM_KEY" type="integer" />
+			<one-to-many class="CollectionMapItem" />
+		</map>
+		<map name="itemsMany" table="COLLECTION_MAP_ITEMS_MANY">
+			<key column="COLLECTION_MAP_ID1" />
+			<map-key-many-to-many class="CollectionMapMany">
+				<column name="COLLECTION_MAP_ID" />
+				<column name="COLLECTION_MAP_ITEM_ID" />
+			</map-key-many-to-many>
+			<many-to-many class="CollectionMapItem" column="xxxx" />
+		</map>
+	</class>
+</hibernate-mapping>
