@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE XModelEntityGroup PUBLIC "-//Red Hat, Inc.//DTD Meta 1.0//EN" "meta.dtd">
+<!DOCTYPE XModelEntityGroup PUBLIC "-//Red Hat, Inc.//DTD Meta 1.0//EN"
+                                   "meta.dtd">
 <XModelEntityGroup>
  <VERSION DEPENDS="Model:1.0" MODULE="Web" VERSION="1.0"/>
  <MAPPINGS/>
@@ -92,33 +93,21 @@
   <XModelAttributes>
    <XModelAttribute default="hibernate-configuration"
     loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="NAME">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="name" xmlname="NAME"/>
    <XModelAttribute default="xml" name="extension" xmlname="EXTENSION">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute loader="ElementType" name="_lateload" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute
     default="-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-    name="publicId" visibility="false">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+    name="publicId" visibility="false"/>
    <XModelAttribute
     default="http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd"
-    name="systemId" visibility="false">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+    name="systemId" visibility="false"/>
    <XModelAttribute default="no" name="isIncorrect" visibility="false">
     <Constraint loader="List">
      <value name="yes"/>
@@ -126,12 +115,8 @@
     </Constraint>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute name="incorrectBody" visibility="false">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="incorrectBody" visibility="false"/>
    <XModelAttribute TRIM="no" name="comment" visibility="false" xmlname="#comment">
-    <Constraint/>
     <Editor name="Note"/>
    </XModelAttribute>
    <XModelAttribute name="encoding">
@@ -263,6 +248,76 @@
   </XActionItem>
   <XDependencies/>
  </XModelEntity>
+ <XModelEntity
+  ImplementationLoadingClass="org.jboss.tools.common.model.loaders.impl.BodyLoader"
+  ImplementingClass="org.jboss.tools.common.model.filesystems.impl.FileXMLImpl"
+  ObjectEditorClass="org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor" name="FileHibReverse3">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.hibernate.file" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="hibernate reverse engineering file"
+    loader="ElementType" name="element type" visibility="false">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute name="name" xmlname="NAME"/>
+   <XModelAttribute TRIM="no" name="body" visibility="false"/>
+   <XModelAttribute default="no" name="isIncorrect" visibility="false">
+    <Constraint loader="List">
+     <value name="yes"/>
+     <value name="no"/>
+    </Constraint>
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute default="xml" name="extension" xmlname="EXTENSION">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute loader="ElementType" name="_lateload" visibility="false">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem HandlerClassName="%Open%" ICON="main.file.java_file"
+    displayName="Open" kind="action" name="Open"/>
+   <XActionItem displayName="Open With" group="1" kind="list" name="OpenWith">
+    <XActionItem HIDE="always"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.OpenWithExternalHandler"
+     ICON="main.file.java_file" PROPERTIES="extension=struts-config"
+     displayName="Open with External Program" kind="action" name="OpenWithSelected"/>
+    <XActionItem HIDE="always"
+     HandlerClassName="org.jboss.tools.common.meta.action.impl.handlers.OpenWithChoiceHandler"
+     ICON="main.file.java_file" displayName="Choose Program..."
+     kind="action" name="OpenWithChoice">
+     <EntityData EntityName="OpenWithHelper">
+      <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="default"/>
+     </EntityData>
+    </XActionItem>
+   </XActionItem>
+   <XActionItem kind="list" name="SaveActions">
+    <XActionItem HIDE="disabled" HandlerClassName="%SaveFile%"
+     ICON="action.save" displayName="Save" kind="action" name="Save"/>
+   </XActionItem>
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
+    <XActionItem BaseActionName="Copy" HandlerClassName="%Copy%"
+     ICON="action.copy" displayName="Copy" kind="action" name="Copy"/>
+    <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
+     ICON="action.cut" displayName="Cut" kind="action" name="Cut"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%DeleteFile%"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
  <XModelEntity ImplementingClass="%Hibernate3OrderedFolder%"
   PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="HibConfig3CachesFolder">
   <XChildrenEntities>
@@ -276,11 +331,9 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="properties" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Caches" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -330,18 +383,13 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="class-cache" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute PROPERTIES="save=always;id=true;category=general"
     name="class" xmlname="class">
-    <Constraint/>
     <Editor name="AccessibleJava"/>
    </XModelAttribute>
-   <XModelAttribute name="region" xmlname="region">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute name="region" xmlname="region"/>
    <XModelAttribute PROPERTIES="save=always" default="read-only"
     name="usage" xmlname="usage">
     <Constraint loader="List">
@@ -361,11 +409,9 @@
     <Editor name="List"/>
    </XModelAttribute>
    <XModelAttribute name="item" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute TRIM="no" name="comment" visibility="false" xmlname="#comment">
-    <Constraint/>
     <Editor name="Note"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -402,18 +448,11 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="collection-cache" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute PROPERTIES="save=always;id=true;category=general"
-    name="collection" xmlname="collection">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute name="region" xmlname="region">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+    name="collection" xmlname="collection"/>
+   <XModelAttribute name="region" xmlname="region"/>
    <XModelAttribute PROPERTIES="save=always" default="read-only"
     name="usage" xmlname="usage">
     <Constraint loader="List">
@@ -425,7 +464,6 @@
     <Editor name="List"/>
    </XModelAttribute>
    <XModelAttribute name="item" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -464,7 +502,6 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="event" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute PROPERTIES="save=always;id=true;category=general"
@@ -502,7 +539,6 @@
     <Editor name="List"/>
    </XModelAttribute>
    <XModelAttribute TRIM="no" name="comment" visibility="false" xmlname="#comment">
-    <Constraint/>
     <Editor name="Note"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -551,11 +587,9 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="events" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Events" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -590,26 +624,15 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="grant" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute PROPERTIES="save=always;id=true;category=general"
-    name="role" xmlname="role">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+    name="role" xmlname="role"/>
    <XModelAttribute PROPERTIES="save=always;category=general"
-    name="entity-name" xmlname="entity-name">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+    name="entity-name" xmlname="entity-name"/>
    <XModelAttribute PROPERTIES="save=always;category=general"
-    name="actions" xmlname="actions">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+    name="actions" xmlname="actions"/>
    <XModelAttribute TRIM="no" name="comment" visibility="false" xmlname="#comment">
-    <Constraint/>
     <Editor name="Note"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -644,7 +667,6 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="listener" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute PROPERTIES="category=general" name="type" xmlname="type">
@@ -683,11 +705,9 @@
    </XModelAttribute>
    <XModelAttribute PROPERTIES="save=always;id=true;category=general"
     name="class" xmlname="class">
-    <Constraint/>
     <Editor name="AccessibleJava"/>
    </XModelAttribute>
    <XModelAttribute TRIM="no" name="comment" visibility="false" xmlname="#comment">
-    <Constraint/>
     <Editor name="Note"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -725,11 +745,9 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="listeners" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Listeners" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -767,35 +785,19 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="mapping" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=advanced" name="resource" xmlname="resource">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=advanced" name="file" xmlname="file">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=advanced" name="jar" xmlname="jar">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=general" name="package" xmlname="package">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=advanced" name="resource" xmlname="resource"/>
+   <XModelAttribute PROPERTIES="category=advanced" name="file" xmlname="file"/>
+   <XModelAttribute PROPERTIES="category=advanced" name="jar" xmlname="jar"/>
+   <XModelAttribute PROPERTIES="category=general" name="package" xmlname="package"/>
    <XModelAttribute PROPERTIES="category=general" name="class" xmlname="class">
-    <Constraint/>
     <Editor name="AccessibleJava"/>
    </XModelAttribute>
    <XModelAttribute COPYABLE="no" PROPERTIES="id=true" name="item" visibility="false">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute TRIM="no" name="comment" visibility="false" xmlname="#comment">
-    <Constraint/>
     <Editor name="Note"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -833,11 +835,9 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="properties" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Mappings" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -876,11 +876,9 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="properties" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute default="Properties" name="name" visibility="false" xmlname="NAME">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -916,20 +914,12 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="property" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute PROPERTIES="save=always;id=true;category=general"
-    name="name" xmlname="name">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute name="value" xmlname="#text">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+    name="name" xmlname="name"/>
+   <XModelAttribute name="value" xmlname="#text"/>
    <XModelAttribute TRIM="no" name="comment" visibility="false" xmlname="#comment">
-    <Constraint/>
     <Editor name="Note"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -966,20 +956,12 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="security" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute PROPERTIES="save=always;category=general"
-    name="context" xmlname="context">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
-   <XModelAttribute PROPERTIES="id=true" default="Security" name="name" visibility="false">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+    name="context" xmlname="context"/>
+   <XModelAttribute PROPERTIES="id=true" default="Security" name="name" visibility="false"/>
    <XModelAttribute TRIM="no" name="comment" visibility="false" xmlname="#comment">
-    <Constraint/>
     <Editor name="Note"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -1032,21 +1014,13 @@
   </XEntityRenderer>
   <XModelAttributes>
    <XModelAttribute default="session-factory" loader="ElementType" name="element type">
-    <Constraint/>
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute PROPERTIES="save=always;category=general"
-    name="name" xmlname="name">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+    name="name" xmlname="name"/>
    <XModelAttribute PROPERTIES="id=true" default="Session Factory"
-    name="path" visibility="false">
-    <Constraint/>
-    <Editor/>
-   </XModelAttribute>
+    name="path" visibility="false"/>
    <XModelAttribute TRIM="no" name="comment" visibility="false" xmlname="#comment">
-    <Constraint/>
     <Editor name="Note"/>
    </XModelAttribute>
   </XModelAttributes>
@@ -1101,6 +1075,7 @@
  <XEntityExtension name="FileFolder">
   <XChildrenEntities>
    <XChildEntity name="FileHibConfig3"/>
+   <XChildEntity name="FileHibReverse3"/>
   </XChildrenEntities>
   <XActionItem kind="list">
    <XActionItem displayName="New" group="1" kind="list" name="CreateActions">
@@ -1124,6 +1099,7 @@
  <XEntityExtension name="FileSystemFolder">
   <XChildrenEntities>
    <XChildEntity name="FileHibConfig3"/>
+   <XChildEntity name="FileHibReverse3"/>
   </XChildrenEntities>
   <XActionItem kind="list">
    <XActionItem displayName="New" group="1" kind="list" name="CreateActions">
@@ -1147,12 +1123,14 @@
  <XEntityExtension name="FileSystemJar">
   <XChildrenEntities>
    <XChildEntity name="FileHibConfig3"/>
+   <XChildEntity name="FileHibReverse3"/>
   </XChildrenEntities>
   <XActionItem kind="list"/>
  </XEntityExtension>
  <XEntityExtension name="JarFolder">
   <XChildrenEntities>
    <XChildEntity name="FileHibConfig3"/>
+   <XChildEntity name="FileHibReverse3"/>
   </XChildrenEntities>
   <XActionItem kind="list"/>
  </XEntityExtension>

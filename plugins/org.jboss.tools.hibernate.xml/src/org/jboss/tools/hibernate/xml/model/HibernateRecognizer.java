@@ -33,12 +33,13 @@ public class HibernateRecognizer implements EntityRecognizer {
 
 	public String getEntityName(String ext, String body) {
 		
-		
 		return (body == null || !"xml".equals(ext)) ? null 
 				: (body.indexOf("\"" + HibernateConstants.DOC_PUBLICID_3_0 + "\"") >= 0 
 				   	|| body.indexOf("\"" + HibernateConstants.DOC_SYSTEMID_3_0 + "\"") >= 0) ? HibernateConstants.ENTITY_FILE_HIBERNATE_3_0 
 				: (body.indexOf("\"" + HibernateConstants.CFG_DOC_PUBLICID_3_0 + "\"") >= 0 
-				   	|| body.indexOf("\"" + HibernateConstants.CFG_DOC_SYSTEMID_3_0 + "\"") >= 0) ? HibernateConstants.ENTITY_FILE_HIB_CONFIG_3_0 
+				   	|| body.indexOf("\"" + HibernateConstants.CFG_DOC_SYSTEMID_3_0 + "\"") >= 0) ? HibernateConstants.ENTITY_FILE_HIB_CONFIG_3_0
+				: (body.indexOf("\"" + HibernateConstants.RVE_DOC_PUBLICID_3_0 + "\"") >= 0 
+				   	|| body.indexOf("\"" + HibernateConstants.RVE_DOC_SYSTEMID_3_0 + "\"") >= 0) ? HibernateConstants.ENTITY_FILE_HIB_REV_ENG_3_0
 				: null;
 	}
 
