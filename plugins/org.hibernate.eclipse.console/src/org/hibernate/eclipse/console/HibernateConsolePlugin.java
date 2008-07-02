@@ -139,16 +139,19 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 				// TODO Auto-generated method stub
 		
 			}
-		
+
+			/**
+			 * @param root
+			 * @param forUpdate - shows whether physical removal necessary
+			 */
 			public void configurationRemoved(ConsoleConfiguration root, boolean forUpdate) {
-				try {
-					removeConfiguration(root.getName());
-				} catch (CoreException e) {
-					if(!forUpdate) {
-						logErrorMessage("Could not delete launch configuration for: " + root.getName(), e);
+				if(!forUpdate) {
+					try {
+						removeConfiguration(root.getName());
+					} catch (CoreException e) {
+						logErrorMessage("Could not delete launch configuration for: " + root.getName(), e);					
 					}
 				}
-		
 			}
 		
 			public void configurationAdded(ConsoleConfiguration root) {
@@ -176,7 +179,8 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 			public void launchConfigurationRemoved(ILaunchConfiguration configuration) {				
 				ConsoleConfiguration cfg = KnownConfigurations.getInstance().find( configuration.getName() );
 				if(cfg!=null) {
-					KnownConfigurations.getInstance().removeConfiguration( cfg, false );
+					// file system removal have been made already. 
+					KnownConfigurations.getInstance().removeConfiguration( cfg, true );
 				}
 			}
 		
@@ -258,7 +262,11 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 		}		
 	}
 
-	
+	/**
+	 * Remove configuration from the file system.
+	 * @param name
+	 * @throws CoreException
+	 */
 	private void removeConfiguration(String name) throws CoreException {
 		ILaunchConfiguration findLaunchConfig = findLaunchConfig(name);
 		if (findLaunchConfig != null) {
