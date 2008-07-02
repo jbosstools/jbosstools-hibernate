@@ -65,6 +65,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -129,10 +130,13 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 	public void createControl(Composite parent) {
 		selectedExporters = new HashSet();
 		deletedExporterIds = new HashSet();
-		// ScrolledComposite scrolled = new ScrolledComposite(parent,
-		// SWT.V_SCROLL | SWT.H_SCROLL);
 
-		Composite container = new Composite( parent, SWT.NONE );
+		final ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+		sc.setExpandHorizontal(true);
+		sc.setExpandVertical(true);
+
+		Composite container = new Composite( sc, SWT.NONE );
+        sc.setContent(container);
 		GridData controlData = new GridData( GridData.FILL_BOTH );
 		container.setLayoutData( controlData );
 
@@ -148,8 +152,10 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 
 		createExporterProperties( container );
 
+        sc.setMinSize(container.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+
 		dialogChanged();
-		setControl( container );
+        setControl(sc);
 	}
 
 	private void createExporterProperties(Composite parent) {

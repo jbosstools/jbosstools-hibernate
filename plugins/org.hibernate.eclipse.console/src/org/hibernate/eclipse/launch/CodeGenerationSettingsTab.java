@@ -46,6 +46,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -96,8 +97,12 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
     public void createControl(Composite parent) {
 
 		//initializeDialogUnits(parent);
+		final ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+		sc.setExpandHorizontal(true);
+		sc.setExpandVertical(true);
 
-		Composite container = new Composite(parent, SWT.NULL);
+		Composite container = new Composite(sc, SWT.NULL);
+        sc.setContent(container);
 		GridLayout layout = new GridLayout();
 
 		container.setLayout(layout);
@@ -246,8 +251,10 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
         // Hack to tell the text field to stretch!
         ( (GridData)controls[1].getLayoutData() ).grabExcessHorizontalSpace=true;
 
-		dialogChanged();
-		setControl(container);
+        sc.setMinSize(container.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+
+        dialogChanged();
+        setControl(sc);
 	}
 
     private void fillLabel(Composite container) {
