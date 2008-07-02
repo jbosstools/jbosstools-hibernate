@@ -38,6 +38,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -103,7 +104,12 @@ public class NewHibernateMappingFilePage extends WizardPage {
 	 * @see IDialogPage#createControl(Composite)
 	 */
 	public void createControl(Composite parent) {
-		Composite container = new Composite(parent, SWT.NULL);
+		final ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+		sc.setExpandHorizontal(true);
+		sc.setExpandVertical(true);
+
+		Composite container = new Composite(sc, SWT.NULL);
+        sc.setContent(container);
 		GridLayout layout = new GridLayout();
 		container.setLayout(layout);
 		layout.numColumns = 3;
@@ -150,9 +156,11 @@ public class NewHibernateMappingFilePage extends WizardPage {
 			}
 		});
 
+		sc.setMinSize(container.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+
 		initialize();
 		dialogChanged();
-		setControl(container);
+        setControl(sc);
 	}
 
 	/**

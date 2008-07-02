@@ -57,6 +57,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -133,7 +134,11 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	 * @see IDialogPage#createControl(Composite)
 	 */
 	public void createControl(Composite parent) {
-		TabFolder folder = new TabFolder(parent,SWT.TOP);
+		final ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+		sc.setExpandHorizontal(true);
+		sc.setExpandVertical(true);
+		TabFolder folder = new TabFolder(sc, SWT.TOP);
+		sc.setContent(folder);
 
 		//Composite container = new Composite(parent, SWT.NULL);
 
@@ -168,7 +173,8 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 
 		initialize(selection);
 		dialogChanged();
-		setControl(folder);
+		sc.setMinSize(folder.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+		setControl(sc);
 	}
 
 	private Composite createGeneral(Composite parent, ModifyListener modifyListener) {

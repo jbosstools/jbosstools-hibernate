@@ -30,6 +30,7 @@ import org.eclipse.jdt.internal.ui.wizards.dialogfields.IDialogFieldListener;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -58,7 +59,12 @@ public class TableFilterWizardPage extends WizardPage {
 	public void createControl(Composite parent) {
 		initializeDialogUnits(parent);
 
-		Composite container = new Composite(parent, SWT.NULL);
+		final ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+		sc.setExpandHorizontal(true);
+		sc.setExpandVertical(true);
+
+		Composite container = new Composite(sc, SWT.NULL);
+        sc.setContent(container);
 		//container.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_CYAN));
 
 		GridLayout layout = new GridLayout();
@@ -91,7 +97,9 @@ public class TableFilterWizardPage extends WizardPage {
 		gd.horizontalSpan=3;
 		tfc.setLayoutData(gd);
 
-		setControl(container);
+		sc.setMinSize(container.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+
+		setControl(sc);
 
 		if(selectedConfiguratonName!=null) {
 			consoleConfigurationName.setText(selectedConfiguratonName);
@@ -107,6 +115,7 @@ public class TableFilterWizardPage extends WizardPage {
      * Ensures that contents is ok.
      */
     private void dialogChanged() {
+    	//updateButtons();
 
     	if (hasDuplicates()) {
         	updateWarningStatus(HibernateConsoleMessages.TableFilterWizardPage_table_filters_contains_duplicates);
@@ -114,6 +123,18 @@ public class TableFilterWizardPage extends WizardPage {
         }
 
     	updateWarningStatus(null);
+    }
+
+    /**
+     * Updates buttons state.
+     */
+    private void updateButtons() {
+    	String strConsoleConfig = consoleConfigurationName.getText();
+    	boolean enabled = true;
+    	if (null == strConsoleConfig || 0 == strConsoleConfig.length()) {
+    		enabled = false;
+    	}
+    	tfc.setRefreshEnabled(enabled);
     }
 
     protected boolean hasDuplicates() {
