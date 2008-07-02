@@ -134,7 +134,9 @@ public class TableFilterWizardPage extends WizardPage {
     	if (null == strConsoleConfig || 0 == strConsoleConfig.length()) {
     		enabled = false;
     	}
-    	tfc.setRefreshEnabled(enabled);
+    	
+    	// FIXME Commented to fix compilation error under Eclipse 3.4
+    	// tfc.setRefreshEnabled(enabled);
     }
 
     protected boolean hasDuplicates() {
