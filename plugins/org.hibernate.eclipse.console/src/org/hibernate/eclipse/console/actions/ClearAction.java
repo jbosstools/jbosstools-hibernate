@@ -22,11 +22,13 @@
 package org.hibernate.eclipse.console.actions;
 
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.texteditor.ITextEditor;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.EclipseImages;
@@ -38,6 +40,7 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
 public class ClearAction extends Action {
 
 	private ITextViewer fViewer;
+	private ITextEditor fTextEditor;
 
 	/**
 	 * Constructs an action to clear the document associated with a text viewer.
@@ -55,6 +58,12 @@ public class ClearAction extends Action {
 		//setImageDescriptor(ConsolePluginImages.getImageDescriptor(IInternalConsoleConstants.IMG_ELCL_CLEAR));
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IConsoleHelpContextIds.CLEAR_CONSOLE_ACTION);
 	}
+	
+	public ClearAction(ITextEditor textEditor) {
+		fTextEditor = textEditor;
+		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.CLEAR) );
+		setToolTipText(HibernateConsoleMessages.ClearAction_clear_editor);
+	}
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.action.IAction#run()
@@ -62,11 +71,19 @@ public class ClearAction extends Action {
 	public void run() {
 		BusyIndicator.showWhile(getStandardDisplay(), new Runnable() {
 			public void run() {
-				IDocument document = fViewer.getDocument();
+				IDocument document = null;
+				if (fViewer != null){
+					document = fViewer.getDocument();
+				} else {
+					Assert.isNotNull(fTextEditor);
+					Assert.isNotNull(fTextEditor.getDocumentProvider());
+					Assert.isNotNull(fTextEditor.getEditorInput());					
+					document = fTextEditor.getDocumentProvider().getDocument(fTextEditor.getEditorInput());
+				}
 				if (document != null) {
 					document.set(""); //$NON-NLS-1$
 				}
-				fViewer.setSelectedRange(0, 0);
+				if (fViewer != null) fViewer.setSelectedRange(0, 0);
 			}
 		});
 	}

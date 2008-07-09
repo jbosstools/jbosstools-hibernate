@@ -29,6 +29,7 @@ import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryInputModel;
+import org.hibernate.eclipse.console.actions.ClearAction;
 import org.hibernate.eclipse.console.actions.ExecuteQueryAction;
 
 public abstract class AbstractQueryEditor extends TextEditor implements
@@ -36,6 +37,7 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 
 	private ToolBarManager tbm;
 	private ExecuteQueryAction execAction = null;
+	private ClearAction clearAction = null;
 	final private QueryInputModel queryInputModel;
 
 	private String defPartName;
@@ -143,20 +145,17 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 
 		tbm = new ToolBarManager( bar );
 		execAction = new ExecuteQueryAction( this );
-		//getDocumentProvider().addElementStateListener(listener)
-		/*getSourceViewer().addTextListener(new ITextListener(){
+		clearAction = new ClearAction( this );
 
-			public void textChanged(TextEvent event) {
-				System.out.println(event.getText());
+		ActionContributionItem item = new ActionContributionItem( execAction );
 
-			}});*/
-		ActionContributionItem item = new ActionContributionItem(
-				execAction );
-
+		tbm.add( item );
+		
+		item = new ActionContributionItem( clearAction );
 		tbm.add( item );
 
 		ControlContribution cc = new ConfigurationCombo( "hql-target", this ); //$NON-NLS-1$
-		tbm.add( cc );
+		tbm.add( cc );		
 
 		tbm.add( new Separator() );
 

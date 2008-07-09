@@ -289,28 +289,29 @@
    <part id="org.hibernate.eclipse.criteriaeditor.CriteriaEditor"/>
   </actionSetPartAssociation>
  </extension>
- <extension
+ <!--extension
        point="org.eclipse.ui.editorActions">
     <editorContribution
           id="org.hibernate.eclipse.hqleditor.HQLEditorContributions"
           targetID="org.hibernate.eclipse.hqleditor.HQLEditor">
          <action
-                actionID="clearEditor"
-                class="org.hibernate.eclipse.console.actions.ClearHQLEditorAction"
-                icon="icons/images/clear.gif"
-                id="org.hibernate.eclipse.console.actions.ClearHQLEditorAction"
-                label="&amp;Clear HQL Editor"
-                menubarPath="HQL/hqlGroup"
-                style="push"
-                toolbarPath="hqlGroup"
-                tooltip="Clear HQL Editor"/>
+               actionID="clearEditor"
+               class="org.hibernate.eclipse.console.actions.ClearHQLEditorAction"
+               icon="icons/images/clear.gif"
+               id="org.hibernate.eclipse.console.actions.ClearHQLEditorAction"
+               label="&amp;Clear HQL Editor"
+               menubarPath="HQL/hqlGroup"
+               style="push"
+               toolbarPath="hqlGroup"
+               tooltip="Clear HQL Editor">
+         </action>
           <menu
                 id="HQL"
                 label="H&amp;QL">
              <separator name="hqlGroup"/>
           </menu>
     </editorContribution>
- </extension>
+ </extension-->
  
    <extension 
       point = "org.eclipse.ui.elementFactories"> 
