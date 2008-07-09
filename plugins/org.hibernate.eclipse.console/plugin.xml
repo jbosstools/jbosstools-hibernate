@@ -228,7 +228,6 @@
                 definitionId="org.hibernate.eclipse.console.actions.ExecuteHQLActionCommand"
                 label="Run Query"
                 retarget="true"
-                toolbarPath="hqlGroup"
                 tooltip="Run HQL Query from current editor">
          </action>         		  
        </actionSet>
