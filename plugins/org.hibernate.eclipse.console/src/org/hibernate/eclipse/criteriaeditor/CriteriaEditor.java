@@ -173,6 +173,10 @@ public class CriteriaEditor extends AbstractQueryEditor {
 
 	public void showEditorInput(IEditorInput editorInput) {
 
+		if (!(getEditorInput() instanceof CriteriaEditorInput)) {
+			super.showEditorInput( editorInput );
+			return;
+		}
 		CriteriaEditorInput hei = (CriteriaEditorInput)getEditorInput();
 		super.showEditorInput( editorInput );
 		IStorage storage = ((CriteriaEditorInput)editorInput).getStorage();
