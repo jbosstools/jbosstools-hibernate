@@ -15,7 +15,7 @@ public abstract class QueryEditorInput  implements IStorageEditorInput, IPersist
     /**
      * Constructs an instance of this class with the given <code>IStorage</code>
      * object as the editor input source.
-     * 
+     *
      * @param storage the storage object for this editor input
      */
     public QueryEditorInput( IStorage storage ) {
@@ -24,17 +24,17 @@ public abstract class QueryEditorInput  implements IStorageEditorInput, IPersist
         }
         setStorage( storage );
         setName( storage.getName() );
-    }    
+    }
 
     /**
      * Gets whether the editor input exists.
-     * 
+     *
      * @see org.eclipse.ui.IEditorInput#exists()
      */
     public boolean exists() {
         if (storage != null)
             return true;
-        
+
         return false;
     }
 
@@ -54,11 +54,11 @@ public abstract class QueryEditorInput  implements IStorageEditorInput, IPersist
         return storage;
     }
 
-    public String getToolTipText() {        
-        return getName();        
+    public String getToolTipText() {
+        return getName();
     }
 
-  
+
     public void setName( String name ) {
         this.name = name;
     }
@@ -71,22 +71,24 @@ public abstract class QueryEditorInput  implements IStorageEditorInput, IPersist
 		return this;
 	}
 
-	
+
 	public boolean equals(Object obj) { // used to identify if HQL editor is the same
 		/*if(obj instanceof HQLEditorInput) {
-			
+
 			return ((HQLEditorInput)obj).getConsoleConfigurationName().equals(getConsoleConfigurationName());
 		}*/
 		return super.equals(obj);
 	}
-	
+
 	public int hashCode() {
 		return name==null?0:name.hashCode();
 	}
 
 
 	public void setQuery(String query) {
-		((QueryEditorStorage)getStorage()).setContents(query);		
+		if (getStorage() instanceof QueryEditorStorage) {
+			((QueryEditorStorage)getStorage()).setContents(query);
+		}
 	}
 
 	public String getConsoleConfigurationName() {
@@ -94,7 +96,7 @@ public abstract class QueryEditorInput  implements IStorageEditorInput, IPersist
 	}
 
 	public void setConsoleConfigurationName(String name2) {
-		((QueryEditorStorage)getStorage()).setConfigurationName(name2);		
+		((QueryEditorStorage)getStorage()).setConfigurationName(name2);
 	}
 
 	abstract public void resetName();

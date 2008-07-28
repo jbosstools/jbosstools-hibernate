@@ -211,4 +211,9 @@ public class CriteriaEditor extends AbstractQueryEditor {
 	protected String getConnectedImageFilePath() {
 		return 	"icons/images/criteria_editor_connect.gif";		//$NON-NLS-1$
 	}
+
+	@Override
+	protected String getSaveAsFileExtension() {
+		return "*.crit";	//$NON-NLS-1$
+	}
 }

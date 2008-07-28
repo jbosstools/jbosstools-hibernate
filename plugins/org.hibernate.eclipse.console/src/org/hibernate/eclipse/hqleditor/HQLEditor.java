@@ -411,4 +411,9 @@ public class HQLEditor extends AbstractQueryEditor {
 		return 	"icons/images/hql_editor_connect.gif";		//$NON-NLS-1$
 	}
 
+
+	@Override
+	protected String getSaveAsFileExtension() {
+		return "*.hql";	//$NON-NLS-1$
+	}
 }

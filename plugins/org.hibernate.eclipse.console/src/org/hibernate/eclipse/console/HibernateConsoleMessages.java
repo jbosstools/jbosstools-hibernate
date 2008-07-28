@@ -18,6 +18,13 @@ public class HibernateConsoleMessages extends NLS {
 	public static String AbstractQueryEditor_do_you_want_open_session_factory;
 	public static String AbstractQueryEditor_max_results;
 	public static String AbstractQueryEditor_open_session_factory;
+	public static String AbstractQueryEditor_cannot_save;
+	public static String AbstractQueryEditor_the_file_has_been_deleted_or_is_not_accessible;
+	public static String AbstractQueryEditor_save_as;
+	public static String AbstractQueryEditor_already_exists_do_you_want_to_replace_it;
+	public static String AbstractQueryEditor_problems_during_save_as;
+	public static String AbstractQueryEditor_save_could_not_be_completed;
+	public static String AbstractQueryEditor_the_original_file_has_been_deleted_or_is_not_accessible;
 	public static String EclipseConsoleConfigurationPreferences_could_not_compute_def_classpath;
 	public static String EclipseConsoleConfigurationPreferences_could_not_resolve_to_file;
 	public static String EclipseConsoleConfigurationPreferences_could_not_resolve_classpaths;
