@@ -180,11 +180,13 @@ public class CriteriaEditor extends AbstractQueryEditor {
 		CriteriaEditorInput hei = (CriteriaEditorInput)getEditorInput();
 		super.showEditorInput( editorInput );
 		IStorage storage = ((CriteriaEditorInput)editorInput).getStorage();
-		 if (storage instanceof CriteriaEditorStorage) {
-             CriteriaEditorStorage sqlEditorStorage = (CriteriaEditorStorage) storage;
-             IDocument document = getDocumentProvider().getDocument( hei );
-			document.set( sqlEditorStorage.getContentsString() );
-         }
+		if (storage instanceof CriteriaEditorStorage) {
+			CriteriaEditorStorage sqlEditorStorage = (CriteriaEditorStorage) storage;
+			IDocument document = getDocumentProvider().getDocument( hei );
+			if (document.get().compareTo(sqlEditorStorage.getContentsString()) != 0) {
+				document.set( sqlEditorStorage.getContentsString() );
+			}
+		}
 	}
 
 
