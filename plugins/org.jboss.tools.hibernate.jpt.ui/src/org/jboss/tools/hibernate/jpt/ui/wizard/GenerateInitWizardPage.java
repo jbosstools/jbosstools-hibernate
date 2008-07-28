@@ -10,15 +10,29 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.wizard;
 
+import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.datatools.connectivity.IConnectionProfile;
+import org.eclipse.datatools.connectivity.ProfileManager;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationType;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.ComboDialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.DialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.IDialogFieldListener;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.IStringButtonAdapter;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.StringButtonDialogField;
+import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.db.JptDbPlugin;
@@ -35,10 +49,16 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
+import org.hibernate.cfg.Environment;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
+import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
+import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
+import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 import org.hibernate.util.StringHelper;
+import org.w3c.dom.Element;
 
 /**
  * @author Dmitry Geraskov
@@ -206,10 +226,89 @@ public class GenerateInitWizardPage extends WizardPage {
 	}
 	
 	public String getConfigurationName() {
-		return consoleConfigurationName.getText();
+		if (selectMethod.getSelection())
+			return consoleConfigurationName.getText();
+		return createConsoleConfiguration();
 	}
 	
 	public String getConnectionProfileName() {
 		return connectionProfileName.getText();
+	}
+	
+	private String createConsoleConfiguration(){
+		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+
+		ILaunchConfigurationType launchConfigurationType = launchManager.getLaunchConfigurationType( ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID );
+		String launchName = launchManager.generateUniqueLaunchConfigurationNameFrom(HibernateConsoleMessages.AddConfigurationAction_hibernate);
+		//ILaunchConfiguration[] launchConfigurations = launchManager.getLaunchConfigurations( launchConfigurationType );
+		ILaunchConfigurationWorkingCopy wc = null;
+		try {
+			wc = launchConfigurationType.newInstance(null, launchName);			
+							
+			wc.setAttributes(getProperties());
+			
+			wc.setAttribute(IConsoleConfigurationLaunchConstants.CONFIGURATION_FACTORY, ConfigurationMode.JPA.toString());
+			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, nonEmptyTrimOrNull( jpaProject.getName() ));
+			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, true );
+			wc.setAttribute(IConsoleConfigurationLaunchConstants.FILE_MAPPINGS, (List)null);
+			wc.setAttribute("hibernate.temp.use_jdbc_metadata_defaults", true);
+			wc.setAttribute(IConsoleConfigurationLaunchConstants.USE_CONNECT_PROFILE_SETTINGS, true);
+			wc.setAttribute(IConsoleConfigurationLaunchConstants.CONNECT_PROFILE_NAME, getConnectionProfileName());
+			wc.doSave();
+			return wc.getName();
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}			
+		
+	}
+	
+	/**
+	 * @param name
+	 * @return
+	 */
+	private String nonEmptyTrimOrNull(String name) {
+		if(StringHelper.isEmpty( name )) {
+			return null;
+		} else {
+			return name.trim();
+		}
+	}
+	
+	private Properties getProperties(){
+		Properties prop = new Properties();
+		IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(getConnectionProfileName());
+			if (null != profile) {
+				Properties cpProperties = profile.getProperties(profile.getProviderId());
+				Map<String, String> keyMaps = new HashMap<String, String>();
+				keyMaps.put(Environment.DRIVER, "org.eclipse.datatools.connectivity.db.driverClass");
+				keyMaps.put(Environment.URL, "org.eclipse.datatools.connectivity.db.URL");							
+				keyMaps.put(Environment.USER, "org.eclipse.datatools.connectivity.db.username");							
+				keyMaps.put(Environment.PASS, "org.eclipse.datatools.connectivity.db.password");							
+				keyMaps.put(Environment.DEFAULT_CATALOG, "org.eclipse.datatools.connectivity.db.databaseName");
+				copyProperties(cpProperties, prop, keyMaps);
+			}
+		return prop;
+	}
+	
+	/**
+	 * 
+	 * @param source
+	 * @param dest
+	 * @param map - key is the key in <code>dest</code> map, value is the key in <code>source</code> map.
+	 */
+	private void copyProperties(Properties source, Properties dest, Map<String, String> map){
+		for (Map.Entry<String, String> entry : map.entrySet()) {
+			putIfNotNull(dest, entry.getKey(), (String) source.get(entry.getValue()));
+		}
+	}
+	
+	private void putIfNotNull(Properties prop, String key, String value){
+		if (StringHelper.isNotEmpty(value)) prop.put(key, value);
+	}
+	
+	public boolean isTemporaryConfiguration(){
+		return !selectMethod.getSelection();
 	}
 }

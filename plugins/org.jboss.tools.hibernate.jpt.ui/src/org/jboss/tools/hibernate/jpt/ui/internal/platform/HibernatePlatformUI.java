@@ -54,30 +54,7 @@ public class HibernatePlatformUI extends GenericPlatformUi {
 		GenerateEntitiesWizard wizard = new GenerateEntitiesWizard(project, selection);
 		
 		WizardDialog dialog = new WizardDialog(null, wizard);
-		dialog.create();
-		/*int returnCode = */dialog.open();
-		/*if (returnCode == Window.OK) {
-			ILaunchConfigurationWorkingCopy wc = createDefaultLaunchConfig(project.getName());
-			if (wc != null) {
-				// SHOULD PRESENT THE CONFIGURATION!!!
-				//unknown - ccname, outputdir, packagename
-				wc.setAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME, project.getName());
-
-				wc.setAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR, project.getName() + "\\src"); //$NON-NLS-1$
-
-				wc.setAttribute(HibernateLaunchConstants.ATTR_PACKAGE_NAME, "package_name");
-				wc.setAttribute(HibernateLaunchConstants.ATTR_PREFER_BASIC_COMPOSITE_IDS, true);
-				wc.setAttribute(HibernateLaunchConstants.ATTR_AUTOMATIC_MANY_TO_MANY, true);
-				wc.setAttribute(HibernateLaunchConstants.ATTR_AUTOMATIC_VERSIONING, true);
-
-				wc.setAttribute(HibernateLaunchConstants.ATTR_ENABLE_JDK5, true);
-				wc.setAttribute(HibernateLaunchConstants.ATTR_ENABLE_EJB3_ANNOTATIONS, true);
-
-				wc.setAttribute(HibernateLaunchConstants.ATTR_EXPORTERS + '.' + exporter_id + ".extension_id", 
-							HibernateLaunchConstants.ATTR_PREFIX + "hbm2java"); //$NON-NLS-1$ //$NON-NLS-2$
-				runLaunchConfiguration(wc);
-			}
-		}	*/	
+		dialog.open();
 	}
 
 	@Override
@@ -85,27 +62,7 @@ public class HibernatePlatformUI extends GenericPlatformUi {
 		GenerateDdlWizard wizard = new GenerateDdlWizard(project, selection);
 		
 		WizardDialog dialog = new WizardDialog(null, wizard);
-		dialog.create();
-		/*int returnCode = */dialog.open();
-		/*if (returnCode == Window.OK) {
-			ILaunchConfigurationWorkingCopy wc = createDefaultLaunchConfig(project.getName());
-			if (wc != null) {
-				// Main
-				//unknown - ccname, outputdir, filename
-				wc.setAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME, project.getName());
-				wc.setAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR, project.getName() + "\\src"); //$NON-NLS-1$
-
-				Map<String, String> prop = new HashMap<String, String>();
-				prop.put("outputFileName", "schema.ddl");
-				//prop.put("outputdir", project.getName() + "\\src");
-				prop.put("format", "true");
-				prop.put("scriptToConsole", "false");
-
-				wc.setAttribute(full_exporter_id + ".properties", prop);
-				wc.setAttribute(full_exporter_id + ".extension_id", HibernateLaunchConstants.ATTR_PREFIX + "hbm2ddl"); //$NON-NLS-1$ //$NON-NLS-2$
-				runLaunchConfiguration(wc);
-			}
-		}*/		
+		dialog.open();
 	}
 
 	public static ILaunchConfigurationWorkingCopy createDefaultLaunchConfig(String projectName) {
@@ -127,13 +84,5 @@ public class HibernatePlatformUI extends GenericPlatformUi {
 		}
 
 		return wc;
-	}
-
-	public static void runLaunchConfiguration(ILaunchConfiguration configuration) {
-		try {
-			DebugPlugin.getDefault().getLaunchManager().addLaunch(configuration.launch(ILaunchManager.RUN_MODE, null));
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
 	}
 }

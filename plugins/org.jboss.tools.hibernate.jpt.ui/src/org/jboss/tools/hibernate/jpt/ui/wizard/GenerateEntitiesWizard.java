@@ -13,7 +13,9 @@ package org.jboss.tools.hibernate.jpt.ui.wizard;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
@@ -28,6 +30,7 @@ import org.eclipse.jpt.gen.internal.PackageGenerator;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.wizards.DatabaseReconnectWizardPage;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.jboss.tools.hibernate.jpt.ui.internal.platform.HibernatePlatformUI;
 
@@ -67,8 +70,8 @@ public class GenerateEntitiesWizard extends Wizard {
 		ILaunchConfigurationWorkingCopy wc = HibernatePlatformUI.createDefaultLaunchConfig(projectName);
 		if (wc != null) {
 			// SHOULD PRESENT THE CONFIGURATION!!!
-			//unknown - ccname, outputdir, packagename
-			wc.setAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME, initPage.getConfigurationName());
+			String concoleConfigurationName = initPage.getConfigurationName();			
+			wc.setAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME, concoleConfigurationName);
 
 			wc.setAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR, page2.getOutputDir()); //$NON-NLS-1$
 
@@ -79,10 +82,20 @@ public class GenerateEntitiesWizard extends Wizard {
 
 			wc.setAttribute(HibernateLaunchConstants.ATTR_ENABLE_JDK5, true);
 			wc.setAttribute(HibernateLaunchConstants.ATTR_ENABLE_EJB3_ANNOTATIONS, true);
+			wc.setAttribute("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+			wc.setAttribute("hibernate.temp.use_jdbc_metadata_defaults", true);
 
 			wc.setAttribute(HibernateLaunchConstants.ATTR_EXPORTERS + '.' + HibernatePlatformUI.exporter_id + ".extension_id", 
 						HibernateLaunchConstants.ATTR_PREFIX + "hbm2java"); //$NON-NLS-1$ //$NON-NLS-2$
-			HibernatePlatformUI.runLaunchConfiguration(wc);
+			try {
+				wc.launch(ILaunchManager.RUN_MODE, null);
+			} catch (CoreException e) {
+				e.printStackTrace();
+			} finally{
+				if (initPage.isTemporaryConfiguration()){
+					KnownConfigurations.getInstance().removeConfiguration(KnownConfigurations.getInstance().find(concoleConfigurationName), false);				
+				}
+			}
 		}
 		return true;
 	}

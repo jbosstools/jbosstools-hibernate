@@ -13,7 +13,10 @@ package org.jboss.tools.hibernate.jpt.ui.wizard;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
@@ -21,6 +24,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.jboss.tools.hibernate.jpt.ui.internal.platform.HibernatePlatformUI;
 
@@ -60,9 +64,8 @@ public class GenerateDdlWizard extends Wizard {
 		String projectName = jpaProject.getName();
 		ILaunchConfigurationWorkingCopy wc = HibernatePlatformUI.createDefaultLaunchConfig(projectName);
 		if (wc != null) {
-			// Main
-			//unknown - ccname, outputdir, filename
-			wc.setAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME, initPage.getConfigurationName());
+			String concoleConfigurationName = initPage.getConfigurationName();
+			wc.setAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME, concoleConfigurationName);
 			wc.setAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR, page2.getOutputDir()); //$NON-NLS-1$
 
 			Map<String, String> prop = new HashMap<String, String>();
@@ -73,7 +76,15 @@ public class GenerateDdlWizard extends Wizard {
 
 			wc.setAttribute(HibernatePlatformUI.full_exporter_id + ".properties", prop);
 			wc.setAttribute(HibernatePlatformUI.full_exporter_id + ".extension_id", HibernateLaunchConstants.ATTR_PREFIX + "hbm2ddl"); //$NON-NLS-1$ //$NON-NLS-2$
-			HibernatePlatformUI.runLaunchConfiguration(wc);
+			try {
+				wc.launch(ILaunchManager.RUN_MODE, null);
+			} catch (CoreException e) {
+				e.printStackTrace();
+			} finally{
+				if (initPage.isTemporaryConfiguration()){
+					KnownConfigurations.getInstance().removeConfiguration(KnownConfigurations.getInstance().find(concoleConfigurationName), false);				
+				}
+			}
 		}
 		return true;
 	}
