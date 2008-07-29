@@ -659,7 +659,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	}
 
 	private void handleProjectBrowse() {
-		IJavaProject paths = DialogSelectionHelper.chooseJavaProject( getShell(), ProjectUtils.findJavaProject( propertyFileText.getText() ), HibernateConsoleMessages.ConsoleConfigurationWizardPage_select_java_project, HibernateConsoleMessages.ConsoleConfigurationWizardPage_select_java_project_to_classpath );
+		IJavaProject paths = DialogSelectionHelper.chooseJavaProject( getShell(), ProjectUtils.findJavaProject( getProjectName() ), HibernateConsoleMessages.ConsoleConfigurationWizardPage_select_java_project, HibernateConsoleMessages.ConsoleConfigurationWizardPage_select_java_project_to_classpath );
 		if(paths!=null) {
 			projectNameText.setText( paths.getProject().getName() );
 		} else {
