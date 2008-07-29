@@ -251,9 +251,9 @@ public class GenerateInitWizardPage extends WizardPage {
 			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, nonEmptyTrimOrNull( jpaProject.getName() ));
 			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, true );
 			wc.setAttribute(IConsoleConfigurationLaunchConstants.FILE_MAPPINGS, (List)null);
-			wc.setAttribute("hibernate.temp.use_jdbc_metadata_defaults", true);
-			wc.setAttribute(IConsoleConfigurationLaunchConstants.USE_CONNECT_PROFILE_SETTINGS, true);
-			wc.setAttribute(IConsoleConfigurationLaunchConstants.CONNECT_PROFILE_NAME, getConnectionProfileName());
+			//wc.setAttribute("hibernate.temp.use_jdbc_metadata_defaults", true);
+			//wc.setAttribute(IConsoleConfigurationLaunchConstants.USE_CONNECT_PROFILE_SETTINGS, true);
+			//wc.setAttribute(IConsoleConfigurationLaunchConstants.CONNECT_PROFILE_NAME, getConnectionProfileName());
 			wc.doSave();
 			return wc.getName();
 		} catch (CoreException e) {
