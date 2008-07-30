@@ -436,6 +436,7 @@
           </imageobject>
         </mediaobject>
       </figure>
+       </para>
 
       <para>Parameters of the Mappings tab in the <property>Hibernate Console Configuration
         wizard</property> are explained below:</para>
@@ -485,7 +486,6 @@
           </tbody>
         </tgroup>
       </table>
-    </para>
 
     <para>Clicking <emphasis>
         <property>Finish</property>
@@ -505,7 +505,6 @@
 
       </mediaobject>
     </figure>
-
   </section>
 
   <section>
