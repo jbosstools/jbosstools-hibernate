@@ -342,9 +342,8 @@
          <newWizardShortcut id="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"/>
          <newWizardShortcut id="org.hibernate.eclipse.console.wizards.NewReverseEngineeringFileWizard"/>
          <viewShortcut id="org.hibernate.eclipse.console.views.KnownConfigurationsView"/>
-         <viewShortcut id="org.hibernate.eclipse.graph.EntityGraphView"/>
          <viewShortcut id="org.hibernate.eclipse.console.views.QueryPageTabView"/>
-         <viewShortcut id="org.hibernate.eclipse.console.views.DynamicQueryTranslatorView"/>
+         <viewShortcut id="org.hibernate.eclipse.console.views.DynamicSQLPreviewView"/>
       </perspectiveExtension>
    </extension>
    <extension
