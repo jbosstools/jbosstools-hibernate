@@ -52,7 +52,7 @@
             icon="icons/images/parameter.gif"
             id="org.hibernate.eclipse.console.views.QueryParametersView"
             name="Query Parameters"/>
-            
+
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">
@@ -81,8 +81,7 @@
             icon="icons/hibernate_small_icon.gif"
             id="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"
             name="Hibernate Console Configuration"
-            preferredPerspectives="org.hibernate.eclipse.console.HibernateConsolePerspective"
-            project="true">
+            preferredPerspectives="org.hibernate.eclipse.console.HibernateConsolePerspective">
          <description>Creates a new Hibernate Console Configuration</description>
       </wizard>
       <wizard
@@ -133,42 +132,42 @@
              </page>
 
    </extension>
-   
+
    <extension point="org.eclipse.ui.popupMenus">
-      <!--objectContribution id="mappingEditorAction" objectClass="org.hibernate.mapping.RootClass"> 
+      <!--objectContribution id="mappingEditorAction" objectClass="org.hibernate.mapping.RootClass">
          <menu id="org.hibernate.eclipse.console.actions.openMappingMenu" label="Open Mapping File" path="mappingEditorAction"/>
          <action
-            id="org.hibernate.eclipse.console.actions.openMappingAction" 
-            label="Open Mapping File" 
-            class="org.hibernate.eclipse.console.actions.OpenMappingActionDelegate"> 
-         </action> 
-      </objectContribution> 
-      <objectContribution id="mappingEditorAction2" objectClass="org.hibernate.mapping.Property"> 
-         <menu id="org.hibernate.eclipse.console.actions.openMappingMenu" label="Open Mapping File" path="mappingEditorAction"/>
-         <action
-            id="org.hibernate.eclipse.console.actions.openMappingAction" 
-            label="Open Mapping File" 
-            class="org.hibernate.eclipse.console.actions.OpenMappingActionDelegate"> 
-         </action> 
+            id="org.hibernate.eclipse.console.actions.openMappingAction"
+            label="Open Mapping File"
+            class="org.hibernate.eclipse.console.actions.OpenMappingActionDelegate">
+         </action>
       </objectContribution>
-      <objectContribution id="sourceEditorAction" objectClass="org.hibernate.mapping.RootClass"> 
+      <objectContribution id="mappingEditorAction2" objectClass="org.hibernate.mapping.Property">
+         <menu id="org.hibernate.eclipse.console.actions.openMappingMenu" label="Open Mapping File" path="mappingEditorAction"/>
+         <action
+            id="org.hibernate.eclipse.console.actions.openMappingAction"
+            label="Open Mapping File"
+            class="org.hibernate.eclipse.console.actions.OpenMappingActionDelegate">
+         </action>
+      </objectContribution>
+      <objectContribution id="sourceEditorAction" objectClass="org.hibernate.mapping.RootClass">
          <menu id="org.hibernate.eclipse.console.actions.openSourceMenu" label="Open Source File" path="sourceEditorAction"/>
          <action
-            id="org.hibernate.eclipse.console.actions.openSourceAction" 
-            label="Open Source File" 
-            class="org.hibernate.eclipse.console.actions.OpenSourceActionDelegate"> 
-         </action> 
-      </objectContribution> 
-       <objectContribution id="sourceEditorAction2" objectClass="org.hibernate.mapping.Property"> 
+            id="org.hibernate.eclipse.console.actions.openSourceAction"
+            label="Open Source File"
+            class="org.hibernate.eclipse.console.actions.OpenSourceActionDelegate">
+         </action>
+      </objectContribution>
+       <objectContribution id="sourceEditorAction2" objectClass="org.hibernate.mapping.Property">
          <menu id="org.hibernate.eclipse.console.actions.openSourceMenu" label="Open Source File" path="sourceEditorAction"/>
          <action
-            id="org.hibernate.eclipse.console.actions.openSourceAction" 
-            label="Open Source File" 
-            class="org.hibernate.eclipse.console.actions.OpenSourceActionDelegate"> 
-         </action> 
-      </objectContribution--> 
+            id="org.hibernate.eclipse.console.actions.openSourceAction"
+            label="Open Source File"
+            class="org.hibernate.eclipse.console.actions.OpenSourceActionDelegate">
+         </action>
+      </objectContribution-->
    </extension>
-   
+
    <extension
         id="hibernateNature"
         name="Hibernate Nature"
@@ -183,15 +182,15 @@
         </requires-nature>
     </extension>
 
-     <extension	
+     <extension
          id="hibernateBuilder"
          name="Hibernate Builder"
          point="org.eclipse.core.resources.builders">
       <builder hasNature="false">
          <run class="org.hibernate.eclipse.builder.HibernateBuilder"/>
       </builder>
-   </extension> 
-   
+   </extension>
+
    <extension
          point="org.eclipse.ui.editors">
       <editor
@@ -229,44 +228,44 @@
                 label="Run Query"
                 retarget="true"
                 tooltip="Run HQL Query from current editor">
-         </action>         		  
+         </action>
        </actionSet>
-        <actionSet 
-            label="Hibernate Code Generation" 
-            id="org.hibernate.eclipse.launch.actionset"> 
+        <actionSet
+            label="Hibernate Code Generation"
+            id="org.hibernate.eclipse.launch.actionset">
             <!-- the menu is here to stop eclipse complaining about a menu entry that might not yet have started (see HBX-863) -->
-           <menu 
-                id="org.eclipse.ui.run" 
-                label="&amp;Run"> 
-             <groupMarker name="HibernateToolsGroup"/> 
+           <menu
+                id="org.eclipse.ui.run"
+                label="&amp;Run">
+             <groupMarker name="HibernateToolsGroup"/>
           </menu>
-         <action 
-               label="Hibernate Code Generation..." 
-               style="pulldown" 
-               icon="icons/images/hibernate_launch.png" 
-               class="org.hibernate.eclipse.launch.LaunchMenuDelegate" 
-               menubarPath="org.eclipse.ui.run/HibernateToolsGroup" 
-               id="org.hibernate.eclipse.launch.LaunchMenuDelegateMenu"> 
-         </action> 
-         <action 
-               label="Hibernate Code Generation..." 
-               style="pulldown" 
-               icon="icons/images/hibernate_launch.png" 
-               tooltip="Generate code via Hibernate Tools" 
-               class="org.hibernate.eclipse.launch.LaunchMenuDelegate" 
-               toolbarPath="org.eclipse.debug.ui.launchActionSet/hibernatetool" 
-               id="org.hibernate.eclipse.launch.LaunchMenuDelegateToolBar"> 
-         </action>  
+         <action
+               label="Hibernate Code Generation..."
+               style="pulldown"
+               icon="icons/images/hibernate_launch.png"
+               class="org.hibernate.eclipse.launch.LaunchMenuDelegate"
+               menubarPath="org.eclipse.ui.run/HibernateToolsGroup"
+               id="org.hibernate.eclipse.launch.LaunchMenuDelegateMenu">
+         </action>
+         <action
+               label="Hibernate Code Generation..."
+               style="pulldown"
+               icon="icons/images/hibernate_launch.png"
+               tooltip="Generate code via Hibernate Tools"
+               class="org.hibernate.eclipse.launch.LaunchMenuDelegate"
+               toolbarPath="org.eclipse.debug.ui.launchActionSet/hibernatetool"
+               id="org.hibernate.eclipse.launch.LaunchMenuDelegateToolBar">
+         </action>
          <action
                definitionId="org.hibernate.eclipse.launch.OpenHibernateToolsConfigurations"
                label="Hibernate Tools ..."
                class="org.hibernate.eclipse.launch.OpenHibernateToolsConfigurations"
                id="org.hibernate.eclipse.launch.OpenHibernateToolsConfigurations">
          </action>
-      </actionSet> 
-       
+      </actionSet>
+
     </extension>
-    
+
     <extension
       point="org.eclipse.ui.commands">
    <command
@@ -312,17 +311,17 @@
           </menu>
     </editorContribution>
  </extension-->
- 
-   <extension 
-      point = "org.eclipse.ui.elementFactories"> 
-         <factory 
-            id ="org.hibernate.eclipse.hqleditor.HQLEditorInputFactory" 
-            class="org.hibernate.eclipse.hqleditor.HQLEditorInputFactory"> 
-         </factory> 
-         <factory 
-            id ="org.hibernate.eclipse.criteriaeditor.CriteriaEditorInputFactory" 
-            class="org.hibernate.eclipse.criteriaeditor.CriteriaEditorInputFactory"> 
-         </factory> 
+
+   <extension
+      point = "org.eclipse.ui.elementFactories">
+         <factory
+            id ="org.hibernate.eclipse.hqleditor.HQLEditorInputFactory"
+            class="org.hibernate.eclipse.hqleditor.HQLEditorInputFactory">
+         </factory>
+         <factory
+            id ="org.hibernate.eclipse.criteriaeditor.CriteriaEditorInputFactory"
+            class="org.hibernate.eclipse.criteriaeditor.CriteriaEditorInputFactory">
+         </factory>
    </extension>
    <!-- Only Show Hibernate Launch Action Set in the following perspectives (as well as the Hibernate Console perspective-->
    <extension
@@ -340,7 +339,7 @@
       	 <actionSet id="org.hibernate.eclipse.launch.actionset"/>
          <newWizardShortcut id="org.hibernate.eclipse.console.wizards.NewHibernateMappingFileWizard"/>
          <newWizardShortcut id="org.hibernate.eclipse.console.wizards.NewConfigurationWizard"/>
-<!--         <newWizardShortcut id="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"/> -->
+         <newWizardShortcut id="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"/>
          <newWizardShortcut id="org.hibernate.eclipse.console.wizards.NewReverseEngineeringFileWizard"/>
          <viewShortcut id="org.hibernate.eclipse.console.views.KnownConfigurationsView"/>
          <viewShortcut id="org.hibernate.eclipse.graph.EntityGraphView"/>
@@ -381,7 +380,7 @@
       <launchConfigurationTypeImage
             icon="icons/images/hibernate_config.gif"
             configTypeID="org.hibernate.eclipse.launch.ConsoleConfigurationLaunchConfigurationType"
-            id="org.hibernate.eclipse.launch.ConsoleConfiguraitonLaunchImage"/>            
+            id="org.hibernate.eclipse.launch.ConsoleConfiguraitonLaunchImage"/>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
@@ -394,7 +393,7 @@
             class="org.hibernate.eclipse.launch.ConsoleConfigurationTabGroup"
             description="Select or configure a Console Configuration"
             id="org.hibernate.eclipse.launch.ConsoleConfigurationLaunchTabGroup"
-            type="org.hibernate.eclipse.launch.ConsoleConfigurationLaunchConfigurationType"/>            
+            type="org.hibernate.eclipse.launch.ConsoleConfigurationLaunchConfigurationType"/>
    </extension>
 
    <extension
@@ -450,7 +449,7 @@
                description="Template directory"
                name="template_path"
                type="path"
-               value=""/>         
+               value=""/>
       </exporter>
       <exporter
             classname="org.hibernate.tool.hbm2x.HibernateMappingExporter"
@@ -492,8 +491,8 @@
                description="Template directory"
                name="template_path"
                type="path"
-               value=""/>                    
-      </exporter>            
+               value=""/>
+      </exporter>
        <exporter
             classname="org.hibernate.tool.hbm2x.GenericExporter"
             description="Generic Exporter (&lt;hbmtemplate&gt;)"
@@ -518,14 +517,14 @@
                description="For each"
                name="for_each"
                type="string"
-               value="entity, component"/>  
+               value="entity, component"/>
             <property
                description="Template name"
                name="template_name"
                type="string"
-               value="pojo/Pojo.ftl"/>            
+               value="pojo/Pojo.ftl"/>
          </exporter>
-                     
+
       <exporter
             classname="org.hibernate.tool.hbm2x.HibernateConfigurationExporter"
             description="Hibernate XML Configuration (.cfg.xml)"
@@ -618,7 +617,7 @@
                name="haltOnError"
                type="boolean"
                value="false"/>
-      </exporter>      
+      </exporter>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
@@ -694,7 +693,7 @@
             </with>
          </enablement>
       </moveParticipant-->
-      
+
    </extension>
    <extension
          point="org.eclipse.ui.popupMenus">
@@ -705,14 +704,14 @@
                class="org.hibernate.eclipse.console.GenerateEntitiesAction"
                id="org.hibernate.eclipse.console.action1"
                label="%GenerateEntities">
-         </action>-->      
+         </action>-->
    </extension>
    <!--   <extension
          point="org.eclipse.ui.themes">
       <themeElementCategory
             id="org.hibernate.eclipse.presentation.hql"
             label="HQL"/>
-            
+
              <fontDefinition
             label="HQL editor text font"
             defaultsTo="org.eclipse.jface.textfont"
@@ -722,10 +721,10 @@
            The HQL editor text font is used by HQL editors.
          </description>
       </fontDefinition>
-            
+
    </extension>
    -->
- 
+
 <!-- Do not expose the facet before the id's are stable
  <extension
         point="org.eclipse.wst.common.project.facet.core.facets">
@@ -787,12 +786,12 @@
             name="Hibernate Known Configurations">
       <possibleChildren>
          <instanceof value="java.lang.Object"/>
-      </possibleChildren>         
+      </possibleChildren>
       </navigatorContent>
    </extension>
 -->
 
- 
+
  <!--
  <extension
        point="org.eclipse.ui.themes">
