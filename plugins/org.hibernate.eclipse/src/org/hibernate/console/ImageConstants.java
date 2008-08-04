@@ -23,14 +23,14 @@ package org.hibernate.console;
 
 /**
  * @author max
- *  
+ *
  */
 public interface ImageConstants {
-	
+
 	public static final String HIBERNATE_LOGO = "images/hibernate.gif"; //$NON-NLS-1$
 	public static final String MINI_HIBERNATE = "images/hicon.gif"; //$NON-NLS-1$
 	public static final String JBOSS_LOGO = "images/jboss.gif"; //$NON-NLS-1$
-	
+
 	public static final String FORMAT_QL = "images/format.gif"; //$NON-NLS-1$
 	public static final String MAPPEDCLASS_PATH = "images/mapped_class.gif"; //$NON-NLS-1$
 
@@ -57,7 +57,7 @@ public interface ImageConstants {
 	public static final String CLOSE_PATH = "images/close.gif"; //$NON-NLS-1$
 
 	public static final String CLOSE_DISABLED_PATH = "images/close_disabled.gif"; //$NON-NLS-1$
-	
+
 	public static final String CLOSE_ALL_PATH = "images/xpl/removeall.gif"; //$NON-NLS-1$
 
 	public static final String CLOSE_ALL_DISABLED_PATH = "images/xpl/removeall_disabled.gif"; //$NON-NLS-1$
@@ -91,7 +91,7 @@ public interface ImageConstants {
 	public static final String CLOSE = "CLOSE"; //$NON-NLS-1$
 
 	public static final String CLOSE_DISABLED = "CLOSE_DISABLED"; //$NON-NLS-1$
-	
+
 	public static final String CLOSE_ALL = "CLOSE_ALL"; //$NON-NLS-1$
 
 	public static final String CLOSE_ALL_DISABLED = "CLOSE_ALL_DISABLED"; //$NON-NLS-1$
@@ -103,9 +103,9 @@ public interface ImageConstants {
 	public static final String UNKNOWNPROPERTY = "UNKNOWNPROPERTY"; //$NON-NLS-1$
 
 	public static final String EXECUTE = "EXECUTE"; //$NON-NLS-1$
-    
+
     public static final String NEW_WIZARD = "NEW_WIZARD"; //$NON-NLS-1$
-    
+
     public static final String COLUMN = "COLUMN"; //$NON-NLS-1$
     public static final String TABLE = "TABLE"; //$NON-NLS-1$
     public static final String SCHEMA = "SCHEMA"; //$NON-NLS-1$
@@ -119,9 +119,10 @@ public interface ImageConstants {
 	public static final String LAYOUT_DISABLED = "LAYOUT_DISABLED"; //$NON-NLS-1$
 	public static final String CRITERIA_EDITOR = "images/criteria_editor.gif"; //$NON-NLS-1$
 	public static final String FUNCTION = "FUNCTION"; //$NON-NLS-1$
-	
+
 	public static final String CHECKBOX_FULL = "images/xpl/complete_tsk.gif"; //$NON-NLS-1$
 	public static final String CHECKBOX_EMPTY = "images/xpl/incomplete_tsk.gif"; //$NON-NLS-1$
 	public static final String RELOAD = "images/reload.gif"; //$NON-NLS-1$
-    
+	public static final String ERROR = "images/error.gif"; //$NON-NLS-1$
+
 }
