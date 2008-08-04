@@ -29,8 +29,8 @@ package org.hibernate.console;
  */
 public abstract class ImageMap implements ImageConstants {
 
-		
-	
+
+
 
 	protected void declareImages() {
 		declareRegistryImage(MAPPEDCLASS, MAPPEDCLASS_PATH);
@@ -74,7 +74,8 @@ public abstract class ImageMap implements ImageConstants {
         declareRegistryImage(CHECKBOX_EMPTY, "images/xpl/incomplete_tsk.gif"); //$NON-NLS-1$
         declareRegistryImage(CHECKBOX_FULL, "images/xpl/complete_tsk.gif"); //$NON-NLS-1$
         declareRegistryImage(RELOAD, "images/reload.gif"); //$NON-NLS-1$
-		
+        declareRegistryImage(ERROR, "images/error.gif"); //$NON-NLS-1$
+
 	}
 
 	protected abstract void declareRegistryImage(String key, String path);
