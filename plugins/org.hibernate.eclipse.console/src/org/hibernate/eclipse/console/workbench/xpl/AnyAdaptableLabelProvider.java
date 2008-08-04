@@ -36,7 +36,9 @@ import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.eclipse.ui.model.IWorkbenchAdapter2;
+import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
+import org.hibernate.eclipse.console.utils.EclipseImages;
 
 /**
  * LabelProvider based on WorkBenchLabelProvider that is not limited to WorkBench elements.
@@ -161,10 +163,13 @@ public class AnyAdaptableLabelProvider extends LabelProvider implements
     public final Image getImage(Object element) {
         //obtain the base image by querying the element
         IWorkbenchAdapter adapter = getAdapter(element);
+        ImageDescriptor descriptor = null;
         if (adapter == null) {
-            return null;
+        	descriptor = EclipseImages.getImageDescriptor(ImageConstants.ERROR);
         }
-        ImageDescriptor descriptor = adapter.getImageDescriptor(element);
+        else {
+        	descriptor = adapter.getImageDescriptor(element);
+        }
         if (descriptor == null) {
             return null;
         }
