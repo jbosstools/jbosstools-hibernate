@@ -134,17 +134,13 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 
 	final public void doSave(IProgressMonitor progressMonitor) {
 		// super.doSave(progressMonitor);
-		IDocumentProvider p= getDocumentProvider();
-		if (p == null)
-			return;
-
 		QueryEditorInput hei = null;
 		if (getEditorInput() instanceof QueryEditorInput) {
 			hei = (QueryEditorInput) getEditorInput();
 			hei.setQuery( getQueryString() );
 		}
-
-		if (p.isDeleted(getEditorInput()) || (hei != null && hei.getStorage() instanceof QueryEditorStorage)) {
+		IDocumentProvider p = getDocumentProvider();
+		if (p != null && p.isDeleted(getEditorInput())) {
 			if (isSaveAsAllowed()) {
 				// 1GEUSSR: ITPUI:ALL - User should never loose changes made in the editors.
 				// Changed Behavior to make sure that if called inside a regular save (because
@@ -195,12 +191,12 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 		ActionContributionItem item = new ActionContributionItem( execAction );
 
 		tbm.add( item );
-		
+
 		item = new ActionContributionItem( clearAction );
 		tbm.add( item );
 
 		ControlContribution cc = new ConfigurationCombo( "hql-target", this ); //$NON-NLS-1$
-		tbm.add( cc );		
+		tbm.add( cc );
 
 		tbm.add( new Separator() );
 
