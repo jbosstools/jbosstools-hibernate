@@ -38,11 +38,7 @@ public abstract class BasicQuickAssistProcessor implements IQuickAssistProcessor
 	public boolean hasAssists(IInvocationContext context) throws CoreException {
 		IJavaProject javaProject = context.getCompilationUnit().getJavaProject();
 		HibernateNature nature = HibernateNature.getHibernateNature( javaProject );
-		if(nature!=null) {
-			return nature.getDefaultConsoleConfiguration()!=null;
-		} else {
-			return false;
-		}
+		return nature != null;		
 	}
 
 	abstract public IJavaCompletionProposal[] getAssists(IInvocationContext context, IProblemLocation[] locations) throws CoreException;
