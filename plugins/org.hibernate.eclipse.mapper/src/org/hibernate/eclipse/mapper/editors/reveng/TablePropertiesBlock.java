@@ -231,14 +231,20 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		List list = ts.toList();
 		for (Iterator it = list.iterator(); it.hasNext();) {
 			Object obj = it.next();
-			if (!(obj instanceof IRevEngTable)) {
-				continue;
+			if (obj instanceof IRevEngTable) {
+				IRevEngTable retable = (IRevEngTable)obj;
+				if (retable instanceof RevEngTableAdapter) {
+					updateSelection = true;
+				}
+				editor.getReverseEngineeringDefinition().removeTable(retable);
 			}
-			IRevEngTable retable = (IRevEngTable)obj;
-			if (retable instanceof RevEngTableAdapter) {
-				updateSelection = true;
+			else if (obj instanceof IRevEngColumn) {
+				IRevEngColumn recolumn = (IRevEngColumn)obj;
+				if (recolumn instanceof RevEngColumnAdapter) {
+					updateSelection = true;
+				}
+				editor.getReverseEngineeringDefinition().removeColumn(recolumn);
 			}
-			editor.getReverseEngineeringDefinition().removeTable(retable);
 		}
 		if (updateSelection) {
 			// if it possible select first item

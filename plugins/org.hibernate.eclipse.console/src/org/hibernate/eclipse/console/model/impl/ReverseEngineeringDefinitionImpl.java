@@ -161,6 +161,10 @@ public class ReverseEngineeringDefinitionImpl implements
 
 	}
 
+	public void removeColumn(IRevEngColumn recolumn) {
+
+	}
+
 	public IRevEngColumn createColumn() {
 		return null;
 	}

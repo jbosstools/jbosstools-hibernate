@@ -45,6 +45,7 @@ import org.hibernate.eclipse.mapper.factory.ObserverAdapterFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefinition {
 
@@ -351,19 +352,28 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 	}
 
 	public void removeTable(IRevEngTable retable) {
-		if ( retable instanceof RevEngTableAdapter) {
+		if (retable instanceof RevEngTableAdapter) {
 			RevEngTableAdapter tf = (RevEngTableAdapter) retable;
 			Node parentNode = tf.getNode().getParentNode();
 			Node previousSibling = tf.getNode().getPreviousSibling();
-			if(DOMModelUtil.isWhiteSpace(previousSibling)) {
+			if (DOMModelUtil.isWhiteSpace(previousSibling)) {
 				parentNode.removeChild(previousSibling);
 			}
 			parentNode.removeChild(tf.getNode());
 			DOMModelUtil.formatNode(parentNode);
-			if(parentNode.getChildNodes().getLength()==0) {
-				Node parentNode2 = parentNode.getParentNode();
-				parentNode2.removeChild(parentNode);
+		}
+	}
+
+	public void removeColumn(IRevEngColumn recolumn) {
+		if (recolumn instanceof RevEngColumnAdapter) {
+			RevEngColumnAdapter cf = (RevEngColumnAdapter) recolumn;
+			Node parentNode = cf.getNode().getParentNode();
+			Node previousSibling = cf.getNode().getPreviousSibling();
+			if (DOMModelUtil.isWhiteSpace(previousSibling)) {
+				parentNode.removeChild(previousSibling);
 			}
+			parentNode.removeChild(cf.getNode());
+			DOMModelUtil.formatNode(parentNode);
 		}
 	}
 

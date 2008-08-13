@@ -57,6 +57,7 @@ public interface IReverseEngineeringDefinition {
 	IRevEngTable createTable();
 	void addTable(IRevEngTable retable);
 	void removeTable(IRevEngTable retable);
+	void removeColumn(IRevEngColumn recolumn);
 	IRevEngColumn createColumn();
 	IRevEngColumn createKeyColumn();
 		
