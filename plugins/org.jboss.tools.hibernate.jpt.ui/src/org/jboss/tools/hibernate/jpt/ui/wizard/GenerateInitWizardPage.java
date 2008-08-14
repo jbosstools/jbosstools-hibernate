@@ -105,6 +105,7 @@ public class GenerateInitWizardPage extends WizardPage {
 		selectMethod = new Button(container, SWT.CHECK);
 		selectMethod.setText("Use Console Configuration");
 		selectMethod.setSelection(true);
+		selectMethod.setEnabled(false);
 		selectMethod.addSelectionListener(new SelectionListener(){
 
 			public void widgetDefaultSelected(SelectionEvent e) {
