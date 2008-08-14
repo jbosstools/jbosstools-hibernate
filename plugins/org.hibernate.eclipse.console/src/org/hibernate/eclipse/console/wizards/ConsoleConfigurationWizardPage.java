@@ -682,6 +682,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	private void dialogChanged() {
 		String propertyFilename = propertyFileText.getText();
 		String configurationFilename = configurationFileText.getText();
+		setMessage(null);
 
 		configurationFileText.setEnabled( !configurationFileWillBeCreated && !getConfigurationMode().equals( ConfigurationMode.JPA ) );
 		confbutton.setEnabled( !getConfigurationMode().equals( ConfigurationMode.JPA ) );
@@ -742,6 +743,12 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 
 		if((!useProjectClassPath() && classPathViewer.getTable().getItemCount()==0)) {
 			updateStatus( HibernateConsoleMessages.ConsoleConfigurationWizardPage_need_to_specify_classpath );
+			return;
+		}
+		
+		if ((configurationFilename != null && configurationFilename.trim().length() > 0) &&
+				(propertyFilename != null && propertyFilename.trim().length() > 0)) {
+			setMessage(HibernateConsoleMessages.ConsoleConfigurationWizardPage_both_hibernate_properties_and_hibernate_cfg_xml, WARNING);
 			return;
 		}
 

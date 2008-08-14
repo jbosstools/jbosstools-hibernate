@@ -384,6 +384,12 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 			}
 		}
 
+		if ((configurationFilename != null && configurationFilename.trim().length() > 0) &&
+				(propertyFilename != null && propertyFilename.trim().length() > 0)) {
+			setMessage(HibernateConsoleMessages.ConsoleConfigurationMainTab_both_hibernate_properties_and_hibernate_cfg_xml);
+			return true;
+		}
+
 		/*if((useProjectClassPath() && StringHelper.isEmpty( getProjectName() )) && classPathViewer.getTable().getItemCount()==0) {
 			setErrorMessage( "Need to specify a project or setup a classpath" );
 			return;

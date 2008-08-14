@@ -203,6 +203,7 @@ public class HibernateConsoleMessages extends NLS {
 	public static String ConsoleConfigurationWizardPage_name_must_specified;
 	public static String ConsoleConfigurationWizardPage_naming_strategy;
 	public static String ConsoleConfigurationWizardPage_need_to_specify_classpath;
+	public static String ConsoleConfigurationWizardPage_both_hibernate_properties_and_hibernate_cfg_xml;
 	public static String ConsoleConfigurationWizardPage_need_to_specify_project;
 	public static String ConsoleConfigurationWizardPage_persistence_unit;
 	public static String ConsoleConfigurationWizardPage_problem_while_initializing_cc;
@@ -424,6 +425,7 @@ public class HibernateConsoleMessages extends NLS {
 	public static String ConsoleConfigurationMainTab_choose_file_to_use_as_hibernate_properties;
 	public static String ConsoleConfigurationMainTab_configuration_file;
 	public static String ConsoleConfigurationMainTab_configuration_file_2;
+	public static String ConsoleConfigurationMainTab_both_hibernate_properties_and_hibernate_cfg_xml;
 	public static String ConsoleConfigurationMainTab_core;
 	public static String ConsoleConfigurationMainTab_create_hibernate_properties_file;
 	public static String ConsoleConfigurationMainTab_create_new;
