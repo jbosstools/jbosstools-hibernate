@@ -47,7 +47,7 @@ public class GenerateDdlWizard extends Wizard {
 		super();
 		this.jpaProject = jpaProject;
 		this.selection = selection;
-		this.setWindowTitle( JptUiMessages.GenerateEntitiesWizard_generateEntities);
+		this.setWindowTitle( JptUiMessages.GenericPlatformUiDialog_notSupportedMessageTitle);
 	}
 	
 	@Override
