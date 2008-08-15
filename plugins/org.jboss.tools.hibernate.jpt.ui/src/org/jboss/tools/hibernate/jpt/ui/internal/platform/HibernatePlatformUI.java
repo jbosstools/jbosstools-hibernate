@@ -73,7 +73,6 @@ public class HibernatePlatformUI extends GenericPlatformUi {
 		ILaunchConfigurationWorkingCopy wc = null;
 		try {
 			wc = launchConfigurationType.newInstance(null, projectName + "-hibernate-generate");
-			wc.setAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER, true);
 			// Create exporters
 			List<String> exporters = new ArrayList<String>();
 			exporters.add(exporter_id); //$NON-NLS-1$

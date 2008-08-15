@@ -75,6 +75,7 @@ public class GenerateEntitiesWizard extends Wizard {
 
 			wc.setAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR, page2.getOutputDir()); //$NON-NLS-1$
 
+			wc.setAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER, true);
 			wc.setAttribute(HibernateLaunchConstants.ATTR_PACKAGE_NAME, page2.getPackageName());
 			wc.setAttribute(HibernateLaunchConstants.ATTR_PREFER_BASIC_COMPOSITE_IDS, true);
 			wc.setAttribute(HibernateLaunchConstants.ATTR_AUTOMATIC_MANY_TO_MANY, true);
