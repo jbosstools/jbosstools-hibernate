@@ -697,9 +697,17 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			updateStatus(HibernateConsoleMessages.ConsoleConfigurationWizardPage_name_must_specified);
 			return;
 		} else {
-			if(oldConfiguaration==null && KnownConfigurations.getInstance().find(getConfigurationName() )!=null) {
-				updateStatus(HibernateConsoleMessages.ConsoleConfigurationWizardPage_config_name_already_exist);
-				return;
+			if(oldConfiguaration==null){
+				ILaunchManager lm = DebugPlugin.getDefault().getLaunchManager();
+				try {
+					if (lm.isExistingLaunchConfigurationName(getConfigurationName())){
+
+					updateStatus(HibernateConsoleMessages.ConsoleConfigurationWizardPage_config_name_already_exist);
+					return;
+					}
+				} catch (CoreException e) {
+					HibernateConsolePlugin.getDefault().logErrorMessage(e.getMessage(), e);
+				}
 			}
 		}
 
