@@ -38,6 +38,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -529,7 +531,9 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
                 }
 
 				if(v.javaProject!=null) {
-					configurationNameText.setText(v.javaProject.getElementName() );
+					ILaunchManager lm = DebugPlugin.getDefault().getLaunchManager();
+					String uniqName = lm.generateUniqueLaunchConfigurationNameFrom(v.javaProject.getElementName());
+					configurationNameText.setText(uniqName);
 					projectNameText.setText(v.javaProject.getElementName());
 				}
 				if (v.propertyFile!=null) {
