@@ -33,6 +33,7 @@ public class ExporterProperty
 	private String defaultValue;
 	private String description;
 	private String name;
+	private String type = "string";		//$NON-NLS-1$
 	private boolean required;
 
 	public ExporterProperty () { }
@@ -43,6 +44,12 @@ public class ExporterProperty
 		this.defaultValue = defaultValue;
 		this.required = required;
 	}
+	
+	public ExporterProperty (String name, String description, String defaultValue, boolean required, String type)
+	{
+		this(name, description, defaultValue, required);
+		setType( type );
+	}	
 
 	public String getDefaultValue() {
 		return defaultValue;
@@ -95,5 +102,19 @@ public class ExporterProperty
 		} else {
 			return description + " [" + name + "]";  //$NON-NLS-1$//$NON-NLS-2$
 		}
+	}
+	
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+	
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
 	}
 }
