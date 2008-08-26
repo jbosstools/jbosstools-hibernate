@@ -201,6 +201,8 @@ public class HibernateConsoleMessages extends NLS {
 	public static String ConsoleConfigurationWizardPage_mappings;
 	public static String ConsoleConfigurationWizardPage_name;
 	public static String ConsoleConfigurationWizardPage_name_must_specified;
+	public static String ConsoleConfigurationWizardPage_bad_name;
+	public static String ConsoleConfigurationWizardPage_bad_char;
 	public static String ConsoleConfigurationWizardPage_naming_strategy;
 	public static String ConsoleConfigurationWizardPage_need_to_specify_classpath;
 	public static String ConsoleConfigurationWizardPage_both_hibernate_properties_and_hibernate_cfg_xml;
