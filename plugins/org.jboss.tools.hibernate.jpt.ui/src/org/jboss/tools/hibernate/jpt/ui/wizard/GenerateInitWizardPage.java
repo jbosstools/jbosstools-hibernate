@@ -10,11 +10,9 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.wizard;
 
-import java.io.File;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -23,7 +21,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
@@ -35,10 +32,7 @@ import org.eclipse.jdt.internal.ui.wizards.dialogfields.StringButtonDialogField;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -52,14 +46,13 @@ import org.eclipse.swt.widgets.Group;
 import org.hibernate.cfg.Environment;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
+import org.hibernate.tool.hbm2x.StringUtils;
 import org.hibernate.util.StringHelper;
 import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
-import org.w3c.dom.Element;
 
 /**
  * @author Dmitry Geraskov
@@ -162,11 +155,10 @@ public class GenerateInitWizardPage extends WizardPage {
 		connectionProfileName = new ComboDialogField(SWT.READ_ONLY);
 		connectionProfileName.setLabelText(JptUiMessages.DatabaseReconnectWizardPage_connection);		
 				
-		List<String> list = dtpConnectionProfileNames();
-		connectionProfileName.setItems((String[]) list.toArray(new String[list.size()]));
+		connectionProfileName.setItems(dtpConnectionProfileNames());
 
 		String connectionName = getProjectConnectionProfileName();
-		if (!StringTools.stringIsEmpty(connectionName)) {
+		if (!StringUtils.isEmpty(connectionName)) {
 			connectionProfileName.selectItem(connectionName);
 		}
 		connectionProfileName.doFillIntoGrid(dbGroup, numColumns);
@@ -206,21 +198,17 @@ public class GenerateInitWizardPage extends WizardPage {
 		setErrorMessage(null);		
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.WizardPage#isPageComplete()
-	 */
-	/*@Override
-	public boolean isPageComplete() {
-		return (selectMethod.getSelection() && (StringHelper.isNotEmpty(getConfigurationName())))
-			||(!selectMethod.getSelection() && (StringHelper.isNotEmpty(getConnectionProfileName())));
-	}*/
-	
-	private List<String> dtpConnectionProfileNames() {
+	private String[] dtpConnectionProfileNames() {
 		List<String> list = new ArrayList<String>();
-		for (Iterator<String> i = CollectionTools.sort(JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNames()); i.hasNext();) {
+		/*for (Iterator<String> i = CollectionTools.sort(JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNames()); i.hasNext();) {
 			list.add(i.next());
+		}*/
+		IConnectionProfile[] cps = ProfileManager.getInstance().getProfiles();
+		for (int i = 0; i < cps.length; i++) {
+			list.add(cps[i].getName());			
 		}
-		return list;
+		Collections.sort(list);
+		return (String[]) list.toArray(new String[list.size()]);
 	}
 	
 	private String getProjectConnectionProfileName() {

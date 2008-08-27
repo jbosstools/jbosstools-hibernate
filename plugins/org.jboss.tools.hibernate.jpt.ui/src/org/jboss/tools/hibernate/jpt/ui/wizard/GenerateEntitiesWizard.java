@@ -10,26 +10,13 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.wizard;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.db.ConnectionProfile;
-import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.gen.internal.EntityGenerator;
-import org.eclipse.jpt.gen.internal.PackageGenerator;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.ui.internal.wizards.DatabaseReconnectWizardPage;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
