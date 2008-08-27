@@ -11,6 +11,8 @@
 
 package org.jboss.tools.hibernate.jpt.ui;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -62,8 +64,42 @@ public class HibernateJptUIPlugin extends AbstractUIPlugin {
 	 * Log message
 	 *
 	 */
-	public static void log(int severity, String message) {
-		//not realized
+	private static void log(int severity, String message, Throwable e) {
+		getDefault().getLog().log(new Status(severity, PLUGIN_ID, message, e));
 	}
+	
+	/**
+	 * Short exception log
+	 *
+	 */
+	public static void logException(Throwable e) {
+		log(IStatus.ERROR, e.getMessage(),  e);
+	}
+	
+	/**
+	 * Short error log call
+	 *
+	 */
+	public static void logError(String message) {
+		log(IStatus.ERROR, message, null);
+	}
+	
+	/**
+	 * Short warning log call
+	 *
+	 */
+	public static void logWarning(String message) {
+		log(IStatus.WARNING, message, null);
+	}
+	
+	/**
+	 * Short information log call
+	 *
+	 */
+	public static void logInfo(String message) {
+		log(IStatus.INFO, message, null);
+	}
+	
+	
 
 }

@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
+import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
 import org.jboss.tools.hibernate.jpt.ui.internal.platform.HibernatePlatformUI;
 
 /**
@@ -79,7 +80,7 @@ public class GenerateDdlWizard extends Wizard {
 			try {
 				wc.launch(ILaunchManager.RUN_MODE, null);
 			} catch (CoreException e) {
-				e.printStackTrace();
+				HibernateJptUIPlugin.logException(e);
 			} finally{
 				if (initPage.isTemporaryConfiguration()){
 					KnownConfigurations.getInstance().removeConfiguration(KnownConfigurations.getInstance().find(concoleConfigurationName), false);				

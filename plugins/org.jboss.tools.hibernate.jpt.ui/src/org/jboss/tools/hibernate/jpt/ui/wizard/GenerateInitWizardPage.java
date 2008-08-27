@@ -58,6 +58,7 @@ import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 import org.hibernate.util.StringHelper;
+import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
 import org.w3c.dom.Element;
 
 /**
@@ -258,8 +259,7 @@ public class GenerateInitWizardPage extends WizardPage {
 			wc.doSave();
 			return wc.getName();
 		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			HibernateJptUIPlugin.logException(e);
 			return null;
 		}			
 		

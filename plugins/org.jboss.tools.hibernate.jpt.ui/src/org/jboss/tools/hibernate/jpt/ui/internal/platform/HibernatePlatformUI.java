@@ -35,6 +35,7 @@ import org.eclipse.jpt.gen.internal.EntityGenerator;
 import org.eclipse.jpt.gen.internal.PackageGenerator;
 import org.eclipse.jpt.ui.internal.platform.generic.GenericPlatformUi;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
+import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
 import org.jboss.tools.hibernate.jpt.ui.wizard.GenerateDdlWizard;
 import org.jboss.tools.hibernate.jpt.ui.wizard.GenerateEntitiesWizard;
 
@@ -79,7 +80,7 @@ public class HibernatePlatformUI extends GenericPlatformUi {
 			wc.setAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, exporters);
 			wc.setAttribute(full_exporter_id, true);
 		} catch (CoreException e) {
-			e.printStackTrace();
+			HibernateJptUIPlugin.logException(e);
 		}
 
 		return wc;
