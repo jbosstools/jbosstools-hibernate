@@ -10,5 +10,53 @@
       </jpaPlatform>
 			
 	</extension>
+   <extension
+         point="org.eclipse.wst.common.project.facet.ui.wizardPages">
+      <wizard-pages
+            action="hibernate.consoleConfiguration.core.install">
+         <page
+               class="org.jboss.tools.hibernate.jpt.ui.wizard.ProjectCreateFacetWizardPage">
+         </page>
+      </wizard-pages>
+   </extension>
+   <extension  
+         point="org.eclipse.wst.common.project.facet.core.facets">
+      <project-facet
+            id="hibernate.consoleConfiguration.core">
+         <label>
+            Console Configuration
+         </label>
+         <description>
+            Enables generation of Console Configuration based on selected Connection Profile.
+         </description>
+      </project-facet>
+      <project-facet-version
+            facet="hibernate.consoleConfiguration.core"
+            version="1.0">
+         <constraint>
+            <requires
+                  facet="jpt.jpa"
+                  soft="false">
+            </requires>
+         </constraint>
+         
+      </project-facet-version>
+      
+      <action
+            facet="hibernate.consoleConfiguration.core"
+            id="hibernate.consoleConfiguration.core.install"
+            type="install">
+            <delegate
+                  class="org.jboss.tools.hibernate.jpt.ui.ConsoleConfigurationFacetInstallDelegate"/>
+            <config-factory
+                  class="org.jboss.tools.hibernate.jpt.ui.ConsoleConfigurationFacetModel$Factory"/>
+         </action>
+      
+   </extension>
+   
+   
+   
+   
+  
 
 </plugin>
