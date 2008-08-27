@@ -436,56 +436,56 @@
           </imageobject>
         </mediaobject>
       </figure>
-       </para>
+    </para>
 
-      <para>Parameters of the Mappings tab in the <property>Hibernate Console Configuration
-        wizard</property> are explained below:</para>
-      <table>
-        <title>Hibernate Console Configuration Mappings</title>
+    <para>Parameters of the Mappings tab in the <property>Hibernate Console Configuration
+      wizard</property> are explained below:</para>
+    <table>
+      <title>Hibernate Console Configuration Mappings</title>
 
-        <tgroup cols="3">
-          <colspec colnum="1" align="left" colwidth="1*"/>
+      <tgroup cols="3">
+        <colspec colnum="1" align="left" colwidth="1*"/>
 
-          <colspec colnum="2" colwidth="3*"/>
+        <colspec colnum="2" colwidth="3*"/>
 
-          <colspec colnum="3" colwidth="1*"/>
+        <colspec colnum="3" colwidth="1*"/>
 
-          <thead>
-            <row>
-              <entry align="center">
-                <para>Parameter</para>
-              </entry>
+        <thead>
+          <row>
+            <entry align="center">
+              <para>Parameter</para>
+            </entry>
 
-              <entry align="center">
-                <para>Description</para>
-              </entry>
+            <entry align="center">
+              <para>Description</para>
+            </entry>
 
-              <entry align="center">
-                <para>Auto detected value</para>
-              </entry>
-            </row>
-          </thead>
+            <entry align="center">
+              <para>Auto detected value</para>
+            </entry>
+          </row>
+        </thead>
 
-          <tbody>
-            <row>
-              <entry>
-                <para>Mapping files </para>
-              </entry>
+        <tbody>
+          <row>
+            <entry>
+              <para>Mapping files </para>
+            </entry>
 
-              <entry>
-                <para>List of additional mapping files that should be loaded. Note: A
-                  hibernate.cfg.xml or persistence.xml can also contain mappings. Thus if these are
-                  duplicated here, you will get "Duplicate mapping" errors when using the console
-                  configuration.</para>
-              </entry>
+            <entry>
+              <para>List of additional mapping files that should be loaded. Note: A
+                hibernate.cfg.xml or persistence.xml can also contain mappings. Thus if these are
+                duplicated here, you will get "Duplicate mapping" errors when using the console
+                configuration.</para>
+            </entry>
 
-              <entry>
-                <para>empty</para>
-              </entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
+            <entry>
+              <para>empty</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
 
     <para>Clicking <emphasis>
         <property>Finish</property>
@@ -1027,16 +1027,16 @@
       <figure>
         <title>Navigation Functionality</title>
 
-          <mediaobject>
-            <imageobject role="fo">
-              <imagedata align="center" fileref="images/plugins/plugins_10.png" format="PNG"
-                scale="80"/>
-            </imageobject>
+        <mediaobject>
+          <imageobject role="fo">
+            <imagedata align="center" fileref="images/plugins/plugins_10.png" format="PNG"
+              scale="80"/>
+          </imageobject>
 
-            <imageobject role="html">
-              <imagedata align="center" fileref="images/plugins/plugins_10.png" format="PNG"/>
-            </imageobject>
-          </mediaobject>
+          <imageobject role="html">
+            <imagedata align="center" fileref="images/plugins/plugins_10.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
 
       </figure>
 
@@ -1120,7 +1120,7 @@
     </section>
   </section>
 
-  <section id="map_config_struct_editor" revisionflag="added"> 
+  <section id="map_config_struct_editor" revisionflag="added">
     <title>Structured Hibernate Mapping and Configuration File Editor</title>
     <para>The structured editor represents the file in the tree form. It also allows to modify the
       structure of the file and its elements with the help of tables provided on the right-hand
@@ -1423,14 +1423,14 @@
           </mediaobject>
         </figure>
 
-        <para>Finally, if you need to have your Diagram exported as 
-          <emphasis><property>.png
-          </property>,</emphasis> 
-          <emphasis><property>.jpeg</property></emphasis>
-           or 
-          <emphasis><property>.bmp </property>,</emphasis>
-          you should right-click anywhere in the <property>Mapping Diagram
-            editor</property> and select <emphasis><property>Export as Image</property></emphasis>.</para>
+        <para>Finally, if you need to have your Diagram exported as <emphasis><property>.png
+            </property>,</emphasis>
+          <emphasis>
+            <property>.jpeg</property>
+          </emphasis> or <emphasis><property>.bmp </property>,</emphasis> you should right-click
+          anywhere in the <property>Mapping Diagram editor</property> and select <emphasis>
+            <property>Export as Image</property>
+          </emphasis>.</para>
 
         <figure>
           <title>Mapping Diagram Export</title>
@@ -1442,17 +1442,16 @@
           </mediaobject>
         </figure>
 
-        <para>As you can see on the figure above, 
-          <emphasis><property>Undo</property>, </emphasis>
-          
-          <emphasis><property>Redo</property></emphasis>
-           and 
-          <emphasis><property>Auto layout </property></emphasis>
-          options are also available through the context menu.</para>
+        <para>As you can see on the figure above, <emphasis><property>Undo</property>, </emphasis>
+          <emphasis>
+            <property>Redo</property>
+          </emphasis> and <emphasis>
+            <property>Auto layout </property>
+          </emphasis> options are also available through the context menu.</para>
       </section>
     </section>
 
-    <section revisionflag="changed"> 
+    <section revisionflag="changed">
       <title>Prototyping Queries</title>
 
       <para>Queries can be prototyped by entering them in the <property>HQL</property> or
@@ -1598,7 +1597,7 @@
     </section>
   </section>
 
-  <section>
+  <section id="debug_log">
     <title>Enable debug logging in the plugins</title>
 
     <para>It is possible to configure the eclipse plugin to route all logging made by the plugins
@@ -1619,5 +1618,62 @@
           url="http://supportweb.cs.bham.ac.uk/docs/tutorials/docsystem/build/tutorials/log4j/log4j.html"
           >Log4j documentation</ulink>.</para>
     </section>
+  </section>
+
+  <section id="dali_integration" role="new">
+    <title>Hibernate support for Dali plugins in Eclipse WTP</title>
+
+    <para>Starting from 3.0.0 Alpha1 version of <property>JBoss Tools</property> Hibernate plugins
+      support Eclipse Dali integration what now makes it possible to use a Hibernate as a complete
+      JPA development platform.</para>
+
+    <para>When starting your new JPA project from <emphasis>
+        <property>New > Other... > JPA > JPA Project</property>
+      </emphasis> (or simply <emphasis>
+        <property>New > JPA Project</property>
+      </emphasis> in <property>JPA Perspective</property>) on the JPA Facet page you&apos;ll be
+      prompted to choose Hibernate as a target platform.</para>
+
+    <figure>
+      <title>Targeting at Hibernate Platform</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/plugins/plugins_23.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>By enabling Hibernate platform specific features you can now generate DDL and Entities.
+      For that find <emphasis>
+        <property>JPA Tools > Generate DDL.../Generate Entities...</property>
+      </emphasis> options in the context menu of your JPA project.</para>
+
+    <figure>
+      <title>Generate DDL/Entities</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/plugins/plugins_24.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>The Generate DDL/Entities wizards first will ask you to choose the <property>Console
+        Configuration</property>.</para>
+
+    <figure>
+      <title>Generate Entities Wizard</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/plugins/plugins_25.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <note>
+      <title>Note:</title>
+
+      <para>Please note, currently the wizards require that you have a <link
+          linkend="console_conf">Hibernate Console Configuration</link> already configured.</para>
+    </note>
   </section>
 </chapter>
