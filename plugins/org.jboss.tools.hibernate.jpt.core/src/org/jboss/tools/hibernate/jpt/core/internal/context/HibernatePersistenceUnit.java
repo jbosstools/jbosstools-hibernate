@@ -13,13 +13,6 @@ package org.jboss.tools.hibernate.jpt.core.internal.context;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkJpaProperties;
-import org.eclipse.jpt.eclipselink.core.internal.context.caching.Caching;
-import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
-import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customization;
-import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logging;
-import org.eclipse.jpt.eclipselink.core.internal.context.options.Options;
-import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
 
 /**
  * @author Dmitry Geraskov
