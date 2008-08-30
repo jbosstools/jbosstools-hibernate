@@ -79,21 +79,31 @@ public class TestUrlClassLoader extends URLClassLoader{
 	 * 
 	 */
     public Class loadClassFromBinaryFile(String fileName) throws IOException {
-        FileInputStream in = null;
-        File f = new File(fileName);
-        byte[] bytes;
-        int fSize = 0;
-        in = new FileInputStream(f);
-        fSize = (int)f.length();
-        bytes = new byte[fSize];
-        int length = 0;
-        while (length < fSize)
-        {
-            length += in.read(bytes,length,in.available());
-        }
-        Class clazz = defineClass(null,bytes,0,length,(CodeSource)null);
-        in.close();
-        return clazz;
+	    FileInputStream in = null;
+    	try {
+		    File f = new File(fileName);
+		    byte[] bytes;
+		    int fSize = 0;
+		    in = new FileInputStream(f);
+		    fSize = (int)f.length();
+		    bytes = new byte[fSize];
+		    int length = 0;
+		    while (length < fSize)
+		    {
+		        length += in.read(bytes,length,in.available());
+		    }
+		    Class clazz = defineClass(null,bytes,0,length,(CodeSource)null);
+		    in.close();
+		    return clazz;
+    	} finally {
+    		if(in!=null) {
+    			try {
+    				in.close();
+    			} catch (IOException e) {
+    				// ignore
+    			}
+    		}
+    	}
     }
 }
 

@@ -245,7 +245,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		if(!includeMappings) {
 			org.dom4j.Document doc;
 			XMLHelper xmlHelper = new XMLHelper();
-			InputStream stream;
+			InputStream stream = null;
 			String resourceName = "<unknown>"; //$NON-NLS-1$
 			try {
 				if(configXMLFile!=null) {

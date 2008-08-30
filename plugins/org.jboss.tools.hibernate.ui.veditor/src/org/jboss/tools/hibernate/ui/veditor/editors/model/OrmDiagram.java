@@ -703,16 +703,25 @@ public class OrmDiagram extends ModelElement {
 	
 	public void load(){
 		Properties properties = new Properties();
+		FileInputStream fis = null;
 		try{
 			File file = new File(getStoreFilePath().toOSString());
 			if(file.exists()){
-				FileInputStream fis = new FileInputStream(file);
+				fis = new FileInputStream(file);
 				properties.load(fis);
 				propertiesInit(properties, this);
 				loadSuccessfull = true;
 			}
 		}catch(IOException ex){
 			VisualEditorPlugin.getDefault().logError("Can't load layout of mapping.", ex); //$NON-NLS-1$
+		} finally {
+			if(fis!=null) {
+				try {
+					fis.close();
+				} catch (IOException e) {
+					// ignore
+				}
+			}
 		}
 	}
 	
