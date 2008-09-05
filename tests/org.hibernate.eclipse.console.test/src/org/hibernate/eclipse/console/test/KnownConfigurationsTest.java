@@ -129,6 +129,11 @@ public class KnownConfigurationsTest extends TestCase {
 				return null;
 			}
 
+			public String getConnectionProfileName() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
 		};
 
 		ConsoleConfigurationPreferences preferences2 = new ConsoleConfigurationPreferences() {
@@ -199,6 +204,11 @@ public class KnownConfigurationsTest extends TestCase {
 			}
 
 			public String getPersistenceUnitName() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			public String getConnectionProfileName() {
 				// TODO Auto-generated method stub
 				return null;
 			}

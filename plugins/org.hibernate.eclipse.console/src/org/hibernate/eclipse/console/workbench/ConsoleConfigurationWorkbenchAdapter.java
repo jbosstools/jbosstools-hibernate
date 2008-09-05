@@ -22,6 +22,7 @@
 package org.hibernate.eclipse.console.workbench;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.osgi.util.NLS;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
@@ -96,4 +97,7 @@ public class ConsoleConfigurationWorkbenchAdapter extends BasicWorkbenchAdapter 
 		return KnownConfigurations.getInstance();
 	}
 
+	protected String getDefaultErrorMessage(Object object) {
+		return NLS.bind(HibernateConsoleMessages.BasicWorkbenchAdapter_error_while_opening_configuration, getLabel(object));
+	}
 }

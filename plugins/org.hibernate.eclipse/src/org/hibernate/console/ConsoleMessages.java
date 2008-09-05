@@ -4,6 +4,7 @@ import org.eclipse.osgi.util.NLS;
 
 public class ConsoleMessages extends NLS {
 	private static final String BUNDLE_NAME = "org.hibernate.console.ConsoleMessages"; //$NON-NLS-1$
+	public static String ConsoleConfiguration_connection_profile_not_found;
 	public static String ConsoleConfiguration_could_not_access;
 	public static String ConsoleConfiguration_could_not_configure_entity_resolver;
 	public static String ConsoleConfiguration_could_not_configure_naming_strategy;

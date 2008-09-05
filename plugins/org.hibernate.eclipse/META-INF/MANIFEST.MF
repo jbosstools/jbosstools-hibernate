@@ -515,6 +515,7 @@ Export-Package: EDU.oswego.cs.dl.util.concurrent,
  pojo
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.console,
- org.eclipse.jface
+ org.eclipse.jface,
+ org.eclipse.datatools.connectivity
 Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: registered

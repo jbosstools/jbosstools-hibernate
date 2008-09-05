@@ -55,7 +55,6 @@ import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 /**
  * Creates a new hibernate.cfg.xml
  */
-
 public class NewConfigurationWizard extends Wizard implements INewWizard {
 	private NewConfigurationWizardPage connectionInfoPage;
 	private ISelection selection;
@@ -87,13 +86,12 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
             }
         }
     }
+    
 	/**
 	 * Adding the page to the wizard.
 	 */
-
 	public void addPages() {
-        cPage =
-        new ExtendedWizardNewFileCreationPage( "Ccfgxml", (IStructuredSelection) selection ); //$NON-NLS-1$
+        cPage = new ExtendedWizardNewFileCreationPage( "Ccfgxml", (IStructuredSelection) selection ); //$NON-NLS-1$
         cPage.setTitle( HibernateConsoleMessages.NewConfigurationWizard_create_hibernate_cfg_file );
         cPage.setDescription( HibernateConsoleMessages.NewConfigurationWizard_create_new_hibernate_cfg_xml );
         cPage.setFileName("hibernate.cfg.xml"); //$NON-NLS-1$
@@ -107,15 +105,12 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 		addPage(confPage);
 	}
 
-
-
 	/**
 	 * This method is called when 'Finish' button is pressed in
 	 * the wizard. We will create an operation and run it
 	 * using wizard as execution context.
 	 */
 	public boolean performFinish() {
-
 		final Properties props = new Properties();
         putIfNotNull(props, Environment.SESSION_FACTORY_NAME, connectionInfoPage.getSessionFactoryName() );
         putIfNotNull(props, Environment.DIALECT, connectionInfoPage.getDialect() );
@@ -148,12 +143,24 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 			return false;
 		}
 
-		if(connectionInfoPage.isCreateConsoleConfigurationEnabled()) {
-        	ConsoleConfigurationCreationWizard.createConsoleConfiguration(getContainer(), confPage);
+		if (connectionInfoPage.isCreateConsoleConfigurationEnabled()) {
+			try {
+				confPage.performFinish();
+			} catch (CoreException ce) {
+				HibernateConsolePlugin.getDefault().showError(getShell(), HibernateConsoleMessages.AddConfigurationAction_problem_add_console_config,  ce);
+			}
         }
-
 		return true;
 	}
+
+	public boolean performCancel() {
+		try {
+			confPage.performCancel();
+		} catch (CoreException ce) {
+			HibernateConsolePlugin.getDefault().showError(getShell(), HibernateConsoleMessages.AddConfigurationAction_problem_add_console_config,  ce);
+		}
+        return true;
+    }
 
 	/**
      * @param props
@@ -173,7 +180,6 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
      * @param file
      * @param props
 	 */
-
 	private void createHibernateCfgXml(
 		final IFile file, Properties props, IProgressMonitor monitor)
 		throws CoreException {
@@ -208,7 +214,6 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 * We will initialize file contents with a sample text.
 	 * @throws UnsupportedEncodingException
 	 */
-
 	private InputStream openContentStream(Properties props) {
         StringWriter stringWriter = new StringWriter();
         HibernateConfigurationExporter hce = new HibernateConfigurationExporter();

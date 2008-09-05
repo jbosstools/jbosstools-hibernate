@@ -35,16 +35,13 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.preferences.AbstractConsoleConfigurationPreferences;
-import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.utils.ClassLoaderHelper;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
-import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -61,9 +58,12 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 	private IPath[] mappings = new IPath[0];
 	private IPath[] customClasspath = new IPath[0];
 
-
-	public EclipseConsoleConfigurationPreferences(String configName, ConfigurationMode cmode, String projectName, boolean useProjectClasspath, String entityResolver, IPath cfgFile, IPath propertyFilename, IPath[] mappings, IPath[] classpaths, String persistenceUnitName, String namingStrategy) {
-		super(configName, cmode, projectName, useProjectClasspath, entityResolver, persistenceUnitName, namingStrategy);
+	public EclipseConsoleConfigurationPreferences(String configName, 
+			ConfigurationMode cmode, String projectName, boolean useProjectClasspath, 
+			String entityResolver, IPath cfgFile, IPath propertyFilename, 
+			IPath[] mappings, IPath[] classpaths, String persistenceUnitName, String namingStrategy,
+			String connectionProfile, boolean connectionProfileFlag) {
+		super(configName, cmode, projectName, useProjectClasspath, entityResolver, persistenceUnitName, namingStrategy, connectionProfile);		
 		this.cfgFile = cfgFile;
 		this.propertyFilename = propertyFilename;
 		this.mappings = mappings;
@@ -135,9 +135,7 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 	public File[] getMappingFiles() {
 		File[] files = new File[mappings.length];
 		for (int i = 0; i < mappings.length; i++) {
-			IPath path = mappings[i];
-			files[i] = pathToFile(path);
-
+			files[i] = pathToFile(mappings[i]);
 		}
 		return files;
 	}
@@ -184,7 +182,6 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 	protected void setMappings(String[] mappings) {
 		this.mappings = new IPath[mappings.length];
 		for (int i = 0; i < mappings.length; i++) {
-			String str = mappings[i];
 			this.mappings[i] = new Path(mappings[i]);
 		}
 	}
@@ -192,7 +189,6 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 	protected void setCustomClassPath(String[] mappings) {
 		this.customClasspath = new IPath[mappings.length];
 		for (int i = 0; i < mappings.length; i++) {
-			//String str = mappings[i];
 			this.customClasspath[i] = new Path(mappings[i]);
 		}
 	}

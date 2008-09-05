@@ -106,6 +106,11 @@ public class ConsoleConfigurationTest extends TestCase {
 			return null;
 		}
 
+		public String getConnectionProfileName() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
 	}
 
 

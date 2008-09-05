@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.sql.DatabaseMetaData;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -38,11 +39,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Map.Entry;
 
 import org.dom4j.DocumentException;
 import org.dom4j.Node;
 import org.dom4j.io.DOMWriter;
+import org.eclipse.datatools.connectivity.IConnectionProfile;
+import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
@@ -58,6 +60,8 @@ import org.hibernate.console.execution.ExecutionContextHolder;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.dialect.DialectFactory;
 import org.hibernate.util.ConfigHelper;
 import org.hibernate.util.ReflectHelper;
 import org.hibernate.util.StringHelper;
@@ -142,7 +146,12 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 
 			method = clazz.getMethod("getHibernateConfiguration", new Class[0]);//$NON-NLS-1$
 			Configuration invoke = (Configuration) method.invoke(ejb3cfg, (Object[])null);
+			invoke = configureConnectionProfile(invoke);
+
 			return invoke;
+		}
+		catch (HibernateConsoleRuntimeException he) {
+			throw he;
 		}
 		catch (Exception e) {
 			throw new HibernateConsoleRuntimeException(ConsoleMessages.ConsoleConfiguration_could_not_create_jpa_based_configuration,e);
@@ -217,6 +226,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 
 					// here both setProperties and configxml have had their chance to tell which databasedriver is needed.
 					registerFakeDriver(localCfg.getProperty(Environment.DRIVER) );
+					//autoConfigureDialect(localCfg); Disabled for now since it causes very looong timeouts for non-running databases + i havent been needed until now...
 
 					// TODO: jpa configuration ?
 					if(includeMappings) {
@@ -232,6 +242,24 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 					localCfg.setProperty( Environment.HBM2DDL_AUTO, "false" ); //$NON-NLS-1$
 
 					return localCfg;
+				}
+
+				private void autoConfigureDialect(Configuration localCfg) {
+					if (localCfg.getProperty(Environment.DIALECT) == null){
+						String url = localCfg.getProperty(Environment.URL);
+						String user = localCfg.getProperty(Environment.USER);
+						String pass = localCfg.getProperty(Environment.PASS);
+						try {
+							DatabaseMetaData meta = DriverManager.getConnection(url, user, pass).getMetaData();
+							String databaseName = meta.getDatabaseProductName();
+							int databaseMajorVersion = meta.getDatabaseMajorVersion();
+							//SQL Dialect:
+							Dialect dialect = DialectFactory.buildDialect( localCfg.getProperties(), databaseName, databaseMajorVersion );
+							localCfg.setProperty(Environment.DIALECT, dialect.toString());
+						} catch (Exception e) {
+						//can't determine dialect
+						}
+					}
 				}
 
 			});
@@ -498,12 +526,18 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 				localCfg = buildAnnotationConfiguration();
 				localCfg = configureStandardConfiguration( includeMappings, localCfg, properties );
 			}
+			catch (HibernateConsoleRuntimeException he) {
+				throw he;
+			}
 			catch (Exception e) {
 				throw new HibernateConsoleRuntimeException(ConsoleMessages.ConsoleConfiguration_could_not_load_annotationconfiguration,e);
 			}
 		} else if(prefs.getConfigurationMode().equals( ConfigurationMode.JPA )) {
 			try {
 				localCfg = buildJPAConfiguration( getPreferences().getPersistenceUnitName(), properties, prefs.getEntityResolverName(), includeMappings );
+			}
+			catch (HibernateConsoleRuntimeException he) {
+				throw he;
 			}
 			catch (Exception e) {
 				throw new HibernateConsoleRuntimeException(ConsoleMessages.ConsoleConfiguration_could_not_load_jpa_configuration,e);
@@ -539,10 +573,45 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		}
 
 		localCfg = loadConfigurationXML( localCfg, includeMappings, entityResolver );
+		localCfg = configureConnectionProfile(localCfg);
 
 		return localCfg;
 	}
 
-
+	private Configuration configureConnectionProfile(Configuration localCfg) {
+		String connectionProfile = prefs.getConnectionProfileName();
+		if(connectionProfile==null) {
+			return localCfg;
+		}
+		
+		IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(connectionProfile);
+		if (profile != null) {
+			final Properties invokeProperties = localCfg.getProperties();
+			// set this property to null!
+			invokeProperties.remove(Environment.DATASOURCE);
+			localCfg.setProperties(invokeProperties);
+			Properties cpProperties = profile.getProperties(profile.getProviderId());
+			// seems we should not setup dialect here
+			//String dialect = "org.hibernate.dialect.HSQLDialect";//cpProperties.getProperty("org.eclipse.datatools.connectivity.db.driverClass");
+			//invoke.setProperty(Environment.DIALECT, dialect);
+			String driver = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.driverClass"); //$NON-NLS-1$
+			localCfg.setProperty(Environment.DRIVER, driver);
+			String url = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.URL"); //$NON-NLS-1$
+			//url += "/";// +  cpProperties.getProperty("org.eclipse.datatools.connectivity.db.databaseName");
+			localCfg.setProperty(Environment.URL, url);
+			String user = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.username"); //$NON-NLS-1$
+			if (null != user && user.length() > 0) {
+				localCfg.setProperty(Environment.USER, user);
+			}
+			String pass = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.password"); //$NON-NLS-1$
+			if (null != pass && pass.length() > 0) {
+				localCfg.setProperty(Environment.PASS, pass);
+			}
+		} else {
+			String out = NLS.bind(ConsoleMessages.ConsoleConfiguration_connection_profile_not_found, connectionProfile);
+			throw new HibernateConsoleRuntimeException(out);			
+		}
+		return localCfg;
+	}
 
 }

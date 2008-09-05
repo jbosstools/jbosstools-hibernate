@@ -72,33 +72,12 @@ public class AddConfigurationAction extends Action {
 		*/
 
 		try {
-			ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
-
-			ILaunchConfigurationType launchConfigurationType = launchManager.getLaunchConfigurationType( ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID );
-			String launchName = launchManager.generateUniqueLaunchConfigurationNameFrom(HibernateConsoleMessages.AddConfigurationAction_hibernate);
-			//ILaunchConfiguration[] launchConfigurations = launchManager.getLaunchConfigurations( launchConfigurationType );
-			ILaunchConfigurationWorkingCopy wc = launchConfigurationType.newInstance(null, launchName);
-			wc.setAttribute(TEMPORARY_CONFIG_FLAG, true);
-			ILaunchConfiguration saved = wc.doSave();
-			int res = DebugUITools.openLaunchConfigurationPropertiesDialog( part.getSite().getShell(), saved, "org.eclipse.debug.ui.launchGroup.run" ); //$NON-NLS-1$
-			List<ILaunchConfiguration> listTempConfigs = new ArrayList<ILaunchConfiguration>();
-			ILaunchConfiguration[] configs = launchManager.getLaunchConfigurations(launchConfigurationType);
-			for (int i = 0; i < configs.length; i++) {
-				boolean temporary = configs[i].getAttribute(AddConfigurationAction.TEMPORARY_CONFIG_FLAG, false);
-				if (temporary) {
-					listTempConfigs.add(configs[i]);
-				}
-			}
+			ILaunchConfiguration wc = createTemporaryLaunchConfiguration();
+			int res = DebugUITools.openLaunchConfigurationPropertiesDialog( part.getSite().getShell(), wc, "org.eclipse.debug.ui.launchGroup.run" ); //$NON-NLS-1$			
 			if (res != Window.OK) {
-				for (int i = 0; i < listTempConfigs.size(); i++) {
-					listTempConfigs.get(i).delete();
-				}
+				deleteTemporaryLaunchConfigurations();
 			} else {
-				for (int i = 0; i < listTempConfigs.size(); i++) {
-					wc = listTempConfigs.get(i).getWorkingCopy();
-					wc.setAttribute(TEMPORARY_CONFIG_FLAG, (String)null); // Must be set to null since it should never be in the actual saved configuration!
-					wc.doSave();
-				}
+				makeTemporaryLaunchConfigurationsPermanent();
 			}
 
 		} catch (CoreException ce) {
@@ -106,5 +85,51 @@ public class AddConfigurationAction extends Action {
 		}
 
 
+	}
+
+	static public ILaunchConfiguration createTemporaryLaunchConfiguration()
+			throws CoreException {
+		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+
+		ILaunchConfigurationType launchConfigurationType = launchManager.getLaunchConfigurationType( ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID );
+		String launchName = launchManager.generateUniqueLaunchConfigurationNameFrom(HibernateConsoleMessages.AddConfigurationAction_hibernate);
+		//ILaunchConfiguration[] launchConfigurations = launchManager.getLaunchConfigurations( launchConfigurationType );
+		ILaunchConfigurationWorkingCopy wc = launchConfigurationType.newInstance(null, launchName);
+		wc.setAttribute(TEMPORARY_CONFIG_FLAG, true);
+		return wc.doSave();
+	}
+
+	static public void makeTemporaryLaunchConfigurationsPermanent() throws CoreException {
+		List<ILaunchConfiguration> listTempConfigs = getTemporaryLaunchConfigurations();
+		ILaunchConfigurationWorkingCopy wc;
+		for (int i = 0; i < listTempConfigs.size(); i++) {
+			wc = listTempConfigs.get(i).getWorkingCopy();
+			wc.setAttribute(TEMPORARY_CONFIG_FLAG, (String)null); // Must be set to null since it should never be in the actual saved configuration!
+			wc.doSave();
+		}		
+	}
+
+	static public void deleteTemporaryLaunchConfigurations() throws CoreException {
+		List<ILaunchConfiguration> listTempConfigs = getTemporaryLaunchConfigurations();
+		for (int i = 0; i < listTempConfigs.size(); i++) {
+			listTempConfigs.get(i).delete();
+		}
+	}
+
+	static private List<ILaunchConfiguration> getTemporaryLaunchConfigurations()
+			throws CoreException {
+		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+
+		ILaunchConfigurationType launchConfigurationType = launchManager.getLaunchConfigurationType( ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID );
+
+		List<ILaunchConfiguration> listTempConfigs = new ArrayList<ILaunchConfiguration>();
+		ILaunchConfiguration[] configs = launchManager.getLaunchConfigurations(launchConfigurationType);
+		for (int i = 0; i < configs.length; i++) {
+			boolean temporary = configs[i].getAttribute(AddConfigurationAction.TEMPORARY_CONFIG_FLAG, false);
+			if (temporary) {
+				listTempConfigs.add(configs[i]);
+			}
+		}
+		return listTempConfigs;
 	}
 }

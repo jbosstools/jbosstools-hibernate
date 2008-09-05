@@ -512,6 +512,8 @@ public class HibernateConsoleMessages extends NLS {
 	public static String HibernateNature_exception_when_trying_to_locate_hibernate_nature;
 	public static String HibernateNature_reading_database_metadata;
 	public static String HibernateNature_reading_database_metadata_for;
+
+	public static String BasicWorkbenchAdapter_error_while_opening_configuration;
 	//
 	static {
 		// initialize resource bundle

@@ -23,106 +23,101 @@ package org.hibernate.eclipse.console.wizards;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IResourceProxy;
-import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationType;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.ui.ILaunchConfigurationDialog;
+import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.search.IJavaSearchConstants;
-import org.eclipse.jdt.core.search.IJavaSearchScope;
-import org.eclipse.jdt.core.search.SearchEngine;
-import org.eclipse.jdt.core.search.SearchMatch;
-import org.eclipse.jdt.core.search.SearchParticipant;
-import org.eclipse.jdt.core.search.SearchPattern;
-import org.eclipse.jdt.ui.wizards.BuildPathDialogAccess;
+import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jface.dialogs.IDialogPage;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.resource.ColorRegistry;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import org.hibernate.cfg.NamingStrategy;
+import org.eclipse.ui.IWorkbenchPreferenceConstants;
+import org.eclipse.ui.PlatformUI;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.eclipse.console.EclipseConsoleConfiguration;
-import org.hibernate.eclipse.console.EclipseConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
-import org.hibernate.eclipse.console.utils.ProjectUtils;
+import org.hibernate.eclipse.console.actions.AddConfigurationAction;
+import org.hibernate.eclipse.launch.ConsoleConfigurationMainTab;
+import org.hibernate.eclipse.launch.ConsoleConfigurationTabGroup;
+import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
+import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 import org.hibernate.util.StringHelper;
-import org.xml.sax.EntityResolver;
-
 
 /**
+ * This wizardpage wraps the LaunchConfiguration based tabs and thus mimicks the normal launch configuration ui.
+ * Most logic should go to the launch config tabs, very little logic should need to be in this class (besides handling the tabs and name of the configuraiton).
+ * 
  * @author max
- *
- *
  */
-public class ConsoleConfigurationWizardPage extends WizardPage {
-
-	private Text propertyFileText;
-	private Text configurationFileText;
-	private Text configurationNameText;
-	private Text projectNameText;
-	private Text persistenceUnitNameText;
-
-
-	private EclipseConsoleConfiguration oldConfiguaration = null;
-	Button coreMode;
-	Button jpaMode;
-	Button annotationsMode;
-
-	private Text entityResolverClassNameText;
-	private Text namingStrategyClassNameText;
-
-	private ISelection selection;
-	private UpDownListComposite mappingFilesViewer;
-	private UpDownListComposite classPathViewer;
-	private boolean configurationFileWillBeCreated;
-	private Button confbutton;
-	private Button entbutton;
-	private Button useProjectClassPath;
-	private Button nambutton;
+public class ConsoleConfigurationWizardPage extends WizardPage implements
+		ILaunchConfigurationDialog {
 
 	/**
+	 * Name label widget
+	 */
+	protected Label nameLabel;
+
+	/**
+	 * Name text widget
+	 */
+	protected Text nameWidget;
+
+	/**
+	 * custom tab folder control
+	 */
+	protected CTabFolder tabFolder;
+
+	/**
+	 * Tab controls
+	 */
+	protected ConsoleConfigurationTabGroup tabGroup;
+
+	protected ILaunchConfigurationWorkingCopy currentLaunchConfig;
+
+	protected int currentTabIndex;
+	
+	protected ISelection selection;
+
+	private boolean initializingTabs;
+	
+	/**
 	 * Constructor for SampleNewWizardPage.
+	 * 
 	 * @param pageName
 	 */
 	public ConsoleConfigurationWizardPage(ISelection selection) {
@@ -136,641 +131,247 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 	 * @see IDialogPage#createControl(Composite)
 	 */
 	public void createControl(Composite parent) {
-		final ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+		final ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL
+				| SWT.V_SCROLL);
 		sc.setExpandHorizontal(true);
 		sc.setExpandVertical(true);
-		TabFolder folder = new TabFolder(sc, SWT.TOP);
-		sc.setContent(folder);
 
-		//Composite container = new Composite(parent, SWT.NULL);
+		Composite container = new Composite(sc, SWT.NONE);
 
-		GridLayout layout = new GridLayout();
-		//container.setLayout(layout);
-		layout.numColumns = 3;
-		layout.verticalSpacing = 9;
+		GridLayout layout = new GridLayout(2, false);
+		layout.verticalSpacing = 10;
+		layout.horizontalSpacing = 5;
+		container.setLayout(layout);
+		GridData gd = new GridData(GridData.FILL_BOTH);
+		container.setLayoutData(gd);
 
-		GridData gd;
+		nameLabel = new Label(container, SWT.HORIZONTAL | SWT.LEFT);
+		nameLabel.setText("Name");
+		nameLabel.setLayoutData(new GridData(
+				GridData.HORIZONTAL_ALIGN_BEGINNING));
+
+		nameWidget = new Text(container, SWT.SINGLE | SWT.BORDER);
+		nameWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		tabFolder = new CTabFolder(container, SWT.TOP | SWT.NO_REDRAW_RESIZE
+				| SWT.NO_TRIM | SWT.FLAT);
+		gd = new GridData(GridData.FILL_BOTH);
+		gd.horizontalSpan = 2;
+		ColorRegistry reg = JFaceResources.getColorRegistry();
+		Color c1 = reg.get("org.eclipse.ui.workbench.ACTIVE_TAB_BG_START"), //$NON-NLS-1$
+		c2 = reg.get("org.eclipse.ui.workbench.ACTIVE_TAB_BG_END"); //$NON-NLS-1$
+		tabFolder.setSelectionBackground(new Color[] { c1, c2 },
+				new int[] { 100 }, true);
+		tabFolder.setSelectionForeground(reg
+				.get("org.eclipse.ui.workbench.ACTIVE_TAB_TEXT_COLOR")); //$NON-NLS-1$
+		tabFolder.setSimple(PlatformUI.getPreferenceStore().getBoolean(
+				IWorkbenchPreferenceConstants.SHOW_TRADITIONAL_STYLE_TABS));
+		tabFolder.setLayoutData(gd);
+		tabFolder.setBorderVisible(true);
+		tabFolder.setFont(parent.getFont());
+
+		sc.setContent(container);
+
+		initTabs(tabFolder);
+
+		try {
+			performStart();
+		} catch (CoreException ce) {
+			HibernateConsolePlugin
+				.getDefault().showError(getShell(),
+					HibernateConsoleMessages.AddConfigurationAction_problem_add_console_config,
+					ce);
+		}
+		try {
+			initialize(currentLaunchConfig, selection);
+		} catch (CoreException ce) {
+			HibernateConsolePlugin
+				.getDefault().logErrorMessage(
+					HibernateConsoleMessages.ConsoleConfigurationWizardPage_problem_while_initializing_cc,
+					ce);
+		}
+		performInit();
 
 		ModifyListener modifyListener = new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				dialogChanged();
 			}
 		};
-
-
-		Composite general = createGeneral( folder, modifyListener );
-		TabItem item = new TabItem(folder, SWT.NONE);
-		item.setControl( general );
-		item.setText( HibernateConsoleMessages.ConsoleConfigurationWizardPage_general );
-
-		Composite composite = buildClassPathTable(folder);
-		item = new TabItem(folder, SWT.NONE);
-		item.setControl( composite );
-		item.setText( HibernateConsoleMessages.ConsoleConfigurationWizardPage_classpath );
-
-		composite = buildMappingFileTable(folder);
-		item = new TabItem(folder, SWT.NONE);
-		item.setControl( composite );
-		item.setText( HibernateConsoleMessages.ConsoleConfigurationWizardPage_mappings );
-
-		initialize(selection);
-		dialogChanged();
-		sc.setMinSize(folder.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+		nameWidget.addModifyListener(modifyListener);
+		
+		setActiveTab(0);		
+		sc.setMinSize(tabFolder.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		setControl(sc);
+		dialogChanged();
 	}
 
-	private Composite createGeneral(Composite parent, ModifyListener modifyListener) {
-		Composite container = new Composite(parent, SWT.NULL);
-		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 3;
-		gridLayout.verticalSpacing = 9;
+	protected void initTabs(CTabFolder folder) {
 
-		container.setLayout(gridLayout);
-		Label label;
-		Button button;
-		GridData gd;
-		label = new Label(container, SWT.NULL);
-		label.setText(HibernateConsoleMessages.ConsoleConfigurationWizardPage_name);
-
-		configurationNameText = new Text(container, SWT.BORDER | SWT.SINGLE);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = 2;
-		configurationNameText.setLayoutData(gd);
-		configurationNameText.addModifyListener(modifyListener);
-
-		label = new Label(container, SWT.NULL);
-		label.setText(HibernateConsoleMessages.ConsoleConfigurationWizardPage_project);
-
-		projectNameText = new Text(container, SWT.BORDER | SWT.SINGLE);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		projectNameText.setLayoutData(gd);
-		projectNameText.addModifyListener(modifyListener);
-
-		button = new Button(container, SWT.PUSH);
-		button.setText(HibernateConsoleMessages.ConsoleConfigurationWizardPage_browse);
-		button.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				handleProjectBrowse();
+		tabGroup = new ConsoleConfigurationTabGroup();
+		tabGroup.createTabs(this, null); // TODO: set the proper mode here
+		ILaunchConfigurationTab[] tabs = tabGroup.getTabs();
+		for (int i = 0; i < tabs.length; i++) {
+			tabs[i].setLaunchConfigurationDialog(this);
+		}
+		for (int i = 0; i < tabs.length; i++) {
+			CTabItem item = new CTabItem(folder, SWT.BORDER);
+			item.setText(tabs[i].getName());
+			item.setImage(tabs[i].getImage());
+			tabs[i].createControl(item.getParent());
+			Control control = tabs[i].getControl();
+			if (control != null) {
+				item.setControl(control);
 			}
-		});
-
-		//label = new Label(container, SWT.NULL);
-		createConfigurationMode( container );
-
-
-		label = new Label(container, SWT.NULL);
-		label.setText(HibernateConsoleMessages.ConsoleConfigurationWizardPage_property_file_2);
-
-		propertyFileText = new Text(container, SWT.BORDER | SWT.SINGLE);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		propertyFileText.setLayoutData(gd);
-		propertyFileText.addModifyListener(modifyListener);
-
-
-		button = new Button(container, SWT.PUSH);
-		button.setText(HibernateConsoleMessages.ConsoleConfigurationWizardPage_browse);
-		button.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				handlePropertyFileBrowse();
-			}
-		});
-
-		label = new Label(container, SWT.NULL);
-		label.setText(HibernateConsoleMessages.ConsoleConfigurationWizardPage_config_file);
-
-		configurationFileText = new Text(container, SWT.BORDER | SWT.SINGLE);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		configurationFileText.setLayoutData(gd);
-		configurationFileText.addModifyListener(modifyListener);
-
-		confbutton = new Button(container, SWT.PUSH);
-		confbutton.setText(HibernateConsoleMessages.ConsoleConfigurationWizardPage_browse);
-		confbutton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				handleConfigurationFileBrowse();
-			}
-		});
-
-		label = new Label(container, SWT.NULL);
-		label.setText(HibernateConsoleMessages.ConsoleConfigurationWizardPage_persistence_unit);
-
-		persistenceUnitNameText = new Text(container, SWT.BORDER | SWT.SINGLE);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = 2;
-		persistenceUnitNameText.setLayoutData(gd);
-		persistenceUnitNameText.addModifyListener(modifyListener);
-
-		label = new Label(container, SWT.NULL);
-		label.setText(HibernateConsoleMessages.ConsoleConfigurationWizardPage_naming_strategy);
-
-		namingStrategyClassNameText = new Text(container, SWT.BORDER | SWT.SINGLE);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = 1;
-		namingStrategyClassNameText.setLayoutData(gd);
-		namingStrategyClassNameText.addModifyListener(modifyListener);
-
-		nambutton = new Button(container, SWT.PUSH);
-		nambutton.setText(HibernateConsoleMessages.ConsoleConfigurationWizardPage_browse);
-		nambutton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				handleNamingStrategyBrowse();
-			}
-		});
-
-		label = new Label(container, SWT.NULL);
-		label.setText(HibernateConsoleMessages.ConsoleConfigurationWizardPage_entity_resolver);
-
-		entityResolverClassNameText = new Text(container, SWT.BORDER | SWT.SINGLE);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = 1;
-		entityResolverClassNameText.setLayoutData(gd);
-		entityResolverClassNameText.addModifyListener(modifyListener);
-
-		entbutton = new Button(container, SWT.PUSH);
-		entbutton.setText(HibernateConsoleMessages.ConsoleConfigurationWizardPage_browse);
-		entbutton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				handleEntityResolverBrowse();
-			}
-		});
-
-
-		return container;
-	}
-
-
-	private void createConfigurationMode(Composite container) {
-		SelectionListener sl = new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				dialogChanged();
-			}
-		};
-		new Label(container, SWT.NULL).setText( HibernateConsoleMessages.ConsoleConfigurationWizardPage_type );
-		Group group = new Group( container, SWT.SHADOW_IN);
-		//group.setText("Choose Hibernate configuration");
-		group.setLayout( new RowLayout( SWT.HORIZONTAL ) );
-		coreMode = new Button(group, SWT.RADIO);
-		coreMode.setText(HibernateConsoleMessages.ConsoleConfigurationWizardPage_core);
-		coreMode.addSelectionListener( sl );
-		coreMode.setSelection( true );
-		annotationsMode = new Button(group, SWT.RADIO);
-		annotationsMode.setText(HibernateConsoleMessages.ConsoleConfigurationWizardPage_annotations);
-		annotationsMode.addSelectionListener( sl );
-		jpaMode = new Button(group, SWT.RADIO);
-		jpaMode.setText(HibernateConsoleMessages.ConsoleConfigurationWizardPage_jpa);
-		jpaMode.addSelectionListener( sl );
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = 2;
-		group.setLayoutData( gd );
-	}
-
-	protected void handleEntityResolverBrowse() {
-		String string = DialogSelectionHelper.chooseImplementation(EntityResolver.class.getName(), entityResolverClassNameText.getText(), HibernateConsoleMessages.ConsoleConfigurationWizardPage_select_entity_resolver_class, getShell());
-		if(string!=null) {
-			entityResolverClassNameText.setText(string);
 		}
 	}
 
-	protected void handleNamingStrategyBrowse() {
-		String string = DialogSelectionHelper.chooseImplementation(NamingStrategy.class.getName(), namingStrategyClassNameText.getText(), HibernateConsoleMessages.ConsoleConfigurationWizardPage_select_naming_strategy_class, getShell());
-		if(string!=null) {
-			namingStrategyClassNameText.setText(string);
-		}
+	public void performStart() throws CoreException {
+		currentLaunchConfig = AddConfigurationAction.createTemporaryLaunchConfiguration().getWorkingCopy();		
+	}
+	
+	public void performCancel() throws CoreException {
+		AddConfigurationAction.deleteTemporaryLaunchConfigurations();		
 	}
 
-
-	private Composite buildClassPathTable(Composite parent) {
-		Composite c = new Composite(parent, SWT.None);
-		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 1;
-		gridLayout.verticalSpacing = 9;
-		c.setLayout( gridLayout );
-
-		classPathViewer = new UpDownListComposite(c, SWT.NONE, HibernateConsoleMessages.ConsoleConfigurationWizardPage_additional_classpath) {
-			protected Object[] handleAdd(int idx) {
-
-				TableItem[] items = getTable().getItems();
-				IPath[] exclude = new IPath[items.length];
-
-				for (int i = 0; i < items.length; i++) {
-					TableItem item = items[i];
-					exclude[i] = (IPath) item.getData();
-				}
-
-				switch (idx) {
-				case 0:
-					return DialogSelectionHelper.chooseFileEntries(getShell(), null, exclude, HibernateConsoleMessages.ConsoleConfigurationWizardPage_add_classpath_entry, HibernateConsoleMessages.ConsoleConfigurationWizardPage_add_directory_zip_jar, new String[] { HibernateConsoleMessages.ConsoleConfigurationWizardPage_27, HibernateConsoleMessages.ConsoleConfigurationWizardPage_28 }, true, true, true);
-				case 1:
-					return BuildPathDialogAccess.chooseExternalJAREntries(getShell() );
-				default:
-					return null;
-				}
-
-			}
-
-			protected String[] getAddButtonLabels() {
-				return new String[] { HibernateConsoleMessages.ConsoleConfigurationWizardPage_add_jar_dir, HibernateConsoleMessages.ConsoleConfigurationWizardPage_add_external_jars };
-			}
-			protected void listChanged() {
-				dialogChanged();
-			}
-
-		};
-		GridData gd = new GridData();
-		gd.grabExcessHorizontalSpace = true;
-		gd.grabExcessVerticalSpace = true;
-		gd.verticalAlignment = GridData.FILL;
-		gd.horizontalAlignment = GridData.FILL;
-		classPathViewer.setLayoutData( gd );
-
-		useProjectClassPath = new Button(c, SWT.CHECK);
-		useProjectClassPath.setSelection( true );
-		useProjectClassPath.setText(HibernateConsoleMessages.ConsoleConfigurationWizardPage_include_default_classpath);
-		useProjectClassPath.addSelectionListener(new SelectionListener() {
-
-			public void widgetDefaultSelected(SelectionEvent e) {
-				dialogChanged();
-			}
-
-			public void widgetSelected(SelectionEvent e) {
-				dialogChanged();
-			}
-		});
-
-
-		return c;
+	public void performFinish() throws CoreException {
+		currentLaunchConfig.rename(nameWidget.getText().trim());
+		currentLaunchConfig.doSave();
+		AddConfigurationAction.makeTemporaryLaunchConfigurationsPermanent();		
 	}
 
-	private UpDownListComposite buildMappingFileTable(Composite parent) {
-		mappingFilesViewer = new UpDownListComposite(parent, SWT.NONE, HibernateConsoleMessages.ConsoleConfigurationWizardPage_additional_mapping_files) {
-			protected Object[] handleAdd(int idx) {
-				TableItem[] items = getTable().getItems();
-				IPath[] exclude = new IPath[items.length];
-
-				for (int i = 0; i < items.length; i++) {
-					TableItem item = items[i];
-					exclude[i] = (IPath) item.getData();
-				}
-
-				return DialogSelectionHelper.chooseFileEntries(getShell(), null, exclude, HibernateConsoleMessages.ConsoleConfigurationWizardPage_add_hbmxml_file, HibernateConsoleMessages.ConsoleConfigurationWizardPage_add_hibernate_mapping_file, new String[] { HibernateConsoleMessages.ConsoleConfigurationWizardPage_35 }, true, false, true);
-			}
-
-			protected void listChanged() {
-				dialogChanged();
-			}
-		};
-
-		GridData gd;
-		gd = new GridData(GridData.FILL_BOTH);
-
-		gd.horizontalSpan = 3;
-		gd.verticalSpan = 1;
-
-		mappingFilesViewer.setLayoutData( gd );
-		return mappingFilesViewer;
-	}
-
-
-
-	/**
-	 * A visitor class that will make a "best guess" on which files the
-	 * user want for the properties and config file.
-	 *
-	 * @author max
-	 *
-	 */
-	static class Visitor implements IResourceProxyVisitor {
-
-		public IPath   propertyFile;
-		public IPath   configFile;
-		public IPath   persistencexml;
-		public IJavaProject javaProject;
-		public List    classpath = new ArrayList();
-		public List    mappings = new ArrayList();
-
-		public boolean visit(IResourceProxy proxy) throws CoreException {
-			//System.out.println("visit: " + proxy.getName() );
-			IPath fullPath = proxy.requestFullPath();
-			if(proxy.getType() == IResource.FILE) {
-				if("hibernate.properties".equals(proxy.getName() ) ) { //$NON-NLS-1$
-					propertyFile = fullPath;
-					return false;
-				}
-
-				if("hibernate.cfg.xml".equals(proxy.getName() ) ) { //$NON-NLS-1$
-					configFile = fullPath;
-					mappings.clear(); // we prefer af cfg.xml over mappings
-					return false;
-				}
-
-				if("persistence.xml".equals( proxy.getName() )) { //$NON-NLS-1$
-					if(javaProject!=null && javaProject.isOnClasspath( proxy.requestResource() )) {
-						persistencexml = fullPath;
-						mappings.clear();
-						return false;
-					}
-				}
-
-				// only add mappings if we don't have a config file.
-				if((configFile==null || persistencexml==null) && proxy.getName().endsWith(".hbm.xml") ) { //$NON-NLS-1$
-					mappings.add(fullPath);
-					return false;
-				}
-			} else if(proxy.getType() == IResource.FOLDER) {
-				if(javaProject!=null) {
-					if(javaProject.getOutputLocation().isPrefixOf(fullPath) ) {
-						//classpath.add(fullPath);
-						return false; // skip output locations
-					}
-				}
-			}
-			return true;
-		}
-	}
-
-
-
-	public void initialize(ISelection currentSelection) {
-		try {
-			Visitor v = new Visitor();
-		// use selection to build configuration from it...
-		if (currentSelection!=null && currentSelection.isEmpty()==false && currentSelection instanceof IStructuredSelection) {
-			IStructuredSelection ssel = (IStructuredSelection)currentSelection;
-			if (ssel.size()>1) return;
-			Object obj = ssel.getFirstElement();
-
-			IContainer container = null;
-			if (obj instanceof IJavaElement) {
-				v.javaProject = ((IJavaElement) obj).getJavaProject();
-				if(v.javaProject!=null) {
-					container = v.javaProject.getProject();
-				}
-			}
-			if (obj instanceof IResource) {
-				IResource res = (IResource) obj;
-				if (obj instanceof IContainer) {
-					container = (IContainer)res;
-				} else {
-					container = res.getParent();
-				}
-
-				if(res.getProject()!=null) {
-					IJavaProject project = JavaCore.create(res.getProject());
-					if(project.exists()) {
-						v.javaProject = project;
-					}
-				}
-			}
-
-			if(container!=null) {
-				container.accept(v, IResource.NONE);
-
-                if(v.javaProject==null) {
-                    IProject project = container.getProject();
-                    v.javaProject = JavaCore.create(project);
-                }
-
-				if(v.javaProject!=null) {
-					ILaunchManager lm = DebugPlugin.getDefault().getLaunchManager();
-					String uniqName = lm.generateUniqueLaunchConfigurationNameFrom(v.javaProject.getElementName());
-					configurationNameText.setText(uniqName);
-					projectNameText.setText(v.javaProject.getElementName());
-				}
-				if (v.propertyFile!=null) {
-					propertyFileText.setText(v.propertyFile.toOSString() );
-				}
-
-				if (v.configFile!=null) {
-					configurationFileText.setText(v.configFile.toOSString() );
-				}
-
-				if (v.persistencexml!=null) {
-					jpaMode.setSelection( true );
-					coreMode.setSelection( false );
-					annotationsMode.setSelection( false );
-				}
-				if (!v.mappings.isEmpty() && v.configFile==null && v.persistencexml==null) mappingFilesViewer.add(v.mappings.toArray(), false);
-				if (!v.classpath.isEmpty() ) classPathViewer.add(v.classpath.toArray(), false);
-				useProjectClassPath.setSelection( true );
-                //if(v.javaProject!=null) {
-					//classPathViewer.add(locateTypes(v.javaProject).toArray(), false);
-				//}
-			} else if (obj instanceof EclipseConsoleConfiguration) {
-				// trying to edit an EXISTING consoleconfiguration
-				EclipseConsoleConfiguration cc = (EclipseConsoleConfiguration) obj;
-				EclipseConsoleConfigurationPreferences prefs = (EclipseConsoleConfigurationPreferences) cc.getPreferences();
-
-				configurationNameText.setText(prefs.getName() );
-				if(prefs.getProjectName()!=null) projectNameText.setText( prefs.getProjectName() );
-				useProjectClassPath.setSelection( prefs.useProjectClasspath() );
-				if(prefs.getPropertyFilename()!=null) propertyFileText.setText(prefs.getPropertyFilename().toOSString() );
-				if(prefs.getCfgFile()!=null) configurationFileText.setText(prefs.getCfgFile().toOSString() );
-				if(prefs.getMappings()!=null) mappingFilesViewer.add(prefs.getMappings(),false);
-				if(prefs.getCustomClasspath()!=null) classPathViewer.add(prefs.getCustomClasspath(),false);
-				if(prefs.getEntityResolverName()!=null) entityResolverClassNameText.setText(prefs.getEntityResolverName());
-				if(prefs.getNamingStrategy() !=null) namingStrategyClassNameText.setText(prefs.getNamingStrategy());
-				if(prefs.getPersistenceUnitName()!=null) persistenceUnitNameText.setText( prefs.getPersistenceUnitName() );
-				jpaMode.setSelection( prefs.getConfigurationMode().equals( ConfigurationMode.JPA ) );
-				coreMode.setSelection( prefs.getConfigurationMode().equals( ConfigurationMode.CORE ) );
-				annotationsMode.setSelection( prefs.getConfigurationMode().equals( ConfigurationMode.ANNOTATIONS ) );
-
-				oldConfiguaration = cc;
-			}
-
-
-
-
-		}
-		} catch (CoreException ce) {
-			HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.ConsoleConfigurationWizardPage_problem_while_initializing_cc, ce);
-		}
-
-	}
-
-	List locateTypes(final IJavaProject javaProject) {
-
-		try {
-			String typeName = "java.sql.Driver"; //$NON-NLS-1$
-            final SearchPattern pattern = SearchPattern.createPattern(typeName, IJavaSearchConstants.TYPE, IJavaSearchConstants.IMPLEMENTORS, SearchPattern.R_EXACT_MATCH);
-			final IJavaSearchScope scope = SearchEngine.createJavaSearchScope(new IJavaElement[] {javaProject });
-
-			final SearchEngine engine = new SearchEngine();
-
-			final CollectingSearchRequestor sr = new CollectingSearchRequestor();
-			final SearchParticipant[] participants = new SearchParticipant[] {SearchEngine.getDefaultSearchParticipant()};
-
-			final ProgressMonitorDialog dialog = new ProgressMonitorDialog(getShell() );
-
-
-			dialog.run(true, false, new IRunnableWithProgress() {
-				public void run(IProgressMonitor monitor) {
-					try {
-						engine.search(pattern, participants, scope, sr, monitor);
-					} catch (CoreException ce) {
-						HibernateConsolePlugin.getDefault().logErrorMessage(
-								HibernateConsoleMessages.ConsoleConfigurationWizardPage_problem_while_locating_jdbc_drivers, ce);
-					}
-				}
-			});
-
-
-			List resources = new ArrayList();
-			Iterator iter = sr.getResults().iterator();
-			while (iter.hasNext() ) {
-				SearchMatch match = (SearchMatch) iter.next();
-				if(match.getResource() instanceof IFile) { // what happens if a actual class implements java.sql.driver ?
-					resources.add(match.getResource().getFullPath() );
-				}
-			}
-
-			return resources;
-		} catch (InvocationTargetException e) {
-			HibernateConsolePlugin.getDefault().logErrorMessage(
-					HibernateConsoleMessages.ConsoleConfigurationWizardPage_problem_while_locating_jdbc_drivers, e);
-			} catch (InterruptedException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage(
-						HibernateConsoleMessages.ConsoleConfigurationWizardPage_problem_while_locating_jdbc_drivers, e);
-		}
-
-
-		return Collections.EMPTY_LIST;
-	}
-
-	IPath[] getMappingFiles() {
-		return tableItems2File(mappingFilesViewer.getTable() );
-	}
-
-	IPath[] getClassPath() {
-		return tableItems2File(classPathViewer.getTable() );
-	}
-
-	private IPath[] tableItems2File(Table table) {
-		TableItem[] items = table.getItems();
-		IPath[] str = new IPath[items.length];
-		for (int i = 0; i < items.length; i++) {
-			TableItem item = items[i];
-			IPath path = (IPath) item.getData();
-			str[i] = path;
-		}
-		return str;
-	}
-
-	private void handlePropertyFileBrowse() {
-		IPath[] paths = org.hibernate.eclipse.console.utils.xpl.DialogSelectionHelper.chooseFileEntries(getShell(),  getPropertyFilePath(), new IPath[0], HibernateConsoleMessages.ConsoleConfigurationWizardPage_select_property_file, HibernateConsoleMessages.ConsoleConfigurationWizardPage_choose_file_to_use, new String[] {"properties"}, false, false, true); //$NON-NLS-1$
-		if(paths!=null && paths.length==1) {
-			propertyFileText.setText( (paths[0]).toOSString() );
-		}
-	}
-
-	private void handleProjectBrowse() {
-		IJavaProject paths = DialogSelectionHelper.chooseJavaProject( getShell(), ProjectUtils.findJavaProject( getProjectName() ), HibernateConsoleMessages.ConsoleConfigurationWizardPage_select_java_project, HibernateConsoleMessages.ConsoleConfigurationWizardPage_select_java_project_to_classpath );
-		if(paths!=null) {
-			projectNameText.setText( paths.getProject().getName() );
-		} else {
-			projectNameText.setText(""); //$NON-NLS-1$
-		}
-	}
-
-
-	private void handleConfigurationFileBrowse() {
-		IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  getConfigurationFilePath(), new IPath[0], HibernateConsoleMessages.ConsoleConfigurationWizardPage_select_hibcfgxml_file, HibernateConsoleMessages.ConsoleConfigurationWizardPage_choose_file_to_use_hibcfgxml_file, new String[] {"cfg.xml"}, false, false, true); //$NON-NLS-1$
-		if(paths!=null && paths.length==1) {
-			configurationFileText.setText( (paths[0]).toOSString() );
-		}
+	public void performInit() {
+		initializingTabs = true;
+		nameWidget.setText(currentLaunchConfig.getName());
+		tabGroup.initializeFrom(currentLaunchConfig);
+		initializingTabs = false;
 	}
 
 	/**
 	 * Ensures that both text fields are set.
 	 */
-
-	private void dialogChanged() {
-		String propertyFilename = propertyFileText.getText();
-		String configurationFilename = configurationFileText.getText();
-		setMessage(null);
-
-		configurationFileText.setEnabled( !configurationFileWillBeCreated && !getConfigurationMode().equals( ConfigurationMode.JPA ) );
-		confbutton.setEnabled( !getConfigurationMode().equals( ConfigurationMode.JPA ) );
-
-		persistenceUnitNameText.setEnabled( getConfigurationMode().equals( ConfigurationMode.JPA) );
-
-		String error = verifyConfigurationName();
-		if (error != null){
-			updateStatus(error);
+	protected void dialogChanged() {
+		if(initializingTabs) {
 			return;
 		}
-
-		if(getProjectName()!=null && StringHelper.isNotEmpty(getProjectName().trim())) {
-			IJavaProject findJavaProject = ProjectUtils.findJavaProject( getProjectName() );
-			if(findJavaProject==null || !findJavaProject.exists()) {
-				String out = NLS.bind(HibernateConsoleMessages.ConsoleConfigurationWizardPage_the_java_project_does_not_exist, getProjectName());
-				updateStatus(out);
-				return;
-			}
-		}
-
-		/* TODO: warn about implicit behavior of loading /hibernate.cfg.xml, /hibernate.properties and /META-INF/persistence.xml
-		 * if (propertyFilename.length() == 0 && configurationFilename.trim().length() == 0) {
-			updateStatus("Property or Configuration file must be specified");
-			return;
-		} */
-
-		if (propertyFilename.length() > 0) {
-			IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(propertyFilename);
-			String msg = checkForFile(HibernateConsoleMessages.ConsoleConfigurationWizardPage_property_file_1, resource);
-			if(msg!=null) {
-				updateStatus(msg);
-				return;
-			}
-		}
-
-		if (!configurationFileWillBeCreated && configurationFilename.length() > 0) {
-			IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(configurationFilename);
-			String msg = checkForFile(HibernateConsoleMessages.ConsoleConfigurationWizardPage_configuration_file,resource);
-			if(msg!=null) {
-				updateStatus(msg);
-				return;
-			}
-		} else if(mappingFilesViewer.getTable().getItemCount()==0) {
-			//TODO: removed to provide a way to create a non-mapping base configuration
-			//updateStatus("Need to specify one or more mapping files");
-			//return;
-		}
-
-		if((useProjectClassPath() && StringHelper.isEmpty( getProjectName() )) && classPathViewer.getTable().getItemCount()==0) {
-			updateStatus( HibernateConsoleMessages.ConsoleConfigurationWizardPage_need_to_specify_project );
+		String messageWarning = null;
+		String messageError = null;
+		if (tabGroup == null || currentLaunchConfig == null) {
+			setMessage(messageWarning);
+			updateStatus(messageError);
 			return;
 		}
-
-		if((!useProjectClassPath() && classPathViewer.getTable().getItemCount()==0)) {
-			updateStatus( HibernateConsoleMessages.ConsoleConfigurationWizardPage_need_to_specify_classpath );
+		String name = getConfigurationName();
+		if (name != null) {
+			name = name.trim();
+		}
+		messageError = verifyConfigurationName(name);
+		if (messageError != null) {
+			setMessage(messageWarning);
+			updateStatus(messageError);
 			return;
 		}
 		
-		if ((configurationFilename != null && configurationFilename.trim().length() > 0) &&
-				(propertyFilename != null && propertyFilename.trim().length() > 0)) {
-			setMessage(HibernateConsoleMessages.ConsoleConfigurationWizardPage_both_hibernate_properties_and_hibernate_cfg_xml, WARNING);
-			return;
+		tabGroup.performApply(currentLaunchConfig);
+		
+		ILaunchConfigurationTab[] tabs = tabGroup.getTabs();		
+		for (int i = 0; i < tabs.length; i++) {
+			if (tabs[i].isValid(currentLaunchConfig)) {
+				if (messageWarning == null) {
+					messageWarning = tabs[i].getMessage();
+					if(messageWarning!=null) {
+						System.out.println(tabs[i].getName() + " warns: " + messageWarning);
+					}
+				}
+			} else {
+				if (messageError == null) {
+					messageError = tabs[i].getErrorMessage();
+					if(messageError!=null) {
+						System.out.println(tabs[i].getName() + " errors: " + messageError);
+					}
+				}
+			}
 		}
-
-		updateStatus(null);
+		setMessage(messageWarning);
+		updateStatus(messageError);
 	}
-	
-	private String verifyConfigurationName(){
-		String currentName = getConfigurationName().trim();
 
-		if (currentName == null || currentName.length() < 1) {
-			return HibernateConsoleMessages.ConsoleConfigurationWizardPage_name_must_specified;
-		}
-
-		ILaunchManager lm = DebugPlugin.getDefault().getLaunchManager();
+	private boolean existingLaunchConfiguration(String name) {
+		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+		ILaunchConfigurationType launchConfigurationType = launchManager
+			.getLaunchConfigurationType(ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID);
 		try {
-			if (lm.isExistingLaunchConfigurationName(currentName)) {
-				return HibernateConsoleMessages.ConsoleConfigurationWizardPage_config_name_already_exist;
+			ILaunchConfiguration[] configs;
+			configs = launchManager.getLaunchConfigurations(launchConfigurationType);				
+			for (int i = 0; i < configs.length; i++) {
+				if(!configs[i].getAttribute(AddConfigurationAction.TEMPORARY_CONFIG_FLAG, false)) {
+					if (name.equalsIgnoreCase(configs[i].getName())) {
+						return true;
+					}	
+				}					
 			}
 		} catch (CoreException e) {
 			HibernateConsolePlugin.getDefault().logErrorMessage(e.getMessage(), e);
 		}
+		return false;
+	}
 
+	/**
+	 * Notification that a tab has been selected
+	 * 
+	 * Disallow tab changing when the current tab is invalid. Update the config
+	 * from the tab being left, and refresh the tab being entered.
+	 */
+	protected void handleTabSelected() {
+		if(tabGroup==null) return;
+		ILaunchConfigurationTab[] tabs = tabGroup.getTabs();
+		if (currentTabIndex == tabFolder.getSelectionIndex() || tabs == null
+				|| tabs.length == 0 || currentTabIndex > (tabs.length - 1)) {
+			return;
+		}
+		if (currentTabIndex != -1) {
+			ILaunchConfigurationTab tab = tabs[currentTabIndex];
+			if (currentLaunchConfig != null) {
+				tab.deactivated(currentLaunchConfig);
+				getActiveTab().activated(currentLaunchConfig);				
+			}			
+		}
+		currentTabIndex = tabFolder.getSelectionIndex();
+	}
+
+	
+	public void setActiveTab(int index) {
+		if(tabGroup==null) return;
+		ILaunchConfigurationTab[] tabs = tabGroup.getTabs();		
+		if (tabs != null && index >= 0 && index < tabs.length) {
+			tabFolder.setSelection(index);
+			handleTabSelected();
+			dialogChanged();
+		}
+	}
+
+	/**
+	 * Returns the currently active <code>ILaunchConfigurationTab</code> being
+	 * displayed, or <code>null</code> if there is none.
+	 * 
+	 * @return currently active <code>ILaunchConfigurationTab</code>, or
+	 *         <code>null</code>.
+	 */
+	public ILaunchConfigurationTab getActiveTab() {
+		if(tabGroup==null) return null;
+		ILaunchConfigurationTab[] tabs = tabGroup.getTabs();		
+		if (tabFolder != null && tabs != null) {
+			int pageIndex = tabFolder.getSelectionIndex();
+			if (pageIndex >= 0) {
+				return tabs[pageIndex];
+			}
+		}
+		return null;
+	}
+
+	protected String verifyConfigurationName(String currentName) {
+		if (currentName == null || currentName.length() < 1) {
+			return HibernateConsoleMessages.ConsoleConfigurationWizardPage_name_must_specified;
+		}
 		if (Platform.OS_WIN32.equals(Platform.getOS())) {
 			String[] badnames = new String[] { "aux", "clock$", "com1", "com2", "com3", "com4", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ 
 					"com5", "com6", "com7", "com8", "com9", "con", "lpt1", "lpt2", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
@@ -791,28 +392,14 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 			}
 		}
 
+		if(existingLaunchConfiguration(currentName)) {
+			return HibernateConsoleMessages.ConsoleConfigurationWizardPage_config_name_already_exist;
+		}
 		return null;
 	}
 
-	String getProjectName() {
-		return projectNameText.getText();
-	}
-
-	String getConfigurationName() {
-		return configurationNameText.getText();
-	}
-
-	private String checkForFile(String msgPrefix, IResource resource) {
-		if(resource!=null) {
-			if(resource instanceof IFile) {
-
-				return null;
-			} else {
-				return msgPrefix + HibernateConsoleMessages.ConsoleConfigurationWizardPage_is_not_a_file;
-			}
-		} else {
-			return msgPrefix + HibernateConsoleMessages.ConsoleConfigurationWizardPage_does_not_exist;
-		}
+	private String getConfigurationName() {
+		return nameWidget.getText();
 	}
 
 	private void updateStatus(String message) {
@@ -820,68 +407,224 @@ public class ConsoleConfigurationWizardPage extends WizardPage {
 		setPageComplete(message == null);
 	}
 
-	public Path getPropertyFilePath() {
-		String p = propertyFileText.getText();
-		return pathOrNull(p);
+	public String generateName(String name) {
+		// empty ILaunchConfigurationDialog method stub
+		return null;
 	}
-	private Path pathOrNull(String p) {
-		if(p==null || p.trim().length()==0) {
+
+	public String getMode() {
+		// empty ILaunchConfigurationDialog method stub
+		return null;
+	}
+
+	public ILaunchConfigurationTab[] getTabs() {
+		if(tabGroup==null) {
 			return null;
 		} else {
-			return new Path(p);
+			return tabGroup.getTabs();
 		}
 	}
 
-	public Path getConfigurationFilePath() {
-		return pathOrNull(configurationFileText.getText() );
+	public void setActiveTab(ILaunchConfigurationTab tab) {
+		// empty ILaunchConfigurationDialog method stub
+	}
+
+	public void setName(String name) {
+		nameWidget.setText(name);		
+	}
+
+	public void updateButtons() {
+		// empty ILaunchConfigurationDialog method stub
+	}
+
+	public void updateMessage() {
+		dialogChanged();
+	}
+
+	public void run(boolean fork, boolean cancelable,
+			IRunnableWithProgress runnable) throws InvocationTargetException,
+			InterruptedException {
+		// empty ILaunchConfigurationDialog method stub
+	}
+
+	static protected String nonEmptyTrimOrNull(Text t) {
+		return nonEmptyTrimOrNull( t.getText() );
+	}
+
+	static String nonEmptyTrimOrNull(String str) {
+		if(StringHelper.isEmpty( str )) {
+			return null;
+		} else {
+			return str.trim();
+		}
+	}
+
+	/////
+	// auxiliary functions to setup config parameters
+	// BEGIN
+	static protected void setPathAttribute(ILaunchConfigurationWorkingCopy currentLaunchConfig, String attr, IPath path) {
+		if (path != null) {
+			currentLaunchConfig.setAttribute(attr, nonEmptyTrimOrNull(path.toOSString()));
+		}
+		else {
+			currentLaunchConfig.setAttribute(attr, (String)null);
+		}
+	}
+	
+	static protected void setProjAttribute(ILaunchConfigurationWorkingCopy currentLaunchConfig, String attr, IJavaProject proj) {
+		if (proj != null) {
+			currentLaunchConfig.setAttribute(attr, nonEmptyTrimOrNull(proj.getElementName()));
+		}
+		else {
+			currentLaunchConfig.setAttribute(attr, (String)null);
+		}
+	}
+	
+	static protected void setStrAttribute(ILaunchConfigurationWorkingCopy currentLaunchConfig, String attr, String str) {
+		if (str != null) {
+			currentLaunchConfig.setAttribute(attr, nonEmptyTrimOrNull(str));
+		}
+		else {
+			currentLaunchConfig.setAttribute(attr, str);
+		}
+	}
+	// END
+	/////
+
+	/**
+	 * Init launch config parameters from proper selection
+	 * 
+	 * @param currentSelection
+	 */
+	static public void initialize(ILaunchConfigurationWorkingCopy launchConfig, ISelection currentSelection) throws CoreException {
+		BestGuessConsoleConfigurationVisitor v = new BestGuessConsoleConfigurationVisitor();
+		// use selection to build configuration from it...
+		if (currentSelection != null && currentSelection.isEmpty() == false
+				&& currentSelection instanceof IStructuredSelection) {
+			IStructuredSelection ssel = (IStructuredSelection) currentSelection;
+			if (ssel.size() > 1) {
+				return;
+			}
+			Object obj = ssel.getFirstElement();
+
+			IContainer container = null;
+			if (obj instanceof IJavaElement) {
+				v.setJavaProject(((IJavaElement) obj).getJavaProject());
+				if (v.getJavaProject() != null) {
+					container = v.getJavaProject().getProject();
+				}
+			}
+			if (obj instanceof IResource) {
+				IResource res = (IResource) obj;
+				if (obj instanceof IContainer) {
+					container = (IContainer) res;
+				} else {
+					container = res.getParent();
+				}
+				if (res.getProject() != null) {
+					IJavaProject project = JavaCore.create(res.getProject());
+					if (project.exists()) {
+						v.setJavaProject(project);
+					}
+				}
+			}
+			if (container != null && v.getJavaProject() == null) {
+				IProject project = container.getProject();
+				v.setJavaProject(JavaCore.create(project));
+			}
+			if (container != null) {
+				container.accept(v, IResource.NONE);
+				if (v.getJavaProject() == null) {
+					IProject project = container.getProject();
+					v.setJavaProject(JavaCore.create(project));
+				}
+				setProjAttribute(launchConfig, IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, v.getJavaProject());
+				
+				if (v.getJavaProject() != null) {
+					ILaunchManager lm = DebugPlugin.getDefault().getLaunchManager();
+					String uniqName = lm.generateUniqueLaunchConfigurationNameFrom(v.getJavaProject().getElementName());
+					launchConfig.rename(uniqName);							
+				}
+				setPathAttribute(launchConfig, IConsoleConfigurationLaunchConstants.PROPERTY_FILE, v.getPropertyFile());
+				setPathAttribute(launchConfig, IConsoleConfigurationLaunchConstants.CFG_XML_FILE, v.getConfigFile());
+				if (v.getPersistencexml() != null) {
+					setStrAttribute(launchConfig, IConsoleConfigurationLaunchConstants.CONFIGURATION_FACTORY, ConfigurationMode.JPA.toString());
+				}
+				else {
+					setStrAttribute(launchConfig, IConsoleConfigurationLaunchConstants.CONFIGURATION_FACTORY, ConfigurationMode.CORE.toString());
+				}
+				if (!v.getMappings().isEmpty() && v.getConfigFile() == null && v.getPersistencexml() == null) {
+					IPath[] mappings = v.getMappings().toArray(new IPath[]{});
+					List<String> l = new ArrayList<String>();
+					for (int i = 0; i < mappings.length; i++) {
+						IPath path = mappings[i];
+						l.add(path.toPortableString());
+					}
+				
+					launchConfig.setAttribute(IConsoleConfigurationLaunchConstants.FILE_MAPPINGS, l);
+				}
+				else {
+					launchConfig.setAttribute(IConsoleConfigurationLaunchConstants.FILE_MAPPINGS, (List<String>)null);
+				}
+				if (!v.getClasspath().isEmpty()) {
+					launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, false);
+					IPath[] custClasspath = v.getClasspath().toArray(new IPath[]{});
+					List<String> mementos = new ArrayList<String>(custClasspath.length);
+					for (int i = 0; i < custClasspath.length; i++) {
+						mementos.add(custClasspath[i].toOSString());
+					}
+					launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, mementos);
+				}
+				else {
+					launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, true);
+					launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, (List<String>)null);
+				}
+			} else if (obj instanceof EclipseConsoleConfiguration) {
+				throw new IllegalStateException("This should never happen!");
+			}
+		}
 	}
 
 	/**
-	 * @return
+	 * Init path to cfg.xml for ConsoleConfigurationMainTab,
+	 * init all tabs parameters
+	 * 
+	 * @param configFullPath full path to cfg.xml file
 	 */
-	public EclipseConsoleConfiguration getOldConfiguration() {
-		return oldConfiguaration;
-	}
-
-	public void setConfigurationFilePath(IPath containerFullPath) {
-		if(!configurationFileWillBeCreated) {
-			initialize( new StructuredSelection(containerFullPath) );
+	public void setConfigurationFilePath(IPath configFullPath) {
+		boolean flagFileWillBeCreated = false;
+		try {
+			IPath path = configFullPath;
+			IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
+			if (resource == null) {
+				flagFileWillBeCreated = true;
+			}
+			while (resource == null && path != null) {
+				path = path.removeLastSegments(1);
+				resource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
+			}
+			initialize(currentLaunchConfig, new StructuredSelection(resource));
+		} catch (CoreException e) {
+			HibernateConsolePlugin.getDefault().logErrorMessage(
+				HibernateConsoleMessages.ConsoleConfigurationWizardPage_problem_while_initializing_cc, e);
 		}
-		configurationFileText.setText(containerFullPath.toPortableString());
-
-		configurationFileWillBeCreated = true;
-		configurationFileText.setEnabled(false);
-		confbutton.setEnabled(false);
-	}
-
-	public String getEntityResolverClassName() {
-		return entityResolverClassNameText.getText();
-	}
-
-	public boolean useProjectClassPath() {
-		return useProjectClassPath.getSelection();
-	}
-
-	public ConfigurationMode getConfigurationMode() {
-		if(annotationsMode.getSelection()) {
-			return ConfigurationMode.ANNOTATIONS;
-		} else if(jpaMode.getSelection()) {
-			return ConfigurationMode.JPA;
-		} else {
-			return ConfigurationMode.CORE;
+		if (flagFileWillBeCreated) {
+			setPathAttribute(currentLaunchConfig, IConsoleConfigurationLaunchConstants.CFG_XML_FILE, configFullPath);
+			ConsoleConfigurationMainTab ccmt = null;
+			ILaunchConfigurationTab[] tabs = tabGroup.getTabs();
+			for (int i = 0; i < tabs.length; i++) {
+				if (tabs[i] instanceof ConsoleConfigurationMainTab) {
+					ccmt = (ConsoleConfigurationMainTab)tabs[i];
+					break;
+				}
+			}
+			if (ccmt != null) {
+				ccmt.markConfigurationFileWillBeCreated();
+			}
 		}
+		performInit();
+		dialogChanged();
 	}
-
-	public String getNamingStrategy() {
-		return namingStrategyClassNameText.getText();
-	}
-
-	public String getPersistenceUnitName() {
-		return persistenceUnitNameText.getText();
-	}
-
 
 
 }
-
-

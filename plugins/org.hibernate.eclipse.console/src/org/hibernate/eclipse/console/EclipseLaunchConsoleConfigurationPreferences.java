@@ -16,14 +16,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.osgi.util.NLS;
-import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
-import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.utils.ClassLoaderHelper;
-import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 import org.w3c.dom.Element;
 
@@ -128,11 +124,15 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 		return getAttribute( IConsoleConfigurationLaunchConstants.NAMING_STRATEGY, null );
 	}
 
+	public String getConnectionProfileName() {
+		return getAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, null);
+	}
+
 	public String getPersistenceUnitName() {
 		return getAttribute( IConsoleConfigurationLaunchConstants.PERSISTENCE_UNIT_NAME, null );
 	}
 
-	public Properties getProperties() {
+	public Properties getProperties() {		
 		File propFile = getPropertyFile();
 		if(propFile==null) return null;
 		try {
@@ -160,10 +160,5 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 	public void writeStateTo(Element node) {
 		throw new IllegalStateException(HibernateConsoleMessages.EclipseLaunchConsoleConfigurationPreferences_cannot_write_to_xml);
 	}
-
-
-
-
-
 
 }

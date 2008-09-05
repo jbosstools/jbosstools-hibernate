@@ -25,6 +25,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.osgi.util.NLS;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
@@ -66,6 +67,6 @@ public class ConfigurationWorkbenchAdapter extends BasicWorkbenchAdapter {
 		return true;
 	}
 
-
+	
 
 }

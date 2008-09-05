@@ -21,18 +21,13 @@
  */
 package org.hibernate.eclipse.console.wizards;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
@@ -41,10 +36,8 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
@@ -52,13 +45,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
-import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.eclipse.console.EclipseConsoleConfiguration;
-import org.hibernate.eclipse.console.EclipseConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
@@ -101,53 +91,24 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 	 * using wizard as execution context.
 	 */
 	public boolean performFinish() {
-		final ConsoleConfigurationWizardPage confPage = this.page;
-		return createConsoleConfiguration( getContainer(), confPage );
-	}
-
-	static boolean createConsoleConfiguration(IWizardContainer container, final ConsoleConfigurationWizardPage confPage) {
-		final String configName = confPage.getConfigurationName();
-		final String entityResolver = confPage.getEntityResolverClassName();
-		final IPath propertyFile = confPage.getPropertyFilePath();
-		final IPath fileName = confPage.getConfigurationFilePath();
-		final ConfigurationMode annotations = confPage.getConfigurationMode();
-		final IPath[] mappings = confPage.getMappingFiles();
-		final IPath[] classpaths = confPage.getClassPath();
-		final boolean useProjectClasspath = confPage.useProjectClassPath();
-		final String projectName = confPage.getProjectName();
-		final String namingStrategy = confPage.getNamingStrategy();
-		final String persistenceUnitName = confPage.getPersistenceUnitName();
-		IRunnableWithProgress op = new IRunnableWithProgress() {
-			public void run(IProgressMonitor monitor) throws InvocationTargetException {
-				try {
-					createConsoleConfiguration(confPage.getShell(), confPage.getOldConfiguration(), configName, annotations, projectName, useProjectClasspath, entityResolver, propertyFile, fileName, mappings, classpaths, persistenceUnitName, namingStrategy, monitor);
-				} catch (CoreException e) {
-					throw new InvocationTargetException(e);
-				} finally {
-					monitor.done();
-				}
-			}
-		};
 		try {
-			container.run(true, false, op);
-		} catch (InterruptedException e) {
-			return false;
-		} catch (InvocationTargetException e) {
-			Throwable realException = e.getTargetException();
-			IStatus s = null;
-			if(realException instanceof CoreException) {
-				s = ( (CoreException)realException).getStatus();
-			} else {
-				IStatus se = HibernateConsolePlugin.throwableToStatus( e );
-				s = new MultiStatus(HibernateConsolePlugin.ID, IStatus.OK, new IStatus[] { se }, HibernateConsoleMessages.ConsoleConfigurationCreationWizard_missing_classes, e);
-
-			}
-			HibernateConsolePlugin.getDefault().showError( container.getShell(), HibernateConsoleMessages.ConsoleConfigurationCreationWizard_error_finishing, s );
-			return false;
+			page.performFinish();
+		} catch (CoreException ce) {
+			HibernateConsolePlugin.getDefault().showError(getShell(), HibernateConsoleMessages.AddConfigurationAction_problem_add_console_config,  ce);
 		}
 		return true;
 	}
 
+	public boolean performCancel() {
+		try {
+			page.performCancel();
+		} catch (CoreException ce) {
+			HibernateConsolePlugin.getDefault().showError(getShell(), HibernateConsoleMessages.AddConfigurationAction_problem_add_console_config,  ce);
+		}
+        return true;
+    }
+
+	// Only used by tests - see JBIDE-2734
 	static protected void createConsoleConfiguration(
 			final Shell shell,
 			final EclipseConsoleConfiguration oldConfig,
@@ -157,8 +118,6 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 		throws CoreException {
 
 		monitor.beginTask(HibernateConsoleMessages.ConsoleConfigurationCreationWizard_configuring_hibernate_console, IProgressMonitor.UNKNOWN);
-
-		//ConsoleConfigurationPreferences ccp = createOldConsoleConfiguration( configName, cmode, projectName, useProjectClasspath, entityResolver, propertyFilename, cfgFile, mappings, classpaths, persistenceUnitName, namingStrategy );
 
 		if(oldConfig!=null) {
 			KnownConfigurations.getInstance().removeConfiguration( oldConfig, false );
@@ -186,7 +145,7 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 		}
 
 		if(classpaths.length>0) {
-			List user = new ArrayList();
+			List<String> user = new ArrayList<String>();
 			for (int i = 0; i < projectEntries.length; i++) {
 				user.add( projectEntries[i].getMemento() );
 			}
@@ -202,7 +161,7 @@ public class ConsoleConfigurationCreationWizard extends Wizard implements
 			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, (String)null);
 		}
 
-		List mappingFiles = new ArrayList();
+		List<String> mappingFiles = new ArrayList<String>();
 		for (int i = 0; i < mappings.length; i++) {
 			mappingFiles.add(mappings[i].toPortableString());
 		}

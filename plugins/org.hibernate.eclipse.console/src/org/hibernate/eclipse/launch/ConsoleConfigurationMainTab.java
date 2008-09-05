@@ -11,6 +11,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -40,6 +41,7 @@ import org.hibernate.console.ImageConstants;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.actions.AddConfigurationAction;
 import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
@@ -49,7 +51,7 @@ import org.hibernate.util.StringHelper;
 
 public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 
-
+	protected boolean configurationFileWillBeCreated = false;
 
 	private Button coreMode;
 	private Button jpaMode;
@@ -60,7 +62,9 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 	private Text configurationFileText;
 	private Text projectNameText;
 	private Text persistenceUnitNameText;
-
+	
+	private ConnectionProfileCtrl connectionProfileCtrl;
+	
 	public String getName() {
 		return HibernateConsoleMessages.ConsoleConfigurationMainTab_main;
 	}
@@ -78,14 +82,25 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 
 		createProjectEditor( comp );
 
+		createDBConnectConfig(comp);
+		
 		createPropertyFileEditor(comp);
 		createConfigurationFileEditor(comp);
 
 		createPersistenceUnitEditor( comp );
 
+		
 
 	}
 
+	private void createDBConnectConfig(Composite container) {
+		Group group = SWTFactory.createGroup(container, "Database connection:", 3, 2, GridData.FILL_HORIZONTAL);
+		
+		connectionProfileCtrl = new ConnectionProfileCtrl(group, 1, "");  //$NON-NLS-1$//$NON-NLS-2$
+		connectionProfileCtrl.addModifyListener(getChangeListener());
+		
+	}
+			
 	private void createConfigurationMode(Composite container) {
 		Group group = createGroup( container, HibernateConsoleMessages.ConsoleConfigurationMainTab_type);
 		group.setLayout( new RowLayout( SWT.HORIZONTAL ) );
@@ -148,14 +163,14 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 
-		configuration.setAttribute( IConsoleConfigurationLaunchConstants.CONFIGURATION_FACTORY, getConfigurationMode().toString());
+		configuration.setAttribute(IConsoleConfigurationLaunchConstants.CONFIGURATION_FACTORY, getConfigurationMode().toString());
 		configuration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, nonEmptyTrimOrNull( projectNameText ));
 		configuration.setAttribute(IConsoleConfigurationLaunchConstants.PROPERTY_FILE, nonEmptyTrimOrNull(propertyFileText));
 		configuration.setAttribute(IConsoleConfigurationLaunchConstants.CFG_XML_FILE, nonEmptyTrimOrNull(configurationFileText));
-		configuration.setAttribute( IConsoleConfigurationLaunchConstants.PERSISTENCE_UNIT_NAME, nonEmptyTrimOrNull(persistenceUnitNameText));
-
+		configuration.setAttribute(IConsoleConfigurationLaunchConstants.PERSISTENCE_UNIT_NAME, nonEmptyTrimOrNull(persistenceUnitNameText));
+		configuration.setAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, nonEmptyTrimOrNull(connectionProfileCtrl.getSelectedConnectionName()));
 	}
-
+	
 	public void initializeFrom(ILaunchConfiguration configuration) {
 
 		try {
@@ -168,10 +183,12 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 			propertyFileText.setText( configuration.getAttribute( IConsoleConfigurationLaunchConstants.PROPERTY_FILE, "" ) ); //$NON-NLS-1$
 			configurationFileText.setText( configuration.getAttribute( IConsoleConfigurationLaunchConstants.CFG_XML_FILE, "" )); //$NON-NLS-1$
 			persistenceUnitNameText.setText( configuration.getAttribute( IConsoleConfigurationLaunchConstants.PERSISTENCE_UNIT_NAME, "" )); //$NON-NLS-1$
+
+			connectionProfileCtrl.selectValue(configuration.getAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, "")); //$NON-NLS-1$
 		}
 		catch (CoreException e) {
 			HibernateConsolePlugin.getDefault().log( e );
-		}
+		}	
 	}
 
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {}
@@ -336,16 +353,18 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 	}
 
 	public boolean isValid(ILaunchConfiguration launchConfig) {
+				
 		setErrorMessage( null );
 		setMessage( null );
 		String propertyFilename = propertyFileText.getText();
 		String configurationFilename = configurationFileText.getText();
 
-		configurationFileText.setEnabled( /* TODO !configurationFileWillBeCreated && */ !getConfigurationMode().equals( ConfigurationMode.JPA ) );
-		confbutton.setEnabled( !getConfigurationMode().equals( ConfigurationMode.JPA ) );
+		boolean modeJPA = getConfigurationMode().equals(ConfigurationMode.JPA);
+		configurationFileText.setEnabled(!configurationFileWillBeCreated && !modeJPA );
+		confbutton.setEnabled(!configurationFileWillBeCreated && !modeJPA);
 
-		persistenceUnitNameText.setEnabled( getConfigurationMode().equals( ConfigurationMode.JPA) );
-
+		persistenceUnitNameText.setEnabled(modeJPA);
+		
 		if(getProjectName()!=null && StringHelper.isNotEmpty(getProjectName().trim())) {
 			Path projectPath = new Path(getProjectName());
 			if (projectPath.segmentCount() > 1){
@@ -375,7 +394,7 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 			}
 		}
 
-		if (/*!configurationFileWillBeCreated &&*/ configurationFilename.length() > 0) {
+		if (!configurationFileWillBeCreated && configurationFilename.length() > 0) {
 			IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(configurationFilename);
 			String msg = checkForFile(HibernateConsoleMessages.ConsoleConfigurationMainTab_configuration_file_2,resource);
 			if(msg!=null) {
@@ -384,11 +403,13 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 			}
 		}
 
-		if ((configurationFilename != null && configurationFilename.trim().length() > 0) &&
+		/* This check is not true! The properties in console configuration is used to override things in cfg.xml/persistence.xml.
+		 * Having a /hibernate.properties is not the same as this!
+		 if ((configurationFilename != null && configurationFilename.trim().length() > 0) &&
 				(propertyFilename != null && propertyFilename.trim().length() > 0)) {
 			setMessage(HibernateConsoleMessages.ConsoleConfigurationMainTab_both_hibernate_properties_and_hibernate_cfg_xml);
 			return true;
-		}
+		}*/
 
 		/*if((useProjectClassPath() && StringHelper.isEmpty( getProjectName() )) && classPathViewer.getTable().getItemCount()==0) {
 			setErrorMessage( "Need to specify a project or setup a classpath" );
@@ -433,5 +454,10 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		return EclipseImages.getImage(ImageConstants.MINI_HIBERNATE);
 	}
 
+	public void markConfigurationFileWillBeCreated() {
+		configurationFileWillBeCreated = true;
+		confbutton.setEnabled(false);
+		configurationFileText.setEnabled(false);
+	}
 
 }

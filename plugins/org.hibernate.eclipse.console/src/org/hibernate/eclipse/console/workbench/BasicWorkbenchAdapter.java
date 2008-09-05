@@ -32,6 +32,7 @@ import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
 import org.eclipse.ui.progress.IElementCollector;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
@@ -116,12 +117,13 @@ public abstract class BasicWorkbenchAdapter implements IDeferredWorkbenchAdapter
 		HibernateConsolePlugin.openError(null, getDefaultErrorTitle(), getDefaultErrorMessage(object), e, HibernateConsolePlugin.PERFORM_SYNC_EXEC);
 	}
 
-	private String getDefaultErrorMessage(Object object) {
-		return HibernateConsoleMessages.BasicWorkbenchAdapter_error_while_expanding + getLabel(object);
+	protected String getDefaultErrorMessage(Object object) {
+		
+		return NLS.bind(HibernateConsoleMessages.BasicWorkbenchAdapter_error_while_expanding, getLabel(object));
 	}
 
 
-	private String getDefaultErrorTitle() {
+	protected String getDefaultErrorTitle() {
 		return HibernateConsoleMessages.BasicWorkbenchAdapter_hibernate_configuration_error;
 	}
 

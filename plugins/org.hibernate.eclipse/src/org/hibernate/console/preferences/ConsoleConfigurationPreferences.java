@@ -35,7 +35,7 @@ import org.w3c.dom.Element;
  *
  */
 public interface ConsoleConfigurationPreferences {
-	
+
 	static final String PATH_TAG = "path"; //$NON-NLS-1$
 	static final String CLASSPATH_TAG = "classpath"; //$NON-NLS-1$
 	static final String MAPPING_TAG = "mapping"; //$NON-NLS-1$
@@ -48,7 +48,7 @@ public interface ConsoleConfigurationPreferences {
 	static final String ANNOTATIONS_ATTRIB = "annotations"; //$NON-NLS-1$
 	static final String ENTITYRESOLVER_ATTRIB = "entityresolver"; //$NON-NLS-1$
 	static final String CONFIGURATION_MODE_ATTRIB = "configuration-factory"; //$NON-NLS-1$
-	
+
 	// TODO: we should move this to some classhandler
 	static public class ConfigurationMode implements Serializable {
 
@@ -88,9 +88,9 @@ public interface ConsoleConfigurationPreferences {
 		}
 	}
 
-	
+
 	public abstract ConfigurationMode getConfigurationMode();
-	
+
 	public abstract String getName();
 
 	/**
@@ -108,7 +108,7 @@ public interface ConsoleConfigurationPreferences {
 	public abstract File getConfigXMLFile();
 
 	public abstract File getPropertyFile();
-	
+
 	public abstract void writeStateTo(Element node);
 
 	public abstract void readStateFrom(Element element);
@@ -118,6 +118,8 @@ public interface ConsoleConfigurationPreferences {
 	public abstract String getEntityResolverName();
 
 	public abstract String getPersistenceUnitName();
-	
+
 	public abstract String getNamingStrategy();
+
+	public abstract String getConnectionProfileName();
 }

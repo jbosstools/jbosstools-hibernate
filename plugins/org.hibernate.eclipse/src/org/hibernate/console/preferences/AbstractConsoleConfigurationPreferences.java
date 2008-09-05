@@ -53,8 +53,13 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 	private ConfigurationMode configurationMode;
 	private String persistenceUnitName;
 	private String namingStrategy;
+	private String connectionProfile;
+	
 
-	public AbstractConsoleConfigurationPreferences(String name, ConfigurationMode configurationMode, String projectName, boolean useProjectclassPath, String entityResolver, String persistenceUnitName, String namingStrategy) {
+	public AbstractConsoleConfigurationPreferences(String name, ConfigurationMode configurationMode,
+			String projectName, boolean useProjectclassPath, String entityResolver,
+			String persistenceUnitName, String namingStrategy,
+			String connectionProfile) {
 		setName(name);
 		this.persistenceUnitName = persistenceUnitName;
 		this.namingStrategy = namingStrategy;
@@ -62,6 +67,7 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 		entityResolverName = entityResolver;
 		this.projectName = projectName;
 		this.useProjectClasspath = useProjectclassPath;
+		this.connectionProfile = connectionProfile;
 	}
 
 	protected AbstractConsoleConfigurationPreferences() {
@@ -80,6 +86,10 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 		return namingStrategy;
 	}
 
+	public String getConnectionProfileName() {
+		return connectionProfile;
+	}
+
 	public void setName(String name) {
 		if(name==null || name.trim().length()==0) {
 			throw new IllegalArgumentException(ConsoleMessages.AbstractConsoleConfigurationPreferences_name_not_null_or_empty);
@@ -95,13 +105,22 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 	public final Properties getProperties() {
 		File propFile = getPropertyFile();
 		if(propFile==null) return null;
+		FileInputStream inStream = null;		
 		try {
 			Properties p = new Properties();
-			p.load(new FileInputStream(propFile) );
+			inStream = new FileInputStream(propFile);
+			p.load(inStream );
 			return p;
 		}
 		catch(IOException io) {
 			throw new HibernateConsoleRuntimeException(ConsoleMessages.AbstractConsoleConfigurationPreferences_could_not_load_prop_file + propFile, io);
+		} finally {
+			if(inStream!=null)
+				try {
+					inStream.close();
+				} catch (IOException e) {
+					//ignore
+				}
 		}
 	}
 
