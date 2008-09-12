@@ -421,7 +421,7 @@ END OF TERMS AND CONDITIONS
       <update label="JBossTools Update Site" url="http://download.jboss.org/jbosstools/updates/stable"/>
       <discovery label="JBossTools Development Update Site" url="http://download.jboss.org/updates/development"/>
    </url>
-   
+
    <requires>
       <import plugin="org.eclipse.core.runtime" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jdt.ui" version="0.0.0" match="greaterOrEqual"/>
@@ -477,12 +477,6 @@ END OF TERMS AND CONDITIONS
 
    <plugin
          id="org.hibernate.eclipse.mapper"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.jboss.ide.eclipse.freemarker"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
