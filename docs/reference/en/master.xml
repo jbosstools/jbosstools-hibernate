@@ -49,6 +49,14 @@
         <imagedata fileref="images/hibernate_logo_a.png" format="PNG"/>
       </imageobject>
     </mediaobject>
+
+<abstract>
+   <title/>
+       <para>
+           <ulink url="http://download.jboss.org/jbosstools/nightly-docs/en/hibernatetools/pdf/Hibernatetools_Reference_Guide.pdf">PDF version</ulink>
+       </para>
+</abstract>
+
   </bookinfo>
   <toc/>
   
