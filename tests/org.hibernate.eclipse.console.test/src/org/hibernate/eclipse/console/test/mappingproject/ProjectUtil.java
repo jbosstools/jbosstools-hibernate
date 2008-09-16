@@ -113,7 +113,7 @@ public class ProjectUtil {
 
 		public void run() throws CoreException {
 			IPath cfgFilePath = new Path(MappingTestProject.PROJECT_NAME + "/" +  //$NON-NLS-1$
-					MappingTestProject.SRC_FOLDER + "/" + ProjectUtil.CFG_FILE_NAME); //$NON-NLS-1$
+					TestUtilsCommon.SRC_FOLDER + "/" + ProjectUtil.CFG_FILE_NAME); //$NON-NLS-1$
 			createConsoleConfiguration(null, null, ConsoleCFGName, ConsoleConfigurationPreferences.ConfigurationMode.CORE,
 					MappingTestProject.PROJECT_NAME, true, "", //$NON-NLS-1$
 					null, cfgFilePath, new Path[0], new Path[0], "", "", new NullProgressMonitor());  //$NON-NLS-1$//$NON-NLS-2$
