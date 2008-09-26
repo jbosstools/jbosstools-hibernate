@@ -10,6 +10,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -35,6 +36,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -49,7 +51,7 @@ public class AddPropertyDialog extends TitleAreaDialog {
 	private final ExporterFactory ef;
 	private ComboViewer propertyCombo;
 	private Control value;
-	private Button browseButton;
+	private Button addPathButton;
 	private String propertyName;
 	private String propertyValue;
 	private ModifyListener modifyListener = new ModifyListener() {
@@ -81,7 +83,7 @@ public class AddPropertyDialog extends TitleAreaDialog {
 
 		Label label = new Label(composite, SWT.NONE);
 		label.setText( HibernateConsoleMessages.AddPropertyDialog_name );
-		Combo combo = new Combo(composite, SWT.BORDER | SWT.LEAD | SWT.DROP_DOWN);
+		final Combo combo = new Combo(composite, SWT.BORDER | SWT.LEAD | SWT.DROP_DOWN);
 		GridData pgd = new GridData(GridData.GRAB_HORIZONTAL | GridData.FILL_HORIZONTAL);
 		pgd.horizontalSpan = 2;
 		combo.setLayoutData(pgd);
@@ -91,12 +93,21 @@ public class AddPropertyDialog extends TitleAreaDialog {
 		
 		combo.addKeyListener(new KeyListener(){
 		
-				public void keyPressed(KeyEvent e) {
+				public void keyPressed(KeyEvent e) {}
+			
+				public void keyReleased(KeyEvent e) {
+					if (e.keyCode == SWT.ARROW_UP || e.keyCode == SWT.ARROW_DOWN) return;
+
+					for (int i = 0; i < combo.getItemCount(); i++) {
+						if (combo.getText().equals(combo.getItem(i))){
+							combo.select(i);
+							propertyCombo.setSelection(propertyCombo.getSelection(), false);
+							return;
+						}
+					}
 					disposeBrowseButton();
 					createTextValueComposite(2);
 				}
-			
-				public void keyReleased(KeyEvent e) {}
 						
 			});
 					
@@ -174,48 +185,55 @@ public class AddPropertyDialog extends TitleAreaDialog {
 		viewer.addSelectionChangedListener( new ISelectionChangedListener() {
 
 			private SelectionListener getSelectionListener(ExporterProperty prop){
-				if ("directory".equals(prop.getType())){				//$NON-NLS-1$
-					return new SelectionListener(){						
-							public void widgetDefaultSelected(SelectionEvent e) {
-								widgetSelected(e);								
-							}
-				
-							public void widgetSelected(SelectionEvent e) {
-								IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  PathHelper.pathOrNull(((Text)value).getText()), new Path[0], 
-										HibernateConsoleMessages.ExporterSettingsTab_select_dir, HibernateConsoleMessages.ExporterSettingsTab_select_dir,
-										new String[0], true, true, false);//$NON-NLS-1$
-								if(paths!=null && paths.length==1) {
-									((Text)value).setText( ( (paths[0]).toOSString() ) );
-								}								
-							}
-						};
-					} else if ("path".equals(prop.getType())){				//$NON-NLS-1$
-							return new SelectionListener(){						
-				
-								public void widgetDefaultSelected(SelectionEvent e) {
-									widgetSelected(e);								
-								}
-				
-								public void widgetSelected(SelectionEvent e) {
-									IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(),  PathHelper.pathOrNull(((Text)value).getText()), new Path[0], 
-											HibernateConsoleMessages.ExporterSettingsTab_select_path, HibernateConsoleMessages.ExporterSettingsTab_select_path,
-											new String[]{new String()}/*allow all files*/, true, true, true);//$NON-NLS-1$
-									//IPath[] paths = DialogSelectionHelper.chooseFolderEntries(getShell(),  PathHelper.pathOrNull(((Text)value).getText()), "Select directories", //$NON-NLS-1$
-									//		"Choose directories", true);//$NON-NLS-1$
-									if(paths!=null && paths.length > 0) {
-										String strPath = paths[0].toOSString();					
-										for (int i = 1; i < paths.length; i++) {
-											strPath += File.pathSeparator + paths[i].toOSString();				
-										}
-										((Text)value).setText( strPath );
-									}								
-								}
-							};
+				if (!("path".equals(prop.getType()) || "directory".equals(prop.getType()))) return null; //$NON-NLS-1$//$NON-NLS-2$				
+				final boolean isPath = "path".equals(prop.getType()); //$NON-NLS-1$
+				return new SelectionListener(){
+						public void widgetDefaultSelected(SelectionEvent e) {
+							widgetSelected(e);
 						}
-						return null;
-					}
-						
 			
+						public void widgetSelected(SelectionEvent e) {
+							String title = isPath ? HibernateConsoleMessages.ExporterSettingsTab_select_path: HibernateConsoleMessages.ExporterSettingsTab_select_dir;
+							String description = title;
+							
+							MessageDialog dialog = new MessageDialog(getShell(),
+									title,
+									null,
+									description,	
+									MessageDialog.QUESTION,
+									new String[] { HibernateConsoleMessages.CodeGenerationSettingsTab_filesystem, HibernateConsoleMessages.CodeGenerationSettingsTab_workspace, IDialogConstants.CANCEL_LABEL},
+									1);
+							int answer = dialog.open();
+							String strPath = null;
+							if (answer == 0) { // filesystem
+								DirectoryDialog dialog2 = new DirectoryDialog(getShell());
+								dialog2.setText(title);
+								dialog2.setMessage(description);
+								
+								String dir = dialog2.open();
+								if (dir != null)
+								{
+									strPath = dir;
+								}
+							} else if (answer == 1){ // workspace								
+								IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(), (IPath)null, new Path[0], 
+										title, description,
+										new String[0], isPath, true, false);//$NON-NLS-1$
+								strPath = paths[0].toOSString();	
+								if (isPath){
+									for (int i = 1; i < paths.length; i++) {
+										strPath += File.pathSeparator + paths[i].toOSString();				
+									}									
+								}	
+							} else return;
+							String oldPath = ((Text)value).getText();
+							if (isPath && oldPath.trim().length() > 0 && strPath != null)
+								((Text)value).setText( oldPath + File.pathSeparator + strPath );
+							else ((Text)value).setText( strPath );	
+						}
+					};
+			}
+
 			public void selectionChanged(SelectionChangedEvent event) {
 				if(value==null) return;
 				IStructuredSelection iss = (IStructuredSelection) event.getSelection();
@@ -224,17 +242,17 @@ public class AddPropertyDialog extends TitleAreaDialog {
 					if ("boolean".equalsIgnoreCase(prop.getType())) {	//$NON-NLS-1$
 						disposeBrowseButton();
 						createComboValueComposite(new String[]{String.valueOf(true), String.valueOf(false)});
-						((Combo)value).select(Boolean.valueOf(prop.getDefaultValue()).booleanValue() ? 0 : 1);
+						((Combo)value).select(Boolean.valueOf(ef.getPropertyValue(prop.getName())).booleanValue() ? 0 : 1);
 					} else if ("directory".equalsIgnoreCase(prop.getType())//$NON-NLS-1$
 							|| "path".equalsIgnoreCase(prop.getType())) {	//$NON-NLS-1$
 						disposeBrowseButton();
 						createTextValueComposite(1);
-						((Text) value).setText(prop.getDefaultValue());
-						createBrowseButton(getSelectionListener(prop));
+						((Text) value).setText(ef.getPropertyValue(prop.getName()));
+						createBrowseButton(getSelectionListener(prop), prop);
 					} else {
 						disposeBrowseButton();
 						createTextValueComposite(2);
-						((Text) value).setText(prop.getDefaultValue());
+						((Text) value).setText(ef.getPropertyValue(prop.getName()));
 					}
 				} else {
 					createTextValueComposite(2);
@@ -248,20 +266,24 @@ public class AddPropertyDialog extends TitleAreaDialog {
 	}
 
 	private void disposeBrowseButton(){
-		if (browseButton != null){
-			Composite parent = browseButton.getParent();
-			browseButton.dispose();
-			browseButton = null;
+		if (addPathButton != null){
+			Composite parent = addPathButton.getParent();
+			addPathButton.dispose();
+			addPathButton = null;
 			parent.layout();
 		}
 	}
  	
-	private void createBrowseButton(SelectionListener listener){
+	private void createBrowseButton(SelectionListener listener, ExporterProperty prop){
 		disposeBrowseButton();
-		browseButton = new Button(value.getParent(), SWT.PUSH);
-		browseButton.setText(HibernateConsoleMessages.ConsoleConfigurationTab_browse);
-		browseButton.setLayoutData(new GridData(GridData.END));
-		browseButton.addSelectionListener(listener);
+		addPathButton = new Button(value.getParent(), SWT.PUSH);
+		if ("path".equals(prop.getType())){
+			addPathButton.setText("Add path...");
+		} else {
+			addPathButton.setText("Browse");
+		}		
+		addPathButton.setLayoutData(new GridData(GridData.END));
+		addPathButton.addSelectionListener(listener);		
 		value.getParent().layout();
 	}
 	
@@ -291,7 +313,7 @@ public class AddPropertyDialog extends TitleAreaDialog {
 			}
 			value = new Combo(parent, SWT.BORDER | SWT.LEAD | SWT.DROP_DOWN | SWT.READ_ONLY);
 			GridData bgd = new GridData(GridData.GRAB_HORIZONTAL | GridData.FILL_HORIZONTAL);
-			bgd.horizontalSpan = 2;
+			bgd.horizontalSpan = 3;
 			value.setLayoutData(bgd);
 			((Combo)value).setItems(items);
 			((Combo)value).addModifyListener( modifyListener );

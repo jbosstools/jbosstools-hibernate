@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.variables.IStringVariableManager;
@@ -204,24 +205,38 @@ public class ExporterFactory {
 		List templatePathList = new ArrayList();
 		if(props.containsKey("template_path")) { //$NON-NLS-1$
 			String resolveTemplatePath = resolve(props.getProperty("template_path")); //$NON-NLS-1$
-			String locationAsStringPath = PathHelper.getLocationAsStringPath(resolveTemplatePath);
-			if(locationAsStringPath==null) {
-				String out = NLS.bind(HibernateConsoleMessages.ExporterFactory_output_dir_in_does_not_exist,
-						resolvedOutputDir, getExporterDefinition().getDescription());
+			StringTokenizer st = new StringTokenizer(resolveTemplatePath, File.pathSeparator);
+			String out = new String();
+			while (st.hasMoreTokens()) {
+				String locationAsStringPath = PathHelper.getLocationAsStringPath(st.nextToken());
+				if(locationAsStringPath==null) {
+					out += NLS.bind(HibernateConsoleMessages.ExporterFactory_template_dir_in_does_not_exist,
+							resolveTemplatePath, getExporterDefinition().getDescription()) + '\n';					
+				} else {
+					templatePathList.add(locationAsStringPath);
+				}				
+			}
+			if (out.length()  > 0 ){//$NON-NLS-1$
+				out = out.substring(0, out.length() - 1);
 				throw new HibernateConsoleRuntimeException(out);
-			} else {
-				templatePathList.add(locationAsStringPath);
 			}
 			props.remove("template_path"); // done to avoid validation check in hibernate tools templates //$NON-NLS-1$
 		}
 		if (StringHelper.isNotEmpty(customTemplatePath)){
 			String resolvedCustomTemplatePath = resolve(customTemplatePath);
-			String locationAsStringPath = PathHelper.getLocationAsStringPath(resolvedCustomTemplatePath);
-			if(locationAsStringPath != null) {
-				templatePathList.add(locationAsStringPath);
-			} else {
-				String out = NLS.bind(HibernateConsoleMessages.ExporterFactory_template_dir_in_does_not_exist,
-						resolvedCustomTemplatePath, getExporterDefinition().getDescription());
+			StringTokenizer st = new StringTokenizer(resolvedCustomTemplatePath, File.pathSeparator);
+			String out = "";
+			while (st.hasMoreTokens()) {
+				String locationAsStringPath = PathHelper.getLocationAsStringPath(st.nextToken());
+				if(locationAsStringPath != null) {
+					templatePathList.add(locationAsStringPath);
+				} else {
+					out = NLS.bind(HibernateConsoleMessages.ExporterFactory_template_dir_in_does_not_exist,
+							resolvedCustomTemplatePath, getExporterDefinition().getDescription());
+				}
+			}
+			if (out != ""){
+				out = out.substring(0, out.length() - 1);
 				throw new HibernateConsoleRuntimeException(out);
 			}
 		}
