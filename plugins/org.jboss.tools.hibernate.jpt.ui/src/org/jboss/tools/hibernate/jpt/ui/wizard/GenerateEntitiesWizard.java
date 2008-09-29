@@ -28,13 +28,13 @@ import org.jboss.tools.hibernate.jpt.ui.internal.platform.HibernatePlatformUI;
  */
 public class GenerateEntitiesWizard extends Wizard {
 
+
 	private JpaProject jpaProject;
 
 	private IStructuredSelection selection;	
 	
-	private GenerateInitWizardPage initPage;
+	private GenerateEntitiesWizardPage initPage;
 	
-	private GenerateEntitiesWizardPage page2; 
 	
 	public GenerateEntitiesWizard( JpaProject jpaProject, IStructuredSelection selection) {
 		super();
@@ -46,10 +46,8 @@ public class GenerateEntitiesWizard extends Wizard {
 	@Override
 	public void addPages() {
 		super.addPages();
-		initPage = new GenerateInitWizardPage(jpaProject);
-		page2 = new GenerateEntitiesWizardPage("");
+		initPage = new GenerateEntitiesWizardPage(jpaProject);
 		addPage(initPage);
-		addPage(page2);
 	}
 	
 	@Override
@@ -61,10 +59,10 @@ public class GenerateEntitiesWizard extends Wizard {
 			String concoleConfigurationName = initPage.getConfigurationName();			
 			wc.setAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME, concoleConfigurationName);
 
-			wc.setAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR, page2.getOutputDir()); //$NON-NLS-1$
+			wc.setAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR, initPage.getOutputDir()); //$NON-NLS-1$
 
 			wc.setAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER, true);
-			wc.setAttribute(HibernateLaunchConstants.ATTR_PACKAGE_NAME, page2.getPackageName());
+			wc.setAttribute(HibernateLaunchConstants.ATTR_PACKAGE_NAME, initPage.getPackageName());
 			wc.setAttribute(HibernateLaunchConstants.ATTR_PREFER_BASIC_COMPOSITE_IDS, true);
 			wc.setAttribute(HibernateLaunchConstants.ATTR_AUTOMATIC_MANY_TO_MANY, true);
 			wc.setAttribute(HibernateLaunchConstants.ATTR_AUTOMATIC_VERSIONING, true);
@@ -88,4 +86,5 @@ public class GenerateEntitiesWizard extends Wizard {
 		}
 		return true;
 	}
+
 }

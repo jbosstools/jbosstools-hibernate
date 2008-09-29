@@ -58,7 +58,7 @@ import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
  * @author Dmitry Geraskov
  *
  */
-public class GenerateInitWizardPage extends WizardPage {
+public abstract class GenerateInitWizardPage extends WizardPage {
 	
 	private ComboDialogField connectionProfileName;
 	
@@ -96,6 +96,8 @@ public class GenerateInitWizardPage extends WizardPage {
 		layout.numColumns = numColumns;
 		layout.verticalSpacing = 10;		
 		
+		createChildControls(container);
+		
 		selectMethod = new Button(container, SWT.CHECK);
 		selectMethod.setText("Use Console Configuration");
 		selectMethod.setSelection(true);
@@ -122,17 +124,19 @@ public class GenerateInitWizardPage extends WizardPage {
 			names[i] = configuration.getName();
 		}
 		consoleConfigurationName.setItems(names);
-		
-		
-
         consoleConfigurationName.setDialogFieldListener(fieldlistener);
         consoleConfigurationName.doFillIntoGrid(container, numColumns);
         
-        createDBGroup(container, numColumns);
+        createDBGroup(container, numColumns);        
 		
 		setControl(container);
-		setPageComplete( false );
 	}
+
+	/**
+	 * @param parent
+	 */
+	protected abstract void createChildControls(Composite parent);
+
 
 	/**
 	 * @param container
@@ -200,9 +204,7 @@ public class GenerateInitWizardPage extends WizardPage {
 	
 	private String[] dtpConnectionProfileNames() {
 		List<String> list = new ArrayList<String>();
-		/*for (Iterator<String> i = CollectionTools.sort(JptDbPlugin.instance().getConnectionProfileRepository().connectionProfileNames()); i.hasNext();) {
-			list.add(i.next());
-		}*/
+
 		IConnectionProfile[] cps = ProfileManager.getInstance().getProfiles();
 		for (int i = 0; i < cps.length; i++) {
 			list.add(cps[i].getName());			

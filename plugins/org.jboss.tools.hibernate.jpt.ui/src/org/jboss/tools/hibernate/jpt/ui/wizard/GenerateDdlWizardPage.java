@@ -11,22 +11,18 @@
 package org.jboss.tools.hibernate.jpt.ui.wizard;
 
 import org.eclipse.core.internal.resources.LocationValidator;
-import org.eclipse.core.internal.resources.OS;
 import org.eclipse.core.internal.resources.Workspace;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.DialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.IDialogFieldListener;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.IStringButtonAdapter;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.StringButtonDialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.StringDialogField;
-import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.swt.SWT;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
@@ -38,7 +34,7 @@ import org.hibernate.util.StringHelper;
  * @author Dmitry Geraskov
  *
  */
-public class GenerateDdlWizardPage extends WizardPage {
+public class GenerateDdlWizardPage extends GenerateInitWizardPage {
 	
 	private StringButtonDialogField outputdir;
 	
@@ -46,27 +42,18 @@ public class GenerateDdlWizardPage extends WizardPage {
 	
 	private LocationValidator validator = new LocationValidator((Workspace) ResourcesPlugin.getWorkspace());
 
-	/**
-	 * @param pageName
-	 */
-	protected GenerateDdlWizardPage(String pageName) {
-		super(pageName);
-		// TODO Auto-generated constructor stub
+	
+	protected GenerateDdlWizardPage(JpaProject jpaProject) {
+		super(jpaProject);
 	}
 
 	/* (non-Javadoc)
-	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
+	 * @see org.jboss.tools.hibernate.jpt.ui.wizard.GenerateInitWizardPage#createChildControls(org.eclipse.swt.widgets.Composite)
 	 */
-	public void createControl(Composite parent) {
-		Composite container = new Composite(parent, SWT.NULL);
-		GridLayout layout = new GridLayout();
+	@Override
+	protected void createChildControls(Composite container) {
 		int numColumns = 3;
-
-		container.setLayout(layout);
-		layout.numColumns = numColumns;
-		layout.verticalSpacing = 10;
-		
-		
+	
 		IDialogFieldListener fieldlistener = new IDialogFieldListener() {
 			public void dialogFieldChanged(DialogField field) {
 				dialogChanged();
@@ -94,11 +81,10 @@ public class GenerateDdlWizardPage extends WizardPage {
 		filename.setText("schema.ddl");
 		filename.setDialogFieldListener(fieldlistener);
         filename.doFillIntoGrid(container, numColumns);
-		
-		setControl(container);
-		setPageComplete( false );
-	}
 
+		setPageComplete( false );		
+	}	
+	
 	protected void dialogChanged() {
 		String msg = PathHelper.checkDirectory(getOutputDir(), HibernateConsoleMessages.CodeGenerationSettingsTab_output_directory, false);
 
@@ -120,8 +106,7 @@ public class GenerateDdlWizardPage extends WizardPage {
             return;
         }
         
-        setErrorMessage( null );
-        setPageComplete( true );
+        super.dialogChanged();
 	}
 	
 	public String getFilename(){
@@ -131,5 +116,6 @@ public class GenerateDdlWizardPage extends WizardPage {
 	public String getOutputDir(){
 		return outputdir.getText();
 	}
+
 
 }

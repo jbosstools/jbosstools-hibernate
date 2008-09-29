@@ -14,12 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.core.JpaProject;
@@ -39,9 +35,7 @@ public class GenerateDdlWizard extends Wizard {
 
 	private IStructuredSelection selection;
 	
-	private GenerateInitWizardPage initPage;
-	
-	private GenerateDdlWizardPage page2; 
+	private GenerateDdlWizardPage initPage;
 	
 	
 	public GenerateDdlWizard(JpaProject jpaProject, IStructuredSelection selection) {
@@ -54,12 +48,10 @@ public class GenerateDdlWizard extends Wizard {
 	@Override
 	public void addPages() {
 		super.addPages();
-		initPage = new GenerateInitWizardPage(jpaProject);
-		page2 = new GenerateDdlWizardPage("");
+		initPage = new GenerateDdlWizardPage(jpaProject);
 		addPage(initPage);
-		addPage(page2);
 	}
-	
+
 	@Override
 	public boolean performFinish() {
 		String projectName = jpaProject.getName();
@@ -67,10 +59,10 @@ public class GenerateDdlWizard extends Wizard {
 		if (wc != null) {
 			String concoleConfigurationName = initPage.getConfigurationName();
 			wc.setAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME, concoleConfigurationName);
-			wc.setAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR, page2.getOutputDir()); //$NON-NLS-1$
+			wc.setAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR, initPage.getOutputDir()); //$NON-NLS-1$
 
 			Map<String, String> prop = new HashMap<String, String>();
-			prop.put("outputFileName", page2.getFilename());
+			prop.put("outputFileName", initPage.getFilename());
 			//prop.put("outputdir", project.getName() + "\\src");
 			prop.put("format", "true");
 			prop.put("scriptToConsole", "false");

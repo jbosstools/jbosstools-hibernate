@@ -18,11 +18,8 @@ import org.eclipse.jdt.internal.ui.wizards.dialogfields.IDialogFieldListener;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.IStringButtonAdapter;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.StringButtonDialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.StringDialogField;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.swt.SWT;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
@@ -34,8 +31,8 @@ import org.hibernate.util.StringHelper;
  * @author Dmitry Geraskov
  *
  */
-public class GenerateEntitiesWizardPage extends WizardPage {
-	
+public class GenerateEntitiesWizardPage extends GenerateInitWizardPage {
+
 	private StringButtonDialogField outputdir;
 	
 	private StringDialogField packageName;
@@ -43,34 +40,17 @@ public class GenerateEntitiesWizardPage extends WizardPage {
 	/**
 	 * @param pageName
 	 */
-	public GenerateEntitiesWizardPage(String pageName) {
-		super(pageName);
-		// TODO Auto-generated constructor stub
+	public GenerateEntitiesWizardPage(JpaProject jpaProject) {
+		super(jpaProject);
 	}
-
-	/**
-	 * @param pageName
-	 * @param title
-	 * @param titleImage
-	 */
-	public GenerateEntitiesWizardPage(String pageName, String title, ImageDescriptor titleImage) {
-		super(pageName, title, titleImage);
-		// TODO Auto-generated constructor stub
-	}
-
+	
 	/* (non-Javadoc)
-	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
+	 * @see org.jboss.tools.hibernate.jpt.ui.wizard.GenerateInitWizardPage#createChildControls(org.eclipse.swt.widgets.Composite)
 	 */
-	public void createControl(Composite parent) {
-		Composite container = new Composite(parent, SWT.NULL);
-		GridLayout layout = new GridLayout();
+	@Override
+	protected void createChildControls(Composite container) {
 		int numColumns = 3;
 
-		container.setLayout(layout);
-		layout.numColumns = numColumns;
-		layout.verticalSpacing = 10;
-		
-		
 		IDialogFieldListener fieldlistener = new IDialogFieldListener() {
 			public void dialogFieldChanged(DialogField field) {
 				dialogChanged();
@@ -98,10 +78,9 @@ public class GenerateEntitiesWizardPage extends WizardPage {
         packageName.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_package);
         packageName.doFillIntoGrid(container, numColumns);
         		
-		setControl(container);
-		//default package is acceptable
-		setPageComplete( true );
+		setPageComplete( false );		
 	}
+
 
 	protected void dialogChanged() {
 		String msg = PathHelper.checkDirectory(getOutputDir(), HibernateConsoleMessages.CodeGenerationSettingsTab_output_directory, false);
@@ -120,8 +99,7 @@ public class GenerateEntitiesWizardPage extends WizardPage {
             }
         }
         
-        setErrorMessage( null );
-        setPageComplete( true );
+        super.dialogChanged();
 	}
 	
 	public String getPackageName(){
