@@ -136,7 +136,7 @@
       </emphasis> for the basis of a Console configuration.</para>
   </section>
 
-  <section id="console_conf">
+  <section id="console_conf" role="updated">
     <title>Creating a Hibernate Console Configuration</title>
 
     <para>A Console configuration describes how the <property>Hibernate plugin</property> should
