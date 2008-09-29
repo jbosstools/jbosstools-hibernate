@@ -161,6 +161,16 @@
     </note>
     <para/>
 
+    <para>The dialog consists of five tabs: </para>
+
+    <itemizedlist>
+      <listitem>
+        <para><emphasis>
+            <property>Main</property>
+          </emphasis> for the basic/required settings</para>
+      </listitem>
+    </itemizedlist>
+
     <figure>
       <title> Creating Hibernate Console Configuration</title>
       <mediaobject>
@@ -172,29 +182,12 @@
           <imagedata align="center" fileref="images/plugins/plugins_2.png" format="PNG"/>
         </imageobject>
       </mediaobject>
-
     </figure>
 
-    <para>The dialog consists of three tabs, <emphasis>
-        <property>General</property>
-      </emphasis> for the basic/required settings, <emphasis>
-        <property>Classpath</property>
-      </emphasis> for classpath and <emphasis>
-        <property>Mappings</property>
-      </emphasis> for additional mappings. The two latter ones are normally not required if you
-      specify a project and it has <emphasis>
-        <property>
-          <literal> /hibernate.cfg.xml </literal>
-        </property>
-      </emphasis> or <emphasis>
-        <property>
-          <literal>/META-INF/persistence.xml</literal>
-        </property>
-      </emphasis> in its project classpath.</para>
-
-    <para>The following table describes the available settings. The wizard can automatically detect
-      default values for most of these if you started the wizard with the relevant java project or
-      resource selected.</para>
+    <para>The following table describes the available settings on the <emphasis>
+        <property>Main</property>
+      </emphasis> tab. The wizard can automatically detect default values for most of these if you
+      started the wizard with the relevant java project or resource selected.</para>
 
     <table>
       <title>Hibernate Console Configuration Parameters</title>
@@ -239,6 +232,22 @@
 
           <row>
             <entry>
+              <para>Type</para>
+            </entry>
+
+            <entry>
+              <para>Choose between &quot;Core&quot;, &quot;Annotations&quot; and
+                &quot;JPA&quot;. Note that the two latter requires running Eclipse IDE with
+                a JDK 5 runtime, otherwise you will get classloading and/or version errors.</para>
+            </entry>
+
+            <entry>
+              <para>No default value</para>
+            </entry>
+          </row>
+
+          <row>
+            <entry>
               <para>Project</para>
             </entry>
 
@@ -254,17 +263,17 @@
 
           <row>
             <entry>
-              <para>Type</para>
+              <para>Database connection</para>
             </entry>
 
             <entry>
-              <para>Choose between &quot;Core&quot;, &quot;Annotations&quot; and
-                &quot;JPA&quot;. Note that the two latter requires running Eclipse IDE with
-                a JDK 5 runtime, otherwise you will get classloading and/or version errors.</para>
+              <para>DTP provided connection that you can use instead of what is in cfg.xml and jpa
+                persistence.xml. It&apos;s possible to use already configured connection or
+                specify a new one here.</para>
             </entry>
 
             <entry>
-              <para>No default value</para>
+              <para>[Hibernate Configured connection]</para>
             </entry>
           </row>
 
@@ -311,6 +320,75 @@
             </entry>
           </row>
 
+        </tbody>
+      </tgroup>
+    </table>
+
+    <tip>
+      <title>Tip:</title>
+
+      <para>The two latter settings are normally not required if you specify a project and it has <emphasis>
+          <property>
+            <literal> /hibernate.cfg.xml </literal>
+          </property>
+        </emphasis> or <emphasis>
+          <property>
+            <literal>/META-INF/persistence.xml</literal>
+          </property>
+        </emphasis> in its project classpath.</para>
+    </tip>
+
+
+    <itemizedlist>
+      <listitem>
+        <para>
+          <emphasis>
+            <property>Options</property>
+          </emphasis> for the additional/optional settings</para>
+      </listitem>
+    </itemizedlist>
+
+    <figure>
+      <title>Options Tab of the Console Configuration Wizard</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/plugins/plugins_2_a.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>The next table describes Hibernate Console Configuration options available on the <emphasis>
+        <property>Options</property>
+      </emphasis> tab.</para>
+
+    <table>
+      <title>Hibernate Console Configuration Options</title>
+
+      <tgroup cols="3">
+        <colspec colnum="1" align="left" colwidth="1*"/>
+
+        <colspec colnum="2" colwidth="3*"/>
+
+        <colspec colnum="3" colwidth="1*"/>
+
+        <thead>
+          <row>
+            <entry align="center">
+              <para>Parameter</para>
+            </entry>
+
+            <entry align="center">
+              <para>Description</para>
+            </entry>
+
+            <entry align="center">
+              <para>Auto detected value</para>
+            </entry>
+          </row>
+        </thead>
+
+        <tbody>
           <row>
             <entry>
               <para>Naming strategy</para>
@@ -340,9 +418,18 @@
               <para>No default value</para>
             </entry>
           </row>
+
         </tbody>
       </tgroup>
     </table>
+
+    <itemizedlist>
+      <listitem>
+        <para><emphasis>
+            <property>Classpath</property>
+          </emphasis> for classpath</para>
+      </listitem>
+    </itemizedlist>
 
     <figure>
       <title>Specifying Classpath in Hibernate Console Configuration</title>
@@ -358,7 +445,7 @@
       </mediaobject>
     </figure>
 
-    <para>The fallowing table specifies the parameters of the Classpath tab of the wizard.</para>
+    <para>The following table specifies the parameters of the Classpath tab of the wizard.</para>
 
     <table>
       <title>Hibernate Console Configuration Classpath</title>
@@ -419,26 +506,33 @@
               <para>Enabled</para>
             </entry>
           </row>
+
         </tbody>
       </tgroup>
     </table>
 
-    <para>
-      <figure>
-        <title>Specifying additional Mappings in Hibernate Console Configuration</title>
-        <mediaobject>
-          <imageobject role="fo">
-            <imagedata align="center" fileref="images/plugins/plugins_4.png" format="PNG"/>
-          </imageobject>
+    <itemizedlist>
+      <listitem>
+        <para><emphasis>
+            <property>Mappings</property>
+          </emphasis> for additional mappings</para>
+      </listitem>
+    </itemizedlist>
 
-          <imageobject role="html">
-            <imagedata align="center" fileref="images/plugins/plugins_4.png" format="PNG"/>
-          </imageobject>
-        </mediaobject>
-      </figure>
-    </para>
+    <figure>
+      <title>Specifying additional Mappings in Hibernate Console Configuration</title>
+      <mediaobject>
+        <imageobject role="fo">
+          <imagedata align="center" fileref="images/plugins/plugins_4.png" format="PNG"/>
+        </imageobject>
 
-    <para>Parameters of the Mappings tab in the <property>Hibernate Console Configuration
+        <imageobject role="html">
+          <imagedata align="center" fileref="images/plugins/plugins_4.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>Parameters of the Mappings tab of the <property>Hibernate Console Configuration
       wizard</property> are explained below:</para>
     <table>
       <title>Hibernate Console Configuration Mappings</title>
@@ -487,10 +581,31 @@
       </tgroup>
     </table>
 
+    <itemizedlist>
+      <listitem>
+        <para>and the last tab <emphasis>
+            <property>Common</property>
+          </emphasis></para>
+      </listitem>
+    </itemizedlist>
+
+    <figure>
+      <title>Common Tab of the Console Configuration Wizard</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/plugins/plugins_4_a.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>It allows to define general aspects of the launch configuration including storage
+      location, console encoding and some others.</para>
+
     <para>Clicking <emphasis>
         <property>Finish</property>
       </emphasis> creates the configuration and shows it in the <property>Hibernate Configurations
-        View</property>.</para>
+        view</property>.</para>
 
     <figure>
       <title>Console Overview</title>
@@ -1672,8 +1787,8 @@
     <note>
       <title>Note:</title>
 
-      <para>Please note, currently the wizards require that you have a <link
-          linkend="console_conf">Hibernate Console Configuration</link> already configured.</para>
+      <para>Please note, currently the wizards require that you have a <link linkend="console_conf"
+          >Hibernate Console Configuration</link> already configured.</para>
     </note>
   </section>
 </chapter>
