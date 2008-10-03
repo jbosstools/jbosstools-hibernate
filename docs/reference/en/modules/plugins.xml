@@ -197,7 +197,7 @@
 
         <colspec colnum="2" colwidth="3*"/>
 
-        <colspec colnum="3" colwidth="1*"/>
+        <colspec colnum="3" align="left"  colwidth="1*"/>
 
         <thead>
           <row>
@@ -370,7 +370,7 @@
 
         <colspec colnum="2" colwidth="3*"/>
 
-        <colspec colnum="3" colwidth="1*"/>
+        <colspec colnum="3" align="left"  colwidth="1*"/>
 
         <thead>
           <row>

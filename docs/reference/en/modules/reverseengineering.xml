@@ -697,7 +697,7 @@
           does not support them or does not have them defined in their schema. Secondly, to allow
           defining the name of the resulting properties (many-to-one and one-to-many's).</para>
          
-          <para><programlisting role="XML"><![CDATA[<foreign-key
+          <programlisting role="XML"><![CDATA[<foreign-key
   constraint-name="foreignKeyName"
   foreign-catalog="catalogName"
   foreign-schema="schemaName"
@@ -710,7 +710,7 @@
  <set 
    property="aCollectionName"
    exclude="true|false"/>
-   </foreign-key>]]></programlisting></para>
+   </foreign-key>]]></programlisting>
         <table frame="topbot">
           <title>Foreign-key attributes</title>
           

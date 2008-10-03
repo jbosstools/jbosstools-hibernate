@@ -21,7 +21,7 @@
                 
                 <colspec colnum="1" align="left" colwidth="1*"/>
                 <colspec colnum="2" colwidth="5*"/>
-                <colspec colnum="3" colwidth="1*"/>
+                <colspec colnum="3" align="left" colwidth="1*"/>
                 
                 <thead>
                     <row>
