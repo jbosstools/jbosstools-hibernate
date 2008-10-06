@@ -21,6 +21,7 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.internal.platform.generic.GenericPlatformUi;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
@@ -53,7 +54,12 @@ public class HibernatePlatformUI extends GenericPlatformUi {
 		WizardDialog dialog = new WizardDialog(null, wizard);
 		dialog.open();
 	}
-
+	
+	@Override
+	protected JpaUiFactory createJpaUiFactory() {
+		return new HibernateUiFactory();
+	}
+	
 	public static ILaunchConfigurationWorkingCopy createDefaultLaunchConfig(String projectName) {
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 		ILaunchConfigurationType launchConfigurationType = launchManager
