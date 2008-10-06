@@ -27,9 +27,8 @@ public class HibernatePlatform extends GenericJpaPlatform {
 		return ID;
 	}
 
-	/* use GenericJpaPlatform's methods while under progress
 	@Override
 	protected JpaFactory buildJpaFactory() {
 		return new HibernateFactory();
-	}*/
+	}
 }

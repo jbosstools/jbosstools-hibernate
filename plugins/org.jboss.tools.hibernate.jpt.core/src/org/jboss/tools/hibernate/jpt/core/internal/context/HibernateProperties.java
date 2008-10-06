@@ -10,7 +10,7 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import org.eclipse.jpt.eclipselink.core.internal.context.PersistenceUnitProperties;
+import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 
 /**
  * @author Dmitry Geraskov
@@ -18,6 +18,6 @@ import org.eclipse.jpt.eclipselink.core.internal.context.PersistenceUnitProperti
  */
 public interface HibernateProperties extends PersistenceUnitProperties {
 	
-	// put getters for specific properties here
+	BasicHibernateProperties getBasicHibernate();
 
 }

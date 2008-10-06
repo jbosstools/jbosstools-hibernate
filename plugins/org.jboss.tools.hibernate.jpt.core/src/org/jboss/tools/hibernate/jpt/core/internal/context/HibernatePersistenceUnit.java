@@ -13,6 +13,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
+import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 
 /**
  * @author Dmitry Geraskov
@@ -36,9 +37,9 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit {
 		this.hibernateProperties = new HibernateJpaProperties(this);
 	}
 
-	/*
-	 * put getters for specific properties here
-	 * 
-	 */
+	// ******** Behavior *********
+	public BasicHibernateProperties getBasicProperties() {
+		return this.hibernateProperties.getBasicHibernate();
+	}
 
 }

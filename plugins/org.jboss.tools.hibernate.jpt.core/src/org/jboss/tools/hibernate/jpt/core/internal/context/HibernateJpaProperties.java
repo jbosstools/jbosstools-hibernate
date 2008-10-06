@@ -10,11 +10,20 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
+import java.util.ListIterator;
+
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.value.ListValueModel;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
+import org.jboss.tools.hibernate.jpt.core.internal.context.basic.HibernateBasic;
 
 /**
  * @author Dmitry Geraskov
@@ -25,48 +34,75 @@ public class HibernateJpaProperties extends AbstractModel implements
 	
 	private PersistenceUnit persistenceUnit;
 	
+	private BasicHibernateProperties basicHibernateProperties;
+	
+	private ListValueModel<Property> propertiesAdapter;
+	private ListValueModel<Property> propertyListAdapter;
+	
 	public HibernateJpaProperties(PersistenceUnit parent) {
 		super();
 		this.initialize(parent);
 	}
+	
+	protected void initialize(PersistenceUnit parent) {
+		this.persistenceUnit = parent;
+		PropertyValueModel<PersistenceUnit> persistenceUnitHolder = 
+			new SimplePropertyValueModel<PersistenceUnit>(this.persistenceUnit);
+		
+		this.propertiesAdapter = this.buildPropertiesAdapter(persistenceUnitHolder);
+		this.propertyListAdapter = this.buildPropertyListAdapter(this.propertiesAdapter);
+		
+		this.basicHibernateProperties = this.buildBasicProperties();
+	}
+	
+	private ListValueModel<Property> buildPropertyListAdapter(ListValueModel<Property> propertiesAdapter) {
+		return new ItemPropertyListValueModelAdapter<Property>(propertiesAdapter, Property.VALUE_PROPERTY);
+	}
+	
+	private ListValueModel<Property> buildPropertiesAdapter(PropertyValueModel<PersistenceUnit> subjectHolder) {
+		return new ListAspectAdapter<PersistenceUnit, Property>(subjectHolder, PersistenceUnit.PROPERTIES_LIST) {
+			@Override
+			protected ListIterator<Property> listIterator_() {
+				return this.subject.properties();
+			}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.eclipselink.core.internal.context.PersistenceUnitProperties#getJpaProject()
-	 */
+			@Override
+			protected int size_() {
+				return this.subject.propertiesSize();
+			}
+		};
+	}
+	
+	// ******** Behavior *********
+	public BasicHibernateProperties getBasicHibernate() {
+		return this.basicHibernateProperties;
+	}
+	
+	private BasicHibernateProperties buildBasicProperties() {
+		return new HibernateBasic(this.persistenceUnit(), this.propertyListAdapter());
+	}
+
+	public ListValueModel<Property> propertyListAdapter() {
+		return this.propertyListAdapter;
+	}
+
+	public PersistenceUnit persistenceUnit() {
+		return this.persistenceUnit;
+	}
+	
 	public JpaProject getJpaProject() {
 		return this.persistenceUnit.getJpaProject();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.eclipselink.core.internal.context.PersistenceUnitProperties#itemIsProperty(org.eclipse.jpt.core.context.persistence.Property)
-	 */
 	public boolean itemIsProperty(Property item) {
 		throw new UnsupportedOperationException();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.eclipselink.core.internal.context.PersistenceUnitProperties#persistenceUnit()
-	 */
-	public PersistenceUnit persistenceUnit() {
-		return this.persistenceUnit;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.eclipselink.core.internal.context.PersistenceUnitProperties#propertyIdFor(org.eclipse.jpt.core.context.persistence.Property)
-	 */
-	public String propertyIdFor(Property property) {
-		throw new UnsupportedOperationException();
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.utility.model.listener.PropertyChangeListener#propertyChanged(org.eclipse.jpt.utility.model.event.PropertyChangeEvent)
-	 */
 	public void propertyChanged(PropertyChangeEvent event) {
 		throw new UnsupportedOperationException();
 	}
-	
-	protected void initialize(PersistenceUnit parent) {
-		this.persistenceUnit = parent;
-	}
 
+	public String propertyIdFor(Property property) {
+		throw new UnsupportedOperationException();
+	}
 }
