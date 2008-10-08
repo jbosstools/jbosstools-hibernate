@@ -494,7 +494,9 @@ public class HibernateConsoleMessages extends NLS {
 	public static String ExporterSettingsTab_template_directory_for;
 	public static String ExporterSettingsTab_use_java5_syntax;
 	public static String ExporterSettingsTab_select_dir;
+	public static String ExporterSettingsTab_select_dir2;
 	public static String ExporterSettingsTab_select_path;
+	public static String ExporterSettingsTab_select_path2;
 	public static String GeneralExceptionStatusHandler_exception_while_generating_code;
 	public static String GeneralExceptionStatusHandler_generating_code;
 	public static String PathHelper_does_not_exist;

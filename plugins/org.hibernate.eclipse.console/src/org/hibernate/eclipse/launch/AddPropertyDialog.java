@@ -96,17 +96,23 @@ public class AddPropertyDialog extends TitleAreaDialog {
 				public void keyPressed(KeyEvent e) {}
 			
 				public void keyReleased(KeyEvent e) {
-					if (e.keyCode == SWT.ARROW_UP || e.keyCode == SWT.ARROW_DOWN) return;
+					if (e.keyCode == SWT.ARROW_UP || e.keyCode == SWT.ARROW_DOWN) {
+						//linux doesn't call selectionChanged event on this events
+						propertyCombo.setSelection(propertyCombo.getSelection(), false);
+						return;
+					}
 
-					for (int i = 0; i < combo.getItemCount(); i++) {
+				    for (int i = 0; i < combo.getItemCount(); i++) {
 						if (combo.getText().equals(combo.getItem(i))){
-							combo.select(i);
-							propertyCombo.setSelection(propertyCombo.getSelection(), false);
+							if (combo.getSelectionIndex() != i){
+								combo.select(i);
+								propertyCombo.setSelection(propertyCombo.getSelection(), false);
+							}								
 							return;
 						}
-					}
-					disposeBrowseButton();
-					createTextValueComposite(2);
+				    }
+				    disposeBrowseButton();
+				    createTextValueComposite(2);
 				}
 						
 			});
@@ -194,7 +200,7 @@ public class AddPropertyDialog extends TitleAreaDialog {
 			
 						public void widgetSelected(SelectionEvent e) {
 							String title = isPath ? HibernateConsoleMessages.ExporterSettingsTab_select_path: HibernateConsoleMessages.ExporterSettingsTab_select_dir;
-							String description = title;
+							String description = isPath ? HibernateConsoleMessages.ExporterSettingsTab_select_path2 : HibernateConsoleMessages.ExporterSettingsTab_select_dir2;
 							
 							MessageDialog dialog = new MessageDialog(getShell(),
 									title,
@@ -229,7 +235,10 @@ public class AddPropertyDialog extends TitleAreaDialog {
 							String oldPath = ((Text)value).getText();
 							if (isPath && oldPath.trim().length() > 0 && strPath != null)
 								((Text)value).setText( oldPath + File.pathSeparator + strPath );
-							else ((Text)value).setText( strPath );	
+							else {
+								if (strPath == null) strPath = "";
+								((Text)value).setText( strPath );	
+							}
 						}
 					};
 			}
@@ -313,7 +322,7 @@ public class AddPropertyDialog extends TitleAreaDialog {
 			}
 			value = new Combo(parent, SWT.BORDER | SWT.LEAD | SWT.DROP_DOWN | SWT.READ_ONLY);
 			GridData bgd = new GridData(GridData.GRAB_HORIZONTAL | GridData.FILL_HORIZONTAL);
-			bgd.horizontalSpan = 3;
+			bgd.horizontalSpan = 2;
 			value.setLayoutData(bgd);
 			((Combo)value).setItems(items);
 			((Combo)value).addModifyListener( modifyListener );
