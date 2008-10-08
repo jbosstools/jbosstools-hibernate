@@ -225,19 +225,21 @@ public class AddPropertyDialog extends TitleAreaDialog {
 								IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(), (IPath)null, new Path[0], 
 										title, description,
 										new String[0], isPath, true, false);//$NON-NLS-1$
-								strPath = paths[0].toOSString();	
-								if (isPath){
-									for (int i = 1; i < paths.length; i++) {
-										strPath += File.pathSeparator + paths[i].toOSString();				
-									}									
-								}	
+								if (paths != null && paths.length > 0){
+									strPath = paths[0].toOSString();
+									if (isPath){
+										for (int i = 1; i < paths.length; i++) {
+											strPath += File.pathSeparator + paths[i].toOSString();
+										}
+									}
+								}
 							} else return;
 							String oldPath = ((Text)value).getText();
 							if (isPath && oldPath.trim().length() > 0 && strPath != null)
 								((Text)value).setText( oldPath + File.pathSeparator + strPath );
 							else {
-								if (strPath == null) strPath = "";
-								((Text)value).setText( strPath );	
+								if (strPath != null)
+									((Text)value).setText( strPath );	
 							}
 						}
 					};
