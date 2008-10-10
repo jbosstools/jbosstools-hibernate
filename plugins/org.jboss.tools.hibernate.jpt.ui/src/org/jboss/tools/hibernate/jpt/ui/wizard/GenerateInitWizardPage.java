@@ -109,6 +109,9 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 			}
 
 			public void widgetSelected(SelectionEvent e) {
+				consoleConfigurationName.setEnabled(selectMethod.getSelection());
+				connectionProfileName.setEnabled(!selectMethod.getSelection());
+				schemaName.setEnabled(!selectMethod.getSelection());
 				dialogChanged();				
 			}});
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -183,10 +186,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 	}
 
 	
-	protected void dialogChanged() {
-		consoleConfigurationName.setEnabled(selectMethod.getSelection());
-		connectionProfileName.setEnabled(!selectMethod.getSelection());
-		schemaName.setEnabled(!selectMethod.getSelection());
+	protected void dialogChanged() {		
 		
 		if (selectMethod.getSelection() && (StringHelper.isEmpty(getConfigurationName()))){
 			setPageComplete(false);
