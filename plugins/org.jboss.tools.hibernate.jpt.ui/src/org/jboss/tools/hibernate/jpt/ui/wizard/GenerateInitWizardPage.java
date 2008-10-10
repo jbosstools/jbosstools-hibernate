@@ -79,7 +79,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 	};
 	
 	public GenerateInitWizardPage(JpaProject jpaProject){
-		super("", "", null);
+		super("", Messages.title, null);
 		this.jpaProject = jpaProject;
 	}
 

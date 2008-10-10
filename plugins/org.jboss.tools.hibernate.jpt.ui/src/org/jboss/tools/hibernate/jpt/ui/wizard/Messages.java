@@ -19,9 +19,10 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.jboss.tools.hibernate.jpt.ui.wizard.messages"; //$NON-NLS-1$
 
-	public static String ccName;	
-	public static String connectionProfileError;	
-	public static String selectName;	
+	public static String ccName;
+	public static String connectionProfileError;
+	public static String title;
+	public static String selectName;
 	public static String wizardMessage;
 
 	static {
