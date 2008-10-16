@@ -205,7 +205,7 @@ public class ExporterFactory {
 		List templatePathList = new ArrayList();
 		if(props.containsKey("template_path")) { //$NON-NLS-1$
 			String resolveTemplatePath = resolve(props.getProperty("template_path")); //$NON-NLS-1$
-			StringTokenizer st = new StringTokenizer(resolveTemplatePath, File.pathSeparator);
+			StringTokenizer st = new StringTokenizer(resolveTemplatePath, ";");
 			String out = new String();
 			while (st.hasMoreTokens()) {
 				String locationAsStringPath = PathHelper.getLocationAsStringPath(st.nextToken());
@@ -224,7 +224,7 @@ public class ExporterFactory {
 		}
 		if (StringHelper.isNotEmpty(customTemplatePath)){
 			String resolvedCustomTemplatePath = resolve(customTemplatePath);
-			StringTokenizer st = new StringTokenizer(resolvedCustomTemplatePath, File.pathSeparator);
+			StringTokenizer st = new StringTokenizer(resolvedCustomTemplatePath, ";");
 			String out = "";
 			while (st.hasMoreTokens()) {
 				String locationAsStringPath = PathHelper.getLocationAsStringPath(st.nextToken());

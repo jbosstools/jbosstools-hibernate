@@ -229,14 +229,14 @@ public class AddPropertyDialog extends TitleAreaDialog {
 									strPath = paths[0].toOSString();
 									if (isPath){
 										for (int i = 1; i < paths.length; i++) {
-											strPath += File.pathSeparator + paths[i].toOSString();
+											strPath += ';' + paths[i].toOSString();
 										}
 									}
 								}
 							} else return;
 							String oldPath = ((Text)value).getText();
 							if (isPath && oldPath.trim().length() > 0 && strPath != null)
-								((Text)value).setText( oldPath + File.pathSeparator + strPath );
+								((Text)value).setText( oldPath + ';' + strPath );
 							else {
 								if (strPath != null)
 									((Text)value).setText( strPath );	
