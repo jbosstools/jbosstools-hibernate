@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -163,7 +164,27 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		Map tables = new HashMap();
 		Map columns = new HashMap();
 
-		if(lds!=null) {
+		if (lds == null) {
+			String tableName = "", namePrefix = "TABLE_";  //$NON-NLS-1$  //$NON-NLS-2$
+			IRevEngTable retable = editor.getReverseEngineeringDefinition().createTable();
+			retable.setCatalog(""); //$NON-NLS-1$
+			retable.setSchema(""); //$NON-NLS-1$
+			TreeSet ts = new TreeSet();
+			IRevEngTable[] retables = editor.getReverseEngineeringDefinition().getTables();
+			char separartor = '%';
+			for (int i = 0; i < retables.length; i++) {
+				ts.add(retables[i].getCatalog() + separartor + retables[i].getSchema() + 
+						separartor + retables[i].getName());
+			}
+			String strCatalogSchema = retable.getCatalog() + separartor + retable.getSchema() + separartor;
+			int i = 0;
+			do {
+				tableName = namePrefix + (i++);
+			} while (ts.contains(strCatalogSchema + tableName));
+			retable.setName(tableName);
+			editor.getReverseEngineeringDefinition().addTable(retable);
+		}
+		else {
 			dialog.setTitle(MapperMessages.TablePropertiesBlock_add_tables_columns);
 			dialog.setMessage(MapperMessages.TablePropertiesBlock_select_tables_columns);
 			dialog.setInput(lds);
