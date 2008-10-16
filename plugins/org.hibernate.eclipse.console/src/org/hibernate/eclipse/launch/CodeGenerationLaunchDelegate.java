@@ -21,6 +21,7 @@
  */
 package org.hibernate.eclipse.launch;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.util.HashSet;
@@ -65,6 +66,7 @@ import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
+import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
@@ -264,7 +266,8 @@ public class CodeGenerationLaunchDelegate extends
 		final String reverseEngineeringStrategy = attributes.getRevengStrategy();
 		final boolean preferBasicCompositeids = attributes.isPreferBasicCompositeIds();
 		final IResource revengres = PathHelper.findMember( root, attributes.getRevengSettings());
-
+		final String revengTables = attributes.getRevengTables();
+		
 		if(reveng) {
 			Configuration configuration = null;
 			if(cc.hasConfiguration()) {
@@ -282,20 +285,24 @@ public class CodeGenerationLaunchDelegate extends
 
 			cc.execute(new Command() { // need to execute in the consoleconfiguration to let it handle classpath stuff!
 
-				public Object execute() {
+				public Object execute() {					
+					//todo: factor this setup of revengstrategy to core		
+					ReverseEngineeringStrategy res = new DefaultReverseEngineeringStrategy();
 
-
-					//todo: factor this setup of revengstrategy to core
-					DefaultReverseEngineeringStrategy configurableNamingStrategy = new DefaultReverseEngineeringStrategy();
-					//configurableNamingStrategy.setSettings(qqsettings);
-
-					ReverseEngineeringStrategy res = configurableNamingStrategy;
-					if(revengres!=null) {
+					OverrideRepository repository = null;
+					
+					if (revengTables != null){
+						repository = new OverrideRepository();
+						repository.addInputStream(new ByteArrayInputStream(revengTables.getBytes()));
+					} else	if(revengres!=null) {
 						/*Configuration configuration = cc.buildWith(new Configuration(), false);*/
 						/*Settings settings = cc.getSettings(configuration);*/
 						File file = PathHelper.getLocation( revengres ).toFile();
-						OverrideRepository repository = new OverrideRepository();///*settings.getDefaultCatalogName(),settings.getDefaultSchemaName()*/);
-						repository.addFile(file);
+						repository = new OverrideRepository();
+						repository.addFile(file);						
+					}
+					
+					if (repository != null){
 						res = repository.getReverseEngineeringStrategy(res);
 					}
 
@@ -308,7 +315,6 @@ public class CodeGenerationLaunchDelegate extends
 					.setDetectManyToMany( attributes.detectManyToMany() )
 					.setDetectOptimisticLock( attributes.detectOptimisticLock() );
 
-					configurableNamingStrategy.setSettings( qqsettings );
 					res.setSettings(qqsettings);
 
 					cfg.setReverseEngineeringStrategy( res );

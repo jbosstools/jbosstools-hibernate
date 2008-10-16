@@ -21,17 +21,12 @@
  */
 package org.hibernate.eclipse.console.wizards;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
-import org.eclipse.jface.viewers.ICellEditorListener;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
@@ -45,7 +40,6 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 import org.hibernate.eclipse.console.model.ITableFilter;
-import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.eclipse.console.workbench.DeferredContentProvider;
 import org.hibernate.eclipse.console.workbench.LazyDatabaseSchema;
 import org.hibernate.eclipse.console.workbench.TableContainer;
@@ -60,11 +54,19 @@ public abstract class TableFilterView extends TreeToTableComposite {
 
 	private TableViewer tableViewer;
 
-	private IReverseEngineeringDefinition revEngDef;
+	protected IReverseEngineeringDefinition revEngDef;
 
 	public TableFilterView(Composite parent, int style) {
-		super( parent, style );
+		super( parent, style );		
+	}
 
+	protected TreeViewer createTreeViewer() {
+		TreeViewer viewer = new TreeViewer( tree );
+		viewer.setLabelProvider( new AnyAdaptableLabelProvider() );
+		viewer.setContentProvider( new DeferredContentProvider() );
+
+		viewer.setInput( null );
+		return viewer;		
 	}
 
 	public void setModel(IReverseEngineeringDefinition revEngDef) {
@@ -75,13 +77,7 @@ public abstract class TableFilterView extends TreeToTableComposite {
 	protected void initialize() {
 		super.initialize();
 		tableViewer = createTableFilterViewer();
-
-		viewer = new TreeViewer( tree );
-		viewer.setLabelProvider( new AnyAdaptableLabelProvider() );
-		viewer.setContentProvider( new DeferredContentProvider() );
-
-		viewer.setInput( null );
-
+		viewer = createTreeViewer();
 	}
 
 	private TableViewer createTableFilterViewer() {
@@ -133,7 +129,7 @@ public abstract class TableFilterView extends TreeToTableComposite {
 		return revEngDef.getTableFilters();
 	}
 
-	private void toggle(boolean exclude) {
+	protected void toggle(boolean exclude) {
 		ISelection selection = viewer.getSelection();
 
 		if ( !selection.isEmpty() ) {

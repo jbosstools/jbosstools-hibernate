@@ -46,6 +46,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
@@ -58,6 +59,7 @@ import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.model.impl.ExporterDefinition;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
+import org.hibernate.mapping.Table;
 
 // This class was created to centralize launch configuration attribute loading/saving
 // (and also to clean up CodeGenerationLaunchDelegate considerably)
@@ -71,8 +73,10 @@ public class ExporterAttributes
    private String outputPath;
    private String templatePath;
    private List exporterFactories;
-private boolean autoManyToManyDetection;
-private boolean autoVersioning;
+   // if set then build reveng strategy relying on the list of tables
+   private String revengTables;
+   private boolean autoManyToManyDetection;
+   private boolean autoVersioning;
 
    public ExporterAttributes () { }
 
@@ -106,8 +110,8 @@ private boolean autoVersioning;
          }
 
          exporterFactories = readExporterFactories(configuration);
-
-      } catch (CoreException e) {
+         revengTables = configuration.getAttribute(HibernateLaunchConstants.ATTR_REVENG_TABLES, (String)null);
+       } catch (CoreException e) {
          throw new CoreException(HibernateConsolePlugin.throwableToStatus(e, 666));
       }
    }
@@ -350,6 +354,10 @@ public boolean detectManyToMany() {
     public boolean detectOptimisticLock() {
     	return autoVersioning;
     }
+
+	public String getRevengTables() {
+		return revengTables;
+	}
 
 
 
