@@ -203,17 +203,22 @@ public class TestUtilsCommon {
 
 	public List<IPath> copyLibs(IProject project, IJavaProject javaProject,
 			File res) throws CoreException {
+		return copyLibs2(project, javaProject,
+				res.getAbsolutePath() + File.separator + TestUtilsCommon.LIB_FOLDER);
+	}
+
+	public List<IPath> copyLibs2(IProject project, IJavaProject javaProject,
+			String absolutePath) throws CoreException {
 		IFolder dst = project.getFolder(TestUtilsCommon.LIB_FOLDER);
 		if (!dst.exists()) {
 			dst.create(false, true, null);
 			javaProject.getPackageFragmentRoot(dst);
 		}
-		File libFolder = new File(res.getAbsolutePath()
-				+ "/" + TestUtilsCommon.LIB_FOLDER); //$NON-NLS-1$
+		File libFolder = new File(absolutePath);
 		if (!libFolder.exists()) {
 			String out = NLS.bind(
 					ConsoleTestMessages.MappingTestProject_folder_not_found,
-					res.getAbsolutePath() + "/" + TestUtilsCommon.LIB_FOLDER); //$NON-NLS-1$
+					absolutePath);
 			throw new RuntimeException(out);
 		}
 		List<IPath> libs = new ArrayList<IPath>();
