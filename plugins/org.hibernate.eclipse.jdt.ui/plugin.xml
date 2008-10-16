@@ -38,4 +38,69 @@
 	<super type="org.eclipse.core.resources.textmarker"/>
 	<persistent value="true"/>
 </extension>  
+    <extension point="org.eclipse.ui.actionSets">
+    	<!-- main menu -->
+        <actionSet label="Java Coding" description="Action set containing coding related Java actions"
+            visible="true" id="org.eclipse.jdt.ui.CodingActionSet3">
+            <menu label="&amp;Source" path="edit" id="org.eclipse.jdt.ui.source.menu">
+		        <separator name="commentGroup"/>
+                <separator name="editGroup"/>
+                <separator name="importGroup"/>
+                <separator name="generateGroup"/>
+                <separator name="codeGroup"/>
+                <separator name="externalizeGroup"/>
+                <separator name="convertGroup"/>
+            </menu>
+            <action
+                class="org.hibernate.eclipse.jdt.ui.internal.jpa.actions.JPAMapToolActionPulldownDelegate"
+                id="org.hibernate.eclipse.jdt.ui.run_jpaaction"
+                label="Generate &amp;Hibernate/JPA annotations"
+                menubarPath="org.eclipse.jdt.ui.source.menu/generateGroup"
+                style="push">
+            </action>
+        </actionSet>
+    </extension>
+    <extension point="org.eclipse.ui.popupMenus">
+		<!-- java editor context menu -->
+        <viewerContribution
+            id="org.hibernate.eclipse.jdt.ui.run_jpa.popupMenu"
+            targetID="#CompilationUnitEditorContext">
+            <menu label="&amp;Source" path="edit" id="org.eclipse.jdt.ui.source.menu">
+		        <separator name="commentGroup"/>
+                <separator name="editGroup"/>
+                <separator name="importGroup"/>
+                <separator name="generateGroup"/>
+                <separator name="codeGroup"/>
+                <separator name="externalizeGroup"/>
+                <separator name="convertGroup"/>
+            </menu>
+            <action
+                  class="org.hibernate.eclipse.jdt.ui.internal.jpa.actions.JPAMapToolActionDelegate"
+                  id="org.hibernate.eclipse.jdt.ui.run_jpaaction2"
+                  label="Generate &amp;Hibernate/JPA annotations"
+                  menubarPath="org.eclipse.jdt.ui.source.menu/generateGroup"
+                  style="push">
+            </action>
+        </viewerContribution>
+		<!-- java element context menu -->
+		<objectContribution adaptable="false"
+			id="org.hibernate.eclipse.jdt.ui.run_jpa.popupMenu.IJavaElementContribution"
+			objectClass="org.eclipse.jdt.core.IJavaElement">
+            <menu label="&amp;Source" path="edit" id="org.eclipse.jdt.ui.source.menu">
+		        <separator name="commentGroup"/>
+                <separator name="editGroup"/>
+                <separator name="importGroup"/>
+                <separator name="generateGroup"/>
+                <separator name="codeGroup"/>
+                <separator name="externalizeGroup"/>
+                <separator name="convertGroup"/>
+            </menu>
+			<action class="org.hibernate.eclipse.jdt.ui.internal.jpa.actions.JPAMapToolActionDelegate"
+				id="org.hibernate.eclipse.jdt.ui.run_jpaaction3"
+				label="Generate &amp;Hibernate/JPA annotations"
+				menubarPath="org.eclipse.jdt.ui.source.menu/generateGroup">
+			</action>
+		</objectContribution>
+    </extension>
+
 </plugin>
