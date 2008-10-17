@@ -31,7 +31,7 @@ import org.eclipse.ui.IWorkbenchPart;
 public class JPAMapToolActionDelegate implements IObjectActionDelegate,
 	IEditorActionDelegate, IViewActionDelegate, IHandler {
 
-	public JPAMapToolActor actor = new JPAMapToolActor();
+	public JPAMapToolActor actor = JPAMapToolActor.getInstance();
 
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
 	}

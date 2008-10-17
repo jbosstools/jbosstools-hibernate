@@ -42,7 +42,7 @@ public class JPAMapToolActionPulldownDelegate implements
 	private Menu fMenu;
 	protected boolean fRecreateMenu = false;
 
-	public JPAMapToolActor actor = new JPAMapToolActor();
+	public JPAMapToolActor actor = JPAMapToolActor.getInstance();
 
 	public Menu getMenu(Menu parent) {
 		setMenu(new Menu(parent));

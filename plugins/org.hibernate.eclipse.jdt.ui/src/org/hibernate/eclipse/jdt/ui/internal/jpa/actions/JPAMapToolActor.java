@@ -48,11 +48,21 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.process.AllEntitiesProcessor;
  */
 public class JPAMapToolActor {
 
+	protected static JPAMapToolActor actor = null; 
 	protected Set<ICompilationUnit> selectionCU = new HashSet<ICompilationUnit>();
 	protected AllEntitiesInfoCollector collector = new AllEntitiesInfoCollector();
 	protected AllEntitiesProcessor processor = new AllEntitiesProcessor();
 
+	protected JPAMapToolActor() {
+	}
 
+	public static JPAMapToolActor getInstance() {
+		if (actor == null) {
+			actor = new JPAMapToolActor();
+		}
+		return actor;
+	}
+	
 	protected org.eclipse.jdt.core.dom.CompilationUnit getCompilationUnit(ICompilationUnit source) {
 		ASTParser parser = ASTParser.newParser(AST.JLS3);
 		parser.setSource(source);
@@ -127,7 +137,7 @@ public class JPAMapToolActor {
 		return selectionCU.size();
 	}
 
-	public void updateSelectedItems(ISelection selection) {
+	synchronized public void updateSelectedItems(ISelection selection) {
 		//System.out.println("Blah! " + selection); //$NON-NLS-1$
 		if (selection instanceof TextSelection) {
 			String fullyQualifiedName = ""; //$NON-NLS-1$

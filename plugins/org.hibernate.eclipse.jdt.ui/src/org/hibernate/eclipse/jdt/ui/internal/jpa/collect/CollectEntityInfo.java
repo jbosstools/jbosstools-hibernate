@@ -216,17 +216,19 @@ public class CollectEntityInfo extends ASTVisitor {
 		Type superType = node.getSuperclassType();
 		if (superType != null) {
 			ITypeBinding tb = superType.resolveBinding();
-			String entityFullyQualifiedName = ""; //$NON-NLS-1$
-			if (tb.getJavaElement() instanceof SourceType) {
-				SourceType sourceT = (SourceType)tb.getJavaElement();
-				try {
-					entityFullyQualifiedName = sourceT.getFullyQualifiedParameterizedName();
-				} catch (JavaModelException e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage("error", e);
+			if (tb != null) {
+				String entityFullyQualifiedName = ""; //$NON-NLS-1$
+				if (tb.getJavaElement() instanceof SourceType) {
+					SourceType sourceT = (SourceType)tb.getJavaElement();
+					try {
+						entityFullyQualifiedName = sourceT.getFullyQualifiedParameterizedName();
+					} catch (JavaModelException e) {
+						HibernateConsolePlugin.getDefault().logErrorMessage("error", e);
+					}
 				}
+				entityInfo.addDependency(entityFullyQualifiedName);
+				entityInfo.setFullyQualifiedParentName(entityFullyQualifiedName);
 			}
-			entityInfo.addDependency(entityFullyQualifiedName);
-			entityInfo.setFullyQualifiedParentName(entityFullyQualifiedName);
 		}
 		List superInterfaces = node.superInterfaceTypes();
 		Iterator it = superInterfaces.iterator();
@@ -266,31 +268,33 @@ public class CollectEntityInfo extends ASTVisitor {
 		} else if (node.getType().isSimpleType()) {
 			SimpleType st = (SimpleType)node.getType();
 			ITypeBinding tb = st.resolveBinding();
-			String entityFullyQualifiedName = ""; //$NON-NLS-1$
-			if (tb.getJavaElement() instanceof SourceType) {
-				SourceType sourceT = (SourceType)tb.getJavaElement();
-				try {
-					entityFullyQualifiedName = sourceT.getFullyQualifiedParameterizedName();
-				} catch (JavaModelException e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
-				}
-				entityInfo.addDependency(entityFullyQualifiedName);
-				Iterator itVarNames = node.fragments().iterator();
-				while (itVarNames.hasNext()) {
-					VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
-					String name = var.getName().getIdentifier();
-					entityInfo.addReference(name, entityFullyQualifiedName, RefType.ONE2ONE);
-				}
-			}
-			else if (tb.getJavaElement() instanceof BinaryType) {
-				ITypeBinding tbParent = tb.getTypeDeclaration().getSuperclass();
-				if (tbParent != null && "java.lang.Number".equals(tbParent.getBinaryName())) { //$NON-NLS-1$
-					// this is candidate for primary id
+			if (tb != null) {
+				String entityFullyQualifiedName = ""; //$NON-NLS-1$
+				if (tb.getJavaElement() instanceof SourceType) {
+					SourceType sourceT = (SourceType)tb.getJavaElement();
+					try {
+						entityFullyQualifiedName = sourceT.getFullyQualifiedParameterizedName();
+					} catch (JavaModelException e) {
+						HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
+					}
+					entityInfo.addDependency(entityFullyQualifiedName);
 					Iterator itVarNames = node.fragments().iterator();
 					while (itVarNames.hasNext()) {
 						VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
 						String name = var.getName().getIdentifier();
-						entityInfo.addPrimaryIdCandidate(name);
+						entityInfo.addReference(name, entityFullyQualifiedName, RefType.ONE2ONE);
+					}
+				}
+				else if (tb.getJavaElement() instanceof BinaryType) {
+					ITypeBinding tbParent = tb.getTypeDeclaration().getSuperclass();
+					if (tbParent != null && "java.lang.Number".equals(tbParent.getBinaryName())) { //$NON-NLS-1$
+						// this is candidate for primary id
+						Iterator itVarNames = node.fragments().iterator();
+						while (itVarNames.hasNext()) {
+							VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
+							String name = var.getName().getIdentifier();
+							entityInfo.addPrimaryIdCandidate(name);
+						}
 					}
 				}
 			}
@@ -301,37 +305,39 @@ public class CollectEntityInfo extends ASTVisitor {
 			ParameterizedType pt = (ParameterizedType)node.getType();
 			Type type = (Type)pt.getType();
 			ITypeBinding tb = type.resolveBinding();
-			ITypeBinding[] interfaces = tb.getTypeDeclaration().getInterfaces();
-			String fullyQualifiedNameTypeName = ""; //$NON-NLS-1$
-			for (int i = 0; i < interfaces.length; i++) {
-				if (interfaces[i].getJavaElement() instanceof BinaryType) {
-					BinaryType binaryT = (BinaryType)interfaces[i].getJavaElement();
-					String tmp = binaryT.getFullyQualifiedName('.');
-					if (0 == "java.util.Collection".compareTo(tmp)) { //$NON-NLS-1$
-						fullyQualifiedNameTypeName = tmp;
-						break;
+			if (tb != null) {
+				ITypeBinding[] interfaces = tb.getTypeDeclaration().getInterfaces();
+				String fullyQualifiedNameTypeName = ""; //$NON-NLS-1$
+				for (int i = 0; i < interfaces.length; i++) {
+					if (interfaces[i].getJavaElement() instanceof BinaryType) {
+						BinaryType binaryT = (BinaryType)interfaces[i].getJavaElement();
+						String tmp = binaryT.getFullyQualifiedName('.');
+						if (0 == "java.util.Collection".compareTo(tmp)) { //$NON-NLS-1$
+							fullyQualifiedNameTypeName = tmp;
+							break;
+						}
 					}
 				}
-			}
-			if (fullyQualifiedNameTypeName.length() > 0) {
-				Iterator typeArgsIt = pt.typeArguments().iterator();
-				while (typeArgsIt.hasNext()) {
-					type = (Type)typeArgsIt.next();
-					tb = type.resolveBinding();
-					String entityFullyQualifiedName = ""; //$NON-NLS-1$
-					if (tb.getJavaElement() instanceof SourceType) {
-						SourceType sourceT = (SourceType)tb.getJavaElement();
-						try {
-							entityFullyQualifiedName = sourceT.getFullyQualifiedParameterizedName();
-						} catch (JavaModelException e) {
-							HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
-						}
-						entityInfo.addDependency(entityFullyQualifiedName);
-						Iterator itVarNames = node.fragments().iterator();
-						while (itVarNames.hasNext()) {
-							VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
-							String name = var.getName().getIdentifier();
-							entityInfo.addReference(name, entityFullyQualifiedName, RefType.ONE2MANY);
+				if (fullyQualifiedNameTypeName.length() > 0) {
+					Iterator typeArgsIt = pt.typeArguments().iterator();
+					while (typeArgsIt.hasNext()) {
+						type = (Type)typeArgsIt.next();
+						tb = type.resolveBinding();
+						String entityFullyQualifiedName = ""; //$NON-NLS-1$
+						if (tb.getJavaElement() instanceof SourceType) {
+							SourceType sourceT = (SourceType)tb.getJavaElement();
+							try {
+								entityFullyQualifiedName = sourceT.getFullyQualifiedParameterizedName();
+							} catch (JavaModelException e) {
+								HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
+							}
+							entityInfo.addDependency(entityFullyQualifiedName);
+							Iterator itVarNames = node.fragments().iterator();
+							while (itVarNames.hasNext()) {
+								VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
+								String name = var.getName().getIdentifier();
+								entityInfo.addReference(name, entityFullyQualifiedName, RefType.ONE2MANY);
+							}
 						}
 					}
 				}
