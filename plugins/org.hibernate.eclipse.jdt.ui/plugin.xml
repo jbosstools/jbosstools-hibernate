@@ -37,7 +37,7 @@
 	<super type="org.eclipse.core.resources.problemmarker"/>
 	<super type="org.eclipse.core.resources.textmarker"/>
 	<persistent value="true"/>
-</extension>  
+</extension>
     <extension point="org.eclipse.ui.actionSets">
     	<!-- main menu -->
         <actionSet label="Java Coding" description="Action set containing coding related Java actions"
@@ -54,7 +54,7 @@
             <action
                 class="org.hibernate.eclipse.jdt.ui.internal.jpa.actions.JPAMapToolActionPulldownDelegate"
                 id="org.hibernate.eclipse.jdt.ui.run_jpaaction"
-                label="Generate &amp;Hibernate/JPA annotations"
+                label="Generate &amp;Hibernate/JPA annotations..."
                 menubarPath="org.eclipse.jdt.ui.source.menu/generateGroup"
                 style="push">
             </action>
@@ -77,7 +77,7 @@
             <action
                   class="org.hibernate.eclipse.jdt.ui.internal.jpa.actions.JPAMapToolActionDelegate"
                   id="org.hibernate.eclipse.jdt.ui.run_jpaaction2"
-                  label="Generate &amp;Hibernate/JPA annotations"
+                  label="Generate &amp;Hibernate/JPA annotations..."
                   menubarPath="org.eclipse.jdt.ui.source.menu/generateGroup"
                   style="push">
             </action>
