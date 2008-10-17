@@ -173,9 +173,9 @@ public class HibernateErrorsTest extends HibernateConsoleTest {
 	private void deleteFile(File file) {
 		try {
 			if (!file.delete())
-				throw new RuntimeException("Cannot remove the " + file.getAbsolutePath() + " file. (" + Platform.getOS() + ")");
+				throw new RuntimeException("Cannot remove the " + file.getAbsolutePath() + " file.");
 		} catch (Throwable e) {
-			throw new RuntimeException("Cannot remove the " + file.getAbsolutePath() + " file. (" + Platform.getOS() + ")",e);
+			throw new RuntimeException("Cannot remove the " + file.getAbsolutePath() + " file.",e);
 		}
 	}
 

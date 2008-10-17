@@ -5,10 +5,12 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 
+import org.eclipse.core.internal.resources.ResourceException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -153,8 +155,16 @@ public class HibernateErrorsTest2 extends HibernateConsoleTest {
 		IProject proj = getProject().getIProject();
 		String projRoot = proj.getLocation().toFile().getAbsolutePath();
 		File file = new File(projRoot);
-
-		getProject().getIProject().delete(false, true, null);
+		boolean deleted = true;
+		int nTrys = 0;
+		while (!deleted && nTrys++ < 5)
+		try {
+			proj.delete(true, true, null);
+			deleted = true;
+		} catch (ResourceException re) {
+			waitForJobs();
+			Thread.sleep(100);
+		}
 		waitForJobs();
 		delete(file);
 	}
@@ -179,11 +189,24 @@ public class HibernateErrorsTest2 extends HibernateConsoleTest {
 
 	private void deleteFile(File file) {
 		try {
-			if (!file.delete())
-				throw new RuntimeException("Cannot remove the " + file.getAbsolutePath() + " file. (" + Platform.getOS() + ")");
+			if (!file.delete()) {
+				throw new RuntimeException(getMessage(file));
+			}
 		} catch (Throwable e) {
-			throw new RuntimeException("Cannot remove the " + file.getAbsolutePath() + " file. (" + Platform.getOS() + ")",e);
+			throw new RuntimeException(getMessage(file),e);
 		}
+	}
+
+	private String getMessage(File file) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("Cannot remove the ");
+		buffer.append(file.getAbsolutePath());
+		buffer.append(" file. ");
+		if (file.exists() && file.isDirectory()) {
+			buffer.append("List=");
+			buffer.append(file.list());
+		}
+		return buffer.toString();
 	}
 	
 	protected SimpleTestProject getProject() {
