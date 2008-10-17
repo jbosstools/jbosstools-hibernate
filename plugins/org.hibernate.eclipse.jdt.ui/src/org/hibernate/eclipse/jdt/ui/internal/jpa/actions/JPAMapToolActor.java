@@ -21,12 +21,19 @@ import org.eclipse.core.internal.filebuffers.SynchronizableDocument;
 import org.eclipse.core.internal.resources.File;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.internal.core.JavaElement;
+import org.eclipse.jdt.internal.core.JavaElementInfo;
+import org.eclipse.jdt.internal.core.JavaProject;
+import org.eclipse.jdt.internal.core.PackageFragment;
+import org.eclipse.jdt.internal.core.PackageFragmentRoot;
 import org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditor;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.TextSelection;
@@ -193,37 +200,85 @@ public class JPAMapToolActor {
 			Iterator it = treeSelection.iterator();
 			while (it.hasNext()) {
 				Object obj = it.next();
-				if (obj instanceof ICompilationUnit) {
-					ICompilationUnit cu = (ICompilationUnit)obj;
-					addCompilationUnit(cu);
-				}
-				else if (obj instanceof File) {
-					File file = (File)obj;
-					if (file != null && file.getProject() != null) {
-						IJavaProject javaProject = JavaCore.create(file.getProject());
-						ICompilationUnit[] cus = Utils.findCompilationUnits(javaProject,
-								file.getFullPath());
-						if (cus != null) {
-							for (int i = 0; i < cus.length; i++) {
-								addCompilationUnit(cus[i]);
-							}
-						}
-					}
-				}
-				else if (obj instanceof JavaElement) {
-					JavaElement javaElement = (JavaElement)obj;
-					ICompilationUnit cu = javaElement.getCompilationUnit();
-					addCompilationUnit(cu);
-				}
-				else {
-					// ignore
-					//System.out.println("1 Blah! " + selection); //$NON-NLS-1$
-				}
+				processJavaElements(obj);
 			}
 		}
 		else {
 			//System.out.println("2 Blah! " + selection); //$NON-NLS-1$
 			selection = null;
+		}
+	}
+	
+	protected void processJavaElements(Object obj) {
+		if (obj instanceof ICompilationUnit) {
+			ICompilationUnit cu = (ICompilationUnit)obj;
+			addCompilationUnit(cu);
+		}
+		else if (obj instanceof File) {
+			File file = (File)obj;
+			if (file != null && file.getProject() != null) {
+				IJavaProject javaProject = JavaCore.create(file.getProject());
+				ICompilationUnit[] cus = Utils.findCompilationUnits(javaProject,
+						file.getFullPath());
+				if (cus != null) {
+					for (int i = 0; i < cus.length; i++) {
+						addCompilationUnit(cus[i]);
+					}
+				}
+			}
+		}
+		else if (obj instanceof JavaProject) {
+			JavaProject javaProject = (JavaProject)obj;
+			IPackageFragmentRoot[] pfr = null;
+			try {
+				pfr = javaProject.getAllPackageFragmentRoots();
+			} catch (JavaModelException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
+			}
+			if (pfr != null) {
+				for (int i = 0; i < pfr.length; i++) {
+					processJavaElements(pfr[i]);
+				}
+			}
+		}
+		else if (obj instanceof PackageFragment) {
+			PackageFragment packageFragment = (PackageFragment)obj;
+			ICompilationUnit[] cus = null;
+			try {
+				cus = packageFragment.getCompilationUnits();
+			} catch (JavaModelException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
+			}
+			if (cus != null) {
+				for (int i = 0; i < cus.length; i++) {
+					addCompilationUnit(cus[i]);
+				}
+			}
+		}
+		else if (obj instanceof PackageFragmentRoot) {
+			PackageFragmentRoot packageFragmentRoot = (PackageFragmentRoot)obj;
+			JavaElement javaElement = (JavaElement)obj;
+			JavaElementInfo javaElementInfo = null;
+			try {
+				javaElementInfo = (JavaElementInfo)javaElement.getElementInfo();
+			} catch (JavaModelException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
+			}
+			if (javaElementInfo != null) {
+				IJavaElement[] je = javaElementInfo.getChildren();
+				for (int i = 0; i < je.length; i++) {
+					processJavaElements(je[i]);
+				}
+			}
+		}
+		else if (obj instanceof JavaElement) {
+			JavaElement javaElement = (JavaElement)obj;
+			ICompilationUnit cu = javaElement.getCompilationUnit();
+			addCompilationUnit(cu);
+		}
+		else {
+			// ignore
+			//System.out.println("1 Blah! " + selection); //$NON-NLS-1$
 		}
 	}
 }
