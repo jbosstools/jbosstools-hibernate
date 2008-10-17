@@ -65,6 +65,8 @@
 			class="org.jboss.tools.hibernate.xml.model.impl.HibConfigCacheImpl"/>
 		<xclass id="org.jboss.tools.hibernate.xml.model.impl.HibConfigMappingImpl"
 			class="org.jboss.tools.hibernate.xml.model.impl.HibConfigMappingImpl"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.impl.HibConfigListenerImpl"
+			class="org.jboss.tools.hibernate.xml.model.impl.HibConfigListenerImpl"/>
 		<xclass id="org.jboss.tools.hibernate.xml.model.impl.HibernateAuxFolderImpl"
 			class="org.jboss.tools.hibernate.xml.model.impl.HibernateAuxFolderImpl"/>
 		<xclass id="org.jboss.tools.hibernate.xml.model.impl.HibernateClassImpl"

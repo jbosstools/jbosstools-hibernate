@@ -658,7 +658,7 @@
   </XActionItem>
   <XDependencies/>
  </XModelEntity>
- <XModelEntity ImplementingClass="%Regular2%" XMLSUBPATH="listener" name="HibConfig3Listener">
+ <XModelEntity ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibConfigListenerImpl" XMLSUBPATH="listener" name="HibConfig3Listener">
   <XChildrenEntities/>
   <XEntityRenderer>
    <ICONS>
