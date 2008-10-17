@@ -30,10 +30,20 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jdt.internal.ui.refactoring.RefactoringSaveHelper;
 import org.eclipse.jdt.internal.ui.refactoring.actions.RefactoringStarter;
+import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
+import org.eclipse.jdt.ui.JavaElementLabelProvider;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StyledString;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.eclipse.ltk.core.refactoring.DocumentChange;
@@ -42,8 +52,11 @@ import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
 import org.eclipse.ltk.ui.refactoring.UserInputWizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.text.edits.MalformedTreeException;
@@ -57,14 +70,14 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
 
 /**
- * 
- * 
+ *
+ *
  * @author Vitali
  */
 public class AllEntitiesProcessor {
 
 	protected IJavaProject javaProject;
-	
+
 	protected class ChangeStructure {
 		public String fullyQualifiedName;
 		public IPath path;
@@ -75,14 +88,14 @@ public class AllEntitiesProcessor {
 	};
 	protected ArrayList<ChangeStructure> changes = new ArrayList<ChangeStructure>();
 
-	public void modify(IJavaProject project, Map<String, EntityInfo> entities, 
+	public void modify(IJavaProject project, Map<String, EntityInfo> entities,
 			boolean askConfirmation) {
 		changes.clear();
 		setJavaProject(project);
 		// get the buffer manager
 		ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
 		Iterator<Map.Entry<String, EntityInfo>> it = entities.entrySet().iterator();
-		String outText = ""; //$NON-NLS-1$
+		/*String outText = ""; //$NON-NLS-1$
 		String ls = System.getProperties().getProperty("line.separator", "\n");  //$NON-NLS-1$//$NON-NLS-2$
 		while (it.hasNext()) {
 			Map.Entry<String, EntityInfo> entry = it.next();
@@ -93,16 +106,16 @@ public class AllEntitiesProcessor {
 				// TODO: save entity name as has compiler problems
 			}
 			outText += entry.getKey() + (it.hasNext() ? ls : ""); //$NON-NLS-1$
-		}
+		}*/
 		boolean performChange = true;
         int res = 0;
         if (askConfirmation) {
         	/** /
     		final String outText2 = outText;
-            MessageDialog dialog = new MessageDialog(JavaPlugin.getActiveWorkbenchShell(), 
-            		JdtUiMessages.AllEntitiesProcessor_header, null, 
-            		JdtUiMessages.AllEntitiesProcessor_message, 
-            		MessageDialog.QUESTION, 
+            MessageDialog dialog = new MessageDialog(JavaPlugin.getActiveWorkbenchShell(),
+            		JdtUiMessages.AllEntitiesProcessor_header, null,
+            		JdtUiMessages.AllEntitiesProcessor_message,
+            		MessageDialog.QUESTION,
             		new String[] { IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL }, 0) {
             	protected Control createCustomArea(Composite parent) {
             		Text messageText = new Text(parent, SWT.WRAP | SWT.V_SCROLL);
@@ -151,7 +164,7 @@ public class AllEntitiesProcessor {
         }
         //
         if (askConfirmation) {
-        	if (!showRefactoringDialog(outText)) {
+        	if (!showRefactoringDialog(entities)) {
         		performChange = false;
         	}
         }
@@ -194,7 +207,7 @@ public class AllEntitiesProcessor {
 		}
 	}
 
-	public void collectModification(ITextFileBufferManager bufferManager, String fullyQualifiedName, 
+	public void collectModification(ITextFileBufferManager bufferManager, String fullyQualifiedName,
 			EntityInfo entityInfo) throws CoreException {
 
 		ChangeStructure cs = new ChangeStructure();
@@ -224,8 +237,8 @@ public class AllEntitiesProcessor {
 			HibernateConsolePlugin.getDefault().logErrorMessage("MalformedTreeException: ", e); //$NON-NLS-1$
 		}
 	}
-	
-	public boolean showRefactoringDialog(final String text) {
+
+	public boolean showRefactoringDialog(final Map<String, EntityInfo> entities) {
 
 		final String wizard_title = JdtUiMessages.AllEntitiesProcessor_header;
 
@@ -277,19 +290,66 @@ public class AllEntitiesProcessor {
 				        Label label = new Label(container, SWT.NULL);
 				        label.setText(JdtUiMessages.AllEntitiesProcessor_message);
 
-	            		Text messageText = new Text(container, SWT.WRAP | SWT.V_SCROLL);
-	        			messageText.setText(text);
-	        			messageText.setEditable(false);
-	        			GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
+				        TableViewer listViewer = new TableViewer(container, SWT.SINGLE | SWT.H_SCROLL
+								| SWT.V_SCROLL | SWT.BORDER);
+						//listViewer.setComparator(getViewerComparator());
+						Control control = listViewer.getControl();
+						GridData data = new GridData(GridData.FILL_BOTH
+								| GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL);
+						data.heightHint = convertHeightInCharsToPixels(10);
+						control.setLayoutData(data);
+						listViewer.setContentProvider(new IStructuredContentProvider() {
+							public Object[] getElements(Object inputElement) {
+								return entities.values().toArray();
+							}
+
+							public void dispose() {
+
+							}
+
+							public void inputChanged(Viewer viewer, Object oldInput,
+									Object newInput) {
+
+							}
+						});
+
+						listViewer.setLabelProvider(new LabelProvider() {
+
+							private Image classImage;
+
+							{
+								classImage = JavaElementImageProvider.getTypeImageDescriptor(false, false, 0, false).createImage();
+
+							}
+							@Override
+							public String getText(Object element) {
+								EntityInfo info = (EntityInfo) element;
+								return info.getFullyQualifiedName();
+							}
+
+							@Override
+							public Image getImage(Object element) {
+								return classImage;
+							}
+
+							@Override
+							public void dispose() {
+								classImage.dispose();
+								super.dispose();
+							}
+						});
+
+						listViewer.setInput(entities);
+						GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
 	        				.grab(true, true)
 	        				.hint(convertHorizontalDLUsToPixels(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH),
-	        					convertHorizontalDLUsToPixels(2 * IDialogConstants.BUTTON_BAR_HEIGHT)).applyTo(messageText);
+	        					convertHorizontalDLUsToPixels(2 * IDialogConstants.BUTTON_BAR_HEIGHT)).applyTo(listViewer.getControl());
 	            		setControl(container);
 					}
 				};
 				addPage(page);
 			}
-			
+
 		};
 
 		wizard.setWindowTitle(wizard_title);
