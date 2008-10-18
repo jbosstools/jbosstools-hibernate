@@ -7,9 +7,12 @@ import java.io.IOException;
 
 import org.eclipse.core.internal.resources.ResourceException;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -44,6 +47,8 @@ public class HibernateErrorsTest2 extends HibernateConsoleTest {
 	private SimpleTestProject project;
 
 	private ConsoleConfiguration ccfg;
+
+	private boolean deleted;
 
 	public HibernateErrorsTest2(String name) {
 		super(name);	
@@ -152,18 +157,23 @@ public class HibernateErrorsTest2 extends HibernateConsoleTest {
 
 		// super.tearDown();
 
-		IProject proj = getProject().getIProject();
+		final IProject proj = getProject().getIProject();
 		String projRoot = proj.getLocation().toFile().getAbsolutePath();
 		File file = new File(projRoot);
-		boolean deleted = true;
+		deleted = false;
 		int nTrys = 0;
-		while (!deleted && nTrys++ < 5)
-		try {
-			proj.delete(true, true, null);
-			deleted = true;
-		} catch (ResourceException re) {
-			waitForJobs();
-			Thread.sleep(100);
+		while (!deleted && nTrys++ < 5) {
+			ResourcesPlugin.getWorkspace().run(new IWorkspaceRunnable() {
+				public void run(IProgressMonitor monitor) throws CoreException {
+					try {
+						proj.delete(true, true, null);
+						deleted = true;
+					} catch (ResourceException re) {
+						//waitForJobs();
+						delay(1000);
+					}
+				}
+			}, new NullProgressMonitor());
 		}
 		waitForJobs();
 		delete(file);
@@ -203,8 +213,12 @@ public class HibernateErrorsTest2 extends HibernateConsoleTest {
 		buffer.append(file.getAbsolutePath());
 		buffer.append(" file. ");
 		if (file.exists() && file.isDirectory()) {
+			String[] files = file.list();
 			buffer.append("List=");
-			buffer.append(file.list());
+			buffer.append(files);
+			buffer.append("-");
+			for (int i = 0; i < files.length; i++)
+				buffer.append(files[i]);
 		}
 		return buffer.toString();
 	}
