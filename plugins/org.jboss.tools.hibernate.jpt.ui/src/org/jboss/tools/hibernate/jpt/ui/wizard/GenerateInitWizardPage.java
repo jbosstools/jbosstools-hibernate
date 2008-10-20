@@ -101,7 +101,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 		selectMethod = new Button(container, SWT.CHECK);
 		selectMethod.setText("Use Console Configuration");
 		selectMethod.setSelection(true);
-		selectMethod.setEnabled(false);
+		//selectMethod.setEnabled(false);
 		selectMethod.addSelectionListener(new SelectionListener(){
 
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -112,6 +112,9 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 				consoleConfigurationName.setEnabled(selectMethod.getSelection());
 				connectionProfileName.setEnabled(!selectMethod.getSelection());
 				schemaName.setEnabled(!selectMethod.getSelection());
+				if (!selectMethod.getSelection()){
+					setMessage("Hibernate dialect is not specified", WARNING);
+				}
 				dialogChanged();				
 			}});
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
