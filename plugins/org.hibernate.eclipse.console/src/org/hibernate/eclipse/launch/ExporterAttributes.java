@@ -74,7 +74,6 @@ public class ExporterAttributes
    private String templatePath;
    private List exporterFactories;
    // if set then build reveng strategy relying on the list of tables
-   private String revengTables;
    private boolean autoManyToManyDetection;
    private boolean autoVersioning;
 
@@ -110,7 +109,6 @@ public class ExporterAttributes
          }
 
          exporterFactories = readExporterFactories(configuration);
-         revengTables = configuration.getAttribute(HibernateLaunchConstants.ATTR_REVENG_TABLES, (String)null);
        } catch (CoreException e) {
          throw new CoreException(HibernateConsolePlugin.throwableToStatus(e, 666));
       }
@@ -347,19 +345,12 @@ public class ExporterAttributes
 	   return exporterFactories;
    }
 
-public boolean detectManyToMany() {
-	return autoManyToManyDetection;
-}
+   public boolean detectManyToMany() {
+	   return autoManyToManyDetection;
+   }
 
     public boolean detectOptimisticLock() {
     	return autoVersioning;
     }
-
-	public String getRevengTables() {
-		return revengTables;
-	}
-
-
-
 
 }

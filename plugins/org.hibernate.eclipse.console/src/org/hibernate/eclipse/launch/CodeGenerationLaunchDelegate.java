@@ -266,7 +266,6 @@ public class CodeGenerationLaunchDelegate extends
 		final String reverseEngineeringStrategy = attributes.getRevengStrategy();
 		final boolean preferBasicCompositeids = attributes.isPreferBasicCompositeIds();
 		final IResource revengres = PathHelper.findMember( root, attributes.getRevengSettings());
-		final String revengTables = attributes.getRevengTables();
 		
 		if(reveng) {
 			Configuration configuration = null;
@@ -291,12 +290,7 @@ public class CodeGenerationLaunchDelegate extends
 
 					OverrideRepository repository = null;
 					
-					if (revengTables != null){
-						repository = new OverrideRepository();
-						repository.addInputStream(new ByteArrayInputStream(revengTables.getBytes()));
-					} else	if(revengres!=null) {
-						/*Configuration configuration = cc.buildWith(new Configuration(), false);*/
-						/*Settings settings = cc.getSettings(configuration);*/
+					if(revengres!=null) {
 						File file = PathHelper.getLocation( revengres ).toFile();
 						repository = new OverrideRepository();
 						repository.addFile(file);						
