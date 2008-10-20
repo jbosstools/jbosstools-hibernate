@@ -264,7 +264,15 @@ public class CollectEntityInfo extends ASTVisitor {
 	public boolean visit(FieldDeclaration node) {
 		if (node.getType().isPrimitiveType()) {
 			PrimitiveType pt = (PrimitiveType)node.getType();
-			ITypeBinding tb = pt.resolveBinding();
+			if (!pt.getPrimitiveTypeCode().equals(PrimitiveType.BOOLEAN)) {
+				// this is candidate for primary id
+				Iterator itVarNames = node.fragments().iterator();
+				while (itVarNames.hasNext()) {
+					VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
+					String name = var.getName().getIdentifier();
+					entityInfo.addPrimaryIdCandidate(name);
+				}
+			}
 		} else if (node.getType().isSimpleType()) {
 			SimpleType st = (SimpleType)node.getType();
 			ITypeBinding tb = st.resolveBinding();

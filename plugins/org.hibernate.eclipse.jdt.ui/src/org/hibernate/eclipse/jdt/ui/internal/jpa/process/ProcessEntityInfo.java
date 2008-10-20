@@ -145,7 +145,7 @@ public class ProcessEntityInfo extends ASTVisitor {
 	}
 	
 	public boolean visit(FieldDeclaration node) {
-		if (node.getType().isSimpleType()) {
+		if (node.getType().isSimpleType() || node.getType().isPrimitiveType()) {
 			if (entityInfo.isAddGeneratedValueFlag()) {
 				String primaryIdName = entityInfo.getPrimaryIdName();
 				Iterator itVarNames = node.fragments().iterator();
