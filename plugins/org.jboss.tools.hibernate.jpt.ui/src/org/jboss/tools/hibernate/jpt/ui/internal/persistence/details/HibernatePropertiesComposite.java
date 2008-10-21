@@ -43,6 +43,8 @@ public class HibernatePropertiesComposite extends AbstractFormPane<BasicHibernat
 		JpaPageComposite<PersistenceUnit> {
 
 	private Text cfgFile;
+	
+	DriverClassHelpers helper;
 
 	/**
 	 * @param subjectHolder
@@ -54,11 +56,11 @@ public class HibernatePropertiesComposite extends AbstractFormPane<BasicHibernat
 		super(subjectHolder, container, widgetFactory);
 	}
 
-	protected void initializeLayout(Composite container) {
-
-		final DriverClassHelpers helper = new DriverClassHelpers();
+	protected void initializeLayout(Composite container) {		
 
 		Composite section = buildSection(container, "Basic properties");
+		
+		helper = new DriverClassHelpers();
 
 		final SimpleListValueModel<String> lvmDialect = new SimpleListValueModel<String>(Arrays.asList(helper
 				.getDialectNames()));
@@ -82,8 +84,8 @@ public class HibernatePropertiesComposite extends AbstractFormPane<BasicHibernat
 		final SimpleListValueModel<String> lvmUrl = new SimpleListValueModel<String>(urls);
 
 		WritablePropertyValueModel<String> dialectHolder = buildDialectHolder();
-		WritablePropertyValueModel<String> driverHolder = buildDriverHolder();
-		WritablePropertyValueModel<String> urlHolder = buildUrlHolder();
+		final WritablePropertyValueModel<String> driverHolder = buildDriverHolder();
+		final WritablePropertyValueModel<String> urlHolder = buildUrlHolder();
 
 		Button b = buildButton(section, HibernateConsoleMessages.CodeGenerationSettingsTab_browse, createSetupAction());
 		cfgFile = buildLabeledText(section,
@@ -115,8 +117,10 @@ public class HibernatePropertiesComposite extends AbstractFormPane<BasicHibernat
 			public void propertyChanged(PropertyChangeEvent event) {
 				String dialectClass = helper.getDialectClass((String) event.getNewValue());
 				String[] driverClasses = helper.getDriverClasses(dialectClass);
+				String driver = driverHolder.getValue();//save value
 				lvmDriver.clear();
 				lvmDriver.addAll(Arrays.asList(driverClasses));
+				driverHolder.setValue(driver);		//restore value
 			}
 		});
 
@@ -124,8 +128,10 @@ public class HibernatePropertiesComposite extends AbstractFormPane<BasicHibernat
 			public void propertyChanged(PropertyChangeEvent event) {
 				String driverClass = helper.getDialectClass((String) event.getNewValue());
 				String[] connectionURLS = helper.getConnectionURLS(driverClass);
+				String url = urlHolder.getValue();//save value
 				lvmUrl.clear();
 				lvmUrl.addAll(Arrays.asList(connectionURLS));
+				urlHolder.setValue(url);		//restore value
 			}
 		});
 
@@ -193,13 +199,18 @@ public class HibernatePropertiesComposite extends AbstractFormPane<BasicHibernat
 				BasicHibernateProperties.DIALECT_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getDialect();
+				String dialect = subject.getDialect();
+				String value = helper.getShortDialectName(dialect);
+				if (value == null) value = dialect;
+				return value;
 			}
 
 			@Override
 			protected void setValue_(String value) {
 				if ("".equals(value))value = null; //$NON-NLS-1$
-				subject.setDialect(value);
+				String dialect = helper.getDialectClass(value);
+				if (dialect == null) dialect = value;
+				subject.setDialect(dialect);
 			}
 		};
 	}
