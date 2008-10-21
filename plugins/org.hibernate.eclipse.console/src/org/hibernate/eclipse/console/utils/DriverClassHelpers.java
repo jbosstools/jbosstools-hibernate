@@ -25,11 +25,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.core.runtime.IPath;
 
 /**
  * @author max
@@ -258,6 +258,15 @@ public class DriverClassHelpers {
         List list = new ArrayList(dialectNames.keySet() );
         Collections.sort(list);
         return (String[]) list.toArray(new String[list.size()]);
+    }
+    
+    public String getShortDialectName(String fullName) {
+    	Iterator keyIterator = dialectNames.keySet().iterator();
+    	while (keyIterator.hasNext()){
+    		String key = (String)keyIterator.next();
+			if (dialectNames.get(key).equals(fullName)) return key;
+		}
+    	return null;
     }
     
     /**
