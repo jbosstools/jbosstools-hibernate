@@ -28,7 +28,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.internal.core.JavaElement;
 import org.eclipse.jdt.internal.core.JavaElementInfo;
 import org.eclipse.jdt.internal.core.JavaProject;
@@ -178,7 +178,10 @@ public class JPAMapToolActor {
 						else {
 							fullyQualifiedName = ""; //$NON-NLS-1$
 						}
-						fullyQualifiedName += ((TypeDeclaration)(resultCU.types().get(0))).getName();
+						Object tmp = resultCU.types().get(0);
+						if (tmp instanceof AbstractTypeDeclaration) {
+							fullyQualifiedName += ((AbstractTypeDeclaration)tmp).getName();
+						}
 					}
 				} catch (IllegalArgumentException e) {
 					HibernateConsolePlugin.getDefault().logErrorMessage("IllegalArgumentException: ", e); //$NON-NLS-1$
