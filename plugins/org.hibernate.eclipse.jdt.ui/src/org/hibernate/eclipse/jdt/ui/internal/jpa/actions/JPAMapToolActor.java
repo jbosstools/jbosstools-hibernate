@@ -29,6 +29,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.internal.core.JavaElement;
 import org.eclipse.jdt.internal.core.JavaElementInfo;
 import org.eclipse.jdt.internal.core.JavaProject;
@@ -181,6 +182,10 @@ public class JPAMapToolActor {
 						Object tmp = resultCU.types().get(0);
 						if (tmp instanceof AbstractTypeDeclaration) {
 							fullyQualifiedName += ((AbstractTypeDeclaration)tmp).getName();
+						}
+						if (!(tmp instanceof TypeDeclaration)) {
+							// ignore EnumDeclaration & AnnotationTypeDeclaration
+							fullyQualifiedName = ""; //$NON-NLS-1$
 						}
 					}
 				} catch (IllegalArgumentException e) {
