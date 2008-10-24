@@ -42,15 +42,15 @@ public class JPAMapToolActionDelegate implements IObjectActionDelegate,
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {
-		actor.updateSelectedItems(selection);
+		actor.setSelection(selection);
 		if (action != null) {
-			action.setEnabled(actor.getSelectedSize() > 0);
+			action.setEnabled(actor.getSelectedSourceSize() > 0);
 		}
 	}
 
 	public void setActiveEditor(IAction action, IEditorPart targetEditor) {
 		if (action != null) {
-			action.setEnabled(actor.getSelectedSize() > 0);
+			action.setEnabled(actor.getSelectedSourceSize() > 0);
 		}
 	}
 
@@ -67,7 +67,7 @@ public class JPAMapToolActionDelegate implements IObjectActionDelegate,
 	}
 
 	public boolean isEnabled() {
-		return (actor.getSelectedSize() > 0);
+		return (actor.getSelectedSourceSize() > 0);
 	}
 
 	public boolean isHandled() {

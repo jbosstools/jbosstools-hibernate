@@ -48,7 +48,8 @@ public class Utils {
 		try {
 			lwType = javaProject.findType(fullyQualifiedName);
 		} catch (JavaModelException e) {
-			HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
+			// just ignore it!
+			//HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
 		}
 		ICompilationUnit resCompilationUnit = null;
 		if (lwType != null) {
@@ -80,20 +81,24 @@ public class Utils {
 		try {
 			javaElement = javaProject.findElement(path.makeRelative());
 		} catch (JavaModelException e) {
-			HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
+			// just ignore it!
+			//HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
 		}
 		ICompilationUnit[] res = null;
-		if (javaElement instanceof ICompilationUnit) {
-			res = new ICompilationUnit[]{ (ICompilationUnit)javaElement };
-		}
-		else if (javaElement instanceof IPackageFragment) {
-			try {
-				res = ((IPackageFragment)javaElement).getCompilationUnits();
-			} catch (JavaModelException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
+		if (javaElement != null) {
+			if (javaElement instanceof ICompilationUnit) {
+				res = new ICompilationUnit[]{ (ICompilationUnit)javaElement };
 			}
-		}
-		else if (javaElement instanceof IClassFile) {
+			else if (javaElement instanceof IPackageFragment) {
+				try {
+					res = ((IPackageFragment)javaElement).getCompilationUnits();
+				} catch (JavaModelException e) {
+					// just ignore it!
+					//HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
+				}
+			}
+			else if (javaElement instanceof IClassFile) {
+			}
 		}
 		return res;
 	}

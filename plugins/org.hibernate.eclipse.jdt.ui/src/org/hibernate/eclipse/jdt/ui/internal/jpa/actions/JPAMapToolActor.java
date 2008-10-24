@@ -46,6 +46,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.jdt.ui.Activator;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
+import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.process.AllEntitiesProcessor;
 
@@ -57,6 +58,7 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.process.AllEntitiesProcessor;
 public class JPAMapToolActor {
 
 	protected static JPAMapToolActor actor = null; 
+	protected ISelection selection = null;
 	protected Set<ICompilationUnit> selectionCU = new HashSet<ICompilationUnit>();
 	protected AllEntitiesInfoCollector collector = new AllEntitiesInfoCollector();
 	protected AllEntitiesProcessor processor = new AllEntitiesProcessor();
@@ -89,6 +91,14 @@ public class JPAMapToolActor {
 	}
 
 	public void updateSelected() {
+		if (selection != null) {
+			updateSelectedItems(selection);
+			selection = null;
+		}
+		if (selectionCU.size() == 0) {
+			processor.modify(null, new HashMap<String, EntityInfo>(), true);
+			return;
+		}
 		Iterator<ICompilationUnit> it = selectionCU.iterator();
 		Map<IJavaProject, Set<ICompilationUnit>> mapJP_CUSet =
 			new HashMap<IJavaProject, Set<ICompilationUnit>>();
@@ -141,18 +151,29 @@ public class JPAMapToolActor {
 		collector.collect(cu);
 	}
 	
-	public int getSelectedSize() {
-		return selectionCU.size();
+	synchronized public int getSelectedSourceSize() {
+		int res = 0;
+		if (selection == null) {
+			res = selectionCU.size();
+		}
+		else if (selection instanceof TextSelection) {
+			res = 1;
+		}
+		else if (selection instanceof TreeSelection) {
+			TreeSelection treeSelection = (TreeSelection)selection;
+			res = treeSelection.size();
+		}
+		return res;
 	}
 
-	synchronized public void updateSelectedItems(ISelection selection) {
+	private void updateSelectedItems(ISelection sel) {
 		//System.out.println("Blah! " + selection); //$NON-NLS-1$
-		if (selection instanceof TextSelection) {
+		if (sel instanceof TextSelection) {
 			String fullyQualifiedName = ""; //$NON-NLS-1$
 			IDocument fDocument = null;
 			SynchronizableDocument sDocument = null;
 			org.eclipse.jdt.core.dom.CompilationUnit resultCU = null;
-			Class clazz = selection.getClass();
+			Class clazz = sel.getClass();
 			Field fd = null;
 			try {
 				fd = clazz.getDeclaredField("fDocument"); //$NON-NLS-1$
@@ -162,7 +183,7 @@ public class JPAMapToolActor {
 			if (fd != null) {
 				try {
 					fd.setAccessible(true);
-					fDocument = (IDocument)fd.get(selection);
+					fDocument = (IDocument)fd.get(sel);
 					if (fDocument instanceof SynchronizableDocument) {
 						sDocument = (SynchronizableDocument)fDocument;
 					}
@@ -202,9 +223,9 @@ public class JPAMapToolActor {
 				addCompilationUnit(cu);
 			}
 		}
-		else if (selection instanceof TreeSelection) {
+		else if (sel instanceof TreeSelection) {
 			clearSelectionCU();
-			TreeSelection treeSelection = (TreeSelection)selection;
+			TreeSelection treeSelection = (TreeSelection)sel;
 			Iterator it = treeSelection.iterator();
 			while (it.hasNext()) {
 				Object obj = it.next();
@@ -213,7 +234,7 @@ public class JPAMapToolActor {
 		}
 		else {
 			//System.out.println("2 Blah! " + selection); //$NON-NLS-1$
-			selection = null;
+			sel = null;
 		}
 	}
 	
@@ -241,7 +262,8 @@ public class JPAMapToolActor {
 			try {
 				pfr = javaProject.getAllPackageFragmentRoots();
 			} catch (JavaModelException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
+				// just ignore it!
+				//HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
 			}
 			if (pfr != null) {
 				for (int i = 0; i < pfr.length; i++) {
@@ -255,7 +277,8 @@ public class JPAMapToolActor {
 			try {
 				cus = packageFragment.getCompilationUnits();
 			} catch (JavaModelException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
+				// just ignore it!
+				//HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
 			}
 			if (cus != null) {
 				for (int i = 0; i < cus.length; i++) {
@@ -270,7 +293,8 @@ public class JPAMapToolActor {
 			try {
 				javaElementInfo = (JavaElementInfo)javaElement.getElementInfo();
 			} catch (JavaModelException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
+				// just ignore it!
+				//HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
 			}
 			if (javaElementInfo != null) {
 				IJavaElement[] je = javaElementInfo.getChildren();
@@ -289,4 +313,9 @@ public class JPAMapToolActor {
 			//System.out.println("1 Blah! " + selection); //$NON-NLS-1$
 		}
 	}
+
+	synchronized public void setSelection(ISelection selection) {
+		this.selection = selection;
+	}
+
 }

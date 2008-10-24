@@ -70,9 +70,9 @@ public class JPAMapToolActionPulldownDelegate implements
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {
-		actor.updateSelectedItems(selection);
+		actor.setSelection(selection);
 		if (action != null) {
-			action.setEnabled(actor.getSelectedSize() > 0);
+			action.setEnabled(actor.getSelectedSourceSize() > 0);
 		}
 	}
 
@@ -114,10 +114,10 @@ public class JPAMapToolActionPulldownDelegate implements
 					fillMenu(m);
 					fRecreateMenu = false;
 				}
-				m.setEnabled(actor.getSelectedSize() > 0);
+				m.setEnabled(actor.getSelectedSourceSize() > 0);
 				MenuItem[] items = m.getItems();
 				for (int i = 0; i < items.length; i++) {
-					items[i].setEnabled(actor.getSelectedSize() > 0);
+					items[i].setEnabled(actor.getSelectedSourceSize() > 0);
 				}
 			}
 			public void menuHidden(MenuEvent e) {
@@ -135,7 +135,7 @@ public class JPAMapToolActionPulldownDelegate implements
 
 	public void setActiveEditor(IAction action, IEditorPart targetEditor) {
 		if (action != null) {
-			action.setEnabled(actor.getSelectedSize() > 0);
+			action.setEnabled(actor.getSelectedSourceSize() > 0);
 		}
 	}
 
