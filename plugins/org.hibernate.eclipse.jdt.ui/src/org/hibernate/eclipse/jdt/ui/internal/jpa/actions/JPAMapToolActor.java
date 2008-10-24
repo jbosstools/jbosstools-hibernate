@@ -39,6 +39,7 @@ import org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditor;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
@@ -166,7 +167,7 @@ public class JPAMapToolActor {
 		return res;
 	}
 
-	private void updateSelectedItems(ISelection sel) {
+	synchronized private void updateSelectedItems(ISelection sel) {
 		//System.out.println("Blah! " + selection); //$NON-NLS-1$
 		if (sel instanceof TextSelection) {
 			String fullyQualifiedName = ""; //$NON-NLS-1$
@@ -315,7 +316,12 @@ public class JPAMapToolActor {
 	}
 
 	synchronized public void setSelection(ISelection selection) {
+		if ((selection instanceof StructuredSelection) && selection.isEmpty()) {
+			// just miss this selection
+			return;
+		}
 		this.selection = selection;
+		//System.out.println("Blah! " + selection); //$NON-NLS-1$
 	}
 
 }
