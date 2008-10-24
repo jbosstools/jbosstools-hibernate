@@ -62,18 +62,13 @@ public class Utils {
 		IProject[] projects = root.getProjects();
 		ICompilationUnit resCompilationUnit = null;
 		for (int i = 0; i < projects.length; i++) {
-			IJavaProject javaProject = JavaCore.create(projects[i]);
-			IType lwType = null;
-			try {
-				lwType = javaProject.findType(fullyQualifiedName);
-			} catch (JavaModelException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
-			}
-			if (lwType != null) {
-				resCompilationUnit = lwType.getCompilationUnit();
-			}
-			if (resCompilationUnit != null) {
-				break;
+			if (projects[i].exists()){/*It is not required project be opened, so use exists method*/
+				IJavaProject javaProject = JavaCore.create(projects[i]);
+				resCompilationUnit = findCompilationUnit(javaProject, fullyQualifiedName);
+
+				if (resCompilationUnit != null) {
+					break;
+				}
 			}
 		}
 		return resCompilationUnit;
