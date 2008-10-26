@@ -9,8 +9,8 @@ public class JDTuiAllTests {
 		TestSuite suite = new TestSuite(
 				"Test for org.hibernate.eclipse.jdt.ui.test");
 		//$JUnit-BEGIN$
-		suite.addTestSuite(HibernateErrorsTest.class);
-		suite.addTestSuite(HibernateErrorsTest2.class);
+		//suite.addTestSuite(HibernateErrorsTest.class);
+		//suite.addTestSuite(HibernateErrorsTest2.class);
 		suite.addTestSuite(HQLQueryValidatorTest.class);
 		suite.addTestSuite(ELTransformerTest.class);
 		//$JUnit-END$
