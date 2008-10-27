@@ -215,11 +215,11 @@
              id="org.hibernate.eclipse.console.actionSet"
              label="HQL"
              visible="false">
-          <menu
+          <!--menu
                 id="HQL"
                 label="H&amp;QL">
              <separator name="hqlGroup"/>
-          </menu>
+          </menu-->
           <action
                 allowLabelUpdate="true"
                 icon="icons/images/execute.gif"
