@@ -38,8 +38,7 @@
 	<super type="org.eclipse.core.resources.textmarker"/>
 	<persistent value="true"/>
 </extension>
-    <extension point="org.eclipse.ui.actionSets">
-    	<!-- main menu -->
+    <!--extension point="org.eclipse.ui.actionSets">
         <actionSet label="Java Coding" description="Action set containing coding related Java actions"
             visible="true" id="org.eclipse.jdt.ui.CodingActionSet3">
             <menu label="&amp;Source" path="edit" id="org.eclipse.jdt.ui.source.menu">
@@ -59,7 +58,7 @@
                 style="push">
             </action>
         </actionSet>
-    </extension>
+    </extension-->
     <extension point="org.eclipse.ui.popupMenus">
 		<!-- java editor context menu -->
         <viewerContribution
