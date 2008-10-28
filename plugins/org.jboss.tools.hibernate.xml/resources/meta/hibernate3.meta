@@ -2,7 +2,7 @@
 <!DOCTYPE XModelEntityGroup PUBLIC "-//Red Hat, Inc.//DTD Meta 1.0//EN"
                                    "meta.dtd">
 <XModelEntityGroup>
- <VERSION DEPENDS="Model:1.0" MODULE="Web" VERSION="1.0"/>
+ <VERSION DEPENDS="Model:1.0" MODULE="Hibernate" VERSION="1.0"/>
  <MAPPINGS>
   <MAPPING name="FilteredTreeConstraints">
    <PAIR name="FileSystems$177" value="org.jboss.tools.hibernate.xml.model.FileHibernateFilteredTreeConstraint"/>
