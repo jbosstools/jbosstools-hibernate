@@ -96,6 +96,11 @@
    <many-to-one property="customer"/>
    <set property="orders"/>
  </foreign-key>
+ <!-- can also control a pure (shared pk) one-to-one  -->
+  <foreign-key constraint-name="ADDRESS_PERSON">
+   <one-to-one exclude="false"/>
+   <inverse-one-to-one exclude="true"/>
+  </foreign-key>
 </table>
 
 </hibernate-reverse-engineering>]]></programlisting>
@@ -695,7 +700,7 @@
             <property>&lt;foreign-key&gt;</property>
           </emphasis> has two purposes. One for allowing to define foreign-keys in databases that
           does not support them or does not have them defined in their schema. Secondly, to allow
-          defining the name of the resulting properties (many-to-one and one-to-many's).</para>
+          defining the name of the resulting properties (many-to-one, one-to-one and one-to-many's).</para>
          
           <programlisting role="XML"><![CDATA[<foreign-key
   constraint-name="foreignKeyName"
@@ -709,6 +714,13 @@
    exclude="true|false"/>
  <set 
    property="aCollectionName"
+   exclude="true|false"
+   
+ <one-to-one 
+   property="aPropertyName"
+   exclude="true|false"/>
+ <inverse-one-to-one
+   property="aPropertyName"
    exclude="true|false"/>
    </foreign-key>]]></programlisting>
         <table frame="topbot">
@@ -738,7 +750,7 @@
                 <entry><para>constraint-name</para></entry>
                 
                 <entry><para>Name of the foreign key constraint. Important when
-                  naming many-to-one and set. It is the constraint-name that is used to link the
+                  naming many-to-one, one-to-one and set. It is the constraint-name that is used to link the
                   processed foreign-keys with the resulting property names.</para></entry>
                 
                 <entry><para>Required</para></entry>
@@ -797,6 +809,26 @@
                 
                 <entry><para>Defines that a set should be created based on this foreign-key
                   and the property attribute specifies the name of the resulting (set) property.
+                  Exclude can be used to explicitly define that it should be created or not.</para></entry>
+                
+                <entry><para>Optional</para></entry>
+              </row>
+              
+              <row>
+                <entry><para>one-to-one</para></entry>
+                
+                <entry><para>Defines that a one-to-one should be created and the
+                  property attribute specifies the name of the resulting property. Exclude can be
+                  used to explicitly define that it should be created or not.</para></entry>
+                
+                <entry><para>Optional</para></entry>
+              </row>
+              
+              <row>
+                <entry><para>inverse-one-to-one</para></entry>
+                
+                <entry><para>Defines that an inverse one-to-one should be created based on this foreign-key
+                  and the property attribute specifies the name of the resulting property.
                   Exclude can be used to explicitly define that it should be created or not.</para></entry>
                 
                 <entry><para>Optional</para></entry>
