@@ -290,7 +290,7 @@ public class CollectEntityInfo extends ASTVisitor {
 					while (itVarNames.hasNext()) {
 						VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
 						String name = var.getName().getIdentifier();
-						entityInfo.addReference(name, entityFullyQualifiedName, RefType.ONE2ONE);
+						entityInfo.addReference(name, entityFullyQualifiedName, RefType.MANY2ONE);
 					}
 				}
 				else if (tb.getJavaElement() instanceof BinaryType) {
