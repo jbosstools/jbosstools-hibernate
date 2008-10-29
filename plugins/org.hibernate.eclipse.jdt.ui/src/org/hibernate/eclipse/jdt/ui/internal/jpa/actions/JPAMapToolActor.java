@@ -327,7 +327,7 @@ public class JPAMapToolActor {
 
 	synchronized public void setSelection(ISelection selection) {
 		//System.out.println("Blah! " + selection); //$NON-NLS-1$
-		if (selection instanceof StructuredSelection) {
+		if (selection instanceof StructuredSelection && selection.isEmpty()) {
 			//System.out.println("This! " + this.selection); //$NON-NLS-1$
 			clearSelectionCU();
 			this.selection = null;
