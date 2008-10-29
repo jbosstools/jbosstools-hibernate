@@ -17,6 +17,7 @@ import java.util.TreeMap;
 
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.JPAConst;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefEntityInfo;
@@ -333,6 +334,16 @@ public class AllEntitiesInfoCollector {
 			return;
 		}
 		org.eclipse.jdt.core.dom.CompilationUnit cu = Utils.getCompilationUnit(icu, true);
+		if (cu == null) {
+			return;
+		}
+		if (cu.types() != null && cu.types().size() > 0 ) {
+			Object tmp = cu.types().get(0);
+			if (!(tmp instanceof TypeDeclaration)) {
+				// ignore EnumDeclaration & AnnotationTypeDeclaration
+				return;
+			}
+		}
 		String fullyQualifiedName = cu.getTypeRoot().findPrimaryType().getFullyQualifiedName();
 		if (mapCUs_Info.containsKey(fullyQualifiedName)) {
 			return;
