@@ -24,6 +24,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
@@ -73,13 +74,6 @@ public class JPAMapToolActor {
 		}
 		return actor;
 	}
-	
-	protected org.eclipse.jdt.core.dom.CompilationUnit getCompilationUnit(ICompilationUnit source) {
-		ASTParser parser = ASTParser.newParser(AST.JLS3);
-		parser.setSource(source);
-		org.eclipse.jdt.core.dom.CompilationUnit result = (org.eclipse.jdt.core.dom.CompilationUnit) parser.createAST(null);
-		return result;
-	}
 
 	public void clearSelectionCU() {
 		selectionCU.clear();
@@ -87,6 +81,15 @@ public class JPAMapToolActor {
 	
 	public void addCompilationUnit(ICompilationUnit cu) {
 		if (cu != null) {
+			IType[] types = null;
+			try {
+				types = cu.getTypes();
+			} catch (JavaModelException e) {
+				// just ignore it
+			}
+			if (types != null) {
+				
+			}
 			selectionCU.add(cu);
 		}
 	}
@@ -95,6 +98,12 @@ public class JPAMapToolActor {
 		if (selection != null) {
 			updateSelectedItems(selection);
 			selection = null;
+		}
+		else {
+			if (selectionCU.size() == 0) {
+				updateOpen();
+				return;
+			}
 		}
 		if (selectionCU.size() == 0) {
 			processor.modify(null, new HashMap<String, EntityInfo>(), true);
@@ -155,7 +164,8 @@ public class JPAMapToolActor {
 	synchronized public int getSelectedSourceSize() {
 		int res = 0;
 		if (selection == null) {
-			res = selectionCU.size();
+			//res = selectionCU.size();
+			res = 1;
 		}
 		else if (selection instanceof TextSelection) {
 			res = 1;
@@ -316,12 +326,14 @@ public class JPAMapToolActor {
 	}
 
 	synchronized public void setSelection(ISelection selection) {
-		if ((selection instanceof StructuredSelection) && selection.isEmpty()) {
-			// just miss this selection
+		//System.out.println("Blah! " + selection); //$NON-NLS-1$
+		if (selection instanceof StructuredSelection) {
+			//System.out.println("This! " + this.selection); //$NON-NLS-1$
+			clearSelectionCU();
+			this.selection = null;
 			return;
 		}
 		this.selection = selection;
-		//System.out.println("Blah! " + selection); //$NON-NLS-1$
 	}
 
 }
