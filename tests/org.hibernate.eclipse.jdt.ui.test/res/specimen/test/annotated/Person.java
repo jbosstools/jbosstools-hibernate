@@ -15,8 +15,8 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Person {
@@ -27,7 +27,7 @@ public class Person {
 	@OneToMany(mappedBy="documentOwner")
 	protected Set<Document> documents;
 	
-	@OneToOne(mappedBy="person")
+	@ManyToOne
 	protected Foto foto;
 
 	protected Set someTestSet;
