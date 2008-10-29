@@ -140,13 +140,70 @@ public class AllEntitiesInfoCollector {
 				if (pi.refEntityInfo == null || pi.refEntityInfo2 == null) {
 					return false;
 				}
-				boolean hasPrompt = false;
+				int hasPrompt = 0; // no user prompt
 				// - use it as prompting from the user
-				if ((pi.fieldId != null && pi.fieldId.equals(pi.refEntityInfo2.mappedBy)) ||
-					(pi.fieldId2 != null && pi.fieldId2.equals(pi.refEntityInfo.mappedBy))) {
-					hasPrompt = true;
+				if ((pi.fieldId != null && pi.fieldId.equals(pi.refEntityInfo2.mappedBy))) {
+					hasPrompt |= 1;
 				}
-				if (hasPrompt) {
+				if ((pi.fieldId2 != null && pi.fieldId2.equals(pi.refEntityInfo.mappedBy))) {
+					hasPrompt |= 2;
+				}
+				if (hasPrompt != 0) {
+					// remember: in case of incorrect user prompts - we proceed his suggestions
+					if (hasPrompt == 1) {
+						if (pi.refEntityInfo2.refType == RefType.ONE2ONE) {
+							pi.refEntityInfo.refType = RefType.ONE2ONE;
+							pi.refEntityInfo.mappedBy = pi.fieldId2;
+							pi.refEntityInfo2.refType = RefType.ONE2ONE;
+							pi.refEntityInfo2.mappedBy = pi.fieldId;
+						}
+						else if (pi.refEntityInfo2.refType == RefType.ONE2MANY) {
+							pi.refEntityInfo.refType = RefType.MANY2ONE;
+							pi.refEntityInfo.mappedBy = pi.fieldId2;
+							pi.refEntityInfo2.refType = RefType.ONE2MANY;
+							pi.refEntityInfo2.mappedBy = pi.fieldId;
+						}
+						else if (pi.refEntityInfo2.refType == RefType.MANY2ONE) {
+							pi.refEntityInfo.refType = RefType.ONE2MANY;
+							pi.refEntityInfo.mappedBy = pi.fieldId2;
+							pi.refEntityInfo2.refType = RefType.MANY2ONE;
+							pi.refEntityInfo2.mappedBy = pi.fieldId;
+						}
+						else if (pi.refEntityInfo2.refType == RefType.MANY2MANY) {
+							pi.refEntityInfo.refType = RefType.MANY2MANY;
+							pi.refEntityInfo.mappedBy = pi.fieldId2;
+							pi.refEntityInfo2.refType = RefType.MANY2MANY;
+							pi.refEntityInfo2.mappedBy = pi.fieldId;
+						}
+					}
+					else if (hasPrompt == 2) {
+						if (pi.refEntityInfo.refType == RefType.ONE2ONE) {
+							pi.refEntityInfo.refType = RefType.ONE2ONE;
+							pi.refEntityInfo.mappedBy = pi.fieldId;
+							pi.refEntityInfo2.refType = RefType.ONE2ONE;
+							pi.refEntityInfo2.mappedBy = pi.fieldId2;
+						}
+						else if (pi.refEntityInfo.refType == RefType.ONE2MANY) {
+							pi.refEntityInfo.refType = RefType.ONE2MANY;
+							pi.refEntityInfo.mappedBy = pi.fieldId;
+							pi.refEntityInfo2.refType = RefType.MANY2ONE;
+							pi.refEntityInfo2.mappedBy = pi.fieldId2;
+						}
+						else if (pi.refEntityInfo.refType == RefType.MANY2ONE) {
+							pi.refEntityInfo.refType = RefType.MANY2ONE;
+							pi.refEntityInfo.mappedBy = pi.fieldId;
+							pi.refEntityInfo2.refType = RefType.ONE2MANY;
+							pi.refEntityInfo2.mappedBy = pi.fieldId2;
+						}
+						else if (pi.refEntityInfo.refType == RefType.MANY2MANY) {
+							pi.refEntityInfo.refType = RefType.MANY2MANY;
+							pi.refEntityInfo.mappedBy = pi.fieldId;
+							pi.refEntityInfo2.refType = RefType.MANY2MANY;
+							pi.refEntityInfo2.mappedBy = pi.fieldId2;
+						}
+					}
+					//if (hasPrompt == 3) - this is case where we get prompt from both sides -
+					// and it is possible this is not correct info... so try to adjust it.
 					if (pi.refEntityInfo.refType == RefType.ONE2ONE) {
 						if (pi.refEntityInfo2.refType == RefType.ONE2ONE) {
 							pi.refEntityInfo.refType = RefType.ONE2ONE;
