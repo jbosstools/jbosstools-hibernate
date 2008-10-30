@@ -12,7 +12,14 @@ package org.jboss.tools.hibernate.jpt.ui.wizard;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaConventions;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.internal.core.PackageFragmentRoot;
+import org.eclipse.jdt.internal.corext.util.JavaConventionsUtil;
+import org.eclipse.jdt.internal.corext.util.Messages;
+import org.eclipse.jdt.internal.ui.wizards.NewWizardMessages;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.DialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.IDialogFieldListener;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.IStringButtonAdapter;
@@ -26,6 +33,7 @@ import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 import org.hibernate.eclipse.launch.PathHelper;
 import org.hibernate.util.StringHelper;
+import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
 
 /**
  * @author Dmitry Geraskov
@@ -65,10 +73,11 @@ public class GenerateEntitiesWizardPage extends GenerateInitWizardPage {
 				}
 			}
 		});
+		outputdir.setText(getDefaultOutput());	
         outputdir.setDialogFieldListener(fieldlistener);
 		outputdir.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_output_dir);
-		outputdir.setButtonLabel(HibernateConsoleMessages.CodeGenerationSettingsTab_browse);
-				
+		outputdir.setButtonLabel(HibernateConsoleMessages.CodeGenerationSettingsTab_browse);	
+
 		Control[] controls = outputdir.doFillIntoGrid(container, numColumns);
 		// Hack to tell the text field to stretch!
 		( (GridData)controls[1].getLayoutData() ).grabExcessHorizontalSpace = true;
@@ -77,29 +86,44 @@ public class GenerateEntitiesWizardPage extends GenerateInitWizardPage {
         packageName.setDialogFieldListener(fieldlistener);
         packageName.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_package);
         packageName.doFillIntoGrid(container, numColumns);
-        		
+                		
 		setPageComplete( false );		
 	}
 
 
 	protected void dialogChanged() {
+		setMessage("");	
+		/*validate package name*/
+		String packName= getPackageName();
+		if (packName.length() > 0) {
+			IStatus val= validatePackageName(packName, getJpaProject());
+			if (val.getSeverity() == IStatus.ERROR) {
+				setErrorMessage(Messages.format(NewWizardMessages.NewTypeWizardPage_error_InvalidPackageName, val.getMessage())); 
+				setPageComplete( false );
+				return;
+			} else if (val.getSeverity() == IStatus.WARNING) {
+				setWarningMessage(Messages.format(NewWizardMessages.NewTypeWizardPage_warning_DiscouragedPackageName, val.getMessage())); 
+			}
+		} else {
+			setWarningMessage(NewWizardMessages.NewTypeWizardPage_warning_DefaultPackageDiscouraged); 
+		}
+		
 		String msg = PathHelper.checkDirectory(getOutputDir(), HibernateConsoleMessages.CodeGenerationSettingsTab_output_directory, false);
-
+		
         if (msg!=null) {
         	setErrorMessage( msg );
         	setPageComplete( false );
             return;
         }
-		
-        if (StringHelper.isNotEmpty(getPackageName())){
-        	IStatus status= JavaConventions.validatePackageName(getPackageName() );
-            if (status.getSeverity() == IStatus.ERROR || status.getSeverity() == IStatus.WARNING) {
-                setErrorMessage( status.getMessage() );
-                return;
-            }
-        }
         
         super.dialogChanged();
+	}
+	
+	private static IStatus validatePackageName(String text, JpaProject project) {
+		if (project == null || !project.getJavaProject().exists()) {
+			return JavaConventions.validatePackageName(text, JavaCore.VERSION_1_3, JavaCore.VERSION_1_3);
+		}
+		return JavaConventionsUtil.validatePackageName(text, project.getJavaProject());
 	}
 	
 	public String getPackageName(){

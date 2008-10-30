@@ -42,7 +42,6 @@ public class GenerateDdlWizardPage extends GenerateInitWizardPage {
 	
 	private LocationValidator validator = new LocationValidator((Workspace) ResourcesPlugin.getWorkspace());
 
-	
 	protected GenerateDdlWizardPage(JpaProject jpaProject) {
 		super(jpaProject);
 	}
@@ -68,6 +67,7 @@ public class GenerateDdlWizardPage extends GenerateInitWizardPage {
 				}
 			}
 		});
+		outputdir.setText(getDefaultOutput());
         outputdir.setDialogFieldListener(fieldlistener);
 		outputdir.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_output_dir);
 		outputdir.setButtonLabel(HibernateConsoleMessages.CodeGenerationSettingsTab_browse);
@@ -86,6 +86,7 @@ public class GenerateDdlWizardPage extends GenerateInitWizardPage {
 	}	
 	
 	protected void dialogChanged() {
+		setErrorMessage(null);
 		String msg = PathHelper.checkDirectory(getOutputDir(), HibernateConsoleMessages.CodeGenerationSettingsTab_output_directory, false);
 
         if (msg!=null) {

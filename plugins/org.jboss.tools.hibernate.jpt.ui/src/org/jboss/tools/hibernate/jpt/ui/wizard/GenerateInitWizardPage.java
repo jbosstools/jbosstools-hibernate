@@ -24,6 +24,10 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.internal.core.PackageFragmentRoot;
+import org.eclipse.jdt.internal.ui.wizards.NewWizardMessages;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.ComboDialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.DialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.IDialogFieldListener;
@@ -201,8 +205,8 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 			setErrorMessage("Please, select connection profile");
 			return;
 		}
+		
 		setPageComplete(true);
-		setErrorMessage(null);		
 	}
 	
 	private String[] dtpConnectionProfileNames() {
@@ -304,5 +308,32 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 	
 	public boolean isTemporaryConfiguration(){
 		return !selectMethod.getSelection();
+	}
+	
+	public JpaProject getJpaProject(){
+		return jpaProject;
+	}
+	
+	public void setWarningMessage(String warning){
+		setMessage(warning, WARNING); 
+	}
+	
+	protected String getDefaultOutput(){
+		try{
+			if (getJpaProject() == null) return "";
+			if (getJpaProject().getJavaProject() == null) return "";
+			if (!getJpaProject().getJavaProject().exists()) return "";
+			IPackageFragmentRoot[] roots = getJpaProject().getJavaProject().getPackageFragmentRoots();
+			for (int i = 0; i < roots.length; i++) {
+				IPackageFragmentRoot root = roots[i];
+				if (root.getClass() == PackageFragmentRoot.class) {
+					if (root.exists()) return root.getResource().getFullPath().toOSString();					
+				}							
+			}
+			return getJpaProject().getJavaProject().getResource().getFullPath().toOSString();
+		} catch(JavaModelException e){
+			HibernateJptUIPlugin.logException(e);
+			return "";
+		}
 	}
 }
