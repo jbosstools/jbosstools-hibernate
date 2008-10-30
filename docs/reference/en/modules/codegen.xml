@@ -606,13 +606,13 @@ public class Person implements Serializable {
         }
         this.name = name;
     }
-}]]></programlisting>
-
-        <para/>
+    }]]></programlisting>
+        <para>To find additional information about <property>Hibernate Tools</property> we suggest that you
+          visit our <ulink url="http://www.hibernate.org/255.html">website</ulink>. If you have questions, you are always welcome in our
+          <ulink url="http://forum.hibernate.org/viewforum.php?f=6">forum</ulink>.</para>
       </section>
     </section>
+    
   </section>
-  <para>To find additional information about <property>Hibernate Tools</property> we suggest that you
-    visit our <ulink url="http://www.hibernate.org/255.html">website</ulink>. If you have questions, you are always welcome in our
-    <ulink url="http://forum.hibernate.org/viewforum.php?f=6">forum</ulink>.</para>
+  
 </chapter>
