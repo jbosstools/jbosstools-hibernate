@@ -584,21 +584,23 @@ public class HBMInfoExtractor {
 					if(parentTypeName!=null) {
 						String componentName = componentPropertyNodeName.getNodeValue();
 						IType parentType = project.findType(parentTypeName);
-						IField field = parentType.getField(componentName);
-						if(field.exists()) {
-							String fieldTypeSignature = field.getTypeSignature();
-							String qualifier = Signature.getSignatureQualifier(fieldTypeSignature);
-							String simpleName = Signature.getSignatureSimpleName(fieldTypeSignature);
-							if(!StringHelper.isEmpty(qualifier)) {
-								simpleName = Signature.toQualifiedName(new String[] { qualifier, simpleName });
+						if(parentType!=null) { // check to avoid null pointer exception
+							IField field = parentType.getField(componentName);
+							if(field.exists()) {
+								String fieldTypeSignature = field.getTypeSignature();
+								String qualifier = Signature.getSignatureQualifier(fieldTypeSignature);
+								String simpleName = Signature.getSignatureSimpleName(fieldTypeSignature);
+								if(!StringHelper.isEmpty(qualifier)) {
+									simpleName = Signature.toQualifiedName(new String[] { qualifier, simpleName });
+								}
+	
+								String[][] possibleTypes = null;
+								possibleTypes = parentType.resolveType(simpleName);
+								if(possibleTypes != null && possibleTypes.length>0) {
+									typename = Signature.toQualifiedName(possibleTypes[0]);
+								}
+	
 							}
-
-							String[][] possibleTypes = null;
-							possibleTypes = parentType.resolveType(simpleName);
-							if(possibleTypes != null && possibleTypes.length>0) {
-								typename = Signature.toQualifiedName(possibleTypes[0]);
-							}
-
 						}
 					}
 				}
