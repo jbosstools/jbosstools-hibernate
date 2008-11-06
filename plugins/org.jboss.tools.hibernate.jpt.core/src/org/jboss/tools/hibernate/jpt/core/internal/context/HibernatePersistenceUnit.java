@@ -73,33 +73,18 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 		        int resType= res.getType();
 		        if (resType != IResource.FILE) {
 		        	Property prop = getProperty(BasicHibernateProperties.HIBERNATE_CONFIG_FILE);
-	            	IMessage message = new HibernateMessage(IMessage.HIGH_SEVERITY, 
+	            	IMessage message = new Message(Messages.class.getName(), IMessage.HIGH_SEVERITY, 
 	            			NOT_A_FILE, new String[]{configFile}, getResource());
 	            	message.setLineNo(prop.getValidationTextRange().getLineNumber());
 	            	messages.add(message);					
 		        }
 		    } else {
 		    	Property prop = getProperty(BasicHibernateProperties.HIBERNATE_CONFIG_FILE);
-	        	IMessage message = new HibernateMessage(IMessage.HIGH_SEVERITY, 
+	        	IMessage message = new Message(Messages.class.getName(), IMessage.HIGH_SEVERITY, 
             			FILE_NOT_FOUND, new String[]{configFile}, getResource());
 	        	message.setLineNo(prop.getValidationTextRange().getLineNumber());
             	messages.add(message);	
 		    }
 		}
 	}
-}
-
-/*Fixes the problem with class loader*/
-class HibernateMessage extends Message {
-	
-	/**
-	 * @param aSeverity
-	 * @param anId
-	 * @param aParams
-	 * @param aTargetObject
-	 */
-	public HibernateMessage(int aSeverity, String anId, String[] aParams, Object aTargetObject) {
-		super(Messages.class.getName(), aSeverity, anId,  aParams, aTargetObject);
-	}
-	
 }
