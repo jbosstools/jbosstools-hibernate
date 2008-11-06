@@ -142,6 +142,7 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 
 	private File pathToFile(IPath path) {
 		if(path==null) return null;
+		if (path.toFile().exists()) return path.toFile();
 		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
 
 		return pathToFile(path.toString(), resource);

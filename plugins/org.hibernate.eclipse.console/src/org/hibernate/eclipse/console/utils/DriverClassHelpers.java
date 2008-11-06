@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 
 /**
@@ -39,6 +40,7 @@ public class DriverClassHelpers {
     private Map dialectNames = new HashMap();
     private Map connectionUrls = new HashMap();
     private Map driverClasses = new HashMap();
+    private Map<String, String> driverToDialect = new HashMap<String, String>();
     
     public DriverClassHelpers() {
         // externalize this!
@@ -238,6 +240,7 @@ public class DriverClassHelpers {
             String url = urls[i];
             add(connectionUrls, driverclass, url);    
         }
+        driverToDialect.put(driverclass, dialect);
     }
    
     /**
@@ -267,6 +270,10 @@ public class DriverClassHelpers {
 			if (dialectNames.get(key).equals(fullName)) return key;
 		}
     	return null;
+    }
+    
+    public String getDialect(String driverclass) {
+    	return driverToDialect.get(driverclass);
     }
     
     /**
