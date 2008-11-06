@@ -33,15 +33,12 @@ public class GenerateDdlWizard extends Wizard {
 
 	private JpaProject jpaProject;
 
-	private IStructuredSelection selection;
-	
 	private GenerateDdlWizardPage initPage;
 	
 	
 	public GenerateDdlWizard(JpaProject jpaProject, IStructuredSelection selection) {
 		super();
 		this.jpaProject = jpaProject;
-		this.selection = selection;
 		this.setWindowTitle( JptUiMessages.GenericPlatformUiDialog_notSupportedMessageTitle);
 	}
 	
@@ -63,7 +60,6 @@ public class GenerateDdlWizard extends Wizard {
 
 			Map<String, String> prop = new HashMap<String, String>();
 			prop.put("outputFileName", initPage.getFilename());
-			//prop.put("outputdir", project.getName() + "\\src");
 			prop.put("format", "true");
 			prop.put("scriptToConsole", "false");
 

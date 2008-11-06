@@ -10,30 +10,28 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.wizard;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
-import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.ILaunchConfigurationType;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.PackageFragmentRoot;
-import org.eclipse.jdt.internal.ui.wizards.NewWizardMessages;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.ComboDialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.DialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.IDialogFieldListener;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.IStringButtonAdapter;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.StringButtonDialogField;
-import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
@@ -47,15 +45,16 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
-import org.hibernate.cfg.Environment;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
+import org.hibernate.eclipse.console.EclipseConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
-import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
-import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
+import org.hibernate.eclipse.console.utils.DriverClassHelpers;
 import org.hibernate.tool.hbm2x.StringUtils;
 import org.hibernate.util.StringHelper;
+import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
 
 /**
@@ -64,11 +63,17 @@ import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
  */
 public abstract class GenerateInitWizardPage extends WizardPage {
 	
+	private static final String AUTODETECT = "[Autodetect]";
+	
+	private DriverClassHelpers helper = new DriverClassHelpers();
+	
 	private ComboDialogField connectionProfileName;
 	
 	private StringButtonDialogField schemaName;
 	
 	private ComboDialogField consoleConfigurationName;
+	
+	private ComboDialogField dialectName;
 	
 	private Button selectMethod;
 	
@@ -102,6 +107,12 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 		
 		createChildControls(container);
 		
+		dialectName = new ComboDialogField(SWT.NONE);
+		dialectName.setLabelText(HibernateConsoleMessages.NewConfigurationWizardPage_database_dialect);
+		dialectName.setItems(getDialectNames());
+		dialectName.selectItem(0);
+		dialectName.doFillIntoGrid(container, numColumns);
+		
 		selectMethod = new Button(container, SWT.CHECK);
 		selectMethod.setText("Use Console Configuration");
 		selectMethod.setSelection(true);
@@ -116,14 +127,11 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 				consoleConfigurationName.setEnabled(selectMethod.getSelection());
 				connectionProfileName.setEnabled(!selectMethod.getSelection());
 				schemaName.setEnabled(!selectMethod.getSelection());
-				if (!selectMethod.getSelection()){
-					setMessage("Hibernate dialect is not specified", WARNING);
-				}
 				dialogChanged();				
 			}});
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = numColumns;
-		selectMethod.setLayoutData(gd);
+		selectMethod.setLayoutData(gd);				
 		
 		consoleConfigurationName = new ComboDialogField(SWT.READ_ONLY);
 		consoleConfigurationName.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_console_configuration);
@@ -234,76 +242,45 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 		return connectionProfileName.getText();
 	}
 	
-	private String createConsoleConfiguration(){
+	private String createConsoleConfiguration(){		
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 
-		ILaunchConfigurationType launchConfigurationType = launchManager.getLaunchConfigurationType( ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID );
-		String launchName = launchManager.generateUniqueLaunchConfigurationNameFrom(HibernateConsoleMessages.AddConfigurationAction_hibernate);
-		//ILaunchConfiguration[] launchConfigurations = launchManager.getLaunchConfigurations( launchConfigurationType );
-		ILaunchConfigurationWorkingCopy wc = null;
-		try {
-			wc = launchConfigurationType.newInstance(null, launchName);			
-							
-			wc.setAttributes(getProperties());
-			
-			wc.setAttribute(IConsoleConfigurationLaunchConstants.CONFIGURATION_FACTORY, ConfigurationMode.JPA.toString());
-			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, nonEmptyTrimOrNull( jpaProject.getName() ));
-			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, true );
-			wc.setAttribute(IConsoleConfigurationLaunchConstants.FILE_MAPPINGS, (List)null);
-			//wc.setAttribute("hibernate.temp.use_jdbc_metadata_defaults", true);
-			//wc.setAttribute(IConsoleConfigurationLaunchConstants.USE_CONNECT_PROFILE_SETTINGS, true);
-			//wc.setAttribute(IConsoleConfigurationLaunchConstants.CONNECT_PROFILE_NAME, getConnectionProfileName());
-			wc.doSave();
-			return wc.getName();
-		} catch (CoreException e) {
-			HibernateJptUIPlugin.logException(e);
-			return null;
-		}			
-		
-	}
-	
-	/**
-	 * @param name
-	 * @return
-	 */
-	private String nonEmptyTrimOrNull(String name) {
-		if(StringHelper.isEmpty( name )) {
-			return null;
-		} else {
-			return name.trim();
-		}
-	}
-	
-	private Properties getProperties(){
-		Properties prop = new Properties();
-		IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(getConnectionProfileName());
-			if (null != profile) {
-				Properties cpProperties = profile.getProperties(profile.getProviderId());
-				Map<String, String> keyMaps = new HashMap<String, String>();
-				keyMaps.put(Environment.DRIVER, "org.eclipse.datatools.connectivity.db.driverClass");
-				keyMaps.put(Environment.URL, "org.eclipse.datatools.connectivity.db.URL");							
-				keyMaps.put(Environment.USER, "org.eclipse.datatools.connectivity.db.username");							
-				keyMaps.put(Environment.PASS, "org.eclipse.datatools.connectivity.db.password");							
-				keyMaps.put(Environment.DEFAULT_CATALOG, "org.eclipse.datatools.connectivity.db.databaseName");
-				copyProperties(cpProperties, prop, keyMaps);
+		String dialect = determineDialect();
+		IPath propPath = null;
+		if (dialect != null) {
+			OutputStream out = null;
+			try{
+				String propName = HibernateConsoleMessages.AddConfigurationAction_hibernate + ".properties"; 
+				propPath = HibernateJptUIPlugin.getDefault().getStateLocation().append(propName);
+				File file = propPath.toFile();
+				file.createNewFile();
+				out = new FileOutputStream(file);
+				Properties p = new Properties();
+				p.setProperty(BasicHibernateProperties.HIBERNATE_DIALECT, determineDialect());
+				p.store(out, null);
+			} catch(IOException e){
+				
+			} finally {
+				if (out != null){
+					try {
+						out.close();
+					} catch (IOException e) {
+					}
+				}
 			}
-		return prop;
-	}
-	
-	/**
-	 * 
-	 * @param source
-	 * @param dest
-	 * @param map - key is the key in <code>dest</code> map, value is the key in <code>source</code> map.
-	 */
-	private void copyProperties(Properties source, Properties dest, Map<String, String> map){
-		for (Map.Entry<String, String> entry : map.entrySet()) {
-			putIfNotNull(dest, entry.getKey(), (String) source.get(entry.getValue()));
 		}
-	}
-	
-	private void putIfNotNull(Properties prop, String key, String value){
-		if (StringHelper.isNotEmpty(value)) prop.put(key, value);
+		
+		String ccName = launchManager.generateUniqueLaunchConfigurationNameFrom(HibernateConsoleMessages.AddConfigurationAction_hibernate);
+		ConsoleConfigurationPreferences prefs = new EclipseConsoleConfigurationPreferences(ccName, 
+				ConfigurationMode.JPA, jpaProject.getName(), true, 
+				null, null, propPath, 
+				new IPath[0], new IPath[0], null, null,
+				getConnectionProfileName(), true);
+		
+		ConsoleConfiguration cc = new ConsoleConfiguration(prefs);
+		KnownConfigurations.getInstance().addConfiguration(cc, false);
+		
+		return ccName;		
 	}
 	
 	public boolean isTemporaryConfiguration(){
@@ -335,5 +312,24 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 			HibernateJptUIPlugin.logException(e);
 			return "";
 		}
+	}
+	
+	private String[] getDialectNames(){
+		String[] dialectNames1 = helper.getDialectNames();
+		String[] dialectNames2 = new String[dialectNames1.length + 1];
+		dialectNames2[0] = AUTODETECT;
+		System.arraycopy(dialectNames1, 0, dialectNames2, 1, dialectNames1.length);
+		return dialectNames2;
+	}
+	
+	private String determineDialect() {
+		if (!AUTODETECT.equals(dialectName.getText())) 
+			return helper.getDialectClass(dialectName.getText());
+		if (!selectMethod.getSelection()){
+			IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(getConnectionProfileName());
+			String driver = profile.getProperties(profile.getProviderId()).getProperty("org.eclipse.datatools.connectivity.db.driverClass");
+			return helper.getDialect(driver);
+		}
+		return null;
 	}
 }

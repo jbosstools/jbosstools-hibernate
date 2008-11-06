@@ -92,7 +92,7 @@ public class GenerateEntitiesWizardPage extends GenerateInitWizardPage {
 
 
 	protected void dialogChanged() {
-		setMessage("");	
+		setErrorMessage(null);
 		/*validate package name*/
 		String packName= getPackageName();
 		if (packName.length() > 0) {
