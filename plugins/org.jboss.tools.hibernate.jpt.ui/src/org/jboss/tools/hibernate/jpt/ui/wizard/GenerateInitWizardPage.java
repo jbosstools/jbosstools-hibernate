@@ -63,7 +63,7 @@ import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
  */
 public abstract class GenerateInitWizardPage extends WizardPage {
 	
-	private static final String AUTODETECT = "[Autodetect]";
+	private static final String AUTODETECT = "[Autodetect]"; //$NON-NLS-1$
 	
 	private DriverClassHelpers helper = new DriverClassHelpers();
 	
@@ -107,12 +107,6 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 		
 		createChildControls(container);
 		
-		dialectName = new ComboDialogField(SWT.NONE);
-		dialectName.setLabelText(HibernateConsoleMessages.NewConfigurationWizardPage_database_dialect);
-		dialectName.setItems(getDialectNames());
-		dialectName.selectItem(0);
-		dialectName.doFillIntoGrid(container, numColumns);
-		
 		selectMethod = new Button(container, SWT.CHECK);
 		selectMethod.setText("Use Console Configuration");
 		selectMethod.setSelection(true);
@@ -127,6 +121,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 				consoleConfigurationName.setEnabled(selectMethod.getSelection());
 				connectionProfileName.setEnabled(!selectMethod.getSelection());
 				schemaName.setEnabled(!selectMethod.getSelection());
+				dialectName.setEnabled(!selectMethod.getSelection());
 				dialogChanged();				
 			}});
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -185,7 +180,15 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 		}
 		connectionProfileName.doFillIntoGrid(dbGroup, numColumns);
 		connectionProfileName.setDialogFieldListener(fieldlistener);
-		connectionProfileName.setEnabled(!selectMethod.getSelection());		
+		connectionProfileName.setEnabled(!selectMethod.getSelection());
+		//****************************dialect*****************
+		dialectName = new ComboDialogField(SWT.NONE);
+		dialectName.setLabelText(HibernateConsoleMessages.NewConfigurationWizardPage_database_dialect);
+		dialectName.setItems(getDialectNames());
+		dialectName.selectItem(0);
+		dialectName.doFillIntoGrid(dbGroup, numColumns);
+		dialectName.setEnabled(false);
+		dialectName.setDialogFieldListener(fieldlistener);	
 		//****************************schema*****************
 		schemaName = new StringButtonDialogField(new IStringButtonAdapter(){
 			public void changeControlPressed(DialogField field) {
@@ -212,6 +215,10 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 			setPageComplete(false);
 			setErrorMessage("Please, select connection profile");
 			return;
+		}
+		
+		if (selectMethod.getSelection()){ // TODO: can't check that dialect set
+			setWarningMessage("Impossible to check that hibernate dialect is set.");
 		}
 		
 		setPageComplete(true);
@@ -323,8 +330,10 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 	}
 	
 	private String determineDialect() {
-		if (!AUTODETECT.equals(dialectName.getText())) 
-			return helper.getDialectClass(dialectName.getText());
+		if (!AUTODETECT.equals(dialectName.getText())){
+			String dialect = helper.getDialectClass(dialectName.getText());
+			return dialect != null ? dialect : dialectName.getText();
+		}
 		if (!selectMethod.getSelection()){
 			IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(getConnectionProfileName());
 			String driver = profile.getProperties(profile.getProviderId()).getProperty("org.eclipse.datatools.connectivity.db.driverClass");

@@ -87,6 +87,7 @@ public class GenerateDdlWizardPage extends GenerateInitWizardPage {
 	
 	protected void dialogChanged() {
 		setErrorMessage(null);
+		setMessage(null);
 		String msg = PathHelper.checkDirectory(getOutputDir(), HibernateConsoleMessages.CodeGenerationSettingsTab_output_directory, false);
 
         if (msg!=null) {
