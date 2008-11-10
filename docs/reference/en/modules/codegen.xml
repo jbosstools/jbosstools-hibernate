@@ -218,7 +218,7 @@ public class Person implements Serializable, IAuditable {
             </entry>
 
             <entry>include this property in the <literal>equals()</literal> and
-              <literal>hashCode()</literal> method. If no use-in-equals is specified, no
+                <literal>hashCode()</literal> method. If no use-in-equals is specified, no
               equals/hashcode will be generated.</entry>
           </row>
 
@@ -282,7 +282,7 @@ public class Person implements Serializable, IAuditable {
         <literal>&lt;meta&gt;</literal>-tags. Thus it can also e.g. be used to specify that
         all fields should be declare protected, instead of the default private. This is done by
         adding <literal>&lt;meta
-        attribute="scope-field"&gt;protected&lt;/meta&gt;</literal> at e.g. just under
+          attribute="scope-field"&gt;protected&lt;/meta&gt;</literal> at e.g. just under
         the <literal>&lt;class&gt;</literal> tag and all fields of that class will be
         protected.</para>
     </note>
@@ -417,11 +417,12 @@ public class Person implements Serializable, IAuditable {
             <property>&lt;meta&gt;</property>
           </emphasis> attribute <emphasis>
             <property>use-in-equals</property>
-          </emphasis> could be a dangerous decision that could produce non expected side-effect.</para>
+          </emphasis> could be a dangerous decision that could produce non expected
+          side-effect.</para>
 
         <para><ulink url="http://www.hibernate.org/109.html">Here</ulink> you can get more in-depth
           explanation on the subject of <property>equals()</property> and
-          <property>hashcode()</property>.</para>
+            <property>hashcode()</property>.</para>
       </section>
     </section>
 
@@ -430,7 +431,7 @@ public class Person implements Serializable, IAuditable {
 
       <para>This section shows an example for using meta attributes (including userspecific
         attributes) together with the code generation features in <property>Hibernate
-        Tools</property>.</para>
+          Tools</property>.</para>
 
       <para>The usecase being implemented is to automatically insert some pre- and post-conditions
         into the getter and setters of the generated POJO. </para>
@@ -452,7 +453,8 @@ public class Person implements Serializable, IAuditable {
             <property>pojo/PojoPropertyAccessor.ftl</property>
           </emphasis></para>
 
-        <para>This file is as the name indicates used to generate property accessors for pojo's.</para>
+        <para>This file is as the name indicates used to generate property accessors for
+          pojo's.</para>
 
         <para>Extract the <emphasis>
             <property>PojoPropertyAccessor.ftl</property>
@@ -508,10 +510,12 @@ public class Person implements Serializable, IAuditable {
           </emphasis> file we define the <emphasis>
             <property>&lt;meta&gt;</property>
           </emphasis> attributes: <literal>pre-cond</literal> or <literal>post-cond</literal>, their
-          contents will be generated into the body of the relevant <literal>set</literal> method.</para>
+          contents will be generated into the body of the relevant <literal>set</literal>
+          method.</para>
 
         <para>As an example let us add a pre-condition for property <literal>name</literal>
-          preventing no <property>Person</property> can have an empty name. Hence we have to modify the <emphasis>
+          preventing no <property>Person</property> can have an empty name. Hence we have to modify
+          the <emphasis>
             <property>Person.hbm.xml</property>
           </emphasis> file like this:</para>
 
@@ -607,12 +611,26 @@ public class Person implements Serializable {
         this.name = name;
     }
     }]]></programlisting>
-        <para>To find additional information about <property>Hibernate Tools</property> we suggest that you
-          visit our <ulink url="http://www.hibernate.org/255.html">website</ulink>. If you have questions, you are always welcome in our
-          <ulink url="http://forum.hibernate.org/viewforum.php?f=6">forum</ulink>.</para>
+
+        <para>In conclusion, this document is intended to introduce you to Hibernate plugin specific
+          features related to tools bath for the Eclipse and Ant tasks.</para>
+
+        <para>In the <link linkend="plugins">Eclipse Plugins</link> chapter you&apos;ve learnt
+          about a set of wizards for creating Mapping files, Configuration file, Console
+          Configuration, got familiar with Mapping and Configuration files editors, tooling for
+          organizing and controlling Reverse Engineering, Hibernate Console and Mapping diagram as
+          well.</para>
+
+        <para>The rest chapters have shown the aspects of using the <property>Hibernate
+            Tools</property> via Ant tasks.</para>
+
+        <para>Please, visit <ulink
+            url="http://www.jboss.com/index.html?module=bb&amp;op=viewforum&amp;f=201">JBoss
+            Tools Users Forum</ulink> to leave questions or/and suggestions on the topic. Your
+          feedback is always appreciated.</para>
       </section>
     </section>
-    
+
   </section>
-  
+
 </chapter>
