@@ -123,6 +123,10 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			if(StringHelper.isNotEmpty( prefs.getNamingStrategy())) {
 				overrides.put( "hibernate.ejb.naming_strategy", prefs.getNamingStrategy() ); //$NON-NLS-1$
 			}
+			
+			if(StringHelper.isNotEmpty( prefs.getDialectName())) {
+				overrides.put( "hibernate.dialect", prefs.getDialectName() ); //$NON-NLS-1$
+			}
 
 			if(!includeMappings) {
 				overrides.put( "hibernate.archive.autodetection", "none" );  //$NON-NLS-1$//$NON-NLS-2$
@@ -571,9 +575,14 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 				throw new HibernateConsoleRuntimeException(ConsoleMessages.ConsoleConfiguration_could_not_configure_naming_strategy + prefs.getNamingStrategy(), c);
 			}
 		}
-
+		
 		localCfg = loadConfigurationXML( localCfg, includeMappings, entityResolver );
 		localCfg = configureConnectionProfile(localCfg);
+		
+		// replace dialect if it is set in preferences
+		if(StringHelper.isNotEmpty( prefs.getDialectName())) {
+			localCfg.setProperty("hibernate.dialect", prefs.getDialectName());
+		}
 
 		return localCfg;
 	}

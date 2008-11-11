@@ -54,12 +54,13 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 	private String persistenceUnitName;
 	private String namingStrategy;
 	private String connectionProfile;
+	private String dialectName;
 	
 
 	public AbstractConsoleConfigurationPreferences(String name, ConfigurationMode configurationMode,
 			String projectName, boolean useProjectclassPath, String entityResolver,
 			String persistenceUnitName, String namingStrategy,
-			String connectionProfile) {
+			String connectionProfile, String dialectName) {
 		setName(name);
 		this.persistenceUnitName = persistenceUnitName;
 		this.namingStrategy = namingStrategy;
@@ -68,6 +69,7 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 		this.projectName = projectName;
 		this.useProjectClasspath = useProjectclassPath;
 		this.connectionProfile = connectionProfile;
+		this.dialectName = dialectName;
 	}
 
 	protected AbstractConsoleConfigurationPreferences() {
@@ -88,6 +90,10 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 
 	public String getConnectionProfileName() {
 		return connectionProfile;
+	}
+	
+	public String getDialectName() {
+		return dialectName;
 	}
 
 	public void setName(String name) {

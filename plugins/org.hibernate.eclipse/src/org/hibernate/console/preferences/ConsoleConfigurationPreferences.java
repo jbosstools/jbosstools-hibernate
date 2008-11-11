@@ -122,4 +122,6 @@ public interface ConsoleConfigurationPreferences {
 	public abstract String getNamingStrategy();
 
 	public abstract String getConnectionProfileName();
+	
+	public abstract String getDialectName();
 }
