@@ -263,13 +263,18 @@ public class DriverClassHelpers {
         return (String[]) list.toArray(new String[list.size()]);
     }
     
+    /**
+     * 
+     * @param fullName
+     * @return short dialect name by corresponding class if available, otherwise return fullName assuming it is a "raw" classname.
+     */
     public String getShortDialectName(String fullName) {
     	Iterator keyIterator = dialectNames.keySet().iterator();
     	while (keyIterator.hasNext()){
     		String key = (String)keyIterator.next();
 			if (dialectNames.get(key).equals(fullName)) return key;
 		}
-    	return null;
+    	return fullName;
     }
     
     public String getDialect(String driverclass) {
