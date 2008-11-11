@@ -134,6 +134,11 @@ public class KnownConfigurationsTest extends TestCase {
 				return null;
 			}
 
+			public String getDialectName() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
 		};
 
 		ConsoleConfigurationPreferences preferences2 = new ConsoleConfigurationPreferences() {
@@ -209,6 +214,11 @@ public class KnownConfigurationsTest extends TestCase {
 			}
 
 			public String getConnectionProfileName() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			public String getDialectName() {
 				// TODO Auto-generated method stub
 				return null;
 			}

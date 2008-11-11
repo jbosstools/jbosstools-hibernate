@@ -111,6 +111,14 @@ public class ConsoleConfigurationTest extends TestCase {
 			return null;
 		}
 
+		/* (non-Javadoc)
+		 * @see org.hibernate.console.preferences.ConsoleConfigurationPreferences#getDialectName()
+		 */
+		public String getDialectName() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
 	}
 
 
