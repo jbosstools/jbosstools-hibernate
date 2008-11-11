@@ -277,7 +277,13 @@ public class DriverClassHelpers {
     	return fullName;
     }
     
+    /**
+     * 
+     * @param driverclass
+     * @return dialect by driverclass.
+     */
     public String getDialect(String driverclass) {
+    	if (driverclass == null) return null;
     	return driverToDialect.get(driverclass);
     }
     
