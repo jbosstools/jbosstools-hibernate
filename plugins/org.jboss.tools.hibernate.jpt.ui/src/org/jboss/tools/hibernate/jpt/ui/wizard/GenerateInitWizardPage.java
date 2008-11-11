@@ -251,38 +251,13 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 	
 	private String createConsoleConfiguration(){		
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
-
 		String dialect = determineDialect();
-		IPath propPath = null;
-		if (dialect != null) {
-			OutputStream out = null;
-			try{
-				String propName = HibernateConsoleMessages.AddConfigurationAction_hibernate + ".properties"; 
-				propPath = HibernateJptUIPlugin.getDefault().getStateLocation().append(propName);
-				File file = propPath.toFile();
-				file.createNewFile();
-				out = new FileOutputStream(file);
-				Properties p = new Properties();
-				p.setProperty(BasicHibernateProperties.HIBERNATE_DIALECT, determineDialect());
-				p.store(out, null);
-			} catch(IOException e){
-				
-			} finally {
-				if (out != null){
-					try {
-						out.close();
-					} catch (IOException e) {
-					}
-				}
-			}
-		}
-		
 		String ccName = launchManager.generateUniqueLaunchConfigurationNameFrom(HibernateConsoleMessages.AddConfigurationAction_hibernate);
 		ConsoleConfigurationPreferences prefs = new EclipseConsoleConfigurationPreferences(ccName, 
 				ConfigurationMode.JPA, jpaProject.getName(), true, 
-				null, null, propPath, 
+				null, null, null, 
 				new IPath[0], new IPath[0], null, null,
-				getConnectionProfileName(), true);
+				getConnectionProfileName(), dialect);
 		
 		ConsoleConfiguration cc = new ConsoleConfiguration(prefs);
 		KnownConfigurations.getInstance().addConfiguration(cc, false);
