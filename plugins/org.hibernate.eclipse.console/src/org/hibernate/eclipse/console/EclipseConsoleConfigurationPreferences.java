@@ -62,8 +62,8 @@ public class EclipseConsoleConfigurationPreferences extends AbstractConsoleConfi
 			ConfigurationMode cmode, String projectName, boolean useProjectClasspath, 
 			String entityResolver, IPath cfgFile, IPath propertyFilename, 
 			IPath[] mappings, IPath[] classpaths, String persistenceUnitName, String namingStrategy,
-			String connectionProfile, boolean connectionProfileFlag) {
-		super(configName, cmode, projectName, useProjectClasspath, entityResolver, persistenceUnitName, namingStrategy, connectionProfile);		
+			String connectionProfile, String dialectName) {
+		super(configName, cmode, projectName, useProjectClasspath, entityResolver, persistenceUnitName, namingStrategy, connectionProfile, dialectName);		
 		this.cfgFile = cfgFile;
 		this.propertyFilename = propertyFilename;
 		this.mappings = mappings;

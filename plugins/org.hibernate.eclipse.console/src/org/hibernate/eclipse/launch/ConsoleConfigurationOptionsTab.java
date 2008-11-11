@@ -10,7 +10,9 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Text;
@@ -18,13 +20,15 @@ import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
+import org.hibernate.eclipse.console.utils.DriverClassHelpers;
 import org.xml.sax.EntityResolver;
 
 public class ConsoleConfigurationOptionsTab extends ConsoleConfigurationTab {
 
-
+	private Combo dialectNameCombo;
 	private Text entityResolverClassNameText;
 	private Text namingStrategyClassNameText;
+	private DriverClassHelpers helper = new DriverClassHelpers();
 
 	public void createControl(Composite parent) {
 		Font font = parent.getFont();
@@ -35,9 +39,21 @@ public class ConsoleConfigurationOptionsTab extends ConsoleConfigurationTab {
 		comp.setLayout(layout);
 		comp.setFont(font);
 
+		createDialectNameCombo( comp );
 		createNamingStrategyClassNameEditor( comp );
 		createEntityResolverClassNameEditor( comp );
 
+	}
+	
+	private void createDialectNameCombo(Composite parent) {
+		Group group = createGroup( parent, HibernateConsoleMessages.NewConfigurationWizardPage_database_dialect );
+		
+		dialectNameCombo = new Combo(group, SWT.NONE);
+		dialectNameCombo.setItems(helper.getDialectNames());
+		Font font=parent.getFont();
+		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+		dialectNameCombo.setLayoutData(gd);
+		dialectNameCombo.setFont(font);
 	}
 
 	private void createNamingStrategyClassNameEditor(Composite parent) {
@@ -71,6 +87,11 @@ public class ConsoleConfigurationOptionsTab extends ConsoleConfigurationTab {
 
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
+			String dialect = configuration.getAttribute( IConsoleConfigurationLaunchConstants.DIALECT , (String)null );
+			if (dialect != null){
+				String dialectShort = helper.getShortDialectName(dialect);
+				dialectNameCombo.setText( dialectShort != null ? dialectShort : dialect );
+			}			
 			namingStrategyClassNameText.setText( configuration.getAttribute( IConsoleConfigurationLaunchConstants.NAMING_STRATEGY, "" ) ); //$NON-NLS-1$
 			entityResolverClassNameText.setText( configuration.getAttribute( IConsoleConfigurationLaunchConstants.ENTITY_RESOLVER, "" ) ); //$NON-NLS-1$
 		}
@@ -80,6 +101,14 @@ public class ConsoleConfigurationOptionsTab extends ConsoleConfigurationTab {
 	}
 
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
+		String dialect = nonEmptyTrimOrNull( dialectNameCombo.getText() );
+		if ( dialect != null ) {
+			String dialectFull = helper.getDialectClass(dialect);
+			/*It can be unknown dialect*/
+			if (dialectFull != null) dialect = dialectFull;
+		}
+		
+		configuration.setAttribute( IConsoleConfigurationLaunchConstants.DIALECT, nonEmptyTrimOrNull( dialect ) );
 		configuration.setAttribute( IConsoleConfigurationLaunchConstants.NAMING_STRATEGY, nonEmptyTrimOrNull( namingStrategyClassNameText ) );
 		configuration.setAttribute( IConsoleConfigurationLaunchConstants.ENTITY_RESOLVER, nonEmptyTrimOrNull( entityResolverClassNameText ) );
 	}

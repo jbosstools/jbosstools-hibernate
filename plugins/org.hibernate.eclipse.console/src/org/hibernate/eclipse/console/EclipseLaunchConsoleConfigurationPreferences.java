@@ -15,11 +15,14 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.datatools.connectivity.IConnectionProfile;
+import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.utils.ClassLoaderHelper;
+import org.hibernate.eclipse.console.utils.DriverClassHelpers;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 import org.w3c.dom.Element;
 
@@ -159,6 +162,17 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 
 	public void writeStateTo(Element node) {
 		throw new IllegalStateException(HibernateConsoleMessages.EclipseLaunchConsoleConfigurationPreferences_cannot_write_to_xml);
+	}
+	
+	public String getDialectName() {
+		String dialect = getAttribute( IConsoleConfigurationLaunchConstants.DIALECT, null );
+		// determine dialect when connection profile is used
+		if (dialect == null && getConnectionProfileName() != null) {
+			IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(getConnectionProfileName());			
+			String driver = profile.getProperties(profile.getProviderId()).getProperty("org.eclipse.datatools.connectivity.db.driverClass");
+			dialect = new DriverClassHelpers().getDialect(driver);
+		}
+		return dialect;
 	}
 
 }

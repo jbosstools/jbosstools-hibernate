@@ -5,6 +5,7 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 public interface IConsoleConfigurationLaunchConstants {
 
 	public static final String ID = "org.hibernate.eclipse.launch"; //$NON-NLS-1$
+	public static final String DIALECT = ID + "DIALECT"; //$NON-NLS-1$
 	public static final String NAMING_STRATEGY = ID + "NAMING_STRATEGY"; //$NON-NLS-1$
 	public static final String ENTITY_RESOLVER = ID + "ENTITY_RESOLVER"; //$NON-NLS-1$
 	public static final String PROPERTY_FILE = ID + ".PROPERTY_FILE"; //$NON-NLS-1$
