@@ -306,8 +306,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 	
 	private String determineDialect() {
 		if (!AUTODETECT.equals(dialectName.getText())){
-			String dialect = helper.getDialectClass(dialectName.getText());
-			return dialect != null ? dialect : dialectName.getText();
+			return helper.getDialectClass(dialectName.getText());
 		}
 		if (!selectMethod.getSelection()){
 			IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(getConnectionProfileName());
