@@ -11,6 +11,7 @@
       <keys path="help/keys-hibernate3.properties"/>
       <keys path="help/keys-hibernate-attrs.properties"/>
       <keys path="help/keys-hibernate-menu.properties"/>
+      <keys path="help/keys-hibernate-lists.properties"/>
    </extension>
    <extension
          point="org.jboss.tools.common.model.resourceMapping">
