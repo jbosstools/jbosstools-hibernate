@@ -12,6 +12,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context;
 
 import java.io.File;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -30,7 +31,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateP
  *
  */
 public class HibernatePersistenceUnit extends GenericPersistenceUnit 
-	implements Messages{
+	implements Messages {
 	
 	private HibernateProperties hibernateProperties;
 
@@ -73,18 +74,33 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 		        int resType= res.getType();
 		        if (resType != IResource.FILE) {
 		        	Property prop = getProperty(BasicHibernateProperties.HIBERNATE_CONFIG_FILE);
-	            	IMessage message = new Message(Messages.class.getName(), IMessage.HIGH_SEVERITY, 
+	            	IMessage message = new LocalMessage(Messages.class.getName(), IMessage.HIGH_SEVERITY, 
 	            			NOT_A_FILE, new String[]{configFile}, getResource());
 	            	message.setLineNo(prop.getValidationTextRange().getLineNumber());
 	            	messages.add(message);					
 		        }
 		    } else {
 		    	Property prop = getProperty(BasicHibernateProperties.HIBERNATE_CONFIG_FILE);
-	        	IMessage message = new Message(Messages.class.getName(), IMessage.HIGH_SEVERITY, 
-            			FILE_NOT_FOUND, new String[]{configFile}, getResource());
+	        	IMessage message = new LocalMessage(Messages.class.getName(), IMessage.HIGH_SEVERITY, 
+            			CONFIG_FILE_NOT_FOUND, new String[]{configFile}, getResource());
 	        	message.setLineNo(prop.getValidationTextRange().getLineNumber());
             	messages.add(message);	
 		    }
 		}
 	}
+	
+	/**
+	 * Hack class needed to make JPA/Validation API pick up our classloader instead of its own.
+	 * 
+	 * @author max
+	 *
+	 */
+	static public class LocalMessage extends Message {
+
+		public LocalMessage(String name, int highSeverity, String notAFile,
+				String[] strings, IResource resource) {
+			super(name, highSeverity, notAFile, strings, resource);
+		}
+	}
+
 }
