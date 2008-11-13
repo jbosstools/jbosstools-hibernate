@@ -11,8 +11,13 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
-import java.util.ResourceBundle;
+import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -22,6 +27,10 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.core.resource.persistence.XmlProperties;
+import org.eclipse.jpt.core.resource.persistence.XmlProperty;
+import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
@@ -88,6 +97,56 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 		    }
 		}
 	}
+	
+	
+	/**
+	 * If persistence.xml contains 3 properties: dialect, driver, url and we delete
+	 * driver-property, then parent's method changes current properties so:
+	 * 1. replace 1-st model's property(dialect) with 1-st property from persistence.xml (dialect)
+	 * 2. replace 2-nd model's property(driver) with 2-nd property from persistence.xml (url)
+	 * 3. remove 3-rd model's property(url)
+	 * Step 3 call property change event which set url=null and this is wrong.
+	 * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=255149
+	 * TODO: remove after bug fixed.
+	 */
+	@Override
+	protected void updateProperties(XmlPersistenceUnit persistenceUnit) {
+		XmlProperties xmlProperties = persistenceUnit.getProperties();
+		
+		Iterator<Property> stream = properties();
+		Iterator<XmlProperty> stream2;
+		
+		if (xmlProperties == null) {
+			stream2 = EmptyIterator.instance();
+		}
+		else {
+			stream2 = new CloneIterator<XmlProperty>(xmlProperties.getProperties());//avoid ConcurrentModificationException
+		}
+		
+		Map<String, XmlProperty> map = new HashMap<String, XmlProperty>();
+		while (stream2.hasNext()){
+			XmlProperty xmlProp = stream2.next();
+			map.put(xmlProp.getName(), xmlProp);
+		}
+		Set<String> performedSet = new HashSet<String>();
+		while (stream.hasNext()) {
+			Property property = stream.next();
+			if (map.containsKey(property.getName())) {
+				XmlProperty xmlProp = map.get(property.getName());
+				property.update(xmlProp);
+				performedSet.add(property.getName());
+			} else {
+				removeProperty_(property);
+			}
+		}		
+		
+		for (Entry<String, XmlProperty> entry : map.entrySet()) {
+			if (!performedSet.contains(entry.getKey())) {
+				addProperty_(buildProperty(entry.getValue()));
+			}
+		}
+	}
+
 	
 	/**
 	 * Hack class needed to make JPA/Validation API pick up our classloader instead of its own.
