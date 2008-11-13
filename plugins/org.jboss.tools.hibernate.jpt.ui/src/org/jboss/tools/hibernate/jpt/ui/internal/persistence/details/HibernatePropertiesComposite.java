@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
+import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
@@ -112,28 +113,33 @@ public class HibernatePropertiesComposite extends AbstractFormPane<BasicHibernat
 				lvmUrl,
 				urlHolder, 
 				null);
+				
+		dialectHolder.addPropertyChangeListener(new SWTPropertyChangeListenerWrapper(
+				new PropertyChangeListener() {
+					public void propertyChanged(PropertyChangeEvent event) {
+						String dialectClass = helper.getDialectClass((String) event.getNewValue());
+						String[] driverClasses = helper.getDriverClasses(dialectClass);
+						String driver = driverHolder.getValue();//save value
+						lvmDriver.clear();
+						lvmDriver.addAll(Arrays.asList(driverClasses));							
+						driverHolder.setValue(driver);		//restore value	
+					}
+				}
+			)
+		);
 
-		dialectHolder.addPropertyChangeListener(new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent event) {
-				String dialectClass = helper.getDialectClass((String) event.getNewValue());
-				String[] driverClasses = helper.getDriverClasses(dialectClass);
-				String driver = driverHolder.getValue();//save value
-				lvmDriver.clear();
-				lvmDriver.addAll(Arrays.asList(driverClasses));
-				driverHolder.setValue(driver);		//restore value
-			}
-		});
-
-		driverHolder.addPropertyChangeListener(new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent event) {
-				String driverClass = (String) event.getNewValue();
-				String[] connectionURLS = helper.getConnectionURLS(driverClass);
-				String url = urlHolder.getValue();//save value
-				lvmUrl.clear();
-				lvmUrl.addAll(Arrays.asList(connectionURLS));
-				urlHolder.setValue(url);		//restore value
-			}
-		});
+		driverHolder.addPropertyChangeListener( new SWTPropertyChangeListenerWrapper(
+				new PropertyChangeListener() {
+					public void propertyChanged(PropertyChangeEvent event) {
+						String driverClass = (String) event.getNewValue();
+						String[] connectionURLS = helper.getConnectionURLS(driverClass);
+						String url = urlHolder.getValue();//save value
+						lvmUrl.clear();
+						lvmUrl.addAll(Arrays.asList(connectionURLS));
+						urlHolder.setValue(url);		//restore value
+					}
+				}
+			) );
 
 		buildLabeledText(
 				section, 
@@ -318,5 +324,4 @@ public class HibernatePropertiesComposite extends AbstractFormPane<BasicHibernat
 	public String getPageText() {
 		return "Hibernate";
 	}
-
 }
