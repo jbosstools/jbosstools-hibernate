@@ -20,19 +20,25 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.ErrorEditorPart;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard;
+import org.hibernate.eclipse.console.wizards.ConsoleConfigurationWizardPage;
+import org.hibernate.eclipse.launch.ConsoleConfigurationMainTab;
 import org.hibernate.mapping.PersistentClass;
 
 /**
@@ -105,21 +111,34 @@ public class ProjectUtil {
 		}
 	}
 
-	public static void createConsoleCFG() throws CoreException{
-		new ConsoleConfigurationCreationWizard2().run();
+	public static void createConsoleCFG() throws CoreException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+		ConsoleConfigurationCreationWizard2 wiz = new ConsoleConfigurationCreationWizard2();
+		IWorkbenchWindow win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		WizardDialog wdialog = new WizardDialog(win.getShell(), wiz);
+		wdialog.create();
+		wiz.run();
+		wdialog.close();
 	}
 
 	private static class ConsoleConfigurationCreationWizard2 extends ConsoleConfigurationCreationWizard{
 
-		public void run() throws CoreException {
+		public void run() throws CoreException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 			IPath cfgFilePath = new Path(MappingTestProject.PROJECT_NAME + "/" +  //$NON-NLS-1$
 					TestUtilsCommon.SRC_FOLDER + "/" + ProjectUtil.CFG_FILE_NAME); //$NON-NLS-1$
-			createConsoleConfiguration(null, null, ConsoleCFGName, ConsoleConfigurationPreferences.ConfigurationMode.CORE,
-					MappingTestProject.PROJECT_NAME, true, "", //$NON-NLS-1$
-					null, cfgFilePath, new Path[0], new Path[0], "", "", new NullProgressMonitor());  //$NON-NLS-1$//$NON-NLS-2$
-
+			ConsoleConfigurationWizardPage page = ((ConsoleConfigurationWizardPage)getPages()[0]);			
+			ILaunchConfigurationTab[] tabs = page.getTabs();
+			ConsoleConfigurationMainTab main = (ConsoleConfigurationMainTab) tabs[0];
+			Class clazz = main.getClass();
+			Field projectName = clazz.getDeclaredField("projectNameText");
+			projectName.setAccessible(true);
+			Text text = (Text) projectName.get(main);
+			text.setText(MappingTestProject.PROJECT_NAME);
+			page.setConfigurationFilePath(cfgFilePath);
+			page.setName(ConsoleCFGName);
+			page.performFinish();
 		}
 	}
+	
 	/**
 	 * Sometimes we have exceptions while opening editors.
 	 * IDE catches this exceptions and opens ErrorEditorPart instead of
@@ -195,5 +214,4 @@ public class ProjectUtil {
 		}
 		return new ITextEditor[0];
 	}
-
 }
