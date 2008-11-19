@@ -42,7 +42,7 @@ Bundle-ClassPath: org.hibernate.eclipse.jar,
  lib/annotations/lucene-core-2.2.0.jar,
  lib/hibernate/log4j-1.2.15.jar
 Bundle-Activator: org.hibernate.eclipse.HibernatePlugin
-Bundle-Vendor: Hibernate Team
+Bundle-Vendor: JBoss, a division of Red Hat.
 Bundle-Localization: plugin
 Export-Package: EDU.oswego.cs.dl.util.concurrent,
  antlr,

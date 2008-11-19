@@ -3,7 +3,7 @@
       id="org.hibernate.eclipse.feature"
       label="Hibernate Tools"
       version="3.2.0.beta7"
-      provider-name="Hibernate Team"
+      provider-name="JBoss, a division of Red Hat."
       plugin="org.hibernate.eclipse">
 
    <description url="http://tools.hibernate.org">
