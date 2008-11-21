@@ -13,7 +13,7 @@ package test.annotated;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Foto {
@@ -23,7 +23,7 @@ public class Foto {
 	@Id @GeneratedValue
 	protected Short id;
 
-	@ManyToOne
+	@OneToOne(mappedBy="foto")
 	protected Person person;
 
 	protected Short width_IDtest;

@@ -101,6 +101,10 @@ public class JPAMapTest extends TestCase {
 				"test.annotated.Passport"); //$NON-NLS-1$
 		ICompilationUnit icu2 = Utils.findCompilationUnit(javaProject,
 				"test.annotated.Staff"); //$NON-NLS-1$
+		//ICompilationUnit icu = Utils.findCompilationUnit(javaProject,
+		//		"test.annotated.Foto"); //$NON-NLS-1$
+		//ICompilationUnit icu2 = Utils.findCompilationUnit(javaProject,
+		//		"test.annotated.Person"); //$NON-NLS-1$
 		assertNotNull(icu);
 		assertNotNull(icu2);
 		collector.initCollector(javaProject);

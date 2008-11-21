@@ -272,6 +272,14 @@ public class AllEntitiesInfoCollector {
 							pi.refEntityInfo2.mappedBy = pi.fieldId;
 						}
 					}
+					else if (pi.refEntityInfo.refType == RefType.MANY2ONE) {
+						if (pi.refEntityInfo2.refType == RefType.MANY2ONE) {
+							pi.refEntityInfo.refType = RefType.ONE2ONE;
+							pi.refEntityInfo.mappedBy = pi.fieldId2;
+							pi.refEntityInfo2.refType = RefType.ONE2ONE;
+							pi.refEntityInfo2.mappedBy = pi.fieldId;
+						}
+					}
 				}
 				return true;
 			}
