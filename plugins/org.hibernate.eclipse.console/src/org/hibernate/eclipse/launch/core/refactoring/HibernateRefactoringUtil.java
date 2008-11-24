@@ -33,10 +33,10 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.jdt.internal.launching.LaunchingPlugin;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
@@ -321,9 +321,29 @@ public class HibernateRefactoringUtil {
 		try {
 			configs = DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurations();
 			List<ILaunchConfiguration> list = new ArrayList<ILaunchConfiguration>();
-			for(int i = 0; i < configs.length; i++) {//refactor only hibernate launch configurations
+			for(int i = 0; i < configs.length && configs[i].exists(); i++) {//refactor only hibernate launch configurations
 				if (!ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID.equals(configs[i].getType().getIdentifier())) continue;
 				if (HibernateRefactoringUtil.isConfigurationAffected(configs[i], path)) list.add(configs[i]);
+			}
+			configs = list.toArray(new ILaunchConfiguration[list.size()]);
+		}
+		catch(CoreException e) {
+			configs = new ILaunchConfiguration[0];
+			HibernateConsolePlugin.getDefault().logErrorMessage( ERROR_MESS, e );
+		}
+
+		return configs;
+	}
+	
+	public static ILaunchConfiguration[] getAffectedLaunchConfigurations(IConnectionProfile profile){
+		ILaunchConfiguration[] configs = null;
+		try {
+			configs = DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurations();
+			List<ILaunchConfiguration> list = new ArrayList<ILaunchConfiguration>();
+			for(int i = 0; i < configs.length && configs[i].exists(); i++) {//refactor only hibernate launch configurations
+				if (!ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID.equals(configs[i].getType().getIdentifier())) continue;
+				if (profile.getName().equals(configs[i].getAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, ""))) 
+					list.add(configs[i]);
 			}
 			configs = list.toArray(new ILaunchConfiguration[list.size()]);
 		}

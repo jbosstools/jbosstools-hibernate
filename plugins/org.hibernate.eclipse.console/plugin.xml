@@ -669,6 +669,19 @@
             </with>
          </enablement>
       </renameParticipant>
+      <renameParticipant
+            class="org.hibernate.eclipse.launch.core.refactoring.ConnectionProfileRenameParticipant"
+            id="org.hibernate.eclipse.console.renameConnectionProfileParticipant"
+            name="name">
+         <enablement>
+            <with
+                  variable="element">
+               <instanceof
+                     value="org.eclipse.datatools.connectivity.IConnectionProfile">
+               </instanceof>
+            </with>
+         </enablement>
+      </renameParticipant>
    </extension>
    <extension
          point="org.eclipse.ltk.core.refactoring.moveParticipants">

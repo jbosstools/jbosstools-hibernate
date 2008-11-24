@@ -516,6 +516,9 @@ public class HibernateConsoleMessages extends NLS {
 	public static String HibernateNature_reading_database_metadata_for;
 
 	public static String BasicWorkbenchAdapter_error_while_opening_configuration;
+	
+	public static String ConnectionProfileRenameChange_update_connection_profile_name;
+	public static String ConnectionProfileRenameParticipant_launch_configurations_updates;
 	//
 	static {
 		// initialize resource bundle
