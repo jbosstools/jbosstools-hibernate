@@ -270,16 +270,17 @@ public class OpenFileActionUtils {
 					IPackageFragmentRoot[] packageFragmentRoots;
 					try {
 						packageFragmentRoots = proj.getAllPackageFragmentRoots();
-						for (int i = 0; i < packageFragmentRoots.length && resource == null; i++) {
+						for (int i = 0; i < packageFragmentRoots.length; i++) {
 							//search in source folders.
 							if (packageFragmentRoots[i].getClass() == PackageFragmentRoot.class) {
 								IPackageFragmentRoot packageFragmentRoot = packageFragmentRoots[i];
 								IPath path = packageFragmentRoot.getPath().append(file.getValue());
 								resource = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+								
+								if (resource != null && resource.exists() &&
+										elementInResource(consoleConfiguration, resource, element)) return resource;
 							}
 						}
-						if (resource != null &&
-								elementInResource(consoleConfiguration, resource, element)) return resource;
 						resource = null;
 					} catch (JavaModelException e) {
 						HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenFileActionUtils_problems_while_get_project_package_fragment_roots, e);
