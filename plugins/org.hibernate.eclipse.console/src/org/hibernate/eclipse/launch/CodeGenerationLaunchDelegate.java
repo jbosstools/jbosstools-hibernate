@@ -307,6 +307,7 @@ public class CodeGenerationLaunchDelegate extends
 					ReverseEngineeringSettings qqsettings = new ReverseEngineeringSettings(res)
 					.setDefaultPackageName(attributes.getPackageName())
 					.setDetectManyToMany( attributes.detectManyToMany() )
+					.setDetectOneToOne( attributes.detectOneToOne() )
 					.setDetectOptimisticLock( attributes.detectOptimisticLock() );
 
 					res.setSettings(qqsettings);

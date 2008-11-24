@@ -73,8 +73,9 @@ public class ExporterAttributes
    private String outputPath;
    private String templatePath;
    private List exporterFactories;
-   // if set then build reveng strategy relying on the list of tables
+
    private boolean autoManyToManyDetection;
+   private boolean autoOneToOneDetection;
    private boolean autoVersioning;
 
    public ExporterAttributes () { }
@@ -101,6 +102,7 @@ public class ExporterAttributes
          templatePath = configuration.getAttribute(HibernateLaunchConstants.ATTR_TEMPLATE_DIR,""); //$NON-NLS-1$
          preferBasicCompositeIds = configuration.getAttribute(HibernateLaunchConstants.ATTR_PREFER_BASIC_COMPOSITE_IDS, true);
          autoManyToManyDetection = configuration.getAttribute( HibernateLaunchConstants.ATTR_AUTOMATIC_MANY_TO_MANY, true);
+         autoOneToOneDetection = configuration.getAttribute( HibernateLaunchConstants.ATTR_AUTOMATIC_ONE_TO_ONE, true);
          autoVersioning = configuration.getAttribute( HibernateLaunchConstants.ATTR_AUTOMATIC_VERSIONING, true);
 
 
@@ -352,5 +354,9 @@ public class ExporterAttributes
     public boolean detectOptimisticLock() {
     	return autoVersioning;
     }
+
+	public boolean detectOneToOne() {
+		return autoOneToOneDetection;
+	}
 
 }

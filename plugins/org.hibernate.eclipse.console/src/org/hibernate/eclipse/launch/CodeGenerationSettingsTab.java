@@ -27,7 +27,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -84,6 +83,7 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
     private SelectionButtonDialogField preferRawCompositeIds;
     private SelectionButtonDialogField autoVersioning;
     private SelectionButtonDialogField autoManyToMany;
+    private SelectionButtonDialogField autoOneToOne;
 
     private SelectionButtonDialogField useOwnTemplates;
     private DirectoryBrowseField templatedir;
@@ -223,13 +223,19 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
         autoManyToMany.setSelection(true);
         autoManyToMany.setDialogFieldListener(fieldlistener);
 
+        autoOneToOne = new SelectionButtonDialogField(SWT.CHECK);
+        autoOneToOne.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_detect_one_to_one_associations);
+        autoOneToOne.setSelection(true);
+        autoOneToOne.setDialogFieldListener(fieldlistener);
+        
+        
         autoVersioning = new SelectionButtonDialogField(SWT.CHECK);
         autoVersioning.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_detect_optimistic_lock_columns);
         autoVersioning.setSelection(true);
         autoVersioning.setDialogFieldListener(fieldlistener);
 
 		useOwnTemplates.attachDialogField(templatedir);
-        reverseengineer.attachDialogFields(new DialogField[] { packageName, preferRawCompositeIds, reverseEngineeringSettings, reverseEngineeringStrategy, autoManyToMany, autoVersioning });
+        reverseengineer.attachDialogFields(new DialogField[] { packageName, preferRawCompositeIds, reverseEngineeringSettings, reverseEngineeringStrategy, autoManyToMany, autoOneToOne, autoVersioning });
 
 		consoleConfigurationName.doFillIntoGrid(container, 4);
 		Control[] controls = outputdir.doFillIntoGrid(container, 4);
@@ -246,6 +252,8 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
         autoVersioning.doFillIntoGrid(container, 3);
         fillLabel(container);
         autoManyToMany.doFillIntoGrid(container, 3);
+        fillLabel(container);
+        autoOneToOne.doFillIntoGrid(container, 3);
 		useOwnTemplates.doFillIntoGrid(container, 4);
         controls = templatedir.doFillIntoGrid(container, 4);
         // Hack to tell the text field to stretch!
@@ -409,6 +417,7 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
            preferRawCompositeIds.setSelection(attributes.isPreferBasicCompositeIds());
            autoManyToMany.setSelection( attributes.detectManyToMany() );
            autoVersioning.setSelection( attributes.detectOptimisticLock() );
+           autoOneToOne.setSelection( attributes.detectOneToOne());
            outputdir.setText(safeText(attributes.getOutputPath()));
            reverseengineer.setSelection(attributes.isReverseEngineer());
            reverseEngineeringSettings.setText(safeText(attributes.getRevengSettings()));
@@ -437,6 +446,7 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 		configuration.setAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR, strOrNull(outputdir.getText()));
 		configuration.setAttribute(HibernateLaunchConstants.ATTR_PREFER_BASIC_COMPOSITE_IDS, preferRawCompositeIds.isSelected());
 		configuration.setAttribute(HibernateLaunchConstants.ATTR_AUTOMATIC_MANY_TO_MANY, autoManyToMany.isSelected());
+		configuration.setAttribute(HibernateLaunchConstants.ATTR_AUTOMATIC_ONE_TO_ONE, autoOneToOne.isSelected());
 		configuration.setAttribute(HibernateLaunchConstants.ATTR_AUTOMATIC_VERSIONING, autoVersioning.isSelected());
 		configuration.setAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER, isReverseEngineerEnabled());
 		configuration.setAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_STRATEGY, strOrNull(reverseEngineeringStrategy.getText()));

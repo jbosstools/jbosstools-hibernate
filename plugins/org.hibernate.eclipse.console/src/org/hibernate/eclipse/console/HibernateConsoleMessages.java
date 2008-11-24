@@ -394,6 +394,7 @@ public class HibernateConsoleMessages extends NLS {
 	public static String CodeGenerationSettingsTab_console_configuration;
 	public static String CodeGenerationSettingsTab_create_new;
 	public static String CodeGenerationSettingsTab_detect_many_to_many_tables;
+	public static String CodeGenerationSettingsTab_detect_one_to_one_associations;
 	public static String CodeGenerationSettingsTab_detect_optimistic_lock_columns;
 	public static String CodeGenerationSettingsTab_do_you_want_create_reveng_xml;
 	public static String CodeGenerationSettingsTab_does_not_exist;
