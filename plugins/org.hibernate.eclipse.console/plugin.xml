@@ -337,6 +337,7 @@
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension targetID="org.hibernate.eclipse.console.HibernateConsolePerspective">
       	 <actionSet id="org.hibernate.eclipse.launch.actionset"/>
+         <actionSet id="org.eclipse.jdt.ui.JavaActionSet"/>
          <newWizardShortcut id="org.hibernate.eclipse.console.wizards.NewHibernateMappingFileWizard"/>
          <newWizardShortcut id="org.hibernate.eclipse.console.wizards.NewConfigurationWizard"/>
          <newWizardShortcut id="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"/>
