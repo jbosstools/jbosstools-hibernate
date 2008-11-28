@@ -769,7 +769,7 @@
       <view
             allowMultiple="false"
             category="hibernatecategory"
-            class="org.hibernate.eclipse.console.views.navigator.KnownConfigurationsNaviagtor"
+            class="org.hibernate.eclipse.console.views.navigator.KnownConfigurationsNavigator"
             id="org.hibernate.eclipse.navigator.KnownConfigurationsViewer"
             name="Hibernate Configurations"/>
    </extension>
