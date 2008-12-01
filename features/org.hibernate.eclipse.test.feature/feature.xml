@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.hibernate.eclipse.test.feature"
-      label="org.hibernate.eclipse.test.feature"
+      label="Hibernate Tests"
       version="3.1.0.beta7"
       provider-name="Hibernate Team">
 
    <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
+      hibernate test 
    </description>
 
    <copyright url="http://www.example.com/copyright">
