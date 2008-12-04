@@ -20,6 +20,8 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.PlatformUI;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
@@ -126,7 +128,17 @@ public class HQLQueryValidatorTest extends HibernateConsoleTest {
 	@Override
 	protected void tearDown() throws Exception {
 		ccfg.reset();
-		super.tearDown();
+		waitForJobs();
+
+		// This code overrides super method to handle error during deleting project with contents.
+		// A deletion of content isn't really necessary because project name is unique
+		IEditorPart editorPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closeEditor(editorPart, false);
+
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().setPerspective(
+				PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId("org.eclipse.ui.resourcePerspective")); //$NON-NLS-1$
+
+		getProject().deleteIProject(false);
 		waitForJobs();
 	}
 	public void testHQLDetector() throws JavaModelException {

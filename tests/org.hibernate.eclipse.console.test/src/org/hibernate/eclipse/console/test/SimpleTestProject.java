@@ -85,6 +85,15 @@ public class SimpleTestProject {
 
 	}
 	
+	public void deleteIProject(boolean deleteContent) {
+		try {
+			project.delete(deleteContent, true, null);
+		} catch (CoreException ce) {
+			throw new RuntimeException(ce);
+		}
+
+	}
+	
 	protected void buildSimpleTestProject() throws JavaModelException, CoreException, IOException {
 		project = buildNewProject(projectName);
 		javaProject = buildJavaProject(project);
