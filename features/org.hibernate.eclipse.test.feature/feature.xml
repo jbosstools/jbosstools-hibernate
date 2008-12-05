@@ -3,10 +3,10 @@
       id="org.hibernate.eclipse.test.feature"
       label="Hibernate Tests"
       version="3.1.0.beta7"
-      provider-name="JBoss, a division of Red Hat.">
+      provider-name="JBoss, a division of Red Hat">
 
    <description url="http://www.example.com/description">
-      hibernate test 
+      hibernate test
    </description>
 
    <copyright url="http://www.example.com/copyright">
