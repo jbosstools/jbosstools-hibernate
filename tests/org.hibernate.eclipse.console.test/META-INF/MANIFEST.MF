@@ -7,7 +7,7 @@ Bundle-ClassPath: org.hibernate.eclipse.console.test.test/,
  lib/hibernate-tools-tests.jar,
  lib/hsqldb.jar,
  lib/jaxen-1.1-beta-7.jar
-Bundle-Vendor: JBoss, a division of Red Hat.
+Bundle-Vendor: JBoss, a division of Red Hat
 Bundle-Localization: plugin
 Export-Package: org.hibernate.eclipse.console.test,
  org.hibernate.eclipse.console.test.mappingproject,
