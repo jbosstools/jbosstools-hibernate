@@ -17,3 +17,4 @@ Eclipse-LazyStart: true
 Export-Package: org.hibernate.eclipse.jdt.ui.test
 Bundle-Activator: org.hibernate.eclipse.jdt.ui.test.HibernateJDTuiTestPlugin
 Bundle-ClassPath: org.hibernate.eclipse.jdt.ui.test.jar
+Bundle-Vendor: JBoss, a division of Red Hat
