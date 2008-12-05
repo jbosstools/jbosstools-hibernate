@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.hibernate.eclipse.console; singleton:=true
 Bundle-Version: 3.2.0.beta9
 Bundle-ClassPath: org.hibernate.eclipse.console.jar
 Bundle-Activator: org.hibernate.eclipse.console.HibernateConsolePlugin
-Bundle-Vendor: JBoss, a division of Red Hat.
+Bundle-Vendor: JBoss, a division of Red Hat
 Bundle-Localization: plugin
 Export-Package: org.hibernate.eclipse.builder,
  org.hibernate.eclipse.console,
