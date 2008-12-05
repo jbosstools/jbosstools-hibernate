@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.hibernate.eclipse.help; singleton:=true
 Bundle-Version: 3.2.0.beta9
 Bundle-ClassPath: help.jar
 Bundle-Activator: org.hibernate.eclipse.help.HelpPlugin
-Bundle-Vendor: JBoss, a division of Red Hat.
+Bundle-Vendor: JBoss, a division of Red Hat
 Bundle-Localization: plugin
 Export-Package: org.hibernate.eclipse.help
 Require-Bundle: org.eclipse.core.runtime,
