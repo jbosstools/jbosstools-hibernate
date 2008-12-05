@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Hibernate Core Plugin
+Bundle-Name: Hibernate Tools
 Bundle-SymbolicName: org.hibernate.eclipse
 Bundle-Version: 3.2.0.beta10
 Bundle-ClassPath: org.hibernate.eclipse.jar,
@@ -42,7 +42,7 @@ Bundle-ClassPath: org.hibernate.eclipse.jar,
  lib/annotations/lucene-core-2.2.0.jar,
  lib/hibernate/log4j-1.2.15.jar
 Bundle-Activator: org.hibernate.eclipse.HibernatePlugin
-Bundle-Vendor: JBoss, a division of Red Hat.
+Bundle-Vendor: JBoss, a division of Red Hat
 Bundle-Localization: plugin
 Export-Package: EDU.oswego.cs.dl.util.concurrent,
  antlr,
