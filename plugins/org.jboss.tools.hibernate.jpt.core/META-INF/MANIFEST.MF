@@ -15,7 +15,7 @@ Require-Bundle:
  org.eclipse.debug.core;bundle-version="3.4.0",
  org.eclipse.emf.ecore;bundle-version="2.4.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Bundle-Vendor: JBoss, a division of Red Hat.
+Bundle-Vendor: JBoss, a division of Red Hat
 Export-Package: org.jboss.tools.hibernate.jpt.core.internal,
  org.jboss.tools.hibernate.jpt.core.internal.context,
  org.jboss.tools.hibernate.jpt.core.internal.context.basic
