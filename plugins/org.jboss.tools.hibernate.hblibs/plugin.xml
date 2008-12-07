@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><?eclipse version="3.0"?>
-<plugin id="org.jboss.tools.hibernate.hblibs" name="Hibernate Jars" provider-name="JBoss, a division of Red Hat." version="2.0.0">
+<plugin id="org.jboss.tools.hibernate.hblibs" name="Hibernate Jars" provider-name="JBoss, a division of Red Hat" version="2.0.0">
    <runtime>
       <library name="lib/ant-1.6.5.jar">
          <export name="*"/>
