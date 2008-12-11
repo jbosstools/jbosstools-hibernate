@@ -595,6 +595,11 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		
 		IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(connectionProfile);
 		if (profile != null) {
+			// refresh profile (refresh jpa connection):
+			// get fresh information about current db structure and update error markers  
+			profile.disconnect();
+			profile.connect(null);
+			//
 			final Properties invokeProperties = localCfg.getProperties();
 			// set this property to null!
 			invokeProperties.remove(Environment.DATASOURCE);
