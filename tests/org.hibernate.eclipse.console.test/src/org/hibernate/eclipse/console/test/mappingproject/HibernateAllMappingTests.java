@@ -18,6 +18,7 @@ import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -50,6 +51,8 @@ public class HibernateAllMappingTests extends TestCase {
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().setPerspective(
 				PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId("org.eclipse.ui.resourcePerspective")); //$NON-NLS-1$
 
+		waitForJobs();
+		
 		IPackagesViewPart packageExplorer = null;
 		try {
 			packageExplorer = (IPackagesViewPart) PlatformUI.getWorkbench()
@@ -135,13 +138,21 @@ public class HibernateAllMappingTests extends TestCase {
 			}
 		}
 	}
-
+	private static final long MAX_IDLE = 30*60*1000L;
 	/**
 	 * Wait until all background tasks are complete.
 	 */
 	public void waitForJobs() {
-		while (Platform.getJobManager().currentJob() != null)
+		long start = System.currentTimeMillis();
+		// Job.getJobManager().isIdle() is more efficient than EditorTestHelper.allJobsQuiet()
+		// EditorTestHelper.allJobsQuiet() isn't thread-safe
+		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=198241 is fixed 
+		//while (!EditorTestHelper.allJobsQuiet()) {
+		while (!Job.getJobManager().isIdle()) {
 			delay(1000);
+			if ( (System.currentTimeMillis()-start) > MAX_IDLE ) 
+				throw new RuntimeException("A long running task detected"); //$NON-NLS-1$
+		}
 	}
 
 	protected MappingTestProject getProject() {
