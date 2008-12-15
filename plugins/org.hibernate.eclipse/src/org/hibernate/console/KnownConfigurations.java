@@ -53,7 +53,6 @@ import org.eclipse.ui.console.MessageConsoleStream;
 import org.hibernate.SessionFactory;
 import org.hibernate.console.node.BaseNode;
 import org.hibernate.console.node.ConfigurationListNode;
-import org.hibernate.eclipse.HibernatePlugin;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -191,7 +190,7 @@ public class KnownConfigurations  {
 
 	/**
 	 * Answer whether the provided configuration name is known by the provider or not.
-	 * The name string corresponds to the Strin returned by ConsoleConfiguration#getName()
+	 * The name string corresponds to the String returned by ConsoleConfiguration#getName()
 	 */
 	public boolean isKnownConfiguration(String name) {
 		return internalGetRepository(name) != null;
