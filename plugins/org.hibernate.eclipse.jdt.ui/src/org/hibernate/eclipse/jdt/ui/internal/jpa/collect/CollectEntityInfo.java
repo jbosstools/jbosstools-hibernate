@@ -346,8 +346,7 @@ public class CollectEntityInfo extends ASTVisitor {
 				// this is candidate for primary id
 				Iterator itVarNames = list.iterator();
 				while (itVarNames.hasNext()) {
-					VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
-					String name = var.getName().getIdentifier();
+					String name = (String)itVarNames.next();
 					entityInfo.addPrimaryIdCandidate(name);
 				}
 			}
