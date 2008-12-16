@@ -8,20 +8,14 @@
   * Contributor:
   *     Red Hat, Inc. - initial API and implementation
   ******************************************************************************/
-package test.annotated;
+package test.annotated.getters;
 
-import javax.persistence.Entity;
+public class Passport extends Document {
 
-@Entity
-public class Staff extends Document {
+	private Long fakeId;
 	
-	protected Long code;
-	
-	protected Staff() {
+	public Passport() {
+		setDocType((byte)1);
 	}
-	
-	public Staff(long code) {
-		this.code = code;
-		setDocType((byte)2);
-	}
+
 }

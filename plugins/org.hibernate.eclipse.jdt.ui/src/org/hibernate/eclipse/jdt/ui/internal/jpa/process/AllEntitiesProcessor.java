@@ -31,17 +31,13 @@ import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jdt.internal.ui.refactoring.RefactoringSaveHelper;
 import org.eclipse.jdt.internal.ui.refactoring.actions.RefactoringStarter;
 import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
-import org.eclipse.jdt.ui.JavaElementLabelProvider;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.ListViewer;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ltk.core.refactoring.Change;
@@ -52,32 +48,49 @@ import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
 import org.eclipse.ltk.ui.refactoring.UserInputWizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.TextEdit;
 import org.eclipse.text.edits.UndoEdit;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.jdt.ui.Activator;
 import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
 
 /**
- *
+ * Modify entity classes
  *
  * @author Vitali
  */
 public class AllEntitiesProcessor {
 
+	/**
+	 * place to search compilation units
+	 */
 	protected IJavaProject javaProject;
+	/**
+	 * annotation style
+	 */
+	protected AnnotStyle annotationStyle = AnnotStyle.FIELDS;
+	/**
+	 * annotation style preference of majority
+	 */
+	protected AnnotStyle annotationStylePreference = AnnotStyle.FIELDS;
 
+	/**
+	 * group all information about changes of document in one structure
+	 */
 	protected class ChangeStructure {
 		public String fullyQualifiedName;
 		public IPath path;
@@ -86,8 +99,41 @@ public class AllEntitiesProcessor {
 		public ITextFileBuffer textFileBuffer;
 		public Change change;
 	};
+	/**
+	 * change info storage
+	 */
 	protected ArrayList<ChangeStructure> changes = new ArrayList<ChangeStructure>();
+	
+	public AllEntitiesProcessor() {
+		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
+		int value = preferenceStore.getInt(AllEntitiesProcessor.class.toString());
+		if (value >= AnnotStyle.values().length) {
+			value = 0;
+		}
+		annotationStyle = AnnotStyle.values()[value];
+	}
+	
+	public void saveAnnotationStylePreference() {
+		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
+		int value = 0;
+		while (value < AnnotStyle.values().length) {
+			if (AnnotStyle.values()[value] == annotationStyle) {
+				break;
+			}
+			value++;
+		}
+		if (value >= AnnotStyle.values().length) {
+			value = 0;
+		}
+		preferenceStore.setValue(AllEntitiesProcessor.class.toString(), value);
+	}
 
+	/**
+	 * execute modification for collection of entities
+	 * @param project - common java project for collection of entities
+	 * @param entities - collection
+	 * @param askConfirmation - ask user confirmation (show dialog)
+	 */
 	public void modify(IJavaProject project, Map<String, EntityInfo> entities,
 			boolean askConfirmation) {
 		changes.clear();
@@ -141,22 +187,13 @@ public class AllEntitiesProcessor {
 			// show warning about compiler problems
 			// ...
 			// modify accepted items
-			it = entities.entrySet().iterator();
-			try {
-				while (it.hasNext()) {
-					Map.Entry<String, EntityInfo> entry = it.next();
-					if (entry.getValue().isAbstractFlag()) {
-						continue;
-					}
-					// this is not only errors, but warnings too
-					//if (entry.getValue().isCompilerProblemsFlag()) {
-					//	continue;
-					//}
-					// modify only non-abstract classes
-					collectModification(bufferManager, entry.getKey(), entry.getValue());
-				}
-			} catch (CoreException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("CoreException: ", e); //$NON-NLS-1$
+			if (getAnnotationStyle().equals(AnnotStyle.AUTO)) {
+				setAnnotationStyle(getAnnotationStylePreference());
+				reCollectModification(bufferManager, entities);
+				setAnnotationStyle(AnnotStyle.AUTO);
+			}
+			else {
+				reCollectModification(bufferManager, entities);
 			}
 		}
         else {
@@ -164,7 +201,7 @@ public class AllEntitiesProcessor {
         }
         //
         if (askConfirmation) {
-        	if (!showRefactoringDialog(entities)) {
+        	if (!showRefactoringDialog(entities, bufferManager)) {
         		performChange = false;
         	}
         }
@@ -207,6 +244,24 @@ public class AllEntitiesProcessor {
 		}
 	}
 
+	public void reCollectModification(ITextFileBufferManager bufferManager, 
+			Map<String, EntityInfo> entities) {
+
+		changes.clear();
+		Iterator<Map.Entry<String, EntityInfo>> it = entities.entrySet().iterator();
+		try {
+			while (it.hasNext()) {
+				Map.Entry<String, EntityInfo> entry = it.next();
+				if (entry.getValue().isAbstractFlag()) {
+					continue;
+				}
+				collectModification(bufferManager, entry.getKey(), entry.getValue());
+			}
+		} catch (CoreException e) {
+			HibernateConsolePlugin.getDefault().logErrorMessage("CoreException: ", e); //$NON-NLS-1$
+		}
+	}
+
 	public void collectModification(ITextFileBufferManager bufferManager, String fullyQualifiedName,
 			EntityInfo entityInfo) throws CoreException {
 
@@ -224,6 +279,7 @@ public class AllEntitiesProcessor {
 			ASTRewrite rewriter = ASTRewrite.create(ast);
 			// ... rewrite
 			ProcessEntityInfo processor = new ProcessEntityInfo();
+			processor.setAnnotationStyle(annotationStyle);
 			processor.setEntityInfo(entityInfo);
 			processor.setASTRewrite(rewriter);
 			cu.accept(processor);
@@ -238,7 +294,8 @@ public class AllEntitiesProcessor {
 		}
 	}
 
-	public boolean showRefactoringDialog(final Map<String, EntityInfo> entities) {
+	public boolean showRefactoringDialog(final Map<String, EntityInfo> entities, 
+			final ITextFileBufferManager bufferManager) {
 
 		final String wizard_title = JdtUiMessages.AllEntitiesProcessor_header;
 
@@ -257,7 +314,7 @@ public class AllEntitiesProcessor {
 			@Override
 			public Change createChange(IProgressMonitor pm){
 
-				final CompositeChange cc = new CompositeChange("");
+				final CompositeChange cc = new CompositeChange(""); //$NON-NLS-1$
 				for (int i = 0; i < changes.size(); i++) {
 					ChangeStructure cs = changes.get(i);
 					String change_name = cs.fullyQualifiedName;
@@ -274,6 +331,27 @@ public class AllEntitiesProcessor {
 			public String getName() {
 				return JdtUiMessages.SaveQueryEditorListener_composite_change_name;
 			}
+		};
+
+		final ModifyListener ml = new ModifyListener() {
+
+			public void modifyText(ModifyEvent e) {
+				int idx = ((Combo)e.getSource()).getSelectionIndex();
+				if (idx == 0 && !getAnnotationStyle().equals(AnnotStyle.FIELDS)) {
+					setAnnotationStyle(AnnotStyle.FIELDS);
+					reCollectModification(bufferManager, entities);
+				}
+				else if (idx == 1 && !getAnnotationStyle().equals(AnnotStyle.GETTERS)) {
+					setAnnotationStyle(AnnotStyle.GETTERS);
+					reCollectModification(bufferManager, entities);
+				}
+				else if (idx == 2 && !getAnnotationStyle().equals(AnnotStyle.AUTO)) {
+					setAnnotationStyle(getAnnotationStylePreference());
+					reCollectModification(bufferManager, entities);
+					setAnnotationStyle(AnnotStyle.AUTO);
+				}
+			}
+			
 		};
 
 		RefactoringWizard wizard = new RefactoringWizard(ref, RefactoringWizard.DIALOG_BASED_USER_INTERFACE) {
@@ -344,6 +422,30 @@ public class AllEntitiesProcessor {
 	        				.grab(true, true)
 	        				.hint(convertHorizontalDLUsToPixels(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH),
 	        					convertHorizontalDLUsToPixels(2 * IDialogConstants.BUTTON_BAR_HEIGHT)).applyTo(listViewer.getControl());
+						//Button generateChoice = new Button(container, SWT.CHECK);
+						//generateChoice.setText("fdwsdfv");
+						Composite combolabel = new Composite(container, SWT.NULL);
+				        layout = new GridLayout();
+				        combolabel.setLayout(layout);
+				        layout.numColumns = 2;
+						Label labelChoice = new Label(combolabel, SWT.NULL);
+						labelChoice.setText(JdtUiMessages.AllEntitiesProcessor_setup_annotation_generation_preference);
+						Combo generateChoice = new Combo(combolabel, SWT.READ_ONLY);
+						generateChoice.add(JdtUiMessages.AllEntitiesProcessor_annotate_fields);
+						generateChoice.add(JdtUiMessages.AllEntitiesProcessor_annotate_getters);
+						generateChoice.add(JdtUiMessages.AllEntitiesProcessor_auto_select_from_class_preference);
+						int idx = 0;
+						if (getAnnotationStyle().equals(AnnotStyle.FIELDS)) {
+							idx = 0;
+						}
+						else if (getAnnotationStyle().equals(AnnotStyle.GETTERS)) {
+							idx = 1;
+						}
+						else if (getAnnotationStyle().equals(AnnotStyle.AUTO)) {
+							idx = 2;
+						}
+						generateChoice.select(idx);
+						generateChoice.addModifyListener(ml);
 	            		setControl(container);
 					}
 				};
@@ -362,11 +464,23 @@ public class AllEntitiesProcessor {
 		return res;
 	}
 
-	public IJavaProject getJavaProject() {
-		return javaProject;
-	}
-
 	protected void setJavaProject(IJavaProject project) {
 		javaProject = project;
+	}
+
+	public AnnotStyle getAnnotationStyle() {
+		return annotationStyle;
+	}
+
+	public void setAnnotationStyle(AnnotStyle annotationStyle) {
+		this.annotationStyle = annotationStyle;
+	}
+
+	public AnnotStyle getAnnotationStylePreference() {
+		return annotationStylePreference;
+	}
+
+	public void setAnnotationStylePreference(AnnotStyle annotationStylePreference) {
+		this.annotationStylePreference = annotationStylePreference;
 	}
 }

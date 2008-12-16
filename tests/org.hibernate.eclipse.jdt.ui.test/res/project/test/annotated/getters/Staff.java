@@ -8,14 +8,14 @@
   * Contributor:
   *     Red Hat, Inc. - initial API and implementation
   ******************************************************************************/
-package test.annotated;
+package test.annotated.getters;
 
-public class Passport extends Document {
-
-	protected Long fakeId;
+public class Staff extends Document {
 	
-	public Passport() {
-		setDocType((byte)1);
+	private Long code;
+	
+	public Staff(long code) {
+		this.code = code;
+		setDocType((byte)2);
 	}
-
 }

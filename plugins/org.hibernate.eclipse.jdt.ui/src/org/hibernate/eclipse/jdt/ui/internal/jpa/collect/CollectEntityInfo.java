@@ -10,6 +10,7 @@
   ******************************************************************************/
 package org.hibernate.eclipse.jdt.ui.internal.jpa.collect;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,6 +31,8 @@ import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.ParameterizedType;
 import org.eclipse.jdt.core.dom.PrimitiveType;
 import org.eclipse.jdt.core.dom.QualifiedType;
+import org.eclipse.jdt.core.dom.ReturnStatement;
+import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SimpleType;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
@@ -43,12 +46,15 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.JPAConst;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefType;
 
 /**
- * 
+ * Visitor to collect information about JPA entity.
  * 
  * @author Vitali
  */
 public class CollectEntityInfo extends ASTVisitor {
 
+	/**
+	 * storage of collected info
+	 */
 	protected EntityInfo entityInfo = new EntityInfo();
 	
 	public EntityInfo getEntityInfo() {
@@ -174,7 +180,7 @@ public class CollectEntityInfo extends ASTVisitor {
 				VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
 				String name = var.getName().getIdentifier();
 				entityInfo.updateReference(name, true, type, mappedBy,
-						0 != annNameShort.compareTo(fullyQualifiedName));
+						0 != annNameShort.compareTo(fullyQualifiedName), true);
 			}
 			astNode = astNode.getParent();
 			if (astNode instanceof TypeDeclaration) {
@@ -182,6 +188,26 @@ public class CollectEntityInfo extends ASTVisitor {
 				if (astNode instanceof CompilationUnit) {
 					cu = (CompilationUnit)astNode;
 				}
+			}
+		}
+		else if (astNode instanceof MethodDeclaration) {
+			MethodDeclaration md = (MethodDeclaration)astNode;
+			if (md.getName().getIdentifier().startsWith("get")) { //$NON-NLS-1$
+				// the getter - process it
+				String name = getReturnIdentifier(md);
+				// process it like FieldDeclaration
+				entityInfo.updateReference(name, true, type, mappedBy,
+						0 != annNameShort.compareTo(fullyQualifiedName), false);
+				astNode = astNode.getParent();
+				if (astNode instanceof TypeDeclaration) {
+					astNode = astNode.getParent();
+					if (astNode instanceof CompilationUnit) {
+						cu = (CompilationUnit)astNode;
+					}
+				}
+			}
+			else {
+				// ignore others
 			}
 		}
 		if (cu != null) {
@@ -250,31 +276,83 @@ public class CollectEntityInfo extends ASTVisitor {
 		return true;
 	}
 
+	public String getReturnIdentifier(MethodDeclaration node) {
+		String res = null;
+		List bodyStatemants = node.getBody().statements();
+		Iterator it = bodyStatemants.iterator();
+		for ( ; it.hasNext(); ) {
+			Object obj = it.next();
+			if (obj instanceof ReturnStatement) {
+				ReturnStatement ret_statement = (ReturnStatement)obj;
+				obj = ret_statement.getExpression();
+				if (obj instanceof SimpleName) {
+					SimpleName sn = (SimpleName)obj;
+					res = sn.getIdentifier();
+				}
+				break;
+			}
+		}
+		return res;
+	}
+
 	public boolean visit(MethodDeclaration node) {
 		if (node.getName().getFullyQualifiedName().compareTo(entityInfo.getName()) == 0) {
-			// this is constructor declaration - process it
+			// this is constructor declaration - process it separately
 			entityInfo.setImplicitConstructorFlag(false);
 			if (node.parameters().size() == 0) {
 				entityInfo.setDefaultConstructorFlag(true);
 			}
+			return true;
 		}
-		return true;
+		// -) is it setter?
+		if (node.getName().getIdentifier().startsWith("set")) { //$NON-NLS-1$
+			// setter - do not process it
+			return true;
+		}
+		// +) is it getter?
+		if (!node.getName().getIdentifier().startsWith("get")) { //$NON-NLS-1$
+			// not the getter - do not process it
+			return true;
+		}
+		// ?) has it an annotation? - updateAnnotationRelInfo
+		// 4) try to define its return type
+		Type type = node.getReturnType2();
+		// 5) try to define name
+		String returnIdentifier = getReturnIdentifier(node);
+		List<String> list = new ArrayList<String>();
+		list.add(returnIdentifier);
+		// process it as a field declaration
+		boolean res = processFieldOrGetter(type, list);
+		return res;
 	}
 	
 	public boolean visit(FieldDeclaration node) {
-		if (node.getType().isPrimitiveType()) {
-			PrimitiveType pt = (PrimitiveType)node.getType();
+		Type type = node.getType();
+		List<String> list = new ArrayList<String>();
+		Iterator itVarNames = node.fragments().iterator();
+		while (itVarNames.hasNext()) {
+			VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
+			String name = var.getName().getIdentifier();
+			list.add(name);
+		}
+		boolean res = processFieldOrGetter(type, list);
+		return res;
+	}
+	
+	public boolean processFieldOrGetter(Type type, List<String> list) {
+		if (type.isPrimitiveType()) {
+			PrimitiveType pt = (PrimitiveType)type;
 			if (!pt.getPrimitiveTypeCode().equals(PrimitiveType.BOOLEAN)) {
 				// this is candidate for primary id
-				Iterator itVarNames = node.fragments().iterator();
+				Iterator itVarNames = list.iterator();
 				while (itVarNames.hasNext()) {
 					VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
 					String name = var.getName().getIdentifier();
 					entityInfo.addPrimaryIdCandidate(name);
 				}
 			}
-		} else if (node.getType().isSimpleType()) {
-			SimpleType st = (SimpleType)node.getType();
+		} else if (type.isSimpleType()) {
+			SimpleType st = (SimpleType)type;
 			ITypeBinding tb = st.resolveBinding();
 			if (tb != null) {
 				String entityFullyQualifiedName = ""; //$NON-NLS-1$
@@ -286,10 +364,9 @@ public class CollectEntityInfo extends ASTVisitor {
 						HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
 					}
 					entityInfo.addDependency(entityFullyQualifiedName);
-					Iterator itVarNames = node.fragments().iterator();
+					Iterator itVarNames = list.iterator();
 					while (itVarNames.hasNext()) {
-						VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
-						String name = var.getName().getIdentifier();
+						String name = (String)itVarNames.next();
 						entityInfo.addReference(name, entityFullyQualifiedName, RefType.MANY2ONE);
 					}
 				}
@@ -297,22 +374,21 @@ public class CollectEntityInfo extends ASTVisitor {
 					ITypeBinding tbParent = tb.getTypeDeclaration().getSuperclass();
 					if (tbParent != null && "java.lang.Number".equals(tbParent.getBinaryName())) { //$NON-NLS-1$
 						// this is candidate for primary id
-						Iterator itVarNames = node.fragments().iterator();
+						Iterator itVarNames = list.iterator();
 						while (itVarNames.hasNext()) {
-							VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
-							String name = var.getName().getIdentifier();
+							String name = (String)itVarNames.next();
 							entityInfo.addPrimaryIdCandidate(name);
 						}
 					}
 				}
 			}
-		} else if (node.getType().isArrayType()) {
-			ArrayType at = (ArrayType)node.getType();
+		} else if (type.isArrayType()) {
+			ArrayType at = (ArrayType)type;
 			ITypeBinding tb = at.resolveBinding();
-		} else if (node.getType().isParameterizedType()) {
-			ParameterizedType pt = (ParameterizedType)node.getType();
-			Type type = (Type)pt.getType();
-			ITypeBinding tb = type.resolveBinding();
+		} else if (type.isParameterizedType()) {
+			ParameterizedType pt = (ParameterizedType)type;
+			Type typeP = (Type)pt.getType();
+			ITypeBinding tb = typeP.resolveBinding();
 			if (tb != null) {
 				ITypeBinding[] interfaces = tb.getTypeDeclaration().getInterfaces();
 				String fullyQualifiedNameTypeName = ""; //$NON-NLS-1$
@@ -329,8 +405,8 @@ public class CollectEntityInfo extends ASTVisitor {
 				if (fullyQualifiedNameTypeName.length() > 0) {
 					Iterator typeArgsIt = pt.typeArguments().iterator();
 					while (typeArgsIt.hasNext()) {
-						type = (Type)typeArgsIt.next();
-						tb = type.resolveBinding();
+						typeP = (Type)typeArgsIt.next();
+						tb = typeP.resolveBinding();
 						String entityFullyQualifiedName = ""; //$NON-NLS-1$
 						if (tb.getJavaElement() instanceof SourceType) {
 							SourceType sourceT = (SourceType)tb.getJavaElement();
@@ -340,21 +416,20 @@ public class CollectEntityInfo extends ASTVisitor {
 								HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
 							}
 							entityInfo.addDependency(entityFullyQualifiedName);
-							Iterator itVarNames = node.fragments().iterator();
+							Iterator itVarNames = list.iterator();
 							while (itVarNames.hasNext()) {
-								VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
-								String name = var.getName().getIdentifier();
+								String name = (String)itVarNames.next();
 								entityInfo.addReference(name, entityFullyQualifiedName, RefType.ONE2MANY);
 							}
 						}
 					}
 				}
 			}
-		} else if (node.getType().isQualifiedType()) {
-			QualifiedType qt = (QualifiedType)node.getType();
+		} else if (type.isQualifiedType()) {
+			QualifiedType qt = (QualifiedType)type;
 			ITypeBinding tb = qt.resolveBinding();
-		} else if (node.getType().isWildcardType()) {
-			WildcardType wt = (WildcardType)node.getType();
+		} else if (type.isWildcardType()) {
+			WildcardType wt = (WildcardType)type;
 			ITypeBinding tb = wt.resolveBinding();
 		}
 		return true;

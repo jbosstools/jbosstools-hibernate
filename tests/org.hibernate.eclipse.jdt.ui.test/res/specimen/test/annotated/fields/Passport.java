@@ -8,7 +8,7 @@
   * Contributor:
   *     Red Hat, Inc. - initial API and implementation
   ******************************************************************************/
-package test.annotated;
+package test.annotated.fields;
 
 import javax.persistence.Entity;
 

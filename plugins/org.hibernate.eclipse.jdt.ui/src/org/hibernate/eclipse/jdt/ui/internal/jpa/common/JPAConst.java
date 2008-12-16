@@ -2,6 +2,12 @@ package org.hibernate.eclipse.jdt.ui.internal.jpa.common;
 
 import java.util.Vector;
 
+/**
+ * Utility class to hold/operate strings constants
+ * of generated JPA annotations.
+ * 
+ * @author Vitali
+ */
 public class JPAConst {
 
 	static public String IMPORT_SERIALIZABLE = "java.io.Serializable"; //$NON-NLS-1$

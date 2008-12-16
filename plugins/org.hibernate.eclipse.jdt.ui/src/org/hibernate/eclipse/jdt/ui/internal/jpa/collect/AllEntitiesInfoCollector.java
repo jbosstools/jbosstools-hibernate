@@ -24,34 +24,57 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefEntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefFieldInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefType;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
+import org.hibernate.eclipse.jdt.ui.internal.jpa.process.AnnotStyle;
 
 /**
- * 
+ * Collect information about JPA entity and it's dependences.
  * 
  * @author Vitali
  */
 public class AllEntitiesInfoCollector {
 
+	/**
+	 * place to search compilation units
+	 */
 	protected IJavaProject javaProject;
-	// fullyQualifiedName -> EntityInfo
+	/**
+	 * map: 
+	 * fullyQualifiedName entity name -> EntityInfo
+	 * this collection of processed entities 
+	 */
 	protected Map<String, EntityInfo> mapCUs_Info = new TreeMap<String, EntityInfo>();
+	/**
+	 * annotation style preference
+	 */
+	protected AnnotStyle annotationStylePreference = AnnotStyle.FIELDS;
 
 	public void initCollector(IJavaProject javaProject) {
+		// setup java project
 		this.javaProject = javaProject;
+		// clear collection
 		mapCUs_Info.clear();
 	}
 	
+	/**
+	 * pair of 2 particular fields from 2 particular entities
+	 */
 	protected class ProcessItem {
-		//
+		// field names
 		public String fieldId = null;
 		public String fieldId2 = null;
-		//
+		// information about field from both entities
 		public RefEntityInfo refEntityInfo = null;
 		public RefEntityInfo refEntityInfo2 = null;
 	}
 	
+	/**
+	 * abstract interface for connection of entities
+	 */
 	protected abstract class IConnector {
 		
+		/**
+		 * object for processing
+		 */
 		protected ProcessItem pi;
 
 		public void setProcessItem(ProcessItem processItem) {
@@ -60,6 +83,10 @@ public class AllEntitiesInfoCollector {
 		public abstract boolean updateRelation();
 	}
 
+	/**
+	 * responsible for enumeration all entities pairs which
+	 * succeed in recognize
+	 */
 	protected class EntityProcessor {
 		
 		protected IConnector connector;
@@ -68,6 +95,9 @@ public class AllEntitiesInfoCollector {
 			this.connector = connector;
 		}
 		
+		/**
+		 * enumerate function
+		 */
 		public void enumEntityPairs() {
 			Iterator<Map.Entry<String, EntityInfo>> it = mapCUs_Info.entrySet().iterator();
 			ProcessItem pi = new ProcessItem();
@@ -119,14 +149,29 @@ public class AllEntitiesInfoCollector {
 		}
 	}
 
+	/**
+	 * process all entities pairs iteratively:
+	 * firstly process pairs with more information about and
+	 * pairs with small information about - process in last order
+	 */
 	public void resolveRelations() {
 		Iterator<Map.Entry<String, EntityInfo>> it = null;
+		int fromVariableCounter = 0;
+		int fromMethodCounter = 0;
 		// generate RefFieldInfoMap (for simple process)
 		it = mapCUs_Info.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry<String, EntityInfo> entry = it.next();
 			EntityInfo entryInfo = entry.getValue();
 			entryInfo.generateRefFieldInfoMap();
+			fromVariableCounter += entryInfo.getFromVariableCounter();
+			fromMethodCounter += entryInfo.getFromMethodCounter();
+		}
+		if (fromVariableCounter >= fromMethodCounter) {
+			annotationStylePreference = AnnotStyle.FIELDS;
+		}
+		else {
+			annotationStylePreference = AnnotStyle.GETTERS;
 		}
 		// update relations
 		EntityProcessor ep = new EntityProcessor();
@@ -381,6 +426,12 @@ public class AllEntitiesInfoCollector {
 		ei.adjustPrimaryId(parentEI);
 	}
 	
+	/**
+	 * start to collect information from particular entity class and
+	 * its dependencies
+	 * @param fullyQualifiedName of startup point entity fully qualified name
+	 * example: "org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector" 
+	 */
 	public void collect(String fullyQualifiedName) {
 		
 		if (fullyQualifiedName == null) {
@@ -393,6 +444,11 @@ public class AllEntitiesInfoCollector {
 		collect(icu);
 	}
 	
+	/**
+	 * start to collect information from particular entity class and
+	 * its dependencies
+	 * @param icu - startup point entity compilation unit
+	 */
 	public void collect(ICompilationUnit icu) {
 		
 		if (icu == null) {
@@ -427,7 +483,14 @@ public class AllEntitiesInfoCollector {
 		}
 	}
 
+	/**
+	 * collection of processed entities getter 
+	 */
 	public Map<String, EntityInfo> getMapCUs_Info() {
 		return mapCUs_Info;
+	}
+
+	public AnnotStyle getAnnotationStylePreference() {
+		return annotationStylePreference;
 	}
 }

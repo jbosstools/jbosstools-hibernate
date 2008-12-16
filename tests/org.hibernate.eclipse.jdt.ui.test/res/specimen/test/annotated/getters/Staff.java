@@ -8,17 +8,20 @@
   * Contributor:
   *     Red Hat, Inc. - initial API and implementation
   ******************************************************************************/
-package org.hibernate.eclipse.jdt.ui.internal.jpa.common;
+package test.annotated.getters;
 
-/**
- * possible reference types
- * 
- * @author Vitali
- */
-public enum RefType {
-	UNDEF,
-	ONE2ONE,
-	ONE2MANY,
-	MANY2ONE,
-	MANY2MANY,
+import javax.persistence.Entity;
+
+@Entity
+public class Staff extends Document {
+	
+	private Long code;
+	
+	protected Staff() {
+	}
+	
+	public Staff(long code) {
+		this.code = code;
+		setDocType((byte)2);
+	}
 }

@@ -8,11 +8,17 @@
   * Contributor:
   *     Red Hat, Inc. - initial API and implementation
   ******************************************************************************/
-package test.annotated;
+package test.annotated.fields;
 
+import javax.persistence.Entity;
+
+@Entity
 public class Staff extends Document {
 	
 	protected Long code;
+	
+	protected Staff() {
+	}
 	
 	public Staff(long code) {
 		this.code = code;

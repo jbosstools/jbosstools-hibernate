@@ -11,7 +11,7 @@
 package org.hibernate.eclipse.jdt.ui.internal.jpa.common;
 
 /**
- * 
+ * Describes relation between 2 entities
  * 
  * @author Vitali
  */
@@ -40,6 +40,8 @@ public class RefEntityInfo implements Comparable<RefEntityInfo> {
 	public boolean hasGetter = false;
 	//
 	public boolean hasSetter = false;
+	// should count number of update operations - cause it is possible to get conflicting information
+	public int updateCounter = 0;
 	//
 	public RefEntityInfo(String fullyQualifiedName, RefType refType) {
 		this.fullyQualifiedName = fullyQualifiedName;

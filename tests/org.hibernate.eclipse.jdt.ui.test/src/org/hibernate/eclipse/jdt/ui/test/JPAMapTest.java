@@ -38,6 +38,7 @@ import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.process.AllEntitiesProcessor;
+import org.hibernate.eclipse.jdt.ui.internal.jpa.process.AnnotStyle;
 
 import junit.framework.TestCase;
 
@@ -52,6 +53,8 @@ public class JPAMapTest extends TestCase {
 	public static String RESOURCE_PATH = "res/project/"; //$NON-NLS-1$
 	public static String SPECIMEN_PATH = "res/specimen/"; //$NON-NLS-1$
 	public static String TESTRESOURCE_PATH = "testresources"; //$NON-NLS-1$
+	public static String TEST_FIELDS = "fields"; //$NON-NLS-1$
+	public static String TEST_GETTERS = "getters"; //$NON-NLS-1$
 	static {
 		RESOURCE_PATH.replaceAll("//", File.separator); //$NON-NLS-1$
 		SPECIMEN_PATH.replaceAll("//", File.separator); //$NON-NLS-1$
@@ -62,19 +65,9 @@ public class JPAMapTest extends TestCase {
 
 	protected IProject project;
 	protected IJavaProject javaProject;
+	protected String testSelection;
 
 	protected void setUp() throws Exception {
-		try {
-			createTestProject();
-		} catch (JavaModelException e1) {
-			fail(e1.getMessage());
-		} catch (CoreException e1) {
-			fail(e1.getMessage());
-		} catch (IOException e1) {
-			fail(e1.getMessage());
-		}
-		assertNotNull(project);
-		assertNotNull(javaProject);
 	}
 
 	protected void tearDown() throws Exception {
@@ -89,7 +82,31 @@ public class JPAMapTest extends TestCase {
 		assertNull(javaProject);
 	}
 
-	public void testTransformer() {
+	public void testTransformerFields() {
+		testSelection = TEST_FIELDS;
+		processor.setAnnotationStyle(AnnotStyle.FIELDS);
+		startTestTransformer();
+	}
+
+	public void testTransformerGetters() {
+		testSelection = TEST_GETTERS;
+		processor.setAnnotationStyle(AnnotStyle.GETTERS);
+		startTestTransformer();
+	}
+
+	public void startTestTransformer() {
+		try {
+			createTestProject();
+		} catch (JavaModelException e1) {
+			fail(e1.getMessage());
+		} catch (CoreException e1) {
+			fail(e1.getMessage());
+		} catch (IOException e1) {
+			fail(e1.getMessage());
+		}
+		assertNotNull(project);
+		assertNotNull(javaProject);
+		//
 		javaProject = ProjectUtils.findJavaProject(PROJECT_NAME);
 		assertNotNull(javaProject);
 		try {
@@ -97,14 +114,16 @@ public class JPAMapTest extends TestCase {
 		} catch (CoreException e) {
 			fail(e.getMessage());
 		}
-		ICompilationUnit icu = Utils.findCompilationUnit(javaProject,
-				"test.annotated.Passport"); //$NON-NLS-1$
-		ICompilationUnit icu2 = Utils.findCompilationUnit(javaProject,
-				"test.annotated.Staff"); //$NON-NLS-1$
 		//ICompilationUnit icu = Utils.findCompilationUnit(javaProject,
-		//		"test.annotated.Foto"); //$NON-NLS-1$
+		//		"test.annotated." + testSelection + ".Document"); //$NON-NLS-1$ //$NON-NLS-2$
+		ICompilationUnit icu = Utils.findCompilationUnit(javaProject,
+				"test.annotated." + testSelection + ".Passport"); //$NON-NLS-1$ //$NON-NLS-2$
+		ICompilationUnit icu2 = Utils.findCompilationUnit(javaProject,
+				"test.annotated." + testSelection + ".Staff"); //$NON-NLS-1$ //$NON-NLS-2$
+		//ICompilationUnit icu = Utils.findCompilationUnit(javaProject,
+		//		"test.annotated." + testSelection + ".Foto"); //$NON-NLS-1$ //$NON-NLS-2$
 		//ICompilationUnit icu2 = Utils.findCompilationUnit(javaProject,
-		//		"test.annotated.Person"); //$NON-NLS-1$
+		//		"test.annotated." + testSelection + ".Person"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertNotNull(icu);
 		assertNotNull(icu2);
 		collector.initCollector(javaProject);
@@ -136,7 +155,8 @@ public class JPAMapTest extends TestCase {
 
 	protected ASTNode getGenerated(String strName) {
 		ICompilationUnit icu = Utils.findCompilationUnit(javaProject,
-				"test.annotated." + strName); //$NON-NLS-1$
+				"test.annotated." + testSelection + //$NON-NLS-1$ 
+				"." + strName); //$NON-NLS-1$
 		ASTParser parser = ASTParser.newParser(AST.JLS3);
 		parser.setSource(icu);
 		ASTNode astNode = parser.createAST(null);
@@ -145,7 +165,10 @@ public class JPAMapTest extends TestCase {
 
 	protected ASTNode getSpecimen(String strName) throws IOException {
 		File resourceFile = getResourceItem(SPECIMEN_PATH
-				+ "test" + File.separator + "annotated" + File.separator + strName + ".java"); //$NON-NLS-1$  //$NON-NLS-2$  //$NON-NLS-3$
+				+ "test" + File.separator  //$NON-NLS-1$
+				+ "annotated" + File.separator   //$NON-NLS-1$
+				+ testSelection + File.separator + strName 
+				+ ".java"); //$NON-NLS-1$
 		if (!resourceFile.exists()) {
 			return null;
 		}

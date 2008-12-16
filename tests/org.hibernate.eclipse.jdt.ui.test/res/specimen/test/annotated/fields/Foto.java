@@ -8,14 +8,22 @@
   * Contributor:
   *     Red Hat, Inc. - initial API and implementation
   ******************************************************************************/
-package test.annotated;
+package test.annotated.fields;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+
+@Entity
 public class Foto {
 
 	protected Long fid;
 	
+	@Id @GeneratedValue
 	protected Short id;
 
+	@OneToOne(mappedBy="foto")
 	protected Person person;
 
 	protected Short width_IDtest;

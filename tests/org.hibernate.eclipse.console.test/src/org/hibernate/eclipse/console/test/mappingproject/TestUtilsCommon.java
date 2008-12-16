@@ -17,6 +17,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.internal.resources.ResourceException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -26,6 +27,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -100,10 +102,14 @@ public class TestUtilsCommon {
 		File[] files = src.listFiles(fileFilter);
 		for (int i = 0; i < files.length; i++) {
 			File file = files[i];
-			if (!file.exists())
+			if (!file.exists()) {
 				continue;
+			}
 			IFile iFile = dst.getFile(file.getName());
 			try {
+				if (iFile.exists()) {
+					iFile.delete(true, null);
+				}
 				iFile.create(new FileInputStream(file), true, null);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
@@ -117,11 +123,14 @@ public class TestUtilsCommon {
 		File[] dirs = src.listFiles(dirFilter);
 		for (int i = 0; i < dirs.length; i++) {
 			File dir = dirs[i];
-			if (!dir.exists())
+			if (!dir.exists()) {
 				continue;
+			}
 			IFolder iFolder = dst.getFolder(dir.getName());
 			try {
-				iFolder.create(true, true, null);
+				if (!iFolder.exists()) {
+					iFolder.create(true, true, null);
+				}
 				recursiveCopyFiles(dir, iFolder);
 			} catch (CoreException e) {
 				e.printStackTrace();
@@ -152,7 +161,15 @@ public class TestUtilsCommon {
 	public void createAndOpenProject(IProjectDescription description,
 			IProject projectHandle) throws CoreException {
 
-		projectHandle.create(description, null);
+		try {
+			projectHandle.create(description, null);
+		} catch (ResourceException re) {
+			// if the project exist - ignore exception
+			if (re.getStatus().getCode() != 374 || re.getStatus().getSeverity() != IStatus.ERROR ||
+					!"org.eclipse.core.resources".equals(re.getStatus().getPlugin())) { //$NON-NLS-1$
+				throw re;
+			}
+		}
 		projectHandle.open(IResource.BACKGROUND_REFRESH, null);
 	}
 
@@ -226,9 +243,13 @@ public class TestUtilsCommon {
 		File[] files = libFolder.listFiles(jarFilter);
 		for (int i = 0; i < files.length; i++) {
 			File file = files[i];
-			if (!file.exists())
+			if (!file.exists()) {
 				continue;
+			}
 			IFile iFile = dst.getFile(file.getName());
+			if (iFile.exists()) {
+				iFile.delete(true, null);
+			}
 			try {
 				iFile.create(new FileInputStream(file), true, null);
 				libs.add(iFile.getFullPath());

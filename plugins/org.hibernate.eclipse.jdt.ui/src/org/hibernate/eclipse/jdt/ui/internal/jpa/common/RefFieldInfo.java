@@ -11,7 +11,7 @@
 package org.hibernate.eclipse.jdt.ui.internal.jpa.common;
 
 /**
- * 
+ * Holds information about field reference annotation
  * 
  * @author Vitali
  */

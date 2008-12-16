@@ -53,16 +53,34 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.process.AllEntitiesProcessor;
 
 /**
- *
+ * Actor to execute annotation generation.
+ * It is singleton.
  *
  * @author Vitali
  */
 public class JPAMapToolActor {
 
-	protected static JPAMapToolActor actor = null; 
+	/**
+	 * instance
+	 */
+	protected static JPAMapToolActor actor = null;
+	/**
+	 * selection - start point to generate annotations
+	 * could be java file, list of files, package, project, some other?
+	 */
 	protected ISelection selection = null;
+	/**
+	 * selected compilation units for startup processing,
+	 * result of processing selection
+	 */
 	protected Set<ICompilationUnit> selectionCU = new HashSet<ICompilationUnit>();
+	/**
+	 * responsible to gather information
+	 */
 	protected AllEntitiesInfoCollector collector = new AllEntitiesInfoCollector();
+	/**
+	 * responsible to generate JPA annotations
+	 */
 	protected AllEntitiesProcessor processor = new AllEntitiesProcessor();
 
 	protected JPAMapToolActor() {
@@ -94,6 +112,9 @@ public class JPAMapToolActor {
 		}
 	}
 
+	/**
+	 * updates selected compilation units collection 
+	 */
 	public void updateSelected() {
 		if (selection != null) {
 			updateSelectedItems(selection);
@@ -135,8 +156,10 @@ public class JPAMapToolActor {
 				collector.collect(icu);
 			}
 			collector.resolveRelations();
+			processor.setAnnotationStylePreference(collector.getAnnotationStylePreference());
 			processor.modify(javaProject, collector.getMapCUs_Info(), true);
 		}
+		processor.saveAnnotationStylePreference();
 	}
 
 	public void updateOpen() {
@@ -325,6 +348,10 @@ public class JPAMapToolActor {
 		}
 	}
 
+	/**
+	 * setup source selection node
+	 * @param selection
+	 */
 	synchronized public void setSelection(ISelection selection) {
 		//System.out.println("Blah! " + selection); //$NON-NLS-1$
 		if (selection instanceof StructuredSelection && selection.isEmpty()) {

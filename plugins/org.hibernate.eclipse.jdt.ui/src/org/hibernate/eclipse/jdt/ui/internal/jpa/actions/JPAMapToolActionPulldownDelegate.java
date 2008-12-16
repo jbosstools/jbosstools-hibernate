@@ -29,7 +29,7 @@ import org.eclipse.ui.IWorkbenchWindowPulldownDelegate2;
 import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
 
 /**
- *
+ * Context menu action delegate for "Generate Hibernate/JPA annotations..."
  *
  * @author Vitali
  */

@@ -8,20 +8,21 @@
   * Contributor:
   *     Red Hat, Inc. - initial API and implementation
   ******************************************************************************/
-package test.annotated;
+package test.annotated.getters;
 
 import java.util.Set;
 
+import javax.persistence.OneToOne;
+
 public class Person {
 	
-	protected Long personId;
+	private Long personId;
 
-	@OneToMany(mappedBy="documentOwner")
-	protected Set<Document> documents;
+	private Set<Document> documents;
 	
-	protected Foto foto;
+	private Foto foto;
 
-	protected Set someTestSet;
+	private Set someTestSet;
 
 	public Long getPersonId() {
 		return personId;
@@ -31,6 +32,7 @@ public class Person {
 		this.personId = personId;
 	}
 
+	@OneToMany(mappedBy="documentOwner")
 	public Set<Document> getDocuments() {
 		return documents;
 	}
@@ -39,6 +41,7 @@ public class Person {
 		this.documents = documents;
 	}
 	
+	@OneToOne(mappedBy="person")
 	public Foto getFoto() {
 		return foto;
 	}

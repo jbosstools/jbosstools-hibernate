@@ -24,7 +24,7 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
 
 /**
- *
+ * Main menu action delegate for "Generate Hibernate/JPA annotations..."
  *
  * @author Vitali
  */

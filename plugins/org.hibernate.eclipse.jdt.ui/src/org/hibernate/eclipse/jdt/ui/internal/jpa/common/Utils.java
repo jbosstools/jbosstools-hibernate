@@ -27,7 +27,7 @@ import org.eclipse.jdt.core.dom.ASTParser;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 /**
- * 
+ * Compilation unit common functions
  * 
  * @author Vitali
  */

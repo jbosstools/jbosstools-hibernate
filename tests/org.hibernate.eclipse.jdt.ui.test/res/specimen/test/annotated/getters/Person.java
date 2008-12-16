@@ -8,30 +8,28 @@
   * Contributor:
   *     Red Hat, Inc. - initial API and implementation
   ******************************************************************************/
-package test.annotated;
+package test.annotated.getters;
 
 import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Person {
 	
-	@Id @GeneratedValue
-	protected Long personId;
+	private Long personId;
 
-	@OneToMany(mappedBy="documentOwner")
-	protected Set<Document> documents;
+	private Set<Document> documents;
 	
-	@OneToOne(mappedBy="person")
-	protected Foto foto;
+	private Foto foto;
 
-	protected Set someTestSet;
+	private Set someTestSet;
 
+	@Id @GeneratedValue
 	public Long getPersonId() {
 		return personId;
 	}
@@ -40,6 +38,7 @@ public class Person {
 		this.personId = personId;
 	}
 
+	@OneToMany(mappedBy="documentOwner")
 	public Set<Document> getDocuments() {
 		return documents;
 	}
@@ -48,6 +47,7 @@ public class Person {
 		this.documents = documents;
 	}
 	
+	@OneToOne(mappedBy="person")
 	public Foto getFoto() {
 		return foto;
 	}

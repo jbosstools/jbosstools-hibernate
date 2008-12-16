@@ -8,17 +8,14 @@
   * Contributor:
   *     Red Hat, Inc. - initial API and implementation
   ******************************************************************************/
-package org.hibernate.eclipse.jdt.ui.internal.jpa.common;
+package test.annotated.fields;
 
-/**
- * possible reference types
- * 
- * @author Vitali
- */
-public enum RefType {
-	UNDEF,
-	ONE2ONE,
-	ONE2MANY,
-	MANY2ONE,
-	MANY2MANY,
+public class Passport extends Document {
+
+	protected Long fakeId;
+	
+	public Passport() {
+		setDocType((byte)1);
+	}
+
 }

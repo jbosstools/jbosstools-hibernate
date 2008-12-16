@@ -19,7 +19,9 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
- * 
+ * Service place to collect information about entity class.
+ * Then this info has been transformed according annotations
+ * creation assumption.
  * 
  * @author Vitali
  */
@@ -98,7 +100,13 @@ public class EntityInfo {
 	protected Map<String, Set<RefFieldInfo>> mapRefFieldInfo = null;
 	/*
 	 */
-	protected List<String> primaryIdCandidates = new ArrayList<String>();
+	protected Set<String> primaryIdCandidates = new TreeSet<String>();
+	/*
+	 */
+	protected int fromVariableCounter = 0;
+	/*
+	 */
+	protected int fromMethodCounter = 0;
 	
 	public void generateRefFieldInfoMap() {
 		mapRefFieldInfo = new TreeMap<String, Set<RefFieldInfo>>();
@@ -143,28 +151,28 @@ public class EntityInfo {
 	}
 	
 	public RefType getFieldIdRelValue(String fieldId) {
-		if (references == null || !references.containsKey(fieldId)) {
+		if (references == null || fieldId == null || !references.containsKey(fieldId)) {
 			return RefType.UNDEF;
 		}
 		return references.get(fieldId).refType;
 	}
 	
 	public boolean getFieldIdAnnotatedValue(String fieldId) {
-		if (references == null || !references.containsKey(fieldId)) {
+		if (references == null || fieldId == null || !references.containsKey(fieldId)) {
 			return false;
 		}
 		return references.get(fieldId).annotated;
 	}
 	
 	public String getFieldIdFQNameValue(String fieldId) {
-		if (references == null || !references.containsKey(fieldId)) {
+		if (references == null || fieldId == null || !references.containsKey(fieldId)) {
 			return ""; //$NON-NLS-1$
 		}
 		return references.get(fieldId).fullyQualifiedName;
 	}
 	
 	public RefEntityInfo getFieldIdRefEntityInfo(String fieldId) {
-		if (references == null || !references.containsKey(fieldId)) {
+		if (references == null || fieldId == null || !references.containsKey(fieldId)) {
 			return null;
 		}
 		return references.get(fieldId);
@@ -307,17 +315,48 @@ public class EntityInfo {
 	}
 
 	public void addReference(String fieldId, String fullyQualifiedName, RefType refType) {
+		if (references == null || fieldId == null) {
+			return;
+		}
+		if (references.containsKey(fieldId)) {
+			RefEntityInfo rei = references.get(fieldId);
+			if (rei != null) {
+				if (rei.fullyQualifiedName != null) {
+					assert(rei.fullyQualifiedName.equals(fullyQualifiedName));
+				}
+				if (rei.refType != null) {
+					assert(rei.refType.equals(refType));
+				}
+			}
+			return;
+		}
 		references.put(fieldId, new RefEntityInfo(fullyQualifiedName, refType));
 	}
 
 	public void updateReference(String fieldId, boolean annotated, RefType refType, String mappedBy, 
-			boolean resolvedAnnotationName) {
+			boolean resolvedAnnotationName, boolean fromVariable) {
+		if (references == null || fieldId == null || !references.containsKey(fieldId)) {
+			return;
+		}
 		RefEntityInfo rei = references.get(fieldId);
 		if (rei != null) {
-			rei.annotated = annotated;
-			rei.refType = refType;
-			rei.mappedBy = mappedBy;
-			rei.resolvedAnnotationName = resolvedAnnotationName;
+			if (rei.updateCounter == 0) {
+				rei.annotated = annotated;
+				rei.refType = refType;
+				rei.mappedBy = mappedBy;
+				rei.resolvedAnnotationName = resolvedAnnotationName;
+			}
+			else {
+				// TODO: possible conflicting info - think about it
+				assert(false);
+			}
+			rei.updateCounter++;
+		}
+		if (fromVariable) {
+			fromVariableCounter++;
+		}
+		else {
+			fromMethodCounter++;
 		}
 	}
 
@@ -376,5 +415,13 @@ public class EntityInfo {
 
 	public boolean needImport(String checkImport) {
 		return (!setExistingImports.contains(checkImport) && setRequiredImports.contains(checkImport));
+	}
+
+	public int getFromVariableCounter() {
+		return fromVariableCounter;
+	}
+
+	public int getFromMethodCounter() {
+		return fromMethodCounter;
 	}
 }
