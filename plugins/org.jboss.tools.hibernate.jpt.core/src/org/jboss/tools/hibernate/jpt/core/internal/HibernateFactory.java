@@ -62,8 +62,9 @@ public class HibernateFactory extends GenericJpaFactory {
 		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, jpaProject.getName());
 		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, true );
 		wc.setAttribute(IConsoleConfigurationLaunchConstants.FILE_MAPPINGS, (List<String>)null);
-		wc.setAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, connectionProfileName);
-				
+		//wc.setAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, connectionProfileName);
+		wc.setAttribute(IConsoleConfigurationLaunchConstants.USE_JPA_PROJECT_PROFILE, "true");//$NON-NLS-1$
+		
 		wc.doSave();
 	}
 }
