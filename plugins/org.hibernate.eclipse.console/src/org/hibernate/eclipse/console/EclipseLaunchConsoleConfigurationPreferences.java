@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -18,6 +19,9 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
+import org.eclipse.jpt.core.JpaDataSource;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
@@ -128,6 +132,20 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 	}
 
 	public String getConnectionProfileName() {
+		if (Boolean.parseBoolean(getAttribute(IConsoleConfigurationLaunchConstants.USE_JPA_PROJECT_PROFILE, null))){
+			String projName = getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, null);
+			if (projName != null){
+				IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projName);
+				if (project != null){
+					JpaProject jpaProject = (JpaProject) project.getAdapter(JpaProject.class);
+					if (jpaProject != null) {
+						JpaDataSource ds = jpaProject.getDataSource();
+						if (ds != null)
+							return ds.getConnectionProfileName();
+					}
+				}
+			}
+		}
 		return getAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, null);
 	}
 
@@ -167,8 +185,9 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 	public String getDialectName() {
 		String dialect = getAttribute( IConsoleConfigurationLaunchConstants.DIALECT, null );
 		// determine dialect when connection profile is used
-		if (dialect == null && getConnectionProfileName() != null) {
-			IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(getConnectionProfileName());			
+		if (dialect == null && getConnectionProfileName() != null && getConnectionProfileName() != null) {
+			IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(getConnectionProfileName());	
+			if (profile == null) return null;
 			String driver = profile.getProperties(profile.getProviderId()).getProperty("org.eclipse.datatools.connectivity.db.driverClass");
 			dialect = new DriverClassHelpers().getDialect(driver);
 		}

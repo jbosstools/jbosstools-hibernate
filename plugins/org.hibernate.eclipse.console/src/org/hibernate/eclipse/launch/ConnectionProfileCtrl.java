@@ -55,8 +55,12 @@ public class ConnectionProfileCtrl {
 	protected ComboViewer comboControl;
 	protected Button buttonNew;
 	protected Button buttonEdit;
+	
+	static final String NO_CONNECTIN_NAME = "[Hibernate configured connection]";
+	static final String JPA_CONNECTIN_NAME = "[JPA Project Configured Connection]";
 
-	static final protected ConnectionWrapper NO_CONNECTION_PLACEHOLDER = new ConnectionWrapper("",null);
+	static final protected ConnectionWrapper NO_CONNECTION_PLACEHOLDER = new ConnectionWrapper(NO_CONNECTIN_NAME, null);
+	static final protected ConnectionWrapper JPA_CONNECTION_PLACEHOLDER = new ConnectionWrapper(JPA_CONNECTIN_NAME, null);
 
 	private static class ConnectionWrapper {
 		
@@ -250,11 +254,7 @@ public class ConnectionProfileCtrl {
 			@Override
 			public String getText(Object element) {
 				ConnectionWrapper cw = (ConnectionWrapper) element;
-				if(cw.getProfile()==null) {
-					return "[Hibernate configured connection]";
-				} else {
-					return cw.getProfile().getName();
-				}
+				return cw.getId();
 			}
 		});
 		
@@ -324,9 +324,6 @@ public class ConnectionProfileCtrl {
 	
 	private String getSelectedId() {
 		ConnectionWrapper cw = getSelectedConnection();
-		if (cw == null) {
-			cw = NO_CONNECTION_PLACEHOLDER;
-		}		
 		return cw.getId();		
 	}
 
@@ -337,6 +334,7 @@ public class ConnectionProfileCtrl {
 		IConnectionProfile[] profiles = ProfileManager.getInstance()
 				.getProfilesByCategory("org.eclipse.datatools.connectivity.db.category"); //$NON-NLS-1$
 		List<ConnectionWrapper> names = new ArrayList<ConnectionWrapper>();
+		names.add(JPA_CONNECTION_PLACEHOLDER);
 		names.add(NO_CONNECTION_PLACEHOLDER);
 		for (IConnectionProfile connectionProfile : profiles) {
 			names.add(new ConnectionWrapper(connectionProfile.getName(), connectionProfile));

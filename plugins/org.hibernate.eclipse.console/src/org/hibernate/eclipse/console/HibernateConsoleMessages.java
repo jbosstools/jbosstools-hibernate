@@ -456,6 +456,9 @@ public class HibernateConsoleMessages extends NLS {
 	public static String ConsoleConfigurationMainTab_type;
 	public static String ConsoleConfigurationMainTab_use_existing;
 	public static String ConsoleConfigurationMainTab_wizard_page;
+	public static String ConsoleConfigurationMainTab_project_must_be_jpa;
+	public static String ConsoleConfigurationMainTab_cp_not_specified;
+	public static String ConsoleConfigurationMainTab_project_must_be_set;
 	public static String ConsoleConfigurationMappingsTab_add_hbm_xml_file;
 	public static String ConsoleConfigurationMappingsTab_add_hibernate_mapping_file;
 	public static String ConsoleConfigurationMappingsTab_additional_mapping_files;

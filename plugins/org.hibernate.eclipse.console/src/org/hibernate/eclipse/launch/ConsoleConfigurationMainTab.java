@@ -21,6 +21,8 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.jpt.core.JpaDataSource;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -168,7 +170,14 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		configuration.setAttribute(IConsoleConfigurationLaunchConstants.PROPERTY_FILE, nonEmptyTrimOrNull(propertyFileText));
 		configuration.setAttribute(IConsoleConfigurationLaunchConstants.CFG_XML_FILE, nonEmptyTrimOrNull(configurationFileText));
 		configuration.setAttribute(IConsoleConfigurationLaunchConstants.PERSISTENCE_UNIT_NAME, nonEmptyTrimOrNull(persistenceUnitNameText));
-		configuration.setAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, nonEmptyTrimOrNull(connectionProfileCtrl.getSelectedConnectionName()));
+		String cpName = nonEmptyTrimOrNull(connectionProfileCtrl.getSelectedConnectionName());
+		if (ConnectionProfileCtrl.JPA_CONNECTIN_NAME.equals(cpName)){
+			configuration.setAttribute(IConsoleConfigurationLaunchConstants.USE_JPA_PROJECT_PROFILE, Boolean.toString(true));
+			configuration.removeAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME);
+		} else {
+			configuration.setAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, cpName);
+			configuration.removeAttribute(IConsoleConfigurationLaunchConstants.USE_JPA_PROJECT_PROFILE);
+		}
 	}
 	
 	public void initializeFrom(ILaunchConfiguration configuration) {
@@ -184,7 +193,10 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 			configurationFileText.setText( configuration.getAttribute( IConsoleConfigurationLaunchConstants.CFG_XML_FILE, "" )); //$NON-NLS-1$
 			persistenceUnitNameText.setText( configuration.getAttribute( IConsoleConfigurationLaunchConstants.PERSISTENCE_UNIT_NAME, "" )); //$NON-NLS-1$
 
-			connectionProfileCtrl.selectValue(configuration.getAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, "")); //$NON-NLS-1$
+			if (Boolean.parseBoolean(configuration.getAttribute(IConsoleConfigurationLaunchConstants.USE_JPA_PROJECT_PROFILE, Boolean.toString(false)))){
+				connectionProfileCtrl.selectValue(ConnectionProfileCtrl.JPA_CONNECTIN_NAME);
+			} else
+				connectionProfileCtrl.selectValue(configuration.getAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, "")); //$NON-NLS-1$			
 		}
 		catch (CoreException e) {
 			HibernateConsolePlugin.getDefault().log( e );
@@ -364,6 +376,7 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		confbutton.setEnabled(!configurationFileWillBeCreated && !modeJPA);
 
 		persistenceUnitNameText.setEnabled(modeJPA);
+		String cpName = nonEmptyTrimOrNull(connectionProfileCtrl.getSelectedConnectionName());
 		
 		if(getProjectName()!=null && StringHelper.isNotEmpty(getProjectName().trim())) {
 			Path projectPath = new Path(getProjectName());
@@ -374,6 +387,32 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 			IJavaProject findJavaProject = ProjectUtils.findJavaProject( getProjectName() );
 			if(findJavaProject==null || !findJavaProject.exists()) {
 				String out = NLS.bind(HibernateConsoleMessages.ConsoleConfigurationMainTab_the_java_project_does_not_exist, getProjectName());
+				setErrorMessage(out);
+				return false;
+			}
+
+			if (ConnectionProfileCtrl.JPA_CONNECTIN_NAME.equals(cpName)){
+				JpaProject jpaProject = (JpaProject) findJavaProject.getAdapter(JpaProject.class);
+				if (jpaProject == null){
+					setErrorMessage(NLS.bind(HibernateConsoleMessages.ConsoleConfigurationMainTab_project_must_be_jpa, getProjectName()));
+					return false;
+				}
+				JpaDataSource ds = jpaProject.getDataSource();
+				if (ds == null || "".equals(ds.getConnectionProfileName())){
+					setErrorMessage(NLS.bind(HibernateConsoleMessages.ConsoleConfigurationMainTab_cp_not_specified, getProjectName()));
+					return false;
+				}
+			}
+		} else {//check if jpa project connection selected
+			if (ConnectionProfileCtrl.JPA_CONNECTIN_NAME.equals(cpName)){
+				setErrorMessage(HibernateConsoleMessages.ConsoleConfigurationMainTab_project_must_be_set);
+				return false;
+			}
+		}
+		
+		if (ConnectionProfileCtrl.JPA_CONNECTIN_NAME.equals(cpName)){
+			if (!jpaMode.getSelection()){
+				String out = NLS.bind("{0} mode must be used for jpa project configured connection", jpaMode.getText());
 				setErrorMessage(out);
 				return false;
 			}

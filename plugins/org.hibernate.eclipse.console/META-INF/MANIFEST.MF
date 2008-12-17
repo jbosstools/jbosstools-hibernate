@@ -74,5 +74,7 @@ Require-Bundle: org.hibernate.eclipse,
  org.eclipse.core.filesystem,
  org.eclipse.core.variables,
  org.eclipse.datatools.connectivity.ui,
- org.eclipse.datatools.connectivity
+ org.eclipse.datatools.connectivity,
+ org.eclipse.jpt.core,
+ org.eclipse.jpt.db
 Eclipse-LazyStart: true
