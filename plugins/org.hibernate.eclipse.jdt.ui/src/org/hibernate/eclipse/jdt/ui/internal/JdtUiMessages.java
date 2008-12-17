@@ -26,6 +26,8 @@ public class JdtUiMessages extends NLS {
 	public static String SaveQueryEditorListener_replacetitle_info;
 	public static String SaveQueryEditorListener_replacequestion_confirm;
 	public static String SaveQueryEditorListener_errormessage;
+	public static String JPAMapToolActor_message_title;
+	public static String JPAMapToolActor_message;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, JdtUiMessages.class);

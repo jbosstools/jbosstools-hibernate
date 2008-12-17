@@ -490,6 +490,21 @@ public class AllEntitiesInfoCollector {
 		return mapCUs_Info;
 	}
 
+	public int getNonAbstractCUNumber() {
+		Iterator<Map.Entry<String, EntityInfo>> it = null;
+		int nonAbstractCUNumber = 0;
+		// generate RefFieldInfoMap (for simple process)
+		it = mapCUs_Info.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<String, EntityInfo> entry = it.next();
+			EntityInfo entryInfo = entry.getValue();
+			if (!entryInfo.isAbstractFlag()) {
+				nonAbstractCUNumber++;
+			}
+		}
+		return nonAbstractCUNumber;
+	}
+
 	public AnnotStyle getAnnotationStylePreference() {
 		return annotationStylePreference;
 	}

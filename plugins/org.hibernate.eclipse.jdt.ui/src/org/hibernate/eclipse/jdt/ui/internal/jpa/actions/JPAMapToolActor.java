@@ -37,16 +37,19 @@ import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.jdt.internal.core.PackageFragment;
 import org.eclipse.jdt.internal.core.PackageFragmentRoot;
 import org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditor;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.jdt.ui.Activator;
+import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
@@ -135,8 +138,7 @@ public class JPAMapToolActor {
 			new HashMap<IJavaProject, Set<ICompilationUnit>>();
 		while (it.hasNext()) {
 			ICompilationUnit cu = it.next();
-			Set<ICompilationUnit> set =
-				mapJP_CUSet.get(cu.getJavaProject());
+			Set<ICompilationUnit> set = mapJP_CUSet.get(cu.getJavaProject());
 			if (set == null) {
 				set = new HashSet<ICompilationUnit>();
 				mapJP_CUSet.put(cu.getJavaProject(), set);
@@ -156,10 +158,21 @@ public class JPAMapToolActor {
 				collector.collect(icu);
 			}
 			collector.resolveRelations();
-			processor.setAnnotationStylePreference(collector.getAnnotationStylePreference());
-			processor.modify(javaProject, collector.getMapCUs_Info(), true);
+			if (collector.getNonAbstractCUNumber() > 0) {
+				processor.setAnnotationStylePreference(collector.getAnnotationStylePreference());
+				processor.modify(javaProject, collector.getMapCUs_Info(), true);
+			}
+			else {
+				MessageDialog.openInformation(getShell(), 
+						JdtUiMessages.JPAMapToolActor_message_title, 
+						JdtUiMessages.JPAMapToolActor_message);
+			}
 		}
 		processor.saveAnnotationStylePreference();
+	}
+
+	private Shell getShell() {
+		return Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
 	}
 
 	public void updateOpen() {
@@ -175,7 +188,14 @@ public class JPAMapToolActor {
 				collector.initCollector(javaProject);
 				collector.collect(cu);
 				collector.resolveRelations();
-				processor.modify(javaProject, collector.getMapCUs_Info(), true);
+				if (collector.getNonAbstractCUNumber() > 0) {
+					processor.modify(javaProject, collector.getMapCUs_Info(), true);
+				}
+				else {
+					MessageDialog.openInformation(getShell(), 
+							JdtUiMessages.JPAMapToolActor_message_title, 
+							JdtUiMessages.JPAMapToolActor_message);
+				}
 			}
 		}
 	}
