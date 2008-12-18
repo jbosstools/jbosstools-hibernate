@@ -174,6 +174,9 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		if (ConnectionProfileCtrl.JPA_CONNECTIN_NAME.equals(cpName)){
 			configuration.setAttribute(IConsoleConfigurationLaunchConstants.USE_JPA_PROJECT_PROFILE, Boolean.toString(true));
 			configuration.removeAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME);
+		} else if (ConnectionProfileCtrl.NO_CONNECTIN_NAME.equals(cpName)) {
+			configuration.setAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, (String)null);
+			configuration.removeAttribute(IConsoleConfigurationLaunchConstants.USE_JPA_PROJECT_PROFILE);
 		} else {
 			configuration.setAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, cpName);
 			configuration.removeAttribute(IConsoleConfigurationLaunchConstants.USE_JPA_PROJECT_PROFILE);
@@ -196,7 +199,7 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 			if (Boolean.parseBoolean(configuration.getAttribute(IConsoleConfigurationLaunchConstants.USE_JPA_PROJECT_PROFILE, Boolean.toString(false)))){
 				connectionProfileCtrl.selectValue(ConnectionProfileCtrl.JPA_CONNECTIN_NAME);
 			} else
-				connectionProfileCtrl.selectValue(configuration.getAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, "")); //$NON-NLS-1$			
+				connectionProfileCtrl.selectValue(configuration.getAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, ConnectionProfileCtrl.NO_CONNECTIN_NAME)); //$NON-NLS-1$			
 		}
 		catch (CoreException e) {
 			HibernateConsolePlugin.getDefault().log( e );
