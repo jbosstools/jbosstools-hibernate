@@ -1735,7 +1735,7 @@
     </section>
   </section>
 
-  <section id="dali_integration" role="new">
+  <section id="dali_integration">
     <title>Hibernate support for Dali plugins in Eclipse WTP</title>
 
     <para>Starting from 3.0.0 Alpha1 version of <property>JBoss Tools</property> Hibernate plugins
