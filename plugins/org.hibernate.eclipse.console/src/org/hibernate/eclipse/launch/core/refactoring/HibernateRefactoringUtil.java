@@ -27,6 +27,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -37,6 +38,9 @@ import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.jdt.core.IJavaModel;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
@@ -103,8 +107,19 @@ public class HibernateRefactoringUtil {
 	}
 
 	private static boolean isClassPathAffected(ILaunchConfiguration config, IPath oldPath) throws CoreException{
+		boolean useDefault = config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, true);
+		if (useDefault){
+			try {
+				if (JavaRuntime.getJavaProject(config) == null) return false;
+			} catch (CoreException e){
+				//do not log "project not found" error
+				return false;
+			}
+		}
+		
 		IRuntimeClasspathEntry[] entries;
 		try {
+			
 			entries = JavaRuntime.computeUnresolvedRuntimeClasspath(config);
 			return isRuntimeClassPathEntriesAffected(entries, oldPath);
 		}
