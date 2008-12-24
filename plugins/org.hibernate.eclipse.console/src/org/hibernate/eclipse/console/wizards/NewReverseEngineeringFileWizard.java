@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
@@ -74,9 +75,8 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
     /** extended to update status messages on first show **/
     static class ExtendedWizardNewFileCreationPage extends WizardNewFileCreationPage {
 
-        public ExtendedWizardNewFileCreationPage(String pageName, IStructuredSelection selection) {
+        public ExtendedWizardNewFileCreationPage(String pageName, IStructuredSelection selection) {        	
             super(pageName, selection);
-            setContainerFullPath(new Path("/")); // TODO: make it based on the selection which should be available when doing the launch! //$NON-NLS-1$
         }
 
         boolean firstTime = true;
@@ -93,6 +93,7 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
 	 */
 
 	public void addPages() {
+		if (selection == null) selection = new StructuredSelection();
 	    cPage = new ExtendedWizardNewFileCreationPage( "Ccfgxml", selection ); //$NON-NLS-1$
 	    cPage.setTitle( HibernateConsoleMessages.NewReverseEngineeringFileWizard_create_hibernate_reverse_engineering_file );
 	    cPage.setDescription( HibernateConsoleMessages.NewReverseEngineeringFileWizard_create_new_hibernate_reveng_xml );
@@ -226,7 +227,7 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
 	 */
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		this.selection = selection;
-
+		if (selection == null) selection = new StructuredSelection();
 	}
 
 	public IPath getCreatedFilePath() {
