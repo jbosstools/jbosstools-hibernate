@@ -3,7 +3,7 @@
   <title>Eclipse Plugins</title>
 
   <para>This chapter will introduce you to the functionality that <property>Hibernate
-    Tools</property> provide within Eclipse. That is a set of wizards and editors for simplifying
+      Tools</property> provide within Eclipse. That is a set of wizards and editors for simplifying
     the work with <property>Hibernate</property>.</para>
 
   <section>
@@ -19,7 +19,7 @@
     <note>
       <title>Note:</title>
       <para>Please note that these tools do not try to hide any functionality of
-        <property>Hibernate</property>. The tools make working with <property>Hibernate</property>
+          <property>Hibernate</property>. The tools make working with <property>Hibernate</property>
         easier, but you are still encouraged/required to read the <ulink
           url="http://www.hibernate.org/5.html">Hibernate Documentation</ulink> to fully utilize
           <property>Hibernate Tools</property> and especially <property>Hibernate</property> it
@@ -136,7 +136,7 @@
       </emphasis> for the basis of a Console configuration.</para>
   </section>
 
-  <section id="console_conf" >
+  <section id="console_conf">
     <title>Creating a Hibernate Console Configuration</title>
 
     <para>A Console configuration describes how the <property>Hibernate plugin</property> should
@@ -147,8 +147,8 @@
       possible if your project requires this.</para>
 
     <para>You create a console configuration by running the <property>Console Configuration
-      Wizard</property>, shown in the following screenshot. The same wizard will also be used if you
-      are coming from the <emphasis>
+        Wizard</property>, shown in the following screenshot. The same wizard will also be used if
+      you are coming from the <emphasis>
         <property>hibernate.cfg.xml</property>
       </emphasis> wizard and had enabled <emphasis>
         <property>Create Console Configuration</property>
@@ -197,7 +197,7 @@
 
         <colspec colnum="2" colwidth="3*"/>
 
-        <colspec colnum="3" align="left"  colwidth="1*"/>
+        <colspec colnum="3" align="left" colwidth="1*"/>
 
         <thead>
           <row>
@@ -316,7 +316,7 @@
 
             <entry>
               <para>No default value (lets Hibernate Entity Manager find the persistence
-              unit)</para>
+                unit)</para>
             </entry>
           </row>
 
@@ -370,7 +370,7 @@
 
         <colspec colnum="2" colwidth="3*"/>
 
-        <colspec colnum="3" align="left"  colwidth="1*"/>
+        <colspec colnum="3" align="left" colwidth="1*"/>
 
         <thead>
           <row>
@@ -484,7 +484,7 @@
                 classpath of the Project does not contain the required classes. Do not add Hibernate
                 core libraries or dependencies, they are already included. If you get ClassNotFound
                 errors then check this list for possible missing or redundant
-              directories/jars.</para>
+                directories/jars.</para>
             </entry>
 
             <entry>
@@ -533,7 +533,7 @@
     </figure>
 
     <para>Parameters of the Mappings tab of the <property>Hibernate Console Configuration
-      wizard</property> are explained below:</para>
+        wizard</property> are explained below:</para>
     <table>
       <title>Hibernate Console Configuration Mappings</title>
 
@@ -622,21 +622,21 @@
     </figure>
   </section>
 
-  <section>
+  <section id="refeng_codegen">
     <title>Reverse Engineering and Code Generation</title>
 
-    <para>A "click-and-generate" reverse engineering and code generation facility is available. This
-      facility allows you to generate a range of artifacts based on database or an already existing
-      Hibernate configuration, be that mapping files or annotated classes. Some of these are POJO
-      Java source file, Hibernate <emphasis>
+    <para>A &quot;click-and-generate&quot; reverse engineering and code generation facility
+      is available. This facility allows you to generate a range of artifacts based on database or
+      an already existing Hibernate configuration, be that mapping files or annotated classes. Some
+      of these are POJO Java source file, Hibernate <emphasis>
         <property>.hbm.xml</property>
       </emphasis>, <emphasis>
         <property>hibernate.cfg.xml</property>
       </emphasis> generation and schema documentation.</para>
 
     <para>To start working with this process, start the <property>Hibernate Code
-      Generation</property> which is available in the toolbar via the <property>Hibernate</property>
-      icon or via the <emphasis>
+        Generation</property> which is available in the toolbar via the
+        <property>Hibernate</property> icon or via the <emphasis>
         <property>Run > Hibernate Code Generation</property>
       </emphasis> menu item.</para>
 
@@ -743,7 +743,7 @@
               <entry>
                 <para>Path to a directory where all output will be written by default. Be aware that
                   existing files will be overwritten, so be sure to specify the correct
-                directory.</para>
+                  directory.</para>
               </entry>
             </row>
 
@@ -835,7 +835,7 @@
 
               <entry>
                 <para>Automatically detect many-to-many tables. Controllable via reveng.
-                strategy.</para>
+                  strategy.</para>
               </entry>
             </row>
 
@@ -865,7 +865,7 @@
       </table>
     </section>
 
-    <section>
+    <section id="exportes">
       <title>Exporters</title>
 
       <para>The <emphasis>
@@ -972,7 +972,18 @@
 
               <entry>
                 <para>Fully customizable exporter which can be used to perform custom
-                generation.</para>
+                  generation.</para>
+              </entry>
+            </row>
+
+            <row>
+              <entry>
+                <para>Schema Export (.ddl)</para>
+              </entry>
+
+              <entry>
+                <para>Generates the appropriate SQL DDL and allows you to store the result in a file
+                  or export it directly to the database.</para>
               </entry>
             </row>
 
@@ -1094,10 +1105,134 @@
                     documentation)</para>
                 </entry>
               </row>
+
+              <row>
+                <entry>
+                  <para>drop</para>
+                </entry>
+
+                <entry>
+                  <para>Output will contain drop statements for the tables, indices and
+                    constraints</para>
+                </entry>
+              </row>
+
+              <row>
+                <entry>
+                  <para>delimiter</para>
+                </entry>
+
+                <entry>
+                  <para>If specified the statements will be dumped to this file</para>
+                </entry>
+              </row>
+
+              <row>
+                <entry>
+                  <para>create</para>
+                </entry>
+
+                <entry>
+                  <para>Output will contain create statements for the tables, indices and
+                    constraints</para>
+                </entry>
+              </row>
+
+              <row>
+                <entry>
+                  <para>scriptToConsole</para>
+                </entry>
+
+                <entry>
+                  <para>The script will be output to Console</para>
+                </entry>
+              </row>
+
+              <row>
+                <entry>
+                  <para>exportToDatabase</para>
+                </entry>
+
+                <entry>
+                  <para>Executes the generated statements against the database</para>
+                </entry>
+              </row>
+
+              <row>
+                <entry>
+                  <para>outputFileName</para>
+                </entry>
+
+                <entry>
+                  <para>If specified the statements will be dumped to this file</para>
+                </entry>
+              </row>
+
+              <row>
+                <entry>
+                  <para>haltOnError</para>
+                </entry>
+
+                <entry>
+                  <para>Halts the build process if an error occurs</para>
+                </entry>
+              </row>
+
+              <row>
+                <entry>
+                  <para>format</para>
+                </entry>
+
+                <entry>
+                  <para>Applies basic formatting to the statements</para>
+                </entry>
+              </row>
+
+              <row>
+                <entry>
+                  <para>schemaUpdate</para>
+                </entry>
+
+                <entry>
+                  <para>Updates a schema</para>
+                </entry>
+              </row>
             </tbody>
           </tgroup>
         </table>
       </para>
+
+      <para>To add a property to the chosen Exporter click the <emphasis>
+          <property>Add</property>
+        </emphasis> button in the <property>Properties</property> section. In the appeared dialog
+        you should select the property from the proposed list and the value for it.</para>
+
+      <figure>
+        <title>Adding the Property for Schema Export (.ddl)</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/plugins/plugins_8a.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <tip>
+        <title>Tip:</title>
+
+        <para>If the property is a directory, it is
+          possible to browse directories in the Value field.</para>
+      </tip>
+      
+      <figure>
+        <title>Specifying the Property Value</title>
+        
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/plugins/plugins_8b.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
     </section>
   </section>
 
@@ -1235,7 +1370,7 @@
     </section>
   </section>
 
-  <section id="map_config_struct_editor" >
+  <section id="map_config_struct_editor">
     <title>Structured Hibernate Mapping and Configuration File Editor</title>
     <para>The structured editor represents the file in the tree form. It also allows to modify the
       structure of the file and its elements with the help of tables provided on the right-hand
@@ -1243,7 +1378,8 @@
 
     <para>To open any mapping file in the editor, choose <emphasis>
         <property>Open With > Hibernate 3.0 XML Editor</property>
-      </emphasis> option from the context menu of the file. The editor should look as follows:</para>
+      </emphasis> option from the context menu of the file. The editor should look as
+      follows:</para>
 
     <figure>
       <title>Structured hbm.xml Editor</title>
@@ -1322,7 +1458,8 @@
     <para>Or you can get it via the <property>Code Generation Launcher</property> by checking the
       proper section in the <emphasis>
         <property>Main</property>
-      </emphasis> tab of the <link linkend="hib_code_gen">Hibernate Code Generation Wizard</link>.</para>
+      </emphasis> tab of the <link linkend="hib_code_gen">Hibernate Code Generation
+      Wizard</link>.</para>
 
     <para>The following screenshot shows the <emphasis>
         <property>Overview</property>
@@ -1512,7 +1649,7 @@
         </figure>
 
         <para>As in <property>Hibernate Configurations View</property> in <property>Mapping
-          Diagram</property> it&apos;s also possible to open source/mapping file for a chosen
+            Diagram</property> it&apos;s also possible to open source/mapping file for a chosen
           object by selecting appropriate option in the context menu. </para>
 
         <figure>
@@ -1572,12 +1709,12 @@
       <para>Queries can be prototyped by entering them in the <property>HQL</property> or
           <property>Criteria Editor</property>. The query editors are opened by right-clicking the
           <property>Console Configuration</property> and selecting either <property>HQL
-        Editor</property> or <property>Hibernate Criteria Editor</property>. The editors
+          Editor</property> or <property>Hibernate Criteria Editor</property>. The editors
         automatically detect the chosen configuration.</para>
 
       <para>If the menu item is disabled then you need at first to create a <property>Session
           Factory</property>. That is done by simply expanding the <property>Session
-        Factory</property> node.</para>
+          Factory</property> node.</para>
 
       <para>By brining up the context menu for a chosen entity or property in the <property>Console
           Configuration</property> and opening <emphasis>
