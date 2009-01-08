@@ -8,34 +8,24 @@
   * Contributor:
   *     Red Hat, Inc. - initial API and implementation
   ******************************************************************************/
-package org.jboss.tools.hibernate.jpt.core.internal;
-
-import org.eclipse.jpt.core.JpaAnnotationProvider;
-import org.eclipse.jpt.core.JpaFactory;
-import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
+package org.jboss.tools.hibernate.jpt.core.internal.context.basic;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-
-public class HibernatePlatform extends GenericJpaPlatform {
+public interface Hibernate {
 	
-	public static String ID = "hibernate";
-
-	@Override
-	public String getId() {
-		return ID;
-	}
-
-	@Override
-	protected JpaFactory buildJpaFactory() {
-		return new HibernateFactory();
-	}
+	// Hibernate package
+	String PACKAGE = "org.hibernate.annotations";
+	String PACKAGE_ = PACKAGE + ".";
 	
-	@Override
-	protected JpaAnnotationProvider buildAnnotationProvider() {
-		return new HibernateJpaAnnotationProvider();
-	}
+	// ********** API **********
+
+	// Hibernate annotations
+	String GENERIC_GENERATOR = PACKAGE_ + "GenericGenerator";
+		String GENERIC_GENERATOR__NAME = "name";
+		String GENERIC_GENERATOR__STRATEGY = "strategy";
+		
 	
 }
