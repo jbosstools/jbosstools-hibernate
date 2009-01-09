@@ -11,6 +11,7 @@
 package org.jboss.tools.hibernate.jpt.core.internal;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
@@ -22,13 +23,22 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGenerator
  */
 public class HibernateJpaAnnotationProvider extends GenericJpaAnnotationProvider {
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider#addAttributeAnnotationDefinitionsTo(java.util.Collection)
-	 */
+	@Override
+	protected void addTypeAnnotationDefinitionsTo(Collection<AnnotationDefinition> definitions) {
+		super.addTypeAnnotationDefinitionsTo(definitions);
+		definitions.add(GenericGeneratorAnnotationDefinition.instance());
+	}
+	
+	@Override
+	protected void addAttributeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+		super.addAttributeMappingAnnotationDefinitionsTo(definitions);
+		definitions.add(GenericGeneratorAnnotationDefinition.instance());
+	}
+	
 	@Override
 	protected void addAttributeAnnotationDefinitionsTo(Collection<AnnotationDefinition> definitions) {
 		super.addAttributeAnnotationDefinitionsTo(definitions);
 		definitions.add(GenericGeneratorAnnotationDefinition.instance());
-	}
-
+	}	
+	
 }

@@ -11,6 +11,7 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -24,16 +25,23 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jpt.core.context.Generator;
+import org.eclipse.jpt.core.context.java.JavaGenerator;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnit;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlProperties;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -79,14 +87,13 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 		super.addToMessages(messages);
 		addFileNotExistsMessages(messages);
 	}	
-	
+
 	protected void addFileNotExistsMessages(List<IMessage> messages) {
 		String configFile = getBasicProperties().getConfigurationFile();
 		if (configFile != null && configFile.length() > 0){
 			IPath path = new Path(configFile);
 				
 			if (new File(path.toOSString()).exists()) return;
-
 
 		    IResource res= ResourcesPlugin.getWorkspace().getRoot().findMember(path);
 		    if (res != null) {
@@ -168,16 +175,21 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 	}
 	
 	protected void updateGenericGenerators(){
-		for (String annotClass : CollectionTools.iterable(getJpaProject().annotatedClassNames())) {
-			ClassRef classRef = buildClassRef(annotClass);
+		for (String annotClass : CollectionTools.iterable(getJpaProject().annotatedClassNames())) {			
+			ClassRef classRef = buildClassRef(annotClass);			
 			JavaPersistentType type = classRef.getJavaPersistentType();
-			ListIterator<JavaPersistentAttribute> typeAttrs = type.attributes();
+			JavaResourcePersistentMember jrpt = getJpaProject().getJavaPersistentTypeResource(annotClass);
+			GenericGeneratorAnnotation annotation = (GenericGeneratorAnnotation) jrpt.getAnnotation(GENERIC_GENERATOR);
+			if (annotation != null) {
+				addGenerator(annotation.buildJavaGenericGenerator(type));
+			}
+			
+			ListIterator<JavaPersistentAttribute> typeAttrs = type.attributes();			
 			for (JavaPersistentAttribute persAttr : CollectionTools.iterable(typeAttrs)) {
 				JavaResourcePersistentAttribute jrpa = persAttr.getResourcePersistentAttribute();
-				GenericGeneratorAnnotation annotation = (GenericGeneratorAnnotation) jrpa.getAnnotation(GENERIC_GENERATOR);
+				annotation = (GenericGeneratorAnnotation) jrpa.getAnnotation(GENERIC_GENERATOR);
 				if (annotation != null){
-					JavaGenericGenerator generator = annotation.buildJavaGenericGenerator(persAttr.getSpecifiedMapping());
-					addGenerator(generator);
+					addGenerator(annotation.buildJavaGenericGenerator(persAttr.getSpecifiedMapping()));
 				}
 			}
 		}
