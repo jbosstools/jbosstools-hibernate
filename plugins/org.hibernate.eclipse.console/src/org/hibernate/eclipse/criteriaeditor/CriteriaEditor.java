@@ -45,6 +45,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.texteditor.ChainedPreferenceStore;
 import org.eclipse.ui.texteditor.IDocumentProvider;
@@ -55,6 +57,7 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.AbstractQueryEditor;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.views.QueryPageTabView;
 import org.hibernate.mapping.PersistentClass;
 
 public class CriteriaEditor extends AbstractQueryEditor {
@@ -119,6 +122,13 @@ public class CriteriaEditor extends AbstractQueryEditor {
     }
 
 	public void executeQuery(ConsoleConfiguration cfg) {
+		final IWorkbenchPage activePage = getEditorSite().getPage();
+		try {
+			activePage.showView(QueryPageTabView.ID);
+		} catch (PartInitException e) {
+			// ignore
+		}
+		
 		cfg.executeBSHQuery(getQueryString(), getQueryInputModel().getCopyForQuery() );
 	}
 
