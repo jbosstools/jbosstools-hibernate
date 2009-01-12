@@ -33,6 +33,8 @@ public class RefEntityInfo implements Comparable<RefEntityInfo> {
 	 */
 	public String mappedBy = null;
 	//
+	public OwnerType owner = OwnerType.UNDEF;
+	//
 	public boolean annotated = false;
 	//
 	public boolean resolvedAnnotationName = false;

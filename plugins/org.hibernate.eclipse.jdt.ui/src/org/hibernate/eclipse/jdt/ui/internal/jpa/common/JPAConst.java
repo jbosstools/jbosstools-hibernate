@@ -14,6 +14,7 @@ public class JPAConst {
 	static public String IMPORT_ENTITY = "javax.persistence.Entity"; //$NON-NLS-1$
 	static public String IMPORT_GENERATED_VALUE = "javax.persistence.GeneratedValue"; //$NON-NLS-1$
 	static public String IMPORT_ID = "javax.persistence.Id"; //$NON-NLS-1$
+	static public String IMPORT_JOINCOLUMN = "javax.persistence.JoinColumn"; //$NON-NLS-1$
 	static public String IMPORT_ONE2ONE = "javax.persistence.OneToOne"; //$NON-NLS-1$
 	static public String IMPORT_ONE2MANY = "javax.persistence.OneToMany"; //$NON-NLS-1$
 	static public String IMPORT_MANY2ONE = "javax.persistence.ManyToOne"; //$NON-NLS-1$
@@ -23,6 +24,7 @@ public class JPAConst {
 	static public String ANNOTATION_ENTITY = "Entity"; //$NON-NLS-1$
 	static public String ANNOTATION_GENERATED_VALUE = "GeneratedValue"; //$NON-NLS-1$
 	static public String ANNOTATION_ID = "Id"; //$NON-NLS-1$
+	static public String ANNOTATION_JOINCOLUMN = "JoinColumn"; //$NON-NLS-1$
 	static public String ANNOTATION_ONE2ONE = "OneToOne"; //$NON-NLS-1$
 	static public String ANNOTATION_ONE2MANY = "OneToMany"; //$NON-NLS-1$
 	static public String ANNOTATION_MANY2ONE = "ManyToOne"; //$NON-NLS-1$
@@ -35,6 +37,7 @@ public class JPAConst {
 		ALL_IMPORTS.add(IMPORT_ENTITY);
 		ALL_IMPORTS.add(IMPORT_GENERATED_VALUE);
 		ALL_IMPORTS.add(IMPORT_ID);
+		ALL_IMPORTS.add(IMPORT_JOINCOLUMN);
 		ALL_IMPORTS.add(IMPORT_ONE2ONE);
 		ALL_IMPORTS.add(IMPORT_ONE2MANY);
 		ALL_IMPORTS.add(IMPORT_MANY2ONE);

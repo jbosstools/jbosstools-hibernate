@@ -12,11 +12,13 @@ package org.hibernate.eclipse.jdt.ui.internal.jpa.process;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Block;
+import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
@@ -28,15 +30,16 @@ import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.QualifiedName;
 import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.SimpleName;
-import org.eclipse.jdt.core.dom.SimpleType;
 import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
+import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.CollectEntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.JPAConst;
+import org.hibernate.eclipse.jdt.ui.internal.jpa.common.OwnerType;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefEntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefFieldInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefType;
@@ -54,6 +57,10 @@ public class ProcessEntityInfo extends ASTVisitor {
 	 */
 	protected EntityInfo entityInfo;
 	/**
+	 * information about all entities
+	 */
+	protected Map<String, EntityInfo> entities;
+	/**
 	 * rewriter to generate new AST blocks
 	 */
 	protected ASTRewrite rewriter;
@@ -64,6 +71,10 @@ public class ProcessEntityInfo extends ASTVisitor {
 
 	public void setEntityInfo(EntityInfo entityInfo) {
 		this.entityInfo = entityInfo;
+	}
+
+	public void setEntities(Map<String, EntityInfo> entities) {
+		this.entities = entities;
 	}
 	
 	public void setASTRewrite(ASTRewrite rewriter) {
@@ -283,7 +294,7 @@ public class ProcessEntityInfo extends ASTVisitor {
 		if (type == null) {
 			return true;
 		}
-		String returnIdentifier = getReturnIdentifier(node);
+		String returnIdentifier = CollectEntityInfo.getReturnIdentifier(node);
 		if (type.isSimpleType() || type.isPrimitiveType()) {
 			if (entityInfo.isAddGeneratedValueFlag()) {
 				String primaryIdName = entityInfo.getPrimaryIdName();
@@ -353,90 +364,77 @@ public class ProcessEntityInfo extends ASTVisitor {
 		}
 		return true;
 	}
-
-	// duplicate method from CollectEntityInfo
-	public String getReturnIdentifier(MethodDeclaration node) {
-		String res = null;
-		List bodyStatemants = node.getBody().statements();
-		Iterator it = bodyStatemants.iterator();
-		for ( ; it.hasNext(); ) {
-			Object obj = it.next();
-			if (obj instanceof ReturnStatement) {
-				ReturnStatement ret_statement = (ReturnStatement)obj;
-				obj = ret_statement.getExpression();
-				if (obj instanceof SimpleName) {
-					SimpleName sn = (SimpleName)obj;
-					res = sn.getIdentifier();
-				}
-				break;
+	
+	public boolean addSimpleMarkerAnnotation(BodyDeclaration node, String name) {
+		if (name == null || name.length() == 0) {
+			return false;
+		}
+		MarkerAnnotation matd = rewriter.getAST().newMarkerAnnotation();
+		matd.setTypeName(rewriter.getAST().newSimpleName(name));
+		ListRewrite lrw = null;
+		if (node instanceof FieldDeclaration) {
+			lrw = rewriter.getListRewrite(node, FieldDeclaration.MODIFIERS2_PROPERTY);
+		}
+		else if (node instanceof MethodDeclaration) {
+			lrw = rewriter.getListRewrite(node, MethodDeclaration.MODIFIERS2_PROPERTY);
+		}
+		if (lrw != null) {
+			lrw.insertFirst(matd, null);
+		}
+		return true;
+	}
+	
+	public boolean addComplexNormalAnnotation(BodyDeclaration node, String name, RefEntityInfo rei) {
+		if (name == null || name.length() == 0) {
+			return false;
+		}
+		NormalAnnotation natd = rewriter.getAST().newNormalAnnotation();
+		MemberValuePair mvp = null;
+		if (rei.mappedBy != null && (rei.owner == OwnerType.YES || 
+				rei.owner == OwnerType.UNDEF)) {
+			mvp = rewriter.getAST().newMemberValuePair();
+			mvp.setName(rewriter.getAST().newSimpleName("mappedBy")); //$NON-NLS-1$
+			StringLiteral sl = rewriter.getAST().newStringLiteral();
+			sl.setLiteralValue(rei.mappedBy);
+			mvp.setValue(sl);
+		}
+		natd.setTypeName(rewriter.getAST().newSimpleName(name));
+		if (mvp != null) {
+			natd.values().add(mvp);
+		}
+		NormalAnnotation natd2 = null;
+		/** /
+		if (rei.owner == OwnerType.NO) {
+			natd2 = rewriter.getAST().newNormalAnnotation();
+			natd2.setTypeName(rewriter.getAST().newSimpleName(JPAConst.ANNOTATION_JOINCOLUMN));
+			mvp = null;
+			String fullyQualifiedName2 = rei.fullyQualifiedName;
+			EntityInfo entryInfo2 = entities.get(fullyQualifiedName2);
+			if (entryInfo2 != null) {
+				mvp = rewriter.getAST().newMemberValuePair();
+				mvp.setName(rewriter.getAST().newSimpleName("name")); //$NON-NLS-1$
+				StringLiteral sl = rewriter.getAST().newStringLiteral();
+				sl.setLiteralValue(entryInfo2.getPrimaryIdName());
+				mvp.setValue(sl);
+			}
+			if (mvp != null) {
+				natd2.values().add(mvp);
 			}
 		}
-		return res;
-	}
-	
-	public boolean addSimpleMarkerAnnotation(FieldDeclaration node, String name) {
-		if (name == null || name.length() == 0) {
-			return false;
+		/**/
+		ListRewrite lrw = null;
+		if (node instanceof FieldDeclaration) {
+			lrw = rewriter.getListRewrite(node, FieldDeclaration.MODIFIERS2_PROPERTY);
 		}
-		MarkerAnnotation matd = rewriter.getAST().newMarkerAnnotation();
-		matd.setTypeName(rewriter.getAST().newSimpleName(name));
-		ListRewrite lrw = rewriter.getListRewrite(node, FieldDeclaration.MODIFIERS2_PROPERTY);
-		lrw.insertFirst(matd, null);
-		return true;
-	}
-	
-	public boolean addComplexNormalAnnotation(FieldDeclaration node, String name, RefEntityInfo rei) {
-		if (name == null || name.length() == 0) {
-			return false;
+		else if (node instanceof MethodDeclaration) {
+			lrw = rewriter.getListRewrite(node, MethodDeclaration.MODIFIERS2_PROPERTY);
 		}
-		NormalAnnotation natd = rewriter.getAST().newNormalAnnotation();
-		MemberValuePair mvp = null;
-		if (rei.mappedBy != null) {
-			mvp = rewriter.getAST().newMemberValuePair();
-			mvp.setName(rewriter.getAST().newSimpleName("mappedBy")); //$NON-NLS-1$
-			StringLiteral sl = rewriter.getAST().newStringLiteral();
-			sl.setLiteralValue(rei.mappedBy);
-			mvp.setValue(sl);
+		if (lrw != null) {
+			if (natd2 != null) {
+				lrw.insertFirst(natd2, null);
+			}
+			lrw.insertFirst(natd, null);
 		}
-		natd.setTypeName(rewriter.getAST().newSimpleName(name));
-		if (mvp != null) {
-			natd.values().add(mvp);
-		}
-		ListRewrite lrw = rewriter.getListRewrite(node, FieldDeclaration.MODIFIERS2_PROPERTY);
-		lrw.insertFirst(natd, null);
-		return true;
-	}
-	
-	public boolean addSimpleMarkerAnnotation(MethodDeclaration node, String name) {
-		if (name == null || name.length() == 0) {
-			return false;
-		}
-		MarkerAnnotation matd = rewriter.getAST().newMarkerAnnotation();
-		matd.setTypeName(rewriter.getAST().newSimpleName(name));
-		ListRewrite lrw = rewriter.getListRewrite(node, MethodDeclaration.MODIFIERS2_PROPERTY);
-		lrw.insertFirst(matd, null);
-		return true;
-	}
-	
-	public boolean addComplexNormalAnnotation(MethodDeclaration node, String name, RefEntityInfo rei) {
-		if (name == null || name.length() == 0) {
-			return false;
-		}
-		NormalAnnotation natd = rewriter.getAST().newNormalAnnotation();
-		MemberValuePair mvp = null;
-		if (rei.mappedBy != null) {
-			mvp = rewriter.getAST().newMemberValuePair();
-			mvp.setName(rewriter.getAST().newSimpleName("mappedBy")); //$NON-NLS-1$
-			StringLiteral sl = rewriter.getAST().newStringLiteral();
-			sl.setLiteralValue(rei.mappedBy);
-			mvp.setValue(sl);
-		}
-		natd.setTypeName(rewriter.getAST().newSimpleName(name));
-		if (mvp != null) {
-			natd.values().add(mvp);
-		}
-		ListRewrite lrw = rewriter.getListRewrite(node, MethodDeclaration.MODIFIERS2_PROPERTY);
-		lrw.insertFirst(natd, null);
 		return true;
 	}
 

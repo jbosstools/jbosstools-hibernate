@@ -20,6 +20,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.JPAConst;
+import org.hibernate.eclipse.jdt.ui.internal.jpa.common.OwnerType;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefEntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefFieldInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefType;
@@ -148,6 +149,107 @@ public class AllEntitiesInfoCollector {
 			}
 		}
 	}
+	
+	public void updateOwner(ProcessItem pi) {
+		if (pi.refEntityInfo.refType == RefType.ONE2ONE) {
+			pi.refEntityInfo.owner = OwnerType.UNDEF;
+			pi.refEntityInfo2.owner = OwnerType.UNDEF;
+		}
+		else if (pi.refEntityInfo.refType == RefType.ONE2MANY) {
+			pi.refEntityInfo.owner = OwnerType.YES;
+			pi.refEntityInfo2.owner = OwnerType.NO;
+		}
+		else if (pi.refEntityInfo.refType == RefType.MANY2ONE) {
+			pi.refEntityInfo.owner = OwnerType.NO;
+			pi.refEntityInfo2.owner = OwnerType.YES;
+		}
+		else if (pi.refEntityInfo.refType == RefType.MANY2MANY) {
+			pi.refEntityInfo.owner = OwnerType.UNDEF;
+			pi.refEntityInfo2.owner = OwnerType.UNDEF;
+		}
+	}
+
+	/**
+	 * responsible for enumeration all entities pairs and
+	 * setup relations between single candidate for several items case 
+	 */
+	protected class EntitySingleCandidateResolver {
+		
+		/**
+		 * enumerate function
+		 */
+		public void enumEntityPairs() {
+			Iterator<Map.Entry<String, EntityInfo>> it = mapCUs_Info.entrySet().iterator();
+			ProcessItem pi = new ProcessItem();
+			while (it.hasNext()) {
+				Map.Entry<String, EntityInfo> entry = it.next();
+				// entry.getKey() - fully qualified name
+				// entry.getValue() - EntityInfo
+				EntityInfo entryInfo = entry.getValue();
+				assert(entry.getKey().equals(entryInfo.getFullyQualifiedName()));
+				String fullyQualifiedName = entryInfo.getFullyQualifiedName();
+				// get references map:
+				// * field id -> RefEntityInfo
+				Iterator<Map.Entry<String, RefEntityInfo>> referencesIt = 
+					entryInfo.getReferences().entrySet().iterator();
+				while (referencesIt.hasNext()) {
+					Map.Entry<String, RefEntityInfo> entry2 = referencesIt.next();
+					// entry2.getKey() - field id
+					// entry2.getValue() - RefEntityInfo
+					pi.fieldId = entry2.getKey();
+					pi.refEntityInfo = entry2.getValue();
+					String fullyQualifiedName2 = pi.refEntityInfo.fullyQualifiedName;
+					EntityInfo entryInfo2 = mapCUs_Info.get(fullyQualifiedName2);
+					assert(fullyQualifiedName2.equals(entryInfo2.getFullyQualifiedName()));
+					if (entryInfo2 != null && pi.refEntityInfo != null) {
+						pi.refEntityInfo2 = null;
+						pi.fieldId2 = null;
+						Set<RefFieldInfo> setRefEntityInfo = entryInfo2.getRefFieldInfoSet(fullyQualifiedName);
+						if (setRefEntityInfo != null && setRefEntityInfo.size() > 1) {
+							// this case of complex decision - but if there is 1 candidate
+							// it is possible to select this candidate automatically
+							// in case of no solution - user should define this himself
+							// try to find 1 suitable candidate
+							RefType suitableRefType = RefType.UNDEF;
+							if (pi.refEntityInfo.refType == RefType.ONE2ONE) {
+								suitableRefType = RefType.ONE2ONE;
+							}
+							else if (pi.refEntityInfo.refType == RefType.ONE2MANY) {
+								suitableRefType = RefType.MANY2ONE;
+							}
+							else if (pi.refEntityInfo.refType == RefType.MANY2ONE) {
+								suitableRefType = RefType.ONE2MANY;
+							}
+							else if (pi.refEntityInfo.refType == RefType.MANY2MANY) {
+								suitableRefType = RefType.MANY2MANY;
+							}
+							RefFieldInfo rfiSingleCandidat = null;
+							Iterator<RefFieldInfo> itTmp = setRefEntityInfo.iterator();
+							while (itTmp.hasNext()) {
+								RefFieldInfo rfi = itTmp.next();
+								if (rfi.refType == suitableRefType) {
+									if (rfiSingleCandidat == null) {
+										rfiSingleCandidat = rfi;
+									}
+									else {
+										// there are a least 2 candidates
+										break;
+									}
+								}
+							}
+							if (!itTmp.hasNext() && rfiSingleCandidat != null) {
+								pi.fieldId2 = rfiSingleCandidat.fieldId;
+								pi.refEntityInfo2 = entryInfo2.getFieldIdRefEntityInfo(pi.fieldId2);
+								pi.refEntityInfo.mappedBy = pi.fieldId2;
+								pi.refEntityInfo2.mappedBy = pi.fieldId;
+								updateOwner(pi);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
 	/**
 	 * process all entities pairs iteratively:
@@ -201,24 +303,28 @@ public class AllEntitiesInfoCollector {
 							pi.refEntityInfo.mappedBy = pi.fieldId2;
 							pi.refEntityInfo2.refType = RefType.ONE2ONE;
 							pi.refEntityInfo2.mappedBy = pi.fieldId;
+							updateOwner(pi);
 						}
 						else if (pi.refEntityInfo2.refType == RefType.ONE2MANY) {
 							pi.refEntityInfo.refType = RefType.MANY2ONE;
 							pi.refEntityInfo.mappedBy = pi.fieldId2;
 							pi.refEntityInfo2.refType = RefType.ONE2MANY;
 							pi.refEntityInfo2.mappedBy = pi.fieldId;
+							updateOwner(pi);
 						}
 						else if (pi.refEntityInfo2.refType == RefType.MANY2ONE) {
 							pi.refEntityInfo.refType = RefType.ONE2MANY;
 							pi.refEntityInfo.mappedBy = pi.fieldId2;
 							pi.refEntityInfo2.refType = RefType.MANY2ONE;
 							pi.refEntityInfo2.mappedBy = pi.fieldId;
+							updateOwner(pi);
 						}
 						else if (pi.refEntityInfo2.refType == RefType.MANY2MANY) {
 							pi.refEntityInfo.refType = RefType.MANY2MANY;
 							pi.refEntityInfo.mappedBy = pi.fieldId2;
 							pi.refEntityInfo2.refType = RefType.MANY2MANY;
 							pi.refEntityInfo2.mappedBy = pi.fieldId;
+							updateOwner(pi);
 						}
 					}
 					else if (hasPrompt == 2) {
@@ -227,24 +333,28 @@ public class AllEntitiesInfoCollector {
 							pi.refEntityInfo.mappedBy = pi.fieldId;
 							pi.refEntityInfo2.refType = RefType.ONE2ONE;
 							pi.refEntityInfo2.mappedBy = pi.fieldId2;
+							updateOwner(pi);
 						}
 						else if (pi.refEntityInfo.refType == RefType.ONE2MANY) {
 							pi.refEntityInfo.refType = RefType.ONE2MANY;
 							pi.refEntityInfo.mappedBy = pi.fieldId;
 							pi.refEntityInfo2.refType = RefType.MANY2ONE;
 							pi.refEntityInfo2.mappedBy = pi.fieldId2;
+							updateOwner(pi);
 						}
 						else if (pi.refEntityInfo.refType == RefType.MANY2ONE) {
 							pi.refEntityInfo.refType = RefType.MANY2ONE;
 							pi.refEntityInfo.mappedBy = pi.fieldId;
 							pi.refEntityInfo2.refType = RefType.ONE2MANY;
 							pi.refEntityInfo2.mappedBy = pi.fieldId2;
+							updateOwner(pi);
 						}
 						else if (pi.refEntityInfo.refType == RefType.MANY2MANY) {
 							pi.refEntityInfo.refType = RefType.MANY2MANY;
 							pi.refEntityInfo.mappedBy = pi.fieldId;
 							pi.refEntityInfo2.refType = RefType.MANY2MANY;
 							pi.refEntityInfo2.mappedBy = pi.fieldId2;
+							updateOwner(pi);
 						}
 					}
 					//if (hasPrompt == 3) - this is case where we get prompt from both sides -
@@ -255,12 +365,14 @@ public class AllEntitiesInfoCollector {
 							pi.refEntityInfo.mappedBy = pi.fieldId2;
 							pi.refEntityInfo2.refType = RefType.ONE2ONE;
 							pi.refEntityInfo2.mappedBy = pi.fieldId;
+							updateOwner(pi);
 						}
 						else if (pi.refEntityInfo2.refType == RefType.ONE2MANY) {
 							pi.refEntityInfo.refType = RefType.MANY2ONE;
 							pi.refEntityInfo.mappedBy = pi.fieldId2;
 							pi.refEntityInfo2.refType = RefType.ONE2MANY;
 							pi.refEntityInfo2.mappedBy = pi.fieldId;
+							updateOwner(pi);
 						}
 					}
 					else if (pi.refEntityInfo.refType == RefType.ONE2MANY) {
@@ -269,12 +381,14 @@ public class AllEntitiesInfoCollector {
 							pi.refEntityInfo.mappedBy = pi.fieldId2;
 							pi.refEntityInfo2.refType = RefType.MANY2ONE;
 							pi.refEntityInfo2.mappedBy = pi.fieldId;
+							updateOwner(pi);
 						}
 						else if (pi.refEntityInfo2.refType == RefType.ONE2MANY) {
 							pi.refEntityInfo.refType = RefType.MANY2MANY;
 							pi.refEntityInfo.mappedBy = pi.fieldId2;
 							pi.refEntityInfo2.refType = RefType.MANY2MANY;
 							pi.refEntityInfo2.mappedBy = pi.fieldId;
+							updateOwner(pi);
 						}
 					}
 				}
@@ -301,12 +415,14 @@ public class AllEntitiesInfoCollector {
 							pi.refEntityInfo.mappedBy = pi.fieldId2;
 							pi.refEntityInfo2.refType = RefType.ONE2ONE;
 							pi.refEntityInfo2.mappedBy = pi.fieldId;
+							updateOwner(pi);
 						}
 						else if (pi.refEntityInfo2.refType == RefType.ONE2MANY) {
 							pi.refEntityInfo.refType = RefType.MANY2ONE;
 							pi.refEntityInfo.mappedBy = pi.fieldId2;
 							pi.refEntityInfo2.refType = RefType.ONE2MANY;
 							pi.refEntityInfo2.mappedBy = pi.fieldId;
+							updateOwner(pi);
 						}
 					}
 					else if (pi.refEntityInfo.refType == RefType.ONE2MANY) {
@@ -315,6 +431,7 @@ public class AllEntitiesInfoCollector {
 							pi.refEntityInfo.mappedBy = pi.fieldId2;
 							pi.refEntityInfo2.refType = RefType.MANY2ONE;
 							pi.refEntityInfo2.mappedBy = pi.fieldId;
+							updateOwner(pi);
 						}
 					}
 					else if (pi.refEntityInfo.refType == RefType.MANY2ONE) {
@@ -323,6 +440,7 @@ public class AllEntitiesInfoCollector {
 							pi.refEntityInfo.mappedBy = pi.fieldId2;
 							pi.refEntityInfo2.refType = RefType.ONE2ONE;
 							pi.refEntityInfo2.mappedBy = pi.fieldId;
+							updateOwner(pi);
 						}
 					}
 				}
@@ -350,6 +468,7 @@ public class AllEntitiesInfoCollector {
 								pi.refEntityInfo.mappedBy = pi.fieldId2;
 								pi.refEntityInfo2.refType = RefType.MANY2MANY;
 								pi.refEntityInfo2.mappedBy = pi.fieldId;
+								updateOwner(pi);
 							}
 						}
 					}
@@ -359,6 +478,10 @@ public class AllEntitiesInfoCollector {
 		};
 		ep.setConnector(m2mRelConnector);
 		ep.enumEntityPairs();
+		// 3)
+		// third - try to assign - "single candidates"
+		EntitySingleCandidateResolver escr = new EntitySingleCandidateResolver();
+		escr.enumEntityPairs();
 		// update import flags
 		it = mapCUs_Info.entrySet().iterator();
 		while (it.hasNext()) {

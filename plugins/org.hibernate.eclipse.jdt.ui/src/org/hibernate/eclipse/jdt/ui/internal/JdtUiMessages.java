@@ -28,6 +28,13 @@ public class JdtUiMessages extends NLS {
 	public static String SaveQueryEditorListener_errormessage;
 	public static String JPAMapToolActor_message_title;
 	public static String JPAMapToolActor_message;
+	public static String ResolveAmbiguous_column_Class;
+	public static String ResolveAmbiguous_column_Association;
+	public static String ResolveAmbiguous_column_Type;
+	public static String ResolveAmbiguous_column_Related;
+	public static String ResolveAmbiguous_column_Owner;
+	public static String ResolveAmbiguous_empty;
+	public static String ResolveAmbiguous_message;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, JdtUiMessages.class);

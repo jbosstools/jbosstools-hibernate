@@ -188,6 +188,15 @@ public class EntityInfo {
 		if (isAddEntityFlag()) {
 			addRequiredImport(JPAConst.IMPORT_ENTITY);
 		}
+		Iterator<Map.Entry<String, RefEntityInfo>> referencesIt = 
+			getReferences().entrySet().iterator();
+		while (referencesIt.hasNext()) {
+			Map.Entry<String, RefEntityInfo> entry = referencesIt.next();
+			RefEntityInfo refEntityInfo = entry.getValue();
+			if (refEntityInfo.owner == OwnerType.NO) {
+				addRequiredImport(JPAConst.IMPORT_JOINCOLUMN);
+			}
+		}
 		// try to intellectually get primary id
 		primaryIdName = null;
 		String entityName = getName().toLowerCase();

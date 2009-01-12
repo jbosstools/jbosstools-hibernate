@@ -20,6 +20,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.ArrayType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.FieldAccess;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
@@ -276,7 +277,7 @@ public class CollectEntityInfo extends ASTVisitor {
 		return true;
 	}
 
-	public String getReturnIdentifier(MethodDeclaration node) {
+	public static String getReturnIdentifier(MethodDeclaration node) {
 		String res = null;
 		List bodyStatemants = node.getBody().statements();
 		Iterator it = bodyStatemants.iterator();
@@ -287,6 +288,11 @@ public class CollectEntityInfo extends ASTVisitor {
 				obj = ret_statement.getExpression();
 				if (obj instanceof SimpleName) {
 					SimpleName sn = (SimpleName)obj;
+					res = sn.getIdentifier();
+				}
+				else if (obj instanceof FieldAccess) {
+					FieldAccess fa = (FieldAccess)obj;
+					SimpleName sn = fa.getName();
 					res = sn.getIdentifier();
 				}
 				break;

@@ -15,65 +15,33 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.core.filebuffers.FileBuffers;
-import org.eclipse.core.filebuffers.ITextFileBuffer;
 import org.eclipse.core.filebuffers.ITextFileBufferManager;
 import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
-import org.eclipse.jdt.internal.ui.refactoring.RefactoringSaveHelper;
-import org.eclipse.jdt.internal.ui.refactoring.actions.RefactoringStarter;
-import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
-import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.ltk.core.refactoring.Change;
-import org.eclipse.ltk.core.refactoring.CompositeChange;
-import org.eclipse.ltk.core.refactoring.DocumentChange;
-import org.eclipse.ltk.core.refactoring.Refactoring;
-import org.eclipse.ltk.core.refactoring.RefactoringStatus;
-import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
-import org.eclipse.ltk.ui.refactoring.UserInputWizardPage;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.text.edits.MalformedTreeException;
-import org.eclipse.text.edits.TextEdit;
 import org.eclipse.text.edits.UndoEdit;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.jdt.ui.Activator;
-import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
+import org.hibernate.eclipse.jdt.ui.internal.jpa.process.wizard.HibernateJPAWizard;
+import org.hibernate.eclipse.jdt.ui.internal.jpa.process.wizard.IHibernateJPAWizardData;
+import org.hibernate.eclipse.jdt.ui.internal.jpa.process.wizard.IHibernateJPAWizardParams;
 
 /**
  * Modify entity classes
  *
  * @author Vitali
  */
-public class AllEntitiesProcessor {
+public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 
 	/**
 	 * place to search compilation units
@@ -88,17 +56,6 @@ public class AllEntitiesProcessor {
 	 */
 	protected AnnotStyle annotationStylePreference = AnnotStyle.FIELDS;
 
-	/**
-	 * group all information about changes of document in one structure
-	 */
-	protected class ChangeStructure {
-		public String fullyQualifiedName;
-		public IPath path;
-		public IDocument document;
-		public TextEdit textEdit;
-		public ITextFileBuffer textFileBuffer;
-		public Change change;
-	};
 	/**
 	 * change info storage
 	 */
@@ -255,7 +212,7 @@ public class AllEntitiesProcessor {
 				if (entry.getValue().isAbstractFlag()) {
 					continue;
 				}
-				collectModification(bufferManager, entry.getKey(), entry.getValue());
+				collectModification(bufferManager, entry.getKey(), entry.getValue(), entities);
 			}
 		} catch (CoreException e) {
 			HibernateConsolePlugin.getDefault().logErrorMessage("CoreException: ", e); //$NON-NLS-1$
@@ -263,7 +220,7 @@ public class AllEntitiesProcessor {
 	}
 
 	public void collectModification(ITextFileBufferManager bufferManager, String fullyQualifiedName,
-			EntityInfo entityInfo) throws CoreException {
+			EntityInfo entityInfo, Map<String, EntityInfo> entities) throws CoreException {
 
 		ChangeStructure cs = new ChangeStructure();
 		cs.fullyQualifiedName = fullyQualifiedName;
@@ -281,6 +238,7 @@ public class AllEntitiesProcessor {
 			ProcessEntityInfo processor = new ProcessEntityInfo();
 			processor.setAnnotationStyle(annotationStyle);
 			processor.setEntityInfo(entityInfo);
+			processor.setEntities(entities);
 			processor.setASTRewrite(rewriter);
 			cu.accept(processor);
 			//
@@ -297,171 +255,23 @@ public class AllEntitiesProcessor {
 	public boolean showRefactoringDialog(final Map<String, EntityInfo> entities, 
 			final ITextFileBufferManager bufferManager) {
 
-		final String wizard_title = JdtUiMessages.AllEntitiesProcessor_header;
+		IHibernateJPAWizardData data = new IHibernateJPAWizardData() {
 
-		Refactoring ref = new Refactoring(){
-
-			@Override
-			public RefactoringStatus checkFinalConditions(IProgressMonitor pm){
-				return RefactoringStatus.create(Status.OK_STATUS);
+			public ITextFileBufferManager getBufferManager() {
+				return bufferManager;
 			}
 
-			@Override
-			public RefactoringStatus checkInitialConditions(IProgressMonitor pm) {
-				return RefactoringStatus.create(Status.OK_STATUS);
+			public Map<String, EntityInfo> getEntities() {
+				return entities;
 			}
 
-			@Override
-			public Change createChange(IProgressMonitor pm){
-
-				final CompositeChange cc = new CompositeChange(""); //$NON-NLS-1$
-				for (int i = 0; i < changes.size(); i++) {
-					ChangeStructure cs = changes.get(i);
-					String change_name = cs.fullyQualifiedName;
-					DocumentChange change = new DocumentChange(change_name, cs.document);
-					change.setEdit(cs.textEdit);
-					cs.change = change;
-					cc.add(change);
-				}
-				cc.markAsSynthetic();
-				return cc;
-			}
-
-			@Override
-			public String getName() {
-				return JdtUiMessages.SaveQueryEditorListener_composite_change_name;
-			}
-		};
-
-		final ModifyListener ml = new ModifyListener() {
-
-			public void modifyText(ModifyEvent e) {
-				int idx = ((Combo)e.getSource()).getSelectionIndex();
-				if (idx == 0 && !getAnnotationStyle().equals(AnnotStyle.FIELDS)) {
-					setAnnotationStyle(AnnotStyle.FIELDS);
-					reCollectModification(bufferManager, entities);
-				}
-				else if (idx == 1 && !getAnnotationStyle().equals(AnnotStyle.GETTERS)) {
-					setAnnotationStyle(AnnotStyle.GETTERS);
-					reCollectModification(bufferManager, entities);
-				}
-				else if (idx == 2 && !getAnnotationStyle().equals(AnnotStyle.AUTO)) {
-					setAnnotationStyle(getAnnotationStylePreference());
-					reCollectModification(bufferManager, entities);
-					setAnnotationStyle(AnnotStyle.AUTO);
-				}
+			public ArrayList<ChangeStructure> getChanges() {
+				return changes;
 			}
 			
 		};
-
-		RefactoringWizard wizard = new RefactoringWizard(ref, RefactoringWizard.DIALOG_BASED_USER_INTERFACE) {
-
-			@Override
-			protected void addUserInputPages() {
-				UserInputWizardPage page = new UserInputWizardPage(wizard_title) {
-					public void createControl(Composite parent) {
-	        		    initializeDialogUnits(parent);
-						Composite container = new Composite(parent, SWT.NULL);
-				        GridLayout layout = new GridLayout();
-				        container.setLayout(layout);
-				        layout.numColumns = 1;
-				        Label label = new Label(container, SWT.NULL);
-				        label.setText(JdtUiMessages.AllEntitiesProcessor_message);
-
-				        TableViewer listViewer = new TableViewer(container, SWT.SINGLE | SWT.H_SCROLL
-								| SWT.V_SCROLL | SWT.BORDER);
-						//listViewer.setComparator(getViewerComparator());
-						Control control = listViewer.getControl();
-						GridData data = new GridData(GridData.FILL_BOTH
-								| GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL);
-						data.heightHint = convertHeightInCharsToPixels(10);
-						control.setLayoutData(data);
-						listViewer.setContentProvider(new IStructuredContentProvider() {
-							public Object[] getElements(Object inputElement) {
-								return entities.values().toArray();
-							}
-
-							public void dispose() {
-
-							}
-
-							public void inputChanged(Viewer viewer, Object oldInput,
-									Object newInput) {
-
-							}
-						});
-
-						listViewer.setLabelProvider(new LabelProvider() {
-
-							private Image classImage;
-
-							{
-								classImage = JavaElementImageProvider.getTypeImageDescriptor(false, false, 0, false).createImage();
-
-							}
-							@Override
-							public String getText(Object element) {
-								EntityInfo info = (EntityInfo) element;
-								return info.getFullyQualifiedName();
-							}
-
-							@Override
-							public Image getImage(Object element) {
-								return classImage;
-							}
-
-							@Override
-							public void dispose() {
-								classImage.dispose();
-								super.dispose();
-							}
-						});
-
-						listViewer.setInput(entities);
-						GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
-	        				.grab(true, true)
-	        				.hint(convertHorizontalDLUsToPixels(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH),
-	        					convertHorizontalDLUsToPixels(2 * IDialogConstants.BUTTON_BAR_HEIGHT)).applyTo(listViewer.getControl());
-						//Button generateChoice = new Button(container, SWT.CHECK);
-						//generateChoice.setText("fdwsdfv");
-						Composite combolabel = new Composite(container, SWT.NULL);
-				        layout = new GridLayout();
-				        combolabel.setLayout(layout);
-				        layout.numColumns = 2;
-						Label labelChoice = new Label(combolabel, SWT.NULL);
-						labelChoice.setText(JdtUiMessages.AllEntitiesProcessor_setup_annotation_generation_preference);
-						Combo generateChoice = new Combo(combolabel, SWT.READ_ONLY);
-						generateChoice.add(JdtUiMessages.AllEntitiesProcessor_annotate_fields);
-						generateChoice.add(JdtUiMessages.AllEntitiesProcessor_annotate_getters);
-						generateChoice.add(JdtUiMessages.AllEntitiesProcessor_auto_select_from_class_preference);
-						int idx = 0;
-						if (getAnnotationStyle().equals(AnnotStyle.FIELDS)) {
-							idx = 0;
-						}
-						else if (getAnnotationStyle().equals(AnnotStyle.GETTERS)) {
-							idx = 1;
-						}
-						else if (getAnnotationStyle().equals(AnnotStyle.AUTO)) {
-							idx = 2;
-						}
-						generateChoice.select(idx);
-						generateChoice.addModifyListener(ml);
-	            		setControl(container);
-					}
-				};
-				addPage(page);
-			}
-
-		};
-
-		wizard.setWindowTitle(wizard_title);
-		wizard.setDefaultPageTitle(wizard_title);
-
-		IWorkbenchWindow win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		RefactoringStarter rStarter = new RefactoringStarter();
-		boolean res = rStarter.activate(wizard, win.getShell(), wizard_title, RefactoringSaveHelper.SAVE_ALL);
-		RefactoringStatus rs = rStarter.getInitialConditionCheckingStatus();
-		return res;
+		HibernateJPAWizard wizard = new HibernateJPAWizard(data, this);
+		return wizard.showWizard();
 	}
 
 	protected void setJavaProject(IJavaProject project) {
