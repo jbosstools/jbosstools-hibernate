@@ -120,15 +120,19 @@ public class JPAMapTest extends TestCase {
 				"test.annotated." + testSelection + ".Passport"); //$NON-NLS-1$ //$NON-NLS-2$
 		ICompilationUnit icu2 = Utils.findCompilationUnit(javaProject,
 				"test.annotated." + testSelection + ".Staff"); //$NON-NLS-1$ //$NON-NLS-2$
+		ICompilationUnit icu3 = Utils.findCompilationUnit(javaProject,
+				"test.annotated." + testSelection + ".FotoXPerson"); //$NON-NLS-1$ //$NON-NLS-2$
 		//ICompilationUnit icu = Utils.findCompilationUnit(javaProject,
 		//		"test.annotated." + testSelection + ".Foto"); //$NON-NLS-1$ //$NON-NLS-2$
 		//ICompilationUnit icu2 = Utils.findCompilationUnit(javaProject,
 		//		"test.annotated." + testSelection + ".Person"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertNotNull(icu);
 		assertNotNull(icu2);
+		assertNotNull(icu3);
 		collector.initCollector(javaProject);
 		collector.collect(icu);
 		collector.collect(icu2);
+		collector.collect(icu3);
 		collector.resolveRelations();
 		processor.modify(javaProject, collector.getMapCUs_Info(), false);
 		//
@@ -137,6 +141,8 @@ public class JPAMapTest extends TestCase {
 		checkItem("Passport"); //$NON-NLS-1$
 		checkItem("Person"); //$NON-NLS-1$
 		checkItem("Staff"); //$NON-NLS-1$
+		checkItem("FotoXPerson"); //$NON-NLS-1$
+		checkItem("PersonXFoto"); //$NON-NLS-1$
 	}
 
 	protected void checkItem(String strCheckItem) {
