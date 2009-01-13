@@ -212,7 +212,8 @@ public class EntityInfo {
 				if (primaryIdName == null) {
 					primaryIdName = name;
 				}
-				else if (primaryIdName.length() > name.length()) {
+				else if (primaryIdName.toLowerCase().indexOf(entityName) == -1 ||
+						primaryIdName.length() > name.length()) {
 					primaryIdName = name;
 				}
 			}
