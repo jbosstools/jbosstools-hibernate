@@ -43,6 +43,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.internal.dialogs.PropertyDialog;
 import org.hibernate.annotations.common.util.StringHelper;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 /**
@@ -146,7 +147,7 @@ public class ConnectionProfileCtrl {
 		 * @param label
 		 */
 		public NewConnectionProfileAction() {
-			super("New...");
+			super(HibernateConsoleMessages.ConnectionProfileCtrl_New);
 		}
 
 		@Override
@@ -201,7 +202,7 @@ public class ConnectionProfileCtrl {
 		 * @param label
 		 */
 		public EditConnectionProfileAction() {
-			super("Edit...");
+			super(HibernateConsoleMessages.ConnectionProfileCtrl_Edit);
 		}
 
 		/**
@@ -269,11 +270,11 @@ public class ConnectionProfileCtrl {
 		combo.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL));
 		
 		buttonNew = new Button(comp, SWT.PUSH);
-		buttonNew.setText("New...");
+		buttonNew.setText(HibernateConsoleMessages.ConnectionProfileCtrl_New);
 		buttonNew.addSelectionListener(action1);
 
 		buttonEdit = new Button(comp, SWT.PUSH);
-		buttonEdit.setText("Edit...");
+		buttonEdit.setText(HibernateConsoleMessages.ConnectionProfileCtrl_Edit);
 		buttonEdit.addSelectionListener(action2);
 
 		updateInput();		

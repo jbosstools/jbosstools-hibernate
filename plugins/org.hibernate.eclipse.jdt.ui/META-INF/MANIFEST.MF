@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Hibernate JDT Integration
+Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.hibernate.eclipse.jdt.ui;singleton:=true
 Bundle-Version: 3.2.0.beta9
 Bundle-Activator: org.hibernate.eclipse.jdt.ui.Activator
-Bundle-Vendor: JBoss, a division of Red Hat
+Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.jdt.ui,
  org.eclipse.jdt.core,

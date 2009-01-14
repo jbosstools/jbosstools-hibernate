@@ -434,6 +434,8 @@ public class HibernateConsoleMessages extends NLS {
 	public static String ConsoleConfigurationMainTab_create_new;
 	public static String ConsoleConfigurationMainTab_create_new_properties_file;
 	public static String ConsoleConfigurationMainTab_create_property_file;
+
+	public static String ConsoleConfigurationMainTab_DatabaseConnection;
 	public static String ConsoleConfigurationMainTab_do_you_want_to_create_new_cfgxml;
 	public static String ConsoleConfigurationMainTab_do_you_want_to_create_new_property_file;
 	public static String ConsoleConfigurationMainTab_does_not_exist;
@@ -521,6 +523,12 @@ public class HibernateConsoleMessages extends NLS {
 
 	public static String BasicWorkbenchAdapter_error_while_opening_configuration;
 	
+	public static String ConnectionProfileCtrl_Edit;
+
+	public static String ConnectionProfileCtrl_HibernateConfiguredConnection;
+
+	public static String ConnectionProfileCtrl_New;
+
 	public static String ConnectionProfileRenameChange_update_connection_profile_name;
 	public static String ConnectionProfileRenameParticipant_launch_configurations_updates;
 	//

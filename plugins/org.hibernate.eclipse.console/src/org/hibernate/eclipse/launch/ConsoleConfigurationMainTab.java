@@ -96,9 +96,9 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 	}
 
 	private void createDBConnectConfig(Composite container) {
-		Group group = SWTFactory.createGroup(container, "Database connection:", 3, 2, GridData.FILL_HORIZONTAL);
+		Group group = SWTFactory.createGroup(container, HibernateConsoleMessages.ConsoleConfigurationMainTab_DatabaseConnection, 3, 2, GridData.FILL_HORIZONTAL);
 		
-		connectionProfileCtrl = new ConnectionProfileCtrl(group, 1, "");  //$NON-NLS-1$//$NON-NLS-2$
+		connectionProfileCtrl = new ConnectionProfileCtrl(group, 1, ""); //$NON-NLS-1$
 		connectionProfileCtrl.addModifyListener(getChangeListener());
 		
 	}

@@ -8,19 +8,19 @@
       <perspective
             icon="icons/hibernate_small_icon.gif"
             class="org.hibernate.eclipse.console.HibernateConsolePerspectiveFactory"
-            name="Hibernate"
+            name="%perspective.name"
             id="org.hibernate.eclipse.console.HibernateConsolePerspective"/>
    </extension>
    <extension
          point="org.eclipse.ui.views">
       <category
-            name="Hibernate"
+            name="%ViewCategory_Hibernate"
             id="hibernatecategory"/>
      <view
             icon="icons/hibernate_small_icon.gif"
             class="org.hibernate.eclipse.console.views.KnownConfigurationsView"
             category="hibernatecategory"
-            name="Hibernate Configurations"
+            name="%ViewName_HibernateConfigurations"
             id="org.hibernate.eclipse.console.views.KnownConfigurationsView"/>
    <!--   <view
             category="hibernatecategory"
@@ -38,20 +38,20 @@
             icon="icons/hibernate_small_icon.gif"
             class="org.hibernate.eclipse.console.views.QueryPageTabView"
             category="hibernatecategory"
-            name="Hibernate Query Result"
+            name="%ViewName_HibernateQueryResult"
             id="org.hibernate.eclipse.console.views.QueryPageTabView"/>
       <view
             category="hibernatecategory"
             class="org.hibernate.eclipse.console.views.DynamicSQLPreviewView"
             icon="icons/images/hibernate_small_icon.jpg"
             id="org.hibernate.eclipse.console.views.DynamicSQLPreviewView"
-            name="Hibernate Dynamic SQL Preview"/>
+            name="%ViewName_HibernateDynamicSQLPreview"/>
       <view
             category="hibernatecategory"
             class="org.hibernate.eclipse.console.views.QueryParametersView"
             icon="icons/images/parameter.gif"
             id="org.hibernate.eclipse.console.views.QueryParametersView"
-            name="Query Parameters"/>
+            name="%ViewName_QueryParameters"/>
 
    </extension>
    <extension
@@ -624,7 +624,7 @@
       <page
             class="org.hibernate.eclipse.hqleditor.preferences.HQLEditorPreferencePage"
             id="org.hibernate.eclipse.hqleditor.preferences.HQLEditorPreferencePage"
-            name="HQL editor">
+            name="%Preference_Page_HQL">
          <keywordReference id="org.hibernate.eclipse.hqleditor.preferencekeywords"/>
       </page>
    </extension>
@@ -771,7 +771,7 @@
             category="hibernatecategory"
             class="org.hibernate.eclipse.console.views.navigator.KnownConfigurationsNavigator"
             id="org.hibernate.eclipse.navigator.KnownConfigurationsViewer"
-            name="Hibernate Configurations"/>
+            name="%ViewName_HibernateConfigurations"/>
    </extension>
    <extension
          point="org.eclipse.ui.navigator.viewer">
