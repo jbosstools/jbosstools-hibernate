@@ -10,10 +10,10 @@
   ******************************************************************************/
 package org.hibernate.eclipse.jdt.ui.internal.jpa.actions;
 
+import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
-import org.eclipse.core.commands.IHandlerListener;
+import org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditor;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IEditorActionDelegate;
@@ -21,15 +21,18 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
+import org.hibernate.eclipse.jdt.ui.Activator;
 
 /**
  * Main menu action delegate for "Generate Hibernate/JPA annotations..."
  *
  * @author Vitali
  */
-public class JPAMapToolActionDelegate implements IObjectActionDelegate,
-	IEditorActionDelegate, IViewActionDelegate, IHandler {
+public class JPAMapToolActionDelegate extends AbstractHandler implements IObjectActionDelegate,
+	IEditorActionDelegate, IViewActionDelegate {
 
 	public JPAMapToolActor actor = JPAMapToolActor.getInstance();
 
@@ -54,30 +57,29 @@ public class JPAMapToolActionDelegate implements IObjectActionDelegate,
 		}
 	}
 
-	public void addHandlerListener(IHandlerListener handlerListener) {
-	}
-
-	public void dispose() {
-	}
-
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		actor.updateSelected();
 		//actor.updateOpen();
 		return null;
 	}
 
-	public boolean isEnabled() {
-		return (actor.getSelectedSourceSize() > 0);
-	}
-
-	public boolean isHandled() {
-		return true;
-	}
-
-	public void removeHandlerListener(IHandlerListener handlerListener) {
-	}
-
 	public void init(IViewPart view) {
 		view = null;
+	}
+	public boolean isCUSelected() {
+		IWorkbench workbench = Activator.getDefault().getWorkbench();
+		IWorkbenchPage page = workbench.getActiveWorkbenchWindow().getActivePage();
+		IEditorPart editor = page.getActiveEditor();
+		if (editor instanceof CompilationUnitEditor) {
+			return true;
+		}
+		return false;
+	}
+
+	public void setEnabled(Object evaluationContext) {
+		boolean enable = isCUSelected();
+		actor.setSelection(null);
+		actor.clearSelectionCU();
+		setBaseEnabled(enable);
 	}
 }
