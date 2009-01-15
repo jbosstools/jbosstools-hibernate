@@ -48,7 +48,7 @@ public class Foto {
 		this.id = id;
 	}
 
-	@OneToOne(mappedBy="foto")
+	@OneToOne()
 	public Person getPerson() {
 		return person;
 	}

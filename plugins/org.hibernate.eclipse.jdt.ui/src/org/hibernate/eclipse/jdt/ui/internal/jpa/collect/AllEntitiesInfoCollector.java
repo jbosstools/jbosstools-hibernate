@@ -152,8 +152,43 @@ public class AllEntitiesInfoCollector {
 	
 	public void updateOwner(ProcessItem pi) {
 		if (pi.refEntityInfo.refType == RefType.ONE2ONE) {
-			pi.refEntityInfo.owner = OwnerType.UNDEF;
-			pi.refEntityInfo2.owner = OwnerType.UNDEF;
+			//pi.refEntityInfo.owner = OwnerType.UNDEF;
+			//pi.refEntityInfo2.owner = OwnerType.UNDEF;
+			if ((pi.refEntityInfo.owner == OwnerType.UNDEF && 
+					pi.refEntityInfo2.owner == OwnerType.UNDEF) ||
+					(pi.refEntityInfo.owner == OwnerType.YES &&
+					pi.refEntityInfo2.owner == OwnerType.YES) ||
+					(pi.refEntityInfo.owner == OwnerType.NO &&
+					pi.refEntityInfo2.owner == OwnerType.NO))
+			{
+				// this is the ambiguous case
+				// TODO: this is temporary solution for GA
+				// select owner in lexicographical order
+				if (pi.refEntityInfo.fullyQualifiedName.compareTo(
+						pi.refEntityInfo2.fullyQualifiedName) > 0) {
+					pi.refEntityInfo.owner = OwnerType.YES;
+					pi.refEntityInfo2.owner = OwnerType.NO;
+				}
+				else {
+					pi.refEntityInfo.owner = OwnerType.NO;
+					pi.refEntityInfo2.owner = OwnerType.YES;
+				}
+			}
+			else if (pi.refEntityInfo.owner == OwnerType.UNDEF || 
+					pi.refEntityInfo2.owner == OwnerType.UNDEF) {
+				if (pi.refEntityInfo.owner == OwnerType.YES) {
+					pi.refEntityInfo2.owner = OwnerType.NO;
+				}
+				else if (pi.refEntityInfo.owner == OwnerType.NO) {
+					pi.refEntityInfo2.owner = OwnerType.YES;
+				}
+				else if (pi.refEntityInfo2.owner == OwnerType.YES) {
+					pi.refEntityInfo.owner = OwnerType.NO;
+				}
+				else if (pi.refEntityInfo2.owner == OwnerType.NO) {
+					pi.refEntityInfo.owner = OwnerType.YES;
+				}
+			}
 		}
 		else if (pi.refEntityInfo.refType == RefType.ONE2MANY) {
 			pi.refEntityInfo.owner = OwnerType.YES;
@@ -164,8 +199,43 @@ public class AllEntitiesInfoCollector {
 			pi.refEntityInfo2.owner = OwnerType.YES;
 		}
 		else if (pi.refEntityInfo.refType == RefType.MANY2MANY) {
-			pi.refEntityInfo.owner = OwnerType.UNDEF;
-			pi.refEntityInfo2.owner = OwnerType.UNDEF;
+			//pi.refEntityInfo.owner = OwnerType.UNDEF;
+			//pi.refEntityInfo2.owner = OwnerType.UNDEF;
+			if ((pi.refEntityInfo.owner == OwnerType.UNDEF && 
+					pi.refEntityInfo2.owner == OwnerType.UNDEF) ||
+					(pi.refEntityInfo.owner == OwnerType.YES &&
+					pi.refEntityInfo2.owner == OwnerType.YES) ||
+					(pi.refEntityInfo.owner == OwnerType.NO &&
+					pi.refEntityInfo2.owner == OwnerType.NO))
+			{
+				// this is the ambiguous case
+				// TODO: this is temporary solution for GA
+				// select owner in lexicographical order
+				if (pi.refEntityInfo.fullyQualifiedName.compareTo(
+						pi.refEntityInfo2.fullyQualifiedName) > 0) {
+					pi.refEntityInfo.owner = OwnerType.YES;
+					pi.refEntityInfo2.owner = OwnerType.NO;
+				}
+				else {
+					pi.refEntityInfo.owner = OwnerType.NO;
+					pi.refEntityInfo2.owner = OwnerType.YES;
+				}
+			}
+			else if (pi.refEntityInfo.owner == OwnerType.UNDEF || 
+					pi.refEntityInfo2.owner == OwnerType.UNDEF) {
+				if (pi.refEntityInfo.owner == OwnerType.YES) {
+					pi.refEntityInfo2.owner = OwnerType.NO;
+				}
+				else if (pi.refEntityInfo.owner == OwnerType.NO) {
+					pi.refEntityInfo2.owner = OwnerType.YES;
+				}
+				else if (pi.refEntityInfo2.owner == OwnerType.YES) {
+					pi.refEntityInfo.owner = OwnerType.NO;
+				}
+				else if (pi.refEntityInfo2.owner == OwnerType.NO) {
+					pi.refEntityInfo.owner = OwnerType.YES;
+				}
+			}
 		}
 	}
 

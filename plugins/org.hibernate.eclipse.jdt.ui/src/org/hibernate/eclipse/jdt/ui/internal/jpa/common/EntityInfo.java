@@ -354,6 +354,9 @@ public class EntityInfo {
 				rei.annotated = annotated;
 				rei.refType = refType;
 				rei.mappedBy = mappedBy;
+				if (rei.mappedBy != null) {
+					rei.owner = OwnerType.YES;
+				}
 				rei.resolvedAnnotationName = resolvedAnnotationName;
 			}
 			else {

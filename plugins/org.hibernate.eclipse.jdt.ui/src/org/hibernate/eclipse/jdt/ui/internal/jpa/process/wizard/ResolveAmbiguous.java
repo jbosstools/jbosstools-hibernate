@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
+import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.OwnerType;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefEntityInfo;
@@ -50,7 +51,7 @@ public class ResolveAmbiguous extends UserInputWizardPage {
 	protected IHibernateJPAWizardParams params;
 
 	protected final int COLUMN_CLASS = 0;
-	protected final int COLUMN_ASSOCIATION = 1;
+	protected final int COLUMN_PROPERTY = 1;
 	protected final int COLUMN_TYPE = 2;
 	protected final int COLUMN_RELATED = 3;
 	protected final int COLUMN_OWNER = 4;
@@ -98,15 +99,15 @@ public class ResolveAmbiguous extends UserInputWizardPage {
 				ti.setData(rei);
 				ti.setText(COLUMN_CLASS, entry.getKey());
 				String shortName = getShortName(rei.fullyQualifiedName);
-				ti.setText(COLUMN_ASSOCIATION, shortName + " " + entryRef.getKey()); //$NON-NLS-1$
-				ti.setText(COLUMN_TYPE, rei.refType.toString());
+				ti.setText(COLUMN_PROPERTY, shortName + " " + entryRef.getKey()); //$NON-NLS-1$
+				ti.setText(COLUMN_TYPE, Utils.refTypeToStr(rei.refType));
 				if (null != rei.mappedBy) {
 					ti.setText(COLUMN_RELATED, rei.mappedBy);
 				}
 				else {
 					ti.setText(COLUMN_RELATED, JdtUiMessages.ResolveAmbiguous_empty);
 				}
-				ti.setText(COLUMN_OWNER, rei.owner.toString());
+				ti.setText(COLUMN_OWNER, Utils.ownerTypeToStr(rei.owner));
 			}
 		}
 		//
@@ -148,22 +149,12 @@ public class ResolveAmbiguous extends UserInputWizardPage {
 			RefEntityInfo rei = (RefEntityInfo)ti.getData();
 			RefType oldVal = rei.refType;
 			OwnerType oldVal2 = rei.owner;
-			if (str.equalsIgnoreCase(RefType.ONE2ONE.toString())) {
-				rei.refType = RefType.ONE2ONE;
-			}
-			else if (str.equalsIgnoreCase(RefType.ONE2MANY.toString())) {
-				rei.refType = RefType.ONE2MANY;
+			rei.refType = Utils.strToRefType(str);
+			if (rei.refType == RefType.ONE2MANY) {
 				rei.owner = OwnerType.YES;
 			}
-			else if (str.equalsIgnoreCase(RefType.MANY2ONE.toString())) {
-				rei.refType = RefType.MANY2ONE;
+			else if (rei.refType == RefType.MANY2ONE) {
 				rei.owner = OwnerType.NO;
-			}
-			else if (str.equalsIgnoreCase(RefType.MANY2MANY.toString())) {
-				rei.refType = RefType.MANY2MANY;
-			}
-			else if (str.equalsIgnoreCase(RefType.UNDEF.toString())) {
-				rei.refType = RefType.UNDEF;
 			}
 			if (oldVal != rei.refType || oldVal2 != rei.owner) {
 				RefEntityInfo rei2 = findMappedRefEntityInfo(rei);
@@ -211,12 +202,12 @@ public class ResolveAmbiguous extends UserInputWizardPage {
 		Color bkgnd = table.getBackground();
 		comboType.setBackground(bkgnd);
 		RefEntityInfo rei = (RefEntityInfo)item.getData();
-		comboType.add(RefType.ONE2ONE.toString());
-		comboType.add(RefType.ONE2MANY.toString());
-		comboType.add(RefType.MANY2ONE.toString());
-		comboType.add(RefType.MANY2MANY.toString());
-		comboType.add(RefType.UNDEF.toString());
-		comboType.setText(rei.refType.toString());
+		comboType.add(Utils.refTypeToStr(RefType.ONE2ONE));
+		comboType.add(Utils.refTypeToStr(RefType.ONE2MANY));
+		comboType.add(Utils.refTypeToStr(RefType.MANY2ONE));
+		comboType.add(Utils.refTypeToStr(RefType.MANY2MANY));
+		comboType.add(Utils.refTypeToStr(RefType.UNDEF));
+		comboType.setText(Utils.refTypeToStr(rei.refType));
 		comboType.addModifyListener(editorTypeModifyListener);
 		//comboType.selectAll();
 		comboType.setFocus();
@@ -291,15 +282,7 @@ public class ResolveAmbiguous extends UserInputWizardPage {
 			TableItem ti = editorOwner.getItem();
 			RefEntityInfo rei = (RefEntityInfo)ti.getData();
 			OwnerType oldVal = rei.owner;
-			if (str.equalsIgnoreCase(OwnerType.YES.toString())) {
-				rei.owner = OwnerType.YES;
-			}
-			else if (str.equalsIgnoreCase(OwnerType.NO.toString())) {
-				rei.owner = OwnerType.NO;
-			}
-			else if (str.equalsIgnoreCase(OwnerType.UNDEF.toString())) {
-				rei.owner = OwnerType.UNDEF;
-			}
+			rei.owner = Utils.strToOwnerType(str);
 			if (oldVal != rei.owner) {
 				RefEntityInfo rei2 = findMappedRefEntityInfo(rei);
 				// firstly search
@@ -364,9 +347,9 @@ public class ResolveAmbiguous extends UserInputWizardPage {
 		comboOwner.setEditable(false);
 		Color bkgnd = table.getBackground();
 		comboOwner.setBackground(bkgnd);
-		comboOwner.add(OwnerType.YES.toString());
-		comboOwner.add(OwnerType.NO.toString());
-		comboOwner.setText(rei.owner.toString());
+		comboOwner.add(Utils.ownerTypeToStr(OwnerType.YES));
+		comboOwner.add(Utils.ownerTypeToStr(OwnerType.NO));
+		comboOwner.setText(Utils.ownerTypeToStr(rei.owner));
 		comboOwner.addModifyListener(editorOwnerModifyListener);
 		editorOwner.setEditor(comboOwner, item, COLUMN_OWNER);
 	}
@@ -389,14 +372,14 @@ public class ResolveAmbiguous extends UserInputWizardPage {
 			return;
 		}
 		RefEntityInfo rei = (RefEntityInfo)ti.getData();
-		ti.setText(COLUMN_TYPE, rei.refType.toString());
+		ti.setText(COLUMN_TYPE, Utils.refTypeToStr(rei.refType));
 		if (null != rei.mappedBy) {
 			ti.setText(COLUMN_RELATED, rei.mappedBy);
 		}
 		else {
 			ti.setText(COLUMN_RELATED, JdtUiMessages.ResolveAmbiguous_empty);
 		}
-		ti.setText(COLUMN_OWNER, rei.owner.toString());
+		ti.setText(COLUMN_OWNER, Utils.ownerTypeToStr(rei.owner));
 	}
 
 	protected void createTableColumns(Table table) {
@@ -406,17 +389,17 @@ public class ResolveAmbiguous extends UserInputWizardPage {
 		column.setText(JdtUiMessages.ResolveAmbiguous_column_Class);
 		column.setWidth(200);
 
-		column = new TableColumn(table, SWT.LEFT, COLUMN_ASSOCIATION);
-		column.setText(JdtUiMessages.ResolveAmbiguous_column_Association);
-		column.setWidth(100);
+		column = new TableColumn(table, SWT.LEFT, COLUMN_PROPERTY);
+		column.setText(JdtUiMessages.ResolveAmbiguous_column_Property);
+		column.setWidth(140);
 
 		column = new TableColumn(table, SWT.LEFT, COLUMN_TYPE);
 		column.setText(JdtUiMessages.ResolveAmbiguous_column_Type);
-		column.setWidth(80);
+		column.setWidth(60);
 
 		column = new TableColumn(table, SWT.LEFT, COLUMN_RELATED);
 		column.setText(JdtUiMessages.ResolveAmbiguous_column_Related);
-		column.setWidth(70);
+		column.setWidth(80);
 
 		column = new TableColumn(table, SWT.LEFT, COLUMN_OWNER);
 		column.setText(JdtUiMessages.ResolveAmbiguous_column_Owner);
@@ -468,7 +451,7 @@ public class ResolveAmbiguous extends UserInputWizardPage {
 			if (!ti.getText(COLUMN_CLASS).equals(rei2.fullyQualifiedName)) {
 				continue;
 			}
-			String fieldId1 = getFieldId(ti.getText(COLUMN_ASSOCIATION));
+			String fieldId1 = getFieldId(ti.getText(COLUMN_PROPERTY));
 			String fieldId2 = ti.getText(COLUMN_RELATED);
 			if (fieldId2.equals(rei1.mappedBy) && fieldId1.equals(rei2.mappedBy)) {
 				tiRes = ti;

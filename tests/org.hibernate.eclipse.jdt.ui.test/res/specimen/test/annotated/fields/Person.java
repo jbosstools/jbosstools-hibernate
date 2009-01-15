@@ -27,7 +27,7 @@ public class Person {
 	@OneToMany(mappedBy="documentOwner")
 	protected Set<Document> documents;
 	
-	@OneToOne(mappedBy="person")
+	@OneToOne()
 	protected Foto foto;
 
 	protected Set someTestSet;

@@ -24,7 +24,6 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
-import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 /**
  * Compilation unit common functions
@@ -103,4 +102,56 @@ public class Utils {
 		return res;
 	}
 
+	static public String refTypeToStr(RefType rt) {
+		if (rt == RefType.ONE2ONE) {
+			return "1-to-1"; //$NON-NLS-1$
+		}
+		else if (rt == RefType.ONE2MANY) {
+			return "1-to-n"; //$NON-NLS-1$
+		}
+		else if (rt == RefType.MANY2ONE) {
+			return "n-to-1"; //$NON-NLS-1$
+		}
+		else if (rt == RefType.MANY2MANY) {
+			return "n-to-n"; //$NON-NLS-1$
+		}
+		return "undef"; //$NON-NLS-1$
+	}
+
+	static public RefType strToRefType(String str) {
+		if ("1-to-1".equals(str)) { //$NON-NLS-1$
+			return RefType.ONE2ONE;
+		}
+		else if ("1-to-n".equals(str)) { //$NON-NLS-1$
+			return RefType.ONE2MANY;
+		}
+		else if ("n-to-1".equals(str)) { //$NON-NLS-1$
+			return RefType.MANY2ONE;
+		}
+		else if ("n-to-n".equals(str)) { //$NON-NLS-1$
+			return RefType.MANY2MANY;
+		}
+		return RefType.UNDEF;
+	}
+
+	static public String ownerTypeToStr(OwnerType ot) {
+		if (ot == OwnerType.YES) {
+			return "yes"; //$NON-NLS-1$
+		}
+		else if (ot == OwnerType.NO) {
+			return "no"; //$NON-NLS-1$
+		}
+		return "undef"; //$NON-NLS-1$
+	}
+
+	static public OwnerType strToOwnerType(String str) {
+		str = str.toLowerCase();
+		if ("yes".equals(str)) { //$NON-NLS-1$
+			return OwnerType.YES;
+		}
+		else if ("no".equals(str)) { //$NON-NLS-1$
+			return OwnerType.NO;
+		}
+		return OwnerType.UNDEF;
+	}
 }

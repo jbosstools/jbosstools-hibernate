@@ -44,8 +44,10 @@ public class HibernateJPAWizard extends RefactoringWizard {
 	protected void addUserInputPages() {
 		UserInputWizardPage page = new EntitiesList(wizard_title, data, params);
 		addPage(page);
+		/** /
 		UserInputWizardPage page2 = new ResolveAmbiguous(wizard_title, data, params);
 		addPage(page2);
+		/**/
 	}
 
 	public HibernateJPARefactoring getHibernateJPARefactoring() {
