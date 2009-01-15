@@ -71,15 +71,16 @@
                     </not> 
                 </visibleWhen> 
             </command> 
-        </menuContribution> 
-        <menuContribution locationURI="menu:sourceMenuId?after=additions"> 
+        </menuContribution>
+        <!-- next section will show Hibernate/JPA menu item in case of active XML editor --> 
+        <!--<menuContribution locationURI="menu:sourceMenuId?after=additions"> 
             <command commandId="org.hibernate.eclipse.jdt.ui.run_jpaaction" 
                 id="org.hibernate.eclipse.jdt.ui.run_jpaaction1" style="push"> 
                 <visibleWhen checkEnabled="false"> 
                     <reference definitionId="org.eclipse.wst.sse.ui.sseActiveContext.definition"></reference> 
                 </visibleWhen> 
             </command> 
-        </menuContribution> 
+        </menuContribution>--> 
     </extension> 
     <extension point="org.eclipse.ui.popupMenus">
 		<!-- java editor context menu -->
