@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Hibernate Jdt Core
+Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.hibernate.jpt.core;singleton:=true
 Bundle-Version: 1.0.0
 Require-Bundle: 
@@ -15,9 +15,10 @@ Require-Bundle:
  org.eclipse.emf.ecore;bundle-version="2.4.0",
  org.eclipse.jdt.core;bundle-version="3.4.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Bundle-Vendor: JBoss, a division of Red Hat
+Bundle-Vendor: %Bundle-Vendor.0
 Export-Package: org.jboss.tools.hibernate.jpt.core.internal,
  org.jboss.tools.hibernate.jpt.core.internal.context,
  org.jboss.tools.hibernate.jpt.core.internal.context.basic
+Bundle-Localization: plugin
 
 

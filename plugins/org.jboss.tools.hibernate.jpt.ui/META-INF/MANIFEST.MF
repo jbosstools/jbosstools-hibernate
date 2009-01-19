@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Hibernate Jdt UI
+Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.hibernate.jpt.ui;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin
@@ -20,7 +20,8 @@ Require-Bundle:
  org.jboss.tools.hibernate.jpt.core;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Bundle-Vendor: JBoss, a division of Red Hat
+Bundle-Vendor: %Bundle-Vendor.0
 Export-Package: org.jboss.tools.hibernate.jpt.ui,
  org.jboss.tools.hibernate.jpt.ui.internal.platform,
  org.jboss.tools.hibernate.jpt.ui.wizard
+Bundle-Localization: plugin
