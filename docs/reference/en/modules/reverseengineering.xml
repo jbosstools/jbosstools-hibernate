@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<chapter id="reverseengineering" role="updated">
+<chapter id="reverseengineering">
   <title>Controlling reverse engineering</title>
 
   <para>When using the <emphasis>
@@ -33,7 +33,7 @@
       to a fully qualified classname.</para>
   </section>
 
-  <section id="hibernaterevengxmlfile" role="updated">
+  <section id="hibernaterevengxmlfile">
     <title>hibernate.reveng.xml file</title>
 
     <para>To have fine control over the process a <emphasis>
