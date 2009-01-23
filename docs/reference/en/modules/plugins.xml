@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="plugins">
+<chapter id="plugins" role="updated">
   <title>Eclipse Plugins</title>
 
   <para>This chapter will introduce you to the functionality that <property>Hibernate
@@ -622,7 +622,7 @@
     </figure>
   </section>
 
-  <section id="refeng_codegen">
+  <section id="refeng_codegen" role="updated">
     <title>Reverse Engineering and Code Generation</title>
 
     <para>A &quot;click-and-generate&quot; reverse engineering and code generation facility
