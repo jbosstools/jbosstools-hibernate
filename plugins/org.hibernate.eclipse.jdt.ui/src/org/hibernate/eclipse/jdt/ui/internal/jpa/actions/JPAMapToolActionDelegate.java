@@ -68,7 +68,13 @@ public class JPAMapToolActionDelegate extends AbstractHandler implements IObject
 	}
 	public boolean isCUSelected() {
 		IWorkbench workbench = Activator.getDefault().getWorkbench();
+		if (workbench == null || workbench.getActiveWorkbenchWindow() == null) {
+			return false;
+		}
 		IWorkbenchPage page = workbench.getActiveWorkbenchWindow().getActivePage();
+		if (page == null) {
+			return false;
+		}
 		IEditorPart editor = page.getActiveEditor();
 		if (editor instanceof CompilationUnitEditor) {
 			return true;
