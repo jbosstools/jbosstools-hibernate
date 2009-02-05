@@ -43,7 +43,7 @@ public class LoadConsoleCFGCompletionProposal implements ICompletionProposal {
 			try {
 				consoleConfiguration.build();
 			} catch (HibernateException he) {
-				HibernateConsolePlugin.getDefault().showError(HibernateConsolePlugin.getDefault().getShell(), HibernateConsoleMessages.LoadConsoleCFGCompletionProposal_could_not_load_configuration + consoleConfiguration.getName(), he);
+				HibernateConsolePlugin.getDefault().showError(HibernateConsolePlugin.getDefault().getShell(), HibernateConsoleMessages.LoadConsoleCFGCompletionProposal_could_not_load_configuration + ' ' + consoleConfiguration.getName(), he);
 			}
 		}
 	}
