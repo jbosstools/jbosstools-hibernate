@@ -728,13 +728,14 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 
 
 		// hard-coded checks: this should be delegated to extension point that knows about the different exporters.
-		Iterator iterator = observableFactoryList.getList().iterator();
+		//Iterator iterator = observableFactoryList.getList().iterator(); // check all exporters
+		Iterator iterator = selectedExporters.iterator(); // check only selected exporters
 		while (iterator.hasNext()) {
 			ExporterFactory ef = (ExporterFactory) iterator.next();
 			String str = (String) ef.getProperties().get("outputdir"); //$NON-NLS-1$
 			String msg = null;
 			if(str!=null) {
-				msg = PathHelper.checkDirectory(str, HibernateConsoleMessages.ExporterSettingsTab_output_directory_for + " " + ef.getExporterDefinition().getDescription(), false); //$NON-NLS-1$
+				msg = PathHelper.checkDirectory(str, HibernateConsoleMessages.ExporterSettingsTab_output_directory_for + " " + ef.getExporterDefinition().getDescription(), true); //$NON-NLS-1$
 				if(msg!=null) {
 					updateStatus(msg);
 					return;
