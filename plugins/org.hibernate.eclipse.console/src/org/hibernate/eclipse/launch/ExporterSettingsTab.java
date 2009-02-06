@@ -48,6 +48,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.ui.JavaElementLabelProvider;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogPage;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.AbstractTableViewer;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -70,6 +71,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -79,6 +81,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
@@ -844,6 +848,66 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 							HibernateConsoleMessages.ExporterSettingsTab_problem_when_reading_hibernate_tools_launch_configuration,
 							ce );
 		}
+	}
+
+	public void setupPropertyColumsWidth() {
+
+		Control control = propertySheet.getControl();
+		if (control instanceof Tree && !control.isDisposed()) {
+			Tree tree = (Tree)control;
+			TreeColumn[] columns = tree.getColumns();
+			IPreferenceStore preferenceStore = HibernateConsolePlugin.getDefault().getPreferenceStore();
+			String tmpName = ExporterSettingsTab.class.toString();
+			int colWidth_0 = preferenceStore.getInt(tmpName + "col_0"); //$NON-NLS-1$
+			int colWidth_1 = preferenceStore.getInt(tmpName + "col_1"); //$NON-NLS-1$
+			if (colWidth_0 > 0 && colWidth_1 > 0) {
+				columns[0].setWidth(colWidth_0);
+				columns[1].setWidth(colWidth_1);
+			}
+			else {
+				Rectangle area = tree.getClientArea();
+				if (area.width > 0) {
+					int width = area.width * 40 / 100;
+					if (width < 2) {
+						width = 2;
+					}
+					columns[0].setWidth(width);
+					width = area.width - columns[0].getWidth() - 4;
+					if (width < 2) {
+						width = 2;
+					}
+					columns[1].setWidth(width);
+				}
+			}
+		}	       
+	}
+
+	public void storePropertyColumsWidth() {
+
+		Control control = propertySheet.getControl();
+		if (control instanceof Tree && !control.isDisposed()) {
+			Tree tree = (Tree)control;
+			IPreferenceStore preferenceStore = HibernateConsolePlugin.getDefault().getPreferenceStore();
+			TreeColumn[] columns = tree.getColumns();
+			String tmpName = ExporterSettingsTab.class.toString();
+			preferenceStore.setValue(tmpName + "col_0", columns[0].getWidth()); //$NON-NLS-1$
+			preferenceStore.setValue(tmpName + "col_1", columns[1].getWidth()); //$NON-NLS-1$
+		}
+	}
+
+	public void activated(ILaunchConfigurationWorkingCopy workingCopy) {
+		super.activated(workingCopy);
+		setupPropertyColumsWidth();
+	}
+
+	public void dispose() {
+		storePropertyColumsWidth();
+		super.dispose();
+	}
+
+	public void deactivated(ILaunchConfigurationWorkingCopy workingCopy) {
+		storePropertyColumsWidth();
+		super.deactivated(workingCopy);
 	}
 
 	private void refreshPropertySheet() {
