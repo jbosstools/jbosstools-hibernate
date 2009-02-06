@@ -358,6 +358,13 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
         }
     }
 
+	public boolean isValid(ILaunchConfiguration launchConfig) {
+		if (getErrorMessage() == null) {
+			return true;
+		}
+		return false;
+	}
+
     private void updateStatus(String message) {
         setErrorMessage(message);
         updateLaunchConfigurationDialog();
