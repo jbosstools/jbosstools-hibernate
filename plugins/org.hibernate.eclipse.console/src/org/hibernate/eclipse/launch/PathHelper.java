@@ -103,9 +103,14 @@ public class PathHelper {
 
 		IPath path = pathOrNull(resolve(strpath));
 
-		if (checkFilesystem) {
-			if (path != null && new File(path.toOSString()).exists()) {
-				return null;
+		if (checkFilesystem && path != null) {
+			File file = new File(path.toOSString());
+			if (file.exists()) {
+				if (file.isDirectory()) {
+					return null;
+				}
+				String out = NLS.bind(HibernateConsoleMessages.PathHelper_not_directory, path);
+				return out;
 			}
 		}
 
