@@ -401,7 +401,7 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 					return false;
 				}
 				JpaDataSource ds = jpaProject.getDataSource();
-				if (ds == null || "".equals(ds.getConnectionProfileName())){
+				if (ds == null || "".equals(ds.getConnectionProfileName())){ //$NON-NLS-1$
 					setErrorMessage(NLS.bind(HibernateConsoleMessages.ConsoleConfigurationMainTab_cp_not_specified, getProjectName()));
 					return false;
 				}
@@ -415,7 +415,7 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		
 		if (ConnectionProfileCtrl.JPA_CONNECTIN_NAME.equals(cpName)){
 			if (!jpaMode.getSelection()){
-				String out = NLS.bind("{0} mode must be used for jpa project configured connection", jpaMode.getText());
+				String out = NLS.bind(HibernateConsoleMessages.ConsoleConfigurationMainTab_mode_must_be_used, jpaMode.getText());
 				setErrorMessage(out);
 				return false;
 			}

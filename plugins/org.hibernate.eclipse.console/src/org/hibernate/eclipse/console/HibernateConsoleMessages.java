@@ -461,6 +461,7 @@ public class HibernateConsoleMessages extends NLS {
 	public static String ConsoleConfigurationMainTab_project_must_be_jpa;
 	public static String ConsoleConfigurationMainTab_cp_not_specified;
 	public static String ConsoleConfigurationMainTab_project_must_be_set;
+	public static String ConsoleConfigurationMainTab_mode_must_be_used;
 	public static String ConsoleConfigurationMappingsTab_add_hbm_xml_file;
 	public static String ConsoleConfigurationMappingsTab_add_hibernate_mapping_file;
 	public static String ConsoleConfigurationMappingsTab_additional_mapping_files;
@@ -507,6 +508,7 @@ public class HibernateConsoleMessages extends NLS {
 	public static String GeneralExceptionStatusHandler_generating_code;
 	public static String PathHelper_does_not_exist;
 	public static String PathHelper_has_invalid_variable_references;
+	public static String PathHelper_not_directory;
 	public static String PathHelper_has_to_be_folder_or_project;
 	public static String PathHelper_project_for_is_closed;
 	//
