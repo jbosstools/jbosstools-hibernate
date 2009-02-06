@@ -33,6 +33,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.SelectionListenerAction;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
+import org.hibernate.EntityMode;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -186,16 +187,18 @@ public class OpenMappingAction extends SelectionListenerAction {
 				IRegion propRegion = null;
 				try {
 					propRegion = findAdapter.find(parentRegion.getOffset()+parentRegion.getLength(), generatePattern(compositeProperty), true, true, false, true);
-					if (propRegion == null){
+					if (propRegion == null && parentProperty.isComposite()
+							&& parentProperty.getPersistentClass().getIdentifierProperty() == parentProperty){
 						// try to use key-property
-						String pattern = generatePattern(compositeProperty).replaceFirst("property", "key-property");	 //$NON-NLS-1$ //$NON-NLS-2$
+						String pattern = generatePattern(compositeProperty).replaceFirst("<property", "<key-property");	 //$NON-NLS-1$ //$NON-NLS-2$
 						propRegion = findAdapter.find(parentRegion.getOffset()+parentRegion.getLength(), pattern, true, true, false, true);
+					
+						if (propRegion == null){
+							// try to use key-many-to-one
+							pattern = generatePattern(compositeProperty).replaceFirst("<many-to-one", "<key-many-to-one");	 //$NON-NLS-1$ //$NON-NLS-2$
+							propRegion = findAdapter.find(parentRegion.getOffset()+parentRegion.getLength(), pattern, true, true, false, true);
+						}
 					}
-					/*if (propRegion == null){
-						// try to find name = "<name>"
-						String pattern = HIBERNATE_TAG_NAME + "[\\s]*=[\\s]*\"" + property.getNodeName() + '\"';
-						propRegion = findAdapter.find(parentRegion.getOffset()+parentRegion.getLength(), pattern, true, true, false, true);
-					}*/
 				} catch (BadLocationException e) {
 					HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenMappingAction_selection_not_found, e);
 				}
@@ -402,12 +405,16 @@ public class OpenMappingAction extends SelectionListenerAction {
 				pattern.append("id"); //$NON-NLS-1$
 			}
 		} else{
-			pattern.append(tool.getTag(property));
+			String toolTag = tool.getTag(property);
+			if ("component".equals(toolTag) && "embedded".equals(property.getPropertyAccessorName())){
+				toolTag = "properties";
+			}
+			pattern.append(toolTag);
 		}
 		pattern.append("[\\s]+[.[^>]]*"); //$NON-NLS-1$
 		pattern.append(HIBERNATE_TAG_NAME);
 		pattern.append("[\\s]*=[\\s]*\""); //$NON-NLS-1$
-		pattern.append(property.getNodeName());
+		pattern.append(property.getName());
 		pattern.append('\"');
 		return pattern.toString();
 	}
