@@ -41,30 +41,4 @@ public class HibernateFactory extends GenericJpaFactory {
 		return new HibernatePersistenceUnit(parent, persistenceUnit);
 	}
 
-
-	@Override
-	public JpaDataSource buildJpaDataSource(JpaProject jpaProject, String connectionProfileName) {
-		try {
-			buildConsoleConfiguration(jpaProject, connectionProfileName);
-		} catch (CoreException e) {
-			//logErrorMessage("Can't create console configuration for project " + jpaProject.getName(), e);
-		}
-		return super.buildJpaDataSource(jpaProject, connectionProfileName);
-	}
-	
-	protected void buildConsoleConfiguration(JpaProject jpaProject, String connectionProfileName) throws CoreException{
-		if (connectionProfileName == null || connectionProfileName.length() == 0) return;
-		ILaunchManager lm = DebugPlugin.getDefault().getLaunchManager();
-		ILaunchConfigurationType lct = lm.getLaunchConfigurationType(ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID);
-		ILaunchConfigurationWorkingCopy wc = lct.newInstance(null, jpaProject.getName());
-					
-		wc.setAttribute(IConsoleConfigurationLaunchConstants.CONFIGURATION_FACTORY, ConfigurationMode.JPA.toString());
-		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, jpaProject.getName());
-		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, true );
-		wc.setAttribute(IConsoleConfigurationLaunchConstants.FILE_MAPPINGS, (List<String>)null);
-		//wc.setAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, connectionProfileName);
-		wc.setAttribute(IConsoleConfigurationLaunchConstants.USE_JPA_PROJECT_PROFILE, "true");//$NON-NLS-1$
-		
-		wc.doSave();
-	}
 }

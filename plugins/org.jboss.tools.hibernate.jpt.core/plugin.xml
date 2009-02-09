@@ -11,5 +11,12 @@
         id="hibernate"
         label="Hibernate"/>		
 	</extension>
+ <extension
+       point="org.eclipse.wst.common.project.facet.core.listeners">
+    <listener
+          class="org.jboss.tools.hibernate.jpt.core.internal.JPAPostInstallFasetListener"
+          eventTypes="POST_INSTALL">
+    </listener>
+ </extension>
 
 </plugin>
