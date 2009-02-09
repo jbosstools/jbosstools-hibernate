@@ -99,6 +99,11 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.wizards.UpDownListComposite;
 
 public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
+	
+	public static final String EXPORTERS_PROPERTIES_COLUMN_PROPERTY_WIDTH = "hibernateCodeGenerationConfigurations.exporters.properties.column.property.Width"; //$NON-NLS-1$
+	
+	public static final String EXPORTERS_PROPERTIES_COLUMN_VALUE_WIDTH = "hibernateCodeGenerationConfigurations.exporters.properties.column.value.Width"; //$NON-NLS-1$
+
 	private Button enableEJB3annotations;
 
 	private Button enableJDK5;
@@ -865,9 +870,8 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 			Tree tree = (Tree)control;
 			TreeColumn[] columns = tree.getColumns();
 			IPreferenceStore preferenceStore = HibernateConsolePlugin.getDefault().getPreferenceStore();
-			String tmpName = ExporterSettingsTab.class.toString();
-			int colWidth_0 = preferenceStore.getInt(tmpName + "col_0"); //$NON-NLS-1$
-			int colWidth_1 = preferenceStore.getInt(tmpName + "col_1"); //$NON-NLS-1$
+			int colWidth_0 = preferenceStore.getInt(EXPORTERS_PROPERTIES_COLUMN_PROPERTY_WIDTH);
+			int colWidth_1 = preferenceStore.getInt(EXPORTERS_PROPERTIES_COLUMN_VALUE_WIDTH);
 			if (colWidth_0 > 0 && colWidth_1 > 0) {
 				columns[0].setWidth(colWidth_0);
 				columns[1].setWidth(colWidth_1);
@@ -897,9 +901,8 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 			Tree tree = (Tree)control;
 			IPreferenceStore preferenceStore = HibernateConsolePlugin.getDefault().getPreferenceStore();
 			TreeColumn[] columns = tree.getColumns();
-			String tmpName = ExporterSettingsTab.class.toString();
-			preferenceStore.setValue(tmpName + "col_0", columns[0].getWidth()); //$NON-NLS-1$
-			preferenceStore.setValue(tmpName + "col_1", columns[1].getWidth()); //$NON-NLS-1$
+			preferenceStore.setValue(EXPORTERS_PROPERTIES_COLUMN_PROPERTY_WIDTH, columns[0].getWidth());
+			preferenceStore.setValue(EXPORTERS_PROPERTIES_COLUMN_VALUE_WIDTH, columns[1].getWidth());
 		}
 	}
 
