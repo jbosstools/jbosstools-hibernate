@@ -1,6 +1,5 @@
 package org.hibernate.eclipse.launch;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -49,6 +48,8 @@ import org.hibernate.util.StringHelper;
 public class AddPropertyDialog extends TitleAreaDialog {
 
 	private final ExporterFactory ef;
+	private final String selectedPropertyId;
+	private final boolean flagEdit;
 	private ComboViewer propertyCombo;
 	private Control value;
 	private Button addPathButton;
@@ -62,14 +63,23 @@ public class AddPropertyDialog extends TitleAreaDialog {
 		
 		};
 
-	protected AddPropertyDialog(Shell parentShell, ExporterFactory ef) {
+	protected AddPropertyDialog(Shell parentShell, ExporterFactory ef, String selectedPropertyId, boolean flagEdit) {
 		super( parentShell );
 		this.ef = ef;
+		this.selectedPropertyId = selectedPropertyId;
+		this.flagEdit = flagEdit;
 	}
 
 	protected Control createDialogArea(Composite parent) {
-		getShell().setText(HibernateConsoleMessages.AddPropertyDialog_add_exporter_property);
-		setTitle(HibernateConsoleMessages.AddPropertyDialog_add_property_to + ef.getExporterDefinition().getDescription());
+		
+		String dialogTitle = HibernateConsoleMessages.AddPropertyDialog_add_exporter_property;
+		String editTitle = HibernateConsoleMessages.AddPropertyDialog_add_property_to;
+		if (flagEdit) {
+			dialogTitle = HibernateConsoleMessages.AddPropertyDialog_edit_exporter_property;
+			editTitle = HibernateConsoleMessages.AddPropertyDialog_edit_property_to;
+		}
+		getShell().setText(dialogTitle);
+		setTitle(editTitle + ef.getExporterDefinition().getDescription());
 		Composite control = (Composite) super.createDialogArea( parent );
 
 		Composite composite = new Composite(control,SWT.NONE);
@@ -117,6 +127,9 @@ public class AddPropertyDialog extends TitleAreaDialog {
 						
 			});
 					
+		if (flagEdit) {
+			propertyCombo.getControl().setEnabled(false);
+		}
 
 		label = new Label(composite, SWT.NONE);
 		label.setText( HibernateConsoleMessages.AddPropertyDialog_value );
@@ -224,7 +237,7 @@ public class AddPropertyDialog extends TitleAreaDialog {
 							} else if (answer == 1){ // workspace								
 								IPath[] paths = DialogSelectionHelper.chooseFileEntries(getShell(), (IPath)null, new Path[0], 
 										title, description,
-										new String[0], isPath, true, false);//$NON-NLS-1$
+										new String[0], isPath, true, false);
 								if (paths != null && paths.length > 0){
 									strPath = paths[0].toOSString();
 									if (isPath){
@@ -272,7 +285,14 @@ public class AddPropertyDialog extends TitleAreaDialog {
 		} );
 		viewer.setInput( ef );
 		if(viewer.getCombo().getItemCount()>0) {
-			viewer.setSelection( new StructuredSelection(viewer.getElementAt( 0 )));
+			Object selected = null;
+			if (selectedPropertyId != null) {
+				selected = ef.getExporterProperty(selectedPropertyId);
+			}
+			else {
+				selected = viewer.getElementAt( 0 );
+			}
+			viewer.setSelection(new StructuredSelection(selected));
 		}
 	}
 
@@ -288,10 +308,10 @@ public class AddPropertyDialog extends TitleAreaDialog {
 	private void createBrowseButton(SelectionListener listener, ExporterProperty prop){
 		disposeBrowseButton();
 		addPathButton = new Button(value.getParent(), SWT.PUSH);
-		if ("path".equals(prop.getType())){
-			addPathButton.setText("Add path...");
+		if ("path".equals(prop.getType())){ //$NON-NLS-1$
+			addPathButton.setText(HibernateConsoleMessages.AddPropertyDialog_add_path);
 		} else {
-			addPathButton.setText("Browse");
+			addPathButton.setText(HibernateConsoleMessages.AddPropertyDialog_browse);
 		}		
 		addPathButton.setLayoutData(new GridData(GridData.END));
 		addPathButton.addSelectionListener(listener);		
@@ -347,7 +367,7 @@ public class AddPropertyDialog extends TitleAreaDialog {
 		} else if(StringHelper.isEmpty( getPropertyValue() )) {
 			setMessage( HibernateConsoleMessages.AddPropertyDialog_the_property_value_must_be_non_empty, IMessageProvider.ERROR);
 		} else {
-			if (ef.hasLocalValueFor( getPropertyName() )) {
+			if (!flagEdit && ef.hasLocalValueFor( getPropertyName() )) {
 				String out = NLS.bind(HibernateConsoleMessages.AddPropertyDialog_the_property_is_already_set, getPropertyName());
 				setMessage(out, IMessageProvider.WARNING);
 			} else {

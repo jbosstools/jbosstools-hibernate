@@ -366,12 +366,16 @@ public class HibernateConsoleMessages extends NLS {
 	//
 	public static String AddPropertyDialog_add_exporter_property;
 	public static String AddPropertyDialog_add_property_to;
+	public static String AddPropertyDialog_edit_exporter_property;
+	public static String AddPropertyDialog_edit_property_to;
 	public static String AddPropertyDialog_name;
 	public static String AddPropertyDialog_the_property_is_already_set;
 	public static String AddPropertyDialog_the_property_name_may_not_contain_whitespaces;
 	public static String AddPropertyDialog_the_property_name_must_be_chosen_or_entered;
 	public static String AddPropertyDialog_the_property_value_must_be_non_empty;
 	public static String AddPropertyDialog_value;
+	public static String AddPropertyDialog_add_path;
+	public static String AddPropertyDialog_browse;
 	public static String CodeGenerationLaunchDelegate_console_configuration_not_found_in;
 	public static String CodeGenerationLaunchDelegate_console_configuration_name_is_empty_in;
 	public static String CodeGenerationLaunchDelegate_could_not_create_or_find_with_default_noarg_constructor;
@@ -485,6 +489,7 @@ public class HibernateConsoleMessages extends NLS {
 	public static String ExporterSettingsTab_description;
 	public static String ExporterSettingsTab_deselect_all;
 	public static String ExporterSettingsTab_does_not_exist;
+	public static String ExporterSettingsTab_edit;
 	public static String ExporterSettingsTab_exporters;
 	public static String ExporterSettingsTab_exporters_2;
 	public static String ExporterSettingsTab_general_settings;

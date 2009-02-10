@@ -42,10 +42,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.ui.JavaElementLabelProvider;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -61,7 +57,6 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
 import org.eclipse.osgi.util.NLS;
@@ -85,6 +80,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
+import org.eclipse.ui.views.properties.IPropertySheetEntry;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.IPropertySourceProvider;
 import org.eclipse.ui.views.properties.PropertySheetEntry;
@@ -123,6 +119,8 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 	private Button add;
 
 	private Button remove;
+
+	private Button edit;
 
 	/**
 	 * Constructor for SampleNewWizardPage.
@@ -184,7 +182,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 
 		gr.setLayout( gridLayout );
 		gd = new GridData( SWT.FILL, SWT.FILL, true, true );
-		gd.verticalSpan = 2;
+		gd.verticalSpan = 3;
 		gr.setLayoutData( gd );
 
 		Control sheet = createPropertySheet( gr );
@@ -205,7 +203,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 				ExporterFactory ef = (ExporterFactory) ss.getFirstElement();
 
 				if(ef!=null) {
-					AddPropertyDialog dialog = new AddPropertyDialog(getShell(), ef);
+					AddPropertyDialog dialog = new AddPropertyDialog(getShell(), ef, null, false);
 					if(dialog.open()==Dialog.OK) {
 						ef.setProperty( dialog.getPropertyName(), dialog.getPropertyValue() );
 						dialogChanged();
@@ -238,6 +236,34 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 		gd.horizontalIndent = 5;
 		remove.setLayoutData( gd );
 
+		edit = new Button( exportersComposite, SWT.PUSH );
+		edit.setEnabled( false );
+		edit.setText( HibernateConsoleMessages.ExporterSettingsTab_edit );
+		gd = new GridData( GridData.HORIZONTAL_ALIGN_FILL
+				| GridData.VERTICAL_ALIGN_BEGINNING );
+		gd.horizontalIndent = 5;
+		edit.setLayoutData( gd );
+		edit.addSelectionListener( new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				IStructuredSelection ss = (IStructuredSelection) getExporterTable().getSelection();
+				ExporterFactory ef = (ExporterFactory) ss.getFirstElement();
+
+				if(ef!=null) {
+					String selectedPropertyId = null;
+					if(currentDescriptor!=null) {
+						selectedPropertyId = (String) currentDescriptor.getId();
+					}
+					AddPropertyDialog dialog = 
+						new AddPropertyDialog(getShell(), ef, selectedPropertyId, true);
+					if(dialog.open()==Dialog.OK) {
+						ef.setProperty( dialog.getPropertyName(), dialog.getPropertyValue() );
+						dialogChanged();
+						refreshPropertySheet();
+					}
+				}
+			}
+		} );
+		
 	}
 
 	public class MyPropertySheetEntry extends PropertySheetEntry {
@@ -265,6 +291,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 			hasSelection = true;
 		}
 		if (remove != null) remove.setEnabled(hasSelection);
+		if (edit != null) edit.setEnabled(hasSelection);
 	}
 
 	private Control createPropertySheet(Composite exportersComposite) {
@@ -317,6 +344,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 						if(s.isEmpty()) {
 							if(add!=null) add.setEnabled( false );
 							if(remove!=null) remove.setEnabled( false );
+							if(edit!=null) edit.setEnabled( false );
 
 							propertySheetEntry.setValues(new Object[0]);
 
@@ -327,6 +355,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 								hasSelection = true;
 							}
 							if(remove!=null) remove.setEnabled( hasSelection );
+							if(edit!=null) edit.setEnabled( hasSelection );
 
 							ExporterFactory ep = (ExporterFactory) s
 							.getFirstElement();
