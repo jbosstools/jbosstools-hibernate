@@ -258,7 +258,14 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 
 	private ObservableFactoryList observableFactoryList;
 
-
+	protected void updateCurrentDescriptor(IPropertyDescriptor propertyDescriptor) {
+		currentDescriptor = propertyDescriptor;
+		boolean hasSelection = false;
+		if (currentDescriptor != null) {
+			hasSelection = true;
+		}
+		if (remove != null) remove.setEnabled(hasSelection);
+	}
 
 	private Control createPropertySheet(Composite exportersComposite) {
 		propertySheet = new PropertySheetPage() {
@@ -267,12 +274,12 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 			public void handleEntrySelection(ISelection selection) {
 				super.handleEntrySelection( selection );
 				IStructuredSelection iss = (IStructuredSelection) selection;
-				if(iss.isEmpty()) {
-					currentDescriptor = null;
-				} else {
+				IPropertyDescriptor propertyDescriptor = null;
+				if(!iss.isEmpty()) {
 					MyPropertySheetEntry mse = (MyPropertySheetEntry)iss.getFirstElement();
-					currentDescriptor = mse.getMyDescriptor();
+					propertyDescriptor = mse.getMyDescriptor();
 				}
+				updateCurrentDescriptor(propertyDescriptor);
 			}
 		};
 
@@ -315,7 +322,11 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 
 						} else {
 							if(add!=null) add.setEnabled( true );
-							if(remove!=null) remove.setEnabled( true );
+							boolean hasSelection = false;
+							if(currentDescriptor!=null) {
+								hasSelection = true;
+							}
+							if(remove!=null) remove.setEnabled( hasSelection );
 
 							ExporterFactory ep = (ExporterFactory) s
 							.getFirstElement();
@@ -326,7 +337,26 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 
 				} );
 
-		return propertySheet.getControl();
+		Control control = propertySheet.getControl();
+		if (control instanceof Tree && !control.isDisposed()) {
+			Tree tree = (Tree)control;
+			tree.addSelectionListener( new SelectionListener() {
+
+				public void widgetDefaultSelected(SelectionEvent e) {
+				}
+
+				public void widgetSelected(SelectionEvent e) {
+					IPropertyDescriptor propertyDescriptor = null;
+					if (e.item != null && e.item.getData() != null) {
+						MyPropertySheetEntry mse = (MyPropertySheetEntry)e.item.getData();
+						propertyDescriptor = mse.getMyDescriptor();
+					}
+					updateCurrentDescriptor(propertyDescriptor);
+				}
+
+			} );
+		}
+		return control;
 	}
 
 	private void createExporterTable(Composite parent) {
