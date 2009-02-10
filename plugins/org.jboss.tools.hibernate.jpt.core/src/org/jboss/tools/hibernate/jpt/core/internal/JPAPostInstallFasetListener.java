@@ -50,7 +50,7 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 				return false;
 			}				
 		} catch (CoreException e) {
-			e.printStackTrace();
+			HibernateJptPlugin.logException(e);
 		}
 		return true;
 	}
@@ -92,7 +92,7 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 			wc.doSave();
 			ProjectUtils.toggleHibernateOnProject(project, true, launchName);
 		} catch (CoreException e) {
-			e.printStackTrace();
+			HibernateJptPlugin.logException(e);
 		}		
 	}
 

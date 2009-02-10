@@ -177,6 +177,11 @@ public class GenericGeneratorAnnotationImpl extends AbstractResourceAnnotation<M
 		return generator;
 	}
 	
+	//for Dali 2.1
+	public void update(CompilationUnit astRoot) {
+		updateFromJava(astRoot);		
+	}
+	
 	// ********** static methods **********
 	private static DeclarationAnnotationElementAdapter<String> buildNameAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, Hibernate.GENERIC_GENERATOR__NAME, false);

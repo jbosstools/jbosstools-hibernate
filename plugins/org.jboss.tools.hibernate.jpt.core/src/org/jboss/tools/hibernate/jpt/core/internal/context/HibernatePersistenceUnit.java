@@ -11,7 +11,9 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -25,32 +27,27 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jpt.core.context.Generator;
-import org.eclipse.jpt.core.context.java.JavaGenerator;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnit;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlProperties;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGeneratorAnnotation;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGenerator;
 
 /**
  * @author Dmitry Geraskov
@@ -81,13 +78,18 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 		return this.hibernateProperties.getBasicHibernate();
 	}
 
-	// ********** Validation ***********************************************	
-	@Override
-	public void addToMessages(List<IMessage> messages) {
-		super.addToMessages(messages);
-		addFileNotExistsMessages(messages);
+	// ********** Validation ***********************************************
+	public void validate(List<IMessage> messages) {
+		addToMessages(messages);
 	}	
-
+	
+	public void addToMessages(List<IMessage> messages) {
+		invokeMethod(this, "addMappingFileMessages", "validateMappingFiles", 
+				new Class[]{List.class}, messages);
+		invokeMethod(this, "addClassMessages", "validateClassRefs", new Class[]{List.class}, messages);
+		addFileNotExistsMessages(messages);
+	}
+	
 	protected void addFileNotExistsMessages(List<IMessage> messages) {
 		String configFile = getBasicProperties().getConfigurationFile();
 		if (configFile != null && configFile.length() > 0){
@@ -171,29 +173,99 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 	@Override
 	public void update(XmlPersistenceUnit persistenceUnit) {
 		super.update(persistenceUnit);
-		updateGenericGenerators();		
+		updateGenericGenerators();
 	}
 	
 	protected void updateGenericGenerators(){
-		for (String annotClass : CollectionTools.iterable(getJpaProject().annotatedClassNames())) {			
+		JpaProject project = getJpaProject();
+		for (String annotClass : CollectionTools.iterable(project.annotatedClassNames())) {			
 			ClassRef classRef = buildClassRef(annotClass);			
 			JavaPersistentType type = classRef.getJavaPersistentType();
-			JavaResourcePersistentMember jrpt = getJpaProject().getJavaPersistentTypeResource(annotClass);
-			GenericGeneratorAnnotation annotation = (GenericGeneratorAnnotation) jrpt.getAnnotation(GENERIC_GENERATOR);
-			if (annotation != null) {
-				addGenerator(annotation.buildJavaGenericGenerator(type));
-			}
-			
-			ListIterator<JavaPersistentAttribute> typeAttrs = type.attributes();			
-			for (JavaPersistentAttribute persAttr : CollectionTools.iterable(typeAttrs)) {
-				JavaResourcePersistentAttribute jrpa = persAttr.getResourcePersistentAttribute();
-				annotation = (GenericGeneratorAnnotation) jrpa.getAnnotation(GENERIC_GENERATOR);
-				if (annotation != null){
-					addGenerator(annotation.buildJavaGenericGenerator(persAttr.getSpecifiedMapping()));
-				}
-			}
+			JavaResourcePersistentMember jrpt = null;
+			GenericGeneratorAnnotation annotation = null;
+			jrpt =	(JavaResourcePersistentMember) invokeMethod(project, "getJavaPersistentTypeResource", 
+					"getJavaResourcePersistentType", new Class[]{String.class}, annotClass);
+			if (jrpt != null){
+				annotation = (GenericGeneratorAnnotation)invokeMethod(jrpt, "getAnnotation", 
+						"getSupportingAnnotation", new Class[]{String.class}, GENERIC_GENERATOR);
+				if (annotation != null) {
+					addGenerator(annotation.buildJavaGenericGenerator(type));
+				}				
+				ListIterator<JavaPersistentAttribute> typeAttrs = type.attributes();
+				for (JavaPersistentAttribute persAttr : CollectionTools.iterable(typeAttrs)) {
+					JavaResourcePersistentAttribute jrpa = persAttr.getResourcePersistentAttribute();
+					annotation = (GenericGeneratorAnnotation)invokeMethod(jrpa, "getAnnotation", 
+							"getSupportingAnnotation", new Class[]{String.class}, GENERIC_GENERATOR);
+					
+					if (annotation != null) {
+						addGenerator(annotation.buildJavaGenericGenerator(persAttr.getSpecifiedMapping()));
+					}
+				}				
+			}			
 		}
 	}
+	
+	/**
+	 * Hack method needed to make Hibernate Platform portable between Dali 2.0 and Dali 2.1
+	 * @param object - object on which method will be called
+	 * @param dali20Name - method name in Dali 2.0
+	 * @param dali21Name - same method name in Dali 2.1
+	 * @param paramTypes - method arguments types.
+	 * @param args - arguments of the method
+	 * @return
+	 */
+	private Object invokeMethod(Object object, String dali20Name, String dali21Name, Class[] argsTypes,
+			Object... args){
+		Method method = getMethod(object.getClass(), dali20Name, dali21Name, argsTypes);			
+		if (method != null){
+			try {
+				return method.invoke(object, args);
+			} catch (IllegalArgumentException e) {
+				HibernateJptPlugin.logException(e);
+			} catch (IllegalAccessException e) {
+				HibernateJptPlugin.logException(e);
+			} catch (InvocationTargetException e) {
+				HibernateJptPlugin.logException(e);
+			}
+		} else {
+			StringBuilder params = new StringBuilder();
+			for (int i = 0; i < argsTypes.length; i++) {
+				params.append(argsTypes[i].getName() + ", ");
+			}
+			if (params.length() > 0) params.deleteCharAt(params.length() - 2);
+			HibernateJptPlugin.logError("Nor \"" + dali20Name + "\" nor \"" + dali21Name
+					+ "\" methods were found with parameter types: (" + params + ")");
+		}
+		return null;
+	}
+	
+	/**
+	 * Hack method needed to make Hibernate Platform portable between Dali 2.0 and Dali 2.1
+	 * @param parent
+	 * @param dali20Name - method name in Dali 2.0
+	 * @param dali21Name - same method name in Dali 2.1
+	 * @param parameterTypes
+	 * @return
+	 */
+	private Method getMethod(Class parent, String dali20Name, String dali21Name, Class... parameterTypes){
+		Class clazz = parent;
+		while (clazz != null){
+			Method method = null;
+			try {//try to get method from Dali 2.0
+				method = clazz.getDeclaredMethod(dali20Name, parameterTypes);
+				return method;
+			} catch (Exception e) {
+				try {//try to get method from Dali 2.1
+					method = clazz.getDeclaredMethod(dali21Name, parameterTypes);
+					return method;
+				} catch (Exception e1) {
+					clazz = clazz.getSuperclass();
+				}				
+			}
+		}
+		return null;
+	}
+
 
 	/**
 	 * Hack class needed to make JPA/Validation API pick up our classloader instead of its own.
@@ -208,5 +280,5 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 			super(name, highSeverity, notAFile, strings, resource);
 		}
 	}
-
+	
 }
