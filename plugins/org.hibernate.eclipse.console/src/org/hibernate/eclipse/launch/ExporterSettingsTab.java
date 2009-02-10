@@ -955,13 +955,18 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 
 	public void storePropertyColumsWidth() {
 
+		if (propertySheet == null) {
+			return;
+		}
 		Control control = propertySheet.getControl();
-		if (control instanceof Tree && !control.isDisposed()) {
-			Tree tree = (Tree)control;
-			IPreferenceStore preferenceStore = HibernateConsolePlugin.getDefault().getPreferenceStore();
-			TreeColumn[] columns = tree.getColumns();
-			preferenceStore.setValue(EXPORTERS_PROPERTIES_COLUMN_PROPERTY_WIDTH, columns[0].getWidth());
-			preferenceStore.setValue(EXPORTERS_PROPERTIES_COLUMN_VALUE_WIDTH, columns[1].getWidth());
+		if (control != null) {
+			if (control instanceof Tree && !control.isDisposed()) {
+				Tree tree = (Tree)control;
+				IPreferenceStore preferenceStore = HibernateConsolePlugin.getDefault().getPreferenceStore();
+				TreeColumn[] columns = tree.getColumns();
+				preferenceStore.setValue(EXPORTERS_PROPERTIES_COLUMN_PROPERTY_WIDTH, columns[0].getWidth());
+				preferenceStore.setValue(EXPORTERS_PROPERTIES_COLUMN_VALUE_WIDTH, columns[1].getWidth());
+			}
 		}
 	}
 
