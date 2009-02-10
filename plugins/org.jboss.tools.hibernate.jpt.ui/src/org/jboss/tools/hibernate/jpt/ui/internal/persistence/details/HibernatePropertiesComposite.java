@@ -19,7 +19,6 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
-import org.eclipse.jpt.ui.internal.widgets.AbstractFormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
@@ -35,13 +34,14 @@ import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 import org.hibernate.eclipse.console.utils.DriverClassHelpers;
 import org.hibernate.eclipse.launch.PathHelper;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
+import org.jboss.tools.hibernate.jpt.ui.xpl.AbstractPane;
 
 /**
  * @author Dmitry Geraskov
  * 
  */
-public class HibernatePropertiesComposite extends AbstractFormPane<BasicHibernateProperties> implements
-		JpaPageComposite<PersistenceUnit> {
+public class HibernatePropertiesComposite extends AbstractPane<BasicHibernateProperties> implements
+		JpaPageComposite {
 
 	private Text cfgFile;
 	

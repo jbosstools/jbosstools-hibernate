@@ -8,7 +8,6 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.GenericJpaUiFactory;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitConnectionComposite;
-import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitGeneralComposite;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitPropertiesComposite;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -16,14 +15,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.ui.internal.persistence.details.HibernatePropertiesComposite;
+import org.jboss.tools.hibernate.jpt.ui.xpl.PersistenceUnitGeneralComposite;
 
 public class HibernateUiFactory extends GenericJpaUiFactory {
 
-	public ListIterator<JpaPageComposite<PersistenceUnit>> createPersistenceUnitComposites(
+	public ListIterator createPersistenceUnitComposites(
 			PropertyValueModel<PersistenceUnit> subjectHolder, Composite parent, WidgetFactory widgetFactory) {
 
-		ArrayList<JpaPageComposite<PersistenceUnit>> pages = new ArrayList<JpaPageComposite<PersistenceUnit>>(1);
+		ArrayList<JpaPageComposite> pages = new ArrayList<JpaPageComposite>(1);
 
+		//replaced from Dali 2.0
 		pages.add(new PersistenceUnitGeneralComposite(subjectHolder, parent, widgetFactory));
 		pages.add(new PersistenceUnitConnectionComposite(subjectHolder, parent, widgetFactory));		
 		pages.add(new PersistenceUnitPropertiesComposite(subjectHolder, parent, widgetFactory));

@@ -166,11 +166,11 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = numColumns;
 		dbGroup.setLayoutData(gd);
-		dbGroup.setText(JptUiMessages.DatabaseReconnectWizardPage_database);		
+		dbGroup.setText(Messages.databaseSettings);		
 		
 		//****************************connection profile*****************
 		connectionProfileName = new ComboDialogField(SWT.READ_ONLY);
-		connectionProfileName.setLabelText(JptUiMessages.DatabaseReconnectWizardPage_connection);		
+		connectionProfileName.setLabelText(Messages.databaseSettings_connection);		
 				
 		connectionProfileName.setItems(dtpConnectionProfileNames());
 
@@ -195,7 +195,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 				// TODO Auto-generated method stub
 				
 			}});
-		schemaName.setLabelText(JptUiMessages.DatabaseReconnectWizardPage_schema);
+		schemaName.setLabelText(Messages.databaseShema);
 		schemaName.setButtonLabel("Refresh");
 		Control[] controls = schemaName.doFillIntoGrid(dbGroup, numColumns);
 		// Hack to tell the text field to stretch!

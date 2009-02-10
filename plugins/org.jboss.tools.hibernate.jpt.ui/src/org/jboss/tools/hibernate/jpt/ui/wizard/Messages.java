@@ -24,6 +24,9 @@ public class Messages extends NLS {
 	public static String title;
 	public static String selectName;
 	public static String wizardMessage;
+	public static String databaseSettings;
+	public static String databaseSettings_connection;
+	public static String databaseShema;
 
 	static {
 		// initialize resource bundle
