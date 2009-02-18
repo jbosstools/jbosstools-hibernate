@@ -428,8 +428,9 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		} */
 
 		if (propertyFilename.length() > 0) {
-			IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(propertyFilename);
-			String msg = checkForFile(HibernateConsoleMessages.ConsoleConfigurationMainTab_property_file_2, resource);
+			//IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(propertyFilename);
+			//String msg = checkForFile(HibernateConsoleMessages.ConsoleConfigurationMainTab_property_file_2, resource);
+			String msg = PathHelper.checkFile(configurationFilename, HibernateConsoleMessages.ConsoleConfigurationMainTab_property_file_2, true);
 			if(msg!=null) {
 				setErrorMessage(msg);
 				return false;
@@ -437,8 +438,9 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		}
 
 		if (!configurationFileWillBeCreated && configurationFilename.length() > 0) {
-			IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(configurationFilename);
-			String msg = checkForFile(HibernateConsoleMessages.ConsoleConfigurationMainTab_configuration_file_2,resource);
+			//IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(configurationFilename);
+			//String msg = checkForFile(HibernateConsoleMessages.ConsoleConfigurationMainTab_configuration_file_2,resource);
+			String msg = PathHelper.checkFile(configurationFilename, HibernateConsoleMessages.ConsoleConfigurationMainTab_configuration_file_2, true);
 			if(msg!=null) {
 				setErrorMessage(msg);
 				return false;

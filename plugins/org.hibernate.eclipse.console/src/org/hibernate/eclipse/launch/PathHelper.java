@@ -135,4 +135,57 @@ public class PathHelper {
 	}
 
 
+	/**
+	 * Checks if file exists.
+	 * Handles variables replacement too.
+	 *
+	 * @param strpath
+	 * @param name
+	 * @param checkFilesystem
+	 * @return
+	 */
+	static public String checkFile(String strpath, String name, boolean checkFilesystem) {
+		if(strpath.indexOf("${") >= 0) { //$NON-NLS-1$
+			IStringVariableManager manager = VariablesPlugin.getDefault().getStringVariableManager();
+			try {
+				manager.validateStringVariables(strpath);
+			}
+			catch (CoreException e) {
+				String out = NLS.bind(HibernateConsoleMessages.PathHelper_has_invalid_variable_references, name, e.getMessage());
+				return out;
+			}
+		}
+
+		IPath path = pathOrNull(resolve(strpath));
+
+		if (checkFilesystem && path != null) {
+			File file = new File(path.toOSString());
+			if (file.exists()) {
+				if (file.isFile()) {
+					return null;
+				}
+				String out = NLS.bind(HibernateConsoleMessages.PathHelper_not_file, path);
+				return out;
+			}
+		}
+
+	    IResource res= ResourcesPlugin.getWorkspace().getRoot().findMember(path);
+	    if (res != null) {
+	        int resType= res.getType();
+	        if (resType == IResource.FILE) {
+	            IProject proj= res.getProject();
+	            if (!proj.isOpen() ) {
+	            	String out = NLS.bind(HibernateConsoleMessages.PathHelper_project_for_is_closed, name, path);
+	                return out;
+	            }
+	        } else {
+	        	String out = NLS.bind(HibernateConsoleMessages.PathHelper_has_to_be_file, name, path);
+	            return out;
+	        }
+	    } else {
+        	String out = NLS.bind(HibernateConsoleMessages.PathHelper_does_not_exist, name, path);
+	        return out;
+	    }
+	    return null;
+	}
 }

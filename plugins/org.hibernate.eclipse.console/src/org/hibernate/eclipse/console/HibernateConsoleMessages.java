@@ -514,7 +514,9 @@ public class HibernateConsoleMessages extends NLS {
 	public static String PathHelper_does_not_exist;
 	public static String PathHelper_has_invalid_variable_references;
 	public static String PathHelper_not_directory;
+	public static String PathHelper_not_file;
 	public static String PathHelper_has_to_be_folder_or_project;
+	public static String PathHelper_has_to_be_file;
 	public static String PathHelper_project_for_is_closed;
 	//
 	public static String HibernateRefactoringUtil_error_during_refactoring;

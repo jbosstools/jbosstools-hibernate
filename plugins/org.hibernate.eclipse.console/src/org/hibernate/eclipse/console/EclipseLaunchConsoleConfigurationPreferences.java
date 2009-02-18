@@ -49,6 +49,14 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 		if(path==null) return null;
 		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
 
+		if(resource == null) {
+			File file = new File(path.toOSString());
+			if (file.exists()) {
+				if (file.isFile()) {
+					return file;
+				}
+			}
+		}
 		return pathToFile(path.toString(), resource);
 	}
 
