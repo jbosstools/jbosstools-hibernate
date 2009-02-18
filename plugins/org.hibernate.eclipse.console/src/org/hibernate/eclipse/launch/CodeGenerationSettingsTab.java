@@ -281,7 +281,7 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 			return;
 		}
 
-        String msg = PathHelper.checkDirectory(outputdir.getText(), HibernateConsoleMessages.CodeGenerationSettingsTab_output_directory, false);
+        String msg = PathHelper.checkDirectory(outputdir.getText(), HibernateConsoleMessages.CodeGenerationSettingsTab_output_directory, true);
 
         if (msg!=null) {
             updateStatus(msg);
