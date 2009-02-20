@@ -279,17 +279,22 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			XMLHelper xmlHelper = new XMLHelper();
 			InputStream stream = null;
 			String resourceName = "<unknown>"; //$NON-NLS-1$
-			try {
-				if(configXMLFile!=null) {
-					resourceName = configXMLFile.toString();
+			if(configXMLFile!=null) {
+				resourceName = configXMLFile.toString();
+				try {
 					stream = new FileInputStream( configXMLFile );
-				} else {
-					resourceName = "/hibernate.cfg.xml"; //$NON-NLS-1$
+				}
+				catch (FileNotFoundException e1) {
+					throw new HibernateConsoleRuntimeException(ConsoleMessages.ConsoleConfiguration_could_not_access + configXMLFile, e1);
+				}
+			} else {
+				resourceName = "/hibernate.cfg.xml"; //$NON-NLS-1$
+				if (checkHibernateResoureExistence(resourceName)) {
 					stream = ConfigHelper.getResourceAsStream( resourceName ); // simulate hibernate's default look up
 				}
-			}
-			catch (FileNotFoundException e1) {
-				throw new HibernateConsoleRuntimeException(ConsoleMessages.ConsoleConfiguration_could_not_access + configXMLFile, e1);
+				else {
+					return localCfg;
+				}
 			}
 
 			try {
@@ -334,9 +339,23 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			if(configXMLFile!=null) {
 				return localCfg.configure(configXMLFile);
 			} else {
-				return localCfg.configure();
+				Configuration resultCfg = localCfg;
+				if (checkHibernateResoureExistence("/hibernate.cfg.xml")) { //$NON-NLS-1$
+					resultCfg = localCfg.configure();
+				}
+				return resultCfg;
 			}
 		}
+	}
+	
+	protected boolean checkHibernateResoureExistence(String resource) {
+		InputStream is = null;
+		try {
+			is = ConfigHelper.getResourceAsStream(resource);
+		} catch(HibernateException e) {
+			// just ignore
+		}
+		return( is != null );
 	}
 
 	/**
@@ -581,7 +600,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		
 		// replace dialect if it is set in preferences
 		if(StringHelper.isNotEmpty( prefs.getDialectName())) {
-			localCfg.setProperty("hibernate.dialect", prefs.getDialectName());
+			localCfg.setProperty("hibernate.dialect", prefs.getDialectName()); //$NON-NLS-1$
 		}
 
 		return localCfg;
