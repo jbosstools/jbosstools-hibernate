@@ -290,12 +290,6 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			}
 			catch (FileNotFoundException e1) {
 				throw new HibernateConsoleRuntimeException(ConsoleMessages.ConsoleConfiguration_could_not_access + configXMLFile, e1);
-			} catch(HibernateException e) {
-				boolean cfgXmlNotFound = ( e.getMessage().indexOf("/hibernate.cfg.xml not found") != -1 ); //$NON-NLS-1$
-				if (!cfgXmlNotFound) {
-					throw e;
-				}
-				return localCfg;
 			}
 
 			try {
@@ -340,16 +334,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			if(configXMLFile!=null) {
 				return localCfg.configure(configXMLFile);
 			} else {
-				Configuration resultCfg = localCfg;
-				try {
-					resultCfg = localCfg.configure();
-				} catch(HibernateException e) {
-					boolean cfgXmlNotFound = ( e.getMessage().indexOf("/hibernate.cfg.xml not found") != -1 ); //$NON-NLS-1$
-					if (!cfgXmlNotFound) {
-						throw e;
-					}
-				}
-				return resultCfg;
+				return localCfg.configure();
 			}
 		}
 	}
