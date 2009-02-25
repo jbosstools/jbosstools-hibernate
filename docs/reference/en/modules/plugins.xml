@@ -838,6 +838,26 @@
                   strategy.</para>
               </entry>
             </row>
+            
+            <row>
+              <entry>
+                <para>Detect one-to-one associations</para>
+              </entry>
+              
+              <entry>
+                <para>
+                  Reverse engineering detects one-to-one associations via primary key and both hbm.xml and annotation generation generates the proper code for it.
+                </para>
+                <para>
+                  The detection is enabled by default (except for Seam 1.2 and Seam 2.0) reverse engineering.
+                  For Hibernate Tools generation there is a checkbox to disable if not wanted.
+        
+                </para>
+              </entry>
+            </row>
+            
+            
+            
 
             <row>
               <entry>
