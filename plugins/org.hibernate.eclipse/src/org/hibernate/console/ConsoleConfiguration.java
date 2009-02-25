@@ -27,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.sql.DatabaseMetaData;
@@ -169,13 +170,77 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		return newInstance;
 	}
 
+	protected void refreshProfile(IConnectionProfile profile) {
+		// refresh profile (refresh jpa connection):
+		// get fresh information about current db structure and update error markers  
+		profile.disconnect();
+		profile.connect(null);
+	}
+
+	/*
+	 * try get a path to the sql driver jar file from DTP connection profile
+	 */
+	protected String getConnectionProfileDriverURL() {
+		String connectionProfile = prefs.getConnectionProfileName();
+		if (connectionProfile == null) {
+			return null;
+		}
+		IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(connectionProfile);
+		if (profile == null) {
+			return null;
+		}
+		refreshProfile(profile);
+		//
+		Properties cpProperties = profile.getProperties(profile.getProviderId());
+		String driverJarPath = cpProperties.getProperty("jarList"); //$NON-NLS-1$
+		return driverJarPath;
+	}
+
+	/*
+	 * get custom classpath URLs 
+	 */
+	protected URL[] getCustomClassPathURLs() {
+		URL[] customClassPathURLsTmp = prefs.getCustomClassPathURLS();
+		URL[] customClassPathURLs = null;
+		String driverURL = getConnectionProfileDriverURL();
+		URL url = null;
+		if (driverURL != null) {
+			try {
+				url = new URL("file:/" + driverURL); //$NON-NLS-1$
+			} catch (MalformedURLException e) {
+				// just ignore
+			}
+		}
+		// should DTP connection profile driver jar file be inserted
+		boolean insertFlag = ( url != null );
+		if (insertFlag) {
+			for (int i = 0; i < customClassPathURLsTmp.length; i++) {
+				if (url.equals(customClassPathURLsTmp[i])) {
+					insertFlag = false;
+					break;
+				}
+			}
+		}
+		if (insertFlag) {
+			customClassPathURLs = new URL[customClassPathURLsTmp.length + 1];
+	        System.arraycopy(customClassPathURLsTmp, 0, 
+	        		customClassPathURLs, 0, customClassPathURLsTmp.length);
+	        // insert DTP connection profile driver jar file URL after the default classpath entries
+			customClassPathURLs[customClassPathURLsTmp.length] = url;
+		}
+		else {
+			customClassPathURLs = customClassPathURLsTmp;
+		}
+		return customClassPathURLs;
+	}
+
 	/**
 	 * @return
 	 *
 	 */
 	public Configuration buildWith(final Configuration cfg, final boolean includeMappings) {
-			URL[] customClassPathURLS = prefs.getCustomClassPathURLS();
-			executionContext = new DefaultExecutionContext( getName(), new URLClassLoader( customClassPathURLS, getParentClassLoader() ) {
+			URL[] customClassPathURLs = getCustomClassPathURLs();
+			executionContext = new DefaultExecutionContext( getName(), new URLClassLoader( customClassPathURLs, getParentClassLoader() ) {
 				protected Class findClass(String name) throws ClassNotFoundException {
 					try {
 					return super.findClass( name );
@@ -614,10 +679,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		
 		IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(connectionProfile);
 		if (profile != null) {
-			// refresh profile (refresh jpa connection):
-			// get fresh information about current db structure and update error markers  
-			profile.disconnect();
-			profile.connect(null);
+			refreshProfile(profile);
 			//
 			final Properties invokeProperties = localCfg.getProperties();
 			// set this property to null!
@@ -629,6 +691,8 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			//invoke.setProperty(Environment.DIALECT, dialect);
 			String driver = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.driverClass"); //$NON-NLS-1$
 			localCfg.setProperty(Environment.DRIVER, driver);
+			// TODO:
+			String driverJarPath = cpProperties.getProperty("jarList"); //$NON-NLS-1$
 			String url = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.URL"); //$NON-NLS-1$
 			//url += "/";// +  cpProperties.getProperty("org.eclipse.datatools.connectivity.db.databaseName");
 			localCfg.setProperty(Environment.URL, url);
