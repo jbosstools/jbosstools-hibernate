@@ -394,7 +394,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			}
 			finally {
 				try {
-					stream.close();
+					if (stream!=null) stream.close();
 				}
 				catch (IOException ioe) {
 					//log.warn( "could not close input stream for: " + resourceName, ioe );
@@ -417,21 +417,19 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		InputStream is = null;
 		try {
 			is = ConfigHelper.getResourceAsStream(resource);
-		} catch(HibernateException e) {
+		}
+		catch (HibernateException e) {
 			// just ignore
 		}
-		boolean res = false;
-		if (is != null )
-		{
-			res = true;
+		finally {
 			try {
-				is.close();
+				if (is != null) is.close();
 			}
 			catch (IOException e) {
 				// ignore
 			}
 		}
-		return res;
+		return (is != null);
 	}
 
 	/**
