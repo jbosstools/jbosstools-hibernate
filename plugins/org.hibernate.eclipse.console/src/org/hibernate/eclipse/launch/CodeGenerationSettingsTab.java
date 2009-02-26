@@ -297,7 +297,7 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
         }
 
         if(reverseEngineeringSettings.getText().trim().length()>0) {
-        	msg = checkFile(getReverseEngineeringSettingsFile(), HibernateConsoleMessages.CodeGenerationSettingsTab_reveng_xml_3);
+            msg = PathHelper.checkFile(reverseEngineeringSettings.getText(), HibernateConsoleMessages.CodeGenerationSettingsTab_reveng_xml_3, true);
         	if(msg!=null) {
         		updateStatus(msg);
         		return;
