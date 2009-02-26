@@ -420,7 +420,18 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		} catch(HibernateException e) {
 			// just ignore
 		}
-		return( is != null );
+		boolean res = false;
+		if (is != null )
+		{
+			res = true;
+			try {
+				is.close();
+			}
+			catch (IOException e) {
+				// ignore
+			}
+		}
+		return res;
 	}
 
 	/**
