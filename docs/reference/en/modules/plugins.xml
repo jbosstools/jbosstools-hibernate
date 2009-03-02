@@ -38,7 +38,7 @@
       </emphasis>, Hibernate Tools provide a basic wizard which you can bring up by navigating <emphasis>
         <property>New > Hibernate XML mapping file</property>.</emphasis></para>
 
-    <figure>
+    <figure>p
       <title>Hibernate XML Mapping File Wizard</title>
 
       <mediaobject>
@@ -1944,8 +1944,9 @@
     <note>
       <title>Note:</title>
 
-      <para>Please note, currently the wizards require that you have a <link linkend="console_conf"
-          >Hibernate Console Configuration</link> already configured.</para>
+      <para>Please note, if you choose Hibernate as a platform and leave the Target Runtime 
+        with &lt;none&gt;, the wizard does not require you to have a <link linkend="console_conf"
+          >Hibernate Console Configuration</link>. A Hibernate Console Configuration is created when the wizard finishes its work.</para>
     </note>
   </section>
 </chapter>
