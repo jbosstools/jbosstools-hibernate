@@ -12,8 +12,7 @@
     <para>Hibernate Eclipse Tools include wizards for creating Hibernate mapping files,
       configuration files (.cfg.xml), revenge.xml as well as wizards for adjusting Console
       Configuration and Code Generation. Special structured and XML editors, editors for executing
-      HQL and Criteria queries are also provided in Hibernate Console. Refer to <link
-        linkend="hibernate_key_features">Key Features</link> section to find all benefits that you
+      HQL and Criteria queries are also provided in Hibernate Console. Refer to <link linkend="hibernate_key_features">Key Features</link> section to find all benefits that you
       can take advantage of while using the tools within Eclipse.</para>
 
     <note>
@@ -38,7 +37,7 @@
       </emphasis>, Hibernate Tools provide a basic wizard which you can bring up by navigating <emphasis>
         <property>New > Hibernate XML mapping file</property>.</emphasis></para>
 
-    <figure>p
+    <figure>
       <title>Hibernate XML Mapping File Wizard</title>
 
       <mediaobject>
@@ -1526,8 +1525,7 @@
       (including usertypes) if the default rules are not applicable. Here again to see the database
       tables press <emphasis>
         <property>Refresh</property>
-      </emphasis> button underneath. More about type mappings you can find further in the <link
-        linkend="type_map">Type Mappings</link> section.</para>
+      </emphasis> button underneath. More about type mappings you can find further in the <link linkend="type_map">Type Mappings</link> section.</para>
 
     <figure>
       <title>Type Mappings Page</title>
