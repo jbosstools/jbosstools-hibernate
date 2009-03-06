@@ -279,6 +279,9 @@ public class CollectEntityInfo extends ASTVisitor {
 
 	public static String getReturnIdentifier(MethodDeclaration node) {
 		String res = null;
+		if (node.getBody() == null) {
+			return res;
+		}
 		List bodyStatemants = node.getBody().statements();
 		Iterator it = bodyStatemants.iterator();
 		for ( ; it.hasNext(); ) {
