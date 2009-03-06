@@ -178,8 +178,9 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 	
 	protected void updateGenericGenerators(){
 		JpaProject project = getJpaProject();
-		for (String annotClass : CollectionTools.iterable(project.annotatedClassNames())) {			
-			ClassRef classRef = buildClassRef(annotClass);			
+		
+		for (ClassRef classRef : CollectionTools.iterable(classRefs())) {			
+			String annotClass = classRef.getClassName();
 			JavaPersistentType type = classRef.getJavaPersistentType();
 			JavaResourcePersistentMember jrpt = null;
 			GenericGeneratorAnnotation annotation = null;
