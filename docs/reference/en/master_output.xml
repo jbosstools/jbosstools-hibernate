@@ -405,7 +405,7 @@
 </chapter>
 
   
-<chapter id="plugins" role="updated" xml:base="file:///home/ochikvina/WORK/for_compare/trunk/hibernatetools/docs/reference/en/modules/plugins.xml">
+<chapter id="plugins"  xml:base="file:///home/ochikvina/WORK/for_compare/trunk/hibernatetools/docs/reference/en/modules/plugins.xml">
   <title>Eclipse Plugins</title>
 
   <para>This chapter will introduce you to the functionality that <property moreinfo="none">Hibernate
@@ -1024,7 +1024,7 @@
     </figure>
   </section>
 
-  <section id="refeng_codegen" role="updated">
+  <section id="refeng_codegen" >
     <title>Reverse Engineering and Code Generation</title>
 
     <para>A "click-and-generate" reverse engineering and code generation facility
