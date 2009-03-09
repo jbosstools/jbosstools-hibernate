@@ -125,6 +125,11 @@ public class JPAMapTest extends TestCase {
 		//		"test.annotated." + testSelection + ".Foto"); //$NON-NLS-1$ //$NON-NLS-2$
 		//ICompilationUnit icu2 = Utils.findCompilationUnit(javaProject,
 		//		"test.annotated." + testSelection + ".Person"); //$NON-NLS-1$ //$NON-NLS-2$
+		ICompilationUnit icu4 = null;
+		if (testSelection == TEST_GETTERS) {
+			icu4 = Utils.findCompilationUnit(javaProject,
+					"test.annotated." + testSelection + ".FotoXPerson"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 		assertNotNull(icu);
 		assertNotNull(icu2);
 		assertNotNull(icu3);
@@ -132,6 +137,9 @@ public class JPAMapTest extends TestCase {
 		collector.collect(icu);
 		collector.collect(icu2);
 		collector.collect(icu3);
+		if (icu4 != null) {
+			collector.collect(icu4);
+		}
 		collector.resolveRelations();
 		processor.modify(javaProject, collector.getMapCUs_Info(), false);
 		//
@@ -142,6 +150,9 @@ public class JPAMapTest extends TestCase {
 		checkItem("Staff"); //$NON-NLS-1$
 		checkItem("FotoXPerson"); //$NON-NLS-1$
 		checkItem("PersonXFoto"); //$NON-NLS-1$
+		if (icu4 != null) {
+			checkItem("Entity"); //$NON-NLS-1$
+		}
 	}
 
 	protected void checkItem(String strCheckItem) {
