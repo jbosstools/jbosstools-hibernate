@@ -87,6 +87,7 @@ public class JPAMapToolActor {
 	protected AllEntitiesProcessor processor = new AllEntitiesProcessor();
 
 	protected JPAMapToolActor() {
+		processor.initAnnotationStylePreference();
 	}
 
 	public static JPAMapToolActor getInstance() {

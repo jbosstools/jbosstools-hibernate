@@ -62,6 +62,9 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 	protected ArrayList<ChangeStructure> changes = new ArrayList<ChangeStructure>();
 	
 	public AllEntitiesProcessor() {
+	}
+
+	public void initAnnotationStylePreference() {
 		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
 		int value = preferenceStore.getInt(AllEntitiesProcessor.class.toString());
 		if (value >= AnnotStyle.values().length) {
