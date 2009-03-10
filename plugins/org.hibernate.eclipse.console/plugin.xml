@@ -796,7 +796,7 @@
             contentProvider="org.hibernate.eclipse.console.views.NavigatorProvider"
             id="org.hibernate.eclipse.navigator.KnownConfigurationsContent"
             labelProvider="org.hibernate.eclipse.console.workbench.xpl.AnyAdaptableLabelProvider"
-            name="Hibernate Known Configurations">
+            name="%NavigatorContent_HibernateKnownConfigs">
       <possibleChildren>
          <instanceof value="java.lang.Object"/>
       </possibleChildren>

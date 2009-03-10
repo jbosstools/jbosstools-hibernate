@@ -40,17 +40,17 @@
 </extension>
     <extension point="org.eclipse.ui.commands"> 
         <category id="org.hibernate.eclipse.jdt.ui.run_jpaaction.category1" 
-            name="Generate Hibernate/JPA annotations"> 
+            name="%Category_GenerateHibernateAnnotations"> 
         </category> 
         <command categoryId="org.hibernate.eclipse.jdt.ui.run_jpaaction.category1" 
             defaultHandler="org.hibernate.eclipse.jdt.ui.internal.jpa.actions.JPAMapToolActionDelegate" 
             id="org.hibernate.eclipse.jdt.ui.run_jpaaction" 
-            name="Generate &amp;Hibernate/JPA annotations..."> 
+            name="%Command_GenerateHibernateAnnotations"> 
         </command> 
     </extension> 
     <extension point="org.eclipse.ui.menus"> 
         <menuContribution locationURI="menu:org.eclipse.ui.main.menu?after=edit"> 
-            <menu id="org.eclipse.jdt.ui.source.menu" label="&amp;Source"> 
+            <menu id="org.eclipse.jdt.ui.source.menu" label="%Menu_Source"> 
             </menu> 
         </menuContribution> 
         <menuContribution locationURI="menu:org.eclipse.jdt.ui.source.menu"> 
@@ -87,7 +87,7 @@
         <viewerContribution
             id="org.hibernate.eclipse.jdt.ui.run_jpa.popupMenu"
             targetID="#CompilationUnitEditorContext">
-            <menu label="&amp;Source" path="edit" id="org.eclipse.jdt.ui.source.menu">
+            <menu label="%Menu_Source" path="edit" id="org.eclipse.jdt.ui.source.menu">
 		        <separator name="commentGroup"/>
                 <separator name="editGroup"/>
                 <separator name="importGroup"/>
@@ -99,7 +99,7 @@
             <action
                   class="org.hibernate.eclipse.jdt.ui.internal.jpa.actions.JPAMapToolActionDelegate"
                   id="org.hibernate.eclipse.jdt.ui.run_jpaaction2"
-                  label="Generate &amp;Hibernate/JPA annotations..."
+                  label="%JavaEditorMenu_GenerateHibernateAnnotations"
                   menubarPath="org.eclipse.jdt.ui.source.menu/generateGroup"
                   style="push">
             </action>
@@ -108,7 +108,7 @@
 		<objectContribution adaptable="false"
 			id="org.hibernate.eclipse.jdt.ui.run_jpa.popupMenu.IJavaElementContribution"
 			objectClass="org.eclipse.jdt.core.IJavaElement">
-            <menu label="&amp;Source" path="edit" id="org.eclipse.jdt.ui.source.menu">
+            <menu label="%Menu_Source" path="edit" id="org.eclipse.jdt.ui.source.menu">
 		        <separator name="commentGroup"/>
                 <separator name="editGroup"/>
                 <separator name="importGroup"/>
@@ -119,7 +119,7 @@
             </menu>
 			<action class="org.hibernate.eclipse.jdt.ui.internal.jpa.actions.JPAMapToolActionDelegate"
 				id="org.hibernate.eclipse.jdt.ui.run_jpaaction3"
-				label="Generate &amp;Hibernate/JPA annotations"
+				label="%JavaElementMenu_GenerateHibernateAnnotations"
 				menubarPath="org.eclipse.jdt.ui.source.menu/generateGroup">
 			</action>
 		</objectContribution>
