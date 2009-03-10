@@ -34,13 +34,13 @@
     <pubdate>April 2008</pubdate>
     <copyright>
       <year>2007</year>
-      <year>2009</year>
-      <holder>JBoss, a division of Red Hat</holder>
+      <year><diffmk:wrapper diffmk:change="changed">2009</diffmk:wrapper></year>
+      <holder><diffmk:wrapper diffmk:change="changed">JBoss, a division of Red Hat</diffmk:wrapper></holder>
     </copyright>
 
-    <releaseinfo>
+    <releaseinfo><diffmk:wrapper diffmk:change="changed">
       Version: 3.2.4.GA
-    </releaseinfo>
+    </diffmk:wrapper></releaseinfo>
 
 
     <mediaobject>
@@ -405,7 +405,7 @@
 </chapter>
 
   
-<chapter id="plugins"  xml:base="file:///home/ochikvina/WORK/for_compare/trunk/hibernatetools/docs/reference/en/modules/plugins.xml">
+<chapter id="plugins" role="updated" xml:base="file:///home/ochikvina/WORK/for_compare/trunk/hibernatetools/docs/reference/en/modules/plugins.xml">
   <title>Eclipse Plugins</title>
 
   <para>This chapter will introduce you to the functionality that <property moreinfo="none">Hibernate
@@ -1024,7 +1024,7 @@
     </figure>
   </section>
 
-  <section id="refeng_codegen" >
+  <section id="refeng_codegen" role="updated">
     <title>Reverse Engineering and Code Generation</title>
 
     <para>A "click-and-generate" reverse engineering and code generation facility
@@ -1239,20 +1239,20 @@
               </entry>
             </row>
             
-            <row>
-              <entry>
-                <para>Detect one-to-one associations</para>
+            <row diffmk:change="added">
+              <entry diffmk:change="added">
+                <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Detect one-to-one associations</diffmk:wrapper></para>
               </entry>
               
-              <entry>
-                <para>
+              <entry diffmk:change="added">
+                <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">
                   Reverse engineering detects one-to-one associations via primary key and both hbm.xml and annotation generation generates the proper code for it.
-                </para>
-                <para>
+                </diffmk:wrapper></para>
+                <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">
                   The detection is enabled by default (except for Seam 1.2 and Seam 2.0) reverse engineering.
                   For Hibernate Tools generation there is a checkbox to disable if not wanted.
         
-                </para>
+                </diffmk:wrapper></para>
               </entry>
             </row>
             
@@ -2326,8 +2326,8 @@
     <note>
       <title>Note:</title>
 
-      <para>Please note, if you choose Hibernate as a platform and leave the Target Runtime 
-        with &lt;none&gt;, the wizard does not require you to have a <link linkend="console_conf">Hibernate Console Configuration</link>. A Hibernate Console Configuration is created when the wizard finishes its work.</para>
+      <para><diffmk:wrapper diffmk:change="changed">Please note, if you choose Hibernate as a platform and leave the Target Runtime 
+        with &lt;none&gt;, the wizard does not require you to have a </diffmk:wrapper><link linkend="console_conf">Hibernate Console Configuration</link><diffmk:wrapper diffmk:change="changed">. A Hibernate Console Configuration is created when the wizard finishes its work.</diffmk:wrapper></para>
     </note>
   </section>
 </chapter>
