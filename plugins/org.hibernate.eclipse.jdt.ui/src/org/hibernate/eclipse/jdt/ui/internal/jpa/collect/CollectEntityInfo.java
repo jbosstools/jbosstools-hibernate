@@ -317,15 +317,15 @@ public class CollectEntityInfo extends ASTVisitor {
 			return true;
 		}
 		// -) is it setter?
-		if (node.getName().getIdentifier().startsWith("set")
-				&& node.parameters().size() == 1) { //$NON-NLS-1$
+		if (node.getName().getIdentifier().startsWith("set")//$NON-NLS-1$
+				&& node.parameters().size() == 1) { 
 			// setter - do not process it
 			return true;
 		}
 		// +) is it getter?
-		if (!(node.getName().getIdentifier().startsWith("get")
-				|| node.getName().getIdentifier().startsWith("is"))
-				|| node.parameters().size() > 0) { //$NON-NLS-1$
+		if (!(node.getName().getIdentifier().startsWith("get")//$NON-NLS-1$
+				|| node.getName().getIdentifier().startsWith("is"))//$NON-NLS-1$
+				|| node.parameters().size() > 0) {
 			// not the getter - do not process it
 			return true;
 		}
@@ -335,7 +335,16 @@ public class CollectEntityInfo extends ASTVisitor {
 		// 5) try to define name
 		String returnIdentifier = getReturnIdentifier(node);
 		List<String> list = new ArrayList<String>();
-		list.add(returnIdentifier);
+		if (returnIdentifier != null){
+			list.add(returnIdentifier);
+		} else {
+			//this need to do not lost primiry id
+			//and add references for interface
+			if (entityInfo.isInterfaceFlag()){
+				String probablyFieldName = Utils.getFieldNameByGetter(node);
+				list.add(probablyFieldName);
+			}
+		}
 		// process it as a field declaration
 		boolean res = processFieldOrGetter(type, list);
 		return res;
