@@ -14,10 +14,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.ArrayType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldAccess;
@@ -45,6 +46,7 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.JPAConst;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefType;
+import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
 
 /**
  * Visitor to collect information about JPA entity.
@@ -65,7 +67,7 @@ public class CollectEntityInfo extends ASTVisitor {
 	public boolean visit(CompilationUnit node) {
 		entityInfo.setFullyQualifiedName(
 			node.getTypeRoot().findPrimaryType().getFullyQualifiedName());
-		if (node.getProblems().length > 0) {
+		if (node.getProblems().length > 0) {//this includes warnings too
 			entityInfo.setCompilerProblemsFlag(true);
 		}
 		return true;
@@ -262,6 +264,7 @@ public class CollectEntityInfo extends ASTVisitor {
 		while (it.hasNext()) {
 			Object obj = it.next();
 			if (obj instanceof SimpleType) {
+				//TODO process interfaces
 				SimpleType st = (SimpleType)obj;
 				String fullyQualifiedName = st.getName().getFullyQualifiedName();
 				if (JPAConst.IMPORT_SERIALIZABLE.compareTo(fullyQualifiedName) == 0) {
@@ -314,12 +317,15 @@ public class CollectEntityInfo extends ASTVisitor {
 			return true;
 		}
 		// -) is it setter?
-		if (node.getName().getIdentifier().startsWith("set")) { //$NON-NLS-1$
+		if (node.getName().getIdentifier().startsWith("set")
+				&& node.parameters().size() == 1) { //$NON-NLS-1$
 			// setter - do not process it
 			return true;
 		}
 		// +) is it getter?
-		if (!node.getName().getIdentifier().startsWith("get")) { //$NON-NLS-1$
+		if (!(node.getName().getIdentifier().startsWith("get")
+				|| node.getName().getIdentifier().startsWith("is"))
+				|| node.parameters().size() > 0) { //$NON-NLS-1$
 			// not the getter - do not process it
 			return true;
 		}
@@ -392,15 +398,42 @@ public class CollectEntityInfo extends ASTVisitor {
 			}
 		} else if (type.isArrayType()) {
 			ArrayType at = (ArrayType)type;
-			ITypeBinding tb = at.resolveBinding();
+			Type componentType = at;
+			while (componentType.isArrayType()){
+				componentType = ((ArrayType)componentType).getComponentType();
+			}
+			ITypeBinding tb = componentType.resolveBinding();
+			if (tb != null) {
+				if (tb.getJavaElement() instanceof SourceType) {
+					String entityFullyQualifiedName = ""; //$NON-NLS-1$
+					SourceType sourceT = (SourceType)tb.getJavaElement();
+					try {
+						entityFullyQualifiedName = sourceT.getFullyQualifiedParameterizedName();
+					} catch (JavaModelException e) {
+						HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
+					}
+					entityInfo.addDependency(entityFullyQualifiedName);
+					Iterator itVarNames = list.iterator();
+					while (itVarNames.hasNext()) {
+						String name = (String)itVarNames.next();
+						entityInfo.addReference(name, entityFullyQualifiedName, RefType.ONE2MANY);
+					}
+				}
+			}
 		} else if (type.isParameterizedType()) {
 			ParameterizedType pt = (ParameterizedType)type;
 			Type typeP = (Type)pt.getType();
 			ITypeBinding tb = typeP.resolveBinding();
 			if (tb != null) {
-				ITypeBinding[] interfaces = tb.getTypeDeclaration().getInterfaces();
+				ITypeBinding[] interfaces = Utils.getAllInterfaces(tb);
 				String fullyQualifiedNameTypeName = ""; //$NON-NLS-1$
-				for (int i = 0; i < interfaces.length; i++) {
+				if (Utils.isImplementInterface(interfaces, "java.util.Collection")){//$NON-NLS-1$
+					fullyQualifiedNameTypeName = "java.util.Collection";//$NON-NLS-1$
+				}
+				if (Utils.isImplementInterface(interfaces, "java.util.Map")){//$NON-NLS-1$
+					fullyQualifiedNameTypeName = "java.util.Map";//$NON-NLS-1$
+				}
+				/*for (int i = 0; i < interfaces.length; i++) {
 					if (interfaces[i].getJavaElement() instanceof BinaryType) {
 						BinaryType binaryT = (BinaryType)interfaces[i].getJavaElement();
 						String tmp = binaryT.getFullyQualifiedName('.');
@@ -409,7 +442,7 @@ public class CollectEntityInfo extends ASTVisitor {
 							break;
 						}
 					}
-				}
+				}*/
 				if (fullyQualifiedNameTypeName.length() > 0) {
 					Iterator typeArgsIt = pt.typeArguments().iterator();
 					while (typeArgsIt.hasNext()) {

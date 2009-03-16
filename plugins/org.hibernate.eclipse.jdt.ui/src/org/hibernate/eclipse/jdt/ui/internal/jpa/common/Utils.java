@@ -24,6 +24,8 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
 
 /**
  * Compilation unit common functions
@@ -43,6 +45,15 @@ public class Utils {
 
 	static public ICompilationUnit findCompilationUnit(IJavaProject javaProject, 
 			String fullyQualifiedName) {
+		IType lwType = findType(javaProject, fullyQualifiedName);
+		if (lwType != null) {
+			return lwType.getCompilationUnit();
+		}
+		return null;
+	}
+	
+	static public IType findType(IJavaProject javaProject, 
+			String fullyQualifiedName) {
 		IType lwType = null;
 		try {
 			lwType = javaProject.findType(fullyQualifiedName);
@@ -50,11 +61,7 @@ public class Utils {
 			// just ignore it!
 			//HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
 		}
-		ICompilationUnit resCompilationUnit = null;
-		if (lwType != null) {
-			resCompilationUnit = lwType.getCompilationUnit();
-		}
-		return resCompilationUnit;
+		return lwType;
 	}
 
 	static public ICompilationUnit findCompilationUnit(String fullyQualifiedName) {
@@ -153,5 +160,38 @@ public class Utils {
 			return OwnerType.NO;
 		}
 		return OwnerType.UNDEF;
+	}
+	
+	public static boolean isImplementInterface(ITypeBinding[] interfaces, String parentInterface){
+		for (int i = 0; i < interfaces.length; i++) {
+			ITypeBinding typeBinding = interfaces[i];
+			if (parentInterface.equals(typeBinding.getBinaryName())) return true;
+			if (isImplementInterface(typeBinding.getInterfaces(), parentInterface)) return true;
+		}
+		return false;
+	}
+	
+	public static ITypeBinding[] getAllInterfaces(ITypeBinding tb){
+		ITypeBinding[] interfaces = tb.getInterfaces();
+		if (tb.isInterface()) {				
+			ITypeBinding[] allInterfaces = new ITypeBinding[interfaces.length + 1];
+			System.arraycopy(interfaces, 0, allInterfaces, 0, interfaces.length);
+			allInterfaces[interfaces.length] = tb;
+			interfaces = allInterfaces;
+		}	
+		return interfaces;
+	}
+	
+	public static String getFieldNameByGetter(MethodDeclaration node){
+		if (node.parameters().size() != 0) return null;
+		String methodName = node.getName().getIdentifier();
+		if (methodName.startsWith("get") && methodName.length() > 3){
+			methodName = methodName.substring(3);
+			return Character.toLowerCase(methodName.charAt(0)) + methodName.substring(1);
+		} else if (methodName.startsWith("is") && methodName.length() > 2){
+			methodName = methodName.substring(2);
+			return Character.toLowerCase(methodName.charAt(0)) + methodName.substring(1);
+		}
+		return null;
 	}
 }
