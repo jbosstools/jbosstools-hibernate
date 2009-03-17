@@ -42,11 +42,14 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.process.wizard.IHibernateJPAWiz
  * @author Vitali
  */
 public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
-
 	/**
 	 * place to search compilation units
 	 */
-	protected IJavaProject javaProject;
+	protected IJavaProject javaProject = null;
+	/**
+	 * place to store default settings
+	 */
+	protected IPreferenceStore preferenceStore = null;
 	/**
 	 * annotation style
 	 */
@@ -55,6 +58,11 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 	 * annotation style preference of majority
 	 */
 	protected AnnotStyle annotationStylePreference = AnnotStyle.FIELDS;
+	/**
+	 * annotation style preference of majority
+	 */
+	public final static String storePropertyName = 
+		"hibernate.jpa.generation.AnnotationStyle.preference"; //$NON-NLS-1$
 
 	/**
 	 * change info storage
@@ -64,9 +72,20 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 	public AllEntitiesProcessor() {
 	}
 
+	public IPreferenceStore getPreferenceStore() {
+		if (preferenceStore == null) {
+			preferenceStore = Activator.getDefault().getPreferenceStore();
+		}
+		return preferenceStore;
+	}
+
+	public void setPreferenceStore(IPreferenceStore preferenceStore) {
+		this.preferenceStore = preferenceStore;
+	}
+
 	public void initAnnotationStylePreference() {
-		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
-		int value = preferenceStore.getInt(AllEntitiesProcessor.class.toString());
+		IPreferenceStore preferenceStore = getPreferenceStore();
+		int value = preferenceStore.getInt(storePropertyName);
 		if (value >= AnnotStyle.values().length) {
 			value = 0;
 		}
@@ -74,7 +93,7 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 	}
 	
 	public void saveAnnotationStylePreference() {
-		IPreferenceStore preferenceStore = Activator.getDefault().getPreferenceStore();
+		IPreferenceStore preferenceStore = getPreferenceStore();
 		int value = 0;
 		while (value < AnnotStyle.values().length) {
 			if (AnnotStyle.values()[value] == annotationStyle) {
@@ -85,7 +104,7 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 		if (value >= AnnotStyle.values().length) {
 			value = 0;
 		}
-		preferenceStore.setValue(AllEntitiesProcessor.class.toString(), value);
+		preferenceStore.setValue(storePropertyName, value);
 	}
 
 	/**

@@ -665,12 +665,13 @@ public class AllEntitiesInfoCollector {
 		CollectEntityInfo finder = new CollectEntityInfo();
 		cu.accept(finder);
 		EntityInfo result = finder.getEntityInfo();
-		result.adjustParameters();
+		Iterator<String> it = null;
 		if (result != null) {
+			result.adjustParameters();
 			mapCUs_Info.put(fullyQualifiedName, result);
+			it = result.getDependences();
 		}
-		Iterator<String> it = result.getDependences();
-		while (it.hasNext()) {
+		if (it != null) while (it.hasNext()) {
 			String fullyQualifiedNameTmp = it.next();
 			collect(fullyQualifiedNameTmp);
 		}

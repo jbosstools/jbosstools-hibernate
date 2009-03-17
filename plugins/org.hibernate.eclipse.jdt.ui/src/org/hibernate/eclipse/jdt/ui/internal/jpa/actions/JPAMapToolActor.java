@@ -87,6 +87,10 @@ public class JPAMapToolActor {
 	protected AllEntitiesProcessor processor = new AllEntitiesProcessor();
 
 	protected JPAMapToolActor() {
+		initAnnotationStylePreference();
+	}
+
+	public void initAnnotationStylePreference() {
 		processor.initAnnotationStylePreference();
 	}
 
@@ -384,4 +388,17 @@ public class JPAMapToolActor {
 		this.selection = selection;
 	}
 
+	// setters for testing
+
+	public void setAllEntitiesInfoCollector(AllEntitiesInfoCollector collector) {
+		this.collector = collector;
+	}
+
+	public void setAllEntitiesProcessor(AllEntitiesProcessor processor) {
+		this.processor = processor;
+	}
+
+	public void setSelectionCU(Set<ICompilationUnit> selectionCU) {
+		this.selectionCU = selectionCU;
+	}
 }

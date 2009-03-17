@@ -10,27 +10,27 @@ import java.util.Vector;
  */
 public class JPAConst {
 
-	static public String IMPORT_SERIALIZABLE = "java.io.Serializable"; //$NON-NLS-1$
-	static public String IMPORT_ENTITY = "javax.persistence.Entity"; //$NON-NLS-1$
-	static public String IMPORT_GENERATED_VALUE = "javax.persistence.GeneratedValue"; //$NON-NLS-1$
-	static public String IMPORT_ID = "javax.persistence.Id"; //$NON-NLS-1$
-	static public String IMPORT_JOINCOLUMN = "javax.persistence.JoinColumn"; //$NON-NLS-1$
-	static public String IMPORT_ONE2ONE = "javax.persistence.OneToOne"; //$NON-NLS-1$
-	static public String IMPORT_ONE2MANY = "javax.persistence.OneToMany"; //$NON-NLS-1$
-	static public String IMPORT_MANY2ONE = "javax.persistence.ManyToOne"; //$NON-NLS-1$
-	static public String IMPORT_MANY2MANY = "javax.persistence.ManyToMany"; //$NON-NLS-1$
+	public static final String IMPORT_SERIALIZABLE = "java.io.Serializable"; //$NON-NLS-1$
+	public static final String IMPORT_ENTITY = "javax.persistence.Entity"; //$NON-NLS-1$
+	public static final String IMPORT_GENERATED_VALUE = "javax.persistence.GeneratedValue"; //$NON-NLS-1$
+	public static final String IMPORT_ID = "javax.persistence.Id"; //$NON-NLS-1$
+	public static final String IMPORT_JOINCOLUMN = "javax.persistence.JoinColumn"; //$NON-NLS-1$
+	public static final String IMPORT_ONE2ONE = "javax.persistence.OneToOne"; //$NON-NLS-1$
+	public static final String IMPORT_ONE2MANY = "javax.persistence.OneToMany"; //$NON-NLS-1$
+	public static final String IMPORT_MANY2ONE = "javax.persistence.ManyToOne"; //$NON-NLS-1$
+	public static final String IMPORT_MANY2MANY = "javax.persistence.ManyToMany"; //$NON-NLS-1$
 	
-	static public String ANNOTATION_SERIALIZABLE = "Serializable"; //$NON-NLS-1$
-	static public String ANNOTATION_ENTITY = "Entity"; //$NON-NLS-1$
-	static public String ANNOTATION_GENERATED_VALUE = "GeneratedValue"; //$NON-NLS-1$
-	static public String ANNOTATION_ID = "Id"; //$NON-NLS-1$
-	static public String ANNOTATION_JOINCOLUMN = "JoinColumn"; //$NON-NLS-1$
-	static public String ANNOTATION_ONE2ONE = "OneToOne"; //$NON-NLS-1$
-	static public String ANNOTATION_ONE2MANY = "OneToMany"; //$NON-NLS-1$
-	static public String ANNOTATION_MANY2ONE = "ManyToOne"; //$NON-NLS-1$
-	static public String ANNOTATION_MANY2MANY = "ManyToMany"; //$NON-NLS-1$
+	public static final String ANNOTATION_SERIALIZABLE = "Serializable"; //$NON-NLS-1$
+	public static final String ANNOTATION_ENTITY = "Entity"; //$NON-NLS-1$
+	public static final String ANNOTATION_GENERATED_VALUE = "GeneratedValue"; //$NON-NLS-1$
+	public static final String ANNOTATION_ID = "Id"; //$NON-NLS-1$
+	public static final String ANNOTATION_JOINCOLUMN = "JoinColumn"; //$NON-NLS-1$
+	public static final String ANNOTATION_ONE2ONE = "OneToOne"; //$NON-NLS-1$
+	public static final String ANNOTATION_ONE2MANY = "OneToMany"; //$NON-NLS-1$
+	public static final String ANNOTATION_MANY2ONE = "ManyToOne"; //$NON-NLS-1$
+	public static final String ANNOTATION_MANY2MANY = "ManyToMany"; //$NON-NLS-1$
 	
-	static public Vector<String> ALL_IMPORTS = new Vector<String>();
+	public static final Vector<String> ALL_IMPORTS = new Vector<String>();
 	
 	static {
 		//ALL_IMPORTS.add(IMPORT_SERIALIZABLE);
