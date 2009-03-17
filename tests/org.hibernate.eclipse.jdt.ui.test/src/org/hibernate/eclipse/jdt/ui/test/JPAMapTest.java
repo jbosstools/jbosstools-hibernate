@@ -44,20 +44,16 @@ import junit.framework.TestCase;
 /**
  * 
  * 
- * @author Vitali
+ * @author Vitali Yemialyanchyk
  */
 public class JPAMapTest extends TestCase {
 
-	public static String PROJECT_NAME = "TestProject"; //$NON-NLS-1$
-	public static String RESOURCE_PATH = "res/project/"; //$NON-NLS-1$
-	public static String SPECIMEN_PATH = "res/specimen/"; //$NON-NLS-1$
-	public static String TESTRESOURCE_PATH = "testresources"; //$NON-NLS-1$
-	public static String TEST_FIELDS = "fields"; //$NON-NLS-1$
-	public static String TEST_GETTERS = "getters"; //$NON-NLS-1$
-	static {
-		RESOURCE_PATH.replaceAll("//", File.separator); //$NON-NLS-1$
-		SPECIMEN_PATH.replaceAll("//", File.separator); //$NON-NLS-1$
-	}
+	public static final String PROJECT_NAME = "TestProject"; //$NON-NLS-1$
+	public static final String RESOURCE_PATH = "res/project/".replaceAll("//", File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final String SPECIMEN_PATH = "res/specimen/".replaceAll("//", File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final String TESTRESOURCE_PATH = "testresources"; //$NON-NLS-1$
+	public static final String TEST_FIELDS = "fields"; //$NON-NLS-1$
+	public static final String TEST_GETTERS = "getters"; //$NON-NLS-1$
 
 	protected AllEntitiesInfoCollector collector = new AllEntitiesInfoCollector();
 	protected AllEntitiesProcessor processor = new AllEntitiesProcessor();
@@ -126,7 +122,7 @@ public class JPAMapTest extends TestCase {
 		//ICompilationUnit icu2 = Utils.findCompilationUnit(javaProject,
 		//		"test.annotated." + testSelection + ".Person"); //$NON-NLS-1$ //$NON-NLS-2$
 		ICompilationUnit icu4 = null;
-		if (testSelection == TEST_GETTERS) {
+		if (testSelection.equals(TEST_GETTERS)) {
 			icu4 = Utils.findCompilationUnit(javaProject,
 					"test.annotated." + testSelection + ".FotoXPerson"); //$NON-NLS-1$ //$NON-NLS-2$
 		}

@@ -7,7 +7,7 @@ public class JDTuiAllTests {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(
-				"Test for org.hibernate.eclipse.jdt.ui.test");
+				"Test for org.hibernate.eclipse.jdt.ui.test"); //$NON-NLS-1$
 		//$JUnit-BEGIN$
 		//suite.addTestSuite(HibernateErrorsTest.class);
 		//suite.addTestSuite(HibernateErrorsTest2.class);
