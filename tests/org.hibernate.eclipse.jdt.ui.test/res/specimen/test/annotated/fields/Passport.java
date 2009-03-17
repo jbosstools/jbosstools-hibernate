@@ -10,15 +10,27 @@
   ******************************************************************************/
 package test.annotated.fields;
 
+import java.util.Map;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Passport extends Document {
 
 	protected Long fakeId;
+	@OneToMany
+	private Map<Visa, String> visas;
 	
 	public Passport() {
 		setDocType((byte)1);
+	}
+	
+	public void setVisas(Map<Visa, String> visas){
+		this.visas = visas;
+	}
+	
+	public Map<Visa, String> getVisas(){
+		return visas;
 	}
 
 }
