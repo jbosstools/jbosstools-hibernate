@@ -806,7 +806,7 @@
               </entry>
 
               <entry>
-                <para>A table that has a multi-colum primary key a &lt;composite-id&gt;
+                <para>A table that has a multi-column primary key a &lt;composite-id&gt;
                   mapping will always be created. If this option is enabled and there are matching
                   foreign-keys each key column is still considered a 'basic' scalar (string, long,
                   etc.) instead of a reference to an entity. If you disable this option a

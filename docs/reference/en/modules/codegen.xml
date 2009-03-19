@@ -353,7 +353,7 @@ public class Person implements Serializable, IAuditable {
           </emphasis> attributes, unless you are defining a class without bi-directional
           associations.</para>
 
-        <para>We recomend instead to add the <emphasis>
+        <para>We recommend instead to add the <emphasis>
             <property>meta</property>
           </emphasis> attributes at the property level:</para>
 
