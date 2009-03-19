@@ -10,6 +10,7 @@
   ******************************************************************************/
 package org.hibernate.eclipse.jdt.ui.internal.jpa.collect;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -53,7 +54,7 @@ public class AllEntitiesInfoCollector {
 		// setup java project
 		this.javaProject = javaProject;
 		// clear collection
-		mapCUs_Info.clear();
+		mapCUs_Info = new TreeMap<String, EntityInfo>();
 	}
 	
 	/**
