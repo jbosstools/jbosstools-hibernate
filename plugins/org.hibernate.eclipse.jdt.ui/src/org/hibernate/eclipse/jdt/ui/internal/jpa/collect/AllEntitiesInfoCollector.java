@@ -10,7 +10,6 @@
   ******************************************************************************/
 package org.hibernate.eclipse.jdt.ui.internal.jpa.collect;
 
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -31,7 +30,7 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.process.AnnotStyle;
 /**
  * Collect information about JPA entity and it's dependences.
  * 
- * @author Vitali
+ * @author Vitali Yemialyanchyk
  */
 public class AllEntitiesInfoCollector {
 

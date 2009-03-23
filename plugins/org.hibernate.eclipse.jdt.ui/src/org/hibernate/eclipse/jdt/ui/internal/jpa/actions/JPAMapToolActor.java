@@ -31,6 +31,9 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jdt.internal.core.ClassFile;
+import org.eclipse.jdt.internal.core.ExternalPackageFragmentRoot;
+import org.eclipse.jdt.internal.core.JarPackageFragmentRoot;
 import org.eclipse.jdt.internal.core.JavaElement;
 import org.eclipse.jdt.internal.core.JavaElementInfo;
 import org.eclipse.jdt.internal.core.JavaProject;
@@ -45,8 +48,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.jdt.ui.Activator;
 import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
@@ -59,7 +62,7 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.process.AllEntitiesProcessor;
  * Actor to execute annotation generation.
  * It is singleton.
  *
- * @author Vitali
+ * @author Vitali Yemialyanchyk
  */
 public class JPAMapToolActor {
 
@@ -101,10 +104,17 @@ public class JPAMapToolActor {
 		return actor;
 	}
 
+	/**
+	 * Cleanup collection of selected elements for processing
+	 */
 	public void clearSelectionCU() {
 		selectionCU.clear();
 	}
 	
+	/**
+	 * Adds compilation unit into collection of selected elements for processing
+	 * @param cu compilation unit
+	 */
 	public void addCompilationUnit(ICompilationUnit cu) {
 		if (cu != null) {
 			IType[] types = null;
@@ -176,14 +186,30 @@ public class JPAMapToolActor {
 		processor.saveAnnotationStylePreference();
 	}
 
-	private Shell getShell() {
-		return Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
+	private IWorkbenchWindow getActiveWorkbenchWindow() {
+		return Activator.getDefault().getWorkbench().getActiveWorkbenchWindow();
 	}
 
-	public void updateOpen() {
-		IWorkbench workbench = Activator.getDefault().getWorkbench();
-		IWorkbenchPage page = workbench.getActiveWorkbenchWindow().getActivePage();
+	private Shell getShell() {
+		IWorkbenchWindow activeWorkbenchWindow = getActiveWorkbenchWindow();
+		if (activeWorkbenchWindow != null) {
+			return activeWorkbenchWindow.getShell();
+		}
+		return null;
+	}
 
+	/**
+	 * update compilation unit of currently opened editor 
+	 */
+	public void updateOpen() {
+		IWorkbenchWindow activeWorkbenchWindow = getActiveWorkbenchWindow();
+		if (activeWorkbenchWindow == null) {
+			return;
+		}
+		IWorkbenchPage page = activeWorkbenchWindow.getActivePage();
+		if (page == null) {
+			return;
+		}
 		IEditorPart editor = page.getActiveEditor();
 		if (editor instanceof CompilationUnitEditor) {
 			CompilationUnitEditor cue = (CompilationUnitEditor)editor;
@@ -209,6 +235,9 @@ public class JPAMapToolActor {
 		collector.collect(cu);
 	}
 	
+	/**
+	 * @return probable number of available item to process
+	 */
 	synchronized public int getSelectedSourceSize() {
 		int res = 0;
 		if (selection == null) {
@@ -221,10 +250,20 @@ public class JPAMapToolActor {
 		else if (selection instanceof TreeSelection) {
 			TreeSelection treeSelection = (TreeSelection)selection;
 			res = treeSelection.size();
+			Iterator it = treeSelection.iterator();
+			while (it.hasNext()) {
+				Object obj = it.next();
+				if (excludeElement(obj)) {
+					res--;
+				}
+			}
 		}
 		return res;
 	}
 
+	/**
+	 * @param sel - current selected workspace element for processing
+	 */
 	synchronized private void updateSelectedItems(ISelection sel) {
 		//System.out.println("Blah! " + selection); //$NON-NLS-1$
 		if (sel instanceof TextSelection) {
@@ -296,7 +335,40 @@ public class JPAMapToolActor {
 			sel = null;
 		}
 	}
+
+	/**
+	 * Check is the object in set of excluded elements
+	 * @param obj
+	 * @return exclusion result
+	 */
+	protected boolean excludeElement(Object obj) {
+		boolean res = false;
+		if (obj instanceof JarPackageFragmentRoot) {
+			res = true;
+		}
+		else if (obj instanceof ClassFile) {
+			res = true;
+		}
+		else if (obj instanceof PackageFragment) {
+			PackageFragment pf = (PackageFragment)obj;
+			try {
+				if (pf.getKind() == IPackageFragmentRoot.K_BINARY) {
+					res = true;
+				}
+			} catch (JavaModelException e) {
+				// ignore
+			}
+		}
+		else if (obj instanceof ExternalPackageFragmentRoot) {
+			res = true;
+		}
+		return res;
+	}
 	
+	/**
+	 * Process object - java element to collect all it's children CompilationUnits
+	 * @param obj
+	 */
 	protected void processJavaElements(Object obj) {
 		if (obj instanceof ICompilationUnit) {
 			ICompilationUnit cu = (ICompilationUnit)obj;

@@ -105,9 +105,27 @@
             </action>
         </viewerContribution>
 		<!-- java element context menu -->
-		<objectContribution adaptable="false"
-			id="org.hibernate.eclipse.jdt.ui.run_jpa.popupMenu.IJavaElementContribution"
+		<objectContribution adaptable="false" 
+			id="org.hibernate.eclipse.jdt.ui.run_jpa.popupMenu.IJavaElementContribution" 
 			objectClass="org.eclipse.jdt.core.IJavaElement">
+			<visibility>
+				<or>
+					<objectClass name="org.eclipse.jdt.core.ICompilationUnit"/>
+					<objectClass name="org.eclipse.jdt.internal.core.JavaProject"/>
+					<objectClass name="org.eclipse.jdt.internal.core.PackageFragment"/>
+					<and>
+						<objectClass name="org.eclipse.jdt.internal.core.JavaElement"/>
+						<not>
+							<or>
+								<objectClass name="org.eclipse.jdt.internal.core.ExternalPackageFragmentRoot"/>
+								<objectClass name="org.eclipse.jdt.internal.core.JarPackageFragmentRoot"/>
+								<objectClass name="org.eclipse.jdt.internal.core.ClassFile"/>
+								<objectClass name="org.eclipse.jdt.internal.core.ExternalJavaProject"/>
+							</or>
+						</not>
+					</and>
+				</or>
+			</visibility>
             <menu label="%Menu_Source" path="edit" id="org.eclipse.jdt.ui.source.menu">
 		        <separator name="commentGroup"/>
                 <separator name="editGroup"/>
