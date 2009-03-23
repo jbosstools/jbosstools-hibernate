@@ -54,6 +54,7 @@ public class ConsoleConfigurationOptionsTab extends ConsoleConfigurationTab {
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		dialectNameCombo.setLayoutData(gd);
 		dialectNameCombo.setFont(font);
+		dialectNameCombo.addModifyListener(getChangeListener());
 	}
 
 	private void createNamingStrategyClassNameEditor(Composite parent) {
@@ -87,10 +88,8 @@ public class ConsoleConfigurationOptionsTab extends ConsoleConfigurationTab {
 
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
-			String dialect = configuration.getAttribute( IConsoleConfigurationLaunchConstants.DIALECT , (String)null );
-			if (dialect != null){
-				dialectNameCombo.setText( helper.getShortDialectName(dialect) );
-			}			
+			String dialect = configuration.getAttribute( IConsoleConfigurationLaunchConstants.DIALECT, "" ); //$NON-NLS-1$
+			dialectNameCombo.setText( helper.getShortDialectName(dialect) );
 			namingStrategyClassNameText.setText( configuration.getAttribute( IConsoleConfigurationLaunchConstants.NAMING_STRATEGY, "" ) ); //$NON-NLS-1$
 			entityResolverClassNameText.setText( configuration.getAttribute( IConsoleConfigurationLaunchConstants.ENTITY_RESOLVER, "" ) ); //$NON-NLS-1$
 		}
