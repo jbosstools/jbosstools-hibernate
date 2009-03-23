@@ -1081,7 +1081,7 @@
    <XActionItem displayName="New" group="1" kind="list" name="CreateActions">
     <XActionItem displayName="File" group="1" kind="list" name="CreateFiles">
      <XActionItem kind="list" name="ORM">
-      <XActionItem HandlerClassName="%SpecialWizard%"
+      <XActionItem HandlerClassName="%SpecialWizard%" HIDE="always"
        ICON="main.hibernate.file"
        PROPERTIES="entity=FileHibConfig3;extensions=.xml.;validator.addfile=true;support=org.jboss.tools.common.model.files.handlers.CreateFileSupport;extension=xml"
        displayName="Hibernate Configuration 3.0..." kind="action" name="CreateFileHibConfig3">
@@ -1091,6 +1091,10 @@
         <AttributeData AttributeName="name"/>
        </EntityData>
       </XActionItem>
+      <XActionItem HandlerClassName="%WizardInvoker%"
+       ICON="main.hibernate.file"
+       PROPERTIES="plugin=org.hibernate.eclipse.console;wizard=org.hibernate.eclipse.console.wizards.NewConfigurationWizard"
+       displayName="Hibernate Configuration 3.0..." kind="action" name="CreateFileHibConfig3V"/>
      </XActionItem>
     </XActionItem>
    </XActionItem>
@@ -1105,7 +1109,7 @@
    <XActionItem displayName="New" group="1" kind="list" name="CreateActions">
     <XActionItem displayName="File" group="1" kind="list" name="CreateFiles">
      <XActionItem kind="list" name="ORM">
-      <XActionItem HandlerClassName="%SpecialWizard%"
+      <XActionItem HandlerClassName="%SpecialWizard%" HIDE="always"
        ICON="main.hibernate.file"
        PROPERTIES="entity=FileHibConfig3;extensions=.xml.;validator.addfile=true;support=org.jboss.tools.common.model.files.handlers.CreateFileSupport;extension=xml"
        displayName="Hibernate Configuration 3.0..." kind="action" name="CreateFileHibConfig3">
@@ -1115,6 +1119,10 @@
         <AttributeData AttributeName="name"/>
        </EntityData>
       </XActionItem>
+      <XActionItem HandlerClassName="%WizardInvoker%"
+       ICON="main.hibernate.file"
+       PROPERTIES="plugin=org.hibernate.eclipse.console;wizard=org.hibernate.eclipse.console.wizards.NewConfigurationWizard"
+       displayName="Hibernate Configuration 3.0..." kind="action" name="CreateFileHibConfig3V"/>
      </XActionItem>
     </XActionItem>
    </XActionItem>
