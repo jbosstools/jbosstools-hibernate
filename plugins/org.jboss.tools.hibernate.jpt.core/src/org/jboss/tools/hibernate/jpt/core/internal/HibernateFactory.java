@@ -10,23 +10,10 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal;
 
-import java.util.List;
-
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.ILaunchConfigurationType;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
-import org.eclipse.jpt.core.JpaDataSource;
-import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
-import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
-import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
-import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
 
 

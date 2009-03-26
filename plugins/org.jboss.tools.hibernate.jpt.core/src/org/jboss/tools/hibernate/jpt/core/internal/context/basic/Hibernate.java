@@ -17,15 +17,15 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.basic;
 public interface Hibernate {
 	
 	// Hibernate package
-	String PACKAGE = "org.hibernate.annotations";
-	String PACKAGE_ = PACKAGE + ".";
+	String PACKAGE = "org.hibernate.annotations"; //$NON-NLS-1$
+	String PACKAGE_ = PACKAGE + "."; //$NON-NLS-1$
 	
 	// ********** API **********
 
 	// Hibernate annotations
-	String GENERIC_GENERATOR = PACKAGE_ + "GenericGenerator";
-		String GENERIC_GENERATOR__NAME = "name";
-		String GENERIC_GENERATOR__STRATEGY = "strategy";
+	String GENERIC_GENERATOR = PACKAGE_ + "GenericGenerator"; //$NON-NLS-1$
+		String GENERIC_GENERATOR__NAME = "name"; //$NON-NLS-1$
+		String GENERIC_GENERATOR__STRATEGY = "strategy"; //$NON-NLS-1$
 		
 	
 }

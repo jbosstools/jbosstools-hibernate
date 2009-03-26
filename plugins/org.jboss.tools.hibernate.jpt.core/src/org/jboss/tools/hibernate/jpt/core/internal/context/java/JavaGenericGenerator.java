@@ -32,6 +32,6 @@ interface GenericGenerator extends Generator {
 	String getStrategy();
 	
 	void setSpecifiedStrategy(String value);
-		String GENERIC_STRATEGY_PROPERTY = "genericStrategyProperty";
+		String GENERIC_STRATEGY_PROPERTY = "genericStrategyProperty"; //$NON-NLS-1$
 
 }

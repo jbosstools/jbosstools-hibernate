@@ -22,65 +22,65 @@ public interface BasicHibernateProperties extends Model, PropertyChangeListener 
 	String getDefaultConfigurationFile();
 	String getConfigurationFile();
 	void setConfigurationFile(String newConfigFile);
-		static final String CONFIG_FILE_PROPERTY = "confFileProperty";
+		static final String CONFIG_FILE_PROPERTY = "confFileProperty"; //$NON-NLS-1$
 		// Hibernate key string
-		static final String HIBERNATE_CONFIG_FILE = "hibernate.ejb.cfgfile";
-		static final String DEFAULT_CONFIG_FILE = "";
+		static final String HIBERNATE_CONFIG_FILE = "hibernate.ejb.cfgfile"; //$NON-NLS-1$
+		static final String DEFAULT_CONFIG_FILE = ""; //$NON-NLS-1$
 	
 	String getDefaultDialect();
 	String getDialect();
 	void setDialect(String newDialect);
-		static final String DIALECT_PROPERTY = "dialectProperty";
+		static final String DIALECT_PROPERTY = "dialectProperty"; //$NON-NLS-1$
 		// Hibernate key string
-		static final String HIBERNATE_DIALECT = "hibernate.dialect";
-		static final String DEFAULT_DIALECT = "";
+		static final String HIBERNATE_DIALECT = "hibernate.dialect"; //$NON-NLS-1$
+		static final String DEFAULT_DIALECT = ""; //$NON-NLS-1$
 		
 	String getDefaultDriver();
 	String getDriver();
 	void setDriver(String newDriver);
-		static final String DRIVER_PROPERTY = "driverProperty";
+		static final String DRIVER_PROPERTY = "driverProperty"; //$NON-NLS-1$
 		// Hibernate key string
-		static final String HIBERNATE_DRIVER = "hibernate.connection.driver_class";
-		static final String DEFAULT_DRIVER = "";
+		static final String HIBERNATE_DRIVER = "hibernate.connection.driver_class"; //$NON-NLS-1$
+		static final String DEFAULT_DRIVER = ""; //$NON-NLS-1$
 		
 	String getDefaultUrl();
 	String getUrl();
 	void setUrl(String newUrl);
-		static final String URL_PROPERTY = "urlProperty";
+		static final String URL_PROPERTY = "urlProperty"; //$NON-NLS-1$
 		// Hibernate key string
-		static final String HIBERNATE_URL = "hibernate.connection.url";
-		static final String DEFAULT_URL = "";
+		static final String HIBERNATE_URL = "hibernate.connection.url"; //$NON-NLS-1$
+		static final String DEFAULT_URL = ""; //$NON-NLS-1$
 		
 	String getDefaultSchemaDefault();
 	String getSchemaDefault();
 	void setSchemaDefault(String newSchemaDefault);
-		static final String SCHEMA_DEFAULT_PROPERTY = "schemaDefaultProperty";
+		static final String SCHEMA_DEFAULT_PROPERTY = "schemaDefaultProperty"; //$NON-NLS-1$
 		// Hibernate key string
-		static final String HIBERNATE_SCHEMA_DEFAULT = "hibernate.default_schema";
-		static final String DEFAULT_SCHEMA_DEFAULT = "";
+		static final String HIBERNATE_SCHEMA_DEFAULT = "hibernate.default_schema"; //$NON-NLS-1$
+		static final String DEFAULT_SCHEMA_DEFAULT = ""; //$NON-NLS-1$
 		
 	String getDefaultCatalogDefault();
 	String getCatalogDefault();
 	void setCatalogDefault(String newCatalogDefault);
-		static final String CATALOG_DEFAULT_PROPERTY = "catalogDefaultProperty";
+		static final String CATALOG_DEFAULT_PROPERTY = "catalogDefaultProperty"; //$NON-NLS-1$
 		// Hibernate key string
-		static final String HIBERNATE_CATALOG = "hibernate.default_catalog";
-		static final String DEFAULT_CATALOG_DEFAULT = "";
+		static final String HIBERNATE_CATALOG = "hibernate.default_catalog"; //$NON-NLS-1$
+		static final String DEFAULT_CATALOG_DEFAULT = ""; //$NON-NLS-1$
 		
 	String getDefaultUsername();
 	String getUsername();
 	void setUsername(String newUsername);
-		static final String USERNAME_PROPERTY = "usernameProperty";
+		static final String USERNAME_PROPERTY = "usernameProperty"; //$NON-NLS-1$
 		// Hibernate key string
-		static final String HIBERNATE_USERNAME = "hibernate.connection.username";
-		static final String DEFAULT_USERNAME = "";
+		static final String HIBERNATE_USERNAME = "hibernate.connection.username"; //$NON-NLS-1$
+		static final String DEFAULT_USERNAME = ""; //$NON-NLS-1$
 		
 	String getDefaultPassword();
 	String getPassword();
 	void setPassword(String newPassword);
-		static final String PASSWORD_PROPERTY = "passwordProperty";
+		static final String PASSWORD_PROPERTY = "passwordProperty"; //$NON-NLS-1$
 		// Hibernate key string
-		static final String HIBERNATE_PASSWORD = "hibernate.connection.password";
-		static final String DEFAULT_PASSWORD = "";
+		static final String HIBERNATE_PASSWORD = "hibernate.connection.password"; //$NON-NLS-1$
+		static final String DEFAULT_PASSWORD = ""; //$NON-NLS-1$
 
 }

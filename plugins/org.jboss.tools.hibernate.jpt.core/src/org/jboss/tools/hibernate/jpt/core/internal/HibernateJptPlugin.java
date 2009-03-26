@@ -10,17 +10,9 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
-import org.hibernate.eclipse.console.HibernateConsoleMessages;
-import org.hibernate.eclipse.logging.LoggingHelper;
-import org.hibernate.eclipse.logging.xpl.EclipseLogger;
-import org.osgi.framework.BundleContext;
 
 /**
  * @author Dmitry Geraskov
@@ -30,11 +22,12 @@ public class HibernateJptPlugin extends Plugin {
 	
 	public static final String ID = "org.jboss.tools.hibernate.jpt.core"; //$NON-NLS-1$
 	
-	private EclipseLogger logger;
-	
-	private static HibernateJptPlugin inst;
+	private static HibernateJptPlugin inst = null;
 	
     public static HibernateJptPlugin getDefault() {
+    	if (inst == null) {
+    		inst = new HibernateJptPlugin();
+    	}
         return inst;
     }
 

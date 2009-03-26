@@ -35,7 +35,7 @@ public interface GenericGeneratorAnnotation extends GeneratorAnnotation {
 	 * Set to null to remove the strategy element.
 	 */
 	void setStrategy(String strategy);
-		String STRATEGY_PROPERTY = "strategyProperty";	
+		String STRATEGY_PROPERTY = "strategyProperty";	 //$NON-NLS-1$
 
 	/**
 	 * Return the {@link TextRange} for the strategy element.  If the strategy element 

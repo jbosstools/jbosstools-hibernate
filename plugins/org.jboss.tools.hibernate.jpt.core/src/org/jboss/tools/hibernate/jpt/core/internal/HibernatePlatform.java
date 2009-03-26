@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
 
 public class HibernatePlatform extends GenericJpaPlatform {
 	
-	public static String ID = "hibernate";
+	public static final String ID = "hibernate"; //$NON-NLS-1$
 
 	@Override
 	public String getId() {

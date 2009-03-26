@@ -16,8 +16,8 @@ package org.jboss.tools.hibernate.jpt.core.internal.context;
  */
 public interface Messages {
 	
-	String NOT_A_FILE = "NOT_A_FILE";
+	String NOT_A_FILE = "NOT_A_FILE"; //$NON-NLS-1$
 	
-	String CONFIG_FILE_NOT_FOUND = "CONFIG_FILE_NOT_FOUND";	
+	String CONFIG_FILE_NOT_FOUND = "CONFIG_FILE_NOT_FOUND";	 //$NON-NLS-1$
 
 }
