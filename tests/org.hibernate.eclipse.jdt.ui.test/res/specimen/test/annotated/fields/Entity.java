@@ -10,24 +10,6 @@
   ******************************************************************************/
 package test.annotated.getters;
 
-import java.util.Map;
-
-public class Passport extends Document {
-
-	protected Long fakeId;
-	
-	private Map<Visa, String> visas;
-	
-	public Passport() {
-		setDocType((byte)1);
-	}
-	
-	public void setVisas(Map<Visa, String> visas){
-		this.visas = visas;
-	}
-	
-	public Map<Visa, String> getVisas(){
-		return visas;
-	}
-
-}
+// just specific test case
+public interface Entity extends Identifiable <Long> 
+{ Long getId (); } 
