@@ -364,6 +364,9 @@ public class CollectEntityInfo extends ASTVisitor {
 	}
 	
 	public boolean processFieldOrGetter(Type type, List<String> list) {
+		if (type == null) {
+			return false;
+		}
 		if (type.isPrimitiveType()) {
 			PrimitiveType pt = (PrimitiveType)type;
 			if (!pt.getPrimitiveTypeCode().equals(PrimitiveType.BOOLEAN)) {
