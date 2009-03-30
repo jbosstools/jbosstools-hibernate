@@ -19,6 +19,8 @@ public class JPAConst {
 	public static final String IMPORT_ONE2MANY = "javax.persistence.OneToMany"; //$NON-NLS-1$
 	public static final String IMPORT_MANY2ONE = "javax.persistence.ManyToOne"; //$NON-NLS-1$
 	public static final String IMPORT_MANY2MANY = "javax.persistence.ManyToMany"; //$NON-NLS-1$
+	public static final String IMPORT_MAPPEDSUPERCLASS = "javax.persistence.MappedSuperclass"; //$NON-NLS-1$
+	public static final String IMPORT_VERSION = "javax.persistence.Version"; //$NON-NLS-1$
 	
 	public static final String ANNOTATION_SERIALIZABLE = "Serializable"; //$NON-NLS-1$
 	public static final String ANNOTATION_ENTITY = "Entity"; //$NON-NLS-1$
@@ -29,6 +31,8 @@ public class JPAConst {
 	public static final String ANNOTATION_ONE2MANY = "OneToMany"; //$NON-NLS-1$
 	public static final String ANNOTATION_MANY2ONE = "ManyToOne"; //$NON-NLS-1$
 	public static final String ANNOTATION_MANY2MANY = "ManyToMany"; //$NON-NLS-1$
+	public static final String ANNOTATION_MAPPEDSUPERCLASS = "MappedSuperclass"; //$NON-NLS-1$
+	public static final String ANNOTATION_VERSION = "Version"; //$NON-NLS-1$
 	
 	public static final Vector<String> ALL_IMPORTS = new Vector<String>();
 	
@@ -42,6 +46,8 @@ public class JPAConst {
 		ALL_IMPORTS.add(IMPORT_ONE2MANY);
 		ALL_IMPORTS.add(IMPORT_MANY2ONE);
 		ALL_IMPORTS.add(IMPORT_MANY2MANY);
+		ALL_IMPORTS.add(IMPORT_MAPPEDSUPERCLASS);
+		ALL_IMPORTS.add(IMPORT_VERSION);
 	}
 
 	static public String getRefType(RefType refType) {
@@ -111,6 +117,22 @@ public class JPAConst {
 	static public boolean isAnnotationMany2Many(String fullyQualifiedName) {
 		if (ANNOTATION_MANY2MANY.compareTo(fullyQualifiedName) == 0 ||
 			IMPORT_MANY2MANY.compareTo(fullyQualifiedName) == 0) {
+			return true;
+		}
+		return false;
+	}
+
+	static public boolean isAnnotationMappedSuperclass(String fullyQualifiedName) {
+		if (ANNOTATION_MAPPEDSUPERCLASS.compareTo(fullyQualifiedName) == 0 ||
+			IMPORT_MAPPEDSUPERCLASS.compareTo(fullyQualifiedName) == 0) {
+			return true;
+		}
+		return false;
+	}
+
+	static public boolean isAnnotationVersion(String fullyQualifiedName) {
+		if (ANNOTATION_VERSION.compareTo(fullyQualifiedName) == 0 ||
+			IMPORT_VERSION.compareTo(fullyQualifiedName) == 0) {
 			return true;
 		}
 		return false;

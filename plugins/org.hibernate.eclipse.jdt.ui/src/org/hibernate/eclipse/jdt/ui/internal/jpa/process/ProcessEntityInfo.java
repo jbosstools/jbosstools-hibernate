@@ -17,19 +17,23 @@ import java.util.Set;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.ArrayType;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
+import org.eclipse.jdt.core.dom.ParameterizedType;
 import org.eclipse.jdt.core.dom.QualifiedName;
 import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.SimpleName;
+import org.eclipse.jdt.core.dom.SimpleType;
 import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
@@ -238,7 +242,7 @@ public class ProcessEntityInfo extends ASTVisitor {
 				}
 			}
 		}
-		if (type.isSimpleType() || type.isParameterizedType()) {
+		if (type.isSimpleType() || type.isParameterizedType() || type.isArrayType()) {
 			Iterator itVarNames = node.fragments().iterator();
 			String fieldId = ""; //$NON-NLS-1$
 			RefType refType = RefType.UNDEF;
@@ -256,7 +260,7 @@ public class ProcessEntityInfo extends ASTVisitor {
 				}
 			}
 			Set<RefFieldInfo> setRFI = entityInfo.getRefFieldInfoSet(fullyQualifiedName2);
-			if (!annotated && setRFI != null) {
+			if (!annotated && setRFI != null && isSimilarType(type, fullyQualifiedName2)) {
 				RefEntityInfo rei = entityInfo.getFieldIdRefEntityInfo(fieldId);
 				// try to process bidirectional relationships:
 				// nRefType == JPAConst.ONE2ONE - OneToOne - the owning side corresponds
@@ -288,6 +292,23 @@ public class ProcessEntityInfo extends ASTVisitor {
 	
 	public boolean visit(MethodDeclaration node) {
 		if (annotationStyle != AnnotStyle.GETTERS) {
+			return true;
+		}
+		if (node.getName().getFullyQualifiedName().compareTo(entityInfo.getName()) == 0 || node.isConstructor()) {
+			// this is constructor declaration
+			return true;
+		}
+		// -) is it setter?
+		if (node.getName().getIdentifier().startsWith("set") //$NON-NLS-1$
+				&& node.parameters().size() == 1) { 
+			// setter - do not process it
+			return true;
+		}
+		// +) is it getter?
+		if (!(node.getName().getIdentifier().startsWith("get") //$NON-NLS-1$
+				|| node.getName().getIdentifier().startsWith("is")) //$NON-NLS-1$
+				|| node.parameters().size() > 0) {
+			// not the getter - do not process it
 			return true;
 		}
 		Type type = node.getReturnType2();
@@ -323,7 +344,7 @@ public class ProcessEntityInfo extends ASTVisitor {
 				}
 			}
 		}
-		if (type.isSimpleType() || type.isParameterizedType()) {
+		if (type.isSimpleType() || type.isParameterizedType() || type.isArrayType()) {
 			String fieldId = ""; //$NON-NLS-1$
 			RefType refType = RefType.UNDEF;
 			boolean annotated = false;
@@ -332,10 +353,8 @@ public class ProcessEntityInfo extends ASTVisitor {
 			refType = entityInfo.getFieldIdRelValue(fieldId);
 			annotated = entityInfo.getFieldIdAnnotatedValue(fieldId);
 			fullyQualifiedName2 = entityInfo.getFieldIdFQNameValue(fieldId);
-			if (refType != RefType.UNDEF) {
-			}
 			Set<RefFieldInfo> setRFI = entityInfo.getRefFieldInfoSet(fullyQualifiedName2);
-			if (!annotated && setRFI != null) {
+			if (!annotated && setRFI != null && isSimilarType(type, fullyQualifiedName2)) {
 				RefEntityInfo rei = entityInfo.getFieldIdRefEntityInfo(fieldId);
 				// try to process bidirectional relationships:
 				// nRefType == JPAConst.ONE2ONE - OneToOne - the owning side corresponds
@@ -361,6 +380,30 @@ public class ProcessEntityInfo extends ASTVisitor {
 					addComplexNormalAnnotation(node, JPAConst.getRefType(refType), rei);
 				}
 			}
+		}
+		return true;
+	}
+
+	// simple type name check 
+	public boolean isSimilarType(Type type, String fullyQualifiedName) {
+		String typeName = null;
+		if (type.isSimpleType()) {
+			SimpleType st = (SimpleType)type;
+			typeName = st.getName().getFullyQualifiedName();
+		}
+		else if (type.isArrayType()) {
+			ArrayType at = (ArrayType)type;
+			Type componentType = at;
+			while (componentType.isArrayType()){
+				componentType = ((ArrayType)componentType).getComponentType();
+			}
+			if (componentType.isSimpleType()) {
+				SimpleType st = (SimpleType)componentType;
+				typeName = st.getName().getFullyQualifiedName();
+			}
+		}
+		if (typeName != null && fullyQualifiedName.indexOf(typeName) == -1) {
+			return false;
 		}
 		return true;
 	}

@@ -59,7 +59,7 @@ public class AllEntitiesInfoCollector {
 	/**
 	 * pair of 2 particular fields from 2 particular entities
 	 */
-	protected class ProcessItem {
+	static protected class ProcessItem {
 		// field names
 		public String fieldId = null;
 		public String fieldId2 = null;
@@ -503,9 +503,23 @@ public class AllEntitiesInfoCollector {
 							pi.refEntityInfo2.mappedBy = pi.fieldId;
 							updateOwner(pi);
 						}
+						else if (pi.refEntityInfo2.refType == RefType.MANY2ONE) {
+							pi.refEntityInfo.refType = RefType.ONE2MANY;
+							pi.refEntityInfo.mappedBy = pi.fieldId2;
+							pi.refEntityInfo2.refType = RefType.MANY2ONE;
+							pi.refEntityInfo2.mappedBy = pi.fieldId;
+							updateOwner(pi);
+						}
 					}
 					else if (pi.refEntityInfo.refType == RefType.MANY2ONE) {
-						if (pi.refEntityInfo2.refType == RefType.MANY2ONE) {
+						if (pi.refEntityInfo2.refType == RefType.ONE2MANY) {
+							pi.refEntityInfo.refType = RefType.MANY2ONE;
+							pi.refEntityInfo.mappedBy = pi.fieldId2;
+							pi.refEntityInfo2.refType = RefType.ONE2MANY;
+							pi.refEntityInfo2.mappedBy = pi.fieldId;
+							updateOwner(pi);
+						}
+						else if (pi.refEntityInfo2.refType == RefType.MANY2ONE) {
 							pi.refEntityInfo.refType = RefType.ONE2ONE;
 							pi.refEntityInfo.mappedBy = pi.fieldId2;
 							pi.refEntityInfo2.refType = RefType.ONE2ONE;

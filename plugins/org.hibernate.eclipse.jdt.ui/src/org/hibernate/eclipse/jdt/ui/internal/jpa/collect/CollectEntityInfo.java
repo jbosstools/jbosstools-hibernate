@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
@@ -251,8 +250,9 @@ public class CollectEntityInfo extends ASTVisitor {
 					SourceType sourceT = (SourceType)tb.getJavaElement();
 					try {
 						entityFullyQualifiedName = sourceT.getFullyQualifiedParameterizedName();
-					} catch (JavaModelException e) {
-						HibernateConsolePlugin.getDefault().logErrorMessage("error", e);
+					}
+					catch (JavaModelException e) {
+						HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
 					}
 				}
 				entityInfo.addDependency(entityFullyQualifiedName);
@@ -308,7 +308,7 @@ public class CollectEntityInfo extends ASTVisitor {
 	}
 
 	public boolean visit(MethodDeclaration node) {
-		if (node.getName().getFullyQualifiedName().compareTo(entityInfo.getName()) == 0) {
+		if (node.getName().getFullyQualifiedName().compareTo(entityInfo.getName()) == 0 || node.isConstructor()) {
 			// this is constructor declaration - process it separately
 			entityInfo.setImplicitConstructorFlag(false);
 			if (node.parameters().size() == 0) {
@@ -317,14 +317,14 @@ public class CollectEntityInfo extends ASTVisitor {
 			return true;
 		}
 		// -) is it setter?
-		if (node.getName().getIdentifier().startsWith("set")//$NON-NLS-1$
+		if (node.getName().getIdentifier().startsWith("set") //$NON-NLS-1$
 				&& node.parameters().size() == 1) { 
 			// setter - do not process it
 			return true;
 		}
 		// +) is it getter?
-		if (!(node.getName().getIdentifier().startsWith("get")//$NON-NLS-1$
-				|| node.getName().getIdentifier().startsWith("is"))//$NON-NLS-1$
+		if (!(node.getName().getIdentifier().startsWith("get") //$NON-NLS-1$
+				|| node.getName().getIdentifier().startsWith("is")) //$NON-NLS-1$
 				|| node.parameters().size() > 0) {
 			// not the getter - do not process it
 			return true;
@@ -337,7 +337,8 @@ public class CollectEntityInfo extends ASTVisitor {
 		List<String> list = new ArrayList<String>();
 		if (returnIdentifier != null){
 			list.add(returnIdentifier);
-		} else {
+		}
+		else {
 			//this need to do not lost primiry id
 			//and add references for interface
 			if (entityInfo.isInterfaceFlag()){
@@ -377,7 +378,8 @@ public class CollectEntityInfo extends ASTVisitor {
 					entityInfo.addPrimaryIdCandidate(name);
 				}
 			}
-		} else if (type.isSimpleType()) {
+		}
+		else if (type.isSimpleType()) {
 			SimpleType st = (SimpleType)type;
 			ITypeBinding tb = st.resolveBinding();
 			if (tb != null) {
@@ -386,7 +388,8 @@ public class CollectEntityInfo extends ASTVisitor {
 					SourceType sourceT = (SourceType)tb.getJavaElement();
 					try {
 						entityFullyQualifiedName = sourceT.getFullyQualifiedParameterizedName();
-					} catch (JavaModelException e) {
+					}
+					catch (JavaModelException e) {
 						HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
 					}
 					entityInfo.addDependency(entityFullyQualifiedName);
@@ -408,7 +411,8 @@ public class CollectEntityInfo extends ASTVisitor {
 					}
 				}
 			}
-		} else if (type.isArrayType()) {
+		}
+		else if (type.isArrayType()) {
 			ArrayType at = (ArrayType)type;
 			Type componentType = at;
 			while (componentType.isArrayType()){
@@ -421,7 +425,8 @@ public class CollectEntityInfo extends ASTVisitor {
 					SourceType sourceT = (SourceType)tb.getJavaElement();
 					try {
 						entityFullyQualifiedName = sourceT.getFullyQualifiedParameterizedName();
-					} catch (JavaModelException e) {
+					}
+					catch (JavaModelException e) {
 						HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
 					}
 					entityInfo.addDependency(entityFullyQualifiedName);
@@ -432,7 +437,8 @@ public class CollectEntityInfo extends ASTVisitor {
 					}
 				}
 			}
-		} else if (type.isParameterizedType()) {
+		}
+		else if (type.isParameterizedType()) {
 			ParameterizedType pt = (ParameterizedType)type;
 			Type typeP = (Type)pt.getType();
 			ITypeBinding tb = typeP.resolveBinding();
@@ -478,10 +484,12 @@ public class CollectEntityInfo extends ASTVisitor {
 					}
 				}
 			}
-		} else if (type.isQualifiedType()) {
+		}
+		else if (type.isQualifiedType()) {
 			QualifiedType qt = (QualifiedType)type;
 			ITypeBinding tb = qt.resolveBinding();
-		} else if (type.isWildcardType()) {
+		}
+		else if (type.isWildcardType()) {
 			WildcardType wt = (WildcardType)type;
 			ITypeBinding tb = wt.resolveBinding();
 		}
