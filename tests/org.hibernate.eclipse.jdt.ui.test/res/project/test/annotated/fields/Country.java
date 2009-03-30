@@ -13,12 +13,14 @@ package test.annotated.fields;
 public class Country {
 	
 	private String name;
+
+	protected Visa visa;
 	
-	public Country(String name){
+	public Country(String name) {
 		this.name = name;
 	}
 	
-	public String getName(){
+	public String getName() {
 		return this.name;
 	}
 

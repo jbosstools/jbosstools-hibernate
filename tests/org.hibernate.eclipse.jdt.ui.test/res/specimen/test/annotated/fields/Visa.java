@@ -13,12 +13,18 @@ package test.annotated.fields;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+/** 
+ * @author Dmitry Geraskov
+ */
 @Entity
 public class Visa {
-	@OneToMany(mappedBy="country")
+	@OneToMany(mappedBy="visa")
 	private Country[] countries;
+
+	protected Visa() {
+	}
 	
-	public Visa(Country[] countries){
+	public Visa(Country[] countries) {
 		this.countries = countries;
 	}
 

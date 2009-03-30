@@ -8,7 +8,7 @@
   * Contributor:
   *     Red Hat, Inc. - initial API and implementation
   ******************************************************************************/
-package test.annotated.fields;
+package test.annotated.getters;
 
 import javax.persistence.Entity;
 
@@ -16,12 +16,15 @@ import javax.persistence.Entity;
 public class Country {
 	
 	private String name;
+
+	protected Country() {
+	}
 	
-	public Country(String name){
+	public Country(String name) {
 		this.name = name;
 	}
 	
-	public String getName(){
+	public String getName() {
 		return this.name;
 	}
 

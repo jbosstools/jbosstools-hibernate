@@ -139,6 +139,7 @@ public class JPAMapTest extends TestCase {
 		collector.resolveRelations();
 		processor.modify(javaProject, collector.getMapCUs_Info(), false);
 		//
+		//checkItem("DocumentBase"); //$NON-NLS-1$
 		checkItem("Document"); //$NON-NLS-1$
 		checkItem("Foto"); //$NON-NLS-1$
 		checkItem("Passport"); //$NON-NLS-1$
@@ -146,6 +147,8 @@ public class JPAMapTest extends TestCase {
 		checkItem("Staff"); //$NON-NLS-1$
 		checkItem("FotoXPerson"); //$NON-NLS-1$
 		checkItem("PersonXFoto"); //$NON-NLS-1$
+		checkItem("Country"); //$NON-NLS-1$
+		checkItem("Visa"); //$NON-NLS-1$
 		if (icu4 != null) {
 			checkItem("Entity"); //$NON-NLS-1$
 		}

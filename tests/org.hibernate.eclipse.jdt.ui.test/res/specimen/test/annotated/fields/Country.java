@@ -11,17 +11,24 @@
 package test.annotated.fields;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Country {
 	
 	private String name;
+
+	@ManyToOne
+	protected Visa visa;
+
+	protected Country() {
+	}
 	
-	public Country(String name){
+	public Country(String name) {
 		this.name = name;
 	}
 	
-	public String getName(){
+	public String getName() {
 		return this.name;
 	}
 

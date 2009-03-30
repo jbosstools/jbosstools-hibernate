@@ -10,16 +10,7 @@
   ******************************************************************************/
 package test.annotated.getters;
 
-public class Country {
-	
-	private String name;
-	
-	public Country(String name) {
-		this.name = name;
-	}
-	
-	public String getName() {
-		return this.name;
-	}
+public abstract class DocumentBase {
 
+	protected Long globalDocumentIdentificator;
 }

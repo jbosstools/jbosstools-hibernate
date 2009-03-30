@@ -8,7 +8,7 @@
   * Contributor:
   *     Red Hat, Inc. - initial API and implementation
   ******************************************************************************/
-package test.annotated.fields;
+package test.annotated.getters;
 
 /**
  * @author Dmitry Geraskov

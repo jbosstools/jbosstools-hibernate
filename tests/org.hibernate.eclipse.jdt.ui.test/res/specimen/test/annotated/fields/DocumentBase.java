@@ -8,18 +8,12 @@
   * Contributor:
   *     Red Hat, Inc. - initial API and implementation
   ******************************************************************************/
-package test.annotated.getters;
+package test.annotated.fields;
 
-public class Country {
-	
-	private String name;
-	
-	public Country(String name) {
-		this.name = name;
-	}
-	
-	public String getName() {
-		return this.name;
-	}
+import javax.persistence.MappedSuperclass;
 
+@MappedSuperclass
+public abstract class DocumentBase {
+
+	protected Long globalDocumentIdentificator;
 }

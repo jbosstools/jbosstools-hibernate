@@ -8,17 +8,23 @@
   * Contributor:
   *     Red Hat, Inc. - initial API and implementation
   ******************************************************************************/
-package test.annotated.fields;
+package test.annotated.getters;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+/** 
+ * @author Dmitry Geraskov
+ */
 @Entity
 public class Visa {
 	private Country[] countries;
 
 	private byta nonCompiledProterty1;
 	privata byte nonCompiledProterty2;
+
+	protected Visa() {
+	}
 	
 	public Visa(Country[] countries){
 		this.countries = countries;
@@ -32,7 +38,7 @@ public class Visa {
 		return countries;
 	}
 
-	@OneToMany(mappedBy="country")
+	@OneToMany
 	public Country[] getCountries(){
 		return countries;
 	}
