@@ -10,7 +10,8 @@
   ******************************************************************************/
 package test.annotated.getters;
 
+@MappedSuperclass
 public abstract class DocumentBase {
 
-	protected Long globalDocumentIdentificator;
+	protected String globalDocumentIdentificator;
 }

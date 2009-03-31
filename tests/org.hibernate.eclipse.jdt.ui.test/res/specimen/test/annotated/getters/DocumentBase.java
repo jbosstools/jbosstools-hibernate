@@ -15,5 +15,5 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public abstract class DocumentBase {
 
-	protected Long globalDocumentIdentificator;
+	protected String globalDocumentIdentificator;
 }

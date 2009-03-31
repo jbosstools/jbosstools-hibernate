@@ -13,7 +13,7 @@ package test.annotated.getters;
 import java.util.Set;
 
 @javax.persistence.Entity
-public class Document {
+public class Document extends DocumentBase {
 
 	private Long documentId;
 

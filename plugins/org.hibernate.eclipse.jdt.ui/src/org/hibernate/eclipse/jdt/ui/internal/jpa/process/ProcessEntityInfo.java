@@ -98,7 +98,7 @@ public class ProcessEntityInfo extends ASTVisitor {
 	}
 
 	public boolean addImport(CompilationUnit node, String importDeclaration) {
-		String[] importDeclarations =  importDeclaration.split("\\."); //$NON-NLS-1$
+		String[] importDeclarations = importDeclaration.split("\\."); //$NON-NLS-1$
 		if (importDeclarations.length <= 1) {
 			return false;
 		}
@@ -138,6 +138,12 @@ public class ProcessEntityInfo extends ASTVisitor {
 	}
 
 	public boolean visit(TypeDeclaration node) {
+		if (entityInfo.isAddMappedSuperclassFlag()) {
+			MarkerAnnotation matd = rewriter.getAST().newMarkerAnnotation();
+			matd.setTypeName(rewriter.getAST().newSimpleName(JPAConst.ANNOTATION_MAPPEDSUPERCLASS));
+			ListRewrite lrw = rewriter.getListRewrite(node, TypeDeclaration.MODIFIERS2_PROPERTY);
+			lrw.insertFirst(matd, null);
+		}
 		if (entityInfo.isAddEntityFlag()) {
 			MarkerAnnotation matd = rewriter.getAST().newMarkerAnnotation();
 			matd.setTypeName(rewriter.getAST().newSimpleName(JPAConst.ANNOTATION_ENTITY));

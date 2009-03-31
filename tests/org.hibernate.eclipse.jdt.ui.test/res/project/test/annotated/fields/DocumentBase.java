@@ -10,7 +10,9 @@
   ******************************************************************************/
 package test.annotated.fields;
 
+import javax.persistence.MappedSuperclass;
+
 public abstract class DocumentBase {
 
-	protected Long globalDocumentIdentificator;
+	protected String globalDocumentIdentificator;
 }

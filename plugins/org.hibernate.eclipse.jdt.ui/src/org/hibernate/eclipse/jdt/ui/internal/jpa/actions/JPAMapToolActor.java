@@ -173,7 +173,7 @@ public class JPAMapToolActor {
 				collector.collect(icu);
 			}
 			collector.resolveRelations();
-			if (collector.getNonAbstractCUNumber() > 0) {
+			if (collector.getNonInterfaceCUNumber() > 0) {
 				processor.setAnnotationStylePreference(collector.getAnnotationStylePreference());
 				processor.modify(javaProject, collector.getMapCUs_Info(), true);
 			}
@@ -219,7 +219,7 @@ public class JPAMapToolActor {
 				collector.initCollector(javaProject);
 				collector.collect(cu);
 				collector.resolveRelations();
-				if (collector.getNonAbstractCUNumber() > 0) {
+				if (collector.getNonInterfaceCUNumber() > 0) {
 					processor.modify(javaProject, collector.getMapCUs_Info(), true);
 				}
 				else {

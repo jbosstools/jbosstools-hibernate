@@ -52,6 +52,10 @@ public class EntityInfo {
 	 */
 	protected boolean addEntityFlag = true;
 	/*
+	 * if true - "@MappedSuperclass" annotation should be added
+	 */
+	protected boolean addMappedSuperclassFlag = false;
+	/*
 	 * existing imports set
 	 */
 	protected Set<String> setExistingImports = new TreeSet<String>();
@@ -286,6 +290,14 @@ public class EntityInfo {
 
 	public void setAddEntityFlag(boolean addEntityFlag) {
 		this.addEntityFlag = addEntityFlag;
+	}
+
+	public boolean isAddMappedSuperclassFlag() {
+		return addMappedSuperclassFlag;
+	}
+
+	public void setAddMappedSuperclassFlag(boolean addMappedSuperclassFlag) {
+		this.addMappedSuperclassFlag = addMappedSuperclassFlag;
 	}
 
 	public boolean isAddSerializableInterfaceFlag() {

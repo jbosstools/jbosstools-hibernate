@@ -713,6 +713,21 @@ public class AllEntitiesInfoCollector {
 		return nonAbstractCUNumber;
 	}
 
+	public int getNonInterfaceCUNumber() {
+		Iterator<Map.Entry<String, EntityInfo>> it = null;
+		int nonInterfaceCUNumber = 0;
+		// generate RefFieldInfoMap (for simple process)
+		it = mapCUs_Info.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<String, EntityInfo> entry = it.next();
+			EntityInfo entryInfo = entry.getValue();
+			if (!entryInfo.isInterfaceFlag()) {
+				nonInterfaceCUNumber++;
+			}
+		}
+		return nonInterfaceCUNumber;
+	}
+
 	public AnnotStyle getAnnotationStylePreference() {
 		return annotationStylePreference;
 	}

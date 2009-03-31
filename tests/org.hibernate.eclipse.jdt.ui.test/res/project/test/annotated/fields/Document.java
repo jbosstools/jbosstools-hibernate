@@ -13,7 +13,7 @@ package test.annotated.fields;
 import java.util.Set;
 
 @javax.persistence.Entity
-public class Document {
+public class Document extends DocumentBase {
 
 	@javax.persistence.Id
 	protected Long documentId;

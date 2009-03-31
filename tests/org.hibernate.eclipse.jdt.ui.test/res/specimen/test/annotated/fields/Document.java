@@ -16,7 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.ManyToOne;
 
 @javax.persistence.Entity
-public class Document {
+public class Document extends DocumentBase {
 
 	@GeneratedValue @javax.persistence.Id
 	protected Long documentId;

@@ -167,6 +167,14 @@ public class CollectEntityInfo extends ASTVisitor {
 			updateAnnotationRelInfo(node, mappedBy, fullyQualifiedName,
 				RefType.MANY2MANY, JPAConst.ANNOTATION_MANY2MANY, JPAConst.IMPORT_MANY2MANY);
 		}
+		else if (JPAConst.isAnnotationMappedSuperclass(fullyQualifiedName)) {
+			entityInfo.setAddEntityFlag(false);
+			entityInfo.setAddMappedSuperclassFlag(false);
+			entityInfo.removeRequiredImport(JPAConst.IMPORT_ENTITY);
+			entityInfo.addRequiredImport(JPAConst.IMPORT_MAPPEDSUPERCLASS);
+		}
+		else if (JPAConst.isAnnotationVersion(fullyQualifiedName)) {
+		}
 		return true;
 	}
 	
@@ -239,7 +247,15 @@ public class CollectEntityInfo extends ASTVisitor {
 	}
 
 	public boolean visit(TypeDeclaration node) {
-		entityInfo.setAbstractFlag(entityInfo.isAbstractFlag() || node.isInterface());
+		boolean isAbstruct = entityInfo.isAbstractFlag() || 
+			Modifier.isAbstract(node.getModifiers()) || node.isInterface();
+		entityInfo.setAbstractFlag(isAbstruct);
+		if (isAbstruct) {
+			entityInfo.setAddEntityFlag(false);
+			entityInfo.setAddMappedSuperclassFlag(true);
+			entityInfo.removeRequiredImport(JPAConst.IMPORT_ENTITY);
+			entityInfo.addRequiredImport(JPAConst.IMPORT_MAPPEDSUPERCLASS);
+		}
 		entityInfo.setInterfaceFlag(node.isInterface());
 		Type superType = node.getSuperclassType();
 		if (superType != null) {

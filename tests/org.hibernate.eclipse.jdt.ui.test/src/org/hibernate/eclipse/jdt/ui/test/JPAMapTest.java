@@ -139,7 +139,7 @@ public class JPAMapTest extends TestCase {
 		collector.resolveRelations();
 		processor.modify(javaProject, collector.getMapCUs_Info(), false);
 		//
-		//checkItem("DocumentBase"); //$NON-NLS-1$
+		checkItem("DocumentBase"); //$NON-NLS-1$
 		checkItem("Document"); //$NON-NLS-1$
 		checkItem("Foto"); //$NON-NLS-1$
 		checkItem("Passport"); //$NON-NLS-1$

@@ -231,7 +231,7 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 		try {
 			while (it.hasNext()) {
 				Map.Entry<String, EntityInfo> entry = it.next();
-				if (entry.getValue().isAbstractFlag()) {
+				if (entry.getValue().isInterfaceFlag()) {
 					continue;
 				}
 				collectModification(bufferManager, entry.getKey(), entry.getValue(), entities);

@@ -107,6 +107,10 @@ public class JPAMapMockTests extends TestCase {
         	inSequence(sequence);
         	will(returnValue(2));
         	
+        	allowing(allEntitiesInfoCollector).getNonInterfaceCUNumber();
+        	inSequence(sequence);
+        	will(returnValue(2));
+        	
         	allowing(allEntitiesInfoCollector).getAnnotationStylePreference();
         	inSequence(sequence);
         	will(returnValue(AnnotStyle.GETTERS));
