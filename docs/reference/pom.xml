@@ -77,6 +77,11 @@
 			<artifactId>jbosstools-docbook-xslt</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		    </dependency>
+                    <dependency> 
+                        <groupId>org.apache.xmlgraphics</groupId> 
+                        <artifactId>fop</artifactId> 
+                        <version>0.95</version> 
+                    </dependency> 
                 </dependencies>
                 <configuration>
                     <sourceDocumentName>${master}</sourceDocumentName>
