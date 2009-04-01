@@ -10,6 +10,8 @@
   ******************************************************************************/
 package test.annotated.fields;
 
+import java.sql.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -29,6 +31,9 @@ public class Foto {
 	protected Short width_IDtest;
 
 	protected Short height_testID;
+
+	@javax.persistence.Version
+	protected Date version;
 	
 	public Foto() {
 	}

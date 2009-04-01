@@ -10,10 +10,13 @@
   ******************************************************************************/
 package test.annotated.getters;
 
+import java.sql.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.Version;
 
 @Entity
 public class Foto {
@@ -27,6 +30,8 @@ public class Foto {
 	private Short width_IDtest;
 
 	private Short height_testID;
+
+	private Date version;
 	
 	public Foto() {
 	}
@@ -71,6 +76,15 @@ public class Foto {
 
 	public void setHeight_testID(Short height_testID) {
 		this.height_testID = height_testID;
+	}
+
+	@Version
+	public Date getVersion() {
+		return version;
+	}
+
+	public void setVersion(Date version) {
+		this.version = version;
 	}
 	
 }

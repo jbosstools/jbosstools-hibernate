@@ -11,9 +11,13 @@
 package test.annotated.fields;
 
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Version;
 
 @MappedSuperclass
 public abstract class DocumentBase {
 
 	protected String globalDocumentIdentificator;
+
+	@Version
+	protected Integer version;
 }

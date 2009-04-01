@@ -93,6 +93,10 @@ public class EntityInfo {
 	 */
 	protected boolean addGeneratedValueFlag = true;
 	/*
+	 * if true - add version marker for "version" property 
+	 */
+	protected boolean addVersionFlag = false;
+	/*
 	 * define relations between entities
 	 * field id -> RefEntityInfo
 	 */
@@ -191,6 +195,21 @@ public class EntityInfo {
 		}
 		if (isAddEntityFlag()) {
 			addRequiredImport(JPAConst.IMPORT_ENTITY);
+		}
+		else {
+			removeRequiredImport(JPAConst.IMPORT_ENTITY);
+		}
+		if (isAddMappedSuperclassFlag()) {
+			addRequiredImport(JPAConst.IMPORT_MAPPEDSUPERCLASS);
+		}
+		else {
+			removeRequiredImport(JPAConst.IMPORT_MAPPEDSUPERCLASS);
+		}
+		if (isAddVersionFlag()) {
+			addRequiredImport(JPAConst.IMPORT_VERSION);
+		}
+		else {
+			removeRequiredImport(JPAConst.IMPORT_VERSION);
 		}
 		Iterator<Map.Entry<String, RefEntityInfo>> referencesIt = 
 			getReferences().entrySet().iterator();
@@ -420,6 +439,14 @@ public class EntityInfo {
 
 	public void setAddGeneratedValueFlag(boolean addGeneratedValueFlag) {
 		this.addGeneratedValueFlag = addGeneratedValueFlag;
+	}
+
+	public boolean isAddVersionFlag() {
+		return addVersionFlag;
+	}
+
+	public void setAddVersionFlag(boolean addVersionFlag) {
+		this.addVersionFlag = addVersionFlag;
 	}
 
 	public void addExistingImport(String existingImport) {

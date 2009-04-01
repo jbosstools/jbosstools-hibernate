@@ -22,16 +22,13 @@ import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
-import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
-import org.eclipse.jdt.core.dom.ParameterizedType;
 import org.eclipse.jdt.core.dom.QualifiedName;
-import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SimpleType;
 import org.eclipse.jdt.core.dom.StringLiteral;
@@ -247,6 +244,24 @@ public class ProcessEntityInfo extends ASTVisitor {
 					lrw.insertFirst(matd, null);
 				}
 			}
+			if (entityInfo.isAddVersionFlag()) {
+				Iterator itVarNames = node.fragments().iterator();
+				boolean addVersionMarker = false;
+				while (itVarNames.hasNext()) {
+					VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
+					String name = var.getName().getIdentifier();
+					if ("version".equals(name)) { //$NON-NLS-1$
+						addVersionMarker = true;
+						break;
+					}
+				}
+				if (addVersionMarker) {
+					MarkerAnnotation matd = rewriter.getAST().newMarkerAnnotation();
+					matd.setTypeName(rewriter.getAST().newSimpleName(JPAConst.ANNOTATION_VERSION));
+					ListRewrite lrw = rewriter.getListRewrite(node, FieldDeclaration.MODIFIERS2_PROPERTY);
+					lrw.insertFirst(matd, null);
+				}
+			}
 		}
 		if (type.isSimpleType() || type.isParameterizedType() || type.isArrayType()) {
 			Iterator itVarNames = node.fragments().iterator();
@@ -345,6 +360,18 @@ public class ProcessEntityInfo extends ASTVisitor {
 				if (addIdMarker) {
 					MarkerAnnotation matd = rewriter.getAST().newMarkerAnnotation();
 					matd.setTypeName(rewriter.getAST().newSimpleName(JPAConst.ANNOTATION_ID));
+					ListRewrite lrw = rewriter.getListRewrite(node, MethodDeclaration.MODIFIERS2_PROPERTY);
+					lrw.insertFirst(matd, null);
+				}
+			}
+			if (entityInfo.isAddVersionFlag()) {
+				boolean addVersionMarker = false;
+				if ("version".equals(returnIdentifier)) { //$NON-NLS-1$
+					addVersionMarker = true;
+				}
+				if (addVersionMarker) {
+					MarkerAnnotation matd = rewriter.getAST().newMarkerAnnotation();
+					matd.setTypeName(rewriter.getAST().newSimpleName(JPAConst.ANNOTATION_VERSION));
 					ListRewrite lrw = rewriter.getListRewrite(node, MethodDeclaration.MODIFIERS2_PROPERTY);
 					lrw.insertFirst(matd, null);
 				}

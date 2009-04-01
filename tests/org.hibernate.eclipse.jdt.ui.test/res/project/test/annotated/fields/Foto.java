@@ -10,6 +10,8 @@
   ******************************************************************************/
 package test.annotated.fields;
 
+import java.sql.Date;
+
 public class Foto {
 
 	protected Long fid;
@@ -21,6 +23,9 @@ public class Foto {
 	protected Short width_IDtest;
 
 	protected Short height_testID;
+
+	@javax.persistence.Version
+	protected Date version;
 	
 	public Foto() {
 	}

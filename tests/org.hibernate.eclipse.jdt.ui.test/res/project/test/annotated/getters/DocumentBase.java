@@ -10,8 +10,20 @@
   ******************************************************************************/
 package test.annotated.getters;
 
-@MappedSuperclass
+import javax.persistence.Version;
+
+@javax.persistence.MappedSuperclass
 public abstract class DocumentBase {
 
 	protected String globalDocumentIdentificator;
+
+	protected Integer version;
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
 }

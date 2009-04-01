@@ -89,40 +89,50 @@ public class CollectEntityInfo extends ASTVisitor {
 		}
 		return processAnnotation(node, mappedBy);
 	}
-	
-	public boolean processAnnotation(Annotation node, String mappedBy) {
-		String fullyQualifiedName = node.getTypeName().getFullyQualifiedName();
-		if (JPAConst.isAnnotationEntity(fullyQualifiedName)) {
-			ITypeBinding tb = node.resolveTypeBinding();
-			CompilationUnit cu = null;
-			ASTNode astNode = node.getParent();
+
+	public CompilationUnit getCUFromFieldMethod(ASTNode node) {
+		CompilationUnit cu = null;
+		ASTNode astNode = node.getParent();
+		if (astNode instanceof FieldDeclaration || 
+				astNode instanceof MethodDeclaration) {
+			astNode = astNode.getParent();
 			if (astNode instanceof TypeDeclaration) {
 				astNode = astNode.getParent();
 				if (astNode instanceof CompilationUnit) {
 					cu = (CompilationUnit)astNode;
 				}
 			}
+		}
+		return cu;
+	}
+
+	public CompilationUnit getCUFromTypeDeclaration(ASTNode node) {
+		CompilationUnit cu = null;
+		ASTNode astNode = node.getParent();
+		if (astNode instanceof TypeDeclaration) {
+			astNode = astNode.getParent();
+			if (astNode instanceof CompilationUnit) {
+				cu = (CompilationUnit)astNode;
+			}
+		}
+		return cu;
+	}
+	
+	public boolean processAnnotation(Annotation node, String mappedBy) {
+		String fullyQualifiedName = node.getTypeName().getFullyQualifiedName();
+		if (JPAConst.isAnnotationEntity(fullyQualifiedName)) {
+			ITypeBinding tb = node.resolveTypeBinding();
+			CompilationUnit cu = getCUFromTypeDeclaration(node);
 			if (cu != null) {
-				entityInfo.setAddEntityFlag(false);
 				if (tb == null) {
 					entityInfo.addRequiredImport(JPAConst.IMPORT_ENTITY);
 				}
+				entityInfo.setAddEntityFlag(false);
 			}
 		}
 		else if (JPAConst.isAnnotationId(fullyQualifiedName)) {
 			ITypeBinding tb = node.resolveTypeBinding();
-			CompilationUnit cu = null;
-			ASTNode astNode = node.getParent();
-			if (astNode instanceof FieldDeclaration || 
-					astNode instanceof MethodDeclaration) {
-				astNode = astNode.getParent();
-				if (astNode instanceof TypeDeclaration) {
-					astNode = astNode.getParent();
-					if (astNode instanceof CompilationUnit) {
-						cu = (CompilationUnit)astNode;
-					}
-				}
-			}
+			CompilationUnit cu = getCUFromFieldMethod(node);
 			if (cu != null) {
 				if (tb == null) {
 					entityInfo.addRequiredImport(JPAConst.IMPORT_ID);
@@ -132,18 +142,7 @@ public class CollectEntityInfo extends ASTVisitor {
 		}
 		else if (JPAConst.isAnnotationGeneratedValue(fullyQualifiedName)) {
 			ITypeBinding tb = node.resolveTypeBinding();
-			CompilationUnit cu = null;
-			ASTNode astNode = node.getParent();
-			if (astNode instanceof FieldDeclaration || 
-					astNode instanceof MethodDeclaration) {
-				astNode = astNode.getParent();
-				if (astNode instanceof TypeDeclaration) {
-					astNode = astNode.getParent();
-					if (astNode instanceof CompilationUnit) {
-						cu = (CompilationUnit)astNode;
-					}
-				}
-			}
+			CompilationUnit cu = getCUFromFieldMethod(node);
 			if (cu != null) {
 				if (tb == null) {
 					entityInfo.addRequiredImport(JPAConst.IMPORT_GENERATED_VALUE);
@@ -168,12 +167,25 @@ public class CollectEntityInfo extends ASTVisitor {
 				RefType.MANY2MANY, JPAConst.ANNOTATION_MANY2MANY, JPAConst.IMPORT_MANY2MANY);
 		}
 		else if (JPAConst.isAnnotationMappedSuperclass(fullyQualifiedName)) {
-			entityInfo.setAddEntityFlag(false);
-			entityInfo.setAddMappedSuperclassFlag(false);
-			entityInfo.removeRequiredImport(JPAConst.IMPORT_ENTITY);
-			entityInfo.addRequiredImport(JPAConst.IMPORT_MAPPEDSUPERCLASS);
+			ITypeBinding tb = node.resolveTypeBinding();
+			CompilationUnit cu = getCUFromTypeDeclaration(node);
+			if (cu != null) {
+				if (tb == null) {
+					entityInfo.addRequiredImport(JPAConst.IMPORT_MAPPEDSUPERCLASS);
+				}
+				entityInfo.setAddEntityFlag(false);
+				entityInfo.setAddMappedSuperclassFlag(false);
+			}
 		}
 		else if (JPAConst.isAnnotationVersion(fullyQualifiedName)) {
+			ITypeBinding tb = node.resolveTypeBinding();
+			CompilationUnit cu = getCUFromFieldMethod(node);
+			if (cu != null) {
+				if (tb == null) {
+					entityInfo.addRequiredImport(JPAConst.IMPORT_VERSION);
+				}
+				entityInfo.setAddVersionFlag(false);
+			}
 		}
 		return true;
 	}
@@ -192,13 +204,7 @@ public class CollectEntityInfo extends ASTVisitor {
 				entityInfo.updateReference(name, true, type, mappedBy,
 						0 != annNameShort.compareTo(fullyQualifiedName), true);
 			}
-			astNode = astNode.getParent();
-			if (astNode instanceof TypeDeclaration) {
-				astNode = astNode.getParent();
-				if (astNode instanceof CompilationUnit) {
-					cu = (CompilationUnit)astNode;
-				}
-			}
+			cu = getCUFromTypeDeclaration(node);
 		}
 		else if (astNode instanceof MethodDeclaration) {
 			MethodDeclaration md = (MethodDeclaration)astNode;
@@ -208,13 +214,7 @@ public class CollectEntityInfo extends ASTVisitor {
 				// process it like FieldDeclaration
 				entityInfo.updateReference(name, true, type, mappedBy,
 						0 != annNameShort.compareTo(fullyQualifiedName), false);
-				astNode = astNode.getParent();
-				if (astNode instanceof TypeDeclaration) {
-					astNode = astNode.getParent();
-					if (astNode instanceof CompilationUnit) {
-						cu = (CompilationUnit)astNode;
-					}
-				}
+				cu = getCUFromTypeDeclaration(node);
 			}
 			else {
 				// ignore others
@@ -253,8 +253,6 @@ public class CollectEntityInfo extends ASTVisitor {
 		if (isAbstruct) {
 			entityInfo.setAddEntityFlag(false);
 			entityInfo.setAddMappedSuperclassFlag(true);
-			entityInfo.removeRequiredImport(JPAConst.IMPORT_ENTITY);
-			entityInfo.addRequiredImport(JPAConst.IMPORT_MAPPEDSUPERCLASS);
 		}
 		entityInfo.setInterfaceFlag(node.isInterface());
 		Type superType = node.getSuperclassType();
@@ -391,7 +389,12 @@ public class CollectEntityInfo extends ASTVisitor {
 				Iterator itVarNames = list.iterator();
 				while (itVarNames.hasNext()) {
 					String name = (String)itVarNames.next();
-					entityInfo.addPrimaryIdCandidate(name);
+					if ("version".equalsIgnoreCase(name)) { //$NON-NLS-1$
+						entityInfo.setAddVersionFlag(true);
+					}
+					else {
+						entityInfo.addPrimaryIdCandidate(name);
+					}
 				}
 			}
 		}
@@ -417,12 +420,29 @@ public class CollectEntityInfo extends ASTVisitor {
 				}
 				else if (tb.getJavaElement() instanceof BinaryType) {
 					ITypeBinding tbParent = tb.getTypeDeclaration().getSuperclass();
-					if (tbParent != null && "java.lang.Number".equals(tbParent.getBinaryName())) { //$NON-NLS-1$
-						// this is candidate for primary id
-						Iterator itVarNames = list.iterator();
-						while (itVarNames.hasNext()) {
-							String name = (String)itVarNames.next();
-							entityInfo.addPrimaryIdCandidate(name);
+					if (tbParent != null) {
+						if ("java.lang.Number".equals(tbParent.getBinaryName())) { //$NON-NLS-1$
+							// this is candidate for primary id
+							Iterator itVarNames = list.iterator();
+							while (itVarNames.hasNext()) {
+								String name = (String)itVarNames.next();
+								if ("version".equalsIgnoreCase(name)) { //$NON-NLS-1$
+									entityInfo.setAddVersionFlag(true);
+								}
+								else {
+									entityInfo.addPrimaryIdCandidate(name);
+								}
+							}
+						}
+						else if ("java.util.Date".equals(tbParent.getBinaryName())) { //$NON-NLS-1$
+							// this is candidate for version
+							Iterator itVarNames = list.iterator();
+							while (itVarNames.hasNext()) {
+								String name = (String)itVarNames.next();
+								if ("version".equalsIgnoreCase(name)) { //$NON-NLS-1$
+									entityInfo.setAddVersionFlag(true);
+								}
+							}
 						}
 					}
 				}
