@@ -79,11 +79,25 @@ import junit.framework.TestCase;
  */
 public class HibernateJPACoreTests extends TestCase {
 
+	/**
+	 * annotated class name
+	 */
 	public static final String className = "TestPTR"; //$NON-NLS-1$
+	/**
+	 * annotated package name
+	 */
 	public static final String packageName = "org.test"; //$NON-NLS-1$
+	/**
+	 * fully qualified name of annotated class
+	 */
 	public static final String classFullName = packageName + "." + className; //$NON-NLS-1$
+	/**
+	 * annotated java file name
+	 */
 	public static final String javaFileName = className + ".java"; //$NON-NLS-1$
-
+	/**
+	 * content of annotated java file
+	 */
 	public static final String strJava = "package " + packageName + ";\n" + //$NON-NLS-1$ //$NON-NLS-2$
 			"import javax.persistence.*;\n" + //$NON-NLS-1$
 			"import org.hibernate.annotations.GenericGenerator;\n" + //$NON-NLS-1$
@@ -100,6 +114,9 @@ public class HibernateJPACoreTests extends TestCase {
 			"public Short getId_Article(){return id_Article;}\n" + //$NON-NLS-1$
 			"public Short getId_Article2(){return id_Article2;}\n" + //$NON-NLS-1$
 			"}\n"; //$NON-NLS-1$
+	/**
+	 * content of .classpath file
+	 */
 	public static final String strClassPath = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + //$NON-NLS-1$
 			"<classpath>\n" + //$NON-NLS-1$
 			"<classpathentry kind=\"src\" path=\"src\"/>\n" + //$NON-NLS-1$
@@ -108,17 +125,29 @@ public class HibernateJPACoreTests extends TestCase {
 			"<classpathentry kind=\"output\" path=\"bin\"/>\n" + //$NON-NLS-1$
 			"</classpath>\n"; //$NON-NLS-1$
 
+	
 	public Mockery context = new Mockery() {
 		{
 			setImposteriser(ClassImposteriser.INSTANCE);
 		}
 	};
 
+	/**
+	 * mock hibernate factory, redefine some methods of base GenericJpaFactory
+	 * to avoid unnecessary checks, which are not a subject of testing. 
+	 */
 	public class MockHibernateFactory extends HibernateFactory {
+		/**
+		 * during the testing our file has relevant content,
+		 * so just return true without dig into the base code.
+		 */
 		public boolean hasRelevantContent(IFile file) {
 			return true;
 		}
-
+		/**
+		 * just build resource model from JavaCore.JAVA_SOURCE_CONTENT_TYPE
+		 * all base code checks are unnecessary.
+		 */
 		public ResourceModel buildResourceModel(JpaProject jpaProject,
 				IFile file) {
 			return buildResourceModel(jpaProject, file,
@@ -126,6 +155,10 @@ public class HibernateJPACoreTests extends TestCase {
 		}
 	}
 
+	/**
+	 * mock hibernate platform to get MockHibernateFactory
+	 * instead of HibernateFactory
+	 */
 	public class MockHibernatePlatform extends HibernatePlatform {
 		protected JpaFactory buildJpaFactory() {
 			JpaFactory jpaFactory = super.buildJpaFactory();
@@ -134,6 +167,9 @@ public class HibernateJPACoreTests extends TestCase {
 		}
 	}
 
+	/**
+	 * mock input stream to simulate javaFileName file reading
+	 */
 	public class MockJavaInputStream extends InputStream {
 
 		protected int pointer = 0;
@@ -147,6 +183,9 @@ public class HibernateJPACoreTests extends TestCase {
 		}
 	}
 
+	/**
+	 * mock input stream to simulate .classpath file reading
+	 */
 	public class MockClassPathInputStream extends InputStream {
 
 		protected int pointer = 0;
@@ -160,12 +199,21 @@ public class HibernateJPACoreTests extends TestCase {
 		}
 	}
 
-	public void testMockSave() throws CoreException, IOException {
+	/**
+	 * The general goal of this test is cover org.jboss.tools.hibernate.jpt.core
+	 * plugin functionality, it doesn't test org.eclipse.jdt functionality,
+	 * so here all org.eclipse.jdt internal objects substituted with mock values. 
+	 * 
+	 * @throws CoreException
+	 * @throws IOException
+	 */
+	public void testMockJPTCore() throws CoreException, IOException {
 
+		// define/prepare mock objects for testing
 		final JpaPlatform jpaPlatform = new MockHibernatePlatform();
 		final String hibernatePlatformId = jpaPlatform.getId();
 		assertTrue(HibernatePlatform.ID.equals(hibernatePlatformId));
-
+		//
 		final JpaProject jpaProject = context.mock(JpaProject.class);
 		final IProject project = context.mock(IProject.class);
 		final IFile file = context.mock(IFile.class);
@@ -183,6 +231,8 @@ public class HibernateJPACoreTests extends TestCase {
 		final XmlPersistenceUnit xmlPersistenceUnit = context
 				.mock(XmlPersistenceUnit.class);
 		final InternalEObject owner = xmlPersistenceUnit;
+		// setup expectations to mock model notifications during
+		// EList<XmlJavaClassRef> classes - value insertion 
 		context.checking(new Expectations() {
 			{
 				oneOf(owner).eNotificationRequired();
@@ -199,6 +249,7 @@ public class HibernateJPACoreTests extends TestCase {
 		final XmlJavaClassRef xmlJavaClassRef1 = PersistenceFactory.eINSTANCE
 				.createXmlJavaClassRef();
 		xmlJavaClassRef1.setJavaClass(testClassName);
+		// insert testClass into classes list
 		classes.add(xmlJavaClassRef1);
 		final EList<XmlMappingFileRef> mappingFiles = new EObjectContainmentEList<XmlMappingFileRef>(
 				XmlMappingFileRef.class, xmlPersistenceUnit,
@@ -206,29 +257,29 @@ public class HibernateJPACoreTests extends TestCase {
 		final List<String> annotatedClassNamesList = new ArrayList<String>();
 		final Iterator<String> annotatedClassNames = annotatedClassNamesList
 				.iterator();
-
+		//
 		final JavaResourcePersistentType javaResourcePersistentType = context
 				.mock(JavaResourcePersistentType.class);
-
+		//
 		final List<JavaResourcePersistentAttribute> resourceAttributesList1 = new ArrayList<JavaResourcePersistentAttribute>();
-
+		//
 		final List<JavaResourcePersistentAttribute> resourceAttributesList2 = new ArrayList<JavaResourcePersistentAttribute>();
 		final JDTFieldAttribute jdtFieldAttribute = new JDTFieldAttribute(null,
 				"", 1, null, null); //$NON-NLS-1$
 		final JavaResourcePersistentAttribute jrpa1 = new JavaResourcePersistentAttributeImpl(
 				javaResourcePersistentType, jdtFieldAttribute);
 		resourceAttributesList2.add(jrpa1);
-
+		//
 		final GenericGeneratorAnnotationImpl genericGeneratorAnnotation = new GenericGeneratorAnnotationImpl(
 				javaResourcePersistentType, null);
-
+		//
 		final InputStream classPathIStream = new MockClassPathInputStream();
 		final InputStream javaIStream = new MockJavaInputStream();
-
+		//
 		final IPath pathProject = new Path(""); //$NON-NLS-1$
-
+		//
 		final IPath pathJavaFile = new Path(javaFileName);
-
+		// define/check jpaPlatform.buildJpaFile expectations
 		context.checking(new Expectations() {
 			{
 
@@ -294,27 +345,33 @@ public class HibernateJPACoreTests extends TestCase {
 				will(returnValue(null));
 			}
 		});
+		// setup JptCorePlugin preferences:
+		// a) setup hibernate as default jpa platform 
 		JptCorePlugin.setDefaultJpaPlatformId(hibernatePlatformId);
+		// b) setup hibernate as jpa platform for project
 		JptCorePlugin.setJpaPlatformId(project, hibernatePlatformId);
-
+		// FIRST TEST:
+		// try to build jpa file using hibernate jpa platform
 		final JpaFile jpaFile = jpaPlatform.buildJpaFile(jpaProject, file);
-
+		//
+		// define/prepare mock objects for further testing
 		final JpaCompilationUnit jpaCompilationUnit = context
 				.mock(JpaCompilationUnit.class);
 		final JpaAnnotationProvider jpaAnnotationProvider = new HibernateJpaAnnotationProvider();
-
+		//
 		final IProjectFacetActionEvent projectFacetActionEvent = context
 				.mock(IProjectFacetActionEvent.class);
 		final IFacetedProject facetedProject = context
 				.mock(IFacetedProject.class);
 		final IProjectFacet projectFacet = context.mock(IProjectFacet.class);
-
+		// define/check jpaPlatform.getJpaFactory().buildPersistenceUnit,
+		// pu.update and jpaPostInstallFasetListener.handleEvent expectations
 		context.checking(new Expectations() {
 			{
 				allowing(xmlPersistenceUnit).getName();
-				will(returnValue("xmlPUName")); //$NON-NLS-1$
+				will(returnValue(className));
 
-				oneOf(xmlPersistenceUnit).setName("xmlPUName"); //$NON-NLS-1$
+				oneOf(xmlPersistenceUnit).setName(className);
 
 				allowing(xmlPersistenceUnit).getClasses();
 				will(returnValue(classes));
@@ -487,17 +544,24 @@ public class HibernateJPACoreTests extends TestCase {
 				will(returnValue(JptCorePlugin.FACET_ID));
 			}
 		});
-
+		// SECOND TEST:
+		// build pu via hibernate jpa factory
 		PersistenceUnit pu = jpaPlatform.getJpaFactory().buildPersistenceUnit(
 				persistence, xmlPersistenceUnit);
+		// THIRD TEST:
+		// update persistence unit and check number of class refs
 		int classRefSizeOld = pu.classRefsSize();
 		pu.update(xmlPersistenceUnit);
 		int classRefSizeNew = pu.classRefsSize();
+		// check is the old number of ref classes remain the same after
+		// pu.update call - should be the same
 		assertTrue(classRefSizeOld == classRefSizeNew);
-
+		// FOURTH TEST:
+		// check for handleEvent of JPAPostInstallFasetListener
 		JPAPostInstallFasetListener jpaPostInstallFasetListener = new JPAPostInstallFasetListener();
 		jpaPostInstallFasetListener.handleEvent(projectFacetActionEvent);
-
+		// GENERAL TEST:
+		// check for all expectations
 		context.assertIsSatisfied();
 	}
 
