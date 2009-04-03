@@ -83,9 +83,9 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 	}	
 	
 	public void addToMessages(List<IMessage> messages) {
-		invokeMethod(this, "addMappingFileMessages", "validateMappingFiles", 
+		invokeMethod(this, "addMappingFileMessages", "validateMappingFiles",  //$NON-NLS-1$ //$NON-NLS-2$
 				new Class[]{List.class}, messages);
-		invokeMethod(this, "addClassMessages", "validateClassRefs", new Class[]{List.class}, messages);
+		invokeMethod(this, "addClassMessages", "validateClassRefs", new Class[]{List.class}, messages);  //$NON-NLS-1$//$NON-NLS-2$
 		addFileNotExistsMessages(messages);
 	}
 	
@@ -183,19 +183,19 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 			JavaPersistentType type = classRef.getJavaPersistentType();
 			JavaResourcePersistentMember jrpt = null;
 			GenericGeneratorAnnotation annotation = null;
-			jrpt =	(JavaResourcePersistentMember) invokeMethod(project, "getJavaPersistentTypeResource", 
-					"getJavaResourcePersistentType", new Class[]{String.class}, annotClass);
+			jrpt =	(JavaResourcePersistentMember) invokeMethod(project, "getJavaPersistentTypeResource",  //$NON-NLS-1$
+					"getJavaResourcePersistentType", new Class[]{String.class}, annotClass); //$NON-NLS-1$
 			if (jrpt != null){
-				annotation = (GenericGeneratorAnnotation)invokeMethod(jrpt, "getAnnotation", 
-						"getSupportingAnnotation", new Class[]{String.class}, GENERIC_GENERATOR);
+				annotation = (GenericGeneratorAnnotation)invokeMethod(jrpt, "getAnnotation",  //$NON-NLS-1$
+						"getSupportingAnnotation", new Class[]{String.class}, GENERIC_GENERATOR); //$NON-NLS-1$
 				if (annotation != null) {
 					addGenerator(annotation.buildJavaGenericGenerator(type));
 				}				
 				ListIterator<JavaPersistentAttribute> typeAttrs = type.attributes();
 				for (JavaPersistentAttribute persAttr : CollectionTools.iterable(typeAttrs)) {
 					JavaResourcePersistentAttribute jrpa = persAttr.getResourcePersistentAttribute();
-					annotation = (GenericGeneratorAnnotation)invokeMethod(jrpa, "getAnnotation", 
-							"getSupportingAnnotation", new Class[]{String.class}, GENERIC_GENERATOR);
+					annotation = (GenericGeneratorAnnotation)invokeMethod(jrpa, "getAnnotation",  //$NON-NLS-1$
+							"getSupportingAnnotation", new Class[]{String.class}, GENERIC_GENERATOR); //$NON-NLS-1$
 					
 					if (annotation != null) {
 						addGenerator(annotation.buildJavaGenericGenerator(persAttr.getSpecifiedMapping()));
@@ -230,11 +230,11 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 		} else {
 			StringBuilder params = new StringBuilder();
 			for (int i = 0; i < argsTypes.length; i++) {
-				params.append(argsTypes[i].getName() + ", ");
+				params.append(argsTypes[i].getName() + ", "); //$NON-NLS-1$
 			}
 			if (params.length() > 0) params.deleteCharAt(params.length() - 2);
-			HibernateJptPlugin.logError("Nor \"" + dali20Name + "\" nor \"" + dali21Name
-					+ "\" methods were found with parameter types: (" + params + ")");
+			HibernateJptPlugin.logError("Nor \"" + dali20Name + "\" nor \"" + dali21Name  //$NON-NLS-1$//$NON-NLS-2$
+					+ "\" methods were found with parameter types: (" + params + ")");  //$NON-NLS-1$//$NON-NLS-2$
 		}
 		return null;
 	}

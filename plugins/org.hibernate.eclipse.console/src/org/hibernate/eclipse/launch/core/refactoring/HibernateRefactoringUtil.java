@@ -357,7 +357,7 @@ public class HibernateRefactoringUtil {
 			List<ILaunchConfiguration> list = new ArrayList<ILaunchConfiguration>();
 			for(int i = 0; i < configs.length && configs[i].exists(); i++) {//refactor only hibernate launch configurations
 				if (!ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID.equals(configs[i].getType().getIdentifier())) continue;
-				if (profile.getName().equals(configs[i].getAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, ""))) 
+				if (profile.getName().equals(configs[i].getAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, "")))  //$NON-NLS-1$
 					list.add(configs[i]);
 			}
 			configs = list.toArray(new ILaunchConfiguration[list.size()]);

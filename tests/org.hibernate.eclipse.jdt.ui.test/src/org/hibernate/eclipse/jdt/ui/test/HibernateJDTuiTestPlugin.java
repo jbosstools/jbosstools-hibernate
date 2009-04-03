@@ -18,7 +18,7 @@ import org.osgi.framework.BundleContext;
 public class HibernateJDTuiTestPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.hibernate.eclipse.jdt.ui.test";
+	public static final String PLUGIN_ID = "org.hibernate.eclipse.jdt.ui.test"; //$NON-NLS-1$
 
 	// The shared instance
 	private static HibernateJDTuiTestPlugin plugin;
@@ -58,7 +58,7 @@ public class HibernateJDTuiTestPlugin extends AbstractUIPlugin {
 	
 	public File getFileInPlugin(IPath path) throws CoreException {
 		try {
-			URL installURL= new URL(getBundle().getEntry("/"), path.toString());
+			URL installURL= new URL(getBundle().getEntry("/"), path.toString()); //$NON-NLS-1$
 			URL localURL= FileLocator.toFileURL(installURL);
 			return new File(localURL.getFile());
 		} catch (IOException e) {

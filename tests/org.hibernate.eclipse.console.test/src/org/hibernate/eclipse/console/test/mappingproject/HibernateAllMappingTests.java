@@ -201,7 +201,7 @@ public class HibernateAllMappingTests extends TestCase {
 						long period = System.currentTimeMillis() - st_pack_time;
 						String time = period / 1000 + "." + (period % 1000) / 100; //$NON-NLS-1$
 						System.out.println( time +ConsoleTestMessages.HibernateAllMappingTests_seconds + 
-								" {" + javaElement.getElementName() + "}");
+								" {" + javaElement.getElementName() + "}");  //$NON-NLS-1$//$NON-NLS-2$
 					}
 					waitForJobs();
 					delay(Customization.EACTH_PACK_TEST_DELAY);

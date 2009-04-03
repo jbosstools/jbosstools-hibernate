@@ -22,7 +22,7 @@ public class HQLEditorPreferencePageTest extends TestCase {
 			prefDialog.open();
 			
 			Object selectedPage = prefDialog.getSelectedPage();
-			assertTrue("Selected page is not an instance of HQLEditorPreferencePage", selectedPage instanceof HQLEditorPreferencePage);
+			assertTrue("Selected page is not an instance of HQLEditorPreferencePage", selectedPage instanceof HQLEditorPreferencePage); //$NON-NLS-1$
 		} finally {
 			prefDialog.close();
 		}

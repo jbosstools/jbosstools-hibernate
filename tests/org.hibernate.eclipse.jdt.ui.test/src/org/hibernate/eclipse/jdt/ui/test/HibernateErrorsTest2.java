@@ -1,6 +1,5 @@
 package org.hibernate.eclipse.jdt.ui.test;
 
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -13,23 +12,15 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.launching.JavaRuntime;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
-import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
@@ -39,8 +30,6 @@ import org.hibernate.eclipse.console.test.HibernateConsoleTest;
 import org.hibernate.eclipse.console.test.SimpleTestProject;
 import org.hibernate.eclipse.console.test.xpl.JavaProjectHelper;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
-import org.hibernate.eclipse.jdt.ui.internal.HQLDetector;
-import org.hibernate.eclipse.jdt.ui.internal.HQLProblem;
 
 public class HibernateErrorsTest2 extends HibernateConsoleTest {
 
@@ -56,7 +45,8 @@ public class HibernateErrorsTest2 extends HibernateConsoleTest {
 	
 	@Override
 	protected SimpleTestProject createTestProject() {
-		return new SimpleTestProject("hqlquerytest-" + System.currentTimeMillis()) { // the currentTime Millis can be removed once the classloader stop hanging on to the jars. see JBIDE-1012
+		// the currentTime Millis can be removed once the classloader stop hanging on to the jars. see JBIDE-1012
+		return new SimpleTestProject("hqlquerytest-" + System.currentTimeMillis()) { //$NON-NLS-1$
 			
 			@Override
 			protected void buildSimpleTestProject() throws JavaModelException,
@@ -75,24 +65,24 @@ public class HibernateErrorsTest2 extends HibernateConsoleTest {
 				
 				assertEquals(3,getIJavaProject().getRawClasspath().length);
 			
-				getIProject().getFolder("src/META-INF").create(true, true, new NullProgressMonitor());
-				 getIProject().getFile("src/META-INF/persistence.xml").create(
-		                    new ByteArrayInputStream(("<persistence>\n" + 
-		                    		"   <persistence-unit name=\"manager1\" transaction-type=\"RESOURCE_LOCAL\">\n" + 
-		                    		"      <class>test.TestClass</class>\n" + 
-		                    		"      <properties>\n" + 
-		                    		"         <property name=\"hibernate.dialect\" value=\"org.hibernate.dialect.HSQLDialect\"/>\n" + 
-		                    		"         <property name=\"hibernate.connection.driver_class\" value=\"org.hsqldb.jdbcDriver\"/>\n" + 
-		                    		"         <property name=\"hibernate.connection.username\" value=\"sa\"/>\n" + 
-		                    		"         <property name=\"hibernate.connection.password\" value=\"\"/>\n" + 
-		                    		"         <property name=\"hibernate.connection.url\" value=\"jdbc:hsqldb:.\"/>\n" +
-		                    		"         <property name=\"hibernate.query.startup_check\" value=\"false\"/>\n" +		                    		
-		                    		"      </properties>\n" + 
-		                    		"   </persistence-unit>\n" + 
-		                    		"</persistence>").getBytes()),
+				getIProject().getFolder("src/META-INF").create(true, true, new NullProgressMonitor()); //$NON-NLS-1$
+				 getIProject().getFile("src/META-INF/persistence.xml").create( //$NON-NLS-1$
+		                    new ByteArrayInputStream(("<persistence>\n" +  //$NON-NLS-1$
+		                    		"   <persistence-unit name=\"manager1\" transaction-type=\"RESOURCE_LOCAL\">\n" +  //$NON-NLS-1$ 
+		                    		"      <class>test.TestClass</class>\n" +   //$NON-NLS-1$
+		                    		"      <properties>\n" +   //$NON-NLS-1$
+		                    		"         <property name=\"hibernate.dialect\" value=\"org.hibernate.dialect.HSQLDialect\"/>\n" +  //$NON-NLS-1$ 
+		                    		"         <property name=\"hibernate.connection.driver_class\" value=\"org.hsqldb.jdbcDriver\"/>\n" +   //$NON-NLS-1$
+		                    		"         <property name=\"hibernate.connection.username\" value=\"sa\"/>\n" +   //$NON-NLS-1$
+		                    		"         <property name=\"hibernate.connection.password\" value=\"\"/>\n" +   //$NON-NLS-1$
+		                    		"         <property name=\"hibernate.connection.url\" value=\"jdbc:hsqldb:.\"/>\n" +  //$NON-NLS-1$
+		                    		"         <property name=\"hibernate.query.startup_check\" value=\"false\"/>\n" +		             //$NON-NLS-1$         		
+		                    		"      </properties>\n" +  //$NON-NLS-1$ 
+		                    		"   </persistence-unit>\n" +   //$NON-NLS-1$
+		                    		"</persistence>").getBytes()),  //$NON-NLS-1$
 		                    false /* force */, new NullProgressMonitor());
 				
-				 getIProject().findMember("src/META-INF/persistence.xml");
+				 getIProject().findMember("src/META-INF/persistence.xml");  //$NON-NLS-1$
 				 getIProject().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
 			}
 			
@@ -100,17 +90,17 @@ public class HibernateErrorsTest2 extends HibernateConsoleTest {
 			protected IType buildType(IPackageFragment pack, String cuName)
 					throws JavaModelException {
 				ICompilationUnit cu = pack.createCompilationUnit(cuName,
-						"", false, null);
+						"", false, null); //$NON-NLS-1$
 				
 				cu.createPackageDeclaration(pack.getElementName(),null);
 				IType type = cu.createType(
-						"@javax.persistence.NamedQuery(name=\"fromUnknown\", query=\"from Unknown\")\n" +
-						"@javax.persistence.Entity\n" +
-						"public class " + TYPE_NAME + " {}",null,false,null);
-				type.createField("@javax.persistence.Id private int id;",null,false,null);
-				type.createField("private String testField;",null,false,null);
-				type.createMethod("public String getTestField() {return this.testField;}",null,false,null);
-				type.createMethod("public void setTestField(String testField) {this.testField = testField;}",null,false,null);
+						"@javax.persistence.NamedQuery(name=\"fromUnknown\", query=\"from Unknown\")\n" + //$NON-NLS-1$
+						"@javax.persistence.Entity\n" + //$NON-NLS-1$
+						"public class " + TYPE_NAME + " {}",null,false,null);  //$NON-NLS-1$//$NON-NLS-2$
+				type.createField("@javax.persistence.Id private int id;",null,false,null); //$NON-NLS-1$
+				type.createField("private String testField;",null,false,null); //$NON-NLS-1$
+				type.createMethod("public String getTestField() {return this.testField;}",null,false,null); //$NON-NLS-1$
+				type.createMethod("public void setTestField(String testField) {this.testField = testField;}",null,false,null); //$NON-NLS-1$
 				return type;
 			}
 		};
@@ -150,7 +140,7 @@ public class HibernateErrorsTest2 extends HibernateConsoleTest {
 				.setPerspective(
 						PlatformUI.getWorkbench().getPerspectiveRegistry()
 								.findPerspectiveWithId(
-										"org.eclipse.ui.resourcePerspective"));
+										"org.eclipse.ui.resourcePerspective")); //$NON-NLS-1$
 
 		waitForJobs();
 		// getProject().deleteIProject();
@@ -209,14 +199,14 @@ public class HibernateErrorsTest2 extends HibernateConsoleTest {
 
 	private String getMessage(File file) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("Cannot remove the ");
+		buffer.append("Cannot remove the "); //$NON-NLS-1$
 		buffer.append(file.getAbsolutePath());
-		buffer.append(" file. ");
+		buffer.append(" file. "); //$NON-NLS-1$
 		if (file.exists() && file.isDirectory()) {
 			String[] files = file.list();
-			buffer.append("List=");
+			buffer.append("List="); //$NON-NLS-1$
 			buffer.append(files);
-			buffer.append("-");
+			buffer.append("-"); //$NON-NLS-1$
 			for (int i = 0; i < files.length; i++)
 				buffer.append(files[i]);
 		}

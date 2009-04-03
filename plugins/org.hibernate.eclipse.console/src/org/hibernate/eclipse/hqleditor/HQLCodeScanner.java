@@ -238,7 +238,7 @@ public class HQLCodeScanner extends RuleBasedScanner {
         List rules = new ArrayList();
 
         rules.add( new EndOfLineRule( "--", commentToken )); //$NON-NLS-1$
-        rules.add( new SingleLineRule( "'", "'", stringToken, '\\' )); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        rules.add( new SingleLineRule( "'", "'", stringToken, '\\' )); //$NON-NLS-1$ //$NON-NLS-2$
         rules.add( new WhitespaceRule( new HQLWhiteSpaceDetector() ));
 
         //rules.add( new HQLLexerRule( hqlToken )); // TODO: need to categorize tokens into types.

@@ -34,10 +34,10 @@ import org.jboss.tools.hibernate.jpt.ui.wizard.GenerateEntitiesWizard;
  */
 public class HibernatePlatformUI extends GenericPlatformUi {
 
-	public static final String LaunchConfigurationType_ID = "org.hibernate.eclipse.launch.CodeGenerationLaunchConfigurationType";
+	public static final String LaunchConfigurationType_ID = "org.hibernate.eclipse.launch.CodeGenerationLaunchConfigurationType"; //$NON-NLS-1$
 
-	public static String exporter_id = "hbmexporter";
-	public static String full_exporter_id = HibernateLaunchConstants.ATTR_EXPORTERS + '.' + "hbmexporter";
+	public static final String exporter_id = "hbmexporter"; //$NON-NLS-1$
+	public static final String full_exporter_id = HibernateLaunchConstants.ATTR_EXPORTERS + '.' + "hbmexporter"; //$NON-NLS-1$
 
 	@Override
 	public void generateEntities(JpaProject project, IStructuredSelection selection) {
@@ -63,14 +63,14 @@ public class HibernatePlatformUI extends GenericPlatformUi {
 	public static ILaunchConfigurationWorkingCopy createDefaultLaunchConfig(String projectName) {
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 		ILaunchConfigurationType launchConfigurationType = launchManager
-				.getLaunchConfigurationType(LaunchConfigurationType_ID); //$NON-NLS-1$
+				.getLaunchConfigurationType(LaunchConfigurationType_ID);
 
 		ILaunchConfigurationWorkingCopy wc = null;
 		try {
-			wc = launchConfigurationType.newInstance(null, projectName + "-hibernate-generate");
+			wc = launchConfigurationType.newInstance(null, projectName + "-hibernate-generate"); //$NON-NLS-1$
 			// Create exporters
 			List<String> exporters = new ArrayList<String>();
-			exporters.add(exporter_id); //$NON-NLS-1$
+			exporters.add(exporter_id);
 			wc.setAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, exporters);
 			wc.setAttribute(full_exporter_id, true);
 		} catch (CoreException e) {

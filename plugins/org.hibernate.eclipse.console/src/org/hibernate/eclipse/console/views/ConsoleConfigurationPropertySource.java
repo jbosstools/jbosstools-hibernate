@@ -76,7 +76,7 @@ public class ConsoleConfigurationPropertySource implements IPropertySource {
 			return preferences.getPropertyFile();
 		}
 		if("mapping.files".equals(id)) { //$NON-NLS-1$
-			return new Integer(preferences.getMappingFiles().length);
+			return Integer.valueOf(preferences.getMappingFiles().length);
 		}
 
 		return null;

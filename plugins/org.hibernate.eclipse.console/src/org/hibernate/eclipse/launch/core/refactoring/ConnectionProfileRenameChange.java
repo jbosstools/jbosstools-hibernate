@@ -90,7 +90,7 @@ public class ConnectionProfileRenameChange extends ConnectionProfileChange {
 			}
 			
 			final ILaunchConfigurationWorkingCopy wc = fLaunchConfiguration.getWorkingCopy();
-			String oldName = wc.getAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, "");
+			String oldName = wc.getAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, ""); //$NON-NLS-1$
 			wc.setAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, fRenameArguments.getNewName());
 			ILaunchConfiguration newConfig = wc.isDirty() ? wc.doSave() : fLaunchConfiguration;
 			RenameArguments args = new RenameArguments(oldName, true);

@@ -205,7 +205,7 @@ public class ExporterFactory {
 		List templatePathList = new ArrayList();
 		if(props.containsKey("template_path")) { //$NON-NLS-1$
 			String resolveTemplatePath = resolve(props.getProperty("template_path")); //$NON-NLS-1$
-			StringTokenizer st = new StringTokenizer(resolveTemplatePath, ";");
+			StringTokenizer st = new StringTokenizer(resolveTemplatePath, ";"); //$NON-NLS-1$
 			String out = new String();
 			while (st.hasMoreTokens()) {
 				String locationAsStringPath = PathHelper.getLocationAsStringPath(st.nextToken());
@@ -216,7 +216,7 @@ public class ExporterFactory {
 					templatePathList.add(locationAsStringPath);
 				}				
 			}
-			if (out.length()  > 0 ){//$NON-NLS-1$
+			if (out.length()  > 0 ){
 				out = out.substring(0, out.length() - 1);
 				throw new HibernateConsoleRuntimeException(out);
 			}
@@ -224,8 +224,8 @@ public class ExporterFactory {
 		}
 		if (StringHelper.isNotEmpty(customTemplatePath)){
 			String resolvedCustomTemplatePath = resolve(customTemplatePath);
-			StringTokenizer st = new StringTokenizer(resolvedCustomTemplatePath, ";");
-			String out = "";
+			StringTokenizer st = new StringTokenizer(resolvedCustomTemplatePath, ";"); //$NON-NLS-1$
+			String out = ""; //$NON-NLS-1$
 			while (st.hasMoreTokens()) {
 				String locationAsStringPath = PathHelper.getLocationAsStringPath(st.nextToken());
 				if(locationAsStringPath != null) {
@@ -235,7 +235,7 @@ public class ExporterFactory {
 							resolvedCustomTemplatePath, getExporterDefinition().getDescription());
 				}
 			}
-			if (out != ""){
+			if (!("".equals(out))){ //$NON-NLS-1$
 				out = out.substring(0, out.length() - 1);
 				throw new HibernateConsoleRuntimeException(out);
 			}

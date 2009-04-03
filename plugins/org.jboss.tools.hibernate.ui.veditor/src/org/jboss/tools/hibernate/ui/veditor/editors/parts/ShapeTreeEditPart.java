@@ -17,7 +17,7 @@ public class ShapeTreeEditPart extends
 		org.eclipse.gef.editparts.AbstractTreeEditPart implements
 		PropertyChangeListener {
 
-	static protected OrmLabelProvider ormLabelProvider = new OrmLabelProvider(
+	static final protected OrmLabelProvider ormLabelProvider = new OrmLabelProvider(
 			new OrmModelImageVisitor(), new OrmModelNameVisitor());
 
 	/**

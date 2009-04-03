@@ -196,7 +196,7 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 		if (dialect == null && getConnectionProfileName() != null && getConnectionProfileName() != null) {
 			IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(getConnectionProfileName());	
 			if (profile == null) return null;
-			String driver = profile.getProperties(profile.getProviderId()).getProperty("org.eclipse.datatools.connectivity.db.driverClass");
+			String driver = profile.getProperties(profile.getProviderId()).getProperty("org.eclipse.datatools.connectivity.db.driverClass"); //$NON-NLS-1$
 			dialect = new DriverClassHelpers().getDialect(driver);
 		}
 		return dialect;

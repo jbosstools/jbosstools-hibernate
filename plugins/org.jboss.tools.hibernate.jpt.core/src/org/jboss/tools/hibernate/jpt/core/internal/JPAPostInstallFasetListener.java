@@ -62,13 +62,13 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 		for (int i = 0; i < lm.getLaunchConfigurations(lct).length; i++){
 			ILaunchConfiguration lc = lm.getLaunchConfigurations(lct)[i];
 			if (project.getName().equals(
-					lc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, ""))){//lc uses this project					
+					lc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, ""))){//lc uses this project					 //$NON-NLS-1$
 				if (project.getName().equals(lc.getName())) return lc;
 				configs.add(lc);				
 			}
 		}
 		//select best launch configuration "projectName (1)"
-		Pattern p = Pattern.compile(project.getName() + " \\(\\d+\\)");
+		Pattern p = Pattern.compile(project.getName() + " \\(\\d+\\)"); //$NON-NLS-1$
 		for (int i = 0; i < configs.size(); i++) {
 			ILaunchConfiguration lc = configs.get(i);
 			if (p.matcher(lc.getName()).matches()) return lc; 

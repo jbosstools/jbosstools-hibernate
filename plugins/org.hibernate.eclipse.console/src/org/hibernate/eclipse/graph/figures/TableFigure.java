@@ -32,7 +32,7 @@ import org.eclipse.swt.graphics.Font;
 
 public class TableFigure extends Figure {
 
-	public static Color tableColor = new Color(null, 0xff, 0xff, 0xaa);
+	public static final Color tableColor = new Color(null, 0xff, 0xff, 0xaa);
 	static Font tableHeaderFont = new Font(null, "Arial", 12, SWT.BOLD); //$NON-NLS-1$
 	
 	private Label label;

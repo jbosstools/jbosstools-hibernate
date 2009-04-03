@@ -22,7 +22,7 @@ import org.osgi.framework.BundleContext;
 public class HibernateJptUIPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.jboss.tools.hibernate.jpt.ui";
+	public static final String PLUGIN_ID = "org.jboss.tools.hibernate.jpt.ui"; //$NON-NLS-1$
 
 	// The shared instance
 	private static HibernateJptUIPlugin plugin;

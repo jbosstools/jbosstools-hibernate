@@ -56,14 +56,14 @@ public class GenerateDdlWizard extends Wizard {
 		if (wc != null) {
 			String concoleConfigurationName = initPage.getConfigurationName();
 			wc.setAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME, concoleConfigurationName);
-			wc.setAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR, initPage.getOutputDir()); //$NON-NLS-1$
+			wc.setAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR, initPage.getOutputDir());
 
 			Map<String, String> prop = new HashMap<String, String>();
-			prop.put("outputFileName", initPage.getFilename());
-			prop.put("format", "true");
-			prop.put("scriptToConsole", "false");
+			prop.put("outputFileName", initPage.getFilename());  //$NON-NLS-1$
+			prop.put("format", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+			prop.put("scriptToConsole", "false"); //$NON-NLS-1$  //$NON-NLS-2$
 
-			wc.setAttribute(HibernatePlatformUI.full_exporter_id + ".properties", prop);
+			wc.setAttribute(HibernatePlatformUI.full_exporter_id + ".properties", prop);  //$NON-NLS-1$
 			wc.setAttribute(HibernatePlatformUI.full_exporter_id + ".extension_id", HibernateLaunchConstants.ATTR_PREFIX + "hbm2ddl"); //$NON-NLS-1$ //$NON-NLS-2$
 			try {
 				wc.launch(ILaunchManager.RUN_MODE, null);

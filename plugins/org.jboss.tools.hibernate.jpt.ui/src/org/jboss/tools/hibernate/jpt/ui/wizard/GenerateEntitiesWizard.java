@@ -59,7 +59,7 @@ public class GenerateEntitiesWizard extends Wizard {
 			String concoleConfigurationName = initPage.getConfigurationName();			
 			wc.setAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME, concoleConfigurationName);
 
-			wc.setAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR, initPage.getOutputDir()); //$NON-NLS-1$
+			wc.setAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR, initPage.getOutputDir());
 
 			wc.setAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER, true);
 			wc.setAttribute(HibernateLaunchConstants.ATTR_PACKAGE_NAME, initPage.getPackageName());
@@ -69,11 +69,11 @@ public class GenerateEntitiesWizard extends Wizard {
 
 			wc.setAttribute(HibernateLaunchConstants.ATTR_ENABLE_JDK5, true);
 			wc.setAttribute(HibernateLaunchConstants.ATTR_ENABLE_EJB3_ANNOTATIONS, true);
-			wc.setAttribute("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-			wc.setAttribute("hibernate.temp.use_jdbc_metadata_defaults", true);
+			wc.setAttribute("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+			wc.setAttribute("hibernate.temp.use_jdbc_metadata_defaults", true); //$NON-NLS-1$
 
-			wc.setAttribute(HibernateLaunchConstants.ATTR_EXPORTERS + '.' + HibernatePlatformUI.exporter_id + ".extension_id", 
-						HibernateLaunchConstants.ATTR_PREFIX + "hbm2java"); //$NON-NLS-1$ //$NON-NLS-2$
+			wc.setAttribute(HibernateLaunchConstants.ATTR_EXPORTERS + '.' + HibernatePlatformUI.exporter_id + ".extension_id",  //$NON-NLS-1$
+						HibernateLaunchConstants.ATTR_PREFIX + "hbm2java"); //$NON-NLS-1$
 			try {
 				wc.launch(ILaunchManager.RUN_MODE, null);
 			} catch (CoreException e) {

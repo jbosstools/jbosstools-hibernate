@@ -146,7 +146,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage implements
 		container.setLayoutData(gd);
 
 		nameLabel = new Label(container, SWT.HORIZONTAL | SWT.LEFT);
-		nameLabel.setText("Name");
+		nameLabel.setText(HibernateConsoleMessages.ConsoleConfigurationWizardPage_name);
 		nameLabel.setLayoutData(new GridData(
 				GridData.HORIZONTAL_ALIGN_BEGINNING));
 
@@ -279,14 +279,14 @@ public class ConsoleConfigurationWizardPage extends WizardPage implements
 				if (messageWarning == null) {
 					messageWarning = tabs[i].getMessage();
 					if(messageWarning!=null) {
-						System.out.println(tabs[i].getName() + " warns: " + messageWarning);
+						System.out.println(NLS.bind(HibernateConsoleMessages.ConsoleConfigurationWizardPage_warnings, tabs[i].getName(), messageWarning));
 					}
 				}
 			} else {
 				if (messageError == null) {
 					messageError = tabs[i].getErrorMessage();
 					if(messageError!=null) {
-						System.out.println(tabs[i].getName() + " errors: " + messageError);
+						System.out.println(NLS.bind(HibernateConsoleMessages.ConsoleConfigurationWizardPage_errors, tabs[i].getName(), messageError));
 					}
 				}
 			}
@@ -485,7 +485,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage implements
 			currentLaunchConfig.setAttribute(attr, nonEmptyTrimOrNull(str));
 		}
 		else {
-			currentLaunchConfig.setAttribute(attr, str);
+			currentLaunchConfig.setAttribute(attr, (String)null);
 		}
 	}
 	// END
@@ -580,7 +580,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage implements
 					launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, (List<String>)null);
 				}
 			} else if (obj instanceof EclipseConsoleConfiguration) {
-				throw new IllegalStateException("This should never happen!");
+				throw new IllegalStateException("This should never happen!"); //$NON-NLS-1$
 			}
 		}
 	}

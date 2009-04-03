@@ -35,7 +35,7 @@ public class PersistentClassFigure extends Figure {
 
 	//public static Color classColor = new Color(null, 188, 174, 121); // hibernate brown
 	//public static Color classColor = new Color(null, 179, 202, 227); // opera tab blue
-	public static Color classColor = new Color(null, 212, 229, 254); // skype says	
+	public static final Color classColor = new Color(null, 212, 229, 254); // skype says	
 	static Font classHeaderFont = new Font(null, "Arial", 12, SWT.BOLD); //$NON-NLS-1$
 	
 	

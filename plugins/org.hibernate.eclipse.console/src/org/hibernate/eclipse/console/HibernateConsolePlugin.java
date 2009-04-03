@@ -540,7 +540,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 		if (exception instanceof CoreException) {
 			status = ((CoreException)exception).getStatus();
 		} else if (exception != null) {
-			status = new MultiStatus(ID, IStatus.ERROR, new IStatus[] { throwableToStatus(exception.getCause())}, exception.toString(), exception); //$NON-NLS-1$
+			status = new MultiStatus(ID, IStatus.ERROR, new IStatus[] { throwableToStatus(exception.getCause())}, exception.toString(), exception);
 		}
 
 		// Check for multi-status with only one child

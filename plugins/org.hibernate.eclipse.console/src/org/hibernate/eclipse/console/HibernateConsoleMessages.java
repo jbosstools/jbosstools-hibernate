@@ -6,14 +6,6 @@ public class HibernateConsoleMessages extends NLS {
 	public static final String BUNDLE_NAME = "org.hibernate.eclipse.console.HibernateConsoleMessages"; //$NON-NLS-1$
 
 	//
-	public static String popup_copy_text;
-	public static String popup_paste_text;
-	public static String popup_select_all;
-	public static String find_replace_action_label;
-	public static String find_replace_action_tooltip;
-	public static String find_replace_action_image;
-	public static String find_replace_action_description;
-	//
 	public static String AbstractQueryEditor_could_not_show_query_editor_input;
 	public static String AbstractQueryEditor_do_you_want_open_session_factory;
 	public static String AbstractQueryEditor_max_results;
@@ -163,65 +155,17 @@ public class HibernateConsoleMessages extends NLS {
 	public static String QueryPagePropertySource_sec;
 	public static String QueryPagePropertySource_unknown;
 	//
-	public static String ConsoleConfigurationCreationWizard_configuring_hibernate_console;
-	public static String ConsoleConfigurationCreationWizard_enable_hibernate_features;
-	public static String ConsoleConfigurationCreationWizard_error_finishing;
-	public static String ConsoleConfigurationCreationWizard_missing_classes;
-	public static String ConsoleConfigurationCreationWizard_the_project;
-	public static String ConsoleConfigurationCreationWizard_the_project_named;
-	public static String ConsoleConfigurationCreationWizard_the_project_named_have;
-	public static String ConsoleConfigurationWizardPage_27;
-	public static String ConsoleConfigurationWizardPage_28;
-	public static String ConsoleConfigurationWizardPage_35;
-	public static String ConsoleConfigurationWizardPage_add_classpath_entry;
-	public static String ConsoleConfigurationWizardPage_add_directory_zip_jar;
-	public static String ConsoleConfigurationWizardPage_add_external_jars;
-	public static String ConsoleConfigurationWizardPage_add_hbmxml_file;
-	public static String ConsoleConfigurationWizardPage_add_hibernate_mapping_file;
-	public static String ConsoleConfigurationWizardPage_add_jar_dir;
-	public static String ConsoleConfigurationWizardPage_additional_classpath;
-	public static String ConsoleConfigurationWizardPage_additional_mapping_files;
-	public static String ConsoleConfigurationWizardPage_annotations;
-	public static String ConsoleConfigurationWizardPage_browse;
-	public static String ConsoleConfigurationWizardPage_choose_file_to_use;
-	public static String ConsoleConfigurationWizardPage_choose_file_to_use_hibcfgxml_file;
-	public static String ConsoleConfigurationWizardPage_classpath;
-	public static String ConsoleConfigurationWizardPage_config_file;
 	public static String ConsoleConfigurationWizardPage_config_name_already_exist;
 	public static String ConsoleConfigurationWizardPage_config_page;
-	public static String ConsoleConfigurationWizardPage_configuration_file;
-	public static String ConsoleConfigurationWizardPage_core;
 	public static String ConsoleConfigurationWizardPage_create_hibernate_console_config;
-	public static String ConsoleConfigurationWizardPage_does_not_exist;
-	public static String ConsoleConfigurationWizardPage_entity_resolver;
-	public static String ConsoleConfigurationWizardPage_general;
-	public static String ConsoleConfigurationWizardPage_include_default_classpath;
-	public static String ConsoleConfigurationWizardPage_is_not_a_file;
-	public static String ConsoleConfigurationWizardPage_jpa;
-	public static String ConsoleConfigurationWizardPage_mappings;
 	public static String ConsoleConfigurationWizardPage_name;
 	public static String ConsoleConfigurationWizardPage_name_must_specified;
 	public static String ConsoleConfigurationWizardPage_bad_name;
 	public static String ConsoleConfigurationWizardPage_bad_char;
-	public static String ConsoleConfigurationWizardPage_naming_strategy;
-	public static String ConsoleConfigurationWizardPage_need_to_specify_classpath;
-	public static String ConsoleConfigurationWizardPage_both_hibernate_properties_and_hibernate_cfg_xml;
-	public static String ConsoleConfigurationWizardPage_need_to_specify_project;
-	public static String ConsoleConfigurationWizardPage_persistence_unit;
 	public static String ConsoleConfigurationWizardPage_problem_while_initializing_cc;
-	public static String ConsoleConfigurationWizardPage_problem_while_locating_jdbc_drivers;
-	public static String ConsoleConfigurationWizardPage_project;
-	public static String ConsoleConfigurationWizardPage_property_file_1;
-	public static String ConsoleConfigurationWizardPage_property_file_2;
-	public static String ConsoleConfigurationWizardPage_select_entity_resolver_class;
-	public static String ConsoleConfigurationWizardPage_select_hibcfgxml_file;
-	public static String ConsoleConfigurationWizardPage_select_java_project;
-	public static String ConsoleConfigurationWizardPage_select_java_project_to_classpath;
-	public static String ConsoleConfigurationWizardPage_select_naming_strategy_class;
-	public static String ConsoleConfigurationWizardPage_select_property_file;
-	public static String ConsoleConfigurationWizardPage_the_java_project_does_not_exist;
 	public static String ConsoleConfigurationWizardPage_this_wizard_allows;
-	public static String ConsoleConfigurationWizardPage_type;
+	public static String ConsoleConfigurationWizardPage_warnings;
+	public static String ConsoleConfigurationWizardPage_errors;
 	public static String NewConfigurationWizard_create_hibernate_cfg_file;
 	public static String NewConfigurationWizard_create_new_hibernate_cfg_xml;
 	public static String NewConfigurationWizard_creating;
@@ -535,6 +479,7 @@ public class HibernateConsoleMessages extends NLS {
 	public static String ConnectionProfileCtrl_Edit;
 
 	public static String ConnectionProfileCtrl_HibernateConfiguredConnection;
+	public static String ConnectionProfileCtrl_JPAConfiguredConnection;
 
 	public static String ConnectionProfileCtrl_New;
 

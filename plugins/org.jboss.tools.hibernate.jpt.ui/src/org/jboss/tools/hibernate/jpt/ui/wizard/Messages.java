@@ -19,14 +19,20 @@ import org.eclipse.osgi.util.NLS;
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.jboss.tools.hibernate.jpt.ui.wizard.messages"; //$NON-NLS-1$
 
-	public static String ccName;
-	public static String connectionProfileError;
-	public static String title;
-	public static String selectName;
-	public static String wizardMessage;
-	public static String databaseSettings;
-	public static String databaseSettings_connection;
-	public static String databaseShema;
+	public static String GenerateInitWizardPage_title;
+	public static String GenerateInitWizardPage_autodetect;
+	public static String GenerateInitWizardPage_use_console_configuration;
+	public static String GenerateInitWizardPage_refresh;
+	public static String GenerateInitWizardPage_databaseSettings;
+	public static String GenerateInitWizardPage_databaseSettings_connection;
+	public static String GenerateInitWizardPage_databaseShema;
+	public static String GenerateInitWizardPage_err_msg_select_console_configuration;
+	public static String GenerateInitWizardPage_err_msg_select_connection_profile;
+	public static String GenerateInitWizardPage_wrn_msg_check_hibernate_dialect;
+	public static String GenerateDdlWizardPage_file_name;
+	public static String GenerateDdlWizardPage_err_msg_input_file_name;
+	public static String HibernatePropertiesComposite_basic_properties;
+	public static String HibernatePropertiesComposite_hibernate;
 
 	static {
 		// initialize resource bundle

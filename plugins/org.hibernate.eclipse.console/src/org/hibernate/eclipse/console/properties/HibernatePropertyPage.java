@@ -129,7 +129,7 @@ public class HibernatePropertyPage extends PropertyPage {
 		IWorkbenchBrowserSupport support = PlatformUI.getWorkbench().getBrowserSupport();
 		try {
 			IWebBrowser browser = support.getExternalBrowser();
-			browser.openURL(new URL(urlEncode(href.toCharArray()))); //$NON-NLS-1$
+			browser.openURL(new URL(urlEncode(href.toCharArray())));
 		}
 		catch (MalformedURLException e) {
 			openWebBrowserError(href, e);

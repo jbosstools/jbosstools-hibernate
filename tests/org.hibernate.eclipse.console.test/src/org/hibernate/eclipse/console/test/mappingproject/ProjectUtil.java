@@ -27,7 +27,6 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -129,7 +128,7 @@ public class ProjectUtil {
 			ILaunchConfigurationTab[] tabs = page.getTabs();
 			ConsoleConfigurationMainTab main = (ConsoleConfigurationMainTab) tabs[0];
 			Class clazz = main.getClass();
-			Field projectName = clazz.getDeclaredField("projectNameText");
+			Field projectName = clazz.getDeclaredField("projectNameText"); //$NON-NLS-1$
 			projectName.setAccessible(true);
 			Text text = (Text) projectName.get(main);
 			text.setText(MappingTestProject.PROJECT_NAME);

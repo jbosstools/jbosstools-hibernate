@@ -31,7 +31,7 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
  */ 
 public class DisplayStringProposalComparator implements Comparator {
 	
-	static public Comparator INSTANCE = new DisplayStringProposalComparator();
+	static final public Comparator INSTANCE = new DisplayStringProposalComparator();
 	
 	public int compare( Object o1, Object o2 ) {
         ICompletionProposal c1 = (ICompletionProposal) o1;

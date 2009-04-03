@@ -49,7 +49,7 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 /**
  * 
  * 
- * @author Vitali
+ * @author Vitali Yemialyanchyk
  */
 public class ConnectionProfileCtrl {
 
@@ -57,8 +57,8 @@ public class ConnectionProfileCtrl {
 	protected Button buttonNew;
 	protected Button buttonEdit;
 	
-	static final String NO_CONNECTIN_NAME = "[Hibernate configured connection]";
-	static final String JPA_CONNECTIN_NAME = "[JPA Project Configured Connection]";
+	static final String NO_CONNECTIN_NAME = HibernateConsoleMessages.ConnectionProfileCtrl_HibernateConfiguredConnection;
+	static final String JPA_CONNECTIN_NAME = HibernateConsoleMessages.ConnectionProfileCtrl_JPAConfiguredConnection;
 
 	static final protected ConnectionWrapper NO_CONNECTION_PLACEHOLDER = new ConnectionWrapper(NO_CONNECTIN_NAME, null);
 	static final protected ConnectionWrapper JPA_CONNECTION_PLACEHOLDER = new ConnectionWrapper(JPA_CONNECTIN_NAME, null);

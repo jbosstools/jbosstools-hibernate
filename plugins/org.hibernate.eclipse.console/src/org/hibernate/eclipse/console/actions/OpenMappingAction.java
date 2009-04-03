@@ -406,8 +406,8 @@ public class OpenMappingAction extends SelectionListenerAction {
 			}
 		} else{
 			String toolTag = tool.getTag(property);
-			if ("component".equals(toolTag) && "embedded".equals(property.getPropertyAccessorName())){
-				toolTag = "properties";
+			if ("component".equals(toolTag) && "embedded".equals(property.getPropertyAccessorName())){  //$NON-NLS-1$//$NON-NLS-2$
+				toolTag = "properties"; //$NON-NLS-1$
 			}
 			pattern.append(toolTag);
 		}

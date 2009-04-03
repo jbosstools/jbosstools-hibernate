@@ -77,8 +77,8 @@ public class GenerateDdlWizardPage extends GenerateInitWizardPage {
 		( (GridData)controls[1].getLayoutData() ).grabExcessHorizontalSpace = true;
 		
 		filename = new StringDialogField();
-		filename.setLabelText("File name");
-		filename.setText("schema.ddl");
+		filename.setLabelText(Messages.GenerateDdlWizardPage_file_name);
+		filename.setText("schema.ddl"); //$NON-NLS-1$
 		filename.setDialogFieldListener(fieldlistener);
         filename.doFillIntoGrid(container, numColumns);
 
@@ -97,7 +97,7 @@ public class GenerateDdlWizardPage extends GenerateInitWizardPage {
         }
         
         if (StringHelper.isEmpty(getFilename())) {
-            setErrorMessage( "Please, input file name" );
+            setErrorMessage(Messages.GenerateDdlWizardPage_err_msg_input_file_name);
             setPageComplete( false );
             return;
         }

@@ -34,6 +34,7 @@ import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 import org.hibernate.eclipse.console.utils.DriverClassHelpers;
 import org.hibernate.eclipse.launch.PathHelper;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
+import org.jboss.tools.hibernate.jpt.ui.wizard.Messages;
 import org.jboss.tools.hibernate.jpt.ui.xpl.AbstractPane;
 
 /**
@@ -59,7 +60,7 @@ public class HibernatePropertiesComposite extends AbstractPane<BasicHibernatePro
 
 	protected void initializeLayout(Composite container) {		
 
-		Composite section = buildSection(container, "Basic properties");
+		Composite section = buildSection(container, Messages.HibernatePropertiesComposite_basic_properties);
 		
 		helper = new DriverClassHelpers();
 
@@ -322,6 +323,6 @@ public class HibernatePropertiesComposite extends AbstractPane<BasicHibernatePro
 	}
 
 	public String getPageText() {
-		return "Hibernate";
+		return Messages.HibernatePropertiesComposite_hibernate;
 	}
 }

@@ -185,10 +185,11 @@ public class Utils {
 	public static String getFieldNameByGetter(MethodDeclaration node){
 		if (node.parameters().size() != 0) return null;
 		String methodName = node.getName().getIdentifier();
-		if (methodName.startsWith("get") && methodName.length() > 3){
+		if (methodName.startsWith("get") && methodName.length() > 3){ //$NON-NLS-1$
 			methodName = methodName.substring(3);
 			return Character.toLowerCase(methodName.charAt(0)) + methodName.substring(1);
-		} else if (methodName.startsWith("is") && methodName.length() > 2){
+		}
+		else if (methodName.startsWith("is") && methodName.length() > 2){ //$NON-NLS-1$
 			methodName = methodName.substring(2);
 			return Character.toLowerCase(methodName.charAt(0)) + methodName.substring(1);
 		}

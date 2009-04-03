@@ -111,7 +111,7 @@ public class ExporterDefinition {
 				propertyElements[i].getAttribute("description"), //$NON-NLS-1$
 				propertyElements[i].getAttribute("value"), //$NON-NLS-1$
 				Boolean.valueOf(propertyElements[i].getAttribute("required")).booleanValue()); //$NON-NLS-1$
-				String type = propertyElements[i].getAttribute("type");
+				String type = propertyElements[i].getAttribute("type"); //$NON-NLS-1$
 				if (type != null){
 					property.setType(type);
 				}

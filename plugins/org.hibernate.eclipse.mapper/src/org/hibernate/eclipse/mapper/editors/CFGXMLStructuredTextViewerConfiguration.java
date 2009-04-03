@@ -75,7 +75,7 @@ public class CFGXMLStructuredTextViewerConfiguration extends StructuredTextViewe
 			}
 		}
 		catch (Exception ex) {
-			MapperPlugin.getDefault().logException(ex); //$NON-NLS-1$
+			MapperPlugin.getDefault().logException(ex);
 		}
 		return javaProject;
 	}

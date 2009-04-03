@@ -10,14 +10,9 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.wizard;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Properties;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
@@ -63,7 +58,7 @@ import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
  */
 public abstract class GenerateInitWizardPage extends WizardPage {
 	
-	private static final String AUTODETECT = "[Autodetect]"; //$NON-NLS-1$
+	private static final String AUTODETECT = Messages.GenerateInitWizardPage_autodetect;
 	
 	private DriverClassHelpers helper = new DriverClassHelpers();
 	
@@ -88,7 +83,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 	};
 	
 	public GenerateInitWizardPage(JpaProject jpaProject){
-		super("", Messages.title, null);
+		super("", Messages.GenerateInitWizardPage_title, null); //$NON-NLS-1$
 		this.jpaProject = jpaProject;
 	}
 
@@ -108,7 +103,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 		createChildControls(container);
 		
 		selectMethod = new Button(container, SWT.CHECK);
-		selectMethod.setText("Use Console Configuration");
+		selectMethod.setText(Messages.GenerateInitWizardPage_use_console_configuration);
 		selectMethod.setSelection(true);
 		//selectMethod.setEnabled(false);
 		selectMethod.addSelectionListener(new SelectionListener(){
@@ -166,11 +161,11 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = numColumns;
 		dbGroup.setLayoutData(gd);
-		dbGroup.setText(Messages.databaseSettings);		
+		dbGroup.setText(Messages.GenerateInitWizardPage_databaseSettings);		
 		
 		//****************************connection profile*****************
 		connectionProfileName = new ComboDialogField(SWT.READ_ONLY);
-		connectionProfileName.setLabelText(Messages.databaseSettings_connection);		
+		connectionProfileName.setLabelText(Messages.GenerateInitWizardPage_databaseSettings_connection);		
 				
 		connectionProfileName.setItems(dtpConnectionProfileNames());
 
@@ -195,8 +190,8 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 				// TODO Auto-generated method stub
 				
 			}});
-		schemaName.setLabelText(Messages.databaseShema);
-		schemaName.setButtonLabel("Refresh");
+		schemaName.setLabelText(Messages.GenerateInitWizardPage_databaseShema);
+		schemaName.setButtonLabel(Messages.GenerateInitWizardPage_refresh);
 		Control[] controls = schemaName.doFillIntoGrid(dbGroup, numColumns);
 		// Hack to tell the text field to stretch!
 		( (GridData)controls[1].getLayoutData() ).grabExcessHorizontalSpace = true;		
@@ -208,17 +203,17 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 		
 		if (selectMethod.getSelection() && (StringHelper.isEmpty(getConfigurationName()))){
 			setPageComplete(false);
-			setErrorMessage("Please, select console configuration");
+			setErrorMessage(Messages.GenerateInitWizardPage_err_msg_select_console_configuration);
 			return;
 		}
 		if (!selectMethod.getSelection() && (StringHelper.isEmpty(getConnectionProfileName()))){
 			setPageComplete(false);
-			setErrorMessage("Please, select connection profile");
+			setErrorMessage(Messages.GenerateInitWizardPage_err_msg_select_connection_profile);
 			return;
 		}
 		
 		if (selectMethod.getSelection()){ // TODO: can't check that dialect set
-			setWarningMessage("Impossible to check that hibernate dialect is set.");
+			setWarningMessage(Messages.GenerateInitWizardPage_wrn_msg_check_hibernate_dialect);
 		}
 		
 		setPageComplete(true);
@@ -279,9 +274,9 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 	
 	protected String getDefaultOutput(){
 		try{
-			if (getJpaProject() == null) return "";
-			if (getJpaProject().getJavaProject() == null) return "";
-			if (!getJpaProject().getJavaProject().exists()) return "";
+			if (getJpaProject() == null) return ""; //$NON-NLS-1$
+			if (getJpaProject().getJavaProject() == null) return ""; //$NON-NLS-1$
+			if (!getJpaProject().getJavaProject().exists()) return ""; //$NON-NLS-1$
 			IPackageFragmentRoot[] roots = getJpaProject().getJavaProject().getPackageFragmentRoots();
 			for (int i = 0; i < roots.length; i++) {
 				IPackageFragmentRoot root = roots[i];
@@ -292,7 +287,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 			return getJpaProject().getJavaProject().getResource().getFullPath().toOSString();
 		} catch(JavaModelException e){
 			HibernateJptUIPlugin.logException(e);
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 	}
 	
@@ -310,7 +305,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 		}
 		if (!selectMethod.getSelection()){
 			IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(getConnectionProfileName());
-			String driver = profile.getProperties(profile.getProviderId()).getProperty("org.eclipse.datatools.connectivity.db.driverClass");
+			String driver = profile.getProperties(profile.getProviderId()).getProperty("org.eclipse.datatools.connectivity.db.driverClass"); //$NON-NLS-1$
 			return helper.getDialect(driver);
 		}
 		return null;

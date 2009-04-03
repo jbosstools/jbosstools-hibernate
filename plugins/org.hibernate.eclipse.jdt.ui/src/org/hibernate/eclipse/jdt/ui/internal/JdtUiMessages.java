@@ -17,7 +17,6 @@ public class JdtUiMessages extends NLS {
 	public static String HQLQuickAssistProcessor_copy_to_hql_editor;
 	public static String JPAMapToolActionPulldownDelegate_menu;
 	public static String SaveQueryEditorListener_replacequestion;
-	public static String SaveQueryEditorListener_replacetitle;
 	public static String SaveQueryEditorListener_hql_editor;
 	public static String SaveQueryEditorListener_cri_editor;
 	public static String SaveQueryEditorListener_change_name;
@@ -25,7 +24,6 @@ public class JdtUiMessages extends NLS {
 	public static String SaveQueryEditorListener_refactoringtitle;
 	public static String SaveQueryEditorListener_replacetitle_info;
 	public static String SaveQueryEditorListener_replacequestion_confirm;
-	public static String SaveQueryEditorListener_errormessage;
 	public static String JPAMapToolActor_message_title;
 	public static String JPAMapToolActor_message;
 	public static String ResolveAmbiguous_column_Class;

@@ -26,9 +26,9 @@ public class SimpleTestProject {
 	
 	final private String projectName;
 	
-	public static String PACKAGE_NAME = "test"; //$NON-NLS-1$
-	public static String TYPE_NAME = "TestClass"; //$NON-NLS-1$
-	public static String FILE_NAME = "TestClass.java"; //$NON-NLS-1$
+	public static final String PACKAGE_NAME = "test"; //$NON-NLS-1$
+	public static final String TYPE_NAME = "TestClass"; //$NON-NLS-1$
+	public static final String FILE_NAME = "TestClass.java"; //$NON-NLS-1$
 	
 	
 	public SimpleTestProject(String projectName) {

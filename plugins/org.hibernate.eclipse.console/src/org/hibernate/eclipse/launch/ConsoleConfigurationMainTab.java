@@ -199,7 +199,7 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 			if (Boolean.parseBoolean(configuration.getAttribute(IConsoleConfigurationLaunchConstants.USE_JPA_PROJECT_PROFILE, Boolean.toString(false)))){
 				connectionProfileCtrl.selectValue(ConnectionProfileCtrl.JPA_CONNECTIN_NAME);
 			} else
-				connectionProfileCtrl.selectValue(configuration.getAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, ConnectionProfileCtrl.NO_CONNECTIN_NAME)); //$NON-NLS-1$			
+				connectionProfileCtrl.selectValue(configuration.getAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, ConnectionProfileCtrl.NO_CONNECTIN_NAME));			
 		}
 		catch (CoreException e) {
 			HibernateConsolePlugin.getDefault().log( e );

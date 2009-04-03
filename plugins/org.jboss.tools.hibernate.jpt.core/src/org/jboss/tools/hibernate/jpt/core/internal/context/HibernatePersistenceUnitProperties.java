@@ -91,7 +91,7 @@ public abstract class  HibernatePersistenceUnitProperties extends AbstractModel 
 	 */
 	public boolean itemIsProperty(Property item) {
 		if (item == null) {
-			throw new IllegalArgumentException("Property is null");
+			throw new IllegalArgumentException("Property is null"); //$NON-NLS-1$
 		}
 		return this.propertyNames().keySet().contains(item.getName());
 	}
@@ -103,7 +103,7 @@ public abstract class  HibernatePersistenceUnitProperties extends AbstractModel 
 	public String propertyIdFor(Property property) {
 		String propertyId = this.propertyNames().get(property.getName());
 		if (propertyId == null) {
-			throw new IllegalArgumentException("Illegal property: " + property.toString());
+			throw new IllegalArgumentException("Illegal property: " + property.toString()); //$NON-NLS-1$
 		}
 		return propertyId;
 	}
@@ -114,7 +114,7 @@ public abstract class  HibernatePersistenceUnitProperties extends AbstractModel 
 				return hibernateKey;
 			}
 		}
-		throw new IllegalArgumentException("Illegal property: " + propertyId);
+		throw new IllegalArgumentException("Illegal property: " + propertyId); //$NON-NLS-1$
 	}
 
 	// ****** get/set String convenience methods *******

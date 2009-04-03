@@ -12,7 +12,6 @@ package org.hibernate.eclipse.jdt.ui.internal;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.ui.refactoring.RefactoringSaveHelper;
 import org.eclipse.jdt.internal.ui.refactoring.actions.RefactoringStarter;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -193,7 +192,7 @@ public class SaveQueryEditorListener implements IPropertyListener {
 			wizard.setDefaultPageTitle(wizard_title);
 
 			IWorkbenchWindow win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-			if ( new RefactoringStarter().activate(wizard, win.getShell(), wizard_title, RefactoringSaveHelper.SAVE_ALL)){ //$NON-NLS-1$
+			if ( new RefactoringStarter().activate(wizard, win.getShell(), wizard_title, RefactoringSaveHelper.SAVE_ALL)){
 				query = newQuery;
 				position.y = query.length();
 				fromEditorPart.doSave(null);

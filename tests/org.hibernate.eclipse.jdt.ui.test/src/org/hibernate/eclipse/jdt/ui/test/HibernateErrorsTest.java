@@ -32,7 +32,7 @@ public class HibernateErrorsTest extends HibernateConsoleTest {
 
 	@Override
 	protected SimpleTestProject createTestProject() {
-		return new SimpleTestProject("hqlquerytest-"
+		return new SimpleTestProject("hqlquerytest-" //$NON-NLS-1$
 				+ System.currentTimeMillis()) { // the currentTime Millis can be
 												// removed once the classloader
 												// stop hanging on to the jars.
@@ -61,28 +61,28 @@ public class HibernateErrorsTest extends HibernateConsoleTest {
 
 				assertEquals(3, getIJavaProject().getRawClasspath().length);
 
-				getIProject().getFolder("src/META-INF").create(true, true,
+				getIProject().getFolder("src/META-INF").create(true, true, //$NON-NLS-1$
 						new NullProgressMonitor());
 				getIProject()
-						.getFile("src/META-INF/persistence.xml")
+						.getFile("src/META-INF/persistence.xml") //$NON-NLS-1$
 						.create(
 								new ByteArrayInputStream(
-										("<persistence>\n"
-												+ "   <persistence-unit name=\"manager1\" transaction-type=\"RESOURCE_LOCAL\">\n"
-												+ "      <class>test.TestClass</class>\n"
-												+ "      <properties>\n"
-												+ "         <property name=\"hibernate.dialect\" value=\"org.hibernate.dialect.HSQLDialect\"/>\n"
-												+ "         <property name=\"hibernate.connection.driver_class\" value=\"org.hsqldb.jdbcDriver\"/>\n"
-												+ "         <property name=\"hibernate.connection.username\" value=\"sa\"/>\n"
-												+ "         <property name=\"hibernate.connection.password\" value=\"\"/>\n"
-												+ "         <property name=\"hibernate.connection.url\" value=\"jdbc:hsqldb:.\"/>\n"
-												+ "         <property name=\"hibernate.query.startup_check\" value=\"false\"/>\n"
-												+ "      </properties>\n"
-												+ "   </persistence-unit>\n"
-												+ "</persistence>").getBytes()),
+										("<persistence>\n" //$NON-NLS-1$
+												+ "   <persistence-unit name=\"manager1\" transaction-type=\"RESOURCE_LOCAL\">\n" //$NON-NLS-1$
+												+ "      <class>test.TestClass</class>\n" //$NON-NLS-1$
+												+ "      <properties>\n" //$NON-NLS-1$
+												+ "         <property name=\"hibernate.dialect\" value=\"org.hibernate.dialect.HSQLDialect\"/>\n" //$NON-NLS-1$
+												+ "         <property name=\"hibernate.connection.driver_class\" value=\"org.hsqldb.jdbcDriver\"/>\n" //$NON-NLS-1$
+												+ "         <property name=\"hibernate.connection.username\" value=\"sa\"/>\n" //$NON-NLS-1$
+												+ "         <property name=\"hibernate.connection.password\" value=\"\"/>\n" //$NON-NLS-1$
+												+ "         <property name=\"hibernate.connection.url\" value=\"jdbc:hsqldb:.\"/>\n" //$NON-NLS-1$
+												+ "         <property name=\"hibernate.query.startup_check\" value=\"false\"/>\n" //$NON-NLS-1$
+												+ "      </properties>\n" //$NON-NLS-1$
+												+ "   </persistence-unit>\n" //$NON-NLS-1$
+												+ "</persistence>").getBytes()), //$NON-NLS-1$
 								false /* force */, new NullProgressMonitor());
 
-				getIProject().findMember("src/META-INF/persistence.xml");
+				getIProject().findMember("src/META-INF/persistence.xml"); //$NON-NLS-1$
 				getIProject().build(IncrementalProjectBuilder.FULL_BUILD,
 						new NullProgressMonitor());
 			}
@@ -90,27 +90,27 @@ public class HibernateErrorsTest extends HibernateConsoleTest {
 			@Override
 			protected IType buildType(IPackageFragment pack, String cuName)
 					throws JavaModelException {
-				ICompilationUnit cu = pack.createCompilationUnit(cuName, "",
+				ICompilationUnit cu = pack.createCompilationUnit(cuName, "", //$NON-NLS-1$
 						false, null);
 
 				cu.createPackageDeclaration(pack.getElementName(), null);
 				IType type = cu.createType(
-						"@javax.persistence.NamedQuery(name=\"fromUnknown\", query=\"from Unknown\")\n"
-								+ "@javax.persistence.Entity\n"
-								+ "public class " + TYPE_NAME + " {}", null,
+						"@javax.persistence.NamedQuery(name=\"fromUnknown\", query=\"from Unknown\")\n" //$NON-NLS-1$
+								+ "@javax.persistence.Entity\n" //$NON-NLS-1$
+								+ "public class " + TYPE_NAME + " {}", null, //$NON-NLS-1$ //$NON-NLS-2$
 						false, null);
-				type.createField("@javax.persistence.Id private int id;", null,
+				type.createField("@javax.persistence.Id private int id;", null, //$NON-NLS-1$
 						false, null);
 				type
-						.createField("private String testField;", null, false,
+						.createField("private String testField;", null, false, //$NON-NLS-1$
 								null);
 				type
 						.createMethod(
-								"public String getTestField() {return this.testField;}",
+								"public String getTestField() {return this.testField;}", //$NON-NLS-1$
 								null, false, null);
 				type
 						.createMethod(
-								"public void setTestField(String testField) {this.testField = testField;}",
+								"public void setTestField(String testField) {this.testField = testField;}", //$NON-NLS-1$
 								null, false, null);
 				return type;
 			}
@@ -139,7 +139,7 @@ public class HibernateErrorsTest extends HibernateConsoleTest {
 				.setPerspective(
 						PlatformUI.getWorkbench().getPerspectiveRegistry()
 								.findPerspectiveWithId(
-										"org.eclipse.ui.resourcePerspective"));
+										"org.eclipse.ui.resourcePerspective")); //$NON-NLS-1$
 
 		waitForJobs();
 		// getProject().deleteIProject();
@@ -173,9 +173,9 @@ public class HibernateErrorsTest extends HibernateConsoleTest {
 	private void deleteFile(File file) {
 		try {
 			if (!file.delete())
-				throw new RuntimeException("Cannot remove the " + file.getAbsolutePath() + " file.");
+				throw new RuntimeException("Cannot remove the " + file.getAbsolutePath() + " file.");  //$NON-NLS-1$//$NON-NLS-2$
 		} catch (Throwable e) {
-			throw new RuntimeException("Cannot remove the " + file.getAbsolutePath() + " file.",e);
+			throw new RuntimeException("Cannot remove the " + file.getAbsolutePath() + " file.",e); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 

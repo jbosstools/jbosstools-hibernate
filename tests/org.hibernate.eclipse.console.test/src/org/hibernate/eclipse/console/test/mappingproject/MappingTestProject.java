@@ -39,8 +39,8 @@ public class MappingTestProject{
 
 	private static MappingTestProject singleton= null;
 
-	public static String PROJECT_NAME = "MappingTestProject"; //$NON-NLS-1$
-	public static String RESOURCE_PATH = "res/project/"; //$NON-NLS-1$
+	public static final String PROJECT_NAME = "MappingTestProject"; //$NON-NLS-1$
+	public static final String RESOURCE_PATH = "res/project/"; //$NON-NLS-1$
 
 	private IProject project;
 	private IJavaProject javaProject;

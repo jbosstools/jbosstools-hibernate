@@ -515,7 +515,7 @@ public class HBMInfoExtractor {
 					alreadyFound.add(fullName);
 				}
 				if (beginsWith(fullName,matchString) || beginsWith(shortName,matchString) ) {
-					CustomCompletionProposal proposal = new CustomCompletionProposal(fullName, //$NON-NLS-2$//$NON-NLS-1$
+					CustomCompletionProposal proposal = new CustomCompletionProposal(fullName,
 							offset, matchString.length(), fullName.length() + 1, null/*XMLEditorPluginImageHelper.getInstance().getImage(XMLEditorPluginImages.IMG_OBJ_ATTRIBUTE)*/,
 							fullName, null, null, XMLRelevanceConstants.R_XML_ATTRIBUTE_VALUE);
 					proposals.add(proposal);

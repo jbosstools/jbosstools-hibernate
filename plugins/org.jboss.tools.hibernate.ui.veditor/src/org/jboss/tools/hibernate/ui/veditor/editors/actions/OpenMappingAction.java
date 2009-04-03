@@ -29,7 +29,7 @@ import org.jboss.tools.hibernate.ui.view.views.ObjectEditorInput;
  *
  */
 public class OpenMappingAction extends SelectionAction {
-	public static String ACTION_ID = "org.jboss.tools.hibernate.ui.veditor.editors.actions.open.mapping"; //$NON-NLS-1$
+	public static final String ACTION_ID = "org.jboss.tools.hibernate.ui.veditor.editors.actions.open.mapping"; //$NON-NLS-1$
 
 	public OpenMappingAction(IWorkbenchPart part) {
 		super(part);
