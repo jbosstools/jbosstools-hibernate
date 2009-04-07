@@ -83,12 +83,16 @@ public class ConnectionProfileCtrl {
 		
 		@Override
 		public boolean equals(Object obj) {
-			if(obj==null) {
+			if (obj == null || !(obj instanceof ConnectionWrapper)) {
 				return false;
 			}
-			
 			ConnectionWrapper cw = (ConnectionWrapper) obj;
 			return this.getId().equals(cw.getId());
+		}
+		
+		@Override
+		public int hashCode() {
+			return this.getId().hashCode();
 		}
 	}
 	

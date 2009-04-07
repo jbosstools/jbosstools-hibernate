@@ -331,7 +331,7 @@ public class AddPropertyDialog extends TitleAreaDialog {
 			value.setLayoutData(vgd);			
 		} else {
 			((GridData)value.getLayoutData()).horizontalSpan = span;
-			((Text)value).setText(new String());
+			((Text)value).setText(""); //$NON-NLS-1$
 		}
 		value.getParent().layout();
 	}
