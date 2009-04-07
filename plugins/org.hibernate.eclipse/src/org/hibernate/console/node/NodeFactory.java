@@ -121,7 +121,7 @@ public class NodeFactory {
 		Enhancer e = ProxyFactory.createEnhancer(PropertyNode.class);
 
         return (BaseNode) e.create(new Class[] { NodeFactory.class, BaseNode.class, int.class, ClassMetadata.class, Object.class, boolean.class},
-        		 new Object[] { this, node, new Integer(i),md,baseObject,Boolean.valueOf(objectGraph) } );
+        		 new Object[] { this, node, Integer.valueOf(i),md,baseObject,Boolean.valueOf(objectGraph) } );
 	}
 
 

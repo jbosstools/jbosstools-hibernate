@@ -105,7 +105,7 @@ public class JavaPage extends AbstractQueryPage {
 
         Iterator iterator = map.keySet().iterator();
         //TODO: filter non classes.
-        String imports = new String();
+        String imports = ""; //$NON-NLS-1$
         while (iterator.hasNext() ) {
             String element =  (String) iterator.next();
             imports += "import " + element + ";\n"; //$NON-NLS-1$ //$NON-NLS-2$

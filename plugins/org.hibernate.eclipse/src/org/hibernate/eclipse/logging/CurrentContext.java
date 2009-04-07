@@ -51,9 +51,6 @@ public class CurrentContext {
 			map.put( key, stack );
 			stack.push( message );
 		}
-		else if ( stack.isEmpty() ) {
-			stack.push( message );
-		}
 		else {
 			stack.push( message );
 		}

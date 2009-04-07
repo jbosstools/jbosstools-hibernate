@@ -44,22 +44,22 @@ public class ConsoleQueryParameter {
 	static final Map typeFormats = new HashMap();
 	static {
 		addTypeFormat(Hibernate.BOOLEAN, Boolean.TRUE );
-		addTypeFormat(Hibernate.BYTE, new Byte((byte) 42));
+		addTypeFormat(Hibernate.BYTE, Byte.valueOf((byte) 42));
 		addTypeFormat(Hibernate.BIG_INTEGER, BigInteger.valueOf(42));
-		addTypeFormat(Hibernate.SHORT, new Short((short) 42));
+		addTypeFormat(Hibernate.SHORT, Short.valueOf((short) 42));
 		addTypeFormat(Hibernate.CALENDAR, new GregorianCalendar());
 		addTypeFormat(Hibernate.CALENDAR_DATE, new GregorianCalendar());
-		addTypeFormat(Hibernate.INTEGER, new Integer(42));
-		addTypeFormat(Hibernate.INTEGER, new Integer(42));
+		addTypeFormat(Hibernate.INTEGER, Integer.valueOf(42));
+		addTypeFormat(Hibernate.INTEGER, Integer.valueOf(42));
 		addTypeFormat(Hibernate.BIG_DECIMAL, new BigDecimal(42.0));
-		addTypeFormat(Hibernate.CHARACTER, new Character('h'));
+		addTypeFormat(Hibernate.CHARACTER, Character.valueOf('h'));
 		addTypeFormat(Hibernate.CLASS, Table.class);
 		addTypeFormat(Hibernate.CURRENCY, Currency.getInstance(Locale.getDefault()));
 		addTypeFormat(Hibernate.DATE, new Date());
-		addTypeFormat(Hibernate.DOUBLE, new Double(42.42));
-		addTypeFormat(Hibernate.FLOAT, new Float(42.42));
+		addTypeFormat(Hibernate.DOUBLE, Double.valueOf(42.42));
+		addTypeFormat(Hibernate.FLOAT, Float.valueOf((float)42.42));
 		addTypeFormat(Hibernate.LOCALE, Locale.getDefault());
-		addTypeFormat(Hibernate.LONG, new Long(42));
+		addTypeFormat(Hibernate.LONG, Long.valueOf(42));
 		addTypeFormat(Hibernate.STRING, "a string"); //$NON-NLS-1$
 		addTypeFormat(Hibernate.TEXT, "a text"); //$NON-NLS-1$
 		addTypeFormat(Hibernate.TIME, new Date());
