@@ -43,7 +43,7 @@ public class HelpPlugin extends AbstractUIPlugin {
 	 */
 	public HelpPlugin() {
 		super();
-		plugin = this;
+		setPlugin(this);
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class HelpPlugin extends AbstractUIPlugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
-		plugin = null;
+		setPlugin(null);
 		resourceBundle = null;
 	}
 
@@ -67,6 +67,10 @@ public class HelpPlugin extends AbstractUIPlugin {
 	 */
 	public static HelpPlugin getDefault() {
 		return plugin;
+	}
+
+	private static void setPlugin(HelpPlugin plugin) {
+		HelpPlugin.plugin = plugin;
 	}
 
 	/**
