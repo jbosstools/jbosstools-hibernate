@@ -39,7 +39,7 @@ public class HibernateJptUIPlugin extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		plugin = this;
+		setPlugin(this);
 	}
 
 	/*
@@ -47,7 +47,7 @@ public class HibernateJptUIPlugin extends AbstractUIPlugin {
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
-		plugin = null;
+		setPlugin(null);
 		super.stop(context);
 	}
 
@@ -58,6 +58,10 @@ public class HibernateJptUIPlugin extends AbstractUIPlugin {
 	 */
 	public static HibernateJptUIPlugin getDefault() {
 		return plugin;
+	}
+
+	private static void setPlugin(HibernateJptUIPlugin plugin) {
+		HibernateJptUIPlugin.plugin = plugin;
 	}
 	
 	/**

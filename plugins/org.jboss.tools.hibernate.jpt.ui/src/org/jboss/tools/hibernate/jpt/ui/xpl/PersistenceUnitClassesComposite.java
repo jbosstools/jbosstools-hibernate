@@ -52,7 +52,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.ui.progress.IProgressService;
-import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
 import org.jboss.tools.hibernate.jpt.ui.xpl.AddRemovePane.Adapter;
 
 /**

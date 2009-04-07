@@ -474,7 +474,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	 */
 	protected void initializeTable(Table table) {
 
-		table.setData("column.width", new Integer(0));
+		table.setData("column.width", Integer.valueOf(0));
 		table.setHeaderVisible(false);
 		table.setLinesVisible(false);
 	}
