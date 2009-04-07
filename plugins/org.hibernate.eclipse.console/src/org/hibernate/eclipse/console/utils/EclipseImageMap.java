@@ -39,7 +39,7 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
  */
 public class EclipseImageMap extends ImageMap {
 
-	protected static URL ICON_BASE_URL = null;
+	protected URL ICON_BASE_URL = null;
 	
 	public EclipseImageMap(Plugin plugin) {
 		String pathSuffix = "icons/";//$NON-NLS-1$
