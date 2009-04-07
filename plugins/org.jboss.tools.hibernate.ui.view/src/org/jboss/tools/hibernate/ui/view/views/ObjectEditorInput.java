@@ -78,4 +78,8 @@ public class ObjectEditorInput implements IEditorInput{
 	public boolean equals(Object obj) {
 		return (obj instanceof ObjectEditorInput && ((ObjectEditorInput)obj).fObject == fObject);
 	}
+
+	public int hashCode() {
+		return fObject.hashCode();
+	}
 }

@@ -52,7 +52,7 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 
 		if (type != null) {
 			name.append(" ["); //$NON-NLS-1$
-			name.append(type != null ? type.toUpperCase() : ""); //$NON-NLS-1$
+			name.append(type.toUpperCase());
 			name.append(column.isNullable() ? " Nullable" : ""); //$NON-NLS-1$ //$NON-NLS-2$
 			name.append(HibernateUtils.getTable(column) != null
 					&& HibernateUtils.isPrimaryKey(column) ? " PK" : ""); //$NON-NLS-1$ //$NON-NLS-2$

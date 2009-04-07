@@ -49,7 +49,7 @@ public class ViewPlugin extends BaseUIPlugin {
 
 	public ViewPlugin() {
 		super();
-		plugin = this;
+		setPlugin(this);
 
 		try {
 			resourceBundle = ResourceBundle.getBundle(PLUGIN_ID + ".EditPluginResources"); //$NON-NLS-1$
@@ -75,10 +75,14 @@ public class ViewPlugin extends BaseUIPlugin {
 
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
+		setPlugin(null);
 	}
 
 	public static ViewPlugin getDefault() {
 		return plugin;
+	}
+	private static void setPlugin(ViewPlugin plugin) {
+		ViewPlugin.plugin = plugin;
 	}
 
 	public static String getResourceString(String key) {
