@@ -1916,6 +1916,7 @@ public abstract class AbstractPane<T extends Model>
 			container,
 			labelText,
 			comboListener,
+			labelProvider,
 			null,
 			helpId
 		);
