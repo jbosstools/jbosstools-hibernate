@@ -94,7 +94,7 @@ public class TreeToTableComposite extends Composite {
 			return null;
 		}
 		protected Object doGetValue() {
-			return new Integer(value);
+			return Integer.valueOf(value);
 		}
 
 		protected void doSetFocus() {
@@ -129,7 +129,7 @@ public class TreeToTableComposite extends Composite {
 				return null;
 			} else {
 				try {
-				return new Integer(Integer.parseInt((String) super.doGetValue()));
+				return Integer.valueOf(Integer.parseInt((String) super.doGetValue()));
 				} catch(NumberFormatException nfe) {
 					return null;
 				}

@@ -104,12 +104,12 @@ final public class TypeMappingCellModifier implements ICellModifier {
 		
 		if("not-null".equals(property)) { //$NON-NLS-1$
 			if(tf.getNullable()==null) {
-				return new Integer(2);
+				return Integer.valueOf(2);
 			}
 			if(tf.getNullable().booleanValue()) {
-				return new Integer(0);
+				return Integer.valueOf(0);
 			} else {
-				return new Integer(1);
+				return Integer.valueOf(1);
 			}
 		}		
 		
