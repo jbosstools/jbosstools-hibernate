@@ -56,6 +56,18 @@ class HibernateTypeDescriptor implements Comparable {
 		return name.compareTo( ( (HibernateTypeDescriptor)o).getName() );
 	}
 	
+	public boolean equals(Object obj) {
+		if (obj == null || !(obj instanceof HibernateTypeDescriptor)) {
+			return false;
+		}
+		HibernateTypeDescriptor htd = (HibernateTypeDescriptor) obj;
+		return this.name.equals(htd.getName());
+	}
+	
+	public int hashCode() {
+		return this.name.hashCode();
+	}
+	
 	public String toString() {
 		return name;
 	}

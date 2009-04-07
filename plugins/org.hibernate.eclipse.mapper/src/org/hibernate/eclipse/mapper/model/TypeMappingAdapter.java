@@ -66,12 +66,11 @@ public class TypeMappingAdapter extends DOMAdapter implements ITypeMapping {
 	
 	private Boolean getBoolean(String name) {
 		Node type = getNode().getAttributes().getNamedItem(name);
-		if(type == null) {
-			return null;
-		} else {
-			Boolean decode = Boolean.valueOf(type.getNodeValue());
-			return decode;
+		Boolean decode = null;
+		if(type != null) {
+			decode = Boolean.valueOf(type.getNodeValue());
 		}		
+		return decode;
 	}
 
 	public Integer getPrecision() {

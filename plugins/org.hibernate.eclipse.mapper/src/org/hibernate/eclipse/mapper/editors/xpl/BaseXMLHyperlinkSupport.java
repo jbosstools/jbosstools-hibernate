@@ -48,7 +48,7 @@ public abstract class BaseXMLHyperlinkSupport {
 				int regLength = att.getValueRegion().getTextLength();
 				String attValue = att.getValueRegionText();
 				if (org.eclipse.wst.sse.core.utils.StringUtils.isQuoted(attValue) ) {
-					regOffset = ++regOffset;
+					++regOffset;
 					regLength = regLength - 2;
 				}
 				hyperRegion = new Region(regOffset, regLength);
