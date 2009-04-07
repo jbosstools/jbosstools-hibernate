@@ -34,7 +34,7 @@ public class GeneralExceptionStatusHandler implements IStatusHandler {
 		final boolean[] result = new boolean[1];
 		HibernateConsolePlugin.getDefault().log( status );
 		HibernateConsolePlugin.openError(null, HibernateConsoleMessages.GeneralExceptionStatusHandler_generating_code, HibernateConsoleMessages.GeneralExceptionStatusHandler_exception_while_generating_code, status.getException(), HibernateConsolePlugin.PERFORM_SYNC_EXEC);
-		return new Boolean(result[0]);
+		return Boolean.valueOf(result[0]);
 	}
 
 }

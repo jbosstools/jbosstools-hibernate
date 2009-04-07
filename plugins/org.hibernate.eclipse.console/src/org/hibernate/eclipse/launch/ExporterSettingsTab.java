@@ -618,7 +618,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 		enableEJB3annotations.addSelectionListener( fieldlistener );
 	}
 
-	private class ExporterContentProvider implements IStructuredContentProvider, PropertyChangeListener {
+	static private class ExporterContentProvider implements IStructuredContentProvider, PropertyChangeListener {
 
 		private AbstractTableViewer viewer;
 
@@ -661,7 +661,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 	}
 
 	// Complete hack to get table to work with arbitrary exporters quickly.
-	private class ObservableFactoryList {
+	static private class ObservableFactoryList {
 
 		List underlyingList = new ArrayList();
 
@@ -675,7 +675,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 			underlyingList.remove((ExporterFactory) data);
 			remove(data);
 			underlyingList.add(i, data);
-			pcs.firePropertyChange("insertElement", new Integer(i), data); //$NON-NLS-1$
+			pcs.firePropertyChange("insertElement", Integer.valueOf(i), data); //$NON-NLS-1$
 
 		}
 
