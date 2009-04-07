@@ -50,7 +50,7 @@ public class HibernateJPTuiTestPlugin extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		plugin = this;
+		setPlugin(this);
 	}
 
 	/*
@@ -61,7 +61,7 @@ public class HibernateJPTuiTestPlugin extends AbstractUIPlugin {
 	 * )
 	 */
 	public void stop(BundleContext context) throws Exception {
-		plugin = null;
+		setPlugin(null);
 		super.stop(context);
 	}
 
@@ -72,6 +72,10 @@ public class HibernateJPTuiTestPlugin extends AbstractUIPlugin {
 	 */
 	public static HibernateJPTuiTestPlugin getDefault() {
 		return plugin;
+	}
+
+	private static void setPlugin(HibernateJPTuiTestPlugin plugin) {
+		HibernateJPTuiTestPlugin.plugin = plugin;
 	}
 
 	public File getFileInPlugin(IPath path) throws CoreException {

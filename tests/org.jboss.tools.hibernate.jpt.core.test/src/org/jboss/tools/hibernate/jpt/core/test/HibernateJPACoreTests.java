@@ -136,7 +136,7 @@ public class HibernateJPACoreTests extends TestCase {
 	 * mock hibernate factory, redefine some methods of base GenericJpaFactory
 	 * to avoid unnecessary checks, which are not a subject of testing. 
 	 */
-	public class MockHibernateFactory extends HibernateFactory {
+	static public class MockHibernateFactory extends HibernateFactory {
 		/**
 		 * during the testing our file has relevant content,
 		 * so just return true without dig into the base code.
@@ -170,7 +170,7 @@ public class HibernateJPACoreTests extends TestCase {
 	/**
 	 * mock input stream to simulate javaFileName file reading
 	 */
-	public class MockJavaInputStream extends InputStream {
+	public static class MockJavaInputStream extends InputStream {
 
 		protected int pointer = 0;
 
@@ -186,7 +186,7 @@ public class HibernateJPACoreTests extends TestCase {
 	/**
 	 * mock input stream to simulate .classpath file reading
 	 */
-	public class MockClassPathInputStream extends InputStream {
+	public static class MockClassPathInputStream extends InputStream {
 
 		protected int pointer = 0;
 
