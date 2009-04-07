@@ -165,6 +165,7 @@ public class ConsoleConfigurationTest extends TestCase {
 		}
 
 		QueryPage qp = consoleCfg.executeHQLQuery("from java.lang.Object"); //$NON-NLS-1$
+		assertNotNull(qp);
 		assertEquals(1, listener.queryCreated);
 
 		consoleCfg.closeSessionFactory();

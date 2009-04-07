@@ -51,6 +51,7 @@ public class JavaFormattingTest extends TestCase {
 		
 		edit.apply(doc);
 		String newcontents = doc.get();
+		assertNotNull(newcontents);
 		//assertEquals(newcontents,"java.lang.String str; \nSystem.out.println();");
 		
 	}

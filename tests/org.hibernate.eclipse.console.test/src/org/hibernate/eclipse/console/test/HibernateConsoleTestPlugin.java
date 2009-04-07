@@ -28,7 +28,7 @@ public class HibernateConsoleTestPlugin extends AbstractUIPlugin {
 	 * The constructor.
 	 */
 	public HibernateConsoleTestPlugin() {
-		plugin = this;
+		setPlugin(this);
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class HibernateConsoleTestPlugin extends AbstractUIPlugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
-		plugin = null;
+		setPlugin(null);
 		resourceBundle = null;
 	}
 
@@ -54,6 +54,9 @@ public class HibernateConsoleTestPlugin extends AbstractUIPlugin {
 		return plugin;
 	}
 
+	private static void setPlugin(HibernateConsoleTestPlugin plugin) {
+		HibernateConsoleTestPlugin.plugin = plugin;
+	}
 	/**
 	 * Returns the string from the plugin's resource bundle,
 	 * or 'key' if not found.

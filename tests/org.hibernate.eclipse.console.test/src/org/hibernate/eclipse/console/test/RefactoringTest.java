@@ -268,7 +268,7 @@ public class RefactoringTest extends TestCase {
 	}
 
 //====================================================================================
-		class TestWorkingCopy implements ILaunchConfigurationWorkingCopy{
+		static class TestWorkingCopy implements ILaunchConfigurationWorkingCopy{
 
 			private TestLaunchConfig parent;
 
@@ -473,7 +473,7 @@ public class RefactoringTest extends TestCase {
 
 		}
 
-		class TestLaunchConfig implements ILaunchConfiguration{
+		static class TestLaunchConfig implements ILaunchConfiguration{
 
 			private Map<String, Object> attributes = new HashMap<String, Object>();
 
