@@ -69,7 +69,7 @@ public class JPAMapToolActor {
 	/**
 	 * instance
 	 */
-	protected static JPAMapToolActor actor = null;
+	private static JPAMapToolActor actor = null;
 	/**
 	 * selection - start point to generate annotations
 	 * could be java file, list of files, package, project, some other?

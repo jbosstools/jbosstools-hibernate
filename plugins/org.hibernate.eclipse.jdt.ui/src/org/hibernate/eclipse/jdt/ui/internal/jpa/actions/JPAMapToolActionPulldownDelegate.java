@@ -66,7 +66,6 @@ public class JPAMapToolActionPulldownDelegate implements
 	}
 
 	public void run(IAction action) {
-		action = null;
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {

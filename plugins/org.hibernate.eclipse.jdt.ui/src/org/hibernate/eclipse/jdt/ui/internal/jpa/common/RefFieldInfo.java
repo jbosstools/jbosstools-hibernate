@@ -37,4 +37,19 @@ public class RefFieldInfo implements Comparable<RefFieldInfo> {
 	public int compareTo(RefFieldInfo rfi) {
 		return fieldId.compareTo(rfi.fieldId);
 	}
+	
+	public boolean equals(Object obj) {
+		if (super.equals(obj)) {
+			return true;
+		}
+		if (obj == null || !(obj instanceof RefFieldInfo)) {
+			return false;
+		}
+		RefFieldInfo rfi = (RefFieldInfo)obj;
+		return fieldId.equals(rfi.fieldId);
+	}
+
+	public int hashCode() {
+		return fieldId.hashCode();
+	}
 }

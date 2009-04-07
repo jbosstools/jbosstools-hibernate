@@ -64,7 +64,6 @@ public class JPAMapToolActionDelegate extends AbstractHandler implements IObject
 	}
 
 	public void init(IViewPart view) {
-		view = null;
 	}
 	public boolean isCUSelected() {
 		IWorkbench workbench = Activator.getDefault().getWorkbench();

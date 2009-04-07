@@ -53,4 +53,19 @@ public class RefEntityInfo implements Comparable<RefEntityInfo> {
 	public int compareTo(RefEntityInfo rei) {
 		return fullyQualifiedName.compareTo(rei.fullyQualifiedName);
 	}
+	
+	public boolean equals(Object obj) {
+		if (super.equals(obj)) {
+			return true;
+		}
+		if (obj == null || !(obj instanceof RefEntityInfo)) {
+			return false;
+		}
+		RefEntityInfo rei = (RefEntityInfo)obj;
+		return fullyQualifiedName.equals(rei.fullyQualifiedName);
+	}
+
+	public int hashCode() {
+		return fullyQualifiedName.hashCode();
+	}
 }
