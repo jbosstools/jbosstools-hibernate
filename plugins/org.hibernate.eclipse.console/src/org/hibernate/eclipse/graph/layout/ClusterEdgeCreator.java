@@ -217,7 +217,7 @@ public class ClusterEdgeCreator
 		//add the new edge to the edge list
 		edgeList.add(edge);
 
-		targetNode = sourceNode;
+		//targetNode = sourceNode;
 		addedEdge = true;
 		return edge;
 	}
@@ -225,7 +225,7 @@ public class ClusterEdgeCreator
 	/**
 	 * Very thin wrapper around List
 	 */
-	private class Cluster
+	static private class Cluster
 	{
 
 		List set = new ArrayList();

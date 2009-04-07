@@ -117,7 +117,7 @@ public class DummyEdgeCreator extends OldGraphVisitor
 		edge.weight = 2;
 		edgeList.add(edge);
 
-		targetNode = sourceNode;
+		//targetNode = sourceNode;
 		addedEdge = true;
 		return edge;
 	}

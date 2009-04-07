@@ -43,7 +43,7 @@ public class PropertiesFigure extends Figure {
 		setOpaque( true );
 	}
 
-	class PropertiesFigureBorder extends AbstractBorder {
+	static class PropertiesFigureBorder extends AbstractBorder {
 
 		public Insets getInsets(IFigure figure) {
 			return new Insets( 5, 3, 3, 1 );
