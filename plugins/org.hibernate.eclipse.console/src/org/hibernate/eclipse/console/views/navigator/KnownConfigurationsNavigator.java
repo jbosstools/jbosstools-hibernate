@@ -29,7 +29,7 @@ import org.hibernate.console.KnownConfigurations;
 public class KnownConfigurationsNavigator extends CommonNavigator {
 
 	protected IAdaptable getInitialInput() {
-		return new AdaptableWrapper(new String());
+		return new AdaptableWrapper(""); //$NON-NLS-1$
 	}
 	
 	public void createPartControl(Composite aParent) {

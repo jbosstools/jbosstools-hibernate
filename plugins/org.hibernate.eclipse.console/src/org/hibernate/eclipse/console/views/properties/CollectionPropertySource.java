@@ -62,7 +62,7 @@ public class CollectionPropertySource implements IPropertySource {
 		if(descriptors==null) {
 			PropertyDescriptor[] properties = new PropertyDescriptor[collection.size()];
 			for (int i = 0; i < properties.length; i++) {
-				properties[i] = new PropertyDescriptor(new Integer(i),"#" + i);				 //$NON-NLS-1$
+				properties[i] = new PropertyDescriptor(Integer.valueOf(i),"#" + i);				 //$NON-NLS-1$
 			}	
 			descriptors = properties;
 		}
