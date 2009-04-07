@@ -61,7 +61,7 @@ public class Connection extends ModelElement {
 			if(needHide == 1)
 				return;
 		}
-		firePropertyChange(SET_HIDEN, null, new Boolean(hiden));
+		firePropertyChange(SET_HIDEN, null, Boolean.valueOf(hiden));
 	}
 
 	public boolean isHiden() {

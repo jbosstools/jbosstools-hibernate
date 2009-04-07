@@ -52,6 +52,6 @@ public class ComponentShape extends ExpandeableShape {
 			}
 		
 		
-		firePropertyChange(SET_CHILDS_HIDEN, null, new Boolean(!refHide));
+		firePropertyChange(SET_CHILDS_HIDEN, null, Boolean.valueOf(!refHide));
 	}
 }

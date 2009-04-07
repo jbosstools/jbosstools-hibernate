@@ -210,11 +210,11 @@ public class OrmShape extends ExpandeableShape {
 	public void refreshHiden() {
 		hiden = !hiden;
 		setElementHidden(this, hiden);
-		firePropertyChange(SET_HIDEN, null, new Boolean(hiden));
+		firePropertyChange(SET_HIDEN, null, Boolean.valueOf(hiden));
 	}
 	
 	public void refreshReference(){
-		firePropertyChange(SET_HIDEN, null, new Boolean(hiden));
+		firePropertyChange(SET_HIDEN, null, Boolean.valueOf(hiden));
 	}
 	
 	private void setElementHidden(ModelElement element, boolean hidden){

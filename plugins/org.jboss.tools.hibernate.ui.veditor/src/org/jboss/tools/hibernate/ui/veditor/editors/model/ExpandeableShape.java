@@ -45,7 +45,7 @@ public class ExpandeableShape extends Shape {
 				}
 			}
 		}
-		firePropertyChange(SHOW_REFERENCES, null, new Boolean(refHide));
+		firePropertyChange(SHOW_REFERENCES, null, Boolean.valueOf(refHide));
 	}
 
 	protected boolean getHide() {
