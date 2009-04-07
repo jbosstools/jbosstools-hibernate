@@ -35,7 +35,10 @@ public class ViewPlugin extends BaseUIPlugin {
 	private static ViewPlugin plugin;
 	private ResourceBundle resourceBundle;
 
-	public static final ResourceBundle BUNDLE_IMAGE = ResourceBundle.getBundle(ViewPlugin.class.getPackage().getName() + ".image"); //$NON-NLS-1$
+	/**
+	 * @deprecated use bundle via ImageBundle.getString()
+	 */
+	public static final ResourceBundle BUNDLE_IMAGE = ImageBundle.getBundle();
 
 	public static boolean TRACE = false;
 	public static boolean TRACE_VIEW = false;

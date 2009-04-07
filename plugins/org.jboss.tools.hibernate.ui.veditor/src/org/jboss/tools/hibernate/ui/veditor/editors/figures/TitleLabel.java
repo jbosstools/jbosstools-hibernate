@@ -14,13 +14,14 @@ import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.swt.graphics.Image;
+import org.jboss.tools.hibernate.ui.view.ImageBundle;
 import org.jboss.tools.hibernate.ui.view.ViewPlugin;
 
 
 public class TitleLabel extends Label {
 
-	static Image shevronUp = ViewPlugin.getImageDescriptor(ViewPlugin.BUNDLE_IMAGE.getString("VisualMapping.shevronUp")).createImage(); //$NON-NLS-1$
-	static Image shevronDown = ViewPlugin.getImageDescriptor(ViewPlugin.BUNDLE_IMAGE.getString("VisualMapping.shevronDown")).createImage(); //$NON-NLS-1$
+	static Image shevronUp = ViewPlugin.getImageDescriptor(ImageBundle.getString("VisualMapping.shevronUp")).createImage(); //$NON-NLS-1$
+	static Image shevronDown = ViewPlugin.getImageDescriptor(ImageBundle.getString("VisualMapping.shevronDown")).createImage(); //$NON-NLS-1$
 
 	protected boolean hiden = false; 
 	

@@ -183,7 +183,7 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 	}
 
 	public void setName(String name) {
-		throw new IllegalStateException(getName() + HibernateConsoleMessages.EclipseLaunchConsoleConfigurationPreferences_cannot_be_renamed);
+		throw new IllegalStateException(NLS.bind(HibernateConsoleMessages.EclipseLaunchConsoleConfigurationPreferences_cannot_be_renamed, getName()));
 	}
 
 	public void writeStateTo(Element node) {

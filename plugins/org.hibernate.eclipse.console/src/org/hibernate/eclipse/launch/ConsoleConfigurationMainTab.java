@@ -487,10 +487,10 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 			if(resource instanceof IFile) {
 				return null;
 			} else {
-				return msgPrefix + HibernateConsoleMessages.ConsoleConfigurationMainTab_is_not_file;
+				return NLS.bind(HibernateConsoleMessages.ConsoleConfigurationMainTab_is_not_file, msgPrefix);
 			}
 		} else {
-			return msgPrefix + HibernateConsoleMessages.ConsoleConfigurationMainTab_does_not_exist;
+			return NLS.bind(HibernateConsoleMessages.ConsoleConfigurationMainTab_does_not_exist, msgPrefix);
 		}
 	}
 

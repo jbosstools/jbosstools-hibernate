@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.ui.view.views;
 
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 import org.hibernate.console.ConsoleConfiguration;

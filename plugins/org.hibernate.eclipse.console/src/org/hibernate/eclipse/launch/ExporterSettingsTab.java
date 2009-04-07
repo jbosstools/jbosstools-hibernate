@@ -832,11 +832,11 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 				}
 			}
 			else {
-				return name + HibernateConsoleMessages.ExporterSettingsTab_has_to_be_folder_or_project;
+				return NLS.bind(HibernateConsoleMessages.ExporterSettingsTab_has_to_be_folder_or_project, name);
 			}
 		}
 		else {
-			return name + HibernateConsoleMessages.ExporterSettingsTab_does_not_exist;
+			return NLS.bind(HibernateConsoleMessages.ExporterSettingsTab_does_not_exist, name);
 		}
 		return null;
 	}
@@ -850,11 +850,11 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 				return null;
 			}
 			else {
-				return name + HibernateConsoleMessages.ExporterSettingsTab_must_be_file;
+				return NLS.bind(HibernateConsoleMessages.ExporterSettingsTab_must_be_file, name);
 			}
 		}
 		else {
-			return name + HibernateConsoleMessages.ExporterSettingsTab_does_not_exist;
+			return NLS.bind(HibernateConsoleMessages.ExporterSettingsTab_does_not_exist, name);
 		}
 	}
 

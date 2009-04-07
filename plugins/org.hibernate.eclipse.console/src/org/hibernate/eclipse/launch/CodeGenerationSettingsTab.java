@@ -44,6 +44,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Image;
@@ -351,10 +352,10 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
             if (resType == IResource.FILE) {
                 return null;
             } else {
-            	return name + HibernateConsoleMessages.CodeGenerationSettingsTab_must_be_file;
+            	return NLS.bind(HibernateConsoleMessages.CodeGenerationSettingsTab_must_be_file, name);
             }
         } else {
-            return name + HibernateConsoleMessages.CodeGenerationSettingsTab_does_not_exist;
+            return NLS.bind(HibernateConsoleMessages.CodeGenerationSettingsTab_does_not_exist, name);
         }
     }
 

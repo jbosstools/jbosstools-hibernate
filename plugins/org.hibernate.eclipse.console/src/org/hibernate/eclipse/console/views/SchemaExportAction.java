@@ -83,9 +83,7 @@ public class SchemaExportAction extends ConsoleConfigurationBasedAction {
 									HibernateConsolePlugin.getDefault().logErrorMessage(outStr, element );
 								}
 								HibernateConsolePlugin.getDefault().showError(viewer.getControl().getShell(),
-															cnt
-															- 1
-															+ HibernateConsoleMessages.SchemaExportAction_error_while_performing_schemaexport,
+															NLS.bind(HibernateConsoleMessages.SchemaExportAction_error_while_performing_schemaexport, cnt - 1),
 															(Throwable)null );
 							}
 						}

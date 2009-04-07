@@ -11,7 +11,6 @@
 package org.jboss.tools.hibernate.ui.view.views;
 
 import java.util.HashMap;
-import java.util.ResourceBundle;
 
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
@@ -20,8 +19,6 @@ import org.jboss.tools.hibernate.ui.view.ViewPlugin;
 
 public class ViewsAction {
     static  ActionOrmTree openEditorAction;
-
-    static private ResourceBundle BUNDLE = ResourceBundle.getBundle(ViewsAction.class.getPackage().getName() + ".views"); //$NON-NLS-1$
 
     static {
         openEditorAction = new ActionOrmTree() { 
@@ -39,7 +36,7 @@ public class ViewsAction {
 				}
 			}
 		}; 
-		openEditorAction.setText(BUNDLE.getString("Explorer.OpenEditorActionName")); //$NON-NLS-1$
-		openEditorAction.setToolTipText(BUNDLE.getString("Explorer.OpenEditorActionToolTipText")); //$NON-NLS-1$
+		openEditorAction.setText(Messages.getString("Explorer.OpenEditorActionName")); //$NON-NLS-1$
+		openEditorAction.setToolTipText(Messages.getString("Explorer.OpenEditorActionToolTipText")); //$NON-NLS-1$
     }
 }

@@ -21,6 +21,7 @@
  */
 package org.hibernate.eclipse.console.views.properties;
 
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource2;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
@@ -104,8 +105,12 @@ public class QueryPagePropertySource implements IPropertySource2
 		if(QUERY_TIME.equals(id) ) {
 			long resultTime = page.getQueryTime();
 			if (resultTime==-1) return HibernateConsoleMessages.QueryPagePropertySource_unknown;
-			if (resultTime > 1000) return (resultTime / 1000) + "." + (resultTime / 100) % 10 +HibernateConsoleMessages.QueryPagePropertySource_sec; //$NON-NLS-1$
-			return resultTime + HibernateConsoleMessages.QueryPagePropertySource_millisec;
+			if (resultTime > 1000) { 
+				return NLS.bind(
+						HibernateConsoleMessages.QueryPagePropertySource_sec,
+						(resultTime / 1000) + "." + (resultTime / 100) % 10); //$NON-NLS-1$
+			}
+			return NLS.bind(HibernateConsoleMessages.QueryPagePropertySource_millisec, resultTime);
 		}
 
 		return null;

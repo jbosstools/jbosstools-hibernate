@@ -12,8 +12,6 @@ package org.jboss.tools.hibernate.ui.view.views;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
-import java.util.ResourceBundle;
 
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.Environment;
@@ -37,10 +35,6 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 	
 	static private String SPACE = " "; //$NON-NLS-1$
 	static private String POINTER = " -> "; //$NON-NLS-1$
-	
-	private ResourceBundle BUNDLE = ResourceBundle
-			.getBundle(OrmModelNameVisitor.class.getPackage().getName()
-					+ ".views"); //$NON-NLS-1$
 	
 	public OrmModelNameVisitor() {
 		super();
@@ -184,7 +178,7 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 		StringBuffer name = new StringBuffer();
 		name.append(field.getName());
 		name.append(" "); //$NON-NLS-1$
-		name.append(BUNDLE.getString("OrmModelNameVisitor.Colon")); //$NON-NLS-1$
+		name.append(Messages.getString("OrmModelNameVisitor.Colon")); //$NON-NLS-1$
 		String typeString = null;
 		
 		try {
