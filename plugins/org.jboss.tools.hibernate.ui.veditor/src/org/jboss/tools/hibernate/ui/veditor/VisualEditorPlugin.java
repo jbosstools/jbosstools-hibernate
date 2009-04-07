@@ -28,7 +28,7 @@ public class VisualEditorPlugin extends BaseUIPlugin {
 	private static VisualEditorPlugin plugin;
 	
 	public VisualEditorPlugin() {
-		plugin = this;
+		setPlugin(this);
 	}
 
 	public void start(BundleContext context) throws Exception {
@@ -37,11 +37,15 @@ public class VisualEditorPlugin extends BaseUIPlugin {
 
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
-		plugin = null;
+		setPlugin(null);
 	}
 
 	public static VisualEditorPlugin getDefault() {
 		return plugin;
+	}
+
+	private static void setPlugin(VisualEditorPlugin plugin) {
+		VisualEditorPlugin.plugin = plugin;
 	}
 
 	public static ImageDescriptor getImageDescriptor(String path) {
