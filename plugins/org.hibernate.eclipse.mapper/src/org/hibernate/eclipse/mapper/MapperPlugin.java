@@ -47,7 +47,7 @@ public class MapperPlugin extends AbstractUIPlugin {
 	 */
 	public MapperPlugin() {
 		super();
-		plugin = this;
+		setPlugin(this);
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class MapperPlugin extends AbstractUIPlugin {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
-		plugin = null;
+		setPlugin(null);
 		resourceBundle = null;
 	}
 
@@ -72,6 +72,10 @@ public class MapperPlugin extends AbstractUIPlugin {
 	 */
 	public static MapperPlugin getDefault() {
 		return plugin;
+	}
+
+	private static void setPlugin(MapperPlugin plugin) {
+		MapperPlugin.plugin = plugin;
 	}
 	
 	public EclipseLogger getLogger() {
