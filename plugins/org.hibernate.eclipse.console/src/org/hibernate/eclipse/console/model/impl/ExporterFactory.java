@@ -206,7 +206,7 @@ public class ExporterFactory {
 		if(props.containsKey("template_path")) { //$NON-NLS-1$
 			String resolveTemplatePath = resolve(props.getProperty("template_path")); //$NON-NLS-1$
 			StringTokenizer st = new StringTokenizer(resolveTemplatePath, ";"); //$NON-NLS-1$
-			String out = new String();
+			String out = ""; //$NON-NLS-1$
 			while (st.hasMoreTokens()) {
 				String locationAsStringPath = PathHelper.getLocationAsStringPath(st.nextToken());
 				if(locationAsStringPath==null) {

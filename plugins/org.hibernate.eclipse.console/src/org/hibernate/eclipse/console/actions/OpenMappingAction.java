@@ -222,11 +222,9 @@ public class OpenMappingAction extends SelectionListenerAction {
 				return editor;
 			}
 	    }
-   		if (editorPart == null) {
-   			String out = NLS.bind(HibernateConsoleMessages.OpenMappingAction_mapping_file_for_property_not_found, compositeProperty.getNodeName());
-			throw new FileNotFoundException(out);
-		}
-   		return null;
+   		// here editorPart := null
+   		String out = NLS.bind(HibernateConsoleMessages.OpenMappingAction_mapping_file_for_property_not_found, compositeProperty.getNodeName());
+   		throw new FileNotFoundException(out);
 	}
 
 	/**

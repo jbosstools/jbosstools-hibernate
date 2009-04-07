@@ -99,7 +99,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 	 */
 	public HibernateConsolePlugin() {
 		super();
-		plugin = this;
+		setPlugin(this);
 	}
 
 
@@ -301,7 +301,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
 		stopListeningForConfigurations();
-		plugin = null;
+		setPlugin(null);
 		resourceBundle = null;
 	}
 
@@ -315,6 +315,10 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 		return plugin;
 	}
 
+	private static void setPlugin(HibernateConsolePlugin plugin) {
+		HibernateConsolePlugin.plugin = plugin;
+	}
+	
 	/**
 	 * Returns the string from the plugin's resource bundle,
 	 * or 'key' if not found.

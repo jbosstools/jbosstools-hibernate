@@ -88,6 +88,10 @@ public class ExporterProperty
 		}
 		return false;
 	}
+	
+	public int hashCode() {
+		return getName().hashCode();
+	}
 
 	public boolean isRequired() {
 		return required;
