@@ -113,7 +113,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 							VisualEditorPlugin.getDefault().logError(e);
 						}
 					if (xy.length > 2)
-						if ((new Boolean(xy[2])).booleanValue())
+						if ((Boolean.valueOf(xy[2])))
 							ormShape.refreshHiden();
 					tempPoint = ormShape.getLocation().y
 							+ getChildrenFigurePreferredHeight(ormShape) + 20;
@@ -404,7 +404,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 
 	}
 
-	class LinkInfo implements ILinkInfo {
+	static class LinkInfo implements ILinkInfo {
 		Connection link = null;
 
 		String id = null;

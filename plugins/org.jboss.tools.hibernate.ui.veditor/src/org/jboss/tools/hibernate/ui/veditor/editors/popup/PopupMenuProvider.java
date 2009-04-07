@@ -108,7 +108,7 @@ public class PopupMenuProvider extends ContextMenuProvider {
 		item.setEnabled(enabled);
 	}
 
-	class AL implements SelectionListener {
+	static class AL implements SelectionListener {
 		IAction action;
 
 		public AL(IAction action) {
