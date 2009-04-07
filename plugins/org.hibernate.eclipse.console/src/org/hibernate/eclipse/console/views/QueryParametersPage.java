@@ -249,7 +249,7 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 					int i = 0;
 					while(iterator.hasNext()) {
 						if (type == ((Type) iterator.next())) {
-							return new Integer(i);
+							return Integer.valueOf(i);
 						}
 						i++;
 					}

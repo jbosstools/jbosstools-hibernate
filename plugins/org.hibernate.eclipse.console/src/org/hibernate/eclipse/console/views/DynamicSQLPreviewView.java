@@ -168,7 +168,6 @@ public class DynamicSQLPreviewView extends ViewPart {
 
 		result = (String) context.execute(new ExecutionContext.Command() {
 			public Object execute() {
-				Session session = null;
 				try {
 					SessionFactoryImpl sfimpl = (SessionFactoryImpl) sf; // hack - to get to the actual queries..
 					StringBuffer str = new StringBuffer(256);
@@ -205,7 +204,6 @@ public class DynamicSQLPreviewView extends ViewPart {
 					}
 					return str.toString();
 				} catch(Throwable t) {
-					if(session!=null) session.close();
 					//StringWriter sw = new StringWriter();
 					StringBuffer msgs = new StringBuffer();
 

@@ -85,7 +85,7 @@ public class NavigatorProvider implements ITreeContentProvider {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			children[kids] = new Long(kids);
+			children[kids] = Long.valueOf(kids);
 		}
 		return children;
 	}
