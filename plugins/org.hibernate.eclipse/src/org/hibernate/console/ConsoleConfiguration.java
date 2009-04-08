@@ -30,6 +30,7 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -318,15 +319,24 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 						String url = localCfg.getProperty(Environment.URL);
 						String user = localCfg.getProperty(Environment.USER);
 						String pass = localCfg.getProperty(Environment.PASS);
+						Connection connection = null;
 						try {
-							DatabaseMetaData meta = DriverManager.getConnection(url, user, pass).getMetaData();
+							connection = DriverManager.getConnection(url, user, pass); 
+							DatabaseMetaData meta = connection.getMetaData();
 							String databaseName = meta.getDatabaseProductName();
 							int databaseMajorVersion = meta.getDatabaseMajorVersion();
 							//SQL Dialect:
 							Dialect dialect = DialectFactory.buildDialect( localCfg.getProperties(), databaseName, databaseMajorVersion );
 							localCfg.setProperty(Environment.DIALECT, dialect.toString());
-						} catch (Exception e) {
+						} catch (SQLException e) {
 						//can't determine dialect
+						}
+						if (connection != null) {
+							try {
+								connection.close();
+							} catch (SQLException e) {
+								// ignore
+							}
 						}
 					}
 				}
