@@ -164,14 +164,25 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 	public Properties getProperties() {		
 		File propFile = getPropertyFile();
 		if(propFile==null) return null;
+		Properties p = new Properties();
+		FileInputStream fis = null;
 		try {
-			Properties p = new Properties();
-			p.load(new FileInputStream(propFile) );
-			return p;
+			fis = new FileInputStream(propFile);
+			p.load(fis);
 		}
 		catch(IOException io) {
 			throw new HibernateConsoleRuntimeException(HibernateConsoleMessages.EclipseLaunchConsoleConfigurationPreferences_could_not_load_property_file + propFile, io);
 		}
+		finally {
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e) {
+					// ignore
+				}
+			}
+		}
+		return p;
 	}
 
 	public File getPropertyFile() {
