@@ -1,7 +1,18 @@
+/*******************************************************************************
+ * Copyright (c) 2007-2009 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.hibernate.ui.veditor.editors.actions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
@@ -25,8 +36,12 @@ import org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor;
 public class ExportImageAction extends Action {
 
 	public static final String ACTION_ID = "Export as Image"; //$NON-NLS-1$
+	public static final String[] dialogFilterExtensions = new String[] { "*.png", "*.jpg", "*.bmp" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	public static final String[] dialogFilterNames = new String[] { UIVEditorMessages.ExportImageAction_png_format,
+		UIVEditorMessages.ExportImageAction_jpg_format, UIVEditorMessages.ExportImageAction_bmp_format };
 
 	private VisualEditor editor;
+	private FileDialog saveDialog = null;
 
 	public ExportImageAction(VisualEditor editor) {
 		this.editor = editor;
@@ -35,17 +50,28 @@ public class ExportImageAction extends Action {
 		setImageDescriptor(ImageDescriptor.createFromFile(
 				VisualEditor.class,"icons/export.png")); //$NON-NLS-1$
 	}
+	
+	/**
+	 * main goal of this function to allow tests for 
+	 * ExportImageAction functionality
+	 * 
+	 * @param saveDialog
+	 */
+	public void setSaveDialog(FileDialog saveDialog) {
+		this.saveDialog = saveDialog;
+	}
 
 	public void run() {
 
-		FileDialog saveDialog = new FileDialog(
+		if (saveDialog == null) {
+			saveDialog = new FileDialog(
 				this.editor.getSite().getShell(), SWT.SAVE);
-		saveDialog
-				.setFilterExtensions(new String[] { "*.png", "*.jpg", "*.bmp" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		saveDialog.setFilterNames(new String[] { UIVEditorMessages.ExportImageAction_png_format,
-				UIVEditorMessages.ExportImageAction_jpg_format, UIVEditorMessages.ExportImageAction_bmp_format });
+		}
+		saveDialog.setFilterExtensions(dialogFilterExtensions);
+		saveDialog.setFilterNames(dialogFilterNames);
 
 		String filePath = saveDialog.open();
+		saveDialog = null;
 		if (filePath == null || filePath.trim().length() == 0) {
 			return;
 		}
@@ -53,23 +79,31 @@ public class ExportImageAction extends Action {
 		IFigure fig = ((ScalableFreeformRootEditPart) this.editor
 				.getEditPartViewer().getRootEditPart())
 				.getLayer(LayerConstants.PRINTABLE_LAYERS);
+		int imageType = SWT.IMAGE_BMP;
+		if (filePath.toLowerCase().endsWith(".jpg")) { //$NON-NLS-1$
+			imageType = SWT.IMAGE_JPEG;
+		} else if (filePath.toLowerCase().endsWith(".png")) { //$NON-NLS-1$
+			imageType = SWT.IMAGE_PNG;
+		}
+		FileOutputStream outStream = null;
 		try {
-			int imageType = SWT.IMAGE_BMP;
-			if (filePath.toLowerCase().endsWith(".jpg")) { //$NON-NLS-1$
-				imageType = SWT.IMAGE_JPEG;
-			} else if (filePath.toLowerCase().endsWith(".png")) { //$NON-NLS-1$
-				imageType = SWT.IMAGE_PNG;
-			}
-
 			byte[] imageData = createImage(fig, imageType);
-			FileOutputStream outStream = new FileOutputStream(filePath);
+			outStream = new FileOutputStream(filePath);
 			outStream.write(imageData);
 			outStream.flush();
-			outStream.close();
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			MessageDialog.openInformation(this.editor.getSite().getShell(),
 					UIVEditorMessages.ExportImageAction_error, UIVEditorMessages.ExportImageAction_failed_to_export_image + e.getMessage());
 			return;
+		}
+		finally {
+			if (outStream != null) {
+				try {
+					outStream.close();
+				} catch (IOException e) {
+					// ignore
+				}
+			}
 		}
 	}
 

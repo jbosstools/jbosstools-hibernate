@@ -20,6 +20,7 @@ Require-Bundle: org.eclipse.ui,
 Bundle-Version: 2.0.0
 Export-Package: org.jboss.tools.hibernate.ui.veditor,
  org.jboss.tools.hibernate.ui.veditor.editors,
+ org.jboss.tools.hibernate.ui.veditor.editors.actions,
  org.jboss.tools.hibernate.ui.veditor.editors.command,
  org.jboss.tools.hibernate.ui.veditor.editors.figures,
  org.jboss.tools.hibernate.ui.veditor.editors.model,
