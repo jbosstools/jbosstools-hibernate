@@ -664,6 +664,7 @@ public class OrmDiagram extends ModelElement {
 	public void save(){
 		Properties properties = new Properties();
 		storeProperties(properties, this);
+		FileOutputStream fos = null;
 		try {
 			File folder = new File(getStoreFolderPath().toOSString());
 			if(!folder.exists()) {
@@ -673,10 +674,18 @@ public class OrmDiagram extends ModelElement {
 			if(!file.exists()) {
 				file.createNewFile();
 			}
-			FileOutputStream fos = new FileOutputStream(file);
+			fos = new FileOutputStream(file);
 			properties.store(fos, ""); //$NON-NLS-1$
 		} catch (IOException e) {
 			VisualEditorPlugin.getDefault().logError("Can't save layout of mapping.", e); //$NON-NLS-1$
+		} finally {
+			if (fos != null) {
+				try {
+					fos.close();
+				} catch (IOException e) {
+					// ignore
+				}
+			}
 		}
 	}
 
@@ -733,9 +742,9 @@ public class OrmDiagram extends ModelElement {
 	private void setState(Properties properties,String key, boolean value){
 		if(properties.containsKey(key)){
 			properties.remove(key);
-			properties.put(key, new Boolean(value).toString());
+			properties.put(key, Boolean.valueOf(value).toString());
 		}else{
-			properties.put(key, new Boolean(value).toString());
+			properties.put(key, Boolean.valueOf(value).toString());
 		}
 	}
 	
@@ -746,7 +755,7 @@ public class OrmDiagram extends ModelElement {
 	private boolean getState(Properties properties, String key){
 		String str = properties.getProperty(key, "true"); //$NON-NLS-1$
 		
-		return new Boolean(str).booleanValue();
+		return Boolean.valueOf(str).booleanValue();
 	}
 	
 	private Point getPoint(Properties properties, String key){
