@@ -31,6 +31,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableColumn;
@@ -204,7 +205,7 @@ public abstract class TableFilterView extends TreeToTableComposite {
 			doExclusion();
 			break;
 		default:
-			throw new IllegalArgumentException( i + HibernateConsoleMessages.TableFilterView_not_known_button );
+			throw new IllegalArgumentException(NLS.bind(HibernateConsoleMessages.TableFilterView_not_known_button, i) );
 		}
 	}
 

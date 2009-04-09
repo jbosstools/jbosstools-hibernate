@@ -171,7 +171,7 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 			p.load(fis);
 		}
 		catch(IOException io) {
-			throw new HibernateConsoleRuntimeException(HibernateConsoleMessages.EclipseLaunchConsoleConfigurationPreferences_could_not_load_property_file + propFile, io);
+			throw new HibernateConsoleRuntimeException(NLS.bind(HibernateConsoleMessages.EclipseLaunchConsoleConfigurationPreferences_could_not_load_property_file, propFile), io);
 		}
 		finally {
 			if (fis != null) {
