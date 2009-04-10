@@ -59,7 +59,7 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
  */
 public class QueryPageViewer {
 
-	class LabelProviderImpl implements ITableLabelProvider {
+	static public class LabelProviderImpl implements ITableLabelProvider {
 		public Image getColumnImage(Object element, int columnIndex) {
 			return null;
 		}
@@ -69,7 +69,9 @@ public class QueryPageViewer {
 				if (element instanceof QueryPage) {
 					value = ( (QueryPage) element).getList().get(columnIndex);
 				}
-
+				if (value == null) {
+					return ""; //$NON-NLS-1$
+				}
 				if (value.getClass().isArray() ) {
 					Object[] arr = (Object[]) value;
 					if (columnIndex > arr.length - 1) {
@@ -80,7 +82,7 @@ public class QueryPageViewer {
 					if(columnIndex!=0) {
 						return "?"; //$NON-NLS-1$
 					} else {
-						return value == null ? "" : value.toString(); //$NON-NLS-1$
+						return value.toString();
 					}
 				}
 			}
@@ -110,7 +112,7 @@ public class QueryPageViewer {
 	};
 
 	// should map to our table model instead
-	class ContentProviderImpl implements IStructuredContentProvider {
+	static class ContentProviderImpl implements IStructuredContentProvider {
 		public Object[] getElements(Object inputElement) {
 			if (inputElement instanceof QueryPage) {
 				QueryPage qp = ( (QueryPage) inputElement);
