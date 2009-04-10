@@ -50,9 +50,9 @@ public class PendingNode {
 	public PendingNode(String type) {
 		text = new String[4];
 		text[0] = HibernateConsoleMessages.PendingNode_pending + type;
-		text[1] = text  + "."; //$NON-NLS-1$
-		text[2] = text  + ".."; //$NON-NLS-1$
-		text[3] = text  + "..."; //$NON-NLS-1$
+		text[1] = text[0] + "."; //$NON-NLS-1$
+		text[2] = text[0] + ".."; //$NON-NLS-1$
+		text[3] = text[0] + "..."; //$NON-NLS-1$
 	}
 
 	public String getText() {
