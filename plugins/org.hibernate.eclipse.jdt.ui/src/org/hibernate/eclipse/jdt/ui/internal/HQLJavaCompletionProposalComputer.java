@@ -66,13 +66,17 @@ public class HQLJavaCompletionProposalComputer implements IJavaCompletionProposa
 	public List computeCompletionProposals(ContentAssistInvocationContext context, IProgressMonitor monitor) {
 		List proposals = new ArrayList();
 		errorMessage = null;
+		
+		if (!(context instanceof JavaContentAssistInvocationContext)) {
+			return proposals;
+		}
 
 		JavaContentAssistInvocationContext ctx = (JavaContentAssistInvocationContext)context;
 
 		try {
 				 ConsoleConfiguration consoleConfiguration = getConfiguration( ctx.getProject() );
 				 if(consoleConfiguration!=null) {
-					 Configuration configuration = consoleConfiguration!=null?consoleConfiguration.getConfiguration():null;
+					 Configuration configuration = consoleConfiguration.getConfiguration();
 
 					 IHQLCodeAssist hqlEval = new HQLCodeAssist(configuration);
 
