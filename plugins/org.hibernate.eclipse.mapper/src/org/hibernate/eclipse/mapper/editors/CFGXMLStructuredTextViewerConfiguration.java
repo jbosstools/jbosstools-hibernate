@@ -34,10 +34,10 @@ import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
-import org.eclipse.wst.sse.core.internal.provisional.StructuredModelManager;
+import org.eclipse.wst.sse.core.StructuredModelManager;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocumentRegion;
-import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredPartitionTypes;
-import org.eclipse.wst.xml.core.internal.provisional.text.IXMLPartitions;
+import org.eclipse.wst.sse.core.text.IStructuredPartitions;
+import org.eclipse.wst.xml.core.text.IXMLPartitions;
 import org.eclipse.wst.xml.ui.StructuredTextViewerConfigurationXML;
 import org.eclipse.wst.xml.ui.internal.contentassist.ContentAssistRequest;
 import org.eclipse.wst.xml.ui.internal.contentassist.NoRegionContentAssistProcessor;
@@ -140,10 +140,10 @@ public class CFGXMLStructuredTextViewerConfiguration extends StructuredTextViewe
 	protected IContentAssistProcessor[] getContentAssistProcessors(ISourceViewer sourceViewer, String partitionType) {
 		IContentAssistProcessor[] processors = null;
 		
-		if ((partitionType == IStructuredPartitionTypes.DEFAULT_PARTITION) || (partitionType == IXMLPartitions.XML_DEFAULT)) {
+		if ((IStructuredPartitions.DEFAULT_PARTITION.equals(partitionType)) || (IXMLPartitions.XML_DEFAULT.equals(partitionType))) {
 			processors = new IContentAssistProcessor[]{new CFGXMLContentAssistProcessor()}; // TODO: return cached one ?
 		}
-		else if (partitionType == IStructuredPartitionTypes.UNKNOWN_PARTITION) {
+		else if (IStructuredPartitions.UNKNOWN_PARTITION.equals(partitionType)) {
 			processors = new IContentAssistProcessor[]{new NoRegionContentAssistProcessor()};
 		}
 		
