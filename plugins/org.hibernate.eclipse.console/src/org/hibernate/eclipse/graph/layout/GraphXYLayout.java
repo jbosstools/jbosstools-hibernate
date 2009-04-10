@@ -47,7 +47,7 @@ public class GraphXYLayout extends FreeformLayout {
 
 	public Object getConstraint(IFigure child) {
 		Object constraint = constraints.get( child );
-		if ( constraint != null || constraint instanceof Rectangle ) {
+		if (constraint instanceof Rectangle) {
 			return (Rectangle) constraint;
 		}
 		else {
