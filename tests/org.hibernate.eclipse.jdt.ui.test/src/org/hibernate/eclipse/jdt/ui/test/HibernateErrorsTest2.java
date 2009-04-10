@@ -205,10 +205,7 @@ public class HibernateErrorsTest2 extends HibernateConsoleTest {
 		if (file.exists() && file.isDirectory()) {
 			String[] files = file.list();
 			buffer.append("List="); //$NON-NLS-1$
-			buffer.append(files);
-			buffer.append("-"); //$NON-NLS-1$
-			for (int i = 0; i < files.length; i++)
-				buffer.append(files[i]);
+			buffer.append(files.toString());
 		}
 		return buffer.toString();
 	}
