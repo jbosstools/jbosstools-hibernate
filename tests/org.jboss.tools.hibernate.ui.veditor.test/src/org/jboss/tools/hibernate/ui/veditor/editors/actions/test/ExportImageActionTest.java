@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.veditor.editors.actions.test;
 
+import java.io.File;
+
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.SWTGraphics;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -51,6 +53,7 @@ public class ExportImageActionTest extends TestCase {
 		final Control control = context.mock(Control.class);;
 		final Display display = context.mock(Display.class);;
 		final Rectangle rectangle = new Rectangle(0, 0, 20, 10);
+		final String filePath = "test.jpg"; //$NON-NLS-1$
 		
 		context.checking(new Expectations() {
 			{
@@ -58,7 +61,7 @@ public class ExportImageActionTest extends TestCase {
 				allowing(saveDialog).setFilterNames(ExportImageAction.dialogFilterNames);
 
 				oneOf(saveDialog).open();
-				will(returnValue("test.jpg")); //$NON-NLS-1$
+				will(returnValue(filePath));
 
 				allowing(editor).getEditPartViewer();
 				will(returnValue(graphicalViewer));
@@ -92,6 +95,12 @@ public class ExportImageActionTest extends TestCase {
 		final ExportImageAction exportImageAction = new ExportImageAction(editor);
 		exportImageAction.setSaveDialog(saveDialog);
 		exportImageAction.run();
+		// test is the file created
+		File file = new File(filePath);
+		assertTrue(file.exists() && file.isFile());
+		//
+		boolean res = file.delete();
+		assertTrue(res);
 		// GENERAL TEST:
 		// check for all expectations
 		context.assertIsSatisfied();
