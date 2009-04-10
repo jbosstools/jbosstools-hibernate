@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.veditor.editors.model.test;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -103,6 +104,18 @@ public class OrmDiagramTest extends TestCase {
 		});
 		final OrmDiagram ormDiagram = new OrmDiagram(consoleConfiguration, ioe, javaProject);
 		ormDiagram.save();
+		// test is the folder created
+		File folder = new File(ormDiagram.getStoreFolderPath().toOSString());
+		assertTrue(folder.exists() && folder.isDirectory());
+		// test is the file created
+		File file = new File(ormDiagram.getStoreFilePath().toOSString());
+		assertTrue(file.exists() && file.isFile());
+		//
+		boolean res = file.delete();
+		assertTrue(res);
+		//
+		res = folder.delete();
+		assertTrue(res);
 		// GENERAL TEST:
 		// check for all expectations
 		context.assertIsSatisfied();

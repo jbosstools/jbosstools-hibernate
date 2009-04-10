@@ -103,15 +103,15 @@ public class OrmDiagram extends ModelElement {
 		setDirty(false);
 	}
 	
-	private IPath getStoreFolderPath() {
+	public IPath getStoreFolderPath() {
 		return javaProject.getProject().getLocation().append(".settings").append(HIBERNATE_MAPPING_LAYOUT_FOLDER_NAME); //$NON-NLS-1$
 	}
 
-	private IPath getStoreFilePath() {
+	public IPath getStoreFilePath() {
 		return getStoreFolderPath().append(getStoreFileName());
 	}
 
-	private String getStoreFileName() {
+	public String getStoreFileName() {
 		String name = ormElements.length > 0 ? ormElements[0].getClassName() : ""; //$NON-NLS-1$
 		for (int i = 1; i < ormElements.length; i++) {
 			name += "_" + ormElements[i].getClassName(); //$NON-NLS-1$
