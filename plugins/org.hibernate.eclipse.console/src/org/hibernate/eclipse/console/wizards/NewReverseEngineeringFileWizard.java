@@ -93,7 +93,9 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
 	 */
 
 	public void addPages() {
-		if (selection == null) selection = new StructuredSelection();
+		if (selection == null) {
+			selection = new StructuredSelection();
+		}
 	    cPage = new ExtendedWizardNewFileCreationPage( "Ccfgxml", selection ); //$NON-NLS-1$
 	    cPage.setTitle( HibernateConsoleMessages.NewReverseEngineeringFileWizard_create_hibernate_reverse_engineering_file );
 	    cPage.setDescription( HibernateConsoleMessages.NewReverseEngineeringFileWizard_create_new_hibernate_reveng_xml );
@@ -226,8 +228,10 @@ public class NewReverseEngineeringFileWizard extends Wizard implements INewWizar
 	 * @see IWorkbenchWizard#init(IWorkbench, IStructuredSelection)
 	 */
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
+		if (selection == null) {
+			selection = new StructuredSelection();
+		}
 		this.selection = selection;
-		if (selection == null) selection = new StructuredSelection();
 	}
 
 	public IPath getCreatedFilePath() {
