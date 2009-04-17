@@ -143,7 +143,7 @@
     <section>
         <title>Other relevant resources on the topic</title>
         
-        <para>Hibernate Tools page on the <ulink url="http://www.hibernate.org/255.html">hibernate.org</ulink>.</para>
+        <!--para>Hibernate Tools page on the <ulink url="http://www.hibernate.org/255.html">hibernate.org</ulink>.</para-->
         <para>All JBoss Developer Studio/JBoss Tools documentation you can find <ulink url="http://www.jboss.com/products/devstudio/docs">here</ulink>.</para>
         <para>The latest documentation builds are available <ulink url="http://download.jboss.org/jbosstools/nightly-docs/">here</ulink>.</para>
     </section>
