@@ -29,7 +29,7 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 			IProject project = event.getProject().getProject();
 			IProjectFacetActionEvent pEvent = (IProjectFacetActionEvent)event;
 			if (pEvent.getProjectFacet().getId().equals(JptCorePlugin.FACET_ID)
-					&& HibernatePlatform.ID.equals(JptCorePlugin.getJpaPlatformId(project))){
+					&& HibernateJpaPlatform.ID.equals(JptCorePlugin.getJpaPlatformId(project))){
 				if (checkPreConditions(project)){
 					buildConsoleConfiguration(project);
 				}				

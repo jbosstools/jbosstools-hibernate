@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-	<extension
-       id="org.jboss.tools.hibernate.jpt.core"
-       point="org.eclipse.jpt.core.jpaPlatform">
-		
-		<jpaPlatform
-        class="org.jboss.tools.hibernate.jpt.core.internal.HibernatePlatform"
-        default="false"
-        id="hibernate"
-        label="Hibernate"/>		
+	<extension id="org.jboss.tools.hibernate.jpt.core"
+		point="org.eclipse.jpt.core.jpaPlatforms">
+		<jpaPlatform 
+			factoryClass="org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaPlatformFactory"
+			default="false"
+			id="hibernate"
+			label="Hibernate">
+		</jpaPlatform>		
 	</extension>
  <extension
        point="org.eclipse.wst.common.project.facet.core.listeners">

@@ -12,7 +12,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context;
 
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.context.persistence.Property;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit.Property;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 

@@ -12,6 +12,8 @@ package org.jboss.tools.hibernate.jpt.core.internal;
 
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaFactory;
+import org.eclipse.jpt.core.JpaPlatformProvider;
+import org.eclipse.jpt.core.JpaValidation;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
 
 /**
@@ -19,23 +21,17 @@ import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
  *
  */
 
-public class HibernatePlatform extends GenericJpaPlatform {
+public class HibernateJpaPlatform extends GenericJpaPlatform {
 	
 	public static final String ID = "hibernate"; //$NON-NLS-1$
+
+	public HibernateJpaPlatform(String id, JpaFactory jpaFactory, JpaAnnotationProvider jpaAnnotationProvider, JpaValidation jpaValidation, JpaPlatformProvider... platformProviders) {
+		super(id, jpaFactory, jpaAnnotationProvider, jpaValidation, platformProviders);
+	}
 
 	@Override
 	public String getId() {
 		return ID;
-	}
-
-	@Override
-	protected JpaFactory buildJpaFactory() {
-		return new HibernateFactory();
-	}
-	
-	@Override
-	protected JpaAnnotationProvider buildAnnotationProvider() {
-		return new HibernateJpaAnnotationProvider();
 	}
 	
 }

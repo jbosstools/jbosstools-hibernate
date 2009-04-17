@@ -13,7 +13,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.basic;
 import java.util.Map;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.context.persistence.Property;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit.Property;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnitProperties;

@@ -15,7 +15,7 @@ import java.util.Map;
 
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.context.persistence.Property;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit.Property;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
@@ -127,7 +127,7 @@ public abstract class  HibernatePersistenceUnitProperties extends AbstractModel 
 
 	protected String getStringValue(String key, String keySuffix) {
 		String elKey = (keySuffix == null) ? key : key + keySuffix;
-		if (this.persistenceUnit().containsProperty(elKey)) {
+		if (this.persistenceUnit().getProperty(elKey) != null) {
 			// TOREVIEW - handle incorrect String in persistence.xml
 			return this.persistenceUnit().getProperty(elKey).getValue();
 		}
@@ -150,7 +150,7 @@ public abstract class  HibernatePersistenceUnitProperties extends AbstractModel 
 			this.persistenceUnit().removeProperty(elKey);
 		}
 		else {
-			this.persistenceUnit().putProperty(elKey, newValue, allowDuplicate);
+			this.persistenceUnit().setProperty(elKey, newValue, allowDuplicate);
 		}
 	}
 
@@ -173,14 +173,16 @@ public abstract class  HibernatePersistenceUnitProperties extends AbstractModel 
 	}
 
 	private void putProperty_(String key, Object value) {
-		this.persistenceUnit().putProperty(key, value.toString(), false);
+		this.persistenceUnit().setProperty(key, value.toString(), false);
 	}
 
 	/**
 	 * Removes a property with the given key.
 	 */
 	protected void removeProperty(String key) {
-		this.persistenceUnit().removeProperty(key);
+		if(this.persistenceUnit().getProperty(key) != null) { 
+			this.persistenceUnit().removeProperty(key);
+		}
 	}
 
 }

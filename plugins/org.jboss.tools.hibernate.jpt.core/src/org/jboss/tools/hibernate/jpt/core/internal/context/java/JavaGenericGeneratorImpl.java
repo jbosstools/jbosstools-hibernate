@@ -39,7 +39,7 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 		return (GenericGeneratorAnnotation) generatorResource;
 	}
 
-	public Integer getDefaultInitialValue() {
+	public int getDefaultInitialValue() {
 		return GenericGenerator.DEFAULT_INITIAL_VALUE;
 	}
 	

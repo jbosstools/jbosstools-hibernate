@@ -11,16 +11,8 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -31,19 +23,19 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
-import org.eclipse.jpt.core.context.persistence.Property;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit.Property;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnit;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
-import org.eclipse.jpt.core.resource.persistence.XmlProperties;
-import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGeneratorAnnotation;
@@ -64,10 +56,6 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 	public HibernatePersistenceUnit(Persistence parent,
 			XmlPersistenceUnit persistenceUnit) {
 		super(parent, persistenceUnit);
-	}
-	
-	protected void initialize(XmlPersistenceUnit xmlPersistenceUnit) {
-		super.initialize(xmlPersistenceUnit);
 		updateGenericGenerators();
 		this.hibernateProperties = new HibernateJpaProperties(this);
 	}
@@ -78,18 +66,13 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 	}
 
 	// ********** Validation ***********************************************
-	public void validate(List<IMessage> messages) {
-		addToMessages(messages);
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		addFileNotExistsMessages(messages, reporter);
 	}	
 	
-	public void addToMessages(List<IMessage> messages) {
-		invokeMethod(this, "addMappingFileMessages", "validateMappingFiles",  //$NON-NLS-1$ //$NON-NLS-2$
-				new Class[]{List.class}, messages);
-		invokeMethod(this, "addClassMessages", "validateClassRefs", new Class[]{List.class}, messages);  //$NON-NLS-1$//$NON-NLS-2$
-		addFileNotExistsMessages(messages);
-	}
-	
-	protected void addFileNotExistsMessages(List<IMessage> messages) {
+	protected void addFileNotExistsMessages(List<IMessage> messages, IReporter reporter) {
 		String configFile = getBasicProperties().getConfigurationFile();
 		if (configFile != null && configFile.length() > 0){
 			IPath path = new Path(configFile);
@@ -116,56 +99,6 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 		}
 	}
 	
-	
-	/**
-	 * If persistence.xml contains 3 properties: dialect, driver, url and we delete
-	 * driver-property, then parent's method changes current properties so:
-	 * 1. replace 1-st model's property(dialect) with 1-st property from persistence.xml (dialect)
-	 * 2. replace 2-nd model's property(driver) with 2-nd property from persistence.xml (url)
-	 * 3. remove 3-rd model's property(url)
-	 * Step 3 call property change event which set url=null and this is wrong.
-	 * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=255149
-	 * TODO: remove after bug fixed.
-	 */
-	@Override
-	protected void updateProperties(XmlPersistenceUnit persistenceUnit) {
-		XmlProperties xmlProperties = persistenceUnit.getProperties();
-		
-		Iterator<Property> stream = properties();
-		Iterator<XmlProperty> stream2;
-		
-		if (xmlProperties == null) {
-			stream2 = EmptyIterator.instance();
-		}
-		else {
-			stream2 = new CloneIterator<XmlProperty>(xmlProperties.getProperties());//avoid ConcurrentModificationException
-		}
-		
-		Map<String, XmlProperty> map = new HashMap<String, XmlProperty>();
-		while (stream2.hasNext()){
-			XmlProperty xmlProp = stream2.next();
-			map.put(xmlProp.getName(), xmlProp);
-		}
-		Set<String> performedSet = new HashSet<String>();
-		while (stream.hasNext()) {
-			Property property = stream.next();
-			if (map.containsKey(property.getName())) {
-				XmlProperty xmlProp = map.get(property.getName());
-				property.update(xmlProp);
-				performedSet.add(property.getName());
-			} else {
-				removeProperty_(property);
-			}
-		}		
-		
-		for (Entry<String, XmlProperty> entry : map.entrySet()) {
-			if (!performedSet.contains(entry.getKey())) {
-				addProperty_(buildProperty(entry.getValue()));
-			}
-		}
-	}
-	
-	
 	/* (non-Javadoc)
 	 * @see org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnit#update(org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit)
 	 */
@@ -173,6 +106,7 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 	public void update(XmlPersistenceUnit persistenceUnit) {
 		super.update(persistenceUnit);
 		updateGenericGenerators();
+		this.fireListChanged(GENERATORS_LIST);
 	}
 	
 	protected void updateGenericGenerators(){
@@ -181,89 +115,32 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 		for (ClassRef classRef : CollectionTools.iterable(classRefs())) {			
 			String annotClass = classRef.getClassName();
 			JavaPersistentType type = classRef.getJavaPersistentType();
-			JavaResourcePersistentMember jrpt = null;
-			GenericGeneratorAnnotation annotation = null;
-			jrpt =	(JavaResourcePersistentMember) invokeMethod(project, "getJavaPersistentTypeResource",  //$NON-NLS-1$
-					"getJavaResourcePersistentType", new Class[]{String.class}, annotClass); //$NON-NLS-1$
+			JavaResourcePersistentType jrpt = project.getJavaResourcePersistentType(annotClass);
 			if (jrpt != null){
-				annotation = (GenericGeneratorAnnotation)invokeMethod(jrpt, "getAnnotation",  //$NON-NLS-1$
-						"getSupportingAnnotation", new Class[]{String.class}, GENERIC_GENERATOR); //$NON-NLS-1$
+				GenericGeneratorAnnotation annotation = null;
+				JavaResourceNode jrn = jrpt.getSupportingAnnotation(GENERIC_GENERATOR);
+				if (jrn instanceof GenericGeneratorAnnotation) {
+					annotation = (GenericGeneratorAnnotation)jrn;
+				}
 				if (annotation != null) {
 					addGenerator(annotation.buildJavaGenericGenerator(type));
 				}				
 				ListIterator<JavaPersistentAttribute> typeAttrs = type.attributes();
 				for (JavaPersistentAttribute persAttr : CollectionTools.iterable(typeAttrs)) {
+					if (persAttr.getSpecifiedMapping() == null) {
+						continue;
+					}
 					JavaResourcePersistentAttribute jrpa = persAttr.getResourcePersistentAttribute();
-					annotation = (GenericGeneratorAnnotation)invokeMethod(jrpa, "getAnnotation",  //$NON-NLS-1$
-							"getSupportingAnnotation", new Class[]{String.class}, GENERIC_GENERATOR); //$NON-NLS-1$
-					
+					jrn = jrpa.getSupportingAnnotation(GENERIC_GENERATOR);
+					if (jrn instanceof GenericGeneratorAnnotation) {
+						annotation = (GenericGeneratorAnnotation)jrn;
+					}
 					if (annotation != null) {
 						addGenerator(annotation.buildJavaGenericGenerator(persAttr.getSpecifiedMapping()));
 					}
 				}				
 			}			
 		}
-	}
-	
-	/**
-	 * Hack method needed to make Hibernate Platform portable between Dali 2.0 and Dali 2.1
-	 * @param object - object on which method will be called
-	 * @param dali20Name - method name in Dali 2.0
-	 * @param dali21Name - same method name in Dali 2.1
-	 * @param paramTypes - method arguments types.
-	 * @param args - arguments of the method
-	 * @return
-	 */
-	private Object invokeMethod(Object object, String dali20Name, String dali21Name, Class[] argsTypes,
-			Object... args){
-		Method method = getMethod(object.getClass(), dali20Name, dali21Name, argsTypes);			
-		if (method != null){
-			try {
-				return method.invoke(object, args);
-			} catch (IllegalArgumentException e) {
-				HibernateJptPlugin.logException(e);
-			} catch (IllegalAccessException e) {
-				HibernateJptPlugin.logException(e);
-			} catch (InvocationTargetException e) {
-				HibernateJptPlugin.logException(e);
-			}
-		} else {
-			StringBuilder params = new StringBuilder();
-			for (int i = 0; i < argsTypes.length; i++) {
-				params.append(argsTypes[i].getName() + ", "); //$NON-NLS-1$
-			}
-			if (params.length() > 0) params.deleteCharAt(params.length() - 2);
-			HibernateJptPlugin.logError("Nor \"" + dali20Name + "\" nor \"" + dali21Name  //$NON-NLS-1$//$NON-NLS-2$
-					+ "\" methods were found with parameter types: (" + params + ")");  //$NON-NLS-1$//$NON-NLS-2$
-		}
-		return null;
-	}
-	
-	/**
-	 * Hack method needed to make Hibernate Platform portable between Dali 2.0 and Dali 2.1
-	 * @param parent
-	 * @param dali20Name - method name in Dali 2.0
-	 * @param dali21Name - same method name in Dali 2.1
-	 * @param parameterTypes
-	 * @return
-	 */
-	private Method getMethod(Class parent, String dali20Name, String dali21Name, Class... parameterTypes){
-		Class clazz = parent;
-		while (clazz != null){
-			Method method = null;
-			try {//try to get method from Dali 2.0
-				method = clazz.getDeclaredMethod(dali20Name, parameterTypes);
-				return method;
-			} catch (Exception e) {
-				try {//try to get method from Dali 2.1
-					method = clazz.getDeclaredMethod(dali21Name, parameterTypes);
-					return method;
-				} catch (Exception e1) {
-					clazz = clazz.getSuperclass();
-				}				
-			}
-		}
-		return null;
 	}
 
 

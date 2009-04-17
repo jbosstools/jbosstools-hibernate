@@ -21,7 +21,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceU
  * @author Dmitry Geraskov
  *
  */
-public class HibernateFactory extends GenericJpaFactory {
+public class HibernateJpaFactory extends GenericJpaFactory {
 
 	@Override
 	public PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit persistenceUnit) {
