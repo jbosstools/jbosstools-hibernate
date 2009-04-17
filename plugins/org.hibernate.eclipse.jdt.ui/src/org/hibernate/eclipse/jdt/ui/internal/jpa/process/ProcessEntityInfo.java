@@ -422,12 +422,12 @@ public class ProcessEntityInfo extends ASTVisitor {
 			if ("java.lang.String".equals(typeName) || "String".equals(typeName)) { //$NON-NLS-1$ //$NON-NLS-2$
 				String fieldId = returnIdentifier;
 				RefColumnInfo rci = entityInfo.getRefColumnInfo(fieldId);
-				if (rci == null) {
+				if (rci == null || !rci.isExist()) {
 					// if there is no @Column annotation - create new @Column annotation
 					// with user defined default value length 
 					NormalAnnotation natd = rewriter.getAST().newNormalAnnotation();
 					natd.setTypeName(rewriter.getAST().newSimpleName(JPAConst.ANNOTATION_COLUMN));
-					ListRewrite lrw = rewriter.getListRewrite(node, FieldDeclaration.MODIFIERS2_PROPERTY);
+					ListRewrite lrw = rewriter.getListRewrite(node, MethodDeclaration.MODIFIERS2_PROPERTY);
 					lrw.insertFirst(natd, null);
 					MemberValuePair mvp = rewriter.getAST().newMemberValuePair();
 					mvp.setName(rewriter.getAST().newSimpleName("length")); //$NON-NLS-1$
