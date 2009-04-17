@@ -59,10 +59,32 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 	 */
 	protected AnnotStyle annotationStylePreference = AnnotStyle.FIELDS;
 	/**
-	 * annotation style preference of majority
+	 * annotation style preference store name
 	 */
 	public final static String storePropertyName = 
 		"hibernate.jpa.generation.AnnotationStyle.preference"; //$NON-NLS-1$
+	/**
+	 * @Column length - default value
+	 */
+	public final static int columnLength = 255;
+	/**
+	 * default length for column which corresponds to String field
+	 */
+	protected int defaultStrLength = columnLength;
+	/**
+	 * default length for column preference store name
+	 */
+	public final static String storeDefaultStrLength = 
+		"hibernate.jpa.generation.DefaultStrLength.preference"; //$NON-NLS-1$
+	/**
+	 * flag to enable optimistic locking
+	 */
+	protected boolean enableOptLock = false;
+	/**
+	 * flag to enable optimistic locking preference store name
+	 */
+	public final static String storeEnableOptLock = 
+		"hibernate.jpa.generation.EnableOptLock.preference"; //$NON-NLS-1$
 
 	/**
 	 * change info storage
@@ -83,16 +105,25 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 		this.preferenceStore = preferenceStore;
 	}
 
-	public void initAnnotationStylePreference() {
+	public void initPreferences() {
 		IPreferenceStore preferenceStore = getPreferenceStore();
+		//
 		int value = preferenceStore.getInt(storePropertyName);
 		if (value >= AnnotStyle.values().length) {
 			value = 0;
 		}
 		annotationStyle = AnnotStyle.values()[value];
+		//
+		value = preferenceStore.getInt(storeDefaultStrLength);
+		if (value <= 0) {
+			value = columnLength;
+		}
+		defaultStrLength = value;
+		//
+		enableOptLock = preferenceStore.getBoolean(storeEnableOptLock);
 	}
 	
-	public void saveAnnotationStylePreference() {
+	public void savePreferences() {
 		IPreferenceStore preferenceStore = getPreferenceStore();
 		int value = 0;
 		while (value < AnnotStyle.values().length) {
@@ -105,6 +136,10 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 			value = 0;
 		}
 		preferenceStore.setValue(storePropertyName, value);
+		//
+		preferenceStore.setValue(storeDefaultStrLength, defaultStrLength);
+		//
+		preferenceStore.setValue(storeEnableOptLock, enableOptLock);
 	}
 
 	/**
@@ -244,6 +279,9 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 	public void collectModification(ITextFileBufferManager bufferManager, String fullyQualifiedName,
 			EntityInfo entityInfo, Map<String, EntityInfo> entities) throws CoreException {
 
+		//
+		entityInfo.updateColumnAnnotationImport(defaultStrLength != columnLength);
+		//
 		ChangeStructure cs = new ChangeStructure();
 		cs.fullyQualifiedName = fullyQualifiedName;
 		ICompilationUnit icu = Utils.findCompilationUnit(javaProject, fullyQualifiedName);
@@ -259,6 +297,8 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 			// ... rewrite
 			ProcessEntityInfo processor = new ProcessEntityInfo();
 			processor.setAnnotationStyle(annotationStyle);
+			processor.setDefaultStrLength(defaultStrLength);
+			processor.setEnableOptLock(enableOptLock);
 			processor.setEntityInfo(entityInfo);
 			processor.setEntities(entities);
 			processor.setASTRewrite(rewriter);
@@ -314,5 +354,21 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 
 	public void setAnnotationStylePreference(AnnotStyle annotationStylePreference) {
 		this.annotationStylePreference = annotationStylePreference;
+	}
+
+	public int getDefaultStrLength() {
+		return defaultStrLength;
+	}
+
+	public void setDefaultStrLength(int defaultStrLength) {
+		this.defaultStrLength = defaultStrLength;
+	}
+
+	public boolean getEnableOptLock() {
+		return enableOptLock;
+	}
+
+	public void setEnableOptLock(boolean enableOptLock) {
+		this.enableOptLock = enableOptLock;
 	}
 }

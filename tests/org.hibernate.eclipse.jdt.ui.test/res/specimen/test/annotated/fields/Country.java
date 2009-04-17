@@ -10,12 +10,14 @@
   ******************************************************************************/
 package test.annotated.fields;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Entity
 public class Country {
 	
+	@Column(length=200)
 	private String name;
 
 	@ManyToOne

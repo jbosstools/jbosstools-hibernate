@@ -51,15 +51,19 @@ public class JPAMapMockTests extends TestCase {
 		
         context.checking(new Expectations() {{
         	oneOf(preferenceStore).setValue(AllEntitiesProcessor.storePropertyName, 2);
+        	oneOf(preferenceStore).setValue(AllEntitiesProcessor.storeDefaultStrLength, 255);
+        	oneOf(preferenceStore).setValue(AllEntitiesProcessor.storeEnableOptLock, false);
         }});
-        allEntitiesProcessor.saveAnnotationStylePreference();
+        allEntitiesProcessor.savePreferences();
         context.assertIsSatisfied();
 
         allEntitiesProcessor.setAnnotationStyle(null);
         context.checking(new Expectations() {{
         	oneOf(preferenceStore).setValue(AllEntitiesProcessor.storePropertyName, 0);
+        	oneOf(preferenceStore).setValue(AllEntitiesProcessor.storeDefaultStrLength, 255);
+        	oneOf(preferenceStore).setValue(AllEntitiesProcessor.storeEnableOptLock, false);
         }});
-        allEntitiesProcessor.saveAnnotationStylePreference();
+        allEntitiesProcessor.savePreferences();
         context.assertIsSatisfied();
 	}
 
@@ -125,7 +129,7 @@ public class JPAMapMockTests extends TestCase {
         	allowing(allEntitiesProcessor).modify(javaProject, null, true);
         	inSequence(sequence);
         	
-        	allowing(allEntitiesProcessor).saveAnnotationStylePreference();
+        	allowing(allEntitiesProcessor).savePreferences();
         	inSequence(sequence);
         }});
 		jpaMapToolActor.updateSelected();

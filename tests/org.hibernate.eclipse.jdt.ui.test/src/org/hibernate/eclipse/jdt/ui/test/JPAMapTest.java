@@ -79,6 +79,7 @@ public class JPAMapTest extends TestCase {
 
 	public void testTransformerFields() {
 		testSelection = TEST_FIELDS;
+		processor.setDefaultStrLength(200);
 		processor.setAnnotationStyle(AnnotStyle.FIELDS);
 		startTestTransformer();
 	}

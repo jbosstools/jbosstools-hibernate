@@ -27,6 +27,14 @@ public interface IHibernateJPAWizardParams {
 
 	public void setAnnotationStyle(AnnotStyle annotationStyle);
 
+	public boolean getEnableOptLock();
+
+	public void setEnableOptLock(boolean enableOptLock);
+
+	public int getDefaultStrLength();
+
+	public void setDefaultStrLength(int defaultStrLength);
+
 	public AnnotStyle getAnnotationStylePreference();
 
 	public void reCollectModification(ITextFileBufferManager bufferManager, 

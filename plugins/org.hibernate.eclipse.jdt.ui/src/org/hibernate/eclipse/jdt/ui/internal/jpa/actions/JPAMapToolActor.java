@@ -90,11 +90,11 @@ public class JPAMapToolActor {
 	protected AllEntitiesProcessor processor = new AllEntitiesProcessor();
 
 	protected JPAMapToolActor() {
-		initAnnotationStylePreference();
+		initPreferences();
 	}
 
-	public void initAnnotationStylePreference() {
-		processor.initAnnotationStylePreference();
+	public void initPreferences() {
+		processor.initPreferences();
 	}
 
 	public static JPAMapToolActor getInstance() {
@@ -183,7 +183,7 @@ public class JPAMapToolActor {
 						JdtUiMessages.JPAMapToolActor_message);
 			}
 		}
-		processor.saveAnnotationStylePreference();
+		processor.savePreferences();
 	}
 
 	private IWorkbenchWindow getActiveWorkbenchWindow() {

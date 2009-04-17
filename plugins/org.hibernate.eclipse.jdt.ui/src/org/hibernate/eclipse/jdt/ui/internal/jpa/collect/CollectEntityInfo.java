@@ -187,7 +187,44 @@ public class CollectEntityInfo extends ASTVisitor {
 				entityInfo.setAddVersionFlag(false);
 			}
 		}
+		else if (JPAConst.isAnnotationColumn(fullyQualifiedName) && node instanceof NormalAnnotation) {
+			updateAnnotationColumn((NormalAnnotation)node, mappedBy, fullyQualifiedName);
+		}
 		return true;
+	}
+	
+	public void updateAnnotationColumn(NormalAnnotation node, String mappedBy, String fullyQualifiedName) {
+		ITypeBinding tb = node.resolveTypeBinding();
+		CompilationUnit cu = null;
+		ASTNode astNode = node.getParent();
+		if (astNode instanceof FieldDeclaration) {
+			FieldDeclaration fd = (FieldDeclaration)astNode;
+			Iterator itVarNames = fd.fragments().iterator();
+			while (itVarNames.hasNext()) {
+				VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
+				String name = var.getName().getIdentifier();
+				entityInfo.updateAnnotationColumn(name, node, true);
+			}
+			cu = getCUFromTypeDeclaration(node);
+		}
+		else if (astNode instanceof MethodDeclaration) {
+			MethodDeclaration md = (MethodDeclaration)astNode;
+			if (md.getName().getIdentifier().startsWith("get")) { //$NON-NLS-1$
+				// the getter - process it
+				String name = getReturnIdentifier(md);
+				// process it like FieldDeclaration
+				entityInfo.updateAnnotationColumn(name, node, true);
+				cu = getCUFromFieldMethod(node);
+			}
+			else {
+				// ignore others
+			}
+		}
+		if (cu != null) {
+			if (tb == null) {
+				entityInfo.addRequiredImport(JPAConst.IMPORT_COLUMN);
+			}
+		}
 	}
 	
 	public void updateAnnotationRelInfo(Annotation node, String mappedBy, String fullyQualifiedName,
@@ -443,6 +480,13 @@ public class CollectEntityInfo extends ASTVisitor {
 									entityInfo.setAddVersionFlag(true);
 								}
 							}
+						}
+					}
+					if ("java.lang.String".equals(tb.getBinaryName())) { //$NON-NLS-1$
+						Iterator itVarNames = list.iterator();
+						while (itVarNames.hasNext()) {
+							String name = (String)itVarNames.next();
+							entityInfo.updateAnnotationColumn(name, null, false);
 						}
 					}
 				}

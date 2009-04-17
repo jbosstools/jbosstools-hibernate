@@ -24,10 +24,14 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Text;
 import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.process.AnnotStyle;
@@ -135,7 +139,7 @@ public class EntitiesList extends UserInputWizardPage {
 			idx = 2;
 		}
 		generateChoice.select(idx);
-		final ModifyListener ml = new ModifyListener() {
+		final ModifyListener mlGenerateChoice = new ModifyListener() {
 
 			public void modifyText(ModifyEvent e) {
 				int idx = ((Combo)e.getSource()).getSelectionIndex();
@@ -155,7 +159,55 @@ public class EntitiesList extends UserInputWizardPage {
 			}
 			
 		};
-		generateChoice.addModifyListener(ml);
+		generateChoice.addModifyListener(mlGenerateChoice);
+		
+		/** /
+		// TODO: implement enable optimistic locking functionality
+		Label labelOptLock = new Label(combolabel, SWT.NULL);
+		labelOptLock.setText(JdtUiMessages.AllEntitiesProcessor_enable_optimistic_locking);
+		Button checkboxOptLock = new Button(combolabel, SWT.CHECK);
+		checkboxOptLock.setSelection(params.getEnableOptLock());
+		final Listener mlOptLock = new Listener() {
+
+			public void handleEvent(Event e) {
+				params.setEnableOptLock(((Button)e.widget).getSelection());
+				params.reCollectModification(data.getBufferManager(), data.getEntities());
+			}
+			
+		};
+		checkboxOptLock.addListener(SWT.Selection, mlOptLock);
+		/**/
+
+		Label labelDefaultStrLength = new Label(combolabel, SWT.NULL);
+		labelDefaultStrLength.setText(JdtUiMessages.AllEntitiesProcessor_default_string_length);
+		Text textDefaultStrLength = new Text(combolabel, SWT.SINGLE | SWT.BORDER | SWT.TRAIL);
+		textDefaultStrLength.setText(String.valueOf(params.getDefaultStrLength()));
+		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
+			.grab(true, true).applyTo(textDefaultStrLength);
+		textDefaultStrLength.addListener(SWT.Verify, new Listener() {
+			public void handleEvent(Event e) {
+				for (int i = 0; i < e.text.length(); i++) {
+					char val = e.text.charAt(i);
+					if (!('0' <= val && val <= '9')) {
+						e.doit = false;
+						return;
+					}
+				}
+			}
+		});
+		final ModifyListener mlDefaultStrLength = new ModifyListener() {
+
+			public void modifyText(ModifyEvent e) {
+				if (e == null || !(e.getSource() instanceof Text)) {
+					return;
+				}
+				params.setDefaultStrLength(Integer.valueOf(((Text)e.getSource()).getText()));
+				params.reCollectModification(data.getBufferManager(), data.getEntities());
+			}
+			
+		};
+		textDefaultStrLength.addModifyListener(mlDefaultStrLength);
+		
 		setControl(container);
 	}
 }

@@ -10,13 +10,15 @@
   ******************************************************************************/
 package org.hibernate.eclipse.jdt.ui.internal.jpa.common;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+
+import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.MemberValuePair;
+import org.eclipse.jdt.core.dom.NormalAnnotation;
 
 /**
  * Service place to collect information about entity class.
@@ -101,6 +103,11 @@ public class EntityInfo {
 	 * field id -> RefEntityInfo
 	 */
 	protected Map<String, RefEntityInfo> references = new TreeMap<String, RefEntityInfo>();
+	/*
+	 * store declared column information for particular field 
+	 * field id -> RefColumnInfo
+	 */
+	protected Map<String, RefColumnInfo> columns = new TreeMap<String, RefColumnInfo>();
 	/*
 	 * fully qualified entity name -> Set<RefFieldInfo>
 	 * this is generated from references map for easy information get
@@ -211,6 +218,7 @@ public class EntityInfo {
 		else {
 			removeRequiredImport(JPAConst.IMPORT_VERSION);
 		}
+		updateColumnAnnotationImport(false);
 		Iterator<Map.Entry<String, RefEntityInfo>> referencesIt = 
 			getReferences().entrySet().iterator();
 		while (referencesIt.hasNext()) {
@@ -252,6 +260,15 @@ public class EntityInfo {
 		}
 		if (primaryIdName == null) {
 			primaryIdName = ""; //$NON-NLS-1$
+		}
+	}
+	
+	public void updateColumnAnnotationImport(boolean nonDefault) {
+		if (isNonColumnAnnotatedStringField() && nonDefault) {
+			addRequiredImport(JPAConst.IMPORT_COLUMN);
+		}
+		else {
+			removeRequiredImport(JPAConst.IMPORT_COLUMN);
 		}
 	}
 
@@ -402,6 +419,52 @@ public class EntityInfo {
 		else {
 			fromMethodCounter++;
 		}
+	}
+
+	public void updateAnnotationColumn(String fieldId, NormalAnnotation node, boolean exist) {
+		if (columns == null || fieldId == null) {
+			return;
+		}
+		RefColumnInfo rci = columns.get(fieldId);
+		if (rci == null) {
+			rci = new RefColumnInfo(fieldId);
+		}
+		if (!rci.isExist()) {
+			rci.setExist(exist);
+		}
+		if (node != null) {
+			Map<String, Expression> rciValues = rci.getValues();
+			Iterator it = node.values().iterator();
+			while (it.hasNext()) {
+				Object obj = it.next();
+				if (obj instanceof MemberValuePair) {
+					MemberValuePair mvp = (MemberValuePair)obj;
+					rciValues.put(mvp.getName().getIdentifier(), mvp.getValue());
+				}
+			}
+		}
+		columns.put(fieldId, rci);
+	}
+
+	public RefColumnInfo getRefColumnInfo(String fieldId) {
+		return columns.get(fieldId);
+	}
+
+	/**
+	 * returns true in case of there is String field which is not
+	 * annotated with @Column
+	 */
+	public boolean isNonColumnAnnotatedStringField() {
+		boolean res = false;
+		Iterator<Map.Entry<String, RefColumnInfo>> it = columns.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<String, RefColumnInfo> entry = it.next();
+			if (!entry.getValue().isExist()) {
+				res = true;
+				break;
+			}
+		}
+		return res;
 	}
 
 	public Set<RefFieldInfo> getRefFieldInfoSet(String fullyQualifiedName) {

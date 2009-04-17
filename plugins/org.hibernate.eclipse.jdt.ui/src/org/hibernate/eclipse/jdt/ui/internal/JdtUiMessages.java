@@ -7,6 +7,8 @@ public class JdtUiMessages extends NLS {
 	public static String AllEntitiesProcessor_header;
 	public static String AllEntitiesProcessor_message;
 	public static String AllEntitiesProcessor_setup_annotation_generation_preference;
+	public static String AllEntitiesProcessor_enable_optimistic_locking;
+	public static String AllEntitiesProcessor_default_string_length;
 	public static String AllEntitiesProcessor_annotate_fields;
 	public static String AllEntitiesProcessor_annotate_getters;
 	public static String AllEntitiesProcessor_auto_select_from_class_preference;

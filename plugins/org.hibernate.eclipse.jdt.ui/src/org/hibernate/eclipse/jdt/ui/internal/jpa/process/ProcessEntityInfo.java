@@ -28,6 +28,7 @@ import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
+import org.eclipse.jdt.core.dom.NumberLiteral;
 import org.eclipse.jdt.core.dom.QualifiedName;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SimpleType;
@@ -41,6 +42,7 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.CollectEntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.JPAConst;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.OwnerType;
+import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefColumnInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefEntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefFieldInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefType;
@@ -69,6 +71,14 @@ public class ProcessEntityInfo extends ASTVisitor {
 	 * annotation style
 	 */
 	protected AnnotStyle annotationStyle = AnnotStyle.FIELDS;
+	/**
+	 * default length for column which corresponds to String field
+	 */
+	protected int defaultStrLength = AllEntitiesProcessor.columnLength;
+	/**
+	 * flag to enable optimistic locking
+	 */
+	protected boolean enableOptLock = false;
 
 	public void setEntityInfo(EntityInfo entityInfo) {
 		this.entityInfo = entityInfo;
@@ -263,6 +273,35 @@ public class ProcessEntityInfo extends ASTVisitor {
 				}
 			}
 		}
+		if (type.isSimpleType() && (AllEntitiesProcessor.columnLength != defaultStrLength)) {
+			SimpleType simpleType = (SimpleType)type;
+			String typeName = simpleType.getName().getFullyQualifiedName();
+			if ("java.lang.String".equals(typeName) || "String".equals(typeName)) { //$NON-NLS-1$ //$NON-NLS-2$
+				String fieldId = null;
+				Iterator itVarNames = node.fragments().iterator();
+				while (itVarNames.hasNext()) {
+					VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
+					fieldId = var.getName().getIdentifier();
+					if (fieldId != null) {
+						break;
+					}
+				}
+				RefColumnInfo rci = entityInfo.getRefColumnInfo(fieldId);
+				if (rci == null || !rci.isExist()) {
+					// if there is no @Column annotation - create new @Column annotation
+					// with user defined default value length 
+					NormalAnnotation natd = rewriter.getAST().newNormalAnnotation();
+					natd.setTypeName(rewriter.getAST().newSimpleName(JPAConst.ANNOTATION_COLUMN));
+					ListRewrite lrw = rewriter.getListRewrite(node, FieldDeclaration.MODIFIERS2_PROPERTY);
+					lrw.insertFirst(natd, null);
+					MemberValuePair mvp = rewriter.getAST().newMemberValuePair();
+					mvp.setName(rewriter.getAST().newSimpleName("length")); //$NON-NLS-1$
+					NumberLiteral nl = rewriter.getAST().newNumberLiteral(String.valueOf(defaultStrLength));
+					mvp.setValue(nl);
+					natd.values().add(mvp);
+				}
+			}
+		}
 		if (type.isSimpleType() || type.isParameterizedType() || type.isArrayType()) {
 			Iterator itVarNames = node.fragments().iterator();
 			String fieldId = ""; //$NON-NLS-1$
@@ -374,6 +413,27 @@ public class ProcessEntityInfo extends ASTVisitor {
 					matd.setTypeName(rewriter.getAST().newSimpleName(JPAConst.ANNOTATION_VERSION));
 					ListRewrite lrw = rewriter.getListRewrite(node, MethodDeclaration.MODIFIERS2_PROPERTY);
 					lrw.insertFirst(matd, null);
+				}
+			}
+		}
+		if (type.isSimpleType() && (AllEntitiesProcessor.columnLength != defaultStrLength)) {
+			SimpleType simpleType = (SimpleType)type;
+			String typeName = simpleType.getName().getFullyQualifiedName();
+			if ("java.lang.String".equals(typeName) || "String".equals(typeName)) { //$NON-NLS-1$ //$NON-NLS-2$
+				String fieldId = returnIdentifier;
+				RefColumnInfo rci = entityInfo.getRefColumnInfo(fieldId);
+				if (rci == null) {
+					// if there is no @Column annotation - create new @Column annotation
+					// with user defined default value length 
+					NormalAnnotation natd = rewriter.getAST().newNormalAnnotation();
+					natd.setTypeName(rewriter.getAST().newSimpleName(JPAConst.ANNOTATION_COLUMN));
+					ListRewrite lrw = rewriter.getListRewrite(node, FieldDeclaration.MODIFIERS2_PROPERTY);
+					lrw.insertFirst(natd, null);
+					MemberValuePair mvp = rewriter.getAST().newMemberValuePair();
+					mvp.setName(rewriter.getAST().newSimpleName("length")); //$NON-NLS-1$
+					NumberLiteral nl = rewriter.getAST().newNumberLiteral(String.valueOf(defaultStrLength));
+					mvp.setValue(nl);
+					natd.values().add(mvp);
 				}
 			}
 		}
@@ -520,5 +580,21 @@ public class ProcessEntityInfo extends ASTVisitor {
 
 	public void setAnnotationStyle(AnnotStyle annotationStyle) {
 		this.annotationStyle = annotationStyle;
+	}
+	
+	public int getDefaultStrLength() {
+		return defaultStrLength;
+	}
+
+	public void setDefaultStrLength(int defaultStrLength) {
+		this.defaultStrLength = defaultStrLength;
+	}
+
+	public boolean getEnableOptLock() {
+		return enableOptLock;
+	}
+
+	public void setEnableOptLock(boolean enableOptLock) {
+		this.enableOptLock = enableOptLock;
 	}
 }
