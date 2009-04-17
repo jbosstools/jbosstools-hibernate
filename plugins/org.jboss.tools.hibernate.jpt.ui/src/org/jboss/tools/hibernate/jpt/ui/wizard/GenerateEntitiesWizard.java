@@ -20,7 +20,7 @@ import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
-import org.jboss.tools.hibernate.jpt.ui.internal.platform.HibernatePlatformUI;
+import org.jboss.tools.hibernate.jpt.ui.internal.platform.HibernateJpaPlatformUi;
 
 /**
  * @author Dmitry Geraskov
@@ -53,7 +53,7 @@ public class GenerateEntitiesWizard extends Wizard {
 	@Override
 	public boolean performFinish() {
 		String projectName = jpaProject.getName();
-		ILaunchConfigurationWorkingCopy wc = HibernatePlatformUI.createDefaultLaunchConfig(projectName);
+		ILaunchConfigurationWorkingCopy wc = HibernateJpaPlatformUi.createDefaultLaunchConfig(projectName);
 		if (wc != null) {
 			// SHOULD PRESENT THE CONFIGURATION!!!
 			String concoleConfigurationName = initPage.getConfigurationName();			
@@ -72,7 +72,7 @@ public class GenerateEntitiesWizard extends Wizard {
 			wc.setAttribute("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect"); //$NON-NLS-1$ //$NON-NLS-2$
 			wc.setAttribute("hibernate.temp.use_jdbc_metadata_defaults", true); //$NON-NLS-1$
 
-			wc.setAttribute(HibernateLaunchConstants.ATTR_EXPORTERS + '.' + HibernatePlatformUI.exporter_id + ".extension_id",  //$NON-NLS-1$
+			wc.setAttribute(HibernateLaunchConstants.ATTR_EXPORTERS + '.' + HibernateJpaPlatformUi.exporter_id + ".extension_id",  //$NON-NLS-1$
 						HibernateLaunchConstants.ATTR_PREFIX + "hbm2java"); //$NON-NLS-1$
 			try {
 				wc.launch(ILaunchManager.RUN_MODE, null);

@@ -3,10 +3,11 @@
 <plugin>
    <extension
          id="org.jboss.tools.hibernate.jpt"
-         point="org.eclipse.jpt.ui.jpaPlatform">
-      <jpaPlatform
-            class="org.jboss.tools.hibernate.jpt.ui.internal.platform.HibernatePlatformUI"
+         point="org.eclipse.jpt.ui.jpaPlatformUis">
+      <jpaPlatformUi
+            factoryClass="org.jboss.tools.hibernate.jpt.ui.internal.platform.HibernateJpaPlatformUiFactory"
+            jpaPlatform="hibernate"
             id="hibernate">
-      </jpaPlatform>  
+      </jpaPlatformUi>
     </extension>
 </plugin>

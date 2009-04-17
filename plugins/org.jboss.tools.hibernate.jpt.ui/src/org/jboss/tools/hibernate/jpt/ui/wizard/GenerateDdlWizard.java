@@ -23,7 +23,7 @@ import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
-import org.jboss.tools.hibernate.jpt.ui.internal.platform.HibernatePlatformUI;
+import org.jboss.tools.hibernate.jpt.ui.internal.platform.HibernateJpaPlatformUi;
 
 /**
  * @author Dmitry Geraskov
@@ -52,7 +52,7 @@ public class GenerateDdlWizard extends Wizard {
 	@Override
 	public boolean performFinish() {
 		String projectName = jpaProject.getName();
-		ILaunchConfigurationWorkingCopy wc = HibernatePlatformUI.createDefaultLaunchConfig(projectName);
+		ILaunchConfigurationWorkingCopy wc = HibernateJpaPlatformUi.createDefaultLaunchConfig(projectName);
 		if (wc != null) {
 			String concoleConfigurationName = initPage.getConfigurationName();
 			wc.setAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME, concoleConfigurationName);
@@ -63,8 +63,8 @@ public class GenerateDdlWizard extends Wizard {
 			prop.put("format", "true"); //$NON-NLS-1$ //$NON-NLS-2$
 			prop.put("scriptToConsole", "false"); //$NON-NLS-1$  //$NON-NLS-2$
 
-			wc.setAttribute(HibernatePlatformUI.full_exporter_id + ".properties", prop);  //$NON-NLS-1$
-			wc.setAttribute(HibernatePlatformUI.full_exporter_id + ".extension_id", HibernateLaunchConstants.ATTR_PREFIX + "hbm2ddl"); //$NON-NLS-1$ //$NON-NLS-2$
+			wc.setAttribute(HibernateJpaPlatformUi.full_exporter_id + ".properties", prop);  //$NON-NLS-1$
+			wc.setAttribute(HibernateJpaPlatformUi.full_exporter_id + ".extension_id", HibernateLaunchConstants.ATTR_PREFIX + "hbm2ddl"); //$NON-NLS-1$ //$NON-NLS-2$
 			try {
 				wc.launch(ILaunchManager.RUN_MODE, null);
 			} catch (CoreException e) {
