@@ -10,9 +10,10 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
+import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.internal.resource.java.AbstractResourceAnnotation;
+import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
@@ -30,7 +31,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
  * @author Dmitry Geraskov
  *
  */
-public class GenericGeneratorAnnotationImpl extends AbstractResourceAnnotation<Member> 
+public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member> 
 					implements GenericGeneratorAnnotation {
 	
 	private final AnnotationElementAdapter<String> nameAdapter;
@@ -221,6 +222,23 @@ public class GenericGeneratorAnnotationImpl extends AbstractResourceAnnotation<M
 		
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;
+		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.jpt.core.resource.java.AnnotationDefinition#buildAnnotation(org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember, org.eclipse.jdt.core.IAnnotation)
+		 */
+		public Annotation buildAnnotation(JavaResourcePersistentMember arg0,
+				IAnnotation arg1) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		/* (non-Javadoc)
+		 * @see org.eclipse.jpt.core.resource.java.AnnotationDefinition#buildNullAnnotation(org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember)
+		 */
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember arg0) {
+			// TODO Auto-generated method stub
+			return null;
 		}
 	}
 
