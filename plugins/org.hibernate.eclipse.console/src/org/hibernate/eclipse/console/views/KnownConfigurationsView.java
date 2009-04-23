@@ -148,6 +148,9 @@ public class KnownConfigurationsView extends ViewPart {
 			public void run() {
 				// TODO: make action dependent on having a connected console configuration!
 				ISelection selection = viewer.getSelection();
+				if (selection == null || selection.isEmpty()) {
+					return;
+				}
 				Object firstElement = ( (IStructuredSelection)selection).getFirstElement();
 				if(firstElement instanceof ConsoleConfiguration) {
 					new EditConsoleConfiguration((ConsoleConfiguration)firstElement).run();
@@ -161,7 +164,8 @@ public class KnownConfigurationsView extends ViewPart {
 						}
 					}
 				} else if (selection instanceof TreeSelection){
-					TreePath path = ((TreeSelection)selection).getPaths()[0];
+					TreePath[] paths = ((TreeSelection)selection).getPaths();
+					TreePath path = paths[0];
 					Object last = path.getLastSegment();
 					ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(path.getSegment(0));
 					if (last instanceof PersistentClass || last.getClass() == Property.class){
@@ -170,7 +174,17 @@ public class KnownConfigurationsView extends ViewPart {
 						} catch (Exception e) {
 							HibernateConsolePlugin.getDefault().logErrorMessage("Can't find mapping file.", e);	//$NON-NLS-1$
 						} 
-					}					
+					}
+					else {
+						for (int i = 0; i < paths.length; i++) {
+							if (viewer.getExpandedState(paths[i])) {
+								viewer.collapseToLevel(paths[i], 1);
+							}
+							else {
+								viewer.expandToLevel(paths[i], 1);
+							}
+						}
+					}
 				}
 			}
 		};
