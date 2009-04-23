@@ -64,10 +64,6 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 	public final static String storePropertyName = 
 		"hibernate.jpa.generation.AnnotationStyle.preference"; //$NON-NLS-1$
 	/**
-	 * @Column length - default value
-	 */
-	public final static int columnLength = 255;
-	/**
 	 * default length for column which corresponds to String field
 	 */
 	protected int defaultStrLength = columnLength;
@@ -281,6 +277,7 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 
 		//
 		entityInfo.updateColumnAnnotationImport(defaultStrLength != columnLength);
+		entityInfo.updateVersionImport(enableOptLock && entityInfo.isAddVersionFlag());
 		//
 		ChangeStructure cs = new ChangeStructure();
 		cs.fullyQualifiedName = fullyQualifiedName;

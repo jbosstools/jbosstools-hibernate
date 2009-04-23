@@ -138,6 +138,7 @@ public class JPAMapTest extends TestCase {
 			collector.collect(icu4);
 		}
 		collector.resolveRelations();
+		processor.setEnableOptLock(true);
 		processor.modify(javaProject, collector.getMapCUs_Info(), false);
 		//
 		checkItem("DocumentBase"); //$NON-NLS-1$

@@ -6,11 +6,11 @@ public class JdtUiMessages extends NLS {
 	private static final String BUNDLE_NAME = "org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages"; //$NON-NLS-1$
 	public static String AllEntitiesProcessor_header;
 	public static String AllEntitiesProcessor_message;
-	public static String AllEntitiesProcessor_setup_annotation_generation_preference;
+	public static String AllEntitiesProcessor_preferred_location_annotations;
 	public static String AllEntitiesProcessor_enable_optimistic_locking;
 	public static String AllEntitiesProcessor_default_string_length;
-	public static String AllEntitiesProcessor_annotate_fields;
-	public static String AllEntitiesProcessor_annotate_getters;
+	public static String AllEntitiesProcessor_fields;
+	public static String AllEntitiesProcessor_getters;
 	public static String AllEntitiesProcessor_auto_select_from_class_preference;
 	public static String CriteriaQuickAssistProcessor_copy_to_criteria_editor;
 	public static String CriteriaQuickAssistProcessor_errormessage;

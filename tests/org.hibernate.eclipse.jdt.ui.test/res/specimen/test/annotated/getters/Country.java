@@ -11,6 +11,7 @@
 package test.annotated.getters;
 
 import javax.persistence.Entity;
+import javax.persistence.Version;
 
 @Entity
 public class Country {
@@ -26,6 +27,17 @@ public class Country {
 	
 	public String getName() {
 		return this.name;
+	}
+
+	protected Integer version;
+	
+	@Version 
+	public Integer getVersion() {
+		return version;
+	}
+	
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 
 }

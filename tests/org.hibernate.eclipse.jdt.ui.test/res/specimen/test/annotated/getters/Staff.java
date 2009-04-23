@@ -11,6 +11,7 @@
 package test.annotated.getters;
 
 import javax.persistence.Entity;
+import javax.persistence.Version;
 
 @Entity
 public class Staff extends Document {
@@ -23,5 +24,16 @@ public class Staff extends Document {
 	public Staff(long code) {
 		this.code = code;
 		setDocType((byte)2);
+	}
+
+	protected Integer version;
+	
+	@Version 
+	public Integer getVersion() {
+		return version;
+	}
+	
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 }

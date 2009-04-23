@@ -12,6 +12,7 @@ package test.annotated.getters;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Version;
 
 /** 
  * @author Dmitry Geraskov
@@ -45,5 +46,16 @@ public class Visa {
 
 	public setCountries(Country[] countries){
 		this.countries = countries;
+	}
+
+	protected Integer version;
+	
+	@Version 
+	public Integer getVersion() {
+		return version;
+	}
+	
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 }

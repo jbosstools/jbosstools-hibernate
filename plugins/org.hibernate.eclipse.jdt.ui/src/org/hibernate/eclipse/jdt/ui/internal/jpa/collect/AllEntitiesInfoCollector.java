@@ -321,6 +321,21 @@ public class AllEntitiesInfoCollector {
 		}
 	}
 
+	public boolean hasMappedSuperclassVersion(String parentName) {
+		if (parentName == null) {
+			return false;
+		}
+		EntityInfo entryInfoParent = mapCUs_Info.get(parentName);
+		if (entryInfoParent == null) {
+			return false;
+		}
+		if (entryInfoParent.isAddMappedSuperclassFlag() || 
+			entryInfoParent.hasMappedSuperclassAnnotation()) {
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * process all entities pairs iteratively:
 	 * firstly process pairs with more information about and
@@ -328,6 +343,24 @@ public class AllEntitiesInfoCollector {
 	 */
 	public void resolveRelations() {
 		Iterator<Map.Entry<String, EntityInfo>> it = null;
+		// resolve parent/child relations
+		// in the case if a child has a @MappedSuperclass parent with version property
+		// we shouldn't add version property to the child
+		it = mapCUs_Info.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<String, EntityInfo> entry = it.next();
+			EntityInfo entityInfo = entry.getValue();
+			String parentName = entityInfo.getFullyQualifiedParentName();
+			if (hasMappedSuperclassVersion(parentName)) {
+				entityInfo.setAddVersionFlag(false);
+			}
+			else {
+				entityInfo.setAddVersionFlag(true);
+			}
+			entityInfo.updateVersionImport(entityInfo.isAddVersionFlag());
+		}
+		//
+		// resolve connection relations
 		int fromVariableCounter = 0;
 		int fromMethodCounter = 0;
 		// generate RefFieldInfoMap (for simple process)

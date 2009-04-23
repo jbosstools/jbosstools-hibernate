@@ -14,6 +14,7 @@ import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Version;
 
 @Entity
 public class Passport extends Document {
@@ -35,4 +36,14 @@ public class Passport extends Document {
 		return visas;
 	}
 
+	protected Integer version;
+	
+	@Version 
+	public Integer getVersion() {
+		return version;
+	}
+	
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
 }

@@ -22,6 +22,10 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.process.AnnotStyle;
  * @author Vitali
  */
 public interface IHibernateJPAWizardParams {
+	/**
+	 * @Column length - default value
+	 */
+	public final static int columnLength = 255;
 
 	public AnnotStyle getAnnotationStyle();
 

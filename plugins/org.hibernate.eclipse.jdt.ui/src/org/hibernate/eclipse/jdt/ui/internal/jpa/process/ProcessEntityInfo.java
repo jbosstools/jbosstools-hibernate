@@ -18,21 +18,28 @@ import java.util.Set;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.ArrayType;
+import org.eclipse.jdt.core.dom.Assignment;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.ExpressionStatement;
+import org.eclipse.jdt.core.dom.FieldAccess;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.NumberLiteral;
 import org.eclipse.jdt.core.dom.QualifiedName;
+import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SimpleType;
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.StringLiteral;
+import org.eclipse.jdt.core.dom.ThisExpression;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
@@ -46,6 +53,7 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefColumnInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefEntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefFieldInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefType;
+import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo.FieldGetterType;
 
 /**
  * Visitor to insert JPA annotations into proper 
@@ -204,6 +212,87 @@ public class ProcessEntityInfo extends ASTVisitor {
 				lrw.insertBefore(md, insertBeforeNode, null);
 			}
 		}
+		if (enableOptLock && entityInfo.isAddVersionFlag() && !entityInfo.hasVersionAnnotation()) {
+			// add property "version", add getter/setter getVersion/setVersion,
+			// add annotation for the property or for the getter
+			//
+			final String version = "version"; //$NON-NLS-1$
+			final String versionType = "Integer"; //$NON-NLS-1$
+			//
+			VariableDeclarationFragment vdFragment = rewriter.getAST().newVariableDeclarationFragment();
+			SimpleName variableName = rewriter.getAST().newSimpleName(version);
+			vdFragment.setName(variableName);
+			FieldDeclaration fieldVersion = rewriter.getAST().newFieldDeclaration(vdFragment);
+			Modifier modifier = rewriter.getAST().newModifier(Modifier.ModifierKeyword.PROTECTED_KEYWORD);
+			fieldVersion.modifiers().add(modifier);
+			Name typeName = rewriter.getAST().newName(versionType);
+			SimpleType type = rewriter.getAST().newSimpleType(typeName);
+			fieldVersion.setType(type);
+			//
+			MethodDeclaration mdGetter = rewriter.getAST().newMethodDeclaration();
+			modifier = rewriter.getAST().newModifier(Modifier.ModifierKeyword.PUBLIC_KEYWORD);
+			mdGetter.modifiers().add(modifier);
+			Block body = rewriter.getAST().newBlock();
+			ReturnStatement returnVersion = rewriter.getAST().newReturnStatement();
+			variableName = rewriter.getAST().newSimpleName(version);
+			returnVersion.setExpression(variableName);
+			body.statements().add(returnVersion);
+			mdGetter.setBody(body);
+			SimpleName sn = rewriter.getAST().newSimpleName("getVersion"); //$NON-NLS-1$
+			mdGetter.setName(sn);
+			typeName = rewriter.getAST().newName(versionType);
+			type = rewriter.getAST().newSimpleType(typeName);
+			mdGetter.setReturnType2(type);
+			//
+			MethodDeclaration mdSetter = rewriter.getAST().newMethodDeclaration();
+			modifier = rewriter.getAST().newModifier(Modifier.ModifierKeyword.PUBLIC_KEYWORD);
+			mdSetter.modifiers().add(modifier);
+			body = rewriter.getAST().newBlock();
+			Assignment assignment = rewriter.getAST().newAssignment();
+			FieldAccess fieldAccess = rewriter.getAST().newFieldAccess();
+			ThisExpression thisExpression = rewriter.getAST().newThisExpression();
+			fieldAccess.setExpression(thisExpression);
+			variableName = rewriter.getAST().newSimpleName(version);
+			fieldAccess.setName(variableName);
+			assignment.setLeftHandSide(fieldAccess);
+			variableName = rewriter.getAST().newSimpleName(version);
+			assignment.setRightHandSide(variableName);
+			ExpressionStatement expressionStatement = rewriter.getAST().newExpressionStatement(assignment);
+			body.statements().add(expressionStatement);
+			mdSetter.setBody(body);
+			sn = rewriter.getAST().newSimpleName("setVersion"); //$NON-NLS-1$
+			mdSetter.setName(sn);
+			SingleVariableDeclaration svd = rewriter.getAST().newSingleVariableDeclaration();
+			variableName = rewriter.getAST().newSimpleName(version);
+			svd.setName(variableName);
+			typeName = rewriter.getAST().newName(versionType);
+			type = rewriter.getAST().newSimpleType(typeName);
+			svd.setType(type);
+			mdSetter.parameters().add(svd);
+			//
+			ListRewrite lrw = rewriter.getListRewrite(node, TypeDeclaration.BODY_DECLARATIONS_PROPERTY);
+			if (entityInfo.getVersionFieldGetter() != FieldGetterType.FIELD && 
+					entityInfo.getVersionFieldGetter() != FieldGetterType.FIELD_GETTER) {
+				lrw.insertLast(fieldVersion, null);
+			}
+			if (entityInfo.getVersionFieldGetter() != FieldGetterType.GETTER && 
+					entityInfo.getVersionFieldGetter() != FieldGetterType.FIELD_GETTER) {
+				lrw.insertLast(mdGetter, null);
+				lrw.insertLast(mdSetter, null);
+			}
+			if (annotationStyle == AnnotStyle.FIELDS) {
+				MarkerAnnotation matd = rewriter.getAST().newMarkerAnnotation();
+				matd.setTypeName(rewriter.getAST().newSimpleName(JPAConst.ANNOTATION_VERSION));
+				lrw = rewriter.getListRewrite(fieldVersion, FieldDeclaration.MODIFIERS2_PROPERTY);
+				lrw.insertFirst(matd, null);
+			}
+			else if (annotationStyle == AnnotStyle.GETTERS) {
+				MarkerAnnotation matd = rewriter.getAST().newMarkerAnnotation();
+				matd.setTypeName(rewriter.getAST().newSimpleName(JPAConst.ANNOTATION_VERSION));
+				lrw = rewriter.getListRewrite(mdGetter, MethodDeclaration.MODIFIERS2_PROPERTY);
+				lrw.insertFirst(matd, null);
+			}
+		}
 		return true;		
 	}
 	
@@ -254,7 +343,7 @@ public class ProcessEntityInfo extends ASTVisitor {
 					lrw.insertFirst(matd, null);
 				}
 			}
-			if (entityInfo.isAddVersionFlag()) {
+			if (enableOptLock && entityInfo.isAddVersionFlag() && !entityInfo.hasVersionAnnotation()) {
 				Iterator itVarNames = node.fragments().iterator();
 				boolean addVersionMarker = false;
 				while (itVarNames.hasNext()) {
@@ -403,7 +492,7 @@ public class ProcessEntityInfo extends ASTVisitor {
 					lrw.insertFirst(matd, null);
 				}
 			}
-			if (entityInfo.isAddVersionFlag()) {
+			if (enableOptLock && entityInfo.isAddVersionFlag() && !entityInfo.hasVersionAnnotation()) {
 				boolean addVersionMarker = false;
 				if ("version".equals(returnIdentifier)) { //$NON-NLS-1$
 					addVersionMarker = true;

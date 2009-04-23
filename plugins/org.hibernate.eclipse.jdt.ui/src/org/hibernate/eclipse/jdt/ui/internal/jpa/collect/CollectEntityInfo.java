@@ -46,6 +46,7 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.JPAConst;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefType;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
+import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo.FieldGetterType;
 
 /**
  * Visitor to collect information about JPA entity.
@@ -175,6 +176,7 @@ public class CollectEntityInfo extends ASTVisitor {
 				}
 				entityInfo.setAddEntityFlag(false);
 				entityInfo.setAddMappedSuperclassFlag(false);
+				entityInfo.setHasMappedSuperclassAnnotation(true);
 			}
 		}
 		else if (JPAConst.isAnnotationVersion(fullyQualifiedName)) {
@@ -184,7 +186,7 @@ public class CollectEntityInfo extends ASTVisitor {
 				if (tb == null) {
 					entityInfo.addRequiredImport(JPAConst.IMPORT_VERSION);
 				}
-				entityInfo.setAddVersionFlag(false);
+				entityInfo.setHasVersionAnnotation(true);
 			}
 		}
 		else if (JPAConst.isAnnotationColumn(fullyQualifiedName) && node instanceof NormalAnnotation) {
@@ -398,7 +400,7 @@ public class CollectEntityInfo extends ASTVisitor {
 			}
 		}
 		// process it as a field declaration
-		boolean res = processFieldOrGetter(type, list);
+		boolean res = processFieldOrGetter(type, list, false);
 		return res;
 	}
 	
@@ -411,11 +413,28 @@ public class CollectEntityInfo extends ASTVisitor {
 			String name = var.getName().getIdentifier();
 			list.add(name);
 		}
-		boolean res = processFieldOrGetter(type, list);
+		boolean res = processFieldOrGetter(type, list, true);
 		return res;
 	}
+
+	public FieldGetterType updateFieldGetter(FieldGetterType fieldGetter, boolean fieldFlag) {
+		if (fieldGetter == FieldGetterType.FIELD) {
+			if (!fieldFlag) {
+				fieldGetter = FieldGetterType.FIELD_GETTER;
+			}
+		}
+		else if (fieldGetter == FieldGetterType.GETTER) {
+			if (fieldFlag) {
+				fieldGetter = FieldGetterType.FIELD_GETTER;
+			}
+		}
+		else if (fieldGetter == FieldGetterType.UNDEF) {
+			fieldGetter = fieldFlag ? FieldGetterType.FIELD : FieldGetterType.GETTER;
+		}
+		return fieldGetter;
+	}
 	
-	public boolean processFieldOrGetter(Type type, List<String> list) {
+	public boolean processFieldOrGetter(Type type, List<String> list, boolean fieldFlag) {
 		if (type == null) {
 			return false;
 		}
@@ -427,7 +446,9 @@ public class CollectEntityInfo extends ASTVisitor {
 				while (itVarNames.hasNext()) {
 					String name = (String)itVarNames.next();
 					if ("version".equalsIgnoreCase(name)) { //$NON-NLS-1$
-						entityInfo.setAddVersionFlag(true);
+						FieldGetterType versionFieldGetter = 
+							updateFieldGetter(entityInfo.getVersionFieldGetter(), fieldFlag);
+						entityInfo.setVersionFieldGetter(versionFieldGetter);
 					}
 					else {
 						entityInfo.addPrimaryIdCandidate(name);
@@ -464,7 +485,9 @@ public class CollectEntityInfo extends ASTVisitor {
 							while (itVarNames.hasNext()) {
 								String name = (String)itVarNames.next();
 								if ("version".equalsIgnoreCase(name)) { //$NON-NLS-1$
-									entityInfo.setAddVersionFlag(true);
+									FieldGetterType versionFieldGetter = 
+										updateFieldGetter(entityInfo.getVersionFieldGetter(), fieldFlag);
+									entityInfo.setVersionFieldGetter(versionFieldGetter);
 								}
 								else {
 									entityInfo.addPrimaryIdCandidate(name);
@@ -477,7 +500,9 @@ public class CollectEntityInfo extends ASTVisitor {
 							while (itVarNames.hasNext()) {
 								String name = (String)itVarNames.next();
 								if ("version".equalsIgnoreCase(name)) { //$NON-NLS-1$
-									entityInfo.setAddVersionFlag(true);
+									FieldGetterType versionFieldGetter = 
+										updateFieldGetter(entityInfo.getVersionFieldGetter(), fieldFlag);
+									entityInfo.setVersionFieldGetter(versionFieldGetter);
 								}
 							}
 						}

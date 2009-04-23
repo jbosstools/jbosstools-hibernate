@@ -17,6 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Version;
 
 @Entity
 public class FotoXPerson {
@@ -52,5 +53,16 @@ public class FotoXPerson {
 
 	public void setPersons(Set<PersonXFoto> persons) {
 		this.persons = persons;
+	}
+
+	protected Integer version;
+	
+	@Version 
+	public Integer getVersion() {
+		return version;
+	}
+	
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 }

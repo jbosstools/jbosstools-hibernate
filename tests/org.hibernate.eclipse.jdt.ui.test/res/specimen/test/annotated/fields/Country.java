@@ -13,6 +13,7 @@ package test.annotated.fields;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Version;
 
 @Entity
 public class Country {
@@ -32,6 +33,17 @@ public class Country {
 	
 	public String getName() {
 		return this.name;
+	}
+
+	@Version 
+	protected Integer version;
+	
+	public Integer getVersion() {
+		return version;
+	}
+	
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 
 }

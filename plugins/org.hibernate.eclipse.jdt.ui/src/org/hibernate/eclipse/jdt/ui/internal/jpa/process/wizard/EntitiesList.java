@@ -123,10 +123,10 @@ public class EntitiesList extends UserInputWizardPage {
         combolabel.setLayout(layout);
         layout.numColumns = 2;
 		Label labelChoice = new Label(combolabel, SWT.NULL);
-		labelChoice.setText(JdtUiMessages.AllEntitiesProcessor_setup_annotation_generation_preference);
+		labelChoice.setText(JdtUiMessages.AllEntitiesProcessor_preferred_location_annotations);
 		Combo generateChoice = new Combo(combolabel, SWT.READ_ONLY);
-		generateChoice.add(JdtUiMessages.AllEntitiesProcessor_annotate_fields);
-		generateChoice.add(JdtUiMessages.AllEntitiesProcessor_annotate_getters);
+		generateChoice.add(JdtUiMessages.AllEntitiesProcessor_fields);
+		generateChoice.add(JdtUiMessages.AllEntitiesProcessor_getters);
 		generateChoice.add(JdtUiMessages.AllEntitiesProcessor_auto_select_from_class_preference);
 		int idx = 0;
 		if (params.getAnnotationStyle().equals(AnnotStyle.FIELDS)) {
@@ -160,23 +160,6 @@ public class EntitiesList extends UserInputWizardPage {
 			
 		};
 		generateChoice.addModifyListener(mlGenerateChoice);
-		
-		/** /
-		// TODO: implement enable optimistic locking functionality
-		Label labelOptLock = new Label(combolabel, SWT.NULL);
-		labelOptLock.setText(JdtUiMessages.AllEntitiesProcessor_enable_optimistic_locking);
-		Button checkboxOptLock = new Button(combolabel, SWT.CHECK);
-		checkboxOptLock.setSelection(params.getEnableOptLock());
-		final Listener mlOptLock = new Listener() {
-
-			public void handleEvent(Event e) {
-				params.setEnableOptLock(((Button)e.widget).getSelection());
-				params.reCollectModification(data.getBufferManager(), data.getEntities());
-			}
-			
-		};
-		checkboxOptLock.addListener(SWT.Selection, mlOptLock);
-		/**/
 
 		Label labelDefaultStrLength = new Label(combolabel, SWT.NULL);
 		labelDefaultStrLength.setText(JdtUiMessages.AllEntitiesProcessor_default_string_length);
@@ -201,12 +184,32 @@ public class EntitiesList extends UserInputWizardPage {
 				if (e == null || !(e.getSource() instanceof Text)) {
 					return;
 				}
-				params.setDefaultStrLength(Integer.valueOf(((Text)e.getSource()).getText()));
+				String str = ((Text)e.getSource()).getText();
+				Integer val = IHibernateJPAWizardParams.columnLength;
+				if (str != null && str.length() > 0) {
+					val = Integer.valueOf(str);
+				}
+				params.setDefaultStrLength(val);
 				params.reCollectModification(data.getBufferManager(), data.getEntities());
 			}
 			
 		};
 		textDefaultStrLength.addModifyListener(mlDefaultStrLength);
+		
+		// enable optimistic locking functionality
+		Label labelOptLock = new Label(combolabel, SWT.NULL);
+		labelOptLock.setText(JdtUiMessages.AllEntitiesProcessor_enable_optimistic_locking);
+		Button checkboxOptLock = new Button(combolabel, SWT.CHECK);
+		checkboxOptLock.setSelection(params.getEnableOptLock());
+		final Listener mlOptLock = new Listener() {
+
+			public void handleEvent(Event e) {
+				params.setEnableOptLock(((Button)e.widget).getSelection());
+				params.reCollectModification(data.getBufferManager(), data.getEntities());
+			}
+			
+		};
+		checkboxOptLock.addListener(SWT.Selection, mlOptLock);
 		
 		setControl(container);
 	}

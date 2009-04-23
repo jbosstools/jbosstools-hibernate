@@ -58,6 +58,10 @@ public class EntityInfo {
 	 */
 	protected boolean addMappedSuperclassFlag = false;
 	/*
+	 * if true - "@MappedSuperclass" exist for the entity
+	 */
+	protected boolean hasMappedSuperclassAnnotation = false;
+	/*
 	 * existing imports set
 	 */
 	protected Set<String> setExistingImports = new TreeSet<String>();
@@ -95,9 +99,38 @@ public class EntityInfo {
 	 */
 	protected boolean addGeneratedValueFlag = true;
 	/*
-	 * if true - add version marker for "version" property 
+	 * if true - add version marker for "version" field 
 	 */
 	protected boolean addVersionFlag = false;
+	//
+	public enum FieldGetterType {
+		UNDEF(0),
+		FIELD(1),
+		GETTER(2),
+		FIELD_GETTER(3);
+		
+		FieldGetterType(int id) {
+	        this.id = id;
+	    }
+
+	    private int id;
+
+	    public int getId() {
+	        return id;
+	    }
+
+	    public static String getClassName() {
+	        return FieldGetterType.class.getName();
+	    }
+	}
+	/*
+	 * if true - entity has "version" field 
+	 */
+	protected FieldGetterType versionFieldGetter = FieldGetterType.UNDEF;
+	/*
+	 * if true - there is a property with @Version
+	 */
+	protected boolean hasVersionAnnotation = false;
 	/*
 	 * define relations between entities
 	 * field id -> RefEntityInfo
@@ -212,12 +245,7 @@ public class EntityInfo {
 		else {
 			removeRequiredImport(JPAConst.IMPORT_MAPPEDSUPERCLASS);
 		}
-		if (isAddVersionFlag()) {
-			addRequiredImport(JPAConst.IMPORT_VERSION);
-		}
-		else {
-			removeRequiredImport(JPAConst.IMPORT_VERSION);
-		}
+		updateVersionImport(FieldGetterType.UNDEF != getVersionFieldGetter());
 		updateColumnAnnotationImport(false);
 		Iterator<Map.Entry<String, RefEntityInfo>> referencesIt = 
 			getReferences().entrySet().iterator();
@@ -260,6 +288,15 @@ public class EntityInfo {
 		}
 		if (primaryIdName == null) {
 			primaryIdName = ""; //$NON-NLS-1$
+		}
+	}
+	
+	public void updateVersionImport(boolean includeFlag) {
+		if (includeFlag) {
+			addRequiredImport(JPAConst.IMPORT_VERSION);
+		}
+		else {
+			removeRequiredImport(JPAConst.IMPORT_VERSION);
 		}
 	}
 	
@@ -334,6 +371,14 @@ public class EntityInfo {
 
 	public void setAddMappedSuperclassFlag(boolean addMappedSuperclassFlag) {
 		this.addMappedSuperclassFlag = addMappedSuperclassFlag;
+	}
+
+	public boolean hasMappedSuperclassAnnotation() {
+		return hasMappedSuperclassAnnotation;
+	}
+
+	public void setHasMappedSuperclassAnnotation(boolean hasMappedSuperclassAnnotation) {
+		this.hasMappedSuperclassAnnotation = hasMappedSuperclassAnnotation;
 	}
 
 	public boolean isAddSerializableInterfaceFlag() {
@@ -510,6 +555,22 @@ public class EntityInfo {
 
 	public void setAddVersionFlag(boolean addVersionFlag) {
 		this.addVersionFlag = addVersionFlag;
+	}
+
+	public FieldGetterType getVersionFieldGetter() {
+		return versionFieldGetter;
+	}
+
+	public void setVersionFieldGetter(FieldGetterType versionFieldGetter) {
+		this.versionFieldGetter = versionFieldGetter;
+	}
+
+	public boolean hasVersionAnnotation() {
+		return hasVersionAnnotation;
+	}
+
+	public void setHasVersionAnnotation(boolean hasVersionAnnotation) {
+		this.hasVersionAnnotation = hasVersionAnnotation;
 	}
 
 	public void addExistingImport(String existingImport) {
