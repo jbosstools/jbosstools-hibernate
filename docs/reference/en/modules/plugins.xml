@@ -268,8 +268,8 @@
 
             <entry>
               <para>DTP provided connection that you can use instead of what is in cfg.xml and jpa
-                persistence.xml. It&apos;s possible to use already configured connection or
-                specify a new one here.</para>
+                persistence.xml. It&apos;s possible to use either already configured hibernate or
+                JPA connection or specify a new one here.</para>
             </entry>
 
             <entry>
