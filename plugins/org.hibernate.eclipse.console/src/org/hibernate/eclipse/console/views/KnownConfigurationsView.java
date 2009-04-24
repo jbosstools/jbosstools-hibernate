@@ -38,6 +38,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.actions.ActionContext;
 import org.eclipse.ui.actions.ActionGroup;
@@ -169,8 +170,9 @@ public class KnownConfigurationsView extends ViewPart {
 					Object last = path.getLastSegment();
 					ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(path.getSegment(0));
 					if (last instanceof PersistentClass || last.getClass() == Property.class){
+						IEditorPart res = null;
 						try {
-							OpenMappingAction.run(path, consoleConfiguration);
+							res = OpenMappingAction.run(path, consoleConfiguration);
 						} catch (Exception e) {
 							HibernateConsolePlugin.getDefault().logErrorMessage("Can't find mapping file.", e);	//$NON-NLS-1$
 						} 

@@ -92,7 +92,7 @@ public class OpenSourceAction extends SelectionListenerAction {
 	 * @throws PartInitException
 	 * @throws FileNotFoundException
 	 */
-	public IEditorPart run(Object selection, IJavaProject proj,
+	public static IEditorPart run(Object selection, IJavaProject proj,
 			String fullyQualifiedName) throws JavaModelException, PartInitException, FileNotFoundException {
 		if (fullyQualifiedName == null) return null;
 		String remainder = null;
@@ -141,7 +141,7 @@ public class OpenSourceAction extends SelectionListenerAction {
 		}
 	}
 
-	private void selectionToEditor(IJavaElement jElement, JavaEditor jEditor) {
+	private static void selectionToEditor(IJavaElement jElement, JavaEditor jEditor) {
 		if (jEditor != null) {
 			jEditor.setSelection(jElement);
 		}

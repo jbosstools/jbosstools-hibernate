@@ -33,7 +33,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.SelectionListenerAction;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.hibernate.EntityMode;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -81,7 +80,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 		}
 	}
 
-	public static void run(TreePath path, ConsoleConfiguration consoleConfiguration) throws PartInitException, JavaModelException, FileNotFoundException {
+	public static IEditorPart run(TreePath path, ConsoleConfiguration consoleConfiguration) throws PartInitException, JavaModelException, FileNotFoundException {
 		boolean isPropertySel = (path.getLastSegment().getClass() == Property.class);
 		if (isPropertySel){
 			Property propertySel = (Property)path.getLastSegment();
@@ -90,11 +89,10 @@ public class OpenMappingAction extends SelectionListenerAction {
 					|| (RootClass.class.isAssignableFrom(persClass.getClass())
 					&& persClass.getClass() != RootClass.class)){
 				Property parentProp = (Property)path.getParentPath().getLastSegment();
-				run(propertySel, parentProp, consoleConfiguration);
-				return;
+				return run(propertySel, parentProp, consoleConfiguration);
 			}
 		}
-		run(path.getLastSegment(), consoleConfiguration);
+		return run(path.getLastSegment(), consoleConfiguration);
 	}
 
 	/**
@@ -109,46 +107,51 @@ public class OpenMappingAction extends SelectionListenerAction {
 		IEditorPart editorPart = null;
 		IJavaProject proj = ProjectUtils.findJavaProject(consoleConfiguration);
 		java.io.File configXMLFile = consoleConfiguration.getPreferences().getConfigXMLFile();
-		if (configXMLFile == null) return null;
-		IResource resource = null;
-		if (selection instanceof Property){
-			Property p = (Property)selection;
-			if (p.getPersistentClass() == null) return null;
-			//use PersistentClass to open editor
-			resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, configXMLFile, p.getPersistentClass());
-			//editorPart = openMapping(p.getPersistentClass(), consoleConfiguration);
-		} else {
-			resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, configXMLFile, selection);
-			//editorPart = openMapping(selection, consoleConfiguration);
-		}
-		if (resource != null){
-			editorPart = openMapping(resource);
-			if (editorPart != null){
-				applySelectionToEditor(selection, editorPart);
+		if (configXMLFile != null) {
+			IResource resource = null;
+			if (selection instanceof Property) {
+				Property p = (Property)selection;
+				if (p.getPersistentClass() != null) {
+					//use PersistentClass to open editor
+					resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, configXMLFile, p.getPersistentClass());
+					//editorPart = openMapping(p.getPersistentClass(), consoleConfiguration);
+				}
 			}
-			return editorPart;
-		}
-
-		//try to find hibernate-annotations
-		PersistentClass rootClass = null;
-		if (selection instanceof PersistentClass) {
-			rootClass = (PersistentClass)selection;
-	    } else if (selection instanceof Property) {
-    		Property p = (Property)selection;
-    		if (p.getPersistentClass() == null) return null;
-    		rootClass = (PersistentClass)p.getPersistentClass();
-	    }
-		if (rootClass != null){
-			if (OpenFileActionUtils.rootClassHasAnnotations(consoleConfiguration, configXMLFile, rootClass)) {
-				String fullyQualifiedName = rootClass.getClassName();
-				editorPart =  new OpenSourceAction().run(selection, proj, fullyQualifiedName);
-				return editorPart;
+			else {
+				resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, configXMLFile, selection);
+				//editorPart = openMapping(selection, consoleConfiguration);
 			}
-		} else {
-			String out = NLS.bind(HibernateConsoleMessages.OpenMappingAction_mapping_for_not_found, selection);
-			throw new FileNotFoundException(out);
+			if (resource != null) {
+				editorPart = openMapping(resource);
+				if (editorPart != null){
+					applySelectionToEditor(selection, editorPart);
+				}
+			}
 		}
-		return null;
+		if (editorPart == null) {
+			//try to find hibernate-annotations
+			PersistentClass rootClass = null;
+			if (selection instanceof PersistentClass) {
+				rootClass = (PersistentClass)selection;
+		    }
+			else if (selection instanceof Property) {
+	    		Property p = (Property)selection;
+	    		if (p.getPersistentClass() != null) {
+	    			rootClass = (PersistentClass)p.getPersistentClass();
+	    		}
+		    }
+			if (rootClass != null){
+				if (OpenFileActionUtils.rootClassHasAnnotations(consoleConfiguration, configXMLFile, rootClass)) {
+					String fullyQualifiedName = rootClass.getClassName();
+					editorPart =  OpenSourceAction.run(selection, proj, fullyQualifiedName);
+				}
+			}
+			else {
+				String out = NLS.bind(HibernateConsoleMessages.OpenMappingAction_mapping_for_not_found, selection);
+				throw new FileNotFoundException(out);
+			}
+		}
+		return editorPart;
 	}
 
 	/**
@@ -218,7 +221,7 @@ public class OpenMappingAction extends SelectionListenerAction {
    			PersistentClass rootClass = parentProperty.getPersistentClass();
 			if (OpenFileActionUtils.rootClassHasAnnotations(consoleConfiguration, configXMLFile, rootClass)) {
 				String fullyQualifiedName =((Component)((Property) parentProperty).getValue()).getComponentClassName();
-				IEditorPart editor = new OpenSourceAction().run(compositeProperty, proj, fullyQualifiedName);
+				IEditorPart editor = OpenSourceAction.run(compositeProperty, proj, fullyQualifiedName);
 				return editor;
 			}
 	    }

@@ -10,11 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.veditor.editors.actions;
 
+import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.gef.ui.actions.SelectionAction;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PartInitException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.Property;
@@ -56,7 +59,11 @@ public class OpenMappingAction extends SelectionAction {
 				Property parentProperty = ((SpecialRootClass)((Property)selection).getPersistentClass()).getProperty();
 				try {
 					org.hibernate.eclipse.console.actions.OpenMappingAction.run(compositSel, parentProperty, consoleConfiguration);
-				} catch (Exception e) {
+				} catch (PartInitException e) {
+					HibernateConsolePlugin.getDefault().logErrorMessage(UIVEditorMessages.OpenMappingAction_canot_find_or_open_mapping_file, e);
+				} catch (JavaModelException e) {
+					HibernateConsolePlugin.getDefault().logErrorMessage(UIVEditorMessages.OpenMappingAction_canot_find_or_open_mapping_file, e);
+				} catch (FileNotFoundException e) {
 					HibernateConsolePlugin.getDefault().logErrorMessage(UIVEditorMessages.OpenMappingAction_canot_find_or_open_mapping_file, e);
 				}
 				continue;
@@ -66,7 +73,11 @@ public class OpenMappingAction extends SelectionAction {
 			}
 			try {
 				org.hibernate.eclipse.console.actions.OpenMappingAction.run(selection, consoleConfiguration);
-			} catch (Exception e) {
+			} catch (PartInitException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage(UIVEditorMessages.OpenMappingAction_open_mapping_file, e);
+			} catch (JavaModelException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage(UIVEditorMessages.OpenMappingAction_open_mapping_file, e);
+			} catch (FileNotFoundException e) {
 				HibernateConsolePlugin.getDefault().logErrorMessage(UIVEditorMessages.OpenMappingAction_open_mapping_file, e);
 			}
 
