@@ -22,6 +22,9 @@
 package org.hibernate.eclipse.console.views;
 
 
+import java.io.FileNotFoundException;
+
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -40,6 +43,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionContext;
 import org.eclipse.ui.actions.ActionGroup;
 import org.eclipse.ui.part.ViewPart;
@@ -161,6 +165,13 @@ public class KnownConfigurationsView extends ViewPart {
 					if(consoleConfiguration.isSessionFactoryCreated() ) {
 						String hql = node.getHQL();
 						if(StringHelper.isNotEmpty( hql )) {
+							try {
+								if (getSite() != null && getSite().getPage() != null) {
+									getSite().getPage().showView(QueryPageTabView.ID);
+								}
+							} catch (PartInitException e) {
+								HibernateConsolePlugin.getDefault().logErrorMessage("Can't show QueryPageTabView.", e);	//$NON-NLS-1$
+							}
 							consoleConfiguration.executeHQLQuery( hql );
 						}
 					}
@@ -173,9 +184,13 @@ public class KnownConfigurationsView extends ViewPart {
 						IEditorPart res = null;
 						try {
 							res = OpenMappingAction.run(path, consoleConfiguration);
-						} catch (Exception e) {
+						} catch (PartInitException e) {
 							HibernateConsolePlugin.getDefault().logErrorMessage("Can't find mapping file.", e);	//$NON-NLS-1$
-						} 
+						} catch (JavaModelException e) {
+							HibernateConsolePlugin.getDefault().logErrorMessage("Can't find mapping file.", e);	//$NON-NLS-1$
+						} catch (FileNotFoundException e) {
+							HibernateConsolePlugin.getDefault().logErrorMessage("Can't find mapping file.", e);	//$NON-NLS-1$
+						}
 					}
 					else {
 						for (int i = 0; i < paths.length; i++) {
