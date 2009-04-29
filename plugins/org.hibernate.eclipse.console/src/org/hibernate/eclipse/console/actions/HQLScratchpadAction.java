@@ -24,6 +24,7 @@ package org.hibernate.eclipse.console.actions;
 import org.eclipse.jface.viewers.TreePath;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
+import org.hibernate.console.node.BaseNode;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
@@ -69,6 +70,13 @@ public class HQLScratchpadAction extends OpenQueryEditorAction {
 				}
 			}
 			return "select o." + prName + " from " + enName + " o";  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+		}
+		else if (node instanceof BaseNode) {
+			BaseNode baseNode = (BaseNode)node;
+			ConsoleConfiguration consoleConfiguration = baseNode.getConsoleConfiguration();
+			if (consoleConfiguration.isSessionFactoryCreated()) {
+				return baseNode.getHQL();
+			}
 		}
 		return ""; //$NON-NLS-1$
 	}
