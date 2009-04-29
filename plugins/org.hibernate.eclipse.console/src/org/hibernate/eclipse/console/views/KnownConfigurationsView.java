@@ -164,6 +164,12 @@ public class KnownConfigurationsView extends ViewPart {
 					ConsoleConfiguration consoleConfiguration = node.getConsoleConfiguration();
 					if(consoleConfiguration.isSessionFactoryCreated() ) {
 						String hql = node.getHQL();
+						// open HQL Editor
+						HibernateConsolePlugin.getDefault().openScratchHQLEditor(
+								consoleConfiguration == null ? null : consoleConfiguration.getName(), hql);
+						/** /
+						// execute query and show results in 
+						// Hibernate Query result view - commented cause old version
 						if(StringHelper.isNotEmpty( hql )) {
 							try {
 								if (getSite() != null && getSite().getPage() != null) {
@@ -174,6 +180,7 @@ public class KnownConfigurationsView extends ViewPart {
 							}
 							consoleConfiguration.executeHQLQuery( hql );
 						}
+						/**/
 					}
 				} else if (selection instanceof TreeSelection){
 					TreePath[] paths = ((TreeSelection)selection).getPaths();
