@@ -36,7 +36,6 @@ import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Value;
 import org.hibernate.type.IntegerType;
 
@@ -78,7 +77,7 @@ public class HbmExporterTest extends TestCase {
 	 * @return
 	 */
 	protected Configuration getConfigurationFor(String... cuNames){
-		Set<ICompilationUnit> selectionCU = new HashSet();
+		Set<ICompilationUnit> selectionCU = new HashSet<ICompilationUnit>();
 		for (int i = 0; i < cuNames.length; i++) {
 			ICompilationUnit icu = Utils.findCompilationUnit(javaProject,
 					cuNames[i]);

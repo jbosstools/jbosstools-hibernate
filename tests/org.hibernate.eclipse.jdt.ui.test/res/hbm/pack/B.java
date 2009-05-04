@@ -4,7 +4,7 @@ package pack;
  * @author Emmanuel Bernard
  */
 public class B {
-	private Integer id;
+	private String id;
 	private int[] testIntArray;
 
 	public int[] getTestIntArray() {
