@@ -512,6 +512,7 @@ public class CollectEntityInfo extends ASTVisitor {
 						while (itVarNames.hasNext()) {
 							String name = (String)itVarNames.next();
 							entityInfo.updateAnnotationColumn(name, null, false);
+							entityInfo.addPrimaryIdCandidate(name);
 						}
 					}
 				}
