@@ -1,5 +1,7 @@
 package org.hibernate.eclipse.jdt.ui.test;
 
+import org.hibernate.eclipse.jdt.ui.test.hbmexporter.HbmExporterTest;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -13,6 +15,7 @@ public class JDTuiAllTests {
 		//suite.addTestSuite(HibernateErrorsTest2.class);
 		suite.addTestSuite(HQLQueryValidatorTest.class);
 		suite.addTestSuite(ELTransformerTest.class);
+		suite.addTestSuite(HbmExporterTest.class);
 		//$JUnit-END$
 		return suite;
 	}
