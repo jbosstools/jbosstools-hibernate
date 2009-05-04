@@ -142,5 +142,13 @@
 			</action>
 		</objectContribution>
     </extension>
-
+	<extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="hibernatewizards"
+            class="org.hibernate.eclipse.jdt.ui.wizards.NewHibernateMappingFileWizard"
+            icon="icons/hibernate_small_icon.gif"
+            id="org.hibernate.eclipse.console.wizards.NewHibernateMappingFileWizard"
+            name="%New_wizard_menu_New_mapping_file"/>
+      </extension>
 </plugin>

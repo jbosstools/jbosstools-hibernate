@@ -25,7 +25,8 @@ public class Customization {
 	/**
 	 * packages name pattern
 	 */
-	public static final String TEST_PACKS_PATTERN = ".*\\.bidi"; //$NON-NLS-1$
+	public static final String TEST_PACKS_PATTERN = 
+		"mapping\\.((idclass))"; //$NON-NLS-1$
 	
 	/**
 	 * is stop after missing package or run further

@@ -26,4 +26,5 @@ Export-Package: org.hibernate.eclipse.jdt.ui,
  org.hibernate.eclipse.jdt.ui.internal.jpa.actions,
  org.hibernate.eclipse.jdt.ui.internal.jpa.collect,
  org.hibernate.eclipse.jdt.ui.internal.jpa.common,
- org.hibernate.eclipse.jdt.ui.internal.jpa.process
+ org.hibernate.eclipse.jdt.ui.internal.jpa.process,
+ org.hibernate.eclipse.jdt.ui.wizards
