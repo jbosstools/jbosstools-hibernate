@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.hibernate.eclipse.console.actions;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -107,25 +108,23 @@ public class OpenMappingAction extends SelectionListenerAction {
 		IEditorPart editorPart = null;
 		IJavaProject proj = ProjectUtils.findJavaProject(consoleConfiguration);
 		java.io.File configXMLFile = consoleConfiguration.getPreferences().getConfigXMLFile();
-		if (configXMLFile != null) {
-			IResource resource = null;
-			if (selection instanceof Property) {
-				Property p = (Property)selection;
-				if (p.getPersistentClass() != null) {
-					//use PersistentClass to open editor
-					resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, configXMLFile, p.getPersistentClass());
-					//editorPart = openMapping(p.getPersistentClass(), consoleConfiguration);
-				}
+		IResource resource = null;
+		if (selection instanceof Property) {
+			Property p = (Property)selection;
+			if (p.getPersistentClass() != null) {
+				//use PersistentClass to open editor
+				resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, configXMLFile, p.getPersistentClass());
+				//editorPart = openMapping(p.getPersistentClass(), consoleConfiguration);
 			}
-			else {
-				resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, configXMLFile, selection);
-				//editorPart = openMapping(selection, consoleConfiguration);
-			}
-			if (resource != null) {
-				editorPart = openMapping(resource);
-				if (editorPart != null){
-					applySelectionToEditor(selection, editorPart);
-				}
+		}
+		else {
+			resource = OpenFileActionUtils.getResource(consoleConfiguration, proj, configXMLFile, selection);
+			//editorPart = openMapping(selection, consoleConfiguration);
+		}
+		if (resource != null) {
+			editorPart = openMapping(resource);
+			if (editorPart != null){
+				applySelectionToEditor(selection, editorPart);
 			}
 		}
 		if (editorPart == null) {

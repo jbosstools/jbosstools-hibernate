@@ -258,12 +258,15 @@ public class OpenFileActionUtils {
 	}
 
 	public static IResource getResource(ConsoleConfiguration consoleConfiguration, IJavaProject proj, java.io.File configXMLFile, Object element) {
-		Document doc = getDocument(consoleConfiguration, configXMLFile);
     	IResource resource = null;
-    	if (consoleConfiguration != null && proj != null && doc != null) {
+    	if (consoleConfiguration == null) {
+        	return resource;
+    	}
+		Document doc = getDocument(consoleConfiguration, configXMLFile);
+		if (proj != null && doc != null) {
         	Element sfNode = doc.getRootElement().element( HIBERNATE_TAG_SESSION_FACTORY );
     		Iterator elements = sfNode.elements(HIBERNATE_TAG_MAPPING).iterator();
-    		while ( elements.hasNext() ) {
+    		while (elements.hasNext() && resource == null) {
     			Element subelement = (Element) elements.next();
 				Attribute file = subelement.attribute( HIBERNATE_TAG_RESOURCE );
 				if (file != null) {
@@ -276,30 +279,40 @@ public class OpenFileActionUtils {
 								IPackageFragmentRoot packageFragmentRoot = packageFragmentRoots[i];
 								IPath path = packageFragmentRoot.getPath().append(file.getValue());
 								resource = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
-								
-								if (resource != null && resource.exists() &&
-										elementInResource(consoleConfiguration, resource, element)) return resource;
+								if (resource != null) {
+									if (resource.exists() && elementInResource(consoleConfiguration, resource, element)) {
+										break;
+									}
+									else {
+										resource = null;
+									}
+								}
 							}
 						}
-						resource = null;
 					} catch (JavaModelException e) {
+						resource = null;
 						HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenFileActionUtils_problems_while_get_project_package_fragment_roots, e);
 					}
 				}
-    		}
-
-        	java.io.File[] files = consoleConfiguration.getPreferences().getMappingFiles();
-    		for (int i = 0; i < files.length; i++) {
-    			java.io.File file = files[i];
+			}
+		}
+		if (resource == null) {
+	    	java.io.File[] files = consoleConfiguration.getPreferences().getMappingFiles();
+			for (int i = 0; i < files.length; i++) {
+				java.io.File file = files[i];
 				if (file != null) {
 					resource = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(file.getPath()));
-					if (resource != null &&
-							OpenFileActionUtils.elementInResource(consoleConfiguration, resource, element)) return resource;
+					if (resource != null) {
+						if (resource.exists() && elementInResource(consoleConfiguration, resource, element)) {
+							break;
+						}
+						else {
+							resource = null;
+						}
+					}
 				}
 			}
-    	}
-    	return null;
+		}
+    	return resource;
 	}
-
-
 }
