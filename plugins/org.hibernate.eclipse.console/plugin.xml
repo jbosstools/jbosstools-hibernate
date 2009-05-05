@@ -56,15 +56,16 @@
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">
+         
       <category
             name="Hibernate"
             id="hibernatewizards"/>
-      <wizard
+      <!--wizard
             category="hibernatewizards"
             class="org.hibernate.eclipse.console.wizards.NewHibernateMappingFileWizard"
             icon="icons/hibernate_small_icon.gif"
             id="org.hibernate.eclipse.console.wizards.NewHibernateMappingFileWizard"
-            name="Hibernate XML Mapping file (hbm.xml)"/>
+            name="Hibernate XML Mapping file (hbm.xml)"/-->
       <wizard
             category="hibernatewizards"
             class="org.hibernate.eclipse.console.wizards.NewConfigurationWizard"
