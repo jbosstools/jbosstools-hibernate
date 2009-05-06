@@ -10,15 +10,13 @@
   ******************************************************************************/
 package test.annotated.fields;
 
-import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
 @MappedSuperclass
 public abstract class DocumentBase {
-
-	@Column(length=200)
-	protected String globalDocumentIdentificator;
+	
+	protected boolean globalDocumentIdentificator;
 
 	@Version
 	protected Integer version;

@@ -15,7 +15,7 @@ import javax.persistence.Version;
 @javax.persistence.MappedSuperclass
 public abstract class DocumentBase {
 
-	protected String globalDocumentIdentificator;
+	protected boolean globalDocumentIdentificator;
 
 	protected Integer version;
 
