@@ -16,6 +16,8 @@ public class JDTuiAllTests {
 		suite.addTestSuite(HQLQueryValidatorTest.class);
 		suite.addTestSuite(ELTransformerTest.class);
 		suite.addTestSuite(HbmExporterTest.class);
+		suite.addTestSuite(JPAMapMockTests.class);
+		suite.addTestSuite(JPAMapTest.class);
 		//$JUnit-END$
 		return suite;
 	}
