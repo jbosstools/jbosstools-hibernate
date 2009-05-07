@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2007-2009 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.hibernate.eclipse.console.actions;
 
 import java.io.FileInputStream;
@@ -52,14 +62,20 @@ public class OpenFileActionUtils {
 	private static final String HIBERNATE_TAG_RESOURCE = "resource";					//$NON-NLS-1$
 	private static final String HIBERNATE_TAG_CATALOG = "catalog";						//$NON-NLS-1$
 	private static final String HIBERNATE_TAG_SCHEMA = "schema";						//$NON-NLS-1$
+	
+	private OpenFileActionUtils() {
+	}
 
 	public static IEditorPart openEditor(IWorkbenchPage page, IResource resource) throws PartInitException {
         return IDE.openEditor(page, (IFile) resource);
 	}
 
 
-	public static boolean rootClassHasAnnotations(ConsoleConfiguration consoleConfiguration, java.io.File configXMLFile, PersistentClass rootClass) {
-		if (configXMLFile == null) return true;
+	public static boolean rootClassHasAnnotations(ConsoleConfiguration consoleConfiguration, PersistentClass rootClass) {
+		java.io.File configXMLFile = consoleConfiguration.getPreferences().getConfigXMLFile();
+		if (configXMLFile == null) {
+			return true;
+		}
 		Document doc = getDocument(consoleConfiguration, configXMLFile);
 		return getElements(doc, HIBERNATE_TAG_MAPPING, HIBERNATE_TAG_CLASS, getPersistentClassName(rootClass)).hasNext();
 	}
@@ -82,15 +98,15 @@ public class OpenFileActionUtils {
 
 
 	private static boolean elementInResource(ConsoleConfiguration consoleConfiguration, IResource resource, Object element) {
+		boolean res = false;
 		if (element instanceof RootClass) {
-			return rootClassInResource(consoleConfiguration, resource, (RootClass)element);
+			res = rootClassInResource(consoleConfiguration, resource, (RootClass)element);
 		} else if (element instanceof Subclass) {
-			return subclassInResource(consoleConfiguration, resource, (Subclass)element);
+			res = subclassInResource(consoleConfiguration, resource, (Subclass)element);
 		} else if (element instanceof Table) {
-			return tableInResource(consoleConfiguration, resource, (Table)element);
-		} else {
-			return false;
+			res = tableInResource(consoleConfiguration, resource, (Table)element);
 		}
+		return res;
 	}
 
 	// TODO: this is *extremely* inefficient - no need to scan the whole tree again and again.
@@ -143,8 +159,6 @@ public class OpenFileActionUtils {
 					) {
 					return true;
 				}
-
-
 			}
 
 			Attribute classNameAttr = element.attribute( HIBERNATE_TAG_NAME );
@@ -257,11 +271,12 @@ public class OpenFileActionUtils {
 		return doc;
 	}
 
-	public static IResource getResource(ConsoleConfiguration consoleConfiguration, IJavaProject proj, java.io.File configXMLFile, Object element) {
+	public static IResource getResource(ConsoleConfiguration consoleConfiguration, IJavaProject proj, Object element) {
     	IResource resource = null;
     	if (consoleConfiguration == null) {
         	return resource;
     	}
+		java.io.File configXMLFile = consoleConfiguration.getPreferences().getConfigXMLFile();
 		Document doc = getDocument(consoleConfiguration, configXMLFile);
 		if (proj != null && doc != null) {
         	Element sfNode = doc.getRootElement().element( HIBERNATE_TAG_SESSION_FACTORY );
@@ -270,9 +285,9 @@ public class OpenFileActionUtils {
     			Element subelement = (Element) elements.next();
 				Attribute file = subelement.attribute( HIBERNATE_TAG_RESOURCE );
 				if (file != null) {
-					IPackageFragmentRoot[] packageFragmentRoots;
 					try {
-						packageFragmentRoots = proj.getAllPackageFragmentRoots();
+						IPackageFragmentRoot[] packageFragmentRoots = 
+							proj.getAllPackageFragmentRoots();
 						for (int i = 0; i < packageFragmentRoots.length; i++) {
 							//search in source folders.
 							if (packageFragmentRoots[i].getClass() == PackageFragmentRoot.class) {
