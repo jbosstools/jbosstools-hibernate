@@ -32,7 +32,6 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
-import org.eclipse.jpt.core.internal.resource.java.JavaResourcePersistentAttributeImpl;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTFieldAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -211,9 +210,9 @@ public class HibernateJPACoreTests extends TestCase {
 		final List<JavaResourcePersistentAttribute> resourceAttributesList2 = new ArrayList<JavaResourcePersistentAttribute>();
 		final JDTFieldAttribute jdtFieldAttribute = new JDTFieldAttribute(null,
 				"", 1, null, null); //$NON-NLS-1$
-		final JavaResourcePersistentAttribute jrpa1 = new JavaResourcePersistentAttributeImpl(
-				javaResourcePersistentType, jdtFieldAttribute);
-		resourceAttributesList2.add(jrpa1);
+		//final JavaResourcePersistentAttribute jrpa1 = new JavaResourcePersistentAttributeImpl(
+		//		javaResourcePersistentType, jdtFieldAttribute);
+		//resourceAttributesList2.add(jrpa1);
 		//
 		final GenericGeneratorAnnotationImpl genericGeneratorAnnotation = new GenericGeneratorAnnotationImpl(
 				javaResourcePersistentType, null);
@@ -352,12 +351,6 @@ public class HibernateJPACoreTests extends TestCase {
 				allowing(javaResourcePersistentType).persistableProperties();
 				will(returnValue(resourceAttributesList2.iterator()));
 
-				oneOf(javaResourcePersistentType).getRoot();
-				will(returnValue(javaResourceCompilationUnit));
-				
-				oneOf(javaResourceCompilationUnit).getAnnotationProvider();
-				will(returnValue(jpaAnnotationProvider));
-
 				allowing(xmlPersistenceUnit).getMappingFiles();
 				will(returnValue(mappingFiles));
 
@@ -411,8 +404,6 @@ public class HibernateJPACoreTests extends TestCase {
 
 				allowing(jpaProject).getDefaultSchema();
 				will(returnValue("schemaName")); //$NON-NLS-1$
-
-				oneOf(jpaProject).update();
 
 				allowing(jpaProject).getDefaultCatalog();
 				will(returnValue("catalogName")); //$NON-NLS-1$
