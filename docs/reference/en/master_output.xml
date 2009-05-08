@@ -5244,7 +5244,7 @@ public class Person implements Serializable {
         <para>The rest chapters have shown the aspects of using the <property moreinfo="none">Hibernate
             Tools</property> via Ant tasks.</para>
 
-        <para>Please, visit <ulink url="http://www.jboss.com/index.html?module=bb&op=viewforum&f=201">JBoss
+        <para>Please, visit <ulink url="http://www.jboss.com/index.html?module=bb&amp;op=viewforum&amp;f=201">JBoss
             Tools Users Forum</ulink> to leave questions or/and suggestions on the topic. Your
           feedback is always appreciated.</para>
       </section>
