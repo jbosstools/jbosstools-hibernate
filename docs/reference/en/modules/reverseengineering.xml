@@ -61,13 +61,13 @@
 <hibernate-reverse-engineering>
 
 <type-mapping>
- <!-- jdbc-type is name fom java.sql.Types -->
+ <!-- jdbc-type is name for java.sql.Types -->
  <sql-type jdbc-type="VARCHAR" length='20' hibernate-type="SomeUserType" /> 
  <sql-type jdbc-type="VARCHAR" length='1' hibernate-type="yes_no" />
- <!-- length, scale and precision can be used to specify the mapping precisly -->
+ <!-- length, scale and precision can be used to specify the mapping precisely -->
  <sql-type jdbc-type="NUMERIC"  precision='1' hibernate-type="boolean" /> 
  <!-- the type-mappings are ordered. This mapping will be consulted last, 
-  thus overriden by the previous one if precision=1 for the column -->
+  thus overridden by the previous one if precision=1 for the column -->
  <sql-type jdbc-type="NUMERIC"  hibernate-type="long" /> 
 </type-mapping>
 

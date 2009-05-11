@@ -268,8 +268,8 @@
 
             <entry>
               <para>DTP provided connection that you can use instead of what is in cfg.xml and jpa
-                persistence.xml. It&apos;s possible to use already configured connection or
-                specify a new one here.</para>
+                persistence.xml. It&apos;s possible to use either already configured hibernate or
+                JPA connection or specify a new one here.</para>
             </entry>
 
             <entry>
@@ -807,7 +807,7 @@
               </entry>
 
               <entry>
-                <para>A table that has a multi-colum primary key a &lt;composite-id&gt;
+                <para>A table that has a multi-column primary key a &lt;composite-id&gt;
                   mapping will always be created. If this option is enabled and there are matching
                   foreign-keys each key column is still considered a 'basic' scalar (string, long,
                   etc.) instead of a reference to an entity. If you disable this option a
@@ -838,26 +838,23 @@
                   strategy.</para>
               </entry>
             </row>
-            
+
             <row>
               <entry>
                 <para>Detect one-to-one associations</para>
               </entry>
-              
+
               <entry>
-                <para>
-                  Reverse engineering detects one-to-one associations via primary key and both hbm.xml and annotation generation generates the proper code for it.
-                </para>
-                <para>
-                  The detection is enabled by default (except for Seam 1.2 and Seam 2.0) reverse engineering.
-                  For Hibernate Tools generation there is a checkbox to disable if not wanted.
-        
-                </para>
+                <para> Reverse engineering detects one-to-one associations via primary key and both
+                  hbm.xml and annotation generation generates the proper code for it. </para>
+                <para> The detection is enabled by default (except for Seam 1.2 and Seam 2.0)
+                  reverse engineering. For Hibernate Tools generation there is a checkbox to disable
+                  if not wanted. </para>
               </entry>
             </row>
-            
-            
-            
+
+
+
 
             <row>
               <entry>
@@ -1240,13 +1237,13 @@
       <tip>
         <title>Tip:</title>
 
-        <para>If the property is a directory, it is
-          possible to browse directories in the Value field.</para>
+        <para>If the property is a directory, it is possible to browse directories in the Value
+          field.</para>
       </tip>
-      
+
       <figure>
         <title>Specifying the Property Value</title>
-        
+
         <mediaobject>
           <imageobject>
             <imagedata fileref="images/plugins/plugins_8b.png"/>
@@ -1899,44 +1896,39 @@
       support Eclipse Dali integration what now makes it possible to use a Hibernate as a complete
       JPA development platform.</para>
 
-    <para>When starting your new JPA project from <emphasis>
-        <property>New > Other... > JPA > JPA Project</property>
+    <para>When starting a new JPA project from <emphasis>
+        <property>New &gt; Other &gt; JPA &gt; JPA Project</property>
       </emphasis> (or simply <emphasis>
-        <property>New > JPA Project</property>
-      </emphasis> in <property>JPA Perspective</property>) on the JPA Facet page you&apos;ll be
-      prompted to choose Hibernate as a target platform.</para>
+        <property>New &gt; JPA Project</property>
+      </emphasis> in <property>JPA Perspective</property>), the first wizard page looks as
+      follows.</para>
+
+    <figure>
+      <title>Starting JPA Project</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/plugins/dali_integration1.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>It&apos;s possible here to select a target runtime and change the project
+      configuration, or you can leave everything as it is.</para>
+
+    <para>On the JPA Facet page you should choose Hibernate as a target platform. Also select the
+      proper database connection, if it is defined, or add a new one by clicking the <emphasis>
+        <property>Add connection</property>
+      </emphasis> link.</para>
+
+    <para>Hitting <emphasis>
+        <property>Finish</property>
+      </emphasis> will generate the project.</para>
 
     <figure>
       <title>Targeting at Hibernate Platform</title>
       <mediaobject>
         <imageobject>
-          <imagedata fileref="images/plugins/plugins_23.png"/>
-        </imageobject>
-      </mediaobject>
-    </figure>
-
-    <para>By enabling Hibernate platform specific features you can now generate DDL and Entities.
-      For that find <emphasis>
-        <property>JPA Tools > Generate DDL.../Generate Entities...</property>
-      </emphasis> options in the context menu of your JPA project.</para>
-
-    <figure>
-      <title>Generate DDL/Entities</title>
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="images/plugins/plugins_24.png"/>
-        </imageobject>
-      </mediaobject>
-    </figure>
-
-    <para>The Generate DDL/Entities wizards first will ask you to choose the <property>Console
-        Configuration</property>.</para>
-
-    <figure>
-      <title>Generate Entities Wizard</title>
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="images/plugins/plugins_25.png"/>
+          <imagedata fileref="images/plugins/dali_integration2.png"/>
         </imageobject>
       </mediaobject>
     </figure>
@@ -1944,8 +1936,76 @@
     <note>
       <title>Note:</title>
 
-      <para>Please note, currently the wizards require that you have a <link linkend="console_conf"
-          >Hibernate Console Configuration</link> already configured.</para>
+      <para>Please note, if you choose Hibernate as a platform while creating a JPA/Dali project, a
+        Hibernate Console Configuration for the project is created automatically when the
+        wizard finishes its work. It allows a full usage of <property>Hibernate Tools</property>
+        features without additional setup.</para>
     </note>
+
+    <para>By enabling Hibernate platform specific features you can now generate DDL and Entities.
+      For that find <emphasis>
+        <property>JPA Tools > Generate DDL/Generate Entities</property>
+      </emphasis> options in the context menu of your JPA project.</para>
+
+    <figure>
+      <title>Generate DDL/Entities</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/plugins/dali_integration3.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <note>
+      <title>Note:</title>
+
+      <para>Please, remember to put the proper database driver to the classpath of your
+        project.</para>
+    </note>
+
+    <para>The <property>Generate DDL/Entities wizards</property> first will ask you to choose the directory where all
+      output will be written.</para>
+
+    <figure>
+      <title>Generate Entities Wizard</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/plugins/dali_integration4.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>To generate entities you can use:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>a Hibernate Console Configuration (proposed by default)</para>
+        <para>Just make sure that the <emphasis>
+            <property>Use Console Configuration</property>
+        </emphasis> checkbox is selected and choose a needed configuration from the <emphasis>
+          <property>Console
+          configurations</property></emphasis> list box.</para>
+        
+        <figure>
+          <title>Generate Entities Wizard</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/plugins/dali_integration5.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+      </listitem>
+    </itemizedlist>
+
+    <itemizedlist>
+      <listitem>
+        <para>or a DTP connection directly</para>
+        <para>Just uncheck <emphasis>
+          <property>Use Console Configuration</property>
+        </emphasis> and adjust database settings.</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>Thus, you can now have the Hibernate runtime support in Eclipse JPA projects.</para>
   </section>
 </chapter>
