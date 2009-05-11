@@ -18,8 +18,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
@@ -81,17 +81,23 @@ public class LaunchConfigurationResourceNameChange extends Change {
 			IWorkspace workspace = ResourcesPlugin.getWorkspace();
 			IWorkspaceRoot root = workspace.getRoot();
 			IPath rootLoacation = root.getLocation();
-			IPath oldConfigLocation = fLaunchConfiguration.getLocation();
-			int matchSegment = oldConfigLocation.matchingFirstSegments(rootLoacation);
-			IPath relativePath = oldConfigLocation.removeFirstSegments(matchSegment);
-			relativePath = relativePath.setDevice(null).makeAbsolute();
+			IPath oldConfigLocationPath = fLaunchConfiguration.getLocation();
+			if (oldConfigLocationPath == null && fLaunchConfiguration.getFile() != null){
+				oldConfigLocationPath = fLaunchConfiguration.getFile().getFullPath();
+			}
+			if (oldConfigLocationPath != null){
+				int matchSegment = oldConfigLocationPath.matchingFirstSegments(rootLoacation);
+				IPath relativePath = oldConfigLocationPath.removeFirstSegments(matchSegment);
+				relativePath = relativePath.setDevice(null).makeAbsolute();
 
-			if (HibernateRefactoringUtil.isAttributeChanged(relativePath.toOSString(), fOldPath)){
-				matchSegment = relativePath.matchingFirstSegments(fOldPath);
-				IPath newLaunchPath = fNewPath.append(relativePath.removeFirstSegments(matchSegment));
-				IFile[] files = root.findFilesForLocation(rootLoacation.append(newLaunchPath));
-				if (files.length > 0){
-					fLaunchConfiguration = DebugPlugin.getDefault().getLaunchManager().getLaunchConfiguration(files[0]);
+				if (HibernateRefactoringUtil.isAttributeChanged(relativePath.toOSString(), fOldPath)){
+					matchSegment = relativePath.matchingFirstSegments(fOldPath);
+					IPath newLaunchPath = fNewPath.append(relativePath.removeFirstSegments(matchSegment));
+					IFile file = root.getFileForLocation(rootLoacation.append(newLaunchPath));
+					if (file != null){
+						fLaunchConfiguration = fLaunchConfiguration.getWorkingCopy();
+						((ILaunchConfigurationWorkingCopy) fLaunchConfiguration).setContainer(file.getParent());
+					}
 				}
 			}
 		}
