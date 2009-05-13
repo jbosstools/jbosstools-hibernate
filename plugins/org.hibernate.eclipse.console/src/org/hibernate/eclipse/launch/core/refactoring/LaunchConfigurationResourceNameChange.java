@@ -18,8 +18,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
@@ -95,8 +95,7 @@ public class LaunchConfigurationResourceNameChange extends Change {
 					IPath newLaunchPath = fNewPath.append(relativePath.removeFirstSegments(matchSegment));
 					IFile file = root.getFileForLocation(rootLoacation.append(newLaunchPath));
 					if (file != null){
-						fLaunchConfiguration = fLaunchConfiguration.getWorkingCopy();
-						((ILaunchConfigurationWorkingCopy) fLaunchConfiguration).setContainer(file.getParent());
+						fLaunchConfiguration = DebugPlugin.getDefault().getLaunchManager().getLaunchConfiguration(file);
 					}
 				}
 			}
