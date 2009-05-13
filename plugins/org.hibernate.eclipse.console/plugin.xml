@@ -666,9 +666,23 @@
             id="org.hibernate.eclipse.launch.core.refactoring.RenameResourceParticipant"
             name="Launch Configurations resource rename updates">
            <enablement>
-            <with variable="element">
-                   <instanceof value="org.eclipse.core.resources.IResource"/>
-            </with>
+           	<and>
+				<or>
+					<with variable="processorIdentifier">
+						<equals
+							value="org.eclipse.jdt.ui.renameJavaProjectProcessor">
+						</equals>
+					</with>
+					<with variable="processorIdentifier">
+						<equals
+							value="org.eclipse.ltk.core.refactoring.renameResourceProcessor">
+						</equals>
+					</with>
+				</or>
+	            <with variable="element">
+	                   <instanceof value="org.eclipse.core.resources.IResource"/>
+	            </with>
+			</and> 
          </enablement>
       </renameParticipant>
       <renameParticipant
