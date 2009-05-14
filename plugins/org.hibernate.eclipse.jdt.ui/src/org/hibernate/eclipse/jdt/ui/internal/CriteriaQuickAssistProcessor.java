@@ -39,7 +39,7 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.eclipse.console.actions.OpenMappingAction;
+import org.hibernate.eclipse.console.actions.OpenFileActionUtils;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.jdt.ui.Activator;
 
@@ -62,7 +62,7 @@ public class CriteriaQuickAssistProcessor extends BasicQuickAssistProcessor  {
 				public void apply(IDocument target) {
 					//IEditorPart editorPart = HibernateConsolePlugin.getDefault().openCriteriaEditor(getName(), getContents());
 					IEditorPart editorPart = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-					ITextEditor[] textEditors = OpenMappingAction.getTextEditors(editorPart);
+					ITextEditor[] textEditors = OpenFileActionUtils.getTextEditors(editorPart);
 					if (textEditors.length == 0) return;
 					new SaveQueryEditorListener(textEditors[0], getName(), getContents(), position, SaveQueryEditorListener.CriteriaEditor);
 				}
