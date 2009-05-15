@@ -698,21 +698,29 @@ public class AllEntitiesInfoCollector {
 		if (cu == null) {
 			return;
 		}
-		if (cu.types() != null && cu.types().size() > 0 ) {
-			Object tmp = cu.types().get(0);
-			if (!(tmp instanceof TypeDeclaration)) {
-				// ignore EnumDeclaration & AnnotationTypeDeclaration
-				return;
-			}
+		if (cu.types() == null || cu.types().size() == 0 ) {
+			return;
 		}
-		String fullyQualifiedName = cu.getTypeRoot().findPrimaryType().getFullyQualifiedName();
+		Object tmp = cu.types().get(0);
+		if (!(tmp instanceof TypeDeclaration)) {
+			// ignore EnumDeclaration & AnnotationTypeDeclaration
+			return;
+		}
+		String fullyQualifiedName = null;
+		//TODO: should inspect all types in cu? so next method to get fullyQualifiedName:
+		//((TypeDeclaration)tmp).resolveBinding().getBinaryName()
+		if (cu.getTypeRoot() == null || cu.getTypeRoot().findPrimaryType() == null) {
+			//fullyQualifiedName = ((TypeDeclaration)tmp).resolveBinding().getBinaryName();
+			return;
+		} else {
+			fullyQualifiedName = cu.getTypeRoot().findPrimaryType().getFullyQualifiedName();
+		}
 		if (mapCUs_Info.containsKey(fullyQualifiedName)) {
 			return;
 		}
 		CollectEntityInfo finder = new CollectEntityInfo();
 		cu.accept(finder);
 		EntityInfo result = finder.getEntityInfo();
-		
 		if (result != null) {
 			result.adjustParameters();
 			mapCUs_Info.put(fullyQualifiedName, result);
