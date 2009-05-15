@@ -1,13 +1,13 @@
 /*******************************************************************************
-  * Copyright (c) 2007-2009 Red Hat, Inc.
-  * Distributed under license by Red Hat, Inc. All rights reserved.
-  * This program is made available under the terms of the
-  * Eclipse Public License v1.0 which accompanies this distribution,
-  * and is available at http://www.eclipse.org/legal/epl-v10.html
-  *
-  * Contributor:
-  *     Red Hat, Inc. - initial API and implementation
-  ******************************************************************************/
+ * Copyright (c) 2007-2009 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.hibernate.eclipse.jdt.ui.wizards;
 
 import java.util.ArrayList;
@@ -33,6 +33,7 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -46,19 +47,16 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
  *
  */
 public class NewHibernateMappingFilePage extends WizardPage {
-	
+
 	private TableViewer viewer;
-	
-	private Map<IJavaProject, Collection<EntityInfo>> project_infos;
 
 	/**
 	 * @param pageName
 	 */
-	protected NewHibernateMappingFilePage(Map<IJavaProject, Collection<EntityInfo>> project_infos) {
+	protected NewHibernateMappingFilePage() {
 		super("");
 		setTitle(HibernateConsoleMessages.NewHibernateMappingFilePage_hibernate_xml_mapping_file);
-		setDescription(HibernateConsoleMessages.NewHibernateMappingFilePage_this_wizard_creates);		
-		this.project_infos = project_infos;
+		setDescription(HibernateConsoleMessages.NewHibernateMappingFilePage_this_wizard_creates);
 	}
 
 	public void createControl(Composite parent) {
@@ -69,64 +67,64 @@ public class NewHibernateMappingFilePage extends WizardPage {
 		sc.pack(false);
 
 		Composite container = new Composite(sc, SWT.NULL);
-        sc.setContent(container);
+		sc.setContent(container);
 
-        FillLayout layout = new FillLayout();
+		Layout layout = new FillLayout();
 		container.setLayout(layout);
-		
+
 		Table table =  new Table(container, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION );
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		table.pack(false);
 		createTableColumns(table);
-		viewer = createTableFilterViewer(table);
-		viewer.setInput(project_infos);
-		
+		viewer = createTableViewer(table);
+		viewer.setInput(null);
+
 		sc.setMinSize(container.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-		setControl(sc);
+		setControl(container);
 	}
-	
+
 	private void createTableColumns(Table table){
 		int coulmnIndex = 0;
 		TableColumn column =  new TableColumn(table, SWT.CENTER, coulmnIndex++);
 		column.setText("!");
 		column.setWidth(20);
-		column.setResizable(false);				
-		
-		if (project_infos.keySet().size() > 1){
-			column = new TableColumn(table, SWT.LEFT, coulmnIndex++);
-			column.setText("Project name");
-			column.setWidth(120);
-		}
-		
+		column.setResizable(false);
+
+		//if (project_infos.keySet().size() > 1){
+		column = new TableColumn(table, SWT.LEFT, coulmnIndex++);
+		column.setText("Project name");
+		column.setWidth(120);
+		//}
+
 		column = new TableColumn(table, SWT.LEFT, coulmnIndex++);
 		column.setText("Class name");
 		column.setWidth(150);
-		
+
 		column = new TableColumn(table, SWT.LEFT, coulmnIndex++);
 		column.setText("File name");
 		column.setWidth(150);
 	}
-	
-	private TableViewer createTableFilterViewer(Table table) {
+
+	private TableViewer createTableViewer(Table table) {
 		TableViewer result = new TableViewer( table );
 		result.setUseHashlookup( true );
-		if (project_infos.keySet().size() > 1){
-			result.setColumnProperties( new String[] {"create", "project",   //$NON-NLS-1$//$NON-NLS-2$
-					"class", "file",} ); //$NON-NLS-1$ //$NON-NLS-2$
-		} else {
+		//if (project_infos.keySet().size() > 1){
+		result.setColumnProperties( new String[] {"create", "project",   //$NON-NLS-1$//$NON-NLS-2$
+				"class", "file",} ); //$NON-NLS-1$ //$NON-NLS-2$
+		/*} else {
 			result.setColumnProperties( new String[] {"create",   //$NON-NLS-1$
 					"class", "file",} ); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-		
+		}*/
 
 		CellEditor[] editors = new CellEditor[result.getColumnProperties().length];
 		editors[0] = new CheckboxCellEditor( result.getTable() );
 		editors[1] = new TextCellEditor( result.getTable() );
 		editors[2] = new TextCellEditor( result.getTable() );
-		if (project_infos.keySet().size() > 1){
-			editors[3] = new TextCellEditor( result.getTable() );
-		}
+		//if (project_infos.keySet().size() > 1){
+		editors[3] = new TextCellEditor( result.getTable() );
+		//}
+
 
 		result.setCellEditors( editors );
 		result.setCellModifier( new TableCellModifier(result) );
@@ -134,35 +132,39 @@ public class NewHibernateMappingFilePage extends WizardPage {
 		result.setContentProvider( new TableContentProvider() );
 		return result;
 	}
-	
+
+	public void setInput(Map<IJavaProject, Collection<EntityInfo>> project_infos){
+		viewer.setInput(project_infos);
+	}
+
 	private class TableLine {
-		
+
 		public String projectName;
-		
+
 		public String className;
-		
+
 		public String fileName;
-		
+
 		public Boolean isCreate = true;
-		
+
 		public TableLine(String projectName, String className){
 			this(projectName, className, className + ".hbm.xml",true);
 		}
-		
+
 		public TableLine(String projectName, String className, String fileName, boolean isCreate){
 			this.projectName = projectName;
 			this.className = className;
 			this.fileName = fileName;
 			this.isCreate = isCreate;
 		}
-		
+
 	}
-	
+
 	private class TableContentProvider implements IStructuredContentProvider {
 
-		public Object[] getElements(Object inputElement) {			
+		public Object[] getElements(Object inputElement) {
 			if (inputElement instanceof Map) {
-				List<TableLine> result = new ArrayList<TableLine>();	
+				List<TableLine> result = new ArrayList<TableLine>();
 				Map<IJavaProject, Collection<EntityInfo>> configs = (Map<IJavaProject, Collection<EntityInfo>>)inputElement;
 				for (Entry<IJavaProject, Collection<EntityInfo>> entry : configs.entrySet()) {
 					Iterator<EntityInfo> iter = entry.getValue().iterator();
@@ -170,35 +172,32 @@ public class NewHibernateMappingFilePage extends WizardPage {
 						EntityInfo ei = iter.next();
 						result.add(new TableLine(entry.getKey().getProject().getName(), ei.getName()));
 					}
-				}			
+				}
 				return result.toArray();
 			}
 			return new Object[0];
 		}
 
-		public void dispose() {	}
+		public void dispose() {}
 
-		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-			// TODO Auto-generated method stub
-			
-		}
-		
+		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {	}
+
 	}
-	
+
 	private class TableLableProvider extends LabelProvider implements ITableLabelProvider  {
-		
+
 		private final TableViewer tv;
 
 		public TableLableProvider(TableViewer tv) {
 			this.tv = tv;
 		}
-		
+
 		public Image getColumnImage(Object element, int columnIndex) {
 			String property = (String) tv.getColumnProperties()[columnIndex];
 			if("create".equals(property)) {
 				TableLine tl = (TableLine) element;
 				String key = tl.isCreate ? null : ImageConstants.CLOSE ; // TODO: find a better image
-				return EclipseImages.getImage(key);			
+				return EclipseImages.getImage(key);
 			}
 			return  null;
 		}
@@ -206,19 +205,21 @@ public class NewHibernateMappingFilePage extends WizardPage {
 		public String getColumnText(Object element, int columnIndex) {
 			String property = (String) tv.getColumnProperties()[columnIndex];
 			TableLine tl = (TableLine) element;
-			
+
 			if ("class".equals(property)){
 				return tl.className;
 			} else if ("project".equals(property)){
 				return tl.projectName;
 			} else if ("file".equals(property)){
 				return tl.fileName;
-			} else return "";
-		}		
+			} else {
+				return "";
+			}
+		}
 	}
-	
+
 	private class TableCellModifier implements ICellModifier {
-		
+
 		private final TableViewer tv;
 
 		public TableCellModifier(TableViewer tv) {
@@ -253,8 +254,8 @@ public class NewHibernateMappingFilePage extends WizardPage {
 			} else if ("create".equals(property)){
 				tl.isCreate = (Boolean)value;
 			}
-			
+
 			tv.update(new Object[] { tl }, new String[] { property });
-		}		
+		}
 	}
 }

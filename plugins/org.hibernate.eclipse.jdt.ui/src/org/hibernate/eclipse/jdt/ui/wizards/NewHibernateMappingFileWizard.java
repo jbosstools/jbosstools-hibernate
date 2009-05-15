@@ -1,16 +1,16 @@
 /*******************************************************************************
-  * Copyright (c) 2007-2009 Red Hat, Inc.
-  * Distributed under license by Red Hat, Inc. All rights reserved.
-  * This program is made available under the terms of the
-  * Eclipse Public License v1.0 which accompanies this distribution,
-  * and is available at http://www.eclipse.org/legal/epl-v10.html
-  *
-  * Contributor:
-  *     Red Hat, Inc. - initial API and implementation
-  ******************************************************************************/
+ * Copyright (c) 2007-2009 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.hibernate.eclipse.jdt.ui.wizards;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,35 +19,32 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import org.eclipse.core.internal.filebuffers.SynchronizableDocument;
 import org.eclipse.core.internal.resources.File;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.internal.core.JavaElement;
 import org.eclipse.jdt.internal.core.JavaElementInfo;
 import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.jdt.internal.core.PackageFragment;
 import org.eclipse.jdt.internal.core.PackageFragmentRoot;
-import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.TextSelection;
-import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.dialogs.IPageChangingListener;
+import org.eclipse.jface.dialogs.PageChangingEvent;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ImageConstants;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
@@ -60,32 +57,81 @@ import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
  * @author Dmitry Geraskov
  *
  */
-public class NewHibernateMappingFileWizard extends Wizard implements INewWizard {
-	
+public class NewHibernateMappingFileWizard extends Wizard implements INewWizard, IPageChangingListener{
+
 	/**
 	 * Selected compilation units for startup processing,
 	 * result of processing selection
 	 */
 	private Set<ICompilationUnit> selectionCU = new HashSet<ICompilationUnit>();
-	
+
 	private Map<IJavaProject, Collection<EntityInfo>> project_infos = new HashMap<IJavaProject, Collection<EntityInfo>>();
 
-	
+	private IStructuredSelection selection;
+
+	private NewHibernateMappingFilePage page2 = null;
+
+	private NewHibernateMappingElementsSelectionPage page1 = null;
+
 	public NewHibernateMappingFileWizard(){
 		setDefaultPageImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.NEW_WIZARD) );
+		setNeedsProgressMonitor(true);
 	}
-	
+
 	@Override
 	public void addPages() {
 		super.addPages();
-		addPage(new NewHibernateMappingFilePage(project_infos));
+		page1 = new NewHibernateMappingElementsSelectionPage(selection);
+		page1.setTitle( HibernateConsoleMessages.NewHibernateMappingFileWizard_create_hibernate_xml_mapping_file );
+		page1.setDescription( HibernateConsoleMessages.NewHibernateMappingFileWizard_create_new_xml_mapping_file );
+		addPage(page1);
+		page2 = new NewHibernateMappingFilePage();
+		addPage(page2);
+		if (getContainer() instanceof WizardDialog) {
+			((WizardDialog) getContainer()).addPageChangingListener(this);
+		} else {
+			throw new IllegalArgumentException("Must use WizardDialog implementation as WizardContainer");
+		}
 	}
-	
+
+	public void handlePageChanging(PageChangingEvent event) {
+		if (event.getTargetPage() == page2){
+			selection = page1.getSelection();
+			try {
+				getContainer().run(false, false, new IRunnableWithProgress(){
+
+					public void run(IProgressMonitor monitor) throws InvocationTargetException,
+					InterruptedException {
+						monitor.beginTask("Find dependent compilation units", selection.size() + 1);
+						Iterator it = selection.iterator();
+						int done = 1;
+						while (it.hasNext()) {
+							Object obj = it.next();
+							processJavaElements(obj);
+							monitor.worked(done++);
+							Thread.currentThread();
+							Thread.sleep(1000);
+						}
+						initEntitiesInfo();
+						monitor.worked(1);
+						monitor.done();
+					}
+				});
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			page2.setInput(project_infos);
+		}
+	}
+
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		updateSelectedItems(selection);
-		initEntitiesInfo();
+		this.selection = selection;
 	}
-	
+
 	@Override
 	public boolean performFinish() {
 		Map<IJavaProject, Configuration> configs = createConfigurations();
@@ -95,13 +141,13 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard 
 
 			IResource container;
 			try {
-				container = entry.getKey().getPackageFragmentRoots().length > 0  
-										? entry.getKey().getPackageFragmentRoots()[0].getResource()
-										: entry.getKey().getResource();
-										
-				HibernateMappingExporter hce = new HibernateMappingExporter(config, 
+				container = entry.getKey().getPackageFragmentRoots().length > 0
+				? entry.getKey().getPackageFragmentRoots()[0].getResource()
+						: entry.getKey().getResource();
+
+				HibernateMappingExporter hce = new HibernateMappingExporter(config,
 						container.getLocation().toFile());
-				
+
 				hce.setGlobalSettings(hmgs);
 				//hce.setForEach("entity");
 				//hce.setFilePattern(file.getName());
@@ -110,7 +156,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard 
 				} catch (Exception e){
 					e.getCause().printStackTrace();
 				}
-		        container.refreshLocal(IResource.DEPTH_INFINITE, null);
+				container.refreshLocal(IResource.DEPTH_INFINITE, null);
 			} catch (JavaModelException e1) {
 				HibernateConsolePlugin.getDefault().log(e1);
 			} catch (CoreException e) {
@@ -121,8 +167,10 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard 
 	}
 	
 	protected void initEntitiesInfo(){
-		if (selectionCU.size() == 0) return;
-		AllEntitiesInfoCollector collector = new AllEntitiesInfoCollector();		
+		if (selectionCU.size() == 0) {
+			return;
+		}
+		AllEntitiesInfoCollector collector = new AllEntitiesInfoCollector();
 		Iterator<ICompilationUnit> it = selectionCU.iterator();
 
 		Map<IJavaProject, Set<ICompilationUnit>> mapJP_CUSet =
@@ -138,10 +186,10 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard 
 			set.add(cu);
 		}
 		Iterator<Map.Entry<IJavaProject, Set<ICompilationUnit>>>
-			mapIt = mapJP_CUSet.entrySet().iterator();
+		mapIt = mapJP_CUSet.entrySet().iterator();
 		while (mapIt.hasNext()) {
 			Map.Entry<IJavaProject, Set<ICompilationUnit>>
-				entry = mapIt.next();
+			entry = mapIt.next();
 			IJavaProject javaProject = entry.getKey();
 			Iterator<ICompilationUnit> setIt = entry.getValue().iterator();
 			collector.initCollector(javaProject);
@@ -155,78 +203,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard 
 
 		}
 	}
-	
-	private Map<IJavaProject, Configuration> createConfigurations() {
-		ConfigurationActor actor = new ConfigurationActor(selectionCU);
-		Map<IJavaProject, Configuration> configs = actor.createConfigurations();
-		return configs;
-	}	
 
-	protected void updateSelectedItems(ISelection sel) {
-		if (sel instanceof TextSelection) {
-			String fullyQualifiedName = ""; //$NON-NLS-1$
-			IDocument fDocument = null;
-			SynchronizableDocument sDocument = null;
-			org.eclipse.jdt.core.dom.CompilationUnit resultCU = null;
-			Class clazz = sel.getClass();
-			Field fd = null;
-			try {
-				fd = clazz.getDeclaredField("fDocument"); //$NON-NLS-1$
-			} catch (NoSuchFieldException e) {
-				// just ignore it!
-			}
-			if (fd != null) {
-				try {
-					fd.setAccessible(true);
-					fDocument = (IDocument)fd.get(sel);
-					if (fDocument instanceof SynchronizableDocument) {
-						sDocument = (SynchronizableDocument)fDocument;
-					}
-					if (sDocument != null) {
-						ASTParser parser = ASTParser.newParser(AST.JLS3);
-						parser.setSource(sDocument.get().toCharArray());
-						parser.setResolveBindings(false);
-						resultCU = (org.eclipse.jdt.core.dom.CompilationUnit) parser.createAST(null);
-					}
-					if (resultCU != null && resultCU.types().size() > 0 ) {
-						if (resultCU.getPackage() != null) {
-							fullyQualifiedName = resultCU.getPackage().getName().getFullyQualifiedName() + "."; //$NON-NLS-1$
-						}
-						else {
-							fullyQualifiedName = ""; //$NON-NLS-1$
-						}
-						Object tmp = resultCU.types().get(0);
-						if (tmp instanceof AbstractTypeDeclaration) {
-							fullyQualifiedName += ((AbstractTypeDeclaration)tmp).getName();
-						}
-						if (!(tmp instanceof TypeDeclaration)) {
-							// ignore EnumDeclaration & AnnotationTypeDeclaration
-							fullyQualifiedName = ""; //$NON-NLS-1$
-						}
-					}
-				} catch (IllegalArgumentException e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage("IllegalArgumentException: ", e); //$NON-NLS-1$
-				} catch (IllegalAccessException e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage("IllegalAccessException: ", e); //$NON-NLS-1$
-				} catch (SecurityException e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage("SecurityException: ", e); //$NON-NLS-1$
-				}
-			}
-			if (fullyQualifiedName.length() > 0) {
-				ICompilationUnit cu = Utils.findCompilationUnit(fullyQualifiedName);
-				selectionCU.add(cu);
-			}
-		}
-		else if (sel instanceof TreeSelection) {
-			TreeSelection treeSelection = (TreeSelection)sel;
-			Iterator it = treeSelection.iterator();
-			while (it.hasNext()) {
-				Object obj = it.next();
-				processJavaElements(obj);
-			}
-		}
-	}
-	
 	protected void processJavaElements(Object obj) {
 		if (obj instanceof ICompilationUnit) {
 			ICompilationUnit cu = (ICompilationUnit)obj;
@@ -239,8 +216,8 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard 
 				ICompilationUnit[] cus = Utils.findCompilationUnits(javaProject,
 						file.getFullPath());
 				if (cus != null) {
-					for (int i = 0; i < cus.length; i++) {
-						selectionCU.add(cus[i]);
+					for (ICompilationUnit cu : cus) {
+						selectionCU.add(cu);
 					}
 				}
 			}
@@ -255,8 +232,8 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard 
 				//HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
 			}
 			if (pfr != null) {
-				for (int i = 0; i < pfr.length; i++) {
-					processJavaElements(pfr[i]);
+				for (IPackageFragmentRoot element : pfr) {
+					processJavaElements(element);
 				}
 			}
 		}
@@ -270,13 +247,12 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard 
 				//HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
 			}
 			if (cus != null) {
-				for (int i = 0; i < cus.length; i++) {
-					selectionCU.add(cus[i]);
+				for (ICompilationUnit cu : cus) {
+					selectionCU.add(cu);
 				}
 			}
 		}
 		else if (obj instanceof PackageFragmentRoot) {
-			PackageFragmentRoot packageFragmentRoot = (PackageFragmentRoot)obj;
 			JavaElement javaElement = (JavaElement)obj;
 			JavaElementInfo javaElementInfo = null;
 			try {
@@ -287,8 +263,8 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard 
 			}
 			if (javaElementInfo != null) {
 				IJavaElement[] je = javaElementInfo.getChildren();
-				for (int i = 0; i < je.length; i++) {
-					processJavaElements(je[i]);
+				for (IJavaElement element : je) {
+					processJavaElements(element);
 				}
 			}
 		}
@@ -299,4 +275,11 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard 
 		}
 	}
 	
+
+	protected Map<IJavaProject, Configuration> createConfigurations() {
+		ConfigurationActor actor = new ConfigurationActor(selectionCU);
+		Map<IJavaProject, Configuration> configs = actor.createConfigurations();
+		return configs;
+	}
+
 }
