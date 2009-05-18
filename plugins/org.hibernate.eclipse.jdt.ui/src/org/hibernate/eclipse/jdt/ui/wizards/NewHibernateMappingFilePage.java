@@ -54,7 +54,7 @@ public class NewHibernateMappingFilePage extends WizardPage {
 	 * @param pageName
 	 */
 	protected NewHibernateMappingFilePage() {
-		super("");
+		super("");	//$NON-NLS-1$
 		setTitle(HibernateConsoleMessages.NewHibernateMappingFilePage_hibernate_xml_mapping_file);
 		setDescription(HibernateConsoleMessages.NewHibernateMappingFilePage_this_wizard_creates);
 	}
@@ -83,6 +83,12 @@ public class NewHibernateMappingFilePage extends WizardPage {
 		sc.setMinSize(container.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		setControl(container);
 	}
+	
+	public void setInput(Map<IJavaProject, Collection<EntityInfo>> project_infos){
+		viewer.setInput(project_infos);
+		//Hide "project" column if only 1 project's CUs selected
+		viewer.getTable().getColumn(1).setWidth(project_infos.size() == 1 ? 0 : 120);
+	}
 
 	private void createTableColumns(Table table){
 		int coulmnIndex = 0;
@@ -109,32 +115,21 @@ public class NewHibernateMappingFilePage extends WizardPage {
 	private TableViewer createTableViewer(Table table) {
 		TableViewer result = new TableViewer( table );
 		result.setUseHashlookup( true );
-		//if (project_infos.keySet().size() > 1){
-		result.setColumnProperties( new String[] {"create", "project",   //$NON-NLS-1$//$NON-NLS-2$
-				"class", "file",} ); //$NON-NLS-1$ //$NON-NLS-2$
-		/*} else {
-			result.setColumnProperties( new String[] {"create",   //$NON-NLS-1$
-					"class", "file",} ); //$NON-NLS-1$ //$NON-NLS-2$
-		}*/
+
+		result.setColumnProperties( new String[] {Columns.CREATE.toString(), 
+				Columns.PROJECT.toString(),	Columns.CLASS.toString(), Columns.FILE.toString()} ); 
 
 		CellEditor[] editors = new CellEditor[result.getColumnProperties().length];
 		editors[0] = new CheckboxCellEditor( result.getTable() );
 		editors[1] = new TextCellEditor( result.getTable() );
 		editors[2] = new TextCellEditor( result.getTable() );
-		//if (project_infos.keySet().size() > 1){
 		editors[3] = new TextCellEditor( result.getTable() );
-		//}
-
 
 		result.setCellEditors( editors );
 		result.setCellModifier( new TableCellModifier(result) );
 		result.setLabelProvider(new TableLableProvider(result));
 		result.setContentProvider( new TableContentProvider() );
 		return result;
-	}
-
-	public void setInput(Map<IJavaProject, Collection<EntityInfo>> project_infos){
-		viewer.setInput(project_infos);
 	}
 
 	private class TableLine {
@@ -158,6 +153,13 @@ public class NewHibernateMappingFilePage extends WizardPage {
 			this.isCreate = isCreate;
 		}
 
+	}
+	
+	private enum Columns {
+		PROJECT,
+		CLASS,
+		FILE,
+		CREATE
 	}
 
 	private class TableContentProvider implements IStructuredContentProvider {
@@ -194,7 +196,7 @@ public class NewHibernateMappingFilePage extends WizardPage {
 
 		public Image getColumnImage(Object element, int columnIndex) {
 			String property = (String) tv.getColumnProperties()[columnIndex];
-			if("create".equals(property)) {
+			if(Columns.CREATE.toString().equals(property)) {
 				TableLine tl = (TableLine) element;
 				String key = tl.isCreate ? null : ImageConstants.CLOSE ; // TODO: find a better image
 				return EclipseImages.getImage(key);
@@ -206,14 +208,14 @@ public class NewHibernateMappingFilePage extends WizardPage {
 			String property = (String) tv.getColumnProperties()[columnIndex];
 			TableLine tl = (TableLine) element;
 
-			if ("class".equals(property)){
+			if (Columns.CLASS.toString().equals(property)){
 				return tl.className;
-			} else if ("project".equals(property)){
+			} else if (Columns.PROJECT.toString().equals(property)){
 				return tl.projectName;
-			} else if ("file".equals(property)){
+			} else if (Columns.FILE.toString().equals(property)){
 				return tl.fileName;
 			} else {
-				return "";
+				return "";//$NON-NLS-1$
 			}
 		}
 	}
@@ -231,13 +233,13 @@ public class NewHibernateMappingFilePage extends WizardPage {
 		}
 
 		public Object getValue(Object element, String property) {
-			if ("class".equals(property)){
+			if (Columns.CLASS.toString().equals(property)){//$NON-NLS-1$
 				return ((TableLine)element).className;
-			} else if ("project".equals(property)){
+			} else if (Columns.PROJECT.toString().equals(property)){//$NON-NLS-1$
 				return ((TableLine)element).projectName;
-			} else if ("file".equals(property)){
+			} else if (Columns.FILE.toString().equals(property)){//$NON-NLS-1$
 				return ((TableLine)element).fileName;
-			} else if ("create".equals(property)){
+			} else if (Columns.CREATE.toString().equals(property)){//$NON-NLS-1$
 				return ((TableLine)element).isCreate;
 			}
 			return null;
@@ -245,13 +247,13 @@ public class NewHibernateMappingFilePage extends WizardPage {
 
 		public void modify(Object element, String property, Object value) {
 			TableLine tl = (TableLine)((TableItem)element).getData();
-			if ("class".equals(property)){
+			if (Columns.CLASS.toString().equals(property)){
 				tl.className = (String)value;
-			} else if ("project".equals(property)){
+			} else if (Columns.PROJECT.toString().equals(property)){
 				tl.projectName = (String)value;
-			} else if ("file".equals(property)){
+			} else if (Columns.FILE.toString().equals(property)){
 				tl.fileName = (String)value;
-			} else if ("create".equals(property)){
+			} else if (Columns.CREATE.toString().equals(property)){
 				tl.isCreate = (Boolean)value;
 			}
 

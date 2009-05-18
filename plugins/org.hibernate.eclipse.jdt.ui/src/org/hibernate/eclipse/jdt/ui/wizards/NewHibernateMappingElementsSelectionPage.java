@@ -20,7 +20,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Tree;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 
 public class NewHibernateMappingElementsSelectionPage extends WizardPage {
 
@@ -31,12 +31,8 @@ public class NewHibernateMappingElementsSelectionPage extends WizardPage {
 
 	private boolean fAllowMultiple = true;
 
-	private int fWidth = 50;
-
-	private int fHeight = 18;
-
 	public NewHibernateMappingElementsSelectionPage(IStructuredSelection selection) {
-		super("", "", null);
+		super("", "", null);	//$NON-NLS-1$ //$NON-NLS-2$
 		fCurrentSelection = selection;
 	}
 
@@ -44,31 +40,53 @@ public class NewHibernateMappingElementsSelectionPage extends WizardPage {
 		Composite composite = new Composite(parent, SWT.NULL);
 		composite.setLayout(new GridLayout());
 		createTreeViewer(composite);
-
-		GridData data = new GridData(GridData.FILL_BOTH);
-		data.widthHint = convertWidthInCharsToPixels(fWidth);
-		data.heightHint = convertHeightInCharsToPixels(fHeight);
-
-		Tree treeWidget = fViewer.getTree();
-		treeWidget.setLayoutData(data);
+		fViewer.getTree().setLayoutData(new GridData(GridData.FILL_BOTH));
 		setControl(composite);
+	}
+	
+	public IStructuredSelection getSelection(){
+		return fCurrentSelection;
+	}
+	
+
+	public void setAllowMultiple(boolean isAllowMultiple){
+		fAllowMultiple = isAllowMultiple;
 	}
 
 	protected TreeViewer createTreeViewer(Composite composite) {
 		int style = SWT.BORDER | (fAllowMultiple ?  SWT.MULTI : SWT.SINGLE);
-		fViewer = new TreeViewer(new Tree(composite, style));
+		fViewer = new TreeViewer(composite, style);
 		fViewer.setContentProvider(new StandardJavaElementContentProvider());
 		fViewer.setLabelProvider(new JavaElementLabelProvider());
 		fViewer.setFilters(getFilters());
-		fViewer.addSelectionChangedListener(getSelectionChangedListener());
+		fViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			public void selectionChanged(SelectionChangedEvent event) {
+				fCurrentSelection = (IStructuredSelection) event.getSelection();
+				updateStatus();
+			}
+		});
 		fViewer.setInput(getInput());
 		fViewer.setSelection(fCurrentSelection, true);
 		return fViewer;
 	}
 
 	protected ViewerFilter[] getFilters(){
-		return new ViewerFilter[] { new ViewerFilter() {
+		return new ViewerFilter[] { new ViewerFilter() {			
 
+			@Override
+			public boolean select(Viewer viewer, Object parentElement,
+					Object element) {
+				if (element instanceof JarPackageFragmentRoot) {
+					return false;
+				} else if (element instanceof ICompilationUnit) {
+					return true;
+				} else if (element instanceof IParent) {
+					return hasCompilationUnits((IParent)element);
+				}  else {
+					return false;
+				}
+			}
+			
 			public boolean hasCompilationUnits(IParent parent){
 				IJavaElement[] elements;
 				try {
@@ -89,20 +107,6 @@ public class NewHibernateMappingElementsSelectionPage extends WizardPage {
 				return false;
 			}
 
-			@Override
-			public boolean select(Viewer viewer, Object parentElement,
-					Object element) {
-				if (element instanceof JarPackageFragmentRoot) {
-					return false;
-				} else if (element instanceof ICompilationUnit) {
-					return true;
-				} else if (element instanceof IParent) {
-					return hasCompilationUnits((IParent)element);
-				}  else {
-					return false;
-				}
-			}
-
 		} };
 	}
 
@@ -110,24 +114,13 @@ public class NewHibernateMappingElementsSelectionPage extends WizardPage {
 		return JavaCore.create( ResourcesPlugin.getWorkspace().getRoot() );
 	}
 
-	public IStructuredSelection getSelection(){
-		return fCurrentSelection;
-	}
-
-	protected ISelectionChangedListener getSelectionChangedListener() {
-		return new ISelectionChangedListener() {
-			public void selectionChanged(SelectionChangedEvent event) {
-				fCurrentSelection = (IStructuredSelection) event.getSelection();
-				updateStatus();
-			}
-		};
-	}
-
-	public void setAllowMultiple(boolean isAllowMultiple){
-		fAllowMultiple = isAllowMultiple;
-	}
-
 	protected void updateStatus() {
-		// TODO Auto-generated method stub
+		setPageComplete((fCurrentSelection != null && !fCurrentSelection.isEmpty()));
+		if (isPageComplete()){
+			setMessage(null);
+		} else {
+			setMessage(HibernateConsoleMessages.NewHibernateMappingElementsSelectionPage_select);
+		}
 	}
+	
 }

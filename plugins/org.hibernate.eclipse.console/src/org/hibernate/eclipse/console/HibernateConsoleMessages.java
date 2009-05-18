@@ -192,6 +192,8 @@ public class HibernateConsoleMessages extends NLS {
 	public static String NewConfigurationWizardPage_session_factory_name;
 	public static String NewConfigurationWizardPage_this_wizard_creates;
 	public static String NewConfigurationWizardPage_user_name;
+	public static String NewHibernateMappingElementsSelectionPage_select;
+
 	public static String NewHibernateMappingFilePage_browse;
 	public static String NewHibernateMappingFilePage_class_to_map;
 	public static String NewHibernateMappingFilePage_container;
@@ -209,7 +211,13 @@ public class HibernateConsoleMessages extends NLS {
 	public static String NewHibernateMappingFileWizard_create_hibernate_xml_mapping_file;
 	public static String NewHibernateMappingFileWizard_create_new_xml_mapping_file;
 	public static String NewHibernateMappingFileWizard_creating;
+
+	public static String NewHibernateMappingFileWizard_error;
+
+	public static String NewHibernateMappingFileWizard_finding_dependent_cu;
 	public static String NewHibernateMappingFileWizard_opening_file_for_editing;
+
+	public static String NewHibernateMappingFileWizard_selection_cant_be_empty;
 	public static String NewReverseEngineeringFileWizard_create_hibernate_reverse_engineering_file;
 	public static String NewReverseEngineeringFileWizard_create_new_hibernate_reveng_xml;
 	public static String NewReverseEngineeringFileWizard_creating;
