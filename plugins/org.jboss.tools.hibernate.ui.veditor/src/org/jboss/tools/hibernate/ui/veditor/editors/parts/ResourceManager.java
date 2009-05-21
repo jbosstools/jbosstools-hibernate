@@ -34,15 +34,15 @@ public class ResourceManager {
 	private ResourceManager() {};
 	
 	private void dispose() {
-		Iterator e = fColorTable.values().iterator();
+		Iterator<Color> e = fColorTable.values().iterator();
 		while (e.hasNext())
-			 ((Color) e.next()).dispose();
-		e = fFontTable.values().iterator();
-		while (e.hasNext())
-			 ((Font) e.next()).dispose();
+			 e.next().dispose();
+		Iterator<Font> e2 = fFontTable.values().iterator();
+		while (e2.hasNext())
+			 e2.next().dispose();
 	}
 	public Color getColor(RGB rgb) {
-		Color color = (Color) fColorTable.get(rgb);
+		Color color = fColorTable.get(rgb);
 		if (color == null) {
 			color = new Color(Display.getCurrent(), rgb);
 			fColorTable.put(rgb, color);
@@ -51,7 +51,7 @@ public class ResourceManager {
 	}
 	
 	public Font getFont(FontData fontData) {
-		Font font = (Font) fFontTable.get(fontData);
+		Font font = fFontTable.get(fontData);
 		if (font == null) {
 			font = new Font(Display.getCurrent(), fontData);
 			fFontTable.put(fontData, font);

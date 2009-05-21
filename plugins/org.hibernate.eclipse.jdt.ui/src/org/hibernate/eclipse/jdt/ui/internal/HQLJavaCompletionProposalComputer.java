@@ -32,6 +32,8 @@ import org.eclipse.jdt.ui.text.java.IJavaCompletionProposalComputer;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.contentassist.ICompletionProposal;
+import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -63,8 +65,8 @@ public class HQLJavaCompletionProposalComputer implements IJavaCompletionProposa
 			return null;
 		}
 	}
-	public List computeCompletionProposals(ContentAssistInvocationContext context, IProgressMonitor monitor) {
-		List proposals = new ArrayList();
+	public List<ICompletionProposal> computeCompletionProposals(ContentAssistInvocationContext context, IProgressMonitor monitor) {
+		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
 		errorMessage = null;
 		
 		if (!(context instanceof JavaContentAssistInvocationContext)) {
@@ -136,8 +138,8 @@ public class HQLJavaCompletionProposalComputer implements IJavaCompletionProposa
 		return start;
 	}
 
-	public List computeContextInformation(ContentAssistInvocationContext context, IProgressMonitor monitor) {
-		return Collections.EMPTY_LIST;
+	public List<IContextInformation> computeContextInformation(ContentAssistInvocationContext context, IProgressMonitor monitor) {
+		return Collections.emptyList();
 	}
 
 	public String getErrorMessage() {

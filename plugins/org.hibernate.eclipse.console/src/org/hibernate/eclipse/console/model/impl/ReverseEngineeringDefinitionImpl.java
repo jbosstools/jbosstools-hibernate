@@ -57,8 +57,8 @@ public class ReverseEngineeringDefinitionImpl implements
 		return new TableFilterImpl(this);
 	}
 
-	List tableFilters = new ArrayList();
-	private List typeMappings = new ArrayList();
+	List<ITableFilter> tableFilters = new ArrayList<ITableFilter>();
+	private List<ITypeMapping> typeMappings = new ArrayList<ITypeMapping>();
 	
 	public void addTableFilter(ITableFilter filter) {
 		tableFilters.add(filter);
@@ -74,7 +74,7 @@ public class ReverseEngineeringDefinitionImpl implements
 	}
 	
 	public ITableFilter[] getTableFilters() {
-		return (ITableFilter[]) tableFilters.toArray(new ITableFilter[tableFilters.size()]);
+		return tableFilters.toArray(new ITableFilter[tableFilters.size()]);
 	}
 
 	public void removeAllTableFilters() {
@@ -96,7 +96,7 @@ public class ReverseEngineeringDefinitionImpl implements
 	}
 
 	private void move(Object tf, int shift) {
-		List list = tableFilters;
+		List<ITableFilter> list = tableFilters;
 		String prop = TABLEFILTER_STRUCTURE;
 		move( tf, shift, list, prop );
 	}
@@ -115,7 +115,7 @@ public class ReverseEngineeringDefinitionImpl implements
 	}
 
 	public ITypeMapping[] getTypeMappings() {
-		return (ITypeMapping[]) typeMappings .toArray(new ITypeMapping[typeMappings.size()]);
+		return typeMappings .toArray(new ITypeMapping[typeMappings.size()]);
 	}
 
 	public ITypeMapping createTypeMapping() {

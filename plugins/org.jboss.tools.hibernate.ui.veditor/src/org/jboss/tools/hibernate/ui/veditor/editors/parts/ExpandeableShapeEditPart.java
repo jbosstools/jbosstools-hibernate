@@ -87,7 +87,7 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 				getFigure().setForegroundColor(ResourceManager.getInstance().getColor(new RGB(0,0,0)));
 			}
 		}else if (ExpandeableShape.SHOW_REFERENCES.equals(prop)) {
-			refreshReferences((Shape)getCastedModel(), ((ExpandeableShape)getCastedModel()).isReferenceVisible());
+			refreshReferences(getCastedModel(), ((ExpandeableShape)getCastedModel()).isReferenceVisible());
 			((TitleLabel)getFigure()).setHidden(!((ExpandeableShape)getCastedModel()).isReferenceVisible());
 		} else {
 			super.propertyChange(evt);
@@ -137,8 +137,8 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 		OrmEditPart shapePart = (OrmEditPart)getViewer().getEditPartRegistry().get(shape);
 		
 		for(int i=0;i<shape.getSourceConnections().size();i++){
-			link = (Connection)shape.getSourceConnections().get(i);
-			refShape = (OrmShape)link.getTarget().getOrmShape();
+			link = shape.getSourceConnections().get(i);
+			refShape = link.getTarget().getOrmShape();
 			if(refShape == null) continue;
 			if(!isReferencesCorrect(refShape)) continue;
 		
@@ -157,7 +157,7 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 		referenceList.add(shape.getOrmShape());
 		
 		for(int i=0;i<shape.getChildren().size();i++){
-			refreshReferences((Shape)shape.getChildren().get(i), visible);
+			refreshReferences(shape.getChildren().get(i), visible);
 		}
 		referenceList.remove(shape.getOrmShape());
 		shape.getOrmDiagram().update();

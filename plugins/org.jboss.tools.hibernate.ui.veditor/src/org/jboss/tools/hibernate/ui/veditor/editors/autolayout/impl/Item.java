@@ -26,7 +26,7 @@ public class Item {
     protected int[] inputs = new int[0];
     protected int[] outputs = new int[0];
     protected int[] comments = new int[0];
-    protected ArrayList inputLinks = new ArrayList();
+    protected ArrayList<ILinkInfo> inputLinks = new ArrayList<ILinkInfo>();
     protected boolean isOwned = false;
     protected int weight = 0;
     protected Group group = null;

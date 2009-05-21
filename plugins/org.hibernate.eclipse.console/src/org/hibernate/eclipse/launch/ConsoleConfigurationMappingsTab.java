@@ -96,7 +96,7 @@ public class ConsoleConfigurationMappingsTab extends ConsoleConfigurationTab {
 
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		IPath[] mappings = getMappings();
-		List l = new ArrayList();
+		List<String> l = new ArrayList<String>();
 		for (int i = 0; i < mappings.length; i++) {
 			IPath path = mappings[i];
 			l.add(path.toPortableString());

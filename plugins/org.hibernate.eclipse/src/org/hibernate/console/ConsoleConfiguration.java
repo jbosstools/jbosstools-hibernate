@@ -37,7 +37,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -76,7 +75,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 
 	private ExecutionContext executionContext;
 
-	private Map fakeDrivers = new HashMap();
+	private Map<String, FakeDelegatingDriver> fakeDrivers = new HashMap<String, FakeDelegatingDriver>();
 
 	/* TODO: move this out to the actual users of the configuraiton/sf ? */
 	private Configuration configuration;
@@ -118,7 +117,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			persistenceUnit = null;
 		}
 		try {
-			Map overrides = new HashMap();
+			Map<Object,Object> overrides = new HashMap<Object,Object>();
 			if(properties!=null) {
 				overrides.putAll( properties );
 			}
@@ -373,25 +372,23 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			}
 
 			try {
-				List errors = new ArrayList();
+				List<Throwable> errors = new ArrayList<Throwable>();
 
 				doc = xmlHelper.createSAXReader( resourceName, errors, entityResolver )
 				.read( new InputSource( stream ) );
 				if ( errors.size() != 0 ) {
 					throw new MappingException(
 							ConsoleMessages.ConsoleConfiguration_invalid_configuration,
-							(Throwable) errors.get( 0 )
+							errors.get( 0 )
 					);
 				}
 
 
-				List list = doc.getRootElement().element("session-factory").elements("mapping");  //$NON-NLS-1$ //$NON-NLS-2$
-				Iterator iterator = list.iterator();
-				while ( iterator.hasNext() ) {
-					Node element = (Node) iterator.next();
+				List<Node> list = doc.getRootElement().element("session-factory").elements("mapping");  //$NON-NLS-1$ //$NON-NLS-2$
+				for (Node element : list) {
 					element.getParent().remove(element);
 				}
-
+				
 				DOMWriter dw = new DOMWriter();
 				Document document = dw.write(doc);
 				return localCfg.configure( document );
@@ -455,9 +452,9 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 
 		if(driverClassName!=null) {
 			try {
-				Class driverClass = ReflectHelper.classForName(driverClassName);
+				Class<Driver> driverClass = ReflectHelper.classForName(driverClassName);
 				if(!fakeDrivers.containsKey(driverClassName) ) { // To avoid "double registration"
-					FakeDelegatingDriver fakeDelegatingDriver = new FakeDelegatingDriver( (Driver) driverClass.newInstance() );
+					FakeDelegatingDriver fakeDelegatingDriver = new FakeDelegatingDriver( driverClass.newInstance() );
 					DriverManager.registerDriver(fakeDelegatingDriver);
 					fakeDrivers.put(driverClassName,fakeDelegatingDriver);
 				}
@@ -512,8 +509,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 
 
 	int execcount;
-	List queryListeners = new ArrayList();
-	List consoleCfgListeners = new ArrayList();
+	List<ConsoleConfigurationListener> consoleCfgListeners = new ArrayList<ConsoleConfigurationListener>();
 
 	public QueryPage executeHQLQuery(final String hql) {
 		return executeHQLQuery(hql, new QueryInputModel());
@@ -554,26 +550,19 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 
 
 	private void fireQueryPageCreated(QueryPage qp) {
-		Iterator i = consoleCfgListeners.iterator();
-		while (i.hasNext() ) {
-			ConsoleConfigurationListener view = (ConsoleConfigurationListener) i.next();
+		for (ConsoleConfigurationListener view : consoleCfgListeners) {
 			view.queryPageCreated(qp);
 		}
 	}
 
-
 	private void fireFactoryBuilt() {
-		Iterator i = consoleCfgListeners.iterator();
-		while (i.hasNext() ) {
-			ConsoleConfigurationListener view = (ConsoleConfigurationListener) i.next();
+		for (ConsoleConfigurationListener view : consoleCfgListeners) {
 			view.sessionFactoryBuilt(this, sessionFactory);
 		}
 	}
 
 	private void fireFactoryClosing(SessionFactory sessionFactory2) {
-		Iterator i = consoleCfgListeners.iterator();
-		while (i.hasNext() ) {
-			ConsoleConfigurationListener view = (ConsoleConfigurationListener) i.next();
+		for (ConsoleConfigurationListener view : consoleCfgListeners) {
 			view.sessionFactoryClosing(this, sessionFactory2);
 		}
 	}
@@ -587,7 +576,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	}
 
 	public ConsoleConfigurationListener[] getConsoleConfigurationListeners() {
-		return (ConsoleConfigurationListener[]) consoleCfgListeners.toArray(new ConsoleConfigurationListener[consoleCfgListeners.size()]);
+		return consoleCfgListeners.toArray(new ConsoleConfigurationListener[consoleCfgListeners.size()]);
 	}
 
 

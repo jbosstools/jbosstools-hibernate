@@ -35,13 +35,14 @@ import java.util.TimeZone;
 import org.hibernate.Hibernate;
 import org.hibernate.mapping.Table;
 import org.hibernate.type.NullableType;
+import org.hibernate.type.Type;
 
 
 public class ConsoleQueryParameter {
 
 	static private final Object NULL_MARKER = null; //new Object() { public String toString() { return "[null]"; } };
 	
-	static final Map typeFormats = new HashMap();
+	static final Map<Type, String> typeFormats = new HashMap<Type, String>();
 	static {
 		addTypeFormat(Hibernate.BOOLEAN, Boolean.TRUE );
 		addTypeFormat(Hibernate.BYTE, Byte.valueOf((byte) 42));
@@ -143,7 +144,7 @@ public class ConsoleQueryParameter {
 		return "<unknown>";				 //$NON-NLS-1$
 	}
 
-	public static Set getPossibleTypes() {
+	public static Set<Type> getPossibleTypes() {
 		return typeFormats.keySet();
 	}
 

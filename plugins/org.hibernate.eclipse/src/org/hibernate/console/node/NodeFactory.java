@@ -24,7 +24,6 @@ package org.hibernate.console.node;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import net.sf.cglib.proxy.Enhancer;
 
@@ -46,9 +45,9 @@ import org.hibernate.type.Type;
  */
 public class NodeFactory {
 
-	private Map classMetaData;
-	private List classes;
-	private Map collectionMetaData;
+	private Map<String, ClassMetadata> classMetaData;
+	private List<String> classes;
+	private Map<String, CollectionMetadata> collectionMetaData;
 	private ConsoleConfiguration consoleConfiguration;
 
 
@@ -62,14 +61,14 @@ public class NodeFactory {
 		setConsoleConfiguration(c);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void setConsoleConfiguration(ConsoleConfiguration c) {
 		consoleConfiguration = c;
 		SessionFactory sf = c.getSessionFactory();
 		classMetaData = sf.getAllClassMetadata();
         collectionMetaData = sf.getAllCollectionMetadata();
-		Set keyset = classMetaData.keySet();
-		classes = new ArrayList();
-		classes.addAll(keyset);
+		classes = new ArrayList<String>();
+		classes.addAll(classMetaData.keySet());
 	}
 
     public ConfigurationEntitiesNode createConfigurationEntitiesNode(String name) {
@@ -101,16 +100,15 @@ public class NodeFactory {
 	}
 
 	public ClassMetadata getMetaData(String clazz) {
-		Object o = classMetaData.get(clazz);
-		return (ClassMetadata) o;
+		return classMetaData.get(clazz);
 	}
 
-	public ClassMetadata getMetaData(Class clazz) {
+	public ClassMetadata getMetaData(Class<?> clazz) {
 		return getMetaData(clazz.getName() );
 	}
 
      public CollectionMetadata getCollectionMetaData(String role) {
-        return (CollectionMetadata) collectionMetaData.get(role);
+        return collectionMetaData.get(role);
      }
 
 	public BaseNode createPropertyNode(BaseNode parent, int idx, ClassMetadata metadata) {
@@ -138,7 +136,7 @@ public class NodeFactory {
 		//return new IdentifierNode(this, parent, md);
 	}
 
-	public BaseNode createNode(BaseNode parent, final Class clazz) {
+	public BaseNode createNode(BaseNode parent, final Class<?> clazz) {
 		ClassMetadata metadata = getMetaData(clazz);
 		if(metadata!=null) {
 			return createClassNode(parent, clazz.getName() );

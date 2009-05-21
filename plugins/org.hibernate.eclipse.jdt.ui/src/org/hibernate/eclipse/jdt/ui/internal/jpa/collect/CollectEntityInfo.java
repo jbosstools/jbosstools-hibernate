@@ -546,7 +546,7 @@ public class CollectEntityInfo extends ASTVisitor {
 		}
 		else if (type.isParameterizedType()) {
 			ParameterizedType pt = (ParameterizedType)type;
-			Type typeP = (Type)pt.getType();
+			Type typeP = pt.getType();
 			ITypeBinding tb = typeP.resolveBinding();
 			if (tb != null) {
 				ITypeBinding[] interfaces = Utils.getAllInterfaces(tb);

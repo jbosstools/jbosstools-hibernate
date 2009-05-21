@@ -94,17 +94,16 @@ public class ClassNode extends BaseNode {
 
 	public String getHQL() {
 
-		List parents = new ArrayList();
+		List<BaseNode> parents = new ArrayList<BaseNode>();
 
-        BaseNode currentParent;
-          currentParent = this;
+        BaseNode currentParent = this;
           while (currentParent != null && !(currentParent instanceof ConfigurationEntitiesNode) ) {
                       parents.add(currentParent);
                       currentParent = currentParent.parent;
              }
 
         if(currentParent instanceof ConfigurationEntitiesNode) {
-            currentParent = (BaseNode) parents.get(parents.size()-1);
+            currentParent = parents.get(parents.size()-1);
           }
 
         // currentParent is the root
@@ -117,7 +116,7 @@ public class ClassNode extends BaseNode {
 
 		String path = ""; //$NON-NLS-1$
 		for (int i = parents.size()-2; i >= 0; i--) {
-			path += "." + ( (BaseNode) parents.get(i) ).getName(); //$NON-NLS-1$
+			path += "." +  parents.get(i).getName(); //$NON-NLS-1$
 		}
 
 		return "select " + alias + path + " from " + cname + " as " + alias; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

@@ -43,8 +43,8 @@ public class PropertyViewAdapter extends Observable {
 
 	private final PersistentClassViewAdapter clazz;
 
-	private List sourceAssociations;
-	private List targetAssociations;
+	private List<PropertyAssociationViewAdapter> sourceAssociations;
+	private List<PropertyViewAdapter> targetAssociations;
 	
 	public PropertyViewAdapter(PersistentClassViewAdapter clazz,
 			Property property) {
@@ -52,7 +52,7 @@ public class PropertyViewAdapter extends Observable {
 		this.property = property;
 		this.configuration = clazz.getConfiguration();
 		this.sourceAssociations = null;
-		this.targetAssociations = Collections.EMPTY_LIST;
+		this.targetAssociations = Collections.emptyList();
 		
 	}
 
@@ -60,19 +60,19 @@ public class PropertyViewAdapter extends Observable {
 		return property;
 	}
 
-	public List getSourceConnections() {
+	public List<PropertyAssociationViewAdapter> getSourceConnections() {
 		checkConnections();
 		return sourceAssociations;
 	}
 
 	private void checkConnections() {
 		if(sourceAssociations==null) {
-			sourceAssociations = new ArrayList();
+			sourceAssociations = new ArrayList<PropertyAssociationViewAdapter>();
 			createSingleEndedEnityAssociations();
 		}		
 	}
 
-	public List getTargetConnections() {
+	public List<PropertyViewAdapter> getTargetConnections() {
 		return targetAssociations;
 	}
 	

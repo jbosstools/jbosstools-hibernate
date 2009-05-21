@@ -190,12 +190,10 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 			}
 
 		});
-		final List possibleTypes = new ArrayList(ConsoleQueryParameter.getPossibleTypes());
-		Collections.sort(possibleTypes, new Comparator() {
+		final List<Type> possibleTypes = new ArrayList<Type>(ConsoleQueryParameter.getPossibleTypes());
+		Collections.sort(possibleTypes, new Comparator<Type>() {
 
-			public int compare(Object o1, Object o2) {
-				Type t1 = (Type) o1;
-				Type t2 = (Type) o2;
+			public int compare(Type t1, Type t2) {
 				return t1.getName().compareTo(t2.getName());
 			}
 

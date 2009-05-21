@@ -48,11 +48,12 @@ public class TableViewAdapter extends GraphNode {
 		return table;
 	}
 
-	public List getColumns() {
-		List result = new ArrayList();
-		Iterator columnIterator = table.getColumnIterator();
+	@SuppressWarnings("unchecked")
+	public List<ColumnViewAdapter> getColumns() {
+		List<ColumnViewAdapter> result = new ArrayList<ColumnViewAdapter>();
+		Iterator<Column> columnIterator = table.getColumnIterator();
 		while ( columnIterator.hasNext() ) {
-			Column element = (Column) columnIterator.next();
+			Column element = columnIterator.next();
 			result.add(new ColumnViewAdapter(this,element));
 		}
 		

@@ -89,7 +89,7 @@ public abstract class AbstractGraphViewPart extends ViewPart {
 	    IActionBars actionBars = getViewSite().getActionBars();
 	    this.actionGroup.fillActionBars(actionBars);
 	    
-	    List zoomLevels = new ArrayList(3);
+	    List<String> zoomLevels = new ArrayList<String>(3);
 	    zoomLevels.add(ZoomManager.FIT_ALL);
 	    zoomLevels.add(ZoomManager.FIT_WIDTH);
 	    zoomLevels.add(ZoomManager.FIT_HEIGHT);
@@ -127,7 +127,7 @@ public abstract class AbstractGraphViewPart extends ViewPart {
 
 	public Object getAdapter(Class adapter) {
 		if(adapter.equals(GraphicalViewer.class)) {
-			return (GraphicalViewer)viewer;
+			return viewer;
 		}
 		return super.getAdapter( adapter );
 	}

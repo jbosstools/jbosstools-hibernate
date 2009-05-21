@@ -109,10 +109,10 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 		if(RequestConstants.REQ_OPEN.equals(req.getType())) {
 			if (getCastedModel().getOrmElement() instanceof Column) {
 				if(getCastedModel().getTargetConnections().size() > 0)
-					((Connection)getCastedModel().getTargetConnections().get(0)).getSource().setFocus();
+					getCastedModel().getTargetConnections().get(0).getSource().setFocus();
 			} else {
 				if(getCastedModel().getSourceConnections().size() > 0)
-					((Connection)getCastedModel().getSourceConnections().get(0)).getTarget().setFocus();
+					getCastedModel().getSourceConnections().get(0).getTarget().setFocus();
 			}
 		}
 	}
@@ -135,11 +135,11 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 		return (Shape) getModel();
 	}
 
-	protected List getModelSourceConnections() {
+	protected List<Connection> getModelSourceConnections() {
 		return getCastedModel().getSourceConnections();
 	}
 
-	protected List getModelTargetConnections() {
+	protected List<Connection> getModelTargetConnections() {
 		return getCastedModel().getTargetConnections();
 	}
 
@@ -272,7 +272,6 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 
 	protected Object getElement() {
 		Object element = getCastedModel().getOrmElement();
-		if (element instanceof SpecialRootClass) element = (RootClass)element;
 		return element;
 	}
 }

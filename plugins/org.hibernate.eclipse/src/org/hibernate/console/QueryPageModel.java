@@ -36,13 +36,13 @@ import javax.swing.AbstractListModel;
  */
 public class QueryPageModel extends AbstractListModel {
 
-	List pages = new ArrayList();
+	List<QueryPage> pages = new ArrayList<QueryPage>();
 
 	public int getSize() {
 		return pages.size();
 	}
 
-	public Object getElementAt(int index) {
+	public QueryPage getElementAt(int index) {
 		return pages.get(index);
 	}
 
@@ -57,7 +57,7 @@ public class QueryPageModel extends AbstractListModel {
 	public void add(QueryPage qp) {	
 		
 		for (int i = pages.size() - 1; i >= 0; i--) {
-			QueryPage element = (QueryPage) pages.get(i);
+			QueryPage element = pages.get(i);
 			if (!element.isSticky() ) {
                 pages.remove(i);
 			}
@@ -72,7 +72,7 @@ public class QueryPageModel extends AbstractListModel {
 	 */
 	public void remove(int i) {
 		
-		QueryPage qp = (QueryPage) pages.remove(i);
+		QueryPage qp = pages.remove(i);
 		if(qp!=null) {
 			qp.removePropertyChangeListener(pcl);
 		}
@@ -85,7 +85,7 @@ public class QueryPageModel extends AbstractListModel {
 	 * @return
 	 */
 	public QueryPage get(int i) {
-		return (QueryPage) getElementAt(i);
+		return getElementAt(i);
 	}
 
 	/**
@@ -95,12 +95,12 @@ public class QueryPageModel extends AbstractListModel {
 		fireContentsChanged(pages, index, index);
 	}
 
-	public Iterator getPages() {
+	public Iterator<QueryPage> getPages() {
 		return pages.iterator();
 	}
 
-	public List getPagesAsList() {
-		return new ArrayList(pages);
+	public List<QueryPage> getPagesAsList() {
+		return new ArrayList<QueryPage>(pages);
 	}
 
 	public boolean remove(QueryPage page) {

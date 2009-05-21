@@ -29,13 +29,11 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
  * Sort a comparator according to its display string.
  * Use the INSTANCE variable to save memory/time.
  */ 
-public class DisplayStringProposalComparator implements Comparator {
+public class DisplayStringProposalComparator implements Comparator<ICompletionProposal> {
 	
-	static final public Comparator INSTANCE = new DisplayStringProposalComparator();
+	static final public Comparator<ICompletionProposal> INSTANCE = new DisplayStringProposalComparator();
 	
-	public int compare( Object o1, Object o2 ) {
-        ICompletionProposal c1 = (ICompletionProposal) o1;
-        ICompletionProposal c2 = (ICompletionProposal) o2;
+	public int compare( ICompletionProposal c1, ICompletionProposal c2 ) {
         return c1.getDisplayString().compareTo( c2.getDisplayString() );
     }
 }

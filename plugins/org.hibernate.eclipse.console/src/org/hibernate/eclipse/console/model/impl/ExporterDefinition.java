@@ -40,20 +40,15 @@
  */
 package org.hibernate.eclipse.console.model.impl;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
-import org.hibernate.eclipse.HibernatePlugin;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.tool.hbm2x.Exporter;
@@ -73,7 +68,7 @@ public class ExporterDefinition {
 
 	final private ImageDescriptor iconDescriptor;
 
-	final private Map properties;
+	final private Map<String, ExporterProperty> properties;
 
 	public ExporterDefinition(IConfigurationElement element) {
 		this(element.getAttribute( "classname" ), //$NON-NLS-1$
@@ -83,7 +78,7 @@ public class ExporterDefinition {
 				createIcon( element ));
 	}
 
-	public ExporterDefinition(String className, String description, String id, Map properties, ImageDescriptor icon) {
+	public ExporterDefinition(String className, String description, String id, Map<String, ExporterProperty> properties, ImageDescriptor icon) {
 		this.classname = className;
 		this.description = description;
 		this.id = id;
@@ -100,8 +95,8 @@ public class ExporterDefinition {
 		}
 	}
 
-	static private Map createProperties(IConfigurationElement element) {
-		Map properties = new HashMap();
+	static private Map<String, ExporterProperty> createProperties(IConfigurationElement element) {
+		Map<String, ExporterProperty> properties = new HashMap<String, ExporterProperty>();
 
 		IConfigurationElement propertyElements[] = element
 				.getChildren( "property" ); //$NON-NLS-1$
@@ -147,7 +142,7 @@ public class ExporterDefinition {
 		return iconDescriptor;
 	}
 
-	public Map getExporterProperties() {
+	public Map<String, ExporterProperty> getExporterProperties() {
 		return properties;
 	}
 

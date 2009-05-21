@@ -35,6 +35,7 @@ public class OrmShape extends ExpandeableShape {
 		generate();
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected void generate() {
 		Shape bodyOrmShape;
 		Object ormElement = getOrmElement();
@@ -49,17 +50,17 @@ public class OrmShape extends ExpandeableShape {
 			if (identifier instanceof Component) {
 				Component component = (Component)identifier;
 				if (component.isEmbedded()) {
-					Iterator iterator = ((Component)identifier).getPropertyIterator();
+					Iterator<Property> iterator = ((Component)identifier).getPropertyIterator();
 					while (iterator.hasNext()) {
-						Property property = (Property) iterator.next();
+						Property property = iterator.next();
 						getChildren().add(new Shape(property));
 					}
 				}
 			}
 
-			Iterator iterator = rootClass.getPropertyIterator();
+			Iterator<Property> iterator = rootClass.getPropertyIterator();
 			while (iterator.hasNext()) {
-				Property field = (Property)iterator.next();
+				Property field = iterator.next();
 				if (!field.isBackRef()) {
 					if (!field.isComposite()) {
 						boolean typeIsAccessible = true;
@@ -96,16 +97,16 @@ public class OrmShape extends ExpandeableShape {
 
 			KeyValue identifier = rootClass.getIdentifier();
 			if (identifier instanceof Component) {
-				Iterator iterator = ((Component)identifier).getPropertyIterator();
+				Iterator<Property> iterator = ((Component)identifier).getPropertyIterator();
 				while (iterator.hasNext()) {
-					Property property = (Property) iterator.next();
+					Property property = iterator.next();
 					getChildren().add(new Shape(property));
 				}
 			}
 
-			Iterator iterator = rootClass.getPropertyIterator();
+			Iterator<Property> iterator = rootClass.getPropertyIterator();
 			while (iterator.hasNext()) {
-				Property field = (Property)iterator.next();
+				Property field = iterator.next();
 				if (!field.isBackRef()) {
 					if (!field.isComposite()) {
 						
@@ -135,9 +136,9 @@ public class OrmShape extends ExpandeableShape {
 					}
 				}
 			}
-			Iterator iter = ((Subclass)ormElement).getPropertyIterator();
+			Iterator<Property> iter = ((Subclass)ormElement).getPropertyIterator();
 			while (iter.hasNext()) {
-				Property property = (Property)iter.next();
+				Property property = iter.next();
 				if (!property.isBackRef()) {
 					if (!property.isComposite()) {
 						
@@ -174,37 +175,32 @@ public class OrmShape extends ExpandeableShape {
 	}
 	
 	public Shape getChild(Column ormElement) {
-		Shape shape = null;
-		Iterator iter = getChildren().iterator();
-		while (iter.hasNext()) {
-			Shape child = (Shape)iter.next();
+		for (Shape child : getChildren()) {
 			Object childElement = child.getOrmElement();
 			if (childElement instanceof Column && ormElement.getName().equals(((Column)childElement).getName())) {
 				return child;
 			}
 		}
-		return shape;
+		return null;
 	}
 
 	public Shape getChild(Property ormElement) {
-		Shape shape = null;
 		if (ormElement != null) {
-			Iterator iter = getChildren().iterator();
-			while (iter.hasNext()) {
-				Shape child = (Shape)iter.next();
+			for (Shape child : getChildren()) {
 				Object childElement = child.getOrmElement();
 				if (childElement instanceof Property && ormElement.getName().equals(((Property)childElement).getName())) {
 					return child;
 				}
 			}
 		}
-		return shape;
+		return null;
 	}
 
 	protected void setHidden(boolean hiden) {
 		super.setHidden(hiden);
-		for (int i = 0; i < getChildren().size(); i++)
-			((Shape)getChildren().get(i)).setHidden(hiden);
+		for (Shape child : getChildren()) {
+			child.setHidden(hiden);
+		}
 	}
 
 	public void refreshHiden() {
@@ -218,9 +214,9 @@ public class OrmShape extends ExpandeableShape {
 	}
 	
 	private void setElementHidden(ModelElement element, boolean hidden){
-		for (int i = 0; i < element.getChildren().size(); i++){
-			((Shape)element.getChildren().get(i)).setHidden(hidden);
-			setElementHidden((ModelElement)element.getChildren().get(i), hidden);
+		for (Shape child : element.getChildren()) {
+			child.setHidden(hidden);
+			setElementHidden(child, hidden);
 		}
 	}
 

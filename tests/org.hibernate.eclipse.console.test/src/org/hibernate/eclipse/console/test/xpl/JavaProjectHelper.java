@@ -20,6 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipFile;
 
@@ -506,14 +507,14 @@ public class JavaProjectHelper {
 	public static void removeFromClasspath(IJavaProject jproject, IPath path) throws JavaModelException {
 		IClasspathEntry[] oldEntries= jproject.getRawClasspath();
 		int nEntries= oldEntries.length;
-		ArrayList list= new ArrayList(nEntries);
+		List<IClasspathEntry> list= new ArrayList<IClasspathEntry>(nEntries);
 		for (int i= 0 ; i < nEntries ; i++) {
 			IClasspathEntry curr= oldEntries[i];
 			if (!path.equals(curr.getPath())) {
 				list.add(curr);			
 			}
 		}
-		IClasspathEntry[] newEntries= (IClasspathEntry[])list.toArray(new IClasspathEntry[list.size()]);
+		IClasspathEntry[] newEntries= list.toArray(new IClasspathEntry[list.size()]);
 		jproject.setRawClasspath(newEntries, null);
 	}	
 

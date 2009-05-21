@@ -33,11 +33,11 @@ public class TableContainerWorkbenchAdapter extends BasicWorkbenchAdapter {
 
 	public Object[] getChildren(Object o) {
 		TableContainer tc = getTableContainer( o );
-		return toArray(tc.getTables().iterator(), Table.class, new Comparator() {
+		return toArray(tc.getTables().iterator(), Table.class, new Comparator<Table>() {
 
-			public int compare(Object arg0, Object arg1) {
+			public int compare(Table arg0, Table arg1) {
 
-				return ((Table)arg0).getName().compareTo(((Table)arg1).getName());
+				return arg0.getName().compareTo(arg1.getName());
 			}
 
 		});

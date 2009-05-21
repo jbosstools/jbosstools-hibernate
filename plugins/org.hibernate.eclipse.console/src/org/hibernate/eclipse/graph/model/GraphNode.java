@@ -28,7 +28,7 @@ import java.util.Observable;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * base class for model elements in our views that are node-like and have a moveable physical bound.
+ * base class for model elements in our views that are node-like and have a movable physical bound.
  *  
  * @author Max Rydahl Andersen
  *
@@ -37,11 +37,11 @@ public abstract class GraphNode extends Observable {
 
 	public static final String ASSOCIATONS = "ASSOCIATIONS"; //$NON-NLS-1$
 	private Rectangle bounds = new Rectangle( 0, 0, -1, -1 );
-	protected List targetAssociations;
-	protected List sourceAssociations;
+	protected List<AssociationViewAdapter> targetAssociations;
+	protected List<AssociationViewAdapter> sourceAssociations;
 
 	public GraphNode() {
-		targetAssociations = new ArrayList();
+		targetAssociations = new ArrayList<AssociationViewAdapter>();
 		sourceAssociations = null; //lazily created
 	}
 	
@@ -60,14 +60,14 @@ public abstract class GraphNode extends Observable {
 	
 	abstract public void createAssociations();
 
-	public List getSourceAssociations() {
+	public List<AssociationViewAdapter> getSourceAssociations() {
 		checkAssociations();
 		return sourceAssociations;
 	}
 
 	private void checkAssociations() {
 		if(sourceAssociations==null) {
-			sourceAssociations=new ArrayList();
+			sourceAssociations=new ArrayList<AssociationViewAdapter>();
 			createAssociations();
 		}		
 	}
@@ -85,7 +85,7 @@ public abstract class GraphNode extends Observable {
 		notifyObservers(ASSOCIATONS);
 	}
 
-	public List getTargetAssociations() {
+	public List<AssociationViewAdapter> getTargetAssociations() {
 		return targetAssociations;
 	}
 

@@ -279,7 +279,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 
 	class DiagramInfo implements IDiagramInfo {
 
-		ArrayList items = new ArrayList();
+		List<IItemInfo> items = new ArrayList<IItemInfo>();
 		OrmDiagram diagram;
 
 		public DiagramInfo(OrmDiagram diagram) {
@@ -302,7 +302,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 		 * 
 		 */
 		public IItemInfo[] getItems() {
-			return (IItemInfo[]) items.toArray(new IItemInfo[0]);
+			return items.toArray(new IItemInfo[0]);
 		}
 
 		/**
@@ -317,7 +317,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 	class DiagramElementInfo implements IItemInfo {
 		OrmShape element;
 
-		ArrayList links = new ArrayList();
+		List<ILinkInfo> links = new ArrayList<ILinkInfo>();
 
 		/**
 		 * 
@@ -326,21 +326,19 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 		public DiagramElementInfo(OrmShape element) {
 			ILinkInfo link;
 			this.element = element;
-			for (int i = 0; i < element.getSourceConnections().size(); i++) {
-				link = new LinkInfo((Connection) element.getSourceConnections()
-						.get(i));
+			for (Connection connection : element.getSourceConnections()) {
+				link = new LinkInfo(connection);
 				addLink(link);
 			}
 			Shape child;
 			for (int j = 0; j < element.getChildren().size(); j++) {
-				child = (Shape) element.getChildren().get(j);
+				child = element.getChildren().get(j);
 				if (child.getSourceConnections().size() == 0) {
 					link = new LinkInfo(getID());
 					addLink(link);
 				}
 				for (int i = 0; i < child.getSourceConnections().size(); i++) {
-					link = new LinkInfo((Connection) child
-							.getSourceConnections().get(i));
+					link = new LinkInfo(child.getSourceConnections().get(i));
 					addLink(link);
 				}
 			}
@@ -384,7 +382,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 		 * 
 		 */
 		public ILinkInfo[] getLinks() {
-			return (ILinkInfo[]) links.toArray(new ILinkInfo[0]);
+			return links.toArray(new ILinkInfo[0]);
 		}
 
 		/**

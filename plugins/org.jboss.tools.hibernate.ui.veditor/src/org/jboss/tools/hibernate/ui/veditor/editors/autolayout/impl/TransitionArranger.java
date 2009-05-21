@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.veditor.editors.autolayout.impl;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.jboss.tools.hibernate.ui.veditor.editors.autolayout.ILinkInfo;
 
@@ -103,9 +103,9 @@ public class TransitionArranger {
 	}
 	
 	private void apply(Item item, int tg) {
-		ArrayList links = item.inputLinks;
+		List<ILinkInfo> links = item.inputLinks;
 		for (int k = 0; k < links.size(); k++) {
-			ILinkInfo io = (ILinkInfo)links.get(k);
+			ILinkInfo io = links.get(k);
 			io.setLinkShape(new int[]{-1, 8 * (tg + 2)});
 		}
 	}

@@ -140,9 +140,9 @@ public class Shape extends ModelElement {
 	
 	protected void setHidden(boolean hiden) {
 		for (int i = 0; i < sourceConnections.size(); i++)
-			((Connection)sourceConnections.get(i)).setHidden(hiden);
+			sourceConnections.get(i).setHidden(hiden);
 		for (int i = 0; i < targetConnections.size(); i++)
-			((Connection)targetConnections.get(i)).setHidden(hiden);
+			targetConnections.get(i).setHidden(hiden);
 	}
 
 	/**

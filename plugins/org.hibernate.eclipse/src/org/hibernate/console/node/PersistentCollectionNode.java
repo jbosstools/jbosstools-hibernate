@@ -146,7 +146,7 @@ public class PersistentCollectionNode extends BaseNode {
 
 	}
 
-	private Object createNode(int idx, Object element, Type type) { // TODO: use a common way to create these darn nodes!
+	private TreeNode createNode(int idx, Object element, Type type) { // TODO: use a common way to create these darn nodes!
 		return new ClassNode(factory, this,type.getReturnedClass().getName(), factory.getMetaData(type.getReturnedClass() ),element,objectGraph);
 	}
 

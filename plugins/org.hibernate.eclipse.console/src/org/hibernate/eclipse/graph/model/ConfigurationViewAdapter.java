@@ -34,8 +34,8 @@ import org.hibernate.mapping.PersistentClass;
 public class ConfigurationViewAdapter extends Observable {
 
 	private final Configuration cfg;
-	private Map persistentClasses; // key: name, value: PersistentClassViewAdapter
-	private List selectedTables;
+	private Map<String, PersistentClassViewAdapter> persistentClasses; // key: name, value: PersistentClassViewAdapter
+	private List<TableViewAdapter> selectedTables;
 	//private final Map sourceAssociations; // key: name, value: List of AssociationViewAdapter
 	//private final Map targetAssociations; // key: name, value: List of AssociationViewAdapter
 	
@@ -46,30 +46,30 @@ public class ConfigurationViewAdapter extends Observable {
 		//targetAssociations = new HashMap();
 	}
 
-	public List getPersistentClasses() {
+	public List<PersistentClassViewAdapter> getPersistentClasses() {
 		if(persistentClasses==null) {
-			Iterator classMappings = cfg.getClassMappings();
-			persistentClasses = new HashMap();
+			Iterator<PersistentClass> classMappings = cfg.getClassMappings();
+			persistentClasses = new HashMap<String, PersistentClassViewAdapter>();
 			while ( classMappings.hasNext() ) {
-				PersistentClass clazz = (PersistentClass) classMappings.next();
+				PersistentClass clazz = classMappings.next();
 				persistentClasses.put( clazz.getEntityName(), new PersistentClassViewAdapter(this, clazz) );
 			}
 			
-			Iterator iterator = persistentClasses.values().iterator();
+			Iterator<PersistentClassViewAdapter> iterator = persistentClasses.values().iterator();
 			while ( iterator.hasNext() ) {
-				PersistentClassViewAdapter element = (PersistentClassViewAdapter) iterator.next();
+				PersistentClassViewAdapter element = iterator.next();
 				element.getSourceAssociations();				
 			}
 		}
 		
-		return new ArrayList(persistentClasses.values());
+		return new ArrayList<PersistentClassViewAdapter>(persistentClasses.values());
 	}
 
 	public PersistentClassViewAdapter getPersistentClassViewAdapter(String associatedEntityName) {
-		return (PersistentClassViewAdapter) persistentClasses.get(associatedEntityName);		
+		return persistentClasses.get(associatedEntityName);		
 	}
 
-	public List getSelectedTables() {		
+	public List<TableViewAdapter> getSelectedTables() {		
 		return selectedTables;
 	}
 
@@ -77,7 +77,7 @@ public class ConfigurationViewAdapter extends Observable {
 		return cfg;
 	}
 
-	public void setSelectedTables(List tables) {
+	public void setSelectedTables(List<TableViewAdapter> tables) {
 		selectedTables = tables;		
 	}
 	

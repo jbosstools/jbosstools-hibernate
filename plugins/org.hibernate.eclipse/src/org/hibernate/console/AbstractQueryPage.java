@@ -39,11 +39,10 @@ public abstract class AbstractQueryPage implements QueryPage {
     private int id;
     private Session session;
 	private final ConsoleConfiguration cfg;
-    protected List list;
+    protected List<Object> list;
     protected long queryTime = -1;				//shows how long query runs
-    List pathNames;
     protected boolean sticky = true;
-    private List exceptions = new ArrayList();
+    private List<Throwable> exceptions = new ArrayList<Throwable>();
 
     /**
      * @param i
@@ -66,7 +65,7 @@ public abstract class AbstractQueryPage implements QueryPage {
     /**
      * 
      */
-    public List getExceptions() {
+    public List<Throwable> getExceptions() {
     	return exceptions;
     }
 

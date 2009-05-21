@@ -158,7 +158,7 @@ public class HQLQueryValidatorTest extends HibernateConsoleTest {
 		
 		assertEquals(1, hqlDetector.getProblems().size());
 		
-		HQLProblem hqlProblem = (HQLProblem) hqlDetector.getProblems().get(0);
+		HQLProblem hqlProblem = hqlDetector.getProblems().get(0);
 		assertTrue(hqlProblem.getMessage().contains("from Unknown")); //$NON-NLS-1$
 				
 	}

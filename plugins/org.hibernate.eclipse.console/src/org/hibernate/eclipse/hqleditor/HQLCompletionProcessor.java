@@ -49,7 +49,7 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
 
     private char[] autoActivationChars = { '.' };
     protected IContextInformationValidator validator = new MinimalDiffContextInformationValidator(5);
-    private final Comparator completionComparator;
+    private final Comparator<ICompletionProposal> completionComparator;
 	//private final HQLEditor editor;
     private QueryEditor hqlEditor;
 	private String errorMessage;
@@ -95,7 +95,7 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
     	errorMessage = null;
     	if (doc != null && currentOffset >= 0) {
 
-    		List proposalList = new ArrayList();
+    		List<ICompletionProposal> proposalList = new ArrayList<ICompletionProposal>();
     		String startWord = null;
 
     		int startOffset = findNearestWhiteSpace( doc, currentOffset, lineStart );
@@ -126,7 +126,7 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
     			//findMatchingWords( currentOffset, proposalList, startWord, HQLCodeScanner.getHQLKeywords(), "keyword" );
     			//findMatchingWords( currentOffset, proposalList, startWord, HQLCodeScanner.getHQLFunctionNames(), "function");
 
-    			result = (ICompletionProposal[]) proposalList.toArray(new ICompletionProposal[proposalList.size()]);
+    			result = proposalList.toArray(new ICompletionProposal[proposalList.size()]);
     			if(result.length==0 && errorMessage==null) {
     				errorMessage = HibernateConsoleMessages.HQLCompletionProcessor_no_hql_completions_available;
     			}

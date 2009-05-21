@@ -1,15 +1,11 @@
 package org.hibernate.eclipse.launch;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
 
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
-import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 import org.hibernate.eclipse.console.model.impl.ExporterProperty;
@@ -28,15 +24,12 @@ public class ExporterFactoryPropertySource implements IPropertySource {
 	}
 
 	public IPropertyDescriptor[] getPropertyDescriptors() {
-		List descriptors = new ArrayList();
+		List<IPropertyDescriptor> descriptors = new ArrayList<IPropertyDescriptor>();
 		
-		Map values = factory.getProperties();
+		Map<String, String> values = factory.getProperties();
 		
 		// get the values we explicitly have
-		Iterator iterator = values.keySet().iterator();
-		while ( iterator.hasNext() ) {
-			String key = (String) iterator.next();
-			
+		for (String key : values.keySet()) {
 			ExporterProperty element = factory.getExporterProperty(key);
 			
 			if(element!=null) {
@@ -60,7 +53,7 @@ public class ExporterFactoryPropertySource implements IPropertySource {
 			}*/
 	
 		
-		return (IPropertyDescriptor[]) descriptors.toArray(new IPropertyDescriptor[0]);
+		return descriptors.toArray(new IPropertyDescriptor[0]);
 	}
 
 	public Object getPropertyValue(Object id) {

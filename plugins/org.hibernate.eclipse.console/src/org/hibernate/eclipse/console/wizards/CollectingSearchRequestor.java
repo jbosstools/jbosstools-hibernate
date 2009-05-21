@@ -28,17 +28,17 @@ import org.eclipse.jdt.core.search.SearchMatch;
 import org.eclipse.jdt.core.search.SearchRequestor;
 
 public class CollectingSearchRequestor extends SearchRequestor {
-	private List found;
+	private List<SearchMatch> found;
 
 	public CollectingSearchRequestor() {
-		found= new ArrayList();
+		found= new ArrayList<SearchMatch>();
 	}
 	
 	public void acceptSearchMatch(SearchMatch match) {
 		found.add(match);
 	}
 
-	public List getResults() {
+	public List<SearchMatch> getResults() {
 		return found;
 	}
 }

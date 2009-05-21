@@ -44,10 +44,10 @@ public abstract class ModelElement implements IPropertySource {
 		}
 	}
 	
-	private List children = new OList();
+	private List<Shape> children = new OList<Shape>();
 	private ModelElement parent;
 	
-	public List getChildren(){
+	public List<Shape> getChildren(){
 		return children;
 	}
 	
@@ -129,12 +129,12 @@ public abstract class ModelElement implements IPropertySource {
 		// do nothing
 	}
 
-	class OList extends ArrayList{
+	class OList<E> extends ArrayList<E>{
 		public OList(){
 			
 		}
 		
-		public boolean add(Object item){
+		public boolean add(E item){
 			if(item instanceof ModelElement)((ModelElement)item).setParent(ModelElement.this);
 			return super.add(item);
 		}

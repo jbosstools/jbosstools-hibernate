@@ -28,7 +28,6 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -53,15 +52,15 @@ public class ClassLoaderHelper {
 
 	static public URLClassLoader getProjectClassLoader (IJavaProject project)
 	{
-		List pathElements = getProjectClassPathURLs(project);
-		URL urlPaths[] = (URL[]) pathElements.toArray(new URL[pathElements.size()]);
+		List<URL> pathElements = getProjectClassPathURLs(project);
+		URL urlPaths[] = pathElements.toArray(new URL[pathElements.size()]);
 
 		return new URLClassLoader(urlPaths, Thread.currentThread().getContextClassLoader() );
 	}
 
-	static public List getProjectClassPathURLs (IJavaProject project)
+	static public List<URL> getProjectClassPathURLs (IJavaProject project)
 	{
-		List pathElements = new ArrayList();
+		List<URL> pathElements = new ArrayList<URL>();
 
 		try {
 			IClasspathEntry paths[] = project.getResolvedClasspath(true);
@@ -146,7 +145,7 @@ public class ClassLoaderHelper {
 		IRuntimeClasspathEntry[] entries = JavaRuntime
 		.computeUnresolvedRuntimeClasspath(configuration);
 		entries = JavaRuntime.resolveRuntimeClasspath(entries, configuration);
-		List userEntries = new ArrayList(entries.length);
+		List<String> userEntries = new ArrayList<String>(entries.length);
 		for (int i = 0; i < entries.length; i++) {
 			IRuntimeClasspathEntry runtimeClasspathEntry = entries[i];
 			if (runtimeClasspathEntry.getClasspathProperty() == IRuntimeClasspathEntry.USER_CLASSES) {
@@ -160,7 +159,7 @@ public class ClassLoaderHelper {
 				//System.out.println("Ignored " + runtimeClasspathEntry.getMemento());
 			}
 		}
-		return (String[]) userEntries.toArray(new String[userEntries.size()]);
+		return userEntries.toArray(new String[userEntries.size()]);
 	}
 
 }

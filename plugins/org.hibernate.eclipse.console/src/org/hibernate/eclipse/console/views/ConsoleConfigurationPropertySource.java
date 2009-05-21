@@ -39,14 +39,14 @@ public class ConsoleConfigurationPropertySource implements IPropertySource {
 
 	static IPropertyDescriptor[] pd;
 	static {
-		List l = new ArrayList();
+		List<IPropertyDescriptor> l = new ArrayList<IPropertyDescriptor>();
 		l.add(new TextPropertyDescriptor("name", HibernateConsoleMessages.ConsoleConfigurationPropertySource_name)); //$NON-NLS-1$
 		l.add(new PropertyDescriptor("hibernate.cfg.xml", HibernateConsoleMessages.ConsoleConfigurationPropertySource_config_file)); //$NON-NLS-1$
 		l.add(new PropertyDescriptor("hibernate.properties", HibernateConsoleMessages.ConsoleConfigurationPropertySource_properties_file)); //$NON-NLS-1$
 		l.add(new PropertyDescriptor("mapping.files", HibernateConsoleMessages.ConsoleConfigurationPropertySource_additional_mapping_files)); //$NON-NLS-1$
 
 
-		pd = (IPropertyDescriptor[]) l.toArray( new IPropertyDescriptor[l.size()] );
+		pd = l.toArray( new IPropertyDescriptor[l.size()] );
 	}
 
 	public ConsoleConfigurationPropertySource(ConsoleConfiguration cfg) {

@@ -45,9 +45,8 @@ public class ClusterEdgeCreator
 	EdgeList edgeList;
 	DirectedGraph graph;
 
-	List edgesAdded;
-	List encountered = new ArrayList();
-	List clusters = new ArrayList();
+	List<Node> encountered = new ArrayList<Node>();
+	List<Cluster> clusters = new ArrayList<Cluster>();
 
 	Cluster currentCluster = null;
 
@@ -68,12 +67,11 @@ public class ClusterEdgeCreator
 			this.graph = graph;
 			this.nodeList = graph.nodes;
 			this.edgeList = graph.edges;
-			edgesAdded = new ArrayList();
 
 			//iterate through all of the nodes in the node list
-			for (Iterator iter = nodeList.iterator(); iter.hasNext();)
+			for (Iterator<Node> iter = nodeList.iterator(); iter.hasNext();)
 			{
-				Node node = (Node) iter.next();
+				Node node = iter.next();
 
 				//check whether we have already come across this node
 				if (!encountered.contains(node))
@@ -95,13 +93,13 @@ public class ClusterEdgeCreator
 				}
 			}
 
-			//System.out.println("Clusters: ");
-			for (Iterator iter = clusters.iterator(); iter.hasNext();)
+			/*System.out.println("Clusters: ");
+			for (Iterator<Cluster> iter = clusters.iterator(); iter.hasNext();)
 			{
-				Cluster cluster = (Cluster) iter.next();
-				//System.out.println(cluster);
+				Cluster cluster = iter.next();
+				System.out.println(cluster);
 
-			}
+			}*/
 
 			coalesceRemainingClusters();
 
@@ -136,25 +134,26 @@ public class ClusterEdgeCreator
 			Node targetNode = null;
 
 			//add an edge from each successive cluster to next
-			for (Iterator iter = clusters.iterator(); iter.hasNext();)
+			for (Iterator<Cluster> iter = clusters.iterator(); iter.hasNext();)
 			{
-				Cluster cluster = (Cluster) iter.next();
+				Cluster cluster = iter.next();
 				if (sourceNode != null)
 				{
 					//use first node in set as target node
-					targetNode = (Node) cluster.set.get(0);
+					targetNode = cluster.set.get(0);
 					newDummyEdge(sourceNode, targetNode);
 				}
 
 				//set up source node for the next iteration using last node in
 				// set
-				sourceNode = (Node) cluster.set.get(cluster.set.size() - 1);
+				sourceNode = cluster.set.get(cluster.set.size() - 1);
 
 			}
 
 		}
 	}
 
+	
 	private void recursivelyAddToCluster(Node node, int depth)
 	{
 
@@ -164,9 +163,9 @@ public class ClusterEdgeCreator
 		{
 			depth++;
 			EdgeList incoming = node.incoming;
-			for (Iterator iter = incoming.iterator(); iter.hasNext();)
+			for (Iterator<Edge> iter = incoming.iterator(); iter.hasNext();)
 			{
-				Edge edge = (Edge) iter.next();
+				Edge edge = iter.next();
 				Node incomingNode = edge.source;
 
 				if (!encountered.contains(incomingNode))
@@ -228,7 +227,7 @@ public class ClusterEdgeCreator
 	static private class Cluster
 	{
 
-		List set = new ArrayList();
+		List<Node> set = new ArrayList<Node>();
 
 		public String toString()
 		{

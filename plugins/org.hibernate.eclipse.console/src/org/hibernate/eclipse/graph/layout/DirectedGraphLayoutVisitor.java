@@ -207,7 +207,7 @@ public class DirectedGraphLayoutVisitor
 		
 		if (nodes != null)
 		{
-			List bends = new ArrayList();
+			List<AbsoluteBendpoint> bends = new ArrayList<AbsoluteBendpoint>();
 			for (int i = 0; i < nodes.size(); i++)
 			{
 				Node vn = nodes.getNode(i);

@@ -45,8 +45,8 @@ public class DummyEdgeCreator extends OldGraphVisitor
 	EdgeList edgeList;
 	DirectedGraph graph;
 
-	List edgesAdded;
-	List candidateList;
+	List<Edge> edgesAdded;
+	List<Node> candidateList;
 	int targetNodeIndex;
 
 	boolean cleanNextTime = false;
@@ -71,7 +71,7 @@ public class DummyEdgeCreator extends OldGraphVisitor
 		this.graph = graph;
 		this.nodeList = graph.nodes;
 		this.edgeList = graph.edges;
-		edgesAdded = new ArrayList();
+		edgesAdded = new ArrayList<Edge>();
 
 	}
 
@@ -82,15 +82,13 @@ public class DummyEdgeCreator extends OldGraphVisitor
 
 		int nodeCount = nodeList.size();
 
-		boolean addedEdge = false;
-
 		//if node count is only one then we don't have to worry about whether
 		// the nodes are connected
 		if (nodeCount > 1)
 		{
-			for (Iterator iter = nodeList.iterator(); iter.hasNext();)
+			for (Iterator<Node> iter = nodeList.iterator(); iter.hasNext();)
 			{
-				Node sourceNode = (Node) iter.next();
+				Node sourceNode = iter.next();
 
 				//we will need to set up a dummy relationship for any table not
 				// in one already
@@ -111,14 +109,11 @@ public class DummyEdgeCreator extends OldGraphVisitor
 	 */
 	private Edge newDummyEdge(Node targetNode, Node sourceNode)
 	{
-		boolean addedEdge;
 		DummyEdgePart edgePart = new DummyEdgePart();
 		Edge edge = new Edge(edgePart, sourceNode, targetNode);
 		edge.weight = 2;
 		edgeList.add(edge);
 
-		//targetNode = sourceNode;
-		addedEdge = true;
 		return edge;
 	}
 
@@ -137,9 +132,9 @@ public class DummyEdgeCreator extends OldGraphVisitor
 			boolean relationshipFound = false;
 
 			//first look for set of targets which are already in relationships
-			for (Iterator iter = nodeList.iterator(); iter.hasNext();)
+			for (Iterator<Node> iter = nodeList.iterator(); iter.hasNext();)
 			{
-				Node element = (Node) iter.next();
+				Node element = iter.next();
 				if ((element.incoming.size() + element.outgoing.size()) >= 1)
 				{
 					candidateList.add(element);
@@ -157,13 +152,11 @@ public class DummyEdgeCreator extends OldGraphVisitor
 			else
 			{
 
-				Comparator comparator = new Comparator()
+				Comparator<Node> comparator = new Comparator<Node>()
 				{
 
-					public int compare(Object o1, Object o2)
+					public int compare(Node t1, Node t2)
 					{
-						Node t1 = (Node) o1;
-						Node t2 = (Node) o2;
 						return t1.incoming.size() - (t2.incoming.size());
 					}
 
@@ -201,14 +194,14 @@ public class DummyEdgeCreator extends OldGraphVisitor
 		else
 			targetNodeIndex++;
 
-		return (Node) candidateList.get(targetNodeIndex);
+		return candidateList.get(targetNodeIndex);
 	}
 
 	protected void removeDummyEdges()
 	{
-		for (Iterator iter = edgesAdded.iterator(); iter.hasNext();)
+		for (Iterator<Edge> iter = edgesAdded.iterator(); iter.hasNext();)
 		{
-			Edge edge = (Edge) iter.next();
+			Edge edge = iter.next();
 			edgeList.remove(edge);
 
 		}

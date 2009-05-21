@@ -65,8 +65,8 @@ public class KnownConfigurations  {
 
 	// TODO: is the best way for the querypage model ?
 	private QueryPageModel queryPages = new QueryPageModel();
-	private List configurationListeners = new ArrayList();
-	private Map configurations;
+	private List<KnownConfigurationsListener> configurationListeners = new ArrayList<KnownConfigurationsListener>();
+	private Map<String, ConsoleConfiguration> configurations;
 	private ConsoleConfigurationListener sfListener = new ConsoleConfigurationListener() {
 
 		public void sessionFactoryClosing(final ConsoleConfiguration configuration, final SessionFactory closingFactory) {
@@ -171,7 +171,7 @@ public class KnownConfigurations  {
 	// added forUpdate as a workaround for letting listeners know it is done to update the configuration so they don't cause removal issues.
 	public void removeConfiguration(final ConsoleConfiguration configuration, final boolean forUpdate) {
 
-		ConsoleConfiguration oldConfig = (ConsoleConfiguration) getRepositoriesMap().remove(configuration.getName() );
+		ConsoleConfiguration oldConfig = getRepositoriesMap().remove(configuration.getName() );
 		if (oldConfig != null) {
 			oldConfig.removeConsoleConfigurationListener(sfListener);
 			fireNotification(new Notification() {
@@ -200,44 +200,38 @@ public class KnownConfigurations  {
 	 * Return a list of the know repository locations
 	 */
 	public ConsoleConfiguration[] getConfigurations() {
-		return (ConsoleConfiguration[])getRepositoriesMap().values().toArray(new ConsoleConfiguration[getRepositoriesMap().size()]);
+		return getRepositoriesMap().values().toArray(new ConsoleConfiguration[getRepositoriesMap().size()]);
 	}
 
 	public ConsoleConfiguration[] getConfigurationsSortedByName() {
-		return getConfigurations(new Comparator() {
-			public boolean equals(Object obj) {
-				return this==obj;
-			}
-
-			public int compare(Object o1, Object o2) {
-				return ( (ConsoleConfiguration)o1).getName()
-					.compareTo(
-							( (ConsoleConfiguration)o2).getName() );
+		return getConfigurations(new Comparator<ConsoleConfiguration>() {
+			public int compare(ConsoleConfiguration o1, ConsoleConfiguration o2) {
+				return o1.getName().compareTo(o2.getName());
 			}
 		});
 	}
 
-	public ConsoleConfiguration[] getConfigurations(Comparator c) {
+	public ConsoleConfiguration[] getConfigurations(Comparator<ConsoleConfiguration> c) {
 		ConsoleConfiguration[] configurations = getConfigurations();
 		Arrays.sort(configurations, c);
 		return configurations;
 	}
 
 	private ConsoleConfiguration internalGetRepository(String location) {
-		return (ConsoleConfiguration) getRepositoriesMap().get(location);
+		return getRepositoriesMap().get(location);
 	}
 
 
-	private Map getRepositoriesMap() {
+	private Map<String, ConsoleConfiguration> getRepositoriesMap() {
 		if (configurations == null) {
-			configurations = new TreeMap();
+			configurations = new TreeMap<String, ConsoleConfiguration>();
 		}
 		return configurations;
 	}
 
 	private KnownConfigurationsListener[] getListeners() {
 		synchronized(configurationListeners) {
-			return (KnownConfigurationsListener[]) configurationListeners.toArray(new KnownConfigurationsListener[configurationListeners.size()]);
+			return configurationListeners.toArray(new KnownConfigurationsListener[configurationListeners.size()]);
 		}
 	}
 
@@ -258,9 +252,9 @@ public class KnownConfigurations  {
 	}
 
 	// TODO: decouple this logging from Eclipse platform!
-	private Map loggingStreams = new HashMap();
+	private Map<String, Object[]> loggingStreams = new HashMap<String, Object[]>();
 	public MessageConsoleStream findLoggingStream(String name) {
-		Object[] console = (Object[]) loggingStreams.get(name);
+		Object[] console = loggingStreams.get(name);
 		if(console==null) {
 			console = new Object[2];
 			String secondaryId = ConsoleMessages.KnownConfigurations_hibernate_log + (name==null?ConsoleMessages.KnownConfigurations_unknown:name);
@@ -274,7 +268,7 @@ public class KnownConfigurations  {
 	}
 
 	private void removeLoggingStream(ConsoleConfiguration oldConfig) {
-		Object[] object = (Object[]) loggingStreams.remove( oldConfig.getName() );
+		Object[] object = loggingStreams.remove( oldConfig.getName() );
 		if(object!=null) {
 			MessageConsole mc = (MessageConsole)object[0];
 			MessageConsoleStream stream = (MessageConsoleStream)object[1];
@@ -288,7 +282,7 @@ public class KnownConfigurations  {
 	public ConsoleConfiguration find(String lastUsedName) {
 		if(configurations==null) return null;
 		if(lastUsedName==null) return null;
-		return (ConsoleConfiguration) configurations.get(lastUsedName);
+		return configurations.get(lastUsedName);
 	}
 
 	public QueryPageModel getQueryPageModel() {
@@ -302,7 +296,7 @@ public class KnownConfigurations  {
 			Document document = builder.newDocument();
 
 			Element element = document.createElement("hibernate-console"); //$NON-NLS-1$
-			Node node = document.appendChild(element);
+			document.appendChild(element);
 
 			ConsoleConfiguration[] configs = getConfigurations();
 			for (int i = 0; i < configs.length; i++) {
@@ -336,13 +330,13 @@ public class KnownConfigurations  {
 		xformer.transform(source, result);
 	}
 
-	List queryParameters = new ArrayList();
+	List<ConsoleQueryParameter> queryParameters = new ArrayList<ConsoleQueryParameter>();
 
 	public ConsoleQueryParameter[] getQueryParameters() {
-		return (ConsoleQueryParameter[]) queryParameters.toArray(new ConsoleQueryParameter[queryParameters.size()]);
+		return queryParameters.toArray(new ConsoleQueryParameter[queryParameters.size()]);
 	}
 
-	public List getQueryParameterList() {
+	public List<ConsoleQueryParameter> getQueryParameterList() {
 		return queryParameters;
 	}
 

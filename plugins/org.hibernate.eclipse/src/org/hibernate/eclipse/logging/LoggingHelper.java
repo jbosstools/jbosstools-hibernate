@@ -22,7 +22,6 @@
 package org.hibernate.eclipse.logging;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.runtime.Plugin;
@@ -32,7 +31,7 @@ public class LoggingHelper {
 		
 	private static LoggingHelper helper;
 	
-	private List logManagers = new ArrayList(); 
+	private List<PluginLogManager> logManagers = new ArrayList<PluginLogManager>(); 
 	
 	public LoggingHelper() {
 		super();	
@@ -49,9 +48,7 @@ public class LoggingHelper {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		synchronized (this.logManagers) {
-			Iterator it = this.logManagers.iterator();
-			while (it.hasNext()) {
-				PluginLogManager logManager = (PluginLogManager) it.next();
+			for (PluginLogManager logManager : logManagers) {
 				logManager.internalShutdown(); 
 			}
 			this.logManagers.clear(); 

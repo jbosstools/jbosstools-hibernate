@@ -200,14 +200,14 @@ public class ProjectUtil {
 	 */
 	public static ITextEditor[] getTextEditors(IEditorPart editorPart) {
 		if (editorPart instanceof MultiPageEditorPart) {
-			List testEditors = new ArrayList();
+			List<IEditorPart> testEditors = new ArrayList<IEditorPart>();
     		IEditorPart[] editors = ((MultiPageEditorPart) editorPart).findEditors(editorPart.getEditorInput());
     		for (int i = 0; i < editors.length; i++) {
 				if (editors[i] instanceof ITextEditor){
 					testEditors.add(editors[i]);
 				}
 			}
-    		return (ITextEditor[])testEditors.toArray(new ITextEditor[0]);
+    		return testEditors.toArray(new ITextEditor[0]);
 		} else if (editorPart instanceof ITextEditor){
 			return new ITextEditor[]{(ITextEditor) editorPart};
 		}

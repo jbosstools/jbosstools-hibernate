@@ -34,7 +34,7 @@ public class ExporterFactory {
 
 	private ExporterDefinition definition;
 
-	final Map inputProperties;
+	final Map<String, String> inputProperties;
 
 	private boolean enabled = true;
 
@@ -43,16 +43,15 @@ public class ExporterFactory {
 	public ExporterFactory(ExporterDefinition definition, String exporterId) {
 		this.definition = definition;
 		this.exporterId = exporterId;
-		inputProperties = new HashMap();
+		inputProperties = new HashMap<String, String>();
 	}
 
-	public Map getDefaultExporterProperties() {
+	public Map<String, ExporterProperty> getDefaultExporterProperties() {
 		return definition.getExporterProperties();
 	}
 
-
 	public String setProperty(String key, String value) {
-		return (String) inputProperties.put( key, value );
+		return inputProperties.put( key, value );
 	}
 
 	public void removeProperty(String propertyName) {
@@ -61,9 +60,9 @@ public class ExporterFactory {
 
 	public String getPropertyValue(String key) {
 		if(inputProperties.containsKey( key )) {
-			return (String) inputProperties.get( key );
+			return inputProperties.get( key );
 		} else {
-			ExporterProperty ep = (ExporterProperty) definition.getExporterProperties().get( key );
+			ExporterProperty ep = definition.getExporterProperties().get( key );
 			if(ep!=null) {
 				return ep.getDefaultValue();
 			} else {
@@ -93,7 +92,7 @@ public class ExporterFactory {
 		boolean enabled = false;
 
 		try {
-		if(configuration.getAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, (List)null)==null) {
+		if(configuration.getAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, (List<String>)null)==null) {
 				enabled = configuration.getAttribute( getId(), false );
 		} else {
 			enabled = configuration.getAttribute( getLaunchAttributePrefix( getId() ), false );
@@ -120,7 +119,7 @@ public class ExporterFactory {
 
 		boolean oldSettings = true;
 		try {
-		if(configuration.getAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, (List)null)==null) {
+		if(configuration.getAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, (List<String>)null)==null) {
 			oldSettings = true;
 		} else {
 			oldSettings = false;
@@ -132,7 +131,7 @@ public class ExporterFactory {
 		setEnabled(configuration, enabled, oldSettings);
 	}
 
-	public Map getProperties() {
+	public Map<String, String> getProperties() {
 		return inputProperties;
 	}
 
@@ -140,13 +139,13 @@ public class ExporterFactory {
 		return exporterId;
 	}
 
-	public void setProperties(Map props) {
+	public void setProperties(Map<String, String> props) {
 		inputProperties.clear();
 		inputProperties.putAll( props );
 	}
 
 	public ExporterProperty getExporterProperty(String key) {
-		return (ExporterProperty) definition.getExporterProperties().get( key );
+		return definition.getExporterProperties().get( key );
 	}
 
 	public boolean hasLocalValueFor(String string) {
@@ -168,7 +167,7 @@ public class ExporterFactory {
 	 * @throws CoreException in case of resolve variables issues.
 	 */
 	public Exporter createConfiguredExporter(Configuration cfg, String defaultOutputDirectory,
-			String customTemplatePath, Properties globalProperties, Set outputDirectories, ArtifactCollector collector) throws CoreException {
+			String customTemplatePath, Properties globalProperties, Set<String> outputDirectories, ArtifactCollector collector) throws CoreException {
 
 		Exporter exporter = getExporterDefinition().createExporterInstance();
 
@@ -202,7 +201,7 @@ public class ExporterFactory {
 
 		exporter.setConfiguration(cfg);
 
-		List templatePathList = new ArrayList();
+		List<String> templatePathList = new ArrayList<String>();
 		if(props.containsKey("template_path")) { //$NON-NLS-1$
 			String resolveTemplatePath = resolve(props.getProperty("template_path")); //$NON-NLS-1$
 			StringTokenizer st = new StringTokenizer(resolveTemplatePath, ";"); //$NON-NLS-1$
@@ -241,7 +240,7 @@ public class ExporterFactory {
 			}
 		}
 
-		exporter.setTemplatePath((String[]) templatePathList.toArray(new String[templatePathList.size()]));
+		exporter.setTemplatePath(templatePathList.toArray(new String[templatePathList.size()]));
 
 
 		// special handling for GenericExporter (TODO: be delegated via plugin.xml)

@@ -126,7 +126,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 			else if (selection instanceof Property) {
 	    		Property p = (Property)selection;
 	    		if (p.getPersistentClass() != null) {
-	    			rootClass = (PersistentClass)p.getPersistentClass();
+	    			rootClass = p.getPersistentClass();
 	    		}
 		    }
 			if (rootClass != null){
@@ -163,7 +163,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 		}
    		if (editorPart == null && parentProperty.isComposite()) {
 			if (OpenFileActionUtils.hasConfigXMLMappingClassAnnotation(consoleConfiguration, rootClass)) {
-				String fullyQualifiedName =((Component)((Property) parentProperty).getValue()).getComponentClassName();
+				String fullyQualifiedName =((Component)parentProperty.getValue()).getComponentClassName();
 				editorPart = OpenSourceAction.run(compositeProperty, proj, fullyQualifiedName);
 			}
 	    }

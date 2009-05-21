@@ -28,13 +28,13 @@ import java.util.Observable;
 /** simple list to be used in e.g. tables */
 public abstract class TableModelList extends Observable {
 
-	final protected List filters;
+	final protected List<Object> filters;
 
 	public TableModelList() {
-		this(new ArrayList());
+		this(new ArrayList<Object>());
 	}
 	
-	public TableModelList(List queryParameterList) {
+	public TableModelList(List<Object> queryParameterList) {
 		filters = queryParameterList;
 	}
 
@@ -71,7 +71,7 @@ public abstract class TableModelList extends Observable {
 		notifyObservers();
 	}
 
-	public List getList() {
+	public List<Object> getList() {
 		return filters;
 	}
 }

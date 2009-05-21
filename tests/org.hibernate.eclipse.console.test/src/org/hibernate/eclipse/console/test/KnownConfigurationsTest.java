@@ -23,7 +23,7 @@ public class KnownConfigurationsTest extends TestCase {
 
 	static class CCListener implements KnownConfigurationsListener {
 
-		List added = new ArrayList();
+		List<ConsoleConfiguration> added = new ArrayList<ConsoleConfiguration>();
 
 		public void configurationAdded(ConsoleConfiguration root) {
 			added.add(root);
@@ -104,11 +104,6 @@ public class KnownConfigurationsTest extends TestCase {
 				return ConsoleTestMessages.KnownConfigurationsTest_fake_prefs;
 			}
 
-			public boolean useAnnotations() {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
 			public String getEntityResolverName() {
 				// TODO Auto-generated method stub
 				return null;
@@ -186,11 +181,6 @@ public class KnownConfigurationsTest extends TestCase {
 
 			public String getName() {
 				return name;
-			}
-
-			public boolean useAnnotations() {
-				// TODO Auto-generated method stub
-				return false;
 			}
 
 			public String getEntityResolverName() {

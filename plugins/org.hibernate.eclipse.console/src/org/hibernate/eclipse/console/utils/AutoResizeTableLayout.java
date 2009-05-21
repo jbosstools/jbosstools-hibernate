@@ -38,7 +38,7 @@ public class AutoResizeTableLayout extends TableLayout implements
         ControlListener {
 
     private final Table table;
-    private List columns = new ArrayList();
+    private List<ColumnLayoutData> columns = new ArrayList<ColumnLayoutData>();
     private boolean autosizing = false;
 
     public AutoResizeTableLayout(Table table) {
@@ -82,7 +82,7 @@ public class AutoResizeTableLayout extends TableLayout implements
 
         // First calc space occupied by fixed columns.
         for (int i = 0; i < size; i++) {
-            ColumnLayoutData col = (ColumnLayoutData)columns.get(i);
+            ColumnLayoutData col = columns.get(i);
             if (col instanceof ColumnPixelData) {
                 int pixels = ((ColumnPixelData)col).width;
                 widths[i] = pixels;
@@ -104,7 +104,7 @@ public class AutoResizeTableLayout extends TableLayout implements
             int rest = width - fixedWidth;
             int totalDistributed = 0;
             for (int i = 0; i < size; i++) {
-                ColumnLayoutData col = (ColumnLayoutData)columns.get(i);
+                ColumnLayoutData col = columns.get(i);
                 if (col instanceof ColumnWeightData) {
                     ColumnWeightData cw = (ColumnWeightData)col;
                     int weight = cw.weight;
@@ -121,7 +121,7 @@ public class AutoResizeTableLayout extends TableLayout implements
                 if (i == size) {
                     i = 0;
                 }
-                ColumnLayoutData col = (ColumnLayoutData)columns.get(i);
+                ColumnLayoutData col = columns.get(i);
                 if (col instanceof ColumnWeightData) {
                     ++widths[i];
                     --diff;

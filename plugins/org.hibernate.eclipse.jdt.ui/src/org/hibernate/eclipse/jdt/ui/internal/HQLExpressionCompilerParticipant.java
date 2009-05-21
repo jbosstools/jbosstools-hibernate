@@ -45,7 +45,7 @@ public class HQLExpressionCompilerParticipant extends CompilationParticipant {
 				HQLDetector hqlDetector = new HQLDetector(cu, consoleConfiguration, context.getFile());
 				node.accept(hqlDetector);
 				if(!hqlDetector.getProblems().isEmpty()) {
-					CategorizedProblem[] toArray = (CategorizedProblem[]) hqlDetector.getProblems().toArray( new CategorizedProblem[0] );
+					CategorizedProblem[] toArray = hqlDetector.getProblems().toArray( new CategorizedProblem[0] );
 					context.recordNewProblems( toArray );
 				}
 			}

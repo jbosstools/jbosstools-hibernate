@@ -229,7 +229,7 @@ public class OpenFileActionUtils {
 		Iterator<Element> classes = getElements(doc, HIBERNATE_TAG_CLASS);
 		boolean res = false;
 		while (classes.hasNext()) {
-			Element element = (Element)classes.next();
+			Element element = classes.next();
 			Attribute tableAttr = element.attribute(HIBERNATE_TAG_TABLE);
 			if (tableAttr != null) {
 				Attribute catalogAttr = element.attribute(HIBERNATE_TAG_CATALOG);
@@ -346,7 +346,7 @@ public class OpenFileActionUtils {
 			HibernateConsolePlugin.getDefault().logErrorMessage("Configuration file not found", e); //$NON-NLS-1$
 		}
 		try {
-			List errors = new ArrayList();
+			List<Throwable> errors = new ArrayList<Throwable>();
 			XMLHelper helper = new XMLHelper();
 			SAXReader saxReader = helper.createSAXReader(configXMLFile.getPath(), errors, entityResolver);
 			doc = saxReader.read(new InputSource( stream));
@@ -359,7 +359,7 @@ public class OpenFileActionUtils {
 		}
 		finally {
 			try {
-				stream.close();
+				if (stream != null) stream.close();
 			}
 			catch (IOException ioe) {
     			HibernateConsolePlugin.getDefault().logErrorMessage("could not close input stream for", ioe);	//$NON-NLS-1$
@@ -377,6 +377,7 @@ public class OpenFileActionUtils {
 	 * @param element
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public static IFile searchInMappingFiles(ConsoleConfiguration consoleConfiguration, IJavaProject proj, Object element) {
 		IFile file = null;
     	if (consoleConfiguration == null || proj == null) {
@@ -389,9 +390,9 @@ public class OpenFileActionUtils {
         	return file;
 		}
     	Element sfNode = doc.getRootElement().element(HIBERNATE_TAG_SESSION_FACTORY);
-		Iterator elements = sfNode.elements(HIBERNATE_TAG_MAPPING).iterator();
+		Iterator<Element> elements = sfNode.elements(HIBERNATE_TAG_MAPPING).iterator();
 		while (elements.hasNext() && file == null) {
-			Element subelement = (Element)elements.next();
+			Element subelement = elements.next();
 			Attribute resourceAttr = subelement.attribute(HIBERNATE_TAG_RESOURCE);
 			if (resourceAttr == null) {
 				continue;
@@ -703,7 +704,7 @@ public class OpenFileActionUtils {
 					testEditors.add((ITextEditor)editors[i]);
 				}
 			}
-    		res = (ITextEditor[])testEditors.toArray(res);
+    		res = testEditors.toArray(res);
 		} else if (editorPart instanceof ITextEditor){
 			res = new ITextEditor[]{(ITextEditor) editorPart};
 		}

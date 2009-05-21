@@ -382,7 +382,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 	}
 
 	public static IStatus throwableToStatus(Throwable t, int code) {
-		List causes = new ArrayList();
+		List<IStatus> causes = new ArrayList<IStatus>();
 		Throwable temp = t;
 		while(temp!=null && temp.getCause()!=temp) {
 			causes.add(new Status(IStatus.ERROR, ID, code, temp.getMessage()==null?temp.toString() + HibernateConsoleMessages.HibernateConsolePlugin_no_message_1:temp.toString(), temp) );
@@ -396,7 +396,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
         if(causes.isEmpty()) {
         	return new Status(IStatus.ERROR, ID, code, msg, t);
         } else {
-        	return new MultiStatus(ID, code,(IStatus[]) causes.toArray(new IStatus[causes.size()]), msg, t);
+        	return new MultiStatus(ID, code,causes.toArray(new IStatus[causes.size()]), msg, t);
         }
 
 	}

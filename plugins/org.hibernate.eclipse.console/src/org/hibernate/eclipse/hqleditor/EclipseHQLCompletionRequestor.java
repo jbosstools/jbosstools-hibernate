@@ -24,6 +24,7 @@ package org.hibernate.eclipse.hqleditor;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.swt.graphics.Image;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
@@ -34,7 +35,7 @@ import org.hibernate.util.StringHelper;
 
 public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor {
 
-	private final List result = new ArrayList();
+	private final List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 	private String lastErrorMessage;
 	private final int virtualOffset;
 	
@@ -46,7 +47,7 @@ public class EclipseHQLCompletionRequestor implements IHQLCompletionRequestor {
 		this.virtualOffset = virtualOffset;
 	}
 
-	public List getCompletionProposals() {		
+	public List<ICompletionProposal> getCompletionProposals() {		
 		return result;
 	}
 

@@ -60,11 +60,12 @@ public class JavaPage extends AbstractQueryPage {
         this.model = model;
     }
 
-    public void setSession(Session s) {
+    @SuppressWarnings("unchecked")
+	public void setSession(Session s) {
 		super.setSession(s);
         try {
         	if(criteriaCode.indexOf( "System.exit" )>=0) { // TODO: externalize run so we don't need this bogus check! //$NON-NLS-1$
-        		list = Collections.EMPTY_LIST;
+        		list = Collections.emptyList();
         		addException( new IllegalArgumentException(ConsoleMessages.JavaPage_not_allowed) );
         		return;
         	}
@@ -82,7 +83,7 @@ public class JavaPage extends AbstractQueryPage {
                 	list = list.subList( 0, Math.min( list.size(), model.getMaxResults().intValue() ) );
                 }
             } else {
-                list = new ArrayList();
+                list = new ArrayList<Object>();
                 list.add(o);
             }
         }
@@ -94,20 +95,21 @@ public class JavaPage extends AbstractQueryPage {
         }
 	}
 
-    private Interpreter setupInterpreter(Session session) throws EvalError, HibernateException {
+    @SuppressWarnings("unchecked")
+	private Interpreter setupInterpreter(Session session) throws EvalError, HibernateException {
         Interpreter interpreter = new Interpreter();
 
         interpreter.set("session", session); //$NON-NLS-1$
         interpreter.setClassLoader( Thread.currentThread().getContextClassLoader() );
         SessionImplementor si = (SessionImplementor)session;
 
-        Map map = si.getFactory().getAllClassMetadata();
+        Map<String, ?> map = si.getFactory().getAllClassMetadata();
 
-        Iterator iterator = map.keySet().iterator();
+        Iterator<String> iterator = map.keySet().iterator();
         //TODO: filter non classes.
         String imports = ""; //$NON-NLS-1$
         while (iterator.hasNext() ) {
-            String element =  (String) iterator.next();
+            String element =  iterator.next();
             imports += "import " + element + ";\n"; //$NON-NLS-1$ //$NON-NLS-2$
         }
 
@@ -119,7 +121,8 @@ public class JavaPage extends AbstractQueryPage {
         return interpreter;
     }
 
-    public List getList() {
+    @SuppressWarnings("unchecked")
+	public List<Object> getList() {
         if(list!=null) return list;
         try {
             if(criteria!=null) {
@@ -128,18 +131,18 @@ public class JavaPage extends AbstractQueryPage {
                 queryTime = System.currentTimeMillis() - startTime;
             }
             else {
-                return Collections.EMPTY_LIST;
+                return Collections.emptyList();
             }
         }
         catch (HibernateException e) {
-        	list = Collections.EMPTY_LIST;
+        	list = Collections.emptyList();
             addException(e);
         }
         return list;
     }
 
-	public List getPathNames() {
-        List l = new ArrayList();
+	public List<String> getPathNames() {
+        List<String> l = new ArrayList<String>();
         l.add(ConsoleMessages.JavaPage_no_info);
         return l;
     }

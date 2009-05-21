@@ -14,6 +14,7 @@ package org.hibernate.eclipse.console.utils.xpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -58,7 +59,7 @@ public class DialogSelectionHelper {
 			throw new IllegalArgumentException(HibernateConsoleMessages.DialogSelectionHelper_used_entries_must_be_notnull);
 		}
 
-		List clazzes = new ArrayList();
+		List<Class<?>> clazzes = new ArrayList<Class<?>>();
 		if(allowDirectories) {
 			clazzes.add(IFolder.class);
 			clazzes.add(IProject.class);
@@ -66,10 +67,10 @@ public class DialogSelectionHelper {
 		if(allowFiles) {
 			clazzes.add(IFile.class);
 		}
-		Class[] acceptedClasses = (Class[]) clazzes.toArray(new Class[clazzes.size()]);
+		Class<?>[] acceptedClasses = clazzes.toArray(new Class[clazzes.size()]);
 
 		TypedElementSelectionValidator validator= new TypedElementSelectionValidator(acceptedClasses, true);
-		ArrayList usedFiles= new ArrayList(usedEntries.length);
+		List<IResource> usedFiles= new ArrayList<IResource>(usedEntries.length);
 		IWorkspaceRoot root= ResourcesPlugin.getWorkspace().getRoot();
 		for (int i= 0; i < usedEntries.length; i++) {
 			IResource resource= root.findMember(usedEntries[i]);
@@ -102,11 +103,11 @@ public class DialogSelectionHelper {
 	}
 
 	public static IPath[] chooseFolderEntries(Shell shell, IPath initialSelection, String title, String description, boolean allowMultiple) {
-		List clazzes = new ArrayList();
+		List<Class<?>> clazzes = new ArrayList<Class<?>>();
 		clazzes.add(IFolder.class);
 		clazzes.add(IProject.class);
 
-		Class[] acceptedClasses = (Class[]) clazzes.toArray(new Class[clazzes.size()]);
+		Class<?>[] acceptedClasses = clazzes.toArray(new Class[clazzes.size()]);
 
 		TypedElementSelectionValidator validator= new TypedElementSelectionValidator(acceptedClasses, true);
 		IWorkspaceRoot root= ResourcesPlugin.getWorkspace().getRoot();

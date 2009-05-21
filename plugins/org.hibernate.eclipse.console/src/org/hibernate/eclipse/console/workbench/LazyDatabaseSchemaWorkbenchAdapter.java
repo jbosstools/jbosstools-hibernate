@@ -45,6 +45,7 @@ import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.hibernate.mapping.Table;
 
 public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 
@@ -52,6 +53,7 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 		return getChildren(o, new NullProgressMonitor());
 	}
 
+	@SuppressWarnings("unchecked")
 	public Object[] getChildren(Object o, final IProgressMonitor monitor) {
 		LazyDatabaseSchema dbs = getLazyDatabaseSchema( o );
 		final DefaultDatabaseCollector db = new DefaultDatabaseCollector();
@@ -60,18 +62,18 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 		try{
 			readDatabaseSchema(monitor, db, consoleConfiguration, dbs.getReverseEngineeringStrategy());
 
-			List result = new ArrayList();
+			List<TableContainer> result = new ArrayList<TableContainer>();
 
-			Iterator qualifierEntries = db.getQualifierEntries();
+			Iterator<Map.Entry<String, List<Table>>> qualifierEntries = db.getQualifierEntries();
 			while ( qualifierEntries.hasNext() ) {
-				Map.Entry entry = (Map.Entry) qualifierEntries.next();
-				result.add(new TableContainer((String) entry.getKey(),(List)entry.getValue()));
+				Map.Entry<String, List<Table>> entry = qualifierEntries.next();
+				result.add(new TableContainer(entry.getKey(), entry.getValue()));
 			}
-			return toArray(result.iterator(), TableContainer.class, new Comparator() {
+			return toArray(result.iterator(), TableContainer.class, new Comparator<TableContainer>() {
 
-				public int compare(Object arg0, Object arg1) {
+				public int compare(TableContainer arg0, TableContainer arg1) {
 
-					return ((TableContainer)arg0).getName().compareTo(((TableContainer)arg1).getName());
+					return arg0.getName().compareTo(arg1.getName());
 				}
 
 			});

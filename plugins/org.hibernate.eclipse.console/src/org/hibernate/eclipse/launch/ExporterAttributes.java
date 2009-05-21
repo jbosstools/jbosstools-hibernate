@@ -72,7 +72,7 @@ public class ExporterAttributes
    private String packageName;
    private String outputPath;
    private String templatePath;
-   private List exporterFactories;
+   private List<ExporterFactory> exporterFactories;
 
    private boolean autoManyToManyDetection;
    private boolean autoOneToOneDetection;
@@ -120,19 +120,18 @@ public class ExporterAttributes
 	   	   return HibernateLaunchConstants.ATTR_EXPORTERS + "." + exporterId; //$NON-NLS-1$
    }
 
-   private List readExporterFactories(ILaunchConfiguration configuration) throws CoreException {
+   private List<ExporterFactory> readExporterFactories(ILaunchConfiguration configuration) throws CoreException {
 
-	   List exporterNames = configuration.getAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, (List)null);
+	   List<String> exporterNames = configuration.getAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, (List<String>)null);
 
 	   if(exporterNames!=null) {
-		   Map exDefinitions = ExtensionManager.findExporterDefinitionsAsMap();
-		   List factories = new ArrayList();
+		   Map<String, ExporterDefinition> exDefinitions = ExtensionManager.findExporterDefinitionsAsMap();
+		   List<ExporterFactory> factories = new ArrayList<ExporterFactory>();
 
-		   for (Iterator iterator = exporterNames.iterator(); iterator.hasNext();) {
-			   String exporterId = (String) iterator.next();
+		   for (String exporterId : exporterNames) {
 			   String extensionId = configuration.getAttribute(getLaunchAttributePrefix(exporterId) + ".extension_id", (String)null); //$NON-NLS-1$
 
-			   ExporterDefinition expDef = (ExporterDefinition) exDefinitions.get(extensionId);
+			   ExporterDefinition expDef = exDefinitions.get(extensionId);
 			   if(expDef==null) {
 				   String out = NLS.bind(HibernateConsoleMessages.ExporterAttributes_could_not_locate_exporter_for_in, extensionId, configuration.getName());
 				   throw new HibernateConsoleRuntimeException(out);
@@ -150,7 +149,7 @@ public class ExporterAttributes
 	   } else {
 		   // fall back to old way of reading if list of exporters does not exist.
 		   ExporterDefinition[] exDefinitions = ExtensionManager.findExporterDefinitions();
-		   List factories = new ArrayList();
+		   List<ExporterFactory> factories = new ArrayList<ExporterFactory>();
 
 		   for (int i = 0; i < exDefinitions.length; i++) {
 			   ExporterDefinition expDef = exDefinitions[i];
@@ -171,7 +170,7 @@ public class ExporterAttributes
 			List exporterFactories, Set enabledExporters, Set deletedExporterIds) {
 
 
-	   List names = new ArrayList();
+	   List<String> names = new ArrayList<String>();
 		for (Iterator iter = exporterFactories.iterator(); iter.hasNext();) {
 			ExporterFactory ef = (ExporterFactory) iter.next();
 			configuration.setAttribute(getLaunchAttributePrefix(ef.getId()) + ".extension_id", ef.getExporterDefinition().getId()); //$NON-NLS-1$
@@ -343,7 +342,7 @@ public class ExporterAttributes
       this.useOwnTemplates = useOwnTemplates;
    }
 
-   public List getExporterFactories() {
+   public List<ExporterFactory> getExporterFactories() {
 	   return exporterFactories;
    }
 

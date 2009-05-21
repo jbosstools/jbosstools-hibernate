@@ -38,16 +38,16 @@ public class HQLQueryPage extends AbstractQueryPage {
 	private String queryString;
 	private QueryInputModel model;
 	
-	public List getList() {
-		if (query==null) return Collections.EMPTY_LIST;
+	public List<Object> getList() {
+		if (query==null) return Collections.emptyList();
 		if (list == null) {
 			try {
 				
 				//list = query.list();
-				list = new ArrayList();
+				list = new ArrayList<Object>();
 				setupParameters(query, model);
 				long startTime = System.currentTimeMillis();
-				Iterator iter = query.list().iterator(); // need to be user-controllable to toggle between iterate, scroll etc.
+				Iterator<?> iter = query.list().iterator(); // need to be user-controllable to toggle between iterate, scroll etc.
 				queryTime = System.currentTimeMillis() - startTime;
 				while (iter.hasNext() ) {
 					Object element = iter.next();
@@ -56,10 +56,10 @@ public class HQLQueryPage extends AbstractQueryPage {
 				pcs.firePropertyChange("list", null, list); //$NON-NLS-1$
 			} 
 			catch (HibernateException e) {
-				list = Collections.EMPTY_LIST;
+				list = Collections.emptyList();
 				addException(e);				                
 			} catch (IllegalArgumentException e) {
-				list = Collections.EMPTY_LIST;
+				list = Collections.emptyList();
 				addException(e);
 			}
 		}
@@ -118,8 +118,8 @@ public class HQLQueryPage extends AbstractQueryPage {
     	return queryString; // cannot use query since it might be null because of an error!    
     }
 
-    public List getPathNames() {
-    	List l = Collections.EMPTY_LIST;
+    public List<String> getPathNames() {
+    	List<String> l = Collections.emptyList();
     
     	try {
     		if(query==null) return l;
@@ -137,7 +137,7 @@ public class HQLQueryPage extends AbstractQueryPage {
     			t = new Type[] { null };
     			// ignore - http://opensource.atlassian.com/projects/hibernate/browse/HHH-2188
     		}
-    		l = new ArrayList(t.length);
+    		l = new ArrayList<String>(t.length);
     
     		for (int i = 0; i < t.length; i++) {
     			Type type = t[i];
@@ -149,7 +149,7 @@ public class HQLQueryPage extends AbstractQueryPage {
     		}
     		} else {
     			String[] t = returnAliases;
-        		l = new ArrayList(t.length);
+        		l = new ArrayList<String>(t.length);
         
         		for (int i = 0; i < t.length; i++) {
         			l.add(t[i]);

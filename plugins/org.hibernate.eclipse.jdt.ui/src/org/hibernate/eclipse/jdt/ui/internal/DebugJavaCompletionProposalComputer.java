@@ -45,8 +45,8 @@ public class DebugJavaCompletionProposalComputer implements IJavaCompletionPropo
 		super();
 	}
 
-	public List computeCompletionProposals(ContentAssistInvocationContext context, IProgressMonitor monitor) {
-		List proposals = new ArrayList();
+	public List<ICompletionProposal> computeCompletionProposals(ContentAssistInvocationContext context, IProgressMonitor monitor) {
+		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
 
 		proposals.add( new CompletionProposal( "hibernate tools", context.getInvocationOffset(), 7, context.getInvocationOffset()) ); //$NON-NLS-1$
 		CharSequence computeIdentifierPrefix = null;

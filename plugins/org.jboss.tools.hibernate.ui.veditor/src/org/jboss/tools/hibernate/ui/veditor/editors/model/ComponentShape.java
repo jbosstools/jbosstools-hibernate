@@ -36,14 +36,14 @@ public class ComponentShape extends ExpandeableShape {
 	
 	protected void setChildsHiden(boolean hiden) {
 		for (int i = 0; i < getChildren().size(); i++)
-			((Shape)getChildren().get(i)).setHidden(hiden);
+			getChildren().get(i).setHidden(hiden);
 	}
 
 	public void refreshChildsHiden(OrmDiagram ormDiagram) {
 		refHide = !refHide;
 		
 		for (int i = 0; i < getChildren().size(); i++)
-			((Shape)getChildren().get(i)).setHidden(!refHide);
+			getChildren().get(i).setHidden(!refHide);
 		
 		if(refHide)
 			if(first){

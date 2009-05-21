@@ -378,9 +378,9 @@ public class HibernateRefactoringUtil {
 		if (changes.size() == 0) {
 			return null;
 		} else if (changes.size() == 1) {
-			return (Change) changes.get(0);
+			return changes.get(0);
 		} else {
-			return new CompositeChange(name, (Change[])changes.toArray(new Change[changes.size()]));
+			return new CompositeChange(name, changes.toArray(new Change[changes.size()]));
 		}
 	}
 }

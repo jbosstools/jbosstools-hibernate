@@ -111,7 +111,7 @@ class FakeTransaction implements Transaction {
 	
 	int status;
 	private Connection connection;
-	List synchronizations = new ArrayList();
+	List<Synchronization> synchronizations = new ArrayList<Synchronization>();
 	private FakeTransactionManager transactionManager;
 	
 	FakeTransaction(FakeTransactionManager transactionManager) {
@@ -141,8 +141,7 @@ class FakeTransaction implements Transaction {
 		else {
 			status = Status.STATUS_PREPARING;
 			
-			for ( int i=0; i<synchronizations.size(); i++ ) {
-				Synchronization s = (Synchronization) synchronizations.get(i);
+			for (Synchronization s : synchronizations) {
 				s.beforeCompletion();
 			}
 			
@@ -159,8 +158,7 @@ class FakeTransaction implements Transaction {
 			
 			status = Status.STATUS_COMMITTED;
 
-			for ( int i=0; i<synchronizations.size(); i++ ) {
-				Synchronization s = (Synchronization) synchronizations.get(i);
+			for (Synchronization s : synchronizations) {
 				s.afterCompletion(status);
 			}
 			
@@ -212,8 +210,7 @@ class FakeTransaction implements Transaction {
 			throw new SystemException();
 		}
 		
-		for ( int i=0; i<synchronizations.size(); i++ ) {
-			Synchronization s = (Synchronization) synchronizations.get(i);
+		for (Synchronization s : synchronizations) {
 			s.afterCompletion(status);
 		}
 		

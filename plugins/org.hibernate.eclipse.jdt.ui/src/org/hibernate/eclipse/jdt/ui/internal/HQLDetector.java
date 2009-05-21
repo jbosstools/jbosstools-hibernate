@@ -23,7 +23,7 @@ import org.hibernate.impl.SessionFactoryImpl;
 public class HQLDetector extends ASTVisitor {
 
 	private final IFile resource;
-	List problems = new ArrayList();
+	List<HQLProblem> problems = new ArrayList<HQLProblem>();
 	private final ConsoleConfiguration consoleConfiguration;
 	private final CompilationUnit cu;
 	
@@ -33,11 +33,12 @@ public class HQLDetector extends ASTVisitor {
 		this.resource = (IFile) resource;
 	}
 
+	@SuppressWarnings("unchecked")
 	public boolean visit(NormalAnnotation node) {
 		if(node.getTypeName().getFullyQualifiedName().endsWith( "NamedQuery" )) { //$NON-NLS-1$
-			Iterator iterator = node.values().iterator();
+			Iterator<MemberValuePair> iterator = node.values().iterator();
 			while ( iterator.hasNext() ) {
-				MemberValuePair element = (MemberValuePair) iterator.next();
+				MemberValuePair element = iterator.next();
 				if(element.getName().getIdentifier().equals("query")) { //$NON-NLS-1$
 					Expression value = element.getValue();
 					if(value instanceof StringLiteral) {
@@ -115,7 +116,7 @@ public class HQLDetector extends ASTVisitor {
 	}
 
 	
-	public List getProblems() {
+	public List<HQLProblem> getProblems() {
 		return problems;
 	}
 }

@@ -63,19 +63,20 @@ public class PersistentClassEditPart extends GraphNodeEditPart  {
 		return HibernateWorkbenchHelper.getLabelForClassName(getPersistentClass().getEntityName());
 	}
 
-	protected List getModelChildren() {	
+	@SuppressWarnings("unchecked")
+	protected List<PropertyViewAdapter> getModelChildren() {	
 		
-		List list = new ArrayList();
+		List<PropertyViewAdapter> list = new ArrayList<PropertyViewAdapter>();
 		
 		Property identifierProperty = getPersistentClass().getIdentifierProperty();
 		if(identifierProperty!=null) {
 			list.add( new PropertyViewAdapter(getPersistentClassViewAdapter(), identifierProperty ));
 		}
 		
-		Iterator propertyIterator = getPersistentClass().getPropertyIterator();
+		Iterator<Property> propertyIterator = getPersistentClass().getPropertyIterator();
 		
 		while ( propertyIterator.hasNext() ) {
-			list.add( new PropertyViewAdapter(getPersistentClassViewAdapter(), (Property) propertyIterator.next()) );
+			list.add( new PropertyViewAdapter(getPersistentClassViewAdapter(), propertyIterator.next()) );
 		}
 		return list;
 	}

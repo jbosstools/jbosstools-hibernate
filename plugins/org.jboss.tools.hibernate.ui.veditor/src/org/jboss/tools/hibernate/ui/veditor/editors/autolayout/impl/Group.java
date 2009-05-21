@@ -10,12 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.veditor.editors.autolayout.impl;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Group {
 	LayuotConstants constants;
     int number;
-    List itemList = new ArrayList();
+    List<Integer> itemList = new ArrayList<Integer>();
 	Item[] allitems = null;
     private int[] items = null;
     int miny = -1;
@@ -66,7 +67,7 @@ public class Group {
     	if(items == null) {
     		items = new int[itemList.size()];
     		for (int i = 0; i < items.length; i++)
-    		  items[i] = ((Integer)itemList.get(i)).intValue();
+    		  items[i] = itemList.get(i);
     	} 
         return items;
     }

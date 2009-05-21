@@ -41,13 +41,13 @@ import org.hibernate.Hibernate;
  */
 public class QueryInputModel extends Observable {
 
-	List parameters;
+	List<ConsoleQueryParameter> parameters;
 	boolean ignoreParameters = false;
 	
 	private Integer maxResults;
 	
 	public QueryInputModel() {
-		parameters = new ArrayList();
+		parameters = new ArrayList<ConsoleQueryParameter>();
 	}
 	
 	public int getParameterCount() {
@@ -55,21 +55,12 @@ public class QueryInputModel extends Observable {
 	}
 	
 	public ConsoleQueryParameter[] getQueryParameters() {
-		return (ConsoleQueryParameter[]) parameters.toArray(new ConsoleQueryParameter[parameters.size()]);
+		return parameters.toArray(new ConsoleQueryParameter[parameters.size()]);
 	}
 	
 	/** return a copy of the parameters currently in this model */
 	public ConsoleQueryParameter[] getQueryParametersForQuery() {
-		if(ignoreParameters) return new ConsoleQueryParameter[0];
-		ConsoleQueryParameter[] result = new ConsoleQueryParameter[parameters.size()];
-		
-		Iterator iterator = parameters.iterator();
-		int i = 0;
-		while(iterator.hasNext()) {
-			ConsoleQueryParameter cqp=(ConsoleQueryParameter) iterator.next(); 
-			result[i++] = new ConsoleQueryParameter(cqp);
-		}
-		return result;
+		return ignoreParameters ? new ConsoleQueryParameter[0] : getQueryParameters();
 	}
 	
 	public QueryInputModel getCopyForQuery() {
@@ -104,7 +95,7 @@ public class QueryInputModel extends Observable {
 		move(cqp, 1, parameters);
 	}
 	
-	protected void move(Object tf, int shift, List list) {
+	protected <T> void move(T tf, int shift, List<T> list) {
 		int i = list.indexOf(tf);
 		
 		if(i>=0) {
@@ -122,20 +113,20 @@ public class QueryInputModel extends Observable {
 		if(parameters.isEmpty()) {
 			return new ConsoleQueryParameter(paramName, Hibernate.STRING, ""); //$NON-NLS-1$
 		} else {
-			ConsoleQueryParameter cqp = (ConsoleQueryParameter) parameters.get(parameters.size()-1);
+			ConsoleQueryParameter cqp = parameters.get(parameters.size()-1);
 			ConsoleQueryParameter c = new ConsoleQueryParameter(cqp);
 			c.setName(makeUnique(parameters.iterator(), paramName));
 			return c;
 		}
 	}
 	
-	private static String makeUnique(Iterator items, String originalPropertyName) {
+	private static String makeUnique(Iterator<ConsoleQueryParameter> items, String originalPropertyName) {
         int cnt = 0;
         String propertyName = originalPropertyName;
-        Set uniqueNames = new HashSet();
+        Set<String> uniqueNames = new HashSet<String>();
         
         while ( items.hasNext() ) {
-            ConsoleQueryParameter element = (ConsoleQueryParameter) items.next();
+            ConsoleQueryParameter element = items.next();
             uniqueNames.add( element.getName() );
         }
         

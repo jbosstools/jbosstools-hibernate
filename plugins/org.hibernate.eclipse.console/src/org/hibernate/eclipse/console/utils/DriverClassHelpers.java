@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,9 +36,9 @@ import java.util.Map.Entry;
  */
 public class DriverClassHelpers {
 
-    private Map dialectNames = new HashMap();
-    private Map connectionUrls = new HashMap();
-    private Map driverClasses = new HashMap();
+    private Map<String, String> dialectNames = new HashMap<String, String>();
+    private Map<String, Set<String>> connectionUrls = new HashMap<String, Set<String>>();
+    private Map<String, Set<String>> driverClasses = new HashMap<String, Set<String>>();
     private Map<String, String> driverToDialect = new HashMap<String, String>();
     
     public DriverClassHelpers() {
@@ -248,19 +247,19 @@ public class DriverClassHelpers {
      * @param string
      * @param string2
      */
-    private void add(Map map, String key, String value) {
-        Set existing = (Set) map.get(key);
+    private void add(Map<String, Set<String>> map, String key, String value) {
+        Set<String> existing = map.get(key);
         if(existing==null) {
-            existing = new HashSet();
+            existing = new HashSet<String>();
             map.put(key,existing);
         }
         existing.add(value);
     }
 
     public String[] getDialectNames() {
-        List list = new ArrayList(dialectNames.keySet() );
+        List<String> list = new ArrayList<String>(dialectNames.keySet() );
         Collections.sort(list);
-        return (String[]) list.toArray(new String[list.size()]);
+        return list.toArray(new String[list.size()]);
     }
     
     /**
@@ -269,10 +268,8 @@ public class DriverClassHelpers {
      * @return short dialect name by corresponding class if available, otherwise return fullName assuming it is a "raw" classname.
      */
     public String getShortDialectName(String fullName) {
-    	Iterator keyIterator = dialectNames.keySet().iterator();
-    	while (keyIterator.hasNext()){
-    		String key = (String)keyIterator.next();
-			if (dialectNames.get(key).equals(fullName)) return key;
+    	for (Entry<String, String> entry : dialectNames.entrySet()) {
+    		if (entry.getValue().equals(fullName)) return entry.getKey();
 		}
     	return fullName;
     }
@@ -293,26 +290,23 @@ public class DriverClassHelpers {
      * @return corresponding class name if available, otherwise return dialectName assuming it is a "raw" classname
      */
     public String getDialectClass(String dialectName) {
-        if(dialectNames.containsKey(dialectName) ) {
-            return (String) dialectNames.get(dialectName);
-        } else {
-            return dialectName;
-        }
+    	String dialectClass = dialectNames.get(dialectName);
+    	return dialectClass != null ? dialectClass : dialectName;
     }
     
     public String[] getDriverClasses(String dialectName) {
-        Set result = (Set) (driverClasses.get(dialectName) );
-        if(result!=null) {
-            return (String[]) result.toArray(new String[result.size()]);
+        Set<String> result = driverClasses.get(dialectName);
+        if(result != null) {
+            return result.toArray(new String[result.size()]);
         } else {
             return new String[0];
         }
     }
     
     public String[] getConnectionURLS(String driverclass) {
-        Set result = (Set) (connectionUrls.get(driverclass) );
-        if(result!=null) {
-            return (String[]) result.toArray(new String[result.size()]);
+        Set<String> result = connectionUrls.get(driverclass);
+        if(result != null) {
+            return result.toArray(new String[result.size()]);
         } else {
             return new String[0];
         }

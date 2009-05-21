@@ -235,7 +235,7 @@ public class HQLCodeScanner extends RuleBasedScanner {
         
         setDefaultReturnToken( otherToken );
 
-        List rules = new ArrayList();
+        List<IRule> rules = new ArrayList<IRule>();
 
         rules.add( new EndOfLineRule( "--", commentToken )); //$NON-NLS-1$
         rules.add( new SingleLineRule( "'", "'", stringToken, '\\' )); //$NON-NLS-1$ //$NON-NLS-2$
@@ -248,7 +248,7 @@ public class HQLCodeScanner extends RuleBasedScanner {
         
         rules.add( wordRule );
 
-        setRules( (IRule[]) rules.toArray( new IRule[ rules.size() ] ) );
+        setRules( rules.toArray( new IRule[ rules.size() ] ) );
     }
 
 	private void addWordRules(final IToken token, WordRule wordRule, String[] reservedWords) {

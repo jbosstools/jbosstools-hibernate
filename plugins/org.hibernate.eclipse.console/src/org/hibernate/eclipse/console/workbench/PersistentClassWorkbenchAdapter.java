@@ -34,16 +34,17 @@ import org.hibernate.util.JoinedIterator;
 
 public class PersistentClassWorkbenchAdapter extends BasicWorkbenchAdapter {
 
+	@SuppressWarnings("unchecked")
 	public Object[] getChildren(Object o) {
 		PersistentClass pc = (PersistentClass) o;
 		Property identifierProperty = pc.getIdentifierProperty();
-		List properties = new ArrayList();
+		List<Property> properties = new ArrayList<Property>();
 		
 		if(identifierProperty!=null) {
 			properties.add(identifierProperty);
 		}
 		
-		Iterator propertyClosureIterator = new JoinedIterator(properties.iterator(), pc.getPropertyClosureIterator());
+		Iterator<Property> propertyClosureIterator = new JoinedIterator(properties.iterator(), pc.getPropertyClosureIterator());
 		return toArray(propertyClosureIterator, Property.class, null);
 	}
 

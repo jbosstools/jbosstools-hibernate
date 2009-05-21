@@ -42,7 +42,7 @@ public abstract class BaseNode implements TreeNode, ExecutionContextHolder {
 
     protected BaseNode parent;
 	protected NodeFactory factory;
-	protected List children = new ArrayList();
+	protected List<TreeNode> children = new ArrayList<TreeNode>();
 	protected String name = "!"; //$NON-NLS-1$
     String iconName = ImageConstants.UNKNOWNPROPERTY;
     
@@ -67,7 +67,7 @@ public abstract class BaseNode implements TreeNode, ExecutionContextHolder {
     
     public TreeNode getChildAt(int childIndex) {
     	checkChildren();
-        return (TreeNode) children.get(childIndex);
+        return children.get(childIndex);
     }
 
     public int getChildCount() {

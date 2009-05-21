@@ -24,7 +24,6 @@ package org.hibernate.eclipse.console.views.navigator;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -68,7 +67,7 @@ public class PendingJob extends Job {
 		PendingUIJob updateUIJob = new PendingUIJob(viewer, placeHolder);
 		updateUIJob.schedule();
 		
-		List children = new ArrayList();
+		List<Object> children = new ArrayList<Object>();
 		Object[] rootObjects = (contentProvider != null) ? contentProvider.getChildren(parent) : null;
 		if (rootObjects != null) {
 			for (int x=0; x< rootObjects.length ; ++x) {

@@ -15,7 +15,7 @@ import java.util.*;
 public class Groups {
 	protected LayuotConstants constants;
     static int FX = 30, FY = 120;
-    List groups = new ArrayList();
+    List<Group> groups = new ArrayList<Group>();
     Item[] items;
     int[][] field;
     int[] yDeltas = null;
@@ -79,7 +79,7 @@ public class Groups {
 		miny = buildYForSingleComments();
 		boolean isSomethingSet = isSomethingSet();
 		for (int i = 0; i < groups.size(); i++) {
-			Group group = (Group)groups.get(i);
+			Group group = groups.get(i);
 			if(group.items().length < 2) continue;
 			Item item = group.getItem(0);
 			if(item.yAssigned) continue;
@@ -98,7 +98,7 @@ public class Groups {
 		int miny = 0;
 		int ix = 0;
 		for (int i = 0; i < groups.size(); i++) {
-			Group group = (Group)groups.get(i);
+			Group group = groups.get(i);
 			if(group.items().length != 1) continue;
 			Item item = group.getItem(0);
 			if(!item.isComment()) continue;
@@ -120,7 +120,7 @@ public class Groups {
     private void buildYForSingles(int miny) {
        int ix = 0;
        for (int i = 0; i < groups.size(); i++) {
-           Group group = (Group)groups.get(i);
+           Group group = groups.get(i);
            if(group.items().length != 1 || group.miny >= 0) continue;
            group.miny = miny;
            Item item = group.getItem(0);
@@ -143,7 +143,7 @@ public class Groups {
     void buildXDeltasForSingles() {
         int[] xDeltas = new int[100];
         for (int i = 0; i < groups.size(); i++) {
-            Group group = (Group)groups.get(i);
+            Group group = groups.get(i);
             if(group.items().length != 1) continue;
             group.xDeltas = xDeltas;
             Item item = group.getItem(0);
@@ -160,7 +160,7 @@ public class Groups {
 
     public void buildDeltas() {
        for (int i = 0; i < groups.size(); i++) {
-           Group group = (Group)groups.get(i);
+           Group group = groups.get(i);
            group.buildXDeltas();
        }
        buildYDeltas();

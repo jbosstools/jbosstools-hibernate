@@ -80,7 +80,6 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
-import org.eclipse.ui.views.properties.IPropertySheetEntry;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.IPropertySourceProvider;
 import org.eclipse.ui.views.properties.PropertySheetEntry;
@@ -104,9 +103,9 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 
 	private Button enableJDK5;
 
-	private Set selectedExporters;
+	private Set<ExporterFactory> selectedExporters;
 
-	private Set deletedExporterIds;
+	private Set<String> deletedExporterIds;
 
 	//private CheckboxTableViewer exporterTable;
 
@@ -135,8 +134,8 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 	 * @see IDialogPage#createControl(Composite)
 	 */
 	public void createControl(Composite parent) {
-		selectedExporters = new HashSet();
-		deletedExporterIds = new HashSet();
+		selectedExporters = new HashSet<ExporterFactory>();
+		deletedExporterIds = new HashSet<String>();
 
 		final ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
 		sc.setExpandHorizontal(true);
@@ -419,9 +418,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 				do {
 					duplicate = false;
 					initialCount++;
-					Iterator iterator = observableFactoryList.getList().iterator();
-					while(iterator.hasNext()) {
-						ExporterFactory def = (ExporterFactory) iterator.next();
+					for (ExporterFactory def : observableFactoryList.getList()) {
 						if(def.getId().equals(""+initialCount)) { //$NON-NLS-1$
 							duplicate = true;
 						}
@@ -440,9 +437,8 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 			protected void handleRemove() {
 					IStructuredSelection selection = (IStructuredSelection) getTableViewer().getSelection();
 					if (selection != null) {
-						int numSelected= selection.size();
-
-						Iterator iterator= selection.iterator();
+						
+						Iterator<Object> iterator= selection.iterator();
 						while (iterator.hasNext() ) {
 							Object item= iterator.next();
 							observableFactoryList.remove((ExporterFactory)item);
@@ -465,7 +461,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 					int index= indices[i];
 					if (index < max) {
 						ExporterFactory data = (ExporterFactory) getTableViewer().getElementAt(index);
-						observableFactoryList.moveTo(index + 1, (ExporterFactory)data);
+						observableFactoryList.moveTo(index + 1, data);
 						newSelection[i]= index + 1;
 					}
 				}
@@ -481,7 +477,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 					int index= indices[i];
 					if (index > 0) {
 						ExporterFactory data = (ExporterFactory) getTableViewer().getElementAt(index);
-						observableFactoryList.moveTo(index - 1, (ExporterFactory)data);
+						observableFactoryList.moveTo(index - 1, data);
 						newSelection[i]= index - 1;
 					}
 				}
@@ -663,27 +659,26 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 	// Complete hack to get table to work with arbitrary exporters quickly.
 	static private class ObservableFactoryList {
 
-		List underlyingList = new ArrayList();
+		List<ExporterFactory> underlyingList = new ArrayList<ExporterFactory>();
 
 		PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
-		public ObservableFactoryList(List exporterFactories) {
+		public ObservableFactoryList(List<ExporterFactory> exporterFactories) {
 			underlyingList = exporterFactories;
 		}
 
 		public void moveTo(int i, ExporterFactory data) {
-			underlyingList.remove((ExporterFactory) data);
+			underlyingList.remove(data);
 			remove(data);
 			underlyingList.add(i, data);
 			pcs.firePropertyChange("insertElement", Integer.valueOf(i), data); //$NON-NLS-1$
-
 		}
 
 		void addPropertyChangeListener(PropertyChangeListener pcl) {
 			pcs.addPropertyChangeListener(pcl);
 		}
 
-		public List getList() {
+		public List<ExporterFactory> getList() {
 			return Collections.unmodifiableList(underlyingList);
 		}
 
@@ -707,12 +702,12 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 	}
 
 	static private class ExporterLabelProvider implements ITableLabelProvider, ILabelProvider {
-		Map exp2img = new HashMap(); // not the most optimized but better
+		Map<String, Image> exp2img = new HashMap<String, Image>(); // not the most optimized but better
 		// than having a finalize method.
 
 		public Image getColumnImage(Object element, int columnIndex) {
 			ExporterDefinition definition = getExporterDefinition(element);
-			Image image = (Image) exp2img.get( definition.getId() );
+			Image image = exp2img.get( definition.getId() );
 			if ( image == null ) {
 				image = definition.getIconDescriptor().createImage();
 				exp2img.put( definition.getId(), image );
@@ -738,11 +733,8 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 		}
 
 		public void dispose() {
-
-			Iterator iterator = exp2img.values().iterator();
-			while ( iterator.hasNext() ) {
-				Image img = (Image) iterator.next();
-				if ( img != null ) {
+			for (Image img : exp2img.values()) {
+				if (img != null) {
 					img.dispose();
 				}
 			}
@@ -793,10 +785,8 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 
 		// hard-coded checks: this should be delegated to extension point that knows about the different exporters.
 		//Iterator iterator = observableFactoryList.getList().iterator(); // check all exporters
-		Iterator iterator = selectedExporters.iterator(); // check only selected exporters
-		while (iterator.hasNext()) {
-			ExporterFactory ef = (ExporterFactory) iterator.next();
-			String str = (String) ef.getProperties().get("outputdir"); //$NON-NLS-1$
+		for (ExporterFactory ef : selectedExporters) {// check only selected exporters
+			String str = ef.getProperties().get("outputdir"); //$NON-NLS-1$
 			String msg = null;
 			if(str!=null) {
 				msg = PathHelper.checkDirectory(str, HibernateConsoleMessages.ExporterSettingsTab_output_directory_for + " " + ef.getExporterDefinition().getDescription(), true); //$NON-NLS-1$
@@ -806,7 +796,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 				}
 			}
 
-			str = (String) ef.getProperties().get("template_path"); //$NON-NLS-1$
+			str = ef.getProperties().get("template_path"); //$NON-NLS-1$
 			if(str!=null) {
 				msg = PathHelper.checkDirectory(str, HibernateConsoleMessages.ExporterSettingsTab_template_directory_for + " " + ef.getExporterDefinition().getDescription(), true); //$NON-NLS-1$
 				if(msg!=null) {
@@ -894,11 +884,10 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 			enableEJB3annotations.setSelection( attributes.isEJB3Enabled() );
 			enableJDK5.setSelection( attributes.isJDK5Enabled() );
 
-			List exporterFactories = attributes.getExporterFactories();
+			List<ExporterFactory> exporterFactories = attributes.getExporterFactories();
 			observableFactoryList = new ObservableFactoryList(exporterFactories);
 			getExporterTable().setInput( observableFactoryList );
-			for (Iterator iter = exporterFactories.iterator(); iter.hasNext();) {
-				ExporterFactory exporterFactory = (ExporterFactory) iter.next();
+			for (ExporterFactory exporterFactory : exporterFactories) {
 				if ( exporterFactory.isEnabled() ) {
 					getExporterTable().setChecked( exporterFactory, true );
 					selectedExporters.add( exporterFactory );
@@ -996,7 +985,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute( HibernateLaunchConstants.ATTR_ENABLE_JDK5,
 				enableJDK5.getSelection() );
 
-		List exporterFactories = ((ObservableFactoryList)getExporterTable().getInput()).getList();
+		List<ExporterFactory> exporterFactories = ((ObservableFactoryList)getExporterTable().getInput()).getList();
 		ExporterAttributes.saveExporterFactories(configuration, exporterFactories, selectedExporters, deletedExporterIds);
 
 		deletedExporterIds.clear();

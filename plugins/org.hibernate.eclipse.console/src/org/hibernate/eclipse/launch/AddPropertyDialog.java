@@ -158,7 +158,7 @@ public class AddPropertyDialog extends TitleAreaDialog {
 
 			public Object[] getElements(Object inputElement) {
 				Iterator set = localEf.getDefaultExporterProperties().entrySet().iterator();
-				List values = new ArrayList(4);
+				List<ExporterProperty> values = new ArrayList<ExporterProperty>(4);
 				while ( set.hasNext() ) {
 					Map.Entry element = (Map.Entry) set.next();
 					//if(!localEf.hasLocalValueFor((String) element.getKey())) {

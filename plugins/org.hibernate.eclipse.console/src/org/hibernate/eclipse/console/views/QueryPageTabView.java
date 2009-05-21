@@ -41,14 +41,11 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Adapter;
-import org.eclipse.swt.custom.CTabFolder2Listener;
 import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
@@ -69,9 +66,9 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 	
 	protected CTabFolder tabs = null;
 
-	private Set listeners = Collections.synchronizedSet(new HashSet() );
+	private Set<ISelectionChangedListener> listeners = Collections.synchronizedSet(new HashSet<ISelectionChangedListener>() );
 	
-	protected List pageViewers = Collections.synchronizedList(new ArrayList() );
+	protected List<QueryPageViewer> pageViewers = Collections.synchronizedList(new ArrayList<QueryPageViewer>() );
 	
 	ListDataListener dataListener = new ListDataListener() {
 		public void contentsChanged(ListDataEvent e) {
@@ -108,16 +105,11 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 	protected void rebuild() {
 		QueryPage selection = getSelectedQueryPage();
 		
-		Collection additions = getAddedResultSets();
-		for (Iterator i = additions.iterator(); i.hasNext();) {
-			QueryPage results = (QueryPage) i.next();
+		for (QueryPage results : getAddedResultSets()) {
 			this.pageViewers.add(new QueryPageViewer(this, results) );
 		}
 		
-		Collection deletions = getRemovedResultSets(); 
-		for (Iterator i = deletions.iterator(); i.hasNext();) {
-			QueryPage results = (QueryPage) i.next();
-			
+		for (QueryPage results : getRemovedResultSets()) {
 			QueryPageViewer viewer = findViewerFor(results);
 			this.pageViewers.remove(viewer);
 			viewer.dispose();
@@ -182,8 +174,7 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 	}
 
 	public void fireSelectionChangedEvent(ISelection selection) {
-		for (Iterator i = this.listeners.iterator(); i.hasNext();) {
-			ISelectionChangedListener listener = (ISelectionChangedListener) i.next();
+		for (ISelectionChangedListener listener : listeners) {
 			listener.selectionChanged(new SelectionChangedEvent(this, selection) );
 		}
 		
@@ -201,6 +192,7 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 		fireSelectionChangedEvent(selection);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Object getAdapter(Class adapter) {
 
 		if (adapter.equals(IPropertySheetPage.class) )
@@ -236,9 +228,9 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 			int index = this.tabs.getSelectionIndex();
 			if (index >= 0) {
 				CTabItem item = this.tabs.getItem(index);
-				for (Iterator i = this.pageViewers.iterator(); 
+				for (Iterator<QueryPageViewer> i = this.pageViewers.iterator(); 
 				selection == null && i.hasNext();) {
-					QueryPageViewer viewer = (QueryPageViewer) i.next();
+					QueryPageViewer viewer = i.next();
 					if (item == viewer.getTabItem() ) {
 						selection = viewer;
 					}
@@ -253,23 +245,22 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 	/**
 	 * @return
 	 */
-	private Collection getRemovedResultSets() {
-		Collection collection = KnownConfigurations.getInstance().getQueryPageModel().getPagesAsList();
-		Collection visible = getQueryPages();
+	private Collection<QueryPage> getRemovedResultSets() {
+		Collection<QueryPage> collection = KnownConfigurations.getInstance().getQueryPageModel().getPagesAsList();
+		Collection<QueryPage> visible = getQueryPages();
 		visible.removeAll(collection);
 		return visible;
 	}
 
-	private Collection getAddedResultSets() {
-		Collection collection = KnownConfigurations.getInstance().getQueryPageModel().getPagesAsList();
+	private Collection<QueryPage> getAddedResultSets() {
+		Collection<QueryPage> collection = KnownConfigurations.getInstance().getQueryPageModel().getPagesAsList();
 		collection.removeAll(getQueryPages() );
 		return collection;
 	}
 	
-	private Collection getQueryPages() {
-		List list = new ArrayList();
-		for (Iterator i = this.pageViewers.iterator(); i.hasNext();) {
-			QueryPageViewer viewer = (QueryPageViewer) i.next();
+	private Collection<QueryPage> getQueryPages() {
+		List<QueryPage> list = new ArrayList<QueryPage>();
+		for (QueryPageViewer viewer : pageViewers) {
 			list.add(viewer.getQueryPage() );
 		}
 		return list;
@@ -277,8 +268,7 @@ public class QueryPageTabView extends ViewPart implements ISelectionProvider {
 	
 	private QueryPageViewer findViewerFor(QueryPage results) {
 		QueryPageViewer viewer = null;
-		for (Iterator i = this.pageViewers.iterator(); viewer == null && i.hasNext();) {
-			QueryPageViewer temp = (QueryPageViewer) i.next();
+		for (QueryPageViewer temp : pageViewers) {
 			if (results != null && results.equals(temp.getQueryPage() ) ) {
 				viewer = temp;
 			}

@@ -227,7 +227,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 			list.add(cps[i].getName());			
 		}
 		Collections.sort(list);
-		return (String[]) list.toArray(new String[list.size()]);
+		return list.toArray(new String[list.size()]);
 	}
 	
 	private String getProjectConnectionProfileName() {

@@ -10,9 +10,8 @@
  ******************************************************************************/
 package org.hibernate.eclipse.console.viewers.xpl;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
@@ -140,9 +139,9 @@ public class MTreeViewer extends TreeViewer {
 	 *            the element
 	 * @return Widget
 	 */
-	protected ArrayList internalFindItem(Item parent, Object element) {
+	protected List<Item> internalFindItem(Item parent, Object element) {
 
-		ArrayList ret = new ArrayList();
+		List<Item> ret = new ArrayList<Item>();
 		// compare with node
 		Object data = parent.getData();
 		if (data != null) {
@@ -155,7 +154,7 @@ public class MTreeViewer extends TreeViewer {
 		Item[] items = getChildren(parent);
 		for (int i = 0; i < items.length; i++) {
 			Item item = items[i];
-			ArrayList o = internalFindItem(item, element);
+			List<Item> o = internalFindItem(item, element);
 			if (null != o) {
 				ret.addAll(o);
 			}
@@ -170,17 +169,17 @@ public class MTreeViewer extends TreeViewer {
 		if (null == root) {
 			return ret;
 		}
-		ArrayList res = new ArrayList();
+		List<Widget> res = new ArrayList<Widget>();
 		Item[] items = getChildren(getControl());
 		if (items != null) {
 			for (int i = 0; i < items.length; i++) {
-				ArrayList o = internalFindItem(items[i], element);
+				List<Item> o = internalFindItem(items[i], element);
 				if (null != o) {
 					res.addAll(o);
 				}
 			}
 		}
-		ret = (Widget[])res.toArray(new Widget[0]);
+		ret = res.toArray(new Widget[0]);
 		return ret;
 	}
 

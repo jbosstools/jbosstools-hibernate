@@ -68,9 +68,10 @@ public abstract class BasicWorkbenchAdapter implements IDeferredWorkbenchAdapter
 	final static Object[] NO_CHILDREN = new Object[0];
 
 
-	protected Object[] toArray(Iterator iterator, Class clazz, Comparator comparator) {
-		List obj = toList( iterator );
-		Object[] array = obj.toArray((Object[]) Array.newInstance(clazz, obj.size()));
+	@SuppressWarnings("unchecked")
+	protected <T> T[] toArray(Iterator<T> iterator, Class<T> clazz, Comparator<? super T> comparator) {
+		List<T> obj = toList( iterator );
+		T[] array = obj.toArray((T[])Array.newInstance(clazz, obj.size()) );
 
 		if(comparator!=null) {
 			Arrays.sort(array, comparator);
@@ -78,16 +79,16 @@ public abstract class BasicWorkbenchAdapter implements IDeferredWorkbenchAdapter
 		return array;
 	}
 
-	private List toList(Iterator iterator) {
-		List obj = new ArrayList();
+	private <T> List<T> toList(Iterator<T> iterator) {
+		List<T> obj = new ArrayList<T>();
 		while ( iterator.hasNext() ) {
 			obj.add(iterator.next());
 		}
 		return obj;
 	}
 
-	protected Object[] toArray(Enumeration enumeration, Class clazz) {
-		List obj = new ArrayList();
+	protected Object[] toArray(Enumeration<Object> enumeration, Class<?> clazz) {
+		List<Object> obj = new ArrayList<Object>();
 		while ( enumeration.hasMoreElements() ) {
 			obj.add(enumeration.nextElement());
 		}

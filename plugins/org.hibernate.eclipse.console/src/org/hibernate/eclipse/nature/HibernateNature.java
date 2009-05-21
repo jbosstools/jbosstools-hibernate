@@ -76,10 +76,10 @@ public class HibernateNature implements IProjectNature {
 		      //add builder to project
 		      ICommand command = desc.newCommand();
 		      command.setBuilderName(HibernateBuilder.BUILDER_ID);
-		      ArrayList list = new ArrayList();
+		      List<ICommand> list = new ArrayList<ICommand>();
 		      list.addAll(Arrays.asList(commands) );
 		      list.add(command);
-		      desc.setBuildSpec( (ICommand[])list.toArray(new ICommand[]{}) );
+		      desc.setBuildSpec( list.toArray(new ICommand[]{}) );
 		      project.setDescription(desc, new NullProgressMonitor() );
 		   }
 	}
@@ -116,13 +116,13 @@ public class HibernateNature implements IProjectNature {
 		}
 	}
 
-	List tables = null;
+	List<Table> tables = null;
 
 	private ReadDatabaseMetaData job;
 
-	public List getTables() {
+	public List<Table> getTables() {
 		ConsoleConfiguration ccfg = getDefaultConsoleConfiguration();
-		if(ccfg==null) return Collections.EMPTY_LIST;
+		if(ccfg==null) return Collections.emptyList();
 
 		if(tables!=null) {
 			return tables;
@@ -134,7 +134,7 @@ public class HibernateNature implements IProjectNature {
 			} else if(job.getState()==Job.NONE) {
 				job.schedule();
 			}
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		}
 	}
 
@@ -147,6 +147,7 @@ public class HibernateNature implements IProjectNature {
 			this.ccfg = ccfg;
 		}
 
+		@SuppressWarnings("unchecked")
 		protected IStatus run(IProgressMonitor monitor) {
 			Configuration cfg = ccfg.buildWith(null, false);
 			final JDBCMetaDataConfiguration jcfg = new JDBCMetaDataConfiguration();
@@ -161,11 +162,11 @@ public class HibernateNature implements IProjectNature {
 				});
 
 
-				List result = new ArrayList();
-				Iterator tabs = jcfg.getTableMappings();
+				List<Table> result = new ArrayList<Table>();
+				Iterator<Table> tabs = jcfg.getTableMappings();
 
 				while (tabs.hasNext() ) {
-					Table table = (Table) tabs.next();
+					Table table = tabs.next();
 					monitor.subTask(table.getName() );
 					result.add(table);
 				}
@@ -180,11 +181,11 @@ public class HibernateNature implements IProjectNature {
 
 	}
 
-	public List getMatchingTables(String tableName) {
-		List result = new ArrayList();
-		Iterator tableMappings = getTables().iterator();
+	public List<Table> getMatchingTables(String tableName) {
+		List<Table> result = new ArrayList<Table>();
+		Iterator<Table> tableMappings = getTables().iterator();
 		while (tableMappings.hasNext() ) {
-			Table table = (Table) tableMappings.next();
+			Table table = tableMappings.next();
 			if(table.getName().toUpperCase().startsWith(tableName.toUpperCase()) ) {
 				result.add(table);
 			}
@@ -195,9 +196,7 @@ public class HibernateNature implements IProjectNature {
 	public Table getTable(TableIdentifier nearestTableName) {
 		// TODO: can be made MUCH more efficient with proper indexing of the tables.
 		// TODO: handle catalog/schema properly
-		Iterator tableMappings = getTables().iterator();
-		while (tableMappings.hasNext() ) {
-			Table table = (Table) tableMappings.next();
+		for (Table table : getTables()) {
 			if(nearestTableName.getName().equals(table.getName())) {
 				return table;
 			}
