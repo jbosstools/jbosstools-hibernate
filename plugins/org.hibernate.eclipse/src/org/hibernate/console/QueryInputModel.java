@@ -60,7 +60,9 @@ public class QueryInputModel extends Observable {
 	
 	/** return a copy of the parameters currently in this model */
 	public ConsoleQueryParameter[] getQueryParametersForQuery() {
-		return ignoreParameters ? new ConsoleQueryParameter[0] : getQueryParameters();
+		//pass 0-size array to guarantee Collection.toArray(T[]) will return new Array instance
+		return ignoreParameters ? new ConsoleQueryParameter[0] 
+		                        : parameters.toArray(new ConsoleQueryParameter[0]);
 	}
 	
 	public QueryInputModel getCopyForQuery() {
