@@ -23,19 +23,16 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit.Property;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGeneratorAnnotation;
@@ -69,10 +66,10 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		addFileNotExistsMessages(messages, reporter);
+		validateHibernateConfigurationFileExists(messages, reporter);
 	}	
-	
-	protected void addFileNotExistsMessages(List<IMessage> messages, IReporter reporter) {
+
+	protected void validateHibernateConfigurationFileExists(List<IMessage> messages, IReporter reporter) {
 		String configFile = getBasicProperties().getConfigurationFile();
 		if (configFile != null && configFile.length() > 0){
 			IPath path = new Path(configFile);
@@ -109,6 +106,7 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 		this.fireListChanged(GENERATORS_LIST);
 	}
 	
+	
 	protected void updateGenericGenerators(){
 		JpaProject project = getJpaProject();
 		
@@ -123,7 +121,7 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 					annotation = (GenericGeneratorAnnotation)jrn;
 				}
 				if (annotation != null) {
-					addGenerator(annotation.buildJavaGenericGenerator(type));
+					addGenerator(((HibernateJpaFactory)getJpaFactory()).buildJavaGenericGenerator(type));
 				}				
 				ListIterator<JavaPersistentAttribute> typeAttrs = type.attributes();
 				for (JavaPersistentAttribute persAttr : CollectionTools.iterable(typeAttrs)) {
@@ -136,7 +134,7 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 						annotation = (GenericGeneratorAnnotation)jrn;
 					}
 					if (annotation != null) {
-						addGenerator(annotation.buildJavaGenericGenerator(persAttr.getSpecifiedMapping()));
+						addGenerator(((HibernateJpaFactory)getJpaFactory()).buildJavaGenericGenerator(type));
 					}
 				}				
 			}			

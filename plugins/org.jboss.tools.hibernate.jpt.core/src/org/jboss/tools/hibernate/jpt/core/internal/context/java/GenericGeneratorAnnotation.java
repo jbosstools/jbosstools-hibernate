@@ -11,7 +11,6 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.GeneratorAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
@@ -42,7 +41,5 @@ public interface GenericGeneratorAnnotation extends GeneratorAnnotation {
 	 * does not exist return the {@link TextRange} for the GenericGenerator annotation.
 	 */
 	TextRange getStrategyTextRange(CompilationUnit astRoot);
-	
-	JavaGenericGenerator buildJavaGenericGenerator(JavaJpaContextNode parent);
 
 }

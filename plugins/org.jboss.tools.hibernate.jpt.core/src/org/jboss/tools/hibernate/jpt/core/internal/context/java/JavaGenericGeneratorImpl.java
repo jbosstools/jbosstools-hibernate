@@ -47,7 +47,7 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 		return this.generatorResource;
 	}
 
-	public void initializeFromResource(GenericGeneratorAnnotation generator) {
+	public void initialize(GenericGeneratorAnnotation generator) {
 		generatorResource = generator;
 		this.name = generator.getName();
 		this.specifiedInitialValue = generator.getInitialValue();

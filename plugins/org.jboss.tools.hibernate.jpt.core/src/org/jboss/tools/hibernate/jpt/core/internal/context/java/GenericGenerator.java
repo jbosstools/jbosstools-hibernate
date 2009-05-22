@@ -10,17 +10,15 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaGenerator;
+import org.eclipse.jpt.core.context.Generator;
 
-/**
- * @author Dmitry Geraskov
- *
- */
-public interface JavaGenericGenerator extends JavaGenerator, GenericGenerator {
+public interface GenericGenerator extends Generator {
 	
-	void initialize(GenericGeneratorAnnotation generator);
+	Integer DEFAULT_INITIAL_VALUE = Integer.valueOf(1);
+
+	String getStrategy();
 	
-	void update(GenericGeneratorAnnotation generator);
+	void setSpecifiedStrategy(String value);
+		String GENERIC_STRATEGY_PROPERTY = "genericStrategyProperty"; //$NON-NLS-1$
 
 }
-

@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
@@ -169,16 +168,6 @@ public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member>
 		return this.nameAdapter.getValue(astRoot);
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGeneratorAnnotation#buildJavaGenericGenerator(org.eclipse.jpt.core.context.java.JavaJpaContextNode)
-	 */
-	public JavaGenericGenerator buildJavaGenericGenerator(JavaJpaContextNode parent) {
-		JavaGenericGenerator generator = new JavaGenericGeneratorImpl(parent);
-		generator.initializeFromResource(this);
-		return generator;
-	}
-	
-	//for Dali 2.1
 	public void update(CompilationUnit astRoot) {
 		updateFromJava(astRoot);		
 	}
