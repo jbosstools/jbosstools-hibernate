@@ -32,8 +32,8 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.hibernate.console.ImageConstants;
-import org.hibernate.eclipse.console.actions.OpenFileActionUtils;
 import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.hibernate.eclipse.console.utils.OpenMappingUtils;
 import org.hibernate.eclipse.jdt.ui.Activator;
 
 public class HQLQuickAssistProcessor extends BasicQuickAssistProcessor {
@@ -55,7 +55,7 @@ public class HQLQuickAssistProcessor extends BasicQuickAssistProcessor {
 		result[0] = new ExternalActionQuickAssistProposal(contents, EclipseImages.getImage(ImageConstants.HQL_EDITOR), JdtUiMessages.HQLQuickAssistProcessor_copy_to_hql_editor, context) {
 			public void apply(IDocument document) {
 				IEditorPart editorPart = Activator.getDefault().getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
-				ITextEditor[] textEditors = OpenFileActionUtils.getTextEditors(editorPart);
+				ITextEditor[] textEditors = OpenMappingUtils.getTextEditors(editorPart);
 				if (textEditors.length == 0) return;
 				Point position = new Point(stringLiteral.getStartPosition() + 1, stringLiteral.getLength() - 2);
 				new SaveQueryEditorListener(textEditors[0], getName(), getContents(), position, SaveQueryEditorListener.HQLEditor);

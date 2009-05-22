@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.hibernate.eclipse.console.actions;
+package org.hibernate.eclipse.console.utils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -29,10 +29,19 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.Type;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jdt.internal.core.JarPackageFragmentRoot;
 import org.eclipse.jdt.internal.core.PackageFragmentRoot;
+import org.eclipse.jdt.internal.core.SourceType;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.FindReplaceDocumentAdapter;
 import org.eclipse.jface.text.IDocument;
@@ -46,13 +55,22 @@ import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.Component;
+import org.hibernate.mapping.ManyToOne;
+import org.hibernate.mapping.Map;
+import org.hibernate.mapping.OneToMany;
+import org.hibernate.mapping.OneToOne;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
+import org.hibernate.mapping.ToOne;
+import org.hibernate.mapping.Value;
 import org.hibernate.tool.hbm2x.Cfg2HbmTool;
 import org.hibernate.util.StringHelper;
 import org.hibernate.util.XMLHelper;
@@ -65,7 +83,7 @@ import org.xml.sax.InputSource;
  * @author Dmitry Geraskov
  * @author Vitali Yemialyanchyk
  */
-public class OpenFileActionUtils {
+public class OpenMappingUtils {
 	
 	public static final String HIBERNATE_TAG_CLASS = "class";                       //$NON-NLS-1$
 	public static final String HIBERNATE_TAG_TABLE = "table";                       //$NON-NLS-1$
@@ -81,9 +99,10 @@ public class OpenFileActionUtils {
 	public static final String HIBERNATE_TAG_SCHEMA = "schema";                     //$NON-NLS-1$
 	public static final String EJB_TAG_ENTITY = "entity";                           //$NON-NLS-1$
 	public static final String EJB_TAG_CLASS = "class";                             //$NON-NLS-1$
+	public static final String EJB_TAG_MAPPED_SUPERCLASS = "mapped-superclass";     //$NON-NLS-1$
 	
 	//prohibit constructor call
-	private OpenFileActionUtils() {}
+	private OpenMappingUtils() {}
 
 	/**
 	 * Get name of a persistent class.
@@ -380,7 +399,7 @@ public class OpenFileActionUtils {
 	@SuppressWarnings("unchecked")
 	public static IFile searchInMappingFiles(ConsoleConfiguration consoleConfiguration, IJavaProject proj, Object element) {
 		IFile file = null;
-    	if (consoleConfiguration == null || proj == null) {
+    	if (consoleConfiguration == null) {
         	return file;
     	}
 		java.io.File configXMLFile = consoleConfiguration.getPreferences().getConfigXMLFile();
@@ -389,6 +408,14 @@ public class OpenFileActionUtils {
 		if (doc == null) {
         	return file;
 		}
+		IPackageFragmentRoot[] packageFragmentRoots = new IPackageFragmentRoot[0]; 
+		try {
+			if (proj != null) {
+				packageFragmentRoots = proj.getAllPackageFragmentRoots();
+			}
+		} catch (JavaModelException e) {
+			HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenFileActionUtils_problems_while_get_project_package_fragment_roots, e);
+		}
     	Element sfNode = doc.getRootElement().element(HIBERNATE_TAG_SESSION_FACTORY);
 		Iterator<Element> elements = sfNode.elements(HIBERNATE_TAG_MAPPING).iterator();
 		while (elements.hasNext() && file == null) {
@@ -396,12 +423,6 @@ public class OpenFileActionUtils {
 			Attribute resourceAttr = subelement.attribute(HIBERNATE_TAG_RESOURCE);
 			if (resourceAttr == null) {
 				continue;
-			}
-			IPackageFragmentRoot[] packageFragmentRoots = new IPackageFragmentRoot[0]; 
-			try {
-				packageFragmentRoots = proj.getAllPackageFragmentRoots();
-			} catch (JavaModelException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenFileActionUtils_problems_while_get_project_package_fragment_roots, e);
 			}
 			for (int i = 0; i < packageFragmentRoots.length; i++) {
 				//search in source folders.
@@ -455,6 +476,69 @@ public class OpenFileActionUtils {
 	}
 
 	/**
+	 * Trying to find hibernate console config ejb3 mapping file,
+	 * which is corresponding to provided element.
+	 *   
+	 * @param consoleConfiguration
+	 * @param proj
+	 * @param element
+	 * @return
+	 */
+	public static IFile searchInEjb3MappingFiles(ConsoleConfiguration consoleConfiguration, IJavaProject proj, Object element) {
+		IFile file = null;
+    	if (consoleConfiguration == null || proj == null) {
+        	return file;
+    	}
+		final ConsoleConfiguration cc2 = consoleConfiguration;
+		List<String> documentPaths = (List<String>)consoleConfiguration.getExecutionContext().execute(new ExecutionContext.Command() {
+			public Object execute() {
+				return OpenMappingUtilsEjb3.enumDocuments(cc2);
+			}
+		});
+		IPath projPath = proj.getPath();
+		IPath projFullPath = proj.getResource().getLocation();
+		IPath outPath = Path.EMPTY;
+		IPackageFragmentRoot[] packageFragmentRoots = new IPackageFragmentRoot[0]; 
+		try {
+			outPath = proj.getOutputLocation();
+			packageFragmentRoots = proj.getPackageFragmentRoots();
+		} catch (JavaModelException e) {
+			HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenFileActionUtils_problems_while_get_project_package_fragment_roots, e);
+		}
+		outPath = outPath.makeRelativeTo(projPath);
+		for (int i = 0; i < packageFragmentRoots.length && file == null; i++) {
+			if (!(packageFragmentRoots[i] instanceof PackageFragmentRoot)) {
+				continue;
+			}
+			if (packageFragmentRoots[i] instanceof JarPackageFragmentRoot) {
+				// TODO: add possibility open resorces from jar files
+				continue;
+			}
+			PackageFragmentRoot packageFragmentRoot = (PackageFragmentRoot)packageFragmentRoots[i];
+			IPath packageFragmentRootPath = packageFragmentRoot.getResource().getFullPath();
+			Iterator<String> it = documentPaths.iterator();
+			while (it.hasNext()) {
+				String docPath = it.next();
+				IPath path2DocFull = Path.fromOSString(docPath);
+				IPath path2Doc = path2DocFull.makeRelativeTo(projFullPath);
+				IPath resPath = projPath.append(path2Doc);
+				resPath = resPath.makeRelativeTo(projPath);
+				resPath = resPath.makeRelativeTo(outPath);
+				resPath = packageFragmentRootPath.append(resPath);
+				file = ResourcesPlugin.getWorkspace().getRoot().getFile(resPath);
+				if (file == null) {
+					continue;
+				}
+				if (file.exists() && elementInFile(consoleConfiguration, file, element)) {
+					break;
+				}
+				file = null;
+			}
+		}
+    	return file;
+	}
+
+	/**
 	 * This function is trying to find hibernate console config file,
 	 * which is corresponding to provided element.
 	 *   
@@ -468,9 +552,9 @@ public class OpenFileActionUtils {
 		if (file == null) {
 			file = searchInAdditionalMappingFiles(consoleConfiguration, element);
 		}
-		//if (file == null) {
-		//	file = searchInEjb3MappingFiles(consoleConfiguration, proj, element);
-		//}
+		if (file == null) {
+			file = searchInEjb3MappingFiles(consoleConfiguration, proj, element);
+		}
     	return file;
 	}
 
@@ -509,30 +593,34 @@ public class OpenFileActionUtils {
 	 * @param selection
 	 * @return a proper document region
 	 */
-	public static IRegion findSelectRegion(FindReplaceDocumentAdapter findAdapter, Object selection) {
+	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, Object selection) {
 		IRegion selectRegion = null;
 		if (selection instanceof RootClass || selection instanceof Subclass) {
-			selectRegion = findSelectRegion(findAdapter, (PersistentClass)selection);
+			selectRegion = findSelectRegion(proj, findAdapter, (PersistentClass)selection);
 		} else if (selection instanceof Property){
-			selectRegion = findSelectRegion(findAdapter, (Property)selection);
+			selectRegion = findSelectRegion(proj, findAdapter, (Property)selection);
 		}
 		return selectRegion;
 	}
-
+	
 	/**
 	 * Finds a document region, which corresponds of given property.
 	 * @param findAdapter
 	 * @param property
 	 * @return a proper document region
 	 */
-	public static IRegion findSelectRegion(FindReplaceDocumentAdapter findAdapter, Property property) {
+	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, Property property) {
 		Assert.isNotNull(property.getPersistentClass());
-		IRegion classRegion = findSelectRegion(findAdapter, property.getPersistentClass());
+		IRegion classRegion = findSelectRegion(proj, findAdapter, property.getPersistentClass());
+		IRegion res = null;
 		if (classRegion == null) {
-			return null;
+			return res;
 		}
+		// in case if we could not find property - we select class
+		res = classRegion;
 		final Cfg2HbmTool tool = new Cfg2HbmTool();
-		final String tagName = tool.getTag(property.getPersistentClass());
+		final PersistentClass persistentClass = property.getPersistentClass();
+		final String tagName = tool.getTag(persistentClass);
 		IRegion finalRegion = null;
 		IRegion propRegion = null;
 		int startOffset = classRegion.getOffset() + classRegion.getLength();
@@ -550,7 +638,25 @@ public class OpenFileActionUtils {
 		} catch (BadLocationException e) {
 			//ignore
 		}
-		IRegion res = null;
+		String className = persistentClass.getClassName();
+		while (propRegion == null) {
+			className = ProjectUtils.getParentTypename(proj, className);
+			if (className == null) {
+				break;
+			}
+			classRegion = findSelectRegion(proj, findAdapter, className);
+			if (classRegion == null) {
+				break;
+			}
+			startOffset = classRegion.getOffset() + classRegion.getLength();
+			try {
+				String tagClose = "</" + EJB_TAG_MAPPED_SUPERCLASS; //$NON-NLS-1$
+				finalRegion = findAdapter.find(startOffset, tagClose, true, true, false, false);
+				propRegion = findAdapter.find(startOffset, generateEjbPropertyPattern(property), true, true, false, true);
+			} catch (BadLocationException e) {
+				//ignore
+			}
+		}
 		if (propRegion != null) {
 			int length = property.getName().length();
 			int offset = propRegion.getOffset() + propRegion.getLength() - length - 1;
@@ -568,7 +674,7 @@ public class OpenFileActionUtils {
 	 * @param persistentClass
 	 * @return a proper document region
 	 */
-	public static IRegion findSelectRegion(FindReplaceDocumentAdapter findAdapter, PersistentClass persistentClass) {
+	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, PersistentClass persistentClass) {
 		IRegion res = null;
 		String[] classPatterns = generatePersistentClassPatterns(persistentClass);
 		IRegion classRegion = null;
@@ -581,6 +687,31 @@ public class OpenFileActionUtils {
 		}
 		if (classRegion != null) {
 			int length = persistentClass.getNodeName().length();
+			int offset = classRegion.getOffset() + classRegion.getLength() - length - 1;
+			res = new Region(offset, length);
+		}
+		return res;
+	}
+	
+	/**
+	 * Finds a document region, which corresponds of given persistent class.
+	 * @param findAdapter
+	 * @param className
+	 * @return a proper document region
+	 */
+	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, String className) {
+		IRegion res = null;
+		String[] classPatterns = generatePersistentClassPatterns(className);
+		IRegion classRegion = null;
+		try {
+			for (int i = 0; (classRegion == null) && (i < classPatterns.length); i++){
+				classRegion = findAdapter.find(0, classPatterns[i], true, true, false, true);
+			}
+		} catch (BadLocationException e) {
+			//ignore
+		}
+		if (classRegion != null) {
+			int length = getShortClassName(className).length();
 			int offset = classRegion.getOffset() + classRegion.getLength() - length - 1;
 			res = new Region(offset, length);
 		}
@@ -612,7 +743,19 @@ public class OpenFileActionUtils {
 		{ HIBERNATE_TAG_CLASS, HIBERNATE_TAG_ENTITY_NAME, },
 		{ EJB_TAG_ENTITY, HIBERNATE_TAG_NAME, },
 		{ EJB_TAG_ENTITY, EJB_TAG_CLASS, },
+		{ EJB_TAG_MAPPED_SUPERCLASS, HIBERNATE_TAG_NAME, },
+		{ EJB_TAG_MAPPED_SUPERCLASS, EJB_TAG_CLASS, },
 	};
+
+	/**
+	 * Extract short name of the class from fullClassName.
+	 * 
+	 * @param fullClassName
+	 * @return a short class name
+	 */
+	public static String getShortClassName(String fullClassName) {
+		return fullClassName.substring(fullClassName.lastIndexOf('.') + 1);
+	}
 	
 	/**
 	 * Generates a persistent class xml tag search patterns.
@@ -620,7 +763,7 @@ public class OpenFileActionUtils {
 	 * @param persClass
 	 * @return an arrays of search patterns
 	 */
-	public static String[] generatePersistentClassPatterns(PersistentClass persClass){
+	public static String[] generatePersistentClassPatterns(PersistentClass persClass) {
 		String fullClassName = null;
 		String shortClassName = null;
 		if (persClass.getEntityName() != null){
@@ -628,11 +771,27 @@ public class OpenFileActionUtils {
 		} else {
 			fullClassName = persClass.getClassName();
 		}
-		shortClassName = fullClassName.substring(fullClassName.lastIndexOf('.') + 1);
+		shortClassName = getShortClassName(fullClassName);
 		final Cfg2HbmTool tool = new Cfg2HbmTool();
 		final String tagName = tool.getTag(persClass);
 		persistentClassPairs[0][0] = tagName;
 		persistentClassPairs[1][0] = tagName;
+		List<String> patterns = new ArrayList<String>();
+		for (int i = 0; i < persistentClassPairs.length; i++) {
+			patterns.add(createPattern(persistentClassPairs[i][0], persistentClassPairs[i][1], shortClassName));
+			patterns.add(createPattern(persistentClassPairs[i][0], persistentClassPairs[i][1], fullClassName));
+		}
+		return patterns.toArray(new String[0]);
+	}
+	
+	/**
+	 * Generates a persistent class xml tag search patterns.
+	 * 
+	 * @param fullClassName
+	 * @return an arrays of search patterns
+	 */
+	public static String[] generatePersistentClassPatterns(String fullClassName) {
+		String shortClassName = getShortClassName(fullClassName);
 		List<String> patterns = new ArrayList<String>();
 		for (int i = 0; i < persistentClassPairs.length; i++) {
 			patterns.add(createPattern(persistentClassPairs[i][0], persistentClassPairs[i][1], shortClassName));
@@ -677,12 +836,41 @@ public class OpenFileActionUtils {
 		PersistentClass pc = property.getPersistentClass();
 		if (pc != null && pc.getIdentifierProperty() == property) {
 			if (property.isComposite()) {
-				toolTag = "composite-id"; //$NON-NLS-1$
+				toolTag = "embedded-id"; //$NON-NLS-1$
 			} else {
 				toolTag = "id"; //$NON-NLS-1$
 			}
 		} else {
+			Value value = property.getValue();
 			toolTag = "basic"; //$NON-NLS-1$
+			if (!value.isSimpleValue()) {
+				if (value instanceof Collection) {
+					value = ((Collection)value).getElement();
+				}
+			}
+			if (value instanceof OneToMany) {
+				toolTag = "one-to-many"; //$NON-NLS-1$
+			}
+			else if (value instanceof ManyToOne) {
+				// could be many-to-one | many-to-many
+				toolTag = "many-to-((one)|(many))"; //$NON-NLS-1$
+			}
+			else if (value instanceof OneToOne) {
+				toolTag = "one-to-one"; //$NON-NLS-1$
+			}
+			else if (value instanceof Map) {
+				toolTag = "many-to-many"; //$NON-NLS-1$
+			}
+			else if (value instanceof Component) {
+				if (((Component)value).isEmbedded()) {
+					toolTag = "embedded"; //$NON-NLS-1$
+				}
+			}
+			if (value instanceof ToOne) {
+				if (((ToOne)value).isEmbedded()) {
+					toolTag = "embedded"; //$NON-NLS-1$
+				}
+			}
 		}
 		return createPattern(toolTag, HIBERNATE_TAG_NAME, property.getName());
 	}

@@ -21,6 +21,8 @@
  */
 package org.hibernate.eclipse.console.utils;
 
+import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -36,8 +38,17 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.ITypeBinding;
+import org.eclipse.jdt.core.dom.Type;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jdt.internal.core.SourceType;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
@@ -192,4 +203,70 @@ public class ProjectUtils {
 		}
 		return proj;
 	}
+	
+	static public org.eclipse.jdt.core.dom.CompilationUnit getCompilationUnit(
+			ICompilationUnit source, boolean bindings) {
+		ASTParser parser = ASTParser.newParser(AST.JLS3);
+		parser.setSource(source);
+		parser.setResolveBindings(bindings);
+		org.eclipse.jdt.core.dom.CompilationUnit result = (org.eclipse.jdt.core.dom.CompilationUnit) parser.createAST(null);
+		return result;
+	}
+
+	static public ICompilationUnit findCompilationUnit(IJavaProject javaProject, 
+			String fullyQualifiedName) {
+		IType lwType = findType(javaProject, fullyQualifiedName);
+		if (lwType != null) {
+			return lwType.getCompilationUnit();
+		}
+		return null;
+	}
+	
+	static public IType findType(IJavaProject javaProject, 
+			String fullyQualifiedName) {
+		IType lwType = null;
+		try {
+			lwType = javaProject.findType(fullyQualifiedName);
+		} catch (JavaModelException e) {
+			// just ignore it!
+		}
+		return lwType;
+	}
+	
+	static public String getParentTypename(IJavaProject proj, String fullyQualifiedName) {
+		String res = null;
+		ICompilationUnit icu = findCompilationUnit(proj, fullyQualifiedName);
+		if (icu == null) {
+			return res;
+		}
+		org.eclipse.jdt.core.dom.CompilationUnit cu = getCompilationUnit(icu, true);
+		if (cu == null) {
+			return res;
+		}
+		List types = cu.types();
+		for (int i = 0; i < types.size() && res == null; i++) {
+			Object obj = types.get(i);
+			if (!(obj instanceof TypeDeclaration)) {
+				continue;
+			}
+			TypeDeclaration td = (TypeDeclaration)obj;
+			Type superType = td.getSuperclassType();
+			if (superType != null) {
+				ITypeBinding tb = superType.resolveBinding();
+				if (tb != null) {
+					if (tb.getJavaElement() instanceof SourceType) {
+						SourceType sourceT = (SourceType)tb.getJavaElement();
+						try {
+							res = sourceT.getFullyQualifiedParameterizedName();
+						}
+						catch (JavaModelException e) {
+							HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
+						}
+					}
+				}
+			}
+		}
+		return res;
+	}
+	
 }
