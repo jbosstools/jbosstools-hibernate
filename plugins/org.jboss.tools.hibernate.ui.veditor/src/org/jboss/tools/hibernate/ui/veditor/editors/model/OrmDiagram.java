@@ -99,7 +99,14 @@ public class OrmDiagram extends ModelElement {
 	}
 	
 	public IPath getStoreFolderPath() {
-		return javaProject.getProject().getLocation().append(".settings").append(HIBERNATE_MAPPING_LAYOUT_FOLDER_NAME); //$NON-NLS-1$
+		IPath storePath = null;
+		if (javaProject != null && javaProject.getProject() != null) {
+			storePath = javaProject.getProject().getLocation();
+		}
+		else {
+			storePath = VisualEditorPlugin.getDefault().getStateLocation(); 
+		}
+		return storePath.append(".settings").append(HIBERNATE_MAPPING_LAYOUT_FOLDER_NAME); //$NON-NLS-1$
 	}
 
 	public IPath getStoreFilePath() {
@@ -700,7 +707,7 @@ public class OrmDiagram extends ModelElement {
 
 	public IFile createLayoutFile(InputStream source) {
 		IFile file = null;
-		IPath path = javaProject.getProject().getLocation().append(".settings").append(HIBERNATE_MAPPING_LAYOUT_FOLDER_NAME); //$NON-NLS-1$
+		IPath path = getStoreFolderPath();
 		IFolder folder = ResourcesPlugin.getWorkspace().getRoot().getFolder(path);
 		if(!folder.exists()) {
 			try {
