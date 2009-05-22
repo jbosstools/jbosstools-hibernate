@@ -69,7 +69,7 @@ public abstract class BasicWorkbenchAdapter implements IDeferredWorkbenchAdapter
 
 
 	@SuppressWarnings("unchecked")
-	protected <T> T[] toArray(Iterator<T> iterator, Class<T> clazz, Comparator<? super T> comparator) {
+	protected <T> T[] toArray(Iterator<? extends T> iterator, Class<T> clazz, Comparator<? super T> comparator) {
 		List<T> obj = toList( iterator );
 		T[] array = obj.toArray((T[])Array.newInstance(clazz, obj.size()) );
 
@@ -79,7 +79,7 @@ public abstract class BasicWorkbenchAdapter implements IDeferredWorkbenchAdapter
 		return array;
 	}
 
-	private <T> List<T> toList(Iterator<T> iterator) {
+	private <T> List<T> toList(Iterator<? extends T> iterator) {
 		List<T> obj = new ArrayList<T>();
 		while ( iterator.hasNext() ) {
 			obj.add(iterator.next());
@@ -87,7 +87,7 @@ public abstract class BasicWorkbenchAdapter implements IDeferredWorkbenchAdapter
 		return obj;
 	}
 
-	protected Object[] toArray(Enumeration<Object> enumeration, Class<?> clazz) {
+	protected Object[] toArray(Enumeration<?> enumeration, Class<?> clazz) {
 		List<Object> obj = new ArrayList<Object>();
 		while ( enumeration.hasMoreElements() ) {
 			obj.add(enumeration.nextElement());

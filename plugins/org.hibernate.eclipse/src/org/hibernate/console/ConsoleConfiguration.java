@@ -133,11 +133,11 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 				overrides.put( "hibernate.archive.autodetection", "none" );  //$NON-NLS-1$//$NON-NLS-2$
 			}
 
-			Class clazz = ReflectHelper.classForName("org.hibernate.ejb.Ejb3Configuration", ConsoleConfiguration.class); //$NON-NLS-1$
+			Class<?> clazz = ReflectHelper.classForName("org.hibernate.ejb.Ejb3Configuration", ConsoleConfiguration.class); //$NON-NLS-1$
 			Object ejb3cfg = clazz.newInstance();
 
 			if(StringHelper.isNotEmpty(entityResolver)) {
-				Class resolver = ReflectHelper.classForName(entityResolver, this.getClass());
+				Class<?> resolver = ReflectHelper.classForName(entityResolver, this.getClass());
 				Object object = resolver.newInstance();
 				Method method = clazz.getMethod("setEntityResolver", new Class[] { EntityResolver.class });//$NON-NLS-1$
 				method.invoke(ejb3cfg, new Object[] { object } );
@@ -163,10 +163,11 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private Configuration buildAnnotationConfiguration() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-		Class clazz = ReflectHelper
+		Class<Configuration> clazz = ReflectHelper
 				.classForName( "org.hibernate.cfg.AnnotationConfiguration" ); //$NON-NLS-1$
-		Configuration newInstance = (Configuration) clazz.newInstance();
+		Configuration newInstance = clazz.newInstance();
 		return newInstance;
 	}
 
@@ -241,7 +242,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	public Configuration buildWith(final Configuration cfg, final boolean includeMappings) {
 			URL[] customClassPathURLs = getCustomClassPathURLs();
 			executionContext = new DefaultExecutionContext( getName(), new URLClassLoader( customClassPathURLs, getParentClassLoader() ) {
-				protected Class findClass(String name) throws ClassNotFoundException {
+				protected Class<?> findClass(String name) throws ClassNotFoundException {
 					try {
 					return super.findClass( name );
 					} catch(ClassNotFoundException cnfe) {
@@ -249,7 +250,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 					}
 				}
 
-				protected synchronized Class loadClass(String name, boolean resolve) throws ClassNotFoundException {
+				protected synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
 					try {
 						return super.loadClass( name, resolve );
 					} catch(ClassNotFoundException cnfe) {
@@ -257,7 +258,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 					}
 				}
 
-				public Class loadClass(String name) throws ClassNotFoundException {
+				public Class<?> loadClass(String name) throws ClassNotFoundException {
 					try {
 					return super.loadClass( name );
 					} catch(ClassNotFoundException cnfe) {
@@ -346,6 +347,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	private Configuration loadConfigurationXML(Configuration localCfg, boolean includeMappings, EntityResolver entityResolver) {
 		File configXMLFile = prefs.getConfigXMLFile();
 		if(!includeMappings) {
@@ -448,6 +450,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	 *
 	 * @param driverClassName
 	 */
+	@SuppressWarnings("unchecked")
 	private void registerFakeDriver(String driverClassName) {
 
 		if(driverClassName!=null) {

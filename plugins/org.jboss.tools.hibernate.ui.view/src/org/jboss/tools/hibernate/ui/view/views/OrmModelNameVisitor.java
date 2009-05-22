@@ -40,8 +40,8 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 		super();
 	}
 	
-	private Map mappings = new HashMap();
-	private Map dialects = new HashMap();
+	private Map<ConsoleConfiguration, Mapping> mappings = new HashMap<ConsoleConfiguration, Mapping>();
+	private Map<String, Dialect> dialects = new HashMap<String, Dialect>();
 
 	public Object visitDatabaseColumn(Column column, Object argument) {
 
@@ -78,7 +78,7 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 			cfg = (ConsoleConfiguration) argument;
 			
 			if (mappings.containsKey(cfg.getConfiguration())) {
-				mapping = (Mapping) mappings.get(cfg);
+				mapping = mappings.get(cfg);
 			} else {
 				mapping = cfg.getConfiguration().buildMapping();
 				mappings.put(cfg, mapping);
@@ -88,7 +88,7 @@ public class OrmModelNameVisitor /*implements IOrmModelVisitor*/ {
 				String dialectName = cfg.getConfiguration().getProperty(Environment.DIALECT);
 				if (dialectName != null) {
 					if (dialects.containsKey(dialectName)) {
-						dialect = (Dialect) dialects.get(dialectName);
+						dialect = dialects.get(dialectName);
 					} else {
 						dialect = (Dialect) Class.forName(dialectName).newInstance();
 						dialects.put(dialectName, dialect);

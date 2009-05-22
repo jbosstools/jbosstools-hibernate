@@ -35,7 +35,7 @@ import org.hibernate.metadata.CollectionMetadata;
 
 public class CollectionPropertySource implements IPropertySource {
 
-	private Collection collection;
+	private Collection<?> collection;
 
 	IPropertyDescriptor[] descriptors = null;
 
@@ -45,9 +45,9 @@ public class CollectionPropertySource implements IPropertySource {
 
 	private final ExecutionContextHolder currentConfiguration;
 	
-	Map values = new WeakHashMap();
+	Map<Object, Object> values = new WeakHashMap<Object, Object>();
 	
-	public CollectionPropertySource(Collection propertyValue, Session currentSession, ExecutionContextHolder currentConfiguration, CollectionMetadata collectionMetadata) {
+	public CollectionPropertySource(Collection<?> propertyValue, Session currentSession, ExecutionContextHolder currentConfiguration, CollectionMetadata collectionMetadata) {
 		collection = propertyValue;
 		this.currentSession = currentSession;
 		this.currentConfiguration = currentConfiguration;
@@ -73,7 +73,7 @@ public class CollectionPropertySource implements IPropertySource {
 		Object value = values.get(id);
 		if(value==null) {
 			Integer i = (Integer) id;
-			Iterator iterator = collection.iterator();
+			Iterator<?> iterator = collection.iterator();
 			int base = 0;
 			
 			while(iterator.hasNext()) {

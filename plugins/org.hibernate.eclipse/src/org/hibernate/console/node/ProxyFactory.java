@@ -53,7 +53,7 @@ public class ProxyFactory {
 	
 	private static final CallbackFilter baseNodeFilter = new CallbackFilter() {
 		public int accept(Method method) {
-			Class declaringClass = method.getDeclaringClass();
+			Class<?> declaringClass = method.getDeclaringClass();
 			if(ExecutionContextHolder.class.isAssignableFrom(declaringClass ) ) {
 				if(GET_EXECUTION_CONTEXT.equals(method.getName() ) ) {
 					return 1;
@@ -64,13 +64,9 @@ public class ProxyFactory {
 				return 1;
 			}
 		}
-
-		public boolean equals(Object o) {
-			return o==this;
-		}
 	};
 	
-	public static Enhancer createEnhancer(Class clazz) {
+	public static Enhancer createEnhancer(Class<?> clazz) {
 		Enhancer e = new Enhancer();
         e.setSuperclass(clazz);
         e.setCallbacks(new Callback[] { ProxyFactory.EXECUTIONCONTEXTHOLDER_METHOD_INTERCEPTOR, NoOp.INSTANCE });
@@ -98,7 +94,7 @@ public class ProxyFactory {
 		
 	}
 	
-	public static Object createEnhancedObject(Class clazz, Object realObject, ExecutionContextHolder ech) {
+	public static Object createEnhancedObject(Class<?> clazz, Object realObject, ExecutionContextHolder ech) {
 		Enhancer e = new Enhancer();
         e.setSuperclass(clazz);
         e.setInterfaces(new Class[] { ExecutionContextHolder.class } );

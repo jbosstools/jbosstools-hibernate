@@ -22,7 +22,7 @@ public class Items {
 	protected LayuotConstants constants;
     protected IDiagramInfo process;
     protected Item[] items;
-    protected Map paths = new HashMap();
+    protected Map<String, Item> paths = new HashMap<String, Item>();
     protected Groups groups = new Groups();
     protected boolean override = false;
 
@@ -97,7 +97,7 @@ public class Items {
             for (int j = 0; j < ts.length; j++) {
                 String target = ts[j].getTargetID();
                 if(target == null || target.length() == 0) continue;
-                Item item2 = (Item)paths.get(target);
+                Item item2 = paths.get(target);
                 if(item2 == null) {
                 	continue;
                 } if(items[i].isComment()) {

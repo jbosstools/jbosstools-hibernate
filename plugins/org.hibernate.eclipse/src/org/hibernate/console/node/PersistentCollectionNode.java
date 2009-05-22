@@ -125,7 +125,7 @@ public class PersistentCollectionNode extends BaseNode {
 			initCollectionObject();
 			int idx = 0;
 			if(!type.isArrayType() ) {
-				Iterator i = ( (Collection)collectionObject).iterator();
+				Iterator<?> i = ( (Collection<?>)collectionObject).iterator();
 
 				while (i.hasNext() ) {
 					Object element = i.next();
@@ -146,7 +146,7 @@ public class PersistentCollectionNode extends BaseNode {
 
 	}
 
-	private TreeNode createNode(int idx, Object element, Type type) { // TODO: use a common way to create these darn nodes!
+	private BaseNode createNode(int idx, Object element, Type type) { // TODO: use a common way to create these darn nodes!
 		return new ClassNode(factory, this,type.getReturnedClass().getName(), factory.getMetaData(type.getReturnedClass() ),element,objectGraph);
 	}
 

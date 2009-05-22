@@ -40,6 +40,7 @@ import org.eclipse.draw2d.graph.DirectedGraph;
 import org.eclipse.draw2d.graph.Edge;
 import org.eclipse.draw2d.graph.Node;
 import org.eclipse.draw2d.graph.NodeList;
+import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.hibernate.eclipse.graph.parts.AssociationEditPart;
 import org.hibernate.eclipse.graph.parts.ConfigurationEditPart;
 import org.hibernate.eclipse.graph.parts.PersistentClassEditPart;
@@ -47,8 +48,8 @@ import org.hibernate.eclipse.graph.parts.PersistentClassEditPart;
 public class DirectedGraphLayoutVisitor
 {
 
-	Map partToNodesMap;
-	Set addedAssociations;
+	Map<AbstractGraphicalEditPart, Object> partToNodesMap;
+	Set<AssociationEditPart> addedAssociations;
 	
 	DirectedGraph graph;
 	private ConfigurationEditPart diagram;
@@ -59,8 +60,8 @@ public class DirectedGraphLayoutVisitor
 	public void layoutDiagram(ConfigurationEditPart diagram)
 	{
 
-		partToNodesMap = new HashMap();
-		addedAssociations = new HashSet();
+		partToNodesMap = new HashMap<AbstractGraphicalEditPart, Object>();
+		addedAssociations = new HashSet<AssociationEditPart>();
 		this.diagram = diagram;
 		graph = new DirectedGraph();
 		addNodes(diagram);
@@ -110,12 +111,11 @@ public class DirectedGraphLayoutVisitor
 
 	//******************* PersistentClassEditPart contribution methods **********/
 
+	@SuppressWarnings("unchecked")
 	protected void addEdges(PersistentClassEditPart classPart)
 	{
-		List outgoing = classPart.getSourceConnections();
-		for (int i = 0; i < outgoing.size(); i++)
-		{
-			AssociationEditPart relationshipPart = (AssociationEditPart) classPart.getSourceConnections().get(i);
+		List<AssociationEditPart> outgoing = classPart.getSourceConnections();
+		for (AssociationEditPart relationshipPart : outgoing) {
 			addEdges(relationshipPart);
 		}
 	}

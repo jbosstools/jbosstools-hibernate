@@ -63,6 +63,7 @@ public class ObjectEditorInput implements IEditorInput{
 	}
 
 
+	@SuppressWarnings("unchecked")
 	public Object getAdapter(Class adapter) {
 		return null;
 	}

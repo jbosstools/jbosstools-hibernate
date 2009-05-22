@@ -44,7 +44,6 @@ import org.hibernate.console.KnownConfigurations;
 public class PluginLogAppender extends AppenderSkeleton {
 
 	private ILog pluginLog;
-	private Map streams = new HashMap();
 
 
 	/**

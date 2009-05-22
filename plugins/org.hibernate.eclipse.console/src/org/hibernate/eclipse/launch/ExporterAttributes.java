@@ -42,11 +42,9 @@ package org.hibernate.eclipse.launch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
@@ -59,7 +57,6 @@ import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.model.impl.ExporterDefinition;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
-import org.hibernate.mapping.Table;
 
 // This class was created to centralize launch configuration attribute loading/saving
 // (and also to clean up CodeGenerationLaunchDelegate considerably)
@@ -120,7 +117,8 @@ public class ExporterAttributes
 	   	   return HibernateLaunchConstants.ATTR_EXPORTERS + "." + exporterId; //$NON-NLS-1$
    }
 
-   private List<ExporterFactory> readExporterFactories(ILaunchConfiguration configuration) throws CoreException {
+   @SuppressWarnings("unchecked")
+private List<ExporterFactory> readExporterFactories(ILaunchConfiguration configuration) throws CoreException {
 
 	   List<String> exporterNames = configuration.getAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, (List<String>)null);
 
@@ -139,8 +137,8 @@ public class ExporterAttributes
 				   ExporterFactory exporterFactory = new ExporterFactory( expDef, exporterId );
 				   exporterFactory.isEnabled( configuration );
 				   factories.add( exporterFactory );
-				   Map props = configuration.getAttribute( getLaunchAttributePrefix(exporterFactory.getId())
-						   + ".properties", new HashMap() ); //$NON-NLS-1$
+				   Map<String, String> props = configuration.getAttribute( getLaunchAttributePrefix(exporterFactory.getId())
+						   + ".properties", new HashMap<String, String>() ); //$NON-NLS-1$
 				   exporterFactory.setProperties( props );
 			   }
 		   }
@@ -156,8 +154,8 @@ public class ExporterAttributes
 			   ExporterFactory exporterFactory = new ExporterFactory( expDef, expDef.getId() );
 			   exporterFactory.isEnabled( configuration );
 			   factories.add( exporterFactory );
-			   Map props = configuration.getAttribute( getLaunchAttributePrefix(exporterFactory.getId())
-					   + ".properties", new HashMap() ); //$NON-NLS-1$
+			   Map<String, String> props = configuration.getAttribute( getLaunchAttributePrefix(exporterFactory.getId())
+					   + ".properties", new HashMap<String, String>() ); //$NON-NLS-1$
 			   exporterFactory.setProperties( props );
 		   }
 
@@ -167,22 +165,21 @@ public class ExporterAttributes
 
    public static void saveExporterFactories(
 			ILaunchConfigurationWorkingCopy configuration,
-			List exporterFactories, Set enabledExporters, Set deletedExporterIds) {
+			List<ExporterFactory> exporterFactories, Set<ExporterFactory> enabledExporters, Set<String> deletedExporterIds) {
 
 
 	   List<String> names = new ArrayList<String>();
-		for (Iterator iter = exporterFactories.iterator(); iter.hasNext();) {
-			ExporterFactory ef = (ExporterFactory) iter.next();
+	   for (ExporterFactory ef : exporterFactories) {
 			configuration.setAttribute(getLaunchAttributePrefix(ef.getId()) + ".extension_id", ef.getExporterDefinition().getId()); //$NON-NLS-1$
 			boolean enabled = enabledExporters.contains( ef );
 			String propertiesId = getLaunchAttributePrefix(ef.getId()) + ".properties"; //$NON-NLS-1$
 			names.add(ef.getId());
 			ef.setEnabled( configuration, enabled, false );
 
-			HashMap map = new HashMap(ef.getProperties());
+			HashMap<String, String> map = new HashMap<String, String>(ef.getProperties());
 
 			if(map.isEmpty()) {
-				configuration.setAttribute( propertiesId, (Map)null );
+				configuration.setAttribute( propertiesId, (Map<String, String>)null );
 			} else {
 				configuration.setAttribute( propertiesId, map );
 			}
@@ -190,9 +187,7 @@ public class ExporterAttributes
 
 		deletedExporterIds.removeAll(names);
 
-		for (Iterator iterator = deletedExporterIds.iterator(); iterator.hasNext();) {
-			String deleted = (String) iterator.next();
-
+		for (String deleted : deletedExporterIds) {
 			configuration.setAttribute( getLaunchAttributePrefix( deleted ), (String)null);
 			configuration.setAttribute(getLaunchAttributePrefix(deleted ) + ".extension_id", (String)null);						 //$NON-NLS-1$
 			configuration.setAttribute(getLaunchAttributePrefix(deleted), (String)null);
@@ -203,20 +198,18 @@ public class ExporterAttributes
 
 	public static void oldSaveExporterFactories(
 			ILaunchConfigurationWorkingCopy configuration,
-			List exporterFactories, List enabledExporters) {
+			List<ExporterFactory> exporterFactories, List<ExporterFactory> enabledExporters) {
 
-
-		for (Iterator iter = exporterFactories.iterator(); iter.hasNext();) {
-			ExporterFactory ef = (ExporterFactory) iter.next();
+		for (ExporterFactory ef : exporterFactories) {
 			boolean enabled = enabledExporters.contains( ef );
 			String propertiesId = ef.getId() + ".properties"; //$NON-NLS-1$
 
 			ef.setEnabled( configuration, enabled, true );
 
-			HashMap map = new HashMap(ef.getProperties());
+			HashMap<String, String> map = new HashMap<String, String>(ef.getProperties());
 
 			if(map.isEmpty()) {
-				configuration.setAttribute( propertiesId, (Map)null );
+				configuration.setAttribute( propertiesId, (Map<String, String>)null );
 			} else {
 				configuration.setAttribute( propertiesId, map );
 			}

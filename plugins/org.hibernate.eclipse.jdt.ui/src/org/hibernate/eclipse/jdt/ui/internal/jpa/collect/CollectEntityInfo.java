@@ -53,6 +53,7 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo.FieldGetterTy
  * 
  * @author Vitali
  */
+@SuppressWarnings({ "unchecked", "restriction" })
 public class CollectEntityInfo extends ASTVisitor {
 
 	/**
@@ -80,7 +81,7 @@ public class CollectEntityInfo extends ASTVisitor {
 	public boolean visit(NormalAnnotation node) {
 		// try to extract mapping prompts
 		String mappedBy = null;
-		Iterator it = node.values().iterator();
+		Iterator<?> it = node.values().iterator();
 		while (it.hasNext()) {
 			MemberValuePair mvp = (MemberValuePair)it.next();
 			if ("mappedBy".equals(mvp.getName().toString())) { //$NON-NLS-1$
@@ -201,7 +202,7 @@ public class CollectEntityInfo extends ASTVisitor {
 		ASTNode astNode = node.getParent();
 		if (astNode instanceof FieldDeclaration) {
 			FieldDeclaration fd = (FieldDeclaration)astNode;
-			Iterator itVarNames = fd.fragments().iterator();
+			Iterator<?> itVarNames = fd.fragments().iterator();
 			while (itVarNames.hasNext()) {
 				VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
 				String name = var.getName().getIdentifier();
@@ -236,7 +237,7 @@ public class CollectEntityInfo extends ASTVisitor {
 		ASTNode astNode = node.getParent();
 		if (astNode instanceof FieldDeclaration) {
 			FieldDeclaration fd = (FieldDeclaration)astNode;
-			Iterator itVarNames = fd.fragments().iterator();
+			Iterator<?> itVarNames = fd.fragments().iterator();
 			while (itVarNames.hasNext()) {
 				VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
 				String name = var.getName().getIdentifier();
@@ -285,6 +286,7 @@ public class CollectEntityInfo extends ASTVisitor {
 		return true;
 	}
 
+	
 	public boolean visit(TypeDeclaration node) {
 		boolean isAbstruct = entityInfo.isAbstractFlag() || 
 			Modifier.isAbstract(node.getModifiers()) || node.isInterface();
@@ -312,8 +314,8 @@ public class CollectEntityInfo extends ASTVisitor {
 				entityInfo.setFullyQualifiedParentName(entityFullyQualifiedName);
 			}
 		}
-		List superInterfaces = node.superInterfaceTypes();
-		Iterator it = superInterfaces.iterator();
+		List<?> superInterfaces = node.superInterfaceTypes();
+		Iterator<?> it = superInterfaces.iterator();
 		while (it.hasNext()) {
 			Object obj = it.next();
 			if (obj instanceof SimpleType) {

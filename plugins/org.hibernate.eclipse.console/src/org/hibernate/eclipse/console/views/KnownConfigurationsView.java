@@ -41,7 +41,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionContext;
@@ -59,7 +58,6 @@ import org.hibernate.eclipse.console.viewers.xpl.MTreeViewer;
 import org.hibernate.eclipse.console.workbench.xpl.AnyAdaptableLabelProvider;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.hibernate.util.StringHelper;
 
 
 /**
@@ -165,8 +163,7 @@ public class KnownConfigurationsView extends ViewPart {
 					if(consoleConfiguration.isSessionFactoryCreated() ) {
 						String hql = node.getHQL();
 						// open HQL Editor
-						HibernateConsolePlugin.getDefault().openScratchHQLEditor(
-								consoleConfiguration == null ? null : consoleConfiguration.getName(), hql);
+						HibernateConsolePlugin.getDefault().openScratchHQLEditor(consoleConfiguration.getName(), hql);
 						/** /
 						// execute query and show results in 
 						// Hibernate Query result view - commented cause old version
@@ -188,9 +185,8 @@ public class KnownConfigurationsView extends ViewPart {
 					Object last = path.getLastSegment();
 					ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(path.getSegment(0));
 					if (last instanceof PersistentClass || last.getClass() == Property.class){
-						IEditorPart res = null;
 						try {
-							res = OpenMappingAction.run(path, consoleConfiguration);
+							OpenMappingAction.run(path, consoleConfiguration);
 						} catch (PartInitException e) {
 							HibernateConsolePlugin.getDefault().logErrorMessage("Can't find mapping file.", e);	//$NON-NLS-1$
 						} catch (JavaModelException e) {
@@ -224,6 +220,7 @@ public class KnownConfigurationsView extends ViewPart {
 		viewer.getTree().setFocus();
 	}
 
+	@SuppressWarnings("unchecked")
 	public Object getAdapter(Class adapter) {
 		if (adapter.equals(IPropertySheetPage.class) )
 		{

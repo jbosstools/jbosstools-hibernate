@@ -30,30 +30,31 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.ui.view.ViewPlugin;
 
+@SuppressWarnings("restriction")
 public class OpenDiagramActionDelegate extends OpenActionDelegate {
 
-	private HashMap hashMap = new HashMap();
+	private HashMap<Object, ObjectEditorInput> hashMap = new HashMap<Object, ObjectEditorInput>();
 
 	public void run(IAction action) {
     	ObjectPluginAction objectPluginAction = (ObjectPluginAction)action;
-    	Map mapCC_PCs = new HashMap();
+    	Map<ConsoleConfiguration, Set<PersistentClass>> mapCC_PCs = new HashMap<ConsoleConfiguration, Set<PersistentClass>>();
     	TreePath[] paths = ((TreeSelection)objectPluginAction.getSelection()).getPaths();
     	for (int i = 0; i < paths.length; i++) {
     		Object last_el = paths[i].getLastSegment();
         	if (last_el instanceof PersistentClass) {
     			PersistentClass persClass = (PersistentClass) last_el;
     			ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(paths[i].getFirstSegment());
-    			Set setPC = (Set)mapCC_PCs.get(consoleConfiguration);
+    			Set<PersistentClass> setPC = mapCC_PCs.get(consoleConfiguration);
     			if (null == setPC) {
-    				setPC = new HashSet();
+    				setPC = new HashSet<PersistentClass>();
     				mapCC_PCs.put(consoleConfiguration, setPC);
     			}
     			setPC.add(persClass);
     		}    
 		}    		
-    	for (Iterator it = mapCC_PCs.keySet().iterator(); it.hasNext(); ) {
-    		ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)it.next();
-    		Set setPC = (Set)mapCC_PCs.get(consoleConfiguration);
+    	for (Iterator<ConsoleConfiguration> it = mapCC_PCs.keySet().iterator(); it.hasNext(); ) {
+    		ConsoleConfiguration consoleConfiguration = it.next();
+    		Set<PersistentClass> setPC = mapCC_PCs.get(consoleConfiguration);
 	    	try {
 	    		openEditor(setPC, consoleConfiguration);
 	    	} catch (PartInitException e) {
@@ -64,7 +65,7 @@ public class OpenDiagramActionDelegate extends OpenActionDelegate {
 
 	public IEditorPart openEditor(PersistentClass persClass,
 			ConsoleConfiguration consoleConfiguration) throws PartInitException {
-		ObjectEditorInput input = (ObjectEditorInput)hashMap.get(persClass.getRootClass());
+		ObjectEditorInput input = hashMap.get(persClass.getRootClass());
 		
 		
 		IJavaProject proj = ProjectUtils.findJavaProject(consoleConfiguration);
@@ -77,7 +78,7 @@ public class OpenDiagramActionDelegate extends OpenActionDelegate {
 		return IDE.openEditor(ViewPlugin.getPage(),input ,"org.jboss.tools.hibernate.ui.veditor.editors.visualeditor");		//$NON-NLS-1$
 	}
 
-	public IEditorPart openEditor(Set setPC, ConsoleConfiguration consoleConfiguration) throws PartInitException {
+	public IEditorPart openEditor(Set<PersistentClass> setPC, ConsoleConfiguration consoleConfiguration) throws PartInitException {
 		
 		if (0 >= setPC.size()) {
 			return null;
@@ -87,13 +88,13 @@ public class OpenDiagramActionDelegate extends OpenActionDelegate {
 		String id = ""; //$NON-NLS-1$
 		PersistentClass persClass = null;
 		int i = 0;
-    	for (Iterator it = setPC.iterator(); it.hasNext(); ) {
-    		persClass = (PersistentClass)it.next();
+    	for (Iterator<PersistentClass> it = setPC.iterator(); it.hasNext(); ) {
+    		persClass = it.next();
     		id += "@" + persClass.toString(); //$NON-NLS-1$
     		rcArr[i++] = persClass.getRootClass();
     	}
 		
-		ObjectEditorInput input = (ObjectEditorInput)hashMap.get(id);
+		ObjectEditorInput input = hashMap.get(id);
 		IJavaProject proj = ProjectUtils.findJavaProject(consoleConfiguration);
 			
 		if (null == input) {

@@ -209,7 +209,7 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 					cqp.setName( (String) value );
 				}
 				if ( TYPE_PROPERTY.equals( property ) ) {
-					Iterator iterator = possibleTypes.iterator();
+					Iterator<Type> iterator = possibleTypes.iterator();
 					int i = 0;
 					while(iterator.hasNext()) {
 						NullableType type = (NullableType) iterator.next();
@@ -242,11 +242,11 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 					return cqp.getName();
 				}
 				if ( TYPE_PROPERTY.equals( property ) ) {
-					Iterator iterator = possibleTypes.iterator();
+					Iterator<Type> iterator = possibleTypes.iterator();
 					NullableType type = cqp.getType();
 					int i = 0;
 					while(iterator.hasNext()) {
-						if (type == ((Type) iterator.next())) {
+						if (type == iterator.next()) {
 							return Integer.valueOf(i);
 						}
 						i++;
@@ -285,10 +285,10 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 
 		String[] valueTypes = new String[possibleTypes.size()];
 
-		Iterator iterator = possibleTypes.iterator();
+		Iterator<Type> iterator = possibleTypes.iterator();
 		int i=0;
 		while ( iterator.hasNext() ) {
-			Type element = (Type) iterator.next();
+			Type element = iterator.next();
 			valueTypes[i++] = element.getName();
 		}
 		CellEditor[] editors = new CellEditor[columnProperties.length];
@@ -364,7 +364,7 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 		public void run() {
 			ConsoleQueryParameter[] queryParameters = model.getQueryParameters();
 
-			Map qp = new HashMap();
+			Map<String, ConsoleQueryParameter> qp = new HashMap<String, ConsoleQueryParameter>();
 			for (int i = 0; i < queryParameters.length; i++) {
 				ConsoleQueryParameter parameter = queryParameters[i];
 				qp.put(parameter.getName(), parameter);
@@ -377,7 +377,7 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 			ConsoleQueryParameter cqp = null;
 			int[] positions = StringHelper.locateUnquoted( queryString, '?' );
 			for (int i = 0; i < positions.length; i++) {
-				cqp = (ConsoleQueryParameter) qp.get(""+i); //$NON-NLS-1$
+				cqp = qp.get(""+i); //$NON-NLS-1$
 				if(cqp==null) {
 					cqp = model.createUniqueParameter(""+i);					 //$NON-NLS-1$
 				}
@@ -385,7 +385,7 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 			}
 
 			StringTokenizer st = new StringTokenizer(queryString, ParserHelper.HQL_SEPARATORS);
-			Set result = new HashSet();
+			Set<String> result = new HashSet<String>();
 
 			while ( st.hasMoreTokens() ) {
 				String string = st.nextToken();
@@ -394,10 +394,10 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 				}
 			}
 
-			Iterator iterator = result.iterator();
+			Iterator<String> iterator = result.iterator();
 			while ( iterator.hasNext() ) {
-				String paramName = (String) iterator.next();
-				cqp = (ConsoleQueryParameter) qp.get(paramName);
+				String paramName = iterator.next();
+				cqp = qp.get(paramName);
 				if(cqp==null) {
 					cqp = model.createUniqueParameter(paramName);
 				}

@@ -32,6 +32,7 @@ import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.geometry.Translatable;
 
 
 /**
@@ -51,15 +52,15 @@ public class GraphAnimation
 	static boolean PLAYBACK;
 	static boolean RECORDING;
 
-	static Map initialStates;
-	static Map finalStates;
+	static Map<IFigure, Translatable> initialStates;
+	static Map<IFigure, Translatable> finalStates;
 
 	public static void end()
 	{
-		Iterator iter = initialStates.keySet().iterator();
+		Iterator<IFigure> iter = initialStates.keySet().iterator();
 		while (iter.hasNext())
 		{
-			IFigure f = ((IFigure) iter.next());
+			IFigure f = iter.next();
 			f.revalidate();
 			f.setVisible(true);
 		}
@@ -84,12 +85,12 @@ public class GraphAnimation
 		while (root.getParent() != null)
 			root = root.getParent();
 
-		initialStates = new HashMap();
-		finalStates = new HashMap();
+		initialStates = new HashMap<IFigure, Translatable>();
+		finalStates = new HashMap<IFigure, Translatable>();
 
 		//This part records all layout results.
 		root.validate();
-		Iterator iter = initialStates.keySet().iterator();
+		Iterator<IFigure> iter = initialStates.keySet().iterator();
 		if (!iter.hasNext())
 		{
 			//Nothing layed out, so abort the animation
@@ -97,7 +98,7 @@ public class GraphAnimation
 			return false;
 		}
 		while (iter.hasNext())
-			recordFinalState((IFigure) iter.next());
+			recordFinalState(iter.next());
 
 		start = System.currentTimeMillis();
 		finish = start + DURATION;
@@ -138,16 +139,17 @@ public class GraphAnimation
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static boolean playbackState(IFigure container)
 	{
 		if (!PLAYBACK)
 			return false;
 
-		List children = container.getChildren();
+		List<IFigure> children = container.getChildren();
 		Rectangle rect1, rect2;
 		for (int i = 0; i < children.size(); i++)
 		{
-			IFigure child = (IFigure) children.get(i);
+			IFigure child = children.get(i);
 			rect1 = (Rectangle) initialStates.get(child);
 			rect2 = (Rectangle) finalStates.get(child);
 			if (rect2 == null)
@@ -272,23 +274,24 @@ public class GraphAnimation
 			initialStates.put(connection, points);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void recordInitialState(IFigure container)
 	{
 		if (!RECORDING)
 			return;
 
-		List children = container.getChildren();
+		List<IFigure> children = container.getChildren();
 		IFigure child;
 		for (int i = 0; i < children.size(); i++)
 		{
-			child = (IFigure) children.get(i);
+			child = children.get(i);
 			initialStates.put(child, child.getBounds().getCopy());
 		}
 	}
 
 	public static void swap()
 	{
-		Map temp = finalStates;
+		Map<IFigure, Translatable> temp = finalStates;
 		finalStates = initialStates;
 		initialStates = temp;
 	}
@@ -298,10 +301,10 @@ public class GraphAnimation
 		current = System.currentTimeMillis() + 30;
 		progress = (double) (current - start) / (finish - start);
 		progress = Math.min(progress, 0.999);
-		Iterator iter = initialStates.keySet().iterator();
+		Iterator<IFigure> iter = initialStates.keySet().iterator();
 
 		while (iter.hasNext())
-			((IFigure) iter.next()).revalidate();
+			iter.next().revalidate();
 		viewport.validate();
 
 		//	Point loc = viewport.getViewLocation();

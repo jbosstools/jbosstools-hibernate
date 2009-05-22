@@ -118,10 +118,10 @@ public class EntityPropertySource implements IPropertySource2
 			propertyValue = classMetadata.getPropertyValue(reflectedObject, (String)id, EntityMode.POJO);
 		}
 
-		if (propertyValue instanceof Collection) {
+		if (propertyValue instanceof Collection<?>) {
 			CollectionMetadata collectionMetadata = currentSession.getSessionFactory().getCollectionMetadata(classMetadata.getEntityName() + "." + id); //$NON-NLS-1$
 			if(collectionMetadata!=null) {
-				propertyValue = new CollectionPropertySource((Collection) propertyValue,currentSession,currentConfiguration, collectionMetadata);
+				propertyValue = new CollectionPropertySource((Collection<?>) propertyValue,currentSession,currentConfiguration, collectionMetadata);
 			}
 		}
 		return propertyValue;

@@ -279,6 +279,7 @@ public class HQLEditor extends AbstractQueryEditor {
 	 * @see org.eclipse.jface.text.source.projection.ProjectionSupport#getAdapter(org.eclipse.jface.text.source.ISourceViewer,
 	 *      java.lang.Class)
 	 */
+	@SuppressWarnings("unchecked")
 	public Object getAdapter( Class classForWhichAdapterNeeded ) {
 	    Object adapter = null;
 

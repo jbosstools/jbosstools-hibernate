@@ -11,13 +11,13 @@ import java.util.Stack;
 
 public class CurrentContext {
 
-	static Hashtable map = new Hashtable();
+	static Hashtable<Thread, Stack<Object>> map = new Hashtable<Thread, Stack<Object>>();
 
 	private CurrentContext() {
 	}
 
 	public static int getDepth() {
-		Stack stack = (Stack) map.get( Thread.currentThread() );
+		Stack<Object> stack = map.get( Thread.currentThread() );
 		if ( stack == null )
 			return 0;
 		else
@@ -26,7 +26,7 @@ public class CurrentContext {
 
 	public static Object pop() {
 		Thread key = Thread.currentThread();
-		Stack stack = (Stack) map.get( key );
+		Stack<Object> stack = map.get( key );
 		if ( stack != null && !stack.isEmpty() )
 			return (stack.pop() );
 		else
@@ -35,7 +35,7 @@ public class CurrentContext {
 
 	public static Object peek() {
 		Thread key = Thread.currentThread();
-		Stack stack = (Stack) map.get( key );
+		Stack<Object> stack = map.get( key );
 		if ( stack != null && !stack.isEmpty() )
 			return stack.peek();
 		else
@@ -44,10 +44,10 @@ public class CurrentContext {
 
 	public static void push(Object message) {
 		Thread key = Thread.currentThread();
-		Stack stack = (Stack) map.get( key );
+		Stack<Object> stack = map.get( key );
 
 		if ( stack == null ) {
-			stack = new Stack();
+			stack = new Stack<Object>();
 			map.put( key, stack );
 			stack.push( message );
 		}

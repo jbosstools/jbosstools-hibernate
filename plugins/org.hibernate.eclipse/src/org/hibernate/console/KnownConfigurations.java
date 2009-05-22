@@ -55,7 +55,6 @@ import org.hibernate.console.node.BaseNode;
 import org.hibernate.console.node.ConfigurationListNode;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 /**
  * This class keeps track of the Hibernate Configurations that are known to

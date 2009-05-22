@@ -25,7 +25,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.osgi.util.NLS;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
@@ -35,14 +34,13 @@ import org.hibernate.mapping.PersistentClass;
 
 public class ConfigurationWorkbenchAdapter extends BasicWorkbenchAdapter {
 
+	@SuppressWarnings("unchecked")
 	public Object[] getChildren(Object o) {
 		Configuration cfg = (Configuration) o;
-		Iterator classMappings = cfg.getClassMappings();
-		return toArray(classMappings, PersistentClass.class, new Comparator() {
+		Iterator<? extends PersistentClass> classMappings = cfg.getClassMappings();
+		return toArray(classMappings, PersistentClass.class, new Comparator<PersistentClass>() {
 
-			public int compare(Object arg0, Object arg1) {
-				PersistentClass p0 = (PersistentClass) arg0;
-				PersistentClass p1 = (PersistentClass) arg1;
+			public int compare(PersistentClass p0, PersistentClass p1) {
 				String label0 = HibernateWorkbenchHelper.getLabelForClassName(p0.getEntityName());
 				String label1 = HibernateWorkbenchHelper.getLabelForClassName(p1.getEntityName());
 				return label0.compareTo(label1);

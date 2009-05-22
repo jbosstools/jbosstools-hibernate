@@ -24,7 +24,6 @@ package org.hibernate.console.node;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.tree.TreeNode;
@@ -42,7 +41,7 @@ public abstract class BaseNode implements TreeNode, ExecutionContextHolder {
 
     protected BaseNode parent;
 	protected NodeFactory factory;
-	protected List<TreeNode> children = new ArrayList<TreeNode>();
+	protected List<BaseNode> children = new ArrayList<BaseNode>();
 	protected String name = "!"; //$NON-NLS-1$
     String iconName = ImageConstants.UNKNOWNPROPERTY;
     
@@ -93,7 +92,7 @@ public abstract class BaseNode implements TreeNode, ExecutionContextHolder {
     	return getChildCount()==0;
     }
 
-    public Enumeration children() {
+    public Enumeration<BaseNode> children() {
     	checkChildren();
         return Collections.enumeration(children);
     }
@@ -122,8 +121,7 @@ public abstract class BaseNode implements TreeNode, ExecutionContextHolder {
     
     /** clear/reset this node. Mainly get rid of children. **/
     public void clear() {
-    	for (Iterator iter = children.iterator(); iter.hasNext();) {
-			BaseNode element = (BaseNode) iter.next();
+    	for (BaseNode element : children) {
 			element.clear();
 		}
     }

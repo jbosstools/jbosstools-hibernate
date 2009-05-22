@@ -37,12 +37,12 @@ public interface QueryPage {
 	 */
 	public abstract long getQueryTime();
 		
-    public abstract List getList();
+    public abstract List<Object> getList();
     /**
      * @param i
      */
     public abstract void setId(int i);
-    public abstract List getPathNames();
+    public abstract List<String> getPathNames();
     public abstract void release();
     /**
      * @return
@@ -55,7 +55,7 @@ public interface QueryPage {
     /**
      * @return
      */
-    public abstract List getExceptions();
+    public abstract List<Throwable> getExceptions();
     /**
      * @return
      */

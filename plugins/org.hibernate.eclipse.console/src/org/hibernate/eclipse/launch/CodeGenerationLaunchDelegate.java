@@ -21,7 +21,6 @@
  */
 package org.hibernate.eclipse.launch;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.util.HashSet;
@@ -39,6 +38,7 @@ import org.eclipse.core.filebuffers.manipulation.TextFileBufferOperation;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -56,7 +56,6 @@ import org.eclipse.jdt.core.ToolFactory;
 import org.eclipse.jdt.core.formatter.CodeFormatter;
 import org.eclipse.jface.text.DocumentRewriteSessionType;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.util.Assert;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.text.edits.TextEdit;
 import org.hibernate.HibernateException;
@@ -66,7 +65,6 @@ import org.hibernate.cfg.reveng.DefaultReverseEngineeringStrategy;
 import org.hibernate.cfg.reveng.OverrideRepository;
 import org.hibernate.cfg.reveng.ReverseEngineeringSettings;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
-import org.hibernate.cfg.reveng.TableFilter;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
@@ -96,7 +94,7 @@ public class CodeGenerationLaunchDelegate extends
 		throws CoreException, OperationCanceledException {
 
 			IResource bufferRes = ResourcesPlugin.getWorkspace().getRoot().findMember(textFileBuffer.getLocation());
-			Map options = null;
+			Map<?, ?> options = null;
 			if(bufferRes!=null) {
 				IJavaProject project = JavaCore.create(bufferRes.getProject());
 				options = project.getOptions(true);
@@ -125,22 +123,20 @@ public class CodeGenerationLaunchDelegate extends
 		try {
 		    ExporterAttributes attributes = new ExporterAttributes(configuration);
 
-		    List exporterFactories = attributes.getExporterFactories();
-		    for (Iterator iter = exporterFactories.iterator(); iter.hasNext();) {
-				ExporterFactory exFactory = (ExporterFactory) iter.next();
+		    List<ExporterFactory> exporterFactories = attributes.getExporterFactories();
+		    for (Iterator<ExporterFactory> iter = exporterFactories.iterator(); iter.hasNext();) {
+				ExporterFactory exFactory = iter.next();
 				if(!exFactory.isEnabled(configuration)) {
 					iter.remove();
 				}
 			}
 
-		    Set outputDirectories = new HashSet();
-		    ExporterFactory[] exporters = (ExporterFactory[]) exporterFactories.toArray( new ExporterFactory[exporterFactories.size()] );
+		    Set<String> outputDirectories = new HashSet<String>();
+		    ExporterFactory[] exporters = exporterFactories.toArray( new ExporterFactory[exporterFactories.size()] );
             ArtifactCollector collector = runExporters(attributes, exporters, outputDirectories, monitor);
 
-            Iterator iterator = outputDirectories.iterator();
-            while (iterator.hasNext()) {
-				String path = (String) iterator.next();
-				refreshOutputDir( path );
+            for (String path : outputDirectories) {
+            	refreshOutputDir( path );
 			}
 
 			RefreshTab.refreshResources(configuration, monitor);
@@ -202,7 +198,7 @@ public class CodeGenerationLaunchDelegate extends
 		}
 	}
 
-	private ArtifactCollector runExporters (final ExporterAttributes attributes, final ExporterFactory[] exporterFactories, final Set outputDirectories, final IProgressMonitor monitor)
+	private ArtifactCollector runExporters (final ExporterAttributes attributes, final ExporterFactory[] exporterFactories, final Set<String> outputDirectories, final IProgressMonitor monitor)
 	   throws CoreException
     {
 
@@ -337,11 +333,12 @@ public class CodeGenerationLaunchDelegate extends
 	}
 
 	// TODO: merge with revstrategy load in JDBCConfigurationTask
+	@SuppressWarnings("unchecked")
 	private ReverseEngineeringStrategy loadreverseEngineeringStrategy(final String className, ReverseEngineeringStrategy delegate) {
         try {
             Class clazz = ReflectHelper.classForName(className);
-			Constructor constructor = clazz.getConstructor(new Class[] { ReverseEngineeringStrategy.class });
-            return (ReverseEngineeringStrategy) constructor.newInstance(new Object[] { delegate });
+			Constructor<ReverseEngineeringStrategy> constructor = clazz.getConstructor(new Class[] { ReverseEngineeringStrategy.class });
+            return constructor.newInstance(new Object[] { delegate });
         }
         catch (NoSuchMethodException e) {
 			try {
@@ -382,6 +379,6 @@ public class CodeGenerationLaunchDelegate extends
 
 	protected void abort(String message, Throwable exception, int code)
 	throws CoreException {
-		throw new CoreException(new Status(IStatus.ERROR, HibernateConsolePlugin.getDefault().ID, code, message, exception));
+		throw new CoreException(new Status(IStatus.ERROR, HibernateConsolePlugin.ID, code, message, exception));
 	}
 }

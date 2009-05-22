@@ -54,7 +54,7 @@ public class EclipseImageMap extends ImageMap {
 	}
 	
 	/** A table of all the <code>ImageDescriptor</code>s. */
-	Map imageDescriptors = new HashMap();
+	Map<String, ImageDescriptor> imageDescriptors = new HashMap<String, ImageDescriptor>();
 	
 	/** The image registry containing <code>Image</code>s. */
 	ImageRegistry imageRegistry = new ImageRegistry();
@@ -85,7 +85,7 @@ public class EclipseImageMap extends ImageMap {
 
 	public ImageDescriptor getImageDescriptor(String key) {
 		
-		return (ImageDescriptor) imageDescriptors.get(key);
+		return imageDescriptors.get(key);
 	}
 
 }

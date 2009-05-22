@@ -42,7 +42,7 @@ import org.jboss.tools.hibernate.ui.view.UIViewMessages;
 
 public class OrmLabelProvider extends LabelProvider implements IColorProvider, IFontProvider {
 
-	private Map imageCache = new HashMap(25);
+	private Map<ImageDescriptor, Image> imageCache = new HashMap<ImageDescriptor, Image>(25);
 	private OrmModelImageVisitor ormModelImageVisitor;
 	private OrmModelNameVisitor ormModelNameVisitor;
 
@@ -87,7 +87,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 			return null;
 		}
 
-		Image image = (Image) imageCache.get(descriptor);
+		Image image = imageCache.get(descriptor);
 		if (image == null) {
 			image = descriptor.createImage();
 			imageCache.put(descriptor, image);
@@ -173,8 +173,8 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 	}
 
 	public void dispose() {
-		for (Iterator i = imageCache.values().iterator(); i.hasNext();) {
-			((Image) i.next()).dispose();
+		for (Iterator<Image> i = imageCache.values().iterator(); i.hasNext();) {
+			i.next().dispose();
 		}
 		imageCache.clear();
 	}

@@ -44,7 +44,7 @@ public class BuildSessionFactoryAction extends ConsoleConfigurationBasedAction {
 	}
 
 	protected void doRun() {
-		for (Iterator i = getSelectedNonResources().iterator(); i.hasNext();) {
+		for (Iterator<?> i = getSelectedNonResources().iterator(); i.hasNext();) {
         	try {
             Object node = i.next();
             if(node instanceof ConsoleConfiguration) {

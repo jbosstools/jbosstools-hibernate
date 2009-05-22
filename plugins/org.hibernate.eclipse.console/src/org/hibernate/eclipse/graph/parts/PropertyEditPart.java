@@ -36,6 +36,7 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.hibernate.eclipse.graph.anchor.LeftOrRightParentAnchor;
 import org.hibernate.eclipse.graph.figures.EditableLabel;
 import org.hibernate.eclipse.graph.model.PersistentClassViewAdapter;
+import org.hibernate.eclipse.graph.model.PropertyAssociationViewAdapter;
 import org.hibernate.eclipse.graph.model.PropertyViewAdapter;
 import org.hibernate.mapping.Property;
 
@@ -72,13 +73,13 @@ public class PropertyEditPart extends AbstractGraphicalEditPart implements NodeE
 		// TODO Auto-generated method stub
 		return super.getCommand( request );
 	}
-	public List getModelSourceConnections() {
-		List sc = ((PropertyViewAdapter) getModel()).getSourceConnections();
+	public List<PropertyAssociationViewAdapter> getModelSourceConnections() {
+		List<PropertyAssociationViewAdapter> sc = ((PropertyViewAdapter) getModel()).getSourceConnections();
 		return sc;
 	}
 	
-	public List getModelTargetConnections() {
-		List tc = ((PropertyViewAdapter) getModel()).getTargetConnections();
+	public List<PropertyViewAdapter> getModelTargetConnections() {
+		List<PropertyViewAdapter> tc = ((PropertyViewAdapter) getModel()).getTargetConnections();
 		return tc;
 	}
 

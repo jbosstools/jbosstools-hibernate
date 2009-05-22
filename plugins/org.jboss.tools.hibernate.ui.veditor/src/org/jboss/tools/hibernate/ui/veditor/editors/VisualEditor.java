@@ -117,7 +117,7 @@ public class VisualEditor extends GraphicalEditor {
 	private TransferDropTargetListener createTransferDropTargetListener() {
 		return new TemplateTransferDropTargetListener(getGraphicalViewer()) {
 			protected CreationFactory getFactory(Object template) {
-				return new SimpleFactory((Class) template);
+				return new SimpleFactory((Class<?>) template);
 			}
 		};
 	}
@@ -159,6 +159,7 @@ public class VisualEditor extends GraphicalEditor {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public Object getAdapter(Class type) {
 		if (type == IContentOutlinePage.class) {
 			DiagramContentOutlinePage outline = new DiagramContentOutlinePage(
@@ -173,10 +174,10 @@ public class VisualEditor extends GraphicalEditor {
 		return super.getAdapter(type);
 	}
 
-	public Set getSelectedElements_old() {
-		Set ret = new HashSet();
-		List selectedEditParts = getGraphicalViewer().getSelectedEditParts();
-		Iterator iterator = selectedEditParts.iterator();
+	public Set<Object> getSelectedElements_old() {
+		Set<Object> ret = new HashSet<Object>();
+		List<?> selectedEditParts = getGraphicalViewer().getSelectedEditParts();
+		Iterator<?> iterator = selectedEditParts.iterator();
 		while (iterator.hasNext()) {
 			Object elem = iterator.next();
 			if (elem instanceof OrmEditPart) {
@@ -191,10 +192,10 @@ public class VisualEditor extends GraphicalEditor {
 		return ret;
 	}
 
-	public Set getSelectedElements() {
-		Set ret = new HashSet();
-		List selectedEditParts = getGraphicalViewer().getSelectedEditParts();
-		Iterator iterator = selectedEditParts.iterator();
+	public Set<Object> getSelectedElements() {
+		Set<Object> ret = new HashSet<Object>();
+		List<?> selectedEditParts = getGraphicalViewer().getSelectedEditParts();
+		Iterator<?> iterator = selectedEditParts.iterator();
 		while (iterator.hasNext()) {
 			Object elem = iterator.next();
 			if (elem instanceof OrmEditPart) {

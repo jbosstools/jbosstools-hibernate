@@ -69,15 +69,9 @@ public class ConfigurationListNode extends BaseNode {
 	protected void checkChildren() {
 		if(!childrenCreated) {
 			ConsoleConfiguration[] configurations = kc.getConfigurations();
-			Arrays.sort(configurations, new Comparator() {
-				public boolean equals(Object obj) {
-					return this==obj;
-				}
-
-				public int compare(Object o1, Object o2) {
-					return ( (ConsoleConfiguration)o1).getName()
-						.compareTo(
-								( (ConsoleConfiguration)o2).getName() );
+			Arrays.sort(configurations, new Comparator<ConsoleConfiguration>() {
+				public int compare(ConsoleConfiguration o1, ConsoleConfiguration o2) {
+					return o1.getName().compareTo(o2.getName());
 				}
 			});
 			for (int i = 0; i < configurations.length; i++) {

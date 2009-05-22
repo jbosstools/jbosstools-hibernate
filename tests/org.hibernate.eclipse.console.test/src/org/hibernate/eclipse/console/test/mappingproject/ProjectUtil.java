@@ -44,6 +44,7 @@ import org.hibernate.mapping.PersistentClass;
  * @author Dmitry Geraskov
  *
  */
+@SuppressWarnings("restriction")
 public class ProjectUtil {
 
 	private static final StringBuilder XML_HEADER = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n") //$NON-NLS-1$
@@ -127,7 +128,7 @@ public class ProjectUtil {
 			ConsoleConfigurationWizardPage page = ((ConsoleConfigurationWizardPage)getPages()[0]);			
 			ILaunchConfigurationTab[] tabs = page.getTabs();
 			ConsoleConfigurationMainTab main = (ConsoleConfigurationMainTab) tabs[0];
-			Class clazz = main.getClass();
+			Class<? extends ConsoleConfigurationMainTab> clazz = main.getClass();
 			Field projectName = clazz.getDeclaredField("projectNameText"); //$NON-NLS-1$
 			projectName.setAccessible(true);
 			Text text = (Text) projectName.get(main);

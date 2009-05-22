@@ -37,7 +37,6 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextListener;
-import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.swt.layout.GridData;
@@ -143,6 +142,7 @@ public class CriteriaEditor extends AbstractQueryEditor {
 		return evalCtx ;
 	}
 
+	@SuppressWarnings("unchecked")
 	private String[] getImports() {
 
 		ConsoleConfiguration consoleConfiguration = getConsoleConfiguration();
@@ -151,12 +151,12 @@ public class CriteriaEditor extends AbstractQueryEditor {
 			consoleConfiguration.build();
 		}
 
-		Set imports = new HashSet();
+		Set<String> imports = new HashSet<String>();
 		Configuration configuration = consoleConfiguration.getConfiguration();
 		if(configuration!=null) {
-			Iterator classMappings = configuration.getClassMappings();
+			Iterator<PersistentClass> classMappings = configuration.getClassMappings();
 			while ( classMappings.hasNext() ) {
-				PersistentClass clazz = (PersistentClass) classMappings.next();
+				PersistentClass clazz = classMappings.next();
 				String className = clazz.getClassName();
 				if(className!=null) {
 					imports.add( className );
@@ -167,11 +167,10 @@ public class CriteriaEditor extends AbstractQueryEditor {
 		imports.add("org.hibernate.*"); //$NON-NLS-1$
 		imports.add("org.hibernate.criterion.*"); //$NON-NLS-1$
 
-		return (String[]) imports.toArray( new String[imports.size()] );
+		return imports.toArray( new String[imports.size()] );
 	}
 
 	public void codeComplete(String prefix, CompletionProposalCollector collector, int position, IJavaProject project) throws JavaModelException {
-		ITextSelection selection= (ITextSelection)getSelectionProvider().getSelection();
 		String code= getSourceViewer().getDocument().get();
 		code= prefix + code;
 		IEvaluationContext e= getEvaluationContext(project);

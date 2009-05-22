@@ -43,6 +43,7 @@ import org.hibernate.eclipse.launch.core.refactoring.HibernateRefactoringUtil;
  * @author Dmitry Geraskov
  *
  */
+@SuppressWarnings("restriction")
 public class RefactoringTest extends TestCase {
 
 	private final String[] oldPathElements = new String[]{"oldPrj","oldSrc", "oldPack", "oldHibernate.cfg.xml"};	  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -229,10 +230,11 @@ public class RefactoringTest extends TestCase {
 		assertTrue(count_new == count_old);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void checkPaths(Path truePath) throws CoreException{
 		String newPath = (String) testStrConfig.getNewAttribute(IConsoleConfigurationLaunchConstants.CFG_XML_FILE);
 		assertEquals(truePath.makeAbsolute(), new Path(newPath).makeAbsolute());
-		newPath = (String) ((List) testStrListConfig.getNewAttribute(IConsoleConfigurationLaunchConstants.FILE_MAPPINGS)).get(0);
+		newPath = ((List<String>) testStrListConfig.getNewAttribute(IConsoleConfigurationLaunchConstants.FILE_MAPPINGS)).get(0);
 		assertEquals(truePath.makeAbsolute(), new Path(newPath).makeAbsolute());
 	}
 
@@ -268,6 +270,7 @@ public class RefactoringTest extends TestCase {
 	}
 
 //====================================================================================
+		@SuppressWarnings("unchecked")
 		static class TestWorkingCopy implements ILaunchConfigurationWorkingCopy{
 
 			private TestLaunchConfig parent;
@@ -307,6 +310,7 @@ public class RefactoringTest extends TestCase {
 				return true;
 			}
 
+			
 			public void removeModes(Set modes) {}
 
 			public void rename(String name) {}
@@ -473,6 +477,7 @@ public class RefactoringTest extends TestCase {
 
 		}
 
+		@SuppressWarnings("unchecked")
 		static class TestLaunchConfig implements ILaunchConfiguration{
 
 			private Map<String, Object> attributes = new HashMap<String, Object>();

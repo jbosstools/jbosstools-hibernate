@@ -52,7 +52,7 @@ public interface ConsoleConfigurationPreferences {
 	// TODO: we should move this to some classhandler
 	static public class ConfigurationMode implements Serializable {
 
-		private static final Map INSTANCES = new HashMap();
+		private static final Map<String, ConfigurationMode> INSTANCES = new HashMap<String, ConfigurationMode>();
 
 		public static final ConfigurationMode CORE = new ConfigurationMode( "CORE" ); //$NON-NLS-1$
 		public static final ConfigurationMode ANNOTATIONS = new ConfigurationMode( "ANNOTATIONS" ); //$NON-NLS-1$
@@ -79,7 +79,7 @@ public interface ConsoleConfigurationPreferences {
 		}
 
 		public static ConfigurationMode parse(String name) {
-			ConfigurationMode rtn = ( ConfigurationMode ) INSTANCES.get( name );
+			ConfigurationMode rtn = INSTANCES.get( name );
 			if ( rtn == null ) {
 				// default is POJO
 				rtn = CORE;

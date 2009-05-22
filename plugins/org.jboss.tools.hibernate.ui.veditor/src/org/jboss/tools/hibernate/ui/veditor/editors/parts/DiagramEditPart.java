@@ -88,7 +88,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 
 	public void restore() {
 		boolean dirty = getCastedModel().isDirty();
-		HashMap hashMap = getCastedModel().getCloneElements();
+		HashMap<String, OrmShape> hashMap = getCastedModel().getCloneElements();
 		String childrenLocations[] = getCastedModel().getChildrenLocations();
 		int tempPoint = 1;
 		OrmShape ormShape;
@@ -100,7 +100,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 					&& childrenLocations[i].indexOf(';') != -1) {
 				string = childrenLocations[i].substring(0, childrenLocations[i]
 						.indexOf('@'));
-				ormShape = (OrmShape) hashMap.remove(string);
+				ormShape = hashMap.remove(string);
 				if (ormShape != null) {
 					string = childrenLocations[i]
 							.substring(childrenLocations[i].indexOf('@') + 1);
@@ -125,14 +125,13 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 		RootClass[] ormElements = getCastedModel().getOrmElements();
 		for (int i = 0; i < childrenLocations.length; i++) {
 			RootClass persistentClass = ormElements[i];
-			ormShape = (OrmShape) hashMap.remove(persistentClass
-					.getEntityName());
+			ormShape = hashMap.remove(persistentClass.getEntityName());
 			if (ormShape != null) {
 				ormShape.setLocation(new Point(20, 20));
 				tempPoint = 40 + getChildrenFigurePreferredHeight(ormShape);
 			}
 			Table table = persistentClass.getTable();
-			ormShape = (OrmShape) hashMap.remove(HibernateUtils.getTableName(table));
+			ormShape = hashMap.remove(HibernateUtils.getTableName(table));
 			if (ormShape != null) {
 				ormShape.setLocation(new Point(pointX, 20));
 				point = 40 + getChildrenFigurePreferredHeight(ormShape);
@@ -143,7 +142,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 		}
 		Object objects[] = hashMap.keySet().toArray();
 		for (int i = 0; i < objects.length; i++) {
-			ormShape = (OrmShape) hashMap.get(objects[i]);
+			ormShape = hashMap.get(objects[i]);
 			if (ormShape != null
 					&& (ormShape.getOrmElement() instanceof RootClass || ormShape
 							.getOrmElement() instanceof SpecialOrmShape)) {
@@ -155,7 +154,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 						.getOrmElement())).getProperty().getValue())
 						.getElement();
 				Table ownerTable = component.getOwner().getTable();
-				ormShape = (OrmShape) hashMap.remove(HibernateUtils.getTableName(ownerTable));
+				ormShape = hashMap.remove(HibernateUtils.getTableName(ownerTable));
 				// }
 				// if (ormShape != null ) {
 				// ormShape.setLocation(new Point(pointX,point));
@@ -166,12 +165,10 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 					point = tempPoint;
 			}
 		}
-		Iterator iterator = hashMap.values().iterator();
-		while (iterator.hasNext()) {
-			ormShape = (OrmShape) iterator.next();
-			if (ormShape.getOrmElement() instanceof Table) {
-				ormShape.setLocation(new Point(pointX, point));
-				point = point + getChildrenFigurePreferredHeight(ormShape) + 20;
+		for (OrmShape shape : hashMap.values()) {
+			if (shape.getOrmElement() instanceof Table) {
+				shape.setLocation(new Point(pointX, point));
+				point = point + getChildrenFigurePreferredHeight(shape) + 20;
 			}
 		}
 		getCastedModel().setDirty(dirty);
@@ -202,7 +199,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 		return j + 120;
 	}
 
-	protected List getModelChildren() {
+	protected List<Shape> getModelChildren() {
 		return getCastedModel().getChildren();
 	}
 

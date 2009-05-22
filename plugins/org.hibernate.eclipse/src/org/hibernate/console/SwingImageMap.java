@@ -38,14 +38,14 @@ public class SwingImageMap extends ImageMap {
 		declareImages();
 	}
 	
-	Map imageRegistry = new HashMap();
+	Map<String, ImageIcon> imageRegistry = new HashMap<String, ImageIcon>();
 	
 	protected void declareRegistryImage(String key, String path) {
 		imageRegistry.put(key, new ImageIcon(SwingImages.class.getResource(path) ) );		
 	}
 
 	public Icon getIcon(String iconName) {
-		return (Icon) imageRegistry.get(iconName);
+		return imageRegistry.get(iconName);
 	}
 
 }

@@ -34,12 +34,12 @@ public class GenericPropertySource implements IPropertySource2 {
 
 	private final Object real;
 	private IPropertyDescriptor[] descriptors;
-	private HashMap map;
+	private HashMap<Object, IPropertyDescriptor> map;
 
 	public GenericPropertySource(Object real) {
 		this.real = real;
 		this.descriptors = buildPropertyDescriptors();
-		this.map = new HashMap();
+		this.map = new HashMap<Object, IPropertyDescriptor>();
 		for (int i = 0; i < descriptors.length; i++) {
 			IPropertyDescriptor desc = descriptors[i];
 			map.put(desc.getId(), desc);			

@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipFile;
 
-import junit.framework.Assert;
-
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -56,12 +54,12 @@ import org.eclipse.jdt.internal.ui.util.CoreUtility;
 import org.eclipse.ui.dialogs.IOverwriteQuery;
 import org.eclipse.ui.wizards.datatransfer.ImportOperation;
 import org.eclipse.ui.wizards.datatransfer.ZipFileStructureProvider;
-import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin;
 
 /**
  * Helper methods to set up a IJavaProject.
  */
+@SuppressWarnings("restriction")
 public class JavaProjectHelper {
 	
 	
@@ -114,8 +112,9 @@ public class JavaProjectHelper {
 	 * Sets the compiler options to 1.5 for the given project.
 	 * @param project the java project
 	 */	
+	@SuppressWarnings("unchecked")
 	public static void set15CompilerOptions(IJavaProject project) {
-		Map options= project.getOptions(false);
+		Map<String,String> options= project.getOptions(false);
 		JavaProjectHelper.set15CompilerOptions(options);
 		project.setOptions(options);
 	}
@@ -124,8 +123,9 @@ public class JavaProjectHelper {
 	 * Sets the compiler options to 1.4 for the given project.
 	 * @param project the java project
 	 */	
+	@SuppressWarnings("unchecked")
 	public static void set14CompilerOptions(IJavaProject project) {
-		Map options= project.getOptions(false);
+		Map<String,String> options= project.getOptions(false);
 		JavaProjectHelper.set14CompilerOptions(options);
 		project.setOptions(options);
 	}
@@ -134,7 +134,7 @@ public class JavaProjectHelper {
 	 * Sets the compiler options to 1.5
 	 * @param options The compiler options to configure
 	 */	
-	public static void set15CompilerOptions(Map options) {
+	public static void set15CompilerOptions(Map<String,String> options) {
 		options.put(JavaCore.COMPILER_COMPLIANCE, JavaCore.VERSION_1_5);
 		options.put(JavaCore.COMPILER_PB_ASSERT_IDENTIFIER, JavaCore.ERROR);
 		options.put(JavaCore.COMPILER_PB_ENUM_IDENTIFIER, JavaCore.ERROR);
@@ -146,7 +146,7 @@ public class JavaProjectHelper {
 	 * Sets the compiler options to 1.4
 	 * @param options The compiler options to configure
 	 */	
-	public static void set14CompilerOptions(Map options) {
+	public static void set14CompilerOptions(Map<String,String> options) {
 		options.put(JavaCore.COMPILER_COMPLIANCE, JavaCore.VERSION_1_4);
 		options.put(JavaCore.COMPILER_PB_ASSERT_IDENTIFIER, JavaCore.ERROR);
 		options.put(JavaCore.COMPILER_PB_ENUM_IDENTIFIER, JavaCore.WARNING);
@@ -158,7 +158,7 @@ public class JavaProjectHelper {
 	 * Sets the compiler options to 1.3
 	 * @param options The compiler options to configure
 	 */	
-	public static void set13CompilerOptions(Map options) {
+	public static void set13CompilerOptions(Map<String,String> options) {
 		options.put(JavaCore.COMPILER_COMPLIANCE, JavaCore.VERSION_1_3);
 		options.put(JavaCore.COMPILER_PB_ASSERT_IDENTIFIER, JavaCore.WARNING);
 		options.put(JavaCore.COMPILER_PB_ENUM_IDENTIFIER, JavaCore.WARNING);
@@ -578,10 +578,11 @@ public class JavaProjectHelper {
 	 * @throws CoreException import failed
 	 * @throws IOException import failed
 	 */
+	@SuppressWarnings("unchecked")
 	public static void importResources(IContainer importTarget, String bundleSourcePath) throws CoreException, IOException {
-		Enumeration entryPaths= HibernateConsoleTestPlugin.getDefault().getBundle().getEntryPaths(bundleSourcePath);
+		Enumeration<String> entryPaths= HibernateConsoleTestPlugin.getDefault().getBundle().getEntryPaths(bundleSourcePath);
 		while (entryPaths.hasMoreElements()) {
-			String path= (String) entryPaths.nextElement();
+			String path= entryPaths.nextElement();
 			IPath name= new Path(path.substring(bundleSourcePath.length()));
 			if (path.endsWith("/")) { //$NON-NLS-1$
 				IFolder folder= importTarget.getFolder(name);

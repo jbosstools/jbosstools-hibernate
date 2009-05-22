@@ -33,7 +33,7 @@ public class CloseAllQueryPageAction extends Action {
 
 	@Override
 	public void run() {
-		List pages = KnownConfigurations.getInstance().getQueryPageModel().getPagesAsList();
+		List<QueryPage> pages = KnownConfigurations.getInstance().getQueryPageModel().getPagesAsList();
 		for (int i = 0; i < pages.size(); i++ ) {
 			KnownConfigurations.getInstance().getQueryPageModel().remove( (QueryPage) pages.get(i) );
 		}

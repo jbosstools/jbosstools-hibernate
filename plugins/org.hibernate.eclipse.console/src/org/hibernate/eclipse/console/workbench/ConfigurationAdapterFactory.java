@@ -22,7 +22,6 @@
 package org.hibernate.eclipse.console.workbench;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IAdapterFactory;
@@ -44,12 +43,12 @@ import org.hibernate.mapping.Value;
 
 public class ConfigurationAdapterFactory implements IAdapterFactory {
 
-	private Class[] classes;
+	private Class<?>[] classes;
 	private IDeferredWorkbenchAdapter[] adapters;
 	
 	
 	public ConfigurationAdapterFactory() {
-		Map map = new HashMap();
+		Map<Class<?>, IDeferredWorkbenchAdapter> map = new HashMap<Class<?>, IDeferredWorkbenchAdapter>();
 		
 		map.put(ConsoleConfiguration.class, new ConsoleConfigurationWorkbenchAdapter());
 		map.put(Configuration.class, new ConfigurationWorkbenchAdapter());
@@ -68,16 +67,15 @@ public class ConfigurationAdapterFactory implements IAdapterFactory {
 		classes = new Class[map.size()];
 		adapters = new IDeferredWorkbenchAdapter[map.size()];
 		
-		Iterator iter = map.entrySet().iterator();
 		int cnt = 0;
-		while ( iter.hasNext() ) {
-			Map.Entry entry = (Map.Entry) iter.next();
-			classes[cnt] = (Class) entry.getKey();
-			adapters[cnt] = (IDeferredWorkbenchAdapter) entry.getValue();
-			cnt++;			
+		for (Map.Entry<Class<?>, IDeferredWorkbenchAdapter> entry : map.entrySet()) {
+			classes[cnt] = entry.getKey();
+			adapters[cnt] = entry.getValue();
+			cnt++;
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Object getAdapter(Object adaptableObject, Class adapterType) {
 		if((adapterType==IDeferredWorkbenchAdapter.class || adapterType==IWorkbenchAdapter.class)) {
 			return getAdapter( adaptableObject );
@@ -95,7 +93,7 @@ public class ConfigurationAdapterFactory implements IAdapterFactory {
 
 	private Object getAdapter(Object adaptableObject) {
 		for (int i = 0; i < classes.length; i++) {
-			Class clazz = classes[i];
+			Class<?> clazz = classes[i];
 			if (clazz.isInstance(adaptableObject)) {
 				return adapters[i];
 			}
@@ -103,13 +101,13 @@ public class ConfigurationAdapterFactory implements IAdapterFactory {
 		return null;
 	}
 
-	public Class[] getAdapterList() {
-		return new Class[] { IDeferredWorkbenchAdapter.class, IWorkbenchAdapter.class, IPropertySource.class, IPropertySource2.class };
+	public Class<?>[] getAdapterList() {
+		return new Class<?>[] { IDeferredWorkbenchAdapter.class, IWorkbenchAdapter.class, IPropertySource.class, IPropertySource2.class };
 	}
 
 	public void registerAdapters(IAdapterManager adapterManager) {
 		for (int i = 0; i < classes.length; i++) {
-			Class clazz = classes[i];
+			Class<?> clazz = classes[i];
 			adapterManager.registerAdapters(this, clazz);
 		}		
 	}

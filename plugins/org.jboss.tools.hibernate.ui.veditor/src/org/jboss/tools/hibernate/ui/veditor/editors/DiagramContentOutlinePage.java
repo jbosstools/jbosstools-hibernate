@@ -11,24 +11,31 @@
 package org.jboss.tools.hibernate.ui.veditor.editors;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.parts.*;
-import org.eclipse.gef.*;
+import org.eclipse.draw2d.LightweightSystem;
+import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.Viewport;
+import org.eclipse.draw2d.parts.ScrollableThumbnail;
+import org.eclipse.draw2d.parts.Thumbnail;
+import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.LayerConstants;
+import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
-import org.eclipse.gef.ui.parts.*;
+import org.eclipse.gef.ui.parts.ContentOutlinePage;
+import org.eclipse.gef.ui.parts.SelectionSynchronizer;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.PageBook;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
@@ -186,6 +193,7 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 	/**
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
 	 */
+	@SuppressWarnings("unchecked")
 	public Object getAdapter(Class type) {
 		if (type == ZoomManager.class) {
 			return ((ScalableFreeformRootEditPart) getGraphicalViewer()
@@ -215,9 +223,6 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 	protected void initializeOutlineViewer() {
 		setContents(getOrmDiagram());
 	}
-
-	
-	private DisposeListener disposeListener;
 
 	/**
 	 * 
@@ -271,7 +276,7 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 		getSelectionSynchronizer().removeViewer(getViewer());
 	}
 	
-	Set listeners = new HashSet();
+	Set<ISelectionChangedListener> listeners = new HashSet<ISelectionChangedListener>();
 
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
 		super.addSelectionChangedListener(listener);
@@ -283,9 +288,7 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 	}
 	
 	void replaceSelectionChangedListeners(GraphicalViewer graphicalViewer) {
-		Iterator it = listeners.iterator();
-		while(it.hasNext()) {
-			ISelectionChangedListener l = (ISelectionChangedListener)it.next();
+		for (ISelectionChangedListener l : listeners) {
 			getViewer().removeSelectionChangedListener(l);
 			graphicalViewer.addSelectionChangedListener(l);
 		}

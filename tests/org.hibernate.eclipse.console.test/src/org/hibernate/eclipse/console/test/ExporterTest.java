@@ -13,7 +13,7 @@ import org.hibernate.eclipse.launch.ExporterFactoryPropertySource;
 
 public class ExporterTest extends TestCase {
 
-	private HashMap map;
+	private HashMap<String, ExporterProperty> map;
 	private ExporterFactory factory;
 	private ExporterDefinition definition;
 	
@@ -21,7 +21,7 @@ public class ExporterTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		
-		map = new HashMap();
+		map = new HashMap<String, ExporterProperty>();
 		map.put("ejb3", new ExporterProperty("ejb3", "Use ejb3 syntax", "true", true)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		definition = new ExporterDefinition("exporterClass",  //$NON-NLS-1$
 								"exporterDescription", //$NON-NLS-1$
@@ -35,12 +35,12 @@ public class ExporterTest extends TestCase {
 	}
 	public void testExporters() {
 		
-		Map properties = definition.getExporterProperties();
+		Map<String, ExporterProperty> properties = definition.getExporterProperties();
 		
 		assertEquals(properties, map);
 		
 		
-		Map defaultProperties = factory.getDefaultExporterProperties();
+		Map<String, ExporterProperty> defaultProperties = factory.getDefaultExporterProperties();
 		assertEquals(defaultProperties, map);
 		
 		

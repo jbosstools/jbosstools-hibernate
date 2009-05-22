@@ -31,6 +31,7 @@ public class AdaptableWrapper implements IAdaptable {
 		this.element = element;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Object getAdapter(Class adapter) {
 		if(adapter.isInstance(element)) {
 			return element;

@@ -39,6 +39,7 @@ import org.apache.log4j.spi.LoggerRepository;
 import org.apache.log4j.spi.RepositorySelector;
 import org.apache.log4j.spi.RootLogger;
 import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.ILogListener;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Plugin;
 
@@ -52,7 +53,7 @@ public class PluginLogManager {
 	private ILog log;
 	private IPath stateLocation;
 	private Hierarchy hierarchy;
-	private HashMap hookedPlugins = new HashMap();
+	private HashMap<String, ILogListener> hookedPlugins = new HashMap<String, ILogListener>();
 	private LoggingHelper helper; 
 	
 	private class PluginEventListener implements HierarchyEventListener {
@@ -230,9 +231,9 @@ public class PluginLogManager {
 	 */
 	void internalShutdown() {
 		synchronized(this.hookedPlugins) {
-			Iterator it = this.hookedPlugins.keySet().iterator();
+			Iterator<String> it = this.hookedPlugins.keySet().iterator();
 			while (it.hasNext()) {
-				String id = (String) it.next(); 
+				String id = it.next(); 
 				PluginLogListener listener = (PluginLogListener) this.hookedPlugins.get(id);
 				listener.dispose(); 
 			}

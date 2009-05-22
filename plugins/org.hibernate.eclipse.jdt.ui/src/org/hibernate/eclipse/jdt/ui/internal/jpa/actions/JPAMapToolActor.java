@@ -201,6 +201,7 @@ public class JPAMapToolActor {
 	/**
 	 * update compilation unit of currently opened editor 
 	 */
+	@SuppressWarnings("restriction")
 	public void updateOpen() {
 		IWorkbenchWindow activeWorkbenchWindow = getActiveWorkbenchWindow();
 		if (activeWorkbenchWindow == null) {
@@ -250,7 +251,7 @@ public class JPAMapToolActor {
 		else if (selection instanceof TreeSelection) {
 			TreeSelection treeSelection = (TreeSelection)selection;
 			res = treeSelection.size();
-			Iterator it = treeSelection.iterator();
+			Iterator<?> it = treeSelection.iterator();
 			while (it.hasNext()) {
 				Object obj = it.next();
 				if (excludeElement(obj)) {
@@ -264,6 +265,7 @@ public class JPAMapToolActor {
 	/**
 	 * @param sel - current selected workspace element for processing
 	 */
+	@SuppressWarnings("restriction")
 	synchronized private void updateSelectedItems(ISelection sel) {
 		//System.out.println("Blah! " + selection); //$NON-NLS-1$
 		if (sel instanceof TextSelection) {
@@ -271,7 +273,7 @@ public class JPAMapToolActor {
 			IDocument fDocument = null;
 			SynchronizableDocument sDocument = null;
 			org.eclipse.jdt.core.dom.CompilationUnit resultCU = null;
-			Class clazz = sel.getClass();
+			Class<?> clazz = sel.getClass();
 			Field fd = null;
 			try {
 				fd = clazz.getDeclaredField("fDocument"); //$NON-NLS-1$
@@ -324,7 +326,7 @@ public class JPAMapToolActor {
 		else if (sel instanceof TreeSelection) {
 			clearSelectionCU();
 			TreeSelection treeSelection = (TreeSelection)sel;
-			Iterator it = treeSelection.iterator();
+			Iterator<?> it = treeSelection.iterator();
 			while (it.hasNext()) {
 				Object obj = it.next();
 				processJavaElements(obj);
@@ -341,6 +343,7 @@ public class JPAMapToolActor {
 	 * @param obj
 	 * @return exclusion result
 	 */
+	@SuppressWarnings("restriction")
 	protected boolean excludeElement(Object obj) {
 		boolean res = false;
 		if (obj instanceof JarPackageFragmentRoot) {
@@ -369,6 +372,7 @@ public class JPAMapToolActor {
 	 * Process object - java element to collect all it's children CompilationUnits
 	 * @param obj
 	 */
+	@SuppressWarnings("restriction")
 	protected void processJavaElements(Object obj) {
 		if (obj instanceof ICompilationUnit) {
 			ICompilationUnit cu = (ICompilationUnit)obj;
@@ -376,7 +380,7 @@ public class JPAMapToolActor {
 		}
 		else if (obj instanceof File) {
 			File file = (File)obj;
-			if (file != null && file.getProject() != null) {
+			if (file.getProject() != null) {
 				IJavaProject javaProject = JavaCore.create(file.getProject());
 				ICompilationUnit[] cus = Utils.findCompilationUnits(javaProject,
 						file.getFullPath());
@@ -418,7 +422,6 @@ public class JPAMapToolActor {
 			}
 		}
 		else if (obj instanceof PackageFragmentRoot) {
-			PackageFragmentRoot packageFragmentRoot = (PackageFragmentRoot)obj;
 			JavaElement javaElement = (JavaElement)obj;
 			JavaElementInfo javaElementInfo = null;
 			try {
