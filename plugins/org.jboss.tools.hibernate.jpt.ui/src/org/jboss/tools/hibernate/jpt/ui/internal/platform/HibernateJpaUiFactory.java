@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.jpt.ui.internal.platform;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -17,12 +18,14 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateP
 import org.jboss.tools.hibernate.jpt.ui.internal.persistence.details.HibernatePropertiesComposite;
 import org.jboss.tools.hibernate.jpt.ui.xpl.PersistenceUnitGeneralComposite;
 
+@SuppressWarnings("restriction")
 public class HibernateJpaUiFactory extends GenericJpaUiFactory {
 
+	@SuppressWarnings("unchecked")
 	public ListIterator createPersistenceUnitComposites(
 			PropertyValueModel<PersistenceUnit> subjectHolder, Composite parent, WidgetFactory widgetFactory) {
 
-		ArrayList<JpaPageComposite> pages = new ArrayList<JpaPageComposite>(1);
+		List<JpaPageComposite> pages = new ArrayList<JpaPageComposite>(1);
 
 		//replaced from Dali 2.0
 		pages.add(new PersistenceUnitGeneralComposite(subjectHolder, parent, widgetFactory));

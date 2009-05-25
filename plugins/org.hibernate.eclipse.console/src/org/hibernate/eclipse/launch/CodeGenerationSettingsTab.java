@@ -65,6 +65,7 @@ import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.wizards.NewReverseEngineeringFileWizard;
 
+@SuppressWarnings("restriction")
 public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 
 	private ComboDialogField consoleConfigurationName;

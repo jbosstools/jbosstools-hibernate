@@ -5,13 +5,11 @@ import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
 import org.eclipse.jpt.core.JpaValidation;
-import org.eclipse.jpt.core.JpaValidation.Supported;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
-import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
-import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatformProvider;
 
+@SuppressWarnings("restriction")
 public class HibernateJpaPlatformFactory implements JpaPlatformFactory {
 
 	/**

@@ -7,6 +7,7 @@ import org.eclipse.jpt.core.internal.platform.AbstractJpaAnnotationDefintionProv
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGeneratorAnnotationImpl.GenericGeneratorAnnotationDefinition;
 
+@SuppressWarnings("restriction")
 public class HibernateJpaAnnotationDefinitionProvider extends AbstractJpaAnnotationDefintionProvider
 {	
 	// singleton

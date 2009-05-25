@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @author Dmitry Geraskov
  * 
  */
+@SuppressWarnings("restriction")
 public class JavaGenericGeneratorImpl extends AbstractJavaGenerator 
 											implements JavaGenericGenerator {
 	

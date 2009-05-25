@@ -29,7 +29,6 @@ import org.eclipse.jdt.internal.ui.wizards.dialogfields.IStringButtonAdapter;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.StringButtonDialogField;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -49,13 +48,13 @@ import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.DriverClassHelpers;
 import org.hibernate.tool.hbm2x.StringUtils;
 import org.hibernate.util.StringHelper;
-import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
 
 /**
  * @author Dmitry Geraskov
  *
  */
+@SuppressWarnings("restriction")
 public abstract class GenerateInitWizardPage extends WizardPage {
 	
 	private static final String AUTODETECT = Messages.GenerateInitWizardPage_autodetect;

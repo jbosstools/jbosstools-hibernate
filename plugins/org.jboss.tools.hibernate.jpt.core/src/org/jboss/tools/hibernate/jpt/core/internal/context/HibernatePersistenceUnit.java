@@ -41,6 +41,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGenerator
  * @author Dmitry Geraskov
  *
  */
+@SuppressWarnings("restriction")
 public class HibernatePersistenceUnit extends GenericPersistenceUnit 
 	implements Messages, Hibernate {
 	

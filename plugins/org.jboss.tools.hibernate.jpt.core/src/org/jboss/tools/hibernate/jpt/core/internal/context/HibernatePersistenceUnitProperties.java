@@ -24,6 +24,7 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
  * @author Dmitry Geraskov
  *
  */
+@SuppressWarnings("restriction")
 public abstract class  HibernatePersistenceUnitProperties extends AbstractModel implements PersistenceUnitProperties {
 
 	private PersistenceUnit persistenceUnit;

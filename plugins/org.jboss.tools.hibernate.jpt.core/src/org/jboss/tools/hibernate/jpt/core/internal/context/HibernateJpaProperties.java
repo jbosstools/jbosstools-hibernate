@@ -29,6 +29,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.HibernateBasic;
  * @author Dmitry Geraskov
  *
  */
+@SuppressWarnings("restriction")
 public class HibernateJpaProperties extends AbstractModel implements
 		HibernateProperties {
 	
