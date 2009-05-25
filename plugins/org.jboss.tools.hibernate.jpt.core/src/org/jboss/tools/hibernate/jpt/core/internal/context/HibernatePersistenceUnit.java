@@ -12,30 +12,19 @@ package org.jboss.tools.hibernate.jpt.core.internal.context;
 
 import java.io.File;
 import java.util.List;
-import java.util.ListIterator;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
-import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGeneratorAnnotation;
 
 /**
  * @author Dmitry Geraskov
@@ -54,7 +43,6 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 	public HibernatePersistenceUnit(Persistence parent,
 			XmlPersistenceUnit persistenceUnit) {
 		super(parent, persistenceUnit);
-		updateGenericGenerators();
 		this.hibernateProperties = new HibernateJpaProperties(this);
 	}
 
@@ -96,52 +84,6 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 		    }
 		}
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnit#update(org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit)
-	 */
-	@Override
-	public void update(XmlPersistenceUnit persistenceUnit) {
-		super.update(persistenceUnit);
-		updateGenericGenerators();
-		this.fireListChanged(GENERATORS_LIST);
-	}
-	
-	
-	protected void updateGenericGenerators(){
-		JpaProject project = getJpaProject();
-		
-		for (ClassRef classRef : CollectionTools.iterable(classRefs())) {			
-			String annotClass = classRef.getClassName();
-			JavaPersistentType type = classRef.getJavaPersistentType();
-			JavaResourcePersistentType jrpt = project.getJavaResourcePersistentType(annotClass);
-			if (jrpt != null){
-				GenericGeneratorAnnotation annotation = null;
-				JavaResourceNode jrn = jrpt.getSupportingAnnotation(GENERIC_GENERATOR);
-				if (jrn instanceof GenericGeneratorAnnotation) {
-					annotation = (GenericGeneratorAnnotation)jrn;
-				}
-				if (annotation != null) {
-					addGenerator(((HibernateJpaFactory)getJpaFactory()).buildJavaGenericGenerator(type));
-				}				
-				ListIterator<JavaPersistentAttribute> typeAttrs = type.attributes();
-				for (JavaPersistentAttribute persAttr : CollectionTools.iterable(typeAttrs)) {
-					if (persAttr.getSpecifiedMapping() == null) {
-						continue;
-					}
-					JavaResourcePersistentAttribute jrpa = persAttr.getResourcePersistentAttribute();
-					jrn = jrpa.getSupportingAnnotation(GENERIC_GENERATOR);
-					if (jrn instanceof GenericGeneratorAnnotation) {
-						annotation = (GenericGeneratorAnnotation)jrn;
-					}
-					if (annotation != null) {
-						addGenerator(((HibernateJpaFactory)getJpaFactory()).buildJavaGenericGenerator(type));
-					}
-				}				
-			}			
-		}
-	}
-
 
 	/**
 	 * Hack class needed to make JPA/Validation API pick up our classloader instead of its own.

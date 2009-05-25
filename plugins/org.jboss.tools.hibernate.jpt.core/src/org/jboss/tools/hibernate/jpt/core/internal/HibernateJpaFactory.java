@@ -11,7 +11,9 @@
 package org.jboss.tools.hibernate.jpt.core.internal;
 
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -19,6 +21,7 @@ import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGeneratorImpl;
 
@@ -38,6 +41,14 @@ public class HibernateJpaFactory extends GenericJpaFactory {
 	@Override
 	public JavaEntity buildJavaEntity(JavaPersistentType parent) {
 		return new HibernateJavaEntity(parent);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jpt.core.internal.platform.GenericJpaFactory#buildJavaIdMapping(org.eclipse.jpt.core.context.java.JavaPersistentAttribute)
+	 */
+	@Override
+	public JavaIdMapping buildJavaIdMapping(JavaPersistentAttribute parent) {
+		return new HibernateJavaIdMapping(parent);
 	}
 	
 	public JavaGenericGenerator buildJavaGenericGenerator(JavaJpaContextNode parent) {

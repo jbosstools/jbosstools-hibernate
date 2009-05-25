@@ -62,7 +62,7 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 		this.setSpecifiedInitialValue_(generator.getInitialValue());
 		this.setSpecifiedAllocationSize_(generator.getAllocationSize());
 		this.setSpecifiedStrategy_(generator.getStrategy());
-		//getPersistenceUnit().addGenerator(this);		
+		this.getPersistenceUnit().addGenerator(this);		
 	}
 	
 	public void setName(String name) {

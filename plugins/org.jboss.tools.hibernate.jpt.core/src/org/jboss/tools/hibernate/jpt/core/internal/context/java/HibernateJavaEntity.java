@@ -16,7 +16,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaGenerator;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.context.java.AbstractJavaEntity;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaEntity;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -28,7 +28,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
  * 
  */
 @SuppressWarnings("restriction")
-public class HibernateJavaEntity extends AbstractJavaEntity implements GenericGeneratorHolder {
+public class HibernateJavaEntity extends GenericJavaEntity implements GenericGeneratorHolder {
 
 	protected JavaGenericGenerator genericGenerator;
 	
