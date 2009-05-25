@@ -195,15 +195,21 @@ public class HibernateConsoleMessages extends NLS {
 	public static String NewHibernateMappingElementsSelectionPage_select;
 
 	public static String NewHibernateMappingFilePage_browse;
+	public static String NewHibernateMappingFilePage_class_name_column;
+
 	public static String NewHibernateMappingFilePage_class_to_map;
 	public static String NewHibernateMappingFilePage_container;
 	public static String NewHibernateMappingFilePage_file_container_must_be_specified;
 	public static String NewHibernateMappingFilePage_file_container_must_exist;
 	public static String NewHibernateMappingFilePage_file_name;
+	public static String NewHibernateMappingFilePage_file_name_column;
 	public static String NewHibernateMappingFilePage_file_name_must_be_specified;
 	public static String NewHibernateMappingFilePage_file_name_must_be_valid;
 	public static String NewHibernateMappingFilePage_hibernate_xml_mapping_file;
 	public static String NewHibernateMappingFilePage_project_must_be_writable;
+
+	public static String NewHibernateMappingFilePage_project_name_column;
+
 	public static String NewHibernateMappingFilePage_select_class_to_map;
 	public static String NewHibernateMappingFilePage_select_new_file_container;
 	public static String NewHibernateMappingFilePage_the_class_will_be_used_when;

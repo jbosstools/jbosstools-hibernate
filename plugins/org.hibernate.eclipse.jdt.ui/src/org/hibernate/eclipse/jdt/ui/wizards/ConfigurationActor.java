@@ -420,12 +420,12 @@ class TypeVisitor extends ASTVisitor{
 
 	@Override
 	public boolean visit(ParameterizedType type) {
-		Assert.isNotNull(type, "Type object cannot be null");
-		Assert.isNotNull(entityInfo, "EntityInfo object cannot be null");
+		Assert.isNotNull(type, "Type object cannot be null"); //$NON-NLS-1$
+		Assert.isNotNull(entityInfo, "EntityInfo object cannot be null"); //$NON-NLS-1$
 		ITypeBinding tb = type.resolveBinding();
-		Assert.isNotNull(tb, "Type binding not resolved.");
+		Assert.isNotNull(tb, "Type binding not resolved."); //$NON-NLS-1$
 		rootClass = rootClasses.get(entityInfo.getFullyQualifiedName());
-		Assert.isNotNull(rootClass, "RootClass not found.");
+		Assert.isNotNull(rootClass, "RootClass not found."); //$NON-NLS-1$
 		
 		Value value = null;
 		if (ref != null && rootClasses.get(ref.fullyQualifiedName) != null){
@@ -491,7 +491,7 @@ class TypeVisitor extends ASTVisitor{
 			} else if (value instanceof org.hibernate.mapping.Map){
 				SimpleValue map_key = new SimpleValue();
 				//FIXME: how to detect key-type here
-				map_key.setTypeName("String");
+				map_key.setTypeName("String"); //$NON-NLS-1$
 				((IndexedCollection)value).setIndex(map_key);
 			}
 			prop.setCascade("none");//$NON-NLS-1$

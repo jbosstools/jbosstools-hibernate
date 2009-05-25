@@ -93,22 +93,22 @@ public class NewHibernateMappingFilePage extends WizardPage {
 	private void createTableColumns(Table table){
 		int coulmnIndex = 0;
 		TableColumn column =  new TableColumn(table, SWT.CENTER, coulmnIndex++);
-		column.setText("!");
+		column.setText("!"); //$NON-NLS-1$
 		column.setWidth(20);
 		column.setResizable(false);
 
 		//if (project_infos.keySet().size() > 1){
 		column = new TableColumn(table, SWT.LEFT, coulmnIndex++);
-		column.setText("Project name");
+		column.setText(HibernateConsoleMessages.NewHibernateMappingFilePage_project_name_column);
 		column.setWidth(120);
 		//}
 
 		column = new TableColumn(table, SWT.LEFT, coulmnIndex++);
-		column.setText("Class name");
+		column.setText(HibernateConsoleMessages.NewHibernateMappingFilePage_class_name_column);
 		column.setWidth(150);
 
 		column = new TableColumn(table, SWT.LEFT, coulmnIndex++);
-		column.setText("File name");
+		column.setText(HibernateConsoleMessages.NewHibernateMappingFilePage_file_name_column);
 		column.setWidth(150);
 	}
 
@@ -143,7 +143,7 @@ public class NewHibernateMappingFilePage extends WizardPage {
 		public Boolean isCreate = true;
 
 		public TableLine(String projectName, String className){
-			this(projectName, className, className + ".hbm.xml",true);
+			this(projectName, className, className + ".hbm.xml",true); //$NON-NLS-1$
 		}
 
 		public TableLine(String projectName, String className, String fileName, boolean isCreate){
@@ -233,13 +233,13 @@ public class NewHibernateMappingFilePage extends WizardPage {
 		}
 
 		public Object getValue(Object element, String property) {
-			if (Columns.CLASS.toString().equals(property)){//$NON-NLS-1$
+			if (Columns.CLASS.toString().equals(property)){
 				return ((TableLine)element).className;
-			} else if (Columns.PROJECT.toString().equals(property)){//$NON-NLS-1$
+			} else if (Columns.PROJECT.toString().equals(property)){
 				return ((TableLine)element).projectName;
-			} else if (Columns.FILE.toString().equals(property)){//$NON-NLS-1$
+			} else if (Columns.FILE.toString().equals(property)){
 				return ((TableLine)element).fileName;
-			} else if (Columns.CREATE.toString().equals(property)){//$NON-NLS-1$
+			} else if (Columns.CREATE.toString().equals(property)){
 				return ((TableLine)element).isCreate;
 			}
 			return null;
