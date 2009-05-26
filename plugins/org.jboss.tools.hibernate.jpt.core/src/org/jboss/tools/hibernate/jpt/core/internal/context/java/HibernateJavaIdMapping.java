@@ -24,7 +24,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
  * @author Dmitry Geraskov
  *
  */
-@SuppressWarnings("restriction")
 public class HibernateJavaIdMapping extends GenericJavaIdMapping 
 implements GenericGeneratorHolder {
 	
