@@ -21,18 +21,27 @@
  */
 package org.hibernate.eclipse.console.utils;
 
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.internal.resources.File;
+import org.eclipse.core.internal.resources.ICoreConstants;
+import org.eclipse.core.internal.resources.ResourceInfo;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -53,6 +62,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
@@ -61,6 +71,7 @@ import org.hibernate.util.StringHelper;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
+@SuppressWarnings("restriction")
 public class ProjectUtils {
 
 	private ProjectUtils() {
@@ -169,39 +180,146 @@ public class ProjectUtils {
 		return null;
 	}
 
-	static public IJavaProject findJavaProject(String name) {
-		if(StringHelper.isEmpty( name )) {
+
+	/**
+	 * Returns a handle to the project resource with the given name
+	 * which is a child of workspace. 
+	 * @param name - java project name
+	 * @return a handle to the project resource
+	 */
+	public static IProject findProject(String name) {
+		if (StringHelper.isEmpty(name)) {
 			return null;
 		}
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IProject project = null;
-		project = root.getProject(name);
-		if (project != null) {
-			return JavaCore.create(project);
-		} else {
-			return null;
-		}
+		IProject project = root.getProject(name);
+		return project;
 	}
 
-	public static IJavaProject findJavaProject(ConsoleConfiguration consoleConfiguration) {
-		IJavaProject proj = null;
+	/**
+	 * Returns the created Java project corresponding to the given name.
+	 * @param name - java project name
+	 * @return a Java project
+	 */
+	public static IJavaProject findJavaProject(String name) {
+		IProject project = findProject(name);
+		if (project != null) {
+			return JavaCore.create(project);
+		}
+		return null;
+	}
+
+	/**
+	 * Returns a handle to the project resource corresponding to 
+	 * the given console configuration name.
+	 * @param consoleConfiguration
+	 * @return a handle to the project resource
+	 */
+	public static IProject findProject(ConsoleConfiguration consoleConfiguration) {
+		IProject res = null;
 		if (consoleConfiguration != null) {
 			ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 			ILaunchConfigurationType launchConfigurationType = launchManager.getLaunchConfigurationType( ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID );
-			ILaunchConfiguration[] launchConfigurations;
 			try {
-				launchConfigurations = launchManager.getLaunchConfigurations( launchConfigurationType );
-				for (int i = 0; i < launchConfigurations.length; i++) { // can't believe there is no look up by name API
+				ILaunchConfiguration[] launchConfigurations = 
+					launchManager.getLaunchConfigurations( launchConfigurationType );
+				// can't believe there is no look up by name API
+				for (int i = 0; i < launchConfigurations.length && res == null; i++) {
 					ILaunchConfiguration launchConfiguration = launchConfigurations[i];
-					if(launchConfiguration.getName().equals(consoleConfiguration.getName())) {
-						proj = ProjectUtils.findJavaProject(launchConfiguration.getAttribute(IConsoleConfigurationLaunchConstants.PROJECT_NAME, "")); //$NON-NLS-1$
+					if (launchConfiguration.getName().equals(consoleConfiguration.getName())) {
+						String projName = launchConfiguration.getAttribute(
+								IConsoleConfigurationLaunchConstants.PROJECT_NAME, ""); //$NON-NLS-1$
+						res = findProject(projName);
 					}
 				}
 			} catch (CoreException e1) {
 				HibernateConsolePlugin.getDefault().log(e1);
 			}
 		}
-		return proj;
+		return res;
+	}
+
+	/**
+	 * Returns the created Java project corresponding to 
+	 * the given console configuration name.
+	 * @param consoleConfiguration
+	 * @return a Java project
+	 */
+	public static IJavaProject findJavaProject(ConsoleConfiguration consoleConfiguration) {
+		IProject project = findProject(consoleConfiguration);
+		if (project != null) {
+			return JavaCore.create(project);
+		}
+		return null;
+	}
+
+	/**
+	 * Checks is file, folder or project exist.
+	 * @param file
+	 * @return true if a resource exist
+	 */
+	public static boolean exists(IFile f) {
+		if (!(f instanceof File)) {
+			return false;
+		}
+		File file = (File)f;
+		ResourceInfo info = file.getResourceInfo(false, false);
+		int flags = file.getFlags(info);
+		if (flags != ICoreConstants.NULL_FLAG) {
+			int type = ResourceInfo.getType(flags);
+			if (type == IResource.FILE || type == IResource.FOLDER || type == IResource.PROJECT) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private static boolean updateCollection(ArrayList<IProject> projects, IProject project) {
+		if (project == null) {
+			return false;
+		}
+		for (Iterator<IProject> it = projects.iterator(); it.hasNext();) {
+			if (project.equals(it.next())) {
+				return false;
+			}
+		}
+		projects.add(project);
+		return true;
+	}
+	
+	/**
+	 * Returns the created Java projects corresponding to  
+	 * the given console configuration (classpath & console configuration name).
+	 * Projects are listed in priority order, sequence is important.
+	 * 
+	 * @param consoleConfiguration
+	 * @return a list of Java projects in order
+	 */
+	public static IJavaProject[] findJavaProjects(ConsoleConfiguration consoleConfiguration) {
+		ConsoleConfigurationPreferences ccp = consoleConfiguration.getPreferences();
+		URL[] classPathURLs = new URL[0];
+		if (ccp != null) {
+			classPathURLs = ccp.getCustomClassPathURLS();
+		}
+		ArrayList<IProject> projects = new ArrayList<IProject>();
+		IFile file = null;
+		for (int i = 0; i < classPathURLs.length; i++) {
+			IPath path = Path.fromOSString(classPathURLs[i].getFile());
+			file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+			if (file == null || !exists(file)) {
+				file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(path);
+			}
+			if (file != null && exists(file)) {
+				updateCollection(projects, file.getProject());
+			}
+		}
+		// insert this in last place
+		updateCollection(projects, findProject(consoleConfiguration));
+		ArrayList<IJavaProject> res = new ArrayList<IJavaProject>();
+		for (Iterator<IProject> it = projects.iterator(); it.hasNext();) {
+			res.add(JavaCore.create(it.next()));
+		}
+		return res.toArray(new IJavaProject[0]);
 	}
 	
 	static public org.eclipse.jdt.core.dom.CompilationUnit getCompilationUnit(

@@ -29,19 +29,10 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.dom.AST;
-import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.ITypeBinding;
-import org.eclipse.jdt.core.dom.Type;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
-import org.eclipse.jdt.internal.core.JarPackageFragmentRoot;
 import org.eclipse.jdt.internal.core.PackageFragmentRoot;
-import org.eclipse.jdt.internal.core.SourceType;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.FindReplaceDocumentAdapter;
 import org.eclipse.jface.text.IDocument;
@@ -83,6 +74,7 @@ import org.xml.sax.InputSource;
  * @author Dmitry Geraskov
  * @author Vitali Yemialyanchyk
  */
+@SuppressWarnings("restriction")
 public class OpenMappingUtils {
 	
 	public static final String HIBERNATE_TAG_CLASS = "class";                       //$NON-NLS-1$
@@ -137,36 +129,36 @@ public class OpenMappingUtils {
 	}
 
 	/**
-	 * Check has consoleConfiguration config.xml file a mapping class for provided rootClass.
-	 * @param consoleConfiguration
+	 * Check has consoleConfig config.xml file a mapping class for provided rootClass.
+	 * @param consoleConfig
 	 * @param rootClass
 	 * @return
 	 */
-	public static boolean hasConfigXMLMappingClassAnnotation(ConsoleConfiguration consoleConfiguration, PersistentClass rootClass) {
-		java.io.File configXMLFile = consoleConfiguration.getPreferences().getConfigXMLFile();
+	public static boolean hasConfigXMLMappingClassAnnotation(ConsoleConfiguration consoleConfig, PersistentClass rootClass) {
+		java.io.File configXMLFile = consoleConfig.getPreferences().getConfigXMLFile();
 		if (configXMLFile == null) {
 			return true;
 		}
-		EntityResolver entityResolver = consoleConfiguration.getConfiguration().getEntityResolver(); 
+		EntityResolver entityResolver = consoleConfig.getConfiguration().getEntityResolver(); 
 		Document doc = getDocument(configXMLFile, entityResolver);
 		return getElements(doc, HIBERNATE_TAG_MAPPING, HIBERNATE_TAG_CLASS, getPersistentClassName(rootClass)).hasNext();
 	}
 
 	/**
 	 * Check has this particular element correspondence in the file.
-	 * @param consoleConfiguration
+	 * @param consoleConfig
 	 * @param file
 	 * @param element
 	 * @return
 	 */
-	public static boolean elementInFile(ConsoleConfiguration consoleConfiguration, IFile file, Object element) {
+	public static boolean elementInFile(ConsoleConfiguration consoleConfig, IFile file, Object element) {
 		boolean res = false;
 		if (element instanceof RootClass) {
-			res = rootClassInFile(consoleConfiguration, file, (RootClass)element);
+			res = rootClassInFile(consoleConfig, file, (RootClass)element);
 		} else if (element instanceof Subclass) {
-			res = subclassInFile(consoleConfiguration, file, (Subclass)element);
+			res = subclassInFile(consoleConfig, file, (Subclass)element);
 		} else if (element instanceof Table) {
-			res = tableInFile(consoleConfiguration, file, (Table)element);
+			res = tableInFile(consoleConfig, file, (Table)element);
 		}
 		return res;
 	}
@@ -180,13 +172,13 @@ public class OpenMappingUtils {
 
 	/**
 	 * Check has this particular rootClass correspondence in the file.
-	 * @param consoleConfiguration
+	 * @param consoleConfig
 	 * @param file
 	 * @param rootClass
 	 * @return
 	 */
-	public static boolean rootClassInFile(ConsoleConfiguration consoleConfiguration, IFile file, RootClass rootClass) {
-		EntityResolver entityResolver = consoleConfiguration.getConfiguration().getEntityResolver(); 
+	public static boolean rootClassInFile(ConsoleConfiguration consoleConfig, IFile file, RootClass rootClass) {
+		EntityResolver entityResolver = consoleConfig.getConfiguration().getEntityResolver(); 
 		Document doc = getDocument(file.getLocation().toFile(), entityResolver);
 		final String clName = getPersistentClassName(rootClass);
 		final String clNameUnq = StringHelper.unqualify(clName);
@@ -214,13 +206,13 @@ public class OpenMappingUtils {
 
 	/**
 	 * Check has this particular subclass correspondence in the file.
-	 * @param consoleConfiguration
+	 * @param consoleConfig
 	 * @param file
 	 * @param subclass
 	 * @return
 	 */
-	public static boolean subclassInFile(ConsoleConfiguration consoleConfiguration, IFile file, Subclass subclass) {
-		EntityResolver entityResolver = consoleConfiguration.getConfiguration().getEntityResolver(); 
+	public static boolean subclassInFile(ConsoleConfiguration consoleConfig, IFile file, Subclass subclass) {
+		EntityResolver entityResolver = consoleConfig.getConfiguration().getEntityResolver(); 
 		Document doc = getDocument(file.getLocation().toFile(), entityResolver);
 		final String clName = getPersistentClassName(subclass);
 		final String clNameUnq = StringHelper.unqualify(clName);
@@ -237,13 +229,13 @@ public class OpenMappingUtils {
 
 	/**
 	 * Check has this particular table correspondence in the file.
-	 * @param consoleConfiguration
+	 * @param consoleConfig
 	 * @param file
 	 * @param table
 	 * @return
 	 */
-	public static boolean tableInFile(ConsoleConfiguration consoleConfiguration, IFile file, Table table) {
-		EntityResolver entityResolver = consoleConfiguration.getConfiguration().getEntityResolver(); 
+	public static boolean tableInFile(ConsoleConfiguration consoleConfig, IFile file, Table table) {
+		EntityResolver entityResolver = consoleConfig.getConfiguration().getEntityResolver(); 
 		Document doc = getDocument(file.getLocation().toFile(), entityResolver);
 		Iterator<Element> classes = getElements(doc, HIBERNATE_TAG_CLASS);
 		boolean res = false;
@@ -272,7 +264,7 @@ public class OpenMappingUtils {
 				classNameAttr = element.attribute(HIBERNATE_TAG_ENTITY_NAME);
 			}
 			if (classNameAttr != null) {
-				String physicalTableName = consoleConfiguration.getConfiguration().getNamingStrategy().classToTableName(classNameAttr.getValue());
+				String physicalTableName = consoleConfig.getConfiguration().getNamingStrategy().classToTableName(classNameAttr.getValue());
 				if (table.getName().equals(physicalTableName)) {
 					res = true;
 					break;
@@ -386,57 +378,74 @@ public class OpenMappingUtils {
 		}
 		return doc;
 	}
+	
+	public static PackageFragmentRoot[] getCCPackageFragmentRoots(ConsoleConfiguration consoleConfiguration) {
+		IJavaProject[] projs = ProjectUtils.findJavaProjects(consoleConfiguration);
+		ArrayList<PackageFragmentRoot> res = new ArrayList<PackageFragmentRoot>(); 
+		try {
+			for (int i = 0; i < projs.length; i++) {
+				IPackageFragmentRoot[] pfrs = projs[i].getAllPackageFragmentRoots();
+				for (int j = 0; j < pfrs.length; j++) {
+					if (pfrs[j].getClass() != PackageFragmentRoot.class) {
+						continue;
+					}
+					res.add((PackageFragmentRoot)pfrs[j]);
+				}
+			}
+		} catch (JavaModelException e) {
+			HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenFileActionUtils_problems_while_get_project_package_fragment_roots, e);
+		}
+		return res.toArray(new PackageFragmentRoot[0]);
+	}
 
 	/**
 	 * Trying to find hibernate console config mapping file,
 	 * which is corresponding to provided element.
 	 *   
-	 * @param consoleConfiguration
-	 * @param proj
+	 * @param consoleConfig
 	 * @param element
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static IFile searchInMappingFiles(ConsoleConfiguration consoleConfiguration, IJavaProject proj, Object element) {
+	public static IFile searchInMappingFiles(ConsoleConfiguration consoleConfig, Object element) {
 		IFile file = null;
-    	if (consoleConfiguration == null) {
+    	if (consoleConfig == null) {
         	return file;
     	}
-		java.io.File configXMLFile = consoleConfiguration.getPreferences().getConfigXMLFile();
-		EntityResolver entityResolver = consoleConfiguration.getConfiguration().getEntityResolver(); 
+		java.io.File configXMLFile = consoleConfig.getPreferences().getConfigXMLFile();
+		EntityResolver entityResolver = consoleConfig.getConfiguration().getEntityResolver(); 
 		Document doc = getDocument(configXMLFile, entityResolver);
 		if (doc == null) {
         	return file;
 		}
-		IPackageFragmentRoot[] packageFragmentRoots = new IPackageFragmentRoot[0]; 
-		try {
-			if (proj != null) {
-				packageFragmentRoots = proj.getAllPackageFragmentRoots();
-			}
-		} catch (JavaModelException e) {
-			HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenFileActionUtils_problems_while_get_project_package_fragment_roots, e);
+		//
+		PackageFragmentRoot[] packageFragments = getCCPackageFragmentRoots(consoleConfig);
+		//
+		ArrayList<IPath> paths = new ArrayList<IPath>(); 
+		for (int i = 0; i < packageFragments.length; i++) {
+			paths.add(packageFragments[i].getPath());
 		}
-    	Element sfNode = doc.getRootElement().element(HIBERNATE_TAG_SESSION_FACTORY);
-		Iterator<Element> elements = sfNode.elements(HIBERNATE_TAG_MAPPING).iterator();
-		while (elements.hasNext() && file == null) {
-			Element subelement = elements.next();
-			Attribute resourceAttr = subelement.attribute(HIBERNATE_TAG_RESOURCE);
-			if (resourceAttr == null) {
-				continue;
-			}
-			for (int i = 0; i < packageFragmentRoots.length; i++) {
-				//search in source folders.
-				if (packageFragmentRoots[i].getClass() != PackageFragmentRoot.class) {
+		// last chance to find file is the same place as configXMLFile
+		paths.add(Path.fromOSString(configXMLFile.getParent()));
+		//
+		for (int i = 0; i < paths.size() && file == null; i++) {
+	    	Element sfNode = doc.getRootElement().element(HIBERNATE_TAG_SESSION_FACTORY);
+			Iterator<Element> elements = sfNode.elements(HIBERNATE_TAG_MAPPING).iterator();
+			while (elements.hasNext() && file == null) {
+				Element subelement = elements.next();
+				Attribute resourceAttr = subelement.attribute(HIBERNATE_TAG_RESOURCE);
+				if (resourceAttr == null) {
 					continue;
 				}
-				IPackageFragmentRoot packageFragmentRoot = packageFragmentRoots[i];
-				IPath path = packageFragmentRoot.getPath().append(resourceAttr.getValue());
+				IPath path = paths.get(i).append(resourceAttr.getValue());
 				file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
-				if (file == null) {
-					continue;
+				if (file == null || !file.exists()) {
+					file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(path);
 				}
-				if (file.exists() && elementInFile(consoleConfiguration, file, element)) {
-					break;
+				if (file != null && file.exists()) {
+					if (elementInFile(consoleConfig, file, element)) {
+						break;
+					}
 				}
 				file = null;
 			}
@@ -448,16 +457,16 @@ public class OpenMappingUtils {
 	 * Trying to find console configuration additional mapping file,
 	 * which is corresponding to provided element.
 	 *   
-	 * @param consoleConfiguration
+	 * @param consoleConfig
 	 * @param element
 	 * @return
 	 */
-	public static IFile searchInAdditionalMappingFiles(ConsoleConfiguration consoleConfiguration, Object element) {
+	public static IFile searchInAdditionalMappingFiles(ConsoleConfiguration consoleConfig, Object element) {
 		IFile file = null;
-    	if (consoleConfiguration == null) {
+    	if (consoleConfig == null) {
         	return file;
     	}
-    	java.io.File[] files = consoleConfiguration.getPreferences().getMappingFiles();
+    	java.io.File[] files = consoleConfig.getPreferences().getMappingFiles();
 		for (int i = 0; i < files.length; i++) {
 			java.io.File fileTmp = files[i];
 			if (fileTmp == null) {
@@ -467,7 +476,7 @@ public class OpenMappingUtils {
 			if (file == null) {
 				continue;
 			}
-			if (file.exists() && elementInFile(consoleConfiguration, file, element)) {
+			if (file.exists() && elementInFile(consoleConfig, file, element)) {
 				break;
 			}
 			file = null;
@@ -479,58 +488,68 @@ public class OpenMappingUtils {
 	 * Trying to find hibernate console config ejb3 mapping file,
 	 * which is corresponding to provided element.
 	 *   
-	 * @param consoleConfiguration
-	 * @param proj
+	 * @param consoleConfig
 	 * @param element
 	 * @return
 	 */
-	public static IFile searchInEjb3MappingFiles(ConsoleConfiguration consoleConfiguration, IJavaProject proj, Object element) {
+	@SuppressWarnings("unchecked")
+	public static IFile searchInEjb3MappingFiles(ConsoleConfiguration consoleConfig, Object element) {
 		IFile file = null;
-    	if (consoleConfiguration == null || proj == null) {
+    	if (consoleConfig == null) {
         	return file;
     	}
-		final ConsoleConfiguration cc2 = consoleConfiguration;
-		List<String> documentPaths = (List<String>)consoleConfiguration.getExecutionContext().execute(new ExecutionContext.Command() {
+		final ConsoleConfiguration cc2 = consoleConfig;
+		List<String> documentPaths = (List<String>)consoleConfig.getExecutionContext().execute(new ExecutionContext.Command() {
 			public Object execute() {
 				return OpenMappingUtilsEjb3.enumDocuments(cc2);
 			}
 		});
-		IPath projPath = proj.getPath();
-		IPath projFullPath = proj.getResource().getLocation();
-		IPath outPath = Path.EMPTY;
-		IPackageFragmentRoot[] packageFragmentRoots = new IPackageFragmentRoot[0]; 
+		IJavaProject[] projs = ProjectUtils.findJavaProjects(consoleConfig);
+		ArrayList<IPath> pathsSrc = new ArrayList<IPath>(); 
+		ArrayList<IPath> pathsOut = new ArrayList<IPath>(); 
+		ArrayList<IPath> pathsFull = new ArrayList<IPath>(); 
 		try {
-			outPath = proj.getOutputLocation();
-			packageFragmentRoots = proj.getPackageFragmentRoots();
+			for (int i = 0; i < projs.length; i++) {
+				IJavaProject proj = projs[i];
+				IPath projPath = proj.getPath();
+				IPath projPathFull = proj.getResource().getLocation();
+				IPath projPathOut = proj.getOutputLocation();
+				projPathOut = projPathOut.makeRelativeTo(projPath);
+				IPackageFragmentRoot[] pfrs = proj.getAllPackageFragmentRoots();
+				for (int j = 0; j < pfrs.length; j++) {
+					// TODO: think about possibility to open resources from jar files
+					if (pfrs[j].getClass() != PackageFragmentRoot.class) {
+						continue;
+					}
+					pathsSrc.add(((PackageFragmentRoot)pfrs[j]).getPath());
+					pathsOut.add(projPathOut);
+					pathsFull.add(projPathFull);
+				}
+			}
 		} catch (JavaModelException e) {
 			HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenFileActionUtils_problems_while_get_project_package_fragment_roots, e);
 		}
-		outPath = outPath.makeRelativeTo(projPath);
-		for (int i = 0; i < packageFragmentRoots.length && file == null; i++) {
-			if (!(packageFragmentRoots[i] instanceof PackageFragmentRoot)) {
-				continue;
-			}
-			if (packageFragmentRoots[i] instanceof JarPackageFragmentRoot) {
-				// TODO: add possibility open resorces from jar files
-				continue;
-			}
-			PackageFragmentRoot packageFragmentRoot = (PackageFragmentRoot)packageFragmentRoots[i];
-			IPath packageFragmentRootPath = packageFragmentRoot.getResource().getFullPath();
+		int scanSize = Math.min(pathsSrc.size(), pathsOut.size());
+		scanSize = Math.min(pathsFull.size(), scanSize);
+		for (int i = 0; i < scanSize && file == null; i++) {
+			IPath pathSrc = pathsSrc.get(i);
+			IPath pathOut = pathsOut.get(i);
+			IPath pathFull = pathsFull.get(i);
 			Iterator<String> it = documentPaths.iterator();
-			while (it.hasNext()) {
+			while (it.hasNext() && file == null) {
 				String docPath = it.next();
 				IPath path2DocFull = Path.fromOSString(docPath);
-				IPath path2Doc = path2DocFull.makeRelativeTo(projFullPath);
-				IPath resPath = projPath.append(path2Doc);
-				resPath = resPath.makeRelativeTo(projPath);
-				resPath = resPath.makeRelativeTo(outPath);
-				resPath = packageFragmentRootPath.append(resPath);
+				IPath resPath = path2DocFull.makeRelativeTo(pathFull);
+				resPath = resPath.makeRelativeTo(pathOut);
+				resPath = pathSrc.append(resPath);
 				file = ResourcesPlugin.getWorkspace().getRoot().getFile(resPath);
-				if (file == null) {
-					continue;
+				if (file == null || !file.exists()) {
+					file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(resPath);
 				}
-				if (file.exists() && elementInFile(consoleConfiguration, file, element)) {
-					break;
+				if (file != null && file.exists()) {
+					if (elementInFile(consoleConfig, file, element)) {
+						break;
+					}
 				}
 				file = null;
 			}
@@ -542,18 +561,17 @@ public class OpenMappingUtils {
 	 * This function is trying to find hibernate console config file,
 	 * which is corresponding to provided element.
 	 *   
-	 * @param consoleConfiguration
-	 * @param proj
+	 * @param consoleConfig
 	 * @param element
 	 * @return
 	 */
-	public static IFile searchFileToOpen(ConsoleConfiguration consoleConfiguration, IJavaProject proj, Object element) {
-		IFile file = searchInMappingFiles(consoleConfiguration, proj, element);
+	public static IFile searchFileToOpen(ConsoleConfiguration consoleConfig, Object element) {
+		IFile file = searchInMappingFiles(consoleConfig, element);
 		if (file == null) {
-			file = searchInAdditionalMappingFiles(consoleConfiguration, element);
+			file = searchInAdditionalMappingFiles(consoleConfig, element);
 		}
 		if (file == null) {
-			file = searchInEjb3MappingFiles(consoleConfiguration, proj, element);
+			file = searchInEjb3MappingFiles(consoleConfig, element);
 		}
     	return file;
 	}
@@ -589,6 +607,7 @@ public class OpenMappingUtils {
 
 	/**
 	 * Finds a document region, which corresponds of given selection object.
+	 * @param proj
 	 * @param findAdapter
 	 * @param selection
 	 * @return a proper document region
@@ -605,6 +624,7 @@ public class OpenMappingUtils {
 	
 	/**
 	 * Finds a document region, which corresponds of given property.
+	 * @param proj
 	 * @param findAdapter
 	 * @param property
 	 * @return a proper document region
@@ -670,6 +690,7 @@ public class OpenMappingUtils {
 	
 	/**
 	 * Finds a document region, which corresponds of given persistent class.
+	 * @param proj
 	 * @param findAdapter
 	 * @param persistentClass
 	 * @return a proper document region
@@ -695,6 +716,7 @@ public class OpenMappingUtils {
 	
 	/**
 	 * Finds a document region, which corresponds of given persistent class.
+	 * @param proj
 	 * @param findAdapter
 	 * @param className
 	 * @return a proper document region
