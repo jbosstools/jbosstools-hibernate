@@ -20,7 +20,6 @@ import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
  * @author Dmitry Geraskov
  *
  */
-@SuppressWarnings("restriction")
 public class HibernateJpaPlatform extends GenericJpaPlatform {
 	
 	public static final String ID = "hibernate"; //$NON-NLS-1$

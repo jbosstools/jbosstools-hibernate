@@ -12,6 +12,10 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.context.Generator;
 
+/**
+ * @author Dmitry Geraskov
+ *
+ */
 public interface GenericGenerator extends Generator {
 	
 	Integer DEFAULT_INITIAL_VALUE = Integer.valueOf(1);

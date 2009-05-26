@@ -27,14 +27,12 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
  * @author Dmitry Geraskov
  * 
  */
-@SuppressWarnings("restriction")
 public class HibernateJavaEntity extends GenericJavaEntity implements GenericGeneratorHolder {
 
 	protected JavaGenericGenerator genericGenerator;
 	
 	public HibernateJavaEntity(JavaPersistentType parent) {
 		super(parent);
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override

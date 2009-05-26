@@ -30,7 +30,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGener
  * @author Dmitry Geraskov
  *
  */
-@SuppressWarnings("restriction")
 public class HibernateJpaFactory extends GenericJpaFactory {
 
 	@Override
