@@ -11,14 +11,19 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.Iterator;
+import java.util.List;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaGenerator;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaIdMapping;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
+import org.logicalcobwebs.cglib.reflect.FastClass.Generator;
 
 /**
  * @author Dmitry Geraskov
@@ -121,6 +126,21 @@ implements GenericGeneratorHolder {
 			else {
 				getGenericGenerator().update(genericGeneratorResource);
 			}
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jpt.core.internal.context.java.GenericJavaIdMapping#validate(java.util.List, org.eclipse.wst.validation.internal.provisional.core.IReporter, org.eclipse.jdt.core.dom.CompilationUnit)
+	 */
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		validateGenericGenerator(messages, reporter, astRoot);
+	}
+	
+	protected void validateGenericGenerator(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		if (genericGenerator != null){
+			genericGenerator.validate(messages, reporter, astRoot);
 		}
 	}
 
