@@ -91,8 +91,7 @@ public class OpenSourceFileTest extends TestCase {
 		IEditorPart editor = null;
 		Throwable ex = null;
 		try {
-			editor = OpenSourceAction.run(selection, MappingTestProject.getTestProject().getIJavaProject(),
-					fullyQualifiedName);
+			editor = OpenSourceAction.run(consCFG, selection, fullyQualifiedName);
 			boolean highlighted = ProjectUtil.checkHighlighting(editor);
 			if (!highlighted) {
 				String out = NLS.bind(ConsoleTestMessages.OpenSourceFileTest_highlighted_region_for_is_empty, selection);

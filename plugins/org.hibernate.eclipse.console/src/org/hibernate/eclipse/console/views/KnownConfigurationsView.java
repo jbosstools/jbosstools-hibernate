@@ -183,10 +183,10 @@ public class KnownConfigurationsView extends ViewPart {
 					TreePath[] paths = ((TreeSelection)selection).getPaths();
 					TreePath path = paths[0];
 					Object last = path.getLastSegment();
-					ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(path.getSegment(0));
+					ConsoleConfiguration consoleConfig = (ConsoleConfiguration)(path.getSegment(0));
 					if (last instanceof PersistentClass || last.getClass() == Property.class){
 						try {
-							OpenMappingAction.run(path, consoleConfiguration);
+							OpenMappingAction.run(consoleConfig, path);
 						} catch (PartInitException e) {
 							HibernateConsolePlugin.getDefault().logErrorMessage("Can't find mapping file.", e);	//$NON-NLS-1$
 						} catch (JavaModelException e) {

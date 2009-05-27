@@ -51,56 +51,60 @@ public class OpenSourceAction extends SelectionListenerAction {
 
 	public void run() {
 		IStructuredSelection sel = getStructuredSelection();
-		if (sel instanceof TreeSelection){
-			for (int i = 0; i < ((TreeSelection)sel).getPaths().length; i++) {
-				TreePath path = ((TreeSelection)sel).getPaths()[i];
-				Object lastSegment = path.getLastSegment();
-		    	PersistentClass persClass = getPersistentClass(lastSegment);
-				ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(path.getSegment(0));
-				IJavaProject proj = ProjectUtils.findJavaProject(consoleConfiguration);
+		if (!(sel instanceof TreeSelection)) {
+			return;
+		}
+		TreePath[] paths = ((TreeSelection)sel).getPaths();
+		for (int i = 0; i < paths.length; i++) {
+			TreePath path = paths[i];
+			Object lastSegment = path.getLastSegment();
+	    	PersistentClass persClass = getPersistentClass(lastSegment);
+			ConsoleConfiguration consoleConfig = (ConsoleConfiguration)(path.getSegment(0));
 
-				String fullyQualifiedName = null;
-				if (lastSegment instanceof Property){
-					Object prevSegment = path.getParentPath().getLastSegment();
-					if (prevSegment instanceof Property
-							&& ((Property)prevSegment).isComposite()){
-						fullyQualifiedName =((Component)((Property) prevSegment).getValue()).getComponentClassName();
-					}
+			String fullyQualifiedName = null;
+			if (lastSegment instanceof Property){
+				Object prevSegment = path.getParentPath().getLastSegment();
+				if (prevSegment instanceof Property
+						&& ((Property)prevSegment).isComposite()){
+					fullyQualifiedName =((Component)((Property) prevSegment).getValue()).getComponentClassName();
 				}
-				if (fullyQualifiedName == null && persClass != null){
-					fullyQualifiedName = persClass.getClassName();
-				}
+			}
+			if (fullyQualifiedName == null && persClass != null){
+				fullyQualifiedName = persClass.getClassName();
+			}
 
-				try {
-					run(lastSegment, proj, fullyQualifiedName);
-				} catch (JavaModelException e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenSourceAction_cannot_find_source_file, e);
-				} catch (PartInitException e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenSourceAction_cannot_open_source_file, e);
-				} catch (FileNotFoundException e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenSourceAction_cannot_find_source_file, e);
-				}
+			try {
+				run(consoleConfig, lastSegment, fullyQualifiedName);
+			} catch (JavaModelException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenSourceAction_cannot_find_source_file, e);
+			} catch (PartInitException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenSourceAction_cannot_open_source_file, e);
+			} catch (FileNotFoundException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenSourceAction_cannot_find_source_file, e);
 			}
 		}
 	}
 
 	/**
+	 * @param consoleConfig
 	 * @param selection
-	 * @param proj
 	 * @param fullyQualifiedName
 	 * @throws JavaModelException
 	 * @throws PartInitException
 	 * @throws FileNotFoundException
 	 */
-	public static IEditorPart run(Object selection, IJavaProject proj,
+	public static IEditorPart run(ConsoleConfiguration consoleConfig, Object selection, 
 			String fullyQualifiedName) throws JavaModelException, PartInitException, FileNotFoundException {
 		if (fullyQualifiedName == null) return null;
+		IJavaProject[] projs = ProjectUtils.findJavaProjects(consoleConfig);
 		String remainder = null;
 		IType type = null;
 		if (fullyQualifiedName.indexOf("$") > 0) { //$NON-NLS-1$
 			remainder = fullyQualifiedName.substring(fullyQualifiedName.indexOf("$") + 1); //$NON-NLS-1$
 			fullyQualifiedName = fullyQualifiedName.substring(0, fullyQualifiedName.indexOf("$")); //$NON-NLS-1$
-			type = proj.findType(fullyQualifiedName);
+			for (int i = 0; i < projs.length && type == null; i++) {
+				type = projs[i].findType(fullyQualifiedName);
+			}
 			while ( remainder.indexOf("$") > 0 ){ //$NON-NLS-1$
 				String subtype = remainder.substring(0, fullyQualifiedName.indexOf("$")); //$NON-NLS-1$
 				type = type.getType(subtype);
@@ -108,7 +112,9 @@ public class OpenSourceAction extends SelectionListenerAction {
 			}
 			type = type.getType(remainder);
 		} else {
-			type = proj.findType(fullyQualifiedName);
+			for (int i = 0; i < projs.length && type == null; i++) {
+				type = projs[i].findType(fullyQualifiedName);
+			}
 		}
 
 		IEditorPart editorPart = JavaUI.openInEditor(type);

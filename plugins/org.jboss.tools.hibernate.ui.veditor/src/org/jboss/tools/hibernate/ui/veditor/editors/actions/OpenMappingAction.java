@@ -43,9 +43,7 @@ public class OpenMappingAction extends SelectionAction {
 
 	public void run() {
 		ObjectEditorInput objectEditorInput = (ObjectEditorInput)((VisualEditor)getWorkbenchPart()).getEditorInput();
-		ConsoleConfiguration consoleConfiguration = objectEditorInput.getConfiguration();
-		//java.io.File configXMLFile = consoleConfiguration.getPreferences().getConfigXMLFile();
-		//IJavaProject proj = objectEditorInput.getJavaProject();
+		ConsoleConfiguration consoleConfig = objectEditorInput.getConfiguration();
 
 		VisualEditor part = (VisualEditor)getWorkbenchPart();
 		Set selectedElements = part.getSelectedElements();
@@ -58,7 +56,7 @@ public class OpenMappingAction extends SelectionAction {
 				Property compositSel = ((Property)selection);
 				Property parentProperty = ((SpecialRootClass)((Property)selection).getPersistentClass()).getProperty();
 				try {
-					org.hibernate.eclipse.console.actions.OpenMappingAction.run(compositSel, parentProperty, consoleConfiguration);
+					org.hibernate.eclipse.console.actions.OpenMappingAction.run(consoleConfig, compositSel, parentProperty);
 				} catch (PartInitException e) {
 					HibernateConsolePlugin.getDefault().logErrorMessage(UIVEditorMessages.OpenMappingAction_canot_find_or_open_mapping_file, e);
 				} catch (JavaModelException e) {
@@ -72,7 +70,7 @@ public class OpenMappingAction extends SelectionAction {
     			selection = ((SpecialRootClass)selection).getProperty();
 			}
 			try {
-				org.hibernate.eclipse.console.actions.OpenMappingAction.run(selection, consoleConfiguration);
+				org.hibernate.eclipse.console.actions.OpenMappingAction.run(consoleConfig, selection);
 			} catch (PartInitException e) {
 				HibernateConsolePlugin.getDefault().logErrorMessage(UIVEditorMessages.OpenMappingAction_open_mapping_file, e);
 			} catch (JavaModelException e) {

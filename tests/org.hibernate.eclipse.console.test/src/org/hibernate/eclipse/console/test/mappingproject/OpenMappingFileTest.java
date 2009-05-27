@@ -85,7 +85,7 @@ public class OpenMappingFileTest extends TestCase {
 		IEditorPart editor = null;
 		Throwable ex = null;
 		try {
-			editor = OpenMappingAction.run(compositeProperty, parentProperty, consCFG);
+			editor = OpenMappingAction.run(consCFG, compositeProperty, parentProperty);
 			boolean highlighted = ProjectUtil.checkHighlighting(editor);
 			if (!highlighted) {
 				String out = NLS.bind(ConsoleTestMessages.OpenMappingFileTest_highlighted_region_for_property_is_empty_package,
@@ -118,7 +118,7 @@ public class OpenMappingFileTest extends TestCase {
 		IEditorPart editor = null;
 		Throwable ex = null;
 		try {
-			editor = OpenMappingAction.run(selection, consCFG);
+			editor = OpenMappingAction.run(consCFG, selection);
 			boolean highlighted = ProjectUtil.checkHighlighting(editor);
 			if (!highlighted) {
 				String out = NLS.bind(ConsoleTestMessages.OpenMappingFileTest_highlighted_region_for_is_empty_package,

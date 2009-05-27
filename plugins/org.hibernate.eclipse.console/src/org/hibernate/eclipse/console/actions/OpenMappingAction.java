@@ -64,7 +64,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 			TreePath path = paths[i];
 			ConsoleConfiguration consoleConfig = (ConsoleConfiguration)(path.getSegment(0));
 			try {
-				run(path, consoleConfig);
+				run(consoleConfig, path);
 			} catch (JavaModelException e) {
 				HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenMappingAction_cannot_find_mapping_file, e);
 			} catch (PartInitException e) {
@@ -83,7 +83,8 @@ public class OpenMappingAction extends SelectionListenerAction {
 	 * @throws JavaModelException
 	 * @throws FileNotFoundException
 	 */
-	public static IEditorPart run(TreePath path, ConsoleConfiguration consoleConfig) throws PartInitException, JavaModelException, FileNotFoundException {
+	public static IEditorPart run(ConsoleConfiguration consoleConfig, TreePath path) 
+			throws PartInitException, JavaModelException, FileNotFoundException {
 		boolean isPropertySel = (path.getLastSegment().getClass() == Property.class);
 		if (isPropertySel) {
 			Property propertySel = (Property)path.getLastSegment();
@@ -92,21 +93,21 @@ public class OpenMappingAction extends SelectionListenerAction {
 					|| (RootClass.class.isAssignableFrom(persClass.getClass())
 					&& persClass.getClass() != RootClass.class)) {
 				Property parentProp = (Property)path.getParentPath().getLastSegment();
-				return run(propertySel, parentProp, consoleConfig);
+				return run(consoleConfig, propertySel, parentProp);
 			}
 		}
-		return run(path.getLastSegment(), consoleConfig);
+		return run(consoleConfig, path.getLastSegment());
 	}
 
 	/**
-	 * @param selection
 	 * @param consoleConfig
+	 * @param selection
 	 * @throws JavaModelException
 	 * @throws PartInitException
 	 * @throws PresistanceClassNotFoundException
 	 * @throws FileNotFoundException
 	 */
-	public static IEditorPart run(Object selection, ConsoleConfiguration consoleConfig) throws PartInitException, JavaModelException, FileNotFoundException {
+	public static IEditorPart run(ConsoleConfiguration consoleConfig, Object selection) throws PartInitException, JavaModelException, FileNotFoundException {
 		IEditorPart editorPart = null;
 		IFile file = null;
 		if (selection instanceof Property) {
@@ -140,9 +141,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 			if (rootClass != null){
 				if (OpenMappingUtils.hasConfigXMLMappingClassAnnotation(consoleConfig, rootClass)) {
 					String fullyQualifiedName = rootClass.getClassName();
-					// TODO: get rid of this - JBIDE-4363
-					IJavaProject proj = ProjectUtils.findJavaProject(consoleConfig);
-					editorPart = OpenSourceAction.run(selection, proj, fullyQualifiedName);
+					editorPart = OpenSourceAction.run(consoleConfig, selection, fullyQualifiedName);
 				}
 			}
 			else {
@@ -154,15 +153,16 @@ public class OpenMappingAction extends SelectionListenerAction {
 	}
 
 	/**
+	 * @param consoleConfig
 	 * @param compositeProperty
 	 * @param parentProperty
-	 * @param consoleConfig
 	 * @throws JavaModelException
 	 * @throws PartInitException
 	 * @throws FileNotFoundException
 	 * @throws BadLocationException
 	 */
-	public static IEditorPart run(Property compositeProperty, Property parentProperty, ConsoleConfiguration consoleConfig) throws PartInitException, JavaModelException, FileNotFoundException{
+	public static IEditorPart run(ConsoleConfiguration consoleConfig, Property compositeProperty, Property parentProperty) 
+			throws PartInitException, JavaModelException, FileNotFoundException {
 		PersistentClass rootClass = parentProperty.getPersistentClass();
 		IFile file = OpenMappingUtils.searchFileToOpen(consoleConfig, rootClass);
 		IEditorPart editorPart = null;
@@ -173,9 +173,7 @@ public class OpenMappingAction extends SelectionListenerAction {
    		if (editorPart == null && parentProperty.isComposite()) {
 			if (OpenMappingUtils.hasConfigXMLMappingClassAnnotation(consoleConfig, rootClass)) {
 				String fullyQualifiedName =((Component)parentProperty.getValue()).getComponentClassName();
-				// TODO: get rid of this - JBIDE-4363
-				IJavaProject proj = ProjectUtils.findJavaProject(consoleConfig);
-				editorPart = OpenSourceAction.run(compositeProperty, proj, fullyQualifiedName);
+				editorPart = OpenSourceAction.run(consoleConfig, compositeProperty, fullyQualifiedName);
 			}
 	    }
    		if (editorPart == null) {

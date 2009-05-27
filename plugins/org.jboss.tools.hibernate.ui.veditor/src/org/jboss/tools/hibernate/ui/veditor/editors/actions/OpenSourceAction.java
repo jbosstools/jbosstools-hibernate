@@ -6,7 +6,6 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.gef.ui.actions.SelectionAction;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
@@ -35,8 +34,7 @@ public class OpenSourceAction extends SelectionAction {
 
 	public void run() {
 		ObjectEditorInput objectEditorInput = (ObjectEditorInput)((VisualEditor)getWorkbenchPart()).getEditorInput();
-		ConsoleConfiguration consoleConfiguration = objectEditorInput.getConfiguration();
-		IJavaProject proj = objectEditorInput.getJavaProject();
+		ConsoleConfiguration consoleConfig = objectEditorInput.getConfiguration();
 
 		VisualEditor part = (VisualEditor)getWorkbenchPart();
 		Set selectedElements = part.getSelectedElements();
@@ -58,7 +56,7 @@ public class OpenSourceAction extends SelectionAction {
 				fullyQualifiedName = fullyQualifiedName.substring(0, fullyQualifiedName.indexOf("$"));
 			}*/
 			try {
-				new org.hibernate.eclipse.console.actions.OpenSourceAction().run(selection, proj, fullyQualifiedName);
+				new org.hibernate.eclipse.console.actions.OpenSourceAction().run(consoleConfig, selection, fullyQualifiedName);
 			} catch (PartInitException e) {
 				HibernateConsolePlugin.getDefault().logErrorMessage(UIVEditorMessages.OpenSourceAction_canot_open_source_file, e);
 			} catch (JavaModelException e) {
