@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.view.views;
 
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
@@ -21,16 +20,14 @@ public class ObjectEditorInput implements IEditorInput{
 	
 	protected Object fObject;
 	protected ConsoleConfiguration configuration;
-	protected IJavaProject javaProject;
 
 	public ObjectEditorInput(Object object) {
 		fObject = object;
 	}
 
-	public ObjectEditorInput(ConsoleConfiguration configuration, Object object, IJavaProject proj) {
+	public ObjectEditorInput(ConsoleConfiguration configuration, Object object) {
 		fObject = object;
 		this.configuration = configuration;
-		javaProject = proj;
 	}
 
 	public Object getObject() {
@@ -70,10 +67,6 @@ public class ObjectEditorInput implements IEditorInput{
 
 	public ConsoleConfiguration getConfiguration() {
 		return configuration;
-	}
-
-	public IJavaProject getJavaProject() {
-		return javaProject;
 	}
 
 	public boolean equals(Object obj) {

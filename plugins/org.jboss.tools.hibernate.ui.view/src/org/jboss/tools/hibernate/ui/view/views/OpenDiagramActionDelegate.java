@@ -66,12 +66,8 @@ public class OpenDiagramActionDelegate extends OpenActionDelegate {
 	public IEditorPart openEditor(PersistentClass persClass,
 			ConsoleConfiguration consoleConfiguration) throws PartInitException {
 		ObjectEditorInput input = hashMap.get(persClass.getRootClass());
-		
-		
-		IJavaProject proj = ProjectUtils.findJavaProject(consoleConfiguration);
-			
 		if(input == null) {
-			input = new ObjectEditorInput(consoleConfiguration, persClass.getRootClass(), proj);
+			input = new ObjectEditorInput(consoleConfiguration, persClass.getRootClass());
 			hashMap.put(persClass.getRootClass(), input);
 		}
 
@@ -93,12 +89,9 @@ public class OpenDiagramActionDelegate extends OpenActionDelegate {
     		id += "@" + persClass.toString(); //$NON-NLS-1$
     		rcArr[i++] = persClass.getRootClass();
     	}
-		
 		ObjectEditorInput input = hashMap.get(id);
-		IJavaProject proj = ProjectUtils.findJavaProject(consoleConfiguration);
-			
 		if (null == input) {
-			input = new ObjectEditorInput(consoleConfiguration, rcArr, proj);
+			input = new ObjectEditorInput(consoleConfiguration, rcArr);
 			hashMap.put(id, input);
 		}
 

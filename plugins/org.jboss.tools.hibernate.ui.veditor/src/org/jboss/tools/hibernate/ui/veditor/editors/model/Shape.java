@@ -186,7 +186,7 @@ public class Shape extends ModelElement {
 				return ((Property) getOrmElement()).getType().getReturnedClass().getName();
 			}
 			else if (getOrmElement() instanceof Column) {
-				String type = ormModelNameVisitor.getColumnSqlType((Column) getOrmElement(), getOrmDiagram().getConsoleConfiguration());
+				String type = ormModelNameVisitor.getColumnSqlType((Column) getOrmElement(), getOrmDiagram().getConsoleConfig());
 				Column column = (Column) getOrmElement();
 
 				StringBuffer name = new StringBuffer();

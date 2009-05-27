@@ -146,7 +146,7 @@ public class VisualEditor extends GraphicalEditor {
 		if (obj instanceof RootClass) {
 			RootClass rootClass = (RootClass)obj;
 			setPartName(UIVEditorMessages.VisualEditor_diagram_for + rootClass.getEntityName());
-			ormDiagram = new OrmDiagram(configuration, rootClass, objectEditorInput.getJavaProject());
+			ormDiagram = new OrmDiagram(configuration, rootClass);
 		}
 		else if (obj instanceof RootClass[]) {
 			RootClass[] rootClasses = (RootClass[])obj;
@@ -155,7 +155,7 @@ public class VisualEditor extends GraphicalEditor {
 				name += " & " + rootClasses[i].getEntityName(); //$NON-NLS-1$
 			}
 			setPartName(UIVEditorMessages.VisualEditor_diagram_for + name);
-			ormDiagram = new OrmDiagram(configuration, rootClasses, objectEditorInput.getJavaProject());
+			ormDiagram = new OrmDiagram(configuration, rootClasses);
 		}
 	}
 

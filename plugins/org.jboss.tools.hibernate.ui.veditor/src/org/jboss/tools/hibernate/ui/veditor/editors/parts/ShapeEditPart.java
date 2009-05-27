@@ -31,7 +31,6 @@ import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editpolicies.SelectionEditPolicy;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -39,7 +38,6 @@ import org.hibernate.mapping.DependantValue;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.ui.veditor.editors.figures.TitleFigure;
@@ -48,7 +46,6 @@ import org.jboss.tools.hibernate.ui.veditor.editors.model.Connection;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.ModelElement;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.Shape;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.SpecialRootClass;
 import org.jboss.tools.hibernate.ui.view.views.OrmLabelProvider;
 import org.jboss.tools.hibernate.ui.view.views.OrmModelImageVisitor;
 import org.jboss.tools.hibernate.ui.view.views.OrmModelNameVisitor;
@@ -74,7 +71,7 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 			}
 			ConsoleConfiguration cfg = null;
 			if (model instanceof OrmDiagram) {
-				cfg = ((OrmDiagram) model).getConsoleConfiguration();
+				cfg = ((OrmDiagram) model).getConsoleConfig();
 			}
 			label.setText(ormLabelProvider.getText(getElement(), cfg));
 			label.setBackgroundColor(getColor());

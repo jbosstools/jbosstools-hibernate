@@ -16,7 +16,6 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.SimpleValue;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.ui.veditor.VisualEditorPlugin;
 
@@ -47,7 +46,7 @@ public class SpecialOrmShape extends OrmShape {
 			try {
 				Type type = null;
 				if (getOrmDiagram() != null){
-					ConsoleConfiguration cfg = getOrmDiagram().getConsoleConfiguration();
+					ConsoleConfiguration cfg = getOrmDiagram().getConsoleConfig();
 					final Property fField = field;
 					type = (Type) cfg.execute(new Command(){
 						public Object execute() {

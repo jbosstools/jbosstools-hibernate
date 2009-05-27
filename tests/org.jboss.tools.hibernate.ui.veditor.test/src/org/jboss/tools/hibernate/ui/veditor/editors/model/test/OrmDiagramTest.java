@@ -43,8 +43,7 @@ public class OrmDiagramTest extends TestCase {
 
 	public void testLoadAndSave() {
 		
-		final ConsoleConfiguration consoleConfiguration = context.mock(ConsoleConfiguration.class);
-		final Configuration configuration = context.mock(Configuration.class);
+		final ConsoleConfiguration consoleConfig = context.mock(ConsoleConfiguration.class);
 		final RootClass ioe = context.mock(RootClass.class);
 		final IJavaProject javaProject = context.mock(IJavaProject.class);
 		final List<Object> emptyList = new ArrayList<Object>();
@@ -53,9 +52,6 @@ public class OrmDiagramTest extends TestCase {
 
 		context.checking(new Expectations() {
 			{
-				oneOf(consoleConfiguration).getConfiguration();
-				will(returnValue(configuration));
-
 				oneOf(ioe).getEntityName();
 				will(returnValue("testEntityName")); //$NON-NLS-1$
 
@@ -95,14 +91,14 @@ public class OrmDiagramTest extends TestCase {
 				allowing(ioe).getClassName();
 				will(returnValue("ClassName")); //$NON-NLS-1$
 				
-				allowing(consoleConfiguration).getName();
+				allowing(consoleConfig).getName();
 				will(returnValue("CCName")); //$NON-NLS-1$
 
 				allowing(ioe).getEntityName();
 				will(returnValue("")); //$NON-NLS-1$
 			}
 		});
-		final OrmDiagram ormDiagram = new OrmDiagram(consoleConfiguration, ioe, javaProject);
+		final OrmDiagram ormDiagram = new OrmDiagram(consoleConfig, ioe);
 		ormDiagram.save();
 		// test is the folder created
 		File folder = new File(ormDiagram.getStoreFolderPath().toOSString());

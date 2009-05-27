@@ -62,7 +62,7 @@ public class ExpandeableShapeTreeEditPart extends
 		Shape model = (Shape) getModel();
 
 		Object element = model.getOrmElement();
-		ConsoleConfiguration cfg = model.getOrmDiagram().getConsoleConfiguration();
+		ConsoleConfiguration cfg = model.getOrmDiagram().getConsoleConfig();
 
 		setWidgetImage(ormLabelProvider.getImage(element));
 		setWidgetText(ormLabelProvider.getText(element, cfg));

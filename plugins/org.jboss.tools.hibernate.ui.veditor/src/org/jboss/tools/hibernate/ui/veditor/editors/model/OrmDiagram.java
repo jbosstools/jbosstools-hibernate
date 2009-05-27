@@ -30,6 +30,7 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.jdt.core.IJavaProject;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -56,20 +57,16 @@ public class OrmDiagram extends ModelElement {
 	private String childrenLocations[];
 	private HashMap<String,OrmShape> elements = new HashMap<String,OrmShape>();
 	private RootClass[] ormElements;
-	private Configuration configuration;
-	private ConsoleConfiguration consoleConfiguration;
-	private IJavaProject javaProject;
+	private ConsoleConfiguration consoleConfig;
 	private String[] entityNames;
 	public static final String HIBERNATE_MAPPING_LAYOUT_FOLDER_NAME = "hibernateMapping"; //$NON-NLS-1$
 	
-	public OrmDiagram(ConsoleConfiguration configuration, RootClass ioe, IJavaProject javaProject) {
-		consoleConfiguration = configuration;
-		this.configuration = configuration.getConfiguration();
+	public OrmDiagram(ConsoleConfiguration consoleConfig, RootClass ioe) {
+		this.consoleConfig = consoleConfig;
 		ormElements = new RootClass[1];
 		ormElements[0] = ioe;
 		entityNames = new String[1];
 		entityNames[0] = ioe.getEntityName();
-		this.javaProject = javaProject;
 
 		childrenLocations = new String[]{new String("")}; //$NON-NLS-1$
 		
@@ -79,16 +76,14 @@ public class OrmDiagram extends ModelElement {
 		setDirty(false);
 	}
 	
-	public OrmDiagram(ConsoleConfiguration configuration, RootClass[] ioe, IJavaProject javaProject) {
-		consoleConfiguration = configuration;
-		this.configuration = configuration.getConfiguration();
+	public OrmDiagram(ConsoleConfiguration consoleConfig, RootClass[] ioe) {
+		this.consoleConfig = consoleConfig;
 		ormElements = new RootClass[ioe.length];
 		System.arraycopy(ioe, 0, ormElements, 0, ioe.length);
 		entityNames = new String[ioe.length];
 		for (int i = 0; i < ormElements.length; i++) {
 			entityNames[i] = ormElements[i].getEntityName();
 		}
-		this.javaProject = javaProject;
 		childrenLocations = new String[]{new String("")}; //$NON-NLS-1$
 		for (int i = 0; i < ormElements.length; i++) {
 			getOrCreatePersistentClass(ormElements[i], null);
@@ -100,6 +95,7 @@ public class OrmDiagram extends ModelElement {
 	
 	public IPath getStoreFolderPath() {
 		IPath storePath = null;
+		IJavaProject javaProject = ProjectUtils.findJavaProject(consoleConfig);
 		if (javaProject != null && javaProject.getProject() != null) {
 			storePath = javaProject.getProject().getLocation();
 		}
@@ -118,7 +114,7 @@ public class OrmDiagram extends ModelElement {
 		for (int i = 1; i < ormElements.length; i++) {
 			name += "_" + ormElements[i].getClassName(); //$NON-NLS-1$
 		}
-		return consoleConfiguration.getName() + "_" + name; //$NON-NLS-1$
+		return consoleConfig.getName() + "_" + name; //$NON-NLS-1$
 	}
 
 	@SuppressWarnings("unchecked")
@@ -139,9 +135,9 @@ public class OrmDiagram extends ModelElement {
 
 	public void refresh() {
 		boolean bRefresh = false;
+		final Configuration config = consoleConfig.getConfiguration();
 		for (int i = 0; i < ormElements.length; i++) {
-			RootClass newOrmElement = (RootClass) consoleConfiguration
-				.getConfiguration().getClassMapping(entityNames[i]);
+			RootClass newOrmElement = (RootClass)config.getClassMapping(entityNames[i]);
 			if (ormElements[i].equals(newOrmElement)) {
 				continue;
 			}
@@ -352,7 +348,8 @@ public class OrmDiagram extends ModelElement {
 			tableShape = elements.get(tableName);
 			if(tableShape == null) {
 				tableShape = createShape(databaseTable);
-				Iterator iterator = getConfiguration().getClassMappings();
+				final Configuration config = consoleConfig.getConfiguration();
+				Iterator iterator = config.getClassMappings();
 				while (iterator.hasNext()) {
 					Object clazz = iterator.next();
 					if (clazz instanceof RootClass) {
@@ -440,7 +437,8 @@ public class OrmDiagram extends ModelElement {
 				Type type = ((Property)element).getType();
 				if (type.isEntityType()) {
 					EntityType et = (EntityType) type;
-					Object clazz = getConfiguration().getClassMapping(et.getAssociatedEntityName());
+					final Configuration config = consoleConfig.getConfiguration();
+					Object clazz = config.getClassMapping(et.getAssociatedEntityName());
 					if (clazz instanceof RootClass) {
 						RootClass rootClass = (RootClass)clazz;
 						s = getOrCreatePersistentClass(rootClass, null);
@@ -469,11 +467,6 @@ public class OrmDiagram extends ModelElement {
 	public void update(){
 		firePropertyChange(REFRESH, null, null);
 	}
-	
-	protected Configuration getConfiguration() {
-		return configuration;
-	}
-	
 
 	@SuppressWarnings("unchecked")
 	protected void refreshComponentReferences(ComponentShape componentShape) {
@@ -811,11 +804,7 @@ public class OrmDiagram extends ModelElement {
 		return getState(properties, getKey(shape)+".state"); //$NON-NLS-1$
 	}
 
-	public IJavaProject getJavaProject() {
-		return javaProject;
-	}
-
-	public ConsoleConfiguration getConsoleConfiguration() {
-		return consoleConfiguration;
+	public ConsoleConfiguration getConsoleConfig() {
+		return consoleConfig;
 	}
 }
