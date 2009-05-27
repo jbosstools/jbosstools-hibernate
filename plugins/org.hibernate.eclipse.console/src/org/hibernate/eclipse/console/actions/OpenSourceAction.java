@@ -99,11 +99,13 @@ public class OpenSourceAction extends SelectionListenerAction {
 		IJavaProject[] projs = ProjectUtils.findJavaProjects(consoleConfig);
 		String remainder = null;
 		IType type = null;
+		IJavaProject proj = null;
 		if (fullyQualifiedName.indexOf("$") > 0) { //$NON-NLS-1$
 			remainder = fullyQualifiedName.substring(fullyQualifiedName.indexOf("$") + 1); //$NON-NLS-1$
 			fullyQualifiedName = fullyQualifiedName.substring(0, fullyQualifiedName.indexOf("$")); //$NON-NLS-1$
 			for (int i = 0; i < projs.length && type == null; i++) {
-				type = projs[i].findType(fullyQualifiedName);
+				proj = projs[i];
+				type = proj.findType(fullyQualifiedName);
 			}
 			while ( remainder.indexOf("$") > 0 ){ //$NON-NLS-1$
 				String subtype = remainder.substring(0, fullyQualifiedName.indexOf("$")); //$NON-NLS-1$
@@ -113,22 +115,45 @@ public class OpenSourceAction extends SelectionListenerAction {
 			type = type.getType(remainder);
 		} else {
 			for (int i = 0; i < projs.length && type == null; i++) {
-				type = projs[i].findType(fullyQualifiedName);
+				proj = projs[i];
+				type = proj.findType(fullyQualifiedName);
 			}
 		}
-
+		IJavaElement jElement = null;
+		if (selection instanceof Property){
+			final String selectionName =((Property)selection).getName(); 
+			final IType typeSave = type;
+			while (true) {
+				jElement = type.getField(selectionName);
+				if (jElement != null && jElement.exists()) {
+					break;
+				}
+				String parentClassName = ProjectUtils.getParentTypename(proj, type.getFullyQualifiedName());
+				if (parentClassName == null) {
+					break;
+				}
+				type = proj.findType(parentClassName);
+				for (int i = 0; i < projs.length && type == null; i++) {
+					proj = projs[i];
+					type = proj.findType(fullyQualifiedName);
+				}
+				if (type == null) {
+					break;
+				}
+			};
+			// do not find element - restore type
+			if (jElement == null || !jElement.exists()) {
+				type = typeSave;
+			}
+		}
+		if (jElement == null) {
+			jElement = type;
+		}
 		IEditorPart editorPart = JavaUI.openInEditor(type);
 		if (editorPart instanceof JavaEditor) {
-			IJavaElement jElement = null;
-			if (selection instanceof Property){
-				jElement = type.getField(((Property)selection).getName());
-			} else {
-				jElement = type;
-			}
-			JavaEditor jEditor = (JavaEditor) editorPart;
+			JavaEditor jEditor = (JavaEditor)editorPart;
 			selectionToEditor(jElement, jEditor);
 		}
-
 		if (editorPart == null) {
 			String out = NLS.bind(HibernateConsoleMessages.OpenSourceAction_source_file_for_class_not_found, fullyQualifiedName);
 			throw new FileNotFoundException(out);
