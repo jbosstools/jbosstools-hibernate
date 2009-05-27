@@ -92,26 +92,27 @@ public class JavaCompletionProcessor implements IContentAssistProcessor {
 				return new ICompletionProposal[0];
 			}
 			String prefix = HibernateConsoleMessages.JavaCompletionProcessor_session_session; // has to do this because of https://bugs.eclipse.org/bugs/show_bug.cgi?id=141518
-
-			try {
-				IJavaProject javaProject = ProjectUtils.findJavaProject( editor.getConsoleConfiguration() );
+			
+			IJavaCompletionProposal[] results = new IJavaCompletionProposal[0];
+			IJavaProject[] projects = ProjectUtils.findJavaProjects(editor.getConsoleConfiguration());
+			for (int i = 0; i < projects.length && results.length <= 0; i++) {
+				IJavaProject javaProject = projects[i];
 				collector = new CompletionProposalCollector( javaProject );
 				collector.acceptContext( new CompletionContext() );
-
-				editor.codeComplete( prefix, collector, position, javaProject );
+				try {
+					editor.codeComplete( prefix, collector, position, javaProject );
+				}
+				catch (JavaModelException x) {
+					Shell shell = viewer.getTextWidget().getShell();
+					ErrorDialog
+							.openError(
+									shell,
+									HibernateConsoleMessages.JavaCompletionProcessor_error, HibernateConsoleMessages.JavaCompletionProcessor_error_while_performing_code_completion, x.getStatus() );
+					HibernateConsolePlugin.getDefault().log( x );
+				}
+				results = collector.getJavaCompletionProposals();
 			}
-			catch (JavaModelException x) {
-				Shell shell = viewer.getTextWidget().getShell();
-				ErrorDialog
-						.openError(
-								shell,
-								HibernateConsoleMessages.JavaCompletionProcessor_error, HibernateConsoleMessages.JavaCompletionProcessor_error_while_performing_code_completion, x.getStatus() );
-				HibernateConsolePlugin.getDefault().log( x );
-			}
-
-			IJavaCompletionProposal[] results = collector
-					.getJavaCompletionProposals();
-
+			
 			Arrays.sort( results, comparator );
 			CompletionHelper.transpose( null, -prefix.length(), results );
 			return results;
