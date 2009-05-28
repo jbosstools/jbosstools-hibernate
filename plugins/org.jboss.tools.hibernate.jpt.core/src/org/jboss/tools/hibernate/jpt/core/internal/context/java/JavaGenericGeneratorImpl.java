@@ -11,6 +11,7 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.jdt.core.IType;
@@ -23,17 +24,6 @@ import org.eclipse.jpt.core.resource.java.GeneratorAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
-import org.hibernate.id.Assigned;
-import org.hibernate.id.ForeignGenerator;
-import org.hibernate.id.GUIDGenerator;
-import org.hibernate.id.IdentityGenerator;
-import org.hibernate.id.IncrementGenerator;
-import org.hibernate.id.SelectGenerator;
-import org.hibernate.id.SequenceGenerator;
-import org.hibernate.id.SequenceHiLoGenerator;
-import org.hibernate.id.SequenceIdentityGenerator;
-import org.hibernate.id.TableHiLoGenerator;
-import org.hibernate.id.UUIDHexGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 
@@ -51,7 +41,7 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 	private static List<String> generatorClasses = new ArrayList<String>();
 	
 	//see org.hibernate.id.IdentifierGeneratorFactory.GENERATORS
-	static{
+	static {
 		generatorClasses.add( "uuid");
 		generatorClasses.add( "hilo");
 		generatorClasses.add( "assigned");
@@ -165,38 +155,63 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 		validateStrategy(messages, reporter, astRoot);
 	}
 	
+	/**
+	 * Method validates GenericGenerator.strategy. Generator strategy either a predefined Hibernate
+	 * strategy or a fully qualified class name.
+	 * 
+	 * @param messages
+	 * @param reporter
+	 * @param astRoot
+	 */
 	protected void validateStrategy(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot){
-		if (strategy != null){
-			if (strategy.trim().length() == 0){
-				IMessage message = new LocalMessage(Messages.class.getName(), IMessage.HIGH_SEVERITY, 
-					STRATEGY_CANT_BE_EMPTY, new String[]{}, getResource());
-				if (getValidationTextRange(astRoot) != null){
-					message.setLineNo(getValidationTextRange(astRoot).getLineNumber());
-				}				
-				messages.add(message);
-			} else if (!generatorClasses.contains(strategy)){				
+		if (strategy != null) {
+			int lineNum = getValidationTextRange(astRoot) == null ? 0 : getValidationTextRange(astRoot).getLineNumber();
+			if (strategy.trim().length() == 0) {
+				messages.add(creatErrorMessage(STRATEGY_CANT_BE_EMPTY, new String[]{}, lineNum));
+			} else if (!generatorClasses.contains(strategy)){
 				IType lwType = null;
 				try {
 					lwType = getJpaProject().getJavaProject().findType(strategy);
-					if (lwType == null && strategy.indexOf('.') < 0
-							&& astRoot.getPackage() != null){
-						String pack = astRoot.getPackage().getName().getFullyQualifiedName();
-						if (pack != null && pack.length() > 0)
-							lwType = getJpaProject().getJavaProject().findType(pack+'.'+strategy);
+					if (lwType == null || !lwType.isClass()){
+						messages.add(creatErrorMessage(STRATEGY_CLASS_NOT_FOUND, new String[]{strategy}, lineNum));
+					} else {
+						 if (!isImplementsIdentifierInterface(lwType)){
+							messages.add(creatErrorMessage(STRATEGY_INTERFACE, new String[]{strategy}, lineNum));
+						 }
 					}
 				} catch (JavaModelException e) {
 					// just ignore it!
 				}
-				if (lwType == null){
-					IMessage message = new LocalMessage(Messages.class.getName(), IMessage.HIGH_SEVERITY, 
-						STRATEGY_CLASS_NOT_FOUND, new String[]{strategy}, getResource());
-					if (getValidationTextRange(astRoot) != null){
-						message.setLineNo(getValidationTextRange(astRoot).getLineNumber());
-					}				
-					messages.add(message);
-				}
+				
 			}
 		}
+	}
+	
+	/**
+	 * 
+	 * @param lwType
+	 * @return <code>true</code> if type implements IdentifierGenerator interface.
+	 * @throws JavaModelException
+	 */
+	protected boolean isImplementsIdentifierInterface(IType type) throws JavaModelException{
+		if (type == null) return false;
+		String[] interfaces = type.getSuperInterfaceNames();
+		if (Arrays.binarySearch(interfaces, "org.hibernate.id.IdentifierGenerator") >= 0) {//$NON-NLS-1$
+			return true;
+		} else if (type.getSuperclassName() != null){
+			IType parentType = getJpaProject().getJavaProject().findType(type.getSuperclassName());
+			if (parentType != null){
+				return isImplementsIdentifierInterface(parentType);
+			}			
+		}
+		return false;
+	}
+	
+	protected IMessage creatErrorMessage(String strmessage, String[] params, int lineNum){
+		IMessage message = new LocalMessage(Messages.class.getName(), IMessage.HIGH_SEVERITY, 
+			strmessage, params, getResource());
+			message.setLineNo(lineNum);
+		return message;
 	}
 
 }
