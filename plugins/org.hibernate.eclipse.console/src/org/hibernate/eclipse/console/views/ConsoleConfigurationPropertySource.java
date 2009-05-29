@@ -24,18 +24,23 @@ package org.hibernate.eclipse.console.views;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.utils.LaunchHelper;
 
 public class ConsoleConfigurationPropertySource implements IPropertySource {
 
-	private final ConsoleConfiguration cfg;
-
+	private ConsoleConfiguration cfg;
 
 	static IPropertyDescriptor[] pd;
 	static {
@@ -93,6 +98,27 @@ public class ConsoleConfigurationPropertySource implements IPropertySource {
 	}
 
 	public void setPropertyValue(Object id, Object value) {
+		if("name".equals(id) && value instanceof String) { //$NON-NLS-1$
+			String newName = (String) value;
+			if (LaunchHelper.verifyConfigurationName(newName) != null) {
+				return;//just do not change name
+			}
+			String oldName = cfg.getName();			
+			try {
+				ILaunchConfiguration lc = HibernateConsolePlugin.getDefault().findLaunchConfig(oldName);
+				if (lc != null){
+					ILaunchConfigurationWorkingCopy wc = lc.getWorkingCopy();
+					wc.rename(newName);
+					wc.doSave();
+					//find newly created console configuration
+					cfg = KnownConfigurations.getInstance().find(newName);
+				} else {
+					HibernateConsolePlugin.getDefault().log("Can't find Console Configuration \"" + oldName + "\"");
+				}
+			} catch (CoreException e) {
+				HibernateConsolePlugin.getDefault().log(e);
+			}
 		}
+	}
 
 }

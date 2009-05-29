@@ -38,7 +38,7 @@ import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
-import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
+import org.hibernate.eclipse.console.utils.LaunchHelper;
 
 /**
  *
@@ -91,7 +91,7 @@ public class AddConfigurationAction extends Action {
 			throws CoreException {
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 
-		ILaunchConfigurationType launchConfigurationType = launchManager.getLaunchConfigurationType( ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID );
+		ILaunchConfigurationType launchConfigurationType = LaunchHelper.getHibernateLaunchConfigsType();
 		String launchName = launchManager.generateUniqueLaunchConfigurationNameFrom(HibernateConsoleMessages.AddConfigurationAction_hibernate);
 		//ILaunchConfiguration[] launchConfigurations = launchManager.getLaunchConfigurations( launchConfigurationType );
 		ILaunchConfigurationWorkingCopy wc = launchConfigurationType.newInstance(null, launchName);
@@ -118,12 +118,8 @@ public class AddConfigurationAction extends Action {
 
 	static private List<ILaunchConfiguration> getTemporaryLaunchConfigurations()
 			throws CoreException {
-		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
-
-		ILaunchConfigurationType launchConfigurationType = launchManager.getLaunchConfigurationType( ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID );
-
 		List<ILaunchConfiguration> listTempConfigs = new ArrayList<ILaunchConfiguration>();
-		ILaunchConfiguration[] configs = launchManager.getLaunchConfigurations(launchConfigurationType);
+		ILaunchConfiguration[] configs = LaunchHelper.findHibernateLaunchConfigs();
 		for (int i = 0; i < configs.length; i++) {
 			boolean temporary = configs[i].getAttribute(AddConfigurationAction.TEMPORARY_CONFIG_FLAG, false);
 			if (temporary) {

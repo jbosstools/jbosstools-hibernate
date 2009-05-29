@@ -43,10 +43,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.preferences.IScopeContext;
-import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationType;
-import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
@@ -65,7 +62,6 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 import org.hibernate.util.StringHelper;
 import org.osgi.service.prefs.BackingStoreException;
@@ -216,27 +212,20 @@ public class ProjectUtils {
 	 * @return a handle to the project resource
 	 */
 	public static IProject findProject(ConsoleConfiguration consoleConfiguration) {
-		IProject res = null;
 		if (consoleConfiguration != null) {
-			ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
-			ILaunchConfigurationType launchConfigurationType = launchManager.getLaunchConfigurationType( ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID );
 			try {
-				ILaunchConfiguration[] launchConfigurations = 
-					launchManager.getLaunchConfigurations( launchConfigurationType );
-				// can't believe there is no look up by name API
-				for (int i = 0; i < launchConfigurations.length && res == null; i++) {
-					ILaunchConfiguration launchConfiguration = launchConfigurations[i];
-					if (launchConfiguration.getName().equals(consoleConfiguration.getName())) {
-						String projName = launchConfiguration.getAttribute(
-								IConsoleConfigurationLaunchConstants.PROJECT_NAME, ""); //$NON-NLS-1$
-						res = findProject(projName);
-					}
+				ILaunchConfiguration launchConfiguration = LaunchHelper.findHibernateLaunchConfig(
+						consoleConfiguration.getName());
+				if(launchConfiguration != null) {
+					String projName = launchConfiguration.getAttribute(
+							IConsoleConfigurationLaunchConstants.PROJECT_NAME, ""); //$NON-NLS-1$
+					return findProject(projName);
 				}
 			} catch (CoreException e1) {
 				HibernateConsolePlugin.getDefault().log(e1);
 			}
 		}
-		return res;
+		return null;
 	}
 
 	/**

@@ -27,7 +27,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -38,9 +37,6 @@ import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.jdt.core.IJavaModel;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
@@ -48,8 +44,8 @@ import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
-import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -334,10 +330,9 @@ public class HibernateRefactoringUtil {
 	public static ILaunchConfiguration[] getAffectedLaunchConfigurations(IPath path){
 		ILaunchConfiguration[] configs = null;
 		try {
-			configs = DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurations();
+			configs = LaunchHelper.findHibernateLaunchConfigs();
 			List<ILaunchConfiguration> list = new ArrayList<ILaunchConfiguration>();
 			for(int i = 0; i < configs.length && configs[i].exists(); i++) {//refactor only hibernate launch configurations
-				if (!ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID.equals(configs[i].getType().getIdentifier())) continue;
 				if (HibernateRefactoringUtil.isConfigurationAffected(configs[i], path)) list.add(configs[i]);
 			}
 			configs = list.toArray(new ILaunchConfiguration[list.size()]);
@@ -353,10 +348,9 @@ public class HibernateRefactoringUtil {
 	public static ILaunchConfiguration[] getAffectedLaunchConfigurations(IConnectionProfile profile){
 		ILaunchConfiguration[] configs = null;
 		try {
-			configs = DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurations();
+			configs = LaunchHelper.findHibernateLaunchConfigs();
 			List<ILaunchConfiguration> list = new ArrayList<ILaunchConfiguration>();
 			for(int i = 0; i < configs.length && configs[i].exists(); i++) {//refactor only hibernate launch configurations
-				if (!ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID.equals(configs[i].getType().getIdentifier())) continue;
 				if (profile.getName().equals(configs[i].getAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, "")))  //$NON-NLS-1$
 					list.add(configs[i]);
 			}

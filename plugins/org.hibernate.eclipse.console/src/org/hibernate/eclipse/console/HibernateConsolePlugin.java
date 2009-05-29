@@ -37,7 +37,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
-import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.ui.PreferenceConstants;
 import org.eclipse.jdt.ui.text.JavaTextTools;
@@ -62,6 +61,7 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.KnownConfigurationsListener;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.actions.AddConfigurationAction;
+import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.console.workbench.ConfigurationAdapterFactory;
 import org.hibernate.eclipse.criteriaeditor.CriteriaEditorInput;
 import org.hibernate.eclipse.criteriaeditor.CriteriaEditorStorage;
@@ -252,10 +252,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 
 
 	private void loadExistingConfigurations() throws CoreException {
-		final ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
-
-		ILaunchConfigurationType lct = launchManager.getLaunchConfigurationType( ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID );
-		ILaunchConfiguration[] launchConfigurations = launchManager.getLaunchConfigurations( lct );
+		ILaunchConfiguration[] launchConfigurations = LaunchHelper.findHibernateLaunchConfigs();
 		for (int i = 0; i < launchConfigurations.length; i++) {
 			KnownConfigurations.getInstance().addConfiguration(
 					new ConsoleConfiguration(new EclipseLaunchConsoleConfigurationPreferences(launchConfigurations[i])), false );
@@ -274,25 +271,9 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 		}
 	}
 
-	private ILaunchConfiguration findLaunchConfig(String name)
+	public ILaunchConfiguration findLaunchConfig(String name)
 			throws CoreException {
-		ILaunchManager launchManager = DebugPlugin.getDefault()
-				.getLaunchManager();
-		ILaunchConfigurationType launchConfigurationType = launchManager
-				.getLaunchConfigurationType(ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID);
-		ILaunchConfiguration[] launchConfigurations = launchManager
-				.getLaunchConfigurations(launchConfigurationType);
-
-		for (int i = 0; i < launchConfigurations.length; i++) { // can't believe
-																// there is no
-																// look up by
-																// name API
-			ILaunchConfiguration launchConfiguration = launchConfigurations[i];
-			if (launchConfiguration.getName().equals(name)) {
-				return launchConfiguration;
-			}
-		}
-		return null;
+		return LaunchHelper.findHibernateLaunchConfig(name);
 	}
 
 	/**
