@@ -28,8 +28,8 @@ import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
 import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent.Type;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
+import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
-import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 
 /**
@@ -70,11 +70,10 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 	}
 	
 	private ILaunchConfiguration getLaunchConfiguration(IProject project) throws CoreException{
-		ILaunchManager lm = DebugPlugin.getDefault().getLaunchManager();			
-		ILaunchConfigurationType lct = lm.getLaunchConfigurationType(ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID);
 		List<ILaunchConfiguration> configs = new ArrayList<ILaunchConfiguration>();
-		for (int i = 0; i < lm.getLaunchConfigurations(lct).length; i++){
-			ILaunchConfiguration lc = lm.getLaunchConfigurations(lct)[i];
+		ILaunchConfiguration[] lcs = LaunchHelper.findHibernateLaunchConfigs();
+		for (int i = 0; i < lcs.length; i++){
+			ILaunchConfiguration lc = lcs[i];
 			if (project.getName().equals(
 					lc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, ""))){//lc uses this project					 //$NON-NLS-1$
 				if (project.getName().equals(lc.getName())) return lc;
@@ -92,7 +91,7 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 	
 	protected void buildConsoleConfiguration(IProject project){
 		ILaunchManager lm = DebugPlugin.getDefault().getLaunchManager();
-		ILaunchConfigurationType lct = lm.getLaunchConfigurationType(ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID);
+		ILaunchConfigurationType lct = LaunchHelper.getHibernateLaunchConfigsType();
 		String launchName = lm.generateUniqueLaunchConfigurationNameFrom(project.getName());
 		ILaunchConfigurationWorkingCopy wc;
 		try {
