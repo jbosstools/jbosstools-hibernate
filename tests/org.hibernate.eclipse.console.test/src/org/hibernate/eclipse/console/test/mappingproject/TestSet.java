@@ -31,9 +31,9 @@ public class TestSet{
 	}
 
 	private static void addPackTests(TestSuite suite) {
-		/*suite.addTestSuite(OpenSourceFileTest.class);
-		suite.addTestSuite(OpenMappingFileTest.class);
-		suite.addTestSuite(OpenMappingDiagramTest.class);*/
 		suite.addTestSuite(HbmExportExceptionTest.class);
+		//suite.addTestSuite(OpenSourceFileTest.class);
+		//suite.addTestSuite(OpenMappingFileTest.class);
+		//suite.addTestSuite(OpenMappingDiagramTest.class);
 	}
 }

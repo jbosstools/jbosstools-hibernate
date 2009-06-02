@@ -17,6 +17,7 @@ import junit.framework.TestCase;
 import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -75,6 +76,7 @@ public class HibernateAllMappingTests extends TestCase {
 		ConsoleConfigUtils.createConsoleConfig(ConsoleConfigUtils.ConsoleCFGName, 
 				cfgFilePath, ConfigurableTestProject.PROJECT_NAME);
 		ProjectUtils.toggleHibernateOnProject(project.getIProject(), true, ConsoleConfigUtils.ConsoleCFGName);
+		project.getIProject().build(IncrementalProjectBuilder.FULL_BUILD, null);
 	}
 
 	/* (non-Javadoc)

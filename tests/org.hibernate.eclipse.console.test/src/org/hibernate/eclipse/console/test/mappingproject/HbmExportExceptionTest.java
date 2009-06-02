@@ -49,7 +49,6 @@ public class HbmExportExceptionTest extends TestCase {
 			KnownConfigurations knownConfigurations = KnownConfigurations.getInstance();
 			final ConsoleConfiguration consCFG = knownConfigurations.find(ConsoleConfigUtils.ConsoleCFGName);
 			assertNotNull(consCFG);
-			//pack.getJavaProject().getProject().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
 			consCFG.reset();
 			consCFG.build();
 			assertTrue(consCFG.hasConfiguration());
