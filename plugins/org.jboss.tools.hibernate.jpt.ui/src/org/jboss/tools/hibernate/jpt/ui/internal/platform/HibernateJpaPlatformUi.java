@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2008 Red Hat, Inc.
+ * Copyright (c) 2007-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -35,7 +35,6 @@ import org.jboss.tools.hibernate.jpt.ui.wizard.GenerateEntitiesWizard;
  * @author Dmitry Geraskov
  * 
  */
-@SuppressWarnings("restriction")
 public class HibernateJpaPlatformUi extends GenericJpaPlatformUi {
 
 	public static final String LaunchConfigurationType_ID = "org.hibernate.eclipse.launch.CodeGenerationLaunchConfigurationType"; //$NON-NLS-1$

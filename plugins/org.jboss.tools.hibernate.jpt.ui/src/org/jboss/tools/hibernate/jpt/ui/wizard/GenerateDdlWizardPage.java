@@ -1,5 +1,5 @@
 /*******************************************************************************
-  * Copyright (c) 2007-2008 Red Hat, Inc.
+  * Copyright (c) 2007-2009 Red Hat, Inc.
   * Distributed under license by Red Hat, Inc. All rights reserved.
   * This program is made available under the terms of the
   * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,8 +10,6 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.wizard;
 
-import org.eclipse.core.internal.resources.LocationValidator;
-import org.eclipse.core.internal.resources.Workspace;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
@@ -40,8 +38,6 @@ public class GenerateDdlWizardPage extends GenerateInitWizardPage {
 	
 	private StringDialogField filename;
 	
-	private LocationValidator validator = new LocationValidator((Workspace) ResourcesPlugin.getWorkspace());
-
 	protected GenerateDdlWizardPage(JpaProject jpaProject) {
 		super(jpaProject);
 	}
@@ -103,7 +99,7 @@ public class GenerateDdlWizardPage extends GenerateInitWizardPage {
         }
         
         IStatus status = ResourcesPlugin.getWorkspace().validateName(getFilename(), IResource.FILE);
-        if (status.getSeverity() != status.OK){
+        if (status.getSeverity() != IStatus.OK){
         	setErrorMessage( status.getMessage() );
             return;
         }

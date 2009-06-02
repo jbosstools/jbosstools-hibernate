@@ -1,5 +1,5 @@
 /*******************************************************************************
-  * Copyright (c) 2007-2008 Red Hat, Inc.
+  * Copyright (c) 2007-2009 Red Hat, Inc.
   * Distributed under license by Red Hat, Inc. All rights reserved.
   * This program is made available under the terms of the
   * Eclipse Public License v1.0 which accompanies this distribution,
@@ -12,11 +12,8 @@ package org.jboss.tools.hibernate.jpt.ui.wizard;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.internal.core.PackageFragmentRoot;
 import org.eclipse.jdt.internal.corext.util.JavaConventionsUtil;
 import org.eclipse.jdt.internal.corext.util.Messages;
 import org.eclipse.jdt.internal.ui.wizards.NewWizardMessages;
@@ -32,8 +29,6 @@ import org.eclipse.swt.widgets.Control;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 import org.hibernate.eclipse.launch.PathHelper;
-import org.hibernate.util.StringHelper;
-import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
 
 /**
  * @author Dmitry Geraskov

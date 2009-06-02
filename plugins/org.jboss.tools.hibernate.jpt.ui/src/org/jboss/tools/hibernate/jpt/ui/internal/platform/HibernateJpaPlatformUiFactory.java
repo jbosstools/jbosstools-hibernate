@@ -21,7 +21,6 @@ import org.eclipse.jpt.ui.internal.structure.PersistenceResourceModelStructurePr
  * @author Dmitry Geraskov
  * 
  */
-@SuppressWarnings("restriction")
 public class HibernateJpaPlatformUiFactory implements JpaPlatformUiFactory {
 
 	public HibernateJpaPlatformUiFactory() {

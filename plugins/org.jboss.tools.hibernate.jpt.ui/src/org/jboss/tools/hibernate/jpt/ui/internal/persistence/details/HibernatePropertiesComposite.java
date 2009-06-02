@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2008 Red Hat, Inc.
+ * Copyright (c) 2007-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -15,10 +15,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
@@ -35,13 +36,12 @@ import org.hibernate.eclipse.console.utils.DriverClassHelpers;
 import org.hibernate.eclipse.launch.PathHelper;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.ui.wizard.Messages;
-import org.jboss.tools.hibernate.jpt.ui.xpl.AbstractPane;
 
 /**
  * @author Dmitry Geraskov
  * 
  */
-public class HibernatePropertiesComposite extends AbstractPane<BasicHibernateProperties> implements
+public class HibernatePropertiesComposite extends FormPane<BasicHibernateProperties> implements
 		JpaPageComposite {
 
 	private Text cfgFile;
@@ -60,7 +60,7 @@ public class HibernatePropertiesComposite extends AbstractPane<BasicHibernatePro
 
 	protected void initializeLayout(Composite container) {		
 
-		Composite section = buildSection(container, Messages.HibernatePropertiesComposite_basic_properties);
+		Composite section = addSection(container, Messages.HibernatePropertiesComposite_basic_properties);
 		
 		helper = new DriverClassHelpers();
 
@@ -89,30 +89,33 @@ public class HibernatePropertiesComposite extends AbstractPane<BasicHibernatePro
 		final WritablePropertyValueModel<String> driverHolder = buildDriverHolder();
 		final WritablePropertyValueModel<String> urlHolder = buildUrlHolder();
 
-		Button b = buildButton(section, HibernateConsoleMessages.CodeGenerationSettingsTab_browse, createSetupAction());
-		cfgFile = buildLabeledText(section,
+		Button b = addButton(section, HibernateConsoleMessages.CodeGenerationSettingsTab_browse, createSetupAction());
+		cfgFile = addLabeledText(section,
 				HibernateConsoleMessages.ConsoleConfigurationPropertySource_config_file + ':', buildConfigFileHolder(),
 				b, null);
 
-		buildLabeledEditableCombo(
+		addLabeledEditableCombo(
 				section, 
 				HibernateConsoleMessages.NewConfigurationWizardPage_database_dialect,
 				lvmDialect, 
 				dialectHolder, 
+				StringConverter.Default.<String>instance(),
 				null);
 
-		buildLabeledEditableCombo(
+		addLabeledEditableCombo(
 				section, 
 				HibernateConsoleMessages.NewConfigurationWizardPage_driver_class, 
 				lvmDriver,
-				driverHolder, 
+				driverHolder,
+				StringConverter.Default.<String>instance(),
 				null);
 		
-		buildLabeledEditableCombo(
-				section, 
-				HibernateConsoleMessages.NewConfigurationWizardPage_connection_url, 
+		addLabeledEditableCombo(
+				section,
+				HibernateConsoleMessages.NewConfigurationWizardPage_connection_url,
 				lvmUrl,
-				urlHolder, 
+				urlHolder,
+				StringConverter.Default.<String>instance(),
 				null);
 				
 		dialectHolder.addPropertyChangeListener(new SWTPropertyChangeListenerWrapper(
@@ -142,22 +145,22 @@ public class HibernatePropertiesComposite extends AbstractPane<BasicHibernatePro
 				}
 			) );
 
-		buildLabeledText(
+		addLabeledText(
 				section, 
 				HibernateConsoleMessages.NewConfigurationWizardPage_default_schema,
 				buildSchemaDefaultHolder());
 		
-		buildLabeledText(
+		addLabeledText(
 				section, 
 				HibernateConsoleMessages.NewConfigurationWizardPage_default_catalog,
 				buildCatalogDefaultHolder());
 		
-		buildLabeledText(
+		addLabeledText(
 				section, 
 				HibernateConsoleMessages.NewConfigurationWizardPage_user_name, 
 				buildUsernameHolder());
 		
-		buildLabeledText(
+		addLabeledText(
 				section, 
 				HibernateConsoleMessages.NewConfigurationWizardPage_password, 
 				buildPasswordHolder());

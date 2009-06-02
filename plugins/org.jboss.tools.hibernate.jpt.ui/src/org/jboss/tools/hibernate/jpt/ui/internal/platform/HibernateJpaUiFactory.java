@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.GenericJpaUiFactory;
+import org.eclipse.jpt.ui.internal.persistence.details.GenericPersistenceUnitGeneralComposite;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitConnectionComposite;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitPropertiesComposite;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -26,13 +27,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.ui.internal.persistence.details.HibernatePropertiesComposite;
-import org.jboss.tools.hibernate.jpt.ui.xpl.PersistenceUnitGeneralComposite;
 
 /**
  * @author Dmitry Geraskov
  * 
  */
-@SuppressWarnings("restriction")
 public class HibernateJpaUiFactory extends GenericJpaUiFactory {
 
 	@SuppressWarnings("unchecked")
@@ -41,9 +40,8 @@ public class HibernateJpaUiFactory extends GenericJpaUiFactory {
 
 		List<JpaPageComposite> pages = new ArrayList<JpaPageComposite>(1);
 
-		//replaced from Dali 2.0
-		pages.add(new PersistenceUnitGeneralComposite(subjectHolder, parent, widgetFactory));
-		pages.add(new PersistenceUnitConnectionComposite(subjectHolder, parent, widgetFactory));		
+		pages.add(new GenericPersistenceUnitGeneralComposite(subjectHolder, parent, widgetFactory));
+		pages.add(new PersistenceUnitConnectionComposite(subjectHolder, parent, widgetFactory));
 		pages.add(new PersistenceUnitPropertiesComposite(subjectHolder, parent, widgetFactory));
 		
 		// ************Hibernate pages***************
