@@ -169,7 +169,7 @@ public class PersistenceUnitGeneralComposite extends AbstractPane<PersistenceUni
 	 * (non-Javadoc)
 	 */
 	public String getHelpID() {
-		return JpaHelpContextIds.PERSISTENCE_UNIT_GENERAL;
+		return "org.eclipse.jpt.ui.persistenceUnit_general"; // JBIDE-4404 was before JpaHelpContextIds.PERSISTENCE_UNIT_GENERAL but that disappeared in Eclipse 3.5.RC3, using direct string instead.
 	}
 
 	/*
