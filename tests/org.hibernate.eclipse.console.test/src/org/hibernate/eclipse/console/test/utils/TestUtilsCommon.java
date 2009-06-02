@@ -8,17 +8,13 @@
   * Contributor:
   *     Red Hat, Inc. - initial API and implementation
   ******************************************************************************/
-package org.hibernate.eclipse.console.test.mappingproject;
+package org.hibernate.eclipse.console.test.utils;
 
 import java.io.File;
-import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.internal.resources.ResourceException;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
@@ -39,105 +35,12 @@ import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 
 /**
  * 
- * 
- * @author Vitali
  */
 public class TestUtilsCommon {
-
-	public static final String SRC_FOLDER = "src"; //$NON-NLS-1$
-	public static final String LIB_FOLDER = "lib"; //$NON-NLS-1$
 
 	public static final Path JRE_CONTAINER = new Path(
 			"org.eclipse.jdt.launching.JRE_CONTAINER"); //$NON-NLS-1$
 
-	protected FileFilter fileFilter = new FileFilter() {
-		public boolean accept(File pathname) {
-			return !pathname.isDirectory();
-		}
-	};
-
-	protected FileFilter dirFilter = new FileFilter() {
-		public boolean accept(File pathname) {
-			// exclude ".svn" and other unnessesary folders
-			if (pathname.getName().charAt(0) == '.')
-				return false;
-			if (LIB_FOLDER.equals(pathname.getName()))
-				return false;
-			return pathname.isDirectory();
-		}
-	};
-
-	protected FileFilter jarFilter = new FileFilter() {
-		public boolean accept(File pathname) {
-			return !pathname.isDirectory()
-					|| pathname.getName().endsWith(".jar"); //$NON-NLS-1$
-		}
-	};
-
-	public FileFilter getFileFilter() {
-		return fileFilter;
-	}
-
-	public void setFileFilter(FileFilter fileFilter) {
-		this.fileFilter = fileFilter;
-	}
-
-	public FileFilter getDirFilter() {
-		return dirFilter;
-	}
-
-	public void setDirFilter(FileFilter dirFilter) {
-		this.dirFilter = dirFilter;
-	}
-
-	public FileFilter getJarFilter() {
-		return jarFilter;
-	}
-
-	public void setJarFilter(FileFilter jarFilter) {
-		this.jarFilter = jarFilter;
-	}
-
-	public void recursiveCopyFiles(File src, IFolder dst) {
-		File[] files = src.listFiles(fileFilter);
-		for (int i = 0; i < files.length; i++) {
-			File file = files[i];
-			if (!file.exists()) {
-				continue;
-			}
-			IFile iFile = dst.getFile(file.getName());
-			try {
-				if (iFile.exists()) {
-					iFile.delete(true, null);
-				}
-				iFile.create(new FileInputStream(file), true, null);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-				continue;
-			} catch (CoreException e) {
-				e.printStackTrace();
-				continue;
-			}
-		}
-
-		File[] dirs = src.listFiles(dirFilter);
-		for (int i = 0; i < dirs.length; i++) {
-			File dir = dirs[i];
-			if (!dir.exists()) {
-				continue;
-			}
-			IFolder iFolder = dst.getFolder(dir.getName());
-			try {
-				if (!iFolder.exists()) {
-					iFolder.create(true, true, null);
-				}
-				recursiveCopyFiles(dir, iFolder);
-			} catch (CoreException e) {
-				e.printStackTrace();
-				continue;
-			}
-		}
-	}
 
 	public IProject buildNewProject(String projectName) {
 		// get a project handle
@@ -199,7 +102,7 @@ public class TestUtilsCommon {
 			IJavaProject javaProject, String strFolder) throws CoreException {
 		IFolder folder = project.getFolder(strFolder);
 		if (!folder.exists()) {
-			folder.create(false, true, null);
+			folder.create(true, true, null);
 			IPackageFragmentRoot root = javaProject
 					.getPackageFragmentRoot(folder);
 			/*
@@ -215,20 +118,20 @@ public class TestUtilsCommon {
 
 	public IPackageFragmentRoot createSourceFolder(IProject project,
 			IJavaProject javaProject) throws CoreException {
-		return createFolder(project, javaProject, SRC_FOLDER);
+		return createFolder(project, javaProject, FilesTransfer.SRC_FOLDER);
 	}
 
 	public List<IPath> copyLibs(IProject project, IJavaProject javaProject,
 			File res) throws CoreException {
 		return copyLibs2(project, javaProject,
-				res.getAbsolutePath() + File.separator + TestUtilsCommon.LIB_FOLDER);
+				res.getAbsolutePath() + File.separator + FilesTransfer.LIB_FOLDER);
 	}
 
 	public List<IPath> copyLibs2(IProject project, IJavaProject javaProject,
 			String absolutePath) throws CoreException {
-		IFolder dst = project.getFolder(TestUtilsCommon.LIB_FOLDER);
+		IFolder dst = project.getFolder(FilesTransfer.LIB_FOLDER);
 		if (!dst.exists()) {
-			dst.create(false, true, null);
+			dst.create(true, true, null);
 			javaProject.getPackageFragmentRoot(dst);
 		}
 		File libFolder = new File(absolutePath);
@@ -239,25 +142,8 @@ public class TestUtilsCommon {
 			throw new RuntimeException(out);
 		}
 		List<IPath> libs = new ArrayList<IPath>();
-
-		File[] files = libFolder.listFiles(jarFilter);
-		for (int i = 0; i < files.length; i++) {
-			File file = files[i];
-			if (!file.exists()) {
-				continue;
-			}
-			IFile iFile = dst.getFile(file.getName());
-			if (iFile.exists()) {
-				iFile.delete(true, null);
-			}
-			try {
-				iFile.create(new FileInputStream(file), true, null);
-				libs.add(iFile.getFullPath());
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-				continue;
-			}
-		}
+		FilesTransfer.copyFolder(libFolder, dst, FilesTransfer.filterJars, 
+				FilesTransfer.filterFolders, libs);
 		return libs;
 	}
 

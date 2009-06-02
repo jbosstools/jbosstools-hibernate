@@ -24,30 +24,16 @@ public class TestSet{
 	 * use only addTestSuit to prevent errors!!!
 	 * @return
 	 */
-	public static TestSuite getTests(){
+	public static TestSuite getTests() {
 		TestSuite suite = new TestSuite(ConsoleTestMessages.TestSet_test_for_mappingtestproject);
-
-		addTestsPackSetUp( suite );
-		addPackTests( suite );
-		addTestsPackTearDown( suite );
-
+		addPackTests(suite);
 		return suite;
 	}
 
-
-	private static void addTestsPackSetUp(TestSuite suite){
-		suite.addTestSuite( UpdateConfigurationTest.class );
+	private static void addPackTests(TestSuite suite) {
+		/*suite.addTestSuite(OpenSourceFileTest.class);
+		suite.addTestSuite(OpenMappingFileTest.class);
+		suite.addTestSuite(OpenMappingDiagramTest.class);*/
+		suite.addTestSuite(HbmExportExceptionTest.class);
 	}
-
-	private static void addPackTests(TestSuite suite){
-		/*suite.addTestSuite( OpenSourceFileTest.class );
-		suite.addTestSuite( OpenMappingFileTest.class );
-		suite.addTestSuite( OpenMappingDiagramTest.class );*/
-		suite.addTestSuite( HbmExportExceptionTest.class );
-	}
-
-	private static void addTestsPackTearDown(TestSuite suite){
-		suite.addTestSuite( CloseAllEditorsTest.class );
-	}
-
 }

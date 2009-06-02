@@ -16,11 +16,12 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
 import org.hibernate.InvalidMappingException;
-import org.hibernate.MappingException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
+import org.hibernate.eclipse.console.test.utils.ConsoleConfigUtils;
+import org.hibernate.eclipse.console.test.utils.ProjectUtil;
 import org.hibernate.eclipse.console.workbench.ConfigurationWorkbenchAdapter;
 import org.hibernate.eclipse.console.workbench.ConsoleConfigurationWorkbenchAdapter;
 import org.hibernate.mapping.PersistentClass;
@@ -33,7 +34,7 @@ import org.jboss.tools.hibernate.ui.view.views.OpenDiagramActionDelegate;
 public class OpenMappingDiagramTest extends TestCase {
 	public void testOpenMappingDiagram() {
 		KnownConfigurations knownConfigurations = KnownConfigurations.getInstance();
-		final ConsoleConfiguration consCFG = knownConfigurations.find(ProjectUtil.ConsoleCFGName);
+		final ConsoleConfiguration consCFG = knownConfigurations.find(ConsoleConfigUtils.ConsoleCFGName);
 		assertNotNull(consCFG);
 		consCFG.reset();
 		Object[] configs = null;

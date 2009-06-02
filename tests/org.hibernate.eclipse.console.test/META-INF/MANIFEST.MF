@@ -21,7 +21,8 @@ Bundle-ClassPath: org.hibernate.eclipse.console.test.test/,
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin
 Export-Package: org.hibernate.eclipse.console.test,
- org.hibernate.eclipse.console.test.mappingproject,
+ org.hibernate.eclipse.console.test.project,
+ org.hibernate.eclipse.console.test.utils,
  org.hibernate.eclipse.console.test.xpl,
  org.hibernate.eclipse.hqleditor.preferences,
  org.jmock,

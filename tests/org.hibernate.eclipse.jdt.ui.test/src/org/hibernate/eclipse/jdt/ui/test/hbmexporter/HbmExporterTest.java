@@ -23,7 +23,8 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
-import org.hibernate.eclipse.console.test.mappingproject.TestUtilsCommon;
+import org.hibernate.eclipse.console.test.utils.FilesTransfer;
+import org.hibernate.eclipse.console.test.utils.TestUtilsCommon;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
@@ -219,7 +220,7 @@ public class HbmExporterTest extends TestCase {
 		}
 		IPackageFragmentRoot sourceFolder = commonUtil.createSourceFolder(
 				project, javaProject);
-		commonUtil.recursiveCopyFiles(resourceFolder, (IFolder) sourceFolder
+		FilesTransfer.copyFolder(resourceFolder, (IFolder) sourceFolder
 				.getResource());
 		File resourceFolderLib = getResourceItem(TESTRESOURCE_PATH);
 		if (!resourceFolderLib.exists()) {

@@ -12,7 +12,7 @@ package org.hibernate.eclipse.mapper;
 
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.hibernate.eclipse.console.test.mappingproject.MappingTestProject;
+import org.hibernate.eclipse.console.test.project.ConfigurableTestProject;
 import org.hibernate.eclipse.mapper.extractor.JavaTypeHandler;
 import org.hibernate.eclipse.mapper.extractor.PackageHandler;
 import junit.framework.TestCase;
@@ -26,7 +26,7 @@ public class HBMInfoExtractorTest extends TestCase {
 
 	public void executeJavaTypeHandlerTest(String start, String attributeName) {
 		sourceLocator.setPackageName("org"); //$NON-NLS-1$
-	    MappingTestProject testProj = MappingTestProject.getTestProject();
+		ConfigurableTestProject testProj = ConfigurableTestProject.getTestProject();
 	    IJavaProject project = testProj.getIJavaProject();
 		JavaTypeHandler javaTypeHandler = new JavaTypeHandler(sourceLocator);
 		ICompletionProposal[] res =
@@ -54,7 +54,7 @@ public class HBMInfoExtractorTest extends TestCase {
 	
 	public void executePackageHandlerTest(String start, String attributeName) {
 		sourceLocator.setPackageName("org"); //$NON-NLS-1$
-	    MappingTestProject testProj = MappingTestProject.getTestProject();
+		ConfigurableTestProject testProj = ConfigurableTestProject.getTestProject();
 	    IJavaProject project = testProj.getIJavaProject();
 	    PackageHandler packageHandler = new PackageHandler(sourceLocator);
 		ICompletionProposal[] res =

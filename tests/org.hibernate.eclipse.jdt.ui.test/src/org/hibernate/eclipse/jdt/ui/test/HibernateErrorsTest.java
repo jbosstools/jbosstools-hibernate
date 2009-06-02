@@ -19,7 +19,7 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 import org.hibernate.eclipse.console.test.HibernateConsoleTest;
-import org.hibernate.eclipse.console.test.SimpleTestProject;
+import org.hibernate.eclipse.console.test.project.SimpleTestProject;
 import org.hibernate.eclipse.console.test.xpl.JavaProjectHelper;
 
 public class HibernateErrorsTest extends HibernateConsoleTest {

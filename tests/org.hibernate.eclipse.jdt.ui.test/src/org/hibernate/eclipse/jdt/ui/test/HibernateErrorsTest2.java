@@ -27,7 +27,7 @@ import org.hibernate.console.preferences.ConsoleConfigurationPreferences.Configu
 import org.hibernate.eclipse.console.EclipseConsoleConfiguration;
 import org.hibernate.eclipse.console.EclipseConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.test.HibernateConsoleTest;
-import org.hibernate.eclipse.console.test.SimpleTestProject;
+import org.hibernate.eclipse.console.test.project.SimpleTestProject;
 import org.hibernate.eclipse.console.test.xpl.JavaProjectHelper;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 

@@ -1,4 +1,4 @@
-package org.hibernate.eclipse.console.test;
+package org.hibernate.eclipse.console.test.project;
 
 import java.io.IOException;
 

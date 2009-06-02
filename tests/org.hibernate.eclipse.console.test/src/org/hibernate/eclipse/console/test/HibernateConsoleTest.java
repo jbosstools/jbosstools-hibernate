@@ -1,12 +1,8 @@
 package org.hibernate.eclipse.console.test;
 
-import java.util.logging.Logger;
-
 import junit.framework.TestCase;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.ui.IPackagesViewPart;
@@ -17,6 +13,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.FileEditorInput;
 import org.hibernate.eclipse.console.HibernateConsolePerspectiveFactory;
+import org.hibernate.eclipse.console.test.project.SimpleTestProject;
 
 public abstract class HibernateConsoleTest extends TestCase {
 
@@ -73,6 +70,7 @@ public abstract class HibernateConsoleTest extends TestCase {
 
 
 		this.project.deleteIProject();
+		this.project = null;
 
 		super.tearDown();
 	}

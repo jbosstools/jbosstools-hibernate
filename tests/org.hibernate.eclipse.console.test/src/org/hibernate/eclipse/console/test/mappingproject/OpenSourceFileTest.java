@@ -24,6 +24,8 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.actions.OpenSourceAction;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
+import org.hibernate.eclipse.console.test.utils.ConsoleConfigUtils;
+import org.hibernate.eclipse.console.test.utils.ProjectUtil;
 import org.hibernate.eclipse.console.workbench.ConfigurationWorkbenchAdapter;
 import org.hibernate.eclipse.console.workbench.ConsoleConfigurationWorkbenchAdapter;
 import org.hibernate.eclipse.console.workbench.PersistentClassWorkbenchAdapter;
@@ -41,7 +43,7 @@ public class OpenSourceFileTest extends TestCase {
 	public void testOpenSourceFileTest() {
 		//fail("test fail");
 		KnownConfigurations knownConfigurations = KnownConfigurations.getInstance();
-		final ConsoleConfiguration consCFG = knownConfigurations.find(ProjectUtil.ConsoleCFGName);
+		final ConsoleConfiguration consCFG = knownConfigurations.find(ConsoleConfigUtils.ConsoleCFGName);
 		assertNotNull(consCFG);
 		consCFG.reset();
 		Object[] configs = null;

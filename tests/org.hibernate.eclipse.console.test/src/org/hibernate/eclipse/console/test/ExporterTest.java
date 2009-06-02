@@ -33,6 +33,13 @@ public class ExporterTest extends TestCase {
 		factory = new ExporterFactory(definition, definition.getId());
 
 	}
+
+	protected void tearDown() throws Exception {
+		map = null;
+		factory = null;
+		definition = null;
+	}
+
 	public void testExporters() {
 		
 		Map<String, ExporterProperty> properties = definition.getExporterProperties();

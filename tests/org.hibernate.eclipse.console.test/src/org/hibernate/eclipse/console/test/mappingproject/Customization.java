@@ -44,11 +44,6 @@ public class Customization {
 	public static final int EACTH_PACK_TEST_DELAY = 0;
 	
 	/**
-	 * Delay in milliseconds before closing workspace
-	 */
-	public static final long AFTER_ALL_PACKS_DELAY = 1000;
-	
-	/**
 	 * Use time profiler
 	 */
 	public static final boolean USE_CONSOLE_OUTPUT = true;

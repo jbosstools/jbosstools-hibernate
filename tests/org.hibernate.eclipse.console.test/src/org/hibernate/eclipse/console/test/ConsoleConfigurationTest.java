@@ -36,6 +36,7 @@ public class ConsoleConfigurationTest extends TestCase {
 
 	protected void tearDown() throws Exception {
 		KnownConfigurations.getInstance().removeAllConfigurations();
+		consoleCfg = null;
 	}
 
 	static class TestConsoleConfigurationPreferences implements ConsoleConfigurationPreferences {

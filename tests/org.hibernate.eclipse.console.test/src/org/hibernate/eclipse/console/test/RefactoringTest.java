@@ -36,6 +36,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.launching.DefaultProjectClasspathEntry;
 import org.eclipse.jdt.internal.launching.RuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
+import org.hibernate.eclipse.console.test.project.SimpleTestProject;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 import org.hibernate.eclipse.launch.core.refactoring.HibernateRefactoringUtil;
 
@@ -188,6 +189,13 @@ public class RefactoringTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		project.deleteIProject();
+		project = null;
+		testStrConfig  = null;
+		testStrListConfig  = null;
+		testNotChangedConfig  = null;
+		runtimeClasspathEntries = null;
+		affectSegmentsCount = null;
+		oldPathStr = null;
 	}
 
 	private void updatePaths(Path oldPath, Path newPath) throws CoreException{

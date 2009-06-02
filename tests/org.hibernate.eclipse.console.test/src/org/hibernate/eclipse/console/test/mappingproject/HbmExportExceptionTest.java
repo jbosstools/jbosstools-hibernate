@@ -11,26 +11,27 @@
 package org.hibernate.eclipse.console.test.mappingproject;
 
 import java.io.File;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
 import junit.framework.TestCase;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.PackageFragmentRoot;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.widgets.Display;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
+import org.hibernate.eclipse.console.test.project.ConfigurableTestProject;
+import org.hibernate.eclipse.console.test.utils.ConsoleConfigUtils;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.ExporterException;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
@@ -46,8 +47,9 @@ public class HbmExportExceptionTest extends TestCase {
 		IPackageFragment pack = HibernateAllMappingTests.getActivePackage();		
 		try{
 			KnownConfigurations knownConfigurations = KnownConfigurations.getInstance();
-			final ConsoleConfiguration consCFG = knownConfigurations.find(ProjectUtil.ConsoleCFGName);
+			final ConsoleConfiguration consCFG = knownConfigurations.find(ConsoleConfigUtils.ConsoleCFGName);
 			assertNotNull(consCFG);
+			//pack.getJavaProject().getProject().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
 			consCFG.reset();
 			consCFG.build();
 			assertTrue(consCFG.hasConfiguration());
@@ -69,7 +71,7 @@ public class HbmExportExceptionTest extends TestCase {
 				for (int i = 0; i < ress.length; i++) {
 					if (ress[i] instanceof IFile){
 						IFile res = (IFile)ress[i];
-						if (res.getName().endsWith(".hbm.xml")){ //$NON-NLS-1$
+						if (res.getName().endsWith(".hbm.xml")) { //$NON-NLS-1$
 							res.delete(true, false, null);
 						}
 					}
@@ -89,9 +91,9 @@ public class HbmExportExceptionTest extends TestCase {
 				collector.formatFiles();
 	
 				try {//build generated configuration
-					pack.getResource().refreshLocal(IResource.DEPTH_ONE, null);
-					waitForJobs();
-					ProjectUtil.customizeCFGFileForPack(pack);
+					pack.getResource().refreshLocal(IResource.DEPTH_INFINITE, null);
+					pack.getJavaProject().getProject().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
+					ConsoleConfigUtils.customizeCfgXmlForPack(pack);
 					assertNotNull(consCFG);
 					consCFG.reset();
 	
@@ -109,7 +111,7 @@ public class HbmExportExceptionTest extends TestCase {
 						config = consCFG.getConfiguration();
 				} catch (CoreException e) {
 					String out = NLS.bind(ConsoleTestMessages.UpdateConfigurationTest_error_customising_file_for_package,
-							new Object[] { ProjectUtil.CFG_FILE_NAME, pack.getPath(), e.getMessage() } );
+							new Object[] { ConsoleConfigUtils.CFG_FILE_NAME, pack.getPath(), e.getMessage() } );
 					fail(out);
 				}
 			} catch (ExporterException e){
@@ -122,55 +124,16 @@ public class HbmExportExceptionTest extends TestCase {
 	}
 	
 	private File getSrcFolder() throws JavaModelException{
-		MappingTestProject mapProject = MappingTestProject.getTestProject();
+		ConfigurableTestProject mapProject = ConfigurableTestProject.getTestProject();
 		PackageFragmentRoot packageFragmentRoot = null;
 		IPackageFragmentRoot[] roots = mapProject.getIJavaProject().getAllPackageFragmentRoots();
-	    for (int i = 0; i < roots.length; i++) {
-	    	if (roots[i].getClass() != PackageFragmentRoot.class) continue;
-			packageFragmentRoot = (PackageFragmentRoot) roots[i];
-			break;
+	    for (int i = 0; i < roots.length && packageFragmentRoot == null; i++) {
+	    	if (roots[i].getClass() == PackageFragmentRoot.class) {
+				packageFragmentRoot = (PackageFragmentRoot) roots[i];
+	    	}
 	    }
 	    assertNotNull(packageFragmentRoot);
 	    return packageFragmentRoot.getResource().getLocation().toFile();
-	}
-	
-	public void waitForJobs() {
-		long start = System.currentTimeMillis();
-		// Job.getJobManager().isIdle() is more efficient than EditorTestHelper.allJobsQuiet()
-		// EditorTestHelper.allJobsQuiet() isn't thread-safe
-		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=198241 is fixed 
-		//while (!EditorTestHelper.allJobsQuiet()) {
-		while (!Job.getJobManager().isIdle()) {
-			delay(1000);
-			if ( (System.currentTimeMillis()-start) > MAX_IDLE ) 
-				throw new RuntimeException("A long running task detected"); //$NON-NLS-1$
-		}
-	}
-	private static final long MAX_IDLE = 30*60*1000L;
-	
-	protected void delay(long waitTimeMillis) {
-		if (waitTimeMillis <= 0) return;
-		Display display = Display.getCurrent();
-
-		// If this is the UI thread,
-		// then process input.
-		if (display != null) {
-			long endTimeMillis = System.currentTimeMillis() + waitTimeMillis;
-			while (System.currentTimeMillis() < endTimeMillis) {
-				if (!display.readAndDispatch())
-					display.sleep();
-			}
-			display.update();
-		}
-
-		// Otherwise, perform a simple sleep.
-		else {
-			try {
-				Thread.sleep(waitTimeMillis);
-			} catch (InterruptedException e) {
-				// Ignored.
-			}
-		}
 	}
 }
 

@@ -25,6 +25,7 @@ public class QueryParametersTest extends TestCase {
 	
 	protected void tearDown() throws Exception {
 		KnownConfigurations.getInstance().removeAllConfigurations();
+		consoleCfg = null;
 	}
 
 	public void testQueryParameter() {
