@@ -9,7 +9,6 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -20,7 +19,8 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 import org.hibernate.eclipse.console.test.HibernateConsoleTest;
 import org.hibernate.eclipse.console.test.project.SimpleTestProject;
-import org.hibernate.eclipse.console.test.xpl.JavaProjectHelper;
+import org.hibernate.eclipse.console.test.project.xpl.JavaProjectHelper;
+import org.hibernate.eclipse.console.test.utils.FilesTransfer;
 
 public class HibernateErrorsTest extends HibernateConsoleTest {
 
@@ -39,9 +39,9 @@ public class HibernateErrorsTest extends HibernateConsoleTest {
 												// see JBIDE-1012
 
 			@Override
-			protected void buildSimpleTestProject() throws JavaModelException,
+			protected void buildProject() throws JavaModelException,
 					CoreException, IOException {
-				super.buildSimpleTestProject();
+				super.buildProject();
 
 				// set up project #3: file system structure with project as
 				// source folder
@@ -58,6 +58,7 @@ public class HibernateErrorsTest extends HibernateConsoleTest {
 				IPackageFragmentRoot addLibraryWithImport = JavaProjectHelper
 						.addLibraryWithImport(getIJavaProject(), Path
 								.fromOSString(ejb3lib.getPath()), null, null);
+				addLibraryWithImport.hasChildren();
 
 				assertEquals(3, getIJavaProject().getRawClasspath().length);
 
@@ -152,31 +153,7 @@ public class HibernateErrorsTest extends HibernateConsoleTest {
 
 		getProject().getIProject().delete(false, true, null);
 		waitForJobs();
-		delete(file);
-	}
-
-	private void delete(File path) {
-		if (path.exists()) {
-			File[] files = path.listFiles();
-			for (int i = 0; i < files.length; i++) {
-				if (files[i].isDirectory()) {
-					delete(files[i]);
-				} else {
-					deleteFile(files[i]);
-				}
-			}
-		}
-		deleteFile(path);
-
-	}
-
-	private void deleteFile(File file) {
-		try {
-			if (!file.delete())
-				throw new RuntimeException("Cannot remove the " + file.getAbsolutePath() + " file.");  //$NON-NLS-1$//$NON-NLS-2$
-		} catch (Throwable e) {
-			throw new RuntimeException("Cannot remove the " + file.getAbsolutePath() + " file.",e); //$NON-NLS-1$ //$NON-NLS-2$
-		}
+		FilesTransfer.delete(file);
 	}
 
 	public void testDummy() throws JavaModelException {

@@ -23,6 +23,7 @@ public class JavaFormattingTest extends TestCase {
 	protected void tearDown() throws Exception {
 	}
 
+	@SuppressWarnings("unchecked")
 	public void testJavaFormatting() throws JavaModelException, MalformedTreeException, BadLocationException {
 /*
 		IFile file = ResourcesPlugin

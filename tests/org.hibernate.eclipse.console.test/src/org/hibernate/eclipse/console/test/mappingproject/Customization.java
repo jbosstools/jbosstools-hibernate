@@ -34,11 +34,6 @@ public class Customization {
 	public static final boolean STOP_AFTER_MISSING_PACK = false;
 	
 	/**
-	 * Shows each test run as individual
-	 */
-	public static final boolean SHOW_EACH_TEST = true;
-	
-	/**
 	 * Delay in milliseconds after each package
 	 */
 	public static final int EACTH_PACK_TEST_DELAY = 0;

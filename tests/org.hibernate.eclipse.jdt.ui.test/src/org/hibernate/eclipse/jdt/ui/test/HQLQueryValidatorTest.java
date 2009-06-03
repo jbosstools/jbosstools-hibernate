@@ -1,6 +1,5 @@
 package org.hibernate.eclipse.jdt.ui.test;
 
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +29,7 @@ import org.hibernate.eclipse.console.EclipseConsoleConfiguration;
 import org.hibernate.eclipse.console.EclipseConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.test.HibernateConsoleTest;
 import org.hibernate.eclipse.console.test.project.SimpleTestProject;
-import org.hibernate.eclipse.console.test.xpl.JavaProjectHelper;
+import org.hibernate.eclipse.console.test.project.xpl.JavaProjectHelper;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.eclipse.jdt.ui.internal.HQLDetector;
 import org.hibernate.eclipse.jdt.ui.internal.HQLProblem;
@@ -50,9 +49,9 @@ public class HQLQueryValidatorTest extends HibernateConsoleTest {
 		return new SimpleTestProject("hqlquerytest-" + System.currentTimeMillis()) { //$NON-NLS-1$
 			
 			@Override
-			protected void buildSimpleTestProject() throws JavaModelException,
+			protected void buildProject() throws JavaModelException,
 					CoreException, IOException {				
-				super.buildSimpleTestProject();
+				super.buildProject();
 				
 				
 				//set up project #3: file system structure with project as source folder
@@ -63,6 +62,7 @@ public class HQLQueryValidatorTest extends HibernateConsoleTest {
 				JavaProjectHelper.addToClasspath(getIJavaProject(), JavaRuntime.getDefaultJREContainerEntry());
 				
 				IPackageFragmentRoot addLibraryWithImport = JavaProjectHelper.addLibraryWithImport(getIJavaProject(), Path.fromOSString(ejb3lib.getPath()), null, null);
+				addLibraryWithImport.hasChildren();
 				
 				assertEquals(3,getIJavaProject().getRawClasspath().length);
 			

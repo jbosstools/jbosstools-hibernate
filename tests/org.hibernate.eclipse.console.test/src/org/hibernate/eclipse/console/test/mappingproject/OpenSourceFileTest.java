@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 
 import junit.framework.TestCase;
 
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorPart;
@@ -24,8 +25,7 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.actions.OpenSourceAction;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
-import org.hibernate.eclipse.console.test.utils.ConsoleConfigUtils;
-import org.hibernate.eclipse.console.test.utils.ProjectUtil;
+import org.hibernate.eclipse.console.test.utils.Utils;
 import org.hibernate.eclipse.console.workbench.ConfigurationWorkbenchAdapter;
 import org.hibernate.eclipse.console.workbench.ConsoleConfigurationWorkbenchAdapter;
 import org.hibernate.eclipse.console.workbench.PersistentClassWorkbenchAdapter;
@@ -40,10 +40,29 @@ import org.hibernate.mapping.Property;
  */
 public class OpenSourceFileTest extends TestCase {
 
+	protected String consoleConfigName = null;
+	
+	protected IPackageFragment testPackage = null; 
+
+	public OpenSourceFileTest() {
+	}
+
+	public OpenSourceFileTest(String name) {
+		super(name);
+	}
+	
+	protected void setUp() throws Exception {
+	}
+
+	protected void tearDown() throws Exception {
+		consoleConfigName = null;
+		testPackage = null;		
+	}
+
 	public void testOpenSourceFileTest() {
 		//fail("test fail");
 		KnownConfigurations knownConfigurations = KnownConfigurations.getInstance();
-		final ConsoleConfiguration consCFG = knownConfigurations.find(ConsoleConfigUtils.ConsoleCFGName);
+		final ConsoleConfiguration consCFG = knownConfigurations.find(consoleConfigName);
 		assertNotNull(consCFG);
 		consCFG.reset();
 		Object[] configs = null;
@@ -53,12 +72,12 @@ public class OpenSourceFileTest extends TestCase {
 			configs = new ConsoleConfigurationWorkbenchAdapter().getChildren(consCFG);
 			assertTrue(configs[0] instanceof Configuration);
 			persClasses = new ConfigurationWorkbenchAdapter().getChildren(configs[0]);
-		} catch (InvalidMappingException ex){
+		} catch (InvalidMappingException ex) {
 			String out = NLS.bind(ConsoleTestMessages.OpenSourceFileTest_source_files_for_package_cannot_be_opened,
-					HibernateAllMappingTests.getActivePackage().getElementName(), ex.getMessage());
+					testPackage.getElementName(), ex.getMessage());
 			fail(out);
 		}
-		if (persClasses.length > 0){
+		if (persClasses.length > 0) {
 			for (int i = 0; i < persClasses.length; i++) {
 				assertTrue(persClasses[0] instanceof PersistentClass);
 				PersistentClass persClass = (PersistentClass) persClasses[i];
@@ -67,7 +86,9 @@ public class OpenSourceFileTest extends TestCase {
 				openTest(persClass, consCFG, fullyQualifiedName);
 				fields =  new PersistentClassWorkbenchAdapter().getChildren(persClass);
 				for (int j = 0; j < fields.length; j++) {
-					if (fields[j].getClass() != Property.class) continue;
+					if (fields[j].getClass() != Property.class) {
+						continue;
+					}
 					fullyQualifiedName = persClass.getClassName();
 					// test Properties
 					openTest(fields[j], consCFG, fullyQualifiedName);
@@ -77,7 +98,9 @@ public class OpenSourceFileTest extends TestCase {
 
 						Object[] compProperties = new PropertyWorkbenchAdapter().getChildren(fields[j]);
 						for (int k = 0; k < compProperties.length; k++) {
-							if (compProperties[k].getClass() != Property.class) continue;
+							if (compProperties[k].getClass() != Property.class) {
+								continue;
+							}
 							//test Composite properties
 							openTest(compProperties[k], consCFG, fullyQualifiedName);
 						}
@@ -94,7 +117,7 @@ public class OpenSourceFileTest extends TestCase {
 		Throwable ex = null;
 		try {
 			editor = OpenSourceAction.run(consCFG, selection, fullyQualifiedName);
-			boolean highlighted = ProjectUtil.checkHighlighting(editor);
+			boolean highlighted = Utils.hasSelection(editor);
 			if (!highlighted) {
 				String out = NLS.bind(ConsoleTestMessages.OpenSourceFileTest_highlighted_region_for_is_empty, selection);
 				fail(out);
@@ -106,7 +129,7 @@ public class OpenSourceFileTest extends TestCase {
 		} catch (FileNotFoundException e) {
 			ex = e;
 		}
-		if (ex == null ) ex = ProjectUtil.getExceptionIfItOccured(editor);
+		if (ex == null ) ex = Utils.getExceptionIfItOccured(editor);
 		if (ex != null) {
 			String out = NLS.bind(ConsoleTestMessages.OpenSourceFileTest_mapping_file_for_not_opened,
 					fullyQualifiedName/*.getClassName()*/, ex.getMessage());
@@ -114,6 +137,19 @@ public class OpenSourceFileTest extends TestCase {
 		}
 	}
 
+	public String getConsoleConfigName() {
+		return consoleConfigName;
+	}
 
+	public void setConsoleConfigName(String consoleConfigName) {
+		this.consoleConfigName = consoleConfigName;
+	}
 
+	public IPackageFragment getTestPackage() {
+		return testPackage;
+	}
+
+	public void setTestPackage(IPackageFragment testPackage) {
+		this.testPackage = testPackage;
+	}
 }

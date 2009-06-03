@@ -28,7 +28,8 @@ import org.hibernate.eclipse.console.EclipseConsoleConfiguration;
 import org.hibernate.eclipse.console.EclipseConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.test.HibernateConsoleTest;
 import org.hibernate.eclipse.console.test.project.SimpleTestProject;
-import org.hibernate.eclipse.console.test.xpl.JavaProjectHelper;
+import org.hibernate.eclipse.console.test.project.xpl.JavaProjectHelper;
+import org.hibernate.eclipse.console.test.utils.FilesTransfer;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 
 public class HibernateErrorsTest2 extends HibernateConsoleTest {
@@ -49,9 +50,9 @@ public class HibernateErrorsTest2 extends HibernateConsoleTest {
 		return new SimpleTestProject("hqlquerytest-" + System.currentTimeMillis()) { //$NON-NLS-1$
 			
 			@Override
-			protected void buildSimpleTestProject() throws JavaModelException,
+			protected void buildProject() throws JavaModelException,
 					CoreException, IOException {				
-				super.buildSimpleTestProject();
+				super.buildProject();
 				
 				
 				//set up project #3: file system structure with project as source folder
@@ -62,6 +63,7 @@ public class HibernateErrorsTest2 extends HibernateConsoleTest {
 				JavaProjectHelper.addToClasspath(getIJavaProject(), JavaRuntime.getDefaultJREContainerEntry());
 				
 				IPackageFragmentRoot addLibraryWithImport = JavaProjectHelper.addLibraryWithImport(getIJavaProject(), Path.fromOSString(ejb3lib.getPath()), null, null);
+				addLibraryWithImport.hasChildren();
 				
 				assertEquals(3,getIJavaProject().getRawClasspath().length);
 			
@@ -166,48 +168,10 @@ public class HibernateErrorsTest2 extends HibernateConsoleTest {
 			}, new NullProgressMonitor());
 		}
 		waitForJobs();
-		delete(file);
+		FilesTransfer.delete(file);
 	}
 	public void testDummy() throws JavaModelException {
 	
-	}
-	
-	private void delete(File path) {
-		if (path.exists()) {
-			File[] files = path.listFiles();
-			for (int i = 0; i < files.length; i++) {
-				if (files[i].isDirectory()) {
-					delete(files[i]);
-				} else {
-					deleteFile(files[i]);
-				}
-			}
-		}
-		deleteFile(path);
-
-	}
-
-	private void deleteFile(File file) {
-		try {
-			if (!file.delete()) {
-				throw new RuntimeException(getMessage(file));
-			}
-		} catch (Throwable e) {
-			throw new RuntimeException(getMessage(file),e);
-		}
-	}
-
-	private String getMessage(File file) {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("Cannot remove the "); //$NON-NLS-1$
-		buffer.append(file.getAbsolutePath());
-		buffer.append(" file. "); //$NON-NLS-1$
-		if (file.exists() && file.isDirectory()) {
-			String[] files = file.list();
-			buffer.append("List="); //$NON-NLS-1$
-			buffer.append(files.toString());
-		}
-		return buffer.toString();
 	}
 	
 	protected SimpleTestProject getProject() {

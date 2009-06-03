@@ -10,7 +10,9 @@
  ******************************************************************************/
 package org.hibernate.eclipse.console.test.mappingproject;
 
+import org.eclipse.jdt.core.IPackageFragment;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
+import org.hibernate.eclipse.console.test.project.ConfigurableTestProject;
 
 import junit.framework.TestSuite;
 
@@ -18,22 +20,33 @@ import junit.framework.TestSuite;
  * @author Dmitry Geraskov
  *
  */
-public class TestSet{
-
+public class TestSet {
+	
 	/**
 	 * use only addTestSuit to prevent errors!!!
 	 * @return
 	 */
-	public static TestSuite getTests() {
+	public static TestSuite createTestSuite(String consoleConfigName,
+			IPackageFragment testPackage, ConfigurableTestProject testProject) {
 		TestSuite suite = new TestSuite(ConsoleTestMessages.TestSet_test_for_mappingtestproject);
-		addPackTests(suite);
+		HbmExportExceptionTest test1 = new HbmExportExceptionTest("testHbmExportExceptionTest"); //$NON-NLS-1$
+		test1.setConsoleConfigName(consoleConfigName);
+		test1.setTestPackage(testPackage);
+		test1.setTestProject(testProject);
+		OpenSourceFileTest test2 = new OpenSourceFileTest("testOpenSourceFileTest"); //$NON-NLS-1$
+		test2.setConsoleConfigName(consoleConfigName);
+		test2.setTestPackage(testPackage);
+		OpenMappingFileTest test3 = new OpenMappingFileTest("testOpenMappingFileTest"); //$NON-NLS-1$
+		test3.setConsoleConfigName(consoleConfigName);
+		test3.setTestPackage(testPackage);
+		OpenMappingDiagramTest test4 = new OpenMappingDiagramTest("testOpenMappingDiagram"); //$NON-NLS-1$
+		test4.setConsoleConfigName(consoleConfigName);
+		test4.setTestPackage(testPackage);
+		//
+		suite.addTest(test1);
+		suite.addTest(test2);
+		suite.addTest(test3);
+		suite.addTest(test4);
 		return suite;
-	}
-
-	private static void addPackTests(TestSuite suite) {
-		suite.addTestSuite(HbmExportExceptionTest.class);
-		//suite.addTestSuite(OpenSourceFileTest.class);
-		//suite.addTestSuite(OpenMappingFileTest.class);
-		//suite.addTestSuite(OpenMappingDiagramTest.class);
 	}
 }

@@ -4,10 +4,6 @@ import java.io.IOException;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -19,42 +15,18 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 
-public class SimpleTestProject {
-
-	IProject project;
-	IJavaProject javaProject;
-	
-	final private String projectName;
+public class SimpleTestProject extends TestProject {
 	
 	public static final String PACKAGE_NAME = "test"; //$NON-NLS-1$
 	public static final String TYPE_NAME = "TestClass"; //$NON-NLS-1$
 	public static final String FILE_NAME = "TestClass.java"; //$NON-NLS-1$
 	
-	
-	public SimpleTestProject(String projectName) {
-		this.projectName=projectName;
-		initialize();
-	}
-	
 	public SimpleTestProject() {
-		projectName  = "HibernateToolsTestProject"; //$NON-NLS-1$
-		initialize();
+		super("HibernateToolsTestProject"); //$NON-NLS-1$
 	}
 
-	void initialize(){
-		try{
-			buildSimpleTestProject();
-		}catch(Exception e){ 
-			throw new RuntimeException(e);
-		}
-	}
-
-	public IProject getIProject(){
-		return this.project;
-	}
-	
-	public IJavaProject getIJavaProject(){
-		return this.javaProject;
+	public SimpleTestProject(String projectName) {
+		super(projectName);
 	}
 	
 	public String getFullyQualifiedTestClassName(){
@@ -76,84 +48,14 @@ public class SimpleTestProject {
 		return getTestClassType().getField("testField"); //$NON-NLS-1$
 	}
 	
-	public void deleteIProject() {
-		try {
-			project.delete(true, true, null);
-		} catch (CoreException ce) {
-			throw new RuntimeException(ce);
-		}
-
-	}
-	
-	public void deleteIProject(boolean deleteContent) {
-		try {
-			project.delete(deleteContent, true, null);
-		} catch (CoreException ce) {
-			throw new RuntimeException(ce);
-		}
-
-	}
-	
-	protected void buildSimpleTestProject() throws JavaModelException, CoreException, IOException {
-		project = buildNewProject(projectName);
-		javaProject = buildJavaProject(project);
-
+	protected void buildProject() throws JavaModelException, CoreException, IOException {
+		super.buildProject();
 		buildType(buildPackage(PACKAGE_NAME, project, javaProject), FILE_NAME);
-		
 	}
-
-	private IProject buildNewProject(String projectName) {
-
-		// get a project handle
-		final IProject newProjectHandle = ResourcesPlugin.getWorkspace()
-				.getRoot().getProject(projectName);
-
-		// get a project descriptor
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		final IProjectDescription description = workspace
-				.newProjectDescription(newProjectHandle.getName());
-
-		try {
-			createAndOpenProject(description, newProjectHandle);
-		} catch (CoreException ce) {
-			throw new RuntimeException(ce);
-		}
-
-		return newProjectHandle;
-	}
-
-	private void createAndOpenProject(IProjectDescription description,
-			IProject projectHandle) throws CoreException {
-
-		projectHandle.create(description, null);
-		projectHandle.open(IResource.BACKGROUND_REFRESH, null);
-	}
-
-	private IJavaProject buildJavaProject(IProject project) {
-
-		IJavaProject javaProject = JavaCore.create(project);
-		try {
-			setJavaNature(project);
-		} catch (CoreException ce) {
-			throw new RuntimeException(ce);
-		}
-		
-		javaProject.setOption(JavaCore.COMPILER_COMPLIANCE, JavaCore.VERSION_1_5);
-		javaProject.setOption(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, JavaCore.VERSION_1_5);
-		javaProject.setOption(JavaCore.COMPILER_SOURCE, JavaCore.VERSION_1_5);
-		return javaProject;
-	}
-
-	private void setJavaNature(IProject project) throws CoreException {
-		IProjectDescription description = project.getDescription();
-		description.setNatureIds(new String[] { JavaCore.NATURE_ID });
-		project.setDescription(description, null);
-	}
-
 
 	private IPackageFragmentRoot buildSourceFolder(IProject project,
 			IJavaProject javaProject) throws CoreException {
-		IFolder folder = project.getFolder("src"); //$NON-NLS-1$
+		IFolder folder = project.getFolder(SRC_FOLDER);
 		folder.create(false, true, null);
 		IPackageFragmentRoot root = javaProject.getPackageFragmentRoot(folder);
 		IClasspathEntry[] newEntries = { JavaCore

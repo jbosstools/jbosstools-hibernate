@@ -3,7 +3,9 @@ package org.hibernate.eclipse.console.test;
 import java.io.IOException;
 
 import org.hibernate.eclipse.console.test.mappingproject.HibernateAllMappingTests;
+import org.hibernate.eclipse.console.views.test.QueryPageViewerTest;
 import org.hibernate.eclipse.hqleditor.preferences.HQLEditorPreferencePageTest;
+import org.hibernate.eclipse.mapper.HBMInfoExtractorTest;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -23,6 +25,9 @@ public class ConsolePluginAllTests {
 		
 		suite.addTestSuite( HibernateAllMappingTests.class );
 		suite.addTestSuite(HQLEditorPreferencePageTest.class);
+		
+		suite.addTestSuite(QueryPageViewerTest.class);
+		suite.addTestSuite(HBMInfoExtractorTest.class);
 
 		// core tests
 		//Properties properties = new Properties();

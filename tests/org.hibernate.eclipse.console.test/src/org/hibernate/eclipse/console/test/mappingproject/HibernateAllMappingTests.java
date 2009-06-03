@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.hibernate.eclipse.console.test.mappingproject;
 
+import java.io.File;
 import java.util.regex.Pattern;
 
 import junit.framework.Test;
@@ -34,25 +35,33 @@ import org.eclipse.ui.PlatformUI;
 import org.hibernate.eclipse.console.HibernateConsolePerspectiveFactory;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.project.ConfigurableTestProject;
+import org.hibernate.eclipse.console.test.project.TestProject;
 import org.hibernate.eclipse.console.test.utils.ConsoleConfigUtils;
-import org.hibernate.eclipse.console.test.utils.FilesTransfer;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 
+/**
+ * 
+ */
+@SuppressWarnings("restriction")
 public class HibernateAllMappingTests extends TestCase {
 
-	private ConfigurableTestProject project;
+	protected String consoleConfigName = null;
+	
+	protected IPackageFragment testPackage = null; 
 
-	private static IPackageFragment activePackage;
+	protected ConfigurableTestProject testProject = null;
+
+	protected TestResult result = null;
 
 	public HibernateAllMappingTests(String name) {
 		super(name);
 	}
 
-	private TestResult result = null;
-
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.project = ConfigurableTestProject.getTestProject();
+		testProject = new ConfigurableTestProject("JUnitTestProj"); //$NON-NLS-1$
+		consoleConfigName = testProject.getIProject().getName();
+		testPackage = null;		
 
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().setPerspective(
 				PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId("org.eclipse.ui.resourcePerspective")); //$NON-NLS-1$
@@ -65,18 +74,18 @@ public class HibernateAllMappingTests extends TestCase {
 			throw new RuntimeException(e);
 		}
 
-		packageExplorer.selectAndReveal(project.getIJavaProject());
+		packageExplorer.selectAndReveal(testProject.getIJavaProject());
 
 		PlatformUI.getWorkbench()
 		.getActiveWorkbenchWindow().getActivePage().setPerspective(
 				PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId(HibernateConsolePerspectiveFactory.ID_CONSOLE_PERSPECTIVE));
 
-		IPath cfgFilePath = new Path(ConfigurableTestProject.PROJECT_NAME + "/" +  //$NON-NLS-1$
-				FilesTransfer.SRC_FOLDER + "/" + ConsoleConfigUtils.CFG_FILE_NAME); //$NON-NLS-1$
-		ConsoleConfigUtils.createConsoleConfig(ConsoleConfigUtils.ConsoleCFGName, 
-				cfgFilePath, ConfigurableTestProject.PROJECT_NAME);
-		ProjectUtils.toggleHibernateOnProject(project.getIProject(), true, ConsoleConfigUtils.ConsoleCFGName);
-		project.getIProject().build(IncrementalProjectBuilder.FULL_BUILD, null);
+		IPath cfgFilePath = new Path(testProject.getIProject().getName() + File.separator +
+				TestProject.SRC_FOLDER + File.separator + ConsoleConfigUtils.CFG_FILE_NAME);
+		ConsoleConfigUtils.createConsoleConfig(consoleConfigName, 
+				cfgFilePath, testProject.getIProject().getName());
+		ProjectUtils.toggleHibernateOnProject(testProject.getIProject(), true, consoleConfigName);
+		testProject.getIProject().build(IncrementalProjectBuilder.FULL_BUILD, null);
 	}
 
 	/* (non-Javadoc)
@@ -89,22 +98,19 @@ public class HibernateAllMappingTests extends TestCase {
 	}
 
 	public void tearDown() throws Exception {
-		ProjectUtils.toggleHibernateOnProject(project.getIProject(), false, ConsoleConfigUtils.ConsoleCFGName);
-		ConsoleConfigUtils.deleteConsoleConfig(ConsoleConfigUtils.ConsoleCFGName);
-		project.deleteIProject(false);
-		project = null;
+		ProjectUtils.toggleHibernateOnProject(testProject.getIProject(), false, consoleConfigName);
+		ConsoleConfigUtils.deleteConsoleConfig(consoleConfigName);
+		testProject.deleteIProject(false);
+		testProject = null;
+		consoleConfigName = null;
+		testPackage = null;		
 		super.tearDown();
-	}
-
-	protected ConfigurableTestProject getProject() {
-		return this.project;
 	}
 
 	public void testEachPackWithTestSet() throws JavaModelException {
 	   	long start_time = System.currentTimeMillis();
-		TestSuite suite = TestSet.getTests();
 		int pack_count = 0;
-		IPackageFragmentRoot[] roots = project.getIJavaProject().getAllPackageFragmentRoots();
+		IPackageFragmentRoot[] roots = testProject.getIJavaProject().getAllPackageFragmentRoots();
 		for (int i = 0; i < roots.length; i++) {
 	    	if (roots[i].getClass() != PackageFragmentRoot.class) {
 	    		continue;
@@ -116,9 +122,9 @@ public class HibernateAllMappingTests extends TestCase {
 				if (!(javaElement instanceof IPackageFragment)) {
 					continue;
 				}
-				IPackageFragment pack = (IPackageFragment)javaElement;
+				testPackage = (IPackageFragment)javaElement;
 				// use packages only with compilation units
-				if (pack.getCompilationUnits().length == 0) {
+				if (testPackage.getCompilationUnits().length == 0) {
 					continue;
 				}
 				if (Customization.U_TEST_PACKS_PATTERN) {
@@ -131,13 +137,9 @@ public class HibernateAllMappingTests extends TestCase {
 				int prev_failCount = result.failureCount();
 				int prev_errCount = result.errorCount();
 
-				if (Customization.SHOW_EACH_TEST) {
-					// this display result for each test in JUinit view
-					suite = TestSet.getTests();
-				}
+				TestSuite suite = TestSet.createTestSuite(consoleConfigName, testPackage, testProject);
 
-				activePackage = pack;
-				customizeCfgXml(pack);
+				customizeCfgXml(testPackage);
 				//==============================
 				//run all tests for package
 				//suite.run(result);
@@ -148,23 +150,25 @@ public class HibernateAllMappingTests extends TestCase {
 				closeAllEditors();
 				//==============================
 				pack_count++;
-				if (Customization.USE_CONSOLE_OUTPUT){
-					System.out.print( result.errorCount() - prev_errCount + ConsoleTestMessages.HibernateAllMappingTests_errors + " \t"); //$NON-NLS-1$
-					System.out.print( result.failureCount() - prev_failCount + ConsoleTestMessages.HibernateAllMappingTests_fails + "\t");						 //$NON-NLS-1$
+				if (Customization.USE_CONSOLE_OUTPUT) {
+					System.out.print(result.errorCount() - prev_errCount + ConsoleTestMessages.HibernateAllMappingTests_errors + " \t"); //$NON-NLS-1$
+					System.out.print(result.failureCount() - prev_failCount + ConsoleTestMessages.HibernateAllMappingTests_fails + "\t");						 //$NON-NLS-1$
 					long period = System.currentTimeMillis() - st_pack_time;
 					String time = period / 1000 + "." + (period % 1000) / 100; //$NON-NLS-1$
 					System.out.println( time +ConsoleTestMessages.HibernateAllMappingTests_seconds + 
 							" {" + javaElement.getElementName() + "}");  //$NON-NLS-1$//$NON-NLS-2$
 				}
 
-				if (Customization.STOP_AFTER_MISSING_PACK){
-					if (result.failureCount() > prev_failCount) break;
+				if (Customization.STOP_AFTER_MISSING_PACK) {
+					if (result.failureCount() > prev_failCount) {
+						break;
+					}
 				}
 				prev_failCount = result.failureCount();
 				prev_errCount = result.errorCount();
 			}
 		}
-		if (Customization.USE_CONSOLE_OUTPUT){
+		if (Customization.USE_CONSOLE_OUTPUT) {
 			System.out.println( "====================================================="); //$NON-NLS-1$
 			System.out.print( result.errorCount() + ConsoleTestMessages.HibernateAllMappingTests_errors + " \t"); //$NON-NLS-1$
 			System.out.print( result.failureCount() + ConsoleTestMessages.HibernateAllMappingTests_fails + "\t");						 //$NON-NLS-1$
@@ -187,11 +191,28 @@ public class HibernateAllMappingTests extends TestCase {
 	protected void closeAllEditors() {
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closeAllEditors(false);
 	}
-	
-	/**
-	 * @return the activePackage
-	 */
-	public static synchronized IPackageFragment getActivePackage() {
-		return activePackage;
+
+	public String getConsoleConfigName() {
+		return consoleConfigName;
+	}
+
+	public void setConsoleConfigName(String consoleConfigName) {
+		this.consoleConfigName = consoleConfigName;
+	}
+
+	public IPackageFragment getTestPackage() {
+		return testPackage;
+	}
+
+	public void setTestPackage(IPackageFragment testPackage) {
+		this.testPackage = testPackage;
+	}
+
+	public ConfigurableTestProject getTestProject() {
+		return testProject;
+	}
+
+	public void setTestProject(ConfigurableTestProject testProject) {
+		this.testProject = testProject;
 	}
 }

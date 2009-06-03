@@ -23,10 +23,19 @@ import junit.framework.TestCase;
  */
 public class HBMInfoExtractorTest extends TestCase {
 	private HBMInfoExtractorStub sourceLocator = new HBMInfoExtractorStub();
+	private ConfigurableTestProject testProj = null;
+
+	protected void setUp() throws Exception {
+		testProj = new ConfigurableTestProject("HBMInfoProj"); //$NON-NLS-1$
+	}
+
+	protected void tearDown() throws Exception {
+		testProj.deleteIProject();
+		testProj = null;
+	}
 
 	public void executeJavaTypeHandlerTest(String start, String attributeName) {
 		sourceLocator.setPackageName("org"); //$NON-NLS-1$
-		ConfigurableTestProject testProj = ConfigurableTestProject.getTestProject();
 	    IJavaProject project = testProj.getIJavaProject();
 		JavaTypeHandler javaTypeHandler = new JavaTypeHandler(sourceLocator);
 		ICompletionProposal[] res =
@@ -54,7 +63,6 @@ public class HBMInfoExtractorTest extends TestCase {
 	
 	public void executePackageHandlerTest(String start, String attributeName) {
 		sourceLocator.setPackageName("org"); //$NON-NLS-1$
-		ConfigurableTestProject testProj = ConfigurableTestProject.getTestProject();
 	    IJavaProject project = testProj.getIJavaProject();
 	    PackageHandler packageHandler = new PackageHandler(sourceLocator);
 		ICompletionProposal[] res =

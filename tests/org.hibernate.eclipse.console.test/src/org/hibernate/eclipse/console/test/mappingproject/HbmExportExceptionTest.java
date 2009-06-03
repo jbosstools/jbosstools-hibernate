@@ -41,13 +41,35 @@ import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
  * @author Dmitry Geraskov
  *
  */
+@SuppressWarnings("restriction")
 public class HbmExportExceptionTest extends TestCase {
 	
+	protected String consoleConfigName = null;
+	
+	protected IPackageFragment testPackage = null; 
+
+	protected ConfigurableTestProject testProject = null;
+
+	public HbmExportExceptionTest() {
+	}
+
+	public HbmExportExceptionTest(String name) {
+		super(name);
+	}
+	
+	protected void setUp() throws Exception {
+	}
+
+	protected void tearDown() throws Exception {
+		testProject = null;
+		consoleConfigName = null;
+		testPackage = null;		
+	}
+	
 	public void testHbmExportExceptionTest() throws Exception {
-		IPackageFragment pack = HibernateAllMappingTests.getActivePackage();		
-		try{
+		try {
 			KnownConfigurations knownConfigurations = KnownConfigurations.getInstance();
-			final ConsoleConfiguration consCFG = knownConfigurations.find(ConsoleConfigUtils.ConsoleCFGName);
+			final ConsoleConfiguration consCFG = knownConfigurations.find(consoleConfigName);
 			assertNotNull(consCFG);
 			consCFG.reset();
 			consCFG.build();
@@ -64,9 +86,9 @@ public class HbmExportExceptionTest extends TestCase {
 			Configuration config = consCFG.getConfiguration();
 			
 			//delete old hbm files
-			assertNotNull( pack );
-			if (pack.getNonJavaResources().length > 0){
-				Object[] ress = pack.getNonJavaResources();
+			assertNotNull( testPackage );
+			if (testPackage.getNonJavaResources().length > 0){
+				Object[] ress = testPackage.getNonJavaResources();
 				for (int i = 0; i < ress.length; i++) {
 					if (ress[i] instanceof IFile){
 						IFile res = (IFile)ress[i];
@@ -90,9 +112,9 @@ public class HbmExportExceptionTest extends TestCase {
 				collector.formatFiles();
 	
 				try {//build generated configuration
-					pack.getResource().refreshLocal(IResource.DEPTH_INFINITE, null);
-					pack.getJavaProject().getProject().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
-					ConsoleConfigUtils.customizeCfgXmlForPack(pack);
+					testPackage.getResource().refreshLocal(IResource.DEPTH_INFINITE, null);
+					testPackage.getJavaProject().getProject().build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
+					ConsoleConfigUtils.customizeCfgXmlForPack(testPackage);
 					assertNotNull(consCFG);
 					consCFG.reset();
 	
@@ -110,22 +132,21 @@ public class HbmExportExceptionTest extends TestCase {
 						config = consCFG.getConfiguration();
 				} catch (CoreException e) {
 					String out = NLS.bind(ConsoleTestMessages.UpdateConfigurationTest_error_customising_file_for_package,
-							new Object[] { ConsoleConfigUtils.CFG_FILE_NAME, pack.getPath(), e.getMessage() } );
+							new Object[] { ConsoleConfigUtils.CFG_FILE_NAME, testPackage.getPath(), e.getMessage() } );
 					fail(out);
 				}
 			} catch (ExporterException e){
 				throw (Exception)e.getCause();
 			}
 		} catch (Exception e){
-			String newMessage = "\nPackage " + pack.getElementName() + ":";
+			String newMessage = "\nPackage " + testPackage.getElementName() + ":"; //$NON-NLS-1$ //$NON-NLS-2$
 			throw new WripperException(newMessage, e);
 		}
 	}
 	
 	private File getSrcFolder() throws JavaModelException{
-		ConfigurableTestProject mapProject = ConfigurableTestProject.getTestProject();
 		PackageFragmentRoot packageFragmentRoot = null;
-		IPackageFragmentRoot[] roots = mapProject.getIJavaProject().getAllPackageFragmentRoots();
+		IPackageFragmentRoot[] roots = testProject.getIJavaProject().getAllPackageFragmentRoots();
 	    for (int i = 0; i < roots.length && packageFragmentRoot == null; i++) {
 	    	if (roots[i].getClass() == PackageFragmentRoot.class) {
 				packageFragmentRoot = (PackageFragmentRoot) roots[i];
@@ -134,10 +155,35 @@ public class HbmExportExceptionTest extends TestCase {
 	    assertNotNull(packageFragmentRoot);
 	    return packageFragmentRoot.getResource().getLocation().toFile();
 	}
+
+	public String getConsoleConfigName() {
+		return consoleConfigName;
+	}
+
+	public void setConsoleConfigName(String consoleConfigName) {
+		this.consoleConfigName = consoleConfigName;
+	}
+
+	public IPackageFragment getTestPackage() {
+		return testPackage;
+	}
+
+	public void setTestPackage(IPackageFragment testPackage) {
+		this.testPackage = testPackage;
+	}
+
+	public ConfigurableTestProject getTestProject() {
+		return testProject;
+	}
+
+	public void setTestProject(ConfigurableTestProject testProject) {
+		this.testProject = testProject;
+	}
 }
 
 class WripperException extends Exception {
 	
+	private static final long serialVersionUID = 8192540921613389467L;
 	private String message;
 	
 	public WripperException(String message, Exception cause){

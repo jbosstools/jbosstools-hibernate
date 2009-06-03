@@ -11,7 +11,6 @@ import java.util.Set;
 import junit.framework.TestCase;
 
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
@@ -23,8 +22,8 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
+import org.hibernate.eclipse.console.test.project.TestProject;
 import org.hibernate.eclipse.console.test.utils.FilesTransfer;
-import org.hibernate.eclipse.console.test.utils.TestUtilsCommon;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
@@ -49,8 +48,7 @@ public class HbmExporterTest extends TestCase {
 	protected AllEntitiesInfoCollector collector = new AllEntitiesInfoCollector();
 	protected AllEntitiesProcessor processor = new AllEntitiesProcessor();
 
-	protected IProject project;
-	protected IJavaProject javaProject;
+	protected TestProject project = null;
 	
 	protected void setUp() throws Exception {
 		try {
@@ -63,8 +61,8 @@ public class HbmExporterTest extends TestCase {
 			fail(e1.getMessage());
 		}
 		assertNotNull(project);
+		IJavaProject javaProject = ProjectUtils.findJavaProject(PROJECT_NAME);
 		assertNotNull(javaProject);
-		assertNotNull(ProjectUtils.findJavaProject(PROJECT_NAME));
 		try {
 			javaProject.getProject().open(null);
 		} catch (CoreException e) {
@@ -80,7 +78,7 @@ public class HbmExporterTest extends TestCase {
 	protected Configuration getConfigurationFor(String... cuNames){
 		Set<ICompilationUnit> selectionCU = new HashSet<ICompilationUnit>();
 		for (int i = 0; i < cuNames.length; i++) {
-			ICompilationUnit icu = Utils.findCompilationUnit(javaProject,
+			ICompilationUnit icu = Utils.findCompilationUnit(project.getIJavaProject(),
 					cuNames[i]);
 			assertNotNull(icu);
 			selectionCU.add(icu);
@@ -88,7 +86,7 @@ public class HbmExporterTest extends TestCase {
 		ConfigurationActor actor = new ConfigurationActor(selectionCU);
 		Map<IJavaProject, Configuration> configurations = actor.createConfigurations();
 		assertEquals(1, configurations.size());
-		Configuration config = configurations.get(javaProject);
+		Configuration config = configurations.get(project.getIJavaProject());
 		assertNotNull(config);
 		return config;
 	}
@@ -100,68 +98,68 @@ public class HbmExporterTest extends TestCase {
 	}
 	
 	public void testId(){
-		Configuration config = getConfigurationFor("pack.A");
-		checkClassesMaped(config, "A", "B");
-		PersistentClass a = config.getClassMapping("A");
-		PersistentClass b = config.getClassMapping("B");
+		Configuration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
+		checkClassesMaped(config, "A", "B"); //$NON-NLS-1$ //$NON-NLS-2$
+		PersistentClass a = config.getClassMapping("A"); //$NON-NLS-1$
+		PersistentClass b = config.getClassMapping("B"); //$NON-NLS-1$
 		
 		Property aId= a.getIdentifierProperty();
 		Property bId= b.getIdentifierProperty();
 		assertNotNull(aId);
 		assertNotNull(bId);
-		assertEquals("id", aId.getName());
-		assertEquals("id", bId.getName());
+		assertEquals("id", aId.getName()); //$NON-NLS-1$
+		assertEquals("id", bId.getName()); //$NON-NLS-1$
 	}
 	
 	public void testProperty(){
-		Configuration config = getConfigurationFor("pack.A");
-		checkClassesMaped(config, "A", "B");
-		PersistentClass a = config.getClassMapping("A");
+		Configuration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
+		checkClassesMaped(config, "A", "B"); //$NON-NLS-1$ //$NON-NLS-2$
+		PersistentClass a = config.getClassMapping("A"); //$NON-NLS-1$
 		
-		Property prop = a.getProperty("prop");
+		Property prop = a.getProperty("prop"); //$NON-NLS-1$
 		Value value = prop.getValue();
 		assertNotNull(value);
-		assertTrue("Expected to get ManyToOne-type mapping", value.getClass()== ManyToOne.class);
+		assertTrue("Expected to get ManyToOne-type mapping", value.getClass()== ManyToOne.class); //$NON-NLS-1$
 		ManyToOne mto = (ManyToOne)value;
-		assertEquals("pack.B", mto.getTypeName());		
+		assertEquals("pack.B", mto.getTypeName()); //$NON-NLS-1$
 	}
 	
 	public void testArray(){
-		Configuration config = getConfigurationFor("pack.A");
-		checkClassesMaped(config, "A", "B");
-		PersistentClass a = config.getClassMapping("A");
-		PersistentClass b = config.getClassMapping("B");
+		Configuration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
+		checkClassesMaped(config, "A", "B"); //$NON-NLS-1$ //$NON-NLS-2$
+		PersistentClass a = config.getClassMapping("A"); //$NON-NLS-1$
+		PersistentClass b = config.getClassMapping("B"); //$NON-NLS-1$
 		
-		Property bs = a.getProperty("bs");
+		Property bs = a.getProperty("bs"); //$NON-NLS-1$
 		Value value = bs.getValue();
 		assertNotNull(value);
-		assertTrue("Expected to get Array-type mapping", value.getClass()==Array.class);
+		assertTrue("Expected to get Array-type mapping", value.getClass()==Array.class); //$NON-NLS-1$
 		Array ar = (Array)value;
-		assertEquals("pack.B", ar.getElementClassName());
-		assertTrue("Expected to get one-to-many array's element type",
+		assertEquals("pack.B", ar.getElementClassName()); //$NON-NLS-1$
+		assertTrue("Expected to get one-to-many array's element type", //$NON-NLS-1$
 				ar.getElement().getClass() == OneToMany.class);
 		
-		Property testIntArray = b.getProperty("testIntArray");
+		Property testIntArray = b.getProperty("testIntArray"); //$NON-NLS-1$
 		assertNotNull(testIntArray);
 		value = testIntArray.getValue();
 		assertNotNull(value);
-		assertTrue("Expected to get PrimitiveArray-type mapping",  
+		assertTrue("Expected to get PrimitiveArray-type mapping", //$NON-NLS-1$  
 				value.getClass()==PrimitiveArray.class);
 		PrimitiveArray pAr = (PrimitiveArray) value;
 		assertNotNull(pAr.getElement());
-		assertTrue("Expected to get int-type primitive array", pAr.getElement().getType().getClass()==IntegerType.class);
+		assertTrue("Expected to get int-type primitive array", pAr.getElement().getType().getClass()==IntegerType.class); //$NON-NLS-1$
 	}
 	
 	public void testList(){
-		Configuration config = getConfigurationFor("pack.A");
-		checkClassesMaped(config, "A", "B");
-		PersistentClass a = config.getClassMapping("A");
-		PersistentClass b = config.getClassMapping("B");
+		Configuration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
+		checkClassesMaped(config, "A", "B"); //$NON-NLS-1$ //$NON-NLS-2$
+		PersistentClass a = config.getClassMapping("A"); //$NON-NLS-1$
+		PersistentClass b = config.getClassMapping("B"); //$NON-NLS-1$
 		
-		Property listProp = a.getProperty("list");
+		Property listProp = a.getProperty("list"); //$NON-NLS-1$
 		Value value = listProp.getValue();
 		assertNotNull(value);
-		assertTrue("Expected to get List-type mapping", 
+		assertTrue("Expected to get List-type mapping", //$NON-NLS-1$ 
 				value.getClass()==org.hibernate.mapping.List.class);
 		org.hibernate.mapping.List list = (org.hibernate.mapping.List)value;
 		assertTrue(list.getElement() instanceof OneToMany);
@@ -171,15 +169,15 @@ public class HbmExporterTest extends TestCase {
 	}
 	
 	public void testSet(){
-		Configuration config = getConfigurationFor("pack.A");
-		checkClassesMaped(config, "A", "B");
-		PersistentClass a = config.getClassMapping("A");
-		PersistentClass b = config.getClassMapping("B");
+		Configuration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
+		checkClassesMaped(config, "A", "B"); //$NON-NLS-1$ //$NON-NLS-2$
+		PersistentClass a = config.getClassMapping("A"); //$NON-NLS-1$
+		PersistentClass b = config.getClassMapping("B"); //$NON-NLS-1$
 		
-		Property setProp = a.getProperty("set");
+		Property setProp = a.getProperty("set"); //$NON-NLS-1$
 		Value value = setProp.getValue();
 		assertNotNull(value);
-		assertTrue("Expected to get Set-type mapping", 
+		assertTrue("Expected to get Set-type mapping",  //$NON-NLS-1$
 				value.getClass()==org.hibernate.mapping.Set.class);
 		org.hibernate.mapping.Set set = (org.hibernate.mapping.Set)value;
 		assertTrue(set.getElement() instanceof OneToMany);
@@ -188,29 +186,27 @@ public class HbmExporterTest extends TestCase {
 	}
 	
 	public void testMap(){
-		Configuration config = getConfigurationFor("pack.A");
-		checkClassesMaped(config, "A", "B");
-		PersistentClass a = config.getClassMapping("A");
-		PersistentClass b = config.getClassMapping("B");
+		Configuration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
+		checkClassesMaped(config, "A", "B"); //$NON-NLS-1$ //$NON-NLS-2$
+		PersistentClass a = config.getClassMapping("A"); //$NON-NLS-1$
+		PersistentClass b = config.getClassMapping("B"); //$NON-NLS-1$
 		
-		Property mapValue = a.getProperty("mapValue");
+		Property mapValue = a.getProperty("mapValue"); //$NON-NLS-1$
 		Value value = mapValue.getValue();
 		assertNotNull(value);
-		assertTrue("Expected to get Map-type mapping", 
+		assertTrue("Expected to get Map-type mapping", //$NON-NLS-1$ 
 				value.getClass()==org.hibernate.mapping.Map.class);
 		org.hibernate.mapping.Map map = (org.hibernate.mapping.Map)value;
 		assertTrue(map.getElement() instanceof OneToMany);
 		assertTrue(map.getCollectionTable().equals(b.getTable()));
 		assertNotNull(map.getKey());
-		assertEquals("string", map.getKey().getType().getName());
+		assertEquals("string", map.getKey().getType().getName()); //$NON-NLS-1$
 	}
 	
 
 	protected void createTestProject() throws JavaModelException,
 			CoreException, IOException {
-		TestUtilsCommon commonUtil = new TestUtilsCommon();
-		project = commonUtil.buildNewProject(PROJECT_NAME);
-		javaProject = commonUtil.buildJavaProject(project);
+		project = new TestProject(PROJECT_NAME);
 		File resourceFolder = getResourceItem(RESOURCE_PATH);
 		if (!resourceFolder.exists()) {
 			String out = NLS.bind(
@@ -218,8 +214,7 @@ public class HbmExporterTest extends TestCase {
 					RESOURCE_PATH);
 			throw new RuntimeException(out);
 		}
-		IPackageFragmentRoot sourceFolder = commonUtil.createSourceFolder(
-				project, javaProject);
+		IPackageFragmentRoot sourceFolder = project.createSourceFolder();
 		FilesTransfer.copyFolder(resourceFolder, (IFolder) sourceFolder
 				.getResource());
 		File resourceFolderLib = getResourceItem(TESTRESOURCE_PATH);
@@ -229,9 +224,8 @@ public class HbmExporterTest extends TestCase {
 					RESOURCE_PATH);
 			throw new RuntimeException(out);
 		}
-		List<IPath> libs = commonUtil.copyLibs2(project, javaProject,
-				resourceFolderLib.getAbsolutePath());
-		commonUtil.generateClassPath(javaProject, libs, sourceFolder);
+		List<IPath> libs = project.copyLibs2(resourceFolderLib.getAbsolutePath());
+		project.generateClassPath(libs, sourceFolder);
 	}
 	
 	protected File getResourceItem(String strResPath) throws IOException {
@@ -246,15 +240,9 @@ public class HbmExporterTest extends TestCase {
 	}
 	
 	protected void tearDown() throws Exception {
-		try {
-			project.delete(true, true, null);
-			project = null;
-			javaProject = null;
-		} catch (CoreException e) {
-			fail(e.getMessage());
-		}
-		assertNull(project);
-		assertNull(javaProject);
+		assertNotNull(project);
+		project.deleteIProject();
+		project = null;
 	}
 
 }

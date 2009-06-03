@@ -12,6 +12,7 @@ package org.hibernate.eclipse.console.test.mappingproject;
 
 import junit.framework.TestCase;
 
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
@@ -20,8 +21,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
-import org.hibernate.eclipse.console.test.utils.ConsoleConfigUtils;
-import org.hibernate.eclipse.console.test.utils.ProjectUtil;
+import org.hibernate.eclipse.console.test.utils.Utils;
 import org.hibernate.eclipse.console.workbench.ConfigurationWorkbenchAdapter;
 import org.hibernate.eclipse.console.workbench.ConsoleConfigurationWorkbenchAdapter;
 import org.hibernate.mapping.PersistentClass;
@@ -32,9 +32,29 @@ import org.jboss.tools.hibernate.ui.view.views.OpenDiagramActionDelegate;
  *
  */
 public class OpenMappingDiagramTest extends TestCase {
+
+	protected String consoleConfigName = null;
+	
+	protected IPackageFragment testPackage = null; 
+
+	public OpenMappingDiagramTest() {
+	}
+
+	public OpenMappingDiagramTest(String name) {
+		super(name);
+	}
+	
+	protected void setUp() throws Exception {
+	}
+
+	protected void tearDown() throws Exception {
+		consoleConfigName = null;
+		testPackage = null;		
+	}
+
 	public void testOpenMappingDiagram() {
 		KnownConfigurations knownConfigurations = KnownConfigurations.getInstance();
-		final ConsoleConfiguration consCFG = knownConfigurations.find(ConsoleConfigUtils.ConsoleCFGName);
+		final ConsoleConfiguration consCFG = knownConfigurations.find(consoleConfigName);
 		assertNotNull(consCFG);
 		consCFG.reset();
 		Object[] configs = null;
@@ -45,7 +65,7 @@ public class OpenMappingDiagramTest extends TestCase {
 			persClasses = new ConfigurationWorkbenchAdapter().getChildren(configs[0]);
 		} catch (InvalidMappingException ex){
 			String out = NLS.bind(ConsoleTestMessages.OpenMappingDiagramTest_mapping_diagrams_for_package_cannot_be_opened,
-					new Object[]{HibernateAllMappingTests.getActivePackage().getElementName(), ex.getMessage()});
+					new Object[]{testPackage.getElementName(), ex.getMessage()});
 			fail(out);
 		}
 
@@ -61,7 +81,7 @@ public class OpenMappingDiagramTest extends TestCase {
 				} catch (PartInitException e) {
 					ex = e;
 				}
-				if (ex == null ) ex = ProjectUtil.getExceptionIfItOccured(editor);
+				if (ex == null ) ex = Utils.getExceptionIfItOccured(editor);
 				if (ex != null) {
 					String out = NLS.bind(ConsoleTestMessages.OpenMappingDiagramTest_mapping_diagram_for_not_opened,
 							new Object[]{persClass.getClassName(), ex.getMessage()});
@@ -72,5 +92,19 @@ public class OpenMappingDiagramTest extends TestCase {
 		//close all editors
 	}
 
+	public String getConsoleConfigName() {
+		return consoleConfigName;
+	}
 
+	public void setConsoleConfigName(String consoleConfigName) {
+		this.consoleConfigName = consoleConfigName;
+	}
+
+	public IPackageFragment getTestPackage() {
+		return testPackage;
+	}
+
+	public void setTestPackage(IPackageFragment testPackage) {
+		this.testPackage = testPackage;
+	}
 }

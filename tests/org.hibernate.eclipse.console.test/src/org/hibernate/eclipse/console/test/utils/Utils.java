@@ -28,7 +28,7 @@ import org.hibernate.mapping.PersistentClass;
  *
  */
 @SuppressWarnings("restriction")
-public class ProjectUtil {
+public class Utils {
 
 
 	public static String getPersistentClassName(PersistentClass persClass) {
@@ -49,46 +49,53 @@ public class ProjectUtil {
 	 * @throws Throwable
 	 */
 	public static Throwable getExceptionIfItOccured(IEditorPart editor){
-		if (editor instanceof ErrorEditorPart){
-			Class<ErrorEditorPart> clazz = ErrorEditorPart.class;
-			Field field;
-			try {
-				field = clazz.getDeclaredField("error"); //$NON-NLS-1$
-
-				field.setAccessible(true);
-
-				Object error = field.get(editor);
-				if (error instanceof IStatus) {
-					IStatus err_status = (IStatus) error;
-					if (err_status.getSeverity() == Status.ERROR){
-						return err_status.getException();
-					}
-				}
-			// catch close means that exception occurred but we can't get it
-			} catch (SecurityException e) {
-				return new RuntimeException(ConsoleTestMessages.ProjectUtil_cannot_get_exception_from_erroreditorpart + e.getMessage());
-			} catch (NoSuchFieldException e) {
-				return new RuntimeException(ConsoleTestMessages.ProjectUtil_cannot_get_error_field_from_erroreditorpart + e.getMessage());
-			} catch (IllegalArgumentException e) {
-				return new RuntimeException(ConsoleTestMessages.ProjectUtil_cannot_get_error_field_from_erroreditorpart + e.getMessage());
-			} catch (IllegalAccessException e) {
-				return new RuntimeException(ConsoleTestMessages.ProjectUtil_cannot_get_error_field_from_erroreditorpart + e.getMessage());
-			}
+		if (!(editor instanceof ErrorEditorPart)) {
+			return null;
 		}
-		return null;
+		String ex = null;
+		try {
+			Class<ErrorEditorPart> clazz = ErrorEditorPart.class;
+			Field field = clazz.getDeclaredField("error"); //$NON-NLS-1$
+			field.setAccessible(true);
+			Object error = field.get(editor);
+			if (error instanceof IStatus) {
+				IStatus err_status = (IStatus) error;
+				if (err_status.getSeverity() == Status.ERROR) {
+					return err_status.getException();
+				}
+			}
+		// catch close means that exception occurred but we can't get it
+		} catch (SecurityException e) {
+			ex = ConsoleTestMessages.ProjectUtil_cannot_get_exception_from_erroreditorpart + e.getMessage();
+		} catch (NoSuchFieldException e) {
+			ex = ConsoleTestMessages.ProjectUtil_cannot_get_error_field_from_erroreditorpart + e.getMessage();
+		} catch (IllegalArgumentException e) {
+			ex = ConsoleTestMessages.ProjectUtil_cannot_get_error_field_from_erroreditorpart + e.getMessage();
+		} catch (IllegalAccessException e) {
+			ex = ConsoleTestMessages.ProjectUtil_cannot_get_error_field_from_erroreditorpart + e.getMessage();
+		}
+		if (ex == null) {
+			return null;
+		}
+		return new RuntimeException(ex);
 	}
 
-	public static boolean checkHighlighting(IEditorPart editor){
+	/**
+	 * Checks has the editor selection or not
+	 * @param editor
+	 * @return
+	 */
+	public static boolean hasSelection(IEditorPart editor){
 		ITextEditor[] tEditors = OpenMappingUtils.getTextEditors(editor);
-		boolean highlighted = false;
-		for (int i = 0; i < tEditors.length && !highlighted; i++) {
+		boolean res = false;
+		for (int i = 0; i < tEditors.length && !res; i++) {
 			ITextEditor textEditor = tEditors[i];
 			ISelection selection = textEditor.getSelectionProvider().getSelection();
 			if (selection instanceof TextSelection){
 				TextSelection tSelection = (TextSelection)selection;
-				highlighted = tSelection.getLength() > 0;
+				res = tSelection.getLength() > 0;
 			}
 		}
-		return highlighted;
+		return res;
 	}
 }

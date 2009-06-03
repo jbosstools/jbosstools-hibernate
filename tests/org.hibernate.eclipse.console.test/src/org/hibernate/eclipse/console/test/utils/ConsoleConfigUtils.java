@@ -46,8 +46,6 @@ public class ConsoleConfigUtils {
 
 	public static final String CFG_FILE_NAME = "hibernate.cfg.xml"; //$NON-NLS-1$
 
-	public static final String ConsoleCFGName = "testConfigName"; //$NON-NLS-1$
-
 	/**
 	 * Create hibernate.cfg.xml file content for the particular test package content.
 	 * @param pack
@@ -126,6 +124,10 @@ public class ConsoleConfigUtils {
 		wdialog.close();
 	}
 
+	/**
+	 * Delete console configuration with given name. 
+	 * @param name
+	 */
 	public static void deleteConsoleConfig(String name) {
 		final KnownConfigurations knownConfigurations = KnownConfigurations.getInstance();
 		final ConsoleConfiguration consoleConfig = knownConfigurations.find(name);

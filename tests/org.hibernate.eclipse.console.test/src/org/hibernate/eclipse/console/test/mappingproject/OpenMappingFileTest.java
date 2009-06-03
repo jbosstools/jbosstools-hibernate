@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 
 import junit.framework.TestCase;
 
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorPart;
@@ -24,8 +25,7 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.actions.OpenMappingAction;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
-import org.hibernate.eclipse.console.test.utils.ConsoleConfigUtils;
-import org.hibernate.eclipse.console.test.utils.ProjectUtil;
+import org.hibernate.eclipse.console.test.utils.Utils;
 import org.hibernate.eclipse.console.workbench.ConfigurationWorkbenchAdapter;
 import org.hibernate.eclipse.console.workbench.ConsoleConfigurationWorkbenchAdapter;
 import org.hibernate.eclipse.console.workbench.PersistentClassWorkbenchAdapter;
@@ -39,9 +39,28 @@ import org.hibernate.mapping.Property;
  */
 public class OpenMappingFileTest extends TestCase {
 
+	protected String consoleConfigName = null;
+	
+	protected IPackageFragment testPackage = null; 
+
+	public OpenMappingFileTest() {
+	}
+
+	public OpenMappingFileTest(String name) {
+		super(name);
+	}
+	
+	protected void setUp() throws Exception {
+	}
+
+	protected void tearDown() throws Exception {
+		consoleConfigName = null;
+		testPackage = null;		
+	}
+
 	public void testOpenMappingFileTest() {
 		KnownConfigurations knownConfigurations = KnownConfigurations.getInstance();
-		final ConsoleConfiguration consCFG = knownConfigurations.find(ConsoleConfigUtils.ConsoleCFGName);
+		final ConsoleConfiguration consCFG = knownConfigurations.find(consoleConfigName);
 		assertNotNull(consCFG);
 		consCFG.reset();
 		Object[] configs = null;
@@ -53,7 +72,7 @@ public class OpenMappingFileTest extends TestCase {
 			persClasses = new ConfigurationWorkbenchAdapter().getChildren(configs[0]);
 		} catch (InvalidMappingException ex){
 			String out = NLS.bind(ConsoleTestMessages.OpenMappingFileTest_mapping_files_for_package_cannot_be_opened,
-					new Object[]{HibernateAllMappingTests.getActivePackage().getElementName(), ex.getMessage()});
+					new Object[]{testPackage.getElementName(), ex.getMessage()});
 			fail(out);
 		}
 		if (persClasses.length > 0){
@@ -82,10 +101,10 @@ public class OpenMappingFileTest extends TestCase {
 		Throwable ex = null;
 		try {
 			editor = OpenMappingAction.run(consCFG, compositeProperty, parentProperty);
-			boolean highlighted = ProjectUtil.checkHighlighting(editor);
+			boolean highlighted = Utils.hasSelection(editor);
 			if (!highlighted) {
 				String out = NLS.bind(ConsoleTestMessages.OpenMappingFileTest_highlighted_region_for_property_is_empty_package,
-						new Object[]{compositeProperty.getNodeName(), HibernateAllMappingTests.getActivePackage().getElementName()});
+						new Object[]{compositeProperty.getNodeName(), testPackage.getElementName()});
 				fail(out);
 			}
 			Object[] compProperties = new PropertyWorkbenchAdapter().getChildren(compositeProperty);
@@ -102,10 +121,10 @@ public class OpenMappingFileTest extends TestCase {
 		} catch (FileNotFoundException e) {
 			ex = e;
 		}
-		if (ex == null ) ex = ProjectUtil.getExceptionIfItOccured(editor);
+		if (ex == null ) ex = Utils.getExceptionIfItOccured(editor);
 		if (ex != null) {
 			String out = NLS.bind(ConsoleTestMessages.OpenMappingFileTest_mapping_file_for_property_not_opened_package,
-					new Object[]{compositeProperty.getNodeName(), HibernateAllMappingTests.getActivePackage().getElementName(), ex.getMessage()});
+					new Object[]{compositeProperty.getNodeName(), testPackage.getElementName(), ex.getMessage()});
 			fail(out);
 		}
 	}
@@ -115,10 +134,10 @@ public class OpenMappingFileTest extends TestCase {
 		Throwable ex = null;
 		try {
 			editor = OpenMappingAction.run(consCFG, selection);
-			boolean highlighted = ProjectUtil.checkHighlighting(editor);
+			boolean highlighted = Utils.hasSelection(editor);
 			if (!highlighted) {
 				String out = NLS.bind(ConsoleTestMessages.OpenMappingFileTest_highlighted_region_for_is_empty_package,
-						new Object[]{selection, HibernateAllMappingTests.getActivePackage().getElementName()});
+						new Object[]{selection, testPackage.getElementName()});
 				fail(out);
 			}
 		} catch (PartInitException e) {
@@ -128,15 +147,27 @@ public class OpenMappingFileTest extends TestCase {
 		} catch (FileNotFoundException e) {
 			ex = e;
 		}
-		if (ex == null ) ex = ProjectUtil.getExceptionIfItOccured(editor);
+		if (ex == null ) ex = Utils.getExceptionIfItOccured(editor);
 		if (ex != null) {
 			String out = NLS.bind(ConsoleTestMessages.OpenMappingFileTest_mapping_file_for_not_opened_package,
-					new Object[]{selection, HibernateAllMappingTests.getActivePackage().getElementName(), ex.getMessage()});
+					new Object[]{selection, testPackage.getElementName(), ex.getMessage()});
 			fail(out);
 		}
 	}
 
+	public String getConsoleConfigName() {
+		return consoleConfigName;
+	}
 
+	public void setConsoleConfigName(String consoleConfigName) {
+		this.consoleConfigName = consoleConfigName;
+	}
 
+	public IPackageFragment getTestPackage() {
+		return testPackage;
+	}
 
+	public void setTestPackage(IPackageFragment testPackage) {
+		this.testPackage = testPackage;
+	}
 }

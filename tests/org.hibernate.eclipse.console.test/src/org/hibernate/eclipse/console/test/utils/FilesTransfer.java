@@ -23,9 +23,6 @@ public class FilesTransfer {
 	
 	private FilesTransfer() {}
 
-	public static final String SRC_FOLDER = "src"; //$NON-NLS-1$
-	public static final String LIB_FOLDER = "lib"; //$NON-NLS-1$
-
 	public static final FileFilter filterFiles = new FileFilter() {
 		public boolean accept(File pathname) {
 			return !pathname.isDirectory();
@@ -34,11 +31,8 @@ public class FilesTransfer {
 
 	public static final FileFilter filterFolders = new FileFilter() {
 		public boolean accept(File pathname) {
-			// exclude ".svn" and other unnecessary folders
-			if (pathname.getName().charAt(0) == '.') {
-				return false;
-			}
-			if (LIB_FOLDER.equals(pathname.getName())) {
+			// exclude hidden files/folders
+			if (pathname.isHidden()) {
 				return false;
 			}
 			return pathname.isDirectory();
@@ -47,8 +41,7 @@ public class FilesTransfer {
 
 	public static final FileFilter filterJars = new FileFilter() {
 		public boolean accept(File pathname) {
-			return !pathname.isDirectory()
-					|| pathname.getName().endsWith(".jar"); //$NON-NLS-1$
+			return pathname.isFile() && pathname.getName().endsWith(".jar"); //$NON-NLS-1$
 		}
 	};
 
@@ -123,5 +116,52 @@ public class FilesTransfer {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	/**
+	 * Delete the whole directory
+	 * @param path
+	 */
+	public static void delete(File path) {
+		if (path.exists()) {
+			File[] files = path.listFiles();
+			for (int i = 0; i < files.length; i++) {
+				if (files[i].isDirectory()) {
+					delete(files[i]);
+				} else {
+					deleteFile(files[i]);
+				}
+			}
+		}
+		deleteFile(path);
+
+	}
+
+	/**
+	 * Delete single file
+	 * @param file
+	 */
+	public static void deleteFile(File file) {
+		try {
+			if (!file.delete()) {
+				throw new RuntimeException(getMessage(file));
+			}
+		} catch (Throwable e) {
+			throw new RuntimeException(getMessage(file) ,e);
+		}
+	}
+
+
+	private static String getMessage(File file) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("Cannot remove the "); //$NON-NLS-1$
+		buffer.append(file.getAbsolutePath());
+		buffer.append(" file. "); //$NON-NLS-1$
+		if (file.exists() && file.isDirectory()) {
+			String[] files = file.list();
+			buffer.append("List="); //$NON-NLS-1$
+			buffer.append(files.toString());
+		}
+		return buffer.toString();
 	}
 }

@@ -18,7 +18,6 @@ import java.net.URL;
 import java.util.List;
 
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
@@ -32,8 +31,8 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
+import org.hibernate.eclipse.console.test.project.TestProject;
 import org.hibernate.eclipse.console.test.utils.FilesTransfer;
-import org.hibernate.eclipse.console.test.utils.TestUtilsCommon;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
@@ -59,23 +58,16 @@ public class JPAMapTest extends TestCase {
 	protected AllEntitiesInfoCollector collector = new AllEntitiesInfoCollector();
 	protected AllEntitiesProcessor processor = new AllEntitiesProcessor();
 
-	protected IProject project;
-	protected IJavaProject javaProject;
+	protected TestProject project = null;
 	protected String testSelection;
 
 	protected void setUp() throws Exception {
 	}
 
 	protected void tearDown() throws Exception {
-		try {
-			project.delete(true, true, null);
-			project = null;
-			javaProject = null;
-		} catch (CoreException e) {
-			fail(e.getMessage());
-		}
-		assertNull(project);
-		assertNull(javaProject);
+		assertNotNull(project);
+		project.deleteIProject();
+		project = null;
 	}
 
 	public void testTransformerFields() {
@@ -102,9 +94,8 @@ public class JPAMapTest extends TestCase {
 			fail(e1.getMessage());
 		}
 		assertNotNull(project);
-		assertNotNull(javaProject);
 		//
-		javaProject = ProjectUtils.findJavaProject(PROJECT_NAME);
+		IJavaProject javaProject = ProjectUtils.findJavaProject(PROJECT_NAME);
 		assertNotNull(javaProject);
 		try {
 			javaProject.getProject().open(null);
@@ -172,7 +163,7 @@ public class JPAMapTest extends TestCase {
 	}
 
 	protected ASTNode getGenerated(String strName) {
-		ICompilationUnit icu = Utils.findCompilationUnit(javaProject,
+		ICompilationUnit icu = Utils.findCompilationUnit(project.getIJavaProject(),
 				"test.annotated." + testSelection + //$NON-NLS-1$ 
 				"." + strName); //$NON-NLS-1$
 		ASTParser parser = ASTParser.newParser(AST.JLS3);
@@ -221,9 +212,7 @@ public class JPAMapTest extends TestCase {
 
 	protected void createTestProject() throws JavaModelException,
 			CoreException, IOException {
-		TestUtilsCommon commonUtil = new TestUtilsCommon();
-		project = commonUtil.buildNewProject(PROJECT_NAME);
-		javaProject = commonUtil.buildJavaProject(project);
+		project = new TestProject(PROJECT_NAME);
 		File resourceFolder = getResourceItem(RESOURCE_PATH);
 		if (!resourceFolder.exists()) {
 			String out = NLS.bind(
@@ -231,8 +220,7 @@ public class JPAMapTest extends TestCase {
 					RESOURCE_PATH);
 			throw new RuntimeException(out);
 		}
-		IPackageFragmentRoot sourceFolder = commonUtil.createSourceFolder(
-				project, javaProject);
+		IPackageFragmentRoot sourceFolder = project.createSourceFolder();
 		FilesTransfer.copyFolder(resourceFolder, (IFolder) sourceFolder
 				.getResource());
 		File resourceFolderLib = getResourceItem(TESTRESOURCE_PATH);
@@ -242,9 +230,8 @@ public class JPAMapTest extends TestCase {
 					RESOURCE_PATH);
 			throw new RuntimeException(out);
 		}
-		List<IPath> libs = commonUtil.copyLibs2(project, javaProject,
-				resourceFolderLib.getAbsolutePath());
-		commonUtil.generateClassPath(javaProject, libs, sourceFolder);
+		List<IPath> libs = project.copyLibs2(resourceFolderLib.getAbsolutePath());
+		project.generateClassPath(libs, sourceFolder);
 	}
 
 }
