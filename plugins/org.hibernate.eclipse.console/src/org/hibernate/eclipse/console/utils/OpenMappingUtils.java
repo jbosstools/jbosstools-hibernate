@@ -508,39 +508,50 @@ public class OpenMappingUtils {
 		ArrayList<IPath> pathsSrc = new ArrayList<IPath>(); 
 		ArrayList<IPath> pathsOut = new ArrayList<IPath>(); 
 		ArrayList<IPath> pathsFull = new ArrayList<IPath>(); 
-		try {
-			for (int i = 0; i < projs.length; i++) {
-				IJavaProject proj = projs[i];
-				IPath projPath = proj.getPath();
-				IPath projPathFull = proj.getResource().getLocation();
-				IPath projPathOut = proj.getOutputLocation();
+		for (int i = 0; i < projs.length; i++) {
+			IJavaProject proj = projs[i];
+			IPath projPathFull = proj.getResource().getLocation();
+			IPath projPath = proj.getPath();
+			IPath projPathOut = null;
+			try {
+				projPathOut = proj.getOutputLocation();
 				projPathOut = projPathOut.makeRelativeTo(projPath);
-				IPackageFragmentRoot[] pfrs = proj.getAllPackageFragmentRoots();
-				for (int j = 0; j < pfrs.length; j++) {
-					// TODO: think about possibility to open resources from jar files
-					if (pfrs[j].getClass() != PackageFragmentRoot.class) {
-						continue;
-					}
-					pathsSrc.add(((PackageFragmentRoot)pfrs[j]).getPath());
-					pathsOut.add(projPathOut);
-					pathsFull.add(projPathFull);
-				}
+			} catch (JavaModelException e) {
+				// just ignore
 			}
-		} catch (JavaModelException e) {
-			HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.OpenFileActionUtils_problems_while_get_project_package_fragment_roots, e);
+			IPackageFragmentRoot[] pfrs = new IPackageFragmentRoot[0];
+			try {
+				pfrs = proj.getAllPackageFragmentRoots();
+			} catch (JavaModelException e) {
+				// just ignore
+			}
+			for (int j = 0; j < pfrs.length; j++) {
+				// TODO: think about possibility to open resources from jar files
+				if (pfrs[j].getClass() != PackageFragmentRoot.class) {
+					continue;
+				}
+				final IPath pathSrc = ((PackageFragmentRoot)pfrs[j]).getPath();
+				final IPath pathOut = projPathOut;
+				final IPath pathFull = projPathFull;
+				pathsSrc.add(pathSrc);
+				pathsOut.add(pathOut);
+				pathsFull.add(pathFull);
+			}
 		}
 		int scanSize = Math.min(pathsSrc.size(), pathsOut.size());
 		scanSize = Math.min(pathsFull.size(), scanSize);
 		for (int i = 0; i < scanSize && file == null; i++) {
-			IPath pathSrc = pathsSrc.get(i);
-			IPath pathOut = pathsOut.get(i);
-			IPath pathFull = pathsFull.get(i);
+			final IPath pathSrc = pathsSrc.get(i);
+			final IPath pathOut = pathsOut.get(i);
+			final IPath pathFull = pathsFull.get(i);
 			Iterator<String> it = documentPaths.iterator();
 			while (it.hasNext() && file == null) {
 				String docPath = it.next();
 				IPath path2DocFull = Path.fromOSString(docPath);
 				IPath resPath = path2DocFull.makeRelativeTo(pathFull);
-				resPath = resPath.makeRelativeTo(pathOut);
+				if (pathOut != null) {
+					resPath = resPath.makeRelativeTo(pathOut);
+				}
 				resPath = pathSrc.append(resPath);
 				file = ResourcesPlugin.getWorkspace().getRoot().getFile(resPath);
 				if (file == null || !file.exists()) {
