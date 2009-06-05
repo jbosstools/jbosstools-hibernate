@@ -23,7 +23,10 @@ import junit.framework.TestSuite;
 public class TestSet {
 	
 	/**
-	 * use only addTestSuit to prevent errors!!!
+	 * Creates test suite for configurable project
+	 * @param consoleConfigName
+	 * @param testPackage
+	 * @param testProject
 	 * @return
 	 */
 	public static TestSuite createTestSuite(String consoleConfigName,
@@ -33,6 +36,7 @@ public class TestSet {
 		test1.setConsoleConfigName(consoleConfigName);
 		test1.setTestPackage(testPackage);
 		test1.setTestProject(testProject);
+		/**/
 		OpenSourceFileTest test2 = new OpenSourceFileTest("testOpenSourceFileTest"); //$NON-NLS-1$
 		test2.setConsoleConfigName(consoleConfigName);
 		test2.setTestPackage(testPackage);
@@ -42,11 +46,14 @@ public class TestSet {
 		OpenMappingDiagramTest test4 = new OpenMappingDiagramTest("testOpenMappingDiagram"); //$NON-NLS-1$
 		test4.setConsoleConfigName(consoleConfigName);
 		test4.setTestPackage(testPackage);
+		/**/
 		//
 		suite.addTest(test1);
+		/**/
 		suite.addTest(test2);
 		suite.addTest(test3);
 		suite.addTest(test4);
+		/**/
 		return suite;
 	}
 }

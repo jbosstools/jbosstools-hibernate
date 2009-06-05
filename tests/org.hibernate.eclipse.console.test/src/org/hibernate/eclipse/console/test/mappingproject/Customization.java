@@ -34,11 +34,6 @@ public class Customization {
 	public static final boolean STOP_AFTER_MISSING_PACK = false;
 	
 	/**
-	 * Delay in milliseconds after each package
-	 */
-	public static final int EACTH_PACK_TEST_DELAY = 0;
-	
-	/**
 	 * Use time profiler
 	 */
 	public static final boolean USE_CONSOLE_OUTPUT = true;

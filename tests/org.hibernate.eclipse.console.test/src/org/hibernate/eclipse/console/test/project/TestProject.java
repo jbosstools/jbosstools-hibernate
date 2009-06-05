@@ -123,12 +123,16 @@ public class TestProject {
 	}
 
 	public IPackageFragmentRoot createFolder(String strFolder) throws CoreException {
+		IPath path = Path.fromOSString(strFolder);
+		for (int i = 0; i < path.segmentCount(); i++) {
+			IFolder folder = project.getFolder(path.uptoSegment(i + 1).toOSString());
+			if (!folder.exists()) {
+				folder.create(true, true, null);
+			}
+		}
 		IFolder folder = project.getFolder(strFolder);
 		if (!folder.exists()) {
 			folder.create(true, true, null);
-			IPackageFragmentRoot root = javaProject
-					.getPackageFragmentRoot(folder);
-			return root;
 		}
 		return javaProject.getPackageFragmentRoot(folder);
 	}
@@ -138,7 +142,7 @@ public class TestProject {
 	}
 
 	public List<IPath> copyLibs(File res) throws CoreException {
-		return copyLibs2(res.getAbsolutePath() + File.separator + LIB_FOLDER);
+		return copyLibs2(res.getAbsolutePath());
 	}
 
 	public List<IPath> copyLibs2(String absolutePath) throws CoreException {
@@ -155,7 +159,7 @@ public class TestProject {
 			throw new RuntimeException(out);
 		}
 		List<IPath> libs = new ArrayList<IPath>();
-		FilesTransfer.copyFolder(libFolder, dst, FilesTransfer.filterJars, 
+		FilesTransfer.copyFolder(libFolder, dst, FilesTransfer.filterFilesJar, 
 				FilesTransfer.filterFolders, libs);
 		return libs;
 	}
@@ -167,7 +171,9 @@ public class TestProject {
 		for (IPath lib_path : libs) {
 			entries.add(JavaCore.newLibraryEntry(lib_path, null, null));
 		}
-		entries.add(JavaCore.newSourceEntry(sourceFolder.getPath()));
+		if (sourceFolder != null) {
+			entries.add(JavaCore.newSourceEntry(sourceFolder.getPath()));
+		}
 		entries.add(JavaCore.newContainerEntry(JRE_CONTAINER));
 		javaProject.setRawClasspath(entries.toArray(new IClasspathEntry[0]), null);
 	}

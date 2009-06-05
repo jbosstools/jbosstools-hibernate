@@ -20,6 +20,8 @@ import org.w3c.dom.Element;
 
 public class ConsoleConfigurationTest extends TestCase {
 
+	public static final String HIBERNATE_CFG_XML_PATH = "/res/project/src/hibernate.cfg.xml".replaceAll("//", File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+
 	private ConsoleConfiguration consoleCfg;
 
 	public ConsoleConfigurationTest(String name) {
@@ -61,10 +63,10 @@ public class ConsoleConfigurationTest extends TestCase {
 			File xmlConfig = null;
 			Bundle bundle = HibernateConsoleTestPlugin.getDefault().getBundle();
 			try {
-				URL url = FileLocator.resolve(bundle.getEntry("/res/project/hibernate.cfg.xml")); //$NON-NLS-1$
+				URL url = FileLocator.resolve(bundle.getEntry(HIBERNATE_CFG_XML_PATH));
 				xmlConfig = new File(url.getFile());
 			} catch (IOException e) {
-				fail("Cannot find /res/project/hibernate.cfg.xml file"); //$NON-NLS-1$
+				fail("Cannot find file: " + HIBERNATE_CFG_XML_PATH); //$NON-NLS-1$
 			}
 			return xmlConfig;
 		}

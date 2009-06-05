@@ -24,24 +24,32 @@ public class FilesTransfer {
 	private FilesTransfer() {}
 
 	public static final FileFilter filterFiles = new FileFilter() {
-		public boolean accept(File pathname) {
-			return !pathname.isDirectory();
+		public boolean accept(File f) {
+			return f.exists() && f.isFile() && !f.isHidden();
 		}
 	};
 
 	public static final FileFilter filterFolders = new FileFilter() {
-		public boolean accept(File pathname) {
-			// exclude hidden files/folders
-			if (pathname.isHidden()) {
-				return false;
-			}
-			return pathname.isDirectory();
+		public boolean accept(File f) {
+			return f.exists() && f.isDirectory() && !f.isHidden();
 		}
 	};
 
-	public static final FileFilter filterJars = new FileFilter() {
-		public boolean accept(File pathname) {
-			return pathname.isFile() && pathname.getName().endsWith(".jar"); //$NON-NLS-1$
+	public static final FileFilter filterFilesJar = new FileFilter() {
+		public boolean accept(File f) {
+			return f.exists() && f.isFile() && !f.isHidden() && f.getName().toLowerCase().endsWith(".jar"); //$NON-NLS-1$
+		}
+	};
+
+	public static final FileFilter filterFilesJava = new FileFilter() {
+		public boolean accept(File f) {
+			return f.exists() && f.isFile() && !f.isHidden() && f.getName().toLowerCase().endsWith(".java"); //$NON-NLS-1$
+		}
+	};
+
+	public static final FileFilter filterFilesXml = new FileFilter() {
+		public boolean accept(File f) {
+			return f.exists() && f.isFile() && !f.isHidden() && f.getName().toLowerCase().endsWith(".xml"); //$NON-NLS-1$
 		}
 	};
 
@@ -67,9 +75,6 @@ public class FilesTransfer {
 		File[] files = src.listFiles(filterFiles);
 		for (int i = 0; i < files.length; i++) {
 			File file = files[i];
-			if (!file.exists()) {
-				continue;
-			}
 			IFile iFile = dst.getFile(file.getName());
 			FileInputStream fis = null;
 			BufferedInputStream bis = null;
@@ -102,19 +107,36 @@ public class FilesTransfer {
 		}
 		File[] dirs = src.listFiles(filterFolders);
 		for (int i = 0; i < dirs.length; i++) {
-			File dir = dirs[i];
-			if (!dir.exists()) {
-				continue;
-			}
-			IFolder iFolder = dst.getFolder(dir.getName());
+			File srcDir = dirs[i];
+			IFolder dstDir = dst.getFolder(srcDir.getName());
 			try {
-				if (!iFolder.exists()) {
-					iFolder.create(true, true, null);
+				if (!dstDir.exists()) {
+					dstDir.create(true, true, null);
 				}
-				copyFolder(dir, iFolder, filterFiles, filterFolders, filesList);
+				copyFolder(srcDir, dstDir, filterFiles, filterFolders, filesList);
 			} catch (CoreException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	/**
+	 * Collect all folders starting from src folder, which contains at least one file
+	 * accepted by filterFiles.
+	 * @param src
+	 * @param filterFiles
+	 * @param filterFolders
+	 * @param foldersList
+	 */
+	public static void collectFoldersWithFiles(File src, FileFilter filterFiles, 
+			FileFilter filterFolders, List<String> foldersList) {
+		File[] files = src.listFiles(filterFiles);
+		if (files.length > 0) {
+			foldersList.add(src.getPath());
+		}
+		File[] dirs = src.listFiles(filterFolders);
+		for (int i = 0; i < dirs.length; i++) {
+			collectFoldersWithFiles(dirs[i], filterFiles, filterFolders, foldersList);
 		}
 	}
 
@@ -143,8 +165,10 @@ public class FilesTransfer {
 	 */
 	public static void deleteFile(File file) {
 		try {
-			if (!file.delete()) {
-				throw new RuntimeException(getMessage(file));
+			if (file.exists()) {
+				if (!file.delete()) {
+					throw new RuntimeException(getMessage(file));
+				}
 			}
 		} catch (Throwable e) {
 			throw new RuntimeException(getMessage(file) ,e);

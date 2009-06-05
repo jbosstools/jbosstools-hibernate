@@ -13,9 +13,11 @@ package org.hibernate.eclipse.console.test.project;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -37,7 +39,12 @@ import org.hibernate.eclipse.console.test.utils.FilesTransfer;
  */
 public class ConfigurableTestProject extends TestProject {
 
-	public static final String RESOURCE_PATH = "res/project/"; //$NON-NLS-1$
+	public static final String RESOURCE_SRC_PATH = "res/project/src/".replaceAll("//", File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final String RESOURCE_LIB_PATH = "res/project/lib/".replaceAll("//", File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+	
+	protected ArrayList<String> foldersList = new ArrayList<String>();
+
+	protected int activePackage = -1;
 
 	public ConfigurableTestProject(String projectName) {
 		super(projectName);
@@ -45,25 +52,16 @@ public class ConfigurableTestProject extends TestProject {
 
 	protected void buildProject() throws JavaModelException, CoreException, IOException {
 		super.buildProject();
-		IPath resourcePath = new Path(RESOURCE_PATH);
-		File resourceFolder = resourcePath.toFile();
-		URL entry = HibernateConsoleTestPlugin.getDefault().getBundle().getEntry(RESOURCE_PATH);
-		URL resProject = FileLocator.resolve(entry);
-		String tplPrjLcStr= FileLocator.resolve(resProject).getFile();
-		resourceFolder = new File(tplPrjLcStr);
-		if (!resourceFolder.exists()) {
-			String out = NLS.bind(ConsoleTestMessages.MappingTestProject_folder_not_found,
-					RESOURCE_PATH);
-			throw new RuntimeException(out);
-		}
+		//final File srcFolder = getFolder(RESOURCE_SRC_PATH);
 	   	long startCopyFiles = System.currentTimeMillis();
-		IPackageFragmentRoot sourceFolder = createSourceFolder();
-		FilesTransfer.copyFolder(resourceFolder, (IFolder) sourceFolder.getResource());
+		IPackageFragmentRoot sourcePackageFragment = createSourceFolder();
+		//FilesTransfer.copyFolder(srcFolder, (IFolder)sourcePackageFragment.getResource());
 	   	long startCopyLibs = System.currentTimeMillis();
-		List<IPath> libs = copyLibs(resourceFolder);
+		final File libFolder = getFolder(RESOURCE_LIB_PATH);
+		List<IPath> libs = copyLibs(libFolder);
 	   	long startBuild = System.currentTimeMillis();
-		generateClassPath(libs, sourceFolder);
-		project.build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
+		generateClassPath(libs, sourcePackageFragment);
+		fullBuild();
 	   	long stopBuild = System.currentTimeMillis();
 		if (Customization.USE_CONSOLE_OUTPUT){
 			System.out.println("====================================================="); //$NON-NLS-1$
@@ -71,5 +69,87 @@ public class ConfigurableTestProject extends TestProject {
 			System.out.println("copyLibs: " + ( ( startBuild - startCopyLibs ) / 1000 )); //$NON-NLS-1$
 			System.out.println("build: " + ( ( stopBuild - startBuild ) / 1000 )); //$NON-NLS-1$
 		}
+	}
+
+	public void restartTestFolders() {
+		activePackage = -1;
+	}
+
+	public boolean setupNextTestFolder() throws IOException, CoreException {
+		activePackage++;
+		if (activePackage >= foldersList.size()) {
+			return false;
+		}
+		final String pack = foldersList.get(activePackage);
+		final File srcFolder = getFolder(RESOURCE_SRC_PATH + pack);
+		FilesTransfer.delete(new File(project.getLocation().append(SRC_FOLDER).toOSString()));
+		IPackageFragmentRoot sourcePackageFragment = createFolder(SRC_FOLDER + File.separator + pack);
+		FilesTransfer.copyFolder(srcFolder, (IFolder)sourcePackageFragment.getResource());
+		return true;
+	}
+
+	protected File getFolder(String path) throws IOException {
+		URL entry = HibernateConsoleTestPlugin.getDefault().getBundle().getEntry(path);
+		URL resProject = FileLocator.resolve(entry);
+		String resolvePath = FileLocator.resolve(resProject).getFile();
+		File folder = new File(resolvePath);
+		if (!folder.exists()) {
+			String out = NLS.bind(ConsoleTestMessages.MappingTestProject_folder_not_found, path);
+			throw new RuntimeException(out);
+		}
+		return folder;
+	}
+
+	public boolean createTestFoldersList() {
+		activePackage = -1;
+		foldersList = new ArrayList<String>();
+		File srcFolder = null;
+		try {
+			srcFolder = getFolder(RESOURCE_SRC_PATH);
+		} catch (IOException e) {
+			// ignore
+		}
+		if (srcFolder == null) {
+			return false;
+		}
+		FilesTransfer.collectFoldersWithFiles(srcFolder, FilesTransfer.filterFilesJava, 
+				FilesTransfer.filterFolders, foldersList);
+		IPath base = Path.fromOSString(srcFolder.getPath());
+		for (int i = 0; i < foldersList.size(); i++) {
+			String str = foldersList.get(i);
+			IPath path = Path.fromOSString(str);
+			path = path.makeRelativeTo(base);
+			foldersList.set(i, path.toOSString());
+		}
+		return true;
+	}
+
+	public boolean useAllSources() {
+		activePackage = -1;
+		foldersList = new ArrayList<String>();
+		File srcFolder = null;
+		try {
+			srcFolder = getFolder(RESOURCE_SRC_PATH);
+		} catch (IOException e) {
+			// ignore
+		}
+		IPackageFragmentRoot sourcePackageFragment = null;
+		try {
+			sourcePackageFragment = createSourceFolder();
+		} catch (CoreException e) {
+			// ignore
+		}
+		if (srcFolder != null && sourcePackageFragment != null) {
+			FilesTransfer.copyFolder(srcFolder, (IFolder)sourcePackageFragment.getResource());
+			foldersList.add(""); //$NON-NLS-1$
+			return true;
+		}
+		return false;
+	}
+
+	public void fullBuild() throws CoreException {
+		IPackageFragmentRoot sourcePackageFragment = createSourceFolder();
+		sourcePackageFragment.getResource().refreshLocal(IResource.DEPTH_INFINITE, null);
+		project.build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
 	}
 }
