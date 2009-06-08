@@ -25,4 +25,5 @@ Export-Package: org.jboss.tools.hibernate.ui.veditor,
  org.jboss.tools.hibernate.ui.veditor.editors.figures,
  org.jboss.tools.hibernate.ui.veditor.editors.model,
  org.jboss.tools.hibernate.ui.veditor.editors.parts
+Import-Package: org.eclipse.ui.actions
 
