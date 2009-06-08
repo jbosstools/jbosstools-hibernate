@@ -336,7 +336,7 @@ public class HibernateJPACoreTests extends TestCase {
 				will(returnValue(genericGeneratorAnnotation));
 
 				allowing(javaResourcePersistentType)
-						.getSuperClassQualifiedName();
+						.getSuperclassQualifiedName();
 				will(returnValue(null));
 
 				allowing(javaResourcePersistentType).getAccess();
