@@ -9,8 +9,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.Property;
 
 public abstract class OpenQueryEditorAction extends SelectionListenerAction {
 

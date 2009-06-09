@@ -103,12 +103,14 @@ public class OpenMappingUtilsEjb3 {
 					}
 					try {
 						addMetadataFromVisitor(visitor, visitorJarURL.getPath(), metadata);
+						/** /
 						JarVisitor.Filter[] otherXmlFilter = getFilters(metadata, CollectionHelper.EMPTY_MAP, false);
 						for (String jarFile : metadata.getJarFiles()) {
 							// TODO: test this code
 							//vit//visitor = JarVisitor.getVisitor(jarFile, otherXmlFilter);
 							//vit//addMetadataFromVisitor(visitor, metadata);
 						}
+						/**/
 					} catch (IOException e) {
 						//ignore
 					}

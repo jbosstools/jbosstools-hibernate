@@ -504,6 +504,9 @@ public class OpenMappingUtils {
 				return OpenMappingUtilsEjb3.enumDocuments(cc2);
 			}
 		});
+    	if (documentPaths == null) {
+        	return file;
+    	}
 		IJavaProject[] projs = ProjectUtils.findJavaProjects(consoleConfig);
 		ArrayList<IPath> pathsSrc = new ArrayList<IPath>(); 
 		ArrayList<IPath> pathsOut = new ArrayList<IPath>(); 

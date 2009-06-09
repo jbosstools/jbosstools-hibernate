@@ -127,14 +127,12 @@ public class CriteriaEditorAction extends OpenQueryEditorAction {
 					enName = enName.substring(enName.lastIndexOf('.') + 1);
 					propCriteria = NLS.bind(alias, prName, prName.charAt(0));
 				}
-				else {
-					return ""; //$NON-NLS-1$
-				}
 			}
-		} else {
+		}
+		if ("".equals(enName)) { //$NON-NLS-1$
 			return ""; //$NON-NLS-1$
 		}
 		enCriteria = NLS.bind(criteria, enName + ".class"); //$NON-NLS-1$
-		return sess + enCriteria + propCriteria + "\n.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP)"; //$NON-NLS-1$
+		return sess + enCriteria + propCriteria;
 	}
 }
