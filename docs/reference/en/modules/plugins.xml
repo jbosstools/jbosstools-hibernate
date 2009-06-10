@@ -1868,37 +1868,49 @@
   <section id="jpa_annotations">
     <title>Hibernate:add JPA annotations view
     </title>
-    <para>Using this wizard you can add the next Hibernate annotations to the class:      
+    <para>Using this wizard you can add the next Hibernate annotations to the class:
+      <emphasis>
+        <property>@Column</property></emphasis>,<emphasis>
+          <property>@Entity</property></emphasis>,<emphasis>
+            <property>@ManyToOne</property></emphasis>,<emphasis>
+              <property>@OneToMany</property></emphasis>,<emphasis>
+                <property>@OneToOne</property></emphasis>,<emphasis>
+                  <property>@ManyToMany</property></emphasis>,<emphasis>
+                    <property>@MappedSuperclass</property></emphasis>,<emphasis>
+                      <property>@Id</property></emphasis>,<emphasis>
+                        <property>@GeneratedValue</property></emphasis> ,<emphasis>
+                          <property>@Version </property></emphasis>    
     </para>
      <itemizedlist>
       <listitem>
-        <para>@Column,</para>
+        <para><emphasis>
+          <property>@Column</property></emphasis> is added to all String properties.</para>
       </listitem>
        <listitem>
-        <para>@Entity,</para>
+         <para><emphasis>
+           <property>@Entity</property></emphasis> is always declared before any class where it doesn't present.</para>
        </listitem>
        <listitem>
-          <para>@ManyToOne,</para>
+         <para><emphasis>
+           <property>@ManyToOne</property></emphasis>,<emphasis>
+             <property>@OneToMany</property></emphasis>,<emphasis>
+               <property>@OneToOne</property></emphasis>,<emphasis>
+                 <property>@ManyToMany</property></emphasis> - this annotations are declared according to the  classes hierarchy.</para>
        </listitem>
        <listitem>
-          <para>@OneToMany,</para>
+         <para><emphasis>
+           <property>@MappedSuperclass</property></emphasis> is added to abstract superclasses.</para>
        </listitem>
        <listitem>
-            <para>@OneToOne,</para>
+         <para><emphasis>
+           <property>@Id</property></emphasis>,<emphasis>
+             <property>@GeneratedValue</property></emphasis> are added automatically only to the  properties under the name "Id",where they don't present.</para>
        </listitem>
+
        <listitem>
-            <para>@ManyToMany,</para>
+         <para><emphasis>
+           <property>@Version</property></emphasis> is declared in case you select <link linkend="optim_lock">Enable optimistic locking</link>.</para>
        </listitem>
-       <listitem>
-             <para>@MappedSuperclass,</para>
-       </listitem>
-       <listitem>
-              <para>@Id,</para>
-       </listitem>
-       <listitem>
-             <para>@GeneratedValue</para>
-       </listitem>
-      
      </itemizedlist>
     <note>
       <title>Note:</title>
@@ -1926,7 +1938,7 @@
     </para>
     <para> If it's nessecary to map your String properties to the columns that length differ from the default value(255) ,change <emphasis><property>Default string length field</property></emphasis> and <code>@Column(length = your length)</code> will be created before every String property.  
     </para>
-    <para>You can add optimistic locking capability to an entity bean by selecting  <emphasis><property>Enable optimistic locking</property></emphasis> checkbox.
+    <para id="optim_lock">You can add optimistic locking capability to an entity bean by selecting  <emphasis><property>Enable optimistic locking</property></emphasis> checkbox.
       This operation will add version property to all the selected classes. The property will be  also annotated  with @Version ,getter and setter will be created. If the property is already exists,it won't be created ,but the getters,setters will be generated.
       If there is already @MappedSuperclass with version in the  base class of the current class - <emphasis><property>"version"</property></emphasis> is not  inserted into the current class.
     </para>
