@@ -15,6 +15,7 @@ import java.io.FileNotFoundException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.FindReplaceDocumentAdapter;
 import org.eclipse.jface.text.IRegion;
@@ -144,10 +145,12 @@ public class OpenMappingAction extends SelectionListenerAction {
 					editorPart = OpenSourceAction.run(consoleConfig, selection, fullyQualifiedName);
 				}
 			}
-			else {
-				String out = NLS.bind(HibernateConsoleMessages.OpenMappingAction_mapping_for_not_found, selection);
-				throw new FileNotFoundException(out);
-			}
+		}
+   		if (editorPart == null) {
+			final String title = HibernateConsoleMessages.OpenMappingAction_open_mapping_file;
+			final String msg = NLS.bind(HibernateConsoleMessages.OpenMappingAction_mapping_for_not_found, selection);
+			MessageDialog.openError(null, title, msg);
+			throw new FileNotFoundException(msg);
 		}
 		return editorPart;
 	}
@@ -177,8 +180,10 @@ public class OpenMappingAction extends SelectionListenerAction {
 			}
 	    }
    		if (editorPart == null) {
-   			String out = NLS.bind(HibernateConsoleMessages.OpenMappingAction_mapping_file_for_property_not_found, compositeProperty.getNodeName());
-   			throw new FileNotFoundException(out);
+			final String title = HibernateConsoleMessages.OpenMappingAction_open_mapping_file;
+			final String msg = NLS.bind(HibernateConsoleMessages.OpenMappingAction_mapping_file_for_property_not_found, compositeProperty.getNodeName());
+			MessageDialog.openError(null, title, msg);
+   			throw new FileNotFoundException(msg);
    		}
    		return editorPart;
 	}
