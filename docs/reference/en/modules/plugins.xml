@@ -1865,7 +1865,104 @@
       </figure>
     </section>
   </section>
+  <section id="jpa_annotations">
+    <title>Hibernate:add JPA annotations view
+    </title>
+    <para>Using this wizard you can add the next Hibernate annotations to the class:      
+    </para>
+     <itemizedlist>
+      <listitem>
+        <para>@Column,</para>
+      </listitem>
+       <listitem>
+        <para>@Entity,</para>
+       </listitem>
+       <listitem>
+          <para>@ManyToOne,</para>
+       </listitem>
+       <listitem>
+          <para>@OneToMany,</para>
+       </listitem>
+       <listitem>
+            <para>@OneToOne,</para>
+       </listitem>
+       <listitem>
+            <para>@ManyToMany,</para>
+       </listitem>
+       <listitem>
+             <para>@MappedSuperclass,</para>
+       </listitem>
+       <listitem>
+              <para>@Id,</para>
+       </listitem>
+       <listitem>
+             <para>@GeneratedValue</para>
+       </listitem>
+      
+     </itemizedlist>
+    <note>
+      <title>Note:</title>
+      <para>This section doesn't cover the meaning of the  <property>Hibernate annotations</property>
+        , for more information read <ulink
+          url="http://docs.jboss.org/hibernate/stable/annotations/reference/en/html/">Hibernate Annotations Documentation</ulink> .</para>
+    </note>
+    
+    <para>To  open this wizard you should right click the class you want to enrich with annotations  <emphasis>
+      <property>>Source>Generate Hibernate/JPA annotations</property></emphasis>. You will  see the Hibernate:add JPA annotations dialog.
+    </para>
+    <figure>
+      <title>Starting Hibernate:add JPA annotations view</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/plugins/annotations1.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para> In the top of it you can see the list of all classes that will be passed through refactoring.
+      Besides the class you have selected in this list  you can also find its superclasses and the classes that objects present in the current class as  properties. 
+    </para>
+    <para>By default the tags are added to the fields of selected classes. But you can change this  option  to  <emphasis><property>Getters</property></emphasis>in <emphasis><property> Preferred location of Annotations</property></emphasis> dropdownlist
+      and then all the annotations will be added to the getter methods. If you choose  <emphasis><property>Auto select from class preference</property></emphasis> then the annotations are added according to the majority of the already existed ones positions.
+    </para>
+    <para> If it's nessecary to map your String properties to the columns that length differ from the default value(255) ,change <emphasis><property>Default string length field</property></emphasis> and <code>@Column(length = your length)</code> will be created before every String property.  
+    </para>
+    <para>You can add optimistic locking capability to an entity bean by selecting  <emphasis><property>Enable optimistic locking</property></emphasis> checkbox.
+      This operation will add version property to all the selected classes. The property will be  also annotated  with @Version ,getter and setter will be created. If the property is already exists,it won't be created ,but the getters,setters will be generated.
+      If there is already @MappedSuperclass with version in the  base class of the current class - <emphasis><property>"version"</property></emphasis> is not  inserted into the current class.
+    </para>
+    <para>After  defining all necessary settings in the current  step press <emphasis><property>Next</property></emphasis> and follow the next wizard steps.
+    </para>
+    <figure>
+      <title>Hibernate:add JPA annotations view</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="images/plugins/annotations2.png"/>
+      </imageobject>
+    </mediaobject>
+    </figure>
+    <para>The  view represents two windows: one with the source code and and the second with refactored one.
+      With the help of <inlinemediaobject><imageobject>
+        <imagedata fileref="images/plugins/butt1.png"/>
+      </imageobject></inlinemediaobject> ,<inlinemediaobject><imageobject>
+        <imagedata fileref="images/plugins/butt2.png"/>
+      </imageobject></inlinemediaobject> ,<inlinemediaobject><imageobject>
+        <imagedata fileref="images/plugins/butt3.png"/>
+      </imageobject></inlinemediaobject> ,<inlinemediaobject><imageobject>
+        <imagedata fileref="images/plugins/butt4.png"/>
+      </imageobject></inlinemediaobject> buttons you can quickly navigate between the differences in the code. If you don't agree with some changes you can't  undo them but you can  remove the class from the list of classes that need refactoring.
+    </para>
+    <figure>
+      <title>List of classes that need refactoring</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="images/plugins/annotations3.png"/>
+      </imageobject>
+    </mediaobject>
+    </figure>
+    <para>To apply the changes click <emphasis>
+      <property>Finish</property></emphasis>.</para>
 
+ </section>
   <section id="debug_log">
     <title>Enable debug logging in the plugins</title>
 
