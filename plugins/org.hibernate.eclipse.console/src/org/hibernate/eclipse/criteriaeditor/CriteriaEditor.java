@@ -39,6 +39,11 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextListener;
 import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -216,6 +221,25 @@ public class CriteriaEditor extends AbstractQueryEditor {
 		Control control = parent.getChildren()[1];
     	control.setLayoutData( new GridData( GridData.FILL_BOTH ) );
 
+	    // the following is needed to make sure the editor area gets focus when editing after query execution
+	    // TODO: find a better way since this is triggered on every mouse click and key stroke in the editor area
+    	// one more remark: without this code -> JBIDE-4446
+	    StyledText textWidget = getSourceViewer().getTextWidget();
+		textWidget.addKeyListener(new KeyAdapter() {
+
+			public void keyPressed(KeyEvent e) {
+				getSite().getPage().activate(CriteriaEditor.this);
+			}
+
+		});
+		textWidget.addMouseListener(new MouseAdapter() {
+
+			public void mouseDown(MouseEvent e) {
+				getSite().getPage().activate(CriteriaEditor.this);
+			}
+
+		});
+    	
 	}
 
 	@Override

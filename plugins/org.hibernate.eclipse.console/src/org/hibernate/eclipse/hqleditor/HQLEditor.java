@@ -164,7 +164,8 @@ public class HQLEditor extends AbstractQueryEditor {
 	    getSite().getWorkbenchWindow().getWorkbench().getHelpSystem().setHelp( parent, HELP_CONTEXT_ID );
 
 	    // the following is needed to make sure the editor area gets focus when editing after query execution
-	    // TODO: find a better way since this is triggered on evey mouse click and key stroke in the editor area
+	    // TODO: find a better way since this is triggered on every mouse click and key stroke in the editor area
+    	// one more remark: without this code -> JBIDE-4446
 	    StyledText textWidget = getSourceViewer().getTextWidget();
 		textWidget.addKeyListener(new KeyAdapter() {
 
