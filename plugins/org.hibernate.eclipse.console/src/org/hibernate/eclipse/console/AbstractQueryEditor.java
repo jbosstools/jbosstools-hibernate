@@ -449,4 +449,12 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 			return files[0];
 		return null;
 	}
+
+	public boolean initTextAndToolTip(String text) {
+		if (execAction != null) {
+			execAction.initTextAndToolTip(text);
+			return true;
+		}
+		return false;
+	}
 }

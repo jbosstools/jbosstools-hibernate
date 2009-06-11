@@ -40,7 +40,7 @@ public class ExecuteQueryAction extends Action {
 
 	public ExecuteQueryAction() {
 		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.EXECUTE) );
-		initTextAndToolTip();
+		initTextAndToolTip(HibernateConsoleMessages.ExecuteQueryAction_run_default);
 	}
 
 
@@ -58,31 +58,26 @@ public class ExecuteQueryAction extends Action {
 	}
 
 	protected void execute(QueryEditor queryEditor) {
-		try {
-			ConsoleConfiguration cfg = queryEditor.getConsoleConfiguration();
-			if(cfg!=null) {
-				if (!cfg.isSessionFactoryCreated()) {
-					if (queryEditor.askUserForConfiguration(cfg.getName())) {
-						if(cfg.getConfiguration()==null) {
-							cfg.build();
-						}
-						cfg.buildSessionFactory();
-						queryEditor.executeQuery(cfg);
+
+		ConsoleConfiguration cfg = queryEditor.getConsoleConfiguration();
+		if(cfg!=null) {
+			if (!cfg.isSessionFactoryCreated()) {
+				if (queryEditor.askUserForConfiguration(cfg.getName())) {
+					if(cfg.getConfiguration()==null) {
+						cfg.build();
 					}
-				} else {
+					cfg.buildSessionFactory();
 					queryEditor.executeQuery(cfg);
 				}
+			} else {
+				queryEditor.executeQuery(cfg);
 			}
 		}
-		finally {
-			initTextAndToolTip();
-		}
-
 	}
 
-	private void initTextAndToolTip() {
-		setText(HibernateConsoleMessages.ExecuteQueryAction_run_hql);
-		setToolTipText(HibernateConsoleMessages.ExecuteQueryAction_run_hql);
+	public void initTextAndToolTip(String text) {
+		setText(text);
+		setToolTipText(text);
 	}
 
 	public void run(IAction action) {

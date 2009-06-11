@@ -239,7 +239,7 @@ public class CriteriaEditor extends AbstractQueryEditor {
 			}
 
 		});
-    	
+		initTextAndToolTip(HibernateConsoleMessages.ExecuteQueryAction_run_criteria);
 	}
 
 	@Override

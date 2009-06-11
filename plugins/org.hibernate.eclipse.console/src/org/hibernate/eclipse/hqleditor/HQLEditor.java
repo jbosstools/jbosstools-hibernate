@@ -181,6 +181,7 @@ public class HQLEditor extends AbstractQueryEditor {
 			}
 
 		});
+		initTextAndToolTip(HibernateConsoleMessages.ExecuteQueryAction_run_hql);
 	}
 
 	/**

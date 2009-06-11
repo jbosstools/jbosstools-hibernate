@@ -36,11 +36,11 @@ import org.hibernate.eclipse.console.actions.ExecuteQueryAction;
  */
 public class CriteriaEditorActionContributor extends TextEditorActionContributor {
 
-	private ExecuteQueryAction executeHQLAction;
+	private ExecuteQueryAction executeQueryAction;
 	
     public CriteriaEditorActionContributor() {
         super();
-        executeHQLAction = new ExecuteQueryAction();    
+        executeQueryAction = new ExecuteQueryAction();    
     }
 
     /**
@@ -63,7 +63,7 @@ public class CriteriaEditorActionContributor extends TextEditorActionContributor
         super.setActiveEditor( targetEditor );
 
         if(targetEditor instanceof QueryEditor) {
-        	executeHQLAction.setHibernateQueryEditor((QueryEditor) targetEditor);
+        	executeQueryAction.setHibernateQueryEditor((QueryEditor) targetEditor);
         }            
                 
     }
@@ -71,7 +71,7 @@ public class CriteriaEditorActionContributor extends TextEditorActionContributor
     public void init(IActionBars bars, IWorkbenchPage page) {
     	super.init( bars, page );
     	
-    	bars.setGlobalActionHandler("org.hibernate.eclipse.console.actions.ExecuteQueryAction", executeHQLAction); //$NON-NLS-1$
+    	bars.setGlobalActionHandler("org.hibernate.eclipse.console.actions.ExecuteQueryAction", executeQueryAction); //$NON-NLS-1$
         bars.updateActionBars();
     }
     

@@ -60,7 +60,9 @@ public class HibernateConsoleMessages extends NLS {
 	public static String EditConsoleConfiguration_exception_while_edit_config;
 	public static String EditConsoleConfiguration_no_launch_cfg_matched;
 	public static String EditConsoleConfiguration_problem_adding_console_cfg;
+	public static String ExecuteQueryAction_run_default;
 	public static String ExecuteQueryAction_run_hql;
+	public static String ExecuteQueryAction_run_criteria;
 	public static String HQLScratchpadAction_hql_editor;
 	public static String HQLScratchpadAction_open_hql_editor;
 	public static String JTidyFormatAction_do_you_want_format_xml_files_with_jtidy;
