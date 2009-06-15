@@ -114,6 +114,9 @@ public class HibernateConsoleMessages extends NLS {
 	//
 	public static String ConsoleConfigurationPropertySource_additional_mapping_files;
 	public static String ConsoleConfigurationPropertySource_config_file;
+	public static String ConsoleConfigurationPropertySource_project;
+	public static String ConsoleConfigurationPropertySource_connection;
+	public static String ConsoleConfigurationPropertySource_mode;
 	public static String ConsoleConfigurationPropertySource_error;
 	public static String ConsoleConfigurationPropertySource_name;
 	public static String ConsoleConfigurationPropertySource_properties_file;
