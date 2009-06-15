@@ -86,6 +86,10 @@ public interface ConsoleConfigurationPreferences {
 			}
 			return rtn;
 		}
+		
+		public static String[] values() {
+			return null;
+		}
 	}
 
 
