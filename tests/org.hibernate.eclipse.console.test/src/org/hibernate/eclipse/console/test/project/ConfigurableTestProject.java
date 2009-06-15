@@ -11,6 +11,7 @@
 package org.hibernate.eclipse.console.test.project;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -80,9 +81,9 @@ public class ConfigurableTestProject extends TestProject {
 		if (activePackage >= foldersList.size()) {
 			return false;
 		}
+		FilesTransfer.delete(new File(project.getLocation().append(SRC_FOLDER).toOSString()));
 		final String pack = foldersList.get(activePackage);
 		final File srcFolder = getFolder(RESOURCE_SRC_PATH + pack);
-		FilesTransfer.delete(new File(project.getLocation().append(SRC_FOLDER).toOSString()));
 		IPackageFragmentRoot sourcePackageFragment = createFolder(SRC_FOLDER + File.separator + pack);
 		FilesTransfer.copyFolder(srcFolder, (IFolder)sourcePackageFragment.getResource());
 		return true;
@@ -100,7 +101,7 @@ public class ConfigurableTestProject extends TestProject {
 		return folder;
 	}
 
-	public boolean createTestFoldersList() {
+	public boolean createTestFoldersList(FileFilter filterFiles, FileFilter filterFolders) {
 		activePackage = -1;
 		foldersList = new ArrayList<String>();
 		File srcFolder = null;
@@ -112,8 +113,7 @@ public class ConfigurableTestProject extends TestProject {
 		if (srcFolder == null) {
 			return false;
 		}
-		FilesTransfer.collectFoldersWithFiles(srcFolder, FilesTransfer.filterFilesJava, 
-				FilesTransfer.filterFolders, foldersList);
+		FilesTransfer.collectFoldersWithFiles(srcFolder, filterFiles, filterFolders, foldersList);
 		IPath base = Path.fromOSString(srcFolder.getPath());
 		for (int i = 0; i < foldersList.size(); i++) {
 			String str = foldersList.get(i);
@@ -122,6 +122,10 @@ public class ConfigurableTestProject extends TestProject {
 			foldersList.set(i, path.toOSString());
 		}
 		return true;
+	}
+
+	public boolean createTestFoldersList() {
+		return createTestFoldersList(FilesTransfer.filterFilesJava, FilesTransfer.filterFolders);
 	}
 
 	public boolean useAllSources() {
@@ -145,6 +149,23 @@ public class ConfigurableTestProject extends TestProject {
 			return true;
 		}
 		return false;
+	}
+
+	public boolean useSelectedFolders() throws IOException, CoreException {
+		activePackage = -1;
+		if (foldersList == null) {
+			return false;
+		}
+		FilesTransfer.delete(new File(project.getLocation().append(SRC_FOLDER).toOSString()));
+		for (int i = 0; i < foldersList.size(); i++) {
+			final String pack = foldersList.get(i);
+			final File srcFolder = getFolder(RESOURCE_SRC_PATH + pack);
+			IPackageFragmentRoot sourcePackageFragment = createFolder(SRC_FOLDER + File.separator + pack);
+			FilesTransfer.copyFolder(srcFolder, (IFolder)sourcePackageFragment.getResource());
+		}
+		foldersList = new ArrayList<String>();
+		foldersList.add(""); //$NON-NLS-1$
+		return true;
 	}
 
 	public void fullBuild() throws CoreException {

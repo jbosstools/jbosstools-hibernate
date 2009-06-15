@@ -2,7 +2,8 @@ package org.hibernate.eclipse.console.test;
 
 import java.io.IOException;
 
-import org.hibernate.eclipse.console.test.mappingproject.HibernateAllMappingTests;
+import org.hibernate.eclipse.console.test.mappingproject.MappingTestsCore;
+import org.hibernate.eclipse.console.test.mappingproject.MappingTestsJpa;
 import org.hibernate.eclipse.console.views.test.QueryPageViewerTest;
 import org.hibernate.eclipse.hqleditor.preferences.HQLEditorPreferencePageTest;
 import org.hibernate.eclipse.mapper.HBMInfoExtractorTest;
@@ -16,14 +17,15 @@ public class ConsolePluginAllTests {
 		TestSuite suite = new TestSuite(
 				ConsoleTestMessages.ConsolePluginAllTests_test_for );
 
-		suite.addTestSuite( KnownConfigurationsTest.class );
-		suite.addTestSuite( QueryParametersTest.class );
-		suite.addTestSuite( PerspectiveTest.class );
-		suite.addTestSuite( ConsoleConfigurationTest.class );
-		suite.addTestSuite( JavaFormattingTest.class );
-		suite.addTestSuite( RefactoringTest.class );
+		suite.addTestSuite(KnownConfigurationsTest.class);
+		suite.addTestSuite(QueryParametersTest.class);
+		suite.addTestSuite(PerspectiveTest.class);
+		suite.addTestSuite(ConsoleConfigurationTest.class);
+		suite.addTestSuite(JavaFormattingTest.class);
+		suite.addTestSuite(RefactoringTest.class);
 		
-		suite.addTestSuite( HibernateAllMappingTests.class );
+		suite.addTestSuite(MappingTestsCore.class);
+		suite.addTestSuite(MappingTestsJpa.class);
 		suite.addTestSuite(HQLEditorPreferencePageTest.class);
 		
 		suite.addTestSuite(QueryPageViewerTest.class);

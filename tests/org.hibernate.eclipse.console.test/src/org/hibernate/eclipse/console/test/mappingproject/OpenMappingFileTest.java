@@ -75,19 +75,28 @@ public class OpenMappingFileTest extends TestCase {
 					new Object[]{testPackage.getElementName(), ex.getMessage()});
 			fail(out);
 		}
-		if (persClasses.length > 0){
+		if (persClasses.length > 0) {
+			final String testClass = "class"; //$NON-NLS-1$
 			for (int i = 0; i < persClasses.length; i++) {
-				assertTrue(persClasses[0] instanceof PersistentClass);
+				assertTrue(persClasses[i] instanceof PersistentClass);
 				PersistentClass persClass = (PersistentClass) persClasses[i];
 				openTest(persClass, consCFG);
 				props =  new PersistentClassWorkbenchAdapter().getChildren(persClass);
 				for (int j = 0; j < props.length; j++) {
-					if (props[j].getClass() != Property.class) continue;
+					if (props[j].getClass() != Property.class) {
+						continue;
+					}
 					openTest(props[j], consCFG);
 					Object[] compProperties = new PropertyWorkbenchAdapter().getChildren(props[j]);
 					for (int k = 0; k < compProperties.length; k++) {
 						//test Composite properties
-						if (compProperties[k].getClass() != Property.class) continue;
+						if (compProperties[k].getClass() != Property.class) {
+							continue;
+						}
+						final Property prop = (Property)compProperties[k];
+						if (testClass.equals(prop.getNodeName()) || testClass.equals(prop.getName())) {
+							continue;
+						}
 						openPropertyTest((Property)compProperties[k], (Property) props[j], consCFG);
 					}
 				}
@@ -121,7 +130,9 @@ public class OpenMappingFileTest extends TestCase {
 		} catch (FileNotFoundException e) {
 			ex = e;
 		}
-		if (ex == null ) ex = Utils.getExceptionIfItOccured(editor);
+		if (ex == null ) {
+			ex = Utils.getExceptionIfItOccured(editor);
+		}
 		if (ex != null) {
 			String out = NLS.bind(ConsoleTestMessages.OpenMappingFileTest_mapping_file_for_property_not_opened_package,
 					new Object[]{compositeProperty.getNodeName(), testPackage.getElementName(), ex.getMessage()});
@@ -147,7 +158,9 @@ public class OpenMappingFileTest extends TestCase {
 		} catch (FileNotFoundException e) {
 			ex = e;
 		}
-		if (ex == null ) ex = Utils.getExceptionIfItOccured(editor);
+		if (ex == null ) {
+			ex = Utils.getExceptionIfItOccured(editor);
+		}
 		if (ex != null) {
 			String out = NLS.bind(ConsoleTestMessages.OpenMappingFileTest_mapping_file_for_not_opened_package,
 					new Object[]{selection, testPackage.getElementName(), ex.getMessage()});

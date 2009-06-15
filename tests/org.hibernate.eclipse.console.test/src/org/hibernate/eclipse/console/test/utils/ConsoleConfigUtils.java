@@ -11,6 +11,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
@@ -119,6 +120,49 @@ public class ConsoleConfigUtils {
 		Text text = (Text) projectName.get(main);
 		text.setText(project);
 		page.setConfigurationFilePath(cfgFilePath);
+		page.setName(name);
+		page.performFinish();
+		wdialog.close();
+	}
+
+	/**
+	 * "Launch" the wizard and create hibernate jpa console configuration in the current workspace. 
+	 * @param name - console configuration name
+	 * @param cfgFilePath - path to hibernate.cfg.xml
+	 * @param project - name of java project selected for console configuration
+	 * @throws CoreException
+	 * @throws NoSuchFieldException
+	 * @throws IllegalAccessException
+	 */
+	public static void createJpaConsoleConfig(String name, String project, String persistenceUnitName) throws CoreException, NoSuchFieldException, IllegalAccessException {
+		final IWorkbenchWindow win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		final ConsoleConfigurationCreationWizard wiz = new ConsoleConfigurationCreationWizard();
+		final WizardDialog wdialog = new WizardDialog(win.getShell(), wiz);
+		wdialog.create();
+		ConsoleConfigurationWizardPage page = ((ConsoleConfigurationWizardPage)wiz.getPages()[0]);			
+		ILaunchConfigurationTab[] tabs = page.getTabs();
+		ConsoleConfigurationMainTab main = (ConsoleConfigurationMainTab) tabs[0];
+		Class<? extends ConsoleConfigurationMainTab> clazz = main.getClass();
+		//
+		Field projectName = clazz.getDeclaredField("projectNameText"); //$NON-NLS-1$
+		projectName.setAccessible(true);
+		Text text = (Text)projectName.get(main);
+		text.setText(project);
+		//
+		Field persistenceUnitNameText = clazz.getDeclaredField("persistenceUnitNameText"); //$NON-NLS-1$
+		persistenceUnitNameText.setAccessible(true);
+		text = (Text)persistenceUnitNameText.get(main);
+		text.setText(persistenceUnitName);
+		//
+		Field jpaMode = clazz.getDeclaredField("jpaMode"); //$NON-NLS-1$
+		Field coreMode = clazz.getDeclaredField("coreMode"); //$NON-NLS-1$
+		jpaMode.setAccessible(true);
+		coreMode.setAccessible(true);
+		Button button = (Button)coreMode.get(main);
+		button.setSelection(false);
+		button = (Button)jpaMode.get(main);
+		button.setSelection(true);
+		//
 		page.setName(name);
 		page.performFinish();
 		wdialog.close();

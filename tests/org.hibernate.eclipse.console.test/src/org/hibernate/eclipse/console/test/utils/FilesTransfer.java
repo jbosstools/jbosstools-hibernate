@@ -53,6 +53,13 @@ public class FilesTransfer {
 		}
 	};
 
+	public static final FileFilter filterFilesJavaXml = new FileFilter() {
+		public boolean accept(File f) {
+			return f.exists() && f.isFile() && !f.isHidden() && 
+				(f.getName().toLowerCase().endsWith(".java") || f.getName().toLowerCase().endsWith(".xml")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+	};
+
 	/**
 	 * Copy whole folder content from source folder to destination folder. 
 	 * @param src - source folder
@@ -144,48 +151,35 @@ public class FilesTransfer {
 	 * Delete the whole directory
 	 * @param path
 	 */
-	public static void delete(File path) {
+	public static boolean delete(File path) {
+		boolean res = true, tmp = true;
 		if (path.exists()) {
 			File[] files = path.listFiles();
 			for (int i = 0; i < files.length; i++) {
 				if (files[i].isDirectory()) {
-					delete(files[i]);
+					tmp = delete(files[i]);;
 				} else {
-					deleteFile(files[i]);
+					tmp = deleteFile(files[i]);
 				}
+				res = res && tmp;
 			}
 		}
-		deleteFile(path);
-
+		tmp = deleteFile(path);
+		res = res && tmp;
+		return res;
 	}
 
 	/**
 	 * Delete single file
 	 * @param file
 	 */
-	public static void deleteFile(File file) {
-		try {
-			if (file.exists()) {
-				if (!file.delete()) {
-					throw new RuntimeException(getMessage(file));
-				}
+	public static boolean deleteFile(File file) {
+		boolean res = false;
+		if (file.exists()) {
+			if (file.delete()) {
+				res = true;
 			}
-		} catch (Throwable e) {
-			throw new RuntimeException(getMessage(file) ,e);
 		}
-	}
-
-
-	private static String getMessage(File file) {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("Cannot remove the "); //$NON-NLS-1$
-		buffer.append(file.getAbsolutePath());
-		buffer.append(" file. "); //$NON-NLS-1$
-		if (file.exists() && file.isDirectory()) {
-			String[] files = file.list();
-			buffer.append("List="); //$NON-NLS-1$
-			buffer.append(files.toString());
-		}
-		return buffer.toString();
+		return res;
 	}
 }
