@@ -43,7 +43,7 @@
       <view
             category="hibernatecategory"
             class="org.hibernate.eclipse.console.views.DynamicSQLPreviewView"
-            icon="icons/images/hibernate_small_icon.jpg"
+            icon="icons/hibernate_small_icon.gif"
             id="org.hibernate.eclipse.console.views.DynamicSQLPreviewView"
             name="%ViewName_HibernateDynamicSQLPreview"/>
       <view
