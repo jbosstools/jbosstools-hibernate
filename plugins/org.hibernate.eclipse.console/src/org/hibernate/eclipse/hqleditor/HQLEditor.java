@@ -97,15 +97,15 @@ public class HQLEditor extends AbstractQueryEditor {
 	    ResourceBundle bundle = getResourceBundle();
 
 	    IAction a = new TextOperationAction( bundle,
-	            "ContentAssistProposal.", this, ISourceViewer.CONTENTASSIST_PROPOSALS ); //$NON-NLS-1$
+	            "HQLEditor_ContentAssistProposal_", this, ISourceViewer.CONTENTASSIST_PROPOSALS ); //$NON-NLS-1$
 	    a.setActionDefinitionId( ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS );
 	    setAction( "ContentAssistProposal", a ); //$NON-NLS-1$
 
-	    a = new TextOperationAction( bundle, "ContentAssistTip.", this, ISourceViewer.CONTENTASSIST_CONTEXT_INFORMATION ); //$NON-NLS-1$
+	    a = new TextOperationAction( bundle, "HQLEditor_ContentAssistTip_", this, ISourceViewer.CONTENTASSIST_CONTEXT_INFORMATION ); //$NON-NLS-1$
 	    a.setActionDefinitionId( ITextEditorActionDefinitionIds.CONTENT_ASSIST_CONTEXT_INFORMATION );
 	    setAction( "ContentAssistTip", a ); //$NON-NLS-1$
 
-	    a = new TextOperationAction( bundle, "ContentFormat.", this, ISourceViewer.FORMAT ); //$NON-NLS-1$
+	    a = new TextOperationAction( bundle, "HQLEditor_ContentFormat_", this, ISourceViewer.FORMAT ); //$NON-NLS-1$
 	    setAction( "ContentFormat", a ); //$NON-NLS-1$
 
 	    /*a = new HQLConnectAction( bundle, "HQLEditor.connectAction." ); //$NON-NLS-1$

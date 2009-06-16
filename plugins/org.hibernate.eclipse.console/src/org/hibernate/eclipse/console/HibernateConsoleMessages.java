@@ -327,6 +327,19 @@ public class HibernateConsoleMessages extends NLS {
 	public static String HQLEditorPreferencePage_keyword;
 	public static String HQLEditorPreferencePage_string_literal;
 	//
+	public static String HQLEditor_ContentAssistProposal_label;
+	public static String HQLEditor_ContentAssistProposal_tooltip;
+	public static String HQLEditor_ContentAssistProposal_image;
+	public static String HQLEditor_ContentAssistProposal_description;
+	public static String HQLEditor_ContentAssistTip_label;
+	public static String HQLEditor_ContentAssistTip_tooltip;
+	public static String HQLEditor_ContentAssistTip_image;
+	public static String HQLEditor_ContentAssistTip_description;
+	public static String HQLEditor_ContentFormat_label;
+	public static String HQLEditor_ContentFormat_tooltip;
+	public static String HQLEditor_ContentFormat_image;
+	public static String HQLEditor_ContentFormat_description;
+	//
 	public static String AddPropertyDialog_add_exporter_property;
 	public static String AddPropertyDialog_add_property_to;
 	public static String AddPropertyDialog_edit_exporter_property;
