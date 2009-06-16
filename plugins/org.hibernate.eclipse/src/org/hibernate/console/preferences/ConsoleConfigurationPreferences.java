@@ -87,8 +87,8 @@ public interface ConsoleConfigurationPreferences {
 			return rtn;
 		}
 		
-		public static String[] values() {
-			return null;
+		public static String[] values(){
+			return INSTANCES.keySet().toArray(new String[INSTANCES.size()]);
 		}
 	}
 
