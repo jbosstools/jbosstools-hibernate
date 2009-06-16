@@ -47,6 +47,7 @@ import org.hibernate.console.preferences.ConsoleConfigurationPreferences.Configu
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.LaunchHelper;
+import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 
 public class ConsoleConfigurationPropertySource implements IPropertySource {
 
@@ -132,9 +133,9 @@ public class ConsoleConfigurationPropertySource implements IPropertySource {
 			try {
 				ILaunchConfiguration lc = HibernateConsolePlugin.getDefault().findLaunchConfig(cfg.getName());
 				if (lc != null){
-					String connectionName = lc.getAttribute("org.hibernate.eclipse.launch.CONNECTION_PROFILE_NAME", (String)null);  //$NON-NLS-1$
+					String connectionName = lc.getAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, (String)null);  
 					if (connectionName == null){
-						connectionName = lc.getAttribute("org.hibernate.eclipse.launch.USE_JPA_PROJECT_PROFILE", Boolean.FALSE.toString());//$NON-NLS-1$
+						connectionName = lc.getAttribute(IConsoleConfigurationLaunchConstants.USE_JPA_PROJECT_PROFILE, Boolean.FALSE.toString());
 						if (Boolean.TRUE.toString().equalsIgnoreCase(connectionName)){
 							connectionName = HibernateConsoleMessages.ConnectionProfileCtrl_JPAConfiguredConnection;
 						} else {
@@ -233,15 +234,15 @@ public class ConsoleConfigurationPropertySource implements IPropertySource {
 				if (lc != null){
 					ILaunchConfigurationWorkingCopy wc = lc.getWorkingCopy();
 					if (index == 0){//jpa
-						wc.setAttribute("org.hibernate.eclipse.launch.USE_JPA_PROJECT_PROFILE", Boolean.TRUE.toString());////$NON-NLS-1$
-						wc.removeAttribute("org.hibernate.eclipse.launch.CONNECTION_PROFILE_NAME");////$NON-NLS-1$
+						wc.setAttribute(IConsoleConfigurationLaunchConstants.USE_JPA_PROJECT_PROFILE, Boolean.TRUE.toString());
+						wc.removeAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME);
 					} else if (index == 1){//hibernate
-						wc.removeAttribute("org.hibernate.eclipse.launch.USE_JPA_PROJECT_PROFILE");////$NON-NLS-1$
-						wc.removeAttribute("org.hibernate.eclipse.launch.CONNECTION_PROFILE_NAME");////$NON-NLS-1$
+						wc.removeAttribute(IConsoleConfigurationLaunchConstants.USE_JPA_PROJECT_PROFILE);
+						wc.removeAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME);
 					} else {//connection profile
 						String[] values = getConnectionNames();
-						wc.setAttribute("org.hibernate.eclipse.launch.CONNECTION_PROFILE_NAME", values[index]);////$NON-NLS-1$
-						wc.removeAttribute("org.hibernate.eclipse.launch.USE_JPA_PROJECT_PROFILE");////$NON-NLS-1$
+						wc.setAttribute(IConsoleConfigurationLaunchConstants.CONNECTION_PROFILE_NAME, values[index]);
+						wc.removeAttribute(IConsoleConfigurationLaunchConstants.USE_JPA_PROJECT_PROFILE);
 					}
 					wc.doSave();
 				} else {
