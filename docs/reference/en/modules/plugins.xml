@@ -1723,25 +1723,47 @@
     <section>
       <title>Prototyping Queries</title>
 
-      <para>Queries can be prototyped by entering them in the <property>HQL</property> or
-          <property>Criteria Editor</property>. The query editors are opened by right-clicking the
-          <property>Console Configuration</property> and selecting either <property>HQL
-          Editor</property> or <property>Hibernate Criteria Editor</property>. The editors
-        automatically detect the chosen configuration.</para>
-
-      <para>If the menu item is disabled then you need at first to create a <property>Session
+      <para>Queries can be prototyped by entering them into the <property>HQL</property> or
+          <property>Criteria Editor</property>. To execute a query you should click the green run button in the editor toolbar or press <emphasis>
+          <property>Ctrl+Enter</property>
+        </emphasis>.</para>
+	
+	<section id="hql_and_criteria_editors">
+		<title>HQL Editor and Hibernate Criteria Editor</title>
+		<para>To open the query editors right-click your project
+          <property>Console Configuration</property> and select <property>HQL
+          Editor</property> (or <property>Hibernate Criteria Editor</property>).</para>
+	
+		<figure>
+			<title>Opening HQL Editor</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/plugins/prototypingQueries.png"/>
+				</imageobject>
+			</mediaobject>
+		</figure>
+		
+	<tip><title>Tip:</title>	
+	<para>If the context menu items are disabled then you need at first to create a <property>Session
           Factory</property>. That is done by simply expanding the <property>Session
           Factory</property> node.</para>
-
-      <para>By brining up the context menu for a chosen entity or property in the <property>Console
-          Configuration</property> and opening <emphasis>
+	</tip>
+		<para>When open the editors they should automatically detect the chosen Console Configuration.</para>
+		
+	<para>To get a prefill query for any entity (or any entity child node) listed in the
+	<emphasis>
+          <property>Session Factory</property></emphasis> you should double-click it. This will open the 
+	<property>HQL Editor</property> with the associated query.</para>
+	
+	<para>Choosing <emphasis>
           <property>HQL Editor</property>
-        </emphasis> or <emphasis>
+        </emphasis> in the context menu for any entity (or any entity child node) will also open the HQL editor
+	with the associated query. If you choose <emphasis>
           <property>Hibernate Criteria Editor</property>
-        </emphasis> you&apos;ll get a prefill query.</para>
+        </emphasis> in the context menu, it will open <property>Hibernate Criteria Editor</property> with the associated 	cretaria.</para>
 
-      <figure>
-        <title>Entering Simple Queries</title>
+	 <figure>
+        <title>Generating Simple Queries</title>
         <mediaobject>
           <imageobject role="fo">
             <imagedata align="center" scale="80" fileref="images/plugins/plugins_19.png"
@@ -1753,36 +1775,38 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>To copy a portion of code from .java file into a HQL or Criteria editor, make use of the
-        Quick Fix option (Ctrl + 1).</para>
 
-      <figure>
+	<para>It&apos;s also possible to copy a portion of code from <emphasis>
+          <property>.java</property></emphasis> file into the <property>HQL</property> or 
+	<property>Criteria editor</property>. To do this make use of the
+        Quick Fix option (<emphasis>
+          <property>Ctrl + 1</property>)</emphasis>.</para>
+
+  	<figure>
         <title>Quick Fix Option Demonstration</title>
-
         <mediaobject>
           <imageobject>
             <imagedata fileref="images/plugins/plugins_19_b.png"/>
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>You can also update the original java code according to changes in the HQL or Criteria
         editor. For that you should save your HQL/Criteria query and submit the replacing in
         appeared confirmation dialog.</para>
 
       <figure>
         <title>Updating Java Code</title>
-
         <mediaobject>
           <imageobject>
             <imagedata fileref="images/plugins/plugins_19_c.png"/>
           </imageobject>
         </mediaobject>
       </figure>
+	</section>    
 
-      <para>Executing the query is done by clicking the green run button in the toolbar or pressing <emphasis>
-          <property>Ctrl+Enter</property>
-        </emphasis>.</para>
-
+	<section>
+		<title>Error Handling</title>
       <para>Errors during creation of the <property>Session Factory</property> or running the
         queries (e.g. if your configuration or query is incorrect) will be shown in a message dialog
         or inclined in the view that detected the error, you may get more information about the
@@ -1800,7 +1824,7 @@
           out of memory. To avoid this you can put a value in the Max results field to reduce the
           number of elements returned.</para>
       </note>
-
+	</section>
       <section>
         <title>Dynamic Query Translator</title>
 
