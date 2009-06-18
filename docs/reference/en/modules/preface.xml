@@ -109,6 +109,17 @@
                         </entry>
                         <entry><link linkend="hib_console">hibernate console</link></entry>
                     </row>
+                	
+                	<row>
+                		<entry>
+                			<para>HQL Editor and Hibernate Criteria Editor</para>
+                		</entry>
+                		<entry>
+                			<para>The editors are intended for writing, editing and executing HQL queries and criterias. They also support the functionality for generating 
+                			simple queries.</para>
+                		</entry>
+                		<entry><link linkend="hql_and_criteria_editors">hql and hibernate criteria editors</link></entry>
+                	</row>
 
                     <row>
                         <entry>
