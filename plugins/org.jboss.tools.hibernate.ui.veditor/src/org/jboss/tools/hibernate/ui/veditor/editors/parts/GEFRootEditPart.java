@@ -19,13 +19,13 @@ import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 //import org.eclipse.gef.LayerConstants; 
 
-public class GEFRootEditPart extends ScalableFreeformRootEditPart{
+public class GEFRootEditPart extends ScalableFreeformRootEditPart {
 
 	public GEFRootEditPart() {
 		super();
 	}
 	
-	public void setToFront(AbstractConnectionEditPart editpart){
+	public void setToFront(AbstractConnectionEditPart editpart) {
 		ConnectionLayer layer = (ConnectionLayer)getLayer(LayerConstants.CONNECTION_LAYER);
 		IFigure fig = editpart.getFigure();
 		

@@ -27,7 +27,6 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.SingleTableSubclass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.ui.veditor.editors.figures.RoundPolylineConnection;
@@ -68,12 +67,13 @@ implements PropertyChangeListener, EditPartListener {
 	
 	public void propertyChange(PropertyChangeEvent event) {
 		String property = event.getPropertyName();
-		if (Connection.SHOW_SELECTION.equals(property)) 
-			getFigure().setForegroundColor(getSelectionColor());			
-		else if (Connection.HIDE_SELECTION.equals(property))
+		if (Connection.SHOW_SELECTION.equals(property)) {
+			getFigure().setForegroundColor(getSelectionColor());
+		} else if (Connection.HIDE_SELECTION.equals(property)) {
 			getFigure().setForegroundColor(getColor());			
-		else if (Connection.SET_HIDEN.equals(property))
-				getFigure().setVisible(!((Boolean)event.getNewValue()).booleanValue());
+		} else if (Connection.SET_HIDEN.equals(property)) {
+			getFigure().setVisible(!((Boolean)event.getNewValue()).booleanValue());
+		}
 	}
 	
 	private Connection getCastedModel() {
@@ -82,24 +82,26 @@ implements PropertyChangeListener, EditPartListener {
 
 	private Color getColor() {
 		Object element = getCastedModel().getTarget().getOrmElement();
-		if (element instanceof RootClass || element instanceof Subclass) 
+		if (element instanceof RootClass || element instanceof Subclass) { 
 			return ResourceManager.getInstance().getColor(new RGB(210,155,100));
-		else if (element instanceof Column || element instanceof Table || element instanceof Property) 
+		} else if (element instanceof Column || element instanceof Table || element instanceof Property) { 
 			return ResourceManager.getInstance().getColor(new RGB(160, 160, 160));
-		else
+		} else {
 			throw new IllegalArgumentException();
+		}
 	}
 
 	private Color getSelectionColor() {
 		if (getCastedModel().getTarget().getOrmElement() instanceof RootClass ||
-				getCastedModel().getTarget().getOrmElement() instanceof Subclass) 
+				getCastedModel().getTarget().getOrmElement() instanceof Subclass) { 
 			return ResourceManager.getInstance().getColor(new RGB(112,161,99));
-		else if (getCastedModel().getTarget().getOrmElement() instanceof Column || 
+		} else if (getCastedModel().getTarget().getOrmElement() instanceof Column || 
 				getCastedModel().getTarget().getOrmElement() instanceof Table || 
-				getCastedModel().getTarget().getOrmElement() instanceof Component) 
+				getCastedModel().getTarget().getOrmElement() instanceof Component) { 
 			return ResourceManager.getInstance().getColor(new RGB(66,173,247));
-		else
+		} else {
 			throw new IllegalArgumentException();
+		}
 	}
 	
 	private class ShapesSelectionEditPolicy extends SelectionEditPolicy {
@@ -133,8 +135,6 @@ implements PropertyChangeListener, EditPartListener {
 	public void selectedStateChanged(EditPart editpart) {
 		if (this.getSelected() == EditPart.SELECTED_PRIMARY) {
 			((GEFRootEditPart) getParent()).setToFront(this);
-
 		}
-		
 	}
 }

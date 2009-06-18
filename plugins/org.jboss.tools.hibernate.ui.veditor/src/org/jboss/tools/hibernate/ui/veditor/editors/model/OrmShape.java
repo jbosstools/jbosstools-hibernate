@@ -43,7 +43,7 @@ public class OrmShape extends ExpandeableShape {
 			RootClass rootClass = (RootClass)getOrmElement();
 			Property identifierProperty = rootClass.getIdentifierProperty();
 			if (identifierProperty != null) {
-				getChildren().add(new Shape(identifierProperty));
+				addChild(new Shape(identifierProperty));
 			}
 
 			KeyValue identifier = rootClass.getIdentifier();
@@ -53,7 +53,7 @@ public class OrmShape extends ExpandeableShape {
 					Iterator<Property> iterator = ((Component)identifier).getPropertyIterator();
 					while (iterator.hasNext()) {
 						Property property = iterator.next();
-						getChildren().add(new Shape(property));
+						addChild(new Shape(property));
 					}
 				}
 			}
@@ -80,10 +80,10 @@ public class OrmShape extends ExpandeableShape {
 						} else {
 							bodyOrmShape = new Shape(field);
 						}
-						getChildren().add(bodyOrmShape);
+						addChild(bodyOrmShape);
 					} else {
 						bodyOrmShape = new ExpandeableShape(field);
-						getChildren().add(bodyOrmShape);
+						addChild(bodyOrmShape);
 					}
 				}
 			}
@@ -92,7 +92,7 @@ public class OrmShape extends ExpandeableShape {
 
 			Property identifierProperty = rootClass.getIdentifierProperty();
 			if (identifierProperty != null) {
-				getChildren().add(new Shape(identifierProperty));
+				addChild(new Shape(identifierProperty));
 			}
 
 			KeyValue identifier = rootClass.getIdentifier();
@@ -100,7 +100,7 @@ public class OrmShape extends ExpandeableShape {
 				Iterator<Property> iterator = ((Component)identifier).getPropertyIterator();
 				while (iterator.hasNext()) {
 					Property property = iterator.next();
-					getChildren().add(new Shape(property));
+					addChild(new Shape(property));
 				}
 			}
 
@@ -129,10 +129,10 @@ public class OrmShape extends ExpandeableShape {
 						} else {
 							bodyOrmShape = new Shape(field);
 						}
-						getChildren().add(bodyOrmShape);
+						addChild(bodyOrmShape);
 					} else {
 						bodyOrmShape = new ExpandeableShape(field);
-						getChildren().add(bodyOrmShape);
+						addChild(bodyOrmShape);
 					}
 				}
 			}
@@ -161,7 +161,7 @@ public class OrmShape extends ExpandeableShape {
 					} else {
 						bodyOrmShape = new ExpandeableShape(property);
 					}
-					getChildren().add(bodyOrmShape);
+					addChild(bodyOrmShape);
 				}
 			}
 		} else if (ormElement instanceof Table) {
@@ -169,13 +169,18 @@ public class OrmShape extends ExpandeableShape {
 			while (iterator.hasNext()) {
 				Column column = (Column)iterator.next();
 				bodyOrmShape = new Shape(column);
-				getChildren().add(bodyOrmShape);
+				addChild(bodyOrmShape);
 			}
 		}
 	}
 	
 	public Shape getChild(Column ormElement) {
-		for (Shape child : getChildren()) {
+		if (ormElement == null) {
+			return null;
+		}
+		Iterator<Shape> it = getChildrenIterator();
+		while (it.hasNext()) {
+			final Shape child = it.next();
 			Object childElement = child.getOrmElement();
 			if (childElement instanceof Column && ormElement.getName().equals(((Column)childElement).getName())) {
 				return child;
@@ -185,12 +190,15 @@ public class OrmShape extends ExpandeableShape {
 	}
 
 	public Shape getChild(Property ormElement) {
-		if (ormElement != null) {
-			for (Shape child : getChildren()) {
-				Object childElement = child.getOrmElement();
-				if (childElement instanceof Property && ormElement.getName().equals(((Property)childElement).getName())) {
-					return child;
-				}
+		if (ormElement == null) {
+			return null;
+		}
+		Iterator<Shape> it = getChildrenIterator();
+		while (it.hasNext()) {
+			final Shape child = it.next();
+			Object childElement = child.getOrmElement();
+			if (childElement instanceof Property && ormElement.getName().equals(((Property)childElement).getName())) {
+				return child;
 			}
 		}
 		return null;
@@ -198,7 +206,9 @@ public class OrmShape extends ExpandeableShape {
 
 	protected void setHidden(boolean hiden) {
 		super.setHidden(hiden);
-		for (Shape child : getChildren()) {
+		Iterator<Shape> it = getChildrenIterator();
+		while (it.hasNext()) {
+			final Shape child = it.next();
 			child.setHidden(hiden);
 		}
 	}
@@ -213,8 +223,10 @@ public class OrmShape extends ExpandeableShape {
 		firePropertyChange(SET_HIDEN, null, Boolean.valueOf(hiden));
 	}
 	
-	private void setElementHidden(ModelElement element, boolean hidden){
-		for (Shape child : element.getChildren()) {
+	private void setElementHidden(ModelElement element, boolean hidden) {
+		Iterator<Shape> it = getChildrenIterator();
+		while (it.hasNext()) {
+			final Shape child = it.next();
 			child.setHidden(hidden);
 			setElementHidden(child, hidden);
 		}

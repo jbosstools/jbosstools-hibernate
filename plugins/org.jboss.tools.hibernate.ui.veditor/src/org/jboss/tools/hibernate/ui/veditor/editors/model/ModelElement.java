@@ -13,11 +13,15 @@ package org.jboss.tools.hibernate.ui.veditor.editors.model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 
+/**
+ * This is basis model class for diagram items.  
+ */
 public abstract class ModelElement implements IPropertySource {
 
 	/** An empty property descriptor. */
@@ -43,51 +47,74 @@ public abstract class ModelElement implements IPropertySource {
 			pcsDelegate.removePropertyChangeListener(l);
 		}
 	}
+
+	/**
+	 * The result is parent or null if the object has no parent
+	 * @return ModelElement
+	 */
+	abstract public ModelElement getParent();
 	
-	private List<Shape> children = new OList<Shape>();
-	private ModelElement parent;
+	/**
+	 * The children are items which type is Shape!
+	 * In general ModelElement is not a child.
+	 */
+	private ArrayList<Shape> children = new ArrayList<Shape>();
 	
-	public List<Shape> getChildren(){
-		return children;
+	public Iterator<Shape> getChildrenIterator() {
+		return children.iterator();
 	}
 	
-	public ModelElement getParent(){
-		return parent;
-	}
-	
-	public void setParent(ModelElement element){
-		parent = element;
-	}
-	
-	public OrmDiagram getOrmDiagram(){
-		ModelElement element = this;
-		while(true){
-			if(element instanceof OrmDiagram) return (OrmDiagram)element;
-			if(element.getParent() == null)break;
-			element = element.getParent();
+	/**
+	 * Return copy of children list (to prevent modification of internal array)
+	 * @return
+	 */
+	public List<Shape> getChildrenList() {
+		ArrayList<Shape> copy = new ArrayList<Shape>();
+		Iterator<Shape> it = getChildrenIterator();
+		while (it.hasNext()) {
+			copy.add(it.next());
 		}
-		return null;
+		return copy;
 	}
 	
-	public ExpandeableShape getExtendeableShape(){
-		ModelElement element = this;
-		while(true){
-			if(element instanceof ExpandeableShape) return (ExpandeableShape)element;
-			if(element.getParent() == null)break;
-			if(element.getParent() instanceof ExpandeableShape) return (ExpandeableShape)element.getParent();
-			element = element.getParent();
-		}
-		return null;
+	/**
+	 * Number of children
+	 * @return
+	 */
+	public int getChildrenNumber() {
+		return children.size();
 	}
 	
-	public OrmShape getOrmShape(){
-		ModelElement element = this;
-		while(true){
-			if(element instanceof OrmShape) return (OrmShape)element;
-			if(element.getParent() == null)break;
-			element = element.getParent();
+	/**
+	 * Standard way to add child
+	 * @param item
+	 * @return
+	 */
+	public boolean addChild(Shape item) {
+		item.setParent(this);
+		return children.add(item);
+	}
+	
+	/**
+	 * Standard way to remove child
+	 * @param item
+	 * @return
+	 */
+	public boolean removeChild(Shape item) {
+		item.setParent(null);
+		return children.remove(item);
+	}
+	
+	/**
+	 * Clear all children
+	 */
+	public void deleteChildren() {
+		Iterator<Shape> it = getChildrenIterator();
+		while (it.hasNext()) {
+			Shape me = it.next();
+			me.setParent(null);
 		}
-		return null;
+		children.clear();
 	}
 	
 	public Object getEditableValue() {
@@ -128,21 +155,4 @@ public abstract class ModelElement implements IPropertySource {
 	public void setPropertyValue(Object id, Object value) {
 		// do nothing
 	}
-
-	class OList<E> extends ArrayList<E>{
-		public OList(){
-			
-		}
-		
-		public boolean add(E item){
-			if(item instanceof ModelElement)((ModelElement)item).setParent(ModelElement.this);
-			return super.add(item);
-		}
-		
-		public boolean remove(Object item){
-			if(item instanceof ModelElement)((ModelElement)item).setParent(null);
-			return super.remove(item);
-		}
-	}
-
 }

@@ -105,11 +105,13 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 	public void performRequest(Request req) {
 		if(RequestConstants.REQ_OPEN.equals(req.getType())) {
 			if (getCastedModel().getOrmElement() instanceof Column) {
-				if(getCastedModel().getTargetConnections().size() > 0)
+				if (getCastedModel().getTargetConnections().size() > 0) {
 					getCastedModel().getTargetConnections().get(0).getSource().setFocus();
+				}
 			} else {
-				if(getCastedModel().getSourceConnections().size() > 0)
+				if (getCastedModel().getSourceConnections().size() > 0) {
 					getCastedModel().getSourceConnections().get(0).getTarget().setFocus();
+				}
 			}
 		}
 	}
@@ -167,10 +169,11 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 				}
 				OrmShapeEditPart part = getOrmShapeEditPart();
 				Point p = r.getCenter();
-				if (reference.x < p.x)
-					p.x-=part.getFigure().getBounds().width/2;
-				 else
-					p.x+=part.getFigure().getBounds().width/2;
+				if (reference.x < p.x) {
+					p.x -= part.getFigure().getBounds().width / 2;
+				} else {
+					p.x += part.getFigure().getBounds().width / 2;
+				}
 				return p;
 			}
 		};
@@ -182,8 +185,9 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 		EditPart part = this;
 		while (!((part instanceof OrmShapeEditPart))) {
 			part = part.getParent();
-			if(i++ > 4)
+			if (i++ > 4) {
 				throw new RuntimeException();
+			}
 		}
 		return (OrmShapeEditPart)part;
 	}

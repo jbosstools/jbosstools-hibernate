@@ -21,7 +21,7 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartListener;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
-public class OrmEditPart extends AbstractGraphicalEditPart implements EditPartListener{
+public class OrmEditPart extends AbstractGraphicalEditPart implements EditPartListener {
 
 	public void setModel(Object model) {
 		super.setModel(model);
@@ -41,7 +41,7 @@ public class OrmEditPart extends AbstractGraphicalEditPart implements EditPartLi
 	}
 
 	public void selectedStateChanged(EditPart editpart) {
-		if(this.getSelected() == EditPart.SELECTED_PRIMARY && OrmEditPart.this.getParent() instanceof DiagramEditPart) {
+		if (this.getSelected() == EditPart.SELECTED_PRIMARY && OrmEditPart.this.getParent() instanceof DiagramEditPart) {
 			((DiagramEditPart)OrmEditPart.this.getParent()).setToFront(this);
 		}
 	}
@@ -77,16 +77,17 @@ public class OrmEditPart extends AbstractGraphicalEditPart implements EditPartLi
 			if (i < editParts.size()) {
 				editPart = editParts.get(i);
 				if (editPart.getModel() == model) {
-					if (editPart.getSource() != this)
+					if (editPart.getSource() != this) {
 						editPart.setSource(this);
+					}
 					continue;
 				}
 			}
 
 			editPart = modelToEditPart.get(model);
-			if (editPart != null)
+			if (editPart != null) {
 				reorderSourceConnection(editPart, i);
-			else {
+			} else {
 				editPart = createOrFindConnection(model);
 				addSourceConnection(editPart, i);
 			}
@@ -94,10 +95,12 @@ public class OrmEditPart extends AbstractGraphicalEditPart implements EditPartLi
 
 		// Remove the remaining EditParts
 		List<ConnectionEditPart> trash = new ArrayList<ConnectionEditPart>();
-		for (; i < editParts.size(); i++)
+		for (; i < editParts.size(); i++) {
 			trash.add(editParts.get(i));
-		for (i = 0; i < trash.size(); i++)
+		}
+		for (i = 0; i < trash.size(); i++) {
 			removeSourceConnection(trash.get(i));
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -113,27 +116,27 @@ public class OrmEditPart extends AbstractGraphicalEditPart implements EditPartLi
 			editPart = connections.get(i);
 			mapModelToEditPart.put(editPart.getModel(), editPart);
 		}
-
 		List<?> modelObjects = getModelTargetConnections();
-		if (modelObjects == null)
+		if (modelObjects == null) {
 			modelObjects = new ArrayList<Object>();
-
+		}
 		for (i = 0; i < modelObjects.size(); i++) {
 			model = modelObjects.get(i);
 
 			if (i < connections.size()) {
 				editPart = connections.get(i);
 				if (editPart.getModel() == model) {
-					if (editPart.getTarget() != this)
+					if (editPart.getTarget() != this) {
 						editPart.setTarget(this);
+					}
 					continue;
 				}
 			}
 
 			editPart = mapModelToEditPart.get(model);
-			if (editPart != null)
+			if (editPart != null) {
 				reorderTargetConnection(editPart, i);
-			else {
+			} else {
 				editPart = createOrFindConnection(model);
 				addTargetConnection(editPart, i);
 			}
@@ -141,15 +144,18 @@ public class OrmEditPart extends AbstractGraphicalEditPart implements EditPartLi
 
 		// Remove the remaining Connection EditParts
 		List<ConnectionEditPart> trash = new ArrayList<ConnectionEditPart>();
-		for (; i < connections.size(); i++)
+		for (; i < connections.size(); i++) {
 			trash.add(connections.get(i));
-		for (i = 0; i < trash.size(); i++)
+		}
+		for (i = 0; i < trash.size(); i++) {
 			removeTargetConnection(trash.get(i));
+		}
 	}
 
 	protected void removeSourceConnection(ConnectionEditPart connection) {
-		if (connection.getSource() != this)
+		if (connection.getSource() != this) {
 			return;
+		}
 		fireRemovingSourceConnection(connection, getSourceConnections()
 				.indexOf(connection));
 		connection.deactivate();
@@ -158,8 +164,9 @@ public class OrmEditPart extends AbstractGraphicalEditPart implements EditPartLi
 	}
 
 	protected void removeTargetConnection(ConnectionEditPart connection) {
-		if (connection.getTarget() != this)
+		if (connection.getTarget() != this) {
 			return;
+		}
 		fireRemovingTargetConnection(connection, getTargetConnections()
 				.indexOf(connection));
 		connection.setTarget(null);

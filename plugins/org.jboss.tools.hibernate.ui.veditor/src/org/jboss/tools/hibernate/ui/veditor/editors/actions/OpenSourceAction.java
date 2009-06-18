@@ -48,7 +48,9 @@ public class OpenSourceAction extends SelectionAction {
 				rootClass = (PersistentClass) selection;
 			} else if (selection instanceof Property) {
 				rootClass = ((Property) selection).getPersistentClass();
-			} else continue;
+			} else {
+				continue;
+			}
 
 			IResource resource = null;
 			String fullyQualifiedName = rootClass.getClassName();//HibernateUtils.getPersistentClassName(rootClass);
@@ -69,6 +71,9 @@ public class OpenSourceAction extends SelectionAction {
 
 	protected boolean calculateEnabled() {
 		VisualEditor part = (VisualEditor)getWorkbenchPart();
+		return part.getSelectedElements().size() > 0;
+		/** /
+		VisualEditor part = (VisualEditor)getWorkbenchPart();
 		Set selectedElements = part.getSelectedElements();
 		Iterator iterator = selectedElements.iterator();
 		while (iterator.hasNext()) {
@@ -77,5 +82,6 @@ public class OpenSourceAction extends SelectionAction {
 					|| elem instanceof Property) return true;
 		}
 		return false;
+		/**/
 	}
 }

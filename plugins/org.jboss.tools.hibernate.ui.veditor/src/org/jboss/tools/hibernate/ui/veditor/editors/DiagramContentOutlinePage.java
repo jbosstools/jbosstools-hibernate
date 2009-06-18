@@ -90,8 +90,8 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 	}
     
     public void update(GraphicalViewer graphicalViewer){
-        if(this.graphicalViewer != null){
-            if(this.graphicalViewer != graphicalViewer){
+        if (this.graphicalViewer != null) {
+            if (this.graphicalViewer != graphicalViewer) {
                 getSelectionSynchronizer().removeViewer(this.graphicalViewer);
                 replaceSelectionChangedListeners(graphicalViewer);
                 this.graphicalViewer = graphicalViewer;
@@ -233,7 +233,7 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 
 		if (rep instanceof ScalableFreeformRootEditPart) {
 			ScalableFreeformRootEditPart root = (ScalableFreeformRootEditPart) rep;
-			if(this.thumbnail != null) {
+			if (this.thumbnail != null) {
 				this.thumbnail.deactivate();
 			}
 			thumbnail = new ScrollableThumbnail((Viewport) root.getFigure());
@@ -256,11 +256,13 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 			showOutlineAction.setChecked(true);
 			showOverviewAction.setChecked(false);
 			pageBook.showPage(outline);
-			if (thumbnail != null)
+			if (thumbnail != null) {
 				thumbnail.setVisible(false);
+			}
 		} else if (id == ID_OVERVIEW) {
-			if (thumbnail == null)
+			if (thumbnail == null) {
 				initializeOverview();
+			}
 			showOutlineAction.setChecked(false);
 			showOverviewAction.setChecked(true);
 			pageBook.showPage(overview);

@@ -13,7 +13,6 @@ package org.jboss.tools.hibernate.ui.veditor.editors.model;
 import java.util.Iterator;
 
 import org.hibernate.mapping.Collection;
-import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;

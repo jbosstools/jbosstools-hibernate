@@ -94,6 +94,55 @@ public class Shape extends ModelElement {
 		ormElement = ioe;
 	}
 
+	private ModelElement parent;
+	
+	public ModelElement getParent() {
+		return parent;
+	}
+	
+	public void setParent(ModelElement element) {
+		parent = element;
+	}
+	
+	public OrmDiagram getOrmDiagram() {
+		OrmDiagram res = null;
+		ModelElement el = this;
+		while (el != null) {
+			if (el instanceof OrmDiagram) {
+				res = (OrmDiagram)el;
+				break;
+			}
+			el = el.getParent();
+		}
+		return res;
+	}
+	
+	public ExpandeableShape getExtendeableShape() {
+		ExpandeableShape res = null;
+		ModelElement el = this;
+		while (el != null) {
+			if (el instanceof ExpandeableShape) {
+				res = (ExpandeableShape)el;
+				break;
+			}
+			el = el.getParent();
+		}
+		return res;
+	}
+	
+	public OrmShape getOrmShape() {
+		OrmShape res = null;
+		ModelElement el = this;
+		while (el != null) {
+			if (el instanceof OrmShape) {
+				res = (OrmShape)el;
+				break;
+			}
+			el = el.getParent();
+		}
+		return res;
+	}
+
 	public void addConnection(Connection conn) {
 		if (conn == null || conn.getSource() == conn.getTarget()) {
 			throw new IllegalArgumentException();
@@ -103,8 +152,7 @@ public class Shape extends ModelElement {
 		} else if (conn.getTarget() == this) {
 			targetConnections.add(conn);
 		}
-	}
-	
+	}	
 	
 	public List<Connection> getSourceConnections() {
 		return sourceConnections;
@@ -139,10 +187,12 @@ public class Shape extends ModelElement {
 	}
 	
 	protected void setHidden(boolean hiden) {
-		for (int i = 0; i < sourceConnections.size(); i++)
+		for (int i = 0; i < sourceConnections.size(); i++) {
 			sourceConnections.get(i).setHidden(hiden);
-		for (int i = 0; i < targetConnections.size(); i++)
+		}
+		for (int i = 0; i < targetConnections.size(); i++) {
 			targetConnections.get(i).setHidden(hiden);
+		}
 	}
 
 	/**

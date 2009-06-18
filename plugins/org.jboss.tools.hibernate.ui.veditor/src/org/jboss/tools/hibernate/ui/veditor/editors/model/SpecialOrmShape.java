@@ -31,12 +31,14 @@ public class SpecialOrmShape extends OrmShape {
 		Shape bodyOrmShape;
 		RootClass rootClass = (RootClass)getOrmElement();
 		Property identifierProperty = rootClass.getIdentifierProperty();
-		if (identifierProperty != null) getChildren().add(new Shape(identifierProperty));
+		if (identifierProperty != null) {
+			addChild(new Shape(identifierProperty));
+		}
 
 		SpecialRootClass src = (SpecialRootClass)getOrmElement();
 		if (src.getParentProperty() != null) {
 			bodyOrmShape = new Shape(src.getParentProperty());
-			getChildren().add(bodyOrmShape);
+			addChild(bodyOrmShape);
 			parentShape = bodyOrmShape;
 		}
 		
@@ -67,7 +69,7 @@ public class SpecialOrmShape extends OrmShape {
 				} else {
 					bodyOrmShape = new Shape(field);
 				}
-				getChildren().add(bodyOrmShape);
+				addChild(bodyOrmShape);
 			} catch (Exception e) {
 				VisualEditorPlugin.getDefault().logError(e);
 			}

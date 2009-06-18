@@ -20,21 +20,21 @@ public class TitleFigure extends Figure {
 	private boolean hiden = false; 
 
 	public void add(IFigure figure, Object constraint, int index) {
-		if(index != -1){
-			if(index == -2)
+		if (index != -1) {
+			if (index == -2) {
 				index = 0;
-			else
+			} else {
 				index++;
+			}
 		}
 		super.add(figure, constraint, index);
 	}
 	
 	public List getChildren() {
-		if (hiden) 
+		if (hiden) {
 			return super.getChildren().subList(0,1);
-		 else 
-			return super.getChildren();
-			
+		} 
+		return super.getChildren();
 	}
 
 	public void setHidden(boolean hiden) {

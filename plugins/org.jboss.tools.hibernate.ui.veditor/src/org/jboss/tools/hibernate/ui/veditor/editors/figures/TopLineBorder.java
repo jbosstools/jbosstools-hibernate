@@ -35,8 +35,9 @@ public class TopLineBorder extends MarginBorder {
 
 	public void paint(IFigure figure, Graphics graphics, Insets insets) {
 		Rectangle r = getPaintRectangle(figure, insets);
-		if (getColor() != null)
+		if (getColor() != null) {
 			graphics.setForegroundColor(getColor());
+		}
 		graphics.drawLine(r.x, r.y, r.right(), r.y);
 	}
 

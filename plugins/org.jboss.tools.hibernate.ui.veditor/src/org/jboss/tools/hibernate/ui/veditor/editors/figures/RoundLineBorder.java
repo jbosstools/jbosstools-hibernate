@@ -18,8 +18,9 @@ import org.eclipse.draw2d.geometry.Insets;
 public class RoundLineBorder extends LineBorder {
 	public void paint(IFigure figure, Graphics graphics, Insets insets) {
 		tempRect.setBounds(getPaintRectangle(figure, insets).resize(-1,-1));
-		if (getColor() != null)
+		if (getColor() != null) {
 			graphics.setForegroundColor(getColor());
+		}
 		graphics.drawRoundRectangle(tempRect, 2, 2);
 	}
 }

@@ -99,8 +99,9 @@ public class PopupMenuProvider extends ContextMenuProvider {
 	public void createMenuItem(Menu menu, IAction action) {
 		boolean enabled = action.isEnabled();
 		boolean hidden = false;
-		if (hidden)
+		if (hidden) {
 			return;
+		}
 		MenuItem item = new MenuItem(menu, SWT.CASCADE);
 		String displayName = action.getText();
 		item.addSelectionListener(new AL(action));

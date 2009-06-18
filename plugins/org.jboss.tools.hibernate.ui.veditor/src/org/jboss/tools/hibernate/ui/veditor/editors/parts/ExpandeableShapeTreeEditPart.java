@@ -2,6 +2,8 @@ package org.jboss.tools.hibernate.ui.veditor.editors.parts;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Tree;
@@ -39,13 +41,17 @@ public class ExpandeableShapeTreeEditPart extends
 	}
 
 	/**
-	 * Returns <code>null</code> as a Tree EditPart holds no children under
-	 * it.
-	 * 
+	 * Returns <code>null</code> as a Tree EditPart holds no children under it.
 	 * @return <code>null</code>
 	 */
-	protected List getModelChildren() {
-		return getExpandeableShape().getChildren();
+	@Override
+	protected List<Shape> getModelChildren() {
+		List<Shape> res = new ArrayList<Shape>();
+		Iterator<Shape> it = getExpandeableShape().getChildrenIterator();
+		while (it.hasNext()) {
+			res.add(it.next());
+		}
+		return res;
 	}
 
 	public void propertyChange(PropertyChangeEvent change) {
@@ -56,8 +62,9 @@ public class ExpandeableShapeTreeEditPart extends
 	 * Refreshes the visual properties of the TreeItem for this part.
 	 */
 	protected void refreshVisuals() {
-		if (getWidget() instanceof Tree)
+		if (getWidget() instanceof Tree) {
 			return;
+		}
 
 		Shape model = (Shape) getModel();
 

@@ -56,9 +56,9 @@ public class ShapeTreeEditPart extends
 	 * Refreshes the visual properties of the TreeItem for this part.
 	 */
 	protected void refreshVisuals() {
-		if (getWidget() instanceof Tree)
+		if (getWidget() instanceof Tree) {
 			return;
-
+		}
 		Shape model = (Shape) getModel();
 
 		Object element = model.getOrmElement();

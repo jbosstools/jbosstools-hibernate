@@ -38,7 +38,7 @@ public class AutoLayoutImpl {
 //		constants.update();
         items.setProcess(process);
         apply();
-        if(items.override) {
+        if (items.override) {
 			TransitionArranger a = new TransitionArranger();
 			a.setItems(items.items);
 			a.execute();
@@ -51,11 +51,15 @@ public class AutoLayoutImpl {
         Item[] is = items.items;
         int[] yDeltas = items.groups.yDeltas;
         for (int i = 0; i < is.length; i++) {
-            if(is[i].isSet()) continue;
+            if (is[i].isSet()) {
+            	continue;
+            }
             IItemInfo o = is[i].itemInfo;
             int x = is[i].ix * constants.deltaX + constants.indentX;
             int y = is[i].iy * constants.deltaY + constants.indentY;
-            if(is[i].ix % 2 == 1) y += 16;
+            if (is[i].ix % 2 == 1) {
+            	y += 16;
+            }
             x += is[i].group.xDeltas[is[i].ix] * constants.incX;
             y += yDeltas[is[i].iy] * constants.incY + is[i].yIndent;
             o.setShape(new int[]{x, y, 0, 0});
@@ -63,11 +67,13 @@ public class AutoLayoutImpl {
     }
     
     private void resetTransitions() {
-    	if(!items.override) return;
+    	if (!items.override) {
+    		return;
+    	}
 		Item[] is = items.items;
 		for (int i = 0; i < is.length; i++) {
 			IItemInfo o = is[i].itemInfo;
-			if(o instanceof ILinkInfo) {
+			if (o instanceof ILinkInfo) {
 				((ILinkInfo)o).setLinkShape(new int[0]);
 			}
 			ILinkInfo[] os = items.getOutput(o);

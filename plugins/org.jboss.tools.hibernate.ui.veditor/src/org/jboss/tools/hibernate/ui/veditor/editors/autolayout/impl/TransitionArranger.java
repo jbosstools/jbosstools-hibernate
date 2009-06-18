@@ -39,10 +39,16 @@ public class TransitionArranger {
 	}
 	
 	private void fill(Item[] v, int ix) {
-		for (int i = 0; i < v.length; i++) v[i] = null;
+		for (int i = 0; i < v.length; i++) {
+			v[i] = null;
+		}
 		for (int i = 0; i < items.length; i++) {
-			if(items[i].inputs.length == 0 || items[i].isOwned) continue;
-			if(items[i].ix == ix) v[items[i].iy] = items[i];
+			if (items[i].inputs.length == 0 || items[i].isOwned) {
+				continue;
+			}
+			if (items[i].ix == ix) {
+				v[items[i].iy] = items[i];
+			}
 		}		
 	}
 	
@@ -51,8 +57,12 @@ public class TransitionArranger {
 	private void execute(int ix, int[][] occ, Item[] v) {
 		int delta = 0;
 		for (int iy = 0; iy < v.length; iy++) {
-			if(v[iy] == null) continue;
-			for (int i = 0; i < occ0.length; i++) occ0[i] = 0;
+			if (v[iy] == null) {
+				continue;
+			}
+			for (int i = 0; i < occ0.length; i++) {
+				occ0[i] = 0;
+			}
 			int[] is = v[iy].inputs;
 			delta = 0;
 			for (int k = 0; k < is.length; k++) {
@@ -60,8 +70,13 @@ public class TransitionArranger {
 				int miny = Math.min(iy, iy2);
 				int maxy = Math.max(iy, iy2);
 				if(maxy - miny > delta) delta = maxy - miny;
-				for (int m = 0; m < occ0.length; m++) for (int y = miny; y <= maxy; y++)
-				  if(occ[m][y] > 0) occ0[m] += occ[m][y];
+				for (int m = 0; m < occ0.length; m++) {
+					for (int y = miny; y <= maxy; y++) {
+						if (occ[m][y] > 0) {
+							occ0[m] += occ[m][y];
+						}
+					}
+				}
 			}
 			int tg = findTransitionLine(delta, occ0);
 			for (int k = 0; k < is.length; k++) {
@@ -89,12 +104,14 @@ public class TransitionArranger {
 	}
 	
 	private int findTransitionLine(int pref, int[] occ0) {
-		if(pref >= occ0.length) pref = occ0.length - 1;
+		if (pref >= occ0.length) {
+			pref = occ0.length - 1;
+		}
 		int h = 1000;
 		int p = -1;
 		for (int i = 0; i < occ0.length; i++) {
 			int h1 = occ0[i] * 3 + Math.abs(i - pref);
-			if(h1 < h) {
+			if (h1 < h) {
 				h = h1;
 				p = i;
 			}			

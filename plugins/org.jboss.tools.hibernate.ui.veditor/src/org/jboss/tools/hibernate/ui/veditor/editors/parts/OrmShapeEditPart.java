@@ -42,7 +42,7 @@ public class OrmShapeEditPart extends ExpandeableShapeEditPart{
 
 	public void addNotify() {
 		super.addNotify();
-		if(((OrmShape)getModel()).isHiden()){
+		if (((OrmShape)getModel()).isHiden()) {
 			int i = figure.getPreferredSize().width;
 			((TitleFigure)figure).setHidden(true);
 			((TitleLabel)figure.getChildren().get(0)).setHidden(true);
@@ -103,10 +103,11 @@ public class OrmShapeEditPart extends ExpandeableShapeEditPart{
 			int i = figure.getPreferredSize().width;
 			((TitleFigure)figure).setHidden(((Boolean)evt.getNewValue()).booleanValue());
 			((TitleLabel)figure.getChildren().get(0)).setHidden(((Boolean)evt.getNewValue()).booleanValue());
-			if(((Boolean)evt.getNewValue()).booleanValue())
+			if(((Boolean)evt.getNewValue()).booleanValue()) {
 				figure.setSize(i,-1);
-			else
+			} else {
 				figure.setSize(-1,-1);
+			}
 			refresh();
 			((OrmDiagram)getParent().getModel()).setDirty(true);
 		} else {
@@ -119,20 +120,23 @@ public class OrmShapeEditPart extends ExpandeableShapeEditPart{
 		if (getModel() instanceof OrmShape) {
 			bounds = new Rectangle(((OrmShape)getModel()).getLocation(), getFigure().getSize());
 		}
-		if (bounds != null) ((GraphicalEditPart) getParent()).setLayoutConstraint(this, getFigure(), bounds);
+		if (bounds != null) {
+			((GraphicalEditPart) getParent()).setLayoutConstraint(this, getFigure(), bounds);
+		}
 	}
 
 	protected Color getBackgroundColor() {
 		Object element = getCastedModel().getOrmElement();
-		if (element instanceof PersistentClass || element instanceof Component)
+		if (element instanceof PersistentClass || element instanceof Component) {
 			return ResourceManager.getInstance().getColor(new RGB(0,0,0));
-		else if (element instanceof Table || element instanceof Property)
+		} else if (element instanceof Table || element instanceof Property) {
 			return ResourceManager.getInstance().getColor(new RGB(
 					Integer.parseInt(ColorConstants.Colors_DatabaseColumnR),
 					Integer.parseInt(ColorConstants.Colors_DatabaseColumnG),
 					Integer.parseInt(ColorConstants.Colors_DatabaseColumnB)));
-		else
+		} else {
 			throw new IllegalArgumentException();
+		}
 	}
 
 }

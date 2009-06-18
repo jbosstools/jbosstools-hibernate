@@ -33,15 +33,15 @@ public class RoundPolylineConnection extends PolylineConnection {
 		}
 		if (Math.abs(points.getFirstPoint().y - points.getLastPoint().y) < 4) {
 			int delta = Math.abs(points.getFirstPoint().y - points.getLastPoint().y);
-			if(points.size() == 4){
+			if (points.size() == 4) {
 				Point point1 = points.getPoint(0);
 				Point point2 = points.getPoint(1);
 				Point point3 = points.getPoint(2);
 				Point point4 = points.getPoint(3);
-				if(point1.x < point4.x){
+				if (point1.x < point4.x) {
 					point2.x -= delta/2;
 					point3.x += delta/2;
-				}else{
+				} else {
 					point2.x += delta/2;
 					point3.x -= delta/2;
 				}
@@ -81,8 +81,9 @@ public class RoundPolylineConnection extends PolylineConnection {
 				eCorner.y = beg.y;
 			}
 			
-			if (bCorner.x != 0 && eCorner.x != 0)
+			if (bCorner.x != 0 && eCorner.x != 0) {
 				g.drawLine(bCorner, eCorner);
+			}
 			bCorner.x = 0;
 	
 			if (i != points.size() - 1) {

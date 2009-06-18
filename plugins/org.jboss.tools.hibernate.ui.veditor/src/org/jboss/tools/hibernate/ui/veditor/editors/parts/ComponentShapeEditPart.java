@@ -11,7 +11,6 @@
 package org.jboss.tools.hibernate.ui.veditor.editors.parts;
 
 import java.beans.PropertyChangeEvent;
-import java.util.List;
 
 import org.eclipse.draw2d.FocusBorder;
 import org.eclipse.draw2d.IFigure;
@@ -24,14 +23,12 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
-import org.eclipse.swt.graphics.RGB;
 import org.jboss.tools.hibernate.ui.veditor.editors.figures.ComponentFigure;
 import org.jboss.tools.hibernate.ui.veditor.editors.figures.TitleLabel;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.ComponentShape;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.ExpandeableShape;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmShape;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.Shape;
 
 
 public class ComponentShapeEditPart extends ExpandeableShapeEditPart {
@@ -77,14 +74,14 @@ public class ComponentShapeEditPart extends ExpandeableShapeEditPart {
 			int i = figure.getPreferredSize().width;
 			((ComponentFigure)figure).setChildsHiden(((Boolean)evt.getNewValue()).booleanValue());
 			
-			if(((Boolean)evt.getNewValue()).booleanValue())
+			if(((Boolean)evt.getNewValue()).booleanValue()) {
 				figure.setSize(i,-1);
-			else
+			} else {
 				figure.setSize(-1,-1);
+			}
 			
 			referenceList.add((OrmShape)getCastedModel().getParent());
 			refreshReferences((ExpandeableShape)getCastedModel(), ((ExpandeableShape)getCastedModel()).isReferenceVisible());
-			
 			
 			((OrmShape)getParent().getModel()).refreshReference();
 		} else {
@@ -97,6 +94,8 @@ public class ComponentShapeEditPart extends ExpandeableShapeEditPart {
 		if (getModel() instanceof ComponentShape) {
 			bounds = new Rectangle(new Point(0,0), getFigure().getSize());
 		}
-		if (bounds != null) ((GraphicalEditPart) getParent()).setLayoutConstraint(this, getFigure(), bounds);
+		if (bounds != null) {
+			((GraphicalEditPart) getParent()).setLayoutConstraint(this, getFigure(), bounds);		
+		}
 	}
 }

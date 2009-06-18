@@ -60,8 +60,7 @@ import org.jboss.tools.hibernate.ui.view.views.HibernateUtils;
 class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 
 	protected void createEditPolicies() {
-		installEditPolicy(EditPolicy.LAYOUT_ROLE,
-				new ShapesXYLayoutEditPolicy());
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, new ShapesXYLayoutEditPolicy());
 	}
 
 	protected IFigure createFigure() {
@@ -81,15 +80,16 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 			refresh();
 			autolayout();
 			// restore();
-		} else if (OrmDiagram.DIRTY.equals(prop))
+		} else if (OrmDiagram.DIRTY.equals(prop)) {
 			((VisualEditor) ((DefaultEditDomain) getViewer().getEditDomain())
 					.getEditorPart()).refreshDirty();
+		}
 	}
 
 	public void restore() {
-		boolean dirty = getCastedModel().isDirty();
-		HashMap<String, OrmShape> hashMap = getCastedModel().getCloneElements();
-		String childrenLocations[] = getCastedModel().getChildrenLocations();
+		boolean dirty = getOrmDiagram().isDirty();
+		HashMap<String, OrmShape> hashMap = getOrmDiagram().getCloneElements();
+		String childrenLocations[] = getOrmDiagram().getChildrenLocations();
 		int tempPoint = 1;
 		OrmShape ormShape;
 		int point = 1;
@@ -105,24 +105,28 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 					string = childrenLocations[i]
 							.substring(childrenLocations[i].indexOf('@') + 1);
 					xy = string.split(";"); //$NON-NLS-1$
-					if (xy.length > 1)
+					if (xy.length > 1) {
 						try {
 							ormShape.setLocation(new Point(Integer
 									.parseInt(xy[0]), Integer.parseInt(xy[1])));
 						} catch (NumberFormatException e) {
 							VisualEditorPlugin.getDefault().logError(e);
 						}
-					if (xy.length > 2)
-						if ((Boolean.valueOf(xy[2])))
+					}
+					if (xy.length > 2) {
+						if ((Boolean.valueOf(xy[2]))) {
 							ormShape.refreshHiden();
+						}
+					}
 					tempPoint = ormShape.getLocation().y
 							+ getChildrenFigurePreferredHeight(ormShape) + 20;
-					if (tempPoint > point)
+					if (tempPoint > point) {
 						point = tempPoint;
+					}
 				}
 			}
 		}
-		RootClass[] ormElements = getCastedModel().getOrmElements();
+		RootClass[] ormElements = getOrmDiagram().getOrmElements();
 		for (int i = 0; i < childrenLocations.length; i++) {
 			RootClass persistentClass = ormElements[i];
 			ormShape = hashMap.remove(persistentClass.getEntityName());
@@ -136,9 +140,9 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 				ormShape.setLocation(new Point(pointX, 20));
 				point = 40 + getChildrenFigurePreferredHeight(ormShape);
 			}
-			if (tempPoint > point)
+			if (tempPoint > point) {
 				point = tempPoint;
-
+			}
 		}
 		Object objects[] = hashMap.keySet().toArray();
 		for (int i = 0; i < objects.length; i++) {
@@ -161,8 +165,9 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 				// point = point + getChildrenFigurePreferredHeight(ormShape) +
 				// 20;
 				// }
-				if (tempPoint > point)
+				if (tempPoint > point) {
 					point = tempPoint;
+				}
 			}
 		}
 		for (OrmShape shape : hashMap.values()) {
@@ -171,10 +176,10 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 				point = point + getChildrenFigurePreferredHeight(shape) + 20;
 			}
 		}
-		getCastedModel().setDirty(dirty);
+		getOrmDiagram().setDirty(dirty);
 	}
 
-	private OrmDiagram getCastedModel() {
+	private OrmDiagram getOrmDiagram() {
 		return (OrmDiagram) getModel();
 	}
 
@@ -182,8 +187,9 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 		GraphicalEditPart part;
 		for (int i = 0; i < getChildren().size(); i++) {
 			part = (GraphicalEditPart) getChildren().get(i);
-			if (ormShape.equals(part.getModel()))
+			if (ormShape.equals(part.getModel())) {
 				return part.getFigure().getPreferredSize().height;
+			}
 		}
 		return 0;
 	}
@@ -193,30 +199,41 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 		IFigure figure;
 		for (int i = 0; i < getFigure().getChildren().size(); i++) {
 			figure = (IFigure) getFigure().getChildren().get(i);
-			if (figure.getPreferredSize().width > j)
+			if (figure.getPreferredSize().width > j) {
 				j = figure.getPreferredSize().width;
+			}
 		}
 		return j + 120;
 	}
 
+	/**
+	 * Returns a <code>List</code> containing the children model objects.
+	 * @return the List of children
+	 */
+	@Override
 	protected List<Shape> getModelChildren() {
-		return getCastedModel().getChildren();
+		List<Shape> res = new ArrayList<Shape>();
+		Iterator<Shape> it = getOrmDiagram().getChildrenIterator();
+		while (it.hasNext()) {
+			res.add(it.next());
+		}
+		return res;
 	}
 
 	public void activate() {
 		if (!isActive()) {
 			super.activate();
 			((ModelElement) getModel()).addPropertyChangeListener(this);
-			if(!getCastedModel().isLoadSuccessfull()){
+			if (!getOrmDiagram().isLoadSuccessfull()) {
 				autolayout();
-				getCastedModel().setDirty(false);
+				getOrmDiagram().setDirty(false);
 			}
 			// restore();
 		}
 	}
 
 	public void autolayout() {
-		IDiagramInfo process = new DiagramInfo(getCastedModel());
+		IDiagramInfo process = new DiagramInfo(getOrmDiagram());
 		AutoLayout layout = new AutoLayout();
 		layout.setGridStep("" + 5); //$NON-NLS-1$
 		layout.setOverride(true);
@@ -225,10 +242,12 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 
 	public void setToFront(EditPart ep) {
 		int index = getChildren().indexOf(ep);
-		if (index == -1)
+		if (index == -1) {
 			return;
-		if (index != getChildren().size() - 1)
+		}
+		if (index != getChildren().size() - 1) {
 			reorderChild(ep, getChildren().size() - 1);
+		}
 	}
 
 	public void deactivate() {
@@ -284,12 +303,12 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 			this.diagram = diagram;
 			OrmShapeEditPart part;
 
-			for (int i = 0; i < diagram.getChildren().size(); i++) {
-				part = (OrmShapeEditPart) getViewer().getEditPartRegistry()
-						.get(diagram.getChildren().get(i));
+			Iterator<Shape> it = diagram.getChildrenIterator();
+			while (it.hasNext()) {
+				Shape child = it.next();
+				part = (OrmShapeEditPart) getViewer().getEditPartRegistry().get(child);
 				if (part != null && part.getFigure().isVisible()) {
-					item = new DiagramElementInfo((OrmShape) diagram
-							.getChildren().get(i));
+					item = new DiagramElementInfo((OrmShape)child);
 					addItem(item);
 				}
 			}
@@ -327,9 +346,9 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 				link = new LinkInfo(connection);
 				addLink(link);
 			}
-			Shape child;
-			for (int j = 0; j < element.getChildren().size(); j++) {
-				child = element.getChildren().get(j);
+			Iterator<Shape> it = element.getChildrenIterator();
+			while (it.hasNext()) {
+				Shape child = it.next();
 				if (child.getSourceConnections().size() == 0) {
 					link = new LinkInfo(getID());
 					addLink(link);

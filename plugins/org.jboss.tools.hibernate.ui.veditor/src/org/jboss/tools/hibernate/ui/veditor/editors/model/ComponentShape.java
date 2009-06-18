@@ -10,15 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.veditor.editors.model;
 
+import java.util.Iterator;
+
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Property;
 
 public class ComponentShape extends ExpandeableShape {
-	public static final String SET_CHILDS_HIDEN = "set childs hiden"; //$NON-NLS-1$
 
-	//protected boolean childsHiden = true;
-	
-	
+	public static final String SET_CHILDS_HIDEN = "set childs hiden"; //$NON-NLS-1$
 
 	public ComponentShape(Object ioe) {	
 		super(ioe);
@@ -27,31 +26,29 @@ public class ComponentShape extends ExpandeableShape {
 			Collection collection = (Collection)((Property)ioe).getValue();
 			bodyOrmShape = new Shape(collection.getKey());
 			bodyOrmShape.setIndent(20);
-			getChildren().add(bodyOrmShape);
+			addChild(bodyOrmShape);
 			bodyOrmShape = new Shape(collection.getElement());
 			bodyOrmShape.setIndent(20);
-			getChildren().add(bodyOrmShape);
+			addChild(bodyOrmShape);
 		}
 	}
 	
-	protected void setChildsHiden(boolean hiden) {
-		for (int i = 0; i < getChildren().size(); i++)
-			getChildren().get(i).setHidden(hiden);
+	protected void setChildsHidden(boolean hidden) {
+		Iterator<Shape> it = getChildrenIterator();
+		while (it.hasNext()) {
+			it.next().setHidden(hidden);
+		}
 	}
 
 	public void refreshChildsHiden(OrmDiagram ormDiagram) {
 		refHide = !refHide;
-		
-		for (int i = 0; i < getChildren().size(); i++)
-			getChildren().get(i).setHidden(!refHide);
-		
-		if(refHide)
-			if(first){
+		setChildsHidden(!refHide);
+		if (refHide) {
+			if (first) {
 				ormDiagram.refreshComponentReferences(this);
-				first=false;
+				first = false;
 			}
-		
-		
+		}
 		firePropertyChange(SET_CHILDS_HIDEN, null, Boolean.valueOf(!refHide));
 	}
 }

@@ -11,6 +11,7 @@
 package org.jboss.tools.hibernate.ui.veditor.editors.model;
 
 public class Connection extends ModelElement {
+	
 	public static final String HIDE_SELECTION = "hide selection"; //$NON-NLS-1$
 	public static final String SHOW_SELECTION = "show selection"; //$NON-NLS-1$
 	public static final String SET_HIDEN = "set hiden"; //$NON-NLS-1$
@@ -52,19 +53,29 @@ public class Connection extends ModelElement {
 	}
 	
 	public void setHidden(boolean hiden) {
-		if(hiden) {
+		if (hiden) {
 			needHide--;
-			if(needHide == 0)
+			if (needHide == 0) {
 				return;
+			}
 		} else {
 			needHide++;
-			if(needHide == 1)
+			if (needHide == 1) {
 				return;
+			}
 		}
 		firePropertyChange(SET_HIDEN, null, Boolean.valueOf(hiden));
 	}
 
 	public boolean isHiden() {
 		return needHide != 2;
+	}
+
+	/**
+	 * It has no parent
+	 */
+	@Override
+	public ModelElement getParent() {
+		return null;
 	}
 }

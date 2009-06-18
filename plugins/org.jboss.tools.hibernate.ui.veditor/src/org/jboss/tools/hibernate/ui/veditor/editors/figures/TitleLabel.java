@@ -28,16 +28,17 @@ public class TitleLabel extends Label {
 
 	protected Dimension calculateLabelSize(Dimension txtSize) {
 		Dimension p = super.calculateLabelSize(txtSize).getCopy();
-		p.width+=40;
+		p.width += 40;
 		return p;
 	}
 
 	protected void paintFigure(Graphics graphics) {
 		super.paintFigure(graphics);
-		if(hiden)
+		if (hiden) {
 			graphics.drawImage(shevronDown, getBounds().x+getBounds().width-20, getBounds().y);
-		else
+		} else {
 			graphics.drawImage(shevronUp, getBounds().x+getBounds().width-20, getBounds().y);
+		}
 	}
 	
 	public void setHidden(boolean hiden) {

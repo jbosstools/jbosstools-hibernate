@@ -35,11 +35,13 @@ public class ResourceManager {
 	
 	private void dispose() {
 		Iterator<Color> e = fColorTable.values().iterator();
-		while (e.hasNext())
-			 e.next().dispose();
+		while (e.hasNext()) {
+			e.next().dispose();
+		}
 		Iterator<Font> e2 = fFontTable.values().iterator();
-		while (e2.hasNext())
-			 e2.next().dispose();
+		while (e2.hasNext()) {
+			e2.next().dispose();
+		}
 	}
 	public Color getColor(RGB rgb) {
 		Color color = fColorTable.get(rgb);

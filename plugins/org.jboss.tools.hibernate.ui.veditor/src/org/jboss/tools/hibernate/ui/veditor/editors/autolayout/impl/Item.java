@@ -84,9 +84,13 @@ public class Item {
 	
 	public void initActivities() {
 		outputActivities = new boolean[outputs.length];
-		for (int i = 0; i < outputActivities.length; i++) outputActivities[i] = outputs[i] != n;
+		for (int i = 0; i < outputActivities.length; i++) {
+			outputActivities[i] = (outputs[i] != n);
+		}
 		inputActivities = new boolean[inputs.length];
-		for (int i = 0; i < inputActivities.length; i++) inputActivities[i] = inputs[i] != n;
+		for (int i = 0; i < inputActivities.length; i++) {
+			inputActivities[i] = (inputs[i] != n);
+		}
 	}
 	
 	public void setWeight(int w) {

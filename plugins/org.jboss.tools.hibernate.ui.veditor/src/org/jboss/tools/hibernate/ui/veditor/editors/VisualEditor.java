@@ -39,9 +39,7 @@ import org.jboss.tools.hibernate.ui.veditor.editors.actions.AutoLayoutAction;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.ExportImageAction;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.OpenMappingAction;
 import org.jboss.tools.hibernate.ui.veditor.editors.actions.OpenSourceAction;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.ModelElement;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmShape;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.Shape;
 import org.jboss.tools.hibernate.ui.veditor.editors.parts.GEFRootEditPart;
 import org.jboss.tools.hibernate.ui.veditor.editors.parts.OrmEditPart;
@@ -139,7 +137,6 @@ public class VisualEditor extends GraphicalEditor {
 	}
 
 	protected void setInput(IEditorInput input) {
-		super.setInput(input);
 		ObjectEditorInput objectEditorInput = (ObjectEditorInput)input;
 		ConsoleConfiguration configuration = objectEditorInput.getConfiguration();
 		Object obj = objectEditorInput.getObject();
@@ -147,8 +144,7 @@ public class VisualEditor extends GraphicalEditor {
 			RootClass rootClass = (RootClass)obj;
 			setPartName(UIVEditorMessages.VisualEditor_diagram_for + rootClass.getEntityName());
 			ormDiagram = new OrmDiagram(configuration, rootClass);
-		}
-		else if (obj instanceof RootClass[]) {
+		} else if (obj instanceof RootClass[]) {
 			RootClass[] rootClasses = (RootClass[])obj;
 			String name = rootClasses.length > 0 ? rootClasses[0].getEntityName() : ""; //$NON-NLS-1$
 			for (int i = 1; i < rootClasses.length; i++) {
@@ -157,6 +153,7 @@ public class VisualEditor extends GraphicalEditor {
 			setPartName(UIVEditorMessages.VisualEditor_diagram_for + name);
 			ormDiagram = new OrmDiagram(configuration, rootClasses);
 		}
+		super.setInput(input);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -172,24 +169,6 @@ public class VisualEditor extends GraphicalEditor {
 		}
 
 		return super.getAdapter(type);
-	}
-
-	public Set<Object> getSelectedElements_old() {
-		Set<Object> ret = new HashSet<Object>();
-		List<?> selectedEditParts = getGraphicalViewer().getSelectedEditParts();
-		Iterator<?> iterator = selectedEditParts.iterator();
-		while (iterator.hasNext()) {
-			Object elem = iterator.next();
-			if (elem instanceof OrmEditPart) {
-				Object model = ((OrmEditPart)elem).getModel();
-				ModelElement shape = (Shape)model;
-				while (!(shape instanceof OrmShape)) {
-					shape = shape.getParent();
-				}
-				ret.add(((OrmShape)shape).getOrmElement());
-			}
-		}
-		return ret;
 	}
 
 	public Set<Object> getSelectedElements() {

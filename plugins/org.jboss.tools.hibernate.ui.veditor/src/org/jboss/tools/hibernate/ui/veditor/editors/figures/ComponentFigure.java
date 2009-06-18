@@ -20,29 +20,30 @@ public class ComponentFigure extends Figure {
 	private boolean childsHiden = false; 
 
 	public void add(IFigure figure, Object constraint, int index) {
-		if(index != -1){
-			if(index == -2)
+		if (index != -1) {
+			if (index == -2) {
 				index = 0;
-			else
+			} else {
 				index++;
+			}
 		}
 		super.add(figure, constraint, index);
 	}
 	
 	public List getChildren() {
-		if (childsHiden) 
+		if (childsHiden) {
 			return super.getChildren().subList(0,1);
-		 else 
-			return super.getChildren();
-			
+		}
+		return super.getChildren();
 	}
 
 	public void setChildsHiden(boolean childsHiden) {
 		
 		this.childsHiden = childsHiden;
-		for(int i=0;i<getChildren().size();i++){
-			if(getChildren().get(i) instanceof TitleLabel)
+		for (int i = 0; i < getChildren().size(); i++) {
+			if (getChildren().get(i) instanceof TitleLabel) {
 				((TitleLabel)getChildren().get(i)).setHidden(childsHiden);
+			}
 		}
 	}
 }
