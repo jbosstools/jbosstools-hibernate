@@ -49,6 +49,7 @@ import org.hibernate.eclipse.console.wizards.NewConfigurationWizard;
 import org.hibernate.eclipse.console.wizards.NewConfigurationWizardPage;
 import org.hibernate.util.StringHelper;
 
+@SuppressWarnings("restriction")
 public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 
 	protected boolean configurationFileWillBeCreated = false;
@@ -57,6 +58,7 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 	private Button jpaMode;
 	private Button annotationsMode;
 	private Button confbutton;
+	private Button persistenceUnitNameButton;
 
 	private Text propertyFileText;
 	private Text configurationFileText;
@@ -153,11 +155,12 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 
 	private void createPersistenceUnitEditor(Composite parent) {
 		Group group = createGroup( parent, HibernateConsoleMessages.ConsoleConfigurationMainTab_persistence_unit );
-		persistenceUnitNameText = new Text(group, SWT.BORDER | SWT.SINGLE);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		persistenceUnitNameText.setFont( parent.getFont() );
-		persistenceUnitNameText.setLayoutData(gd);
-		persistenceUnitNameText.addModifyListener(getChangeListener());
+		persistenceUnitNameText = createBrowseEditor( parent, group);
+		persistenceUnitNameButton = createBrowseButton( group, new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				handlePersistenceUnitBrowse();
+			}
+		} );
 	}
 
 
@@ -238,6 +241,15 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 			projectNameText.setText( paths.getProject().getName() );
 		} else {
 			projectNameText.setText(""); //$NON-NLS-1$
+		}
+	}
+
+	private void handlePersistenceUnitBrowse() {
+		String persistenceUnit = DialogSelectionHelper.choosePersistenceUnit( getShell(), persistenceUnitNameText.getText(), HibernateConsoleMessages.ConsoleConfigurationMainTab_select_persistence_unit, HibernateConsoleMessages.ConsoleConfigurationMainTab_jpa_selected_persistence_unit, findJavaProject() );
+		if(persistenceUnit!=null) {
+			persistenceUnitNameText.setText( persistenceUnit );
+		} else {
+			persistenceUnitNameText.setText(""); //$NON-NLS-1$
 		}
 	}
 
@@ -377,6 +389,7 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 		confbutton.setEnabled(!configurationFileWillBeCreated && !modeJPA);
 
 		persistenceUnitNameText.setEnabled(modeJPA);
+		persistenceUnitNameButton.setEnabled(modeJPA);
 		String cpName = nonEmptyTrimOrNull(connectionProfileCtrl.getSelectedConnectionName());
 		
 		if(getProjectName()!=null && StringHelper.isNotEmpty(getProjectName().trim())) {

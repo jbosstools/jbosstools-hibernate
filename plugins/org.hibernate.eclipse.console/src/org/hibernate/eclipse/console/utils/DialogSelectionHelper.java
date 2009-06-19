@@ -22,6 +22,7 @@
 package org.hibernate.eclipse.console.utils;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.debug.internal.ui.stringsubstitution.StringVariableLabelProvider;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
@@ -44,6 +45,7 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
  * @author max
  *
  */
+@SuppressWarnings("restriction")
 public class DialogSelectionHelper extends org.hibernate.eclipse.console.utils.xpl.DialogSelectionHelper {
 
 	
@@ -76,6 +78,29 @@ public class DialogSelectionHelper extends org.hibernate.eclipse.console.utils.x
 		return null;		
 	}
 
+	/**
+	 * Realize a Persistence Unit selection dialog and return the first selected persistence unit,
+	 * or null if there was none.
+	 */
+	public static String choosePersistenceUnit(Shell shell, String initialSelection, String title, String description,
+			IJavaProject javaProject) {
+		String[] availablePersistenceUnit = ProjectUtils.availablePersistenceUnits(javaProject);
+		ILabelProvider labelProvider= new StringVariableLabelProvider();
+		ElementListSelectionDialog dialog= new ElementListSelectionDialog(shell, labelProvider);
+		dialog.setTitle(title);
+		dialog.setMessage(description);
+		dialog.setElements(availablePersistenceUnit);
+		
+		String persistenceUnit = initialSelection;
+		if (persistenceUnit != null) {
+			dialog.setInitialSelections(new Object[] { persistenceUnit });
+		}
+		if (dialog.open() == Window.OK) {
+			return (String) dialog.getFirstResult();
+		}
+		return initialSelection;
+	}
+
 	static public String chooseImplementation(String supertype, String initialSelection, String title, Shell shell) {
 		SelectionDialog dialog= null;
 		try {
@@ -102,9 +127,8 @@ public class DialogSelectionHelper extends org.hibernate.eclipse.console.utils.x
 		if (types != null && types.length > 0) {
 			IType type= (IType) types[0];
 			return type.getFullyQualifiedName('.');
-		} else {
-			return null;
 		}
+		return null;
 	}
 
 }

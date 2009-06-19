@@ -1,6 +1,5 @@
 package org.hibernate.eclipse.launch;
 
-import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -34,7 +33,6 @@ abstract public class ConsoleConfigurationTab extends AbstractLaunchConfiguratio
 	}
 
 	ChangeListener changeListener = new ChangeListener();
-	private ILaunchConfiguration currentLaunchConfig;
 
 	protected Button createBrowseButton(Group group, SelectionListener selectionListener) {
 		Button button = createPushButton(group, HibernateConsoleMessages.ConsoleConfigurationTab_browse, null);

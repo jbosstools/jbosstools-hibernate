@@ -21,11 +21,16 @@
  */
 package org.hibernate.eclipse.console.utils;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.eclipse.core.internal.resources.File;
 import org.eclipse.core.internal.resources.ICoreConstants;
 import org.eclipse.core.internal.resources.ResourceInfo;
@@ -66,6 +71,7 @@ import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 import org.hibernate.util.StringHelper;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
+import org.xml.sax.InputSource;
 
 @SuppressWarnings("restriction")
 public class ProjectUtils {
@@ -340,6 +346,7 @@ public class ProjectUtils {
 		return lwType;
 	}
 	
+	@SuppressWarnings("unchecked")
 	static public String getParentTypename(IJavaProject proj, String fullyQualifiedName) {
 		String res = null;
 		ICompilationUnit icu = findCompilationUnit(proj, fullyQualifiedName);
@@ -376,4 +383,47 @@ public class ProjectUtils {
 		return res;
 	}
 	
+	@SuppressWarnings("unchecked")
+	static public String[] availablePersistenceUnits(IJavaProject javaProject) {
+		if (javaProject == null || javaProject.getResource() == null) {
+			return new String[0];
+		}
+		IPath projPathFull = javaProject.getResource().getLocation();
+		IPath projPath = javaProject.getPath();
+		IPath path = javaProject.readOutputLocation().append(OpenMappingUtilsEjb3.META_INF_PERS_XML);
+		path = path.makeRelativeTo(projPath);
+		path = projPathFull.append(path);
+		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(path);
+		if (!exists(file)) {
+			return new String[0];
+		}
+		InputStream is = null;
+		org.dom4j.Document doc = null;
+		try {
+			is = file.getContents();
+			SAXReader saxReader = new SAXReader();
+			doc = saxReader.read(new InputSource(is));
+		} catch (CoreException e) {
+			HibernateConsolePlugin.getDefault().logErrorMessage("CoreException: ", e); //$NON-NLS-1$
+		} catch (DocumentException e) {
+			HibernateConsolePlugin.getDefault().logErrorMessage("DocumentException: ", e); //$NON-NLS-1$
+		} finally {
+			try {
+				if (is != null) is.close();
+			}
+			catch (IOException ioe) {
+				//ignore
+			}
+		}
+		if (doc == null || doc.getRootElement() == null) {
+			return new String[0];
+		}
+		Iterator it = doc.getRootElement().elements("persistence-unit").iterator(); //$NON-NLS-1$
+		ArrayList<String> res = new ArrayList<String>();
+		while (it.hasNext()) {
+			Element el = (Element)it.next();
+			res.add(el.attributeValue("name")); //$NON-NLS-1$
+		}
+		return res.toArray(new String[0]);
+	}
 }
