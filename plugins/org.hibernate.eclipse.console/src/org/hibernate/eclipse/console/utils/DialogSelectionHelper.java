@@ -75,7 +75,7 @@ public class DialogSelectionHelper extends org.hibernate.eclipse.console.utils.x
 		if (dialog.open() == Window.OK) {			
 			return (IJavaProject) dialog.getFirstResult();
 		}			
-		return null;		
+		return initialSelection;		
 	}
 
 	/**
