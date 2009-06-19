@@ -1,7 +1,6 @@
 Manifest-Version: 1.0
 Eclipse-LazyStart: true
 Bundle-Name: %pluginName
-Bundle-ClassPath: orm2-xml-ui.jar
 Bundle-Activator: org.jboss.tools.hibernate.ui.xml.HibernateUIXMLPlugin
 Bundle-Vendor: %providerName
 Bundle-SymbolicName: org.jboss.tools.hibernate.xml.ui; singleton:=true

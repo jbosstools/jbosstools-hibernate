@@ -21,7 +21,7 @@
             class="org.jboss.tools.hibernate.ui.xml.editor.Hibernate3CompoundEditor"
             contributorClass="org.jboss.tools.common.model.ui.texteditors.MultiPageContributor"
             default="true"
-            icon="images/xstudio/editors/hibernate_file.gif" 
+            icon="$nl$/images/xstudio/editors/hibernate_file.gif" 
             id="org.jboss.tools.hibernate.ui.xml.editor.Hibernate3CompoundEditor"
             matchingStrategy = "org.jboss.tools.common.core.resources.MatchingStrategyImpl"
             name="Hibernate 3.0 XML Editor">
@@ -31,7 +31,7 @@
             class="org.jboss.tools.hibernate.ui.xml.editor.HibConfig3CompoundEditor"
             contributorClass="org.jboss.tools.common.model.ui.texteditors.MultiPageContributor"
             default="true"
-            icon="images/xstudio/editors/hibernate_file.gif" 
+            icon="$nl$/images/xstudio/editors/hibernate_file.gif" 
             id="org.jboss.tools.hibernate.ui.xml.editor.HibConfig3CompoundEditor"
             matchingStrategy = "org.jboss.tools.common.core.resources.MatchingStrategyImpl"
             name="Hibernate Configuration 3.0 XML Editor">
