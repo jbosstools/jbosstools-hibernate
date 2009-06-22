@@ -221,109 +221,130 @@ public class Shape extends ModelElement {
 	 * @see #getPropertyDescriptors()
 	 */
 	public Object getPropertyValue(Object propertyId) {
+		Object res = null;
+		Column col = null;
+		if (getOrmElement() instanceof Column) {
+			col = (Column)getOrmElement();
+		}
+		Property prop = null;
+		if (getOrmElement() instanceof Property) {
+			prop = (Property)getOrmElement();
+		}
 		if (PROPERTY_NAME.equals(propertyId)) {
-			if (getOrmElement() instanceof Property) {
-				return ((Property) getOrmElement()).getName();
+			if (prop != null) {
+				res = prop.getName();
 			}
-			else if (getOrmElement() instanceof Column) {
-				return ((Column) getOrmElement()).getName();
+			else if (col != null) {
+				res = col.getName();
 			}
 		}
 		else if (PROPERTY_TYPE.equals(propertyId)) {
-			if (getOrmElement() instanceof Property) {
-				Value value = ((Property) getOrmElement()).getValue();
-				if (value instanceof Component) return ((Property) getOrmElement()).getValue().toString();
-				return ((Property) getOrmElement()).getType().getReturnedClass().getName();
+			if (prop != null) {
+				Value value = prop.getValue();
+				if (value instanceof Component) {
+					res = prop.getValue().toString();
+				}
+				else {
+					res = prop.getType().getReturnedClass().getName();
+				}
 			}
-			else if (getOrmElement() instanceof Column) {
-				String type = ormModelNameVisitor.getColumnSqlType((Column) getOrmElement(), getOrmDiagram().getConsoleConfig());
-				Column column = (Column) getOrmElement();
+			else if (col != null) {
+				String type = ormModelNameVisitor.getColumnSqlType(col, getOrmDiagram().getConsoleConfig());
 
 				StringBuffer name = new StringBuffer();
 
 				if (type != null) {
 					name.append(type.toUpperCase());
-					name.append(HibernateUtils.getTable(column) != null
-							&& HibernateUtils.isPrimaryKey(column) ? " PK" : ""); //$NON-NLS-1$  //$NON-NLS-2$
-					name.append(HibernateUtils.getTable(column) != null
-							&& HibernateUtils.isForeignKey(column) ? " FK" : ""); //$NON-NLS-1$ //$NON-NLS-2$
+					name.append(HibernateUtils.getTable(col) != null
+							&& HibernateUtils.isPrimaryKey(col) ? " PK" : ""); //$NON-NLS-1$  //$NON-NLS-2$
+					name.append(HibernateUtils.getTable(col) != null
+							&& HibernateUtils.isForeignKey(col) ? " FK" : ""); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 
-				return name.toString();
+				res = name.toString();
 			}
 		}
 		else if (PROPERTY_VALUE.equals(propertyId)) {
-			if (getOrmElement() instanceof Property) {
-				return ((Property) getOrmElement()).getValue().toString();
+			if (prop != null) {
+				res = prop.getValue().toString();
 			}
 			else if (getOrmElement() instanceof Column) {
-				return ((Column) getOrmElement()).getValue().toString();
+				res = col.getValue().toString();
 			}
 		}
 		else if (PROPERTY_CLASS.equals(propertyId)) {
-			if (getOrmElement() instanceof Property) {
-				if (((Property) getOrmElement()).getPersistentClass() != null)
-					return ((Property) getOrmElement()).getPersistentClass().getClassName();
-				else 
-					return null;
+			if (prop != null) {
+				if (prop.getPersistentClass() != null) {
+					res = prop.getPersistentClass().getClassName();
+				}
 			}
 		}
 		else if (PROPERTY_SELECT.equals(propertyId)) {
-			if (getOrmElement() instanceof Property) {
-				return Boolean.valueOf(((Property) getOrmElement()).isSelectable()).toString(); 
+			if (prop != null) {
+				res = Boolean.valueOf(prop.isSelectable()).toString(); 
 			}
 		}
 		else if (PROPERTY_INSERT.equals(propertyId)) {
-			if (getOrmElement() instanceof Property) {
-				return Boolean.valueOf(((Property) getOrmElement()).isInsertable()).toString(); 
+			if (prop != null) {
+				res = Boolean.valueOf(prop.isInsertable()).toString(); 
 			}
 		}
 		else if (PROPERTY_UPDATE.equals(propertyId)) {
-			if (getOrmElement() instanceof Property) {
-				return Boolean.valueOf(((Property) getOrmElement()).isUpdateable()).toString(); 
+			if (prop != null) {
+				res = Boolean.valueOf(prop.isUpdateable()).toString(); 
 			}
 		}
 		else if (PROPERTY_CASCADE.equals(propertyId)) {
-			if (getOrmElement() instanceof Property) {
-				return ((Property) getOrmElement()).getCascade(); 
+			if (prop != null) {
+				res = prop.getCascade(); 
 			}
 		}
 		else if (PROPERTY_LAZY.equals(propertyId)) {
-			if (getOrmElement() instanceof Property) {
-				return Boolean.valueOf(((Property) getOrmElement()).isLazy()).toString(); 
+			if (prop != null) {
+				res = Boolean.valueOf(prop.isLazy()).toString(); 
 			}
 		}
 		else if (PROPERTY_OPTIONAL.equals(propertyId)) {
-			if (getOrmElement() instanceof Property) {
-				return Boolean.valueOf(((Property) getOrmElement()).isOptional()).toString(); 
+			if (prop != null) {
+				res = Boolean.valueOf(prop.isOptional()).toString(); 
 			}
 		}
 		else if (PROPERTY_NATURAL_IDENTIFIER.equals(propertyId)) {
-			if (getOrmElement() instanceof Property) {
-				return Boolean.valueOf(((Property) getOrmElement()).isNaturalIdentifier()).toString(); 
+			if (prop != null) {
+				res = Boolean.valueOf(prop.isNaturalIdentifier()).toString(); 
 			}
 		}
 		else if (PROPERTY_NODE_NAME.equals(propertyId)) {
-			if (getOrmElement() instanceof Property) {
-				return ((Property) getOrmElement()).getNodeName();
+			if (prop != null) {
+				res = prop.getNodeName();
 			}
 		}
 		else if (PROPERTY_OPTIMISTIC_LOCKED.equals(propertyId)) {
-			if (getOrmElement() instanceof Property) {
-				return Boolean.valueOf(((Property) getOrmElement()).isOptimisticLocked()).toString(); 
+			if (prop != null) {
+				res = Boolean.valueOf(prop.isOptimisticLocked()).toString(); 
 			}
 		}
 		else if (PROPERTY_NULLABLE.equals(propertyId)) {
-			if (getOrmElement() instanceof Column) {
-				return Boolean.valueOf(((Column) getOrmElement()).isNullable()).toString(); 
+			if (col != null) {
+				res = Boolean.valueOf(col.isNullable()).toString(); 
 			}
 		}
 		else if (PROPERTY_UNIQUE.equals(propertyId)) {
-			if (getOrmElement() instanceof Column) {
-				return Boolean.valueOf(((Column) getOrmElement()).isUnique()).toString(); 
+			if (col != null) {
+				res = Boolean.valueOf(col.isUnique()).toString(); 
 			}
 		}
-		return super.getPropertyValue(propertyId);
+		if (res == null) {
+			res = super.getPropertyValue(propertyId);
+		}
+		return toEmptyStr(res);
+	}
+	
+	protected Object toEmptyStr(Object obj) {
+		if (obj == null) {
+			return ""; //$NON-NLS-1$
+		}
+		return obj;
 	}
 
 }
