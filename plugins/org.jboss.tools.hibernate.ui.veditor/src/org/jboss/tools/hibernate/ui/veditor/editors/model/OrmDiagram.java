@@ -15,7 +15,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -118,12 +119,51 @@ public class OrmDiagram extends ModelElement {
 		return getStoreFolderPath().append(getStoreFileName());
 	}
 
+	/**
+	 * Generate file name to store diagram. File name consist of elements names,
+	 * in case if result of elements names is too long md5sum calculated for generated name.
+	 * @return
+	 */
 	public String getStoreFileName() {
-		String name = ormElements.length > 0 ? ormElements[0].getClassName() : ""; //$NON-NLS-1$
-		for (int i = 1; i < ormElements.length; i++) {
-			name += "_" + ormElements[i].getClassName(); //$NON-NLS-1$
+		StringBuilder name = new StringBuilder();
+		for (int i = 0; i < ormElements.length; i++) {
+			name.append("_"); //$NON-NLS-1$
+			name.append(ormElements[i].getNodeName());
 		}
-		return consoleConfig.getName() + "_" + name; //$NON-NLS-1$
+		String res = consoleConfig.getName() + name.toString();
+		if (res.length() > 64) {
+			res = consoleConfig.getName() + "_" + md5sum(name.toString()); //$NON-NLS-1$
+		}
+		return res;
+	}
+	
+	public static final String md5sum(String input) {
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("MD5"); //$NON-NLS-1$
+		} catch (NoSuchAlgorithmException e) {
+		}
+		if (md == null || input == null) {
+			return input;
+		}
+		StringBuffer sbuf = new StringBuffer();
+		byte [] raw = md.digest(input.getBytes());
+		for (int i = 0; i < raw.length; i++) {
+			int c = (int)raw[i];
+			if (c < 0) {
+				c = (Math.abs(c) - 1) ^ 255;
+			}
+			final String block = toHex(c >>> 4) + toHex(c & 15);
+			sbuf.append(block);
+		}
+		return sbuf.toString();
+	}
+
+	private static final String toHex(int s) {
+		if (s < 10) {
+			return String.valueOf((char)('0' + s));
+		}
+		return String.valueOf((char)('a' + (s - 10)));
 	}
 
 	@SuppressWarnings("unchecked")
