@@ -440,7 +440,7 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 	}
 
 	private String safeText(String text) {
-		return text==null?"":text;
+		return text==null?"":text; //$NON-NLS-1$
 	}
 
 	private String strOrNull(String text) {
