@@ -51,6 +51,9 @@ import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.ui.veditor.VisualEditorPlugin;
 import org.jboss.tools.hibernate.ui.view.views.HibernateUtils;
 
+import sun.misc.Compare;
+import sun.misc.Sort;
+
 public class OrmDiagram extends ModelElement {
 	
 	public static final String REFRESH = "refresh"; //$NON-NLS-1$
@@ -82,6 +85,9 @@ public class OrmDiagram extends ModelElement {
 		this.consoleConfig = consoleConfig;
 		ormElements = new RootClass[ioe.length];
 		System.arraycopy(ioe, 0, ormElements, 0, ioe.length);
+		// should sort elements - cause different sort order gives different file name
+		// for the same thing
+		Sort.quicksort(ormElements, new OrmElCompare());
 		entityNames = new String[ioe.length];
 		for (int i = 0; i < ormElements.length; i++) {
 			entityNames[i] = ormElements[i].getEntityName();
@@ -93,6 +99,16 @@ public class OrmDiagram extends ModelElement {
 		expandModel(this);
 		load();
 		setDirty(false);
+	}
+	
+	protected class OrmElCompare implements Compare {
+
+		public int doCompare(Object arg0, Object arg1) {
+			RootClass rc0 = (RootClass)arg0;
+			RootClass rc1 = (RootClass)arg1;
+			return rc0.getNodeName().compareTo(rc1.getNodeName());
+		}
+		
 	}
 
 	/**
