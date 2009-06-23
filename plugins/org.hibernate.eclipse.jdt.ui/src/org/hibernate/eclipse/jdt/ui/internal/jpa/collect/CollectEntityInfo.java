@@ -331,7 +331,7 @@ public class CollectEntityInfo extends ASTVisitor {
 				}
 			}
 		}
-		ITypeBinding tb = node.resolveBinding();
+		node.resolveBinding();
 		return true;
 	}
 
@@ -340,8 +340,8 @@ public class CollectEntityInfo extends ASTVisitor {
 		if (node.getBody() == null) {
 			return res;
 		}	
-		List bodyStatemants = node.getBody().statements();
-		Iterator it = bodyStatemants.iterator();
+		List<?> bodyStatemants = node.getBody().statements();
+		Iterator<?> it = bodyStatemants.iterator();
 		for ( ; it.hasNext(); ) {
 			Object obj = it.next();
 			if (obj instanceof ReturnStatement) {
@@ -409,9 +409,9 @@ public class CollectEntityInfo extends ASTVisitor {
 	public boolean visit(FieldDeclaration node) {
 		Type type = node.getType();
 		List<String> list = new ArrayList<String>();
-		Iterator itVarNames = node.fragments().iterator();
+		Iterator<VariableDeclarationFragment> itVarNames = node.fragments().iterator();
 		while (itVarNames.hasNext()) {
-			VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
+			VariableDeclarationFragment var = itVarNames.next();
 			String name = var.getName().getIdentifier();
 			list.add(name);
 		}
@@ -444,9 +444,9 @@ public class CollectEntityInfo extends ASTVisitor {
 			PrimitiveType pt = (PrimitiveType)type;
 			if (!pt.getPrimitiveTypeCode().equals(PrimitiveType.BOOLEAN)) {
 				// this is candidate for primary id
-				Iterator itVarNames = list.iterator();
+				Iterator<String> itVarNames = list.iterator();
 				while (itVarNames.hasNext()) {
-					String name = (String)itVarNames.next();
+					String name = itVarNames.next();
 					if ("version".equalsIgnoreCase(name)) { //$NON-NLS-1$
 						FieldGetterType versionFieldGetter = 
 							updateFieldGetter(entityInfo.getVersionFieldGetter(), fieldFlag);
@@ -472,9 +472,9 @@ public class CollectEntityInfo extends ASTVisitor {
 						HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
 					}
 					entityInfo.addDependency(entityFullyQualifiedName);
-					Iterator itVarNames = list.iterator();
+					Iterator<String> itVarNames = list.iterator();
 					while (itVarNames.hasNext()) {
-						String name = (String)itVarNames.next();
+						String name = itVarNames.next();
 						entityInfo.addReference(name, entityFullyQualifiedName, RefType.MANY2ONE);
 					}
 				}
@@ -483,9 +483,9 @@ public class CollectEntityInfo extends ASTVisitor {
 					if (tbParent != null) {
 						if ("java.lang.Number".equals(tbParent.getBinaryName())) { //$NON-NLS-1$
 							// this is candidate for primary id
-							Iterator itVarNames = list.iterator();
+							Iterator<String> itVarNames = list.iterator();
 							while (itVarNames.hasNext()) {
-								String name = (String)itVarNames.next();
+								String name = itVarNames.next();
 								if ("version".equalsIgnoreCase(name)) { //$NON-NLS-1$
 									FieldGetterType versionFieldGetter = 
 										updateFieldGetter(entityInfo.getVersionFieldGetter(), fieldFlag);
@@ -498,9 +498,9 @@ public class CollectEntityInfo extends ASTVisitor {
 						}
 						else if ("java.util.Date".equals(tbParent.getBinaryName())) { //$NON-NLS-1$
 							// this is candidate for version
-							Iterator itVarNames = list.iterator();
+							Iterator<String> itVarNames = list.iterator();
 							while (itVarNames.hasNext()) {
-								String name = (String)itVarNames.next();
+								String name = itVarNames.next();
 								if ("version".equalsIgnoreCase(name)) { //$NON-NLS-1$
 									FieldGetterType versionFieldGetter = 
 										updateFieldGetter(entityInfo.getVersionFieldGetter(), fieldFlag);
@@ -510,9 +510,9 @@ public class CollectEntityInfo extends ASTVisitor {
 						}
 					}
 					if ("java.lang.String".equals(tb.getBinaryName())) { //$NON-NLS-1$
-						Iterator itVarNames = list.iterator();
+						Iterator<String> itVarNames = list.iterator();
 						while (itVarNames.hasNext()) {
-							String name = (String)itVarNames.next();
+							String name = itVarNames.next();
 							entityInfo.updateAnnotationColumn(name, null, false);
 							entityInfo.addPrimaryIdCandidate(name);
 						}
@@ -538,9 +538,9 @@ public class CollectEntityInfo extends ASTVisitor {
 						HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
 					}
 					entityInfo.addDependency(entityFullyQualifiedName);
-					Iterator itVarNames = list.iterator();
+					Iterator<String> itVarNames = list.iterator();
 					while (itVarNames.hasNext()) {
-						String name = (String)itVarNames.next();
+						String name = itVarNames.next();
 						entityInfo.addReference(name, entityFullyQualifiedName, RefType.ONE2MANY);
 					}
 				}
@@ -570,9 +570,9 @@ public class CollectEntityInfo extends ASTVisitor {
 					}
 				}*/
 				if (fullyQualifiedNameTypeName.length() > 0) {
-					Iterator typeArgsIt = pt.typeArguments().iterator();
+					Iterator<Type> typeArgsIt = pt.typeArguments().iterator();
 					while (typeArgsIt.hasNext()) {
-						typeP = (Type)typeArgsIt.next();
+						typeP = typeArgsIt.next();
 						tb = typeP.resolveBinding();
 						String entityFullyQualifiedName = ""; //$NON-NLS-1$
 						if (tb.getJavaElement() instanceof SourceType) {
@@ -583,9 +583,9 @@ public class CollectEntityInfo extends ASTVisitor {
 								HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
 							}
 							entityInfo.addDependency(entityFullyQualifiedName);
-							Iterator itVarNames = list.iterator();
+							Iterator<String> itVarNames = list.iterator();
 							while (itVarNames.hasNext()) {
-								String name = (String)itVarNames.next();
+								String name = itVarNames.next();
 								entityInfo.addReference(name, entityFullyQualifiedName, RefType.ONE2MANY);
 							}
 						}

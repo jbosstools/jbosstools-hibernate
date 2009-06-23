@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -114,17 +113,16 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 		return getAttribute( IConsoleConfigurationLaunchConstants.ENTITY_RESOLVER, null );
 	}
 
+	@SuppressWarnings("unchecked")
 	public File[] getMappingFiles() {
 		try {
-			List mappings = launchConfiguration.getAttribute( IConsoleConfigurationLaunchConstants.FILE_MAPPINGS, Collections.EMPTY_LIST );
+			List<String> mappings = launchConfiguration.getAttribute( IConsoleConfigurationLaunchConstants.FILE_MAPPINGS, Collections.EMPTY_LIST );
 			File[] result = new File[mappings.size()];
 			int i = 0;
-			Iterator iter = mappings.iterator();
-			while ( iter.hasNext() ) {
-				String element = (String) iter.next();
+			for (String element : mappings) {
 				result[i++] = strToFile( element );
 			}
-			return result;
+			return result;				
 		}
 		catch (CoreException e) {
 			throw new HibernateConsoleRuntimeException(e);

@@ -31,10 +31,10 @@ import org.hibernate.console.ImageConstants;
  */
 public class ConfigurationEntitiesNode extends BaseNode {
 
-	public ConfigurationEntitiesNode(String name, NodeFactory factory, List classes) {
+	public ConfigurationEntitiesNode(String name, NodeFactory factory, List<String> classes) {
         super(factory,null);
         for (int i = 0; i < classes.size(); i++) {
-			children.add(factory.createClassNode(this,(String)classes.get(i) ) );
+			children.add(factory.createClassNode(this,classes.get(i) ) );
 		}
         iconName = ImageConstants.TYPES;
         this.name = name;

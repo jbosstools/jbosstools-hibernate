@@ -26,6 +26,7 @@ import java.util.List;
 import org.eclipse.draw2d.IFigure;
 import org.hibernate.eclipse.graph.figures.EditableLabel;
 import org.hibernate.eclipse.graph.figures.TableFigure;
+import org.hibernate.eclipse.graph.model.ColumnViewAdapter;
 import org.hibernate.eclipse.graph.model.TableViewAdapter;
 
 public class TableEditPart extends GraphNodeEditPart {
@@ -53,7 +54,7 @@ public class TableEditPart extends GraphNodeEditPart {
 		return figure.getColumnsFigure();
 	}
 	
-	protected List getModelChildren() {
+	protected List<ColumnViewAdapter> getModelChildren() {
 		TableViewAdapter tableViewAdapter = getTableViewAdapter();
 		return tableViewAdapter.getColumns();		
 	}

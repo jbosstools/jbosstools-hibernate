@@ -44,11 +44,9 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.hibernate.SessionFactory;
-import org.hibernate.classic.Session;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
-import org.hibernate.eclipse.console.QueryEditor;
 import org.hibernate.eclipse.console.utils.QLFormatHelper;
 import org.hibernate.eclipse.hqleditor.HQLEditor;
 import org.hibernate.eclipse.hqleditor.HQLEditorDocumentSetupParticipant;
@@ -178,7 +176,7 @@ public class DynamicSQLPreviewView extends ViewPart {
 						QueryTranslator translator = translators[i];
 						if(translator.isManipulationStatement()) {
 							str.append(HibernateConsoleMessages.DynamicSQLPreviewView_manipulation_of + i + ":"); //$NON-NLS-1$
-							Iterator iterator = translator.getQuerySpaces().iterator();
+							Iterator<?> iterator = translator.getQuerySpaces().iterator();
 							while ( iterator.hasNext() ) {
 								Object qspace = iterator.next();
 								str.append(qspace);
@@ -195,7 +193,7 @@ public class DynamicSQLPreviewView extends ViewPart {
 							}
 						}
 						str.append("\n-----------------\n"); //$NON-NLS-1$
-						Iterator sqls = translator.collectSqlStrings().iterator();
+						Iterator<?> sqls = translator.collectSqlStrings().iterator();
 						while ( sqls.hasNext() ) {
 							String sql = (String) sqls.next();
 							str.append(QLFormatHelper.formatForScreen(sql));

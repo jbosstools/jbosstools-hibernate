@@ -34,6 +34,7 @@ import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.hibernate.eclipse.graph.model.AssociationViewAdapter;
 import org.hibernate.eclipse.graph.model.GraphNode;
 
 public abstract class GraphNodeEditPart extends AbstractGraphicalEditPart implements Observer, NodeEditPart {
@@ -51,7 +52,7 @@ public abstract class GraphNodeEditPart extends AbstractGraphicalEditPart implem
 		}
 	}
 	
-	protected List getModelSourceConnections() {
+	protected List<AssociationViewAdapter> getModelSourceConnections() {
 		return getGraphNode().getSourceAssociations();		
 	}
 	
@@ -59,7 +60,7 @@ public abstract class GraphNodeEditPart extends AbstractGraphicalEditPart implem
 		return (GraphNode)getModel();
 	}
 
-	protected List getModelTargetConnections() {
+	protected List<AssociationViewAdapter> getModelTargetConnections() {
 		return getGraphNode().getTargetAssociations();
 	}
 

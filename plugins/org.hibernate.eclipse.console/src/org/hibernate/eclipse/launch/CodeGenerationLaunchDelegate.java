@@ -336,13 +336,13 @@ public class CodeGenerationLaunchDelegate extends
 	@SuppressWarnings("unchecked")
 	private ReverseEngineeringStrategy loadreverseEngineeringStrategy(final String className, ReverseEngineeringStrategy delegate) {
         try {
-            Class clazz = ReflectHelper.classForName(className);
+            Class<ReverseEngineeringStrategy> clazz = ReflectHelper.classForName(className);
 			Constructor<ReverseEngineeringStrategy> constructor = clazz.getConstructor(new Class[] { ReverseEngineeringStrategy.class });
             return constructor.newInstance(new Object[] { delegate });
         }
         catch (NoSuchMethodException e) {
 			try {
-				Class clazz = ReflectHelper.classForName(className);
+				Class<?> clazz = ReflectHelper.classForName(className);
 				ReverseEngineeringStrategy rev = (ReverseEngineeringStrategy) clazz.newInstance();
 				return rev;
 			}

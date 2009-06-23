@@ -120,7 +120,7 @@ public class QueryPageViewer {
 				if(qp.getExceptions().isEmpty() ) {
 					return ensureNotNull(objects);
 				} else {
-					Throwable[] throwables = (Throwable[])qp.getExceptions().toArray(new Throwable[0]);
+					Throwable[] throwables = qp.getExceptions().toArray(new Throwable[0]);
 					HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.QueryPageViewer_exception_while_executing_hql_query, throwables);
 					return throwables; // TODO: provide actual error page
 				}
@@ -261,7 +261,7 @@ public class QueryPageViewer {
 	private int addColumnsToTable(final Table table) {
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
-		List columns = this.queryPage.getPathNames();
+		List<String> columns = this.queryPage.getPathNames();
 		int columnCount = columns.size();
 		for (int i = 0; i < columnCount; i++) {
 			TableColumn column = new TableColumn(table, SWT.NONE);

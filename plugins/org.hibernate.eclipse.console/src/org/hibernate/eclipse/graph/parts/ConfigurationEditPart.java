@@ -59,7 +59,7 @@ public class ConfigurationEditPart extends AbstractGraphicalEditPart implements 
 		setModel( configuration );
 	}
 
-	protected List getModelChildren() {
+	protected List<?> getModelChildren() {
 		if ( getConfigurationViewAdapter() == null )
 			return super.getModelChildren();
 		return getConfigurationViewAdapter().getPersistentClasses();

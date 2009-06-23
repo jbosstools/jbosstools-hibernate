@@ -77,7 +77,7 @@ public class JavaPage extends AbstractQueryPage {
                 if(model.getMaxResults()!=null) {
                 	criteria.setMaxResults( model.getMaxResults().intValue() );
                 }
-            } else if (o instanceof List) {
+            } else if (o instanceof List<?>) {
                 list = (List<Object>) o;
                 if(model.getMaxResults()!=null) {
                 	list = list.subList( 0, Math.min( list.size(), model.getMaxResults().intValue() ) );

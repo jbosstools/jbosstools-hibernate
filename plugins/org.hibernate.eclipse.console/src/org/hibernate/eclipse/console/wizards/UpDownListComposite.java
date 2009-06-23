@@ -292,9 +292,7 @@ public class UpDownListComposite extends Composite {
 	protected void handleRemove() {
 		IStructuredSelection selection = (IStructuredSelection) tableView.getSelection();
 		if (selection != null) {
-			int numSelected= selection.size();
-
-			Iterator iterator= selection.iterator();
+			Iterator<?> iterator= selection.iterator();
 			while (iterator.hasNext() ) {
 				Object item= iterator.next();
 				tableView.remove(item);

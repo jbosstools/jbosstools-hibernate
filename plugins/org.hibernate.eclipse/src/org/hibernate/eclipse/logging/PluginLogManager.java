@@ -246,7 +246,7 @@ public class PluginLogManager {
 	 * Returns all the loggers in this manager.
 	 * @return Enumeration logger enumeration
 	 */
-	public Enumeration getCurrentLoggers() {
+	public Enumeration<?> getCurrentLoggers() {
 		return this.hierarchy.getCurrentLoggers();
 	}
 

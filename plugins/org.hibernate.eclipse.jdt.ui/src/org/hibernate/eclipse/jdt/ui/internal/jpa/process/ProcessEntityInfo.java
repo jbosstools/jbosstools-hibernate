@@ -129,7 +129,7 @@ public class ProcessEntityInfo extends ASTVisitor {
 		ListRewrite lrw = rewriter.getListRewrite(node, CompilationUnit.IMPORTS_PROPERTY);
 		// insert import declaration in the proper place
 		// prefer alphabetic order and package separation
-		Iterator it = lrw.getRewrittenList().iterator();
+		Iterator<?> it = lrw.getRewrittenList().iterator();
 		ASTNode insertBeforeNode = null;
 		for ( ; it.hasNext(); ) {
 			Object obj = it.next();
@@ -152,6 +152,7 @@ public class ProcessEntityInfo extends ASTVisitor {
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
 	public boolean visit(TypeDeclaration node) {
 		if (entityInfo.isAddMappedSuperclassFlag()) {
 			MarkerAnnotation matd = rewriter.getAST().newMarkerAnnotation();
@@ -195,9 +196,9 @@ public class ProcessEntityInfo extends ASTVisitor {
 			SimpleName sn = rewriter.getAST().newSimpleName(entityInfo.getName());
 			md.setName(sn);
 			ListRewrite lrw = rewriter.getListRewrite(node, TypeDeclaration.BODY_DECLARATIONS_PROPERTY);
-			List list = lrw.getOriginalList();
+			List<?> list = lrw.getOriginalList();
 			MethodDeclaration insertBeforeNode = null;
-			Iterator it = list.iterator();
+			Iterator<?> it = list.iterator();
 			while (it.hasNext()) {
 				Object obj = it.next();
 				if (obj instanceof MethodDeclaration) {
@@ -296,6 +297,7 @@ public class ProcessEntityInfo extends ASTVisitor {
 		return true;		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public boolean visit(FieldDeclaration node) {
 		if (annotationStyle != AnnotStyle.FIELDS) {
 			return true;
@@ -307,10 +309,10 @@ public class ProcessEntityInfo extends ASTVisitor {
 		if (type.isSimpleType() || type.isPrimitiveType()) {
 			if (entityInfo.isAddGeneratedValueFlag()) {
 				String primaryIdName = entityInfo.getPrimaryIdName();
-				Iterator itVarNames = node.fragments().iterator();
+				Iterator<VariableDeclarationFragment> itVarNames = node.fragments().iterator();
 				boolean addGeneratedValueMarker = false;
 				while (itVarNames.hasNext()) {
-					VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
+					VariableDeclarationFragment var = itVarNames.next();
 					String name = var.getName().getIdentifier();
 					if (primaryIdName.equals(name)) {
 						addGeneratedValueMarker = true;
@@ -326,10 +328,10 @@ public class ProcessEntityInfo extends ASTVisitor {
 			}
 			if (entityInfo.isAddPrimaryIdFlag()) {
 				String primaryIdName = entityInfo.getPrimaryIdName();
-				Iterator itVarNames = node.fragments().iterator();
+				Iterator<VariableDeclarationFragment> itVarNames = node.fragments().iterator();
 				boolean addIdMarker = false;
 				while (itVarNames.hasNext()) {
-					VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
+					VariableDeclarationFragment var = itVarNames.next();
 					String name = var.getName().getIdentifier();
 					if (primaryIdName.equals(name)) {
 						addIdMarker = true;
@@ -344,10 +346,10 @@ public class ProcessEntityInfo extends ASTVisitor {
 				}
 			}
 			if (enableOptLock && entityInfo.isAddVersionFlag() && !entityInfo.hasVersionAnnotation()) {
-				Iterator itVarNames = node.fragments().iterator();
+				Iterator<VariableDeclarationFragment> itVarNames = node.fragments().iterator();
 				boolean addVersionMarker = false;
 				while (itVarNames.hasNext()) {
-					VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
+					VariableDeclarationFragment var = itVarNames.next();
 					String name = var.getName().getIdentifier();
 					if ("version".equals(name)) { //$NON-NLS-1$
 						addVersionMarker = true;
@@ -367,9 +369,9 @@ public class ProcessEntityInfo extends ASTVisitor {
 			String typeName = simpleType.getName().getFullyQualifiedName();
 			if ("java.lang.String".equals(typeName) || "String".equals(typeName)) { //$NON-NLS-1$ //$NON-NLS-2$
 				String fieldId = null;
-				Iterator itVarNames = node.fragments().iterator();
+				Iterator<VariableDeclarationFragment> itVarNames = node.fragments().iterator();
 				while (itVarNames.hasNext()) {
-					VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
+					VariableDeclarationFragment var = itVarNames.next();
 					fieldId = var.getName().getIdentifier();
 					if (fieldId != null) {
 						break;
@@ -392,13 +394,13 @@ public class ProcessEntityInfo extends ASTVisitor {
 			}
 		}
 		if (type.isSimpleType() || type.isParameterizedType() || type.isArrayType()) {
-			Iterator itVarNames = node.fragments().iterator();
+			Iterator<VariableDeclarationFragment> itVarNames = node.fragments().iterator();
 			String fieldId = ""; //$NON-NLS-1$
 			RefType refType = RefType.UNDEF;
 			boolean annotated = false;
 			String fullyQualifiedName2 = ""; //$NON-NLS-1$
 			while (itVarNames.hasNext()) {
-				VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
+				VariableDeclarationFragment var = itVarNames.next();
 				String name = var.getName().getIdentifier();
 				fieldId = name;
 				refType = entityInfo.getFieldIdRelValue(fieldId);
@@ -439,6 +441,7 @@ public class ProcessEntityInfo extends ASTVisitor {
 		return true;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public boolean visit(MethodDeclaration node) {
 		if (annotationStyle != AnnotStyle.GETTERS) {
 			return true;
@@ -609,6 +612,7 @@ public class ProcessEntityInfo extends ASTVisitor {
 		return true;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public boolean addComplexNormalAnnotation(BodyDeclaration node, String name, RefEntityInfo rei) {
 		if (name == null || name.length() == 0) {
 			return false;

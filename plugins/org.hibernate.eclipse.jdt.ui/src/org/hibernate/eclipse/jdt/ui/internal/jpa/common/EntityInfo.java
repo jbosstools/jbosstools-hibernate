@@ -479,7 +479,7 @@ public class EntityInfo {
 		}
 		if (node != null) {
 			Map<String, Expression> rciValues = rci.getValues();
-			Iterator it = node.values().iterator();
+			Iterator<?> it = node.values().iterator();
 			while (it.hasNext()) {
 				Object obj = it.next();
 				if (obj instanceof MemberValuePair) {

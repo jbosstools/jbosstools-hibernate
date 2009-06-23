@@ -58,12 +58,13 @@ public class SchemaExportAction extends ConsoleConfigurationBasedAction {
 	}
 
 	public void doRun() {
-		for (Iterator i = getSelectedNonResources().iterator(); i.hasNext();) {
+		for (Iterator<?> i = getSelectedNonResources().iterator(); i.hasNext();) {
 			try {
 				Object node = i.next();
 				if ( node instanceof ConsoleConfiguration ) {
 				final ConsoleConfiguration config = (ConsoleConfiguration) node;
 				config.execute( new Command() {
+					@SuppressWarnings("unchecked")
 					public Object execute() {
 						String out = NLS.bind(HibernateConsoleMessages.SchemaExportAction_sure_run_schemaexport, config.getName());
 						if ( config.getConfiguration() != null
@@ -74,11 +75,10 @@ public class SchemaExportAction extends ConsoleConfigurationBasedAction {
 									.getConfiguration() );
 							export.create( false, true );
 							if ( !export.getExceptions().isEmpty() ) {
-								Iterator iterator = export.getExceptions()
-										.iterator();
+								Iterator<Throwable> iterator = export.getExceptions().iterator();
 								int cnt = 1;
 								while ( iterator.hasNext() ) {
-									Throwable element = (Throwable) iterator.next();
+									Throwable element = iterator.next();
 									String outStr = NLS.bind(HibernateConsoleMessages.SchemaExportAction_errornum_while_performing_schemaexport, cnt++);
 									HibernateConsolePlugin.getDefault().logErrorMessage(outStr, element );
 								}

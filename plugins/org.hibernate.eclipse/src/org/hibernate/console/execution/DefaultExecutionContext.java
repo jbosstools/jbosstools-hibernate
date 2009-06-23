@@ -33,7 +33,7 @@ public class DefaultExecutionContext implements ExecutionContext {
 
 	final private URLClassLoader configurationClassLoader;
 	private volatile int installs;
-	private Map previousLoaders = new WeakHashMap();
+	private Map<Thread, ClassLoader> previousLoaders = new WeakHashMap<Thread, ClassLoader>();
 
 	final String key;
 
@@ -76,7 +76,7 @@ public class DefaultExecutionContext implements ExecutionContext {
 		installs--; // TODO: make more safe (synchronized) bookkeeping of the classloader installation.
 
 		if(installs==0) {
-			ClassLoader cl = (ClassLoader) previousLoaders.get(Thread.currentThread() );
+			ClassLoader cl = previousLoaders.get(Thread.currentThread() );
 			if(configurationClassLoader!=null && Thread.currentThread().getContextClassLoader() != configurationClassLoader) {
 				String out = NLS.bind(ConsoleMessages.DefaultExecutionContext_existing_classloader, Thread.currentThread().getContextClassLoader(), configurationClassLoader);
 				throw new IllegalStateException(out);

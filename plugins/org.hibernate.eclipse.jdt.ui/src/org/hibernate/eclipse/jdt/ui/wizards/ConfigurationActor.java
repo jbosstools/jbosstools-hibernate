@@ -270,6 +270,7 @@ class ProcessEntityInfo extends ASTVisitor {
 		return true;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public boolean visit(FieldDeclaration node) {
 		Type type = node.getType();
 		if (type == null) {
@@ -277,9 +278,9 @@ class ProcessEntityInfo extends ASTVisitor {
 		}
 
 		String primaryIdName = entityInfo.getPrimaryIdName();
-		Iterator itVarNames = node.fragments().iterator();
+		Iterator<VariableDeclarationFragment> itVarNames = node.fragments().iterator();
 		while (itVarNames.hasNext()) {
-			VariableDeclarationFragment var = (VariableDeclarationFragment)itVarNames.next();
+			VariableDeclarationFragment var = itVarNames.next();
 			Property prop = createProperty(var);			
 			if (prop == null) {
 				continue;
@@ -399,7 +400,6 @@ class TypeVisitor extends ASTVisitor{
 			
 			array.setElement(oValue);
 		}
-		if (array == null) return true;
 		
 		SimpleValue key = new SimpleValue();
 		if (StringHelper.isNotEmpty(entityInfo.getPrimaryIdName())) {

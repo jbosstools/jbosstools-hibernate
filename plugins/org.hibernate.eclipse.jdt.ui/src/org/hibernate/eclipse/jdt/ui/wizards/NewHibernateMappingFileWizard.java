@@ -231,7 +231,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 								throws InvocationTargetException,
 								InterruptedException {
 							monitor.beginTask(HibernateConsoleMessages.NewHibernateMappingFileWizard_finding_dependent_cu, selection.size() + 1);
-							Iterator it = selection.iterator();
+							Iterator<?> it = selection.iterator();
 							int done = 1;
 							while (it.hasNext()) {
 								Object obj = it.next();

@@ -77,14 +77,15 @@ public class ConsoleConfigurationMappingsTab extends ConsoleConfigurationTab {
 		return str;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
 			mappingFilesViewer.clear();
-			List mappings = configuration.getAttribute( IConsoleConfigurationLaunchConstants.FILE_MAPPINGS, Collections.EMPTY_LIST );
+			List<String> mappings = configuration.getAttribute( IConsoleConfigurationLaunchConstants.FILE_MAPPINGS, Collections.EMPTY_LIST );
 			IPath[] mapA = new IPath[mappings.size()];
 			int i=0;
-			for (Iterator iter = mappings.iterator(); iter.hasNext();) {
-				String file = (String) iter.next();
+			for (Iterator<String> iter = mappings.iterator(); iter.hasNext();) {
+				String file = iter.next();
 				mapA[i++] = Path.fromPortableString( file );
 			}
 			mappingFilesViewer.add(mapA, false);

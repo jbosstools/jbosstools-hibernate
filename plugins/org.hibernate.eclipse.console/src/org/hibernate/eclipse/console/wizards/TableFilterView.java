@@ -135,7 +135,7 @@ public abstract class TableFilterView extends TreeToTableComposite {
 
 		if ( !selection.isEmpty() ) {
 			StructuredSelection ss = (StructuredSelection) selection;
-			Iterator iterator = ss.iterator();
+			Iterator<?> iterator = ss.iterator();
 			while ( iterator.hasNext() ) {
 				Object sel = iterator.next();
 				ITableFilter filter = null;

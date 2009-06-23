@@ -44,7 +44,7 @@ public class FileFilter extends ViewerFilter {
 
 	private final String[] fileExtensions;
 
-	private List excludedFiles;
+	private List<IResource> excludedFiles;
 	private boolean recursive ;
 
 	private final boolean allowDirectories;
@@ -55,7 +55,7 @@ public class FileFilter extends ViewerFilter {
 	 * @param recusive Folders are only shown if, searched recursively, contain
 	 * a matching file
 	 */
-	public FileFilter(String[] fileExtensions, IFile[] excludedFiles, boolean recusive) {
+	public FileFilter(String[] fileExtensions, IResource[] excludedFiles, boolean recusive) {
 		this.fileExtensions = fileExtensions;
 		if (excludedFiles != null) {
 			this.excludedFiles= Arrays.asList(excludedFiles);
@@ -66,10 +66,10 @@ public class FileFilter extends ViewerFilter {
 		allowDirectories = false;
 	}
 	
-	public FileFilter(String[] fileExtensions, List excludedFiles, boolean recusive, boolean allowDirectories) {
+	public FileFilter(String[] fileExtensions, List<IResource> usedFiles, boolean recusive, boolean allowDirectories) {
 		
 		this.fileExtensions = fileExtensions;
-		this.excludedFiles= excludedFiles;
+		this.excludedFiles= usedFiles;
 		recursive = recusive;
 		this.allowDirectories = allowDirectories;		
 	}

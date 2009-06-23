@@ -79,6 +79,7 @@ public class HibernateRefactoringUtil {
 		return isAttributesAffected(config, oldPath) || isClassPathAffected(config, oldPath);
 	}
 
+	@SuppressWarnings("unchecked")
 	private static boolean isAttributesAffected(ILaunchConfiguration config, IPath oldPath) throws CoreException{
 		String attrib = null;
 		for (int i = 0; i < pathKeys.length; i++) {
@@ -146,6 +147,7 @@ public class HibernateRefactoringUtil {
 		return path.isPrefixOf(new Path(attrib));
 	}
 
+	@SuppressWarnings("unchecked")
 	public static ILaunchConfiguration updateLaunchConfig(ILaunchConfiguration config, IPath oldPath, IPath newPath) throws CoreException{
 		final ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
 		updateAttributes(oldPath, newPath, wc);
@@ -153,7 +155,7 @@ public class HibernateRefactoringUtil {
 		//classpath
 		try {
 			IRuntimeClasspathEntry[] entries = JavaRuntime.computeUnresolvedRuntimeClasspath(config);
-			List oldMementos = config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, Collections.EMPTY_LIST);
+			List<String> oldMementos = config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, Collections.EMPTY_LIST);
 			List<String> newMementos = new ArrayList<String>();
 			boolean isChanged = updateClasspathEntries(entries, oldMementos, newMementos, oldPath, newPath);
 			if (isChanged) wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, newMementos);
@@ -281,6 +283,7 @@ public class HibernateRefactoringUtil {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private static void updateAttributes(IPath oldPath, IPath newPath,
 			final ILaunchConfigurationWorkingCopy wc) throws CoreException {
 		String attrib = null;
