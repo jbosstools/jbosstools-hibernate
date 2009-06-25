@@ -54,7 +54,7 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Object[] getChildren(Object o, final IProgressMonitor monitor) {
+	public synchronized Object[] getChildren(Object o, final IProgressMonitor monitor) {
 		LazyDatabaseSchema dbs = getLazyDatabaseSchema( o );
 		final DefaultDatabaseCollector db = new DefaultDatabaseCollector();
 
