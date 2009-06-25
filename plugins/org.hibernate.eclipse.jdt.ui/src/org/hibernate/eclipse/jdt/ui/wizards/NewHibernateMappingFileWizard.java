@@ -37,6 +37,7 @@ import org.eclipse.jface.dialogs.IPageChangingListener;
 import org.eclipse.jface.dialogs.PageChangingEvent;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.INewWizard;
@@ -55,6 +56,7 @@ import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
  * @author Dmitry Geraskov
  *
  */
+@SuppressWarnings("restriction")
 public class NewHibernateMappingFileWizard extends Wizard implements INewWizard, IPageChangingListener{
 
 	/**
@@ -85,12 +87,18 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 		addPage(page1);
 		page2 = new NewHibernateMappingFilePage();
 		addPage(page2);
+	}
+
+	@Override
+	public void setContainer(IWizardContainer wizardContainer) {
+		if (getContainer() instanceof WizardDialog) {
+			((WizardDialog) getContainer()).removePageChangingListener(this);
+		}
+		super.setContainer(wizardContainer);
 		if (getContainer() instanceof WizardDialog) {
 			((WizardDialog) getContainer()).addPageChangingListener(this);
-		} else {
-			throw new IllegalArgumentException(HibernateConsoleMessages.NewHibernateMappingFileWizard_error);
 		}
-	}
+    }
 
 	public void handlePageChanging(PageChangingEvent event) {
 		if (event.getTargetPage() == page2){
