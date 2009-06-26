@@ -224,7 +224,7 @@ public class OrmShape extends ExpandeableShape {
 	}
 	
 	private void setElementHidden(ModelElement element, boolean hidden) {
-		Iterator<Shape> it = getChildrenIterator();
+		Iterator<Shape> it = element.getChildrenIterator();
 		while (it.hasNext()) {
 			final Shape child = it.next();
 			child.setHidden(hidden);
