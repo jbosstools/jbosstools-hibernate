@@ -17,13 +17,13 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaGenerator;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaIdMapping;
+import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
-import org.logicalcobwebs.cglib.reflect.FastClass.Generator;
 
 /**
  * @author Dmitry Geraskov
@@ -41,9 +41,6 @@ implements GenericGeneratorHolder {
 		super(parent);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.core.internal.context.java.GenericJavaIdMapping#initialize()
-	 */
 	@Override
 	protected void initialize() {
 		super.initialize();
@@ -129,9 +126,6 @@ implements GenericGeneratorHolder {
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.core.internal.context.java.GenericJavaIdMapping#validate(java.util.List, org.eclipse.wst.validation.internal.provisional.core.IReporter, org.eclipse.jdt.core.dom.CompilationUnit)
-	 */
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
@@ -142,6 +136,22 @@ implements GenericGeneratorHolder {
 		if (genericGenerator != null){
 			genericGenerator.validate(messages, reporter, astRoot);
 		}
+	}
+	
+	@Override
+	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter,
+			CompilationUnit astRoot) {
+		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		if (this.getGenericGenerator() != null) {
+			result = this.getGenericGenerator().javaCompletionProposals(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
 	}
 
 }

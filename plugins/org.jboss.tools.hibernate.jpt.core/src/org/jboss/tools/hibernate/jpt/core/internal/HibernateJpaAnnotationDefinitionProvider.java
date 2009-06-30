@@ -15,6 +15,7 @@ import java.util.List;
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.platform.AbstractJpaAnnotationDefintionProvider;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedQueryAnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGeneratorAnnotationImpl.GenericGeneratorAnnotationDefinition;
 
 /**
@@ -47,6 +48,7 @@ public class HibernateJpaAnnotationDefinitionProvider extends AbstractJpaAnnotat
 	@Override
 	protected void addTypeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
 		definitions.add(GenericGeneratorAnnotationDefinition.instance());
+		definitions.add(HibernateNamedQueryAnnotationDefinition.instance());
 	}
 	
 	@Override

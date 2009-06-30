@@ -13,12 +13,17 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaGenerator;
+import org.eclipse.jpt.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaEntity;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.NamedQueriesAnnotation;
+import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -55,6 +60,10 @@ public class HibernateJavaEntity extends GenericJavaEntity implements GenericGen
 		firePropertyChanged(GENERIC_GENERATOR_PROPERTY, oldGenericGenerator, newGenericGenerator);
 	}
 	
+	protected HibernateJpaFactory getJpaFactory() {
+		return (HibernateJpaFactory) this.getJpaPlatform().getJpaFactory();
+	}
+	
 	protected void initializeGenericGenerator() {
 		GenericGeneratorAnnotation genericGeneratorResource = getResourceGenericGenerator();
 		if (genericGeneratorResource != null) {
@@ -62,12 +71,26 @@ public class HibernateJavaEntity extends GenericJavaEntity implements GenericGen
 		}
 	}
 	
+	@Override
+	protected void initializeNamedQueries() {
+		super.initializeNamedQueries();
+		for (ListIterator<NestableAnnotation> stream = this.javaResourcePersistentType.supportingAnnotations(Hibernate.NAMED_QUERY, Hibernate.NAMED_QUERIES); stream.hasNext(); ) {
+			this.namedQueries.add(buildHibernateNamedQuery((HibernateNamedQueryAnnotation) stream.next()));
+		}
+	}
+	
+	protected JavaNamedQuery buildHibernateNamedQuery(HibernateNamedQueryAnnotation namedQueryResource) {
+		JavaNamedQuery namedQuery = getJpaFactory().buildHibernateJavaNamedQuery(this);
+		namedQuery.initialize(namedQueryResource);
+		return namedQuery;
+	}
+
 	protected GenericGeneratorAnnotation getResourceGenericGenerator() {
 		return (GenericGeneratorAnnotation) this.javaResourcePersistentType.getSupportingAnnotation(GenericGeneratorAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected JavaGenericGenerator buildGenericGenerator(GenericGeneratorAnnotation genericGeneratorResource) {
-		JavaGenericGenerator generator = ((HibernateJpaFactory) getJpaFactory()).buildJavaGenericGenerator(this);
+		JavaGenericGenerator generator = getJpaFactory().buildJavaGenericGenerator(this);
 		generator.initialize(genericGeneratorResource);
 		return generator;
 	}
@@ -76,7 +99,7 @@ public class HibernateJavaEntity extends GenericJavaEntity implements GenericGen
 		if (getGenericGenerator() != null) {
 			throw new IllegalStateException("genericGenerator already exists"); //$NON-NLS-1$
 		}
-		this.genericGenerator = ((HibernateJpaFactory)getJpaFactory()).buildJavaGenericGenerator(this);
+		this.genericGenerator = getJpaFactory().buildJavaGenericGenerator(this);
 		GenericGeneratorAnnotation genericGeneratorResource = (GenericGeneratorAnnotation)javaResourcePersistentType
 								.addSupportingAnnotation(GenericGeneratorAnnotation.ANNOTATION_NAME);
 		this.genericGenerator.initialize(genericGeneratorResource);
@@ -128,10 +151,40 @@ public class HibernateJavaEntity extends GenericJavaEntity implements GenericGen
 			}
 		}
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.core.internal.context.java.AbstractJavaEntity#validate(java.util.List, org.eclipse.wst.validation.internal.provisional.core.IReporter, org.eclipse.jdt.core.dom.CompilationUnit)
-	 */
+
+	@Override
+	protected void updateNamedQueries() {
+		ListIterator<JavaNamedQuery> queries = namedQueries();
+		ListIterator<NestableAnnotation> resourceNamedQueries = this.javaResourcePersistentType.supportingAnnotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
+		
+		ListIterator<NestableAnnotation> hibernateNamedQueries = this.javaResourcePersistentType.supportingAnnotations(Hibernate.NAMED_QUERY, Hibernate.NAMED_QUERIES);
+		
+		while (queries.hasNext()) {
+			JavaNamedQuery namedQuery = queries.next();
+			if (namedQuery instanceof HibernateJavaNamedQuery) {
+				if (hibernateNamedQueries.hasNext()) {
+					namedQuery.update((HibernateNamedQueryAnnotation) hibernateNamedQueries.next());
+				} else {
+					removeNamedQuery_(namedQuery);
+				}
+			} else {
+				if (resourceNamedQueries.hasNext()) {
+					namedQuery.update((NamedQueryAnnotation) resourceNamedQueries.next());
+				} else {
+					removeNamedQuery_(namedQuery);
+				}
+			}			
+		}
+		
+		while (resourceNamedQueries.hasNext()) {
+			addNamedQuery(buildNamedQuery((NamedQueryAnnotation) resourceNamedQueries.next()));
+		}
+		
+		while (hibernateNamedQueries.hasNext()) {
+			addNamedQuery(buildHibernateNamedQuery((HibernateNamedQueryAnnotation) hibernateNamedQueries.next()));
+		}
+	}
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);

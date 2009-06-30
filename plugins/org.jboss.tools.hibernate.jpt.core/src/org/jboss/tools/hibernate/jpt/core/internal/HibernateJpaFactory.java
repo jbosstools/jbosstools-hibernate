@@ -13,6 +13,7 @@ package org.jboss.tools.hibernate.jpt.core.internal;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.persistence.Persistence;
@@ -22,8 +23,10 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaParameter;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGeneratorImpl;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaParameter;
 
 
 /**
@@ -42,9 +45,6 @@ public class HibernateJpaFactory extends GenericJpaFactory {
 		return new HibernateJavaEntity(parent);
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.core.internal.platform.GenericJpaFactory#buildJavaIdMapping(org.eclipse.jpt.core.context.java.JavaPersistentAttribute)
-	 */
 	@Override
 	public JavaIdMapping buildJavaIdMapping(JavaPersistentAttribute parent) {
 		return new HibernateJavaIdMapping(parent);
@@ -52,6 +52,14 @@ public class HibernateJpaFactory extends GenericJpaFactory {
 	
 	public JavaGenericGenerator buildJavaGenericGenerator(JavaJpaContextNode parent) {
 		return new JavaGenericGeneratorImpl(parent);
+	}
+	
+	public JavaNamedQuery buildHibernateJavaNamedQuery(JavaJpaContextNode parent) {
+		return new HibernateJavaNamedQueryImpl(parent);
+	}
+
+	public JavaParameter buildJavaParameter(JavaGenericGeneratorImpl javaGenericGeneratorImpl) {
+		return new HibernateJavaParameter(javaGenericGeneratorImpl);
 	}
 
 }
