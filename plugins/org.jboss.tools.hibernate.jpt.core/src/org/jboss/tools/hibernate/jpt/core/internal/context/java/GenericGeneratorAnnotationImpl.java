@@ -10,13 +10,18 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
+import java.util.ListIterator;
+import java.util.Vector;
+
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.resource.java.source.AnnotationContainerTools;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.AnnotationContainer;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -24,7 +29,13 @@ import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
+import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.NestableParameterAnnotation;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.ParameterAnnotation;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.SourceParameterAnnotation;
 
 /**
  * @author Dmitry Geraskov
@@ -43,13 +54,17 @@ public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member>
 	
 	private static final DeclarationAnnotationElementAdapter<String> STRATEGY_ADAPTER = buildStrategyAdapter();
 
+	final ParametersAnnotationContainer parametersContainer = new ParametersAnnotationContainer();
+	
 	private String name;
 	
 	private String strategy;
 	
+	final Vector<NestableParameterAnnotation> parameters = new Vector<NestableParameterAnnotation>();
+	
 	private Integer initialValue = 1;
 	
-	private Integer allocationSize = 1;
+	private Integer allocationSize = 50;
 	
 	/**
 	 * @param parent
@@ -63,7 +78,14 @@ public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member>
 	
 	public void initialize(CompilationUnit astRoot) {
 		this.name = this.name(astRoot);
-		this.strategy = this.strategy(astRoot);		
+		this.strategy = this.strategy(astRoot);	
+		AnnotationContainerTools.initialize(this.parametersContainer, astRoot);
+	}
+	
+	public void update(CompilationUnit astRoot) {
+		this.setStrategy(this.strategy(astRoot));
+		this.setName(this.name(astRoot));
+		AnnotationContainerTools.update(this.parametersContainer, astRoot);
 	}
 	
 	public String getAnnotationName() {
@@ -106,9 +128,6 @@ public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member>
 		return this.getElementTextRange(STRATEGY_ADAPTER, astRoot);
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.core.resource.java.GeneratorAnnotation#getAllocationSize()
-	 */
 	public Integer getAllocationSize() {
 		return allocationSize;
 	}
@@ -153,11 +172,6 @@ public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member>
 	}
 	
 	// ********** java annotations -> persistence model **********
-	public void updateFromJava(CompilationUnit astRoot) {
-		this.setStrategy(this.strategy(astRoot));
-		this.setName(this.name(astRoot));
-	}
-
 	protected String strategy(CompilationUnit astRoot) {
 		//TODO: get Generator instead of String
 		//use buildJavaGenericGenerator method before thi will be done
@@ -166,11 +180,7 @@ public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member>
 	
 	protected String name(CompilationUnit astRoot) {
 		return this.nameAdapter.getValue(astRoot);
-	}
-	
-	public void update(CompilationUnit astRoot) {
-		updateFromJava(astRoot);		
-	}
+	}	
 	
 	// ********** static methods **********
 	private static DeclarationAnnotationElementAdapter<String> buildNameAdapter() {
@@ -229,6 +239,132 @@ public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member>
 			// TODO Auto-generated method stub
 			return null;
 		}
+	}
+
+	//************************ parameters ***********************
+	
+	public ParameterAnnotation addParameter(int index) {
+		return (NestableParameterAnnotation) AnnotationContainerTools.addNestedAnnotation(index, this.parametersContainer);
+	}
+	
+	NestableParameterAnnotation addParameterInternal() {
+		NestableParameterAnnotation parameter = this.buildParameter(this.parameters.size());
+		this.parameters.add(parameter);
+		return parameter;
+	}
+	
+	NestableParameterAnnotation buildParameter(int index) {
+		return SourceParameterAnnotation.createGenericGeneratorParameter(this, this.member, this.daa, index);
+	}
+	
+	ListIterator<NestableParameterAnnotation> nestableParameters() {
+		return new CloneListIterator<NestableParameterAnnotation>(this.parameters);
+	}
+	
+	void parameterAdded(int index, NestableParameterAnnotation parameter) {
+		this.fireItemAdded(PARAMETERS_LIST, index, parameter);
+	}
+	
+	NestableParameterAnnotation moveParameterInternal(int targetIndex, int sourceIndex) {
+		return CollectionTools.move(this.parameters, targetIndex, sourceIndex).get(targetIndex);
+	}
+
+	void parameterMoved(int targetIndex, int sourceIndex) {
+		this.fireItemMoved(PARAMETERS_LIST, targetIndex, sourceIndex);
+	}
+
+	public int indexOfParameter(ParameterAnnotation parameter) {
+		return this.parameters.indexOf(parameter);
+	}
+
+	public void moveParameter(int targetIndex, int sourceIndex) {
+		AnnotationContainerTools.moveNestedAnnotation(targetIndex, sourceIndex, this.parametersContainer);
+	}
+
+	public ParameterAnnotation parameterAt(int index) {
+		return this.parameters.get(index);
+	}
+
+	public ListIterator<ParameterAnnotation> parameters() {
+		return new CloneListIterator<ParameterAnnotation>(this.parameters);
+	}
+
+	public int parametersSize() {
+		return parameters.size();
+	}
+
+	public void removeParameter(int index) {
+		AnnotationContainerTools.removeNestedAnnotation(index, this.parametersContainer);	
+	}
+	
+	NestableParameterAnnotation removeParameterInternal(int index) {
+		return this.parameters.remove(index);
+	}
+
+	void hintRemoved(int index, NestableParameterAnnotation parameter) {
+		this.fireItemRemoved(PARAMETERS_LIST, index, parameter);
+	}
+	
+	/**
+	 * adapt the AnnotationContainer interface to the override's join columns
+	 */
+	class ParametersAnnotationContainer
+		implements AnnotationContainer<NestableParameterAnnotation>
+	{
+		public String getContainerAnnotationName() {
+			return GenericGeneratorAnnotationImpl.this.getAnnotationName();
+		}
+
+		public org.eclipse.jdt.core.dom.Annotation getContainerJdtAnnotation(CompilationUnit astRoot) {
+			return GenericGeneratorAnnotationImpl.this.getJdtAnnotation(astRoot);
+		}
+
+		public String getElementName() {
+			return Hibernate.GENERIC_GENERATOR__PARAMETERS;
+		}
+
+		public String getNestableAnnotationName() {
+			return ParameterAnnotation.ANNOTATION_NAME;
+		}
+
+		public ListIterator<NestableParameterAnnotation> nestedAnnotations() {
+			return GenericGeneratorAnnotationImpl.this.nestableParameters();
+		}
+
+		public int nestedAnnotationsSize() {
+			return GenericGeneratorAnnotationImpl.this.parametersSize();
+		}
+
+		public NestableParameterAnnotation addNestedAnnotationInternal() {
+			return GenericGeneratorAnnotationImpl.this.addParameterInternal();
+		}
+
+		public void nestedAnnotationAdded(int index, NestableParameterAnnotation nestedAnnotation) {
+			GenericGeneratorAnnotationImpl.this.parameterAdded(index, nestedAnnotation);
+		}
+
+		public NestableParameterAnnotation moveNestedAnnotationInternal(int targetIndex, int sourceIndex) {
+			return GenericGeneratorAnnotationImpl.this.moveParameterInternal(targetIndex, sourceIndex);
+		}
+
+		public void nestedAnnotationMoved(int targetIndex, int sourceIndex) {
+			GenericGeneratorAnnotationImpl.this.parameterMoved(targetIndex, sourceIndex);
+		}
+
+		public NestableParameterAnnotation removeNestedAnnotationInternal(int index) {
+			return GenericGeneratorAnnotationImpl.this.removeParameterInternal(index);
+		}
+
+		public void nestedAnnotationRemoved(int index, NestableParameterAnnotation nestedAnnotation) {
+			GenericGeneratorAnnotationImpl.this.hintRemoved(index, nestedAnnotation);
+		}
+
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this);
+		}
+
+
 	}
 
 }

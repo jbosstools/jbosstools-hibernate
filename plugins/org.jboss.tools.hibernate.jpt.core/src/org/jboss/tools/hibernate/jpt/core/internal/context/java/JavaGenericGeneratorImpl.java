@@ -13,6 +13,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -20,12 +21,16 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaGenerator;
-import org.eclipse.jpt.core.resource.java.GeneratorAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
+import org.jboss.tools.hibernate.jpt.core.internal.context.Parameter;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.ParameterAnnotation;
 
 /**
  * @author Dmitry Geraskov
@@ -36,9 +41,11 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 	
 	private String strategy;
 	
-	protected GeneratorAnnotation generatorResource;
+	protected final List<JavaParameter> parameters;
 	
-	private static List<String> generatorClasses = new ArrayList<String>();
+	protected GenericGeneratorAnnotation generatorResource;
+	
+	public static List<String> generatorClasses = new ArrayList<String>();
 	
 	//see org.hibernate.id.IdentifierGeneratorFactory.GENERATORS
 	static {
@@ -61,17 +68,14 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 	 */
 	public JavaGenericGeneratorImpl(JavaJpaContextNode parent) {
 		super(parent);
-	}
-	
-	protected GenericGeneratorAnnotation getGeneratorResource() {
-		return (GenericGeneratorAnnotation) generatorResource;
+		this.parameters = new ArrayList<JavaParameter>();
 	}
 
 	public int getDefaultInitialValue() {
 		return GenericGenerator.DEFAULT_INITIAL_VALUE;
 	}
 	
-	protected GeneratorAnnotation getResourceGenerator() {
+	protected GenericGeneratorAnnotation getResourceGenerator() {
 		return this.generatorResource;
 	}
 
@@ -81,6 +85,7 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 		this.specifiedInitialValue = generator.getInitialValue();
 		this.specifiedAllocationSize = generator.getAllocationSize();
 		this.strategy = generator.getStrategy();
+		this.initializeParameters();
 	}
 
 	public void update(GenericGeneratorAnnotation generator) {
@@ -89,7 +94,8 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 		this.setSpecifiedInitialValue_(generator.getInitialValue());
 		this.setSpecifiedAllocationSize_(generator.getAllocationSize());
 		this.setSpecifiedStrategy_(generator.getStrategy());
-		this.getPersistenceUnit().addGenerator(this);		
+		this.updateParameters();
+		this.getPersistenceUnit().addGenerator(this);
 	}
 	
 	public void setName(String name) {
@@ -125,10 +131,10 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 		return strategy;
 	}
 
-	public void setSpecifiedStrategy(String strategy) {
+	public void setStrategy(String strategy) {
 		String oldStrategy = this.strategy;
 		this.strategy = strategy;
-		getGeneratorResource().setStrategy(strategy);
+		getResourceGenerator().setStrategy(strategy);
 		firePropertyChanged(GENERIC_STRATEGY_PROPERTY, oldStrategy, strategy);
 	}
 	
@@ -146,9 +152,6 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 		return null;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode#validate(java.util.List, org.eclipse.wst.validation.internal.provisional.core.IReporter, org.eclipse.jdt.core.dom.CompilationUnit)
-	 */
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
@@ -212,6 +215,90 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 			strmessage, params, getResource());
 			message.setLineNo(lineNum);
 		return message;
+	}
+	
+	@Override
+	protected HibernateJpaFactory getJpaFactory() {
+		return (HibernateJpaFactory) super.getJpaFactory();
+	}
+	
+	//************************ parameters ***********************
+
+	public JavaParameter addParameter(int index) {
+		JavaParameter parameter = getJpaFactory().buildJavaParameter(this);
+		this.parameters.add(index, parameter);
+		this.getResourceGenerator().addParameter(index);
+		this.fireItemAdded(GenericGenerator.PARAMETERS_LIST, index, parameter);
+		return parameter;
+	}
+	
+	protected void addParameter(int index, JavaParameter parameter) {
+		addItemToList(index, parameter, this.parameters, GenericGenerator.PARAMETERS_LIST);
+	}
+	
+	protected void addParameter(JavaParameter parameter) {
+		addParameter(this.parameters.size(), parameter);
+	}
+	
+	public void removeParameter(Parameter parameter) {
+		removeParameter(this.parameters.indexOf(parameter));	
+	}
+	
+	public void removeParameter(int index) {
+		JavaParameter removedParameter = this.parameters.remove(index);
+		this.getResourceGenerator().removeParameter(index);
+		fireItemRemoved(GenericGenerator.PARAMETERS_LIST, index, removedParameter);	
+	}
+	
+	protected void removeParameter_(JavaParameter parameter) {
+		removeItemFromList(parameter, this.parameters, GenericGenerator.PARAMETERS_LIST);
+	}	
+
+	public void moveParameter(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.parameters, targetIndex, sourceIndex);
+		this.getResourceGenerator().moveParameter(targetIndex, sourceIndex);
+		fireItemMoved(GenericGenerator.PARAMETERS_LIST, targetIndex, sourceIndex);	
+	}
+
+	public ListIterator<JavaParameter> parameters() {
+		return new CloneListIterator<JavaParameter>(this.parameters);
+	}
+
+	public int parametersSize() {
+		return parameters.size();
+	}	
+	
+	protected void initializeParameters() {
+		ListIterator<ParameterAnnotation> resourceParameters = this.generatorResource.parameters();
+		
+		while(resourceParameters.hasNext()) {
+			this.parameters.add(createParameter(resourceParameters.next()));
+		}
+	}
+	
+	protected void updateParameters() {
+		ListIterator<JavaParameter> contextParameters = parameters();
+		ListIterator<ParameterAnnotation> resourceParameters = this.generatorResource.parameters();
+		
+		while (contextParameters.hasNext()) {
+			JavaParameter parameter = contextParameters.next();
+			if (resourceParameters.hasNext()) {
+				parameter.update(resourceParameters.next());
+			}
+			else {
+				removeParameter_(parameter);
+			}
+		}
+		
+		while (resourceParameters.hasNext()) {
+			addParameter(createParameter(resourceParameters.next()));
+		}
+	}
+
+	protected JavaParameter createParameter(ParameterAnnotation resourceParameter) {
+		JavaParameter parameter =  getJpaFactory().buildJavaParameter(this);
+		parameter.initialize(resourceParameter);
+		return parameter;
 	}
 
 }

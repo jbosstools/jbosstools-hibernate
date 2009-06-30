@@ -14,8 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.WidgetFactory;
+import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.GenericJpaUiFactory;
 import org.eclipse.jpt.ui.internal.persistence.details.GenericPersistenceUnitGeneralComposite;
@@ -26,6 +28,8 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
+import org.jboss.tools.hibernate.jpt.ui.internal.java.details.HibernateJavaEntityComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.persistence.details.HibernatePropertiesComposite;
 
 /**
@@ -52,6 +56,12 @@ public class HibernateJpaUiFactory extends GenericJpaUiFactory {
 		pages.add(new HibernatePropertiesComposite(basicHolder, parent, widgetFactory));
 
 		return pages.listIterator();
+	}
+	
+	@Override
+	public JpaComposite createJavaEntityComposite(PropertyValueModel<JavaEntity> subjectHolder,
+			Composite parent, WidgetFactory widgetFactory) {
+		return new HibernateJavaEntityComposite<HibernateJavaEntity>(subjectHolder, parent, widgetFactory);
 	}
 
 	private PropertyValueModel<BasicHibernateProperties> buildBasicHolder(

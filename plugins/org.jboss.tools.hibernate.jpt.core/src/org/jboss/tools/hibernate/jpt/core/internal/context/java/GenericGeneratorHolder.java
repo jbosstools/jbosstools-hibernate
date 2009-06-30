@@ -10,11 +10,13 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
+import org.eclipse.jpt.core.context.GeneratorHolder;
+
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface GenericGeneratorHolder {
+public interface GenericGeneratorHolder extends GeneratorHolder {
 	
 	String GENERIC_GENERATOR_PROPERTY = "genericGenerator"; //$NON-NLS-1$	
 	

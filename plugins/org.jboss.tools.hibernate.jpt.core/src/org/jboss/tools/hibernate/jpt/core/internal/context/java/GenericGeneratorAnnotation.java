@@ -10,10 +10,13 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
+import java.util.ListIterator;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.resource.java.GeneratorAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.ParameterAnnotation;
 
 /**
  * @author Dmitry Geraskov
@@ -34,7 +37,44 @@ public interface GenericGeneratorAnnotation extends GeneratorAnnotation {
 	 * Set to null to remove the strategy element.
 	 */
 	void setStrategy(String strategy);
-		String STRATEGY_PROPERTY = "strategyProperty";	 //$NON-NLS-1$
+	String STRATEGY_PROPERTY = "strategyProperty";	 //$NON-NLS-1$
+	
+	/**
+	 * Corresponds to the 'parameters' element of the *Generic Generator annotation.
+	 * Return an empty iterator if the element does not exist in Java.
+	 */
+	ListIterator<ParameterAnnotation> parameters();
+		String PARAMETERS_LIST = "parameters"; //$NON-NLS-1$
+	
+	/**
+	 * Corresponds to the 'parameters' element of the *Generic Generator annotation.
+	 */
+	int parametersSize();
+
+	/**
+	 * Corresponds to the 'parameters' element of the *Generic Generator annotation.
+	 */
+	ParameterAnnotation parameterAt(int index);
+	
+	/**
+	 * Corresponds to the 'parameters' element of the *Generic Generator annotation.
+	 */
+	int indexOfParameter(ParameterAnnotation parameter);
+	
+	/**
+	 * Corresponds to the 'parameters' element of the *Generic Generator annotation.
+	 */
+	ParameterAnnotation addParameter(int index);
+	
+	/**
+	 * Corresponds to the 'parameters' element of the *Generic Generator annotation.
+	 */
+	void moveParameter(int targetIndex, int sourceIndex);
+
+	/**
+	 * Corresponds to the 'parameters' element of the *Generic Generator annotation.
+	 */
+	void removeParameter(int index);	
 
 	/**
 	 * Return the {@link TextRange} for the strategy element.  If the strategy element 

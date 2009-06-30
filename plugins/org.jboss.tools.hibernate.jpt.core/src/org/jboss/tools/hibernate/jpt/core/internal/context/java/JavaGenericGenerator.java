@@ -10,13 +10,26 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
+import java.util.ListIterator;
+
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaGenerator;
+import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * @author Dmitry Geraskov
  *
  */
 public interface JavaGenericGenerator extends JavaGenerator, GenericGenerator {
+	
+	@SuppressWarnings("unchecked")
+	ListIterator<JavaParameter> parameters();
+	
+	JavaParameter addParameter(int index);
+	
+	// **************** validation *********************************************
+	
+	TextRange getNameTextRange(CompilationUnit astRoot);
 	
 	void initialize(GenericGeneratorAnnotation generator);
 	
