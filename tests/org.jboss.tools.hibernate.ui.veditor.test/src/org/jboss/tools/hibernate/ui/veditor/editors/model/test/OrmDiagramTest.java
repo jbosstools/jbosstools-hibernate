@@ -15,10 +15,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.core.IJavaProject;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
@@ -45,10 +41,8 @@ public class OrmDiagramTest extends TestCase {
 		
 		final ConsoleConfiguration consoleConfig = context.mock(ConsoleConfiguration.class);
 		final RootClass ioe = context.mock(RootClass.class);
-		final IJavaProject javaProject = context.mock(IJavaProject.class);
 		final List<Object> emptyList = new ArrayList<Object>();
 		final Iterator<Object> emptyListIterator = emptyList.iterator();
-		final IProject project = context.mock(IProject.class);
 
 		context.checking(new Expectations() {
 			{
@@ -82,11 +76,8 @@ public class OrmDiagramTest extends TestCase {
 				oneOf(ioe).getJoinIterator();
 				will(returnValue(emptyListIterator));
 				
-				allowing(javaProject).getProject();
-				will(returnValue(project));
-
-				allowing(project).getLocation();
-				will(returnValue(Path.fromOSString(""))); //$NON-NLS-1$
+				allowing(ioe).getNodeName();
+				will(returnValue("NodeName")); //$NON-NLS-1$
 				
 				allowing(ioe).getClassName();
 				will(returnValue("ClassName")); //$NON-NLS-1$
