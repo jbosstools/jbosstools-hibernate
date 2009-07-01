@@ -15,6 +15,7 @@ import org.jboss.tools.common.model.ui.editor.EditorDescriptor;
 import org.jboss.tools.common.model.ui.editors.multipage.DefaultMultipageEditor;
 import org.jboss.tools.common.model.ui.texteditors.XMLTextEditorComponent;
 import org.jboss.tools.hibernate.ui.xml.HibernateUIXMLPlugin;
+import org.jboss.tools.hibernate.ui.xml.Messages;
 import org.jboss.tools.hibernate.xml.model.FileHibernateFilteredTreeConstraint;
 
 
@@ -27,25 +28,25 @@ public class HibConfig3CompoundEditor extends DefaultMultipageEditor {
 		if(isAppropriateNature()) {
 			
 			sessionFactory = createTreeFormPage();
-			sessionFactory.setLabel("Session Factory");
-			sessionFactory.setTitle("Hibernate Configuration 3.0 XML Editor");
+			sessionFactory.setLabel(Messages.HibConfig3CompoundEditor_SessionFactoryLabel);
+			sessionFactory.setTitle(Messages.HibConfig3CompoundEditor_SessionFactoryTitle);
 			((TreeFormPage)sessionFactory).addFilter(new FileHibernateFilteredTreeConstraint());
-			sessionFactory.initialize(object.getChildByPath("Session Factory"));
-			addFormPage(sessionFactory, "sessionFactoryEditor");
+			sessionFactory.initialize(object.getChildByPath("Session Factory")); //$NON-NLS-1$
+			addFormPage(sessionFactory, "sessionFactoryEditor"); //$NON-NLS-1$
 
 			security = createTreeFormPage();
-			security.setLabel("Security");
-			security.setTitle("Hibernate Configuration 3.0 XML Editor");
+			security.setLabel(Messages.HibConfig3CompoundEditor_SecurityLabel);
+			security.setTitle(Messages.HibConfig3CompoundEditor_SecurityTitle);
 			((TreeFormPage)security).addFilter(new FileHibernateFilteredTreeConstraint());
-			security.initialize(object.getChildByPath("Security"));
-			addFormPage(security, "securityEditor");
+			security.initialize(object.getChildByPath("Security")); //$NON-NLS-1$
+			addFormPage(security, "securityEditor"); //$NON-NLS-1$
 
 		}
 		createTextPage();
 		initEditors();
-		if(treeFormPage != null) selectionProvider.addHost("treeEditor", treeFormPage.getSelectionProvider());
-		if(sessionFactory != null) selectionProvider.addHost("sessionFactoryEditor", sessionFactory.getSelectionProvider());
-		if(textEditor != null) selectionProvider.addHost("textEditor", getTextSelectionProvider());
+		if(treeFormPage != null) selectionProvider.addHost("treeEditor", treeFormPage.getSelectionProvider()); //$NON-NLS-1$
+		if(sessionFactory != null) selectionProvider.addHost("sessionFactoryEditor", sessionFactory.getSelectionProvider()); //$NON-NLS-1$
+		if(textEditor != null) selectionProvider.addHost("textEditor", getTextSelectionProvider()); //$NON-NLS-1$
 	}
 
 	protected void addFormPage(TreeFormPage formPage, String name) {
@@ -63,9 +64,9 @@ public class HibConfig3CompoundEditor extends DefaultMultipageEditor {
 
 	protected void setNormalMode() {
 		if (treeFormPage!=null) { // AU added
-			sessionFactory.initialize(getModelObject().getChildByPath("Session Factory")); // AU added
+			sessionFactory.initialize(getModelObject().getChildByPath("Session Factory")); // AU added //$NON-NLS-1$
 			sessionFactory.setErrorMode(isErrorMode());
-			security.initialize(getModelObject().getChildByPath("Security")); // AU added
+			security.initialize(getModelObject().getChildByPath("Security")); // AU added //$NON-NLS-1$
 			security.setErrorMode(isErrorMode());
 		} // AU added
 		if (selectionProvider!=null) {
@@ -78,9 +79,9 @@ public class HibConfig3CompoundEditor extends DefaultMultipageEditor {
 
 	protected void setErrorMode() {
 		if (treeFormPage!=null) { // AU added
-			sessionFactory.initialize(getModelObject().getChildByPath("Session Factory")); // AU added
+			sessionFactory.initialize(getModelObject().getChildByPath("Session Factory")); // AU added //$NON-NLS-1$
 			sessionFactory.setErrorMode(isErrorMode());
-			security.initialize(getModelObject().getChildByPath("Security")); // AU added
+			security.initialize(getModelObject().getChildByPath("Security")); // AU added //$NON-NLS-1$
 			security.setErrorMode(isErrorMode());
 		} // AU added
 		if (treeEditor!=null) { 
@@ -90,7 +91,7 @@ public class HibConfig3CompoundEditor extends DefaultMultipageEditor {
 
 	public Object getAdapter(Class adapter) {
 			if (adapter == EditorDescriptor.class)
-				return new EditorDescriptor("HibernateConfiguration3.0");
+				return new EditorDescriptor("HibernateConfiguration3.0"); //$NON-NLS-1$
 
 			return super.getAdapter(adapter);
 	}

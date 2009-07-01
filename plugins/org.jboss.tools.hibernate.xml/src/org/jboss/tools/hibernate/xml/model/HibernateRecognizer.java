@@ -17,29 +17,29 @@ public class HibernateRecognizer implements EntityRecognizer {
 	static {
 		try {
 			XMLEntityResolver.registerPublicEntity(
-				HibernateConstants.DOC_PUBLICID_3_0, HibernateRecognizer.class, "/meta/hibernate-mapping-3.0.dtd"
+				HibernateConstants.DOC_PUBLICID_3_0, HibernateRecognizer.class, "/meta/hibernate-mapping-3.0.dtd" //$NON-NLS-1$
 			);
 			XMLEntityResolver.registerSystemEntity(
-				HibernateConstants.DOC_SYSTEMID_3_0, HibernateRecognizer.class, "/meta/hibernate-mapping-3.0.dtd"
+				HibernateConstants.DOC_SYSTEMID_3_0, HibernateRecognizer.class, "/meta/hibernate-mapping-3.0.dtd" //$NON-NLS-1$
 			);
 			XMLEntityResolver.registerPublicEntity(
-				HibernateConstants.CFG_DOC_PUBLICID_3_0, HibernateRecognizer.class, "/meta/hibernate-configuration-3.0.dtd"
+				HibernateConstants.CFG_DOC_PUBLICID_3_0, HibernateRecognizer.class, "/meta/hibernate-configuration-3.0.dtd" //$NON-NLS-1$
 			);
 			XMLEntityResolver.registerSystemEntity(
-				HibernateConstants.CFG_DOC_SYSTEMID_3_0, HibernateRecognizer.class, "/meta/hibernate-configuration-3.0.dtd"
+				HibernateConstants.CFG_DOC_SYSTEMID_3_0, HibernateRecognizer.class, "/meta/hibernate-configuration-3.0.dtd" //$NON-NLS-1$
 			);
 		} catch (Exception e) {}
 	}
 
 	public String getEntityName(String ext, String body) {
 		
-		return (body == null || !"xml".equals(ext)) ? null 
-				: (body.indexOf("\"" + HibernateConstants.DOC_PUBLICID_3_0 + "\"") >= 0 
-				   	|| body.indexOf("\"" + HibernateConstants.DOC_SYSTEMID_3_0 + "\"") >= 0) ? HibernateConstants.ENTITY_FILE_HIBERNATE_3_0 
-				: (body.indexOf("\"" + HibernateConstants.CFG_DOC_PUBLICID_3_0 + "\"") >= 0 
-				   	|| body.indexOf("\"" + HibernateConstants.CFG_DOC_SYSTEMID_3_0 + "\"") >= 0) ? HibernateConstants.ENTITY_FILE_HIB_CONFIG_3_0
-				: (body.indexOf("\"" + HibernateConstants.RVE_DOC_PUBLICID_3_0 + "\"") >= 0 
-				   	|| body.indexOf("\"" + HibernateConstants.RVE_DOC_SYSTEMID_3_0 + "\"") >= 0) ? HibernateConstants.ENTITY_FILE_HIB_REV_ENG_3_0
+		return (body == null || !"xml".equals(ext)) ? null  //$NON-NLS-1$
+				: (body.indexOf("\"" + HibernateConstants.DOC_PUBLICID_3_0 + "\"") >= 0  //$NON-NLS-1$ //$NON-NLS-2$
+				   	|| body.indexOf("\"" + HibernateConstants.DOC_SYSTEMID_3_0 + "\"") >= 0) ? HibernateConstants.ENTITY_FILE_HIBERNATE_3_0  //$NON-NLS-1$ //$NON-NLS-2$
+				: (body.indexOf("\"" + HibernateConstants.CFG_DOC_PUBLICID_3_0 + "\"") >= 0  //$NON-NLS-1$ //$NON-NLS-2$
+				   	|| body.indexOf("\"" + HibernateConstants.CFG_DOC_SYSTEMID_3_0 + "\"") >= 0) ? HibernateConstants.ENTITY_FILE_HIB_CONFIG_3_0 //$NON-NLS-1$ //$NON-NLS-2$
+				: (body.indexOf("\"" + HibernateConstants.RVE_DOC_PUBLICID_3_0 + "\"") >= 0  //$NON-NLS-1$ //$NON-NLS-2$
+				   	|| body.indexOf("\"" + HibernateConstants.RVE_DOC_SYSTEMID_3_0 + "\"") >= 0) ? HibernateConstants.ENTITY_FILE_HIB_REV_ENG_3_0 //$NON-NLS-1$ //$NON-NLS-2$
 				: null;
 	}
 

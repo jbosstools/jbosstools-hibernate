@@ -10,9 +10,11 @@
  ******************************************************************************/ 
 package org.jboss.tools.hibernate.xml.model.impl;
 
+import java.text.MessageFormat;
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.model.impl.OrderedObjectImpl;
 import org.jboss.tools.hibernate.xml.HibernateXMLPlugin;
+import org.jboss.tools.hibernate.xml.Messages;
 
 public class RegularObject2Impl extends OrderedObjectImpl {
 	private static final long serialVersionUID = 1L;
@@ -22,18 +24,18 @@ public class RegularObject2Impl extends OrderedObjectImpl {
 		if(attribute != null) return attribute;
 		XAttribute[] as = getModelEntity().getAttributes();
 		for (int i = 0; i < as.length; i++) {
-			if("true".equals(as[i].getProperty("id"))) {
+			if("true".equals(as[i].getProperty("id"))) { //$NON-NLS-1$ //$NON-NLS-2$
 				attribute = as[i].getName();
 				return attribute;
 			}
 		}
-		HibernateXMLPlugin.log("No id attribute set for entity " + getModelEntity().getName());
+		HibernateXMLPlugin.log(MessageFormat.format(Messages.RegularObject2Impl_NoIdAttribute, getModelEntity().getName()));
 		attribute = as[0].getName();
 		return attribute;
 	}
 	
 	public String name() {
-		return "" + getAttributeValue(getAttribute());
+		return "" + getAttributeValue(getAttribute()); //$NON-NLS-1$
 	}
 
 }

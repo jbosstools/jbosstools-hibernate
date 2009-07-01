@@ -20,20 +20,20 @@ public class HibernateMapImpl extends OrderedObject2Impl {
 	private static final long serialVersionUID = 1L;
 	
 	public String getAttributeValue(String name) {
-		if("index".equals(name)) {
-			XModelObject c = getChildByPath("index");
-			return c == null ? "index" : c.getAttributeValue("element type");
-		} else if("element".equals(name)) {
-			XModelObject c = getChildByPath("element");
-			return c == null ? "element" : c.getAttributeValue("element type");
+		if("index".equals(name)) { //$NON-NLS-1$
+			XModelObject c = getChildByPath("index"); //$NON-NLS-1$
+			return c == null ? "index" : c.getAttributeValue("element type"); //$NON-NLS-1$ //$NON-NLS-2$
+		} else if("element".equals(name)) { //$NON-NLS-1$
+			XModelObject c = getChildByPath("element"); //$NON-NLS-1$
+			return c == null ? "element" : c.getAttributeValue("element type"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return super.getAttributeValue(name);
 	}
 
 	public String setAttributeValue(String name, String value) {
-		if("index".equals(name)) {
+		if("index".equals(name)) { //$NON-NLS-1$
 			return value;
-		} else if("element".equals(name)) {
+		} else if("element".equals(name)) { //$NON-NLS-1$
 			return value;
 		}
 		return super.setAttributeValue(name, value);
@@ -41,30 +41,30 @@ public class HibernateMapImpl extends OrderedObject2Impl {
 
 	protected void onAttributeValueEdit(String name, String oldValue, String newValue) throws XModelException {
 		if(newValue == null || newValue.equals(oldValue)) return;
-		if("index".equals(name)) {
+		if("index".equals(name)) { //$NON-NLS-1$
 			String actionName = 
-				"index".equals(newValue) ? "AddIndex" :
-				"list-index".equals(newValue) ? "AddListIndex" :					
-				"map-key".equals(newValue) ? "AddMapKey" :
-				"composite-map-key".equals(newValue) ? "AddCompositeMapKey" :
-				"map-key-many-to-many".equals(newValue) ? "AddMapKeyManyToMany" :
-				"composite-index".equals(newValue) ? "AddCompositeIndex" :
-				"index-many-to-any".equals(newValue) ? "AddIndexManyToAny" :
-				"index-many-to-many".equals(newValue) ? "AddIndexManyToMany" :
+				"index".equals(newValue) ? "AddIndex" : //$NON-NLS-1$ //$NON-NLS-2$
+				"list-index".equals(newValue) ? "AddListIndex" :					 //$NON-NLS-1$ //$NON-NLS-2$
+				"map-key".equals(newValue) ? "AddMapKey" : //$NON-NLS-1$ //$NON-NLS-2$
+				"composite-map-key".equals(newValue) ? "AddCompositeMapKey" : //$NON-NLS-1$ //$NON-NLS-2$
+				"map-key-many-to-many".equals(newValue) ? "AddMapKeyManyToMany" : //$NON-NLS-1$ //$NON-NLS-2$
+				"composite-index".equals(newValue) ? "AddCompositeIndex" : //$NON-NLS-1$ //$NON-NLS-2$
+				"index-many-to-any".equals(newValue) ? "AddIndexManyToAny" : //$NON-NLS-1$ //$NON-NLS-2$
+				"index-many-to-many".equals(newValue) ? "AddIndexManyToMany" : //$NON-NLS-1$ //$NON-NLS-2$
 				null;
-			String actionPath = (actionName == null) ? null : "CreateActions.IndexActions." + actionName;
+			String actionPath = (actionName == null) ? null : "CreateActions.IndexActions." + actionName; //$NON-NLS-1$
 			if(actionPath != null && XActionInvoker.getAction(actionPath, this) != null) {
 				XActionInvoker.invoke(actionPath, this, new Properties());
 			}
-		} else if("element".equals(name)) {
+		} else if("element".equals(name)) { //$NON-NLS-1$
 			String actionName = 
-				"element".equals(newValue) ? "AddElement" :
-				"one-to-many".equals(newValue) ? "AddOneToMany" :
-				"many-to-many".equals(newValue) ? "AddManyToMany" :
-				"composite-element".equals(newValue) ? "AddCompositeElement" :
-				"many-to-any".equals(newValue) ? "AddManyToAny" :
+				"element".equals(newValue) ? "AddElement" : //$NON-NLS-1$ //$NON-NLS-2$
+				"one-to-many".equals(newValue) ? "AddOneToMany" : //$NON-NLS-1$ //$NON-NLS-2$
+				"many-to-many".equals(newValue) ? "AddManyToMany" : //$NON-NLS-1$ //$NON-NLS-2$
+				"composite-element".equals(newValue) ? "AddCompositeElement" : //$NON-NLS-1$ //$NON-NLS-2$
+				"many-to-any".equals(newValue) ? "AddManyToAny" : //$NON-NLS-1$ //$NON-NLS-2$
 				null;
-			String actionPath = (actionName == null) ? null : "CreateActions." + actionName;
+			String actionPath = (actionName == null) ? null : "CreateActions." + actionName; //$NON-NLS-1$
 			if(actionPath != null && XActionInvoker.getAction(actionPath, this) != null) {
 				XActionInvoker.invoke(actionPath, this, new Properties());
 			}

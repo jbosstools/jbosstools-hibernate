@@ -225,7 +225,7 @@ public class ParametersComposite extends Pane<GeneratorHolder> {
 		public String getColumnText(Object element, int columnIndex) {
 
 			Parameter parameter = (Parameter) element;
-			String value = "";
+			String value = ""; //$NON-NLS-1$
 
 			switch (columnIndex) {
 				case ParameterColumnAdapter.NAME_COLUMN_INDEX: {
@@ -240,7 +240,7 @@ public class ParametersComposite extends Pane<GeneratorHolder> {
 			}
 
 			if (value == null) {
-				value = "";
+				value = ""; //$NON-NLS-1$
 			}
 
 			return value;
@@ -274,7 +274,7 @@ public class ParametersComposite extends Pane<GeneratorHolder> {
 
 				public Object getValue(Object element, String property) {
 					Parameter parameter = (Parameter) element;
-					String value = "";
+					String value = ""; //$NON-NLS-1$
 
 					if (property == Parameter.NAME_PROPERTY) {
 						value = parameter.getName();
@@ -284,7 +284,7 @@ public class ParametersComposite extends Pane<GeneratorHolder> {
 					}
 
 					if (value == null) {
-						value = "";
+						value = ""; //$NON-NLS-1$
 					}
 
 					return value;

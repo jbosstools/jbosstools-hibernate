@@ -19,11 +19,12 @@ import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.engines.impl.EnginesLoader;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
+import org.jboss.tools.hibernate.xml.Messages;
 
 public class IdStructureHelper {
-	public static String ENT_HIBERNATE_ID = "Hibernate3Id";
-	public static String ENT_HIBERNATE_COMPOSITE_ID = "Hibernate3CompositeId";
-	public static String ID_PATH_PART = "[id]";
+	public static String ENT_HIBERNATE_ID = "Hibernate3Id"; //$NON-NLS-1$
+	public static String ENT_HIBERNATE_COMPOSITE_ID = "Hibernate3CompositeId"; //$NON-NLS-1$
+	public static String ID_PATH_PART = "[id]"; //$NON-NLS-1$
 	
 	public static XModelObject getIdChild(XModelObject clsReference) {
 		return clsReference.getChildByPath(ID_PATH_PART);
@@ -65,7 +66,7 @@ public class IdStructureHelper {
 			List<XModelObject> list = new ArrayList<XModelObject>();
 			XModelObject[] cs = id.getChildren();
 			for (int i = 0; i < cs.length; i++) {
-				if(cs[i].getModelEntity().getName().startsWith("HibernateMeta")) continue;
+				if(cs[i].getModelEntity().getName().startsWith("HibernateMeta")) continue; //$NON-NLS-1$
 				list.add(cs[i]);
 			}
 			return list.toArray(new XModelObject[0]);
@@ -73,26 +74,26 @@ public class IdStructureHelper {
 	}
 	
 	public static XModelObject[] getAsAttributes(XModelObject id) throws XModelException {
-		String name = id.getAttributeValue("name");
+		String name = id.getAttributeValue("name"); //$NON-NLS-1$
 		if(name.length() == 0) return new XModelObject[0];
 		String entity = id.getModelEntity().getName();
 		if(ENT_HIBERNATE_ID.equals(entity)) {
-			XModelObject c = id.getModel().createModelObject("HibernateProperty", null);
+			XModelObject c = id.getModel().createModelObject("HibernateProperty", null); //$NON-NLS-1$
 			EnginesLoader.merge(c, id, false);
 			return new XModelObject[]{c};
-		} else if("HibernateCompositeId".equals(entity)) {
-			String cls = id.getAttributeValue("class");
+		} else if("HibernateCompositeId".equals(entity)) { //$NON-NLS-1$
+			String cls = id.getAttributeValue("class"); //$NON-NLS-1$
 			if(cls.length() == 0) {
 				XModelObject[] cs = id.getChildren();
 				List<XModelObject> list = new ArrayList<XModelObject>();
 				for (int i = 0; i < cs.length; i++) {
-					if(cs[i].getModelEntity().getName().startsWith("HibernateMeta")) continue;
+					if(cs[i].getModelEntity().getName().startsWith("HibernateMeta")) continue; //$NON-NLS-1$
 					XModelObject gc = getAsAttribute(cs[i]);
 					if(gc != null) list.add(gc);
 				}
 				return list.toArray(new XModelObject[0]);
 			} else {
-				XModelObject c = id.getModel().createModelObject("HibernateComponent", null);
+				XModelObject c = id.getModel().createModelObject("HibernateComponent", null); //$NON-NLS-1$
 				EnginesLoader.merge(c, id, false);
 				XModelObject[] cs = id.getChildren();
 				for (int i = 0; i < cs.length; i++) {
@@ -107,8 +108,8 @@ public class IdStructureHelper {
 	
 	public static XModelObject getAsAttribute(XModelObject key) throws XModelException {
 		String ec = key.getModelEntity().getName();
-		String er = ("HibernateKeyProperty".equals(ec))	? "HibernateProperty" 
-		    : ("HibernateKeyManyToOne".equals(ec)) ? "HibernateManyToOne"
+		String er = ("HibernateKeyProperty".equals(ec))	? "HibernateProperty"  //$NON-NLS-1$ //$NON-NLS-2$
+		    : ("HibernateKeyManyToOne".equals(ec)) ? "HibernateManyToOne" //$NON-NLS-1$ //$NON-NLS-2$
 		    : null;
 		if(er == null) return null;
 		XModelObject a = key.getModel().createModelObject(er, null);
@@ -126,7 +127,7 @@ public class IdStructureHelper {
 		} else if(ENT_HIBERNATE_COMPOSITE_ID.equals(entity)) {
 			XModelObject[] cs = id.getChildren();
 			for (int i = 0; i < cs.length; i++) {
-				if(cs[i].getModelEntity().getName().startsWith("HibernateMeta")) continue;
+				if(cs[i].getModelEntity().getName().startsWith("HibernateMeta")) continue; //$NON-NLS-1$
 				addColumnsToList(cs[i], list);
 			}
 		}
@@ -134,35 +135,35 @@ public class IdStructureHelper {
 	}
 	
 	private static void addColumnsToList(XModelObject o, List<XModelObject> list) throws XModelException {
-		XModelObject[] cs = o.getChildren("HibernateColumn");
+		XModelObject[] cs = o.getChildren("HibernateColumn"); //$NON-NLS-1$
 		if(cs.length > 0) {
 			for (int i = 0; i < cs.length; i++) list.add(cs[i].copy());
 		} else {
-			String column = o.getAttributeValue("column");
+			String column = o.getAttributeValue("column"); //$NON-NLS-1$
 			if(column == null) return;
-			XModelObject c = o.getModel().createModelObject("HibernateColumn", null);
+			XModelObject c = o.getModel().createModelObject("HibernateColumn", null); //$NON-NLS-1$
 			EnginesLoader.merge(c, o, false);
-			if(column.length() > 0) c.setAttributeValue("name", column);
+			if(column.length() > 0) c.setAttributeValue("name", column); //$NON-NLS-1$
 			list.add(c);
 		}
 	}
 	
 	public static boolean isDefaultId(XModelObject id) {
 		return isNamelessId(id) && !isIdComposite(id) &&
-			   id.getAttributeValue("column").length() == 0 && 
-			   id.getChildren("HibernateColumn").length == 0;
+			   id.getAttributeValue("column").length() == 0 &&  //$NON-NLS-1$
+			   id.getChildren("HibernateColumn").length == 0; //$NON-NLS-1$
 	}
 	
 	public static boolean isNamelessId(XModelObject id) {
-		return isId(id) && id.getAttributeValue("name").length() == 0;
+		return isId(id) && id.getAttributeValue("name").length() == 0; //$NON-NLS-1$
 	}
 	
 	public static String getIdType(XModelObject id) {
 		if(id == null) return null;
 		if(ENT_HIBERNATE_ID.equals(id.getModelEntity().getName())) {
-			return id.getAttributeValue("type");
+			return id.getAttributeValue("type"); //$NON-NLS-1$
 		} else if(isIdComposite(id)) {
-			return id.getAttributeValue("class");
+			return id.getAttributeValue("class"); //$NON-NLS-1$
 		} else {
 			return null;
 		}
@@ -183,8 +184,8 @@ public class IdStructureHelper {
 	
 	public static boolean isCompositeIdOfOtherType(XModelObject object) {
 		if(object == null || !isIdComposite(object)) return false;
-		return (object.getAttributeValue("name").length() > 0 || 
-		        object.getAttributeValue("class").length() > 0);
+		return (object.getAttributeValue("name").length() > 0 ||  //$NON-NLS-1$
+		        object.getAttributeValue("class").length() > 0); //$NON-NLS-1$
 	}
 	
 	public static boolean isLastPropertyInCompositeId(XModelObject object) {
@@ -195,9 +196,9 @@ public class IdStructureHelper {
 	}
 	
 	public static void showLastPropertyInCompositeIdWarning(XModel model) {
-		String message = "You should not remove last attribute from composite-id.\n" +
-						 "Please replace id first.";
-		model.getService().showDialog("Warning", message, new String[]{"Close"}, null, ServiceDialog.WARNING);
+		String message = Messages.IdStructureHelper_ShouldNotRemoveLastAttribute; 
+		model.getService().showDialog(Messages.IdStructureHelper_WarningTitle, message, 
+				new String[]{Messages.IdStructureHelper_CloseOption}, null, ServiceDialog.WARNING);
 	}
 	
 //	public static JavaBean getBeanForId(XModelObject id) {

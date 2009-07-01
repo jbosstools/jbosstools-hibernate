@@ -49,18 +49,18 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 	
 	//see org.hibernate.id.IdentifierGeneratorFactory.GENERATORS
 	static {
-		generatorClasses.add( "uuid");
-		generatorClasses.add( "hilo");
-		generatorClasses.add( "assigned");
-		generatorClasses.add( "identity");
-		generatorClasses.add( "select");
-		generatorClasses.add( "sequence");
-		generatorClasses.add( "seqhilo");
-		generatorClasses.add( "increment");
-		generatorClasses.add( "foreign");
-		generatorClasses.add( "guid");
-		generatorClasses.add( "uuid.hex");
-		generatorClasses.add( "sequence-identity");
+		generatorClasses.add( "uuid"); //$NON-NLS-1$
+		generatorClasses.add( "hilo"); //$NON-NLS-1$
+		generatorClasses.add( "assigned"); //$NON-NLS-1$
+		generatorClasses.add( "identity"); //$NON-NLS-1$
+		generatorClasses.add( "select"); //$NON-NLS-1$
+		generatorClasses.add( "sequence"); //$NON-NLS-1$
+		generatorClasses.add( "seqhilo"); //$NON-NLS-1$
+		generatorClasses.add( "increment"); //$NON-NLS-1$
+		generatorClasses.add( "foreign"); //$NON-NLS-1$
+		generatorClasses.add( "guid"); //$NON-NLS-1$
+		generatorClasses.add( "uuid.hex"); //$NON-NLS-1$
+		generatorClasses.add( "sequence-identity"); //$NON-NLS-1$
 	}
 
 	/**

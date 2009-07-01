@@ -14,12 +14,12 @@ public class HibernateClassImpl extends OrderedObject2Impl {
     private static final long serialVersionUID = 3382417320218706443L;
     
     public String get(String s) {
-    	if("details".equals(s)) {
-    		String elementType = getAttributeValue("element type");
-    		if("join".equals(elementType)) {
-    			return "join " + "table=" + getAttributeValue("table");
+    	if("details".equals(s)) { //$NON-NLS-1$
+    		String elementType = getAttributeValue("element type"); //$NON-NLS-1$
+    		if("join".equals(elementType)) { //$NON-NLS-1$
+    			return "join " + "table=" + getAttributeValue("table"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     		} else {
-    			return elementType + " name=" + getAttributeValue("name");
+    			return elementType + " name=" + getAttributeValue("name"); //$NON-NLS-1$ //$NON-NLS-2$
     		}
     	}
     	return super.get(s);

@@ -16,10 +16,10 @@ public class HibernateFormulaImpl extends OrderedObjectImpl {
 	private static final long serialVersionUID = 1L;
 
 	public String name() {
-		return "formula";
+		return "formula"; //$NON-NLS-1$
 	}
 	
 	public String getPathPart() {
-		return "" + ("" + getAttributeValue("value")).hashCode();
+		return "" + ("" + getAttributeValue("value")).hashCode(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 }

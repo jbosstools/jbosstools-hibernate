@@ -32,12 +32,12 @@ public interface Hibernate {
 		String GENERATOR_PARAMETER__NAME = "name"; //$NON-NLS-1$
 		String GENERATOR_PARAMETER__VALUE = "value"; //$NON-NLS-1$
 		
-	String NAMED_QUERY = PACKAGE_ + "NamedQuery";
-		String NAMED_QUERY__NAME = "name";
-		String NAMED_QUERY__QUERY = "query";
-		String NAMED_QUERY__HINTS = "hints";
+	String NAMED_QUERY = PACKAGE_ + "NamedQuery"; //$NON-NLS-1$
+		String NAMED_QUERY__NAME = "name"; //$NON-NLS-1$
+		String NAMED_QUERY__QUERY = "query"; //$NON-NLS-1$
+		String NAMED_QUERY__HINTS = "hints"; //$NON-NLS-1$
 		
-	String NAMED_QUERIES = PACKAGE_ + "NamedQueries";
-		String NAMED_QUERIES__VALUE = "value";
+	String NAMED_QUERIES = PACKAGE_ + "NamedQueries"; //$NON-NLS-1$
+		String NAMED_QUERIES__VALUE = "value"; //$NON-NLS-1$
 	
 }

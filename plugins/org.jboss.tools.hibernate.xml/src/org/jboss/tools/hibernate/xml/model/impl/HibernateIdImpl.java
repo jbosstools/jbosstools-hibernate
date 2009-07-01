@@ -22,21 +22,21 @@ public class HibernateIdImpl extends OrderedObjectImpl {
 	}
     
 	public String name() {
-		String nm = "" + getAttributeValue("name");
-		if(nm.length() == 0) nm = "<" + getModelEntity().getXMLSubPath() + ">";
+		String nm = "" + getAttributeValue("name"); //$NON-NLS-1$ //$NON-NLS-2$
+		if(nm.length() == 0) nm = "<" + getModelEntity().getXMLSubPath() + ">"; //$NON-NLS-1$ //$NON-NLS-2$
 		return nm;
 	}
 	
 	public String getPathPart() {
-		return "[id]";
+		return "[id]"; //$NON-NLS-1$
 	}
 
 }
 
 class IdOrderedByEntityChildren extends OrderedByEntityChildren {
 	protected int getEntityIndex(String s) {
-		if("Hibernate3KeyManyToOne".equals(s))
-			s = "Hibernate3KeyProperty";
+		if("Hibernate3KeyManyToOne".equals(s)) //$NON-NLS-1$
+			s = "Hibernate3KeyProperty"; //$NON-NLS-1$
 		return super.getEntityIndex(s);
 	}
 

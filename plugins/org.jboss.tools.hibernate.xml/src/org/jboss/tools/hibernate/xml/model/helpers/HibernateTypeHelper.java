@@ -18,6 +18,7 @@ import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 
+@SuppressWarnings("nls")
 public class HibernateTypeHelper {
 	static Properties hToJ = new Properties();
 	static Properties jToH = new Properties();

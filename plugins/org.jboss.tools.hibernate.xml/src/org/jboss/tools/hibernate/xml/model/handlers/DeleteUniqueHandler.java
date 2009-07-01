@@ -23,14 +23,14 @@ public class DeleteUniqueHandler extends DefaultRemoveHandler {
 
 	public void executeHandler(XModelObject object, Properties p) throws XModelException {
 		if(!isEnabled(object)) return;
-		String transactionName = "delete " + DefaultCreateHandler.title(object, false);
+		String transactionName = "delete " + DefaultCreateHandler.title(object, false); //$NON-NLS-1$
 		executeInTransaction(object, p, transactionName, XTransactionUndo.REMOVE);
 	}
 
 	protected void transaction(XModelObject object, Properties p) throws XModelException {
 		XModelObject parent = object.getParent();
 		removeFromParent(object);
-		String entity = action.getProperty("entity");
+		String entity = action.getProperty("entity"); //$NON-NLS-1$
 		if(entity == null) entity = object.getModelEntity().getName();
 		XModelObject c = XModelObjectLoaderUtil.createValidObject(object.getModel(), entity);
 		DefaultCreateHandler.addCreatedObject(parent, c, p);

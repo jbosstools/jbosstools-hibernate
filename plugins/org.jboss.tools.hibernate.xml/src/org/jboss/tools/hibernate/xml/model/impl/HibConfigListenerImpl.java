@@ -8,9 +8,9 @@ public class HibConfigListenerImpl extends RegularObject2Impl {
 
 	public String getPathPart() {
 		String pp = super.getPathPart();
-		String type = getAttributeValue("type");
+		String type = getAttributeValue("type"); //$NON-NLS-1$
 		if(type != null && type.length() > 0) {
-			pp += ":" + type;
+			pp += ":" + type; //$NON-NLS-1$
 		}
 		return pp;
 	}

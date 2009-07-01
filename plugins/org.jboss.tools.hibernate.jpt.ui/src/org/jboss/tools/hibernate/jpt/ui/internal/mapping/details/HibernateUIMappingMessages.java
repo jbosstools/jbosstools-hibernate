@@ -22,6 +22,10 @@ public class HibernateUIMappingMessages extends NLS {
 	public static String GenericGeneratorComposite_name;
 	public static String GenericGeneratorComposite_strategy;
 
+	public static String HibernateGeneratorsComposite_CheckBoxLabel;
+
+	public static String HibernateGeneratorsComposite_SectionLabel;
+
 	private HibernateUIMappingMessages() {}
 
 	static {

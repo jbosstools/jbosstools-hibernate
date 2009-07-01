@@ -50,14 +50,14 @@ public class HibernateGeneratorsComposite extends GeneratorsComposite {
 		// Sequence Generator sub-section
 		container = addCollapsableSubSection(
 			addSubPane(container, 10),
-			"Generic Generator",
+			HibernateUIMappingMessages.HibernateGeneratorsComposite_SectionLabel,
 			genericGeneratorExpansionStateHolder
 		);
 
 		// Sequence Generator check box
 		Button genericGeneratorCheckBox = addCheckBox(
 			addSubPane(container, 5),
-			"Generic generator",
+			HibernateUIMappingMessages.HibernateGeneratorsComposite_CheckBoxLabel,
 			buildGenericGeneratorBooleanHolder(),
 			null//TODO add help
 		);

@@ -30,7 +30,7 @@ public class FolderOwnerAdopt implements XAdoptManager {
 		if(isAdoptableGrandChild(target, object)) {
 			XModelObject folder = getFolderForChild(target, object);
 			if(folder == null) return;
-			XActionInvoker.invoke("CopyActions.Paste", folder, null);
+			XActionInvoker.invoke("CopyActions.Paste", folder, null); //$NON-NLS-1$
 		}
 	}
 	

@@ -31,16 +31,16 @@ public class FileHibernateFilteredTreeConstraint implements XFilteredTreeConstra
 	
 	boolean checkEntity(XModelEntity entity) {
 		String res = checkedEntities.getProperty(entity.getName());
-		if(res != null) return "true".equals(res);
+		if(res != null) return "true".equals(res); //$NON-NLS-1$
 		XChild[] cs = entity.getChildren();
 		for (int i = 0; i < cs.length; i++) {
 			String n = cs[i].getName();
-			if(n.startsWith("Hibernate") && n.endsWith("Folder")) {
-				checkedEntities.setProperty(n, "true");
+			if(n.startsWith("Hibernate") && n.endsWith("Folder")) { //$NON-NLS-1$ //$NON-NLS-2$
+				checkedEntities.setProperty(n, "true"); //$NON-NLS-1$
 				return true;
 			}
 		}
-		checkedEntities.setProperty(entity.getName(), "false");
+		checkedEntities.setProperty(entity.getName(), "false"); //$NON-NLS-1$
 		return false;		
 	}
 	
@@ -52,7 +52,7 @@ public class FileHibernateFilteredTreeConstraint implements XFilteredTreeConstra
 	public boolean accepts(XModelObject object) {
 		String entity = object.getModelEntity().getName();
 //		if("OrmDiagram".equals(entity)) return false;
-		if(entity.startsWith("Hibernate") && entity.endsWith("Folder") && object.getChildren().length == 0) return false;
+		if(entity.startsWith("Hibernate") && entity.endsWith("Folder") && object.getChildren().length == 0) return false; //$NON-NLS-1$ //$NON-NLS-2$
 		return true;
 	}
 

@@ -16,13 +16,13 @@ public class HibernateMetaImpl extends RegularObjectImpl {
     private static final long serialVersionUID = 6834715619315516824L;
 	
 	public String name() {
-		return "" + getAttributeValue("attribute");
+		return "" + getAttributeValue("attribute"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	public String getPathPart() {
-		String v = getAttributeValue("value");
+		String v = getAttributeValue("value"); //$NON-NLS-1$
 		int hash = (v == null) ? -1 : v.hashCode();
-		return name() + "[" + hash + "]";
+		return name() + "[" + hash + "]"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 }

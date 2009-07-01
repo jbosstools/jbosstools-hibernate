@@ -18,6 +18,7 @@ import org.jboss.tools.common.editor.TreeFormPage;
 import org.jboss.tools.common.model.ui.editor.EditorDescriptor;
 import org.jboss.tools.common.model.ui.editors.multipage.DefaultMultipageEditor;
 import org.jboss.tools.common.model.ui.texteditors.XMLTextEditorComponent;
+import org.jboss.tools.hibernate.ui.xml.Messages;
 import org.jboss.tools.hibernate.xml.model.FileHibernateFilteredTreeConstraint;
 
 
@@ -26,20 +27,20 @@ public class Hibernate3CompoundEditor extends DefaultMultipageEditor {
 	protected void doCreatePages() {
 		if(isAppropriateNature()) {
 			treeFormPage = createTreeFormPage();
-			treeFormPage.setTitle("Hibernate 3.0 XML Editor");
+			treeFormPage.setTitle(Messages.Hibernate3CompoundEditor_HibernateXMLEditor);
 			((TreeFormPage)treeFormPage).addFilter(new FileHibernateFilteredTreeConstraint());
 			treeFormPage.initialize(object);
 			addFormPage(treeFormPage);
 		}
 		createTextPage();
 		initEditors();
-		if(treeFormPage != null) selectionProvider.addHost("treeEditor", treeFormPage.getSelectionProvider());
-		if(textEditor != null) selectionProvider.addHost("textEditor", getTextSelectionProvider());
+		if(treeFormPage != null) selectionProvider.addHost("treeEditor", treeFormPage.getSelectionProvider()); //$NON-NLS-1$
+		if(textEditor != null) selectionProvider.addHost("textEditor", getTextSelectionProvider()); //$NON-NLS-1$
 	}
 
 	public Object getAdapter(Class adapter) {
 			if (adapter == EditorDescriptor.class)
-				return new EditorDescriptor("Hibernate3.0");
+				return new EditorDescriptor("Hibernate3.0"); //$NON-NLS-1$
 			return super.getAdapter(adapter);
 	}
 	

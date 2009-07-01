@@ -21,7 +21,7 @@ public class AddHibernateAnyHandler extends DefaultCreateHandler {
 
 	protected XModelObject modifyCreatedObject(XModelObject o) {
 		Properties p = extractProperties(data[0]);
-		String[] cs = new String[]{p.getProperty("column1"), p.getProperty("column2")};
+		String[] cs = new String[]{p.getProperty("column1"), p.getProperty("column2")}; //$NON-NLS-1$ //$NON-NLS-2$
 		for (int i = 0; i < cs.length; i++) {
 			o.addChild(ColumnsStructureHelper.newColumn(o.getModel(), cs[i]));
 		}		

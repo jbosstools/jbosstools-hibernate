@@ -14,19 +14,19 @@ public class HibConfigMappingImpl extends RegularObject2Impl {
 	private static final long serialVersionUID = 1L;
 	
 	public String getAttributeValue(String name) {
-		if("item".equals(name)) {
-			String[] as = {"resource", "file", "jar", "package", "class"};
+		if("item".equals(name)) { //$NON-NLS-1$
+			String[] as = {"resource", "file", "jar", "package", "class"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 			for (int i = 0; i < as.length; i++) {
 				String s = getAttributeValue(as[i]);
-				if(s != null && s.length() > 0) return as[i] + "=" + s;
+				if(s != null && s.length() > 0) return as[i] + "=" + s; //$NON-NLS-1$
 			}
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 		return super.getAttributeValue(name);
 	}
 
 	public String setAttributeValue(String name, String value) {
-		if("item".equals(name)) {
+		if("item".equals(name)) { //$NON-NLS-1$
 			return getAttributeValue(name);
 		}
 		return super.setAttributeValue(name, value);

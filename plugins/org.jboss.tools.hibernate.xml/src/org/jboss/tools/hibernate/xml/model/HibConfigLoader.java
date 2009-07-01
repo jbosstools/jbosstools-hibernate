@@ -26,12 +26,12 @@ public class HibConfigLoader extends SimpleWebFileLoader {
 }
 
 class HibConfigLoaderUtil extends XModelObjectLoaderUtil {
-	static String[] factoryFolders = new String[]{"Properties", "Mappings", "Caches", "Events", "Listeners"};
+	static String[] factoryFolders = new String[]{"Properties", "Mappings", "Caches", "Events", "Listeners"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 	
     public boolean save(Element parent, XModelObject o) {
-    	if(o.getModelEntity().getName().equals("HibConfig3Security")) {
-    		if(o.getAttributeValue("context").length() == 0 && o.getChildren().length == 0 && 
-    			o.getAttributeValue("comment").length() == 0) {
+    	if(o.getModelEntity().getName().equals("HibConfig3Security")) { //$NON-NLS-1$
+    		if(o.getAttributeValue("context").length() == 0 && o.getChildren().length == 0 &&  //$NON-NLS-1$
+    			o.getAttributeValue("comment").length() == 0) { //$NON-NLS-1$
     			return true;
     		}
     	}
@@ -40,7 +40,7 @@ class HibConfigLoaderUtil extends XModelObjectLoaderUtil {
 
 	private String[] getFolders(XModelObject o) {
 		String entity = o.getModelEntity().getName();
-		if(entity.equals("HibConfig3SessionFactory")) return factoryFolders;
+		if(entity.equals("HibConfig3SessionFactory")) return factoryFolders; //$NON-NLS-1$
 		return null;
 	}
 
@@ -77,7 +77,7 @@ class HibConfigLoaderUtil extends XModelObjectLoaderUtil {
 		if(v == null) return false;
 		if(v.length() == 0 || v.equals(dv)) {
 			XAttribute attr = entity.getAttribute(n);
-			return (attr != null && "always".equals(attr.getProperty("save")));
+			return (attr != null && "always".equals(attr.getProperty("save"))); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return super.isSaveable(entity, n, v, dv);
 	}

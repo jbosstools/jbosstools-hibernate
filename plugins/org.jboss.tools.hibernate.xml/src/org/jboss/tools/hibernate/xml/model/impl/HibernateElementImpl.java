@@ -16,17 +16,17 @@ public class HibernateElementImpl extends OrderedObjectImpl {
     private static final long serialVersionUID = 220538596631608391L;
 	
 	public String getPresentationString() {
-		String presentationAttr = getModelEntity().getProperty("presentationAttribute");
-		return ((presentationAttr != null) ? getAttributeValue(presentationAttr) : "") +
-			"[" + getAttributeValue("element type") + "]";
+		String presentationAttr = getModelEntity().getProperty("presentationAttribute"); //$NON-NLS-1$
+		return ((presentationAttr != null) ? getAttributeValue(presentationAttr) : "") + //$NON-NLS-1$
+			"[" + getAttributeValue("element type") + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 	
 	public String name() {
-		return "" + getPathPart();
+		return "" + getPathPart(); //$NON-NLS-1$
 	}
 	
 	public String getPathPart() {
-		return "element";
+		return "element"; //$NON-NLS-1$
 	}
 	
 }

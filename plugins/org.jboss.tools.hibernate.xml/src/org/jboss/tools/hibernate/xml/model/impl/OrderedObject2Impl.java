@@ -19,7 +19,7 @@ public class OrderedObject2Impl extends RegularObject2Impl {
 	protected RegularChildren createChildren() {
 		return new OrderedByEntityChildren() {
 			protected int getEntityIndex(String s) {
-				if("Hibernate3Formula".equals(s)) return super.getEntityIndex("Hibernate3Column");
+				if("Hibernate3Formula".equals(s)) return super.getEntityIndex("Hibernate3Column"); //$NON-NLS-1$ //$NON-NLS-2$
 		        return super.getEntityIndex(s);
 		    }
 		};

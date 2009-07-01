@@ -16,10 +16,10 @@ import org.jboss.tools.common.model.XModelObject;
 
 public class AddSubclassHandler extends DefaultCreateHandler {
 	static String[] entities = 
-		{"Hibernate3Join", 
-		 "Hibernate3Subclass", 
-		 "Hibernate3JoinedSubclass", 
-		 "Hibernate3UnionSubclass"};
+		{"Hibernate3Join",  //$NON-NLS-1$
+		 "Hibernate3Subclass",  //$NON-NLS-1$
+		 "Hibernate3JoinedSubclass",  //$NON-NLS-1$
+		 "Hibernate3UnionSubclass"}; //$NON-NLS-1$
 	static int[][] matrix = new int[][]{
 		{1,1,0,0},
 		{1,1,0,0},
@@ -36,7 +36,7 @@ public class AddSubclassHandler extends DefaultCreateHandler {
 
     public boolean isEnabled(XModelObject object) {
     	if(!super.isEnabled(object)) return true;
-    	String entity = action.getProperty("entity");
+    	String entity = action.getProperty("entity"); //$NON-NLS-1$
     	if(entity == null) return true;
     	XModelObject[] os = object.getChildren();
     	if(os.length == 0) return true;

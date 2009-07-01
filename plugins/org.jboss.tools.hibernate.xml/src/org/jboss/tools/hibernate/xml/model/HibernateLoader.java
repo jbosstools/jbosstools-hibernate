@@ -40,28 +40,28 @@ public class HibernateLoader extends SimpleWebFileLoader {
 }
 
 class HibernateLoaderUtil extends XModelObjectLoaderUtil {
-	static String[] metaFolders = new String[]{"Meta"};
-	static String[] fileFolders = new String[]{"Types", "Imports", "Classes", "Result Sets", "Queries", "Filters", "Database Objects"};
-	static String[] classFolders = new String[]{"Tuplizers", "Properties", "Subclasses", "SQL", "Filters", "Result Sets", "Queries"};
-	static String[] subclassFolders = new String[]{"Tuplizers", "Synchronize", "Properties", "Subclasses", "SQL", "Result Sets", "Queries"};
-	static String[] compositeElementFolders = new String[]{"Properties"};
-	static String[] listFolders = new String[]{"SQL"};
-	static String[] setFolders = new String[]{"SQL", "Filters"};
+	static String[] metaFolders = new String[]{"Meta"}; //$NON-NLS-1$
+	static String[] fileFolders = new String[]{"Types", "Imports", "Classes", "Result Sets", "Queries", "Filters", "Database Objects"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+	static String[] classFolders = new String[]{"Tuplizers", "Properties", "Subclasses", "SQL", "Filters", "Result Sets", "Queries"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+	static String[] subclassFolders = new String[]{"Tuplizers", "Synchronize", "Properties", "Subclasses", "SQL", "Result Sets", "Queries"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+	static String[] compositeElementFolders = new String[]{"Properties"}; //$NON-NLS-1$
+	static String[] listFolders = new String[]{"SQL"}; //$NON-NLS-1$
+	static String[] setFolders = new String[]{"SQL", "Filters"}; //$NON-NLS-1$ //$NON-NLS-2$
 	
 	static Map<String,String[]> folders = new HashMap<String,String[]>();
 	
 	static {
-		folders.put("file", fileFolders);
-		folders.put("class", classFolders);
-		folders.put("subclass", subclassFolders);
-		folders.put("component", compositeElementFolders);
-		folders.put("element", compositeElementFolders);
-		folders.put("list", listFolders);
-		folders.put("set", setFolders);
+		folders.put("file", fileFolders); //$NON-NLS-1$
+		folders.put("class", classFolders); //$NON-NLS-1$
+		folders.put("subclass", subclassFolders); //$NON-NLS-1$
+		folders.put("component", compositeElementFolders); //$NON-NLS-1$
+		folders.put("element", compositeElementFolders); //$NON-NLS-1$
+		folders.put("list", listFolders); //$NON-NLS-1$
+		folders.put("set", setFolders); //$NON-NLS-1$
 	}
 	
 	private String[] getFolders(XModelObject o) {
-		String loaderKind = o.getModelEntity().getProperty("loaderKind");
+		String loaderKind = o.getModelEntity().getProperty("loaderKind"); //$NON-NLS-1$
 		return (loaderKind == null) ? null : (String[])folders.get(loaderKind);
 	}
 
@@ -82,8 +82,8 @@ class HibernateLoaderUtil extends XModelObjectLoaderUtil {
     public boolean saveChildren(Element element, XModelObject o) {
 		saveFolders(element, o, metaFolders);
 		String entity = o.getModelEntity().getName();
-		if("Hibernate3Component".equals(entity)) {
-			moveElementToEnd(element, "parent");
+		if("Hibernate3Component".equals(entity)) { //$NON-NLS-1$
+			moveElementToEnd(element, "parent"); //$NON-NLS-1$
 		}
 		boolean b = super.saveChildren(element, o);
 		String[] fs = getFolders(o);
@@ -104,7 +104,7 @@ class HibernateLoaderUtil extends XModelObjectLoaderUtil {
 		if(v == null) return false;
 		if(v.length() == 0 || v.equals(dv)) {
 			XAttribute attr = entity.getAttribute(n);
-			return (attr != null && "always".equals(attr.getProperty("save")));
+			return (attr != null && "always".equals(attr.getProperty("save"))); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		return super.isSaveable(entity, n, v, dv);
 	}
@@ -118,9 +118,9 @@ class HibernateLoaderUtil extends XModelObjectLoaderUtil {
 	}
 
     protected String getChildEntity(XModelEntity entity, Element e) {
-    	if(e != null && "database-object".equals(e.getNodeName())) {
-    		Element c = XMLUtilities.getUniqueChild(e, "definition");
-    		return c != null ? "Hibernate3DatabaseObjectDef" : "Hibernate3DatabaseObjectCreateDrop";
+    	if(e != null && "database-object".equals(e.getNodeName())) { //$NON-NLS-1$
+    		Element c = XMLUtilities.getUniqueChild(e, "definition"); //$NON-NLS-1$
+    		return c != null ? "Hibernate3DatabaseObjectDef" : "Hibernate3DatabaseObjectCreateDrop"; //$NON-NLS-1$ //$NON-NLS-2$
     	}
     	return super.getChildEntity(entity, e);
     }
@@ -133,7 +133,7 @@ class HibernateMetaLoader {
 		ok = true;
 		try {
 			XModelEntity e = XModelMetaDataImpl.getInstance().getEntity(HibernateConstants.ENTITY_HIBERNATE_PROPERTY_3_0);
-			XAttribute a = e.getAttribute("type");
+			XAttribute a = e.getAttribute("type"); //$NON-NLS-1$
 			if(a.getConstraint() instanceof XAttributeConstraintAList) {
 				XAttributeConstraintAList c = (XAttributeConstraintAList)a.getConstraint();
 				c.setValues(HibernateTypeHelper.TYPE_NAMES);

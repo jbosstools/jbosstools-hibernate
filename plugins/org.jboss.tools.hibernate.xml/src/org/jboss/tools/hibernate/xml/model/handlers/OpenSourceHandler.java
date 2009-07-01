@@ -21,13 +21,13 @@ public class OpenSourceHandler extends OpenJavaSourceHandler {
     	XModelObject f = object;
     	while(f != null && f.getFileType() != XModelObject.FILE) f = f.getParent();
     	if(f == null) return v;
-    	String p = f.getAttributeValue("package");
-    	if(p != null && p.length() > 0) return p + "." + v;
+    	String p = f.getAttributeValue("package"); //$NON-NLS-1$
+    	if(p != null && p.length() > 0) return p + "." + v; //$NON-NLS-1$
     	return v;
     }
 
     protected String getAttribute() {
-        return action.getProperty("attribute");
+        return action.getProperty("attribute"); //$NON-NLS-1$
     }
 
 }

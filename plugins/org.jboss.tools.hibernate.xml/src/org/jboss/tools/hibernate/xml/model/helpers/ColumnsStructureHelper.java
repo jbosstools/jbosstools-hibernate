@@ -22,7 +22,7 @@ import org.jboss.tools.common.model.XModelException;
 import org.jboss.tools.common.model.XModelObject;
 
 public class ColumnsStructureHelper {
-	public static String ENT_HIBERNATE_COLUMN = "Hibernate3Column";
+	public static String ENT_HIBERNATE_COLUMN = "Hibernate3Column"; //$NON-NLS-1$
 	
 	public static boolean isColumnObject(XModelObject object) {
 		return ENT_HIBERNATE_COLUMN.equals(object.getModelEntity().getName());
@@ -30,7 +30,7 @@ public class ColumnsStructureHelper {
 	
 	public static XModelObject newColumn(XModel model, String name) {
 		XModelObject c = model.createModelObject(ENT_HIBERNATE_COLUMN, null);
-		c.setAttributeValue("name", name);
+		c.setAttributeValue("name", name); //$NON-NLS-1$
 		return c;		
 	}
 	
@@ -58,10 +58,10 @@ public class ColumnsStructureHelper {
 	 */	
 	public static String getDeclaredColumnName(XModelObject columnOwner) {
 		if(!hasNoChildColumns(columnOwner)) return null;
-		String column = columnOwner.getAttributeValue("column");
+		String column = columnOwner.getAttributeValue("column"); //$NON-NLS-1$
 		if(column == null || column.length() > 0) return column;
-		String name = columnOwner.getAttributeValue("name");
-		if(name != null && name.length() == 0 && IdStructureHelper.isId(columnOwner)) return "id";
+		String name = columnOwner.getAttributeValue("name"); //$NON-NLS-1$
+		if(name != null && name.length() == 0 && IdStructureHelper.isId(columnOwner)) return "id"; //$NON-NLS-1$
 		return name;
 	}
 
@@ -76,7 +76,7 @@ public class ColumnsStructureHelper {
 		XAttribute[] as = c.getModelEntity().getAttributes();
 		for (int i = 0; i < as.length; i++) {
 			String n = as[i].getName();
-			if("name".equals(n)) continue;
+			if("name".equals(n)) continue; //$NON-NLS-1$
 			String v = columnOwner.getAttributeValue(n);
 			if(v == null || v.equals(as[i].getDefaultValue())) continue;
 			c.setAttributeValue(n, v);
@@ -104,7 +104,7 @@ public class ColumnsStructureHelper {
 		XAttribute[] as = column.getModelEntity().getAttributes();
 		for (int i = 0; i < as.length; i++) {
 			String n = as[i].getName();
-			if("name".equals(n) || "persistent".equals(n)) continue;
+			if("name".equals(n) || "persistent".equals(n)) continue; //$NON-NLS-1$ //$NON-NLS-2$
 			String v = column.getAttributeValue(n);
 			if(v == null || v.equals(as[i].getDefaultValue())) continue;
 			if(attribute.getAttribute(n) == null) return true;
@@ -136,9 +136,9 @@ public class ColumnsStructureHelper {
 		for (int i = 0; i < as.length; i++) {
 			String n = as[i].getName();
 			String v = column.getAttributeValue(n);
-			if("name".equals(n)) {
-				n = "column";
-				if(v.equals(attribute.getAttributeValue("name"))) v = "";
+			if("name".equals(n)) { //$NON-NLS-1$
+				n = "column"; //$NON-NLS-1$
+				if(v.equals(attribute.getAttributeValue("name"))) v = ""; //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			if(v == null) continue;
 ///			if(!"column".equals(n) && v.equals(as[i].getDefaultValue())) continue;
@@ -154,17 +154,17 @@ public class ColumnsStructureHelper {
 		Set<String> set = new HashSet<String>();
 		if(table == null) return set;
 		XModelObject[] cs = table.getChildren();
-		for (int i = 0; i < cs.length; i++) set.add(cs[i].getAttributeValue("name"));
+		for (int i = 0; i < cs.length; i++) set.add(cs[i].getAttributeValue("name")); //$NON-NLS-1$
 		return set;
 	}
 	
 	public static void provideUniqueName(XModelObject column, Set<String> columns) {
-		String n = column.getAttributeValue("name");
+		String n = column.getAttributeValue("name"); //$NON-NLS-1$
 		if(columns.contains(n)) {
 			int i = 1;
 			while(columns.contains(n + i)) ++i;
 			n = n + i;
-			column.setAttributeValue("name", n);
+			column.setAttributeValue("name", n); //$NON-NLS-1$
 		}
 		columns.add(n);
 	}
@@ -188,7 +188,7 @@ public class ColumnsStructureHelper {
 
 	public static void replaceColumnDeclarationWithChild(XModelObject attrReference, XModelObject column) throws XModelException {
 		DefaultCreateHandler.addCreatedObject(attrReference, column, -1);
-		XModelObject c = newColumn(attrReference.getModel(), attrReference.getAttributeValue("name"));
+		XModelObject c = newColumn(attrReference.getModel(), attrReference.getAttributeValue("name")); //$NON-NLS-1$
 		mergeColumnDataToAttribute(attrReference, c);
 	}
 

@@ -17,14 +17,14 @@ import org.jboss.tools.common.model.XModelObject;
 public class AddHibernateCollectionHandler extends DefaultCreateHandler {
 
 	protected XModelObject modifyCreatedObject(XModelObject o) {
-		XModelObject c = o.getChildByPath("index");
+		XModelObject c = o.getChildByPath("index"); //$NON-NLS-1$
 		if(c == null) {
-			c = o.getModel().createModelObject("Hibernate3Index", null);
+			c = o.getModel().createModelObject("Hibernate3Index", null); //$NON-NLS-1$
 			o.addChild(c);
 		}
-		c = o.getChildByPath("element");
+		c = o.getChildByPath("element"); //$NON-NLS-1$
 		if(c == null) {
-			c = o.getModel().createModelObject("Hibernate3Element", null);
+			c = o.getModel().createModelObject("Hibernate3Element", null); //$NON-NLS-1$
 			o.addChild(c);
 		}
 		return o;

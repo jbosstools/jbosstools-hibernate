@@ -19,7 +19,7 @@ public class ContextPackageProvider implements IContextPackageProvider {
 	public String getContextPackage() {
 		while(object != null && object.getFileType() != XModelObject.FILE) object = object.getParent();
 		if(object == null) return null;
-		String s = object.getAttributeValue("package");
+		String s = object.getAttributeValue("package"); //$NON-NLS-1$
 		if(s != null && s.length() == 0) return null;
 		return s;
 	}

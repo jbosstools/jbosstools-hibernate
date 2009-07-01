@@ -18,25 +18,25 @@ import org.jboss.tools.common.model.ui.forms.IFormData;
  * @author glory
  */
 public class HibConfig3CacheFormLayoutData {
-	static String CLASS_CACHE_ENTITY = "HibConfig3ClassCache";
-	static String COLLECTION_CACHE_ENTITY = "HibConfig3CollectionCache";
+	static String CLASS_CACHE_ENTITY = "HibConfig3ClassCache"; //$NON-NLS-1$
+	static String COLLECTION_CACHE_ENTITY = "HibConfig3CollectionCache"; //$NON-NLS-1$
 	
 	final static IFormData CACHE_LIST_DEFINITION = new FormData(
 		"Caches",
-		"", //Description
+		"", //Description //$NON-NLS-1$
 		"Caches",
 		new FormAttributeData[]{new FormAttributeData("item", 100, "item")},
 		new String[]{CLASS_CACHE_ENTITY, COLLECTION_CACHE_ENTITY},
-		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddCache")
+		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddCache") //$NON-NLS-1$
 	);
 
 	final static IFormData CACHE_FOLDER_DEFINITION = new FormData(
 		"Caches",
-		"", //"Description
+		"", //"Description //$NON-NLS-1$
 		"HibConfig3CachesFolder",
 		new FormAttributeData[]{new FormAttributeData("item", 100, "item")},
 		new String[]{CLASS_CACHE_ENTITY, COLLECTION_CACHE_ENTITY},
-		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddCache")
+		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddCache") //$NON-NLS-1$
 	);
 
 

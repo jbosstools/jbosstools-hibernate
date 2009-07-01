@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class HibernateXMLPlugin extends AbstractUIPlugin {
-	public static final String PLUGIN_ID = "org.jboss.tools.hibernate.xml";
+	public static final String PLUGIN_ID = "org.jboss.tools.hibernate.xml"; //$NON-NLS-1$
 
 	static HibernateXMLPlugin INSTANCE = null; 
 
@@ -37,7 +37,7 @@ public class HibernateXMLPlugin extends AbstractUIPlugin {
 	}
 	
 	public static void log(Exception ex) {
-		INSTANCE.getLog().log(new Status(Status.ERROR, PLUGIN_ID, Status.OK, "No message", ex));
+		INSTANCE.getLog().log(new Status(Status.ERROR, PLUGIN_ID, Status.OK, "No message", ex)); //$NON-NLS-1$
 	}
 
 	public static boolean isDebugEnabled() {

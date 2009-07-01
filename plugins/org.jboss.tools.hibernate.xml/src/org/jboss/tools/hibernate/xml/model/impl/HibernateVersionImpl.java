@@ -16,11 +16,11 @@ public class HibernateVersionImpl extends OrderedObjectImpl {
     private static final long serialVersionUID = 220540876994971851L;
 	
 	public String getPathPart() {
-		return "version";
+		return "version"; //$NON-NLS-1$
 	}
 	
 	public String getPresentationString() {
-		return "" + getAttributeValue("name"); 
+		return "" + getAttributeValue("name");  //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 }

@@ -14,19 +14,19 @@ public class HibConfigCacheImpl extends RegularObject2Impl {
 	private static final long serialVersionUID = 1L;
 	
 	public String getAttributeValue(String name) {
-		if("item".equals(name)) {
-			String[] as = {"class", "collection"};
+		if("item".equals(name)) { //$NON-NLS-1$
+			String[] as = {"class", "collection"}; //$NON-NLS-1$ //$NON-NLS-2$
 			for (int i = 0; i < as.length; i++) {
 				String s = getAttributeValue(as[i]);
-				if(s != null && s.length() > 0) return as[i] + "=" + s;
+				if(s != null && s.length() > 0) return as[i] + "=" + s; //$NON-NLS-1$
 			}
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 		return super.getAttributeValue(name);
 	}
 
 	public String setAttributeValue(String name, String value) {
-		if("item".equals(name)) {
+		if("item".equals(name)) { //$NON-NLS-1$
 			return getAttributeValue(name);
 		}
 		return super.setAttributeValue(name, value);
