@@ -17,12 +17,11 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.*;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.jboss.tools.hibernate.ui.view.BaseUIPlugin;
 import org.osgi.framework.BundleContext;
 
-public class VisualEditorPlugin extends BaseUIPlugin {
+public class VisualEditorPlugin extends AbstractUIPlugin {
 
-	public final static String PLUGIN_ID= "org.jboss.tools.hibernate.ui.veditor"; //$NON-NLS-1$
+	public final static String ID = "org.jboss.tools.hibernate.ui.veditor"; //$NON-NLS-1$
 	
 	//The shared instance.
 	private static VisualEditorPlugin plugin;
@@ -49,7 +48,7 @@ public class VisualEditorPlugin extends BaseUIPlugin {
 	}
 
 	public static ImageDescriptor getImageDescriptor(String path) {
-		return AbstractUIPlugin.imageDescriptorFromPlugin(PLUGIN_ID, path);
+		return AbstractUIPlugin.imageDescriptorFromPlugin(ID, path);
 	}
 
 	public static IWorkbenchPage getPage(){

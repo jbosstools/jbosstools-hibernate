@@ -11,13 +11,13 @@ public class TreePartFactory implements EditPartFactory {
 
 	public EditPart createEditPart(EditPart context, Object modelElement) {
 		if (modelElement instanceof OrmDiagram) {
-			return new DiagramTreeEditPart(modelElement);
+			return new DiagramTreeEditPart((OrmDiagram)modelElement);
 		}
 		if (modelElement instanceof ExpandeableShape) {
-			return new ExpandeableShapeTreeEditPart(modelElement);
+			return new ExpandeableShapeTreeEditPart((ExpandeableShape)modelElement);
 		}
 		if (modelElement instanceof Shape) {
-			return new ShapeTreeEditPart(modelElement);
+			return new ShapeTreeEditPart((Shape)modelElement);
 		}
 		throw new RuntimeException(UIVEditorMessages.PartFactory_canot_create_part_for_model_element
 				+ ((modelElement != null) ? modelElement.getClass().getName()

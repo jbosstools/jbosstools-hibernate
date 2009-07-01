@@ -10,8 +10,6 @@
  ******************************************************************************/ 
 package org.jboss.tools.hibernate.ui.veditor.editors.parts;
 
-import java.util.List;
-
 import org.eclipse.draw2d.ConnectionLayer;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.LayerConstants;
@@ -25,14 +23,12 @@ public class GEFRootEditPart extends ScalableFreeformRootEditPart {
 		super();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void setToFront(AbstractConnectionEditPart editpart) {
 		ConnectionLayer layer = (ConnectionLayer)getLayer(LayerConstants.CONNECTION_LAYER);
 		IFigure fig = editpart.getFigure();
-		
-		List children = layer.getChildren();
-		
-		children.remove(fig);
-		children.add(fig);
+		layer.getChildren().remove(fig);
+		layer.getChildren().add(fig);
 	}
 	
 

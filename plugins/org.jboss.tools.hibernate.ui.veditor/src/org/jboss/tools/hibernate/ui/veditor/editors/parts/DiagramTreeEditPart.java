@@ -19,8 +19,8 @@ public class DiagramTreeEditPart extends org.eclipse.gef.editparts.AbstractTreeE
 	 *
 	 * @param model  Model for this.
 	 */
-	public DiagramTreeEditPart(Object model) {
-		super (model);
+	public DiagramTreeEditPart(OrmDiagram model) {
+		super(model);
 	}
 
 	/**

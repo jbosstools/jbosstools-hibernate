@@ -20,9 +20,8 @@ public class HibernateUtils {
 	public static String getPersistentClassName(PersistentClass rootClass) {
 		if (rootClass == null) {
 			return ""; //$NON-NLS-1$
-		} else { 
-			return rootClass.getEntityName() != null ? rootClass.getEntityName() : rootClass.getClassName();
-		}
+		} 
+		return rootClass.getEntityName() != null ? rootClass.getEntityName() : rootClass.getClassName();
 	}
 	
 	public static String getPersistentClassName(String className) {
@@ -34,23 +33,28 @@ public class HibernateUtils {
 		return className;
 	}
 	
-	public static boolean isPrimaryKey(Column column){
+	public static boolean isPrimaryKey(Column column) {
 		Table table = getTable(column);
-		if(table != null){
-			if(table.getPrimaryKey() != null){
-				if(table.getPrimaryKey().containsColumn(column)) return true;
+		if (table != null) {
+			if (table.getPrimaryKey() != null) {
+				if (table.getPrimaryKey().containsColumn(column)) {
+					return true;
+				}
 			}
 		}
 		return false;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static boolean isForeignKey(Column column){
 		Table table = getTable(column);
-		if(table != null){
-			Iterator iter = table.getForeignKeyIterator();
-			while(iter.hasNext()){
-				ForeignKey fk = (ForeignKey)iter.next();
-				if(fk.containsColumn(column)) return true;
+		if (table != null) {
+			Iterator<ForeignKey> iter = table.getForeignKeyIterator();
+			while (iter.hasNext()) {
+				ForeignKey fk = iter.next();
+				if (fk.containsColumn(column)) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -58,8 +62,9 @@ public class HibernateUtils {
 	}
 	
 	public static Table getTable(Column column){
-		if(column.getValue() != null)
+		if (column.getValue() != null) {
 			return column.getValue().getTable();
+		}
 		return null;
 	}
 }

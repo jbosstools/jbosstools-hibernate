@@ -46,9 +46,10 @@ public class OpenMappingAction extends SelectionAction {
 		ConsoleConfiguration consoleConfig = objectEditorInput.getConfiguration();
 
 		VisualEditor part = (VisualEditor)getWorkbenchPart();
-		Set selectedElements = part.getSelectedElements();
+		//Set selectedElements = part.getSelectedElements();
+		Set<Object> selectedElements = part.getSelectedElements2();
 
-		Iterator iterator = selectedElements.iterator();
+		Iterator<Object> iterator = selectedElements.iterator();
 		while (iterator.hasNext()) {
 			Object selection = iterator.next();
 			if (selection instanceof Property

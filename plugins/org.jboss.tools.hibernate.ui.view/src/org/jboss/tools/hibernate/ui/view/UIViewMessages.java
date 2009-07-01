@@ -9,6 +9,8 @@ public class UIViewMessages extends NLS {
 	public static String OrmLabelProvider_element;
 	public static String OrmLabelProvider_orm_element;
 	public static String OrmLabelProvider_unknown_type_of_element_in_tree_of_type;
+	public static String ViewPlugin_no_message_1;
+	public static String ViewPlugin_no_message_2;
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, UIViewMessages.class);

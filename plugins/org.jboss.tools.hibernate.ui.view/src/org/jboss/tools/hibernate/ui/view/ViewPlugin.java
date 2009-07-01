@@ -10,63 +10,40 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.view;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.MissingResourceException;
-import java.util.Properties;
-import java.util.ResourceBundle;
 
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
  * The main plugin class to be used in the desktop.
  */
-public class ViewPlugin extends BaseUIPlugin {
+public class ViewPlugin extends AbstractUIPlugin {
+
+	public static final String ID = "org.jboss.tools.hibernate.view"; //$NON-NLS-1$
+
 	private static ViewPlugin plugin;
-	private ResourceBundle resourceBundle;
-
-	/**
-	 * @deprecated use bundle via ImageBundle.getString()
-	 */
-	public static final ResourceBundle BUNDLE_IMAGE = ImageBundle.getBundle();
-
-	public static boolean TRACE = false;
-	public static boolean TRACE_VIEW = false;
-	public static boolean TRACE_WIZARD = false;
-
-	public static final String PLUGIN_ID = "org.jboss.tools.hibernate.view"; //$NON-NLS-1$
-	public static final String autoMappingSettingPrefPage = "autoMappingSettingPrefPage";	 //$NON-NLS-1$
 
 	public ViewPlugin() {
 		super();
 		setPlugin(this);
-
-		try {
-			resourceBundle = ResourceBundle.getBundle(PLUGIN_ID + ".EditPluginResources"); //$NON-NLS-1$
-		} catch (MissingResourceException x) {
-			resourceBundle = null;
-		}
 	}
 
 	public static ImageDescriptor getImageDescriptor(String name) {
-		String iconPath = "images/"; //$NON-NLS-1$
+		final String iconPath = "images/"; //$NON-NLS-1$
+		final URL installURL = getDefault().getBundle().getEntry("/"); //$NON-NLS-1$
+		URL url = null;
 		try {
-			URL installURL = getDefault().getBundle().getEntry("/");; //$NON-NLS-1$
-			URL url = new URL(installURL, iconPath + name);
-			return ImageDescriptor.createFromURL(url);
+			url = new URL(installURL, iconPath + name);
 		} catch (MalformedURLException e) {
-			return ImageDescriptor.getMissingImageDescriptor();
 		}
+		return ImageDescriptor.createFromURL(url);
 	}
 
 	public void start(BundleContext context) throws Exception {
@@ -85,60 +62,10 @@ public class ViewPlugin extends BaseUIPlugin {
 		ViewPlugin.plugin = plugin;
 	}
 
-	public static String getResourceString(String key) {
-		ResourceBundle bundle = ViewPlugin.getDefault().getResourceBundle();
-		try {
-			return (bundle != null) ? bundle.getString(key) : key;
-		} catch (MissingResourceException e) {
-			return key;
-		}
-	}
-
-	public ResourceBundle getResourceBundle() {
-		return resourceBundle;
-	}
-
-	public static Shell getActiveWorkbenchShell() {
-		IWorkbenchWindow window = getActiveWorkbenchWindow();
-		if (window != null) {
-			return window.getShell();
-		}
-		return null;
-	}
-
-	public static IWorkbenchWindow getActiveWorkbenchWindow() {
-		return getDefault().getWorkbench().getActiveWorkbenchWindow();
-	}
-
 	public static IWorkbenchPage getPage(){
 	    IWorkbench workbench = PlatformUI.getWorkbench();
 	    IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
 	    return window.getActivePage();
 	}
 
-	static {
-
-		String value = Platform.getDebugOption(PLUGIN_ID + "/debug"); //$NON-NLS-1$
-		if (value != null && value.equalsIgnoreCase("true")) TRACE = true; //$NON-NLS-1$
-
-		value = Platform.getDebugOption(PLUGIN_ID + "/debug/view"); //$NON-NLS-1$
-		if (value != null && value.equalsIgnoreCase("true")) TRACE_VIEW = true; //$NON-NLS-1$
-
-		value = Platform.getDebugOption(PLUGIN_ID + "/debug/view/wizard"); //$NON-NLS-1$
-		if (value != null && value.equalsIgnoreCase("true")) TRACE_WIZARD = true;		 //$NON-NLS-1$
-
-	}
-
-	public static void loadPreferenceStoreProperties(Properties properties, String key){
-		IPreferenceStore preferenceStore = ViewPlugin.getDefault().getPreferenceStore();
-		String value = preferenceStore.getString(key);
-		if (value.length() != 0){
-			ByteArrayInputStream bain = new ByteArrayInputStream(value.getBytes());
-			try {
-				properties.load(bain);
-			} catch (IOException e) {
-				getDefault().logError(UIViewMessages.ViewPlugin_canot_load_preference_store_properties, e);
-			}
-		}
-	}
 }

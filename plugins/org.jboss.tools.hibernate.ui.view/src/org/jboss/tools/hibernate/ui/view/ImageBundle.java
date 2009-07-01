@@ -19,11 +19,4 @@ public class ImageBundle {
 			return '!' + key + '!';
 		}
 	}
-
-	/**
-	 * @deprecated use bundle via ImageBundle.getString()
-	 */
-	public static ResourceBundle getBundle() {
-		return RESOURCE_BUNDLE;
-	}
 }

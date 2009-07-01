@@ -21,10 +21,6 @@ public class ObjectEditorInput implements IEditorInput{
 	protected Object fObject;
 	protected ConsoleConfiguration configuration;
 
-	public ObjectEditorInput(Object object) {
-		fObject = object;
-	}
-
 	public ObjectEditorInput(ConsoleConfiguration configuration, Object object) {
 		fObject = object;
 		this.configuration = configuration;

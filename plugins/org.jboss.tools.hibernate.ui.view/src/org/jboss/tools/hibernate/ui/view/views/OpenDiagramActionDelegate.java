@@ -16,24 +16,34 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IObjectActionDelegate;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.internal.ObjectPluginAction;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.eclipse.console.utils.ProjectUtils;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.ui.view.ViewPlugin;
 
 @SuppressWarnings("restriction")
-public class OpenDiagramActionDelegate extends OpenActionDelegate {
+public class OpenDiagramActionDelegate implements IObjectActionDelegate {
 
 	private HashMap<Object, ObjectEditorInput> hashMap = new HashMap<Object, ObjectEditorInput>();
+	//private IWorkbenchPart fPart;
+
+	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
+		//this.fPart = targetPart;
+	}
+
+	public void selectionChanged(IAction action, ISelection selection) {
+	}
 
 	public void run(IAction action) {
     	ObjectPluginAction objectPluginAction = (ObjectPluginAction)action;
@@ -58,7 +68,7 @@ public class OpenDiagramActionDelegate extends OpenActionDelegate {
 	    	try {
 	    		openEditor(setPC, consoleConfiguration);
 	    	} catch (PartInitException e) {
-				ViewPlugin.getDefault().logError("Can't open mapping view.", e);		//$NON-NLS-1$
+	    		HibernateConsolePlugin.getDefault().logErrorMessage("Can't open mapping view.", e);		//$NON-NLS-1$
 			} 
     	}
 	}
@@ -66,12 +76,12 @@ public class OpenDiagramActionDelegate extends OpenActionDelegate {
 	public IEditorPart openEditor(PersistentClass persClass,
 			ConsoleConfiguration consoleConfiguration) throws PartInitException {
 		ObjectEditorInput input = hashMap.get(persClass.getRootClass());
-		if(input == null) {
+		if (input == null) {
 			input = new ObjectEditorInput(consoleConfiguration, persClass.getRootClass());
 			hashMap.put(persClass.getRootClass(), input);
 		}
 
-		return IDE.openEditor(ViewPlugin.getPage(),input ,"org.jboss.tools.hibernate.ui.veditor.editors.visualeditor");		//$NON-NLS-1$
+		return IDE.openEditor(ViewPlugin.getPage(),input, "org.jboss.tools.hibernate.ui.veditor.editors.visualeditor");		//$NON-NLS-1$
 	}
 
 	public IEditorPart openEditor(Set<PersistentClass> setPC, ConsoleConfiguration consoleConfiguration) throws PartInitException {
@@ -95,6 +105,6 @@ public class OpenDiagramActionDelegate extends OpenActionDelegate {
 			hashMap.put(id, input);
 		}
 
-		return IDE.openEditor(ViewPlugin.getPage(),input ,"org.jboss.tools.hibernate.ui.veditor.editors.visualeditor");		//$NON-NLS-1$
+		return IDE.openEditor(ViewPlugin.getPage(),input, "org.jboss.tools.hibernate.ui.veditor.editors.visualeditor");		//$NON-NLS-1$
 	}
 }

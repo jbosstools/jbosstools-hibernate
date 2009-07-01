@@ -70,9 +70,9 @@ public class OpenSourceAction extends SelectionAction {
 	}
 
 	protected boolean calculateEnabled() {
-		//VisualEditor part = (VisualEditor)getWorkbenchPart();
-		//return part.getSelectedElements().size() > 0;
-		/**/
+		VisualEditor part = (VisualEditor)getWorkbenchPart();
+		return part.getSelectedElements().size() > 0;
+		/** /
 		VisualEditor part = (VisualEditor)getWorkbenchPart();
 		Set selectedElements = part.getSelectedElements();
 		Iterator iterator = selectedElements.iterator();

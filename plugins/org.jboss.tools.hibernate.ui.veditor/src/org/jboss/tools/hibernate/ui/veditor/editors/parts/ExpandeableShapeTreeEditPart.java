@@ -11,15 +11,12 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.ExpandeableShape;
 import org.jboss.tools.hibernate.ui.veditor.editors.model.Shape;
 import org.jboss.tools.hibernate.ui.view.views.OrmLabelProvider;
-import org.jboss.tools.hibernate.ui.view.views.OrmModelImageVisitor;
-import org.jboss.tools.hibernate.ui.view.views.OrmModelNameVisitor;
 
 public class ExpandeableShapeTreeEditPart extends
 		org.eclipse.gef.editparts.AbstractTreeEditPart implements
 		PropertyChangeListener {
 
-	static final protected OrmLabelProvider ormLabelProvider = new OrmLabelProvider(
-			new OrmModelImageVisitor(), new OrmModelNameVisitor());
+	protected OrmLabelProvider ormLabelProvider;
 
 	/**
 	 * Constructor initializes this with the given model.
@@ -27,8 +24,10 @@ public class ExpandeableShapeTreeEditPart extends
 	 * @param model
 	 *            Model for this.
 	 */
-	public ExpandeableShapeTreeEditPart(Object model) {
+	public ExpandeableShapeTreeEditPart(ExpandeableShape model) {
 		super(model);
+		ConsoleConfiguration cfg = model.getOrmDiagram().getConsoleConfig();
+		ormLabelProvider = new OrmLabelProvider(cfg.getConfiguration());
 	}
 
 	/**
@@ -65,14 +64,10 @@ public class ExpandeableShapeTreeEditPart extends
 		if (getWidget() instanceof Tree) {
 			return;
 		}
-
 		Shape model = (Shape) getModel();
-
 		Object element = model.getOrmElement();
-		ConsoleConfiguration cfg = model.getOrmDiagram().getConsoleConfig();
-
 		setWidgetImage(ormLabelProvider.getImage(element));
-		setWidgetText(ormLabelProvider.getText(element, cfg));
+		setWidgetText(ormLabelProvider.getText(element));
 	}
 
 }

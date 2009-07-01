@@ -189,6 +189,21 @@ public class VisualEditor extends GraphicalEditor {
 		return ret;
 	}
 
+	public Set<Object> getSelectedElements2() {
+		Set<Object> ret = new HashSet<Object>();
+		List<?> selectedEditParts = getGraphicalViewer().getSelectedEditParts();
+		Iterator<?> iterator = selectedEditParts.iterator();
+		while (iterator.hasNext()) {
+			Object elem = iterator.next();
+			if (elem instanceof OrmEditPart) {
+				Shape shape = (Shape)((OrmEditPart)elem).getModel();
+				Object ormElement = shape.getOrmElement();
+				ret.add(ormElement);
+			}
+		}
+		return ret;
+	}
+
 	public OrmDiagram getViewerContents() {
 		return ormDiagram;
 	}
