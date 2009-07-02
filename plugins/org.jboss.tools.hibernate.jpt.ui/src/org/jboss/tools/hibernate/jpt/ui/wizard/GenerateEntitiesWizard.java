@@ -66,7 +66,6 @@ public class GenerateEntitiesWizard extends Wizard {
 
 			wc.setAttribute(HibernateLaunchConstants.ATTR_ENABLE_JDK5, true);
 			wc.setAttribute(HibernateLaunchConstants.ATTR_ENABLE_EJB3_ANNOTATIONS, true);
-			wc.setAttribute("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect"); //$NON-NLS-1$ //$NON-NLS-2$
 			wc.setAttribute("hibernate.temp.use_jdbc_metadata_defaults", true); //$NON-NLS-1$
 
 			wc.setAttribute(HibernateLaunchConstants.ATTR_EXPORTERS + '.' + HibernateJpaPlatformUi.exporter_id + ".extension_id",  //$NON-NLS-1$
