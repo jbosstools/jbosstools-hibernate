@@ -25,7 +25,7 @@ import org.hibernate.eclipse.console.test.utils.Utils;
 import org.hibernate.eclipse.console.workbench.ConfigurationWorkbenchAdapter;
 import org.hibernate.eclipse.console.workbench.ConsoleConfigurationWorkbenchAdapter;
 import org.hibernate.mapping.PersistentClass;
-import org.jboss.tools.hibernate.ui.view.views.OpenDiagramActionDelegate;
+import org.jboss.tools.hibernate.ui.view.OpenDiagramActionDelegate;
 
 /**
  * @author Dmitry Geraskov
