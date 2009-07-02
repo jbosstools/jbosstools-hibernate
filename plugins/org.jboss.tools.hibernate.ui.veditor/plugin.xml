@@ -4,12 +4,24 @@
     <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor"
-            contributorClass="org.jboss.tools.hibernate.ui.veditor.editors.EditorActionContributor"
+            class="org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer"
+            contributorClass="org.jboss.tools.hibernate.ui.diagram.editors.EditorActionContributor"
             icon="$nl$/icons/hibernate_small_icon.gif"
-            id="org.jboss.tools.hibernate.ui.veditor.editors.visualeditor"
+            id="org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer"
             name="Hibernate Diagram Viewer">
       </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.popupMenus">
+      <objectContribution id="diagramEditorAction" objectClass="org.hibernate.mapping.PersistentClass"> 
+         <menu id="org.jboss.tools.hibernate.ui.view.openDiagram" label="Open Mapping Diagram" path="diagramEditorAction"/>
+         <action
+            id="org.jboss.tools.hibernate.ui.view.openDiagramAction" 
+            label="Open Mapping Diagram" 
+            icon="images/hibernate_small_icon.gif" 
+            class="org.jboss.tools.hibernate.ui.view.OpenDiagramActionDelegate"> 
+         </action> 
+      </objectContribution> 
    </extension>
 
 </plugin>
