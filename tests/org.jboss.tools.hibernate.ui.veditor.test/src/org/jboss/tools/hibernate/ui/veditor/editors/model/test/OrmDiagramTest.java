@@ -17,7 +17,7 @@ import java.util.List;
 
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.mapping.RootClass;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;

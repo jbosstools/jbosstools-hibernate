@@ -21,8 +21,8 @@ import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
-import org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor;
-import org.jboss.tools.hibernate.ui.veditor.editors.actions.ExportImageAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExportImageAction;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
@@ -44,7 +44,7 @@ public class ExportImageActionTest extends TestCase {
 
 	public void testAction() {
 		
-		final VisualEditor editor = context.mock(VisualEditor.class);;
+		final DiagramViewer editor = context.mock(DiagramViewer.class);;
 		final FileDialog saveDialog = context.mock(FileDialog.class);;
 		final GraphicalViewer graphicalViewer = context.mock(GraphicalViewer.class);;
 		final ScalableFreeformRootEditPart scalableFreeformRootEditPart = context.mock(ScalableFreeformRootEditPart.class);;
