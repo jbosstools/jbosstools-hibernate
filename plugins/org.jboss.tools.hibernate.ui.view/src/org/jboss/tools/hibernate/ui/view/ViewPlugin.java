@@ -35,17 +35,6 @@ public class ViewPlugin extends AbstractUIPlugin {
 		setPlugin(this);
 	}
 
-	public static ImageDescriptor getImageDescriptor(String name) {
-		final String iconPath = "images/"; //$NON-NLS-1$
-		final URL installURL = getDefault().getBundle().getEntry("/"); //$NON-NLS-1$
-		URL url = null;
-		try {
-			url = new URL(installURL, iconPath + name);
-		} catch (MalformedURLException e) {
-		}
-		return ImageDescriptor.createFromURL(url);
-	}
-
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 	}

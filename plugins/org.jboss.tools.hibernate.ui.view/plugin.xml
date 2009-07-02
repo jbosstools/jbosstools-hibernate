@@ -1,15 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?><?eclipse version="3.0"?>
 <plugin>
-
-   <extension point="org.eclipse.ui.popupMenus">
-      <objectContribution id="diagramEditorAction" objectClass="org.hibernate.mapping.PersistentClass"> 
-         <menu id="org.jboss.tools.hibernate.ui.view.openDiagram" label="Open Mapping Diagram" path="diagramEditorAction"/>
-         <action
-            id="org.jboss.tools.hibernate.ui.view.openDiagramAction" 
-            label="Open Mapping Diagram" 
-            icon="images/hibernate_small_icon.gif" 
-            class="org.jboss.tools.hibernate.ui.view.views.OpenDiagramActionDelegate"> 
-         </action> 
-      </objectContribution> 
-   </extension>
 </plugin>
