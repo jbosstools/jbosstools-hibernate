@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.veditor.editors.figures;
+package org.jboss.tools.hibernate.ui.diagram.editors.figures;
 
 import java.util.List;
 

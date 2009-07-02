@@ -8,10 +8,10 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.veditor.editors.autolayout;
+package org.jboss.tools.hibernate.ui.diagram.editors.autolayout;
 
-import org.jboss.tools.hibernate.ui.veditor.editors.autolayout.impl.AutoLayoutImpl;
-import org.jboss.tools.hibernate.ui.veditor.editors.autolayout.impl.Items;
+import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.impl.AutoLayoutImpl;
+import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.impl.Items;
 
 
 public class AutoLayout {

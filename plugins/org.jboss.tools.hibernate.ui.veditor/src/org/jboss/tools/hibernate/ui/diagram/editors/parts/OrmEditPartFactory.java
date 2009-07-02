@@ -8,17 +8,17 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.veditor.editors.parts;
+package org.jboss.tools.hibernate.ui.diagram.editors.parts;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
-import org.jboss.tools.hibernate.ui.veditor.UIVEditorMessages;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.ComponentShape;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.Connection;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.ExpandeableShape;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmShape;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.Shape;
+import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.ComponentShape;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.ExpandeableShape;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmShape;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
 
 
 public class OrmEditPartFactory implements EditPartFactory {
@@ -50,8 +50,8 @@ public class OrmEditPartFactory implements EditPartFactory {
 			return new ConnectionEditPart();
 		}
 		throw new RuntimeException(
-				UIVEditorMessages.PartFactory_canot_create_part_for_model_element
-				+ ((modelElement != null) ? modelElement.getClass().getName() : UIVEditorMessages.PartFactory_null));
+				DiagramViewerMessages.PartFactory_canot_create_part_for_model_element
+				+ ((modelElement != null) ? modelElement.getClass().getName() : DiagramViewerMessages.PartFactory_null));
 	}
 
 }

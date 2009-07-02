@@ -8,23 +8,23 @@
  * Contributors:
  *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.veditor.editors.actions;
+package org.jboss.tools.hibernate.ui.diagram.editors.actions;
 
 import org.eclipse.jface.action.Action;
-import org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor;
+import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
 
 public class AutoLayoutAction extends Action {
 
 	public static final String ACTION_ID = "Auto layout"; //$NON-NLS-1$
 
-	private VisualEditor editor;
+	private DiagramViewer editor;
 
-	public AutoLayoutAction(VisualEditor editor) {
+	public AutoLayoutAction(DiagramViewer editor) {
 		this.editor = editor;
 		setId(ACTION_ID);
 		setText(ACTION_ID);
 		//setImageDescriptor(ImageDescriptor.createFromFile(
-		//		VisualEditor.class, "icons/export.png"));
+		//		DiagramViewer.class, "icons/export.png"));
 	}
 
 	public void run() {

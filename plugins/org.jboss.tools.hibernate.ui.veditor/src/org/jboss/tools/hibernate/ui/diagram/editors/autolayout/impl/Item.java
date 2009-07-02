@@ -8,12 +8,12 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.veditor.editors.autolayout.impl;
+package org.jboss.tools.hibernate.ui.diagram.editors.autolayout.impl;
 
 import java.util.*;
 
-import org.jboss.tools.hibernate.ui.veditor.editors.autolayout.IItemInfo;
-import org.jboss.tools.hibernate.ui.veditor.editors.autolayout.ILinkInfo;
+import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.IItemInfo;
+import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.ILinkInfo;
 
 
 public class Item {

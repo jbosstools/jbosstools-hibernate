@@ -8,14 +8,14 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.veditor.editors.autolayout.impl;
+package org.jboss.tools.hibernate.ui.diagram.editors.autolayout.impl;
 
 import java.util.*;
 
-import org.jboss.tools.hibernate.ui.veditor.VisualEditorPlugin;
-import org.jboss.tools.hibernate.ui.veditor.editors.autolayout.IItemInfo;
-import org.jboss.tools.hibernate.ui.veditor.editors.autolayout.ILinkInfo;
-import org.jboss.tools.hibernate.ui.veditor.editors.autolayout.IDiagramInfo;
+import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
+import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.IItemInfo;
+import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.ILinkInfo;
+import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.IDiagramInfo;
 
 public class Items {
 	protected LayuotConstants constants;

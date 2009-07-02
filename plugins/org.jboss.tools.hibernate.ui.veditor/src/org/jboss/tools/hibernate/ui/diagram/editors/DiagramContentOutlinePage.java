@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.veditor.editors;
+package org.jboss.tools.hibernate.ui.diagram.editors;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -38,8 +38,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.PageBook;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
-import org.jboss.tools.hibernate.ui.veditor.editors.parts.TreePartFactory;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
+import org.jboss.tools.hibernate.ui.diagram.editors.parts.TreePartFactory;
 
 
 public class DiagramContentOutlinePage extends ContentOutlinePage implements
@@ -47,7 +47,7 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 	
 	private GraphicalViewer graphicalViewer;
 	
-	private VisualEditor editor;
+	private DiagramViewer editor;
 	
 	private OrmDiagram ormDiagram;
 
@@ -149,7 +149,7 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 			}
 		};
 		showOutlineAction.setImageDescriptor(ImageDescriptor.createFromFile(
-				VisualEditor.class,"icons/outline.gif")); //$NON-NLS-1$
+				DiagramViewer.class,"icons/outline.gif")); //$NON-NLS-1$
 		tbm.add(showOutlineAction);
 		showOverviewAction = new Action() {
 			public void run() {
@@ -157,7 +157,7 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 			}
 		};
 		showOverviewAction.setImageDescriptor(ImageDescriptor.createFromFile(
-				VisualEditor.class,"icons/overview.gif")); //$NON-NLS-1$
+				DiagramViewer.class,"icons/overview.gif")); //$NON-NLS-1$
 		tbm.add(showOverviewAction);
 		showPage(ID_OVERVIEW);
 	}
@@ -310,11 +310,11 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 		this.ormDiagram = ormDiagram;
 	}
 
-	public VisualEditor getEditor() {
+	public DiagramViewer getEditor() {
 		return editor;
 	}
 
-	public void setEditor(VisualEditor editor) {
+	public void setEditor(DiagramViewer editor) {
 		this.editor = editor;
 	}
 

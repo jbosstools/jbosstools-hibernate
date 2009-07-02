@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.veditor.editors.parts;
+package org.jboss.tools.hibernate.ui.diagram.editors.parts;
 
 import java.beans.PropertyChangeEvent;
 
@@ -31,11 +31,11 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
-import org.jboss.tools.hibernate.ui.veditor.editors.figures.RoundLineBorder;
-import org.jboss.tools.hibernate.ui.veditor.editors.figures.TitleFigure;
-import org.jboss.tools.hibernate.ui.veditor.editors.figures.TitleLabel;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmShape;
+import org.jboss.tools.hibernate.ui.diagram.editors.figures.RoundLineBorder;
+import org.jboss.tools.hibernate.ui.diagram.editors.figures.TitleFigure;
+import org.jboss.tools.hibernate.ui.diagram.editors.figures.TitleLabel;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmShape;
 
 
 public class OrmShapeEditPart extends ExpandeableShapeEditPart{

@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.veditor.editors.autolayout;
+package org.jboss.tools.hibernate.ui.diagram.editors.autolayout;
 
 public interface ILinkInfo {
 	public String getTargetID();

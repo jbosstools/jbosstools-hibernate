@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.ui.veditor.editors.parts;
+package org.jboss.tools.hibernate.ui.diagram.editors.parts;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -7,8 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Tree;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.Shape;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
 
 public class DiagramTreeEditPart extends org.eclipse.gef.editparts.AbstractTreeEditPart
 	implements PropertyChangeListener
@@ -19,8 +19,8 @@ public class DiagramTreeEditPart extends org.eclipse.gef.editparts.AbstractTreeE
 	 *
 	 * @param model  Model for this.
 	 */
-	public DiagramTreeEditPart(Object model) {
-		super (model);
+	public DiagramTreeEditPart(OrmDiagram model) {
+		super(model);
 	}
 
 	/**

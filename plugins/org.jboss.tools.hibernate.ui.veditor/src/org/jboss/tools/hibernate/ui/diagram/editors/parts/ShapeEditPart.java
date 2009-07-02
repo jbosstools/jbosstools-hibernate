@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.veditor.editors.parts;
+package org.jboss.tools.hibernate.ui.diagram.editors.parts;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -40,22 +40,30 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
-import org.jboss.tools.hibernate.ui.veditor.editors.figures.TitleFigure;
-import org.jboss.tools.hibernate.ui.veditor.editors.figures.TopLineBorder;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.Connection;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.ModelElement;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.Shape;
-import org.jboss.tools.hibernate.ui.view.views.OrmLabelProvider;
-import org.jboss.tools.hibernate.ui.view.views.OrmModelImageVisitor;
-import org.jboss.tools.hibernate.ui.view.views.OrmModelNameVisitor;
+import org.jboss.tools.hibernate.ui.diagram.editors.figures.TitleFigure;
+import org.jboss.tools.hibernate.ui.diagram.editors.figures.TopLineBorder;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.ModelElement;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
+import org.jboss.tools.hibernate.ui.view.OrmLabelProvider;
 
 
-public class ShapeEditPart extends
-OrmEditPart implements PropertyChangeListener,  NodeEditPart {
+public class ShapeEditPart extends OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 
-	static final protected OrmLabelProvider ormLabelProvider =
-		new OrmLabelProvider(new OrmModelImageVisitor(), new OrmModelNameVisitor());
+	protected OrmLabelProvider ormLabelProvider = new OrmLabelProvider();
+
+	public void setModel(Object model) {
+		super.setModel(model);
+		ModelElement modelTmp = (ModelElement)model;
+		while (modelTmp.getParent() != null) {
+			modelTmp = modelTmp.getParent();
+		}
+		if (modelTmp instanceof OrmDiagram) {
+			ConsoleConfiguration consoleConfig = ((OrmDiagram)modelTmp).getConsoleConfig();
+			ormLabelProvider.setConfig(consoleConfig.getConfiguration());
+		}
+	}
 
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE,  new ShapesSelectionEditPolicy());
@@ -65,15 +73,7 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 	protected IFigure createFigure() {
 		if (getModel() instanceof Shape) {
 			Label label = new Label();
-			ModelElement model = (ModelElement) getModel();
-			while (model.getParent() != null) {
-				model = model.getParent();
-			}
-			ConsoleConfiguration cfg = null;
-			if (model instanceof OrmDiagram) {
-				cfg = ((OrmDiagram) model).getConsoleConfig();
-			}
-			label.setText(ormLabelProvider.getText(getElement(), cfg));
+			label.setText(ormLabelProvider.getText(getElement()));
 			label.setBackgroundColor(getColor());
 			label.setIcon(ormLabelProvider.getImage(getElement()));
 			label.setLabelAlignment(PositionConstants.LEFT);
@@ -119,14 +119,14 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 	public void activate() {
 		if (!isActive()) {
 			super.activate();
-			((ModelElement) getModel()).addPropertyChangeListener(this);
+			getCastedModel().addPropertyChangeListener(this);
 		}
 	}
 
 	public void deactivate() {
 		if (isActive()) {
 			super.deactivate();
-			((ModelElement) getModel()).removePropertyChangeListener(this);
+			getCastedModel().removePropertyChangeListener(this);
 		}
 	}
 
@@ -243,28 +243,28 @@ OrmEditPart implements PropertyChangeListener,  NodeEditPart {
 
 		protected void hideSelection() {
 			getCastedModel().hideSelection();
-			Iterator iter  = getCastedModel().getSourceConnections().iterator();
+			Iterator<Connection> iter = getCastedModel().getSourceConnections().iterator();
 			while (iter.hasNext()) {
-				Connection element = (Connection) iter.next();
+				Connection element = iter.next();
 				element.hideSelection();
 			}
 			iter = getCastedModel().getTargetConnections().iterator();
 			while (iter.hasNext()) {
-				Connection element = (Connection) iter.next();
+				Connection element = iter.next();
 				element.hideSelection();
 			}
 		}
 
 		protected void showSelection() {
 			getCastedModel().showSelection();
-			Iterator iter  = getCastedModel().getSourceConnections().iterator();
+			Iterator<Connection> iter  = getCastedModel().getSourceConnections().iterator();
 			while (iter.hasNext()) {
-				Connection element = (Connection) iter.next();
+				Connection element = iter.next();
 				element.showSelection();
 			}
 			iter = getCastedModel().getTargetConnections().iterator();
 			while (iter.hasNext()) {
-				Connection element = (Connection) iter.next();
+				Connection element = iter.next();
 				element.showSelection();
 			}
 		}

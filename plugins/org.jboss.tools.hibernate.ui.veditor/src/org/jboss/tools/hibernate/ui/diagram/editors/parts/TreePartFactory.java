@@ -1,27 +1,27 @@
-package org.jboss.tools.hibernate.ui.veditor.editors.parts;
+package org.jboss.tools.hibernate.ui.diagram.editors.parts;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
-import org.jboss.tools.hibernate.ui.veditor.UIVEditorMessages;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.ExpandeableShape;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.Shape;
+import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.ExpandeableShape;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
 
 public class TreePartFactory implements EditPartFactory {
 
 	public EditPart createEditPart(EditPart context, Object modelElement) {
 		if (modelElement instanceof OrmDiagram) {
-			return new DiagramTreeEditPart(modelElement);
+			return new DiagramTreeEditPart((OrmDiagram)modelElement);
 		}
 		if (modelElement instanceof ExpandeableShape) {
-			return new ExpandeableShapeTreeEditPart(modelElement);
+			return new ExpandeableShapeTreeEditPart((ExpandeableShape)modelElement);
 		}
 		if (modelElement instanceof Shape) {
-			return new ShapeTreeEditPart(modelElement);
+			return new ShapeTreeEditPart((Shape)modelElement);
 		}
-		throw new RuntimeException(UIVEditorMessages.PartFactory_canot_create_part_for_model_element
+		throw new RuntimeException(DiagramViewerMessages.PartFactory_canot_create_part_for_model_element
 				+ ((modelElement != null) ? modelElement.getClass().getName()
-						: UIVEditorMessages.PartFactory_null));
+						: DiagramViewerMessages.PartFactory_null));
 	}
 
 }

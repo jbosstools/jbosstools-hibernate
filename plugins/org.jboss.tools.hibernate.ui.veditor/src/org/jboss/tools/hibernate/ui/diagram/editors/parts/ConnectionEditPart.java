@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.veditor.editors.parts;
+package org.jboss.tools.hibernate.ui.diagram.editors.parts;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -29,11 +29,9 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
-import org.jboss.tools.hibernate.ui.veditor.editors.figures.RoundPolylineConnection;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.Connection;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.ModelElement;
-
-
+import org.jboss.tools.hibernate.ui.diagram.editors.figures.RoundPolylineConnection;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.ModelElement;
 
 class ConnectionEditPart extends AbstractConnectionEditPart 
 implements PropertyChangeListener, EditPartListener {

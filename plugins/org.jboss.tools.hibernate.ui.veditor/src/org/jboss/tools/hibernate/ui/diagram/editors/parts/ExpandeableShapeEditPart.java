@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.veditor.editors.parts;
+package org.jboss.tools.hibernate.ui.diagram.editors.parts;
 
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
@@ -23,12 +23,12 @@ import org.eclipse.gef.RequestConstants;
 import org.eclipse.swt.graphics.RGB;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
-import org.jboss.tools.hibernate.ui.veditor.editors.figures.TitleLabel;
-import org.jboss.tools.hibernate.ui.veditor.editors.figures.TopLineBorder;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.Connection;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.ExpandeableShape;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmShape;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.Shape;
+import org.jboss.tools.hibernate.ui.diagram.editors.figures.TitleLabel;
+import org.jboss.tools.hibernate.ui.diagram.editors.figures.TopLineBorder;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.ExpandeableShape;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmShape;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
 
 
 public class ExpandeableShapeEditPart extends ShapeEditPart {

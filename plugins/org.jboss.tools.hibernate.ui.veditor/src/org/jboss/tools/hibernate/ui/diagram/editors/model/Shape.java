@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.veditor.editors.model;
+package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +19,8 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Value;
-import org.jboss.tools.hibernate.ui.view.views.HibernateUtils;
-import org.jboss.tools.hibernate.ui.view.views.OrmModelNameVisitor;
+import org.jboss.tools.hibernate.ui.view.HibernateUtils;
+import org.jboss.tools.hibernate.ui.view.OrmLabelProvider;
 
 public class Shape extends ModelElement {
 	
@@ -33,9 +33,9 @@ public class Shape extends ModelElement {
 	public static final String SHOW_SELECTION = "show selection"; //$NON-NLS-1$
 	public static final String SET_FOCUS = "set focus"; //$NON-NLS-1$
 	
-	private Object  ormElement;
+	private Object ormElement;
 	
-	static OrmModelNameVisitor ormModelNameVisitor;
+	private static OrmLabelProvider labelProvider = new OrmLabelProvider();
 		
 	private static IPropertyDescriptor[] descriptors_property;
 	private static IPropertyDescriptor[] descriptors_column;
@@ -60,8 +60,6 @@ public class Shape extends ModelElement {
 	private static final String PROPERTY_UNIQUE = "unique"; //$NON-NLS-1$
 
 	static {
-		
-		ormModelNameVisitor = new OrmModelNameVisitor();
 		
 		descriptors_property = new IPropertyDescriptor[] { 
 				new TextPropertyDescriptor(PROPERTY_NAME, PROPERTY_NAME),
@@ -233,103 +231,87 @@ public class Shape extends ModelElement {
 		if (PROPERTY_NAME.equals(propertyId)) {
 			if (prop != null) {
 				res = prop.getName();
-			}
-			else if (col != null) {
+			} else if (col != null) {
 				res = col.getName();
 			}
-		}
-		else if (PROPERTY_TYPE.equals(propertyId)) {
+		} else if (PROPERTY_TYPE.equals(propertyId)) {
 			if (prop != null) {
 				Value value = prop.getValue();
 				if (value instanceof Component) {
 					res = prop.getValue().toString();
-				}
-				else {
+				} else {
 					res = prop.getType().getReturnedClass().getName();
 				}
-			}
-			else if (col != null) {
-				String type = ormModelNameVisitor.getColumnSqlType(col, getOrmDiagram().getConsoleConfig());
-
+			} else if (col != null) {
+				String sqlType = col.getSqlType();
+				if (sqlType == null) {
+					labelProvider.setConfig(getOrmDiagram().getConsoleConfig().getConfiguration());
+					labelProvider.updateColumnSqlType(col);
+					sqlType = col.getSqlType();
+				}
 				StringBuffer name = new StringBuffer();
-
-				if (type != null) {
-					name.append(type.toUpperCase());
+				if (sqlType != null) {
+					name.append(sqlType.toUpperCase());
 					name.append(HibernateUtils.getTable(col) != null
 							&& HibernateUtils.isPrimaryKey(col) ? " PK" : ""); //$NON-NLS-1$  //$NON-NLS-2$
 					name.append(HibernateUtils.getTable(col) != null
 							&& HibernateUtils.isForeignKey(col) ? " FK" : ""); //$NON-NLS-1$ //$NON-NLS-2$
 				}
-
 				res = name.toString();
 			}
-		}
-		else if (PROPERTY_VALUE.equals(propertyId)) {
+		} else if (PROPERTY_VALUE.equals(propertyId)) {
 			if (prop != null) {
 				res = prop.getValue().toString();
-			}
-			else if (getOrmElement() instanceof Column) {
+			} else if (getOrmElement() instanceof Column) {
 				res = col.getValue().toString();
 			}
-		}
-		else if (PROPERTY_CLASS.equals(propertyId)) {
+		} else if (PROPERTY_CLASS.equals(propertyId)) {
 			if (prop != null) {
 				if (prop.getPersistentClass() != null) {
 					res = prop.getPersistentClass().getClassName();
 				}
 			}
-		}
-		else if (PROPERTY_SELECT.equals(propertyId)) {
+		} else if (PROPERTY_SELECT.equals(propertyId)) {
 			if (prop != null) {
 				res = Boolean.valueOf(prop.isSelectable()).toString(); 
 			}
-		}
-		else if (PROPERTY_INSERT.equals(propertyId)) {
+		} else if (PROPERTY_INSERT.equals(propertyId)) {
 			if (prop != null) {
 				res = Boolean.valueOf(prop.isInsertable()).toString(); 
 			}
-		}
-		else if (PROPERTY_UPDATE.equals(propertyId)) {
+		} else if (PROPERTY_UPDATE.equals(propertyId)) {
 			if (prop != null) {
 				res = Boolean.valueOf(prop.isUpdateable()).toString(); 
 			}
-		}
-		else if (PROPERTY_CASCADE.equals(propertyId)) {
+		} else if (PROPERTY_CASCADE.equals(propertyId)) {
 			if (prop != null) {
 				res = prop.getCascade(); 
 			}
-		}
-		else if (PROPERTY_LAZY.equals(propertyId)) {
+		} else if (PROPERTY_LAZY.equals(propertyId)) {
 			if (prop != null) {
 				res = Boolean.valueOf(prop.isLazy()).toString(); 
 			}
-		}
-		else if (PROPERTY_OPTIONAL.equals(propertyId)) {
+		} else if (PROPERTY_OPTIONAL.equals(propertyId)) {
 			if (prop != null) {
 				res = Boolean.valueOf(prop.isOptional()).toString(); 
 			}
-		}
-		else if (PROPERTY_NATURAL_IDENTIFIER.equals(propertyId)) {
+		} else if (PROPERTY_NATURAL_IDENTIFIER.equals(propertyId)) {
 			if (prop != null) {
 				res = Boolean.valueOf(prop.isNaturalIdentifier()).toString(); 
 			}
-		}
-		else if (PROPERTY_NODE_NAME.equals(propertyId)) {
+		} else if (PROPERTY_NODE_NAME.equals(propertyId)) {
 			if (prop != null) {
 				res = prop.getNodeName();
 			}
-		}
-		else if (PROPERTY_OPTIMISTIC_LOCKED.equals(propertyId)) {
+		} else if (PROPERTY_OPTIMISTIC_LOCKED.equals(propertyId)) {
 			if (prop != null) {
 				res = Boolean.valueOf(prop.isOptimisticLocked()).toString(); 
 			}
-		}
-		else if (PROPERTY_NULLABLE.equals(propertyId)) {
+		} else if (PROPERTY_NULLABLE.equals(propertyId)) {
 			if (col != null) {
 				res = Boolean.valueOf(col.isNullable()).toString(); 
 			}
-		}
-		else if (PROPERTY_UNIQUE.equals(propertyId)) {
+		} else if (PROPERTY_UNIQUE.equals(propertyId)) {
 			if (col != null) {
 				res = Boolean.valueOf(col.isUnique()).toString(); 
 			}

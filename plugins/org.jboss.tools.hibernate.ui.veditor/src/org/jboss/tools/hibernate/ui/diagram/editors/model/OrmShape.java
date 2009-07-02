@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.veditor.editors.model;
+package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
 import java.util.Iterator;
 
@@ -40,7 +40,7 @@ public class OrmShape extends ExpandeableShape {
 		Shape bodyOrmShape;
 		Object ormElement = getOrmElement();
 		if (ormElement instanceof RootClass) {
-			RootClass rootClass = (RootClass)getOrmElement();
+			RootClass rootClass = (RootClass)ormElement;
 			Property identifierProperty = rootClass.getIdentifierProperty();
 			if (identifierProperty != null) {
 				addChild(new Shape(identifierProperty));

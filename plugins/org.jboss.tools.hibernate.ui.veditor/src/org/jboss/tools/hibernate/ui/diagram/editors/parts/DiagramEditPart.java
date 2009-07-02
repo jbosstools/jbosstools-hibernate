@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.veditor.editors.parts;
+package org.jboss.tools.hibernate.ui.diagram.editors.parts;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -37,25 +37,25 @@ import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
-import org.jboss.tools.hibernate.ui.veditor.VisualEditorPlugin;
-import org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor;
-import org.jboss.tools.hibernate.ui.veditor.editors.autolayout.AutoLayout;
-import org.jboss.tools.hibernate.ui.veditor.editors.autolayout.IItemInfo;
-import org.jboss.tools.hibernate.ui.veditor.editors.autolayout.ILinkInfo;
-import org.jboss.tools.hibernate.ui.veditor.editors.autolayout.IDiagramInfo;
-import org.jboss.tools.hibernate.ui.veditor.editors.command.ShapeSetConstraintCommand;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.Connection;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.ModelElement;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmShape;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.Shape;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.SpecialOrmShape;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.SpecialRootClass;
-import org.jboss.tools.hibernate.ui.view.views.HibernateUtils;
+import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
+import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.AutoLayout;
+import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.IItemInfo;
+import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.ILinkInfo;
+import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.IDiagramInfo;
+import org.jboss.tools.hibernate.ui.diagram.editors.command.ShapeSetConstraintCommand;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.ModelElement;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmShape;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.SpecialOrmShape;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.SpecialRootClass;
+import org.jboss.tools.hibernate.ui.view.HibernateUtils;
 
 class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 
@@ -81,7 +81,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 			autolayout();
 			// restore();
 		} else if (OrmDiagram.DIRTY.equals(prop)) {
-			((VisualEditor) ((DefaultEditDomain) getViewer().getEditDomain())
+			((DiagramViewer) ((DefaultEditDomain) getViewer().getEditDomain())
 					.getEditorPart()).refreshDirty();
 		}
 	}
@@ -110,7 +110,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 							ormShape.setLocation(new Point(Integer
 									.parseInt(xy[0]), Integer.parseInt(xy[1])));
 						} catch (NumberFormatException e) {
-							VisualEditorPlugin.getDefault().logError(e);
+							HibernateConsolePlugin.getDefault().logErrorMessage("NumberFormatException: ", e); //$NON-NLS-1$
 						}
 					}
 					if (xy.length > 2) {

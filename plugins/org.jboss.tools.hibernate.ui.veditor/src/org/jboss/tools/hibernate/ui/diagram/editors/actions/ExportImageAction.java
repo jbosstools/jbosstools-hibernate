@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.veditor.editors.actions;
+package org.jboss.tools.hibernate.ui.diagram.editors.actions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
@@ -30,25 +30,25 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.widgets.FileDialog;
-import org.jboss.tools.hibernate.ui.veditor.UIVEditorMessages;
-import org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor;
+import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
+import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
 
 public class ExportImageAction extends Action {
 
 	public static final String ACTION_ID = "Export as Image"; //$NON-NLS-1$
 	public static final String[] dialogFilterExtensions = new String[] { "*.png", "*.jpg", "*.bmp" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-	public static final String[] dialogFilterNames = new String[] { UIVEditorMessages.ExportImageAction_png_format,
-		UIVEditorMessages.ExportImageAction_jpg_format, UIVEditorMessages.ExportImageAction_bmp_format };
+	public static final String[] dialogFilterNames = new String[] { DiagramViewerMessages.ExportImageAction_png_format,
+		DiagramViewerMessages.ExportImageAction_jpg_format, DiagramViewerMessages.ExportImageAction_bmp_format };
 
-	private VisualEditor editor;
+	private DiagramViewer editor;
 	private FileDialog saveDialog = null;
 
-	public ExportImageAction(VisualEditor editor) {
+	public ExportImageAction(DiagramViewer editor) {
 		this.editor = editor;
 		setId(ACTION_ID);
 		setText(ACTION_ID);
 		setImageDescriptor(ImageDescriptor.createFromFile(
-				VisualEditor.class,"icons/export.png")); //$NON-NLS-1$
+				DiagramViewer.class,"icons/export.png")); //$NON-NLS-1$
 	}
 	
 	/**
@@ -93,7 +93,7 @@ public class ExportImageAction extends Action {
 			outStream.flush();
 		} catch (Exception e) {
 			MessageDialog.openInformation(this.editor.getSite().getShell(),
-					UIVEditorMessages.ExportImageAction_error, UIVEditorMessages.ExportImageAction_failed_to_export_image + e.getMessage());
+					DiagramViewerMessages.ExportImageAction_error, DiagramViewerMessages.ExportImageAction_failed_to_export_image + e.getMessage());
 			return;
 		}
 		finally {

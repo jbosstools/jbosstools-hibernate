@@ -8,16 +8,17 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.veditor.editors.model;
+package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
 import java.util.Iterator;
 
+import org.hibernate.MappingException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.execution.ExecutionContext.Command;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.type.Type;
-import org.jboss.tools.hibernate.ui.veditor.VisualEditorPlugin;
 
 public class SpecialOrmShape extends OrmShape {
 	private Shape parentShape;
@@ -27,6 +28,7 @@ public class SpecialOrmShape extends OrmShape {
 //		generate();
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void generate() {
 		Shape bodyOrmShape;
 		RootClass rootClass = (RootClass)getOrmElement();
@@ -42,37 +44,33 @@ public class SpecialOrmShape extends OrmShape {
 			parentShape = bodyOrmShape;
 		}
 		
-		Iterator iterator = rootClass.getPropertyIterator();
+		Iterator<Property> iterator = rootClass.getPropertyIterator();
 		while (iterator.hasNext()) {
-			Property field = (Property)iterator.next();
-			try {
-				Type type = null;
-				if (getOrmDiagram() != null){
-					ConsoleConfiguration cfg = getOrmDiagram().getConsoleConfig();
-					final Property fField = field;
-					type = (Type) cfg.execute(new Command(){
-						public Object execute() {
-							return fField.getValue().getType();
-						}});								
-				} else {
-					try{
-						type = field.getValue().getType();
-					} catch (Exception e){
-						//type is not accessible
-						VisualEditorPlugin.getDefault().logError(e);
-					}
+			Property field = iterator.next();
+			Type type = null;
+			if (getOrmDiagram() != null){
+				ConsoleConfiguration cfg = getOrmDiagram().getConsoleConfig();
+				final Property fField = field;
+				type = (Type) cfg.execute(new Command(){
+					public Object execute() {
+						return fField.getValue().getType();
+					}});								
+			} else {
+				try{
+					type = field.getValue().getType();
+				} catch (MappingException e){
+					//type is not accessible
+					HibernateConsolePlugin.getDefault().logErrorMessage("MappingException: ", e); //$NON-NLS-1$
 				}
-				if (type != null && type.isEntityType()) {
-					bodyOrmShape = new ExpandeableShape(field);
-				} else if (type != null && type.isCollectionType()) {
-					bodyOrmShape = new ComponentShape(field);
-				} else {
-					bodyOrmShape = new Shape(field);
-				}
-				addChild(bodyOrmShape);
-			} catch (Exception e) {
-				VisualEditorPlugin.getDefault().logError(e);
 			}
+			if (type != null && type.isEntityType()) {
+				bodyOrmShape = new ExpandeableShape(field);
+			} else if (type != null && type.isCollectionType()) {
+				bodyOrmShape = new ComponentShape(field);
+			} else {
+				bodyOrmShape = new Shape(field);
+			}
+			addChild(bodyOrmShape);
 		}
 	}
 

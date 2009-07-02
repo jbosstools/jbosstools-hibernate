@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.veditor.editors.parts;
+package org.jboss.tools.hibernate.ui.diagram.editors.parts;
 
 import java.beans.PropertyChangeEvent;
 
@@ -23,12 +23,12 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
-import org.jboss.tools.hibernate.ui.veditor.editors.figures.ComponentFigure;
-import org.jboss.tools.hibernate.ui.veditor.editors.figures.TitleLabel;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.ComponentShape;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.ExpandeableShape;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmDiagram;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmShape;
+import org.jboss.tools.hibernate.ui.diagram.editors.figures.ComponentFigure;
+import org.jboss.tools.hibernate.ui.diagram.editors.figures.TitleLabel;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.ComponentShape;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.ExpandeableShape;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmShape;
 
 
 public class ComponentShapeEditPart extends ExpandeableShapeEditPart {

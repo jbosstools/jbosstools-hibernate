@@ -8,7 +8,7 @@
  * Contributors:
  *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.veditor.editors.popup;
+package org.jboss.tools.hibernate.ui.diagram.editors.popup;
 
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.EditPartViewer;
@@ -29,12 +29,12 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
-import org.jboss.tools.hibernate.ui.veditor.editors.actions.AutoLayoutAction;
-import org.jboss.tools.hibernate.ui.veditor.editors.actions.ExportImageAction;
-import org.jboss.tools.hibernate.ui.veditor.editors.actions.OpenMappingAction;
-import org.jboss.tools.hibernate.ui.veditor.editors.actions.OpenSourceAction;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.Shape;
-import org.jboss.tools.hibernate.ui.veditor.editors.parts.OrmEditPart;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.AutoLayoutAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExportImageAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.OpenMappingAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.OpenSourceAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
+import org.jboss.tools.hibernate.ui.diagram.editors.parts.OrmEditPart;
 
 public class PopupMenuProvider extends ContextMenuProvider {
 	private ActionRegistry actionRegistry;

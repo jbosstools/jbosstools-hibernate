@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.veditor.editors.model;
+package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

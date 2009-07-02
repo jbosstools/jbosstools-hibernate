@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.ui.veditor.editors.actions;
+package org.jboss.tools.hibernate.ui.diagram.editors.actions;
 
 import java.io.FileNotFoundException;
 import java.util.Iterator;
@@ -13,30 +13,30 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.jboss.tools.hibernate.ui.veditor.UIVEditorMessages;
-import org.jboss.tools.hibernate.ui.veditor.VisualEditorPlugin;
-import org.jboss.tools.hibernate.ui.veditor.editors.VisualEditor;
-import org.jboss.tools.hibernate.ui.view.views.ObjectEditorInput;
+import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
+import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
+import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
+import org.jboss.tools.hibernate.ui.view.ObjectEditorInput;
 
 /**
  * @author Dmitry Geraskov
  *
  */
 public class OpenSourceAction extends SelectionAction {
-	public static final String ACTION_ID = "org.jboss.tools.hibernate.ui.veditor.editors.actions.open.source"; //$NON-NLS-1$
+	public static final String ACTION_ID = "org.jboss.tools.hibernate.ui.diagram.editors.actions.open.source"; //$NON-NLS-1$
 
 	public OpenSourceAction(IWorkbenchPart part) {
 		super(part);
 		setId(ACTION_ID);
-		setText(UIVEditorMessages.OpenSourceAction_open_source_file);
-		setImageDescriptor(VisualEditorPlugin.getImageDescriptor("icons/java.gif")); //$NON-NLS-1$
+		setText(DiagramViewerMessages.OpenSourceAction_open_source_file);
+		setImageDescriptor(UiPlugin.getImageDescriptor("icons/java.gif")); //$NON-NLS-1$
 	}
 
 	public void run() {
-		ObjectEditorInput objectEditorInput = (ObjectEditorInput)((VisualEditor)getWorkbenchPart()).getEditorInput();
+		ObjectEditorInput objectEditorInput = (ObjectEditorInput)((DiagramViewer)getWorkbenchPart()).getEditorInput();
 		ConsoleConfiguration consoleConfig = objectEditorInput.getConfiguration();
 
-		VisualEditor part = (VisualEditor)getWorkbenchPart();
+		DiagramViewer part = (DiagramViewer)getWorkbenchPart();
 		Set selectedElements = part.getSelectedElements();
 
 		Iterator iterator = selectedElements.iterator();
@@ -60,20 +60,20 @@ public class OpenSourceAction extends SelectionAction {
 			try {
 				new org.hibernate.eclipse.console.actions.OpenSourceAction().run(consoleConfig, selection, fullyQualifiedName);
 			} catch (PartInitException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage(UIVEditorMessages.OpenSourceAction_canot_open_source_file, e);
+				HibernateConsolePlugin.getDefault().logErrorMessage(DiagramViewerMessages.OpenSourceAction_canot_open_source_file, e);
 			} catch (JavaModelException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage(UIVEditorMessages.OpenSourceAction_canot_find_source_file, e);
+				HibernateConsolePlugin.getDefault().logErrorMessage(DiagramViewerMessages.OpenSourceAction_canot_find_source_file, e);
 			} catch (FileNotFoundException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage(UIVEditorMessages.OpenSourceAction_canot_find_source_file, e);
+				HibernateConsolePlugin.getDefault().logErrorMessage(DiagramViewerMessages.OpenSourceAction_canot_find_source_file, e);
 			}
 		}
 	}
 
 	protected boolean calculateEnabled() {
-		//VisualEditor part = (VisualEditor)getWorkbenchPart();
-		//return part.getSelectedElements().size() > 0;
-		/**/
-		VisualEditor part = (VisualEditor)getWorkbenchPart();
+		DiagramViewer part = (DiagramViewer)getWorkbenchPart();
+		return part.getSelectedElements().size() > 0;
+		/** /
+		DiagramViewer part = (DiagramViewer)getWorkbenchPart();
 		Set selectedElements = part.getSelectedElements();
 		Iterator iterator = selectedElements.iterator();
 		while (iterator.hasNext()) {

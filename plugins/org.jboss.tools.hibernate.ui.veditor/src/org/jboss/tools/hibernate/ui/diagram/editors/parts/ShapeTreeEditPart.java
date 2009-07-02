@@ -1,4 +1,4 @@
-package org.jboss.tools.hibernate.ui.veditor.editors.parts;
+package org.jboss.tools.hibernate.ui.diagram.editors.parts;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -7,18 +7,15 @@ import java.util.List;
 
 import org.eclipse.swt.widgets.Tree;
 import org.hibernate.console.ConsoleConfiguration;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.ExpandeableShape;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.Shape;
-import org.jboss.tools.hibernate.ui.view.views.OrmLabelProvider;
-import org.jboss.tools.hibernate.ui.view.views.OrmModelImageVisitor;
-import org.jboss.tools.hibernate.ui.view.views.OrmModelNameVisitor;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.ExpandeableShape;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
+import org.jboss.tools.hibernate.ui.view.OrmLabelProvider;
 
 public class ShapeTreeEditPart extends
 		org.eclipse.gef.editparts.AbstractTreeEditPart implements
 		PropertyChangeListener {
 
-	static final protected OrmLabelProvider ormLabelProvider = new OrmLabelProvider(
-			new OrmModelImageVisitor(), new OrmModelNameVisitor());
+	protected OrmLabelProvider ormLabelProvider;
 
 	/**
 	 * Constructor initializes this with the given model.
@@ -26,8 +23,10 @@ public class ShapeTreeEditPart extends
 	 * @param model
 	 *            Model for this.
 	 */
-	public ShapeTreeEditPart(Object model) {
+	public ShapeTreeEditPart(Shape model) {
 		super(model);
+		ConsoleConfiguration cfg = model.getOrmDiagram().getConsoleConfig();
+		ormLabelProvider = new OrmLabelProvider(cfg.getConfiguration());
 	}
 
 	/**
@@ -45,7 +44,7 @@ public class ShapeTreeEditPart extends
 	 * 
 	 * @return <code>null</code>
 	 */
-	protected List getModelChildren() {
+	protected List<?> getModelChildren() {
 		return Collections.EMPTY_LIST;
 	}
 
@@ -60,12 +59,9 @@ public class ShapeTreeEditPart extends
 			return;
 		}
 		Shape model = (Shape) getModel();
-
 		Object element = model.getOrmElement();
-		ConsoleConfiguration cfg = model.getOrmDiagram().getConsoleConfig();
-
 		setWidgetImage(ormLabelProvider.getImage(element));
-		setWidgetText(ormLabelProvider.getText(element, cfg));
+		setWidgetText(ormLabelProvider.getText(element));
 	}
 
 }

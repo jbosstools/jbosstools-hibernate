@@ -8,9 +8,7 @@
  * Contributors:
  *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
  ******************************************************************************/ 
-package org.jboss.tools.hibernate.ui.veditor.editors.parts;
-
-import java.util.List;
+package org.jboss.tools.hibernate.ui.diagram.editors.parts;
 
 import org.eclipse.draw2d.ConnectionLayer;
 import org.eclipse.draw2d.IFigure;
@@ -25,14 +23,12 @@ public class GEFRootEditPart extends ScalableFreeformRootEditPart {
 		super();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void setToFront(AbstractConnectionEditPart editpart) {
 		ConnectionLayer layer = (ConnectionLayer)getLayer(LayerConstants.CONNECTION_LAYER);
 		IFigure fig = editpart.getFigure();
-		
-		List children = layer.getChildren();
-		
-		children.remove(fig);
-		children.add(fig);
+		layer.getChildren().remove(fig);
+		layer.getChildren().add(fig);
 	}
 	
 

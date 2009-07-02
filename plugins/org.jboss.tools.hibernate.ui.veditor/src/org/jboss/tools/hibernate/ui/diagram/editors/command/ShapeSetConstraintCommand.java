@@ -8,15 +8,15 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.veditor.editors.command;
+package org.jboss.tools.hibernate.ui.diagram.editors.command;
 
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
-import org.jboss.tools.hibernate.ui.veditor.UIVEditorMessages;
-import org.jboss.tools.hibernate.ui.veditor.editors.model.OrmShape;
+import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmShape;
 
 
 public class ShapeSetConstraintCommand extends Command {
@@ -34,7 +34,7 @@ public class ShapeSetConstraintCommand extends Command {
 		this.shape = shape;
 		this.request = req;
 		this.newLocation = newLocation.getCopy();
-		setLabel(UIVEditorMessages.ShapeSetConstraintCommand_move);
+		setLabel(DiagramViewerMessages.ShapeSetConstraintCommand_move);
 	}
 
 	public boolean canExecute() {

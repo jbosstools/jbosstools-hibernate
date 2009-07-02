@@ -8,12 +8,12 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.veditor.editors.parts;
+package org.jboss.tools.hibernate.ui.diagram.editors.parts;
 
 import org.eclipse.osgi.util.NLS;
 
 public class ColorConstants extends NLS {
-	private static final String BUNDLE_NAME = "org.jboss.tools.hibernate.ui.veditor.editors.parts.ColorConstants"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.jboss.tools.hibernate.ui.diagram.editors.parts.ColorConstants"; //$NON-NLS-1$
 
 	private ColorConstants() {
 	}
