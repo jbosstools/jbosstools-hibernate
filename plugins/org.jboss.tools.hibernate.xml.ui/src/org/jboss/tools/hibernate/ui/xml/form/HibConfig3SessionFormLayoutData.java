@@ -22,13 +22,13 @@ public class HibConfig3SessionFormLayoutData {
 		new IFormData[] {
 			new FormData(
 				"Session Factory",
-				"", //"Description
-				Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("HibConfig3SessionFactory")
+				"", //"Description //$NON-NLS-1$
+				Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("HibConfig3SessionFactory") //$NON-NLS-1$
 			),
 			HibConfig3PropertyFormLayoutData.PROPERTY_LIST_DEFINITION,
 			HibConfig3MappingFormLayoutData.MAPPING_LIST_DEFINITION,
 		};
 
 	final static IFormData SESSION_FACTORY_FORM_DEFINITION = new FormData(
-		"HibConfig3SessionFactory", new String[]{null}, SESSION_FACTORY_DEFINITIONS);
+		"HibConfig3SessionFactory", new String[]{null}, SESSION_FACTORY_DEFINITIONS); //$NON-NLS-1$
 }

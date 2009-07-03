@@ -19,21 +19,21 @@ import org.jboss.tools.common.model.ui.forms.IFormData;
  * @author glory
  */
 public class Hibernate3FormulaFormLayoutData {
-	static String FORMULA_ENTITY = "Hibernate3Formula";
+	static String FORMULA_ENTITY = "Hibernate3Formula"; //$NON-NLS-1$
 
 	static IFormData FORMULA_LIST_DEFINITION = new FormData(
 		"Formulas",
-		"", //"Description
-		new FormAttributeData[]{new FormAttributeData("value", 100)},
+		"", //"Description //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("value", 100)}, //$NON-NLS-1$
 		new String[]{FORMULA_ENTITY},
-		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddFormula")
+		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddFormula") //$NON-NLS-1$
 	);
 
 	static IFormData FORMULA_DEFINITION = new FormData(
 		"Formula",
-		"", //"Description
+		"", //"Description //$NON-NLS-1$
 		FORMULA_ENTITY,
-		new FormAttributeData[]{new FormAttributeData("value", GreedyLayoutDataFactory.getInstance())}
+		new FormAttributeData[]{new FormAttributeData("value", GreedyLayoutDataFactory.getInstance())} //$NON-NLS-1$
 	);
 
 }

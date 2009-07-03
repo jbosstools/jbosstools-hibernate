@@ -23,57 +23,65 @@ public class Hibernate3FileFormLayoutData {
 		new IFormData[] {
 			new FormData(
 				"File Hibernate 3.0",
-				"", //"Description
-				Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("FileHibernate3")
+				"", //"Description //$NON-NLS-1$
+				Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("FileHibernate3") //$NON-NLS-1$
 			),
 			new FormData(
 				"Advanced",
-				"", //"Description
-				Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData("FileHibernate3")
+				"", //"Description //$NON-NLS-1$
+				Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData("FileHibernate3") //$NON-NLS-1$
 			),
 			Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 			new FormData(
 				"Types",
-				"", //Description
-				"Types",
-				new FormAttributeData[]{new FormAttributeData("name", 30, "name"), new FormAttributeData("class", 70, "class")},
-				new String[]{"Hibernate3Typedef"},
-				Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddTypedef")
+				"", //Description //$NON-NLS-1$
+				"Types", //$NON-NLS-1$
+				new FormAttributeData[]{
+						new FormAttributeData("name", 30, "name"),  //$NON-NLS-1$
+						new FormAttributeData("class", 70, "class")}, //$NON-NLS-1$
+				new String[]{"Hibernate3Typedef"}, //$NON-NLS-1$
+				Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddTypedef") //$NON-NLS-1$
 			),
 			new FormData(
 				"Imports",
-				"", //Description
-				"Imports",
-				new FormAttributeData[]{new FormAttributeData("class", 60, "class"), new FormAttributeData("rename", 40, "rename")},
-				new String[]{"Hibernate3Import"},
-				Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddImport")
+				"", //Description //$NON-NLS-1$
+				"Imports", //$NON-NLS-1$
+				new FormAttributeData[]{
+						new FormAttributeData("class", 60, "class"),  //$NON-NLS-1$
+						new FormAttributeData("rename", 40, "rename")}, //$NON-NLS-1$
+				new String[]{"Hibernate3Import"}, //$NON-NLS-1$
+				Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddImport") //$NON-NLS-1$
 			),
 			new FormData(
 				"Classes",
-				"", //Description
-				"Classes",
-				new FormAttributeData[]{new FormAttributeData("name", 100, "class name")},
-				new String[]{"Hibernate3Class", "Hibernate3Subclass", "Hibernate3JoinedSubclass", "Hibernate3UnionSubclass"},
-				Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddAnyClass")
+				"", //Description //$NON-NLS-1$
+				"Classes", //$NON-NLS-1$
+				new FormAttributeData[]{new FormAttributeData("name", 100, "class name")}, //$NON-NLS-1$
+				new String[]{"Hibernate3Class", "Hibernate3Subclass", "Hibernate3JoinedSubclass", "Hibernate3UnionSubclass"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddAnyClass") //$NON-NLS-1$
 			),
 			new FormData(
 				"Queries",
-				"", //"Description
-				"Queries",
-				new FormAttributeData[]{new FormAttributeData("name", 30, "name"), new FormAttributeData("query", 70, "query")},
-				new String[]{"Hibernate3Query", "Hibernate3SQLQuery"},
-				Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddAnyQuery")
+				"", //"Description //$NON-NLS-1$
+				"Queries", //$NON-NLS-1$
+				new FormAttributeData[]{
+						new FormAttributeData("name", 30, "name"),  //$NON-NLS-1$
+						new FormAttributeData("query", 70, "query")}, //$NON-NLS-1$
+				new String[]{"Hibernate3Query", "Hibernate3SQLQuery"}, //$NON-NLS-1$ //$NON-NLS-2$
+				Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddAnyQuery") //$NON-NLS-1$
 			),
 			new FormData(
 				"Filters",
-				"", //"Description
-				"Filters",
-				new FormAttributeData[]{new FormAttributeData("name", 30, "name"), new FormAttributeData("value", 70, "value")},
-				new String[]{"Hibernate3Filterdef"},
-				Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddFilterdef")
+				"", //"Description //$NON-NLS-1$
+				"Filters", //$NON-NLS-1$
+				new FormAttributeData[]{
+						new FormAttributeData("name", 30, "name"),  //$NON-NLS-1$
+						new FormAttributeData("value", 70, "value")}, //$NON-NLS-1$
+				new String[]{"Hibernate3Filterdef"}, //$NON-NLS-1$
+				Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddFilterdef") //$NON-NLS-1$
 			),
 		};
 
 	final static IFormData FILE_FORM_DEFINITION = new FormData(
-		"FileHibernate3", new String[]{null}, FILE_DEFINITIONS);
+		"FileHibernate3", new String[]{null}, FILE_DEFINITIONS); //$NON-NLS-1$
 }

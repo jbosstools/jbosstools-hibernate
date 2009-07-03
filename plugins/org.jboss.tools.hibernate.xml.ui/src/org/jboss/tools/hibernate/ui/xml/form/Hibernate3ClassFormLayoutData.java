@@ -18,82 +18,83 @@ import org.jboss.tools.common.model.ui.forms.IFormData;
  * @author glory
  */
 public class Hibernate3ClassFormLayoutData {
-	static String CLASS_ENTITY = "Hibernate3Class";
-	static String SUBCLASS_ENTITY = "Hibernate3Subclass";
-	static String JOIN_ENTITY = "Hibernate3Join";
-	static String JOINED_SUBCLASS_ENTITY = "Hibernate3JoinedSubclass";
-	static String ALL_SUBCLASSES_ENTITY = "Hibernate3AllSubclassFolder";
-	static String SUBCLASSES_ENTITY = "Hibernate3SubclassFolder";
-	static String JOINED_SUBCLASSES_ENTITY = "Hibernate3JoinedSubclassFolder";
+	static String CLASS_ENTITY = "Hibernate3Class"; //$NON-NLS-1$
+	static String SUBCLASS_ENTITY = "Hibernate3Subclass"; //$NON-NLS-1$
+	static String JOIN_ENTITY = "Hibernate3Join"; //$NON-NLS-1$
+	static String JOINED_SUBCLASS_ENTITY = "Hibernate3JoinedSubclass"; //$NON-NLS-1$
+	static String ALL_SUBCLASSES_ENTITY = "Hibernate3AllSubclassFolder"; //$NON-NLS-1$
+	static String SUBCLASSES_ENTITY = "Hibernate3SubclassFolder"; //$NON-NLS-1$
+	static String JOINED_SUBCLASSES_ENTITY = "Hibernate3JoinedSubclassFolder"; //$NON-NLS-1$
 	
 	static IFormData ALL_SUBCLASSES_LIST_DEFINITION = new FormData(
 		"Subclasses",
-		"", //Description
-		"Subclasses",
-		new FormAttributeData[]{new FormAttributeData("details", 100, "subclass info")},
+		"", //Description //$NON-NLS-1$
+		"Subclasses", //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("details", 100, "subclass info")}, //$NON-NLS-1$
 		Hibernate3FormLayoutDataUtil.getChildEntitiesWithAttribute(ALL_SUBCLASSES_ENTITY, "details"),
-		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddAnyClass")
+		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddAnyClass") //$NON-NLS-1$
 	);
 
 	static IFormData ALL_SUBCLASSES_FOLDER_DEFINITION = new FormData(
 		"Subclasses",
-		"", //Description
+		"", //Description //$NON-NLS-1$
 		ALL_SUBCLASSES_ENTITY,
-		new FormAttributeData[]{new FormAttributeData("details", 100, "subclass info")},
+		new FormAttributeData[]{new FormAttributeData("details", 100, "subclass info")}, //$NON-NLS-1$
 		Hibernate3FormLayoutDataUtil.getChildEntitiesWithAttribute(ALL_SUBCLASSES_ENTITY, "details"),
-		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddAnyClass")
+		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddAnyClass") //$NON-NLS-1$
 	);
 
 	static IFormData SUBCLASSES_LIST_DEFINITION = new FormData(
 		"Subclasses",
-		"", //Description
-		"Subclasses",
-		new FormAttributeData[]{new FormAttributeData("details", 100, "subclass info")},
+		"", //Description //$NON-NLS-1$
+		"Subclasses", //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("details", 100, "subclass info")}, //$NON-NLS-1$
 		Hibernate3FormLayoutDataUtil.getChildEntitiesWithAttribute(SUBCLASSES_ENTITY, "details"),
-		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddAnyClass")
+		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddAnyClass") //$NON-NLS-1$
 	);
 
 	static IFormData SUBCLASSES_FOLDER_DEFINITION = new FormData(
 		"Subclasses",
-		"", //Description
+		"", //Description //$NON-NLS-1$
 		SUBCLASSES_ENTITY,
-		new FormAttributeData[]{new FormAttributeData("details", 100, "subclass info")},
+		new FormAttributeData[]{new FormAttributeData("details", 100, "subclass info")}, //$NON-NLS-1$
 		Hibernate3FormLayoutDataUtil.getChildEntitiesWithAttribute(SUBCLASSES_ENTITY, "details"),
-		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddAnyClass")
+		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddAnyClass") //$NON-NLS-1$
 	);
 
 	static IFormData JOINED_SUBCLASSES_LIST_DEFINITION = new FormData(
 		"Subclasses",
-		"", //Description
-		"Subclasses",
-		new FormAttributeData[]{new FormAttributeData("name", 100, "class name")},
+		"", //Description //$NON-NLS-1$
+		"Subclasses", //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("name", 100, "class name")}, //$NON-NLS-1$
 		Hibernate3FormLayoutDataUtil.getChildEntitiesWithAttribute(JOINED_SUBCLASSES_ENTITY, "name"),
-		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddJoinedSubclass")
+		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddJoinedSubclass") //$NON-NLS-1$
 	);
 
 	static IFormData JOINED_SUBCLASSES_FOLDER_DEFINITION = new FormData(
 		"Subclasses",
-		"", //Description
+		"", //Description //$NON-NLS-1$
 		JOINED_SUBCLASSES_ENTITY,
-		new FormAttributeData[]{new FormAttributeData("name", 100, "class name")},
+		new FormAttributeData[]{new FormAttributeData("name", 100, "class name")}, //$NON-NLS-1$
 		Hibernate3FormLayoutDataUtil.getChildEntitiesWithAttribute(JOINED_SUBCLASSES_ENTITY, "name"),
-		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddJoinedSubclass")
+		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddJoinedSubclass") //$NON-NLS-1$
 	);
 
 	private final static IFormData[] CLASS_DEFINITIONS = new IFormData[] {
 		new FormData(
 			"Class",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(CLASS_ENTITY)
 		),
-		Hibernate3FormLayoutDataUtil.createAllChildrenFormData("Properties", "Hibernate3AttributesCFolder", "Properties", "name", "CreateActions.AddAttribute"),
+		Hibernate3FormLayoutDataUtil.createAllChildrenFormData("Properties", 
+				"Hibernate3AttributesCFolder", "Properties", "name", "CreateActions.AddAttribute"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		ALL_SUBCLASSES_LIST_DEFINITION,
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		Hibernate3FilterFormLayoutData.FILTER_LIST_DEFINITION,
 		Hibernate3SQLQueryFormLayoutData.SYNCHRONIZES_LIST_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(CLASS_ENTITY)
 		),
 	};
@@ -105,16 +106,17 @@ public class Hibernate3ClassFormLayoutData {
 	private final static IFormData[] SUBCLASS_DEFINITIONS =	new IFormData[] {
 		new FormData(
 			"Subclass",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(SUBCLASS_ENTITY)
 		),
-		Hibernate3FormLayoutDataUtil.createAllChildrenFormData("Properties", "Hibernate3AttributesCFolder", "Properties", "name", "CreateActions.AddAttribute"),
+		Hibernate3FormLayoutDataUtil.createAllChildrenFormData("Properties", 
+				"Hibernate3AttributesCFolder", "Properties", "name", "CreateActions.AddAttribute"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		SUBCLASSES_LIST_DEFINITION,
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		Hibernate3SQLQueryFormLayoutData.SYNCHRONIZES_FOLDER_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(SUBCLASS_ENTITY)
 		),
 	};
@@ -126,14 +128,15 @@ public class Hibernate3ClassFormLayoutData {
 	private final static IFormData[] JOIN_DEFINITIONS =	new IFormData[] {
 		new FormData(
 			"Join",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(JOIN_ENTITY)
 		),
-		Hibernate3FormLayoutDataUtil.createAllChildrenFormData("Properties", "Hibernate3AttributesJFolder", "Properties", "name", "CreateActions.AddAttribute"),
+		Hibernate3FormLayoutDataUtil.createAllChildrenFormData("Properties", 
+				"Hibernate3AttributesJFolder", "Properties", "name", "CreateActions.AddAttribute"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(JOIN_ENTITY)
 		),
 	};
@@ -145,16 +148,17 @@ public class Hibernate3ClassFormLayoutData {
 	private final static IFormData[] JOINED_SUBCLASS_DEFINITIONS =	new IFormData[] {
 		new FormData(
 			"Joined Subclass",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(JOINED_SUBCLASS_ENTITY)
 		),
-		Hibernate3FormLayoutDataUtil.createAllChildrenFormData("Properties", "Hibernate3AttributesCFolder", "Properties", "name", "CreateActions.AddAttribute"),
+		Hibernate3FormLayoutDataUtil.createAllChildrenFormData("Properties", 
+				"Hibernate3AttributesCFolder", "Properties", "name", "CreateActions.AddAttribute"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		JOINED_SUBCLASSES_LIST_DEFINITION,
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		Hibernate3SQLQueryFormLayoutData.SYNCHRONIZES_LIST_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(JOINED_SUBCLASS_ENTITY)
 		),
 	};

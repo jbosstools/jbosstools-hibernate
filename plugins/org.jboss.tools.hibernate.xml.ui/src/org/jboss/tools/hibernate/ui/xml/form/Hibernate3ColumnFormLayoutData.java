@@ -21,10 +21,10 @@ public class Hibernate3ColumnFormLayoutData {
 	
 	final static IFormData COLUMN_LIST_DEFINITION =	new FormData(
 		"Columns",
-		"", //"Description
-		new FormAttributeData[]{new FormAttributeData("name", 50), new FormAttributeData("sql-type", 50)},
-		new String[]{"Hibernate3Column"},
-		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddColumn")
+		"", //"Description //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("name", 50), new FormAttributeData("sql-type", 50)}, //$NON-NLS-1$ //$NON-NLS-2$
+		new String[]{"Hibernate3Column"}, //$NON-NLS-1$
+		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddColumn") //$NON-NLS-1$
 	);
 
 }

@@ -17,12 +17,12 @@ import org.jboss.tools.common.model.ui.forms.IFormData;
  * @author glory
  */
 public class Hibernate3ManyToOneFormLayoutData {
-	static String MANY_TO_ONE_ENTITY = "Hibernate3ManyToOne";
+	static String MANY_TO_ONE_ENTITY = "Hibernate3ManyToOne"; //$NON-NLS-1$
 	
 	final static IFormData[] MANY_TO_ONE_DEFINITIONS = new IFormData[] {
 		new FormData(
 			"Many To One",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(MANY_TO_ONE_ENTITY)
 		),
 		Hibernate3ColumnFormLayoutData.COLUMN_LIST_DEFINITION,
@@ -30,7 +30,7 @@ public class Hibernate3ManyToOneFormLayoutData {
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(MANY_TO_ONE_ENTITY)
 		),
 	};

@@ -17,18 +17,18 @@ import org.jboss.tools.common.model.ui.forms.IFormData;
  * @author glory
  */
 public class Hibernate3OneToOneFormLayoutData {
-	static String ONE_TO_ONE_ENTITY = "Hibernate3OneToOne";
+	static String ONE_TO_ONE_ENTITY = "Hibernate3OneToOne"; //$NON-NLS-1$
 	
 	final static IFormData[] ONE_TO_ONE_DEFINITIONS = new IFormData[] {
 		new FormData(
 			"One To One",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(ONE_TO_ONE_ENTITY)
 		),
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(ONE_TO_ONE_ENTITY)
 		),
 	};

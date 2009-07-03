@@ -22,11 +22,11 @@ public class HibConfig3FileFormLayoutData {
 		new IFormData[] {
 			new FormData(
 				"File Hibernate Configuration 3.0",
-				"", //"Description
-				Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("FileHibConfig3")
+				"", //"Description //$NON-NLS-1$
+				Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("FileHibConfig3") //$NON-NLS-1$
 			),
 		};
 
 	final static IFormData FILE_FORM_DEFINITION = new FormData(
-		"FileHibConfig3", new String[]{null}, FILE_DEFINITIONS);
+		"FileHibConfig3", new String[]{null}, FILE_DEFINITIONS); //$NON-NLS-1$
 }

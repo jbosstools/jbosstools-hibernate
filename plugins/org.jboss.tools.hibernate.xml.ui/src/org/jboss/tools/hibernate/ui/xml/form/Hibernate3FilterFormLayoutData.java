@@ -18,51 +18,51 @@ import org.jboss.tools.common.model.ui.forms.IFormData;
  * @author glory
  */
 public class Hibernate3FilterFormLayoutData {
-	static String FILTER_ENTITY = "Hibernate3Filter";
-	static String FILTER_FOLDER_ENTITY = "Hibernate3FilterFolder";
-	static String FILTERDEF_ENTITY = "Hibernate3Filterdef";
-	static String FILTERDEF_FOLDER_ENTITY = "Hibernate3FilterdefFolder";
-	static String TYPEDEF_ENTITY = "Hibernate3Typedef";
+	static String FILTER_ENTITY = "Hibernate3Filter"; //$NON-NLS-1$
+	static String FILTER_FOLDER_ENTITY = "Hibernate3FilterFolder"; //$NON-NLS-1$
+	static String FILTERDEF_ENTITY = "Hibernate3Filterdef"; //$NON-NLS-1$
+	static String FILTERDEF_FOLDER_ENTITY = "Hibernate3FilterdefFolder"; //$NON-NLS-1$
+	static String TYPEDEF_ENTITY = "Hibernate3Typedef"; //$NON-NLS-1$
 	
 	final static IFormData FILTER_LIST_DEFINITION = new FormData(
 		"Filters",
-		"", //Description
-		"Filters",
-		new FormAttributeData[]{new FormAttributeData("name", 100, "name")},
+		"", //Description //$NON-NLS-1$
+		"Filters", //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("name", 100, "name")}, //$NON-NLS-1$
 		new String[]{FILTER_ENTITY},
-		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddFilter")
+		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddFilter") //$NON-NLS-1$
 	);
 
 	final static IFormData FILTER_FOLDER_DEFINITION = new FormData(
 		"Filters",
-		"", //"Description
+		"", //"Description //$NON-NLS-1$
 		FILTER_FOLDER_ENTITY,
-		new FormAttributeData[]{new FormAttributeData("name", 100, "name")},
+		new FormAttributeData[]{new FormAttributeData("name", 100, "name")}, //$NON-NLS-1$
 		new String[]{FILTER_ENTITY},
-		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddFilter")
+		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddFilter") //$NON-NLS-1$
 	);
 
 	final static IFormData FILTERDEF_FOLDER_DEFINITION = new FormData(
 		"Filters",
-		"", //"Description
+		"", //"Description //$NON-NLS-1$
 		FILTERDEF_FOLDER_ENTITY,
-		new FormAttributeData[]{new FormAttributeData("name", 100, "name")},
+		new FormAttributeData[]{new FormAttributeData("name", 100, "name")}, //$NON-NLS-1$
 		new String[]{FILTERDEF_ENTITY},
-		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddFilterdef")
+		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddFilterdef") //$NON-NLS-1$
 	);
 
 	private final static IFormData PARAMETERS =	new FormData(
 		"Parameters",
-		"", //"Description
-		new FormAttributeData[]{new FormAttributeData("name", 30), new FormAttributeData("type", 70)},
-		new String[]{"Hibernate3FilterParam"},
-		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddParam")
+		"", //"Description //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("name", 30), new FormAttributeData("type", 70)}, //$NON-NLS-1$ //$NON-NLS-2$
+		new String[]{"Hibernate3FilterParam"}, //$NON-NLS-1$
+		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddParam") //$NON-NLS-1$
 	);
 
 	private final static IFormData[] FILTERDEF_DEFINITIONS = new IFormData[] {
 		new FormData(
 			"Filter Definition",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(FILTERDEF_ENTITY)
 		),
 		PARAMETERS
@@ -75,7 +75,7 @@ public class Hibernate3FilterFormLayoutData {
 	private final static IFormData[] TYPEDEF_DEFINITIONS = new IFormData[] {
 		new FormData(
 			"Type Definition",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(TYPEDEF_ENTITY)
 		),
 		PARAMETERS

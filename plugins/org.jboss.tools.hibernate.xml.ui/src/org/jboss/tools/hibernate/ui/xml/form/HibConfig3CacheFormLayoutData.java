@@ -24,8 +24,8 @@ public class HibConfig3CacheFormLayoutData {
 	final static IFormData CACHE_LIST_DEFINITION = new FormData(
 		"Caches",
 		"", //Description //$NON-NLS-1$
-		"Caches",
-		new FormAttributeData[]{new FormAttributeData("item", 100, "item")},
+		"Caches", //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("item", 100, "item")}, //$NON-NLS-1$
 		new String[]{CLASS_CACHE_ENTITY, COLLECTION_CACHE_ENTITY},
 		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddCache") //$NON-NLS-1$
 	);
@@ -33,8 +33,8 @@ public class HibConfig3CacheFormLayoutData {
 	final static IFormData CACHE_FOLDER_DEFINITION = new FormData(
 		"Caches",
 		"", //"Description //$NON-NLS-1$
-		"HibConfig3CachesFolder",
-		new FormAttributeData[]{new FormAttributeData("item", 100, "item")},
+		"HibConfig3CachesFolder", //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("item", 100, "item")}, //$NON-NLS-1$
 		new String[]{CLASS_CACHE_ENTITY, COLLECTION_CACHE_ENTITY},
 		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddCache") //$NON-NLS-1$
 	);

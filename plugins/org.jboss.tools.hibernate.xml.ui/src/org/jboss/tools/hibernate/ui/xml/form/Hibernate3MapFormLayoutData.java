@@ -21,27 +21,27 @@ public class Hibernate3MapFormLayoutData {
 	final static IFormData[] MAP_DEFINITIONS = new IFormData[] {
 		new FormData(
 			"Map",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(MAP_ENTITY)
 		),
 		new FormData(
 			"Key",
-			"",
-			"key",
+			"", //$NON-NLS-1$
+			"key", //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("Hibernate3Key")
 		),
 		new FormData(
 			"Index",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			new IFormAttributeData[]{
-				new FormAttributeData("index", 100, "Index Kind")
+				new FormAttributeData("index", 100, "Index Kind") //$NON-NLS-1$
 			}
 		),
 		new FormData(
 			"Element",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			new IFormAttributeData[]{
-				new FormAttributeData("element", 100, "Element Kind")
+				new FormAttributeData("element", 100, "Element Kind") //$NON-NLS-1$
 			}
 		),
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
@@ -49,7 +49,7 @@ public class Hibernate3MapFormLayoutData {
 		Hibernate3FilterFormLayoutData.FILTER_LIST_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(MAP_ENTITY)
 		),
 	};

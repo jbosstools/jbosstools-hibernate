@@ -17,28 +17,28 @@ import org.jboss.tools.common.model.ui.forms.IFormData;
  * @author glory
  */
 public class Hibernate3KeyFormLayoutData {
-	static String KEY_ENTITY = "Hibernate3Key";	
-	static String KEY_MANY_TO_ONE_ENTITY = "Hibernate3KeyManyToOne";
-	static String KEY_PROPERTY_ENTITY = "Hibernate3KeyProperty";
+	static String KEY_ENTITY = "Hibernate3Key";	 //$NON-NLS-1$
+	static String KEY_MANY_TO_ONE_ENTITY = "Hibernate3KeyManyToOne"; //$NON-NLS-1$
+	static String KEY_PROPERTY_ENTITY = "Hibernate3KeyProperty"; //$NON-NLS-1$
 	
-	static String MAP_KEY_ENTITY = "Hibernate3MapKey";
-	static String MAP_KEY_MANY_TO_MANY_ENTITY = "Hibernate3MapKeyManyToMany";
-	static String COMPOSITE_MAP_KEY_ENTITY = "Hibernate3CompositeMapKey";
+	static String MAP_KEY_ENTITY = "Hibernate3MapKey"; //$NON-NLS-1$
+	static String MAP_KEY_MANY_TO_MANY_ENTITY = "Hibernate3MapKeyManyToMany"; //$NON-NLS-1$
+	static String COMPOSITE_MAP_KEY_ENTITY = "Hibernate3CompositeMapKey"; //$NON-NLS-1$
 	
-	static String INDEX_ENTITY = "Hibernate3Index";
-	static String LIST_INDEX_ENTITY = "Hibernate3ListIndex";
+	static String INDEX_ENTITY = "Hibernate3Index"; //$NON-NLS-1$
+	static String LIST_INDEX_ENTITY = "Hibernate3ListIndex"; //$NON-NLS-1$
 
 	final static IFormData[] KEY_DEFINITIONS =	new IFormData[] {
 		new FormData(
 			"Key",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(KEY_ENTITY)
 		),
 		Hibernate3ColumnFormLayoutData.COLUMN_LIST_DEFINITION,
 //		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(KEY_ENTITY)
 		),
 	};
@@ -50,14 +50,14 @@ public class Hibernate3KeyFormLayoutData {
 	final static IFormData[] KEY_MANY_TO_ONE_DEFINITIONS =	new IFormData[] {
 		new FormData(
 			"Key Many To One",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(KEY_MANY_TO_ONE_ENTITY)
 		),
 		Hibernate3ColumnFormLayoutData.COLUMN_LIST_DEFINITION,
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(KEY_MANY_TO_ONE_ENTITY)
 		),
 	};
@@ -69,14 +69,14 @@ public class Hibernate3KeyFormLayoutData {
 	final static IFormData[] KEY_PROPERTY_DEFINITIONS =	new IFormData[] {
 		new FormData(
 			"Key Property",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(KEY_PROPERTY_ENTITY)
 		),
 		Hibernate3ColumnFormLayoutData.COLUMN_LIST_DEFINITION,
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(KEY_PROPERTY_ENTITY)
 		),
 	};
@@ -88,14 +88,14 @@ public class Hibernate3KeyFormLayoutData {
 	final static IFormData[] MAP_KEY_DEFINITIONS =	new IFormData[] {
 		new FormData(
 			"Map Key",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(MAP_KEY_ENTITY)
 		),
 		Hibernate3ColumnFormLayoutData.COLUMN_LIST_DEFINITION,
 		Hibernate3FormulaFormLayoutData.FORMULA_LIST_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(MAP_KEY_ENTITY)
 		),
 	};
@@ -107,14 +107,14 @@ public class Hibernate3KeyFormLayoutData {
 	final static IFormData[] MAP_KEY_MANY_TO_MANY_DEFINITIONS =	new IFormData[] {
 		new FormData(
 			"Map Key Many To Many",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(MAP_KEY_MANY_TO_MANY_ENTITY)
 		),
 		Hibernate3ColumnFormLayoutData.COLUMN_LIST_DEFINITION,
 		Hibernate3FormulaFormLayoutData.FORMULA_LIST_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(MAP_KEY_MANY_TO_MANY_ENTITY)
 		),
 	};
@@ -126,10 +126,11 @@ public class Hibernate3KeyFormLayoutData {
 	final static IFormData[] COMPOSITE_MAP_KEY_DEFINITIONS =	new IFormData[] {
 		new FormData(
 			"Composite Map key",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(COMPOSITE_MAP_KEY_ENTITY)
 		),
-		Hibernate3FormLayoutDataUtil.createChildrenFormData("Key Properties", null, null, "name", new String[]{"Hibernate3KeyProperty", "Hibernate3KeyManyToOne"}, "CreateActions.AddKeys.AddKey"),
+		Hibernate3FormLayoutDataUtil.createChildrenFormData("Key Properties", 
+				null, null, "name", new String[]{"Hibernate3KeyProperty", "Hibernate3KeyManyToOne"}, "CreateActions.AddKeys.AddKey"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	};
 
 	static IFormData COMPOSITE_MAP_KEY_DEFINITION = new FormData(

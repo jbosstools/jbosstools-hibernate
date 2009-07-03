@@ -18,23 +18,23 @@ import org.jboss.tools.common.model.ui.forms.IFormData;
  * @author glory
  */
 public class HibConfig3MappingFormLayoutData {
-	static String MAPPING_ENTITY = "HibConfig3Mapping";
+	static String MAPPING_ENTITY = "HibConfig3Mapping"; //$NON-NLS-1$
 	
 	final static IFormData MAPPING_LIST_DEFINITION = new FormData(
 		"Mappings",
-		"", //Description
-		"Mappings",
-		new FormAttributeData[]{new FormAttributeData("item", 100, "item")},
+		"", //Description //$NON-NLS-1$
+		"Mappings", //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("item", 100, "item")}, //$NON-NLS-1$
 		new String[]{MAPPING_ENTITY},
-		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddMapping")
+		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddMapping") //$NON-NLS-1$
 	);
 
 	final static IFormData MAPPING_FOLDER_DEFINITION = new FormData(
 		"Mappings",
-		"", //"Description
-		"HibConfig3MappingsFolder",
-		new FormAttributeData[]{new FormAttributeData("item", 100, "item")},
+		"", //"Description //$NON-NLS-1$
+		"HibConfig3MappingsFolder", //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("item", 100, "item")}, //$NON-NLS-1$
 		new String[]{MAPPING_ENTITY},
-		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddMapping")
+		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddMapping") //$NON-NLS-1$
 	);
 }

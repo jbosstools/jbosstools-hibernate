@@ -19,49 +19,53 @@ import org.jboss.tools.common.model.ui.forms.IFormData;
  * @author glory
  */
 public class HibConfig3EventFormLayoutData {
-	static String EVENT_ENTITY = "HibConfig3Event";
-	static String LISTENER_ENTITY = "HibConfig3Listener";
+	static String EVENT_ENTITY = "HibConfig3Event"; //$NON-NLS-1$
+	static String LISTENER_ENTITY = "HibConfig3Listener"; //$NON-NLS-1$
 	
 	final static IFormData EVENT_LIST_DEFINITION = new FormData(
 		"Events",
-		"", //Description
-		"Events",
-		new FormAttributeData[]{new FormAttributeData("type", 100, "type")},
+		"", //Description //$NON-NLS-1$
+		"Events", //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("type", 100, "type")}, //$NON-NLS-1$
 		new String[]{EVENT_ENTITY},
-		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddEvent")
+		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddEvent") //$NON-NLS-1$
 	);
 
 	final static IFormData EVENT_FOLDER_DEFINITION = new FormData(
 		"Events",
-		"", //"Description
-		"HibConfig3EventsFolder",
-		new FormAttributeData[]{new FormAttributeData("type", 100, "type")},
+		"", //Description //$NON-NLS-1$
+		"HibConfig3EventsFolder", //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("type", 100, "type")}, //$NON-NLS-1$
 		new String[]{EVENT_ENTITY},
-		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddEvent")
+		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddEvent") //$NON-NLS-1$
 	);
 
 	final static IFormData LISTENER_LIST_DEFINITION = new FormData(
 		"Listeners",
-		"", //Description
+		"", //Description //$NON-NLS-1$
 //		"Listeners",
-		new FormAttributeData[]{new FormAttributeData("class", 70, "class"), new FormAttributeData("type", 30, "type")},
+		new FormAttributeData[]{
+				new FormAttributeData("class", 70, "class"),  //$NON-NLS-1$
+				new FormAttributeData("type", 30, "type")}, //$NON-NLS-1$
 		new String[]{LISTENER_ENTITY},
-		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddListener")
+		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddListener") //$NON-NLS-1$
 	);
 
 	final static IFormData LISTENER_FOLDER_DEFINITION = new FormData(
 		"Listeners",
-		"", //"Description
-		"HibConfig3ListenersFolder",
-		new FormAttributeData[]{new FormAttributeData("class", 70, "class"), new FormAttributeData("type", 30, "type")},
+		"", //"Description //$NON-NLS-1$
+		"HibConfig3ListenersFolder", //$NON-NLS-1$
+		new FormAttributeData[]{
+				new FormAttributeData("class", 70, "class"),  //$NON-NLS-1$
+				new FormAttributeData("type", 30, "type")}, //$NON-NLS-1$
 		new String[]{LISTENER_ENTITY},
-		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddListener")
+		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddListener") //$NON-NLS-1$
 	);
 	
 	final static IFormData[] EVENT_DEFINITIONS = new IFormData[] {
 		new FormData(
 			"Event",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(EVENT_ENTITY)
 		),
 		LISTENER_LIST_DEFINITION,

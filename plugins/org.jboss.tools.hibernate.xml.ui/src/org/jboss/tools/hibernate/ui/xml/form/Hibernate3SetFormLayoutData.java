@@ -16,26 +16,26 @@ import org.jboss.tools.common.model.ui.forms.IFormAttributeData;
 import org.jboss.tools.common.model.ui.forms.IFormData;
 
 public class Hibernate3SetFormLayoutData {
-	static String SET_ENTITY = "Hibernate3Set";
-	static String BAG_ENTITY = "Hibernate3Bag";
+	static String SET_ENTITY = "Hibernate3Set"; //$NON-NLS-1$
+	static String BAG_ENTITY = "Hibernate3Bag"; //$NON-NLS-1$
 
 	final static IFormData[] SET_DEFINITIONS = new IFormData[] {
 		new FormData(
 			"Set",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(SET_ENTITY)
 		),
 		new FormData(
 			"Key",
-			"",
-			"key",
-			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("Hibernate3Key")
+			"", //$NON-NLS-1$
+			"key", //$NON-NLS-1$
+			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("Hibernate3Key") //$NON-NLS-1$
 		),
 		new FormData(
 			"Element",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			new IFormAttributeData[]{
-				new FormAttributeData("element", 100, "Element Kind")
+				new FormAttributeData("element", 100, "Element Kind") //$NON-NLS-1$
 			}
 		),
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
@@ -43,7 +43,7 @@ public class Hibernate3SetFormLayoutData {
 		Hibernate3FilterFormLayoutData.FILTER_LIST_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(SET_ENTITY)
 		),
 	};
@@ -51,20 +51,20 @@ public class Hibernate3SetFormLayoutData {
 	final static IFormData[] BAG_DEFINITIONS = new IFormData[] {
 		new FormData(
 			"Bag",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(BAG_ENTITY)
 		),
 		new FormData(
 			"Key",
-			"",
-			"key",
-			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("Hibernate3Key")
+			"", //$NON-NLS-1$
+			"key", //$NON-NLS-1$
+			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("Hibernate3Key") //$NON-NLS-1$
 		),
 		new FormData(
 			"Element",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			new IFormAttributeData[]{
-				new FormAttributeData("element", 100, "Element Kind")
+				new FormAttributeData("element", 100, "Element Kind") //$NON-NLS-1$
 			}
 		),
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
@@ -72,7 +72,7 @@ public class Hibernate3SetFormLayoutData {
 		Hibernate3FilterFormLayoutData.FILTER_LIST_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(BAG_ENTITY)
 		),
 	};

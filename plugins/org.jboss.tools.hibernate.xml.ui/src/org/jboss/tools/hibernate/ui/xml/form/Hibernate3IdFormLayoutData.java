@@ -17,21 +17,24 @@ import org.jboss.tools.common.model.ui.forms.IFormData;
  * @author glory
  */
 public class Hibernate3IdFormLayoutData {
-	static String COMPOSITE_ID_ENTITY = "Hibernate3CompositeId";
-	static String COMPOSITE_INDEX_ENTITY = "Hibernate3CompositeIndex";
-	static String COLLECTION_ID_ENTITY = "Hibernate3CollectionId";
+	static String COMPOSITE_ID_ENTITY = "Hibernate3CompositeId"; //$NON-NLS-1$
+	static String COMPOSITE_INDEX_ENTITY = "Hibernate3CompositeIndex"; //$NON-NLS-1$
+	static String COLLECTION_ID_ENTITY = "Hibernate3CollectionId"; //$NON-NLS-1$
 	
 	final static IFormData[] COMPOSITE_ID_DEFINITIONS =	new IFormData[] {
 		new FormData(
 			"Composite ID",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(COMPOSITE_ID_ENTITY)
 		),
-		Hibernate3FormLayoutDataUtil.createChildrenFormData("Key Properties", null, null, "name", new String[]{"Hibernate3KeyProperty", "Hibernate3KeyManyToOne"}, "CreateActions.AddKeys.AddKey"),
+		Hibernate3FormLayoutDataUtil.createChildrenFormData(
+				"Key Properties", null, null, 
+				"name",  //$NON-NLS-1$
+				new String[]{"Hibernate3KeyProperty", "Hibernate3KeyManyToOne"}, "CreateActions.AddKeys.AddKey"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(COMPOSITE_ID_ENTITY)
 		),
 	};
@@ -43,14 +46,14 @@ public class Hibernate3IdFormLayoutData {
 	final static IFormData[] COLLECTION_ID_DEFINITIONS =	new IFormData[] {
 		new FormData(
 			"Collection ID",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(COLLECTION_ID_ENTITY)
 		),
 		Hibernate3ColumnFormLayoutData.COLUMN_LIST_DEFINITION,
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(COLLECTION_ID_ENTITY)
 		),
 	};
@@ -62,10 +65,13 @@ public class Hibernate3IdFormLayoutData {
 	final static IFormData[] COMPOSITE_INDEX_DEFINITIONS =	new IFormData[] {
 		new FormData(
 			"Composite Index",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(COMPOSITE_INDEX_ENTITY)
 		),
-		Hibernate3FormLayoutDataUtil.createChildrenFormData("Key Properties", null, null, "name", new String[]{"Hibernate3KeyProperty", "Hibernate3KeyManyToOne"}, "CreateActions.AddKeys.AddKey"),
+		Hibernate3FormLayoutDataUtil.createChildrenFormData(
+				"Key Properties", null, null, 
+				"name",  //$NON-NLS-1$
+				new String[]{"Hibernate3KeyProperty", "Hibernate3KeyManyToOne"}, "CreateActions.AddKeys.AddKey"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	};
 
 	static IFormData COMPOSITE_INDEX_DEFINITION = new FormData(

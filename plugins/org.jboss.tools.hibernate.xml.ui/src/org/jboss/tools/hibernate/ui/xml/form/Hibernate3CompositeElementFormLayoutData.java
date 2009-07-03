@@ -14,20 +14,21 @@ import org.jboss.tools.common.model.ui.forms.FormData;
 import org.jboss.tools.common.model.ui.forms.IFormData;
 
 public class Hibernate3CompositeElementFormLayoutData {
-	static String ELEMENT_ENTITY = "Hibernate3CompositeElement";
-	static String NESTED_ELEMENT_ENTITY = "Hibernate3NestedCompositeElement";
+	static String ELEMENT_ENTITY = "Hibernate3CompositeElement"; //$NON-NLS-1$
+	static String NESTED_ELEMENT_ENTITY = "Hibernate3NestedCompositeElement"; //$NON-NLS-1$
 
 	final static IFormData[] ELEMENT_DEFINITIONS = new IFormData[] {
 		new FormData(
 			"Composite Element",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(ELEMENT_ENTITY)
 		),
-		Hibernate3FormLayoutDataUtil.createAllChildrenFormData("Properties", "Hibernate3AttributesNestedFolder", "Properties", "name", "CreateActions.AddAttribute"),
+		Hibernate3FormLayoutDataUtil.createAllChildrenFormData("Properties", 
+				"Hibernate3AttributesNestedFolder", "Properties", "name", "CreateActions.AddAttribute"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(ELEMENT_ENTITY)
 		)
 	};
@@ -39,14 +40,15 @@ public class Hibernate3CompositeElementFormLayoutData {
 	final static IFormData[] NESTED_ELEMENT_DEFINITIONS = new IFormData[] {
 		new FormData(
 			"Composite Element",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(NESTED_ELEMENT_ENTITY)
 		),
-		Hibernate3FormLayoutDataUtil.createAllChildrenFormData("Properties", "Hibernate3AttributesNestedFolder", "Properties", "name", "CreateActions.AddAttribute"),
+		Hibernate3FormLayoutDataUtil.createAllChildrenFormData("Properties", 
+				"Hibernate3AttributesNestedFolder", "Properties", "name", "CreateActions.AddAttribute"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(NESTED_ELEMENT_ENTITY)
 		)
 	};

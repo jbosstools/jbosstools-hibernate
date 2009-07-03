@@ -16,40 +16,40 @@ import org.jboss.tools.common.model.ui.forms.IFormAttributeData;
 import org.jboss.tools.common.model.ui.forms.IFormData;
 
 public class Hibernate3ListFormLayoutData {
-	static String LIST_ENTITY = "Hibernate3List";
-	static String ARRAY_ENTITY = "Hibernate3Array";
+	static String LIST_ENTITY = "Hibernate3List"; //$NON-NLS-1$
+	static String ARRAY_ENTITY = "Hibernate3Array"; //$NON-NLS-1$
 
 	final static IFormData[] LIST_DEFINITIONS = new IFormData[] {
 		new FormData(
 			"List",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(LIST_ENTITY)
 		),
 		new FormData(
 			"Key",
-			"",
-			"key",
-			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("Hibernate3Key")
+			"", //$NON-NLS-1$
+			"key", //$NON-NLS-1$
+			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("Hibernate3Key") //$NON-NLS-1$
 		),
 		new FormData(
 			"Index",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			new IFormAttributeData[]{
-				new FormAttributeData("index", 100, "Index Kind")
+				new FormAttributeData("index", 100, "Index Kind") //$NON-NLS-1$
 			}
 		),
 		new FormData(
 			"Element",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			new IFormAttributeData[]{
-				new FormAttributeData("element", 100, "Element Kind")
+				new FormAttributeData("element", 100, "Element Kind") //$NON-NLS-1$
 			}
 		),
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		Hibernate3SQLQueryFormLayoutData.SYNCHRONIZES_LIST_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(LIST_ENTITY)
 		),
 	};
@@ -57,34 +57,34 @@ public class Hibernate3ListFormLayoutData {
 	final static IFormData[] ARRAY_DEFINITIONS = new IFormData[] {
 		new FormData(
 			"Array",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(ARRAY_ENTITY)
 		),
 		new FormData(
 			"Key",
-			"",
-			"key",
-			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("Hibernate3Key")
+			"", //$NON-NLS-1$
+			"key", //$NON-NLS-1$
+			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("Hibernate3Key") //$NON-NLS-1$
 		),
 		new FormData(
 			"Index",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			new IFormAttributeData[]{
-				new FormAttributeData("index", 100, "Index Kind")
+				new FormAttributeData("index", 100, "Index Kind") //$NON-NLS-1$
 			}
 		),
 		new FormData(
 			"Element",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			new IFormAttributeData[]{
-				new FormAttributeData("element", 100, "Element Kind")
+				new FormAttributeData("element", 100, "Element Kind") //$NON-NLS-1$
 			}
 		),
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		Hibernate3SQLQueryFormLayoutData.SYNCHRONIZES_LIST_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(ARRAY_ENTITY)
 		),
 	};

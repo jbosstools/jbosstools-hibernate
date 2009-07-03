@@ -14,21 +14,21 @@ import org.jboss.tools.common.model.ui.forms.FormData;
 import org.jboss.tools.common.model.ui.forms.IFormData;
 
 public class Hibernate3ElementFormLayoutData {
-	static String ELEMENT_ENTITY = "Hibernate3Element";
-	static String MANY_TO_MANY_ENTITY = "Hibernate3ManyToMany";
-	static String MANY_TO_ANY_ENTITY = "Hibernate3ManyToAny";
+	static String ELEMENT_ENTITY = "Hibernate3Element"; //$NON-NLS-1$
+	static String MANY_TO_MANY_ENTITY = "Hibernate3ManyToMany"; //$NON-NLS-1$
+	static String MANY_TO_ANY_ENTITY = "Hibernate3ManyToAny"; //$NON-NLS-1$
 
 	final static IFormData[] ELEMENT_DEFINITIONS = new IFormData[] {
 		new FormData(
 			"Element",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(ELEMENT_ENTITY)
 		),
 		Hibernate3ColumnFormLayoutData.COLUMN_LIST_DEFINITION,
 		Hibernate3FormulaFormLayoutData.FORMULA_LIST_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(ELEMENT_ENTITY)
 		)
 	};
@@ -40,7 +40,7 @@ public class Hibernate3ElementFormLayoutData {
 	final static IFormData[] MANY_TO_MANY_DEFINITIONS = new IFormData[] {
 		new FormData(
 			"Many To Many",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(MANY_TO_MANY_ENTITY)
 		),
 		Hibernate3ColumnFormLayoutData.COLUMN_LIST_DEFINITION,
@@ -49,7 +49,7 @@ public class Hibernate3ElementFormLayoutData {
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(MANY_TO_MANY_ENTITY)
 		)
 	};
@@ -61,7 +61,7 @@ public class Hibernate3ElementFormLayoutData {
 	final static IFormData[] MANY_TO_ANY_DEFINITIONS = new IFormData[] {
 		new FormData(
 			"Many To Any",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(MANY_TO_ANY_ENTITY)
 		),
 		Hibernate3AnyFormLayoutData.META_VALUE_LIST_DEFINITION,

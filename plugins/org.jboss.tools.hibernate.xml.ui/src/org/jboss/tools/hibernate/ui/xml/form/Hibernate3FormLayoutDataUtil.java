@@ -29,22 +29,36 @@ import org.jboss.tools.common.model.ui.forms.InfoLayoutDataFactory;
  * @author glory
  */
 public class Hibernate3FormLayoutDataUtil {
-	private final static String STBFE_CLASS_NAME = "org.jboss.tools.common.model.ui.attribute.editor.JavaHyperlinkLineFieldEditor";
-	public final static String SBFEE_CLASS_NAME = "org.jboss.tools.common.model.ui.attribute.editor.StringButtonFieldEditorEx";
+	private final static String STBFE_CLASS_NAME = "org.jboss.tools.common.model.ui.attribute.editor.JavaHyperlinkLineFieldEditor"; //$NON-NLS-1$
+	public final static String SBFEE_CLASS_NAME = "org.jboss.tools.common.model.ui.attribute.editor.StringButtonFieldEditorEx"; //$NON-NLS-1$
 
-	private final static String SELECT_IT_ACTION = "%SelectIt%";
-	private final static String INTERNAL_ACTION = "%internal%";
-	private final static String DEFAULT_DELETE_ACTION = "DeleteActions.Delete";
+	private final static String SELECT_IT_ACTION = "%SelectIt%"; //$NON-NLS-1$
+	private final static String INTERNAL_ACTION = "%internal%"; //$NON-NLS-1$
+	private final static String DEFAULT_DELETE_ACTION = "DeleteActions.Delete"; //$NON-NLS-1$
 //	private final static String DEFAULT_EDIT_ACTION = "Properties.Properties";
 
+	/**
+	 *  (non-translatable)
+	 */
 	public static IFormAttributeData[] createGeneralFormAttributeData(String entityName) {
 		return createFormAttributeData(entityName, "general");
 	}
 
+	/**
+	 * 
+	 * @param entityName (non-translatable)
+	 * @return
+	 */
 	public static IFormAttributeData[] createAdvancedFormAttributeData(String entityName) {
 		return createFormAttributeData(entityName, "advanced");
 	}
 
+	/**
+	 * 
+	 * @param entityName (non-translatable)
+	 * @param categoryName
+	 * @return
+	 */
 	public static IFormAttributeData[] createFormAttributeData(String entityName, String categoryName) {
 		XModelEntity entity = PreferenceModelUtilities.getPreferenceModel().getMetaData().getEntity(entityName);
 		if(entity == null) return new IFormAttributeData[0];
@@ -52,12 +66,12 @@ public class Hibernate3FormLayoutDataUtil {
 		XAttribute[] as = entity.getAttributes();
 		for (int i = 0; i < as.length; i++) {
 			if(!as[i].isVisible()) continue;
-			String category = as[i].getProperty("category");
+			String category = as[i].getProperty("category"); //$NON-NLS-1$
 			if(category != null && category.equals(categoryName)) {
 				String editorName = as[i].getEditor().getName();
-				if("AccessibleJava".equals(editorName)) {
+				if("AccessibleJava".equals(editorName)) { //$NON-NLS-1$
 					list.add(new FormAttributeData(as[i].getName(), null, STBFE_CLASS_NAME));
-				} else if("Note".equals(editorName)) {
+				} else if("Note".equals(editorName)) { //$NON-NLS-1$
 					list.add(new FormAttributeData(as[i].getName(), InfoLayoutDataFactory.getInstance()));
 				} else {
 					list.add(new FormAttributeData(as[i].getName()));
@@ -67,6 +81,12 @@ public class Hibernate3FormLayoutDataUtil {
 		return (IFormAttributeData[])list.toArray(new IFormAttributeData[0]);
 	}
 	
+	/**
+	 * 
+	 * @param entityName (non-translatable)
+	 * @param attributeName (non-translatable)
+	 * @return
+	 */
 	public static String[] getChildEntitiesWithAttribute(String entityName, String attributeName) {
 		XModelEntity entity = PreferenceModelUtilities.getPreferenceModel().getMetaData().getEntity(entityName);
 		if(entity == null) return new String[0];
@@ -79,15 +99,34 @@ public class Hibernate3FormLayoutDataUtil {
 		return list.toArray(new String[0]);
 	}
 
+	/**
+	 * 
+	 * @param name (translatable)
+	 * @param entityName (non-translatable)
+	 * @param childName (non-translatable)
+	 * @param attributeName (non-translatable)
+	 * @param createAction (non-translatable)
+	 * @return
+	 */
 	public static FormData createAllChildrenFormData(String name, String entityName, String childName, String attributeName, String createAction) {
 		return createChildrenFormData(name, entityName, childName, attributeName,
 				Hibernate3FormLayoutDataUtil.getChildEntitiesWithAttribute(entityName, attributeName), createAction);
 	}
 
+	/**
+	 * 
+	 * @param name (translatable)
+	 * @param entityName (non-translatable)
+	 * @param childName (non-translatable)
+	 * @param attributeName (non-translatable)
+	 * @param entityNames (non-translatable)
+	 * @param createAction (non-translatable)
+	 * @return
+	 */
 	public static FormData createChildrenFormData(String name, String entityName, String childName, String attributeName, String[] entityNames, String createAction) {
 		return new FormData(
 			name,
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			childName != null ? childName : entityName,
 			new FormAttributeData[]{new FormAttributeData(attributeName, 100, attributeName)},
 			entityNames,
@@ -95,6 +134,11 @@ public class Hibernate3FormLayoutDataUtil {
 		);
 	}
 
+	/**
+	 * 
+	 * @param actionPath (non-translatable)
+	 * @return
+	 */
 	public static IFormActionData[] createDefaultFormActionData(String actionPath) {
 		return new IFormActionData[] {
 			new FormActionData(TableStructuredEditor.ADD_ACTION, actionPath),

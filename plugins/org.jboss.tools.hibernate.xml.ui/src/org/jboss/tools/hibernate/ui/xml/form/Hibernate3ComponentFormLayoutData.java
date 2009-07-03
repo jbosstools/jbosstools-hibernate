@@ -17,20 +17,21 @@ import org.jboss.tools.common.model.ui.forms.IFormData;
  * @author glory
  */
 public class Hibernate3ComponentFormLayoutData {
-	static String COMPONENT_ENTITY = "Hibernate3Component";
-	static String DYNAMIC_COMPONENT_ENTITY = "Hibernate3DynamicComponent";
+	static String COMPONENT_ENTITY = "Hibernate3Component"; //$NON-NLS-1$
+	static String DYNAMIC_COMPONENT_ENTITY = "Hibernate3DynamicComponent"; //$NON-NLS-1$
 
 	final static IFormData[] COMPONENT_DEFINITIONS = new IFormData[] {
 		new FormData(
 			"Component",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(COMPONENT_ENTITY)
 		),
-		Hibernate3FormLayoutDataUtil.createAllChildrenFormData("Properties", "Hibernate3AttributesFolder", "Properties", "name", "CreateActions.AddAttribute"),
+		Hibernate3FormLayoutDataUtil.createAllChildrenFormData("Properties", 
+				"Hibernate3AttributesFolder", "Properties", "name", "CreateActions.AddAttribute"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(COMPONENT_ENTITY)
 		),
 	};
@@ -42,13 +43,14 @@ public class Hibernate3ComponentFormLayoutData {
 	final static IFormData[] DYNAMIC_COMPONENT_DEFINITIONS = new IFormData[] {
 		new FormData(
 			"Dynamic Component",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(DYNAMIC_COMPONENT_ENTITY)
 		),
-		Hibernate3FormLayoutDataUtil.createAllChildrenFormData("Properties", "Hibernate3AttributesFolder", "Properties", "name", "CreateActions.AddAttribute"),
+		Hibernate3FormLayoutDataUtil.createAllChildrenFormData("Properties", 
+				"Hibernate3AttributesFolder", "Properties", "name", "CreateActions.AddAttribute"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(COMPONENT_ENTITY)
 		),
 	};

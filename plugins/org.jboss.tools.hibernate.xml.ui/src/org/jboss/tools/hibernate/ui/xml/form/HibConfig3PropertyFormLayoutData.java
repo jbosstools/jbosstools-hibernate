@@ -18,24 +18,24 @@ import org.jboss.tools.common.model.ui.forms.IFormData;
  * @author glory
  */
 public class HibConfig3PropertyFormLayoutData {
-	static String PROPERTY_ENTITY = "HibConfig3Property";
+	static String PROPERTY_ENTITY = "HibConfig3Property"; //$NON-NLS-1$
 	
 	final static IFormData PROPERTY_LIST_DEFINITION = new FormData(
 		"Properties",
-		"", //Description
-		"Properties",
-		new FormAttributeData[]{new FormAttributeData("name", 100, "name")},
+		"", //Description //$NON-NLS-1$
+		"Properties", //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("name", 100, "name")}, //$NON-NLS-1$
 		new String[]{PROPERTY_ENTITY},
-		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddProperty")
+		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddProperty") //$NON-NLS-1$
 	);
 
 	final static IFormData PROPERTY_FOLDER_DEFINITION = new FormData(
 		"Properties",
-		"", //"Description
-		"HibConfig3PropertiesFolder",
-		new FormAttributeData[]{new FormAttributeData("name", 100, "name")},
+		"", //"Description //$NON-NLS-1$
+		"HibConfig3PropertiesFolder", //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("name", 100, "name")}, //$NON-NLS-1$
 		new String[]{PROPERTY_ENTITY},
-		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddProperty")
+		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddProperty") //$NON-NLS-1$
 	);
 
 

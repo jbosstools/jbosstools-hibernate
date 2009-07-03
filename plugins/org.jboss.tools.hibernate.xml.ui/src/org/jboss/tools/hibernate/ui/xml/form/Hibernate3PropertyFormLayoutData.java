@@ -17,11 +17,11 @@ import org.jboss.tools.common.model.ui.forms.IFormData;
  * @author glory
  */
 public class Hibernate3PropertyFormLayoutData {
-	static String PROPERTY_ENTITY = "Hibernate3Property";
+	static String PROPERTY_ENTITY = "Hibernate3Property"; //$NON-NLS-1$
 	final static IFormData[] PROPERTY_DEFINITIONS =	new IFormData[] {
 		new FormData(
 			"Property",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(PROPERTY_ENTITY)
 		),
 		Hibernate3ColumnFormLayoutData.COLUMN_LIST_DEFINITION,
@@ -29,7 +29,7 @@ public class Hibernate3PropertyFormLayoutData {
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		new FormData(
 			"Advanced",
-			"", //"Description
+			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(PROPERTY_ENTITY)
 		),
 	};
