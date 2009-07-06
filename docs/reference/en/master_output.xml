@@ -26,13 +26,13 @@
 ]><book lang="en" xmlns:diffmk="http://diffmk.sf.net/ns/diff">
   <bookinfo>
     <title>Hibernate Tools Reference Guide</title>
-      <corpauthor diffmk:change="added">
-        <inlinemediaobject diffmk:change="added">
-          <imageobject diffmk:change="added" role="fo">
-            <imagedata diffmk:change="added" fileref="images/jbosstools_logo.png" format="PNG"></imagedata>
+      <corpauthor>
+        <inlinemediaobject>
+          <imageobject role="fo">
+            <imagedata fileref="images/jbosstools_logo.png" format="PNG"></imagedata>
           </imageobject>	
-          <imageobject diffmk:change="added" role="html">
-            <imagedata diffmk:change="added"></imagedata>
+          <imageobject role="html">
+            <imagedata></imagedata>
           </imageobject>	
         </inlinemediaobject>           
       </corpauthor>
@@ -44,11 +44,11 @@
     <copyright>
       <year>2007</year>
       <year>2009</year>
-      <holder>JBoss, a division of Red Hat</holder>
+      <holder><diffmk:wrapper diffmk:change="changed">JBoss by Red Hat</diffmk:wrapper></holder>
     </copyright>
 
     <releaseinfo><diffmk:wrapper diffmk:change="changed">
-      Version: 3.3.0.M1
+      Version: 3.3.0.M2
     </diffmk:wrapper></releaseinfo>
 
 
@@ -177,6 +177,17 @@
                         </entry>
                         <entry><link linkend="hib_console">hibernate console</link></entry>
                     </row>
+                	
+                	<row diffmk:change="added">
+                		<entry diffmk:change="added">
+                			<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">HQL Editor and Hibernate Criteria Editor</diffmk:wrapper></para>
+                		</entry>
+                		<entry diffmk:change="added">
+                			<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">The editors are intended for writing, editing and executing HQL queries and criterias. They also support the functionality for generating 
+                			simple queries.</diffmk:wrapper></para>
+                		</entry>
+                		<entry diffmk:change="added"><link diffmk:change="added" linkend="hql_and_criteria_editors"><diffmk:wrapper diffmk:change="added">hql and hibernate criteria editors</diffmk:wrapper></link></entry>
+                	</row>
 
                     <row>
                         <entry>
@@ -2129,25 +2140,47 @@
     <section>
       <title>Prototyping Queries</title>
 
-      <para>Queries can be prototyped by entering them in the <property moreinfo="none">HQL</property> or
-          <property moreinfo="none">Criteria Editor</property>. The query editors are opened by right-clicking the
-          <property moreinfo="none">Console Configuration</property> and selecting either <property moreinfo="none">HQL
-          Editor</property> or <property moreinfo="none">Hibernate Criteria Editor</property>. The editors
-        automatically detect the chosen configuration.</para>
-
-      <para>If the menu item is disabled then you need at first to create a <property moreinfo="none">Session
+      <para><diffmk:wrapper diffmk:change="changed">Queries can be prototyped by entering them into the </diffmk:wrapper><property moreinfo="none">HQL</property> or
+          <property moreinfo="none">Criteria Editor</property><diffmk:wrapper diffmk:change="added">. To execute a query you should click the green run button in the editor toolbar or press </diffmk:wrapper><emphasis diffmk:change="added">
+          <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Ctrl+Enter</diffmk:wrapper></property>
+        </emphasis><diffmk:wrapper diffmk:change="added">.</diffmk:wrapper></para>
+	
+	<section diffmk:change="added" id="hql_and_criteria_editors">
+		<title diffmk:change="added"><diffmk:wrapper diffmk:change="added">HQL Editor and Hibernate Criteria Editor</diffmk:wrapper></title>
+		<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">To open the query editors right-click your project
+          </diffmk:wrapper><property moreinfo="none">Console Configuration</property><diffmk:wrapper diffmk:change="changed"> and select </diffmk:wrapper><property moreinfo="none">HQL
+          Editor</property><diffmk:wrapper diffmk:change="changed"> (or </diffmk:wrapper><property moreinfo="none">Hibernate Criteria Editor</property><diffmk:wrapper diffmk:change="changed">).</diffmk:wrapper></para>
+	
+		<figure diffmk:change="added" float="0">
+			<title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Opening HQL Editor</diffmk:wrapper></title>
+			<mediaobject diffmk:change="added">
+				<imageobject diffmk:change="added">
+					<imagedata diffmk:change="added" fileref="images/plugins/prototypingQueries.png"></imagedata>
+				</imageobject>
+			</mediaobject>
+		</figure>
+		
+	<tip diffmk:change="added"><title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Tip:</diffmk:wrapper></title>	
+	<para><diffmk:wrapper diffmk:change="changed">If the context menu items are disabled then you need at first to create a </diffmk:wrapper><property moreinfo="none">Session
           Factory</property>. That is done by simply expanding the <property moreinfo="none">Session
           Factory</property> node.</para>
-
-      <para>By brining up the context menu for a chosen entity or property in the <property moreinfo="none">Console
-          Configuration</property> and opening <emphasis>
+	</tip>
+		<para><diffmk:wrapper diffmk:change="added">When open the editors they should automatically detect the chosen Console Configuration.</diffmk:wrapper></para>
+		
+	<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">To get a prefill query for any entity (or any entity child node) listed in the
+	</diffmk:wrapper><emphasis diffmk:change="added">
+          <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Session Factory</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> you should double-click it. This will open the 
+	</diffmk:wrapper><property moreinfo="none"><diffmk:wrapper diffmk:change="changed">HQL Editor</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added"> with the associated query.</diffmk:wrapper></para>
+	
+	<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Choosing </diffmk:wrapper><emphasis>
           <property moreinfo="none">HQL Editor</property>
-        </emphasis> or <emphasis>
+        </emphasis><diffmk:wrapper diffmk:change="changed"> in the context menu for any entity (or any entity child node) will also open the HQL editor
+	with the associated query. If you choose </diffmk:wrapper><emphasis>
           <property moreinfo="none">Hibernate Criteria Editor</property>
-        </emphasis> you'll get a prefill query.</para>
+        </emphasis><diffmk:wrapper diffmk:change="added"> in the context menu, it will open </diffmk:wrapper><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Hibernate Criteria Editor</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added"> with the associated 	cretaria.</diffmk:wrapper></para>
 
-      <figure float="0">
-        <title>Entering Simple Queries</title>
+	 <figure float="0">
+        <title><diffmk:wrapper diffmk:change="changed">Generating Simple Queries</diffmk:wrapper></title>
         <mediaobject>
           <imageobject role="fo">
             <imagedata align="center" fileref="images/plugins/plugins_19.png" format="PNG" scale="80"></imagedata>
@@ -2158,36 +2191,38 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para>To copy a portion of code from .java file into a HQL or Criteria editor, make use of the
-        Quick Fix option (Ctrl + 1).</para>
 
-      <figure float="0">
+	<para><diffmk:wrapper diffmk:change="added">It's also possible to copy a portion of code from </diffmk:wrapper><emphasis diffmk:change="added">
+          <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">.java</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> file into the </diffmk:wrapper><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">HQL</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added"> or 
+	</diffmk:wrapper><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Criteria editor</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added">. To do this make use of the
+        Quick Fix option (</diffmk:wrapper><emphasis diffmk:change="added">
+          <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Ctrl + 1</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added">)</diffmk:wrapper></emphasis><diffmk:wrapper diffmk:change="added">.</diffmk:wrapper></para>
+
+  	<figure float="0">
         <title>Quick Fix Option Demonstration</title>
-
         <mediaobject>
           <imageobject>
             <imagedata fileref="images/plugins/plugins_19_b.png"></imagedata>
           </imageobject>
         </mediaobject>
       </figure>
+
       <para>You can also update the original java code according to changes in the HQL or Criteria
         editor. For that you should save your HQL/Criteria query and submit the replacing in
         appeared confirmation dialog.</para>
 
       <figure float="0">
         <title>Updating Java Code</title>
-
         <mediaobject>
           <imageobject>
             <imagedata fileref="images/plugins/plugins_19_c.png"></imagedata>
           </imageobject>
         </mediaobject>
       </figure>
+	</section>    
 
-      <para>Executing the query is done by clicking the green run button in the toolbar or pressing <emphasis>
-          <property moreinfo="none">Ctrl+Enter</property>
-        </emphasis>.</para>
-
+	<section diffmk:change="added">
+		<title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Error Handling</diffmk:wrapper></title>
       <para>Errors during creation of the <property moreinfo="none">Session Factory</property> or running the
         queries (e.g. if your configuration or query is incorrect) will be shown in a message dialog
         or inclined in the view that detected the error, you may get more information about the
@@ -2205,7 +2240,7 @@
           out of memory. To avoid this you can put a value in the Max results field to reduce the
           number of elements returned.</para>
       </note>
-
+	</section>
       <section>
         <title>Dynamic Query Translator</title>
 
@@ -2267,7 +2302,115 @@
       </figure>
     </section>
   </section>
+  <section diffmk:change="added" id="jpa_annotations">
+    <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Hibernate:add JPA annotations view
+    </diffmk:wrapper></title>
+    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Using this wizard you can add the next Hibernate annotations to the class:
+      </diffmk:wrapper><emphasis diffmk:change="added">
+        <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@Column</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
+          <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@Entity</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
+            <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@ManyToOne</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
+              <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@OneToMany</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
+                <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@OneToOne</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
+                  <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@ManyToMany</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
+                    <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@MappedSuperclass</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
+                      <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@Id</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
+                        <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@GeneratedValue</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> ,</diffmk:wrapper><emphasis diffmk:change="added">
+                          <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@Version </diffmk:wrapper></property></emphasis>    
+    </para>
+     <itemizedlist diffmk:change="added">
+      <listitem diffmk:change="added">
+        <para diffmk:change="added"><emphasis diffmk:change="added">
+          <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@Column</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> is added to all String properties.</diffmk:wrapper></para>
+      </listitem>
+       <listitem diffmk:change="added">
+         <para diffmk:change="added"><emphasis diffmk:change="added">
+           <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@Entity</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> is always declared before any class where it doesn't present.</diffmk:wrapper></para>
+       </listitem>
+       <listitem diffmk:change="added">
+         <para diffmk:change="added"><emphasis diffmk:change="added">
+           <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@ManyToOne</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
+             <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@OneToMany</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
+               <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@OneToOne</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
+                 <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@ManyToMany</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> - this annotations are declared according to the  classes hierarchy.</diffmk:wrapper></para>
+       </listitem>
+       <listitem diffmk:change="added">
+         <para diffmk:change="added"><emphasis diffmk:change="added">
+           <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@MappedSuperclass</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> is added to abstract superclasses.</diffmk:wrapper></para>
+       </listitem>
+       <listitem diffmk:change="added">
+         <para diffmk:change="added"><emphasis diffmk:change="added">
+           <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@Id</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
+             <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@GeneratedValue</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> are added automatically only to the  properties under the name "Id",where they don't present.</diffmk:wrapper></para>
+       </listitem>
 
+       <listitem diffmk:change="added">
+         <para diffmk:change="added"><emphasis diffmk:change="added">
+           <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@Version</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> is declared in case you select </diffmk:wrapper><link diffmk:change="added" linkend="optim_lock"><diffmk:wrapper diffmk:change="added">Enable optimistic locking</diffmk:wrapper></link><diffmk:wrapper diffmk:change="added">.</diffmk:wrapper></para>
+       </listitem>
+     </itemizedlist>
+    <note diffmk:change="added">
+      <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Note:</diffmk:wrapper></title>
+      <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">This section doesn't cover the meaning of the  </diffmk:wrapper><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Hibernate annotations</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added">
+        , for more information read </diffmk:wrapper><ulink diffmk:change="added" url="http://docs.jboss.org/hibernate/stable/annotations/reference/en/html/"><diffmk:wrapper diffmk:change="added">Hibernate Annotations Documentation</diffmk:wrapper></ulink><diffmk:wrapper diffmk:change="added"> .</diffmk:wrapper></para>
+    </note>
+    
+    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">To  open this wizard you should right click the class you want to enrich with annotations  </diffmk:wrapper><emphasis diffmk:change="added">
+      <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">&gt;Source&gt;Generate Hibernate/JPA annotations</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">. You will  see the Hibernate:add JPA annotations dialog.
+    </diffmk:wrapper></para>
+    <figure diffmk:change="added" float="0">
+      <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Starting Hibernate:add JPA annotations view</diffmk:wrapper></title>
+      <mediaobject diffmk:change="added">
+        <imageobject diffmk:change="added">
+          <imagedata diffmk:change="added" fileref="images/plugins/annotations1.png"></imagedata>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added"> In the top of it you can see the list of all classes that will be passed through refactoring.
+      Besides the class you have selected in this list  you can also find its superclasses and the classes that objects present in the current class as  properties. 
+    </diffmk:wrapper></para>
+    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">By default the tags are added to the fields of selected classes. But you can change this  option  to  </diffmk:wrapper><emphasis diffmk:change="added"><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Getters</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">in </diffmk:wrapper><emphasis diffmk:change="added"><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added"> Preferred location of Annotations</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> dropdownlist
+      and then all the annotations will be added to the getter methods. If you choose  </diffmk:wrapper><emphasis diffmk:change="added"><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Auto select from class preference</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> then the annotations are added according to the majority of the already existed ones positions.
+    </diffmk:wrapper></para>
+    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added"> If it's nessecary to map your String properties to the columns that length differ from the default value(255) ,change </diffmk:wrapper><emphasis diffmk:change="added"><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Default string length field</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> and </diffmk:wrapper><code diffmk:change="added"><diffmk:wrapper diffmk:change="added">@Column(length = your length)</diffmk:wrapper></code><diffmk:wrapper diffmk:change="added"> will be created before every String property.  
+    </diffmk:wrapper></para>
+    <para diffmk:change="added" id="optim_lock"><diffmk:wrapper diffmk:change="added">You can add optimistic locking capability to an entity bean by selecting  </diffmk:wrapper><emphasis diffmk:change="added"><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Enable optimistic locking</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> checkbox.
+      This operation will add version property to all the selected classes. The property will be  also annotated  with @Version ,getter and setter will be created. If the property is already exists,it won't be created ,but the getters,setters will be generated.
+      If there is already @MappedSuperclass with version in the  base class of the current class - </diffmk:wrapper><emphasis diffmk:change="added"><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">"version"</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> is not  inserted into the current class.
+    </diffmk:wrapper></para>
+    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">After  defining all necessary settings in the current  step press </diffmk:wrapper><emphasis diffmk:change="added"><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Next</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> and follow the next wizard steps.
+    </diffmk:wrapper></para>
+    <figure diffmk:change="added" float="0">
+      <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Hibernate:add JPA annotations view</diffmk:wrapper></title>
+    <mediaobject diffmk:change="added">
+      <imageobject diffmk:change="added">
+        <imagedata diffmk:change="added" fileref="images/plugins/annotations2.png"></imagedata>
+      </imageobject>
+    </mediaobject>
+    </figure>
+    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">The  view represents two windows: one with the source code and and the second with refactored one.
+      With the help of </diffmk:wrapper><inlinemediaobject diffmk:change="added"><imageobject diffmk:change="added">
+        <imagedata diffmk:change="added" fileref="images/plugins/butt1.png"></imagedata>
+      </imageobject></inlinemediaobject><diffmk:wrapper diffmk:change="added"> ,</diffmk:wrapper><inlinemediaobject diffmk:change="added"><imageobject diffmk:change="added">
+        <imagedata diffmk:change="added" fileref="images/plugins/butt2.png"></imagedata>
+      </imageobject></inlinemediaobject><diffmk:wrapper diffmk:change="added"> ,</diffmk:wrapper><inlinemediaobject diffmk:change="added"><imageobject diffmk:change="added">
+        <imagedata diffmk:change="added" fileref="images/plugins/butt3.png"></imagedata>
+      </imageobject></inlinemediaobject><diffmk:wrapper diffmk:change="added"> ,</diffmk:wrapper><inlinemediaobject diffmk:change="added"><imageobject diffmk:change="added">
+        <imagedata diffmk:change="added" fileref="images/plugins/butt4.png"></imagedata>
+      </imageobject></inlinemediaobject><diffmk:wrapper diffmk:change="added"> buttons you can quickly navigate between the differences in the code. If you don't agree with some changes you can't  undo them but you can  remove the class from the list of classes that need refactoring.
+    </diffmk:wrapper></para>
+    <figure diffmk:change="added" float="0">
+      <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">List of classes that need refactoring</diffmk:wrapper></title>
+    <mediaobject diffmk:change="added">
+      <imageobject diffmk:change="added">
+        <imagedata diffmk:change="added" fileref="images/plugins/annotations3.png"></imagedata>
+      </imageobject>
+    </mediaobject>
+    </figure>
+    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">To apply the changes click </diffmk:wrapper><emphasis diffmk:change="added">
+      <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Finish</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">.</diffmk:wrapper></para>
+
+ </section>
   <section id="debug_log">
     <title>Enable debug logging in the plugins</title>
 
@@ -5253,7 +5396,7 @@ public class Person implements Serializable {
         <para>The rest chapters have shown the aspects of using the <property moreinfo="none">Hibernate
             Tools</property> via Ant tasks.</para>
 
-        <para>Please, visit <ulink url="http://www.jboss.com/index.html?module=bb&apos;op=viewforum&apos;f=201">JBoss
+        <para>Please, visit <ulink url="http://www.jboss.com/index.html?module=bb&amp;op=viewforum&amp;f=201">JBoss
             Tools Users Forum</ulink> to leave questions or/and suggestions on the topic. Your
           feedback is always appreciated.</para>
       </section>
