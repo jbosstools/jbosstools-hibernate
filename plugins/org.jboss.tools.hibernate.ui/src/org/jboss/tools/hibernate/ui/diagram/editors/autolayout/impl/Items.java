@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.ui.diagram.editors.autolayout.impl;
 
 import java.util.*;
 
-import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
 import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.IItemInfo;
 import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.ILinkInfo;
 import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.IDiagramInfo;
