@@ -11,3 +11,4 @@ Export-Package: org.jboss.tools.hibernate.ui.view
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
 Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

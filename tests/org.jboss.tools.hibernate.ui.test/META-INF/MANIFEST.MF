@@ -17,3 +17,4 @@ Bundle-ClassPath: org.jboss.tools.hibernate.ui.diagram.test.jar
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin
 Import-Package: org.eclipse.core.resources
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

@@ -27,4 +27,5 @@ Export-Package: org.jboss.tools.hibernate.ui.diagram,
  org.jboss.tools.hibernate.ui.diagram.editors.parts,
  org.jboss.tools.hibernate.ui.view
 Import-Package: org.eclipse.ui.actions
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
 
