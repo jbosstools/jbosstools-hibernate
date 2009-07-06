@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.hibernate.ui.veditor;singleton:=true
 Bundle-Version: 2.0.0
-Bundle-ClassPath: view.jar
+Bundle-ClassPath: veditor.jar
 Bundle-Activator: org.jboss.tools.hibernate.ui.veditor.ViewPlugin
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin
