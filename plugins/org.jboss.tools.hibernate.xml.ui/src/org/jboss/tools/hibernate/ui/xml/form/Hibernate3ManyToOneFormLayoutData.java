@@ -21,7 +21,7 @@ public class Hibernate3ManyToOneFormLayoutData {
 	
 	final static IFormData[] MANY_TO_ONE_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Many To One",
+			Messages.Hibernate3ManyToOneFormLayoutData_ManyToOne,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(MANY_TO_ONE_ENTITY)
 		),
@@ -29,7 +29,7 @@ public class Hibernate3ManyToOneFormLayoutData {
 		Hibernate3FormulaFormLayoutData.FORMULA_LIST_DEFINITION,
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		new FormData(
-			"Advanced",
+			Messages.Hibernate3ManyToOneFormLayoutData_Advanced,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(MANY_TO_ONE_ENTITY)
 		),

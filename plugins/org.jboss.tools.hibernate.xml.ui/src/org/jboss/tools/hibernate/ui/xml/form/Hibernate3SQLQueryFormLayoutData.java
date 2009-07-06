@@ -23,7 +23,7 @@ public class Hibernate3SQLQueryFormLayoutData {
 	static String RESULT_SET_ENTITY = "Hibernate3ResultSet"; //$NON-NLS-1$
 	
 	static IFormData SYNCHRONIZES_LIST_DEFINITION = new FormData(
-		"Synchronize",
+		Messages.Hibernate3SQLQueryFormLayoutData_SyncList,
 		"", //"Description //$NON-NLS-1$
 		new FormAttributeData[]{new FormAttributeData("table", 100)}, //$NON-NLS-1$
 		new String[]{SYNCHRONIZES_ENTITY},
@@ -31,7 +31,7 @@ public class Hibernate3SQLQueryFormLayoutData {
 	);
 
 	static IFormData SYNCHRONIZES_FOLDER_DEFINITION = new FormData(
-		"Synchronize",
+		Messages.Hibernate3SQLQueryFormLayoutData_SyncFolder,
 		"", //"Description //$NON-NLS-1$
 		"Synchronize", //$NON-NLS-1$
 		new FormAttributeData[]{new FormAttributeData("table", 100)}, //$NON-NLS-1$
@@ -41,19 +41,19 @@ public class Hibernate3SQLQueryFormLayoutData {
 
 	final static IFormData[] SQL_QUERY_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"SQL Query",
+			Messages.Hibernate3SQLQueryFormLayoutData_SQLQuery,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(SQL_QUERY_ENTITY)
 		),
 		new FormData(
-			"Returns",
+			Messages.Hibernate3SQLQueryFormLayoutData_QueryReturns,
 			"", //"Description //$NON-NLS-1$
 			new FormAttributeData[]{new FormAttributeData("alias", 100)}, //$NON-NLS-1$
 			new String[]{"Hibernate3Return", "Hibernate3ReturnJoin", "Hibernate3LoadCollection"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.Returns.AddAnyReturn") //$NON-NLS-1$
 		),
 		new FormData(
-			"Return Scalars",
+			Messages.Hibernate3SQLQueryFormLayoutData_QueryReturnScalars,
 			"", //"Description //$NON-NLS-1$
 			new FormAttributeData[]{new FormAttributeData("column", 40), new FormAttributeData("type", 60)}, //$NON-NLS-1$ //$NON-NLS-2$
 			new String[]{"Hibernate3ReturnScalar"}, //$NON-NLS-1$
@@ -61,7 +61,7 @@ public class Hibernate3SQLQueryFormLayoutData {
 		),
 		SYNCHRONIZES_LIST_DEFINITION,
 		new FormData(
-			"Advanced",
+			Messages.Hibernate3SQLQueryFormLayoutData_QueryAdvanced,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(SQL_QUERY_ENTITY)
 		),
@@ -69,26 +69,26 @@ public class Hibernate3SQLQueryFormLayoutData {
 
 	final static IFormData[] RESULT_SET_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Result Set",
+			Messages.Hibernate3SQLQueryFormLayoutData_ResultSet,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(RESULT_SET_ENTITY)
 		),
 		new FormData(
-			"Returns",
+			Messages.Hibernate3SQLQueryFormLayoutData_ResultSetReturns,
 			"", //"Description //$NON-NLS-1$
 			new FormAttributeData[]{new FormAttributeData("alias", 100)}, //$NON-NLS-1$
 			new String[]{"Hibernate3Return", "Hibernate3ReturnJoin", "Hibernate3LoadCollection"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.Returns.AddAnyReturn") //$NON-NLS-1$
 		),
 		new FormData(
-			"Return Scalars",
+			Messages.Hibernate3SQLQueryFormLayoutData_ResultSetReturnScalars,
 			"", //"Description //$NON-NLS-1$
 			new FormAttributeData[]{new FormAttributeData("column", 40), new FormAttributeData("type", 60)}, //$NON-NLS-1$ //$NON-NLS-2$
 			new String[]{"Hibernate3ReturnScalar"}, //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddReturnScalar") //$NON-NLS-1$
 		),
 		new FormData(
-			"Advanced",
+			Messages.Hibernate3SQLQueryFormLayoutData_ResultSetAdvanced,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(RESULT_SET_ENTITY)
 		),

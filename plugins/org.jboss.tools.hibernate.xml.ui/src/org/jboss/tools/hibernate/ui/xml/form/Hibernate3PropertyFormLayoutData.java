@@ -20,7 +20,7 @@ public class Hibernate3PropertyFormLayoutData {
 	static String PROPERTY_ENTITY = "Hibernate3Property"; //$NON-NLS-1$
 	final static IFormData[] PROPERTY_DEFINITIONS =	new IFormData[] {
 		new FormData(
-			"Property",
+			Messages.Hibernate3PropertyFormLayoutData_Property,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(PROPERTY_ENTITY)
 		),
@@ -28,7 +28,7 @@ public class Hibernate3PropertyFormLayoutData {
 		Hibernate3FormulaFormLayoutData.FORMULA_LIST_DEFINITION,
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		new FormData(
-			"Advanced",
+			Messages.Hibernate3PropertyFormLayoutData_Advanced,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(PROPERTY_ENTITY)
 		),

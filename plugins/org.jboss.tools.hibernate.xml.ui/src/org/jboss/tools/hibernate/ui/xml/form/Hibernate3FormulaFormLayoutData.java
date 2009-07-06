@@ -22,7 +22,7 @@ public class Hibernate3FormulaFormLayoutData {
 	static String FORMULA_ENTITY = "Hibernate3Formula"; //$NON-NLS-1$
 
 	static IFormData FORMULA_LIST_DEFINITION = new FormData(
-		"Formulas",
+		Messages.Hibernate3FormulaFormLayoutData_FormulaList,
 		"", //"Description //$NON-NLS-1$
 		new FormAttributeData[]{new FormAttributeData("value", 100)}, //$NON-NLS-1$
 		new String[]{FORMULA_ENTITY},
@@ -30,7 +30,7 @@ public class Hibernate3FormulaFormLayoutData {
 	);
 
 	static IFormData FORMULA_DEFINITION = new FormData(
-		"Formula",
+		Messages.Hibernate3FormulaFormLayoutData_Formula,
 		"", //"Description //$NON-NLS-1$
 		FORMULA_ENTITY,
 		new FormAttributeData[]{new FormAttributeData("value", GreedyLayoutDataFactory.getInstance())} //$NON-NLS-1$

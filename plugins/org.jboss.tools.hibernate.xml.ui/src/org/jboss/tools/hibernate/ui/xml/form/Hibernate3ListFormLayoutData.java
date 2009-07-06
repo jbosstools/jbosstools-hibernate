@@ -21,34 +21,34 @@ public class Hibernate3ListFormLayoutData {
 
 	final static IFormData[] LIST_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"List",
+			Messages.Hibernate3ListFormLayoutData_List,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(LIST_ENTITY)
 		),
 		new FormData(
-			"Key",
+			Messages.Hibernate3ListFormLayoutData_ListKey,
 			"", //$NON-NLS-1$
 			"key", //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("Hibernate3Key") //$NON-NLS-1$
 		),
 		new FormData(
-			"Index",
+			Messages.Hibernate3ListFormLayoutData_ListIndex,
 			"", //"Description //$NON-NLS-1$
 			new IFormAttributeData[]{
-				new FormAttributeData("index", 100, "Index Kind") //$NON-NLS-1$
+				new FormAttributeData("index", 100, Messages.Hibernate3ListFormLayoutData_ListIndexKind) //$NON-NLS-1$
 			}
 		),
 		new FormData(
-			"Element",
+			Messages.Hibernate3ListFormLayoutData_ListElement,
 			"", //"Description //$NON-NLS-1$
 			new IFormAttributeData[]{
-				new FormAttributeData("element", 100, "Element Kind") //$NON-NLS-1$
+				new FormAttributeData("element", 100, Messages.Hibernate3ListFormLayoutData_ListElementKind) //$NON-NLS-1$
 			}
 		),
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		Hibernate3SQLQueryFormLayoutData.SYNCHRONIZES_LIST_DEFINITION,
 		new FormData(
-			"Advanced",
+			Messages.Hibernate3ListFormLayoutData_ListAdvanced,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(LIST_ENTITY)
 		),
@@ -56,34 +56,34 @@ public class Hibernate3ListFormLayoutData {
 
 	final static IFormData[] ARRAY_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Array",
+			Messages.Hibernate3ListFormLayoutData_Array,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(ARRAY_ENTITY)
 		),
 		new FormData(
-			"Key",
+			Messages.Hibernate3ListFormLayoutData_ArrayKey,
 			"", //$NON-NLS-1$
 			"key", //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("Hibernate3Key") //$NON-NLS-1$
 		),
 		new FormData(
-			"Index",
+			Messages.Hibernate3ListFormLayoutData_ArrayIndex,
 			"", //"Description //$NON-NLS-1$
 			new IFormAttributeData[]{
-				new FormAttributeData("index", 100, "Index Kind") //$NON-NLS-1$
+				new FormAttributeData("index", 100, Messages.Hibernate3ListFormLayoutData_ArrayIndexKind) //$NON-NLS-1$
 			}
 		),
 		new FormData(
-			"Element",
+			Messages.Hibernate3ListFormLayoutData_ArrayElement,
 			"", //"Description //$NON-NLS-1$
 			new IFormAttributeData[]{
-				new FormAttributeData("element", 100, "Element Kind") //$NON-NLS-1$
+				new FormAttributeData("element", 100, Messages.Hibernate3ListFormLayoutData_ArrayElementKind) //$NON-NLS-1$
 			}
 		),
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		Hibernate3SQLQueryFormLayoutData.SYNCHRONIZES_LIST_DEFINITION,
 		new FormData(
-			"Advanced",
+			Messages.Hibernate3ListFormLayoutData_ArrayAdvanced,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(ARRAY_ENTITY)
 		),

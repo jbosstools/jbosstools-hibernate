@@ -23,17 +23,17 @@ public class Hibernate3IdFormLayoutData {
 	
 	final static IFormData[] COMPOSITE_ID_DEFINITIONS =	new IFormData[] {
 		new FormData(
-			"Composite ID",
+			Messages.Hibernate3IdFormLayoutData_CompositeID,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(COMPOSITE_ID_ENTITY)
 		),
 		Hibernate3FormLayoutDataUtil.createChildrenFormData(
-				"Key Properties", null, null, 
+				Messages.Hibernate3IdFormLayoutData_IDKeyProperties, null, null, 
 				"name",  //$NON-NLS-1$
 				new String[]{"Hibernate3KeyProperty", "Hibernate3KeyManyToOne"}, "CreateActions.AddKeys.AddKey"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		new FormData(
-			"Advanced",
+			Messages.Hibernate3IdFormLayoutData_Advanced,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(COMPOSITE_ID_ENTITY)
 		),
@@ -45,14 +45,14 @@ public class Hibernate3IdFormLayoutData {
 
 	final static IFormData[] COLLECTION_ID_DEFINITIONS =	new IFormData[] {
 		new FormData(
-			"Collection ID",
+			Messages.Hibernate3IdFormLayoutData_CollectionID,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(COLLECTION_ID_ENTITY)
 		),
 		Hibernate3ColumnFormLayoutData.COLUMN_LIST_DEFINITION,
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		new FormData(
-			"Advanced",
+			Messages.Hibernate3IdFormLayoutData_Advanced,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(COLLECTION_ID_ENTITY)
 		),
@@ -64,12 +64,12 @@ public class Hibernate3IdFormLayoutData {
 
 	final static IFormData[] COMPOSITE_INDEX_DEFINITIONS =	new IFormData[] {
 		new FormData(
-			"Composite Index",
+			Messages.Hibernate3IdFormLayoutData_CompositeIndex,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(COMPOSITE_INDEX_ENTITY)
 		),
 		Hibernate3FormLayoutDataUtil.createChildrenFormData(
-				"Key Properties", null, null, 
+				Messages.Hibernate3IdFormLayoutData_IndexKeyProperties, null, null, 
 				"name",  //$NON-NLS-1$
 				new String[]{"Hibernate3KeyProperty", "Hibernate3KeyManyToOne"}, "CreateActions.AddKeys.AddKey"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	};

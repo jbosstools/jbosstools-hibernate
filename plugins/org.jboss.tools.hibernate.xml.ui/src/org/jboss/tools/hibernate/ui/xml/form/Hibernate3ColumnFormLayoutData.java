@@ -20,7 +20,7 @@ import org.jboss.tools.common.model.ui.forms.IFormData;
 public class Hibernate3ColumnFormLayoutData {
 	
 	final static IFormData COLUMN_LIST_DEFINITION =	new FormData(
-		"Columns",
+		Messages.Hibernate3ColumnFormLayoutData_List,
 		"", //"Description //$NON-NLS-1$
 		new FormAttributeData[]{new FormAttributeData("name", 50), new FormAttributeData("sql-type", 50)}, //$NON-NLS-1$ //$NON-NLS-2$
 		new String[]{"Hibernate3Column"}, //$NON-NLS-1$

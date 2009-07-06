@@ -22,7 +22,7 @@ public class Hibernate3AnyFormLayoutData {
 	static String META_VALUE_ENTITY = "Hibernate3MetaValue"; //$NON-NLS-1$
 	
 	static IFormData META_VALUE_LIST_DEFINITION = new FormData(
-		"Meta Values",
+		Messages.Hibernate3AnyFormLayoutData_List,
 		"", //"Description //$NON-NLS-1$
 		new FormAttributeData[]{new FormAttributeData("value", 50), new FormAttributeData("class", 50)}, //$NON-NLS-1$ //$NON-NLS-2$
 		new String[]{META_VALUE_ENTITY},
@@ -31,7 +31,7 @@ public class Hibernate3AnyFormLayoutData {
 
 	final static IFormData[] ANY_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Any",
+			Messages.Hibernate3AnyFormLayoutData_General,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(ANY_ENTITY)
 		),
@@ -39,7 +39,7 @@ public class Hibernate3AnyFormLayoutData {
 		Hibernate3ColumnFormLayoutData.COLUMN_LIST_DEFINITION,
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		new FormData(
-			"Advanced",
+			Messages.Hibernate3AnyFormLayoutData_Advanced,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(ANY_ENTITY)
 		),

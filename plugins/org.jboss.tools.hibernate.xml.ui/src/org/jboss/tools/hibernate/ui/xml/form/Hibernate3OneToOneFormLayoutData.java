@@ -21,13 +21,13 @@ public class Hibernate3OneToOneFormLayoutData {
 	
 	final static IFormData[] ONE_TO_ONE_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"One To One",
+			Messages.Hibernate3OneToOneFormLayoutData_OneToOne,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(ONE_TO_ONE_ENTITY)
 		),
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		new FormData(
-			"Advanced",
+			Messages.Hibernate3OneToOneFormLayoutData_Advanced,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(ONE_TO_ONE_ENTITY)
 		),

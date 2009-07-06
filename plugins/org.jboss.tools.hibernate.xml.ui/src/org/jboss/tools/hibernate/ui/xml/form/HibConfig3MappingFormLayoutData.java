@@ -21,19 +21,19 @@ public class HibConfig3MappingFormLayoutData {
 	static String MAPPING_ENTITY = "HibConfig3Mapping"; //$NON-NLS-1$
 	
 	final static IFormData MAPPING_LIST_DEFINITION = new FormData(
-		"Mappings",
+		Messages.HibConfig3MappingFormLayoutData_List,
 		"", //Description //$NON-NLS-1$
 		"Mappings", //$NON-NLS-1$
-		new FormAttributeData[]{new FormAttributeData("item", 100, "item")}, //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("item", 100, Messages.HibConfig3MappingFormLayoutData_Item)}, //$NON-NLS-1$
 		new String[]{MAPPING_ENTITY},
 		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddMapping") //$NON-NLS-1$
 	);
 
 	final static IFormData MAPPING_FOLDER_DEFINITION = new FormData(
-		"Mappings",
+		Messages.HibConfig3MappingFormLayoutData_Folder,
 		"", //"Description //$NON-NLS-1$
 		"HibConfig3MappingsFolder", //$NON-NLS-1$
-		new FormAttributeData[]{new FormAttributeData("item", 100, "item")}, //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("item", 100, Messages.HibConfig3MappingFormLayoutData_Item)}, //$NON-NLS-1$
 		new String[]{MAPPING_ENTITY},
 		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddMapping") //$NON-NLS-1$
 	);

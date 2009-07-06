@@ -22,40 +22,40 @@ public class Hibernate3MetaFormLayoutData {
 	static String TUPLIZER_ENTITY = "Hibernate3Tuplizer"; //$NON-NLS-1$
 	
 	final static IFormData META_LIST_DEFINITION = new FormData(
-		"Meta",
+		Messages.Hibernate3MetaFormLayoutData_List,
 		"", //Description //$NON-NLS-1$
 		"Meta", //$NON-NLS-1$
 		new FormAttributeData[]{
-				new FormAttributeData("attribute", 30, "attribute"),  //$NON-NLS-1$
-				new FormAttributeData("value", 70, "value")}, //$NON-NLS-1$
+				new FormAttributeData("attribute", 30, Messages.Hibernate3MetaFormLayoutData_Attr),  //$NON-NLS-1$
+				new FormAttributeData("value", 70, Messages.Hibernate3MetaFormLayoutData_Value)}, //$NON-NLS-1$
 		new String[]{META_ENTITY},
 		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddMeta") //$NON-NLS-1$
 	);
 
 	final static IFormData META_FOLDER_DEFINITION = new FormData(
-		"Meta",
+		Messages.Hibernate3MetaFormLayoutData_Folder,
 		"", //"Description //$NON-NLS-1$
 		"Hibernate3MetaFolder", //$NON-NLS-1$
 		new FormAttributeData[]{
-				new FormAttributeData("attribute", 30, "attribute"),  //$NON-NLS-1$
-				new FormAttributeData("value", 70, "value")}, //$NON-NLS-1$
+				new FormAttributeData("attribute", 30, Messages.Hibernate3MetaFormLayoutData_Attr),  //$NON-NLS-1$
+				new FormAttributeData("value", 70, Messages.Hibernate3MetaFormLayoutData_Value)}, //$NON-NLS-1$
 		new String[]{META_ENTITY},
 		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddMeta") //$NON-NLS-1$
 	);
 
 	final static IFormData TUPLIZER_LIST_DEFINITION = new FormData(
-		"Tuplizers",
+		Messages.Hibernate3MetaFormLayoutData_TuplizersList,
 		"", //"Description //$NON-NLS-1$
 		"Tuplizers", //$NON-NLS-1$
-		new FormAttributeData[]{new FormAttributeData("attribute", 100, "class")}, //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("attribute", 100, Messages.Hibernate3MetaFormLayoutData_Class)}, //$NON-NLS-1$
 		new String[]{TUPLIZER_ENTITY},
 		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddTuplizer") //$NON-NLS-1$
 	);
 	final static IFormData TUPLIZER_FOLDER_DEFINITION = new FormData(
-		"Tuplizers",
+		Messages.Hibernate3MetaFormLayoutData_TuplizersFolder,
 		"", //"Description //$NON-NLS-1$
 		"Hibernate3TuplizerFolder", //$NON-NLS-1$
-		new FormAttributeData[]{new FormAttributeData("attribute", 100, "class")}, //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("attribute", 100, Messages.Hibernate3MetaFormLayoutData_Class)}, //$NON-NLS-1$
 		new String[]{TUPLIZER_ENTITY},
 		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddTuplizer") //$NON-NLS-1$
 	);

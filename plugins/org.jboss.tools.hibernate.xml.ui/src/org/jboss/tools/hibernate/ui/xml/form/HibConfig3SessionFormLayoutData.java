@@ -21,7 +21,7 @@ public class HibConfig3SessionFormLayoutData {
 	private final static IFormData[] SESSION_FACTORY_DEFINITIONS =
 		new IFormData[] {
 			new FormData(
-				"Session Factory",
+				Messages.HibConfig3SessionFormLayoutData_Header,
 				"", //"Description //$NON-NLS-1$
 				Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("HibConfig3SessionFactory") //$NON-NLS-1$
 			),

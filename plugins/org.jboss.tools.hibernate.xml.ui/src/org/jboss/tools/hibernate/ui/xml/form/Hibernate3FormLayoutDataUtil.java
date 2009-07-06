@@ -38,10 +38,12 @@ public class Hibernate3FormLayoutDataUtil {
 //	private final static String DEFAULT_EDIT_ACTION = "Properties.Properties";
 
 	/**
-	 *  (non-translatable)
+	 * 
+	 * @param entityName (non-translatable)
+	 * @return
 	 */
 	public static IFormAttributeData[] createGeneralFormAttributeData(String entityName) {
-		return createFormAttributeData(entityName, "general");
+		return createFormAttributeData(entityName, "general"); //$NON-NLS-1$
 	}
 
 	/**
@@ -50,7 +52,7 @@ public class Hibernate3FormLayoutDataUtil {
 	 * @return
 	 */
 	public static IFormAttributeData[] createAdvancedFormAttributeData(String entityName) {
-		return createFormAttributeData(entityName, "advanced");
+		return createFormAttributeData(entityName, "advanced"); //$NON-NLS-1$
 	}
 
 	/**

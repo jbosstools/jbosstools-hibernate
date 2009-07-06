@@ -16,39 +16,39 @@ import org.jboss.tools.common.model.ui.forms.IFormAttributeData;
 import org.jboss.tools.common.model.ui.forms.IFormData;
 
 public class Hibernate3MapFormLayoutData {
-	static String MAP_ENTITY = "Hibernate3Map";
+	static String MAP_ENTITY = "Hibernate3Map"; //$NON-NLS-1$
 
 	final static IFormData[] MAP_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Map",
+			Messages.Hibernate3MapFormLayoutData_Map,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(MAP_ENTITY)
 		),
 		new FormData(
-			"Key",
+			Messages.Hibernate3MapFormLayoutData_Key,
 			"", //$NON-NLS-1$
 			"key", //$NON-NLS-1$
-			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("Hibernate3Key")
+			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("Hibernate3Key") //$NON-NLS-1$
 		),
 		new FormData(
-			"Index",
+			Messages.Hibernate3MapFormLayoutData_Index,
 			"", //"Description //$NON-NLS-1$
 			new IFormAttributeData[]{
-				new FormAttributeData("index", 100, "Index Kind") //$NON-NLS-1$
+				new FormAttributeData("index", 100, Messages.Hibernate3MapFormLayoutData_IndexKind) //$NON-NLS-1$
 			}
 		),
 		new FormData(
-			"Element",
+			Messages.Hibernate3MapFormLayoutData_Element,
 			"", //"Description //$NON-NLS-1$
 			new IFormAttributeData[]{
-				new FormAttributeData("element", 100, "Element Kind") //$NON-NLS-1$
+				new FormAttributeData("element", 100, Messages.Hibernate3MapFormLayoutData_ElementKind) //$NON-NLS-1$
 			}
 		),
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		Hibernate3SQLQueryFormLayoutData.SYNCHRONIZES_LIST_DEFINITION,
 		Hibernate3FilterFormLayoutData.FILTER_LIST_DEFINITION,
 		new FormData(
-			"Advanced",
+			Messages.Hibernate3MapFormLayoutData_Advanced,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(MAP_ENTITY)
 		),

@@ -21,7 +21,7 @@ public class HibConfig3FileFormLayoutData {
 	private final static IFormData[] FILE_DEFINITIONS =
 		new IFormData[] {
 			new FormData(
-				"File Hibernate Configuration 3.0",
+				Messages.HibConfig3FileFormLayoutData_Header,
 				"", //"Description //$NON-NLS-1$
 				Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("FileHibConfig3") //$NON-NLS-1$
 			),

@@ -21,28 +21,28 @@ public class Hibernate3SetFormLayoutData {
 
 	final static IFormData[] SET_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Set",
+			Messages.Hibernate3SetFormLayoutData_Set,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(SET_ENTITY)
 		),
 		new FormData(
-			"Key",
+			Messages.Hibernate3SetFormLayoutData_SetKey,
 			"", //$NON-NLS-1$
 			"key", //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("Hibernate3Key") //$NON-NLS-1$
 		),
 		new FormData(
-			"Element",
+			Messages.Hibernate3SetFormLayoutData_SetElement,
 			"", //"Description //$NON-NLS-1$
 			new IFormAttributeData[]{
-				new FormAttributeData("element", 100, "Element Kind") //$NON-NLS-1$
+				new FormAttributeData("element", 100, Messages.Hibernate3SetFormLayoutData_SetElementKind) //$NON-NLS-1$
 			}
 		),
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		Hibernate3SQLQueryFormLayoutData.SYNCHRONIZES_LIST_DEFINITION,
 		Hibernate3FilterFormLayoutData.FILTER_LIST_DEFINITION,
 		new FormData(
-			"Advanced",
+			Messages.Hibernate3SetFormLayoutData_SetAdvanced,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(SET_ENTITY)
 		),
@@ -50,28 +50,28 @@ public class Hibernate3SetFormLayoutData {
 
 	final static IFormData[] BAG_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Bag",
+			Messages.Hibernate3SetFormLayoutData_Bag,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(BAG_ENTITY)
 		),
 		new FormData(
-			"Key",
+			Messages.Hibernate3SetFormLayoutData_BagKey,
 			"", //$NON-NLS-1$
 			"key", //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("Hibernate3Key") //$NON-NLS-1$
 		),
 		new FormData(
-			"Element",
+			Messages.Hibernate3SetFormLayoutData_BagElement,
 			"", //"Description //$NON-NLS-1$
 			new IFormAttributeData[]{
-				new FormAttributeData("element", 100, "Element Kind") //$NON-NLS-1$
+				new FormAttributeData("element", 100, Messages.Hibernate3SetFormLayoutData_BagElementKind) //$NON-NLS-1$
 			}
 		),
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		Hibernate3SQLQueryFormLayoutData.SYNCHRONIZES_LIST_DEFINITION,
 		Hibernate3FilterFormLayoutData.FILTER_LIST_DEFINITION,
 		new FormData(
-			"Advanced",
+			Messages.Hibernate3SetFormLayoutData_BagAdvanced,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(BAG_ENTITY)
 		),
