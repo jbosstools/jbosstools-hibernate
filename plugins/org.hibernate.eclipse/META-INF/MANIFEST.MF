@@ -518,3 +518,4 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.datatools.connectivity
 Eclipse-LazyStart: true
 Eclipse-BuddyPolicy: registered
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

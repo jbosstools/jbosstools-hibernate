@@ -27,3 +27,4 @@ Import-Package: org.eclipse.core.resources,
  org.eclipse.jem.util,
  org.eclipse.wst.common.componentcore,
  org.jboss.tools.hibernate.jpt.core.internal
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

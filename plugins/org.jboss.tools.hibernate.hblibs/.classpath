@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry exported="true" kind="lib" path="lib/ant-1.6.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ant-antlr-1.6.5.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ant-junit-1.6.5.jar"/>
@@ -38,7 +40,5 @@
 	<classpathentry exported="true" kind="lib" path="lib/versioncheck.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/xerces-2.6.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/xml-apis.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

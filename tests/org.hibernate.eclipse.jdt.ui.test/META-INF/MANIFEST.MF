@@ -19,3 +19,4 @@ Bundle-Activator: org.hibernate.eclipse.jdt.ui.test.HibernateJDTuiTestPlugin
 Bundle-ClassPath: org.hibernate.eclipse.jdt.ui.test.jar
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

@@ -8,8 +8,7 @@ Bundle-Activator: org.hibernate.eclipse.help.HelpPlugin
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin
 Export-Package: org.hibernate.eclipse.help
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.help,
- org.eclipse.help.ui,
- org.eclipse.ui
+Require-Bundle: org.eclipse.help,
+ org.eclipse.help.ui
 Eclipse-LazyStart: true
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
