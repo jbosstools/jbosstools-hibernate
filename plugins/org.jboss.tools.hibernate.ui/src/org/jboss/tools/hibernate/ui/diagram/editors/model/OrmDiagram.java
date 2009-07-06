@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -52,9 +54,6 @@ import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
 import org.jboss.tools.hibernate.ui.view.HibernateUtils;
 
-import sun.misc.Compare;
-import sun.misc.Sort;
-
 public class OrmDiagram extends ModelElement {
 	
 	public static final String REFRESH = "refresh"; //$NON-NLS-1$
@@ -88,7 +87,7 @@ public class OrmDiagram extends ModelElement {
 		System.arraycopy(ioe, 0, ormElements, 0, ioe.length);
 		// should sort elements - cause different sort order gives different file name
 		// for the same thing
-		Sort.quicksort(ormElements, new OrmElCompare());
+		Arrays.sort(ormElements, new OrmElCompare());
 		entityNames = new String[ioe.length];
 		for (int i = 0; i < ormElements.length; i++) {
 			entityNames[i] = ormElements[i].getEntityName();
@@ -102,12 +101,10 @@ public class OrmDiagram extends ModelElement {
 		setDirty(false);
 	}
 	
-	protected class OrmElCompare implements Compare {
+	protected class OrmElCompare implements Comparator<RootClass> {
 
-		public int doCompare(Object arg0, Object arg1) {
-			RootClass rc0 = (RootClass)arg0;
-			RootClass rc1 = (RootClass)arg1;
-			return rc0.getNodeName().compareTo(rc1.getNodeName());
+		public int compare(RootClass o1, RootClass o2) {
+			return o1.getNodeName().compareTo(o2.getNodeName());
 		}
 		
 	}
