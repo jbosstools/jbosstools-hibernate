@@ -10,10 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.view;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
