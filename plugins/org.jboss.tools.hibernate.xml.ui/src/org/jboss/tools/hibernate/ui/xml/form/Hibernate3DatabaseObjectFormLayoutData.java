@@ -22,7 +22,7 @@ public class Hibernate3DatabaseObjectFormLayoutData {
 	static String DATABASE_FOLDER_ENTITY = "Hibernate3DatabaseObjectFolder"; //$NON-NLS-1$
 
 	final static IFormData DIALECT_SCOPE_LIST_DEFINITION =	new FormData(
-		"Dialect Scopes",
+		Messages.Hibernate3DatabaseObjectFormLayoutData_DialectScopes,
 		"", //"Description //$NON-NLS-1$
 		new FormAttributeData[]{new FormAttributeData("name", 100)}, //$NON-NLS-1$
 		new String[]{DIALECT_SCOPE_ENTITY},
@@ -30,16 +30,16 @@ public class Hibernate3DatabaseObjectFormLayoutData {
 	);
 
 	final static IFormData DATABASE_OBJECT_LIST_DEFINITION = new FormData(
-		"Database Objects",
+		Messages.Hibernate3DatabaseObjectFormLayoutData_DatabaseObjectList,
 		"", //"Description //$NON-NLS-1$
-		new FormAttributeData[]{new FormAttributeData("presentation", 100, "database object")}, //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("presentation", 100, Messages.Hibernate3DatabaseObjectFormLayoutData_DatabaseObjectAttr)}, //$NON-NLS-1$
 		new String[]{DATABASE_OBJECT_DEF_ENTITY, DATABASE_OBJECT_CD_ENTITY},
 		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddDatabaseObject") //$NON-NLS-1$
 	);
 
 	final static IFormData[] DATABASE_OBJECT_DEF_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Database Object",
+			Messages.Hibernate3DatabaseObjectFormLayoutData_DatabaseObjectDef,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(DATABASE_OBJECT_DEF_ENTITY)
 		),
@@ -48,7 +48,7 @@ public class Hibernate3DatabaseObjectFormLayoutData {
 
 	final static IFormData[] DATABASE_OBJECT_CD_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Database Object",
+			Messages.Hibernate3DatabaseObjectFormLayoutData_DatabaseObjectCreateDrop,
 			"", //"Description //$NON-NLS-1$
 //			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(DATABASE_OBJECT_CD_ENTITY)
 			new IFormAttributeData[]{

@@ -22,61 +22,61 @@ public class Hibernate3FileFormLayoutData {
 	private final static IFormData[] FILE_DEFINITIONS =
 		new IFormData[] {
 			new FormData(
-				"File Hibernate 3.0",
+				Messages.Hibernate3FileFormLayoutData_FileDef,
 				"", //"Description //$NON-NLS-1$
 				Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData("FileHibernate3") //$NON-NLS-1$
 			),
 			new FormData(
-				"Advanced",
+				Messages.Hibernate3FileFormLayoutData_Advanced,
 				"", //"Description //$NON-NLS-1$
 				Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData("FileHibernate3") //$NON-NLS-1$
 			),
 			Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 			new FormData(
-				"Types",
+				Messages.Hibernate3FileFormLayoutData_Types,
 				"", //Description //$NON-NLS-1$
 				"Types", //$NON-NLS-1$
 				new FormAttributeData[]{
-						new FormAttributeData("name", 30, "name"),  //$NON-NLS-1$
-						new FormAttributeData("class", 70, "class")}, //$NON-NLS-1$
+						new FormAttributeData("name", 30, Messages.Hibernate3FileFormLayoutData_Name),  //$NON-NLS-1$
+						new FormAttributeData("class", 70, Messages.Hibernate3FileFormLayoutData_Class)}, //$NON-NLS-1$
 				new String[]{"Hibernate3Typedef"}, //$NON-NLS-1$
 				Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddTypedef") //$NON-NLS-1$
 			),
 			new FormData(
-				"Imports",
+				Messages.Hibernate3FileFormLayoutData_Imports,
 				"", //Description //$NON-NLS-1$
 				"Imports", //$NON-NLS-1$
 				new FormAttributeData[]{
-						new FormAttributeData("class", 60, "class"),  //$NON-NLS-1$
-						new FormAttributeData("rename", 40, "rename")}, //$NON-NLS-1$
+						new FormAttributeData("class", 60, Messages.Hibernate3FileFormLayoutData_Class),  //$NON-NLS-1$
+						new FormAttributeData("rename", 40, Messages.Hibernate3FileFormLayoutData_Rename)}, //$NON-NLS-1$
 				new String[]{"Hibernate3Import"}, //$NON-NLS-1$
 				Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddImport") //$NON-NLS-1$
 			),
 			new FormData(
-				"Classes",
+				Messages.Hibernate3FileFormLayoutData_Classes,
 				"", //Description //$NON-NLS-1$
 				"Classes", //$NON-NLS-1$
-				new FormAttributeData[]{new FormAttributeData("name", 100, "class name")}, //$NON-NLS-1$
+				new FormAttributeData[]{new FormAttributeData("name", 100, Messages.Hibernate3FileFormLayoutData_ClassName)}, //$NON-NLS-1$
 				new String[]{"Hibernate3Class", "Hibernate3Subclass", "Hibernate3JoinedSubclass", "Hibernate3UnionSubclass"}, //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 				Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddAnyClass") //$NON-NLS-1$
 			),
 			new FormData(
-				"Queries",
+				Messages.Hibernate3FileFormLayoutData_Queries,
 				"", //"Description //$NON-NLS-1$
 				"Queries", //$NON-NLS-1$
 				new FormAttributeData[]{
-						new FormAttributeData("name", 30, "name"),  //$NON-NLS-1$
-						new FormAttributeData("query", 70, "query")}, //$NON-NLS-1$
+						new FormAttributeData("name", 30, Messages.Hibernate3FileFormLayoutData_Name),  //$NON-NLS-1$
+						new FormAttributeData("query", 70, Messages.Hibernate3FileFormLayoutData_Query)}, //$NON-NLS-1$
 				new String[]{"Hibernate3Query", "Hibernate3SQLQuery"}, //$NON-NLS-1$ //$NON-NLS-2$
 				Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddAnyQuery") //$NON-NLS-1$
 			),
 			new FormData(
-				"Filters",
+				Messages.Hibernate3FileFormLayoutData_Filters,
 				"", //"Description //$NON-NLS-1$
 				"Filters", //$NON-NLS-1$
 				new FormAttributeData[]{
-						new FormAttributeData("name", 30, "name"),  //$NON-NLS-1$
-						new FormAttributeData("value", 70, "value")}, //$NON-NLS-1$
+						new FormAttributeData("name", 30, Messages.Hibernate3FileFormLayoutData_Name),  //$NON-NLS-1$
+						new FormAttributeData("value", 70, Messages.Hibernate3FileFormLayoutData_Value)}, //$NON-NLS-1$
 				new String[]{"Hibernate3Filterdef"}, //$NON-NLS-1$
 				Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddFilterdef") //$NON-NLS-1$
 			),

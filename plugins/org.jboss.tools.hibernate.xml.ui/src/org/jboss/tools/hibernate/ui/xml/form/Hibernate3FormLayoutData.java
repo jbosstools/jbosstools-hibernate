@@ -73,40 +73,40 @@ public class Hibernate3FormLayoutData implements IFormLayoutData {
 			Hibernate3FormulaFormLayoutData.FORMULA_DEFINITION,
 						
 			new FormData(
-				"Types",
+				Messages.Hibernate3FormLayoutData_Types,
 				"", //"Description //$NON-NLS-1$
 				"Hibernate3TypedefFolder", //$NON-NLS-1$
 				new FormAttributeData[]{
-						new FormAttributeData("name", 30, "name"),  //$NON-NLS-1$
-						new FormAttributeData("class", 70, "class")}, //$NON-NLS-1$
+						new FormAttributeData("name", 30, Messages.Hibernate3FormLayoutData_Name),  //$NON-NLS-1$
+						new FormAttributeData("class", 70, Messages.Hibernate3FormLayoutData_Class)}, //$NON-NLS-1$
 				new String[]{"Hibernate3Typedef"}, //$NON-NLS-1$
 				Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddTypedef") //$NON-NLS-1$
 			),
 			new FormData(
-				"Imports",
+				Messages.Hibernate3FormLayoutData_Imports,
 				"", //"Description //$NON-NLS-1$
 				"Hibernate3ImportFolder", //$NON-NLS-1$
 				new FormAttributeData[]{
-						new FormAttributeData("class", 60, "class"),  //$NON-NLS-1$
-						new FormAttributeData("rename", 40, "rename")}, //$NON-NLS-1$
+						new FormAttributeData("class", 60, Messages.Hibernate3FormLayoutData_Class),  //$NON-NLS-1$
+						new FormAttributeData("rename", 40, Messages.Hibernate3FormLayoutData_Rename)}, //$NON-NLS-1$
 				new String[]{"Hibernate3Import"}, //$NON-NLS-1$
 				Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddTypedef") //$NON-NLS-1$
 			),
 			new FormData(
-				"Classes",
+				Messages.Hibernate3FormLayoutData_Classes,
 				"", //"Description //$NON-NLS-1$
 				"Hibernate3ClassFolder", //$NON-NLS-1$
-				new FormAttributeData[]{new FormAttributeData("name", 100, "class name")}, //$NON-NLS-1$
-				Hibernate3FormLayoutDataUtil.getChildEntitiesWithAttribute("Hibernate3ClassFolder", "name"), //$NON-NLS-1$
+				new FormAttributeData[]{new FormAttributeData("name", 100, Messages.Hibernate3FormLayoutData_ClassName)}, //$NON-NLS-1$
+				Hibernate3FormLayoutDataUtil.getChildEntitiesWithAttribute("Hibernate3ClassFolder", Messages.Hibernate3FormLayoutData_Name), //$NON-NLS-1$
 				Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddAnyClass") //$NON-NLS-1$
 			),
 			new FormData(
-				"Queries",
+				Messages.Hibernate3FormLayoutData_Queries,
 				"", //"Description //$NON-NLS-1$
 				"Hibernate3QueryFolder", //$NON-NLS-1$
 				new FormAttributeData[]{
-						new FormAttributeData("name", 30, "name"),  //$NON-NLS-1$
-						new FormAttributeData("query", 70, "query")}, //$NON-NLS-1$
+						new FormAttributeData("name", 30, Messages.Hibernate3FormLayoutData_Name),  //$NON-NLS-1$
+						new FormAttributeData("query", 70, Messages.Hibernate3FormLayoutData_Query)}, //$NON-NLS-1$
 				new String[]{"Hibernate3Query", "Hibernate3SQLQuery"}, //$NON-NLS-1$ //$NON-NLS-2$
 				Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddAnyQuery") //$NON-NLS-1$
 			),
@@ -119,15 +119,15 @@ public class Hibernate3FormLayoutData implements IFormLayoutData {
 			Hibernate3FilterFormLayoutData.FILTERDEF_DEFINITION,
 			Hibernate3FilterFormLayoutData.TYPEDEF_DEFINITION,
 
-			Hibernate3FormLayoutDataUtil.createAllChildrenFormData("Properties", 
+			Hibernate3FormLayoutDataUtil.createAllChildrenFormData(Messages.Hibernate3FormLayoutData_Properties, 
 					"Hibernate3AttributesCFolder", null, "name", "CreateActions.AddAttribute"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			Hibernate3FormLayoutDataUtil.createAllChildrenFormData("Properties", 
+			Hibernate3FormLayoutDataUtil.createAllChildrenFormData(Messages.Hibernate3FormLayoutData_Properties, 
 					"Hibernate3AttributesFolder",  null, "name", "CreateActions.AddAttribute"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			Hibernate3FormLayoutDataUtil.createAllChildrenFormData("Properties", 
+			Hibernate3FormLayoutDataUtil.createAllChildrenFormData(Messages.Hibernate3FormLayoutData_Properties, 
 					"Hibernate3AttributesJFolder", null, "name", "CreateActions.AddAttribute"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			Hibernate3FormLayoutDataUtil.createAllChildrenFormData("Properties", 
+			Hibernate3FormLayoutDataUtil.createAllChildrenFormData(Messages.Hibernate3FormLayoutData_Properties, 
 					"Hibernate3AttributesPFolder", null, "name", "CreateActions.AddAttribute"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			Hibernate3FormLayoutDataUtil.createAllChildrenFormData("Properties", 
+			Hibernate3FormLayoutDataUtil.createAllChildrenFormData(Messages.Hibernate3FormLayoutData_Properties, 
 					"Hibernate3AttributesNestedFolder", null, "name", "CreateActions.AddAttribute"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			
 			Hibernate3DatabaseObjectFormLayoutData.DATABASE_OBJECT_CD_DEFINITION,

@@ -25,34 +25,34 @@ public class Hibernate3FilterFormLayoutData {
 	static String TYPEDEF_ENTITY = "Hibernate3Typedef"; //$NON-NLS-1$
 	
 	final static IFormData FILTER_LIST_DEFINITION = new FormData(
-		"Filters",
+		Messages.Hibernate3FilterFormLayoutData_List,
 		"", //Description //$NON-NLS-1$
 		"Filters", //$NON-NLS-1$
-		new FormAttributeData[]{new FormAttributeData("name", 100, "name")}, //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("name", 100, Messages.Hibernate3FilterFormLayoutData_Name)}, //$NON-NLS-1$
 		new String[]{FILTER_ENTITY},
 		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddFilter") //$NON-NLS-1$
 	);
 
 	final static IFormData FILTER_FOLDER_DEFINITION = new FormData(
-		"Filters",
+		Messages.Hibernate3FilterFormLayoutData_Folder,
 		"", //"Description //$NON-NLS-1$
 		FILTER_FOLDER_ENTITY,
-		new FormAttributeData[]{new FormAttributeData("name", 100, "name")}, //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("name", 100, Messages.Hibernate3FilterFormLayoutData_Name)}, //$NON-NLS-1$
 		new String[]{FILTER_ENTITY},
 		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddFilter") //$NON-NLS-1$
 	);
 
 	final static IFormData FILTERDEF_FOLDER_DEFINITION = new FormData(
-		"Filters",
+		Messages.Hibernate3FilterFormLayoutData_FilterDefFolder,
 		"", //"Description //$NON-NLS-1$
 		FILTERDEF_FOLDER_ENTITY,
-		new FormAttributeData[]{new FormAttributeData("name", 100, "name")}, //$NON-NLS-1$
+		new FormAttributeData[]{new FormAttributeData("name", 100, Messages.Hibernate3FilterFormLayoutData_Name)}, //$NON-NLS-1$
 		new String[]{FILTERDEF_ENTITY},
 		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddFilterdef") //$NON-NLS-1$
 	);
 
 	private final static IFormData PARAMETERS =	new FormData(
-		"Parameters",
+		Messages.Hibernate3FilterFormLayoutData_Params,
 		"", //"Description //$NON-NLS-1$
 		new FormAttributeData[]{new FormAttributeData("name", 30), new FormAttributeData("type", 70)}, //$NON-NLS-1$ //$NON-NLS-2$
 		new String[]{"Hibernate3FilterParam"}, //$NON-NLS-1$
@@ -61,7 +61,7 @@ public class Hibernate3FilterFormLayoutData {
 
 	private final static IFormData[] FILTERDEF_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Filter Definition",
+			Messages.Hibernate3FilterFormLayoutData_FilterDef,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(FILTERDEF_ENTITY)
 		),
@@ -74,7 +74,7 @@ public class Hibernate3FilterFormLayoutData {
 
 	private final static IFormData[] TYPEDEF_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Type Definition",
+			Messages.Hibernate3FilterFormLayoutData_TypeDef,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(TYPEDEF_ENTITY)
 		),

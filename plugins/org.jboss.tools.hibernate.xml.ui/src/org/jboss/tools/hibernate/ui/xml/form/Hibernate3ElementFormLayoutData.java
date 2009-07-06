@@ -20,14 +20,14 @@ public class Hibernate3ElementFormLayoutData {
 
 	final static IFormData[] ELEMENT_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Element",
+			Messages.Hibernate3ElementFormLayoutData_Element,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(ELEMENT_ENTITY)
 		),
 		Hibernate3ColumnFormLayoutData.COLUMN_LIST_DEFINITION,
 		Hibernate3FormulaFormLayoutData.FORMULA_LIST_DEFINITION,
 		new FormData(
-			"Advanced",
+			Messages.Hibernate3ElementFormLayoutData_Advanced,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(ELEMENT_ENTITY)
 		)
@@ -39,7 +39,7 @@ public class Hibernate3ElementFormLayoutData {
 
 	final static IFormData[] MANY_TO_MANY_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Many To Many",
+			Messages.Hibernate3ElementFormLayoutData_ManyToMany,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(MANY_TO_MANY_ENTITY)
 		),
@@ -48,7 +48,7 @@ public class Hibernate3ElementFormLayoutData {
 		Hibernate3FilterFormLayoutData.FILTER_LIST_DEFINITION,
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		new FormData(
-			"Advanced",
+			Messages.Hibernate3ElementFormLayoutData_Advanced,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(MANY_TO_MANY_ENTITY)
 		)
@@ -60,7 +60,7 @@ public class Hibernate3ElementFormLayoutData {
 
 	final static IFormData[] MANY_TO_ANY_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Many To Any",
+			Messages.Hibernate3ElementFormLayoutData_ManyToAny,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(MANY_TO_ANY_ENTITY)
 		),

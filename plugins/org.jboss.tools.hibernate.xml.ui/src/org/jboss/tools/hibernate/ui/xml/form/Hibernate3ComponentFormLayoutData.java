@@ -22,15 +22,15 @@ public class Hibernate3ComponentFormLayoutData {
 
 	final static IFormData[] COMPONENT_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Component",
+			Messages.Hibernate3ComponentFormLayoutData_Component,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(COMPONENT_ENTITY)
 		),
-		Hibernate3FormLayoutDataUtil.createAllChildrenFormData("Properties", 
+		Hibernate3FormLayoutDataUtil.createAllChildrenFormData(Messages.Hibernate3ComponentFormLayoutData_Properties, 
 				"Hibernate3AttributesFolder", "Properties", "name", "CreateActions.AddAttribute"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		Hibernate3MetaFormLayoutData.META_LIST_DEFINITION,
 		new FormData(
-			"Advanced",
+			Messages.Hibernate3ComponentFormLayoutData_Advanced,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(COMPONENT_ENTITY)
 		),
@@ -42,14 +42,14 @@ public class Hibernate3ComponentFormLayoutData {
 
 	final static IFormData[] DYNAMIC_COMPONENT_DEFINITIONS = new IFormData[] {
 		new FormData(
-			"Dynamic Component",
+			Messages.Hibernate3ComponentFormLayoutData_DynamicComponent,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createGeneralFormAttributeData(DYNAMIC_COMPONENT_ENTITY)
 		),
-		Hibernate3FormLayoutDataUtil.createAllChildrenFormData("Properties", 
+		Hibernate3FormLayoutDataUtil.createAllChildrenFormData(Messages.Hibernate3ComponentFormLayoutData_Properties, 
 				"Hibernate3AttributesFolder", "Properties", "name", "CreateActions.AddAttribute"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		new FormData(
-			"Advanced",
+			Messages.Hibernate3ComponentFormLayoutData_Advanced,
 			"", //"Description //$NON-NLS-1$
 			Hibernate3FormLayoutDataUtil.createAdvancedFormAttributeData(COMPONENT_ENTITY)
 		),
