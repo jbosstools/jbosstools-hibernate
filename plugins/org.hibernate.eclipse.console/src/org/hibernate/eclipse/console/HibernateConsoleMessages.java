@@ -199,34 +199,17 @@ public class HibernateConsoleMessages extends NLS {
 	public static String NewConfigurationWizardPage_user_name;
 	public static String NewHibernateMappingElementsSelectionPage_select;
 
-	public static String NewHibernateMappingFilePage_browse;
 	public static String NewHibernateMappingFilePage_class_name_column;
-
-	public static String NewHibernateMappingFilePage_class_to_map;
-	public static String NewHibernateMappingFilePage_container;
-	public static String NewHibernateMappingFilePage_file_container_must_be_specified;
-	public static String NewHibernateMappingFilePage_file_container_must_exist;
-	public static String NewHibernateMappingFilePage_file_name;
 	public static String NewHibernateMappingFilePage_file_name_column;
-	public static String NewHibernateMappingFilePage_file_name_must_be_specified;
-	public static String NewHibernateMappingFilePage_file_name_must_be_valid;
 	public static String NewHibernateMappingFilePage_hibernate_xml_mapping_file;
-	public static String NewHibernateMappingFilePage_project_must_be_writable;
 
 	public static String NewHibernateMappingFilePage_project_name_column;
 
-	public static String NewHibernateMappingFilePage_select_class_to_map;
-	public static String NewHibernateMappingFilePage_select_new_file_container;
-	public static String NewHibernateMappingFilePage_the_class_will_be_used_when;
 	public static String NewHibernateMappingFilePage_this_wizard_creates;
 	public static String NewHibernateMappingFileWizard_create_hibernate_xml_mapping_file;
 	public static String NewHibernateMappingFileWizard_create_new_xml_mapping_file;
-	public static String NewHibernateMappingFileWizard_creating;
-
-	public static String NewHibernateMappingFileWizard_error;
 
 	public static String NewHibernateMappingFileWizard_finding_dependent_cu;
-	public static String NewHibernateMappingFileWizard_opening_file_for_editing;
 
 	public static String NewHibernateMappingFileWizard_selection_cant_be_empty;
 	public static String NewReverseEngineeringFileWizard_create_hibernate_reverse_engineering_file;
