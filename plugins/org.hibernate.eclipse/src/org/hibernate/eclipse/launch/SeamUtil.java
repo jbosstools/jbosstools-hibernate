@@ -6,7 +6,8 @@ import java.util.Set;
 /**
  * Do not remove this file! 
  * This file is necessary for SeamGenerateEnitiesWizard.java
- * org.jboss.tools.seam.ui\src\org\jboss\tools\seam\ui\wizard\SeamGenerateEnitiesWizard
+ * org.jboss.tools.seam.ui
+ * src.org.jboss.tools.seam.ui.wizard.SeamGenerateEnitiesWizard
  * for more information: JBIDE-4531
  * This is "hack" to get seam gen code generation work 
  * without launching in a separate process. 
