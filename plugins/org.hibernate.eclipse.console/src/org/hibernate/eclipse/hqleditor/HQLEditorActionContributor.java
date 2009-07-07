@@ -59,9 +59,9 @@ public class HQLEditorActionContributor extends TextEditorActionContributor {
         super();
         ResourceBundle bundle = ResourceBundle.getBundle(HibernateConsoleMessages.BUNDLE_NAME);
 
-        contentAssistProposalAction = new RetargetTextEditorAction( bundle, "ContentAssistProposal." );//$NON-NLS-1$
-        contentAssistTipAction =  new RetargetTextEditorAction( bundle, "ContentAssistTip." ); //$NON-NLS-1$
-        contentFormatAction = new RetargetTextEditorAction( bundle, "ContentFormat." ); //$NON-NLS-1$
+        contentAssistProposalAction = new RetargetTextEditorAction( bundle, "HQLEditor_ContentAssistProposal_" );//$NON-NLS-1$
+        contentAssistTipAction =  new RetargetTextEditorAction( bundle, "HQLEditor_ContentAssistTip_" ); //$NON-NLS-1$
+        contentFormatAction = new RetargetTextEditorAction( bundle, "HQLEditor_ContentFormat_" ); //$NON-NLS-1$
         executeHQLAction = new ExecuteQueryAction();
 
     }

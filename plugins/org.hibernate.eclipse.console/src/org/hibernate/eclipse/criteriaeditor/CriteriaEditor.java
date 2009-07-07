@@ -88,7 +88,7 @@ public class CriteriaEditor extends AbstractQueryEditor {
 
 	protected void createActions() {
 		super.createActions();
-		Action action = new TextOperationAction(getResourceBundle(), "ContentAssistProposal.", this, ISourceViewer.CONTENTASSIST_PROPOSALS); //$NON-NLS-1$
+		Action action = new TextOperationAction(getResourceBundle(), "HQLEditor_ContentAssistProposal_", this, ISourceViewer.CONTENTASSIST_PROPOSALS); //$NON-NLS-1$
 		action.setActionDefinitionId(ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS);
 		setAction("ContentAssistProposal", action);//$NON-NLS-1$
 
