@@ -100,7 +100,7 @@ public class QueryPagePropertySource implements IPropertySource2
 		}
 		if(QUERY_SIZE.equals(id) ) {
 			int resultSize = page.getResultSize();
-			return resultSize==-1?HibernateConsoleMessages.QueryPagePropertySource_unknown:resultSize;
+			return resultSize==-1?HibernateConsoleMessages.QueryPagePropertySource_unknown:String.valueOf(resultSize);
 		}
 		if(QUERY_TIME.equals(id) ) {
 			long resultTime = page.getQueryTime();
