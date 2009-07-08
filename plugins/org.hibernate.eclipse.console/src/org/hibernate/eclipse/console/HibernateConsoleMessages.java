@@ -311,6 +311,7 @@ public class HibernateConsoleMessages extends NLS {
 	public static String HQLEditorPreferencePage_string_literal;
 
 	// The following strings are used in org.hibernate.eclipse.hqleditor.HQLEditor.createActions()
+	// and org.hibernate.eclipse.hqleditor.HQLEditorActionContributor.HQLEditorActionContributor()
 	public static String HQLEditor_ContentAssistProposal_label;
 	public static String HQLEditor_ContentAssistProposal_tooltip;
 	public static String HQLEditor_ContentAssistProposal_image;
