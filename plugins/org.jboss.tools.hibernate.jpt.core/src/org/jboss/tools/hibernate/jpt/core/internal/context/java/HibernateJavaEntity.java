@@ -17,41 +17,67 @@ import java.util.ListIterator;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaGenerator;
-import org.eclipse.jpt.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaEntity;
+import org.eclipse.jpt.core.context.java.JavaQuery;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaEntity;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.java.NamedQueriesAnnotation;
-import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQueriesAnnotation;
 
 /**
  * @author Dmitry Geraskov
  * 
  */
-public class HibernateJavaEntity extends GenericJavaEntity implements GenericGeneratorHolder {
+public class HibernateJavaEntity extends AbstractJavaEntity 
+implements GenericGeneratorHolder, HibernateQueryContainer {
 
 	protected JavaGenericGenerator genericGenerator;
 	
+	protected final List<HibernateNamedQuery> hibernateNamedQueries;
+	
 	public HibernateJavaEntity(JavaPersistentType parent) {
 		super(parent);
+		this.hibernateNamedQueries = new ArrayList<HibernateNamedQuery>();
 	}
 	
 	@Override
 	public void initialize(JavaResourcePersistentType resourcePersistentType) {
 		super.initialize(resourcePersistentType);
 		this.initializeGenericGenerator();
+		this.initializeHibernateNamedQueries();
 	}
 	
 	@Override
+	public void update(JavaResourcePersistentType resourcePersistentType) {
+		super.update(resourcePersistentType);
+		this.updateGenericGenerator();
+		this.updateHibernateNamedQueries();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterator<JavaQuery> queries() {
+		return new CompositeIterator<JavaQuery>(super.queries(), this.hibernateNamedQueries());
+	}
+	
+	// ********************* GenericGenerator **************
+	@SuppressWarnings("unchecked")
+	@Override
 	public Iterator<String> correspondingAnnotationNames() {
-		return new CompositeIterator<String>(Hibernate.GENERIC_GENERATOR, super.correspondingAnnotationNames());
+		return new CompositeIterator<String>(
+				new ArrayIterator<String>(Hibernate.GENERIC_GENERATOR, 
+				Hibernate.NAMED_QUERY,
+				Hibernate.NAMED_QUERIES),
+				super.correspondingAnnotationNames());
 	}
 	
 	public void setGenericGenerator(JavaGenericGenerator newGenericGenerator) {
@@ -69,20 +95,6 @@ public class HibernateJavaEntity extends GenericJavaEntity implements GenericGen
 		if (genericGeneratorResource != null) {
 			this.genericGenerator = buildGenericGenerator(genericGeneratorResource);
 		}
-	}
-	
-	@Override
-	protected void initializeNamedQueries() {
-		super.initializeNamedQueries();
-		for (ListIterator<NestableAnnotation> stream = this.javaResourcePersistentType.supportingAnnotations(Hibernate.NAMED_QUERY, Hibernate.NAMED_QUERIES); stream.hasNext(); ) {
-			this.namedQueries.add(buildHibernateNamedQuery((HibernateNamedQueryAnnotation) stream.next()));
-		}
-	}
-	
-	protected JavaNamedQuery buildHibernateNamedQuery(HibernateNamedQueryAnnotation namedQueryResource) {
-		JavaNamedQuery namedQuery = getJpaFactory().buildHibernateJavaNamedQuery(this);
-		namedQuery.initialize(namedQueryResource);
-		return namedQuery;
 	}
 
 	protected GenericGeneratorAnnotation getResourceGenericGenerator() {
@@ -129,12 +141,6 @@ public class HibernateJavaEntity extends GenericJavaEntity implements GenericGen
 		}
 	}
 	
-	@Override
-	public void update(JavaResourcePersistentType resourcePersistentType) {
-		super.update(resourcePersistentType);
-		updateGenericGenerator();
-	}
-	
 	protected void updateGenericGenerator() {
 		GenericGeneratorAnnotation genericGeneratorResource = getResourceGenericGenerator();
 		if (genericGeneratorResource == null) {
@@ -151,40 +157,85 @@ public class HibernateJavaEntity extends GenericJavaEntity implements GenericGen
 			}
 		}
 	}
-
-	@Override
-	protected void updateNamedQueries() {
-		ListIterator<JavaNamedQuery> queries = namedQueries();
-		ListIterator<NestableAnnotation> resourceNamedQueries = this.javaResourcePersistentType.supportingAnnotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
-		
-		ListIterator<NestableAnnotation> hibernateNamedQueries = this.javaResourcePersistentType.supportingAnnotations(Hibernate.NAMED_QUERY, Hibernate.NAMED_QUERIES);
+	// ********************* NamedQuery **************
+	public ListIterator<HibernateNamedQuery> hibernateNamedQueries() {
+		return new CloneListIterator<HibernateNamedQuery>(this.hibernateNamedQueries);
+	}
+	
+	public int hibernateNamedQueriesSize() {
+		return this.hibernateNamedQueries.size();
+	}
+	
+	protected void initializeHibernateNamedQueries() {
+		for (ListIterator<NestableAnnotation> stream = this.javaResourcePersistentType.supportingAnnotations(HibernateNamedQueryAnnotation.ANNOTATION_NAME, HibernateNamedQueriesAnnotation.ANNOTATION_NAME); stream.hasNext(); ) {
+			this.hibernateNamedQueries.add(buildHibernateNamedQuery((HibernateNamedQueryAnnotation) stream.next()));
+		}
+	}
+	
+	protected HibernateNamedQuery buildHibernateNamedQuery(HibernateNamedQueryAnnotation namedQueryResource) {
+		HibernateNamedQuery hibernateNamedQuery = getJpaFactory().buildHibernateNamedQuery(this);
+		hibernateNamedQuery.initialize(namedQueryResource);
+		return hibernateNamedQuery;
+	}
+	
+	protected void updateHibernateNamedQueries() {
+		ListIterator<HibernateNamedQuery> queries = hibernateNamedQueries();
+		ListIterator<NestableAnnotation> resourceNamedQueries = this.javaResourcePersistentType.supportingAnnotations(HibernateNamedQueryAnnotation.ANNOTATION_NAME, HibernateNamedQueriesAnnotation.ANNOTATION_NAME);
 		
 		while (queries.hasNext()) {
-			JavaNamedQuery namedQuery = queries.next();
-			if (namedQuery instanceof HibernateJavaNamedQuery) {
-				if (hibernateNamedQueries.hasNext()) {
-					namedQuery.update((HibernateNamedQueryAnnotation) hibernateNamedQueries.next());
-				} else {
-					removeNamedQuery_(namedQuery);
-				}
-			} else {
-				if (resourceNamedQueries.hasNext()) {
-					namedQuery.update((NamedQueryAnnotation) resourceNamedQueries.next());
-				} else {
-					removeNamedQuery_(namedQuery);
-				}
-			}			
+			HibernateNamedQuery hibernateNamedQuery = queries.next();
+			if (resourceNamedQueries.hasNext()) {
+				hibernateNamedQuery.update((HibernateNamedQueryAnnotation) resourceNamedQueries.next());
+			}
+			else {
+				removeHibernateNamedQuery_(hibernateNamedQuery);
+			}
 		}
 		
 		while (resourceNamedQueries.hasNext()) {
-			addNamedQuery(buildNamedQuery((NamedQueryAnnotation) resourceNamedQueries.next()));
-		}
-		
-		while (hibernateNamedQueries.hasNext()) {
-			addNamedQuery(buildHibernateNamedQuery((HibernateNamedQueryAnnotation) hibernateNamedQueries.next()));
+			addHibernateNamedQuery(buildHibernateNamedQuery((HibernateNamedQueryAnnotation) resourceNamedQueries.next()));
 		}
 	}
+	
+	public HibernateNamedQuery addHibernateNamedQuery(int index) {
+		HibernateNamedQuery hibernateNamedQuery = getJpaFactory().buildHibernateNamedQuery(this);
+		this.hibernateNamedQueries.add(index, hibernateNamedQuery);
+		HibernateNamedQueryAnnotation hibernateNamedQueryAnnotation = (HibernateNamedQueryAnnotation) this.javaResourcePersistentType
+			.addSupportingAnnotation(index, HibernateNamedQueryAnnotation.ANNOTATION_NAME, HibernateNamedQueriesAnnotation.ANNOTATION_NAME);
+		hibernateNamedQuery.initialize(hibernateNamedQueryAnnotation);
+		fireItemAdded(HIBERNATE_NAMED_QUERIES_LIST, index, hibernateNamedQuery);
+		return hibernateNamedQuery;
+	}
+	
+	protected void addHibernateNamedQuery(int index, HibernateNamedQuery hibernateNamedQuery) {
+		addItemToList(index, hibernateNamedQuery, this.hibernateNamedQueries, HIBERNATE_NAMED_QUERIES_LIST);
+	}
+	
+	protected void addHibernateNamedQuery(HibernateNamedQuery hibernateNamedQuery) {
+		this.addHibernateNamedQuery(this.hibernateNamedQueries.size(), hibernateNamedQuery);
+	}
+	
+	public void removeHibernateNamedQuery(HibernateNamedQuery hibernateNamedQuery) {
+		removeHibernateNamedQuery(this.hibernateNamedQueries.indexOf(hibernateNamedQuery));
+	}
+	
+	public void removeHibernateNamedQuery(int index) {
+		HibernateNamedQuery removedHibernateNamedQuery = this.hibernateNamedQueries.remove(index);
+		this.javaResourcePersistentType.removeSupportingAnnotation(index, HibernateNamedQueryAnnotation.ANNOTATION_NAME, HibernateNamedQueriesAnnotation.ANNOTATION_NAME);
+		fireItemRemoved(HIBERNATE_NAMED_QUERIES_LIST, index, removedHibernateNamedQuery);
+	}	
+	
+	protected void removeHibernateNamedQuery_(HibernateNamedQuery hibernateNamedQuery) {
+		removeItemFromList(hibernateNamedQuery, this.hibernateNamedQueries, HIBERNATE_NAMED_QUERIES_LIST);
+	}
+	
+	public void moveHibernateNamedQuery(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.hibernateNamedQueries, targetIndex, sourceIndex);
+		this.javaResourcePersistentType.moveSupportingAnnotation(targetIndex, sourceIndex, HibernateNamedQueriesAnnotation.ANNOTATION_NAME);
+		fireItemMoved(HIBERNATE_NAMED_QUERIES_LIST, targetIndex, sourceIndex);		
+	}
 
+	// ************************* validation ***********************
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);

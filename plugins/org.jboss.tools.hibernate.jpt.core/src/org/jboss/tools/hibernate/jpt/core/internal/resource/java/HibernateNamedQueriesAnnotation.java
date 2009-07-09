@@ -8,25 +8,20 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.jpt.core.internal;
+package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
-import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaNamedQuery;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaNamedQuery;
+import org.eclipse.jpt.core.resource.java.ContainerAnnotation;
+import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedQueryAnnotation;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class HibernateJavaNamedQueryImpl extends GenericJavaNamedQuery
-	implements HibernateJavaNamedQuery {
+public interface HibernateNamedQueriesAnnotation extends
+		ContainerAnnotation<HibernateNamedQueryAnnotation> {
+	
+	String ANNOTATION_NAME = Hibernate.NAMED_QUERIES;
 
-	/**
-	 * @param parent
-	 */
-	public HibernateJavaNamedQueryImpl(JavaJpaContextNode parent) {
-		super(parent);
-	}
-
-
+	String HIBERNATE_NAMED_QUERIES_LIST = "hibernateNamedQueries"; //$NON-NLS-1$
 }

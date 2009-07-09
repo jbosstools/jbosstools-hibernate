@@ -36,8 +36,33 @@ public interface Hibernate {
 		String NAMED_QUERY__NAME = "name"; //$NON-NLS-1$
 		String NAMED_QUERY__QUERY = "query"; //$NON-NLS-1$
 		String NAMED_QUERY__HINTS = "hints"; //$NON-NLS-1$
+		String NAMED_QUERY__FLUSH_MODE = "flushMode"; //$NON-NLS-1$
+		String NAMED_QUERY__CACHE_MODE = "cacheMode"; //$NON-NLS-1$
+		String NAMED_QUERY__CACHEABLE = "cacheable"; //$NON-NLS-1$
+		String NAMED_QUERY__CACHE_REGION = "cacheRegion"; //$NON-NLS-1$
+		String NAMED_QUERY__FETCH_SIZE = "fetchSize"; //$NON-NLS-1$
+		String NAMED_QUERY__TIMEOUT = "timeout"; //$NON-NLS-1$
+		String NAMED_QUERY__COMMENT = "comment"; //$NON-NLS-1$
+		String NAMED_QUERY__READ_ONLY = "readOnly"; //$NON-NLS-1$
 		
 	String NAMED_QUERIES = PACKAGE_ + "NamedQueries"; //$NON-NLS-1$
 		String NAMED_QUERIES__VALUE = "value"; //$NON-NLS-1$
+		
+	String FLUSH_MODE_TYPE = PACKAGE_ + "FlushModeType"; //$NON-NLS-1$
+		String FLUSH_MODE_TYPE_ = FLUSH_MODE_TYPE + '.'; 
+		String FLUSH_MODE_TYPE__ALWAYS = FLUSH_MODE_TYPE_ + "ALWAYS"; //$NON-NLS-1$
+		String FLUSH_MODE_TYPE__AUTO = FLUSH_MODE_TYPE_ + "AUTO"; //$NON-NLS-1$
+		String FLUSH_MODE_TYPE__COMMIT = FLUSH_MODE_TYPE_ + "COMMIT"; //$NON-NLS-1$
+		String FLUSH_MODE_TYPE__NEVER = FLUSH_MODE_TYPE_ + "NEVER"; //$NON-NLS-1$
+		String FLUSH_MODE_TYPE__MANUAL = FLUSH_MODE_TYPE_ + "MANUAL"; //$NON-NLS-1$
+		
+	String CACHE_MODE_TYPE = PACKAGE_ + "CacheModeType"; //$NON-NLS-1$
+		String CACHE_MODE_TYPE_ = CACHE_MODE_TYPE + '.';
+		String CACHE_MODE_TYPE__GET = CACHE_MODE_TYPE_ + "GET"; //$NON-NLS-1$
+		String CACHE_MODE_TYPE__IGNORE = CACHE_MODE_TYPE_ + "IGNORE"; //$NON-NLS-1$
+		String CACHE_MODE_TYPE__NORMAL = CACHE_MODE_TYPE_ + "NORMAL"; //$NON-NLS-1$
+		String CACHE_MODE_TYPE__PUT = CACHE_MODE_TYPE_ + "PUT"; //$NON-NLS-1$
+		String CACHE_MODE_TYPE__REFRESH = CACHE_MODE_TYPE_ + "REFRESH"; //$NON-NLS-1$
+
 	
 }

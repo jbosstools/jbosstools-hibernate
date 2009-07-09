@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.internal.platform.AbstractJpaAnnotationDefintionProv
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedQueryAnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGeneratorAnnotationImpl.GenericGeneratorAnnotationDefinition;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQueriesAnnotationDefinition;
 
 /**
  * @author Dmitry Geraskov
@@ -49,6 +50,7 @@ public class HibernateJpaAnnotationDefinitionProvider extends AbstractJpaAnnotat
 	protected void addTypeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
 		definitions.add(GenericGeneratorAnnotationDefinition.instance());
 		definitions.add(HibernateNamedQueryAnnotationDefinition.instance());
+		definitions.add(HibernateNamedQueriesAnnotationDefinition.instance());
 	}
 	
 	@Override

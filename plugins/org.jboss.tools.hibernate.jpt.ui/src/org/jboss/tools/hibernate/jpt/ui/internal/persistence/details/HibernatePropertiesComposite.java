@@ -317,7 +317,7 @@ public class HibernatePropertiesComposite extends FormPane<BasicHibernatePropert
 	}
 
 	public String getHelpID() {
-		// TODO Auto-generated method stub
+		// TODO help
 		return null;
 	}
 

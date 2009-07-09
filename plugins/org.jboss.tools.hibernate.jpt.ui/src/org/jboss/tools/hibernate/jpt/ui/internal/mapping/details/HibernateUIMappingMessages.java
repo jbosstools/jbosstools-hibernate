@@ -18,13 +18,24 @@ import org.eclipse.osgi.util.NLS;
  */
 public class HibernateUIMappingMessages extends NLS {
 	private static final String BUNDLE_NAME = "org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.messages"; //$NON-NLS-1$
+
 		
 	public static String GenericGeneratorComposite_name;
 	public static String GenericGeneratorComposite_strategy;
-
 	public static String HibernateGeneratorsComposite_CheckBoxLabel;
-
 	public static String HibernateGeneratorsComposite_SectionLabel;
+	public static String NamedQueryPropertyComposite_cacheable;
+	public static String NamedQueryPropertyComposite_cacheableWithDefault;
+	public static String NamedQueryPropertyComposite_flushMode;
+	public static String NamedQueryPropertyComposite_cacheMode;
+	public static String NamedQueryPropertyComposite_readOnly;
+	public static String NamedQueryPropertyComposite_readOnlyWithDefault;
+	public static String NamedQueryPropertyComposite_cacheRegion;
+	public static String NamedQueryPropertyComposite_fetchSize;
+	public static String NamedQueryPropertyComposite_timeout;
+	public static String HibernateAddQueryDialog_hibernateNamedQuery;
+	public static String HibernateAddQueryDialog_hibernateNamedNativeQuery;
+	
 
 	private HibernateUIMappingMessages() {}
 
