@@ -102,4 +102,8 @@ public interface HibernateNamedQuery extends JavaNamedQuery {
 	boolean isDefaultReadOnly();
 		boolean DEFAULT_READ_ONLY = false;
 		String DEFAULT_READ_ONLY_PROPERTY = "defaultReadOnly"; //$NON-NLS-1$
+		
+	void initialize(HibernateNamedQueryAnnotation resourceNamedQuery);
+
+	void update(HibernateNamedQueryAnnotation resourceNamedQuery);
 }
