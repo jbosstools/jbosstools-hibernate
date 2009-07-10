@@ -144,7 +144,7 @@ public class OpenMappingFileTest extends TestCase {
 		IEditorPart editor = null;
 		Throwable ex = null;
 		try {
-			editor = OpenMappingAction.run(consCFG, selection);
+			editor = OpenMappingAction.run(consCFG, selection, null);
 			boolean highlighted = Utils.hasSelection(editor);
 			if (!highlighted) {
 				String out = NLS.bind(ConsoleTestMessages.OpenMappingFileTest_highlighted_region_for_is_empty_package,

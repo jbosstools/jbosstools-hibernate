@@ -130,7 +130,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 			editorPart = OpenMappingUtils.openFileInEditor(file);
 			boolean updateRes = updateEditorSelection(editorPart, selection);
 			if (!updateRes && selectionParent != null) {
-				// if it is not possible to select object, try to select it's child
+				// if it is not possible to select object, try to select it's parent
 				updateRes = updateEditorSelection(editorPart, selectionParent);
 			}
 		}
