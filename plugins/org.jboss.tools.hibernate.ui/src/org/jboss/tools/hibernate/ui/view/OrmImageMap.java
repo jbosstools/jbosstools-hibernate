@@ -11,6 +11,7 @@
 package org.jboss.tools.hibernate.ui.view;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.hibernate.MappingException;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -30,6 +31,7 @@ import org.hibernate.mapping.Set;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
+import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
 
 /**
@@ -117,23 +119,31 @@ public class OrmImageMap {
 				str = "Image_PersistentFieldMany-to-one"; //$NON-NLS-1$
 			} else if (value instanceof Any) {
 				str = "Image_PersistentFieldAny"; //$NON-NLS-1$
-			} else if (field.getType() != null && field.getType().isCollectionType()) {
-				if (value instanceof PrimitiveArray) {
-					str = "Image_Collection_primitive_array"; //$NON-NLS-1$
-				} else if (value instanceof Array) {
-					str = "Image_Collection_array"; //$NON-NLS-1$
-				} else if (value instanceof List) {
-					str = "Image_Collection_list"; //$NON-NLS-1$
-				} else if (value instanceof Set) {
-					str = "Image_Collection_set"; //$NON-NLS-1$
-				} else if (value instanceof Map) {
-					str = "Image_Collection_map"; //$NON-NLS-1$
-				} else if (value instanceof Bag) {
-					str = "Image_Collection_bag"; //$NON-NLS-1$
-				} else if (value instanceof IdentifierBag) {
-					str = "Image_Collection_idbag"; //$NON-NLS-1$
-				} else {
-					str = "Image_Collection"; //$NON-NLS-1$
+			} else {
+				Type type = null;
+				try {
+					type = field.getType();
+				} catch (MappingException ex) {
+					// ignore it
+				}
+				if (type != null && type.isCollectionType()) {
+					if (value instanceof PrimitiveArray) {
+						str = "Image_Collection_primitive_array"; //$NON-NLS-1$
+					} else if (value instanceof Array) {
+						str = "Image_Collection_array"; //$NON-NLS-1$
+					} else if (value instanceof List) {
+						str = "Image_Collection_list"; //$NON-NLS-1$
+					} else if (value instanceof Set) {
+						str = "Image_Collection_set"; //$NON-NLS-1$
+					} else if (value instanceof Map) {
+						str = "Image_Collection_map"; //$NON-NLS-1$
+					} else if (value instanceof Bag) {
+						str = "Image_Collection_bag"; //$NON-NLS-1$
+					} else if (value instanceof IdentifierBag) {
+						str = "Image_Collection_idbag"; //$NON-NLS-1$
+					} else {
+						str = "Image_Collection"; //$NON-NLS-1$
+					}
 				}
 			}
 		} else if ("parent".equals(field.getName())) { //$NON-NLS-1$

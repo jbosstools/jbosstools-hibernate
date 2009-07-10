@@ -23,6 +23,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
+import org.hibernate.MappingException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.Dialect;
@@ -131,9 +132,18 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 				}
 			}
 		}
-		sqlType = column.getSqlType(dialect, mapping);
-		column.setSqlType(sqlType);
-		return true;
+		if (dialect != null) {
+			try {
+				sqlType = column.getSqlType(dialect, mapping);
+			} catch (MappingException ex) {
+				// ignore it
+			}
+		}
+		if (sqlType != null) {
+			column.setSqlType(sqlType);
+			return true;
+		}
+		return false;
 	}
 
 }

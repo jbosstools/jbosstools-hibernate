@@ -71,7 +71,7 @@ public class OpenMappingDiagramTest extends TestCase {
 
 		if (persClasses.length > 0){
 			for (int i = 0; i < persClasses.length; i++) {
-				assertTrue(persClasses[0] instanceof PersistentClass);
+				assertTrue(persClasses[i] instanceof PersistentClass);
 				PersistentClass persClass = (PersistentClass) persClasses[i];
 
 				IEditorPart editor = null;
@@ -81,7 +81,9 @@ public class OpenMappingDiagramTest extends TestCase {
 				} catch (PartInitException e) {
 					ex = e;
 				}
-				if (ex == null ) ex = Utils.getExceptionIfItOccured(editor);
+				if (ex == null ) {
+					ex = Utils.getExceptionIfItOccured(editor);
+				}
 				if (ex != null) {
 					String out = NLS.bind(ConsoleTestMessages.OpenMappingDiagramTest_mapping_diagram_for_not_opened,
 							new Object[]{persClass.getClassName(), ex.getMessage()});
