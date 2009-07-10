@@ -861,7 +861,7 @@ public class OrmDiagram extends ModelElement {
 		}
 	}
 	
-	public void setState(Properties properties,Shape shape, boolean value) {
+	public void setState(Properties properties, Shape shape, boolean value) {
 		setState(properties, getKey(shape) + ".state", value); //$NON-NLS-1$
 	}
 	

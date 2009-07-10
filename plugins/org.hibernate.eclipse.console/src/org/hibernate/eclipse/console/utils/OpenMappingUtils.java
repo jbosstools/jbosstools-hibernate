@@ -50,6 +50,7 @@ import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.Collection;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.Map;
@@ -89,10 +90,16 @@ public class OpenMappingUtils {
 	public static final String HIBERNATE_TAG_RESOURCE = "resource";                 //$NON-NLS-1$
 	public static final String HIBERNATE_TAG_CATALOG = "catalog";                   //$NON-NLS-1$
 	public static final String HIBERNATE_TAG_SCHEMA = "schema";                     //$NON-NLS-1$
+	public static final String HIBERNATE_TAG_KEY = "key";                           //$NON-NLS-1$
+	public static final String HIBERNATE_TAG_MANY2ONE = "many-to-one";              //$NON-NLS-1$
+	public static final String HIBERNATE_TAG_PROPERTY = "property";                 //$NON-NLS-1$
 	public static final String EJB_TAG_ENTITY = "entity";                           //$NON-NLS-1$
 	public static final String EJB_TAG_CLASS = "class";                             //$NON-NLS-1$
 	public static final String EJB_TAG_MAPPED_SUPERCLASS = "mapped-superclass";     //$NON-NLS-1$
-	
+	public static final String EJB_TAG_COLUMN = "column";                           //$NON-NLS-1$
+	public static final String EJB_TAG_ID = "id";                                   //$NON-NLS-1$
+	public static final String EJB_TAG_BASIC = "basic";                             //$NON-NLS-1$
+
 	//prohibit constructor call
 	private OpenMappingUtils() {}
 
@@ -234,6 +241,7 @@ public class OpenMappingUtils {
 	 * @param table
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public static boolean tableInFile(ConsoleConfiguration consoleConfig, IFile file, Table table) {
 		EntityResolver entityResolver = consoleConfig.getConfiguration().getEntityResolver(); 
 		Document doc = getDocument(file.getLocation().toFile(), entityResolver);
@@ -273,6 +281,34 @@ public class OpenMappingUtils {
 		}
 		if (!res && getElements(doc, HIBERNATE_TAG_TABLE, table.getName()).hasNext()) {
 			res = true;
+		}
+		if (!res) {
+			classes = getElements(doc, EJB_TAG_ENTITY);
+			while (classes.hasNext() && !res) {
+				Element element = classes.next();
+				Iterator<Element> itTables = element.elements(HIBERNATE_TAG_TABLE).iterator();
+				while (itTables.hasNext()) {
+					element = itTables.next();
+					Attribute tableAttr = element.attribute(HIBERNATE_TAG_NAME);
+					if (tableAttr != null) {
+						Attribute catalogAttr = element.attribute(HIBERNATE_TAG_CATALOG);
+						if (catalogAttr == null) {
+							catalogAttr = doc.getRootElement().attribute(HIBERNATE_TAG_CATALOG);
+						}
+						Attribute schemaAttr = element.attribute(HIBERNATE_TAG_SCHEMA);
+						if (schemaAttr == null) {
+							schemaAttr = doc.getRootElement().attribute(HIBERNATE_TAG_SCHEMA);
+						}
+						String catalog = catalogAttr != null ? catalogAttr.getValue() : null;
+						String schema = schemaAttr != null ? schemaAttr.getValue() : null;
+						String name = tableAttr.getValue();
+						if (getTableName(catalog, schema, name).equals(getTableName(table))) {
+							res = true;
+							break;
+						}
+					}
+				}
+			}
 		}
 		return res;
 	}
@@ -632,6 +668,10 @@ public class OpenMappingUtils {
 			selectRegion = findSelectRegion(proj, findAdapter, (PersistentClass)selection);
 		} else if (selection instanceof Property){
 			selectRegion = findSelectRegion(proj, findAdapter, (Property)selection);
+		} else if (selection instanceof Table) {
+			selectRegion = findSelectRegion(proj, findAdapter, (Table)selection);
+		} else if (selection instanceof Column) {
+			selectRegion = findSelectRegion(proj, findAdapter, (Column)selection);
 		}
 		return selectRegion;
 	}
@@ -753,6 +793,58 @@ public class OpenMappingUtils {
 		}
 		return res;
 	}
+	
+	/**
+	 * Finds a document region, which corresponds of given persistent class.
+	 * @param proj
+	 * @param findAdapter
+	 * @param table
+	 * @return a proper document region
+	 */
+	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, Table table) {
+		IRegion res = null;
+		String[] tablePatterns = generateTablePatterns(table.getName());
+		IRegion tableRegion = null;
+		try {
+			for (int i = 0; (tableRegion == null) && (i < tablePatterns.length); i++){
+				tableRegion = findAdapter.find(0, tablePatterns[i], true, true, false, true);
+			}
+		} catch (BadLocationException e) {
+			//ignore
+		}
+		if (tableRegion != null) {
+			int length = table.getName().length();
+			int offset = tableRegion.getOffset() + tableRegion.getLength() - length - 1;
+			res = new Region(offset, length);
+		}
+		return res;
+	}
+	
+	/**
+	 * Finds a document region, which corresponds of given persistent class.
+	 * @param proj
+	 * @param findAdapter
+	 * @param table
+	 * @return a proper document region
+	 */
+	public static IRegion findSelectRegion(IJavaProject proj, FindReplaceDocumentAdapter findAdapter, Column column) {
+		IRegion res = null;
+		String[] columnPatterns = generateColumnPatterns(column.getName());
+		IRegion columnRegion = null;
+		try {
+			for (int i = 0; (columnRegion == null) && (i < columnPatterns.length); i++){
+				columnRegion = findAdapter.find(0, columnPatterns[i], true, true, false, true);
+			}
+		} catch (BadLocationException e) {
+			//ignore
+		}
+		if (columnRegion != null) {
+			int length = column.getName().length();
+			int offset = columnRegion.getOffset() + columnRegion.getLength() - length - 1;
+			res = new Region(offset, length);
+		}
+		return res;
+	}
 
 	/**
 	 * Creates a xml tag search pattern with given tag name which should contains
@@ -781,6 +873,25 @@ public class OpenMappingUtils {
 		{ EJB_TAG_ENTITY, EJB_TAG_CLASS, },
 		{ EJB_TAG_MAPPED_SUPERCLASS, HIBERNATE_TAG_NAME, },
 		{ EJB_TAG_MAPPED_SUPERCLASS, EJB_TAG_CLASS, },
+	};
+	
+	private static String[][] tablePairs = {
+		{ HIBERNATE_TAG_TABLE, HIBERNATE_TAG_NAME, },
+		{ HIBERNATE_TAG_CLASS, HIBERNATE_TAG_NAME, },
+		{ HIBERNATE_TAG_CLASS, HIBERNATE_TAG_ENTITY_NAME, },
+		{ EJB_TAG_ENTITY, HIBERNATE_TAG_NAME, },
+		{ EJB_TAG_ENTITY, EJB_TAG_CLASS, },
+	};
+	
+	private static String[][] columnPairs = {
+		{ EJB_TAG_COLUMN, HIBERNATE_TAG_NAME, },
+		{ EJB_TAG_ID, EJB_TAG_COLUMN, },
+		{ HIBERNATE_TAG_MANY2ONE, EJB_TAG_COLUMN, },
+		{ HIBERNATE_TAG_KEY, EJB_TAG_COLUMN, },
+		{ EJB_TAG_ID, HIBERNATE_TAG_NAME, },
+		{ HIBERNATE_TAG_MANY2ONE, HIBERNATE_TAG_NAME, },
+		{ EJB_TAG_BASIC, HIBERNATE_TAG_NAME, },
+		{ HIBERNATE_TAG_PROPERTY, HIBERNATE_TAG_NAME, },
 	};
 
 	/**
@@ -832,6 +943,34 @@ public class OpenMappingUtils {
 		for (int i = 0; i < persistentClassPairs.length; i++) {
 			patterns.add(createPattern(persistentClassPairs[i][0], persistentClassPairs[i][1], shortClassName));
 			patterns.add(createPattern(persistentClassPairs[i][0], persistentClassPairs[i][1], fullClassName));
+		}
+		return patterns.toArray(new String[0]);
+	}
+
+	/**
+	 * Generates a table xml tag search patterns.
+	 * 
+	 * @param tableName
+	 * @return an arrays of search patterns
+	 */
+	public static String[] generateTablePatterns(String tableName) {
+		List<String> patterns = new ArrayList<String>();
+		for (int i = 0; i < tablePairs.length; i++) {
+			patterns.add(createPattern(tablePairs[i][0], tablePairs[i][1], tableName));
+		}
+		return patterns.toArray(new String[0]);
+	}
+
+	/**
+	 * Generates a column xml tag search patterns.
+	 * 
+	 * @param columnName
+	 * @return an arrays of search patterns
+	 */
+	public static String[] generateColumnPatterns(String columnName) {
+		List<String> patterns = new ArrayList<String>();
+		for (int i = 0; i < columnPairs.length; i++) {
+			patterns.add(createPattern(columnPairs[i][0], columnPairs[i][1], columnName));
 		}
 		return patterns.toArray(new String[0]);
 	}

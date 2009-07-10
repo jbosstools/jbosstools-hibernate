@@ -38,6 +38,7 @@ import org.hibernate.mapping.Property;
  * @author Dmitry Geraskov
  */
 
+@SuppressWarnings("restriction")
 public class OpenSourceAction extends SelectionListenerAction {
 
 	private String imageFilePath = "icons/images/java.gif"; //$NON-NLS-1$

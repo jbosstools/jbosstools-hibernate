@@ -171,34 +171,15 @@ public class DiagramViewer extends GraphicalEditor {
 		return super.getAdapter(type);
 	}
 
-	public Set<Object> getSelectedElements() {
-		Set<Object> ret = new HashSet<Object>();
+	public Set<Shape> getSelectedElements() {
+		Set<Shape> ret = new HashSet<Shape>();
 		List<?> selectedEditParts = getGraphicalViewer().getSelectedEditParts();
 		Iterator<?> iterator = selectedEditParts.iterator();
 		while (iterator.hasNext()) {
 			Object elem = iterator.next();
 			if (elem instanceof OrmEditPart) {
 				Shape shape = (Shape)((OrmEditPart)elem).getModel();
-				Object ormElement = shape.getOrmElement();
-				if (ormElement instanceof Column){
-					shape = (Shape) shape.getParent();
-				}
-				ret.add(shape.getOrmElement());
-			}
-		}
-		return ret;
-	}
-
-	public Set<Object> getSelectedElements2() {
-		Set<Object> ret = new HashSet<Object>();
-		List<?> selectedEditParts = getGraphicalViewer().getSelectedEditParts();
-		Iterator<?> iterator = selectedEditParts.iterator();
-		while (iterator.hasNext()) {
-			Object elem = iterator.next();
-			if (elem instanceof OrmEditPart) {
-				Shape shape = (Shape)((OrmEditPart)elem).getModel();
-				Object ormElement = shape.getOrmElement();
-				ret.add(ormElement);
+				ret.add(shape);
 			}
 		}
 		return ret;

@@ -97,18 +97,19 @@ public class OpenMappingAction extends SelectionListenerAction {
 				return run(consoleConfig, propertySel, parentProp);
 			}
 		}
-		return run(consoleConfig, path.getLastSegment());
+		return run(consoleConfig, path.getLastSegment(), null);
 	}
 
 	/**
 	 * @param consoleConfig
 	 * @param selection
+	 * @param selectionParent
 	 * @throws JavaModelException
 	 * @throws PartInitException
 	 * @throws PresistanceClassNotFoundException
 	 * @throws FileNotFoundException
 	 */
-	public static IEditorPart run(ConsoleConfiguration consoleConfig, Object selection) throws PartInitException, JavaModelException, FileNotFoundException {
+	public static IEditorPart run(ConsoleConfiguration consoleConfig, Object selection, Object selectionParent) throws PartInitException, JavaModelException, FileNotFoundException {
 		IEditorPart editorPart = null;
 		IFile file = null;
 		if (selection instanceof Property) {
@@ -116,16 +117,22 @@ public class OpenMappingAction extends SelectionListenerAction {
 			if (p.getPersistentClass() != null) {
 				//use PersistentClass to open editor
 				file = OpenMappingUtils.searchFileToOpen(consoleConfig, p.getPersistentClass());
-				//editorPart = openMapping(p.getPersistentClass(), consoleConfig);
 			}
 		}
 		else {
-			file = OpenMappingUtils.searchFileToOpen(consoleConfig, selection);
-			//editorPart = openMapping(selection, consoleConfig);
+			if (selectionParent != null) {
+				file = OpenMappingUtils.searchFileToOpen(consoleConfig, selectionParent);
+			} else {
+				file = OpenMappingUtils.searchFileToOpen(consoleConfig, selection);
+			}
 		}
 		if (file != null) {
 			editorPart = OpenMappingUtils.openFileInEditor(file);
-			updateEditorSelection(editorPart, selection);
+			boolean updateRes = updateEditorSelection(editorPart, selection);
+			if (!updateRes && selectionParent != null) {
+				// if it is not possible to select object, try to select it's child
+				updateRes = updateEditorSelection(editorPart, selectionParent);
+			}
 		}
 		if (editorPart == null) {
 			//try to find hibernate-annotations

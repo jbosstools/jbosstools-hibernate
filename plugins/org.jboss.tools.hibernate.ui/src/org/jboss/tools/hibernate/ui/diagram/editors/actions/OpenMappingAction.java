@@ -16,14 +16,17 @@ import java.util.Set;
 
 import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Property;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.SpecialRootClass;
 import org.jboss.tools.hibernate.ui.view.ObjectEditorInput;
 
@@ -46,18 +49,20 @@ public class OpenMappingAction extends SelectionAction {
 		ConsoleConfiguration consoleConfig = objectEditorInput.getConfiguration();
 
 		DiagramViewer part = (DiagramViewer)getWorkbenchPart();
-		//Set selectedElements = part.getSelectedElements();
-		Set<Object> selectedElements = part.getSelectedElements2();
+		Set<Shape> selectedElements = part.getSelectedElements();
 
-		Iterator<Object> iterator = selectedElements.iterator();
-		while (iterator.hasNext()) {
-			Object selection = iterator.next();
+		IEditorPart editorPart = null;
+		Iterator<Shape> iterator = selectedElements.iterator();
+		// open only first editor - no sense to open all of them
+		while (iterator.hasNext() && editorPart == null) {
+			Shape shape = iterator.next();
+			Object selection = shape.getOrmElement();
 			if (selection instanceof Property
 					&& ((Property)selection).getPersistentClass() instanceof SpecialRootClass){
 				Property compositSel = ((Property)selection);
-				Property parentProperty = ((SpecialRootClass)((Property)selection).getPersistentClass()).getProperty();
+				Property parentProperty = ((SpecialRootClass)compositSel.getPersistentClass()).getProperty();
 				try {
-					org.hibernate.eclipse.console.actions.OpenMappingAction.run(consoleConfig, compositSel, parentProperty);
+					editorPart = org.hibernate.eclipse.console.actions.OpenMappingAction.run(consoleConfig, compositSel, parentProperty);
 				} catch (PartInitException e) {
 					HibernateConsolePlugin.getDefault().logErrorMessage(DiagramViewerMessages.OpenMappingAction_canot_find_or_open_mapping_file, e);
 				} catch (JavaModelException e) {
@@ -70,8 +75,14 @@ public class OpenMappingAction extends SelectionAction {
 			if (selection instanceof SpecialRootClass) {
     			selection = ((SpecialRootClass)selection).getProperty();
 			}
+			Shape shapeParent = null;
+			Object selectionParent = null;
+			if (selection instanceof Column){
+				shapeParent = (Shape)shape.getParent();
+				selectionParent = shapeParent.getOrmElement();
+			}
 			try {
-				org.hibernate.eclipse.console.actions.OpenMappingAction.run(consoleConfig, selection);
+				editorPart = org.hibernate.eclipse.console.actions.OpenMappingAction.run(consoleConfig, selection, selectionParent);
 			} catch (PartInitException e) {
 				HibernateConsolePlugin.getDefault().logErrorMessage(DiagramViewerMessages.OpenMappingAction_open_mapping_file, e);
 			} catch (JavaModelException e) {
