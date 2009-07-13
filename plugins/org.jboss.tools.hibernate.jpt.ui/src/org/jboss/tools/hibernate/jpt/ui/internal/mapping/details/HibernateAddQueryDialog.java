@@ -29,6 +29,7 @@ import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedQuery;
 
 /**
@@ -136,7 +137,7 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 			queryTypes.add(Query.NAMED_QUERY);
 			queryTypes.add(Query.NAMED_NATIVE_QUERY);
 			queryTypes.add(HibernateNamedQuery.HIBERNATE_NAMED_QUERY);
-			
+			queryTypes.add(HibernateNamedNativeQuery.HIBERNATE_NAMED_NATIVE_QUERY);			
 			return new StaticListValueModel<String>(queryTypes);
 		}
 		
@@ -151,6 +152,9 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 					}
 					if (value == HibernateNamedQuery.HIBERNATE_NAMED_QUERY) {
 						return HibernateUIMappingMessages.HibernateAddQueryDialog_hibernateNamedQuery;
+					}
+					if (value == HibernateNamedNativeQuery.HIBERNATE_NAMED_NATIVE_QUERY) {
+						return HibernateUIMappingMessages.HibernateAddQueryDialog_hibernateNamedNativeQuery;
 					}
 					return value;
 				}

@@ -14,8 +14,10 @@ import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.java.details.JavaEntityComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateQueryContainer;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateGeneratorsComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateQueriesComposite;
 
@@ -35,6 +37,7 @@ public class HibernateJavaEntityComposite<HibernateJavaEntity> extends JavaEntit
 		super(subjectHolder, parent, widgetFactory);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void initializeQueriesPane(Composite container) {
 		container = addCollapsableSection(
@@ -42,7 +45,7 @@ public class HibernateJavaEntityComposite<HibernateJavaEntity> extends JavaEntit
 			JptUiMappingsMessages.EntityComposite_queries
 		);
 		
-		new HibernateQueriesComposite(this, container);
+		new HibernateQueriesComposite((Pane<? extends HibernateQueryContainer>) this, container);
 	}
 	
 	@Override

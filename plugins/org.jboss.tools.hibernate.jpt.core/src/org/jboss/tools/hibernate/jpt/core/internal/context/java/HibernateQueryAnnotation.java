@@ -11,18 +11,14 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.resource.java.NestableNamedQueryAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
  * @author Dmitry Geraskov
- *
+ * 
+ * Interface contains Hibernate specific attributes.
  */
-public interface HibernateNamedQueryAnnotation extends NestableNamedQueryAnnotation {
-	
-	//replace with Hibernate annotation
-	String ANNOTATION_NAME = Hibernate.NAMED_QUERY;
+public interface HibernateQueryAnnotation {
 	
 	//************************ flushMode *********************************
 	
@@ -95,4 +91,5 @@ public interface HibernateNamedQueryAnnotation extends NestableNamedQueryAnnotat
 	Boolean isReadOnly();
 	void setReadOnly(Boolean value);
 		String READ_ONLY_PROPERTY = "readOnly"; //$NON-NLS-1$
+
 }

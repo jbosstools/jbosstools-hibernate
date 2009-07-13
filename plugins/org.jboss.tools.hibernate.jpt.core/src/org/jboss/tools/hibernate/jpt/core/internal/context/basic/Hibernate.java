@@ -48,6 +48,25 @@ public interface Hibernate {
 	String NAMED_QUERIES = PACKAGE_ + "NamedQueries"; //$NON-NLS-1$
 		String NAMED_QUERIES__VALUE = "value"; //$NON-NLS-1$
 		
+	String NAMED_NATIVE_QUERY = PACKAGE_ + "NamedNativeQuery"; //$NON-NLS-1$
+		String NAMED_NATIVE_QUERY__NAME = "name"; //$NON-NLS-1$
+		String NAMED_NATIVE_QUERY__QUERY = "query"; //$NON-NLS-1$
+		String NAMED_NATIVE_QUERY__HINTS = "hints"; //$NON-NLS-1$
+		String NAMED_NATIVE_QUERY__FLUSH_MODE = "flushMode"; //$NON-NLS-1$
+		String NAMED_NATIVE_QUERY__CACHE_MODE = "cacheMode"; //$NON-NLS-1$
+		String NAMED_NATIVE_QUERY__CACHEABLE = "cacheable"; //$NON-NLS-1$
+		String NAMED_NATIVE_QUERY__CACHE_REGION = "cacheRegion"; //$NON-NLS-1$
+		String NAMED_NATIVE_QUERY__FETCH_SIZE = "fetchSize"; //$NON-NLS-1$
+		String NAMED_NATIVE_QUERY__TIMEOUT = "timeout"; //$NON-NLS-1$
+		String NAMED_NATIVE_QUERY__COMMENT = "comment"; //$NON-NLS-1$
+		String NAMED_NATIVE_QUERY__READ_ONLY = "readOnly"; //$NON-NLS-1$
+		String NAMED_NATIVE_QUERY__RESULT_CLASS = "resultClass"; //$NON-NLS-1$
+		String NAMED_NATIVE_QUERY__RESULT_SET_MAPPING = "resultSetMapping"; //$NON-NLS-1$
+		String NAMED_NATIVE_QUERY__CALLABLE = "callable"; //$NON-NLS-1$
+	
+	String NAMED_NATIVE_QUERIES = PACKAGE_ + "NamedNativeQueries"; //$NON-NLS-1$
+		String NAMED_NATIVE_QUERIES__VALUE = "value"; //$NON-NLS-1$
+
 	String FLUSH_MODE_TYPE = PACKAGE_ + "FlushModeType"; //$NON-NLS-1$
 		String FLUSH_MODE_TYPE_ = FLUSH_MODE_TYPE + '.'; 
 		String FLUSH_MODE_TYPE__ALWAYS = FLUSH_MODE_TYPE_ + "ALWAYS"; //$NON-NLS-1$

@@ -22,8 +22,11 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaParameter;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedNativeQuery;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedNativeQueryImpl;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedQuery;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedQueryImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGeneratorImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaParameter;
@@ -56,6 +59,10 @@ public class HibernateJpaFactory extends GenericJpaFactory {
 	
 	public HibernateNamedQuery buildHibernateNamedQuery(JavaJpaContextNode parent) {
 		return new HibernateNamedQueryImpl(parent);
+	}
+	
+	public HibernateNamedNativeQuery buildHibernateNamedNativeQuery(JavaJpaContextNode parent) {
+		return new HibernateNamedNativeQueryImpl(parent);
 	}
 
 	public JavaParameter buildJavaParameter(JavaGenericGeneratorImpl javaGenericGeneratorImpl) {

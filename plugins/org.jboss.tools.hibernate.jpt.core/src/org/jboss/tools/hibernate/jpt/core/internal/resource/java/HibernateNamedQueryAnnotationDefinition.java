@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.jpt.core.internal.context.java;
+package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateSourceNamedQueryAnnotation;
 
 
 /**
@@ -27,6 +28,14 @@ public class HibernateNamedQueryAnnotationDefinition implements AnnotationDefini
 	// singleton
 	private static final AnnotationDefinition INSTANCE = new HibernateNamedQueryAnnotationDefinition();
 
+	
+	/**
+	 * Ensure single instance.
+	 */
+	private HibernateNamedQueryAnnotationDefinition() {
+		super();
+	}
+	
 	/**
 	 * Return the singleton.
 	 */

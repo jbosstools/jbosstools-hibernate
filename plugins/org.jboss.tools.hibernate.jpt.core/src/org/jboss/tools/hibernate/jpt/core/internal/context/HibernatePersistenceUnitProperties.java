@@ -163,7 +163,6 @@ public abstract class  HibernatePersistenceUnitProperties extends AbstractModel 
 	 * @param value -
 	 *            property value
 	 */
-	@SuppressWarnings("unchecked")
 	protected void putProperty(String key, Object value) {
 		String elKey = this.hibernateKeyFor(key);
 		if (value == null)

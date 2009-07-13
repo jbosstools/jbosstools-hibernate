@@ -23,21 +23,22 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateSourceNamedQueryAnnotation;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedNativeQueryAnnotation;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateSourceNamedNativeQueryAnnotation;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class HibernateSourceNamedQueriesAnnotation extends SourceAnnotation<Member> 
-implements HibernateNamedQueriesAnnotation {
+public class HibernateSourceNamedNativeQueriesAnnotation extends SourceAnnotation<Member> implements
+		HibernateNamedNativeQueriesAnnotation {
 
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
-	private final Vector<HibernateNamedQueryAnnotation> hibernateNamedQueries = new Vector<HibernateNamedQueryAnnotation>();
+	private final Vector<HibernateNamedNativeQueryAnnotation> hibernateNamedNativeQueries = new Vector<HibernateNamedNativeQueryAnnotation>();
 
 
-	public HibernateSourceNamedQueriesAnnotation(JavaResourceNode parent, Member member) {
+	public HibernateSourceNamedNativeQueriesAnnotation(JavaResourceNode parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 	}
 
@@ -55,7 +56,7 @@ implements HibernateNamedQueriesAnnotation {
 
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.hibernateNamedQueries);
+		sb.append(this.hibernateNamedNativeQueries);
 	}
 	
 	// ********** AnnotationContainer implementation **********
@@ -69,49 +70,50 @@ implements HibernateNamedQueriesAnnotation {
 	}
 
 	public String getElementName() {
-		return Hibernate.NAMED_QUERIES__VALUE;
+		return Hibernate.NAMED_NATIVE_QUERIES__VALUE;
 	}
 
 	public String getNestableAnnotationName() {
-		return HibernateNamedQueryAnnotation.ANNOTATION_NAME;
+		return HibernateNamedNativeQueryAnnotation.ANNOTATION_NAME;
 	}
 
-	public ListIterator<HibernateNamedQueryAnnotation> nestedAnnotations() {
-		return new CloneListIterator<HibernateNamedQueryAnnotation>(this.hibernateNamedQueries);
+	public ListIterator<HibernateNamedNativeQueryAnnotation> nestedAnnotations() {
+		return new CloneListIterator<HibernateNamedNativeQueryAnnotation>(this.hibernateNamedNativeQueries);
 	}
 
 	public int nestedAnnotationsSize() {
-		return this.hibernateNamedQueries.size();
+		return this.hibernateNamedNativeQueries.size();
 	}
 
-	public HibernateNamedQueryAnnotation addNestedAnnotationInternal() {
-		HibernateNamedQueryAnnotation namedQuery = this.buildHibernateNamedQuery(this.hibernateNamedQueries.size());
-		this.hibernateNamedQueries.add(namedQuery);
+	public HibernateNamedNativeQueryAnnotation addNestedAnnotationInternal() {
+		HibernateNamedNativeQueryAnnotation namedQuery = this.buildHibernateNamedNativeQuery(this.hibernateNamedNativeQueries.size());
+		this.hibernateNamedNativeQueries.add(namedQuery);
 		return namedQuery;
 	}
 
-	private HibernateNamedQueryAnnotation buildHibernateNamedQuery(int index) {
-		return HibernateSourceNamedQueryAnnotation.createNestedHibernateNamedQuery(this, member, index, this.daa);
+	private HibernateNamedNativeQueryAnnotation buildHibernateNamedNativeQuery(int index) {
+		return HibernateSourceNamedNativeQueryAnnotation.createNestedHibernateNamedNativeQuery(this, member, index, this.daa);
 	}
 	
-	public void nestedAnnotationAdded(int index, HibernateNamedQueryAnnotation nestedAnnotation) {
-		this.fireItemAdded(HIBERNATE_NAMED_QUERIES_LIST, index, nestedAnnotation);
+	public void nestedAnnotationAdded(int index, HibernateNamedNativeQueryAnnotation nestedAnnotation) {
+		this.fireItemAdded(HIBERNATE_NAMED_NATIVE_QUERIES_LIST, index, nestedAnnotation);
 	}
 
-	public HibernateNamedQueryAnnotation moveNestedAnnotationInternal(int targetIndex, int sourceIndex) {
-		return CollectionTools.move(this.hibernateNamedQueries, targetIndex, sourceIndex).get(targetIndex);
+	public HibernateNamedNativeQueryAnnotation moveNestedAnnotationInternal(int targetIndex, int sourceIndex) {
+		return CollectionTools.move(this.hibernateNamedNativeQueries, targetIndex, sourceIndex).get(targetIndex);
 	}
 
 	public void nestedAnnotationMoved(int targetIndex, int sourceIndex) {
-		this.fireItemMoved(HIBERNATE_NAMED_QUERIES_LIST, targetIndex, sourceIndex);
+		this.fireItemMoved(HIBERNATE_NAMED_NATIVE_QUERIES_LIST, targetIndex, sourceIndex);
 	}
 
-	public HibernateNamedQueryAnnotation removeNestedAnnotationInternal(int index) {
-		return this.hibernateNamedQueries.remove(index);
+	public HibernateNamedNativeQueryAnnotation removeNestedAnnotationInternal(int index) {
+		return this.hibernateNamedNativeQueries.remove(index);
 	}
 
-	public void nestedAnnotationRemoved(int index, HibernateNamedQueryAnnotation nestedAnnotation) {
-		this.fireItemRemoved(HIBERNATE_NAMED_QUERIES_LIST, index, nestedAnnotation);
+	public void nestedAnnotationRemoved(int index, HibernateNamedNativeQueryAnnotation nestedAnnotation) {
+		this.fireItemRemoved(HIBERNATE_NAMED_NATIVE_QUERIES_LIST, index, nestedAnnotation);
 	}
+
 
 }

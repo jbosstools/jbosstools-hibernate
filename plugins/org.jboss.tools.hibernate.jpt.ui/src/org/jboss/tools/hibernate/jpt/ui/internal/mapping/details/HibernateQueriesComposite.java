@@ -46,6 +46,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.PageBook;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateQueryContainer;
 
@@ -53,12 +54,13 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateQueryCo
  * @author Dmitry Geraskov
  *
  */
-public class HibernateQueriesComposite extends Pane<QueryContainer> {
+public class HibernateQueriesComposite extends Pane<HibernateQueryContainer> {
 
 	private AddRemoveListPane<QueryContainer> listPane;
 	private NamedNativeQueryPropertyComposite namedNativeQueryPane;
 	private NamedQueryPropertyComposite namedQueryPane;
 	private HibernateNamedQueryPropertyComposite hibernateNamedQueryPane;
+	private HibernateNamedNativeQueryPropertyComposite hibernateNamedNativeQueryPane;
 	private WritablePropertyValueModel<Query> queryHolder;
 
 	/**
@@ -67,7 +69,7 @@ public class HibernateQueriesComposite extends Pane<QueryContainer> {
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container
 	 */
-	public HibernateQueriesComposite(Pane<? extends QueryContainer> parentPane,
+	public HibernateQueriesComposite(Pane<? extends HibernateQueryContainer> parentPane,
 	                        Composite parent) {
 
 		super(parentPane, parent, false);
@@ -87,15 +89,17 @@ public class HibernateQueriesComposite extends Pane<QueryContainer> {
 		}
 		String queryType = hibernateAddQueryDialog.getQueryType();
 		Query query;
-		HibernateQueryContainer subj = (HibernateQueryContainer)this.getSubject();
 		if (queryType == Query.NAMED_QUERY) {
 			query = this.getSubject().addNamedQuery(getSubject().namedQueriesSize());
 		}
 		else if (queryType == Query.NAMED_NATIVE_QUERY) {
-			query = subj.addNamedNativeQuery(subj.namedNativeQueriesSize());
+			query = this.getSubject().addNamedNativeQuery(this.getSubject().namedNativeQueriesSize());
 		}
 		else if (queryType == HibernateNamedQuery.HIBERNATE_NAMED_QUERY) {
-			query = subj.addHibernateNamedQuery(subj.hibernateNamedQueriesSize());
+			query = this.getSubject().addHibernateNamedQuery(this.getSubject().hibernateNamedQueriesSize());
+		}
+		else if (queryType == HibernateNamedNativeQuery.HIBERNATE_NAMED_NATIVE_QUERY) {
+			query = this.getSubject().addHibernateNamedNativeQuery(this.getSubject().hibernateNamedNativeQueriesSize());
 		}
 		else {
 			throw new IllegalArgumentException();
@@ -166,6 +170,23 @@ public class HibernateQueriesComposite extends Pane<QueryContainer> {
 			}
 		};
 	}
+	
+	private ListValueModel<HibernateNamedNativeQuery> buildHibernateNamedNativeQueriesListHolder() {
+		return new ListAspectAdapter<QueryContainer, HibernateNamedNativeQuery>(
+			getSubjectHolder(),
+			HibernateQueryContainer.HIBERNATE_NAMED_NATIVE_QUERIES_LIST)
+		{
+			@Override
+			protected ListIterator<HibernateNamedNativeQuery> listIterator_() {
+				return ((HibernateQueryContainer)this.subject).hibernateNamedNativeQueries();
+			}
+
+			@Override
+			protected int size_() {
+				return ((HibernateQueryContainer)this.subject).hibernateNamedNativeQueriesSize();
+			}
+		};
+	}
 
 	private ListValueModel<NamedQuery> buildNamedQueriesListHolder() {
 		return new ListAspectAdapter<QueryContainer, NamedQuery>(
@@ -201,6 +222,15 @@ public class HibernateQueriesComposite extends Pane<QueryContainer> {
 			}
 		};
 	}
+	
+	private PropertyValueModel<HibernateNamedNativeQuery> buildHibernateNamedNativeQueryHolder() {
+		return new TransformationPropertyValueModel<Query, HibernateNamedNativeQuery>(this.queryHolder) {
+			@Override
+			protected HibernateNamedNativeQuery transform_(Query value) {
+				return (value instanceof HibernateNamedNativeQuery) ? (HibernateNamedNativeQuery) value : null;
+			}
+		};
+	}
 
 	private Transformer<Query, Control> buildPaneTransformer() {
 		return new Transformer<Query, Control>() {
@@ -212,6 +242,10 @@ public class HibernateQueriesComposite extends Pane<QueryContainer> {
 				
 				if (query instanceof HibernateNamedQuery) {
 					return HibernateQueriesComposite.this.hibernateNamedQueryPane.getControl();
+				}
+				
+				if (query instanceof HibernateNamedNativeQuery){
+					return HibernateQueriesComposite.this.hibernateNamedNativeQueryPane.getControl();
 				}
 
 				if (query instanceof NamedNativeQuery) {
@@ -234,7 +268,9 @@ public class HibernateQueriesComposite extends Pane<QueryContainer> {
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				for (Object item : listSelectionModel.selectedValues()) {
 					if (item instanceof HibernateNamedQuery) {
-						((HibernateQueryContainer)getSubject()).removeHibernateNamedQuery((HibernateNamedQuery)item);
+						getSubject().removeHibernateNamedQuery((HibernateNamedQuery)item);
+					} else if (item instanceof HibernateNamedNativeQuery) {
+						getSubject().removeHibernateNamedNativeQuery((HibernateNamedNativeQuery)item);
 					} else if (item instanceof NamedQuery) {
 						getSubject().removeNamedQuery((NamedQuery) item);
 					} else {
@@ -248,6 +284,7 @@ public class HibernateQueriesComposite extends Pane<QueryContainer> {
 	private ListValueModel<Query> buildQueriesListHolder() {
 		List<ListValueModel<? extends Query>> list = new ArrayList<ListValueModel<? extends Query>>();
 		list.add(buildHibernateNamedQueriesListHolder());
+		list.add(buildHibernateNamedNativeQueriesListHolder());
 		list.add(buildNamedQueriesListHolder());
 		list.add(buildNamedNativeQueriesListHolder());
 		return new CompositeListValueModel<ListValueModel<? extends Query>, Query>(list);
@@ -264,7 +301,9 @@ public class HibernateQueriesComposite extends Pane<QueryContainer> {
 					int index = -1;
 
 					if (query instanceof HibernateNamedQuery) {
-						index = CollectionTools.indexOf(((HibernateQueryContainer)getSubject()).hibernateNamedQueries(), query);
+						index = CollectionTools.indexOf(getSubject().hibernateNamedQueries(), query);
+					} else if (query instanceof HibernateNamedNativeQuery) {
+						index = CollectionTools.indexOf(getSubject().hibernateNamedNativeQueries(), query);
 					} else if (query instanceof NamedQuery) {
 						index = CollectionTools.indexOf(getSubject().namedQueries(), query);
 					} else {
@@ -305,12 +344,19 @@ public class HibernateQueriesComposite extends Pane<QueryContainer> {
 		PageBook pageBook = new PageBook(container, SWT.NULL);
 		pageBook.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		// Named Query property pane
+		// Hibernate Named Query property pane
 		this.hibernateNamedQueryPane = new HibernateNamedQueryPropertyComposite(
 			this,
 			buildHibernateNamedQueryHolder(),
 			pageBook
 		);
+		
+		// Hibernate Named Native Query property pane
+		this.hibernateNamedNativeQueryPane = new HibernateNamedNativeQueryPropertyComposite(
+			this,
+			buildHibernateNamedNativeQueryHolder(),
+			pageBook
+		);		
 		
 		// Named Query property pane
 		this.namedQueryPane = new NamedQueryPropertyComposite(
