@@ -11,18 +11,19 @@
 package org.jboss.tools.hibernate.ui.diagram.editors.actions;
 
 import org.eclipse.jface.action.Action;
+import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
 
 public class AutoLayoutAction extends Action {
 
-	public static final String ACTION_ID = "Auto layout"; //$NON-NLS-1$
+	public static final String ACTION_ID = "auto_layout_id"; //$NON-NLS-1$
 
 	private DiagramViewer editor;
 
 	public AutoLayoutAction(DiagramViewer editor) {
 		this.editor = editor;
 		setId(ACTION_ID);
-		setText(ACTION_ID);
+		setText(DiagramViewerMessages.AutoLayoutAction_auto_layout);
 		//setImageDescriptor(ImageDescriptor.createFromFile(
 		//		DiagramViewer.class, "icons/export.png"));
 	}

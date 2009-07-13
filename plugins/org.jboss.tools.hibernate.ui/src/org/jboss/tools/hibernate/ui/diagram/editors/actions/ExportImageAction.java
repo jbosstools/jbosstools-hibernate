@@ -35,7 +35,7 @@ import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
 
 public class ExportImageAction extends Action {
 
-	public static final String ACTION_ID = "Export as Image"; //$NON-NLS-1$
+	public static final String ACTION_ID = "export_as_image_id"; //$NON-NLS-1$
 	public static final String[] dialogFilterExtensions = new String[] { "*.png", "*.jpg", "*.bmp" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	public static final String[] dialogFilterNames = new String[] { DiagramViewerMessages.ExportImageAction_png_format,
 		DiagramViewerMessages.ExportImageAction_jpg_format, DiagramViewerMessages.ExportImageAction_bmp_format };
@@ -46,7 +46,7 @@ public class ExportImageAction extends Action {
 	public ExportImageAction(DiagramViewer editor) {
 		this.editor = editor;
 		setId(ACTION_ID);
-		setText(ACTION_ID);
+		setText(DiagramViewerMessages.ExportImageAction_export_as_image);
 		setImageDescriptor(ImageDescriptor.createFromFile(
 				DiagramViewer.class,"icons/export.png")); //$NON-NLS-1$
 	}

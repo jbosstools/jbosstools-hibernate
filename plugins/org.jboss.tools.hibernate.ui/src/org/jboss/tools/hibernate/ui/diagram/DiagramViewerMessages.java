@@ -24,6 +24,8 @@ public class DiagramViewerMessages extends NLS {
 
 	public static String EditorActionContributor_refresh_visual_mapping;
 	public static String DiagramViewer_diagram_for;
+	public static String AutoLayoutAction_auto_layout;
+	public static String ExportImageAction_export_as_image;
 	public static String ExportImageAction_bmp_format;
 	public static String ExportImageAction_error;
 	public static String ExportImageAction_failed_to_export_image;
