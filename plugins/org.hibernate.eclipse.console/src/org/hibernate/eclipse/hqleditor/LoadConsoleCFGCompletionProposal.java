@@ -18,6 +18,7 @@ import org.eclipse.swt.graphics.Point;
 import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
+import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
@@ -42,8 +43,17 @@ public class LoadConsoleCFGCompletionProposal implements ICompletionProposal {
 		if(consoleConfiguration.getConfiguration()==null) {
 			try {
 				consoleConfiguration.build();
+				consoleConfiguration.execute( new ExecutionContext.Command() {
+
+					public Object execute() {
+						if(consoleConfiguration.hasConfiguration()) {
+							consoleConfiguration.getConfiguration().buildMappings();
+						}
+						return consoleConfiguration;
+					}
+				} );
 			} catch (HibernateException he) {
-				HibernateConsolePlugin.getDefault().showError(HibernateConsolePlugin.getDefault().getShell(), HibernateConsoleMessages.LoadConsoleCFGCompletionProposal_could_not_load_configuration + ' ' + consoleConfiguration.getName(), he);
+				HibernateConsolePlugin.getDefault().showError(HibernateConsolePlugin.getShell(), HibernateConsoleMessages.LoadConsoleCFGCompletionProposal_could_not_load_configuration + ' ' + consoleConfiguration.getName(), he);
 			}
 		}
 	}
