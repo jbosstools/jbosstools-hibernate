@@ -28,7 +28,6 @@ public class Messages extends NLS {
 	public static String GenerateInitWizardPage_databaseShema;
 	public static String GenerateInitWizardPage_err_msg_select_console_configuration;
 	public static String GenerateInitWizardPage_err_msg_select_connection_profile;
-	public static String GenerateInitWizardPage_wrn_msg_check_hibernate_dialect;
 	public static String GenerateDdlWizardPage_file_name;
 	public static String GenerateDdlWizardPage_err_msg_input_file_name;
 	public static String HibernatePropertiesComposite_basic_properties;

@@ -210,10 +210,6 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 			return;
 		}
 		
-		if (selectMethod.getSelection()){ // TODO: can't check that dialect set
-			setWarningMessage(Messages.GenerateInitWizardPage_wrn_msg_check_hibernate_dialect);
-		}
-		
 		setPageComplete(true);
 	}
 	
