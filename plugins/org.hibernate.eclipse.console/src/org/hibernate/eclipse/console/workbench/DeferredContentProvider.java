@@ -23,12 +23,16 @@ package org.hibernate.eclipse.console.workbench;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ui.model.BaseWorkbenchContentProvider;
 import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.eclipse.ui.progress.DeferredTreeContentManager;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
+import org.eclipse.ui.progress.PendingUpdateAdapter;
+import org.hibernate.console.ImageConstants;
+import org.hibernate.eclipse.console.utils.EclipseImages;
 
 public class DeferredContentProvider extends BaseWorkbenchContentProvider {
 
@@ -39,14 +43,7 @@ public class DeferredContentProvider extends BaseWorkbenchContentProvider {
 	 */
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		if (viewer instanceof AbstractTreeViewer) {
-			manager = new DeferredTreeContentManager(this, (AbstractTreeViewer) viewer) {
-				protected IDeferredWorkbenchAdapter getAdapter(Object element) {
-					if (element instanceof IDeferredWorkbenchAdapter)
-			            return (IDeferredWorkbenchAdapter) element;
-			        Object adapter = Platform.getAdapterManager().getAdapter(element,IDeferredWorkbenchAdapter.class);
-			        return (IDeferredWorkbenchAdapter) adapter;				
-			   }
-			};
+			manager = new DeferredTreeContentManagerImpl((AbstractTreeViewer) viewer);
 		}
 		super.inputChanged(viewer, oldInput, newInput);
 	}
@@ -84,5 +81,27 @@ public class DeferredContentProvider extends BaseWorkbenchContentProvider {
         } else {
         	return (IWorkbenchAdapter) Platform.getAdapterManager().getAdapter(o, IWorkbenchAdapter.class);
         }
+	}
+	
+	private class DeferredTreeContentManagerImpl extends DeferredTreeContentManager {
+		public DeferredTreeContentManagerImpl(AbstractTreeViewer viewer) {
+			super(viewer);
+		}
+
+		protected IDeferredWorkbenchAdapter getAdapter(Object element) {
+			if (element instanceof IDeferredWorkbenchAdapter) {
+				return (IDeferredWorkbenchAdapter) element;
+			}
+			Object adapter = Platform.getAdapterManager().getAdapter(element, IDeferredWorkbenchAdapter.class);
+			return (IDeferredWorkbenchAdapter) adapter;
+		}
+
+		protected PendingUpdateAdapter createPendingUpdateAdapter() {
+			return new PendingUpdateAdapter() {
+				public ImageDescriptor getImageDescriptor(Object object) {
+					return EclipseImages.getImageDescriptor(ImageConstants.RELOAD);
+				}
+			};
+		}
 	}
 }
