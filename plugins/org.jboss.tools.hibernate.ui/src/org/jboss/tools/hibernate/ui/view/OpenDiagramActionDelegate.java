@@ -26,7 +26,9 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.internal.ObjectPluginAction;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
@@ -44,22 +46,51 @@ public class OpenDiagramActionDelegate implements IObjectActionDelegate {
 	public void selectionChanged(IAction action, ISelection selection) {
 	}
 
+	@SuppressWarnings("unchecked")
 	public void run(IAction action) {
     	ObjectPluginAction objectPluginAction = (ObjectPluginAction)action;
     	Map<ConsoleConfiguration, Set<PersistentClass>> mapCC_PCs = new HashMap<ConsoleConfiguration, Set<PersistentClass>>();
     	TreePath[] paths = ((TreeSelection)objectPluginAction.getSelection()).getPaths();
     	for (int i = 0; i < paths.length; i++) {
+    		final Object firstSegment = paths[i].getFirstSegment();
+    		if (!(firstSegment instanceof ConsoleConfiguration)) {
+    			continue;
+    		}
+    		final ConsoleConfiguration consoleConfig = (ConsoleConfiguration)(firstSegment);
+			Set<PersistentClass> setPC = mapCC_PCs.get(consoleConfig);
+			if (null == setPC) {
+				setPC = new HashSet<PersistentClass>();
+				mapCC_PCs.put(consoleConfig, setPC);
+			}
     		Object last_el = paths[i].getLastSegment();
         	if (last_el instanceof PersistentClass) {
     			PersistentClass persClass = (PersistentClass) last_el;
-    			ConsoleConfiguration consoleConfiguration = (ConsoleConfiguration)(paths[i].getFirstSegment());
-    			Set<PersistentClass> setPC = mapCC_PCs.get(consoleConfiguration);
-    			if (null == setPC) {
-    				setPC = new HashSet<PersistentClass>();
-    				mapCC_PCs.put(consoleConfiguration, setPC);
-    			}
     			setPC.add(persClass);
-    		}    
+    		} else if (last_el instanceof Configuration) {
+    			Configuration config = (Configuration)last_el;
+    			Iterator<PersistentClass> it = (Iterator<PersistentClass>)(config.getClassMappings());
+    			while (it.hasNext()) {
+        			setPC.add(it.next());
+    			}
+    		} else if (last_el instanceof ConsoleConfiguration) {
+    			Configuration config = consoleConfig.getConfiguration();
+    			if (config == null) {
+    				consoleConfig.build();
+    				consoleConfig.execute( new ExecutionContext.Command() {
+    					public Object execute() {
+    						if(consoleConfig.hasConfiguration()) {
+    							consoleConfig.getConfiguration().buildMappings();
+    						}
+    						return consoleConfig;
+    					}
+    				} );
+    				config = consoleConfig.getConfiguration();
+    			}
+    			Iterator<PersistentClass> it = (Iterator<PersistentClass>)(config.getClassMappings());
+    			while (it.hasNext()) {
+        			setPC.add(it.next());
+    			}
+    		}
 		}    		
     	for (Iterator<ConsoleConfiguration> it = mapCC_PCs.keySet().iterator(); it.hasNext(); ) {
     		ConsoleConfiguration consoleConfiguration = it.next();

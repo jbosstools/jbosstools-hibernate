@@ -13,12 +13,19 @@
    </extension>
 
    <extension point="org.eclipse.ui.popupMenus">
-      <objectContribution id="diagramEditorAction" objectClass="org.hibernate.mapping.PersistentClass"> 
-         <menu id="org.jboss.tools.hibernate.ui.view.openDiagram" label="Open Mapping Diagram" path="diagramEditorAction"/>
+      <objectContribution id="diagramEditorAction" objectClass="java.lang.Object"> 
+         <visibility>
+           <or>
+             <objectClass name="org.hibernate.cfg.Configuration"/>
+             <objectClass name="org.hibernate.console.ConsoleConfiguration"/>
+             <objectClass name="org.hibernate.mapping.PersistentClass"/>
+           </or>
+         </visibility>
          <action
             id="org.jboss.tools.hibernate.ui.view.openDiagramAction" 
-            label="Open Mapping Diagram" 
-            icon="images/hibernate_small_icon.gif" 
+            label="Mapping Diagram" 
+            icon="images/hibernate_small_icon.gif"
+            menubarPath="group.primalEditors.last"
             class="org.jboss.tools.hibernate.ui.view.OpenDiagramActionDelegate"> 
          </action> 
       </objectContribution> 
