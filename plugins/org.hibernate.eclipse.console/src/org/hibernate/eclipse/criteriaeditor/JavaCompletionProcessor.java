@@ -21,8 +21,6 @@
  */
 package org.hibernate.eclipse.criteriaeditor;
 
-import java.util.Arrays;
-
 import org.eclipse.jdt.core.CompletionContext;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
@@ -40,6 +38,7 @@ import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.eclipse.hqleditor.CompletionHelper;
+import org.hibernate.eclipse.hqleditor.LoadConsoleCFGCompletionProposal;
 import org.hibernate.util.StringHelper;
 
 public class JavaCompletionProcessor implements IContentAssistProcessor {
@@ -113,8 +112,15 @@ public class JavaCompletionProcessor implements IContentAssistProcessor {
 				results = collector.getJavaCompletionProposals();
 			}
 			
-			Arrays.sort( results, comparator );
 			CompletionHelper.transpose( null, -prefix.length(), results );
+			
+			if (editor.getConsoleConfiguration().getConfiguration() == null){
+				ICompletionProposal[] results2 = new ICompletionProposal[results.length + 1];
+				System.arraycopy(results, 0, results2, 1, results.length);
+				results2[0] = new LoadConsoleCFGCompletionProposal(editor.getConsoleConfiguration());
+				return results2;
+			}
+			
 			return results;
 		}
 		finally {
