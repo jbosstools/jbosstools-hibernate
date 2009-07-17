@@ -48,6 +48,8 @@ import org.hibernate.eclipse.console.utils.LaunchHelper;
  */
 public class AddConfigurationAction extends Action {
 
+	public static final String ADDCONFIG_ACTIONID = "actionid.addconfig"; //$NON-NLS-1$
+
 	/** Constant used to avoid unnecessary broadcast which is caused by the workaround for having the ClassPathTab not throwing
 	 *  and exception on unsaved configurations */
 	public static final String TEMPORARY_CONFIG_FLAG = "_TEMPORARY_CONFIG_"; //$NON-NLS-1$
@@ -58,6 +60,7 @@ public class AddConfigurationAction extends Action {
 		this.part = part;
 		setText(HibernateConsoleMessages.AddConfigurationAction_add_config);
 		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.ADD) );
+		setId(ADDCONFIG_ACTIONID);
 	}
 
 	public void run() {

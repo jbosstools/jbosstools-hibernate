@@ -40,6 +40,8 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
  */
 public class SchemaExportAction extends ConsoleConfigurationBasedAction {
 
+	public static final String SCHEMAEXPORT_ACTIONID = "actionid.schemaexport"; //$NON-NLS-1$
+
 	private StructuredViewer viewer;
 
 	/**
@@ -47,6 +49,7 @@ public class SchemaExportAction extends ConsoleConfigurationBasedAction {
 	 */
 	protected SchemaExportAction(String text) {
 		super( text );
+		setId(SCHEMAEXPORT_ACTIONID);
 	}
 
 	/**
@@ -55,6 +58,7 @@ public class SchemaExportAction extends ConsoleConfigurationBasedAction {
 	public SchemaExportAction(StructuredViewer selectionProvider) {
 		super( HibernateConsoleMessages.SchemaExportAction_run_schemaexport );
 		this.viewer = selectionProvider;
+		setId(SCHEMAEXPORT_ACTIONID);
 	}
 
 	public void doRun() {

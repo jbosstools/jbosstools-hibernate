@@ -35,6 +35,8 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
  */
 public class RefreshAction extends SelectionListenerAction {
 
+	public static final String REFRESH_ACTIONID = "actionid.refresh"; //$NON-NLS-1$
+
 	private final StructuredViewer viewer;
 	private String imageFilePath = "icons/images/refresh_run.gif"; //$NON-NLS-1$
 
@@ -42,6 +44,7 @@ public class RefreshAction extends SelectionListenerAction {
 		super(HibernateConsoleMessages.RefreshAction_refresh);
 		this.viewer = viewer;
 		setImageDescriptor(HibernateConsolePlugin.getImageDescriptor(imageFilePath  ));
+		setId(REFRESH_ACTIONID);
 	}
 
 	public void run() {

@@ -41,6 +41,8 @@ import org.hibernate.eclipse.console.utils.LaunchHelper;
  */
 public class EditConsoleConfiguration extends ConsoleConfigurationBasedAction {
 
+	public static final String EDITCONSOLECONFIG_ACTIONID = "actionid.editconsoleconfig"; //$NON-NLS-1$
+
 	ConsoleConfiguration cfg = null;
 
 	/**
@@ -48,6 +50,7 @@ public class EditConsoleConfiguration extends ConsoleConfigurationBasedAction {
 	 */
 	public EditConsoleConfiguration() {
 		super(HibernateConsoleMessages.EditConsoleConfiguration_edit_config);
+		setId(EDITCONSOLECONFIG_ACTIONID);
 	}
 
 	public EditConsoleConfiguration(ConsoleConfiguration configuration) {

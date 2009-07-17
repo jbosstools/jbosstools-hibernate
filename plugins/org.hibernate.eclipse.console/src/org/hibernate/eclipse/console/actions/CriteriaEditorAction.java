@@ -37,11 +37,15 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 
 public class CriteriaEditorAction extends OpenQueryEditorAction {
+	
+	public static final String CRITERIAEDITOR_ACTIONID = "actionid.criteriaeditor"; //$NON-NLS-1$
+
 	public CriteriaEditorAction() {
 		super( HibernateConsoleMessages.CriteriaEditorAction_hibernate_criteria_editor );
 		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.CRITERIA_EDITOR));
 		setToolTipText(HibernateConsoleMessages.CriteriaEditorAction_open_hibernate_criteria_editor);
 		setEnabled( true );
+		setId(CRITERIAEDITOR_ACTIONID);
 	}
 
 	protected void openQueryEditor(ConsoleConfiguration config, String query) {

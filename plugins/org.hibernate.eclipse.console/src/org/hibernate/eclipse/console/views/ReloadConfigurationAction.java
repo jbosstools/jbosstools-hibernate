@@ -13,6 +13,8 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
 
 public class ReloadConfigurationAction extends ConsoleConfigurationBasedAction {
 
+	public static final String RELOADCONFIG_ACTIONID = "actionid.reloadconfig"; //$NON-NLS-1$
+
 	private StructuredViewer viewer;
 
 	protected ReloadConfigurationAction(StructuredViewer sv) {
@@ -20,6 +22,7 @@ public class ReloadConfigurationAction extends ConsoleConfigurationBasedAction {
 		setEnabledWhenNoSessionFactory(true);
 		viewer = sv;
 		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.RELOAD) );
+		setId(RELOADCONFIG_ACTIONID);
 	}
 
 	protected void doRun() {

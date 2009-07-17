@@ -32,11 +32,15 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 
 public class HQLScratchpadAction extends OpenQueryEditorAction {
+
+	public static final String HQLSCRATCHPAD_ACTIONID = "actionid.hqlscratchpad"; //$NON-NLS-1$
+	
 	public HQLScratchpadAction() {
 		super( HibernateConsoleMessages.HQLScratchpadAction_hql_editor );
 		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.HQL_EDITOR));
 		setToolTipText(HibernateConsoleMessages.HQLScratchpadAction_open_hql_editor);
 		setEnabled( true );
+		setId(HQLSCRATCHPAD_ACTIONID);
 	}
 
 	protected void openQueryEditor(ConsoleConfiguration config, String query) {

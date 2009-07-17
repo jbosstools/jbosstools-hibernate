@@ -27,12 +27,10 @@ import java.util.List;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.actions.SelectionListenerAction;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
-import org.hibernate.eclipse.console.utils.ProjectUtils;
 
 /**
  * @author max
@@ -40,12 +38,15 @@ import org.hibernate.eclipse.console.utils.ProjectUtils;
  */
 public class DeleteConfigurationAction extends SelectionListenerAction {
 
+	public static final String DELETECONFIG_ACTIONID = "actionid.deleteconfig"; //$NON-NLS-1$
+
 	private StructuredViewer part;
 
 	public DeleteConfigurationAction(StructuredViewer selectionProvider) {
 		super(HibernateConsoleMessages.DeleteConfigurationAction_delete_config);
 		setEnabled(false);
 		this.part = selectionProvider;
+		setId(DELETECONFIG_ACTIONID);
 	}
 
 	public void run() {

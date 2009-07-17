@@ -41,6 +41,8 @@ import org.hibernate.mapping.Property;
 @SuppressWarnings("restriction")
 public class OpenSourceAction extends SelectionListenerAction {
 
+	public static final String OPENSOURCE_ACTIONID = "actionid.opensource"; //$NON-NLS-1$
+
 	private String imageFilePath = "icons/images/java.gif"; //$NON-NLS-1$
 
 	public OpenSourceAction() {
@@ -48,6 +50,7 @@ public class OpenSourceAction extends SelectionListenerAction {
 		setToolTipText(HibernateConsoleMessages.OpenSourceAction_open_source_file);
 		setEnabled( true );
 		setImageDescriptor(HibernateConsolePlugin.getImageDescriptor(imageFilePath));
+		setId(OPENSOURCE_ACTIONID);
 	}
 
 	public void run() {

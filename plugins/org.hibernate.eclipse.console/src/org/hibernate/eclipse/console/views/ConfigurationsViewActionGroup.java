@@ -22,6 +22,7 @@
 package org.hibernate.eclipse.console.views;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -42,14 +43,37 @@ import org.hibernate.eclipse.console.actions.OpenSourceAction;
 import org.hibernate.eclipse.console.actions.RefreshAction;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
-import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.Subclass;
 
 /**
  * @author max
  *
  */
 public class ConfigurationsViewActionGroup extends ActionGroup {
+
+	/**
+	 * menu group for open primal editors related actions.
+	 * Value: <code>"group.primalEditors"</code>
+	 */
+	public static final String GROUP_PRIMAL_EDITORS = "group.primalEditors"; //$NON-NLS-1$
+	public static final String GROUP_PRIMAL_EDITORS_LAST = "group.primalEditors.last"; //$NON-NLS-1$
+	/**
+	 * menu group for Hibernate Console Configuration related actions.
+	 * Value: <code>"group.consoleConfig"</code>
+	 */
+	public static final String GROUP_CONSOLE_CONFIG = "group.consoleConfig"; //$NON-NLS-1$
+	public static final String GROUP_CONSOLE_CONFIG_LAST = "group.consoleConfig.last"; //$NON-NLS-1$
+	/**
+	 * menu group for addition Hibernate related actions.
+	 * Value: <code>"group.addition"</code>
+	 */
+	public static final String GROUP_ADDITION = "group.addition"; //$NON-NLS-1$
+	public static final String GROUP_ADDITION_LAST = "group.addition.last"; //$NON-NLS-1$
+	/**
+	 * menu group for open other editors related actions.
+	 * Value: <code>"group.otherEditors"</code>
+	 */
+	public static final String GROUP_OTHER_EDITORS = "group.otherEditors"; //$NON-NLS-1$
+	public static final String GROUP_OTHER_EDITORS_LAST = "group.otherEditors.last"; //$NON-NLS-1$
 
 	private Action addConfigurationAction;
 	private SelectionListenerAction deleteConfigurationAction;
@@ -119,30 +143,39 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 	}
 	
 	public void fillContextMenu(IMenuManager menu) {
-		if (getContext() == null) return;
-		IStructuredSelection selection = (IStructuredSelection) getContext().getSelection();
-		if (selection == null) return;
-		Object first = selection.getFirstElement();
-		menu.add(hqlEditorAction);
-		menu.add(criteriaEditorAction);
-		menu.add(new Separator() );
-		menu.add(addConfigurationAction);
-		if (first instanceof ConsoleConfiguration){
-			menu.add(reloadConfigurationAction);
-			menu.add(editConfigurationAction);
-			menu.add(deleteConfigurationAction);
-		}		
-		menu.add(new Separator() );
-		menu.add(refreshAction);
-		if (first instanceof ConsoleConfiguration){
-			menu.add(schemaExportAction);
+		if (getContext() == null) {
+			return;
 		}
-		menu.add(new Separator() );
+		IStructuredSelection selection = (IStructuredSelection) getContext().getSelection();
+		if (selection == null) {
+			return;
+		}
+		Object first = selection.getFirstElement();
+		menu.add(new Separator(GROUP_PRIMAL_EDITORS));
+		menu.appendToGroup(GROUP_PRIMAL_EDITORS, hqlEditorAction);
+		menu.appendToGroup(GROUP_PRIMAL_EDITORS, criteriaEditorAction);
+		menu.add(new GroupMarker(GROUP_PRIMAL_EDITORS_LAST));
+		menu.add(new Separator(GROUP_CONSOLE_CONFIG));
+		menu.appendToGroup(GROUP_CONSOLE_CONFIG, addConfigurationAction);
+		if (first instanceof ConsoleConfiguration) {
+			menu.appendToGroup(GROUP_CONSOLE_CONFIG, reloadConfigurationAction);
+			menu.appendToGroup(GROUP_CONSOLE_CONFIG, editConfigurationAction);
+			menu.appendToGroup(GROUP_CONSOLE_CONFIG, deleteConfigurationAction);
+		}		
+		menu.add(new GroupMarker(GROUP_CONSOLE_CONFIG_LAST));
+		menu.add(new Separator(GROUP_ADDITION));
+		menu.appendToGroup(GROUP_ADDITION, refreshAction);
+		if (first instanceof ConsoleConfiguration){
+			menu.appendToGroup(GROUP_ADDITION, schemaExportAction);
+		}
+		menu.add(new GroupMarker(GROUP_ADDITION_LAST));
+		menu.add(new Separator(GROUP_OTHER_EDITORS));
 		// TODO: shouldn't these and maybe the others not be defined via menu extension points ?
 		if (first != null && (first instanceof PersistentClass || first.getClass() == Property.class)) {			
-			menu.add(openSourceAction);
-			menu.add(openMappingAction);
+			menu.appendToGroup(GROUP_OTHER_EDITORS, openSourceAction);
+			menu.appendToGroup(GROUP_OTHER_EDITORS, openMappingAction);
 		}
+		menu.add(new GroupMarker(GROUP_OTHER_EDITORS_LAST));
 	}
 	
 	public void fillActionBars(IActionBars actionBars) {

@@ -46,6 +46,8 @@ import org.hibernate.mapping.RootClass;
  */
 public class OpenMappingAction extends SelectionListenerAction {
 
+	public static final String OPENMAPPING_ACTIONID = "actionid.openmapping"; //$NON-NLS-1$
+
 	private final String imageFilePath =  "icons/images/mapping.gif"; //$NON-NLS-1$
 
 	public OpenMappingAction() {
@@ -53,6 +55,7 @@ public class OpenMappingAction extends SelectionListenerAction {
 		setToolTipText(HibernateConsoleMessages.OpenMappingAction_open_mapping_file);
 		setEnabled(true);
 		setImageDescriptor(HibernateConsolePlugin.getImageDescriptor(imageFilePath ));
+		setId(OPENMAPPING_ACTIONID);
 	}
 
 	public void run() {
