@@ -811,7 +811,7 @@
                   mapping will always be created. If this option is enabled and there are matching
                   foreign-keys each key column is still considered a 'basic' scalar (string, long,
                   etc.) instead of a reference to an entity. If you disable this option a
-                  &lt;key-many-to-one&gt; instead. Note: a &lt;many-to-one&gt;
+                  <code>&lt;key-many-to-one&gt;</code> instead. Note: a <code>&lt;many-to-one&gt;</code>
                   property is still created, but is simply marked as non-updatable and
                   non-insertable.</para>
               </entry>
@@ -1281,13 +1281,11 @@
       <title>Java property/class completion</title>
 
       <para>Package, class, and field completion is enabled for relevant XML attributes. The
-        auto-completion detects its context and limits the completion for e.g. <emphasis>
-          <property>&lt;property&gt;</property>
-        </emphasis> and only shows the properties/fields available in the enclosing <emphasis>
-          <property>&lt;class&gt;</property>
-        </emphasis>, <emphasis>
-          <property>&lt;subclass&gt;</property>
-        </emphasis> etc. It is also possible to navigate from the <emphasis>
+        auto-completion detects its context and limits the completion for e.g. <code>&lt;property&gt;</code> and only shows the properties/fields available in the enclosing 
+          <code>&lt;class&gt;</code>
+        ,
+          <code>&lt;subclass&gt;</code>
+         etc. It is also possible to navigate from the <emphasis>
           <property>hbm.xml</property>
         </emphasis> files to the relevant class/field in java code.</para>
 
@@ -1365,9 +1363,7 @@
 
       <para>In <emphasis>
           <property>cfg.xml</property>
-        </emphasis> code completion for the value of <emphasis>
-          <property>&lt;property&gt; name</property>
-        </emphasis> attributes is available.</para>
+        </emphasis> code completion for the value of <code>&lt;property&gt; name</code> attributes is available.</para>
 
 
       <figure>

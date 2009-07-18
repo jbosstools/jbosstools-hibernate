@@ -2,12 +2,9 @@
 <chapter id="reverseengineering">
   <title>Controlling reverse engineering</title>
 
-  <para>When using the <emphasis>
-      <property>&lt;jdbcconfiguration&gt;</property>, </emphasis> the ant task will read the
+  <para>When using the <code>&lt;jdbcconfiguration&gt;</code>, the ant task will read the
     database metadata and thus will perform a reverse engineering of the database schema into a
-    normal Hibernate Configuration. It is from this object e.g. <emphasis>
-      <property>&lt;hbm2java&gt;</property>
-    </emphasis>can generate other artifacts such as <emphasis>
+    normal Hibernate Configuration. It is from this object e.g. <code>&lt;hbm2java&gt;</code>can generate other artifacts such as <emphasis>
       <property>.java</property>
     </emphasis>, <emphasis>
       <property>.hbm.xml</property>
@@ -46,7 +43,7 @@
     <note>
       <title>Note:</title>
       <para>Many databases are case-sensitive with their names and thus if you cannot make some
-        table match and you are sure it is not excluded by a &lt;table-filter&gt; then check
+        table match and you are sure it is not excluded by a <code>&lt;table-filter&gt;</code> then check
         if the case matches; most databases stores table names in uppercase.</para>
     </note>
 
@@ -109,26 +106,19 @@
     <section>
       <title>Schema Selection (&lt;schema-selection&gt;)</title>
 
-      <para><emphasis>
-          <property>&lt;schema-selection&gt;</property>
-        </emphasis> is used to drive which schemas the reverse engineering will try and
+      <para><code>&lt;schema-selection&gt;</code> is used to drive which schemas the reverse engineering will try and
         process.</para>
 
-      <para>By default the reverse engineering will read all schemas and then use <emphasis>
-          <property>&lt;table-filter&gt;</property>
-        </emphasis> to decide which tables get reverse engineered and which do not; this makes it
+      <para>By default the reverse engineering will read all schemas and then use <code>&lt;table-filter&gt;</code>
+        to decide which tables get reverse engineered and which do not; this makes it
         easy to get started but can be inefficient on databases with many schemas.</para>
 
-      <para>With <emphasis>
-          <property>&lt;schema-selection&gt;</property>
-        </emphasis> it is thus possible to limit the actual processed schemas and thus significantly
-        speed-up the reverse engineering. <emphasis>
-          <property>&lt;table-filter&gt;</property>
-        </emphasis> is still used to then decide which tables will be included/excluded.</para>
+      <para>With <code>&lt;schema-selection&gt;</code> it is thus possible to limit the actual processed schemas and thus significantly
+        speed-up the reverse engineering. <code>&lt;table-filter&gt;</code> is still used to then decide which tables will be included/excluded.</para>
 
       <note>
         <title>Note:</title>
-        <para>If no <literal>&lt;schema-selection&gt;</literal> is specified, the reverse
+        <para>If no <code>&lt;schema-selection&gt;</code> is specified, the reverse
           engineering works as if all schemas should be processed. This is equal to:
           <![CDATA[<schema-selection/>]]>. Which in turn is equal to:
           <![CDATA[<schema-selection match-catalog=".*" match-schema=".*" match-table=".*"/>]]></para>
@@ -164,9 +154,7 @@
     <section id="type_map">
       <title>Type mappings (&lt;type-mapping&gt;)</title>
 
-      <para>The <emphasis>
-          <property>&lt;type-mapping&gt;</property>
-        </emphasis> section specifies how the JDBC types found in the database should be mapped to
+      <para>The <code>&lt;type-mapping&gt;</code> section specifies how the JDBC types found in the database should be mapped to
         Hibernate types. e.g. <emphasis>
           <property>java.sql.Types.VARCHAR</property></emphasis> with a length of 1 should be mapped to the
         Hibernate type <emphasis>
@@ -358,9 +346,8 @@
     <section>
       <title>Table filters (&lt;table-filter&gt;)</title>
 
-      <para>The <emphasis>
-          <property>&lt;table-filter&gt;</property>
-        </emphasis> let you specify matching rules for performing general filtering/setup for
+      <para>The <code>&lt;table-filter&gt;</code>
+        let you specify matching rules for performing general filtering/setup for
         tables, e.g. let you include or exclude specific tables based on the schema or even a
         specific prefix.</para>
 
@@ -446,9 +433,8 @@
     <section id="tab_and_col">
       <title>Specific table configuration (&lt;table&gt;)</title>
 
-      <para><emphasis>
-          <property>&lt;table&gt;</property>
-        </emphasis> allows you to provide explicit configuration on how a table should be reverse
+      <para><code>&lt;table&gt;</code>
+        allows you to provide explicit configuration on how a table should be reverse
         engineered. Amongst other things it allows controlling over the naming of a class for the
         table, specifying which identifier generator should be used for the primary key etc.</para>
 
@@ -531,9 +517,7 @@
       <section>
         <title>&lt;primary-key&gt;</title>
 
-        <para>A <emphasis>
-            <property>&lt;primary-key&gt;</property>
-          </emphasis> allows you to define a primary-key for tables that don&apos;t have it
+        <para>A <code>&lt;primary-key&gt;</code> allows you to define a primary-key for tables that don&apos;t have it
           defined in the database, and probably more importantly it allows you to define which
           identifier strategy should be used (even for already existing primary-key's).</para>
 
@@ -605,9 +589,7 @@
       <section>
         <title>&lt;column&gt;</title>
 
-        <para>With a <emphasis>
-            <property>&lt;column&gt;</property>
-          </emphasis> it is possible to explicitly name the resulting property for a column. It is
+        <para>With a <code>&lt;column&gt;</code> it is possible to explicitly name the resulting property for a column. It is
           also possible to redefine what jdbc and/or Hibernate type a column should be processed as
           and finally it is possible to completely exclude a column from processing.</para>
         
@@ -696,9 +678,8 @@
       <section>
         <title>&lt;foreign-key&gt;</title>
 
-        <para>The <emphasis>
-            <property>&lt;foreign-key&gt;</property>
-          </emphasis> has two purposes. One for allowing to define foreign-keys in databases that
+        <para>The <code>&lt;foreign-key&gt;</code>
+           has two purposes. One for allowing to define foreign-keys in databases that
           does not support them or does not have them defined in their schema. Secondly, to allow
           defining the name of the resulting properties (many-to-one, one-to-one and one-to-many's).</para>
          

@@ -12,10 +12,10 @@
     <para>The meta model is the model used by Hibernate Core to perform its object relational
       mapping. The model includes information about tables, columns, classes, properties,
       components, values, collections etc. The API is in <literal>org.hibernate.mapping</literal>
-      and its main entry point is the <literal>Configuration</literal> class, the same class that is
+      and its main entry point is the <property>Configuration</property> class, the same class that is
       used to build a session factory.</para>
 
-    <para>The model represented by the <literal>Configuration</literal> class can be build in many
+    <para>The model represented by the <property>Configuration</property> class can be build in many
       ways. The following list the currently supported ones in <property>Hibernate Tools</property>. </para>
 
     <para>
@@ -25,11 +25,9 @@
               <property>hbm.xml</property>
             </emphasis> files, requires a <emphasis>
               <property>hibernate.cfg.xml</property>
-            </emphasis>. Named core in Eclipse and <emphasis>
-              <property>
-                <literal>&lt;configuration&gt;</literal>
-              </property>
-            </emphasis> in ant.</para>
+            </emphasis>. Named core in Eclipse and 
+             <code>&lt;configuration&gt;</code>
+               in ant.</para>
         </listitem>
 
         <listitem>
@@ -37,11 +35,9 @@
               <property>hbm.xml</property>
             </emphasis> and annotated classes, requires a <emphasis>
               <property>hibernate.cfg.xml</property>
-            </emphasis>. Named annotations in Eclipse and <emphasis>
-              <property>
-                <literal>&lt;annotationconfiguration&gt;</literal>
-              </property>
-            </emphasis> in ant.</para>
+            </emphasis>. Named annotations in Eclipse and 
+            <code>&lt;annotationconfiguration&gt;</code>
+             in ant.</para>
         </listitem>
 
         <listitem>
@@ -49,22 +45,18 @@
               <property>hbm.xml</property>
             </emphasis> and annotated classes requires that the project has a <emphasis>
               <property>META-INF/persistence.xml</property>
-            </emphasis> in its classpath. Named JPA in Eclipse and <emphasis>
-              <property>
-                <literal>&lt;jpaconfiguration&gt;</literal>
-              </property>
-            </emphasis> in ant.</para>
+            </emphasis> in its classpath. Named JPA in Eclipse and 
+             <code>&lt;jpaconfiguration&gt;</code>
+              in ant.</para>
         </listitem>
 
         <listitem>
           <para>A JDBC configuration uses <property>Hibernate Tools</property> reverse engineering
             and reads its mappings via JDBC metadata + additional reverse engineering files
             (reveng.xml). Automatically used in Eclipse when doing reverse engineering from JDBC and
-            named <emphasis>
-              <property>
-                <literal>&lt;jdbcconfiguration&gt;</literal>
-              </property>
-            </emphasis> in ant.</para>
+            named 
+                <code>&lt;jdbcconfiguration&gt;</code>
+               in ant.</para>
         </listitem>
       </itemizedlist>
     </para>
