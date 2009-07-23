@@ -19,7 +19,7 @@ import org.eclipse.osgi.util.NLS;
 public class HibernateUIMappingMessages extends NLS {
 	private static final String BUNDLE_NAME = "org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.messages"; //$NON-NLS-1$
 
-		
+
 	public static String GenericGeneratorComposite_name;
 	public static String GenericGeneratorComposite_strategy;
 	public static String HibernateGeneratorsComposite_CheckBoxLabel;
@@ -35,7 +35,12 @@ public class HibernateUIMappingMessages extends NLS {
 	public static String NamedQueryPropertyComposite_timeout;
 	public static String HibernateAddQueryDialog_hibernateNamedQuery;
 	public static String HibernateAddQueryDialog_hibernateNamedNativeQuery;
-	
+	public static String GenericGeneratorsComposite_generatorNullName;
+	public static String GenericGeneratorsComposite_addGeneratorNameDescription;
+	public static String EnterNameDialog_title;
+	public static String EnterNameDialog_labelText;
+	public static String NameStateObject_nameMustBeSpecified;
+	public static String NameStateObject_nameAlreadyExists;
 
 	private HibernateUIMappingMessages() {}
 

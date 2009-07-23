@@ -19,8 +19,6 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
-import org.eclipse.jpt.core.context.Generator;
-import org.eclipse.jpt.core.context.GeneratorHolder;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.swt.ColumnAdapter;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
@@ -42,15 +40,14 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Parameter;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGenerator;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGeneratorHolder;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class ParametersComposite extends Pane<GeneratorHolder> {
+public class ParametersComposite extends Pane<GenericGenerator> {
 	
-	private PropertyValueModel<Generator> generatorHolder;
+	//private WritablePropertyValueModel<GenericGenerator> generatorHolder;
 	
 	private WritablePropertyValueModel<Parameter> parameterHolder;
 
@@ -60,20 +57,17 @@ public class ParametersComposite extends Pane<GeneratorHolder> {
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public ParametersComposite(Pane<? extends GeneratorHolder> parentPane,
-	                           Composite container) {
+	public ParametersComposite(Pane<?> parentPane,
+	      Composite container, WritablePropertyValueModel<GenericGenerator> generatorHolder) {
 
-		super(parentPane,container);
+		super(parentPane, generatorHolder, container, false);
 	}
-	
-	protected GenericGenerator getGenericGenerator(){
-		return ((GenericGeneratorHolder) getSubject()).getGenericGenerator();
-	}
+
 
 	private PropertyValueModel<Boolean> buildPaneEnableHolder() {
-		return new TransformationPropertyValueModel<GeneratorHolder, Boolean>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<GenericGenerator, Boolean>(getSubjectHolder()) {
 			@Override
-			protected Boolean transform(GeneratorHolder generator) {
+			protected Boolean transform(GenericGenerator generator) {
 				return (generator != null);
 			}
 		};
@@ -82,13 +76,13 @@ public class ParametersComposite extends Pane<GeneratorHolder> {
 	private Adapter buildParameterAdapter() {
 		return new AddRemoveTablePane.AbstractAdapter() {
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				Parameter parameter = getGenericGenerator().addParameter(getGenericGenerator().parametersSize());
+				Parameter parameter = getSubject().addParameter(getSubject().parametersSize());
 				parameterHolder.setValue(parameter);
 			}
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				for (Object item : listSelectionModel.selectedValues()) {
-					getGenericGenerator().removeParameter((Parameter) item);
+					getSubject().removeParameter((Parameter) item);
 				}
 			}
 		};
@@ -103,23 +97,21 @@ public class ParametersComposite extends Pane<GeneratorHolder> {
 	}
 
 	private ListValueModel<Parameter> buildParameterListHolder() {
-		return new ListAspectAdapter<Generator, Parameter>(
-				generatorHolder,
+		return new ListAspectAdapter<GenericGenerator, Parameter>(
+				getSubjectHolder(),
 				GenericGenerator.PARAMETERS_LIST) {
 			@Override
 			protected ListIterator<Parameter> listIterator_() {
-				GenericGenerator generator = (GenericGenerator) subject;
-				if (generator == null ){
+				if (subject == null ){
 					return EmptyListIterator.instance();
 				} else {
-					return generator.parameters();
+					return subject.parameters();
 				}
 			}
 
 			@Override
 			protected int size_() {
-				GenericGenerator generator = (GenericGenerator) subject;
-				return generator == null ? 0 : generator.parametersSize();
+				return subject == null ? 0 : subject.parametersSize();
 			}
 		};
 	}
@@ -127,18 +119,7 @@ public class ParametersComposite extends Pane<GeneratorHolder> {
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.generatorHolder = buildGeneratorHolder();
 		parameterHolder = buildParameterHolder();
-	}
-
-	private PropertyValueModel<Generator> buildGeneratorHolder() {
-		return new PropertyAspectAdapter<GeneratorHolder, Generator>(getSubjectHolder(), 
-				GenericGeneratorHolder.GENERIC_GENERATOR_PROPERTY) {
-			@Override
-			protected Generator buildValue_() {
-				return ParametersComposite.this.getGenericGenerator();
-			}
-		};
 	}
 
 	@Override
@@ -247,7 +228,7 @@ public class ParametersComposite extends Pane<GeneratorHolder> {
 		}
 	}
 
-	private class TablePane extends AddRemoveTablePane<GeneratorHolder> {
+	private class TablePane extends AddRemoveTablePane<GenericGenerator> {
 
 		private TablePane(Composite parent) {
 			super(ParametersComposite.this,

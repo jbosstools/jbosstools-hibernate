@@ -18,7 +18,9 @@ import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGeneratorHolder;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
 
 /**
  * @author Dmitry Geraskov
@@ -45,6 +47,7 @@ public class HibernateGeneratorsComposite extends GeneratorsComposite {
 		initializeGenericGeneratorPane(container);
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected void initializeGenericGeneratorPane(Composite container) {
 
 		// Sequence Generator sub-section
@@ -62,29 +65,35 @@ public class HibernateGeneratorsComposite extends GeneratorsComposite {
 			null//TODO add help
 		);
 
-		// Sequence Generator pane
-		new GenericGeneratorComposite(
-			this,
-			addSubPane(container, 0, genericGeneratorCheckBox.getBorderWidth() + 16)
+		// Generic Generator pane
+		new GenericGeneratorsComposite(
+			(Pane<? extends GenericGeneratorHolder>) this,
+			addSubPane(container, 0, genericGeneratorCheckBox.getBorderWidth() + 16),
+			(getSubject() instanceof HibernateJavaIdMapping)
 		);
 		
 	}
+	
+	protected GenericGenerator getGenerator(GeneratorHolder subject) {
+		return (((GenericGeneratorHolder)subject).genericGeneratorsSize() == 0) ? null
+					: ((GenericGeneratorHolder)subject).genericGenerators().next();
+	}
 
 	private WritablePropertyValueModel<Boolean> buildGenericGeneratorBooleanHolder() {
-		return new PropertyAspectAdapter<GeneratorHolder, Boolean>(getSubjectHolder(), GenericGeneratorHolder.GENERIC_GENERATOR_PROPERTY) {
+		return new PropertyAspectAdapter<GeneratorHolder, Boolean>(getSubjectHolder(), GenericGeneratorHolder.GENERIC_GENERATORS_LIST) {
+			
 			@Override
 			protected Boolean buildValue_() {
-				return ((GenericGeneratorHolder)subject).getGenericGenerator() != null;
+				return getGenerator(subject) != null;
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-
-				if (value && (((GenericGeneratorHolder)subject).getGenericGenerator() == null)) {
-					((GenericGeneratorHolder)subject).addGenericGenerator();
+				if (value && (getGenerator(subject) == null)) {
+					((GenericGeneratorHolder)subject).addGenericGenerator(0);
 				}
-				else if (!value && (((GenericGeneratorHolder)subject).getGenericGenerator() != null)) {
-					((GenericGeneratorHolder)subject).removeGenericGenerator();
+				else if (!value && (getGenerator(subject) != null)) {
+					((GenericGeneratorHolder)subject).removeGenericGenerator(0);
 				}
 			}
 		};
