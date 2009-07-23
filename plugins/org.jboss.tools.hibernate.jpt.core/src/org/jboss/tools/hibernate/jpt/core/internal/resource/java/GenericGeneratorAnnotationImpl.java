@@ -8,7 +8,7 @@
   * Contributor:
   *     Red Hat, Inc. - initial API and implementation
   ******************************************************************************/
-package org.jboss.tools.hibernate.jpt.core.internal.context.java;
+package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
 import java.util.ListIterator;
 import java.util.Vector;
@@ -18,24 +18,29 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.AnnotationContainerTools;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationContainer;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
+import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
-import org.jboss.tools.hibernate.jpt.core.internal.resource.java.NestableParameterAnnotation;
-import org.jboss.tools.hibernate.jpt.core.internal.resource.java.ParameterAnnotation;
-import org.jboss.tools.hibernate.jpt.core.internal.resource.java.SourceParameterAnnotation;
 
 /**
  * @author Dmitry Geraskov
@@ -44,36 +49,30 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.SourceParameter
 public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member> 
 					implements GenericGeneratorAnnotation {
 	
-	private final AnnotationElementAdapter<String> nameAdapter;
-	
-	private final AnnotationElementAdapter<String> strategyAdapter;
-
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
-	private static final DeclarationAnnotationElementAdapter<String> NAME_ADAPTER = buildNameAdapter();
-	
-	private static final DeclarationAnnotationElementAdapter<String> STRATEGY_ADAPTER = buildStrategyAdapter();
-
-	final ParametersAnnotationContainer parametersContainer = new ParametersAnnotationContainer();
-	
+	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
+	private final AnnotationElementAdapter<String> nameAdapter;
 	private String name;
 	
-	private String strategy;
+	private final DeclarationAnnotationElementAdapter<String> strategyDeclarationAdapter;
+	private final AnnotationElementAdapter<String> strategyAdapter;
+	private String strategy;	
 	
 	final Vector<NestableParameterAnnotation> parameters = new Vector<NestableParameterAnnotation>();
-	
-	private Integer initialValue = 1;
-	
-	private Integer allocationSize = 50;
+	final ParametersAnnotationContainer parametersContainer = new ParametersAnnotationContainer();
 	
 	/**
 	 * @param parent
 	 * @param member
 	 */
-	public GenericGeneratorAnnotationImpl(JavaResourcePersistentMember parent, Member member) {
-		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
-		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, NAME_ADAPTER);
-		this.strategyAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, STRATEGY_ADAPTER);
+	public GenericGeneratorAnnotationImpl(JavaResourceNode parent, Member member,
+			DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+		super(parent, member, daa, annotationAdapter);
+		this.nameDeclarationAdapter = this.buildNameAdapter(daa);
+		this.nameAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, nameDeclarationAdapter);
+		this.strategyDeclarationAdapter = this.buildStrategyAdapter(daa);
+		this.strategyAdapter = new ShortCircuitAnnotationElementAdapter<String>(member, strategyDeclarationAdapter);
 	}
 	
 	public void initialize(CompilationUnit astRoot) {
@@ -121,60 +120,41 @@ public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member>
 	}
 	
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(NAME_ADAPTER, astRoot);
+		return this.getElementTextRange(nameDeclarationAdapter, astRoot);
 	}
 	
 	public TextRange getStrategyTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(STRATEGY_ADAPTER, astRoot);
+		return this.getElementTextRange(strategyDeclarationAdapter, astRoot);
 	}
 	
 	public Integer getAllocationSize() {
-		return allocationSize;
+		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.core.resource.java.GeneratorAnnotation#getAllocationSizeTextRange(org.eclipse.jdt.core.dom.CompilationUnit)
-	 */
 	public TextRange getAllocationSizeTextRange(CompilationUnit astRoot) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.core.resource.java.GeneratorAnnotation#getInitialValue()
-	 */
 	public Integer getInitialValue() {
-		return initialValue;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.core.resource.java.GeneratorAnnotation#getInitialValueTextRange(org.eclipse.jdt.core.dom.CompilationUnit)
-	 */
-	public TextRange getInitialValueTextRange(CompilationUnit astRoot) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.core.resource.java.GeneratorAnnotation#setAllocationSize(java.lang.Integer)
-	 */
-	public void setAllocationSize(Integer allocationSize) {
-		this.allocationSize = allocationSize;
-		
+	public TextRange getInitialValueTextRange(CompilationUnit astRoot) {
+		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.core.resource.java.GeneratorAnnotation#setInitialValue(java.lang.Integer)
-	 */
+	public void setAllocationSize(Integer allocationSize) {
+		throw new UnsupportedOperationException();		
+	}
+
 	public void setInitialValue(Integer initialValue) {
-		this.initialValue = initialValue;
-		
+		throw new UnsupportedOperationException();			
 	}
 	
 	// ********** java annotations -> persistence model **********
 	protected String strategy(CompilationUnit astRoot) {
 		//TODO: get Generator instead of String
-		//use buildJavaGenericGenerator method before thi will be done
+		//use buildJavaGenericGenerator method before this will be done
 		return this.strategyAdapter.getValue(astRoot);
 	}
 	
@@ -182,68 +162,10 @@ public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member>
 		return this.nameAdapter.getValue(astRoot);
 	}	
 	
-	// ********** static methods **********
-	private static DeclarationAnnotationElementAdapter<String> buildNameAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, Hibernate.GENERIC_GENERATOR__NAME, false);
-	}
-	
-	private static DeclarationAnnotationElementAdapter<String> buildStrategyAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, Hibernate.GENERIC_GENERATOR__STRATEGY, false);
-	}	
-	
-
-	public static class GenericGeneratorAnnotationDefinition implements AnnotationDefinition
-	{
-		// singleton
-		private static final GenericGeneratorAnnotationDefinition INSTANCE = new GenericGeneratorAnnotationDefinition();
-
-		/**
-		 * Return the singleton.
-		 */
-		public static AnnotationDefinition instance() {
-			return INSTANCE;
-		}
-
-		/**
-		 * Ensure non-instantiability.
-		 */
-		private GenericGeneratorAnnotationDefinition() {
-			super();
-		}
-
-		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-			return new GenericGeneratorAnnotationImpl(parent, member);
-		}
-		
-		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
-			return null;
-		}
-		
-		public String getAnnotationName() {
-			return ANNOTATION_NAME;
-		}
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.jpt.core.resource.java.AnnotationDefinition#buildAnnotation(org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember, org.eclipse.jdt.core.IAnnotation)
-		 */
-		public Annotation buildAnnotation(JavaResourcePersistentMember arg0,
-				IAnnotation arg1) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		/* (non-Javadoc)
-		 * @see org.eclipse.jpt.core.resource.java.AnnotationDefinition#buildNullAnnotation(org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember)
-		 */
-		public Annotation buildNullAnnotation(JavaResourcePersistentMember arg0) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-	}
 
 	//************************ parameters ***********************
 	
-	public ParameterAnnotation addParameter(int index) {
+	public NestableParameterAnnotation addParameter(int index) {
 		return (NestableParameterAnnotation) AnnotationContainerTools.addNestedAnnotation(index, this.parametersContainer);
 	}
 	
@@ -301,9 +223,49 @@ public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member>
 		return this.parameters.remove(index);
 	}
 
-	void hintRemoved(int index, NestableParameterAnnotation parameter) {
+	void parameterRemoved(int index, NestableParameterAnnotation parameter) {
 		this.fireItemRemoved(PARAMETERS_LIST, index, parameter);
 	}
+	
+	// ********** NestableAnnotation implementation **********
+	public void initializeFrom(NestableAnnotation oldAnnotation) {
+		GenericGeneratorAnnotation oldGenericGenerator = (GenericGeneratorAnnotation) oldAnnotation;
+		this.setName(oldGenericGenerator.getName());
+		this.setStrategy(oldGenericGenerator.getStrategy());
+		//this.setAllocationSize(oldGenericGenerator.getAllocationSize());
+		//this.setInitialValue(oldGenericGenerator.getInitialValue());
+		for (ParameterAnnotation oldParameter : CollectionTools.iterable(oldGenericGenerator.parameters())) {
+			NestableParameterAnnotation newParameter = this.addParameter(oldGenericGenerator.indexOfParameter(oldParameter));
+			newParameter.initializeFrom((NestableParameterAnnotation) oldParameter);
+		}
+	}
+	
+
+	/**
+	 * convenience implementation of method from NestableAnnotation interface
+	 * for subclasses
+	 */
+	public void moveAnnotation(int newIndex) {
+		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);
+	}
+
+	private IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
+		return (IndexedAnnotationAdapter) this.annotationAdapter;
+	}
+	
+	@Override
+	public void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(name);
+	}
+	
+	private DeclarationAnnotationElementAdapter<String> buildNameAdapter(DeclarationAnnotationAdapter daa) {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, Hibernate.GENERIC_GENERATOR__NAME, false);
+	}
+	
+	private DeclarationAnnotationElementAdapter<String> buildStrategyAdapter(DeclarationAnnotationAdapter daa) {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, Hibernate.GENERIC_GENERATOR__STRATEGY, false);
+	}	
 	
 	/**
 	 * adapt the AnnotationContainer interface to the override's join columns
@@ -356,15 +318,67 @@ public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member>
 		}
 
 		public void nestedAnnotationRemoved(int index, NestableParameterAnnotation nestedAnnotation) {
-			GenericGeneratorAnnotationImpl.this.hintRemoved(index, nestedAnnotation);
+			GenericGeneratorAnnotationImpl.this.parameterRemoved(index, nestedAnnotation);
 		}
 
 		@Override
 		public String toString() {
 			return StringTools.buildToStringFor(this);
 		}
+	}
 
+	public static GenericGeneratorAnnotation createNestedGenericGenerator(
+			JavaResourceNode parent, Member member,
+			int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
+		IndexedDeclarationAnnotationAdapter idaa = buildNestedHibernateDeclarationAnnotationAdapter(index, attributeOverridesAdapter);
+		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(member, idaa);
+		return new GenericGeneratorAnnotationImpl(parent, member, idaa, annotationAdapter);
+	}
+	
+	private static IndexedDeclarationAnnotationAdapter buildNestedHibernateDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter hibernateGenericGeneratorsAdapter) {
+		return new NestedIndexedDeclarationAnnotationAdapter(hibernateGenericGeneratorsAdapter, index, Hibernate.GENERIC_GENERATOR);
+	}
 
+	public static class GenericGeneratorAnnotationDefinition implements AnnotationDefinition
+	{
+		// singleton
+		private static final GenericGeneratorAnnotationDefinition INSTANCE = new GenericGeneratorAnnotationDefinition();
+
+		/**
+		 * Return the singleton.
+		 */
+		public static AnnotationDefinition instance() {
+			return INSTANCE;
+		}
+
+		/**
+		 * Ensure non-instantiability.
+		 */
+		private GenericGeneratorAnnotationDefinition() {
+			super();
+		}
+
+		public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
+			return new GenericGeneratorAnnotationImpl(parent, member,
+				DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
+		}
+		
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
+			throw new UnsupportedOperationException();
+		}
+		
+		public String getAnnotationName() {
+			return GenericGeneratorAnnotation.ANNOTATION_NAME;
+		}
+
+		public Annotation buildAnnotation(JavaResourcePersistentMember arg0,
+				IAnnotation arg1) {
+			throw new UnsupportedOperationException();
+		}
+
+		public Annotation buildNullAnnotation(JavaResourcePersistentMember arg0) {
+			throw new UnsupportedOperationException();
+		}
 	}
 
 }

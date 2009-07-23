@@ -12,6 +12,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaGenerator;
@@ -20,10 +21,13 @@ import org.eclipse.jpt.core.internal.context.java.GenericJavaIdMapping;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
+import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorAnnotation;
 
 /**
  * @author Dmitry Geraskov
@@ -71,7 +75,7 @@ implements GenericGeneratorHolder {
 											: new SingleElementIterator(getGenericGenerator()));
 	}
 
-	public JavaGenericGenerator addGenericGenerator() {
+	public JavaGenericGenerator addGenericGenerator(int index) {
 		if (getGenericGenerator() != null) {
 			throw new IllegalStateException("genericGenerator already exists"); //$NON-NLS-1$
 		}
@@ -79,28 +83,28 @@ implements GenericGeneratorHolder {
 		GenericGeneratorAnnotation genericGeneratorResource = (GenericGeneratorAnnotation)getResourcePersistentAttribute()
 								.addSupportingAnnotation(GenericGeneratorAnnotation.ANNOTATION_NAME);
 		this.genericGenerator.initialize(genericGeneratorResource);
-		firePropertyChanged(GENERIC_GENERATOR_PROPERTY, null, this.genericGenerator);
+		firePropertyChanged(GENERIC_GENERATORS_LIST, null, this.genericGenerator);
 		return this.genericGenerator;
 	}
 
-	public JavaGenericGenerator getGenericGenerator() {
+	private JavaGenericGenerator getGenericGenerator() {
 		return genericGenerator;
 	}
 
-	public void removeGenericGenerator() {
+	private void removeGenericGenerator() {
 		if (getGenericGenerator() == null) {
 			throw new IllegalStateException("genericGenerator does not exist, cannot be removed"); //$NON-NLS-1$
 		}
 		JavaGenericGenerator oldGenericGenerator = this.genericGenerator;
 		this.genericGenerator = null;
 		this.getResourcePersistentAttribute().removeSupportingAnnotation(GenericGeneratorAnnotation.ANNOTATION_NAME);
-		firePropertyChanged(GENERIC_GENERATOR_PROPERTY, oldGenericGenerator,null);
+		firePropertyChanged(GENERIC_GENERATORS_LIST, oldGenericGenerator,null);
 	}
 	
-	public void setGenericGenerator(JavaGenericGenerator newGenericGenerator) {
+	private void setGenericGenerator(JavaGenericGenerator newGenericGenerator) {
 		JavaGenericGenerator oldGenericGenerator = this.genericGenerator;
 		this.genericGenerator = newGenericGenerator;
-		firePropertyChanged(GENERIC_GENERATOR_PROPERTY, oldGenericGenerator, newGenericGenerator);
+		firePropertyChanged(GENERIC_GENERATORS_LIST, oldGenericGenerator, newGenericGenerator);
 	}
 	
 	@Override
@@ -132,7 +136,7 @@ implements GenericGeneratorHolder {
 		validateGenericGenerator(messages, reporter, astRoot);
 	}
 	
-	protected void validateGenericGenerator(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	private void validateGenericGenerator(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		if (genericGenerator != null){
 			genericGenerator.validate(messages, reporter, astRoot);
 		}
@@ -152,6 +156,32 @@ implements GenericGeneratorHolder {
 			}
 		}
 		return null;
+	}
+
+	public ListIterator<GenericGenerator> genericGenerators() {
+		return genericGenerator == null ? EmptyListIterator.<GenericGenerator>instance()				
+					: new SingleElementListIterator<GenericGenerator>(genericGenerator);
+	}
+
+	public int genericGeneratorsSize() {
+		return genericGenerator == null ? 0 : 1;
+	}
+
+	public void moveGenericGenerator(int targetIndex, int sourceIndex) {
+		throw new UnsupportedOperationException();
+	}
+
+	public void removeGenericGenerator(int index) {
+		if (genericGeneratorsSize() < index + 1){
+			throw new IndexOutOfBoundsException();
+		}
+		removeGenericGenerator();
+	}
+
+	public void removeGenericGenerator(GenericGenerator generator) {
+		if (this.genericGenerator == generator){
+			removeGenericGenerator();
+		}		
 	}
 
 }

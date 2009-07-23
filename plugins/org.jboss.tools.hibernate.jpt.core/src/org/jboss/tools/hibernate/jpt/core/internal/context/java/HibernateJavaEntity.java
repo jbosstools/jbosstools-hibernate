@@ -31,7 +31,10 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorAnnotation;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorsAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedNativeQueriesAnnotation;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedNativeQueryAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQueriesAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQueryAnnotation;
 
@@ -42,7 +45,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQ
 public class HibernateJavaEntity extends AbstractJavaEntity 
 implements GenericGeneratorHolder, HibernateQueryContainer {
 
-	protected JavaGenericGenerator genericGenerator;
+	protected final List<JavaGenericGenerator> genericGenerators;
 	
 	protected final List<HibernateNamedQuery> hibernateNamedQueries;
 	
@@ -50,6 +53,7 @@ implements GenericGeneratorHolder, HibernateQueryContainer {
 	
 	public HibernateJavaEntity(JavaPersistentType parent) {
 		super(parent);
+		this.genericGenerators = new ArrayList<JavaGenericGenerator>();
 		this.hibernateNamedQueries = new ArrayList<HibernateNamedQuery>();
 		this.hibernateNamedNativeQueries = new ArrayList<HibernateNamedNativeQuery>();
 	}
@@ -57,7 +61,7 @@ implements GenericGeneratorHolder, HibernateQueryContainer {
 	@Override
 	public void initialize(JavaResourcePersistentType resourcePersistentType) {
 		super.initialize(resourcePersistentType);
-		this.initializeGenericGenerator();
+		this.initializeGenericGenerators();
 		this.initializeHibernateNamedQueries();
 		this.initializeHibernateNamedNativeQueries();
 	}
@@ -65,9 +69,13 @@ implements GenericGeneratorHolder, HibernateQueryContainer {
 	@Override
 	public void update(JavaResourcePersistentType resourcePersistentType) {
 		super.update(resourcePersistentType);
-		this.updateGenericGenerator();
+		this.updateGenericGenerators();
 		this.updateHibernateNamedQueries();
 		this.updateHibernateNamedNativeQueries();
+	}	
+	
+	protected HibernateJpaFactory getJpaFactory() {
+		return (HibernateJpaFactory) this.getJpaPlatform().getJpaFactory();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -79,38 +87,73 @@ implements GenericGeneratorHolder, HibernateQueryContainer {
 				this.hibernateNamedNativeQueries());
 	}
 	
-	// ********************* GenericGenerator **************
 	@SuppressWarnings("unchecked")
 	@Override
 	public Iterator<String> correspondingAnnotationNames() {
 		return new CompositeIterator<String>(
-				new ArrayIterator<String>(Hibernate.GENERIC_GENERATOR, 
-				Hibernate.NAMED_QUERY,
-				Hibernate.NAMED_QUERIES,
-				Hibernate.NAMED_NATIVE_QUERY,
-				Hibernate.NAMED_NATIVE_QUERIES),
+				new ArrayIterator<String>(
+					Hibernate.GENERIC_GENERATOR,
+					Hibernate.GENERIC_GENERATORS, 
+					Hibernate.NAMED_QUERY,
+					Hibernate.NAMED_QUERIES,
+					Hibernate.NAMED_NATIVE_QUERY,
+					Hibernate.NAMED_NATIVE_QUERIES),
 				super.correspondingAnnotationNames());
 	}
 	
-	public void setGenericGenerator(JavaGenericGenerator newGenericGenerator) {
-		JavaGenericGenerator oldGenericGenerator = this.genericGenerator;
-		this.genericGenerator = newGenericGenerator;
-		firePropertyChanged(GENERIC_GENERATOR_PROPERTY, oldGenericGenerator, newGenericGenerator);
+	// ********************* GenericGenerators **************
+
+	public GenericGenerator addGenericGenerator(int index) {
+		JavaGenericGenerator newGenericGenerator = getJpaFactory().buildJavaGenericGenerator(this);
+		this.genericGenerators.add(newGenericGenerator);
+		GenericGeneratorAnnotation genericGeneratorAnnotation = (GenericGeneratorAnnotation)this.javaResourcePersistentType
+			.addSupportingAnnotation(index, GenericGeneratorAnnotation.ANNOTATION_NAME, GenericGeneratorsAnnotation.ANNOTATION_NAME);
+		newGenericGenerator.initialize(genericGeneratorAnnotation);
+		fireItemAdded(GENERIC_GENERATORS_LIST, index, newGenericGenerator);
+		return newGenericGenerator;
 	}
 	
-	protected HibernateJpaFactory getJpaFactory() {
-		return (HibernateJpaFactory) this.getJpaPlatform().getJpaFactory();
+	protected void addGenericGenerator(JavaGenericGenerator genericGenerator) {
+		this.addGenericGenerator(genericGeneratorsSize(), genericGenerator);
 	}
 	
-	protected void initializeGenericGenerator() {
-		GenericGeneratorAnnotation genericGeneratorResource = getResourceGenericGenerator();
-		if (genericGeneratorResource != null) {
-			this.genericGenerator = buildGenericGenerator(genericGeneratorResource);
-		}
+	protected void addGenericGenerator(int index, JavaGenericGenerator genericGenerator) {
+		addItemToList(index, genericGenerator, this.genericGenerators, GENERIC_GENERATORS_LIST);
 	}
 
-	protected GenericGeneratorAnnotation getResourceGenericGenerator() {
-		return (GenericGeneratorAnnotation) this.javaResourcePersistentType.getSupportingAnnotation(GenericGeneratorAnnotation.ANNOTATION_NAME);
+	@SuppressWarnings("unchecked")
+	public ListIterator<JavaGenericGenerator> genericGenerators() {
+		return new CloneListIterator<JavaGenericGenerator>(genericGenerators);
+	}
+
+	public int genericGeneratorsSize() {
+		return this.genericGenerators.size();
+	}
+
+	public void moveGenericGenerator(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.genericGenerators, targetIndex, sourceIndex);
+		this.javaResourcePersistentType.moveSupportingAnnotation(targetIndex, sourceIndex, GenericGeneratorAnnotation.ANNOTATION_NAME);
+		fireItemMoved(GENERIC_GENERATORS_LIST, targetIndex, sourceIndex);		
+	}
+
+	public void removeGenericGenerator(int index) {
+		JavaGenericGenerator removedGenericGenerator = this.genericGenerators.remove(index);
+		this.javaResourcePersistentType.removeSupportingAnnotation(index, GenericGeneratorAnnotation.ANNOTATION_NAME, GenericGeneratorsAnnotation.ANNOTATION_NAME);
+		fireItemRemoved(GENERIC_GENERATORS_LIST, index, removedGenericGenerator);		
+	}
+
+	public void removeGenericGenerator(GenericGenerator generator) {
+		removeGenericGenerator(this.genericGenerators.indexOf(generator));		
+	}
+
+	protected void removeGenericGenerator_(JavaGenericGenerator generator) {
+		removeItemFromList(generator, this.genericGenerators, GENERIC_GENERATORS_LIST);
+	}
+
+	protected void initializeGenericGenerators() {
+		for (ListIterator<NestableAnnotation> stream = this.javaResourcePersistentType.supportingAnnotations(GenericGeneratorAnnotation.ANNOTATION_NAME, GenericGeneratorsAnnotation.ANNOTATION_NAME); stream.hasNext(); ) {
+			this.genericGenerators.add(buildGenericGenerator((GenericGeneratorAnnotation) stream.next()));
+		}
 	}
 	
 	protected JavaGenericGenerator buildGenericGenerator(GenericGeneratorAnnotation genericGeneratorResource) {
@@ -118,55 +161,31 @@ implements GenericGeneratorHolder, HibernateQueryContainer {
 		generator.initialize(genericGeneratorResource);
 		return generator;
 	}
-
-	public JavaGenericGenerator addGenericGenerator() {
-		if (getGenericGenerator() != null) {
-			throw new IllegalStateException("genericGenerator already exists"); //$NON-NLS-1$
-		}
-		this.genericGenerator = getJpaFactory().buildJavaGenericGenerator(this);
-		GenericGeneratorAnnotation genericGeneratorResource = (GenericGeneratorAnnotation)javaResourcePersistentType
-								.addSupportingAnnotation(GenericGeneratorAnnotation.ANNOTATION_NAME);
-		this.genericGenerator.initialize(genericGeneratorResource);
-		firePropertyChanged(GENERIC_GENERATOR_PROPERTY, null, this.genericGenerator);
-		return this.genericGenerator;
-	}
-
-	public JavaGenericGenerator getGenericGenerator() {
-		return genericGenerator;
-	}
-
-	public void removeGenericGenerator() {
-		if (getGenericGenerator() == null) {
-			throw new IllegalStateException("genericGenerator does not exist, cannot be removed"); //$NON-NLS-1$
-		}
-		JavaGenericGenerator oldGenericGenerator = this.genericGenerator;
-		this.genericGenerator = null;
-		this.javaResourcePersistentType.removeSupportingAnnotation(GenericGeneratorAnnotation.ANNOTATION_NAME);
-		firePropertyChanged(GENERIC_GENERATOR_PROPERTY, oldGenericGenerator,null);
-	}
 	
 	@Override
 	protected void addGeneratorsTo(ArrayList<JavaGenerator> generators) {
 		super.addGeneratorsTo(generators);
-		if (this.genericGenerator != null) {
-			generators.add(this.genericGenerator);
+		for (JavaGenericGenerator genericGenerator : genericGenerators) {
+			generators.add(genericGenerator);
 		}
 	}
 	
-	protected void updateGenericGenerator() {
-		GenericGeneratorAnnotation genericGeneratorResource = getResourceGenericGenerator();
-		if (genericGeneratorResource == null) {
-			if (getGenericGenerator() != null) {
-				setGenericGenerator(null);
-			}
-		}
-		else {
-			if (getGenericGenerator() == null) {
-				setGenericGenerator(buildGenericGenerator(genericGeneratorResource));
+	protected void updateGenericGenerators() {
+		ListIterator<JavaGenericGenerator> genericGenerators = genericGenerators();
+		ListIterator<NestableAnnotation> resourceGenericGenerators = this.javaResourcePersistentType.supportingAnnotations(GenericGeneratorAnnotation.ANNOTATION_NAME, GenericGeneratorsAnnotation.ANNOTATION_NAME);
+
+		while (genericGenerators.hasNext()) {
+			JavaGenericGenerator genericGenerator = genericGenerators.next();
+			if (resourceGenericGenerators.hasNext()) {
+				genericGenerator.update((GenericGeneratorAnnotation) resourceGenericGenerators.next());
 			}
 			else {
-				getGenericGenerator().update(genericGeneratorResource);
+				removeGenericGenerator_(genericGenerator);
 			}
+		}
+
+		while (resourceGenericGenerators.hasNext()) {
+			addGenericGenerator(buildGenericGenerator((GenericGeneratorAnnotation) resourceGenericGenerators.next()));
 		}
 	}
 	// ********************* NamedQuery **************
@@ -337,9 +356,9 @@ implements GenericGeneratorHolder, HibernateQueryContainer {
 	}
 	
 	protected void validateGenericGenerator(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		if (genericGenerator != null){
+		for (JavaGenericGenerator genericGenerator : genericGenerators) {
 			genericGenerator.validate(messages, reporter, astRoot);
-		}
+		}	
 	}
 	
 	@Override
@@ -349,8 +368,8 @@ implements GenericGeneratorHolder, HibernateQueryContainer {
 		if (result != null) {
 			return result;
 		}
-		if (this.getGenericGenerator() != null) {
-			result = this.getGenericGenerator().javaCompletionProposals(pos, filter, astRoot);
+		for (JavaGenericGenerator genericGenerator : genericGenerators) {
+			result = genericGenerator.javaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}

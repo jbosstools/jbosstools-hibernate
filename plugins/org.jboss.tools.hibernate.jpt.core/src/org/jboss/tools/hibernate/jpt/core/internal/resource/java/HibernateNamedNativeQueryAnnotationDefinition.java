@@ -16,7 +16,6 @@ import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateSourceNamedNativeQueryAnnotation;
 
 /**
  * @author Dmitry Geraskov

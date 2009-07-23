@@ -8,21 +8,22 @@
   * Contributor:
   *     Red Hat, Inc. - initial API and implementation
   ******************************************************************************/
-package org.jboss.tools.hibernate.jpt.core.internal.context.java;
+package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
 import java.util.ListIterator;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.resource.java.GeneratorAnnotation;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
-import org.jboss.tools.hibernate.jpt.core.internal.resource.java.ParameterAnnotation;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface GenericGeneratorAnnotation extends GeneratorAnnotation {
+public interface GenericGeneratorAnnotation extends 
+	NestableAnnotation, GeneratorAnnotation {
 	
 	String ANNOTATION_NAME = Hibernate.GENERIC_GENERATOR;
 	

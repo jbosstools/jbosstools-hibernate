@@ -32,6 +32,9 @@ public interface Hibernate {
 		String GENERATOR_PARAMETER__NAME = "name"; //$NON-NLS-1$
 		String GENERATOR_PARAMETER__VALUE = "value"; //$NON-NLS-1$
 		
+	String GENERIC_GENERATORS = PACKAGE_ + "GenericGenerators"; //$NON-NLS-1$
+		String GENERIC_GENERATORS__VALUE = "value"; //$NON-NLS-1$
+		
 	String NAMED_QUERY = PACKAGE_ + "NamedQuery"; //$NON-NLS-1$
 		String NAMED_QUERY__NAME = "name"; //$NON-NLS-1$
 		String NAMED_QUERY__QUERY = "query"; //$NON-NLS-1$

@@ -30,6 +30,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Parameter;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.ParameterAnnotation;
 
 /**
@@ -47,7 +48,9 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 	
 	public static List<String> generatorClasses = new ArrayList<String>();
 	
-	//see org.hibernate.id.IdentifierGeneratorFactory.GENERATORS
+	/**
+	 * @see org.hibernate.id.IdentifierGeneratorFactory.GENERATORS
+	 */
 	static {
 		generatorClasses.add( "uuid"); //$NON-NLS-1$
 		generatorClasses.add( "hilo"); //$NON-NLS-1$
@@ -70,20 +73,14 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 		super(parent);
 		this.parameters = new ArrayList<JavaParameter>();
 	}
-
-	public int getDefaultInitialValue() {
-		return GenericGenerator.DEFAULT_INITIAL_VALUE;
-	}
 	
 	protected GenericGeneratorAnnotation getResourceGenerator() {
 		return this.generatorResource;
 	}
 
 	public void initialize(GenericGeneratorAnnotation generator) {
-		generatorResource = generator;
+		this.generatorResource = generator;
 		this.name = generator.getName();
-		this.specifiedInitialValue = generator.getInitialValue();
-		this.specifiedAllocationSize = generator.getAllocationSize();
 		this.strategy = generator.getStrategy();
 		this.initializeParameters();
 	}
@@ -91,8 +88,6 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 	public void update(GenericGeneratorAnnotation generator) {
 		this.generatorResource = generator;
 		this.setName_(generator.getName());
-		this.setSpecifiedInitialValue_(generator.getInitialValue());
-		this.setSpecifiedAllocationSize_(generator.getAllocationSize());
 		this.setSpecifiedStrategy_(generator.getStrategy());
 		this.updateParameters();
 		this.getPersistenceUnit().addGenerator(this);
@@ -103,20 +98,6 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 		this.name = name;
 		this.generatorResource.setName(name);
 		this.firePropertyChanged(Generator.NAME_PROPERTY, old, name);
-	}
-	
-	public void setSpecifiedInitialValue(Integer specifiedInitialValue) {
-		Integer old = this.specifiedInitialValue;
-		this.specifiedInitialValue = specifiedInitialValue;
-		this.generatorResource.setInitialValue(specifiedInitialValue);
-		this.firePropertyChanged(Generator.SPECIFIED_INITIAL_VALUE_PROPERTY, old, specifiedInitialValue);
-	}
-	
-	public void setSpecifiedAllocationSize(Integer specifiedAllocationSize) {
-		Integer old = this.specifiedAllocationSize;
-		this.specifiedAllocationSize = specifiedAllocationSize;
-		this.generatorResource.setAllocationSize(specifiedAllocationSize);
-		this.firePropertyChanged(Generator.SPECIFIED_ALLOCATION_SIZE_PROPERTY, old, specifiedAllocationSize);
 	}
 	
 	public TextRange getSelectionTextRange(CompilationUnit astRoot) {
@@ -299,6 +280,11 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 		JavaParameter parameter =  getJpaFactory().buildJavaParameter(this);
 		parameter.initialize(resourceParameter);
 		return parameter;
+	}
+	
+
+	public int getDefaultInitialValue() {
+		return GenericGenerator.DEFAULT_INITIAL_VALUE;
 	}
 
 }

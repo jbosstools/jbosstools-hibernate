@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
 import org.eclipse.jpt.core.resource.java.NestableNamedQueryAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateQueryAnnotation;
 
 /**
  * @author Dmitry Geraskov

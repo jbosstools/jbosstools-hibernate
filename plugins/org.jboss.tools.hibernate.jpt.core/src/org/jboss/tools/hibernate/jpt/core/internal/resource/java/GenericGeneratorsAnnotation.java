@@ -17,12 +17,12 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
  * @author Dmitry Geraskov
  *
  */
-public interface HibernateNamedNativeQueriesAnnotation extends
-		ContainerAnnotation<HibernateNamedNativeQueryAnnotation> {
-
-	String ANNOTATION_NAME = Hibernate.NAMED_NATIVE_QUERIES;
-
-	String HIBERNATE_NAMED_NATIVE_QUERIES_LIST = "hibernateNamedNativeQueries"; //$NON-NLS-1$
-
+public interface GenericGeneratorsAnnotation extends
+		ContainerAnnotation<GenericGeneratorAnnotation> {
 	
+	String ANNOTATION_NAME = Hibernate.GENERIC_GENERATORS;
+
+	String GENERIC_GENERATORS_LIST = "genericGenerators"; //$NON-NLS-1$
+
+
 }

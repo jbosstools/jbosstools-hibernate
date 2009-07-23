@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.jpt.core.internal.context.java;
+package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
 import org.eclipse.jpt.core.resource.java.NestableNamedNativeQueryAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;

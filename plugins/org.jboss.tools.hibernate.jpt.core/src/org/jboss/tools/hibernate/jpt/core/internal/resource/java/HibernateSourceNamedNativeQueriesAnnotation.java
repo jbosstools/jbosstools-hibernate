@@ -23,8 +23,6 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedNativeQueryAnnotation;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateSourceNamedNativeQueryAnnotation;
 
 /**
  * @author Dmitry Geraskov

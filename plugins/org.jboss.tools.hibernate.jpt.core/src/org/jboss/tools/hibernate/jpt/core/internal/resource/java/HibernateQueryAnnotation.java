@@ -8,10 +8,12 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.jpt.core.internal.context.java;
+package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.CacheModeType;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.FlushModeType;
 
 /**
  * @author Dmitry Geraskov
