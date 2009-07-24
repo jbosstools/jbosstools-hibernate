@@ -48,17 +48,17 @@ public class SpecialOrmShape extends OrmShape {
 		while (iterator.hasNext()) {
 			Property field = iterator.next();
 			Type type = null;
-			if (getOrmDiagram() != null){
+			if (getOrmDiagram() != null) {
 				ConsoleConfiguration cfg = getOrmDiagram().getConsoleConfig();
 				final Property fField = field;
-				type = (Type) cfg.execute(new Command(){
+				type = (Type) cfg.execute(new Command() {
 					public Object execute() {
 						return fField.getValue().getType();
 					}});								
 			} else {
 				try{
 					type = field.getValue().getType();
-				} catch (MappingException e){
+				} catch (MappingException e) {
 					//type is not accessible
 					HibernateConsolePlugin.getDefault().logErrorMessage("MappingException: ", e); //$NON-NLS-1$
 				}

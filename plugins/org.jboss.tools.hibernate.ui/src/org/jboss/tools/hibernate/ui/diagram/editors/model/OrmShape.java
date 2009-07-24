@@ -22,6 +22,7 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
+import org.jboss.tools.hibernate.ui.diagram.rulers.DiagramGuide;
 
 public class OrmShape extends ExpandeableShape {
 	public static final String SET_HIDEN = "set hiden"; //$NON-NLS-1$
@@ -29,6 +30,8 @@ public class OrmShape extends ExpandeableShape {
 	public static final String LOCATION_PROP = "OrmShape.Location";		 //$NON-NLS-1$
 	private Point location = new Point(0, 0);
 	protected boolean hiden = false;
+
+	private DiagramGuide verticalGuide, horizontalGuide;
 	
 	public OrmShape(Object ioe) {	
 		super(ioe);
@@ -219,7 +222,7 @@ public class OrmShape extends ExpandeableShape {
 		firePropertyChange(SET_HIDEN, null, Boolean.valueOf(hiden));
 	}
 	
-	public void refreshReference(){
+	public void refreshReference() {
 		firePropertyChange(SET_HIDEN, null, Boolean.valueOf(hiden));
 	}
 	
@@ -246,5 +249,21 @@ public class OrmShape extends ExpandeableShape {
 
 	public boolean isHiden() {
 		return hiden;
+	}
+
+	public DiagramGuide getHorizontalGuide() {
+		return horizontalGuide;
+	}
+
+	public void setHorizontalGuide(DiagramGuide hGuide) {
+		horizontalGuide = hGuide;
+	}
+
+	public DiagramGuide getVerticalGuide() {
+		return verticalGuide;
+	}
+
+	public void setVerticalGuide(DiagramGuide vGuide) {
+		verticalGuide = vGuide;
 	}
 }

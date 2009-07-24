@@ -10,6 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.autolayout;
 
+/**
+ * interface to provide information about whole diagram 
+ */
 public interface IDiagramInfo {
 	IItemInfo[] getItems();
 }

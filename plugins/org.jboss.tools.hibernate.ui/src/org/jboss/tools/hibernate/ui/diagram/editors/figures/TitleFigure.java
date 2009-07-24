@@ -15,6 +15,10 @@ import java.util.List;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
 
+/**
+ *
+ */
+@SuppressWarnings("unchecked")
 public class TitleFigure extends Figure {
 	
 	private boolean hiden = false; 
@@ -31,10 +35,9 @@ public class TitleFigure extends Figure {
 	}
 	
 	public List getChildren() {
-		if (hiden) {
-			return super.getChildren().subList(0,1);
-		} 
-		return super.getChildren();
+		List res = super.getChildren();
+		res = hiden ? res.subList(0, 1) : res;
+		return res;
 	}
 
 	public void setHidden(boolean hiden) {

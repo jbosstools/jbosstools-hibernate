@@ -24,19 +24,19 @@ import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.ManhattanConnectionRouter;
 import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.CompoundSnapToHelper;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.LayerConstants;
-import org.eclipse.gef.Request;
-import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
-import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
-import org.eclipse.gef.requests.ChangeBoundsRequest;
-import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.SnapToGeometry;
+import org.eclipse.gef.SnapToGrid;
+import org.eclipse.gef.SnapToGuides;
+import org.eclipse.gef.SnapToHelper;
+import org.eclipse.gef.rulers.RulerProvider;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
@@ -47,7 +47,6 @@ import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.AutoLayout;
 import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.IItemInfo;
 import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.ILinkInfo;
 import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.IDiagramInfo;
-import org.jboss.tools.hibernate.ui.diagram.editors.command.ShapeSetConstraintCommand;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.ModelElement;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
@@ -57,10 +56,14 @@ import org.jboss.tools.hibernate.ui.diagram.editors.model.SpecialOrmShape;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.SpecialRootClass;
 import org.jboss.tools.hibernate.ui.view.HibernateUtils;
 
+/**
+ *
+ */
 class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 
 	protected void createEditPolicies() {
-		installEditPolicy(EditPolicy.LAYOUT_ROLE, new ShapesXYLayoutEditPolicy());
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, 
+			new ShapesXYLayoutEditPolicy((XYLayout)getContentPane().getLayoutManager()));
 	}
 
 	protected IFigure createFigure() {
@@ -194,11 +197,12 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 		return 0;
 	}
 
+	@SuppressWarnings("unchecked")
 	private int calculateTableLocation() {
 		int j = 0;
-		IFigure figure;
-		for (int i = 0; i < getFigure().getChildren().size(); i++) {
-			figure = (IFigure) getFigure().getChildren().get(i);
+		List<IFigure> children = getFigure().getChildren();
+		for (int i = 0; i < children.size(); i++) {
+			IFigure figure = children.get(i);
 			if (figure.getPreferredSize().width > j) {
 				j = figure.getPreferredSize().width;
 			}
@@ -254,42 +258,6 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 		if (isActive()) {
 			super.deactivate();
 			((ModelElement) getModel()).removePropertyChangeListener(this);
-		}
-	}
-
-	private static class ShapesXYLayoutEditPolicy extends XYLayoutEditPolicy {
-
-		protected Command createChangeConstraintCommand(
-				ChangeBoundsRequest request, EditPart child, Object constraint) {
-			if (child instanceof OrmShapeEditPart
-					&& constraint instanceof Rectangle) {
-				return new ShapeSetConstraintCommand((OrmShape) child
-						.getModel(), request, ((Rectangle) constraint)
-						.getLocation());
-			}
-			return super.createChangeConstraintCommand(request, child,
-					constraint);
-		}
-
-		protected Command createAddCommand(EditPart child, Object constraint) {
-			return null;
-		}
-
-		protected Command createChangeConstraintCommand(EditPart child,
-				Object constraint) {
-			return null;
-		}
-
-		protected Command getCreateCommand(CreateRequest request) {
-			return null;
-		}
-
-		protected Command getDeleteDependantCommand(Request request) {
-			return null;
-		}
-
-		protected EditPolicy createChildEditPolicy(EditPart child) {
-			return new NonResizableEditPolicy();
 		}
 	}
 
@@ -385,8 +353,8 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 					.getEditPartRegistry().get(element);
 			if (part != null) {
 				IFigure fig = part.getFigure();
-				shape[2] = fig.getPreferredSize().width;
-				shape[3] = fig.getPreferredSize().height;
+				shape[2] = fig.getSize().width;//fig.getPreferredSize().width;
+				shape[3] = fig.getSize().height;//fig.getPreferredSize().height;
 			} else {
 				shape[2] = 6000;
 				shape[3] = 1000;
@@ -418,7 +386,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 
 	}
 
-	static class LinkInfo implements ILinkInfo {
+	class LinkInfo implements ILinkInfo {
 		Connection link = null;
 
 		String id = null;
@@ -439,16 +407,14 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 			this.id = id;
 		}
 
-		/**
-		 * 
-		 */
 		public String getTargetID() {
-			if (id != null)
+			if (id != null) {
 				return id;
-			if (link.getTarget() != null)
+			}
+			if (link.getTarget() != null) {
 				return link.getTarget().toString();
-			else
-				return ""; //$NON-NLS-1$
+			}
+			return ""; //$NON-NLS-1$
 		}
 
 		/**
@@ -456,5 +422,40 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 		 */
 		public void setLinkShape(int[] vs) {
 		}
+	}
+
+
+	/**
+	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
+	 */
+	@SuppressWarnings("unchecked")
+	public Object getAdapter(Class adapter) {
+		if (adapter == SnapToHelper.class) {
+			List<SnapToHelper> snapStrategies = new ArrayList<SnapToHelper>();
+			Boolean val = (Boolean)getViewer().getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY);
+			if (val != null && val.booleanValue()) {
+				snapStrategies.add(new SnapToGuides(this));
+			}
+			val = (Boolean)getViewer().getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED);
+			if (val != null && val.booleanValue()) {
+				snapStrategies.add(new SnapToGeometry(this));
+			}
+			val = (Boolean)getViewer().getProperty(SnapToGrid.PROPERTY_GRID_ENABLED);
+			if (val != null && val.booleanValue()) {
+				snapStrategies.add(new SnapToGrid(this));
+			}
+			if (snapStrategies.size() == 0) {
+				return null;
+			}
+			if (snapStrategies.size() == 1) {
+				return snapStrategies.get(0);
+			}
+			SnapToHelper ss[] = new SnapToHelper[snapStrategies.size()];
+			for (int i = 0; i < snapStrategies.size(); i++) {
+				ss[i] = (SnapToHelper)snapStrategies.get(i);
+			}
+			return new CompoundSnapToHelper(ss);
+		}
+		return super.getAdapter(adapter);
 	}
 }

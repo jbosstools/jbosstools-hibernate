@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Group {
-	LayuotConstants constants;
+	LayoutConstants constants;
 	int number;
 	List<Integer> itemList = new ArrayList<Integer>();
 	Item[] allitems = null;
@@ -30,7 +30,7 @@ public class Group {
 		allitems = items;
 	}
 
-	public void setConstants(LayuotConstants constants) {
+	public void setConstants(LayoutConstants constants) {
 		this.constants = constants;
 	}
 
@@ -229,7 +229,7 @@ public class Group {
 		for (int i = 0; i < xDeltas.length; i++) {
 			xDeltas[i] = 0;
 		}
-		// /if(hasSetItems()) return;
+		// /if (hasSetItems()) return;
 		for (int i = 0; i < items.length; i++) {
 			int c = getItem(i).ix;
 			if (c >= xDeltas.length) {

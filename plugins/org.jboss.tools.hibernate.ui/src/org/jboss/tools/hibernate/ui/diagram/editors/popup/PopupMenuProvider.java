@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007-2009 Exadel, Inc. and Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -30,12 +30,17 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.AutoLayoutAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.CollapseAllAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExpandAllAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExportImageAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.OpenMappingAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.OpenSourceAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
 import org.jboss.tools.hibernate.ui.diagram.editors.parts.OrmEditPart;
 
+/**
+ *
+ */
 public class PopupMenuProvider extends ContextMenuProvider {
 	private ActionRegistry actionRegistry;
 
@@ -49,10 +54,8 @@ public class PopupMenuProvider extends ContextMenuProvider {
 		GEFActionConstants.addStandardActionGroups(menu);
 
 		menu.add(new Separator(GEFActionConstants.MB_ADDITIONS));
-
 		IAction action = null;
-
-		if (getViewer().getSelection() instanceof StructuredSelection){
+		if (getViewer().getSelection() instanceof StructuredSelection) {
 			IStructuredSelection selection = (IStructuredSelection) getViewer().getSelection();
 			if (selection != null &&  selection.getFirstElement() instanceof OrmEditPart) {
 				Object obj = ((OrmEditPart)selection.getFirstElement()).getModel();
@@ -62,7 +65,7 @@ public class PopupMenuProvider extends ContextMenuProvider {
 					if (first instanceof PersistentClass
 							|| first.getClass() == Property.class
 							|| first instanceof Table
-							|| first instanceof Column){		
+							|| first instanceof Column) {
 						action = getActionRegistry().getAction(OpenSourceAction.ACTION_ID);
 						appendToGroup(GEFActionConstants.MB_ADDITIONS, action);
 						createMenuItem(getMenu(), action);
@@ -79,6 +82,14 @@ public class PopupMenuProvider extends ContextMenuProvider {
 		appendToGroup(GEFActionConstants.GROUP_VIEW, action);
 		createMenuItem(getMenu(), action);
 		
+		action = getActionRegistry().getAction(CollapseAllAction.ACTION_ID);
+		appendToGroup(GEFActionConstants.GROUP_VIEW, action);
+		createMenuItem(getMenu(), action);
+		
+		action = getActionRegistry().getAction(ExpandAllAction.ACTION_ID);
+		appendToGroup(GEFActionConstants.GROUP_VIEW, action);
+		createMenuItem(getMenu(), action);
+		
 		action = getActionRegistry().getAction(ExportImageAction.ACTION_ID);
 		appendToGroup(GEFActionConstants.MB_ADDITIONS, action);
 		createMenuItem(getMenu(), action);
@@ -90,6 +101,9 @@ public class PopupMenuProvider extends ContextMenuProvider {
 		menu.appendToGroup(
 				GEFActionConstants.GROUP_UNDO, 
 				getAction(ActionFactory.REDO.getId()));
+		menu.appendToGroup(
+				GEFActionConstants.GROUP_VIEW, // target group id
+				getAction(ActionFactory.SELECT_ALL.getId())); // action to add
 	}
 
 	private IAction getAction(String actionId) {

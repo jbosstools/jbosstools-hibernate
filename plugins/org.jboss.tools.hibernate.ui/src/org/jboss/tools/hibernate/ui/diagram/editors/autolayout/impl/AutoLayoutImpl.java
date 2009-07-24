@@ -16,7 +16,7 @@ import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.IDiagramInfo;
 
 
 public class AutoLayoutImpl {
-	LayuotConstants constants = new LayuotConstants();
+	LayoutConstants constants = new LayoutConstants();
     protected Items items;
 
     public AutoLayoutImpl() {}

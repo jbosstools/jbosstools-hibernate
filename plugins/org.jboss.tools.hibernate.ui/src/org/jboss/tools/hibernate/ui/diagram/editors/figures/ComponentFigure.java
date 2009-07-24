@@ -15,6 +15,10 @@ import java.util.List;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
 
+/**
+ *
+ */
+@SuppressWarnings("unchecked")
 public class ComponentFigure extends Figure {
 	
 	private boolean childsHiden = false; 
@@ -31,18 +35,19 @@ public class ComponentFigure extends Figure {
 	}
 	
 	public List getChildren() {
+		List res = super.getChildren();
 		if (childsHiden) {
-			return super.getChildren().subList(0,1);
+			res = res.subList(0, 1);
 		}
-		return super.getChildren();
+		return res;
 	}
 
 	public void setChildsHiden(boolean childsHiden) {
-		
 		this.childsHiden = childsHiden;
-		for (int i = 0; i < getChildren().size(); i++) {
-			if (getChildren().get(i) instanceof TitleLabel) {
-				((TitleLabel)getChildren().get(i)).setHidden(childsHiden);
+		List children = getChildren();
+		for (int i = 0; i < children.size(); i++) {
+			if (children.get(i) instanceof TitleLabel) {
+				((TitleLabel)children.get(i)).setHidden(childsHiden);
 			}
 		}
 	}

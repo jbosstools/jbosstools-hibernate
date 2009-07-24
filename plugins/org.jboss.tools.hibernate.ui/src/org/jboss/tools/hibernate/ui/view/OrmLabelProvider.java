@@ -33,6 +33,9 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 
+/**
+ *
+ */
 public class OrmLabelProvider extends LabelProvider implements IColorProvider, IFontProvider {
 
 	private Map<ImageDescriptor, Image> imageCache = new HashMap<ImageDescriptor, Image>(25);

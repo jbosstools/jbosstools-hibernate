@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -12,17 +12,38 @@ package org.jboss.tools.hibernate.ui.diagram.editors.figures;
 
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.PolylineConnection;
+import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 
+/**
+ * Round angles of base polyline connection.
+ * @see PolylineConnection
+ */
 public class RoundPolylineConnection extends PolylineConnection {
+	
+	private transient Point beg = new Point();
+	private transient Point end = new Point();
+	private transient Point eCorner = new Point();
+	private transient Point bCorner = new Point();
+
+	/**
+	 * @see Shape#outlineShape(Graphics)
+	 */
 	protected void outlineShape(Graphics g) {
+		// this function draw "right angle" polyline connection
+		//super.outlineShape(g);
+		// this function draw rounded polyline connection
+		outlineRoundedShape(g);
+	}
+	
+	/**
+	 * Outline rounded polyline connection
+	 * @param g
+	 */
+	protected void outlineRoundedShape(Graphics g) {
 		PointList points = getPoints();
 		Point point = points.getPoint(0);
-		Point beg = new Point();
-		Point end = new Point();
-		Point eCorner = new Point();
-		Point bCorner = new Point();
 		boolean horiz;
 		beg.x = point.x;
 		beg.y = point.y;
@@ -39,11 +60,11 @@ public class RoundPolylineConnection extends PolylineConnection {
 				Point point3 = points.getPoint(2);
 				Point point4 = points.getPoint(3);
 				if (point1.x < point4.x) {
-					point2.x -= delta/2;
-					point3.x += delta/2;
+					point2.x -= delta / 2;
+					point3.x += delta / 2;
 				} else {
-					point2.x += delta/2;
-					point3.x -= delta/2;
+					point2.x += delta / 2;
+					point3.x -= delta / 2;
 				}
 				g.drawLine(point1, point2);
 				g.drawLine(point2, point3);
@@ -56,12 +77,7 @@ public class RoundPolylineConnection extends PolylineConnection {
 			point = points.getPoint(i);
 			end.x = point.x;
 			end.y = point.y;
-	
-			if (beg.y == end.y)
-				horiz = true;
-			else
-				horiz = false;
-	
+			horiz = (beg.y == end.y);
 			eCorner.x = 0;
 			if (i != 1) {
 				if (horiz) {

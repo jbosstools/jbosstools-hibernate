@@ -37,7 +37,9 @@ import org.jboss.tools.hibernate.ui.diagram.editors.figures.TitleLabel;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmShape;
 
-
+/**
+ * 
+ */
 public class OrmShapeEditPart extends ExpandeableShapeEditPart{
 
 	public void addNotify() {
@@ -89,7 +91,7 @@ public class OrmShapeEditPart extends ExpandeableShapeEditPart{
 	}
 
 	public void performRequest(Request req) {
-		if(RequestConstants.REQ_OPEN.equals(req.getType()) && getModel() instanceof OrmShape) {
+		if (RequestConstants.REQ_OPEN.equals(req.getType()) && getModel() instanceof OrmShape) {
 			((OrmShape)getModel()).refreshHiden();
 		}
 	}
@@ -103,7 +105,7 @@ public class OrmShapeEditPart extends ExpandeableShapeEditPart{
 			int i = figure.getPreferredSize().width;
 			((TitleFigure)figure).setHidden(((Boolean)evt.getNewValue()).booleanValue());
 			((TitleLabel)figure.getChildren().get(0)).setHidden(((Boolean)evt.getNewValue()).booleanValue());
-			if(((Boolean)evt.getNewValue()).booleanValue()) {
+			if (((Boolean)evt.getNewValue()).booleanValue()) {
 				figure.setSize(i,-1);
 			} else {
 				figure.setSize(-1,-1);

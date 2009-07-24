@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.autolayout.impl;
 
-public class LayuotConstants {
+public class LayoutConstants {
 	static int DELTA_X = 200;
 	static int DELTA_Y = 104;
 	static int X_INC = 32;

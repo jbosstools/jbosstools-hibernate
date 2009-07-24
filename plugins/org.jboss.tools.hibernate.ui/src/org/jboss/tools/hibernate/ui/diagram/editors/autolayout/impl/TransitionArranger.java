@@ -69,7 +69,7 @@ public class TransitionArranger {
 				int iy2 = items[is[k]].iy;
 				int miny = Math.min(iy, iy2);
 				int maxy = Math.max(iy, iy2);
-				if(maxy - miny > delta) delta = maxy - miny;
+				if (maxy - miny > delta) delta = maxy - miny;
 				for (int m = 0; m < occ0.length; m++) {
 					for (int y = miny; y <= maxy; y++) {
 						if (occ[m][y] > 0) {
@@ -90,7 +90,9 @@ public class TransitionArranger {
 	private int getMaxX() {
 		int ix = 0;
 		for (int i = 0; i < items.length; i++) {
-			if(items[i].ix > ix) ix = items[i].ix;
+			if (items[i].ix > ix) {
+				ix = items[i].ix;
+			}
 		}
 		return ix;
 	}
@@ -98,7 +100,9 @@ public class TransitionArranger {
 	private int getMaxY() {
 		int iy = 0;
 		for (int i = 0; i < items.length; i++) {
-			if(items[i].iy > iy) iy = items[i].iy;
+			if (items[i].iy > iy) {
+				iy = items[i].iy;
+			}
 		}
 		return iy;
 	}

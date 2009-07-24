@@ -13,7 +13,7 @@ package org.jboss.tools.hibernate.ui.diagram.editors.autolayout.impl;
 import java.util.*;
 
 public class Groups {
-	protected LayuotConstants constants;
+	protected LayoutConstants constants;
 	static int FX = 30, FY = 120;
 	List<Group> groups = new ArrayList<Group>();
 	Item[] items;
@@ -23,7 +23,7 @@ public class Groups {
 	public Groups() {
 	}
 
-	public void setConstants(LayuotConstants constants) {
+	public void setConstants(LayoutConstants constants) {
 		this.constants = constants;
 	}
 

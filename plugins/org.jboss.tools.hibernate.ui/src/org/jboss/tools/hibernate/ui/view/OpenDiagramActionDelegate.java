@@ -78,7 +78,7 @@ public class OpenDiagramActionDelegate implements IObjectActionDelegate {
     				consoleConfig.build();
     				consoleConfig.execute( new ExecutionContext.Command() {
     					public Object execute() {
-    						if(consoleConfig.hasConfiguration()) {
+    						if (consoleConfig.hasConfiguration()) {
     							consoleConfig.getConfiguration().buildMappings();
     						}
     						return consoleConfig;

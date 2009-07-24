@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -22,6 +22,9 @@ import org.eclipse.ui.plugin.*;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.osgi.framework.BundleContext;
 
+/**
+ *
+ */
 public class UiPlugin extends AbstractUIPlugin {
 
 	public final static String ID = "org.jboss.tools.hibernate.ui"; //$NON-NLS-1$
@@ -65,13 +68,13 @@ public class UiPlugin extends AbstractUIPlugin {
 		return ImageDescriptor.createFromURL(url);
 	}
 
-	public static IWorkbenchPage getPage(){
+	public static IWorkbenchPage getPage() {
 	    IWorkbench workbench = PlatformUI.getWorkbench();
 	    IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
 	    return window.getActivePage();
 	}
 
-	public static Shell getShell(){
+	public static Shell getShell() {
 	    IWorkbench workbench = PlatformUI.getWorkbench();
 	    IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
 	    return window.getShell();

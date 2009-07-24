@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -48,10 +48,14 @@ import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
 import org.jboss.tools.hibernate.ui.view.OrmLabelProvider;
 
-
-public class ShapeEditPart extends OrmEditPart implements PropertyChangeListener,  NodeEditPart {
+/**
+ * 
+ */
+public class ShapeEditPart extends OrmEditPart implements PropertyChangeListener, NodeEditPart {
 
 	protected OrmLabelProvider ormLabelProvider = new OrmLabelProvider();
+	protected ChopboxAnchorNearestSide sourceAnchor = null;
+	protected ChopboxAnchorNearestSide targetAnchor = null;
 
 	public void setModel(Object model) {
 		super.setModel(model);
@@ -69,7 +73,6 @@ public class ShapeEditPart extends OrmEditPart implements PropertyChangeListener
 		installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE,  new ShapesSelectionEditPolicy());
 	}
 
-
 	protected IFigure createFigure() {
 		if (getModel() instanceof Shape) {
 			Label label = new Label();
@@ -78,7 +81,7 @@ public class ShapeEditPart extends OrmEditPart implements PropertyChangeListener
 			label.setIcon(ormLabelProvider.getImage(getElement()));
 			label.setLabelAlignment(PositionConstants.LEFT);
 			label.setOpaque(true);
-			TopLineBorder border = new TopLineBorder(1,2+getCastedModel().getIndent(),1,2);
+			TopLineBorder border = new TopLineBorder(1, 2 + getCastedModel().getIndent(), 1, 2);
 			border.setColor(getOrmShapeEditPart().getColor());
 			label.setBorder(border);
 			return label;
@@ -103,7 +106,7 @@ public class ShapeEditPart extends OrmEditPart implements PropertyChangeListener
 	}
 
 	public void performRequest(Request req) {
-		if(RequestConstants.REQ_OPEN.equals(req.getType())) {
+		if (RequestConstants.REQ_OPEN.equals(req.getType())) {
 			if (getCastedModel().getOrmElement() instanceof Column) {
 				if (getCastedModel().getTargetConnections().size() > 0) {
 					getCastedModel().getTargetConnections().get(0).getSource().setFocus();
@@ -143,42 +146,117 @@ public class ShapeEditPart extends OrmEditPart implements PropertyChangeListener
 	}
 
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-		return getConnectionAnchor();
+		if (sourceAnchor == null) {
+			sourceAnchor = createConnectionAnchor(connection, true);
+		} else if (sourceAnchor.getConnection() == null) {
+			sourceAnchor.setConnection(connection);
+		}
+		return sourceAnchor;
 	}
 
 	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-		return getConnectionAnchor();
+		if (targetAnchor == null) {
+			targetAnchor = createConnectionAnchor(connection, false);
+		} else if (targetAnchor.getConnection() == null) {
+			targetAnchor.setConnection(connection);
+		}
+		return targetAnchor;
 	}
 
 	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-		return getConnectionAnchor();
+		if (sourceAnchor == null) {
+			sourceAnchor = createConnectionAnchor(null, true);
+		}
+		return sourceAnchor;
 	}
 
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-		return getConnectionAnchor();
+		if (targetAnchor == null) {
+			targetAnchor = createConnectionAnchor(null, false);
+		}
+		return targetAnchor;
 	}
 
-	protected ConnectionAnchor getConnectionAnchor() {
-		ChopboxAnchor anchor = new ChopboxAnchor(getFigure()){
-			public Point getLocation(Point reference) {
-				Rectangle r = getOwner().getBounds().getCopy();
-				getOwner().translateToAbsolute(r);
-				if (getOwner() instanceof TitleFigure) {
-					r = ((IFigure)getOwner().getChildren().get(0)).getBounds().getCopy();
-					((IFigure)getOwner().getChildren().get(0)).translateToAbsolute(r);
-				}
-				OrmShapeEditPart part = getOrmShapeEditPart();
-				Point p = r.getCenter();
-				if (reference.x < p.x) {
-					p.x -= part.getFigure().getBounds().width / 2;
-				} else {
-					p.x += part.getFigure().getBounds().width / 2;
-				}
-				return p;
-			}
-		};
-		return anchor;
+	protected ChopboxAnchorNearestSide createConnectionAnchor(ConnectionEditPart connection, boolean flagSource) {
+		return new ChopboxAnchorNearestSide(connection, flagSource, getFigure());
 	}
+	
+	public class ChopboxAnchorNearestSide extends ChopboxAnchor {
+		
+		protected ConnectionEditPart base;
+		protected boolean flagSource;
+		
+		public ChopboxAnchorNearestSide(ConnectionEditPart base, boolean flagSource, IFigure owner) {
+			super(owner);
+			this.base = base;
+			this.flagSource = flagSource;
+		}
+
+		public IFigure getOwner() {
+			IFigure ownerFigure = super.getOwner();
+			if (ownerFigure instanceof TitleFigure && ownerFigure.getChildren().size() > 0) {
+				ownerFigure = (IFigure)ownerFigure.getChildren().get(0);
+			}
+			return ownerFigure;
+		}
+		
+		public Point getLocation(Point reference) {
+			Rectangle r = Rectangle.SINGLETON;
+			IFigure ownerFigure = getOwner();
+			r.setBounds(ownerFigure.getBounds());
+			ownerFigure.translateToAbsolute(r);
+			Point result = r.getCenter();
+			boolean bPreferLeft = (reference.x < result.x);
+			/** /
+			// this strategy is necessary for right selection of nearest side
+			// not tested cause: https://bugs.eclipse.org/bugs/show_bug.cgi?id=284153
+			// TODO: test and fix this after eclipse-gef bugfix
+			IFigure figureSource = null;
+			IFigure figureTarget = null;
+			AbstractGraphicalEditPart sepSource = null;
+			AbstractGraphicalEditPart sepTarget = null;
+			if (base != null) {
+				sepSource = (AbstractGraphicalEditPart)base.getSource();
+				sepTarget = (AbstractGraphicalEditPart)base.getTarget();
+				figureSource = sepSource != null ? sepSource.getFigure() : null;
+				figureTarget = sepTarget != null ? sepTarget.getFigure() : null;
+			}
+			if (figureSource != null && figureTarget != null) {
+				Rectangle rcSource = figureSource.getBounds();
+				figureSource.translateToAbsolute(rcSource);
+				Rectangle rcTarget = figureTarget.getBounds();
+				figureTarget.translateToAbsolute(rcTarget);
+				int delta1 = Math.abs(rcSource.x - rcTarget.x);
+				int delta2 = Math.abs(rcSource.x - rcTarget.x - rcTarget.width);
+				int delta3 = Math.abs(rcSource.x + rcSource.width - rcTarget.x);
+				int delta4 = Math.abs(rcSource.x + rcSource.width - rcTarget.x - rcTarget.width);
+				if (delta1 < delta2 && delta1 < delta3 && delta1 < delta4) {
+					bPreferLeft = true;
+				} else if (delta4 < delta1 && delta4 < delta2 && delta4 < delta3) {
+					bPreferLeft = false;
+				} else if (delta2 < delta1 && delta2 < delta3 && delta2 < delta4) {
+					bPreferLeft = (flagSource) ? true : false;
+				} else if (delta3 < delta1 && delta3 < delta2 && delta3 < delta4) {
+					bPreferLeft = (flagSource) ? false : true;
+				}
+			}
+			/**/
+			if (bPreferLeft) {
+				result.x = r.x;
+			} else {
+				result.x = r.x + r.width;
+			}
+			return result;
+		}
+
+		public ConnectionEditPart getConnection() {
+			return base;
+		}
+
+		public void setConnection(ConnectionEditPart connection) {
+			this.base = connection;
+		}
+	};
 
 	protected OrmShapeEditPart getOrmShapeEditPart() {
 		int i = 0;

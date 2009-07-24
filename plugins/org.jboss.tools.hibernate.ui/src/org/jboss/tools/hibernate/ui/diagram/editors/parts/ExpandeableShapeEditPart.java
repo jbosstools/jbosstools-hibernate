@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -30,7 +30,9 @@ import org.jboss.tools.hibernate.ui.diagram.editors.model.ExpandeableShape;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmShape;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
 
-
+/**
+ *
+ */
 public class ExpandeableShapeEditPart extends ShapeEditPart {
 	protected IFigure createFigure() {
 		if (getModel() instanceof Shape) {
@@ -51,7 +53,8 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 	
 	public void activate() {
 		super.activate();
-		if(this.getClass().equals(ExpandeableShapeEditPart.class) && !((ExpandeableShape)getModel()).isReferenceVisible()){
+		if (this.getClass().equals(ExpandeableShapeEditPart.class) && 
+				!((ExpandeableShape)getModel()).isReferenceVisible()) {
 			((ExpandeableShape)getModel()).refHide = true;
 			((ExpandeableShape)getModel()).refreshReferences(getViewer().getContents().getModel());
 			((ExpandeableShape)getModel()).getOrmDiagram().setDirty(false);
@@ -59,7 +62,7 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 	}
 	
 	public void performRequest(Request req) {
-		if(RequestConstants.REQ_OPEN.equals(req.getType())) {
+		if (RequestConstants.REQ_OPEN.equals(req.getType())) {
 			((ExpandeableShape)getModel()).refreshReferences(getViewer().getContents().getModel());
 		}
 	}
@@ -67,21 +70,23 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
 		if (Shape.SHOW_SELECTION.equals(prop)) {
-			if(getFigure().getChildren().size() > 0){
-				((IFigure)getFigure().getChildren().get(0)).setBackgroundColor(getSelectionColor());	
-				((IFigure)getFigure().getChildren().get(0)).setForegroundColor(ResourceManager.getInstance().getColor(new RGB(255,255,255)));
+			IFigure updateFigure;
+			if (getFigure().getChildren().size() > 0) {
+				updateFigure = (IFigure)getFigure().getChildren().get(0);	
 			} else {
-				getFigure().setBackgroundColor(getSelectionColor());	
-				getFigure().setForegroundColor(ResourceManager.getInstance().getColor(new RGB(255,255,255)));
+				updateFigure = getFigure();	
 			}
+			updateFigure.setBackgroundColor(getSelectionColor());	
+			updateFigure.setForegroundColor(ResourceManager.getInstance().getColor(new RGB(255,255,255)));
 		} else if (Shape.HIDE_SELECTION.equals(prop)) {
-			if(getFigure().getChildren().size() > 0){
-				((IFigure)getFigure().getChildren().get(0)).setBackgroundColor(getColor());		
-				((IFigure)getFigure().getChildren().get(0)).setForegroundColor(ResourceManager.getInstance().getColor(new RGB(0,0,0)));
+			IFigure updateFigure;
+			if (getFigure().getChildren().size() > 0) {
+				updateFigure = (IFigure)getFigure().getChildren().get(0);		
 			} else {
-				getFigure().setBackgroundColor(getColor());		
-				getFigure().setForegroundColor(ResourceManager.getInstance().getColor(new RGB(0,0,0)));
+				updateFigure = getFigure();		
 			}
+			updateFigure.setBackgroundColor(getColor());		
+			updateFigure.setForegroundColor(ResourceManager.getInstance().getColor(new RGB(0,0,0)));
 		} else if (ExpandeableShape.SHOW_REFERENCES.equals(prop)) {
 			refreshReferences(getCastedModel(), ((ExpandeableShape)getCastedModel()).isReferenceVisible());
 			((TitleLabel)getFigure()).setHidden(!((ExpandeableShape)getCastedModel()).isReferenceVisible());
@@ -92,7 +97,7 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 	
 	protected ArrayList<OrmShape> referenceList = new ArrayList<OrmShape>();
 	
-	protected void refreshReference(ExpandeableShape shape, boolean visible){
+	protected void refreshReference(ExpandeableShape shape, boolean visible) {
 		OrmShape refShape = shape.getReference();
 		if (refShape == null) {
 			return;
@@ -113,7 +118,7 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 			OrmShape tableShape = refShape.getOrmDiagram().getShape(table);
 			OrmEditPart tablePart = (OrmEditPart)getViewer().getEditPartRegistry().get(tableShape);
 			if (tablePart != null) {
-				if(isTableCanBeInvisible(tablePart, visible)){
+				if (isTableCanBeInvisible(tablePart, visible)) {
 					tablePart.getFigure().setVisible(visible);
 					setLinksVisible(tablePart, visible);
 				}
@@ -168,7 +173,7 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 		shape.getOrmDiagram().update();
 	}
 	
-	private boolean isTableCanBeInvisible(OrmEditPart tablePart, boolean visible){
+	private boolean isTableCanBeInvisible(OrmEditPart tablePart, boolean visible) {
 		if (visible) {
 			return true;
 		}
@@ -182,7 +187,7 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 		return true;
 	}
 	
-	private boolean isShapeCanBeInvisible(OrmEditPart source, OrmEditPart target, boolean visible){
+	private boolean isShapeCanBeInvisible(OrmEditPart source, OrmEditPart target, boolean visible) {
 		if (visible) {
 			return true;
 		}
@@ -249,7 +254,7 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 		return true;
 	}
 	
-	private boolean validateShape(Shape shape){
+	private boolean validateShape(Shape shape) {
 		if (!shape.getClass().equals(OrmShape.class)) {
 			OrmShape ormShape = shape.getOrmShape();
 			if (ormShape != null) {
@@ -259,7 +264,8 @@ public class ExpandeableShapeEditPart extends ShapeEditPart {
 			}
 		}
 		ExpandeableShape expanableShape = shape.getExtendeableShape();
-		if (expanableShape != null && !shape.equals(expanableShape) && !expanableShape.getClass().equals(OrmShape.class)) {
+		if (expanableShape != null && !shape.equals(expanableShape) && 
+				!expanableShape.getClass().equals(OrmShape.class)) {
 			if (!expanableShape.isReferenceVisible()) {
 				return false;
 			}

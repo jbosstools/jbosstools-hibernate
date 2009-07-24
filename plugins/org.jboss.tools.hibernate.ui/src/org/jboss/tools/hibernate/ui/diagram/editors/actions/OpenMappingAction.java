@@ -58,7 +58,7 @@ public class OpenMappingAction extends SelectionAction {
 			Shape shape = iterator.next();
 			Object selection = shape.getOrmElement();
 			if (selection instanceof Property
-					&& ((Property)selection).getPersistentClass() instanceof SpecialRootClass){
+					&& ((Property)selection).getPersistentClass() instanceof SpecialRootClass) {
 				Property compositSel = ((Property)selection);
 				Property parentProperty = ((SpecialRootClass)compositSel.getPersistentClass()).getProperty();
 				try {
@@ -77,7 +77,7 @@ public class OpenMappingAction extends SelectionAction {
 			}
 			Shape shapeParent = null;
 			Object selectionParent = null;
-			if (selection instanceof Column){
+			if (selection instanceof Column) {
 				shapeParent = (Shape)shape.getParent();
 				selectionParent = shapeParent.getOrmElement();
 			}

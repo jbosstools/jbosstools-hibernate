@@ -19,12 +19,14 @@ import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.parts.ScrollableThumbnail;
 import org.eclipse.draw2d.parts.Thumbnail;
+import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
+import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.parts.ContentOutlinePage;
 import org.eclipse.gef.ui.parts.SelectionSynchronizer;
 import org.eclipse.jface.action.Action;
@@ -36,12 +38,17 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.PageBook;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
 import org.jboss.tools.hibernate.ui.diagram.editors.parts.TreePartFactory;
+import org.jboss.tools.hibernate.ui.diagram.editors.popup.PopupMenuProvider;
 
-
+/**
+ *
+ */
 public class DiagramContentOutlinePage extends ContentOutlinePage implements
 		IAdaptable {
 	
@@ -68,16 +75,17 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 	static final int ID_OVERVIEW = 1;
 
 	private Thumbnail thumbnail;
-
-	IPageSite pSite;
+	
+	private ActionRegistry actionRegistry;
 
 	/**
 	 * The constructor
 	 * 
 	 * @param viewer
 	 */
-	public DiagramContentOutlinePage(EditPartViewer viewer) {
+	public DiagramContentOutlinePage(EditPartViewer viewer, ActionRegistry actionRegistry) {
 		super(viewer);
+		this.actionRegistry = actionRegistry;
 	}
 
 	/**
@@ -89,7 +97,7 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 		this.graphicalViewer = graphicalViewer;
 	}
     
-    public void update(GraphicalViewer graphicalViewer){
+    public void update(GraphicalViewer graphicalViewer) {
         if (this.graphicalViewer != null) {
             if (this.graphicalViewer != graphicalViewer) {
                 getSelectionSynchronizer().removeViewer(this.graphicalViewer);
@@ -132,7 +140,16 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 	 */
 	public void init(IPageSite pageSite) {
 		super.init(pageSite);
-		this.pSite = pageSite;
+		ActionRegistry registry = getActionRegistry();
+		if (registry == null) {
+			return;
+		}
+		IActionBars bars = pageSite.getActionBars();
+		String id = ActionFactory.UNDO.getId();
+		bars.setGlobalActionHandler(id, registry.getAction(id));
+		id = ActionFactory.REDO.getId();
+		bars.setGlobalActionHandler(id, registry.getAction(id));
+		bars.updateActionBars();
 	}
 
 	/**
@@ -142,6 +159,11 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 	protected void configureOutlineViewer() {
 		getViewer().setEditDomain(editor.getDefaultEditDomain());
 		getViewer().setEditPartFactory(new TreePartFactory());
+		ContextMenuProvider provider = new PopupMenuProvider(getViewer(), getActionRegistry());
+		getViewer().setContextMenu(provider);
+		getSite().registerContextMenu(
+			"org.jboss.tools.hibernate.ui.diagram.editors.popup.outline.contextmenu", //$NON-NLS-1$
+			provider, getSite().getSelectionProvider());
 		IToolBarManager tbm = getSite().getActionBars().getToolBarManager();
 		showOutlineAction = new Action() {
 			public void run() {
@@ -316,6 +338,10 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 
 	public void setEditor(DiagramViewer editor) {
 		this.editor = editor;
+	}
+
+	protected ActionRegistry getActionRegistry() {
+		return actionRegistry;
 	}
 
 }

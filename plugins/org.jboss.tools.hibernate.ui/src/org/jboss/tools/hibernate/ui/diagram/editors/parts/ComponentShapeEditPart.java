@@ -55,7 +55,8 @@ public class ComponentShapeEditPart extends ExpandeableShapeEditPart {
 	
 	public void activate() {
 		super.activate();
-		if(this.getClass().equals(ComponentShapeEditPart.class) && !((ExpandeableShape)getModel()).isReferenceVisible()){
+		if (this.getClass().equals(ComponentShapeEditPart.class) && 
+				!((ExpandeableShape)getModel()).isReferenceVisible()) {
 			((ComponentShape)getModel()).refHide = true;
 			((ComponentShape)getModel()).refreshChildsHiden(((OrmDiagram)getViewer().getContents().getModel()));
 			((ExpandeableShape)getModel()).getOrmDiagram().setDirty(false);
@@ -63,7 +64,8 @@ public class ComponentShapeEditPart extends ExpandeableShapeEditPart {
 	}
 	
 	public void performRequest(Request req) {
-		if(RequestConstants.REQ_OPEN.equals(req.getType()) && getModel() instanceof ComponentShape) {
+		if (RequestConstants.REQ_OPEN.equals(req.getType()) && 
+				getModel() instanceof ComponentShape) {
 			((ComponentShape)getModel()).refreshChildsHiden(((OrmDiagram)getViewer().getContents().getModel()));
 		}
 	}
@@ -74,7 +76,7 @@ public class ComponentShapeEditPart extends ExpandeableShapeEditPart {
 			int i = figure.getPreferredSize().width;
 			((ComponentFigure)figure).setChildsHiden(((Boolean)evt.getNewValue()).booleanValue());
 			
-			if(((Boolean)evt.getNewValue()).booleanValue()) {
+			if (((Boolean)evt.getNewValue()).booleanValue()) {
 				figure.setSize(i,-1);
 			} else {
 				figure.setSize(-1,-1);

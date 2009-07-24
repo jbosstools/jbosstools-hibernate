@@ -22,9 +22,12 @@ public class DiagramViewerMessages extends NLS {
 		NLS.initializeMessages(BUNDLE_NAME, DiagramViewerMessages.class);
 	}
 
+	public static String ViewMenu_label_text;
 	public static String EditorActionContributor_refresh_visual_mapping;
 	public static String DiagramViewer_diagram_for;
 	public static String AutoLayoutAction_auto_layout;
+	public static String CollapseAllAction_collapse_all;
+	public static String ExpandAllAction_expand_all;
 	public static String ExportImageAction_export_as_image;
 	public static String ExportImageAction_bmp_format;
 	public static String ExportImageAction_error;
@@ -39,4 +42,7 @@ public class DiagramViewerMessages extends NLS {
 	public static String ShapeSetConstraintCommand_move;
 	public static String PartFactory_canot_create_part_for_model_element;
 	public static String PartFactory_null;
+	public static String CreateGuideCommand_Label;
+	public static String DeleteGuideCommand_Label;
+	public static String MoveGuideCommand_Label;
 }

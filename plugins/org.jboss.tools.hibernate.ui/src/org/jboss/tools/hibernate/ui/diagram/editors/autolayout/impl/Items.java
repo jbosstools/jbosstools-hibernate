@@ -17,7 +17,7 @@ import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.ILinkInfo;
 import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.IDiagramInfo;
 
 public class Items {
-	protected LayuotConstants constants;
+	protected LayoutConstants constants;
 	protected IDiagramInfo process;
 	protected Item[] items;
 	protected Map<String, Item> paths = new HashMap<String, Item>();
@@ -27,7 +27,7 @@ public class Items {
 	public Items() {
 	}
 
-	public void setConstants(LayuotConstants constants) {
+	public void setConstants(LayoutConstants constants) {
 		this.constants = constants;
 		groups.setConstants(constants);
 	}

@@ -30,6 +30,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.jdt.core.IJavaProject;
 import org.hibernate.cfg.Configuration;
@@ -52,6 +53,7 @@ import org.hibernate.mapping.Value;
 import org.hibernate.type.EntityType;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
+import org.jboss.tools.hibernate.ui.diagram.rulers.DiagramRuler;
 import org.jboss.tools.hibernate.ui.view.HibernateUtils;
 
 public class OrmDiagram extends ModelElement {
@@ -65,8 +67,14 @@ public class OrmDiagram extends ModelElement {
 	private ConsoleConfiguration consoleConfig;
 	private String[] entityNames;
 	public static final String HIBERNATE_MAPPING_LAYOUT_FOLDER_NAME = "hibernateMapping"; //$NON-NLS-1$
+	protected DiagramRuler leftRuler, topRuler;
+	private boolean rulersVisibility = false;
+	private boolean snapToGeometry = false;
+	private boolean gridEnabled = false;
+	private double zoom = 1.0;
 	
 	public OrmDiagram(ConsoleConfiguration consoleConfig, RootClass ioe) {
+		createRulers();
 		this.consoleConfig = consoleConfig;
 		ormElements = new RootClass[1];
 		ormElements[0] = ioe;
@@ -82,6 +90,7 @@ public class OrmDiagram extends ModelElement {
 	}
 	
 	public OrmDiagram(ConsoleConfiguration consoleConfig, RootClass[] ioe) {
+		createRulers();
 		this.consoleConfig = consoleConfig;
 		ormElements = new RootClass[ioe.length];
 		System.arraycopy(ioe, 0, ormElements, 0, ioe.length);
@@ -99,6 +108,11 @@ public class OrmDiagram extends ModelElement {
 		expandModel(this);
 		load();
 		setDirty(false);
+	}
+
+	protected void createRulers() {
+		leftRuler = new DiagramRuler(false);
+		topRuler = new DiagramRuler(true);
 	}
 	
 	protected class OrmElCompare implements Comparator<RootClass> {
@@ -221,7 +235,29 @@ public class OrmDiagram extends ModelElement {
 		firePropertyChange(REFRESH, null, null);
 	}
 	
-	private void expandModel(ModelElement element){
+	public void collapseAll() {
+		toggleModelState(this, false);
+	}
+	
+	public void expandAll() {
+		toggleModelState(this, true);
+	}
+	
+	private void toggleModelState(ModelElement element, final boolean state) {
+		if (element instanceof OrmShape) {
+			OrmShape ormShape = ((OrmShape)element);
+			boolean refresh = state ? ormShape.isHiden() : !ormShape.isHiden();
+			if (refresh) {
+				ormShape.refreshHiden();
+			}
+		}
+		Iterator<Shape> it = element.getChildrenList().iterator();
+		while (it.hasNext()) {
+			toggleModelState(it.next(), state);
+		}
+	}
+	
+	private void expandModel(ModelElement element) {
 		if (element.getClass().equals(ExpandeableShape.class)) {
 			processExpand((ExpandeableShape)element);
 		} else if (element.getClass().equals(ComponentShape.class)) {
@@ -304,7 +340,7 @@ public class OrmDiagram extends ModelElement {
 	
 
 	@SuppressWarnings("unchecked")
-	private OrmShape getOrCreatePersistentClass(PersistentClass persistentClass, Table componentClassDatabaseTable){
+	private OrmShape getOrCreatePersistentClass(PersistentClass persistentClass, Table componentClassDatabaseTable) {
 		OrmShape classShape = null;
 		if (persistentClass == null) {
 			return classShape;
@@ -414,7 +450,7 @@ public class OrmDiagram extends ModelElement {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private OrmShape getOrCreateDatabaseTable(Table databaseTable){
+	private OrmShape getOrCreateDatabaseTable(Table databaseTable) {
 		OrmShape tableShape = null;
 		if (databaseTable != null) {
 			String tableName = HibernateUtils.getTableName(databaseTable);
@@ -441,7 +477,7 @@ public class OrmDiagram extends ModelElement {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void createConnections(ExpandeableShape persistentClass, ExpandeableShape dbTable){
+	private void createConnections(ExpandeableShape persistentClass, ExpandeableShape dbTable) {
 		Property parentProperty = null;
 		if (persistentClass.getOrmElement() instanceof SpecialRootClass) {
 			parentProperty = ((SpecialRootClass)persistentClass.getOrmElement()).getParentProperty();
@@ -481,7 +517,7 @@ public class OrmDiagram extends ModelElement {
 		}
 	}
 	
-	private boolean isConnectionExist(Shape source, Shape target){
+	private boolean isConnectionExist(Shape source, Shape target) {
 		Connection conn;
 		if (source != null && source.getSourceConnections() != null) {
 			for (int i = 0; i < source.getSourceConnections().size(); i++) {
@@ -541,13 +577,13 @@ public class OrmDiagram extends ModelElement {
 			shape.firePropertyChange(REFRESH, null, null);
 			s.firePropertyChange(REFRESH, null, null);
 		}
-		if(!shape.getParent().equals(s)) {
+		if (!shape.getParent().equals(s)) {
 			shape.setReference(s);
 		}
 		firePropertyChange(REFRESH, null, null);
 	}
 	
-	public void update(){
+	public void update() {
 		firePropertyChange(REFRESH, null, null);
 	}
 
@@ -640,7 +676,7 @@ public class OrmDiagram extends ModelElement {
 				if (el instanceof Column) {
 					Column col = (Column)el;
 					Shape shape = childShape.getChild(col);
-					if (shape != null && !isConnectionExist(csChild1, shape)){
+					if (shape != null && !isConnectionExist(csChild1, shape)) {
 						new Connection(csChild1, shape);
 						csChild1.firePropertyChange(REFRESH, null, null);
 						shape.firePropertyChange(REFRESH, null, null);
@@ -734,7 +770,7 @@ public class OrmDiagram extends ModelElement {
 		return key;
 	}
 	
-	public void propertiesInit(Properties properties, ModelElement shape){
+	public void propertiesInit(Properties properties, ModelElement shape) {
 		boolean state;
 		if (shape instanceof OrmShape) {
 			final OrmShape ormShape = (OrmShape)shape;
@@ -774,8 +810,12 @@ public class OrmDiagram extends ModelElement {
 		}
 	}
 	
-	public void save(){
+	public void save() {
 		Properties properties = new Properties();
+		properties.put("rulersVisibility", "" + rulersVisibility); //$NON-NLS-1$ //$NON-NLS-2$
+		properties.put("snapToGeometry", "" + snapToGeometry); //$NON-NLS-1$ //$NON-NLS-2$
+		properties.put("gridEnabled", "" + gridEnabled); //$NON-NLS-1$ //$NON-NLS-2$
+		properties.put("zoom", "" + zoom); //$NON-NLS-1$ //$NON-NLS-2$
 		storeProperties(properties, this);
 		FileOutputStream fos = null;
 		try {
@@ -823,7 +863,7 @@ public class OrmDiagram extends ModelElement {
 
 	private boolean loadSuccessfull = false;
 	
-	public void load(){
+	public void load() {
 		Properties properties = new Properties();
 		FileInputStream fis = null;
 		try {
@@ -831,6 +871,14 @@ public class OrmDiagram extends ModelElement {
 			if (file.exists()) {
 				fis = new FileInputStream(file);
 				properties.load(fis);
+				String str = properties.getProperty("rulersVisibility", "false"); //$NON-NLS-1$ //$NON-NLS-2$
+				rulersVisibility = Boolean.valueOf(str).booleanValue();
+				str = properties.getProperty("snapToGeometry", "false"); //$NON-NLS-1$ //$NON-NLS-2$
+				snapToGeometry = Boolean.valueOf(str).booleanValue();
+				str = properties.getProperty("gridEnabled", "false"); //$NON-NLS-1$ //$NON-NLS-2$
+				gridEnabled = Boolean.valueOf(str).booleanValue();
+				str = properties.getProperty("zoom", "1.0"); //$NON-NLS-1$ //$NON-NLS-2$
+				zoom = Double.valueOf(str).doubleValue();
 				propertiesInit(properties, this);
 				loadSuccessfull = true;
 			}
@@ -852,7 +900,7 @@ public class OrmDiagram extends ModelElement {
 	}
 	
 		
-	private void setState(Properties properties,String key, boolean value) {
+	private void setState(Properties properties, String key, boolean value) {
 		if (properties.containsKey(key)) {
 			properties.remove(key);
 			properties.put(key, Boolean.valueOf(value).toString());
@@ -896,20 +944,65 @@ public class OrmDiagram extends ModelElement {
 		}
 	}
 	
-	public void setPosition(Properties properties, OrmShape shape){
+	public void setPosition(Properties properties, OrmShape shape) {
 		Point point = shape.getLocation();
 		setPoint(properties, getKey(shape), point);
 	}
 
-	public Point getPosition(Properties properties, OrmShape shape){
+	public Point getPosition(Properties properties, OrmShape shape) {
 		return getPoint(properties, getKey(shape));
 	}
 	
-	public boolean getState(Properties properties, Shape shape){
+	public boolean getState(Properties properties, Shape shape) {
 		return getState(properties, getKey(shape) + ".state"); //$NON-NLS-1$
 	}
 
 	public ConsoleConfiguration getConsoleConfig() {
 		return consoleConfig;
+	}
+	
+	public DiagramRuler getRuler(int orientation) {
+		DiagramRuler result = null;
+		switch (orientation) {
+			case PositionConstants.NORTH :
+				result = topRuler;
+				break;
+			case PositionConstants.WEST :
+				result = leftRuler;
+				break;
+		}
+		return result;
+	}
+
+	public void setRulerVisibility(boolean newValue) {
+		rulersVisibility = newValue;
+	}
+
+	public boolean getRulerVisibility() {
+		return rulersVisibility;
+	}
+
+	public void setGridEnabled(boolean isEnabled) {
+		gridEnabled = isEnabled;
+	}
+
+	public boolean isGridEnabled() {
+		return gridEnabled;
+	}
+
+	public void setSnapToGeometry(boolean isEnabled) {
+		snapToGeometry = isEnabled;
+	}
+
+	public boolean isSnapToGeometryEnabled() {
+		return snapToGeometry;
+	}
+
+	public void setZoom(double zoom) {
+		this.zoom = zoom;
+	}
+
+	public double getZoom() {
+		return zoom;
 	}
 }

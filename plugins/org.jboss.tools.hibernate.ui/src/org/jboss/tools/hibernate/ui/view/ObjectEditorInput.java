@@ -15,7 +15,9 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 import org.hibernate.console.ConsoleConfiguration;
 
-
+/**
+ *
+ */
 public class ObjectEditorInput implements IEditorInput{
 	
 	protected Object fObject;

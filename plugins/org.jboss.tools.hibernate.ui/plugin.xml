@@ -5,7 +5,7 @@
          point="org.eclipse.ui.editors">
       <editor
             class="org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer"
-            contributorClass="org.jboss.tools.hibernate.ui.diagram.editors.EditorActionContributor"
+            contributorClass="org.jboss.tools.hibernate.ui.diagram.editors.DiagramActionBarContributor"
             icon="$nl$/icons/hibernate_small_icon.gif"
             id="org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer"
             name="Hibernate Diagram Viewer">
