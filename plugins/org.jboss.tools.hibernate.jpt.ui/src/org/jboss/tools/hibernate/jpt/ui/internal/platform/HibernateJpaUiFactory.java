@@ -15,11 +15,12 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
-import org.eclipse.jpt.ui.internal.GenericJpaUiFactory;
+import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.persistence.details.GenericPersistenceUnitGeneralComposite;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitConnectionComposite;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitPropertiesComposite;
@@ -29,6 +30,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
+import org.jboss.tools.hibernate.jpt.ui.internal.java.details.HibernateIdMappingComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.java.details.HibernateJavaEntityComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.persistence.details.HibernatePropertiesComposite;
 
@@ -36,7 +39,7 @@ import org.jboss.tools.hibernate.jpt.ui.internal.persistence.details.HibernatePr
  * @author Dmitry Geraskov
  * 
  */
-public class HibernateJpaUiFactory extends GenericJpaUiFactory {
+public class HibernateJpaUiFactory extends BaseJpaUiFactory {
 
 	@SuppressWarnings("unchecked")
 	public ListIterator createPersistenceUnitComposites(
@@ -56,6 +59,15 @@ public class HibernateJpaUiFactory extends GenericJpaUiFactory {
 		pages.add(new HibernatePropertiesComposite(basicHolder, parent, widgetFactory));
 
 		return pages.listIterator();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public JpaComposite createJavaIdMappingComposite(
+			PropertyValueModel<JavaIdMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new HibernateIdMappingComposite((PropertyValueModel<? extends HibernateJavaIdMapping>) subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override

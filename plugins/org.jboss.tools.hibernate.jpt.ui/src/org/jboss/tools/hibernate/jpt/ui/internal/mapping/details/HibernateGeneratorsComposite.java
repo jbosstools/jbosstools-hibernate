@@ -20,7 +20,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGeneratorHolder;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
 
 /**
  * @author Dmitry Geraskov
@@ -68,9 +67,7 @@ public class HibernateGeneratorsComposite extends GeneratorsComposite {
 		// Generic Generator pane
 		new GenericGeneratorsComposite(
 			(Pane<? extends GenericGeneratorHolder>) this,
-			addSubPane(container, 0, genericGeneratorCheckBox.getBorderWidth() + 16),
-			(getSubject() instanceof HibernateJavaIdMapping)
-		);
+			addSubPane(container, 0, genericGeneratorCheckBox.getBorderWidth() + 16));
 		
 	}
 	

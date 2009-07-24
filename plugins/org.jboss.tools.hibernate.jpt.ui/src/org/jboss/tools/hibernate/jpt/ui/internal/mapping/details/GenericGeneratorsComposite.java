@@ -44,6 +44,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGeneratorHolder;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGeneratorImpl;
 import org.jboss.tools.hibernate.jpt.ui.internal.widgets.EnterNameDialog;
 
@@ -79,17 +80,11 @@ import org.jboss.tools.hibernate.jpt.ui.internal.widgets.EnterNameDialog;
  */
 public class GenericGeneratorsComposite extends Pane<GenericGeneratorHolder> {
 	
-	/**
-	 * Shows is Member can contains only 1 @GenericGenerator or not.
-	 */
-	private boolean singleGenerator;
-	
 	private AddRemoveListPane<GenericGeneratorHolder> listPane;
 	private WritablePropertyValueModel<GenericGenerator> generatorHolder;
 
-	public GenericGeneratorsComposite(Pane<? extends GenericGeneratorHolder> parentPane, Composite parent, boolean singleGenerator) {
+	public GenericGeneratorsComposite(Pane<? extends GenericGeneratorHolder> parentPane, Composite parent) {
 		super(parentPane, parent, false);
-		this.singleGenerator = singleGenerator;
 	}
 	
 	private void addGenericGenerator() {
@@ -145,24 +140,6 @@ public class GenericGeneratorsComposite extends Pane<GenericGeneratorHolder> {
 			null//TODO help
 		);
 	}
-
-
-	private ListValueModel<GenericGenerator> buildGenericGeneratorsListHolder() {
-		return new ListAspectAdapter<GenericGeneratorHolder, GenericGenerator>(
-			getSubjectHolder(),
-			GenericGeneratorHolder.GENERIC_GENERATORS_LIST)
-		{
-			@Override
-			protected ListIterator<GenericGenerator> listIterator_() {
-				return this.subject.genericGenerators();
-			}
-
-			@Override
-			protected int size_() {
-				return this.subject.genericGeneratorsSize();
-			}
-		};
-	}
 	
 	private Adapter buildGenericGeneratorsAdapter() {
 
@@ -217,7 +194,7 @@ public class GenericGeneratorsComposite extends Pane<GenericGeneratorHolder> {
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		if (singleGenerator){
+		if (getSubject() instanceof HibernateJavaIdMapping){
 			// Name widgets
 			addLabeledText(
 				container,
@@ -275,6 +252,7 @@ public class GenericGeneratorsComposite extends Pane<GenericGeneratorHolder> {
 																: getSubject().genericGenerators().next();
 
 				generator.setName(value);
+				generatorHolder.setValue(generator);
 			}
 
 			@Override

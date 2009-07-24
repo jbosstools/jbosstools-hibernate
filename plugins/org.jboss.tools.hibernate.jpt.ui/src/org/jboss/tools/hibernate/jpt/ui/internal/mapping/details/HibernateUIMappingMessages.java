@@ -41,6 +41,8 @@ public class HibernateUIMappingMessages extends NLS {
 	public static String EnterNameDialog_labelText;
 	public static String NameStateObject_nameMustBeSpecified;
 	public static String NameStateObject_nameAlreadyExists;
+	public static String HibernateIdMappingComposite_genericGeneratorSection;
+	public static String HibernateIdMappingComposite_genericGeneratorCheckBox;
 
 	private HibernateUIMappingMessages() {}
 
