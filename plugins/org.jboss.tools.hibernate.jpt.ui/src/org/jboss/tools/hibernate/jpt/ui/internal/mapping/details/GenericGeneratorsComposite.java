@@ -19,10 +19,7 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.context.Generator;
-import org.eclipse.jpt.core.context.IdMapping;
-import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.ui.internal.mappings.db.SequenceCombo;
-import org.eclipse.jpt.ui.internal.mappings.details.GenerationComposite;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
@@ -70,9 +67,9 @@ import org.jboss.tools.hibernate.jpt.ui.internal.widgets.EnterNameDialog;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see IdMapping
- * @see SequenceGenerator
- * @see GenerationComposite - The parent container
+ * @see HibernateGeneratorsComposite
+ * @see GenericGenerator
+ * @see HibernateGenerationComposite - The parent container
  * @see SequenceCombo
  *
  * @version 2.0
