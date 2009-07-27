@@ -12,6 +12,7 @@ package org.jboss.tools.hibernate.ui.diagram.editors.popup;
 
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.editparts.AbstractTreeEditPart;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.jface.action.IAction;
@@ -39,7 +40,7 @@ import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
 import org.jboss.tools.hibernate.ui.diagram.editors.parts.OrmEditPart;
 
 /**
- *
+ * Context menu provider for Diagram Viewer and Diagram Outline.
  */
 public class PopupMenuProvider extends ContextMenuProvider {
 	private ActionRegistry actionRegistry;
@@ -56,26 +57,37 @@ public class PopupMenuProvider extends ContextMenuProvider {
 		menu.add(new Separator(GEFActionConstants.MB_ADDITIONS));
 		IAction action = null;
 		if (getViewer().getSelection() instanceof StructuredSelection) {
+			Shape selectedShape = null;
 			IStructuredSelection selection = (IStructuredSelection) getViewer().getSelection();
-			if (selection != null &&  selection.getFirstElement() instanceof OrmEditPart) {
-				Object obj = ((OrmEditPart)selection.getFirstElement()).getModel();
-				if (null != obj && obj instanceof Shape) {
-					Shape shape = (Shape)obj;
-					Object first = shape.getOrmElement();
-					if (first instanceof PersistentClass
-							|| first.getClass() == Property.class
-							|| first instanceof Table
-							|| first instanceof Column) {
-						action = getActionRegistry().getAction(OpenSourceAction.ACTION_ID);
-						appendToGroup(GEFActionConstants.MB_ADDITIONS, action);
-						createMenuItem(getMenu(), action);
-						
-						action = getActionRegistry().getAction(OpenMappingAction.ACTION_ID);
-						appendToGroup(GEFActionConstants.MB_ADDITIONS, action);
-						createMenuItem(getMenu(), action);					
+			if (selection != null) {
+				Object firstElement = selection.getFirstElement();
+				if (firstElement instanceof OrmEditPart) {
+					Object obj = ((OrmEditPart)firstElement).getModel();
+					if (null != obj && obj instanceof Shape) {
+						selectedShape = (Shape)obj;
+					}
+				} else if (firstElement instanceof AbstractTreeEditPart) {
+					Object obj = ((AbstractTreeEditPart)firstElement).getModel();
+					if (null != obj && obj instanceof Shape) {
+						selectedShape = (Shape)obj;
 					} 
-				} 
+				}
 			}			
+			if (selectedShape != null) {
+				Object first = selectedShape.getOrmElement();
+				if (first instanceof PersistentClass
+						|| first.getClass() == Property.class
+						|| first instanceof Table
+						|| first instanceof Column) {
+					action = getActionRegistry().getAction(OpenSourceAction.ACTION_ID);
+					appendToGroup(GEFActionConstants.MB_ADDITIONS, action);
+					createMenuItem(getMenu(), action);
+					
+					action = getActionRegistry().getAction(OpenMappingAction.ACTION_ID);
+					appendToGroup(GEFActionConstants.MB_ADDITIONS, action);
+					createMenuItem(getMenu(), action);					
+				}
+			}
 		}
 		
 		action = getActionRegistry().getAction(AutoLayoutAction.ACTION_ID);
