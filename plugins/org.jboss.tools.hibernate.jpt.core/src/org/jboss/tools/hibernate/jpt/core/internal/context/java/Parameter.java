@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.jpt.core.internal.context;
+package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.context.JpaContextNode;
 
