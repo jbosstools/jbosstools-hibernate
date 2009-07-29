@@ -38,8 +38,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
-import org.jboss.tools.hibernate.jpt.core.internal.context.Parameter;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGenerator;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.Parameter;
 
 /**
  * @author Dmitry Geraskov
