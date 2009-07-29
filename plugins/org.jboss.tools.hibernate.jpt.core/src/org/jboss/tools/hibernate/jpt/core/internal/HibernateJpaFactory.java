@@ -21,12 +21,15 @@ import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntityImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaParameter;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedNativeQueryImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedQueryImpl;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaDiscriminatorFormula;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaDiscriminatorFormulaImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGeneratorImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaParameter;
@@ -45,7 +48,7 @@ public class HibernateJpaFactory extends GenericJpaFactory {
 	
 	@Override
 	public JavaEntity buildJavaEntity(JavaPersistentType parent) {
-		return new HibernateJavaEntity(parent);
+		return new HibernateJavaEntityImpl(parent);
 	}
 	
 	@Override
@@ -67,6 +70,11 @@ public class HibernateJpaFactory extends GenericJpaFactory {
 
 	public JavaParameter buildJavaParameter(JavaGenericGeneratorImpl javaGenericGeneratorImpl) {
 		return new HibernateJavaParameter(javaGenericGeneratorImpl);
+	}
+
+	public JavaDiscriminatorFormula buildJavaDiscriminatorFormula(
+			HibernateJavaEntity hibernateJavaEntity) {
+		return new JavaDiscriminatorFormulaImpl(hibernateJavaEntity);
 	}
 
 }

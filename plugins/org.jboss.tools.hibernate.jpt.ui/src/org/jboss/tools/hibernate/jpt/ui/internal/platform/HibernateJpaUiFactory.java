@@ -70,10 +70,11 @@ public class HibernateJpaUiFactory extends BaseJpaUiFactory {
 		return new HibernateIdMappingComposite((PropertyValueModel<? extends HibernateJavaIdMapping>) subjectHolder, parent, widgetFactory);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public JpaComposite createJavaEntityComposite(PropertyValueModel<JavaEntity> subjectHolder,
 			Composite parent, WidgetFactory widgetFactory) {
-		return new HibernateJavaEntityComposite<HibernateJavaEntity>(subjectHolder, parent, widgetFactory);
+		return new HibernateJavaEntityComposite((PropertyValueModel<? extends HibernateJavaEntity>) subjectHolder, parent, widgetFactory);
 	}
 
 	private PropertyValueModel<BasicHibernateProperties> buildBasicHolder(

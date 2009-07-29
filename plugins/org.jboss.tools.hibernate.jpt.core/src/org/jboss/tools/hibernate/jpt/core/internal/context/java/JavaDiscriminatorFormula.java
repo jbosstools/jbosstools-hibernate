@@ -10,15 +10,19 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateEntity;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.DiscriminatorFormulaAnnotation;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface HibernateJavaEntity extends HibernateEntity, JavaEntity {
-
-	JavaDiscriminatorFormula getDiscriminatorFormula();
+public interface JavaDiscriminatorFormula extends DiscriminatorFormula {
 	
+	void initialize(DiscriminatorFormulaAnnotation dfResource);
+	
+	/**
+	 * Update the JavaParameter context model object to match the DiscriminatorFormulaAnnotation 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(DiscriminatorFormulaAnnotation dfResource);
 }

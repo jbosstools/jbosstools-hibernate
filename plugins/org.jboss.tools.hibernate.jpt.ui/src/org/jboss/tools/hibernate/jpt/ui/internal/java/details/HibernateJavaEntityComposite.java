@@ -10,13 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.java.details;
 
-import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.java.details.JavaEntityComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateQueryContainer;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateGeneratorsComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateQueriesComposite;
@@ -25,14 +25,14 @@ import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateQuerie
  * @author Dmitry Geraskov
  *
  */
-public class HibernateJavaEntityComposite<HibernateJavaEntity> extends JavaEntityComposite {
+public class HibernateJavaEntityComposite extends JavaEntityComposite {
 
 	/**
 	 * @param subjectHolder
 	 * @param parent
 	 * @param widgetFactory
 	 */
-	public HibernateJavaEntityComposite(PropertyValueModel<? extends JavaEntity> subjectHolder,
+	public HibernateJavaEntityComposite(PropertyValueModel<? extends HibernateJavaEntity> subjectHolder,
 			Composite parent, WidgetFactory widgetFactory) {
 		super(subjectHolder, parent, widgetFactory);
 	}
@@ -56,6 +56,11 @@ public class HibernateJavaEntityComposite<HibernateJavaEntity> extends JavaEntit
 		);
 		
 		new HibernateGeneratorsComposite(this, container);
+	}
+	
+	@Override
+	protected void addInheritanceComposite(Composite container) {
+		new HibernateJavaInheritanceComposite(this, container);
 	}
 
 }

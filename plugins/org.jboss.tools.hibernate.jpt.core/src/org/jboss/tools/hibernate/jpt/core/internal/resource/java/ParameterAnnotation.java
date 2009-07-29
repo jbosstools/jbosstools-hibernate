@@ -28,7 +28,7 @@ public interface ParameterAnnotation extends Annotation {
 		
 	/**
 	 * Return the {@link TextRange} for the 'name' element. If the element 
-	 * does not exist return the {@link TextRange} for the QueryHint annotation.
+	 * does not exist return the {@link TextRange} for the ParameterAnnotation annotation.
 	 */
 	TextRange getNameTextRange(CompilationUnit astRoot);
 
@@ -48,7 +48,7 @@ public interface ParameterAnnotation extends Annotation {
 
 	/**
 	 * Return the {@link TextRange} for the 'value' element. If the element 
-	 * does not exist return the {@link TextRange} for the QueryHint annotation.
+	 * does not exist return the {@link TextRange} for the ParameterAnnotation annotation.
 	 */
 	TextRange getValueTextRange(CompilationUnit astRoot);
 

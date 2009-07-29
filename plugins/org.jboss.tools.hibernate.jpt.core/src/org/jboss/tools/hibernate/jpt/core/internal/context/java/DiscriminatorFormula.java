@@ -10,15 +10,16 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateEntity;
+import org.eclipse.jpt.core.context.JpaContextNode;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface HibernateJavaEntity extends HibernateEntity, JavaEntity {
-
-	JavaDiscriminatorFormula getDiscriminatorFormula();
+public interface DiscriminatorFormula extends JpaContextNode {
 	
+	String getValue();
+	void setValue(String value);
+		String VALUE_PROPERTY = "value"; //$NON-NLS-1$
+
 }

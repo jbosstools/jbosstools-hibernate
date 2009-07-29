@@ -86,5 +86,7 @@ public interface Hibernate {
 		String CACHE_MODE_TYPE__PUT = CACHE_MODE_TYPE_ + "PUT"; //$NON-NLS-1$
 		String CACHE_MODE_TYPE__REFRESH = CACHE_MODE_TYPE_ + "REFRESH"; //$NON-NLS-1$
 
+	String DISCRIMINATOR_FORMULA = PACKAGE_ + "DiscriminatorFormula"; //$NON-NLS-1$
+		String DISCRIMINATOR_FORMULA__VALUE = "value"; //$NON-NLS-1$
 	
 }

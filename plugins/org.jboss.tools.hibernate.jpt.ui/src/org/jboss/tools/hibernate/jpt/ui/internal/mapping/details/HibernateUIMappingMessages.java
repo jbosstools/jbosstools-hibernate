@@ -43,6 +43,7 @@ public class HibernateUIMappingMessages extends NLS {
 	public static String NameStateObject_nameAlreadyExists;
 	public static String HibernateIdMappingComposite_genericGeneratorSection;
 	public static String HibernateIdMappingComposite_genericGeneratorCheckBox;
+	public static String HibernateDiscriminatorColumnComposite_formula;
 
 	private HibernateUIMappingMessages() {}
 

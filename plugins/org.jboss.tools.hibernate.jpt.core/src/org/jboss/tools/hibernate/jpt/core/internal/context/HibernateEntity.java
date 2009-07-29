@@ -8,17 +8,20 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.jpt.core.internal.context.java;
+package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateEntity;
+import org.eclipse.jpt.core.context.Entity;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.DiscriminatorFormula;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGeneratorHolder;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateQueryContainer;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface HibernateJavaEntity extends HibernateEntity, JavaEntity {
-
-	JavaDiscriminatorFormula getDiscriminatorFormula();
+public interface HibernateEntity extends Entity,
+	GenericGeneratorHolder, HibernateQueryContainer {
 	
+	DiscriminatorFormula getDiscriminatorFormula();
+
 }
