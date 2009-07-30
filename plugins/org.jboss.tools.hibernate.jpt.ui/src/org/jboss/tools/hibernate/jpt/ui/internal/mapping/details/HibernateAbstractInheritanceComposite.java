@@ -8,7 +8,7 @@
  *     Oracle - initial API and implementation
  * Code copied from org.eclipse.jpt.ui.internal.mappings.details.AbstractInheritanceComposite
  ******************************************************************************/
-package org.jboss.tools.hibernate.jpt.ui.internal.java.details;
+package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
 import java.util.Collection;
 
@@ -120,7 +120,7 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 			JpaHelpContextIds.ENTITY_INHERITANCE_STRATEGY
 		);
 
-		// Discrinator Value widgets
+		// Discriminator Value widgets
 		CCombo discriminatorValueCombo = addEditableCCombo(
 			subPane,
 			buildDiscriminatorValueListHolder(),

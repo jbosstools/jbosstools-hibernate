@@ -31,8 +31,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceU
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
-import org.jboss.tools.hibernate.jpt.ui.internal.java.details.HibernateIdMappingComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.java.details.HibernateJavaEntityComposite;
+import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateIdMappingComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.persistence.details.HibernatePropertiesComposite;
 
 /**

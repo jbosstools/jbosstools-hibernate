@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.jpt.ui.internal.java.details;
+package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Converter;
@@ -30,7 +30,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
-import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateGenerationComposite;
 
 /**
  * @author Dmitry Geraskov

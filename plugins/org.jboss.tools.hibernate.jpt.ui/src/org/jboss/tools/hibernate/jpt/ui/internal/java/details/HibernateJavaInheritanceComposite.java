@@ -15,6 +15,7 @@ import org.eclipse.jpt.ui.internal.java.details.JavaPrimaryKeyJoinColumnsComposi
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
+import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateAbstractInheritanceComposite;
 
 /**
  * @author Dmitry Geraskov
