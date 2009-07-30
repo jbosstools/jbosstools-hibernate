@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
+import org.jboss.tools.hibernate.jpt.core.internal.context.DiscriminatorFormula;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.DiscriminatorFormulaAnnotation;
 
 /**

@@ -38,8 +38,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
+import org.jboss.tools.hibernate.jpt.core.internal.context.DiscriminatorFormula;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateEntity;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.DiscriminatorFormula;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateUIMappingMessages;
 
 /**
