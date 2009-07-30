@@ -75,6 +75,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateEntity;
  * @since 2.0
  */
 public class HibernateDiscriminatorColumnComposite <T extends HibernateEntity> extends FormPane<T> {
+	
+	private WritablePropertyValueModel<DiscriminatorFormula> discriminatorFormulaHolder;
 
 	/**
 	 * Creates a new <code>InheritanceComposite</code>.
@@ -86,6 +88,12 @@ public class HibernateDiscriminatorColumnComposite <T extends HibernateEntity> e
 	                            Composite parent) {
 
 		super(parentPane, parent, false);
+	}
+	
+	@Override
+	protected void initialize() {
+		super.initialize();
+		discriminatorFormulaHolder = new SimplePropertyValueModel<DiscriminatorFormula>();
 	}
 
 	@Override
@@ -128,12 +136,11 @@ public class HibernateDiscriminatorColumnComposite <T extends HibernateEntity> e
 			JptUiMappingsMessages.InheritanceComposite_detailsGroupBox,
 			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
 		);
-		
+
 		new DetailsComposite(this, discriminatorColumnHolder, addSubPane(container, 0, 16));
-		
+
 		new PaneEnabler(buildDiscriminatorColumnEnabledHolder(), this);
 	}
-
 
 	private ColumnCombo<DiscriminatorColumn> addDiscriminatorColumnCombo(
 		Composite container,
@@ -171,14 +178,13 @@ public class HibernateDiscriminatorColumnComposite <T extends HibernateEntity> e
 			protected String getValue() {
 				return getSubject().getSpecifiedName();
 			}
-			
+
 			@Override
 			protected String buildNullDefaultValueEntry() {
 				return JptUiMappingsMessages.NoneSelected;
 			}
 		};
-	}	
-
+	}
 	
 	private PropertyValueModel<DiscriminatorColumn> buildDiscriminatorColumnHolder() {
 		return new PropertyAspectAdapter<Entity, DiscriminatorColumn>(getSubjectHolder()) {
@@ -189,30 +195,39 @@ public class HibernateDiscriminatorColumnComposite <T extends HibernateEntity> e
 		};
 	}
 	
-	
 	private WritablePropertyValueModel<String> buildDiscriminatorFormulaHolder() {
-		return new PropertyAspectAdapter<HibernateEntity, String>(getSubjectHolder(), DiscriminatorFormula.VALUE_PROPERTY) {
+		return new PropertyAspectAdapter<DiscriminatorFormula, String>(discriminatorFormulaHolder, DiscriminatorFormula.VALUE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				DiscriminatorFormula df = this.subject.getDiscriminatorFormula();
-				return df == null ? null : df.getValue();
+				return subject == null ? null : subject.getValue();
+			}
+
+			@Override
+			public void setValue(String value) {
+				if (value != null && !"".equals(value)) { //$NON-NLS-1$
+					DiscriminatorFormula discriminatorFormula = (getSubject().getDiscriminatorFormula() != null 
+							? getSubject().getDiscriminatorFormula()
+							: getSubject().addDiscriminatorFormula());
+					discriminatorFormula.setValue(value);
+					discriminatorFormulaHolder.setValue(discriminatorFormula);
+				}
+				setValue_(value);
 			}
 
 			@Override
 			protected void setValue_(String value) {
-				if ("".equals(value)) value = null; //$NON-NLS-1$
-				DiscriminatorFormula df = this.subject.getDiscriminatorFormula();
-				if (value == null && df != null){
-						this.subject.removeDiscriminatorFormula();
+				if ("".equals(value)) {//$NON-NLS-1$
+					value = null;
+				}
+				if (value == null && subject != null){
+					getSubject().removeDiscriminatorFormula();
+					return;
 				} else {
-					if (df == null){
-						df = this.subject.addDiscriminatorFormula();
-					}
-					df.setValue(value);
+					subject.setValue(value);
 				}
 			}
 		};
-	}	
+	}
 
 	private EnumFormComboViewer<DiscriminatorColumn, DiscriminatorType> addDiscriminatorTypeCombo(
 		Composite container,
