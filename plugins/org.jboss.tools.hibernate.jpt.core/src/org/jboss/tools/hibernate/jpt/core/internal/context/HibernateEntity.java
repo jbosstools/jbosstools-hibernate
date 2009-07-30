@@ -21,6 +21,12 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateQueryCo
 public interface HibernateEntity extends Entity,
 	GenericGeneratorHolder, HibernateQueryContainer {
 	
+	String DISCRIMINATOR_FORMULA_PROPERTY = "discriminatorFormula"; //$NON-NLS-1$
+	
 	DiscriminatorFormula getDiscriminatorFormula();
+	
+	DiscriminatorFormula addDiscriminatorFormula();
+	
+	void removeDiscriminatorFormula();
 
 }

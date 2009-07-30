@@ -56,7 +56,6 @@ implements HibernateJavaEntity {
 	
 	public HibernateJavaEntityImpl(JavaPersistentType parent) {
 		super(parent);
-		this.discriminatorFormula = getJpaFactory().buildJavaDiscriminatorFormula(this);
 		this.genericGenerators = new ArrayList<JavaGenericGenerator>();
 		this.hibernateNamedQueries = new ArrayList<HibernateNamedQuery>();
 		this.hibernateNamedNativeQueries = new ArrayList<HibernateNamedNativeQuery>();
@@ -65,7 +64,7 @@ implements HibernateJavaEntity {
 	@Override
 	public void initialize(JavaResourcePersistentType resourcePersistentType) {
 		super.initialize(resourcePersistentType);
-		this.discriminatorFormula.initialize(getDiscriminatorFormulaResource(resourcePersistentType));
+		this.initializeDiscriminatorFormula();
 		this.initializeGenericGenerators();
 		this.initializeHibernateNamedQueries();
 		this.initializeHibernateNamedNativeQueries();
@@ -108,20 +107,71 @@ implements HibernateJavaEntity {
 				super.correspondingAnnotationNames());
 	}
 	
-	// ********************* DiscriminatorFormula **************
-	
+	// ********************* DiscriminatorFormula **************	
 	public JavaDiscriminatorFormula getDiscriminatorFormula() {
 		return this.discriminatorFormula;
 	}
-
-	private void updateDiscriminatorFormula() {
-		getDiscriminatorFormula().update(getDiscriminatorFormulaResource(this.javaResourcePersistentType));		
+	
+	protected void setDiscriminatorFormula(JavaDiscriminatorFormula newDiscriminatorFormula) {
+		JavaDiscriminatorFormula oldDiscriminatorFormula = this.discriminatorFormula;
+		this.discriminatorFormula = newDiscriminatorFormula;
+		firePropertyChanged(DISCRIMINATOR_FORMULA_PROPERTY, oldDiscriminatorFormula, newDiscriminatorFormula);
+	}
+	
+	public JavaDiscriminatorFormula addDiscriminatorFormula() {
+		if (getDiscriminatorFormula() != null) {
+			throw new IllegalStateException("discriminatorFormula already exists"); //$NON-NLS-1$
+		}
+		this.discriminatorFormula = getJpaFactory().buildJavaDiscriminatorFormula(this);
+		DiscriminatorFormulaAnnotation discriminatorFormulaResource = (DiscriminatorFormulaAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(DiscriminatorFormulaAnnotation.ANNOTATION_NAME);
+		this.discriminatorFormula.initialize(discriminatorFormulaResource);
+		firePropertyChanged(DISCRIMINATOR_FORMULA_PROPERTY, null, this.discriminatorFormula);
+		return this.discriminatorFormula;
+	}
+	
+	public void removeDiscriminatorFormula() {
+		if (getDiscriminatorFormula() == null) {
+			throw new IllegalStateException("discriminatorFormula does not exist, cannot be removed"); //$NON-NLS-1$
+		}
+		JavaDiscriminatorFormula oldDiscriminatorFormula = this.discriminatorFormula;
+		this.discriminatorFormula = null;
+		this.javaResourcePersistentType.removeSupportingAnnotation(DiscriminatorFormulaAnnotation.ANNOTATION_NAME);
+		firePropertyChanged(DISCRIMINATOR_FORMULA_PROPERTY, oldDiscriminatorFormula,null);
+	}
+	
+	protected void initializeDiscriminatorFormula() {
+		DiscriminatorFormulaAnnotation discriminatorFormulaResource = getDiscriminatorFormulaResource();
+		if (discriminatorFormulaResource != null) {
+			this.discriminatorFormula = buildDiscriminatorFormula(discriminatorFormulaResource);
+		}
 	}
 
-	public DiscriminatorFormulaAnnotation getDiscriminatorFormulaResource(JavaResourcePersistentType resourcePersistentType) {
-		return (DiscriminatorFormulaAnnotation) resourcePersistentType.getNonNullSupportingAnnotation(DiscriminatorFormulaAnnotation.ANNOTATION_NAME);
+	protected void updateDiscriminatorFormula() {
+		DiscriminatorFormulaAnnotation discriminatorFormulaResource = getDiscriminatorFormulaResource();
+		if (discriminatorFormulaResource == null) {
+			if (getDiscriminatorFormula() != null) {
+				setDiscriminatorFormula(null);
+			}
+		}
+		else {
+			if (getDiscriminatorFormula() == null) {
+				setDiscriminatorFormula(buildDiscriminatorFormula(discriminatorFormulaResource));
+			}
+			else {
+				getDiscriminatorFormula().update(discriminatorFormulaResource);
+			}
+		}
 	}
 
+	public DiscriminatorFormulaAnnotation getDiscriminatorFormulaResource() {
+		return (DiscriminatorFormulaAnnotation) this.javaResourcePersistentType.getSupportingAnnotation(DiscriminatorFormulaAnnotation.ANNOTATION_NAME);
+	}
+	
+	protected JavaDiscriminatorFormula buildDiscriminatorFormula(DiscriminatorFormulaAnnotation discriminatorFormulaResource) {
+		JavaDiscriminatorFormula discriminatorFormula = getJpaFactory().buildJavaDiscriminatorFormula(this);
+		discriminatorFormula.initialize(discriminatorFormulaResource);
+		return discriminatorFormula;
+	}
 	// ********************* GenericGenerators **************
 
 	public GenericGenerator addGenericGenerator(int index) {

@@ -20,7 +20,6 @@ import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
@@ -127,7 +126,7 @@ public class DiscriminatorFormulaAnnotationImpl extends SourceAnnotation<Type> i
 		}
 
 		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
-			return new NullDiscriminatorFormulaAnnotation((JavaResourcePersistentType) parent);
+			throw new UnsupportedOperationException();
 		}
 
 	}

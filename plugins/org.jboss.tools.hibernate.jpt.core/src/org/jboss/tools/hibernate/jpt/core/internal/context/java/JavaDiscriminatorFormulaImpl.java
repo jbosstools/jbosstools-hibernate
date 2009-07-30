@@ -14,6 +14,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.jboss.tools.hibernate.jpt.core.internal.context.DiscriminatorFormula;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.DiscriminatorFormulaAnnotation;
 
 /**
@@ -49,7 +50,7 @@ public class JavaDiscriminatorFormulaImpl extends AbstractJavaJpaContextNode imp
 		String oldValue = this.value;
 		this.value = newValue;
 		this.dfResource.setValue(newValue);
-		firePropertyChanged(Parameter.VALUE_PROPERTY, oldValue, newValue);
+		firePropertyChanged(DiscriminatorFormula.VALUE_PROPERTY, oldValue, newValue);
 	}
 
 	

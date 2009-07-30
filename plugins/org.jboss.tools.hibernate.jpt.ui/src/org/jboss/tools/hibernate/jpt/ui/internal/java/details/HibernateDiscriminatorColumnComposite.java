@@ -109,11 +109,10 @@ public class HibernateDiscriminatorColumnComposite <T extends HibernateEntity> e
 		);
 		
 		// Formula widgets
-		addLabeledMultiLineText(
+		addLabeledText(
 			discriminatorColumnContainer,
 			HibernateUIMappingMessages.HibernateDiscriminatorColumnComposite_formula,
 			buildDiscriminatorFormulaHolder(),
-			2,
 			null//TODO help
 		);
 
@@ -196,12 +195,22 @@ public class HibernateDiscriminatorColumnComposite <T extends HibernateEntity> e
 		return new PropertyAspectAdapter<HibernateEntity, String>(getSubjectHolder(), DiscriminatorFormula.VALUE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return this.subject.getDiscriminatorFormula().getValue();
+				DiscriminatorFormula df = this.subject.getDiscriminatorFormula();
+				return df == null ? null : df.getValue();
 			}
 
 			@Override
 			protected void setValue_(String value) {
-				this.subject.getDiscriminatorFormula().setValue(value);
+				if ("".equals(value)) value = null; //$NON-NLS-1$
+				DiscriminatorFormula df = this.subject.getDiscriminatorFormula();
+				if (value == null && df != null){
+						this.subject.removeDiscriminatorFormula();
+				} else {
+					if (df == null){
+						df = this.subject.addDiscriminatorFormula();
+					}
+					df.setValue(value);
+				}
 			}
 		};
 	}	
