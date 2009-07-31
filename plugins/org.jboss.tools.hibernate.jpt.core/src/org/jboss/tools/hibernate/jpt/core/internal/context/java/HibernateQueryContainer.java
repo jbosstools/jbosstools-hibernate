@@ -13,6 +13,8 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.core.context.QueryContainer;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
 
 /**
  * @author Dmitry Geraskov

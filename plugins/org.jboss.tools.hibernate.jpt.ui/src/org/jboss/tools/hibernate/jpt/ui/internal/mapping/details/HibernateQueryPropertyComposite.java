@@ -28,9 +28,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.CacheModeType;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.FlushModeType;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateQuery;
 
 /**

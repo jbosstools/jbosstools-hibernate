@@ -88,5 +88,8 @@ public interface Hibernate {
 
 	String DISCRIMINATOR_FORMULA = PACKAGE_ + "DiscriminatorFormula"; //$NON-NLS-1$
 		String DISCRIMINATOR_FORMULA__VALUE = "value"; //$NON-NLS-1$
+		
+	String GENERATED = PACKAGE_ + "Generated"; //$NON-NLS-1$
+		String GENERATED__VALUE = "value"; //$NON-NLS-1$
 	
 }

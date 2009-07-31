@@ -26,7 +26,7 @@ import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGenerator;
+import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGeneratorHolder;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
 

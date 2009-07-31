@@ -29,8 +29,8 @@ import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedNativeQuery;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedQuery;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
 
 /**
  * @author Dmitry Geraskov
