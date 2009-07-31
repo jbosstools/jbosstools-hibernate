@@ -12,6 +12,8 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaNamedQuery;
+import org.jboss.tools.hibernate.jpt.core.internal.context.CacheModeType;
+import org.jboss.tools.hibernate.jpt.core.internal.context.FlushModeType;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQueryAnnotation;
 

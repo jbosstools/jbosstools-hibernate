@@ -11,8 +11,6 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
 import org.eclipse.jpt.core.context.Entity;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGeneratorHolder;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateQueryContainer;
 
 /**
  * @author Dmitry Geraskov

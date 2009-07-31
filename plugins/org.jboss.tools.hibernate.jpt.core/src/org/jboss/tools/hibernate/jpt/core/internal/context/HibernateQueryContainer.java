@@ -8,13 +8,11 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.jpt.core.internal.context.java;
+package org.jboss.tools.hibernate.jpt.core.internal.context;
 
 import java.util.ListIterator;
 
 import org.eclipse.jpt.core.context.QueryContainer;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
 
 /**
  * @author Dmitry Geraskov

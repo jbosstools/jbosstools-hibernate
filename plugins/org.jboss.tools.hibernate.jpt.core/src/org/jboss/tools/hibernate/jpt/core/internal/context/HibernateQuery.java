@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.jpt.core.internal.context.java;
+package org.jboss.tools.hibernate.jpt.core.internal.context;
 
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.utility.model.Model;

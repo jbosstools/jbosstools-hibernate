@@ -11,7 +11,6 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
 import org.eclipse.jpt.core.context.java.JavaNamedQuery;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQueryAnnotation;
 
 /**

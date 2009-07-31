@@ -8,12 +8,11 @@
   * Contributor:
   *     Red Hat, Inc. - initial API and implementation
   ******************************************************************************/
-package org.jboss.tools.hibernate.jpt.core.internal.context.java;
+package org.jboss.tools.hibernate.jpt.core.internal.context;
 
 import java.util.ListIterator;
 
 import org.eclipse.jpt.core.context.GeneratorHolder;
-import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
 
 /**
  * @author Dmitry Geraskov

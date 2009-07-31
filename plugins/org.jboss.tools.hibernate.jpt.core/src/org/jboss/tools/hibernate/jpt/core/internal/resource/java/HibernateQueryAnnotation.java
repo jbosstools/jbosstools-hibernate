@@ -12,8 +12,8 @@ package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.CacheModeType;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.FlushModeType;
+import org.jboss.tools.hibernate.jpt.core.internal.context.CacheModeType;
+import org.jboss.tools.hibernate.jpt.core.internal.context.FlushModeType;
 
 /**
  * @author Dmitry Geraskov

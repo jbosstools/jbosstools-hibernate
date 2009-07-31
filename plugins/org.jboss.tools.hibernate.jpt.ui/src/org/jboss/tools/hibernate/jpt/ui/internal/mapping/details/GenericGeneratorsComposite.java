@@ -40,7 +40,7 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGeneratorHolder;
+import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGeneratorHolder;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGeneratorImpl;
 import org.jboss.tools.hibernate.jpt.ui.internal.widgets.EnterNameDialog;

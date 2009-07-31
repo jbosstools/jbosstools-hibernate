@@ -27,7 +27,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGeneratorHolder;
+import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGeneratorHolder;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
 
 /**

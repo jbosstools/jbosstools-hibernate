@@ -34,9 +34,9 @@ import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
+import org.jboss.tools.hibernate.jpt.core.internal.context.CacheModeType;
+import org.jboss.tools.hibernate.jpt.core.internal.context.FlushModeType;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.CacheModeType;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.FlushModeType;
 
 /**
  * @author Dmitry Geraskov

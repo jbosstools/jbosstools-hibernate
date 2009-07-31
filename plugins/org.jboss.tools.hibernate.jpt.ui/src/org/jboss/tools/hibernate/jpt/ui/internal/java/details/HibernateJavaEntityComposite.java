@@ -16,8 +16,8 @@ import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateQueryContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateQueryContainer;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateGeneratorsComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateQueriesComposite;
 
