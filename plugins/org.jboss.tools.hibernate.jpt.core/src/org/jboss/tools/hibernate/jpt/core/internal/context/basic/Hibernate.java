@@ -1,5 +1,5 @@
 /*******************************************************************************
-  * Copyright (c) 2007-2008 Red Hat, Inc.
+  * Copyright (c) 2008-2009 Red Hat, Inc.
   * Distributed under license by Red Hat, Inc. All rights reserved.
   * This program is made available under the terms of the
   * Eclipse Public License v1.0 which accompanies this distribution,
@@ -91,5 +91,11 @@ public interface Hibernate {
 		
 	String GENERATED = PACKAGE_ + "Generated"; //$NON-NLS-1$
 		String GENERATED__VALUE = "value"; //$NON-NLS-1$
+		
+	String GENERATION_TIME = PACKAGE_ + "GenerationTime"; //$NON-NLS-1$
+		String GENERATION_TIME_ = GENERATION_TIME + '.';
+		String GENERATION_TIME__NEVER = GENERATION_TIME_ + "NEVER"; //$NON-NLS-1$
+		String GENERATION_TIME__INSERT = GENERATION_TIME_ + "INSERT"; //$NON-NLS-1$
+		String GENERATION_TIME__ALWAYS = GENERATION_TIME_ + "ALWAYS"; //$NON-NLS-1$
 	
 }
