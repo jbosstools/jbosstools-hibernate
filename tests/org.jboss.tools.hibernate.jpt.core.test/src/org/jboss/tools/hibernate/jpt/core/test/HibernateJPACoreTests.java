@@ -15,6 +15,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -53,12 +55,10 @@ import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaPlatform;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaPlatformFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.JPAPostInstallFasetListener;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.GenericGeneratorAnnotationImpl;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorAnnotationImpl;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
-
-import junit.framework.TestCase;
 
 /**
  * JUnit plugin test class for core Hibernate JPA platform
@@ -215,7 +215,7 @@ public class HibernateJPACoreTests extends TestCase {
 		//resourceAttributesList2.add(jrpa1);
 		//
 		final GenericGeneratorAnnotationImpl genericGeneratorAnnotation = new GenericGeneratorAnnotationImpl(
-				javaResourcePersistentType, null);
+				javaResourcePersistentType, null, null, null);
 		//
 		final InputStream classPathIStream = new MockClassPathInputStream();
 		final InputStream javaIStream = new MockJavaInputStream();
