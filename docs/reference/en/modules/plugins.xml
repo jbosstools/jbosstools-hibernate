@@ -137,7 +137,7 @@
   </section>
 
   <section id="console_conf">
-    <title>Creating a Hibernate Console Configuration</title>
+    <title>Hibernate Console Configuration</title>
 
     <para>A Console configuration describes how the <property>Hibernate plugin</property> should
       configure <property>Hibernate</property> and what configuration files, including which
@@ -145,7 +145,10 @@
       query prototyping, reverse engineering and code generation. You can have multiple named
       console configurations. Normally you would just need one per project, but more is definitely
       possible if your project requires this.</para>
-
+ <section id="creat_console_conf">
+   <title>Creating a Hibernate Console Configuration</title>
+ 
+    
     <para>You create a console configuration by running the <property>Console Configuration
         Wizard</property>, shown in the following screenshot. The same wizard will also be used if
       you are coming from the <emphasis>
@@ -620,7 +623,185 @@
 
       </mediaobject>
     </figure>
-  </section>
+ </section>
+    <section id="modif_console_conf">
+      <title>Modifying a Hibernate Console Configuration
+      </title>
+      <para>When you created a hibernate console configuration you can modify it in 2 ways:
+      </para>
+      
+      <itemizedlist>
+        <listitem>
+          <para>right click on the configuration in
+            <emphasis>
+              <property>Hibernate Configurations View->Edit Configuration
+              </property>
+            </emphasis>.</para>
+            
+            <figure>
+              <title>Opening Edit Configuration Wizard</title>
+              
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="images/plugins/plugins_4_c.png"/>
+                </imageobject>
+              </mediaobject>
+            </figure>
+          <para> After clicking you will see the Edit Configuration Wizard that is similar to  <emphasis>
+              <property>Create Console Configuration</property>
+            </emphasis>,described in <link
+              linkend="creat_console_conf">Creating a Hibernate Console Configuration section</link>.
+          </para>
+        </listitem>
+        <listitem><para>use Properties view for modifying some of Console Configuration properties.</para>
+          <figure>
+            <title>Properties View</title>
+            
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="images/plugins/plugins_4_b.png"/>
+              </imageobject>
+            </mediaobject>
+          </figure>
+          <para>The following table describes the available settings in the Properties view. Most properties are changeable by left click but some are not.
+          
+          <table>
+            <title>Properties</title>
+            
+            <tgroup cols="3">
+              <colspec colnum="1" align="left" colwidth="1*"/>
+              
+              <colspec colnum="2" colwidth="3*"/>
+              
+              <colspec colnum="3" align="left" colwidth="1*"/>
+              
+              <thead>
+                <row>
+                  <entry align="center">
+                    <para>Property</para>
+                  </entry>
+                  
+                  <entry align="center">
+                    <para>Description</para>
+                  </entry>
+                  
+                  <entry align="center">
+                    <para>Is Changeable</para>
+                  </entry>
+                </row>
+              </thead>
+              
+              <tbody>
+                <row>
+                  <entry>
+                    <para>Additional mapping files </para>
+                  </entry>
+                  
+                  <entry>
+                    <para>List of additional mapping files that should be loaded.
+                    </para>
+                  </entry>
+                  
+                  <entry>
+                    <para>False</para>
+                  </entry>
+                </row>  
+                <row>
+                  <entry>
+                    <para>Configuration file</para>
+                  </entry>
+                  
+                  <entry>
+                    <para>Path to a hibernate.cfg.xml file</para>
+                  </entry>
+                  
+                  <entry>
+                    <para>False</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Connection</para>
+                  </entry>
+                  
+                  <entry>
+                    <para>DTP provided connection that you can use instead of what is in cfg.xml and jpa
+                      persistence.xml. It&apos;s possible to use either already configured hibernate or
+                      JPA connection or specify a new one here.</para>
+                  </entry>
+                  
+                  <entry>
+                    <para>True</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Name</para>
+                  </entry>
+                  
+                  <entry>
+                    <para>The unique name of the console configuration</para>
+                  </entry>
+                  
+                  <entry>
+                    <para>True</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Project</para>
+                  </entry>
+                  
+                  <entry>
+                    <para>The name of a java project which classpath should be used in the console
+                      configuration</para>
+                  </entry>
+                  
+                  <entry>
+                    <para>True</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Properties file</para>
+                  </entry>
+                  
+                  <entry>
+                    <para>Path to a hibernate.properties file</para>
+                  </entry>
+                  
+                  <entry>
+                    <para>False</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Type</para>
+                  </entry>
+                  
+                  <entry>
+                    <para>Choose between &quot;CORE&quot;, &quot;ANNOTATIONS&quot; and
+                      &quot;JPA&quot; according to the method of relational mapping you want to use. Note that the two latter requires running Eclipse IDE with
+                      a JDK 5 runtime, otherwise you will get classloading and/or version errors.</para>
+                  </entry>
+                  
+                  <entry>
+                    <para>True</para>
+                  </entry>
+                </row>
+            
+              </tbody>
+            </tgroup>
+          </table>
+          
+        </para>
+        </listitem>
+      </itemizedlist>
+    </section>
+    
+    </section>
+    
+  
 
   <section id="refeng_codegen" role="updated">
     <title>Reverse Engineering and Code Generation</title>
@@ -1850,7 +2031,7 @@
     <section>
       <title>Properties View</title>
 
-      <para>As you can see on the figure, <property>Properties view</property> shows the number of
+      <para>As you can see on the figure,when clicking on class/entity <property>Properties view</property> shows the number of
         query results as well as the time of executing.</para>
 
       <figure>
@@ -1883,6 +2064,9 @@
           </imageobject>
         </mediaobject>
       </figure>
+      <para>You can also use <property>Properties view</property> when clicking on the configuration 
+        itself in Hibernate Configuration View( <link
+          linkend="modif_console_conf">Modifying a Hibernate Console Configuration section</link>). </para>
     </section>
   </section>
   <section id="jpa_annotations">

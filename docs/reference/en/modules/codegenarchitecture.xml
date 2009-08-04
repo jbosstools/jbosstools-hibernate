@@ -97,8 +97,8 @@
   <section>
     <title>Exporters</title>
 
-    <para>Code generation is done in so called Exporters. An <literal>Exporter</literal> is handed a
-      Hibernate Meta Model represented as a <literal>Configuration</literal> instance and it is then
+    <para>Code generation is done in so called Exporters. An <code>Exporter</code> is handed a
+      Hibernate Meta Model represented as a <code>Configuration</code> instance and it is then
       the job of the exporter to generate a set of code artifacts.</para>
 
     <para>The tools provides a default set of Exporter's which can be used in both Ant and the
