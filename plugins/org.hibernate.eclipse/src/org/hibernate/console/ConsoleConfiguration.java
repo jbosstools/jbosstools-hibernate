@@ -174,7 +174,9 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	protected void refreshProfile(IConnectionProfile profile) {
 		// refresh profile (refresh jpa connection):
 		// get fresh information about current db structure and update error markers  
-		profile.disconnect();
+		if (profile.getConnectionState() == IConnectionProfile.CONNECTED_STATE){
+			profile.disconnect();			
+		}
 		profile.connect(null);
 	}
 
