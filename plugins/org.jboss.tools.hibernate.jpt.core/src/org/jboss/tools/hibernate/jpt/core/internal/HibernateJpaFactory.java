@@ -10,6 +10,7 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal;
 
+import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
@@ -22,6 +23,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEmbeddable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntityImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
@@ -75,6 +77,10 @@ public class HibernateJpaFactory extends GenericJpaFactory {
 	public JavaDiscriminatorFormula buildJavaDiscriminatorFormula(
 			HibernateJavaEntity hibernateJavaEntity) {
 		return new JavaDiscriminatorFormulaImpl(hibernateJavaEntity);
+	}
+	
+	public JavaEmbeddable buildJavaEmbeddable(JavaPersistentType parent) {
+		return new HibernateJavaEmbeddable(parent);
 	}
 
 }
