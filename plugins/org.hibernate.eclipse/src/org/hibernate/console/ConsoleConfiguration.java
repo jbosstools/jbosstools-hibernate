@@ -684,7 +684,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 
 	private Configuration configureConnectionProfile(Configuration localCfg) {
 		String connectionProfile = prefs.getConnectionProfileName();
-		if(connectionProfile==null) {
+		if(connectionProfile==null || "".equals(connectionProfile)) {//$NON-NLS-1$
 			return localCfg;
 		}
 		
