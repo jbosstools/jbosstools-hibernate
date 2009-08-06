@@ -48,6 +48,7 @@ import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.DriverClassHelpers;
 import org.hibernate.tool.hbm2x.StringUtils;
 import org.hibernate.util.StringHelper;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
 
 /**
@@ -115,7 +116,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 				connectionProfileName.setEnabled(!selectMethod.getSelection());
 				schemaName.setEnabled(!selectMethod.getSelection());
 				dialectName.setEnabled(!selectMethod.getSelection());
-				dialogChanged();				
+				dialogChanged();		
 			}});
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = numColumns;
@@ -130,14 +131,15 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 			names[i] = configuration.getName();
 		}
 		consoleConfigurationName.setItems(names);
+		consoleConfigurationName.setText(HibernateJptPlugin.getDefaultConsoleConfiguration(jpaProject));
         consoleConfigurationName.setDialogFieldListener(fieldlistener);
-        consoleConfigurationName.doFillIntoGrid(container, numColumns);
-        
+        consoleConfigurationName.doFillIntoGrid(container, numColumns);        
+
         createDBGroup(container, numColumns);        
-		
+
 		setControl(container);
 	}
-
+	
 	/**
 	 * @param parent
 	 */
