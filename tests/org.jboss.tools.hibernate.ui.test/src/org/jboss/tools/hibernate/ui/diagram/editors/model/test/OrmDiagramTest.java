@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
@@ -40,6 +41,7 @@ public class OrmDiagramTest extends TestCase {
 	public void testLoadAndSave() {
 		
 		final ConsoleConfiguration consoleConfig = context.mock(ConsoleConfiguration.class);
+		final Configuration config = context.mock(Configuration.class);
 		final RootClass ioe = context.mock(RootClass.class);
 		final List<Object> emptyList = new ArrayList<Object>();
 		final Iterator<Object> emptyListIterator = emptyList.iterator();
@@ -48,6 +50,9 @@ public class OrmDiagramTest extends TestCase {
 			{
 				oneOf(ioe).getEntityName();
 				will(returnValue("testEntityName")); //$NON-NLS-1$
+				
+				allowing(consoleConfig).getConfiguration();
+				will(returnValue(config));
 
 				oneOf(ioe).getEntityName();
 				will(returnValue("")); //$NON-NLS-1$
@@ -90,7 +95,7 @@ public class OrmDiagramTest extends TestCase {
 			}
 		});
 		final OrmDiagram ormDiagram = new OrmDiagram(consoleConfig, ioe);
-		ormDiagram.save();
+		ormDiagram.saveInFile();
 		// test is the folder created
 		File folder = new File(ormDiagram.getStoreFolderPath().toOSString());
 		assertTrue(folder.exists() && folder.isDirectory());

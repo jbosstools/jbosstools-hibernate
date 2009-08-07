@@ -12,6 +12,7 @@ package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
@@ -22,26 +23,39 @@ import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.ui.view.HibernateUtils;
 import org.jboss.tools.hibernate.ui.view.OrmLabelProvider;
 
-public class Shape extends ModelElement {
+/**
+ * Shape which represents particular Hibernate element on the diagram.
+ * 
+ * @author some modifications from Vitali
+ */
+public class Shape extends BaseElement {
 	
+	public static final String SET_FOCUS = "setFocus"; //$NON-NLS-1$
+
+	/**
+	 * left indent for property string on diagram
+	 */
 	private int indent = 0;
-		
+	/**
+	 * source and target connections to connect shapes with directed edges.
+	 */
 	private List<Connection> sourceConnections = new ArrayList<Connection>();
 	private List<Connection> targetConnections = new ArrayList<Connection>();
-	
-	public static final String HIDE_SELECTION = "hide selection"; //$NON-NLS-1$
-	public static final String SHOW_SELECTION = "show selection"; //$NON-NLS-1$
-	public static final String SET_FOCUS = "set focus"; //$NON-NLS-1$
-	
+	/**
+	 * orm element which is behind the shape
+	 */
 	private Object ormElement;
+	/**
+	 * only one BaseElement offspring has a parent - this is Shape
+	 */
+	private BaseElement parent;
 	
 	private static OrmLabelProvider labelProvider = new OrmLabelProvider();
-		
 	private static IPropertyDescriptor[] descriptors_property;
 	private static IPropertyDescriptor[] descriptors_column;
 
 	/**
-	 * Property set
+	 * Hibernate properties set
 	 */
 	private static final String PROPERTY_NAME = "name"; //$NON-NLS-1$
 	private static final String PROPERTY_TYPE = "type"; //$NON-NLS-1$
@@ -91,49 +105,22 @@ public class Shape extends ModelElement {
 	protected Shape(Object ioe) {
 		ormElement = ioe;
 	}
-
-	private ModelElement parent;
 	
-	public ModelElement getParent() {
+	@Override
+	public BaseElement getParent() {
 		return parent;
 	}
 	
-	public void setParent(ModelElement element) {
+	public void setParent(BaseElement element) {
 		parent = element;
 	}
 	
 	public OrmDiagram getOrmDiagram() {
 		OrmDiagram res = null;
-		ModelElement el = this;
+		BaseElement el = this;
 		while (el != null) {
 			if (el instanceof OrmDiagram) {
 				res = (OrmDiagram)el;
-				break;
-			}
-			el = el.getParent();
-		}
-		return res;
-	}
-	
-	public ExpandeableShape getExtendeableShape() {
-		ExpandeableShape res = null;
-		ModelElement el = this;
-		while (el != null) {
-			if (el instanceof ExpandeableShape) {
-				res = (ExpandeableShape)el;
-				break;
-			}
-			el = el.getParent();
-		}
-		return res;
-	}
-	
-	public OrmShape getOrmShape() {
-		OrmShape res = null;
-		ModelElement el = this;
-		while (el != null) {
-			if (el instanceof OrmShape) {
-				res = (OrmShape)el;
 				break;
 			}
 			el = el.getParent();
@@ -145,9 +132,9 @@ public class Shape extends ModelElement {
 		if (conn == null || conn.getSource() == conn.getTarget()) {
 			throw new IllegalArgumentException();
 		}
-		if (conn.getSource() == this) {
+		if (conn.getSource() == this && !sourceConnections.contains(conn)) {
 			sourceConnections.add(conn);
-		} else if (conn.getTarget() == this) {
+		} else if (conn.getTarget() == this && !targetConnections.contains(conn)) {
 			targetConnections.add(conn);
 		}
 	}	
@@ -163,13 +150,10 @@ public class Shape extends ModelElement {
 	public Object getOrmElement() {
 		return ormElement;
 	}
-	
-	public void hideSelection() {
-		firePropertyChange(HIDE_SELECTION, null, null);
-	}
 
-	public void showSelection() {
-		firePropertyChange(SHOW_SELECTION, null, null);
+	@Override
+	public String getKey() {
+		return Utils.getName(getOrmElement());
 	}
 
 	public void setFocus() {
@@ -184,13 +168,36 @@ public class Shape extends ModelElement {
 		this.indent = indent;
 	}
 	
-	protected void setHidden(boolean hiden) {
-		for (int i = 0; i < sourceConnections.size(); i++) {
-			sourceConnections.get(i).setHidden(hiden);
+	@Override
+	public void updateVisibleValue(boolean initState) {
+		super.updateVisibleValue(initState);
+		// update connections visibility state
+		for (Connection connection : sourceConnections) {
+			connection.updateVisibleValue(getOrmDiagram().getConnectionsVisibility());
 		}
-		for (int i = 0; i < targetConnections.size(); i++) {
-			targetConnections.get(i).setHidden(hiden);
+		for (Connection connection : targetConnections) {
+			connection.updateVisibleValue(getOrmDiagram().getConnectionsVisibility());
 		}
+	}
+	
+	@Override
+	protected void loadFromProperties(Properties properties) {
+		super.loadFromProperties(properties);
+		String str = properties.getProperty("indent", "0"); //$NON-NLS-1$ //$NON-NLS-2$
+		indent = Integer.valueOf(str).intValue();
+	}
+
+	@Override
+	protected void saveInProperties(Properties properties) {
+		properties.put("indent", "" + indent); //$NON-NLS-1$ //$NON-NLS-2$
+		super.saveInProperties(properties);
+	}
+
+	public String toString() {
+		if (ormElement == null) {
+			return super.toString();
+		}
+		return ormElement.toString();
 	}
 
 	/**

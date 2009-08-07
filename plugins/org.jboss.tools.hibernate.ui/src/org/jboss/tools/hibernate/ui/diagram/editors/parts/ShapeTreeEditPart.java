@@ -17,12 +17,12 @@ import java.util.List;
 
 import org.eclipse.swt.widgets.Tree;
 import org.hibernate.console.ConsoleConfiguration;
-import org.jboss.tools.hibernate.ui.diagram.editors.model.ExpandeableShape;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.ExpandableShape;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
 import org.jboss.tools.hibernate.ui.view.OrmLabelProvider;
 
 /**
- *
+ * @author some modifications from Vitali
  */
 public class ShapeTreeEditPart extends
 		org.eclipse.gef.editparts.AbstractTreeEditPart implements
@@ -47,8 +47,8 @@ public class ShapeTreeEditPart extends
 	 * 
 	 * @return Model of this.
 	 */
-	protected ExpandeableShape getExpandeableShape() {
-		return (ExpandeableShape) getModel();
+	protected ExpandableShape getExpandeableShape() {
+		return (ExpandableShape) getModel();
 	}
 
 	/**

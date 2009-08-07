@@ -10,11 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.autolayout.impl;
 
-import java.util.List;
-
-import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.ILinkInfo;
-
-
+/**
+ * 
+ * @author some modifications from Vitali
+ */
 public class TransitionArranger {
 	Item[] items;
 	
@@ -35,7 +34,11 @@ public class TransitionArranger {
 	}
 	
 	private void clean(int[][] occ) {
-		for (int i = 0; i < occ.length; i++) for (int j = 0; j < occ[0].length; j++) occ[i][j] = 0;
+		for (int i = 0; i < occ.length; i++) {
+			for (int j = 0; j < occ[0].length; j++) {
+				occ[i][j] = 0;
+			}
+		}
 	}
 	
 	private void fill(Item[] v, int ix) {
@@ -83,7 +86,6 @@ public class TransitionArranger {
 				int iy2 = items[is[k]].iy;
 				occ[tg][iy2]++;
 			}
-			apply(v[iy], tg);
 		}
 	}
 	
@@ -122,13 +124,4 @@ public class TransitionArranger {
 		}
 		return p;
 	}
-	
-	private void apply(Item item, int tg) {
-		List<ILinkInfo> links = item.inputLinks;
-		for (int k = 0; k < links.size(); k++) {
-			ILinkInfo io = links.get(k);
-			io.setLinkShape(new int[]{-1, 8 * (tg + 2)});
-		}
-	}
-
 }

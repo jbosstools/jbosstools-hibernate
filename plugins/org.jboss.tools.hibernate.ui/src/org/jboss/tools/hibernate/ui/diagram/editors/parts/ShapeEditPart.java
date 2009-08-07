@@ -11,7 +11,6 @@
 package org.jboss.tools.hibernate.ui.diagram.editors.parts;
 
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,6 +27,7 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
+import org.eclipse.gef.editparts.AbstractEditPart;
 import org.eclipse.gef.editpolicies.SelectionEditPolicy;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
@@ -43,15 +43,14 @@ import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.ui.diagram.editors.figures.TitleFigure;
 import org.jboss.tools.hibernate.ui.diagram.editors.figures.TopLineBorder;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection;
-import org.jboss.tools.hibernate.ui.diagram.editors.model.ModelElement;
-import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.BaseElement;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
 import org.jboss.tools.hibernate.ui.view.OrmLabelProvider;
 
 /**
- * 
+ * @author some modifications from Vitali
  */
-public class ShapeEditPart extends OrmEditPart implements PropertyChangeListener, NodeEditPart {
+public class ShapeEditPart extends OrmEditPart implements NodeEditPart {
 
 	protected OrmLabelProvider ormLabelProvider = new OrmLabelProvider();
 	protected ChopboxAnchorNearestSide sourceAnchor = null;
@@ -59,12 +58,8 @@ public class ShapeEditPart extends OrmEditPart implements PropertyChangeListener
 
 	public void setModel(Object model) {
 		super.setModel(model);
-		ModelElement modelTmp = (ModelElement)model;
-		while (modelTmp.getParent() != null) {
-			modelTmp = modelTmp.getParent();
-		}
-		if (modelTmp instanceof OrmDiagram) {
-			ConsoleConfiguration consoleConfig = ((OrmDiagram)modelTmp).getConsoleConfig();
+		if (getOrmDiagram() != null) {
+			ConsoleConfiguration consoleConfig = getOrmDiagram().getConsoleConfig();
 			ormLabelProvider.setConfig(consoleConfig.getConfiguration());
 		}
 	}
@@ -73,76 +68,105 @@ public class ShapeEditPart extends OrmEditPart implements PropertyChangeListener
 		installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE,  new ShapesSelectionEditPolicy());
 	}
 
+	/**
+	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
+	 */
+	@Override
 	protected IFigure createFigure() {
-		if (getModel() instanceof Shape) {
-			Label label = new Label();
-			label.setText(ormLabelProvider.getText(getElement()));
-			label.setBackgroundColor(getColor());
-			label.setIcon(ormLabelProvider.getImage(getElement()));
-			label.setLabelAlignment(PositionConstants.LEFT);
-			label.setOpaque(true);
-			TopLineBorder border = new TopLineBorder(1, 2 + getCastedModel().getIndent(), 1, 2);
-			border.setColor(getOrmShapeEditPart().getColor());
-			label.setBorder(border);
-			return label;
-		} else {
-			throw new IllegalArgumentException();
-		}
+		Label label = new Label();
+		label.setText(ormLabelProvider.getText(getElement()));
+		label.setBackgroundColor(getColor());
+		label.setIcon(ormLabelProvider.getImage(getElement()));
+		label.setLabelAlignment(PositionConstants.LEFT);
+		label.setOpaque(true);
+		TopLineBorder border = new TopLineBorder(1, 2 + getModelShape().getIndent(), 1, 2);
+		border.setColor(getOrmShapeEditPart().getColor());
+		label.setBorder(border);
+		return label;
 	}
 
+	/**
+	 * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
+	 */
+	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
-		if (Shape.SHOW_SELECTION.equals(prop)) {
-			getFigure().setBackgroundColor(getSelectionColor());
-			getFigure().setForegroundColor(ResourceManager.getInstance().getColor(new RGB(255,255,255)));
-		} else if (Shape.HIDE_SELECTION.equals(prop)) {
-			getFigure().setBackgroundColor(getColor());
-			getFigure().setForegroundColor(ResourceManager.getInstance().getColor(new RGB(0,0,0)));
+		if (BaseElement.SELECTED.equals(prop)) {
+			updateSelected((Boolean)evt.getNewValue());
+		} else if (BaseElement.VISIBLE.equals(prop)) {
+			getFigure().setVisible(((Boolean)evt.getNewValue()).booleanValue());
+		} else if (BaseElement.REFRESH.equals(prop)) {
+			getFigure().setVisible(getModelShape().isVisible());
+			updateSelected(getModelShape().isSelected());
 		} else if (Shape.SET_FOCUS.equals(prop)) {
 			getViewer().select(this);
 			getViewer().reveal(this);
 		}
 		refresh();
 	}
+	
+	protected void updateSelected(boolean selected) {
+		//setSelected(selected ? EditPart.SELECTED : EditPart.SELECTED_NONE);
+		if (!selected) {
+			setSelected(EditPart.SELECTED_NONE);
+		}
+		getFigure().setBackgroundColor(selected ? getSelectionColor() : getColor());
+		getFigure().setForegroundColor(ResourceManager.getInstance().getColor(
+				selected ? new RGB(255, 255, 255) : new RGB(0, 0, 0)));
+	}
 
+	/**
+	 * @see AbstractEditPart#performRequest(Request)
+	 */
+	@Override
 	public void performRequest(Request req) {
 		if (RequestConstants.REQ_OPEN.equals(req.getType())) {
-			if (getCastedModel().getOrmElement() instanceof Column) {
-				if (getCastedModel().getTargetConnections().size() > 0) {
-					getCastedModel().getTargetConnections().get(0).getSource().setFocus();
+			if (getModelShape().getOrmElement() instanceof Column) {
+				if (getModelShape().getTargetConnections().size() > 0) {
+					getModelShape().getTargetConnections().get(0).getSource().setFocus();
 				}
 			} else {
-				if (getCastedModel().getSourceConnections().size() > 0) {
-					getCastedModel().getSourceConnections().get(0).getTarget().setFocus();
+				if (getModelShape().getSourceConnections().size() > 0) {
+					getModelShape().getSourceConnections().get(0).getTarget().setFocus();
 				}
 			}
+		} else {
+			super.performRequest(req);
 		}
 	}
 
+	/**
+	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#activate()
+	 */
+	@Override
 	public void activate() {
 		if (!isActive()) {
 			super.activate();
-			getCastedModel().addPropertyChangeListener(this);
+			getModelShape().addPropertyChangeListener(this);
 		}
 	}
 
+	/**
+	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#deactivate()
+	 */
+	@Override
 	public void deactivate() {
 		if (isActive()) {
 			super.deactivate();
-			getCastedModel().removePropertyChangeListener(this);
+			getModelShape().removePropertyChangeListener(this);
 		}
 	}
 
-	protected Shape getCastedModel() {
+	protected Shape getModelShape() {
 		return (Shape) getModel();
 	}
 
 	protected List<Connection> getModelSourceConnections() {
-		return getCastedModel().getSourceConnections();
+		return getModelShape().getSourceConnections();
 	}
 
 	protected List<Connection> getModelTargetConnections() {
-		return getCastedModel().getTargetConnections();
+		return getModelShape().getTargetConnections();
 	}
 
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
@@ -271,33 +295,33 @@ public class ShapeEditPart extends OrmEditPart implements PropertyChangeListener
 	}
 
 	protected Color getColor() {
-		Object element = getCastedModel().getOrmElement();
-		if (element instanceof PersistentClass || element instanceof Component)
+		final Object el = getElement();
+		if (el instanceof PersistentClass || el instanceof Component)
 			return ResourceManager.getInstance().getColor(new RGB(
 					Integer.parseInt(ColorConstants.Colors_PersistentClassR),
 					Integer.parseInt(ColorConstants.Colors_PersistentClassG),
 					Integer.parseInt(ColorConstants.Colors_PersistentClassB)));
-		else if (element instanceof Property || element instanceof SimpleValue)
+		else if (el instanceof Property || el instanceof SimpleValue)
 			return ResourceManager.getInstance().getColor(new RGB(
 					Integer.parseInt(ColorConstants.Colors_PersistentFieldR),
 					Integer.parseInt(ColorConstants.Colors_PersistentFieldG),
 					Integer.parseInt(ColorConstants.Colors_PersistentFieldB)));
-		else if (element instanceof Column)
+		else if (el instanceof Column)
 			return ResourceManager.getInstance().getColor(new RGB(
 					Integer.parseInt(ColorConstants.Colors_DatabaseColumnR),
 					Integer.parseInt(ColorConstants.Colors_DatabaseColumnG),
 					Integer.parseInt(ColorConstants.Colors_DatabaseColumnB)));
-		else if (element instanceof Table)
+		else if (el instanceof Table)
 			return ResourceManager.getInstance().getColor(new RGB(
 					Integer.parseInt(ColorConstants.Colors_DatabaseTableR),
 					Integer.parseInt(ColorConstants.Colors_DatabaseTableG),
 					Integer.parseInt(ColorConstants.Colors_DatabaseTableB)));
-		else if (element instanceof DependantValue)
+		else if (el instanceof DependantValue)
 			return ResourceManager.getInstance().getColor(new RGB(
 					Integer.parseInt(ColorConstants.Colors_DatabaseTableR),
 					Integer.parseInt(ColorConstants.Colors_DatabaseTableG),
 					Integer.parseInt(ColorConstants.Colors_DatabaseTableB)));
-		else if (element instanceof OneToMany)
+		else if (el instanceof OneToMany)
 			return ResourceManager.getInstance().getColor(new RGB(
 					Integer.parseInt(ColorConstants.Colors_PersistentFieldR),
 					Integer.parseInt(ColorConstants.Colors_PersistentFieldG),
@@ -307,50 +331,49 @@ public class ShapeEditPart extends OrmEditPart implements PropertyChangeListener
 	}
 
 	protected Color getSelectionColor() {
-	if (getCastedModel().getOrmElement() instanceof PersistentClass ||
-				getCastedModel().getOrmElement() instanceof Property ||
-				getCastedModel().getOrmElement() instanceof SimpleValue ||
-				getCastedModel().getOrmElement() instanceof OneToMany)
-			return ResourceManager.getInstance().getColor(new RGB(112,161,99));
-		else if (getCastedModel().getOrmElement() instanceof Table || getCastedModel().getOrmElement() instanceof Column)
-			return ResourceManager.getInstance().getColor(new RGB(66,173,247));
-		return ResourceManager.getInstance().getColor(new RGB(255,0,0));
+		final Object el = getElement();
+		if (el instanceof PersistentClass || el instanceof Property ||
+				el instanceof SimpleValue || el instanceof OneToMany) {
+			return ResourceManager.getInstance().getColor(new RGB(112, 161, 99));
+		} else if (el instanceof Table || el instanceof Column) {
+			return ResourceManager.getInstance().getColor(new RGB(66, 173, 247));
+		}
+		return ResourceManager.getInstance().getColor(new RGB(255, 0, 0));
 	}
 
 	private class ShapesSelectionEditPolicy extends SelectionEditPolicy {
 
 		protected void hideSelection() {
-			getCastedModel().hideSelection();
-			Iterator<Connection> iter = getCastedModel().getSourceConnections().iterator();
+			getModelShape().setSelected(false);
+			Iterator<Connection> iter = getModelShape().getSourceConnections().iterator();
 			while (iter.hasNext()) {
 				Connection element = iter.next();
-				element.hideSelection();
+				element.setSelected(false);
 			}
-			iter = getCastedModel().getTargetConnections().iterator();
+			iter = getModelShape().getTargetConnections().iterator();
 			while (iter.hasNext()) {
 				Connection element = iter.next();
-				element.hideSelection();
+				element.setSelected(false);
 			}
 		}
 
 		protected void showSelection() {
-			getCastedModel().showSelection();
-			Iterator<Connection> iter  = getCastedModel().getSourceConnections().iterator();
+			getModelShape().setSelected(true);
+			Iterator<Connection> iter  = getModelShape().getSourceConnections().iterator();
 			while (iter.hasNext()) {
 				Connection element = iter.next();
-				element.showSelection();
+				element.setSelected(true);
 			}
-			iter = getCastedModel().getTargetConnections().iterator();
+			iter = getModelShape().getTargetConnections().iterator();
 			while (iter.hasNext()) {
 				Connection element = iter.next();
-				element.showSelection();
+				element.setSelected(true);
 			}
 		}
 
 	}
 
 	protected Object getElement() {
-		Object element = getCastedModel().getOrmElement();
-		return element;
+		return getModelShape().getOrmElement();
 	}
 }

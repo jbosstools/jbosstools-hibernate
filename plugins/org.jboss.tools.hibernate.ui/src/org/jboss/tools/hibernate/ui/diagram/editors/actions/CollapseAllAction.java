@@ -10,21 +10,18 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.actions;
 
-import org.eclipse.jface.action.Action;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
 
 /**
- *
+ * @author Vitali Yemialyanchyk
  */
-public class CollapseAllAction extends Action {
+public class CollapseAllAction extends DiagramBaseAction {
 
 	public static final String ACTION_ID = "collapse_all_id"; //$NON-NLS-1$
 
-	private DiagramViewer editor;
-
 	public CollapseAllAction(DiagramViewer editor) {
-		this.editor = editor;
+		super(editor);
 		setId(ACTION_ID);
 		setText(DiagramViewerMessages.CollapseAllAction_collapse_all);
 		//setImageDescriptor(ImageDescriptor.createFromFile(
@@ -32,6 +29,6 @@ public class CollapseAllAction extends Action {
 	}
 
 	public void run() {
-		editor.getViewerContents().collapseAll();
+		getDiagramViewer().getViewerContents().collapseAll();
 	}
 }

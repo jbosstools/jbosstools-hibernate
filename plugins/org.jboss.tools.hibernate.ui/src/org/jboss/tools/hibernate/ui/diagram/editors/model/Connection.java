@@ -10,22 +10,25 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
-public class Connection extends ModelElement {
+/**
+ * Directed connection between 2 shapes, from source to target. 
+ *
+ * @author some modifications from Vitali
+ */
+public class Connection extends BaseElement {
 	
-	public static final String HIDE_SELECTION = "hide selection"; //$NON-NLS-1$
-	public static final String SHOW_SELECTION = "show selection"; //$NON-NLS-1$
-	public static final String SET_HIDEN = "set hiden"; //$NON-NLS-1$
-	
-	private Shape source;
-	private Shape target;
-	
-	private int needHide;
+	protected Shape source;
+	protected Shape target;
+
+	/**
+	 * flag to prevent cycle call of updateVisibleValue()
+	 */
+	protected boolean inUpdateVisibleValue = false;
 		
 	public Connection(Shape s, Shape newTarget) {
 		if (s == null || newTarget == null || s == newTarget) {
 			throw new IllegalArgumentException();
 		}
-		needHide = 2;
 		this.source = s;
 		this.target = newTarget;
 		source.addConnection(this);
@@ -39,43 +42,51 @@ public class Connection extends ModelElement {
 	public Shape getTarget() {
 		return target;
 	}
-			
-	public void hideSelection() {
-		firePropertyChange(HIDE_SELECTION, null, null);
-		source.firePropertyChange(Shape.HIDE_SELECTION, null, null);
-		target.firePropertyChange(Shape.HIDE_SELECTION, null, null);
-	}
 
-	public void showSelection() {
-		firePropertyChange(SHOW_SELECTION, null, null);
-		source.firePropertyChange(Shape.SHOW_SELECTION, null, null);
-		target.firePropertyChange(Shape.SHOW_SELECTION, null, null);
+	/**
+	 * It has no children, so not possible to add.
+	 */
+	public boolean addChild(Shape item) {
+		return false;
 	}
 	
-	public void setHidden(boolean hiden) {
-		if (hiden) {
-			needHide--;
-			if (needHide == 0) {
-				return;
-			}
-		} else {
-			needHide++;
-			if (needHide == 1) {
-				return;
-			}
-		}
-		firePropertyChange(SET_HIDEN, null, Boolean.valueOf(hiden));
+	@Override
+	public void setSelected(boolean selected) {
+		source.setSelected(selected);
+		target.setSelected(selected);
+		super.setSelected(selected);
 	}
-
-	public boolean isHiden() {
-		return needHide != 2;
+	
+	@Override
+	public void updateVisibleValue(boolean initState) {
+		if (inUpdateVisibleValue) {
+			return;
+		}
+		inUpdateVisibleValue = true;
+		boolean visible = initState;
+		visible = visible && source.isVisible();
+		visible = visible && target.isVisible();
+		setVisible(visible);
+		super.updateVisibleValue(this.visible);
+		inUpdateVisibleValue = false;
 	}
 
 	/**
 	 * It has no parent
 	 */
 	@Override
-	public ModelElement getParent() {
+	public BaseElement getParent() {
+		return null;
+	}
+	
+	@Override
+	public void refresh() {
+		updateVisibleValue(isVisible());
+		super.refresh();
+	}
+
+	@Override
+	public String getKey() {
 		return null;
 	}
 }

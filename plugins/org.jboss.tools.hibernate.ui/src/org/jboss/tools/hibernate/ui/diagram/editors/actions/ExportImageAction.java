@@ -20,7 +20,6 @@ import org.eclipse.draw2d.SWTGraphics;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
@@ -33,18 +32,17 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
 
-public class ExportImageAction extends Action {
+public class ExportImageAction extends DiagramBaseAction {
 
 	public static final String ACTION_ID = "export_as_image_id"; //$NON-NLS-1$
 	public static final String[] dialogFilterExtensions = new String[] { "*.png", "*.jpg", "*.bmp" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	public static final String[] dialogFilterNames = new String[] { DiagramViewerMessages.ExportImageAction_png_format,
 		DiagramViewerMessages.ExportImageAction_jpg_format, DiagramViewerMessages.ExportImageAction_bmp_format };
 
-	private DiagramViewer editor;
 	private FileDialog saveDialog = null;
 
 	public ExportImageAction(DiagramViewer editor) {
-		this.editor = editor;
+		super(editor);
 		setId(ACTION_ID);
 		setText(DiagramViewerMessages.ExportImageAction_export_as_image);
 		setImageDescriptor(ImageDescriptor.createFromFile(
@@ -65,7 +63,7 @@ public class ExportImageAction extends Action {
 
 		if (saveDialog == null) {
 			saveDialog = new FileDialog(
-				this.editor.getSite().getShell(), SWT.SAVE);
+				getDiagramViewer().getSite().getShell(), SWT.SAVE);
 		}
 		saveDialog.setFilterExtensions(dialogFilterExtensions);
 		saveDialog.setFilterNames(dialogFilterNames);
@@ -76,7 +74,7 @@ public class ExportImageAction extends Action {
 			return;
 		}
 
-		IFigure fig = ((ScalableFreeformRootEditPart) this.editor
+		IFigure fig = ((ScalableFreeformRootEditPart) getDiagramViewer()
 				.getEditPartViewer().getRootEditPart())
 				.getLayer(LayerConstants.PRINTABLE_LAYERS);
 		int imageType = SWT.IMAGE_BMP;
@@ -92,7 +90,7 @@ public class ExportImageAction extends Action {
 			outStream.write(imageData);
 			outStream.flush();
 		} catch (Exception e) {
-			MessageDialog.openInformation(this.editor.getSite().getShell(),
+			MessageDialog.openInformation(getDiagramViewer().getSite().getShell(),
 					DiagramViewerMessages.ExportImageAction_error, DiagramViewerMessages.ExportImageAction_failed_to_export_image + e.getMessage());
 			return;
 		}
@@ -118,7 +116,7 @@ public class ExportImageAction extends Action {
 	 */
 	private byte[] createImage(IFigure figure, int format) throws Exception {
 
-		Device device = this.editor.getEditPartViewer().getControl()
+		Device device = getDiagramViewer().getEditPartViewer().getControl()
 				.getDisplay();
 		Rectangle r = figure.getBounds();
 

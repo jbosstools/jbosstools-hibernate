@@ -15,8 +15,10 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
-//import org.eclipse.gef.LayerConstants; 
 
+/**
+ * @author some modifications from Vitali
+ */
 public class GEFRootEditPart extends ScalableFreeformRootEditPart {
 
 	public GEFRootEditPart() {
@@ -30,6 +32,4 @@ public class GEFRootEditPart extends ScalableFreeformRootEditPart {
 		layer.getChildren().remove(fig);
 		layer.getChildren().add(fig);
 	}
-	
-
 }

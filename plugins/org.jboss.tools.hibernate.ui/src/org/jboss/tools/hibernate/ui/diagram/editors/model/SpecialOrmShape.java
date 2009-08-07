@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -20,17 +20,23 @@ import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.type.Type;
 
+/**
+ * 
+ * @author some modifications from Vitali
+ */
 public class SpecialOrmShape extends OrmShape {
 	private Shape parentShape;
 
 	public SpecialOrmShape(SpecialRootClass ioe) {
 		super(ioe);
-//		generate();
 	}
 
+	/**
+	 * creates children of the shape, 
+	 */
 	@SuppressWarnings("unchecked")
-	protected void generate() {
-		Shape bodyOrmShape;
+	@Override
+	protected void initModel() {
 		RootClass rootClass = (RootClass)getOrmElement();
 		Property identifierProperty = rootClass.getIdentifierProperty();
 		if (identifierProperty != null) {
@@ -39,7 +45,7 @@ public class SpecialOrmShape extends OrmShape {
 
 		SpecialRootClass src = (SpecialRootClass)getOrmElement();
 		if (src.getParentProperty() != null) {
-			bodyOrmShape = new Shape(src.getParentProperty());
+			Shape bodyOrmShape = new Shape(src.getParentProperty());
 			addChild(bodyOrmShape);
 			parentShape = bodyOrmShape;
 		}
@@ -63,8 +69,9 @@ public class SpecialOrmShape extends OrmShape {
 					HibernateConsolePlugin.getDefault().logErrorMessage("MappingException: ", e); //$NON-NLS-1$
 				}
 			}
+			Shape bodyOrmShape = null;
 			if (type != null && type.isEntityType()) {
-				bodyOrmShape = new ExpandeableShape(field);
+				bodyOrmShape = new ExpandableShape(field);
 			} else if (type != null && type.isCollectionType()) {
 				bodyOrmShape = new ComponentShape(field);
 			} else {

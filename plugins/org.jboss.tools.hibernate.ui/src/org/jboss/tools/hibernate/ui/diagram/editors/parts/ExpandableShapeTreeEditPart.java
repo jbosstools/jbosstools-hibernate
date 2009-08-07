@@ -18,14 +18,14 @@ import java.util.List;
 
 import org.eclipse.swt.widgets.Tree;
 import org.hibernate.console.ConsoleConfiguration;
-import org.jboss.tools.hibernate.ui.diagram.editors.model.ExpandeableShape;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.ExpandableShape;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
 import org.jboss.tools.hibernate.ui.view.OrmLabelProvider;
 
 /**
- *
+ * @author some modifications from Vitali
  */
-public class ExpandeableShapeTreeEditPart extends
+public class ExpandableShapeTreeEditPart extends
 		org.eclipse.gef.editparts.AbstractTreeEditPart implements
 		PropertyChangeListener {
 
@@ -37,7 +37,7 @@ public class ExpandeableShapeTreeEditPart extends
 	 * @param model
 	 *            Model for this.
 	 */
-	public ExpandeableShapeTreeEditPart(ExpandeableShape model) {
+	public ExpandableShapeTreeEditPart(ExpandableShape model) {
 		super(model);
 		ConsoleConfiguration cfg = model.getOrmDiagram().getConsoleConfig();
 		ormLabelProvider = new OrmLabelProvider(cfg.getConfiguration());
@@ -48,8 +48,8 @@ public class ExpandeableShapeTreeEditPart extends
 	 * 
 	 * @return Model of this.
 	 */
-	protected ExpandeableShape getExpandeableShape() {
-		return (ExpandeableShape) getModel();
+	protected ExpandableShape getExpandeableShape() {
+		return (ExpandableShape) getModel();
 	}
 
 	/**

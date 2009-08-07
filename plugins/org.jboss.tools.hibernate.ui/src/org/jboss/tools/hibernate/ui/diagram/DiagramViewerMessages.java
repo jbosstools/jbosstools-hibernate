@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -39,6 +39,9 @@ public class DiagramViewerMessages extends NLS {
 	public static String OpenSourceAction_canot_find_source_file;
 	public static String OpenSourceAction_canot_open_source_file;
 	public static String OpenSourceAction_open_source_file;
+	public static String ToggleShapeExpandStateAction_toggle_expand_state;
+	public static String ToggleShapeVisibleStateAction_toggle_visible_state;
+	public static String ToggleConnectionsAction_toggle_connections;
 	public static String ShapeSetConstraintCommand_move;
 	public static String PartFactory_canot_create_part_for_model_element;
 	public static String PartFactory_null;

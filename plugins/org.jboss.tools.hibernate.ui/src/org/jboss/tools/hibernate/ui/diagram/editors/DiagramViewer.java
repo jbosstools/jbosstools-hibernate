@@ -11,6 +11,7 @@
 package org.jboss.tools.hibernate.ui.diagram.editors;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -57,6 +58,9 @@ import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExpandAllAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExportImageAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.OpenMappingAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.OpenSourceAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleConnectionsAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeExpandStateAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeVisibleStateAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
 import org.jboss.tools.hibernate.ui.diagram.editors.parts.GEFRootEditPart;
@@ -68,7 +72,7 @@ import org.jboss.tools.hibernate.ui.diagram.rulers.DiagramRulerProvider;
 import org.jboss.tools.hibernate.ui.view.ObjectEditorInput;
 
 /**
- *
+ * @author some modifications from Vitali
  */
 public class DiagramViewer extends GraphicalEditor {
 
@@ -82,7 +86,7 @@ public class DiagramViewer extends GraphicalEditor {
 
 	public void doSave(IProgressMonitor monitor) {
 		saveProperties();
-		ormDiagram.save();
+		ormDiagram.saveInFile();
 		ormDiagram.setDirty(false);
 	}
 
@@ -169,6 +173,15 @@ public class DiagramViewer extends GraphicalEditor {
 
 		action = new AutoLayoutAction(this);
 		registry.registerAction(action);
+		
+		action = new ToggleConnectionsAction(this);
+		registry.registerAction(action);
+		
+		action = new ToggleShapeExpandStateAction(this);
+		registry.registerAction(action);
+
+		action = new ToggleShapeVisibleStateAction(this);
+		registry.registerAction(action);
 
 		action = new CollapseAllAction(this);
 		registry.registerAction(action);
@@ -207,6 +220,18 @@ public class DiagramViewer extends GraphicalEditor {
 	public boolean isDirty() {
 		return ormDiagram.isDirty();
 	}
+	
+	protected String getItemName(RootClass rootClass) {
+		String res = rootClass.getEntityName();
+		if (res == null) {
+			res = rootClass.getClassName();
+		}
+		if (res == null) {
+			res = rootClass.getNodeName();
+		}
+		res = res.substring(res.lastIndexOf(".") + 1); //$NON-NLS-1$
+		return res;
+	}
 
 	protected void setInput(IEditorInput input) {
 		ObjectEditorInput objectEditorInput = (ObjectEditorInput)input;
@@ -214,15 +239,21 @@ public class DiagramViewer extends GraphicalEditor {
 		Object obj = objectEditorInput.getObject();
 		if (obj instanceof RootClass) {
 			RootClass rootClass = (RootClass)obj;
-			setPartName(DiagramViewerMessages.DiagramViewer_diagram_for + rootClass.getEntityName());
+			setPartName(DiagramViewerMessages.DiagramViewer_diagram_for + " " + getItemName(rootClass)); //$NON-NLS-1$
 			ormDiagram = new OrmDiagram(configuration, rootClass);
 		} else if (obj instanceof RootClass[]) {
 			RootClass[] rootClasses = (RootClass[])obj;
-			String name = rootClasses.length > 0 ? rootClasses[0].getEntityName() : ""; //$NON-NLS-1$
-			for (int i = 1; i < rootClasses.length; i++) {
-				name += " & " + rootClasses[i].getEntityName(); //$NON-NLS-1$
+			ArrayList<String> names = new ArrayList<String>();
+			for (int i = 0; i < rootClasses.length; i++) {
+				names.add(getItemName(rootClasses[i]));
 			}
-			setPartName(DiagramViewerMessages.DiagramViewer_diagram_for + name);
+			// sort to get same name for same combinations of entities
+			Collections.sort(names);
+			String name = names.size() > 0 ? names.get(0) : ""; //$NON-NLS-1$
+			for (int i = 1; i < rootClasses.length; i++) {
+				name += " & " + names.get(i); //$NON-NLS-1$
+			}
+			setPartName(DiagramViewerMessages.DiagramViewer_diagram_for + " " + name); //$NON-NLS-1$
 			ormDiagram = new OrmDiagram(configuration, rootClasses);
 		}
 		super.setInput(input);

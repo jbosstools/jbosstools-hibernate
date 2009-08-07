@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -14,87 +14,104 @@ import java.beans.PropertyChangeEvent;
 
 import org.eclipse.draw2d.FocusBorder;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.jboss.tools.hibernate.ui.diagram.editors.figures.ComponentFigure;
-import org.jboss.tools.hibernate.ui.diagram.editors.figures.TitleLabel;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.ComponentShape;
-import org.jboss.tools.hibernate.ui.diagram.editors.model.ExpandeableShape;
-import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
-import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmShape;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.ExpandableShape;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.BaseElement;
 
+/**
+ * 
+ * @author some modifications from Vitali
+ */
+public class ComponentShapeEditPart extends ExpandableShapeEditPart {
 
-public class ComponentShapeEditPart extends ExpandeableShapeEditPart {
-
-	protected IFigure createFigure() {
-		if (getModel() instanceof ComponentShape) {
-			IFigure figure = new ComponentFigure();
-			figure.setLayoutManager(new ToolbarLayout());
-			Label label = new TitleLabel();
-			label.setText(ormLabelProvider.getText(getCastedModel().getOrmElement()));	
-			label.setBackgroundColor(getColor());
-			label.setOpaque(true);
-			label.setIcon(ormLabelProvider.getImage(getCastedModel().getOrmElement()));
-			label.setLabelAlignment(PositionConstants.LEFT);
-			label.setBorder(new MarginBorder(1,2,1,2));
-			figure.add(label,-2);
-			figure.setBorder(new FocusBorder());
-			figure.setSize(-1,-1);
-			return figure;
-		} else {
-			throw new IllegalArgumentException();
+	public ComponentFigure getComponentFigure() {
+		if (getFigure() instanceof ComponentFigure) {
+			return (ComponentFigure)getFigure();
 		}
+		return null;
 	}
 	
+	/**
+	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
+	 */
+	@Override
+	protected IFigure createFigure() {
+		ComponentFigure figure = new ComponentFigure();
+		figure.createTitle(ormLabelProvider.getText(getElement()), 
+				ormLabelProvider.getImage(getElement()), getColor());
+		figure.setBorder(new FocusBorder());
+		figure.setSize(-1, -1);
+		return figure;
+	}
+	
+	/**
+	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#activate()
+	 */
+	@Override
 	public void activate() {
 		super.activate();
-		if (this.getClass().equals(ComponentShapeEditPart.class) && 
-				!((ExpandeableShape)getModel()).isReferenceVisible()) {
-			((ComponentShape)getModel()).refHide = true;
-			((ComponentShape)getModel()).refreshChildsHiden(((OrmDiagram)getViewer().getContents().getModel()));
-			((ExpandeableShape)getModel()).getOrmDiagram().setDirty(false);
-		}
 	}
 	
+	public ComponentShape getModelComponentShape() {
+		return (ComponentShape)getModel();
+	}
+	
+	/**
+	 * @see AbstractEditPart#performRequest(Request)
+	 */
+	@Override
 	public void performRequest(Request req) {
-		if (RequestConstants.REQ_OPEN.equals(req.getType()) && 
-				getModel() instanceof ComponentShape) {
-			((ComponentShape)getModel()).refreshChildsHiden(((OrmDiagram)getViewer().getContents().getModel()));
+		if (RequestConstants.REQ_OPEN.equals(req.getType())) {
+			ExpandableShape es = getModelExpandableShape();
+			if (es.isExpanded()) {
+				es.collapse();
+			} else {
+				es.expand();
+			}
+		} else {
+			super.performRequest(req);
 		}
 	}
 	
+	/**
+	 * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
+	 */
+	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
-		if (ComponentShape.SET_CHILDS_HIDEN.equals(prop)) {
-			int i = figure.getPreferredSize().width;
-			((ComponentFigure)figure).setChildsHiden(((Boolean)evt.getNewValue()).booleanValue());
-			
-			if (((Boolean)evt.getNewValue()).booleanValue()) {
-				figure.setSize(i,-1);
-			} else {
-				figure.setSize(-1,-1);
+		if (ExpandableShape.EXPANDED.equals(prop)) {
+			boolean expanded = (Boolean)evt.getNewValue();
+			if (getComponentFigure() != null) {
+				getComponentFigure().setExpanded(expanded);
 			}
-			
-			referenceList.add((OrmShape)getCastedModel().getParent());
-			refreshReferences((ExpandeableShape)getCastedModel(), ((ExpandeableShape)getCastedModel()).isReferenceVisible());
-			
-			((OrmShape)getParent().getModel()).refreshReference();
+			BaseElement parent = getModelParent();
+			if (parent.getParent() != null) {
+				// refresh only parent which has a parent! so we exclude OrmDiagram here
+				// refresh only basic properties
+				parent.refreshBasic();
+			}
+			getOrmDiagram().updateDirty(evt.getNewValue() != evt.getOldValue());
+		} else if (BaseElement.REFRESH.equals(prop)) {
+			if (getComponentFigure() != null) {
+				getComponentFigure().setExpanded(getModelExpandableShape().isExpanded());
+			}
+			super.propertyChange(evt);
 		} else {
 			super.propertyChange(evt);
 		}
+		refresh();
 	}
 
 	protected void refreshVisuals() {
 		Rectangle bounds = null;
 		if (getModel() instanceof ComponentShape) {
-			bounds = new Rectangle(new Point(0,0), getFigure().getSize());
+			bounds = new Rectangle(new Point(0, 0), getFigure().getSize());
 		}
 		if (bounds != null) {
 			((GraphicalEditPart) getParent()).setLayoutConstraint(this, getFigure(), bounds);		

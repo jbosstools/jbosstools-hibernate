@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -11,17 +11,21 @@
 package org.jboss.tools.hibernate.ui.diagram.editors.autolayout.impl;
 
 import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.IItemInfo;
-import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.ILinkInfo;
 import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.IDiagramInfo;
 
-
+/**
+ * 
+ * @author some modifications from Vitali
+ */
 public class AutoLayoutImpl {
 	LayoutConstants constants = new LayoutConstants();
-    protected Items items;
+    protected Items items = new Items();
 
-    public AutoLayoutImpl() {}
+    public AutoLayoutImpl() {
+    	items.setConstants(constants);
+    }
     
-    public void setGridStep(String gridStep) {
+    public void setGridStep(int gridStep) {
 		constants.update(gridStep);
     }
     
@@ -46,8 +50,6 @@ public class AutoLayoutImpl {
     }
 
     private void apply() {
-		resetTransitions(); // temporal
-
         Item[] is = items.items;
         int[] yDeltas = items.groups.yDeltas;
         for (int i = 0; i < is.length; i++) {
@@ -65,23 +67,4 @@ public class AutoLayoutImpl {
             o.setShape(new int[]{x, y, 0, 0});
         }
     }
-    
-    private void resetTransitions() {
-    	if (!items.override) {
-    		return;
-    	}
-		Item[] is = items.items;
-		for (int i = 0; i < is.length; i++) {
-			IItemInfo o = is[i].itemInfo;
-			if (o instanceof ILinkInfo) {
-				((ILinkInfo)o).setLinkShape(new int[0]);
-			}
-			ILinkInfo[] os = items.getOutput(o);
-			for (int j = 0; j < os.length; j++) {
-				os[j].setLinkShape(new int[0]);
-			}
-		}
-    	
-    }
-
 }

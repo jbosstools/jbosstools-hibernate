@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.popup;
 
+import java.util.Iterator;
+
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.editparts.AbstractTreeEditPart;
@@ -36,11 +38,16 @@ import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExpandAllAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExportImageAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.OpenMappingAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.OpenSourceAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleConnectionsAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeExpandStateAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeVisibleStateAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
 import org.jboss.tools.hibernate.ui.diagram.editors.parts.OrmEditPart;
 
 /**
  * Context menu provider for Diagram Viewer and Diagram Outline.
+ * 
+ * @author some modifications from Vitali
  */
 public class PopupMenuProvider extends ContextMenuProvider {
 	private ActionRegistry actionRegistry;
@@ -50,6 +57,7 @@ public class PopupMenuProvider extends ContextMenuProvider {
 		this.actionRegistry = actionRegistry;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void buildContextMenu(IMenuManager menu) {
 		// Add standard action groups to the menu
 		GEFActionConstants.addStandardActionGroups(menu);
@@ -61,19 +69,17 @@ public class PopupMenuProvider extends ContextMenuProvider {
 			IStructuredSelection selection = (IStructuredSelection) getViewer().getSelection();
 			if (selection != null) {
 				Object firstElement = selection.getFirstElement();
+				Object obj = null;
 				if (firstElement instanceof OrmEditPart) {
-					Object obj = ((OrmEditPart)firstElement).getModel();
-					if (null != obj && obj instanceof Shape) {
-						selectedShape = (Shape)obj;
-					}
+					obj = ((OrmEditPart)firstElement).getModel();
 				} else if (firstElement instanceof AbstractTreeEditPart) {
-					Object obj = ((AbstractTreeEditPart)firstElement).getModel();
-					if (null != obj && obj instanceof Shape) {
-						selectedShape = (Shape)obj;
-					} 
+					obj = ((AbstractTreeEditPart)firstElement).getModel();
 				}
+				if (null != obj && obj instanceof Shape) {
+					selectedShape = (Shape)obj;
+				} 
 			}			
-			if (selectedShape != null) {
+			if (selectedShape != null && selection.size() == 1) {
 				Object first = selectedShape.getOrmElement();
 				if (first instanceof PersistentClass
 						|| first.getClass() == Property.class
@@ -88,7 +94,38 @@ public class PopupMenuProvider extends ContextMenuProvider {
 					createMenuItem(getMenu(), action);					
 				}
 			}
+			boolean addToggleMenu = false;
+		    Iterator it = selection.iterator();
+		    while (it.hasNext() && !addToggleMenu) {
+		    	Object element = it.next();
+				Object obj = null;
+				if (element instanceof OrmEditPart) {
+					obj = ((OrmEditPart)element).getModel();
+				} else if (element instanceof AbstractTreeEditPart) {
+					obj = ((AbstractTreeEditPart)element).getModel();
+				}
+				if (null != obj && obj instanceof Shape) {
+					selectedShape = (Shape)obj;
+					Object first = selectedShape.getOrmElement();
+					if (first instanceof PersistentClass || first instanceof Table) {
+						addToggleMenu = true;
+					}
+				} 
+		    }
+			if (addToggleMenu) {
+				action = getActionRegistry().getAction(ToggleShapeVisibleStateAction.ACTION_ID);
+				appendToGroup(GEFActionConstants.GROUP_EDIT, action);
+				createMenuItem(getMenu(), action);
+
+				action = getActionRegistry().getAction(ToggleShapeExpandStateAction.ACTION_ID);
+				appendToGroup(GEFActionConstants.GROUP_EDIT, action);
+				createMenuItem(getMenu(), action);
+			}
 		}
+
+		action = getActionRegistry().getAction(ToggleConnectionsAction.ACTION_ID);
+		appendToGroup(GEFActionConstants.GROUP_EDIT, action);
+		createMenuItem(getMenu(), action);
 		
 		action = getActionRegistry().getAction(AutoLayoutAction.ACTION_ID);
 		appendToGroup(GEFActionConstants.GROUP_VIEW, action);
@@ -107,12 +144,15 @@ public class PopupMenuProvider extends ContextMenuProvider {
 		createMenuItem(getMenu(), action);
 
 		// Add actions to the menu
+		/** /
+		// is undo/redo operation so necessary for popup menu?
 		menu.appendToGroup(
 				GEFActionConstants.GROUP_UNDO, // target group id
 				getAction(ActionFactory.UNDO.getId())); // action to add
 		menu.appendToGroup(
 				GEFActionConstants.GROUP_UNDO, 
 				getAction(ActionFactory.REDO.getId()));
+		/**/
 		menu.appendToGroup(
 				GEFActionConstants.GROUP_VIEW, // target group id
 				getAction(ActionFactory.SELECT_ALL.getId())); // action to add

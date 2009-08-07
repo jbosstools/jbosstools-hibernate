@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -11,9 +11,7 @@
 package org.jboss.tools.hibernate.ui.diagram.editors.parts;
 
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,36 +28,27 @@ import org.eclipse.gef.CompoundSnapToHelper;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.SnapToGeometry;
 import org.eclipse.gef.SnapToGrid;
 import org.eclipse.gef.SnapToGuides;
 import org.eclipse.gef.SnapToHelper;
 import org.eclipse.gef.rulers.RulerProvider;
-import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.mapping.Collection;
-import org.hibernate.mapping.Component;
-import org.hibernate.mapping.RootClass;
-import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
-import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.AutoLayout;
 import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.IItemInfo;
 import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.ILinkInfo;
 import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.IDiagramInfo;
+import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.impl.AutoLayoutImpl;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection;
-import org.jboss.tools.hibernate.ui.diagram.editors.model.ModelElement;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.BaseElement;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmShape;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
-import org.jboss.tools.hibernate.ui.diagram.editors.model.SpecialOrmShape;
-import org.jboss.tools.hibernate.ui.diagram.editors.model.SpecialRootClass;
-import org.jboss.tools.hibernate.ui.view.HibernateUtils;
 
 /**
- *
+ * @author some modifications from Vitali
  */
-class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
+class DiagramEditPart extends OrmEditPart {
 
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, 
@@ -77,137 +66,22 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 		return f;
 	}
 
+	/**
+	 * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
+	 */
+	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
-		if (OrmDiagram.REFRESH.equals(prop)) {
+		if (OrmDiagram.AUTOLAYOUT.equals(prop)) {
 			refresh();
 			autolayout();
-			// restore();
+		} else if (BaseElement.REFRESH.equals(prop)) {
+			refresh();
 		} else if (OrmDiagram.DIRTY.equals(prop)) {
 			((DiagramViewer) ((DefaultEditDomain) getViewer().getEditDomain())
 					.getEditorPart()).refreshDirty();
 		}
-	}
-
-	public void restore() {
-		boolean dirty = getOrmDiagram().isDirty();
-		HashMap<String, OrmShape> hashMap = getOrmDiagram().getCloneElements();
-		String childrenLocations[] = getOrmDiagram().getChildrenLocations();
-		int tempPoint = 1;
-		OrmShape ormShape;
-		int point = 1;
-		int pointX = calculateTableLocation();
-		String string, xy[];
-		for (int i = 0; i < childrenLocations.length; i++) {
-			if (childrenLocations[i].indexOf('@') != -1
-					&& childrenLocations[i].indexOf(';') != -1) {
-				string = childrenLocations[i].substring(0, childrenLocations[i]
-						.indexOf('@'));
-				ormShape = hashMap.remove(string);
-				if (ormShape != null) {
-					string = childrenLocations[i]
-							.substring(childrenLocations[i].indexOf('@') + 1);
-					xy = string.split(";"); //$NON-NLS-1$
-					if (xy.length > 1) {
-						try {
-							ormShape.setLocation(new Point(Integer
-									.parseInt(xy[0]), Integer.parseInt(xy[1])));
-						} catch (NumberFormatException e) {
-							HibernateConsolePlugin.getDefault().logErrorMessage("NumberFormatException: ", e); //$NON-NLS-1$
-						}
-					}
-					if (xy.length > 2) {
-						if ((Boolean.valueOf(xy[2]))) {
-							ormShape.refreshHiden();
-						}
-					}
-					tempPoint = ormShape.getLocation().y
-							+ getChildrenFigurePreferredHeight(ormShape) + 20;
-					if (tempPoint > point) {
-						point = tempPoint;
-					}
-				}
-			}
-		}
-		RootClass[] ormElements = getOrmDiagram().getOrmElements();
-		for (int i = 0; i < childrenLocations.length; i++) {
-			RootClass persistentClass = ormElements[i];
-			ormShape = hashMap.remove(persistentClass.getEntityName());
-			if (ormShape != null) {
-				ormShape.setLocation(new Point(20, 20));
-				tempPoint = 40 + getChildrenFigurePreferredHeight(ormShape);
-			}
-			Table table = persistentClass.getTable();
-			ormShape = hashMap.remove(HibernateUtils.getTableName(table));
-			if (ormShape != null) {
-				ormShape.setLocation(new Point(pointX, 20));
-				point = 40 + getChildrenFigurePreferredHeight(ormShape);
-			}
-			if (tempPoint > point) {
-				point = tempPoint;
-			}
-		}
-		Object objects[] = hashMap.keySet().toArray();
-		for (int i = 0; i < objects.length; i++) {
-			ormShape = hashMap.get(objects[i]);
-			if (ormShape != null
-					&& (ormShape.getOrmElement() instanceof RootClass || ormShape
-							.getOrmElement() instanceof SpecialOrmShape)) {
-				ormShape.setLocation(new Point(20, point));
-				tempPoint = point + getChildrenFigurePreferredHeight(ormShape)
-						+ 20;
-				// if (ormShape.getOrmElement() instanceof SpecialRootClass) {
-				Component component = (Component) ((Collection) ((SpecialRootClass) (ormShape
-						.getOrmElement())).getProperty().getValue())
-						.getElement();
-				Table ownerTable = component.getOwner().getTable();
-				ormShape = hashMap.remove(HibernateUtils.getTableName(ownerTable));
-				// }
-				// if (ormShape != null ) {
-				// ormShape.setLocation(new Point(pointX,point));
-				// point = point + getChildrenFigurePreferredHeight(ormShape) +
-				// 20;
-				// }
-				if (tempPoint > point) {
-					point = tempPoint;
-				}
-			}
-		}
-		for (OrmShape shape : hashMap.values()) {
-			if (shape.getOrmElement() instanceof Table) {
-				shape.setLocation(new Point(pointX, point));
-				point = point + getChildrenFigurePreferredHeight(shape) + 20;
-			}
-		}
-		getOrmDiagram().setDirty(dirty);
-	}
-
-	private OrmDiagram getOrmDiagram() {
-		return (OrmDiagram) getModel();
-	}
-
-	private int getChildrenFigurePreferredHeight(OrmShape ormShape) {
-		GraphicalEditPart part;
-		for (int i = 0; i < getChildren().size(); i++) {
-			part = (GraphicalEditPart) getChildren().get(i);
-			if (ormShape.equals(part.getModel())) {
-				return part.getFigure().getPreferredSize().height;
-			}
-		}
-		return 0;
-	}
-
-	@SuppressWarnings("unchecked")
-	private int calculateTableLocation() {
-		int j = 0;
-		List<IFigure> children = getFigure().getChildren();
-		for (int i = 0; i < children.size(); i++) {
-			IFigure figure = children.get(i);
-			if (figure.getPreferredSize().width > j) {
-				j = figure.getPreferredSize().width;
-			}
-		}
-		return j + 120;
+		refresh();
 	}
 
 	/**
@@ -227,19 +101,20 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 	public void activate() {
 		if (!isActive()) {
 			super.activate();
-			((ModelElement) getModel()).addPropertyChangeListener(this);
-			if (!getOrmDiagram().isLoadSuccessfull()) {
+			((BaseElement) getModel()).addPropertyChangeListener(this);
+			if (!getOrmDiagram().isFileLoadSuccessfull()) {
+				refresh();
 				autolayout();
+				refresh();
 				getOrmDiagram().setDirty(false);
 			}
-			// restore();
 		}
 	}
 
 	public void autolayout() {
 		IDiagramInfo process = new DiagramInfo(getOrmDiagram());
-		AutoLayout layout = new AutoLayout();
-		layout.setGridStep("" + 5); //$NON-NLS-1$
+		AutoLayoutImpl layout = new AutoLayoutImpl();
+		layout.setGridStep(5);
 		layout.setOverride(true);
 		layout.setProcess(process);
 	}
@@ -257,7 +132,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 	public void deactivate() {
 		if (isActive()) {
 			super.deactivate();
-			((ModelElement) getModel()).removePropertyChangeListener(this);
+			((BaseElement) getModel()).removePropertyChangeListener(this);
 		}
 	}
 
@@ -267,16 +142,12 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 		OrmDiagram diagram;
 
 		public DiagramInfo(OrmDiagram diagram) {
-			IItemInfo item;
 			this.diagram = diagram;
-			OrmShapeEditPart part;
-
 			Iterator<Shape> it = diagram.getChildrenIterator();
 			while (it.hasNext()) {
 				Shape child = it.next();
-				part = (OrmShapeEditPart) getViewer().getEditPartRegistry().get(child);
-				if (part != null && part.getFigure().isVisible()) {
-					item = new DiagramElementInfo((OrmShape)child);
+				if (child.isVisible()) {
+					IItemInfo item = new DiagramElementInfo((OrmShape)child);
 					addItem(item);
 				}
 			}
@@ -311,19 +182,27 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 			ILinkInfo link;
 			this.element = element;
 			for (Connection connection : element.getSourceConnections()) {
-				link = new LinkInfo(connection);
-				addLink(link);
+				if (connection.isVisible()) {
+					link = new LinkInfo(connection);
+					addLink(link);
+				}
 			}
 			Iterator<Shape> it = element.getChildrenIterator();
 			while (it.hasNext()) {
 				Shape child = it.next();
-				if (child.getSourceConnections().size() == 0) {
+				if (!child.isVisible()) {
+					continue;
+				}
+				final List<Connection> sourceConnections = child.getSourceConnections(); 
+				if (sourceConnections.size() == 0) {
 					link = new LinkInfo(getID());
 					addLink(link);
 				}
-				for (int i = 0; i < child.getSourceConnections().size(); i++) {
-					link = new LinkInfo(child.getSourceConnections().get(i));
-					addLink(link);
+				for (Connection connection : sourceConnections) {
+					if (connection.isVisible()) {
+						link = new LinkInfo(connection);
+						addLink(link);
+					}
 				}
 			}
 		}
@@ -343,7 +222,7 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 		}
 
 		/**
-		 * 
+		 * gets shape vertices
 		 */
 		public int[] getShape() {
 			int[] shape = new int[4];
@@ -353,13 +232,24 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 					.getEditPartRegistry().get(element);
 			if (part != null) {
 				IFigure fig = part.getFigure();
-				shape[2] = fig.getSize().width;//fig.getPreferredSize().width;
-				shape[3] = fig.getSize().height;//fig.getPreferredSize().height;
+				//shape[2] = fig.getSize().width;
+				//shape[3] = fig.getSize().height;
+				// use preferred size for correct autolayout
+				shape[2] = fig.getPreferredSize().width;
+				shape[3] = fig.getPreferredSize().height;
 			} else {
+				// indicate refresh model error
 				shape[2] = 6000;
 				shape[3] = 1000;
 			}
 			return shape;
+		}
+
+		/**
+		 * setup OrmShape up-left point location, using s[0] and s[1]
+		 */
+		public void setShape(int[] s) {
+			element.setLocation(new Point(s[0], s[1]));
 		}
 
 		/**
@@ -375,13 +265,6 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 		 */
 		public void addLink(ILinkInfo link) {
 			links.add(link);
-		}
-
-		/**
-		 * 
-		 */
-		public void setShape(int[] s) {
-			element.setLocation(new Point(s[0], s[1]));
 		}
 
 	}
@@ -415,12 +298,6 @@ class DiagramEditPart extends OrmEditPart implements PropertyChangeListener {
 				return link.getTarget().toString();
 			}
 			return ""; //$NON-NLS-1$
-		}
-
-		/**
-		 * 
-		 */
-		public void setLinkShape(int[] vs) {
 		}
 	}
 

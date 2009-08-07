@@ -21,9 +21,11 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.type.Type;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.Utils;
 
 /**
  * Map: ORM object -> label 
+ * @author some modifications from Vitali
  */
 public class OrmLabelMap {
 	
@@ -58,7 +60,7 @@ public class OrmLabelMap {
 	}
 
 	public static String getParticularLabel(Table table) {
-		return HibernateUtils.getTableName(table);
+		return Utils.getTableName(table);
 	}
 
 	public static String getParticularLabel(Column column) {
@@ -160,7 +162,7 @@ public class OrmLabelMap {
 				persistentClass.getEntityName() : persistentClass.getClassName());
 		Table table = persistentClass.getTable();
 		if (table != null) {
-			final String tableName = HibernateUtils.getTableName(table);
+			final String tableName = Utils.getTableName(table);
 			if (tableName != null) {
 				name.append(POINTER);
 				name.append(tableName);

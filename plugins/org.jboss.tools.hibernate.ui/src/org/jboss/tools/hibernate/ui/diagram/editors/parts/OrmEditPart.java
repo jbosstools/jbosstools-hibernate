@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.parts;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,8 +22,13 @@ import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartListener;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.BaseElement;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
 
-public class OrmEditPart extends AbstractGraphicalEditPart implements EditPartListener {
+/**
+ * @author some modifications from Vitali
+ */
+public class OrmEditPart extends AbstractGraphicalEditPart implements PropertyChangeListener, EditPartListener {
 
 	public void setModel(Object model) {
 		super.setModel(model);
@@ -46,6 +53,10 @@ public class OrmEditPart extends AbstractGraphicalEditPart implements EditPartLi
 		}
 	}
 
+	/**
+	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
+	 */
+	@Override
 	protected IFigure createFigure() {
 		return null;
 	}
@@ -173,4 +184,24 @@ public class OrmEditPart extends AbstractGraphicalEditPart implements EditPartLi
 		primRemoveTargetConnection(connection);
 	}
 
+	/**
+	 * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
+	 */
+	public void propertyChange(PropertyChangeEvent evt) {
+	}
+	
+	public OrmDiagram getOrmDiagram() {
+		BaseElement modelTmp = (BaseElement)getModel();
+		OrmDiagram res = modelTmp instanceof OrmDiagram ? (OrmDiagram)modelTmp : null;
+		while (modelTmp.getParent() != null) {
+			modelTmp = modelTmp.getParent();
+			res = modelTmp instanceof OrmDiagram ? (OrmDiagram)modelTmp : res;
+		}
+		return res;
+	}
+
+	public BaseElement getModelParent() {
+		BaseElement modelTmp = (BaseElement)getModel();
+		return modelTmp.getParent();
+	}
 }

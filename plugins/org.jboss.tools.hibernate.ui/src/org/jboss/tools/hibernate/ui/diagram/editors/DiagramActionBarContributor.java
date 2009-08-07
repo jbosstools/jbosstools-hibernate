@@ -30,6 +30,10 @@ import org.eclipse.ui.actions.RetargetAction;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.AutoLayoutAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleConnectionsAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeExpandStateAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeVisibleStateAction;
 import org.jboss.tools.hibernate.ui.view.ImageBundle;
 
 @SuppressWarnings("restriction")
@@ -43,6 +47,13 @@ public class DiagramActionBarContributor extends ActionBarContributor {
 		workbenchAction.setImageDescriptor(UiPlugin.getImageDescriptor2(ImageBundle.getString("Explorer.refreshOrmGef"))); //$NON-NLS-1$
 		workbenchAction.setToolTipText(DiagramViewerMessages.EditorActionContributor_refresh_visual_mapping);
 		addAction(workbenchAction);
+		//
+		addAction(new AutoLayoutAction(null));
+		//
+		addAction(new ToggleConnectionsAction(null));
+		addAction(new ToggleShapeExpandStateAction(null));
+		addAction(new ToggleShapeVisibleStateAction(null));
+		//
 		addRetargetAction(new UndoRetargetAction());
 		addRetargetAction(new RedoRetargetAction());
 		addRetargetAction(new ZoomInRetargetAction());
@@ -65,6 +76,7 @@ public class DiagramActionBarContributor extends ActionBarContributor {
 	 */
 	public void contributeToToolBar(IToolBarManager tbm) {
 		tbm.add(getAction(ActionFactory.REFRESH.getId()));
+		tbm.add(new Separator());	
 		tbm.add(getAction(ActionFactory.UNDO.getId()));
 		tbm.add(getAction(ActionFactory.REDO.getId()));
 		tbm.add(new Separator());	
@@ -76,6 +88,12 @@ public class DiagramActionBarContributor extends ActionBarContributor {
 			ZoomManager.FIT_WIDTH
 		};
 		tbm.add(new ZoomComboContributionItem(getPage(), zoomStrings));
+		tbm.add(new Separator());	
+		tbm.add(getAction(AutoLayoutAction.ACTION_ID));
+		tbm.add(new Separator());	
+		tbm.add(getAction(ToggleConnectionsAction.ACTION_ID));
+		tbm.add(getAction(ToggleShapeExpandStateAction.ACTION_ID));
+		tbm.add(getAction(ToggleShapeVisibleStateAction.ACTION_ID));
 	}
 
 	/**

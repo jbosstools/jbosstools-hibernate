@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,6 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.autolayout.impl;
 
+/**
+ * 
+ * @author some modifications from Vitali
+ */
 public class LayoutConstants {
 	static int DELTA_X = 200;
 	static int DELTA_Y = 104;
@@ -32,7 +36,11 @@ public class LayoutConstants {
 			deltaY = DELTA_Y;
 			incX = X_INC;
 			incY = Y_INC;
-		}	
+		}
+		update(step);
+	}
+	
+	public void update(int step) {
 		indentX = (step < 24) ? 24 : step;
 		indentY = (step < 16) ? 16 : step;
 		if (step == 16) {

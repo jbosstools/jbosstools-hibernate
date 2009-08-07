@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -31,15 +31,18 @@ import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.ui.diagram.editors.figures.RoundPolylineConnection;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection;
-import org.jboss.tools.hibernate.ui.diagram.editors.model.ModelElement;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.BaseElement;
 
+/**
+ * @author some modifications from Vitali
+ */
 class ConnectionEditPart extends AbstractConnectionEditPart 
-implements PropertyChangeListener, EditPartListener {
+	implements PropertyChangeListener, EditPartListener {
 	
 	public void activate() {
 		if (!isActive()) {
 			super.activate();
-			((ModelElement) getModel()).addPropertyChangeListener(this);
+			((BaseElement) getModel()).addPropertyChangeListener(this);
 			addEditPartListener(this);
 		}
 	}
@@ -52,64 +55,73 @@ implements PropertyChangeListener, EditPartListener {
 		PolylineConnection connection = new RoundPolylineConnection();		
 		connection.setForegroundColor(getColor());	
 		connection.setTargetDecoration(new PolygonDecoration());		
-		connection.setVisible(!getCastedModel().isHiden());
+		connection.setVisible(getModelConnection().isVisible());
 		return connection;
 	}
 	
 	public void deactivate() {
 		if (isActive()) {
 			super.deactivate();
-			((ModelElement) getModel()).removePropertyChangeListener(this);
+			((BaseElement) getModel()).removePropertyChangeListener(this);
 		}
 	}
 	
 	public void propertyChange(PropertyChangeEvent event) {
 		String property = event.getPropertyName();
-		if (Connection.SHOW_SELECTION.equals(property)) {
-			getFigure().setForegroundColor(getSelectionColor());
-		} else if (Connection.HIDE_SELECTION.equals(property)) {
-			getFigure().setForegroundColor(getColor());			
-		} else if (Connection.SET_HIDEN.equals(property)) {
-			getFigure().setVisible(!((Boolean)event.getNewValue()).booleanValue());
+		if (BaseElement.SELECTED.equals(property)) {
+			updateSelected((Boolean)event.getNewValue());
+		} else if (BaseElement.VISIBLE.equals(property)) {
+			getFigure().setVisible(((Boolean)event.getNewValue()).booleanValue());
+		} else if (BaseElement.REFRESH.equals(property)) {
+			getFigure().setVisible(getModelConnection().isVisible());
+			updateSelected(getModelConnection().isSelected());
 		}
 	}
 	
-	private Connection getCastedModel() {
+	protected void updateSelected(boolean selected) {
+		//setSelected(selected ? EditPart.SELECTED : EditPart.SELECTED_NONE);
+		if (!selected) {
+			setSelected(EditPart.SELECTED_NONE);
+		}
+		getFigure().setForegroundColor(selected ? getSelectionColor() : getColor());
+	}
+	
+	private Connection getModelConnection() {
 		return (Connection) getModel();
 	}
 
+	protected Object getTargetElement() {
+		return getModelConnection().getTarget().getOrmElement();
+	}
+
 	private Color getColor() {
-		Object element = getCastedModel().getTarget().getOrmElement();
-		if (element instanceof RootClass || element instanceof Subclass) { 
-			return ResourceManager.getInstance().getColor(new RGB(210,155,100));
-		} else if (element instanceof Column || element instanceof Table || element instanceof Property) { 
+		Object el = getTargetElement();
+		if (el instanceof RootClass || el instanceof Subclass) { 
+			return ResourceManager.getInstance().getColor(new RGB(210, 155, 100));
+		} else if (el instanceof Column || el instanceof Table || el instanceof Property) { 
 			return ResourceManager.getInstance().getColor(new RGB(160, 160, 160));
-		} else {
-			throw new IllegalArgumentException();
 		}
+		return ResourceManager.getInstance().getColor(new RGB(255, 0, 0));
 	}
 
 	private Color getSelectionColor() {
-		if (getCastedModel().getTarget().getOrmElement() instanceof RootClass ||
-				getCastedModel().getTarget().getOrmElement() instanceof Subclass) { 
-			return ResourceManager.getInstance().getColor(new RGB(112,161,99));
-		} else if (getCastedModel().getTarget().getOrmElement() instanceof Column || 
-				getCastedModel().getTarget().getOrmElement() instanceof Table || 
-				getCastedModel().getTarget().getOrmElement() instanceof Component) { 
-			return ResourceManager.getInstance().getColor(new RGB(66,173,247));
-		} else {
-			throw new IllegalArgumentException();
+		Object el = getTargetElement();
+		if (el instanceof RootClass || el instanceof Subclass) { 
+			return ResourceManager.getInstance().getColor(new RGB(112, 161, 99));
+		} else if (el instanceof Column || el instanceof Table || el instanceof Component) { 
+			return ResourceManager.getInstance().getColor(new RGB(66, 173, 247));
 		}
+		return ResourceManager.getInstance().getColor(new RGB(255, 0, 0));
 	}
 	
 	private class ShapesSelectionEditPolicy extends SelectionEditPolicy {
 
 		protected void hideSelection() {
-			getCastedModel().hideSelection();
+			getModelConnection().setSelected(false);
 		}
 
 		protected void showSelection() {
-			getCastedModel().showSelection();
+			getModelConnection().setSelected(true);
 		}
 		
 	}

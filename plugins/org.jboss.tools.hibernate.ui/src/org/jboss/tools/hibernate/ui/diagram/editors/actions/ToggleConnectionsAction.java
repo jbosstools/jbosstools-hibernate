@@ -10,25 +10,27 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.actions;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
 
 /**
  * @author Vitali Yemialyanchyk
  */
-public class ExpandAllAction extends DiagramBaseAction {
+public class ToggleConnectionsAction extends DiagramBaseAction {
 
-	public static final String ACTION_ID = "expand_all_id"; //$NON-NLS-1$
+	public static final String ACTION_ID = "toggleConnectionsId"; //$NON-NLS-1$
 
-	public ExpandAllAction(DiagramViewer editor) {
+	public ToggleConnectionsAction(DiagramViewer editor) {
 		super(editor);
 		setId(ACTION_ID);
-		setText(DiagramViewerMessages.ExpandAllAction_expand_all);
-		//setImageDescriptor(ImageDescriptor.createFromFile(
-		//		DiagramViewer.class, "icons/export.png"));
+		setText(DiagramViewerMessages.ToggleConnectionsAction_toggle_connections);
+		setToolTipText(DiagramViewerMessages.ToggleConnectionsAction_toggle_connections);
+		setImageDescriptor(ImageDescriptor.createFromFile(
+				DiagramViewer.class, "icons/toggleconnections.png")); //$NON-NLS-1$
 	}
 
 	public void run() {
-		getDiagramViewer().getViewerContents().expandAll();
+		getDiagramViewer().getViewerContents().toggleConnections();
 	}
 }

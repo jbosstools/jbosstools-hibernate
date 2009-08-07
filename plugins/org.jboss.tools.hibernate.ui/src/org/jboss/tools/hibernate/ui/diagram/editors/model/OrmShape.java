@@ -11,6 +11,7 @@
 package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
 import java.util.Iterator;
+import java.util.Properties;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.hibernate.mapping.Collection;
@@ -24,23 +25,34 @@ import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.ui.diagram.rulers.DiagramGuide;
 
-public class OrmShape extends ExpandeableShape {
-	public static final String SET_HIDEN = "set hiden"; //$NON-NLS-1$
-	
-	public static final String LOCATION_PROP = "OrmShape.Location";		 //$NON-NLS-1$
-	private Point location = new Point(0, 0);
-	protected boolean hiden = false;
+/**
+ * Only OrmShape has it's own location on Diagram.
+ * 
+ * @author some modifications from Vitali
+ */
+public class OrmShape extends ExpandableShape {
 
+	public static final String LOCATION_PROP = "location";		 //$NON-NLS-1$
+	/**
+	 * up-left point element location on diagram
+	 */
+	private Point location = new Point(0, 0);
+	/**
+	 * vertical and horizontal guide attached to OrmShape, 
+	 * additional way to change shape location on diagram
+	 */
 	private DiagramGuide verticalGuide, horizontalGuide;
 	
 	public OrmShape(Object ioe) {	
 		super(ioe);
-		generate();
+		initModel();
 	}
 	
+	/**
+	 * creates children of the shape, 
+	 */
 	@SuppressWarnings("unchecked")
-	protected void generate() {
-		Shape bodyOrmShape;
+	protected void initModel() {
 		Object ormElement = getOrmElement();
 		if (ormElement instanceof RootClass) {
 			RootClass rootClass = (RootClass)ormElement;
@@ -74,18 +86,19 @@ public class OrmShape extends ExpandeableShape {
 								typeIsAccessible = false;
 							}
 						}
+						Shape bodyOrmShape = null;
 						if (field.getValue().isSimpleValue() && !((SimpleValue)field.getValue()).isTypeSpecified()) {
 							bodyOrmShape = new Shape(field);
 						} else if (typeIsAccessible && field.getValue() instanceof Collection) {
 							bodyOrmShape = new ComponentShape(field);
 						} else if (typeIsAccessible && field.getValue().getType().isEntityType()) {
-							bodyOrmShape = new ExpandeableShape(field);
+							bodyOrmShape = new ExpandableShape(field);
 						} else {
 							bodyOrmShape = new Shape(field);
 						}
 						addChild(bodyOrmShape);
 					} else {
-						bodyOrmShape = new ExpandeableShape(field);
+						Shape bodyOrmShape = new ExpandableShape(field);
 						addChild(bodyOrmShape);
 					}
 				}
@@ -112,8 +125,7 @@ public class OrmShape extends ExpandeableShape {
 				Property field = iterator.next();
 				if (!field.isBackRef()) {
 					if (!field.isComposite()) {
-						
-						
+
 						boolean typeIsAccessible = true;
 						if (field.getValue().isSimpleValue() && ((SimpleValue)field.getValue()).isTypeSpecified()) {
 							try {
@@ -122,11 +134,11 @@ public class OrmShape extends ExpandeableShape {
 								typeIsAccessible = false;
 							}
 						}
-						
+						Shape bodyOrmShape = null;
 						if (typeIsAccessible && field.getValue().isSimpleValue()) {
 							bodyOrmShape = new Shape(field);
 						} else if (typeIsAccessible && field.getValue().getType().isEntityType()) {
-							bodyOrmShape = new ExpandeableShape(field);
+							bodyOrmShape = new ExpandableShape(field);
 						} else if (typeIsAccessible && field.getValue().getType().isCollectionType()) {
 							bodyOrmShape = new ComponentShape(field);
 						} else {
@@ -134,7 +146,7 @@ public class OrmShape extends ExpandeableShape {
 						}
 						addChild(bodyOrmShape);
 					} else {
-						bodyOrmShape = new ExpandeableShape(field);
+						Shape bodyOrmShape = new ExpandableShape(field);
 						addChild(bodyOrmShape);
 					}
 				}
@@ -153,25 +165,26 @@ public class OrmShape extends ExpandeableShape {
 								typeIsAccessible = false;
 							}
 						}						
-						
+						Shape bodyOrmShape = null;
 						if (typeIsAccessible && property.getValue().getType().isEntityType()) {
-							bodyOrmShape = new ExpandeableShape(property);
+							bodyOrmShape = new ExpandableShape(property);
 						} else if (typeIsAccessible && property.getValue().getType().isCollectionType()) {
 							bodyOrmShape = new ComponentShape(property);
 						} else {
 							bodyOrmShape = new Shape(property);
 						}
+						addChild(bodyOrmShape);
 					} else {
-						bodyOrmShape = new ExpandeableShape(property);
+						Shape bodyOrmShape = new ExpandableShape(property);
+						addChild(bodyOrmShape);
 					}
-					addChild(bodyOrmShape);
 				}
 			}
 		} else if (ormElement instanceof Table) {
 			Iterator iterator = ((Table)getOrmElement()).getColumnIterator();
 			while (iterator.hasNext()) {
 				Column column = (Column)iterator.next();
-				bodyOrmShape = new Shape(column);
+				Shape bodyOrmShape = new Shape(column);
 				addChild(bodyOrmShape);
 			}
 		}
@@ -207,34 +220,6 @@ public class OrmShape extends ExpandeableShape {
 		return null;
 	}
 
-	protected void setHidden(boolean hiden) {
-		super.setHidden(hiden);
-		Iterator<Shape> it = getChildrenIterator();
-		while (it.hasNext()) {
-			final Shape child = it.next();
-			child.setHidden(hiden);
-		}
-	}
-
-	public void refreshHiden() {
-		hiden = !hiden;
-		setElementHidden(this, hiden);
-		firePropertyChange(SET_HIDEN, null, Boolean.valueOf(hiden));
-	}
-	
-	public void refreshReference() {
-		firePropertyChange(SET_HIDEN, null, Boolean.valueOf(hiden));
-	}
-	
-	private void setElementHidden(ModelElement element, boolean hidden) {
-		Iterator<Shape> it = element.getChildrenIterator();
-		while (it.hasNext()) {
-			final Shape child = it.next();
-			child.setHidden(hidden);
-			setElementHidden(child, hidden);
-		}
-	}
-
 	public Point getLocation() {
 		return location.getCopy();
 	}
@@ -245,10 +230,6 @@ public class OrmShape extends ExpandeableShape {
 		}
 		location.setLocation(newLocation);
 		firePropertyChange(LOCATION_PROP, null, location);
-	}
-
-	public boolean isHiden() {
-		return hiden;
 	}
 
 	public DiagramGuide getHorizontalGuide() {
@@ -265,5 +246,53 @@ public class OrmShape extends ExpandeableShape {
 
 	public void setVerticalGuide(DiagramGuide vGuide) {
 		verticalGuide = vGuide;
+	}
+	
+	protected Point getPoint(Properties properties, String key) {
+		Point point = new Point(0, 0);
+		String str = properties.getProperty(key + ".x", "0"); //$NON-NLS-1$ //$NON-NLS-2$
+		point.x = Integer.parseInt(str);
+		String str2 = properties.getProperty(key + ".y", "0"); //$NON-NLS-1$ //$NON-NLS-2$
+		point.y = Integer.parseInt(str2);
+		return point;
+	}
+	
+	protected void setPoint(Properties properties, String key, Point point) {
+		String key1 = key + ".x"; //$NON-NLS-1$
+		if (!properties.containsKey(key1)) {
+			properties.remove(key1);
+			properties.put(key1, "" + point.x); //$NON-NLS-1$
+		} else {
+			properties.put(key1, "" + point.x); //$NON-NLS-1$
+		}
+		String key2 = key + ".y"; //$NON-NLS-1$
+		if (!properties.containsKey(key2)) {
+			properties.remove(key2);
+			properties.put(key2, "" + point.y); //$NON-NLS-1$
+		} else {
+			properties.put(key2, "" + point.y); //$NON-NLS-1$
+		}
+	}
+	
+	public void setPosition(Properties properties) {
+		Point point = getLocation();
+		setPoint(properties, getKey(), point);
+	}
+
+	public Point getPosition(Properties properties) {
+		return getPoint(properties, getKey());
+	}
+	
+	@Override
+	protected void loadFromProperties(Properties properties) {
+		super.loadFromProperties(properties);
+		Point pos = getPosition(properties);
+		setLocation(pos);
+	}
+
+	@Override
+	protected void saveInProperties(Properties properties) {
+		setPosition(properties);
+		super.saveInProperties(properties);
 	}
 }
