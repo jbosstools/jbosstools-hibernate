@@ -40,8 +40,4 @@ public class DiagramBaseAction extends Action {
 		return res;
 	}
 
-	public boolean isEnabled() {
-		return (getDiagramViewer() != null);
-	}
-
 }
