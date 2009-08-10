@@ -45,7 +45,9 @@ import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.eclipse.console.EclipseConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
+import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 import org.hibernate.eclipse.console.utils.DriverClassHelpers;
+import org.hibernate.eclipse.launch.PathHelper;
 import org.hibernate.tool.hbm2x.StringUtils;
 import org.hibernate.util.StringHelper;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
@@ -61,6 +63,8 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 	
 	private DriverClassHelpers helper = new DriverClassHelpers();
 	
+	private StringButtonDialogField outputdir;
+	
 	private ComboDialogField connectionProfileName;
 	
 	private StringButtonDialogField schemaName;
@@ -75,7 +79,9 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 
 	private JpaProject jpaProject;
 	
-	private IDialogFieldListener fieldlistener = new IDialogFieldListener() {
+	protected int numColumns = 3;
+	
+	protected IDialogFieldListener fieldlistener = new IDialogFieldListener() {
 		public void dialogFieldChanged(DialogField field) {
 			dialogChanged();
 		}
@@ -92,19 +98,35 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 	 */
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
-		GridLayout layout = new GridLayout();
-		int numColumns = 3;
+		GridLayout layout = new GridLayout();		
 
 		container.setLayout(layout);
 		layout.numColumns = numColumns;
 		layout.verticalSpacing = 10;		
+		
+		outputdir = new StringButtonDialogField(new IStringButtonAdapter() {
+			public void changeControlPressed(DialogField field) {
+				IPath[] paths = DialogSelectionHelper.chooseFolderEntries(getShell(),  PathHelper.pathOrNull(outputdir.getText()), HibernateConsoleMessages.CodeGenerationSettingsTab_select_output_dir, HibernateConsoleMessages.CodeGenerationSettingsTab_choose_dir_for_generated_files, false);
+				if(paths!=null && paths.length==1) {
+					outputdir.setText( ( (paths[0]).toOSString() ) );
+				}
+			}
+		});
+		outputdir.setText(getDefaultOutput());
+        outputdir.setDialogFieldListener(fieldlistener);
+		outputdir.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_output_dir);
+		outputdir.setButtonLabel(HibernateConsoleMessages.CodeGenerationSettingsTab_browse);
+		
+		Control[] controls = outputdir.doFillIntoGrid(container, numColumns);
+		// Hack to tell the text field to stretch!
+		( (GridData)controls[1].getLayoutData() ).grabExcessHorizontalSpace = true;
+		setPageComplete(!StringHelper.isEmpty(getOutputDir()));
 		
 		createChildControls(container);
 		
 		selectMethod = new Button(container, SWT.CHECK);
 		selectMethod.setText(Messages.GenerateInitWizardPage_use_console_configuration);
 		selectMethod.setSelection(true);
-		//selectMethod.setEnabled(false);
 		selectMethod.addSelectionListener(new SelectionListener(){
 
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -138,6 +160,10 @@ public abstract class GenerateInitWizardPage extends WizardPage {
         createDBGroup(container, numColumns);        
 
 		setControl(container);
+		
+		if (StringHelper.isEmpty(consoleConfigurationName.getText())) {
+				setPageComplete(false);
+		}
 	}
 	
 	/**
@@ -199,7 +225,15 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 	}
 
 	
-	protected void dialogChanged() {		
+	protected void dialogChanged() {
+		
+		String msg = PathHelper.checkDirectory(getOutputDir(), HibernateConsoleMessages.CodeGenerationSettingsTab_output_directory, false);
+
+        if (msg!=null) {
+        	setErrorMessage( msg );
+        	setPageComplete( false );
+            return;
+        }
 		
 		if (selectMethod.getSelection() && (StringHelper.isEmpty(getConfigurationName()))){
 			setPageComplete(false);
@@ -213,6 +247,10 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 		}
 		
 		setPageComplete(true);
+	}
+	
+	public String getOutputDir(){
+		return outputdir.getText();
 	}
 	
 	private String[] dtpConnectionProfileNames() {

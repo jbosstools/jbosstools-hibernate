@@ -62,7 +62,8 @@ public class GenerateDdlWizard extends Wizard {
 			prop.put("outputFileName", initPage.getFilename());  //$NON-NLS-1$
 			prop.put("format", "true"); //$NON-NLS-1$ //$NON-NLS-2$
 			prop.put("scriptToConsole", "false"); //$NON-NLS-1$  //$NON-NLS-2$
-
+			prop.put("exportToDatabase", "false");//$NON-NLS-1$  //$NON-NLS-2$			
+			
 			wc.setAttribute(HibernateJpaPlatformUi.full_exporter_id + ".properties", prop);  //$NON-NLS-1$
 			wc.setAttribute(HibernateJpaPlatformUi.full_exporter_id + ".extension_id", HibernateLaunchConstants.ATTR_PREFIX + "hbm2ddl"); //$NON-NLS-1$ //$NON-NLS-2$
 			try {
