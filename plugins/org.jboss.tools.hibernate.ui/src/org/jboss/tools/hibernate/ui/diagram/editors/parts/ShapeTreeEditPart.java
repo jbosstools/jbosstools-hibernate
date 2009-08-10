@@ -16,10 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Tree;
-import org.hibernate.console.ConsoleConfiguration;
-import org.jboss.tools.hibernate.ui.diagram.editors.model.ExpandableShape;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
-import org.jboss.tools.hibernate.ui.view.OrmLabelProvider;
 
 /**
  * @author some modifications from Vitali
@@ -27,8 +24,6 @@ import org.jboss.tools.hibernate.ui.view.OrmLabelProvider;
 public class ShapeTreeEditPart extends
 		org.eclipse.gef.editparts.AbstractTreeEditPart implements
 		PropertyChangeListener {
-
-	protected OrmLabelProvider ormLabelProvider;
 
 	/**
 	 * Constructor initializes this with the given model.
@@ -38,8 +33,6 @@ public class ShapeTreeEditPart extends
 	 */
 	public ShapeTreeEditPart(Shape model) {
 		super(model);
-		ConsoleConfiguration cfg = model.getOrmDiagram().getConsoleConfig();
-		ormLabelProvider = new OrmLabelProvider(cfg.getConfiguration());
 	}
 
 	/**
@@ -47,8 +40,8 @@ public class ShapeTreeEditPart extends
 	 * 
 	 * @return Model of this.
 	 */
-	protected ExpandableShape getExpandeableShape() {
-		return (ExpandableShape) getModel();
+	protected Shape getShape() {
+		return (Shape) getModel();
 	}
 
 	/**
@@ -73,8 +66,8 @@ public class ShapeTreeEditPart extends
 		}
 		Shape model = (Shape) getModel();
 		Object element = model.getOrmElement();
-		setWidgetImage(ormLabelProvider.getImage(element));
-		setWidgetText(ormLabelProvider.getText(element));
+		setWidgetImage(getShape().getOrmDiagram().getLabelProvider().getImage(element));
+		setWidgetText(getShape().getOrmDiagram().getLabelProvider().getText(element));
 	}
 
 }

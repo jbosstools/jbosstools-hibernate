@@ -32,14 +32,15 @@ import org.jboss.tools.hibernate.ui.diagram.editors.parts.OrmEditPart;
 public class ToggleShapeExpandStateAction extends DiagramBaseAction {
 
 	public static final String ACTION_ID = "toggleShapeExpandStateId"; //$NON-NLS-1$
+	private static final ImageDescriptor img = 
+		ImageDescriptor.createFromFile(DiagramViewer.class, "icons/toggleshapeexpandstate.png"); //$NON-NLS-1$
 
 	public ToggleShapeExpandStateAction(DiagramViewer editor) {
 		super(editor);
 		setId(ACTION_ID);
 		setText(DiagramViewerMessages.ToggleShapeExpandStateAction_toggle_expand_state);
 		setToolTipText(DiagramViewerMessages.ToggleShapeExpandStateAction_toggle_expand_state);
-		setImageDescriptor(ImageDescriptor.createFromFile(
-				DiagramViewer.class, "icons/toggleshapeexpandstate.png")); //$NON-NLS-1$
+		setImageDescriptor(img);
 	}
 
 	@SuppressWarnings("unchecked")

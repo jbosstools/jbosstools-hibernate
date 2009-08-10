@@ -40,13 +40,14 @@ public class ExportImageAction extends DiagramBaseAction {
 		DiagramViewerMessages.ExportImageAction_jpg_format, DiagramViewerMessages.ExportImageAction_bmp_format };
 
 	private FileDialog saveDialog = null;
+	private static final ImageDescriptor img = 
+		ImageDescriptor.createFromFile(DiagramViewer.class, "icons/export.png"); //$NON-NLS-1$
 
 	public ExportImageAction(DiagramViewer editor) {
 		super(editor);
 		setId(ACTION_ID);
 		setText(DiagramViewerMessages.ExportImageAction_export_as_image);
-		setImageDescriptor(ImageDescriptor.createFromFile(
-				DiagramViewer.class,"icons/export.png")); //$NON-NLS-1$
+		setImageDescriptor(img);
 	}
 	
 	/**

@@ -26,11 +26,15 @@ public class Utils {
 	public static boolean isConnectionExist(Shape source, Shape target) {
 		boolean res = false;
 		if (source != null && target != null) {
-			List<Connection> sourceConnections = source.getSourceConnections();
-			for (int i = 0; !res && i < sourceConnections.size(); i++) {
-				Connection conn = sourceConnections.get(i);
-				if (conn.getTarget().equals(target)) {
-					res = true;
+			if (source.equals(target)) {
+				res = true;
+			} else {
+				List<Connection> sourceConnections = source.getSourceConnections();
+				for (int i = 0; !res && i < sourceConnections.size(); i++) {
+					Connection conn = sourceConnections.get(i);
+					if (conn.getTarget().equals(target)) {
+						res = true;
+					}
 				}
 			}
 		}

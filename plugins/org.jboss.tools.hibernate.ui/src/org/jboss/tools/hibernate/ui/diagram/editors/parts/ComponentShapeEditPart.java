@@ -43,8 +43,8 @@ public class ComponentShapeEditPart extends ExpandableShapeEditPart {
 	@Override
 	protected IFigure createFigure() {
 		ComponentFigure figure = new ComponentFigure();
-		figure.createTitle(ormLabelProvider.getText(getElement()), 
-				ormLabelProvider.getImage(getElement()), getColor());
+		figure.createTitle(getOrmDiagram().getLabelProvider().getText(getElement()), 
+				getOrmDiagram().getLabelProvider().getImage(getElement()), getColor());
 		figure.setBorder(new FocusBorder());
 		figure.setSize(-1, -1);
 		return figure;

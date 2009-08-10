@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
@@ -28,12 +29,14 @@ import org.jboss.tools.hibernate.ui.view.ObjectEditorInput;
  */
 public class OpenSourceAction extends SelectionAction {
 	public static final String ACTION_ID = "org.jboss.tools.hibernate.ui.diagram.editors.actions.open.source"; //$NON-NLS-1$
+	private static final ImageDescriptor img = 
+		UiPlugin.getImageDescriptor("icons/java.gif"); //$NON-NLS-1$
 
 	public OpenSourceAction(IWorkbenchPart part) {
 		super(part);
 		setId(ACTION_ID);
 		setText(DiagramViewerMessages.OpenSourceAction_open_source_file);
-		setImageDescriptor(UiPlugin.getImageDescriptor("icons/java.gif")); //$NON-NLS-1$
+		setImageDescriptor(img);
 	}
 
 	public void run() {

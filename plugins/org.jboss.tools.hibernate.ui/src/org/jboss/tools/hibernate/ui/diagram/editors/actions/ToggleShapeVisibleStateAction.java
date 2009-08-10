@@ -34,14 +34,15 @@ import org.jboss.tools.hibernate.ui.diagram.editors.parts.OrmEditPart;
 public class ToggleShapeVisibleStateAction extends DiagramBaseAction {
 
 	public static final String ACTION_ID = "toggleShapeVisibleStateId"; //$NON-NLS-1$
+	private static final ImageDescriptor img = 
+		ImageDescriptor.createFromFile(DiagramViewer.class, "icons/toggleshapevisiblestate.png"); //$NON-NLS-1$
 
 	public ToggleShapeVisibleStateAction(DiagramViewer editor) {
 		super(editor);
 		setId(ACTION_ID);
 		setText(DiagramViewerMessages.ToggleShapeVisibleStateAction_toggle_visible_state);
 		setToolTipText(DiagramViewerMessages.ToggleShapeVisibleStateAction_toggle_visible_state);
-		setImageDescriptor(ImageDescriptor.createFromFile(
-				DiagramViewer.class, "icons/toggleshapevisiblestate.png")); //$NON-NLS-1$
+		setImageDescriptor(img);
 	}
 
 	@SuppressWarnings("unchecked")

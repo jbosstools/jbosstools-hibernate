@@ -21,7 +21,6 @@ import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.ui.view.HibernateUtils;
-import org.jboss.tools.hibernate.ui.view.OrmLabelProvider;
 
 /**
  * Shape which represents particular Hibernate element on the diagram.
@@ -50,7 +49,6 @@ public class Shape extends BaseElement {
 	 */
 	private BaseElement parent;
 	
-	private static OrmLabelProvider labelProvider = new OrmLabelProvider();
 	private static IPropertyDescriptor[] descriptors_property;
 	private static IPropertyDescriptor[] descriptors_column;
 
@@ -252,8 +250,7 @@ public class Shape extends BaseElement {
 			} else if (col != null) {
 				String sqlType = col.getSqlType();
 				if (sqlType == null) {
-					labelProvider.setConfig(getOrmDiagram().getConsoleConfig().getConfiguration());
-					labelProvider.updateColumnSqlType(col);
+					getOrmDiagram().getLabelProvider().updateColumnSqlType(col);
 					sqlType = col.getSqlType();
 				}
 				StringBuffer name = new StringBuffer();

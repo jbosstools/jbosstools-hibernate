@@ -31,7 +31,6 @@ import org.eclipse.gef.editparts.AbstractEditPart;
 import org.eclipse.gef.editpolicies.SelectionEditPolicy;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
-import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
@@ -45,23 +44,17 @@ import org.jboss.tools.hibernate.ui.diagram.editors.figures.TopLineBorder;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.BaseElement;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
-import org.jboss.tools.hibernate.ui.view.OrmLabelProvider;
 
 /**
  * @author some modifications from Vitali
  */
 public class ShapeEditPart extends OrmEditPart implements NodeEditPart {
 
-	protected OrmLabelProvider ormLabelProvider = new OrmLabelProvider();
 	protected ChopboxAnchorNearestSide sourceAnchor = null;
 	protected ChopboxAnchorNearestSide targetAnchor = null;
 
 	public void setModel(Object model) {
 		super.setModel(model);
-		if (getOrmDiagram() != null) {
-			ConsoleConfiguration consoleConfig = getOrmDiagram().getConsoleConfig();
-			ormLabelProvider.setConfig(consoleConfig.getConfiguration());
-		}
 	}
 
 	protected void createEditPolicies() {
@@ -74,9 +67,9 @@ public class ShapeEditPart extends OrmEditPart implements NodeEditPart {
 	@Override
 	protected IFigure createFigure() {
 		Label label = new Label();
-		label.setText(ormLabelProvider.getText(getElement()));
+		label.setText(getOrmDiagram().getLabelProvider().getText(getElement()));
 		label.setBackgroundColor(getColor());
-		label.setIcon(ormLabelProvider.getImage(getElement()));
+		label.setIcon(getOrmDiagram().getLabelProvider().getImage(getElement()));
 		label.setLabelAlignment(PositionConstants.LEFT);
 		label.setOpaque(true);
 		TopLineBorder border = new TopLineBorder(1, 2 + getModelShape().getIndent(), 1, 2);

@@ -38,6 +38,7 @@ import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
 import org.jboss.tools.hibernate.ui.diagram.rulers.DiagramRuler;
+import org.jboss.tools.hibernate.ui.view.OrmLabelProvider;
 
 /**
  * The whole diagram, all information about diagram elements are here.
@@ -53,6 +54,7 @@ public class OrmDiagram extends BaseElement {
 	
 	// hibernate console configuration is the source of diagram elements 
 	private ConsoleConfiguration consoleConfig;
+	private OrmLabelProvider labelProvider = new OrmLabelProvider();
 
 	private	boolean dirty = false;
 	private HashMap<String, OrmShape> elements = new HashMap<String, OrmShape>();
@@ -74,6 +76,7 @@ public class OrmDiagram extends BaseElement {
 	public OrmDiagram(ConsoleConfiguration consoleConfig, RootClass ioe) {
 		createRulers();
 		this.consoleConfig = consoleConfig;
+		labelProvider.setConfig(consoleConfig.getConfiguration());
 		ormElements = new RootClass[1];
 		ormElements[0] = ioe;
 		entityNames = new String[1];
@@ -88,6 +91,7 @@ public class OrmDiagram extends BaseElement {
 	public OrmDiagram(ConsoleConfiguration consoleConfig, RootClass[] ioe) {
 		createRulers();
 		this.consoleConfig = consoleConfig;
+		labelProvider.setConfig(consoleConfig.getConfiguration());
 		ormElements = new RootClass[ioe.length];
 		System.arraycopy(ioe, 0, ormElements, 0, ioe.length);
 		// should sort elements - cause different sort order gives different file name
@@ -475,5 +479,9 @@ public class OrmDiagram extends BaseElement {
 	@Override
 	public String getKey() {
 		return null;
+	}
+
+	public OrmLabelProvider getLabelProvider() {
+		return labelProvider;
 	}
 }

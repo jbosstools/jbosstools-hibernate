@@ -20,14 +20,15 @@ import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
 public class AutoLayoutAction extends DiagramBaseAction {
 
 	public static final String ACTION_ID = "auto_layout_id"; //$NON-NLS-1$
+	private static final ImageDescriptor img = 
+		ImageDescriptor.createFromFile(DiagramViewer.class, "icons/autolayout.png"); //$NON-NLS-1$
 
 	public AutoLayoutAction(DiagramViewer editor) {
 		super(editor);
 		setId(ACTION_ID);
 		setText(DiagramViewerMessages.AutoLayoutAction_auto_layout);
 		setToolTipText(DiagramViewerMessages.AutoLayoutAction_auto_layout);
-		setImageDescriptor(ImageDescriptor.createFromFile(
-				DiagramViewer.class, "icons/autolayout.png")); //$NON-NLS-1$
+		setImageDescriptor(img);
 	}
 
 	public void run() {

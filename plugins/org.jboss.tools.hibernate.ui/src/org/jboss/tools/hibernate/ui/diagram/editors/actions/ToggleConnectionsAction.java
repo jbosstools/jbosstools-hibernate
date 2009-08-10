@@ -20,14 +20,15 @@ import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
 public class ToggleConnectionsAction extends DiagramBaseAction {
 
 	public static final String ACTION_ID = "toggleConnectionsId"; //$NON-NLS-1$
+	private static final ImageDescriptor img = 
+		ImageDescriptor.createFromFile(DiagramViewer.class, "icons/toggleconnections.png"); //$NON-NLS-1$
 
 	public ToggleConnectionsAction(DiagramViewer editor) {
 		super(editor);
 		setId(ACTION_ID);
 		setText(DiagramViewerMessages.ToggleConnectionsAction_toggle_connections);
 		setToolTipText(DiagramViewerMessages.ToggleConnectionsAction_toggle_connections);
-		setImageDescriptor(ImageDescriptor.createFromFile(
-				DiagramViewer.class, "icons/toggleconnections.png")); //$NON-NLS-1$
+		setImageDescriptor(img);
 	}
 
 	public void run() {

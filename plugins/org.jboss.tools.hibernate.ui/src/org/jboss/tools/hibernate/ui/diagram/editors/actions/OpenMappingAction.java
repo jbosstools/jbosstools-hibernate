@@ -16,6 +16,7 @@ import java.util.Set;
 
 import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
@@ -36,12 +37,14 @@ import org.jboss.tools.hibernate.ui.view.ObjectEditorInput;
  */
 public class OpenMappingAction extends SelectionAction {
 	public static final String ACTION_ID = "org.jboss.tools.hibernate.ui.diagram.editors.actions.open.mapping"; //$NON-NLS-1$
+	private static final ImageDescriptor img = 
+		UiPlugin.getImageDescriptor("icons/mapping.gif"); //$NON-NLS-1$
 
 	public OpenMappingAction(IWorkbenchPart part) {
 		super(part);
 		setId(ACTION_ID);
 		setText(DiagramViewerMessages.OpenMappingAction_open_mapping_file);
-		setImageDescriptor(UiPlugin.getImageDescriptor("icons/mapping.gif")); //$NON-NLS-1$
+		setImageDescriptor(img);
 	}
 
 	public void run() {

@@ -407,7 +407,19 @@ public class ElementsFactory {
 					if (processed.contains(shapeCol)) {
 						continue;
 					}
-					if (dbColumn.getName().equals(((Column)(shapeCol).getOrmElement()).getName())) {
+					if (shape.equals(shapeCol)) {
+						continue;
+					}
+					Object ormElement = shapeCol.getOrmElement();
+					String name2 = ""; //$NON-NLS-1$
+					if (ormElement instanceof Column) {
+						Column dbColumn2 = (Column)ormElement;
+						name2 = dbColumn2.getName();
+					} else if (ormElement instanceof Property) {
+						Property property2 = (Property)ormElement;
+						name2 = property2.getName();
+					}
+					if (dbColumn.getName().equals(name2)) {
 						if (!isConnectionExist(shape, shapeCol)) {
 							connections.add(new Connection(shape, shapeCol));
 						}

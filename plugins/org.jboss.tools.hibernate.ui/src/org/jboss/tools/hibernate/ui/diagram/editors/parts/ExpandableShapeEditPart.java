@@ -47,9 +47,9 @@ public class ExpandableShapeEditPart extends ShapeEditPart {
 	@Override
 	protected IFigure createFigure() {
 		Label label = new TitleLabel();
-		label.setText(ormLabelProvider.getText(getElement()));	
+		label.setText(getOrmDiagram().getLabelProvider().getText(getElement()));	
 		label.setBackgroundColor(getColor());
-		label.setIcon(ormLabelProvider.getImage(getElement()));
+		label.setIcon(getOrmDiagram().getLabelProvider().getImage(getElement()));
 		label.setLabelAlignment(PositionConstants.LEFT);
 		label.setOpaque(true);
 		TopLineBorder border = 
