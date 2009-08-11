@@ -125,6 +125,10 @@ public interface ConsoleConfigurationPreferences {
 
 	public abstract String getNamingStrategy();
 
+	/**
+	 * 
+	 * @return null if ConnectionProfile was not specified
+	 */
 	public abstract String getConnectionProfileName();
 	
 	public abstract String getDialectName();

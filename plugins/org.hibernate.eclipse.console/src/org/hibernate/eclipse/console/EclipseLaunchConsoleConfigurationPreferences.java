@@ -147,7 +147,7 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 					if (jpaProject != null) {
 						JpaDataSource ds = jpaProject.getDataSource();
 						if (ds != null)
-							return ds.getConnectionProfileName();
+							return "".equals(ds.getConnectionProfileName()) ? null : ds.getConnectionProfileName();//$NON-NLS-1$
 					}
 				}
 			}

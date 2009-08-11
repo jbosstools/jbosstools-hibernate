@@ -175,7 +175,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		// refresh profile (refresh jpa connection):
 		// get fresh information about current db structure and update error markers  
 		if (profile.getConnectionState() == IConnectionProfile.CONNECTED_STATE){
-			profile.disconnect();			
+			profile.disconnect(null);
 		}
 		profile.connect(null);
 	}
@@ -686,7 +686,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 
 	private Configuration configureConnectionProfile(Configuration localCfg) {
 		String connectionProfile = prefs.getConnectionProfileName();
-		if(connectionProfile==null || "".equals(connectionProfile)) {//$NON-NLS-1$
+		if(connectionProfile==null) {
 			return localCfg;
 		}
 		
