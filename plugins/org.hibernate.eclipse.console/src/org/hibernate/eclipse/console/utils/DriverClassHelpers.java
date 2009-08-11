@@ -74,6 +74,7 @@ public class DriverClassHelpers {
         dialectNames.put("Sybase 11", "org.hibernate.dialect.Sybase11Dialect"); //$NON-NLS-1$ //$NON-NLS-2$
         dialectNames.put("Sybase Anywhere", "org.hibernate.dialect.SybaseAnywhereDialect"); //$NON-NLS-1$ //$NON-NLS-2$
         dialectNames.put("SQL Server", "org.hibernate.dialect.SQLServerDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("Teiid", "org.teiid.dialect.TeiidDialect"); //$NON-NLS-1$ //$NON-NLS-2$
 
         addDriverAndURLS("org.hibernate.dialect.HSQLDialect", //$NON-NLS-1$
                          "org.hsqldb.jdbcDriver",  //$NON-NLS-1$
@@ -227,6 +228,14 @@ public class DriverClassHelpers {
         
         addDriverAndURLS("org.hibernate.dialect.PointbaseDialect", "com.pointbase.jdbc.jdbcUniversalDriver", //$NON-NLS-1$  //$NON-NLS-2$
                 new String[] { "jdbc:pointbase:embedded:sample" }); //$NON-NLS-1$
+        
+        addDriverAndURLS("org.teiid.dialect.TeiidDialect", "org.teiid.jdbc.TeiidDriver", //$NON-NLS-1$  //$NON-NLS-2$
+                new String[] { 
+        			"jdbc:teiid:vdb@mm://<host>:<port>;user=<user>;password=<password>",  //$NON-NLS-1$ 
+        			"jdbc:teiid:vdb@mms://<host>:<port>;user=<user>;password=<password>",  //$NON-NLS-1$ 
+        			"jdbc:teiid:vdb@<path_to>/deploy.properties;user=<user>;password=<password>",  //$NON-NLS-1$
+       			}
+        );
     }
 
     /**
