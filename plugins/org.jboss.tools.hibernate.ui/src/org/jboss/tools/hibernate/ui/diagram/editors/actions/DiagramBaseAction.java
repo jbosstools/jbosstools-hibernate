@@ -13,6 +13,8 @@ package org.jboss.tools.hibernate.ui.diagram.editors.actions;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.views.contentoutline.ContentOutline;
+import org.jboss.tools.hibernate.ui.diagram.editors.DiagramContentOutlinePage;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
 
 /**
@@ -35,6 +37,12 @@ public class DiagramBaseAction extends Action {
 			IWorkbenchPart part = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart();
 			if (part instanceof DiagramViewer) {
 				res = (DiagramViewer)part;
+			} else if (part instanceof ContentOutline) {
+				ContentOutline co = (ContentOutline)part;
+				if (co.getCurrentPage() instanceof DiagramContentOutlinePage) {
+					DiagramContentOutlinePage dcop = (DiagramContentOutlinePage)co.getCurrentPage();
+					res = dcop.getEditor();
+				}
 			}
 		}
 		return res;

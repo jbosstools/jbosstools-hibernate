@@ -29,7 +29,7 @@ import org.jboss.tools.hibernate.ui.view.ObjectEditorInput;
  */
 public class OpenSourceAction extends SelectionAction {
 	public static final String ACTION_ID = "org.jboss.tools.hibernate.ui.diagram.editors.actions.open.source"; //$NON-NLS-1$
-	private static final ImageDescriptor img = 
+	public static final ImageDescriptor img = 
 		UiPlugin.getImageDescriptor("icons/java.gif"); //$NON-NLS-1$
 
 	public OpenSourceAction(IWorkbenchPart part) {

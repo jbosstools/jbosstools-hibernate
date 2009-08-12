@@ -32,7 +32,7 @@ import org.jboss.tools.hibernate.ui.diagram.editors.parts.OrmEditPart;
 public class ToggleShapeExpandStateAction extends DiagramBaseAction {
 
 	public static final String ACTION_ID = "toggleShapeExpandStateId"; //$NON-NLS-1$
-	private static final ImageDescriptor img = 
+	public static final ImageDescriptor img = 
 		ImageDescriptor.createFromFile(DiagramViewer.class, "icons/toggleshapeexpandstate.png"); //$NON-NLS-1$
 
 	public ToggleShapeExpandStateAction(DiagramViewer editor) {

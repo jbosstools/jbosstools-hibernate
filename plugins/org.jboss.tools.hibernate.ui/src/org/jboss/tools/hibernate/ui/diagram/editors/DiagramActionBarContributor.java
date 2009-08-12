@@ -32,6 +32,7 @@ import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.AutoLayoutAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleConnectionsAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.DiagramBaseRetargetAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeExpandStateAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeVisibleStateAction;
 import org.jboss.tools.hibernate.ui.view.ImageBundle;
@@ -48,11 +49,27 @@ public class DiagramActionBarContributor extends ActionBarContributor {
 		workbenchAction.setToolTipText(DiagramViewerMessages.EditorActionContributor_refresh_visual_mapping);
 		addAction(workbenchAction);
 		//
-		addAction(new AutoLayoutAction(null));
+		addRetargetAction(new DiagramBaseRetargetAction(
+				AutoLayoutAction.ACTION_ID, 
+				DiagramViewerMessages.AutoLayoutAction_auto_layout,
+				DiagramViewerMessages.AutoLayoutAction_auto_layout,
+				AutoLayoutAction.img));
 		//
-		addAction(new ToggleConnectionsAction(null));
-		addAction(new ToggleShapeExpandStateAction(null));
-		addAction(new ToggleShapeVisibleStateAction(null));
+		addRetargetAction(new DiagramBaseRetargetAction(
+				ToggleConnectionsAction.ACTION_ID, 
+				DiagramViewerMessages.ToggleConnectionsAction_toggle_connections,
+				DiagramViewerMessages.ToggleConnectionsAction_toggle_connections,
+				ToggleConnectionsAction.img));
+		addRetargetAction(new DiagramBaseRetargetAction(
+				ToggleShapeExpandStateAction.ACTION_ID, 
+				DiagramViewerMessages.ToggleShapeExpandStateAction_toggle_expand_state,
+				DiagramViewerMessages.ToggleShapeExpandStateAction_toggle_expand_state,
+				ToggleShapeExpandStateAction.img));
+		addRetargetAction(new DiagramBaseRetargetAction(
+				ToggleShapeVisibleStateAction.ACTION_ID, 
+				DiagramViewerMessages.ToggleShapeVisibleStateAction_toggle_visible_state,
+				DiagramViewerMessages.ToggleShapeVisibleStateAction_toggle_visible_state,
+				ToggleShapeVisibleStateAction.img));
 		//
 		addRetargetAction(new UndoRetargetAction());
 		addRetargetAction(new RedoRetargetAction());

@@ -34,7 +34,7 @@ import org.jboss.tools.hibernate.ui.diagram.editors.parts.OrmEditPart;
 public class ToggleShapeVisibleStateAction extends DiagramBaseAction {
 
 	public static final String ACTION_ID = "toggleShapeVisibleStateId"; //$NON-NLS-1$
-	private static final ImageDescriptor img = 
+	public static final ImageDescriptor img = 
 		ImageDescriptor.createFromFile(DiagramViewer.class, "icons/toggleshapevisiblestate.png"); //$NON-NLS-1$
 
 	public ToggleShapeVisibleStateAction(DiagramViewer editor) {

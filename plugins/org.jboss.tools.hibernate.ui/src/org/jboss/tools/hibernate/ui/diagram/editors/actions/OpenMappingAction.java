@@ -37,7 +37,7 @@ import org.jboss.tools.hibernate.ui.view.ObjectEditorInput;
  */
 public class OpenMappingAction extends SelectionAction {
 	public static final String ACTION_ID = "org.jboss.tools.hibernate.ui.diagram.editors.actions.open.mapping"; //$NON-NLS-1$
-	private static final ImageDescriptor img = 
+	public static final ImageDescriptor img = 
 		UiPlugin.getImageDescriptor("icons/mapping.gif"); //$NON-NLS-1$
 
 	public OpenMappingAction(IWorkbenchPart part) {
