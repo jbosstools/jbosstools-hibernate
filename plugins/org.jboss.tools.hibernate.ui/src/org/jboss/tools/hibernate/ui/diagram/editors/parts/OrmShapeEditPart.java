@@ -64,7 +64,8 @@ public class OrmShapeEditPart extends ExpandableShapeEditPart{
 		TitleFigure figure = new TitleFigure();
 		figure.setLayoutManager(new ToolbarLayout());
 		String text = getOrmDiagram().getLabelProvider().getText(element);
-		figure.createTitle(text, getOrmDiagram().getLabelProvider().getImage(element), getColor());
+		figure.createTitle(text, getOrmDiagram().getLabelProvider().getImage(element), 
+				getColor(), getOrmDiagram().getFontHeight());
 		figure.setBackgroundColor(getBackgroundColor());
 		return figure;
 	}

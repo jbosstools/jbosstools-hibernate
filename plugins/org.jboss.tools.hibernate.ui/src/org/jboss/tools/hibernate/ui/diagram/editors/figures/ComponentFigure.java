@@ -38,9 +38,9 @@ public class ComponentFigure extends Figure {
 		setLayoutManager(new ToolbarLayout());
 	}
 	
-	public void createTitle(String text, Image icon, Color bg) {
+	public void createTitle(String text, Image icon, Color bg, float fontHeight) {
 		removeTitle();
-		TitleLabel label = new TitleLabel();
+		TitleLabel label = new TitleLabel(fontHeight);
 		label.setText(text);	
 		label.setBackgroundColor(bg);
 		label.setOpaque(true);

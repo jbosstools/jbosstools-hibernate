@@ -55,13 +55,13 @@ public class TitleFigure extends Figure {
 	 * @param icon
 	 * @param bg
 	 */
-	public void createTitle(String text, Image icon, Color bg) {
+	public void createTitle(String text, Image icon, Color bg, float fontHeight) {
 		removeTitle();
-		TitleLabel label = new TitleLabel();
+		TitleLabel label = new TitleLabel(fontHeight);
 		label.setText(text);
 		FontData fontData[] = Display.getCurrent().getSystemFont().getFontData();
 		fontData[0].setStyle(SWT.BOLD);
-		//fontData[0].height++;
+		fontData[0].height = fontHeight;
 		label.setFont(ResourceManager.getInstance().getFont(fontData[0]));
 		label.setBackgroundColor(bg);
 		label.setIcon(icon);

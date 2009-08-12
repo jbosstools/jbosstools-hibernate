@@ -30,7 +30,9 @@ import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractEditPart;
 import org.eclipse.gef.editpolicies.SelectionEditPolicy;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Display;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
@@ -67,6 +69,9 @@ public class ShapeEditPart extends OrmEditPart implements NodeEditPart {
 	@Override
 	protected IFigure createFigure() {
 		Label label = new Label();
+		FontData fontData[] = Display.getCurrent().getSystemFont().getFontData();
+		fontData[0].height = getOrmDiagram().getFontHeight();
+		label.setFont(ResourceManager.getInstance().getFont(fontData[0]));
 		label.setText(getOrmDiagram().getLabelProvider().getText(getElement()));
 		label.setBackgroundColor(getColor());
 		label.setIcon(getOrmDiagram().getLabelProvider().getImage(getElement()));

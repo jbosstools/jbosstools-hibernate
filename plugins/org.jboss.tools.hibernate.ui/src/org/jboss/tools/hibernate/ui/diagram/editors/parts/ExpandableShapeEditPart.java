@@ -46,7 +46,7 @@ public class ExpandableShapeEditPart extends ShapeEditPart {
 	 */
 	@Override
 	protected IFigure createFigure() {
-		Label label = new TitleLabel();
+		Label label = new TitleLabel(getOrmDiagram().getFontHeight());
 		label.setText(getOrmDiagram().getLabelProvider().getText(getElement()));	
 		label.setBackgroundColor(getColor());
 		label.setIcon(getOrmDiagram().getLabelProvider().getImage(getElement()));

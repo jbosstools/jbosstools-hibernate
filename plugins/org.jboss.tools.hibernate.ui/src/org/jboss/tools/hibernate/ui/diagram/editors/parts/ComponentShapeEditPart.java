@@ -44,7 +44,8 @@ public class ComponentShapeEditPart extends ExpandableShapeEditPart {
 	protected IFigure createFigure() {
 		ComponentFigure figure = new ComponentFigure();
 		figure.createTitle(getOrmDiagram().getLabelProvider().getText(getElement()), 
-				getOrmDiagram().getLabelProvider().getImage(getElement()), getColor());
+				getOrmDiagram().getLabelProvider().getImage(getElement()), getColor(),
+				getOrmDiagram().getFontHeight());
 		figure.setBorder(new FocusBorder());
 		figure.setSize(-1, -1);
 		return figure;

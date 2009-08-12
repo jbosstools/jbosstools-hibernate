@@ -14,8 +14,11 @@ import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
+import org.jboss.tools.hibernate.ui.diagram.editors.parts.ResourceManager;
 import org.jboss.tools.hibernate.ui.view.ImageBundle;
 
 /**
@@ -31,7 +34,13 @@ public class TitleLabel extends Label {
 	/**
 	 * to represent expanded/collapsed state
 	 */
-	protected boolean expanded = true; 
+	protected boolean expanded = true;
+	
+	public TitleLabel(float fontHeight) {
+		FontData fontData[] = Display.getCurrent().getSystemFont().getFontData();
+		fontData[0].height = fontHeight;
+		setFont(ResourceManager.getInstance().getFont(fontData[0]));
+	}
 
 	/**
 	 * @see Label#calculateLabelSize(Dimension)

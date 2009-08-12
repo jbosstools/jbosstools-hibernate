@@ -31,6 +31,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.widgets.Display;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -69,11 +71,13 @@ public class OrmDiagram extends BaseElement {
 	private boolean snapToGeometry = false;
 	private boolean gridEnabled = false;
 	private double zoom = 1.0;
+	private float fontHeight = 8.5f;
 	
 	//
 	private boolean fileLoadSuccessfull = false;
 	
 	public OrmDiagram(ConsoleConfiguration consoleConfig, RootClass ioe) {
+		initFontHeight();
 		createRulers();
 		this.consoleConfig = consoleConfig;
 		labelProvider.setConfig(consoleConfig.getConfiguration());
@@ -89,6 +93,7 @@ public class OrmDiagram extends BaseElement {
 	}
 	
 	public OrmDiagram(ConsoleConfiguration consoleConfig, RootClass[] ioe) {
+		initFontHeight();
 		createRulers();
 		this.consoleConfig = consoleConfig;
 		labelProvider.setConfig(consoleConfig.getConfiguration());
@@ -474,6 +479,21 @@ public class OrmDiagram extends BaseElement {
 
 	public double getZoom() {
 		return zoom;
+	}
+	
+	protected void initFontHeight() {
+		FontData fontData[] = Display.getCurrent().getSystemFont().getFontData();
+		if (fontData.length > 0) {
+			fontHeight = fontData[0].height;
+		}
+	}
+
+	public void setFontHeight(float fontHeight) {
+		this.fontHeight = fontHeight;
+	}
+
+	public float getFontHeight() {
+		return fontHeight;
 	}
 
 	@Override
