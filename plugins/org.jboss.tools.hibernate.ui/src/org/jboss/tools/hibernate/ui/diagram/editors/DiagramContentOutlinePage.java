@@ -42,6 +42,7 @@ import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.PageBook;
+import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
 import org.jboss.tools.hibernate.ui.diagram.editors.parts.TreePartFactory;
 import org.jboss.tools.hibernate.ui.diagram.editors.popup.PopupMenuProvider;
@@ -170,16 +171,18 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 				showPage(ID_OUTLINE);
 			}
 		};
+		showOutlineAction.setToolTipText(DiagramViewerMessages.DiagramContentOutlinePage_Outline);
 		showOutlineAction.setImageDescriptor(ImageDescriptor.createFromFile(
-				DiagramViewer.class,"icons/outline.gif")); //$NON-NLS-1$
+				DiagramViewer.class, "icons/outline.gif")); //$NON-NLS-1$
 		tbm.add(showOutlineAction);
 		showOverviewAction = new Action() {
 			public void run() {
 				showPage(ID_OVERVIEW);
 			}
 		};
+		showOverviewAction.setToolTipText(DiagramViewerMessages.DiagramContentOutlinePage_Overview);
 		showOverviewAction.setImageDescriptor(ImageDescriptor.createFromFile(
-				DiagramViewer.class,"icons/overview.gif")); //$NON-NLS-1$
+				DiagramViewer.class, "icons/overview.gif")); //$NON-NLS-1$
 		tbm.add(showOverviewAction);
 		showPage(ID_OVERVIEW);
 	}

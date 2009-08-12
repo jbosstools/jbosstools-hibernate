@@ -48,4 +48,6 @@ public class DiagramViewerMessages extends NLS {
 	public static String CreateGuideCommand_Label;
 	public static String DeleteGuideCommand_Label;
 	public static String MoveGuideCommand_Label;
+	public static String DiagramContentOutlinePage_Outline;
+	public static String DiagramContentOutlinePage_Overview;
 }
