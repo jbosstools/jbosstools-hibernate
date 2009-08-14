@@ -1937,7 +1937,7 @@
         </emphasis> in the context menu for any entity (or any entity child node) will also open the HQL editor
 	with the associated query. If you choose <emphasis>
           <property>Hibernate Criteria Editor</property>
-        </emphasis> in the context menu, it will open <property>Hibernate Criteria Editor</property> with the associated 	cretaria.</para>
+	</emphasis> in the context menu, it will open <property>Hibernate Criteria Editor</property> with the associated 	criteria.</para>
 
 	 <figure>
         <title>Generating Simple Queries</title>
