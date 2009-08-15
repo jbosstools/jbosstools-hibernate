@@ -20,6 +20,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.internal.core.PackageFragmentRoot;
 import org.eclipse.jdt.ui.IPackagesViewPart;
 import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -57,7 +58,10 @@ public abstract class MappingTestsBase extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		testProject = new ConfigurableTestProject("JUnitTestProj"); //$NON-NLS-1$
+		
+		testProject = new ConfigurableTestProject("JUnitTestProj"+System.currentTimeMillis()); //$NON-NLS-1$
+
+
 		consoleConfigName = testProject.getIProject().getName();
 		testPackage = null;		
 
