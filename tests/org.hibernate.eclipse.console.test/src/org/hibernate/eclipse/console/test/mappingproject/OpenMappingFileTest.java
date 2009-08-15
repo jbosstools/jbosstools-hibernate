@@ -19,6 +19,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.hibernate.InvalidMappingException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
@@ -55,7 +56,8 @@ public class OpenMappingFileTest extends TestCase {
 
 	protected void tearDown() throws Exception {
 		consoleConfigName = null;
-		testPackage = null;		
+		testPackage = null;
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closeAllEditors(false);
 	}
 
 	public void testOpenMappingFileTest() {

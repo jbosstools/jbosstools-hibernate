@@ -11,6 +11,8 @@
 package org.hibernate.eclipse.console.test.mappingproject;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.CoreException;
@@ -22,6 +24,7 @@ import org.eclipse.jdt.ui.IPackagesViewPart;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.hibernate.eclipse.console.HibernateConsolePerspectiveFactory;
@@ -143,6 +146,14 @@ public abstract class MappingTestsBase extends TestCase {
 				int prev_failCount = result.failureCount();
 				int prev_errCount = result.errorCount();
 
+				Method m = null;
+				try {
+					m = Display.getCurrent().getClass().getDeclaredMethod("runAsyncMessages", boolean.class);
+					m.setAccessible(true);
+				} catch (SecurityException e) {
+				} catch (NoSuchMethodException e) {
+				}
+				
 				TestSuite suite = TestSet.createTestSuite(consoleConfigName, testPackage, testProject);
 
 				customizeCfgXml(testPackage);
@@ -152,8 +163,24 @@ public abstract class MappingTestsBase extends TestCase {
 				for (int k = 0; k < suite.testCount(); k++) {
 					Test test = suite.testAt(k);
 					test.run(result);
+// ----------------------------------------------					
+// https://jira.jboss.org/jira/browse/JBIDE-4740 
+// first way to fix OutOfMemory problems
+					closeAllEditors();
+					int LIMIT = 50,
+						ii = 0;
+					while(ii<LIMIT && Display.getCurrent().readAndDispatch()) {
+						//Display.getCurrent().sleep();
+						ii++;
+					}
 				}
-				closeAllEditors();
+				// Second way
+				try {
+					m.invoke(Display.getCurrent(), Boolean.TRUE);
+				} catch (IllegalArgumentException e) {
+				} catch (IllegalAccessException e) {
+				} catch (InvocationTargetException e) {
+				}				
 				//==============================
 				executions++;
 				if (Customization.USE_CONSOLE_OUTPUT) {
