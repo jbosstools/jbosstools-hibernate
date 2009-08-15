@@ -174,7 +174,8 @@ public abstract class MappingTestsBase extends TestCase {
 						ii++;
 					}
 				}
-				// Second way
+				// Second way to fix https://jira.jboss.org/jira/browse/JBIDE-4740
+				// invoked to clean up RunnableLock[] in UISynchronizer
 				try {
 					m.invoke(Display.getCurrent(), Boolean.TRUE);
 				} catch (IllegalArgumentException e) {
