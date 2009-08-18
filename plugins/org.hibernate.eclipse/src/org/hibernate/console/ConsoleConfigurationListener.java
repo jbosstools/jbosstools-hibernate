@@ -43,5 +43,7 @@ public interface ConsoleConfigurationListener {
 	 * @param closedSessionFactory TODO
 	 */
 	public void sessionFactoryClosing(ConsoleConfiguration configuration, SessionFactory aboutToCloseFactory);
+
+	public void configurationBuilt(ConsoleConfiguration ccfg);
 	
 }

@@ -27,6 +27,7 @@ import org.eclipse.jpt.ui.internal.platform.generic.GenericJpaPlatformUi;
 import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
 import org.jboss.tools.hibernate.jpt.ui.wizard.GenerateDdlWizard;
 import org.jboss.tools.hibernate.jpt.ui.wizard.GenerateEntitiesWizard;
@@ -35,6 +36,8 @@ import org.jboss.tools.hibernate.jpt.ui.wizard.GenerateEntitiesWizard;
  * @author Dmitry Geraskov
  * 
  */
+ 
+@SuppressWarnings("restriction")
 public class HibernateJpaPlatformUi extends GenericJpaPlatformUi {
 
 	public static final String LaunchConfigurationType_ID = "org.hibernate.eclipse.launch.CodeGenerationLaunchConfigurationType"; //$NON-NLS-1$
@@ -54,7 +57,7 @@ public class HibernateJpaPlatformUi extends GenericJpaPlatformUi {
 
 	@Override
 	public void generateEntities(JpaProject project, IStructuredSelection selection) {
-		GenerateEntitiesWizard wizard = new GenerateEntitiesWizard(project, selection);
+		GenerateEntitiesWizard wizard = new GenerateEntitiesWizard((HibernateJpaProject) project, selection);
 		
 		WizardDialog dialog = new WizardDialog(null, wizard);
 		dialog.open();
@@ -62,7 +65,7 @@ public class HibernateJpaPlatformUi extends GenericJpaPlatformUi {
 
 	@Override
 	public void generateDDL(JpaProject project, IStructuredSelection selection) {
-		GenerateDdlWizard wizard = new GenerateDdlWizard(project, selection);
+		GenerateDdlWizard wizard = new GenerateDdlWizard((HibernateJpaProject) project, selection);
 		
 		WizardDialog dialog = new WizardDialog(null, wizard);
 		dialog.open();

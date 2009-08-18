@@ -27,6 +27,8 @@ import org.hibernate.SessionFactory;
 public interface KnownConfigurationsListener {
 	public void configurationAdded(ConsoleConfiguration root);
 	
+	public void configurationBuilt(ConsoleConfiguration ccfg);
+	
 	public void sessionFactoryBuilt(ConsoleConfiguration ccfg, SessionFactory builtFactory);
 	
 	public void sessionFactoryClosing(ConsoleConfiguration configuration, SessionFactory closingFactory);

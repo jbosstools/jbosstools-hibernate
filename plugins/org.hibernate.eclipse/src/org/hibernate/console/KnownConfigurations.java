@@ -66,7 +66,7 @@ public class KnownConfigurations  {
 	private QueryPageModel queryPages = new QueryPageModel();
 	private List<KnownConfigurationsListener> configurationListeners = new ArrayList<KnownConfigurationsListener>();
 	private Map<String, ConsoleConfiguration> configurations;
-	private ConsoleConfigurationListener sfListener = new ConsoleConfigurationListener() {
+	private ConsoleConfigurationListener sfListener = new ConcoleConfigurationAdapter() {
 
 		public void sessionFactoryClosing(final ConsoleConfiguration configuration, final SessionFactory closingFactory) {
 			fireNotification(new Notification() {
@@ -87,6 +87,14 @@ public class KnownConfigurations  {
 		public void queryPageCreated(QueryPage qp) {
 			queryPages.add(qp);
 		}
+		
+		public void configurationBuilt(final ConsoleConfiguration ccfg) {
+			fireNotification(new Notification() {
+				public void notify(KnownConfigurationsListener listener) {
+					listener.configurationBuilt(ccfg);
+				}
+			});
+		};
 
 	};
 

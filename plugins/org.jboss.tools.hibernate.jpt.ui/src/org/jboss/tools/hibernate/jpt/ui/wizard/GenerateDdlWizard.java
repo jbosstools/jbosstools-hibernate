@@ -18,10 +18,10 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
 import org.jboss.tools.hibernate.jpt.ui.internal.platform.HibernateJpaPlatformUi;
 
@@ -29,14 +29,16 @@ import org.jboss.tools.hibernate.jpt.ui.internal.platform.HibernateJpaPlatformUi
  * @author Dmitry Geraskov
  *
  */
+ 
+@SuppressWarnings("restriction")
 public class GenerateDdlWizard extends Wizard {	
 
-	private JpaProject jpaProject;
+	private HibernateJpaProject jpaProject;
 
 	private GenerateDdlWizardPage initPage;
 	
 	
-	public GenerateDdlWizard(JpaProject jpaProject, IStructuredSelection selection) {
+	public GenerateDdlWizard(HibernateJpaProject jpaProject, IStructuredSelection selection) {
 		super();
 		this.jpaProject = jpaProject;
 		this.setWindowTitle( JptUiMessages.GenericPlatformUiDialog_notSupportedMessageTitle);

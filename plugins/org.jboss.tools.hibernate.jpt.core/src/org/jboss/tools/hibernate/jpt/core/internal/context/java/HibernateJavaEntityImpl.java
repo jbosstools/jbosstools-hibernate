@@ -16,12 +16,18 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.context.BaseJoinColumn;
+import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaGenerator;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaQuery;
+import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn.Owner;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaEntity;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -29,7 +35,9 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
@@ -46,6 +54,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQ
  * @author Dmitry Geraskov
  * 
  */
+@SuppressWarnings("restriction")
 public class HibernateJavaEntityImpl extends AbstractJavaEntity 
 implements HibernateJavaEntity {
 	
@@ -84,6 +93,11 @@ implements HibernateJavaEntity {
 	
 	protected HibernateJpaFactory getJpaFactory() {
 		return (HibernateJpaFactory) this.getJpaPlatform().getJpaFactory();
+	}
+	
+	@Override
+	public HibernateJpaProject getJpaProject() {
+		return (HibernateJpaProject) super.getJpaProject();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -450,4 +464,63 @@ implements HibernateJavaEntity {
 		}
 		return null;
 	}
+	
+	protected String getResourceDefaultName() {
+		NamingStrategy namingStrategy = getJpaProject().getNamingStrategy();
+		if (namingStrategy != null){
+				return namingStrategy.classToTableName(javaResourcePersistentType.getName());
+		}
+		return javaResourcePersistentType.getName();
+	}
+	
+	@Override
+	protected Owner createPrimaryKeyJoinColumnOwner() {
+		return new HibernatePrimaryKeyJoinColumnOwner();
+	}
+	
+	// ********** pk join column owner **********
+
+	class HibernatePrimaryKeyJoinColumnOwner implements JavaBaseJoinColumn.Owner
+	{
+		public TextRange getValidationTextRange(CompilationUnit astRoot) {
+			return HibernateJavaEntityImpl.this.getValidationTextRange(astRoot);
+		}
+
+		public TypeMapping getTypeMapping() {
+			return HibernateJavaEntityImpl.this;
+		}
+
+		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
+			return HibernateJavaEntityImpl.this.getDbTable(tableName);
+		}
+
+		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {
+			Entity parentEntity = HibernateJavaEntityImpl.this.getParentEntity();
+			return (parentEntity == null) ? null : parentEntity.getPrimaryDbTable();
+		}
+
+		public int joinColumnsSize() {
+			return HibernateJavaEntityImpl.this.primaryKeyJoinColumnsSize();
+		}
+		
+		public boolean isVirtual(BaseJoinColumn joinColumn) {
+			return HibernateJavaEntityImpl.this.defaultPrimaryKeyJoinColumn == joinColumn;
+		}		
+		
+		public String getDefaultColumnName() {
+			if (joinColumnsSize() != 1) {
+				return null;
+			}
+			Entity parentEntity = HibernateJavaEntityImpl.this.getParentEntity();
+			NamingStrategy ns = HibernateJavaEntityImpl.this.getJpaProject().getNamingStrategy();
+			if (ns == null)
+				return parentEntity.getPrimaryKeyColumnName();
+
+			String name = ns.joinKeyColumnName(parentEntity.getPrimaryKeyColumnName(),
+					parentEntity.getPrimaryTableName());
+			return parentEntity.getPrimaryDbTable().getDatabase().convertNameToIdentifier(name) ;
+		}
+	}	
 }
+
+

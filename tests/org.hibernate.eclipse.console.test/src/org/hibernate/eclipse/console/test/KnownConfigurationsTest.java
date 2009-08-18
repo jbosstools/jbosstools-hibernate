@@ -11,7 +11,7 @@ import junit.framework.TestCase;
 import org.hibernate.SessionFactory;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
-import org.hibernate.console.KnownConfigurationsListener;
+import org.hibernate.console.KnownConfigurationsAdapter;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.w3c.dom.Element;
 
@@ -21,7 +21,7 @@ public class KnownConfigurationsTest extends TestCase {
 		super( name );
 	}
 
-	static class CCListener implements KnownConfigurationsListener {
+	static class CCListener extends KnownConfigurationsAdapter {
 
 		List<ConsoleConfiguration> added = new ArrayList<ConsoleConfiguration>();
 

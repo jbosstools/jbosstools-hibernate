@@ -54,10 +54,10 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.hibernate.HibernateException;
-import org.hibernate.SessionFactory;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.KnownConfigurationsAdapter;
 import org.hibernate.console.KnownConfigurationsListener;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.actions.AddConfigurationAction;
@@ -126,19 +126,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 	private void listenForConfigurations() {
 		final ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 
-		kcl = new KnownConfigurationsListener() {
-
-			public void sessionFactoryClosing(ConsoleConfiguration configuration,
-					SessionFactory closingFactory) {
-				// TODO Auto-generated method stub
-
-			}
-
-			public void sessionFactoryBuilt(ConsoleConfiguration ccfg,
-					SessionFactory builtFactory) {
-				// TODO Auto-generated method stub
-
-			}
+		kcl = new KnownConfigurationsAdapter() {
 
 			/**
 			 * @param root
@@ -153,12 +141,6 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 					}
 				}
 			}
-
-			public void configurationAdded(ConsoleConfiguration root) {
-				// TODO Auto-generated method stub
-
-			}
-
 		};
 
 		KnownConfigurations.getInstance().addConsoleConfigurationListener(kcl);

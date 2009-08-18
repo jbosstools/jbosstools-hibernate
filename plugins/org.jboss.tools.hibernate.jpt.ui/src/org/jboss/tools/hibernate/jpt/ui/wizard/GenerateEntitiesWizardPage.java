@@ -21,12 +21,14 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.swt.widgets.Composite;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.launch.PathHelper;
-import org.hibernate.util.StringHelper;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 
 /**
  * @author Dmitry Geraskov
  *
  */
+ 
+@SuppressWarnings("restriction")
 public class GenerateEntitiesWizardPage extends GenerateInitWizardPage {
 
 	private StringDialogField packageName;
@@ -34,7 +36,7 @@ public class GenerateEntitiesWizardPage extends GenerateInitWizardPage {
 	/**
 	 * @param pageName
 	 */
-	public GenerateEntitiesWizardPage(JpaProject jpaProject) {
+	public GenerateEntitiesWizardPage(HibernateJpaProject jpaProject) {
 		super(jpaProject);
 	}
 	

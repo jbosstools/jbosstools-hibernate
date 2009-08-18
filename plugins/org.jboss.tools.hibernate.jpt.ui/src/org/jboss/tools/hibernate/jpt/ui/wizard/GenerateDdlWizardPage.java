@@ -14,19 +14,21 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.StringDialogField;
-import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.swt.widgets.Composite;
 import org.hibernate.util.StringHelper;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 
 /**
  * @author Dmitry Geraskov
  *
  */
+ 
+@SuppressWarnings("restriction")
 public class GenerateDdlWizardPage extends GenerateInitWizardPage {
 	
 	private StringDialogField filename;
 	
-	protected GenerateDdlWizardPage(JpaProject jpaProject) {
+	protected GenerateDdlWizardPage(HibernateJpaProject jpaProject) {
 		super(jpaProject);
 	}
 

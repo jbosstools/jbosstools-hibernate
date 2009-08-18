@@ -50,13 +50,15 @@ import org.hibernate.eclipse.console.utils.DriverClassHelpers;
 import org.hibernate.eclipse.launch.PathHelper;
 import org.hibernate.tool.hbm2x.StringUtils;
 import org.hibernate.util.StringHelper;
-import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
 
 /**
  * @author Dmitry Geraskov
  *
  */
+ 
+@SuppressWarnings("restriction")
 public abstract class GenerateInitWizardPage extends WizardPage {
 	
 	private static final String AUTODETECT = Messages.GenerateInitWizardPage_autodetect;
@@ -77,7 +79,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 	
 	private Group dbGroup;
 
-	private JpaProject jpaProject;
+	private HibernateJpaProject jpaProject;
 	
 	protected int numColumns = 3;
 	
@@ -87,7 +89,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 		}
 	};
 	
-	public GenerateInitWizardPage(JpaProject jpaProject){
+	public GenerateInitWizardPage(HibernateJpaProject jpaProject){
 		super("", Messages.GenerateInitWizardPage_title, null); //$NON-NLS-1$
 		this.jpaProject = jpaProject;
 	}
@@ -153,7 +155,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 			names[i] = configuration.getName();
 		}
 		consoleConfigurationName.setItems(names);
-		consoleConfigurationName.setText(HibernateJptPlugin.getDefaultConsoleConfiguration(jpaProject));
+		consoleConfigurationName.setText(jpaProject.getDefaultConsoleConfigurationName());
         consoleConfigurationName.setDialogFieldListener(fieldlistener);
         consoleConfigurationName.doFillIntoGrid(container, numColumns);        
 

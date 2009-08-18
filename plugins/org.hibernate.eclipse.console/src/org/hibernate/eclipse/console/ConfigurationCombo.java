@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Control;
 import org.hibernate.SessionFactory;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.KnownConfigurationsAdapter;
 import org.hibernate.console.KnownConfigurationsListener;
 
 final class ConfigurationCombo extends ComboContribution {
@@ -38,7 +39,7 @@ final class ConfigurationCombo extends ComboContribution {
 
 		Control control = super.createControl( parent );
 
-		listener = new KnownConfigurationsListener() {
+		listener = new KnownConfigurationsAdapter() {
 
 			public void sessionFactoryClosing(
 					ConsoleConfiguration configuration,

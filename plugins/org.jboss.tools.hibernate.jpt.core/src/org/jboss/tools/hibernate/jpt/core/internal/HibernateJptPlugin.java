@@ -10,19 +10,25 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ProjectScope;
+import java.util.Iterator;
+
+import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.jpt.core.JpaProject;
-import org.osgi.service.prefs.Preferences;
+import org.eclipse.jpt.core.internal.JpaModelManager;
+import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.KnownConfigurationsAdapter;
+import org.osgi.framework.BundleContext;
 
 /**
  * @author Dmitry Geraskov
  *
  */
+@SuppressWarnings("restriction")
 public class HibernateJptPlugin extends Plugin {
 	
 	public static final String ID = "org.jboss.tools.hibernate.jpt.core"; //$NON-NLS-1$
@@ -84,16 +90,51 @@ public class HibernateJptPlugin extends Plugin {
 		log(IStatus.INFO, message, null);
 	}
 	
-	public static String getDefaultConsoleConfiguration(JpaProject jpaProject){
-		IProject project = jpaProject.getProject();
-		IScopeContext scope = new ProjectScope(project);
-
-		Preferences node = scope.getNode("org.hibernate.eclipse.console"); //$NON-NLS-1$
-
-		if(node!=null) {
-			return node.get("default.configuration", project.getName() ); //$NON-NLS-1$
-		}
-		return null;
-	}	
+	@Override
+	public void start(BundleContext context) throws Exception {
+		super.start(context);
+		KnownConfigurations.getInstance().addConsoleConfigurationListener(new KnownConfigurationsAdapter(){
+			
+			private void revalidateProjects(ConsoleConfiguration ccfg){
+				//FIXME: call only Dali's validator
+				try {
+					Iterator<JpaProject> jpaProjects = JpaModelManager.instance().getJpaModel().jpaProjects();
+					while (jpaProjects.hasNext()) {
+						JpaProject jpaProject = (JpaProject) jpaProjects.next();
+						if (jpaProject instanceof HibernateJpaProject) {
+							String ccName = ((HibernateJpaProject)jpaProject).getDefaultConsoleConfigurationName();
+							if (ccfg.getName().equals(ccName)){
+								jpaProject.getJavaProject().getProject().build(IncrementalProjectBuilder.FULL_BUILD, null);
+							}							
+						}
+						
+						
+					}
+				} catch (CoreException e) {
+					logException(e);
+				}
+			}
+			
+			@Override
+			public void configurationBuilt(ConsoleConfiguration ccfg) {
+				if (ccfg.getConfiguration() == null
+						|| ccfg.getConfiguration().getNamingStrategy() == null){
+					return;
+				}
+				revalidateProjects(ccfg);
+			}
+			
+			@Override
+			public void configurationRemoved(ConsoleConfiguration root,
+					boolean forUpdate) {
+				if(forUpdate || root.getConfiguration() == null
+						|| root.getConfiguration().getNamingStrategy() == null) {
+					return;
+				}
+				revalidateProjects(root);
+			}
+			
+		});
+	}
 	
 }

@@ -110,6 +110,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 
 	public void build() {
 		configuration = buildWith(null, true);
+		fireConfigurationBuilt();
 	}
 
 	private Configuration buildJPAConfiguration(String persistenceUnit, Properties properties, String entityResolver, boolean includeMappings) {
@@ -552,7 +553,12 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 
 		});
 	}
-
+	
+	private void fireConfigurationBuilt() {
+		for (ConsoleConfigurationListener view : consoleCfgListeners) {
+			view.configurationBuilt(this);
+		}
+	}	
 
 	private void fireQueryPageCreated(QueryPage qp) {
 		for (ConsoleConfigurationListener view : consoleCfgListeners) {

@@ -22,11 +22,10 @@
 package org.hibernate.console.node;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.console.ConcoleConfigurationAdapter;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.ConsoleConfigurationListener;
 import org.hibernate.console.ConsoleMessages;
 import org.hibernate.console.ImageConstants;
-import org.hibernate.console.QueryPage;
 
 /**
  * @author max
@@ -40,7 +39,7 @@ public class ConfigurationNode extends BaseNode {
 	public ConfigurationNode(BaseNode parent, ConsoleConfiguration configuration) {
 		super(null,parent);
 		this.configuration = configuration;
-		configuration.addConsoleConfigurationListener(new ConsoleConfigurationListener() {
+		configuration.addConsoleConfigurationListener(new ConcoleConfigurationAdapter() {
 			public void sessionFactoryBuilt(ConsoleConfiguration ccfg, SessionFactory builtSessionFactory) {
 				clear();
 			}
@@ -48,8 +47,6 @@ public class ConfigurationNode extends BaseNode {
 			public void sessionFactoryClosing(ConsoleConfiguration configuration, SessionFactory closedSessionFactory) {
 				clear();
 			}
-
-			public void queryPageCreated(QueryPage qp) { }
 		});
 
 		name = configuration.getName();

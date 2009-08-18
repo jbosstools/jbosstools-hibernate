@@ -104,4 +104,8 @@ public class KnownConfigurationsProvider extends DeferredContentProvider impleme
 			}
 		});				
 	}
+
+	public void configurationBuilt(ConsoleConfiguration ccfg) {
+		//TODO refresh tree?
+	}
 }

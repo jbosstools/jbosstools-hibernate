@@ -9,8 +9,8 @@ import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.hibernate.SessionFactory;
+import org.hibernate.console.ConcoleConfigurationAdapter;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.ConsoleConfigurationListener;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryPage;
@@ -125,7 +125,7 @@ public class ConsoleConfigurationTest extends TestCase {
 	}
 
 
-	static class MockCCListener implements ConsoleConfigurationListener {
+	static class MockCCListener extends ConcoleConfigurationAdapter {
 		int factoryBuilt = 0;
 		int factoryClosing = 0;
 		public int queryCreated;
@@ -143,9 +143,6 @@ public class ConsoleConfigurationTest extends TestCase {
 		public void queryPageCreated(QueryPage qp) {
 			queryCreated++;
 		}
-
-
-
 	}
 
 	public void testBuildConfiguration() {
@@ -155,7 +152,7 @@ public class ConsoleConfigurationTest extends TestCase {
 		consoleCfg.addConsoleConfigurationListener(listener);
 
 		consoleCfg.build();
-
+		
 		assertEquals(0, listener.factoryBuilt);
 		consoleCfg.buildSessionFactory();
 		assertEquals(1, listener.factoryBuilt);
