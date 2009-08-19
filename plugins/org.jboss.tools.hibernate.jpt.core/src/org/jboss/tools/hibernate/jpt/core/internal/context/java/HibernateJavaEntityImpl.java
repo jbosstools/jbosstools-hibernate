@@ -518,7 +518,10 @@ implements HibernateJavaEntity {
 
 			String name = ns.joinKeyColumnName(parentEntity.getPrimaryKeyColumnName(),
 					parentEntity.getPrimaryTableName());
-			return parentEntity.getPrimaryDbTable().getDatabase().convertNameToIdentifier(name) ;
+			if (parentEntity.getPrimaryDbTable() != null){
+				return parentEntity.getPrimaryDbTable().getDatabase().convertNameToIdentifier(name);
+			}
+			return name ;
 		}
 	}	
 }

@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.internal.context.MappingTools;
+import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.Table;
 import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
@@ -99,12 +100,16 @@ public class NamingStrategyMappingTools extends MappingTools {
 		
 		NamingStrategy namingStrategy = ((HibernateJpaProject)targetEntity.getJpaProject()).getNamingStrategy();
 		if (namingStrategy != null){
-			String logicalTargetColumnName = namingStrategy.logicalColumnName(targetColumnName, prefix);			
+			String logicalTargetColumnName = null;
+			if (targetColumnName != null || prefix != null){
+				logicalTargetColumnName = namingStrategy.logicalColumnName(targetColumnName, prefix);
+			}
 			String name = namingStrategy.foreignKeyColumnName(prefix,
 													targetEntity.getPersistentType().getName(),
 													targetEntity.getPrimaryTableName(),
 													logicalTargetColumnName);
-			return targetEntity.getPrimaryDbTable().getDatabase().convertNameToIdentifier(name);
+			Table t = targetEntity.getPrimaryDbTable();
+			return t != null ? t.getDatabase().convertNameToIdentifier(name) : name;
 		}
 		if (prefix == null) {			
 			prefix = targetEntityName;
