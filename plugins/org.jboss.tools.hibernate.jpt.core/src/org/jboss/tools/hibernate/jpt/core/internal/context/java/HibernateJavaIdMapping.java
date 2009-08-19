@@ -26,7 +26,9 @@ import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGeneratorHolder;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorAnnotation;
@@ -183,7 +185,20 @@ implements GenericGeneratorHolder {
 	public void removeGenericGenerator(GenericGenerator generator) {
 		if (this.genericGenerator == generator){
 			removeGenericGenerator();
-		}		
+		}
+	}
+	
+	@Override
+	public HibernateJpaProject getJpaProject() {
+		return (HibernateJpaProject) super.getJpaProject();
 	}
 
+	@Override
+	public String getDefaultColumnName() {
+		NamingStrategy namingStrategy = getJpaProject().getNamingStrategy();
+		if (namingStrategy != null && getPersistentAttribute().getName() != null){
+				return namingStrategy.propertyToColumnName(getPersistentAttribute().getName());
+		}
+		return super.getDefaultColumnName();
+	}
 }
