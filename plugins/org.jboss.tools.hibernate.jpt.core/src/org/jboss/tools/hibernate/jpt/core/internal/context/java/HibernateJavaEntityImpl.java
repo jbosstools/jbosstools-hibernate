@@ -468,7 +468,7 @@ implements HibernateJavaEntity {
 	protected String getResourceDefaultName() {
 		NamingStrategy namingStrategy = getJpaProject().getNamingStrategy();
 		if (namingStrategy != null){
-				return namingStrategy.classToTableName(javaResourcePersistentType.getName());
+				return namingStrategy.classToTableName(javaResourcePersistentType.getQualifiedName());
 		}
 		return javaResourcePersistentType.getName();
 	}

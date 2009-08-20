@@ -193,12 +193,4 @@ implements GenericGeneratorHolder {
 		return (HibernateJpaProject) super.getJpaProject();
 	}
 
-	@Override
-	public String getDefaultColumnName() {
-		NamingStrategy namingStrategy = getJpaProject().getNamingStrategy();
-		if (namingStrategy != null && getPersistentAttribute().getName() != null){
-				return namingStrategy.propertyToColumnName(getPersistentAttribute().getName());
-		}
-		return super.getDefaultColumnName();
-	}
 }
