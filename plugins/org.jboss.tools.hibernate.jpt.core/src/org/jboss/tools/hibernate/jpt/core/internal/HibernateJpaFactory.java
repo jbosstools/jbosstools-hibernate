@@ -25,9 +25,17 @@ import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaColumn.Owner;
+import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
+import org.eclipse.jpt.core.context.orm.OrmEntity;
+import org.eclipse.jpt.core.context.orm.OrmIdMapping;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
+import org.eclipse.jpt.core.resource.orm.XmlBasic;
+import org.eclipse.jpt.core.resource.orm.XmlEntity;
+import org.eclipse.jpt.core.resource.orm.XmlId;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
@@ -50,6 +58,9 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaDiscriminato
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGeneratorImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaParameter;
+import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmBasicMapping;
+import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmEntity;
+import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmIdMapping;
 
 
 /**
@@ -139,6 +150,24 @@ public class HibernateJpaFactory extends GenericJpaFactory {
 	public JavaJoinColumn buildJavaJoinColumn(JavaJpaContextNode parent,
 			org.eclipse.jpt.core.context.java.JavaJoinColumn.Owner owner) {
 		return new HibernateJavaJoinColumn(parent, owner);
+	}
+	
+	@Override
+	public OrmEntity buildOrmEntity(OrmPersistentType parent,
+			XmlEntity resourceMapping) {
+		return new HibernateOrmEntity(parent, resourceMapping);
+	}
+	
+	@Override
+	public OrmBasicMapping buildOrmBasicMapping(OrmPersistentAttribute parent,
+			XmlBasic resourceMapping) {
+		return new HibernateOrmBasicMapping(parent, resourceMapping);
+	}
+	
+	@Override
+	public OrmIdMapping buildOrmIdMapping(OrmPersistentAttribute parent,
+			XmlId resourceMapping) {
+		return new HibernateOrmIdMapping(parent, resourceMapping);
 	}
 
 }

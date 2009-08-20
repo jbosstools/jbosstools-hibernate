@@ -105,10 +105,8 @@ public class HibernateJptPlugin extends Plugin {
 							String ccName = ((HibernateJpaProject)jpaProject).getDefaultConsoleConfigurationName();
 							if (ccfg.getName().equals(ccName)){
 								jpaProject.getJavaProject().getProject().build(IncrementalProjectBuilder.FULL_BUILD, null);
-							}							
+							}
 						}
-						
-						
 					}
 				} catch (CoreException e) {
 					logException(e);
@@ -133,7 +131,6 @@ public class HibernateJptPlugin extends Plugin {
 				}
 				revalidateProjects(root);
 			}
-			
 		});
 	}
 	
