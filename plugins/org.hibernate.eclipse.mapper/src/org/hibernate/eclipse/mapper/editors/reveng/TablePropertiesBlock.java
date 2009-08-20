@@ -71,6 +71,7 @@ import org.hibernate.eclipse.mapper.model.RevEngParamAdapter;
 import org.hibernate.eclipse.mapper.model.RevEngPrimaryKeyAdapter;
 import org.hibernate.eclipse.mapper.model.RevEngTableAdapter;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Table;
 
 public class TablePropertiesBlock extends MasterDetailsBlock {
@@ -206,6 +207,13 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 							columns.put(lastTable,existing);
 						}
 						existing.add(object);
+					} else if (object instanceof PrimaryKey) {
+						List existing = (List) columns.get(lastTable);
+						if(existing==null) {
+							existing = new ArrayList();
+							columns.put(lastTable,existing);
+						}
+						existing.addAll(((PrimaryKey)object).getColumns());
 					}
 				}
 			}
@@ -231,7 +239,9 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 						Column column = (Column) colIterator.next();
 						IRevEngColumn revCol = editor.getReverseEngineeringDefinition().createColumn();
 						revCol.setName(column.getName());
-						revCol.setJDBCType(column.getSqlType()); // TODO: should not be required
+						if (column.getSqlType() != null){
+							revCol.setJDBCType(column.getSqlType()); // TODO: should not be required
+						}
 						retable.addColumn(revCol);
 					}
 				}
