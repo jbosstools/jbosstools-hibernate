@@ -17,8 +17,12 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.wst.validation.internal.core.Message;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 
 /**
  * @author Dmitry Geraskov
@@ -44,12 +48,19 @@ public class NamingStrategyMappingTools extends MappingTools {
 		if (targetTableName == null) {
 			return null;
 		}
-		NamingStrategy namingStrategy =((HibernateJpaProject)targetEntity.getJpaProject()).getNamingStrategy();
-		if (namingStrategy != null){
-			String name = namingStrategy.collectionTableName(relationshipMapping.getEntity().getPersistentType().getName(),
-					owningTableName, targetEntity.getPersistentType().getName(), targetTableName, relationshipMapping.getName());
-			Table primaryTable = relationshipMapping.getTypeMapping().getPrimaryDbTable();			
-			return primaryTable.getDatabase().convertNameToIdentifier(name);
+		NamingStrategy ns =((HibernateJpaProject)targetEntity.getJpaProject()).getNamingStrategy();
+		if (ns != null){
+			try{
+				String name = ns.collectionTableName(relationshipMapping.getEntity().getPersistentType().getName(),
+						owningTableName, targetEntity.getPersistentType().getName(), targetTableName, relationshipMapping.getName());
+				Table primaryTable = relationshipMapping.getTypeMapping().getPrimaryDbTable();			
+				return primaryTable != null ? primaryTable.getDatabase().convertNameToIdentifier(name)
+						: name;
+			} catch (Exception e) {
+				Message m = new LocalMessage(IMessage.HIGH_SEVERITY, 
+						Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
+				HibernateJptPlugin.logException(m.getText(), e);
+			}
 		}
 		return owningTableName + '_' + targetTableName;
 	}
@@ -67,11 +78,17 @@ public class NamingStrategyMappingTools extends MappingTools {
 		if (targetTable == null) {
 			return null;
 		}
-		NamingStrategy namingStrategy = ((HibernateJpaProject)targetEntity.getJpaProject()).getNamingStrategy();
-		if (namingStrategy != null){
-			String name = namingStrategy.collectionTableName(relationshipMapping.getEntity().getPersistentType().getName(),
-					owningTable.getName(), targetEntity.getPersistentType().getName(), targetTable.getName(), relationshipMapping.getName());
-			return owningTable.getDatabase().convertNameToIdentifier(name);
+		NamingStrategy ns = ((HibernateJpaProject)targetEntity.getJpaProject()).getNamingStrategy();
+		if (ns != null){
+			try {
+				String name = ns.collectionTableName(relationshipMapping.getEntity().getPersistentType().getName(),
+						owningTable.getName(), targetEntity.getPersistentType().getName(), targetTable.getName(), relationshipMapping.getName());
+				return owningTable.getDatabase().convertNameToIdentifier(name);
+			} catch (Exception e) {
+				Message m = new LocalMessage(IMessage.HIGH_SEVERITY, 
+						Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
+				HibernateJptPlugin.logException(m.getText(), e);
+			}
 		}
 		String name = owningTable.getName() + '_' + targetTable.getName();
 		return owningTable.getDatabase().convertNameToIdentifier(name);
@@ -98,18 +115,24 @@ public class NamingStrategyMappingTools extends MappingTools {
 		// Column targetColumn = joinColumn.getTargetPrimaryKeyDbColumn();
 		String targetColumnName = joinColumn.getReferencedColumnName();
 		
-		NamingStrategy namingStrategy = ((HibernateJpaProject)targetEntity.getJpaProject()).getNamingStrategy();
-		if (namingStrategy != null){
+		NamingStrategy ns = ((HibernateJpaProject)targetEntity.getJpaProject()).getNamingStrategy();
+		if (ns != null){
 			String logicalTargetColumnName = null;
-			if (targetColumnName != null || prefix != null){
-				logicalTargetColumnName = namingStrategy.logicalColumnName(targetColumnName, prefix);
+			try {
+				if (targetColumnName != null || prefix != null){
+					logicalTargetColumnName = ns.logicalColumnName(targetColumnName, prefix);
+				}
+				String name = ns.foreignKeyColumnName(prefix,
+														targetEntity.getPersistentType().getName(),
+														targetEntity.getPrimaryTableName(),
+														logicalTargetColumnName);
+				Table t = targetEntity.getPrimaryDbTable();
+				return t != null ? t.getDatabase().convertNameToIdentifier(name) : name;
+			} catch (Exception e) {
+				Message m = new LocalMessage(IMessage.HIGH_SEVERITY, 
+						Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
+				HibernateJptPlugin.logException(m.getText(), e);
 			}
-			String name = namingStrategy.foreignKeyColumnName(prefix,
-													targetEntity.getPersistentType().getName(),
-													targetEntity.getPrimaryTableName(),
-													logicalTargetColumnName);
-			Table t = targetEntity.getPrimaryDbTable();
-			return t != null ? t.getDatabase().convertNameToIdentifier(name) : name;
 		}
 		if (prefix == null) {			
 			prefix = targetEntityName;

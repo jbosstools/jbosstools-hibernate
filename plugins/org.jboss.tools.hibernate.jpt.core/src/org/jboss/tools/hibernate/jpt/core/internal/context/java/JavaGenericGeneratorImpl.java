@@ -193,7 +193,7 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 	}
 	
 	protected IMessage creatErrorMessage(String strmessage, String[] params, int lineNum){
-		IMessage message = new LocalMessage(Messages.class.getName(), IMessage.HIGH_SEVERITY, 
+		IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY, 
 			strmessage, params, getResource());
 			message.setLineNo(lineNum);
 		return message;

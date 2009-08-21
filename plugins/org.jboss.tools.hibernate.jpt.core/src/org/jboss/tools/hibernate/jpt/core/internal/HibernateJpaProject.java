@@ -33,21 +33,21 @@ public class HibernateJpaProject extends AbstractJpaProject {
 	public HibernateJpaProject(JpaProject.Config config) throws CoreException {
 		super(config);
 	}
-	
+
 	public NamingStrategy getNamingStrategy(){
 		String ccName = getDefaultConsoleConfigurationName();
 		if (ccName != null || "".equals(ccName)){//$NON-NLS-1$
 			ConsoleConfiguration cc = KnownConfigurations.getInstance().find(ccName);
 			if (cc != null){
-				if (cc.getConfiguration() != null){					
+				if (cc.getConfiguration() != null){
 					Configuration config = cc.getConfiguration();
-					return config.getNamingStrategy();					
+					return config.getNamingStrategy();
 				}
 			}
 		}
 		return null;
 	}
-	
+
 	public String getDefaultConsoleConfigurationName(){
 		IScopeContext scope = new ProjectScope(getProject());
 		Preferences node = scope.getNode("org.hibernate.eclipse.console"); //$NON-NLS-1$
@@ -56,5 +56,5 @@ public class HibernateJpaProject extends AbstractJpaProject {
 		}
 		return null;
 	}
-	
+
 }

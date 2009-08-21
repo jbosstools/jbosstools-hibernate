@@ -33,14 +33,18 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
+import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.DiscriminatorFormulaAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorAnnotation;
@@ -466,9 +470,15 @@ implements HibernateJavaEntity {
 	}
 	
 	protected String getResourceDefaultName() {
-		NamingStrategy namingStrategy = getJpaProject().getNamingStrategy();
-		if (namingStrategy != null){
-				return namingStrategy.classToTableName(javaResourcePersistentType.getQualifiedName());
+		NamingStrategy ns = getJpaProject().getNamingStrategy();
+		if (ns != null){
+			try {
+				return ns.classToTableName(javaResourcePersistentType.getQualifiedName());
+			} catch (Exception e) {
+				Message m = new LocalMessage(IMessage.HIGH_SEVERITY, 
+						Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
+				HibernateJptPlugin.logException(m.getText(), e);
+			}
 		}
 		return javaResourcePersistentType.getName();
 	}
@@ -513,15 +523,21 @@ implements HibernateJavaEntity {
 			}
 			Entity parentEntity = HibernateJavaEntityImpl.this.getParentEntity();
 			NamingStrategy ns = HibernateJavaEntityImpl.this.getJpaProject().getNamingStrategy();
-			if (ns == null)
-				return parentEntity.getPrimaryKeyColumnName();
-
-			String name = ns.joinKeyColumnName(parentEntity.getPrimaryKeyColumnName(),
-					parentEntity.getPrimaryTableName());
-			if (parentEntity.getPrimaryDbTable() != null){
-				return parentEntity.getPrimaryDbTable().getDatabase().convertNameToIdentifier(name);
+			if (ns != null) {				
+				try {
+					String name = ns.joinKeyColumnName(parentEntity.getPrimaryKeyColumnName(),
+						parentEntity.getPrimaryTableName());
+					if (parentEntity.getPrimaryDbTable() != null){
+						return parentEntity.getPrimaryDbTable().getDatabase().convertNameToIdentifier(name);
+					}
+					return name ;
+				} catch (Exception e) {
+					Message m = new LocalMessage(IMessage.HIGH_SEVERITY, 
+							Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
+					HibernateJptPlugin.logException(m.getText(), e);
+				}
 			}
-			return name ;
+			return parentEntity.getPrimaryKeyColumnName();
 		}
 	}	
 }

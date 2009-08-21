@@ -69,14 +69,14 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 		        int resType= res.getType();
 		        if (resType != IResource.FILE) {
 		        	Property prop = getProperty(BasicHibernateProperties.HIBERNATE_CONFIG_FILE);
-	            	IMessage message = new LocalMessage(Messages.class.getName(), IMessage.HIGH_SEVERITY, 
+	            	IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY, 
 	            			NOT_A_FILE, new String[]{configFile}, getResource());
 	            	message.setLineNo(prop.getValidationTextRange().getLineNumber());
 	            	messages.add(message);					
 		        }
 		    } else {
 		    	Property prop = getProperty(BasicHibernateProperties.HIBERNATE_CONFIG_FILE);
-	        	IMessage message = new LocalMessage(Messages.class.getName(), IMessage.HIGH_SEVERITY, 
+	        	IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY, 
             			CONFIG_FILE_NOT_FOUND, new String[]{configFile}, getResource());
 	        	message.setLineNo(prop.getValidationTextRange().getLineNumber());
             	messages.add(message);	
@@ -92,9 +92,9 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 	 */
 	static public class LocalMessage extends Message {
 
-		public LocalMessage(String name, int severity, String message,
+		public LocalMessage(int severity, String message,
 				String[] strings, IResource resource) {
-			super(name, severity, message, strings, resource);
+			super(Messages.class.getName(), severity, message, strings, resource);
 		}
 	}
 	
