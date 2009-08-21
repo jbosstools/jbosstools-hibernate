@@ -405,7 +405,7 @@ public class Person implements Serializable, IAuditable {
           </emphasis> could be a dangerous decision that could produce non expected
           side-effect.</para>
 
-        <para><ulink url="http://www.hibernate.org/109.html">Here</ulink> you can get more in-depth
+        <para><ulink url="http://www.hibernate.org/109.html">On www.hibernate.org </ulink> you can get more in-depth
           explanation on the subject of <property>equals()</property> and
             <property>hashcode()</property>.</para>
       </section>
