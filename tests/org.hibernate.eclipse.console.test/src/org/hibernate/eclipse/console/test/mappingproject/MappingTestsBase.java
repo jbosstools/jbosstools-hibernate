@@ -163,9 +163,9 @@ public abstract class MappingTestsBase extends TestCase {
 				for (int k = 0; k < suite.testCount(); k++) {
 					Test test = suite.testAt(k);
 					test.run(result);
-// ----------------------------------------------					
-// https://jira.jboss.org/jira/browse/JBIDE-4740 
-// first way to fix OutOfMemory problems
+					// ----------------------------------------------					
+					// https://jira.jboss.org/jira/browse/JBIDE-4740 
+					// first way to fix OutOfMemory problems
 					closeAllEditors();
 					int LIMIT = 50,
 						ii = 0;
