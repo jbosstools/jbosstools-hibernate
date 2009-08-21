@@ -120,7 +120,7 @@ public class HibernatePropertyPage extends PropertyPage {
 		jbossLogoButton.setImage(EclipseImages.getImage(ImageConstants.JBOSS_LOGO));
 		jbossLogoButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				openBrowser("http://www.jboss.org/products/jbosside"); //$NON-NLS-1$
+				openBrowser("http://www.jboss.com/products/devstudio"); //$NON-NLS-1$
 			}
 		});
 	}
