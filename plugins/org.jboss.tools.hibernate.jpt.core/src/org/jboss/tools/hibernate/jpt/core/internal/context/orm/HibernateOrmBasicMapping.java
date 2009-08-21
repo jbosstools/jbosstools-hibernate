@@ -42,7 +42,7 @@ public class HibernateOrmBasicMapping extends GenericOrmBasicMapping<XmlBasic> {
 	@Override
 	public String getDefaultColumnName() {
 		NamingStrategy ns = getJpaProject().getNamingStrategy();
-		if (ns != null) {
+		if (getJpaProject().isNamingStrategyEnabled() && ns != null) {
 			try {
 				return ns.propertyToColumnName(getName());
 			} catch (Exception e) {

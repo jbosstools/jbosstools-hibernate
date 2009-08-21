@@ -103,6 +103,7 @@ public class HibernateConsoleMessages extends NLS {
 	public static String HibernatePropertyPage_enable_hibernate3_support;
 	public static String HibernatePropertyPage_open_url;
 	public static String HibernatePropertyPage_unable_open_webbrowser_for_url;
+	public static String HibernatePropertyPage_use_naming_strategy;
 	//
 	public static String AutoResizeTableLayout_unknown_column_layout_data;
 	public static String ClassLoaderHelper_could_not_determine_physical_location_for;

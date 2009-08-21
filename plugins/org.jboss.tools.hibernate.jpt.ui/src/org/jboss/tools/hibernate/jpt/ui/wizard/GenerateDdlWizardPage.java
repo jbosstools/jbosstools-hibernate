@@ -42,7 +42,7 @@ public class GenerateDdlWizardPage extends GenerateInitWizardPage {
 		filename.setText("schema.ddl"); //$NON-NLS-1$
 		filename.setDialogFieldListener(fieldlistener);
         filename.doFillIntoGrid(container, numColumns);
-	}	
+	}
 	
 	protected void dialogChanged() {
 		setErrorMessage(null);

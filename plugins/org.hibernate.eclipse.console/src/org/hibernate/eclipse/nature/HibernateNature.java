@@ -50,6 +50,7 @@ import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.builder.HibernateBuilder;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.properties.HibernatePropertiesConstants;
 import org.hibernate.mapping.Table;
 import org.osgi.service.prefs.Preferences;
 
@@ -106,10 +107,10 @@ public class HibernateNature implements IProjectNature {
 		IJavaProject prj = JavaCore.create(project);
 		IScopeContext scope = new ProjectScope(prj.getProject() );
 
-		Preferences node = scope.getNode("org.hibernate.eclipse.console"); //$NON-NLS-1$
+		Preferences node = scope.getNode(HibernatePropertiesConstants.HIBERNATE_CONSOLE_NODE);
 
 		if(node!=null) {
-			String cfg = node.get("default.configuration", prj.getProject().getName() ); //$NON-NLS-1$
+			String cfg = node.get(HibernatePropertiesConstants.DEFAULT_CONFIGURATION, prj.getProject().getName() );
 			return cfg;
 		} else {
 			return null;

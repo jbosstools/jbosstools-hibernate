@@ -15,7 +15,6 @@ import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.internal.context.MappingTools;
-import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -48,8 +47,10 @@ public class NamingStrategyMappingTools extends MappingTools {
 		if (targetTableName == null) {
 			return null;
 		}
-		NamingStrategy ns =((HibernateJpaProject)targetEntity.getJpaProject()).getNamingStrategy();
-		if (ns != null){
+
+		HibernateJpaProject hibernateJpaProject = (HibernateJpaProject)targetEntity.getJpaProject();
+		NamingStrategy ns = hibernateJpaProject.getNamingStrategy();		
+		if (ns != null && hibernateJpaProject.isNamingStrategyEnabled()){
 			try{
 				String name = ns.collectionTableName(relationshipMapping.getEntity().getPersistentType().getName(),
 						owningTableName, targetEntity.getPersistentType().getName(), targetTableName, relationshipMapping.getName());
@@ -78,8 +79,9 @@ public class NamingStrategyMappingTools extends MappingTools {
 		if (targetTable == null) {
 			return null;
 		}
-		NamingStrategy ns = ((HibernateJpaProject)targetEntity.getJpaProject()).getNamingStrategy();
-		if (ns != null){
+		HibernateJpaProject hibernateJpaProject = (HibernateJpaProject)targetEntity.getJpaProject();
+		NamingStrategy ns = hibernateJpaProject.getNamingStrategy();
+		if (ns != null && hibernateJpaProject.isNamingStrategyEnabled()){
 			try {
 				String name = ns.collectionTableName(relationshipMapping.getEntity().getPersistentType().getName(),
 						owningTable.getName(), targetEntity.getPersistentType().getName(), targetTable.getName(), relationshipMapping.getName());
@@ -115,8 +117,9 @@ public class NamingStrategyMappingTools extends MappingTools {
 		// Column targetColumn = joinColumn.getTargetPrimaryKeyDbColumn();
 		String targetColumnName = joinColumn.getReferencedColumnName();
 		
-		NamingStrategy ns = ((HibernateJpaProject)targetEntity.getJpaProject()).getNamingStrategy();
-		if (ns != null){
+		HibernateJpaProject hibernateJpaProject = (HibernateJpaProject)targetEntity.getJpaProject();
+		NamingStrategy ns = hibernateJpaProject.getNamingStrategy();
+		if (ns != null && hibernateJpaProject.isNamingStrategyEnabled()){
 			String logicalTargetColumnName = null;
 			try {
 				if (targetColumnName != null || prefix != null){

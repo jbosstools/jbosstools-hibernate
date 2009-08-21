@@ -5,6 +5,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.jdt.core.IJavaProject;
+import org.hibernate.eclipse.console.properties.HibernatePropertiesConstants;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
@@ -21,14 +22,14 @@ public class ContentAssistTest extends HibernateConsoleTest {
 		IScopeContext scope = new ProjectScope(prj.getProject() );
 		
 	
-		Preferences node = scope.getNode("org.hibernate.eclipse.console"); //$NON-NLS-1$
+		Preferences node = scope.getNode(HibernatePropertiesConstants.HIBERNATE_CONSOLE_NODE);
 		
-		node.putBoolean("hibernate3.enabled", true ); //$NON-NLS-1$
-		node.put("default.configuration", "testcfg" ); //$NON-NLS-1$ //$NON-NLS-2$
+		node.putBoolean(HibernatePropertiesConstants.HIBERNATE3_ENABLED, true );
+		node.put(HibernatePropertiesConstants.DEFAULT_CONFIGURATION, "testcfg" ); //$NON-NLS-1$
 		node.flush();
 		
 		
-		ProjectUtils.addProjectNature(prj.getProject(), "org.hibernate.eclipse.console.hibernateNature", new NullProgressMonitor() ); //$NON-NLS-1$
-		ProjectUtils.removeProjectNature(prj.getProject(), "org.hibernate.eclipse.console.hibernateNature", new NullProgressMonitor() ); //$NON-NLS-1$
+		ProjectUtils.addProjectNature(prj.getProject(), HibernatePropertiesConstants.HIBERNATE_NATURE, new NullProgressMonitor() );
+		ProjectUtils.removeProjectNature(prj.getProject(), HibernatePropertiesConstants.HIBERNATE_NATURE, new NullProgressMonitor() );
 	}
 }

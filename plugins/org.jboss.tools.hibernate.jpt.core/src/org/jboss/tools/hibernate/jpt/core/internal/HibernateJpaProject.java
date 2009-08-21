@@ -20,6 +20,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.eclipse.console.properties.HibernatePropertiesConstants;
 import org.osgi.service.prefs.Preferences;
 
 /**
@@ -28,6 +29,8 @@ import org.osgi.service.prefs.Preferences;
  */
 @SuppressWarnings("restriction")
 public class HibernateJpaProject extends AbstractJpaProject {
+	
+	private Boolean cachedNamingStrategyEnable;
 	
 
 	public HibernateJpaProject(JpaProject.Config config) throws CoreException {
@@ -50,11 +53,26 @@ public class HibernateJpaProject extends AbstractJpaProject {
 
 	public String getDefaultConsoleConfigurationName(){
 		IScopeContext scope = new ProjectScope(getProject());
-		Preferences node = scope.getNode("org.hibernate.eclipse.console"); //$NON-NLS-1$
+		Preferences node = scope.getNode(HibernatePropertiesConstants.HIBERNATE_CONSOLE_NODE);
 		if(node!=null) {
-			return node.get("default.configuration", getName() ); //$NON-NLS-1$
+			return node.get(HibernatePropertiesConstants.DEFAULT_CONFIGURATION, getName() );
 		}
 		return null;
+	}
+	
+	public boolean isNamingStrategyEnabled(){
+		// as this flag cannot be changed without cleaning up and
+		// rebuilding ( == creating new instance) of jpa project we cache it
+		if (cachedNamingStrategyEnable == null){
+			IScopeContext scope = new ProjectScope(getProject());
+			Preferences node = scope.getNode(HibernatePropertiesConstants.HIBERNATE_CONSOLE_NODE);
+			if(node!=null) {
+				cachedNamingStrategyEnable = node.getBoolean(HibernatePropertiesConstants.NAMING_STRATEGY_ENABLED, true );
+			} else {
+				cachedNamingStrategyEnable = true;
+			}			
+		}
+		return cachedNamingStrategyEnable;
 	}
 
 }

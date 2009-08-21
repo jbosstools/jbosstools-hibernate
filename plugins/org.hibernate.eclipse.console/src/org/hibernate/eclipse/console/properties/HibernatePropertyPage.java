@@ -21,18 +21,29 @@
  */
 package org.hibernate.eclipse.console.properties;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRunnable;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ProjectScope;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.preference.PreferencePage;
+import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -55,6 +66,7 @@ import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
+import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
 public class HibernatePropertyPage extends PropertyPage {
@@ -64,6 +76,12 @@ public class HibernatePropertyPage extends PropertyPage {
 	private Button enableHibernate;
 
 	private Combo selectedConfiguration;
+	
+	private Button enableNamingStrategy;
+	
+	private Label nsSeparator;
+	
+	private boolean initNamingStrategy;
 
 
 	/**
@@ -99,9 +117,6 @@ public class HibernatePropertyPage extends PropertyPage {
 				enableSettings(selection);
 			}
 		});
-
-
-
 	}
 
 	private void createLogoButtons(Composite composite) {
@@ -159,12 +174,13 @@ public class HibernatePropertyPage extends PropertyPage {
 	       return retu.toString();
 	}
 
-	private void addSeparator(Composite parent) {
+	private Label addSeparator(Composite parent) {
 		Label separator = new Label(parent, SWT.SEPARATOR | SWT.HORIZONTAL);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		gridData.grabExcessHorizontalSpace = true;
 		separator.setLayoutData(gridData);
+		return separator;
 	}
 
 	private void addSecondSection(Composite parent) {
@@ -187,7 +203,14 @@ public class HibernatePropertyPage extends PropertyPage {
 		}
 
 		settings = new Control[] { ownerLabel, selectedConfiguration };
-
+	}
+	
+	private void addThirdSection(Composite parent) {
+		Composite settingsPart = createDefaultComposite(parent,2);
+		
+		enableNamingStrategy = new Button(settingsPart, SWT.CHECK);
+		enableNamingStrategy.setText(HibernateConsoleMessages.HibernatePropertyPage_use_naming_strategy);
+		enableNamingStrategy.setSelection(initNamingStrategy);
 	}
 
 	/**
@@ -203,8 +226,11 @@ public class HibernatePropertyPage extends PropertyPage {
 
 		addFirstSection(composite);
 		addSeparator(composite);
-		addSecondSection(composite);
+		addSecondSection(composite);		
 		addSeparator(composite);
+		addThirdSection(composite);		
+		nsSeparator = addSeparator(composite);
+		
 		addLogoSection(composite);
 		loadValues();
 		enableSettings(enableHibernate.getSelection() );
@@ -230,6 +256,11 @@ public class HibernatePropertyPage extends PropertyPage {
 		enableHibernate.setSelection(false);
 		selectedConfiguration.setText(""); //$NON-NLS-1$
 	}
+	
+	private boolean isHibernateJpaProject(){
+		JpaProject jpaProject = (JpaProject) getProject().getAdapter(JpaProject.class);
+		return (jpaProject != null) && (jpaProject.getJpaPlatform().getId().equals(HibernatePropertiesConstants.HIBERNATE_JPA_PLATFORM_ID));
+	}
 
 	private IProject getProject() {
 		IAdaptable adaptable= getElement();
@@ -242,27 +273,89 @@ public class HibernatePropertyPage extends PropertyPage {
 		return null;
 	}
 
+	@Override
+	public void setVisible(boolean visible) {
+		//loadValues();
+		nsSeparator.setVisible(isHibernateJpaProject());
+		enableNamingStrategy.setVisible(isHibernateJpaProject());
+		super.setVisible(visible);
+	}
 
 	public void loadValues() {
 		IProject project = getProject();
 		IScopeContext scope = new ProjectScope(project);
 
-		Preferences node = scope.getNode("org.hibernate.eclipse.console"); //$NON-NLS-1$
+		Preferences node = scope.getNode(HibernatePropertiesConstants.HIBERNATE_CONSOLE_NODE);
 
 		if(node!=null) {
-			enableHibernate.setSelection(node.getBoolean("hibernate3.enabled", false) ); //$NON-NLS-1$
-			String cfg = node.get("default.configuration", project.getName() ); //$NON-NLS-1$
+			enableHibernate.setSelection(node.getBoolean(HibernatePropertiesConstants.HIBERNATE3_ENABLED, false) );
+			String cfg = node.get(HibernatePropertiesConstants.DEFAULT_CONFIGURATION, project.getName() );
 			ConsoleConfiguration configuration = KnownConfigurations.getInstance().find(cfg);
 			if(configuration==null) {
 				selectedConfiguration.setText(""); //$NON-NLS-1$
 			} else {
 				selectedConfiguration.setText(cfg);
 			}
+			initNamingStrategy = node.getBoolean(HibernatePropertiesConstants.NAMING_STRATEGY_ENABLED, true);
+			enableNamingStrategy.setSelection(initNamingStrategy);
 		}
-
 	}
+	
+	protected boolean saveNamigStrategyChanges(){
+		if (initNamingStrategy == enableNamingStrategy.getSelection()) return true;
+		IScopeContext scope = new ProjectScope(getProject());
+
+		Preferences node = scope.getNode(HibernatePropertiesConstants.HIBERNATE_CONSOLE_NODE);
+
+		if(node!=null) {
+			node.putBoolean(HibernatePropertiesConstants.NAMING_STRATEGY_ENABLED, enableNamingStrategy.getSelection() );
+			try {
+				node.flush();
+				final IWorkspaceRunnable wr = new IWorkspaceRunnable() {
+					@SuppressWarnings("restriction")
+					public void run(IProgressMonitor monitor)
+							throws CoreException {
+						JpaModelManager.instance().rebuildJpaProject(getProject());
+						getProject().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
+					}
+				};
+
+				IRunnableWithProgress op = new IRunnableWithProgress() {
+					public void run(IProgressMonitor monitor) 
+							throws InvocationTargetException, InterruptedException {
+						try {
+							IWorkspace ws = ResourcesPlugin.getWorkspace();
+							ws.run(wr, ws.getRoot(), IWorkspace.AVOID_UPDATE, monitor);
+						}
+						catch(CoreException e) {
+							throw new InvocationTargetException(e);
+						}
+					}
+				};
+
+				try {
+					new ProgressMonitorDialog(getShell()).run(true, false, op);
+				}
+				catch (InterruptedException e) {
+					return false;
+				}
+				catch (InvocationTargetException e) {
+					final Throwable te = e.getTargetException();
+					throw new RuntimeException(te);
+				}
+				return true;
+			} catch (BackingStoreException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.ProjectUtils_could_not_save_changes_to_preferences, e);
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+	
 	public boolean performOk() {
-		ProjectUtils.toggleHibernateOnProject( getProject(), enableHibernate.getSelection(), selectedConfiguration.getText() );
+		ProjectUtils.toggleHibernateOnProject( getProject(), enableHibernate.getSelection(), selectedConfiguration.getText());
+		saveNamigStrategyChanges();
 		return true;
 	}
 

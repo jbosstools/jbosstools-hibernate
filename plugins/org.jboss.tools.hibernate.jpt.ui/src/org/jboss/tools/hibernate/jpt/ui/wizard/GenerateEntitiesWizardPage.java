@@ -27,7 +27,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
  * @author Dmitry Geraskov
  *
  */
- 
+
 @SuppressWarnings("restriction")
 public class GenerateEntitiesWizardPage extends GenerateInitWizardPage {
 
@@ -39,18 +39,22 @@ public class GenerateEntitiesWizardPage extends GenerateInitWizardPage {
 	public GenerateEntitiesWizardPage(HibernateJpaProject jpaProject) {
 		super(jpaProject);
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.jboss.tools.hibernate.jpt.ui.wizard.GenerateInitWizardPage#createChildControls(org.eclipse.swt.widgets.Composite)
-	 */
+
 	@Override
 	protected void createChildControls(Composite container) {
 		packageName = new StringDialogField();
         packageName.setDialogFieldListener(fieldlistener);
         packageName.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_package);
-        packageName.doFillIntoGrid(container, numColumns);        
+        packageName.doFillIntoGrid(container, numColumns);
 	}
 
+	@Override
+	public void createControl(Composite parent) {
+		super.createControl(parent);
+		if (!"".equals(getOutputDir())){//$NON-NLS-1$
+			packageName.setFocus();
+		}
+	}
 
 	protected void dialogChanged() {
 		setErrorMessage(null);
@@ -69,25 +73,25 @@ public class GenerateEntitiesWizardPage extends GenerateInitWizardPage {
 		} else {
 			setWarningMessage(NewWizardMessages.NewTypeWizardPage_warning_DefaultPackageDiscouraged); 
 		}
-		
+
 		String msg = PathHelper.checkDirectory(getOutputDir(), HibernateConsoleMessages.CodeGenerationSettingsTab_output_directory, false);
-		
+
         if (msg!=null) {
         	setErrorMessage( msg );
         	setPageComplete( false );
             return;
         }
-        
+
         super.dialogChanged();
 	}
-	
+
 	private static IStatus validatePackageName(String text, JpaProject project) {
 		if (project == null || !project.getJavaProject().exists()) {
 			return JavaConventions.validatePackageName(text, JavaCore.VERSION_1_3, JavaCore.VERSION_1_3);
 		}
 		return JavaConventionsUtil.validatePackageName(text, project.getJavaProject());
 	}
-	
+
 	public String getPackageName(){
 		return packageName.getText();
 	}

@@ -67,6 +67,7 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.properties.HibernatePropertiesConstants;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 import org.hibernate.util.StringHelper;
 import org.osgi.service.prefs.BackingStoreException;
@@ -83,11 +84,11 @@ public class ProjectUtils {
 	public static boolean toggleHibernateOnProject(IProject project, boolean enable,String defaultConsoleName) {
 		IScopeContext scope = new ProjectScope(project);
 
-		Preferences node = scope.getNode("org.hibernate.eclipse.console"); //$NON-NLS-1$
+		Preferences node = scope.getNode(HibernatePropertiesConstants.HIBERNATE_CONSOLE_NODE);
 
 		if(node!=null) {
-			node.putBoolean("hibernate3.enabled", enable ); //$NON-NLS-1$
-			node.put("default.configuration", defaultConsoleName ); //$NON-NLS-1$
+			node.putBoolean(HibernatePropertiesConstants.HIBERNATE3_ENABLED, enable );
+			node.put(HibernatePropertiesConstants.DEFAULT_CONFIGURATION, defaultConsoleName );
 			try {
 				node.flush();
 			} catch (BackingStoreException e) {
@@ -100,9 +101,9 @@ public class ProjectUtils {
 
 		try {
 			if(enable) {
-				return ProjectUtils.addProjectNature(project, "org.hibernate.eclipse.console.hibernateNature", new NullProgressMonitor() ); //$NON-NLS-1$
+				return ProjectUtils.addProjectNature(project, HibernatePropertiesConstants.HIBERNATE_NATURE, new NullProgressMonitor() );
 			} else {
-				return ProjectUtils.removeProjectNature(project, "org.hibernate.eclipse.console.hibernateNature", new NullProgressMonitor() ); //$NON-NLS-1$
+				return ProjectUtils.removeProjectNature(project, HibernatePropertiesConstants.HIBERNATE_NATURE, new NullProgressMonitor() );
 			}
 		} catch(CoreException ce) {
 			HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.ProjectUtils_could_not_activate_hibernate_nature_on_project + project.getName(), ce);

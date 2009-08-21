@@ -26,7 +26,7 @@ public class HibernateJavaColumn extends GenericJavaColumn {
 	@Override
 	protected String buildDefaultName() {
 		NamingStrategy ns = getJpaProject().getNamingStrategy();
-		if (ns != null && super.buildDefaultName() != null){
+		if ( getJpaProject().isNamingStrategyEnabled() && ns != null && super.buildDefaultName() != null){
 			try {
 				return ns.propertyToColumnName(super.buildDefaultName());
 			} catch (Exception e) {

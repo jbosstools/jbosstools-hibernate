@@ -105,7 +105,7 @@ public class HibernateOrmEntity extends AbstractOrmEntity {
 			}
 			Entity parentEntity = HibernateOrmEntity.this.getParentEntity();
 			NamingStrategy ns = HibernateOrmEntity.this.getJpaProject().getNamingStrategy();
-			if (ns != null){				
+			if (getJpaProject().isNamingStrategyEnabled() && ns != null){				
 				try {
 					String name = ns.joinKeyColumnName(parentEntity.getPrimaryKeyColumnName(),
 							parentEntity.getPrimaryTableName());

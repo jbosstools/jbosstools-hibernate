@@ -10,11 +10,18 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.core.JpaProject;
@@ -104,7 +111,8 @@ public class HibernateJptPlugin extends Plugin {
 						if (jpaProject instanceof HibernateJpaProject) {
 							String ccName = ((HibernateJpaProject)jpaProject).getDefaultConsoleConfigurationName();
 							if (ccfg.getName().equals(ccName)){
-								jpaProject.getJavaProject().getProject().build(IncrementalProjectBuilder.FULL_BUILD, null);
+								rebuildJpaProject(jpaProject.getJavaProject().getProject());
+								//jpaProject.getJavaProject().getProject().build(IncrementalProjectBuilder.FULL_BUILD, null);
 							}
 						}
 					}
@@ -133,5 +141,27 @@ public class HibernateJptPlugin extends Plugin {
 			}
 		});
 	}
-	
+
+	private void rebuildJpaProject(final IProject project){
+		try {
+			final IWorkspaceRunnable wr = new IWorkspaceRunnable() {
+				public void run(IProgressMonitor monitor)
+						throws CoreException {
+					JpaModelManager.instance().rebuildJpaProject(project);
+					project.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
+				}
+			};
+
+			try {
+				IWorkspace ws = ResourcesPlugin.getWorkspace();
+				ws.run(wr, ws.getRoot(), IWorkspace.AVOID_UPDATE, new NullProgressMonitor());
+			} catch(CoreException e) {
+				throw new InvocationTargetException(e);
+			}				
+		} catch (InvocationTargetException e) {
+				final Throwable te = e.getTargetException();
+				throw new RuntimeException(te);
+		}
+	}
+
 }

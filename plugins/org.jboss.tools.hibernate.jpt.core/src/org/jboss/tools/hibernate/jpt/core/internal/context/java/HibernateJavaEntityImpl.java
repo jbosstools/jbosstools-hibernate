@@ -471,7 +471,7 @@ implements HibernateJavaEntity {
 	
 	protected String getResourceDefaultName() {
 		NamingStrategy ns = getJpaProject().getNamingStrategy();
-		if (ns != null){
+		if (getJpaProject().isNamingStrategyEnabled() && ns != null){
 			try {
 				return ns.classToTableName(javaResourcePersistentType.getQualifiedName());
 			} catch (Exception e) {
@@ -522,8 +522,9 @@ implements HibernateJavaEntity {
 				return null;
 			}
 			Entity parentEntity = HibernateJavaEntityImpl.this.getParentEntity();
-			NamingStrategy ns = HibernateJavaEntityImpl.this.getJpaProject().getNamingStrategy();
-			if (ns != null) {				
+			HibernateJpaProject hibernateJpaProject = HibernateJavaEntityImpl.this.getJpaProject();
+			NamingStrategy ns = hibernateJpaProject.getNamingStrategy();
+			if (hibernateJpaProject.isNamingStrategyEnabled() && ns != null) {
 				try {
 					String name = ns.joinKeyColumnName(parentEntity.getPrimaryKeyColumnName(),
 						parentEntity.getPrimaryTableName());

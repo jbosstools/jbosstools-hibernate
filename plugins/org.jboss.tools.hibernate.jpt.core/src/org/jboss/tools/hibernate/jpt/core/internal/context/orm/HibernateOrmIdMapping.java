@@ -41,7 +41,7 @@ public class HibernateOrmIdMapping extends GenericOrmIdMapping {
 	@Override
 	public String getDefaultColumnName() {
 		NamingStrategy namingStrategy = getJpaProject().getNamingStrategy();
-		if (namingStrategy != null && getName() != null){
+		if (getJpaProject().isNamingStrategyEnabled() && namingStrategy != null && getName() != null){
 			try {
 				return namingStrategy.propertyToColumnName(getName());
 			} catch (Exception e) {
