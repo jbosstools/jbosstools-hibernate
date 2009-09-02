@@ -11,8 +11,6 @@
 package org.hibernate.eclipse.console.test.mappingproject;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.CoreException;
@@ -22,9 +20,10 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.internal.core.PackageFragmentRoot;
 import org.eclipse.jdt.ui.IPackagesViewPart;
 import org.eclipse.jdt.ui.JavaUI;
-import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.hibernate.eclipse.console.HibernateConsolePerspectiveFactory;
@@ -55,6 +54,8 @@ public abstract class MappingTestsBase extends TestCase {
 
 	protected int executions = 0;
 
+	protected int openEditors = 0;
+
 	public MappingTestsBase(String name) {
 		super(name);
 	}
@@ -62,8 +63,7 @@ public abstract class MappingTestsBase extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		
-		testProject = new ConfigurableTestProject("JUnitTestProj"+System.currentTimeMillis()); //$NON-NLS-1$
-
+		testProject = new ConfigurableTestProject("JUnitTestProj" + System.currentTimeMillis()); //$NON-NLS-1$
 
 		consoleConfigName = testProject.getIProject().getName();
 		testPackage = null;		
@@ -145,43 +145,22 @@ public abstract class MappingTestsBase extends TestCase {
 				long st_pack_time = System.currentTimeMillis();
 				int prev_failCount = result.failureCount();
 				int prev_errCount = result.errorCount();
-
-				Method m = null;
-				try {
-					m = Display.getCurrent().getClass().getDeclaredMethod("runAsyncMessages", boolean.class);
-					m.setAccessible(true);
-				} catch (SecurityException e) {
-				} catch (NoSuchMethodException e) {
-				}
-				
+				//
 				TestSuite suite = TestSet.createTestSuite(consoleConfigName, testPackage, testProject);
-
+				//
 				customizeCfgXml(testPackage);
 				//==============================
 				//run all tests for package
-				//suite.run(result);
+				/** /
+				suite.run(result);
+				/**/
 				for (int k = 0; k < suite.testCount(); k++) {
 					Test test = suite.testAt(k);
 					test.run(result);
-					// ----------------------------------------------					
-					// https://jira.jboss.org/jira/browse/JBIDE-4740 
-					// first way to fix OutOfMemory problems
 					closeAllEditors();
-					int LIMIT = 50,
-						ii = 0;
-					while(ii<LIMIT && Display.getCurrent().readAndDispatch()) {
-						//Display.getCurrent().sleep();
-						ii++;
-					}
 				}
-				// Second way to fix https://jira.jboss.org/jira/browse/JBIDE-4740
-				// invoked to clean up RunnableLock[] in UISynchronizer
-				try {
-					m.invoke(Display.getCurrent(), Boolean.TRUE);
-				} catch (IllegalArgumentException e) {
-				} catch (IllegalAccessException e) {
-				} catch (InvocationTargetException e) {
-				}				
+				/**/
+				closeAllEditors();
 				//==============================
 				executions++;
 				if (Customization.USE_CONSOLE_OUTPUT) {
@@ -218,7 +197,17 @@ public abstract class MappingTestsBase extends TestCase {
 	}
 	
 	protected void closeAllEditors() {
-		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closeAllEditors(false);
+		final IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		if (workbenchWindow != null) {
+			final IWorkbenchPage workbenchPage = workbenchWindow.getActivePage();
+			if (workbenchPage != null) {
+				openEditors += workbenchPage.getEditorReferences().length;
+				workbenchPage.closeAllEditors(false);
+			}
+		}
+		// clean up event queue to avoid "memory leak",
+		// this is necessary to fix https://jira.jboss.org/jira/browse/JBIDE-4824
+		while (Display.getCurrent().readAndDispatch());
 	}
 
 	public String getConsoleConfigName() {

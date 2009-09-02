@@ -175,6 +175,9 @@ public class ConsoleConfigUtils {
 	public static void deleteConsoleConfig(String name) {
 		final KnownConfigurations knownConfigurations = KnownConfigurations.getInstance();
 		final ConsoleConfiguration consoleConfig = knownConfigurations.find(name);
+		if (consoleConfig != null) {
+			consoleConfig.reset();
+		}
 		knownConfigurations.removeConfiguration(consoleConfig, false);
 	}
 }

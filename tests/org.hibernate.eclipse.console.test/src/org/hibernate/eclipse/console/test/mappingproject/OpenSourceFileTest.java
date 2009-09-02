@@ -17,7 +17,10 @@ import junit.framework.TestCase;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.hibernate.InvalidMappingException;
@@ -45,6 +48,8 @@ public class OpenSourceFileTest extends TestCase {
 	
 	protected IPackageFragment testPackage = null; 
 
+	protected int openEditors = 0;
+
 	public OpenSourceFileTest() {
 	}
 
@@ -58,7 +63,7 @@ public class OpenSourceFileTest extends TestCase {
 	protected void tearDown() throws Exception {
 		consoleConfigName = null;
 		testPackage = null;
-		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closeAllEditors(false);
+		closeAllEditors();
 	}
 
 	public void testOpenSourceFileTest() {
@@ -153,5 +158,19 @@ public class OpenSourceFileTest extends TestCase {
 
 	public void setTestPackage(IPackageFragment testPackage) {
 		this.testPackage = testPackage;
+	}
+	
+	protected void closeAllEditors() {
+		final IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		if (workbenchWindow != null) {
+			final IWorkbenchPage workbenchPage = workbenchWindow.getActivePage();
+			if (workbenchPage != null) {
+				openEditors += workbenchPage.getEditorReferences().length;
+				workbenchPage.closeAllEditors(false);
+			}
+		}
+		// clean up event queue to avoid "memory leak",
+		// this is necessary to fix https://jira.jboss.org/jira/browse/JBIDE-4824
+		while (Display.getCurrent().readAndDispatch());
 	}
 }
