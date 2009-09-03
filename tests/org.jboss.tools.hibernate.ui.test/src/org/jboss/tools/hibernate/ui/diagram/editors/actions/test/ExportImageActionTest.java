@@ -62,6 +62,9 @@ public class ExportImageActionTest extends TestCase {
 				oneOf(saveDialog).open();
 				will(returnValue(filePath));
 
+				allowing(editor).getSite();
+				will(returnValue(null));
+
 				allowing(editor).getEditPartViewer();
 				will(returnValue(graphicalViewer));
 
