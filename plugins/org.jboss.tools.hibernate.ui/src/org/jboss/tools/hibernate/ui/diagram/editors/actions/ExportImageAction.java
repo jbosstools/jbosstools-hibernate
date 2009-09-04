@@ -29,6 +29,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.widgets.FileDialog;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
 
@@ -40,6 +41,7 @@ public class ExportImageAction extends DiagramBaseAction {
 		DiagramViewerMessages.ExportImageAction_jpg_format, DiagramViewerMessages.ExportImageAction_bmp_format };
 
 	private FileDialog saveDialog = null;
+	private boolean showErrDialog = true;
 	public static final ImageDescriptor img = 
 		ImageDescriptor.createFromFile(DiagramViewer.class, "icons/export.png"); //$NON-NLS-1$
 
@@ -58,6 +60,10 @@ public class ExportImageAction extends DiagramBaseAction {
 	 */
 	public void setSaveDialog(FileDialog saveDialog) {
 		this.saveDialog = saveDialog;
+	}
+
+	public void setShowErrDialog(boolean showErrDialog) {
+		this.showErrDialog = showErrDialog;
 	}
 
 	public void run() {
@@ -91,9 +97,11 @@ public class ExportImageAction extends DiagramBaseAction {
 			outStream.write(imageData);
 			outStream.flush();
 		} catch (Exception e) {
-			MessageDialog.openInformation(getDiagramViewer().getSite().getShell(),
+			HibernateConsolePlugin.getDefault().logErrorMessage("ExportImageAction", e); //$NON-NLS-1$
+			if (showErrDialog) {
+				MessageDialog.openInformation(getDiagramViewer().getSite().getShell(),
 					DiagramViewerMessages.ExportImageAction_error, DiagramViewerMessages.ExportImageAction_failed_to_export_image + e.getMessage());
-			return;
+			}
 		}
 		finally {
 			if (outStream != null) {

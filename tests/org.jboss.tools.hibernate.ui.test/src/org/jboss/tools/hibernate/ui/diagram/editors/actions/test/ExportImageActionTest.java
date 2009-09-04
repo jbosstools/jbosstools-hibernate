@@ -96,6 +96,7 @@ public class ExportImageActionTest extends TestCase {
 		});
 		final ExportImageAction exportImageAction = new ExportImageAction(editor);
 		exportImageAction.setSaveDialog(saveDialog);
+		exportImageAction.setShowErrDialog(false);
 		exportImageAction.run();
 		// test is the file created
 		File file = new File(filePath);
