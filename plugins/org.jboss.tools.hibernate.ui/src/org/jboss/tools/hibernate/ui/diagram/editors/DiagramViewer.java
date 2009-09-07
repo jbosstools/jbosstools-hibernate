@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -31,9 +33,14 @@ import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.requests.SimpleFactory;
 import org.eclipse.gef.rulers.RulerProvider;
 import org.eclipse.gef.ui.actions.ActionRegistry;
+import org.eclipse.gef.ui.actions.DeleteAction;
+import org.eclipse.gef.ui.actions.RedoAction;
+import org.eclipse.gef.ui.actions.SaveAction;
+import org.eclipse.gef.ui.actions.SelectAllAction;
 import org.eclipse.gef.ui.actions.ToggleGridAction;
 import org.eclipse.gef.ui.actions.ToggleRulerVisibilityAction;
 import org.eclipse.gef.ui.actions.ToggleSnapToGeometryAction;
+import org.eclipse.gef.ui.actions.UndoAction;
 import org.eclipse.gef.ui.actions.WorkbenchPartAction;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
@@ -47,6 +54,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.hibernate.console.ConsoleConfiguration;
@@ -58,6 +66,7 @@ import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExpandAllAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExportImageAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.OpenMappingAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.OpenSourceAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.PrintDiagramViewerAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleConnectionsAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeExpandStateAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeVisibleStateAction;
@@ -139,6 +148,7 @@ public class DiagramViewer extends GraphicalEditor {
 		return getGraphicalViewer();
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void createActions() {
 
 		getEditorSite().getActionBars().setGlobalActionHandler(
@@ -152,15 +162,37 @@ public class DiagramViewer extends GraphicalEditor {
 			}
 		});
 
-		super.createActions();
+		//super.createActions();
+		// BEGIN: redefine super.createActions
+		ActionRegistry registry = getActionRegistry();
+		IAction action;
+		
+		action = new UndoAction(this);
+		registry.registerAction(action);
+		getStackActions().add(action.getId());
+		
+		action = new RedoAction(this);
+		registry.registerAction(action);
+		getStackActions().add(action.getId());
+		
+		action = new SelectAllAction(this);
+		registry.registerAction(action);
+		
+		action = new DeleteAction((IWorkbenchPart)this);
+		registry.registerAction(action);
+		getSelectionActions().add(action.getId());
+		
+		action = new SaveAction(this);
+		registry.registerAction(action);
+		getPropertyActions().add(action.getId());
+		
+		registry.registerAction(new PrintDiagramViewerAction(this));
+		// END: redefine super.createActions
 
 		getEditorSite().getActionBars().setGlobalActionHandler(ActionFactory.PRINT.getId(), 
 				getActionRegistry().getAction(ActionFactory.PRINT.getId()));
 		getEditorSite().getActionBars().setGlobalActionHandler(ActionFactory.SELECT_ALL.getId(), 
 				getActionRegistry().getAction(ActionFactory.SELECT_ALL.getId()));
-
-		ActionRegistry registry = getActionRegistry();
-		IAction action;
 
 		action = new OpenMappingAction(this);
 		registry.registerAction(action);
@@ -367,11 +399,7 @@ public class DiagramViewer extends GraphicalEditor {
 				.getProperty(SnapToGrid.PROPERTY_GRID_ENABLED)).booleanValue());
 		ormDiagram.setSnapToGeometry(((Boolean)getGraphicalViewer()
 				.getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED)).booleanValue());
-		ZoomManager manager = (ZoomManager)getGraphicalViewer()
-				.getProperty(ZoomManager.class.toString());
-		if (manager != null) {
-			ormDiagram.setZoom(manager.getZoom());
-		}
+		ormDiagram.setZoom(getZoom());
 		return true;
 	}
 
@@ -383,5 +411,73 @@ public class DiagramViewer extends GraphicalEditor {
 		rulerComp = new RulerComposite(parent, SWT.NONE);
 		super.createGraphicalViewer(rulerComp);
 		rulerComp.setGraphicalViewer((ScrollingGraphicalViewer)getGraphicalViewer());
+	}
+
+	/**
+	 * Returns the current zoom level.
+	 * @return double the zoom level
+	 */
+	public double getZoom() {
+		double zoom = 1.0;
+		ZoomManager manager = (ZoomManager)getGraphicalViewer()
+			.getProperty(ZoomManager.class.toString());
+		if (manager != null) {
+			zoom = manager.getZoom();
+		}
+		return zoom;
+	}
+	
+	public double getFitHeightZoomValue() {
+		double res = 1.0;
+		ZoomManager manager = (ZoomManager)getGraphicalViewer()
+			.getProperty(ZoomManager.class.toString());
+		Method m = null;
+		try {
+			m = manager.getClass().getDeclaredMethod("getFitHeightZoomLevel"); //$NON-NLS-1$
+			m.setAccessible(true);
+			res = (Double)m.invoke(manager);
+		} catch (SecurityException e) {
+		} catch (NoSuchMethodException e) {
+		} catch (IllegalArgumentException e) {
+		} catch (IllegalAccessException e) {
+		} catch (InvocationTargetException e) {
+		}
+		return res;
+	}
+	
+	public double getFitPageZoomValue() {
+		double res = 1.0;
+		ZoomManager manager = (ZoomManager)getGraphicalViewer()
+			.getProperty(ZoomManager.class.toString());
+		Method m = null;
+		try {
+			m = manager.getClass().getDeclaredMethod("getFitPageZoomLevel"); //$NON-NLS-1$
+			m.setAccessible(true);
+			res = (Double)m.invoke(manager);
+		} catch (SecurityException e) {
+		} catch (NoSuchMethodException e) {
+		} catch (IllegalArgumentException e) {
+		} catch (IllegalAccessException e) {
+		} catch (InvocationTargetException e) {
+		}
+		return res;
+	}
+	
+	public double getFitWidthZoomValue() {
+		double res = 1.0;
+		ZoomManager manager = (ZoomManager)getGraphicalViewer()
+			.getProperty(ZoomManager.class.toString());
+		Method m = null;
+		try {
+			m = manager.getClass().getDeclaredMethod("getFitWidthZoomLevel"); //$NON-NLS-1$
+			m.setAccessible(true);
+			res = (Double)m.invoke(manager);
+		} catch (SecurityException e) {
+		} catch (NoSuchMethodException e) {
+		} catch (IllegalArgumentException e) {
+		} catch (IllegalAccessException e) {
+		} catch (InvocationTargetException e) {
+		}
+		return res;
 	}
 }
