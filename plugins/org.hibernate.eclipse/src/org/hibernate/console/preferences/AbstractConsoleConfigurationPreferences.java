@@ -210,8 +210,9 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 		String[] mappings = new String[0];
 		String[] classpath = new String[0];
 
-		cfgName = node.getAttribute(NAME_ATTRIB);
-
+		if (node.hasAttribute(NAME_ATTRIB)) {
+			cfgName = node.getAttribute(NAME_ATTRIB);
+		}
 
 		String attribute = node.getAttribute(ANNOTATIONS_ATTRIB);
 		if(StringHelper.isNotEmpty( attribute )) {
@@ -231,7 +232,7 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 		setProjectName( attribute );
 
 		attribute = node.getAttribute( USE_PROJECT_CLASSPATH_ATTRIB );
-		setUseProjectClasspath((attribute != null) && attribute.equalsIgnoreCase("true")); //$NON-NLS-1$
+		setUseProjectClasspath("true".equalsIgnoreCase(attribute)); //$NON-NLS-1$
 
 		attribute = node.getAttribute(ENTITYRESOLVER_ATTRIB);
 		if(attribute!=null && attribute.trim().length()>0) {
@@ -240,12 +241,18 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 
 		NodeList elements = node.getElementsByTagName(HIBERNATE_CONFIG_XML_TAG);
 		if(elements.getLength()==1) {
-			cfgFile = ( (Element)elements.item(0) ).getAttribute(LOCATION_ATTRIB);
+			final Element el = (Element)elements.item(0);
+			if (el.hasAttribute(LOCATION_ATTRIB)) {
+				cfgFile = el.getAttribute(LOCATION_ATTRIB);
+			}
 		}
 
 		elements = node.getElementsByTagName(HIBERNATE_PROPERTIES_TAG);
 		if(elements.getLength()==1) {
-			propFile = ( (Element)elements.item(0) ).getAttribute(LOCATION_ATTRIB);
+			final Element el = (Element)elements.item(0);
+			if (el.hasAttribute(LOCATION_ATTRIB)) {
+				propFile = el.getAttribute(LOCATION_ATTRIB);
+			}
 		}
 
 
@@ -276,7 +283,8 @@ public abstract class AbstractConsoleConfigurationPreferences implements
 			result = new String[maps.getLength()];
 			for (int j = 0; j < maps.getLength(); j++) {
 				Element child = (Element) maps.item(j);
-				result[j] = child.getAttribute(LOCATION_ATTRIB);
+				result[j] = child.hasAttribute(LOCATION_ATTRIB) ?
+						child.getAttribute(LOCATION_ATTRIB) : null;
 			}
 		}
 		return result;
