@@ -46,19 +46,15 @@ Require-Bundle: org.junit,
  org.eclipse.core.runtime,
  org.eclipse.ui.ide,
  org.hibernate.eclipse,
- org.hibernate.eclipse.help,
  org.hibernate.eclipse.mapper,
  org.eclipse.jface.text,
  org.hibernate.eclipse.console,
- org.eclipse.wst.xml.core,
- org.eclipse.wst.xml.ui,
  org.apache.ant,
  org.eclipse.ui.views,
  org.jboss.tools.hibernate.ui,
- org.eclipse.ui.editors,
- org.eclipse.debug.core,
- org.jboss.tools.tests;bundle-version="2.0.0",
- org.eclipse.debug.ui;bundle-version="3.4.0"
+ org.jboss.tools.tests,
+ org.eclipse.debug.ui,
+ org.eclipse.ui.workbench.texteditor;bundle-version="3.5.0"
 Eclipse-LazyStart: true
 Bundle-Activator: org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin
 Eclipse-RegisterBuddy: org.hibernate.eclipse
