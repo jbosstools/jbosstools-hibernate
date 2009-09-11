@@ -1,11 +1,12 @@
 Manifest-Version: 1.0
-Eclipse-LazyStart: true
+Bundle-ManifestVersion: 2
+Bundle-ActivationPolicy: lazy
 Bundle-Name: %pluginName
 Bundle-Activator: org.jboss.tools.hibernate.ui.xml.HibernateUIXMLPlugin
 Bundle-Vendor: %providerName
-Bundle-SymbolicName: org.jboss.tools.hibernate.xml.ui; singleton:=true
+Bundle-SymbolicName: org.jboss.tools.hibernate.xml.ui;singleton:=true
 Bundle-Localization: plugin
-Provide-Package: org.jboss.tools.hibernate.ui.xml,
+Export-Package: org.jboss.tools.hibernate.ui.xml,
  org.jboss.tools.hibernate.ui.xml.editor,
  org.jboss.tools.hibernate.ui.xml.form
 Require-Bundle: org.eclipse.ui.ide,

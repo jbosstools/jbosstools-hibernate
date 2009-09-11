@@ -1,11 +1,12 @@
 Manifest-Version: 1.0
-Eclipse-LazyStart: true
+Bundle-ManifestVersion: 2
+Bundle-ActivationPolicy: lazy
 Bundle-Name: %pluginName
 Bundle-Activator: org.jboss.tools.hibernate.xml.HibernateXMLPlugin
 Bundle-Vendor: %providerName
-Bundle-SymbolicName: org.jboss.tools.hibernate.xml; singleton:=true
+Bundle-SymbolicName: org.jboss.tools.hibernate.xml;singleton:=true
 Bundle-Localization: plugin
-Provide-Package: org.jboss.tools.hibernate.xml,
+Export-Package: org.jboss.tools.hibernate.xml,
  org.jboss.tools.hibernate.xml.model,
  org.jboss.tools.hibernate.xml.model.handlers,
  org.jboss.tools.hibernate.xml.model.impl

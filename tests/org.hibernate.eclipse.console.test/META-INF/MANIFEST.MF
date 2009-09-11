@@ -55,7 +55,7 @@ Require-Bundle: org.junit,
  org.jboss.tools.tests,
  org.eclipse.debug.ui,
  org.eclipse.ui.workbench.texteditor;bundle-version="3.5.0"
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin
 Eclipse-RegisterBuddy: org.hibernate.eclipse
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
