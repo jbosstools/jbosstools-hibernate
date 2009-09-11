@@ -11,10 +11,14 @@
 package org.jboss.tools.hibernate.xml.model;
 
 import org.jboss.tools.common.meta.XAttribute;
+import org.jboss.tools.common.meta.XChild;
 import org.jboss.tools.common.meta.XModelEntity;
 import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.loaders.impl.SimpleWebFileLoader;
+import org.jboss.tools.common.model.project.ext.store.XMLStoreConstants;
 import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
+import org.jboss.tools.hibernate.xml.model.impl.ComplexAttrUtil;
+import org.jboss.tools.hibernate.xml.model.impl.HibConfigComplexPropertyImpl;
 import org.w3c.dom.Element;
 
 public class HibConfigLoader extends SimpleWebFileLoader {
@@ -53,7 +57,12 @@ class HibConfigLoaderUtil extends XModelObjectLoaderUtil {
 	protected void loadFolders(Element element, XModelObject o, String[] folders) {
 		for (int i = 0; i < folders.length; i++) {
 			XModelObject c = o.getChildByPath(folders[i]);
-			if(c != null) super.loadChildren(element, c);
+			if(c != null) {
+				super.loadChildren(element, c);
+				if(i == 0) {
+					assignComplexProperties(c);
+				}
+			}
 		}
 	}
 
@@ -81,5 +90,21 @@ class HibConfigLoaderUtil extends XModelObjectLoaderUtil {
 		}
 		return super.isSaveable(entity, n, v, dv);
 	}
-	
+
+	private void assignComplexProperties(XModelObject folder) {
+		XModelObject[] ps = folder.getChildren(HibConfigComplexPropertyImpl.ENT_PROPERTY);
+		for (int i = 0; i < ps.length; i++) {
+			String n = ps[i].getAttributeValue(XMLStoreConstants.ATTR_NAME);
+			String v = ps[i].getAttributeValue(XMLStoreConstants.ATTR_VALUE);
+			XAttribute attr = ComplexAttrUtil.findComplexAttr(folder, n);
+			if(attr != null) {
+				XModelEntity entity = attr.getModelEntity();
+				XModelObject c = folder.getChildByPath(entity.getAttribute("name").getDefaultValue());
+				if(c != null) {
+					c.setAttributeValue(attr.getName(), v);
+				}
+			}
+		}
+	}
+
 }

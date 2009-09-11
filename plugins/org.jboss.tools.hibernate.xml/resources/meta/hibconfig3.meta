@@ -3,7 +3,11 @@
                                    "meta.dtd">
 <XModelEntityGroup>
  <VERSION DEPENDS="Model:1.0" MODULE="Hibernate" VERSION="1.0"/>
- <MAPPINGS/>
+ <MAPPINGS>
+  <MAPPING name="Implementations">
+   <PAIR name="ComplexProperty" value="org.jboss.tools.hibernate.xml.model.impl.HibConfigComplexPropertyImpl"/>
+  </MAPPING>
+ </MAPPINGS>
  <ICONS>
   <GROUP name="action"/>
   <GROUP name="main">
@@ -658,7 +662,9 @@
   </XActionItem>
   <XDependencies/>
  </XModelEntity>
- <XModelEntity ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibConfigListenerImpl" XMLSUBPATH="listener" name="HibConfig3Listener">
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibConfigListenerImpl"
+  XMLSUBPATH="listener" name="HibConfig3Listener">
   <XChildrenEntities/>
   <XEntityRenderer>
    <ICONS>
@@ -850,6 +856,9 @@
      <EntityData EntityName="HibConfig3Mapping">
       <AttributeData AttributeName="class" Mandatory="no"/>
       <AttributeData AttributeName="package" Mandatory="no"/>
+      <AttributeData AttributeName="file" Mandatory="no"/>
+      <AttributeData AttributeName="jar" Mandatory="no"/>
+      <AttributeData AttributeName="resource" Mandatory="no"/>
      </EntityData>
     </XActionItem>
    </XActionItem>
@@ -864,9 +873,388 @@
   </XActionItem>
   <XDependencies/>
  </XModelEntity>
+ <XModelEntity ImplementingClass="%ComplexProperty%" name="HibConfig3ObjectBytecode">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.hibernate.folder" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="Bytecode" loader="ElementType" name="element type">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="id=true;category=general"
+    default="Bytecode" name="name" visibility="false" xmlname="name">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.bytecode.provider" name="provider"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.bytecode.use_reflection_optimizer" name="use reflection optimizer">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions"/>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem displayName="move" kind="list" name="MoveActions"/>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%ComplexProperty%" name="HibConfig3ObjectC3P0">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.hibernate.folder" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="C3P0" loader="ElementType" name="element type">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="id=true;category=general" default="C3P0"
+    name="name" visibility="false" xmlname="name">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.c3p0.acquire_increment" name="acquire increment"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.c3p0.idle_test_period" name="idle test period"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.c3p0.max_size" name="max size"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.c3p0.max_statements" name="max statements"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.c3p0.min_size" name="min size"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.c3p0.timeout" name="timeout"/>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions"/>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem displayName="move" kind="list" name="MoveActions"/>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%ComplexProperty%" name="HibConfig3ObjectCache">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.hibernate.folder" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="Cache" loader="ElementType" name="element type">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="id=true;category=general"
+    default="Cache" name="name" visibility="false" xmlname="name">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.cache.jndi" name="jndi"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.cache.provider_class" name="provider class">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="AccessibleJava"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.cache.provider_configuration_file_resource_path" name="provider configuration file">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="AccessibleJava"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.cache.query_cache_factory" name="query cache factory">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="AccessibleJava"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.cache.region_prefix" name="region prefix">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="AccessibleJava"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.cache.use_minimal_puts" name="use minimal puts">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.cache.use_query_cache" name="use query cache">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.cache.use_second_level_cache" name="use second level cache">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.cache.use_structured_entries" name="use structured entries">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions"/>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem displayName="move" kind="list" name="MoveActions"/>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%ComplexProperty%" name="HibConfig3ObjectConnection">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.hibernate.folder" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="Connection" loader="ElementType" name="element type">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="id=true;category=general"
+    default="Connection" name="name" visibility="false" xmlname="name">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.connection" name="connection"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.connection.autocommit" name="autocommit">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.connection.datasource" name="datasource"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.connection.driver_class" name="driver class">
+    <Editor name="AccessibleJava"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.connection.isolation" name="isolation"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.connection.password" name="password"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.connection.pool_size" name="pool size"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.connection.provider_class" name="provider class">
+    <Editor name="AccessibleJava"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.connection.release_mode" name="release mode">
+    <Constraint loader="List">
+     <value/>
+     <value name="on_close"/>
+     <value name="after_transaction"/>
+     <value name="after_statement"/>
+     <value name="auto"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.connection.url" name="url"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.connection.username" name="username"/>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions"/>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem displayName="move" kind="list" name="MoveActions"/>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%ComplexProperty%" name="HibConfig3ObjectJDBC">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.hibernate.folder" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="JDBC" loader="ElementType" name="element type">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="id=true;category=general" default="JDBC"
+    name="name" visibility="false" xmlname="name">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.jdbc.batch_size" name="batch size"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.jdbc.batch_versioned_data" name="batch versioned data"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.jdbc.factory_class" name="factory class"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.jdbc.fetch_size" name="fetch size"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.jdbc.sql_exception_converter" name="sql exception converter"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.jdbc.use_get_generated_keys" name="use get generated keys">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.jdbc.use_scrollable_resultset" name="use scrollable resultset">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.jdbc.use_streams_for_binary" name="use streams for binary">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.jdbc.wrap_result_sets" name="wrap result sets">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions"/>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem displayName="move" kind="list" name="MoveActions"/>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%ComplexProperty%" name="HibConfig3ObjectJNDI">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.hibernate.folder" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="JNDI" loader="ElementType" name="element type">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="id=true;category=general" default="JNDI"
+    name="name" visibility="false" xmlname="name">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.jndi" name="jndi"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.jndi.class" name="class">
+    <Editor name="AccessibleJava"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.jndi.url" name="url"/>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions"/>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem displayName="move" kind="list" name="MoveActions"/>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
  <XModelEntity ImplementingClass="%Hibernate3OrderedFolder%"
   PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="HibConfig3PropertiesFolder">
   <XChildrenEntities>
+   <XChildEntity maxCount="1" name="HibConfig3ObjectBytecode" required="yes"/>
+   <XChildEntity maxCount="1" name="HibConfig3ObjectC3P0" required="yes"/>
+   <XChildEntity maxCount="1" name="HibConfig3ObjectCache" required="yes"/>
+   <XChildEntity maxCount="1" name="HibConfig3ObjectConnection" required="yes"/>
+   <XChildEntity maxCount="1" name="HibConfig3ObjectJDBC" required="yes"/>
+   <XChildEntity maxCount="1" name="HibConfig3ObjectJNDI" required="yes"/>
    <XChildEntity name="HibConfig3Property"/>
   </XChildrenEntities>
   <XEntityRenderer>
@@ -905,7 +1293,9 @@
   </XActionItem>
   <XDependencies/>
  </XModelEntity>
- <XModelEntity ImplementingClass="%Regular2%" XMLSUBPATH="property" name="HibConfig3Property">
+ <XModelEntity
+  ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibConfigSimplePropertyImpl"
+  XMLSUBPATH="property" name="HibConfig3Property">
   <XChildrenEntities/>
   <XEntityRenderer>
    <ICONS>
@@ -935,7 +1325,8 @@
      displayName="Properties..." kind="action" name="Properties"/>
    </XActionItem>
    <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
-    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+    <XActionItem BaseActionName="Delete"
+     HandlerClassName="org.jboss.tools.hibernate.xml.model.handlers.DeletePropertyHandler"
      ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
    </XActionItem>
    <XActionItem displayName="move" kind="list" name="MoveActions">
@@ -1081,7 +1472,7 @@
    <XActionItem displayName="New" group="1" kind="list" name="CreateActions">
     <XActionItem displayName="File" group="1" kind="list" name="CreateFiles">
      <XActionItem kind="list" name="ORM">
-      <XActionItem HandlerClassName="%SpecialWizard%" HIDE="always"
+      <XActionItem HIDE="always" HandlerClassName="%SpecialWizard%"
        ICON="main.hibernate.file"
        PROPERTIES="entity=FileHibConfig3;extensions=.xml.;validator.addfile=true;support=org.jboss.tools.common.model.files.handlers.CreateFileSupport;extension=xml"
        displayName="Hibernate Configuration 3.0..." kind="action" name="CreateFileHibConfig3">
@@ -1109,7 +1500,7 @@
    <XActionItem displayName="New" group="1" kind="list" name="CreateActions">
     <XActionItem displayName="File" group="1" kind="list" name="CreateFiles">
      <XActionItem kind="list" name="ORM">
-      <XActionItem HandlerClassName="%SpecialWizard%" HIDE="always"
+      <XActionItem HIDE="always" HandlerClassName="%SpecialWizard%"
        ICON="main.hibernate.file"
        PROPERTIES="entity=FileHibConfig3;extensions=.xml.;validator.addfile=true;support=org.jboss.tools.common.model.files.handlers.CreateFileSupport;extension=xml"
        displayName="Hibernate Configuration 3.0..." kind="action" name="CreateFileHibConfig3">
