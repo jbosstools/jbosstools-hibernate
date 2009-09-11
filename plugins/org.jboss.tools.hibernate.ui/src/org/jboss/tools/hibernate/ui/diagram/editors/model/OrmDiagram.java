@@ -72,7 +72,8 @@ public class OrmDiagram extends BaseElement {
 	private boolean gridEnabled = false;
 	private double zoom = 1.0;
 	private float fontHeight = 8.5f;
-	
+	private boolean deepIntoSort = false;
+
 	//
 	private boolean fileLoadSuccessfull = false;
 	
@@ -86,7 +87,7 @@ public class OrmDiagram extends BaseElement {
 		entityNames = new String[1];
 		entityNames[0] = ioe.getEntityName();
 		recreateChildren();
-		sortChildren(false);
+		sortChildren(deepIntoSort);
 		loadFromFile();
 		refreshDiagramElements();
 		setDirty(false);
@@ -107,7 +108,7 @@ public class OrmDiagram extends BaseElement {
 			entityNames[i] = ormElements[i].getEntityName();
 		}
 		recreateChildren();
-		sortChildren(false);
+		sortChildren(deepIntoSort);
 		loadFromFile();
 		refreshDiagramElements();
 		setDirty(false);
@@ -260,7 +261,7 @@ public class OrmDiagram extends BaseElement {
 		Properties properties = new Properties();
 		saveInProperties(properties);
 		recreateChildren();
-		sortChildren(false);
+		sortChildren(deepIntoSort);
 		// -> load just from properties
 		loadFromProperties(properties);
 		refreshDiagramElements();
@@ -346,6 +347,8 @@ public class OrmDiagram extends BaseElement {
 		gridEnabled = Boolean.valueOf(str).booleanValue();
 		str = properties.getProperty("zoom", "1.0"); //$NON-NLS-1$ //$NON-NLS-2$
 		zoom = Double.valueOf(str).doubleValue();
+		str = properties.getProperty("deepIntoSort", "false"); //$NON-NLS-1$ //$NON-NLS-2$
+		deepIntoSort = Boolean.valueOf(str).booleanValue();
 	}
 
 	@Override
@@ -354,6 +357,7 @@ public class OrmDiagram extends BaseElement {
 		properties.put("snapToGeometry", "" + snapToGeometry); //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put("gridEnabled", "" + gridEnabled); //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put("zoom", "" + zoom); //$NON-NLS-1$ //$NON-NLS-2$
+		properties.put("deepIntoSort", "" + deepIntoSort); //$NON-NLS-1$ //$NON-NLS-2$
 		super.saveInProperties(properties);
 	}
 	
@@ -503,5 +507,13 @@ public class OrmDiagram extends BaseElement {
 
 	public OrmLabelProvider getLabelProvider() {
 		return labelProvider;
+	}
+	
+	public boolean isDeepIntoSort() {
+		return deepIntoSort;
+	}
+
+	public void setDeepIntoSort(boolean deepIntoSort) {
+		this.deepIntoSort = deepIntoSort;
 	}
 }

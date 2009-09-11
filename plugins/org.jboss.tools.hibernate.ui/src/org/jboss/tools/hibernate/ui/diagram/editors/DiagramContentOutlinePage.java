@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -35,6 +35,7 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -166,6 +167,9 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 			"org.jboss.tools.hibernate.ui.diagram.editors.popup.outline.contextmenu", //$NON-NLS-1$
 			provider, getSite().getSelectionProvider());
 		IToolBarManager tbm = getSite().getActionBars().getToolBarManager();
+		
+		tbm.add(new LexicalSortingAction());
+
 		showOutlineAction = new Action() {
 			public void run() {
 				showPage(ID_OUTLINE);
@@ -347,4 +351,39 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 		return actionRegistry;
 	}
 
+	class LexicalSortingAction extends Action {
+
+		@SuppressWarnings("restriction")
+		public LexicalSortingAction() {
+			super();
+			setText(DiagramViewerMessages.DiagramViewer_OutlinePage_Sort_label);
+			org.eclipse.jdt.internal.ui.JavaPluginImages.setLocalImageDescriptors(this, "alphab_sort_co.gif"); //$NON-NLS-1$
+			setToolTipText(DiagramViewerMessages.DiagramViewer_OutlinePage_Sort_tooltip);
+			setDescription(DiagramViewerMessages.DiagramViewer_OutlinePage_Sort_description);
+
+			boolean checked = getOrmDiagram().isDeepIntoSort();
+			valueChanged(checked);
+		}
+
+		public void run() {
+			valueChanged(isChecked());
+		}
+
+		private void valueChanged(final boolean on) {
+			setChecked(on);
+			BusyIndicator.showWhile(outline.getDisplay(), new Runnable() {
+				public void run() {
+					if (on) {
+						getOrmDiagram().setDeepIntoSort(true);
+						getOrmDiagram().refresh();
+						setContents(getOrmDiagram());
+					} else {
+						getOrmDiagram().setDeepIntoSort(false);
+						getOrmDiagram().refresh();
+						setContents(getOrmDiagram());
+					}
+				}
+			});
+		}
+	}
 }

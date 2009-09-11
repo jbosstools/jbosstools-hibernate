@@ -50,4 +50,7 @@ public class DiagramViewerMessages extends NLS {
 	public static String MoveGuideCommand_Label;
 	public static String DiagramContentOutlinePage_Outline;
 	public static String DiagramContentOutlinePage_Overview;
+	public static String DiagramViewer_OutlinePage_Sort_label;
+	public static String DiagramViewer_OutlinePage_Sort_tooltip;
+	public static String DiagramViewer_OutlinePage_Sort_description;
 }
