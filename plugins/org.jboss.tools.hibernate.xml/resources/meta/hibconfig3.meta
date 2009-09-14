@@ -633,9 +633,21 @@
    <XModelAttribute PROPERTIES="save=always;id=true;category=general"
     name="role" xmlname="role"/>
    <XModelAttribute PROPERTIES="save=always;category=general"
-    name="entity-name" xmlname="entity-name"/>
-   <XModelAttribute PROPERTIES="save=always;category=general"
-    name="actions" xmlname="actions"/>
+    name="entity-name" xmlname="entity-name">
+    <Editor name="AccessibleJava"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="save=always;category=general;separator=comma;greedy=always"
+    name="actions" xmlname="actions">
+    <Constraint loader="org.jboss.tools.hibernate.xml.model.GrantActionsConstraint">
+     <value name="*"/>
+     <value name="read"/>
+     <value name="insert"/>
+     <value name="update"/>
+     <value name="delete"/>
+    </Constraint>
+    <Editor name="ListAdd"/>
+   </XModelAttribute>
    <XModelAttribute TRIM="no" name="comment" visibility="false" xmlname="#comment">
     <Editor name="Note"/>
    </XModelAttribute>
@@ -1097,7 +1109,12 @@
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.connection.password" name="password"/>
    <XModelAttribute
-    PROPERTIES="category=general;h_property=hibernate.connection.pool_size" name="pool size"/>
+    PROPERTIES="category=general;h_property=hibernate.connection.pool_size" name="pool size">
+    <Constraint loader="Int">
+     <value name="mandatory=false"/>
+    </Constraint>
+    <Editor name="Int"/>
+   </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.connection.provider_class" name="provider class">
     <Editor name="AccessibleJava"/>
@@ -1148,13 +1165,23 @@
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute
-    PROPERTIES="category=general;h_property=hibernate.jdbc.batch_size" name="batch size"/>
+    PROPERTIES="category=general;h_property=hibernate.jdbc.batch_size" name="batch size">
+    <Constraint loader="Int">
+     <value name="mandatory=false"/>
+    </Constraint>
+    <Editor name="Int"/>
+   </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.jdbc.batch_versioned_data" name="batch versioned data"/>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.jdbc.factory_class" name="factory class"/>
    <XModelAttribute
-    PROPERTIES="category=general;h_property=hibernate.jdbc.fetch_size" name="fetch size"/>
+    PROPERTIES="category=general;h_property=hibernate.jdbc.fetch_size" name="fetch size">
+    <Constraint loader="Int">
+     <value name="mandatory=false"/>
+    </Constraint>
+    <Editor name="Int"/>
+   </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.jdbc.sql_exception_converter" name="sql exception converter"/>
    <XModelAttribute
@@ -1273,8 +1300,8 @@
   <XActionItem kind="list">
    <XActionItem ICON="action.empty" displayName="New" group="1"
     kind="list" name="CreateActions">
-    <XActionItem HandlerClassName="%Create%"
-     PROPERTIES="validator.add=true" WizardClassName="%Default%"
+    <XActionItem HandlerClassName="%SpecialWizard%"
+     PROPERTIES="validator.add=true;support=org.jboss.tools.hibernate.xml.model.handlers.AddPropertySupport"
      displayName="Property..." kind="action" name="AddProperty">
      <EntityData EntityName="HibConfig3Property">
       <AttributeData AttributeName="name"/>
@@ -1307,7 +1334,10 @@
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute PROPERTIES="save=always;id=true;category=general"
-    name="name" xmlname="name"/>
+    name="name" xmlname="name">
+    <Constraint loader="ListString"/>
+    <Editor name="HibernatePropertyList"/>
+   </XModelAttribute>
    <XModelAttribute name="value" xmlname="#text"/>
    <XModelAttribute TRIM="no" name="comment" visibility="false" xmlname="#comment">
     <Editor name="Note"/>

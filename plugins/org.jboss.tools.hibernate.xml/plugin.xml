@@ -101,6 +101,11 @@
 
 		<xclass id="org.jboss.tools.hibernate.xml.model.handlers.DeletePropertyHandler"
 			class="org.jboss.tools.hibernate.xml.model.handlers.DeletePropertyHandler"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.handlers.AddPropertySupport"
+			class="org.jboss.tools.hibernate.xml.model.handlers.AddPropertySupport"/>
+		
+		<xclass id="org.jboss.tools.hibernate.xml.model.GrantActionsConstraint"
+			class="org.jboss.tools.hibernate.xml.model.GrantActionsConstraint"/>
    </extension>
 
 </plugin>
