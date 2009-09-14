@@ -19,6 +19,7 @@ import org.jboss.tools.common.model.ui.forms.IFormData;
  */
 public class HibConfig3PropertyFormLayoutData {
 	static String PROPERTY_ENTITY = "HibConfig3Property"; //$NON-NLS-1$
+	public static String PROPERTY_FOLDER_ENTITY = "HibConfig3PropertiesFolder"; //$NON-NLS-1$
 	
 	final static IFormData PROPERTY_LIST_DEFINITION = new FormData(
 		Messages.HibConfig3PropertyFormLayoutData_List,
@@ -32,7 +33,7 @@ public class HibConfig3PropertyFormLayoutData {
 	final static IFormData PROPERTY_FOLDER_DEFINITION = new FormData(
 		Messages.HibConfig3PropertyFormLayoutData_Folder,
 		"", //"Description //$NON-NLS-1$
-		"HibConfig3PropertiesFolder", //$NON-NLS-1$
+		PROPERTY_FOLDER_ENTITY,
 		new FormAttributeData[]{new FormAttributeData("name", 100, Messages.HibConfig3PropertyFormLayoutData_Name)}, //$NON-NLS-1$
 		new String[]{PROPERTY_ENTITY},
 		Hibernate3FormLayoutDataUtil.createDefaultFormActionData("CreateActions.AddProperty") //$NON-NLS-1$

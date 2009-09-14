@@ -54,4 +54,13 @@
 		<xclass id="org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
 			class="org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"/>
 	</extension>
+
+   <extension point="org.jboss.tools.common.model.ui.attributeAdapter">
+      <attributeAdapter class="org.jboss.tools.hibernate.ui.xml.editor.PropertyListAdapter" id="HibernatePropertyList"/>
+   </extension>
+
+   <extension point="org.jboss.tools.common.model.ui.attributeEditor">
+      <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.ComboBoxEditor" id="HibernatePropertyList"/>
+   </extension>
+
 </plugin>
