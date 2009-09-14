@@ -1072,7 +1072,8 @@
   </XActionItem>
   <XDependencies/>
  </XModelEntity>
- <XModelEntity ImplementingClass="%ComplexProperty%" name="HibConfig3ObjectConnection">
+ <XModelEntity ImplementingClass="%ComplexProperty%"
+  PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="HibConfig3ObjectConnection">
   <XChildrenEntities/>
   <XEntityRenderer>
    <ICONS>
@@ -1088,24 +1089,13 @@
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute
-    PROPERTIES="category=general;h_property=hibernate.connection" name="connection"/>
-   <XModelAttribute
-    PROPERTIES="category=general;h_property=hibernate.connection.autocommit" name="autocommit">
-    <Constraint loader="List">
-     <value/>
-     <value name="true"/>
-     <value name="false"/>
-    </Constraint>
-    <Editor name="List"/>
-   </XModelAttribute>
-   <XModelAttribute
-    PROPERTIES="category=general;h_property=hibernate.connection.datasource" name="datasource"/>
-   <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.connection.driver_class" name="driver class">
     <Editor name="AccessibleJava"/>
    </XModelAttribute>
    <XModelAttribute
-    PROPERTIES="category=general;h_property=hibernate.connection.isolation" name="isolation"/>
+    PROPERTIES="category=general;h_property=hibernate.connection.url" name="url"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.connection.username" name="username"/>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.connection.password" name="password"/>
    <XModelAttribute
@@ -1116,11 +1106,26 @@
     <Editor name="Int"/>
    </XModelAttribute>
    <XModelAttribute
-    PROPERTIES="category=general;h_property=hibernate.connection.provider_class" name="provider class">
+    PROPERTIES="category=advanced;h_property=hibernate.connection" name="connection"/>
+   <XModelAttribute
+    PROPERTIES="category=advanced;h_property=hibernate.connection.autocommit" name="autocommit">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=advanced;h_property=hibernate.connection.datasource" name="datasource"/>
+   <XModelAttribute
+    PROPERTIES="category=advanced;h_property=hibernate.connection.isolation" name="isolation"/>
+   <XModelAttribute
+    PROPERTIES="category=advanced;h_property=hibernate.connection.provider_class" name="provider class">
     <Editor name="AccessibleJava"/>
    </XModelAttribute>
    <XModelAttribute
-    PROPERTIES="category=general;h_property=hibernate.connection.release_mode" name="release mode">
+    PROPERTIES="category=advanced;h_property=hibernate.connection.release_mode" name="release mode">
     <Constraint loader="List">
      <value/>
      <value name="on_close"/>
@@ -1130,10 +1135,92 @@
     </Constraint>
     <Editor name="List"/>
    </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions"/>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem displayName="move" kind="list" name="MoveActions"/>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%ComplexProperty%" name="HibConfig3ObjectHibernate">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.hibernate.folder" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="Hibernate" loader="ElementType" name="element type">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="id=true;category=general"
+    default="Hibernate" name="name" visibility="false" xmlname="name">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
    <XModelAttribute
-    PROPERTIES="category=general;h_property=hibernate.connection.url" name="url"/>
+    PROPERTIES="category=general;h_property=hibernate.dialect" name="dialect">
+    <Constraint loader="ListString">
+     <value name="org.hibernate.dialect.DB2Dialect"/>
+     <value name="org.hibernate.dialect.DB2400Dialect"/>
+     <value name="org.hibernate.dialect.DB2390Dialect"/>
+     <value name="org.hibernate.dialect.PostgreSQLDialect"/>
+     <value name="org.hibernate.dialect.MySQLDialect"/>
+     <value name="org.hibernate.dialect.MySQLInnoDBDialect"/>
+     <value name="org.hibernate.dialect.MySQLMyISAMDialect"/>
+     <value name="org.hibernate.dialect.OracleDialect"/>
+     <value name="org.hibernate.dialect.Oracle9iDialect"/>
+     <value name="org.hibernate.dialect.Oracle10gDialect"/>
+     <value name="org.hibernate.dialect.SybaseDialect"/>
+     <value name="org.hibernate.dialect.SybaseAnywhereDialect"/>
+     <value name="org.hibernate.dialect.SQLServerDialect"/>
+     <value name="org.hibernate.dialect.SAPDBDialect"/>
+     <value name="org.hibernate.dialect.InformixDialect"/>
+     <value name="org.hibernate.dialect.HSQLDialect"/>
+     <value name="org.hibernate.dialect.IngresDialect"/>
+     <value name="org.hibernate.dialect.ProgressDialect"/>
+     <value name="org.hibernate.dialect.MckoiDialect"/>
+     <value name="org.hibernate.dialect.InterbaseDialect"/>
+     <value name="org.hibernate.dialect.PointbaseDialect"/>
+     <value name="org.hibernate.dialect.FrontbaseDialect"/>
+     <value name="org.hibernate.dialect.FirebirdDialect"/>
+    </Constraint>
+    <Editor name="ListString"/>
+   </XModelAttribute>
    <XModelAttribute
-    PROPERTIES="category=general;h_property=hibernate.connection.username" name="username"/>
+    PROPERTIES="category=general;h_property=hibernate.show_sql" name="show sql">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.use_sql_comments" name="use sql comments">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.format_sql" name="format sql">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
   </XModelAttributes>
   <XActionItem kind="list">
    <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions"/>
@@ -1273,15 +1360,169 @@
   </XActionItem>
   <XDependencies/>
  </XModelEntity>
+ <XModelEntity ImplementingClass="%ComplexProperty%" name="HibConfig3ObjectProxool">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.hibernate.folder" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="Proxool" loader="ElementType" name="element type">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="id=true;category=general"
+    default="Proxool" name="name" visibility="false" xmlname="name">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.proxool" name="proxool"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.proxool.existing_pool" name="existing pool"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.proxool.pool_alias" name="pool alias"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.proxool.properties" name="properties"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.proxool.xml" name="xml"/>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions"/>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem displayName="move" kind="list" name="MoveActions"/>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%ComplexProperty%" name="HibConfig3ObjectQuery">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.hibernate.folder" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="Query" loader="ElementType" name="element type">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="id=true;category=general"
+    default="Query" name="name" visibility="false" xmlname="name">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.query.factory_class" name="factory class">
+    <Editor name="AccessibleJava"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.query.jpaql_strict_compliance" name="jpaql strict compliance">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.query.startup_check" name="startup check">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.query.substitutions" name="substitutions"/>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions"/>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem displayName="move" kind="list" name="MoveActions"/>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
+ <XModelEntity ImplementingClass="%ComplexProperty%" name="HibConfig3ObjectTransaction">
+  <XChildrenEntities/>
+  <XEntityRenderer>
+   <ICONS>
+    <ICON info="main.hibernate.folder" type="main"/>
+   </ICONS>
+  </XEntityRenderer>
+  <XModelAttributes>
+   <XModelAttribute default="Transaction" loader="ElementType" name="element type">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="id=true;category=general"
+    default="Transaction" name="name" visibility="false" xmlname="name">
+    <Editor name="Uneditable"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.transaction.auto_close_session" name="auto close session">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.transaction.factory_class" name="factory class">
+    <Editor name="AccessibleJava"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.transaction.flush_before_completion" name="flush before completion">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.transaction.manager_lookup_class" name="manager lookup class">
+    <Editor name="AccessibleJava"/>
+   </XModelAttribute>
+  </XModelAttributes>
+  <XActionItem kind="list">
+   <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions"/>
+   <XActionItem ICON="action.empty" kind="list" name="Properties">
+    <XActionItem HandlerClassName="%Properties%" ICON="action.empty"
+     displayName="Properties..." kind="action" name="Properties"/>
+   </XActionItem>
+   <XActionItem ICON="action.delete" displayName="Delete" kind="list" name="DeleteActions">
+    <XActionItem BaseActionName="Delete" HandlerClassName="%Delete%"
+     ICON="action.delete" displayName="Delete" kind="action" name="Delete"/>
+   </XActionItem>
+   <XActionItem displayName="move" kind="list" name="MoveActions"/>
+  </XActionItem>
+  <XDependencies/>
+ </XModelEntity>
  <XModelEntity ImplementingClass="%Hibernate3OrderedFolder%"
   PROPERTIES="formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData" name="HibConfig3PropertiesFolder">
   <XChildrenEntities>
+   <XChildEntity maxCount="1" name="HibConfig3ObjectConnection" required="yes"/>
+   <XChildEntity maxCount="1" name="HibConfig3ObjectHibernate" required="yes"/>
    <XChildEntity maxCount="1" name="HibConfig3ObjectBytecode" required="yes"/>
    <XChildEntity maxCount="1" name="HibConfig3ObjectC3P0" required="yes"/>
    <XChildEntity maxCount="1" name="HibConfig3ObjectCache" required="yes"/>
-   <XChildEntity maxCount="1" name="HibConfig3ObjectConnection" required="yes"/>
    <XChildEntity maxCount="1" name="HibConfig3ObjectJDBC" required="yes"/>
    <XChildEntity maxCount="1" name="HibConfig3ObjectJNDI" required="yes"/>
+   <XChildEntity maxCount="1" name="HibConfig3ObjectProxool" required="yes"/>
+   <XChildEntity maxCount="1" name="HibConfig3ObjectQuery" required="yes"/>
+   <XChildEntity maxCount="1" name="HibConfig3ObjectTransaction" required="yes"/>
    <XChildEntity name="HibConfig3Property"/>
   </XChildrenEntities>
   <XEntityRenderer>
