@@ -367,7 +367,7 @@
               <entry>
                 <para>Name of a class that implements org.hibernate.cfg.NamingStrategy. Used for
                   setting up the naming strategy in Hibernate which controls the automatic naming of
-                  tables and columns.</para>
+                  tables and columns.In JPA projects naming strategy is supported for default Name/Columns mapping</para>
               </entry>
 
               <entry>
