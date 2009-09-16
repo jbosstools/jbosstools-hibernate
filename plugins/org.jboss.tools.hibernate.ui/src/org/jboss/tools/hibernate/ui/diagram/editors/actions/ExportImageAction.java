@@ -96,7 +96,7 @@ public class ExportImageAction extends DiagramBaseAction {
 			outStream = new FileOutputStream(filePath);
 			outStream.write(imageData);
 			outStream.flush();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			HibernateConsolePlugin.getDefault().logErrorMessage("ExportImageAction", e); //$NON-NLS-1$
 			if (showErrDialog) {
 				MessageDialog.openInformation(getDiagramViewer().getSite().getShell(),
@@ -123,7 +123,7 @@ public class ExportImageAction extends DiagramBaseAction {
 	 *          SWT.IMAGE_ICO, SWT.IMAGE_JPEG, or SWT.IMAGE_PNG
 	 * @return the bytes of an encoded image for the specified Figure
 	 */
-	private byte[] createImage(IFigure figure, int format) throws Exception {
+	private byte[] createImage(IFigure figure, int format) {
 
 		Device device = getDiagramViewer().getEditPartViewer().getControl()
 				.getDisplay();
@@ -134,7 +134,6 @@ public class ExportImageAction extends DiagramBaseAction {
 		Image image = null;
 		GC gc = null;
 		Graphics g = null;
-		Exception error = null;
 		try {
 			image = new Image(device, r.width, r.height);
 			gc = new GC(image);
@@ -146,8 +145,6 @@ public class ExportImageAction extends DiagramBaseAction {
 			ImageLoader imageLoader = new ImageLoader();
 			imageLoader.data = new ImageData[] { image.getImageData() };
 			imageLoader.save(result, format);
-		} catch (Exception ex) {
-			error = ex;
 		} finally {
 			if (g != null) {
 				g.dispose();
@@ -158,9 +155,6 @@ public class ExportImageAction extends DiagramBaseAction {
 			if (image != null) {
 				image.dispose();
 			}
-		}
-		if (error != null) {
-			throw error;
 		}
 		return result.toByteArray();
 	}

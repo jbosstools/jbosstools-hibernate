@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -93,10 +94,8 @@ public class OpenSourceAction extends SelectionAction {
 			}*/
 			try {
 				editorPart = org.hibernate.eclipse.console.actions.OpenSourceAction.run(consoleConfig, selection, fullyQualifiedName);
-			} catch (PartInitException e) {
+			} catch (CoreException e) {
 				HibernateConsolePlugin.getDefault().logErrorMessage(DiagramViewerMessages.OpenSourceAction_canot_open_source_file, e);
-			} catch (JavaModelException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage(DiagramViewerMessages.OpenSourceAction_canot_find_source_file, e);
 			} catch (FileNotFoundException e) {
 				HibernateConsolePlugin.getDefault().logErrorMessage(DiagramViewerMessages.OpenSourceAction_canot_find_source_file, e);
 			}

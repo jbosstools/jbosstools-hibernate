@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -66,9 +67,7 @@ public class OpenMappingAction extends SelectionAction {
 				Property parentProperty = ((SpecialRootClass)compositSel.getPersistentClass()).getProperty();
 				try {
 					editorPart = org.hibernate.eclipse.console.actions.OpenMappingAction.run(consoleConfig, compositSel, parentProperty);
-				} catch (PartInitException e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage(DiagramViewerMessages.OpenMappingAction_canot_find_or_open_mapping_file, e);
-				} catch (JavaModelException e) {
+				} catch (CoreException e) {
 					HibernateConsolePlugin.getDefault().logErrorMessage(DiagramViewerMessages.OpenMappingAction_canot_find_or_open_mapping_file, e);
 				} catch (FileNotFoundException e) {
 					HibernateConsolePlugin.getDefault().logErrorMessage(DiagramViewerMessages.OpenMappingAction_canot_find_or_open_mapping_file, e);
@@ -86,9 +85,7 @@ public class OpenMappingAction extends SelectionAction {
 			}
 			try {
 				editorPart = org.hibernate.eclipse.console.actions.OpenMappingAction.run(consoleConfig, selection, selectionParent);
-			} catch (PartInitException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage(DiagramViewerMessages.OpenMappingAction_open_mapping_file, e);
-			} catch (JavaModelException e) {
+			} catch (CoreException e) {
 				HibernateConsolePlugin.getDefault().logErrorMessage(DiagramViewerMessages.OpenMappingAction_open_mapping_file, e);
 			} catch (FileNotFoundException e) {
 				HibernateConsolePlugin.getDefault().logErrorMessage(DiagramViewerMessages.OpenMappingAction_open_mapping_file, e);

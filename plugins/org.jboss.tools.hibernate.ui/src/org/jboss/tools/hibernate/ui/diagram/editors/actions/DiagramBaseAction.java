@@ -30,22 +30,16 @@ public class DiagramBaseAction extends Action {
 
 	protected DiagramViewer getDiagramViewer() {
 		DiagramViewer res = editor;
-		if (res == null && PlatformUI.getWorkbench() != null && 
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null &&
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() != null &&
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart() != null) {
-			IWorkbenchPart part = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart();
-			if (part instanceof DiagramViewer) {
-				res = (DiagramViewer)part;
-			} else if (part instanceof ContentOutline) {
-				ContentOutline co = (ContentOutline)part;
-				if (co.getCurrentPage() instanceof DiagramContentOutlinePage) {
-					DiagramContentOutlinePage dcop = (DiagramContentOutlinePage)co.getCurrentPage();
-					res = dcop.getEditor();
-				}
+		IWorkbenchPart part = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart();
+		if (part instanceof DiagramViewer) {
+			res = (DiagramViewer)part;
+		} else if (part instanceof ContentOutline) {
+			ContentOutline co = (ContentOutline)part;
+			if (co.getCurrentPage() instanceof DiagramContentOutlinePage) {
+				DiagramContentOutlinePage dcop = (DiagramContentOutlinePage)co.getCurrentPage();
+				res = dcop.getEditor();
 			}
 		}
 		return res;
 	}
-
 }
