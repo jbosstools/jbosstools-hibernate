@@ -20,6 +20,7 @@ import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Value;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection.ConnectionType;
 import org.jboss.tools.hibernate.ui.view.HibernateUtils;
 
 /**
@@ -171,10 +172,42 @@ public class Shape extends BaseElement {
 		super.updateVisibleValue(initState);
 		// update connections visibility state
 		for (Connection connection : sourceConnections) {
-			connection.updateVisibleValue(getOrmDiagram().getConnectionsVisibility());
+			boolean state = true;
+			ConnectionType ct = connection.getConnectionType();
+			switch (ct) {
+			case ClassMapping:
+				state = getOrmDiagram().getConnectionsVisibilityClassMapping();
+				break;
+			case PropertyMapping:
+				state = getOrmDiagram().getConnectionsVisibilityPropertyMapping();
+				break;
+			case Association:
+				state = getOrmDiagram().getConnectionsVisibilityAssociation();
+				break;
+			case ForeignKeyConstraint:
+				state = getOrmDiagram().getConnectionsVisibilityForeignKeyConstraint();
+				break;
+			}
+			connection.updateVisibleValue(state);
 		}
 		for (Connection connection : targetConnections) {
-			connection.updateVisibleValue(getOrmDiagram().getConnectionsVisibility());
+			boolean state = true;
+			ConnectionType ct = connection.getConnectionType();
+			switch (ct) {
+			case ClassMapping:
+				state = getOrmDiagram().getConnectionsVisibilityClassMapping();
+				break;
+			case PropertyMapping:
+				state = getOrmDiagram().getConnectionsVisibilityPropertyMapping();
+				break;
+			case Association:
+				state = getOrmDiagram().getConnectionsVisibilityAssociation();
+				break;
+			case ForeignKeyConstraint:
+				state = getOrmDiagram().getConnectionsVisibilityForeignKeyConstraint();
+				break;
+			}
+			connection.updateVisibleValue(state);
 		}
 	}
 	

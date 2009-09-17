@@ -41,13 +41,13 @@ import org.eclipse.gef.ui.actions.ToggleGridAction;
 import org.eclipse.gef.ui.actions.ToggleRulerVisibilityAction;
 import org.eclipse.gef.ui.actions.ToggleSnapToGeometryAction;
 import org.eclipse.gef.ui.actions.UndoAction;
-import org.eclipse.gef.ui.actions.WorkbenchPartAction;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.parts.GraphicalEditor;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.gef.ui.parts.TreeViewer;
 import org.eclipse.gef.ui.rulers.RulerComposite;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.swt.SWT;
@@ -60,6 +60,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ActionMenu;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.AutoLayoutAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.CollapseAllAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExpandAllAction;
@@ -67,7 +68,12 @@ import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExportImageAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.OpenMappingAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.OpenSourceAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.PrintDiagramViewerAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.RefreshAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleAssociationAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleClassMappingAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleConnectionsAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleForeignKeyConstraintAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.TogglePropertyMappingAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeExpandStateAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeVisibleStateAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
@@ -81,7 +87,9 @@ import org.jboss.tools.hibernate.ui.diagram.rulers.DiagramRulerProvider;
 import org.jboss.tools.hibernate.ui.view.ObjectEditorInput;
 
 /**
- * @author some modifications from Vitali
+ * 
+ * @author ?
+ * @author Vitali Yemialyanchyk
  */
 public class DiagramViewer extends GraphicalEditor {
 
@@ -151,21 +159,15 @@ public class DiagramViewer extends GraphicalEditor {
 	@SuppressWarnings("unchecked")
 	protected void createActions() {
 
-		getEditorSite().getActionBars().setGlobalActionHandler(
-				ActionFactory.REFRESH.getId(), new WorkbenchPartAction(this) {
-
-			protected boolean calculateEnabled() {
-				return true;
-			}
-			public void run() {
-				ormDiagram.refresh();
-			}
-		});
-
 		//super.createActions();
 		// BEGIN: redefine super.createActions
 		ActionRegistry registry = getActionRegistry();
 		IAction action;
+
+		action = new RefreshAction(this);
+		registry.registerAction(action);
+		getEditorSite().getActionBars().setGlobalActionHandler(
+				ActionFactory.REFRESH.getId(), action);
 		
 		action = new UndoAction(this);
 		registry.registerAction(action);
@@ -206,14 +208,28 @@ public class DiagramViewer extends GraphicalEditor {
 		action = new AutoLayoutAction(this);
 		registry.registerAction(action);
 		
-		action = new ToggleConnectionsAction(this);
+		ToggleConnectionsAction actionToggleConnections = new ToggleConnectionsAction(this);
+		registry.registerAction(actionToggleConnections);
+		
+		action = new ToggleAssociationAction(this);
+		registry.registerAction(action);
+		
+		action = new ToggleClassMappingAction(this);
+		registry.registerAction(action);
+		
+		action = new ToggleForeignKeyConstraintAction(this);
+		registry.registerAction(action);
+		
+		action = new TogglePropertyMappingAction(this);
 		registry.registerAction(action);
 		
 		action = new ToggleShapeExpandStateAction(this);
 		registry.registerAction(action);
+		getSelectionActions().add(action.getId());
 
 		action = new ToggleShapeVisibleStateAction(this);
 		registry.registerAction(action);
+		getSelectionActions().add(action.getId());
 
 		action = new CollapseAllAction(this);
 		registry.registerAction(action);
@@ -226,6 +242,13 @@ public class DiagramViewer extends GraphicalEditor {
 
 		action = new ZoomOutAction(gefRootEditPart.getZoomManager());
 		registry.registerAction(action);
+
+		Action[] act = new Action[4];
+		act[0] = (Action)registry.getAction(TogglePropertyMappingAction.ACTION_ID);
+		act[1] = (Action)registry.getAction(ToggleClassMappingAction.ACTION_ID);
+		act[2] = (Action)registry.getAction(ToggleAssociationAction.ACTION_ID);
+		act[3] = (Action)registry.getAction(ToggleForeignKeyConstraintAction.ACTION_ID);
+		actionToggleConnections.setMenuCreator(new ActionMenu(act));
 
 	}
 
@@ -304,6 +327,9 @@ public class DiagramViewer extends GraphicalEditor {
 			outline.setSelectionSynchronizer(getSelectionSynchronizer());
 			outline.setOrmDiagram(ormDiagram);
 			outline.setEditor(this);
+			RefreshAction refreshAction = (RefreshAction)getActionRegistry().getAction(
+					ActionFactory.REFRESH.getId());
+			refreshAction.setOutlinePage(outline);
 			return outline;
 		}
 		if (type == ZoomManager.class) {
@@ -479,5 +505,50 @@ public class DiagramViewer extends GraphicalEditor {
 		} catch (InvocationTargetException e) {
 		}
 		return res;
+	}
+	
+	
+	public boolean getConnectionsVisibilityAssociation() {
+		return getViewerContents().getConnectionsVisibilityAssociation();
+	}
+	
+	public void setConnectionsVisibilityAssociation(boolean connectionsVisibilityAssociation) {
+		getViewerContents().setConnectionsVisibilityAssociation(connectionsVisibilityAssociation);
+		ActionRegistry registry = getActionRegistry();
+		IAction action = registry.getAction(ToggleAssociationAction.ACTION_ID);
+		action.setChecked(connectionsVisibilityAssociation);
+	}
+	
+	public boolean getConnectionsVisibilityClassMapping() {
+		return getViewerContents().getConnectionsVisibilityClassMapping();
+	}
+	
+	public void setConnectionsVisibilityClassMapping(boolean connectionsVisibilityClassMapping) {
+		getViewerContents().setConnectionsVisibilityClassMapping(connectionsVisibilityClassMapping);
+		ActionRegistry registry = getActionRegistry();
+		IAction action = registry.getAction(ToggleClassMappingAction.ACTION_ID);
+		action.setChecked(connectionsVisibilityClassMapping);
+	}
+	
+	public boolean getConnectionsVisibilityForeignKeyConstraint() {
+		return getViewerContents().getConnectionsVisibilityForeignKeyConstraint();
+	}
+	
+	public void setConnectionsVisibilityForeignKeyConstraint(boolean connectionsVisibilityForeignKeyConstraint) {
+		getViewerContents().setConnectionsVisibilityForeignKeyConstraint(connectionsVisibilityForeignKeyConstraint);
+		ActionRegistry registry = getActionRegistry();
+		IAction action = registry.getAction(ToggleForeignKeyConstraintAction.ACTION_ID);
+		action.setChecked(connectionsVisibilityForeignKeyConstraint);
+	}
+	
+	public boolean getConnectionsVisibilityPropertyMapping() {
+		return getViewerContents().getConnectionsVisibilityPropertyMapping();
+	}
+	
+	public void setConnectionsVisibilityPropertyMapping(boolean connectionsVisibilityPropertyMapping) {
+		getViewerContents().setConnectionsVisibilityPropertyMapping(connectionsVisibilityPropertyMapping);
+		ActionRegistry registry = getActionRegistry();
+		IAction action = registry.getAction(TogglePropertyMappingAction.ACTION_ID);
+		action.setChecked(connectionsVisibilityPropertyMapping);
 	}
 }

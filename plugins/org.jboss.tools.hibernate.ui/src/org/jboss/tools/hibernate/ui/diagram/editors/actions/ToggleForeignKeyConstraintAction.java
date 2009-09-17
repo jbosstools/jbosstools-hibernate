@@ -15,32 +15,29 @@ import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
 
 /**
- * Show|Hide all connections.
+ * Show|Hide connections which type is "Foreign key constraints" 
+ * (foreign keys which associations are based on).
  * 
  * @author Vitali Yemialyanchyk
  */
-public class ToggleConnectionsAction extends DiagramBaseAction {
+public class ToggleForeignKeyConstraintAction extends DiagramBaseAction {
 
-	public static final String ACTION_ID = "toggleConnectionsId"; //$NON-NLS-1$
+	public static final String ACTION_ID = "toggleForeignKeyConstraintId"; //$NON-NLS-1$
 	public static final ImageDescriptor img = 
-		ImageDescriptor.createFromFile(DiagramViewer.class, "icons/toggleconnections.png"); //$NON-NLS-1$
+		ImageDescriptor.createFromFile(DiagramViewer.class, "icons/toggleforeignkeyconstraint.png"); //$NON-NLS-1$
 
-	public ToggleConnectionsAction(DiagramViewer editor) {
-		super(editor, AS_DROP_DOWN_MENU);
+	public ToggleForeignKeyConstraintAction(DiagramViewer editor) {
+		super(editor);
 		setId(ACTION_ID);
-		setText(DiagramViewerMessages.ToggleConnectionsAction_toggle_connections);
-		setToolTipText(DiagramViewerMessages.ToggleConnectionsAction_toggle_connections);
+		setText(DiagramViewerMessages.ToggleForeignKeyConstraintAction_foreign_key_constraints);
+		setToolTipText(DiagramViewerMessages.ToggleForeignKeyConstraintAction_foreign_key_constraints);
 		setImageDescriptor(img);
+		boolean state = getDiagramViewer().getConnectionsVisibilityForeignKeyConstraint();
+		setChecked(state);
 	}
 
 	public void run() {
-		boolean state = getDiagramViewer().getConnectionsVisibilityAssociation();
-		getDiagramViewer().setConnectionsVisibilityAssociation(!state);
-		state = getDiagramViewer().getConnectionsVisibilityClassMapping();
-		getDiagramViewer().setConnectionsVisibilityClassMapping(!state);
-		state = getDiagramViewer().getConnectionsVisibilityForeignKeyConstraint();
+		boolean state = getDiagramViewer().getConnectionsVisibilityForeignKeyConstraint();
 		getDiagramViewer().setConnectionsVisibilityForeignKeyConstraint(!state);
-		state = getDiagramViewer().getConnectionsVisibilityPropertyMapping();
-		getDiagramViewer().setConnectionsVisibilityPropertyMapping(!state);
 	}
 }

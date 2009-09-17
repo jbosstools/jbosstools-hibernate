@@ -13,12 +13,20 @@ package org.jboss.tools.hibernate.ui.diagram.editors.model;
 /**
  * Directed connection between 2 shapes, from source to target. 
  *
- * @author some modifications from Vitali
+ * @author ?
+ * @author Vitali Yemialyanchyk
  */
 public class Connection extends BaseElement {
 	
 	protected Shape source;
 	protected Shape target;
+	
+	public enum ConnectionType {
+		ClassMapping,
+		PropertyMapping,
+		Association,
+		ForeignKeyConstraint,
+	};
 
 	/**
 	 * flag to prevent cycle call of updateVisibleValue()
@@ -41,6 +49,20 @@ public class Connection extends BaseElement {
 	
 	public Shape getTarget() {
 		return target;
+	}
+	
+	public ConnectionType getConnectionType() {
+		if ((source instanceof OrmShape) && (target instanceof OrmShape)) {
+			return ConnectionType.ClassMapping;
+		}
+		if ((source instanceof OrmShape) || (target instanceof OrmShape)) {
+			return ConnectionType.Association;
+		}
+		// TODO: what is ForeignKeyConstraint?
+		//if ( ??? ) {
+		//	return ConnectionType.ForeignKeyConstraint;
+		//}
+		return ConnectionType.PropertyMapping;
 	}
 
 	/**

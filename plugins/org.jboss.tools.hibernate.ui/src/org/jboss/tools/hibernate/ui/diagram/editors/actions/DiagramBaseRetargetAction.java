@@ -24,5 +24,13 @@ public class DiagramBaseRetargetAction extends RetargetAction {
 		setToolTipText(toolTipText);
 		setImageDescriptor(imgDescriptor);
 	}
+	
+	public DiagramBaseRetargetAction(final String actionId, final String text,
+			final String toolTipText, final ImageDescriptor imgDescriptor,
+			int style) {
+		super(actionId, text, style);
+		setToolTipText(toolTipText);
+		setImageDescriptor(imgDescriptor);
+	}
 
 }

@@ -15,10 +15,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.gef.editparts.AbstractTreeEditPart;
+import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ui.IWorkbenchPart;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
@@ -31,13 +30,13 @@ import org.jboss.tools.hibernate.ui.diagram.editors.parts.OrmEditPart;
  * 
  * @author Vitali Yemialyanchyk
  */
-public class ToggleShapeVisibleStateAction extends DiagramBaseAction {
+public class ToggleShapeVisibleStateAction extends SelectionAction {
 
 	public static final String ACTION_ID = "toggleShapeVisibleStateId"; //$NON-NLS-1$
 	public static final ImageDescriptor img = 
 		ImageDescriptor.createFromFile(DiagramViewer.class, "icons/toggleshapevisiblestate.png"); //$NON-NLS-1$
 
-	public ToggleShapeVisibleStateAction(DiagramViewer editor) {
+	public ToggleShapeVisibleStateAction(IWorkbenchPart editor) {
 		super(editor);
 		setId(ACTION_ID);
 		setText(DiagramViewerMessages.ToggleShapeVisibleStateAction_toggle_visible_state);
@@ -47,26 +46,22 @@ public class ToggleShapeVisibleStateAction extends DiagramBaseAction {
 
 	@SuppressWarnings("unchecked")
 	public void run() {
-		ISelection selection = getDiagramViewer().getEditPartViewer().getSelection();
-		if (!(selection instanceof StructuredSelection)) {
+		if (getSelectedObjects().isEmpty()) {
 			return;
 		}
 		List<OrmShape> selectedShape = new ArrayList<OrmShape>();
-		IStructuredSelection structedSelection = (IStructuredSelection)selection;
-		if (structedSelection != null) {
-			Iterator it = structedSelection.iterator();
-			while (it.hasNext()) {
-				Object firstElement = it.next();
-				Object obj = null;
-				if (firstElement instanceof OrmEditPart) {
-					obj = ((OrmEditPart)firstElement).getModel();
-				} else if (firstElement instanceof AbstractTreeEditPart) {
-					obj = ((AbstractTreeEditPart)firstElement).getModel();
-				}
-				if (null != obj && obj instanceof OrmShape) {
-					selectedShape.add((OrmShape)obj);
-				} 
+		Iterator it = getSelectedObjects().iterator();
+		while (it.hasNext()) {
+			Object firstElement = it.next();
+			Object obj = null;
+			if (firstElement instanceof OrmEditPart) {
+				obj = ((OrmEditPart)firstElement).getModel();
+			} else if (firstElement instanceof AbstractTreeEditPart) {
+				obj = ((AbstractTreeEditPart)firstElement).getModel();
 			}
+			if (null != obj && obj instanceof OrmShape) {
+				selectedShape.add((OrmShape)obj);
+			} 
 		}
 		for (OrmShape shape : selectedShape) {
 			Object ormElement = shape.getOrmElement();
@@ -74,5 +69,35 @@ public class ToggleShapeVisibleStateAction extends DiagramBaseAction {
 				shape.setVisible(!shape.isVisible());
 			}
 		}
+	}
+
+	@Override
+	protected boolean calculateEnabled() {
+		return canPerformAction();
+	}
+
+	@SuppressWarnings("unchecked")
+	private boolean canPerformAction() {
+		boolean res = false;
+		if (getSelectedObjects().isEmpty()) {
+			return res;
+		}
+		Iterator it = getSelectedObjects().iterator();
+		while (it.hasNext() && !res) {
+			Object firstElement = it.next();
+			Object obj = null;
+			if (firstElement instanceof OrmEditPart) {
+				obj = ((OrmEditPart)firstElement).getModel();
+			} else if (firstElement instanceof AbstractTreeEditPart) {
+				obj = ((AbstractTreeEditPart)firstElement).getModel();
+			}
+			if (null != obj && obj instanceof OrmShape) {
+				Object ormElement = ((OrmShape)obj).getOrmElement();
+				if (ormElement instanceof PersistentClass || ormElement instanceof Table) {
+					res = true;
+				}
+			} 
+		}
+		return res;
 	}
 }

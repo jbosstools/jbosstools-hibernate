@@ -27,6 +27,11 @@ public class DiagramBaseAction extends Action {
 	public DiagramBaseAction(DiagramViewer editor) {
 		this.editor = editor;
 	}
+	
+	public DiagramBaseAction(DiagramViewer editor, int style) {
+		super(null, style);
+		this.editor = editor;
+	}
 
 	protected DiagramViewer getDiagramViewer() {
 		DiagramViewer res = editor;

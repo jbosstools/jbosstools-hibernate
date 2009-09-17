@@ -53,4 +53,8 @@ public class DiagramViewerMessages extends NLS {
 	public static String DiagramViewer_OutlinePage_Sort_label;
 	public static String DiagramViewer_OutlinePage_Sort_tooltip;
 	public static String DiagramViewer_OutlinePage_Sort_description;
+	public static String ToggleClassMappingAction_class_mappings;
+	public static String TogglePropertyMappingAction_property_mappings;
+	public static String ToggleAssociationAction_associations;
+	public static String ToggleForeignKeyConstraintAction_foreign_key_constraints;
 }

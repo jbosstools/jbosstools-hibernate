@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2007-2009 Exadel, Inc. and Red Hat, Inc.
+ * Copyright (c) 2007-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  *
- * Contributors:
- *     Exadel, Inc. and Red Hat, Inc. - initial API and implementation
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.popup;
 
@@ -41,13 +41,16 @@ import org.jboss.tools.hibernate.ui.diagram.editors.actions.OpenSourceAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleConnectionsAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeExpandStateAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeVisibleStateAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.ExpandableShape;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmShape;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
 import org.jboss.tools.hibernate.ui.diagram.editors.parts.OrmEditPart;
 
 /**
  * Context menu provider for Diagram Viewer and Diagram Outline.
  * 
- * @author some modifications from Vitali
+ * @author ?
+ * @author Vitali Yemialyanchyk
  */
 public class PopupMenuProvider extends ContextMenuProvider {
 	private ActionRegistry actionRegistry;
@@ -94,9 +97,10 @@ public class PopupMenuProvider extends ContextMenuProvider {
 					createMenuItem(getMenu(), action);					
 				}
 			}
-			boolean addToggleMenu = false;
+			boolean addToggleVisibleStateMenu = false;
+			boolean addToggleExpandStateMenu = false;
 		    Iterator it = selection.iterator();
-		    while (it.hasNext() && !addToggleMenu) {
+		    while (it.hasNext() && (!addToggleVisibleStateMenu || !addToggleExpandStateMenu)) {
 		    	Object element = it.next();
 				Object obj = null;
 				if (element instanceof OrmEditPart) {
@@ -104,19 +108,23 @@ public class PopupMenuProvider extends ContextMenuProvider {
 				} else if (element instanceof AbstractTreeEditPart) {
 					obj = ((AbstractTreeEditPart)element).getModel();
 				}
-				if (null != obj && obj instanceof Shape) {
+				if (null != obj && obj instanceof OrmShape) {
 					selectedShape = (Shape)obj;
 					Object first = selectedShape.getOrmElement();
 					if (first instanceof PersistentClass || first instanceof Table) {
-						addToggleMenu = true;
+						addToggleVisibleStateMenu = true;
 					}
+				}
+				if (null != obj && obj instanceof ExpandableShape) {
+					addToggleExpandStateMenu = true;
 				} 
 		    }
-			if (addToggleMenu) {
+			if (addToggleVisibleStateMenu) {
 				action = getActionRegistry().getAction(ToggleShapeVisibleStateAction.ACTION_ID);
 				appendToGroup(GEFActionConstants.GROUP_EDIT, action);
 				createMenuItem(getMenu(), action);
-
+			}
+			if (addToggleExpandStateMenu) {
 				action = getActionRegistry().getAction(ToggleShapeExpandStateAction.ACTION_ID);
 				appendToGroup(GEFActionConstants.GROUP_EDIT, action);
 				createMenuItem(getMenu(), action);

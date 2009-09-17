@@ -19,6 +19,7 @@ import org.eclipse.gef.ui.actions.UndoRetargetAction;
 import org.eclipse.gef.ui.actions.ZoomComboContributionItem;
 import org.eclipse.gef.ui.actions.ZoomInRetargetAction;
 import org.eclipse.gef.ui.actions.ZoomOutRetargetAction;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
@@ -30,9 +31,14 @@ import org.eclipse.ui.actions.RetargetAction;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ActionMenu;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.AutoLayoutAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleAssociationAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleClassMappingAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleConnectionsAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.DiagramBaseRetargetAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleForeignKeyConstraintAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.TogglePropertyMappingAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeExpandStateAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeVisibleStateAction;
 import org.jboss.tools.hibernate.ui.view.ImageBundle;
@@ -49,27 +55,71 @@ public class DiagramActionBarContributor extends ActionBarContributor {
 		workbenchAction.setToolTipText(DiagramViewerMessages.EditorActionContributor_refresh_visual_mapping);
 		addAction(workbenchAction);
 		//
-		addRetargetAction(new DiagramBaseRetargetAction(
+		DiagramBaseRetargetAction diagramAction;
+		Action[] act;
+		//
+		diagramAction = new DiagramBaseRetargetAction(
 				AutoLayoutAction.ACTION_ID, 
 				DiagramViewerMessages.AutoLayoutAction_auto_layout,
 				DiagramViewerMessages.AutoLayoutAction_auto_layout,
-				AutoLayoutAction.img));
+				AutoLayoutAction.img);
+		addRetargetAction(diagramAction);
 		//
-		addRetargetAction(new DiagramBaseRetargetAction(
+		DiagramBaseRetargetAction diagramAction1 = new DiagramBaseRetargetAction(
 				ToggleConnectionsAction.ACTION_ID, 
 				DiagramViewerMessages.ToggleConnectionsAction_toggle_connections,
 				DiagramViewerMessages.ToggleConnectionsAction_toggle_connections,
-				ToggleConnectionsAction.img));
-		addRetargetAction(new DiagramBaseRetargetAction(
+				ToggleConnectionsAction.img);
+		addRetargetAction(diagramAction1);
+		//
+		DiagramBaseRetargetAction diagramAction2 = new DiagramBaseRetargetAction(
 				ToggleShapeExpandStateAction.ACTION_ID, 
 				DiagramViewerMessages.ToggleShapeExpandStateAction_toggle_expand_state,
 				DiagramViewerMessages.ToggleShapeExpandStateAction_toggle_expand_state,
-				ToggleShapeExpandStateAction.img));
-		addRetargetAction(new DiagramBaseRetargetAction(
+				ToggleShapeExpandStateAction.img);
+		addRetargetAction(diagramAction2);
+		//
+		diagramAction = new DiagramBaseRetargetAction(
 				ToggleShapeVisibleStateAction.ACTION_ID, 
 				DiagramViewerMessages.ToggleShapeVisibleStateAction_toggle_visible_state,
 				DiagramViewerMessages.ToggleShapeVisibleStateAction_toggle_visible_state,
-				ToggleShapeVisibleStateAction.img));
+				ToggleShapeVisibleStateAction.img);
+		addRetargetAction(diagramAction);
+		//
+		diagramAction = new DiagramBaseRetargetAction(
+				ToggleClassMappingAction.ACTION_ID, 
+				DiagramViewerMessages.ToggleClassMappingAction_class_mappings,
+				DiagramViewerMessages.ToggleClassMappingAction_class_mappings,
+				ToggleClassMappingAction.img, IAction.AS_CHECK_BOX);
+		addRetargetAction(diagramAction);
+		//
+		diagramAction = new DiagramBaseRetargetAction(
+				TogglePropertyMappingAction.ACTION_ID, 
+				DiagramViewerMessages.TogglePropertyMappingAction_property_mappings,
+				DiagramViewerMessages.TogglePropertyMappingAction_property_mappings,
+				TogglePropertyMappingAction.img, IAction.AS_CHECK_BOX);
+		addRetargetAction(diagramAction);
+		//
+		diagramAction = new DiagramBaseRetargetAction(
+				ToggleAssociationAction.ACTION_ID, 
+				DiagramViewerMessages.ToggleAssociationAction_associations,
+				DiagramViewerMessages.ToggleAssociationAction_associations,
+				ToggleAssociationAction.img, IAction.AS_CHECK_BOX);
+		addRetargetAction(diagramAction);
+		//
+		diagramAction = new DiagramBaseRetargetAction(
+				ToggleForeignKeyConstraintAction.ACTION_ID, 
+				DiagramViewerMessages.ToggleForeignKeyConstraintAction_foreign_key_constraints,
+				DiagramViewerMessages.ToggleForeignKeyConstraintAction_foreign_key_constraints,
+				ToggleForeignKeyConstraintAction.img, IAction.AS_CHECK_BOX);
+		addRetargetAction(diagramAction);
+		//
+		act = new Action[4];
+		act[0] = (Action)getAction(TogglePropertyMappingAction.ACTION_ID);
+		act[1] = (Action)getAction(ToggleClassMappingAction.ACTION_ID);
+		act[2] = (Action)getAction(ToggleAssociationAction.ACTION_ID);
+		act[3] = (Action)getAction(ToggleForeignKeyConstraintAction.ACTION_ID);
+		diagramAction1.setMenuCreator(new ActionMenu(act));
 		//
 		addRetargetAction(new UndoRetargetAction());
 		addRetargetAction(new RedoRetargetAction());
@@ -93,10 +143,10 @@ public class DiagramActionBarContributor extends ActionBarContributor {
 	 */
 	public void contributeToToolBar(IToolBarManager tbm) {
 		tbm.add(getAction(ActionFactory.REFRESH.getId()));
-		tbm.add(new Separator());	
-		tbm.add(getAction(ActionFactory.UNDO.getId()));
-		tbm.add(getAction(ActionFactory.REDO.getId()));
-		tbm.add(new Separator());	
+		tbm.add(new Separator());
+		//tbm.add(getAction(ActionFactory.UNDO.getId()));
+		//tbm.add(getAction(ActionFactory.REDO.getId()));
+		//tbm.add(new Separator());
 		//tbm.add(getAction(GEFActionConstants.ZOOM_IN));
 		//tbm.add(getAction(GEFActionConstants.ZOOM_OUT));
 		String[] zoomStrings = new String[] {

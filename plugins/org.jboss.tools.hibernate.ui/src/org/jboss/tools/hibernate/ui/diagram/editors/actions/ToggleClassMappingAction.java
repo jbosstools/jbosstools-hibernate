@@ -15,32 +15,28 @@ import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
 
 /**
- * Show|Hide all connections.
+ * Show|Hide connections which type is "Class Mappings" (class->table).
  * 
  * @author Vitali Yemialyanchyk
  */
-public class ToggleConnectionsAction extends DiagramBaseAction {
+public class ToggleClassMappingAction extends DiagramBaseAction {
 
-	public static final String ACTION_ID = "toggleConnectionsId"; //$NON-NLS-1$
+	public static final String ACTION_ID = "toggleClassMappingId"; //$NON-NLS-1$
 	public static final ImageDescriptor img = 
-		ImageDescriptor.createFromFile(DiagramViewer.class, "icons/toggleconnections.png"); //$NON-NLS-1$
+		ImageDescriptor.createFromFile(DiagramViewer.class, "icons/toggleclassmapping.png"); //$NON-NLS-1$
 
-	public ToggleConnectionsAction(DiagramViewer editor) {
-		super(editor, AS_DROP_DOWN_MENU);
+	public ToggleClassMappingAction(DiagramViewer editor) {
+		super(editor);
 		setId(ACTION_ID);
-		setText(DiagramViewerMessages.ToggleConnectionsAction_toggle_connections);
-		setToolTipText(DiagramViewerMessages.ToggleConnectionsAction_toggle_connections);
+		setText(DiagramViewerMessages.ToggleClassMappingAction_class_mappings);
+		setToolTipText(DiagramViewerMessages.ToggleClassMappingAction_class_mappings);
 		setImageDescriptor(img);
+		boolean state = getDiagramViewer().getConnectionsVisibilityClassMapping();
+		setChecked(state);
 	}
 
 	public void run() {
-		boolean state = getDiagramViewer().getConnectionsVisibilityAssociation();
-		getDiagramViewer().setConnectionsVisibilityAssociation(!state);
-		state = getDiagramViewer().getConnectionsVisibilityClassMapping();
+		boolean state = getDiagramViewer().getConnectionsVisibilityClassMapping();
 		getDiagramViewer().setConnectionsVisibilityClassMapping(!state);
-		state = getDiagramViewer().getConnectionsVisibilityForeignKeyConstraint();
-		getDiagramViewer().setConnectionsVisibilityForeignKeyConstraint(!state);
-		state = getDiagramViewer().getConnectionsVisibilityPropertyMapping();
-		getDiagramViewer().setConnectionsVisibilityPropertyMapping(!state);
 	}
 }

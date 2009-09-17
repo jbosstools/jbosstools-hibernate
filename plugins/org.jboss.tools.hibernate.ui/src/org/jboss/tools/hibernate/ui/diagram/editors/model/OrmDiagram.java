@@ -39,6 +39,7 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection.ConnectionType;
 import org.jboss.tools.hibernate.ui.diagram.rulers.DiagramRuler;
 import org.jboss.tools.hibernate.ui.view.OrmLabelProvider;
 
@@ -62,7 +63,10 @@ public class OrmDiagram extends BaseElement {
 	private HashMap<String, OrmShape> elements = new HashMap<String, OrmShape>();
 	private RootClass[] ormElements;
 	private String[] entityNames;
-	private boolean connectionsVisibility = true;
+	private boolean connectionsVisibilityClassMapping = true;
+	private boolean connectionsVisibilityPropertyMapping = true;
+	private boolean connectionsVisibilityAssociation = true;
+	private boolean connectionsVisibilityForeignKeyConstraint = true;
 	private ArrayList<Connection> connections = new ArrayList<Connection>();
 	
 	// editor elements settings
@@ -315,25 +319,72 @@ public class OrmDiagram extends BaseElement {
 		firePropertyChange(AUTOLAYOUT, null, null);
 	}
 	
-	public boolean getConnectionsVisibility() {
-		return connectionsVisibility;
+	public boolean getConnectionsVisibilityAssociation() {
+		return connectionsVisibilityAssociation;
 	}
 	
-	public void setConnectionsVisibility(boolean connectionsVisibility) {
-		if (this.connectionsVisibility == connectionsVisibility) {
+	public void setConnectionsVisibilityAssociation(boolean connectionsVisibilityAssociation) {
+		if (this.connectionsVisibilityAssociation == connectionsVisibilityAssociation) {
 			return;
 		}
-		this.connectionsVisibility = connectionsVisibility;
+		this.connectionsVisibilityAssociation = connectionsVisibilityAssociation;
 		for (Connection connection : connections) {
-			if (!(connection.getSource() instanceof OrmShape) ||
-					!(connection.getTarget() instanceof OrmShape)) {
-				connection.setVisible(connectionsVisibility);
+			ConnectionType ct = connection.getConnectionType();
+			if (ct == ConnectionType.Association) {
+				connection.setVisible(connectionsVisibilityAssociation);
 			}
 		}
 	}
 	
-	public void toggleConnections() {
-		setConnectionsVisibility(!getConnectionsVisibility());
+	public boolean getConnectionsVisibilityClassMapping() {
+		return connectionsVisibilityClassMapping;
+	}
+	
+	public void setConnectionsVisibilityClassMapping(boolean connectionsVisibilityClassMapping) {
+		if (this.connectionsVisibilityClassMapping == connectionsVisibilityClassMapping) {
+			return;
+		}
+		this.connectionsVisibilityClassMapping = connectionsVisibilityClassMapping;
+		for (Connection connection : connections) {
+			ConnectionType ct = connection.getConnectionType();
+			if (ct == ConnectionType.ClassMapping) {
+				connection.setVisible(connectionsVisibilityClassMapping);
+			}
+		}
+	}
+	
+	public boolean getConnectionsVisibilityForeignKeyConstraint() {
+		return connectionsVisibilityForeignKeyConstraint;
+	}
+	
+	public void setConnectionsVisibilityForeignKeyConstraint(boolean connectionsVisibilityForeignKeyConstraint) {
+		if (this.connectionsVisibilityForeignKeyConstraint == connectionsVisibilityForeignKeyConstraint) {
+			return;
+		}
+		this.connectionsVisibilityForeignKeyConstraint = connectionsVisibilityForeignKeyConstraint;
+		for (Connection connection : connections) {
+			ConnectionType ct = connection.getConnectionType();
+			if (ct == ConnectionType.ForeignKeyConstraint) {
+				connection.setVisible(connectionsVisibilityForeignKeyConstraint);
+			}
+		}
+	}
+	
+	public boolean getConnectionsVisibilityPropertyMapping() {
+		return connectionsVisibilityPropertyMapping;
+	}
+	
+	public void setConnectionsVisibilityPropertyMapping(boolean connectionsVisibilityPropertyMapping) {
+		if (this.connectionsVisibilityPropertyMapping == connectionsVisibilityPropertyMapping) {
+			return;
+		}
+		this.connectionsVisibilityPropertyMapping = connectionsVisibilityPropertyMapping;
+		for (Connection connection : connections) {
+			ConnectionType ct = connection.getConnectionType();
+			if (ct == ConnectionType.PropertyMapping) {
+				connection.setVisible(connectionsVisibilityPropertyMapping);
+			}
+		}
 	}
 	
 	@Override
@@ -349,6 +400,14 @@ public class OrmDiagram extends BaseElement {
 		zoom = Double.valueOf(str).doubleValue();
 		str = properties.getProperty("deepIntoSort", "false"); //$NON-NLS-1$ //$NON-NLS-2$
 		deepIntoSort = Boolean.valueOf(str).booleanValue();
+		str = properties.getProperty("connectionsVisibilityAssociation", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+		connectionsVisibilityAssociation = Boolean.valueOf(str).booleanValue();
+		str = properties.getProperty("connectionsVisibilityClassMapping", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+		connectionsVisibilityClassMapping = Boolean.valueOf(str).booleanValue();
+		str = properties.getProperty("connectionsVisibilityForeignKeyConstraint", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+		connectionsVisibilityForeignKeyConstraint = Boolean.valueOf(str).booleanValue();
+		str = properties.getProperty("connectionsVisibilityPropertyMapping", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+		connectionsVisibilityPropertyMapping = Boolean.valueOf(str).booleanValue();
 	}
 
 	@Override
@@ -358,6 +417,10 @@ public class OrmDiagram extends BaseElement {
 		properties.put("gridEnabled", "" + gridEnabled); //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put("zoom", "" + zoom); //$NON-NLS-1$ //$NON-NLS-2$
 		properties.put("deepIntoSort", "" + deepIntoSort); //$NON-NLS-1$ //$NON-NLS-2$
+		properties.put("connectionsVisibilityAssociation", "" + connectionsVisibilityAssociation); //$NON-NLS-1$ //$NON-NLS-2$
+		properties.put("connectionsVisibilityClassMapping", "" + connectionsVisibilityClassMapping); //$NON-NLS-1$ //$NON-NLS-2$
+		properties.put("connectionsVisibilityForeignKeyConstraint", "" + connectionsVisibilityForeignKeyConstraint); //$NON-NLS-1$ //$NON-NLS-2$
+		properties.put("connectionsVisibilityPropertyMapping", "" + connectionsVisibilityPropertyMapping); //$NON-NLS-1$ //$NON-NLS-2$
 		super.saveInProperties(properties);
 	}
 	
