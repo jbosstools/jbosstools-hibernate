@@ -942,17 +942,47 @@
     <Editor name="Uneditable"/>
    </XModelAttribute>
    <XModelAttribute
-    PROPERTIES="category=general;h_property=hibernate.c3p0.acquire_increment" name="acquire increment"/>
+    PROPERTIES="category=general;h_property=hibernate.c3p0.acquire_increment" name="acquire increment">
+    <Constraint loader="Int">
+     <value name="mandatory=false"/>
+    </Constraint>
+    <Editor name="Int"/>
+   </XModelAttribute>
    <XModelAttribute
-    PROPERTIES="category=general;h_property=hibernate.c3p0.idle_test_period" name="idle test period"/>
+    PROPERTIES="category=general;h_property=hibernate.c3p0.idle_test_period" name="idle test period">
+    <Constraint loader="Int">
+     <value name="mandatory=false"/>
+    </Constraint>
+    <Editor name="Int"/>
+   </XModelAttribute>
    <XModelAttribute
-    PROPERTIES="category=general;h_property=hibernate.c3p0.max_size" name="max size"/>
+    PROPERTIES="category=general;h_property=hibernate.c3p0.max_size" name="max size">
+    <Constraint loader="Int">
+     <value name="mandatory=false"/>
+    </Constraint>
+    <Editor name="Int"/>
+   </XModelAttribute>
    <XModelAttribute
-    PROPERTIES="category=general;h_property=hibernate.c3p0.max_statements" name="max statements"/>
+    PROPERTIES="category=general;h_property=hibernate.c3p0.max_statements" name="max statements">
+    <Constraint loader="Int">
+     <value name="mandatory=false"/>
+    </Constraint>
+    <Editor name="Int"/>
+   </XModelAttribute>
    <XModelAttribute
-    PROPERTIES="category=general;h_property=hibernate.c3p0.min_size" name="min size"/>
+    PROPERTIES="category=general;h_property=hibernate.c3p0.min_size" name="min size">
+    <Constraint loader="Int">
+     <value name="mandatory=false"/>
+    </Constraint>
+    <Editor name="Int"/>
+   </XModelAttribute>
    <XModelAttribute
-    PROPERTIES="category=general;h_property=hibernate.c3p0.timeout" name="timeout"/>
+    PROPERTIES="category=general;h_property=hibernate.c3p0.timeout" name="timeout">
+    <Constraint loader="Int">
+     <value name="mandatory=false"/>
+    </Constraint>
+    <Editor name="Int"/>
+   </XModelAttribute>
   </XModelAttributes>
   <XActionItem kind="list">
    <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions"/>
@@ -987,40 +1017,16 @@
     PROPERTIES="category=general;h_property=hibernate.cache.jndi" name="jndi"/>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.cache.provider_class" name="provider class">
-    <Constraint loader="List">
-     <value/>
-     <value name="true"/>
-     <value name="false"/>
-    </Constraint>
     <Editor name="AccessibleJava"/>
    </XModelAttribute>
    <XModelAttribute
-    PROPERTIES="category=general;h_property=hibernate.cache.provider_configuration_file_resource_path" name="provider configuration file">
-    <Constraint loader="List">
-     <value/>
-     <value name="true"/>
-     <value name="false"/>
-    </Constraint>
-    <Editor name="AccessibleJava"/>
-   </XModelAttribute>
+    PROPERTIES="category=general;h_property=hibernate.cache.provider_configuration_file_resource_path" name="provider configuration file"/>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.cache.query_cache_factory" name="query cache factory">
-    <Constraint loader="List">
-     <value/>
-     <value name="true"/>
-     <value name="false"/>
-    </Constraint>
     <Editor name="AccessibleJava"/>
    </XModelAttribute>
    <XModelAttribute
-    PROPERTIES="category=general;h_property=hibernate.cache.region_prefix" name="region prefix">
-    <Constraint loader="List">
-     <value/>
-     <value name="true"/>
-     <value name="false"/>
-    </Constraint>
-    <Editor name="AccessibleJava"/>
-   </XModelAttribute>
+    PROPERTIES="category=general;h_property=hibernate.cache.region_prefix" name="region prefix"/>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.cache.use_minimal_puts" name="use minimal puts">
     <Constraint loader="List">
@@ -1214,6 +1220,85 @@
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.format_sql" name="format sql">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.default_batch_fetch_size" name="default batch fetch size">
+    <Constraint loader="Int">
+     <value name="mandatory=false"/>
+    </Constraint>
+    <Editor name="Int"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.default_catalog" name="default catalog"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.default_entity_mode" name="default entity mode">
+    <Constraint loader="List">
+     <value/>
+     <value name="dynamic-map"/>
+     <value name="dom4j"/>
+     <value name="pojo"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.default_schema" name="default schema"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.current_session_context_class" name="current session context class"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.generate_statistics" name="generate statistics">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.hbm2ddl.auto" name="hbm2ddl auto">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.jacc_context_id" name="jacc context id"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.max_fetch_depth" name="max fetch depth">
+    <Constraint loader="Int">
+     <value name="mandatory=false"/>
+    </Constraint>
+    <Editor name="Int"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.order_inserts" name="order inserts">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.order_updates" name="order updates">
+    <Constraint loader="List">
+     <value/>
+     <value name="true"/>
+     <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.session_factory_name" name="session factory name"/>
+   <XModelAttribute
+    PROPERTIES="category=general;h_property=hibernate.use_identifier_rollback" name="use identifier rollback">
     <Constraint loader="List">
      <value/>
      <value name="true"/>
