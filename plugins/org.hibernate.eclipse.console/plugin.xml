@@ -83,7 +83,7 @@
             id="org.hibernate.eclipse.console.wizards.ConsoleConfigurationCreationWizard"
             name="Hibernate Console Configuration"
             preferredPerspectives="org.hibernate.eclipse.console.HibernateConsolePerspective">
-         <description>Creates a new Hibernate Console Configuration</description>
+         <description>Create a new Hibernate Console Configuration</description>
       </wizard>
       <wizard
             canFinishEarly="false"
