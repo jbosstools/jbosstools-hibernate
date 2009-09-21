@@ -149,6 +149,10 @@
             class="org.hibernate.eclipse.jdt.ui.wizards.NewHibernateMappingFileWizard"
             icon="icons/hibernate_small_icon.gif"
             id="org.hibernate.eclipse.console.wizards.NewHibernateMappingFileWizard"
-            name="%New_wizard_menu_New_mapping_file"/>
+            name="%New_wizard_menu_New_mapping_file">
+         <description>
+            %New_wizard_menu_New_mapping_file_description
+         </description>
+      </wizard>
       </extension>
 </plugin>
