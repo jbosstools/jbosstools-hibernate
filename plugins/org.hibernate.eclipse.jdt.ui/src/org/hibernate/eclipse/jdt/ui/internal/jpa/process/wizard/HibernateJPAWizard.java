@@ -12,9 +12,9 @@ package org.hibernate.eclipse.jdt.ui.internal.jpa.process.wizard;
 
 import org.eclipse.jdt.ui.refactoring.RefactoringSaveHelper;
 import org.eclipse.jdt.internal.ui.refactoring.actions.RefactoringStarter;
-import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
 import org.eclipse.ltk.ui.refactoring.UserInputWizardPage;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
@@ -24,6 +24,7 @@ import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
  *
  * @author Vitali
  */
+@SuppressWarnings("restriction")
 public class HibernateJPAWizard extends RefactoringWizard {
 
 	protected final String wizard_title = JdtUiMessages.AllEntitiesProcessor_header;
@@ -55,10 +56,11 @@ public class HibernateJPAWizard extends RefactoringWizard {
 	}
 
 	public boolean showWizard() {
-		IWorkbenchWindow win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		RefactoringStarter refactoringStarter = new RefactoringStarter();
-		boolean res = refactoringStarter.activate(this, win.getShell(), wizard_title, RefactoringSaveHelper.SAVE_ALL);
-		RefactoringStatus rs = refactoringStarter.getInitialConditionCheckingStatus();
+		final IWorkbenchWindow win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		final Shell shell = win.getShell();
+		final RefactoringStarter refactoringStarter = new RefactoringStarter();
+		boolean res = refactoringStarter.activate(this, shell, wizard_title, RefactoringSaveHelper.SAVE_ALL);
+		//RefactoringStatus rs = refactoringStarter.getInitialConditionCheckingStatus();
 		return res;
 	}
 

@@ -26,8 +26,8 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.text.edits.MalformedTreeException;
-import org.eclipse.text.edits.UndoEdit;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.jdt.ui.Activator;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
@@ -150,8 +150,8 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 		setJavaProject(project);
 		// get the buffer manager
 		ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
-		Iterator<Map.Entry<String, EntityInfo>> it = entities.entrySet().iterator();
-		/*String outText = ""; //$NON-NLS-1$
+		/*Iterator<Map.Entry<String, EntityInfo>> it = entities.entrySet().iterator();
+		String outText = ""; //$NON-NLS-1$
 		String ls = System.getProperties().getProperty("line.separator", "\n");  //$NON-NLS-1$//$NON-NLS-2$
 		while (it.hasNext()) {
 			Map.Entry<String, EntityInfo> entry = it.next();
@@ -237,10 +237,10 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 		for (int i = 0; i < changes.size(); i++) {
 			ChangeStructure cs = changes.get(i);
 			try {
-				if (cs.textFileBuffer != null && cs.document != null && cs.textEdit != null &&
+				if (cs.textFileBuffer != null && cs.textEdit != null &&
 					((cs.change != null && cs.change.isEnabled()) || (cs.change == null))) {
-					cs.document = cs.textFileBuffer.getDocument();
-					UndoEdit undo = cs.textEdit.apply(cs.document);
+					IDocument document = cs.textFileBuffer.getDocument();
+					cs.textEdit.apply(document);
 					// commit changes to underlying file
 					cs.textFileBuffer.commit(null, true);
 				}
@@ -288,7 +288,7 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 			bufferManager.connect(cs.path, LocationKind.IFILE, null);
 			cs.textFileBuffer = bufferManager.getTextFileBuffer(cs.path, LocationKind.IFILE);
 			// retrieve the buffer
-			cs.document = cs.textFileBuffer.getDocument();
+			cs.icu = icu;
 			AST ast = cu.getAST();
 			ASTRewrite rewriter = ASTRewrite.create(ast);
 			// ... rewrite
@@ -300,8 +300,9 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 			processor.setEntities(entities);
 			processor.setASTRewrite(rewriter);
 			cu.accept(processor);
-			//
-			cs.textEdit = rewriter.rewriteAST(cs.document, JavaCore.getOptions());
+			////
+			IDocument documentChange = cs.textFileBuffer.getDocument();
+			cs.textEdit = rewriter.rewriteAST(documentChange, JavaCore.getOptions());
 			// add change to array of changes
 			changes.add(cs);
 		} catch (JavaModelException e) {

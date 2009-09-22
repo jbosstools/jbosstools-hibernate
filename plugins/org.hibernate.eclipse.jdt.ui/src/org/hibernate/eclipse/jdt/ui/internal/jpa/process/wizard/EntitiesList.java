@@ -41,6 +41,7 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.process.AnnotStyle;
  *
  * @author Vitali
  */
+@SuppressWarnings("restriction")
 public class EntitiesList extends UserInputWizardPage {
 	
 	protected IHibernateJPAWizardData data;

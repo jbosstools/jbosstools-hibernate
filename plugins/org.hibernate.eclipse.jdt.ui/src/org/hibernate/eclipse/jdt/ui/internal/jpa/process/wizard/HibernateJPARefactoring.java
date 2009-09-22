@@ -12,13 +12,14 @@ package org.hibernate.eclipse.jdt.ui.internal.jpa.process.wizard;
 
 import java.util.ArrayList;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
-import org.eclipse.ltk.core.refactoring.DocumentChange;
 import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
+import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.process.ChangeStructure;
 
@@ -55,7 +56,8 @@ public class HibernateJPARefactoring extends Refactoring {
 		for (int i = 0; i < changes.size(); i++) {
 			ChangeStructure cs = changes.get(i);
 			String change_name = cs.fullyQualifiedName;
-			DocumentChange change = new DocumentChange(change_name, cs.document);
+			TextFileChange change = new TextFileChange(change_name, (IFile)cs.icu.getResource());
+			change.setSaveMode(TextFileChange.FORCE_SAVE);
 			change.setEdit(cs.textEdit);
 			cs.change = change;
 			cc.add(change);
