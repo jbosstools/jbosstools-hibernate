@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -27,6 +27,7 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.SelectionListenerAction;
+import org.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
@@ -220,6 +221,9 @@ public class OpenMappingAction extends SelectionListenerAction {
 		IJavaProject proj = ProjectUtils.findJavaProject(editorPart);
 		IRegion selectRegion = OpenMappingUtils.findSelectRegion(proj, findAdapter, selection);
 		if (selectRegion != null) {
+			if (editorPart instanceof MultiPageEditorPart) {
+				((MultiPageEditorPart)editorPart).setActiveEditor(textEditor);
+			}
 			textEditor.selectAndReveal(selectRegion.getOffset(), selectRegion.getLength());
 			return true;
 		}
@@ -277,6 +281,9 @@ public class OpenMappingAction extends SelectionListenerAction {
 		int length = compositeProperty.getNodeName().length();
 		int offset = propRegion.getOffset() + propRegion.getLength() - length - 1;
 		propRegion = new Region(offset, length);
+		if (editorPart instanceof MultiPageEditorPart) {
+			((MultiPageEditorPart)editorPart).setActiveEditor(textEditor);
+		}
 		textEditor.selectAndReveal(propRegion.getOffset(), propRegion.getLength());
 		return true;
 	}
