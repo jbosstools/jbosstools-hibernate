@@ -33,11 +33,11 @@
     <para>Hibernate mapping files are used to specify how your objects are related to database
       tables.</para>
 
-    <para>For creating a skeleton mapping file, i. e. any <emphasis>
+  	<para>To create basic mappings for properties and associations, i. e. generate <emphasis>
         <property>.hbm.xml</property>
-      </emphasis>, Hibernate Tools provide a basic wizard which you can bring up by navigating <emphasis>
+      </emphasis> files, Hibernate Tools provide a basic wizard which you can bring up by navigating <emphasis>
         <property>New > Hibernate XML mapping file</property>.</emphasis></para>
-
+  	<para>At first you&apos;ll be asked to select a package or multiple individual classes to map.</para>
     <figure>
       <title>Hibernate XML Mapping File Wizard</title>
 
@@ -48,10 +48,9 @@
       </mediaobject>
     </figure>
 
-    <para>At first you&apos;ll be asked to specify the location and the name for a new mapping
-      file. On the next dialog you should type or browse the class to map.</para>
+   <para>Next wizard page lists the mappings to be generated.</para>
     <figure>
-      <title>Specifying the Class to Map</title>
+    	<title>Mappings to be generated</title>
 
       <mediaobject>
         <imageobject>
@@ -59,21 +58,7 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Pressing finish creates the file and opens it in the <link
-        linkend="map_config_struct_editor">structured hbm.xml editor</link>.</para>
-
-    <para> If you start the wizard from the selected class, all values will be detected there
-      automatically.</para>
-
-    <figure>
-      <title>Creating Mapping File for Selected Class</title>
-
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="images/plugins/plugins_0_b.png"/>
-        </imageobject>
-      </mediaobject>
-    </figure>
+    <para>Pressing finish creates the files.</para>
 
   </section>
 
