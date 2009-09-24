@@ -36,8 +36,6 @@ import org.jboss.tools.hibernate.jpt.ui.wizard.GenerateEntitiesWizard;
  * @author Dmitry Geraskov
  * 
  */
- 
-@SuppressWarnings("restriction")
 public class HibernateJpaPlatformUi extends GenericJpaPlatformUi {
 
 	public static final String LaunchConfigurationType_ID = "org.hibernate.eclipse.launch.CodeGenerationLaunchConfigurationType"; //$NON-NLS-1$

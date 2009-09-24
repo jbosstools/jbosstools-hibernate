@@ -26,8 +26,6 @@ import org.jboss.tools.hibernate.jpt.ui.internal.platform.HibernateJpaPlatformUi
  * @author Dmitry Geraskov
  *
  */
- 
-@SuppressWarnings("restriction")
 public class GenerateEntitiesWizard extends Wizard {
 
 

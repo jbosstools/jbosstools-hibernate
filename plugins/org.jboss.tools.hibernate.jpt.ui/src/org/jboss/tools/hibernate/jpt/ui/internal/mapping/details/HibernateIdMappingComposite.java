@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
-import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.ConvertibleMapping;
 import org.eclipse.jpt.core.context.IdMapping;
@@ -18,7 +17,6 @@ import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.mappings.details.ColumnComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TemporalTypeComposite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -29,6 +27,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateColumn;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
 
 /**
@@ -51,11 +50,11 @@ implements JpaComposite{
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private PropertyValueModel<? extends Column> buildColumnHolder() {
-		return new TransformationPropertyValueModel<IdMapping, Column>(getSubjectHolder())  {
+	private PropertyValueModel<? extends HibernateColumn> buildColumnHolder() {
+		return new TransformationPropertyValueModel<IdMapping, HibernateColumn>(getSubjectHolder())  {
 			@Override
-			protected Column transform_(IdMapping value) {
-				return value.getColumn();
+			protected HibernateColumn transform_(IdMapping value) {
+				return (HibernateColumn)value.getColumn();
 			}
 		};
 	}
@@ -64,7 +63,7 @@ implements JpaComposite{
 	protected void initializeLayout(Composite container) {
 		
 		// Column widgets
-		new ColumnComposite(this, buildColumnHolder(), container);
+		new HibernateColumnComposite(this, buildColumnHolder(), container);
 
 		initializeTypePane(container);
 

@@ -12,26 +12,14 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
-import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaJoinColumn;
-import org.jboss.tools.hibernate.jpt.core.internal.context.NamingStrategyMappingTools;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateJoinColumn;
 
 /**
+ * Combines 2 interfaces.
  * @author Dmitry Geraskov
  *
  */
-@SuppressWarnings("restriction")
-public class HibernateJavaJoinColumn extends GenericJavaJoinColumn {
-
-	public HibernateJavaJoinColumn(JavaJpaContextNode parent, JavaJoinColumn.Owner owner) {
-		super(parent, owner);
-	}
-	
-	@Override
-	protected String buildDefaultName() {
-		return NamingStrategyMappingTools.buildJoinColumnDefaultName(this);
-	}
-	
-	
+public interface HibernateJavaJoinColumn extends HibernateJoinColumn,
+		JavaJoinColumn {
 
 }

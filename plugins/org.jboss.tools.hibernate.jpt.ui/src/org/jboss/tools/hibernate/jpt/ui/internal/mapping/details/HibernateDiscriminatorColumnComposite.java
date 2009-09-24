@@ -19,7 +19,6 @@ import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.mappings.details.AbstractEntityComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.DiscriminatorColumnComposite;
 import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
@@ -40,6 +39,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.jboss.tools.hibernate.jpt.core.internal.context.DiscriminatorFormula;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateEntity;
+import org.jboss.tools.hibernate.jpt.ui.internal.mappings.db.xpl.ColumnCombo;
 
 /**
  * Here the layout of this pane:

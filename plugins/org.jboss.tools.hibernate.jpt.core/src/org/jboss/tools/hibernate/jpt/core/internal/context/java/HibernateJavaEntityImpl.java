@@ -18,6 +18,7 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaGenerator;
@@ -33,18 +34,15 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
-import org.eclipse.wst.validation.internal.core.Message;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
-import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
-import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
-import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateTable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.DiscriminatorFormulaAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorAnnotation;
@@ -58,7 +56,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQ
  * @author Dmitry Geraskov
  * 
  */
-@SuppressWarnings("restriction")
 public class HibernateJavaEntityImpl extends AbstractJavaEntity 
 implements HibernateJavaEntity {
 	
@@ -126,6 +123,10 @@ implements HibernateJavaEntity {
 					Hibernate.NAMED_NATIVE_QUERIES,
 					Hibernate.DISCRIMINATOR_FORMULA),
 				super.correspondingAnnotationNames());
+	}
+	
+	public HibernateJavaTable getTable() {
+		return (HibernateJavaTable) super.getTable();
 	}
 	
 	// ********************* DiscriminatorFormula **************	
@@ -469,11 +470,11 @@ implements HibernateJavaEntity {
 		return null;
 	}
 	
-	protected String getResourceDefaultName() {
+	/*protected String getResourceDefaultName() {
 		NamingStrategy ns = getJpaProject().getNamingStrategy();
 		if (getJpaProject().isNamingStrategyEnabled() && ns != null){
 			try {
-				return ns.classToTableName(javaResourcePersistentType.getQualifiedName());
+				return ns.classToTableName(javaResourcePersistentType.getName());
 			} catch (Exception e) {
 				Message m = new LocalMessage(IMessage.HIGH_SEVERITY, 
 						Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
@@ -481,7 +482,7 @@ implements HibernateJavaEntity {
 			}
 		}
 		return javaResourcePersistentType.getName();
-	}
+	}*/
 	
 	@Override
 	protected Owner createPrimaryKeyJoinColumnOwner() {
@@ -521,8 +522,9 @@ implements HibernateJavaEntity {
 			if (joinColumnsSize() != 1) {
 				return null;
 			}
+			
 			Entity parentEntity = HibernateJavaEntityImpl.this.getParentEntity();
-			HibernateJpaProject hibernateJpaProject = HibernateJavaEntityImpl.this.getJpaProject();
+			/*HibernateJpaProject hibernateJpaProject = HibernateJavaEntityImpl.this.getJpaProject();
 			NamingStrategy ns = hibernateJpaProject.getNamingStrategy();
 			if (hibernateJpaProject.isNamingStrategyEnabled() && ns != null) {
 				try {
@@ -537,10 +539,37 @@ implements HibernateJavaEntity {
 							Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
 					HibernateJptPlugin.logException(m.getText(), e);
 				}
-			}
+			}*/
 			return parentEntity.getPrimaryKeyColumnName();
 		}
-	}	
+	}
+
+	@Override
+	public String getPrimaryTableName() {
+		return this.getTable().getDBTableName();
+	}
+	
+	@Override
+	public String getDefaultTableName() {
+		return super.getDefaultTableName();
+	}
+	
+	/**
+	 * Convert Table to it's DB name.
+	 */
+	protected Iterator<String> tableNames(Iterator<Table> tables) {
+		return new TransformationIterator<Table, String>(tables) {
+			@Override
+			protected String transform(Table t) {
+				if (t instanceof HibernateTable) {
+					return ((HibernateTable)t).getDBTableName();					
+				} else {
+					return t.getName();//What is this???
+				}				
+			}
+		};
+	}
+	
 }
 
 

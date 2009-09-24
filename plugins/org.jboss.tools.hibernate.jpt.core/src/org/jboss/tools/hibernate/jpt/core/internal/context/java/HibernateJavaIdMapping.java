@@ -26,7 +26,6 @@ import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
-import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
@@ -53,6 +52,16 @@ implements GenericGeneratorHolder {
 	protected void initialize() {
 		super.initialize();
 		this.initializeGenericGenerator();
+	}
+	
+	@Override
+	public HibernateJavaColumn getColumn() {
+		return (HibernateJavaColumn) column;
+	}
+	
+	@Override
+	public String getPrimaryKeyColumnName() {
+		return this.getColumn().getDBColumnName();
 	}
 	
 	protected void initializeGenericGenerator() {

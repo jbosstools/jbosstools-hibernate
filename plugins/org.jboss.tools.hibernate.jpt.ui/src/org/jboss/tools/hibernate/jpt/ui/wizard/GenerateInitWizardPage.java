@@ -57,8 +57,6 @@ import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
  * @author Dmitry Geraskov
  *
  */
- 
-@SuppressWarnings("restriction")
 public abstract class GenerateInitWizardPage extends WizardPage {
 	
 	private static final String AUTODETECT = Messages.GenerateInitWizardPage_autodetect;

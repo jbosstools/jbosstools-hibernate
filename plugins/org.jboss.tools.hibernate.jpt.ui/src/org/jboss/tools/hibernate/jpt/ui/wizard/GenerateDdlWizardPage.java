@@ -22,8 +22,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
  * @author Dmitry Geraskov
  *
  */
- 
-@SuppressWarnings("restriction")
 public class GenerateDdlWizardPage extends GenerateInitWizardPage {
 	
 	private StringDialogField filename;

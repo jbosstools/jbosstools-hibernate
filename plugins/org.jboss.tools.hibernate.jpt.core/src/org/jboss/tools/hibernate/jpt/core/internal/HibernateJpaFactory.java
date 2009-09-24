@@ -12,11 +12,15 @@ package org.jboss.tools.hibernate.jpt.core.internal;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaColumn;
+import org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.core.context.java.JavaJoinTable;
+import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
@@ -24,33 +28,54 @@ import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaColumn.Owner;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
+import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
+import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
+import org.eclipse.jpt.core.context.orm.OrmJoinTable;
+import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
+import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmTable;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.orm.XmlId;
+import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
+import org.eclipse.jpt.core.resource.orm.XmlJoinTableMapping;
+import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
+import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
+import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
+import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaColumn;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaColumnImpl;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaDiscriminatorColumnImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEmbeddable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntityImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaJoinColumn;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaJoinColumnImpl;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaJoinTableImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaManyToManyMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaManyToOneMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaOneToManyMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaOneToOneMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaParameter;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaSecondaryTableImpl;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaTable;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaTableImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedNativeQueryImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedQueryImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaDiscriminatorFormula;
@@ -59,15 +84,22 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGener
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGeneratorImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaParameter;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmBasicMapping;
-import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmEntity;
+import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmColumnImpl;
+import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmEntityImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmIdMapping;
+import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmJoinColumnImpl;
+import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmJoinTableImpl;
+import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmManyToManyMapping;
+import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmManyToOneMapping;
+import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmOneToManyMapping;
+import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmOneToOneMapping;
+import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmTableImpl;
 
 
 /**
  * @author Dmitry Geraskov
  *
  */
-@SuppressWarnings("restriction")
 public class HibernateJpaFactory extends GenericJpaFactory {
 	
 	// ********** Core Model **********
@@ -96,6 +128,13 @@ public class HibernateJpaFactory extends GenericJpaFactory {
 		return new JavaGenericGeneratorImpl(parent);
 	}
 	
+	@Override
+	public JavaDiscriminatorColumn buildJavaDiscriminatorColumn(
+			JavaEntity parent,
+			org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn.Owner owner) {
+		return new HibernateJavaDiscriminatorColumnImpl(parent, owner);
+	}
+	
 	public HibernateNamedQuery buildHibernateNamedQuery(JavaJpaContextNode parent) {
 		return new HibernateNamedQueryImpl(parent);
 	}
@@ -119,7 +158,7 @@ public class HibernateJpaFactory extends GenericJpaFactory {
 	
 	@Override
 	public JavaColumn buildJavaColumn(JavaJpaContextNode parent, Owner owner) {
-		return new HibernateJavaColumn(parent, owner);
+		return new HibernateJavaColumnImpl(parent, owner);
 	}
 	
 	@Override
@@ -149,14 +188,25 @@ public class HibernateJpaFactory extends GenericJpaFactory {
 	@Override
 	public JavaJoinColumn buildJavaJoinColumn(JavaJpaContextNode parent,
 			org.eclipse.jpt.core.context.java.JavaJoinColumn.Owner owner) {
-		return new HibernateJavaJoinColumn(parent, owner);
+		return new HibernateJavaJoinColumnImpl(parent, owner);
 	}
 	
 	@Override
-	public OrmEntity buildOrmEntity(OrmPersistentType parent,
-			XmlEntity resourceMapping) {
-		return new HibernateOrmEntity(parent, resourceMapping);
+	public JavaSecondaryTable buildJavaSecondaryTable(JavaEntity parent) {
+		return new HibernateJavaSecondaryTableImpl(parent);
 	}
+	
+	@Override
+	public JavaJoinTable buildJavaJoinTable(JavaJoinTableJoiningStrategy parent) {
+		return new HibernateJavaJoinTableImpl(parent);
+	}
+	
+	@Override
+	public HibernateJavaTable buildJavaTable(JavaEntity parent) {
+		return new HibernateJavaTableImpl(parent);
+	}
+	
+	// ********** ORM Context Model **********
 	
 	@Override
 	public OrmBasicMapping buildOrmBasicMapping(OrmPersistentAttribute parent,
@@ -168,6 +218,56 @@ public class HibernateJpaFactory extends GenericJpaFactory {
 	public OrmIdMapping buildOrmIdMapping(OrmPersistentAttribute parent,
 			XmlId resourceMapping) {
 		return new HibernateOrmIdMapping(parent, resourceMapping);
+	}
+	
+		@Override
+	public OrmEntity buildOrmEntity(OrmPersistentType parent,
+			XmlEntity resourceMapping) {
+		return new HibernateOrmEntityImpl(parent, resourceMapping);
+	}
+		
+	@Override
+	public OrmTable buildOrmTable(OrmEntity parent) {
+		return new HibernateOrmTableImpl(parent);
+	}
+
+    @Override
+	public OrmJoinTable buildOrmJoinTable(OrmJoinTableJoiningStrategy parent,
+			XmlJoinTableMapping resourceMapping) {
+		return new HibernateOrmJoinTableImpl(parent, resourceMapping);
+	}	
+	
+	@Override
+	public OrmColumn buildOrmColumn(XmlContextNode parent,
+			org.eclipse.jpt.core.context.orm.OrmColumn.Owner owner) {
+		return new HibernateOrmColumnImpl(parent, owner);
+	}
+	
+	@Override
+	public OrmJoinColumn buildOrmJoinColumn(XmlContextNode parent,
+			org.eclipse.jpt.core.context.orm.OrmJoinColumn.Owner owner,
+			XmlJoinColumn resourceJoinColumn) {
+		return new HibernateOrmJoinColumnImpl(parent, owner, resourceJoinColumn);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public OrmManyToManyMapping buildOrmManyToManyMapping(OrmPersistentAttribute parent, XmlManyToMany resourceMapping) {
+		return new HibernateOrmManyToManyMapping(parent, resourceMapping);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public OrmManyToOneMapping buildOrmManyToOneMapping(OrmPersistentAttribute parent, XmlManyToOne resourceMapping) {
+		return new HibernateOrmManyToOneMapping(parent, resourceMapping);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public OrmOneToManyMapping buildOrmOneToManyMapping(OrmPersistentAttribute parent, XmlOneToMany resourceMapping) {
+		return new HibernateOrmOneToManyMapping(parent, resourceMapping);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public OrmOneToOneMapping buildOrmOneToOneMapping(OrmPersistentAttribute parent, XmlOneToOne resourceMapping) {
+		return new HibernateOrmOneToOneMapping(parent, resourceMapping);
 	}
 
 }

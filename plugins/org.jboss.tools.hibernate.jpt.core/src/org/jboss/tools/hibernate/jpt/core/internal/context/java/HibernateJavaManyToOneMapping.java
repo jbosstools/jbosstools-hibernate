@@ -11,6 +11,7 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
+import org.eclipse.jpt.core.context.java.JavaManyToOneRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaManyToOneMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.NamingStrategyMappingTools;
@@ -19,8 +20,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.NamingStrategyMapping
  * @author Dmitry Geraskov
  *
  */
- 
-@SuppressWarnings("restriction")
 public class HibernateJavaManyToOneMapping extends GenericJavaManyToOneMapping {
 
 
@@ -31,6 +30,11 @@ public class HibernateJavaManyToOneMapping extends GenericJavaManyToOneMapping {
 	@Override
 	public String getJoinTableDefaultName() {
 		return NamingStrategyMappingTools.buildJoinTableDefaultName(this);
+	}
+
+	@Override
+	protected JavaManyToOneRelationshipReference buildRelationshipReference() {
+		return new HibernateJavaManyToOneRelationshipReference(this);
 	}
 
 }

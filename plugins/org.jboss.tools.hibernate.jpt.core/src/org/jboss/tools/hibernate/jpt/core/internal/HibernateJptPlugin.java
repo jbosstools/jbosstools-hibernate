@@ -35,7 +35,6 @@ import org.osgi.framework.BundleContext;
  * @author Dmitry Geraskov
  *
  */
-@SuppressWarnings("restriction")
 public class HibernateJptPlugin extends Plugin {
 	
 	public static final String ID = "org.jboss.tools.hibernate.jpt.core"; //$NON-NLS-1$

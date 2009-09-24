@@ -19,8 +19,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.NamingStrategyMapping
  * @author Dmitry Geraskov
  *
  */
-
-@SuppressWarnings("restriction")
 public class HibernateJavaOneToManyMapping extends GenericJavaOneToManyMapping {
 
 	public HibernateJavaOneToManyMapping(JavaPersistentAttribute parent) {

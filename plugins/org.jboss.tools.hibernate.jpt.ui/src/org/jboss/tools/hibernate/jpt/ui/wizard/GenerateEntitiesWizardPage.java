@@ -27,8 +27,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
  * @author Dmitry Geraskov
  *
  */
-
-@SuppressWarnings("restriction")
 public class GenerateEntitiesWizardPage extends GenerateInitWizardPage {
 
 	private StringDialogField packageName;

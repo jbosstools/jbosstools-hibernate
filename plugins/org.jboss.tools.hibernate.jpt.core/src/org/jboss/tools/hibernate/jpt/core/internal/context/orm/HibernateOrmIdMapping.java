@@ -26,7 +26,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceU
  * @author Dmitry Geraskov
  *
  */
-public class HibernateOrmIdMapping extends GenericOrmIdMapping {
+public class HibernateOrmIdMapping extends GenericOrmIdMapping<XmlId> {
 
 	public HibernateOrmIdMapping(OrmPersistentAttribute parent,
 			XmlId resourceMapping) {

@@ -26,7 +26,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceU
  * @author Dmitry Geraskov
  *
  */
-@SuppressWarnings("restriction")
 public class HibernateOrmBasicMapping extends GenericOrmBasicMapping<XmlBasic> {
 
 	public HibernateOrmBasicMapping(OrmPersistentAttribute parent,

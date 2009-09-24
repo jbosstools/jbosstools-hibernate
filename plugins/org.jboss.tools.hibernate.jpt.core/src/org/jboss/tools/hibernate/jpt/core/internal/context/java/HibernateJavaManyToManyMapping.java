@@ -20,7 +20,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.NamingStrategyMapping
  *
  */
  
-@SuppressWarnings("restriction")
 public class HibernateJavaManyToManyMapping extends
 		GenericJavaManyToManyMapping {
 

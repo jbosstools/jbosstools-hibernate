@@ -14,8 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
+import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -31,8 +33,11 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceU
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
+import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmEntity;
 import org.jboss.tools.hibernate.jpt.ui.internal.java.details.HibernateJavaEntityComposite;
+import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateBasicMappingComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateIdMappingComposite;
+import org.jboss.tools.hibernate.jpt.ui.internal.orm.details.HibernateOrmEntityComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.persistence.details.HibernatePropertiesComposite;
 
 /**
@@ -76,6 +81,14 @@ public class HibernateJpaUiFactory extends BaseJpaUiFactory {
 			Composite parent, WidgetFactory widgetFactory) {
 		return new HibernateJavaEntityComposite((PropertyValueModel<? extends HibernateJavaEntity>) subjectHolder, parent, widgetFactory);
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public JpaComposite createOrmEntityComposite(
+			PropertyValueModel<OrmEntity> subjectHolder, Composite parent,
+			WidgetFactory widgetFactory) {
+		return new HibernateOrmEntityComposite((PropertyValueModel<? extends HibernateOrmEntity>) subjectHolder, parent, widgetFactory);
+	}
 
 	private PropertyValueModel<BasicHibernateProperties> buildBasicHolder(
 			PropertyValueModel<HibernatePersistenceUnit> subjectHolder) {
@@ -95,6 +108,13 @@ public class HibernateJpaUiFactory extends BaseJpaUiFactory {
 				return (HibernatePersistenceUnit) value;
 			}
 		};
+	}
+	
+	public JpaComposite createJavaBasicMappingComposite(
+			PropertyValueModel<JavaBasicMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new HibernateBasicMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 
 }

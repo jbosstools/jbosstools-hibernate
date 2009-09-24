@@ -27,7 +27,6 @@ import org.osgi.service.prefs.Preferences;
  * @author Dmitry Geraskov
  *
  */
-@SuppressWarnings("restriction")
 public class HibernateJpaProject extends AbstractJpaProject {
 	
 	private Boolean cachedNamingStrategyEnable;

@@ -11,8 +11,11 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
+import org.eclipse.jpt.core.context.Column;
+import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.db.Table;
@@ -27,7 +30,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceU
  * @author Dmitry Geraskov
  *
  */
-@SuppressWarnings("restriction")
 public class NamingStrategyMappingTools extends MappingTools {
 	
 	public static String buildJoinTableDefaultName(RelationshipMapping relationshipMapping) {
@@ -52,11 +54,17 @@ public class NamingStrategyMappingTools extends MappingTools {
 		NamingStrategy ns = hibernateJpaProject.getNamingStrategy();		
 		if (ns != null && hibernateJpaProject.isNamingStrategyEnabled()){
 			try{
-				String name = ns.collectionTableName(relationshipMapping.getEntity().getPersistentType().getName(),
-						owningTableName, targetEntity.getPersistentType().getName(), targetTableName, relationshipMapping.getName());
-				Table primaryTable = relationshipMapping.getTypeMapping().getPrimaryDbTable();			
+				String name = ns.collectionTableName(
+						relationshipMapping.getEntity().getPersistentType().getName(),//+
+						relationshipMapping.getEntity().getTable().getName(),//+
+						targetEntity.getPersistentType().getName(),//+
+						targetEntity.getTable().getName(),//+
+						relationshipMapping.getName()//+
+						);
+				/*Table primaryTable = relationshipMapping.getTypeMapping().getPrimaryDbTable();			
 				return primaryTable != null ? primaryTable.getDatabase().convertNameToIdentifier(name)
-						: name;
+						: name;*/
+				return name;
 			} catch (Exception e) {
 				Message m = new LocalMessage(IMessage.HIGH_SEVERITY, 
 						Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
@@ -79,24 +87,32 @@ public class NamingStrategyMappingTools extends MappingTools {
 		if (targetTable == null) {
 			return null;
 		}
+		
 		HibernateJpaProject hibernateJpaProject = (HibernateJpaProject)targetEntity.getJpaProject();
 		NamingStrategy ns = hibernateJpaProject.getNamingStrategy();
 		if (ns != null && hibernateJpaProject.isNamingStrategyEnabled()){
 			try {
-				String name = ns.collectionTableName(relationshipMapping.getEntity().getPersistentType().getName(),
-						owningTable.getName(), targetEntity.getPersistentType().getName(), targetTable.getName(), relationshipMapping.getName());
-				return owningTable.getDatabase().convertNameToIdentifier(name);
+				String name = ns.collectionTableName(
+						relationshipMapping.getEntity().getPersistentType().getName(),//+
+						relationshipMapping.getEntity().getTable().getName(),//+
+						targetEntity.getPersistentType().getName(),//+
+						targetEntity.getTable().getName(),//+
+						relationshipMapping.getName()//+
+						);
+				//return owningTable.getDatabase().convertNameToIdentifier(name);
+				return name;
 			} catch (Exception e) {
-				Message m = new LocalMessage(IMessage.HIGH_SEVERITY, 
+				Message m = new LocalMessage(IMessage.HIGH_SEVERITY,
 						Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
 				HibernateJptPlugin.logException(m.getText(), e);
 			}
 		}
 		String name = owningTable.getName() + '_' + targetTable.getName();
-		return owningTable.getDatabase().convertNameToIdentifier(name);
+		//return owningTable.getDatabase().convertNameToIdentifier(name);
+		return name;
 	}
 	
-	public static String buildJoinColumnDefaultName(JoinColumn joinColumn) {
+	public static String buildJoinColumnDefaultName(HibernateJoinColumn joinColumn) {		
 		JoinColumn.Owner owner = joinColumn.getOwner();
 		RelationshipMapping relationshipMapping = owner.getRelationshipMapping();
 		if (relationshipMapping == null) {
@@ -116,32 +132,42 @@ public class NamingStrategyMappingTools extends MappingTools {
 		// primary key column of the target entity)
 		// Column targetColumn = joinColumn.getTargetPrimaryKeyDbColumn();
 		String targetColumnName = joinColumn.getReferencedColumnName();
-		
+		if (targetColumnName == null) {
+			return null;
+		}
 		HibernateJpaProject hibernateJpaProject = (HibernateJpaProject)targetEntity.getJpaProject();
 		NamingStrategy ns = hibernateJpaProject.getNamingStrategy();
 		if (ns != null && hibernateJpaProject.isNamingStrategyEnabled()){
 			String logicalTargetColumnName = null;
+			String name = null;
 			try {
-				if (targetColumnName != null || prefix != null){
-					logicalTargetColumnName = ns.logicalColumnName(targetColumnName, prefix);
+				if (joinColumn.getSpecifiedName() != null){
+					name = ns.columnName(joinColumn.getSpecifiedName());
+				} else {
+					PersistentAttribute pattr = joinColumn.getReferencedPersistentAttribute();
+					if (pattr != null && pattr.getMapping() instanceof ColumnMapping){
+						Column column = ((ColumnMapping)pattr.getMapping()).getColumn();
+						if (column != null){
+							logicalTargetColumnName = ns.logicalColumnName(column.getSpecifiedName(), pattr.getName());
+						} else {
+							logicalTargetColumnName = ns.logicalColumnName(null, pattr.getName());
+						}
+					}
+					
+					name = ns.foreignKeyColumnName(prefix,
+									targetEntity.getPersistentType().getName(),//+
+									targetEntity.getTable().getName(),//+
+									logicalTargetColumnName);//+
 				}
-				String name = ns.foreignKeyColumnName(prefix,
-														targetEntity.getPersistentType().getName(),
-														targetEntity.getPrimaryTableName(),
-														logicalTargetColumnName);
-				Table t = targetEntity.getPrimaryDbTable();
-				return t != null ? t.getDatabase().convertNameToIdentifier(name) : name;
+				return name;
 			} catch (Exception e) {
-				Message m = new LocalMessage(IMessage.HIGH_SEVERITY, 
+				Message m = new LocalMessage(IMessage.HIGH_SEVERITY,
 						Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
 				HibernateJptPlugin.logException(m.getText(), e);
 			}
 		}
-		if (prefix == null) {			
+		if (prefix == null) {
 			prefix = targetEntityName;
-		}		
-		if (targetColumnName == null) {
-			return null;
 		}
 		String name = prefix + '_' + targetColumnName;
 		// not sure which of these is correct...
@@ -151,6 +177,6 @@ public class NamingStrategyMappingTools extends MappingTools {
 		// return targetColumn.getDatabase().convertNameToIdentifier(name);
 		return name;
 	}
-
+	
 
 }

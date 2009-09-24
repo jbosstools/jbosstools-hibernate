@@ -26,5 +26,11 @@ public interface HibernateEntity extends Entity,
 	DiscriminatorFormula addDiscriminatorFormula();
 	
 	void removeDiscriminatorFormula();
+	
+	HibernateTable getTable();
+	
+	//Column getPrimaryIdColumn();
+	
+	//String getDefaultDBTableName();
 
 }

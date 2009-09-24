@@ -11,21 +11,23 @@
 package org.jboss.tools.hibernate.jpt.ui.internal.java.details;
 
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.java.details.JavaEntityComposite;
+import org.eclipse.jpt.ui.internal.java.details.JavaSecondaryTablesComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.ui.internal.mappings.details.AbstractEntityComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.EntityNameComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.IdClassComposite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateQueryContainer;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateGeneratorsComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateQueriesComposite;
+import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateTableComposite;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class HibernateJavaEntityComposite extends JavaEntityComposite {
+public class HibernateJavaEntityComposite extends AbstractEntityComposite<HibernateJavaEntity> {
 
 	/**
 	 * @param subjectHolder
@@ -37,7 +39,11 @@ public class HibernateJavaEntityComposite extends JavaEntityComposite {
 		super(subjectHolder, parent, widgetFactory);
 	}
 	
-	@SuppressWarnings("unchecked")
+	@Override
+	protected void addSecondaryTablesComposite(Composite container) {
+		new JavaSecondaryTablesComposite(this, container);
+	}
+	
 	@Override
 	protected void initializeQueriesPane(Composite container) {
 		container = addCollapsableSection(
@@ -45,7 +51,7 @@ public class HibernateJavaEntityComposite extends JavaEntityComposite {
 			JptUiMappingsMessages.EntityComposite_queries
 		);
 		
-		new HibernateQueriesComposite((Pane<? extends HibernateQueryContainer>) this, container);
+		new HibernateQueriesComposite(this, container);
 	}
 	
 	@Override
@@ -61,6 +67,14 @@ public class HibernateJavaEntityComposite extends JavaEntityComposite {
 	@Override
 	protected void addInheritanceComposite(Composite container) {
 		new HibernateJavaInheritanceComposite(this, container);
+	}
+	
+	protected void initializeGeneralPane(Composite container) {
+		int groupBoxMargin = getGroupBoxMargin();
+
+		new HibernateTableComposite(this, container);
+		new EntityNameComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+		new IdClassComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
 	}
 
 }

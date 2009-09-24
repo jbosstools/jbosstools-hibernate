@@ -23,5 +23,5 @@ public interface HibernateJavaEntity extends HibernateEntity, JavaEntity {
 	
 	JavaDiscriminatorFormula addDiscriminatorFormula();
 
-	
+	HibernateJavaTable getTable();
 }

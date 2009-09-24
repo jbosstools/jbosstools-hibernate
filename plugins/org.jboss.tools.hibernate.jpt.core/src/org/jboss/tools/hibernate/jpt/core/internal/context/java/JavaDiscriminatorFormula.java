@@ -22,7 +22,7 @@ public interface JavaDiscriminatorFormula extends DiscriminatorFormula {
 	void initialize(DiscriminatorFormulaAnnotation dfResource);
 	
 	/**
-	 * Update the JavaParameter context model object to match the DiscriminatorFormulaAnnotation 
+	 * Update the JavaDiscriminatorFormula context model object to match the DiscriminatorFormulaAnnotation 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update(DiscriminatorFormulaAnnotation dfResource);
