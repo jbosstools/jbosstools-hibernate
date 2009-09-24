@@ -292,10 +292,23 @@ public class DiagramViewer extends GraphicalEditor {
 		ObjectEditorInput objectEditorInput = (ObjectEditorInput)input;
 		ConsoleConfiguration configuration = objectEditorInput.getConfiguration();
 		Object obj = objectEditorInput.getObject();
+		setPartName(DiagramViewerMessages.DiagramViewer_diagram_for + " " + getDiagramName(obj)); //$NON-NLS-1$
 		if (obj instanceof RootClass) {
 			RootClass rootClass = (RootClass)obj;
-			setPartName(DiagramViewerMessages.DiagramViewer_diagram_for + " " + getItemName(rootClass)); //$NON-NLS-1$
 			ormDiagram = new OrmDiagram(configuration, rootClass);
+		} else if (obj instanceof RootClass[]) {
+			RootClass[] rootClasses = (RootClass[])obj;
+			ormDiagram = new OrmDiagram(configuration, rootClasses);
+		}
+		super.setInput(input);
+		loadProperties();
+	}
+
+	protected String getDiagramName(Object obj) {
+		String name = ""; //$NON-NLS-1$
+		if (obj instanceof RootClass) {
+			RootClass rootClass = (RootClass)obj;
+			name = getItemName(rootClass);
 		} else if (obj instanceof RootClass[]) {
 			RootClass[] rootClasses = (RootClass[])obj;
 			ArrayList<String> names = new ArrayList<String>();
@@ -304,15 +317,22 @@ public class DiagramViewer extends GraphicalEditor {
 			}
 			// sort to get same name for same combinations of entities
 			Collections.sort(names);
-			String name = names.size() > 0 ? names.get(0) : ""; //$NON-NLS-1$
+			name = names.size() > 0 ? names.get(0) : ""; //$NON-NLS-1$
 			for (int i = 1; i < rootClasses.length; i++) {
 				name += " & " + names.get(i); //$NON-NLS-1$
 			}
-			setPartName(DiagramViewerMessages.DiagramViewer_diagram_for + " " + name); //$NON-NLS-1$
-			ormDiagram = new OrmDiagram(configuration, rootClasses);
 		}
-		super.setInput(input);
-		loadProperties();
+		return name;
+	}
+
+	public String getDiagramName() {
+		IEditorInput input = getEditorInput();
+		Object obj = null;
+		if (input instanceof ObjectEditorInput) {
+			ObjectEditorInput objectEditorInput = (ObjectEditorInput)input;
+			obj = objectEditorInput.getObject();
+		}
+		return getDiagramName(obj);
 	}
 
 	/**

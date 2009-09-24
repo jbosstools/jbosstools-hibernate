@@ -12,6 +12,10 @@ package org.jboss.tools.hibernate.ui.diagram.editors.actions.test;
 
 import java.io.File;
 
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.SWTGraphics;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -20,7 +24,7 @@ import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExportImageAction;
 import org.jmock.Expectations;
@@ -44,23 +48,29 @@ public class ExportImageActionTest extends TestCase {
 
 	public void testAction() {
 		
-		final DiagramViewer editor = context.mock(DiagramViewer.class);;
-		final FileDialog saveDialog = context.mock(FileDialog.class);;
-		final GraphicalViewer graphicalViewer = context.mock(GraphicalViewer.class);;
-		final ScalableFreeformRootEditPart scalableFreeformRootEditPart = context.mock(ScalableFreeformRootEditPart.class);;
-		final IFigure figure = context.mock(IFigure.class);;
-		final Control control = context.mock(Control.class);;
-		final Display display = context.mock(Display.class);;
+		final DiagramViewer editor = context.mock(DiagramViewer.class);
+		final SaveAsDialog saveDialog = context.mock(SaveAsDialog.class);
+		final GraphicalViewer graphicalViewer = context.mock(GraphicalViewer.class);
+		final ScalableFreeformRootEditPart scalableFreeformRootEditPart = context.mock(ScalableFreeformRootEditPart.class);
+		final IFigure figure = context.mock(IFigure.class);
+		final Control control = context.mock(Control.class);
+		final Display display = context.mock(Display.class);
 		final Rectangle rectangle = new Rectangle(0, 0, 20, 10);
 		final String filePath = "test.jpg"; //$NON-NLS-1$
+		final IPath resPath = new Path(filePath);
 		
 		context.checking(new Expectations() {
 			{
-				allowing(saveDialog).setFilterExtensions(ExportImageAction.dialogFilterExtensions);
-				allowing(saveDialog).setFilterNames(ExportImageAction.dialogFilterNames);
+				allowing(editor).getDiagramName();
+				will(returnValue(filePath));
+
+				allowing(saveDialog).setOriginalName(filePath);
 
 				oneOf(saveDialog).open();
-				will(returnValue(filePath));
+				will(returnValue(0));
+
+				oneOf(saveDialog).getResult();
+				will(returnValue(resPath));
 
 				allowing(editor).getSite();
 				will(returnValue(null));
@@ -99,7 +109,10 @@ public class ExportImageActionTest extends TestCase {
 		exportImageAction.setShowErrDialog(false);
 		exportImageAction.run();
 		// test is the file created
-		File file = new File(filePath);
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		IPath path = workspace.getRoot().getFullPath().append(resPath);
+		path = workspace.getRoot().getLocation().append(path);
+		File file = path.toFile();
 		assertTrue(file.exists() && file.isFile());
 		//
 		boolean res = file.delete();

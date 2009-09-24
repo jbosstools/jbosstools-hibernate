@@ -13,7 +13,12 @@ package org.jboss.tools.hibernate.ui.diagram.editors.actions;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.SWTGraphics;
@@ -21,6 +26,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Device;
@@ -28,7 +34,8 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
-import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.ui.actions.WorkspaceModifyOperation;
+import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
@@ -40,7 +47,8 @@ public class ExportImageAction extends DiagramBaseAction {
 	public static final String[] dialogFilterNames = new String[] { DiagramViewerMessages.ExportImageAction_png_format,
 		DiagramViewerMessages.ExportImageAction_jpg_format, DiagramViewerMessages.ExportImageAction_bmp_format };
 
-	private FileDialog saveDialog = null;
+	//private FileDialog saveDialog = null;
+	private SaveAsDialog saveDialog = null;
 	private boolean showErrDialog = true;
 	public static final ImageDescriptor img = 
 		ImageDescriptor.createFromFile(DiagramViewer.class, "icons/export.png"); //$NON-NLS-1$
@@ -58,7 +66,7 @@ public class ExportImageAction extends DiagramBaseAction {
 	 * 
 	 * @param saveDialog
 	 */
-	public void setSaveDialog(FileDialog saveDialog) {
+	public void setSaveDialog(SaveAsDialog saveDialog) {
 		this.saveDialog = saveDialog;
 	}
 
@@ -68,49 +76,76 @@ public class ExportImageAction extends DiagramBaseAction {
 
 	public void run() {
 
+		boolean createdSaveDialog = false;
 		if (saveDialog == null) {
-			saveDialog = new FileDialog(
-				getDiagramViewer().getSite().getShell(), SWT.SAVE);
+			saveDialog = new SaveAsDialog(getDiagramViewer().getSite().getWorkbenchWindow().getShell());
+			createdSaveDialog = true;
 		}
-		saveDialog.setFilterExtensions(dialogFilterExtensions);
-		saveDialog.setFilterNames(dialogFilterNames);
-
-		String filePath = saveDialog.open();
-		saveDialog = null;
-		if (filePath == null || filePath.trim().length() == 0) {
+		saveDialog.setOriginalName(getDiagramViewer().getDiagramName());
+		saveDialog.open();
+		final IPath pathSave = saveDialog.getResult();		
+		if (pathSave == null) {
 			return;
 		}
 
-		IFigure fig = ((ScalableFreeformRootEditPart) getDiagramViewer()
+		final IFigure fig = ((ScalableFreeformRootEditPart) getDiagramViewer()
 				.getEditPartViewer().getRootEditPart())
 				.getLayer(LayerConstants.PRINTABLE_LAYERS);
-		int imageType = SWT.IMAGE_BMP;
-		if (filePath.toLowerCase().endsWith(".jpg")) { //$NON-NLS-1$
-			imageType = SWT.IMAGE_JPEG;
-		} else if (filePath.toLowerCase().endsWith(".png")) { //$NON-NLS-1$
-			imageType = SWT.IMAGE_PNG;
-		}
-		FileOutputStream outStream = null;
-		try {
-			byte[] imageData = createImage(fig, imageType);
-			outStream = new FileOutputStream(filePath);
-			outStream.write(imageData);
-			outStream.flush();
-		} catch (IOException e) {
-			HibernateConsolePlugin.getDefault().logErrorMessage("ExportImageAction", e); //$NON-NLS-1$
-			if (showErrDialog) {
-				MessageDialog.openInformation(getDiagramViewer().getSite().getShell(),
-					DiagramViewerMessages.ExportImageAction_error, DiagramViewerMessages.ExportImageAction_failed_to_export_image + e.getMessage());
+		int imageTypeTmp = SWT.IMAGE_BMP;
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		String ext = pathSave.getFileExtension();
+		if (ext != null) {
+			ext = ext.toLowerCase();
+			if (ext.endsWith("jpg")) { //$NON-NLS-1$
+				imageTypeTmp = SWT.IMAGE_JPEG;
+			} else if (ext.endsWith("png")) { //$NON-NLS-1$
+				imageTypeTmp = SWT.IMAGE_PNG;
+			} else if (ext.endsWith("gif")) { //$NON-NLS-1$
+				imageTypeTmp = SWT.IMAGE_GIF;
+			} else if (ext.endsWith("bmp")) { //$NON-NLS-1$
+				imageTypeTmp = SWT.IMAGE_BMP;
 			}
 		}
-		finally {
-			if (outStream != null) {
+		IPath pathTmp = workspace.getRoot().getFullPath().append(pathSave);
+		pathTmp = workspace.getRoot().getLocation().append(pathTmp);
+		if (ext == null) {
+			pathTmp = pathTmp.addFileExtension("bmp"); //$NON-NLS-1$
+		}
+		final IPath path = pathTmp;
+		final int imageType = imageTypeTmp;
+		
+		WorkspaceModifyOperation op = new WorkspaceModifyOperation() {
+			public void execute(final IProgressMonitor monitor) {
+				FileOutputStream outStream = null;
 				try {
-					outStream.close();
+					byte[] imageData = createImage(fig, imageType);
+					outStream = new FileOutputStream(path.toString());
+					outStream.write(imageData);
+					outStream.flush();
 				} catch (IOException e) {
-					// ignore
+					HibernateConsolePlugin.getDefault().logErrorMessage("ExportImageAction", e); //$NON-NLS-1$
+					if (showErrDialog) {
+						MessageDialog.openInformation(getDiagramViewer().getSite().getShell(),
+							DiagramViewerMessages.ExportImageAction_error, DiagramViewerMessages.ExportImageAction_failed_to_export_image + e.getMessage());
+					}
+				}
+				finally {
+					if (outStream != null) {
+						try {
+							outStream.close();
+						} catch (IOException e) {
+							// ignore
+						}
+					}
 				}
 			}
+		};
+		try {
+			new ProgressMonitorDialog(
+					createdSaveDialog ? getDiagramViewer().getSite().getWorkbenchWindow().getShell() : null)
+					.run(false, true, op);
+		} catch (InvocationTargetException e) {
+		} catch (InterruptedException e) {
 		}
 	}
 
