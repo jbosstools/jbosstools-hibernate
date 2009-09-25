@@ -148,7 +148,6 @@ public class NewConfigurationWizardPage extends WizardPage {
         label.setText(HibernateConsoleMessages.NewConfigurationWizardPage_database_dialect);
         dialectCombo = new Combo(container, SWT.NULL);
         fillHerUp(dialectCombo, helper.getDialectNames() );
-        dialectCombo.select(0);
         gd = new GridData(GridData.FILL_HORIZONTAL);
         gd.grabExcessHorizontalSpace = true;
         dialectCombo.setLayoutData(gd);
