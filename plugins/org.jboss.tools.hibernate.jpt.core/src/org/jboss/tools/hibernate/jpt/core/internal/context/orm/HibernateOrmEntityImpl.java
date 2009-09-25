@@ -11,10 +11,12 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
+import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmBaseJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
@@ -22,6 +24,7 @@ import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEntity;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.hibernate.cfg.NamingStrategy;
@@ -31,6 +34,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.DiscriminatorFormula;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateTable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 
@@ -51,40 +55,15 @@ implements HibernateOrmEntity {
 		return (HibernateJpaProject) super.getJpaProject();
 	}
 	
-/*
-   @Override
-	protected String buildDefaultName() {
-		NamingStrategy ns = getJpaProject().getNamingStrategy();
-		if (!isMetadataComplete()) {
-			JavaEntity javaEntity = getJavaEntity();
-			if (javaEntity != null) {
-				return javaEntity.getName();
-			}
-		}
-		String className = getClass_();
-		if (className != null) {
-			try {
-				String shortCalssName = ClassTools.shortNameForClassNamed(className);
-				return ns == null ? shortCalssName : ns.classToTableName(shortCalssName);
-			} catch (Exception e) {
-				Message m = new LocalMessage(IMessage.HIGH_SEVERITY,
-						Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
-				HibernateJptPlugin.logException(m.getText(), e);
-			}
-		}
-		return null;
-	}
-	
-	
 	@Override
 	public String getPrimaryTableName() {
 		return this.getTable().getDBTableName();
-	}*/
-
+	}
+	
 	/**
 	 * Convert Table to it's DB name.
 	 */
-/*	@Override
+	@Override
 	protected Iterator<String> tableNames(Iterator<Table> tables) {
 		return new TransformationIterator<Table, String>(tables) {
 			@Override
@@ -96,7 +75,7 @@ implements HibernateOrmEntity {
 				}				
 			}
 		};
-	}*/
+	}
 	
 	@Override
 	protected OrmBaseJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {

@@ -17,7 +17,9 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
+import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
+import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -34,6 +36,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateP
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmEntity;
+import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmIdMapping;
 import org.jboss.tools.hibernate.jpt.ui.internal.java.details.HibernateJavaEntityComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateBasicMappingComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateIdMappingComposite;
@@ -115,6 +118,23 @@ public class HibernateJpaUiFactory extends BaseJpaUiFactory {
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		return new HibernateBasicMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
+	public JpaComposite createOrmBasicMappingComposite(
+			PropertyValueModel<OrmBasicMapping> subjectHolder,
+			Composite parent, WidgetFactory widgetFactory) {
+		return new HibernateBasicMappingComposite(subjectHolder, parent,
+				widgetFactory);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public JpaComposite createOrmIdMappingComposite(
+			PropertyValueModel<OrmIdMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new HibernateIdMappingComposite((PropertyValueModel<? extends HibernateOrmIdMapping>) subjectHolder, parent, widgetFactory);
 	}
 
 }

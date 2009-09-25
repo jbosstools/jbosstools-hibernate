@@ -85,7 +85,7 @@ implements HibernateOrmColumn {
 	}
 
 	public String getSpecifiedDBTableName() {
-		if (getSpecifiedName() == null) return null;
+		if (getSpecifiedTable() == null) return null;
 		NamingStrategy ns = getJpaProject().getNamingStrategy();
 		if (getJpaProject().isNamingStrategyEnabled() && ns != null){
 			try {
@@ -96,7 +96,7 @@ implements HibernateOrmColumn {
 				HibernateJptPlugin.logException(m.getText(), e);
 			}
 		}
-		return this.getName();
+		return this.getSpecifiedTable();
 	}
 
 }

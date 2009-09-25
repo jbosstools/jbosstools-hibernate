@@ -65,7 +65,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaDis
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEmbeddable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntityImpl;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMappingImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaJoinColumnImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaJoinTableImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaManyToManyMapping;
@@ -86,7 +86,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaParameter;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmBasicMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmColumnImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmEntityImpl;
-import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmIdMapping;
+import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmIdMappingImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmJoinColumnImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmJoinTableImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmManyToManyMapping;
@@ -121,7 +121,7 @@ public class HibernateJpaFactory extends GenericJpaFactory {
 	
 	@Override
 	public JavaIdMapping buildJavaIdMapping(JavaPersistentAttribute parent) {
-		return new HibernateJavaIdMapping(parent);
+		return new HibernateJavaIdMappingImpl(parent);
 	}
 	
 	public JavaGenericGenerator buildJavaGenericGenerator(JavaJpaContextNode parent) {
@@ -217,7 +217,7 @@ public class HibernateJpaFactory extends GenericJpaFactory {
 	@Override
 	public OrmIdMapping buildOrmIdMapping(OrmPersistentAttribute parent,
 			XmlId resourceMapping) {
-		return new HibernateOrmIdMapping(parent, resourceMapping);
+		return new HibernateOrmIdMappingImpl(parent, resourceMapping);
 	}
 	
 		@Override

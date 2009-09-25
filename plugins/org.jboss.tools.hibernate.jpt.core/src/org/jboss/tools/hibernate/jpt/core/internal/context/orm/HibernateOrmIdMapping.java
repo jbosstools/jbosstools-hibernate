@@ -11,46 +11,14 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmIdMapping;
-import org.eclipse.jpt.core.resource.orm.XmlId;
-import org.eclipse.wst.validation.internal.core.Message;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.hibernate.cfg.NamingStrategy;
-import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
-import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
-import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
+import org.eclipse.jpt.core.context.orm.OrmIdMapping;
+import org.jboss.tools.hibernate.jpt.core.internal.context.basic.HibernateIdMapping;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class HibernateOrmIdMapping extends GenericOrmIdMapping<XmlId> {
-
-	public HibernateOrmIdMapping(OrmPersistentAttribute parent,
-			XmlId resourceMapping) {
-		super(parent, resourceMapping);
-	}
-	
-	@Override
-	public HibernateJpaProject getJpaProject() {
-		return (HibernateJpaProject) super.getJpaProject();
-	}
-
-	@Override
-	public String getDefaultColumnName() {
-		NamingStrategy namingStrategy = getJpaProject().getNamingStrategy();
-		if (getJpaProject().isNamingStrategyEnabled() && namingStrategy != null && getName() != null){
-			try {
-				return namingStrategy.propertyToColumnName(getName());
-			} catch (Exception e) {
-				Message m = new LocalMessage(IMessage.HIGH_SEVERITY, 
-						Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
-				HibernateJptPlugin.logException(m.getText(), e);
-			}
-		}
-		return super.getDefaultColumnName();
-	}
+public interface HibernateOrmIdMapping extends HibernateIdMapping,
+		OrmIdMapping {
 
 }
