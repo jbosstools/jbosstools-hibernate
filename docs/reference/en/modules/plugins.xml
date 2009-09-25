@@ -1787,7 +1787,7 @@
         <para>In order to get a visual feel on how entities are related as well as view their
           structures, a <property>Mapping Diagram</property> is provided. It is available by right
           clicking on the entity you want a mapping diagram for and then choosing <emphasis>
-            <property>Open Mapping Diagram</property>.</emphasis></para>
+            <property>Mapping Diagram</property>.</emphasis></para>
 
         <figure>
           <title>Mapping Diagram</title>
@@ -1801,8 +1801,47 @@
             </imageobject>
           </mediaobject>
         </figure>
-
-        <para>For better navigating on the Diagram use <property>Outline view</property> which is
+        <para>To make  <property>Mapping Diagram</property> usage easier you can use <property>Rules</property>,
+          <property>Grid</property>,<property>Snap to Geometry</property> checkboxes in the <emphasis>
+            <property>View</property></emphasis> menu.  </para>
+        <figure>
+          <title>View menu</title>
+          
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/plugins/map_diagram1.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+        <para>If you will select <emphasis>
+          <property>Rules</property></emphasis> checkbox, the view print page scale will be added to the page.
+          The numbers on the scale show its size in inches.If you click on the scale a <emphasis>
+            <property>Ruler Guide</property></emphasis> will appear on the diagram.
+          You can connect any diagram item to it.To connect the items you should move their tops
+          to the Ruler Guide. And while moving the ruler guide, the items will be moved together with it as a whole.</para>
+        <figure>
+          <title>Moving the Ruler guide</title>
+          
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/plugins/map_diagram2.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+        <para>If you'll select <emphasis>
+          <property>Grid</property></emphasis> checkbox, the grid will appear on the diagram.</para>
+        <figure>
+          <title>Grid on Mapping diagram</title>
+          
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/plugins/map_diagram3.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+        <para>The checkbox <emphasis>
+          <property>Snap to Geometry</property></emphasis> helps to put the items of the diagram into allineation with the grid.</para>
+        <para>For better navigating through the diagram use <property>Outline view</property> which is
           available in the structural and graphical modes.</para>
         <figure>
           <title>Navigating in the Structural Mode</title>
@@ -1854,7 +1893,7 @@
           </mediaobject>
         </figure>
 
-        <para>Finally, if you need to have your Diagram exported as <emphasis><property>.png
+        <para>If you need to have your Diagram exported as <emphasis><property>.png
             </property>,</emphasis>
           <emphasis>
             <property>.jpeg</property>
@@ -1872,13 +1911,54 @@
             </imageobject>
           </mediaobject>
         </figure>
-
-        <para>As you can see on the figure above, <emphasis><property>Undo</property>, </emphasis>
+        <para>Using   <emphasis>
+          <property>Toggle connections</property></emphasis> option(  <inlinemediaobject><imageobject>
+          <imagedata fileref="images/plugins/toggleConnections.png"/>
+        </imageobject></inlinemediaobject>) you can hide all the connections on the diagram except the ones,
+        that connect POJO class to DB table.</para>
+        <figure>
+          <title>Toggle connections option usage</title>
+          
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/plugins/plugins_18_f.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+        <para>  <emphasis>
+          <property>Auto layout</property></emphasis> (  <inlinemediaobject><imageobject>
+          <imagedata fileref="images/plugins/autoLayout.png"/>
+        </imageobject></inlinemediaobject>) is used to dispose all the items of the diagram in a standard manner.</para>
+        <para>As you can see on the figure above, <emphasis><property>Collapse All</property>, </emphasis>
           <emphasis>
-            <property>Redo</property>
+            <property>Expand All</property>
           </emphasis> and <emphasis>
-            <property>Auto layout </property>
+            <property>Select All </property>
           </emphasis> options are also available through the context menu.</para>
+        <para>When you open the context menu while clicking an item on the diagram, it quite differs from the one described before.</para>
+        <figure>
+          <title>Context menu in mapping item </title>
+          
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/plugins/plugins_18_g.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+        <para>Now you can see two extra options in the menu:   <emphasis>
+          <property>Toggle visible state</property></emphasis>,  <emphasis>
+            <property>Toggle expand state</property></emphasis>.</para>
+        <itemizedlist>
+          <listitem><para>  <emphasis>
+            <property>Toggle visible state</property></emphasis> (  <inlinemediaobject><imageobject>
+            <imagedata fileref="images/plugins/visibleState.png"/>
+          </imageobject></inlinemediaobject>)  is used to hide/show an item on the mapping diagram.</para></listitem>
+          <listitem><para>  <emphasis>
+            <property>Toggle expand state</property></emphasis> (  <inlinemediaobject><imageobject>
+            <imagedata fileref="images/plugins/expandState.png"/>
+          </imageobject></inlinemediaobject>)  is used for expanding/collapsing fields of the item.</para></listitem>
+          </itemizedlist>
+        <para>All the described types of the context menu are also available in the Outline view.</para>
       </section>
     </section>
 
