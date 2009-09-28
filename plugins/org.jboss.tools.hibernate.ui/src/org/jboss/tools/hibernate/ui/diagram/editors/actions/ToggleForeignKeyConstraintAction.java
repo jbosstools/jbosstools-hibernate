@@ -40,4 +40,10 @@ public class ToggleForeignKeyConstraintAction extends DiagramBaseAction {
 		boolean state = getDiagramViewer().getConnectionsVisibilityForeignKeyConstraint();
 		getDiagramViewer().setConnectionsVisibilityForeignKeyConstraint(!state);
 	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO: JBIDE-4956 -> still not implemented
+		return false;
+	}
 }
