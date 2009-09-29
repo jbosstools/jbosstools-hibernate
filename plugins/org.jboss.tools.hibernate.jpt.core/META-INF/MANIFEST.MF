@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.jboss.tools.hibernate.jpt.core;singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 3.3.0.qualifier
 Require-Bundle: 
  org.eclipse.core.runtime,
  org.eclipse.wst.validation,

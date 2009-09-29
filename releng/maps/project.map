@@ -1,0 +1,13 @@
+feature@org.hibernate.eclipse.sdk.feature=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/hibernatetools/features/org.hibernate.eclipse.sdk.feature
+feature@org.hibernate.eclipse.feature=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/hibernatetools/features/org.hibernate.eclipse.feature
+feature@org.hibernate.eclipse.test.feature=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/hibernatetools/features/org.hibernate.eclipse.test.feature
+
+plugin@org.hibernate.eclipse=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/hibernatetools/plugins/org.hibernate.eclipse
+plugin@org.hibernate.eclipse.console=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/hibernatetools/plugins/org.hibernate.eclipse.console
+plugin@org.hibernate.eclipse.mapper=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/hibernatetools/plugins/org.hibernate.eclipse.mapper
+plugin@org.hibernate.eclipse.help=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/hibernatetools/plugins/org.hibernate.eclipse.help
+plugin@org.hibernate.eclipse.jdt.ui=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/hibernatetools/plugins/org.hibernate.eclipse.jdt.ui
+plugin@org.hibernate.eclipse.jdt.apt.ui=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/hibernatetools/plugins/org.hibernate.eclipse.jdt.apt.ui
+plugin@org.jboss.tools.hibernate.ui=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/hibernatetools/plugins/org.jboss.tools.hibernate.ui
+plugin@org.jboss.tools.hibernate.jpt.core=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/hibernatetools/plugins/org.jboss.tools.hibernate.jpt.core
+plugin@org.jboss.tools.hibernate.jpt.ui=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/hibernatetools/plugins/org.jboss.tools.hibernate.jpt.ui

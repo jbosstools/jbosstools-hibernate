@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate Jdt UI
 Bundle-SymbolicName: org.jboss.tools.hibernate.jpt.ui;singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 3.3.0.qualifier
 Bundle-Activator: org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin
 Require-Bundle: 
  org.hibernate.eclipse.console,

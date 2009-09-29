@@ -24,5 +24,5 @@ Require-Bundle: org.eclipse.ui.ide,
  org.eclipse.core.runtime,
  org.jboss.tools.common,
  org.jboss.tools.common.model
-Bundle-Version: 2.0.0
+Bundle-Version: 3.3.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

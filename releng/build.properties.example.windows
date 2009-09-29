@@ -1,0 +1,55 @@
+## BEGIN PROJECT BUILD PROPERTIES ##
+
+# this property allows ant-contrib and pde-svn-plugin to be fetched and installed automatically for you
+thirdPartyDownloadLicenseAcceptance="I accept"
+
+projectid=jbosstools.hibernatetools
+zipPrefix=HibernateTools
+incubation=
+buildType=N
+version=3.3.0
+
+mainFeatureToBuildID=org.hibernate.eclipse.sdk.feature
+testFeatureToBuildID=org.hibernate.eclipse.test.feature
+
+build.steps=buildUpdate,buildTests,generateDigests,test,publish,cleanup
+
+# Re-use local sources?
+localSourceCheckoutDir=C:/workspace2
+
+# For windows, must be explicit about paths using correct slashes (/); dirs with spaces should be avoided
+writableBuildRoot=C:/tmp/build
+
+#relengBuilderDir=C:/Users/max/workspace-hibernatetoolsbuild/org.hibernate.eclipse.releng
+#relengBaseBuilderDir=C:/Users/max/workspace-hibernatetoolsbuild/org.eclipse.releng.basebuilder
+#relengCommonBuilderDir=C:/Users/max/workspace-hibernatetoolsbuild/org.eclipse.dash.common.releng
+relengBuilderDir=C:/workspace2/org.hibernate.eclipse.releng
+relengBaseBuilderDir=C:/workspace2/org.eclipse.releng.basebuilder
+relengCommonBuilderDir=C:/workspace2/org.eclipse.dash.common.releng
+
+JAVA_HOME=C:/Progra~1/Java/jdk1.6.0_11
+JAVA50_HOME=C:/Progra~1/Java/jdk1.6.0_11
+JAVA60_HOME=C:/Progra~1/Java/jdk1.6.0_11
+
+dependencyURLs=\
+http://repository.jboss.org/eclipse/galileo/eclipse-SDK-3.5.1-win32.zip,\
+http://repository.jboss.org/eclipse/galileo/wtp-R-3.1.1-20090917225226.zip,\
+http://repository.jboss.org/eclipse/galileo/emf-runtime-2.5.0.zip,\
+http://repository.jboss.org/eclipse/galileo/xsd-runtime-2.5.0.zip,\
+http://downloads.sourceforge.net/sourceforge/hibernate/hibernate-3.0.3.zip
+
+flattenDependencies=true
+parallelCompilation=true
+generateFeatureVersionSuffix=true
+individualSourceBundles=true
+
+domainNamespace=*
+projNamespace=org.hibernate.eclipse
+projRelengName=org.hibernate.eclipse.releng
+
+# needed for Hudson, not for local?
+#projRelengRoot=svn://svn.jboss.org/repos/jbosstools/trunk/jmx
+#projRelengPath=releng
+#basebuilderBranch=R35_M6
+
+## END PROJECT BUILD PROPERTIES ##

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.hibernate.eclipse.jdt.ui;singleton:=true
-Bundle-Version: 3.2.0.beta9
+Bundle-Version: 3.3.0.qualifier
 Bundle-Activator: org.hibernate.eclipse.jdt.ui.Activator
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin

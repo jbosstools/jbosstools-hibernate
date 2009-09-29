@@ -2,7 +2,7 @@
 <feature
       id="org.hibernate.eclipse.test.feature"
       label="Hibernate Tests"
-      version="3.1.0.beta7"
+      version="3.3.0.qualifier"
       provider-name="JBoss by Red Hat">
 
    <description url="http://www.example.com/description">
