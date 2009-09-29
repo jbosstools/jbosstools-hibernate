@@ -108,8 +108,7 @@ public class NamingStrategyMappingTools extends MappingTools {
 			}
 		}
 		String name = owningTable.getName() + '_' + targetTable.getName();
-		//return owningTable.getDatabase().convertNameToIdentifier(name);
-		return name;
+		return owningTable.getDatabase().convertNameToIdentifier(name);
 	}
 	
 	public static String buildJoinColumnDefaultName(HibernateJoinColumn joinColumn) {		
