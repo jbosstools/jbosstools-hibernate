@@ -20,6 +20,7 @@ public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "org.jboss.tools.hibernate.jpt.ui.wizard.messages"; //$NON-NLS-1$
 
 	public static String GenerateInitWizardPage_title;
+	public static String GenerateInitWizardPage_export_to_db;
 	public static String GenerateInitWizardPage_autodetect;
 	public static String GenerateInitWizardPage_use_console_configuration;
 	public static String GenerateInitWizardPage_refresh;

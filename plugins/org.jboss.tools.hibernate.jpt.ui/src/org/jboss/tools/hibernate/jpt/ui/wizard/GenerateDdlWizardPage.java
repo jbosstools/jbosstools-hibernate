@@ -14,6 +14,9 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.StringDialogField;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.hibernate.util.StringHelper;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
@@ -26,13 +29,12 @@ public class GenerateDdlWizardPage extends GenerateInitWizardPage {
 	
 	private StringDialogField filename;
 	
+	private Button exportToDB;
+	
 	protected GenerateDdlWizardPage(HibernateJpaProject jpaProject) {
 		super(jpaProject);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.jboss.tools.hibernate.jpt.ui.wizard.GenerateInitWizardPage#createChildControls(org.eclipse.swt.widgets.Composite)
-	 */
 	@Override
 	protected void createChildControls(Composite container) {
 		filename = new StringDialogField();
@@ -40,6 +42,13 @@ public class GenerateDdlWizardPage extends GenerateInitWizardPage {
 		filename.setText("schema.ddl"); //$NON-NLS-1$
 		filename.setDialogFieldListener(fieldlistener);
         filename.doFillIntoGrid(container, numColumns);
+        
+        exportToDB = new Button(container, SWT.CHECK);
+        exportToDB.setText(Messages.GenerateInitWizardPage_export_to_db);
+        GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd.horizontalSpan = numColumns;
+		exportToDB.setLayoutData(gd);	
+        
 	}
 	
 	protected void dialogChanged() {
@@ -65,7 +74,8 @@ public class GenerateDdlWizardPage extends GenerateInitWizardPage {
 		return filename.getText();
 	}
 	
-
-
+	public boolean isExportToDB(){
+		return exportToDB.getSelection();
+	}
 
 }
