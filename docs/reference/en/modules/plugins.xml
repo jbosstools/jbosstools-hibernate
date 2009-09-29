@@ -76,11 +76,13 @@
       </emphasis> file if you do not already have such one.</para>
 
     <para>Start the wizard by clicking <emphasis>
-      <property>New > Other (Ctrl+N)</property> or on a web Seam project in Web Projects view  <property> WebContent -> New -> File -> Hibernate Configuration 3.0</property> 
-      </emphasis>, then <emphasis>
+      <property>New > Other (Ctrl+N)</property></emphasis>, then <emphasis>
         <property>Hibernate > Hibernate Configuration File (cfg.xml)</property>
       </emphasis> and press <emphasis>
         <property>Next</property>
+      </emphasis>
+      or on a web Seam project in the <property>Web Projects</property> view  
+      <emphasis><property> WebContent -> New -> File -> Hibernate Configuration 3.0</property> 
       </emphasis>. After selecting the wanted location for the <emphasis>
         <property>hibernate.cfg.xml</property>
       </emphasis> file, you will see the following page:</para>
