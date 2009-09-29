@@ -62,5 +62,12 @@
    <extension point="org.jboss.tools.common.model.ui.attributeEditor">
       <attributeEditor class="org.jboss.tools.common.model.ui.attribute.editor.ComboBoxEditor" id="HibernatePropertyList"/>
    </extension>
+   <extension
+         point="org.jboss.tools.common.model.ui.propertiesFileContentAssist">
+         <propertiesFileContentAssist 
+         		processor="org.jboss.tools.hibernate.ui.xml.editor.HibernatePropertiesContentAssistProcessor"
+         		fileName="hibernate.properties"
+         />
+   </extension>
 
 </plugin>
