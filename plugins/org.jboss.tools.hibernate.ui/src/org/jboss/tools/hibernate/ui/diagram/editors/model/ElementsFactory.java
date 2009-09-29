@@ -78,7 +78,7 @@ public class ElementsFactory {
 				if (clazz instanceof RootClass) {
 					RootClass rootClass = (RootClass)clazz;
 					s = getOrCreatePersistentClass(rootClass, null);
-					if (!isConnectionExist(shape, s)) {
+					if (shouldCreateConnection(shape, s)) {
 						connections.add(new Connection(shape, s));
 					}
 				} else if (clazz instanceof Subclass) {
@@ -87,7 +87,7 @@ public class ElementsFactory {
 			}
 		} else {
 			s = getOrCreatePersistentClass(new SpecialRootClass(property), null);
-			if (!isConnectionExist(shape, s)) {
+			if (shouldCreateConnection(shape, s)) {
 				connections.add(new Connection(shape, s));
 			}
 			createConnections(s, getOrCreateDatabaseTable(property.getValue().getTable()));
@@ -118,63 +118,67 @@ public class ElementsFactory {
 			}
 			SimpleValue value = (SimpleValue)csChild0.getOrmElement();
 			OrmShape tableShape = getOrCreateDatabaseTable(value.getTable());
-			Iterator it = value.getColumnIterator();
-			while (it.hasNext()) {
-				Object el = it.next();
-				if (el instanceof Column) {
-					Column col = (Column)el;
-					Shape shape = tableShape.getChild(col);
-					if (shape != null && !isConnectionExist(csChild0, shape)) {
-						connections.add(new Connection(csChild0, shape));
+			if (tableShape != null) {
+				Iterator it = value.getColumnIterator();
+				while (it.hasNext()) {
+					Object el = it.next();
+					if (el instanceof Column) {
+						Column col = (Column)el;
+						Shape shape = tableShape.getChild(col);
+						if (shouldCreateConnection(csChild0, shape)) {
+							connections.add(new Connection(csChild0, shape));
+						}
 					}
 				}
 			}
-			if (!isConnectionExist(csChild1, childShape)) {
+			if (shouldCreateConnection(csChild1, childShape)) {
 				connections.add(new Connection(csChild1, childShape));
 			}
 			
 		} else if (collection.isOneToMany()) {
 			childShape = getOrCreateAssociationClass(property);
-			if (childShape == null) {
-				return;
-			}
-			if (!isConnectionExist(csChild1, childShape)) {
-				connections.add(new Connection(csChild1, childShape));
-			}
-			OrmShape keyTableShape = getOrCreateDatabaseTable(collection.getKey().getTable());
-			Iterator it = collection.getKey().getColumnIterator();
-			while (it.hasNext()) {
-				Object el = it.next();
-				if (el instanceof Column) {
-					Column col = (Column)el;
-					Shape shape = keyTableShape.getChild(col);
-					if (shape != null && !isConnectionExist(csChild0, shape)) {
-						connections.add(new Connection(csChild0, shape));
+			if (childShape != null) {
+				if (shouldCreateConnection(csChild1, childShape)) {
+					connections.add(new Connection(csChild1, childShape));
+				}
+				OrmShape keyTableShape = getOrCreateDatabaseTable(collection.getKey().getTable());
+				Iterator it = collection.getKey().getColumnIterator();
+				while (it.hasNext()) {
+					Object el = it.next();
+					if (el instanceof Column) {
+						Column col = (Column)el;
+						Shape shape = keyTableShape.getChild(col);
+						if (shouldCreateConnection(csChild0, shape)) {
+							connections.add(new Connection(csChild0, shape));
+						}
 					}
 				}
 			}
-			
-		} else /* if (collection.isMap() || collection.isSet()) */ {
+
+		} else {
+			// this is case: if (collection.isMap() || collection.isSet())
 			childShape = getOrCreateDatabaseTable(collection.getCollectionTable());
-			Iterator it = ((DependantValue)csChild0.getOrmElement()).getColumnIterator();
-			while (it.hasNext()) {
-				Object el = it.next();
-				if (el instanceof Column) {
-					Column col = (Column)el;
-					Shape shape = childShape.getChild(col);
-					if (shape != null && !isConnectionExist(csChild0, shape)) {
-						connections.add(new Connection(csChild0, shape));
+			if (childShape != null) {
+				Iterator it = ((DependantValue)csChild0.getOrmElement()).getColumnIterator();
+				while (it.hasNext()) {
+					Object el = it.next();
+					if (el instanceof Column) {
+						Column col = (Column)el;
+						Shape shape = childShape.getChild(col);
+						if (shouldCreateConnection(csChild0, shape)) {
+							connections.add(new Connection(csChild0, shape));
+						}
 					}
 				}
-			}
-			it = ((SimpleValue)csChild1.getOrmElement()).getColumnIterator();
-			while (it.hasNext()) {
-				Object el = it.next();
-				if (el instanceof Column) {
-					Column col = (Column)el;
-					Shape shape = childShape.getChild(col);
-					if (shape != null && !isConnectionExist(csChild1, shape)) {
-						connections.add(new Connection(csChild1, shape));
+				it = ((SimpleValue)csChild1.getOrmElement()).getColumnIterator();
+				while (it.hasNext()) {
+					Object el = it.next();
+					if (el instanceof Column) {
+						Column col = (Column)el;
+						Shape shape = childShape.getChild(col);
+						if (shouldCreateConnection(csChild1, shape)) {
+							connections.add(new Connection(csChild1, shape));
+						}
 					}
 				}
 			}
@@ -193,7 +197,11 @@ public class ElementsFactory {
 					Object clazz = iterator.next();
 					if (clazz instanceof RootClass) {
 						RootClass cls = (RootClass)clazz;
-						getOrCreatePersistentClass(cls, null);
+						if (databaseTable.equals(cls.getTable())) {
+							// create persistent class shape only for RootClass,
+							// which has same table reference
+							getOrCreatePersistentClass(cls, null);
+						}
 					}
 				}
 			}			
@@ -202,7 +210,8 @@ public class ElementsFactory {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected OrmShape getOrCreatePersistentClass(PersistentClass persistentClass, Table componentClassDatabaseTable) {
+	protected OrmShape getOrCreatePersistentClass(PersistentClass persistentClass, 
+			Table componentClassDatabaseTable) {
 		OrmShape classShape = null;
 		if (persistentClass == null) {
 			return classShape;
@@ -221,7 +230,7 @@ public class ElementsFactory {
 				shape = getOrCreateDatabaseTable(componentClassDatabaseTable);
 			}
 			createConnections(classShape, shape);
-			if (!isConnectionExist(classShape, shape)) {
+			if (shouldCreateConnection(classShape, shape)) {
 				connections.add(new Connection(classShape, shape));
 			}
 		}
@@ -239,12 +248,12 @@ public class ElementsFactory {
 					Table jcTable = ((Subclass)element).getTable();
 					OrmShape jcTableShape = getOrCreateDatabaseTable(jcTable);
 					createConnections(subclassShape, jcTableShape);
-					if (!isConnectionExist(subclassShape, jcTableShape)) {
+					if (shouldCreateConnection(subclassShape, jcTableShape)) {
 						connections.add(new Connection(subclassShape, jcTableShape));
 					}
 				} else {
 					createConnections(subclassShape, shape);
-					if (!isConnectionExist(subclassShape, shape)) {
+					if (shouldCreateConnection(subclassShape, shape)) {
 						connections.add(new Connection(subclassShape, shape));
 					}
 				}
@@ -272,7 +281,7 @@ public class ElementsFactory {
 					componentClassShape = getOrCreateComponentClass(((RootClass)persistentClass).getIdentifierProperty());
 
 					Shape idPropertyShape = classShape.getChild(persistentClass.getIdentifierProperty());
-					if (idPropertyShape != null && !isConnectionExist(idPropertyShape, componentClassShape)) {
+					if (shouldCreateConnection(idPropertyShape, componentClassShape)) {
 						connections.add(new Connection(idPropertyShape, componentClassShape));
 					}
 
@@ -290,7 +299,7 @@ public class ElementsFactory {
 			Iterator<Property> iterator = join.getPropertyIterator();
 			while (iterator.hasNext()) {
 				Property property = iterator.next();
-				OrmShape tableShape =  getOrCreateDatabaseTable(property.getValue().getTable());
+				OrmShape tableShape = getOrCreateDatabaseTable(property.getValue().getTable());
 				createConnections(classShape, tableShape);
 			}
 		}
@@ -311,13 +320,14 @@ public class ElementsFactory {
 					tableShape = getOrCreateDatabaseTable(component.getTable());
 				}
 				createConnections(classShape, tableShape);
-				if (!isConnectionExist(classShape, tableShape)) {
+				if (shouldCreateConnection(classShape, tableShape)) {
 					connections.add(new Connection(classShape, tableShape));
 				}
 				Shape parentShape = ((SpecialOrmShape)classShape).getParentShape();
 				if (parentShape != null) {
-					OrmShape parentClassShape = elements.get(Utils.getName(((Property)parentShape.getOrmElement()).getPersistentClass().getEntityName()));
-					if (!isConnectionExist(parentShape, parentClassShape)) {
+					OrmShape parentClassShape = elements.get(
+							Utils.getName(((Property)parentShape.getOrmElement()).getPersistentClass().getEntityName()));
+					if (shouldCreateConnection(parentShape, parentClassShape)) {
 						connections.add(new Connection(parentShape, parentClassShape));
 					}
 				}
@@ -347,7 +357,7 @@ public class ElementsFactory {
 				tableShape = getOrCreateDatabaseTable(component.getAssociatedClass().getTable());
 			}
 			createConnections(classShape, tableShape);
-			if (!isConnectionExist(classShape, tableShape)) {
+			if (shouldCreateConnection(classShape, tableShape)) {
 				connections.add(new Connection(classShape, tableShape));
 			}
 		}
@@ -381,7 +391,11 @@ public class ElementsFactory {
 	
 	
 	@SuppressWarnings("unchecked")
-	private void createConnections(ExpandableShape persistentClass, ExpandableShape dbTable) {
+	private boolean createConnections(ExpandableShape persistentClass, ExpandableShape dbTable) {
+		boolean res = false;
+		if (persistentClass == null || dbTable == null) {
+			return res;
+		}
 		Property parentProperty = null;
 		if (persistentClass.getOrmElement() instanceof SpecialRootClass) {
 			parentProperty = ((SpecialRootClass)persistentClass.getOrmElement()).getParentProperty();
@@ -421,14 +435,16 @@ public class ElementsFactory {
 						name2 = property2.getName();
 					}
 					if (dbColumn.getName().equals(name2)) {
-						if (!isConnectionExist(shape, shapeCol)) {
+						if (shouldCreateConnection(shape, shapeCol)) {
 							connections.add(new Connection(shape, shapeCol));
+							res = true;
 						}
 						processed.add(shapeCol);
 					}						
 				}
 			}
 		}
+		return res;
 	}
 	
 
@@ -446,5 +462,15 @@ public class ElementsFactory {
 	
 	private boolean isConnectionExist(Shape source, Shape target) {
 		return Utils.isConnectionExist(source, target);
+	}
+	
+	private boolean shouldCreateConnection(Shape source, Shape target) {
+		if (source == null || target == null || source == target) {
+			return false;
+		}
+		if (isConnectionExist(source, target)) {
+			return false;
+		}
+		return true;
 	}
 }
