@@ -13,7 +13,6 @@ package org.jboss.tools.hibernate.ui.diagram.editors;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -275,64 +274,30 @@ public class DiagramViewer extends GraphicalEditor {
 	public boolean isDirty() {
 		return ormDiagram.isDirty();
 	}
-	
-	protected String getItemName(RootClass rootClass) {
-		String res = rootClass.getEntityName();
-		if (res == null) {
-			res = rootClass.getClassName();
-		}
-		if (res == null) {
-			res = rootClass.getNodeName();
-		}
-		res = res.substring(res.lastIndexOf(".") + 1); //$NON-NLS-1$
-		return res;
-	}
 
 	protected void setInput(IEditorInput input) {
 		ObjectEditorInput objectEditorInput = (ObjectEditorInput)input;
 		ConsoleConfiguration configuration = objectEditorInput.getConfiguration();
-		Object obj = objectEditorInput.getObject();
-		setPartName(DiagramViewerMessages.DiagramViewer_diagram_for + " " + getDiagramName(obj)); //$NON-NLS-1$
-		if (obj instanceof RootClass) {
-			RootClass rootClass = (RootClass)obj;
+		ArrayList<RootClass> roots = objectEditorInput.getRootClasses();
+		setPartName(DiagramViewerMessages.DiagramViewer_diagram_for + " " + objectEditorInput.getName()); //$NON-NLS-1$
+		if (roots.size() == 1) {
+			RootClass rootClass = roots.get(0);
 			ormDiagram = new OrmDiagram(configuration, rootClass);
-		} else if (obj instanceof RootClass[]) {
-			RootClass[] rootClasses = (RootClass[])obj;
+		} else if (roots.size() > 1) {
+			RootClass[] rootClasses = roots.toArray(new RootClass[0]);
 			ormDiagram = new OrmDiagram(configuration, rootClasses);
 		}
 		super.setInput(input);
 		loadProperties();
 	}
 
-	protected String getDiagramName(Object obj) {
-		String name = ""; //$NON-NLS-1$
-		if (obj instanceof RootClass) {
-			RootClass rootClass = (RootClass)obj;
-			name = getItemName(rootClass);
-		} else if (obj instanceof RootClass[]) {
-			RootClass[] rootClasses = (RootClass[])obj;
-			ArrayList<String> names = new ArrayList<String>();
-			for (int i = 0; i < rootClasses.length; i++) {
-				names.add(getItemName(rootClasses[i]));
-			}
-			// sort to get same name for same combinations of entities
-			Collections.sort(names);
-			name = names.size() > 0 ? names.get(0) : ""; //$NON-NLS-1$
-			for (int i = 1; i < rootClasses.length; i++) {
-				name += " & " + names.get(i); //$NON-NLS-1$
-			}
-		}
-		return name;
-	}
-
 	public String getDiagramName() {
 		IEditorInput input = getEditorInput();
-		Object obj = null;
 		if (input instanceof ObjectEditorInput) {
 			ObjectEditorInput objectEditorInput = (ObjectEditorInput)input;
-			obj = objectEditorInput.getObject();
+			return objectEditorInput.getName();
 		}
-		return getDiagramName(obj);
+		return ""; //$NON-NLS-1$
 	}
 
 	/**

@@ -58,7 +58,8 @@ public class ElementsFactory {
 		}
 		Iterator<Shape> it = element.getChildrenList().iterator();
 		while (it.hasNext()) {
-			createChildren(it.next());
+			final Shape shape = it.next();
+			createChildren(shape);
 		}
 	}
 	
