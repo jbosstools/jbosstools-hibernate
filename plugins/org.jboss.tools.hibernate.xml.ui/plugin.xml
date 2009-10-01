@@ -68,6 +68,7 @@
          		processor="org.jboss.tools.hibernate.ui.xml.editor.HibernatePropertiesContentAssistProcessor"
          		attributeProcessor="org.jboss.tools.hibernate.ui.xml.editor.HibernatePropertiesContentProposalProvider"
          		fileName="hibernate.properties"
+         		entity="HibConfig3Property"
          />
    </extension>
 

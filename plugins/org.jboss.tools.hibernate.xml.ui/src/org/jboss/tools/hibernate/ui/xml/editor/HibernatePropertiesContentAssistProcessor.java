@@ -31,6 +31,7 @@ import org.jboss.tools.common.meta.XModelEntity;
 import org.jboss.tools.common.meta.constraint.XAttributeConstraint;
 import org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintAList;
 import org.jboss.tools.common.meta.key.WizardKeys;
+import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ui.attribute.adapter.JavaClassContentAssistProvider;
 import org.jboss.tools.common.model.ui.texteditors.propertyeditor.AbstractPropertiesContentAssistProcessor;
 import org.jboss.tools.common.model.util.EclipseJavaUtil;
@@ -54,7 +55,7 @@ public class HibernatePropertiesContentAssistProcessor extends
 
 		List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
-		Map<String, XAttribute> attributes = getAttributes();
+		Map<String, XAttribute> attributes = getAttributes(object);
 
 		if(context.isInComment()) {
 			return new ICompletionProposal[0];
@@ -146,7 +147,7 @@ public class HibernatePropertiesContentAssistProcessor extends
 
 	static Map<String, XAttribute> attributes = null;
 
-	public Map<String, XAttribute> getAttributes() {
+	public static Map<String, XAttribute> getAttributes(XModelObject object) {
 		if(attributes == null) {
 			attributes = new TreeMap<String, XAttribute>();
 			XModelEntity entity = object.getModel().getMetaData().getEntity("HibConfig3PropertiesFolder"); //$NON-NLS-1$
