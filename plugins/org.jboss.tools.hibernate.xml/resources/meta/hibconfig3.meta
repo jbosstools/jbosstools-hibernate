@@ -1662,7 +1662,6 @@
    <XModelAttribute PROPERTIES="save=always;id=true;category=general"
     name="name" xmlname="name">
     <Constraint loader="ListString"/>
-    <Editor name="HibernatePropertyList"/>
    </XModelAttribute>
    <XModelAttribute name="value" xmlname="#text"/>
    <XModelAttribute TRIM="no" name="comment" visibility="false" xmlname="#comment">
