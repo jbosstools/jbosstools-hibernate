@@ -67,10 +67,7 @@ public class HibernatePropertiesContentAssistProcessor extends
 			String[] ps = attributes.keySet().toArray(new String[0]);
 			for (int i = 0; i < ps.length; i++) {
 				if(context.hasProperty(ps[i])) continue;
-				String description = WizardKeys.getString(ps[i] + ".description"); //$NON-NLS-1$
-				if("@NULL_KEY@".equals(description) || description == null) {
-					description = ps[i] + "<p>TODO - add description into keys-hibernate-config.properties";
-				}
+				String description = getDescription(ps[i]);
 				if(ps[i].startsWith(namePrefix)) {
 					CompletionProposal proposal = new CompletionProposal(
 							ps[i],
@@ -120,13 +117,7 @@ public class HibernatePropertiesContentAssistProcessor extends
 					IJavaProject jp = EclipseResourceUtil.getJavaProject(project);
 					if(ps != null) for (int i = 0; i < ps.length; i++) {
 						String value = ps[i].getContent();
-						String descr = null;
-						if(jp != null) try {
-							IType type = EclipseJavaUtil.findType(jp, value);
-							if(type != null) descr = JavadocContentAccess2.getHTMLContent(type, true);
-						} catch (JavaModelException e) {
-							//ignore
-						}
+						String descr = getDescription(jp, value);
 						CompletionProposal proposal = new CompletionProposal(
 								value,
 								valueOffset,
@@ -170,4 +161,26 @@ public class HibernatePropertiesContentAssistProcessor extends
 		
 	}
 
+	public static String getDescription(String propertyName) {
+		String dot = "."; //$NON-NLS-1$
+		String key = propertyName;
+		if(!key.endsWith(dot)) key += dot;
+		key += "description"; //$NON-NLS-1$
+		String description = WizardKeys.getString(key);
+		if("@NULL_KEY@".equals(description) || description == null) {
+			description = propertyName + "<p>TODO - add description into keys-hibernate-config.properties";
+		}
+		return description;
+	}
+
+	public static String getDescription(IJavaProject jp, String value) {
+		String descr = null;
+		if(jp != null) try {
+			IType type = EclipseJavaUtil.findType(jp, value);
+			if(type != null) descr = JavadocContentAccess2.getHTMLContent(type, true);
+		} catch (JavaModelException e) {
+			//ignore
+		}
+		return descr;
+	}
 }

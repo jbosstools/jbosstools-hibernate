@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.jface.fieldassist.IContentProposalProvider;
 import org.jboss.tools.common.meta.XAttribute;
@@ -26,6 +28,7 @@ import org.jboss.tools.common.model.loaders.impl.PropertiesLoader;
 import org.jboss.tools.common.model.ui.attribute.AttributeContentProposalProviderFactory;
 import org.jboss.tools.common.model.ui.attribute.adapter.JavaClassContentAssistProvider;
 import org.jboss.tools.common.model.ui.attribute.adapter.PropertiesContentProposalProvider;
+import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.hibernate.xml.model.impl.HibConfigComplexPropertyImpl;
 
 /**
@@ -52,7 +55,7 @@ public class HibernatePropertiesContentProposalProvider extends PropertiesConten
 					String prop = (dot < 0) ? ps[i] : ps[i].substring(0, dot + 1);
 					if(unique.contains(prop)) continue;
 					unique.add(prop);
-					IContentProposal cp = AttributeContentProposalProviderFactory.makeContentProposal(prop, prop);
+					IContentProposal cp = AttributeContentProposalProviderFactory.makeContentProposal(prop, prop, HibernatePropertiesContentAssistProcessor.getDescription(prop));
 					result.add(cp);
 				}
 			}			
@@ -70,7 +73,7 @@ public class HibernatePropertiesContentProposalProvider extends PropertiesConten
 					for (int i = 0; i < vs.length; i++) {
 						if(vs[i].length() == 0) continue;
 						if(vs[i].startsWith(valuePrefix)) {
-							IContentProposal cp = AttributeContentProposalProviderFactory.makeContentProposal(vs[i], vs[i]);
+							IContentProposal cp = AttributeContentProposalProviderFactory.makeContentProposal(vs[i], vs[i], null);
 							result.add(cp);
 						}
 					}
@@ -79,7 +82,18 @@ public class HibernatePropertiesContentProposalProvider extends PropertiesConten
 					p.init(object, null, attr);
 					IContentProposalProvider pp = p.getContentProposalProvider();
 					IContentProposal[] ps = pp.getProposals(valuePrefix, valuePrefix.length());
-					return ps;
+					IJavaProject jp = getJavaProject();
+					for (int i = 0; i < ps.length; i++) {
+						String descr = ps[i].getDescription();
+						if(descr == null || descr.length() == 0) {
+							String value = ps[i].getContent();
+							descr = HibernatePropertiesContentAssistProcessor.getDescription(jp, value);
+							IContentProposal p2 = AttributeContentProposalProviderFactory.makeContentProposal(value, ps[i].getLabel(), descr);
+							result.add(p2);
+						} else {
+							result.add(ps[i]);
+						}
+					}
 				} else {
 					//TODO
 				}
@@ -108,4 +122,8 @@ public class HibernatePropertiesContentProposalProvider extends PropertiesConten
 		
 	}
 
+	IJavaProject getJavaProject() {
+		IProject project = EclipseResourceUtil.getProject(object);
+		return EclipseResourceUtil.getJavaProject(project);		
+	}
 }
