@@ -111,7 +111,7 @@ public class HibernatePropertiesContentAssistProcessor extends
 					}
 				} else if("AccessibleJava".equals(attr.getEditor().getName())) { //$NON-NLS-1$
 					JavaClassContentAssistProvider p = new JavaClassContentAssistProvider();
-					p.init(object, attr);
+					p.init(object, null, attr);
 					IContentProposalProvider pp = p.getContentProposalProvider();
 					IContentProposal[] ps = pp.getProposals(valuePrefix, valuePrefix.length());
 					IProject project = EclipseResourceUtil.getProject(object);
