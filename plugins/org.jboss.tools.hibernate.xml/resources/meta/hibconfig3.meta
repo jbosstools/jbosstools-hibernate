@@ -1261,12 +1261,14 @@
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.hbm2ddl.auto" name="hbm2ddl auto">
-    <Constraint loader="List">
+    <Constraint loader="ListString">
      <value/>
-     <value name="true"/>
-     <value name="false"/>
+     <value name="validate"/>
+     <value name="update"/>
+     <value name="create"/>
+     <value name="create-drop"/>
     </Constraint>
-    <Editor name="List"/>
+    <Editor name="ListString"/>
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.jacc_context_id" name="jacc context id"/>
