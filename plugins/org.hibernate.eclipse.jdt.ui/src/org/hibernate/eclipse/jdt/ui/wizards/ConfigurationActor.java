@@ -1,5 +1,5 @@
 /*******************************************************************************
-  * Copyright (c) 2007-2008 Red Hat, Inc.
+  * Copyright (c) 2008-2009 Red Hat, Inc.
   * Distributed under license by Red Hat, Inc. All rights reserved.
   * This program is made available under the terms of the
   * Eclipse Public License v1.0 which accompanies this distribution,
@@ -39,6 +39,7 @@ import org.eclipse.jdt.core.dom.WildcardType;
 import org.hibernate.FetchMode;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Mappings;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefEntityInfo;
@@ -181,8 +182,7 @@ public class ConfigurationActor {
 					entry.setValue(subclass);
 				}
 			} catch (JavaModelException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				HibernateConsolePlugin.getDefault().log(e);
 			}			
 		}
 		return pcCopy.values();
@@ -248,8 +248,8 @@ class ProcessEntityInfo extends ASTVisitor {
 			Table table = new Table(className.toUpperCase());
 			RootClass rootClass = new RootClass();
 			rootClass.setEntityName( className );
-			rootClass.setClassName( entryInfo.getFullyQualifiedName() );				
-			rootClass.setProxyInterfaceName( className );
+			rootClass.setClassName( entryInfo.getFullyQualifiedName() );
+			rootClass.setProxyInterfaceName( entryInfo.getFullyQualifiedName() );
 			rootClass.setLazy(true);
 			rootClass.setTable(table);
 			rootClass.setAbstract(entryInfo.isAbstractFlag());//abstract or interface
@@ -406,7 +406,7 @@ class TypeVisitor extends ASTVisitor{
 			key.addColumn(new Column(entityInfo.getPrimaryIdName().toUpperCase()));
 		}
 		array.setKey(key);
-		array.setFetchMode(FetchMode.SELECT);
+		array.setFetchMode(FetchMode.JOIN);
 		SimpleValue index = new SimpleValue();
 		
 		//add default index
@@ -511,7 +511,7 @@ class TypeVisitor extends ASTVisitor{
 			Column column = new Column(varName.toUpperCase());
 			sValue.addColumn(column);					
 			sValue.setTypeName(tb.getBinaryName());
-			sValue.setFetchMode(FetchMode.SELECT);
+			sValue.setFetchMode(FetchMode.JOIN);
 			sValue.setReferencedEntityName(ref.fullyQualifiedName);
 			buildProperty(sValue);
 			prop.setCascade("none");//$NON-NLS-1$
