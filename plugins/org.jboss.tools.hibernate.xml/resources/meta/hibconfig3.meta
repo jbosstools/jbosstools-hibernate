@@ -4,6 +4,11 @@
 <XModelEntityGroup>
  <VERSION DEPENDS="Model:1.0" MODULE="Hibernate" VERSION="1.0"/>
  <MAPPINGS>
+  <MAPPING name="AttributeConstraints">
+   <PAIR name="IntEL" value="org.jboss.tools.hibernate.xml.model.constraint.IntELConstraint"/>
+   <PAIR name="ListEL" value="org.jboss.tools.hibernate.xml.model.constraint.ListELConstraint"/>
+   <PAIR name="ListIntEL" value="org.jboss.tools.hibernate.xml.model.constraint.ListIntELConstraint"/>
+  </MAPPING>
   <MAPPING name="Implementations">
    <PAIR name="ComplexProperty" value="org.jboss.tools.hibernate.xml.model.impl.HibConfigComplexPropertyImpl"/>
   </MAPPING>
@@ -904,7 +909,7 @@
     PROPERTIES="category=general;h_property=hibernate.bytecode.provider" name="provider"/>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.bytecode.use_reflection_optimizer" name="use reflection optimizer">
-    <Constraint loader="List">
+    <Constraint loader="%ListEL%">
      <value/>
      <value name="true"/>
      <value name="false"/>
@@ -943,42 +948,42 @@
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.c3p0.acquire_increment" name="acquire increment">
-    <Constraint loader="Int">
+    <Constraint loader="%IntEL%">
      <value name="mandatory=false"/>
     </Constraint>
     <Editor name="Int"/>
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.c3p0.idle_test_period" name="idle test period">
-    <Constraint loader="Int">
+    <Constraint loader="%IntEL%">
      <value name="mandatory=false"/>
     </Constraint>
     <Editor name="Int"/>
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.c3p0.max_size" name="max size">
-    <Constraint loader="Int">
+    <Constraint loader="%IntEL%">
      <value name="mandatory=false"/>
     </Constraint>
     <Editor name="Int"/>
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.c3p0.max_statements" name="max statements">
-    <Constraint loader="Int">
+    <Constraint loader="%IntEL%">
      <value name="mandatory=false"/>
     </Constraint>
     <Editor name="Int"/>
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.c3p0.min_size" name="min size">
-    <Constraint loader="Int">
+    <Constraint loader="%IntEL%">
      <value name="mandatory=false"/>
     </Constraint>
     <Editor name="Int"/>
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.c3p0.timeout" name="timeout">
-    <Constraint loader="Int">
+    <Constraint loader="%IntEL%">
      <value name="mandatory=false"/>
     </Constraint>
     <Editor name="Int"/>
@@ -1029,7 +1034,7 @@
     PROPERTIES="category=general;h_property=hibernate.cache.region_prefix" name="region prefix"/>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.cache.use_minimal_puts" name="use minimal puts">
-    <Constraint loader="List">
+    <Constraint loader="%ListEL%">
      <value/>
      <value name="true"/>
      <value name="false"/>
@@ -1038,7 +1043,7 @@
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.cache.use_query_cache" name="use query cache">
-    <Constraint loader="List">
+    <Constraint loader="%ListEL%">
      <value/>
      <value name="true"/>
      <value name="false"/>
@@ -1047,7 +1052,7 @@
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.cache.use_second_level_cache" name="use second level cache">
-    <Constraint loader="List">
+    <Constraint loader="%ListEL%">
      <value/>
      <value name="true"/>
      <value name="false"/>
@@ -1056,7 +1061,7 @@
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.cache.use_structured_entries" name="use structured entries">
-    <Constraint loader="List">
+    <Constraint loader="%ListEL%">
      <value/>
      <value name="true"/>
      <value name="false"/>
@@ -1106,7 +1111,7 @@
     PROPERTIES="category=general;h_property=hibernate.connection.password" name="password"/>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.connection.pool_size" name="pool size">
-    <Constraint loader="Int">
+    <Constraint loader="%IntEL%">
      <value name="mandatory=false"/>
     </Constraint>
     <Editor name="Int"/>
@@ -1115,7 +1120,7 @@
     PROPERTIES="category=advanced;h_property=hibernate.connection" name="connection"/>
    <XModelAttribute
     PROPERTIES="category=advanced;h_property=hibernate.connection.autocommit" name="autocommit">
-    <Constraint loader="List">
+    <Constraint loader="%ListEL%">
      <value/>
      <value name="true"/>
      <value name="false"/>
@@ -1132,7 +1137,7 @@
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=advanced;h_property=hibernate.connection.release_mode" name="release mode">
-    <Constraint loader="List">
+    <Constraint loader="%ListEL%">
      <value/>
      <value name="on_close"/>
      <value name="after_transaction"/>
@@ -1202,7 +1207,7 @@
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.show_sql" name="show sql">
-    <Constraint loader="List">
+    <Constraint loader="%ListEL%">
      <value/>
      <value name="true"/>
      <value name="false"/>
@@ -1211,7 +1216,7 @@
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.use_sql_comments" name="use sql comments">
-    <Constraint loader="List">
+    <Constraint loader="%ListEL%">
      <value/>
      <value name="true"/>
      <value name="false"/>
@@ -1220,7 +1225,7 @@
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.format_sql" name="format sql">
-    <Constraint loader="List">
+    <Constraint loader="%ListEL%">
      <value/>
      <value name="true"/>
      <value name="false"/>
@@ -1229,7 +1234,7 @@
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.default_batch_fetch_size" name="default batch fetch size">
-    <Constraint loader="Int">
+    <Constraint loader="%IntEL%">
      <value name="mandatory=false"/>
     </Constraint>
     <Editor name="Int"/>
@@ -1238,7 +1243,7 @@
     PROPERTIES="category=general;h_property=hibernate.default_catalog" name="default catalog"/>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.default_entity_mode" name="default entity mode">
-    <Constraint loader="List">
+    <Constraint loader="%ListEL%">
      <value/>
      <value name="dynamic-map"/>
      <value name="dom4j"/>
@@ -1252,7 +1257,7 @@
     PROPERTIES="category=general;h_property=hibernate.current_session_context_class" name="current session context class"/>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.generate_statistics" name="generate statistics">
-    <Constraint loader="List">
+    <Constraint loader="%ListEL%">
      <value/>
      <value name="true"/>
      <value name="false"/>
@@ -1274,14 +1279,14 @@
     PROPERTIES="category=general;h_property=hibernate.jacc_context_id" name="jacc context id"/>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.max_fetch_depth" name="max fetch depth">
-    <Constraint loader="Int">
+    <Constraint loader="%IntEL%">
      <value name="mandatory=false"/>
     </Constraint>
     <Editor name="Int"/>
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.order_inserts" name="order inserts">
-    <Constraint loader="List">
+    <Constraint loader="%ListEL%">
      <value/>
      <value name="true"/>
      <value name="false"/>
@@ -1290,7 +1295,7 @@
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.order_updates" name="order updates">
-    <Constraint loader="List">
+    <Constraint loader="%ListEL%">
      <value/>
      <value name="true"/>
      <value name="false"/>
@@ -1301,7 +1306,7 @@
     PROPERTIES="category=general;h_property=hibernate.session_factory_name" name="session factory name"/>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.use_identifier_rollback" name="use identifier rollback">
-    <Constraint loader="List">
+    <Constraint loader="%ListEL%">
      <value/>
      <value name="true"/>
      <value name="false"/>
@@ -1340,7 +1345,7 @@
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.jdbc.batch_size" name="batch size">
-    <Constraint loader="Int">
+    <Constraint loader="%IntEL%">
      <value name="mandatory=false"/>
     </Constraint>
     <Editor name="Int"/>
@@ -1351,7 +1356,7 @@
     PROPERTIES="category=general;h_property=hibernate.jdbc.factory_class" name="factory class"/>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.jdbc.fetch_size" name="fetch size">
-    <Constraint loader="Int">
+    <Constraint loader="%IntEL%">
      <value name="mandatory=false"/>
     </Constraint>
     <Editor name="Int"/>
@@ -1360,7 +1365,7 @@
     PROPERTIES="category=general;h_property=hibernate.jdbc.sql_exception_converter" name="sql exception converter"/>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.jdbc.use_get_generated_keys" name="use get generated keys">
-    <Constraint loader="List">
+    <Constraint loader="%ListEL%">
      <value/>
      <value name="true"/>
      <value name="false"/>
@@ -1369,7 +1374,7 @@
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.jdbc.use_scrollable_resultset" name="use scrollable resultset">
-    <Constraint loader="List">
+    <Constraint loader="%ListEL%">
      <value/>
      <value name="true"/>
      <value name="false"/>
@@ -1378,7 +1383,7 @@
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.jdbc.use_streams_for_binary" name="use streams for binary">
-    <Constraint loader="List">
+    <Constraint loader="%ListEL%">
      <value/>
      <value name="true"/>
      <value name="false"/>
@@ -1387,7 +1392,7 @@
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.jdbc.wrap_result_sets" name="wrap result sets">
-    <Constraint loader="List">
+    <Constraint loader="%ListEL%">
      <value/>
      <value name="true"/>
      <value name="false"/>
@@ -1508,7 +1513,7 @@
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.query.jpaql_strict_compliance" name="jpaql strict compliance">
-    <Constraint loader="List">
+    <Constraint loader="%ListEL%">
      <value/>
      <value name="true"/>
      <value name="false"/>
@@ -1517,7 +1522,7 @@
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.query.startup_check" name="startup check">
-    <Constraint loader="List">
+    <Constraint loader="%ListEL%">
      <value/>
      <value name="true"/>
      <value name="false"/>
@@ -1558,7 +1563,7 @@
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.transaction.auto_close_session" name="auto close session">
-    <Constraint loader="List">
+    <Constraint loader="%ListEL%">
      <value/>
      <value name="true"/>
      <value name="false"/>
@@ -1571,7 +1576,7 @@
    </XModelAttribute>
    <XModelAttribute
     PROPERTIES="category=general;h_property=hibernate.transaction.flush_before_completion" name="flush before completion">
-    <Constraint loader="List">
+    <Constraint loader="%ListEL%">
      <value/>
      <value name="true"/>
      <value name="false"/>

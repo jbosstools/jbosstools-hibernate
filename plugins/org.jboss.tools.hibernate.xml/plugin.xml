@@ -107,6 +107,14 @@
 		
 		<xclass id="org.jboss.tools.hibernate.xml.model.GrantActionsConstraint"
 			class="org.jboss.tools.hibernate.xml.model.GrantActionsConstraint"/>
+			
+			
+		<xclass id="org.jboss.tools.hibernate.xml.model.constraint.IntELConstraint"
+			class="org.jboss.tools.hibernate.xml.model.constraint.IntELConstraint"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.constraint.ListELConstraint"
+			class="org.jboss.tools.hibernate.xml.model.constraint.ListELConstraint"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.constraint.ListIntELConstraint"
+			class="org.jboss.tools.hibernate.xml.model.constraint.ListIntELConstraint"/>
    </extension>
 
 </plugin>

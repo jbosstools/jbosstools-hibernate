@@ -8,6 +8,7 @@ Bundle-SymbolicName: org.jboss.tools.hibernate.xml;singleton:=true
 Bundle-Localization: plugin
 Export-Package: org.jboss.tools.hibernate.xml,
  org.jboss.tools.hibernate.xml.model,
+ org.jboss.tools.hibernate.xml.model.constraint,
  org.jboss.tools.hibernate.xml.model.handlers,
  org.jboss.tools.hibernate.xml.model.impl
 Require-Bundle: org.eclipse.ui.ide,
