@@ -16,13 +16,7 @@ import org.eclipse.jpt.core.context.Column;
  * @author Dmitry Geraskov
  *
  */
-public interface HibernateColumn extends Column {
-
-	String getDBColumnName();
-
-	String getSpecifiedDBColumnName();
-
-	String getDefaultDBColumnName();
+public interface HibernateColumn extends Column, HibernateNamedColumn {
 	
 	//**** Table ****
 	

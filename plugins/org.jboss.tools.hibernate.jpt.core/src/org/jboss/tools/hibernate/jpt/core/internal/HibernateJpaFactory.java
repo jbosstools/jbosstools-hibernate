@@ -13,6 +13,7 @@ package org.jboss.tools.hibernate.jpt.core.internal;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
@@ -60,6 +61,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaBasicMappingImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaColumnImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaDiscriminatorColumnImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEmbeddable;
@@ -204,6 +206,10 @@ public class HibernateJpaFactory extends GenericJpaFactory {
 	@Override
 	public HibernateJavaTable buildJavaTable(JavaEntity parent) {
 		return new HibernateJavaTableImpl(parent);
+	}
+	
+	public JavaBasicMapping buildJavaBasicMapping(JavaPersistentAttribute parent) {
+		return new HibernateJavaBasicMappingImpl(parent);
 	}
 	
 	// ********** ORM Context Model **********

@@ -8,22 +8,21 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateEntity;
+package org.jboss.tools.hibernate.jpt.core.internal.context;
+
+import org.eclipse.jpt.core.context.NamedColumn;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface HibernateJavaEntity extends HibernateEntity, JavaEntity {
-
-	JavaDiscriminatorFormula getDiscriminatorFormula();
+public interface HibernateNamedColumn extends NamedColumn {
 	
-	JavaDiscriminatorFormula addDiscriminatorFormula();
+	String getDBColumnName();
 	
-	void removeDiscriminatorFormula();
+	String getSpecifiedDBColumnName();
+	
+	String getDefaultDBColumnName();
 
-	HibernateJavaTable getTable();
 }

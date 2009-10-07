@@ -21,12 +21,6 @@ public interface HibernateEntity extends Entity,
 	
 	String DISCRIMINATOR_FORMULA_PROPERTY = "discriminatorFormula"; //$NON-NLS-1$
 	
-	DiscriminatorFormula getDiscriminatorFormula();
-	
-	DiscriminatorFormula addDiscriminatorFormula();
-	
-	void removeDiscriminatorFormula();
-	
 	HibernateTable getTable();
 	
 	//Column getPrimaryIdColumn();

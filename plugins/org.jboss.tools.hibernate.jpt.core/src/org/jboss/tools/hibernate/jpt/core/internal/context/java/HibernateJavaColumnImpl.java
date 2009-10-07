@@ -13,6 +13,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaColumn;
+import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.core.Message;
@@ -28,7 +29,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceU
  *
  */
 public class HibernateJavaColumnImpl extends GenericJavaColumn implements HibernateJavaColumn {
-
+	
 	public HibernateJavaColumnImpl(JavaJpaContextNode parent, JavaColumn.Owner owner) {
 		super(parent, owner);
 	}
@@ -37,6 +38,14 @@ public class HibernateJavaColumnImpl extends GenericJavaColumn implements Hibern
 	public HibernateJpaProject getJpaProject() {
 		return (HibernateJpaProject) super.getJpaProject();
 	}
+	
+	@Override
+	public void initialize(ColumnAnnotation column) {
+		super.initialize(column);
+		//this.initializGenerated();
+	}
+	
+	//********* DB Column name ******************
 
 	@Override
 	public Column getDbColumn() {
@@ -82,6 +91,8 @@ public class HibernateJavaColumnImpl extends GenericJavaColumn implements Hibern
 		}
 		return super.buildDefaultName();
 	}
+	
+	//************ DB Table name ***********
 
 	public String getDBTableName() {
 		return getSpecifiedDBTableName() != null ? getSpecifiedDBTableName()
@@ -106,5 +117,32 @@ public class HibernateJavaColumnImpl extends GenericJavaColumn implements Hibern
 		}
 		return this.getSpecifiedTable();
 	}
+	
+	//********** Generated ************
+	/*private void initializGenerated() {
+		GeneratedAnnotation generatedResource = getGeneratedResource();
+		if (generatedResource != null) {
+			this.generated = buildGenerated(generatedResource);
+		}
+	}
+	
+	public GeneratedAnnotation getGeneratedResource() {
+		return (GeneratedAnnotation) this.javaResourcePersistentType.getSupportingAnnotation(GeneratedAnnotation.ANNOTATION_NAME);
+	}
+
+	public JavaGenerated addGenerated() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public JavaGenerated getGenerated() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void removeGenerated() {
+		// TODO Auto-generated method stub
+		
+	}*/
 	
 }

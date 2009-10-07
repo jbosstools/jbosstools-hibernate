@@ -17,12 +17,8 @@ import org.eclipse.jpt.core.context.DiscriminatorColumn;
  * @author Dmitry Geraskov
  *
  */
-public interface HibernateDiscriminatorColumn extends DiscriminatorColumn {
+public interface HibernateDiscriminatorColumn extends DiscriminatorColumn,
+HibernateNamedColumn {
 
-	String getDBColumnName();
-
-	String getSpecifiedDBColumnName();
-
-	String getDefaultDBColumnName();
 	
 }

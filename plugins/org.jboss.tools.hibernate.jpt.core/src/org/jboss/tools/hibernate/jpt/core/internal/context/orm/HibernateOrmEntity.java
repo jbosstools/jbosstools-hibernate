@@ -12,7 +12,6 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmEntity;
-import org.jboss.tools.hibernate.jpt.core.internal.context.DiscriminatorFormula;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateEntity;
 
 /**
@@ -21,9 +20,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateEntity;
  */
 public interface HibernateOrmEntity extends HibernateEntity, OrmEntity {
 
-	DiscriminatorFormula getDiscriminatorFormula();
-	
-	DiscriminatorFormula addDiscriminatorFormula();
-
 	HibernateOrmTable getTable();
+
 }

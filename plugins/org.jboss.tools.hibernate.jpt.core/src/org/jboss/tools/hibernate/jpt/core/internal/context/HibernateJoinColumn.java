@@ -18,13 +18,7 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
  * @author Dmitry Geraskov
  *
  */
-public interface HibernateJoinColumn extends JoinColumn {
-	
-	String getDBColumnName();
-
-	String getSpecifiedDBColumnName();
-
-	String getDefaultDBColumnName();
+public interface HibernateJoinColumn extends JoinColumn, HibernateNamedColumn {
 	
 	//**** referenced column
 	

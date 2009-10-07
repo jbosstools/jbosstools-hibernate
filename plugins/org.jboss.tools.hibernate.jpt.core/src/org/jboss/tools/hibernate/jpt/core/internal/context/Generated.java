@@ -8,21 +8,19 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import org.eclipse.jpt.core.context.BaseColumn;
+import org.eclipse.jpt.core.context.JpaContextNode;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface HibernateBaseColumn extends BaseColumn {
+public interface Generated extends JpaContextNode {
+
+	GenerationTime getGenerationTime();
 	
-	String getDBColumnName();
-	
-	String getSpecifiedDBColumnName();
-	
-	String getDefaultDBColumnName();
+	void setGenerationTime(GenerationTime value);
+		String GENERATION_TIME_PROPERTY = "value"; //$NON-NLS-1$
 
 }

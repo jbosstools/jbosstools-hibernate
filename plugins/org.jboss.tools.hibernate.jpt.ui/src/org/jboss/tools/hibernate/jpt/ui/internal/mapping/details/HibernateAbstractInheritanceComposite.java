@@ -19,6 +19,7 @@ import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.mappings.details.AbstractEntityComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.AbstractInheritanceComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.DiscriminatorColumnComposite;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -32,6 +33,7 @@ import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateEntity;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 
 /**
  * Here the layout of this pane:
@@ -103,6 +105,7 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 		super(parentPane, parent, false);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -141,7 +144,12 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 	
 		new ControlEnabler(buildDiscriminatorValueEnabledHolder(), discriminatorValueCombo, discriminatorValueLabel);
 		
-		new HibernateDiscriminatorColumnComposite<HibernateEntity>(this, container);
+		if (getSubject() instanceof HibernateJavaEntity) {
+			new HibernateDiscriminatorColumnComposite((FormPane<? extends HibernateJavaEntity>) this, container);			
+		} else {
+			new DiscriminatorColumnComposite<Entity>(this, container);
+		}
+		
 
 		// Primary Key Join Columns widgets
 		addPrimaryKeyJoinColumnsComposite(addSubPane(container, 5));

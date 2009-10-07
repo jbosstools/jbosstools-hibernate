@@ -44,6 +44,7 @@ public class HibernateUIMappingMessages extends NLS {
 	public static String HibernateIdMappingComposite_genericGeneratorSection;
 	public static String HibernateIdMappingComposite_genericGeneratorCheckBox;
 	public static String HibernateDiscriminatorColumnComposite_formula;
+	public static String BasicGeneralSection_generated;
 
 	private HibernateUIMappingMessages() {}
 

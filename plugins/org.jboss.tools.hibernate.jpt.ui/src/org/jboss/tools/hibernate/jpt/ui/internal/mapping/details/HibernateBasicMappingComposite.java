@@ -33,6 +33,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.jboss.tools.hibernate.jpt.core.internal.context.Generated;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateColumn;
 
 /**
@@ -106,6 +107,7 @@ public class HibernateBasicMappingComposite extends FormPane<BasicMapping>
 		initializeTypePane(container);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void initializeGeneralPane(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
 
@@ -114,6 +116,10 @@ public class HibernateBasicMappingComposite extends FormPane<BasicMapping>
 		// Align the widgets under the ColumnComposite
 		container = addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 
+		if (getSubject() instanceof Generated) {
+			new GeneratedComposite((FormPane<? extends Generated>) this, container);			
+		}
+		
 		new FetchTypeComposite(this, container);
 		new OptionalComposite(this, addSubPane(container, 4));
 

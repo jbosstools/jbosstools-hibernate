@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.jboss.tools.hibernate.jpt.core.internal.context.DiscriminatorFormula;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateEntity;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.ui.internal.mappings.db.xpl.ColumnCombo;
 
 /**
@@ -74,7 +74,7 @@ import org.jboss.tools.hibernate.jpt.ui.internal.mappings.db.xpl.ColumnCombo;
  * @version 2.0
  * @since 2.0
  */
-public class HibernateDiscriminatorColumnComposite <T extends HibernateEntity> extends FormPane<T> {
+public class HibernateDiscriminatorColumnComposite extends FormPane<HibernateJavaEntity> {
 	
 	private WritablePropertyValueModel<DiscriminatorFormula> discriminatorFormulaHolder;
 
@@ -84,7 +84,7 @@ public class HibernateDiscriminatorColumnComposite <T extends HibernateEntity> e
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public HibernateDiscriminatorColumnComposite(FormPane<? extends T> parentPane,
+	public HibernateDiscriminatorColumnComposite(FormPane<? extends HibernateJavaEntity> parentPane,
 	                            Composite parent) {
 
 		super(parentPane, parent, false);

@@ -30,7 +30,6 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
-import org.jboss.tools.hibernate.jpt.core.internal.context.DiscriminatorFormula;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
@@ -138,16 +137,6 @@ implements HibernateOrmEntity {
 	}
 	
 	//******** TODO **********
-
-	public DiscriminatorFormula addDiscriminatorFormula() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public DiscriminatorFormula getDiscriminatorFormula() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	public void removeDiscriminatorFormula() {
 		// TODO Auto-generated method stub		
