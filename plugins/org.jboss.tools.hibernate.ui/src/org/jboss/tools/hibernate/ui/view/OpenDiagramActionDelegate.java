@@ -104,12 +104,12 @@ public class OpenDiagramActionDelegate implements IObjectActionDelegate {
 	}
 
 	public IEditorPart openEditor(PersistentClass persClass,
-			ConsoleConfiguration consoleConfiguration) throws PartInitException {
-		ObjectEditorInput input = new ObjectEditorInput(consoleConfiguration, persClass.getRootClass());
+			ConsoleConfiguration consoleConfig) throws PartInitException {
+		DiagramEditorInput input = new DiagramEditorInput(consoleConfig.getName(), persClass.getRootClass());
 		return IDE.openEditor(UiPlugin.getPage(), input, "org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer");		//$NON-NLS-1$
 	}
 
-	public IEditorPart openEditor(Set<PersistentClass> setPC, ConsoleConfiguration consoleConfiguration) throws PartInitException {
+	public IEditorPart openEditor(Set<PersistentClass> setPC, ConsoleConfiguration consoleConfig) throws PartInitException {
 		
 		if (setPC.size() <= 0) {
 			return null;
@@ -121,7 +121,7 @@ public class OpenDiagramActionDelegate implements IObjectActionDelegate {
     		persClass = it.next();
     		rcArr[i++] = persClass.getRootClass();
     	}
-		ObjectEditorInput input = new ObjectEditorInput(consoleConfiguration, rcArr);
+		DiagramEditorInput input = new DiagramEditorInput(consoleConfig.getName(), rcArr);
 		return IDE.openEditor(UiPlugin.getPage(), input, "org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer");		//$NON-NLS-1$
 	}
 }

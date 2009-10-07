@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 
@@ -29,6 +30,7 @@ import org.eclipse.ui.views.properties.IPropertySource;
  */
 public abstract class BaseElement implements IPropertySource, Comparable<BaseElement> {
 
+	public static final String CLASS_NAME = "className"; //$NON-NLS-1$
 	public static final String SELECTED = "selected"; //$NON-NLS-1$
 	public static final String VISIBLE = "visible"; //$NON-NLS-1$
 	public static final String VISIBLE_CHILDREN = "visibileChildren"; //$NON-NLS-1$
@@ -266,33 +268,90 @@ public abstract class BaseElement implements IPropertySource, Comparable<BaseEle
 	 * @return key value for object of this class
 	 */
 	public abstract String getKey();
+	
+	public void setPrValue(IMemento memento, String propertyName, boolean value) {
+		Utils.setPropertyValue(memento, getKey() + "." + propertyName, value); //$NON-NLS-1$
+	}
+	
+	public boolean getPrValue(IMemento memento, String propertyName, boolean def) {
+		return Utils.getPropertyValue(memento, getKey() + "." + propertyName, def); //$NON-NLS-1$
+	}
+	
+	public void setPrValue(Properties properties, String propertyName, boolean value) {
+		Utils.setPropertyValue(properties, getKey() + "." + propertyName, value); //$NON-NLS-1$
+	}
+	
+	public boolean getPrValue(Properties properties, String propertyName, boolean def) {
+		return Utils.getPropertyValue(properties, getKey() + "." + propertyName, def); //$NON-NLS-1$
+	}
+	
+	public void setPrValue(IMemento memento, String propertyName, int value) {
+		Utils.setPropertyValue(memento, getKey() + "." + propertyName, Integer.toString(value)); //$NON-NLS-1$
+	}
+	
+	public int getPrValue(IMemento memento, String propertyName, int def) {
+		return Utils.getPropertyValue(memento, getKey() + "." + propertyName, def); //$NON-NLS-1$
+	}
+	
+	public void setPrValue(Properties properties, String propertyName, int value) {
+		Utils.setPropertyValue(properties, getKey() + "." + propertyName, Integer.toString(value)); //$NON-NLS-1$
+	}
+	
+	public int getPrValue(Properties properties, String propertyName, int def) {
+		return Utils.getPropertyValue(properties, getKey() + "." + propertyName, def); //$NON-NLS-1$
+	}
+	
+	public void setPrValue(IMemento memento, String propertyName, double value) {
+		Utils.setPropertyValue(memento, getKey() + "." + propertyName, Double.toString(value)); //$NON-NLS-1$
+	}
+	
+	public double getPrValue(IMemento memento, String propertyName, double def) {
+		return Utils.getPropertyValue(memento, getKey() + "." + propertyName, def); //$NON-NLS-1$
+	}
+	
+	public void setPrValue(Properties properties, String propertyName, double value) {
+		Utils.setPropertyValue(properties, getKey() + "." + propertyName, Double.toString(value)); //$NON-NLS-1$
+	}
+	
+	public double getPrValue(Properties properties, String propertyName, double def) {
+		return Utils.getPropertyValue(properties, getKey() + "." + propertyName, def); //$NON-NLS-1$
+	}
 
-	protected void setPropertyValue(Properties properties, String key, boolean value) {
-		if (properties.containsKey(key)) {
-			properties.remove(key);
+	public void setPrValue(IMemento memento, String propertyName, String value) {
+		Utils.setPropertyValue(memento, getKey() + "." + propertyName, value); //$NON-NLS-1$
+	}
+	
+	public String getPrValue(IMemento memento, String propertyName, String def) {
+		return Utils.getPropertyValue(memento, getKey() + "." + propertyName, def); //$NON-NLS-1$
+	}
+	
+	public void setPrValue(Properties properties, String propertyName, String value) {
+		Utils.setPropertyValue(properties, getKey() + "." + propertyName, value); //$NON-NLS-1$
+	}
+	
+	public String getPrValue(Properties properties, String propertyName, String def) {
+		return Utils.getPropertyValue(properties, getKey() + "." + propertyName, def); //$NON-NLS-1$
+	}
+	
+	public void loadState(IMemento memento) {
+		boolean visibleChildren = getPrValue(memento, VISIBLE_CHILDREN, true);
+		setVisibleChildren(visibleChildren);
+		boolean visible = getPrValue(memento, VISIBLE, true);
+		setVisible(visible);
+		boolean selected = getPrValue(memento, SELECTED, true);
+		setSelected(selected);
+		Iterator<Shape> it = getChildrenIterator();
+		while (it.hasNext()) {
+			it.next().loadState(memento);
 		}
-		properties.put(key, Boolean.valueOf(value).toString());
-	}
-	
-	protected boolean getPropertyValue(Properties properties, String key) {
-		String str = properties.getProperty(key, "true"); //$NON-NLS-1$
-		return Boolean.valueOf(str).booleanValue();
-	}
-	
-	public void setPrValue(Properties properties, boolean value, String propertyName) {
-		setPropertyValue(properties, getKey() + "." + propertyName, value); //$NON-NLS-1$
-	}
-	
-	public boolean getPrValue(Properties properties, String propertyName) {
-		return getPropertyValue(properties, getKey() + "." + propertyName); //$NON-NLS-1$
 	}
 	
 	protected void loadFromProperties(Properties properties) {
-		boolean visibleChildren = getPrValue(properties, VISIBLE_CHILDREN);
+		boolean visibleChildren = getPrValue(properties, VISIBLE_CHILDREN, true);
 		setVisibleChildren(visibleChildren);
-		boolean visible = getPrValue(properties, VISIBLE);
+		boolean visible = getPrValue(properties, VISIBLE, true);
 		setVisible(visible);
-		boolean selected = getPrValue(properties, SELECTED);
+		boolean selected = getPrValue(properties, SELECTED, true);
 		setSelected(selected);
 		Iterator<Shape> it = getChildrenIterator();
 		while (it.hasNext()) {
@@ -300,13 +359,30 @@ public abstract class BaseElement implements IPropertySource, Comparable<BaseEle
 		}
 	}
 
-	protected void saveInProperties(Properties properties) {
+	public void saveState(IMemento memento) {
+		String className = getClass().getCanonicalName();
+		setPrValue(memento, CLASS_NAME, className);
 		boolean visibleChildren = isVisibleChildren();
-		setPrValue(properties, visibleChildren, VISIBLE_CHILDREN);
+		setPrValue(memento, VISIBLE_CHILDREN, visibleChildren);
 		boolean visible = isVisible();
-		setPrValue(properties, visible, VISIBLE);
+		setPrValue(memento, VISIBLE, visible);
 		boolean selected = isSelected();
-		setPrValue(properties, selected, SELECTED);
+		setPrValue(memento, SELECTED, selected);
+		Iterator<Shape> it = getChildrenIterator();
+		while (it.hasNext()) {
+			it.next().saveState(memento);
+		}
+	}
+
+	protected void saveInProperties(Properties properties) {
+		String className = getClass().getCanonicalName();
+		setPrValue(properties, CLASS_NAME, className);
+		boolean visibleChildren = isVisibleChildren();
+		setPrValue(properties, VISIBLE_CHILDREN, visibleChildren);
+		boolean visible = isVisible();
+		setPrValue(properties, VISIBLE, visible);
+		boolean selected = isSelected();
+		setPrValue(properties, SELECTED, selected);
 		Iterator<Shape> it = getChildrenIterator();
 		while (it.hasNext()) {
 			it.next().saveInProperties(properties);

@@ -29,6 +29,6 @@ public class CollapseAllAction extends DiagramBaseAction {
 	}
 
 	public void run() {
-		getDiagramViewer().getViewerContents().collapseAll();
+		getDiagramViewer().getOrmDiagram().collapseAll();
 	}
 }

@@ -32,6 +32,6 @@ public class AutoLayoutAction extends DiagramBaseAction {
 	}
 
 	public void run() {
-		getDiagramViewer().getViewerContents().autolayout();
+		getDiagramViewer().getOrmDiagram().autolayout();
 	}
 }

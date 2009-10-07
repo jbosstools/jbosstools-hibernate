@@ -43,6 +43,8 @@ public class OrmDiagramTest extends TestCase {
 		final ConsoleConfiguration consoleConfig = context.mock(ConsoleConfiguration.class);
 		final Configuration config = context.mock(Configuration.class);
 		final RootClass ioe = context.mock(RootClass.class);
+		ArrayList<RootClass> rts = new ArrayList<RootClass>();
+		rts.add(ioe);
 		final List<Object> emptyList = new ArrayList<Object>();
 		final Iterator<Object> emptyListIterator = emptyList.iterator();
 
@@ -94,7 +96,11 @@ public class OrmDiagramTest extends TestCase {
 				will(returnValue("")); //$NON-NLS-1$
 			}
 		});
-		final OrmDiagram ormDiagram = new OrmDiagram(consoleConfig, ioe);
+		final OrmDiagram ormDiagram = new OrmDiagram("", rts) { //$NON-NLS-1$
+			public ConsoleConfiguration getConsoleConfig() {
+				return consoleConfig;
+			}
+		};
 		ormDiagram.saveInFile();
 		// test is the folder created
 		File folder = new File(ormDiagram.getStoreFolderPath().toOSString());

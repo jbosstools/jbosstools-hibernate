@@ -8,27 +8,23 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.ui.diagram.editors.actions;
+package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
-import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
 
 /**
- * @author Vitali Yemialyanchyk
- */
-public class ExpandAllAction extends DiagramBaseAction {
+*
+* author: Vitali Yemialyanchyk
+*/
+public class MessageShape extends OrmShape {
 
-	public static final String ACTION_ID = "expand_all_id"; //$NON-NLS-1$
-
-	public ExpandAllAction(DiagramViewer editor) {
-		super(editor);
-		setId(ACTION_ID);
-		setText(DiagramViewerMessages.ExpandAllAction_expand_all);
-		//setImageDescriptor(ImageDescriptor.createFromFile(
-		//		DiagramViewer.class, "icons/export.png"));
+	protected MessageShape() {
+		super(DiagramViewerMessages.MessageShape_warning);
 	}
 
-	public void run() {
-		getDiagramViewer().getOrmDiagram().expandAll();
+	@Override
+	public String getKey() {
+		return null;
 	}
+
 }

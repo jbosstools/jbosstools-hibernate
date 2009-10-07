@@ -14,6 +14,7 @@ import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
@@ -37,9 +38,14 @@ public class TitleLabel extends Label {
 	protected boolean expanded = true;
 	
 	public TitleLabel(float fontHeight) {
-		FontData fontData[] = Display.getCurrent().getSystemFont().getFontData();
-		fontData[0].height = fontHeight;
-		setFont(ResourceManager.getInstance().getFont(fontData[0]));
+		if (Display.getCurrent() != null) {
+			final Font font = Display.getCurrent().getSystemFont();
+			if (font != null) {
+				FontData fontData[] = font.getFontData();
+				fontData[0].height = fontHeight;
+				setFont(ResourceManager.getInstance().getFont(fontData[0]));
+			}
+		}
 	}
 
 	/**

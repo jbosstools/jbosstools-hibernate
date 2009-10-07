@@ -378,7 +378,9 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 			setDescription(DiagramViewerMessages.DiagramViewer_OutlinePage_Sort_description);
 
 			boolean checked = getOrmDiagram().isDeepIntoSort();
-			valueChanged(checked);
+			if (checked) {
+				valueChanged(checked);
+			}
 		}
 
 		public void run() {
@@ -389,15 +391,10 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 			setChecked(on);
 			BusyIndicator.showWhile(outline.getDisplay(), new Runnable() {
 				public void run() {
-					if (on) {
-						getOrmDiagram().setDeepIntoSort(true);
-						getOrmDiagram().refresh();
-						setContents(getOrmDiagram());
-					} else {
-						getOrmDiagram().setDeepIntoSort(false);
-						getOrmDiagram().refresh();
-						setContents(getOrmDiagram());
-					}
+					final OrmDiagram od = getOrmDiagram();
+					od.setDeepIntoSort(on);
+					od.refresh();
+					setContents(od);
 				}
 			});
 		}

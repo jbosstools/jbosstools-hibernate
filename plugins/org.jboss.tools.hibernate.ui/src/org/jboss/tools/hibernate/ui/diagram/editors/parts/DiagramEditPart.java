@@ -146,7 +146,7 @@ class DiagramEditPart extends OrmEditPart {
 			Iterator<Shape> it = diagram.getChildrenIterator();
 			while (it.hasNext()) {
 				Shape child = it.next();
-				if (child.isVisible()) {
+				if (child.isVisible() && (child instanceof OrmShape)) {
 					IItemInfo item = new DiagramElementInfo((OrmShape)child);
 					addItem(item);
 				}

@@ -16,6 +16,7 @@ import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.ComponentShape;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.ExpandableShape;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.MessageShape;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmShape;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
@@ -46,6 +47,8 @@ public class OrmEditPartFactory implements EditPartFactory {
 			res = new ShapeEditPart();
 		} else if (baseElement instanceof Connection) {
 			res = new ConnectionEditPart();
+		} else if (baseElement instanceof MessageShape) {
+			res = new OrmShapeEditPart();
 		}
 		if (res == null) {
 			throw new RuntimeException(

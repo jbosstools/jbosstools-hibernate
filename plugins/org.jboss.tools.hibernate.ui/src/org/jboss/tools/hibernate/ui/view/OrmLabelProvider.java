@@ -26,6 +26,9 @@ import org.eclipse.swt.widgets.Display;
 import org.hibernate.MappingException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
+import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.engine.Mapping;
@@ -40,25 +43,52 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 
 	private Map<ImageDescriptor, Image> imageCache = new HashMap<ImageDescriptor, Image>(25);
 	
-	protected Configuration config = null;
+	protected String consoleConfigName;
 	protected Mapping mapping = null;
 	protected Dialect dialect = null;
 
 	public OrmLabelProvider() {
 	}
 
-	public OrmLabelProvider(Configuration config) {
+	public OrmLabelProvider(String consoleConfigName) {
 		super();
-		setConfig(config);
+		setConsoleConfigName(consoleConfigName);
 	}
 
-	public void setConfig(Configuration config) {
-		if (this.config == config) {
+	public void setConsoleConfigName(String consoleConfigName) {
+		if (this.consoleConfigName == consoleConfigName) {
 			return;
 		}
-		this.config = config;
+		this.consoleConfigName = consoleConfigName;
 		mapping = null;
 		dialect = null;
+	}
+
+	protected Configuration getConfig() {
+		final ConsoleConfiguration consoleConfig = getConsoleConfig();
+		if (consoleConfig != null) {
+			Configuration config = consoleConfig.getConfiguration();
+			if (config == null) {
+				consoleConfig.build();
+				consoleConfig.execute(new ExecutionContext.Command() {
+					public Object execute() {
+						if (consoleConfig.hasConfiguration()) {
+							consoleConfig.getConfiguration().buildMappings();
+						}
+						return consoleConfig;
+					}
+				} );
+				config = consoleConfig.getConfiguration();
+			}
+			return config;
+		}
+		return null;
+	}
+
+	protected ConsoleConfiguration getConsoleConfig() {
+		final KnownConfigurations knownConfigurations = KnownConfigurations.getInstance();
+		ConsoleConfiguration consoleConfig = knownConfigurations.find(consoleConfigName);
+		return consoleConfig;
 	}
 
 	@Override
@@ -118,10 +148,11 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 		if (sqlType != null) {
 			return false;
 		}
-		if (mapping == null) {
+		final Configuration config = getConfig();
+		if (mapping == null && config != null) {
 			mapping = config.buildMapping();
 		}
-		if (dialect == null) {
+		if (dialect == null && config != null) {
 			final String dialectName = config.getProperty(Environment.DIALECT);
 			if (dialectName != null) {
 				try {

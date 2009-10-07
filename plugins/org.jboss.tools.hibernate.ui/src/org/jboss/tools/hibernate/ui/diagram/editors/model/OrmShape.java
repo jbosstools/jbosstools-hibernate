@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.ui.IMemento;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -248,6 +249,22 @@ public class OrmShape extends ExpandableShape {
 		verticalGuide = vGuide;
 	}
 	
+	protected Point getPoint(IMemento memento, String key) {
+		Point point = new Point(0, 0);
+		String str = Utils.getPropertyValue(memento, key + ".x", "0"); //$NON-NLS-1$ //$NON-NLS-2$
+		point.x = Integer.parseInt(str);
+		String str2 = Utils.getPropertyValue(memento, key + ".y", "0"); //$NON-NLS-1$ //$NON-NLS-2$
+		point.y = Integer.parseInt(str2);
+		return point;
+	}
+	
+	protected void setPoint(IMemento memento, String key, Point point) {
+		String key1 = key + ".x"; //$NON-NLS-1$
+		memento.putString(key1, "" + point.x); //$NON-NLS-1$
+		String key2 = key + ".y"; //$NON-NLS-1$
+		memento.putString(key2, "" + point.y); //$NON-NLS-1$
+	}
+	
 	protected Point getPoint(Properties properties, String key) {
 		Point point = new Point(0, 0);
 		String str = properties.getProperty(key + ".x", "0"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -261,17 +278,22 @@ public class OrmShape extends ExpandableShape {
 		String key1 = key + ".x"; //$NON-NLS-1$
 		if (!properties.containsKey(key1)) {
 			properties.remove(key1);
-			properties.put(key1, "" + point.x); //$NON-NLS-1$
-		} else {
-			properties.put(key1, "" + point.x); //$NON-NLS-1$
 		}
+		properties.put(key1, "" + point.x); //$NON-NLS-1$
 		String key2 = key + ".y"; //$NON-NLS-1$
 		if (!properties.containsKey(key2)) {
 			properties.remove(key2);
-			properties.put(key2, "" + point.y); //$NON-NLS-1$
-		} else {
-			properties.put(key2, "" + point.y); //$NON-NLS-1$
 		}
+		properties.put(key2, "" + point.y); //$NON-NLS-1$
+	}
+	
+	public void setPosition(IMemento memento) {
+		Point point = getLocation();
+		setPoint(memento, getKey(), point);
+	}
+
+	public Point getPosition(IMemento memento) {
+		return getPoint(memento, getKey());
 	}
 	
 	public void setPosition(Properties properties) {
@@ -284,10 +306,23 @@ public class OrmShape extends ExpandableShape {
 	}
 	
 	@Override
+	public void loadState(IMemento memento) {
+		super.loadState(memento);
+		Point pos = getPosition(memento);
+		setLocation(pos);
+	}
+	
+	@Override
 	protected void loadFromProperties(Properties properties) {
 		super.loadFromProperties(properties);
 		Point pos = getPosition(properties);
 		setLocation(pos);
+	}
+
+	@Override
+	public void saveState(IMemento memento) {
+		setPosition(memento);
+		super.saveState(memento);
 	}
 
 	@Override

@@ -30,7 +30,7 @@ import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
-import org.jboss.tools.hibernate.ui.view.ObjectEditorInput;
+import org.jboss.tools.hibernate.ui.view.DiagramEditorInput;
 
 /**
  * @author Dmitry Geraskov
@@ -49,8 +49,8 @@ public class OpenSourceAction extends SelectionAction {
 	}
 
 	public void run() {
-		ObjectEditorInput objectEditorInput = (ObjectEditorInput)((DiagramViewer)getWorkbenchPart()).getEditorInput();
-		ConsoleConfiguration consoleConfig = objectEditorInput.getConfiguration();
+		DiagramEditorInput objectEditorInput = (DiagramEditorInput)((DiagramViewer)getWorkbenchPart()).getEditorInput();
+		ConsoleConfiguration consoleConfig = objectEditorInput.getConsoleConfig();
 
 		DiagramViewer part = (DiagramViewer)getWorkbenchPart();
 		Set<Shape> selectedElements = part.getSelectedElements();

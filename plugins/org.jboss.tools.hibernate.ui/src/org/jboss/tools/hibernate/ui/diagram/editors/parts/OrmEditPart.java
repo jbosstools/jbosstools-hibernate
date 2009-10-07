@@ -193,7 +193,7 @@ public class OrmEditPart extends AbstractGraphicalEditPart implements PropertyCh
 	public OrmDiagram getOrmDiagram() {
 		BaseElement modelTmp = (BaseElement)getModel();
 		OrmDiagram res = modelTmp instanceof OrmDiagram ? (OrmDiagram)modelTmp : null;
-		while (modelTmp.getParent() != null) {
+		while (modelTmp != null && modelTmp.getParent() != null) {
 			modelTmp = modelTmp.getParent();
 			res = modelTmp instanceof OrmDiagram ? (OrmDiagram)modelTmp : res;
 		}
@@ -202,6 +202,6 @@ public class OrmEditPart extends AbstractGraphicalEditPart implements PropertyCh
 
 	public BaseElement getModelParent() {
 		BaseElement modelTmp = (BaseElement)getModel();
-		return modelTmp.getParent();
+		return modelTmp != null ? modelTmp.getParent() : null;
 	}
 }

@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
+import java.util.Properties;
+
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Property;
 
@@ -37,5 +39,15 @@ public class ComponentShape extends ExpandableShape {
 			bodyOrmShape.setIndent(20);
 			addChild(bodyOrmShape);
 		}
+	}
+
+	@Override
+	protected void loadFromProperties(Properties properties) {
+		super.loadFromProperties(properties);
+	}
+	
+	@Override
+	protected void saveInProperties(Properties properties) {
+		super.saveInProperties(properties);
 	}
 }

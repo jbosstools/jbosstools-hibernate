@@ -78,7 +78,8 @@ public class ShapeEditPart extends OrmEditPart implements NodeEditPart {
 		label.setLabelAlignment(PositionConstants.LEFT);
 		label.setOpaque(true);
 		TopLineBorder border = new TopLineBorder(1, 2 + getModelShape().getIndent(), 1, 2);
-		border.setColor(getOrmShapeEditPart().getColor());
+		final OrmShapeEditPart osep = getOrmShapeEditPart();
+		border.setColor(osep != null ? osep.getColor() : ResourceManager.getInstance().getColor(new RGB(0, 0, 0)));
 		label.setBorder(border);
 		return label;
 	}
@@ -283,7 +284,7 @@ public class ShapeEditPart extends OrmEditPart implements NodeEditPart {
 	protected OrmShapeEditPart getOrmShapeEditPart() {
 		int i = 0;
 		EditPart part = this;
-		while (!((part instanceof OrmShapeEditPart))) {
+		while (part != null && !(part instanceof OrmShapeEditPart)) {
 			part = part.getParent();
 			if (i++ > 4) {
 				throw new RuntimeException();

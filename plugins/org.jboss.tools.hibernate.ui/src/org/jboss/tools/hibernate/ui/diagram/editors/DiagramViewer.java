@@ -18,6 +18,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.DefaultEditDomain;
@@ -55,9 +58,9 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.dialogs.SaveAsDialog;
+import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
-import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.mapping.RootClass;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ActionMenu;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.AutoLayoutAction;
@@ -83,7 +86,7 @@ import org.jboss.tools.hibernate.ui.diagram.editors.parts.OrmEditPartFactory;
 import org.jboss.tools.hibernate.ui.diagram.editors.popup.PopupMenuProvider;
 import org.jboss.tools.hibernate.ui.diagram.rulers.DiagramRuler;
 import org.jboss.tools.hibernate.ui.diagram.rulers.DiagramRulerProvider;
-import org.jboss.tools.hibernate.ui.view.ObjectEditorInput;
+import org.jboss.tools.hibernate.ui.view.DiagramEditorInput;
 
 /**
  * 
@@ -92,7 +95,6 @@ import org.jboss.tools.hibernate.ui.view.ObjectEditorInput;
  */
 public class DiagramViewer extends GraphicalEditor {
 
-	private OrmDiagram ormDiagram = null;
 	private GEFRootEditPart gefRootEditPart = new GEFRootEditPart();
 	private RulerComposite rulerComp;
 
@@ -102,11 +104,29 @@ public class DiagramViewer extends GraphicalEditor {
 
 	public void doSave(IProgressMonitor monitor) {
 		saveProperties();
-		ormDiagram.saveInFile();
-		ormDiagram.setDirty(false);
+		//getOrmDiagram().saveInFile();
+		getOrmDiagram().saveInXmlFile();
+		getOrmDiagram().setDirty(false);
 	}
 
 	public void doSaveAs() {
+		SaveAsDialog saveAsDialog = new SaveAsDialog(getSite().getWorkbenchWindow().getShell());
+		saveAsDialog.setOriginalName(getDiagramName());
+		saveAsDialog.open();
+		final IPath pathSave = saveAsDialog.getResult();		
+		if (pathSave == null) {
+			return;
+		}
+		saveProperties();
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		IPath pathTmp = workspace.getRoot().getFullPath().append(pathSave);
+		pathTmp = workspace.getRoot().getLocation().append(pathTmp);
+		String ext = pathSave.getFileExtension();
+		if (ext == null) {
+			pathTmp = pathTmp.addFileExtension("hibernate"); //$NON-NLS-1$
+		}
+		getOrmDiagram().saveInFile(pathTmp, true);
+		getOrmDiagram().setDirty(false);
 	}
 
 	protected void initializeGraphicalViewer() {
@@ -125,7 +145,7 @@ public class DiagramViewer extends GraphicalEditor {
 		//
 		viewer.setRootEditPart(gefRootEditPart);
 		viewer.addDropTargetListener(createTransferDropTargetListener());
-		viewer.setContents(ormDiagram);
+		viewer.setContents(getOrmDiagram());
 
 		PopupMenuProvider provider = new PopupMenuProvider(viewer, getActionRegistry());
 		viewer.setContextMenu(provider);
@@ -134,20 +154,20 @@ public class DiagramViewer extends GraphicalEditor {
 		viewer.setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.MOD1), 
 			MouseWheelZoomHandler.SINGLETON);
 		// Ruler properties
-		DiagramRuler ruler = ormDiagram.getRuler(PositionConstants.WEST);
+		DiagramRuler ruler = getOrmDiagram().getRuler(PositionConstants.WEST);
 		RulerProvider rulerProvider = null;
 		if (ruler != null) {
 			rulerProvider = new DiagramRulerProvider(ruler);
 		}
 		getGraphicalViewer().setProperty(RulerProvider.PROPERTY_VERTICAL_RULER, rulerProvider);
-		ruler = ormDiagram.getRuler(PositionConstants.NORTH);
+		ruler = getOrmDiagram().getRuler(PositionConstants.NORTH);
 		rulerProvider = null;
 		if (ruler != null) {
 			rulerProvider = new DiagramRulerProvider(ruler);
 		}
 		getGraphicalViewer().setProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER, rulerProvider);
 		getGraphicalViewer().setProperty(RulerProvider.PROPERTY_RULER_VISIBILITY, 
-				new Boolean(ormDiagram.getRulerVisibility()));
+				new Boolean(getOrmDiagram().getRulerVisibility()));
 		loadProperties();
 	}
 
@@ -260,7 +280,7 @@ public class DiagramViewer extends GraphicalEditor {
 	}
 
 	public boolean isSaveAsAllowed() {
-		return false;
+		return true;
 	}
 
 	public boolean isSaveOnCloseNeeded() {
@@ -272,32 +292,38 @@ public class DiagramViewer extends GraphicalEditor {
 	}
 
 	public boolean isDirty() {
-		return ormDiagram.isDirty();
+		return getOrmDiagram().isDirty();
 	}
 
 	protected void setInput(IEditorInput input) {
-		ObjectEditorInput objectEditorInput = (ObjectEditorInput)input;
-		ConsoleConfiguration configuration = objectEditorInput.getConfiguration();
-		ArrayList<RootClass> roots = objectEditorInput.getRootClasses();
-		setPartName(DiagramViewerMessages.DiagramViewer_diagram_for + " " + objectEditorInput.getName()); //$NON-NLS-1$
-		if (roots.size() == 1) {
-			RootClass rootClass = roots.get(0);
-			ormDiagram = new OrmDiagram(configuration, rootClass);
-		} else if (roots.size() > 1) {
-			RootClass[] rootClasses = roots.toArray(new RootClass[0]);
-			ormDiagram = new OrmDiagram(configuration, rootClasses);
+		DiagramEditorInput diagramInput = null;
+		if (input instanceof FileEditorInput) {
+			diagramInput = new DiagramEditorInput((FileEditorInput)input);
+		} else if (input instanceof DiagramEditorInput) {
+			diagramInput = (DiagramEditorInput)input;
 		}
-		super.setInput(input);
+		setPartName(DiagramViewerMessages.DiagramViewer_diagram_for + " " + diagramInput.getName()); //$NON-NLS-1$
+		super.setInput(diagramInput);
 		loadProperties();
+	}
+
+	public DiagramEditorInput getDiagramInput() {
+		DiagramEditorInput diagramInput = (DiagramEditorInput)getEditorInput();
+		return diagramInput;
 	}
 
 	public String getDiagramName() {
 		IEditorInput input = getEditorInput();
-		if (input instanceof ObjectEditorInput) {
-			ObjectEditorInput objectEditorInput = (ObjectEditorInput)input;
+		if (input instanceof DiagramEditorInput) {
+			DiagramEditorInput objectEditorInput = (DiagramEditorInput)input;
 			return objectEditorInput.getName();
 		}
 		return ""; //$NON-NLS-1$
+	}
+
+	public void refresh() {
+		getOrmDiagram().refresh();
+		setPartName(DiagramViewerMessages.DiagramViewer_diagram_for + " " + getDiagramInput().getName()); //$NON-NLS-1$
 	}
 
 	/**
@@ -310,7 +336,7 @@ public class DiagramViewer extends GraphicalEditor {
 					new TreeViewer(), getActionRegistry());
 			outline.setGraphicalViewer(getGraphicalViewer());
 			outline.setSelectionSynchronizer(getSelectionSynchronizer());
-			outline.setOrmDiagram(ormDiagram);
+			outline.setOrmDiagram(getOrmDiagram());
 			outline.setEditor(this);
 			RefreshAction refreshAction = (RefreshAction)getActionRegistry().getAction(
 					ActionFactory.REFRESH.getId());
@@ -337,8 +363,8 @@ public class DiagramViewer extends GraphicalEditor {
 		return ret;
 	}
 
-	public OrmDiagram getViewerContents() {
-		return ormDiagram;
+	public OrmDiagram getOrmDiagram() {
+		return getDiagramInput().getOrmDiagram();
 	}
 
 	public DefaultEditDomain getDefaultEditDomain() {
@@ -361,56 +387,56 @@ public class DiagramViewer extends GraphicalEditor {
 	}
 	
 	protected boolean loadProperties() {
-		if (ormDiagram == null || getGraphicalViewer() == null) {
+		if (getOrmDiagram() == null || getGraphicalViewer() == null) {
 			return false;
 		}
 		// Ruler properties
-		DiagramRuler ruler = ormDiagram.getRuler(PositionConstants.WEST);
+		DiagramRuler ruler = getOrmDiagram().getRuler(PositionConstants.WEST);
 		RulerProvider provider = null;
 		if (ruler != null) {
 			provider = new DiagramRulerProvider(ruler);
 		}
 		getGraphicalViewer().setProperty(RulerProvider.PROPERTY_VERTICAL_RULER, provider);
-		ruler = ormDiagram.getRuler(PositionConstants.NORTH);
+		ruler = getOrmDiagram().getRuler(PositionConstants.NORTH);
 		provider = null;
 		if (ruler != null) {
 			provider = new DiagramRulerProvider(ruler);
 		}
 		getGraphicalViewer().setProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER, provider);
 		getGraphicalViewer().setProperty(RulerProvider.PROPERTY_RULER_VISIBILITY, 
-				new Boolean(ormDiagram.getRulerVisibility()));
+				new Boolean(getOrmDiagram().getRulerVisibility()));
 		
 		// Snap to Geometry property
 		getGraphicalViewer().setProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED, 
-				new Boolean(ormDiagram.isSnapToGeometryEnabled()));
+				new Boolean(getOrmDiagram().isSnapToGeometryEnabled()));
 		
 		// Grid properties
 		getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_ENABLED, 
-				new Boolean(ormDiagram.isGridEnabled()));
+				new Boolean(getOrmDiagram().isGridEnabled()));
 		// We keep grid visibility and enablement in sync
 		getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_VISIBLE, 
-				new Boolean(ormDiagram.isGridEnabled()));
+				new Boolean(getOrmDiagram().isGridEnabled()));
 		
 		// Zoom
 		ZoomManager manager = (ZoomManager)getGraphicalViewer()
 				.getProperty(ZoomManager.class.toString());
 		if (manager != null) {
-			manager.setZoom(ormDiagram.getZoom());
+			manager.setZoom(getOrmDiagram().getZoom());
 		}
 		return true;
 	}
 
 	protected boolean saveProperties() {
-		if (ormDiagram == null || getGraphicalViewer() == null) {
+		if (getOrmDiagram() == null || getGraphicalViewer() == null) {
 			return false;
 		}
-		ormDiagram.setRulerVisibility(((Boolean)getGraphicalViewer()
+		getOrmDiagram().setRulerVisibility(((Boolean)getGraphicalViewer()
 				.getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY)).booleanValue());
-		ormDiagram.setGridEnabled(((Boolean)getGraphicalViewer()
+		getOrmDiagram().setGridEnabled(((Boolean)getGraphicalViewer()
 				.getProperty(SnapToGrid.PROPERTY_GRID_ENABLED)).booleanValue());
-		ormDiagram.setSnapToGeometry(((Boolean)getGraphicalViewer()
+		getOrmDiagram().setSnapToGeometry(((Boolean)getGraphicalViewer()
 				.getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED)).booleanValue());
-		ormDiagram.setZoom(getZoom());
+		getOrmDiagram().setZoom(getZoom());
 		return true;
 	}
 
@@ -494,44 +520,44 @@ public class DiagramViewer extends GraphicalEditor {
 	
 	
 	public boolean getConnectionsVisibilityAssociation() {
-		return getViewerContents().getConnectionsVisibilityAssociation();
+		return getOrmDiagram().getConnectionsVisibilityAssociation();
 	}
 	
 	public void setConnectionsVisibilityAssociation(boolean connectionsVisibilityAssociation) {
-		getViewerContents().setConnectionsVisibilityAssociation(connectionsVisibilityAssociation);
+		getOrmDiagram().setConnectionsVisibilityAssociation(connectionsVisibilityAssociation);
 		ActionRegistry registry = getActionRegistry();
 		IAction action = registry.getAction(ToggleAssociationAction.ACTION_ID);
 		action.setChecked(connectionsVisibilityAssociation);
 	}
 	
 	public boolean getConnectionsVisibilityClassMapping() {
-		return getViewerContents().getConnectionsVisibilityClassMapping();
+		return getOrmDiagram().getConnectionsVisibilityClassMapping();
 	}
 	
 	public void setConnectionsVisibilityClassMapping(boolean connectionsVisibilityClassMapping) {
-		getViewerContents().setConnectionsVisibilityClassMapping(connectionsVisibilityClassMapping);
+		getOrmDiagram().setConnectionsVisibilityClassMapping(connectionsVisibilityClassMapping);
 		ActionRegistry registry = getActionRegistry();
 		IAction action = registry.getAction(ToggleClassMappingAction.ACTION_ID);
 		action.setChecked(connectionsVisibilityClassMapping);
 	}
 	
 	public boolean getConnectionsVisibilityForeignKeyConstraint() {
-		return getViewerContents().getConnectionsVisibilityForeignKeyConstraint();
+		return getOrmDiagram().getConnectionsVisibilityForeignKeyConstraint();
 	}
 	
 	public void setConnectionsVisibilityForeignKeyConstraint(boolean connectionsVisibilityForeignKeyConstraint) {
-		getViewerContents().setConnectionsVisibilityForeignKeyConstraint(connectionsVisibilityForeignKeyConstraint);
+		getOrmDiagram().setConnectionsVisibilityForeignKeyConstraint(connectionsVisibilityForeignKeyConstraint);
 		ActionRegistry registry = getActionRegistry();
 		IAction action = registry.getAction(ToggleForeignKeyConstraintAction.ACTION_ID);
 		action.setChecked(connectionsVisibilityForeignKeyConstraint);
 	}
 	
 	public boolean getConnectionsVisibilityPropertyMapping() {
-		return getViewerContents().getConnectionsVisibilityPropertyMapping();
+		return getOrmDiagram().getConnectionsVisibilityPropertyMapping();
 	}
 	
 	public void setConnectionsVisibilityPropertyMapping(boolean connectionsVisibilityPropertyMapping) {
-		getViewerContents().setConnectionsVisibilityPropertyMapping(connectionsVisibilityPropertyMapping);
+		getOrmDiagram().setConnectionsVisibilityPropertyMapping(connectionsVisibilityPropertyMapping);
 		ActionRegistry registry = getActionRegistry();
 		IAction action = registry.getAction(TogglePropertyMappingAction.ACTION_ID);
 		action.setChecked(connectionsVisibilityPropertyMapping);

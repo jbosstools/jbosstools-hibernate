@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.mapping.Column;
@@ -31,6 +32,7 @@ import org.jboss.tools.hibernate.ui.view.HibernateUtils;
 public class Shape extends BaseElement {
 	
 	public static final String SET_FOCUS = "setFocus"; //$NON-NLS-1$
+	public static final String IDENT = "indent"; //$NON-NLS-1$
 
 	/**
 	 * left indent for property string on diagram
@@ -212,15 +214,28 @@ public class Shape extends BaseElement {
 	}
 	
 	@Override
+	public void loadState(IMemento memento) {
+		super.loadState(memento);
+		int indentTmp = getPrValue(memento, IDENT, 0);
+		indent = indentTmp;
+	}
+	
+	@Override
 	protected void loadFromProperties(Properties properties) {
 		super.loadFromProperties(properties);
-		String str = properties.getProperty("indent", "0"); //$NON-NLS-1$ //$NON-NLS-2$
-		indent = Integer.valueOf(str).intValue();
+		int indentTmp = getPrValue(properties, IDENT, 0);
+		indent = indentTmp;
+	}
+
+	@Override
+	public void saveState(IMemento memento) {
+		setPrValue(memento, IDENT, indent);
+		super.saveState(memento);
 	}
 
 	@Override
 	protected void saveInProperties(Properties properties) {
-		properties.put("indent", "" + indent); //$NON-NLS-1$ //$NON-NLS-2$
+		setPrValue(properties, IDENT, indent);
 		super.saveInProperties(properties);
 	}
 

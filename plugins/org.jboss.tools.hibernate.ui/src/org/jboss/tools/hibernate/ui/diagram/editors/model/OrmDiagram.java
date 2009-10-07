@@ -10,15 +10,18 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -33,8 +36,13 @@ import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IMemento;
+import org.eclipse.ui.WorkbenchException;
+import org.eclipse.ui.XMLMemento;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.mapping.RootClass;
@@ -45,7 +53,7 @@ import org.jboss.tools.hibernate.ui.view.OrmLabelProvider;
 
 /**
  * The whole diagram, all information about diagram elements are here.
- * @author some modifications from Vitali
+ * @author Vitali Yemialianchyk
  * @see BaseElement
 */
 public class OrmDiagram extends BaseElement {
@@ -56,80 +64,123 @@ public class OrmDiagram extends BaseElement {
 	public static final String AUTOLAYOUT = "autolayout"; //$NON-NLS-1$
 	
 	// hibernate console configuration is the source of diagram elements 
-	private ConsoleConfiguration consoleConfig;
-	private OrmLabelProvider labelProvider = new OrmLabelProvider();
+	protected String consoleConfigName;
+	protected ArrayList<RootClass> roots = new ArrayList<RootClass>();
+	protected ArrayList<String> entityNames = new ArrayList<String>();
 
 	private	boolean dirty = false;
-	private HashMap<String, OrmShape> elements = new HashMap<String, OrmShape>();
-	private RootClass[] ormElements;
-	private String[] entityNames;
-	private boolean connectionsVisibilityClassMapping = true;
-	private boolean connectionsVisibilityPropertyMapping = true;
-	private boolean connectionsVisibilityAssociation = true;
-	private boolean connectionsVisibilityForeignKeyConstraint = true;
-	private ArrayList<Connection> connections = new ArrayList<Connection>();
+
+	protected HashMap<String, OrmShape> elements = new HashMap<String, OrmShape>();
+	protected ArrayList<Connection> connections = new ArrayList<Connection>();
+
+	protected OrmLabelProvider labelProvider = new OrmLabelProvider();
+	
+	protected boolean connectionsVisibilityClassMapping = true;
+	protected boolean connectionsVisibilityPropertyMapping = true;
+	protected boolean connectionsVisibilityAssociation = true;
+	protected boolean connectionsVisibilityForeignKeyConstraint = true;
 	
 	// editor elements settings
 	protected DiagramRuler leftRuler, topRuler;
-	private boolean rulersVisibility = false;
-	private boolean snapToGeometry = false;
-	private boolean gridEnabled = false;
-	private double zoom = 1.0;
-	private float fontHeight = 8.5f;
-	private boolean deepIntoSort = false;
-
+	protected boolean rulersVisibility = false;
+	protected boolean snapToGeometry = false;
+	protected boolean gridEnabled = false;
+	protected double zoom = 1.0;
+	protected float fontHeight = 8.5f;
+	protected boolean deepIntoSort = false;
 	//
 	private boolean fileLoadSuccessfull = false;
+	// this is workaround to load diagram state in the case if Console Config loaded later
+	// so we can correctly refresh diagram state
+	private IMemento memento = null;
 	
-	public OrmDiagram(ConsoleConfiguration consoleConfig, RootClass ioe) {
-		initFontHeight();
-		createRulers();
-		this.consoleConfig = consoleConfig;
-		labelProvider.setConfig(consoleConfig.getConfiguration());
-		ormElements = new RootClass[1];
-		ormElements[0] = ioe;
-		entityNames = new String[1];
-		entityNames[0] = ioe.getEntityName();
-		recreateChildren();
-		sortChildren(deepIntoSort);
-		loadFromFile();
-		refreshDiagramElements();
-		setDirty(false);
+	public class RootClassComparator implements Comparator<RootClass> {
+		public int compare(RootClass o1, RootClass o2) {
+			return getItemName(o1).compareTo(getItemName(o2));
+		}
 	}
 	
-	public OrmDiagram(ConsoleConfiguration consoleConfig, RootClass[] ioe) {
+	public OrmDiagram(String consoleConfigName, ArrayList<RootClass> rts) {
 		initFontHeight();
 		createRulers();
-		this.consoleConfig = consoleConfig;
-		labelProvider.setConfig(consoleConfig.getConfiguration());
-		ormElements = new RootClass[ioe.length];
-		System.arraycopy(ioe, 0, ormElements, 0, ioe.length);
+		this.consoleConfigName = consoleConfigName;
+		@SuppressWarnings("unused")
+		ConsoleConfiguration consoleConfig = getConsoleConfig();
+		labelProvider.setConsoleConfigName(consoleConfigName);
+		roots.addAll(rts);
 		// should sort elements - cause different sort order gives different file name
 		// for the same thing
-		Arrays.sort(ormElements, new OrmElCompare());
-		entityNames = new String[ioe.length];
-		for (int i = 0; i < ormElements.length; i++) {
-			entityNames[i] = ormElements[i].getEntityName();
+		Collections.sort(roots, new RootClassComparator());
+		entityNames.clear();
+		for (int i = 0; i < roots.size(); i++) {
+			entityNames.add(getItemFullName(roots.get(i)));
 		}
 		recreateChildren();
 		sortChildren(deepIntoSort);
-		loadFromFile();
+		if (consoleConfigName.length() > 0) {
+			////loadFromFile();
+			loadFromXmlFile();
+		}
 		refreshDiagramElements();
 		setDirty(false);
 	}
+
+	public String getDiagramName() {
+		String name = ""; //$NON-NLS-1$
+		ArrayList<String> names = new ArrayList<String>();
+		for (int i = 0; i < entityNames.size(); i++) {
+			names.add(getItemName(entityNames.get(i)));
+		}
+		// sort to get same name for same combinations of entities
+		Collections.sort(names);
+		name = names.size() > 0 ? names.get(0) : ""; //$NON-NLS-1$
+		for (int i = 1; i < names.size(); i++) {
+			name += " & " + names.get(i); //$NON-NLS-1$
+		}
+		return name;
+	}
 	
-	protected void recreateChildren() {
+	protected String getItemFullName(RootClass rootClass) {
+		if (rootClass == null) {
+			return ""; //$NON-NLS-1$
+		}
+		String res = rootClass.getEntityName();
+		if (res == null) {
+			res = rootClass.getClassName();
+		}
+		if (res == null) {
+			res = rootClass.getNodeName();
+		}
+		return res;
+	}
+	
+	protected String getItemName(String name) {
+		String res = name;
+		return res.substring(res.lastIndexOf(".") + 1); //$NON-NLS-1$
+	}
+	
+	protected String getItemName(RootClass rootClass) {
+		return getItemName(getItemFullName(rootClass));
+	}
+	
+	public void recreateChildren() {
 		deleteChildren();
 		elements.clear();
 		connections.clear();
 		final ElementsFactory factory = new ElementsFactory(
-			consoleConfig.getConfiguration(), elements, connections);
-		for (int i = 0; i < ormElements.length; i++) {
-			factory.getOrCreatePersistentClass(ormElements[i], null);
+			getConfig(), elements, connections);
+		for (int i = 0; i < roots.size(); i++) {
+			RootClass rc = roots.get(i);
+			if (rc != null) {
+				factory.getOrCreatePersistentClass(rc, null);
+			}
 		}
 		updateChildrenList();
 		factory.createChildren(this);
 		updateChildrenList();
+		if (getChildrenNumber() == 0) {
+			addChild(new MessageShape());
+		}
 	}
 
 	protected void updateChildrenList() {
@@ -174,6 +225,7 @@ public class OrmDiagram extends BaseElement {
 	
 	public IPath getStoreFolderPath() {
 		IPath storePath = null;
+		ConsoleConfiguration consoleConfig = getConsoleConfig();
 		IJavaProject javaProject = ProjectUtils.findJavaProject(consoleConfig);
 		if (javaProject != null && javaProject.getProject() != null) {
 			storePath = javaProject.getProject().getLocation();
@@ -195,13 +247,13 @@ public class OrmDiagram extends BaseElement {
 	 */
 	public String getStoreFileName() {
 		StringBuilder name = new StringBuilder();
-		for (int i = 0; i < ormElements.length; i++) {
+		for (int i = 0; i < entityNames.size(); i++) {
 			name.append("_"); //$NON-NLS-1$
-			name.append(ormElements[i].getNodeName());
+			name.append(getItemName(entityNames.get(i)));
 		}
-		String res = consoleConfig.getName() + name.toString();
+		String res = getConsoleConfigName() + name.toString();
 		if (res.length() > 64) {
-			res = consoleConfig.getName() + "_" + md5sum(name.toString()); //$NON-NLS-1$
+			res = getConsoleConfigName() + "_" + md5sum(name.toString()); //$NON-NLS-1$
 		}
 		return res;
 	}
@@ -241,35 +293,53 @@ public class OrmDiagram extends BaseElement {
 	}
 
 	public RootClass getOrmElement(int idx) {
-		if (0 > idx || idx >= ormElements.length) {
+		if (0 > idx || idx >= roots.size()) {
 			return null;
 		}
-		return ormElements[idx];
+		return roots.get(idx);
 	}
 
-	public RootClass[] getOrmElements() {
-		return ormElements;
+	public boolean refreshRootsFromNames() {
+		final Configuration config = getConfig();
+		if (config == null) {
+			return false;
+		}
+		for (int i = 0; i < roots.size(); i++) {
+			RootClass newOrmElement = (RootClass)config.getClassMapping(entityNames.get(i));
+			if (roots.get(i) == null) {
+				if (newOrmElement == null) {
+					continue;
+				}
+			}
+			else if (roots.get(i).equals(newOrmElement)) {
+				continue;
+			}
+			roots.set(i, newOrmElement);
+		}
+		return true;
 	}
 
 	@Override
 	public void refresh() {
-		final Configuration config = consoleConfig.getConfiguration();
-		for (int i = 0; i < ormElements.length; i++) {
-			RootClass newOrmElement = (RootClass)config.getClassMapping(entityNames[i]);
-			if (ormElements[i].equals(newOrmElement)) {
-				continue;
-			}
-			ormElements[i] = newOrmElement;
-		}
+		refreshRootsFromNames();
 		// -> save just into properties
 		Properties properties = new Properties();
-		saveInProperties(properties);
+		if (memento == null) {
+			saveInProperties(properties);
+		}
 		recreateChildren();
 		sortChildren(deepIntoSort);
-		// -> load just from properties
-		loadFromProperties(properties);
+		if (memento == null) {
+			// -> load just from properties
+			loadFromProperties(properties);
+		} else {
+			loadState(memento);
+		}
 		refreshDiagramElements();
-		updateDirty(true);
+		updateDirty(memento != null ? false : true);
+		if (memento != null && getConsoleConfig() != null) {
+			memento = null;
+		}
 		super.refresh();
 	}
 	
@@ -387,58 +457,123 @@ public class OrmDiagram extends BaseElement {
 		}
 	}
 	
+	static public String getConsoleConfigName(IMemento memento) {
+		String str = memento.getString("consoleConfig_name"); //$NON-NLS-1$
+		if (str == null) {
+			str = ""; //$NON-NLS-1$
+		}
+		return str;
+	}
+	
 	@Override
-	protected void loadFromProperties(Properties properties) {
-		super.loadFromProperties(properties);
-		String str = properties.getProperty("rulersVisibility", "false"); //$NON-NLS-1$ //$NON-NLS-2$
-		rulersVisibility = Boolean.valueOf(str).booleanValue();
-		str = properties.getProperty("snapToGeometry", "false"); //$NON-NLS-1$ //$NON-NLS-2$
-		snapToGeometry = Boolean.valueOf(str).booleanValue();
-		str = properties.getProperty("gridEnabled", "false"); //$NON-NLS-1$ //$NON-NLS-2$
-		gridEnabled = Boolean.valueOf(str).booleanValue();
-		str = properties.getProperty("zoom", "1.0"); //$NON-NLS-1$ //$NON-NLS-2$
-		zoom = Double.valueOf(str).doubleValue();
-		str = properties.getProperty("deepIntoSort", "false"); //$NON-NLS-1$ //$NON-NLS-2$
-		deepIntoSort = Boolean.valueOf(str).booleanValue();
-		str = properties.getProperty("connectionsVisibilityAssociation", "true"); //$NON-NLS-1$ //$NON-NLS-2$
-		connectionsVisibilityAssociation = Boolean.valueOf(str).booleanValue();
-		str = properties.getProperty("connectionsVisibilityClassMapping", "true"); //$NON-NLS-1$ //$NON-NLS-2$
-		connectionsVisibilityClassMapping = Boolean.valueOf(str).booleanValue();
-		str = properties.getProperty("connectionsVisibilityForeignKeyConstraint", "true"); //$NON-NLS-1$ //$NON-NLS-2$
-		connectionsVisibilityForeignKeyConstraint = Boolean.valueOf(str).booleanValue();
-		str = properties.getProperty("connectionsVisibilityPropertyMapping", "true"); //$NON-NLS-1$ //$NON-NLS-2$
-		connectionsVisibilityPropertyMapping = Boolean.valueOf(str).booleanValue();
+	public void loadState(IMemento memento) {
+		super.loadState(memento);
+		consoleConfigName = getPrValue(memento, "consoleConfig_name", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		@SuppressWarnings("unused")
+		ConsoleConfiguration consoleConfig = getConsoleConfig();
+		labelProvider.setConsoleConfigName(consoleConfigName);
+		int size = getPrValue(memento, "entityNames_size", 0); //$NON-NLS-1$
+		roots.clear();
+		entityNames.clear();
+		for (int i = 0; i < size; i++) {
+			roots.add(null);
+			entityNames.add(getPrValue(memento, "entityNames_" + Integer.toString(i), "")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		rulersVisibility = getPrValue(memento, "rulersVisibility", false); //$NON-NLS-1$
+		snapToGeometry = getPrValue(memento, "snapToGeometry", false); //$NON-NLS-1$
+		gridEnabled = getPrValue(memento, "gridEnabled", false); //$NON-NLS-1$
+		zoom = getPrValue(memento, "zoom", 1.0); //$NON-NLS-1$
+		deepIntoSort = getPrValue(memento, "deepIntoSort", false); //$NON-NLS-1$
+		connectionsVisibilityAssociation = getPrValue(memento, "connectionsVisibilityAssociation", true); //$NON-NLS-1$
+		connectionsVisibilityClassMapping = getPrValue(memento, "connectionsVisibilityClassMapping", true); //$NON-NLS-1$
+		connectionsVisibilityForeignKeyConstraint = getPrValue(memento, "connectionsVisibilityForeignKeyConstraint", true); //$NON-NLS-1$
+		connectionsVisibilityPropertyMapping = getPrValue(memento, "connectionsVisibilityPropertyMapping", true); //$NON-NLS-1$
+		refreshRootsFromNames();
 	}
 
 	@Override
+	protected void loadFromProperties(Properties properties) {
+		super.loadFromProperties(properties);
+		consoleConfigName = getPrValue(properties, "consoleConfig_name", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		@SuppressWarnings("unused")
+		ConsoleConfiguration consoleConfig = getConsoleConfig();
+		labelProvider.setConsoleConfigName(consoleConfigName);
+		int size = getPrValue(properties, "entityNames_size", 0); //$NON-NLS-1$
+		roots.clear();
+		entityNames.clear();
+		for (int i = 0; i < size; i++) {
+			roots.add(null);
+			entityNames.add(getPrValue(properties, "entityNames_" + Integer.toString(i), "")); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		rulersVisibility = getPrValue(properties, "rulersVisibility", false); //$NON-NLS-1$
+		snapToGeometry = getPrValue(properties, "snapToGeometry", false); //$NON-NLS-1$
+		gridEnabled = getPrValue(properties, "gridEnabled", false); //$NON-NLS-1$
+		zoom = getPrValue(properties, "zoom", 1.0); //$NON-NLS-1$
+		deepIntoSort = getPrValue(properties, "deepIntoSort", false); //$NON-NLS-1$
+		connectionsVisibilityAssociation = getPrValue(properties, "connectionsVisibilityAssociation", true); //$NON-NLS-1$
+		connectionsVisibilityClassMapping = getPrValue(properties, "connectionsVisibilityClassMapping", true); //$NON-NLS-1$
+		connectionsVisibilityForeignKeyConstraint = getPrValue(properties, "connectionsVisibilityForeignKeyConstraint", true); //$NON-NLS-1$
+		connectionsVisibilityPropertyMapping = getPrValue(properties, "connectionsVisibilityPropertyMapping", true); //$NON-NLS-1$
+		refreshRootsFromNames();
+	}
+
+	@Override
+	public void saveState(IMemento memento) {
+		setPrValue(memento, "consoleConfig_name", consoleConfigName); //$NON-NLS-1$
+		setPrValue(memento, "entityNames_size", "" + entityNames.size()); //$NON-NLS-1$ //$NON-NLS-2$
+		for (int i = 0; i < entityNames.size(); i++) {
+			setPrValue(memento, "entityNames_" + Integer.toString(i), "" + entityNames.get(i)); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		setPrValue(memento, "rulersVisibility", "" + rulersVisibility); //$NON-NLS-1$ //$NON-NLS-2$
+		setPrValue(memento, "snapToGeometry", "" + snapToGeometry); //$NON-NLS-1$ //$NON-NLS-2$
+		setPrValue(memento, "gridEnabled", "" + gridEnabled); //$NON-NLS-1$ //$NON-NLS-2$
+		setPrValue(memento, "zoom", "" + zoom); //$NON-NLS-1$ //$NON-NLS-2$
+		setPrValue(memento, "deepIntoSort", "" + deepIntoSort); //$NON-NLS-1$ //$NON-NLS-2$
+		setPrValue(memento, "connectionsVisibilityAssociation", "" + connectionsVisibilityAssociation); //$NON-NLS-1$ //$NON-NLS-2$
+		setPrValue(memento, "connectionsVisibilityClassMapping", "" + connectionsVisibilityClassMapping); //$NON-NLS-1$ //$NON-NLS-2$
+		setPrValue(memento, "connectionsVisibilityForeignKeyConstraint", "" + connectionsVisibilityForeignKeyConstraint); //$NON-NLS-1$ //$NON-NLS-2$
+		setPrValue(memento, "connectionsVisibilityPropertyMapping", "" + connectionsVisibilityPropertyMapping); //$NON-NLS-1$ //$NON-NLS-2$
+		super.saveState(memento);
+	}
+	
+	@Override
 	protected void saveInProperties(Properties properties) {
-		properties.put("rulersVisibility", "" + rulersVisibility); //$NON-NLS-1$ //$NON-NLS-2$
-		properties.put("snapToGeometry", "" + snapToGeometry); //$NON-NLS-1$ //$NON-NLS-2$
-		properties.put("gridEnabled", "" + gridEnabled); //$NON-NLS-1$ //$NON-NLS-2$
-		properties.put("zoom", "" + zoom); //$NON-NLS-1$ //$NON-NLS-2$
-		properties.put("deepIntoSort", "" + deepIntoSort); //$NON-NLS-1$ //$NON-NLS-2$
-		properties.put("connectionsVisibilityAssociation", "" + connectionsVisibilityAssociation); //$NON-NLS-1$ //$NON-NLS-2$
-		properties.put("connectionsVisibilityClassMapping", "" + connectionsVisibilityClassMapping); //$NON-NLS-1$ //$NON-NLS-2$
-		properties.put("connectionsVisibilityForeignKeyConstraint", "" + connectionsVisibilityForeignKeyConstraint); //$NON-NLS-1$ //$NON-NLS-2$
-		properties.put("connectionsVisibilityPropertyMapping", "" + connectionsVisibilityPropertyMapping); //$NON-NLS-1$ //$NON-NLS-2$
+		setPrValue(properties, "consoleConfig_name", consoleConfigName); //$NON-NLS-1$
+		setPrValue(properties, "entityNames_size", "" + entityNames.size()); //$NON-NLS-1$ //$NON-NLS-2$
+		for (int i = 0; i < entityNames.size(); i++) {
+			setPrValue(properties, "entityNames_" + Integer.toString(i), "" + entityNames.get(i)); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		setPrValue(properties, "rulersVisibility", "" + rulersVisibility); //$NON-NLS-1$ //$NON-NLS-2$
+		setPrValue(properties, "snapToGeometry", "" + snapToGeometry); //$NON-NLS-1$ //$NON-NLS-2$
+		setPrValue(properties, "gridEnabled", "" + gridEnabled); //$NON-NLS-1$ //$NON-NLS-2$
+		setPrValue(properties, "zoom", "" + zoom); //$NON-NLS-1$ //$NON-NLS-2$
+		setPrValue(properties, "deepIntoSort", "" + deepIntoSort); //$NON-NLS-1$ //$NON-NLS-2$
+		setPrValue(properties, "connectionsVisibilityAssociation", "" + connectionsVisibilityAssociation); //$NON-NLS-1$ //$NON-NLS-2$
+		setPrValue(properties, "connectionsVisibilityClassMapping", "" + connectionsVisibilityClassMapping); //$NON-NLS-1$ //$NON-NLS-2$
+		setPrValue(properties, "connectionsVisibilityForeignKeyConstraint", "" + connectionsVisibilityForeignKeyConstraint); //$NON-NLS-1$ //$NON-NLS-2$
+		setPrValue(properties, "connectionsVisibilityPropertyMapping", "" + connectionsVisibilityPropertyMapping); //$NON-NLS-1$ //$NON-NLS-2$
 		super.saveInProperties(properties);
 	}
 	
-	public void saveInFile() {
-		Properties properties = new Properties();
-		saveInProperties(properties);
+	public void saveInFile(IPath path, boolean format) {
 		FileOutputStream fos = null;
 		try {
-			File folder = new File(getStoreFolderPath().toOSString());
-			if (!folder.exists()) {
-				folder.mkdirs();
-			}
-			File file = new File(getStoreFilePath().toOSString());
+			File file = new File(path.toOSString());
 			if (!file.exists()) {
 				file.createNewFile();
 			}
 			fos = new FileOutputStream(file);
-			properties.store(fos, ""); //$NON-NLS-1$
+			if (format) {
+				XMLMemento memento = XMLMemento.createWriteRoot("OrmDiagram"); //$NON-NLS-1$
+				saveState(memento);
+				OutputStreamWriter writer = new OutputStreamWriter(fos, "utf-8"); //$NON-NLS-1$
+				memento.save(writer);
+				writer.close();
+			} else {
+				Properties properties = new Properties();
+				saveInProperties(properties);
+				properties.store(fos, ""); //$NON-NLS-1$
+			}
 		} catch (IOException e) {
 			HibernateConsolePlugin.getDefault().logErrorMessage("Can't save layout of mapping.", e); //$NON-NLS-1$
 		} finally {
@@ -450,6 +585,22 @@ public class OrmDiagram extends BaseElement {
 				}
 			}
 		}
+	}
+	
+	public void saveInXmlFile() {
+		File folder = new File(getStoreFolderPath().toOSString());
+		if (!folder.exists()) {
+			folder.mkdirs();
+		}
+		saveInFile(getStoreFilePath(), true);
+	}
+	
+	public void saveInFile() {
+		File folder = new File(getStoreFolderPath().toOSString());
+		if (!folder.exists()) {
+			folder.mkdirs();
+		}
+		saveInFile(getStoreFilePath(), false);
 	}
 
 	public IFile createLayoutFile(InputStream source) {
@@ -470,17 +621,29 @@ public class OrmDiagram extends BaseElement {
 		return file;
 	}
 
-	public void loadFromFile() {
+	public void loadFromFile(IPath path, boolean format) {
 		fileLoadSuccessfull = false;
 		FileInputStream fis = null;
 		try {
-			File file = new File(getStoreFilePath().toOSString());
+			File file = new File(path.toOSString());
 			if (file.exists()) {
 				fis = new FileInputStream(file);
-				Properties properties = new Properties();
-				properties.load(fis);
-				loadFromProperties(properties);
-				fileLoadSuccessfull = true;
+				if (format) {
+					BufferedReader reader = new BufferedReader(
+							new InputStreamReader(fis, "utf-8")); //$NON-NLS-1$
+					try {
+						IMemento memento = XMLMemento.createReadRoot(reader);
+						loadState(memento);
+						fileLoadSuccessfull = true;
+					} catch (WorkbenchException e) {
+						HibernateConsolePlugin.getDefault().logErrorMessage("Can't load layout of mapping.", e); //$NON-NLS-1$
+					}
+				} else {
+					Properties properties = new Properties();
+					properties.load(fis);
+					loadFromProperties(properties);
+					fileLoadSuccessfull = true;
+				}
 			}
 		} catch (IOException ex) {
 			HibernateConsolePlugin.getDefault().logErrorMessage("Can't load layout of mapping.", ex); //$NON-NLS-1$
@@ -494,12 +657,47 @@ public class OrmDiagram extends BaseElement {
 			}
 		}
 	}
+
+	public void loadFromXmlFile() {
+		loadFromFile(getStoreFilePath(), true);
+	}
+
+	public void loadFromFile() {
+		loadFromFile(getStoreFilePath(), false);
+	}
 	
 	public boolean isFileLoadSuccessfull() {
 		return fileLoadSuccessfull;
 	}
 
+	public String getConsoleConfigName() {
+		return consoleConfigName;
+	}
+
+	protected Configuration getConfig() {
+		final ConsoleConfiguration consoleConfig = getConsoleConfig();
+		if (consoleConfig != null) {
+			Configuration config = consoleConfig.getConfiguration();
+			if (config == null) {
+				consoleConfig.build();
+				consoleConfig.execute(new ExecutionContext.Command() {
+					public Object execute() {
+						if (consoleConfig.hasConfiguration()) {
+							consoleConfig.getConfiguration().buildMappings();
+						}
+						return consoleConfig;
+					}
+				} );
+				config = consoleConfig.getConfiguration();
+			}
+			return config;
+		}
+		return null;
+	}
+
 	public ConsoleConfiguration getConsoleConfig() {
+		final KnownConfigurations knownConfigurations = KnownConfigurations.getInstance();
+		ConsoleConfiguration consoleConfig = knownConfigurations.find(consoleConfigName);
 		return consoleConfig;
 	}
 	
@@ -578,5 +776,49 @@ public class OrmDiagram extends BaseElement {
 
 	public void setDeepIntoSort(boolean deepIntoSort) {
 		this.deepIntoSort = deepIntoSort;
+	}
+
+	public boolean equals(Object obj) {
+		boolean res = false;
+		if (!(obj instanceof OrmDiagram)) {
+			return res;
+		}
+		final OrmDiagram od = (OrmDiagram)obj;
+		if (consoleConfigName == null) {
+			if (od.getConsoleConfigName() != null) {
+				return res;
+			}
+		} else if (!consoleConfigName.equals(od.getConsoleConfigName())) {
+			return res;
+		}
+		final ArrayList<RootClass> rootsOd = od.roots;
+		if (roots.size() != rootsOd.size()) {
+			return res;
+		}
+		res = true;
+		for (int i = 0; i < roots.size(); i++) {
+			RootClass rc = roots.get(i);
+			if (rc == null) {
+				if (rc != rootsOd.get(i)) {
+					res = false;
+					break;
+				}
+			} else if (!rc.equals(rootsOd.get(i))) {
+				res = false;
+				break;
+			}
+		}
+		return res;
+	}
+
+	public int hashCode() {
+		if (consoleConfigName == null) {
+			return roots.hashCode();
+		}
+		return roots.hashCode() + consoleConfigName.hashCode();
+	}
+	
+	public void setMemento(IMemento memento) {
+		this.memento = memento;
 	}
 }

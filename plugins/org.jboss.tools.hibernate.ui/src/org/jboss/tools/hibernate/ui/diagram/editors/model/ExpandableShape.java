@@ -12,6 +12,8 @@ package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
 import java.util.Properties;
 
+import org.eclipse.ui.IMemento;
+
 /**
  * Shape with two intrinsic states: expand and collapse.
  * 
@@ -77,16 +79,30 @@ public class ExpandableShape extends Shape {
 	}
 	
 	@Override
+	public void loadState(IMemento memento) {
+		super.loadState(memento);
+		boolean expanded = getPrValue(memento, EXPANDED, true);
+		setExpanded(expanded);
+	}
+	
+	@Override
 	protected void loadFromProperties(Properties properties) {
 		super.loadFromProperties(properties);
-		boolean expanded = getPrValue(properties, EXPANDED);
+		boolean expanded = getPrValue(properties, EXPANDED, true);
 		setExpanded(expanded);
+	}
+
+	@Override
+	public void saveState(IMemento memento) {
+		boolean expanded = isExpanded();
+		setPrValue(memento, EXPANDED, expanded);
+		super.saveState(memento);
 	}
 
 	@Override
 	protected void saveInProperties(Properties properties) {
 		boolean expanded = isExpanded();
-		setPrValue(properties, expanded, EXPANDED);
+		setPrValue(properties, EXPANDED, expanded);
 		super.saveInProperties(properties);
 	}
 }

@@ -57,4 +57,5 @@ public class DiagramViewerMessages extends NLS {
 	public static String TogglePropertyMappingAction_property_mappings;
 	public static String ToggleAssociationAction_associations;
 	public static String ToggleForeignKeyConstraintAction_foreign_key_constraints;
+	public static String MessageShape_warning;
 }

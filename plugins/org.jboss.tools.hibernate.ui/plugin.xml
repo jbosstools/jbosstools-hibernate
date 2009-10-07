@@ -4,6 +4,8 @@
     <extension
          point="org.eclipse.ui.editors">
       <editor
+            default="true"
+            extensions="hibernate"
             class="org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer"
             contributorClass="org.jboss.tools.hibernate.ui.diagram.editors.DiagramActionBarContributor"
             icon="$nl$/icons/hibernate_small_icon.gif"
@@ -29,6 +31,13 @@
             class="org.jboss.tools.hibernate.ui.view.OpenDiagramActionDelegate"> 
          </action> 
       </objectContribution> 
+   </extension>
+   <extension
+         point="org.eclipse.ui.elementFactories">
+      <factory
+            class="org.jboss.tools.hibernate.ui.view.DiagramEditorInputFactory"
+            id="org.jboss.tools.hibernate.ui.view.DiagramEditorInputFactory">
+      </factory>
    </extension>
 
 </plugin>

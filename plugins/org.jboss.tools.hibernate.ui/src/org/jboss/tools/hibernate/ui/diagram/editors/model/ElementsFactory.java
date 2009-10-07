@@ -74,7 +74,8 @@ public class ElementsFactory {
 			Type type = ((Property)element).getType();
 			if (type.isEntityType()) {
 				EntityType et = (EntityType) type;
-				Object clazz = config.getClassMapping(et.getAssociatedEntityName());
+				Object clazz = config != null ? 
+						config.getClassMapping(et.getAssociatedEntityName()) : null;
 				if (clazz instanceof RootClass) {
 					RootClass rootClass = (RootClass)clazz;
 					s = getOrCreatePersistentClass(rootClass, null);
@@ -192,15 +193,17 @@ public class ElementsFactory {
 			tableShape = getShape(databaseTable);
 			if (tableShape == null) {
 				tableShape = createShape(databaseTable);
-				Iterator iterator = config.getClassMappings();
-				while (iterator.hasNext()) {
-					Object clazz = iterator.next();
-					if (clazz instanceof RootClass) {
-						RootClass cls = (RootClass)clazz;
-						if (databaseTable.equals(cls.getTable())) {
-							// create persistent class shape only for RootClass,
-							// which has same table reference
-							getOrCreatePersistentClass(cls, null);
+				if (config != null) {
+					Iterator iterator = config.getClassMappings();
+					while (iterator.hasNext()) {
+						Object clazz = iterator.next();
+						if (clazz instanceof RootClass) {
+							RootClass cls = (RootClass)clazz;
+							if (databaseTable.equals(cls.getTable())) {
+								// create persistent class shape only for RootClass,
+								// which has same table reference
+								getOrCreatePersistentClass(cls, null);
+							}
 						}
 					}
 				}
@@ -363,8 +366,6 @@ public class ElementsFactory {
 		}
 		return classShape;
 	}
-
-
 	
 	protected OrmShape createShape(Object ormElement) {
 		OrmShape ormShape = null;
@@ -386,9 +387,6 @@ public class ElementsFactory {
 		}
 		return ormShape;
 	}
-
-	
-	
 	
 	@SuppressWarnings("unchecked")
 	private boolean createConnections(ExpandableShape persistentClass, ExpandableShape dbTable) {

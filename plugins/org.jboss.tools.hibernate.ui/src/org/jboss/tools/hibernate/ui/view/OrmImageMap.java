@@ -55,6 +55,8 @@ public class OrmImageMap {
 			imageName = getImageName((SimpleValue)obj);
 		} else if (obj instanceof PersistentClass) {
 			imageName = getImageName((PersistentClass)obj);
+		} else if (obj instanceof String) {
+			imageName = "Image_Error"; //$NON-NLS-1$;
 		}
 		return UiPlugin.getImageDescriptor("images/" + ImageBundle.getString(imageName)); //$NON-NLS-1$
 	}

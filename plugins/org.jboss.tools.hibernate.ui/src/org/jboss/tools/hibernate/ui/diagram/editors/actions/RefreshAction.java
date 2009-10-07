@@ -36,7 +36,7 @@ public class RefreshAction extends WorkbenchPartAction {
 	}
 
 	public void run() {
-		getDiagramViewer().getViewerContents().refresh();
+		getDiagramViewer().refresh();
 		if (outline != null) {
 			// synchronize contents of outline page
 			outline.setContents(outline.getOrmDiagram());

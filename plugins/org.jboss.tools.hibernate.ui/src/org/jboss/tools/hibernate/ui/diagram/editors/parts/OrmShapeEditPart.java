@@ -32,7 +32,7 @@ import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmShape;
 /**
  * @author some modifications from Vitali
  */
-public class OrmShapeEditPart extends ExpandableShapeEditPart{
+public class OrmShapeEditPart extends ExpandableShapeEditPart {
 
 	public OrmShape getModelOrmShape() {
 		return (OrmShape)getModel();
@@ -128,6 +128,8 @@ public class OrmShapeEditPart extends ExpandableShapeEditPart{
 					Integer.parseInt(ColorConstants.Colors_DatabaseColumnR),
 					Integer.parseInt(ColorConstants.Colors_DatabaseColumnG),
 					Integer.parseInt(ColorConstants.Colors_DatabaseColumnB)));
+		} else if (element instanceof String) {
+			return ResourceManager.getInstance().getColor(new RGB(0, 0, 0));
 		} else {
 			throw new IllegalArgumentException();
 		}

@@ -18,6 +18,7 @@ import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
@@ -59,10 +60,15 @@ public class TitleFigure extends Figure {
 		removeTitle();
 		TitleLabel label = new TitleLabel(fontHeight);
 		label.setText(text);
-		FontData fontData[] = Display.getCurrent().getSystemFont().getFontData();
-		fontData[0].setStyle(SWT.BOLD);
-		fontData[0].height = fontHeight;
-		label.setFont(ResourceManager.getInstance().getFont(fontData[0]));
+		if (Display.getCurrent() != null) {
+			final Font font = Display.getCurrent().getSystemFont();
+			if (font != null) {
+				FontData fontData[] = font.getFontData();
+				fontData[0].setStyle(SWT.BOLD);
+				fontData[0].height = fontHeight;
+				label.setFont(ResourceManager.getInstance().getFont(fontData[0]));
+			}
+		}
 		label.setBackgroundColor(bg);
 		label.setIcon(icon);
 		label.setLabelAlignment(PositionConstants.LEFT);
