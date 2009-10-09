@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <chapter id="plugins" role="updated">
   <title>Eclipse Plugins</title>
 
@@ -1623,7 +1623,7 @@
       </emphasis> then.</para>
 
     <figure>
-      <title>Overview Page</title>
+      <title>ChooseReverse Engineering File Wizard </title>
       <mediaobject>
         <imageobject role="fo">
           <imagedata align="center" scale="80" fileref="images/plugins/plugins_22.png" format="PNG"
