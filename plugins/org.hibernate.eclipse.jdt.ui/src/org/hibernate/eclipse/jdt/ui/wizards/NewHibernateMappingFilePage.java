@@ -164,6 +164,7 @@ public class NewHibernateMappingFilePage extends WizardPage {
 
 	private class TableContentProvider implements IStructuredContentProvider {
 
+		@SuppressWarnings("unchecked")
 		public Object[] getElements(Object inputElement) {
 			if (inputElement instanceof Map) {
 				List<TableLine> result = new ArrayList<TableLine>();

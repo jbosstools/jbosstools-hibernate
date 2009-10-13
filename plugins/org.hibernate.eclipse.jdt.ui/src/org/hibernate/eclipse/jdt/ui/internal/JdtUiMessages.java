@@ -35,6 +35,14 @@ public class JdtUiMessages extends NLS {
 	public static String ResolveAmbiguous_column_Owner;
 	public static String ResolveAmbiguous_empty;
 	public static String ResolveAmbiguous_message;
+	public static String AddRemoveTableComposite_add_class;
+	public static String AddRemoveTableComposite_add_package;
+	public static String AddRemoveTableComposite_java_types_title;
+	public static String AddRemoveTableComposite_java_packages_title;
+	public static String AddRemoveTableComposite_java_select_types;
+	public static String AddRemoveTableComposite_java_select_packages;
+	public static String NewHibernateMappingElementsSelectionPage2_description;
+	
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, JdtUiMessages.class);

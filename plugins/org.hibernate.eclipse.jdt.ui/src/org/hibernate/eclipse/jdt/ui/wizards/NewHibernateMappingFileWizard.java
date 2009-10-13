@@ -11,6 +11,7 @@
 package org.hibernate.eclipse.jdt.ui.wizards;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,6 +28,8 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.IParent;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.JavaElement;
 import org.eclipse.jdt.internal.core.JavaElementInfo;
@@ -37,6 +40,7 @@ import org.eclipse.jface.dialogs.IPageChangingListener;
 import org.eclipse.jface.dialogs.PageChangingEvent;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -67,24 +71,31 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 
 	private Map<IJavaProject, Collection<EntityInfo>> project_infos = new HashMap<IJavaProject, Collection<EntityInfo>>();
 
-	private IStructuredSelection selection;	
+	private IStructuredSelection selection;
+	
+	private NewHibernateMappingElementsSelectionPage2 page0 = null;
 
-	private NewHibernateMappingElementsSelectionPage page1 = null;
+	//private NewHibernateMappingElementsSelectionPage page1 = null;
 	
 	private NewHibernateMappingFilePage page2 = null;
 
 	public NewHibernateMappingFileWizard(){
 		setDefaultPageImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.NEW_WIZARD) );
 		setNeedsProgressMonitor(true);
+		setWindowTitle(HibernateConsoleMessages.NewHibernateMappingFileWizard_create_hibernate_xml_mapping_file);
 	}
 
 	@Override
 	public void addPages() {
 		super.addPages();
-		page1 = new NewHibernateMappingElementsSelectionPage(selection);
-		page1.setTitle( HibernateConsoleMessages.NewHibernateMappingFileWizard_create_hibernate_xml_mapping_file );
-		page1.setDescription( HibernateConsoleMessages.NewHibernateMappingFileWizard_create_new_xml_mapping_file );
-		addPage(page1);
+		
+		page0 = new NewHibernateMappingElementsSelectionPage2(HibernateConsoleMessages.NewHibernateMappingFileWizard_create_hibernate_xml_mapping_file, selection);
+		addPage(page0);
+		
+		//page1 = new NewHibernateMappingElementsSelectionPage(selection);
+		//page1.setTitle( HibernateConsoleMessages.NewHibernateMappingFileWizard_create_hibernate_xml_mapping_file );
+		//page1.setDescription( HibernateConsoleMessages.NewHibernateMappingFileWizard_create_new_xml_mapping_file );
+		//addPage(page1);
 		page2 = new NewHibernateMappingFilePage();
 		addPage(page2);
 	}
@@ -102,13 +113,63 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 
 	public void handlePageChanging(PageChangingEvent event) {
 		if (event.getTargetPage() == page2){
-				updateCompilationUnits();
-				page2.setInput(project_infos);
+			updateCompilationUnits();
+			page2.setInput(project_infos);
 		}
 	}
 
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		this.selection = selection;
+		Set<IJavaElement> filteredElements = new HashSet<IJavaElement>();
+		Object[] elements = selection.toArray();
+		for (int i = 0; i < elements.length; i++) {
+			if (elements[i] instanceof JavaProject) {
+				JavaProject project = (JavaProject) elements[i];
+				try {
+					IPackageFragmentRoot[] roots = project.getPackageFragmentRoots();
+					for (int j = 0; j < roots.length; j++) {
+						if (!roots[j].isArchive()){
+							IJavaElement[] rootChildren = roots[j].getChildren();
+							for (int k = 0; k < rootChildren.length; k++) {
+								if (rootChildren[k] instanceof IParent && ((IParent)rootChildren[k]).hasChildren()){
+									filteredElements.add(rootChildren[k]);	
+								}						
+							}														
+						}
+					} 
+				} catch (JavaModelException e) {
+					e.printStackTrace();
+				}				
+			} else if (elements[i] instanceof IPackageFragmentRoot) {
+				IPackageFragmentRoot root = (IPackageFragmentRoot)elements[i];
+				if (!root.isArchive()){							
+					try {
+						filteredElements.addAll(Arrays.asList((root.getChildren())));
+					} catch (JavaModelException e) {
+						e.printStackTrace();
+					}							
+			}
+			} else if (elements[i] instanceof ICompilationUnit) {
+				ICompilationUnit cu = (ICompilationUnit)elements[i];
+				IType[] types;
+				try {
+					types = cu.getTypes();
+					//remove java extension.
+					String typeName = cu.getElementName().substring(0, cu.getElementName().length() - 5);
+					for (int j = 0; j < types.length; j++) {
+						if (types[j].getElementName().equals(typeName)){
+							filteredElements.add(types[j]);
+							break;
+						}
+					}
+				} catch (JavaModelException e) {
+					e.printStackTrace();
+				}
+					
+			} else if (elements[i] instanceof IJavaElement) {
+				filteredElements.add((IJavaElement) elements[i]);
+			}
+		}
+		this.selection = new StructuredSelection(filteredElements.toArray());
 	}
 
 	@Override
@@ -227,11 +288,11 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 
 	
 	protected void updateCompilationUnits(){
-		Assert.isNotNull(page1.getSelection(), HibernateConsoleMessages.NewHibernateMappingFileWizard_selection_cant_be_empty);
-		if ((selectionCU == null) || !page1.getSelection().equals(selection)) {
+		Assert.isNotNull(page0.getSelection(), HibernateConsoleMessages.NewHibernateMappingFileWizard_selection_cant_be_empty);
+		if ((selectionCU == null) || !page0.getSelection().equals(selection)) {
 			selectionCU = new HashSet<ICompilationUnit>();
 			project_infos.clear();
-			selection = page1.getSelection();
+			selection = page0.getSelection();
 				try {
 					getContainer().run(false, false, new IRunnableWithProgress() {
 
