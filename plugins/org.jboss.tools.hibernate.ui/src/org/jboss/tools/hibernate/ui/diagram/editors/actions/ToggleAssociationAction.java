@@ -10,9 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.actions;
 
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
+import org.jboss.tools.hibernate.ui.diagram.editors.command.ToggleAssociationCommand;
 
 /**
  * Show|Hide connections which type is "Associations" (class associations).
@@ -36,7 +39,12 @@ public class ToggleAssociationAction extends DiagramBaseAction {
 	}
 
 	public void run() {
-		boolean state = getDiagramViewer().getConnectionsVisibilityAssociation();
-		getDiagramViewer().setConnectionsVisibilityAssociation(!state);
+		execute(getCommand());
+	}
+
+	public Command getCommand() {
+		CompoundCommand cc = new CompoundCommand();
+		cc.add(new ToggleAssociationCommand(getDiagramViewer()));
+		return cc;
 	}
 }

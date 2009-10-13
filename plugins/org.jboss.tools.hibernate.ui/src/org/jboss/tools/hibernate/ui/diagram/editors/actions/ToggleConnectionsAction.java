@@ -10,9 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.actions;
 
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
+import org.jboss.tools.hibernate.ui.diagram.editors.command.ToggleConnectionsCommand;
 
 /**
  * Show|Hide all connections.
@@ -34,13 +37,12 @@ public class ToggleConnectionsAction extends DiagramBaseAction {
 	}
 
 	public void run() {
-		boolean state = getDiagramViewer().getConnectionsVisibilityAssociation();
-		getDiagramViewer().setConnectionsVisibilityAssociation(!state);
-		state = getDiagramViewer().getConnectionsVisibilityClassMapping();
-		getDiagramViewer().setConnectionsVisibilityClassMapping(!state);
-		state = getDiagramViewer().getConnectionsVisibilityForeignKeyConstraint();
-		getDiagramViewer().setConnectionsVisibilityForeignKeyConstraint(!state);
-		state = getDiagramViewer().getConnectionsVisibilityPropertyMapping();
-		getDiagramViewer().setConnectionsVisibilityPropertyMapping(!state);
+		execute(getCommand());
+	}
+
+	public Command getCommand() {
+		CompoundCommand cc = new CompoundCommand();
+		cc.add(new ToggleConnectionsCommand(getDiagramViewer()));
+		return cc;
 	}
 }

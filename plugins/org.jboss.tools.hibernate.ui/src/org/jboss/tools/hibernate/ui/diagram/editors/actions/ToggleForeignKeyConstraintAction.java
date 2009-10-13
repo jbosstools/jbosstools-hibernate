@@ -10,9 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.actions;
 
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
+import org.jboss.tools.hibernate.ui.diagram.editors.command.ToggleForeignKeyConstraintCommand;
 
 /**
  * Show|Hide connections which type is "Foreign key constraints" 
@@ -37,8 +40,13 @@ public class ToggleForeignKeyConstraintAction extends DiagramBaseAction {
 	}
 
 	public void run() {
-		boolean state = getDiagramViewer().getConnectionsVisibilityForeignKeyConstraint();
-		getDiagramViewer().setConnectionsVisibilityForeignKeyConstraint(!state);
+		execute(getCommand());
+	}
+
+	public Command getCommand() {
+		CompoundCommand cc = new CompoundCommand();
+		cc.add(new ToggleForeignKeyConstraintCommand(getDiagramViewer()));
+		return cc;
 	}
 
 	@Override

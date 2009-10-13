@@ -10,9 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.actions;
 
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
+import org.jboss.tools.hibernate.ui.diagram.editors.command.AutoLayoutCommand;
 
 /**
  * @author some modifications from Vitali
@@ -32,6 +35,12 @@ public class AutoLayoutAction extends DiagramBaseAction {
 	}
 
 	public void run() {
-		getDiagramViewer().getOrmDiagram().autolayout();
+		execute(getCommand());
+	}
+
+	public Command getCommand() {
+		CompoundCommand cc = new CompoundCommand();
+		cc.add(new AutoLayoutCommand(getDiagramViewer().getOrmDiagram()));
+		return cc;
 	}
 }

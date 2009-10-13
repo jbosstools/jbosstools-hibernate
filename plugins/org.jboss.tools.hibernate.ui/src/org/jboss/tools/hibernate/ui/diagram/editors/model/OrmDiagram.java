@@ -26,6 +26,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -33,6 +34,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
@@ -820,5 +822,41 @@ public class OrmDiagram extends BaseElement {
 	
 	public void setMemento(IMemento memento) {
 		this.memento = memento;
+	}
+	
+	public HashMap<String, Point> getElementsLocations() {
+		HashMap<String, Point> elLocations = new HashMap<String, Point>();
+		Iterator< Entry<String, OrmShape> > it = elements.entrySet().iterator();
+		while (it.hasNext()) {
+			Entry<String, OrmShape> entry = it.next();
+			elLocations.put(entry.getKey(), entry.getValue().getLocation());
+		}
+		return elLocations;
+	}
+	
+	public void setElementsLocations(HashMap<String, Point> elLocations) {
+		Iterator< Entry<String, Point> > it = elLocations.entrySet().iterator();
+		while (it.hasNext()) {
+			Entry<String, Point> entry = it.next();
+			elements.get(entry.getKey()).setLocation(entry.getValue());
+		}
+	}
+	
+	public HashMap<String, Boolean> getElementsExpState() {
+		HashMap<String, Boolean> elExpState = new HashMap<String, Boolean>();
+		Iterator< Entry<String, OrmShape> > it = elements.entrySet().iterator();
+		while (it.hasNext()) {
+			Entry<String, OrmShape> entry = it.next();
+			elExpState.put(entry.getKey(), entry.getValue().isExpanded());
+		}
+		return elExpState;
+	}
+	
+	public void setElementsExpState(HashMap<String, Boolean> elExpState) {
+		Iterator< Entry<String, Boolean> > it = elExpState.entrySet().iterator();
+		while (it.hasNext()) {
+			Entry<String, Boolean> entry = it.next();
+			elements.get(entry.getKey()).setExpanded(entry.getValue());
+		}
 	}
 }

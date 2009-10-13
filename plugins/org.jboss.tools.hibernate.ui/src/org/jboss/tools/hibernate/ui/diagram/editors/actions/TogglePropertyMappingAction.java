@@ -10,9 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.actions;
 
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
+import org.jboss.tools.hibernate.ui.diagram.editors.command.TogglePropertyMappingCommand;
 
 /**
  * Show|Hide connections which type is "Property Mappings" (property->column).
@@ -36,7 +39,12 @@ public class TogglePropertyMappingAction extends DiagramBaseAction {
 	}
 
 	public void run() {
-		boolean state = getDiagramViewer().getConnectionsVisibilityPropertyMapping();
-		getDiagramViewer().setConnectionsVisibilityPropertyMapping(!state);
+		execute(getCommand());
+	}
+
+	public Command getCommand() {
+		CompoundCommand cc = new CompoundCommand();
+		cc.add(new TogglePropertyMappingCommand(getDiagramViewer()));
+		return cc;
 	}
 }

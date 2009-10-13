@@ -14,12 +14,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.editparts.AbstractTreeEditPart;
 import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IWorkbenchPart;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
+import org.jboss.tools.hibernate.ui.diagram.editors.command.ToggleShapeExpandStateCommand;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.ExpandableShape;
 import org.jboss.tools.hibernate.ui.diagram.editors.parts.OrmEditPart;
 
@@ -42,10 +45,15 @@ public class ToggleShapeExpandStateAction extends SelectionAction {
 		setImageDescriptor(img);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void run() {
+		execute(getCommand());
+	}
+
+	@SuppressWarnings("unchecked")
+	public Command getCommand() {
+		CompoundCommand cc = new CompoundCommand();
 		if (getSelectedObjects().isEmpty()) {
-			return;
+			return cc;
 		}
 		List<ExpandableShape> selectedShape = new ArrayList<ExpandableShape>();
 		Iterator it = getSelectedObjects().iterator();
@@ -61,9 +69,10 @@ public class ToggleShapeExpandStateAction extends SelectionAction {
 				selectedShape.add((ExpandableShape)obj);
 			} 
 		}
-		for (ExpandableShape shape : selectedShape) {
-			shape.setExpanded(!shape.isExpanded());
+		if (selectedShape.size() > 0) {
+			cc.add(new ToggleShapeExpandStateCommand(selectedShape));
 		}
+		return cc;
 	}
 
 	@Override

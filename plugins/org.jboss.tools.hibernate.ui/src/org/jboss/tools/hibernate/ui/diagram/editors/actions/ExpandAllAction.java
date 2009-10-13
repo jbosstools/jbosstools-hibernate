@@ -10,8 +10,11 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.actions;
 
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CompoundCommand;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
+import org.jboss.tools.hibernate.ui.diagram.editors.command.ExpandAllCommand;
 
 /**
  * @author Vitali Yemialyanchyk
@@ -29,6 +32,12 @@ public class ExpandAllAction extends DiagramBaseAction {
 	}
 
 	public void run() {
-		getDiagramViewer().getOrmDiagram().expandAll();
+		execute(getCommand());
+	}
+
+	public Command getCommand() {
+		CompoundCommand cc = new CompoundCommand();
+		cc.add(new ExpandAllCommand(getDiagramViewer().getOrmDiagram()));
+		return cc;
 	}
 }

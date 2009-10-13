@@ -10,8 +10,11 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.actions;
 
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CompoundCommand;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
+import org.jboss.tools.hibernate.ui.diagram.editors.command.CollapseAllCommand;
 
 /**
  * @author Vitali Yemialyanchyk
@@ -29,6 +32,12 @@ public class CollapseAllAction extends DiagramBaseAction {
 	}
 
 	public void run() {
-		getDiagramViewer().getOrmDiagram().collapseAll();
+		execute(getCommand());
+	}
+
+	public Command getCommand() {
+		CompoundCommand cc = new CompoundCommand();
+		cc.add(new CollapseAllCommand(getDiagramViewer().getOrmDiagram()));
+		return cc;
 	}
 }

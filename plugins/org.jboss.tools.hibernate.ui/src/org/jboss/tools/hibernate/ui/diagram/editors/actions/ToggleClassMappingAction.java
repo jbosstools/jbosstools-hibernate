@@ -10,9 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.actions;
 
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
+import org.jboss.tools.hibernate.ui.diagram.editors.command.ToggleClassMappingCommand;
 
 /**
  * Show|Hide connections which type is "Class Mappings" (class->table).
@@ -36,7 +39,12 @@ public class ToggleClassMappingAction extends DiagramBaseAction {
 	}
 
 	public void run() {
-		boolean state = getDiagramViewer().getConnectionsVisibilityClassMapping();
-		getDiagramViewer().setConnectionsVisibilityClassMapping(!state);
+		execute(getCommand());
+	}
+
+	public Command getCommand() {
+		CompoundCommand cc = new CompoundCommand();
+		cc.add(new ToggleClassMappingCommand(getDiagramViewer()));
+		return cc;
 	}
 }
