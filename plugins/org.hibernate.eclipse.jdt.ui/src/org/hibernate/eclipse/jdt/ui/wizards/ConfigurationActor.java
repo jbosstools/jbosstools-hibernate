@@ -427,30 +427,32 @@ class TypeVisitor extends ASTVisitor{
 		rootClass = rootClasses.get(entityInfo.getFullyQualifiedName());
 		Assert.isNotNull(rootClass, "RootClass not found."); //$NON-NLS-1$
 		
-		Value value = null;
-		if (ref != null && rootClasses.get(ref.fullyQualifiedName) != null){
-			RootClass associatedClass = rootClasses.get(ref.fullyQualifiedName);
-			ITypeBinding[] interfaces = Utils.getAllInterfaces(tb);
-			value = buildCollectionValue(interfaces);
-			if (value != null) {
-				org.hibernate.mapping.Collection cValue = (org.hibernate.mapping.Collection)value;
+		ITypeBinding[] interfaces = Utils.getAllInterfaces(tb);
+		Value value = buildCollectionValue(interfaces);
+		if (value != null) {
+			org.hibernate.mapping.Collection cValue = (org.hibernate.mapping.Collection)value;			
+			if (ref != null && rootClasses.get(ref.fullyQualifiedName) != null){
 				OneToMany oValue = new OneToMany(rootClass);
+				RootClass associatedClass = rootClasses.get(ref.fullyQualifiedName);
 				oValue.setAssociatedClass(associatedClass);
 				oValue.setReferencedEntityName(ref.fullyQualifiedName);
 				//Set another table
-				cValue.setCollectionTable(associatedClass.getTable());
-				
-				cValue.setElement(oValue);
-				
-				if (value instanceof List){
-					((IndexedCollection)cValue).setIndex(new SimpleValue());
-				} else if (value instanceof org.hibernate.mapping.Map){
-					SimpleValue map_key = new SimpleValue();
-					//FIXME: is it possible to map Map<SourceType, String>?
-					//Or only Map<String, SourceType>
-					map_key.setTypeName(tb.getTypeArguments()[0].getBinaryName());
-					((IndexedCollection)cValue).setIndex(map_key);
-				}
+				cValue.setCollectionTable(associatedClass.getTable());				
+				cValue.setElement(oValue);				
+			} else {
+				SimpleValue elementValue = buildSimpleValue(tb.getTypeArguments()[0].getQualifiedName());
+				elementValue.setTable(rootClass.getTable());
+				cValue.setElement(elementValue);
+				cValue.setCollectionTable(rootClass.getTable());//TODO what to set?
+			}
+			if (value instanceof List){
+				((IndexedCollection)cValue).setIndex(new SimpleValue());
+			} else if (value instanceof org.hibernate.mapping.Map){
+				SimpleValue map_key = new SimpleValue();
+				//FIXME: is it possible to map Map<SourceType, String>?
+				//Or only Map<String, SourceType>
+				map_key.setTypeName(tb.getTypeArguments()[0].getBinaryName());
+				((IndexedCollection)cValue).setIndex(map_key);
 			}
 		}
 				
@@ -485,6 +487,7 @@ class TypeVisitor extends ASTVisitor{
 		if (value != null){
 			SimpleValue element = buildSimpleValue("string");//$NON-NLS-1$
 			((org.hibernate.mapping.Collection) value).setElement(element);
+			((org.hibernate.mapping.Collection) value).setCollectionTable(rootClass.getTable());//TODO what to set?
 			buildProperty(value);
 			if (value instanceof List){
 				((IndexedCollection)value).setIndex(new SimpleValue());
