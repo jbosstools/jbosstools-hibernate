@@ -43,6 +43,9 @@ public class AddRemoveTableComposite extends UpDownListComposite {
 				ArrayContentProvider.getInstance());
 		setUpDownVisible(false);
 	}
+
+	protected void setUpDownVisible(boolean tmp) {
+	}
 	
 	@Override
 	protected String[] getAddButtonLabels() {
