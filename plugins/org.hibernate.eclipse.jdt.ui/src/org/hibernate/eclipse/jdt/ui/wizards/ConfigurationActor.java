@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -49,7 +50,6 @@ import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.IndexedCollection;
 import org.hibernate.mapping.JoinedSubclass;
-import org.hibernate.mapping.List;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
@@ -445,7 +445,7 @@ class TypeVisitor extends ASTVisitor{
 				cValue.setElement(elementValue);
 				cValue.setCollectionTable(rootClass.getTable());//TODO what to set?
 			}
-			if (value instanceof List){
+			if (value instanceof org.hibernate.mapping.List){
 				((IndexedCollection)cValue).setIndex(new SimpleValue());
 			} else if (value instanceof org.hibernate.mapping.Map){
 				SimpleValue map_key = new SimpleValue();
@@ -489,7 +489,7 @@ class TypeVisitor extends ASTVisitor{
 			((org.hibernate.mapping.Collection) value).setElement(element);
 			((org.hibernate.mapping.Collection) value).setCollectionTable(rootClass.getTable());//TODO what to set?
 			buildProperty(value);
-			if (value instanceof List){
+			if (value instanceof org.hibernate.mapping.List){
 				((IndexedCollection)value).setIndex(new SimpleValue());
 			} else if (value instanceof org.hibernate.mapping.Map){
 				SimpleValue map_key = new SimpleValue();
@@ -549,13 +549,13 @@ class TypeVisitor extends ASTVisitor{
 	
 	private org.hibernate.mapping.Collection buildCollectionValue(ITypeBinding[] interfaces){
 		org.hibernate.mapping.Collection cValue = null;
-		if (Utils.isImplementInterface(interfaces, "java.util.Set")){//$NON-NLS-1$
+		if (Utils.isImplementInterface(interfaces, Set.class.getName())){
 			cValue = new org.hibernate.mapping.Set(rootClass);
-		} else if (Utils.isImplementInterface(interfaces, "java.util.List")){//$NON-NLS-1$
-			cValue = new org.hibernate.mapping.List(rootClass);	
-		} else if (Utils.isImplementInterface(interfaces, "java.util.Map")){//$NON-NLS-1$
+		} else if (Utils.isImplementInterface(interfaces, List.class.getName())){
+			cValue = new org.hibernate.mapping.List(rootClass);
+		} else if (Utils.isImplementInterface(interfaces, Map.class.getName())){
 			cValue = new org.hibernate.mapping.Map(rootClass);
-		} else if (Utils.isImplementInterface(interfaces, "java.util.Collection")){//$NON-NLS-1$
+		} else if (Utils.isImplementInterface(interfaces, Collection.class.getName())){
 			cValue = new org.hibernate.mapping.Bag(rootClass);
 		}
 		
