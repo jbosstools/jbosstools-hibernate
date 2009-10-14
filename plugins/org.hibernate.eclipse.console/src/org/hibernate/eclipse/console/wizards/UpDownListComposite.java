@@ -359,4 +359,9 @@ public class UpDownListComposite extends Composite {
 	public void clear() {
 		tableView.getTable().removeAll();
 	}
+	
+	public void setUpDownVisible(boolean visible){
+		upButton.setVisible(visible);
+		downButton.setVisible(visible);
+	}
 }
