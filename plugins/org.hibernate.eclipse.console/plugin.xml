@@ -641,26 +641,21 @@
    </extension>
    <extension
          point="org.eclipse.ltk.core.refactoring.renameParticipants">
-      <!--renameParticipant
-            class="org.hibernate.eclipse.launch.core.refactoring.RenameProjectParticipant"
-            id="org.hibernate.eclipse.launch.core.refactoring.RenameProjectParticipant"
-            name="Launch Configurations projectrename updates">
+         <renameParticipant
+            class="org.hibernate.eclipse.launch.core.refactoring.ConsoleConfigurationITypeRenameParticipant"
+            name="Console Configuration IType Participant"
+            id="org.hibernate.eclipse.launch.core.refactoring.ConsoleConfigurationITypeRenameParticipant"> 
          <enablement>
-            <with variable="element">
-                   <instanceof value="org.eclipse.jdt.core.IJavaProject"/>
-            </with>
+           <with variable="affectedNatures">
+             <iterate operator="or">
+               <equals value="org.eclipse.jdt.core.javanature"/>
+             </iterate>
+           </with>
+           <with variable="element">
+   	         <instanceof value="org.eclipse.jdt.core.IType"/>
+           </with>
          </enablement>
       </renameParticipant>
-      <renameParticipant
-            class="org.hibernate.eclipse.launch.core.refactoring.RenamePackageParticipant"
-            id="org.hibernate.eclipse.launch.core.refactoring.RenamePackageParticipant"
-            name="Launch Configurations package rename updates">
-            <enablement>
-            <with variable="element">
-                   <instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
-            </with>
-         </enablement>
-      </renameParticipant-->
       <renameParticipant
             class="org.hibernate.eclipse.launch.core.refactoring.RenameResourceParticipant"
             id="org.hibernate.eclipse.launch.core.refactoring.RenameResourceParticipant"
@@ -711,16 +706,21 @@
             </with>
          </enablement>
       </moveParticipant>
-      <!--moveParticipant
-            class="org.hibernate.eclipse.launch.core.refactoring.MovePackageParticipant"
-            id="org.hibernate.eclipse.launch.core.refactoring.MovePackageParticipant"
-            name="Launch Configurations resource move updates">
-            <enablement>
-            <with variable="element">
-                   <instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
-            </with>
+      <moveParticipant
+            class="org.hibernate.eclipse.launch.core.refactoring.ConsoleConfigurationITypeMoveParticipant"
+            name="Console Configuration IType Participant"
+            id="org.hibernate.eclipse.launch.core.refactoring.ConsoleConfigurationITypeMoveParticipant"> 
+         <enablement>
+           <with variable="affectedNatures">
+             <iterate operator="or">
+               <equals value="org.eclipse.jdt.core.javanature"/>
+             </iterate>
+           </with>
+           <with variable="element">
+   	         <instanceof value="org.eclipse.jdt.core.IType"/>
+           </with>
          </enablement>
-      </moveParticipant-->
+      </moveParticipant>
 
    </extension>
    <extension

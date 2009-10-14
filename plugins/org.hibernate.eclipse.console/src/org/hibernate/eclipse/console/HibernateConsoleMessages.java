@@ -488,6 +488,9 @@ public class HibernateConsoleMessages extends NLS {
 	public static String LaunchConfigurationResourceNameChange_update_resource_path_in_launch_cfg;
 	public static String MoveResourceParticipant_launch_configurations_updates;
 	public static String RenameResourceParticipant_launch_configurations_updates;
+	
+	public static String ConsoleConfigurationITypeRenameParticipant_update;
+	public static String ConsoleConfigurationITypeRenameParticipant_update_names;
 	//
 	public static String HibernateNature_error_while_performing_background_reading_of_database_schema;
 	public static String HibernateNature_exception_when_trying_to_locate_hibernate_nature;

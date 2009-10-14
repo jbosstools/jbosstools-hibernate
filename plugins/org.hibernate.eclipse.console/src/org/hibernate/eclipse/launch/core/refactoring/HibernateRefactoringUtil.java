@@ -37,6 +37,9 @@ import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
@@ -380,4 +383,64 @@ public class HibernateRefactoringUtil {
 			return new CompositeChange(name, changes.toArray(new Change[changes.size()]));
 		}
 	}
+
+	public static Change createChangesForTypeRename(IType type, String newName) {
+		IType dtype = type.getDeclaringType();
+		String newfqname = newName;
+		if (dtype == null) {
+			IPackageFragment packageFragment = type.getPackageFragment();
+			if (!packageFragment.isDefaultPackage()) {
+				newfqname = packageFragment.getElementName() + '.' + newName;
+			}
+		} 
+		else {
+			newfqname = dtype.getFullyQualifiedName() + '$' + newName;
+		}
+		return createChangesForTypeChange(type, newfqname);
+	}
+	
+	public static Change createChangesForTypeMove(IType type, IJavaElement destination) {
+		String newfqname = type.getElementName();
+		if (destination instanceof IType) {
+			newfqname = ((IType)destination).getFullyQualifiedName() + '$' + type.getElementName();
+		} 
+		else if (destination instanceof IPackageFragment) {
+			if (!((IPackageFragment) destination).isDefaultPackage()) {
+				newfqname = destination.getElementName() + '.' + type.getElementName();
+			}
+		} 
+		return createChangesForTypeChange(type, newfqname);
+	}
+	
+	protected static Change createChangesForTypeChange(IType type, String newfqname) {
+		List<Change> changes = new ArrayList<Change>();
+		String pname = type.getJavaProject().getElementName();
+		String typename = type.getFullyQualifiedName();
+		ILaunchConfiguration[] configs = null;
+		try {
+			configs = LaunchHelper.findHibernateLaunchConfigs();
+			String nsName, ername;
+			for(int i = 0; i < configs.length && configs[i].exists(); i++) {
+				String attrib = configs[i].getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String)null);
+				if(attrib != null) {
+					if(attrib.equals(pname)) {
+						nsName = configs[i].getAttribute(IConsoleConfigurationLaunchConstants.NAMING_STRATEGY, (String)null);
+						ername = configs[i].getAttribute(IConsoleConfigurationLaunchConstants.ENTITY_RESOLVER, (String)null);
+						if (typename.equals(nsName) ) {
+							changes.add(new ConsoleConfigurationNamingStrategyChange(configs[i], newfqname));
+						}
+						if (typename.equals(ername)) {
+							changes.add(new ConsoleConfigurationEntityResolverChange(configs[i], newfqname));
+						}
+					}
+				}				
+			}			
+		} catch(CoreException e) {
+			configs = new ILaunchConfiguration[0];
+			HibernateConsolePlugin.getDefault().logErrorMessage( ERROR_MESS, e );
+		}
+		return createChangesFromList(changes, HibernateConsoleMessages.ConsoleConfigurationITypeRenameParticipant_update);
+	}
+
+
 }

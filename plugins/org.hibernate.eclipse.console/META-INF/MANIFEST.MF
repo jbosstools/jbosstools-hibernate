@@ -75,6 +75,7 @@ Require-Bundle: org.hibernate.eclipse,
  org.eclipse.datatools.connectivity.ui,
  org.eclipse.datatools.connectivity,
  org.eclipse.jpt.core,
- org.eclipse.jpt.db
+ org.eclipse.jpt.db,
+ org.eclipse.jdt
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
