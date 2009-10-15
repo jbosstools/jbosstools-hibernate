@@ -2324,8 +2324,8 @@
 
     <para>By enabling Hibernate platform specific features you can now generate DDL and Entities.
       For that find <emphasis>
-        <property>JPA Tools > Generate DDL/Generate Entities</property>
-      </emphasis> options in the context menu of your JPA project.</para>
+        <property>JPA Tools > Generate Tables from Entities/Generate Entities from Tables</property>
+        </emphasis> options in the context menu of your JPA project.</para>
 
     <figure>
       <title>Generate DDL/Entities</title>
@@ -2343,7 +2343,7 @@
         project.</para>
     </note>
 
-    <para>The <property>Generate DDL/Entities wizards</property> first will ask you to choose the directory where all
+    <para>The <property>Generate Entities wizard</property> first will ask you to choose the directory where all
       output will be written.</para>
 
     <figure>
@@ -2386,6 +2386,15 @@
       </listitem>
     </itemizedlist>
 
+<para>All the same you do with Generate Entities Wizard you can do with Generate DDL wizard. Special feature for Generate DDL wizard is possible automatic execution of Generation DDL  in the database. </para>
+ <figure>
+          <title>Generate DDL Wizard</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/plugins/dali_integration6.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
     <para>Thus, you can now have the Hibernate runtime support in Eclipse JPA projects.</para>
   </section>
 </chapter>
