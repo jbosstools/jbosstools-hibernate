@@ -1578,7 +1578,6 @@
 
     <figure>
       <title>Structured cfg.xml Editor</title>
-
       <mediaobject>
         <imageobject>
           <imagedata fileref="images/plugins/plugins_12_b.png"/>
@@ -1587,6 +1586,82 @@
     </figure>
 
   </section>
+	
+	<section id="properties_editor">
+		<title>JBoss Tools Properties Editor</title>
+		
+		<para>The editor is meant for editing <literal>.properties</literal> files. It contains two tabs: the 
+			<property>Properties</property> (UI) tab and the 
+				<property>Source</property> tab for manual editing.</para>
+		
+		<para>For <literal>hibernate.properties</literal> file <property>JBoss Tools Properties Editor</property>
+			provides content assist which is available both for hibernate properties and property values. You can make use of 
+			the content assist while editing the file in the Source view and in the Properties view of the editor.</para>
+		
+		
+		<para>To add the property in the 
+			<property>Properties</property> view, click the <emphasis>
+			<property>Add</property></emphasis> button.</para>
+
+				<figure>
+					<title>Adding the Property</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="images/plugins/add_property1.png"/>
+						</imageobject>
+					</mediaobject>
+				</figure>
+		
+		<para>In the <emphasis>
+			<property>Name</property></emphasis> field press <emphasis>
+				<property>Ctrl+Space</property></emphasis> to invoke the content assist. 
+			It will suggest <emphasis>
+				<property>&apos;hibernate.&apos;</property></emphasis> which is the prefix for all hibernate properties. After 
+			selecting <emphasis>
+				<property>&apos;hibernate.&apos;</property></emphasis> and invoking the content assist again, 
+			other prefixes and properties are displayed as the proposals with a description of each one.</para>
+		
+		<figure>
+			<title>Content Assist for Properties Names</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/plugins/add_property2.png"/>
+				</imageobject>
+			</mediaobject>
+		</figure>
+		
+		<para>When invoking the content assist in the <emphasis>
+			<property>Value</property></emphasis> field, it also provides a list of proposals.</para>
+		
+		<figure>
+			<title>Content Assist for Properties Values</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/plugins/add_property3.png"/>
+				</imageobject>
+			</mediaobject>
+		</figure>
+		
+		<para>In the <property>Source</property> view of the editor, content assist also could be invoked both for properties names and values:</para>
+		
+		<figure>
+			<title>Content Assist in the Source view</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/plugins/add_property4.png"/>
+				</imageobject>
+			</mediaobject>
+		</figure>
+		
+		<figure>
+			<title>Content Assist in the Source view</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/plugins/add_property5.png"/>
+				</imageobject>
+			</mediaobject>
+		</figure>
+	</section>
 
   <section id="rev_xml_editor">
     <title>Reveng.xml Editor</title>
