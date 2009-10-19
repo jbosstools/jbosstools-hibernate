@@ -1,36 +1,38 @@
 /*******************************************************************************
-  * Copyright (c) 2007-2008 Red Hat, Inc.
-  * Distributed under license by Red Hat, Inc. All rights reserved.
-  * This program is made available under the terms of the
-  * Eclipse Public License v1.0 which accompanies this distribution,
-  * and is available at http://www.eclipse.org/legal/epl-v10.html
-  *
-  * Contributor:
-  *     Red Hat, Inc. - initial API and implementation
-  ******************************************************************************/
+ * Copyright (c) 2007-2009 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.hibernate.eclipse.jdt.ui.internal.jpa.process;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.core.filebuffers.FileBuffers;
+import org.eclipse.core.filebuffers.ITextFileBuffer;
 import org.eclipse.core.filebuffers.ITextFileBufferManager;
 import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.text.edits.MalformedTreeException;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.jdt.ui.Activator;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
+import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfosCollection;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.process.wizard.HibernateJPAWizard;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.process.wizard.IHibernateJPAWizardData;
@@ -216,7 +218,7 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
         	}
         }
         if (performChange) {
-			performChange(bufferManager);
+			performCommit(entities, bufferManager);
         }
 		performDisconnect(bufferManager);
 	}
@@ -233,23 +235,22 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 		changes.clear();
 	}
 
-	protected void performChange(ITextFileBufferManager bufferManager) {
+	protected void performCommit(final Map<String, EntityInfo> entities,
+			ITextFileBufferManager bufferManager) {
+		
+		HashSet<IPath> paths = new HashSet<IPath>();
 		for (int i = 0; i < changes.size(); i++) {
 			ChangeStructure cs = changes.get(i);
+			paths.add(cs.path);
+		}
+		Iterator<IPath> it = paths.iterator();
+		while (it.hasNext()) {
+			ITextFileBuffer textFileBuffer = bufferManager.getTextFileBuffer(it.next(), LocationKind.IFILE);
 			try {
-				if (cs.textFileBuffer != null && cs.textEdit != null &&
-					((cs.change != null && cs.change.isEnabled()) || (cs.change == null))) {
-					IDocument document = cs.textFileBuffer.getDocument();
-					cs.textEdit.apply(document);
-					// commit changes to underlying file
-					cs.textFileBuffer.commit(null, true);
-				}
+				// commit changes to underlying file
+				textFileBuffer.commit(null, true);
 			} catch (CoreException e) {
 				HibernateConsolePlugin.getDefault().logErrorMessage("CoreException: ", e); //$NON-NLS-1$
-			} catch (MalformedTreeException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("MalformedTreeException: ", e); //$NON-NLS-1$
-			} catch (BadLocationException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("BadLocationException: ", e); //$NON-NLS-1$
 			}
 		}
 	}
@@ -258,58 +259,73 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 			Map<String, EntityInfo> entities) {
 
 		changes.clear();
+		HashMap<IPath, EntityInfosCollection> modifications = new HashMap<IPath, EntityInfosCollection>();
 		Iterator<Map.Entry<String, EntityInfo>> it = entities.entrySet().iterator();
-		try {
-			while (it.hasNext()) {
-				Map.Entry<String, EntityInfo> entry = it.next();
-				if (entry.getValue().isInterfaceFlag()) {
-					continue;
-				}
-				collectModification(bufferManager, entry.getKey(), entry.getValue(), entities);
+		while (it.hasNext()) {
+			Map.Entry<String, EntityInfo> entry = it.next();
+			if (entry.getValue().isInterfaceFlag()) {
+				continue;
 			}
-		} catch (CoreException e) {
-			HibernateConsolePlugin.getDefault().logErrorMessage("CoreException: ", e); //$NON-NLS-1$
+			final String fullyQualifiedName = entry.getKey();
+			ICompilationUnit icu = Utils.findCompilationUnit(javaProject, fullyQualifiedName);
+			org.eclipse.jdt.core.dom.CompilationUnit cu = Utils.getCompilationUnit(icu, true);
+			final IPath path = cu.getJavaElement().getPath();
+			EntityInfosCollection eiCollection = null;
+			if (modifications.containsKey(path)) {
+				eiCollection = modifications.get(path);
+			} else {
+				eiCollection = new EntityInfosCollection();
+				eiCollection.setPath(path);
+				eiCollection.setICompilationUnit(icu);
+				eiCollection.setCompilationUnit(cu);
+				modifications.put(path, eiCollection);
+				try {
+					bufferManager.connect(path, LocationKind.IFILE, null);
+				} catch (CoreException e) {
+					HibernateConsolePlugin.getDefault().logErrorMessage("CoreException: ", e); //$NON-NLS-1$
+				}
+			}
+			final EntityInfo entityInfo = entry.getValue();
+			//
+			entityInfo.updateColumnAnnotationImport(defaultStrLength != columnLength);
+			entityInfo.updateVersionImport(enableOptLock && entityInfo.isAddVersionFlag());
+			//
+			eiCollection.addEntityInfo(entityInfo);
+		}
+		Iterator<EntityInfosCollection> itEIC = modifications.values().iterator();
+		while (itEIC.hasNext()) {
+			EntityInfosCollection eic = itEIC.next();
+			eic.updateExistingImportSet();
+			eic.updateRequiredImportSet();
+			collectModification(bufferManager, eic, entities);
 		}
 	}
 
-	public void collectModification(ITextFileBufferManager bufferManager, String fullyQualifiedName,
-			EntityInfo entityInfo, Map<String, EntityInfo> entities) throws CoreException {
+	public void collectModification(ITextFileBufferManager bufferManager, 
+			EntityInfosCollection entityInfos, Map<String, EntityInfo> entities) {
 
-		//
-		entityInfo.updateColumnAnnotationImport(defaultStrLength != columnLength);
-		entityInfo.updateVersionImport(enableOptLock && entityInfo.isAddVersionFlag());
-		//
 		ChangeStructure cs = new ChangeStructure();
-		cs.fullyQualifiedName = fullyQualifiedName;
-		ICompilationUnit icu = Utils.findCompilationUnit(javaProject, fullyQualifiedName);
-		org.eclipse.jdt.core.dom.CompilationUnit cu = Utils.getCompilationUnit(icu, false);
-		cs.path = cu.getJavaElement().getPath();
-		try {
-			bufferManager.connect(cs.path, LocationKind.IFILE, null);
-			cs.textFileBuffer = bufferManager.getTextFileBuffer(cs.path, LocationKind.IFILE);
-			// retrieve the buffer
-			cs.icu = icu;
-			AST ast = cu.getAST();
-			ASTRewrite rewriter = ASTRewrite.create(ast);
-			// ... rewrite
-			ProcessEntityInfo processor = new ProcessEntityInfo();
-			processor.setAnnotationStyle(annotationStyle);
-			processor.setDefaultStrLength(defaultStrLength);
-			processor.setEnableOptLock(enableOptLock);
-			processor.setEntityInfo(entityInfo);
-			processor.setEntities(entities);
-			processor.setASTRewrite(rewriter);
-			cu.accept(processor);
-			////
-			IDocument documentChange = cs.textFileBuffer.getDocument();
-			cs.textEdit = rewriter.rewriteAST(documentChange, JavaCore.getOptions());
-			// add change to array of changes
-			changes.add(cs);
-		} catch (JavaModelException e) {
-			HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
-		} catch (MalformedTreeException e) {
-			HibernateConsolePlugin.getDefault().logErrorMessage("MalformedTreeException: ", e); //$NON-NLS-1$
-		}
+		cs.icu = entityInfos.getICompilationUnit();
+		cs.path = entityInfos.getPath();
+		ITextFileBuffer textFileBuffer = bufferManager.getTextFileBuffer(cs.path, LocationKind.IFILE);
+		// retrieve the buffer
+		AST ast = entityInfos.getCompilationUnit().getAST();
+		ASTRewrite rewriter = ASTRewrite.create(ast);
+		// ... rewrite
+		ProcessEntityInfo processor = new ProcessEntityInfo();
+		processor.setAnnotationStyle(annotationStyle);
+		processor.setDefaultStrLength(defaultStrLength);
+		processor.setEnableOptLock(enableOptLock);
+		processor.setEntityInfos(entityInfos);
+		processor.setEntities(entities);
+		processor.setASTRewrite(rewriter);
+		entityInfos.getCompilationUnit().accept(processor);
+		////
+		IDocument documentChange = textFileBuffer.getDocument();
+		cs.textEdit = rewriter.rewriteAST(documentChange, JavaCore.getOptions());
+		//cs.textEdit = rewriter.rewriteAST();
+		// add change to array of changes
+		changes.add(cs);
 	}
 
 	public boolean showRefactoringDialog(final Map<String, EntityInfo> entities, 

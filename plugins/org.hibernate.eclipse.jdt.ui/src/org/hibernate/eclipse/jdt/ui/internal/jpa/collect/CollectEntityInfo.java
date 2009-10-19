@@ -60,14 +60,19 @@ public class CollectEntityInfo extends ASTVisitor {
 	 * storage of collected info
 	 */
 	protected EntityInfo entityInfo = new EntityInfo();
+
+	protected String fullyQualifiedName = null;
+	
+	public CollectEntityInfo(String fullyQualifiedName) {
+		this.fullyQualifiedName = fullyQualifiedName;
+		entityInfo.setFullyQualifiedName(fullyQualifiedName);
+	}
 	
 	public EntityInfo getEntityInfo() {
 		return entityInfo;
 	}
 
 	public boolean visit(CompilationUnit node) {
-		entityInfo.setFullyQualifiedName(
-			node.getTypeRoot().findPrimaryType().getFullyQualifiedName());
 		if (node.getProblems().length > 0) {//this includes warnings too
 			entityInfo.setCompilerProblemsFlag(true);
 		}
@@ -288,6 +293,11 @@ public class CollectEntityInfo extends ASTVisitor {
 
 	
 	public boolean visit(TypeDeclaration node) {
+		ITypeBinding typeBinding = node.resolveBinding();
+		String nodeName = typeBinding == null ? null : typeBinding.getBinaryName();
+		if (fullyQualifiedName == null || !fullyQualifiedName.equalsIgnoreCase(nodeName)) {
+			return false;
+		}
 		boolean isAbstruct = entityInfo.isAbstractFlag() || 
 			Modifier.isAbstract(node.getModifiers()) || node.isInterface();
 		entityInfo.setAbstractFlag(isAbstruct);
@@ -595,10 +605,12 @@ public class CollectEntityInfo extends ASTVisitor {
 		}
 		else if (type.isQualifiedType()) {
 			QualifiedType qt = (QualifiedType)type;
+			@SuppressWarnings("unused")
 			ITypeBinding tb = qt.resolveBinding();
 		}
 		else if (type.isWildcardType()) {
 			WildcardType wt = (WildcardType)type;
+			@SuppressWarnings("unused")
 			ITypeBinding tb = wt.resolveBinding();
 		}
 		return true;

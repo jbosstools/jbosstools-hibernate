@@ -64,6 +64,7 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.process.AllEntitiesProcessor;
  *
  * @author Vitali Yemialyanchyk
  */
+@SuppressWarnings("restriction")
 public class JPAMapToolActor {
 
 	/**
@@ -201,7 +202,6 @@ public class JPAMapToolActor {
 	/**
 	 * update compilation unit of currently opened editor 
 	 */
-	@SuppressWarnings("restriction")
 	public void updateOpen() {
 		IWorkbenchWindow activeWorkbenchWindow = getActiveWorkbenchWindow();
 		if (activeWorkbenchWindow == null) {
@@ -265,7 +265,6 @@ public class JPAMapToolActor {
 	/**
 	 * @param sel - current selected workspace element for processing
 	 */
-	@SuppressWarnings("restriction")
 	synchronized private void updateSelectedItems(ISelection sel) {
 		//System.out.println("Blah! " + selection); //$NON-NLS-1$
 		if (sel instanceof TextSelection) {
@@ -343,7 +342,6 @@ public class JPAMapToolActor {
 	 * @param obj
 	 * @return exclusion result
 	 */
-	@SuppressWarnings("restriction")
 	protected boolean excludeElement(Object obj) {
 		boolean res = false;
 		if (obj instanceof JarPackageFragmentRoot) {
@@ -372,7 +370,6 @@ public class JPAMapToolActor {
 	 * Process object - java element to collect all it's children CompilationUnits
 	 * @param obj
 	 */
-	@SuppressWarnings("restriction")
 	protected void processJavaElements(Object obj) {
 		if (obj instanceof ICompilationUnit) {
 			ICompilationUnit cu = (ICompilationUnit)obj;

@@ -31,6 +31,7 @@ import org.hibernate.eclipse.jdt.ui.Activator;
  *
  * @author Vitali
  */
+@SuppressWarnings("restriction")
 public class JPAMapToolActionDelegate extends AbstractHandler implements IObjectActionDelegate,
 	IEditorActionDelegate, IViewActionDelegate {
 

@@ -49,6 +49,7 @@ import org.hibernate.eclipse.hqleditor.HQLEditor;
  * @author Dmitry Geraskov
  *
  */
+@SuppressWarnings("restriction")
 public class SaveQueryEditorListener implements IPropertyListener {
 
 	public static final String id = "AbstractQueryEditor.ReplaceString";	//$NON-NLS-1$

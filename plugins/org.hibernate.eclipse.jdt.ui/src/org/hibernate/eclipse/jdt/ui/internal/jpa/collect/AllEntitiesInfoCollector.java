@@ -10,6 +10,7 @@
   ******************************************************************************/
 package org.hibernate.eclipse.jdt.ui.internal.jpa.collect;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -689,6 +690,7 @@ public class AllEntitiesInfoCollector {
 	 * its dependencies
 	 * @param icu - startup point entity compilation unit
 	 */
+	@SuppressWarnings("unchecked")
 	public void collect(ICompilationUnit icu) {
 		
 		if (icu == null) {
@@ -701,33 +703,48 @@ public class AllEntitiesInfoCollector {
 		if (cu.types() == null || cu.types().size() == 0 ) {
 			return;
 		}
-		Object tmp = cu.types().get(0);
-		if (!(tmp instanceof TypeDeclaration)) {
+		boolean hasTypeDeclaration = false;
+		Iterator it = cu.types().iterator();
+		while (it.hasNext()) {
+			Object tmp = it.next();
+			if (tmp instanceof TypeDeclaration) {
+				hasTypeDeclaration = true;
+				break;
+			}
+		}
+		if (!hasTypeDeclaration) {
 			// ignore EnumDeclaration & AnnotationTypeDeclaration
 			return;
 		}
-		String fullyQualifiedName = null;
+		ArrayList<String> fullyQualifiedNames = new ArrayList<String>();
 		//TODO: should inspect all types in cu? so next method to get fullyQualifiedName:
-		//((TypeDeclaration)tmp).resolveBinding().getBinaryName()
 		if (cu.getTypeRoot() == null || cu.getTypeRoot().findPrimaryType() == null) {
-			//fullyQualifiedName = ((TypeDeclaration)tmp).resolveBinding().getBinaryName();
-			return;
-		} else {
-			fullyQualifiedName = cu.getTypeRoot().findPrimaryType().getFullyQualifiedName();
-		}
-		if (mapCUs_Info.containsKey(fullyQualifiedName)) {
-			return;
-		}
-		CollectEntityInfo finder = new CollectEntityInfo();
-		cu.accept(finder);
-		EntityInfo result = finder.getEntityInfo();
-		if (result != null) {
-			result.adjustParameters();
-			mapCUs_Info.put(fullyQualifiedName, result);
-			Iterator<String> it = result.getDependences();
+			it = cu.types().iterator();
 			while (it.hasNext()) {
-				String fullyQualifiedNameTmp = it.next();
-				collect(fullyQualifiedNameTmp);
+				Object tmp = it.next();
+				if (tmp instanceof TypeDeclaration) {
+					fullyQualifiedNames.add(((TypeDeclaration)tmp).resolveBinding().getBinaryName());
+				}
+			}
+		} else {
+			fullyQualifiedNames.add(cu.getTypeRoot().findPrimaryType().getFullyQualifiedName());
+		}
+		Iterator<String> itFQNames = fullyQualifiedNames.iterator();
+		while (itFQNames.hasNext()) {
+			String fullyQualifiedName = itFQNames.next();
+			if (!mapCUs_Info.containsKey(fullyQualifiedName)) {
+				CollectEntityInfo finder = new CollectEntityInfo(fullyQualifiedName);
+				cu.accept(finder);
+				EntityInfo result = finder.getEntityInfo();
+				if (result != null) {
+					result.adjustParameters();
+					mapCUs_Info.put(fullyQualifiedName, result);
+					Iterator<String> itDep = result.getDependences();
+					while (itDep.hasNext()) {
+						String fullyQualifiedNameTmp = itDep.next();
+						collect(fullyQualifiedNameTmp);
+					}
+				}
 			}
 		}
 	}

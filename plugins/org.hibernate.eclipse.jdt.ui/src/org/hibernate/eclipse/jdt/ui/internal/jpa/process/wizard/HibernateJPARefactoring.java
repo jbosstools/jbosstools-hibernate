@@ -34,7 +34,7 @@ public class HibernateJPARefactoring extends Refactoring {
 	 * change info storage
 	 */
 	protected ArrayList<ChangeStructure> changes;
-	
+
 	public HibernateJPARefactoring(ArrayList<ChangeStructure> changes) {
 		this.changes = changes;
 	}
@@ -55,9 +55,9 @@ public class HibernateJPARefactoring extends Refactoring {
 		final CompositeChange cc = new CompositeChange(""); //$NON-NLS-1$
 		for (int i = 0; i < changes.size(); i++) {
 			ChangeStructure cs = changes.get(i);
-			String change_name = cs.fullyQualifiedName;
+			final String change_name = cs.path.toString();
 			TextFileChange change = new TextFileChange(change_name, (IFile)cs.icu.getResource());
-			change.setSaveMode(TextFileChange.FORCE_SAVE);
+			change.setSaveMode(TextFileChange.LEAVE_DIRTY);
 			change.setEdit(cs.textEdit);
 			cs.change = change;
 			cc.add(change);

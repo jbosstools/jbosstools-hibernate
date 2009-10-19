@@ -1,13 +1,13 @@
 /*******************************************************************************
-  * Copyright (c) 2007-2008 Red Hat, Inc.
-  * Distributed under license by Red Hat, Inc. All rights reserved.
-  * This program is made available under the terms of the
-  * Eclipse Public License v1.0 which accompanies this distribution,
-  * and is available at http://www.eclipse.org/legal/epl-v10.html
-  *
-  * Contributor:
-  *     Red Hat, Inc. - initial API and implementation
-  ******************************************************************************/
+ * Copyright (c) 2007-2008 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.hibernate.eclipse.jdt.ui.internal.jpa.common;
 
 import java.util.Iterator;
@@ -581,12 +581,20 @@ public class EntityInfo {
 		setExistingImports.remove(existingImport);
 	}
 
+	public void collectExistingImport(Set<String> setExistingImports) {
+		setExistingImports.addAll(this.setExistingImports);
+	}
+
 	public void addRequiredImport(String requiredImport) {
 		setRequiredImports.add(requiredImport);
 	}
 
 	public void removeRequiredImport(String requiredImport) {
 		setRequiredImports.remove(requiredImport);
+	}
+
+	public void collectRequiredImport(Set<String> setRequiredImports) {
+		setRequiredImports.addAll(this.setRequiredImports);
 	}
 
 	public boolean needImport(String checkImport) {
@@ -599,5 +607,28 @@ public class EntityInfo {
 
 	public int getFromMethodCounter() {
 		return fromMethodCounter;
+	}
+	
+	public String toString() {
+		return getFullyQualifiedName();
+	}
+
+	public int hashCode() {
+		return getFullyQualifiedName().hashCode();
+	}
+	
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof EntityInfo)) {
+			return false;
+		}
+		EntityInfo ei = (EntityInfo)obj;
+		if (getFullyQualifiedName().equals(ei.getFullyQualifiedName()) &&
+			getFullyQualifiedParentName().equals(ei.getFullyQualifiedParentName())) {
+			return true;
+		}
+		return false;
 	}
 }

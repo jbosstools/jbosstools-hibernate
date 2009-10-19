@@ -25,6 +25,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.ExpressionStatement;
 import org.eclipse.jdt.core.dom.FieldAccess;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.MemberValuePair;
@@ -47,6 +48,7 @@ import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jdt.core.dom.rewrite.ListRewrite;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.CollectEntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
+import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfosCollection;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.JPAConst;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.OwnerType;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.RefColumnInfo;
@@ -63,6 +65,10 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo.FieldGetterTy
  */
 public class ProcessEntityInfo extends ASTVisitor {
 
+	/**
+	 * information about entity's annotations for whole compilation unit
+	 */
+	protected EntityInfosCollection entityInfos;
 	/**
 	 * information about entity's annotations
 	 */
@@ -88,8 +94,8 @@ public class ProcessEntityInfo extends ASTVisitor {
 	 */
 	protected boolean enableOptLock = false;
 
-	public void setEntityInfo(EntityInfo entityInfo) {
-		this.entityInfo = entityInfo;
+	public void setEntityInfos(EntityInfosCollection entityInfos) {
+		this.entityInfos = entityInfos;
 	}
 
 	public void setEntities(Map<String, EntityInfo> entities) {
@@ -101,11 +107,12 @@ public class ProcessEntityInfo extends ASTVisitor {
 	}
 
 	public boolean visit(CompilationUnit node) {
+		entityInfo = null;
 		// TODO: sort all imports in alphabetic order
 		//ListRewrite lrw = rewriter.getListRewrite(node, CompilationUnit.IMPORTS_PROPERTY);
 		for (int i = 0; i < JPAConst.ALL_IMPORTS.size(); i++) {
 			String tmp = JPAConst.ALL_IMPORTS.get(i);
-			if (entityInfo.needImport(tmp)) {
+			if (entityInfos.needImport(tmp)) {
 				addImport(node, tmp);
 			}
 		}
@@ -154,6 +161,15 @@ public class ProcessEntityInfo extends ASTVisitor {
 
 	@SuppressWarnings("unchecked")
 	public boolean visit(TypeDeclaration node) {
+		ITypeBinding typeBinding = node.resolveBinding();
+		String nodeName = typeBinding == null ? null : typeBinding.getBinaryName();
+		if (nodeName == null) {
+			return false;
+		}
+		entityInfo = entityInfos.getEntityInfo(nodeName);
+		if (entityInfo == null) {
+			return false;
+		}
 		if (entityInfo.isAddMappedSuperclassFlag()) {
 			MarkerAnnotation matd = rewriter.getAST().newMarkerAnnotation();
 			matd.setTypeName(rewriter.getAST().newSimpleName(JPAConst.ANNOTATION_MAPPEDSUPERCLASS));
@@ -299,6 +315,9 @@ public class ProcessEntityInfo extends ASTVisitor {
 	
 	@SuppressWarnings("unchecked")
 	public boolean visit(FieldDeclaration node) {
+		if (entityInfo == null) {
+			return false;
+		}
 		if (annotationStyle != AnnotStyle.FIELDS) {
 			return true;
 		}
@@ -443,6 +462,9 @@ public class ProcessEntityInfo extends ASTVisitor {
 	
 	@SuppressWarnings("unchecked")
 	public boolean visit(MethodDeclaration node) {
+		if (entityInfo == null) {
+			return false;
+		}
 		if (annotationStyle != AnnotStyle.GETTERS) {
 			return true;
 		}
