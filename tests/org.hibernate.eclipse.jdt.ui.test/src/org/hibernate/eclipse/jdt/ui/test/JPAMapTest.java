@@ -110,24 +110,33 @@ public class JPAMapTest extends TestCase {
 				"test.annotated." + testSelection + ".Staff"); //$NON-NLS-1$ //$NON-NLS-2$
 		ICompilationUnit icu3 = Utils.findCompilationUnit(javaProject,
 				"test.annotated." + testSelection + ".FotoXPerson"); //$NON-NLS-1$ //$NON-NLS-2$
+		ICompilationUnit icu4 = Utils.findCompilationUnit(javaProject,
+				"test.annotated." + testSelection + ".ZTypesComplex"); //$NON-NLS-1$ //$NON-NLS-2$
+		try {
+			icu4.becomeWorkingCopy(null);
+		} catch (JavaModelException e) {
+			// ignore
+		}
 		//ICompilationUnit icu = Utils.findCompilationUnit(javaProject,
 		//		"test.annotated." + testSelection + ".Foto"); //$NON-NLS-1$ //$NON-NLS-2$
 		//ICompilationUnit icu2 = Utils.findCompilationUnit(javaProject,
 		//		"test.annotated." + testSelection + ".Person"); //$NON-NLS-1$ //$NON-NLS-2$
-		ICompilationUnit icu4 = null;
+		ICompilationUnit icu44 = null;
 		if (testSelection.equals(TEST_GETTERS)) {
-			icu4 = Utils.findCompilationUnit(javaProject,
+			icu44 = Utils.findCompilationUnit(javaProject,
 					"test.annotated." + testSelection + ".FotoXPerson"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		assertNotNull(icu);
 		assertNotNull(icu2);
 		assertNotNull(icu3);
+		assertNotNull(icu4);
 		collector.initCollector(javaProject);
 		collector.collect(icu);
 		collector.collect(icu2);
 		collector.collect(icu3);
-		if (icu4 != null) {
-			collector.collect(icu4);
+		collector.collect(icu4);
+		if (icu44 != null) {
+			collector.collect(icu44);
 		}
 		collector.resolveRelations();
 		processor.setEnableOptLock(true);
@@ -143,7 +152,8 @@ public class JPAMapTest extends TestCase {
 		checkItem("PersonXFoto"); //$NON-NLS-1$
 		checkItem("Country"); //$NON-NLS-1$
 		checkItem("Visa"); //$NON-NLS-1$
-		if (icu4 != null) {
+		checkItem("ZTypesComplex"); //$NON-NLS-1$
+		if (icu44 != null) {
 			checkItem("Entity"); //$NON-NLS-1$
 		}
 	}
