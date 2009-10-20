@@ -2035,7 +2035,45 @@
             <imagedata fileref="images/plugins/expandState.png"/>
           </imageobject></inlinemediaobject>)  is used for expanding/collapsing fields of the item.</para></listitem>
           </itemizedlist>
-        <para>All the described types of the context menu are also available in the Outline view.</para>
+        <para>All the described types of the context menu are also available in the <property>Outline</property> view.</para>
+      	
+      	<para>It&apos;s possible to save the diagram in the eclipse workspace. Click the usual <emphasis>
+      		<property>File &gt; Save As</property></emphasis> option, the wizard will ask you to set the location within you project
+      		where to save the file and give the name for the diagram. The item&apos;s names concatenated with the ampersand 
+      		symbols are set as the default name for a diagram. The file is saved with the <literal>.hibernate</literal> extension.</para>
+      	
+      	<figure>
+      		<title>The Diagram saved in the Workspace</title>
+      		<mediaobject>
+      			<imageobject>
+      				<imagedata fileref="images/plugins/saveDiagram.png"/>
+      			</imageobject>
+      		</mediaobject>
+      	</figure>
+      	
+      	<tip>
+      		<title>Note:</title>
+      		<para>If you restart the Eclipse with the mapping diagram opened, the mapping diagram will be restored with the
+      			message like on the figure below. To view the diagram content, you should perform the refreshing.</para>
+      	</tip>
+      	
+      	<figure>
+      		<title>The Diagram after Restarting the Eclipse</title>
+      		<mediaobject>
+      			<imageobject>
+      				<imagedata fileref="images/plugins/diagram1.png"/>
+      			</imageobject>
+      		</mediaobject>
+      	</figure>
+      	
+      	<figure>
+      		<title>The Diagram after Refreshing</title>
+      		<mediaobject>
+      			<imageobject>
+      				<imagedata fileref="images/plugins/diagram2.png"/>
+      			</imageobject>
+      		</mediaobject>
+      	</figure>
       </section>
     </section>
 
