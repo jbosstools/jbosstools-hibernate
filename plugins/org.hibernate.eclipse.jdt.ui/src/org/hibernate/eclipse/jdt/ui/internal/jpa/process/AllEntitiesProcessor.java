@@ -12,7 +12,6 @@ package org.hibernate.eclipse.jdt.ui.internal.jpa.process;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -28,7 +27,9 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.text.edits.MalformedTreeException;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.jdt.ui.Activator;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
@@ -238,19 +239,24 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 	protected void performCommit(final Map<String, EntityInfo> entities,
 			ITextFileBufferManager bufferManager) {
 		
-		HashSet<IPath> paths = new HashSet<IPath>();
 		for (int i = 0; i < changes.size(); i++) {
 			ChangeStructure cs = changes.get(i);
-			paths.add(cs.path);
-		}
-		Iterator<IPath> it = paths.iterator();
-		while (it.hasNext()) {
-			ITextFileBuffer textFileBuffer = bufferManager.getTextFileBuffer(it.next(), LocationKind.IFILE);
-			try {
-				// commit changes to underlying file
-				textFileBuffer.commit(null, true);
-			} catch (CoreException e) {
-				HibernateConsolePlugin.getDefault().logErrorMessage("CoreException: ", e); //$NON-NLS-1$
+			if (cs.textEdit != null && ((cs.change != null && cs.change.isEnabled()) || (cs.change == null))) {
+				ITextFileBuffer textFileBuffer = bufferManager.getTextFileBuffer(cs.path, LocationKind.IFILE);
+				IDocument document = textFileBuffer.getDocument();
+				try {
+					cs.textEdit.apply(document);
+				} catch (MalformedTreeException e) {
+					HibernateConsolePlugin.getDefault().logErrorMessage("MalformedTreeException: ", e); //$NON-NLS-1$
+				} catch (BadLocationException e) {
+					HibernateConsolePlugin.getDefault().logErrorMessage("BadLocationException: ", e); //$NON-NLS-1$
+				}
+				try {
+					// commit changes to underlying file
+					textFileBuffer.commit(null, true);
+				} catch (CoreException e) {
+					HibernateConsolePlugin.getDefault().logErrorMessage("CoreException: ", e); //$NON-NLS-1$
+				}
 			}
 		}
 	}
