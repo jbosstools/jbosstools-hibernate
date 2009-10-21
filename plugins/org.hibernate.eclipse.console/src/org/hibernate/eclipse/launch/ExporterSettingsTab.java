@@ -402,9 +402,14 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 					return new Object[0];// { exporterFactory };
 				case 1:
 					getExporterTable().setAllChecked( true );
+					selectedExporters.clear();
+					observableFactoryList.copyUnderlyingList(selectedExporters);
+					dialogChanged();
 					break;
 				case 2:
 					getExporterTable().setAllChecked( false );
+					selectedExporters.clear();
+					dialogChanged();
 					break;
 				default:
 					break;
@@ -434,6 +439,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 
 			}
 
+			@SuppressWarnings("unchecked")
 			protected void handleRemove() {
 					IStructuredSelection selection = (IStructuredSelection) getTableViewer().getSelection();
 					if (selection != null) {
@@ -519,6 +525,8 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 		exporterUpDown.setLayoutData( gd );
 	}
 
+	// currently unused functionality
+	@SuppressWarnings("unused")
 	private void createOldExporterTable(Composite parent) {
 		Composite exporterOptions = createComposite( parent, HibernateConsoleMessages.ExporterSettingsTab_exporters );
 
@@ -665,6 +673,10 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 
 		public ObservableFactoryList(List<ExporterFactory> exporterFactories) {
 			underlyingList = exporterFactories;
+		}
+
+		public void copyUnderlyingList(Set<ExporterFactory> list) {
+			list.addAll(underlyingList);
 		}
 
 		public void moveTo(int i, ExporterFactory data) {
@@ -860,6 +872,8 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 		updateLaunchConfigurationDialog();
 	}
 
+	// currently unused functionality
+	@SuppressWarnings("unused")
 	private Path pathOrNull(String p) {
 		if ( p == null || p.trim().length() == 0 ) {
 			return null;
