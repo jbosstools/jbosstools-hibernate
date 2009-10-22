@@ -25,6 +25,7 @@ import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.dialogs.SaveAsDialog;
+import org.hibernate.eclipse.console.test.project.TestProject;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExportImageAction;
 import org.jmock.Expectations;
@@ -39,6 +40,19 @@ import junit.framework.TestCase;
  * @author Vitali Yemialyanchyk
  */
 public class ExportImageActionTest extends TestCase {
+
+	public static final String PROJECT_NAME = "TestProject"; //$NON-NLS-1$
+	
+	protected TestProject project = null;
+
+	protected void setUp() throws Exception {
+		project = new TestProject(PROJECT_NAME);
+	}
+
+	protected void tearDown() throws Exception {
+		project.deleteIProject();
+		project = null;
+	}
 	
 	public Mockery context = new Mockery() {
 		{
@@ -56,12 +70,12 @@ public class ExportImageActionTest extends TestCase {
 		final Control control = context.mock(Control.class);
 		final Display display = context.mock(Display.class);
 		final Rectangle rectangle = new Rectangle(0, 0, 20, 10);
-		final String filePath = "test.jpg"; //$NON-NLS-1$
+		final String filePath = PROJECT_NAME + File.separator + "test.jpg"; //$NON-NLS-1$
 		final IPath resPath = new Path(filePath);
 		
 		context.checking(new Expectations() {
 			{
-				allowing(editor).getDiagramName();
+				allowing(editor).getStoreFileName();
 				will(returnValue(filePath));
 
 				allowing(saveDialog).setOriginalName(filePath);
@@ -120,7 +134,6 @@ public class ExportImageActionTest extends TestCase {
 		// GENERAL TEST:
 		// check for all expectations
 		context.assertIsSatisfied();
-		
 	}
 		
 
