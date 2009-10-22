@@ -26,12 +26,14 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.internal.ObjectPluginAction;
+import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.RootClass;
+import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
 
 @SuppressWarnings("restriction")
@@ -75,7 +77,14 @@ public class OpenDiagramActionDelegate implements IObjectActionDelegate {
     		} else if (last_el instanceof ConsoleConfiguration) {
     			Configuration config = consoleConfig.getConfiguration();
     			if (config == null) {
-    				consoleConfig.build();
+    				try {
+        				consoleConfig.build();
+    				} catch (HibernateException he) {
+    					HibernateConsolePlugin.getDefault().showError(
+    						HibernateConsolePlugin.getShell(), 
+    						DiagramViewerMessages.OpenDiagramActionDelegate_could_not_load_configuration + 
+    						' ' + consoleConfig.getName(), he);
+    				}
     				consoleConfig.execute( new ExecutionContext.Command() {
     					public Object execute() {
     						if (consoleConfig.hasConfiguration()) {
@@ -86,9 +95,11 @@ public class OpenDiagramActionDelegate implements IObjectActionDelegate {
     				} );
     				config = consoleConfig.getConfiguration();
     			}
-    			Iterator<PersistentClass> it = (Iterator<PersistentClass>)(config.getClassMappings());
-    			while (it.hasNext()) {
-        			setPC.add(it.next());
+    			if (config != null) {
+	    			Iterator<PersistentClass> it = (Iterator<PersistentClass>)(config.getClassMappings());
+	    			while (it.hasNext()) {
+	        			setPC.add(it.next());
+	    			}
     			}
     		}
 		}    		
@@ -111,9 +122,6 @@ public class OpenDiagramActionDelegate implements IObjectActionDelegate {
 
 	public IEditorPart openEditor(Set<PersistentClass> setPC, ConsoleConfiguration consoleConfig) throws PartInitException {
 		
-		if (setPC.size() <= 0) {
-			return null;
-		}
 		RootClass[] rcArr = new RootClass[setPC.size()];
 		PersistentClass persClass = null;
 		int i = 0;

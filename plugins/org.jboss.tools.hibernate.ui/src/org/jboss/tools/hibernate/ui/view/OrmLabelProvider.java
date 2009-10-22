@@ -23,6 +23,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
+import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
@@ -69,7 +70,11 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 		if (consoleConfig != null) {
 			Configuration config = consoleConfig.getConfiguration();
 			if (config == null) {
-				consoleConfig.build();
+				try {
+    				consoleConfig.build();
+				} catch (HibernateException he) {
+					// here just ignore this
+				}
 				consoleConfig.execute(new ExecutionContext.Command() {
 					public Object execute() {
 						if (consoleConfig.hasConfiguration()) {

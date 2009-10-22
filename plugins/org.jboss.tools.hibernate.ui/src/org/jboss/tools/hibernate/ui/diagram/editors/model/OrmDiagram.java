@@ -11,6 +11,8 @@
 package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -18,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -41,6 +44,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.XMLMemento;
+import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
@@ -48,6 +52,7 @@ import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.mapping.RootClass;
+import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection.ConnectionType;
 import org.jboss.tools.hibernate.ui.diagram.rulers.DiagramRuler;
@@ -169,8 +174,10 @@ public class OrmDiagram extends BaseElement {
 		deleteChildren();
 		elements.clear();
 		connections.clear();
+		StringBuilder errorMessage = new StringBuilder();
+		Configuration config = getConfig(errorMessage);
 		final ElementsFactory factory = new ElementsFactory(
-			getConfig(), elements, connections);
+			config, elements, connections);
 		for (int i = 0; i < roots.size(); i++) {
 			RootClass rc = roots.get(i);
 			if (rc != null) {
@@ -181,7 +188,18 @@ public class OrmDiagram extends BaseElement {
 		factory.createChildren(this);
 		updateChildrenList();
 		if (getChildrenNumber() == 0) {
-			addChild(new MessageShape());
+			String error = DiagramViewerMessages.MessageShape_warning;
+			if (config != null) {
+				if (consoleConfigName != null && consoleConfigName.length() > 0) {
+					error = consoleConfigName;
+					error += ": "; //$NON-NLS-1$
+					error += DiagramViewerMessages.Diagram_no_items_or_incorrect_state;
+				}
+			}
+			if (errorMessage.length() > 0) {
+				error = errorMessage.toString();
+			}
+			addChild(new MessageShape(error));
 		}
 	}
 
@@ -557,6 +575,44 @@ public class OrmDiagram extends BaseElement {
 		super.saveInProperties(properties);
 	}
 	
+	public void saveInWorkspaceFile(IPath path, boolean format) {
+		final IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+		if (file.exists()) {
+			try {
+				file.delete(true, null);
+			} catch (CoreException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage("Can't delete file.", e); //$NON-NLS-1$
+			}
+		}
+		if (file.exists()) {
+			return;
+		}
+		byte[] arrSave = new byte[0];
+		try {
+			if (format) {
+				XMLMemento memento = XMLMemento.createWriteRoot("OrmDiagram"); //$NON-NLS-1$
+				saveState(memento);
+				StringWriter strWriter = new StringWriter();
+				memento.save(strWriter);
+				arrSave = strWriter.toString().getBytes();
+			} else {
+				Properties properties = new Properties();
+				saveInProperties(properties);
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				properties.store(baos, ""); //$NON-NLS-1$
+				arrSave = baos.toByteArray();
+			}
+		} catch (IOException e) {
+			HibernateConsolePlugin.getDefault().logErrorMessage("Can't save layout of mapping.", e); //$NON-NLS-1$
+		}
+		ByteArrayInputStream inputStream = new ByteArrayInputStream(arrSave);
+		try {
+			file.create(inputStream, true, null);
+		} catch (CoreException e) {
+			HibernateConsolePlugin.getDefault().logErrorMessage("Can't save layout of mapping.", e); //$NON-NLS-1$
+		}
+	}
+	
 	public void saveInFile(IPath path, boolean format) {
 		FileOutputStream fos = null;
 		try {
@@ -677,11 +733,30 @@ public class OrmDiagram extends BaseElement {
 	}
 
 	protected Configuration getConfig() {
+		return getConfig(null);
+	}
+	
+	protected Configuration getConfig(StringBuilder error) {
+		if (error != null) {
+			error.delete(0, error.length());
+		}
 		final ConsoleConfiguration consoleConfig = getConsoleConfig();
 		if (consoleConfig != null) {
 			Configuration config = consoleConfig.getConfiguration();
 			if (config == null) {
-				consoleConfig.build();
+				try {
+    				consoleConfig.build();
+				} catch (HibernateException he) {
+					// here just ignore this
+					if (error != null) {
+						error.append(consoleConfigName);
+						error.append(": "); //$NON-NLS-1$
+						error.append(he.getMessage());
+						if (error.length() == 0) {
+							error.append(he.getCause());
+						}
+					}
+				}
 				consoleConfig.execute(new ExecutionContext.Command() {
 					public Object execute() {
 						if (consoleConfig.hasConfiguration()) {
@@ -693,6 +768,11 @@ public class OrmDiagram extends BaseElement {
 				config = consoleConfig.getConfiguration();
 			}
 			return config;
+		}
+		if (error != null && consoleConfigName != null && consoleConfigName.length() > 0) {
+			error.append(consoleConfigName);
+			error.append(": "); //$NON-NLS-1$
+			error.append(DiagramViewerMessages.Diagram_incorrect_state);
 		}
 		return null;
 	}

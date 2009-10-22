@@ -10,16 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
-import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
-
 /**
 *
 * author: Vitali Yemialyanchyk
 */
 public class MessageShape extends OrmShape {
 
-	protected MessageShape() {
-		super(DiagramViewerMessages.MessageShape_warning);
+	protected MessageShape(String error) {
+		super(error);
 	}
 
 	@Override

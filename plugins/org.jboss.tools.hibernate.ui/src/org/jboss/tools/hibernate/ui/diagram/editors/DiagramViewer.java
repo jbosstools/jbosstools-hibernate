@@ -18,8 +18,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.PositionConstants;
@@ -118,14 +116,12 @@ public class DiagramViewer extends GraphicalEditor {
 			return;
 		}
 		saveProperties();
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		IPath pathTmp = workspace.getRoot().getFullPath().append(pathSave);
-		pathTmp = workspace.getRoot().getLocation().append(pathTmp);
+		IPath pathTmp = pathSave;
 		String ext = pathSave.getFileExtension();
 		if (ext == null) {
 			pathTmp = pathTmp.addFileExtension("hibernate"); //$NON-NLS-1$
 		}
-		getOrmDiagram().saveInFile(pathTmp, true);
+		getOrmDiagram().saveInWorkspaceFile(pathTmp, true);
 		getOrmDiagram().setDirty(false);
 	}
 
