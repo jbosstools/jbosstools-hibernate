@@ -10,13 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.actions;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.Graphics;
@@ -81,18 +82,17 @@ public class ExportImageAction extends DiagramBaseAction {
 			saveDialog = new SaveAsDialog(getDiagramViewer().getSite().getWorkbenchWindow().getShell());
 			createdSaveDialog = true;
 		}
-		saveDialog.setOriginalName(getDiagramViewer().getDiagramName());
+		saveDialog.setOriginalName(getDiagramViewer().getStoreFileName());
 		saveDialog.open();
-		final IPath pathSave = saveDialog.getResult();		
+		final IPath pathSave = saveDialog.getResult();
+		saveDialog = null;
 		if (pathSave == null) {
 			return;
 		}
-
 		final IFigure fig = ((ScalableFreeformRootEditPart) getDiagramViewer()
 				.getEditPartViewer().getRootEditPart())
 				.getLayer(LayerConstants.PRINTABLE_LAYERS);
 		int imageTypeTmp = SWT.IMAGE_BMP;
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		String ext = pathSave.getFileExtension();
 		if (ext != null) {
 			ext = ext.toLowerCase();
@@ -106,23 +106,31 @@ public class ExportImageAction extends DiagramBaseAction {
 				imageTypeTmp = SWT.IMAGE_BMP;
 			}
 		}
-		IPath pathTmp = workspace.getRoot().getFullPath().append(pathSave);
-		pathTmp = workspace.getRoot().getLocation().append(pathTmp);
+		IPath pathTmp = pathSave;
 		if (ext == null) {
 			pathTmp = pathTmp.addFileExtension("bmp"); //$NON-NLS-1$
 		}
 		final IPath path = pathTmp;
 		final int imageType = imageTypeTmp;
+
+		final IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
 		
 		WorkspaceModifyOperation op = new WorkspaceModifyOperation() {
 			public void execute(final IProgressMonitor monitor) {
-				FileOutputStream outStream = null;
+				ByteArrayInputStream inputStream = null;
 				try {
-					byte[] imageData = createImage(fig, imageType);
-					outStream = new FileOutputStream(path.toString());
-					outStream.write(imageData);
-					outStream.flush();
-				} catch (IOException e) {
+					if (file != null) {
+						byte[] imageData = createImage(fig, imageType);
+						if (file.exists()) {
+							file.delete(true, null);
+						}
+						if (!file.exists()) {
+							inputStream = new ByteArrayInputStream(imageData);
+							file.create(inputStream, true, null);
+						}
+					}
+				
+				} catch (CoreException e) {
 					HibernateConsolePlugin.getDefault().logErrorMessage("ExportImageAction", e); //$NON-NLS-1$
 					if (showErrDialog) {
 						MessageDialog.openInformation(getDiagramViewer().getSite().getShell(),
@@ -130,9 +138,9 @@ public class ExportImageAction extends DiagramBaseAction {
 					}
 				}
 				finally {
-					if (outStream != null) {
+					if (inputStream != null) {
 						try {
-							outStream.close();
+							inputStream.close();
 						} catch (IOException e) {
 							// ignore
 						}

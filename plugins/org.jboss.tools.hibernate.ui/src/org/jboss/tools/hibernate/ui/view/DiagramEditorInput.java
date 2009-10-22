@@ -91,6 +91,10 @@ public class DiagramEditorInput implements IEditorInput, IStorageEditorInput, IP
 		return ormDiagram.getDiagramName();
 	}
 
+	public String getStoreFileName() {
+		return ormDiagram.getStoreFileName();
+	}
+
 	public IPersistableElement getPersistable() {
 		return this;
 	}

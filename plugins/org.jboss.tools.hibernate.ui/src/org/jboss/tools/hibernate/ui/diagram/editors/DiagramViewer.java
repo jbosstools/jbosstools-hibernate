@@ -111,7 +111,7 @@ public class DiagramViewer extends GraphicalEditor {
 
 	public void doSaveAs() {
 		SaveAsDialog saveAsDialog = new SaveAsDialog(getSite().getWorkbenchWindow().getShell());
-		saveAsDialog.setOriginalName(getDiagramName());
+		saveAsDialog.setOriginalName(getStoreFileName());
 		saveAsDialog.open();
 		final IPath pathSave = saveAsDialog.getResult();		
 		if (pathSave == null) {
@@ -313,10 +313,17 @@ public class DiagramViewer extends GraphicalEditor {
 	}
 
 	public String getDiagramName() {
-		IEditorInput input = getEditorInput();
-		if (input instanceof DiagramEditorInput) {
-			DiagramEditorInput objectEditorInput = (DiagramEditorInput)input;
-			return objectEditorInput.getName();
+		DiagramEditorInput diagramInput = getDiagramInput();
+		if (diagramInput != null) {
+			return diagramInput.getName();
+		}
+		return ""; //$NON-NLS-1$
+	}
+
+	public String getStoreFileName() {
+		DiagramEditorInput diagramInput = getDiagramInput();
+		if (diagramInput != null) {
+			return diagramInput.getStoreFileName();
 		}
 		return ""; //$NON-NLS-1$
 	}
