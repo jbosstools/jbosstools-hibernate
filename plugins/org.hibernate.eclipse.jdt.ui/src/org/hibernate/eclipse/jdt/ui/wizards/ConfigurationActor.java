@@ -315,7 +315,6 @@ class ProcessEntityInfo extends ASTVisitor {
 				} else {
 					rootClass.addProperty(prop);
 				}
-				//System.out.println("From method->" + varName);
 			}
 		}
 		return super.visit(node);
@@ -435,7 +434,7 @@ class TypeVisitor extends ASTVisitor{
 				OneToMany oValue = new OneToMany(rootClass);
 				RootClass associatedClass = rootClasses.get(ref.fullyQualifiedName);
 				oValue.setAssociatedClass(associatedClass);
-				oValue.setReferencedEntityName(ref.fullyQualifiedName);
+				oValue.setReferencedEntityName(associatedClass.getEntityName());
 				//Set another table
 				cValue.setCollectionTable(associatedClass.getTable());				
 				cValue.setElement(oValue);				
@@ -515,7 +514,8 @@ class TypeVisitor extends ASTVisitor{
 			sValue.addColumn(column);					
 			sValue.setTypeName(tb.getBinaryName());
 			sValue.setFetchMode(FetchMode.JOIN);
-			sValue.setReferencedEntityName(ref.fullyQualifiedName);
+			RootClass associatedClass = rootClasses.get(ref.fullyQualifiedName);
+			sValue.setReferencedEntityName(associatedClass.getEntityName());
 			buildProperty(sValue);
 			prop.setCascade("none");//$NON-NLS-1$
 		} else {
@@ -561,7 +561,7 @@ class TypeVisitor extends ASTVisitor{
 		
 		if (cValue == null) return null;
 		
-		//By default set the same table, but for one-to many should change it to associated class's table
+		//By default set the same table, but for one-to-many should change it to associated class's table
 		cValue.setCollectionTable(rootClass.getTable());
 
 		SimpleValue key = new SimpleValue();
