@@ -35,6 +35,7 @@ import org.eclipse.jdt.core.dom.PrimitiveType;
 import org.eclipse.jdt.core.dom.QualifiedType;
 import org.eclipse.jdt.core.dom.SimpleType;
 import org.eclipse.jdt.core.dom.Type;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jdt.core.dom.WildcardType;
 import org.hibernate.FetchMode;
@@ -266,7 +267,32 @@ class ProcessEntityInfo extends ASTVisitor {
 	
 	@Override
 	public boolean visit(CompilationUnit node) {
-		Assert.isNotNull(rootClass);	
+		Assert.isNotNull(rootClass);
+		return true;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public boolean visit(TypeDeclaration node) {
+		if ("".equals(entityInfo.getPrimaryIdName())){ //$NON-NLS-1$
+			//try to guess id
+			FieldDeclaration[] fields = node.getFields();
+			String firstFieldName = ""; //$NON-NLS-1$
+			for (int i = 0; i < fields.length; i++) {
+				Iterator<VariableDeclarationFragment> itFieldsNames = fields[i].fragments().iterator();
+				while(itFieldsNames.hasNext()) {
+					VariableDeclarationFragment field = itFieldsNames.next();
+					if ("id".equals(field.getName().getIdentifier()) //$NON-NLS-1$
+							|| "identity".equals(field.getName().getIdentifier())){ //$NON-NLS-1$
+						entityInfo.setPrimaryIdName(field.getName().getIdentifier());
+						return true;
+					} else if ("".equals(firstFieldName)){ //$NON-NLS-1$
+						//set first field as id
+						firstFieldName = field.getName().getIdentifier();
+					}
+				}
+			}
+			entityInfo.setPrimaryIdName(firstFieldName);
+		}
 		return true;
 	}
 	
