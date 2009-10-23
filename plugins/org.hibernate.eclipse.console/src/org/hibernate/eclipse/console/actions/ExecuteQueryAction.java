@@ -24,9 +24,11 @@ package org.hibernate.eclipse.console.actions;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Event;
+import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.QueryEditor;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 
@@ -60,14 +62,23 @@ public class ExecuteQueryAction extends Action {
 	protected void execute(QueryEditor queryEditor) {
 
 		ConsoleConfiguration cfg = queryEditor.getConsoleConfiguration();
-		if(cfg!=null) {
+		if (cfg != null) {
 			if (!cfg.isSessionFactoryCreated()) {
 				if (queryEditor.askUserForConfiguration(cfg.getName())) {
-					if(cfg.getConfiguration()==null) {
-						cfg.build();
+					if (cfg.getConfiguration() == null) {
+	    				try {
+	    					cfg.build();
+	    				} catch (HibernateException he) {
+	    					HibernateConsolePlugin.getDefault().showError(
+	    						HibernateConsolePlugin.getShell(), 
+	    						HibernateConsoleMessages.LoadConsoleCFGCompletionProposal_could_not_load_configuration +
+	    						' ' + cfg.getName(), he);
+	    				}
 					}
-					cfg.buildSessionFactory();
-					queryEditor.executeQuery(cfg);
+					if (cfg.getConfiguration() != null) {
+						cfg.buildSessionFactory();
+						queryEditor.executeQuery(cfg);
+					}
 				}
 			} else {
 				queryEditor.executeQuery(cfg);
