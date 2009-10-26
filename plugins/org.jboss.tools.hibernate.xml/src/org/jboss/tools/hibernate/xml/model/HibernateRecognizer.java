@@ -28,6 +28,12 @@ public class HibernateRecognizer implements EntityRecognizer {
 			XMLEntityResolver.registerSystemEntity(
 				HibernateConstants.CFG_DOC_SYSTEMID_3_0, HibernateRecognizer.class, "/meta/hibernate-configuration-3.0.dtd" //$NON-NLS-1$
 			);
+			XMLEntityResolver.registerPublicEntity(
+					HibernateConstants.CFG_DOC_PUBLICID_2_0, HibernateRecognizer.class, "/meta/hibernate-configuration-2.0.dtd" //$NON-NLS-1$
+				);
+			XMLEntityResolver.registerSystemEntity(
+				HibernateConstants.CFG_DOC_SYSTEMID_2_0, HibernateRecognizer.class, "/meta/hibernate-configuration-2.0.dtd" //$NON-NLS-1$
+			);
 		} catch (Exception e) {}
 	}
 
@@ -38,6 +44,9 @@ public class HibernateRecognizer implements EntityRecognizer {
 				   	|| body.indexOf("\"" + HibernateConstants.DOC_SYSTEMID_3_0 + "\"") >= 0) ? HibernateConstants.ENTITY_FILE_HIBERNATE_3_0  //$NON-NLS-1$ //$NON-NLS-2$
 				: (body.indexOf("\"" + HibernateConstants.CFG_DOC_PUBLICID_3_0 + "\"") >= 0  //$NON-NLS-1$ //$NON-NLS-2$
 				   	|| body.indexOf("\"" + HibernateConstants.CFG_DOC_SYSTEMID_3_0 + "\"") >= 0) ? HibernateConstants.ENTITY_FILE_HIB_CONFIG_3_0 //$NON-NLS-1$ //$NON-NLS-2$
+				//we do not support cfg 2.0 but let's try and do the best
+				: (body.indexOf("\"" + HibernateConstants.CFG_DOC_PUBLICID_2_0 + "\"") >= 0  //$NON-NLS-1$ //$NON-NLS-2$
+				   	|| body.indexOf("\"" + HibernateConstants.CFG_DOC_SYSTEMID_2_0 + "\"") >= 0) ? HibernateConstants.ENTITY_FILE_HIB_CONFIG_3_0 //$NON-NLS-1$ //$NON-NLS-2$
 				: (body.indexOf("\"" + HibernateConstants.RVE_DOC_PUBLICID_3_0 + "\"") >= 0  //$NON-NLS-1$ //$NON-NLS-2$
 				   	|| body.indexOf("\"" + HibernateConstants.RVE_DOC_SYSTEMID_3_0 + "\"") >= 0) ? HibernateConstants.ENTITY_FILE_HIB_REV_ENG_3_0 //$NON-NLS-1$ //$NON-NLS-2$
 				: null;
