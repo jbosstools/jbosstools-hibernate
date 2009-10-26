@@ -29,6 +29,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateColumn;
+import org.jboss.tools.hibernate.jpt.core.internal.context.IndexHolder;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.HibernateIdMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
 
@@ -75,6 +76,15 @@ implements JpaComposite{
 			new HibernateGenerationComposite((FormPane<? extends HibernateJavaIdMapping>) this, addSubPane(container, 10));			
 		} else {
 			new GenerationComposite(this, addSubPane(container, 10));
+		}
+		
+		if (getSubject() instanceof IndexHolder) {
+			container = addCollapsableSection(
+					container,
+					HibernateUIMappingMessages.Index_section_index
+				);
+			((GridLayout) container.getLayout()).numColumns = 2;
+			new IndexHolderComposite((FormPane<? extends IndexHolder>) this, container);			
 		}
 		
 	}

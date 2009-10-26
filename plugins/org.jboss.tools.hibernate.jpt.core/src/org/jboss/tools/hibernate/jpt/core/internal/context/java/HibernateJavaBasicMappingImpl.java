@@ -17,19 +17,24 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaBasicMapping;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Generated;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenerationTime;
+import org.jboss.tools.hibernate.jpt.core.internal.context.Index;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GeneratedAnnotation;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotation;
 
 /**
  * @author Dmitry Geraskov
  *
  */
 public class HibernateJavaBasicMappingImpl extends AbstractJavaBasicMapping
-implements Generated {
+implements HibernateJavaBasicMapping {
 	
 	protected GenerationTime specifiedGenerationTime;
+	
+	protected Index index;
 
 	public HibernateJavaBasicMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
@@ -41,13 +46,27 @@ implements Generated {
 			JPA.LOB,
 			JPA.TEMPORAL,
 			JPA.ENUMERATED,
-			Hibernate.GENERATED);
+			Hibernate.GENERATED,
+			Hibernate.INDEX);
+	}
+	
+	@Override
+	protected HibernateJpaFactory getJpaFactory() {
+		return (HibernateJpaFactory) super.getJpaFactory();
 	}
 	
 	@Override
 	protected void initialize() {
 		super.initialize();
 		this.specifiedGenerationTime = this.getResourceGenerationTime();
+		this.initializeIndex();
+	}
+	
+	@Override
+	protected void update() {
+		super.update();
+		this.setGenerationTime_(this.getResourceGenerationTime());
+		this.updateIndex();
 	}
 	
 	public GeneratedAnnotation getResourceGenerated() {
@@ -90,11 +109,78 @@ implements Generated {
 		this.specifiedGenerationTime = newGenerationTime;
 		firePropertyChanged(Generated.GENERATION_TIME_PROPERTY, oldValue, newGenerationTime);
 	}
+
+
 	
-	@Override
-	protected void update() {
-		super.update();
-		this.setGenerationTime_(this.getResourceGenerationTime());
+	public void removeResourceIndex() {
+		getResourcePersistentAttribute().removeSupportingAnnotation(IndexAnnotation.ANNOTATION_NAME);
+	}
+	
+	// *** index
+	
+	protected void initializeIndex() {
+		IndexAnnotation indexResource = getResourceIndex();
+		if (indexResource != null) {
+			this.index = buildIndex(indexResource);
+		}
+	}
+	
+	protected void updateIndex() {
+		IndexAnnotation indexResource = getResourceIndex();
+		if (indexResource == null) {
+			if (getIndex() != null) {
+				setIndex(null);
+			}
+		}
+		else {
+			if (getIndex() == null) {
+				setIndex(buildIndex(indexResource));
+			}
+			else {
+				getIndex().update(indexResource);
+			}
+		}
+	}
+	
+	public Index addIndex() {
+		if (getIndex() != null) {
+			throw new IllegalStateException("index already exists"); //$NON-NLS-1$
+		}
+		this.index = getJpaFactory().buildIndex(this);
+		IndexAnnotation indexResource = (IndexAnnotation) getResourcePersistentAttribute().addSupportingAnnotation(IndexAnnotation.ANNOTATION_NAME);
+		this.index.initialize(indexResource);
+		firePropertyChanged(INDEX_PROPERTY, null, this.index);
+		return this.index;
+	}
+
+	public Index getIndex() {
+		return this.index;
+	}
+	
+	protected void setIndex(Index newIndex) {
+		Index oldIndex = this.index;
+		this.index = newIndex;
+		firePropertyChanged(INDEX_PROPERTY, oldIndex, newIndex);
+	}
+
+	public void removeIndex() {
+		if (getIndex() == null) {
+			throw new IllegalStateException("index does not exist, cannot be removed"); //$NON-NLS-1$
+		}
+		Index oldIndex = this.index;
+		this.index = null;
+		this.getResourcePersistentAttribute().removeSupportingAnnotation(IndexAnnotation.ANNOTATION_NAME);
+		firePropertyChanged(INDEX_PROPERTY, oldIndex, null);
+	}
+	
+	protected Index buildIndex(IndexAnnotation indexResource) {
+		Index index = getJpaFactory().buildIndex(this);
+		index.initialize(indexResource);
+		return index;
+	}
+	
+	protected IndexAnnotation getResourceIndex() {
+		return (IndexAnnotation) this.getResourcePersistentAttribute().getSupportingAnnotation(IndexAnnotation.ANNOTATION_NAME);
 	}
 	
 }

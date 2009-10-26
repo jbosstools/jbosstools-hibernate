@@ -9,18 +9,24 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 
-package org.jboss.tools.hibernate.jpt.core.internal.context.java;
+package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import org.eclipse.jpt.core.context.java.JavaIdMapping;
-import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGeneratorHolder;
-import org.jboss.tools.hibernate.jpt.core.internal.context.IndexHolder;
-import org.jboss.tools.hibernate.jpt.core.internal.context.basic.HibernateIdMapping;
+import org.eclipse.jpt.core.context.JpaContextNode;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface HibernateJavaIdMapping extends HibernateIdMapping,
-		JavaIdMapping, GenericGeneratorHolder, IndexHolder {
+public interface IndexHolder extends JpaContextNode {
+	
+	//******************** index *****************
+
+	String INDEX_PROPERTY = "index"; //$NON-NLS-1$
+	
+	Index getIndex();
+	
+	Index addIndex();
+	
+	void removeIndex();
 
 }

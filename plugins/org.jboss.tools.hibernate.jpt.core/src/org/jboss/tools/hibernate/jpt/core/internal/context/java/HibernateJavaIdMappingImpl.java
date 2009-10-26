@@ -27,9 +27,11 @@ import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
-import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
+import org.jboss.tools.hibernate.jpt.core.internal.context.Index;
+import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorAnnotation;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotation;
 
 /**
  * @author Dmitry Geraskov
@@ -40,17 +42,38 @@ implements HibernateJavaIdMapping {
 	
 	protected JavaGenericGenerator genericGenerator;
 	
+	protected Index index;
+	
 	/**
 	 * @param parent
 	 */
 	public HibernateJavaIdMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
 	}
-
+	
+	@Override
+	public Iterator<String> supportingAnnotationNames() {
+		return new CompositeIterator<String>(super.supportingAnnotationNames(),
+				Hibernate.INDEX);
+	}
+	
+	@Override
+	protected HibernateJpaFactory getJpaFactory() {
+		return (HibernateJpaFactory) super.getJpaFactory();
+	}
+	
 	@Override
 	protected void initialize() {
 		super.initialize();
 		this.initializeGenericGenerator();
+		this.initializeIndex();
+	}
+	
+	@Override
+	public void update() {
+		super.update();
+		updateGenericGenerator();
+		this.updateIndex();
 	}
 	
 	@Override
@@ -117,12 +140,6 @@ implements HibernateJavaIdMapping {
 		JavaGenericGenerator oldGenericGenerator = this.genericGenerator;
 		this.genericGenerator = newGenericGenerator;
 		firePropertyChanged(GENERIC_GENERATORS_LIST, oldGenericGenerator, newGenericGenerator);
-	}
-	
-	@Override
-	public void update() {
-		super.update();
-		updateGenericGenerator();
 	}
 	
 	protected void updateGenericGenerator() {
@@ -196,9 +213,71 @@ implements HibernateJavaIdMapping {
 		}
 	}
 	
-	@Override
-	public HibernateJpaProject getJpaProject() {
-		return (HibernateJpaProject) super.getJpaProject();
+	// *** index
+	
+	protected void initializeIndex() {
+		IndexAnnotation indexResource = getResourceIndex();
+		if (indexResource != null) {
+			this.index = buildIndex(indexResource);
+		}
+	}
+	
+	protected void updateIndex() {
+		IndexAnnotation indexResource = getResourceIndex();
+		if (indexResource == null) {
+			if (getIndex() != null) {
+				setIndex(null);
+			}
+		}
+		else {
+			if (getIndex() == null) {
+				setIndex(buildIndex(indexResource));
+			}
+			else {
+				getIndex().update(indexResource);
+			}
+		}
+	}
+	
+	public Index addIndex() {
+		if (getIndex() != null) {
+			throw new IllegalStateException("index already exists"); //$NON-NLS-1$
+		}
+		this.index = getJpaFactory().buildIndex(this);
+		IndexAnnotation indexResource = (IndexAnnotation) getResourcePersistentAttribute().addSupportingAnnotation(IndexAnnotation.ANNOTATION_NAME);
+		this.index.initialize(indexResource);
+		firePropertyChanged(INDEX_PROPERTY, null, this.index);
+		return this.index;
+	}
+
+	public Index getIndex() {
+		return this.index;
+	}
+	
+	protected void setIndex(Index newIndex) {
+		Index oldIndex = this.index;
+		this.index = newIndex;
+		firePropertyChanged(INDEX_PROPERTY, oldIndex, newIndex);
+	}
+
+	public void removeIndex() {
+		if (getIndex() == null) {
+			throw new IllegalStateException("index does not exist, cannot be removed"); //$NON-NLS-1$
+		}
+		Index oldIndex = this.index;
+		this.index = null;
+		this.getResourcePersistentAttribute().removeSupportingAnnotation(IndexAnnotation.ANNOTATION_NAME);
+		firePropertyChanged(INDEX_PROPERTY, oldIndex, null);
+	}
+	
+	protected Index buildIndex(IndexAnnotation indexResource) {
+		Index index = getJpaFactory().buildIndex(this);
+		index.initialize(indexResource);
+		return index;
+	}
+	
+	protected IndexAnnotation getResourceIndex() {
+		return (IndexAnnotation) this.getResourcePersistentAttribute().getSupportingAnnotation(IndexAnnotation.ANNOTATION_NAME);
 	}
 
 }

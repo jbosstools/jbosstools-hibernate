@@ -61,6 +61,8 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
+import org.jboss.tools.hibernate.jpt.core.internal.context.Index;
+import org.jboss.tools.hibernate.jpt.core.internal.context.IndexImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaBasicMappingImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaColumnImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaDiscriminatorColumnImpl;
@@ -274,6 +276,10 @@ public class HibernateJpaFactory extends GenericJpaFactory {
 	@SuppressWarnings("unchecked")
 	public OrmOneToOneMapping buildOrmOneToOneMapping(OrmPersistentAttribute parent, XmlOneToOne resourceMapping) {
 		return new HibernateOrmOneToOneMapping(parent, resourceMapping);
+	}
+
+	public Index buildIndex(JavaJpaContextNode parent) {
+		return new IndexImpl(parent);
 	}
 
 }

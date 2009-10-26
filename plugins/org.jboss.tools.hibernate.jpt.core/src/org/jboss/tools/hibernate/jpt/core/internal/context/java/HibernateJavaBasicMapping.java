@@ -11,16 +11,14 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaIdMapping;
-import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGeneratorHolder;
+import org.eclipse.jpt.core.context.java.JavaBasicMapping;
+import org.jboss.tools.hibernate.jpt.core.internal.context.Generated;
 import org.jboss.tools.hibernate.jpt.core.internal.context.IndexHolder;
-import org.jboss.tools.hibernate.jpt.core.internal.context.basic.HibernateIdMapping;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface HibernateJavaIdMapping extends HibernateIdMapping,
-		JavaIdMapping, GenericGeneratorHolder, IndexHolder {
+public interface HibernateJavaBasicMapping extends JavaBasicMapping, Generated, IndexHolder {
 
 }

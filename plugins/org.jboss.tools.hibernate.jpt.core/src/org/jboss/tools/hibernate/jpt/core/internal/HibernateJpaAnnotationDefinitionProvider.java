@@ -22,6 +22,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQ
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.DiscriminatorFormulaAnnotationImpl.DiscriminatorFormulaAnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GeneratedAnnotationImpl.GeneratedAnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorAnnotationImpl.GenericGeneratorAnnotationDefinition;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotationImpl.IndexAnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.SourceGenericGeneratorsAnnotation.GenericGeneratorsAnnotationDefinition;
 
 /**
@@ -70,5 +71,6 @@ public class HibernateJpaAnnotationDefinitionProvider extends AbstractJpaAnnotat
 	protected void addAttributeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
 		definitions.add(GenericGeneratorAnnotationDefinition.instance());
 		definitions.add(GeneratedAnnotationDefinition.instance());
+		definitions.add(IndexAnnotationDefinition.instance());
 	}
 }

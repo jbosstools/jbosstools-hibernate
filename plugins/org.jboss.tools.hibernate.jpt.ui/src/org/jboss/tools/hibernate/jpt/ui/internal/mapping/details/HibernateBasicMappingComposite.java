@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Generated;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateColumn;
+import org.jboss.tools.hibernate.jpt.core.internal.context.IndexHolder;
 
 /**
  * Here the layout of this pane:
@@ -105,6 +106,7 @@ public class HibernateBasicMappingComposite extends FormPane<BasicMapping>
 	protected void initializeLayout(Composite container) {
 		initializeGeneralPane(container);
 		initializeTypePane(container);
+		initializeIndexPane(container);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -124,6 +126,7 @@ public class HibernateBasicMappingComposite extends FormPane<BasicMapping>
 		new OptionalComposite(this, addSubPane(container, 4));
 
 	}
+	
 	private void initializeTypePane(Composite container) {
 
 		container = addCollapsableSection(
@@ -165,6 +168,19 @@ public class HibernateBasicMappingComposite extends FormPane<BasicMapping>
 			buildEnumeratedBooleanHolder(), 
 			null);
 		registerSubPane(new EnumTypeComposite(buildEnumeratedConverterHolder(specifiedConverterHolder), container, getWidgetFactory()));
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void initializeIndexPane(Composite container) {
+		if (getSubject() instanceof IndexHolder) {
+			container = addCollapsableSection(
+					container,
+					HibernateUIMappingMessages.Index_section_index
+				);
+			((GridLayout) container.getLayout()).numColumns = 2;
+			new IndexHolderComposite((FormPane<? extends IndexHolder>) this, container);			
+		}
+
 	}
 
 	private PropertyValueModel<HibernateColumn> buildColumnHolder() {
