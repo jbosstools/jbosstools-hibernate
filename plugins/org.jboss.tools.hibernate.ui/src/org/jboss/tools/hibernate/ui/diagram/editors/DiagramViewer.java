@@ -23,6 +23,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.KeyHandler;
+import org.eclipse.gef.KeyStroke;
 import org.eclipse.gef.MouseWheelHandler;
 import org.eclipse.gef.MouseWheelZoomHandler;
 import org.eclipse.gef.SnapToGeometry;
@@ -44,6 +46,7 @@ import org.eclipse.gef.ui.actions.UndoAction;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.parts.GraphicalEditor;
+import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.gef.ui.parts.TreeViewer;
 import org.eclipse.gef.ui.rulers.RulerComposite;
@@ -65,6 +68,7 @@ import org.jboss.tools.hibernate.ui.diagram.editors.actions.AutoLayoutAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.CollapseAllAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExpandAllAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExportImageAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.LexicalSortingAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.OpenMappingAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.OpenSourceAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.PrintDiagramViewerAction;
@@ -94,6 +98,7 @@ import org.jboss.tools.hibernate.ui.view.DiagramEditorInput;
 public class DiagramViewer extends GraphicalEditor {
 
 	private GEFRootEditPart gefRootEditPart = new GEFRootEditPart();
+	private KeyHandler sharedKeyHandler;
 	private RulerComposite rulerComp;
 
 	public DiagramViewer() {
@@ -128,6 +133,9 @@ public class DiagramViewer extends GraphicalEditor {
 	protected void initializeGraphicalViewer() {
 		final GraphicalViewer viewer = getGraphicalViewer();
 		viewer.setEditPartFactory(new OrmEditPartFactory());
+		//
+		viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer)
+			.setParent(getCommonKeyHandler()));
 		//
 		List<String> zoomLevels = new ArrayList<String>(3);
 		zoomLevels.add(ZoomManager.FIT_ALL);
@@ -258,6 +266,9 @@ public class DiagramViewer extends GraphicalEditor {
 		action = new ZoomOutAction(gefRootEditPart.getZoomManager());
 		registry.registerAction(action);
 
+		action = new LexicalSortingAction(this, null);
+		registry.registerAction(action);
+
 		Action[] act = new Action[4];
 		act[0] = (Action)registry.getAction(TogglePropertyMappingAction.ACTION_ID);
 		act[1] = (Action)registry.getAction(ToggleClassMappingAction.ACTION_ID);
@@ -344,6 +355,9 @@ public class DiagramViewer extends GraphicalEditor {
 			RefreshAction refreshAction = (RefreshAction)getActionRegistry().getAction(
 					ActionFactory.REFRESH.getId());
 			refreshAction.setOutlinePage(outline);
+			LexicalSortingAction lexicalSortAction = (LexicalSortingAction)getActionRegistry().getAction(
+					LexicalSortingAction.ACTION_ID);
+			lexicalSortAction.setOutlinePage(outline);
 			return outline;
 		}
 		if (type == ZoomManager.class) {
@@ -564,5 +578,32 @@ public class DiagramViewer extends GraphicalEditor {
 		ActionRegistry registry = getActionRegistry();
 		IAction action = registry.getAction(TogglePropertyMappingAction.ACTION_ID);
 		action.setChecked(connectionsVisibilityPropertyMapping);
+	}
+	
+	/**
+	 * Returns the KeyHandler with common bindings for both the Outline and Graphical Views.
+	 * For example, delete is a common action.
+	 */
+	protected KeyHandler getCommonKeyHandler(){
+		if (sharedKeyHandler == null){
+			sharedKeyHandler = new KeyHandler();
+			sharedKeyHandler.put(
+				KeyStroke.getPressed('\r', Action.findKeyCode("RETURN"), 0), //$NON-NLS-1$
+				getActionRegistry().getAction(ToggleShapeExpandStateAction.ACTION_ID));
+			sharedKeyHandler.put(
+				KeyStroke.getPressed('\r', SWT.KEYPAD_CR, 0),
+				getActionRegistry().getAction(ToggleShapeExpandStateAction.ACTION_ID));
+			sharedKeyHandler.put(
+				KeyStroke.getPressed('+', SWT.KEYPAD_ADD, 0),
+				getActionRegistry().getAction(ToggleShapeVisibleStateAction.ACTION_ID));
+			sharedKeyHandler.put(
+				KeyStroke.getReleased(' ', Action.findKeyCode("SPACE"), 0), //$NON-NLS-1$
+				getActionRegistry().getAction(LexicalSortingAction.ACTION_ID));
+		}
+		return sharedKeyHandler;
+	}
+	
+	public IAction getLexicalSortingAction() {
+		return getActionRegistry().getAction(LexicalSortingAction.ACTION_ID);
 	}
 }

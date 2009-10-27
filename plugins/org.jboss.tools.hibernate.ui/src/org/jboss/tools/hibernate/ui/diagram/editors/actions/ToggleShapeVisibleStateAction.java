@@ -43,7 +43,7 @@ public class ToggleShapeVisibleStateAction extends SelectionAction {
 		super(editor);
 		setId(ACTION_ID);
 		setText(DiagramViewerMessages.ToggleShapeVisibleStateAction_toggle_visible_state);
-		setToolTipText(DiagramViewerMessages.ToggleShapeVisibleStateAction_toggle_visible_state);
+		setToolTipText(DiagramViewerMessages.ToggleShapeVisibleStateAction_toggle_visible_state_tooltip);
 		setImageDescriptor(img);
 	}
 

@@ -41,7 +41,7 @@ public class ToggleShapeExpandStateAction extends SelectionAction {
 		super(editor);
 		setId(ACTION_ID);
 		setText(DiagramViewerMessages.ToggleShapeExpandStateAction_toggle_expand_state);
-		setToolTipText(DiagramViewerMessages.ToggleShapeExpandStateAction_toggle_expand_state);
+		setToolTipText(DiagramViewerMessages.ToggleShapeExpandStateAction_toggle_expand_state_tooltip);
 		setImageDescriptor(img);
 	}
 

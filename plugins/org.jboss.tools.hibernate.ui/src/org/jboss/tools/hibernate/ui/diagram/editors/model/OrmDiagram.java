@@ -69,6 +69,7 @@ public class OrmDiagram extends BaseElement {
 	public static final String HIBERNATE_MAPPING_LAYOUT_FOLDER_NAME = "hibernateMapping"; //$NON-NLS-1$
 	public static final String DIRTY = "dirty"; //$NON-NLS-1$
 	public static final String AUTOLAYOUT = "autolayout"; //$NON-NLS-1$
+	public static final String DEEPINTOSORT = "deepIntoSort"; //$NON-NLS-1$
 	
 	// hibernate console configuration is the source of diagram elements 
 	protected String consoleConfigName;
@@ -857,7 +858,10 @@ public class OrmDiagram extends BaseElement {
 	}
 
 	public void setDeepIntoSort(boolean deepIntoSort) {
-		this.deepIntoSort = deepIntoSort;
+		if (this.deepIntoSort != deepIntoSort) {
+			this.deepIntoSort = deepIntoSort;
+			firePropertyChange(DEEPINTOSORT, null, null);
+		}
 	}
 
 	public boolean equals(Object obj) {

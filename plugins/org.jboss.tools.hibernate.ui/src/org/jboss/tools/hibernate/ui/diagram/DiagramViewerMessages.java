@@ -40,7 +40,9 @@ public class DiagramViewerMessages extends NLS {
 	public static String OpenSourceAction_canot_open_source_file;
 	public static String OpenSourceAction_open_source_file;
 	public static String ToggleShapeExpandStateAction_toggle_expand_state;
+	public static String ToggleShapeExpandStateAction_toggle_expand_state_tooltip;
 	public static String ToggleShapeVisibleStateAction_toggle_visible_state;
+	public static String ToggleShapeVisibleStateAction_toggle_visible_state_tooltip;
 	public static String ToggleConnectionsAction_toggle_connections;
 	public static String ShapeSetConstraintCommand_move;
 	public static String PartFactory_canot_create_part_for_model_element;

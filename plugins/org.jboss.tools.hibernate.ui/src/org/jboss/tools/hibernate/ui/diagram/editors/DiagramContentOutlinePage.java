@@ -35,7 +35,6 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -45,6 +44,7 @@ import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.PageBook;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.AutoLayoutAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.LexicalSortingAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleConnectionsAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeExpandStateAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeVisibleStateAction;
@@ -167,6 +167,8 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 		bars.setGlobalActionHandler(id, registry.getAction(id));
 		id = ToggleShapeVisibleStateAction.ACTION_ID;
 		bars.setGlobalActionHandler(id, registry.getAction(id));
+		id = LexicalSortingAction.ACTION_ID;
+		bars.setGlobalActionHandler(id, registry.getAction(id));
 		bars.updateActionBars();
 	}
 
@@ -184,7 +186,7 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 			provider, getSite().getSelectionProvider());
 		IToolBarManager tbm = getSite().getActionBars().getToolBarManager();
 		
-		tbm.add(new LexicalSortingAction());
+		tbm.add(editor.getLexicalSortingAction());
 
 		showOutlineAction = new Action() {
 			public void run() {
@@ -354,7 +356,11 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 	public void setOrmDiagram(OrmDiagram ormDiagram) {
 		this.ormDiagram = ormDiagram;
 	}
-
+	
+	public Control getOutline() {
+		return outline;
+	}
+	
 	public DiagramViewer getEditor() {
 		return editor;
 	}
@@ -365,38 +371,5 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 
 	protected ActionRegistry getActionRegistry() {
 		return actionRegistry;
-	}
-
-	class LexicalSortingAction extends Action {
-
-		@SuppressWarnings("restriction")
-		public LexicalSortingAction() {
-			super();
-			setText(DiagramViewerMessages.DiagramViewer_OutlinePage_Sort_label);
-			org.eclipse.jdt.internal.ui.JavaPluginImages.setLocalImageDescriptors(this, "alphab_sort_co.gif"); //$NON-NLS-1$
-			setToolTipText(DiagramViewerMessages.DiagramViewer_OutlinePage_Sort_tooltip);
-			setDescription(DiagramViewerMessages.DiagramViewer_OutlinePage_Sort_description);
-
-			boolean checked = getOrmDiagram().isDeepIntoSort();
-			if (checked) {
-				valueChanged(checked);
-			}
-		}
-
-		public void run() {
-			valueChanged(isChecked());
-		}
-
-		private void valueChanged(final boolean on) {
-			setChecked(on);
-			BusyIndicator.showWhile(outline.getDisplay(), new Runnable() {
-				public void run() {
-					final OrmDiagram od = getOrmDiagram();
-					od.setDeepIntoSort(on);
-					od.refresh();
-					setContents(od);
-				}
-			});
-		}
 	}
 }
