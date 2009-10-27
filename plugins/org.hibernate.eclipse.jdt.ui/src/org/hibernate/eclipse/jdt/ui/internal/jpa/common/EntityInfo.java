@@ -263,8 +263,7 @@ public class EntityInfo {
 		while (it.hasNext()) {
 			String name = it.next();
 			String check = name.toLowerCase();
-			if ("id".equalsIgnoreCase(check) //$NON-NLS-1$
-					|| "identity".equalsIgnoreCase(check)) { //$NON-NLS-1$
+			if ("id".equalsIgnoreCase(check)) { //$NON-NLS-1$
 				primaryIdName = name;
 				break;
 			}

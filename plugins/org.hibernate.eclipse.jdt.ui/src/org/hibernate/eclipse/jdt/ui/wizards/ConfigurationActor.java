@@ -51,6 +51,7 @@ import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.IndexedCollection;
 import org.hibernate.mapping.JoinedSubclass;
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.ManyToOne;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.OneToOne;
@@ -180,6 +181,14 @@ public class ConfigurationActor {
 					subclass.setEntityName(pastClass.getEntityName());
 					subclass.setDiscriminatorValue(StringHelper.unqualify(pastClass.getClassName()));
 					subclass.setAbstract(pastClass.isAbstract());
+					if (subclass instanceof JoinedSubclass) {
+						((JoinedSubclass) subclass).setTable(new Table(pastClass.getClassName().toUpperCase()));
+						((JoinedSubclass) subclass).setKey((KeyValue) pc.getIdentifierProperty().getValue());
+					}
+					Iterator it = pastClass.getPropertyIterator();
+					while (it.hasNext()) {
+						subclass.addProperty((Property) it.next());
+					}
 					entry.setValue(subclass);
 				}
 			} catch (JavaModelException e) {
@@ -192,9 +201,13 @@ public class ConfigurationActor {
 	private PersistentClass getMappedSuperclass(IJavaProject project, Map<String, PersistentClass> persistentClasses, RootClass rootClass) throws JavaModelException{
 		IType type = Utils.findType(project, rootClass.getClassName());		
 		//TODO not direct superclass?
-		if (type.getSuperclassName() != null
-				&& persistentClasses.get(type.getSuperclassName()) != null){			
-			return persistentClasses.get(type.getSuperclassName());
+		if (type.getSuperclassName() != null){
+			String[][] supertypes = type.resolveType(type.getSuperclassName());
+			if (supertypes != null){
+				String supertype = supertypes[0][0].length() > 0 ? supertypes[0][0] + '.' + supertypes[0][1]
+				                                               : supertypes[0][1];
+				return persistentClasses.get(supertype);
+			}
 		} 
 		return null;
 	}
@@ -280,20 +293,39 @@ class ProcessEntityInfo extends ASTVisitor {
 			for (int i = 0; i < fields.length; i++) {
 				Iterator<VariableDeclarationFragment> itFieldsNames = fields[i].fragments().iterator();
 				while(itFieldsNames.hasNext()) {
-					VariableDeclarationFragment field = itFieldsNames.next();
-					if ("id".equals(field.getName().getIdentifier()) //$NON-NLS-1$
-							|| "identity".equals(field.getName().getIdentifier())){ //$NON-NLS-1$
-						entityInfo.setPrimaryIdName(field.getName().getIdentifier());
+					VariableDeclarationFragment variable = itFieldsNames.next();
+					Type type = ((FieldDeclaration)variable.getParent()).getType();
+					if ("id".equals(variable.getName().getIdentifier()) //$NON-NLS-1$
+							&& !type.isArrayType()
+							&& !Utils.isImplementInterface(new ITypeBinding[]{type.resolveBinding()}, Collection.class.getName())){
+						entityInfo.setPrimaryIdName(variable.getName().getIdentifier());
 						return true;
-					} else if ("".equals(firstFieldName)){ //$NON-NLS-1$
+					} else if ("".equals(firstFieldName)//$NON-NLS-1$
+							&& !type.isArrayType()
+							&& !Utils.isImplementInterface(
+									new ITypeBinding[]{type.resolveBinding()}, Collection.class.getName())){
 						//set first field as id
-						firstFieldName = field.getName().getIdentifier();
+						firstFieldName = variable.getName().getIdentifier();
 					}
 				}
 			}
 			entityInfo.setPrimaryIdName(firstFieldName);
 		}
 		return true;
+	}
+	
+	@Override
+	public void endVisit(TypeDeclaration node) {
+		if (rootClass.getIdentifierProperty() == null){
+			//root class should always has id
+			SimpleValue sValue = new SimpleValue();
+			sValue.addColumn(new Column("id".toUpperCase()));//$NON-NLS-1$
+			sValue.setTypeName(Long.class.getName());
+			Property prop = new Property();
+			prop.setName("id"); //$NON-NLS-1$
+			prop.setValue(sValue);
+			rootClass.setIdentifierProperty(prop);
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -519,7 +551,7 @@ class TypeVisitor extends ASTVisitor{
 			} else if (value instanceof org.hibernate.mapping.Map){
 				SimpleValue map_key = new SimpleValue();
 				//FIXME: how to detect key-type here
-				map_key.setTypeName("String"); //$NON-NLS-1$
+				map_key.setTypeName("string"); //$NON-NLS-1$
 				((IndexedCollection)value).setIndex(map_key);
 			}
 			prop.setCascade("none");//$NON-NLS-1$
