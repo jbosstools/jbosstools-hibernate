@@ -157,6 +157,7 @@ public class ConfigurationActor {
 	 * @param rootClasses
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	private Collection<PersistentClass> createHierarhyStructure(IJavaProject project, Map<String, RootClass> rootClasses){
 		Map<String, PersistentClass> pcCopy = new HashMap<String, PersistentClass>();
 		for (Map.Entry<String, RootClass> entry : rootClasses.entrySet()) {
