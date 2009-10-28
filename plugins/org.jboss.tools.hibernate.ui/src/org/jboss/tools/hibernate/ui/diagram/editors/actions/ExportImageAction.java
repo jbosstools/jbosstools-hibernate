@@ -168,8 +168,9 @@ public class ExportImageAction extends DiagramBaseAction {
 	 */
 	private byte[] createImage(IFigure figure, int format) {
 
-		Device device = getDiagramViewer().getEditPartViewer().getControl()
-				.getDisplay();
+		//Device device = getDiagramViewer().getEditPartViewer().getControl()
+		//		.getDisplay();
+		Device device = null;
 		Rectangle r = figure.getBounds();
 
 		ByteArrayOutputStream result = new ByteArrayOutputStream();
@@ -188,6 +189,8 @@ public class ExportImageAction extends DiagramBaseAction {
 			ImageLoader imageLoader = new ImageLoader();
 			imageLoader.data = new ImageData[] { image.getImageData() };
 			imageLoader.save(result, format);
+		} catch (Throwable e) {
+			HibernateConsolePlugin.getDefault().logErrorMessage("ExportImageAction - save:", e); //$NON-NLS-1$
 		} finally {
 			if (g != null) {
 				g.dispose();
