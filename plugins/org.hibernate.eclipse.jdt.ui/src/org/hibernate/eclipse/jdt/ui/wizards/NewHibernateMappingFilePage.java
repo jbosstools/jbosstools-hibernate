@@ -56,7 +56,7 @@ public class NewHibernateMappingFilePage extends WizardPage {
 	protected NewHibernateMappingFilePage() {
 		super("");	//$NON-NLS-1$
 		setTitle(HibernateConsoleMessages.NewHibernateMappingFilePage_hibernate_xml_mapping_file);
-		setDescription(HibernateConsoleMessages.NewHibernateMappingFilePage_this_wizard_creates);
+		setMessage(HibernateConsoleMessages.NewHibernateMappingFilePage_this_wizard_creates, WARNING);
 	}
 
 	public void createControl(Composite parent) {
