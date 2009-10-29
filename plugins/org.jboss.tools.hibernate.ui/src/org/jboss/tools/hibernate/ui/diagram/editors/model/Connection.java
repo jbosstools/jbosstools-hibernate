@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -9,6 +9,11 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.model;
+
+import org.hibernate.mapping.Column;
+import org.hibernate.mapping.Property;
+import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Table;
 
 /**
  * Directed connection between 2 shapes, from source to target. 
@@ -21,6 +26,9 @@ public class Connection extends BaseElement {
 	protected Shape source;
 	protected Shape target;
 	
+	/**
+	 * supported connection types 
+	 */
 	public enum ConnectionType {
 		ClassMapping,
 		PropertyMapping,
@@ -51,17 +59,43 @@ public class Connection extends BaseElement {
 		return target;
 	}
 	
+	/**
+	 * Detect connection type from connected source and target.
+	 * 
+	 * @return
+	 */
 	public ConnectionType getConnectionType() {
-		if ((source instanceof OrmShape) && (target instanceof OrmShape)) {
-			return ConnectionType.ClassMapping;
+		if (source instanceof OrmShape && target instanceof OrmShape) {
+			if ((source.getOrmElement() instanceof Table) && (target.getOrmElement() instanceof Table)) {
+				return ConnectionType.ForeignKeyConstraint;
+			}
+			boolean bClassMapping = true;
+			if (!(source.getOrmElement() instanceof RootClass || source.getOrmElement() instanceof Table)) {
+				bClassMapping = false;
+			}
+			if (!(target.getOrmElement() instanceof RootClass || target.getOrmElement() instanceof Table)) {
+				bClassMapping = false;
+			}
+			if (bClassMapping) {
+				return ConnectionType.ClassMapping;
+			}
 		}
-		if ((source instanceof OrmShape) || (target instanceof OrmShape)) {
-			return ConnectionType.Association;
+		if ((source.getOrmElement() instanceof Table && target.getOrmElement() instanceof Table) ||
+			(source.getOrmElement() instanceof Table && target.getOrmElement() instanceof Column) ||
+			(source.getOrmElement() instanceof Column && target.getOrmElement() instanceof Table) ||
+			(source.getOrmElement() instanceof Column && target.getOrmElement() instanceof Column)) {
+			return ConnectionType.ForeignKeyConstraint;
 		}
-		// TODO: what is ForeignKeyConstraint?
-		//if ( ??? ) {
-		//	return ConnectionType.ForeignKeyConstraint;
-		//}
+		if (((source instanceof OrmShape) ^ (target instanceof OrmShape))) {
+			boolean bAssociation = true;
+			if (!(!(source instanceof OrmShape) && source.getOrmElement() instanceof Property) &&
+				!(!(target instanceof OrmShape) && target.getOrmElement() instanceof Property)) {
+				bAssociation = false;
+			}
+			if (bAssociation) {
+				return ConnectionType.Association;
+			}
+		}
 		return ConnectionType.PropertyMapping;
 	}
 

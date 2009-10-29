@@ -187,6 +187,7 @@ public class OrmDiagram extends BaseElement {
 		}
 		updateChildrenList();
 		factory.createChildren(this);
+		factory.createForeingKeyConnections();
 		updateChildrenList();
 		if (getChildrenNumber() == 0) {
 			String error = DiagramViewerMessages.MessageShape_warning;

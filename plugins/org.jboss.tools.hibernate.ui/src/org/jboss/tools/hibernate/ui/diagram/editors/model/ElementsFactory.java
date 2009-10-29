@@ -21,6 +21,7 @@ import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.DependantValue;
+import org.hibernate.mapping.ForeignKey;
 import org.hibernate.mapping.Join;
 import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
@@ -34,8 +35,10 @@ import org.hibernate.type.EntityType;
 import org.hibernate.type.Type;
 
 /**
+ * Responsible to create diagram elements for given
+ * Hibernate Console Configuration.
  * 
- * @author Vitali
+ * @author Vitali Yemialyanchyk
  */
 public class ElementsFactory {
 
@@ -48,6 +51,45 @@ public class ElementsFactory {
 		this.config = config;
 		this.elements = elements;
 		this.connections = connections;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void createForeingKeyConnections() {
+		Iterator<OrmShape> it = elements.values().iterator();
+		while (it.hasNext()) {
+			final OrmShape shape = it.next();
+			Object ormElement = shape.getOrmElement();
+			if (ormElement instanceof Table) {
+				Table databaseTable = (Table)ormElement;
+				Iterator<ForeignKey> itFK = (Iterator<ForeignKey>)databaseTable.getForeignKeyIterator();
+				while (itFK.hasNext()) {
+					final ForeignKey fk = itFK.next();
+					Table referencedTable = fk.getReferencedTable();
+					final OrmShape referencedShape = getOrCreateDatabaseTable(referencedTable);
+					//
+					Iterator<Column> itColumns = (Iterator<Column>)fk.columnIterator();
+					while (itColumns.hasNext()) {
+						Column col = itColumns.next();
+						Shape shapeColumn = shape.getChild(col);
+						Iterator<Column> itReferencedColumns = null;
+						if (fk.isReferenceToPrimaryKey()) {
+							itReferencedColumns = 
+								(Iterator<Column>)referencedTable.getPrimaryKey().columnIterator();
+						} else {
+							itReferencedColumns = 
+								(Iterator<Column>)fk.getReferencedColumns().iterator();
+						}
+						while (itReferencedColumns != null && itReferencedColumns.hasNext()) {
+							Column colReferenced = itReferencedColumns.next();
+							Shape shapeReferencedColumn = referencedShape.getChild(colReferenced);
+							if (shouldCreateConnection(shapeColumn, shapeReferencedColumn)) {
+								connections.add(new Connection(shapeColumn, shapeReferencedColumn));
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	public void createChildren(BaseElement element) {

@@ -41,6 +41,12 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
 
+/**
+ * Export image into selected image format.
+ * "png", "jpg", "bmp" are supported. 
+ * 
+ * @author Vitali Yemialyanchyk
+ */
 public class ExportImageAction extends DiagramBaseAction {
 
 	public static final String ACTION_ID = "export_as_image_id"; //$NON-NLS-1$
