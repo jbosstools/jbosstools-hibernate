@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -15,10 +15,14 @@ import java.util.*;
 import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.IItemInfo;
 import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.ILinkInfo;
 
-
+/**
+ * Auto layout item.
+ */
 public class Item {
-    protected IItemInfo itemInfo;
-    protected int n;
+	
+    private int nId;
+    private IItemInfo itemInfo;
+    
     protected int x = 0;
     protected int y = 0;
     protected int ix = -1;
@@ -35,9 +39,21 @@ public class Item {
     protected boolean isSet = false;
     protected boolean yAssigned = false;
 
-    public Item() {}
+    public Item(int nId, IItemInfo itemInfo) {
+    	this.nId = nId;
+    	this.itemInfo = itemInfo;
+    	if (itemInfo != null && !itemInfo.isVisible()) {
+    		isSet = true;
+    	    ix = 0;
+    	    iy = 0;
+    	}
+    }
     
-    public IItemInfo getObject() {
+    public int getId() {
+    	return nId;
+    }
+    
+    public IItemInfo getItemInfo() {
     	return itemInfo;
     }
 
@@ -77,6 +93,10 @@ public class Item {
     public boolean isComment() {
         return itemInfo != null && itemInfo.isComment();
     }
+
+    public boolean isVisible() {
+        return itemInfo != null && itemInfo.isVisible();
+    }
     
     int gravity;
     boolean[] outputActivities;
@@ -85,11 +105,11 @@ public class Item {
 	public void initActivities() {
 		outputActivities = new boolean[outputs.length];
 		for (int i = 0; i < outputActivities.length; i++) {
-			outputActivities[i] = (outputs[i] != n);
+			outputActivities[i] = (outputs[i] != nId);
 		}
 		inputActivities = new boolean[inputs.length];
 		for (int i = 0; i < inputActivities.length; i++) {
-			inputActivities[i] = (inputs[i] != n);
+			inputActivities[i] = (inputs[i] != nId);
 		}
 	}
 	

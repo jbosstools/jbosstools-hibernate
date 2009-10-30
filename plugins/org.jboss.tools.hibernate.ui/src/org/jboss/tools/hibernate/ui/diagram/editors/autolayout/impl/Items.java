@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -16,6 +16,9 @@ import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.IItemInfo;
 import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.ILinkInfo;
 import org.jboss.tools.hibernate.ui.diagram.editors.autolayout.IDiagramInfo;
 
+/**
+ * @author ?
+ */
 public class Items {
 	protected LayoutConstants constants;
 	protected IDiagramInfo process;
@@ -55,11 +58,9 @@ public class Items {
 		IItemInfo[] is = process.getItems();
 		items = new Item[is.length];
 		for (int i = 0; i < is.length; i++) {
-			Item item = new Item();
+			Item item = new Item(i, is[i]);
 			items[i] = item;
 			paths.put(is[i].getID(), item);
-			item.n = i;
-			item.itemInfo = is[i];
 			int[] shape = is[i].getShape();
 			if (!override && shape != null && shape.length > 1) {
 				item.x = shape[0];
@@ -107,8 +108,8 @@ public class Items {
 
 	private void buildBinds() {
 		for (int i = 0; i < items.length; i++) {
-			ILinkInfo[] ts = (items[i].itemInfo instanceof ILinkInfo) ? new ILinkInfo[] { (ILinkInfo) items[i].itemInfo }
-					: getOutput(items[i].itemInfo);
+			ILinkInfo[] ts = (items[i].getItemInfo() instanceof ILinkInfo) ? new ILinkInfo[] { (ILinkInfo) items[i].getItemInfo() }
+					: getOutput(items[i].getItemInfo());
 			for (int j = 0; j < ts.length; j++) {
 				String target = ts[j].getTargetID();
 				if (target == null || target.length() == 0) {
@@ -119,13 +120,13 @@ public class Items {
 					continue;
 				}
 				if (items[i].isComment()) {
-					item2.addComment(items[i].n);
+					item2.addComment(items[i].getId());
 					items[i].isOwned = true;
 				} else if (item2.weight < 0) {
 					continue;
 				} else {
-					item2.addInput(items[i].n, ts[j]);
-					items[i].addOutput(item2.n);
+					item2.addInput(items[i].getId(), ts[j]);
+					items[i].addOutput(item2.getId());
 				}
 			}
 		}

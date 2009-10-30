@@ -19,6 +19,7 @@ public interface IItemInfo {
 	 */
 	public String getID();
 	public boolean isComment();
+	public boolean isVisible();
 	/**
 	 * gets shape vertices
 	 */

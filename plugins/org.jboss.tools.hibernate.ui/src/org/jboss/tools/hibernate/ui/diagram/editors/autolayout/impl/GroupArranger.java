@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,6 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.autolayout.impl;
 
+/**
+ * @author ?
+ */
 public class GroupArranger {
 	Group group;
 	int mgi = 0; // items with indefinite gravity
@@ -116,7 +119,7 @@ public class GroupArranger {
 		Item i2 = group.allitems[item.inputs[input]];
 		int[] is = i2.outputs;
 		for (int i = 0; i < is.length; i++) {
-			if (is[i] == item.n) {
+			if (is[i] == item.getId()) {
 				i2.outputActivities[i] = b;
 			}
 		}

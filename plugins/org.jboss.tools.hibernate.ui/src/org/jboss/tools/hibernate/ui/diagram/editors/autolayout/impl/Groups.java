@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -12,6 +12,9 @@ package org.jboss.tools.hibernate.ui.diagram.editors.autolayout.impl;
 
 import java.util.*;
 
+/**
+ * @author ?
+ */
 public class Groups {
 	protected LayoutConstants constants;
 	static int FX = 30, FY = 120;
@@ -79,7 +82,7 @@ public class Groups {
 			}
 		}
 		for (int i = 0; i < items.length; i++) {
-			if (items[i].isSet()) {
+			if (items[i].isSet() && items[i].isVisible()) {
 				field[items[i].ix][items[i].iy] = 1;
 			}
 		}
@@ -195,7 +198,7 @@ public class Groups {
 			if (c >= xDeltas.length) {
 				continue;
 			}
-			int[] shape = item.getObject().getShape();
+			int[] shape = item.getItemInfo().getShape();
 			if (shape == null || shape.length < 4) {
 				continue;
 			}
@@ -231,7 +234,7 @@ public class Groups {
 			if (sz > yDeltas[c]) {
 				yDeltas[c] = sz;
 			}
-			int[] shape = items[i].getObject().getShape();
+			int[] shape = items[i].getItemInfo().getShape();
 			if (shape == null || shape.length < 4) {
 				continue;
 			}

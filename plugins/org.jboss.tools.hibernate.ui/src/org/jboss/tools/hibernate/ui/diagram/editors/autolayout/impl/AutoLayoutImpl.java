@@ -56,7 +56,11 @@ public class AutoLayoutImpl {
             if (is[i].isSet()) {
             	continue;
             }
-            IItemInfo o = is[i].itemInfo;
+            IItemInfo itemInfo = is[i].getItemInfo();
+            if (!is[i].isVisible()) {
+            	itemInfo.setShape(new int[]{0, 0, 0, 0});
+            	continue;
+            }
             int x = is[i].ix * constants.deltaX + constants.indentX;
             int y = is[i].iy * constants.deltaY + constants.indentY;
             if (is[i].ix % 2 == 1) {
@@ -64,7 +68,7 @@ public class AutoLayoutImpl {
             }
             x += is[i].group.xDeltas[is[i].ix] * constants.incX;
             y += yDeltas[is[i].iy] * constants.incY + is[i].yIndent;
-            o.setShape(new int[]{x, y, 0, 0});
+            itemInfo.setShape(new int[]{x, y, 0, 0});
         }
     }
 }

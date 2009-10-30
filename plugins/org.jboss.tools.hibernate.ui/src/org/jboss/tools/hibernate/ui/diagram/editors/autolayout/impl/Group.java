@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Red Hat, Inc.
+ * Copyright (c) 2007-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -13,6 +13,9 @@ package org.jboss.tools.hibernate.ui.diagram.editors.autolayout.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author ?
+ */
 public class Group {
 	LayoutConstants constants;
 	int number;
@@ -259,7 +262,7 @@ public class Group {
 			if (c >= xDeltas.length) {
 				continue;
 			}
-			int[] shape = getItem(i).getObject().getShape();
+			int[] shape = getItem(i).getItemInfo().getShape();
 			if (shape == null || shape.length < 4) {
 				continue;
 			}
