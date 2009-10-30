@@ -55,7 +55,9 @@ public class ElementsFactory {
 	
 	@SuppressWarnings("unchecked")
 	public void createForeingKeyConnections() {
-		Iterator<OrmShape> it = elements.values().iterator();
+		// do clone cause elements could be changed during iteration!
+		HashMap<String, OrmShape> elementsTmp = (HashMap<String, OrmShape>)elements.clone();
+		Iterator<OrmShape> it = elementsTmp.values().iterator();
 		while (it.hasNext()) {
 			final OrmShape shape = it.next();
 			Object ormElement = shape.getOrmElement();
