@@ -36,7 +36,7 @@ import org.jboss.tools.hibernate.ui.diagram.editors.model.BaseElement;
 /**
  * @author some modifications from Vitali
  */
-class ConnectionEditPart extends AbstractConnectionEditPart 
+public class ConnectionEditPart extends AbstractConnectionEditPart 
 	implements PropertyChangeListener, EditPartListener {
 	
 	public void activate() {

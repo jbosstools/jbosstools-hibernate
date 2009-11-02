@@ -13,6 +13,7 @@ package org.jboss.tools.hibernate.ui.diagram.editors.actions;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IMenuCreator;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 
@@ -73,7 +74,12 @@ public class ActionMenu extends Action implements IMenuCreator {
 	}
 
 	protected void addActionToMenu(Menu parent, Action action) {
-		ActionContributionItem item = new ActionContributionItem(action);
-		item.fill(parent, -1);
+		if (action == null) {
+			Separator item = new Separator();
+			item.fill(parent, -1);
+		} else {
+			ActionContributionItem item = new ActionContributionItem(action);
+			item.fill(parent, -1);
+		}
 	}
 }

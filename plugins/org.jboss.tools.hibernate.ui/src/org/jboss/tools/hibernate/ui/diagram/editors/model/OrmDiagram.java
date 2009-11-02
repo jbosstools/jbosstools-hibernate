@@ -96,6 +96,7 @@ public class OrmDiagram extends BaseElement {
 	protected double zoom = 1.0;
 	protected float fontHeight = 8.5f;
 	protected boolean deepIntoSort = false;
+	protected boolean flagManhattanConnectionRouter = true;
 	//
 	private boolean fileLoadSuccessfull = false;
 	// this is workaround to load diagram state in the case if Console Config loaded later
@@ -506,6 +507,7 @@ public class OrmDiagram extends BaseElement {
 		gridEnabled = getPrValue(memento, "gridEnabled", false); //$NON-NLS-1$
 		zoom = getPrValue(memento, "zoom", 1.0); //$NON-NLS-1$
 		deepIntoSort = getPrValue(memento, "deepIntoSort", false); //$NON-NLS-1$
+		flagManhattanConnectionRouter = getPrValue(memento, "flagManhattanConnectionRouter", true); //$NON-NLS-1$
 		connectionsVisibilityAssociation = getPrValue(memento, "connectionsVisibilityAssociation", true); //$NON-NLS-1$
 		connectionsVisibilityClassMapping = getPrValue(memento, "connectionsVisibilityClassMapping", true); //$NON-NLS-1$
 		connectionsVisibilityForeignKeyConstraint = getPrValue(memento, "connectionsVisibilityForeignKeyConstraint", true); //$NON-NLS-1$
@@ -532,6 +534,7 @@ public class OrmDiagram extends BaseElement {
 		gridEnabled = getPrValue(properties, "gridEnabled", false); //$NON-NLS-1$
 		zoom = getPrValue(properties, "zoom", 1.0); //$NON-NLS-1$
 		deepIntoSort = getPrValue(properties, "deepIntoSort", false); //$NON-NLS-1$
+		flagManhattanConnectionRouter = getPrValue(properties, "flagManhattanConnectionRouter", true); //$NON-NLS-1$
 		connectionsVisibilityAssociation = getPrValue(properties, "connectionsVisibilityAssociation", true); //$NON-NLS-1$
 		connectionsVisibilityClassMapping = getPrValue(properties, "connectionsVisibilityClassMapping", true); //$NON-NLS-1$
 		connectionsVisibilityForeignKeyConstraint = getPrValue(properties, "connectionsVisibilityForeignKeyConstraint", true); //$NON-NLS-1$
@@ -551,6 +554,7 @@ public class OrmDiagram extends BaseElement {
 		setPrValue(memento, "gridEnabled", "" + gridEnabled); //$NON-NLS-1$ //$NON-NLS-2$
 		setPrValue(memento, "zoom", "" + zoom); //$NON-NLS-1$ //$NON-NLS-2$
 		setPrValue(memento, "deepIntoSort", "" + deepIntoSort); //$NON-NLS-1$ //$NON-NLS-2$
+		setPrValue(memento, "flagManhattanConnectionRouter", "" + flagManhattanConnectionRouter); //$NON-NLS-1$ //$NON-NLS-2$
 		setPrValue(memento, "connectionsVisibilityAssociation", "" + connectionsVisibilityAssociation); //$NON-NLS-1$ //$NON-NLS-2$
 		setPrValue(memento, "connectionsVisibilityClassMapping", "" + connectionsVisibilityClassMapping); //$NON-NLS-1$ //$NON-NLS-2$
 		setPrValue(memento, "connectionsVisibilityForeignKeyConstraint", "" + connectionsVisibilityForeignKeyConstraint); //$NON-NLS-1$ //$NON-NLS-2$
@@ -570,6 +574,7 @@ public class OrmDiagram extends BaseElement {
 		setPrValue(properties, "gridEnabled", "" + gridEnabled); //$NON-NLS-1$ //$NON-NLS-2$
 		setPrValue(properties, "zoom", "" + zoom); //$NON-NLS-1$ //$NON-NLS-2$
 		setPrValue(properties, "deepIntoSort", "" + deepIntoSort); //$NON-NLS-1$ //$NON-NLS-2$
+		setPrValue(properties, "flagManhattanConnectionRouter", "" + flagManhattanConnectionRouter); //$NON-NLS-1$ //$NON-NLS-2$
 		setPrValue(properties, "connectionsVisibilityAssociation", "" + connectionsVisibilityAssociation); //$NON-NLS-1$ //$NON-NLS-2$
 		setPrValue(properties, "connectionsVisibilityClassMapping", "" + connectionsVisibilityClassMapping); //$NON-NLS-1$ //$NON-NLS-2$
 		setPrValue(properties, "connectionsVisibilityForeignKeyConstraint", "" + connectionsVisibilityForeignKeyConstraint); //$NON-NLS-1$ //$NON-NLS-2$
@@ -943,5 +948,21 @@ public class OrmDiagram extends BaseElement {
 			Entry<String, Boolean> entry = it.next();
 			elements.get(entry.getKey()).setExpanded(entry.getValue());
 		}
+	}
+
+	public boolean isManhattanConnectionRouter() {
+		return flagManhattanConnectionRouter;
+	}
+
+	public boolean isFanConnectionRouter() {
+		return !flagManhattanConnectionRouter;
+	}
+
+	public void setupManhattanConnectionRouter() {
+		flagManhattanConnectionRouter = true;
+	}
+
+	public void setupFanConnectionRouter() {
+		flagManhattanConnectionRouter = false;
 	}
 }

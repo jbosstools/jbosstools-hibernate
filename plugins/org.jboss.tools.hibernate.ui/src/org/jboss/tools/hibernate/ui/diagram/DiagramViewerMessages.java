@@ -63,4 +63,6 @@ public class DiagramViewerMessages extends NLS {
 	public static String Diagram_incorrect_state;
 	public static String Diagram_no_items_or_incorrect_state;
 	public static String OpenDiagramActionDelegate_could_not_load_configuration;
+	public static String ConnectionRouterFanAction_select_fan_connection_router;
+	public static String ConnectionRouterManhattanAction_select_manhattan_connection_router;
 }

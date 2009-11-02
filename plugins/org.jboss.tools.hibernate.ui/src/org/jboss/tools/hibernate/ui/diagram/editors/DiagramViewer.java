@@ -66,6 +66,8 @@ import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ActionMenu;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.AutoLayoutAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.CollapseAllAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ConnectionRouterFanAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ConnectionRouterManhattanAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExpandAllAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExportImageAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.LexicalSortingAction;
@@ -82,6 +84,7 @@ import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeExpandSta
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeVisibleStateAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
+import org.jboss.tools.hibernate.ui.diagram.editors.parts.DiagramEditPart;
 import org.jboss.tools.hibernate.ui.diagram.editors.parts.GEFRootEditPart;
 import org.jboss.tools.hibernate.ui.diagram.editors.parts.OrmEditPart;
 import org.jboss.tools.hibernate.ui.diagram.editors.parts.OrmEditPartFactory;
@@ -246,6 +249,12 @@ public class DiagramViewer extends GraphicalEditor {
 		action = new TogglePropertyMappingAction(this);
 		registry.registerAction(action);
 		
+		action = new ConnectionRouterFanAction(this);
+		registry.registerAction(action);
+		
+		action = new ConnectionRouterManhattanAction(this);
+		registry.registerAction(action);
+		
 		action = new ToggleShapeExpandStateAction(this);
 		registry.registerAction(action);
 		getSelectionActions().add(action.getId());
@@ -269,11 +278,14 @@ public class DiagramViewer extends GraphicalEditor {
 		action = new LexicalSortingAction(this, null);
 		registry.registerAction(action);
 
-		Action[] act = new Action[4];
+		Action[] act = new Action[7];
 		act[0] = (Action)registry.getAction(TogglePropertyMappingAction.ACTION_ID);
 		act[1] = (Action)registry.getAction(ToggleClassMappingAction.ACTION_ID);
 		act[2] = (Action)registry.getAction(ToggleAssociationAction.ACTION_ID);
 		act[3] = (Action)registry.getAction(ToggleForeignKeyConstraintAction.ACTION_ID);
+		act[4] = null;
+		act[5] = (Action)registry.getAction(ConnectionRouterManhattanAction.ACTION_ID);
+		act[6] = (Action)registry.getAction(ConnectionRouterFanAction.ACTION_ID);
 		actionToggleConnections.setMenuCreator(new ActionMenu(act));
 
 	}
@@ -605,5 +617,19 @@ public class DiagramViewer extends GraphicalEditor {
 	
 	public IAction getLexicalSortingAction() {
 		return getActionRegistry().getAction(LexicalSortingAction.ACTION_ID);
+	}
+	
+	public GEFRootEditPart getRootEditPart() {
+		return gefRootEditPart;
+	}
+	
+	public DiagramEditPart getDiagramEditPart() {
+		if (!gefRootEditPart.getChildren().isEmpty()) {
+			Object obj = gefRootEditPart.getChildren().get(0);
+			if (obj instanceof DiagramEditPart) {
+				return (DiagramEditPart)obj;
+			}
+		}
+		return null;
 	}
 }

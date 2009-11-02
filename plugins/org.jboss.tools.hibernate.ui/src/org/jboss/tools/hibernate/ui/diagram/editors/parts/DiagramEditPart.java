@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.ConnectionLayer;
+import org.eclipse.draw2d.FanRouter;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.FreeformLayout;
@@ -44,7 +45,7 @@ import org.jboss.tools.hibernate.ui.diagram.editors.model.Shape;
 /**
  * @author some modifications from Vitali
  */
-class DiagramEditPart extends OrmEditPart {
+public class DiagramEditPart extends OrmEditPart {
 
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, 
@@ -55,16 +56,40 @@ class DiagramEditPart extends OrmEditPart {
 		Figure f = new FreeformLayer();
 		f.setBorder(new MarginBorder(3));
 		f.setLayoutManager(new FreeformLayout());
-
-		ConnectionLayer connLayer = (ConnectionLayer) getLayer(LayerConstants.CONNECTION_LAYER);
-		connLayer.setConnectionRouter(new ManhattanConnectionRouter());
-		//connLayer.setConnectionRouter(new ShortestPathConnectionRouter());
-		//connLayer.setConnectionRouter(new BendpointConnectionRouter());
-		//connLayer.setConnectionRouter(new FanRouter());
-
+		if (isManhattanConnectionRouter()) {
+			getOrmDiagram().setupFanConnectionRouter();
+			setupManhattanConnectionRouter();
+		} else {
+			getOrmDiagram().setupManhattanConnectionRouter();
+			setupFanConnectionRouter();
+		}
 		return f;
 	}
 
+	public void setupManhattanConnectionRouter() {
+		if (!isManhattanConnectionRouter()) {
+			ConnectionLayer connLayer = (ConnectionLayer) getLayer(LayerConstants.CONNECTION_LAYER);
+			connLayer.setConnectionRouter(new ManhattanConnectionRouter());
+			getOrmDiagram().setupManhattanConnectionRouter();
+		}
+	}
+
+	public void setupFanConnectionRouter() {
+		if (!isFanConnectionRouter()) {
+			ConnectionLayer connLayer = (ConnectionLayer) getLayer(LayerConstants.CONNECTION_LAYER);
+			connLayer.setConnectionRouter(new FanRouter());
+			getOrmDiagram().setupFanConnectionRouter();
+		}
+	}
+
+	public boolean isManhattanConnectionRouter() {
+		return getOrmDiagram().isManhattanConnectionRouter();
+	}
+
+	public boolean isFanConnectionRouter() {
+		return getOrmDiagram().isFanConnectionRouter();
+	}
+	
 	/**
 	 * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
 	 */
