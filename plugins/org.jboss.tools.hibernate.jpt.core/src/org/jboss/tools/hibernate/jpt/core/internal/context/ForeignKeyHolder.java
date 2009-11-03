@@ -8,24 +8,28 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.jboss.tools.hibernate.jpt.core.internal.context.ForeignKeyHolder;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateEntity;
+package org.jboss.tools.hibernate.jpt.core.internal.context;
+
+import org.eclipse.jpt.core.context.JpaContextNode;
+import org.eclipse.jpt.db.Table;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface HibernateJavaEntity extends JavaEntity,
-HibernateEntity, ForeignKeyHolder{
-
-	JavaDiscriminatorFormula getDiscriminatorFormula();
+public interface ForeignKeyHolder extends JpaContextNode {
 	
-	JavaDiscriminatorFormula addDiscriminatorFormula();
-	
-	void removeDiscriminatorFormula();
+	//******************** ForeignKey *****************
 
-	HibernateJavaTable getTable();
+	String FOREIGN_KEY_PROPERTY = "foreignKey"; //$NON-NLS-1$
+	
+	ForeignKey getForeignKey();
+	
+	ForeignKey addForeignKey();
+	
+	void removeForeignKey();
+
+	Table getForeignKeyDbTable();
+
 }

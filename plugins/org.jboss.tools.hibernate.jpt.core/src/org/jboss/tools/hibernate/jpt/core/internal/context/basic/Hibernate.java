@@ -101,5 +101,8 @@ public interface Hibernate {
 	String INDEX = PACKAGE_ + "Index"; //$NON-NLS-1$
 		String INDEX__NAME = "name"; //$NON-NLS-1$
 		String INDEX__COLUMN_NAMES = "columnNames"; //$NON-NLS-1$
-	
+		
+	String FOREIGN_KEY = PACKAGE_ + "ForeignKey"; //$NON-NLS-1$
+		String FOREIGN_KEY__NAME = "name"; //$NON-NLS-1$
+		String FOREIGN_KEY__INVERSE_NAME = "inverseName"; //$NON-NLS-1$
 }

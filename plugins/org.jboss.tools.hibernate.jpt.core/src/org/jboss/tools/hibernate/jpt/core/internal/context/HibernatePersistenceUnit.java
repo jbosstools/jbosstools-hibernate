@@ -93,7 +93,7 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 	static public class LocalMessage extends Message {
 
 		public LocalMessage(int severity, String message,
-				String[] strings, IResource resource) {
+				String[] strings, Object resource) {
 			super(Messages.class.getName(), severity, message, strings, resource);
 		}
 	}

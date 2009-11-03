@@ -20,6 +20,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedN
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQueriesAnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQueryAnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.DiscriminatorFormulaAnnotationImpl.DiscriminatorFormulaAnnotationDefinition;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.ForeignKeyAnnotationImpl.ForeignKeyAnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GeneratedAnnotationImpl.GeneratedAnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorAnnotationImpl.GenericGeneratorAnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotationImpl.IndexAnnotationDefinition;
@@ -61,6 +62,7 @@ public class HibernateJpaAnnotationDefinitionProvider extends AbstractJpaAnnotat
 		definitions.add(HibernateNamedNativeQueryAnnotationDefinition.instance());
 		definitions.add(HibernateNamedNativeQueriesAnnotationDefinition.instance());
 		definitions.add(DiscriminatorFormulaAnnotationDefinition.instance());
+		definitions.add(ForeignKeyAnnotationDefinition.instance());
 	}
 	
 	@Override
@@ -72,5 +74,6 @@ public class HibernateJpaAnnotationDefinitionProvider extends AbstractJpaAnnotat
 		definitions.add(GenericGeneratorAnnotationDefinition.instance());
 		definitions.add(GeneratedAnnotationDefinition.instance());
 		definitions.add(IndexAnnotationDefinition.instance());
+		definitions.add(ForeignKeyAnnotationDefinition.instance());
 	}
 }

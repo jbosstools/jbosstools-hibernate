@@ -58,6 +58,8 @@ import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
+import org.jboss.tools.hibernate.jpt.core.internal.context.ForeignKey;
+import org.jboss.tools.hibernate.jpt.core.internal.context.ForeignKeyImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
@@ -280,6 +282,10 @@ public class HibernateJpaFactory extends GenericJpaFactory {
 
 	public Index buildIndex(JavaJpaContextNode parent) {
 		return new IndexImpl(parent);
+	}
+
+	public ForeignKey buildForeignKey(JavaJpaContextNode parent) {
+		return new ForeignKeyImpl(parent);
 	}
 
 }
