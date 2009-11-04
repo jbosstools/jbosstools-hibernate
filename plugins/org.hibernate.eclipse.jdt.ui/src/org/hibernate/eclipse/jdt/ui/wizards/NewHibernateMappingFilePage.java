@@ -38,8 +38,8 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.hibernate.console.ImageConstants;
-import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 
 /**
@@ -55,8 +55,8 @@ public class NewHibernateMappingFilePage extends WizardPage {
 	 */
 	protected NewHibernateMappingFilePage() {
 		super("");	//$NON-NLS-1$
-		setTitle(HibernateConsoleMessages.NewHibernateMappingFilePage_hibernate_xml_mapping_file);
-		setMessage(HibernateConsoleMessages.NewHibernateMappingFilePage_this_wizard_creates, WARNING);
+		setTitle(JdtUiMessages.NewHibernateMappingFilePage_hibernate_xml_mapping_file);
+		setMessage(JdtUiMessages.NewHibernateMappingFilePage_this_wizard_creates, WARNING);
 	}
 
 	public void createControl(Composite parent) {
@@ -99,16 +99,16 @@ public class NewHibernateMappingFilePage extends WizardPage {
 
 		//if (project_infos.keySet().size() > 1){
 		column = new TableColumn(table, SWT.LEFT, coulmnIndex++);
-		column.setText(HibernateConsoleMessages.NewHibernateMappingFilePage_project_name_column);
+		column.setText(JdtUiMessages.NewHibernateMappingFilePage_project_name_column);
 		column.setWidth(120);
 		//}
 
 		column = new TableColumn(table, SWT.LEFT, coulmnIndex++);
-		column.setText(HibernateConsoleMessages.NewHibernateMappingFilePage_class_name_column);
+		column.setText(JdtUiMessages.NewHibernateMappingFilePage_class_name_column);
 		column.setWidth(150);
 
 		column = new TableColumn(table, SWT.LEFT, coulmnIndex++);
-		column.setText(HibernateConsoleMessages.NewHibernateMappingFilePage_file_name_column);
+		column.setText(JdtUiMessages.NewHibernateMappingFilePage_file_name_column);
 		column.setWidth(150);
 	}
 

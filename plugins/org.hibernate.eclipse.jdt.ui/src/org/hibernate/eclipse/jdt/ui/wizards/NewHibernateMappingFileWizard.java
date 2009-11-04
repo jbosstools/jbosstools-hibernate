@@ -63,6 +63,7 @@ import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
@@ -96,7 +97,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 	public NewHibernateMappingFileWizard(){
 		setDefaultPageImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.NEW_WIZARD) );
 		setNeedsProgressMonitor(true);
-		setWindowTitle(HibernateConsoleMessages.NewHibernateMappingFileWizard_create_hibernate_xml_mapping_file);
+		setWindowTitle(JdtUiMessages.NewHibernateMappingFileWizard_create_hibernate_xml_mapping_file);
 	}
 
 	@Override
@@ -107,7 +108,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 			selection = new StructuredSelection();
 		}
 		
-		page0 = new NewHibernateMappingElementsSelectionPage2(HibernateConsoleMessages.NewHibernateMappingFileWizard_create_hibernate_xml_mapping_file, selection);
+		page0 = new NewHibernateMappingElementsSelectionPage2(JdtUiMessages.NewHibernateMappingFileWizard_create_hibernate_xml_mapping_file, selection);
 		addPage(page0);
 		
 		//page1 = new NewHibernateMappingElementsSelectionPage(selection);
@@ -116,8 +117,8 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 		//addPage(page1);
 		
 		cPage = new WizardNewFileCreationPage( "Ccfgxml", selection ); //$NON-NLS-1$
-	    cPage.setTitle( HibernateConsoleMessages.NewHibernateMappingFileWizard_create_hibernate_xml_mapping_file );
-	    cPage.setDescription( HibernateConsoleMessages.NewHibernateMappingFileWizard_create_hibernate_xml_mapping_file );
+	    cPage.setTitle( JdtUiMessages.NewHibernateMappingFileWizard_create_hibernate_xml_mapping_file );
+	    cPage.setDescription( JdtUiMessages.NewHibernateMappingFileWizard_create_empty_xml_mapping_file );
 	    cPage.setFileName("hibernate.hbm.xml"); //$NON-NLS-1$
 	    addPage( cPage );	    
 	    
@@ -127,7 +128,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 	
 	@Override
 	public IWizardPage getNextPage(IWizardPage page) {
-		if (page == page0 && !page0.createEmpty()) return page2;
+		if (page == page0 && !page0.getSelection().isEmpty()) return page2;
 		if (page == cPage) return null;
 		return super.getNextPage(page);
 	}
@@ -206,7 +207,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 
 	@Override
 	public boolean performFinish() {
-		if (page0.createEmpty()){
+		if (page0.getSelection().isEmpty()){
 			final IFile file = cPage.createNewFile();
 			IRunnableWithProgress op = new IRunnableWithProgress() {
 				public void run(IProgressMonitor monitor) throws InvocationTargetException {
@@ -396,7 +397,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 	}
 	
 	protected void updateCompilationUnits(){
-		Assert.isNotNull(page0.getSelection(), HibernateConsoleMessages.NewHibernateMappingFileWizard_selection_cant_be_empty);
+		Assert.isNotNull(page0.getSelection(), JdtUiMessages.NewHibernateMappingFileWizard_selection_cant_be_empty);
 		if ((selectionCU == null) || !page0.getSelection().equals(selection)) {
 			selectionCU = new HashSet<ICompilationUnit>();
 			project_infos.clear();
@@ -407,7 +408,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 						public void run(IProgressMonitor monitor)
 								throws InvocationTargetException,
 								InterruptedException {
-							monitor.beginTask(HibernateConsoleMessages.NewHibernateMappingFileWizard_finding_dependent_cu, selection.size() + 1);
+							monitor.beginTask(JdtUiMessages.NewHibernateMappingFileWizard_look_for_dependent_cu, selection.size() + 1);
 							Iterator<?> it = selection.iterator();
 							int done = 1;
 							while (it.hasNext()) {

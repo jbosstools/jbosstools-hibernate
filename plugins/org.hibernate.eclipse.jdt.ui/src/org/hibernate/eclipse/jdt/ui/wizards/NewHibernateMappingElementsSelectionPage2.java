@@ -15,7 +15,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableItem;
 import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
@@ -28,8 +27,6 @@ public class NewHibernateMappingElementsSelectionPage2 extends WizardPage {
 	
 	AddRemoveTableComposite addRemoveTableComposite;
 	
-	Button createEmpty;
-	
 	private IStructuredSelection selection;
 
 	public NewHibernateMappingElementsSelectionPage2(String pageName, IStructuredSelection selection) {
@@ -39,16 +36,8 @@ public class NewHibernateMappingElementsSelectionPage2 extends WizardPage {
 	}
 
 	public void createControl(Composite parent) {
-		/*Composite container = new Composite(parent, SWT.NULL);
-		GridLayout layout = new GridLayout();		
-
-		container.setLayout(layout);
-		layout.verticalSpacing = 10;*/
-		
 		addRemoveTableComposite = new AddRemoveTableComposite(parent, SWT.NONE);
 		addRemoveTableComposite.getTableViewer().setInput(selection.toArray());
-		createEmpty = new Button(addRemoveTableComposite, SWT.CHECK);
-		createEmpty.setText(JdtUiMessages.NewHibernateMappingElementsSelectionPage2_createEmpty);
 		setControl(addRemoveTableComposite);
 	}
 	
@@ -59,10 +48,6 @@ public class NewHibernateMappingElementsSelectionPage2 extends WizardPage {
 			data[i] = items[i].getData();
 		}
 		return new StructuredSelection(data);
-	}
-	
-	public boolean createEmpty(){
-		return createEmpty.getSelection();
 	}
 
 }

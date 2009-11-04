@@ -200,19 +200,6 @@ public class HibernateConsoleMessages extends NLS {
 	public static String NewConfigurationWizardPage_user_name;
 	public static String NewHibernateMappingElementsSelectionPage_select;
 
-	public static String NewHibernateMappingFilePage_class_name_column;
-	public static String NewHibernateMappingFilePage_file_name_column;
-	public static String NewHibernateMappingFilePage_hibernate_xml_mapping_file;
-
-	public static String NewHibernateMappingFilePage_project_name_column;
-
-	public static String NewHibernateMappingFilePage_this_wizard_creates;
-	public static String NewHibernateMappingFileWizard_create_hibernate_xml_mapping_file;
-	public static String NewHibernateMappingFileWizard_create_new_xml_mapping_file;
-
-	public static String NewHibernateMappingFileWizard_finding_dependent_cu;
-
-	public static String NewHibernateMappingFileWizard_selection_cant_be_empty;
 	public static String NewReverseEngineeringFileWizard_create_hibernate_reverse_engineering_file;
 	public static String NewReverseEngineeringFileWizard_create_new_hibernate_reveng_xml;
 	public static String NewReverseEngineeringFileWizard_creating;
