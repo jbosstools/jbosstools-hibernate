@@ -24,6 +24,12 @@ Raleigh NC 27606 USA.
 
 
    <plugin
+         id="org.jboss.tools.tests"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
          id="org.hibernate.eclipse.console.test"
          download-size="0"
          install-size="0"
