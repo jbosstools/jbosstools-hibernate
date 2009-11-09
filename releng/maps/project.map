@@ -11,3 +11,5 @@ plugin@org.hibernate.eclipse.jdt.apt.ui=SVN,,http://anonsvn.jboss.org/repos,,jbo
 plugin@org.jboss.tools.hibernate.ui=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/hibernatetools/plugins/org.jboss.tools.hibernate.ui
 plugin@org.jboss.tools.hibernate.jpt.core=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/hibernatetools/plugins/org.jboss.tools.hibernate.jpt.core
 plugin@org.jboss.tools.hibernate.jpt.ui=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/hibernatetools/plugins/org.jboss.tools.hibernate.jpt.ui
+
+plugin@org.jboss.tools.tests=SVN,,https://anonsvn.jboss.org/repos,,jbosstools/trunk/tests/tests/org.jboss.tools.tests
