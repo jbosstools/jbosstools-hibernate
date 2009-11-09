@@ -34,6 +34,8 @@ JAVA60_HOME=C:/Progra~1/Java/jdk1.6.0_11
 dependencyURLs=\
 http://repository.jboss.org/eclipse/galileo/eclipse-SDK-3.5.1-win32.zip,\
 http://repository.jboss.org/eclipse/galileo/wtp-R-3.1.1-20090917225226.zip,\
+http://repository.jboss.org/eclipse/galileo/dtp_1.7.1.zip,\
+http://repository.jboss.org/eclipse/galileo/GEF-runtime-3.5.1.zip,\
 http://repository.jboss.org/eclipse/galileo/emf-runtime-2.5.0.zip,\
 http://repository.jboss.org/eclipse/galileo/xsd-runtime-2.5.0.zip,\
 http://downloads.sourceforge.net/sourceforge/hibernate/hibernate-3.0.3.zip
