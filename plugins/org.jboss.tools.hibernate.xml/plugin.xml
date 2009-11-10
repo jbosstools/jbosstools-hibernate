@@ -96,6 +96,8 @@
 			class="org.jboss.tools.hibernate.xml.model.impl.HibConfigComplexPropertyImpl"/>
 		<xclass id="org.jboss.tools.hibernate.xml.model.impl.HibConfigSimplePropertyImpl"
 			class="org.jboss.tools.hibernate.xml.model.impl.HibConfigSimplePropertyImpl"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.impl.HibClassImpl"
+			class="org.jboss.tools.hibernate.xml.model.impl.HibClassImpl"/>
 
 		<xclass id="org.jboss.tools.hibernate.xml.model.impl.ContextPackageProvider"
 			class="org.jboss.tools.hibernate.xml.model.impl.ContextPackageProvider"/>

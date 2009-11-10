@@ -437,6 +437,7 @@
      kind="action" name="AddJoinedSubclass">
      <EntityData EntityName="Hibernate3JoinedSubclass">
       <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="entity-name" Mandatory="no"/>
      </EntityData>
     </XActionItem>
     <XActionItem
@@ -446,6 +447,7 @@
      WizardClassName="%Default%" displayName="Subclass..." kind="action" name="AddSubclass">
      <EntityData EntityName="Hibernate3Subclass">
       <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="entity-name" Mandatory="no"/>
      </EntityData>
     </XActionItem>
     <XActionItem
@@ -456,6 +458,7 @@
      kind="action" name="AddUnionSubclass">
      <EntityData EntityName="Hibernate3UnionSubclass">
       <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="entity-name" Mandatory="no"/>
      </EntityData>
     </XActionItem>
    </XActionItem>
@@ -824,7 +827,8 @@
      WizardClassName="%Default%" displayName="Many-to-Many..."
      kind="action" name="AddManyToMany">
      <EntityData EntityName="Hibernate3ManyToMany">
-      <AttributeData AttributeName="class"/>
+      <AttributeData AttributeName="class" Mandatory="no"/>
+      <AttributeData AttributeName="entity-name" Mandatory="no"/>
      </EntityData>
     </XActionItem>
     <XActionItem HandlerClassName="%Hibernate3Replace%"
@@ -833,7 +837,8 @@
      WizardClassName="%Default%" displayName="One-to-Many..."
      kind="action" name="AddOneToMany">
      <EntityData EntityName="Hibernate3OneToMany">
-      <AttributeData AttributeName="class"/>
+      <AttributeData AttributeName="class" Mandatory="no"/>
+      <AttributeData AttributeName="entity-name" Mandatory="no"/>
      </EntityData>
     </XActionItem>
     <XActionItem kind="list" name="SQL">
@@ -1678,7 +1683,8 @@
      WizardClassName="%Default%" displayName="Many-to-Many..."
      kind="action" name="AddManyToMany">
      <EntityData EntityName="Hibernate3ManyToMany">
-      <AttributeData AttributeName="class"/>
+      <AttributeData AttributeName="class" Mandatory="no"/>
+      <AttributeData AttributeName="entity-name" Mandatory="no"/>
      </EntityData>
     </XActionItem>
     <XActionItem HandlerClassName="%Hibernate3Replace%"
@@ -1687,7 +1693,8 @@
      WizardClassName="%Default%" displayName="One-to-Many..."
      kind="action" name="AddOneToMany">
      <EntityData EntityName="Hibernate3OneToMany">
-      <AttributeData AttributeName="class"/>
+      <AttributeData AttributeName="class" Mandatory="no"/>
+      <AttributeData AttributeName="entity-name" Mandatory="no"/>
      </EntityData>
     </XActionItem>
     <XActionItem kind="list" name="SQL">
@@ -1803,7 +1810,7 @@
  </XModelEntity>
  <XModelEntity
   AdoptManagerClass="org.jboss.tools.hibernate.xml.model.handlers.FolderOwnerAdopt"
-  ImplementingClass="%Ordered2%"
+  ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibClassImpl"
   PROPERTIES="loaderKind=class;formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="class" name="Hibernate3Class">
   <XChildrenEntities>
@@ -1835,7 +1842,7 @@
    <XModelAttribute default="class" loader="ElementType" name="element type">
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=advanced" name="entity-name" xmlname="entity-name"/>
+   <XModelAttribute PROPERTIES="category=general" name="entity-name" xmlname="entity-name"/>
    <XModelAttribute
     PROPERTIES="save=always;id=true;category=general;contextPackageProvider=org.jboss.tools.hibernate.xml.model.impl.ContextPackageProvider"
     name="name" xmlname="name">
@@ -2222,6 +2229,7 @@
      WizardClassName="%Default%" displayName="Class..." kind="action" name="AddClass">
      <EntityData EntityName="Hibernate3Class">
       <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="entity-name" Mandatory="no"/>
      </EntityData>
     </XActionItem>
     <XActionItem HandlerClassName="%Create%"
@@ -2230,6 +2238,7 @@
      displayName="Joined-Subclass..." kind="action" name="AddJoinedSubclass">
      <EntityData EntityName="Hibernate3JoinedSubclass">
       <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="entity-name" Mandatory="no"/>
       <AttributeData AttributeName="extends"/>
      </EntityData>
     </XActionItem>
@@ -2238,6 +2247,7 @@
      WizardClassName="%Default%" displayName="Subclass..." kind="action" name="AddSubclass">
      <EntityData EntityName="Hibernate3Subclass">
       <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="entity-name" Mandatory="no"/>
       <AttributeData AttributeName="extends"/>
      </EntityData>
     </XActionItem>
@@ -2247,6 +2257,7 @@
      displayName="Union-Subclass..." kind="action" name="AddUnionSubclass">
      <EntityData EntityName="Hibernate3UnionSubclass">
       <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="entity-name" Mandatory="no"/>
       <AttributeData AttributeName="extends"/>
      </EntityData>
     </XActionItem>
@@ -4131,7 +4142,8 @@
      WizardClassName="%Default%" displayName="Many-to-Many..."
      kind="action" name="AddManyToMany">
      <EntityData EntityName="Hibernate3ManyToMany">
-      <AttributeData AttributeName="class"/>
+      <AttributeData AttributeName="class" Mandatory="no"/>
+      <AttributeData AttributeName="entity-name" Mandatory="no"/>
      </EntityData>
     </XActionItem>
     <XActionItem HandlerClassName="%Hibernate3Replace%"
@@ -4140,7 +4152,8 @@
      WizardClassName="%Default%" displayName="One-to-Many..."
      kind="action" name="AddOneToMany">
      <EntityData EntityName="Hibernate3OneToMany">
-      <AttributeData AttributeName="class"/>
+      <AttributeData AttributeName="class" Mandatory="no"/>
+      <AttributeData AttributeName="entity-name" Mandatory="no"/>
      </EntityData>
     </XActionItem>
     <XActionItem kind="list" name="SQL">
@@ -4903,6 +4916,7 @@
      displayName="Joined-Subclass..." kind="action" name="AddJoinedSubclass">
      <EntityData EntityName="Hibernate3JoinedSubclass">
       <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="entity-name" Mandatory="no"/>
      </EntityData>
     </XActionItem>
    </XActionItem>
@@ -5410,7 +5424,8 @@
      WizardClassName="%Default%" displayName="Many-to-Many..."
      kind="action" name="AddManyToMany">
      <EntityData EntityName="Hibernate3ManyToMany">
-      <AttributeData AttributeName="class"/>
+      <AttributeData AttributeName="class" Mandatory="no"/>
+      <AttributeData AttributeName="entity-name" Mandatory="no"/>
      </EntityData>
     </XActionItem>
     <XActionItem HandlerClassName="%Hibernate3Replace%"
@@ -5419,7 +5434,8 @@
      WizardClassName="%Default%" displayName="One-to-Many..."
      kind="action" name="AddOneToMany">
      <EntityData EntityName="Hibernate3OneToMany">
-      <AttributeData AttributeName="class"/>
+      <AttributeData AttributeName="class" Mandatory="no"/>
+      <AttributeData AttributeName="entity-name" Mandatory="no"/>
      </EntityData>
     </XActionItem>
     <XActionItem kind="list" name="SQL">
@@ -5704,7 +5720,7 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibernateElementImpl"
-  PROPERTIES="presentationAttribute=class;formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
+  PROPERTIES="presentationAttribute=entity-name|class;formFactory=%Default%;formLayout=org.jboss.tools.hibernate.ui.xml.form.Hibernate3FormLayoutData"
   XMLSUBPATH="many-to-many" name="Hibernate3ManyToMany">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
@@ -5721,8 +5737,7 @@
    <XModelAttribute default="many-to-many" loader="ElementType" name="element type">
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="save=always;category=general"
-    name="class" xmlname="class"/>
+   <XModelAttribute PROPERTIES="category=general" name="class" xmlname="class"/>
    <XModelAttribute PROPERTIES="category=advanced" name="node" xmlname="node"/>
    <XModelAttribute PROPERTIES="category=advanced" default="true"
     name="embed-xml" xmlname="embed-xml">
@@ -6302,7 +6317,8 @@
      WizardClassName="%Default%" displayName="One-to-Many..."
      kind="action" name="AddOneToMany">
      <EntityData EntityName="Hibernate3OneToMany">
-      <AttributeData AttributeName="class"/>
+      <AttributeData AttributeName="class" Mandatory="no"/>
+      <AttributeData AttributeName="entity-name" Mandatory="no"/>
      </EntityData>
     </XActionItem>
     <XActionItem HandlerClassName="%Hibernate3Replace%"
@@ -6311,7 +6327,8 @@
      WizardClassName="%Default%" displayName="Many-to-Many..."
      kind="action" name="AddManyToMany">
      <EntityData EntityName="Hibernate3ManyToMany">
-      <AttributeData AttributeName="class"/>
+      <AttributeData AttributeName="class" Mandatory="no"/>
+      <AttributeData AttributeName="entity-name" Mandatory="no"/>
      </EntityData>
     </XActionItem>
     <XActionItem HandlerClassName="%Hibernate3Replace%"
@@ -6835,7 +6852,8 @@
  </XModelEntity>
  <XModelEntity
   ImplementingClass="org.jboss.tools.hibernate.xml.model.impl.HibernateElementImpl"
-  PROPERTIES="presentationAttribute=class" XMLSUBPATH="one-to-many" name="Hibernate3OneToMany">
+  PROPERTIES="presentationAttribute=entity-name|class"
+  XMLSUBPATH="one-to-many" name="Hibernate3OneToMany">
   <XChildrenEntities/>
   <XEntityRenderer>
    <ICONS>
@@ -6846,7 +6864,7 @@
    <XModelAttribute default="one-to-many" loader="ElementType" name="element type">
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="save=always" name="class" xmlname="class">
+   <XModelAttribute name="class" xmlname="class">
     <Editor name="AccessibleJava"/>
    </XModelAttribute>
    <XModelAttribute default="exception" name="not-found" xmlname="not-found">
@@ -8927,7 +8945,8 @@
      WizardClassName="%Default%" displayName="Many-to-Many..."
      kind="action" name="AddManyToMany">
      <EntityData EntityName="Hibernate3ManyToMany">
-      <AttributeData AttributeName="class"/>
+      <AttributeData AttributeName="class" Mandatory="no"/>
+      <AttributeData AttributeName="entity-name" Mandatory="no"/>
      </EntityData>
     </XActionItem>
     <XActionItem HandlerClassName="%Hibernate3Replace%"
@@ -8936,7 +8955,8 @@
      WizardClassName="%Default%" displayName="One-to-Many..."
      kind="action" name="AddOneToMany">
      <EntityData EntityName="Hibernate3OneToMany">
-      <AttributeData AttributeName="class"/>
+      <AttributeData AttributeName="class" Mandatory="no"/>
+      <AttributeData AttributeName="entity-name" Mandatory="no"/>
      </EntityData>
     </XActionItem>
     <XActionItem kind="list" name="SQL">
@@ -9021,7 +9041,7 @@
     <Constraint loader="QClassName"/>
     <Editor name="AccessibleJava"/>
    </XModelAttribute>
-   <XModelAttribute name="entity-name" xmlname="entity-name"/>
+   <XModelAttribute PROPERTIES="category=general" name="entity-name" xmlname="entity-name"/>
    <XModelAttribute PROPERTIES="category=general" name="proxy" xmlname="proxy">
     <Editor name="AccessibleJava"/>
    </XModelAttribute>
@@ -9262,6 +9282,7 @@
      WizardClassName="%Default%" displayName="Subclass..." kind="action" name="AddSubclass">
      <EntityData EntityName="Hibernate3Subclass">
       <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="entity-name" Mandatory="no"/>
      </EntityData>
     </XActionItem>
    </XActionItem>
@@ -10008,6 +10029,7 @@
      displayName="Union-Subclass..." kind="action" name="AddUnionSubclass">
      <EntityData EntityName="Hibernate3UnionSubclass">
       <AttributeData AttributeName="name"/>
+      <AttributeData AttributeName="entity-name" Mandatory="no"/>
      </EntityData>
     </XActionItem>
    </XActionItem>

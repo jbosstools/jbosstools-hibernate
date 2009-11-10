@@ -10,7 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.hibernate.xml.model.impl;
 
-public class HibernateClassImpl extends OrderedObject2Impl {
+public class HibernateClassImpl extends HibClassImpl {
     private static final long serialVersionUID = 3382417320218706443L;
     
     public String get(String s) {
