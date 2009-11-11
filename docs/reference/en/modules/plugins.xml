@@ -306,7 +306,7 @@
 
             <entry>
               <para>No default value (lets Hibernate Entity Manager find the persistence
-                unit)</para>
+                unit or it can be defined manually using Browse button)</para>
             </entry>
           </row>
 
