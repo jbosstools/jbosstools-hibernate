@@ -169,7 +169,11 @@ public class ConfigurationActor {
 				pc = getMappedSuperclass(project, pcCopy, (RootClass) entry.getValue());				
 				Subclass subclass = null;
 				if (pc != null){
-					subclass = new JoinedSubclass(pc);					
+					if (pc.isAbstract()){
+						subclass = new SingleTableSubclass(pc);
+					} else {
+						subclass = new JoinedSubclass(pc);
+					}
 				} else {
 					pc = getMappedImplementedInterface(project, pcCopy, (RootClass) entry.getValue());
 					if (pc != null){
@@ -185,6 +189,10 @@ public class ConfigurationActor {
 					if (subclass instanceof JoinedSubclass) {
 						((JoinedSubclass) subclass).setTable(new Table(pastClass.getClassName().toUpperCase()));
 						((JoinedSubclass) subclass).setKey((KeyValue) pc.getIdentifierProperty().getValue());
+					} else {
+						if (pastClass.getIdentifierProperty() != null) {
+							subclass.addProperty(pastClass.getIdentifierProperty());
+						}
 					}
 					Iterator it = pastClass.getPropertyIterator();
 					while (it.hasNext()) {
