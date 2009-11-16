@@ -59,7 +59,7 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 	protected boolean checkPreConditions(IProject project){
 		try {
 			ILaunchConfiguration lc = getLaunchConfiguration(project);
-			if (lc != null){
+			if (lc != null && lc.exists()){
 				ProjectUtils.toggleHibernateOnProject(project, true, lc.getName());
 				return false;
 			}				
