@@ -1942,79 +1942,137 @@
             </imageobject>
           </mediaobject>
         </figure>
+      	
+      	<para>The options in the context menu of the mapping diagram are listed in the next table.</para>
+      	
+      	<table>
+      		<title>Context Menu Options of the Mapping Diagram</title>
+      		
+      		<tgroup cols="3">      			
+      			<colspec colnum="1"  align="left" colwidth="1*"/>
+      			<colspec colnum="2" align="left" colwidth="1*"/>
+      			<colspec colnum="3" align="left" colwidth="3*"/>
+      			
+      			<thead>
+      				<row>
+      					<entry align="center">
+      						<para>Icon</para>
+      					</entry>
+      					
+      					<entry align="center">
+      						<para>Command</para>
+      					</entry>
+      					
+      					<entry align="center">
+      						<para>Description</para>
+      					</entry>
+      				</row>
+      			</thead>
+      			
+      			<tbody>
+      				<row>
+      					<entry>
+      						<para><inlinemediaobject><imageobject>
+      							<imagedata fileref="images/plugins/toggleConnections.png"/>
+      						</imageobject></inlinemediaobject>
+      						</para>
+      					</entry>
+      					<entry>
+      						<para>Show|Hide connections</para>
+      					</entry>
+      					<entry>
+      						<para>Allows to select what types of connections should be shown on the diagram:
+      									<itemizedlist>
+      										<listitem><para>Property Mappings</para></listitem>
+      										<listitem><para>Class Mappings</para></listitem>
+      										<listitem><para>Associations</para></listitem>
+      										<listitem><para>Foreign key constraints</para></listitem>
+      									</itemizedlist>
+      						and choose the type of the connection router:
+      									<itemizedlist>
+      										<listitem><para>Manhattan Connection Router</para></listitem>
+      										<listitem><para>Fan Connection Router</para></listitem>
+      									</itemizedlist>
+      						</para>
+      					</entry>
+      				</row>
+      				
+      				<row>
+      					<entry>
+      						<para><inlinemediaobject><imageobject>
+      							<imagedata fileref="images/plugins/autoLayout.png"/>
+      						</imageobject></inlinemediaobject>
+      						</para>
+      					</entry>
+      					<entry>
+      						<para>Auto layout</para>
+      					</entry>
+      					<entry>
+      						<para>Used to dispose all the items of the diagram in a standard manner</para>
+      					</entry>
+      				</row>
+      				
+      				<row>
+      					<entry>
+      						<para></para>
+      					</entry>
+      					<entry>
+      						<para>Collapse All</para>
+      					</entry>
+      					<entry>
+      						<para>Collapses all the diagram elements</para>
+      					</entry>
+      				</row>
+      				
+      				<row>
+      					<entry>
+      						<para></para>
+      					</entry>
+      					<entry>
+      						<para>Expand All</para>
+      					</entry>
+      					<entry>
+      						<para>Expands all the diagram elements</para>
+      					</entry>
+      				</row>
+      				
+      				<row>
+      					<entry>
+      						<para></para>
+      					</entry>
+      					<entry>
+      						<para>Select All</para>
+      					</entry>
+      					<entry>
+      						<para>Makes all the diagram elements selected</para>
+      					</entry>
+      				</row>
+      				
+      				<row>
+      					<entry>
+      						<para><inlinemediaobject><imageobject>
+      							<imagedata fileref="images/plugins/exportAsImage.png"/>
+      						</imageobject></inlinemediaobject>
+      						</para>
+      					</entry>
+      					<entry>
+      						<para>Export as Image</para>
+      					</entry>
+      					<entry>
+      						<para>Allows to export a diagram as <emphasis><property>.png
+      						</property>,</emphasis>
+      							<emphasis>
+      								<property>.jpeg</property>
+      							</emphasis> or <emphasis><property>.bmp </property></emphasis></para>
+      					</entry>
+      				</row>
+      			</tbody>
+      		</tgroup>
+      	</table>
 
-        <para>As in <property>Hibernate Configurations View</property> in <property>Mapping
-            Diagram</property> it&apos;s also possible to open source/mapping file for a chosen
-          object by selecting appropriate option in the context menu. </para>
-
-        <figure>
-          <title>Navigating on the Diagram</title>
-
-          <mediaobject>
-            <imageobject>
-              <imagedata fileref="images/plugins/plugins_18_c.png"/>
-            </imageobject>
-          </mediaobject>
-        </figure>
-
-        <para>If you ask to open source/mapping file by right clicking on any entity element, this
-          element will be highlighted in the open file.</para>
-
-        <figure>
-          <title>Opening Source for Object</title>
-
-          <mediaobject>
-            <imageobject>
-              <imagedata fileref="images/plugins/plugins_18_d.png"/>
-            </imageobject>
-          </mediaobject>
-        </figure>
-
-        <para>If you need to have your Diagram exported as <emphasis><property>.png
-            </property>,</emphasis>
-          <emphasis>
-            <property>.jpeg</property>
-          </emphasis> or <emphasis><property>.bmp </property>,</emphasis> you should right-click
-          anywhere in the <property>Mapping Diagram editor</property> and select <emphasis>
-            <property>Export as Image</property>
-          </emphasis>.</para>
-
-        <figure>
-          <title>Mapping Diagram Export</title>
-
-          <mediaobject>
-            <imageobject>
-              <imagedata fileref="images/plugins/plugins_18_e.png"/>
-            </imageobject>
-          </mediaobject>
-        </figure>
-        <para>Using   <emphasis>
-          <property>Toggle connections</property></emphasis> option(  <inlinemediaobject><imageobject>
-          <imagedata fileref="images/plugins/toggleConnections.png"/>
-        </imageobject></inlinemediaobject>) you can hide all the connections on the diagram except the ones,
-        that connect POJO class to DB table.</para>
-        <figure>
-          <title>Toggle connections option usage</title>
-          
-          <mediaobject>
-            <imageobject>
-              <imagedata fileref="images/plugins/plugins_18_f.png"/>
-            </imageobject>
-          </mediaobject>
-        </figure>
-        <para>  <emphasis>
-          <property>Auto layout</property></emphasis> (  <inlinemediaobject><imageobject>
-          <imagedata fileref="images/plugins/autoLayout.png"/>
-        </imageobject></inlinemediaobject>) is used to dispose all the items of the diagram in a standard manner.</para>
-        <para>As you can see on the figure above, <emphasis><property>Collapse All</property>, </emphasis>
-          <emphasis>
-            <property>Expand All</property>
-          </emphasis> and <emphasis>
-            <property>Select All </property>
-          </emphasis> options are also available through the context menu.</para>
         <para>When you open the context menu while clicking an item on the diagram, it quite differs from the one described before.</para>
         <figure>
-          <title>Context menu in mapping item </title>
+          <title>Context Menu in Mapping Item</title>
           
           <mediaobject>
             <imageobject>
@@ -2022,20 +2080,173 @@
             </imageobject>
           </mediaobject>
         </figure>
-        <para>Now you can see two extra options in the menu:   <emphasis>
-          <property>Toggle visible state</property></emphasis>,  <emphasis>
-            <property>Toggle expand state</property></emphasis>.</para>
-        <itemizedlist>
-          <listitem><para>  <emphasis>
-            <property>Toggle visible state</property></emphasis> (  <inlinemediaobject><imageobject>
-            <imagedata fileref="images/plugins/visibleState.png"/>
-          </imageobject></inlinemediaobject>)  is used to hide/show an item on the mapping diagram.</para></listitem>
-          <listitem><para>  <emphasis>
-            <property>Toggle expand state</property></emphasis> (  <inlinemediaobject><imageobject>
-            <imagedata fileref="images/plugins/expandState.png"/>
-          </imageobject></inlinemediaobject>)  is used for expanding/collapsing fields of the item.</para></listitem>
-          </itemizedlist>
-        <para>All the described types of the context menu are also available in the <property>Outline</property> view.</para>
+      	
+      	<para>The next table describes all the extra options in the menu of mapping items:</para>
+      	
+      	<table>
+      		<title>Extra Options in the Context Menu of Mapping Item</title>
+      		
+      		<tgroup cols="3">      			
+      			<colspec colnum="1"  align="left" colwidth="1*"/>
+      			<colspec colnum="2" align="left" colwidth="1*"/>
+      			<colspec colnum="3" align="left" colwidth="3*"/>
+      			
+      			<thead>
+      				<row>
+      					<entry align="center">
+      						<para>Icon</para>
+      					</entry>
+      					
+      					<entry align="center">
+      						<para>Command</para>
+      					</entry>
+      					
+      					<entry align="center">
+      						<para>Description</para>
+      					</entry>
+      				</row>
+      			</thead>
+      			
+      			<tbody>
+      				<row>
+      					<entry>
+      						<para><inlinemediaobject><imageobject>
+      							<imagedata fileref="images/plugins/visibleState.png"/>
+      						</imageobject></inlinemediaobject>
+      						</para>
+      					</entry>
+      					<entry>
+      						<para>Toggle Visible State</para>
+      					</entry>
+      					<entry>
+      						<para>Used to hide/show an item on the mapping diagram</para>
+      					</entry>
+      				</row>
+      				
+      				<row>
+      					<entry>
+      						<para><inlinemediaobject><imageobject>
+      							<imagedata fileref="images/plugins/expandState.png"/>
+      						</imageobject></inlinemediaobject>
+      						</para>
+      					</entry>
+      					<entry>
+      						<para>Expand|Collapse</para>
+      					</entry>
+      					<entry>
+      						<para>Used for expanding/collapsing fields of the item</para>
+      					</entry>
+      				</row>
+      				
+      				<row>
+      					<entry>
+      						<para><inlinemediaobject><imageobject>
+      							<imagedata fileref="images/plugins/openSourceFile_but.png"/>
+      						</imageobject></inlinemediaobject>
+      						</para>
+      					</entry>
+      					<entry>
+      						<para>Open Source File</para>
+      					</entry>
+      					<entry>
+      						<para>Makes it possible to open a source file for a chosen
+      							object/element. The selected element will be highlighted in the open file.</para>
+      					</entry>
+      				</row>
+      				
+      				<row>
+      					<entry>
+      						<para><inlinemediaobject><imageobject>
+      							<imagedata fileref="images/plugins/openMappingFile_but.png"/>
+      						</imageobject></inlinemediaobject>
+      						</para>
+      					</entry>
+      					<entry>
+      						<para>Open Mapping File</para>
+      					</entry>
+      					<entry>
+      						<para>Makes it possible to open a mapping file for a chosen
+      							object/element. The selected element will be highlighted in the open file.</para>
+      					</entry>
+      				</row>
+      			</tbody>
+      		</tgroup>
+      	</table>
+        
+      	<tip>
+      		<title>Tip:</title>
+      		<para>All the described types of the context menu are also available in the <property>Outline</property> view.</para>
+      	</tip>
+      	
+      	<para>The below table lists the actions that could be performed using the keyboard keys (or keys combinations).</para>
+      	
+      	<table>
+      		<title>Hibernate Mapping Diagram Shortcut Keys</title>
+      		
+      		<tgroup cols="2">      			
+      			<colspec colnum="1"  align="left" colwidth="3*"/>
+      			<colspec colnum="2" align="left" colwidth="1*"/>
+      			
+      			<thead>
+      				<row>
+      					<entry align="center">
+      						<para>Command</para>
+      					</entry>
+      					
+      					<entry align="center">
+      						<para>Binding</para>
+      					</entry>
+      				</row>
+      			</thead>
+      			
+      			<tbody>
+      				<row>
+      					<entry>
+      						<para>Scroll the diagram content</para>
+      					</entry>
+      					<entry>
+      						<para>Ctrl + Shift + arrows</para>
+      					</entry>
+      				</row>
+      				
+      				<row>
+      					<entry>
+      						<para>Collapse/Expand selected item(s)</para>
+      					</entry>
+      					<entry>
+      						<para> Enter </para>
+      					</entry>
+      				</row>
+      				
+      				<row>
+      					<entry>
+      						<para>Show/Hide selected item(s)</para>
+      					</entry>
+      					<entry>
+      						<para> + </para>
+      					</entry>
+      				</row>
+      				
+      				<row>
+      					<entry>
+      						<para>Sort items in alphabetical order or return the initial state</para>
+      					</entry>
+      					<entry>
+      						<para>Space</para>
+      					</entry>
+      				</row>
+      				
+      				<row>
+      					<entry>
+      						<para>Navigate between the items</para>
+      					</entry>
+      					<entry>
+      						<para>Arrows</para>
+      					</entry>
+      				</row>
+      			</tbody>
+      		</tgroup>
+      	</table>
       	
       	<para>It&apos;s possible to save the diagram in the eclipse workspace. Click the usual <emphasis>
       		<property>File &gt; Save As</property></emphasis> option, the wizard will ask you to set the location within you project
