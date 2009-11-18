@@ -557,6 +557,7 @@ public class ConsoleConfigurationWizardPage extends WizardPage implements
 		}
 		if (flagFileWillBeCreated) {
 			setPathAttribute(currentLaunchConfig, IConsoleConfigurationLaunchConstants.CFG_XML_FILE, configFullPath);
+			setStrAttribute(currentLaunchConfig, IConsoleConfigurationLaunchConstants.CONFIGURATION_FACTORY, ConfigurationMode.CORE.toString());
 			ConsoleConfigurationMainTab ccmt = null;
 			ILaunchConfigurationTab[] tabs = tabGroup.getTabs();
 			for (int i = 0; i < tabs.length; i++) {

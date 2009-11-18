@@ -32,6 +32,7 @@ import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jface.viewers.ICellEditorValidator;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.osgi.util.NLS;
@@ -110,7 +111,7 @@ public class ConsoleConfigurationPropertySource implements IPropertySource {
 			try {
 				ILaunchConfiguration lc = HibernateConsolePlugin.getDefault().findLaunchConfig(cfg.getName());
 				if (lc != null){
-					String projectName = lc.getAttribute("org.eclipse.jdt.launching.PROJECT_ATTR", "");  //$NON-NLS-1$//$NON-NLS-2$
+					String projectName = lc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, "");  //$NON-NLS-1$
 					return Arrays.binarySearch(getSortedProjectNames(), projectName);
 				} else {
 					HibernateConsolePlugin.getDefault().log("Can't find Console Configuration \"" + cfg.getName() + "\"");//$NON-NLS-1$//$NON-NLS-2$
@@ -219,7 +220,7 @@ public class ConsoleConfigurationPropertySource implements IPropertySource {
 				ILaunchConfiguration lc = HibernateConsolePlugin.getDefault().findLaunchConfig(cfg.getName());
 				if (lc != null){
 					ILaunchConfigurationWorkingCopy wc = lc.getWorkingCopy();
-					wc.setAttribute("org.eclipse.jdt.launching.PROJECT_ATTR", getSortedProjectNames()[index]);////$NON-NLS-1$
+					wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, getSortedProjectNames()[index]);
 					wc.doSave();
 				} else {
 					HibernateConsolePlugin.getDefault().log("Can't find Console Configuration \"" + cfg.getName() + "\"");//$NON-NLS-1$//$NON-NLS-2$
@@ -266,7 +267,7 @@ public class ConsoleConfigurationPropertySource implements IPropertySource {
 						try {
 							ILaunchConfiguration lc = HibernateConsolePlugin.getDefault().findLaunchConfig(cfg.getName());
 							if (lc != null){
-								String projectName = lc.getAttribute("org.eclipse.jdt.launching.PROJECT_ATTR", (String)null);  //$NON-NLS-1$
+								String projectName = lc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String)null);
 								if (projectName != null){
 									return NLS.bind(HibernateConsoleMessages.ConsoleConfigurationMainTab_the_java_project_does_not_exist, projectName);
 								}
