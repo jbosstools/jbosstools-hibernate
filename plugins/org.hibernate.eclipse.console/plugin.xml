@@ -640,6 +640,19 @@
             label="hql editor colors coloring highlighting query"/>
    </extension>
    <extension
+         point="org.eclipse.ltk.core.refactoring.deleteParticipants">
+      <deleteParticipant
+            class="org.hibernate.eclipse.launch.core.refactoring.DeleteResourceParticipant"
+            id="org.hibernate.eclipse.launch.core.refactoring.DeleteResourceParticipant"
+            name="Console Configuration Resource Delete Participant">
+         <enablement>
+            <with variable="element">
+               <instanceof value="org.eclipse.core.resources.IResource"/>
+            </with>
+         </enablement>
+      </deleteParticipant>
+   </extension>
+   <extension
          point="org.eclipse.ltk.core.refactoring.renameParticipants">
          <renameParticipant
             class="org.hibernate.eclipse.launch.core.refactoring.ConsoleConfigurationITypeRenameParticipant"

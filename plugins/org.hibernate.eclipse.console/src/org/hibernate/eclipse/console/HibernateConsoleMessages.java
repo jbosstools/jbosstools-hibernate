@@ -475,6 +475,7 @@ public class HibernateConsoleMessages extends NLS {
 	public static String LaunchConfigurationResourceNameChange_update_resource_path_in_launch_cfg;
 	public static String MoveResourceParticipant_launch_configurations_updates;
 	public static String RenameResourceParticipant_launch_configurations_updates;
+	public static String DeleteResourceParticipant_hibernate_configurations_updates;
 	
 	public static String ConsoleConfigurationITypeRenameParticipant_update;
 	public static String ConsoleConfigurationITypeRenameParticipant_update_names;

@@ -30,12 +30,15 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +47,11 @@ import java.util.Properties;
 import org.dom4j.DocumentException;
 import org.dom4j.Node;
 import org.dom4j.io.DOMWriter;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.ProfileManager;
+import org.eclipse.jdt.apt.core.internal.JarClassLoader;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
@@ -71,9 +77,11 @@ import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
+@SuppressWarnings("restriction")
 public class ConsoleConfiguration implements ExecutionContextHolder {
 
 	private ExecutionContext executionContext;
+	private ClassLoader classLoader = null;
 
 	private Map<String, FakeDelegatingDriver> fakeDrivers = new HashMap<String, FakeDelegatingDriver>();
 
@@ -106,6 +114,18 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		// reseting state
 		configuration = null;
 		closeSessionFactory();
+		cleanUpClassLoader();
+	}
+
+	public void cleanUpClassLoader() {
+		ClassLoader classLoaderTmp = classLoader;
+		while (classLoaderTmp != null) {
+			if (classLoaderTmp instanceof JarClassLoader) {
+				((JarClassLoader)classLoaderTmp).close();
+			}
+			classLoaderTmp = classLoaderTmp.getParent();
+		}
+		classLoader = null;
 	}
 
 	public void build() {
@@ -237,38 +257,101 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		}
 		return customClassPathURLs;
 	}
+	
+	public URL[] getCustomClassPathURLs_Jars() {
+		URL[] classPathURLs = getCustomClassPathURLs();
+		ArrayList<URL> res = new ArrayList<URL>();
+		for (int i = 0; i < classPathURLs.length; i++) {
+			String fileName = classPathURLs[i].getFile();
+			fileName = fileName.toLowerCase();
+			if (fileName.endsWith(".jar")) { //$NON-NLS-1$
+				res.add(classPathURLs[i]);
+			}
+		}
+		return res.toArray(new URL[0]);
+	}
+	
+	protected URL[] getCustomClassPathURLs_NotJars() {
+		URL[] classPathURLs = getCustomClassPathURLs();
+		ArrayList<URL> res = new ArrayList<URL>();
+		for (int i = 0; i < classPathURLs.length; i++) {
+			String fileName = classPathURLs[i].getFile();
+			fileName = fileName.toLowerCase();
+			if (!fileName.endsWith(".jar")) { //$NON-NLS-1$
+				res.add(classPathURLs[i]);
+			}
+		}
+		return res.toArray(new URL[0]);
+	}
+	
+	protected ClassLoader createJarClassLoader() {
+		URL[] customClassPathURLs_Jars = getCustomClassPathURLs_Jars();
+		List<File> filesTmp = new ArrayList<File>();
+		for (int i = 0; i < customClassPathURLs_Jars.length; i++) {
+			String filePath = customClassPathURLs_Jars[i].getPath();
+			IPath resourcePath = new Path(filePath);
+			File resourceFile = resourcePath.toFile();
+			//if (resourceFile.exists()) {
+				filesTmp.add(resourceFile);
+			//}
+		}
+		final List<File> files = filesTmp;
+		JarClassLoader jarClassLoader = AccessController.doPrivileged(new PrivilegedAction<JarClassLoader>() {
+			public JarClassLoader run() {
+				return new JarClassLoader(files, getParentClassLoader()) {
+					@Override
+					public Enumeration<URL> getResources(String name) throws IOException {
+						return null;
+					}
+				};
+			}
+		});
+		return jarClassLoader;
+	}
+	
+	protected ClassLoader createURLClassLoader() {
+		final URL[] customClassPathURLs = getCustomClassPathURLs_NotJars();
+		URLClassLoader urlClassLoader = AccessController.doPrivileged(new PrivilegedAction<URLClassLoader>() {
+			public URLClassLoader run() {
+				return new URLClassLoader(customClassPathURLs, createJarClassLoader()) {
+					protected Class<?> findClass(String name) throws ClassNotFoundException {
+						try {
+							return super.findClass(name);
+						} catch (ClassNotFoundException cnfe) {
+							throw cnfe;
+						}
+					}
+		
+					protected synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+						try {
+							return super.loadClass(name, resolve);
+						} catch (ClassNotFoundException cnfe) {
+							throw cnfe;
+						}
+					}
+		
+					public Class<?> loadClass(String name) throws ClassNotFoundException {
+						try {
+							return super.loadClass(name);
+						} catch (ClassNotFoundException cnfe) {
+							throw cnfe;
+						}
+					}
+				};
+			}
+		});
+		return urlClassLoader;
+	}
 
 	/**
 	 * @return
 	 *
 	 */
 	public Configuration buildWith(final Configuration cfg, final boolean includeMappings) {
-			URL[] customClassPathURLs = getCustomClassPathURLs();
-			executionContext = new DefaultExecutionContext( getName(), new URLClassLoader( customClassPathURLs, getParentClassLoader() ) {
-				protected Class<?> findClass(String name) throws ClassNotFoundException {
-					try {
-					return super.findClass( name );
-					} catch(ClassNotFoundException cnfe) {
-						throw cnfe;
-					}
-				}
-
-				protected synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
-					try {
-						return super.loadClass( name, resolve );
-					} catch(ClassNotFoundException cnfe) {
-						throw cnfe;
-					}
-				}
-
-				public Class<?> loadClass(String name) throws ClassNotFoundException {
-					try {
-					return super.loadClass( name );
-					} catch(ClassNotFoundException cnfe) {
-						throw cnfe;
-					}
-				}
-			});
+			if (classLoader == null) {
+				classLoader = createURLClassLoader();
+			}
+			executionContext = new DefaultExecutionContext(getName(), classLoader);
 
 			Configuration result = (Configuration) executionContext.execute(new ExecutionContext.Command() {
 

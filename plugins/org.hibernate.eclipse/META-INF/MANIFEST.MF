@@ -484,6 +484,7 @@ Export-Package: EDU.oswego.cs.dl.util.concurrent,
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.console,
  org.eclipse.jface,
+ org.eclipse.jdt.apt.core,
  org.eclipse.datatools.connectivity
 Bundle-ActivationPolicy: lazy
 Eclipse-BuddyPolicy: registered

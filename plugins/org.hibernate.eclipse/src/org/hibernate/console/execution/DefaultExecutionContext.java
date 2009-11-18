@@ -21,7 +21,6 @@
  */
 package org.hibernate.console.execution;
 
-import java.net.URLClassLoader;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -31,13 +30,13 @@ import org.hibernate.eclipse.logging.CurrentContext;
 
 public class DefaultExecutionContext implements ExecutionContext {
 
-	final private URLClassLoader configurationClassLoader;
+	final private ClassLoader configurationClassLoader;
 	private volatile int installs;
 	private Map<Thread, ClassLoader> previousLoaders = new WeakHashMap<Thread, ClassLoader>();
 
 	final String key;
 
-	public DefaultExecutionContext(String key, URLClassLoader loader) {
+	public DefaultExecutionContext(String key, ClassLoader loader) {
 		configurationClassLoader = loader;
 		this.key = key;
 	}

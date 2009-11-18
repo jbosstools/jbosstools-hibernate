@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.lang.ref.WeakReference;
@@ -25,14 +26,19 @@ import java.sql.Driver;
 import java.security.PrivilegedAction;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.apt.core.internal.JarClassLoader;
 import org.hibernate.console.execution.DefaultExecutionContext;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin;
+import org.hibernate.eclipse.console.test.utils.GarbageCollectionUtil;
 import org.hibernate.util.ReflectHelper;
 
 import junit.framework.TestCase;
@@ -44,6 +50,7 @@ import junit.framework.TestCase;
  *  
  * @author Vitali Yemialyanchyk
  */
+@SuppressWarnings("restriction")
 public class DriverDeleteTest extends TestCase {
 
 	public static final String DRIVER_TEST_NAME = "mysql-connector-java-5.0.7-bin.jar"; //$NON-NLS-1$
@@ -67,6 +74,18 @@ public class DriverDeleteTest extends TestCase {
 			e.printStackTrace();
 		}
 		return customClassPathURLs;
+	}
+
+	protected List<File> getCustomClassPathFiles() {
+		final List<File> files = new ArrayList<File>();
+		File driverJar2;
+		try {
+			driverJar2 = getResourceItem(DRIVER_PUT_PATH);
+			files.add(driverJar2);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return files;
 	}
 
 	protected File getResourceItem(String strResPath) throws IOException {
@@ -124,29 +143,61 @@ public class DriverDeleteTest extends TestCase {
 		URLClassLoader urlClassLoader = AccessController.doPrivileged(new PrivilegedAction<URLClassLoader>() {
 			public URLClassLoader run() {
 				return new URLClassLoader( customClassPathURLs, getParentClassLoader() ) {
-					protected Class<?> findClass(String name) throws ClassNotFoundException {
+				    public InputStream getResourceAsStream(String name) {
+				    	InputStream is = super.getResourceAsStream(name);
+				    	return is;
+				    }
+				    
+				    public URL findResource(final String name) {
+				    	URL res = super.findResource(name);
+				    	return res;
+				    }
+
+				    public Enumeration<URL> findResources(final String name) throws IOException {
+				    	Enumeration<URL> res = super.findResources(name);
+				    	return res;
+				    }
+
+				    protected Class<?> findClass(String name) throws ClassNotFoundException {
+						Class<?> res = null;
 						try {
-							return super.findClass(name);
+							res = super.findClass(name);
 						} catch (ClassNotFoundException cnfe) {
 							throw cnfe;
 						}
+						return res;
 					}
 
 					protected synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+						Class<?> res = null;
 						try {
-							return super.loadClass(name, resolve);
+							res = super.loadClass(name, resolve);
 						} catch (ClassNotFoundException cnfe) {
 							throw cnfe;
 						}
+						return res;
 					}
 
 					public Class<?> loadClass(String name) throws ClassNotFoundException {
+						Class<?> res = null;
 						try {
-							return super.loadClass(name);
+							res = super.loadClass(name);
 						} catch (ClassNotFoundException cnfe) {
 							throw cnfe;
 						}
+						return res;
 					}
+				};
+			}
+		});
+		return urlClassLoader;
+	}
+	
+	public JarClassLoader createJarClassLoader() {
+		final List<File> files = getCustomClassPathFiles();
+		JarClassLoader urlClassLoader = AccessController.doPrivileged(new PrivilegedAction<JarClassLoader>() {
+			public JarClassLoader run() {
+				return new JarClassLoader(files, getParentClassLoader()) {
 				};
 			}
 		});
@@ -170,46 +221,9 @@ public class DriverDeleteTest extends TestCase {
 			res += cbuf.toString() + "\r\n"; //$NON-NLS-1$
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public void initExecutionContext() {
-		/**/
-		URLClassLoader urlClassLoader = createClassLoader();
-		/**/
-		Class<Driver> driverClass = null;
-		try {
-			driverClass = (Class<Driver>)urlClassLoader.loadClass("com.mysql.jdbc.Driver"); //$NON-NLS-1$
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		assertNotNull(driverClass);
-		/**/
-		int numRedDrivers = 0;
-		StringWriter wr = new StringWriter();
-		PrintWriter pw = new PrintWriter(wr);
-		DriverManager.setLogWriter(pw);
-		Driver driver = null;
-		/**/
-		try {
-			driver = driverClass.newInstance();
-			/**/
-			DriverManager.registerDriver(driver);
-			//DriverManager.deregisterDriver(driver);
-			java.util.Enumeration<Driver> drEnum = DriverManager.getDrivers();
-			while (drEnum.hasMoreElements()) {
-				driver = drEnum.nextElement();
-				DriverManager.deregisterDriver(driver);
-				numRedDrivers++;
-			}
-			/**/
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-		/**/
+	public void forceDeleteDrivers() {
 		Class<DriverManager> clazz = DriverManager.class;
 		Vector drivers = null;
 		try {
@@ -228,59 +242,95 @@ public class DriverDeleteTest extends TestCase {
 		if (drivers != null && drivers.size() > 0) {
 			drivers.clear();
 		}
+		clazz = null;
+		drivers = null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void initExecutionContext() {
+		/**/
+		//URLClassLoader urlClassLoader = createClassLoader();
+		JarClassLoader urlClassLoader = createJarClassLoader();
+		/**/
+		Class<Driver> driverClass = null;
+		try {
+			driverClass = (Class<Driver>)urlClassLoader.loadClass("com.mysql.jdbc.Driver"); //$NON-NLS-1$
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		assertNotNull(driverClass);
+		/**/
+		int numRedDrivers = 0;
+		StringWriter wr = new StringWriter();
+		PrintWriter pw = new PrintWriter(wr);
+		DriverManager.setLogWriter(pw);
+		Driver driver = null;
+		/**/
+		try {
+			driver = driverClass.newInstance();
+			DriverManager.registerDriver(driver);
+			//DriverManager.deregisterDriver(driver);
+			java.util.Enumeration<Driver> drEnum = DriverManager.getDrivers();
+			while (drEnum.hasMoreElements()) {
+				driver = drEnum.nextElement();
+				DriverManager.deregisterDriver(driver);
+				numRedDrivers++;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		/**/
 		System.out.print(wr.res);
 		/** /
 		DefaultExecutionContext dec = new DefaultExecutionContext(getName(), urlClassLoader);
 		executionContext = new WeakReference<ExecutionContext>(dec);
-		dec = null;
 		/** /
-		dec.execute(new ExecutionContext.Command() {
-
-			@SuppressWarnings("unchecked")
+		ExecutionContext.Command command = new ExecutionContext.Command() {
 			public Object execute() {
 				try {
 					Class<Driver> driverClass = null;
 					//if (driverClass != null) {
-						driverClass = ReflectHelper.classForName("com.mysql.jdbc.Driver"); //$NON-NLS-1$
+						//driverClass = ReflectHelper.classForName("com.mysql.jdbc.Driver"); //$NON-NLS-1$
+						ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+						if (contextClassLoader != null) {
+							driverClass = (Class<Driver>)contextClassLoader.loadClass("com.mysql.jdbc.Driver"); //$NON-NLS-1$
+						}
 						//if (driverClass == null) {
-							DriverManager.registerDriver(driverClass.newInstance());
+						//driverClass.newInstance();
+							//DriverManager.registerDriver(driverClass.newInstance());
 						//}
 					//}
-				} catch (InstantiationException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
+					//contextClassLoader = null;
+					//driverClass = null;
+				//} catch (InstantiationException e) {
+				//	e.printStackTrace();
+				//} catch (IllegalAccessException e) {
+				//	e.printStackTrace();
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
-				} catch (SQLException e) {
-					e.printStackTrace();
+				//} catch (SQLException e) {
+				//	e.printStackTrace();
 				}
 				return null;
 			}
-		});
-		/**/
+		};
+		dec.execute(command);
+		command = null;
+		dec = null;
+		/** /
+		forceDeleteDrivers();
 		//
-		clazz = null;
-		drivers = null;
 		// obligatory in other case gc can't collect these variables!!!
 		driver = null;
 		driverClass = null;
 		urlClassLoader = null;
 		forceCollectGarbage();
 		/**/
-	}
-	
-	public int forceCollectGarbage() {
-		int numGCCall = 0;
-		long freeMemory = 0;
-		long freeMemoryAfter = freeMemory;
-		do {
-			freeMemory = Runtime.getRuntime().freeMemory();
-			System.gc();
-			numGCCall++;
-			freeMemoryAfter = Runtime.getRuntime().freeMemory();
-		} while (freeMemoryAfter - freeMemory != 0);
-		return numGCCall;
+		urlClassLoader.close();
 	}
 	
 	public void cleanupExecutionContext() {
@@ -307,7 +357,7 @@ public class DriverDeleteTest extends TestCase {
 			executionContext = null;
 		}
 		//
-		forceCollectGarbage();
+		GarbageCollectionUtil.forceCollectGarbage();
 	}
 
 	public void testDelete() {
