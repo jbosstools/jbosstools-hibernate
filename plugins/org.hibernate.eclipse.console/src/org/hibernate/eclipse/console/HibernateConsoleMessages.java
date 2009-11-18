@@ -495,6 +495,9 @@ public class HibernateConsoleMessages extends NLS {
 
 	public static String ConnectionProfileRenameChange_update_connection_profile_name;
 	public static String ConnectionProfileRenameParticipant_launch_configurations_updates;
+
+	public static String DeleteProjectParticipant_console_configurations_updates;
+	public static String DeleteProjectParticipant_delete_console_configuration;
 	//
 	static {
 		// initialize resource bundle

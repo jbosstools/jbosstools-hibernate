@@ -707,7 +707,7 @@
          </enablement>
       </moveParticipant>
       <moveParticipant
-            class="org.hibernate.eclipse.launch.core.refactoring.ConsoleConfigurationITypeMoveParticipant"
+            class="org.hibernate.eclipse.launch.core.refactoring.MoveResourceParticipant"
             name="Console Configuration IType Participant"
             id="org.hibernate.eclipse.launch.core.refactoring.ConsoleConfigurationITypeMoveParticipant"> 
          <enablement>
@@ -722,6 +722,21 @@
          </enablement>
       </moveParticipant>
 
+   </extension>
+   <extension
+         point="org.eclipse.ltk.core.refactoring.deleteParticipants">
+      <deleteParticipant
+            class="org.hibernate.eclipse.console.DeleteProjectParticipant"
+            id="org.hibernate.eclipse.console.deleteProjectParticipant"
+            name="Console Configuration Project delete participant">
+         <enablement>
+            <with
+                  variable="element">
+               <instanceof
+                     value="org.eclipse.core.resources.IProject">
+               </instanceof>
+            </with></enablement>
+      </deleteParticipant>
    </extension>
    <extension
          point="org.eclipse.ui.popupMenus">

@@ -27,6 +27,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -348,6 +349,24 @@ public class HibernateRefactoringUtil {
 			HibernateConsolePlugin.getDefault().logErrorMessage( ERROR_MESS, e );
 		}
 
+		return configs;
+	}
+	
+	public static ILaunchConfiguration[] getAffectedLaunchConfigurations(IProject project){
+		ILaunchConfiguration[] configs = null;
+		try {
+			configs = LaunchHelper.findHibernateLaunchConfigs();
+			List<ILaunchConfiguration> list = new ArrayList<ILaunchConfiguration>();
+			for(int i = 0; i < configs.length && configs[i].exists(); i++) {//refactor only hibernate launch configurations
+				String projectName = configs[i].getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String)null);
+				if (project.getName().equals(projectName)) list.add(configs[i]);
+			}
+			configs = list.toArray(new ILaunchConfiguration[list.size()]);
+		}
+		catch(CoreException e) {
+			configs = new ILaunchConfiguration[0];
+			HibernateConsolePlugin.getDefault().logErrorMessage( ERROR_MESS, e );
+		}
 		return configs;
 	}
 	
