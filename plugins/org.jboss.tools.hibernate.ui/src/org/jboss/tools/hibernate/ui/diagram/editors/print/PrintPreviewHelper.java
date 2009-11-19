@@ -11,6 +11,7 @@ import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.SWTGraphics;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.LayerConstants;
+/** /
 import org.eclipse.gmf.runtime.common.ui.action.actions.IPrintActionHelper;
 import org.eclipse.gmf.runtime.common.ui.util.WindowUtil;
 import org.eclipse.gmf.runtime.diagram.ui.internal.pagesetup.PageInfoHelper.PageMargins;
@@ -24,6 +25,7 @@ import org.eclipse.gmf.runtime.draw2d.ui.mapmode.IMapMode;
 import org.eclipse.gmf.runtime.draw2d.ui.mapmode.MapModeUtil;
 import org.eclipse.gmf.runtime.draw2d.ui.render.internal.graphics.RenderedMapModeGraphics;
 import org.eclipse.gmf.runtime.draw2d.ui.render.internal.graphics.RenderedScaledGraphics;
+/**/
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
@@ -61,7 +63,7 @@ public class PrintPreviewHelper{
 	 * Action helper for print. This must be passed in to have something happen
 	 * when print is pressed
 	 */
-	protected IPrintActionHelper printActionHelper;
+//	protected IPrintActionHelper printActionHelper;
 
 	/**
 	 * Increment userX everytime the user moves right, decrement userX everytime
@@ -268,6 +270,7 @@ public class PrintPreviewHelper{
 	/**
 	 * Initialize all toolbar images
 	 */
+	/** /
 	protected void initializeToolbarImages() {
 		printImage = DiagramUIPrintingPluginImages.DESC_PRINT.createImage();
 
@@ -737,12 +740,10 @@ public class PrintPreviewHelper{
 			diagramEditPart = getDiagramEditorPart().getDiagramEditPart();
 		}
 		if (diagramEditPart == null) {
-			/** /
-			Diagram diagram = getDiagramEditorPart().getDiagram(); //do not getDiagramEditPart
-			PreferencesHint preferencesHint = getPreferencesHint(getDiagramEditorPart());
-			diagramEditPart = PrintHelperUtil.createDiagramEditPart(diagram, preferencesHint, getTempShell());
-			PrintHelperUtil.initializePreferences(diagramEditPart, preferencesHint);
-			/**/
+			//Diagram diagram = getDiagramEditorPart().getDiagram(); //do not getDiagramEditPart
+			//PreferencesHint preferencesHint = getPreferencesHint(getDiagramEditorPart());
+			//diagramEditPart = PrintHelperUtil.createDiagramEditPart(diagram, preferencesHint, getTempShell());
+			//PrintHelperUtil.initializePreferences(diagramEditPart, preferencesHint);
 		}
 		return diagramEditPart;
 	}
@@ -981,14 +982,12 @@ public class PrintPreviewHelper{
 			g.scale(scale);
 
 			//vit
-			/** /
-			String headerOrFooter =
-				HeaderAndFooterHelper.makeHeaderOrFooterString(
-					WorkspaceViewerProperties.HEADER_PREFIX,
-					1 + userY + row,
-					1 + userX + col,
-					getDiagramEditPart());
-			/**/
+			//String headerOrFooter =
+			//	HeaderAndFooterHelper.makeHeaderOrFooterString(
+			//		WorkspaceViewerProperties.HEADER_PREFIX,
+			//		1 + userY + row,
+			//		1 + userX + col,
+			//		getDiagramEditPart());
 			String headerOrFooter = "headerOrFooter";
 			
 			g.drawText(
@@ -997,14 +996,12 @@ public class PrintPreviewHelper{
 				getMapMode().DPtoLP(HeaderAndFooterHelper.TOP_MARGIN_DP));
 
 			//vit
-			/** /
-			headerOrFooter =
-				HeaderAndFooterHelper.makeHeaderOrFooterString(
-					WorkspaceViewerProperties.FOOTER_PREFIX,
-					1 + userY + row,
-					1 + userX + col,
-					getDiagramEditPart());
-			/**/
+			//headerOrFooter =
+			//	HeaderAndFooterHelper.makeHeaderOrFooterString(
+			//		WorkspaceViewerProperties.FOOTER_PREFIX,
+			//		1 + userY + row,
+			//		1 + userX + col,
+			//		getDiagramEditPart());
 			headerOrFooter = "headerOrFooter";
 
 			g.drawText(
@@ -1079,4 +1076,5 @@ public class PrintPreviewHelper{
 	public void setPercentScaling(int userScale){
 		setUserScale(userScale);
 	}
+	/**/
 }

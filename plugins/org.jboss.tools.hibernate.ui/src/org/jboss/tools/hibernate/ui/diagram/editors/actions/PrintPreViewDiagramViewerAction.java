@@ -13,7 +13,7 @@ package org.jboss.tools.hibernate.ui.diagram.editors.actions;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.gmf.runtime.common.ui.action.actions.IPrintActionHelper;
+//import org.eclipse.gmf.runtime.common.ui.action.actions.IPrintActionHelper;
 
 /**
  * Initial test implementation for Print preview for Mapping Diagram
@@ -24,11 +24,11 @@ public class PrintPreViewDiagramViewerAction extends AbstractHandler {
 
 	private org.jboss.tools.hibernate.ui.diagram.editors.print.PrintPreviewHelper 
 		printPreviewHelper = new org.jboss.tools.hibernate.ui.diagram.editors.print.PrintPreviewHelper();
-	private IPrintActionHelper helper = null; 
+//	private IPrintActionHelper helper = null; 
 		//new org.eclipse.gmf.runtime.diagram.ui.printing.render.actions.EnhancedPrintActionHelper();
 	
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		printPreviewHelper.doPrintPreview(helper);
+//		printPreviewHelper.doPrintPreview(helper);
 		return null;
 	}
 
