@@ -609,6 +609,9 @@ public class DiagramViewer extends GraphicalEditor {
 				KeyStroke.getPressed('+', SWT.KEYPAD_ADD, 0),
 				getActionRegistry().getAction(ToggleShapeVisibleStateAction.ACTION_ID));
 			sharedKeyHandler.put(
+					KeyStroke.getPressed('=', '=', 0),
+					getActionRegistry().getAction(ToggleShapeVisibleStateAction.ACTION_ID));
+			sharedKeyHandler.put(
 				KeyStroke.getReleased(' ', Action.findKeyCode("SPACE"), 0), //$NON-NLS-1$
 				getActionRegistry().getAction(LexicalSortingAction.ACTION_ID));
 		}
