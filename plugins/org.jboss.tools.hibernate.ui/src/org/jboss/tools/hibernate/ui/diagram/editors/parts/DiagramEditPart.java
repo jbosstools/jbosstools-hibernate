@@ -193,4 +193,8 @@ public class DiagramEditPart extends OrmEditPart {
 		}
 		return super.getAdapter(adapter);
 	}
+
+	public IFigure getLayer(Object layer) {
+		return super.getLayer(layer);
+	}
 }

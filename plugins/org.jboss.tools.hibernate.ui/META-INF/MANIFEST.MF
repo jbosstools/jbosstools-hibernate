@@ -16,6 +16,9 @@ Require-Bundle: org.eclipse.ui,
  org.hibernate.eclipse,
  org.eclipse.jdt.core,
  org.eclipse.jdt.ui,
+ org.eclipse.gmf.runtime.diagram.ui,
+ org.eclipse.gmf.runtime.diagram.ui.printing,
+ org.eclipse.gmf.runtime.draw2d.ui.render,
  org.hibernate.eclipse.console
 Bundle-Version: 3.3.0.qualifier
 Export-Package: org.jboss.tools.hibernate.ui.diagram,

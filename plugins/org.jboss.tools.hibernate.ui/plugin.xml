@@ -13,7 +13,48 @@
             name="Hibernate Diagram Viewer">
       </editor>
    </extension>
-
+   <!-- hide Print Page Setup & Print Preview initial implementation 
+   <extension point="org.eclipse.ui.commands"> 
+      <category id="org.jboss.tools.hibernate.ui.print.category1" 
+         name="%Category_Print"> 
+      </category> 
+      <command categoryId="org.jboss.tools.hibernate.ui.print.category1" 
+         defaultHandler="org.jboss.tools.hibernate.ui.diagram.editors.actions.PrintPageSetupDiagramViewerAction" 
+         id="org.jboss.tools.hibernate.ui.run_page_setup" 
+         name="%Command_PrintPageSetup"> 
+      </command> 
+      <command categoryId="org.jboss.tools.hibernate.ui.print.category1" 
+         defaultHandler="org.jboss.tools.hibernate.ui.diagram.editors.actions.PrintPreViewDiagramViewerAction" 
+         id="org.jboss.tools.hibernate.ui.run_print_preview" 
+         name="%Command_PrintPreview"> 
+      </command> 
+   </extension> 
+   <extension point="org.eclipse.ui.menus"> 
+      <menuContribution locationURI="menu:file?before=print.ext"> 
+         <command commandId="org.jboss.tools.hibernate.ui.run_page_setup" 
+            id="org.jboss.tools.hibernate.ui.run_page_setup" style="push"> 
+            <visibleWhen checkEnabled="false"> 
+               <with variable="activeEditorId">
+                  <or>
+                     <equals value="org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer" />
+                  </or>
+               </with>
+            </visibleWhen> 
+         </command> 
+      </menuContribution>
+      <menuContribution locationURI="menu:file?before=print.ext"> 
+         <command commandId="org.jboss.tools.hibernate.ui.run_print_preview" 
+            id="org.jboss.tools.hibernate.ui.run_print_preview" style="push"> 
+            <visibleWhen checkEnabled="false"> 
+               <with variable="activeEditorId">
+                  <or>
+                     <equals value="org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer" />
+                  </or>
+               </with>
+            </visibleWhen> 
+         </command> 
+      </menuContribution>
+   </extension> --> 
    <extension point="org.eclipse.ui.popupMenus">
       <objectContribution id="diagramEditorAction" objectClass="java.lang.Object"> 
          <visibility>
