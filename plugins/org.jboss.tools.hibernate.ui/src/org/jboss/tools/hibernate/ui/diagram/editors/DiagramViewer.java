@@ -321,7 +321,7 @@ public class DiagramViewer extends GraphicalEditor {
 		} else if (input instanceof DiagramEditorInput) {
 			diagramInput = (DiagramEditorInput)input;
 		}
-		setPartName(DiagramViewerMessages.DiagramViewer_diagram_for + " " + diagramInput.getName()); //$NON-NLS-1$
+		setPartName(diagramInput.getName());
 		super.setInput(diagramInput);
 		loadProperties();
 	}
@@ -349,7 +349,7 @@ public class DiagramViewer extends GraphicalEditor {
 
 	public void refresh() {
 		getOrmDiagram().refresh();
-		setPartName(DiagramViewerMessages.DiagramViewer_diagram_for + " " + getDiagramInput().getName()); //$NON-NLS-1$
+		setPartName(getDiagramInput().getName());
 	}
 
 	/**

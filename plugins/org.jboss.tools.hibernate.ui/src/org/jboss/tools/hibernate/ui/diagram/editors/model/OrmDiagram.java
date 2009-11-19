@@ -142,10 +142,21 @@ public class OrmDiagram extends BaseElement {
 		}
 		// sort to get same name for same combinations of entities
 		Collections.sort(names);
+		name = consoleConfigName + ":"; //$NON-NLS-1$
+		name += names.size() > 0 ? " " + names.get(0) : ""; //$NON-NLS-1$ //$NON-NLS-2$
+		if (names.size() > 1) {
+			if (names.size() == 2) {
+				name += " and " + names.get(1); //$NON-NLS-1$
+			} else {
+				name += " and " + (names.size() - 1) + " others"; //$NON-NLS-1$ //$NON-NLS-2$
+			}
+		}
+		/** /
 		name = names.size() > 0 ? names.get(0) : ""; //$NON-NLS-1$
 		for (int i = 1; i < names.size(); i++) {
 			name += " & " + names.get(i); //$NON-NLS-1$
 		}
+		/**/
 		return name;
 	}
 	
