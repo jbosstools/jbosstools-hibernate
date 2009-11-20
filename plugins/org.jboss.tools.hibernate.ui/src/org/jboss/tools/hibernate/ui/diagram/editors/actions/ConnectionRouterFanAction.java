@@ -10,17 +10,20 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.actions;
 
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
-import org.jboss.tools.hibernate.ui.diagram.editors.parts.DiagramEditPart;
+import org.jboss.tools.hibernate.ui.diagram.editors.command.ToggleConnectionRouterFanCommand;
 
 /**
  * Connect figures with direct line connections
  * 
  * @author Vitali Yemialyanchyk
  */
-public class ConnectionRouterFanAction extends DiagramBaseAction {
+public class ConnectionRouterFanAction extends DiagramBaseAction 
+{
 
 	public static final String ACTION_ID = "connectionRouterFanId"; //$NON-NLS-1$
 	public static final ImageDescriptor img = 
@@ -35,17 +38,15 @@ public class ConnectionRouterFanAction extends DiagramBaseAction {
 	}
 
 	public void run() {
-		DiagramEditPart diagramEditPart = getDiagramViewer().getDiagramEditPart();
-		if (diagramEditPart != null) {
-			diagramEditPart.setupFanConnectionRouter();
-		}
+		execute(getCommand());
 	}
 
-	public boolean isChecked() {
-		DiagramEditPart diagramEditPart = getDiagramViewer().getDiagramEditPart();
-		if (diagramEditPart != null) {
-			return diagramEditPart.isFanConnectionRouter();
+	public Command getCommand() {
+		CompoundCommand cc = new CompoundCommand();
+		boolean checked = editor.isFanConnectionRouter();
+		if (!checked) {
+			cc.add(new ToggleConnectionRouterFanCommand(getDiagramViewer()));
 		}
-		return super.isChecked();
+		return cc;
 	}
 }

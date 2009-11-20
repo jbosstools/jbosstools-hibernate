@@ -35,6 +35,10 @@ import org.jboss.tools.hibernate.ui.diagram.editors.actions.ActionMenu;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.AutoLayoutAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ConnectionRouterFanAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ConnectionRouterManhattanAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ShapeCollapseAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ShapeExpandAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ShapeHideAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ShapeShowAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleAssociationAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleClassMappingAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleConnectionsAction;
@@ -67,25 +71,53 @@ public class DiagramActionBarContributor extends ActionBarContributor {
 				AutoLayoutAction.img);
 		addRetargetAction(diagramAction);
 		//
-		DiagramBaseRetargetAction diagramAction1 = new DiagramBaseRetargetAction(
+		DiagramBaseRetargetAction diagramToggleConnectionsAction = new DiagramBaseRetargetAction(
 				ToggleConnectionsAction.ACTION_ID, 
 				DiagramViewerMessages.ToggleConnectionsAction_toggle_connections,
 				DiagramViewerMessages.ToggleConnectionsAction_toggle_connections,
 				ToggleConnectionsAction.img);
-		addRetargetAction(diagramAction1);
+		addRetargetAction(diagramToggleConnectionsAction);
 		//
-		DiagramBaseRetargetAction diagramAction2 = new DiagramBaseRetargetAction(
+		DiagramBaseRetargetAction diagramToggleExpandStateAction = new DiagramBaseRetargetAction(
 				ToggleShapeExpandStateAction.ACTION_ID, 
 				DiagramViewerMessages.ToggleShapeExpandStateAction_toggle_expand_state,
 				DiagramViewerMessages.ToggleShapeExpandStateAction_toggle_expand_state_tooltip,
 				ToggleShapeExpandStateAction.img);
-		addRetargetAction(diagramAction2);
+		addRetargetAction(diagramToggleExpandStateAction);
 		//
 		diagramAction = new DiagramBaseRetargetAction(
+				ShapeExpandAction.ACTION_ID, 
+				DiagramViewerMessages.ShapeExpandAction_shape_expand,
+				DiagramViewerMessages.ShapeExpandAction_shape_expand_tooltip,
+				ShapeExpandAction.img);
+		addRetargetAction(diagramAction);
+		//
+		diagramAction = new DiagramBaseRetargetAction(
+				ShapeCollapseAction.ACTION_ID, 
+				DiagramViewerMessages.ShapeCollapseAction_shape_collapse,
+				DiagramViewerMessages.ShapeCollapseAction_shape_collapse_tooltip,
+				ShapeCollapseAction.img);
+		addRetargetAction(diagramAction);
+		//
+		DiagramBaseRetargetAction diagramToggleVisibleStateAction = new DiagramBaseRetargetAction(
 				ToggleShapeVisibleStateAction.ACTION_ID, 
 				DiagramViewerMessages.ToggleShapeVisibleStateAction_toggle_visible_state,
 				DiagramViewerMessages.ToggleShapeVisibleStateAction_toggle_visible_state_tooltip,
 				ToggleShapeVisibleStateAction.img);
+		addRetargetAction(diagramToggleVisibleStateAction);
+		//
+		diagramAction = new DiagramBaseRetargetAction(
+				ShapeHideAction.ACTION_ID, 
+				DiagramViewerMessages.ShapeHideAction_shape_hide,
+				DiagramViewerMessages.ShapeHideAction_shape_hide_tooltip,
+				ShapeHideAction.img);
+		addRetargetAction(diagramAction);
+		//
+		diagramAction = new DiagramBaseRetargetAction(
+				ShapeShowAction.ACTION_ID, 
+				DiagramViewerMessages.ShapeShowAction_shape_show,
+				DiagramViewerMessages.ShapeShowAction_shape_show_tooltip,
+				ShapeShowAction.img);
 		addRetargetAction(diagramAction);
 		//
 		diagramAction = new DiagramBaseRetargetAction(
@@ -138,7 +170,17 @@ public class DiagramActionBarContributor extends ActionBarContributor {
 		act[4] = null;
 		act[5] = (Action)getAction(ConnectionRouterManhattanAction.ACTION_ID);
 		act[6] = (Action)getAction(ConnectionRouterFanAction.ACTION_ID);
-		diagramAction1.setMenuCreator(new ActionMenu(act));
+		diagramToggleConnectionsAction.setMenuCreator(new ActionMenu(act));
+		//
+		act = new Action[2];
+		act[0] = (Action)getAction(ShapeExpandAction.ACTION_ID);
+		act[1] = (Action)getAction(ShapeCollapseAction.ACTION_ID);
+		diagramToggleExpandStateAction.setMenuCreator(new ActionMenu(act));
+		//
+		act = new Action[2];
+		act[0] = (Action)getAction(ShapeShowAction.ACTION_ID);
+		act[1] = (Action)getAction(ShapeHideAction.ACTION_ID);
+		diagramToggleVisibleStateAction.setMenuCreator(new ActionMenu(act));
 		//
 		addRetargetAction(new UndoRetargetAction());
 		addRetargetAction(new RedoRetargetAction());

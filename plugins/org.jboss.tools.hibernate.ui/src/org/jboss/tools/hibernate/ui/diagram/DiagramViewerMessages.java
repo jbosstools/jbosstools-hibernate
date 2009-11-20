@@ -39,6 +39,14 @@ public class DiagramViewerMessages extends NLS {
 	public static String OpenSourceAction_canot_find_source_file;
 	public static String OpenSourceAction_canot_open_source_file;
 	public static String OpenSourceAction_open_source_file;
+	public static String ShapeCollapseAction_shape_collapse;
+	public static String ShapeCollapseAction_shape_collapse_tooltip;
+	public static String ShapeExpandAction_shape_expand;
+	public static String ShapeExpandAction_shape_expand_tooltip;
+	public static String ShapeHideAction_shape_hide;
+	public static String ShapeHideAction_shape_hide_tooltip;
+	public static String ShapeShowAction_shape_show;
+	public static String ShapeShowAction_shape_show_tooltip;
 	public static String ToggleShapeExpandStateAction_toggle_expand_state;
 	public static String ToggleShapeExpandStateAction_toggle_expand_state_tooltip;
 	public static String ToggleShapeVisibleStateAction_toggle_visible_state;

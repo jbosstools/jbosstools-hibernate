@@ -19,7 +19,6 @@ import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.parts.ScrollableThumbnail;
 import org.eclipse.draw2d.parts.Thumbnail;
-import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.LayerConstants;
@@ -32,6 +31,7 @@ import org.eclipse.gef.ui.parts.SelectionSynchronizer;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.swt.SWT;
@@ -50,7 +50,6 @@ import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeExpandSta
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleShapeVisibleStateAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
 import org.jboss.tools.hibernate.ui.diagram.editors.parts.TreePartFactory;
-import org.jboss.tools.hibernate.ui.diagram.editors.popup.PopupMenuProvider;
 
 /**
  *
@@ -179,7 +178,9 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 	protected void configureOutlineViewer() {
 		getViewer().setEditDomain(editor.getDefaultEditDomain());
 		getViewer().setEditPartFactory(new TreePartFactory());
-		ContextMenuProvider provider = new PopupMenuProvider(getViewer(), getActionRegistry());
+		MenuManager provider = editor.getContextMenu();
+		//MenuManager provider = new PopupMenuProvider(getViewer(), getActionRegistry());
+		//getViewer().setContextMenu(provider);
 		getViewer().setContextMenu(provider);
 		getSite().registerContextMenu(
 			"org.jboss.tools.hibernate.ui.diagram.editors.popup.outline.contextmenu", //$NON-NLS-1$

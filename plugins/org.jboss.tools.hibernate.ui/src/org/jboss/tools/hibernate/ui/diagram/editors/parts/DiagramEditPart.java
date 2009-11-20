@@ -67,19 +67,15 @@ public class DiagramEditPart extends OrmEditPart {
 	}
 
 	public void setupManhattanConnectionRouter() {
-		if (!isManhattanConnectionRouter()) {
-			ConnectionLayer connLayer = (ConnectionLayer) getLayer(LayerConstants.CONNECTION_LAYER);
-			connLayer.setConnectionRouter(new ManhattanConnectionRouter());
-			getOrmDiagram().setupManhattanConnectionRouter();
-		}
+		ConnectionLayer connLayer = (ConnectionLayer) getLayer(LayerConstants.CONNECTION_LAYER);
+		connLayer.setConnectionRouter(new ManhattanConnectionRouter());
+		getOrmDiagram().setupManhattanConnectionRouter();
 	}
 
 	public void setupFanConnectionRouter() {
-		if (!isFanConnectionRouter()) {
-			ConnectionLayer connLayer = (ConnectionLayer) getLayer(LayerConstants.CONNECTION_LAYER);
-			connLayer.setConnectionRouter(new FanRouter());
-			getOrmDiagram().setupFanConnectionRouter();
-		}
+		ConnectionLayer connLayer = (ConnectionLayer) getLayer(LayerConstants.CONNECTION_LAYER);
+		connLayer.setConnectionRouter(new FanRouter());
+		getOrmDiagram().setupFanConnectionRouter();
 	}
 
 	public boolean isManhattanConnectionRouter() {

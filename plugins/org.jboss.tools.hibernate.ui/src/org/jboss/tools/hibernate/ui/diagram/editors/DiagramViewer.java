@@ -52,6 +52,7 @@ import org.eclipse.gef.ui.parts.TreeViewer;
 import org.eclipse.gef.ui.rulers.RulerComposite;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -62,19 +63,20 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
-import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ActionMenu;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.AutoLayoutAction;
-import org.jboss.tools.hibernate.ui.diagram.editors.actions.CollapseAllAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ConnectionRouterFanAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ConnectionRouterManhattanAction;
-import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExpandAllAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExportImageAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.LexicalSortingAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.OpenMappingAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.OpenSourceAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.PrintDiagramViewerAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.RefreshAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ShapeCollapseAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ShapeExpandAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ShapeHideAction;
+import org.jboss.tools.hibernate.ui.diagram.editors.actions.ShapeShowAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleAssociationAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleClassMappingAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ToggleConnectionsAction;
@@ -176,6 +178,8 @@ public class DiagramViewer extends GraphicalEditor {
 		getGraphicalViewer().setProperty(RulerProvider.PROPERTY_RULER_VISIBILITY, 
 				new Boolean(getOrmDiagram().getRulerVisibility()));
 		loadProperties();
+		
+		updateConnectionRouterActions();
 	}
 
 	public GraphicalViewer getEditPartViewer() {
@@ -251,23 +255,41 @@ public class DiagramViewer extends GraphicalEditor {
 		
 		action = new ConnectionRouterFanAction(this);
 		registry.registerAction(action);
+		getPropertyActions().add(action.getId());
 		
 		action = new ConnectionRouterManhattanAction(this);
 		registry.registerAction(action);
+		getPropertyActions().add(action.getId());
 		
-		action = new ToggleShapeExpandStateAction(this);
+		ToggleShapeExpandStateAction actionToggleShapeExpandState = new ToggleShapeExpandStateAction(this);
+		registry.registerAction(actionToggleShapeExpandState);
+		getSelectionActions().add(actionToggleShapeExpandState.getId());
+		
+		action = new ShapeExpandAction(this);
+		registry.registerAction(action);
+		getSelectionActions().add(action.getId());
+		
+		action = new ShapeCollapseAction(this);
 		registry.registerAction(action);
 		getSelectionActions().add(action.getId());
 
-		action = new ToggleShapeVisibleStateAction(this);
+		ToggleShapeVisibleStateAction actionToggleShapeVisibleState = new ToggleShapeVisibleStateAction(this);
+		registry.registerAction(actionToggleShapeVisibleState);
+		getSelectionActions().add(actionToggleShapeVisibleState.getId());
+		
+		action = new ShapeHideAction(this);
+		registry.registerAction(action);
+		getSelectionActions().add(action.getId());
+		
+		action = new ShapeShowAction(this);
 		registry.registerAction(action);
 		getSelectionActions().add(action.getId());
 
-		action = new CollapseAllAction(this);
-		registry.registerAction(action);
+		//action = new CollapseAllAction(this);
+		//registry.registerAction(action);
 
-		action = new ExpandAllAction(this);
-		registry.registerAction(action);
+		//action = new ExpandAllAction(this);
+		//registry.registerAction(action);
 
 		action = new ZoomInAction(gefRootEditPart.getZoomManager());
 		registry.registerAction(action);
@@ -277,7 +299,7 @@ public class DiagramViewer extends GraphicalEditor {
 
 		action = new LexicalSortingAction(this, null);
 		registry.registerAction(action);
-
+		
 		Action[] act = new Action[7];
 		act[0] = (Action)registry.getAction(TogglePropertyMappingAction.ACTION_ID);
 		act[1] = (Action)registry.getAction(ToggleClassMappingAction.ACTION_ID);
@@ -288,6 +310,15 @@ public class DiagramViewer extends GraphicalEditor {
 		act[6] = (Action)registry.getAction(ConnectionRouterFanAction.ACTION_ID);
 		actionToggleConnections.setMenuCreator(new ActionMenu(act));
 
+		act = new Action[2];
+		act[0] = (Action)registry.getAction(ShapeExpandAction.ACTION_ID);
+		act[1] = (Action)registry.getAction(ShapeCollapseAction.ACTION_ID);
+		actionToggleShapeExpandState.setMenuCreator(new ActionMenu(act));
+
+		act = new Action[2];
+		act[0] = (Action)registry.getAction(ShapeShowAction.ACTION_ID);
+		act[1] = (Action)registry.getAction(ShapeHideAction.ACTION_ID);
+		actionToggleShapeVisibleState.setMenuCreator(new ActionMenu(act));
 	}
 
 	private TransferDropTargetListener createTransferDropTargetListener() {
@@ -634,5 +665,68 @@ public class DiagramViewer extends GraphicalEditor {
 			}
 		}
 		return null;
+	}
+	
+	public void updateSelectionActions() {
+		updateActions(getSelectionActions());
+	}
+	
+	public void updateConnectionRouterActions() {
+		boolean res = isManhattanConnectionRouter();
+		ActionRegistry registry = getActionRegistry();
+		IAction action = registry.getAction(ConnectionRouterManhattanAction.ACTION_ID);
+		action.setChecked(res);
+		action = registry.getAction(ConnectionRouterFanAction.ACTION_ID);
+		action.setChecked(!res);
+	}
+
+	public MenuManager getContextMenu() {
+		final GraphicalViewer viewer = getGraphicalViewer();
+		if (viewer != null) {
+			return viewer.getContextMenu();
+		}
+		return null;
+	}
+	
+	public boolean isFanConnectionRouter() {
+		boolean res = false;
+		DiagramEditPart diagramEditPart = getDiagramEditPart();
+		if (diagramEditPart != null) {
+			res = diagramEditPart.isFanConnectionRouter();
+		}
+		return res;
+	}
+	
+	public void setFanConnectionRouter(boolean res) {
+		DiagramEditPart diagramEditPart = getDiagramEditPart();
+		if (diagramEditPart != null) {
+			if (res) {
+				diagramEditPart.setupFanConnectionRouter();
+			} else {
+				diagramEditPart.setupManhattanConnectionRouter();
+			}
+		}
+		updateConnectionRouterActions();
+	}
+	
+	public boolean isManhattanConnectionRouter() {
+		boolean res = false;
+		DiagramEditPart diagramEditPart = getDiagramEditPart();
+		if (diagramEditPart != null) {
+			res = diagramEditPart.isManhattanConnectionRouter();
+		}
+		return res;
+	}
+	
+	public void setManhattanConnectionRouter(boolean res) {
+		DiagramEditPart diagramEditPart = getDiagramEditPart();
+		if (diagramEditPart != null) {
+			if (res) {
+				diagramEditPart.setupManhattanConnectionRouter();
+			} else {
+				diagramEditPart.setupFanConnectionRouter();
+			}
+		}
+		updateConnectionRouterActions();
 	}
 }

@@ -20,28 +20,29 @@ import org.eclipse.gef.editparts.AbstractTreeEditPart;
 import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IWorkbenchPart;
+import org.hibernate.mapping.PersistentClass;
+import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
-import org.jboss.tools.hibernate.ui.diagram.editors.command.ToggleShapeExpandStateCommand;
-import org.jboss.tools.hibernate.ui.diagram.editors.model.ExpandableShape;
+import org.jboss.tools.hibernate.ui.diagram.editors.command.ToggleShapeVisibleStateCommand;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmShape;
 import org.jboss.tools.hibernate.ui.diagram.editors.parts.OrmEditPart;
 
 /**
- * Toggle expand state of selected shapes.
  * 
  * @author Vitali Yemialyanchyk
  */
-public class ToggleShapeExpandStateAction extends SelectionAction {
+public class ShapeHideAction extends SelectionAction {
 
-	public static final String ACTION_ID = "toggleShapeExpandStateId"; //$NON-NLS-1$
+	public static final String ACTION_ID = "shapeHideId"; //$NON-NLS-1$
 	public static final ImageDescriptor img = 
-		ImageDescriptor.createFromFile(DiagramViewer.class, "icons/toggleshapeexpandstate2.png"); //$NON-NLS-1$
+		ImageDescriptor.createFromFile(DiagramViewer.class, "icons/shapehide.png"); //$NON-NLS-1$
 
-	public ToggleShapeExpandStateAction(IWorkbenchPart editor) {
+	public ShapeHideAction(IWorkbenchPart editor) {
 		super(editor);
 		setId(ACTION_ID);
-		setText(DiagramViewerMessages.ToggleShapeExpandStateAction_toggle_expand_state);
-		setToolTipText(DiagramViewerMessages.ToggleShapeExpandStateAction_toggle_expand_state_tooltip);
+		setText(DiagramViewerMessages.ShapeHideAction_shape_hide);
+		setToolTipText(DiagramViewerMessages.ShapeHideAction_shape_hide_tooltip);
 		setImageDescriptor(img);
 	}
 	
@@ -62,7 +63,7 @@ public class ToggleShapeExpandStateAction extends SelectionAction {
 		if (getSelectedObjects().isEmpty()) {
 			return cc;
 		}
-		List<ExpandableShape> selectedShape = new ArrayList<ExpandableShape>();
+		List<OrmShape> selectedShape = new ArrayList<OrmShape>();
 		Iterator it = getSelectedObjects().iterator();
 		while (it.hasNext()) {
 			Object firstElement = it.next();
@@ -72,12 +73,15 @@ public class ToggleShapeExpandStateAction extends SelectionAction {
 			} else if (firstElement instanceof AbstractTreeEditPart) {
 				obj = ((AbstractTreeEditPart)firstElement).getModel();
 			}
-			if (null != obj && obj instanceof ExpandableShape) {
-				selectedShape.add((ExpandableShape)obj);
+			if (null != obj && obj instanceof OrmShape) {
+				OrmShape ormShape = (OrmShape)obj;
+				if (ormShape.isVisible()) {
+					selectedShape.add(ormShape);
+				}
 			} 
 		}
 		if (selectedShape.size() > 0) {
-			cc.add(new ToggleShapeExpandStateCommand(selectedShape));
+			cc.add(new ToggleShapeVisibleStateCommand(selectedShape));
 		}
 		return cc;
 	}
@@ -102,8 +106,14 @@ public class ToggleShapeExpandStateAction extends SelectionAction {
 			} else if (firstElement instanceof AbstractTreeEditPart) {
 				obj = ((AbstractTreeEditPart)firstElement).getModel();
 			}
-			if (null != obj && obj instanceof ExpandableShape) {
-				res = true;
+			if (null != obj && obj instanceof OrmShape) {
+				OrmShape ormShape = (OrmShape)obj;
+				Object ormElement = ormShape.getOrmElement();
+				if (ormElement instanceof PersistentClass || ormElement instanceof Table) {
+					if (ormShape.isVisible()) {
+						res = true;
+					}
+				}
 			} 
 		}
 		return res;

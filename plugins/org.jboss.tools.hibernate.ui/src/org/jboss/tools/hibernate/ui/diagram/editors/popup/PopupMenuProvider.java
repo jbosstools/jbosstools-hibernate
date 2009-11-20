@@ -33,8 +33,6 @@ import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.AutoLayoutAction;
-import org.jboss.tools.hibernate.ui.diagram.editors.actions.CollapseAllAction;
-import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExpandAllAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.ExportImageAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.OpenMappingAction;
 import org.jboss.tools.hibernate.ui.diagram.editors.actions.OpenSourceAction;
@@ -59,9 +57,10 @@ public class PopupMenuProvider extends ContextMenuProvider {
 		super(viewer);
 		this.actionRegistry = actionRegistry;
 	}
-
+    		
 	@SuppressWarnings("unchecked")
 	public void buildContextMenu(IMenuManager menu) {
+		
 		// Add standard action groups to the menu
 		GEFActionConstants.addStandardActionGroups(menu);
 
@@ -139,13 +138,13 @@ public class PopupMenuProvider extends ContextMenuProvider {
 		appendToGroup(GEFActionConstants.GROUP_VIEW, action);
 		createMenuItem(getMenu(), action);
 		
-		action = getActionRegistry().getAction(CollapseAllAction.ACTION_ID);
-		appendToGroup(GEFActionConstants.GROUP_VIEW, action);
-		createMenuItem(getMenu(), action);
+		//action = getActionRegistry().getAction(CollapseAllAction.ACTION_ID);
+		//appendToGroup(GEFActionConstants.GROUP_VIEW, action);
+		//createMenuItem(getMenu(), action);
 		
-		action = getActionRegistry().getAction(ExpandAllAction.ACTION_ID);
-		appendToGroup(GEFActionConstants.GROUP_VIEW, action);
-		createMenuItem(getMenu(), action);
+		//action = getActionRegistry().getAction(ExpandAllAction.ACTION_ID);
+		//appendToGroup(GEFActionConstants.GROUP_VIEW, action);
+		//createMenuItem(getMenu(), action);
 		
 		action = getActionRegistry().getAction(ExportImageAction.ACTION_ID);
 		appendToGroup(GEFActionConstants.MB_ADDITIONS, action);
@@ -176,7 +175,7 @@ public class PopupMenuProvider extends ContextMenuProvider {
 		if (hidden) {
 			return;
 		}
-		MenuItem item = new MenuItem(menu, SWT.CASCADE);
+		MenuItem item = new MenuItem(menu, SWT.CASCADE | SWT.RADIO | SWT.CHECK);
 		String displayName = action.getText();
 		item.addSelectionListener(new AL(action));
 		item.setText(displayName);

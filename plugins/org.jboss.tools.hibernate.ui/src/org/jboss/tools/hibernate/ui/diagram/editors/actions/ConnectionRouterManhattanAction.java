@@ -10,17 +10,20 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.actions;
 
+import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
-import org.jboss.tools.hibernate.ui.diagram.editors.parts.DiagramEditPart;
+import org.jboss.tools.hibernate.ui.diagram.editors.command.ToggleConnectionRouterManhattanCommand;
 
 /**
  * Connect figures with bend line connections
  * 
  * @author Vitali Yemialyanchyk
  */
-public class ConnectionRouterManhattanAction extends DiagramBaseAction {
+public class ConnectionRouterManhattanAction extends DiagramBaseAction 
+{
 
 	public static final String ACTION_ID = "connectionRouterManhattanId"; //$NON-NLS-1$
 	public static final ImageDescriptor img = 
@@ -35,17 +38,15 @@ public class ConnectionRouterManhattanAction extends DiagramBaseAction {
 	}
 
 	public void run() {
-		DiagramEditPart diagramEditPart = getDiagramViewer().getDiagramEditPart();
-		if (diagramEditPart != null) {
-			diagramEditPart.setupManhattanConnectionRouter();
-		}
+		execute(getCommand());
 	}
 
-	public boolean isChecked() {
-		DiagramEditPart diagramEditPart = getDiagramViewer().getDiagramEditPart();
-		if (diagramEditPart != null) {
-			return diagramEditPart.isManhattanConnectionRouter();
+	public Command getCommand() {
+		CompoundCommand cc = new CompoundCommand();
+		boolean checked = editor.isManhattanConnectionRouter();
+		if (!checked) {
+			cc.add(new ToggleConnectionRouterManhattanCommand(getDiagramViewer()));
 		}
-		return super.isChecked();
-	}
+		return cc;
+	}	
 }

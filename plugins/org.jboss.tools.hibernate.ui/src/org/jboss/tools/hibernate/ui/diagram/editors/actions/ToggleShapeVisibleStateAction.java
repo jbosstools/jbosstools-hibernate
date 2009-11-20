@@ -46,9 +46,16 @@ public class ToggleShapeVisibleStateAction extends SelectionAction {
 		setToolTipText(DiagramViewerMessages.ToggleShapeVisibleStateAction_toggle_visible_state_tooltip);
 		setImageDescriptor(img);
 	}
+	
+	protected DiagramViewer getDiagramViewer() {
+		return (DiagramViewer)getWorkbenchPart();
+	}
 
 	public void run() {
 		execute(getCommand());
+		if (getDiagramViewer() != null) {
+			getDiagramViewer().updateSelectionActions();
+		}
 	}
 
 	@SuppressWarnings("unchecked")

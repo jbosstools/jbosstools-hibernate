@@ -27,21 +27,20 @@ import org.jboss.tools.hibernate.ui.diagram.editors.model.ExpandableShape;
 import org.jboss.tools.hibernate.ui.diagram.editors.parts.OrmEditPart;
 
 /**
- * Toggle expand state of selected shapes.
  * 
  * @author Vitali Yemialyanchyk
  */
-public class ToggleShapeExpandStateAction extends SelectionAction {
+public class ShapeCollapseAction extends SelectionAction {
 
-	public static final String ACTION_ID = "toggleShapeExpandStateId"; //$NON-NLS-1$
+	public static final String ACTION_ID = "shapeCollapseId"; //$NON-NLS-1$
 	public static final ImageDescriptor img = 
-		ImageDescriptor.createFromFile(DiagramViewer.class, "icons/toggleshapeexpandstate2.png"); //$NON-NLS-1$
+		ImageDescriptor.createFromFile(DiagramViewer.class, "icons/shapecollapse.png"); //$NON-NLS-1$
 
-	public ToggleShapeExpandStateAction(IWorkbenchPart editor) {
+	public ShapeCollapseAction(IWorkbenchPart editor) {
 		super(editor);
 		setId(ACTION_ID);
-		setText(DiagramViewerMessages.ToggleShapeExpandStateAction_toggle_expand_state);
-		setToolTipText(DiagramViewerMessages.ToggleShapeExpandStateAction_toggle_expand_state_tooltip);
+		setText(DiagramViewerMessages.ShapeCollapseAction_shape_collapse);
+		setToolTipText(DiagramViewerMessages.ShapeCollapseAction_shape_collapse_tooltip);
 		setImageDescriptor(img);
 	}
 	
@@ -73,7 +72,10 @@ public class ToggleShapeExpandStateAction extends SelectionAction {
 				obj = ((AbstractTreeEditPart)firstElement).getModel();
 			}
 			if (null != obj && obj instanceof ExpandableShape) {
-				selectedShape.add((ExpandableShape)obj);
+				ExpandableShape es = (ExpandableShape)obj;
+				if (es.isExpanded()) {
+					selectedShape.add(es);
+				}
 			} 
 		}
 		if (selectedShape.size() > 0) {
@@ -103,7 +105,10 @@ public class ToggleShapeExpandStateAction extends SelectionAction {
 				obj = ((AbstractTreeEditPart)firstElement).getModel();
 			}
 			if (null != obj && obj instanceof ExpandableShape) {
-				res = true;
+				ExpandableShape es = (ExpandableShape)obj;
+				if (es.isExpanded()) {
+					res = true;
+				}
 			} 
 		}
 		return res;
