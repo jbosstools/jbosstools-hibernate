@@ -14,7 +14,7 @@ import org.jboss.tools.hibernate.ui.bot.testcase.Activator;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.entity.JavaClassEntity;
 import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
-import org.jboss.tools.ui.bot.ext.types.Label;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
 
 public class HibernateTest extends SWTTestExt {
@@ -32,7 +32,7 @@ public class HibernateTest extends SWTTestExt {
 		// loadProperties(Activator.PLUGIN_ID);
 		
 		// Show perspective and view
-		eclipse.closeView(Label.View.WELCOME);
+		eclipse.closeView(IDELabel.View.WELCOME);
 		eclipse.openPerspective(PerspectiveType.JAVA);
 
 		// Create needed project

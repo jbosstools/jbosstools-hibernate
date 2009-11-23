@@ -16,7 +16,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
 import org.jboss.tools.hibernate.ui.bot.testsuite.Project;
 import org.jboss.tools.ui.bot.ext.types.EntityType;
-import org.jboss.tools.ui.bot.ext.types.Label;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -54,16 +54,16 @@ public class MappingFileTest extends HibernateTest {
 	 */
 	private void createFilesFromClasses() {
 		// Select Both classes
-		SWTBot viewBot = bot.viewByTitle(Label.View.PACKAGE_EXPLORER).bot();
+		SWTBot viewBot = bot.viewByTitle(IDELabel.View.PACKAGE_EXPLORER).bot();
 		SWTBotTreeItem item = viewBot.tree().expandNode(Project.PROJECT_NAME).expandNode("src");	
 		item = item.expandNode(Project.PACKAGE_NAME).select();
 		item.select(Project.CLASS1+".java",Project.CLASS2+".java");			
 		
 		// Create mapping files 
 		eclipse.createNew(EntityType.HIBERNATE_MAPPING_FILE);
-		eclipse.waitForShell(Label.Shell.NEW_HIBERNATE_MAPPING_FILE);
-		bot.button(Label.Button.NEXT).click();
-		bot.button(Label.Button.FINISH).click();
+		eclipse.waitForShell(IDELabel.Shell.NEW_HIBERNATE_MAPPING_FILE);
+		bot.button(IDELabel.Button.NEXT).click();
+		bot.button(IDELabel.Button.FINISH).click();
 		util.waitForNonIgnoredJobs();
 		
 		// Check if new mapping files exists
@@ -76,14 +76,14 @@ public class MappingFileTest extends HibernateTest {
 	 */
 	private void createFilesFromPackage() {
 		// Select Package file
-		SWTBot viewBot = bot.viewByTitle(Label.View.PACKAGE_EXPLORER).bot();
+		SWTBot viewBot = bot.viewByTitle(IDELabel.View.PACKAGE_EXPLORER).bot();
 		SWTBotTreeItem item = viewBot.tree().expandNode(Project.PROJECT_NAME).expandNode("src");	
 		item = item.expandNode(Project.PACKAGE_NAME).select();
 		
 		// Create mapping files 
 		eclipse.createNew(EntityType.HIBERNATE_MAPPING_FILE);
-		eclipse.waitForShell(Label.Shell.NEW_HIBERNATE_MAPPING_FILE);
-		bot.button(Label.Button.FINISH).click();
+		eclipse.waitForShell(IDELabel.Shell.NEW_HIBERNATE_MAPPING_FILE);
+		bot.button(IDELabel.Button.FINISH).click();
 		util.waitForNonIgnoredJobs();
 				
 		// Check if new mapping files exists
