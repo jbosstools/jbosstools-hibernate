@@ -23,15 +23,18 @@ package org.hibernate.eclipse.console.views;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.internal.core.LaunchConfiguration;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jface.viewers.ICellEditorValidator;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -50,6 +53,7 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 
+@SuppressWarnings("restriction")
 public class ConsoleConfigurationPropertySource implements IPropertySource {
 
 	private ConsoleConfiguration cfg;
@@ -220,7 +224,16 @@ public class ConsoleConfigurationPropertySource implements IPropertySource {
 				ILaunchConfiguration lc = HibernateConsolePlugin.getDefault().findLaunchConfig(cfg.getName());
 				if (lc != null){
 					ILaunchConfigurationWorkingCopy wc = lc.getWorkingCopy();
-					wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, getSortedProjectNames()[index]);
+					String projectName = getSortedProjectNames()[index];
+					wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, projectName);
+					if (projectName != null){
+						wc.setAttribute(LaunchConfiguration.ATTR_MAPPED_RESOURCE_PATHS,
+								Collections.singletonList(projectName));
+						wc.setAttribute(LaunchConfiguration.ATTR_MAPPED_RESOURCE_TYPES, Collections.singletonList(Integer.toString(IResource.PROJECT)));
+					} else {
+						wc.removeAttribute(LaunchConfiguration.ATTR_MAPPED_RESOURCE_PATHS);
+						wc.removeAttribute(LaunchConfiguration.ATTR_MAPPED_RESOURCE_TYPES);
+					}
 					wc.doSave();
 				} else {
 					HibernateConsolePlugin.getDefault().log("Can't find Console Configuration \"" + cfg.getName() + "\"");//$NON-NLS-1$//$NON-NLS-2$

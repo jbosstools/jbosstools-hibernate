@@ -1,5 +1,8 @@
 package org.hibernate.eclipse.console.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
@@ -7,17 +10,64 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.internal.ui.DebugUIPlugin;
+import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.osgi.util.NLS;
+import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.actions.AddConfigurationAction;
 import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
 
+@SuppressWarnings("restriction")
 public class LaunchHelper {
 	
 	public static ILaunchConfiguration findHibernateLaunchConfig(String name) throws CoreException {
 		return findLaunchConfigurationByName(
 			ICodeGenerationLaunchConstants.CONSOLE_CONFIGURATION_LAUNCH_TYPE_ID, name);
+	}
+	
+	/**
+	 * UI elements should use this method as it does filtering of launch configuration related 
+	 * to deleted or closed projects if the settings are set.
+	 * @return
+	 * @throws CoreException 
+	 */
+	public static ILaunchConfiguration[] findFilteredHibernateLaunchConfigs() throws CoreException{
+		ILaunchConfiguration[] allHibernateLaunchConfigurations = findHibernateLaunchConfigs();
+		List<ILaunchConfiguration> launchConfigurations = new ArrayList<ILaunchConfiguration>();
+		for (ILaunchConfiguration config : allHibernateLaunchConfigurations) {			
+			if (DebugUIPlugin.doLaunchConfigurationFiltering(config)) launchConfigurations.add(config);
+		}
+		return launchConfigurations.toArray(new ILaunchConfiguration[launchConfigurations.size()]);
+	}
+	
+	/**
+	 * UI elements should use this method as it does filtering of console configuration related 
+	 * to deleted or closed projects if the settings are set.
+	 * @return
+	 * @throws CoreException
+	 */
+	public static ConsoleConfiguration[] findFilteredSortedConsoleConfigs() {
+		ConsoleConfiguration[] ccs = KnownConfigurations.getInstance().getConfigurationsSortedByName();
+		List<ConsoleConfiguration> consoleConfigurations = new ArrayList<ConsoleConfiguration>();
+		for (ConsoleConfiguration cc : ccs) {
+			boolean isAccepted = true;
+			try {
+				ILaunchConfiguration config = LaunchHelper.findHibernateLaunchConfig(cc.getName());
+				if (config != null){
+					isAccepted = DebugUIPlugin.doLaunchConfigurationFiltering(config);
+				}
+			} catch (CoreException e) {
+				HibernateConsolePlugin.getDefault().showError(null, e.getLocalizedMessage(), e);
+			}					
+			if (isAccepted){
+				consoleConfigurations .add(cc);
+			}			
+		}
+		return consoleConfigurations.toArray(new ConsoleConfiguration[consoleConfigurations.size()]);
+	
 	}
 	
 	public static ILaunchConfigurationType getHibernateLaunchConfigsType(){
@@ -51,6 +101,17 @@ public class LaunchHelper {
 			}
 		}
 		return null;
+	}
+	
+	public static ILaunchConfiguration[] findProjectRelatedHibernateLaunchConfigs(String projectName) throws CoreException {
+		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+		ILaunchConfiguration[] configs = launchManager.getLaunchConfigurations(getHibernateLaunchConfigsType());
+		List<ILaunchConfiguration> list = new ArrayList<ILaunchConfiguration>();
+		for(int i = 0; i < configs.length && configs[i].exists(); i++) {
+			String project = configs[i].getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String)null);
+			if (projectName.equals(project)) list.add(configs[i]);
+		}
+		return list.toArray(new ILaunchConfiguration[list.size()]);
 	}
 	
 	public static String verifyConfigurationName(String currentName) {

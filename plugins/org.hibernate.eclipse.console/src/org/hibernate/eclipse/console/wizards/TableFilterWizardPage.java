@@ -35,13 +35,14 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 import org.hibernate.eclipse.console.model.ITableFilter;
 import org.hibernate.eclipse.console.model.impl.ReverseEngineeringDefinitionImpl;
+import org.hibernate.eclipse.console.utils.LaunchHelper;
 
 
+@SuppressWarnings("restriction")
 public class TableFilterWizardPage extends WizardPage {
 	// TODO: clean this up to use a shared wizard model
 
@@ -75,7 +76,7 @@ public class TableFilterWizardPage extends WizardPage {
 
 		consoleConfigurationName = new ComboDialogField(SWT.READ_ONLY);
 		consoleConfigurationName.setLabelText(HibernateConsoleMessages.TableFilterWizardPage_console_configuration);
-		ConsoleConfiguration[] cfg = KnownConfigurations.getInstance().getConfigurationsSortedByName();
+		ConsoleConfiguration[] cfg = LaunchHelper.findFilteredSortedConsoleConfigs();
 		String[] names = new String[cfg.length];
 		for (int i = 0; i < cfg.length; i++) {
 			ConsoleConfiguration configuration = cfg[i];

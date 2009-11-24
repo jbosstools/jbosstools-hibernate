@@ -13,6 +13,7 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.KnownConfigurationsAdapter;
 import org.hibernate.console.KnownConfigurationsListener;
+import org.hibernate.eclipse.console.utils.LaunchHelper;
 
 final class ConfigurationCombo extends ComboContribution {
 
@@ -65,8 +66,7 @@ final class ConfigurationCombo extends ComboContribution {
 	}
 
 	protected void populateComboBox() {
-		ConsoleConfiguration[] configurations = KnownConfigurations
-				.getInstance().getConfigurationsSortedByName();
+		ConsoleConfiguration[] configurations = LaunchHelper.findFilteredSortedConsoleConfigs();
 		final String[] names = new String[configurations.length];
 		for (int i = 0; i < configurations.length; i++) {
 			names[i] = configurations[i].getName();

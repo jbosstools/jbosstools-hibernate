@@ -11,16 +11,20 @@
 package org.jboss.tools.hibernate.jpt.core.internal;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.internal.core.LaunchConfiguration;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
@@ -75,7 +79,7 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 		for (int i = 0; i < lcs.length; i++){
 			ILaunchConfiguration lc = lcs[i];
 			if (project.getName().equals(
-					lc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, ""))){//lc uses this project					 //$NON-NLS-1$
+					lc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String)null))){//lc uses this project					 //$NON-NLS-1$
 				if (project.getName().equals(lc.getName())) return lc;
 				configs.add(lc);				
 			}
@@ -96,11 +100,14 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 		ILaunchConfigurationWorkingCopy wc;
 		try {
 			wc = lct.newInstance(null, launchName);
+			wc.setAttribute(LaunchConfiguration.ATTR_MAPPED_RESOURCE_PATHS,
+					Collections.singletonList(new Path(project.getName()).makeAbsolute().toString()));
+			wc.setAttribute(LaunchConfiguration.ATTR_MAPPED_RESOURCE_TYPES, Collections.singletonList(Integer.toString(IResource.PROJECT)));
 			wc.setAttribute(IConsoleConfigurationLaunchConstants.CONFIGURATION_FACTORY, ConfigurationMode.JPA.toString());
 			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, project.getName());
 			wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, true );
 			wc.setAttribute(IConsoleConfigurationLaunchConstants.FILE_MAPPINGS, (List<String>)null);
-			wc.setAttribute(IConsoleConfigurationLaunchConstants.USE_JPA_PROJECT_PROFILE, "true");//$NON-NLS-1$
+			wc.setAttribute(IConsoleConfigurationLaunchConstants.USE_JPA_PROJECT_PROFILE, Boolean.toString(true));
 			
 			wc.doSave();
 			ProjectUtils.toggleHibernateOnProject(project, true, launchName);

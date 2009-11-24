@@ -3,6 +3,8 @@
  */
 package org.hibernate.eclipse.launch;
 
+import java.util.Collections;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -10,6 +12,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.internal.core.LaunchConfiguration;
 import org.eclipse.debug.internal.ui.SWTFactory;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
@@ -165,9 +168,17 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 
 
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-
+		String projectName = nonEmptyTrimOrNull( projectNameText );
 		configuration.setAttribute(IConsoleConfigurationLaunchConstants.CONFIGURATION_FACTORY, getConfigurationMode().toString());
-		configuration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, nonEmptyTrimOrNull( projectNameText ));
+		configuration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, projectName);
+		if (projectName != null){
+			configuration.setAttribute(LaunchConfiguration.ATTR_MAPPED_RESOURCE_PATHS,
+					Collections.singletonList(nonEmptyTrimOrNull( projectName )));
+			configuration.setAttribute(LaunchConfiguration.ATTR_MAPPED_RESOURCE_TYPES, Collections.singletonList(Integer.toString(IResource.PROJECT)));
+		} else {
+			configuration.removeAttribute(LaunchConfiguration.ATTR_MAPPED_RESOURCE_PATHS);
+			configuration.removeAttribute(LaunchConfiguration.ATTR_MAPPED_RESOURCE_TYPES);
+		}
 		configuration.setAttribute(IConsoleConfigurationLaunchConstants.PROPERTY_FILE, nonEmptyTrimOrNull(propertyFileText));
 		configuration.setAttribute(IConsoleConfigurationLaunchConstants.CFG_XML_FILE, nonEmptyTrimOrNull(configurationFileText));
 		configuration.setAttribute(IConsoleConfigurationLaunchConstants.PERSISTENCE_UNIT_NAME, nonEmptyTrimOrNull(persistenceUnitNameText));

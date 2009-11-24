@@ -23,6 +23,7 @@ package org.hibernate.eclipse.console.wizards;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.resources.IContainer;
@@ -31,9 +32,11 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.internal.core.LaunchConfiguration;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.jdt.core.IJavaElement;
@@ -81,6 +84,7 @@ import org.hibernate.util.StringHelper;
  * 
  * @author max
  */
+@SuppressWarnings("restriction")
 public class ConsoleConfigurationWizardPage extends WizardPage implements
 		ILaunchConfigurationDialog {
 
@@ -421,9 +425,14 @@ public class ConsoleConfigurationWizardPage extends WizardPage implements
 	static protected void setProjAttribute(ILaunchConfigurationWorkingCopy currentLaunchConfig, String attr, IJavaProject proj) {
 		if (proj != null) {
 			currentLaunchConfig.setAttribute(attr, nonEmptyTrimOrNull(proj.getElementName()));
+			currentLaunchConfig.setAttribute(LaunchConfiguration.ATTR_MAPPED_RESOURCE_PATHS,
+					Collections.singletonList(new Path(nonEmptyTrimOrNull(proj.getElementName())).makeAbsolute().toString()));
+			currentLaunchConfig.setAttribute(LaunchConfiguration.ATTR_MAPPED_RESOURCE_TYPES, Collections.singletonList(Integer.toString(IResource.PROJECT)));
 		}
 		else {
 			currentLaunchConfig.setAttribute(attr, (String)null);
+			currentLaunchConfig.removeAttribute(LaunchConfiguration.ATTR_MAPPED_RESOURCE_PATHS);
+			currentLaunchConfig.removeAttribute(LaunchConfiguration.ATTR_MAPPED_RESOURCE_TYPES);
 		}
 	}
 	

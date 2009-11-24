@@ -24,6 +24,7 @@ package org.hibernate.eclipse.console.views;
 
 import java.io.FileNotFoundException;
 
+import org.eclipse.debug.internal.ui.DebugUIPlugin;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
@@ -38,6 +39,8 @@ import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
@@ -64,6 +67,7 @@ import org.hibernate.mapping.Property;
  * @author max
  *
  */
+@SuppressWarnings("restriction")
 public class KnownConfigurationsView extends ViewPart {
 
 	public static final String ID = "org.hibernate.eclipse.console.views.KnownConfigurationsView";	//$NON-NLS-1$
@@ -88,7 +92,16 @@ public class KnownConfigurationsView extends ViewPart {
 		
 		viewer.setLabelProvider(new AnyAdaptableLabelProvider());
 		
-		viewer.setContentProvider(new KnownConfigurationsProvider());
+		final KnownConfigurationsProvider cp = new KnownConfigurationsProvider();
+		viewer.setContentProvider(cp);
+		DebugUIPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(cp);
+		
+		viewer.getTree().addDisposeListener(new DisposeListener() {
+			
+			public void widgetDisposed(DisposeEvent e) {
+				DebugUIPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(cp);
+			}
+		});
 		
 		//viewer.setInput(KnownConfigurations.getInstance().getRootNode() );
 		viewer.setInput( KnownConfigurations.getInstance() );

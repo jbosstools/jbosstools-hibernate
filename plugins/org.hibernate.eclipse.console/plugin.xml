@@ -723,7 +723,7 @@
       </moveParticipant>
 
    </extension>
-   <extension
+   <!-- extension
          point="org.eclipse.ltk.core.refactoring.deleteParticipants">
       <deleteParticipant
             class="org.hibernate.eclipse.console.DeleteProjectParticipant"
@@ -737,7 +737,7 @@
                </instanceof>
             </with></enablement>
       </deleteParticipant>
-   </extension>
+   </extension -->
    <extension
          point="org.eclipse.ui.popupMenus">
       <!--<objectContribution

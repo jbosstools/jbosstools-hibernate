@@ -26,14 +26,13 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.progress.IDeferredWorkbenchAdapter;
 import org.eclipse.ui.progress.IElementCollector;
-import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
+import org.hibernate.eclipse.console.utils.LaunchHelper;
 
 public class KnownConfigurationsWorkbenchAdapter implements IDeferredWorkbenchAdapter {
 
 	public Object[] getChildren(Object o) {
-		KnownConfigurations kc = (KnownConfigurations) o;
-		return kc.getConfigurationsSortedByName();
+		return LaunchHelper.findFilteredSortedConsoleConfigs();
 	}
 
 	public ImageDescriptor getImageDescriptor(Object object) {

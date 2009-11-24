@@ -65,6 +65,7 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
@@ -196,7 +197,7 @@ public class HibernatePropertyPage extends PropertyPage {
 		selectedConfiguration.setLayoutData(gd);
 
 		// Populate owner text field
-		ConsoleConfiguration[] configurations = KnownConfigurations.getInstance().getConfigurationsSortedByName();
+		ConsoleConfiguration[] configurations = LaunchHelper.findFilteredSortedConsoleConfigs();
 		for (int i = 0; i < configurations.length; i++) {
 			ConsoleConfiguration configuration = configurations[i];
 			selectedConfiguration.add(configuration.getName() );
