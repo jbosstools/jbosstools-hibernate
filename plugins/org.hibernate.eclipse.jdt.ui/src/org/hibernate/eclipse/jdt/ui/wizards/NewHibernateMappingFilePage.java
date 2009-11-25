@@ -17,7 +17,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.internal.ui.JavaPlugin;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jdt.internal.ui.viewsupport.ImageDescriptorRegistry;
+import org.eclipse.jdt.ui.JavaElementImageDescriptor;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ICellModifier;
@@ -31,12 +38,14 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.ui.model.IWorkbenchAdapter;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
@@ -46,6 +55,7 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
  * @author Dmitry Geraskov
  *
  */
+@SuppressWarnings("restriction")
 public class NewHibernateMappingFilePage extends WizardPage {
 
 	private TableViewer viewer;
@@ -92,20 +102,21 @@ public class NewHibernateMappingFilePage extends WizardPage {
 
 	private void createTableColumns(Table table){
 		int coulmnIndex = 0;
-		TableColumn column =  new TableColumn(table, SWT.CENTER, coulmnIndex++);
+		TableColumn column = new TableColumn(table, SWT.CENTER, coulmnIndex++);
 		column.setText("!"); //$NON-NLS-1$
-		column.setWidth(20);
+		/* Hide the column while JBIDE-4269 is not implemented.
+		 * (Filtering generated elements)
+		 */
+		column.setWidth(0);
 		column.setResizable(false);
 
-		//if (project_infos.keySet().size() > 1){
 		column = new TableColumn(table, SWT.LEFT, coulmnIndex++);
 		column.setText(JdtUiMessages.NewHibernateMappingFilePage_project_name_column);
 		column.setWidth(120);
-		//}
 
 		column = new TableColumn(table, SWT.LEFT, coulmnIndex++);
 		column.setText(JdtUiMessages.NewHibernateMappingFilePage_class_name_column);
-		column.setWidth(150);
+		column.setWidth(200);
 
 		column = new TableColumn(table, SWT.LEFT, coulmnIndex++);
 		column.setText(JdtUiMessages.NewHibernateMappingFilePage_file_name_column);
@@ -120,10 +131,11 @@ public class NewHibernateMappingFilePage extends WizardPage {
 				Columns.PROJECT.toString(),	Columns.CLASS.toString(), Columns.FILE.toString()} ); 
 
 		CellEditor[] editors = new CellEditor[result.getColumnProperties().length];
-		editors[0] = new CheckboxCellEditor( result.getTable() );
-		editors[1] = new TextCellEditor( result.getTable() );
-		editors[2] = new TextCellEditor( result.getTable() );
-		editors[3] = new TextCellEditor( result.getTable() );
+		int coulmnIndex = 0;
+		editors[coulmnIndex++] = new CheckboxCellEditor( result.getTable() );
+		editors[coulmnIndex++] = new TextCellEditor( result.getTable() );
+		editors[coulmnIndex++] = new TextCellEditor( result.getTable() );
+		editors[coulmnIndex++] = new TextCellEditor( result.getTable() );
 
 		result.setCellEditors( editors );
 		result.setCellModifier( new TableCellModifier(result) );
@@ -139,18 +151,21 @@ public class NewHibernateMappingFilePage extends WizardPage {
 		public String className;
 
 		public String fileName;
+		
+		public IProject  project;
 
 		public Boolean isCreate = true;
 
-		public TableLine(String projectName, String className){
-			this(projectName, className, className + ".hbm.xml",true); //$NON-NLS-1$
+		public TableLine(IProject iProject, String className){
+			this(iProject, className, className + ".hbm.xml",true); //$NON-NLS-1$
 		}
 
-		public TableLine(String projectName, String className, String fileName, boolean isCreate){
-			this.projectName = projectName;
+		public TableLine(IProject iProject, String className, String fileName, boolean isCreate){
+			this.projectName = iProject.getName();
 			this.className = className;
 			this.fileName = fileName;
 			this.isCreate = isCreate;
+			this.project = iProject;
 		}
 
 	}
@@ -173,7 +188,7 @@ public class NewHibernateMappingFilePage extends WizardPage {
 					Iterator<EntityInfo> iter = entry.getValue().iterator();
 					while (iter.hasNext()) {
 						EntityInfo ei = iter.next();
-						result.add(new TableLine(entry.getKey().getProject().getName(), ei.getName()));
+						result.add(new TableLine(entry.getKey().getProject(), ei.getName()));
 					}
 				}
 				return result.toArray();
@@ -190,6 +205,10 @@ public class NewHibernateMappingFilePage extends WizardPage {
 	private class TableLableProvider extends LabelProvider implements ITableLabelProvider  {
 
 		private final TableViewer tv;
+		
+		private final Point IMAGE_SIZE = new Point(16, 16);
+		
+		private final ImageDescriptorRegistry registry = JavaPlugin.getImageDescriptorRegistry();
 
 		public TableLableProvider(TableViewer tv) {
 			this.tv = tv;
@@ -197,12 +216,25 @@ public class NewHibernateMappingFilePage extends WizardPage {
 
 		public Image getColumnImage(Object element, int columnIndex) {
 			String property = (String) tv.getColumnProperties()[columnIndex];
-			if(Columns.CREATE.toString().equals(property)) {
-				TableLine tl = (TableLine) element;
+			TableLine tl = (TableLine) element;
+			if(Columns.CREATE.toString().equals(property)) {				
 				String key = tl.isCreate ? null : ImageConstants.CLOSE ; // TODO: find a better image
 				return EclipseImages.getImage(key);
+			} else if (Columns.CLASS.toString().equals(property)){
+				return registry.get(
+						new JavaElementImageDescriptor(JavaPluginImages.DESC_OBJS_CLASS, 0, IMAGE_SIZE));
+			} else if (Columns.FILE.toString().equals(property)){
+				IFile file = tl.project.getFile(tl.fileName);
+				IWorkbenchAdapter wbAdapter= (IWorkbenchAdapter) file.getAdapter(IWorkbenchAdapter.class);
+				if (wbAdapter != null) {
+					ImageDescriptor descriptor= wbAdapter.getImageDescriptor(file);
+					if (descriptor != null) {
+						return registry.get(
+								new JavaElementImageDescriptor(descriptor, 0, IMAGE_SIZE));
+					}					
+				}				
 			}
-			return  null;
+			return null;
 		}
 
 		public String getColumnText(Object element, int columnIndex) {
