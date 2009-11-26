@@ -86,8 +86,6 @@ public class JPAMapTest extends TestCase {
 	public void startTestTransformer() {
 		try {
 			createTestProject();
-		} catch (JavaModelException e1) {
-			fail(e1.getMessage());
 		} catch (CoreException e1) {
 			fail(e1.getMessage());
 		} catch (IOException e1) {
