@@ -49,7 +49,7 @@
     <ICON name="discriminator" path="images/orm2/discriminator.gif"/>
     <ICON name="dynamic-component" path="images/orm2/dynacomponent.gif"/>
     <ICON name="element" path="images/orm2/property.gif"/>
-    <ICON name="file" path="images/orm2/file.gif"/>
+    <ICON name="file" path="images/file/hibernate-file.gif"/>
     <ICON name="filter" path="images/orm2/filter.gif"/>
     <ICON name="folder" path="images/java/package.gif"/>
     <ICON name="generator" path="images/java/attr.gif"/>

@@ -15,72 +15,7 @@
  </MAPPINGS>
  <ICONS>
   <GROUP name="action"/>
-  <GROUP name="main">
-   <GROUP name="hibernate">
-    <GROUP name="relation">
-     <ICON name="collection" path="images/orm2/collection.gif"/>
-     <ICON name="collection-small" path="images/orm2/collection_small.gif"/>
-     <ICON name="manytoone" path="images/orm2/manytoone.gif"/>
-     <ICON name="onetoone" path="images/orm2/onetoone.gif"/>
-    </GROUP>
-    <ICON name="any" path="images/orm2/manytoany.gif"/>
-    <ICON name="array" path="images/orm2/collection.gif"/>
-    <ICON name="bag" path="images/orm2/collection.gif"/>
-    <ICON name="cache" path="images/java/attr.gif"/>
-    <ICON name="class" path="images/orm2/class.gif"/>
-    <ICON name="classes" path="images/file/system_folder.gif"/>
-    <ICON name="classpath" path="images/file/system_folder.gif"/>
-    <ICON name="collection-id" path="images/orm2/id.gif"/>
-    <ICON name="column" path="images/orm2/column.gif"/>
-    <ICON name="comment" path="images/orm2/comment.gif"/>
-    <ICON name="component" path="images/orm2/component.gif"/>
-    <ICON name="composite-element" path="images/orm2/component.gif"/>
-    <ICON name="composite-id" path="images/orm2/composite_id.gif"/>
-    <ICON name="composite-index" path="images/orm2/composite_id.gif"/>
-    <ICON name="discriminator" path="images/orm2/discriminator.gif"/>
-    <ICON name="dynamic-component" path="images/orm2/dynacomponent.gif"/>
-    <ICON name="element" path="images/orm2/property.gif"/>
-    <ICON name="file" path="images/orm2/file.gif"/>
-    <ICON name="filter" path="images/orm2/filter.gif"/>
-    <ICON name="folder" path="images/java/package.gif"/>
-    <ICON name="generator" path="images/java/attr.gif"/>
-    <ICON name="id" path="images/orm2/id.gif"/>
-    <ICON name="idbag" path="images/orm2/collection.gif"/>
-    <ICON name="import" path="images/java/attr.gif"/>
-    <ICON name="index" path="images/orm2/index.gif"/>
-    <ICON name="index-many-to-any" path="images/orm2/index-manytoany.gif"/>
-    <ICON name="index-many-to-many" path="images/orm2/index-manytomany.gif"/>
-    <ICON name="java-field" path="images/java/attr.gif"/>
-    <ICON name="jcs-cache" path="images/java/attr.gif"/>
-    <ICON name="joined-subclass" path="images/orm2/class.gif"/>
-    <ICON name="key" path="images/orm2/id.gif"/>
-    <ICON name="key-many-to-one" path="images/orm2/key-manytoone.gif"/>
-    <ICON name="key-property" path="images/orm2/key-property.gif"/>
-    <ICON name="list" path="images/orm2/collection.gif"/>
-    <ICON name="many-to-any" path="images/orm2/manytoany.gif"/>
-    <ICON name="many-to-many" path="images/orm2/manytomany.gif"/>
-    <ICON name="many-to-one" path="images/orm2/manytoone.gif"/>
-    <ICON name="map" path="images/orm2/collection.gif"/>
-    <ICON name="meta" path="images/java/attr.gif"/>
-    <ICON name="meta-value" path="images/java/attr.gif"/>
-    <ICON name="nested-composite-element" path="images/orm2/component.gif"/>
-    <ICON name="one-to-many" path="images/orm2/onetomany.gif"/>
-    <ICON name="one-to-one" path="images/orm2/onetoone.gif"/>
-    <ICON name="param" path="images/orm2/parameter.gif"/>
-    <ICON name="parent" path="images/jdo/relation/super_table.gif"/>
-    <ICON name="primitive-array" path="images/orm2/collection.gif"/>
-    <ICON name="property" path="images/orm2/property.gif"/>
-    <ICON name="query" path="images/orm2/parameter.gif"/>
-    <ICON name="return" path="images/java/attr.gif"/>
-    <ICON name="set" path="images/orm2/collection.gif"/>
-    <ICON name="sql-query" path="images/orm2/parameter.gif"/>
-    <ICON name="subclass" path="images/orm2/class.gif"/>
-    <ICON name="subselect" path="images/java/attr.gif"/>
-    <ICON name="synchronize" path="images/java/attr.gif"/>
-    <ICON name="timestamp" path="images/orm2/timestamp.gif"/>
-    <ICON name="version" path="images/orm2/version.gif"/>
-   </GROUP>
-  </GROUP>
+  <GROUP name="main"/>
  </ICONS>
  <GlobalActions kind="list"/>
  <XModelEntity
