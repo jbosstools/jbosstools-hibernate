@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.command;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.gef.commands.Command;
@@ -23,26 +24,40 @@ import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmShape;
  */
 public class ToggleShapeVisibleStateCommand extends Command {
 	
+	protected OrmShape primalElement;
 	protected List<OrmShape> selectedShape;
+	protected List<Boolean> selectedShapeStates;
 	
-	public ToggleShapeVisibleStateCommand(List<OrmShape> selectedShape) {
+	public ToggleShapeVisibleStateCommand(List<OrmShape> selectedShape, OrmShape primalElement) {
+		this.primalElement = primalElement;
 		this.selectedShape = selectedShape;
+		selectedShapeStates = new ArrayList<Boolean>();
+		for (OrmShape shape : selectedShape) {
+			selectedShapeStates.add(shape.isVisible());
+		}
 	}
 	
 	public void execute() {
+		boolean visState = false;
+		if (primalElement != null) {
+			visState = primalElement.isVisible();
+		} else if (selectedShape.size() > 0) {
+			visState = selectedShape.get(0).isVisible();
+		}
 		for (OrmShape shape : selectedShape) {
 			Object ormElement = shape.getOrmElement();
 			if (ormElement instanceof PersistentClass || ormElement instanceof Table) {
-				shape.setVisible(!shape.isVisible());
+				shape.setVisible(!visState);
 			}
 		}
 	}
 
 	public void undo() {
-		for (OrmShape shape : selectedShape) {
+		for (int i = 0; i < selectedShape.size(); i++) {
+			OrmShape shape = selectedShape.get(i);
 			Object ormElement = shape.getOrmElement();
 			if (ormElement instanceof PersistentClass || ormElement instanceof Table) {
-				shape.setVisible(!shape.isVisible());
+				shape.setVisible(selectedShapeStates.get(i));
 			}
 		}
 	}

@@ -172,15 +172,15 @@ public class DiagramActionBarContributor extends ActionBarContributor {
 		act[6] = (Action)getAction(ConnectionRouterFanAction.ACTION_ID);
 		diagramToggleConnectionsAction.setMenuCreator(new ActionMenu(act));
 		//
-		act = new Action[2];
-		act[0] = (Action)getAction(ShapeExpandAction.ACTION_ID);
-		act[1] = (Action)getAction(ShapeCollapseAction.ACTION_ID);
-		diagramToggleExpandStateAction.setMenuCreator(new ActionMenu(act));
+		//act = new Action[2];
+		//act[0] = (Action)getAction(ShapeExpandAction.ACTION_ID);
+		//act[1] = (Action)getAction(ShapeCollapseAction.ACTION_ID);
+		//diagramToggleExpandStateAction.setMenuCreator(new ActionMenu(act));
 		//
-		act = new Action[2];
-		act[0] = (Action)getAction(ShapeShowAction.ACTION_ID);
-		act[1] = (Action)getAction(ShapeHideAction.ACTION_ID);
-		diagramToggleVisibleStateAction.setMenuCreator(new ActionMenu(act));
+		//act = new Action[2];
+		//act[0] = (Action)getAction(ShapeShowAction.ACTION_ID);
+		//act[1] = (Action)getAction(ShapeHideAction.ACTION_ID);
+		//diagramToggleVisibleStateAction.setMenuCreator(new ActionMenu(act));
 		//
 		addRetargetAction(new UndoRetargetAction());
 		addRetargetAction(new RedoRetargetAction());

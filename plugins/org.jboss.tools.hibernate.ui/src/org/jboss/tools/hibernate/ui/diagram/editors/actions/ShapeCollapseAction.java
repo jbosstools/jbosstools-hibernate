@@ -79,7 +79,7 @@ public class ShapeCollapseAction extends SelectionAction {
 			} 
 		}
 		if (selectedShape.size() > 0) {
-			cc.add(new ToggleShapeExpandStateCommand(selectedShape));
+			cc.add(new ToggleShapeExpandStateCommand(selectedShape, null));
 		}
 		return cc;
 	}

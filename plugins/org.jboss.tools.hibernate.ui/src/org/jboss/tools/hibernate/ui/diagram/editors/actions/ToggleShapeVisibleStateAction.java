@@ -19,6 +19,7 @@ import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.editparts.AbstractTreeEditPart;
 import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchPart;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Table;
@@ -78,8 +79,21 @@ public class ToggleShapeVisibleStateAction extends SelectionAction {
 				selectedShape.add((OrmShape)obj);
 			} 
 		}
+		OrmShape primalElement = null;
+		if (getSelection() instanceof IStructuredSelection) {
+			Object firstElement = ((IStructuredSelection)getSelection()).getFirstElement();
+			Object obj = null;
+			if (firstElement instanceof OrmEditPart) {
+				obj = ((OrmEditPart)firstElement).getModel();
+			} else if (firstElement instanceof AbstractTreeEditPart) {
+				obj = ((AbstractTreeEditPart)firstElement).getModel();
+			}
+			if (null != obj && obj instanceof OrmShape) {
+				primalElement = (OrmShape)obj;
+			} 
+		}
 		if (selectedShape.size() > 0) {
-			cc.add(new ToggleShapeVisibleStateCommand(selectedShape));
+			cc.add(new ToggleShapeVisibleStateCommand(selectedShape, primalElement));
 		}
 		return cc;
 	}

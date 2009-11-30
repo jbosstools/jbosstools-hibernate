@@ -19,6 +19,7 @@ import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.editparts.AbstractTreeEditPart;
 import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchPart;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.editors.DiagramViewer;
@@ -76,8 +77,21 @@ public class ToggleShapeExpandStateAction extends SelectionAction {
 				selectedShape.add((ExpandableShape)obj);
 			} 
 		}
+		ExpandableShape primalElement = null;
+		if (getSelection() instanceof IStructuredSelection) {
+			Object firstElement = ((IStructuredSelection)getSelection()).getFirstElement();
+			Object obj = null;
+			if (firstElement instanceof OrmEditPart) {
+				obj = ((OrmEditPart)firstElement).getModel();
+			} else if (firstElement instanceof AbstractTreeEditPart) {
+				obj = ((AbstractTreeEditPart)firstElement).getModel();
+			}
+			if (null != obj && obj instanceof ExpandableShape) {
+				primalElement = (ExpandableShape)obj;
+			} 
+		}
 		if (selectedShape.size() > 0) {
-			cc.add(new ToggleShapeExpandStateCommand(selectedShape));
+			cc.add(new ToggleShapeExpandStateCommand(selectedShape, primalElement));
 		}
 		return cc;
 	}

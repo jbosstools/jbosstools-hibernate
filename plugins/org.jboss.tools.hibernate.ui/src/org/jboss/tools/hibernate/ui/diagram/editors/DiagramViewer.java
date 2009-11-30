@@ -310,15 +310,15 @@ public class DiagramViewer extends GraphicalEditor {
 		act[6] = (Action)registry.getAction(ConnectionRouterFanAction.ACTION_ID);
 		actionToggleConnections.setMenuCreator(new ActionMenu(act));
 
-		act = new Action[2];
-		act[0] = (Action)registry.getAction(ShapeExpandAction.ACTION_ID);
-		act[1] = (Action)registry.getAction(ShapeCollapseAction.ACTION_ID);
-		actionToggleShapeExpandState.setMenuCreator(new ActionMenu(act));
+		//act = new Action[2];
+		//act[0] = (Action)registry.getAction(ShapeExpandAction.ACTION_ID);
+		//act[1] = (Action)registry.getAction(ShapeCollapseAction.ACTION_ID);
+		//actionToggleShapeExpandState.setMenuCreator(new ActionMenu(act));
 
-		act = new Action[2];
-		act[0] = (Action)registry.getAction(ShapeShowAction.ACTION_ID);
-		act[1] = (Action)registry.getAction(ShapeHideAction.ACTION_ID);
-		actionToggleShapeVisibleState.setMenuCreator(new ActionMenu(act));
+		//act = new Action[2];
+		//act[0] = (Action)registry.getAction(ShapeShowAction.ACTION_ID);
+		//act[1] = (Action)registry.getAction(ShapeHideAction.ACTION_ID);
+		//actionToggleShapeVisibleState.setMenuCreator(new ActionMenu(act));
 	}
 
 	private TransferDropTargetListener createTransferDropTargetListener() {

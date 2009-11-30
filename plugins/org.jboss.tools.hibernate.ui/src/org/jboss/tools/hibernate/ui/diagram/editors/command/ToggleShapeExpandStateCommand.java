@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.diagram.editors.command;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.gef.commands.Command;
@@ -21,21 +22,35 @@ import org.jboss.tools.hibernate.ui.diagram.editors.model.ExpandableShape;
  */
 public class ToggleShapeExpandStateCommand extends Command {
 	
+	protected ExpandableShape primalElement;
 	protected List<ExpandableShape> selectedShape;
+	protected List<Boolean> selectedShapeStates;
 	
-	public ToggleShapeExpandStateCommand(List<ExpandableShape> selectedShape) {
+	public ToggleShapeExpandStateCommand(List<ExpandableShape> selectedShape, ExpandableShape primalElement) {
+		this.primalElement = primalElement;
 		this.selectedShape = selectedShape;
+		selectedShapeStates = new ArrayList<Boolean>();
+		for (ExpandableShape shape : selectedShape) {
+			selectedShapeStates.add(shape.isExpanded());
+		}
 	}
 	
 	public void execute() {
+		boolean expState = false;
+		if (primalElement != null) {
+			expState = primalElement.isExpanded();
+		} else if (selectedShape.size() > 0) {
+			expState = selectedShape.get(0).isExpanded();
+		}
 		for (ExpandableShape shape : selectedShape) {
-			shape.setExpanded(!shape.isExpanded());
+			shape.setExpanded(!expState);
 		}
 	}
 
 	public void undo() {
-		for (ExpandableShape shape : selectedShape) {
-			shape.setExpanded(!shape.isExpanded());
+		for (int i = 0; i < selectedShape.size(); i++) {
+			ExpandableShape shape = selectedShape.get(i);
+			shape.setExpanded(selectedShapeStates.get(i));
 		}
 	}
 

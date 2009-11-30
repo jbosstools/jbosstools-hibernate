@@ -81,7 +81,7 @@ public class ShapeShowAction extends SelectionAction {
 			} 
 		}
 		if (selectedShape.size() > 0) {
-			cc.add(new ToggleShapeVisibleStateCommand(selectedShape));
+			cc.add(new ToggleShapeVisibleStateCommand(selectedShape, null));
 		}
 		return cc;
 	}
