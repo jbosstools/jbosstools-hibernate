@@ -37,7 +37,12 @@ public class MappingFileTest extends HibernateTest {
 
 	/**
 	 * TC 01 - Create Hibernate Mapping file (when package is selected)
-	 */
+	 * Create new .hbm.xml
+	 * ASSERT: No exception
+	 * Select Class to map 
+	 * ASSERT: .hbm.xml must appears in JBoss Editor
+	 * Note: 2 Way check Created from package and classes
+	 */	
 	@Test
 	public void createFile() {	
 		createFilesFromPackage();

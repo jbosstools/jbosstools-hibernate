@@ -12,6 +12,8 @@ package org.jboss.tools.hibernate.ui.bot.testcase;
 
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
+import org.jboss.tools.hibernate.ui.bot.testsuite.Project;
+import org.jboss.tools.ui.bot.ext.types.EntityType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -23,7 +25,12 @@ public class ReverseEngineerFileTest extends HibernateTest {
 	 */
 	@Test
 	public void createFile() {
-
+		// Create 
+		eclipse.createNew(EntityType.HIBERNATE_REVERSE_FILE);
+		
+		
+		packageExplorer.selectProject(Project.PROJECT_NAME);
+		
 	}
 
 	/**

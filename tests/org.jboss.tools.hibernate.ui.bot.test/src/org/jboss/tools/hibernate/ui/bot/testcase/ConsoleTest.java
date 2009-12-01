@@ -11,59 +11,112 @@
 package org.jboss.tools.hibernate.ui.bot.testcase;
 
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
+import org.jboss.tools.hibernate.ui.bot.testsuite.Project;
+import org.jboss.tools.ui.bot.ext.types.EntityType;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class ConsoleTest extends HibernateTest {
 
+	@BeforeClass	
+	public static void setUp() {
+		HibernateTest.createProject();
+	}
+	
+	@AfterClass
+	public static void tearDown() { 
+		HibernateTest.clean();
+	}	
+	
+	private SWTBotShell mainShell;
+	
+	/**
+	 * Create console TestCases TC03 - TC16
+	 */
+	@Test
+	public void createConsole() {
+		packageExplorer.selectProject(Project.PROJECT_NAME);
+		eclipse.createNew(EntityType.HIBERNATE_CONSOLE);		
+				
+		createMainTab();
+		mainShell.activate();
+		createOptionTab();
+		createClasspathTab();
+		createMappingsTab();
+		createCommonTab();
+		
+		bot.button(IDELabel.Button.FINISH).click();
+	}
+	
 	/**
 	 * TC 03
 	 */
-	@Test
-	public void createMainTab() {
-
+	private void createMainTab() {
+		bot.cTabItem(IDELabel.HBConsoleWizard.MAIN_TAB).activate();
+		bot.textWithLabelInGroup("",IDELabel.HBConsoleWizard.PROJECT_GROUP ).setText(Project.PROJECT_NAME);
+		mainShell =  bot.activeShell();
+			
+		// Create new configuration file
+		bot.buttonInGroup(IDELabel.HBConsoleWizard.SETUP_BUTTON,IDELabel.HBConsoleWizard.CONFIGURATION_FILE_GROUP).click();
+		bot.button(IDELabel.HBConsoleWizard.CREATE_NEW_BUTTON).click();
+		eclipse.selectTreeLocation(Project.PROJECT_NAME, "src");
+		eclipse.button(IDELabel.Button.NEXT).click();
+		bot.comboBoxWithLabel(IDELabel.HBConsoleWizard.DATABASE_DIALECT).setSelection(Project.DB_DIALECT);
+		bot.comboBoxWithLabel(IDELabel.HBConsoleWizard.DRIVER_CLASS).setSelection(Project.DRIVER_CLASS);
+		bot.comboBoxWithLabel(IDELabel.HBConsoleWizard.CONNECTION_URL).setText(Project.JDBC_STRING);
+		
+		SWTBotShell shell = bot.activeShell();
+		bot.button(IDELabel.Button.FINISH).click();
+		eclipse.waitForClosedShell(shell);				
 	}
 
 	/**
 	 * TC 04
 	 */
-	@Test
-	public void createOptionTab() {
+	private void createOptionTab() {
+		mainShell.activate();
+		bot.cTabItem(IDELabel.HBConsoleWizard.OPTIONS_TAB).activate();
+				
 
+		bot.comboBoxWithLabelInGroup("", IDELabel.HBConsoleWizard.DATABASE_DIALECT).setSelection(Project.DB_DIALECT);
 	}
 
 	/**
 	 * TC 05
 	 */
-	@Test
-	public void createClasspathTab() {
-
+	private void createClasspathTab() {
+		mainShell.activate();
+		bot.cTabItem(IDELabel.HBConsoleWizard.CLASSPATH_TAB).activate();
 	}
 
 	/**
 	 * TC 06
 	 */
-	@Test
-	public void createMappingsTab() {
-
+	private void createMappingsTab() {
+		mainShell.activate();
+		bot.cTabItem(IDELabel.HBConsoleWizard.MAPPINGS_TAB).activate();
 	}
 
 	/**
 	 * TC 07
 	 */
-	@Test
-	public void createCommonTab() {
-
+	private void createCommonTab() {
+		mainShell.activate();
+		bot.cTabItem(IDELabel.HBConsoleWizard.COMMON_TAB).activate();
 	}
 
 	/**
 	 * TC 16
 	 */
-	@Test
+	@Test	
 	public void editConsole() {
-
+		// TODO
 	}
 
 }
