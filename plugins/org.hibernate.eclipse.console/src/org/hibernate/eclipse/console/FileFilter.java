@@ -87,6 +87,7 @@ public class FileFilter extends ViewerFilter {
 		else if (allowDirectories && element instanceof IFolder) {
 			return true;
 		} else if (element instanceof IContainer) { // IProject, IFolder
+			if (!((IContainer)element).isAccessible()) return false;
 			if (!recursive ) {
 				return true;
 			}
