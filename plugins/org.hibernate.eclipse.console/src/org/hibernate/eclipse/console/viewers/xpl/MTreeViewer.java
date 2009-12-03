@@ -19,6 +19,7 @@ import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Item;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.swt.widgets.Widget;
 
 /**
@@ -46,6 +47,17 @@ public class MTreeViewer extends TreeViewer {
 		super(parent, style);
 	}
 
+	public void clearChildren(Object node) {
+		Widget[] items = getChildren(node == null ? getTree() : (Widget)node);
+		for (int j = 0; j < items.length; j++) {
+			clearChildren(items[j]);
+			if (items[j] instanceof TreeItem) {
+				((TreeItem)items[j]).setExpanded(false);
+				((TreeItem)items[j]).clearAll(true);
+			}
+		}
+	}
+	
 	/**
 	 * Adds the given child elements to this viewer as children of the given
 	 * parent element. If this viewer does not have a sorter, the elements are

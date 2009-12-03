@@ -29,7 +29,8 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.Driver;
@@ -37,6 +38,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -74,6 +76,7 @@ import org.xml.sax.InputSource;
 public class ConsoleConfiguration implements ExecutionContextHolder {
 
 	private ExecutionContext executionContext;
+	private ConsoleConfigClassLoader classLoader = null;
 
 	private Map<String, FakeDelegatingDriver> fakeDrivers = new HashMap<String, FakeDelegatingDriver>();
 
@@ -106,6 +109,36 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		// reseting state
 		configuration = null;
 		closeSessionFactory();
+		if (executionContext != null) {
+			executionContext.execute(new ExecutionContext.Command() {
+	
+				public Object execute() {
+					Iterator<FakeDelegatingDriver> it = fakeDrivers.values().iterator();
+					while (it.hasNext()) {
+						try {
+							DriverManager.deregisterDriver(it.next());
+						} catch (SQLException e) {
+							// ignore
+						}
+					}
+					return null;
+				}
+			});
+		}
+		fakeDrivers.clear();
+		cleanUpClassLoader();
+		executionContext = null;
+	}
+
+	public void cleanUpClassLoader() {
+		ClassLoader classLoaderTmp = classLoader;
+		while (classLoaderTmp != null) {
+			if (classLoaderTmp instanceof ConsoleConfigClassLoader) {
+				((ConsoleConfigClassLoader)classLoaderTmp).close();
+			}
+			classLoaderTmp = classLoaderTmp.getParent();
+		}
+		classLoader = null;
 	}
 
 	public void build() {
@@ -237,38 +270,50 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		}
 		return customClassPathURLs;
 	}
+	
+	protected ConsoleConfigClassLoader createClassLoader() {
+		final URL[] customClassPathURLs = getCustomClassPathURLs();
+		ConsoleConfigClassLoader classLoader = AccessController.doPrivileged(new PrivilegedAction<ConsoleConfigClassLoader>() {
+			public ConsoleConfigClassLoader run() {
+				return new ConsoleConfigClassLoader(customClassPathURLs, getParentClassLoader()) {
+					protected Class<?> findClass(String name) throws ClassNotFoundException {
+						try {
+							return super.findClass(name);
+						} catch (ClassNotFoundException cnfe) {
+							throw cnfe;
+						}
+					}
+		
+					protected synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+						try {
+							return super.loadClass(name, resolve);
+						} catch (ClassNotFoundException cnfe) {
+							throw cnfe;
+						}
+					}
+		
+					public Class<?> loadClass(String name) throws ClassNotFoundException {
+						try {
+							return super.loadClass(name);
+						} catch (ClassNotFoundException cnfe) {
+							throw cnfe;
+						}
+					}
+				};
+			}
+		});
+		return classLoader;
+	}
 
 	/**
 	 * @return
 	 *
 	 */
 	public Configuration buildWith(final Configuration cfg, final boolean includeMappings) {
-			URL[] customClassPathURLs = getCustomClassPathURLs();
-			executionContext = new DefaultExecutionContext( getName(), new URLClassLoader( customClassPathURLs, getParentClassLoader() ) {
-				protected Class<?> findClass(String name) throws ClassNotFoundException {
-					try {
-					return super.findClass( name );
-					} catch(ClassNotFoundException cnfe) {
-						throw cnfe;
-					}
-				}
-
-				protected synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
-					try {
-						return super.loadClass( name, resolve );
-					} catch(ClassNotFoundException cnfe) {
-						throw cnfe;
-					}
-				}
-
-				public Class<?> loadClass(String name) throws ClassNotFoundException {
-					try {
-					return super.loadClass( name );
-					} catch(ClassNotFoundException cnfe) {
-						throw cnfe;
-					}
-				}
-			});
+			if (classLoader == null) {
+				classLoader = createClassLoader();
+			}
+			executionContext = new DefaultExecutionContext(getName(), classLoader);
 
 			Configuration result = (Configuration) executionContext.execute(new ExecutionContext.Command() {
 

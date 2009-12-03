@@ -21,7 +21,6 @@
  */
 package org.hibernate.console.execution;
 
-import java.net.URLClassLoader;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -31,13 +30,13 @@ import org.hibernate.eclipse.logging.CurrentContext;
 
 public class DefaultExecutionContext implements ExecutionContext {
 
-	final private URLClassLoader configurationClassLoader;
+	final private ClassLoader configurationClassLoader;
 	private volatile int installs;
 	private Map<Thread, ClassLoader> previousLoaders = new WeakHashMap<Thread, ClassLoader>();
 
 	final String key;
 
-	public DefaultExecutionContext(String key, URLClassLoader loader) {
+	public DefaultExecutionContext(String key, ClassLoader loader) {
 		configurationClassLoader = loader;
 		this.key = key;
 	}
@@ -45,7 +44,7 @@ public class DefaultExecutionContext implements ExecutionContext {
 	/* (non-Javadoc)
 	 * @see org.hibernate.console.IExecutionContext#installLoader()
 	 */
-	public void installLoader() {
+	public synchronized void installLoader() {
 		installs++;
 		if(configurationClassLoader!=null && Thread.currentThread().getContextClassLoader() != configurationClassLoader) {
 			previousLoaders.put(Thread.currentThread(), Thread.currentThread().getContextClassLoader() );
@@ -57,7 +56,7 @@ public class DefaultExecutionContext implements ExecutionContext {
 	/* (non-Javadoc)
 	 * @see org.hibernate.console.IExecutionContext#execute(org.hibernate.console.ExecutionContext.Command)
 	 */
-	public Object execute(Command c) {
+	public synchronized Object execute(Command c) {
 		try {
 			CurrentContext.push( key );
 			installLoader();
@@ -72,7 +71,7 @@ public class DefaultExecutionContext implements ExecutionContext {
 	/* (non-Javadoc)
 	 * @see org.hibernate.console.IExecutionContext#uninstallLoader()
 	 */
-	public void uninstallLoader() {
+	public synchronized void uninstallLoader() {
 		installs--; // TODO: make more safe (synchronized) bookkeeping of the classloader installation.
 
 		if(installs==0) {

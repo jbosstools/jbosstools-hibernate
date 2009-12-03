@@ -34,6 +34,7 @@ import org.eclipse.ui.actions.ActionGroup;
 import org.eclipse.ui.actions.SelectionListenerAction;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.actions.AddConfigurationAction;
+import org.hibernate.eclipse.console.actions.CloseConfigAction;
 import org.hibernate.eclipse.console.actions.CriteriaEditorAction;
 import org.hibernate.eclipse.console.actions.DeleteConfigurationAction;
 import org.hibernate.eclipse.console.actions.EditConsoleConfiguration;
@@ -76,6 +77,7 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 	public static final String GROUP_OTHER_EDITORS_LAST = "group.otherEditors.last"; //$NON-NLS-1$
 
 	private Action addConfigurationAction;
+	private SelectionListenerAction closeConfigAction;
 	private SelectionListenerAction deleteConfigurationAction;
 	private SelectionListenerAction refreshAction;
 	//private SelectionListenerAction connectAction;
@@ -92,6 +94,9 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 		
 		this.selectionProvider = selectionProvider;
 		addConfigurationAction = new AddConfigurationAction(part);
+		
+		closeConfigAction = new CloseConfigAction(selectionProvider);
+		selectionProvider.addSelectionChangedListener(closeConfigAction);
 		
 		deleteConfigurationAction = new DeleteConfigurationAction(selectionProvider);
 		selectionProvider.addSelectionChangedListener(deleteConfigurationAction);
@@ -133,6 +138,7 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 
 	public void dispose() {
 		super.dispose();
+		selectionProvider.removeSelectionChangedListener(closeConfigAction);
 		selectionProvider.removeSelectionChangedListener(deleteConfigurationAction);
 		selectionProvider.removeSelectionChangedListener(refreshAction);
 		selectionProvider.removeSelectionChangedListener(reloadConfigurationAction);
@@ -160,6 +166,7 @@ public class ConfigurationsViewActionGroup extends ActionGroup {
 		if (first instanceof ConsoleConfiguration) {
 			menu.appendToGroup(GROUP_CONSOLE_CONFIG, reloadConfigurationAction);
 			menu.appendToGroup(GROUP_CONSOLE_CONFIG, editConfigurationAction);
+			menu.appendToGroup(GROUP_CONSOLE_CONFIG, closeConfigAction);
 			menu.appendToGroup(GROUP_CONSOLE_CONFIG, deleteConfigurationAction);
 		}		
 		menu.add(new GroupMarker(GROUP_CONSOLE_CONFIG_LAST));

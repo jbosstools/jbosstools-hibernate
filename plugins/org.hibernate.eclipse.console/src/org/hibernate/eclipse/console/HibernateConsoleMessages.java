@@ -49,6 +49,7 @@ public class HibernateConsoleMessages extends NLS {
 	public static String ConsoleConfigurationBasedAction_problem_while_executing;
 	public static String CriteriaEditorAction_hibernate_criteria_editor;
 	public static String CriteriaEditorAction_open_hibernate_criteria_editor;
+	public static String CloseConfigAction_close_config;
 	public static String DeleteConfigurationAction_delete_config;
 	public static String DeleteConfigurationAction_delete_console_config;
 	public static String DeleteConfigurationAction_do_you_wish_del_selected_config;
