@@ -37,7 +37,7 @@
         <property>.hbm.xml</property>
       </emphasis> files, Hibernate Tools provide a basic wizard which you can bring up by navigating <emphasis>
         <property>New > Hibernate XML mapping file</property>.</emphasis></para>
-  	<para>At first you&apos;ll be asked to select a package or multiple individual classes to map.</para>
+    <para>At first you&apos;ll be asked to select a package or multiple individual classes to map. It's also possible to create  an empty file, don't select any packages or classes and an empty .hbm will be created in the specified location</para>
     <figure>
       <title>Hibernate XML Mapping File Wizard</title>
 
