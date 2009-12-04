@@ -30,7 +30,7 @@ public class ConfigurationFileTest extends HibernateTest {
 
 	@BeforeClass
 	public static void setUp() {
-		HibernateTest.createProject();
+		HibernateTest.prepareProject();
 	}
 	
 	@AfterClass

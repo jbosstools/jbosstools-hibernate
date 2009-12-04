@@ -10,6 +10,7 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.ui.bot.testsuite;
 
+import org.jboss.tools.hibernate.ui.bot.testcase.CodeGenerationLauncherTest;
 import org.jboss.tools.hibernate.ui.bot.testcase.ConfigurationFileTest;
 import org.jboss.tools.hibernate.ui.bot.testcase.ConsoleTest;
 import org.jboss.tools.hibernate.ui.bot.testcase.MappingFileTest;
@@ -33,8 +34,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	ReverseEngineerFileTest.class, ViewsTest.class */
 		
 @SuiteClasses( { 	ConfigurationFileTest.class,
-					ConsoleTest.class,
-					MappingFileTest.class})		
+					ConsoleTest.class,					
+					MappingFileTest.class,
+					CodeGenerationLauncherTest.class})		
 		
 public class HibernateAllTests extends HibernateTest {
 

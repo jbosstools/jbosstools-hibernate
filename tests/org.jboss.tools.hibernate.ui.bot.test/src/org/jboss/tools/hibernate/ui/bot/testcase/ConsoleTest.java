@@ -26,7 +26,7 @@ public class ConsoleTest extends HibernateTest {
 
 	@BeforeClass	
 	public static void setUp() {
-		HibernateTest.createProject();
+		HibernateTest.prepareProject();
 	}
 	
 	@AfterClass
@@ -35,12 +35,15 @@ public class ConsoleTest extends HibernateTest {
 	}	
 	
 	private SWTBotShell mainShell;
+	private static boolean done = false;
 	
 	/**
 	 * Create console TestCases TC03 - TC16
 	 */
 	@Test
 	public void createConsole() {
+		if (done) return;
+		
 		packageExplorer.selectProject(Project.PROJECT_NAME);
 		eclipse.createNew(EntityType.HIBERNATE_CONSOLE);		
 				
@@ -52,6 +55,8 @@ public class ConsoleTest extends HibernateTest {
 		createCommonTab();
 		
 		bot.button(IDELabel.Button.FINISH).click();
+		
+		done = true;
 	}
 	
 	/**
@@ -73,7 +78,8 @@ public class ConsoleTest extends HibernateTest {
 		
 		SWTBotShell shell = bot.activeShell();
 		bot.button(IDELabel.Button.FINISH).click();
-		eclipse.waitForClosedShell(shell);				
+		eclipse.waitForClosedShell(shell);
+		
 	}
 
 	/**

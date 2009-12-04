@@ -21,6 +21,7 @@ import java.nio.channels.FileChannel;
 
 import org.eclipse.core.runtime.Platform;
 import org.jboss.tools.hibernate.ui.bot.testcase.Activator;
+import org.jboss.tools.hibernate.ui.bot.testcase.ConsoleTest;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.entity.JavaClassEntity;
 import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
@@ -39,11 +40,11 @@ public class HibernateTest extends SWTTestExt {
 	
 
 	public static void prepare() {	
-		createProject();
-		createClasses();
+		prepareProject();
+		prepareClasses();
 	}
 	
-	public static void createClasses() {
+	public static void prepareClasses() {
 		
 		if (classesCreated) return; 
 		
@@ -63,7 +64,7 @@ public class HibernateTest extends SWTTestExt {
 		classesCreated = true;		
 	}
 	
-	public static void createProject() {
+	public static void prepareProject() {
 		
 		if (projectCreated) return;
 		
@@ -128,6 +129,10 @@ public class HibernateTest extends SWTTestExt {
 		if (finished) return;
 		
 		log.info("Clean finished");
-		bot.sleep(TIME_10S);
+	}
+
+	public static void prepareConsole() {
+		ConsoleTest consoleTest = new ConsoleTest();
+		consoleTest.createConsole();
 	}
 }
