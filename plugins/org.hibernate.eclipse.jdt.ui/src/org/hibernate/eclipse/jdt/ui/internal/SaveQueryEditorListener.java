@@ -10,16 +10,17 @@
   ******************************************************************************/
 package org.hibernate.eclipse.jdt.ui.internal;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.ui.refactoring.RefactoringSaveHelper;
 import org.eclipse.jdt.internal.ui.refactoring.actions.RefactoringStarter;
+import org.eclipse.jdt.ui.refactoring.RefactoringSaveHelper;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.ltk.core.refactoring.Change;
-import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.eclipse.ltk.core.refactoring.DocumentChange;
+import org.eclipse.ltk.core.refactoring.MultiStateTextFileChange;
 import org.eclipse.ltk.core.refactoring.Refactoring;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.ui.refactoring.RefactoringWizard;
@@ -33,6 +34,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.text.edits.TextEdit;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.IWorkbenchPart;
@@ -112,6 +114,7 @@ public class SaveQueryEditorListener implements IPropertyListener {
 		if (IEditorPart.PROP_DIRTY == propId && !editor.isDirty()){
 			IDocumentProvider docProvider = fromEditorPart.getDocumentProvider();
 
+			final IFile file = ((IFileEditorInput) fromEditorPart.getEditorInput()).getFile();
 			final IDocument doc = docProvider.getDocument( fromEditorPart.getEditorInput() );
 			boolean isDocChanged = true;
 			try {
@@ -158,9 +161,10 @@ public class SaveQueryEditorListener implements IPropertyListener {
 					change.setEdit(replaceEdit);
 
 					String cc_name = NLS.bind(JdtUiMessages.SaveQueryEditorListener_composite_change_name, editor_name);
-					final CompositeChange cc = new CompositeChange(cc_name);
-					cc.add(change);
-					return cc;
+					MultiStateTextFileChange mChange = new MultiStateTextFileChange(cc_name, file);
+					mChange.addChange(change);
+
+					return mChange;
 				}
 
 				@Override
