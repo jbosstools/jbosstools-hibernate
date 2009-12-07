@@ -292,6 +292,9 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 	}
 
 	public void setContents(Object contents) {
+		if (getViewer().getEditPartFactory() == null) {
+			getViewer().setEditPartFactory(new TreePartFactory());
+		}
 		getViewer().setContents(contents);
 	}
 

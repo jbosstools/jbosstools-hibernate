@@ -48,10 +48,6 @@ public class LexicalSortingAction extends Action {
 		}
 	}
 
-	public boolean isChecked() {
-		return getOrmDiagram().isDeepIntoSort();
-	}
-
 	public void run() {
 		valueChanged(!getOrmDiagram().isDeepIntoSort());
 		setChecked(getOrmDiagram().isDeepIntoSort());
