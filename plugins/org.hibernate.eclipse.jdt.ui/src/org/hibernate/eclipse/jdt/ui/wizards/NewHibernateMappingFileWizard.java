@@ -165,7 +165,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 							for (int k = 0; k < rootChildren.length; k++) {
 								if (rootChildren[k] instanceof IParent && ((IParent)rootChildren[k]).hasChildren()){
 									filteredElements.add(rootChildren[k]);	
-								}						
+								}
 							}														
 						}
 					} 
@@ -427,5 +427,10 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 					HibernateConsolePlugin.getDefault().log(e);
 				}
 		}
+	}
+	
+	@Override
+	public boolean canFinish() {
+		return !page0.getSelection().isEmpty() || cPage.isPageComplete();
 	}
 }
