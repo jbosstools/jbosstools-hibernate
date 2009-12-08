@@ -33,8 +33,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.IParent;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.JavaElement;
@@ -163,8 +163,14 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 						if (!roots[j].isArchive()){
 							IJavaElement[] rootChildren = roots[j].getChildren();
 							for (int k = 0; k < rootChildren.length; k++) {
-								if (rootChildren[k] instanceof IParent && ((IParent)rootChildren[k]).hasChildren()){
-									filteredElements.add(rootChildren[k]);	
+								if (rootChildren[k] instanceof IPackageFragment) {
+									IPackageFragment pkg = (IPackageFragment) rootChildren[k];
+									try {
+										if (pkg.containsJavaResources())
+											filteredElements.add(rootChildren[k]);
+									} catch (JavaModelException e1) {
+										e1.printStackTrace();
+									}
 								}
 							}														
 						}

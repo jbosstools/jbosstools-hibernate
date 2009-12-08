@@ -11,11 +11,16 @@
 
 package org.hibernate.eclipse.jdt.ui.wizards;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.internal.core.JavaModelManager;
+import org.eclipse.jdt.internal.ui.dialogs.PackageSelectionDialog;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaElementLabelProvider;
 import org.eclipse.jdt.ui.JavaUI;
@@ -23,6 +28,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.PlatformUI;
@@ -75,21 +81,13 @@ public class AddRemoveTableComposite extends UpDownListComposite {
 					dialog.setTitle(JdtUiMessages.AddRemoveTableComposite_java_types_title); 
 					dialog.setMessage(JdtUiMessages.AddRemoveTableComposite_java_select_types);
 				} else if (i == 1){
-					dialog=
-						JavaUI.createPackageDialog(
-							getShell(),
-							PlatformUI.getWorkbench().getProgressService(),
-							scope,
-							true,
-							true,
-							null);
-						dialog.setTitle(JdtUiMessages.AddRemoveTableComposite_java_packages_title); 
-						dialog.setMessage(JdtUiMessages.AddRemoveTableComposite_java_select_packages);
+					dialog = new JavaPackageSelectionDialog(getShell(), scope);
+					dialog.setTitle(JdtUiMessages.AddRemoveTableComposite_java_packages_title); 
+					dialog.setMessage(JdtUiMessages.AddRemoveTableComposite_java_select_packages);
 				} else {
 					return null;
-				}
-					
-					
+				}					
+
 				if (dialog.open() == IDialogConstants.CANCEL_ID)
 					return null;
 
@@ -98,8 +96,36 @@ public class AddRemoveTableComposite extends UpDownListComposite {
 				return null;
 			}
 	}
-	
-	
 
+}
+
+@SuppressWarnings("restriction")
+class JavaPackageSelectionDialog extends PackageSelectionDialog {
+	
+	public JavaPackageSelectionDialog(Shell parent, IJavaSearchScope scope) {
+		super(parent,
+				PlatformUI.getWorkbench().getProgressService(),
+				PackageSelectionDialog.F_HIDE_EMPTY_INNER,
+				scope);
+		setIgnoreCase(false);
+		setMultipleSelection(true);
+	}
+	
+	@Override
+	public void setElements(Object[] elements) {
+		List<IPackageFragment> javaPackages = new ArrayList<IPackageFragment>();
+		for (Object element : elements) {
+			if (element instanceof IPackageFragment) {
+				IPackageFragment pkg = (IPackageFragment) element;
+				try {
+					if (pkg.containsJavaResources()) javaPackages.add(pkg);
+				} catch (JavaModelException e) {
+					e.printStackTrace();
+				}				
+			}
+		}
+		super.setElements(javaPackages.toArray());
+	}
+	
 }
 
