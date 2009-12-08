@@ -270,7 +270,7 @@ class ProcessEntityInfo extends ASTVisitor {
 			String className = entryInfo.getName();
 			Table table = new Table(className.toUpperCase());
 			RootClass rootClass = new RootClass();
-			rootClass.setEntityName( className );
+			rootClass.setEntityName( entryInfo.getFullyQualifiedName() );
 			rootClass.setClassName( entryInfo.getFullyQualifiedName() );
 			rootClass.setProxyInterfaceName( entryInfo.getFullyQualifiedName() );
 			rootClass.setLazy(true);
