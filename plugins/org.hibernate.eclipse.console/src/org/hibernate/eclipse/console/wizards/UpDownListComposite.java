@@ -224,7 +224,7 @@ public class UpDownListComposite extends Composite {
 		return button;
 	}
 
-	private void handleButtonPressed(Button button) {
+	protected void handleButtonPressed(Button button) {
 		if (button == removeButton) {
 			handleRemove();
 		} else if (button == upButton) {
