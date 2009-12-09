@@ -16,6 +16,7 @@ import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
 import org.jboss.tools.hibernate.ui.bot.testsuite.Project;
 import org.jboss.tools.ui.bot.ext.types.EntityType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.jboss.tools.ui.bot.ext.types.ViewType;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -44,6 +45,9 @@ public class ConsoleTest extends HibernateTest {
 	public void createConsole() {
 		if (done) return;
 		
+		log.info("HB Console creation STARTED");
+		
+		eclipse.showView(ViewType.PACKAGE_EXPLORER);
 		packageExplorer.selectProject(Project.PROJECT_NAME);
 		eclipse.createNew(EntityType.HIBERNATE_CONSOLE);		
 				
@@ -55,6 +59,7 @@ public class ConsoleTest extends HibernateTest {
 		createCommonTab();
 		
 		bot.button(IDELabel.Button.FINISH).click();
+		log.info("HB Console creation FINISHED");
 		
 		done = true;
 	}
@@ -79,7 +84,8 @@ public class ConsoleTest extends HibernateTest {
 		SWTBotShell shell = bot.activeShell();
 		bot.button(IDELabel.Button.FINISH).click();
 		eclipse.waitForClosedShell(shell);
-		
+		log.info("HB Console Main tab DONE");		
+		bot.sleep(TIME_1S);
 	}
 
 	/**
@@ -91,6 +97,8 @@ public class ConsoleTest extends HibernateTest {
 				
 
 		bot.comboBoxWithLabelInGroup("", IDELabel.HBConsoleWizard.DATABASE_DIALECT).setSelection(Project.DB_DIALECT);
+		log.info("HB Console Option tab DONE");
+		bot.sleep(TIME_1S);
 	}
 
 	/**
@@ -99,6 +107,8 @@ public class ConsoleTest extends HibernateTest {
 	private void createClasspathTab() {
 		mainShell.activate();
 		bot.cTabItem(IDELabel.HBConsoleWizard.CLASSPATH_TAB).activate();
+		log.info("HB Console ClassPath tab DONE");
+		bot.sleep(TIME_1S);
 	}
 
 	/**
@@ -107,6 +117,8 @@ public class ConsoleTest extends HibernateTest {
 	private void createMappingsTab() {
 		mainShell.activate();
 		bot.cTabItem(IDELabel.HBConsoleWizard.MAPPINGS_TAB).activate();
+		log.info("HB Console Mappings tab DONE");
+		bot.sleep(TIME_1S);
 	}
 
 	/**
@@ -115,6 +127,8 @@ public class ConsoleTest extends HibernateTest {
 	private void createCommonTab() {
 		mainShell.activate();
 		bot.cTabItem(IDELabel.HBConsoleWizard.COMMON_TAB).activate();
+		log.info("HB Console Common tab DONE");
+		bot.sleep(TIME_1S);
 	}
 
 	/**

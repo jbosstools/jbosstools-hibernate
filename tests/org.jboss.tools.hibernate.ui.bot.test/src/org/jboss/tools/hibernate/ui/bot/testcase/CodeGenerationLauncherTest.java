@@ -10,9 +10,13 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.ui.bot.testcase;
 
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.hamcrest.Matcher;
 import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
 import org.jboss.tools.hibernate.ui.bot.testsuite.Project;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -25,12 +29,14 @@ import org.junit.runner.RunWith;
 public class CodeGenerationLauncherTest extends HibernateTest {
 
 	SWTBotShell mainShell = null;
+	public static boolean generationDone = false;
 	
 	@BeforeClass
 	public static void setUp() {
 
 		prepareProject();
 		prepareConsole();
+		prepareDatabase();
 	}
 	
 	/**
@@ -38,6 +44,9 @@ public class CodeGenerationLauncherTest extends HibernateTest {
 	 */
 	@Test
 	public void generate() {
+		if (generationDone) return;
+		
+		log.info("HB Code Generation STARTED");
 		eclipse.openPerspective(PerspectiveType.HIBERNATE);
 		
 		createNewHibernateCodeGenerationConfiguration();
@@ -46,8 +55,10 @@ public class CodeGenerationLauncherTest extends HibernateTest {
 		fillExportersTab();
 		fillRefreshTab();
 		fillCommonTab();		
-			
-		bot.button(IDELabel.Button.RUN);
+				
+		bot.button(IDELabel.Button.RUN).click();	
+		log.info("HB Code Generation FINISHED");
+		generationDone = true;			
 	}
 	private void createNewHibernateCodeGenerationConfiguration() {
 		SWTBotMenu menu = null;
@@ -57,6 +68,7 @@ public class CodeGenerationLauncherTest extends HibernateTest {
 		
 		mainShell = bot.activeShell();
 	}
+	
 	/**
 	 * TC 09
 	 */
@@ -81,6 +93,18 @@ public class CodeGenerationLauncherTest extends HibernateTest {
 		bot.button(IDELabel.Button.OK).click();
 		eclipse.selectTreeLocation(Project.PROJECT_NAME,"gen");
 		bot.button(IDELabel.Button.OK).click();
+		
+		// Create console configuration
+		Matcher<Button> matcher = WidgetMatcherFactory.withText("Reverse engineer from JDBC Connection");
+		Button button = bot.widget(matcher);		
+		SWTBotCheckBox cb = new SWTBotCheckBox(button); 
+				
+		if (!cb.isChecked())
+			cb.click();
+		
+		bot.textWithLabel("Package:").setText("org.test");
+		log.info("HB Code Generation Main tab DONE");
+		bot.sleep(TIME_1S);
 	}
 
 	/**
@@ -90,7 +114,9 @@ public class CodeGenerationLauncherTest extends HibernateTest {
 		mainShell.activate();
 		bot.cTabItem(IDELabel.HBLaunchConfigurationDialog.EXPORTERS_TAB).activate();
 		bot.table().select("Domain code (.java)");
-		bot.table().getTableItem(0).check();		
+		bot.table().getTableItem(0).check();
+		log.info("HB Code Generation Exporters tab DONE");
+		bot.sleep(TIME_1S);
 	}
 
 	/**
@@ -99,7 +125,8 @@ public class CodeGenerationLauncherTest extends HibernateTest {
 	public void fillRefreshTab() {
 		mainShell.activate();
 		bot.cTabItem(IDELabel.HBLaunchConfigurationDialog.REFRESH_TAB).activate();
-
+		log.info("HB Code Generation Refresh tab DONE");
+		bot.sleep(TIME_1S);
 	}
 
 	/**
@@ -108,6 +135,8 @@ public class CodeGenerationLauncherTest extends HibernateTest {
 	public void fillCommonTab() {
 		mainShell.activate();
 		bot.cTabItem(IDELabel.HBLaunchConfigurationDialog.COMMON_TAB).activate();
+		log.info("HB Code Generation Common tab DONE");
+		bot.sleep(TIME_1S);
 	}
 
 }

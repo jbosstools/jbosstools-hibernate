@@ -22,7 +22,7 @@ public class Project {
 	public static final String PROJECT_NAME = "HibernateTest";
 	public static final String DB_DIALECT = "HSQL";
 	public static final String DRIVER_CLASS = "org.hsqldb.jdbcDriver";
-	public static final String JDBC_STRING = "jdbc:hsqldb:hsql://localhost/hbtestdb";
+	public static final String JDBC_STRING = "jdbc:hsqldb:hsql://localhost/xdb";
 	public static final String HSQLDB_PATH = "/home/jpeterka/lib/hsqldb";
 	public static final String CONF_FILE_NAME2 = "hibernate2.cfg.xml";
 

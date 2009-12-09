@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.jboss.tools.ui.bot.ext"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/HSQLDB"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

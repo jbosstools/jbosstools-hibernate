@@ -10,6 +10,7 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.ui.bot.testsuite;
 
+import static org.eclipse.swtbot.eclipse.finder.matchers.WithPartName.withPartName;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -20,11 +21,22 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.datatools.connectivity.ConnectionProfileException;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.eclipse.ui.IViewReference;
+import org.hamcrest.Matcher;
 import org.jboss.tools.hibernate.ui.bot.testcase.Activator;
 import org.jboss.tools.hibernate.ui.bot.testcase.ConsoleTest;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.entity.JavaClassEntity;
 import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
+import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
+import org.jboss.tools.ui.bot.ext.helper.DatabaseHelper;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
@@ -34,10 +46,9 @@ public class HibernateTest extends SWTTestExt {
 	private static boolean finished = false;
 	private static boolean classesCreated = false;
 	private static boolean projectCreated = false;
+	private static boolean databasePrepared = false;
 	
 	//private static Properties properties;	
-	
-	
 
 	public static void prepare() {	
 		prepareProject();
@@ -53,13 +64,13 @@ public class HibernateTest extends SWTTestExt {
 		classEntity.setClassName(Project.CLASS1);
 		classEntity.setPackageName(Project.PACKAGE_NAME);
 		eclipse.createJavaClass(classEntity);
-		eclipse.setClassContentFromResource(Activator.PLUGIN_ID, "src", Project.PACKAGE_NAME, Project.CLASS1+".java");
+		eclipse.setClassContentFromResource(true, Activator.PLUGIN_ID, "src", Project.PACKAGE_NAME, Project.CLASS1+".java");
 		
 		// Class 2		
 		classEntity.setClassName(Project.CLASS2);
 		classEntity.setPackageName(Project.PACKAGE_NAME);
 		eclipse.createJavaClass(classEntity);
-		eclipse.setClassContentFromResource(Activator.PLUGIN_ID, "src", Project.PACKAGE_NAME, Project.CLASS2+".java");
+		eclipse.setClassContentFromResource(true, Activator.PLUGIN_ID, "src", Project.PACKAGE_NAME, Project.CLASS2+".java");
 
 		classesCreated = true;		
 	}
@@ -101,7 +112,31 @@ public class HibernateTest extends SWTTestExt {
 	}
 	
 	public static void addDriverClassPath() {
-		// TODO add hsqldb into classpath
+			
+		eclipse.showView(ViewType.PROJECT_EXPLORER);
+		SWTBotView view = bot.viewByTitle("Project Explorer");
+		view.show();
+		view.setFocus();
+		SWTBot packageExplorerBot = view.bot();		
+		SWTBotTree tree = packageExplorerBot.tree();
+
+		// Bot workaround for Bot menu
+		ContextMenuHelper.prepareTreeItemForContextMenu(tree);	    
+	    new SWTBotMenu(ContextMenuHelper.getContextMenu(tree,"Refresh",false)).click();
+
+		ContextMenuHelper.prepareTreeItemForContextMenu(tree);	    
+	    new SWTBotMenu(ContextMenuHelper.getContextMenu(tree,"Properties",false)).click();
+	    
+	    // Set build path
+	    bot.tree().expandNode("Java Build Path").select();
+	    bot.tabItem("Libraries").activate();
+	    bot.button("Add JARs...").click();
+	    bot.tree().expandNode(Project.PROJECT_NAME).expandNode("hsqldb.jar").select();
+	    
+	    bot.button(IDELabel.Button.OK).click();
+	    bot.sleep(TIME_1S);
+	    bot.button(IDELabel.Button.OK).click();
+	    bot.sleep(TIME_1S);
 	}
 	
 	/**
@@ -122,7 +157,8 @@ public class HibernateTest extends SWTTestExt {
     	inChannel.transferTo(0, inChannel.size(),	outChannel);
 
     	if (inChannel != null) inChannel.close();
-    	if (outChannel != null) outChannel.close();	
+    	if (outChannel != null) outChannel.close();
+    	log.info("Driver hsqldb.jar copied");
 	}
 
 	public static void clean() {
@@ -134,5 +170,58 @@ public class HibernateTest extends SWTTestExt {
 	public static void prepareConsole() {
 		ConsoleTest consoleTest = new ConsoleTest();
 		consoleTest.createConsole();
+	}
+		
+	
+	public static void prepareDatabase()  {
+		if (databasePrepared) return;
+		
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(Platform.getLocation());
+		stringBuilder.append(File.separator);
+		stringBuilder.append(Project.PROJECT_NAME);
+		stringBuilder.append(File.separator);
+		stringBuilder.append("hsqldb.jar");
+		
+		try {
+			DatabaseHelper.createDriver(stringBuilder.toString());
+		} catch (ConnectionProfileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		eclipse.openPerspective(PerspectiveType.DB_DEVELOPMENT);
+		eclipse.showView(ViewType.DATA_SOURCE_EXPLORER);		
+		
+		bot.sleep(TIME_1S);
+		
+		//bot.activetree().expandNode("Database Connections").select();
+		
+		Matcher<IViewReference> matcher = withPartName("Data Source Explorer");
+		SWTBotView view = bot.view(matcher);
+		
+		bot.sleep(TIME_1S);
+		SWTBotTree tree = view.bot().tree();
+
+		// Open SQL Scrapbook 
+		SWTBotTreeItem item = tree.expandNode("Database Connections").expandNode("DefaultDS");
+		item.contextMenu("Connect").click();		
+		item.contextMenu("Open SQL Scrapbook").click();
+						
+		// Set SQL Scrapbook		
+		SWTBotEditor editor = eclipse.editorByTitle("SQL Scrapbook 0");
+		editor.setFocus();
+		bot.comboBoxWithLabelInGroup("Type:","Connection profile").setSelection("HSQLDB_1.8");
+		bot.comboBoxWithLabelInGroup("Name:","Connection profile").setSelection("DefaultDS");
+		bot.comboBoxWithLabelInGroup("Database:","Connection profile").setSelection("Default");
+
+		// Insert SQL script into editor
+		eclipse.setClassContentFromResource(false, Activator.PLUGIN_ID, "sql", "SQL Scrapbook 0");
+		
+		// Execute Script and close
+		bot.editorByTitle("SQL Scrapbook 0").toTextEditor().contextMenu("Execute All").click();		
+		editor.close();
+		
+		bot.sleep(TIME_5S);
 	}
 }
