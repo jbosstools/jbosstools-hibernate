@@ -66,21 +66,36 @@
             <command commandId="org.hibernate.eclipse.jdt.ui.run_jpaaction" 
                 id="org.hibernate.eclipse.jdt.ui.run_jpaaction" style="push"> 
                 <visibleWhen checkEnabled="false"> 
-                    <not> 
-                        <reference definitionId="org.eclipse.wst.sse.ui.sseActiveContext.definition"></reference> 
-                    </not> 
+                    <or>
+                        <with variable="activeEditorId">
+                            <or>
+                                <equals value="org.eclipse.jdt.ui.CompilationUnitEditor" />
+                            </or>
+                        </with>
+                        <with variable="selection">
+                            <iterate ifEmpty="false">
+                                <or>
+                                    <instanceof value="org.eclipse.jdt.core.ICompilationUnit"/>
+                                    <instanceof value="org.eclipse.jdt.internal.core.JavaProject"/>
+                                    <instanceof value="org.eclipse.jdt.internal.core.PackageFragment"/>
+                                    <and>
+                                        <instanceof value="org.eclipse.jdt.internal.core.JavaElement"/>
+                                        <not>
+                                            <or>
+                                                <instanceof value="org.eclipse.jdt.internal.core.ExternalPackageFragmentRoot"/>
+                                                <instanceof value="org.eclipse.jdt.internal.core.JarPackageFragmentRoot"/>
+                                                <instanceof value="org.eclipse.jdt.internal.core.ClassFile"/>
+                                                <instanceof value="org.eclipse.jdt.internal.core.ExternalJavaProject"/>
+                                            </or>
+                                        </not>
+                                    </and>
+                                </or>
+                            </iterate>
+                        </with>
+                    </or>
                 </visibleWhen> 
-            </command> 
+            </command>
         </menuContribution>
-        <!-- next section will show Hibernate/JPA menu item in case of active XML editor --> 
-        <!--<menuContribution locationURI="menu:sourceMenuId?after=additions"> 
-            <command commandId="org.hibernate.eclipse.jdt.ui.run_jpaaction" 
-                id="org.hibernate.eclipse.jdt.ui.run_jpaaction1" style="push"> 
-                <visibleWhen checkEnabled="false"> 
-                    <reference definitionId="org.eclipse.wst.sse.ui.sseActiveContext.definition"></reference> 
-                </visibleWhen> 
-            </command> 
-        </menuContribution>--> 
     </extension> 
     <extension point="org.eclipse.ui.popupMenus">
 		<!-- java editor context menu -->

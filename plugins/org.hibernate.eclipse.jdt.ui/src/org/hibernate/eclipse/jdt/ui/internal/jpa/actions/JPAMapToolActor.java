@@ -370,7 +370,7 @@ public class JPAMapToolActor {
 	 * Process object - java element to collect all it's children CompilationUnits
 	 * @param obj
 	 */
-	protected void processJavaElements(Object obj) {
+	public void processJavaElements(Object obj) {
 		if (obj instanceof ICompilationUnit) {
 			ICompilationUnit cu = (ICompilationUnit)obj;
 			addCompilationUnit(cu);
@@ -472,5 +472,9 @@ public class JPAMapToolActor {
 
 	public void setSelectionCU(Set<ICompilationUnit> selectionCU) {
 		this.selectionCU = selectionCU;
+	}
+
+	public int getSelectionCUSize() {
+		return selectionCU.size();
 	}
 }

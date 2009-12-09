@@ -8,6 +8,7 @@ Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.jdt.ui,
  org.eclipse.jdt.core,
+ org.eclipse.core.expressions,
  org.eclipse.core.resources,
  org.eclipse.core.runtime,
  org.eclipse.ui,

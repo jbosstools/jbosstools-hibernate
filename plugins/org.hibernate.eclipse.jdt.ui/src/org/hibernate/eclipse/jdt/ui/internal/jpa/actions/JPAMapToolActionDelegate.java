@@ -10,9 +10,13 @@
   ******************************************************************************/
 package org.hibernate.eclipse.jdt.ui.internal.jpa.actions;
 
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.expressions.EvaluationContext;
 import org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditor;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -82,10 +86,28 @@ public class JPAMapToolActionDelegate extends AbstractHandler implements IObject
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setEnabled(Object evaluationContext) {
-		boolean enable = isCUSelected();
+		boolean enable = false;
 		actor.setSelection(null);
 		actor.clearSelectionCU();
+		if (!enable && evaluationContext instanceof EvaluationContext) {
+			EvaluationContext ec = (EvaluationContext)evaluationContext;
+			Object obj = ec.getDefaultVariable();
+			if (obj instanceof List) {
+				Iterator it = ((List)obj).iterator();
+				while (it.hasNext()) {
+					obj = it.next();
+					actor.processJavaElements(obj);
+				}
+			} else {
+				actor.processJavaElements(obj);
+			}
+			enable = actor.getSelectionCUSize() > 0;
+		}
+		if (!enable) {
+			enable = isCUSelected();
+		}
 		setBaseEnabled(enable);
 	}
 }
