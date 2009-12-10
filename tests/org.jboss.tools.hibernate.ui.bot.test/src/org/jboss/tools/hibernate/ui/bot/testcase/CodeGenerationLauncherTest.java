@@ -12,15 +12,18 @@ package org.jboss.tools.hibernate.ui.bot.testcase;
 
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Matcher;
 import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
 import org.jboss.tools.hibernate.ui.bot.testsuite.Project;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
+import org.jboss.tools.ui.bot.ext.types.ViewType;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +35,9 @@ public class CodeGenerationLauncherTest extends HibernateTest {
 	public static boolean generationDone = false;
 	
 	@BeforeClass
+	/**
+	 * Setup prerequisites for this test
+	 */
 	public static void setUp() {
 
 		prepareProject();
@@ -58,8 +64,34 @@ public class CodeGenerationLauncherTest extends HibernateTest {
 				
 		bot.button(IDELabel.Button.RUN).click();	
 		log.info("HB Code Generation FINISHED");
+		util.waitForNonIgnoredJobs();
+		
+		checkGeneratedFiles();
+		
 		generationDone = true;			
 	}
+	/**
+	 * Checks existence generated files after code generation 
+	 */
+	private void checkGeneratedFiles() {
+	
+		SWTBot viewBot = eclipse.showView(ViewType.PROJECT_EXPLORER);
+		SWTBotTreeItem item;
+
+		item = eclipse.selectTreeLocation(viewBot, Project.PROJECT_NAME,"gen","org","test","Customers.java");
+		item.doubleClick();
+		item = eclipse.selectTreeLocation(viewBot, Project.PROJECT_NAME,"gen","org","test","Employees.java");
+		item.doubleClick();
+		item = eclipse.selectTreeLocation(viewBot, Project.PROJECT_NAME,"gen","org","test","Offices.java");
+		item.doubleClick();			
+		
+		log.info("Generated files check DONE");
+		bot.sleep(TIME_10S);
+	}
+
+	/**
+	 * 
+	 */
 	private void createNewHibernateCodeGenerationConfiguration() {
 		SWTBotMenu menu = null;
 		menu = bot.menu("Run");
@@ -68,7 +100,7 @@ public class CodeGenerationLauncherTest extends HibernateTest {
 		
 		mainShell = bot.activeShell();
 	}
-	
+
 	/**
 	 * TC 09
 	 */
@@ -138,5 +170,4 @@ public class CodeGenerationLauncherTest extends HibernateTest {
 		log.info("HB Code Generation Common tab DONE");
 		bot.sleep(TIME_1S);
 	}
-
 }

@@ -21,3 +21,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Eclipse-RegisterBuddy: org.apache.log4j
 Import-Package: org.eclipse.jdt.internal.ui
+Bundle-ClassPath: lib/hsqldb.jar,
+ .

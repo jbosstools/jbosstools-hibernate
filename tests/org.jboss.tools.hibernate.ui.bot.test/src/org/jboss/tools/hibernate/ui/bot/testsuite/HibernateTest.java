@@ -19,6 +19,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.datatools.connectivity.ConnectionProfileException;
@@ -30,6 +35,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.IViewReference;
 import org.hamcrest.Matcher;
+import org.hsqldb.Server;
 import org.jboss.tools.hibernate.ui.bot.testcase.Activator;
 import org.jboss.tools.hibernate.ui.bot.testcase.ConsoleTest;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
@@ -37,6 +43,7 @@ import org.jboss.tools.ui.bot.ext.entity.JavaClassEntity;
 import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
 import org.jboss.tools.ui.bot.ext.helper.DatabaseHelper;
+import org.jboss.tools.ui.bot.ext.types.DriverEntity;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
@@ -47,14 +54,23 @@ public class HibernateTest extends SWTTestExt {
 	private static boolean classesCreated = false;
 	private static boolean projectCreated = false;
 	private static boolean databasePrepared = false;
+	private static boolean dbRunning = false;
+	
+	private static Thread hsqlThread = null;  
 	
 	//private static Properties properties;	
 
+	/**
+	 * Prepare project and classes
+	 */
 	public static void prepare() {	
 		prepareProject();
 		prepareClasses();
 	}
 	
+	/**
+	 * Create testing classes for the project
+	 */
 	public static void prepareClasses() {
 		
 		if (classesCreated) return; 
@@ -75,6 +91,9 @@ public class HibernateTest extends SWTTestExt {
 		classesCreated = true;		
 	}
 	
+	/**
+	 * Create Java project for testing hibernate features
+	 */
 	public static void prepareProject() {
 		
 		if (projectCreated) return;
@@ -100,6 +119,9 @@ public class HibernateTest extends SWTTestExt {
 		projectCreated = true;
 	}
 	
+	/**
+	 * Copy driver into project and add to classpath
+	 */
 	public static void addDriver() {
 		try {
 			addDriverIntoProject();
@@ -110,7 +132,10 @@ public class HibernateTest extends SWTTestExt {
 		}
 		addDriverClassPath();		
 	}
-	
+
+	/**
+	 * Add Driver to classpath
+	 */
 	public static void addDriverClassPath() {
 			
 		eclipse.showView(ViewType.PROJECT_EXPLORER);
@@ -161,20 +186,30 @@ public class HibernateTest extends SWTTestExt {
     	log.info("Driver hsqldb.jar copied");
 	}
 
+	/**
+	 * Clean after tests
+	 */
 	public static void clean() {
 		if (finished) return;
 		
 		log.info("Clean finished");
 	}
 
+	/**
+	 * Run's console tests (prerequisite for other tests to be able to execute them separately)
+	 */
 	public static void prepareConsole() {
 		ConsoleTest consoleTest = new ConsoleTest();
 		consoleTest.createConsole();
 	}
 		
-	
+	/**
+	 * Prepares database and insert test data by using connection profile and sql scrapbook
+	 */
 	public static void prepareDatabase()  {
 		if (databasePrepared) return;
+		
+		runHSQLDBServer(Project.DB_FILE,Project.DB_NAME);
 		
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(Platform.getLocation());
@@ -184,10 +219,13 @@ public class HibernateTest extends SWTTestExt {
 		stringBuilder.append("hsqldb.jar");
 		
 		try {
-			DatabaseHelper.createDriver(stringBuilder.toString());
+			DriverEntity entity = new DriverEntity();
+			entity.setDrvPath(stringBuilder.toString());
+			entity.setJdbcString("jdbc:hsqldb:hsql://localhost/xdb");
+			DatabaseHelper.createDriver(entity);
 		} catch (ConnectionProfileException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Unable to create HSQL Driver" + e);
+			fail();			
 		}
 
 		eclipse.openPerspective(PerspectiveType.DB_DEVELOPMENT);
@@ -209,7 +247,7 @@ public class HibernateTest extends SWTTestExt {
 		item.contextMenu("Open SQL Scrapbook").click();
 						
 		// Set SQL Scrapbook		
-		SWTBotEditor editor = eclipse.editorByTitle("SQL Scrapbook 0");
+		SWTBotEditor editor = bot.editorByTitle("SQL Scrapbook 0");
 		editor.setFocus();
 		bot.comboBoxWithLabelInGroup("Type:","Connection profile").setSelection("HSQLDB_1.8");
 		bot.comboBoxWithLabelInGroup("Name:","Connection profile").setSelection("DefaultDS");
@@ -223,5 +261,55 @@ public class HibernateTest extends SWTTestExt {
 		editor.close();
 		
 		bot.sleep(TIME_5S);
+	}
+	
+	/**
+	 * Run HSQLDB database in server mode
+	 * @param file
+	 * @param dbname
+	 */
+	public static void runHSQLDBServer(final String file, final String dbname) {
+		if (dbRunning) return;
+
+		log.info("Starting HSQLDB");
+		Runnable runable = new Runnable() {
+			
+			public void run() {
+				Server.main(new String[] {"-database.0","file:" + file,"-dbname.0",dbname });
+			}
+		};
+		
+		hsqlThread = new Thread(runable);
+		hsqlThread.start();
+		log.info("HSQLDB started");
+		dbRunning = true;
+	}
+	
+	/**
+	 * Stop HSQL Database by sending SHUTDOWN command
+	 */
+	public static void stopHSQLDBServer() {
+		
+		try {		
+			Class.forName("org.hsqldb.jdbcDriver");
+			
+			Connection connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/xdb");
+			
+			Statement statement = connection.createStatement();
+			ResultSet resultset = statement.executeQuery("SHUTDOWN");
+			
+			resultset.close();
+			statement.close();
+			connection.close();
+			
+			
+		} catch (SQLException e) {
+			
+		}
+		catch (ClassNotFoundException e) {
+			log.error("Unable to stop HSQLDB " + e);
+		}
+
+		
 	}
 }

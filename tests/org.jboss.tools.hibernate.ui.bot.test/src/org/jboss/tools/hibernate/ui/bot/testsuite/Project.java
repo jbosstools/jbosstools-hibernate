@@ -25,5 +25,6 @@ public class Project {
 	public static final String JDBC_STRING = "jdbc:hsqldb:hsql://localhost/xdb";
 	public static final String HSQLDB_PATH = "/home/jpeterka/lib/hsqldb";
 	public static final String CONF_FILE_NAME2 = "hibernate2.cfg.xml";
-
+	public static final String DB_FILE = "mydb";
+	public static final String DB_NAME = "xdb";
 }

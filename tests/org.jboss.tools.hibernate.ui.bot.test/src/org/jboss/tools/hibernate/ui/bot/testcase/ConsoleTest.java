@@ -76,7 +76,7 @@ public class ConsoleTest extends HibernateTest {
 		bot.buttonInGroup(IDELabel.HBConsoleWizard.SETUP_BUTTON,IDELabel.HBConsoleWizard.CONFIGURATION_FILE_GROUP).click();
 		bot.button(IDELabel.HBConsoleWizard.CREATE_NEW_BUTTON).click();
 		eclipse.selectTreeLocation(Project.PROJECT_NAME, "src");
-		eclipse.button(IDELabel.Button.NEXT).click();
+		bot.button(IDELabel.Button.NEXT).click();
 		bot.comboBoxWithLabel(IDELabel.HBConsoleWizard.DATABASE_DIALECT).setSelection(Project.DB_DIALECT);
 		bot.comboBoxWithLabel(IDELabel.HBConsoleWizard.DRIVER_CLASS).setSelection(Project.DRIVER_CLASS);
 		bot.comboBoxWithLabel(IDELabel.HBConsoleWizard.CONNECTION_URL).setText(Project.JDBC_STRING);
