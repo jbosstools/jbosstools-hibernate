@@ -300,14 +300,14 @@ public class DiagramViewer extends GraphicalEditor {
 		action = new LexicalSortingAction(this, null);
 		registry.registerAction(action);
 		
-		Action[] act = new Action[7];
+		Action[] act = new Action[4];
 		act[0] = (Action)registry.getAction(TogglePropertyMappingAction.ACTION_ID);
 		act[1] = (Action)registry.getAction(ToggleClassMappingAction.ACTION_ID);
 		act[2] = (Action)registry.getAction(ToggleAssociationAction.ACTION_ID);
 		act[3] = (Action)registry.getAction(ToggleForeignKeyConstraintAction.ACTION_ID);
-		act[4] = null;
-		act[5] = (Action)registry.getAction(ConnectionRouterManhattanAction.ACTION_ID);
-		act[6] = (Action)registry.getAction(ConnectionRouterFanAction.ACTION_ID);
+		//act[4] = null;
+		//act[5] = (Action)registry.getAction(ConnectionRouterManhattanAction.ACTION_ID);
+		//act[6] = (Action)registry.getAction(ConnectionRouterFanAction.ACTION_ID);
 		actionToggleConnections.setMenuCreator(new ActionMenu(act));
 
 		//act = new Action[2];

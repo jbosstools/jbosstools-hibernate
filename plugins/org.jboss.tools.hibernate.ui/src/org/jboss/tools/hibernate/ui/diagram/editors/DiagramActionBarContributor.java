@@ -162,14 +162,14 @@ public class DiagramActionBarContributor extends ActionBarContributor {
 				ConnectionRouterFanAction.img, IAction.AS_RADIO_BUTTON);
 		addRetargetAction(diagramAction);
 		//
-		act = new Action[7];
+		act = new Action[4];
 		act[0] = (Action)getAction(TogglePropertyMappingAction.ACTION_ID);
 		act[1] = (Action)getAction(ToggleClassMappingAction.ACTION_ID);
 		act[2] = (Action)getAction(ToggleAssociationAction.ACTION_ID);
 		act[3] = (Action)getAction(ToggleForeignKeyConstraintAction.ACTION_ID);
-		act[4] = null;
-		act[5] = (Action)getAction(ConnectionRouterManhattanAction.ACTION_ID);
-		act[6] = (Action)getAction(ConnectionRouterFanAction.ACTION_ID);
+		//act[4] = null;
+		//act[5] = (Action)getAction(ConnectionRouterManhattanAction.ACTION_ID);
+		//act[6] = (Action)getAction(ConnectionRouterFanAction.ACTION_ID);
 		diagramToggleConnectionsAction.setMenuCreator(new ActionMenu(act));
 		//
 		//act = new Action[2];
@@ -244,6 +244,9 @@ public class DiagramActionBarContributor extends ActionBarContributor {
 		viewMenu.add(getAction(GEFActionConstants.TOGGLE_RULER_VISIBILITY));
 		viewMenu.add(getAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY));
 		viewMenu.add(getAction(GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY));
+		viewMenu.add(new Separator());
+		viewMenu.add(getAction(ConnectionRouterManhattanAction.ACTION_ID));
+		viewMenu.add(getAction(ConnectionRouterFanAction.ACTION_ID));
 		menubar.insertAfter(IWorkbenchActionConstants.M_EDIT, viewMenu);
 	}
 }

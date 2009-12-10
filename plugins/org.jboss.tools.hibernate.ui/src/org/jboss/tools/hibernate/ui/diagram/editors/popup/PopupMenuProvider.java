@@ -16,7 +16,6 @@ import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.editparts.AbstractTreeEditPart;
 import org.eclipse.gef.ui.actions.ActionRegistry;
-import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
@@ -51,7 +50,12 @@ import org.jboss.tools.hibernate.ui.diagram.editors.parts.OrmEditPart;
  * @author Vitali Yemialyanchyk
  */
 public class PopupMenuProvider extends ContextMenuProvider {
-	private ActionRegistry actionRegistry;
+
+    public static final String GROUP_OPEN_SOURCE = "open_source"; //$NON-NLS-1$
+    public static final String GROUP_EDIT = "edit"; //$NON-NLS-1$
+    public static final String GROUP_ADDITIONAL_ACTIONS = "additional_actions"; //$NON-NLS-1$
+
+    private ActionRegistry actionRegistry;
 
 	public PopupMenuProvider(EditPartViewer viewer, ActionRegistry actionRegistry) {
 		super(viewer);
@@ -61,10 +65,11 @@ public class PopupMenuProvider extends ContextMenuProvider {
 	@SuppressWarnings("unchecked")
 	public void buildContextMenu(IMenuManager menu) {
 		
+		menu.add(new Separator(GROUP_OPEN_SOURCE));
+		menu.add(new Separator(GROUP_EDIT));
+		menu.add(new Separator(GROUP_ADDITIONAL_ACTIONS));
 		// Add standard action groups to the menu
-		GEFActionConstants.addStandardActionGroups(menu);
-
-		menu.add(new Separator(GEFActionConstants.MB_ADDITIONS));
+		//GEFActionConstants.addStandardActionGroups(menu);
 		IAction action = null;
 		if (getViewer().getSelection() instanceof StructuredSelection) {
 			Shape selectedShape = null;
@@ -88,11 +93,11 @@ public class PopupMenuProvider extends ContextMenuProvider {
 						|| first instanceof Table
 						|| first instanceof Column) {
 					action = getActionRegistry().getAction(OpenSourceAction.ACTION_ID);
-					appendToGroup(GEFActionConstants.MB_ADDITIONS, action);
+					appendToGroup(GROUP_OPEN_SOURCE, action);
 					createMenuItem(getMenu(), action);
 					
 					action = getActionRegistry().getAction(OpenMappingAction.ACTION_ID);
-					appendToGroup(GEFActionConstants.MB_ADDITIONS, action);
+					appendToGroup(GROUP_OPEN_SOURCE, action);
 					createMenuItem(getMenu(), action);					
 				}
 			}
@@ -120,34 +125,34 @@ public class PopupMenuProvider extends ContextMenuProvider {
 		    }
 			if (addToggleVisibleStateMenu) {
 				action = getActionRegistry().getAction(ToggleShapeVisibleStateAction.ACTION_ID);
-				appendToGroup(GEFActionConstants.GROUP_EDIT, action);
+				appendToGroup(GROUP_EDIT, action);
 				createMenuItem(getMenu(), action);
 			}
 			if (addToggleExpandStateMenu) {
 				action = getActionRegistry().getAction(ToggleShapeExpandStateAction.ACTION_ID);
-				appendToGroup(GEFActionConstants.GROUP_EDIT, action);
+				appendToGroup(GROUP_EDIT, action);
 				createMenuItem(getMenu(), action);
 			}
 		}
 
 		action = getActionRegistry().getAction(ToggleConnectionsAction.ACTION_ID);
-		appendToGroup(GEFActionConstants.GROUP_EDIT, action);
+		appendToGroup(GROUP_EDIT, action);
 		createMenuItem(getMenu(), action);
 		
 		action = getActionRegistry().getAction(AutoLayoutAction.ACTION_ID);
-		appendToGroup(GEFActionConstants.GROUP_VIEW, action);
+		appendToGroup(GROUP_ADDITIONAL_ACTIONS, action);
 		createMenuItem(getMenu(), action);
 		
 		//action = getActionRegistry().getAction(CollapseAllAction.ACTION_ID);
-		//appendToGroup(GEFActionConstants.GROUP_VIEW, action);
+		//appendToGroup(GROUP_EDIT, action);
 		//createMenuItem(getMenu(), action);
 		
 		//action = getActionRegistry().getAction(ExpandAllAction.ACTION_ID);
-		//appendToGroup(GEFActionConstants.GROUP_VIEW, action);
+		//appendToGroup(GROUP_EDIT, action);
 		//createMenuItem(getMenu(), action);
 		
 		action = getActionRegistry().getAction(ExportImageAction.ACTION_ID);
-		appendToGroup(GEFActionConstants.MB_ADDITIONS, action);
+		appendToGroup(GROUP_ADDITIONAL_ACTIONS, action);
 		createMenuItem(getMenu(), action);
 
 		// Add actions to the menu
@@ -161,7 +166,7 @@ public class PopupMenuProvider extends ContextMenuProvider {
 				getAction(ActionFactory.REDO.getId()));
 		/**/
 		menu.appendToGroup(
-				GEFActionConstants.GROUP_VIEW, // target group id
+				GROUP_EDIT, // target group id
 				getAction(ActionFactory.SELECT_ALL.getId())); // action to add
 	}
 
