@@ -707,7 +707,7 @@
          </enablement>
       </moveParticipant>
       <moveParticipant
-            class="org.hibernate.eclipse.launch.core.refactoring.MoveResourceParticipant"
+            class="org.hibernate.eclipse.launch.core.refactoring.ConsoleConfigurationITypeMoveParticipant"
             name="Console Configuration IType Participant"
             id="org.hibernate.eclipse.launch.core.refactoring.ConsoleConfigurationITypeMoveParticipant"> 
          <enablement>
