@@ -286,9 +286,9 @@ public class Connection extends BaseElement {
 			}
 		} else if (PROPERTY_CLASS_FIELD_TYPE.equals(propertyId)) {
 			if (source.getOrmElement() instanceof Property) {
-				res = ((Property)(source.getOrmElement())).getType();
+				res = ((Property)(source.getOrmElement())).getType().toString();
 			} else if (target.getOrmElement() instanceof Property) {
-				res = ((Property)(target.getOrmElement())).getType();
+				res = ((Property)(target.getOrmElement())).getType().toString();
 			}
 		} else if (PROPERTY_TABLE_FIELD_TYPE.equals(propertyId)) {
 			if (source.getOrmElement() instanceof Column) {
@@ -298,9 +298,9 @@ public class Connection extends BaseElement {
 			}
 		} else if (PROPERTY_ASSOCIATION_TYPE.equals(propertyId)) {
 			if (source.getOrmElement() instanceof Property) {
-				res = ((Property)(source.getOrmElement())).getValue();
+				res = ((Property)(source.getOrmElement())).getValue().toString();
 			} else if (target.getOrmElement() instanceof Property) {
-				res = ((Property)(target.getOrmElement())).getValue();
+				res = ((Property)(target.getOrmElement())).getValue().toString();
 			}
 			if (res instanceof OneToOne) {
 				res = "OneToOne"; //$NON-NLS-1$
@@ -315,7 +315,7 @@ public class Connection extends BaseElement {
 			}
 		} else if (PROPERTY_SOURCE_CLASS_FIELD_TYPE.equals(propertyId)) {
 			if (source.getOrmElement() instanceof Property) {
-				res = ((Property)(source.getOrmElement())).getType();
+				res = ((Property)(source.getOrmElement())).getType().toString();
 			}
 		} else if (PROPERTY_SOURCE_TABLE_FIELD.equals(propertyId)) {
 			if (source.getOrmElement() instanceof Column) {

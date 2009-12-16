@@ -155,7 +155,7 @@ public abstract class BaseElement implements IPropertySource, Comparable<BaseEle
 	}
 	
 	public Object getEditableValue() {
-		return this;
+		return toString();
 	}
 
 	/**

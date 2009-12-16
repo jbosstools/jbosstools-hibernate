@@ -473,39 +473,41 @@ public class OrmShape extends ExpandableShape {
 		}
 		if (rootClass != null) {
 			if (ENTITY_isAbstract.equals(propertyId)) {
-				res = rootClass.isAbstract();
+				if (rootClass.isAbstract() != null) {
+					res = rootClass.isAbstract().toString();
+				} 
 			} else if (ENTITY_isCustomDeleteCallable.equals(propertyId)) {
-				res = rootClass.isCustomDeleteCallable();
+				res = Boolean.valueOf(rootClass.isCustomDeleteCallable()).toString();
 			} else if (ENTITY_isCustomInsertCallable.equals(propertyId)) {
-				res = rootClass.isCustomInsertCallable();
+				res = Boolean.valueOf(rootClass.isCustomInsertCallable()).toString();
 			} else if (ENTITY_isCustomUpdateCallable.equals(propertyId)) {
-				res = rootClass.isCustomUpdateCallable();
+				res = Boolean.valueOf(rootClass.isCustomUpdateCallable()).toString();
 			} else if (ENTITY_isDiscriminatorInsertable.equals(propertyId)) {
-				res = rootClass.isDiscriminatorInsertable();
+				res = Boolean.valueOf(rootClass.isDiscriminatorInsertable()).toString();
 			} else if (ENTITY_isDiscriminatorValueNotNull.equals(propertyId)) {
-				res = rootClass.isDiscriminatorValueNotNull();
+				res = Boolean.valueOf(rootClass.isDiscriminatorValueNotNull()).toString();
 			} else if (ENTITY_isDiscriminatorValueNull.equals(propertyId)) {
-				res = rootClass.isDiscriminatorValueNull();
+				res = Boolean.valueOf(rootClass.isDiscriminatorValueNull()).toString();
 			} else if (ENTITY_isExplicitPolymorphism.equals(propertyId)) {
-				res = rootClass.isExplicitPolymorphism();
+				res = Boolean.valueOf(rootClass.isExplicitPolymorphism()).toString();
 			} else if (ENTITY_isForceDiscriminator.equals(propertyId)) {
-				res = rootClass.isForceDiscriminator();
+				res = Boolean.valueOf(rootClass.isForceDiscriminator()).toString();
 			} else if (ENTITY_isInherited.equals(propertyId)) {
-				res = rootClass.isInherited();
+				res = Boolean.valueOf(rootClass.isInherited()).toString();
 			} else if (ENTITY_isJoinedSubclass.equals(propertyId)) {
-				res = rootClass.isJoinedSubclass();
+				res = Boolean.valueOf(rootClass.isJoinedSubclass()).toString();
 			} else if (ENTITY_isLazy.equals(propertyId)) {
-				res = rootClass.isLazy();
+				res = Boolean.valueOf(rootClass.isLazy()).toString();
 			} else if (ENTITY_isLazyPropertiesCacheable.equals(propertyId)) {
-				res = rootClass.isLazyPropertiesCacheable();
+				res = Boolean.valueOf(rootClass.isLazyPropertiesCacheable()).toString();
 			} else if (ENTITY_isMutable.equals(propertyId)) {
-				res = rootClass.isMutable();
+				res = Boolean.valueOf(rootClass.isMutable()).toString();
 			} else if (ENTITY_isPolymorphic.equals(propertyId)) {
-				res = rootClass.isPolymorphic();
+				res = Boolean.valueOf(rootClass.isPolymorphic()).toString();
 			} else if (ENTITY_isVersioned.equals(propertyId)) {
-				res = rootClass.isVersioned();
+				res = Boolean.valueOf(rootClass.isVersioned()).toString();
 			} else if (ENTITY_batchSize.equals(propertyId)) {
-				res = rootClass.getBatchSize();
+				res = Integer.valueOf(rootClass.getBatchSize()).toString();
 			} else if (ENTITY_cacheConcurrencyStrategy.equals(propertyId)) {
 				res = rootClass.getCacheConcurrencyStrategy();
 			} else if (ENTITY_className.equals(propertyId)) {
@@ -525,9 +527,11 @@ public class OrmShape extends ExpandableShape {
 			} else if (ENTITY_nodeName.equals(propertyId)) {
 				res = rootClass.getNodeName();
 			} else if (ENTITY_optimisticLockMode.equals(propertyId)) {
-				res = rootClass.getOptimisticLockMode();
+				res = Integer.valueOf(rootClass.getOptimisticLockMode()).toString();
 			} else if (ENTITY_table.equals(propertyId)) {
-				res = rootClass.getTable();
+				if (rootClass.getTable() != null) {
+					res = rootClass.getTable().getName();
+				}
 			} else if (ENTITY_temporaryIdTableDDL.equals(propertyId)) {
 				res = rootClass.getTemporaryIdTableDDL();
 			} else if (ENTITY_temporaryIdTableName.equals(propertyId)) {
@@ -544,7 +548,9 @@ public class OrmShape extends ExpandableShape {
 			} else if (TABLE_name.equals(propertyId)) {
 				res = table.getName();
 			} else if (TABLE_primaryKey.equals(propertyId)) {
-				res = table.getPrimaryKey();
+				if (table.getPrimaryKey() != null) {
+					res = table.getPrimaryKey().getName();
+				}
 			} else if (TABLE_rowId.equals(propertyId)) {
 				res = table.getRowId();
 			} else if (TABLE_schema.equals(propertyId)) {
@@ -552,13 +558,13 @@ public class OrmShape extends ExpandableShape {
 			} else if (TABLE_subselect.equals(propertyId)) {
 				res = table.getSubselect();
 			} else if (TABLE_hasDenormalizedTables.equals(propertyId)) {
-				res = table.hasDenormalizedTables();
+				res = Boolean.valueOf(table.hasDenormalizedTables()).toString();
 			} else if (TABLE_isAbstract.equals(propertyId)) {
-				res = table.isAbstract();
+				res = Boolean.valueOf(table.isAbstract()).toString();
 			} else if (TABLE_isAbstractUnionTable.equals(propertyId)) {
-				res = table.isAbstractUnionTable();
+				res = Boolean.valueOf(table.isAbstractUnionTable()).toString();
 			} else if (TABLE_isPhysicalTable.equals(propertyId)) {
-				res = table.isPhysicalTable();
+				res = Boolean.valueOf(table.isPhysicalTable()).toString();
 			}
 		}
 		if (res == null) {

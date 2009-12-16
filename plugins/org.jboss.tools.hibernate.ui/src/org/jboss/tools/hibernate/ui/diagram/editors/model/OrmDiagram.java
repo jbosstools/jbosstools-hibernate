@@ -1022,13 +1022,13 @@ public class OrmDiagram extends BaseElement {
 		if (PROPERTY_NAME.equals(propertyId)) {
 			res = getDiagramName();
 		} else if (PROPERTY_WIDTH.equals(propertyId)) {
-			res = width;
+			res = Integer.valueOf(width).toString();
 		} else if (PROPERTY_HEIGHT.equals(propertyId)) {
-			res = height;
+			res = Integer.valueOf(height).toString();
 		} else if (PROPERTY_ZOOM.equals(propertyId)) {
-			res = zoom;
+			res = Double.valueOf(zoom).toString();
 		} else if (PROPERTY_ITEMS.equals(propertyId)) {
-			res = elements.size();
+			res = Integer.valueOf(elements.size()).toString();
 		} else if (PROPERTY_ENTITIES.equals(propertyId)) {
 			int nEntities = 0;
 			Iterator<OrmShape> it = elements.values().iterator();
@@ -1039,7 +1039,7 @@ public class OrmDiagram extends BaseElement {
 					nEntities++;
 				}
 			}
-			res = nEntities;
+			res = Integer.valueOf(nEntities).toString();
 		} else if (PROPERTY_TABLES.equals(propertyId)) {
 			int nTables = 0;
 			Iterator<OrmShape> it = elements.values().iterator();
@@ -1050,7 +1050,7 @@ public class OrmDiagram extends BaseElement {
 					nTables++;
 				}
 			}
-			res = nTables;
+			res = Integer.valueOf(nTables).toString();
 		} else if (PROPERTY_INVISIBLE.equals(propertyId)) {
 			int nInvisible = 0;
 			Iterator<OrmShape> it = elements.values().iterator();
@@ -1060,7 +1060,7 @@ public class OrmDiagram extends BaseElement {
 					nInvisible++;
 				}
 			}
-			res = nInvisible;
+			res = Integer.valueOf(nInvisible).toString();
 		}
 		if (res == null) {
 			res = super.getPropertyValue(propertyId);
