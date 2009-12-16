@@ -26,13 +26,13 @@
 ]><book lang="en" xmlns:diffmk="http://diffmk.sf.net/ns/diff">
   <bookinfo>
     <title>Hibernate Tools Reference Guide</title>
-      <corpauthor diffmk:change="added">
-        <inlinemediaobject diffmk:change="added">
-          <imageobject diffmk:change="added" role="fo">
-            <imagedata diffmk:change="added" fileref="images/jbosstools_logo.png" format="PNG"></imagedata>
+      <corpauthor>
+        <inlinemediaobject>
+          <imageobject role="fo">
+            <imagedata fileref="images/jbosstools_logo.png" format="PNG"></imagedata>
           </imageobject>	
-          <imageobject diffmk:change="added" role="html">
-            <imagedata diffmk:change="added"></imagedata>
+          <imageobject role="html">
+            <imagedata></imagedata>
           </imageobject>	
         </inlinemediaobject>           
       </corpauthor>
@@ -44,11 +44,11 @@
     <copyright>
       <year>2007</year>
       <year>2009</year>
-      <holder><diffmk:wrapper diffmk:change="changed">JBoss by Red Hat</diffmk:wrapper></holder>
+      <holder>JBoss by Red Hat</holder>
     </copyright>
 
     <releaseinfo><diffmk:wrapper diffmk:change="changed">
-      Version: 3.3.0.M2
+      Version: 3.3.0.CR1
     </diffmk:wrapper></releaseinfo>
 
 
@@ -69,7 +69,7 @@
   <toc></toc>
   
   
-<chapter id="preface" xml:base="file:///home/ochikvina/WORK/for_compare/trunk/hibernatetools/docs/reference/en/modules/preface.xml">
+<chapter id="preface" xml:base="file:///home/ochikvina/WORK/for_compare/jbosstools-3.1.0.CR1/hibernatetools/docs/reference/en/modules/preface.xml">
 
     <title>Preface</title>
 
@@ -178,15 +178,15 @@
                         <entry><link linkend="hib_console">hibernate console</link></entry>
                     </row>
                 	
-                	<row diffmk:change="added">
-                		<entry diffmk:change="added">
-                			<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">HQL Editor and Hibernate Criteria Editor</diffmk:wrapper></para>
+                	<row>
+                		<entry>
+                			<para>HQL Editor and Hibernate Criteria Editor</para>
                 		</entry>
-                		<entry diffmk:change="added">
-                			<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">The editors are intended for writing, editing and executing HQL queries and criterias. They also support the functionality for generating 
-                			simple queries.</diffmk:wrapper></para>
+                		<entry>
+                			<para>The editors are intended for writing, editing and executing HQL queries and criterias. They also support the functionality for generating 
+                			simple queries.</para>
                 		</entry>
-                		<entry diffmk:change="added"><link diffmk:change="added" linkend="hql_and_criteria_editors"><diffmk:wrapper diffmk:change="added">hql and hibernate criteria editors</diffmk:wrapper></link></entry>
+                		<entry><link linkend="hql_and_criteria_editors">hql and hibernate criteria editors</link></entry>
                 	</row>
 
                     <row>
@@ -224,13 +224,14 @@
         
         <!--para>Hibernate Tools page on the <ulink url="http://www.hibernate.org/255.html">hibernate.org</ulink>.</para-->
         <para>All JBoss Developer Studio/JBoss Tools release documentation you can find at<ulink url="http://docs.jboss.org/tools/">http://docs.jboss.org/tools</ulink> in the corresponding release directory.</para>
+        <para>There is some extra information about Hidernate on <ulink url="http://www.jboss.org/community/wiki/JBossHibernate3">JBoss Wiki page. </ulink></para>
         <para>The latest documentation builds are available at <ulink url="http://download.jboss.org/jbosstools/nightly-docs/">http://download.jboss.org/jbosstools/nightly-docs</ulink>.</para>
     </section>
 
 </chapter>
 
   
-<chapter id="setup" xml:base="file:///home/ochikvina/WORK/for_compare/trunk/hibernatetools/docs/reference/en/modules/setup.xml">
+<chapter id="setup" xml:base="file:///home/ochikvina/WORK/for_compare/jbosstools-3.1.0.CR1/hibernatetools/docs/reference/en/modules/setup.xml">
   <title>Download and install Hibernate Tools</title>
 
   <para><property moreinfo="none">Hibernate Tools</property> can be used "standalone" via Ant
@@ -313,7 +314,7 @@
 </chapter>
  
   
-<chapter id="codegenarchitecture" xml:base="file:///home/ochikvina/WORK/for_compare/trunk/hibernatetools/docs/reference/en/modules/codegenarchitecture.xml">
+<chapter id="codegenarchitecture" xml:base="file:///home/ochikvina/WORK/for_compare/jbosstools-3.1.0.CR1/hibernatetools/docs/reference/en/modules/codegenarchitecture.xml">
   <title>Code generation architecture</title>
 
   <para>The code generation mechanism in the <property moreinfo="none">Hibernate Tools</property> consists of a few
@@ -326,10 +327,10 @@
     <para>The meta model is the model used by Hibernate Core to perform its object relational
       mapping. The model includes information about tables, columns, classes, properties,
       components, values, collections etc. The API is in <literal moreinfo="none">org.hibernate.mapping</literal>
-      and its main entry point is the <property diffmk:change="added" moreinfo="none">Configuration</property> class, the same class that is
+      and its main entry point is the <property moreinfo="none">Configuration</property> class, the same class that is
       used to build a session factory.</para>
 
-    <para>The model represented by the <property diffmk:change="added" moreinfo="none">Configuration</property> class can be build in many
+    <para>The model represented by the <property moreinfo="none">Configuration</property> class can be build in many
       ways. The following list the currently supported ones in <property moreinfo="none">Hibernate Tools</property>. </para>
 
     <para>
@@ -339,9 +340,9 @@
               <property moreinfo="none">hbm.xml</property>
             </emphasis> files, requires a <emphasis>
               <property moreinfo="none">hibernate.cfg.xml</property>
-            </emphasis><diffmk:wrapper diffmk:change="added">. Named core in Eclipse and 
-             </diffmk:wrapper><code diffmk:change="added">&lt;configuration&gt;</code><diffmk:wrapper diffmk:change="added">
-               in ant.</diffmk:wrapper></para>
+            </emphasis>. Named core in Eclipse and 
+             <code>&lt;configuration&gt;</code>
+               in ant.</para>
         </listitem>
 
         <listitem>
@@ -349,9 +350,9 @@
               <property moreinfo="none">hbm.xml</property>
             </emphasis> and annotated classes, requires a <emphasis>
               <property moreinfo="none">hibernate.cfg.xml</property>
-            </emphasis><diffmk:wrapper diffmk:change="added">. Named annotations in Eclipse and 
-            </diffmk:wrapper><code diffmk:change="added">&lt;annotationconfiguration&gt;</code><diffmk:wrapper diffmk:change="added">
-             in ant.</diffmk:wrapper></para>
+            </emphasis>. Named annotations in Eclipse and 
+            <code>&lt;annotationconfiguration&gt;</code>
+             in ant.</para>
         </listitem>
 
         <listitem>
@@ -359,18 +360,18 @@
               <property moreinfo="none">hbm.xml</property>
             </emphasis> and annotated classes requires that the project has a <emphasis>
               <property moreinfo="none">META-INF/persistence.xml</property>
-            </emphasis><diffmk:wrapper diffmk:change="added"> in its classpath. Named JPA in Eclipse and 
-             </diffmk:wrapper><code diffmk:change="added">&lt;jpaconfiguration&gt;</code><diffmk:wrapper diffmk:change="added">
-              in ant.</diffmk:wrapper></para>
+            </emphasis> in its classpath. Named JPA in Eclipse and 
+             <code>&lt;jpaconfiguration&gt;</code>
+              in ant.</para>
         </listitem>
 
         <listitem>
-          <para>A JDBC configuration uses <property moreinfo="none">Hibernate Tools</property><diffmk:wrapper diffmk:change="added"> reverse engineering
+          <para>A JDBC configuration uses <property moreinfo="none">Hibernate Tools</property> reverse engineering
             and reads its mappings via JDBC metadata + additional reverse engineering files
             (reveng.xml). Automatically used in Eclipse when doing reverse engineering from JDBC and
             named 
-                </diffmk:wrapper><code diffmk:change="added">&lt;jdbcconfiguration&gt;</code><diffmk:wrapper diffmk:change="added">
-               in ant.</diffmk:wrapper></para>
+                <code>&lt;jdbcconfiguration&gt;</code>
+               in ant.</para>
         </listitem>
       </itemizedlist>
     </para>
@@ -411,8 +412,8 @@
   <section>
     <title>Exporters</title>
 
-    <para>Code generation is done in so called Exporters. An <code diffmk:change="added">Exporter</code> is handed a
-      Hibernate Meta Model represented as a <code diffmk:change="added">Configuration</code> instance and it is then
+    <para>Code generation is done in so called Exporters. An <code>Exporter</code> is handed a
+      Hibernate Meta Model represented as a <code>Configuration</code> instance and it is then
       the job of the exporter to generate a set of code artifacts.</para>
 
     <para>The tools provides a default set of Exporter's which can be used in both Ant and the
@@ -425,7 +426,7 @@
 </chapter>
 
   
-<chapter id="plugins" role="updated" xml:base="file:///home/ochikvina/WORK/for_compare/trunk/hibernatetools/docs/reference/en/modules/plugins.xml">
+<chapter id="plugins" role="updated" xml:base="file:///home/ochikvina/WORK/for_compare/jbosstools-3.1.0.CR1/hibernatetools/docs/reference/en/modules/plugins.xml">
   <title>Eclipse Plugins</title>
 
   <para>This chapter will introduce you to the functionality that <property moreinfo="none">Hibernate
@@ -457,11 +458,11 @@
     <para>Hibernate mapping files are used to specify how your objects are related to database
       tables.</para>
 
-    <para>For creating a skeleton mapping file, i. e. any <emphasis>
+  	<para>To create basic mappings for properties and associations, i. e. generate <emphasis>
         <property moreinfo="none">.hbm.xml</property>
-      </emphasis>, Hibernate Tools provide a basic wizard which you can bring up by navigating <emphasis>
+      </emphasis> files, Hibernate Tools provide a basic wizard which you can bring up by navigating <emphasis>
         <property moreinfo="none">New &gt; Hibernate XML mapping file</property>.</emphasis></para>
-
+  	<para>At first you'll be asked to select a package or multiple individual classes to map.</para>
     <figure float="0">
       <title>Hibernate XML Mapping File Wizard</title>
 
@@ -472,10 +473,9 @@
       </mediaobject>
     </figure>
 
-    <para>At first you'll be asked to specify the location and the name for a new mapping
-      file. On the next dialog you should type or browse the class to map.</para>
+   <para>Next wizard page lists the mappings to be generated.</para>
     <figure float="0">
-      <title>Specifying the Class to Map</title>
+    	<title>Mappings to be generated</title>
 
       <mediaobject>
         <imageobject>
@@ -483,20 +483,7 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>Pressing finish creates the file and opens it in the <link linkend="map_config_struct_editor">structured hbm.xml editor</link>.</para>
-
-    <para> If you start the wizard from the selected class, all values will be detected there
-      automatically.</para>
-
-    <figure float="0">
-      <title>Creating Mapping File for Selected Class</title>
-
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="images/plugins/plugins_0_b.png"></imagedata>
-        </imageobject>
-      </mediaobject>
-    </figure>
+    <para>Pressing finish creates the files.</para>
 
   </section>
 
@@ -514,11 +501,13 @@
       </emphasis> file if you do not already have such one.</para>
 
     <para>Start the wizard by clicking <emphasis>
-      <property moreinfo="none">New &gt; Other (Ctrl+N)</property><diffmk:wrapper diffmk:change="added"> or on a web Seam project in Web Projects view  </diffmk:wrapper><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added"> WebContent -&gt; New -&gt; File -&gt; Hibernate Configuration 3.0</diffmk:wrapper></property> 
-      </emphasis>, then <emphasis>
+      <property moreinfo="none">New &gt; Other (Ctrl+N)</property></emphasis>, then <emphasis>
         <property moreinfo="none">Hibernate &gt; Hibernate Configuration File (cfg.xml)</property>
       </emphasis> and press <emphasis>
         <property moreinfo="none">Next</property>
+      </emphasis>
+      or on a web Seam project in the <property moreinfo="none">Web Projects</property> view  
+      <emphasis><property moreinfo="none"> WebContent -&gt; New -&gt; File -&gt; Hibernate Configuration 3.0</property> 
       </emphasis>. After selecting the wanted location for the <emphasis>
         <property moreinfo="none">hibernate.cfg.xml</property>
       </emphasis> file, you will see the following page:</para>
@@ -559,7 +548,7 @@
   </section>
 
   <section id="console_conf">
-    <title><diffmk:wrapper diffmk:change="changed">Hibernate Console Configuration</diffmk:wrapper></title>
+    <title>Hibernate Console Configuration</title>
 
     <para>A Console configuration describes how the <property moreinfo="none">Hibernate plugin</property> should
       configure <property moreinfo="none">Hibernate</property> and what configuration files, including which
@@ -567,8 +556,8 @@
       query prototyping, reverse engineering and code generation. You can have multiple named
       console configurations. Normally you would just need one per project, but more is definitely
       possible if your project requires this.</para>
- <section diffmk:change="added" id="creat_console_conf">
-   <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Creating a Hibernate Console Configuration</diffmk:wrapper></title>
+ <section id="creat_console_conf">
+   <title>Creating a Hibernate Console Configuration</title>
  
     
     <para>You create a console configuration by running the <property moreinfo="none">Console Configuration
@@ -740,8 +729,8 @@
             </entry>
 
             <entry>
-              <para>No default value (lets Hibernate Entity Manager find the persistence
-                unit)</para>
+              <para><diffmk:wrapper diffmk:change="changed">No default value (lets Hibernate Entity Manager find the persistence
+                unit or it can be defined manually using Browse button)</diffmk:wrapper></para>
             </entry>
           </row>
 
@@ -1046,168 +1035,168 @@
       </mediaobject>
     </figure>
  </section>
-    <section diffmk:change="added" id="modif_console_conf">
-      <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Modifying a Hibernate Console Configuration
-      </diffmk:wrapper></title>
-      <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">When you created a hibernate console configuration you can modify it in 2 ways:
-      </diffmk:wrapper></para>
+    <section id="modif_console_conf">
+      <title>Modifying a Hibernate Console Configuration
+      </title>
+      <para>When you created a hibernate console configuration you can modify it in 2 ways:
+      </para>
       
-      <itemizedlist diffmk:change="added">
-        <listitem diffmk:change="added">
-          <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">right click on the configuration in
-            </diffmk:wrapper><emphasis diffmk:change="added">
-              <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Hibernate Configurations View-&gt;Edit Configuration
-              </diffmk:wrapper></property>
-            </emphasis><diffmk:wrapper diffmk:change="added">.</diffmk:wrapper></para>
+      <itemizedlist>
+        <listitem>
+          <para>right click on the configuration in
+            <emphasis>
+              <property moreinfo="none">Hibernate Configurations View-&gt;Edit Configuration
+              </property>
+            </emphasis>.</para>
             
-            <figure diffmk:change="added" float="0">
-              <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Opening Edit Configuration Wizard</diffmk:wrapper></title>
+            <figure float="0">
+              <title>Opening Edit Configuration Wizard</title>
               
-              <mediaobject diffmk:change="added">
-                <imageobject diffmk:change="added">
-                  <imagedata diffmk:change="added" fileref="images/plugins/plugins_4_c.png"></imagedata>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="images/plugins/plugins_4_c.png"></imagedata>
                 </imageobject>
               </mediaobject>
             </figure>
-          <para diffmk:change="added"><diffmk:wrapper diffmk:change="added"> After clicking you will see the Edit Configuration Wizard that is similar to  </diffmk:wrapper><emphasis diffmk:change="added">
-              <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Create Console Configuration</diffmk:wrapper></property>
-            </emphasis><diffmk:wrapper diffmk:change="added">,described in </diffmk:wrapper><link diffmk:change="added" linkend="creat_console_conf"><diffmk:wrapper diffmk:change="added">Creating a Hibernate Console Configuration section</diffmk:wrapper></link><diffmk:wrapper diffmk:change="added">.
-          </diffmk:wrapper></para>
+          <para> After clicking you will see the Edit Configuration Wizard that is similar to  <emphasis>
+              <property moreinfo="none">Create Console Configuration</property>
+            </emphasis>,described in <link linkend="creat_console_conf">Creating a Hibernate Console Configuration section</link>.
+          </para>
         </listitem>
-        <listitem diffmk:change="added"><para diffmk:change="added"><diffmk:wrapper diffmk:change="added">use Properties view for modifying some of Console Configuration properties.</diffmk:wrapper></para>
-          <figure diffmk:change="added" float="0">
-            <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Properties View</diffmk:wrapper></title>
+        <listitem><para>use Properties view for modifying some of Console Configuration properties.</para>
+          <figure float="0">
+            <title>Properties View</title>
             
-            <mediaobject diffmk:change="added">
-              <imageobject diffmk:change="added">
-                <imagedata diffmk:change="added" fileref="images/plugins/plugins_4_b.png"></imagedata>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="images/plugins/plugins_4_b.png"></imagedata>
               </imageobject>
             </mediaobject>
           </figure>
-          <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">The following table describes the available settings in the Properties view. Most properties are changeable by left click but some are not.
+          <para>The following table describes the available settings in the Properties view. Most properties are changeable by left click but some are not.
           
-          </diffmk:wrapper><table diffmk:change="added">
-            <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Properties</diffmk:wrapper></title>
+          <table>
+            <title>Properties</title>
             
-            <tgroup cols="3" diffmk:change="added">
-              <colspec align="left" colnum="1" colwidth="1*" diffmk:change="added"></colspec>
+            <tgroup cols="3">
+              <colspec align="left" colnum="1" colwidth="1*"></colspec>
               
-              <colspec colnum="2" colwidth="3*" diffmk:change="added"></colspec>
+              <colspec colnum="2" colwidth="3*"></colspec>
               
-              <colspec align="left" colnum="3" colwidth="1*" diffmk:change="added"></colspec>
+              <colspec align="left" colnum="3" colwidth="1*"></colspec>
               
-              <thead diffmk:change="added">
-                <row diffmk:change="added">
-                  <entry align="center" diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Property</diffmk:wrapper></para>
+              <thead>
+                <row>
+                  <entry align="center">
+                    <para>Property</para>
                   </entry>
                   
-                  <entry align="center" diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Description</diffmk:wrapper></para>
+                  <entry align="center">
+                    <para>Description</para>
                   </entry>
                   
-                  <entry align="center" diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Is Changeable</diffmk:wrapper></para>
+                  <entry align="center">
+                    <para>Is Changeable</para>
                   </entry>
                 </row>
               </thead>
               
-              <tbody diffmk:change="added">
-                <row diffmk:change="added">
-                  <entry diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Additional mapping files </diffmk:wrapper></para>
+              <tbody>
+                <row>
+                  <entry>
+                    <para>Additional mapping files </para>
                   </entry>
                   
-                  <entry diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">List of additional mapping files that should be loaded.
-                    </diffmk:wrapper></para>
+                  <entry>
+                    <para>List of additional mapping files that should be loaded.
+                    </para>
                   </entry>
                   
-                  <entry diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">False</diffmk:wrapper></para>
+                  <entry>
+                    <para>False</para>
                   </entry>
                 </row>  
-                <row diffmk:change="added">
-                  <entry diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Configuration file</diffmk:wrapper></para>
+                <row>
+                  <entry>
+                    <para>Configuration file</para>
                   </entry>
                   
-                  <entry diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Path to a hibernate.cfg.xml file</diffmk:wrapper></para>
+                  <entry>
+                    <para>Path to a hibernate.cfg.xml file</para>
                   </entry>
                   
-                  <entry diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">False</diffmk:wrapper></para>
+                  <entry>
+                    <para>False</para>
                   </entry>
                 </row>
-                <row diffmk:change="added">
-                  <entry diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Connection</diffmk:wrapper></para>
+                <row>
+                  <entry>
+                    <para>Connection</para>
                   </entry>
                   
-                  <entry diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">DTP provided connection that you can use instead of what is in cfg.xml and jpa
+                  <entry>
+                    <para>DTP provided connection that you can use instead of what is in cfg.xml and jpa
                       persistence.xml. It's possible to use either already configured hibernate or
-                      JPA connection or specify a new one here.</diffmk:wrapper></para>
+                      JPA connection or specify a new one here.</para>
                   </entry>
                   
-                  <entry diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">True</diffmk:wrapper></para>
+                  <entry>
+                    <para>True</para>
                   </entry>
                 </row>
-                <row diffmk:change="added">
-                  <entry diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Name</diffmk:wrapper></para>
+                <row>
+                  <entry>
+                    <para>Name</para>
                   </entry>
                   
-                  <entry diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">The unique name of the console configuration</diffmk:wrapper></para>
+                  <entry>
+                    <para>The unique name of the console configuration</para>
                   </entry>
                   
-                  <entry diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">True</diffmk:wrapper></para>
+                  <entry>
+                    <para>True</para>
                   </entry>
                 </row>
-                <row diffmk:change="added">
-                  <entry diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Project</diffmk:wrapper></para>
+                <row>
+                  <entry>
+                    <para>Project</para>
                   </entry>
                   
-                  <entry diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">The name of a java project which classpath should be used in the console
-                      configuration</diffmk:wrapper></para>
+                  <entry>
+                    <para>The name of a java project which classpath should be used in the console
+                      configuration</para>
                   </entry>
                   
-                  <entry diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">True</diffmk:wrapper></para>
+                  <entry>
+                    <para>True</para>
                   </entry>
                 </row>
-                <row diffmk:change="added">
-                  <entry diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Properties file</diffmk:wrapper></para>
+                <row>
+                  <entry>
+                    <para>Properties file</para>
                   </entry>
                   
-                  <entry diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Path to a hibernate.properties file</diffmk:wrapper></para>
+                  <entry>
+                    <para>Path to a hibernate.properties file</para>
                   </entry>
                   
-                  <entry diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">False</diffmk:wrapper></para>
+                  <entry>
+                    <para>False</para>
                   </entry>
                 </row>
-                <row diffmk:change="added">
-                  <entry diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Type</diffmk:wrapper></para>
+                <row>
+                  <entry>
+                    <para>Type</para>
                   </entry>
                   
-                  <entry diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Choose between "CORE", "ANNOTATIONS" and
+                  <entry>
+                    <para>Choose between "CORE", "ANNOTATIONS" and
                       "JPA" according to the method of relational mapping you want to use. Note that the two latter requires running Eclipse IDE with
-                      a JDK 5 runtime, otherwise you will get classloading and/or version errors.</diffmk:wrapper></para>
+                      a JDK 5 runtime, otherwise you will get classloading and/or version errors.</para>
                   </entry>
                   
-                  <entry diffmk:change="added">
-                    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">True</diffmk:wrapper></para>
+                  <entry>
+                    <para>True</para>
                   </entry>
                 </row>
             
@@ -1407,13 +1396,13 @@
               </entry>
 
               <entry>
-                <para><diffmk:wrapper diffmk:change="added">A table that has a multi-column primary key a &lt;composite-id&gt;
+                <para>A table that has a multi-column primary key a &lt;composite-id&gt;
                   mapping will always be created. If this option is enabled and there are matching
                   foreign-keys each key column is still considered a 'basic' scalar (string, long,
                   etc.) instead of a reference to an entity. If you disable this option a
-                  </diffmk:wrapper><code diffmk:change="added"><diffmk:wrapper diffmk:change="added">&lt;key-many-to-one&gt;</diffmk:wrapper></code><diffmk:wrapper diffmk:change="added"> instead. Note: a </diffmk:wrapper><code diffmk:change="added"><diffmk:wrapper diffmk:change="added">&lt;many-to-one&gt;</diffmk:wrapper></code><diffmk:wrapper diffmk:change="added">
+                  <code>&lt;key-many-to-one&gt;</code> instead. Note: a <code>&lt;many-to-one&gt;</code>
                   property is still created, but is simply marked as non-updatable and
-                  non-insertable.</diffmk:wrapper></para>
+                  non-insertable.</para>
               </entry>
             </row>
 
@@ -1880,11 +1869,11 @@
       <title>Java property/class completion</title>
 
       <para>Package, class, and field completion is enabled for relevant XML attributes. The
-        auto-completion detects its context and limits the completion for e.g. <code diffmk:change="added">&lt;property&gt;</code><diffmk:wrapper diffmk:change="added"> and only shows the properties/fields available in the enclosing 
-          </diffmk:wrapper><code diffmk:change="added">&lt;class&gt;</code><diffmk:wrapper diffmk:change="added">
+        auto-completion detects its context and limits the completion for e.g. <code>&lt;property&gt;</code> and only shows the properties/fields available in the enclosing 
+          <code>&lt;class&gt;</code>
         ,
-          </diffmk:wrapper><code diffmk:change="added">&lt;subclass&gt;</code><diffmk:wrapper diffmk:change="added">
-         etc. It is also possible to navigate from the </diffmk:wrapper><emphasis>
+          <code>&lt;subclass&gt;</code>
+         etc. It is also possible to navigate from the <emphasis>
           <property moreinfo="none">hbm.xml</property>
         </emphasis> files to the relevant class/field in java code.</para>
 
@@ -1960,7 +1949,7 @@
 
       <para>In <emphasis>
           <property moreinfo="none">cfg.xml</property>
-        </emphasis> code completion for the value of <code diffmk:change="added">&lt;property&gt; name</code> attributes is available.</para>
+        </emphasis> code completion for the value of <code>&lt;property&gt; name</code> attributes is available.</para>
 
 
       <figure float="0">
@@ -2006,7 +1995,6 @@
 
     <figure float="0">
       <title>Structured cfg.xml Editor</title>
-
       <mediaobject>
         <imageobject>
           <imagedata fileref="images/plugins/plugins_12_b.png"></imagedata>
@@ -2015,6 +2003,82 @@
     </figure>
 
   </section>
+	
+	<section id="properties_editor">
+		<title>JBoss Tools Properties Editor</title>
+		
+		<para>The editor is meant for editing <literal moreinfo="none">.properties</literal> files. It contains two tabs: the 
+			<property moreinfo="none">Properties</property> (UI) tab and the 
+				<property moreinfo="none">Source</property> tab for manual editing.</para>
+		
+		<para>For <literal moreinfo="none">hibernate.properties</literal> file <property moreinfo="none">JBoss Tools Properties Editor</property>
+			provides content assist which is available both for hibernate properties and property values. You can make use of 
+			the content assist while editing the file in the Source view and in the Properties view of the editor.</para>
+		
+		
+		<para>To add the property in the 
+			<property moreinfo="none">Properties</property> view, click the <emphasis>
+			<property moreinfo="none">Add</property></emphasis> button.</para>
+
+				<figure float="0">
+					<title>Adding the Property</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="images/plugins/add_property1.png"></imagedata>
+						</imageobject>
+					</mediaobject>
+				</figure>
+		
+		<para>In the <emphasis>
+			<property moreinfo="none">Name</property></emphasis> field press <emphasis>
+				<property moreinfo="none">Ctrl+Space</property></emphasis> to invoke the content assist. 
+			It will suggest <emphasis>
+				<property moreinfo="none">'hibernate.'</property></emphasis> which is the prefix for all hibernate properties. After 
+			selecting <emphasis>
+				<property moreinfo="none">'hibernate.'</property></emphasis> and invoking the content assist again, 
+			other prefixes and properties are displayed as the proposals with a description of each one.</para>
+		
+		<figure float="0">
+			<title>Content Assist for Properties Names</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/plugins/add_property2.png"></imagedata>
+				</imageobject>
+			</mediaobject>
+		</figure>
+		
+		<para>When invoking the content assist in the <emphasis>
+			<property moreinfo="none">Value</property></emphasis> field, it also provides a list of proposals.</para>
+		
+		<figure float="0">
+			<title>Content Assist for Properties Values</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/plugins/add_property3.png"></imagedata>
+				</imageobject>
+			</mediaobject>
+		</figure>
+		
+		<para>In the <property moreinfo="none">Source</property> view of the editor, content assist also could be invoked both for properties names and values:</para>
+		
+		<figure float="0">
+			<title>Content Assist in the Source view</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/plugins/add_property4.png"></imagedata>
+				</imageobject>
+			</mediaobject>
+		</figure>
+		
+		<figure float="0">
+			<title>Content Assist in the Source view</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/plugins/add_property5.png"></imagedata>
+				</imageobject>
+			</mediaobject>
+		</figure>
+	</section>
 
   <section id="rev_xml_editor">
     <title>Reveng.xml Editor</title>
@@ -2051,7 +2115,7 @@
       </emphasis> then.</para>
 
     <figure float="0">
-      <title>Overview Page</title>
+      <title>ChooseReverse Engineering File Wizard </title>
       <mediaobject>
         <imageobject role="fo">
           <imagedata align="center" fileref="images/plugins/plugins_22.png" format="PNG" scale="80"></imagedata>
@@ -2210,7 +2274,7 @@
         <para>In order to get a visual feel on how entities are related as well as view their
           structures, a <property moreinfo="none">Mapping Diagram</property> is provided. It is available by right
           clicking on the entity you want a mapping diagram for and then choosing <emphasis>
-            <property moreinfo="none">Open Mapping Diagram</property>.</emphasis></para>
+            <property moreinfo="none">Mapping Diagram</property>.</emphasis></para>
 
         <figure float="0">
           <title>Mapping Diagram</title>
@@ -2224,8 +2288,47 @@
             </imageobject>
           </mediaobject>
         </figure>
-
-        <para>For better navigating on the Diagram use <property moreinfo="none">Outline view</property> which is
+        <para>To make  <property moreinfo="none">Mapping Diagram</property> usage easier you can use <property moreinfo="none">Rules</property>,
+          <property moreinfo="none">Grid</property>,<property moreinfo="none">Snap to Geometry</property> checkboxes in the <emphasis>
+            <property moreinfo="none">View</property></emphasis> menu.  </para>
+        <figure float="0">
+          <title>View menu</title>
+          
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/plugins/map_diagram1.png"></imagedata>
+            </imageobject>
+          </mediaobject>
+        </figure>
+        <para>If you will select <emphasis>
+          <property moreinfo="none">Rules</property></emphasis> checkbox, the view print page scale will be added to the page.
+          The numbers on the scale show its size in inches.If you click on the scale a <emphasis>
+            <property moreinfo="none">Ruler Guide</property></emphasis> will appear on the diagram.
+          You can connect any diagram item to it.To connect the items you should move their tops
+          to the Ruler Guide. And while moving the ruler guide, the items will be moved together with it as a whole.</para>
+        <figure float="0">
+          <title>Moving the Ruler guide</title>
+          
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/plugins/map_diagram2.png"></imagedata>
+            </imageobject>
+          </mediaobject>
+        </figure>
+        <para>If you'll select <emphasis>
+          <property moreinfo="none">Grid</property></emphasis> checkbox, the grid will appear on the diagram.</para>
+        <figure float="0">
+          <title>Grid on Mapping diagram</title>
+          
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/plugins/map_diagram3.png"></imagedata>
+            </imageobject>
+          </mediaobject>
+        </figure>
+        <para>The checkbox <emphasis>
+          <property moreinfo="none">Snap to Geometry</property></emphasis> helps to put the items of the diagram into allineation with the grid.</para>
+        <para>For better navigating through the diagram use <property moreinfo="none">Outline view</property> which is
           available in the structural and graphical modes.</para>
         <figure float="0">
           <title>Navigating in the Structural Mode</title>
@@ -2249,106 +2352,396 @@
             </imageobject>
           </mediaobject>
         </figure>
+      	
+      	<para><diffmk:wrapper diffmk:change="added">The options in the context menu of the mapping diagram are listed in the next table.</diffmk:wrapper></para>
+      	
+      	<table diffmk:change="added">
+      		<title><diffmk:wrapper diffmk:change="changed">Context Menu Options of the Mapping Diagram</diffmk:wrapper></title>
+      		
+      		<tgroup cols="3" diffmk:change="added">      			
+      			<colspec align="left" colnum="1" colwidth="1*" diffmk:change="added"></colspec>
+      			<colspec align="left" colnum="2" colwidth="1*" diffmk:change="added"></colspec>
+      			<colspec align="left" colnum="3" colwidth="3*" diffmk:change="added"></colspec>
+      			
+      			<thead diffmk:change="added">
+      				<row diffmk:change="added">
+      					<entry align="center" diffmk:change="added">
+      						<para><diffmk:wrapper diffmk:change="changed">Icon</diffmk:wrapper></para>
+      					</entry>
+      					
+      					<entry align="center" diffmk:change="added">
+      						<para><diffmk:wrapper diffmk:change="added">Command</diffmk:wrapper></para>
+      					</entry>
+      					
+      					<entry align="center" diffmk:change="added">
+      						<para><diffmk:wrapper diffmk:change="added">Description</diffmk:wrapper></para>
+      					</entry>
+      				</row>
+      			</thead>
+      			
+      			<tbody diffmk:change="added">
+      				<row diffmk:change="added">
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><inlinemediaobject><imageobject>
+      							<imagedata fileref="images/plugins/toggleConnections.png"></imagedata>
+      						</imageobject></inlinemediaobject>
+      						</para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Show|Hide connections</diffmk:wrapper></para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Allows to select what types of connections should be shown on the diagram:
+      									</diffmk:wrapper><itemizedlist diffmk:change="added">
+      										<listitem diffmk:change="added"><para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Property Mappings</diffmk:wrapper></para></listitem>
+      										<listitem diffmk:change="added"><para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Class Mappings</diffmk:wrapper></para></listitem>
+      										<listitem diffmk:change="added"><para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Associations</diffmk:wrapper></para></listitem>
+      										<listitem diffmk:change="added"><para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Foreign key constraints</diffmk:wrapper></para></listitem>
+      									</itemizedlist><diffmk:wrapper diffmk:change="added">
+      						and choose the type of the connection router:
+      									</diffmk:wrapper><itemizedlist diffmk:change="added">
+      										<listitem diffmk:change="added"><para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Manhattan Connection Router</diffmk:wrapper></para></listitem>
+      										<listitem diffmk:change="added"><para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Fan Connection Router</diffmk:wrapper></para></listitem>
+      									</itemizedlist>
+      						</para>
+      					</entry>
+      				</row>
+      				
+      				<row diffmk:change="added">
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><inlinemediaobject diffmk:change="added"><imageobject>
+      							<imagedata fileref="images/plugins/autoLayout.png"/>
+      						</imageobject></inlinemediaobject>
+      						</para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para>Auto layout</para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Used to dispose all the items of the diagram in a standard manner</diffmk:wrapper></para>
+      					</entry>
+      				</row>
+      				
+      				<row diffmk:change="added">
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"></para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Collapse All</diffmk:wrapper></para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Collapses all the diagram elements</diffmk:wrapper></para>
+      					</entry>
+      				</row>
+      				
+      				<row diffmk:change="added">
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"></para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Expand All</diffmk:wrapper></para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Expands all the diagram elements</diffmk:wrapper></para>
+      					</entry>
+      				</row>
+      				
+      				<row diffmk:change="added">
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"></para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Select All</diffmk:wrapper></para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Makes all the diagram elements selected</diffmk:wrapper></para>
+      					</entry>
+      				</row>
+      				
+      				<row diffmk:change="added">
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><inlinemediaobject><imageobject>
+      							<imagedata fileref="images/plugins/exportAsImage.png"/>
+      						</imageobject></inlinemediaobject>
+      						</para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Export as Image</diffmk:wrapper></para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para><diffmk:wrapper diffmk:change="changed">Allows to export a diagram as </diffmk:wrapper><emphasis><property moreinfo="none"><diffmk:wrapper diffmk:change="changed">.png
+      						</diffmk:wrapper></property><diffmk:wrapper diffmk:change="changed">,</diffmk:wrapper></emphasis>
+      							<emphasis>
+      								<property moreinfo="none"><diffmk:wrapper diffmk:change="changed">.jpeg</diffmk:wrapper></property>
+      							</emphasis><diffmk:wrapper diffmk:change="changed"> or </diffmk:wrapper><emphasis><property moreinfo="none"><diffmk:wrapper diffmk:change="changed">.bmp </diffmk:wrapper></property></emphasis></para>
+      					</entry>
+      				</row>
+      			</tbody>
+      		</tgroup>
+      	</table>
 
-        <para>As in <property moreinfo="none">Hibernate Configurations View</property> in <property moreinfo="none">Mapping
-            Diagram</property> it's also possible to open source/mapping file for a chosen
-          object by selecting appropriate option in the context menu. </para>
-
+        <para>When you open the context menu while clicking an item on the diagram, it quite differs from the one described before.</para>
         <figure float="0">
-          <title>Navigating on the Diagram</title>
-
+          <title><diffmk:wrapper diffmk:change="changed">Context Menu in Mapping Item</diffmk:wrapper></title>
+          
           <mediaobject>
             <imageobject>
-              <imagedata fileref="images/plugins/plugins_18_c.png"></imagedata>
+              <imagedata fileref="images/plugins/plugins_18_g.png"></imagedata>
             </imageobject>
           </mediaobject>
         </figure>
-
-        <para>If you ask to open source/mapping file by right clicking on any entity element, this
-          element will be highlighted in the open file.</para>
-
-        <figure float="0">
-          <title>Opening Source for Object</title>
-
-          <mediaobject>
-            <imageobject>
-              <imagedata fileref="images/plugins/plugins_18_d.png"></imagedata>
-            </imageobject>
-          </mediaobject>
-        </figure>
-
-        <para>Finally, if you need to have your Diagram exported as <emphasis><property moreinfo="none">.png
-            </property>,</emphasis>
-          <emphasis>
-            <property moreinfo="none">.jpeg</property>
-          </emphasis> or <emphasis><property moreinfo="none">.bmp </property>,</emphasis> you should right-click
-          anywhere in the <property moreinfo="none">Mapping Diagram editor</property> and select <emphasis>
-            <property moreinfo="none">Export as Image</property>
-          </emphasis>.</para>
-
-        <figure float="0">
-          <title>Mapping Diagram Export</title>
-
-          <mediaobject>
-            <imageobject>
-              <imagedata fileref="images/plugins/plugins_18_e.png"></imagedata>
-            </imageobject>
-          </mediaobject>
-        </figure>
-
-        <para>As you can see on the figure above, <emphasis><property moreinfo="none">Undo</property>, </emphasis>
-          <emphasis>
-            <property moreinfo="none">Redo</property>
-          </emphasis> and <emphasis>
-            <property moreinfo="none">Auto layout </property>
-          </emphasis> options are also available through the context menu.</para>
+      	
+      	<para><diffmk:wrapper diffmk:change="added">The next table describes all the extra options in the menu of mapping items:</diffmk:wrapper></para>
+      	
+      	<table diffmk:change="added">
+      		<title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Extra Options in the Context Menu of Mapping Item</diffmk:wrapper></title>
+      		
+      		<tgroup cols="3" diffmk:change="added">      			
+      			<colspec align="left" colnum="1" colwidth="1*" diffmk:change="added"></colspec>
+      			<colspec align="left" colnum="2" colwidth="1*" diffmk:change="added"></colspec>
+      			<colspec align="left" colnum="3" colwidth="3*" diffmk:change="added"></colspec>
+      			
+      			<thead diffmk:change="added">
+      				<row diffmk:change="added">
+      					<entry align="center" diffmk:change="added">
+      						<para><diffmk:wrapper diffmk:change="added">Icon</diffmk:wrapper></para>
+      					</entry>
+      					
+      					<entry align="center" diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Command</diffmk:wrapper></para>
+      					</entry>
+      					
+      					<entry align="center" diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Description</diffmk:wrapper></para>
+      					</entry>
+      				</row>
+      			</thead>
+      			
+      			<tbody diffmk:change="added">
+      				<row diffmk:change="added">
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><inlinemediaobject><imageobject>
+      							<imagedata fileref="images/plugins/visibleState.png"></imagedata>
+      						</imageobject></inlinemediaobject>
+      						</para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para><diffmk:wrapper diffmk:change="added">Toggle Visible State</diffmk:wrapper></para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Used to hide/show an item on the mapping diagram</diffmk:wrapper></para>
+      					</entry>
+      				</row>
+      				
+      				<row diffmk:change="added">
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><inlinemediaobject><imageobject>
+      							<imagedata fileref="images/plugins/expandState.png"></imagedata>
+      						</imageobject></inlinemediaobject>
+      						</para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Expand|Collapse</diffmk:wrapper></para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Used for expanding/collapsing fields of the item</diffmk:wrapper></para>
+      					</entry>
+      				</row>
+      				
+      				<row diffmk:change="added">
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><inlinemediaobject diffmk:change="added"><imageobject diffmk:change="added">
+      							<imagedata diffmk:change="added" fileref="images/plugins/openSourceFile_but.png"></imagedata>
+      						</imageobject></inlinemediaobject>
+      						</para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Open Source File</diffmk:wrapper></para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Makes it possible to open a source file for a chosen
+      							object/element. The selected element will be highlighted in the open file.</diffmk:wrapper></para>
+      					</entry>
+      				</row>
+      				
+      				<row diffmk:change="added">
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><inlinemediaobject diffmk:change="added"><imageobject diffmk:change="added">
+      							<imagedata diffmk:change="added" fileref="images/plugins/openMappingFile_but.png"></imagedata>
+      						</imageobject></inlinemediaobject>
+      						</para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Open Mapping File</diffmk:wrapper></para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Makes it possible to open a mapping file for a chosen
+      							object/element. The selected element will be highlighted in the open file.</diffmk:wrapper></para>
+      					</entry>
+      				</row>
+      			</tbody>
+      		</tgroup>
+      	</table>
+        
+      	<tip diffmk:change="added">
+      		<title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Tip:</diffmk:wrapper></title>
+      		<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">All the described types of the context menu are also available in the </diffmk:wrapper><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Outline</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added"> view.</diffmk:wrapper></para>
+      	</tip>
+      	
+      	<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">The below table lists the actions that could be performed using the keyboard keys (or keys combinations).</diffmk:wrapper></para>
+      	
+      	<table diffmk:change="added">
+      		<title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Hibernate Mapping Diagram Shortcut Keys</diffmk:wrapper></title>
+      		
+      		<tgroup cols="2" diffmk:change="added">      			
+      			<colspec align="left" colnum="1" colwidth="3*" diffmk:change="added"></colspec>
+      			<colspec align="left" colnum="2" colwidth="1*" diffmk:change="added"></colspec>
+      			
+      			<thead diffmk:change="added">
+      				<row diffmk:change="added">
+      					<entry align="center" diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Command</diffmk:wrapper></para>
+      					</entry>
+      					
+      					<entry align="center" diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Binding</diffmk:wrapper></para>
+      					</entry>
+      				</row>
+      			</thead>
+      			
+      			<tbody diffmk:change="added">
+      				<row diffmk:change="added">
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Scroll the diagram content</diffmk:wrapper></para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Ctrl + Shift + arrows</diffmk:wrapper></para>
+      					</entry>
+      				</row>
+      				
+      				<row diffmk:change="added">
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Collapse/Expand selected item(s)</diffmk:wrapper></para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added"> Enter </diffmk:wrapper></para>
+      					</entry>
+      				</row>
+      				
+      				<row diffmk:change="added">
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Show/Hide selected item(s)</diffmk:wrapper></para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para><diffmk:wrapper diffmk:change="changed"> + </diffmk:wrapper></para>
+      					</entry>
+      				</row>
+      				
+      				<row diffmk:change="added">
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Sort items in alphabetical order or return the initial state</diffmk:wrapper></para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Space</diffmk:wrapper></para>
+      					</entry>
+      				</row>
+      				
+      				<row diffmk:change="added">
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Navigate between the items</diffmk:wrapper></para>
+      					</entry>
+      					<entry diffmk:change="added">
+      						<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Arrows</diffmk:wrapper></para>
+      					</entry>
+      				</row>
+      			</tbody>
+      		</tgroup>
+      	</table>
+      	
+      	<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">It's possible to save the diagram in the eclipse workspace. Click the usual </diffmk:wrapper><emphasis diffmk:change="added">
+      		<property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">File &gt; Save As</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> option, the wizard will ask you to set the location within you project
+      		where to save the file and give the name for the diagram. The item's names concatenated with the ampersand 
+      		symbols are set as the default name for a diagram. The file is saved with the </diffmk:wrapper><literal diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">.hibernate</diffmk:wrapper></literal><diffmk:wrapper diffmk:change="added"> extension.</diffmk:wrapper></para>
+      	
+      	<figure diffmk:change="added" float="0">
+      		<title diffmk:change="added"><diffmk:wrapper diffmk:change="added">The Diagram saved in the Workspace</diffmk:wrapper></title>
+      		<mediaobject diffmk:change="added">
+      			<imageobject diffmk:change="added">
+      				<imagedata diffmk:change="added" fileref="images/plugins/saveDiagram.png"></imagedata>
+      			</imageobject>
+      		</mediaobject>
+      	</figure>
+      	
+      	<tip diffmk:change="added">
+      		<title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Note:</diffmk:wrapper></title>
+      		<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">If you restart the Eclipse with the mapping diagram opened, the mapping diagram will be restored with the
+      			message like on the figure below. To view the diagram content, you should perform the refreshing.</diffmk:wrapper></para>
+      	</tip>
+      	
+      	<figure diffmk:change="added" float="0">
+      		<title diffmk:change="added"><diffmk:wrapper diffmk:change="added">The Diagram after Restarting the Eclipse</diffmk:wrapper></title>
+      		<mediaobject diffmk:change="added">
+      			<imageobject diffmk:change="added">
+      				<imagedata diffmk:change="added" fileref="images/plugins/diagram1.png"></imagedata>
+      			</imageobject>
+      		</mediaobject>
+      	</figure>
+      	
+      	<figure diffmk:change="added" float="0">
+      		<title diffmk:change="added"><diffmk:wrapper diffmk:change="added">The Diagram after Refreshing</diffmk:wrapper></title>
+      		<mediaobject diffmk:change="added">
+      			<imageobject diffmk:change="added">
+      				<imagedata diffmk:change="added" fileref="images/plugins/diagram2.png"></imagedata>
+      			</imageobject>
+      		</mediaobject>
+      	</figure>
       </section>
     </section>
 
     <section>
       <title>Prototyping Queries</title>
 
-      <para><diffmk:wrapper diffmk:change="changed">Queries can be prototyped by entering them into the </diffmk:wrapper><property moreinfo="none">HQL</property> or
-          <property moreinfo="none">Criteria Editor</property><diffmk:wrapper diffmk:change="added">. To execute a query you should click the green run button in the editor toolbar or press </diffmk:wrapper><emphasis diffmk:change="added">
-          <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Ctrl+Enter</diffmk:wrapper></property>
-        </emphasis><diffmk:wrapper diffmk:change="added">.</diffmk:wrapper></para>
+      <para>Queries can be prototyped by entering them into the <property moreinfo="none">HQL</property> or
+          <property moreinfo="none">Criteria Editor</property>. To execute a query you should click the green run button in the editor toolbar or press <emphasis>
+          <property moreinfo="none">Ctrl+Enter</property>
+        </emphasis>.</para>
 	
-	<section diffmk:change="added" id="hql_and_criteria_editors">
-		<title diffmk:change="added"><diffmk:wrapper diffmk:change="added">HQL Editor and Hibernate Criteria Editor</diffmk:wrapper></title>
-		<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">To open the query editors right-click your project
-          </diffmk:wrapper><property moreinfo="none">Console Configuration</property><diffmk:wrapper diffmk:change="changed"> and select </diffmk:wrapper><property moreinfo="none">HQL
-          Editor</property><diffmk:wrapper diffmk:change="changed"> (or </diffmk:wrapper><property moreinfo="none">Hibernate Criteria Editor</property><diffmk:wrapper diffmk:change="changed">).</diffmk:wrapper></para>
+	<section id="hql_and_criteria_editors">
+		<title>HQL Editor and Hibernate Criteria Editor</title>
+		<para>To open the query editors right-click your project
+          <property moreinfo="none">Console Configuration</property> and select <property moreinfo="none">HQL
+          Editor</property> (or <property moreinfo="none">Hibernate Criteria Editor</property>).</para>
 	
-		<figure diffmk:change="added" float="0">
-			<title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Opening HQL Editor</diffmk:wrapper></title>
-			<mediaobject diffmk:change="added">
-				<imageobject diffmk:change="added">
-					<imagedata diffmk:change="added" fileref="images/plugins/prototypingQueries.png"></imagedata>
+		<figure float="0">
+			<title>Opening HQL Editor</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/plugins/prototypingQueries.png"></imagedata>
 				</imageobject>
 			</mediaobject>
 		</figure>
 		
-	<tip diffmk:change="added"><title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Tip:</diffmk:wrapper></title>	
-	<para><diffmk:wrapper diffmk:change="changed">If the context menu items are disabled then you need at first to create a </diffmk:wrapper><property moreinfo="none">Session
+	<tip><title>Tip:</title>	
+	<para>If the context menu items are disabled then you need at first to create a <property moreinfo="none">Session
           Factory</property>. That is done by simply expanding the <property moreinfo="none">Session
           Factory</property> node.</para>
 	</tip>
-		<para><diffmk:wrapper diffmk:change="added">When open the editors they should automatically detect the chosen Console Configuration.</diffmk:wrapper></para>
+		<para>When open the editors they should automatically detect the chosen Console Configuration.</para>
 		
-	<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">To get a prefill query for any entity (or any entity child node) listed in the
-	</diffmk:wrapper><emphasis diffmk:change="added">
-          <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Session Factory</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> you should double-click it. This will open the 
-	</diffmk:wrapper><property moreinfo="none"><diffmk:wrapper diffmk:change="changed">HQL Editor</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added"> with the associated query.</diffmk:wrapper></para>
+	<para>To get a prefill query for any entity (or any entity child node) listed in the
+	<emphasis>
+          <property moreinfo="none">Session Factory</property></emphasis> you should double-click it. This will open the 
+	<property moreinfo="none">HQL Editor</property> with the associated query.</para>
 	
-	<para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Choosing </diffmk:wrapper><emphasis>
+	<para>Choosing <emphasis>
           <property moreinfo="none">HQL Editor</property>
-        </emphasis><diffmk:wrapper diffmk:change="changed"> in the context menu for any entity (or any entity child node) will also open the HQL editor
-	with the associated query. If you choose </diffmk:wrapper><emphasis>
+        </emphasis> in the context menu for any entity (or any entity child node) will also open the HQL editor
+	with the associated query. If you choose <emphasis>
           <property moreinfo="none">Hibernate Criteria Editor</property>
-	</emphasis><diffmk:wrapper diffmk:change="added"> in the context menu, it will open </diffmk:wrapper><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Hibernate Criteria Editor</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added"> with the associated 	criteria.</diffmk:wrapper></para>
+	</emphasis> in the context menu, it will open <property moreinfo="none">Hibernate Criteria Editor</property> with the associated 	criteria.</para>
 
 	 <figure float="0">
-        <title><diffmk:wrapper diffmk:change="changed">Generating Simple Queries</diffmk:wrapper></title>
+        <title>Generating Simple Queries</title>
         <mediaobject>
           <imageobject role="fo">
             <imagedata align="center" fileref="images/plugins/plugins_19.png" format="PNG" scale="80"></imagedata>
@@ -2360,11 +2753,11 @@
         </mediaobject>
       </figure>
 
-	<para><diffmk:wrapper diffmk:change="added">It's also possible to copy a portion of code from </diffmk:wrapper><emphasis diffmk:change="added">
-          <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">.java</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> file into the </diffmk:wrapper><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">HQL</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added"> or 
-	</diffmk:wrapper><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Criteria editor</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added">. To do this make use of the
-        Quick Fix option (</diffmk:wrapper><emphasis diffmk:change="added">
-          <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Ctrl + 1</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added">)</diffmk:wrapper></emphasis><diffmk:wrapper diffmk:change="added">.</diffmk:wrapper></para>
+	<para>It's also possible to copy a portion of code from <emphasis>
+          <property moreinfo="none">.java</property></emphasis> file into the <property moreinfo="none">HQL</property> or 
+	<property moreinfo="none">Criteria editor</property>. To do this make use of the
+        Quick Fix option (<emphasis>
+          <property moreinfo="none">Ctrl + 1</property>)</emphasis>.</para>
 
   	<figure float="0">
         <title>Quick Fix Option Demonstration</title>
@@ -2389,8 +2782,8 @@
       </figure>
 	</section>    
 
-	<section diffmk:change="added">
-		<title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Error Handling</diffmk:wrapper></title>
+	<section>
+		<title>Error Handling</title>
       <para>Errors during creation of the <property moreinfo="none">Session Factory</property> or running the
         queries (e.g. if your configuration or query is incorrect) will be shown in a message dialog
         or inclined in the view that detected the error, you may get more information about the
@@ -2437,7 +2830,7 @@
     <section>
       <title>Properties View</title>
 
-      <para><diffmk:wrapper diffmk:change="changed">As you can see on the figure,when clicking on class/entity </diffmk:wrapper><property moreinfo="none">Properties view</property> shows the number of
+      <para>As you can see on the figure,when clicking on class/entity <property moreinfo="none">Properties view</property> shows the number of
         query results as well as the time of executing.</para>
 
       <figure float="0">
@@ -2468,117 +2861,117 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">You can also use </diffmk:wrapper><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Properties view</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added"> when clicking on the configuration 
-        itself in Hibernate Configuration View( </diffmk:wrapper><link diffmk:change="added" linkend="modif_console_conf"><diffmk:wrapper diffmk:change="added">Modifying a Hibernate Console Configuration section</diffmk:wrapper></link><diffmk:wrapper diffmk:change="added">). </diffmk:wrapper></para>
+      <para>You can also use <property moreinfo="none">Properties view</property> when clicking on the configuration 
+        itself in Hibernate Configuration View( <link linkend="modif_console_conf">Modifying a Hibernate Console Configuration section</link>). </para>
     </section>
   </section>
-  <section diffmk:change="added" id="jpa_annotations">
-    <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Hibernate:add JPA annotations view
-    </diffmk:wrapper></title>
-    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Using this wizard you can add the next Hibernate annotations to the class:
-      </diffmk:wrapper><emphasis diffmk:change="added">
-        <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@Column</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
-          <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@Entity</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
-            <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@ManyToOne</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
-              <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@OneToMany</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
-                <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@OneToOne</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
-                  <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@ManyToMany</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
-                    <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@MappedSuperclass</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
-                      <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@Id</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
-                        <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@GeneratedValue</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> ,</diffmk:wrapper><emphasis diffmk:change="added">
-                          <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@Version </diffmk:wrapper></property></emphasis>    
+  <section id="jpa_annotations">
+    <title>Hibernate:add JPA annotations view
+    </title>
+    <para>Using this wizard you can add the next Hibernate annotations to the class:
+      <emphasis>
+        <property moreinfo="none">@Column</property></emphasis>,<emphasis>
+          <property moreinfo="none">@Entity</property></emphasis>,<emphasis>
+            <property moreinfo="none">@ManyToOne</property></emphasis>,<emphasis>
+              <property moreinfo="none">@OneToMany</property></emphasis>,<emphasis>
+                <property moreinfo="none">@OneToOne</property></emphasis>,<emphasis>
+                  <property moreinfo="none">@ManyToMany</property></emphasis>,<emphasis>
+                    <property moreinfo="none">@MappedSuperclass</property></emphasis>,<emphasis>
+                      <property moreinfo="none">@Id</property></emphasis>,<emphasis>
+                        <property moreinfo="none">@GeneratedValue</property></emphasis> ,<emphasis>
+                          <property moreinfo="none">@Version </property></emphasis>    
     </para>
-     <itemizedlist diffmk:change="added">
-      <listitem diffmk:change="added">
-        <para diffmk:change="added"><emphasis diffmk:change="added">
-          <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@Column</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> is added to all String properties.</diffmk:wrapper></para>
+     <itemizedlist>
+      <listitem>
+        <para><emphasis>
+          <property moreinfo="none">@Column</property></emphasis> is added to all String properties.</para>
       </listitem>
-       <listitem diffmk:change="added">
-         <para diffmk:change="added"><emphasis diffmk:change="added">
-           <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@Entity</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> is always declared before any class where it doesn't present.</diffmk:wrapper></para>
+       <listitem>
+         <para><emphasis>
+           <property moreinfo="none">@Entity</property></emphasis> is always declared before any class where it doesn't present.</para>
        </listitem>
-       <listitem diffmk:change="added">
-         <para diffmk:change="added"><emphasis diffmk:change="added">
-           <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@ManyToOne</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
-             <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@OneToMany</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
-               <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@OneToOne</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
-                 <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@ManyToMany</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> - this annotations are declared according to the  classes hierarchy.</diffmk:wrapper></para>
+       <listitem>
+         <para><emphasis>
+           <property moreinfo="none">@ManyToOne</property></emphasis>,<emphasis>
+             <property moreinfo="none">@OneToMany</property></emphasis>,<emphasis>
+               <property moreinfo="none">@OneToOne</property></emphasis>,<emphasis>
+                 <property moreinfo="none">@ManyToMany</property></emphasis> - this annotations are declared according to the  classes hierarchy.</para>
        </listitem>
-       <listitem diffmk:change="added">
-         <para diffmk:change="added"><emphasis diffmk:change="added">
-           <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@MappedSuperclass</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> is added to abstract superclasses.</diffmk:wrapper></para>
+       <listitem>
+         <para><emphasis>
+           <property moreinfo="none">@MappedSuperclass</property></emphasis> is added to abstract superclasses.</para>
        </listitem>
-       <listitem diffmk:change="added">
-         <para diffmk:change="added"><emphasis diffmk:change="added">
-           <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@Id</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">,</diffmk:wrapper><emphasis diffmk:change="added">
-             <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@GeneratedValue</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> are added automatically only to the  properties under the name "Id",where they don't present.</diffmk:wrapper></para>
+       <listitem>
+         <para><emphasis>
+           <property moreinfo="none">@Id</property></emphasis>,<emphasis>
+             <property moreinfo="none">@GeneratedValue</property></emphasis> are added automatically only to the  properties under the name "Id",where they don't present.</para>
        </listitem>
 
-       <listitem diffmk:change="added">
-         <para diffmk:change="added"><emphasis diffmk:change="added">
-           <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@Version</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> is declared in case you select </diffmk:wrapper><link diffmk:change="added" linkend="optim_lock"><diffmk:wrapper diffmk:change="added">Enable optimistic locking</diffmk:wrapper></link><diffmk:wrapper diffmk:change="added">.</diffmk:wrapper></para>
+       <listitem>
+         <para><emphasis>
+           <property moreinfo="none">@Version</property></emphasis> is declared in case you select <link linkend="optim_lock">Enable optimistic locking</link>.</para>
        </listitem>
      </itemizedlist>
-    <note diffmk:change="added">
-      <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Note:</diffmk:wrapper></title>
-      <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">This section doesn't cover the meaning of the  </diffmk:wrapper><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Hibernate annotations</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added">
-        , for more information read </diffmk:wrapper><ulink diffmk:change="added" url="http://docs.jboss.org/hibernate/stable/annotations/reference/en/html/"><diffmk:wrapper diffmk:change="added">Hibernate Annotations Documentation</diffmk:wrapper></ulink><diffmk:wrapper diffmk:change="added"> .</diffmk:wrapper></para>
+    <note>
+      <title>Note:</title>
+      <para>This section doesn't cover the meaning of the  <property moreinfo="none">Hibernate annotations</property>
+        , for more information read <ulink url="http://docs.jboss.org/hibernate/stable/annotations/reference/en/html/">Hibernate Annotations Documentation</ulink> .</para>
     </note>
     
-    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">To  open this wizard you should right click the class you want to enrich with annotations  </diffmk:wrapper><emphasis diffmk:change="added">
-      <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">&gt;Source&gt;Generate Hibernate/JPA annotations</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">. You will  see the Hibernate:add JPA annotations dialog.
-    </diffmk:wrapper></para>
-    <figure diffmk:change="added" float="0">
-      <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Starting Hibernate:add JPA annotations view</diffmk:wrapper></title>
-      <mediaobject diffmk:change="added">
-        <imageobject diffmk:change="added">
-          <imagedata diffmk:change="added" fileref="images/plugins/annotations1.png"></imagedata>
+    <para>To  open this wizard you should right click the class you want to enrich with annotations  <emphasis>
+      <property moreinfo="none">&gt;Source&gt;Generate Hibernate/JPA annotations</property></emphasis>. You will  see the Hibernate:add JPA annotations dialog.
+    </para>
+    <figure float="0">
+      <title>Starting Hibernate:add JPA annotations view</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/plugins/annotations1.png"></imagedata>
         </imageobject>
       </mediaobject>
     </figure>
-    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added"> In the top of it you can see the list of all classes that will be passed through refactoring.
+    <para> In the top of it you can see the list of all classes that will be passed through refactoring.
       Besides the class you have selected in this list  you can also find its superclasses and the classes that objects present in the current class as  properties. 
-    </diffmk:wrapper></para>
-    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">By default the tags are added to the fields of selected classes. But you can change this  option  to  </diffmk:wrapper><emphasis diffmk:change="added"><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Getters</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">in </diffmk:wrapper><emphasis diffmk:change="added"><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added"> Preferred location of Annotations</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> dropdownlist
-      and then all the annotations will be added to the getter methods. If you choose  </diffmk:wrapper><emphasis diffmk:change="added"><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Auto select from class preference</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> then the annotations are added according to the majority of the already existed ones positions.
-    </diffmk:wrapper></para>
-    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added"> If it's nessecary to map your String properties to the columns that length differ from the default value(255) ,change </diffmk:wrapper><emphasis diffmk:change="added"><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Default string length field</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> and </diffmk:wrapper><code diffmk:change="added"><diffmk:wrapper diffmk:change="added">@Column(length = your length)</diffmk:wrapper></code><diffmk:wrapper diffmk:change="added"> will be created before every String property.  
-    </diffmk:wrapper></para>
-    <para diffmk:change="added" id="optim_lock"><diffmk:wrapper diffmk:change="added">You can add optimistic locking capability to an entity bean by selecting  </diffmk:wrapper><emphasis diffmk:change="added"><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Enable optimistic locking</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> checkbox.
+    </para>
+    <para>By default the tags are added to the fields of selected classes. But you can change this  option  to  <emphasis><property moreinfo="none">Getters</property></emphasis>in <emphasis><property moreinfo="none"> Preferred location of Annotations</property></emphasis> dropdownlist
+      and then all the annotations will be added to the getter methods. If you choose  <emphasis><property moreinfo="none">Auto select from class preference</property></emphasis> then the annotations are added according to the majority of the already existed ones positions.
+    </para>
+    <para> If it's nessecary to map your String properties to the columns that length differ from the default value(255) ,change <emphasis><property moreinfo="none">Default string length field</property></emphasis> and <code>@Column(length = your length)</code> will be created before every String property.  
+    </para>
+    <para id="optim_lock">You can add optimistic locking capability to an entity bean by selecting  <emphasis><property moreinfo="none">Enable optimistic locking</property></emphasis> checkbox.
       This operation will add version property to all the selected classes. The property will be  also annotated  with @Version ,getter and setter will be created. If the property is already exists,it won't be created ,but the getters,setters will be generated.
-      If there is already @MappedSuperclass with version in the  base class of the current class - </diffmk:wrapper><emphasis diffmk:change="added"><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">"version"</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> is not  inserted into the current class.
-    </diffmk:wrapper></para>
-    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">After  defining all necessary settings in the current  step press </diffmk:wrapper><emphasis diffmk:change="added"><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Next</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added"> and follow the next wizard steps.
-    </diffmk:wrapper></para>
-    <figure diffmk:change="added" float="0">
-      <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Hibernate:add JPA annotations view</diffmk:wrapper></title>
-    <mediaobject diffmk:change="added">
-      <imageobject diffmk:change="added">
-        <imagedata diffmk:change="added" fileref="images/plugins/annotations2.png"></imagedata>
+      If there is already @MappedSuperclass with version in the  base class of the current class - <emphasis><property moreinfo="none">"version"</property></emphasis> is not  inserted into the current class.
+    </para>
+    <para>After  defining all necessary settings in the current  step press <emphasis><property moreinfo="none">Next</property></emphasis> and follow the next wizard steps.
+    </para>
+    <figure float="0">
+      <title>Hibernate:add JPA annotations view</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="images/plugins/annotations2.png"></imagedata>
       </imageobject>
     </mediaobject>
     </figure>
-    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">The  view represents two windows: one with the source code and and the second with refactored one.
-      With the help of </diffmk:wrapper><inlinemediaobject diffmk:change="added"><imageobject diffmk:change="added">
-        <imagedata diffmk:change="added" fileref="images/plugins/butt1.png"></imagedata>
-      </imageobject></inlinemediaobject><diffmk:wrapper diffmk:change="added"> ,</diffmk:wrapper><inlinemediaobject diffmk:change="added"><imageobject diffmk:change="added">
-        <imagedata diffmk:change="added" fileref="images/plugins/butt2.png"></imagedata>
-      </imageobject></inlinemediaobject><diffmk:wrapper diffmk:change="added"> ,</diffmk:wrapper><inlinemediaobject diffmk:change="added"><imageobject diffmk:change="added">
-        <imagedata diffmk:change="added" fileref="images/plugins/butt3.png"></imagedata>
-      </imageobject></inlinemediaobject><diffmk:wrapper diffmk:change="added"> ,</diffmk:wrapper><inlinemediaobject diffmk:change="added"><imageobject diffmk:change="added">
-        <imagedata diffmk:change="added" fileref="images/plugins/butt4.png"></imagedata>
-      </imageobject></inlinemediaobject><diffmk:wrapper diffmk:change="added"> buttons you can quickly navigate between the differences in the code. If you don't agree with some changes you can't  undo them but you can  remove the class from the list of classes that need refactoring.
-    </diffmk:wrapper></para>
-    <figure diffmk:change="added" float="0">
-      <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">List of classes that need refactoring</diffmk:wrapper></title>
-    <mediaobject diffmk:change="added">
-      <imageobject diffmk:change="added">
-        <imagedata diffmk:change="added" fileref="images/plugins/annotations3.png"></imagedata>
+    <para>The  view represents two windows: one with the source code and and the second with refactored one.
+      With the help of <inlinemediaobject><imageobject>
+        <imagedata fileref="images/plugins/butt1.png"></imagedata>
+      </imageobject></inlinemediaobject> ,<inlinemediaobject><imageobject>
+        <imagedata fileref="images/plugins/butt2.png"></imagedata>
+      </imageobject></inlinemediaobject> ,<inlinemediaobject><imageobject>
+        <imagedata fileref="images/plugins/butt3.png"></imagedata>
+      </imageobject></inlinemediaobject> ,<inlinemediaobject><imageobject>
+        <imagedata fileref="images/plugins/butt4.png"></imagedata>
+      </imageobject></inlinemediaobject> buttons you can quickly navigate between the differences in the code. If you don't agree with some changes you can't  undo them but you can  remove the class from the list of classes that need refactoring.
+    </para>
+    <figure float="0">
+      <title>List of classes that need refactoring</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="images/plugins/annotations3.png"></imagedata>
       </imageobject>
     </mediaobject>
     </figure>
-    <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">To apply the changes click </diffmk:wrapper><emphasis diffmk:change="added">
-      <property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Finish</diffmk:wrapper></property></emphasis><diffmk:wrapper diffmk:change="added">.</diffmk:wrapper></para>
+    <para>To apply the changes click <emphasis>
+      <property moreinfo="none">Finish</property></emphasis>.</para>
 
  </section>
   <section id="debug_log">
@@ -2656,8 +3049,8 @@
 
     <para>By enabling Hibernate platform specific features you can now generate DDL and Entities.
       For that find <emphasis>
-        <property moreinfo="none">JPA Tools &gt; Generate DDL/Generate Entities</property>
-      </emphasis> options in the context menu of your JPA project.</para>
+        <property moreinfo="none">JPA Tools &gt; Generate Tables from Entities/Generate Entities from Tables</property>
+        </emphasis> options in the context menu of your JPA project.</para>
 
     <figure float="0">
       <title>Generate DDL/Entities</title>
@@ -2675,7 +3068,7 @@
         project.</para>
     </note>
 
-    <para>The <property moreinfo="none">Generate DDL/Entities wizards</property> first will ask you to choose the directory where all
+    <para>The <property moreinfo="none">Generate Entities wizard</property> first will ask you to choose the directory where all
       output will be written.</para>
 
     <figure float="0">
@@ -2718,12 +3111,21 @@
       </listitem>
     </itemizedlist>
 
+<para>All the same you do with Generate Entities Wizard you can do with Generate DDL wizard. Special feature for Generate DDL wizard is possible automatic execution of Generation DDL  in the database. </para>
+ <figure float="0">
+          <title>Generate DDL Wizard</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/plugins/dali_integration6.png"></imagedata>
+            </imageobject>
+          </mediaobject>
+        </figure>
     <para>Thus, you can now have the Hibernate runtime support in Eclipse JPA projects.</para>
   </section>
 </chapter>
  
   
-<chapter id="ant" xml:base="file:///home/ochikvina/WORK/for_compare/trunk/hibernatetools/docs/reference/en/modules/ant.xml">
+<chapter id="ant" xml:base="file:///home/ochikvina/WORK/for_compare/jbosstools-3.1.0.CR1/hibernatetools/docs/reference/en/modules/ant.xml">
   <title>Ant Tools</title>
 
   <para>Maybe somebody will find it more preferable to use Ant for generation purposes. Thus, this
@@ -2775,9 +3177,9 @@
          classpathref="toolslib" />
 ]]></programlisting>
 
-    <para><diffmk:wrapper diffmk:change="added">This 
-        </diffmk:wrapper><code diffmk:change="added">&lt;taskdef&gt;</code><diffmk:wrapper diffmk:change="added">
-       defines an Ant task called </diffmk:wrapper><emphasis>
+    <para>This 
+        <code>&lt;taskdef&gt;</code>
+       defines an Ant task called <emphasis>
         <property moreinfo="none"> hibernatetool </property>
       </emphasis> which now can be used anywhere in your ant <emphasis>
         <property moreinfo="none">build.xml</property>
@@ -2924,7 +3326,7 @@
     <section>
       <title>Basic examples</title>
 
-      <para>The following example shows the most basic setup for generating pojo's via <code diffmk:change="added">&lt;hbm2java&gt;</code> from a normal <emphasis>
+      <para>The following example shows the most basic setup for generating pojo's via <code>&lt;hbm2java&gt;</code> from a normal <emphasis>
           <property moreinfo="none">
             <literal moreinfo="none">hibernate.cfg.xml</literal>
           </property>. </emphasis> The output will be put in the <emphasis>
@@ -2942,8 +3344,8 @@
 
 
       <para>The following example is similar, but now we are performing multiple exports from the
-        same configuration. We are exporting the schema via <code diffmk:change="added">&lt;hbm2dll&gt;</code><diffmk:wrapper diffmk:change="added">,  generates some DAO code via </diffmk:wrapper><code diffmk:change="added">&lt;hbm2dao&gt;</code><diffmk:wrapper diffmk:change="added">
-        and finally runs a custom code generation via </diffmk:wrapper><code diffmk:change="added">&lt;hbmtemplate&gt;</code><diffmk:wrapper diffmk:change="added">. This is again from a normal </diffmk:wrapper><emphasis>
+        same configuration. We are exporting the schema via <code>&lt;hbm2dll&gt;</code>,  generates some DAO code via <code>&lt;hbm2dao&gt;</code>
+        and finally runs a custom code generation via <code>&lt;hbmtemplate&gt;</code>. This is again from a normal <emphasis>
           <property moreinfo="none">hibernate.cfg.xml</property>
         </emphasis> and the output is still put in the <emphasis>
           <property moreinfo="none">
@@ -2974,14 +3376,14 @@
   <section>
     <title>Hibernate Configurations</title>
 
-    <para><emphasis><diffmk:wrapper diffmk:change="added">Hibernatetool</diffmk:wrapper></emphasis><diffmk:wrapper diffmk:change="added"> supports four different Hibernate configurations: A
+    <para><emphasis>Hibernatetool</emphasis> supports four different Hibernate configurations: A
       standard Hibernate configuration 
-        (</diffmk:wrapper><code diffmk:change="added"><diffmk:wrapper diffmk:change="added">&lt;configuration&gt;</diffmk:wrapper></code><diffmk:wrapper diffmk:change="added">),  Annotation based
-      configuration  (</diffmk:wrapper><code diffmk:change="added">&lt;annotationconfiguration&gt;</code><diffmk:wrapper diffmk:change="added">),
+        (<code>&lt;configuration&gt;</code>),  Annotation based
+      configuration  (<code>&lt;annotationconfiguration&gt;</code>),
       JPA persistence based configuration 
-          (</diffmk:wrapper><code diffmk:change="added">&lt;jpaconfiguration&gt;</code><diffmk:wrapper diffmk:change="added">)  and a JDBC based
-      configuration  (</diffmk:wrapper><code diffmk:change="added">&lt;jdbcconfiguration&gt;</code><diffmk:wrapper diffmk:change="added">)
-      for use when reverse engineering.</diffmk:wrapper></para>
+          (<code>&lt;jpaconfiguration&gt;</code>)  and a JDBC based
+      configuration  (<code>&lt;jdbcconfiguration&gt;</code>)
+      for use when reverse engineering.</para>
 
     <para>Each have in common that they are able to build up a Hibernate Configuration object from
       which a set of exporters can be run to generate various output. </para>
@@ -2998,10 +3400,10 @@
     <section>
       <title>Standard Hibernate Configuration (&lt;configuration&gt;)</title>
 
-      <para><diffmk:wrapper diffmk:change="added">A 
-          </diffmk:wrapper><code diffmk:change="added">&lt;configuration&gt;</code><diffmk:wrapper diffmk:change="added">
+      <para>A 
+          <code>&lt;configuration&gt;</code>
          is used to define a standard Hibernate configuration. A standard Hibernate
-        configuration reads the mappings from a </diffmk:wrapper><emphasis>
+        configuration reads the mappings from a <emphasis>
           <property moreinfo="none">cfg.xml</property>
         </emphasis> and/or a fileset.</para>
 
@@ -3090,7 +3492,7 @@
               <entry>
                 <para>Name of a class that implements org.hibernate.cfg.NamingStrategy. Used for
                   setting up the naming strategy in Hibernate which controls the automatic naming of
-                  tables and columns.</para>
+                  tables and columns.In JPA projects naming strategy is supported for default Name/Columns mapping</para>
               </entry>
 
               <entry>
@@ -3156,25 +3558,25 @@
     <section>
       <title>Annotation based Configuration (&lt;annotationconfiguration&gt;)</title>
 
-      <para><diffmk:wrapper diffmk:change="added">An 
-          </diffmk:wrapper><code diffmk:change="added">&lt;annotationconfiguration&gt;</code><diffmk:wrapper diffmk:change="added">
+      <para>An 
+          <code>&lt;annotationconfiguration&gt;</code>
         is used when you want to read the metamodel from EJB3/Hibernate Annotations
-        based POJO's.</diffmk:wrapper></para>
+        based POJO's.</para>
 
       <important>
         <title>Important:</title>
-        <para><diffmk:wrapper diffmk:change="added">To use it remember to put the jar files needed for using hibernate annotations in the
+        <para>To use it remember to put the jar files needed for using hibernate annotations in the
           classpath of the 
-            </diffmk:wrapper><code diffmk:change="added">&lt;taskdef&gt;</code><diffmk:wrapper diffmk:change="added">,  i. e.
-          hibernate-annotations.jar and hibernate-commons-annotations.jar.</diffmk:wrapper></para>
+            <code>&lt;taskdef&gt;</code>,  i. e.
+          hibernate-annotations.jar and hibernate-commons-annotations.jar.</para>
       </important>
 
-      <para><diffmk:wrapper diffmk:change="added">The 
-          </diffmk:wrapper><code diffmk:change="added">&lt;annotationconfiguration&gt;</code><diffmk:wrapper diffmk:change="added">
+      <para>The 
+          <code>&lt;annotationconfiguration&gt;</code>
          supports the same attributes as a 
-          </diffmk:wrapper><code diffmk:change="added">&lt;configuration&gt;</code><diffmk:wrapper diffmk:change="added">
+          <code>&lt;configuration&gt;</code>
         except that the configurationfile attribute is now required as that is from
-        where an </diffmk:wrapper><emphasis diffmk:change="added">AnnotationConfiguration</emphasis> gets the list of classes/packages it
+        where an <emphasis>AnnotationConfiguration</emphasis> gets the list of classes/packages it
         should load.</para>
 
       <para>Thus the minimal usage is:</para>
@@ -3193,18 +3595,18 @@
     <section>
       <title>JPA based configuration (&lt;jpaconfiguration&gt;)</title>
 
-      <para>A <code diffmk:change="added">&lt;jpaconfiguration&gt;</code><diffmk:wrapper diffmk:change="added">
+      <para>A <code>&lt;jpaconfiguration&gt;</code>
         is used when you want to read the metamodel from JPA/Hibernate Annotation where
         you want to use the auto-scan configuration as defined in the JPA spec (part of EJB3). In
-        other words, when you do not have a </diffmk:wrapper><emphasis>
+        other words, when you do not have a <emphasis>
           <property moreinfo="none">hibernate.cfg.xml</property>, </emphasis> but instead have a setup where you use
         a <emphasis>
           <property moreinfo="none">persistence.xml</property>
         </emphasis> packaged in a JPA compliant manner.</para>
 
-      <para>The <code diffmk:change="added">&lt;jpaconfiguration&gt;</code><diffmk:wrapper diffmk:change="added">
+      <para>The <code>&lt;jpaconfiguration&gt;</code>
         will simply just try and auto-configure it self based on the available
-        classpath, e.g. look for </diffmk:wrapper><emphasis>
+        classpath, e.g. look for <emphasis>
           <property moreinfo="none">META-INF/persistence.xml</property>. </emphasis></para>
 
       <para>The <emphasis>
@@ -3214,9 +3616,9 @@
         </emphasis> is specified it will automatically search for one and if a unique one is found,
         use it, but if multiple persistence units are available it will error.</para>
 
-      <para>To use a <code diffmk:change="added">&lt;jpaconfiguration&gt;</code><diffmk:wrapper diffmk:change="added">
+      <para>To use a <code>&lt;jpaconfiguration&gt;</code>
          you will need to specify some additional jars from Hibernate EntityManager in
-        the </diffmk:wrapper><code diffmk:change="added">&lt;taskdef&gt;</code> of the hibernatetool. The following shows a full setup:</para>
+        the <code>&lt;taskdef&gt;</code> of the hibernatetool. The following shows a full setup:</para>
 
       <programlisting format="linespecific" role="XML"><![CDATA[<path id="ejb3toolslib">
  <path refid="jpatoolslib"/> <!-- ref to previously defined toolslib -->
@@ -3256,7 +3658,7 @@
     <section>
       <title>JDBC Configuration for reverse engineering (&lt;jdbcconfiguration&gt;)</title>
 
-      <para>A <code diffmk:change="added">&lt;jdbcconfiguration&gt;</code> is used to perform reverse engineering of the database from a JDBC connection.</para>
+      <para>A <code>&lt;jdbcconfiguration&gt;</code> is used to perform reverse engineering of the database from a JDBC connection.</para>
 
       <para>This configuration works by reading the connection properties either from <emphasis>
           <property moreinfo="none">hibernate.cfg.xml</property>
@@ -3264,9 +3666,9 @@
           <property moreinfo="none">hibernate.properties</property>
         </emphasis> with a fileset.</para>
 
-      <para>The <code diffmk:change="added">&lt;jdbcconfiguration&gt;</code><diffmk:wrapper diffmk:change="added"> has the same attributes as a 
-          </diffmk:wrapper><code diffmk:change="added">&lt;configuration&gt;</code><diffmk:wrapper diffmk:change="added">
-         plus the following additional attributes:</diffmk:wrapper></para>
+      <para>The <code>&lt;jdbcconfiguration&gt;</code> has the same attributes as a 
+          <code>&lt;configuration&gt;</code>
+         plus the following additional attributes:</para>
 
       <programlisting format="linespecific" role="XML"><![CDATA[<jdbcconfiguration
   ...
@@ -3336,11 +3738,11 @@
               </entry>
 
               <entry>
-                <para><diffmk:wrapper diffmk:change="changed">Name of a class that implements org.hibernate.cfg.reveng.ReverseEngineeringStrategy.
+                <para>Name of a class that implements org.hibernate.cfg.reveng.ReverseEngineeringStrategy.
                   Used for setting up the strategy the tools will use to control the reverse engineering, e.g. naming of
                   properties, which tables to include/exclude etc. Using a class instead of (or as
                   addition to) a reveng.xml file gives you full programmatic control of the reverse
-                  engineering.</diffmk:wrapper></para>
+                  engineering.</para>
               </entry>
 
               <entry>
@@ -3371,9 +3773,9 @@
               </entry>
 
               <entry>
-                <para><diffmk:wrapper diffmk:change="added">If true, columns named VERSION or TIMESTAMP with appropriate types will be
+                <para>If true, columns named VERSION or TIMESTAMP with appropriate types will be
                   mapped with the appropriate optimistic locking corresponding to
-                  </diffmk:wrapper><code diffmk:change="added"><diffmk:wrapper diffmk:change="added">&lt;version&gt;</diffmk:wrapper></code><diffmk:wrapper diffmk:change="added"> or </diffmk:wrapper><code diffmk:change="added"><diffmk:wrapper diffmk:change="added">&lt;timestamp&gt;</diffmk:wrapper></code><diffmk:wrapper diffmk:change="added">.</diffmk:wrapper></para>
+                  <code>&lt;version&gt;</code> or <code>&lt;timestamp&gt;</code>.</para>
               </entry>
 
               <entry>
@@ -3389,9 +3791,9 @@
       <section>
         <title>Example</title>
 
-        <para>Here is an example of using <code diffmk:change="added">&lt;jdbcconfiguration&gt;</code><diffmk:wrapper diffmk:change="added"> to generate Hibernate xml mappings via 
-            </diffmk:wrapper><code diffmk:change="added">&lt;hbm2hbmxml&gt;</code><diffmk:wrapper diffmk:change="added">. The connection settings here
-          is read from a </diffmk:wrapper><emphasis>
+        <para>Here is an example of using <code>&lt;jdbcconfiguration&gt;</code> to generate Hibernate xml mappings via 
+            <code>&lt;hbm2hbmxml&gt;</code>. The connection settings here
+          is read from a <emphasis>
             <property moreinfo="none"> hibernate.properties </property>
           </emphasis> file but could just as well have been read from a <emphasis>
             <property moreinfo="none">hibernate.cfg.xml</property>. </emphasis></para>
@@ -3410,15 +3812,15 @@
 
     <para>Exporters are the parts that do the actual job of converting the hibernate metamodel into
       various artifacts, mainly code. The following section describes the current supported set of
-      exporters in the <property moreinfo="none">Hibernate Tool</property><diffmk:wrapper diffmk:change="added"> distribution. It is also possible for
+      exporters in the <property moreinfo="none">Hibernate Tool</property> distribution. It is also possible for
       userdefined exporters, that is done through the 
-        </diffmk:wrapper><code diffmk:change="added">&lt;hbmtemplate&gt;</code><diffmk:wrapper diffmk:change="added">
-      exporter.</diffmk:wrapper></para>
+        <code>&lt;hbmtemplate&gt;</code>
+      exporter.</para>
 
     <section>
       <title>Database schema exporter (&lt;hbm2ddl&gt;)</title>
 
-      <para><code diffmk:change="added">&lt;hbm2ddl&gt;</code> lets you run schemaexport and schemaupdate which generates the appropriate SQL
+      <para><code>&lt;hbm2ddl&gt;</code> lets you run schemaexport and schemaupdate which generates the appropriate SQL
         DDL and allow you to store the result in a file or export it directly to the database.
         Remember that if a custom naming strategy is needed it is placed on the configuration
         element.</para>
@@ -3583,8 +3985,8 @@
       <section>
         <title>Example</title>
 
-        <para>Basic example of using <code diffmk:change="added">&lt;hbm2ddl&gt;</code><diffmk:wrapper diffmk:change="added">,  which does not export to the
-          database but simply dumps the sql to a file named </diffmk:wrapper><emphasis>
+        <para>Basic example of using <code>&lt;hbm2ddl&gt;</code>,  which does not export to the
+          database but simply dumps the sql to a file named <emphasis>
             <property moreinfo="none">sql.ddl</property>. </emphasis></para>
 
         <programlisting format="linespecific" role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
@@ -3595,9 +3997,9 @@
     </section>
 
     <section>
-      <title><diffmk:wrapper diffmk:change="added">POJO java code exporter (&lt;hbm2java&gt;)</diffmk:wrapper></title>
+      <title>POJO java code exporter (&lt;hbm2java&gt;)</title>
 
-      <para><code diffmk:change="added">&lt;hbm2java&gt;</code> is a java codegenerator. Options for controlling whether JDK 5 syntax can be
+      <para><code>&lt;hbm2java&gt;</code> is a java codegenerator. Options for controlling whether JDK 5 syntax can be
         used and whether the POJO should be annotated with EJB3/Hibernate Annotations.</para>
 
       <programlisting format="linespecific" role="XML"><![CDATA[<hbm2java
@@ -3665,7 +4067,7 @@
       <section>
         <title>Example</title>
 
-        <para>Basic example of using <code diffmk:change="added">&lt;hbm2java&gt;</code> to generate POJO's that utilize jdk5 constructs.</para>
+        <para>Basic example of using <code>&lt;hbm2java&gt;</code> to generate POJO's that utilize jdk5 constructs.</para>
 
         <programlisting format="linespecific" role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
  <configuration configurationfile="hibernate.cfg.xml"/>
@@ -3675,12 +4077,12 @@
     </section>
 
     <section>
-      <title><diffmk:wrapper diffmk:change="added">Hibernate Mapping files exporter (&lt;hbm2hbmxml&gt;)</diffmk:wrapper></title>
+      <title>Hibernate Mapping files exporter (&lt;hbm2hbmxml&gt;)</title>
 
-      <para><code diffmk:change="added">&lt;hbm2hbmxml&gt;</code><diffmk:wrapper diffmk:change="added"> generates a set of .hbm files. Intended to be used together with a 
-          </diffmk:wrapper><code diffmk:change="added">&lt;jdbcconfiguration&gt;</code><diffmk:wrapper diffmk:change="added">
+      <para><code>&lt;hbm2hbmxml&gt;</code> generates a set of .hbm files. Intended to be used together with a 
+          <code>&lt;jdbcconfiguration&gt;</code>
          when performing reverse engineering, but can be used with any kind of
-        configuration. e.g. to convert from annotation based pojo's to </diffmk:wrapper><emphasis>
+        configuration. e.g. to convert from annotation based pojo's to <emphasis>
           <property moreinfo="none">hbm.xml</property>. </emphasis></para>
 
       <note>
@@ -3694,17 +4096,17 @@
       <section>
         <title>Example</title>
 
-        <para>Basic usage of <code diffmk:change="added">&lt;hbm2hbmxml&gt;</code>. </para>
+        <para>Basic usage of <code>&lt;hbm2hbmxml&gt;</code>. </para>
 
         <programlisting format="linespecific" role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
  <configuration configurationfile="hibernate.cfg.xml"/>
  <hbm2hbmxml/>
 </hibernatetool>]]></programlisting>
 
-        <para><code diffmk:change="added">&lt;hbm2hbmxml&gt;</code> is normally used with a <code diffmk:change="added">&lt;jdbcconfiguration&gt;</code> like in the above example, but any other configuration can also be used to
+        <para><code>&lt;hbm2hbmxml&gt;</code> is normally used with a <code>&lt;jdbcconfiguration&gt;</code> like in the above example, but any other configuration can also be used to
           convert between the different ways of performing mappings. Here is an example of that,
-          using an <code diffmk:change="added">&lt;annotationconfiguration&gt;</code><diffmk:wrapper diffmk:change="added">
-          .</diffmk:wrapper></para>
+          using an <code>&lt;annotationconfiguration&gt;</code>
+          .</para>
 
         <note>
           <title>Note:</title>
@@ -3720,12 +4122,12 @@
     </section>
 
     <section>
-      <title><diffmk:wrapper diffmk:change="added">Hibernate Configuration file exporter (&lt;hbm2cfgxml&gt;)</diffmk:wrapper></title>
+      <title>Hibernate Configuration file exporter (&lt;hbm2cfgxml&gt;)</title>
 
-      <para><code diffmk:change="added">&lt;hbm2cfgxml&gt;</code> generates a <emphasis>
-          <property moreinfo="none">hibernate.cfg.xml</property>. </emphasis> Intended to be used together with a <code diffmk:change="added">&lt;jdbcconfiguration&gt;</code><diffmk:wrapper diffmk:change="added">
+      <para><code>&lt;hbm2cfgxml&gt;</code> generates a <emphasis>
+          <property moreinfo="none">hibernate.cfg.xml</property>. </emphasis> Intended to be used together with a <code>&lt;jdbcconfiguration&gt;</code>
          when performing reverse engineering, but it can be used with any kind of
-        configuration. The </diffmk:wrapper><code diffmk:change="added">&lt;hbm2cfgxml&gt;</code> will contain the properties used and adds mapping entries for each mapped class.</para>
+        configuration. The <code>&lt;hbm2cfgxml&gt;</code> will contain the properties used and adds mapping entries for each mapped class.</para>
 
       <programlisting format="linespecific" role="XML"><![CDATA[<hbm2cfgxml
   ejb3="true|false"
@@ -3779,10 +4181,10 @@
     </section>
 
     <section>
-      <title><diffmk:wrapper diffmk:change="added">Documentation exporter (&lt;hbm2doc&gt;)</diffmk:wrapper></title>
+      <title>Documentation exporter (&lt;hbm2doc&gt;)</title>
 
-      <para><code diffmk:change="added">&lt;hbm2doc&gt;</code><diffmk:wrapper diffmk:change="added">
-         generates html documentation a'la javadoc for the database schema et.al.</diffmk:wrapper></para>
+      <para><code>&lt;hbm2doc&gt;</code>
+         generates html documentation a'la javadoc for the database schema et.al.</para>
 
       <programlisting format="linespecific" role="XML"><![CDATA[<hbm2doc/>]]></programlisting>
     </section>
@@ -3790,7 +4192,7 @@
     <section>
       <title>Query exporter (&lt;query&gt;)</title>
 
-      <para><code diffmk:change="added">&lt;query&gt;</code> is used to execute a HQL query statements and optionally sends the output to a
+      <para><code>&lt;query&gt;</code> is used to execute a HQL query statements and optionally sends the output to a
         file. It can be used for verifying the mappings and for basic data extraction.</para>
 
       <programlisting format="linespecific" role="XML"><![CDATA[<query
@@ -3808,7 +4210,7 @@
       <section>
         <title>Examples</title>
 
-        <para>The simplest usage of <code diffmk:change="added">&lt;query&gt;</code> will just execute the query without dumping to a file. This can be used to
+        <para>The simplest usage of <code>&lt;query&gt;</code> will just execute the query without dumping to a file. This can be used to
           verify that queries can actually be performed.</para>
 
         <programlisting format="linespecific" role="XML"><![CDATA[<hibernatetool>
@@ -3816,8 +4218,8 @@
  <query>from java.lang.Object</query>
 </hibernatetool>]]></programlisting>
 
-        <para>Multiple queries can be executed by nested <code diffmk:change="added">&lt;hql&gt;</code><diffmk:wrapper diffmk:change="added"> elements.
-          In this example we also let the output be dumped to </diffmk:wrapper><emphasis>
+        <para>Multiple queries can be executed by nested <code>&lt;hql&gt;</code> elements.
+          In this example we also let the output be dumped to <emphasis>
             <property moreinfo="none">queryresult.txt</property>. </emphasis></para>
 
         <note>
@@ -3836,7 +4238,7 @@
     </section>
 
     <section id="hbmtemplate">
-      <title><diffmk:wrapper diffmk:change="added">Generic Hibernate metamodel exporter (&lt;hbmtemplate&gt;)</diffmk:wrapper></title>
+      <title>Generic Hibernate metamodel exporter (&lt;hbmtemplate&gt;)</title>
 
       <para>Generic exporter that can be controlled by a user provides a template or class.</para>
 
@@ -3855,9 +4257,9 @@
       <section>
         <title>Exporter via &lt;hbmtemplate&gt;</title>
 
-        <para><diffmk:wrapper diffmk:change="added">The following is an example of reverse engineering via 
-          </diffmk:wrapper><code diffmk:change="added">&lt;jdbcconfiguration&gt;</code><diffmk:wrapper diffmk:change="added"> and usage of a custom Exporter via the 
-          </diffmk:wrapper><code diffmk:change="added">&lt;hbmtemplate&gt;</code>.</para>
+        <para>The following is an example of reverse engineering via 
+          <code>&lt;jdbcconfiguration&gt;</code> and usage of a custom Exporter via the 
+          <code>&lt;hbmtemplate&gt;</code>.</para>
 
         <programlisting format="linespecific" role="XML"><![CDATA[ <hibernatetool destdir="${destdir}">
   <jdbcconfiguration 
@@ -3890,57 +4292,57 @@
   <section>
     <title>Using properties to configure Exporters</title>
 
-    <para><diffmk:wrapper diffmk:change="added">Exporters can be controlled by user properties. The user properties are specified via 
-        </diffmk:wrapper><code diffmk:change="added">&lt;property&gt;</code><diffmk:wrapper diffmk:change="added">
+    <para>Exporters can be controlled by user properties. The user properties are specified via 
+        <code>&lt;property&gt;</code>
        or 
-              </diffmk:wrapper><code diffmk:change="added">&lt;propertyset&gt;</code><diffmk:wrapper diffmk:change="added">
+              <code>&lt;propertyset&gt;</code>
         and each exporter will have access to them directly in the templates and via
-        </diffmk:wrapper><property moreinfo="none">Exporter.setProperties()</property>.</para>
+        <property moreinfo="none">Exporter.setProperties()</property>.</para>
 
     <section>
-      <title><diffmk:wrapper diffmk:change="added">&lt;property&gt; and
-       &lt;propertyset&gt;</diffmk:wrapper></title>
+      <title>&lt;property&gt; and
+       &lt;propertyset&gt;</title>
 
-      <para>The <code diffmk:change="added">&lt;property&gt;</code><diffmk:wrapper diffmk:change="added"> 
+      <para>The <code>&lt;property&gt;</code> 
         allows you bind a string value to a key. The value will be available in the
-        templates via </diffmk:wrapper><code diffmk:change="added">$&lt;key&gt;</code><diffmk:wrapper diffmk:change="added">.
+        templates via <code>$&lt;key&gt;</code>.
         The following example will assign the string value 
-          </diffmk:wrapper><code diffmk:change="added">"true"</code><diffmk:wrapper diffmk:change="added">
+          <code>"true"</code>
          to the variable 
-          </diffmk:wrapper><code diffmk:change="added">$descriptors</code><diffmk:wrapper diffmk:change="added">
-        .</diffmk:wrapper></para>
+          <code>$descriptors</code>
+        .</para>
 
       <programlisting format="linespecific" role="XML"><![CDATA[<property key="descriptors" value="true"/>]]></programlisting>
 
-      <para>Most times using <code diffmk:change="added">&lt;property&gt;</code> is enough for specifying the properties needed for the exporters. Still the ant
-        tools supports the notion of <code diffmk:change="added">&lt;propertyset&gt;</code> that is used for grouping a set of properties. More about the functionality of <code diffmk:change="added">&lt;propertyset&gt;</code><diffmk:wrapper diffmk:change="added">
-       is explained in detail in the </diffmk:wrapper><ulink url="http://ant.apache.org/manual/">Ant
+      <para>Most times using <code>&lt;property&gt;</code> is enough for specifying the properties needed for the exporters. Still the ant
+        tools supports the notion of <code>&lt;propertyset&gt;</code> that is used for grouping a set of properties. More about the functionality of <code>&lt;propertyset&gt;</code>
+       is explained in detail in the <ulink url="http://ant.apache.org/manual/">Ant
           manual</ulink>.</para>
     </section>
 
     <section>
       <title>Getting access to user specific classes</title>
 
-      <para>If the templates need to access some user class it becomes possible by specifying a <code diffmk:change="added"><diffmk:wrapper diffmk:change="added">
-             "toolclass"</diffmk:wrapper></code> in the properties.</para>
+      <para>If the templates need to access some user class it becomes possible by specifying a <code>
+             "toolclass"</code> in the properties.</para>
 
       <programlisting format="linespecific" role="XML"><![CDATA[<property key="hibernatetool.sometool.toolclass" value="x.y.z.NameOfToolClass"/>
 ]]></programlisting>
 
-      <para>Placing the above <code diffmk:change="added">&lt;property&gt;</code> tag in <code diffmk:change="added">&lt;hibernatetool&gt;</code><diffmk:wrapper diffmk:change="added">
+      <para>Placing the above <code>&lt;property&gt;</code> tag in <code>&lt;hibernatetool&gt;</code>
          or inside any exporter will automatically create an instance of
-          </diffmk:wrapper><literal moreinfo="none">x.y.z.NameOfToolClass</literal> and it will be available in the templates as
+          <literal moreinfo="none">x.y.z.NameOfToolClass</literal> and it will be available in the templates as
           <literal moreinfo="none">$sometool</literal>. This is useful to delegate logic and code generation to java
         code instead of placing such logic in the templates.</para>
 
       <section>
         <title>Example</title>
 
-        <para>Here is an example that uses <code diffmk:change="added">&lt;hbmtemplate&gt;</code><diffmk:wrapper diffmk:change="added">
-          together with </diffmk:wrapper><code diffmk:change="added">&lt;property&gt;</code> which will be available to the templates/exporter. </para>
+        <para>Here is an example that uses <code>&lt;hbmtemplate&gt;</code>
+          together with <code>&lt;property&gt;</code> which will be available to the templates/exporter. </para>
         <note>
           <title>Note:</title>
-          <para><diffmk:wrapper diffmk:change="added"> This example actually simulates what </diffmk:wrapper><code diffmk:change="added"><diffmk:wrapper diffmk:change="added">&lt;hbm2java&gt;</diffmk:wrapper></code><diffmk:wrapper diffmk:change="added"> actually does.</diffmk:wrapper></para>
+          <para> This example actually simulates what <code>&lt;hbm2java&gt;</code> actually does.</para>
         </note>
 
         <programlisting format="linespecific" role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
@@ -3961,12 +4363,12 @@
 </chapter>
 
   
-<chapter id="reverseengineering" xml:base="file:///home/ochikvina/WORK/for_compare/trunk/hibernatetools/docs/reference/en/modules/reverseengineering.xml">
+<chapter id="reverseengineering" xml:base="file:///home/ochikvina/WORK/for_compare/jbosstools-3.1.0.CR1/hibernatetools/docs/reference/en/modules/reverseengineering.xml">
   <title>Controlling reverse engineering</title>
 
-  <para>When using the <code diffmk:change="added">&lt;jdbcconfiguration&gt;</code><diffmk:wrapper diffmk:change="added">, the ant task will read the
+  <para>When using the <code>&lt;jdbcconfiguration&gt;</code>, the ant task will read the
     database metadata and thus will perform a reverse engineering of the database schema into a
-    normal Hibernate Configuration. It is from this object e.g. </diffmk:wrapper><code diffmk:change="added">&lt;hbm2java&gt;</code>can generate other artifacts such as <emphasis>
+    normal Hibernate Configuration. It is from this object e.g. <code>&lt;hbm2java&gt;</code>can generate other artifacts such as <emphasis>
       <property moreinfo="none">.java</property>
     </emphasis>, <emphasis>
       <property moreinfo="none">.hbm.xml</property>
@@ -4004,9 +4406,9 @@
 
     <note>
       <title>Note:</title>
-      <para><diffmk:wrapper diffmk:change="added">Many databases are case-sensitive with their names and thus if you cannot make some
-        table match and you are sure it is not excluded by a </diffmk:wrapper><code diffmk:change="added"><diffmk:wrapper diffmk:change="added">&lt;table-filter&gt;</diffmk:wrapper></code><diffmk:wrapper diffmk:change="added"> then check
-        if the case matches; most databases stores table names in uppercase.</diffmk:wrapper></para>
+      <para>Many databases are case-sensitive with their names and thus if you cannot make some
+        table match and you are sure it is not excluded by a <code>&lt;table-filter&gt;</code> then check
+        if the case matches; most databases stores table names in uppercase.</para>
     </note>
 
     <para>Below you can see an example of a <emphasis>
@@ -4068,19 +4470,19 @@
     <section>
       <title>Schema Selection (&lt;schema-selection&gt;)</title>
 
-      <para><code diffmk:change="added">&lt;schema-selection&gt;</code> is used to drive which schemas the reverse engineering will try and
+      <para><code>&lt;schema-selection&gt;</code> is used to drive which schemas the reverse engineering will try and
         process.</para>
 
-      <para>By default the reverse engineering will read all schemas and then use <code diffmk:change="added">&lt;table-filter&gt;</code><diffmk:wrapper diffmk:change="added">
+      <para>By default the reverse engineering will read all schemas and then use <code>&lt;table-filter&gt;</code>
         to decide which tables get reverse engineered and which do not; this makes it
-        easy to get started but can be inefficient on databases with many schemas.</diffmk:wrapper></para>
+        easy to get started but can be inefficient on databases with many schemas.</para>
 
-      <para>With <code diffmk:change="added">&lt;schema-selection&gt;</code> it is thus possible to limit the actual processed schemas and thus significantly
-        speed-up the reverse engineering. <code diffmk:change="added">&lt;table-filter&gt;</code> is still used to then decide which tables will be included/excluded.</para>
+      <para>With <code>&lt;schema-selection&gt;</code> it is thus possible to limit the actual processed schemas and thus significantly
+        speed-up the reverse engineering. <code>&lt;table-filter&gt;</code> is still used to then decide which tables will be included/excluded.</para>
 
       <note>
         <title>Note:</title>
-        <para>If no <code diffmk:change="added">&lt;schema-selection&gt;</code> is specified, the reverse
+        <para>If no <code>&lt;schema-selection&gt;</code> is specified, the reverse
           engineering works as if all schemas should be processed. This is equal to:
           <![CDATA[<schema-selection/>]]>. Which in turn is equal to:
           <![CDATA[<schema-selection match-catalog=".*" match-schema=".*" match-table=".*"/>]]></para>
@@ -4116,7 +4518,7 @@
     <section id="type_map">
       <title>Type mappings (&lt;type-mapping&gt;)</title>
 
-      <para>The <code diffmk:change="added">&lt;type-mapping&gt;</code> section specifies how the JDBC types found in the database should be mapped to
+      <para>The <code>&lt;type-mapping&gt;</code> section specifies how the JDBC types found in the database should be mapped to
         Hibernate types. e.g. <emphasis>
           <property moreinfo="none">java.sql.Types.VARCHAR</property></emphasis> with a length of 1 should be mapped to the
         Hibernate type <emphasis>
@@ -4308,10 +4710,10 @@
     <section>
       <title>Table filters (&lt;table-filter&gt;)</title>
 
-      <para>The <code diffmk:change="added">&lt;table-filter&gt;</code><diffmk:wrapper diffmk:change="added">
+      <para>The <code>&lt;table-filter&gt;</code>
         let you specify matching rules for performing general filtering/setup for
         tables, e.g. let you include or exclude specific tables based on the schema or even a
-        specific prefix.</diffmk:wrapper></para>
+        specific prefix.</para>
 
         <programlisting format="linespecific" role="XML"><![CDATA[<table-filter
  match-catalog="catalog_matching_rule"
@@ -4395,10 +4797,10 @@
     <section id="tab_and_col">
       <title>Specific table configuration (&lt;table&gt;)</title>
 
-      <para><code diffmk:change="added">&lt;table&gt;</code><diffmk:wrapper diffmk:change="added">
+      <para><code>&lt;table&gt;</code>
         allows you to provide explicit configuration on how a table should be reverse
         engineered. Amongst other things it allows controlling over the naming of a class for the
-        table, specifying which identifier generator should be used for the primary key etc.</diffmk:wrapper></para>
+        table, specifying which identifier generator should be used for the primary key etc.</para>
 
           <programlisting format="linespecific" role="XML"><![CDATA[<table 
  catalog="catalog_name"
@@ -4479,7 +4881,7 @@
       <section>
         <title>&lt;primary-key&gt;</title>
 
-        <para>A <code diffmk:change="added">&lt;primary-key&gt;</code> allows you to define a primary-key for tables that don't have it
+        <para>A <code>&lt;primary-key&gt;</code> allows you to define a primary-key for tables that don't have it
           defined in the database, and probably more importantly it allows you to define which
           identifier strategy should be used (even for already existing primary-key's).</para>
 
@@ -4551,7 +4953,7 @@
       <section>
         <title>&lt;column&gt;</title>
 
-        <para>With a <code diffmk:change="added">&lt;column&gt;</code> it is possible to explicitly name the resulting property for a column. It is
+        <para>With a <code>&lt;column&gt;</code> it is possible to explicitly name the resulting property for a column. It is
           also possible to redefine what jdbc and/or Hibernate type a column should be processed as
           and finally it is possible to completely exclude a column from processing.</para>
         
@@ -4640,10 +5042,10 @@
       <section>
         <title>&lt;foreign-key&gt;</title>
 
-        <para>The <code diffmk:change="added">&lt;foreign-key&gt;</code><diffmk:wrapper diffmk:change="added">
+        <para>The <code>&lt;foreign-key&gt;</code>
            has two purposes. One for allowing to define foreign-keys in databases that
           does not support them or does not have them defined in their schema. Secondly, to allow
-          defining the name of the resulting properties (many-to-one, one-to-one and one-to-many's).</diffmk:wrapper></para>
+          defining the name of the resulting properties (many-to-one, one-to-one and one-to-many's).</para>
          
           <programlisting format="linespecific" role="XML"><![CDATA[<foreign-key
   constraint-name="foreignKeyName"
@@ -4839,31 +5241,31 @@
 </chapter>
 
   
-<chapter id="codegen" xml:base="file:///home/ochikvina/WORK/for_compare/trunk/hibernatetools/docs/reference/en/modules/codegen.xml">
+<chapter id="codegen" xml:base="file:///home/ochikvina/WORK/for_compare/jbosstools-3.1.0.CR1/hibernatetools/docs/reference/en/modules/codegen.xml">
   <title>Controlling POJO code generation</title>
 
-  <para>When using <code diffmk:change="added">&lt;hbm2java&gt;</code> or the eclipse plugin to generate POJO java code you have the possibility to control
-    certain aspects of the code generation. This is primarily done with the <code diffmk:change="added">&lt;meta&gt;</code><diffmk:wrapper diffmk:change="added">
-     tag in the mapping files. The following section describes the possible </diffmk:wrapper><code diffmk:change="added"><diffmk:wrapper diffmk:change="added">
+  <para>When using <code>&lt;hbm2java&gt;</code> or the eclipse plugin to generate POJO java code you have the possibility to control
+    certain aspects of the code generation. This is primarily done with the <code>&lt;meta&gt;</code>
+     tag in the mapping files. The following section describes the possible <code>
       &lt;meta&gt;
-    </diffmk:wrapper></code> tags and their use.</para>
+    </code> tags and their use.</para>
 
   <section>
-    <title><diffmk:wrapper diffmk:change="added">The &lt;meta&gt; attribute</diffmk:wrapper></title>
+    <title>The &lt;meta&gt; attribute</title>
 
-    <para>The <code diffmk:change="added">&lt;meta&gt;</code> tag is a simple way of annotating the <emphasis>
+    <para>The <code>&lt;meta&gt;</code> tag is a simple way of annotating the <emphasis>
         <property moreinfo="none">hbm.xml</property>
       </emphasis> with information, so tools have a natural place to store/read information that is
       not directly related to the Hibernate core.</para>
 
-    <para>You can use the <code diffmk:change="added">&lt;meta&gt;</code> tag to e.g. tell <code diffmk:change="added">&lt;hbm2java&gt;</code><diffmk:wrapper diffmk:change="added">
-      to only generate </diffmk:wrapper><emphasis>
+    <para>You can use the <code>&lt;meta&gt;</code> tag to e.g. tell <code>&lt;hbm2java&gt;</code>
+      to only generate <emphasis>
         <property moreinfo="none">"protected"</property>
       </emphasis> setters, have classes always implement a certain set of interfaces or even have
       them extend a certain base class and even more.</para>
 
-    <para>The following example shows how to use various <code diffmk:change="added">&lt;meta&gt;</code><diffmk:wrapper diffmk:change="added">
-       attributes and the resulting java code.</diffmk:wrapper></para>
+    <para>The following example shows how to use various <code>&lt;meta&gt;</code>
+       attributes and the resulting java code.</para>
 
     <programlisting format="linespecific" role="XML"><![CDATA[<class name="Person">
     <meta attribute="class-description">
@@ -5089,36 +5491,36 @@ public class Person implements Serializable, IAuditable {
       </tgroup>
     </table>
 
-    <para>Attributes declared via the <code diffmk:change="added">&lt;meta&gt;</code><diffmk:wrapper diffmk:change="added">
-       tag are per default </diffmk:wrapper><emphasis>
+    <para>Attributes declared via the <code>&lt;meta&gt;</code>
+       tag are per default <emphasis>
         <property moreinfo="none">"inherited"</property>
       </emphasis> inside an <emphasis>
         <property moreinfo="none">hbm.xml</property>
       </emphasis> file.</para>
 
     <para>What does that mean? It means that if you e.g want to have all your classes implement
-        <property diffmk:change="added" moreinfo="none">IAuditable</property> then you just add an <code diffmk:change="added"> &lt;meta
+        <property moreinfo="none">IAuditable</property> then you just add an <code> &lt;meta
         attribute="implements"&gt;IAuditable&lt;/meta&gt;</code> in the top of the <emphasis>
         <property moreinfo="none">hbm.xml</property>
-      </emphasis> file, just after <code diffmk:change="added">&lt;hibernate-mapping&gt;</code><diffmk:wrapper diffmk:change="added">. Now all classes defined
-      in that </diffmk:wrapper><emphasis>
+      </emphasis> file, just after <code>&lt;hibernate-mapping&gt;</code>. Now all classes defined
+      in that <emphasis>
         <property moreinfo="none">hbm.xml</property>
-      </emphasis> file will implement <property diffmk:change="added" moreinfo="none">IAuditable</property>!</para>
+      </emphasis> file will implement <property moreinfo="none">IAuditable</property>!</para>
 
     <note>
       <title>Note:</title>
       <para>This applies to <emphasis>all</emphasis>
-        <code diffmk:change="added">&lt;meta&gt;</code>-tags. Thus it can also e.g. be used to specify that
+        <code>&lt;meta&gt;</code>-tags. Thus it can also e.g. be used to specify that
         all fields should be declare protected, instead of the default private. This is done by
-        adding <code diffmk:change="added">&lt;meta
+        adding <code>&lt;meta
           attribute="scope-field"&gt;protected&lt;/meta&gt;</code> at e.g. just under
-        the <code diffmk:change="added">&lt;class&gt;</code> tag and all fields of that class will be
+        the <code>&lt;class&gt;</code> tag and all fields of that class will be
         protected.</para>
     </note>
 
-    <para>To avoid having a <code diffmk:change="added">&lt;meta&gt;</code><diffmk:wrapper diffmk:change="added">
-       tag inherited then you can simply specify </diffmk:wrapper><code diffmk:change="added"> inherit = "false"</code>
-      for the attribute, e.g. <code diffmk:change="added"> &lt;meta attribute = "scope-class" inherit =
+    <para>To avoid having a <code>&lt;meta&gt;</code>
+       tag inherited then you can simply specify <code> inherit = "false"</code>
+      for the attribute, e.g. <code> &lt;meta attribute = "scope-class" inherit =
         "false"&gt;public abstract&lt;/meta&gt;</code> will restrict the <emphasis>
         <property moreinfo="none">"class-scope"</property>
       </emphasis> to the current class, not the subclasses.</para>
@@ -5126,12 +5528,12 @@ public class Person implements Serializable, IAuditable {
     <section>
       <title>Recommendations</title>
 
-      <para><diffmk:wrapper diffmk:change="added">The following are some good practices when using 
-          </diffmk:wrapper><code diffmk:change="added">&lt;meta&gt;</code><diffmk:wrapper diffmk:change="added">
-        attributes.</diffmk:wrapper></para>
+      <para>The following are some good practices when using 
+          <code>&lt;meta&gt;</code>
+        attributes.</para>
 
       <section>
-        <title>Dangers of a class level <property diffmk:change="added" moreinfo="none">use-in-string and use-in-equals</property> meta
+        <title>Dangers of a class level <property moreinfo="none">use-in-string and use-in-equals</property> meta
           attributes when having bi-directional associations</title>
 
         <para>If we have two entities with a bi-directional association between them and define at
@@ -5168,13 +5570,13 @@ public class Person implements Serializable, IAuditable {
   </class>
 </hibernate-mapping>]]></programlisting>
 
-        <para>Then <code diffmk:change="added">&lt;hbm2java&gt;</code><diffmk:wrapper diffmk:change="added">
+        <para>Then <code>&lt;hbm2java&gt;</code>
           will assume you want to include all properties and collections in the
-            </diffmk:wrapper><code diffmk:change="added">toString()/equals()</code> methods and this can result in infinite
+            <code>toString()/equals()</code> methods and this can result in infinite
           recursive calls.</para>
 
         <para>To remedy this you have to decide which side of the association will include the other
-          part (if at all) in the <code diffmk:change="added">toString()/equals()</code> methods. Therefore it is
+          part (if at all) in the <code>toString()/equals()</code> methods. Therefore it is
           not a good practice to put at class scope such <emphasis>
             <property moreinfo="none">meta</property>
           </emphasis> attributes, unless you are defining a class without bi-directional
@@ -5225,10 +5627,10 @@ public class Person implements Serializable, IAuditable {
       </section>
 
       <section>
-        <title><diffmk:wrapper diffmk:change="added">Be aware of putting at class scope level &lt;meta&gt;
-          attributeuse-in-equals</diffmk:wrapper></title>
+        <title>Be aware of putting at class scope level &lt;meta&gt;
+          attributeuse-in-equals</title>
 
-        <para>For <code diffmk:change="added">equal()/hashCode()</code> method generation, you have to take into
+        <para>For <code>equal()/hashCode()</code> method generation, you have to take into
           account that the attributes that participate on such method definition, should take into
           account only attributes with business meaning (the name, social security number, etc, but
           no generated id's, for example).</para>
@@ -5240,12 +5642,12 @@ public class Person implements Serializable, IAuditable {
           set.</para>
 
         <para>Therefore automatically configuration of the generation of
-            <property moreinfo="none">equals()/hashCode()</property> methods specifying at class scope level the <code diffmk:change="added">&lt;meta&gt;</code> attribute <emphasis>
+            <property moreinfo="none">equals()/hashCode()</property> methods specifying at class scope level the <code>&lt;meta&gt;</code> attribute <emphasis>
             <property moreinfo="none">use-in-equals</property>
           </emphasis> could be a dangerous decision that could produce non expected
           side-effect.</para>
 
-        <para><ulink url="http://www.hibernate.org/109.html"><diffmk:wrapper diffmk:change="changed">On www.hibernate.org </diffmk:wrapper></ulink> you can get more in-depth
+        <para><ulink url="http://www.hibernate.org/109.html">On www.hibernate.org </ulink> you can get more in-depth
           explanation on the subject of <property moreinfo="none">equals()</property> and
             <property moreinfo="none">hashcode()</property>.</para>
       </section>
@@ -5264,12 +5666,12 @@ public class Person implements Serializable, IAuditable {
       <section>
         <title>Generate pre/post-conditions for methods</title>
 
-        <para>With a <code diffmk:change="added"> &lt;meta attribute="class-code"&gt;</code>, you can add
-          additional methods on a given class, nevertheless such <code diffmk:change="added">&lt;meta&gt;</code><diffmk:wrapper diffmk:change="added">
-           attribute can not be used at a property scope level and </diffmk:wrapper><property moreinfo="none">Hibernate
-            Tools</property> does not provide such <code diffmk:change="added"><diffmk:wrapper diffmk:change="added">
+        <para>With a <code> &lt;meta attribute="class-code"&gt;</code>, you can add
+          additional methods on a given class, nevertheless such <code>&lt;meta&gt;</code>
+           attribute can not be used at a property scope level and <property moreinfo="none">Hibernate
+            Tools</property> does not provide such <code>
             &gt;&lt;meta&gt;
-          </diffmk:wrapper></code> attributes.</para>
+          </code> attributes.</para>
 
         <para>A possible solution for this is to modify the freemarker templates responsible for
           generating the POJO's. If you look inside <emphasis>
@@ -5333,11 +5735,11 @@ public class Person implements Serializable, IAuditable {
             <property moreinfo="none">.hbm.xml</property>
           </emphasis> file we define the <emphasis>
             <property moreinfo="none">&lt;meta&gt;</property>
-          </emphasis> attributes: <code diffmk:change="added">pre-cond</code> or <code diffmk:change="added">post-cond</code>, their
+          </emphasis> attributes: <code>pre-cond</code> or <code>post-cond</code>, their
           contents will be generated into the body of the relevant <literal moreinfo="none">set</literal>
           method.</para>
 
-        <para>As an example let us add a pre-condition for property <code diffmk:change="added">name</code>
+        <para>As an example let us add a pre-condition for property <code>name</code>
           preventing no <property moreinfo="none">Person</property> can have an empty name. Hence we have to modify
           the <emphasis>
             <property moreinfo="none">Person.hbm.xml</property>
@@ -5360,8 +5762,8 @@ public class Person implements Serializable, IAuditable {
 
         <note>
           <title>Note:</title>
-          <para><diffmk:wrapper diffmk:change="added">I) To escape the &amp; symbol we put &amp;amp;. You can use
-            </diffmk:wrapper><code diffmk:change="added"><diffmk:wrapper diffmk:change="added"> &lt;![CDATA[]]&gt;</diffmk:wrapper></code><diffmk:wrapper diffmk:change="added"> instead.</diffmk:wrapper></para>
+          <para>I) To escape the &amp; symbol we put &amp;amp;. You can use
+            <code> &lt;![CDATA[]]&gt;</code> instead.</para>
           <para>II) Note that we are referring to "firstName" directly and this is the parameter
             name not the actual field name. If you want to refer the field you have to use
             "this.firstName" instead. </para>
@@ -5370,8 +5772,8 @@ public class Person implements Serializable, IAuditable {
         <para>Finally we have to generate the <emphasis>
             <property moreinfo="none">Person.java</property>
           </emphasis> class, for this we can use both Eclipse and Ant as long as you remember to set
-          or fill in the templatepath setting. For Ant we configure <code diffmk:change="added">&lt;hibernatetool&gt;</code><diffmk:wrapper diffmk:change="added">
-           task via </diffmk:wrapper><literal moreinfo="none">the templatepath</literal> attribute as in:</para>
+          or fill in the templatepath setting. For Ant we configure <code>&lt;hibernatetool&gt;</code>
+           task via <literal moreinfo="none">the templatepath</literal> attribute as in:</para>
 
         <programlisting format="linespecific" role="XML"><![CDATA[
     <target name="hbm2java">
@@ -5392,8 +5794,8 @@ public class Person implements Serializable, IAuditable {
         </hibernatetool>
     </target>]]></programlisting>
 
-        <para>Invoking the target <code diffmk:change="added">&lt;hbm2java&gt;</code><diffmk:wrapper diffmk:change="added">
-          will generate on the </diffmk:wrapper><emphasis>
+        <para>Invoking the target <code>&lt;hbm2java&gt;</code>
+          will generate on the <emphasis>
             <property moreinfo="none">${hbm2java.dest.dir}</property>
           </emphasis> the file <emphasis>
             <property moreinfo="none">Person.java</property>
