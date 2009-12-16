@@ -44,6 +44,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.XMLMemento;
+import org.eclipse.ui.views.properties.IPropertyDescriptor;
+import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
@@ -52,6 +54,7 @@ import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.Table;
 import org.jboss.tools.hibernate.ui.diagram.DiagramViewerMessages;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection.ConnectionType;
@@ -94,6 +97,8 @@ public class OrmDiagram extends BaseElement {
 	protected boolean snapToGeometry = false;
 	protected boolean gridEnabled = false;
 	protected double zoom = 1.0;
+	protected int width = 0;
+	protected int height = 0;
 	protected float fontHeight = 8.5f;
 	protected boolean deepIntoSort = false;
 	protected boolean flagManhattanConnectionRouter = true;
@@ -102,6 +107,30 @@ public class OrmDiagram extends BaseElement {
 	// this is workaround to load diagram state in the case if Console Config loaded later
 	// so we can correctly refresh diagram state
 	private IMemento memento = null;
+
+	private static final String PROPERTY_NAME = "name"; //$NON-NLS-1$
+	private static final String PROPERTY_WIDTH = "width"; //$NON-NLS-1$
+	private static final String PROPERTY_HEIGHT = "height"; //$NON-NLS-1$
+	private static final String PROPERTY_ZOOM = "zoom"; //$NON-NLS-1$
+	private static final String PROPERTY_ITEMS = "items"; //$NON-NLS-1$
+	private static final String PROPERTY_ENTITIES = "entities"; //$NON-NLS-1$
+	private static final String PROPERTY_TABLES = "tables"; //$NON-NLS-1$
+	private static final String PROPERTY_INVISIBLE = "invisible"; //$NON-NLS-1$
+
+	private static IPropertyDescriptor[] descriptors_diagram;
+	
+	static {	
+		descriptors_diagram = new IPropertyDescriptor[] { 
+			new TextPropertyDescriptor(PROPERTY_NAME, PROPERTY_NAME),
+			new TextPropertyDescriptor(PROPERTY_WIDTH, PROPERTY_WIDTH),
+			new TextPropertyDescriptor(PROPERTY_HEIGHT, PROPERTY_HEIGHT),
+			new TextPropertyDescriptor(PROPERTY_ZOOM, PROPERTY_ZOOM),
+			new TextPropertyDescriptor(PROPERTY_ITEMS, PROPERTY_ITEMS),
+			new TextPropertyDescriptor(PROPERTY_ENTITIES, PROPERTY_ENTITIES),
+			new TextPropertyDescriptor(PROPERTY_TABLES, PROPERTY_TABLES),
+			new TextPropertyDescriptor(PROPERTY_INVISIBLE, PROPERTY_INVISIBLE),
+		};
+	}
 	
 	public class RootClassComparator implements Comparator<RootClass> {
 		public int compare(RootClass o1, RootClass o2) {
@@ -975,5 +1004,67 @@ public class OrmDiagram extends BaseElement {
 
 	public void setupFanConnectionRouter() {
 		flagManhattanConnectionRouter = false;
+	}
+	
+	public void updateWidthAndHeight(int width, int height) {
+		this.width = width;
+		this.height = height;
+	}
+
+	@Override
+	public IPropertyDescriptor[] getPropertyDescriptors() {
+		return descriptors_diagram;
+	}
+
+	@Override
+	public Object getPropertyValue(Object propertyId) {
+		Object res = null;
+		if (PROPERTY_NAME.equals(propertyId)) {
+			res = getDiagramName();
+		} else if (PROPERTY_WIDTH.equals(propertyId)) {
+			res = width;
+		} else if (PROPERTY_HEIGHT.equals(propertyId)) {
+			res = height;
+		} else if (PROPERTY_ZOOM.equals(propertyId)) {
+			res = zoom;
+		} else if (PROPERTY_ITEMS.equals(propertyId)) {
+			res = elements.size();
+		} else if (PROPERTY_ENTITIES.equals(propertyId)) {
+			int nEntities = 0;
+			Iterator<OrmShape> it = elements.values().iterator();
+			while (it.hasNext()) {
+				final OrmShape shape = it.next();
+				Object ormElement = shape.getOrmElement();
+				if (ormElement instanceof RootClass) {
+					nEntities++;
+				}
+			}
+			res = nEntities;
+		} else if (PROPERTY_TABLES.equals(propertyId)) {
+			int nTables = 0;
+			Iterator<OrmShape> it = elements.values().iterator();
+			while (it.hasNext()) {
+				final OrmShape shape = it.next();
+				Object ormElement = shape.getOrmElement();
+				if (ormElement instanceof Table) {
+					nTables++;
+				}
+			}
+			res = nTables;
+		} else if (PROPERTY_INVISIBLE.equals(propertyId)) {
+			int nInvisible = 0;
+			Iterator<OrmShape> it = elements.values().iterator();
+			while (it.hasNext()) {
+				final OrmShape shape = it.next();
+				if (!shape.isVisible()) {
+					nInvisible++;
+				}
+			}
+			res = nInvisible;
+		}
+		if (res == null) {
+			res = super.getPropertyValue(propertyId);
+		}
+		return toEmptyStr(res);
 	}
 }

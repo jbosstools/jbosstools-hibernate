@@ -77,28 +77,27 @@ public class Shape extends BaseElement {
 	static {
 		
 		descriptors_property = new IPropertyDescriptor[] { 
-				new TextPropertyDescriptor(PROPERTY_NAME, PROPERTY_NAME),
-				new TextPropertyDescriptor(PROPERTY_TYPE, PROPERTY_TYPE),
-				new TextPropertyDescriptor(PROPERTY_VALUE, PROPERTY_VALUE),
-				new TextPropertyDescriptor(PROPERTY_CLASS, PROPERTY_CLASS),
-				new TextPropertyDescriptor(PROPERTY_SELECT, PROPERTY_SELECT),
-				new TextPropertyDescriptor(PROPERTY_INSERT, PROPERTY_INSERT),
-				new TextPropertyDescriptor(PROPERTY_UPDATE, PROPERTY_UPDATE),
-				new TextPropertyDescriptor(PROPERTY_CASCADE, PROPERTY_CASCADE),
-				new TextPropertyDescriptor(PROPERTY_LAZY, PROPERTY_LAZY),
-				new TextPropertyDescriptor(PROPERTY_OPTIONAL, PROPERTY_OPTIONAL),
-				new TextPropertyDescriptor(PROPERTY_NATURAL_IDENTIFIER, PROPERTY_NATURAL_IDENTIFIER),
-				new TextPropertyDescriptor(PROPERTY_NODE_NAME, PROPERTY_NODE_NAME),
-				new TextPropertyDescriptor(PROPERTY_OPTIMISTIC_LOCKED, PROPERTY_OPTIMISTIC_LOCKED),
+			new TextPropertyDescriptor(PROPERTY_NAME, PROPERTY_NAME),
+			new TextPropertyDescriptor(PROPERTY_TYPE, PROPERTY_TYPE),
+			new TextPropertyDescriptor(PROPERTY_VALUE, PROPERTY_VALUE),
+			new TextPropertyDescriptor(PROPERTY_CLASS, PROPERTY_CLASS),
+			new TextPropertyDescriptor(PROPERTY_SELECT, PROPERTY_SELECT),
+			new TextPropertyDescriptor(PROPERTY_INSERT, PROPERTY_INSERT),
+			new TextPropertyDescriptor(PROPERTY_UPDATE, PROPERTY_UPDATE),
+			new TextPropertyDescriptor(PROPERTY_CASCADE, PROPERTY_CASCADE),
+			new TextPropertyDescriptor(PROPERTY_LAZY, PROPERTY_LAZY),
+			new TextPropertyDescriptor(PROPERTY_OPTIONAL, PROPERTY_OPTIONAL),
+			new TextPropertyDescriptor(PROPERTY_NATURAL_IDENTIFIER, PROPERTY_NATURAL_IDENTIFIER),
+			new TextPropertyDescriptor(PROPERTY_NODE_NAME, PROPERTY_NODE_NAME),
+			new TextPropertyDescriptor(PROPERTY_OPTIMISTIC_LOCKED, PROPERTY_OPTIMISTIC_LOCKED),
 		};
 
-	
 		descriptors_column = new IPropertyDescriptor[] { 
-				new TextPropertyDescriptor(PROPERTY_NAME, PROPERTY_NAME),
-				new TextPropertyDescriptor(PROPERTY_TYPE, PROPERTY_TYPE),
-				new TextPropertyDescriptor(PROPERTY_VALUE, PROPERTY_VALUE),
-				new TextPropertyDescriptor(PROPERTY_NULLABLE, PROPERTY_NULLABLE),
-				new TextPropertyDescriptor(PROPERTY_UNIQUE, PROPERTY_UNIQUE),
+			new TextPropertyDescriptor(PROPERTY_NAME, PROPERTY_NAME),
+			new TextPropertyDescriptor(PROPERTY_TYPE, PROPERTY_TYPE),
+			new TextPropertyDescriptor(PROPERTY_VALUE, PROPERTY_VALUE),
+			new TextPropertyDescriptor(PROPERTY_NULLABLE, PROPERTY_NULLABLE),
+			new TextPropertyDescriptor(PROPERTY_UNIQUE, PROPERTY_UNIQUE),
 		};
 
 	} // static
@@ -254,11 +253,11 @@ public class Shape extends BaseElement {
 	 * @see #getPropertyValue(Object)
 	 * @see #setPropertyValue(Object, Object)
 	 */
+	@Override
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		if (getOrmElement() instanceof Property) {
 			return descriptors_property;
-		}
-		else if (getOrmElement() instanceof Column) {
+		} else if (getOrmElement() instanceof Column) {
 			return descriptors_column;
 		}
 		return super.getPropertyDescriptors();
@@ -271,6 +270,7 @@ public class Shape extends BaseElement {
 	 * @see #descriptors
 	 * @see #getPropertyDescriptors()
 	 */
+	@Override
 	public Object getPropertyValue(Object propertyId) {
 		Object res = null;
 		Column col = null;
@@ -281,21 +281,45 @@ public class Shape extends BaseElement {
 		if (getOrmElement() instanceof Property) {
 			prop = (Property)getOrmElement();
 		}
-		if (PROPERTY_NAME.equals(propertyId)) {
-			if (prop != null) {
+		if (prop != null) {
+			if (PROPERTY_NAME.equals(propertyId)) {
 				res = prop.getName();
-			} else if (col != null) {
-				res = col.getName();
-			}
-		} else if (PROPERTY_TYPE.equals(propertyId)) {
-			if (prop != null) {
+			} else if (PROPERTY_TYPE.equals(propertyId)) {
 				Value value = prop.getValue();
 				if (value instanceof Component) {
 					res = prop.getValue().toString();
 				} else {
 					res = prop.getType().getReturnedClass().getName();
 				}
-			} else if (col != null) {
+			} else if (PROPERTY_VALUE.equals(propertyId)) {
+				res = prop.getValue().toString();
+			} else if (PROPERTY_CLASS.equals(propertyId)) {
+				if (prop.getPersistentClass() != null) {
+					res = prop.getPersistentClass().getClassName();
+				}
+			} else if (PROPERTY_SELECT.equals(propertyId)) {
+				res = Boolean.valueOf(prop.isSelectable()).toString(); 
+			} else if (PROPERTY_INSERT.equals(propertyId)) {
+				res = Boolean.valueOf(prop.isInsertable()).toString(); 
+			} else if (PROPERTY_UPDATE.equals(propertyId)) {
+				res = Boolean.valueOf(prop.isUpdateable()).toString(); 
+			} else if (PROPERTY_CASCADE.equals(propertyId)) {
+				res = prop.getCascade(); 
+			} else if (PROPERTY_LAZY.equals(propertyId)) {
+				res = Boolean.valueOf(prop.isLazy()).toString(); 
+			} else if (PROPERTY_OPTIONAL.equals(propertyId)) {
+				res = Boolean.valueOf(prop.isOptional()).toString(); 
+			} else if (PROPERTY_NATURAL_IDENTIFIER.equals(propertyId)) {
+				res = Boolean.valueOf(prop.isNaturalIdentifier()).toString(); 
+			} else if (PROPERTY_NODE_NAME.equals(propertyId)) {
+				res = prop.getNodeName();
+			} else if (PROPERTY_OPTIMISTIC_LOCKED.equals(propertyId)) {
+				res = Boolean.valueOf(prop.isOptimisticLocked()).toString(); 
+			}
+		} else if (col != null) {
+			if (PROPERTY_NAME.equals(propertyId)) {
+				res = col.getName();
+			} else if (PROPERTY_TYPE.equals(propertyId)) {
 				String sqlType = col.getSqlType();
 				if (sqlType == null) {
 					getOrmDiagram().getLabelProvider().updateColumnSqlType(col);
@@ -310,61 +334,11 @@ public class Shape extends BaseElement {
 							&& HibernateUtils.isForeignKey(col) ? " FK" : ""); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				res = name.toString();
-			}
-		} else if (PROPERTY_VALUE.equals(propertyId)) {
-			if (prop != null) {
-				res = prop.getValue().toString();
-			} else if (getOrmElement() instanceof Column) {
+			} else if (PROPERTY_VALUE.equals(propertyId)) {
 				res = col.getValue().toString();
-			}
-		} else if (PROPERTY_CLASS.equals(propertyId)) {
-			if (prop != null) {
-				if (prop.getPersistentClass() != null) {
-					res = prop.getPersistentClass().getClassName();
-				}
-			}
-		} else if (PROPERTY_SELECT.equals(propertyId)) {
-			if (prop != null) {
-				res = Boolean.valueOf(prop.isSelectable()).toString(); 
-			}
-		} else if (PROPERTY_INSERT.equals(propertyId)) {
-			if (prop != null) {
-				res = Boolean.valueOf(prop.isInsertable()).toString(); 
-			}
-		} else if (PROPERTY_UPDATE.equals(propertyId)) {
-			if (prop != null) {
-				res = Boolean.valueOf(prop.isUpdateable()).toString(); 
-			}
-		} else if (PROPERTY_CASCADE.equals(propertyId)) {
-			if (prop != null) {
-				res = prop.getCascade(); 
-			}
-		} else if (PROPERTY_LAZY.equals(propertyId)) {
-			if (prop != null) {
-				res = Boolean.valueOf(prop.isLazy()).toString(); 
-			}
-		} else if (PROPERTY_OPTIONAL.equals(propertyId)) {
-			if (prop != null) {
-				res = Boolean.valueOf(prop.isOptional()).toString(); 
-			}
-		} else if (PROPERTY_NATURAL_IDENTIFIER.equals(propertyId)) {
-			if (prop != null) {
-				res = Boolean.valueOf(prop.isNaturalIdentifier()).toString(); 
-			}
-		} else if (PROPERTY_NODE_NAME.equals(propertyId)) {
-			if (prop != null) {
-				res = prop.getNodeName();
-			}
-		} else if (PROPERTY_OPTIMISTIC_LOCKED.equals(propertyId)) {
-			if (prop != null) {
-				res = Boolean.valueOf(prop.isOptimisticLocked()).toString(); 
-			}
-		} else if (PROPERTY_NULLABLE.equals(propertyId)) {
-			if (col != null) {
+			} else if (PROPERTY_NULLABLE.equals(propertyId)) {
 				res = Boolean.valueOf(col.isNullable()).toString(); 
-			}
-		} else if (PROPERTY_UNIQUE.equals(propertyId)) {
-			if (col != null) {
+			} else if (PROPERTY_UNIQUE.equals(propertyId)) {
 				res = Boolean.valueOf(col.isUnique()).toString(); 
 			}
 		}
@@ -373,12 +347,4 @@ public class Shape extends BaseElement {
 		}
 		return toEmptyStr(res);
 	}
-	
-	protected Object toEmptyStr(Object obj) {
-		if (obj == null) {
-			return ""; //$NON-NLS-1$
-		}
-		return obj;
-	}
-
 }

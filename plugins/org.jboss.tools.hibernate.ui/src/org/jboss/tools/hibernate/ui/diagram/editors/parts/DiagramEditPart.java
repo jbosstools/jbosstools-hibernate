@@ -104,6 +104,16 @@ public class DiagramEditPart extends OrmEditPart {
 		refresh();
 	}
 
+	@Override
+	public void refresh() {
+		IFigure layer = getLayer(LayerConstants.PRIMARY_LAYER);
+		getOrmDiagram().updateWidthAndHeight(layer.getBounds().width, layer.getBounds().height);
+		double zoom = ((DiagramViewer) ((DefaultEditDomain) getViewer().getEditDomain())
+				.getEditorPart()).getZoom();
+		getOrmDiagram().setZoom(zoom);
+		super.refresh();
+	}
+
 	/**
 	 * Returns a <code>List</code> containing the children model objects.
 	 * @return the List of children

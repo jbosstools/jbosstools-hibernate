@@ -15,6 +15,8 @@ import java.util.Properties;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.ui.IMemento;
+import org.eclipse.ui.views.properties.IPropertyDescriptor;
+import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -32,7 +34,7 @@ import org.jboss.tools.hibernate.ui.diagram.rulers.DiagramGuide;
  * @author some modifications from Vitali
  */
 public class OrmShape extends ExpandableShape {
-
+	
 	public static final String LOCATION_PROP = "location";		 //$NON-NLS-1$
 	/**
 	 * up-left point element location on diagram
@@ -43,6 +45,107 @@ public class OrmShape extends ExpandableShape {
 	 * additional way to change shape location on diagram
 	 */
 	private DiagramGuide verticalGuide, horizontalGuide;
+
+	private static IPropertyDescriptor[] descriptors_entity;
+	private static IPropertyDescriptor[] descriptors_table;
+
+	private static final String ENTITY_isAbstract = "isAbstract"; //$NON-NLS-1$
+	private static final String ENTITY_isCustomDeleteCallable = "isCustomDeleteCallable"; //$NON-NLS-1$
+	private static final String ENTITY_isCustomInsertCallable = "isCustomInsertCallable"; //$NON-NLS-1$
+	private static final String ENTITY_isCustomUpdateCallable = "isCustomUpdateCallable"; //$NON-NLS-1$
+	private static final String ENTITY_isDiscriminatorInsertable = "isDiscriminatorInsertable"; //$NON-NLS-1$
+	private static final String ENTITY_isDiscriminatorValueNotNull = "isDiscriminatorValueNotNull"; //$NON-NLS-1$
+	private static final String ENTITY_isDiscriminatorValueNull = "isDiscriminatorValueNull"; //$NON-NLS-1$
+	private static final String ENTITY_isExplicitPolymorphism = "isExplicitPolymorphism"; //$NON-NLS-1$
+	private static final String ENTITY_isForceDiscriminator = "isForceDiscriminator"; //$NON-NLS-1$
+	private static final String ENTITY_isInherited = "isInherited"; //$NON-NLS-1$
+	private static final String ENTITY_isJoinedSubclass = "isJoinedSubclass"; //$NON-NLS-1$
+	private static final String ENTITY_isLazy = "isLazy"; //$NON-NLS-1$
+	private static final String ENTITY_isLazyPropertiesCacheable = "isLazyPropertiesCacheable"; //$NON-NLS-1$
+	private static final String ENTITY_isMutable = "isMutable"; //$NON-NLS-1$
+	private static final String ENTITY_isPolymorphic = "isPolymorphic"; //$NON-NLS-1$
+	private static final String ENTITY_isVersioned = "isVersioned"; //$NON-NLS-1$
+	private static final String ENTITY_batchSize = "batchSize"; //$NON-NLS-1$
+	private static final String ENTITY_cacheConcurrencyStrategy = "cacheConcurrencyStrategy"; //$NON-NLS-1$
+	private static final String ENTITY_className = "className"; //$NON-NLS-1$
+	private static final String ENTITY_customSQLDelete = "customSQLDelete"; //$NON-NLS-1$
+	private static final String ENTITY_customSQLInsert = "customSQLInsert"; //$NON-NLS-1$
+	private static final String ENTITY_customSQLUpdate = "customSQLUpdate"; //$NON-NLS-1$
+	private static final String ENTITY_discriminatorValue = "discriminatorValue"; //$NON-NLS-1$
+	private static final String ENTITY_entityName = "entityName"; //$NON-NLS-1$
+	private static final String ENTITY_loaderName = "loaderName"; //$NON-NLS-1$
+	private static final String ENTITY_nodeName = "nodeName"; //$NON-NLS-1$
+	private static final String ENTITY_optimisticLockMode = "optimisticLockMode"; //$NON-NLS-1$
+	private static final String ENTITY_table = "table"; //$NON-NLS-1$
+	private static final String ENTITY_temporaryIdTableDDL = "temporaryIdTableDDL"; //$NON-NLS-1$
+	private static final String ENTITY_temporaryIdTableName = "temporaryIdTableName"; //$NON-NLS-1$
+	private static final String ENTITY_where = "where"; //$NON-NLS-1$
+	private static final String ENTITY_cacheRegionName = "cacheRegionName"; //$NON-NLS-1$
+
+	private static final String TABLE_catalog = "catalog"; //$NON-NLS-1$
+	private static final String TABLE_comment = "comment"; //$NON-NLS-1$
+	private static final String TABLE_name = "name"; //$NON-NLS-1$
+	private static final String TABLE_primaryKey = "primaryKey"; //$NON-NLS-1$
+	private static final String TABLE_rowId = "rowId"; //$NON-NLS-1$
+	private static final String TABLE_schema = "schema"; //$NON-NLS-1$
+	private static final String TABLE_subselect = "subselect"; //$NON-NLS-1$
+	private static final String TABLE_hasDenormalizedTables = "hasDenormalizedTables"; //$NON-NLS-1$
+	private static final String TABLE_isAbstract = "isAbstract"; //$NON-NLS-1$
+	private static final String TABLE_isAbstractUnionTable = "isAbstractUnionTable"; //$NON-NLS-1$
+	private static final String TABLE_isPhysicalTable = "isPhysicalTable"; //$NON-NLS-1$
+	
+	static {
+		
+		descriptors_entity = new IPropertyDescriptor[] { 
+			new TextPropertyDescriptor(ENTITY_isAbstract, ENTITY_isAbstract),
+			new TextPropertyDescriptor(ENTITY_isCustomDeleteCallable, ENTITY_isCustomDeleteCallable),
+			new TextPropertyDescriptor(ENTITY_isCustomInsertCallable, ENTITY_isCustomInsertCallable),
+			new TextPropertyDescriptor(ENTITY_isCustomUpdateCallable, ENTITY_isCustomUpdateCallable),
+			new TextPropertyDescriptor(ENTITY_isDiscriminatorInsertable, ENTITY_isDiscriminatorInsertable),
+			new TextPropertyDescriptor(ENTITY_isDiscriminatorValueNotNull, ENTITY_isDiscriminatorValueNotNull),
+			new TextPropertyDescriptor(ENTITY_isDiscriminatorValueNull, ENTITY_isDiscriminatorValueNull),
+			new TextPropertyDescriptor(ENTITY_isExplicitPolymorphism, ENTITY_isExplicitPolymorphism),
+			new TextPropertyDescriptor(ENTITY_isForceDiscriminator, ENTITY_isForceDiscriminator),
+			new TextPropertyDescriptor(ENTITY_isInherited, ENTITY_isInherited),
+			new TextPropertyDescriptor(ENTITY_isJoinedSubclass, ENTITY_isJoinedSubclass),
+			new TextPropertyDescriptor(ENTITY_isLazy, ENTITY_isLazy),
+			new TextPropertyDescriptor(ENTITY_isLazyPropertiesCacheable, ENTITY_isLazyPropertiesCacheable),
+			new TextPropertyDescriptor(ENTITY_isMutable, ENTITY_isMutable),
+			new TextPropertyDescriptor(ENTITY_isPolymorphic, ENTITY_isPolymorphic),
+			new TextPropertyDescriptor(ENTITY_isVersioned, ENTITY_isVersioned),
+			new TextPropertyDescriptor(ENTITY_batchSize, ENTITY_batchSize),
+			new TextPropertyDescriptor(ENTITY_cacheConcurrencyStrategy, ENTITY_cacheConcurrencyStrategy),
+			new TextPropertyDescriptor(ENTITY_className, ENTITY_className),
+			new TextPropertyDescriptor(ENTITY_customSQLDelete, ENTITY_customSQLDelete),
+			new TextPropertyDescriptor(ENTITY_customSQLInsert, ENTITY_customSQLInsert),
+			new TextPropertyDescriptor(ENTITY_customSQLUpdate, ENTITY_customSQLUpdate),
+			new TextPropertyDescriptor(ENTITY_discriminatorValue, ENTITY_discriminatorValue),
+			new TextPropertyDescriptor(ENTITY_entityName, ENTITY_entityName),
+			new TextPropertyDescriptor(ENTITY_loaderName, ENTITY_loaderName),
+			new TextPropertyDescriptor(ENTITY_nodeName, ENTITY_nodeName),
+			new TextPropertyDescriptor(ENTITY_optimisticLockMode, ENTITY_optimisticLockMode),
+			new TextPropertyDescriptor(ENTITY_table, ENTITY_table),
+			new TextPropertyDescriptor(ENTITY_temporaryIdTableDDL, ENTITY_temporaryIdTableDDL),
+			new TextPropertyDescriptor(ENTITY_temporaryIdTableName, ENTITY_temporaryIdTableName),
+			new TextPropertyDescriptor(ENTITY_where, ENTITY_where),
+			new TextPropertyDescriptor(ENTITY_cacheRegionName, ENTITY_cacheRegionName),
+		};
+		
+		descriptors_table = new IPropertyDescriptor[] { 
+			new TextPropertyDescriptor(TABLE_catalog, TABLE_catalog),
+			new TextPropertyDescriptor(TABLE_comment, TABLE_comment),
+			new TextPropertyDescriptor(TABLE_name, TABLE_name),
+			new TextPropertyDescriptor(TABLE_primaryKey, TABLE_primaryKey),
+			new TextPropertyDescriptor(TABLE_rowId, TABLE_rowId),
+			new TextPropertyDescriptor(TABLE_schema, TABLE_schema),
+			new TextPropertyDescriptor(TABLE_subselect, TABLE_subselect),
+			new TextPropertyDescriptor(TABLE_hasDenormalizedTables, TABLE_hasDenormalizedTables),
+			new TextPropertyDescriptor(TABLE_isAbstract, TABLE_isAbstract),
+			new TextPropertyDescriptor(TABLE_isAbstractUnionTable, TABLE_isAbstractUnionTable),
+			new TextPropertyDescriptor(TABLE_isPhysicalTable, TABLE_isPhysicalTable),
+		};
+
+	} // static
 	
 	public OrmShape(Object ioe) {	
 		super(ioe);
@@ -329,5 +432,138 @@ public class OrmShape extends ExpandableShape {
 	protected void saveInProperties(Properties properties) {
 		setPosition(properties);
 		super.saveInProperties(properties);
+	}
+
+	@Override
+	public IPropertyDescriptor[] getPropertyDescriptors() {
+		IPropertyDescriptor[] res = super.getPropertyDescriptors();
+		if (res.length > 0) {
+			return res;
+		}
+		Object ormElement = getOrmElement();
+		if (ormElement instanceof RootClass) {
+			//RootClass rootClass = (RootClass)ormElement;
+			res = descriptors_entity;
+		} else if (ormElement instanceof Subclass) {
+			//RootClass rootClass = ((Subclass)ormElement).getRootClass();
+		} else if (ormElement instanceof Table) {
+			//Iterator iterator = ((Table)getOrmElement()).getColumnIterator();
+			//while (iterator.hasNext()) {
+			//	Column column = (Column)iterator.next();
+			//	Shape bodyOrmShape = new Shape(column);
+			//	addChild(bodyOrmShape);
+			//}
+			res = descriptors_table;
+		}
+		return res;
+	}
+
+	@Override
+	public Object getPropertyValue(Object propertyId) {
+		Object res = null;
+		RootClass rootClass = null;
+		Table table = null;
+		Object ormElement = getOrmElement();
+		if (ormElement instanceof RootClass) {
+			rootClass = (RootClass)ormElement;
+		} else if (ormElement instanceof Subclass) {
+			//rootClass = ((Subclass)ormElement).getRootClass();
+		} else if (ormElement instanceof Table) {
+			table = (Table)getOrmElement();
+		}
+		if (rootClass != null) {
+			if (ENTITY_isAbstract.equals(propertyId)) {
+				res = rootClass.isAbstract();
+			} else if (ENTITY_isCustomDeleteCallable.equals(propertyId)) {
+				res = rootClass.isCustomDeleteCallable();
+			} else if (ENTITY_isCustomInsertCallable.equals(propertyId)) {
+				res = rootClass.isCustomInsertCallable();
+			} else if (ENTITY_isCustomUpdateCallable.equals(propertyId)) {
+				res = rootClass.isCustomUpdateCallable();
+			} else if (ENTITY_isDiscriminatorInsertable.equals(propertyId)) {
+				res = rootClass.isDiscriminatorInsertable();
+			} else if (ENTITY_isDiscriminatorValueNotNull.equals(propertyId)) {
+				res = rootClass.isDiscriminatorValueNotNull();
+			} else if (ENTITY_isDiscriminatorValueNull.equals(propertyId)) {
+				res = rootClass.isDiscriminatorValueNull();
+			} else if (ENTITY_isExplicitPolymorphism.equals(propertyId)) {
+				res = rootClass.isExplicitPolymorphism();
+			} else if (ENTITY_isForceDiscriminator.equals(propertyId)) {
+				res = rootClass.isForceDiscriminator();
+			} else if (ENTITY_isInherited.equals(propertyId)) {
+				res = rootClass.isInherited();
+			} else if (ENTITY_isJoinedSubclass.equals(propertyId)) {
+				res = rootClass.isJoinedSubclass();
+			} else if (ENTITY_isLazy.equals(propertyId)) {
+				res = rootClass.isLazy();
+			} else if (ENTITY_isLazyPropertiesCacheable.equals(propertyId)) {
+				res = rootClass.isLazyPropertiesCacheable();
+			} else if (ENTITY_isMutable.equals(propertyId)) {
+				res = rootClass.isMutable();
+			} else if (ENTITY_isPolymorphic.equals(propertyId)) {
+				res = rootClass.isPolymorphic();
+			} else if (ENTITY_isVersioned.equals(propertyId)) {
+				res = rootClass.isVersioned();
+			} else if (ENTITY_batchSize.equals(propertyId)) {
+				res = rootClass.getBatchSize();
+			} else if (ENTITY_cacheConcurrencyStrategy.equals(propertyId)) {
+				res = rootClass.getCacheConcurrencyStrategy();
+			} else if (ENTITY_className.equals(propertyId)) {
+				res = rootClass.getClassName();
+			} else if (ENTITY_customSQLDelete.equals(propertyId)) {
+				res = rootClass.getCustomSQLDelete();
+			} else if (ENTITY_customSQLInsert.equals(propertyId)) {
+				res = rootClass.getCustomSQLInsert();
+			} else if (ENTITY_customSQLUpdate.equals(propertyId)) {
+				res = rootClass.getCustomSQLUpdate();
+			} else if (ENTITY_discriminatorValue.equals(propertyId)) {
+				res = rootClass.getDiscriminatorValue();
+			} else if (ENTITY_entityName.equals(propertyId)) {
+				res = rootClass.getEntityName();
+			} else if (ENTITY_loaderName.equals(propertyId)) {
+				res = rootClass.getLoaderName();
+			} else if (ENTITY_nodeName.equals(propertyId)) {
+				res = rootClass.getNodeName();
+			} else if (ENTITY_optimisticLockMode.equals(propertyId)) {
+				res = rootClass.getOptimisticLockMode();
+			} else if (ENTITY_table.equals(propertyId)) {
+				res = rootClass.getTable();
+			} else if (ENTITY_temporaryIdTableDDL.equals(propertyId)) {
+				res = rootClass.getTemporaryIdTableDDL();
+			} else if (ENTITY_temporaryIdTableName.equals(propertyId)) {
+				res = rootClass.getTemporaryIdTableName();
+			} else if (ENTITY_where.equals(propertyId)) {
+				res = rootClass.getWhere();
+			}
+		}
+		if (table != null) {
+			if (TABLE_catalog.equals(propertyId)) {
+				res = table.getCatalog();
+			} else if (TABLE_comment.equals(propertyId)) {
+				res = table.getComment();
+			} else if (TABLE_name.equals(propertyId)) {
+				res = table.getName();
+			} else if (TABLE_primaryKey.equals(propertyId)) {
+				res = table.getPrimaryKey();
+			} else if (TABLE_rowId.equals(propertyId)) {
+				res = table.getRowId();
+			} else if (TABLE_schema.equals(propertyId)) {
+				res = table.getSchema();
+			} else if (TABLE_subselect.equals(propertyId)) {
+				res = table.getSubselect();
+			} else if (TABLE_hasDenormalizedTables.equals(propertyId)) {
+				res = table.hasDenormalizedTables();
+			} else if (TABLE_isAbstract.equals(propertyId)) {
+				res = table.isAbstract();
+			} else if (TABLE_isAbstractUnionTable.equals(propertyId)) {
+				res = table.isAbstractUnionTable();
+			} else if (TABLE_isPhysicalTable.equals(propertyId)) {
+				res = table.isPhysicalTable();
+			}
+		}
+		if (res == null) {
+			res = super.getPropertyValue(propertyId);
+		}
+		return toEmptyStr(res);
 	}
 }

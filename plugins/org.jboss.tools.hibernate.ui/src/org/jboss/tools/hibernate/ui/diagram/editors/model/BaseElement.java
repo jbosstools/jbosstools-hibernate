@@ -388,4 +388,11 @@ public abstract class BaseElement implements IPropertySource, Comparable<BaseEle
 			it.next().saveInProperties(properties);
 		}
 	}
+
+	protected Object toEmptyStr(Object obj) {
+		if (obj == null) {
+			return ""; //$NON-NLS-1$
+		}
+		return obj;
+	}
 }
