@@ -18,7 +18,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableItem;
-import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
 
 /**
  * @author Dmitry Geraskov
@@ -33,7 +32,6 @@ public class NewHibernateMappingElementsSelectionPage2 extends WizardPage {
 	public NewHibernateMappingElementsSelectionPage2(String pageName, IStructuredSelection selection) {
 		super(pageName);
 		this.selection = selection;
-		setDescription(JdtUiMessages.NewHibernateMappingElementsSelectionPage2_description);
 	}
 
 	public void createControl(Composite parent) {

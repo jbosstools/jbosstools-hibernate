@@ -42,6 +42,7 @@ import org.eclipse.jdt.internal.core.JavaElementInfo;
 import org.eclipse.jdt.internal.core.JavaProject;
 import org.eclipse.jdt.internal.core.PackageFragment;
 import org.eclipse.jdt.internal.core.PackageFragmentRoot;
+import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.IPageChangingListener;
 import org.eclipse.jface.dialogs.PageChangingEvent;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -89,8 +90,6 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 	private NewHibernateMappingElementsSelectionPage2 page0 = null;
 	
 	private WizardNewFileCreationPage cPage;
-
-	//private NewHibernateMappingElementsSelectionPage page1 = null;
 	
 	private NewHibernateMappingFilePage page2 = null;	
 
@@ -109,12 +108,8 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 		}
 		
 		page0 = new NewHibernateMappingElementsSelectionPage2(JdtUiMessages.NewHibernateMappingFileWizard_create_hibernate_xml_mapping_file, selection);
+		page0.setDescription(JdtUiMessages.NewHibernateMappingElementsSelectionPage2_description);
 		addPage(page0);
-		
-		//page1 = new NewHibernateMappingElementsSelectionPage(selection);
-		//page1.setTitle( HibernateConsoleMessages.NewHibernateMappingFileWizard_create_hibernate_xml_mapping_file );
-		//page1.setDescription( HibernateConsoleMessages.NewHibernateMappingFileWizard_create_new_xml_mapping_file );
-		//addPage(page1);
 		
 		cPage = new WizardNewFileCreationPage( "Ccfgxml", selection ); //$NON-NLS-1$
 	    cPage.setTitle( JdtUiMessages.NewHibernateMappingFileWizard_create_hibernate_xml_mapping_file );
@@ -122,7 +117,10 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 	    cPage.setFileName("hibernate.hbm.xml"); //$NON-NLS-1$
 	    addPage( cPage );	    
 	    
-		page2 = new NewHibernateMappingFilePage();
+		page2 = new NewHibernateMappingFilePage(true);
+		page2.setTitle(JdtUiMessages.NewHibernateMappingFilePage_hibernate_xml_mapping_file);
+		page2.setMessage(JdtUiMessages.NewHibernateMappingFilePage_this_wizard_creates, IMessageProvider.WARNING);
+	
 		addPage(page2);		
 	}
 	
