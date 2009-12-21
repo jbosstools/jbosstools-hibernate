@@ -26,10 +26,16 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
@@ -117,7 +123,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 	    cPage.setFileName("hibernate.hbm.xml"); //$NON-NLS-1$
 	    addPage( cPage );	    
 	    
-		page2 = new NewHibernateMappingFilePage(true);
+		page2 = new NewHibernateMappingFilePage(false);
 		page2.setTitle(JdtUiMessages.NewHibernateMappingFilePage_hibernate_xml_mapping_file);
 		page2.setMessage(JdtUiMessages.NewHibernateMappingFilePage_this_wizard_creates, IMessageProvider.WARNING);
 	
@@ -241,14 +247,19 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 				Configuration config = entry.getValue();
 				HibernateMappingGlobalSettings hmgs = new HibernateMappingGlobalSettings();
 
-				IResource container;
+				
 				try {
-					container = entry.getKey().getPackageFragmentRoots().length > 0
+				    IResource container = entry.getKey().getPackageFragmentRoots().length > 0
 					? entry.getKey().getPackageFragmentRoots()[0].getResource()
 							: entry.getKey().getResource();
-
+					
+					IPath temp_path = entry.getKey().getProject().getLocation()
+						.append(".settings").append("org.hibernate_tools.temp");
+					
+					IFolder temp_folder = entry.getKey().getProject().getFolder(new Path(".settings/org.hibernate_tools.temp"));
+					
 					HibernateMappingExporter hce = new HibernateMappingExporter(config,
-							container.getLocation().toFile());
+							temp_folder.getLocation().toFile());
 
 					hce.setGlobalSettings(hmgs);
 					//hce.setForEach("entity");
