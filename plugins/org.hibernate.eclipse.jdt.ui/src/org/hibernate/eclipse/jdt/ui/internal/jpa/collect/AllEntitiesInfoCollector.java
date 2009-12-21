@@ -36,12 +36,8 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.process.AnnotStyle;
 public class AllEntitiesInfoCollector {
 
 	/**
-	 * place to search compilation units
-	 */
-	protected IJavaProject javaProject;
-	/**
 	 * map: 
-	 * fullyQualifiedName entity name -> EntityInfo
+	 * javaProjectName + "/" + fullyQualifiedName entity name -> EntityInfo
 	 * this collection of processed entities 
 	 */
 	protected Map<String, EntityInfo> mapCUs_Info = new TreeMap<String, EntityInfo>();
@@ -50,11 +46,9 @@ public class AllEntitiesInfoCollector {
 	 */
 	protected AnnotStyle annotationStylePreference = AnnotStyle.FIELDS;
 
-	public void initCollector(IJavaProject javaProject) {
-		// setup java project
-		this.javaProject = javaProject;
+	public void initCollector() {
 		// clear collection
-		mapCUs_Info = new TreeMap<String, EntityInfo>();
+		mapCUs_Info.clear();
 	}
 	
 	/**
@@ -108,8 +102,9 @@ public class AllEntitiesInfoCollector {
 				// entry.getKey() - fully qualified name
 				// entry.getValue() - EntityInfo
 				EntityInfo entryInfo = entry.getValue();
-				assert(entry.getKey().equals(entryInfo.getFullyQualifiedName()));
 				String fullyQualifiedName = entryInfo.getFullyQualifiedName();
+				String javaProjectName = entryInfo.getJavaProjectName();
+				assert(entry.getKey().equals(javaProjectName + "/" + fullyQualifiedName)); //$NON-NLS-1$
 				// get references map:
 				// * field id -> RefEntityInfo
 				Iterator<Map.Entry<String, RefEntityInfo>> referencesIt = 
@@ -121,7 +116,7 @@ public class AllEntitiesInfoCollector {
 					pi.fieldId = entry2.getKey();
 					pi.refEntityInfo = entry2.getValue();
 					String fullyQualifiedName2 = pi.refEntityInfo.fullyQualifiedName;
-					EntityInfo entryInfo2 = mapCUs_Info.get(fullyQualifiedName2);
+					EntityInfo entryInfo2 = mapCUs_Info.get(javaProjectName + "/" + fullyQualifiedName2); //$NON-NLS-1$
 					assert(fullyQualifiedName2.equals(entryInfo2.getFullyQualifiedName()));
 					if (entryInfo2 != null && pi.refEntityInfo != null) {
 						pi.refEntityInfo2 = null;
@@ -257,8 +252,9 @@ public class AllEntitiesInfoCollector {
 				// entry.getKey() - fully qualified name
 				// entry.getValue() - EntityInfo
 				EntityInfo entryInfo = entry.getValue();
-				assert(entry.getKey().equals(entryInfo.getFullyQualifiedName()));
 				String fullyQualifiedName = entryInfo.getFullyQualifiedName();
+				String javaProjectName = entryInfo.getJavaProjectName();
+				assert(entry.getKey().equals(javaProjectName + "/" + fullyQualifiedName)); //$NON-NLS-1$
 				// get references map:
 				// * field id -> RefEntityInfo
 				Iterator<Map.Entry<String, RefEntityInfo>> referencesIt = 
@@ -270,7 +266,7 @@ public class AllEntitiesInfoCollector {
 					pi.fieldId = entry2.getKey();
 					pi.refEntityInfo = entry2.getValue();
 					String fullyQualifiedName2 = pi.refEntityInfo.fullyQualifiedName;
-					EntityInfo entryInfo2 = mapCUs_Info.get(fullyQualifiedName2);
+					EntityInfo entryInfo2 = mapCUs_Info.get(javaProjectName + "/" + fullyQualifiedName2); //$NON-NLS-1$
 					assert(fullyQualifiedName2.equals(entryInfo2.getFullyQualifiedName()));
 					if (entryInfo2 != null && pi.refEntityInfo != null) {
 						pi.refEntityInfo2 = null;
@@ -322,11 +318,11 @@ public class AllEntitiesInfoCollector {
 		}
 	}
 
-	public boolean hasMappedSuperclassVersion(String parentName) {
+	public boolean hasMappedSuperclassVersion(String javaProjectName, String parentName) {
 		if (parentName == null) {
 			return false;
 		}
-		EntityInfo entryInfoParent = mapCUs_Info.get(parentName);
+		EntityInfo entryInfoParent = mapCUs_Info.get(javaProjectName + "/" + parentName); //$NON-NLS-1$
 		if (entryInfoParent == null) {
 			return false;
 		}
@@ -351,8 +347,9 @@ public class AllEntitiesInfoCollector {
 		while (it.hasNext()) {
 			Map.Entry<String, EntityInfo> entry = it.next();
 			EntityInfo entityInfo = entry.getValue();
+			String javaProjectName = entityInfo.getJavaProjectName();
 			String parentName = entityInfo.getFullyQualifiedParentName();
-			if (hasMappedSuperclassVersion(parentName)) {
+			if (hasMappedSuperclassVersion(javaProjectName, parentName)) {
 				entityInfo.setAddVersionFlag(false);
 			}
 			else {
@@ -662,7 +659,7 @@ public class AllEntitiesInfoCollector {
 		if (ei == null) {
 			return;
 		}
-		EntityInfo parentEI = mapCUs_Info.get(ei.getFullyQualifiedParentName());
+		EntityInfo parentEI = mapCUs_Info.get(ei.getJavaProjectName() + "/" + ei.getFullyQualifiedParentName()); //$NON-NLS-1$
 		adjustParentId(parentEI);
 		ei.adjustPrimaryId(parentEI);
 	}
@@ -673,14 +670,15 @@ public class AllEntitiesInfoCollector {
 	 * @param fullyQualifiedName of startup point entity fully qualified name
 	 * example: "org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector" 
 	 */
-	public void collect(String fullyQualifiedName) {
+	public void collect(String fullyQualifiedName, String projectName) {
 		
 		if (fullyQualifiedName == null) {
 			return;
 		}
-		if (mapCUs_Info.containsKey(fullyQualifiedName)) {
+		if (mapCUs_Info.containsKey(projectName + "/" + fullyQualifiedName)) { //$NON-NLS-1$
 			return;
 		}
+		final IJavaProject javaProject = Utils.findJavaProject(projectName);
 		ICompilationUnit icu = Utils.findCompilationUnit(javaProject, fullyQualifiedName);
 		collect(icu);
 	}
@@ -716,6 +714,8 @@ public class AllEntitiesInfoCollector {
 			// ignore EnumDeclaration & AnnotationTypeDeclaration
 			return;
 		}
+		IJavaProject javaProject = icu.getJavaProject();
+		String projectName = (javaProject != null) ? javaProject.getProject().getName() : ""; //$NON-NLS-1$
 		ArrayList<String> fullyQualifiedNames = new ArrayList<String>();
 		//TODO: should inspect all types in cu? so next method to get fullyQualifiedName:
 		if (cu.getTypeRoot() == null || cu.getTypeRoot().findPrimaryType() == null) {
@@ -732,17 +732,18 @@ public class AllEntitiesInfoCollector {
 		Iterator<String> itFQNames = fullyQualifiedNames.iterator();
 		while (itFQNames.hasNext()) {
 			String fullyQualifiedName = itFQNames.next();
-			if (!mapCUs_Info.containsKey(fullyQualifiedName)) {
+			if (!mapCUs_Info.containsKey(projectName + "/" + fullyQualifiedName)) { //$NON-NLS-1$
 				CollectEntityInfo finder = new CollectEntityInfo(fullyQualifiedName);
 				cu.accept(finder);
 				EntityInfo result = finder.getEntityInfo();
 				if (result != null) {
 					result.adjustParameters();
-					mapCUs_Info.put(fullyQualifiedName, result);
+					result.setJavaProjectName(projectName);
+					mapCUs_Info.put(projectName + "/" + fullyQualifiedName, result); //$NON-NLS-1$
 					Iterator<String> itDep = result.getDependences();
 					while (itDep.hasNext()) {
 						String fullyQualifiedNameTmp = itDep.next();
-						collect(fullyQualifiedNameTmp);
+						collect(fullyQualifiedNameTmp, projectName);
 					}
 				}
 			}

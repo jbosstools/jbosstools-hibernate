@@ -18,6 +18,8 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.actions.JPAMapToolActor;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
@@ -35,6 +37,7 @@ import junit.framework.TestCase;
  * 
  * @author Vitali Yemialyanchyk
  */
+@SuppressWarnings("restriction")
 public class JPAMapMockTests extends TestCase {
 
 
@@ -81,8 +84,9 @@ public class JPAMapMockTests extends TestCase {
 		jpaMapToolActor.setAllEntitiesInfoCollector(allEntitiesInfoCollector);
 		jpaMapToolActor.setSelection(selection);
 		
+		final IStructuredSelection selection2Update = new StructuredSelection();
         context.checking(new Expectations() {{
-        	exactly(1).of(allEntitiesProcessor).modify(null, new HashMap<String, EntityInfo>(), true);
+        	exactly(1).of(allEntitiesProcessor).modify(new HashMap<String, EntityInfo>(), true, selection2Update);
         }});
 		jpaMapToolActor.updateSelected();
         context.assertIsSatisfied();
@@ -98,7 +102,7 @@ public class JPAMapMockTests extends TestCase {
         	inSequence(sequence);
         	will(returnValue(javaProject));
         	
-        	allowing(allEntitiesInfoCollector).initCollector(javaProject);
+        	allowing(allEntitiesInfoCollector).initCollector();
         	inSequence(sequence);
         	
         	allowing(allEntitiesInfoCollector).collect(compilationUnit);
@@ -126,12 +130,14 @@ public class JPAMapMockTests extends TestCase {
         	inSequence(sequence);
         	will(returnValue(null));
         	
-        	allowing(allEntitiesProcessor).modify(javaProject, null, true);
+        	allowing(allEntitiesProcessor).modify(null, true, null);
         	inSequence(sequence);
         	
         	allowing(allEntitiesProcessor).savePreferences();
         	inSequence(sequence);
-        }});
+
+        	exactly(1).of(allEntitiesProcessor).modify(null, true, selection2Update);
+		}});
 		jpaMapToolActor.updateSelected();
         context.assertIsSatisfied();
 

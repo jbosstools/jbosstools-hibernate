@@ -46,6 +46,7 @@ import junit.framework.TestCase;
  * 
  * @author Vitali Yemialyanchyk
  */
+@SuppressWarnings("restriction")
 public class JPAMapTest extends TestCase {
 
 	public static final String PROJECT_NAME = "TestProject"; //$NON-NLS-1$
@@ -128,7 +129,7 @@ public class JPAMapTest extends TestCase {
 		assertNotNull(icu2);
 		assertNotNull(icu3);
 		assertNotNull(icu4);
-		collector.initCollector(javaProject);
+		collector.initCollector();
 		collector.collect(icu);
 		collector.collect(icu2);
 		collector.collect(icu3);
@@ -138,7 +139,7 @@ public class JPAMapTest extends TestCase {
 		}
 		collector.resolveRelations();
 		processor.setEnableOptLock(true);
-		processor.modify(javaProject, collector.getMapCUs_Info(), false);
+		processor.modify(collector.getMapCUs_Info(), false, null);
 		//
 		checkItem("DocumentBase"); //$NON-NLS-1$
 		checkItem("Document"); //$NON-NLS-1$

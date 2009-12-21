@@ -31,6 +31,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
 import org.hibernate.eclipse.console.wizards.UpDownListComposite;
@@ -59,6 +61,28 @@ public class AddRemoveTableComposite extends UpDownListComposite {
 	protected void createColumns(Table table) {
 		TableColumn column = new TableColumn(table, SWT.NULL);
 		column.setWidth(350);
+	}
+
+	public void add(Object[] o, boolean notify) {
+		ArrayList<Object> arr = new ArrayList<Object>();
+		ArrayList<Object> arrSelItems = new ArrayList<Object>();
+		for (int i = 0; i < o.length; i++) {
+			Widget w = getTableViewer().testFindItem(o[i]);
+			if (w == null) {
+				arr.add(o[i]);
+			} else {
+				arrSelItems.add(w);
+			}
+		}
+		super.add(arr.toArray(), notify);
+		for (int i = 0; i < arr.size(); i++) {
+			Widget w = getTableViewer().testFindItem(arr.get(i));
+			if (w != null) {
+				arrSelItems.add(w);
+			}
+		}
+		getTableViewer().getTable().setSelection(arrSelItems.toArray(new TableItem[0]));
+		getTableViewer().setSelection(getTableViewer().getSelection(), false);
 	}
 	
 	protected Object[] handleAdd(int i) {

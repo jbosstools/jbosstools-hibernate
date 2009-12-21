@@ -55,11 +55,13 @@ public class Utils {
 	static public IType findType(IJavaProject javaProject, 
 			String fullyQualifiedName) {
 		IType lwType = null;
-		try {
-			lwType = javaProject.findType(fullyQualifiedName);
-		} catch (JavaModelException e) {
-			// just ignore it!
-			//HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
+		if (javaProject != null) {
+			try {
+				lwType = javaProject.findType(fullyQualifiedName);
+			} catch (JavaModelException e) {
+				// just ignore it!
+				//HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
+			}
 		}
 		return lwType;
 	}
@@ -79,6 +81,31 @@ public class Utils {
 			}
 		}
 		return resCompilationUnit;
+	}
+
+	static public IProject findProject(String projectName) {
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IProject[] projects = root.getProjects();
+		IProject res = null;
+		for (int i = 0; i < projects.length && res == null; i++) {
+			if (projects[i].exists() && projects[i].getName().compareTo(projectName) == 0) {
+				res = projects[i];
+			}
+		}
+		return res;
+	}
+
+	static public IJavaProject findJavaProject(String projectName) {
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		IProject[] projects = root.getProjects();
+		IJavaProject res = null;
+		for (int i = 0; i < projects.length && res == null; i++) {
+			if (projects[i].exists() && projects[i].getName().compareTo(projectName) == 0) {
+				IJavaProject javaProject = JavaCore.create(projects[i]);
+				res = javaProject;
+			}
+		}
+		return res;
 	}
 	
 	static public ICompilationUnit[] findCompilationUnits(IJavaProject javaProject,

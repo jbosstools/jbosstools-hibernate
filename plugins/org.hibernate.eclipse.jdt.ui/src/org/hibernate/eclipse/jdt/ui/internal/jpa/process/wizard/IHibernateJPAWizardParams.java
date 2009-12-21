@@ -10,11 +10,12 @@
   ******************************************************************************/
 package org.hibernate.eclipse.jdt.ui.internal.jpa.process.wizard;
 
+import java.util.ArrayList;
 import java.util.Map;
 
-import org.eclipse.core.filebuffers.ITextFileBufferManager;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.process.AnnotStyle;
+import org.hibernate.eclipse.jdt.ui.internal.jpa.process.ChangeStructure;
 
 /**
  * Hibernate JPA wizard input parameters interface
@@ -41,6 +42,9 @@ public interface IHibernateJPAWizardParams {
 
 	public AnnotStyle getAnnotationStylePreference();
 
-	public void reCollectModification(ITextFileBufferManager bufferManager, 
-			Map<String, EntityInfo> entities);
+	public void reCollectModification(Map<String, EntityInfo> entities);
+	
+	public void performDisconnect();
+
+	public ArrayList<ChangeStructure> getChanges();
 }

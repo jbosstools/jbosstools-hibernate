@@ -28,14 +28,11 @@ import java.util.Map.Entry;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
@@ -358,7 +355,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 			entry = mapIt.next();
 			IJavaProject javaProject = entry.getKey();
 			Iterator<ICompilationUnit> setIt = entry.getValue().iterator();
-			collector.initCollector(javaProject);
+			collector.initCollector();
 			while (setIt.hasNext()) {
 				ICompilationUnit icu = setIt.next();
 				collector.collect(icu);

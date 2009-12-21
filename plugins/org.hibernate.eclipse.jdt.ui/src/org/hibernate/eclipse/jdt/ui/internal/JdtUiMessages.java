@@ -54,6 +54,11 @@ public class JdtUiMessages extends NLS {
 	public static String NewHibernateMappingFileWizard_look_for_dependent_cu;
 	public static String NewHibernateMappingFileWizard_selection_cant_be_empty;
 	
+	public static String EntitiesSource_header;
+	public static String EntitiesSource_description;
+	public static String EntitiesList_header;
+	public static String EntitiesList_description;
+	
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, JdtUiMessages.class);

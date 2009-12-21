@@ -31,6 +31,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
@@ -43,6 +45,10 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.process.AnnotStyle;
  */
 @SuppressWarnings("restriction")
 public class EntitiesList extends UserInputWizardPage {
+
+	protected final int COLUMN_CLASS = 0;
+	
+	protected TableViewer listViewer;
 	
 	protected IHibernateJPAWizardData data;
 
@@ -52,6 +58,29 @@ public class EntitiesList extends UserInputWizardPage {
 		super(name);
 		this.data = data;
 		this.params = params;
+		setDescription(JdtUiMessages.EntitiesList_description);
+	}
+	
+	public IStructuredContentProvider createContentProvider(final IHibernateJPAWizardData data) {
+		return new IStructuredContentProvider() {
+			public Object[] getElements(Object inputElement) {
+				return data.getEntities().values().toArray();
+			}
+
+			public void dispose() {
+			}
+
+			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+			}
+		};
+	}
+	
+	public void setData(final IHibernateJPAWizardData data) {
+		this.data = data;
+		if (listViewer != null) {
+			listViewer.setContentProvider(createContentProvider(data));
+			listViewer.setInput(data.getEntities());
+		}
 	}
 	
 	public void createControl(Composite parent) {
@@ -63,7 +92,7 @@ public class EntitiesList extends UserInputWizardPage {
         Label label = new Label(container, SWT.NULL);
         label.setText(JdtUiMessages.AllEntitiesProcessor_message);
 
-        TableViewer listViewer = new TableViewer(container, SWT.SINGLE | SWT.H_SCROLL
+        listViewer = new TableViewer(container, SWT.SINGLE | SWT.H_SCROLL
 				| SWT.V_SCROLL | SWT.BORDER);
 		//listViewer.setComparator(getViewerComparator());
 		Control control = listViewer.getControl();
@@ -71,21 +100,7 @@ public class EntitiesList extends UserInputWizardPage {
 				| GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL);
 		gridData.heightHint = convertHeightInCharsToPixels(10);
 		control.setLayoutData(gridData);
-		listViewer.setContentProvider(new IStructuredContentProvider() {
-			public Object[] getElements(Object inputElement) {
-				return data.getEntities().values().toArray();
-			}
-
-			public void dispose() {
-
-			}
-
-			public void inputChanged(Viewer viewer, Object oldInput,
-					Object newInput) {
-
-			}
-		});
-
+		listViewer.setContentProvider(createContentProvider(data));
 		listViewer.setLabelProvider(new LabelProvider() {
 
 			private Image classImage;
@@ -113,6 +128,9 @@ public class EntitiesList extends UserInputWizardPage {
 		});
 
 		listViewer.setInput(data.getEntities());
+        listViewer.getTable().setHeaderVisible(true);
+		listViewer.getTable().setLinesVisible(true);
+		createTableColumns(listViewer.getTable());
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
 			.grab(true, true)
 			.hint(convertHorizontalDLUsToPixels(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH),
@@ -146,15 +164,15 @@ public class EntitiesList extends UserInputWizardPage {
 				int idx = ((Combo)e.getSource()).getSelectionIndex();
 				if (idx == 0 && !params.getAnnotationStyle().equals(AnnotStyle.FIELDS)) {
 					params.setAnnotationStyle(AnnotStyle.FIELDS);
-					params.reCollectModification(data.getBufferManager(), data.getEntities());
+					params.reCollectModification(data.getEntities());
 				}
 				else if (idx == 1 && !params.getAnnotationStyle().equals(AnnotStyle.GETTERS)) {
 					params.setAnnotationStyle(AnnotStyle.GETTERS);
-					params.reCollectModification(data.getBufferManager(), data.getEntities());
+					params.reCollectModification(data.getEntities());
 				}
 				else if (idx == 2 && !params.getAnnotationStyle().equals(AnnotStyle.AUTO)) {
 					params.setAnnotationStyle(params.getAnnotationStylePreference());
-					params.reCollectModification(data.getBufferManager(), data.getEntities());
+					params.reCollectModification(data.getEntities());
 					params.setAnnotationStyle(AnnotStyle.AUTO);
 				}
 			}
@@ -191,7 +209,7 @@ public class EntitiesList extends UserInputWizardPage {
 					val = Integer.valueOf(str);
 				}
 				params.setDefaultStrLength(val);
-				params.reCollectModification(data.getBufferManager(), data.getEntities());
+				params.reCollectModification(data.getEntities());
 			}
 			
 		};
@@ -206,12 +224,20 @@ public class EntitiesList extends UserInputWizardPage {
 
 			public void handleEvent(Event e) {
 				params.setEnableOptLock(((Button)e.widget).getSelection());
-				params.reCollectModification(data.getBufferManager(), data.getEntities());
+				params.reCollectModification(data.getEntities());
 			}
 			
 		};
 		checkboxOptLock.addListener(SWT.Selection, mlOptLock);
 		
 		setControl(container);
+	}
+
+	protected void createTableColumns(Table table) {
+		TableColumn column = null;
+		
+		column = new TableColumn(table, SWT.LEFT, COLUMN_CLASS);
+		column.setText(JdtUiMessages.ResolveAmbiguous_column_Class);
+		column.setWidth(200);
 	}
 }

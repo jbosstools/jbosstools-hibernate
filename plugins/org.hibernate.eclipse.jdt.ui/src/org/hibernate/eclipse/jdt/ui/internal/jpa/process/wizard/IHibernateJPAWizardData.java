@@ -13,7 +13,7 @@ package org.hibernate.eclipse.jdt.ui.internal.jpa.process.wizard;
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.eclipse.core.filebuffers.ITextFileBufferManager;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.process.ChangeStructure;
 
@@ -25,8 +25,8 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.process.ChangeStructure;
 public interface IHibernateJPAWizardData {
 	
 	public Map<String, EntityInfo> getEntities();
-	
-	public ITextFileBufferManager getBufferManager();
 
 	public ArrayList<ChangeStructure> getChanges();
+
+	public IStructuredSelection getSelection2Update();
 }

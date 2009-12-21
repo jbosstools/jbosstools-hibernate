@@ -165,7 +165,7 @@ public class ResolveAmbiguous extends UserInputWizardPage {
 				updateEditorOwner(ti);
 				updateTI(ti);
 				updateTI(ti2);
-				params.reCollectModification(data.getBufferManager(), data.getEntities());
+				params.reCollectModification(data.getEntities());
 			}
 		}
 	}
@@ -238,7 +238,7 @@ public class ResolveAmbiguous extends UserInputWizardPage {
 				updateEditorType(ti);
 				updateEditorOwner(ti);
 				updateTI(ti);
-				params.reCollectModification(data.getBufferManager(), data.getEntities());
+				params.reCollectModification(data.getEntities());
 			}
 		}
 	}
@@ -292,7 +292,7 @@ public class ResolveAmbiguous extends UserInputWizardPage {
 				updateEditorType(ti);
 				updateTI(ti);
 				updateTI(ti2);
-				params.reCollectModification(data.getBufferManager(), data.getEntities());
+				params.reCollectModification(data.getEntities());
 			}
 		}
 	}

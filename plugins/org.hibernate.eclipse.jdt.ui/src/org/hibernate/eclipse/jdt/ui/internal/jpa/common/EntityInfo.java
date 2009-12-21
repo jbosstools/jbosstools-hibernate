@@ -30,6 +30,10 @@ import org.eclipse.jdt.core.dom.NormalAnnotation;
 public class EntityInfo {
 	
 	/*
+	 * fully java project name
+	 */
+	protected String javaProjectName = ""; //$NON-NLS-1$
+	/*
 	 * fully qualified entity name
 	 */
 	protected String fullyQualifiedName = ""; //$NON-NLS-1$
@@ -315,6 +319,14 @@ public class EntityInfo {
 			return arr[arr.length - 1];
 		}
 		return ""; //$NON-NLS-1$
+	}
+
+	public String getJavaProjectName() {
+		return javaProjectName;
+	}
+
+	public void setJavaProjectName(String javaProjectName) {
+		this.javaProjectName = javaProjectName;
 	}
 
 	public String getFullyQualifiedName() {

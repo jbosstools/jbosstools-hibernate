@@ -29,6 +29,7 @@ import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.text.edits.MalformedTreeException;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.jdt.ui.Activator;
@@ -36,6 +37,7 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfosCollection;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.process.wizard.HibernateJPAWizard;
+import org.hibernate.eclipse.jdt.ui.internal.jpa.process.wizard.HibernateJPAWizardDataFactory;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.process.wizard.IHibernateJPAWizardData;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.process.wizard.IHibernateJPAWizardParams;
 
@@ -45,10 +47,6 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.process.wizard.IHibernateJPAWiz
  * @author Vitali
  */
 public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
-	/**
-	 * place to search compilation units
-	 */
-	protected IJavaProject javaProject = null;
 	/**
 	 * place to store default settings
 	 */
@@ -147,13 +145,13 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 	 * @param entities - collection
 	 * @param askConfirmation - ask user confirmation (show dialog)
 	 */
-	public void modify(IJavaProject project, Map<String, EntityInfo> entities,
-			boolean askConfirmation) {
+	//public void modify(IJavaProject project, Map<String, EntityInfo> entities,
+	public void modify(Map<String, EntityInfo> entities,
+			boolean askConfirmation, IStructuredSelection selection2Update) {
 		changes.clear();
-		setJavaProject(project);
 		// get the buffer manager
-		ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
-		/*Iterator<Map.Entry<String, EntityInfo>> it = entities.entrySet().iterator();
+		/** /
+		Iterator<Map.Entry<String, EntityInfo>> it = entities.entrySet().iterator();
 		String outText = ""; //$NON-NLS-1$
 		String ls = System.getProperties().getProperty("line.separator", "\n");  //$NON-NLS-1$//$NON-NLS-2$
 		while (it.hasNext()) {
@@ -165,35 +163,10 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 				// TODO: save entity name as has compiler problems
 			}
 			outText += entry.getKey() + (it.hasNext() ? ls : ""); //$NON-NLS-1$
-		}*/
+		}
+		/**/
 		boolean performChange = true;
         int res = 0;
-        if (askConfirmation) {
-        	/** /
-    		final String outText2 = outText;
-            MessageDialog dialog = new MessageDialog(JavaPlugin.getActiveWorkbenchShell(),
-            		JdtUiMessages.AllEntitiesProcessor_header, null,
-            		JdtUiMessages.AllEntitiesProcessor_message,
-            		MessageDialog.QUESTION,
-            		new String[] { IDialogConstants.OK_LABEL, IDialogConstants.CANCEL_LABEL }, 0) {
-            	protected Control createCustomArea(Composite parent) {
-            		Text messageText = new Text(parent, SWT.WRAP | SWT.V_SCROLL);
-        			messageText.setText(outText2);
-        			messageText.setEditable(false);
-        			GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
-        				.grab(true, true)
-        				.hint(convertHorizontalDLUsToPixels(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH),
-        					convertHorizontalDLUsToPixels(2 * IDialogConstants.BUTTON_BAR_HEIGHT)).applyTo(messageText);
-
-            		return messageText;
-            	}
-            	protected boolean isResizable() {
-            		return true;
-            	}
-            };
-            res = dialog.open();
-            /**/
-        }
         if (res == 0) {
 			// TODO:
 			// show warning about abstract classes
@@ -202,29 +175,28 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 			// modify accepted items
 			if (getAnnotationStyle().equals(AnnotStyle.AUTO)) {
 				setAnnotationStyle(getAnnotationStylePreference());
-				reCollectModification(bufferManager, entities);
+				reCollectModification(entities);
 				setAnnotationStyle(AnnotStyle.AUTO);
+			} else {
+				reCollectModification(entities);
 			}
-			else {
-				reCollectModification(bufferManager, entities);
-			}
-		}
-        else {
+		} else {
         	performChange = false;
         }
         //
         if (askConfirmation) {
-        	if (!showRefactoringDialog(entities, bufferManager)) {
+        	if (!showRefactoringDialog(entities, selection2Update)) {
         		performChange = false;
         	}
         }
         if (performChange) {
-			performCommit(entities, bufferManager);
+			performCommit(entities);
         }
-		performDisconnect(bufferManager);
+		performDisconnect();
 	}
 
-	protected void performDisconnect(ITextFileBufferManager bufferManager) {
+	public void performDisconnect() {
+		final ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
 		for (int i = 0; i < changes.size(); i++) {
 			ChangeStructure cs = changes.get(i);
 			try {
@@ -236,9 +208,9 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 		changes.clear();
 	}
 
-	protected void performCommit(final Map<String, EntityInfo> entities,
-			ITextFileBufferManager bufferManager) {
+	protected void performCommit(final Map<String, EntityInfo> entities) {
 		
+		final ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
 		for (int i = 0; i < changes.size(); i++) {
 			ChangeStructure cs = changes.get(i);
 			if (cs.textEdit != null && ((cs.change != null && cs.change.isEnabled()) || (cs.change == null))) {
@@ -261,10 +233,10 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 		}
 	}
 
-	public void reCollectModification(ITextFileBufferManager bufferManager, 
-			Map<String, EntityInfo> entities) {
+	public void reCollectModification(Map<String, EntityInfo> entities) {
 
 		changes.clear();
+		final ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
 		HashMap<IPath, EntityInfosCollection> modifications = new HashMap<IPath, EntityInfosCollection>();
 		Iterator<Map.Entry<String, EntityInfo>> it = entities.entrySet().iterator();
 		while (it.hasNext()) {
@@ -272,8 +244,13 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 			if (entry.getValue().isInterfaceFlag()) {
 				continue;
 			}
-			final String fullyQualifiedName = entry.getKey();
+			final String javaProjectName = entry.getValue().getJavaProjectName();
+			final String fullyQualifiedName = entry.getValue().getFullyQualifiedName();
+			IJavaProject javaProject = Utils.findJavaProject(javaProjectName);
 			ICompilationUnit icu = Utils.findCompilationUnit(javaProject, fullyQualifiedName);
+			if (icu == null) {
+				continue;
+			}
 			org.eclipse.jdt.core.dom.CompilationUnit cu = Utils.getCompilationUnit(icu, true);
 			final IPath path = cu.getJavaElement().getPath();
 			EntityInfosCollection eiCollection = null;
@@ -335,29 +312,13 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 	}
 
 	public boolean showRefactoringDialog(final Map<String, EntityInfo> entities, 
-			final ITextFileBufferManager bufferManager) {
+			final IStructuredSelection selection2Update) {
 
-		IHibernateJPAWizardData data = new IHibernateJPAWizardData() {
-
-			public ITextFileBufferManager getBufferManager() {
-				return bufferManager;
-			}
-
-			public Map<String, EntityInfo> getEntities() {
-				return entities;
-			}
-
-			public ArrayList<ChangeStructure> getChanges() {
-				return changes;
-			}
-			
-		};
+		IHibernateJPAWizardData data = 
+			HibernateJPAWizardDataFactory.createHibernateJPAWizardData(
+				entities, selection2Update, changes);
 		HibernateJPAWizard wizard = new HibernateJPAWizard(data, this);
 		return wizard.showWizard();
-	}
-
-	protected void setJavaProject(IJavaProject project) {
-		javaProject = project;
 	}
 
 	public AnnotStyle getAnnotationStyle() {
@@ -390,5 +351,9 @@ public class AllEntitiesProcessor implements IHibernateJPAWizardParams {
 
 	public void setEnableOptLock(boolean enableOptLock) {
 		this.enableOptLock = enableOptLock;
+	}
+
+	public ArrayList<ChangeStructure> getChanges() {
+		return changes;
 	}
 }

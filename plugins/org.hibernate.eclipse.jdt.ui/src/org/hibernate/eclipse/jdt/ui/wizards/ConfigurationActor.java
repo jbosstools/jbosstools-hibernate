@@ -115,7 +115,7 @@ public class ConfigurationActor {
 				entry = mapIt.next();
 			IJavaProject javaProject = entry.getKey();
 			Iterator<ICompilationUnit> setIt = entry.getValue().iterator();
-			collector.initCollector(javaProject);
+			collector.initCollector();
 			while (setIt.hasNext()) {
 				ICompilationUnit icu = setIt.next();
 				collector.collect(icu);
