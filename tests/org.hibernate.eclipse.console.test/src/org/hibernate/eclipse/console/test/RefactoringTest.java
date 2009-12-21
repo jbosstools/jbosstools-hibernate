@@ -12,6 +12,7 @@ package org.hibernate.eclipse.console.test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,7 @@ import org.eclipse.jdt.internal.launching.DefaultProjectClasspathEntry;
 import org.eclipse.jdt.internal.launching.RuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.hibernate.eclipse.console.test.project.SimpleTestProject;
+import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
 import org.hibernate.eclipse.launch.core.refactoring.HibernateRefactoringUtil;
 
@@ -47,6 +49,8 @@ import org.hibernate.eclipse.launch.core.refactoring.HibernateRefactoringUtil;
 @SuppressWarnings("restriction")
 public class RefactoringTest extends TestCase {
 
+	private static final String HBMTEMPLATE0 = "hbmtemplate0";
+	private static final String HBMTEMPLATE0_PROPERTIES = HibernateLaunchConstants.ATTR_EXPORTERS + '.' + HBMTEMPLATE0 + ".properties";
 	private final String[] oldPathElements = new String[]{"oldPrj","oldSrc", "oldPack", "oldHibernate.cfg.xml"};	  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	private final String[] newPathElements = new String[]{"newPrj","newSrc", "newPack", "newHibernate.cfg.xml"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
@@ -55,6 +59,8 @@ public class RefactoringTest extends TestCase {
 	private TestLaunchConfig testStrConfig  = null;
 	private TestLaunchConfig testStrListConfig  = null;
 	private TestLaunchConfig testNotChangedConfig  = null;
+	private TestLaunchConfig testCodeGenerationConfig = null;
+	private TestLaunchConfig testNotChangedCodeGenerationConfig = null;
 
 
 	private IRuntimeClasspathEntry[] runtimeClasspathEntries = null;
@@ -73,6 +79,8 @@ public class RefactoringTest extends TestCase {
 		Map<String, Object> testStrAttr = new HashMap<String, Object>();
 		Map<String, Object> testStrListAttr = new HashMap<String, Object>();
 		Map<String, Object> testNotChangedAttr = new HashMap<String, Object>();
+		Map<String, Object> testCodeGenerationAttr = new HashMap<String, Object>();
+		Map<String, Object> testNotChangedCodeGenerationAttr = new HashMap<String, Object>();
 
 		testStrAttr.put(IConsoleConfigurationLaunchConstants.CFG_XML_FILE, oldPathStr);
 
@@ -81,9 +89,29 @@ public class RefactoringTest extends TestCase {
 		testNotChangedAttr.put(IConsoleConfigurationLaunchConstants.CFG_XML_FILE, notChangedPathStr);
 		testNotChangedAttr.put(IConsoleConfigurationLaunchConstants.FILE_MAPPINGS, Arrays.asList(new String[]{notChangedPathStr}));
 
+		testCodeGenerationAttr.put(HibernateLaunchConstants.ATTR_TEMPLATE_DIR, generateOldPathForSegment(2).toString());
+		testCodeGenerationAttr.put(HibernateLaunchConstants.ATTR_OUTPUT_DIR, generateOldPathForSegment(2).toString());
+		testCodeGenerationAttr.put(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_SETTINGS, oldPathStr.toString());
+		testCodeGenerationAttr.put(HibernateLaunchConstants.ATTR_EXPORTERS, Collections.singletonList(HBMTEMPLATE0));
+		Map<String, String> expProps = new HashMap<String, String>();
+		expProps.put("outputdir", generateOldPathForSegment(2).toString());
+		testCodeGenerationAttr.put(HBMTEMPLATE0_PROPERTIES,	expProps);
+		
+		testNotChangedCodeGenerationAttr.put(HibernateLaunchConstants.ATTR_TEMPLATE_DIR, notChangedPathStr.toString());
+		testNotChangedCodeGenerationAttr.put(HibernateLaunchConstants.ATTR_OUTPUT_DIR, notChangedPathStr.toString());
+		testNotChangedCodeGenerationAttr.put(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_SETTINGS, notChangedPathStr.toString());
+		testCodeGenerationAttr.put(HibernateLaunchConstants.ATTR_EXPORTERS, Collections.singletonList(HBMTEMPLATE0));
+		Map<String, String> expProps2 = new HashMap<String, String>();
+		expProps2.put("outputdir", generateOldPathForSegment(2).toString());
+		testNotChangedCodeGenerationAttr.put(HBMTEMPLATE0_PROPERTIES, expProps2);
+
+		
 		testStrConfig = new TestLaunchConfig(testStrAttr);
 		testStrListConfig = new TestLaunchConfig(testStrListAttr);
 		testNotChangedConfig = new TestLaunchConfig(testNotChangedAttr);
+		testCodeGenerationConfig = new TestLaunchConfig(testCodeGenerationAttr);
+		testNotChangedCodeGenerationConfig = new TestLaunchConfig(testNotChangedCodeGenerationAttr);
+		
 		project = new SimpleTestProject(oldPathElements[0]);
 		IJavaProject proj = project.getIJavaProject();
 
@@ -108,9 +136,11 @@ public class RefactoringTest extends TestCase {
 		for (int i = 0; i < oldPathElements.length - 1; i++) {
 			IPath oldPathPart = generateOldPathForSegment(i);
 			try {
-				assertTrue(HibernateRefactoringUtil.isConfigurationAffected(testStrConfig, oldPathPart));
-				assertTrue(HibernateRefactoringUtil.isConfigurationAffected(testStrListConfig, oldPathPart));
-				assertFalse(HibernateRefactoringUtil.isConfigurationAffected(testNotChangedConfig, oldPathPart));
+				assertTrue(HibernateRefactoringUtil.isConsoleConfigAffected(testStrConfig, oldPathPart));
+				assertTrue(HibernateRefactoringUtil.isConsoleConfigAffected(testStrListConfig, oldPathPart));
+				assertFalse(HibernateRefactoringUtil.isConsoleConfigAffected(testNotChangedConfig, oldPathPart));
+				assertTrue(HibernateRefactoringUtil.isCodeGenerationConfigAffected(testCodeGenerationConfig, oldPathPart));
+				assertFalse(HibernateRefactoringUtil.isConsoleConfigAffected(testNotChangedCodeGenerationConfig, oldPathPart));
 			} catch (CoreException e) {
 				fail(ConsoleTestMessages.RefactoringTest_exception_while_findchange_launch_config_processing + e.getMessage());
 			}
@@ -147,7 +177,9 @@ public class RefactoringTest extends TestCase {
 		int segmentNum = 0;
 		try {
 			updatePaths(generateOldPathForSegment(segmentNum), generateNewPathForSegment(segmentNum));
-			checkPaths(generateTruePathForSegment(segmentNum));
+			Path truePath = generateTruePathForSegment(segmentNum);
+			checkPaths(truePath);
+			checkAdditional(truePath);	
 		} catch (CoreException e) {
 			fail(ConsoleTestMessages.RefactoringTest_exception_while_projnamechange_refactor);
 		}
@@ -157,7 +189,9 @@ public class RefactoringTest extends TestCase {
 		int segmentNum = 1;
 		try {
 			updatePaths(generateOldPathForSegment(segmentNum), generateNewPathForSegment(segmentNum));
-			checkPaths(generateTruePathForSegment(segmentNum));
+			Path truePath = generateTruePathForSegment(segmentNum);
+			checkPaths(truePath);
+			checkAdditional(truePath);		
 		} catch (CoreException e) {
 			fail(ConsoleTestMessages.RefactoringTest_exception_while_srcnamechange_refactor);
 		}
@@ -167,7 +201,9 @@ public class RefactoringTest extends TestCase {
 		int segmentNum = 2;
 		try {
 			updatePaths(generateOldPathForSegment(segmentNum), generateNewPathForSegment(segmentNum));
-			checkPaths(generateTruePathForSegment(segmentNum));
+			Path truePath = generateTruePathForSegment(segmentNum);
+			checkPaths(truePath);
+			checkAdditional(truePath);
 		} catch (CoreException e) {
 			fail(ConsoleTestMessages.RefactoringTest_exception_while_packnamechange_refactor);
 		}
@@ -199,8 +235,9 @@ public class RefactoringTest extends TestCase {
 	}
 
 	private void updatePaths(Path oldPath, Path newPath) throws CoreException{
-		HibernateRefactoringUtil.updateLaunchConfig(testStrConfig, oldPath, newPath);
-		HibernateRefactoringUtil.updateLaunchConfig(testStrListConfig, oldPath, newPath);
+		HibernateRefactoringUtil.updateConsoleConfig(testStrConfig, oldPath, newPath);
+		HibernateRefactoringUtil.updateConsoleConfig(testStrListConfig, oldPath, newPath);
+		HibernateRefactoringUtil.updateCodeGenerationConfig(testCodeGenerationConfig, oldPath, newPath);
 	}
 
 	private void checkMementoChanged(String oldMemento, String newMemento, IPath oldPathPart, IPath newPath){
@@ -244,6 +281,20 @@ public class RefactoringTest extends TestCase {
 		assertEquals(truePath.makeAbsolute(), new Path(newPath).makeAbsolute());
 		newPath = ((List<String>) testStrListConfig.getNewAttribute(IConsoleConfigurationLaunchConstants.FILE_MAPPINGS)).get(0);
 		assertEquals(truePath.makeAbsolute(), new Path(newPath).makeAbsolute());
+		
+		newPath = (String) testCodeGenerationConfig.getNewAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_SETTINGS);
+		assertEquals(truePath.makeAbsolute(), new Path(newPath).makeAbsolute());
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void checkAdditional(Path truePath) throws CoreException {
+		String newPath = (String) testCodeGenerationConfig.getNewAttribute(HibernateLaunchConstants.ATTR_TEMPLATE_DIR);
+		assertEquals(truePath.removeLastSegments(1).makeAbsolute(), new Path(newPath).makeAbsolute());
+		newPath = (String) testCodeGenerationConfig.getNewAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR);
+		assertEquals(truePath.removeLastSegments(1).makeAbsolute(), new Path(newPath).makeAbsolute());
+		Map<String, String> props = testCodeGenerationConfig.getAttribute(HBMTEMPLATE0_PROPERTIES,
+				new HashMap<String, String>());
+		assertEquals(truePath.removeLastSegments(1).makeAbsolute(), new Path(props.get("outputdir")).makeAbsolute());
 	}
 
 	private Path generateNewPathForSegment(int segmentNum){
@@ -333,7 +384,9 @@ public class RefactoringTest extends TestCase {
 				attributes.put(attributeName, value);
 			}
 
-			public void setAttribute(String attributeName, Map value) {fail(ConsoleTestMessages.RefactoringTest_method_not_tested);}
+			public void setAttribute(String attributeName, Map value) {
+				attributes.put(attributeName, value);
+			}
 
 			public void setAttribute(String attributeName, boolean value) {fail(ConsoleTestMessages.RefactoringTest_method_not_tested);}
 
@@ -387,8 +440,7 @@ public class RefactoringTest extends TestCase {
 
 			public Map getAttribute(String attributeName, Map defaultValue)
 					throws CoreException {
-				fail(ConsoleTestMessages.RefactoringTest_method_not_tested);
-				return null;
+				return parent.getAttribute(attributeName, defaultValue);
 			}
 
 			public String getAttribute(String attributeName, String defaultValue)
@@ -559,7 +611,11 @@ public class RefactoringTest extends TestCase {
 
 			public Map getAttribute(String attributeName, Map defaultValue)
 					throws CoreException {
-				return null;
+				if (attributes.containsKey(attributeName)){
+					return (Map) attributes.get(attributeName);
+				} else {
+					return defaultValue;
+				}
 			}
 
 			public String getAttribute(String attributeName, String defaultValue)

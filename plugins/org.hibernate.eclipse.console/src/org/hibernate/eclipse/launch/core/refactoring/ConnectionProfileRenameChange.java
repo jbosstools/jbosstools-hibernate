@@ -73,9 +73,7 @@ public class ConnectionProfileRenameChange extends ConnectionProfileChange {
 		return new RefactoringStatus();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ltk.core.refactoring.Change#perform(org.eclipse.core.runtime.IProgressMonitor)
-	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public Change perform(IProgressMonitor pm) throws CoreException {
 		if (fLaunchConfiguration.exists()){

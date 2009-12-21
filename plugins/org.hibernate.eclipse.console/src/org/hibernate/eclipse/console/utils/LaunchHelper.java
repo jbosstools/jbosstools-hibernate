@@ -157,4 +157,26 @@ public class LaunchHelper {
 		}
 		return false;
 	}
+
+	//***************************** Hibernate Code Generation Launch Configurations ************
+	
+	public static ILaunchConfiguration[] findFilteredCodeGenerationConfigs() throws CoreException{
+		ILaunchConfiguration[] allHibernateLaunchConfigurations = findCodeGenerationConfigs();
+		List<ILaunchConfiguration> launchConfigurations = new ArrayList<ILaunchConfiguration>();
+		for (ILaunchConfiguration config : allHibernateLaunchConfigurations) {			
+			if (DebugUIPlugin.doLaunchConfigurationFiltering(config)) launchConfigurations.add(config);
+		}
+		return launchConfigurations.toArray(new ILaunchConfiguration[launchConfigurations.size()]);
+	}
+	
+	public static ILaunchConfiguration[] findCodeGenerationConfigs() throws CoreException {
+		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+		return launchManager.getLaunchConfigurations(getCodeGenerationType());
+	}
+	
+	public static ILaunchConfigurationType getCodeGenerationType(){
+		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+		return launchManager.getLaunchConfigurationType(
+			ICodeGenerationLaunchConstants.CODE_GENERATION_LAUNCH_TYPE_ID);
+	}
 }

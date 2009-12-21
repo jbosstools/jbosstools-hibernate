@@ -15,8 +15,10 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -67,43 +69,74 @@ public class HibernateRefactoringUtil {
 
 	private static final String ERROR_MESS = HibernateConsoleMessages.HibernateRefactoringUtil_error_during_refactoring;
 
-	private static String[] pathKeys = new String[]{
+	private static String[] ccKeys = new String[]{
 		IConsoleConfigurationLaunchConstants.CFG_XML_FILE,
 		IConsoleConfigurationLaunchConstants.PROPERTY_FILE,
 		HibernateLaunchConstants.ATTR_TEMPLATE_DIR,
 		HibernateLaunchConstants.ATTR_OUTPUT_DIR,
 		HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_SETTINGS,
 		};
+	
+	private static String[] cgKeys = new String[]{
+		HibernateLaunchConstants.ATTR_TEMPLATE_DIR,
+		HibernateLaunchConstants.ATTR_OUTPUT_DIR,
+		HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_SETTINGS,
+		};
 
-	private static String[] pathListKeys = new String[]{
+	private static String[] ccListKeys = new String[]{
 		IConsoleConfigurationLaunchConstants.FILE_MAPPINGS,
 	};
 
-	public static boolean isConfigurationAffected(ILaunchConfiguration config, IPath oldPath) throws CoreException{
-		return isAttributesAffected(config, oldPath) || isClassPathAffected(config, oldPath);
+	public static boolean isConsoleConfigAffected(ILaunchConfiguration config, IPath oldPath) throws CoreException{
+		return isAttributesAffected(config, oldPath, ccKeys) || isListAttributesAffected(config, oldPath, ccListKeys)
+			|| isClassPathAffected(config, oldPath);
+	}
+	
+	public static boolean isCodeGenerationConfigAffected(ILaunchConfiguration config, IPath oldPath) throws CoreException{
+		return isAttributesAffected(config, oldPath, cgKeys) || isExportersAffected(config, oldPath);
 	}
 
-	@SuppressWarnings("unchecked")
-	private static boolean isAttributesAffected(ILaunchConfiguration config, IPath oldPath) throws CoreException{
+	private static boolean isAttributesAffected(ILaunchConfiguration config, IPath oldPath, String[] paths) throws CoreException{
 		String attrib = null;
-		for (int i = 0; i < pathKeys.length; i++) {
-			attrib = config.getAttribute(pathKeys[i], (String)null);
+		for (int i = 0; i < paths.length; i++) {
+			attrib = config.getAttribute(paths[i], (String)null);
 			if (isAttributeChanged(attrib, oldPath))
 				return true;
 		}
-
-		for (int i = 0; i < pathListKeys.length; i++) {
-			List<String> list = config.getAttribute(pathListKeys[i], Collections.EMPTY_LIST);
+		return false;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static boolean isListAttributesAffected(ILaunchConfiguration config, IPath oldPath, String[] listPaths) throws CoreException{
+		for (int i = 0; i < listPaths.length; i++) {
+			List<String> list = config.getAttribute(listPaths[i], Collections.EMPTY_LIST);
 			List<String> newMappings = new ArrayList<String>();
 			Iterator<String> iter = list.iterator();
 			while ( iter.hasNext() ) {
-				attrib = iter.next();
+				String attrib = iter.next();
 				if (isAttributeChanged(attrib, oldPath)){
 					return true;
 				}
 				newMappings.add(attrib);
 			}
 		}
+		return false;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static boolean isExportersAffected(ILaunchConfiguration config,
+			IPath oldPath) throws CoreException {
+		String[] k = new String[]{"outputdir"}; //$NON-NLS-1$
+		List<String> exporterNames = config.getAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, Collections.EMPTY_LIST);
+		for (String exporterName : exporterNames) {
+			Map<String, String> props = config.getAttribute(HibernateLaunchConstants.ATTR_EXPORTERS + '.' + 
+					exporterName + ".properties", new HashMap<String, String>() ); //$NON-NLS-1$
+			for (String attribute : k) {
+				if (isAttributeChanged(props.get(attribute), oldPath))
+					return true; ;
+			}
+		}
+
 		return false;
 	}
 
@@ -152,9 +185,10 @@ public class HibernateRefactoringUtil {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static ILaunchConfiguration updateLaunchConfig(ILaunchConfiguration config, IPath oldPath, IPath newPath) throws CoreException{
+	public static ILaunchConfiguration updateConsoleConfig(ILaunchConfiguration config, IPath oldPath, IPath newPath) throws CoreException{
 		final ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
-		updateAttributes(oldPath, newPath, wc);
+		updateAttributes(oldPath, newPath, wc, ccKeys);
+		updateListAttributes(oldPath, newPath, wc, ccListKeys);
 
 		//classpath
 		try {
@@ -168,11 +202,50 @@ public class HibernateRefactoringUtil {
 			HibernateConsolePlugin.getDefault().log( e );
 		}
 
-		//JavaMigrationDelegate.updateResourceMapping(wc);
 		if (wc.isDirty()) {
 			return wc.doSave();
 		} else {
 			return config;
+		}
+	}
+	
+	public static ILaunchConfiguration updateCodeGenerationConfig(ILaunchConfiguration config, IPath oldPath, IPath newPath) throws CoreException{
+		final ILaunchConfigurationWorkingCopy wc = config.getWorkingCopy();
+		updateAttributes(oldPath, newPath, wc, cgKeys);
+		updateExporters(oldPath, newPath, wc);
+		if (wc.isDirty()) {
+			return wc.doSave();
+		} else {
+			return config;
+		}
+	}	
+
+	/**
+	 * @param oldPath
+	 * @param newPath
+	 * @param wc
+	 * @throws CoreException 
+	 */
+	@SuppressWarnings("unchecked")
+	private static void updateExporters(IPath oldPath, IPath newPath,
+			ILaunchConfigurationWorkingCopy wc) throws CoreException {
+		String[] keys = new String[]{"outputdir"}; //$NON-NLS-1$
+		List<String> exporterNames = wc.getAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, Collections.EMPTY_LIST);
+		for (String exporterName : exporterNames) {
+			String exporterProp = HibernateLaunchConstants.ATTR_EXPORTERS + '.' + 
+				exporterName + ".properties";//$NON-NLS-1$
+			Map<String, String> props = wc.getAttribute(exporterProp,
+					new HashMap<String, String>() ); 
+			boolean isChanged = false;
+			for (String key : keys) {
+				String attrib = props.get(key);
+				if (isAttributeChanged(attrib, oldPath)){
+					attrib = getUpdatedPath(attrib, oldPath, newPath);
+					props.put(key, attrib);
+					isChanged = true;
+				}
+			}
+			if (isChanged) wc.setAttribute(exporterProp, props);
 		}
 	}
 
@@ -287,9 +360,8 @@ public class HibernateRefactoringUtil {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private static void updateAttributes(IPath oldPath, IPath newPath,
-			final ILaunchConfigurationWorkingCopy wc) throws CoreException {
+			final ILaunchConfigurationWorkingCopy wc, String[] pathKeys) throws CoreException {
 		String attrib = null;
 		for (int i = 0; i < pathKeys.length; i++) {
 			attrib = wc.getAttribute(pathKeys[i], (String)null);
@@ -298,7 +370,12 @@ public class HibernateRefactoringUtil {
 				wc.setAttribute(pathKeys[i], attrib);
 			}
 		}
-
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static void updateListAttributes(IPath oldPath, IPath newPath,
+			final ILaunchConfigurationWorkingCopy wc, String[] pathListKeys) throws CoreException {
+		String attrib = null;
 		boolean isChanged = false;
 		for (int i = 0; i < pathListKeys.length; i++) {
 			List<String> list = wc.getAttribute(pathListKeys[i], Collections.EMPTY_LIST);
@@ -334,13 +411,31 @@ public class HibernateRefactoringUtil {
 		return newAttribPath.toOSString();
 	}
 
-	public static ILaunchConfiguration[] getAffectedLaunchConfigurations(IPath path){
+	public static ILaunchConfiguration[] getAffectedConsoleConfigs(IPath path){
 		ILaunchConfiguration[] configs = null;
 		try {
 			configs = LaunchHelper.findHibernateLaunchConfigs();
 			List<ILaunchConfiguration> list = new ArrayList<ILaunchConfiguration>();
 			for(int i = 0; i < configs.length && configs[i].exists(); i++) {//refactor only hibernate launch configurations
-				if (HibernateRefactoringUtil.isConfigurationAffected(configs[i], path)) list.add(configs[i]);
+				if (HibernateRefactoringUtil.isConsoleConfigAffected(configs[i], path)) list.add(configs[i]);
+			}
+			configs = list.toArray(new ILaunchConfiguration[list.size()]);
+		}
+		catch(CoreException e) {
+			configs = new ILaunchConfiguration[0];
+			HibernateConsolePlugin.getDefault().logErrorMessage( ERROR_MESS, e );
+		}
+
+		return configs;
+	}
+	
+	public static ILaunchConfiguration[] getAffectedCodeGenerationConfigs(IPath path){
+		ILaunchConfiguration[] configs = null;
+		try {
+			configs = LaunchHelper.findCodeGenerationConfigs();
+			List<ILaunchConfiguration> list = new ArrayList<ILaunchConfiguration>();
+			for(int i = 0; i < configs.length && configs[i].exists(); i++) {
+				if (HibernateRefactoringUtil.isCodeGenerationConfigAffected(configs[i], path)) list.add(configs[i]);
 			}
 			configs = list.toArray(new ILaunchConfiguration[list.size()]);
 		}

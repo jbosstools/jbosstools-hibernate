@@ -25,12 +25,18 @@ public class MoveResourceParticipant extends MoveParticipant {
 
 	public Change createChange(IProgressMonitor pm) throws CoreException,
 			OperationCanceledException {
-		ILaunchConfiguration[] configs = HibernateRefactoringUtil.getAffectedLaunchConfigurations(fResource.getFullPath());
+		ILaunchConfiguration[] configs = HibernateRefactoringUtil.getAffectedConsoleConfigs(fResource.getFullPath());
 
 		List<Change> changes = new ArrayList<Change>();
-		LaunchConfigurationResourceNameChange change = null;
+		Change change = null;
 		for (int i= 0; i < configs.length; i++) {
 			change = new LaunchConfigurationResourceNameChange(configs[i], fResource.getFullPath(), ((IResource)getArguments().getDestination()).getFullPath().append(fResource.getName()));
+			changes.add(change);
+		}
+		
+		configs = HibernateRefactoringUtil.getAffectedCodeGenerationConfigs(fResource.getFullPath());
+		for (int i= 0; i < configs.length; i++) {
+			change = new CodeGenerationReseourceNameChange(configs[i], fResource.getFullPath(), ((IResource)getArguments().getDestination()).getFullPath().append(fResource.getName()));
 			changes.add(change);
 		}
 

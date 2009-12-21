@@ -22,6 +22,7 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
+import org.eclipse.osgi.util.NLS;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 
 /**
@@ -35,7 +36,7 @@ public class LaunchConfigurationResourceNameChange extends Change {
 	private IPath fNewPath;
 
 	/**
-	 * LaunchConfigurationResourceMoveChange constructor.
+	 * LaunchConfigurationResourceNameChange constructor.
 	 * @param launchConfiguration the launch configuration to modify
 	 * @param oldPath the old Path of the resource.
 	 * @param newPath the new Path of the resource.
@@ -57,7 +58,7 @@ public class LaunchConfigurationResourceNameChange extends Change {
 	 * @see org.eclipse.ltk.core.refactoring.Change#getName()
 	 */
 	public String getName() {
-		return HibernateConsoleMessages.LaunchConfigurationResourceNameChange_update_resource_path_in_launch_cfg + fLaunchConfiguration.getName();
+		return NLS.bind(HibernateConsoleMessages.LaunchConfigurationResourceNameChange_update_resource_path_in_launch_cfg, fLaunchConfiguration.getName());
 	}
 
 	/* (non-Javadoc)
@@ -73,9 +74,7 @@ public class LaunchConfigurationResourceNameChange extends Change {
 		return new RefactoringStatus();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.ltk.core.refactoring.Change#perform(org.eclipse.core.runtime.IProgressMonitor)
-	 */
+	@SuppressWarnings("deprecation")
 	public Change perform(IProgressMonitor pm) throws CoreException {
 		if (!fLaunchConfiguration.exists()){
 			IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -100,7 +99,7 @@ public class LaunchConfigurationResourceNameChange extends Change {
 				}
 			}
 		}
-		fLaunchConfiguration = HibernateRefactoringUtil.updateLaunchConfig(fLaunchConfiguration, fOldPath, fNewPath);
+		fLaunchConfiguration = HibernateRefactoringUtil.updateConsoleConfig(fLaunchConfiguration, fOldPath, fNewPath);
 		return new LaunchConfigurationResourceNameChange(fLaunchConfiguration, fNewPath, fOldPath);
 	}
 }
