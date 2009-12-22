@@ -161,6 +161,7 @@ public class HibernateConsoleMessages extends NLS {
 	public static String QueryPagePropertySource_query_string;
 	public static String QueryPagePropertySource_sec;
 	public static String QueryPagePropertySource_unknown;
+	public static String QueryPagePropertySource_tab_name;
 	//
 	public static String ConsoleConfigurationWizardPage_config_name_already_exist;
 	public static String ConsoleConfigurationWizardPage_config_page;

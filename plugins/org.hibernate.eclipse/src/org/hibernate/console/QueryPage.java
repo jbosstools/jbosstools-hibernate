@@ -60,6 +60,11 @@ public interface QueryPage {
      * @return
      */
     public abstract String getQueryString();
+	/**
+	 * @return
+	 */
+	public abstract String getTabName();
+	public abstract void setTabName(String tabName);
     /**
      * @param b
      */

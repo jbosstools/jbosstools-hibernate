@@ -43,8 +43,10 @@ public class QueryPagePropertySource implements IPropertySource2
 
 	private static final String QUERY_TIME = "QueryPage.time"; //$NON-NLS-1$
 
+	private static final String TAB_NAME = "QueryPage.tabName"; //$NON-NLS-1$
+
 	static {
-		descriptors = new IPropertyDescriptor[4];
+		descriptors = new IPropertyDescriptor[5];
         PropertyDescriptor descriptor;
 
         // query string
@@ -68,11 +70,17 @@ public class QueryPagePropertySource implements IPropertySource2
         //descriptor.setCategory(IResourcePropertyConstants.P_FILE_SYSTEM_CATEGORY);
         descriptors[2] = descriptor;
 
-     // time of query running
+        // time of query running
         descriptor = new TextPropertyDescriptor(QUERY_TIME,
                 HibernateConsoleMessages.QueryPagePropertySource_query_run_time);
         descriptor.setAlwaysIncompatible(false);
         descriptors[3] = descriptor;
+
+        // time of query running
+        descriptor = new TextPropertyDescriptor(TAB_NAME,
+        		HibernateConsoleMessages.QueryPagePropertySource_tab_name);
+        descriptor.setAlwaysIncompatible(false);
+        descriptors[4] = descriptor;
     }
 
 	public QueryPagePropertySource (QueryPage page) {
@@ -112,7 +120,9 @@ public class QueryPagePropertySource implements IPropertySource2
 			}
 			return NLS.bind(HibernateConsoleMessages.QueryPagePropertySource_millisec, resultTime);
 		}
-
+		if(TAB_NAME.equals(id) ) {
+			return page.getTabName();
+		}
 		return null;
 	}
 
@@ -121,11 +131,14 @@ public class QueryPagePropertySource implements IPropertySource2
 	}
 
 	public void resetPropertyValue(Object id) {
-
+		if (TAB_NAME.equals(id)) {
+			page.setTabName(page.getQueryString().replace('\n', ' ').replace('\r', ' '));
+		}
 	}
 
 	public void setPropertyValue(Object id, Object value) {
-
-
+		if (TAB_NAME.equals(id)) {
+			page.setTabName(value == null ? "<null>" : value.toString()); //$NON-NLS-1$
+		}
 	}
 }

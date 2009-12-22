@@ -43,6 +43,7 @@ public abstract class AbstractQueryPage implements QueryPage {
     protected long queryTime = -1;				//shows how long query runs
     protected boolean sticky = true;
     private List<Throwable> exceptions = new ArrayList<Throwable>();
+    protected String tabName;
 
     /**
      * @param i
@@ -142,5 +143,14 @@ public abstract class AbstractQueryPage implements QueryPage {
 	
 	public long getQueryTime(){
 		return queryTime;
+	}
+
+	public String getTabName() {
+		return tabName;
+	}
+	public void setTabName(String tabName) {
+		String oldValue = this.tabName;
+		this.tabName = tabName;
+		pcs.firePropertyChange("tabName", oldValue, tabName); //$NON-NLS-1$
 	}
 }

@@ -22,6 +22,7 @@
 package org.hibernate.eclipse.console.views;
 
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import org.eclipse.jface.action.IMenuListener;
@@ -180,7 +181,7 @@ public class QueryPageViewer {
 		composite.setLayout(layout);
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH) );
 
-		this.tabItem.setText(this.queryPage.getQueryString().replace('\n', ' ').replace('\r', ' ') );
+		this.tabItem.setText(this.queryPage.getTabName());
 		this.tabItem.setToolTipText(this.queryPage.getQueryString());
 		/* different icon dependent on java/hql etc.
 		if (this.queryPage.getEntity() == null) {
@@ -204,6 +205,7 @@ public class QueryPageViewer {
 		initializePopUpMenu();
 
 		this.qrView.tabs.setSelection(index-1);
+		this.queryPage.addPropertyChangeListener(queryPagePropChangeListener);
 	}
 
 
@@ -270,6 +272,14 @@ public class QueryPageViewer {
 		return columnCount;
 	}
 
+	protected PropertyChangeListener queryPagePropChangeListener = new PropertyChangeListener() {
+		public void propertyChange(PropertyChangeEvent event) {
+			if ("tabName".equals(event.getPropertyName() )) { //$NON-NLS-1$
+				tabItem.setText(queryPage.getTabName());
+			}
+		}
+	};
+	
 	public void propertyChange(PropertyChangeEvent event) {
 		if ("rows".equals(event.getPropertyName() ) ) { //$NON-NLS-1$
 			this.tableViewer.refresh();
@@ -289,6 +299,7 @@ public class QueryPageViewer {
 
 	public void dispose() {
 		//this.queryPage.removePropertyChangeListener(this);
+		this.queryPage.removePropertyChangeListener(queryPagePropChangeListener);
 		this.tabItem.dispose();
 	}
 

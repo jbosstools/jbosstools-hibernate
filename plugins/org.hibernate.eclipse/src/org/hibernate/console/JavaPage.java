@@ -57,6 +57,7 @@ public class JavaPage extends AbstractQueryPage {
     public JavaPage(ConsoleConfiguration cfg, String criteriaCode, QueryInputModel model) {
 		super(cfg);
         this.criteriaCode =  criteriaCode;
+		setTabName(getQueryString().replace('\n', ' ').replace('\r', ' '));
         this.model = model;
     }
 

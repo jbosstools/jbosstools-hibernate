@@ -97,6 +97,7 @@ public class HQLQueryPage extends AbstractQueryPage {
 	public HQLQueryPage(ConsoleConfiguration cfg, String string, QueryInputModel model) {
 		super(cfg);
 		queryString = string;
+		setTabName(getQueryString().replace('\n', ' ').replace('\r', ' '));
 		this.model = model;
 	}
 
