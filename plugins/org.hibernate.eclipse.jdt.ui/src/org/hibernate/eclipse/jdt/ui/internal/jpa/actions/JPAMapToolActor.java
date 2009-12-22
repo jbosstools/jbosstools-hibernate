@@ -128,7 +128,7 @@ public class JPAMapToolActor {
 			return;
 		}
 		Iterator<ICompilationUnit> it = compileUnitCollector.setSelectionCUIterator();
-		/**/
+		collector.initCollector();
 		while (it.hasNext()) {
 			ICompilationUnit cu = it.next();
 			collector.collect(cu);

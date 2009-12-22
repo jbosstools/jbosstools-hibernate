@@ -10,10 +10,14 @@
   ******************************************************************************/
 package org.hibernate.eclipse.jdt.ui.internal.jpa.process.wizard;
 
+import java.util.Iterator;
+import java.util.Map;
+
 import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -46,7 +50,10 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.process.AnnotStyle;
 @SuppressWarnings("restriction")
 public class EntitiesList extends UserInputWizardPage {
 
-	protected final int COLUMN_CLASS = 0;
+	private enum Columns {
+		PROJECT,
+		CLASS,
+	}
 	
 	protected TableViewer listViewer;
 	
@@ -80,7 +87,33 @@ public class EntitiesList extends UserInputWizardPage {
 		if (listViewer != null) {
 			listViewer.setContentProvider(createContentProvider(data));
 			listViewer.setInput(data.getEntities());
+			//
+			for (int i = 0; i < listViewer.getTable().getColumnCount(); i++) {
+				String property = (String)listViewer.getColumnProperties()[i];
+				if (Columns.PROJECT.toString().equals(property)) {
+					listViewer.getTable().getColumn(i).setWidth(isOneProject() ? 0 : 200);
+					listViewer.getTable().getColumn(i).setResizable(!isOneProject());
+					listViewer.getTable().getColumn(i).pack();
+					break;
+				}
+			}
 		}
+	}
+	
+	public boolean isOneProject() {
+		Map<String, EntityInfo> mapEntities = data.getEntities();
+		Iterator<EntityInfo> it = mapEntities.values().iterator();
+		boolean res = true;
+		String javaProjectName = null;
+		while (it.hasNext()) {
+			EntityInfo ei = it.next();
+			if (javaProjectName != null && !javaProjectName.equalsIgnoreCase(ei.getJavaProjectName())) {
+				res = false;
+				break;
+			}
+			javaProjectName = ei.getJavaProjectName();
+		}
+		return res;
 	}
 	
 	public void createControl(Composite parent) {
@@ -89,8 +122,8 @@ public class EntitiesList extends UserInputWizardPage {
         GridLayout layout = new GridLayout();
         container.setLayout(layout);
         layout.numColumns = 1;
-        Label label = new Label(container, SWT.NULL);
-        label.setText(JdtUiMessages.AllEntitiesProcessor_message);
+        //Label label = new Label(container, SWT.NULL);
+        //label.setText(JdtUiMessages.AllEntitiesProcessor_message);
 
         listViewer = new TableViewer(container, SWT.SINGLE | SWT.H_SCROLL
 				| SWT.V_SCROLL | SWT.BORDER);
@@ -100,37 +133,16 @@ public class EntitiesList extends UserInputWizardPage {
 				| GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL);
 		gridData.heightHint = convertHeightInCharsToPixels(10);
 		control.setLayoutData(gridData);
+		String[] columnProperties = new String[] {
+			Columns.CLASS.toString(), Columns.PROJECT.toString(),
+		};
+		listViewer.setColumnProperties(columnProperties); 
 		listViewer.setContentProvider(createContentProvider(data));
-		listViewer.setLabelProvider(new LabelProvider() {
-
-			private Image classImage;
-
-			{
-				classImage = JavaElementImageProvider.getTypeImageDescriptor(false, false, 0, false).createImage();
-
-			}
-			@Override
-			public String getText(Object element) {
-				EntityInfo info = (EntityInfo) element;
-				return info.getFullyQualifiedName();
-			}
-
-			@Override
-			public Image getImage(Object element) {
-				return classImage;
-			}
-
-			@Override
-			public void dispose() {
-				classImage.dispose();
-				super.dispose();
-			}
-		});
-
+		listViewer.setLabelProvider(new TableLableProvider(listViewer));
+		createTableColumns(listViewer.getTable());
 		listViewer.setInput(data.getEntities());
         listViewer.getTable().setHeaderVisible(true);
 		listViewer.getTable().setLinesVisible(true);
-		createTableColumns(listViewer.getTable());
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
 			.grab(true, true)
 			.hint(convertHorizontalDLUsToPixels(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH),
@@ -150,11 +162,9 @@ public class EntitiesList extends UserInputWizardPage {
 		int idx = 0;
 		if (params.getAnnotationStyle().equals(AnnotStyle.FIELDS)) {
 			idx = 0;
-		}
-		else if (params.getAnnotationStyle().equals(AnnotStyle.GETTERS)) {
+		} else if (params.getAnnotationStyle().equals(AnnotStyle.GETTERS)) {
 			idx = 1;
-		}
-		else if (params.getAnnotationStyle().equals(AnnotStyle.AUTO)) {
+		} else if (params.getAnnotationStyle().equals(AnnotStyle.AUTO)) {
 			idx = 2;
 		}
 		generateChoice.select(idx);
@@ -234,10 +244,53 @@ public class EntitiesList extends UserInputWizardPage {
 	}
 
 	protected void createTableColumns(Table table) {
-		TableColumn column = null;
 		
-		column = new TableColumn(table, SWT.LEFT, COLUMN_CLASS);
+		TableColumn column = null;
+		int i = 0;
+		
+		column = new TableColumn(table, SWT.LEFT, i++);
 		column.setText(JdtUiMessages.ResolveAmbiguous_column_Class);
 		column.setWidth(200);
+		
+		column = new TableColumn(table, SWT.LEFT, i++);
+		column.setText(JdtUiMessages.NewHibernateMappingFilePage_project_name_column);
+		column.setWidth(isOneProject() ? 0: 200);
+		column.setResizable(!isOneProject());
+	}
+
+	protected class TableLableProvider extends LabelProvider implements ITableLabelProvider  {
+
+		protected final TableViewer tv;
+		
+		protected Image classImage = JavaElementImageProvider.getTypeImageDescriptor(false, false, 0, false).createImage();
+		
+		public TableLableProvider(TableViewer tv) {
+			this.tv = tv;
+		}
+
+		public Image getColumnImage(Object element, int columnIndex) {
+			String property = (String) tv.getColumnProperties()[columnIndex];
+			if (Columns.CLASS.toString().equals(property)) {
+				return classImage;
+			}
+			return null;
+		}
+
+		public String getColumnText(Object element, int columnIndex) {
+			String property = (String) tv.getColumnProperties()[columnIndex];
+			EntityInfo info = (EntityInfo) element;
+			if (Columns.CLASS.toString().equals(property)) {
+				return info.getFullyQualifiedName();
+			} else if (Columns.PROJECT.toString().equals(property)) {
+				return info.getJavaProjectName();
+			}
+			return "";//$NON-NLS-1$
+		}
+
+		@Override
+		public void dispose() {
+			classImage.dispose();
+			super.dispose();
+		}
 	}
 }
