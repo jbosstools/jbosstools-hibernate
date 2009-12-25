@@ -15,16 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.internal.ui.text.javadoc.JavadocContentAccess2;
-import org.eclipse.jface.fieldassist.IContentProposal;
-import org.eclipse.jface.fieldassist.IContentProposalProvider;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.jboss.tools.common.meta.XAttribute;
 import org.jboss.tools.common.meta.XChild;
 import org.jboss.tools.common.meta.XModelEntity;
@@ -32,10 +24,7 @@ import org.jboss.tools.common.meta.constraint.XAttributeConstraint;
 import org.jboss.tools.common.meta.constraint.impl.XAttributeConstraintAList;
 import org.jboss.tools.common.meta.key.WizardKeys;
 import org.jboss.tools.common.model.XModelObject;
-import org.jboss.tools.common.model.ui.attribute.adapter.JavaClassContentAssistProvider;
 import org.jboss.tools.common.model.ui.texteditors.propertyeditor.AbstractPropertiesContentAssistProcessor;
-import org.jboss.tools.common.model.util.EclipseJavaUtil;
-import org.jboss.tools.common.model.util.EclipseResourceUtil;
 import org.jboss.tools.hibernate.ui.xml.form.HibConfig3PropertyFormLayoutData;
 import org.jboss.tools.hibernate.xml.model.impl.HibConfigComplexPropertyImpl;
 
@@ -52,7 +41,6 @@ public class HibernatePropertiesContentAssistProcessor extends
 	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer,
 			int offset) {
 		Context context = getContext(viewer, offset);
-		String text = viewer.getDocument().get();
 
 		List<ICompletionProposal> result = new ArrayList<ICompletionProposal>();
 
@@ -62,28 +50,15 @@ public class HibernatePropertiesContentAssistProcessor extends
 			return new ICompletionProposal[0];
 		}
 		if(context.isInPropertyName()) {
-			int nameOffset = context.getNameOffset();
-			String namePrefix = nameOffset < offset ? text.substring(nameOffset, offset) : ""; //$NON-NLS-1$
 			String[] ps = attributes.keySet().toArray(new String[0]);
 			for (int i = 0; i < ps.length; i++) {
-				if(context.hasProperty(ps[i])) continue;
-				String description = getDescription(ps[i]);
-				if(ps[i].startsWith(namePrefix)) {
-					CompletionProposal proposal = new CompletionProposal(
-							ps[i],
-							nameOffset,
-							context.getNameLength(),
-							ps[i].length(),
-							null,
-							ps[i], 
-							null, 
-							description);
+				String description = getDescription(ps[i]); //set more substantial description
+				ICompletionProposal proposal = getNameProposal(ps[i], description, context);
+				if(proposal != null) {
 					result.add( proposal);
 				}
 			}	
 		} else if(context.isInValue()) {
-			int valueOffset = context.getValueOffset();
-			String valuePrefix = valueOffset < offset && valueOffset >= 0 ? text.substring(valueOffset, offset) : ""; //$NON-NLS-1$
 			String propertyName = context.getPropertyName();
 			if(attributes.containsKey(propertyName)) {
 				XAttribute attr = attributes.get(propertyName);
@@ -95,40 +70,14 @@ public class HibernatePropertiesContentAssistProcessor extends
 					String[] vs = ((XAttributeConstraintAList)c).getValues();
 					for (int i = 0; i < vs.length; i++) {
 						if(vs[i].length() == 0) continue;
-						if(vs[i].startsWith(valuePrefix)) {
-							CompletionProposal proposal = new CompletionProposal(
-									vs[i],
-									valueOffset,
-									context.getValueLength(),
-									vs[i].length(),
-									null,
-									vs[i], 
-									null, 
-									vs[i]); //should we put more substantial description?
+						String description = vs[i]; //set more substantial description
+						ICompletionProposal proposal = getValueProposal(vs[i], description, context);
+						if(proposal != null) {
 							result.add( proposal);
 						}
 					}
 				} else if("AccessibleJava".equals(attr.getEditor().getName())) { //$NON-NLS-1$
-					JavaClassContentAssistProvider p = new JavaClassContentAssistProvider();
-					p.init(object, null, attr);
-					IContentProposalProvider pp = p.getContentProposalProvider();
-					IContentProposal[] ps = pp.getProposals(valuePrefix, valuePrefix.length());
-					IProject project = EclipseResourceUtil.getProject(object);
-					IJavaProject jp = EclipseResourceUtil.getJavaProject(project);
-					if(ps != null) for (int i = 0; i < ps.length; i++) {
-						String value = ps[i].getContent();
-						String descr = getDescription(jp, value);
-						CompletionProposal proposal = new CompletionProposal(
-								value,
-								valueOffset,
-								context.getValueLength(),
-								value.length(),
-								null,
-								ps[i].getLabel(),
-								null, 
-								descr != null ? descr : ps[i].getDescription());
-						result.add(proposal);
-					}
+					result.addAll(getJavaTypeContentProposals(attr, context));
 				} else {
 					//TODO
 				}
@@ -173,14 +122,4 @@ public class HibernatePropertiesContentAssistProcessor extends
 		return description;
 	}
 
-	public static String getDescription(IJavaProject jp, String value) {
-		String descr = null;
-		if(jp != null) try {
-			IType type = EclipseJavaUtil.findType(jp, value);
-			if(type != null) descr = JavadocContentAccess2.getHTMLContent(type, true);
-		} catch (JavaModelException e) {
-			//ignore
-		}
-		return descr;
-	}
 }

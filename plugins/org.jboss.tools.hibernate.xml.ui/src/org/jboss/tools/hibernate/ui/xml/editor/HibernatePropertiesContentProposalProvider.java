@@ -78,22 +78,7 @@ public class HibernatePropertiesContentProposalProvider extends PropertiesConten
 						}
 					}
 				} else if("AccessibleJava".equals(attr.getEditor().getName())) { //$NON-NLS-1$
-					JavaClassContentAssistProvider p = new JavaClassContentAssistProvider();
-					p.init(object, null, attr);
-					IContentProposalProvider pp = p.getContentProposalProvider();
-					IContentProposal[] ps = pp.getProposals(valuePrefix, valuePrefix.length());
-					IJavaProject jp = getJavaProject();
-					for (int i = 0; i < ps.length; i++) {
-						String descr = ps[i].getDescription();
-						if(descr == null || descr.length() == 0) {
-							String value = ps[i].getContent();
-							descr = HibernatePropertiesContentAssistProcessor.getDescription(jp, value);
-							IContentProposal p2 = AttributeContentProposalProviderFactory.makeContentProposal(value, ps[i].getLabel(), descr);
-							result.add(p2);
-						} else {
-							result.add(ps[i]);
-						}
-					}
+					result.addAll(getJavaTypeContentProposals(contents, position));
 				} else {
 					//TODO
 				}
@@ -103,27 +88,8 @@ public class HibernatePropertiesContentProposalProvider extends PropertiesConten
 		return result.toArray(new IContentProposal[0]);
 	}
 
-	boolean isNameAttribute() {
-		return attribute.getName().equals(XModelObjectConstants.ATTR_NAME);
+	protected boolean isPropertyEntity(String entity) {
+		return super.isPropertyEntity(entity) || HibConfigComplexPropertyImpl.ENT_PROPERTY.equals(entity);
 	}
 
-	String getPropertyName() {
-		String value = null;	
-		if(data != null) {
-			value = data.getValue(XModelObjectConstants.ATTR_NAME);
-
-		} else if(object != null 
-				&& (object.getModelEntity().getName().equals(PropertiesLoader.ENT_PROPERTY)
-					|| object.getModelEntity().getName().equals(HibConfigComplexPropertyImpl.ENT_PROPERTY))) {
-			value = object.getAttributeValue(XModelObjectConstants.ATTR_NAME);
-			
-		}
-		return value;
-		
-	}
-
-	IJavaProject getJavaProject() {
-		IProject project = EclipseResourceUtil.getProject(object);
-		return EclipseResourceUtil.getJavaProject(project);		
-	}
 }
