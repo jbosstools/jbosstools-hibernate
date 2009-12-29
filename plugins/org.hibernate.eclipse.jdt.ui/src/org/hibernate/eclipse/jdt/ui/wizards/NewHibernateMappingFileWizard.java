@@ -191,12 +191,12 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 				try {
 					types = cu.getTypes();
 					//remove java extension.
-					String typeName = cu.getElementName().substring(0, cu.getElementName().length() - 5);
+					//String typeName = cu.getElementName().substring(0, cu.getElementName().length() - 5);
 					for (int j = 0; j < types.length; j++) {
-						if (types[j].getElementName().equals(typeName)){
+						//if (types[j].getElementName().equals(typeName)){
 							filteredElements.add(types[j]);
-							break;
-						}
+						//	break;
+						//}
 					}
 				} catch (JavaModelException e) {
 					e.printStackTrace();
