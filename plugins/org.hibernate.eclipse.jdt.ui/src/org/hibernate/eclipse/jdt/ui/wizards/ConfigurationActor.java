@@ -142,7 +142,7 @@ public class ConfigurationActor {
 				
 				processor.setEntityInfo(entry.getValue());			
 				cu.accept(processor);
-			}			
+			}
 		}
 		
 		Mappings mappings = config.createMappings();
@@ -210,7 +210,7 @@ public class ConfigurationActor {
 	}
 	
 	private PersistentClass getMappedSuperclass(IJavaProject project, Map<String, PersistentClass> persistentClasses, RootClass rootClass) throws JavaModelException{
-		IType type = Utils.findType(project, rootClass.getClassName());		
+		IType type = Utils.findType(project, rootClass.getClassName());
 		//TODO not direct superclass?
 		if (type.getSuperclassName() != null){
 			String[][] supertypes = type.resolveType(type.getSuperclassName());
@@ -257,13 +257,7 @@ class ProcessEntityInfo extends ASTVisitor {
 	
 	TypeVisitor typeVisitor;
 	
-	/**
-	 * information about all entities
-	 */
-	protected Map<String, EntityInfo> entities;
-	
 	public void setEntities(Map<String, EntityInfo> entities) {
-		this.entities = entities;
 		rootClasses.clear();
 		Iterator<Map.Entry<String, EntityInfo>> it = entities.entrySet().iterator();
 		while (it.hasNext()) {

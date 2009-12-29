@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -362,7 +363,12 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 				collector.collect(icu);
 			}
 			collector.resolveRelations();
-			project_infos.put(javaProject, collector.getMapCUs_Info().values());
+			Collection<EntityInfo> c = new ArrayList<EntityInfo>();
+			for (Iterator<EntityInfo> i = collector.getMapCUs_Info().values().iterator();
+						i.hasNext();) {
+				c.add(i.next());				
+			}
+			project_infos.put(javaProject, c);
 
 		}
 	}
