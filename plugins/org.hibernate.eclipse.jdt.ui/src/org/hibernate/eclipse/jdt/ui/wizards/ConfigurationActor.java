@@ -135,7 +135,7 @@ public class ConfigurationActor {
 		processor.setEntities(entities);
 		
 		for (Entry<String, EntityInfo> entry : entities.entrySet()) {			
-			String fullyQualifiedName = entry.getKey();
+			String fullyQualifiedName = entry.getValue().getFullyQualifiedName();
 			ICompilationUnit icu = Utils.findCompilationUnit(project, fullyQualifiedName);
 			CompilationUnit cu = Utils.getCompilationUnit(icu, true);
 			
@@ -276,7 +276,7 @@ class ProcessEntityInfo extends ASTVisitor {
 			rootClass.setLazy(true);
 			rootClass.setTable(table);
 			rootClass.setAbstract(entryInfo.isAbstractFlag());//abstract or interface
-			rootClasses.put(entry.getKey(), rootClass);
+			rootClasses.put(entryInfo.getFullyQualifiedName(), rootClass);
 		}
 		typeVisitor = new TypeVisitor(rootClasses);
 	}

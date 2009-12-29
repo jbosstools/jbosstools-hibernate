@@ -26,13 +26,10 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
@@ -246,17 +243,21 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 
 				
 				try {
-				    IResource container = entry.getKey().getPackageFragmentRoots().length > 0
+				   /* IResource container = entry.getKey().getPackageFragmentRoots().length > 0
 					? entry.getKey().getPackageFragmentRoots()[0].getResource()
 							: entry.getKey().getResource();
 					
-					IPath temp_path = entry.getKey().getProject().getLocation()
-						.append(".settings").append("org.hibernate_tools.temp");
+					IPath temp_path = entry.getKey().getProject().getLocation().append(".settings").append("org.hibernate_tools.temp");
 					
 					IFolder temp_folder = entry.getKey().getProject().getFolder(new Path(".settings/org.hibernate_tools.temp"));
+					*/
 					
+					IResource container = entry.getKey().getPackageFragmentRoots().length > 0
+					? entry.getKey().getPackageFragmentRoots()[0].getResource()
+							: entry.getKey().getResource();
+
 					HibernateMappingExporter hce = new HibernateMappingExporter(config,
-							temp_folder.getLocation().toFile());
+							container.getLocation().toFile());
 
 					hce.setGlobalSettings(hmgs);
 					//hce.setForEach("entity");
@@ -341,7 +342,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 		//separate by parent project
 		while (it.hasNext()) {
 			ICompilationUnit cu = it.next();
-			Set<ICompilationUnit> set = mapJP_CUSet.get(cu.getJavaProject());
+			Set<ICompilationUnit> set = mapJP_CUSet.get(cu.getJavaProject().getElementName());
 			if (set == null) {
 				set = new HashSet<ICompilationUnit>();
 				mapJP_CUSet.put(cu.getJavaProject(), set);

@@ -185,6 +185,12 @@ public class NewHibernateMappingFilePage extends WizardPage {
 			this.project = iProject;
 		}
 
+		@Override
+		public String toString() {
+			return "TableLine [className=" + className + ", projectName=" //$NON-NLS-1$ //$NON-NLS-2$
+					+ projectName + "]"; //$NON-NLS-1$
+		}		
+
 	}
 	
 	private enum Columns {

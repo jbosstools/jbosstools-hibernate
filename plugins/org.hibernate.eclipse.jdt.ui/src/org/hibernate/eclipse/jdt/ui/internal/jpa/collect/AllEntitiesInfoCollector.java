@@ -40,15 +40,19 @@ public class AllEntitiesInfoCollector {
 	 * javaProjectName + "/" + fullyQualifiedName entity name -> EntityInfo
 	 * this collection of processed entities 
 	 */
-	protected Map<String, EntityInfo> mapCUs_Info = new TreeMap<String, EntityInfo>();
+	protected Map<String, EntityInfo> mapCUs_Info;
 	/**
 	 * annotation style preference
 	 */
 	protected AnnotStyle annotationStylePreference = AnnotStyle.FIELDS;
+	
+	public AllEntitiesInfoCollector() {
+		initCollector();
+	}
 
 	public void initCollector() {
 		// clear collection
-		mapCUs_Info.clear();
+		mapCUs_Info = new TreeMap<String, EntityInfo>();
 	}
 	
 	/**
