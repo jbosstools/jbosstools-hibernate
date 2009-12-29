@@ -342,7 +342,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 		//separate by parent project
 		while (it.hasNext()) {
 			ICompilationUnit cu = it.next();
-			Set<ICompilationUnit> set = mapJP_CUSet.get(cu.getJavaProject().getElementName());
+			Set<ICompilationUnit> set = mapJP_CUSet.get(cu.getJavaProject());
 			if (set == null) {
 				set = new HashSet<ICompilationUnit>();
 				mapJP_CUSet.put(cu.getJavaProject(), set);
