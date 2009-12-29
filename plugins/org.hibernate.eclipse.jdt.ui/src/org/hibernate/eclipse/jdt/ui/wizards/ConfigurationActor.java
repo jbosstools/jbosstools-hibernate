@@ -137,10 +137,12 @@ public class ConfigurationActor {
 		for (Entry<String, EntityInfo> entry : entities.entrySet()) {			
 			String fullyQualifiedName = entry.getValue().getFullyQualifiedName();
 			ICompilationUnit icu = Utils.findCompilationUnit(project, fullyQualifiedName);
-			CompilationUnit cu = Utils.getCompilationUnit(icu, true);
-			
-			processor.setEntityInfo(entry.getValue());			
-			cu.accept(processor);
+			if (icu != null){
+				CompilationUnit cu = Utils.getCompilationUnit(icu, true);
+				
+				processor.setEntityInfo(entry.getValue());			
+				cu.accept(processor);
+			}			
 		}
 		
 		Mappings mappings = config.createMappings();
