@@ -118,6 +118,10 @@ public class HQLQueryPage extends AbstractQueryPage {
     public String getQueryString() {
     	return queryString; // cannot use query since it might be null because of an error!    
     }
+	public void setQueryString(String queryString) {
+		this.queryString = queryString;
+		list = null;
+	}
 
     public List<String> getPathNames() {
     	List<String> l = Collections.emptyList();

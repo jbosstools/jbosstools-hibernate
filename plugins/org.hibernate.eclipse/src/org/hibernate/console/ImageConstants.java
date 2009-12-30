@@ -125,4 +125,10 @@ public interface ImageConstants {
 	public static final String RELOAD = "images/reload.gif"; //$NON-NLS-1$
 	public static final String ERROR = "images/error.gif"; //$NON-NLS-1$
 
+	public static final String PINUP = "PINUP"; //$NON-NLS-1$
+	public static final String PINUP_PATH = "images/pinup.png"; //$NON-NLS-1$
+
+	public static final String PINDOWN = "PINDOWN"; //$NON-NLS-1$
+	public static final String PINDOWN_PATH = "images/pindown.png"; //$NON-NLS-1$
+
 }

@@ -45,6 +45,7 @@ public class HibernateConsoleMessages extends NLS {
 	public static String BuildSessionFactoryAction_exception_while_start_hibernate;
 	public static String BuildSessionFactoryAction_start_hibernate_resulted;
 	public static String ClearAction_clear_editor;
+	public static String StickResTabAction_stick_editor;
 	public static String CloseQueryPageAction_close_query_page;
 	public static String ConsoleConfigurationBasedAction_problem_while_executing;
 	public static String CriteriaEditorAction_hibernate_criteria_editor;

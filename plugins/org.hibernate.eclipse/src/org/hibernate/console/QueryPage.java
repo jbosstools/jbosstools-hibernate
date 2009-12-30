@@ -60,6 +60,7 @@ public interface QueryPage {
      * @return
      */
     public abstract String getQueryString();
+    public abstract void setQueryString(String str);
 	/**
 	 * @return
 	 */

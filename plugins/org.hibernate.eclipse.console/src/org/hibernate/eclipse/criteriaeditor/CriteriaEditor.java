@@ -56,8 +56,12 @@ import org.eclipse.ui.texteditor.ChainedPreferenceStore;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.TextOperationAction;
+import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.QueryPage;
+import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.AbstractQueryEditor;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -125,6 +129,8 @@ public class CriteriaEditor extends AbstractQueryEditor {
         return docSetupParticipant;
     }
 
+	protected QueryPage queryPage = null;
+	
 	public void executeQuery(ConsoleConfiguration cfg) {
 		final IWorkbenchPage activePage = getEditorSite().getPage();
 		try {
@@ -133,7 +139,21 @@ public class CriteriaEditor extends AbstractQueryEditor {
 			// ignore
 		}
 		
-		cfg.executeBSHQuery(getQueryString(), getQueryInputModel().getCopyForQuery() );
+		if (queryPage == null || !getPinToOneResTab()) {
+			queryPage = cfg.executeBSHQuery(getQueryString(), getQueryInputModel().getCopyForQuery() );
+		} else {
+			final ConsoleConfiguration cfg0 = cfg;
+			cfg.execute(new Command() {
+				public Object execute() {
+					KnownConfigurations.getInstance().getQueryPageModel().remove(queryPage);
+					Session session = cfg0.getSessionFactory().openSession();
+					queryPage.setQueryString(getQueryString());
+					queryPage.setSession(session);
+					KnownConfigurations.getInstance().getQueryPageModel().add(queryPage);
+					return null;
+				}
+			});
+		}
 	}
 
 	protected IEvaluationContext getEvaluationContext(IJavaProject project) {

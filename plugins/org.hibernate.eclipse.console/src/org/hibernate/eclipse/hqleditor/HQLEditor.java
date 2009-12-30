@@ -53,7 +53,11 @@ import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.TextOperationAction;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+import org.hibernate.Session;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.QueryPage;
+import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.AbstractQueryEditor;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
@@ -406,18 +410,31 @@ public class HQLEditor extends AbstractQueryEditor {
 		   return getSourceViewer();
 	   }
 
+	protected QueryPage queryPage = null;
 
-
-	   public void executeQuery(ConsoleConfiguration cfg) {
-		   final IWorkbenchPage activePage = getEditorSite().getPage();
-		   try {
-			   activePage.showView(QueryPageTabView.ID);
-		   } catch (PartInitException e) {	
-			   // ignore
-		   }
-		   
-		   cfg.executeHQLQuery(getQueryString(), getQueryInputModel().getCopyForQuery() );
-	   }
+	public void executeQuery(ConsoleConfiguration cfg) {
+		final IWorkbenchPage activePage = getEditorSite().getPage();
+		try {
+			activePage.showView(QueryPageTabView.ID);
+		} catch (PartInitException e) {	
+			// ignore
+		}
+		if (queryPage == null || !getPinToOneResTab()) {
+			queryPage = cfg.executeHQLQuery(getQueryString(), getQueryInputModel().getCopyForQuery() );
+		} else {
+			final ConsoleConfiguration cfg0 = cfg;
+			cfg.execute(new Command() {
+				public Object execute() {
+					KnownConfigurations.getInstance().getQueryPageModel().remove(queryPage);
+					Session session = cfg0.getSessionFactory().openSession();
+					queryPage.setQueryString(getQueryString());
+					queryPage.setSession(session);
+					KnownConfigurations.getInstance().getQueryPageModel().add(queryPage);
+					return null;
+				}
+			});
+		}
+	}
 
 	@Override
 	protected String getConnectedImageFilePath() {

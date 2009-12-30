@@ -151,6 +151,11 @@ public class JavaPage extends AbstractQueryPage {
     public String getQueryString() {
         return criteriaCode;
     }
+	public void setQueryString(String queryString) {
+		this.criteriaCode = queryString;
+		list = null;
+		ip = null;
+	}
 
     public void release() {
 

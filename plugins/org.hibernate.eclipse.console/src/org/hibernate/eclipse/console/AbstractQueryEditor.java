@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2007-2009 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.hibernate.eclipse.console;
 
 import java.io.File;
@@ -45,7 +55,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.ide.FileStoreEditorInput;
-import org.eclipse.ui.internal.WorkbenchPlugin;
 import org.eclipse.ui.internal.editors.text.EditorsPlugin;
 import org.eclipse.ui.internal.editors.text.NLSUtility;
 import org.eclipse.ui.part.FileEditorInput;
@@ -55,6 +64,7 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.eclipse.console.actions.ClearAction;
 import org.hibernate.eclipse.console.actions.ExecuteQueryAction;
+import org.hibernate.eclipse.console.actions.StickResTabAction;
 
 public abstract class AbstractQueryEditor extends TextEditor implements
 		QueryEditor, IShowEditorInput {
@@ -62,6 +72,7 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 	private ToolBarManager tbm;
 	private ExecuteQueryAction execAction = null;
 	private ClearAction clearAction = null;
+	private StickResTabAction stickResTabAction = null;
 	final private QueryInputModel queryInputModel;
 
 	private String defPartName;
@@ -71,6 +82,8 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 	// to enable execution of queries from files - hack for HBX-744
 	private String consoleConfigurationName;
 
+	protected boolean pinToOneResTab = false;
+	
 	public AbstractQueryEditor() {
 		queryInputModel = new QueryInputModel();
 	}
@@ -187,9 +200,9 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 		tbm = new ToolBarManager( bar );
 		execAction = new ExecuteQueryAction( this );
 		clearAction = new ClearAction( this );
+		stickResTabAction = new StickResTabAction( this );
 
 		ActionContributionItem item = new ActionContributionItem( execAction );
-
 		tbm.add( item );
 
 		item = new ActionContributionItem( clearAction );
@@ -270,6 +283,10 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 		};
 		tbm.add(cc);
 
+		tbm.add( new Separator() );
+		item = new ActionContributionItem( stickResTabAction );
+		tbm.add( item );
+
 		tbm.update( true );
 
 	}
@@ -313,6 +330,7 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 	 * @see org.eclipse.ui.texteditor.AbstractDecoratedTextEditor#performSaveAs(IProgressMonitor)
 	 * the same method except line: "dialog.setOriginalName(getSaveAsFileExtension());"
 	 */
+	@SuppressWarnings("restriction")
 	protected void performSaveAs(IProgressMonitor progressMonitor) {
 		Shell shell= getSite().getShell();
 		final IEditorInput input= getEditorInput();
@@ -456,5 +474,13 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 			return true;
 		}
 		return false;
+	}
+
+	public boolean getPinToOneResTab() {
+		return pinToOneResTab;
+	}
+
+	public void setPinToOneResTab(boolean pinToOneResTab) {
+		this.pinToOneResTab = pinToOneResTab;
 	}
 }
