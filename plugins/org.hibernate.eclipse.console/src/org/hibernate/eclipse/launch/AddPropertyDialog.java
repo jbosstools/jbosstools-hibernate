@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2007-2010 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.hibernate.eclipse.launch;
 
 import java.util.ArrayList;
@@ -45,6 +55,9 @@ import org.hibernate.eclipse.console.model.impl.ExporterProperty;
 import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
 import org.hibernate.util.StringHelper;
 
+/**
+ * Add/edit property dialog to configure Hibernate Exporters.
+ */
 public class AddPropertyDialog extends TitleAreaDialog {
 
 	private final ExporterFactory ef;
@@ -93,7 +106,7 @@ public class AddPropertyDialog extends TitleAreaDialog {
 
 		Label label = new Label(composite, SWT.NONE);
 		label.setText( HibernateConsoleMessages.AddPropertyDialog_name );
-		final Combo combo = new Combo(composite, SWT.BORDER | SWT.LEAD | SWT.DROP_DOWN);
+		final Combo combo = new Combo(composite, SWT.BORDER | SWT.DROP_DOWN);
 		GridData pgd = new GridData(GridData.GRAB_HORIZONTAL | GridData.FILL_HORIZONTAL);
 		pgd.horizontalSpan = 2;
 		combo.setLayoutData(pgd);
@@ -134,7 +147,7 @@ public class AddPropertyDialog extends TitleAreaDialog {
 		label = new Label(composite, SWT.NONE);
 		label.setText( HibernateConsoleMessages.AddPropertyDialog_value );
 
-		value = new Text(composite, SWT.BORDER | SWT.LEAD );
+		value = new Text(composite, SWT.BORDER);
 		value.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.FILL_HORIZONTAL));
 		((Text)value).addModifyListener( modifyListener );
 
@@ -293,6 +306,7 @@ public class AddPropertyDialog extends TitleAreaDialog {
 				selected = viewer.getElementAt( 0 );
 			}
 			viewer.setSelection(new StructuredSelection(selected));
+			viewer.getCombo().select(viewer.getCombo().getSelectionIndex());
 		}
 	}
 
