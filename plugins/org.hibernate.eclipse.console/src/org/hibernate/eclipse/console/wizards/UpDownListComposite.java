@@ -174,7 +174,7 @@ public class UpDownListComposite extends Composite {
 		GridData gridData2 = new org.eclipse.swt.layout.GridData();
 		gridData2.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		gridData2.grabExcessHorizontalSpace = false;
-		gridData2.grabExcessVerticalSpace = false;
+		gridData2.grabExcessVerticalSpace = true;
 		gridData2.verticalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		buttons = new Composite( group, SWT.NONE );
 		buttons.setLayout(new GridLayout());
@@ -202,6 +202,11 @@ public class UpDownListComposite extends Composite {
 		downButton.setText(HibernateConsoleMessages.UpDownListComposite_down);
 		downButton.setLayoutData(gridData5);
 		downButton.addSelectionListener(buttonListener);
+
+		createAdditionalOptions(buttons);
+	}
+
+	protected void createAdditionalOptions(Composite parent) {
 	}
 
 	protected String[] getAddButtonLabels() {
