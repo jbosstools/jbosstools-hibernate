@@ -130,12 +130,12 @@ public class JPAMapTest extends TestCase {
 		assertNotNull(icu3);
 		assertNotNull(icu4);
 		collector.initCollector();
-		collector.collect(icu);
-		collector.collect(icu2);
-		collector.collect(icu3);
-		collector.collect(icu4);
+		collector.collect(icu, Integer.MAX_VALUE);
+		collector.collect(icu2, Integer.MAX_VALUE);
+		collector.collect(icu3, Integer.MAX_VALUE);
+		collector.collect(icu4, Integer.MAX_VALUE);
 		if (icu44 != null) {
-			collector.collect(icu44);
+			collector.collect(icu44, Integer.MAX_VALUE);
 		}
 		collector.resolveRelations();
 		processor.setEnableOptLock(true);

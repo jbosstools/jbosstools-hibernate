@@ -88,7 +88,7 @@ public class JPAMapMockTests extends TestCase {
         context.checking(new Expectations() {{
         	exactly(1).of(allEntitiesProcessor).modify(new HashMap<String, EntityInfo>(), true, selection2Update);
         }});
-		jpaMapToolActor.updateSelected();
+		jpaMapToolActor.updateSelected(Integer.MAX_VALUE);
         context.assertIsSatisfied();
 
 		jpaMapToolActor.setSelection(null);
@@ -105,7 +105,7 @@ public class JPAMapMockTests extends TestCase {
         	allowing(allEntitiesInfoCollector).initCollector();
         	inSequence(sequence);
         	
-        	allowing(allEntitiesInfoCollector).collect(compilationUnit);
+        	allowing(allEntitiesInfoCollector).collect(compilationUnit, Integer.MAX_VALUE);
         	inSequence(sequence);
         	
         	allowing(allEntitiesInfoCollector).resolveRelations();
@@ -138,7 +138,7 @@ public class JPAMapMockTests extends TestCase {
 
         	exactly(1).of(allEntitiesProcessor).modify(null, true, selection2Update);
 		}});
-		jpaMapToolActor.updateSelected();
+		jpaMapToolActor.updateSelected(Integer.MAX_VALUE);
         context.assertIsSatisfied();
 
         /** /

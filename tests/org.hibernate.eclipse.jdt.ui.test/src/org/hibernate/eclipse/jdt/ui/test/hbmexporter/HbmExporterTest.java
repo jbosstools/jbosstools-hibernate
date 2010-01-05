@@ -84,7 +84,7 @@ public class HbmExporterTest extends TestCase {
 			selectionCU.add(icu);
 		}
 		ConfigurationActor actor = new ConfigurationActor(selectionCU);
-		Map<IJavaProject, Configuration> configurations = actor.createConfigurations();
+		Map<IJavaProject, Configuration> configurations = actor.createConfigurations(Integer.MAX_VALUE);
 		assertEquals(1, configurations.size());
 		Configuration config = configurations.get(project.getIJavaProject());
 		assertNotNull(config);
