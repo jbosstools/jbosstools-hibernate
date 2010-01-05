@@ -87,7 +87,7 @@ public class ConfigurationActor {
 	 * 
 	 * @return different configuration for different projects
 	 */
-	public Map<IJavaProject, Configuration> createConfigurations(){
+	public Map<IJavaProject, Configuration> createConfigurations(int processDepth){
 		Map<IJavaProject, Configuration> configs = new HashMap<IJavaProject, Configuration>();
 		if (selectionCU.size() == 0) {
 			return configs;
@@ -118,7 +118,7 @@ public class ConfigurationActor {
 			collector.initCollector();
 			while (setIt.hasNext()) {
 				ICompilationUnit icu = setIt.next();
-				collector.collect(icu);
+				collector.collect(icu, processDepth);
 			}
 			collector.resolveRelations();
 			//I don't check here if any non abstract class selected

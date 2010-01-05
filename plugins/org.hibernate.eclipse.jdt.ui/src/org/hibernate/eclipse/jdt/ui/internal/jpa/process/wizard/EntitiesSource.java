@@ -46,6 +46,10 @@ public class EntitiesSource extends UserInputWizardPage {
 		addRemoveTableComposite.getTableViewer().setInput(selection.toArray());
 		setControl(addRemoveTableComposite);
 	}
+
+	public int getProcessDepth() {
+		return addRemoveTableComposite.getProcessDepth();
+	}
 	
 	public IStructuredSelection getSelection() {
 		TableItem[] items = addRemoveTableComposite.getTableViewer().getTable().getItems();

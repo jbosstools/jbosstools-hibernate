@@ -671,9 +671,9 @@ public class AllEntitiesInfoCollector {
 	 * @param fullyQualifiedName of startup point entity fully qualified name
 	 * example: "org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector" 
 	 */
-	public void collect(String fullyQualifiedName, String projectName) {
+	public void collect(String fullyQualifiedName, String projectName, int depth) {
 		
-		if (fullyQualifiedName == null) {
+		if (fullyQualifiedName == null || depth < 0) {
 			return;
 		}
 		if (mapCUs_Info.containsKey(projectName + "/" + fullyQualifiedName)) { //$NON-NLS-1$
@@ -681,18 +681,19 @@ public class AllEntitiesInfoCollector {
 		}
 		final IJavaProject javaProject = Utils.findJavaProject(projectName);
 		ICompilationUnit icu = Utils.findCompilationUnit(javaProject, fullyQualifiedName);
-		collect(icu);
+		collect(icu, depth);
 	}
 	
 	/**
 	 * start to collect information from particular entity class and
 	 * its dependencies
 	 * @param icu - startup point entity compilation unit
+	 * @param depth - process depth
 	 */
 	@SuppressWarnings("unchecked")
-	public void collect(ICompilationUnit icu) {
+	public void collect(ICompilationUnit icu, int depth) {
 		
-		if (icu == null) {
+		if (icu == null || depth < 0) {
 			return;
 		}
 		org.eclipse.jdt.core.dom.CompilationUnit cu = Utils.getCompilationUnit(icu, true);
@@ -741,10 +742,12 @@ public class AllEntitiesInfoCollector {
 					result.adjustParameters();
 					result.setJavaProjectName(projectName);
 					mapCUs_Info.put(projectName + "/" + fullyQualifiedName, result); //$NON-NLS-1$
-					Iterator<String> itDep = result.getDependences();
-					while (itDep.hasNext()) {
-						String fullyQualifiedNameTmp = itDep.next();
-						collect(fullyQualifiedNameTmp, projectName);
+					if (depth > 0) {
+						Iterator<String> itDep = result.getDependences();
+						while (itDep.hasNext()) {
+							String fullyQualifiedNameTmp = itDep.next();
+							collect(fullyQualifiedNameTmp, projectName, depth - 1);
+						}
 					}
 				}
 			}

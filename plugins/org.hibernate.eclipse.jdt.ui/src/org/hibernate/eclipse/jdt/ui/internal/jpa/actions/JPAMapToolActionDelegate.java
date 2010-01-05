@@ -45,7 +45,7 @@ public class JPAMapToolActionDelegate extends AbstractHandler implements IObject
 	}
 
 	public void run(IAction action) {
-		actor.updateSelected();
+		actor.updateSelected(Integer.MAX_VALUE);
 		//actor.updateOpen();
 	}
 
@@ -63,7 +63,7 @@ public class JPAMapToolActionDelegate extends AbstractHandler implements IObject
 	}
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		actor.updateSelected();
+		actor.updateSelected(Integer.MAX_VALUE);
 		//actor.updateOpen();
 		return null;
 	}

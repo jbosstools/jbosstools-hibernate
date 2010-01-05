@@ -27,6 +27,8 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
@@ -35,6 +37,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
+import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.wizards.UpDownListComposite;
 import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
 
@@ -45,6 +48,8 @@ import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
 @SuppressWarnings("restriction")
 public class AddRemoveTableComposite extends UpDownListComposite {
 
+	protected Button depthControl;
+	
 	public AddRemoveTableComposite(Composite parent, int style) {
 		super(parent, style, "", //$NON-NLS-1$
 				false, new JavaElementLabelProvider(),
@@ -56,6 +61,22 @@ public class AddRemoveTableComposite extends UpDownListComposite {
 	protected String[] getAddButtonLabels() {
 		return new String[] { JdtUiMessages.AddRemoveTableComposite_add_class,
 							  JdtUiMessages.AddRemoveTableComposite_add_package};
+	}
+
+	@Override
+	protected void createAdditionalOptions(Composite parent) {
+		GridData gridData = new org.eclipse.swt.layout.GridData();
+		gridData.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
+		gridData.grabExcessHorizontalSpace = false;
+		gridData.grabExcessVerticalSpace = false;
+		gridData.verticalAlignment = SWT.BOTTOM;
+		depthControl = new Button(parent, SWT.CHECK);
+		depthControl.setText(HibernateConsoleMessages.AddRemoveTableComposite_no_dependencies);
+		depthControl.setLayoutData(gridData);
+	}
+
+	public int getProcessDepth() {
+		return depthControl.getSelection() ? 0 : Integer.MAX_VALUE;
 	}
 	
 	protected void createColumns(Table table) {

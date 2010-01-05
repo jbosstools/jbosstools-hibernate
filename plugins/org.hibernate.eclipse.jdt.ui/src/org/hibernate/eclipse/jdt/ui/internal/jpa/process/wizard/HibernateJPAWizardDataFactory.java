@@ -51,7 +51,8 @@ public class HibernateJPAWizardDataFactory {
 
 	@SuppressWarnings("unchecked")
 	static public IHibernateJPAWizardData createHibernateJPAWizardData(
-			final IStructuredSelection selection2Update, IHibernateJPAWizardParams params) {
+			final IStructuredSelection selection2Update, 
+			IHibernateJPAWizardParams params, int depth) {
 
 		CompilationUnitCollector compileUnitCollector = new CompilationUnitCollector();
 		Iterator itSelection2Update = selection2Update.iterator();
@@ -64,7 +65,7 @@ public class HibernateJPAWizardDataFactory {
 		collector.initCollector();
 		while (it.hasNext()) {
 			ICompilationUnit cu = it.next();
-			collector.collect(cu);
+			collector.collect(cu, depth);
 		}
 		collector.resolveRelations();
 		final Map<String, EntityInfo> entities = collector.getMapCUs_Info();

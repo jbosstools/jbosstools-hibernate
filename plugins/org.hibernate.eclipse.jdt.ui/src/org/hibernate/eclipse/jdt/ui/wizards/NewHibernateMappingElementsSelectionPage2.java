@@ -55,6 +55,10 @@ public class NewHibernateMappingElementsSelectionPage2 extends WizardPage {
 		return new StructuredSelection(data);
 	}
 	
+	public int getProcessDepth() {
+		return addRemoveTableComposite.getProcessDepth();
+	}
+	
 	protected void itemsChanged(){
 		getContainer().updateButtons();
 	}

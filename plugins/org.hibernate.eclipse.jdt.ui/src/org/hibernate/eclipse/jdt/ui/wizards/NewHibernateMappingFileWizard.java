@@ -87,6 +87,8 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 	private Map<IJavaProject, Collection<EntityInfo>> project_infos = new HashMap<IJavaProject, Collection<EntityInfo>>();
 
 	private IStructuredSelection selection;
+	// process depth of current selection
+	private int processDepth = Integer.MIN_VALUE;
 	
 	private NewHibernateMappingElementsSelectionPage2 page0 = null;
 	
@@ -360,7 +362,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 			collector.initCollector();
 			while (setIt.hasNext()) {
 				ICompilationUnit icu = setIt.next();
-				collector.collect(icu);
+				collector.collect(icu, processDepth);
 			}
 			collector.resolveRelations();
 			Collection<EntityInfo> c = new ArrayList<EntityInfo>();
@@ -373,16 +375,19 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 		}
 	}
 
-	protected void processJavaElements(Object obj) {
+	protected void processJavaElements(Object obj, int depth) {
+		if (depth < 0) {
+			return;
+		}
 		try {
 			if (obj instanceof ICompilationUnit) {
 				ICompilationUnit cu = (ICompilationUnit) obj;
 				selectionCU.add(cu);
-			} else if (obj instanceof JavaProject) {
+			} else if (obj instanceof JavaProject && depth > 0) {
 				JavaProject javaProject = (JavaProject) obj;
 				IPackageFragmentRoot[] pfr = javaProject.getAllPackageFragmentRoots();
 				for (IPackageFragmentRoot element : pfr) {
-					processJavaElements(element);
+					processJavaElements(element, depth - 1);
 				}
 			} else if (obj instanceof PackageFragment) {
 				PackageFragment packageFragment = (PackageFragment) obj;
@@ -390,12 +395,12 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 				for (ICompilationUnit cu : cus) {
 					selectionCU.add(cu);
 				}
-			} else if (obj instanceof PackageFragmentRoot) {
+			} else if (obj instanceof PackageFragmentRoot && depth > 0) {
 				JavaElement javaElement = (JavaElement) obj;
 				JavaElementInfo javaElementInfo = (JavaElementInfo) javaElement.getElementInfo();
 				IJavaElement[] je = javaElementInfo.getChildren();
 				for (IJavaElement element : je) {
-					processJavaElements(element);
+					processJavaElements(element, depth - 1);
 				}
 			} else if (obj instanceof JavaElement) {
 				JavaElement javaElement = (JavaElement) obj;
@@ -411,16 +416,18 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 
 	protected Map<IJavaProject, Configuration> createConfigurations() {
 		ConfigurationActor actor = new ConfigurationActor(selectionCU);
-		Map<IJavaProject, Configuration> configs = actor.createConfigurations();
+		Map<IJavaProject, Configuration> configs = actor.createConfigurations(processDepth);
 		return configs;
 	}
 	
 	protected void updateCompilationUnits(){
 		Assert.isNotNull(page0.getSelection(), JdtUiMessages.NewHibernateMappingFileWizard_selection_cant_be_empty);
-		if ((selectionCU == null) || !page0.getSelection().equals(selection)) {
+		if ((selectionCU == null) || !page0.getSelection().equals(selection) || 
+				processDepth != page0.getProcessDepth()) {
 			selectionCU = new HashSet<ICompilationUnit>();
 			project_infos.clear();
 			selection = page0.getSelection();
+			processDepth = page0.getProcessDepth();
 				try {
 					getContainer().run(false, false, new IRunnableWithProgress() {
 
@@ -432,7 +439,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 							int done = 1;
 							while (it.hasNext()) {
 								Object obj = it.next();
-								processJavaElements(obj);
+								processJavaElements(obj, processDepth);
 								monitor.worked(done++);
 							}
 							initEntitiesInfo();

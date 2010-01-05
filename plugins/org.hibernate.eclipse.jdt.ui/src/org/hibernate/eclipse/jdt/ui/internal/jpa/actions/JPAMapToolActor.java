@@ -112,14 +112,15 @@ public class JPAMapToolActor {
 
 	/**
 	 * updates selected compilation units collection 
+	 * @param depth - process depth
 	 */
-	public void updateSelected() {
+	public void updateSelected(int depth) {
 		if (selection != null) {
 			updateSelectedItems(selection);
 			selection = null;
 		} else {
 			if (getSelectionCUSize() == 0) {
-				updateOpen();
+				updateOpen(depth);
 				return;
 			}
 		}
@@ -131,7 +132,7 @@ public class JPAMapToolActor {
 		collector.initCollector();
 		while (it.hasNext()) {
 			ICompilationUnit cu = it.next();
-			collector.collect(cu);
+			collector.collect(cu, depth);
 		}
 		collector.resolveRelations();
 		if (collector.getNonInterfaceCUNumber() > 0) {
@@ -159,8 +160,9 @@ public class JPAMapToolActor {
 
 	/**
 	 * update compilation unit of currently opened editor 
+	 * @param depth - process depth
 	 */
-	public void updateOpen() {
+	public void updateOpen(int depth) {
 		IWorkbenchWindow activeWorkbenchWindow = getActiveWorkbenchWindow();
 		if (activeWorkbenchWindow == null) {
 			return;
@@ -177,7 +179,7 @@ public class JPAMapToolActor {
 				//IJavaProject javaProject = cu.getJavaProject();
 				//collector.initCollector(javaProject);
 				collector.initCollector();
-				collector.collect(cu);
+				collector.collect(cu, depth);
 				collector.resolveRelations();
 				if (collector.getNonInterfaceCUNumber() > 0) {
 					//processor.modify(javaProject, collector.getMapCUs_Info(), true, createSelection2Update());
@@ -192,7 +194,7 @@ public class JPAMapToolActor {
 	}
 
 	public void makePersistent(ICompilationUnit cu) throws CoreException {
-		collector.collect(cu);
+		collector.collect(cu, Integer.MAX_VALUE);
 	}
 	
 	/**

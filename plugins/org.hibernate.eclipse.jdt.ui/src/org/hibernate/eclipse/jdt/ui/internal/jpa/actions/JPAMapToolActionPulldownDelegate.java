@@ -93,7 +93,7 @@ public class JPAMapToolActionPulldownDelegate implements
 		IAction action = new Action(JdtUiMessages.JPAMapToolActionPulldownDelegate_menu) {
 			public void run() {
 				//actor.updateOpen();
-				actor.updateSelected();
+				actor.updateSelected(Integer.MAX_VALUE);
 			}
 		};
 		addToMenu(menu, action, -1);
@@ -146,7 +146,7 @@ public class JPAMapToolActionPulldownDelegate implements
 
 	public void runWithEvent(IAction action, Event event) {
 		//actor.updateOpen();
-		actor.updateSelected();
+		actor.updateSelected(Integer.MAX_VALUE);
 	}
 
 }

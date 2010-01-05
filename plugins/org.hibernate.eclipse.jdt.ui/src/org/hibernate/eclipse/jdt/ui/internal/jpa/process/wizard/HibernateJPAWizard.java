@@ -120,8 +120,8 @@ public class HibernateJPAWizard extends RefactoringWizard implements IPageChangi
 			EntitiesList entitiesList = (EntitiesList)targetPage;
 			final IStructuredSelection selection = entitiesSource.getSelection();
 			IHibernateJPAWizardData data = 
-				HibernateJPAWizardDataFactory.createHibernateJPAWizardData(selection,
-				params);
+				HibernateJPAWizardDataFactory.createHibernateJPAWizardData(
+					selection, params, entitiesSource.getProcessDepth());
 			entitiesList.setData(data);
 		}
 	}
