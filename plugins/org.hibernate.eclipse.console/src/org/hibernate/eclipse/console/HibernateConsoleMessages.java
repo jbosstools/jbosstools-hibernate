@@ -504,6 +504,7 @@ public class HibernateConsoleMessages extends NLS {
 	public static String DeleteProjectParticipant_delete_console_configuration;
 	
 	public static String AddRemoveTableComposite_no_dependencies;
+	public static String AddRemoveTableComposite_control_depth_level;
 	//
 	static {
 		// initialize resource bundle

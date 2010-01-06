@@ -27,13 +27,18 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
@@ -49,6 +54,7 @@ import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
 public class AddRemoveTableComposite extends UpDownListComposite {
 
 	protected Button depthControl;
+	protected Text depthNumbers;
 	
 	public AddRemoveTableComposite(Composite parent, int style) {
 		super(parent, style, "", //$NON-NLS-1$
@@ -69,14 +75,41 @@ public class AddRemoveTableComposite extends UpDownListComposite {
 		gridData.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
 		gridData.grabExcessHorizontalSpace = false;
 		gridData.grabExcessVerticalSpace = false;
-		gridData.verticalAlignment = SWT.BOTTOM;
+		GridData gridData2 = new org.eclipse.swt.layout.GridData();
+		gridData2.horizontalAlignment = org.eclipse.swt.layout.GridData.FILL;
+		gridData2.grabExcessHorizontalSpace = false;
+		gridData2.grabExcessVerticalSpace = false;
 		depthControl = new Button(parent, SWT.CHECK);
-		depthControl.setText(HibernateConsoleMessages.AddRemoveTableComposite_no_dependencies);
+		//depthControl.setText(HibernateConsoleMessages.AddRemoveTableComposite_no_dependencies);
+		depthControl.setText(HibernateConsoleMessages.AddRemoveTableComposite_control_depth_level);
 		depthControl.setLayoutData(gridData);
+		depthNumbers = new Text(parent, SWT.SINGLE | SWT.BORDER | SWT.TRAIL);
+		depthNumbers.setText("0"); //$NON-NLS-1$
+		depthNumbers.setLayoutData(gridData2);
+		depthNumbers.setEnabled(false);
+		depthNumbers.addListener(SWT.Verify, new Listener() {
+			public void handleEvent(Event e) {
+				String string = e.text;
+				char [] chars = new char[string.length()];
+				string.getChars (0, chars.length, chars, 0);
+				for (int i = 0; i < chars.length; i++) {
+					if (!('0' <= chars [i] && chars [i] <= '9')) {
+						e.doit = false;
+						return;
+					}
+				}
+			}
+		});
+		depthControl.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				depthNumbers.setEnabled(depthControl.getSelection());
+			}
+		});
 	}
 
 	public int getProcessDepth() {
-		return depthControl.getSelection() ? 0 : Integer.MAX_VALUE;
+		String num = depthNumbers.getText();
+		return depthControl.getSelection() ? Integer.parseInt(num) : Integer.MAX_VALUE;
 	}
 	
 	protected void createColumns(Table table) {
