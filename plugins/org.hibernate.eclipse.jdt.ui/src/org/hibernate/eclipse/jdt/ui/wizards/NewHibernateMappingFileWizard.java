@@ -111,6 +111,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 		}
 		
 		page0 = new NewHibernateMappingElementsSelectionPage2(JdtUiMessages.NewHibernateMappingFileWizard_create_hibernate_xml_mapping_file, selection);
+		page0.setTitle(JdtUiMessages.NewHibernateMappingElementsSelectionPage2_title);
 		page0.setDescription(JdtUiMessages.NewHibernateMappingElementsSelectionPage2_description);
 		addPage(page0);
 		
