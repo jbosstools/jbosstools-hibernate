@@ -61,6 +61,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryPage;
+import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.AbstractQueryEditor;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
@@ -172,6 +173,18 @@ public class CriteriaEditor extends AbstractQueryEditor {
 
 		final ConsoleConfiguration consoleConfiguration = getConsoleConfiguration();
 
+		if(consoleConfiguration.getConfiguration()==null) {
+		 	consoleConfiguration.build();
+		 	consoleConfiguration.execute( new ExecutionContext.Command() {
+		 		public Object execute() {
+		 			if(consoleConfiguration.hasConfiguration()) {
+		 			consoleConfiguration.getConfiguration().buildMappings();
+		 		}
+		 			return consoleConfiguration;
+		 		}
+			});
+		}
+		
 		Set<String> imports = new HashSet<String>();
 		Configuration configuration = consoleConfiguration.getConfiguration();
 		if(configuration!=null) {
