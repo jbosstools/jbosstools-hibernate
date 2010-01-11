@@ -11,6 +11,7 @@
 package org.hibernate.eclipse.jdt.ui.wizards;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -68,8 +69,10 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
+import org.hibernate.eclipse.jdt.ui.internal.jpa.common.Utils;
 import org.hibernate.tool.hbm2x.HibernateMappingExporter;
 import org.hibernate.tool.hbm2x.HibernateMappingGlobalSettings;
+import org.hibernate.tool.hbm2x.pojo.POJOClass;
 
 /**
  * @author Dmitry Geraskov
@@ -212,6 +215,42 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 		}
 		this.selection = new StructuredSelection(filteredElements.toArray());
 	}
+	
+	protected class HibernateMappingExporter2 extends HibernateMappingExporter {
+		protected IJavaProject proj;
+		public HibernateMappingExporter2(IJavaProject proj, Configuration cfg, File outputdir) {
+	    	super(cfg, outputdir);
+	    	this.proj = proj;
+	    }
+		/**
+		 * redefine base exportPOJO to setup right output dir in case 
+		 * of several source folders 
+		 */
+		@SuppressWarnings("unchecked")
+		@Override
+		protected void exportPOJO(Map additionalContext, POJOClass element) {
+			File outputdir4File = getOutputDirectory();
+			String fullyQualifiedName = element.getQualifiedDeclarationName();
+			ICompilationUnit icu = Utils.findCompilationUnit(proj, fullyQualifiedName);
+			if (icu != null) {
+				IResource resource = null;
+				try {
+					resource = icu.getCorrespondingResource();
+				} catch (JavaModelException e) {
+					//ignore
+				}
+				int n = fullyQualifiedName.split("\\.").length; //$NON-NLS-1$
+				for ( ; n > 0 && resource != null; n--) {
+					resource = resource.getParent();
+				}
+				if (resource != null) {
+					outputdir4File = resource.getLocation().toFile();
+				}
+			}
+			setOutputDirectory(outputdir4File);
+			super.exportPOJO(additionalContext, element);
+		}
+	}
 
 	@Override
 	public boolean performFinish() {
@@ -256,12 +295,11 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 					IFolder temp_folder = entry.getKey().getProject().getFolder(new Path(".settings/org.hibernate_tools.temp"));
 					*/
 					
-					IResource container = entry.getKey().getPackageFragmentRoots().length > 0
-					? entry.getKey().getPackageFragmentRoots()[0].getResource()
-							: entry.getKey().getResource();
+					IPackageFragmentRoot[] pfRoots = entry.getKey().getPackageFragmentRoots();
+					IResource container = pfRoots.length > 0 ? pfRoots[0].getResource() : entry.getKey().getResource();
 
-					HibernateMappingExporter hce = new HibernateMappingExporter(config,
-							container.getLocation().toFile());
+					HibernateMappingExporter2 hce = new HibernateMappingExporter2(
+							entry.getKey(), config, container.getLocation().toFile());
 
 					hce.setGlobalSettings(hmgs);
 					//hce.setForEach("entity");
@@ -271,7 +309,12 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 					} catch (Exception e){
 						e.getCause().printStackTrace();
 					}
-					container.refreshLocal(IResource.DEPTH_INFINITE, null);
+					for (int i = 0; i < pfRoots.length; i++) {
+						container = pfRoots[i].getResource();
+						if (container != null && container.getType() != IResource.FILE) {
+							container.refreshLocal(IResource.DEPTH_INFINITE, null);
+						}
+					}
 				} catch (JavaModelException e1) {
 					HibernateConsolePlugin.getDefault().log(e1);
 				} catch (CoreException e) {
