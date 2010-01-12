@@ -34,8 +34,10 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
+import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.QueryEditor;
@@ -90,7 +92,7 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
         return result;
     }
 
-    ICompletionProposal[] computeProposals(IDocument doc, int lineStart, final int currentOffset, ConsoleConfiguration consoleConfiguration) {
+    ICompletionProposal[] computeProposals(IDocument doc, int lineStart, final int currentOffset, final ConsoleConfiguration consoleConfiguration) {
     	ICompletionProposal[] result = null;
     	errorMessage = null;
     	if (doc != null && currentOffset >= 0) {
@@ -112,6 +114,21 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
 					return result;
 				}
 
+				if(consoleConfiguration != null && consoleConfiguration.getConfiguration()==null) {
+					try{
+					 	consoleConfiguration.build();
+					 	consoleConfiguration.execute( new ExecutionContext.Command() {
+					 		public Object execute() {
+					 			if(consoleConfiguration.hasConfiguration()) {
+					 			consoleConfiguration.getConfiguration().buildMappings();
+					 		}
+					 			return consoleConfiguration;
+					 		}
+						});
+					} catch (HibernateException e){
+					}
+				}
+				
 				Configuration configuration = consoleConfiguration!=null?consoleConfiguration.getConfiguration():null;
 				IHQLCodeAssist hqlEval = new HQLCodeAssist(configuration);
 				EclipseHQLCompletionRequestor eclipseHQLCompletionCollector = new EclipseHQLCompletionRequestor();
@@ -119,9 +136,9 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
 				proposalList.addAll(eclipseHQLCompletionCollector.getCompletionProposals());
 				errorMessage = eclipseHQLCompletionCollector.getLastErrorMessage();
 
-				if(configuration == null && consoleConfiguration!=null) {
+				/*if(configuration == null && consoleConfiguration!=null) {
 					proposalList.add(new LoadConsoleCFGCompletionProposal(consoleConfiguration));
-				}
+				}*/
 
     			//findMatchingWords( currentOffset, proposalList, startWord, HQLCodeScanner.getHQLKeywords(), "keyword" );
     			//findMatchingWords( currentOffset, proposalList, startWord, HQLCodeScanner.getHQLFunctionNames(), "function");

@@ -56,6 +56,7 @@ import org.eclipse.ui.texteditor.ChainedPreferenceStore;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.eclipse.ui.texteditor.TextOperationAction;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
@@ -174,15 +175,19 @@ public class CriteriaEditor extends AbstractQueryEditor {
 		final ConsoleConfiguration consoleConfiguration = getConsoleConfiguration();
 
 		if(consoleConfiguration.getConfiguration()==null) {
-		 	consoleConfiguration.build();
-		 	consoleConfiguration.execute( new ExecutionContext.Command() {
-		 		public Object execute() {
-		 			if(consoleConfiguration.hasConfiguration()) {
-		 			consoleConfiguration.getConfiguration().buildMappings();
-		 		}
-		 			return consoleConfiguration;
-		 		}
-			});
+			try {
+			 	consoleConfiguration.build();
+			 	consoleConfiguration.execute( new ExecutionContext.Command() {
+			 		public Object execute() {
+			 			if(consoleConfiguration.hasConfiguration()) {
+			 			consoleConfiguration.getConfiguration().buildMappings();
+			 		}
+			 			return consoleConfiguration;
+			 		}
+				});
+			} catch (HibernateException e) {
+				
+			}
 		}
 		
 		Set<String> imports = new HashSet<String>();
