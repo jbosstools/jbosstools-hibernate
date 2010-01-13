@@ -40,11 +40,12 @@
     <author><firstname>Max</firstname><surname>Andersen</surname><email>max.andersen@jboss.com</email></author>
     <author><firstname>Olga</firstname><surname>Chikvina</surname></author>
     <author><firstname>Svetlana</firstname><surname>Mukhina</surname><email>smukhina@exadel.com</email></author>   
-    
-    <pubdate>April 2008</pubdate>
+
     <copyright>
       <year>2007</year>
+      <year>2008</year>
       <year>2009</year>
+      <year>2010</year>
       <holder>JBoss by Red Hat</holder>
     </copyright>
 
