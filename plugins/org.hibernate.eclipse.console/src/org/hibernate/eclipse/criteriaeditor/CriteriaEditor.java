@@ -39,6 +39,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.ITextListener;
 import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -186,7 +187,8 @@ public class CriteriaEditor extends AbstractQueryEditor {
 			 		}
 				});
 			} catch (HibernateException e) {
-				
+				String mess = NLS.bind(HibernateConsoleMessages.CompletionHelper_error_could_not_build_cc, consoleConfiguration.getName());
+				HibernateConsolePlugin.getDefault().logErrorMessage(mess, e);
 			}
 		}
 		

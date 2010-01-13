@@ -265,6 +265,7 @@ public class HibernateConsoleMessages extends NLS {
 	public static String CriteriaEditorStorage_none;
 	public static String JavaCompletionProcessor_error;
 	public static String JavaCompletionProcessor_error_while_performing_code_completion;
+	public static String JavaCompletionProcessor_error_find_project;
 	public static String JavaCompletionProcessor_no_console_configuration_found;
 	public static String JavaCompletionProcessor_session_session;
 	//
@@ -284,6 +285,7 @@ public class HibernateConsoleMessages extends NLS {
 	//
 	public static String CompletionHelper_could_not_complete_java_types;
 	public static String CompletionHelper_error_unknown_completion_proposal_class;
+	public static String CompletionHelper_error_could_not_build_cc;
 	public static String HQLCompletionProcessor_could_not_get_document_contents;
 	public static String HQLCompletionProcessor_error_while_performing_hql_completion;
 	public static String HQLCompletionProcessor_no_hql_completions_available;

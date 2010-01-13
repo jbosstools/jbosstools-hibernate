@@ -92,8 +92,15 @@ public class JavaCompletionProcessor implements IContentAssistProcessor {
 			String prefix = HibernateConsoleMessages.JavaCompletionProcessor_session_session; // has to do this because of https://bugs.eclipse.org/bugs/show_bug.cgi?id=141518
 			
 			IJavaCompletionProposal[] results = new IJavaCompletionProposal[0];
-			IJavaProject[] projects = ProjectUtils.findJavaProjects(editor.getConsoleConfiguration());
-			for (int i = 0; i < projects.length && results.length <= 0; i++) {
+			IJavaProject[] projects = null;
+			//try {
+				ProjectUtils.findJavaProjects(editor.getConsoleConfiguration());
+			/*} catch (RuntimeException e){
+				String mess = NLS.bind(HibernateConsoleMessages.JavaCompletionProcessor_error_find_project,
+						editor.getConsoleConfiguration().getName());
+				HibernateConsolePlugin.getDefault().logErrorMessage(mess, e);
+			}*/
+			for (int i = 0; projects != null && i < projects.length && results.length <= 0; i++) {
 				IJavaProject javaProject = projects[i];
 				collector = new CompletionProposalCollector( javaProject );
 				collector.acceptContext( new CompletionContext() );

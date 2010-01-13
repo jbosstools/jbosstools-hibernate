@@ -34,6 +34,7 @@ import org.eclipse.jface.text.contentassist.ICompletionProposal;
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.jface.text.contentassist.IContextInformationValidator;
+import org.eclipse.osgi.util.NLS;
 import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
@@ -126,6 +127,8 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
 					 		}
 						});
 					} catch (HibernateException e){
+						String mess = NLS.bind(HibernateConsoleMessages.CompletionHelper_error_could_not_build_cc, consoleConfiguration.getName());
+						HibernateConsolePlugin.getDefault().logErrorMessage(mess, e);
 					}
 				}
 				
