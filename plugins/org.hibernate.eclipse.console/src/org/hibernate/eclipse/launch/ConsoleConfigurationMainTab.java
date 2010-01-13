@@ -320,9 +320,7 @@ public class ConsoleConfigurationMainTab extends ConsoleConfigurationTab {
 
 	private void handleConfigurationFileSetup() {
 		int defaultChoice = 0;
-		IPath initialPath = getConfigurationFilePath() != null ? getConfigurationFilePath() : null;
-
-		if(initialPath!=null) {
+		if(getConfigurationFilePath()!=null) {
     		defaultChoice = 1;
     	}
 		MessageDialog dialog = createSetupDialog(HibernateConsoleMessages.ConsoleConfigurationMainTab_setup_configuration_file, HibernateConsoleMessages.ConsoleConfigurationMainTab_do_you_want_to_create_new_cfgxml, defaultChoice);
