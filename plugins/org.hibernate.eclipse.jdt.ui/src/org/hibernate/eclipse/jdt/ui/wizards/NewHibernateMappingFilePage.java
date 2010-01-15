@@ -94,7 +94,7 @@ public class NewHibernateMappingFilePage extends WizardPage {
 		viewer.setInput(null);
 
 		sc.setMinSize(container.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-		setControl(container);
+		setControl(sc);
 	}
 	
 	public void setInput(Map<IJavaProject, Collection<EntityInfo>> project_infos){

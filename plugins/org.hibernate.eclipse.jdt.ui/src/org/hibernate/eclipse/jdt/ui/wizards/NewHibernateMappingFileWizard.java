@@ -31,6 +31,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
@@ -66,6 +67,7 @@ import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.hibernate.eclipse.console.utils.FileUtils;
 import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.collect.AllEntitiesInfoCollector;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
@@ -98,6 +100,8 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 	private WizardNewFileCreationPage cPage;
 	
 	private NewHibernateMappingFilePage page2 = null;	
+	
+	private NewHibernateMappingPreviewPage previewPage = null;	
 
 	public NewHibernateMappingFileWizard(){
 		setDefaultPageImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.NEW_WIZARD) );
@@ -122,13 +126,15 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 	    cPage.setTitle( JdtUiMessages.NewHibernateMappingFileWizard_create_hibernate_xml_mapping_file );
 	    cPage.setDescription( JdtUiMessages.NewHibernateMappingFileWizard_create_empty_xml_mapping_file );
 	    cPage.setFileName("hibernate.hbm.xml"); //$NON-NLS-1$
-	    addPage( cPage );	    
+	    addPage(cPage);	    
 	    
 		page2 = new NewHibernateMappingFilePage(false);
 		page2.setTitle(JdtUiMessages.NewHibernateMappingFilePage_hibernate_xml_mapping_file);
 		page2.setMessage(JdtUiMessages.NewHibernateMappingFilePage_this_wizard_creates, IMessageProvider.WARNING);
-	
 		addPage(page2);		
+
+		previewPage = new NewHibernateMappingPreviewPage();
+		addPage(previewPage);
 	}
 	
 	@Override
@@ -150,9 +156,12 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
     }
 
 	public void handlePageChanging(PageChangingEvent event) {
-		if (event.getTargetPage() == page2){
+		if (event.getTargetPage() == page2) {
 			updateCompilationUnits();
 			page2.setInput(project_infos);
+		} else if (event.getTargetPage() == previewPage) {
+			Map<IJavaProject, IPath> places2Gen = getPlaces2Gen();
+			previewPage.setPlaces2Gen(places2Gen);
 		}
 	}
 
@@ -229,7 +238,8 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 		@SuppressWarnings("unchecked")
 		@Override
 		protected void exportPOJO(Map additionalContext, POJOClass element) {
-			File outputdir4File = getOutputDirectory();
+			File outputdir4FileOld = getOutputDirectory();
+			File outputdir4FileNew = outputdir4FileOld;
 			String fullyQualifiedName = element.getQualifiedDeclarationName();
 			ICompilationUnit icu = Utils.findCompilationUnit(proj, fullyQualifiedName);
 			if (icu != null) {
@@ -244,16 +254,79 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 					resource = resource.getParent();
 				}
 				if (resource != null) {
-					outputdir4File = resource.getLocation().toFile();
+					final IPath projPath = proj.getResource().getLocation();
+					IPath place2Gen = projPath.append(".settings"); //$NON-NLS-1$
+					place2Gen = place2Gen.append(NewHibernateMappingPreviewPage.HIBERNATE_NEW_HBM_XML_FOLDER_NAME);
+					//
+					IPath tmpPath = resource.getLocation();
+					tmpPath = tmpPath.makeRelativeTo(projPath);
+					place2Gen = place2Gen.append(tmpPath);
+					outputdir4FileNew = place2Gen.toFile();
 				}
 			}
-			setOutputDirectory(outputdir4File);
+			if (!outputdir4FileNew.exists()) {
+				outputdir4FileNew.mkdirs();
+			}
+			setOutputDirectory(outputdir4FileNew);
 			super.exportPOJO(additionalContext, element);
+			setOutputDirectory(outputdir4FileOld);
+		}
+	}
+
+	protected Map<IJavaProject, IPath> getPlaces2Gen() {
+		updateCompilationUnits();
+		Map<IJavaProject, Configuration> configs = createConfigurations();
+		Map<IJavaProject, IPath> places2Gen = new HashMap<IJavaProject, IPath>();
+		for (Entry<IJavaProject, Configuration> entry : configs.entrySet()) {
+			Configuration config = entry.getValue();
+			HibernateMappingGlobalSettings hmgs = new HibernateMappingGlobalSettings();
+
+			final IPath projPath = entry.getKey().getProject().getLocation();
+			IPath place2Gen = projPath.append(".settings"); //$NON-NLS-1$
+			place2Gen = place2Gen.append(NewHibernateMappingPreviewPage.HIBERNATE_NEW_HBM_XML_FOLDER_NAME);
+			places2Gen.put(entry.getKey(), place2Gen);
+			
+			File folder2Gen = new File(place2Gen.toOSString());
+			FileUtils.delete(folder2Gen); // cleanup folder before gen info
+			if (!folder2Gen.exists()) {
+				folder2Gen.mkdirs();
+			}
+			HibernateMappingExporter2 hce = new HibernateMappingExporter2(
+					entry.getKey(), config, folder2Gen);
+
+			hce.setGlobalSettings(hmgs);
+			//hce.setForEach("entity");
+			//hce.setFilePattern(file.getName());
+			try {
+				hce.start();
+			} catch (Exception e){
+				e.getCause().printStackTrace();
+			}
+		}
+		return places2Gen;
+	}
+
+	protected void cleanUpGenFolders() {
+		Set<IJavaProject> projs = previewPage.getJavaProjects();
+		for (IJavaProject proj : projs) {
+			// cleanup gen folder
+			final IPath projPath = proj.getProject().getLocation();
+			IPath place2Gen = projPath.append(".settings"); //$NON-NLS-1$
+			place2Gen = place2Gen.append(NewHibernateMappingPreviewPage.HIBERNATE_NEW_HBM_XML_FOLDER_NAME);
+			File folder2Gen = new File(place2Gen.toOSString());
+			FileUtils.delete(folder2Gen);
 		}
 	}
 
 	@Override
+	public boolean performCancel() {
+		cleanUpGenFolders();
+        return super.performCancel();
+    }
+
+	@Override
 	public boolean performFinish() {
+		boolean res = true;
 		if (page0.getSelection().isEmpty()){
 			final IFile file = cPage.createNewFile();
 			IRunnableWithProgress op = new IRunnableWithProgress() {
@@ -270,59 +343,35 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 			try {
 				getContainer().run(true, false, op);
 			} catch (InterruptedException e) {
-				return false;
+				res = false;
 			} catch (InvocationTargetException e) {
 				Throwable realException = e.getTargetException();
 				HibernateConsolePlugin.getDefault().showError(getShell(), HibernateConsoleMessages.NewReverseEngineeringFileWizard_error, realException);
-				return false;
+				res = false;
 			}
-			return true;
+			cleanUpGenFolders();
 		} else {
-			updateCompilationUnits();
-			Map<IJavaProject, Configuration> configs = createConfigurations();
-			for (Entry<IJavaProject, Configuration> entry : configs.entrySet()) {
-				Configuration config = entry.getValue();
-				HibernateMappingGlobalSettings hmgs = new HibernateMappingGlobalSettings();
-
-				
+			previewPage.performFinish();
+			// refresh
+			Set<IJavaProject> projs = previewPage.getJavaProjects();
+			for (IJavaProject proj : projs) {
 				try {
-				   /* IResource container = entry.getKey().getPackageFragmentRoots().length > 0
-					? entry.getKey().getPackageFragmentRoots()[0].getResource()
-							: entry.getKey().getResource();
-					
-					IPath temp_path = entry.getKey().getProject().getLocation().append(".settings").append("org.hibernate_tools.temp");
-					
-					IFolder temp_folder = entry.getKey().getProject().getFolder(new Path(".settings/org.hibernate_tools.temp"));
-					*/
-					
-					IPackageFragmentRoot[] pfRoots = entry.getKey().getPackageFragmentRoots();
-					IResource container = pfRoots.length > 0 ? pfRoots[0].getResource() : entry.getKey().getResource();
-
-					HibernateMappingExporter2 hce = new HibernateMappingExporter2(
-							entry.getKey(), config, container.getLocation().toFile());
-
-					hce.setGlobalSettings(hmgs);
-					//hce.setForEach("entity");
-					//hce.setFilePattern(file.getName());
-					try {
-						hce.start();
-					} catch (Exception e){
-						e.getCause().printStackTrace();
-					}
+					IPackageFragmentRoot[] pfRoots = proj.getPackageFragmentRoots();
 					for (int i = 0; i < pfRoots.length; i++) {
-						container = pfRoots[i].getResource();
+						IResource container = pfRoots[i].getResource();
 						if (container != null && container.getType() != IResource.FILE) {
 							container.refreshLocal(IResource.DEPTH_INFINITE, null);
 						}
 					}
-				} catch (JavaModelException e1) {
-					HibernateConsolePlugin.getDefault().log(e1);
+				} catch (JavaModelException e) {
+					HibernateConsolePlugin.getDefault().log(e);
 				} catch (CoreException e) {
 					HibernateConsolePlugin.getDefault().log(e);
 				}
 			}
-			return true;
+			cleanUpGenFolders();
 		}		
+		return res;
 	}
 	
     /**
@@ -472,30 +521,30 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 			project_infos.clear();
 			selection = page0.getSelection();
 			processDepth = page0.getProcessDepth();
-				try {
-					getContainer().run(false, false, new IRunnableWithProgress() {
+			try {
+				getContainer().run(false, false, new IRunnableWithProgress() {
 
-						public void run(IProgressMonitor monitor)
-								throws InvocationTargetException,
-								InterruptedException {
-							monitor.beginTask(JdtUiMessages.NewHibernateMappingFileWizard_look_for_dependent_cu, selection.size() + 1);
-							Iterator<?> it = selection.iterator();
-							int done = 1;
-							while (it.hasNext()) {
-								Object obj = it.next();
-								processJavaElements(obj, processDepth);
-								monitor.worked(done++);
-							}
-							initEntitiesInfo();
-							monitor.worked(1);
-							monitor.done();
+					public void run(IProgressMonitor monitor)
+							throws InvocationTargetException,
+							InterruptedException {
+						monitor.beginTask(JdtUiMessages.NewHibernateMappingFileWizard_look_for_dependent_cu, selection.size() + 1);
+						Iterator<?> it = selection.iterator();
+						int done = 1;
+						while (it.hasNext()) {
+							Object obj = it.next();
+							processJavaElements(obj, processDepth);
+							monitor.worked(done++);
 						}
-					});
-				} catch (InvocationTargetException e) {
-					HibernateConsolePlugin.getDefault().log(e);
-				} catch (InterruptedException e) {
-					HibernateConsolePlugin.getDefault().log(e);
-				}
+						initEntitiesInfo();
+						monitor.worked(1);
+						monitor.done();
+					}
+				});
+			} catch (InvocationTargetException e) {
+				HibernateConsolePlugin.getDefault().log(e);
+			} catch (InterruptedException e) {
+				HibernateConsolePlugin.getDefault().log(e);
+			}
 		}
 	}
 	
