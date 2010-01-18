@@ -13,6 +13,7 @@ package org.hibernate.eclipse.jdt.ui.internal.jpa.actions;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.internal.filebuffers.SynchronizableDocument;
@@ -33,6 +34,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.widgets.Shell;
@@ -125,7 +127,9 @@ public class JPAMapToolActor {
 			}
 		}
 		if (getSelectionCUSize() == 0) {
-			processor.modify(new HashMap<String, EntityInfo>(), true, createSelection2Update());
+			Map<String, EntityInfo> mapCUs_Info = new HashMap<String, EntityInfo>();
+			IStructuredSelection selection2Update = createSelection2Update();
+			processor.modify(mapCUs_Info, true, selection2Update);
 			return;
 		}
 		Iterator<ICompilationUnit> it = compileUnitCollector.setSelectionCUIterator();
@@ -137,7 +141,9 @@ public class JPAMapToolActor {
 		collector.resolveRelations();
 		if (collector.getNonInterfaceCUNumber() > 0) {
 			processor.setAnnotationStylePreference(collector.getAnnotationStylePreference());
-			processor.modify(collector.getMapCUs_Info(), true, createSelection2Update());
+			Map<String, EntityInfo> mapCUs_Info = collector.getMapCUs_Info();
+			IStructuredSelection selection2Update = createSelection2Update();
+			processor.modify(mapCUs_Info, true, selection2Update);
 		} else {
 			MessageDialog.openInformation(getShell(), 
 					JdtUiMessages.JPAMapToolActor_message_title, 
@@ -176,14 +182,14 @@ public class JPAMapToolActor {
 			CompilationUnitEditor cue = (CompilationUnitEditor)editor;
 			ICompilationUnit cu = (ICompilationUnit)cue.getViewPartInput();
 			if (cu != null) {
-				//IJavaProject javaProject = cu.getJavaProject();
-				//collector.initCollector(javaProject);
+				addCompilationUnit(cu);
 				collector.initCollector();
 				collector.collect(cu, depth);
 				collector.resolveRelations();
 				if (collector.getNonInterfaceCUNumber() > 0) {
-					//processor.modify(javaProject, collector.getMapCUs_Info(), true, createSelection2Update());
-					processor.modify(collector.getMapCUs_Info(), true, createSelection2Update());
+					Map<String, EntityInfo> mapCUs_Info = collector.getMapCUs_Info();
+					IStructuredSelection selection2Update = createSelection2Update();
+					processor.modify(mapCUs_Info, true, selection2Update);
 				} else {
 					MessageDialog.openInformation(getShell(), 
 							JdtUiMessages.JPAMapToolActor_message_title, 
