@@ -28,7 +28,7 @@ public class FileUtils {
 			File[] files = path.listFiles();
 			for (int i = 0; i < files.length; i++) {
 				if (files[i].isDirectory()) {
-					tmp = delete(files[i]);;
+					tmp = delete(files[i]);
 				} else {
 					tmp = deleteFile(files[i]);
 				}

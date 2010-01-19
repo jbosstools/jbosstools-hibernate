@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.Map.Entry;
 
 import org.eclipse.core.filebuffers.FileBuffers;
@@ -43,6 +44,7 @@ import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.text.edits.TextEdit;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.utils.FileUtils;
 
 /**
  * Preview wizard page for new hibernate mappings.
@@ -54,6 +56,8 @@ public class NewHibernateMappingPreviewPage extends PreviewWizardPage {
 
 	public static final String HIBERNATE_NEW_HBM_XML_FOLDER_NAME = "hibernateNewHbmXml"; //$NON-NLS-1$
 	
+	protected IPath rootPlace2GenBase = null;
+	protected IPath rootPlace2Gen = null;
 	protected Map<IJavaProject, IPath> places2Gen;
 	protected Set<IPath> paths2Disconnect = new HashSet<IPath>();
 
@@ -64,6 +68,11 @@ public class NewHibernateMappingPreviewPage extends PreviewWizardPage {
 	@Override
 	public void dispose() {
 		performDisconnect();
+		IPath place2Gen = getRootPlace2Gen();
+		if (place2Gen != null) {
+			File folder2Gen = new File(place2Gen.toOSString());
+			FileUtils.delete(folder2Gen);
+		}
 		super.dispose();
 	}
 
@@ -166,6 +175,26 @@ public class NewHibernateMappingPreviewPage extends PreviewWizardPage {
 		}
 		return str.toString();
 	}
+
+	public IPath getRootPlace2GenBase() {
+		if (rootPlace2GenBase != null) {
+			return rootPlace2GenBase;
+		}
+		String systemTmpDir = System.getProperty("java.io.tmpdir"); //$NON-NLS-1$
+		rootPlace2GenBase = new Path(systemTmpDir);
+		rootPlace2GenBase = rootPlace2GenBase.append(HIBERNATE_NEW_HBM_XML_FOLDER_NAME);
+		return rootPlace2GenBase;
+	}
+
+	public IPath getRootPlace2Gen() {
+		if (rootPlace2Gen != null) {
+			return rootPlace2Gen;
+		}
+		rootPlace2Gen = getRootPlace2GenBase();
+		String uuidName = UUID.randomUUID().toString();
+		rootPlace2Gen = rootPlace2Gen.append(uuidName);
+		return rootPlace2Gen;
+	}
 	
 	/**
 	 * Try to create one change according with input file (fileSrc).
@@ -184,7 +213,7 @@ public class NewHibernateMappingPreviewPage extends PreviewWizardPage {
 		}
 		final IPath basePath = proj.getResource().getParent().getLocation();
 		final IPath projPath = proj.getResource().getLocation();
-		final IPath place2Gen = projPath.append(".settings").append(HIBERNATE_NEW_HBM_XML_FOLDER_NAME); //$NON-NLS-1$
+		final IPath place2Gen = getRootPlace2Gen().append(proj.getElementName());
 		IPath filePathFrom = new Path(fileSrc.getPath());
 		IPath filePathTo = filePathFrom.makeRelativeTo(place2Gen);
 		filePathTo = projPath.append(filePathTo);

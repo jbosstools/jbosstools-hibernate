@@ -260,8 +260,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 				}
 				if (resource != null) {
 					final IPath projPath = proj.getResource().getLocation();
-					IPath place2Gen = projPath.append(".settings"); //$NON-NLS-1$
-					place2Gen = place2Gen.append(NewHibernateMappingPreviewPage.HIBERNATE_NEW_HBM_XML_FOLDER_NAME);
+					IPath place2Gen = previewPage.getRootPlace2Gen().append(proj.getElementName());
 					//
 					IPath tmpPath = resource.getLocation();
 					tmpPath = tmpPath.makeRelativeTo(projPath);
@@ -286,9 +285,8 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 			Configuration config = entry.getValue();
 			HibernateMappingGlobalSettings hmgs = new HibernateMappingGlobalSettings();
 
-			final IPath projPath = entry.getKey().getProject().getLocation();
-			IPath place2Gen = projPath.append(".settings"); //$NON-NLS-1$
-			place2Gen = place2Gen.append(NewHibernateMappingPreviewPage.HIBERNATE_NEW_HBM_XML_FOLDER_NAME);
+			//final IPath projPath = entry.getKey().getProject().getLocation();
+			IPath place2Gen = previewPage.getRootPlace2Gen().append(entry.getKey().getElementName());
 			places2Gen.put(entry.getKey(), place2Gen);
 			
 			File folder2Gen = new File(place2Gen.toOSString());
@@ -315,9 +313,8 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 		Set<IJavaProject> projs = previewPage.getJavaProjects();
 		for (IJavaProject proj : projs) {
 			// cleanup gen folder
-			final IPath projPath = proj.getProject().getLocation();
-			IPath place2Gen = projPath.append(".settings"); //$NON-NLS-1$
-			place2Gen = place2Gen.append(NewHibernateMappingPreviewPage.HIBERNATE_NEW_HBM_XML_FOLDER_NAME);
+			//final IPath projPath = proj.getProject().getLocation();
+			IPath place2Gen = previewPage.getRootPlace2Gen().append(proj.getElementName());
 			File folder2Gen = new File(place2Gen.toOSString());
 			FileUtils.delete(folder2Gen);
 		}
@@ -356,6 +353,10 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 			}
 			cleanUpGenFolders();
 		} else {
+			if (previewPage.getChange() == null) {
+				Map<IJavaProject, IPath> places2Gen = getPlaces2Gen();
+				previewPage.setPlaces2Gen(places2Gen);
+			}
 			previewPage.performFinish();
 			// refresh
 			Set<IJavaProject> projs = previewPage.getJavaProjects();
