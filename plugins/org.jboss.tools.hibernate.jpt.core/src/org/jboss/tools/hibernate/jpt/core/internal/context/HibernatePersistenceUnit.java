@@ -13,16 +13,21 @@ package org.jboss.tools.hibernate.jpt.core.internal.context;
 import java.io.File;
 import java.util.List;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
@@ -33,7 +38,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 public class HibernatePersistenceUnit extends GenericPersistenceUnit 
 	implements Messages, Hibernate {
 	
-	private HibernateProperties hibernateProperties;
+	private HibernateJpaProperties hibernateProperties;
 
 	/**
 	 * @param parent
@@ -63,6 +68,19 @@ public class HibernatePersistenceUnit extends GenericPersistenceUnit
 			IPath path = new Path(configFile);
 				
 			if (new File(path.toOSString()).exists()) return;
+			
+			try {
+				IJavaProject jp = getJpaProject().getJavaProject();
+				IPackageFragmentRoot[] pfrs = jp.getPackageFragmentRoots();
+				for (int i = 0; i < pfrs.length; i++) {
+					if (pfrs[i].isArchive()) continue;
+					if (((IContainer)pfrs[i].getResource()).findMember(path) != null){
+						return;
+					}
+				}
+			} catch (JavaModelException e) {
+				HibernateJptPlugin.logException(e);
+			}
 
 		    IResource res= ResourcesPlugin.getWorkspace().getRoot().findMember(path);
 		    if (res != null) {
