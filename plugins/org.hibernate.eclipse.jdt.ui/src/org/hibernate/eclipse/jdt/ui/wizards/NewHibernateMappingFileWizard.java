@@ -194,13 +194,13 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 				}				
 			} else if (elements[i] instanceof IPackageFragmentRoot) {
 				IPackageFragmentRoot root = (IPackageFragmentRoot)elements[i];
-				if (!root.isArchive()){							
+				if (!root.isArchive()) {							
 					try {
 						filteredElements.addAll(Arrays.asList((root.getChildren())));
 					} catch (JavaModelException e) {
 						e.printStackTrace();
 					}							
-			}
+				}
 			} else if (elements[i] instanceof ICompilationUnit) {
 				ICompilationUnit cu = (ICompilationUnit)elements[i];
 				IType[] types;
@@ -249,8 +249,13 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 				} catch (JavaModelException e) {
 					//ignore
 				}
-				int n = fullyQualifiedName.split("\\.").length; //$NON-NLS-1$
-				for ( ; n > 0 && resource != null; n--) {
+				String[] aFQName = fullyQualifiedName.split("\\."); //$NON-NLS-1$
+				int n = aFQName.length - 1;
+				for ( ; n >= 0 && resource != null; n--) {
+					if (n == 0 && aFQName[n].length() == 0) {
+						// handle the (default package) case
+						break;
+					}
 					resource = resource.getParent();
 				}
 				if (resource != null) {
@@ -300,7 +305,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 			try {
 				hce.start();
 			} catch (Exception e){
-				e.getCause().printStackTrace();
+				HibernateConsolePlugin.getDefault().log(e);
 			}
 		}
 		return places2Gen;
@@ -387,16 +392,22 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 		throws CoreException {
 		// create a sample file
 		monitor.beginTask(HibernateConsoleMessages.NewReverseEngineeringFileWizard_creating + file.getName(), 2);
+		InputStream stream = null;
 		try {
-			InputStream stream = openContentStream();
+			stream = openContentStream();
 			if (file.exists() ) {
                 file.setContents(stream, true, true, monitor);
 			} else {
 				file.create(stream, true, monitor);
 			}
-			stream.close();
-		} catch (IOException e) {
-
+		} finally {
+			if (stream != null) {
+				try {
+					stream.close();
+				} catch (IOException e) {
+					// ignore
+				}
+			}
 		}
 		monitor.worked(1);
 		monitor.setTaskName(HibernateConsoleMessages.NewConfigurationWizard_open_file_for_editing);
@@ -407,6 +418,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 				try {
 					IDE.openEditor(page, file, true);
 				} catch (PartInitException e) {
+					HibernateConsolePlugin.getDefault().log(e);
 				}
 			}
 		});
