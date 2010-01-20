@@ -156,6 +156,10 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
     }
 
 	public void handlePageChanging(PageChangingEvent event) {
+		if (event.getTargetPage() != previewPage) {
+			// clean up changes
+			previewPage.setChange(null);
+		}
 		if (event.getTargetPage() == page2) {
 			updateCompilationUnits();
 			page2.setInput(project_infos);
