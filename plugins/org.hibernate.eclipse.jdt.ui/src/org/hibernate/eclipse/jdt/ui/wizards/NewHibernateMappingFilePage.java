@@ -17,14 +17,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.JavaPluginImages;
 import org.eclipse.jdt.internal.ui.viewsupport.ImageDescriptorRegistry;
 import org.eclipse.jdt.ui.JavaElementImageDescriptor;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ICellModifier;
@@ -45,11 +43,8 @@ import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.ide.IDE;
-import org.eclipse.ui.model.IWorkbenchAdapter;
-import org.hibernate.console.ImageConstants;
-import org.hibernate.eclipse.console.utils.EclipseImages;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 
@@ -59,11 +54,17 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
  */
 @SuppressWarnings("restriction")
 public class NewHibernateMappingFilePage extends WizardPage {
+	
+	private final Point IMAGE_SIZE = new Point(16, 16);
 
 	private TableViewer viewer;
 	
 	private boolean hideFilename;
-
+	
+	private final ImageDescriptorRegistry registry = JavaPlugin.getImageDescriptorRegistry();
+	
+	private final Image hibMapping = HibernateConsolePlugin.getImageDescriptor("icons/images/hibernate_mapping.gif").createImage(); //$NON-NLS-1$
+	
 	/**
 	 * @param pageName
 	 */
@@ -101,14 +102,14 @@ public class NewHibernateMappingFilePage extends WizardPage {
 		viewer.setInput(project_infos);
 		//Hide "project" column if only 1 project's CUs selected
 		if (project_infos.size() == 1){
-			viewer.getTable().getColumn(1).setWidth(0);
+			viewer.getTable().getColumn(3).setWidth(0);
 		} else {
-			viewer.getTable().getColumn(1).setWidth(120);
-			viewer.getTable().getColumn(1).pack();
-		}
-		viewer.getTable().getColumn(2).pack();
-		if (!hideFilename){
+			viewer.getTable().getColumn(3).setWidth(120);
 			viewer.getTable().getColumn(3).pack();
+		}
+		viewer.getTable().getColumn(1).pack();
+		if (!hideFilename){
+			viewer.getTable().getColumn(2).pack();
 		}
 	}
 
@@ -121,21 +122,27 @@ public class NewHibernateMappingFilePage extends WizardPage {
 		 */
 		//if (hideFilename) 
 		column.setWidth(0);
-		column.setResizable(false);
-
-		column = new TableColumn(table, SWT.LEFT, coulmnIndex++);
-		column.setText(JdtUiMessages.NewHibernateMappingFilePage_project_name_column);
-		column.setWidth(120);
+		column.setResizable(false);		
 
 		column = new TableColumn(table, SWT.LEFT, coulmnIndex++);
 		column.setText(JdtUiMessages.NewHibernateMappingFilePage_class_name_column);
+		column.setImage(registry.get(
+				new JavaElementImageDescriptor(JavaPluginImages.DESC_OBJS_CLASS, 0, IMAGE_SIZE)));
 		column.setWidth(200);
 
-		if (!hideFilename) {
+		if (!hideFilename) {			
 			column = new TableColumn(table, SWT.LEFT, coulmnIndex++);
 			column.setText(JdtUiMessages.NewHibernateMappingFilePage_file_name_column);
 			column.setWidth(150);
+			column.setImage(hibMapping);
 		}
+		
+		column = new TableColumn(table, SWT.LEFT, coulmnIndex++);
+		column.setText(JdtUiMessages.NewHibernateMappingFilePage_project_name_column);
+		column.setImage(registry.get(new JavaElementImageDescriptor(
+				JavaPlugin.getDefault().getWorkbench().getSharedImages()
+					.getImageDescriptor(IDE.SharedImages.IMG_OBJ_PROJECT), 0, IMAGE_SIZE)));
+		column.setWidth(120);
 	}
 
 	private TableViewer createTableViewer(Table table) {
@@ -143,7 +150,7 @@ public class NewHibernateMappingFilePage extends WizardPage {
 		result.setUseHashlookup( true );
 
 		result.setColumnProperties( new String[] {Columns.CREATE.toString(), 
-				Columns.PROJECT.toString(),	Columns.CLASS.toString(), Columns.FILE.toString()} ); 
+				Columns.CLASS.toString(), Columns.FILE.toString(), Columns.PROJECT.toString(),} ); 
 
 		CellEditor[] editors = new CellEditor[result.getColumnProperties().length];
 		int coulmnIndex = 0;
@@ -160,16 +167,20 @@ public class NewHibernateMappingFilePage extends WizardPage {
 		result.setContentProvider( new TableContentProvider() );
 		return result;
 	}
+	
+	@Override
+	public void dispose() {
+		hibMapping.dispose();
+		super.dispose();
+	}
 
 	private class TableLine {
-
-		public String projectName;
 
 		public String className;
 
 		public String fileName;
 		
-		public IProject  project;
+		public IProject project;
 
 		public Boolean isCreate = true;
 
@@ -178,7 +189,6 @@ public class NewHibernateMappingFilePage extends WizardPage {
 		}
 
 		public TableLine(IProject iProject, String className, String fileName, boolean isCreate){
-			this.projectName = iProject.getName();
 			this.className = className;
 			this.fileName = fileName;
 			this.isCreate = isCreate;
@@ -188,7 +198,7 @@ public class NewHibernateMappingFilePage extends WizardPage {
 		@Override
 		public String toString() {
 			return "TableLine [className=" + className + ", projectName=" //$NON-NLS-1$ //$NON-NLS-2$
-					+ projectName + "]"; //$NON-NLS-1$
+					+ project.getName() + "]"; //$NON-NLS-1$
 		}		
 
 	}
@@ -229,18 +239,12 @@ public class NewHibernateMappingFilePage extends WizardPage {
 
 		private final TableViewer tv;
 		
-		private final Point IMAGE_SIZE = new Point(16, 16);
-		
-		private final ImageDescriptorRegistry registry = JavaPlugin.getImageDescriptorRegistry();
-
-		private ImageDescriptor DESC_OBJ_PROJECT = null;
-		
 		public TableLableProvider(TableViewer tv) {
 			this.tv = tv;
 		}
 
 		public Image getColumnImage(Object element, int columnIndex) {
-			String property = (String) tv.getColumnProperties()[columnIndex];
+			/*String property = (String) tv.getColumnProperties()[columnIndex];
 			TableLine tl = (TableLine) element;
 			if(Columns.CREATE.toString().equals(property)) {				
 				String key = tl.isCreate ? null : ImageConstants.CLOSE ; // TODO: find a better image
@@ -264,7 +268,7 @@ public class NewHibernateMappingFilePage extends WizardPage {
 					DESC_OBJ_PROJECT= 		 images.getImageDescriptor(IDE.SharedImages.IMG_OBJ_PROJECT);
 				}
 				return registry.get(new JavaElementImageDescriptor(DESC_OBJ_PROJECT, 0, IMAGE_SIZE));
-			}
+			}*/
 			return null;
 		}
 
@@ -275,7 +279,7 @@ public class NewHibernateMappingFilePage extends WizardPage {
 			if (Columns.CLASS.toString().equals(property)){
 				return tl.className;
 			} else if (Columns.PROJECT.toString().equals(property)){
-				return tl.projectName;
+				return tl.project.getName();
 			} else if (Columns.FILE.toString().equals(property)){
 				return tl.fileName;
 			} else {
@@ -300,7 +304,7 @@ public class NewHibernateMappingFilePage extends WizardPage {
 			if (Columns.CLASS.toString().equals(property)){
 				return ((TableLine)element).className;
 			} else if (Columns.PROJECT.toString().equals(property)){
-				return ((TableLine)element).projectName;
+				return ((TableLine)element).project.getName();
 			} else if (Columns.FILE.toString().equals(property)){
 				return ((TableLine)element).fileName;
 			} else if (Columns.CREATE.toString().equals(property)){
@@ -311,11 +315,7 @@ public class NewHibernateMappingFilePage extends WizardPage {
 
 		public void modify(Object element, String property, Object value) {
 			TableLine tl = (TableLine)((TableItem)element).getData();
-			if (Columns.CLASS.toString().equals(property)){
-				tl.className = (String)value;
-			} else if (Columns.PROJECT.toString().equals(property)){
-				tl.projectName = (String)value;
-			} else if (Columns.FILE.toString().equals(property)){
+			if (Columns.FILE.toString().equals(property)){
 				tl.fileName = (String)value;
 			} else if (Columns.CREATE.toString().equals(property)){
 				tl.isCreate = (Boolean)value;

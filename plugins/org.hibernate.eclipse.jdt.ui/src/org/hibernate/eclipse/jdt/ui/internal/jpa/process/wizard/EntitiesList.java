@@ -13,7 +13,10 @@ package org.hibernate.eclipse.jdt.ui.internal.jpa.process.wizard;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.eclipse.jdt.internal.ui.viewsupport.JavaElementImageProvider;
+import org.eclipse.jdt.internal.ui.JavaPlugin;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jdt.internal.ui.viewsupport.ImageDescriptorRegistry;
+import org.eclipse.jdt.ui.JavaElementImageDescriptor;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -26,6 +29,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -38,6 +42,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.ide.IDE;
 import org.hibernate.eclipse.jdt.ui.internal.JdtUiMessages;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.common.EntityInfo;
 import org.hibernate.eclipse.jdt.ui.internal.jpa.process.AnnotStyle;
@@ -49,6 +54,10 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.process.AnnotStyle;
  */
 @SuppressWarnings("restriction")
 public class EntitiesList extends UserInputWizardPage {
+	
+	private final ImageDescriptorRegistry registry = JavaPlugin.getImageDescriptorRegistry();
+	
+	private final Point IMAGE_SIZE = new Point(16, 16);
 
 	private enum Columns {
 		PROJECT,
@@ -251,10 +260,15 @@ public class EntitiesList extends UserInputWizardPage {
 		column = new TableColumn(table, SWT.LEFT, i++);
 		column.setText(JdtUiMessages.ResolveAmbiguous_column_Class);
 		column.setWidth(200);
+		column.setImage(registry.get(
+				new JavaElementImageDescriptor(JavaPluginImages.DESC_OBJS_CLASS, 0, IMAGE_SIZE)));
 		
 		column = new TableColumn(table, SWT.LEFT, i++);
 		column.setText(JdtUiMessages.NewHibernateMappingFilePage_project_name_column);
 		column.setWidth(isOneProject() ? 0: 200);
+		column.setImage(registry.get(new JavaElementImageDescriptor(
+				JavaPlugin.getDefault().getWorkbench().getSharedImages()
+					.getImageDescriptor(IDE.SharedImages.IMG_OBJ_PROJECT), 0, IMAGE_SIZE)));
 		column.setResizable(!isOneProject());
 	}
 
@@ -262,17 +276,17 @@ public class EntitiesList extends UserInputWizardPage {
 
 		protected final TableViewer tv;
 		
-		protected Image classImage = JavaElementImageProvider.getTypeImageDescriptor(false, false, 0, false).createImage();
+		//protected Image classImage = JavaElementImageProvider.getTypeImageDescriptor(false, false, 0, false).createImage();
 		
 		public TableLableProvider(TableViewer tv) {
 			this.tv = tv;
 		}
 
 		public Image getColumnImage(Object element, int columnIndex) {
-			String property = (String) tv.getColumnProperties()[columnIndex];
+			/*String property = (String) tv.getColumnProperties()[columnIndex];
 			if (Columns.CLASS.toString().equals(property)) {
 				return classImage;
-			}
+			}*/
 			return null;
 		}
 
@@ -287,10 +301,10 @@ public class EntitiesList extends UserInputWizardPage {
 			return "";//$NON-NLS-1$
 		}
 
-		@Override
+		/*@Override
 		public void dispose() {
 			classImage.dispose();
 			super.dispose();
-		}
+		}*/
 	}
 }
