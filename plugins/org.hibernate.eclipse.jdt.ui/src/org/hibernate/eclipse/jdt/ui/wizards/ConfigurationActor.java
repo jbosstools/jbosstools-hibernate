@@ -443,6 +443,7 @@ class TypeVisitor extends ASTVisitor{
 		Array array = null;
 		Type componentType = type.getComponentType();
 		ITypeBinding tb = componentType.resolveBinding();
+		if (tb == null) return false;//Unresolved binding. Omit the property.
 		if (tb.isPrimitive()){
 			array = new PrimitiveArray(rootClass);
 			
@@ -485,7 +486,7 @@ class TypeVisitor extends ASTVisitor{
 		Assert.isNotNull(type, "Type object cannot be null"); //$NON-NLS-1$
 		Assert.isNotNull(entityInfo, "EntityInfo object cannot be null"); //$NON-NLS-1$
 		ITypeBinding tb = type.resolveBinding();
-		Assert.isNotNull(tb, "Type binding not resolved."); //$NON-NLS-1$
+		if (tb == null) return false;//Unresolved binding. Omit the property.
 		rootClass = rootClasses.get(entityInfo.getFullyQualifiedName());
 		Assert.isNotNull(rootClass, "RootClass not found."); //$NON-NLS-1$
 		
@@ -543,7 +544,7 @@ class TypeVisitor extends ASTVisitor{
 	@Override
 	public boolean visit(SimpleType type) {
 		ITypeBinding tb = type.resolveBinding();
-		Assert.isNotNull(tb);
+		if (tb == null) return false;//Unresolved binding. Omit the property.
 		ITypeBinding[] interfaces = Utils.getAllInterfaces(tb);
 		Value value = buildCollectionValue(interfaces);
 		if (value != null){

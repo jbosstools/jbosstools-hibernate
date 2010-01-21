@@ -192,6 +192,7 @@ public class Utils {
 	public static boolean isImplementInterface(ITypeBinding[] interfaces, String parentInterface){
 		for (int i = 0; i < interfaces.length; i++) {
 			ITypeBinding typeBinding = interfaces[i];
+			if (typeBinding==null) continue;
 			if (parentInterface.equals(typeBinding.getBinaryName())) return true;
 			if (isImplementInterface(typeBinding.getInterfaces(), parentInterface)) return true;
 		}
