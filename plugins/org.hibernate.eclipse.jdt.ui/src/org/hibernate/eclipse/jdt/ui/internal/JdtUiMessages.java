@@ -46,7 +46,7 @@ public class JdtUiMessages extends NLS {
 	public static String NewHibernateMappingElementsSelectionPage2_description;
 	public static String NewHibernateMappingFilePage_class_name_column;
 	public static String NewHibernateMappingFilePage_file_name_column;
-	public static String NewHibernateMappingFilePage_hibernate_xml_mapping_file;
+	public static String NewHibernateMappingFilePage_title;
 	public static String NewHibernateMappingFilePage_project_name_column;
 	public static String NewHibernateMappingFilePage_this_wizard_creates;
 	
@@ -54,6 +54,8 @@ public class JdtUiMessages extends NLS {
 	public static String NewHibernateMappingFileWizard_create_empty_xml_mapping_file;
 	public static String NewHibernateMappingFileWizard_look_for_dependent_cu;
 	public static String NewHibernateMappingFileWizard_selection_cant_be_empty;
+	
+	public static String NewHibernateMappingPreviewPage_title;
 	
 	public static String EntitiesSource_header;
 	public static String EntitiesSource_description;

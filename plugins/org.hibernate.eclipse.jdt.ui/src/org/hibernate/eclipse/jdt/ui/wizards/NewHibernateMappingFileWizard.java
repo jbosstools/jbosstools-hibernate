@@ -129,11 +129,12 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 	    addPage(cPage);	    
 	    
 		page2 = new NewHibernateMappingFilePage(false);
-		page2.setTitle(JdtUiMessages.NewHibernateMappingFilePage_hibernate_xml_mapping_file);
+		page2.setTitle(JdtUiMessages.NewHibernateMappingFilePage_title);
 		page2.setMessage(JdtUiMessages.NewHibernateMappingFilePage_this_wizard_creates, IMessageProvider.WARNING);
 		addPage(page2);		
 
 		previewPage = new NewHibernateMappingPreviewPage();
+		previewPage.setTitle(JdtUiMessages.NewHibernateMappingPreviewPage_title);
 		addPage(previewPage);
 	}
 	
