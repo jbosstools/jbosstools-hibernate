@@ -22,6 +22,8 @@ import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.participants.CheckConditionsContext;
 import org.eclipse.ltk.core.refactoring.participants.RenameParticipant;
+import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 
 /**
@@ -50,6 +52,10 @@ public class RenameResourceParticipant extends RenameParticipant {
 		List<Change> changes = new ArrayList<Change>();
 		Change change = null;
 		for (int i= 0; i < configs.length; i++) {
+			ConsoleConfiguration cc = KnownConfigurations.getInstance().find(configs[i].getName());
+			if (cc != null) {
+				cc.reset();
+			}
 			change = new LaunchConfigurationResourceNameChange(configs[i], fResource.getFullPath(),
 					fResource.getParent().getFullPath().append(getArguments().getNewName()));
 			changes.add(change);
