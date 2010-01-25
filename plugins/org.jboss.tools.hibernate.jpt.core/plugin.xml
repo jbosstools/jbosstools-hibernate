@@ -18,4 +18,25 @@
     </listener>
  </extension>
 
+ <extension 
+		point="org.eclipse.jst.common.project.facet.core.libraryProviders">
+		
+		<provider id="hibernate-user-library-provider" extends="wtp-user-library-provider">
+			<param name="validator" value="org.eclipse.jst.common.project.facet.core.libprov.user.KeyClassesValidator"/>
+			<param name="validator.param.0" value="javax.persistence.Entity"/>
+			<param name="validator.param.1" value="org.hibernate.SessionFactory"/>
+			<enablement>
+				<and>
+					<with variable="requestingProjectFacet">
+						<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
+					</with>
+					<with variable="jpaPlatform">
+						<equals value="hibernate"/>
+					</with>
+				</and>
+			</enablement>
+		</provider>
+		
+ </extension>
+ 
 </plugin>
