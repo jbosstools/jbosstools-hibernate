@@ -10,11 +10,15 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.ui.bot.testcase;
 
+import java.util.List;
+
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
 import org.jboss.tools.hibernate.ui.bot.testsuite.Project;
+import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
+import org.jboss.tools.ui.bot.ext.parts.ObjectMultiPageEditorBot;
 import org.jboss.tools.ui.bot.ext.types.EntityType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.AfterClass;
@@ -101,5 +105,35 @@ public class MappingFileTest extends HibernateTest {
 	 */
 	@Test
 	public void editFile() {
+		// Open Hibernate Mapping File (ObjectMultiPageEditor on source tab)
+		eclipse.openFile(Project.PROJECT_NAME,"src",Project.PACKAGE_NAME,Project.CLASS1 + ".hbm.xml");
+		ObjectMultiPageEditorBot pageBot = new ObjectMultiPageEditorBot(Project.CLASS1 + ".hbm.xml");
+		pageBot.selectPage("Source");
+		
+		// Check code completion
+		SWTBotEditorExt editor = bot.editorByTitle(Project.CLASS1 + ".hbm.xml");
+		
+		String search = "</id>";  
+		List<String> lines = editor.getLines();
+		
+		int index = 0;
+		for (String line : lines ) {
+			index++;
+			if (line.trim().equals(search)) break;
+		}
+
+		log.info("Line index: " + index);
+
+		// Insert tag for cc check
+		String newLine = "<property name=\"\"> ";
+		int col = newLine.indexOf("\"\"");
+		editor.selectRange(index, 0, 0);
+		editor.insertText("\n");
+		editor.insertText(newLine);
+		editor.selectRange(index, col + 1, 0);
+		
+		// TODO autocomplete proposal check
+		
+		editor.save();		
 	}
 }

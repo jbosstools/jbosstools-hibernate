@@ -136,7 +136,7 @@ public class ConsoleTest extends HibernateTest {
 	 */
 	@Test	
 	public void editConsole() {
-		// TODO
+		// TODO impl.
 	}
 
 }
