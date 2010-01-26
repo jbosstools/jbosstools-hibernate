@@ -59,6 +59,7 @@ public class ConsoleTest extends HibernateTest {
 		createCommonTab();
 		
 		bot.button(IDELabel.Button.FINISH).click();
+		util.waitForNonIgnoredJobs();
 		log.info("HB Console creation FINISHED");
 		
 		done = true;
@@ -84,6 +85,7 @@ public class ConsoleTest extends HibernateTest {
 		SWTBotShell shell = bot.activeShell();
 		bot.button(IDELabel.Button.FINISH).click();
 		eclipse.waitForClosedShell(shell);
+			
 		log.info("HB Console Main tab DONE");		
 		bot.sleep(TIME_1S);
 	}

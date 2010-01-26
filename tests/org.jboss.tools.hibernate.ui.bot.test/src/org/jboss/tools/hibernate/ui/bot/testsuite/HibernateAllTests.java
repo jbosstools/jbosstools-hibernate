@@ -33,10 +33,10 @@ import org.junit.runners.Suite.SuiteClasses;
 	MappingsDiagramTest.class,
 	ReverseEngineerFileTest.class, ViewsTest.class */
 		
-@SuiteClasses( { 	ConfigurationFileTest.class,
-					ConsoleTest.class,					
+@SuiteClasses( { 	ConfigurationFileTest.class,									
 					MappingFileTest.class,
-					CodeGenerationLauncherTest.class})		
+					CodeGenerationLauncherTest.class,
+					ConsoleTest.class})		
 		
 public class HibernateAllTests extends HibernateTest {
 

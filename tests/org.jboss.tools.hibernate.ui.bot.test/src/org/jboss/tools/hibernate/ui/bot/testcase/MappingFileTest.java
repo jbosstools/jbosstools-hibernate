@@ -17,8 +17,8 @@ import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
 import org.jboss.tools.hibernate.ui.bot.testsuite.Project;
-import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
 import org.jboss.tools.ui.bot.ext.parts.ObjectMultiPageEditorBot;
+import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
 import org.jboss.tools.ui.bot.ext.types.EntityType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.AfterClass;
@@ -70,7 +70,7 @@ public class MappingFileTest extends HibernateTest {
 		
 		// Create mapping files 
 		eclipse.createNew(EntityType.HIBERNATE_MAPPING_FILE);
-		eclipse.waitForShell(IDELabel.Shell.NEW_HIBERNATE_MAPPING_FILE);
+
 		bot.button(IDELabel.Button.NEXT).click();
 		bot.button(IDELabel.Button.FINISH).click();
 		util.waitForNonIgnoredJobs();
@@ -86,12 +86,13 @@ public class MappingFileTest extends HibernateTest {
 	private void createFilesFromPackage() {
 		// Select Package file
 		SWTBot viewBot = bot.viewByTitle(IDELabel.View.PACKAGE_EXPLORER).bot();
+		bot.viewByTitle(IDELabel.View.PACKAGE_EXPLORER).show();
+		bot.viewByTitle(IDELabel.View.PACKAGE_EXPLORER).setFocus();
 		SWTBotTreeItem item = viewBot.tree().expandNode(Project.PROJECT_NAME).expandNode("src");	
 		item = item.expandNode(Project.PACKAGE_NAME).select();
 		
 		// Create mapping files 
 		eclipse.createNew(EntityType.HIBERNATE_MAPPING_FILE);
-		eclipse.waitForShell(IDELabel.Shell.NEW_HIBERNATE_MAPPING_FILE);
 		bot.button(IDELabel.Button.FINISH).click();
 		util.waitForNonIgnoredJobs();
 				

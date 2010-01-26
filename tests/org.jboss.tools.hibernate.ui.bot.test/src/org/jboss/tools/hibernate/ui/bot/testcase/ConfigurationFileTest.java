@@ -78,9 +78,11 @@ public class ConfigurationFileTest extends HibernateTest {
 		if (!cb.isChecked())
 			cb.click();
 		
-		SWTBotShell shell = bot.activeShell();
+		SWTBotShell shell = bot.activeShell();		
+		log.info("Active shell:" + shell.getText());
 		bot.button(IDELabel.Button.FINISH).click();
-		eclipse.waitForClosedShell(shell);				
+		eclipse.waitForClosedShell(shell);
+		log.info("Active Shell: " + bot.activeShell().getText());
 	}
 
 	/**
@@ -96,8 +98,7 @@ public class ConfigurationFileTest extends HibernateTest {
 	 */
 	public void editFile() throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
 		
-		eclipse.openFile(Project.PROJECT_NAME, "src", Project.CONF_FILE_NAME2);
-		SWTBotEditor editor = bot.editorByTitle(Project.CONF_FILE_NAME2);
+		SWTBotEditor editor = eclipse.openFile(Project.PROJECT_NAME, "src", Project.CONF_FILE_NAME2);
 		ObjectMultiPageEditorBot multiBot = new ObjectMultiPageEditorBot(Project.CONF_FILE_NAME2);
 
 		// 1. Tabs availability		
@@ -177,7 +178,6 @@ public class ConfigurationFileTest extends HibernateTest {
 		
 		editor.saveAndClose();		
 		assertTrue("Security element not found in xml", found);		
-		bot.sleep(TIME_10S);
 	}
 
 }

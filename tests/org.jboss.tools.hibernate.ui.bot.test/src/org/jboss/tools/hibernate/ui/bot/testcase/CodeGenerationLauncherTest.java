@@ -43,6 +43,7 @@ public class CodeGenerationLauncherTest extends HibernateTest {
 		prepareProject();
 		prepareConsole();
 		prepareDatabase();
+		util.waitForNonIgnoredJobs();
 	}
 	
 	/**
@@ -53,8 +54,10 @@ public class CodeGenerationLauncherTest extends HibernateTest {
 		if (generationDone) return;
 		
 		log.info("HB Code Generation STARTED");
-		eclipse.openPerspective(PerspectiveType.HIBERNATE);
+		log.info("Active Shell: " + bot.activeShell().getText());
 		
+		eclipse.openPerspective(PerspectiveType.HIBERNATE);
+				
 		createNewHibernateCodeGenerationConfiguration();
 		
 		fillMainTab();		
@@ -66,8 +69,10 @@ public class CodeGenerationLauncherTest extends HibernateTest {
 		log.info("HB Code Generation FINISHED");
 		util.waitForNonIgnoredJobs();
 		
-		checkGeneratedFiles();
+		log.info("Active Shell: " + bot.activeShell().getText());
 		
+		checkGeneratedFiles();
+				
 		generationDone = true;			
 	}
 	/**
@@ -75,6 +80,13 @@ public class CodeGenerationLauncherTest extends HibernateTest {
 	 */
 	private void checkGeneratedFiles() {
 	
+		log.info("Active Shell: " + bot.activeShell().getText());
+		SWTBotShell[] shells = bot.shells();
+		for (SWTBotShell shell : shells) {
+			log.info("Possible shell: " + shell.getText());
+		}
+				
+		bot.sleep(TIME_20S);
 		SWTBot viewBot = eclipse.showView(ViewType.PROJECT_EXPLORER);
 		SWTBotTreeItem item;
 
