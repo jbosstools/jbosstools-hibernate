@@ -19,7 +19,6 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
@@ -29,8 +28,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.HibernateBasic;
  * @author Dmitry Geraskov
  *
  */
-public class HibernateJpaProperties extends AbstractModel implements
-		HibernateProperties {
+public class HibernateJpaProperties extends AbstractModel {
 	
 	private PersistenceUnit persistenceUnit;
 	
@@ -56,7 +54,7 @@ public class HibernateJpaProperties extends AbstractModel implements
 	}
 	
 	private ListValueModel<Property> buildPropertyListAdapter(ListValueModel<Property> propertiesAdapter) {
-		return new ItemPropertyListValueModelAdapter<Property>(propertiesAdapter, Property.VALUE_PROPERTY);
+		return new ItemPropertyListValueModelAdapter<Property>(propertiesAdapter, Property.VALUE_PROPERTY, Property.NAME_PROPERTY);
 	}
 	
 	private ListValueModel<Property> buildPropertiesAdapter(PropertyValueModel<PersistenceUnit> subjectHolder) {
@@ -94,15 +92,4 @@ public class HibernateJpaProperties extends AbstractModel implements
 		return this.persistenceUnit.getJpaProject();
 	}
 
-	public boolean itemIsProperty(Property item) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void propertyChanged(PropertyChangeEvent event) {
-		throw new UnsupportedOperationException();
-	}
-
-	public String propertyIdFor(Property property) {
-		throw new UnsupportedOperationException();
-	}
 }

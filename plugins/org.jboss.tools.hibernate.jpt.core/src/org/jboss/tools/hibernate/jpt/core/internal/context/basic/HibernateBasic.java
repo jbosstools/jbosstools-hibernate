@@ -125,6 +125,7 @@ public class HibernateBasic extends HibernatePersistenceUnitProperties
 	}
 	
 	public void setConfigurationFile(String newConfigFile) {
+		if (!valueWasChanged(configFile, newConfigFile)) return;
 		String old = this.configFile;
 		this.configFile = newConfigFile;
 		this.putProperty(CONFIG_FILE_PROPERTY, newConfigFile);
@@ -148,6 +149,7 @@ public class HibernateBasic extends HibernatePersistenceUnitProperties
 	}
 
 	public void setDialect(String newDialect) {
+		if (!valueWasChanged(dialect, newDialect)) return;
 		String old = this.dialect;
 		this.dialect = newDialect;
 		this.putProperty(DIALECT_PROPERTY, newDialect);
@@ -171,6 +173,7 @@ public class HibernateBasic extends HibernatePersistenceUnitProperties
 	}	
 
 	public void setDriver(String newDriver) {
+		if (!valueWasChanged(driver, newDriver)) return;
 		String old = this.driver;
 		this.driver = newDriver;
 		this.putProperty(DRIVER_PROPERTY, newDriver);
@@ -194,6 +197,7 @@ public class HibernateBasic extends HibernatePersistenceUnitProperties
 	}	
 
 	public void setUrl(String newUrl) {
+		if (!valueWasChanged(url, newUrl)) return;
 		String old = this.url;
 		this.url = newUrl;
 		this.putProperty(URL_PROPERTY, newUrl);
@@ -217,6 +221,7 @@ public class HibernateBasic extends HibernatePersistenceUnitProperties
 	}
 	
 	public void setSchemaDefault(String newSchemaDefault) {
+		if (!valueWasChanged(schemaDefault, newSchemaDefault)) return;
 		String old = this.schemaDefault;
 		this.schemaDefault = newSchemaDefault;
 		this.putProperty(SCHEMA_DEFAULT_PROPERTY, newSchemaDefault);
@@ -240,6 +245,7 @@ public class HibernateBasic extends HibernatePersistenceUnitProperties
 	}
 	
 	public void setCatalogDefault(String newCatalogDefault) {
+		if (!valueWasChanged(catalogDefault, newCatalogDefault)) return;
 		String old = this.catalogDefault;
 		this.catalogDefault = newCatalogDefault;
 		this.putProperty(CATALOG_DEFAULT_PROPERTY, newCatalogDefault);
@@ -263,6 +269,7 @@ public class HibernateBasic extends HibernatePersistenceUnitProperties
 	}	
 
 	public void setUsername(String newUsername) {
+		if (!valueWasChanged(username, newUsername)) return;
 		String old = this.username;
 		this.username = newUsername;
 		this.putProperty(USERNAME_PROPERTY, newUsername);
@@ -286,6 +293,7 @@ public class HibernateBasic extends HibernatePersistenceUnitProperties
 	}
 
 	public void setPassword(String newPassword) {
+		if (!valueWasChanged(password, newPassword)) return;
 		String old = this.password;
 		this.password = newPassword;
 		this.putProperty(PASSWORD_PROPERTY, newPassword);
@@ -297,6 +305,22 @@ public class HibernateBasic extends HibernatePersistenceUnitProperties
 		String old = this.password;
 		this.password = newPassword;
 		this.firePropertyChanged(event.getAspectName(), old, newPassword);
+	}
+
+	public void updateProperties() {
+		setConfigurationFile(this.getStringValue(HIBERNATE_CONFIG_FILE));
+		setDialect(this.getStringValue(HIBERNATE_DIALECT));
+		setDriver(this.getStringValue(HIBERNATE_DRIVER));
+		setUrl(this.getStringValue(HIBERNATE_URL));
+		setSchemaDefault(this.getStringValue(HIBERNATE_SCHEMA_DEFAULT));
+		setCatalogDefault(this.getStringValue(HIBERNATE_CATALOG));
+		setUsername(this.getStringValue(HIBERNATE_USERNAME));
+		setPassword(this.getStringValue(HIBERNATE_PASSWORD));
+	}
+	
+	private boolean valueWasChanged(String oldValue, String newValue){
+		return oldValue == null ? newValue != null
+				: !oldValue.equals(newValue);
 	}
 
 }
