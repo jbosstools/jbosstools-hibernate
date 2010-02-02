@@ -99,9 +99,9 @@ public class HbmExporterTest extends TestCase {
 	
 	public void testId(){
 		Configuration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
-		checkClassesMaped(config, "A", "B"); //$NON-NLS-1$ //$NON-NLS-2$
-		PersistentClass a = config.getClassMapping("A"); //$NON-NLS-1$
-		PersistentClass b = config.getClassMapping("B"); //$NON-NLS-1$
+		checkClassesMaped(config, "pack.A", "pack.B"); //$NON-NLS-1$ //$NON-NLS-2$
+		PersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
+		PersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
 		
 		Property aId= a.getIdentifierProperty();
 		Property bId= b.getIdentifierProperty();
@@ -113,8 +113,8 @@ public class HbmExporterTest extends TestCase {
 	
 	public void testProperty(){
 		Configuration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
-		checkClassesMaped(config, "A", "B"); //$NON-NLS-1$ //$NON-NLS-2$
-		PersistentClass a = config.getClassMapping("A"); //$NON-NLS-1$
+		checkClassesMaped(config, "pack.A", "pack.B"); //$NON-NLS-1$ //$NON-NLS-2$
+		PersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
 		
 		Property prop = a.getProperty("prop"); //$NON-NLS-1$
 		Value value = prop.getValue();
@@ -126,9 +126,9 @@ public class HbmExporterTest extends TestCase {
 	
 	public void testArray(){
 		Configuration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
-		checkClassesMaped(config, "A", "B"); //$NON-NLS-1$ //$NON-NLS-2$
-		PersistentClass a = config.getClassMapping("A"); //$NON-NLS-1$
-		PersistentClass b = config.getClassMapping("B"); //$NON-NLS-1$
+		checkClassesMaped(config, "pack.A", "pack.B"); //$NON-NLS-1$ //$NON-NLS-2$
+		PersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
+		PersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
 		
 		Property bs = a.getProperty("bs"); //$NON-NLS-1$
 		Value value = bs.getValue();
@@ -152,9 +152,9 @@ public class HbmExporterTest extends TestCase {
 	
 	public void testList(){
 		Configuration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
-		checkClassesMaped(config, "A", "B"); //$NON-NLS-1$ //$NON-NLS-2$
-		PersistentClass a = config.getClassMapping("A"); //$NON-NLS-1$
-		PersistentClass b = config.getClassMapping("B"); //$NON-NLS-1$
+		checkClassesMaped(config, "pack.A", "pack.B"); //$NON-NLS-1$ //$NON-NLS-2$
+		PersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
+		PersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
 		
 		Property listProp = a.getProperty("list"); //$NON-NLS-1$
 		Value value = listProp.getValue();
@@ -170,9 +170,9 @@ public class HbmExporterTest extends TestCase {
 	
 	public void testSet(){
 		Configuration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
-		checkClassesMaped(config, "A", "B"); //$NON-NLS-1$ //$NON-NLS-2$
-		PersistentClass a = config.getClassMapping("A"); //$NON-NLS-1$
-		PersistentClass b = config.getClassMapping("B"); //$NON-NLS-1$
+		checkClassesMaped(config, "pack.A", "pack.B"); //$NON-NLS-1$ //$NON-NLS-2$
+		PersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
+		PersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
 		
 		Property setProp = a.getProperty("set"); //$NON-NLS-1$
 		Value value = setProp.getValue();
@@ -187,9 +187,9 @@ public class HbmExporterTest extends TestCase {
 	
 	public void testMap(){
 		Configuration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
-		checkClassesMaped(config, "A", "B"); //$NON-NLS-1$ //$NON-NLS-2$
-		PersistentClass a = config.getClassMapping("A"); //$NON-NLS-1$
-		PersistentClass b = config.getClassMapping("B"); //$NON-NLS-1$
+		checkClassesMaped(config, "pack.A", "pack.B"); //$NON-NLS-1$ //$NON-NLS-2$
+		PersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$
+		PersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
 		
 		Property mapValue = a.getProperty("mapValue"); //$NON-NLS-1$
 		Value value = mapValue.getValue();
