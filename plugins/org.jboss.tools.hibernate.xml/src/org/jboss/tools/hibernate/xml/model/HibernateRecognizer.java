@@ -11,6 +11,8 @@
 package org.jboss.tools.hibernate.xml.model;
 
 import org.jboss.tools.common.model.loaders.EntityRecognizer;
+import org.jboss.tools.common.model.loaders.EntityRecognizerContext;
+import org.jboss.tools.common.model.loaders.XMLRecognizerContext;
 import org.jboss.tools.common.xml.XMLEntityResolver;
 
 public class HibernateRecognizer implements EntityRecognizer {
@@ -37,19 +39,27 @@ public class HibernateRecognizer implements EntityRecognizer {
 		} catch (Exception e) {}
 	}
 
-	public String getEntityName(String ext, String body) {
-		
-		return (body == null || !"xml".equals(ext)) ? null  //$NON-NLS-1$
-				: (body.indexOf("\"" + HibernateConstants.DOC_PUBLICID_3_0 + "\"") >= 0  //$NON-NLS-1$ //$NON-NLS-2$
-				   	|| body.indexOf("\"" + HibernateConstants.DOC_SYSTEMID_3_0 + "\"") >= 0) ? HibernateConstants.ENTITY_FILE_HIBERNATE_3_0  //$NON-NLS-1$ //$NON-NLS-2$
-				: (body.indexOf("\"" + HibernateConstants.CFG_DOC_PUBLICID_3_0 + "\"") >= 0  //$NON-NLS-1$ //$NON-NLS-2$
-				   	|| body.indexOf("\"" + HibernateConstants.CFG_DOC_SYSTEMID_3_0 + "\"") >= 0) ? HibernateConstants.ENTITY_FILE_HIB_CONFIG_3_0 //$NON-NLS-1$ //$NON-NLS-2$
+    public String getEntityName(EntityRecognizerContext context) {
+    	String body = context.getBody();
+        if(body == null || !"xml".equals(context.getExtension())) return null; //$NON-NLS-1$
+		XMLRecognizerContext xml = context.getXMLContext();
+		if(xml.isDTD()) {
+			String publicId = xml.getPublicId();
+			String systemId = xml.getSystemId();
+//			String root = xml.getRootName();
+			if(HibernateConstants.DOC_PUBLICID_3_0.equals(publicId)	|| HibernateConstants.DOC_SYSTEMID_3_0.equals(systemId)) {
+				return HibernateConstants.ENTITY_FILE_HIBERNATE_3_0;
+			} else if(HibernateConstants.CFG_DOC_PUBLICID_3_0.equals(publicId) || HibernateConstants.CFG_DOC_SYSTEMID_3_0.equals(systemId)) {
+				return HibernateConstants.ENTITY_FILE_HIB_CONFIG_3_0;
+			} else if(HibernateConstants.CFG_DOC_PUBLICID_2_0.equals(publicId) || HibernateConstants.CFG_DOC_SYSTEMID_2_0.equals(systemId)) {
 				//we do not support cfg 2.0 but let's try and do the best
-				: (body.indexOf("\"" + HibernateConstants.CFG_DOC_PUBLICID_2_0 + "\"") >= 0  //$NON-NLS-1$ //$NON-NLS-2$
-				   	|| body.indexOf("\"" + HibernateConstants.CFG_DOC_SYSTEMID_2_0 + "\"") >= 0) ? HibernateConstants.ENTITY_FILE_HIB_CONFIG_3_0 //$NON-NLS-1$ //$NON-NLS-2$
-				: (body.indexOf("\"" + HibernateConstants.RVE_DOC_PUBLICID_3_0 + "\"") >= 0  //$NON-NLS-1$ //$NON-NLS-2$
-				   	|| body.indexOf("\"" + HibernateConstants.RVE_DOC_SYSTEMID_3_0 + "\"") >= 0) ? HibernateConstants.ENTITY_FILE_HIB_REV_ENG_3_0 //$NON-NLS-1$ //$NON-NLS-2$
-				: null;
+				return HibernateConstants.ENTITY_FILE_HIB_CONFIG_3_0;
+			} else if(HibernateConstants.RVE_DOC_PUBLICID_3_0.equals(publicId) || HibernateConstants.RVE_DOC_SYSTEMID_3_0.equals(systemId)) {
+				return HibernateConstants.ENTITY_FILE_HIB_REV_ENG_3_0;
+			}
+		}
+		
+		return null;
 	}
 
 }
