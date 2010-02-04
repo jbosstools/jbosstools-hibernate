@@ -1,81 +1,108 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <chapter id="setup">
   <title>Download and install Hibernate Tools</title>
-
-  <para><property>Hibernate Tools</property> can be used &quot;standalone&quot; via Ant
-    1.6.x or fully integrated into an Eclipse + WTP based IDE, such as <property>JBDS/JBoss
-      Tools</property>, or a default Eclipse + WTP installation. The following sections describe the
-    install steps in these environments.</para>
-
+  <para><property>Hibernate Tools</property> can be used &quot;standalone&quot; via Ant 1.6.x or
+    fully integrated into an Eclipse + WTP based IDE, such as <property>JBDS/JBoss Tools</property>,
+    or a default Eclipse + WTP installation. The following sections describe the install steps in
+    these environments.</para>
   <note>
     <title>Note:</title>
-    <para>The <property>Hibernate Tools 3.2.4.GA</property> (the current release version) requires
-      Eclipse Ganymede 3.4.2.</para>
+    <para>The <property>Hibernate Tools 3.3.0</property> (the current release version) requires
+      Eclipse Galileo 3.5.</para>
   </note>
-
   <section>
     <title>JBoss Tools</title>
-
-    <para><property>JBoss Tools 3.0.0.GA</property> (the latest release) includes
-        <property>Hibernate Tools 3.2.4.GA</property> and thus nothing is required besides <ulink
-        url="http://jboss.org/tools/download/stable/3_0_0_GA.html">downloading</ulink> and <ulink
-        url="&gsglink;#JBossToolsInstall">installing JBoss Tools</ulink>. If you need to update
-      to a newer version of the <property>Hibernate Tools</property> just follow the instructions in
-      the Eclipse IDE section.</para>
+    <para><property>JBoss Tools 3.1.0</property> (the latest release) includes <property>Hibernate
+        Tools 3.3.0</property> and thus nothing is required besides <property>downloading</property>
+      and <property>installing JBoss Tools</property>. If you need to update to a newer version of
+      the <property>Hibernate Tools</property> just follow the instructions in the Eclipse IDE
+      section.</para>
   </section>
-
   <section>
     <title>Eclipse IDE</title>
-
-    <para>To install the <property>Hibernate Tools</property> into any <property>Eclipse 3.4.x</property> based IDE you
-      can either download the <property>Hibernate Tools</property> distribution from the <ulink
-        url="http://jboss.org/tools/download/stable/3_0_0_GA.html">JBoss Tools download page</ulink>
-      or from the <ulink url="http://download.jboss.org/jbosstools/updates/stable/">JBoss Tools
-        Update Site</ulink>.</para>
-
-    <para>If you download the <property>Hibernate Tools</property> distribution you need to place
-      the <emphasis>
-        <property>/plugins</property>
-      </emphasis> and <emphasis>
-        <property>/feature</property>
-      </emphasis> directory into your eclipse directory or eclipse extensions directory. Sometimes
-      Eclipse does not automatically detect new plugins and thus the tools will not be activated. To
-      ensure eclipse sees these changes just clean up the cached plugin information by running
-      eclipse with the <emphasis>
-        <property>-clean</property>
-      </emphasis> option, e.g. <emphasis>
-        <property>eclipse -clean</property>.</emphasis> Using the updatesite does not require any
-      additional steps.</para>
-
+    <para>To install the <property>Hibernate Tools</property> into any <property>Eclipse
+        3.5</property> based IDE you can either use <ulink
+        url="http://download.jboss.org/jbosstools/updates/stable/">JBoss Tools Update Site</ulink>
+      or install it manually.</para>
+    <para>If you want to install the <property>Hibernate Tools</property> distribution manually you
+      need to:</para>
+    <itemizedlist>
+      <listitem>
+        <para>Download from www.eclipse.org:</para>
+        <itemizedlist>
+          <listitem>
+            <para>birt-report-framework-2_5_0.zip</para>
+          </listitem>
+          <listitem>
+            <para>birt-wtp-integration-sdk-2_3_2.zip</para>
+          </listitem>
+          <listitem>
+            <para>dtp-sdk_1.7.0.zip</para>
+          </listitem>
+          <listitem>
+            <para>eclipse-SDK-3.5-win32.zip</para>
+          </listitem>
+          <listitem>
+            <para>emf-runtime-2.5.0.zip</para>
+          </listitem>
+          <listitem>
+            <para>GEF-SDK-3.5.0.zip</para>
+          </listitem>
+          <listitem>
+            <para>org.eclipse.swtbot.eclipse.test-2.0.0.371-dev-e35.zip</para>
+          </listitem>
+          <listitem>
+            <para>org.eclipse.swtbot.eclipse-2.0.0.340-dev.zip</para>
+          </listitem>
+          <listitem>
+            <para>site-1.6.2.zip</para>
+          </listitem>
+          <listitem>
+            <para>tptp.sdk-TPTP-4.6.0.zip</para>
+          </listitem>
+          <listitem>
+            <para>wtp-sdk-R-3.1-20090616035105.zip</para>
+          </listitem>
+          <listitem>
+            <para>xsd-runtime-2.5.0.zip</para>
+          </listitem>
+        </itemizedlist>
+      </listitem>
+      <listitem>
+        <para>Then you should unpack these files into Eclipse install folder.</para>
+      </listitem>
+      <listitem>
+        <para>From <ulink url="https://www.hibernate.org/6.html">hibernate.org-Download Overview</ulink> download <ulink url="http://downloads.sourceforge.net/project/jboss/JBossTools/JBossTools3.1.0.CR1/HibernateTools-3.3.0.v200912250601M-H198-CR1.zip">Hibernate Tools</ulink>
+          .</para>
+        
+      </listitem>
+      <listitem>
+        <para>Unpack <property>Hibernate Tools</property> in eclipse/dropins folder</para>
+      </listitem>
+    </itemizedlist>
     <note>
       <title>Note:</title>
-      <para>If you need more basic instructions on installing plugins and general usage of eclipse
+      <para>If you need more detailed instructions on  plugins installation and general usage of eclipse
         then check out <ulink url="https://eclipse-tutorial.dev.java.net/"
           >https://eclipse-tutorial.dev.java.net/</ulink> and especially <ulink
           url="https://eclipse-tutorial.dev.java.net/visual-tutorials/updatemanager.html"
           >https://eclipse-tutorial.dev.java.net/visual-tutorials/updatemanager.html</ulink> which
         covers using the update manager.</para>
     </note>
-
     <section>
       <title>Usage of Eclipse WTP</title>
-
       <para>The <property>Hibernate Tools</property> plugins currently use <property>WTP
           3.x</property> which at this time is the latest stable release from the Eclipse Webtools
         project.</para>
-
       <para>Because the WTP project not always have had proper versioning of their plugins there
         might exist WTP plugins in your existing eclipse directory from other Eclipse based projects
         that are from an earlier WTP release but has either the same version number or higher. It is
         thus recommended that if you have issues with WTP provided features to try and install the
         plugins on a clean install of eclipse to ensure there are no version collisions.</para>
-
     </section>
   </section>
-
   <section>
     <title>Ant</title>
-
     <para>To use the tools via Ant you need the <emphasis>
         <property>hibernate-tools.jar</property>
       </emphasis> and associated libraries. The libraries are included in the distribution from the
