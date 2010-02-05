@@ -11,7 +11,6 @@
 package org.jboss.tools.hibernate.ui.view;
 
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.hibernate.MappingException;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -125,7 +124,7 @@ public class OrmImageMap {
 				Type type = null;
 				try {
 					type = field.getType();
-				} catch (MappingException ex) {
+				} catch (Exception ex) {
 					// ignore it
 				}
 				if (type != null && type.isCollectionType()) {

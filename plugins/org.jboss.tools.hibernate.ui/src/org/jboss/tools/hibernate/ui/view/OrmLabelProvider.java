@@ -24,7 +24,6 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.hibernate.HibernateException;
-import org.hibernate.MappingException;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.console.ConsoleConfiguration;
@@ -174,7 +173,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 		if (dialect != null) {
 			try {
 				sqlType = column.getSqlType(dialect, mapping);
-			} catch (MappingException ex) {
+			} catch (Exception ex) {
 				// ignore it
 			}
 		}
