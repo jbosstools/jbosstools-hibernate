@@ -21,19 +21,15 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.AccessController;
+import java.sql.Connection;
 import java.sql.Driver;
+import java.sql.SQLException;
 import java.security.PrivilegedAction;
 import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
-import java.util.PropertyResourceBundle;
-import java.util.ResourceBundle;
 import java.util.Vector;
-import java.util.jar.JarFile;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
@@ -45,8 +41,6 @@ import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin;
 import org.hibernate.eclipse.console.test.utils.GarbageCollectionUtil;
 import org.hibernate.util.ReflectHelper;
-
-//import sun.reflect.FieldAccessor;
 
 import junit.framework.TestCase;
 
@@ -60,8 +54,17 @@ import junit.framework.TestCase;
 @SuppressWarnings("restriction")
 public class DriverDeleteTest extends TestCase {
 
-	public static final String DRIVER_TEST_NAME = "mysql-connector-java-5.0.7-bin.jar"; //$NON-NLS-1$
-	public static final String DRIVER_GET_PATH = "testresources/".replaceAll("//", File.separator) + DRIVER_TEST_NAME; //$NON-NLS-1$ //$NON-NLS-2$
+	//public static final String DRIVER_TEST_NAME = "mysql-connector-java-5.0.7-bin.jar"; //$NON-NLS-1$
+	public static final String DRIVER_TEST_NAME = "hsqldb.jar"; //$NON-NLS-1$
+	//public static final String DRIVER_TEST_CLASS = "com.mysql.jdbc.Driver"; //$NON-NLS-1$
+	public static final String DRIVER_TEST_CLASS = "org.hsqldb.jdbcDriver"; //$NON-NLS-1$
+	//public static final String CONNECTION_USERNAME = "root"; //$NON-NLS-1$
+	public static final String CONNECTION_USERNAME = "sa"; //$NON-NLS-1$
+	//public static final String CONNECTION_PASSWORD = "p@ssw0rd"; //$NON-NLS-1$
+	public static final String CONNECTION_PASSWORD = ""; //$NON-NLS-1$
+	//public static final String CONNECTION_URL = "jdbc:mysql://localhost:3306/jpa"; //$NON-NLS-1$
+	public static final String CONNECTION_URL = "jdbc:hsqldb:."; //$NON-NLS-1$
+	public static final String DRIVER_GET_PATH = "lib/".replaceAll("//", File.separator) + DRIVER_TEST_NAME; //$NON-NLS-1$ //$NON-NLS-2$
 	public static final String DRIVER_PUT_PATH = "res/".replaceAll("//", File.separator) + DRIVER_TEST_NAME; //$NON-NLS-1$ //$NON-NLS-2$
 	public static final String PUT_PATH = "res"; //$NON-NLS-1$
 
@@ -317,20 +320,6 @@ public class DriverDeleteTest extends TestCase {
 		//URLClassLoader urlClassLoader = createClassLoader();
 		//JarClassLoader urlClassLoader = createJarClassLoader();
 		final ConsoleConfigClassLoader urlClassLoader = createJarClassLoader2();
-		/** /
-		prevClassLoader = Thread.currentThread().getContextClassLoader();
-		Thread.currentThread().setContextClassLoader(urlClassLoader);
-		ClassLoader prevClassLoader22 = Thread.currentThread().getContextClassLoader();
-		//
-		Class<Driver> driverClass22 = null;
-		Class<Driver> driverClass = null;
-		try {
-			driverClass = (Class<Driver>)urlClassLoader.loadClass("com.mysql.jdbc.Driver"); //$NON-NLS-1$
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		assertNotNull(driverClass);
-		/**/
 		int numRedDrivers = 0;
 		//StringWriter wr = new StringWriter();
 		//PrintWriter pw = new PrintWriter(wr);
@@ -342,7 +331,7 @@ public class DriverDeleteTest extends TestCase {
 		try {
 			driver = driverClass.newInstance();
 			//DriverManager.registerDriver(driver);
-			//driverClass = ReflectHelper.classForName("com.mysql.jdbc.Driver"); //$NON-NLS-1$
+			//driverClass = ReflectHelper.classForName(DRIVER_TEST_CLASS);
 			//driver = driverClass.newInstance();
 			//DriverManager.registerDriver(driver);
 			//DriverManager.deregisterDriver(driver);
@@ -353,10 +342,10 @@ public class DriverDeleteTest extends TestCase {
 				numRedDrivers++;
 			}
 			java.util.Properties info = new java.util.Properties();
-		    info.put("user", "root");
-		    info.put("password", "p@ssw0rd2");
-			connection = driver.connect("jdbc:mysql://localhost:3306/jpa", info);
-			//connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/jpa", "root", "p@ssw0rd");
+		    info.put("user", CONNECTION_USERNAME);
+		    info.put("password", CONNECTION_PASSWORD);
+			connection = driver.connect(CONNECTION_URL, info);
+			//connection = DriverManager.getConnection(CONNECTION_URL, CONNECTION_USERNAME, CONNECTION_PASSWORD);
 			test = connection.getCatalog();
 			connection.close();
 			DriverManager.deregisterDriver(driver);
@@ -381,30 +370,28 @@ public class DriverDeleteTest extends TestCase {
 			public Object execute() {
 				try {
 					Class<Driver> driverClass = null;
-					//Class.forName("com.mysql.jdbc.Driver"); //$NON-NLS-1$
+					//Class.forName(DRIVER_TEST_CLASS);
 					//if (driverClass != null) {
-						driverClass = ReflectHelper.classForName("com.mysql.jdbc.Driver"); //$NON-NLS-1$
+						driverClass = ReflectHelper.classForName(DRIVER_TEST_CLASS);
 						Driver driver2 = driverClass.newInstance();
 						//DriverManager.registerDriver(driver2);
 						ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 						if (contextClassLoader != null) {
-							driverClass = (Class<Driver>)contextClassLoader.loadClass("com.mysql.jdbc.Driver"); //$NON-NLS-1$
+							driverClass = (Class<Driver>)contextClassLoader.loadClass(DRIVER_TEST_CLASS);
 						}
 						//if (driverClass == null) {
 						//driverClass.newInstance();
 							//DriverManager.registerDriver(driverClass.newInstance());
 						//}
 						java.util.Properties info = new java.util.Properties();
-					    info.put("user", "root");
-					    info.put("password", "p@ssw0rd2");
+					    info.put("user", CONNECTION_USERNAME);
+					    info.put("password", CONNECTION_PASSWORD);
 					    
-						/** /
+						/**/
 					    try {
-					    	Connection connection = driver2.connect("jdbc:mysql://localhost:3306/jpa", info);
-					    	//Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/jpa", "root", "p@ssw0rd");  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+					    	Connection connection = driver2.connect(CONNECTION_URL, info);
+					    	//Connection connection = DriverManager.getConnection(CONNECTION_URL, CONNECTION_USERNAME, CONNECTION_PASSWORD);  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 					    	//String test = connection.getCatalog();
-
-					    	//System.out.println(test);
 					    	//System.out.println(test);
 					    	connection.close();
 						} catch (SQLException e) {
@@ -415,158 +402,10 @@ public class DriverDeleteTest extends TestCase {
 						Object obj = null;
 						Field f = null;
 						
-						/**/
-						Class<com.mysql.jdbc.Connection> connClass = ReflectHelper.classForName("com.mysql.jdbc.Connection"); //$NON-NLS-1$
-						f = connClass.getDeclaredField("cancelTimer");
-						f.setAccessible(true);
-						java.util.Timer timer = (java.util.Timer)f.get(null);
-						if (timer != null) {
-							timer.cancel();
-							timer.purge();
-						}
-						f.set(null, null);
-						
-						Class<com.mysql.jdbc.LoadBalancingConnectionProxy> classLoadBalancingConnectionProxyClass = ReflectHelper.classForName("com.mysql.jdbc.LoadBalancingConnectionProxy"); //$NON-NLS-1$
-						f = classLoadBalancingConnectionProxyClass.getDeclaredField("getLocalTimeMethod");
-						f.setAccessible(true);
-						obj = f.get(null);
-						f.set(null, null);
-						
-						Class<com.mysql.jdbc.StandardSocketFactory> classStandardSocketFactory = ReflectHelper.classForName("com.mysql.jdbc.StandardSocketFactory"); //$NON-NLS-1$
-						f = classStandardSocketFactory.getDeclaredField("setTraficClassMethod");
-						f.setAccessible(true);
-						obj = f.get(null);
-						f.set(null, null);
-						
-						Class<com.mysql.jdbc.StringUtils> classStringUtils = ReflectHelper.classForName("com.mysql.jdbc.StringUtils"); //$NON-NLS-1$
-						f = classStringUtils.getDeclaredField("toPlainStringMethod");
-						f.setAccessible(true);
-						obj = f.get(null);
-						f.set(null, null);
-						/**/
-						
-						Class<com.mysql.jdbc.Util> classUtil = ReflectHelper.classForName("com.mysql.jdbc.Util"); //$NON-NLS-1$
-						f = classUtil.getDeclaredField("systemNanoTimeMethod");
-						f.setAccessible(true);
-						obj = f.get(null);
-						f.set(null, null);
-						/** /
-						//
-						f = classUtil.getDeclaredField("DEFAULT_TIMEZONE");
-						f.setAccessible(true);
-						obj = f.get(null);
-						setStaticFinalField(f, null);
-						//
-						f = classUtil.getDeclaredField("enclosingInstance");
-						f.setAccessible(true);
-						obj = f.get(null);
-						f.set(null, null);
-						/** /
-						testStaticObj = Locale.getDefault();
-						/**/
-						ResourceBundle temp = ResourceBundle.getBundle("com.mysql.jdbc.LocalizedErrorMessages", Locale.getDefault(),
-								urlClassLoader);
-						/**/
-				        final String resName = "com.mysql.jdbc.LocalizedErrorMessages".replace('.', '/') + ".properties";
-				        InputStream stream = (InputStream)java.security.AccessController.doPrivileged(
-				            new java.security.PrivilegedAction() {
-				                public Object run() {
-				                    if (urlClassLoader != null) {
-				                        return urlClassLoader.getResourceAsStream(resName);
-				                    } else {
-				                        return ClassLoader.getSystemResourceAsStream(resName);
-				                    }
-				                }
-				            }
-				        );
-
-				        if (stream != null) {
-				            // make sure it is buffered
-				            stream = new java.io.BufferedInputStream(stream);
-							java.util.PropertyResourceBundle prb = new PropertyResourceBundle(stream);
-				            stream.close();
-				        } 
-						//
-						/**/
-						//
-						Class<com.mysql.jdbc.Messages> classMessages = ReflectHelper.classForName("com.mysql.jdbc.Messages"); //$NON-NLS-1$
-						f = classMessages.getDeclaredField("BUNDLE_NAME");
-						f.setAccessible(true);
-						obj = f.get(null);
-						setStaticFinalField(f, null);
-						//
-						f = classMessages.getDeclaredField("RESOURCE_BUNDLE");
-						f.setAccessible(true);
-						obj = f.get(null);
-						setStaticFinalField(f, null);
-						/**/
-						//Class<java.util.ResourceBundle> classResourceBundle = ReflectHelper.classForName("java.util.ResourceBundle"); //$NON-NLS-1$
-						//Class<java.util.PropertyResourceBundle> classPropertyResourceBundle = (Class<java.util.PropertyResourceBundle>)obj.getClass();
-						Class<java.util.PropertyResourceBundle> classPropertyResourceBundle = (Class<java.util.PropertyResourceBundle>)temp.getClass();
-						Class<java.util.ResourceBundle> classResourceBundle = (Class<ResourceBundle>)classPropertyResourceBundle.getSuperclass(); //$NON-NLS-1$
-						f = classResourceBundle.getDeclaredField("cacheKey");
-						f.setAccessible(true);
-						obj = f.get(null);
-						setStaticFinalField(f, null);
-						//
-						f = classResourceBundle.getDeclaredField("underConstruction");
-						f.setAccessible(true);
-						obj = f.get(null);
-						setStaticFinalField(f, null);
-						//
-						f = classResourceBundle.getDeclaredField("NOT_FOUND");
-						f.setAccessible(true);
-						obj = f.get(null);
-						setStaticFinalField(f, null);
-						//
-						f = classResourceBundle.getDeclaredField("cacheList");
-						f.setAccessible(true);
-						obj = f.get(null);
-						setStaticFinalField(f, null);
-						//
-						f = classResourceBundle.getDeclaredField("referenceQueue");
-						f.setAccessible(true);
-						obj = f.get(null);
-						setStaticFinalField(f, null);
-						/**/
-						
-				        /**/
-						//Class<sun.net.www.protocol.jar.JarURLConnection> classJarURLConnection = ReflectHelper.classForName("sun.net.www.protocol.jar.JarURLConnection"); //$NON-NLS-1$
-						//f = classJarURLConnection.getDeclaredField("factory");
-						//f.setAccessible(true);
-						//obj = f.get(null);
-						//f.set(null, null);
-						//
-						Class classJarFileFactory = obj.getClass();
-						f = classJarFileFactory.getDeclaredField("fileCache");
-						f.setAccessible(true);
-						obj = f.get(null);
-						HashMap fileCache = (HashMap)obj;
-						f.set(null, null);
-						//
-						f = classJarFileFactory.getDeclaredField("urlCache");
-						f.setAccessible(true);
-						obj = f.get(null);
-						HashMap urlCache = (HashMap)obj;
-						f.set(null, null);
-						//
-						Iterator it = urlCache.keySet().iterator();
-						while (it.hasNext()) {
-							JarFile jarFile = (JarFile)it.next();
-							if (jarFile.getName().equals(DRIVER_TEST_NAME)) {
-								jarFile.close();
-							}
-						}
-				        /**/
-						//DriverManager.deregisterDriver(driver2);
 					//}
 					//contextClassLoader = null;
 					//driverClass = null;
-				} catch (IOException e) {
-					e.printStackTrace();
 				} catch (SecurityException e) {
-					e.printStackTrace();
-				} catch (NoSuchFieldException e) {
 					e.printStackTrace();
 				} catch (InstantiationException e) {
 					e.printStackTrace();
@@ -574,8 +413,6 @@ public class DriverDeleteTest extends TestCase {
 					e.printStackTrace();
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
-				//} catch (SQLException e) {
-				//	e.printStackTrace();
 				}
 				return null;
 			}
@@ -595,24 +432,6 @@ public class DriverDeleteTest extends TestCase {
 		urlClassLoader.close();
 	}
 	
-	private static final String MODIFIERS_FIELD = "modifiers";
-
-	public static void setStaticFinalField(Field field, Object value)
-			throws NoSuchFieldException, IllegalAccessException {
-		/** /
-		field.setAccessible(true);
-		Field modifiersField = Field.class.getDeclaredField(MODIFIERS_FIELD);
-		modifiersField.setAccessible(true);
-		int modifiers = modifiersField.getInt(field);
-		modifiers &= ~Modifier.FINAL;
-		modifiersField.setInt(field, modifiers);
-		sun.reflect.ReflectionFactory reflection =
-			sun.reflect.ReflectionFactory.getReflectionFactory();
-		FieldAccessor fa = reflection.newFieldAccessor(field, false);
-		fa.set(null, value);
-		/**/
-	}
-	
 	public void cleanupExecutionContext() {
 		/** /
 		if (executionContext != null && executionContext.get() != null) {
@@ -621,7 +440,7 @@ public class DriverDeleteTest extends TestCase {
 				@SuppressWarnings("unchecked")
 				public Object execute() {
 					try {
-						Class<Driver> driverClass = ReflectHelper.classForName("com.mysql.jdbc.Driver"); //$NON-NLS-1$
+						Class<Driver> driverClass = ReflectHelper.classForName(DRIVER_TEST_CLASS);
 						DriverManager.deregisterDriver(driverClass.newInstance());
 					} catch (InstantiationException e) {
 						e.printStackTrace();
