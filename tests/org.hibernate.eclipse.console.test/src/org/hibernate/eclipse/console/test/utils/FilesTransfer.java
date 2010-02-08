@@ -87,17 +87,33 @@ public class FilesTransfer {
 			BufferedInputStream bis = null;
 			try {
 				if (iFile.exists()) {
-					iFile.delete(true, null);
+					try {
+						iFile.delete(true, null);
+					} catch (CoreException e) {
+						e.printStackTrace();
+					}
 				}
 				fis = new FileInputStream(file);
 				bis = new BufferedInputStream(fis);
-				iFile.create(bis, IResource.FORCE, null);
+				int nTryCounter = 5;
+				while (nTryCounter > 0) {
+					try {
+						iFile.create(bis, IResource.FORCE, null);
+						nTryCounter = 0;
+					} catch (CoreException e) {
+						e.printStackTrace();
+						nTryCounter--;
+						try {
+							Thread.sleep(500);
+						} catch (InterruptedException e1) {
+							// ignore
+						}
+					}
+				}
 				if (filesList != null) {
 					filesList.add(iFile.getFullPath());
 				}
 			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (CoreException e) {
 				e.printStackTrace();
 			} finally {
 				if (bis != null) {
