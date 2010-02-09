@@ -141,6 +141,10 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 					}
 				}
 			}
+
+			public void configurationReset(ConsoleConfiguration ccfg) {				
+				
+			}
 		};
 
 		KnownConfigurations.getInstance().addConsoleConfigurationListener(kcl);

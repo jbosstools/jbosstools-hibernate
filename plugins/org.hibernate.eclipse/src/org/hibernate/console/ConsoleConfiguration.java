@@ -129,6 +129,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		}
 		fakeDrivers.clear();
 		cleanUpClassLoader();
+		fireConfigurationReset();
 		executionContext = null;
 	}
 
@@ -604,6 +605,12 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	private void fireConfigurationBuilt() {
 		for (ConsoleConfigurationListener view : consoleCfgListeners) {
 			view.configurationBuilt(this);
+		}
+	}	
+
+	private void fireConfigurationReset() {
+		for (ConsoleConfigurationListener view : consoleCfgListeners) {
+			view.configurationReset(this);
 		}
 	}	
 

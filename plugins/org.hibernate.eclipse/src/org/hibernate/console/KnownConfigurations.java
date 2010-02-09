@@ -94,6 +94,14 @@ public class KnownConfigurations  {
 					listener.configurationBuilt(ccfg);
 				}
 			});
+		}
+
+		public void configurationReset(final ConsoleConfiguration ccfg) {
+			fireNotification(new Notification() {
+				public void notify(KnownConfigurationsListener listener) {
+					listener.configurationReset(ccfg);
+				}
+			}); 			
 		};
 
 	};

@@ -114,12 +114,20 @@ public class KnownConfigurationsProvider extends DeferredContentProvider impleme
 	}
 
 	public void sessionFactoryClosing(final ConsoleConfiguration configuration, SessionFactory closingFactory) {
+		refreshTree(configuration);				
+	}
+
+	public void configurationReset(ConsoleConfiguration ccfg) {
+		refreshTree(ccfg);		
+	}
+	
+	private void refreshTree(final ConsoleConfiguration configuration) {
 		Display.getDefault().syncExec(new Runnable() {
 			public void run() {
 				tv.collapseToLevel(configuration, AbstractTreeViewer.ALL_LEVELS);
 				tv.refresh(configuration);
 			}
-		});				
+		});
 	}
 
 	public void configurationBuilt(ConsoleConfiguration ccfg) {
@@ -187,6 +195,8 @@ public class KnownConfigurationsProvider extends DeferredContentProvider impleme
 			refreshTree();
 		}		
 	}
+
+	
 	
 
 }

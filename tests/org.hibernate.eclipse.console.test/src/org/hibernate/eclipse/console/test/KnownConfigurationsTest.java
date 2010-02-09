@@ -42,6 +42,11 @@ public class KnownConfigurationsTest extends TestCase {
 				fail(ConsoleTestMessages.KnownConfigurationsTest_trying_remove_non_existing_console);
 			}
 		}
+
+		public void configurationReset(ConsoleConfiguration ccfg) {
+			// TODO Auto-generated method stub
+			
+		}
 	}
 
 	public void testKnownConfigurations() {

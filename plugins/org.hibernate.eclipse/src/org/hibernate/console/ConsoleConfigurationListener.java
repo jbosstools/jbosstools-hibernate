@@ -45,5 +45,7 @@ public interface ConsoleConfigurationListener {
 	public void sessionFactoryClosing(ConsoleConfiguration configuration, SessionFactory aboutToCloseFactory);
 
 	public void configurationBuilt(ConsoleConfiguration ccfg);
+
+	public void configurationReset(ConsoleConfiguration ccfg);
 	
 }

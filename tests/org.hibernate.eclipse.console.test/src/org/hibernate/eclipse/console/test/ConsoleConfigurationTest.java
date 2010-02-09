@@ -143,6 +143,11 @@ public class ConsoleConfigurationTest extends TestCase {
 		public void queryPageCreated(QueryPage qp) {
 			queryCreated++;
 		}
+
+		public void configurationReset(ConsoleConfiguration ccfg) {
+			// TODO Auto-generated method stub
+			
+		}
 	}
 
 	public void testBuildConfiguration() {

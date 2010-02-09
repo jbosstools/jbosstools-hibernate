@@ -47,6 +47,10 @@ public class ConfigurationNode extends BaseNode {
 			public void sessionFactoryClosing(ConsoleConfiguration configuration, SessionFactory closedSessionFactory) {
 				clear();
 			}
+
+			public void configurationReset(ConsoleConfiguration ccfg) {
+				clear();				
+			}
 		});
 
 		name = configuration.getName();
