@@ -449,6 +449,10 @@ public class OpenMappingUtils {
         	return file;
     	}
 		java.io.File configXMLFile = consoleConfig.getConfigXMLFile();
+		if (!consoleConfig.hasConfiguration()) {
+			consoleConfig.build();
+			consoleConfig.buildSessionFactory();
+		}
 		EntityResolver entityResolver = consoleConfig.getConfiguration().getEntityResolver(); 
 		Document doc = getDocument(configXMLFile, entityResolver);
 		if (doc == null) {
