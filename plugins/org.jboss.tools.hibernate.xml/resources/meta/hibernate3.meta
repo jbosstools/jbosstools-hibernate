@@ -2766,6 +2766,7 @@
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
    <XChildEntity name="Hibernate3KeyProperty"/>
    <XChildEntity name="Hibernate3KeyManyToOne"/>
+   <XChildEntity maxCount="1" name="Hibernate3Generator" required="yes"/>
   </XChildrenEntities>
   <XEntityRenderer>
    <ICONS>
@@ -2828,6 +2829,15 @@
        <AttributeData AttributeName="name"/>
       </EntityData>
      </XActionItem>
+    </XActionItem>
+    <XActionItem HandlerClassName="%Hibernate3Replace%"
+     ICON="main.hibernate.generator"
+     PROPERTIES="significanceMessageClass=%Replace%;child=generator"
+     WizardClassName="%Default%" displayName="Generator..."
+     kind="action" name="AddGenerator">
+     <EntityData EntityName="Hibernate3Generator">
+      <AttributeData AttributeName="class"/>
+     </EntityData>
     </XActionItem>
    </XActionItem>
    <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
@@ -3446,6 +3456,7 @@
   <XChildrenEntities>
    <XChildEntity name="Hibernate3Column"/>
    <XChildEntity name="Hibernate3Formula"/>
+   <XChildEntity maxCount="1" name="Hibernate3Type"/>
   </XChildrenEntities>
   <XEntityRenderer>
    <ICONS>
@@ -3459,8 +3470,7 @@
    <XModelAttribute PROPERTIES="category=general" name="column" xmlname="column"/>
    <XModelAttribute PROPERTIES="category=advanced" name="node" xmlname="node"/>
    <XModelAttribute PROPERTIES="category=advanced" name="formula" xmlname="formula"/>
-   <XModelAttribute PROPERTIES="save=always;category=general"
-    name="type" xmlname="type"/>
+   <XModelAttribute PROPERTIES="category=general" name="type" xmlname="type"/>
    <XModelAttribute PROPERTIES="category=advanced" name="length" xmlname="length"/>
    <XModelAttribute PROPERTIES="category=advanced" name="precision" xmlname="precision"/>
    <XModelAttribute PROPERTIES="category=advanced" name="scale" xmlname="scale"/>
@@ -3975,19 +3985,21 @@
    <XModelAttribute default="idbag" loader="ElementType" name="element type">
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="save=always;id=true" name="name" xmlname="name"/>
-   <XModelAttribute default="property" name="access" xmlname="access">
+   <XModelAttribute PROPERTIES="save=always;id=true;category=general"
+    name="name" xmlname="name"/>
+   <XModelAttribute PROPERTIES="category=general" default="property"
+    name="access" xmlname="access">
     <Constraint loader="ListString">
      <value name="property"/>
      <value name="field"/>
     </Constraint>
     <Editor name="ListString"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="id=true" name="table" xmlname="table"/>
-   <XModelAttribute name="schema" xmlname="schema"/>
-   <XModelAttribute name="catalog" xmlname="catalog"/>
-   <XModelAttribute name="subselect" xmlname="subselect"/>
-   <XModelAttribute name="lazy" xmlname="lazy">
+   <XModelAttribute PROPERTIES="id=true;category=general" name="table" xmlname="table"/>
+   <XModelAttribute PROPERTIES="category=general" name="schema" xmlname="schema"/>
+   <XModelAttribute PROPERTIES="category=general" name="catalog" xmlname="catalog"/>
+   <XModelAttribute PROPERTIES="category=advanced" name="subselect" xmlname="subselect"/>
+   <XModelAttribute PROPERTIES="category=advanced" name="lazy" xmlname="lazy">
     <Constraint loader="List">
      <value name="true"/>
      <value name="false"/>
@@ -4004,12 +4016,16 @@
     </Constraint>
     <Editor name="List"/>
    </XModelAttribute>
-   <XModelAttribute default="none" name="cascade" xmlname="cascade"/>
-   <XModelAttribute name="where" xmlname="where"/>
-   <XModelAttribute default="1" name="batch-size" xmlname="batch-size">
+   <XModelAttribute PROPERTIES="category=advanced" default="none"
+    name="cascade" xmlname="cascade"/>
+   <XModelAttribute PROPERTIES="category=advanced" name="order-by" xmlname="order-by"/>
+   <XModelAttribute PROPERTIES="category=advanced" name="where" xmlname="where"/>
+   <XModelAttribute PROPERTIES="category=advanced" default="1"
+    name="batch-size" xmlname="batch-size">
     <Constraint loader="Int"/>
    </XModelAttribute>
-   <XModelAttribute default="auto" name="outer-join" xmlname="outer-join">
+   <XModelAttribute PROPERTIES="category=advanced" default="auto"
+    name="outer-join" xmlname="outer-join">
     <Constraint loader="List">
      <value name="true"/>
      <value name="false"/>
@@ -4017,7 +4033,7 @@
     </Constraint>
     <Editor name="List"/>
    </XModelAttribute>
-   <XModelAttribute name="fetch" xmlname="fetch">
+   <XModelAttribute PROPERTIES="category=advanced" name="fetch" xmlname="fetch">
     <Constraint loader="List">
      <value name="join"/>
      <value name="select"/>
@@ -4026,18 +4042,23 @@
     </Constraint>
     <Editor name="List"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="since=2.1.3" name="persister" xmlname="persister"/>
-   <XModelAttribute name="collection-type" xmlname="collection-type"/>
-   <XModelAttribute PROPERTIES="since=2.1.2" name="check" xmlname="check"/>
-   <XModelAttribute default="true" name="optimistic-lock" xmlname="optimistic-lock">
+   <XModelAttribute PROPERTIES="since=2.1.3;category=advanced"
+    name="persister" xmlname="persister"/>
+   <XModelAttribute PROPERTIES="category=advanced"
+    name="collection-type" xmlname="collection-type"/>
+   <XModelAttribute PROPERTIES="since=2.1.2;category=advanced"
+    name="check" xmlname="check"/>
+   <XModelAttribute PROPERTIES="category=advanced" default="true"
+    name="optimistic-lock" xmlname="optimistic-lock">
     <Constraint loader="List">
      <value name="true"/>
      <value name="false"/>
     </Constraint>
     <Editor name="List"/>
    </XModelAttribute>
-   <XModelAttribute name="node" xmlname="node"/>
-   <XModelAttribute default="true" name="embed-xml" xmlname="embed-xml">
+   <XModelAttribute PROPERTIES="category=advanced" name="node" xmlname="node"/>
+   <XModelAttribute PROPERTIES="category=advanced" default="true"
+    name="embed-xml" xmlname="embed-xml">
     <Constraint loader="List">
      <value name="true"/>
      <value name="false"/>
@@ -5793,7 +5814,8 @@
     <Editor name="List"/>
    </XModelAttribute>
    <XModelAttribute PROPERTIES="category=advanced" name="where" xmlname="where"/>
-   <XModelAttribute name="property-ref" xmlname="property-ref"/>
+   <XModelAttribute PROPERTIES="category=advanced" name="order-by" xmlname="order-by"/>
+   <XModelAttribute PROPERTIES="category=advanced" name="property-ref" xmlname="property-ref"/>
    <XModelAttribute TRIM="no" name="comment" visibility="false" xmlname="#comment">
     <Editor name="Note"/>
    </XModelAttribute>
@@ -6918,6 +6940,7 @@
   XMLSUBPATH="one-to-one" name="Hibernate3OneToOne">
   <XChildrenEntities>
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
+   <XChildEntity name="Hibernate3Formula"/>
   </XChildrenEntities>
   <XEntityRenderer>
    <ICONS>
@@ -6993,6 +7016,13 @@
      ICON="main.hibernate.meta"
      PROPERTIES="sourcepath=Meta;actionpath=CreateActions/AddMeta"
      WizardClassName="%Default%" displayName="Meta..." kind="action" name="AddMeta"/>
+    <XActionItem HandlerClassName="%Create%"
+     ICON="main.hibernate.column" WizardClassName="%Default%"
+     displayName="Formula..." kind="action" name="AddFormula">
+     <EntityData EntityName="Hibernate3Formula">
+      <AttributeData AttributeName="value" Mandatory="no"/>
+     </EntityData>
+    </XActionItem>
    </XActionItem>
    <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
     <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
@@ -8251,10 +8281,20 @@
     loader="ElementType" name="element type">
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute default="false" name="callable" xmlname="callable">
+   <XModelAttribute PROPERTIES="category=general" default="false"
+    name="callable" xmlname="callable">
     <Constraint loader="List">
      <value name="true"/>
      <value name="false"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="check" xmlname="check">
+    <Constraint loader="List">
+     <value/>
+     <value name="none"/>
+     <value name="rowcount"/>
+     <value name="param"/>
     </Constraint>
     <Editor name="List"/>
    </XModelAttribute>
@@ -8298,14 +8338,24 @@
     loader="ElementType" name="element type">
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute default="false" name="callable" xmlname="callable">
+   <XModelAttribute PROPERTIES="category=general" default="false"
+    name="callable" xmlname="callable">
     <Constraint loader="List">
      <value name="true"/>
      <value name="false"/>
     </Constraint>
     <Editor name="List"/>
    </XModelAttribute>
-   <XModelAttribute name="value" xmlname="#text">
+   <XModelAttribute PROPERTIES="category=general" name="check" xmlname="check">
+    <Constraint loader="List">
+     <value/>
+     <value name="none"/>
+     <value name="rowcount"/>
+     <value name="param"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="value" xmlname="#text">
     <Editor name="Note"/>
    </XModelAttribute>
    <XModelAttribute TRIM="no" name="comment" visibility="false" xmlname="#comment">
@@ -8422,14 +8472,24 @@
     loader="ElementType" name="element type">
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute default="false" name="callable" xmlname="callable">
+   <XModelAttribute PROPERTIES="category=general" default="false"
+    name="callable" xmlname="callable">
     <Constraint loader="List">
      <value name="true"/>
      <value name="false"/>
     </Constraint>
     <Editor name="List"/>
    </XModelAttribute>
-   <XModelAttribute name="value" xmlname="#text">
+   <XModelAttribute PROPERTIES="category=general" name="check" xmlname="check">
+    <Constraint loader="List">
+     <value/>
+     <value name="none"/>
+     <value name="rowcount"/>
+     <value name="param"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="value" xmlname="#text">
     <Editor name="Note"/>
    </XModelAttribute>
    <XModelAttribute TRIM="no" name="comment" visibility="false" xmlname="#comment">
@@ -8689,14 +8749,24 @@
     loader="ElementType" name="element type">
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute default="false" name="callable" xmlname="callable">
+   <XModelAttribute PROPERTIES="category=general" default="false"
+    name="callable" xmlname="callable">
     <Constraint loader="List">
      <value name="true"/>
      <value name="false"/>
     </Constraint>
     <Editor name="List"/>
    </XModelAttribute>
-   <XModelAttribute name="value" xmlname="#text">
+   <XModelAttribute PROPERTIES="category=general" name="check" xmlname="check">
+    <Constraint loader="List">
+     <value/>
+     <value name="none"/>
+     <value name="rowcount"/>
+     <value name="param"/>
+    </Constraint>
+    <Editor name="List"/>
+   </XModelAttribute>
+   <XModelAttribute PROPERTIES="category=general" name="value" xmlname="#text">
     <Editor name="Note"/>
    </XModelAttribute>
    <XModelAttribute TRIM="no" name="comment" visibility="false" xmlname="#comment">
