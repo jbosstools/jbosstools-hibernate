@@ -653,22 +653,26 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		}
 		if (configXMLFile == null && classLoader != null) {
 			URL url = classLoader.findResource("hibernate.cfg.xml"); //$NON-NLS-1$
-			URI uri = null;
-			try {
-				uri = url.toURI();
-				configXMLFile = new File(uri);
-			} catch (URISyntaxException e) {
-				// ignore
+			if (url != null) {
+				URI uri = null;
+				try {
+					uri = url.toURI();
+					configXMLFile = new File(uri);
+				} catch (URISyntaxException e) {
+					// ignore
+				}
 			}
 		}
 		if (configXMLFile == null) {
 			URL url = Environment.class.getClassLoader().getResource("hibernate.cfg.xml"); //$NON-NLS-1$
-			URI uri = null;
-			try {
-				uri = url.toURI();
-				configXMLFile = new File(uri);
-			} catch (URISyntaxException e) {
-				// ignore
+			if (url != null) {
+				URI uri = null;
+				try {
+					uri = url.toURI();
+					configXMLFile = new File(uri);
+				} catch (URISyntaxException e) {
+					// ignore
+				}
 			}
 		}
 		return configXMLFile;
