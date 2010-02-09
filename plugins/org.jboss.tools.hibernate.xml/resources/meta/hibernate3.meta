@@ -2766,7 +2766,7 @@
    <XChildEntity maxCount="1" name="Hibernate3MetaFolder" required="yes"/>
    <XChildEntity name="Hibernate3KeyProperty"/>
    <XChildEntity name="Hibernate3KeyManyToOne"/>
-   <XChildEntity maxCount="1" name="Hibernate3Generator" required="yes"/>
+   <XChildEntity maxCount="1" name="Hibernate3Generator"/>
   </XChildrenEntities>
   <XEntityRenderer>
    <ICONS>
@@ -8409,7 +8409,7 @@
     kind="list" name="CreateActions">
     <XActionItem HandlerClassName="%Hibernate3Replace%"
      ICON="main.hibernate.index"
-     PROPERTIES="significanceMessageClass=%Replace%;child=index"
+     PROPERTIES="significanceMessageClass=%Replace%;child=loader"
      WizardClassName="%Default%" displayName="Loader..." kind="action" name="AddLoader">
      <EntityData EntityName="Hibernate3Loader">
       <AttributeData AttributeName="query-ref"/>
@@ -8417,7 +8417,7 @@
     </XActionItem>
     <XActionItem HandlerClassName="%Hibernate3Replace%"
      ICON="main.hibernate.index"
-     PROPERTIES="significanceMessageClass=%Replace%;child=index"
+     PROPERTIES="significanceMessageClass=%Replace%;child=sql-insert"
      WizardClassName="%Default%" displayName="Insert..." kind="action" name="AddInsert">
      <EntityData EntityName="Hibernate3SQLInsert">
       <AttributeData AttributeName="value" Mandatory="no"/>
@@ -8425,7 +8425,7 @@
     </XActionItem>
     <XActionItem HandlerClassName="%Hibernate3Replace%"
      ICON="main.hibernate.index"
-     PROPERTIES="significanceMessageClass=%Replace%;child=index"
+     PROPERTIES="significanceMessageClass=%Replace%;child=sql-update"
      WizardClassName="%Default%" displayName="Update..." kind="action" name="AddUpdate">
      <EntityData EntityName="Hibernate3SQLUpdate">
       <AttributeData AttributeName="value" Mandatory="no"/>
@@ -8433,7 +8433,7 @@
     </XActionItem>
     <XActionItem HandlerClassName="%Hibernate3Replace%"
      ICON="main.hibernate.index"
-     PROPERTIES="significanceMessageClass=%Replace%;child=index"
+     PROPERTIES="significanceMessageClass=%Replace%;child=sql-delete"
      WizardClassName="%Default%" displayName="Delete..." kind="action" name="AddDelete">
      <EntityData EntityName="Hibernate3SQLDelete">
       <AttributeData AttributeName="value" Mandatory="no"/>
@@ -8441,7 +8441,7 @@
     </XActionItem>
     <XActionItem HandlerClassName="%Hibernate3Replace%"
      ICON="main.hibernate.index"
-     PROPERTIES="significanceMessageClass=%Replace%;child=index"
+     PROPERTIES="significanceMessageClass=%Replace%;child=sql-delete-all"
      WizardClassName="%Default%" displayName="Delete All..."
      kind="action" name="AddDeleteAll">
      <EntityData EntityName="Hibernate3SQLDeleteAll">
@@ -8541,7 +8541,7 @@
     kind="list" name="CreateActions">
     <XActionItem HandlerClassName="%Hibernate3Replace%"
      ICON="main.hibernate.index"
-     PROPERTIES="significanceMessageClass=%Replace%;child=index"
+     PROPERTIES="significanceMessageClass=%Replace%;child=sql-insert"
      WizardClassName="%Default%" displayName="Insert..." kind="action" name="AddInsert">
      <EntityData EntityName="Hibernate3SQLInsert">
       <AttributeData AttributeName="value" Mandatory="no"/>
@@ -8549,7 +8549,7 @@
     </XActionItem>
     <XActionItem HandlerClassName="%Hibernate3Replace%"
      ICON="main.hibernate.index"
-     PROPERTIES="significanceMessageClass=%Replace%;child=index"
+     PROPERTIES="significanceMessageClass=%Replace%;child=sql-update"
      WizardClassName="%Default%" displayName="Update..." kind="action" name="AddUpdate">
      <EntityData EntityName="Hibernate3SQLUpdate">
       <AttributeData AttributeName="value" Mandatory="no"/>
@@ -8557,7 +8557,7 @@
     </XActionItem>
     <XActionItem HandlerClassName="%Hibernate3Replace%"
      ICON="main.hibernate.index"
-     PROPERTIES="significanceMessageClass=%Replace%;child=index"
+     PROPERTIES="significanceMessageClass=%Replace%;child=sql-delete"
      WizardClassName="%Default%" displayName="Delete..." kind="action" name="AddDelete">
      <EntityData EntityName="Hibernate3SQLDelete">
       <AttributeData AttributeName="value" Mandatory="no"/>
