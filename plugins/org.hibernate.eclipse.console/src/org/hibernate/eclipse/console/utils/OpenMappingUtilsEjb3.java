@@ -20,8 +20,14 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.ejb.Ejb3Configuration;
 import org.hibernate.ejb.HibernatePersistence;
+import org.hibernate.ejb.packaging.ClassFilter;
+import org.hibernate.ejb.packaging.Entry;
+import org.hibernate.ejb.packaging.FileFilter;
+import org.hibernate.ejb.packaging.Filter;
 import org.hibernate.ejb.packaging.JarVisitor;
+import org.hibernate.ejb.packaging.JarVisitorFactory;
 import org.hibernate.ejb.packaging.NamedInputStream;
+import org.hibernate.ejb.packaging.PackageFilter;
 import org.hibernate.ejb.packaging.PersistenceMetadata;
 import org.hibernate.ejb.packaging.PersistenceXmlLoader;
 import org.hibernate.util.CollectionHelper;
@@ -88,18 +94,17 @@ public class OpenMappingUtilsEjb3 {
 				URL visitorJarURL = null;
 				if (metadata.getName() == null) {
 					visitor = getMainJarVisitor(url, metadata, CollectionHelper.EMPTY_MAP);
-					visitorJarURL = JarVisitor.getJarURLFromURLEntry(url, "/" + META_INF_PERS_XML); //$NON-NLS-1$
+					visitorJarURL = JarVisitorFactory.getJarURLFromURLEntry(url, "/" + META_INF_PERS_XML); //$NON-NLS-1$
 					metadata.setName(visitor.getUnqualifiedJarName());
 				}
 				if (persistenceUnitName == null && xmls.hasMoreElements()) {
-					//throw new PersistenceException( "No name provided and several persistence units found" );
+					//throw new PersistenceException("No name provided and several persistence units found");
 					stopErrorFlag = true;
 			    	break;
-				}
-				else if (persistenceUnitName == null || metadata.getName().equals(persistenceUnitName)) {
+				} else if (persistenceUnitName == null || metadata.getName().equals(persistenceUnitName)) {
 					if (visitor == null) {
 						visitor = getMainJarVisitor(url, metadata, CollectionHelper.EMPTY_MAP);
-						visitorJarURL = JarVisitor.getJarURLFromURLEntry(url, "/" + META_INF_PERS_XML); //$NON-NLS-1$
+						visitorJarURL = JarVisitorFactory.getJarURLFromURLEntry(url, "/" + META_INF_PERS_XML); //$NON-NLS-1$
 					}
 					try {
 						addMetadataFromVisitor(visitor, visitorJarURL.getPath(), metadata);
@@ -145,10 +150,11 @@ public class OpenMappingUtilsEjb3 {
 	 * @param integration
 	 * @return
 	 */
-	public static JarVisitor getMainJarVisitor(URL url, PersistenceMetadata metadata, Map integration) {
-		URL jarURL = JarVisitor.getJarURLFromURLEntry(url, "/" + META_INF_PERS_XML); //$NON-NLS-1$
-		JarVisitor.Filter[] persistenceXmlFilter = getFilters(metadata, integration, metadata.getExcludeUnlistedClasses());
-		JarVisitor visitor = JarVisitor.getVisitor(jarURL, persistenceXmlFilter);
+	@SuppressWarnings("unchecked")
+	private static JarVisitor getMainJarVisitor(URL url, PersistenceMetadata metadata, Map integration) {
+		URL jarURL = JarVisitorFactory.getJarURLFromURLEntry(url, "/" + META_INF_PERS_XML); //$NON-NLS-1$
+		Filter[] persistenceXmlFilter = getFilters(metadata, integration, metadata.getExcludeUnlistedClasses());
+		JarVisitor visitor = JarVisitorFactory.getVisitor(jarURL, persistenceXmlFilter);
 		return visitor;
 	}
 
@@ -160,28 +166,28 @@ public class OpenMappingUtilsEjb3 {
 	 * @param metadata
 	 * @throws IOException
 	 */
-	public static void addMetadataFromVisitor(JarVisitor visitor, String addPath, PersistenceMetadata metadata) throws IOException {
+	@SuppressWarnings("unchecked")
+	private static void addMetadataFromVisitor(JarVisitor visitor, String addPath, PersistenceMetadata metadata) throws IOException {
 		Set[] entries = visitor.getMatchingEntries();
-		JarVisitor.Filter[] filters = visitor.getFilters();
+		Filter[] filters = visitor.getFilters();
 		int size = filters.length;
 		List<String> classes = metadata.getClasses();
 		List<String> packages = metadata.getPackages();
 		List<NamedInputStream> hbmFiles = metadata.getHbmfiles();
+		List<String> mappingFiles = metadata.getMappingFiles();
 		for (int index = 0; index < size; index++) {
-			Iterator homogeneousEntry = entries[index].iterator();
-			while (homogeneousEntry.hasNext()) {
-				JarVisitor.Entry entry = (JarVisitor.Entry) homogeneousEntry.next();
-				if (filters[index] instanceof JarVisitor.ClassFilter) {
-					//TODO only add entry if there is annotations (Javassist)
+			for (Object o : entries[index]) {
+				Entry entry = (Entry) o;
+				if (filters[index] instanceof ClassFilter) {
 					classes.add(entry.getName());
-				}
-				else if (filters[index] instanceof JarVisitor.PackageFilter) {
+				} else if (filters[index] instanceof PackageFilter) {
 					packages.add(entry.getName());
-				}
-				else if (filters[index] instanceof JarVisitor.FileFilter) {
-					hbmFiles.add(new NamedInputStream(addPath + "/" + entry.getName(),  //$NON-NLS-1$
+				} else if (filters[index] instanceof FileFilter) {
+					hbmFiles.add(new NamedInputStream(addPath + "/" + entry.getName(), //$NON-NLS-1$
 							entry.getInputStream()));
-					metadata.getMappingFiles().remove(entry.getName());
+					if (mappingFiles != null) {
+						mappingFiles.remove(entry.getName());
+					}
 				}
 			}
 		}
@@ -196,7 +202,8 @@ public class OpenMappingUtilsEjb3 {
 	 * @param excludeIfNotOverriden
 	 * @return
 	 */
-	public static boolean[] getDetectedArtifacts(Properties properties, Map overridenProperties, boolean excludeIfNotOverriden) {
+	@SuppressWarnings("unchecked")
+	private static boolean[] getDetectedArtifacts(Properties properties, Map overridenProperties, boolean excludeIfNotOverriden) {
 		//result[0] - detect classes
 		//result[1] - detect hbm
 		boolean[] result = { false, false };
@@ -205,7 +212,7 @@ public class OpenMappingUtilsEjb3 {
 		detect = detect == null ?
 				properties.getProperty( HibernatePersistence.AUTODETECTION) : detect;
 		if (detect == null && excludeIfNotOverriden) {
-			//not overriden through HibernatePersistence.AUTODETECTION so we comply with the spec excludeUnlistedClasses
+			//not overridden through HibernatePersistence.AUTODETECTION so we comply with the spec excludeUnlistedClasses
 			return result;
 		}
 		else if (detect == null){
@@ -233,21 +240,26 @@ public class OpenMappingUtilsEjb3 {
 	 * @param excludeIfNotOverriden
 	 * @return
 	 */
-	public static JarVisitor.Filter[] getFilters(PersistenceMetadata metadata, Map overridenProperties, boolean excludeIfNotOverriden) {
+	@SuppressWarnings("unchecked")
+	private static Filter[] getFilters(PersistenceMetadata metadata, Map overridenProperties, boolean excludeIfNotOverriden) {
 		Properties properties = metadata.getProps();
 		final List<String> mappingFiles = metadata.getMappingFiles();
-		boolean[] result = getDetectedArtifacts(properties, overridenProperties, excludeIfNotOverriden);
+		boolean[] detectedArtifacts = getDetectedArtifacts(properties, overridenProperties, excludeIfNotOverriden);
+		return getFilters(detectedArtifacts, true, mappingFiles);
+	}
 
-		int size = ( result[0] ? 2 : 0 ) + 1; //class involves classes and packages, xml files are always involved because of orm.xml
-		JarVisitor.Filter[] filters = new JarVisitor.Filter[size];
-		if (result[0]) {
-			filters[0] = new JarVisitor.PackageFilter(false, null) {
+	private static Filter[] getFilters(final boolean[] detectedArtifacts, final boolean searchORM, final List<String> mappingFiles) {
+		final int mappingFilesSize = mappingFiles != null ? mappingFiles.size() : 0;
+		int size = (detectedArtifacts[0] ? 2 : 0) + ((searchORM || detectedArtifacts[1] || mappingFilesSize > 0) ? 1 : 0);
+		Filter[] filters = new Filter[size];
+		if (detectedArtifacts[0]) {
+			filters[0] = new PackageFilter(false, null) {
 				public boolean accept(String javaElementName) {
 					return true;
 				}
 			};
-			filters[1] = new JarVisitor.ClassFilter(
-					false, new Class[]{
+			filters[1] = new ClassFilter(
+					false, new Class[] {
 					Entity.class,
 					MappedSuperclass.class,
 					Embeddable.class}
@@ -257,20 +269,12 @@ public class OpenMappingUtilsEjb3 {
 				}
 			};
 		}
-		if (result[1]) {
-			filters[size - 1] = new JarVisitor.FileFilter(true) {
+		if (detectedArtifacts[1] || searchORM || mappingFilesSize > 0) {
+			filters[size - 1] = new FileFilter(true) {
 				public boolean accept(String javaElementName) {
-					return javaElementName.endsWith("hbm.xml") //$NON-NLS-1$
-							|| javaElementName.endsWith(META_INF_ORM_XML)
-							|| mappingFiles.contains(javaElementName);
-				}
-			};
-		}
-		else {
-			filters[size - 1] = new JarVisitor.FileFilter(true) {
-				public boolean accept(String javaElementName) {
-					return javaElementName.endsWith(META_INF_ORM_XML)
-							|| mappingFiles.contains(javaElementName);
+					return (detectedArtifacts[1] && javaElementName.endsWith("hbm.xml")) //$NON-NLS-1$
+							|| (searchORM && javaElementName.endsWith(META_INF_ORM_XML))
+							|| (mappingFilesSize > 0 && mappingFiles.contains(javaElementName));
 				}
 			};
 		}

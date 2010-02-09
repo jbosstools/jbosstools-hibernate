@@ -37,6 +37,10 @@ public class FakeTransactionManagerLookup implements TransactionManagerLookup {
 		return null; //throw new UnsupportedOperationException();
 	}
 
+	public Object getTransactionIdentifier(Transaction transaction) {		
+		return transaction;
+	}
+
 }
 
 class FakeTransactionManager implements TransactionManager {

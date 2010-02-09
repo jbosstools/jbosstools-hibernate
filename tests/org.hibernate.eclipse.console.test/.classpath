@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
-	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate-tools-tests.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hsqldb.jar"/>
@@ -17,5 +17,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/jmock-2.5.1/jmock-legacy-2.5.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jmock-2.5.1/jmock-script-2.5.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jmock-2.5.1/objenesis-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Bin/mysql-connector-java-5.0.7/mysql-connector-java-5.0.7-bin.jar" sourcepath="C:/Bin/mysql-connector-java-5.0.7/src"/>
 	<classpathentry kind="output" path="build/eclipse"/>
 </classpath>

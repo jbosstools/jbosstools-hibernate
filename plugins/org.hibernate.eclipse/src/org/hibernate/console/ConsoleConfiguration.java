@@ -34,7 +34,6 @@ import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -66,7 +65,7 @@ import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.dialect.DialectFactory;
+import org.hibernate.dialect.resolver.DialectFactory;
 import org.hibernate.util.ConfigHelper;
 import org.hibernate.util.ReflectHelper;
 import org.hibernate.util.StringHelper;
@@ -373,11 +372,8 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 						Connection connection = null;
 						try {
 							connection = DriverManager.getConnection(url, user, pass); 
-							DatabaseMetaData meta = connection.getMetaData();
-							String databaseName = meta.getDatabaseProductName();
-							int databaseMajorVersion = meta.getDatabaseMajorVersion();
 							//SQL Dialect:
-							Dialect dialect = DialectFactory.buildDialect( localCfg.getProperties(), databaseName, databaseMajorVersion );
+							Dialect dialect = DialectFactory.buildDialect( localCfg.getProperties(), connection );
 							localCfg.setProperty(Environment.DIALECT, dialect.toString());
 						} catch (SQLException e) {
 						//can't determine dialect
