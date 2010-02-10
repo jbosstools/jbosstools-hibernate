@@ -42,7 +42,7 @@ import org.hibernate.eclipse.mapper.editors.reveng.xpl.FormTextEntry;
 
 public class ColumnDetailsPage extends RevEngDetailsPage implements IDetailsPage, PropertyChangeListener {
 
-	private Button excluded;
+	//private Button excluded;
 	private FormTextEntry nameEntry;
 	private FormTextEntry jdbcTypeEntry;
 	private FormTextEntry propertyEntry;
@@ -61,17 +61,17 @@ public class ColumnDetailsPage extends RevEngDetailsPage implements IDetailsPage
 			}
 		});
 
-		excluded = toolkit.createButton(client, MapperMessages.ColumnDetailsPage_exclude_columns_from_reverse_engineering, SWT.CHECK);
+		//excluded = toolkit.createButton(client, MapperMessages.ColumnDetailsPage_exclude_columns_from_reverse_engineering, SWT.CHECK);
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true,false);
 		gridData.horizontalSpan = 3;
-		excluded.setLayoutData(gridData);
+		/*excluded.setLayoutData(gridData);
 		excluded.addSelectionListener(new SelectionAdapter() {
 
 			public void widgetSelected(SelectionEvent e) {
 				column.setExcluded(excluded.getSelection());
 			}
 
-		});
+		});*/
 
 		jdbcTypeEntry = new FormTextEntry(client, toolkit, MapperMessages.ColumnDetailsPage_jdbc_type, SWT.NULL);
 		jdbcTypeEntry.setDescription(MapperMessages.ColumnDetailsPage_which_jdbc_type_this_column_should_have);
@@ -115,7 +115,7 @@ public class ColumnDetailsPage extends RevEngDetailsPage implements IDetailsPage
 		jdbcTypeEntry.setValue(column.getJDBCType());
 		propertyEntry.setValue(column.getPropertyName());
 		typeEntry.setValue(column.getType());
-		excluded.setSelection(column.getExclude());
+		//excluded.setSelection(column.getExclude());
 
 		nameEntry.setEditable(!column.getExclude());
 	}
