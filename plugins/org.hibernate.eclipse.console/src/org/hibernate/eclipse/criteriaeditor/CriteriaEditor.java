@@ -150,6 +150,7 @@ public class CriteriaEditor extends AbstractQueryEditor {
 				public Object execute() {
 					KnownConfigurations.getInstance().getQueryPageModel().remove(queryPage);
 					Session session = cfg0.getSessionFactory().openSession();
+					queryPage.setModel(getQueryInputModel().getCopyForQuery());
 					queryPage.setQueryString(getQueryString());
 					queryPage.setSession(session);
 					KnownConfigurations.getInstance().getQueryPageModel().add(queryPage);

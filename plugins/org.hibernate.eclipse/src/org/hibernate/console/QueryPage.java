@@ -92,4 +92,6 @@ public interface QueryPage {
     
     /** Return result size if known, -1 if not */ 
     public int getResultSize();
+    
+    public void setModel(QueryInputModel model);
 }

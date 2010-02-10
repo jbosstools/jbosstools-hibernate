@@ -44,6 +44,7 @@ public abstract class AbstractQueryPage implements QueryPage {
     protected boolean sticky = true;
     private List<Throwable> exceptions = new ArrayList<Throwable>();
     protected String tabName;
+    protected QueryInputModel model;
 
     /**
      * @param i
@@ -60,8 +61,9 @@ public abstract class AbstractQueryPage implements QueryPage {
 		}
 	}
 
-	public AbstractQueryPage(ConsoleConfiguration cfg) {
+	public AbstractQueryPage(ConsoleConfiguration cfg, QueryInputModel model) {
 		this.cfg = cfg;
+		this.model = model;
 	}
     /**
      * 
@@ -152,5 +154,9 @@ public abstract class AbstractQueryPage implements QueryPage {
 		String oldValue = this.tabName;
 		this.tabName = tabName;
 		pcs.firePropertyChange("tabName", oldValue, tabName); //$NON-NLS-1$
+	}
+
+	public void setModel(QueryInputModel model) {
+		this.model = model;
 	}
 }

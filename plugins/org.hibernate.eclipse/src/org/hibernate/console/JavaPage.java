@@ -48,17 +48,14 @@ public class JavaPage extends AbstractQueryPage {
 
     private Interpreter ip;
 
-	private QueryInputModel model;
-
     /**
      * @param model
      * @param session2
      */
     public JavaPage(ConsoleConfiguration cfg, String criteriaCode, QueryInputModel model) {
-		super(cfg);
+		super(cfg, model);
         this.criteriaCode =  criteriaCode;
 		setTabName(getQueryString().replace('\n', ' ').replace('\r', ' '));
-        this.model = model;
     }
 
     @SuppressWarnings("unchecked")

@@ -36,7 +36,6 @@ public class HQLQueryPage extends AbstractQueryPage {
 
 	private Query query;
 	private String queryString;
-	private QueryInputModel model;
 	
 	public List<Object> getList() {
 		if (query==null) return Collections.emptyList();
@@ -95,10 +94,9 @@ public class HQLQueryPage extends AbstractQueryPage {
 	 * @param queryParameters 
 	 */
 	public HQLQueryPage(ConsoleConfiguration cfg, String string, QueryInputModel model) {
-		super(cfg);
+		super(cfg, model);
 		queryString = string;
 		setTabName(getQueryString().replace('\n', ' ').replace('\r', ' '));
-		this.model = model;
 	}
 
 	public void setSession(Session s) {

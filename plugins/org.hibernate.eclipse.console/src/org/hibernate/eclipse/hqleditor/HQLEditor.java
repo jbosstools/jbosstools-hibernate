@@ -420,13 +420,14 @@ public class HQLEditor extends AbstractQueryEditor {
 			// ignore
 		}
 		if (queryPage == null || !getPinToOneResTab()) {
-			queryPage = cfg.executeHQLQuery(getQueryString(), getQueryInputModel().getCopyForQuery() );
+			queryPage = cfg.executeHQLQuery(getQueryString(), getQueryInputModel().getCopyForQuery());
 		} else {
 			final ConsoleConfiguration cfg0 = cfg;
 			cfg.execute(new Command() {
 				public Object execute() {
 					KnownConfigurations.getInstance().getQueryPageModel().remove(queryPage);
 					Session session = cfg0.getSessionFactory().openSession();
+					queryPage.setModel(getQueryInputModel().getCopyForQuery());
 					queryPage.setQueryString(getQueryString());
 					queryPage.setSession(session);
 					KnownConfigurations.getInstance().getQueryPageModel().add(queryPage);
