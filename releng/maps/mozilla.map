@@ -1,0 +1,11 @@
+!*** from http://repository.jboss.com/xulrunner/
+
+feature@org.mozilla.xpcom.feature,1.9.1.0_v20090825-1855-27801aw311A193502411=GET,http://repository.jboss.com/xulrunner/org.mozilla.xpcom.feature_1.9.1.0_v20090825-1855-27801aw311A193502411.jar
+plugin@org.mozilla.xpcom,1.9.1.2a=GET,http://repository.jboss.com/xulrunner/org.mozilla.xpcom_1.9.1.2a.jar
+
+feature@org.mozilla.xulrunner.feature,1.9.1.0_v20090825-1855-57Z379OhF77g7cFR37gN7=GET,http://repository.jboss.com/xulrunner/org.mozilla.xulrunner.feature_1.9.1.0_v20090825-1855-57Z379OhF77g7cFR37gN7.jar
+plugin@org.mozilla.xulrunner.win32.win32.x86,1.9.1.2=GET,http://repository.jboss.com/xulrunner/org.mozilla.xulrunner.win32.win32.x86_1.9.1.2.jar
+plugin@org.mozilla.xulrunner.gtk.linux,1.9.1.2=GET,http://repository.jboss.com/xulrunner/org.mozilla.xulrunner.gtk.linux.x86_1.9.1.2.jar
+plugin@org.mozilla.xulrunner.gtk.linux.x86_64,1.9.1.2a=GET,http://repository.jboss.com/xulrunner/org.mozilla.xulrunner.gtk.linux.x86_64_1.9.1.2a.jar
+plugin@org.mozilla.xulrunner.carbon.macosx,1.9.1.2=GET,http://repository.jboss.com/xulrunner/org.mozilla.xulrunner.carbon.macosx_1.9.1.2.jar
+plugin@org.mozilla.xulrunner.cocoa.macosx,1.9.1.2=GET,http://repository.jboss.com/xulrunner/org.mozilla.xulrunner.cocoa.macosx_1.9.1.2.jar

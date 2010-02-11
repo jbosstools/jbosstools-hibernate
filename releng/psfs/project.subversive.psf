@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psf version="2.0">
+<provider id="org.eclipse.team.svn.core.svnnature">
+
+  <!-- !*** features -->
+
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/features/org.hibernate.eclipse.sdk.feature,org.hibernate.eclipse.sdk.feature"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/features/org.hibernate.eclipse.feature,org.hibernate.eclipse.feature"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/features/org.hibernate.eclipse.test.feature,org.hibernate.eclipse.test.feature"/>
+
+  <!-- !*** plugins -->
+
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/plugins/org.hibernate.eclipse,org.hibernate.eclipse"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/plugins/org.hibernate.eclipse.console,org.hibernate.eclipse.console"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/plugins/org.hibernate.eclipse.help,org.hibernate.eclipse.help"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/plugins/org.hibernate.eclipse.jdt.apt.ui,org.hibernate.eclipse.jdt.apt.ui"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/plugins/org.hibernate.eclipse.jdt.ui,org.hibernate.eclipse.jdt.ui"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/plugins/org.hibernate.eclipse.mapper,org.hibernate.eclipse.mapper"/>
+
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/plugins/org.jboss.tools.hibernate.jpt.core,org.jboss.tools.hibernate.jpt.core"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/plugins/org.jboss.tools.hibernate.jpt.ui,org.jboss.tools.hibernate.jpt.ui"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/plugins/org.jboss.tools.hibernate.ui,org.jboss.tools.hibernate.ui"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/plugins/org.jboss.tools.hibernate.xml.ui,org.jboss.tools.hibernate.xml.ui"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/plugins/org.jboss.tools.hibernate.xml,org.jboss.tools.hibernate.xml"/>
+
+  <!-- !*** tests -->
+
+  <project reference="1.0.1,https://anonsvn.jboss.org/repos/jbosstools/trunk/tests/tests/org.jboss.tools.tests,org.jboss.tools.tests"/>
+
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/tests/org.hibernate.eclipse.console.test,org.hibernate.eclipse.console.test"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/tests/org.hibernate.eclipse.jdt.ui.test,org.hibernate.eclipse.jdt.ui.test"/>
+
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/tests/org.jboss.tools.hibernate.jpt.core.test,org.jboss.tools.hibernate.jpt.core.test"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/tests/org.jboss.tools.hibernate.ui.bot.test,org.jboss.tools.hibernate.ui.bot.test"/>
+  <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/tests/org.jboss.tools.hibernate.ui.test,org.jboss.tools.hibernate.ui.test"/>
+
+</provider>
+</psf>
