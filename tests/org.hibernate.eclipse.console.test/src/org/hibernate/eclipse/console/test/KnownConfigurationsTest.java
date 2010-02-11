@@ -43,10 +43,6 @@ public class KnownConfigurationsTest extends TestCase {
 			}
 		}
 
-		public void configurationReset(ConsoleConfiguration ccfg) {
-			// TODO Auto-generated method stub
-			
-		}
 	}
 
 	public void testKnownConfigurations() {

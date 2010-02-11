@@ -59,9 +59,6 @@ final class ConfigurationCombo extends ComboContribution {
 				populateComboBox();
 			}
 
-			public void configurationReset(ConsoleConfiguration ccfg) {				
-				
-			}
 		};
 		KnownConfigurations.getInstance().addConsoleConfigurationListener(
 				listener );			

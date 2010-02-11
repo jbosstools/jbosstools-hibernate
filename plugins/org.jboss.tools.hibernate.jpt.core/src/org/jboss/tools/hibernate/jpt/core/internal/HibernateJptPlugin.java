@@ -139,10 +139,6 @@ public class HibernateJptPlugin extends Plugin {
 				revalidateProjects(root);
 			}
 
-			public void configurationReset(ConsoleConfiguration ccfg) {
-				// TODO Auto-generated method stub
-				
-			}
 		});
 	}
 

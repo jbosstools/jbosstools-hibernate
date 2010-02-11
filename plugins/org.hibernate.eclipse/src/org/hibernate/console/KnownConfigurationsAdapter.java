@@ -41,5 +41,7 @@ public abstract class KnownConfigurationsAdapter implements KnownConfigurationsL
 
 	public void sessionFactoryClosing(ConsoleConfiguration configuration,
 			SessionFactory closingFactory) {}
+	
+	public void configurationReset(ConsoleConfiguration ccfg){}
 
 }
