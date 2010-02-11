@@ -29,7 +29,6 @@
 
   <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/tests/org.hibernate.eclipse.console.test,org.hibernate.eclipse.console.test"/>
   <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/tests/org.hibernate.eclipse.jdt.ui.test,org.hibernate.eclipse.jdt.ui.test"/>
-
   <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/tests/org.jboss.tools.hibernate.jpt.core.test,org.jboss.tools.hibernate.jpt.core.test"/>
   <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/tests/org.jboss.tools.hibernate.ui.bot.test,org.jboss.tools.hibernate.ui.bot.test"/>
   <project reference="1.0.1,http://anonsvn.jboss.org/repos/jbosstools/trunk/hibernatetools/tests/org.jboss.tools.hibernate.ui.test,org.jboss.tools.hibernate.ui.test"/>
