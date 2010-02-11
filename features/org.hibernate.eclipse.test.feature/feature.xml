@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feature
-      id="org.hibernate.eclipse.test.feature"
-      label="Hibernate Tests"
-      version="3.3.0.qualifier"
-      provider-name="JBoss by Red Hat">
+<feature id="org.hibernate.eclipse.test.feature" label="Hibernate Tests" version="3.3.0.qualifier" provider-name="JBoss by Red Hat">
 
-   <description url="http://www.example.com/description">
+	<description url="http://www.example.com/description">
       hibernate test
    </description>
 
-   <copyright url="http://www.example.com/copyright">
+	<copyright url="http://www.example.com/copyright">
       [Enter Copyright Description here.]
    </copyright>
 
-   <license>Red Hat, Inc. licenses these features and plugins to you under
+	<license>Red Hat, Inc. licenses these features and plugins to you under
 certain open source licenses (or aggregations of such licenses), which
 in a particular case may include the Eclipse Public License, the GNU
 Lesser General Public License, and/or certain other open source
@@ -22,29 +18,15 @@ source code, or contact Red Hat Legal Affairs, 1801 Varsity Drive,
 Raleigh NC 27606 USA.
 </license>
 
+	<plugin id="org.eclipse.ant.optional.junit" download-size="0" install-size="0" version="0.0.0" fragment="true" />
+	<plugin id="org.eclipse.test" download-size="0" install-size="0" version="0.0.0" />
 
-   <plugin
-         id="org.jboss.tools.tests"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
+	<plugin id="org.jboss.tools.tests" download-size="0" install-size="0" version="0.0.0" />
 
-   <plugin
-         id="org.hibernate.eclipse.console.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
+	<plugin id="org.hibernate.eclipse.console.test" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.hibernate.eclipse.jdt.ui.test" download-size="0" install-size="0" version="0.0.0" />
 
-   <plugin
-         id="org.hibernate.eclipse.jdt.ui.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.jboss.tools.hibernate.ui.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
+	<plugin id="org.jboss.tools.hibernate.jpt.core.test" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.hibernate.ui.bot.test" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.hibernate.ui.test" download-size="0" install-size="0" version="0.0.0" />
 </feature>
