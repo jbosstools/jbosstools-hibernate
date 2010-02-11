@@ -25,7 +25,6 @@ plugin@org.jboss.tools.tests=SVN,,https://anonsvn.jboss.org/repos,,jbosstools/tr
 
 plugin@org.hibernate.eclipse.console.test=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/hibernatetools/tests/org.hibernate.eclipse.console.test
 plugin@org.hibernate.eclipse.jdt.ui.test=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/hibernatetools/tests/org.hibernate.eclipse.jdt.ui.test
-
 plugin@org.jboss.tools.hibernate.jpt.core.test=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/hibernatetools/tests/org.jboss.tools.hibernate.jpt.core.test
 plugin@org.jboss.tools.hibernate.ui.bot.test=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/hibernatetools/tests/org.jboss.tools.hibernate.ui.bot.test
 plugin@org.jboss.tools.hibernate.ui.test=SVN,,http://anonsvn.jboss.org/repos,,jbosstools/trunk/hibernatetools/tests/org.jboss.tools.hibernate.ui.test
