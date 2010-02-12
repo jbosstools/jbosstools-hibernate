@@ -323,13 +323,13 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 					Configuration localCfg = cfg;
 
 					Properties properties = prefs.getProperties();
-					// to fix: JBIDE-5839 - setup this property: false is default value 
-					// to make hibernate tools diff hibernate versions compatible
-					if (properties.getProperty("hibernate.search.autoregister_listeners") == null) { //$NON-NLS-1$
-						properties.setProperty("hibernate.search.autoregister_listeners", "false"); //$NON-NLS-1$ //$NON-NLS-2$
-					}
 
 					if(properties!=null) {
+						// to fix: JBIDE-5839 - setup this property: false is default value 
+						// to make hibernate tools diff hibernate versions compatible
+						if (properties.getProperty("hibernate.search.autoregister_listeners") == null) { //$NON-NLS-1$
+							properties.setProperty("hibernate.search.autoregister_listeners", "false"); //$NON-NLS-1$ //$NON-NLS-2$
+						}
 						// in case the transaction manager is empty then we need to inject a faketm since hibernate will still try and instantiate it.
 						String str = properties.getProperty( "hibernate.transaction.manager_lookup_class" ); //$NON-NLS-1$
 						if(str != null && StringHelper.isEmpty( str )) {
