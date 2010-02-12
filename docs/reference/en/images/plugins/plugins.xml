@@ -129,7 +129,7 @@
       possible if your project requires this.</para>
     <section id="creat_console_conf">
       <title>Creating a Hibernate Console Configuration</title>
-      <para>You can create a console configuration by running the <property>Console Configuration
+      <para>You create a console configuration by running the <property>Console Configuration
           Wizard</property>, shown in the following screenshot. The same wizard will also be used if
         you are coming from the <emphasis>
           <property>hibernate.cfg.xml</property>
@@ -163,7 +163,7 @@
       </figure>
       <para>The following table describes the available settings on the <emphasis>
           <property>Main</property>
-        </emphasis> tab. The wizard can automatically detect the default values for most of them  if you
+        </emphasis> tab. The wizard can automatically detect default values for most of these if you
         started the wizard with the relevant java project or resource selected.</para>
       <table>
         <title>Hibernate Console Configuration Parameters</title>
@@ -264,7 +264,7 @@
                 <para>Name of the persistence unit to use</para>
               </entry>
               <entry>
-                <para>No default value (let Hibernate Entity Manager find the persistence unit or
+                <para>No default value (lets Hibernate Entity Manager find the persistence unit or
                   it can be defined manually using Browse button)</para>
               </entry>
             </row>
@@ -273,7 +273,7 @@
       </table>
       <tip>
         <title>Tip:</title>
-        <para>The two latter settings are usually  not required if you specify a project and it has
+        <para>The two latter settings are normally not required if you specify a project and it has
             <emphasis>
             <property>
               <literal> /hibernate.cfg.xml </literal>
@@ -479,7 +479,7 @@
               <entry>
                 <para>List of additional mapping files that should be loaded. Note: A
                   hibernate.cfg.xml or persistence.xml can also contain mappings. Thus if these are
-                  duplications here, you will get "Duplicate mapping" errors when using the console
+                  duplicated here, you will get "Duplicate mapping" errors when using the console
                   configuration.</para>
               </entry>
               <entry>
@@ -527,9 +527,9 @@
       <para>When you created a hibernate console configuration you can modify it in 2 ways: </para>
       <itemizedlist>
         <listitem>
-          <para>right-click on the configuration in <emphasis>
+          <para>right click on the configuration in <emphasis>
               <property>Hibernate Configurations View->Edit Configuration </property>
-            </emphasis> or just double-click on <property>Console Configuration</property> item.</para>
+            </emphasis> or just double click on <property>Console Configuration</property> item.</para>
           <figure>
             <title>Opening Edit Configuration Wizard</title>
             <mediaobject>
@@ -651,7 +651,7 @@
                     <entry>
                       <para>Choose between &quot;CORE&quot;, &quot;ANNOTATIONS&quot; and
                         &quot;JPA&quot; according to the method of relational mapping you want to
-                        use. Note, the two latter requires running Eclipse IDE with a JDK 5
+                        use. Note that the two latter requires running Eclipse IDE with a JDK 5
                         runtime, otherwise you will get classloading and/or version errors.</para>
                     </entry>
                     <entry>
@@ -666,7 +666,7 @@
     </section>
     <section id='closing_conf_config'>
       <title>Closing Hibernate Console Configuration</title>
-      <para>To close <property>Hibernate Console Configuration</property> you need do right-click your configuration
+      <para>To close <property>Hibernate Console Configuration</property> you need do right click your configuration
         and choose <property>Close Configuration</property> option </para>
       <figure>
         <title>Close Hibernate Console Configuration</title>
