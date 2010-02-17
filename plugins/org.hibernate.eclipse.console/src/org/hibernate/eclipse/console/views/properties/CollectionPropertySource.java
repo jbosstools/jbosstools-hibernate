@@ -29,29 +29,17 @@ import java.util.WeakHashMap;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
-import org.hibernate.Session;
-import org.hibernate.console.execution.ExecutionContextHolder;
-import org.hibernate.metadata.CollectionMetadata;
 
 public class CollectionPropertySource implements IPropertySource {
 
 	private Collection<?> collection;
 
 	IPropertyDescriptor[] descriptors = null;
-
-	private final Session currentSession;
-
-	private final CollectionMetadata collectionMetadata;
-
-	private final ExecutionContextHolder currentConfiguration;
 	
 	Map<Object, Object> values = new WeakHashMap<Object, Object>();
 	
-	public CollectionPropertySource(Collection<?> propertyValue, Session currentSession, ExecutionContextHolder currentConfiguration, CollectionMetadata collectionMetadata) {
+	public CollectionPropertySource(Collection<?> propertyValue) {
 		collection = propertyValue;
-		this.currentSession = currentSession;
-		this.currentConfiguration = currentConfiguration;
-		this.collectionMetadata = collectionMetadata;		
 	}
 
 	public Object getEditableValue() {

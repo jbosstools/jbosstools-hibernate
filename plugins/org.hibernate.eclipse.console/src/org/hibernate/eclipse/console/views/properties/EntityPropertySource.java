@@ -28,7 +28,9 @@ import org.eclipse.ui.views.properties.IPropertySource2;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.hibernate.EntityMode;
 import org.hibernate.Session;
-import org.hibernate.console.execution.ExecutionContextHolder;
+import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.metadata.ClassMetadata;
@@ -42,14 +44,14 @@ public class EntityPropertySource implements IPropertySource2
 	private Object reflectedObject;
 	private IPropertyDescriptor[] propertyDescriptors;
 
-	private final ExecutionContextHolder currentConfiguration;
+	private final String consoleConfigName;
 	private final Session currentSession;
 	private ClassMetadata classMetadata;
 
-	public EntityPropertySource (final Object object, final Session currentSession, ExecutionContextHolder currentConfiguration)
+	public EntityPropertySource(final Object object, final Session currentSession, String consoleConfigName)
 	{
 		this.currentSession = currentSession;
-		this.currentConfiguration = currentConfiguration;
+		this.consoleConfigName = consoleConfigName;
 		reflectedObject = object;
 		if(currentSession.isOpen()) {
 			classMetadata = currentSession.getSessionFactory().getClassMetadata( currentSession.getEntityName(reflectedObject) );
@@ -65,16 +67,23 @@ public class EntityPropertySource implements IPropertySource2
 	}
 
 	public IPropertyDescriptor[] getPropertyDescriptors() {
-		if(propertyDescriptors==null) {
-			currentConfiguration.getExecutionContext().execute(new Command() {
-
-				public Object execute() {
-
-					propertyDescriptors = initializePropertyDescriptors(classMetadata);
-					return null;
+		if (propertyDescriptors == null) {
+			ConsoleConfiguration consoleConfig = KnownConfigurations.getInstance().find(consoleConfigName);
+			if (consoleConfig != null) {
+				ExecutionContext executionContext = consoleConfig.getExecutionContext();
+				if (executionContext == null) {
+					consoleConfig.build();
+					executionContext = consoleConfig.getExecutionContext();
 				}
-
-			});
+				if (executionContext != null) {
+					executionContext.execute(new Command() {
+						public Object execute() {
+							propertyDescriptors = initializePropertyDescriptors(classMetadata);
+							return null;
+						}
+					});
+				}
+			}
 		}
 		return propertyDescriptors;
 	}
@@ -121,7 +130,7 @@ public class EntityPropertySource implements IPropertySource2
 		if (propertyValue instanceof Collection<?>) {
 			CollectionMetadata collectionMetadata = currentSession.getSessionFactory().getCollectionMetadata(classMetadata.getEntityName() + "." + id); //$NON-NLS-1$
 			if(collectionMetadata!=null) {
-				propertyValue = new CollectionPropertySource((Collection<?>) propertyValue,currentSession,currentConfiguration, collectionMetadata);
+				propertyValue = new CollectionPropertySource((Collection<?>) propertyValue);
 			}
 		}
 		return propertyValue;
