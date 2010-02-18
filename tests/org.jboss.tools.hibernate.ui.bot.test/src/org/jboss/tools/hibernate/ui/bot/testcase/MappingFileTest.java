@@ -112,7 +112,7 @@ public class MappingFileTest extends HibernateTest {
 		pageBot.selectPage("Source");
 		
 		// Check code completion
-		SWTBotEditorExt editor = bot.editorByTitle(Project.CLASS1 + ".hbm.xml");
+		SWTBotEditorExt editor = bot.swtBotEditorExtByTitle(Project.CLASS1 + ".hbm.xml");
 		
 		String search = "</id>";  
 		List<String> lines = editor.getLines();
