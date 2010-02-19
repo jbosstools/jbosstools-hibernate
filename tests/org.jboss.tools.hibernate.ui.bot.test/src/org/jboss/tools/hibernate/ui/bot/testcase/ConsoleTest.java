@@ -26,12 +26,12 @@ import org.junit.runner.RunWith;
 public class ConsoleTest extends HibernateTest {
 
 	@BeforeClass	
-	public static void setUp() {
+	public static void setUpTest() {
 		HibernateTest.prepareProject();
 	}
 	
 	@AfterClass
-	public static void tearDown() { 
+	public static void tearDownTest() { 
 		HibernateTest.clean();
 	}	
 	

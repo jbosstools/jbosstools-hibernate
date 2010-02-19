@@ -10,9 +10,6 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.ui.bot.testcase;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -45,12 +42,12 @@ import org.xml.sax.SAXException;
 public class ConfigurationFileTest extends HibernateTest {
 
 	@BeforeClass
-	public static void setUp() {
+	public static void setUpTest() {
 		HibernateTest.prepareProject();
 	}
 	
 	@AfterClass
-	public static void tearDown() { 
+	public static void tearDownTest() { 
 		HibernateTest.clean();
 	}	
 	

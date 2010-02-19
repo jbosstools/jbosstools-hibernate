@@ -30,12 +30,12 @@ import org.junit.runner.RunWith;
 public class MappingFileTest extends HibernateTest {
 
 	@BeforeClass
-	public static void setUp() {
+	public static void setUpTest() {
 		HibernateTest.prepare();
 	}
 	
 	@AfterClass
-	public static void tearDown() { 
+	public static void tearDownTest() { 
 		HibernateTest.clean();
 	}
 

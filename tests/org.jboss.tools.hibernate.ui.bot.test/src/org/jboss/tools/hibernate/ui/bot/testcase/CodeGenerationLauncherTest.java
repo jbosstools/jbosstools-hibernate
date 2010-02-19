@@ -38,7 +38,7 @@ public class CodeGenerationLauncherTest extends HibernateTest {
 	/**
 	 * Setup prerequisites for this test
 	 */
-	public static void setUp() {
+	public void setUpTest() {
 
 		prepareProject();
 		prepareConsole();

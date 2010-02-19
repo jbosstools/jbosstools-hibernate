@@ -41,12 +41,12 @@ import org.junit.runners.Suite.SuiteClasses;
 public class HibernateAllTests extends HibernateTest {
 
 	@BeforeClass
-	public static void setUp() {
+	public static void setUpSuite() {
 		HibernateTest.prepare();
 	}
 
 	@AfterClass
-	public static void tearDown() {
+	public static void tearDownSuite() {
 		HibernateTest.clean();
 	}
 }
