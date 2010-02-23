@@ -2461,6 +2461,8 @@
     <para>Starting from 3.0.0 Alpha1 version of <property>JBoss Tools</property> Hibernate plugins
       support Eclipse Dali integration what now makes it possible to use a Hibernate as a complete
       JPA development platform.</para>
+    <section id="jpa_project_with_hibernate">
+      <title>Creating JPA project with Hibernate support</title>
     <para>When starting a new JPA project from <emphasis>
         <property>New &gt; Other &gt; JPA &gt; JPA Project</property>
       </emphasis> (or simply <emphasis>
@@ -2499,7 +2501,10 @@
         finishes its work. It allows a full usage of <property>Hibernate Tools</property> features
         without additional setup.</para>
     </note>
-    <para>By enabling Hibernate platform specific features you can now generate DDL and Entities.
+    </section>
+   <section id="generate_ddl_entities_with_hibernate"> 
+     <title>Generating DDL and Entities</title>
+     <para>By enabling Hibernate platform specific features you can now generate DDL and Entities.
       For that find <emphasis>
         <property>JPA Tools > Generate Tables from Entities/Generate Entities from Tables</property>
       </emphasis> options in the context menu of your JPA project.</para>
@@ -2531,10 +2536,10 @@
       <listitem>
         <para>a Hibernate Console Configuration (proposed by default)</para>
         <para>Just make sure that the <emphasis>
-            <property>Use Console Configuration</property>
-          </emphasis> checkbox is selected and choose a needed configuration from the <emphasis>
-            <property>Console configurations</property>
-          </emphasis> list box.</para>
+          <property>Use Console Configuration</property>
+        </emphasis> checkbox is selected and choose a needed configuration from the <emphasis>
+          <property>Console configurations</property>
+        </emphasis> list box.</para>
         <figure>
           <title>Generate Entities Wizard</title>
           <mediaobject>
@@ -2565,5 +2570,80 @@
       </mediaobject>
     </figure>
     <para>Thus, you can now have the Hibernate runtime support in Eclipse JPA projects.</para>
+   </section>
+   <section id="hibernate_annotations_support">
+      <title>Hibernate Annotations Support</title>
+     <para>Also Hibernate Annotations are supported in <property>Dali Java Persistence Tools</property>.
+       The next annotations are integrated with <property>JPA Details</property> view:</para>
+     <itemizedlist>
+       <listitem>         
+         <para>Id Generator annotations - <property>@GenericGenerator</property> and <property>@GeneratedValue</property></para>
+         <figure>
+           <title>@GenericGenerator support in Dali</title>
+           <mediaobject>
+             <imageobject>
+                  <imagedata fileref="images/plugins/dali_integration7.png"/>
+             
+              </imageobject>
+           
+           </mediaobject>
+         </figure>
+         <figure>
+           <title>@GeneratedValue support in Dali</title>
+           <mediaobject>
+             <imageobject>
+               <imagedata fileref="images/plugins/dali_integration8.png"/>
+             </imageobject>
+             
+           </mediaobject>
+         </figure>         
+       </listitem>
+       <listitem>
+         <para>Property annotations- <property>@DiscriminatorFormula</property>, <property>@Generated Annotation</property>, <property>@Index annotation</property></para>
+         <figure>
+           <title>@Index support in Dali</title>
+           <mediaobject>
+             <imageobject>
+               <imagedata fileref="images/plugins/dali_integration9.png"/>
+             </imageobject>
+             
+           </mediaobject>
+         </figure>
+         
+       </listitem>
+       <listitem>
+         <para>Mapping Queries annotations - <property>@NamedQuery</property> and <property>@NamedNativeQuery</property></para>
+         <figure>
+           <title>Add New Named Query Dialog with Hibernate Support</title>
+           <mediaobject>
+             <imageobject>
+               <imagedata fileref="images/plugins/dali_integration10.png"/>
+             </imageobject>
+             
+           </mediaobject>
+         </figure>
+         
+         
+         
+         <figure>
+           <title>@NamedQuery support in Dali</title>
+             <mediaobject>
+               <imageobject>
+                 <imagedata fileref="images/plugins/dali_integration11.png"/>
+               </imageobject>
+               
+             </mediaobject>
+         </figure>
+       </listitem>
+     </itemizedlist>
+     <para>More information about Hibernate Annotation you can find in <ulink url="http://docs.jboss.org/hibernate/stable/annotations/reference/en/html/">Hibernate Annotations Reference Guide</ulink>. </para> 
+     
+   </section>
+    <section>
+      <title>Relevant Resources Links</title>
+      <para>There is full information about native Dali plugin features on <ulink url="http://help.eclipse.org/galileo/index.jsp?nav=/8">Eclipse Documentation page</ulink>.</para> 
+    </section>
+    
   </section>
+  
 </chapter>
