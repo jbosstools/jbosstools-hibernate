@@ -148,10 +148,9 @@ public class ProjectUtils {
 
 			String[] natures = description.getNatureIds();
 	        String[] newNatures = new String[natures.length - 1];
-	        for(int i = 0, j = 0; i < natures.length; i++) {
-	            if (!natures[i].equals(nature)) {
-	                newNatures[j++] = natures[i];
-	            }
+	        for(int i = 0; i < natures.length; i++) {
+	            if (!natures[i].equals(nature) )
+	                newNatures[i] = natures[i];
 	        }
 	        description.setNatureIds(newNatures);
 	        project.setDescription(description, monitor);
