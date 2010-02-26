@@ -42,14 +42,14 @@
 
     <copyright>
       <year>2007</year>
-      <year><diffmk:wrapper diffmk:change="added">2008</diffmk:wrapper></year>
-      <year diffmk:change="added">2009</year>
-      <year diffmk:change="added"><diffmk:wrapper diffmk:change="added">2010</diffmk:wrapper></year>
+      <year>2008</year>
+      <year>2009</year>
+      <year>2010</year>
       <holder>JBoss by Red Hat</holder>
     </copyright>
 
     <releaseinfo><diffmk:wrapper diffmk:change="changed">
-      Version: 3.3.0.CR2
+      Version: 3.3.0.GA
     </diffmk:wrapper></releaseinfo>
 
 
@@ -234,88 +234,88 @@
   
 <chapter id="setup" xml:base="file:///home/vchukhutsina/repos/ochik_jboss/hibernatetools/docs/reference/en/modules/setup.xml">
   <title>Download and install Hibernate Tools</title>
-  <para><property moreinfo="none">Hibernate Tools</property><diffmk:wrapper diffmk:change="changed"> can be used "standalone" via Ant 1.6.x or
-    fully integrated into an Eclipse + WTP based IDE, such as </diffmk:wrapper><property moreinfo="none"><diffmk:wrapper diffmk:change="changed">JBDS/JBoss Tools</diffmk:wrapper></property><diffmk:wrapper diffmk:change="changed">,
+  <para><property moreinfo="none">Hibernate Tools</property> can be used "standalone" via Ant 1.6.x or
+    fully integrated into an Eclipse + WTP based IDE, such as <property moreinfo="none">JBDS/JBoss Tools</property>,
     or a default Eclipse + WTP installation. The following sections describe the install steps in
-    these environments.</diffmk:wrapper></para>
+    these environments.</para>
   <note>
     <title>Note:</title>
-    <para>The <property moreinfo="none"><diffmk:wrapper diffmk:change="changed">Hibernate Tools 3.3.0</diffmk:wrapper></property><diffmk:wrapper diffmk:change="changed"> (the current release version) requires
-      Eclipse Galileo 3.5.</diffmk:wrapper></para>
+    <para>The <property moreinfo="none">Hibernate Tools 3.3.0</property> (the current release version) requires
+      Eclipse Galileo 3.5.</para>
   </note>
   <section>
     <title>JBoss Tools</title>
-    <para><property moreinfo="none"><diffmk:wrapper diffmk:change="changed">JBoss Tools 3.1.0</diffmk:wrapper></property><diffmk:wrapper diffmk:change="changed"> (the latest release) includes </diffmk:wrapper><property moreinfo="none"><diffmk:wrapper diffmk:change="changed">Hibernate
-        Tools 3.3.0</diffmk:wrapper></property> and thus nothing is required besides <property diffmk:change="added" moreinfo="none">downloading</property><diffmk:wrapper diffmk:change="added">
-      and </diffmk:wrapper><property diffmk:change="added" moreinfo="none">installing JBoss Tools</property><diffmk:wrapper diffmk:change="added">. If you need to update to a newer version of
-      the </diffmk:wrapper><property moreinfo="none">Hibernate Tools</property><diffmk:wrapper diffmk:change="changed"> just follow the instructions in the Eclipse IDE
-      section.</diffmk:wrapper></para>
+    <para><property moreinfo="none">JBoss Tools 3.1.0</property> (the latest release) includes <property moreinfo="none">Hibernate
+        Tools 3.3.0</property> and thus nothing is required besides <property moreinfo="none">downloading</property>
+      and <property moreinfo="none">installing JBoss Tools</property>. If you need to update to a newer version of
+      the <property moreinfo="none">Hibernate Tools</property> just follow the instructions in the Eclipse IDE
+      section.</para>
   </section>
   <section>
     <title>Eclipse IDE</title>
-    <para>To install the <property moreinfo="none">Hibernate Tools</property> into any <property moreinfo="none"><diffmk:wrapper diffmk:change="added">Eclipse
-        3.5</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added"> based IDE you can either use </diffmk:wrapper><ulink url="http://download.jboss.org/jbosstools/updates/stable/"><diffmk:wrapper diffmk:change="changed">JBoss Tools Update Site</diffmk:wrapper></ulink><diffmk:wrapper diffmk:change="changed">
-      or install it manually.</diffmk:wrapper></para>
-    <para><diffmk:wrapper diffmk:change="changed">If you want to install the </diffmk:wrapper><property moreinfo="none">Hibernate Tools</property><diffmk:wrapper diffmk:change="added"> distribution manually you
-      need to:</diffmk:wrapper></para>
-    <itemizedlist diffmk:change="added">
-      <listitem diffmk:change="added">
-        <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Download from www.eclipse.org:</diffmk:wrapper></para>
-        <itemizedlist diffmk:change="added">
-          <listitem diffmk:change="added">
-            <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">birt-report-framework-2_5_0.zip</diffmk:wrapper></para>
+    <para>To install the <property moreinfo="none">Hibernate Tools</property> into any <property moreinfo="none">Eclipse
+        3.5</property> based IDE you can either use <ulink url="http://download.jboss.org/jbosstools/updates/stable/">JBoss Tools Update Site</ulink>
+      or install it manually.</para>
+    <para>If you want to install the <property moreinfo="none">Hibernate Tools</property> distribution manually you
+      need to:</para>
+    <itemizedlist>
+      <listitem>
+        <para>Download from www.eclipse.org:</para>
+        <itemizedlist>
+          <listitem>
+            <para>birt-report-framework-2_5_0.zip</para>
           </listitem>
-          <listitem diffmk:change="added">
-            <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">birt-wtp-integration-sdk-2_3_2.zip</diffmk:wrapper></para>
+          <listitem>
+            <para>birt-wtp-integration-sdk-2_3_2.zip</para>
           </listitem>
-          <listitem diffmk:change="added">
-            <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">dtp-sdk_1.7.0.zip</diffmk:wrapper></para>
+          <listitem>
+            <para>dtp-sdk_1.7.0.zip</para>
           </listitem>
-          <listitem diffmk:change="added">
-            <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">eclipse-SDK-3.5-win32.zip</diffmk:wrapper></para>
+          <listitem>
+            <para>eclipse-SDK-3.5-win32.zip</para>
           </listitem>
-          <listitem diffmk:change="added">
-            <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">emf-runtime-2.5.0.zip</diffmk:wrapper></para>
+          <listitem>
+            <para>emf-runtime-2.5.0.zip</para>
           </listitem>
-          <listitem diffmk:change="added">
-            <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">GEF-SDK-3.5.0.zip</diffmk:wrapper></para>
+          <listitem>
+            <para>GEF-SDK-3.5.0.zip</para>
           </listitem>
-          <listitem diffmk:change="added">
-            <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">org.eclipse.swtbot.eclipse.test-2.0.0.371-dev-e35.zip</diffmk:wrapper></para>
+          <listitem>
+            <para>org.eclipse.swtbot.eclipse.test-2.0.0.371-dev-e35.zip</para>
           </listitem>
-          <listitem diffmk:change="added">
-            <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">org.eclipse.swtbot.eclipse-2.0.0.340-dev.zip</diffmk:wrapper></para>
+          <listitem>
+            <para>org.eclipse.swtbot.eclipse-2.0.0.340-dev.zip</para>
           </listitem>
-          <listitem diffmk:change="added">
-            <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">site-1.6.2.zip</diffmk:wrapper></para>
+          <listitem>
+            <para>site-1.6.2.zip</para>
           </listitem>
-          <listitem diffmk:change="added">
-            <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">tptp.sdk-TPTP-4.6.0.zip</diffmk:wrapper></para>
+          <listitem>
+            <para>tptp.sdk-TPTP-4.6.0.zip</para>
           </listitem>
-          <listitem diffmk:change="added">
-            <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">wtp-sdk-R-3.1-20090616035105.zip</diffmk:wrapper></para>
+          <listitem>
+            <para>wtp-sdk-R-3.1-20090616035105.zip</para>
           </listitem>
-          <listitem diffmk:change="added">
-            <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">xsd-runtime-2.5.0.zip</diffmk:wrapper></para>
+          <listitem>
+            <para>xsd-runtime-2.5.0.zip</para>
           </listitem>
         </itemizedlist>
       </listitem>
-      <listitem diffmk:change="added">
-        <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Then you should unpack these files into Eclipse install folder.</diffmk:wrapper></para>
+      <listitem>
+        <para>Then you should unpack these files into Eclipse install folder.</para>
       </listitem>
-      <listitem diffmk:change="added">
-        <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">From </diffmk:wrapper><ulink diffmk:change="added" url="https://www.hibernate.org/6.html"><diffmk:wrapper diffmk:change="added">hibernate.org-Download Overview</diffmk:wrapper></ulink><diffmk:wrapper diffmk:change="added"> download </diffmk:wrapper><ulink diffmk:change="added" url="http://downloads.sourceforge.net/project/jboss/JBossTools/JBossTools3.1.0.CR1/HibernateTools-3.3.0.v200912250601M-H198-CR1.zip"><diffmk:wrapper diffmk:change="added">Hibernate Tools</diffmk:wrapper></ulink><diffmk:wrapper diffmk:change="added">
-          .</diffmk:wrapper></para>
+      <listitem>
+        <para>From <ulink url="https://www.hibernate.org/6.html">hibernate.org-Download Overview</ulink> download <ulink url="http://downloads.sourceforge.net/project/jboss/JBossTools/JBossTools3.1.0.CR1/HibernateTools-3.3.0.v200912250601M-H198-CR1.zip">Hibernate Tools</ulink>
+          .</para>
         
       </listitem>
-      <listitem diffmk:change="added">
-        <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Unpack </diffmk:wrapper><property moreinfo="none"><diffmk:wrapper diffmk:change="changed">Hibernate Tools</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added"> in eclipse/dropins folder</diffmk:wrapper></para>
+      <listitem>
+        <para>Unpack <property moreinfo="none">Hibernate Tools</property> in eclipse/dropins folder</para>
       </listitem>
     </itemizedlist>
     <note>
       <title>Note:</title>
-      <para><diffmk:wrapper diffmk:change="changed">If you need more detailed instructions on  plugins installation and general usage of eclipse
-        then check out </diffmk:wrapper><ulink url="https://eclipse-tutorial.dev.java.net/">https://eclipse-tutorial.dev.java.net/</ulink> and especially <ulink url="https://eclipse-tutorial.dev.java.net/visual-tutorials/updatemanager.html">https://eclipse-tutorial.dev.java.net/visual-tutorials/updatemanager.html</ulink> which
+      <para>If you need more detailed instructions on  plugins installation and general usage of eclipse
+        then check out <ulink url="https://eclipse-tutorial.dev.java.net/">https://eclipse-tutorial.dev.java.net/</ulink> and especially <ulink url="https://eclipse-tutorial.dev.java.net/visual-tutorials/updatemanager.html">https://eclipse-tutorial.dev.java.net/visual-tutorials/updatemanager.html</ulink> which
         covers using the update manager.</para>
     </note>
     <section>
@@ -475,6 +475,18 @@
           <property moreinfo="none">Hibernate Tools</property> and especially <property moreinfo="none">Hibernate</property> it
         self.</para>
     </note>
+    <section diffmk:change="added" id="download_base_project">
+      <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Download base project</diffmk:wrapper></title>
+      <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">You can download example projects which are used as base for this chapter.</diffmk:wrapper></para>
+      <para diffmk:change="added"><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">JPA base project</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added"> is available </diffmk:wrapper><ulink diffmk:change="added" url="http://anonsvn.jboss.org/repos/jbosstools/trunk//hibernatetools/docs/reference/en/JPA_project_for_hibernate_jboss_tools_331.zip"><diffmk:wrapper diffmk:change="added">here</diffmk:wrapper></ulink><diffmk:wrapper diffmk:change="added"> 
+        and  base </diffmk:wrapper><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Java project</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added"> is situated </diffmk:wrapper><ulink diffmk:change="added" url="http://anonsvn.jboss.org/repos/jbosstools/trunk//hibernatetools/docs/reference/en/TestHibernate_for_hibernate_jboss_tools_331.zip"><diffmk:wrapper diffmk:change="added">here</diffmk:wrapper></ulink><diffmk:wrapper diffmk:change="added">.</diffmk:wrapper></para>
+      <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Also you need start </diffmk:wrapper><ulink diffmk:change="added" url="http://anonsvn.jboss.org/repos/jbosstools/trunk//hibernatetools/docs/reference/en/database_jboss_tools_331.zip"><diffmk:wrapper diffmk:change="added">database</diffmk:wrapper></ulink><diffmk:wrapper diffmk:change="added">.</diffmk:wrapper></para>
+      <note diffmk:change="added">
+        <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Note:</diffmk:wrapper></title>
+        <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">How to run database you can know in </diffmk:wrapper><ulink diffmk:change="added" url="http://docs.jboss.org/tools/3.0.1.GA/en/GettingStartedGuide/html/first_seam.html#start_dev_db"><diffmk:wrapper diffmk:change="added">Getting Started Guide</diffmk:wrapper></ulink><diffmk:wrapper diffmk:change="added">.</diffmk:wrapper></para>
+      </note>
+    </section>
+    
   </section>
   <section id="map_file_wizard">
     <title>Creating a Hibernate Mapping File</title>
@@ -2249,7 +2261,7 @@
                   <para>
                     <inlinemediaobject>
                       <imageobject>
-                        <imagedata fileref="images/plugins/visibleState.png"/>
+                        <imagedata fileref="images/plugins/visibleState.png"/>  
                       </imageobject>
                     </inlinemediaobject>
                   </para>
@@ -2862,9 +2874,9 @@
     <title>Enable debug logging in the plugins</title>
     <para>It is possible to configure the eclipse plugin to route all logging made by the plugins
       and hibernate code it self to the <property moreinfo="none">Error Log View</property> in Eclipse.</para>
-    <para diffmk:change="added"><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Error Log View</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added"> is very useful tool to solve any problem which appears in Hibernate Tools Plugins. 
+    <para><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Error Log View</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added"> is very useful tool to solve any problem which appears in Hibernate Tools Plugins. 
       You can use if there are troubles with setting up </diffmk:wrapper><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Hibernate Console Configuration</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added">.</diffmk:wrapper></para> 
-    <para>This is done by editing the <emphasis>
+    <para diffmk:change="added">This is done by editing the <emphasis>
       <property moreinfo="none">hibernate-log4j.properties</property>
       </emphasis> in <emphasis>
         <property moreinfo="none">org.hibernate.eclipse/ directory/jar</property>
@@ -2881,6 +2893,8 @@
     <para>Starting from 3.0.0 Alpha1 version of <property moreinfo="none">JBoss Tools</property> Hibernate plugins
       support Eclipse Dali integration what now makes it possible to use a Hibernate as a complete
       JPA development platform.</para>
+    <section diffmk:change="added" id="jpa_project_with_hibernate">
+      <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Creating JPA project with Hibernate support</diffmk:wrapper></title>
     <para>When starting a new JPA project from <emphasis>
         <property moreinfo="none">New &gt; Other &gt; JPA &gt; JPA Project</property>
       </emphasis> (or simply <emphasis>
@@ -2919,7 +2933,10 @@
         finishes its work. It allows a full usage of </diffmk:wrapper><property moreinfo="none">Hibernate Tools</property><diffmk:wrapper diffmk:change="changed"> features
         without additional setup.</diffmk:wrapper></para>
     </note>
-    <para>By enabling Hibernate platform specific features you can now generate DDL and Entities.
+    </section>
+   <section diffmk:change="added" id="generate_ddl_entities_with_hibernate"> 
+     <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Generating DDL and Entities</diffmk:wrapper></title>
+     <para>By enabling Hibernate platform specific features you can now generate DDL and Entities.
       For that find <emphasis>
         <property moreinfo="none">JPA Tools &gt; Generate Tables from Entities/Generate Entities from Tables</property>
       </emphasis> options in the context menu of your JPA project.</para>
@@ -2951,10 +2968,10 @@
       <listitem>
         <para>a Hibernate Console Configuration (proposed by default)</para>
         <para>Just make sure that the <emphasis>
-            <property moreinfo="none">Use Console Configuration</property>
-          </emphasis> checkbox is selected and choose a needed configuration from the <emphasis>
-            <property moreinfo="none"><diffmk:wrapper diffmk:change="changed">Console configurations</diffmk:wrapper></property>
-          </emphasis> list box.</para>
+          <property moreinfo="none">Use Console Configuration</property>
+        </emphasis> checkbox is selected and choose a needed configuration from the <emphasis>
+          <property moreinfo="none"><diffmk:wrapper diffmk:change="changed">Console configurations</diffmk:wrapper></property>
+        </emphasis> list box.</para>
         <figure float="0">
           <title>Generate Entities Wizard</title>
           <mediaobject>
@@ -2985,7 +3002,82 @@
       </mediaobject>
     </figure>
     <para>Thus, you can now have the Hibernate runtime support in Eclipse JPA projects.</para>
+   </section>
+   <section diffmk:change="added" id="hibernate_annotations_support">
+      <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Hibernate Annotations Support</diffmk:wrapper></title>
+     <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Also Hibernate Annotations are supported in </diffmk:wrapper><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">Dali Java Persistence Tools</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added">.
+       The next annotations are integrated with </diffmk:wrapper><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">JPA Details</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added"> view:</diffmk:wrapper></para>
+     <itemizedlist diffmk:change="added">
+       <listitem diffmk:change="added">         
+         <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Id Generator annotations - </diffmk:wrapper><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@GenericGenerator</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added"> and </diffmk:wrapper><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@GeneratedValue</diffmk:wrapper></property></para>
+         <figure diffmk:change="added" float="0">
+           <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">@GenericGenerator support in Dali</diffmk:wrapper></title>
+           <mediaobject diffmk:change="added">
+             <imageobject diffmk:change="added">
+                  <imagedata diffmk:change="added" fileref="images/plugins/dali_integration7.png"></imagedata>
+             
+              </imageobject>
+           
+           </mediaobject>
+         </figure>
+         <figure diffmk:change="added" float="0">
+           <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">@GeneratedValue support in Dali</diffmk:wrapper></title>
+           <mediaobject diffmk:change="added">
+             <imageobject diffmk:change="added">
+               <imagedata diffmk:change="added" fileref="images/plugins/dali_integration8.png"></imagedata>
+             </imageobject>
+             
+           </mediaobject>
+         </figure>         
+       </listitem>
+       <listitem diffmk:change="added">
+         <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Property annotations- </diffmk:wrapper><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@DiscriminatorFormula</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added">, </diffmk:wrapper><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@Generated Annotation</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added">, </diffmk:wrapper><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@Index annotation</diffmk:wrapper></property></para>
+         <figure diffmk:change="added" float="0">
+           <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">@Index support in Dali</diffmk:wrapper></title>
+           <mediaobject diffmk:change="added">
+             <imageobject diffmk:change="added">
+               <imagedata diffmk:change="added" fileref="images/plugins/dali_integration9.png"></imagedata>
+             </imageobject>
+             
+           </mediaobject>
+         </figure>
+         
+       </listitem>
+       <listitem diffmk:change="added">
+         <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">Mapping Queries annotations - </diffmk:wrapper><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@NamedQuery</diffmk:wrapper></property><diffmk:wrapper diffmk:change="added"> and </diffmk:wrapper><property diffmk:change="added" moreinfo="none"><diffmk:wrapper diffmk:change="added">@NamedNativeQuery</diffmk:wrapper></property></para>
+         <figure diffmk:change="added" float="0">
+           <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Add New Named Query Dialog with Hibernate Support</diffmk:wrapper></title>
+           <mediaobject diffmk:change="added">
+             <imageobject diffmk:change="added">
+               <imagedata diffmk:change="added" fileref="images/plugins/dali_integration10.png"></imagedata>
+             </imageobject>
+             
+           </mediaobject>
+         </figure>
+         
+         
+         
+         <figure diffmk:change="added" float="0">
+           <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">@NamedQuery support in Dali</diffmk:wrapper></title>
+             <mediaobject diffmk:change="added">
+               <imageobject diffmk:change="added">
+                 <imagedata diffmk:change="added" fileref="images/plugins/dali_integration11.png"></imagedata>
+               </imageobject>
+               
+             </mediaobject>
+         </figure>
+       </listitem>
+     </itemizedlist>
+     <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">More information about Hibernate Annotation you can find in </diffmk:wrapper><ulink diffmk:change="added" url="http://docs.jboss.org/hibernate/stable/annotations/reference/en/html/"><diffmk:wrapper diffmk:change="added">Hibernate Annotations Reference Guide</diffmk:wrapper></ulink><diffmk:wrapper diffmk:change="added">. </diffmk:wrapper></para> 
+     
+   </section>
+    <section diffmk:change="added">
+      <title diffmk:change="added"><diffmk:wrapper diffmk:change="added">Relevant Resources Links</diffmk:wrapper></title>
+      <para diffmk:change="added"><diffmk:wrapper diffmk:change="added">There is full information about native Dali plugin features on </diffmk:wrapper><ulink diffmk:change="added" url="http://help.eclipse.org/galileo/index.jsp?nav=/8"><diffmk:wrapper diffmk:change="added">Eclipse Documentation page</diffmk:wrapper></ulink><diffmk:wrapper diffmk:change="added">.</diffmk:wrapper></para> 
+    </section>
+    
   </section>
+  
 </chapter>
  
   
