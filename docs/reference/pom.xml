@@ -23,7 +23,7 @@
         <profile>
         <id>releaseJBDS</id>
         <properties>
-            <master>master_output.xml</master>
+            <master>master.xml</master>
             <xsl-single>classpath:/xslt/com/jboss/tools/xhtml-single-release.xsl</xsl-single>
             <xsl-chunked>classpath:/xslt/com/jboss/tools/xhtml-release.xsl</xsl-chunked>
             <xsl-pdf>classpath:/xslt/com/jboss/tools/pdf.xsl</xsl-pdf>
