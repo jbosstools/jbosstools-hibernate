@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="preface">
+<chapter id="introduction">
 
-    <title>Preface</title>
+    <title>Introduction</title>
 
     <para><property>Hibernate Tools</property> is a toolset for <ulink
             url="http://www.hibernate.org/6.html">Hibernate 3</ulink> and <ulink

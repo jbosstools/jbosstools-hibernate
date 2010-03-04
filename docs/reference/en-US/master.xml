@@ -3,13 +3,13 @@
 "http://www.docbook.org/xml/4.3/docbookx.dtd"
 
 [
-<!ENTITY preface SYSTEM "modules/preface.xml">
-<!ENTITY setup SYSTEM "modules/setup.xml">
-<!ENTITY codegenarchitecture SYSTEM "modules/codegenarchitecture.xml">
-<!ENTITY plugins SYSTEM "modules/plugins.xml">
-<!ENTITY ant SYSTEM "modules/ant.xml">
-<!ENTITY reveng SYSTEM "modules/reverseengineering.xml">
-<!ENTITY codegen SYSTEM "modules/codegen.xml">
+<!ENTITY introduction SYSTEM "introduction.xml">
+<!ENTITY setup SYSTEM "setup.xml">
+<!ENTITY codegenarchitecture SYSTEM "codegenarchitecture.xml">
+<!ENTITY plugins SYSTEM "plugins.xml">
+<!ENTITY ant SYSTEM "ant.xml">
+<!ENTITY reveng SYSTEM "reverseengineering.xml">
+<!ENTITY codegen SYSTEM "codegen.xml">
 
 <!ENTITY seamlink "../../seam/html_single/index.html">
 <!ENTITY aslink "../../as/html_single/index.html">
@@ -24,7 +24,7 @@
 <!ENTITY strutstutoriallink "../../struts_tools_tutorial/html_single/index.html">                         
 
 ]>
-<book lang="en">
+<book>
   <bookinfo>
     <title>Hibernate Tools Reference Guide</title>
       <corpauthor>
@@ -70,7 +70,7 @@
   </bookinfo>
   <toc/>
   
-  &preface;
+  &introduction;
   &setup; 
   &codegenarchitecture;
   &plugins; 

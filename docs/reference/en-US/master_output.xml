@@ -3,13 +3,13 @@
 "http://www.docbook.org/xml/4.3/docbookx.dtd"
 
 [
-<!ENTITY preface SYSTEM "modules/preface.xml">
-<!ENTITY setup SYSTEM "modules/setup.xml">
-<!ENTITY codegenarchitecture SYSTEM "modules/codegenarchitecture.xml">
-<!ENTITY plugins SYSTEM "modules/plugins.xml">
-<!ENTITY ant SYSTEM "modules/ant.xml">
-<!ENTITY reveng SYSTEM "modules/reverseengineering.xml">
-<!ENTITY codegen SYSTEM "modules/codegen.xml">
+<!ENTITY introduction SYSTEM "introduction.xml">
+<!ENTITY setup SYSTEM "setup.xml">
+<!ENTITY codegenarchitecture SYSTEM "codegenarchitecture.xml">
+<!ENTITY plugins SYSTEM "plugins.xml">
+<!ENTITY ant SYSTEM "ant.xml">
+<!ENTITY reveng SYSTEM "reverseengineering.xml">
+<!ENTITY codegen SYSTEM "codegen.xml">
 
 <!ENTITY seamlink "../../seam/html_single/index.html">
 <!ENTITY aslink "../../as/html_single/index.html">
@@ -23,7 +23,7 @@
 <!ENTITY strutsreflink "../../struts_tools_ref_guide/html_single/index.html">
 <!ENTITY strutstutoriallink "../../struts_tools_tutorial/html_single/index.html">                         
 
-]><book lang="en" xmlns:diffmk="http://diffmk.sf.net/ns/diff">
+]><book xmlns:diffmk="http://diffmk.sf.net/ns/diff">
   <bookinfo>
     <title>Hibernate Tools Reference Guide</title>
       <corpauthor>
@@ -70,9 +70,9 @@
   <toc></toc>
   
   
-<chapter id="preface" xml:base="file:///home/vchukhutsina/repos/ochik_jboss/hibernatetools/docs/reference/en/modules/preface.xml">
+<chapter id="introduction" xml:base="file:///home/vchukhutsina/repos/ochik_jboss/hibernatetools/docs/reference/en-US/introduction.xml">
 
-    <title>Preface</title>
+    <title>Introduction</title>
 
     <para><property moreinfo="none">Hibernate Tools</property> is a toolset for <ulink url="http://www.hibernate.org/6.html">Hibernate 3</ulink> and <ulink url="http://www.hibernate.org/27.html">related projects</ulink>. The tools provide Ant
         tasks and Eclipse plugins for performing reverse engineering, code generation, visualization
@@ -232,7 +232,7 @@
 </chapter>
 
   
-<chapter id="setup" xml:base="file:///home/vchukhutsina/repos/ochik_jboss/hibernatetools/docs/reference/en/modules/setup.xml">
+<chapter id="setup" xml:base="file:///home/vchukhutsina/repos/ochik_jboss/hibernatetools/docs/reference/en-US/setup.xml">
   <title>Download and install Hibernate Tools</title>
   <para><property moreinfo="none">Hibernate Tools</property> can be used "standalone" via Ant 1.6.x or
     fully integrated into an Eclipse + WTP based IDE, such as <property moreinfo="none">JBDS/JBoss Tools</property>,
@@ -344,7 +344,7 @@
 </chapter>
  
   
-<chapter id="codegenarchitecture" xml:base="file:///home/vchukhutsina/repos/ochik_jboss/hibernatetools/docs/reference/en/modules/codegenarchitecture.xml">
+<chapter id="codegenarchitecture" xml:base="file:///home/vchukhutsina/repos/ochik_jboss/hibernatetools/docs/reference/en-US/codegenarchitecture.xml">
   <title>Code generation architecture</title>
 
   <para>The code generation mechanism in the <property moreinfo="none">Hibernate Tools</property> consists of a few
@@ -456,7 +456,7 @@
 </chapter>
 
   
-<chapter id="plugins" role="updated" xml:base="file:///home/vchukhutsina/repos/ochik_jboss/hibernatetools/docs/reference/en/modules/plugins.xml">
+<chapter id="plugins" role="updated" xml:base="file:///home/vchukhutsina/repos/ochik_jboss/hibernatetools/docs/reference/en-US/plugins.xml">
   <title>Eclipse Plugins</title>
   <para>This chapter will introduce you to the functionality that <property moreinfo="none">Hibernate
       Tools</property> provide within Eclipse. That is a set of wizards and editors for simplifying
@@ -3081,7 +3081,7 @@
 </chapter>
  
   
-<chapter id="ant" xml:base="file:///home/vchukhutsina/repos/ochik_jboss/hibernatetools/docs/reference/en/modules/ant.xml">
+<chapter id="ant" xml:base="file:///home/vchukhutsina/repos/ochik_jboss/hibernatetools/docs/reference/en-US/ant.xml">
   <title>Ant Tools</title>
 
   <para>Maybe somebody will find it more preferable to use Ant for generation purposes. Thus, this
@@ -4319,7 +4319,7 @@
 </chapter>
 
   
-<chapter id="reverseengineering" xml:base="file:///home/vchukhutsina/repos/ochik_jboss/hibernatetools/docs/reference/en/modules/reverseengineering.xml">
+<chapter id="reverseengineering" xml:base="file:///home/vchukhutsina/repos/ochik_jboss/hibernatetools/docs/reference/en-US/reverseengineering.xml">
   <title>Controlling reverse engineering</title>
 
   <para>When using the <code>&lt;jdbcconfiguration&gt;</code>, the ant task will read the
@@ -5197,7 +5197,7 @@
 </chapter>
 
   
-<chapter id="codegen" xml:base="file:///home/vchukhutsina/repos/ochik_jboss/hibernatetools/docs/reference/en/modules/codegen.xml">
+<chapter id="codegen" xml:base="file:///home/vchukhutsina/repos/ochik_jboss/hibernatetools/docs/reference/en-US/codegen.xml">
   <title>Controlling POJO code generation</title>
 
   <para>When using <code>&lt;hbm2java&gt;</code> or the eclipse plugin to generate POJO java code you have the possibility to control

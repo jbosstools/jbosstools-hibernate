@@ -85,9 +85,9 @@
                 </dependencies>
                 <configuration>
                     <sourceDocumentName>${master}</sourceDocumentName>
-                    <sourceDirectory>${pom.basedir}/en</sourceDirectory>
+                    <sourceDirectory>${pom.basedir}/en-US</sourceDirectory>
                     <imageResource>
-                        <directory>${pom.basedir}/en</directory>
+                        <directory>${pom.basedir}/en-US</directory>
                         <includes>
                             <include>images/**/*</include>
                         </includes>
