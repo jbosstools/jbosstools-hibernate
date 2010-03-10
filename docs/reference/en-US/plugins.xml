@@ -24,9 +24,9 @@
     <section id="download_base_project">
       <title>Download base project</title>
       <para>You can download example projects which are used as base for this chapter.</para>
-      <para><property>JPA base project</property> is available <ulink url="http://anonsvn.jboss.org/repos/jbosstools/trunk//hibernatetools/docs/reference/en/JPA_project_for_hibernate_jboss_tools_331.zip">here</ulink> 
-        and  base <property>Java project</property> is situated <ulink url="http://anonsvn.jboss.org/repos/jbosstools/trunk//hibernatetools/docs/reference/en/TestHibernate_for_hibernate_jboss_tools_331.zip">here</ulink>.</para>
-      <para>Also you need start <ulink url="http://anonsvn.jboss.org/repos/jbosstools/trunk//hibernatetools/docs/reference/en/database_jboss_tools_331.zip">database</ulink>.</para>
+      <para><property>JPA base project</property> is available <ulink url="http://anonsvn.jboss.org/repos/jbosstools/trunk//hibernatetools/docs/reference/en-US/JPA_project_for_hibernate_jboss_tools.zip">here</ulink> 
+        and  base <property>Java project</property> is situated <ulink url="http://anonsvn.jboss.org/repos/jbosstools/trunk//hibernatetools/docs/reference/en-US/TestHibernate_for_hibernate_jboss_tools.zip">here</ulink>.</para>
+      <para>Also you need start <ulink url="http://anonsvn.jboss.org/repos/jbosstools/trunk//hibernatetools/docs/reference/en-US/database_jboss_tools.zip">database</ulink>.</para>
       <note>
         <title>Note:</title>
         <para>How to run database you can know in <ulink url="http://docs.jboss.org/tools/3.0.1.GA/en/GettingStartedGuide/html/first_seam.html#start_dev_db">Getting Started Guide</ulink>.</para>
