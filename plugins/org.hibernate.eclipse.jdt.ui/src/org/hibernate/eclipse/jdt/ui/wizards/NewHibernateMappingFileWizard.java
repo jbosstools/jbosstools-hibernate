@@ -18,7 +18,6 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -201,7 +200,18 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 				IPackageFragmentRoot root = (IPackageFragmentRoot)elements[i];
 				if (!root.isArchive()) {							
 					try {
-						filteredElements.addAll(Arrays.asList((root.getChildren())));
+						IJavaElement[] rootChildren = root.getChildren();
+						for (int k = 0; k < rootChildren.length; k++) {
+							if (rootChildren[k] instanceof IPackageFragment) {
+								IPackageFragment pkg = (IPackageFragment) rootChildren[k];
+								try {
+									if (pkg.containsJavaResources())
+										filteredElements.add(rootChildren[k]);
+								} catch (JavaModelException e1) {
+									e1.printStackTrace();
+								}
+							}
+						}
 					} catch (JavaModelException e) {
 						e.printStackTrace();
 					}							
