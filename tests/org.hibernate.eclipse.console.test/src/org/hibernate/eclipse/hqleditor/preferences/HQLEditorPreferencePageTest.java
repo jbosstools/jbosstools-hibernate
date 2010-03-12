@@ -1,7 +1,9 @@
 package org.hibernate.eclipse.hqleditor.preferences;
 
 import org.eclipse.jface.preference.PreferenceDialog;
-import org.jboss.tools.test.util.WorkbenchUtils;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.PreferencesUtil;
 
 import junit.framework.TestCase;
 /**
@@ -12,10 +14,20 @@ import junit.framework.TestCase;
  */
 public class HQLEditorPreferencePageTest extends TestCase {
 
+	public static Shell getActiveShell() {
+		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+	}
+
+	public static PreferenceDialog createPreferenceDialog(String pageId) {
+		PreferenceDialog dialog = PreferencesUtil.createPreferenceDialogOn(
+			getActiveShell(), pageId, new String[] {pageId}, null);
+		dialog.setBlockOnOpen(false);
+		return dialog;
+	}
+	
 	public void testHQLEditorPreferencePageShow() {
 		PreferenceDialog prefDialog = 
-			WorkbenchUtils.createPreferenceDialog(
-					HQLEditorPreferencePage.class.getName());
+			createPreferenceDialog(HQLEditorPreferencePage.class.getName());
 
 		try {
 			prefDialog.setBlockOnOpen(false);
@@ -30,8 +42,7 @@ public class HQLEditorPreferencePageTest extends TestCase {
 	
 	public void testHQLEditorPreferencePagePerformOk() {
 		PreferenceDialog prefDialog = 
-			WorkbenchUtils.createPreferenceDialog(
-					HQLEditorPreferencePage.class.getName());
+			createPreferenceDialog(HQLEditorPreferencePage.class.getName());
 
 		try {
 			prefDialog.setBlockOnOpen(false);
