@@ -174,6 +174,11 @@ public class ConfigurationActor {
 				if (pc != null){
 					if (pc.isAbstract()){
 						subclass = new SingleTableSubclass(pc);
+						if (pc instanceof RootClass && pc.getDiscriminator() == null){
+							SimpleValue discr = new SimpleValue();
+							discr.setTypeName("string"); //$NON-NLS-1$
+							((RootClass)pc).setDiscriminator(discr);
+						}
 					} else {
 						subclass = new JoinedSubclass(pc);
 					}
