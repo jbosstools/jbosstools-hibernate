@@ -299,6 +299,7 @@ public class NewHibernateMappingFileWizard extends Wizard implements INewWizard,
 		for (Entry<IJavaProject, Configuration> entry : configs.entrySet()) {
 			Configuration config = entry.getValue();
 			HibernateMappingGlobalSettings hmgs = new HibernateMappingGlobalSettings();
+			hmgs.setDefaultAccess("field"); //$NON-NLS-1$
 
 			//final IPath projPath = entry.getKey().getProject().getLocation();
 			IPath place2Gen = previewPage.getRootPlace2Gen().append(entry.getKey().getElementName());
