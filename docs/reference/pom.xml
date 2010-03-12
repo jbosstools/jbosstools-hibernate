@@ -23,7 +23,7 @@
         <profile>
         <id>releaseJBDS</id>
         <properties>
-            <master>master.xml</master>
+            <master>master_output.xml</master>
             <xsl-single>classpath:/xslt/com/jboss/tools/xhtml-single-release.xsl</xsl-single>
             <xsl-chunked>classpath:/xslt/com/jboss/tools/xhtml-release.xsl</xsl-chunked>
             <xsl-pdf>classpath:/xslt/com/jboss/tools/pdf.xsl</xsl-pdf>
@@ -85,9 +85,9 @@
                 </dependencies>
                 <configuration>
                     <sourceDocumentName>${master}</sourceDocumentName>
-                    <sourceDirectory>${pom.basedir}/en</sourceDirectory>
+                    <sourceDirectory>${pom.basedir}/en-US</sourceDirectory>
                     <imageResource>
-                        <directory>${pom.basedir}/en</directory>
+                        <directory>${pom.basedir}/en-US</directory>
                         <includes>
                             <include>images/**/*</include>
                         </includes>

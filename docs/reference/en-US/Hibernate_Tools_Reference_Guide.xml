@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE Book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+]>
+<book>
+<xi:include href="Book_Info.xml" xmlns:xi="http://www.w3.org/2001/XInclude"></xi:include>
+<xi:include href="Preface.xml" xmlns:xi="http://www.w3.org/2001/XInclude"></xi:include>
+<xi:include href="introduction.xml" xmlns:xi="http://www.w3.org/2001/XInclude"></xi:include>
+<xi:include href="setup.xml" xmlns:xi="http://www.w3.org/2001/XInclude"></xi:include>
+<xi:include href="codegenarchitecture.xml" xmlns:xi="http://www.w3.org/2001/XInclude"></xi:include>
+<xi:include href="plugins.xml" xmlns:xi="http://www.w3.org/2001/XInclude"></xi:include>
+<xi:include href="ant.xml" xmlns:xi="http://www.w3.org/2001/XInclude"></xi:include>
+<xi:include href="reverseengineering.xml" xmlns:xi="http://www.w3.org/2001/XInclude"></xi:include>
+<xi:include href="codegen.xml" xmlns:xi="http://www.w3.org/2001/XInclude"></xi:include>
+<xi:include href="Revision_History.xml" xmlns:xi="http://www.w3.org/2001/XInclude"></xi:include>
+</book>
