@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.Map.Entry;
 
@@ -561,6 +562,13 @@ class TypeVisitor extends ASTVisitor{
 				((IndexedCollection)value).setIndex(map_key);
 			}
 			prop.setCascade("none");//$NON-NLS-1$
+		} else if (tb.isEnum()){
+			value = buildSimpleValue(org.hibernate.type.EnumType.class.getName());
+			Properties typeParameters = new Properties();
+			typeParameters.put(org.hibernate.type.EnumType.ENUM, tb.getBinaryName());
+			typeParameters.put(org.hibernate.type.EnumType.TYPE, java.sql.Types.VARCHAR);
+			((SimpleValue)value).setTypeParameters(typeParameters);
+			buildProperty(value);
 		} else if (ref != null){
 			ToOne sValue = null;
 			if (ref.refType == RefType.MANY2ONE){
