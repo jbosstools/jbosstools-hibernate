@@ -592,7 +592,11 @@ class TypeVisitor extends ASTVisitor{
 			sValue.setTypeName(tb.getBinaryName());
 			sValue.setFetchMode(FetchMode.JOIN);
 			RootClass associatedClass = rootClasses.get(ref.fullyQualifiedName);
-			sValue.setReferencedEntityName(associatedClass.getEntityName());
+			if (associatedClass != null){
+				sValue.setReferencedEntityName(associatedClass.getEntityName());
+			} else {
+				sValue.setReferencedPropertyName(ref.fullyQualifiedName);
+			}			
 			buildProperty(sValue);
 			prop.setCascade("none");//$NON-NLS-1$
 		} else {
