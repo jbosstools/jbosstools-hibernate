@@ -130,5 +130,7 @@ public interface ImageConstants {
 
 	public static final String PINDOWN = "PINDOWN"; //$NON-NLS-1$
 	public static final String PINDOWN_PATH = "images/pindown.png"; //$NON-NLS-1$
+	public static final String PRIMARY_KEY = "PRIMARY_KEY";//$NON-NLS-1$
+	public static final String GENERATOR = "GENERATOR";//$NON-NLS-1$
 
 }

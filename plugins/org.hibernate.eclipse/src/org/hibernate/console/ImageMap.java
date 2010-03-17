@@ -77,7 +77,8 @@ public abstract class ImageMap implements ImageConstants {
         declareRegistryImage(ERROR, "images/error.gif"); //$NON-NLS-1$
 		declareRegistryImage(PINUP, PINUP_PATH);
 		declareRegistryImage(PINDOWN, PINDOWN_PATH);
-
+		declareRegistryImage(PRIMARY_KEY, "images/primary_key.gif"); //$NON-NLS-1$
+		declareRegistryImage(GENERATOR, "images/generator.gif"); //$NON-NLS-1$
 	}
 
 	protected abstract void declareRegistryImage(String key, String path);

@@ -85,6 +85,10 @@ public class TablePropertiesLabelProvider extends LabelProvider {
 			return EclipseImages.getImage(ImageConstants.COLUMN);
 		} else if(element instanceof IRevEngParameter) {
 			return EclipseImages.getImage(ImageConstants.PARAMETER);
+		} else if(element instanceof IRevEngPrimaryKey) {
+			return EclipseImages.getImage(ImageConstants.PRIMARY_KEY);
+		} else if (element instanceof IRevEngGenerator){
+			return EclipseImages.getImage(ImageConstants.GENERATOR);
 		}
 		return null;
 	}
