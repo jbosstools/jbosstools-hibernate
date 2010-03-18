@@ -32,9 +32,9 @@ import org.eclipse.wst.sse.core.internal.provisional.INodeAdapterFactory;
 import org.eclipse.wst.sse.core.internal.provisional.INodeNotifier;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
-import org.hibernate.dialect.FirebirdDialect;
 import org.hibernate.eclipse.console.model.IRevEngColumn;
 import org.hibernate.eclipse.console.model.IRevEngGenerator;
+import org.hibernate.eclipse.console.model.IRevEngParameter;
 import org.hibernate.eclipse.console.model.IRevEngPrimaryKey;
 import org.hibernate.eclipse.console.model.IRevEngTable;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
@@ -45,7 +45,6 @@ import org.hibernate.eclipse.mapper.factory.ObserverAdapterFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefinition {
 
@@ -391,6 +390,10 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 
 	public IRevEngGenerator createGenerator() {
 		return (IRevEngGenerator) factory.adapt((INodeNotifier) getDocument().createElement("generator")); //$NON-NLS-1$
+	}
+	
+	public IRevEngParameter createParameter() {
+		return (IRevEngParameter) factory.adapt((INodeNotifier) getDocument().createElement("param")); //$NON-NLS-1$		
 	}
 
 }
