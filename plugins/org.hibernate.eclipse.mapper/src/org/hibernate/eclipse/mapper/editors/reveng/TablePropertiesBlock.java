@@ -58,6 +58,9 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.hibernate.cfg.reveng.TableIdentifier;
 import org.hibernate.eclipse.console.model.IRevEngColumn;
+import org.hibernate.eclipse.console.model.IRevEngGenerator;
+import org.hibernate.eclipse.console.model.IRevEngParameter;
+import org.hibernate.eclipse.console.model.IRevEngPrimaryKey;
 import org.hibernate.eclipse.console.model.IRevEngTable;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 import org.hibernate.eclipse.console.workbench.DeferredContentProvider;
@@ -268,13 +271,30 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 					updateSelection = true;
 				}
 				editor.getReverseEngineeringDefinition().removeTable(retable);
-			}
-			else if (obj instanceof IRevEngColumn) {
+			} else if (obj instanceof IRevEngColumn) {
 				IRevEngColumn recolumn = (IRevEngColumn)obj;
 				if (recolumn instanceof RevEngColumnAdapter) {
 					updateSelection = true;
 				}
 				editor.getReverseEngineeringDefinition().removeColumn(recolumn);
+			} else if (obj instanceof IRevEngPrimaryKey) {
+				IRevEngPrimaryKey reprimaryKey = (IRevEngPrimaryKey)obj;
+				if (reprimaryKey instanceof RevEngPrimaryKeyAdapter) {
+					updateSelection = true;
+				}
+				editor.getReverseEngineeringDefinition().removePrimaryKey(reprimaryKey);
+			} else if (obj instanceof IRevEngGenerator) {
+				IRevEngGenerator regenerator = (IRevEngGenerator)obj;
+				if (regenerator instanceof RevEngGeneratorAdapter) {
+					updateSelection = true;
+				}
+				editor.getReverseEngineeringDefinition().removeGenerator(regenerator);
+			} else if (obj instanceof IRevEngParameter) {
+				IRevEngParameter reparam = (IRevEngParameter)obj;
+				if (reparam instanceof RevEngParamAdapter) {
+					updateSelection = true;
+				}
+				editor.getReverseEngineeringDefinition().removeParameter(reparam);
 			}
 		}
 		if (updateSelection) {

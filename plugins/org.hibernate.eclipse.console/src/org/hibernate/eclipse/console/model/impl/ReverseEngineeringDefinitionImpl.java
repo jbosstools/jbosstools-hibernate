@@ -27,6 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.eclipse.console.model.IRevEngColumn;
+import org.hibernate.eclipse.console.model.IRevEngGenerator;
+import org.hibernate.eclipse.console.model.IRevEngParameter;
+import org.hibernate.eclipse.console.model.IRevEngPrimaryKey;
 import org.hibernate.eclipse.console.model.IRevEngTable;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
 import org.hibernate.eclipse.console.model.ITableFilter;
@@ -163,6 +166,18 @@ public class ReverseEngineeringDefinitionImpl implements
 
 	public void removeColumn(IRevEngColumn recolumn) {
 
+	}
+	
+	public void removeGenerator(IRevEngGenerator regenerator) {
+		
+	}
+
+	public void removeParameter(IRevEngParameter reparam) {
+		
+	}
+
+	public void removePrimaryKey(IRevEngPrimaryKey reprimaryKey) {
+		
 	}
 
 	public IRevEngColumn createColumn() {

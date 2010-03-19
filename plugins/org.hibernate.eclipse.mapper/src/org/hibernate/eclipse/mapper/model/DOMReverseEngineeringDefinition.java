@@ -351,27 +351,34 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 	}
 
 	public void removeTable(IRevEngTable retable) {
-		if (retable instanceof RevEngTableAdapter) {
-			RevEngTableAdapter tf = (RevEngTableAdapter) retable;
-			Node parentNode = tf.getNode().getParentNode();
-			Node previousSibling = tf.getNode().getPreviousSibling();
-			if (DOMModelUtil.isWhiteSpace(previousSibling)) {
-				parentNode.removeChild(previousSibling);
-			}
-			parentNode.removeChild(tf.getNode());
-			DOMModelUtil.formatNode(parentNode);
-		}
+		removeDomAdapterNode(retable);
 	}
 
 	public void removeColumn(IRevEngColumn recolumn) {
-		if (recolumn instanceof RevEngColumnAdapter) {
-			RevEngColumnAdapter cf = (RevEngColumnAdapter) recolumn;
-			Node parentNode = cf.getNode().getParentNode();
-			Node previousSibling = cf.getNode().getPreviousSibling();
+		removeDomAdapterNode(recolumn);
+	}
+	
+	public void removeGenerator(IRevEngGenerator regenerator) {
+		removeDomAdapterNode(regenerator);
+	}
+
+	public void removeParameter(IRevEngParameter reparam) {
+		removeDomAdapterNode(reparam);
+	}
+
+	public void removePrimaryKey(IRevEngPrimaryKey reprimaryKey) {
+		removeDomAdapterNode(reprimaryKey);
+	}
+	
+	private void removeDomAdapterNode(Object node){
+		if (node instanceof DOMAdapter) {
+			DOMAdapter pf = (DOMAdapter) node;
+			Node parentNode = pf.getNode().getParentNode();
+			Node previousSibling = pf.getNode().getPreviousSibling();
 			if (DOMModelUtil.isWhiteSpace(previousSibling)) {
 				parentNode.removeChild(previousSibling);
 			}
-			parentNode.removeChild(cf.getNode());
+			parentNode.removeChild(pf.getNode());
 			DOMModelUtil.formatNode(parentNode);
 		}
 	}
