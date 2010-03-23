@@ -27,4 +27,7 @@ public class Project {
 	public static final String CONF_FILE_NAME2 = "hibernate2.cfg.xml";
 	public static final String DB_FILE = "mydb";
 	public static final String DB_NAME = "xdb";
+	
+	// JPA Project
+	public static final String JPA_PRJ_NAME = "jpatest1";
 }
