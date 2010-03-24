@@ -197,11 +197,11 @@ public class ConfigurationActor {
 					if (subclass instanceof JoinedSubclass) {
 						((JoinedSubclass) subclass).setTable(new Table(pastClass.getClassName().toUpperCase()));
 						((JoinedSubclass) subclass).setKey((KeyValue) pc.getIdentifierProperty().getValue());
-					} else {
-						if (pastClass.getIdentifierProperty() != null) {
-							subclass.addProperty(pastClass.getIdentifierProperty());
-						}
 					}
+					if (pastClass.getIdentifierProperty() != null) {
+						subclass.addProperty(pastClass.getIdentifierProperty());
+					}
+					
 					Iterator it = pastClass.getPropertyIterator();
 					while (it.hasNext()) {
 						subclass.addProperty((Property) it.next());
