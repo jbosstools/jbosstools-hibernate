@@ -261,6 +261,8 @@ class ProcessEntityInfo extends ASTVisitor {
 	 */
 	protected EntityInfo entityInfo;
 	
+	private TypeDeclaration currentType;
+	
 	TypeVisitor typeVisitor;
 	
 	public void setEntities(Map<String, EntityInfo> entities) {
@@ -297,6 +299,7 @@ class ProcessEntityInfo extends ASTVisitor {
 	
 	@SuppressWarnings("unchecked")
 	public boolean visit(TypeDeclaration node) {
+		currentType = node;
 		if ("".equals(entityInfo.getPrimaryIdName())){ //$NON-NLS-1$
 			//try to guess id
 			FieldDeclaration[] fields = node.getFields();
@@ -354,7 +357,9 @@ class ProcessEntityInfo extends ASTVisitor {
 			if (prop == null) {
 				continue;
 			}
-			
+			if (!varHasGetterAndSetter(var)){
+				prop.setPropertyAccessorName("field"); //$NON-NLS-1$
+			}
 			String name = var.getName().getIdentifier();
 			if (name.equals(primaryIdName)) {
 				rootClass.setIdentifierProperty(prop);
@@ -364,6 +369,28 @@ class ProcessEntityInfo extends ASTVisitor {
 		}
 
 		return true;
+	}
+	
+	private boolean varHasGetterAndSetter(VariableDeclarationFragment var){
+		String name = var.getName().getIdentifier();
+		String setterName = "set" + Character.toUpperCase(name.charAt(0)) + name.substring(1); //$NON-NLS-1$
+		String getterName = "get" + Character.toUpperCase(name.charAt(0)) + name.substring(1); //$NON-NLS-1$
+		String getterName2 = null;
+		Type varType = ((FieldDeclaration)var.getParent()).getType();
+		if (varType.isPrimitiveType()
+				&& ((PrimitiveType)varType).getPrimitiveTypeCode() == PrimitiveType.BOOLEAN){
+			getterName2 = "is" + Character.toUpperCase(name.charAt(0)) + name.substring(1); //$NON-NLS-1$
+		}		
+		boolean setterFound = false, getterFound = false;
+		MethodDeclaration[] mds = currentType.getMethods();
+		for (MethodDeclaration methodDeclaration : mds) {
+			String methodName = methodDeclaration.getName().getIdentifier();
+			if (methodName.equals(setterName)) setterFound = true;
+			if (methodName.equals(getterName)) getterFound = true;
+			if (methodName.equals(getterName2)) getterFound = true;
+			if (setterFound && getterFound) return true;
+		}
+		return false;
 	}
 	
 	@Override
@@ -404,7 +431,7 @@ class ProcessEntityInfo extends ASTVisitor {
 	protected Property createProperty(String varName,  Type varType) {
 			typeVisitor.init(varName, entityInfo);
 			varType.accept(typeVisitor);
-			Property p = typeVisitor.getProperty();			
+			Property p = typeVisitor.getProperty();
 			return p;
 	}
 
