@@ -11,7 +11,6 @@
 package org.jboss.tools.hibernate.ui.bot.testsuite;
 
 import static org.eclipse.swtbot.eclipse.finder.matchers.WithPartName.withPartName;
-import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileInputStream;

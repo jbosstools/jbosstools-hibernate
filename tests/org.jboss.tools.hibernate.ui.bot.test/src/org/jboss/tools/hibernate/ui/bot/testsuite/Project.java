@@ -30,4 +30,7 @@ public class Project {
 	
 	// JPA Project
 	public static final String JPA_PRJ_NAME = "jpatest1";
+	public static final String DDL_OUTPUT = "src";
+	public static final String DDL_FILENAME = "test_schema.dll";
+	public static final String ENTITIES_PACKAGE = "org.entities";
 }
