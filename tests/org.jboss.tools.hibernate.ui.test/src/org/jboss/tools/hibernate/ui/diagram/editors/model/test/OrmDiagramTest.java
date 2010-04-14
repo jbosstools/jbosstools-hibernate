@@ -52,16 +52,16 @@ public class OrmDiagramTest extends TestCase {
 		context.checking(new Expectations() {
 			{
 				oneOf(ioe).getEntityName();
-				will(returnValue(innerIntricateName)); //$NON-NLS-1$
+				will(returnValue(innerIntricateName));
 				
 				allowing(consoleConfig).getConfiguration();
 				will(returnValue(config));
 
 				oneOf(ioe).getEntityName();
-				will(returnValue(innerIntricateName)); //$NON-NLS-1$
+				will(returnValue(innerIntricateName));
 
 				oneOf(ioe).getEntityName();
-				will(returnValue(innerIntricateName)); //$NON-NLS-1$
+				will(returnValue(innerIntricateName));
 
 				oneOf(ioe).getIdentifierProperty();
 				will(returnValue(null));
@@ -94,7 +94,7 @@ public class OrmDiagramTest extends TestCase {
 				will(returnValue("CCName")); //$NON-NLS-1$
 
 				allowing(ioe).getEntityName();
-				will(returnValue(innerIntricateName)); //$NON-NLS-1$
+				will(returnValue(innerIntricateName));
 			}
 		});
 		final OrmDiagram ormDiagram = new OrmDiagram("", rts) { //$NON-NLS-1$
