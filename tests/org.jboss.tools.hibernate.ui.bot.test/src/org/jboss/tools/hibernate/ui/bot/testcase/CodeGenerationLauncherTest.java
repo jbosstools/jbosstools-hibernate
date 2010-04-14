@@ -12,18 +12,17 @@ package org.jboss.tools.hibernate.ui.bot.testcase;
 
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory;
-import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.hamcrest.Matcher;
 import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
 import org.jboss.tools.hibernate.ui.bot.testsuite.Project;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
-import org.jboss.tools.ui.bot.ext.types.ViewType;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,7 +37,7 @@ public class CodeGenerationLauncherTest extends HibernateTest {
 	/**
 	 * Setup prerequisites for this test
 	 */
-	public void setUpTest() {
+	public static void setUpTest() {
 
 		prepareProject();
 		prepareConsole();
@@ -85,20 +84,15 @@ public class CodeGenerationLauncherTest extends HibernateTest {
 		for (SWTBotShell shell : shells) {
 			log.info("Possible shell: " + shell.getText());
 		}
-				
-		bot.sleep(TIME_20S);
-		SWTBot viewBot = eclipse.showView(ViewType.PROJECT_EXPLORER);
-		SWTBotTreeItem item;
+					 
+		open.viewOpen(ActionItem.View.JavaPackageExplorer.LABEL);					
 
-		item = eclipse.selectTreeLocation(viewBot, Project.PROJECT_NAME,"gen","org","test","Customers.java");
-		item.doubleClick();
-		item = eclipse.selectTreeLocation(viewBot, Project.PROJECT_NAME,"gen","org","test","Employees.java");
-		item.doubleClick();
-		item = eclipse.selectTreeLocation(viewBot, Project.PROJECT_NAME,"gen","org","test","Offices.java");
-		item.doubleClick();			
-		
+		packageExplorer.openFile(Project.PROJECT_NAME,"gen","org","test","Customers.java");
+		packageExplorer.openFile(Project.PROJECT_NAME,"gen","org","test","Customers.java");
+		packageExplorer.openFile(Project.PROJECT_NAME,"gen","org","test","Employees.java");
+		packageExplorer.openFile(Project.PROJECT_NAME,"gen","org","test","Offices.java");
+
 		log.info("Generated files check DONE");
-		bot.sleep(TIME_10S);
 	}
 
 	/**
@@ -182,4 +176,8 @@ public class CodeGenerationLauncherTest extends HibernateTest {
 		log.info("HB Code Generation Common tab DONE");
 		bot.sleep(TIME_1S);
 	}
+	
+	@AfterClass
+	public static void clean() {
+	}	
 }
