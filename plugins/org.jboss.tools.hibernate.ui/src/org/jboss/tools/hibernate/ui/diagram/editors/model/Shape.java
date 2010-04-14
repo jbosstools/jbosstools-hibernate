@@ -153,7 +153,8 @@ public class Shape extends BaseElement {
 
 	@Override
 	public String getKey() {
-		return Utils.getName(getOrmElement());
+		//fix for https://jira.jboss.org/jira/browse/JBIDE-6186
+		return Utils.getName(getOrmElement()).replaceAll("\\$", "."); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void setFocus() {
