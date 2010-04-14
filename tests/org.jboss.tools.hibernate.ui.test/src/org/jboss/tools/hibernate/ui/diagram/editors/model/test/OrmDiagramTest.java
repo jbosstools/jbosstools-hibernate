@@ -17,7 +17,10 @@ import java.util.List;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.SimpleValue;
+import org.hibernate.mapping.Value;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.OrmDiagram;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -47,20 +50,20 @@ public class OrmDiagramTest extends TestCase {
 		rts.add(ioe);
 		final List<Object> emptyList = new ArrayList<Object>();
 		final Iterator<Object> emptyListIterator = emptyList.iterator();
-
+		final String innerIntricateName = "myInner$Id";
 		context.checking(new Expectations() {
 			{
 				oneOf(ioe).getEntityName();
-				will(returnValue("testEntityName")); //$NON-NLS-1$
+				will(returnValue(innerIntricateName)); //$NON-NLS-1$
 				
 				allowing(consoleConfig).getConfiguration();
 				will(returnValue(config));
 
 				oneOf(ioe).getEntityName();
-				will(returnValue("")); //$NON-NLS-1$
+				will(returnValue(innerIntricateName)); //$NON-NLS-1$
 
 				oneOf(ioe).getEntityName();
-				will(returnValue("")); //$NON-NLS-1$
+				will(returnValue(innerIntricateName)); //$NON-NLS-1$
 
 				oneOf(ioe).getIdentifierProperty();
 				will(returnValue(null));
@@ -93,7 +96,7 @@ public class OrmDiagramTest extends TestCase {
 				will(returnValue("CCName")); //$NON-NLS-1$
 
 				allowing(ioe).getEntityName();
-				will(returnValue("")); //$NON-NLS-1$
+				will(returnValue(innerIntricateName)); //$NON-NLS-1$
 			}
 		});
 		final OrmDiagram ormDiagram = new OrmDiagram("", rts) { //$NON-NLS-1$
@@ -101,7 +104,7 @@ public class OrmDiagramTest extends TestCase {
 				return consoleConfig;
 			}
 		};
-		ormDiagram.saveInFile();
+		ormDiagram.saveInXmlFile();
 		// test is the folder created
 		File folder = new File(ormDiagram.getStoreFolderPath().toOSString());
 		assertTrue(folder.exists() && folder.isDirectory());
@@ -118,5 +121,91 @@ public class OrmDiagramTest extends TestCase {
 		// check for all expectations
 		context.assertIsSatisfied();
 	}
+/*
+	public void testSaveInXmlFile() {
+		
+		final ConsoleConfiguration consoleConfig = context.mock(ConsoleConfiguration.class);
+		final Configuration config = context.mock(Configuration.class);
+		final RootClass ioe = context.mock(RootClass.class);
+		ArrayList<RootClass> rts = new ArrayList<RootClass>();
+		final Property id = new Property();
+		Value v = new SimpleValue();
+		id.setValue(v);
+		id.setName("id");
+		id.setPersistentClass(ioe);
+		rts.add(ioe);
+		final List<Object> emptyList = new ArrayList<Object>();
+		final Iterator<Object> emptyListIterator = emptyList.iterator();
+		final String innerInnerClass = "myInner$Id";
 
+		context.checking(new Expectations() {
+			{
+				oneOf(ioe).getEntityName();
+				will(returnValue(innerInnerClass)); //$NON-NLS-1$
+				
+				allowing(consoleConfig).getConfiguration();
+				will(returnValue(config));
+
+				oneOf(ioe).getEntityName();
+				will(returnValue(innerInnerClass)); //$NON-NLS-1$
+
+				oneOf(ioe).getEntityName();
+				will(returnValue(innerInnerClass)); //$NON-NLS-1$
+
+				oneOf(ioe).getIdentifierProperty();
+				will(returnValue(id));
+
+				oneOf(ioe).getIdentifier();
+				will(returnValue(null));
+
+				oneOf(ioe).getPropertyIterator();
+				will(returnValue(emptyListIterator));
+
+				oneOf(ioe).getTable();
+				will(returnValue(null));
+
+				oneOf(ioe).getSubclassIterator();
+				will(returnValue(emptyListIterator));
+
+				oneOf(ioe).getIdentifier();
+				will(returnValue(null));
+
+				oneOf(ioe).getJoinIterator();
+				will(returnValue(emptyListIterator));
+				
+				allowing(ioe).getNodeName();
+				will(returnValue("NodeName")); //$NON-NLS-1$
+				
+				allowing(ioe).getClassName();
+				will(returnValue("ClassName")); //$NON-NLS-1$
+				
+				allowing(consoleConfig).getName();
+				will(returnValue("CCName")); //$NON-NLS-1$
+
+				allowing(ioe).getEntityName();
+				will(returnValue(innerInnerClass)); //$NON-NLS-1$
+			}
+		});
+		final OrmDiagram ormDiagram = new OrmDiagram("", rts) { //$NON-NLS-1$
+			public ConsoleConfiguration getConsoleConfig() {
+				return consoleConfig;
+			}
+		};
+		ormDiagram.saveInXmlFile();
+		// test is the folder created
+		File folder = new File(ormDiagram.getStoreFolderPath().toOSString());
+		assertTrue(folder.exists() && folder.isDirectory());
+		// test is the file created
+		File file = new File(ormDiagram.getStoreFilePath().toOSString());
+		assertTrue(file.exists() && file.isFile());
+		//
+		boolean res = file.delete();
+		assertTrue(res);
+		//
+		res = folder.delete();
+		assertTrue(res);
+		// GENERAL TEST:
+		// check for all expectations
+		context.assertIsSatisfied();
+	}*/
 }
