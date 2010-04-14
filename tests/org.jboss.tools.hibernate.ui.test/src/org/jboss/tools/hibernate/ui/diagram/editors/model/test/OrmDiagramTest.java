@@ -50,6 +50,7 @@ public class OrmDiagramTest extends TestCase {
 		rts.add(ioe);
 		final List<Object> emptyList = new ArrayList<Object>();
 		final Iterator<Object> emptyListIterator = emptyList.iterator();
+		//see https://jira.jboss.org/jira/browse/JBIDE-6186
 		final String innerIntricateName = "myInner$Id";
 		context.checking(new Expectations() {
 			{
