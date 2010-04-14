@@ -58,6 +58,8 @@ public class DaliTest extends HibernateTest {
 
 		// JPA Facet Page
 		bot.comboBoxInGroup("Platform").setSelection("Hibernate");
+		//bot.comboBoxInGroup("JPA Implementation").setSelection("Library Provided by Target Runtime");
+		bot.comboBoxInGroup("JPA implementation").setSelection("Disable Library Configuration");
 
 		// Finish
 		bot.button(IDELabel.Button.FINISH).click();
@@ -98,9 +100,7 @@ public class DaliTest extends HibernateTest {
 		bot.button(IDELabel.Button.FINISH).click();
 
 		// Check file
-		ProjectExplorer explorer = new ProjectExplorer();
-		explorer.openFile(Project.JPA_PRJ_NAME, Project.DDL_OUTPUT,
-				Project.DDL_FILENAME);
+		packageExplorer.openFile(Project.JPA_PRJ_NAME, Project.DDL_OUTPUT, Project.DDL_FILENAME);
 	}
 
 	/**
