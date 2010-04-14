@@ -47,21 +47,20 @@ public class OrmDiagramTest extends TestCase {
 		rts.add(ioe);
 		final List<Object> emptyList = new ArrayList<Object>();
 		final Iterator<Object> emptyListIterator = emptyList.iterator();
-		//see https://jira.jboss.org/jira/browse/JBIDE-6186
-		final String innerIntricateName = "myInner$Id";
+
 		context.checking(new Expectations() {
 			{
 				oneOf(ioe).getEntityName();
-				will(returnValue(innerIntricateName));
+				will(returnValue("testEntityName")); //$NON-NLS-1$
 				
 				allowing(consoleConfig).getConfiguration();
 				will(returnValue(config));
 
 				oneOf(ioe).getEntityName();
-				will(returnValue(innerIntricateName));
+				will(returnValue("")); //$NON-NLS-1$
 
 				oneOf(ioe).getEntityName();
-				will(returnValue(innerIntricateName));
+				will(returnValue("")); //$NON-NLS-1$
 
 				oneOf(ioe).getIdentifierProperty();
 				will(returnValue(null));
@@ -94,7 +93,7 @@ public class OrmDiagramTest extends TestCase {
 				will(returnValue("CCName")); //$NON-NLS-1$
 
 				allowing(ioe).getEntityName();
-				will(returnValue(innerIntricateName)); //$NON-NLS-1$
+				will(returnValue("")); //$NON-NLS-1$
 			}
 		});
 		final OrmDiagram ormDiagram = new OrmDiagram("", rts) { //$NON-NLS-1$
@@ -102,7 +101,7 @@ public class OrmDiagramTest extends TestCase {
 				return consoleConfig;
 			}
 		};
-		ormDiagram.saveInXmlFile();
+		ormDiagram.saveInFile();
 		// test is the folder created
 		File folder = new File(ormDiagram.getStoreFolderPath().toOSString());
 		assertTrue(folder.exists() && folder.isDirectory());
