@@ -10,10 +10,13 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.ui.bot.testcase;
 
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
 import org.jboss.tools.hibernate.ui.bot.testsuite.Project;
+import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.EntityType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
@@ -33,17 +36,18 @@ public class ConsoleTest extends HibernateTest {
 	@AfterClass
 	public static void tearDownTest() { 
 		HibernateTest.clean();
+		bot.sleep(TIME_5S);
 	}	
 	
 	private SWTBotShell mainShell;
-	private static boolean done = false;
+	private static boolean consoleCreated = false;
 	
 	/**
 	 * Create console TestCases TC03 - TC16
 	 */
 	@Test
 	public void createConsole() {
-		if (done) return;
+		if (consoleCreated) return;
 		
 		log.info("HB Console creation STARTED");
 		
@@ -62,7 +66,7 @@ public class ConsoleTest extends HibernateTest {
 		util.waitForNonIgnoredJobs();
 		log.info("HB Console creation FINISHED");
 		
-		done = true;
+		consoleCreated = true;
 	}
 	
 	/**
@@ -134,11 +138,61 @@ public class ConsoleTest extends HibernateTest {
 	}
 
 	/**
-	 * TC 16
+	 * TC 16 - open console, change serveral value, apply changes and check changes if they were store correctly
 	 */
 	@Test	
 	public void editConsole() {
-		// TODO impl.
+		// prereq
+		createConsole();
+		
+		// open console
+		openConsoleConfiguration();		
+		editConsoleValues();
+		
+		// open console again
+		openConsoleConfiguration();
+		checkConsoleValues();		
 	}
-
+	
+	private void editConsoleValues() {
+		// perform change on
+		// - Main page
+		bot.cTabItem(IDELabel.HBConsoleWizard.MAIN_TAB).activate();
+		bot.radioInGroup("Type:",1).click();
+		bot.sleep(TIME_1S);
+		// - Option
+		bot.cTabItem(IDELabel.HBConsoleWizard.OPTIONS_TAB).activate();
+		bot.comboBoxInGroup("Database dialect:").setSelection("MySQL");
+		bot.sleep(TIME_1S);
+		// - Classpath
+		bot.cTabItem(IDELabel.HBConsoleWizard.CLASSPATH_TAB).activate();		
+		bot.sleep(TIME_1S);
+		// - Mapping
+		bot.cTabItem(IDELabel.HBConsoleWizard.MAPPINGS_TAB).activate();
+		bot.sleep(TIME_1S);
+		// - Common
+		bot.cTabItem(IDELabel.HBConsoleWizard.COMMON_TAB).activate();
+		bot.sleep(TIME_1S);		
+		// apply
+		bot.clickButton(IDELabel.Button.APPLY);
+	}
+	
+	private void checkConsoleValues() {
+		// perform change on
+		// - Main page
+		bot.cTabItem(IDELabel.HBConsoleWizard.MAIN_TAB).activate();
+		assertTrue(bot.radioInGroup("Type:",1).isSelected());	
+		// - Option
+		bot.cTabItem(IDELabel.HBConsoleWizard.OPTIONS_TAB).activate();
+		assertEquals("MySQL", bot.comboBoxInGroup("Database dialect:").getText());
+		bot.clickButton(IDELabel.Button.OK);
+		
+		log.info("Changed console value checked");
+	}
+	
+	private void openConsoleConfiguration() {
+		SWTBot viewBot = open.viewOpen(ActionItem.View.HibernateHibernateConfigurations.LABEL).bot();
+		SWTBotTreeItem item = eclipse.selectTreeLocation(viewBot, Project.PROJECT_NAME);
+		item.doubleClick();		
+	}
 }
