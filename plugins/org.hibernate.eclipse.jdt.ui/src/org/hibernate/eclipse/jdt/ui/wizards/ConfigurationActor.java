@@ -177,6 +177,7 @@ public class ConfigurationActor {
 						if (pc instanceof RootClass && pc.getDiscriminator() == null){
 							SimpleValue discr = new SimpleValue();
 							discr.setTypeName("string"); //$NON-NLS-1$
+							discr.addColumn(new Column("DISCR_COL")); //$NON-NLS-1$
 							((RootClass)pc).setDiscriminator(discr);
 						}
 					} else {
@@ -294,43 +295,48 @@ class ProcessEntityInfo extends ASTVisitor {
 	@Override
 	public boolean visit(CompilationUnit node) {
 		Assert.isNotNull(rootClass);
+		currentType = null;
 		return true;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public boolean visit(TypeDeclaration node) {
-		currentType = node;
-		if ("".equals(entityInfo.getPrimaryIdName())){ //$NON-NLS-1$
-			//try to guess id
-			FieldDeclaration[] fields = node.getFields();
-			String firstFieldName = ""; //$NON-NLS-1$
-			for (int i = 0; i < fields.length; i++) {
-				Iterator<VariableDeclarationFragment> itFieldsNames = fields[i].fragments().iterator();
-				while(itFieldsNames.hasNext()) {
-					VariableDeclarationFragment variable = itFieldsNames.next();
-					Type type = ((FieldDeclaration)variable.getParent()).getType();
-					if ("id".equals(variable.getName().getIdentifier()) //$NON-NLS-1$
-							&& !type.isArrayType()
-							&& !Utils.isImplementInterface(new ITypeBinding[]{type.resolveBinding()}, Collection.class.getName())){
-						entityInfo.setPrimaryIdName(variable.getName().getIdentifier());
-						return true;
-					} else if ("".equals(firstFieldName)//$NON-NLS-1$
-							&& !type.isArrayType()
-							&& !Utils.isImplementInterface(
-									new ITypeBinding[]{type.resolveBinding()}, Collection.class.getName())){
-						//set first field as id
-						firstFieldName = variable.getName().getIdentifier();
+		if (currentType == null){
+			currentType = node;
+			if ("".equals(entityInfo.getPrimaryIdName())){ //$NON-NLS-1$
+				//try to guess id
+				FieldDeclaration[] fields = node.getFields();
+				String firstFieldName = ""; //$NON-NLS-1$
+				for (int i = 0; i < fields.length; i++) {
+					Iterator<VariableDeclarationFragment> itFieldsNames = fields[i].fragments().iterator();
+					while(itFieldsNames.hasNext()) {
+						VariableDeclarationFragment variable = itFieldsNames.next();
+						Type type = ((FieldDeclaration)variable.getParent()).getType();
+						if ("id".equals(variable.getName().getIdentifier()) //$NON-NLS-1$
+								&& !type.isArrayType()
+								&& !Utils.isImplementInterface(new ITypeBinding[]{type.resolveBinding()}, Collection.class.getName())){
+							entityInfo.setPrimaryIdName(variable.getName().getIdentifier());
+							return true;
+						} else if ("".equals(firstFieldName)//$NON-NLS-1$
+								&& !type.isArrayType()
+								&& !Utils.isImplementInterface(
+										new ITypeBinding[]{type.resolveBinding()}, Collection.class.getName())){
+							//set first field as id
+							firstFieldName = variable.getName().getIdentifier();
+						}
 					}
 				}
+				entityInfo.setPrimaryIdName(firstFieldName);
 			}
-			entityInfo.setPrimaryIdName(firstFieldName);
+			return true;
 		}
-		return true;
+		//do not visit inner type
+		return false;
 	}
 	
 	@Override
 	public void endVisit(TypeDeclaration node) {
-		if (rootClass.getIdentifierProperty() == null){
+		if (currentType == node && rootClass.getIdentifierProperty() == null){
 			//root class should always has id
 			SimpleValue sValue = new SimpleValue();
 			sValue.addColumn(new Column("id".toUpperCase()));//$NON-NLS-1$
@@ -382,7 +388,7 @@ class ProcessEntityInfo extends ASTVisitor {
 			getterName2 = "is" + Character.toUpperCase(name.charAt(0)) + name.substring(1); //$NON-NLS-1$
 		}		
 		boolean setterFound = false, getterFound = false;
-		MethodDeclaration[] mds = currentType.getMethods();
+		MethodDeclaration[] mds = ((TypeDeclaration)((FieldDeclaration)var.getParent()).getParent()).getMethods();
 		for (MethodDeclaration methodDeclaration : mds) {
 			String methodName = methodDeclaration.getName().getIdentifier();
 			if (methodName.equals(setterName)) setterFound = true;
@@ -601,7 +607,7 @@ class TypeVisitor extends ASTVisitor{
 			typeParameters.put(org.hibernate.type.EnumType.TYPE, java.sql.Types.VARCHAR);
 			((SimpleValue)value).setTypeParameters(typeParameters);
 			buildProperty(value);
-		} else if (ref != null){
+		} else if (ref != null /*&& ref.fullyQualifiedName.indexOf('$') < 0*/){
 			ToOne sValue = null;
 			if (ref.refType == RefType.MANY2ONE){
 				sValue = new ManyToOne(rootClass.getTable());
@@ -618,12 +624,7 @@ class TypeVisitor extends ASTVisitor{
 			sValue.addColumn(column);					
 			sValue.setTypeName(tb.getBinaryName());
 			sValue.setFetchMode(FetchMode.JOIN);
-			RootClass associatedClass = rootClasses.get(ref.fullyQualifiedName);
-			if (associatedClass != null){
-				sValue.setReferencedEntityName(associatedClass.getEntityName());
-			} else {
-				sValue.setReferencedPropertyName(ref.fullyQualifiedName);
-			}			
+			sValue.setReferencedEntityName(ref.fullyQualifiedName);
 			buildProperty(sValue);
 			prop.setCascade("none");//$NON-NLS-1$
 		} else {
