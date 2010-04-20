@@ -49,6 +49,7 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.actions.AddConfigurationAction;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.tool.hbm2x.HibernateConfigurationExporter;
 
@@ -142,14 +143,17 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 			HibernateConsolePlugin.getDefault().showError(getShell(), HibernateConsoleMessages.NewConfigurationWizard_error, realException);
 			return false;
 		}
-
-		if (connectionInfoPage.isCreateConsoleConfigurationEnabled()) {
-			try {
+		
+		try {
+			if (connectionInfoPage.isCreateConsoleConfigurationEnabled()) {
 				confPage.performFinish();
-			} catch (CoreException ce) {
-				HibernateConsolePlugin.getDefault().showError(getShell(), HibernateConsoleMessages.AddConfigurationAction_problem_add_console_config,  ce);
-			}
-        }
+			} else {
+				AddConfigurationAction.deleteTemporaryLaunchConfigurations();
+	        }
+		} catch (CoreException ce) {
+			HibernateConsolePlugin.getDefault().showError(getShell(), HibernateConsoleMessages.AddConfigurationAction_problem_add_console_config,  ce);
+		}
+        
 		return true;
 	}
 
