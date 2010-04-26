@@ -18,17 +18,12 @@ source code, or contact Red Hat Legal Affairs, 1801 Varsity Drive,
 Raleigh NC 27606 USA.
 </license>
 
-	<plugin id="org.eclipse.ant.optional.junit" download-size="0" install-size="0" version="0.0.0" fragment="true" />
-	<plugin id="org.eclipse.test" download-size="0" install-size="0" version="0.0.0" />
-
-	<plugin id="org.jboss.tools.tests" download-size="0" install-size="0" version="0.0.0" />
-
 	<plugin id="org.hibernate.eclipse.console.test" download-size="0" install-size="0" version="0.0.0" />
 	<plugin id="org.hibernate.eclipse.jdt.ui.test" download-size="0" install-size="0" version="0.0.0" />
+	<plugin id="org.jboss.tools.hibernate.ui.test" download-size="0" install-size="0" version="0.0.0" />
 
 	<!-- not yet enabled / built -->
 	<!-- <plugin id="org.jboss.tools.hibernate.jpt.core.test" download-size="0" install-size="0" version="0.0.0" /> -->
 	<!-- <plugin id="org.jboss.tools.hibernate.ui.bot.test" download-size="0" install-size="0" version="0.0.0" /> -->
 	
-	<plugin id="org.jboss.tools.hibernate.ui.test" download-size="0" install-size="0" version="0.0.0" />
 </feature>

@@ -23,7 +23,8 @@ Export-Package: org.jboss.tools.hibernate.jpt.core.internal,
  org.jboss.tools.hibernate.jpt.core.internal.context,
  org.jboss.tools.hibernate.jpt.core.internal.context.basic,
  org.jboss.tools.hibernate.jpt.core.internal.context.java,
- org.jboss.tools.hibernate.jpt.core.internal.context.orm
+ org.jboss.tools.hibernate.jpt.core.internal.context.orm,
+ org.jboss.tools.hibernate.jpt.core.internal.resource.java
 Bundle-Localization: plugin
 Bundle-Activator: org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin
 Bundle-ActivationPolicy: lazy
