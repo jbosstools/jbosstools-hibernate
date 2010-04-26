@@ -102,6 +102,8 @@ public class HibernateConsoleMessages extends NLS {
 	public static String HibernateConsolePreferencePage_text_pref;
 	//
 	public static String HibernatePropertyPage_default_hibernate_console_config;
+
+	public static String HibernatePropertyPage_details;
 	public static String HibernatePropertyPage_enable_hibernate3_support;
 	public static String HibernatePropertyPage_open_url;
 	public static String HibernatePropertyPage_unable_open_webbrowser_for_url;

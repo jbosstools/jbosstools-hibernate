@@ -54,6 +54,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.browser.IWebBrowser;
@@ -64,12 +65,14 @@ import org.hibernate.console.ImageConstants;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.eclipse.console.actions.EditConsoleConfiguration;
 import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
+@SuppressWarnings("restriction")
 public class HibernatePropertyPage extends PropertyPage {
 
 	Control[] settings;
@@ -78,11 +81,15 @@ public class HibernatePropertyPage extends PropertyPage {
 
 	private Combo selectedConfiguration;
 	
+	private Link details;
+	
 	private Button enableNamingStrategy;
 	
 	private Label nsSeparator;
 	
 	private boolean initNamingStrategy;
+	
+	private static final String NONE = "<None>"; //$NON-NLS-1$
 
 
 	/**
@@ -185,25 +192,43 @@ public class HibernatePropertyPage extends PropertyPage {
 	}
 
 	private void addSecondSection(Composite parent) {
-		Composite settingsPart = createDefaultComposite(parent,2);
-
 		// Label for owner field
-		Label ownerLabel = new Label(settingsPart, SWT.NONE);
+		Label ownerLabel = new Label(parent, SWT.NONE);
 		ownerLabel.setText(HibernateConsoleMessages.HibernatePropertyPage_default_hibernate_console_config);
 
-		selectedConfiguration = new Combo(parent, SWT.DROP_DOWN);
+		Composite settingsPart = createDefaultComposite(parent,2);
+		selectedConfiguration = new Combo(settingsPart, SWT.DROP_DOWN | SWT.READ_ONLY);
 		GridData gd = new GridData();
 		gd.widthHint = convertWidthInCharsToPixels(50);
 		selectedConfiguration.setLayoutData(gd);
 
+		selectedConfiguration.add(NONE);
 		// Populate owner text field
 		ConsoleConfiguration[] configurations = LaunchHelper.findFilteredSortedConsoleConfigs();
 		for (int i = 0; i < configurations.length; i++) {
 			ConsoleConfiguration configuration = configurations[i];
 			selectedConfiguration.add(configuration.getName() );
 		}
+		
+		details = new Link(settingsPart, SWT.NONE);
+		details.setText(HibernateConsoleMessages.HibernatePropertyPage_details);
+		details.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				ConsoleConfiguration config = KnownConfigurations.getInstance().find(selectedConfiguration.getText());
+				if (config != null) {
+					new EditConsoleConfiguration(config).run();
+				}				
+			}
+		});
+		
+		selectedConfiguration.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				details.setEnabled(selectedConfiguration.getSelectionIndex() != 0);
+			}
+		});
+				
 
-		settings = new Control[] { ownerLabel, selectedConfiguration };
+		settings = new Control[] { ownerLabel, selectedConfiguration, details};
 	}
 	
 	private void addThirdSection(Composite parent) {
@@ -255,7 +280,7 @@ public class HibernatePropertyPage extends PropertyPage {
 
 	protected void performDefaults() {
 		enableHibernate.setSelection(false);
-		selectedConfiguration.setText(""); //$NON-NLS-1$
+		selectedConfiguration.select(0);
 	}
 	
 	private boolean isHibernateJpaProject(){
@@ -293,9 +318,10 @@ public class HibernatePropertyPage extends PropertyPage {
 			String cfg = node.get(HibernatePropertiesConstants.DEFAULT_CONFIGURATION, project.getName() );
 			ConsoleConfiguration configuration = KnownConfigurations.getInstance().find(cfg);
 			if(configuration==null) {
-				selectedConfiguration.setText(""); //$NON-NLS-1$
+				selectedConfiguration.select(0);
+				details.setEnabled(false);
 			} else {
-				selectedConfiguration.setText(cfg);
+				selectedConfiguration.setText(cfg);				
 			}
 			initNamingStrategy = node.getBoolean(HibernatePropertiesConstants.NAMING_STRATEGY_ENABLED, true);
 			enableNamingStrategy.setSelection(initNamingStrategy);
@@ -313,7 +339,6 @@ public class HibernatePropertyPage extends PropertyPage {
 			try {
 				node.flush();
 				final IWorkspaceRunnable wr = new IWorkspaceRunnable() {
-					@SuppressWarnings("restriction")
 					public void run(IProgressMonitor monitor)
 							throws CoreException {
 						JpaModelManager.instance().rebuildJpaProject(getProject());
@@ -338,7 +363,7 @@ public class HibernatePropertyPage extends PropertyPage {
 					new ProgressMonitorDialog(getShell()).run(true, false, op);
 				}
 				catch (InterruptedException e) {
-					return false;
+					return false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
 				}
 				catch (InvocationTargetException e) {
 					final Throwable te = e.getTargetException();
@@ -355,7 +380,8 @@ public class HibernatePropertyPage extends PropertyPage {
 	}
 	
 	public boolean performOk() {
-		ProjectUtils.toggleHibernateOnProject( getProject(), enableHibernate.getSelection(), selectedConfiguration.getText());
+		ProjectUtils.toggleHibernateOnProject( getProject(), enableHibernate.getSelection(),
+				selectedConfiguration.getSelectionIndex() != 0 ? selectedConfiguration.getText() : ""); //$NON-NLS-1$
 		saveNamigStrategyChanges();
 		return true;
 	}
@@ -365,6 +391,9 @@ public class HibernatePropertyPage extends PropertyPage {
 		for (int i = 0; i < settings.length; i++) {
 			Control comp = settings[i];
 			comp.setEnabled(selection);
+		}
+		if (selection) {
+			details.setEnabled(selectedConfiguration.getSelectionIndex() != 0);
 		}
 	}
 
