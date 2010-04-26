@@ -7,7 +7,7 @@ import java.util.Set;
 /**
  * @author Emmanuel Bernard
  */
-public class A {
+public abstract class A {
 	private Integer id;
 	private B prop;
 	private B[] bs;

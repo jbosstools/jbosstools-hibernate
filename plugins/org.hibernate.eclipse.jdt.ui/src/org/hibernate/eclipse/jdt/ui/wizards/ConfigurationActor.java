@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.Map.Entry;
 
@@ -173,6 +174,12 @@ public class ConfigurationActor {
 				if (pc != null){
 					if (pc.isAbstract()){
 						subclass = new SingleTableSubclass(pc);
+						if (pc instanceof RootClass && pc.getDiscriminator() == null){
+							SimpleValue discr = new SimpleValue();
+							discr.setTypeName("string"); //$NON-NLS-1$
+							discr.addColumn(new Column("DISCR_COL")); //$NON-NLS-1$
+							((RootClass)pc).setDiscriminator(discr);
+						}
 					} else {
 						subclass = new JoinedSubclass(pc);
 					}
@@ -191,11 +198,11 @@ public class ConfigurationActor {
 					if (subclass instanceof JoinedSubclass) {
 						((JoinedSubclass) subclass).setTable(new Table(pastClass.getClassName().toUpperCase()));
 						((JoinedSubclass) subclass).setKey((KeyValue) pc.getIdentifierProperty().getValue());
-					} else {
-						if (pastClass.getIdentifierProperty() != null) {
-							subclass.addProperty(pastClass.getIdentifierProperty());
-						}
 					}
+					if (pastClass.getIdentifierProperty() != null) {
+						subclass.addProperty(pastClass.getIdentifierProperty());
+					}
+					
 					Iterator it = pastClass.getPropertyIterator();
 					while (it.hasNext()) {
 						subclass.addProperty((Property) it.next());
@@ -255,6 +262,8 @@ class ProcessEntityInfo extends ASTVisitor {
 	 */
 	protected EntityInfo entityInfo;
 	
+	private TypeDeclaration currentType;
+	
 	TypeVisitor typeVisitor;
 	
 	public void setEntities(Map<String, EntityInfo> entities) {
@@ -286,42 +295,48 @@ class ProcessEntityInfo extends ASTVisitor {
 	@Override
 	public boolean visit(CompilationUnit node) {
 		Assert.isNotNull(rootClass);
+		currentType = null;
 		return true;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public boolean visit(TypeDeclaration node) {
-		if ("".equals(entityInfo.getPrimaryIdName())){ //$NON-NLS-1$
-			//try to guess id
-			FieldDeclaration[] fields = node.getFields();
-			String firstFieldName = ""; //$NON-NLS-1$
-			for (int i = 0; i < fields.length; i++) {
-				Iterator<VariableDeclarationFragment> itFieldsNames = fields[i].fragments().iterator();
-				while(itFieldsNames.hasNext()) {
-					VariableDeclarationFragment variable = itFieldsNames.next();
-					Type type = ((FieldDeclaration)variable.getParent()).getType();
-					if ("id".equals(variable.getName().getIdentifier()) //$NON-NLS-1$
-							&& !type.isArrayType()
-							&& !Utils.isImplementInterface(new ITypeBinding[]{type.resolveBinding()}, Collection.class.getName())){
-						entityInfo.setPrimaryIdName(variable.getName().getIdentifier());
-						return true;
-					} else if ("".equals(firstFieldName)//$NON-NLS-1$
-							&& !type.isArrayType()
-							&& !Utils.isImplementInterface(
-									new ITypeBinding[]{type.resolveBinding()}, Collection.class.getName())){
-						//set first field as id
-						firstFieldName = variable.getName().getIdentifier();
+		if (currentType == null){
+			currentType = node;
+			if ("".equals(entityInfo.getPrimaryIdName())){ //$NON-NLS-1$
+				//try to guess id
+				FieldDeclaration[] fields = node.getFields();
+				String firstFieldName = ""; //$NON-NLS-1$
+				for (int i = 0; i < fields.length; i++) {
+					Iterator<VariableDeclarationFragment> itFieldsNames = fields[i].fragments().iterator();
+					while(itFieldsNames.hasNext()) {
+						VariableDeclarationFragment variable = itFieldsNames.next();
+						Type type = ((FieldDeclaration)variable.getParent()).getType();
+						if ("id".equals(variable.getName().getIdentifier()) //$NON-NLS-1$
+								&& !type.isArrayType()
+								&& !Utils.isImplementInterface(new ITypeBinding[]{type.resolveBinding()}, Collection.class.getName())){
+							entityInfo.setPrimaryIdName(variable.getName().getIdentifier());
+							return true;
+						} else if ("".equals(firstFieldName)//$NON-NLS-1$
+								&& !type.isArrayType()
+								&& !Utils.isImplementInterface(
+										new ITypeBinding[]{type.resolveBinding()}, Collection.class.getName())){
+							//set first field as id
+							firstFieldName = variable.getName().getIdentifier();
+						}
 					}
 				}
+				entityInfo.setPrimaryIdName(firstFieldName);
 			}
-			entityInfo.setPrimaryIdName(firstFieldName);
+			return true;
 		}
-		return true;
+		//do not visit inner type
+		return false;
 	}
 	
 	@Override
 	public void endVisit(TypeDeclaration node) {
-		if (rootClass.getIdentifierProperty() == null){
+		if (currentType == node && rootClass.getIdentifierProperty() == null){
 			//root class should always has id
 			SimpleValue sValue = new SimpleValue();
 			sValue.addColumn(new Column("id".toUpperCase()));//$NON-NLS-1$
@@ -348,7 +363,9 @@ class ProcessEntityInfo extends ASTVisitor {
 			if (prop == null) {
 				continue;
 			}
-			
+			if (!varHasGetterAndSetter(var)){
+				prop.setPropertyAccessorName("field"); //$NON-NLS-1$
+			}
 			String name = var.getName().getIdentifier();
 			if (name.equals(primaryIdName)) {
 				rootClass.setIdentifierProperty(prop);
@@ -358,6 +375,28 @@ class ProcessEntityInfo extends ASTVisitor {
 		}
 
 		return true;
+	}
+	
+	private boolean varHasGetterAndSetter(VariableDeclarationFragment var){
+		String name = var.getName().getIdentifier();
+		String setterName = "set" + Character.toUpperCase(name.charAt(0)) + name.substring(1); //$NON-NLS-1$
+		String getterName = "get" + Character.toUpperCase(name.charAt(0)) + name.substring(1); //$NON-NLS-1$
+		String getterName2 = null;
+		Type varType = ((FieldDeclaration)var.getParent()).getType();
+		if (varType.isPrimitiveType()
+				&& ((PrimitiveType)varType).getPrimitiveTypeCode() == PrimitiveType.BOOLEAN){
+			getterName2 = "is" + Character.toUpperCase(name.charAt(0)) + name.substring(1); //$NON-NLS-1$
+		}		
+		boolean setterFound = false, getterFound = false;
+		MethodDeclaration[] mds = ((TypeDeclaration)((FieldDeclaration)var.getParent()).getParent()).getMethods();
+		for (MethodDeclaration methodDeclaration : mds) {
+			String methodName = methodDeclaration.getName().getIdentifier();
+			if (methodName.equals(setterName)) setterFound = true;
+			if (methodName.equals(getterName)) getterFound = true;
+			if (methodName.equals(getterName2)) getterFound = true;
+			if (setterFound && getterFound) return true;
+		}
+		return false;
 	}
 	
 	@Override
@@ -398,7 +437,7 @@ class ProcessEntityInfo extends ASTVisitor {
 	protected Property createProperty(String varName,  Type varType) {
 			typeVisitor.init(varName, entityInfo);
 			varType.accept(typeVisitor);
-			Property p = typeVisitor.getProperty();			
+			Property p = typeVisitor.getProperty();
 			return p;
 	}
 
@@ -561,7 +600,14 @@ class TypeVisitor extends ASTVisitor{
 				((IndexedCollection)value).setIndex(map_key);
 			}
 			prop.setCascade("none");//$NON-NLS-1$
-		} else if (ref != null){
+		} else if (tb.isEnum()){
+			value = buildSimpleValue(org.hibernate.type.EnumType.class.getName());
+			Properties typeParameters = new Properties();
+			typeParameters.put(org.hibernate.type.EnumType.ENUM, tb.getBinaryName());
+			typeParameters.put(org.hibernate.type.EnumType.TYPE, java.sql.Types.VARCHAR);
+			((SimpleValue)value).setTypeParameters(typeParameters);
+			buildProperty(value);
+		} else if (ref != null /*&& ref.fullyQualifiedName.indexOf('$') < 0*/){
 			ToOne sValue = null;
 			if (ref.refType == RefType.MANY2ONE){
 				sValue = new ManyToOne(rootClass.getTable());
@@ -578,8 +624,7 @@ class TypeVisitor extends ASTVisitor{
 			sValue.addColumn(column);					
 			sValue.setTypeName(tb.getBinaryName());
 			sValue.setFetchMode(FetchMode.JOIN);
-			RootClass associatedClass = rootClasses.get(ref.fullyQualifiedName);
-			sValue.setReferencedEntityName(associatedClass.getEntityName());
+			sValue.setReferencedEntityName(ref.fullyQualifiedName);
 			buildProperty(sValue);
 			prop.setCascade("none");//$NON-NLS-1$
 		} else {

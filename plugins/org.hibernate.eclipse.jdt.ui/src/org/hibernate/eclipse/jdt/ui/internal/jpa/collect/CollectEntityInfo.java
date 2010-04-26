@@ -475,12 +475,7 @@ public class CollectEntityInfo extends ASTVisitor {
 				String entityFullyQualifiedName = ""; //$NON-NLS-1$
 				if (tb.getJavaElement() instanceof SourceType) {
 					SourceType sourceT = (SourceType)tb.getJavaElement();
-					try {
-						entityFullyQualifiedName = sourceT.getFullyQualifiedParameterizedName();
-					}
-					catch (JavaModelException e) {
-						HibernateConsolePlugin.getDefault().logErrorMessage("JavaModelException: ", e); //$NON-NLS-1$
-					}
+					entityFullyQualifiedName = sourceT.getFullyQualifiedName();
 					entityInfo.addDependency(entityFullyQualifiedName);
 					Iterator<String> itVarNames = list.iterator();
 					while (itVarNames.hasNext()) {

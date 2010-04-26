@@ -36,6 +36,7 @@ import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.PrimitiveArray;
 import org.hibernate.mapping.Property;
+import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Value;
 import org.hibernate.type.IntegerType;
 
@@ -203,6 +204,60 @@ public class HbmExporterTest extends TestCase {
 		assertEquals("string", map.getKey().getType().getName()); //$NON-NLS-1$
 	}
 	
+	public void testEnum(){
+		Configuration config = getConfigurationFor("pack.A"); //$NON-NLS-1$
+		checkClassesMaped(config, "pack.A", "pack.B"); //$NON-NLS-1$ //$NON-NLS-2$
+		PersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
+		
+		Property setProp = b.getProperty("state"); //$NON-NLS-1$
+		Value value = setProp.getValue();
+		assertNotNull(value);
+		assertTrue("Expected to get SimpleValue value",  //$NON-NLS-1$
+				value.getClass()==SimpleValue.class);
+		SimpleValue sv = (SimpleValue)value;
+		assertTrue("Expected to get Enum-type mapping",  //$NON-NLS-1$
+				org.hibernate.type.EnumType.class.getName().equals(sv.getTypeName()));
+		assertTrue("Expected to get pack.State class mapping",  //$NON-NLS-1$
+				sv.getTypeParameters().getProperty("enumClass").equals("pack.State"));
+	}
+	
+	public void testAccessField(){
+		Configuration config = getConfigurationFor("pack.B"); //$NON-NLS-1$
+		checkClassesMaped(config, "pack.B"); //$NON-NLS-1$
+		PersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
+
+		Property bId= b.getIdentifierProperty();
+		assertNotNull(bId);
+		assertEquals("field", bId.getPropertyAccessorName()); //$NON-NLS-1$
+	}
+	
+	public void testInner(){
+		Configuration config = getConfigurationFor("pack.B"); //$NON-NLS-1$
+		PersistentClass b = config.getClassMapping("pack.B"); //$NON-NLS-1$
+		
+		Property prop = b.getProperty("inner");
+		assertNotNull(prop);
+		assertTrue(prop.getValue() instanceof SimpleValue);
+		assertEquals("pack.B$Inner", ((SimpleValue)prop.getValue()).getTypeName()); //$NON-NLS-1$
+	}
+	
+	public void testClassHierarchy(){
+		Configuration config = getConfigurationFor("pack.C"); //$NON-NLS-1$
+		checkClassesMaped(config, "pack.A", "pack.B", "pack.C"); //$NON-NLS-1$ //$NON-NLS-2$
+		PersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$		
+		PersistentClass c = config.getClassMapping("pack.C"); //$NON-NLS-1$
+		
+		assertTrue("Class A should be abstract", a.isAbstract());
+		assertEquals("Class A should be the superclass of class C", a, c.getSuperclass());
+		assertNotNull("Class A should have a discriminator", a.getDiscriminator());
+	}
+	
+	public void testDiscriminator(){
+		Configuration config = getConfigurationFor("pack.C"); //$NON-NLS-1$
+		PersistentClass a = config.getClassMapping("pack.A"); //$NON-NLS-1$		
+		
+		assertNotNull("Class A should have a discriminator", a.getDiscriminator());
+	}
 
 	protected void createTestProject() throws JavaModelException,
 			CoreException, IOException {
