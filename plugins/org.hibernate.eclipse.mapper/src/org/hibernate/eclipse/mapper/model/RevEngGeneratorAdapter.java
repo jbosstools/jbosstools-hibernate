@@ -50,5 +50,11 @@ public class RevEngGeneratorAdapter extends DOMAdapter implements
 	public void setGeneratorClassName(String value) {
 		setAttribute("class", value, null);		 //$NON-NLS-1$
 	}
+	
+	public void addParameter() {
+		DOMAdapter key = (DOMAdapter) getModel().createParameter();
+		getNode().insertBefore(key.getNode(), getNode().getFirstChild());
+		DOMModelUtil.formatNode(getNode().getParentNode());
+	}
 
 }

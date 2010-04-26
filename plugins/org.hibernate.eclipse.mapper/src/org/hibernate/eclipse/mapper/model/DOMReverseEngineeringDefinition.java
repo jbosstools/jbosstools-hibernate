@@ -35,6 +35,7 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
 import org.hibernate.dialect.FirebirdDialect;
 import org.hibernate.eclipse.console.model.IRevEngColumn;
 import org.hibernate.eclipse.console.model.IRevEngGenerator;
+import org.hibernate.eclipse.console.model.IRevEngParameter;
 import org.hibernate.eclipse.console.model.IRevEngPrimaryKey;
 import org.hibernate.eclipse.console.model.IRevEngTable;
 import org.hibernate.eclipse.console.model.IReverseEngineeringDefinition;
@@ -391,6 +392,10 @@ public class DOMReverseEngineeringDefinition implements	IReverseEngineeringDefin
 
 	public IRevEngGenerator createGenerator() {
 		return (IRevEngGenerator) factory.adapt((INodeNotifier) getDocument().createElement("generator")); //$NON-NLS-1$
+	}
+	
+	public IRevEngParameter createParameter() {
+		return (IRevEngParameter) factory.adapt((INodeNotifier) getDocument().createElement("param")); //$NON-NLS-1$		
 	}
 
 }

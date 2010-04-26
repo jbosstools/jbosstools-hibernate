@@ -27,6 +27,9 @@ import java.beans.PropertyChangeListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.IDetailsPage;
 import org.eclipse.ui.forms.IFormPart;
@@ -53,7 +56,19 @@ public class GeneratorDetailsPage extends RevEngDetailsPage implements IDetailsP
 				generator.setGeneratorClassName(entry.getValue());
 			}
 		});
+		
+		Button button = toolkit.createButton(client, MapperMessages.GeneratorDetailsPage_add_param, SWT.NULL);
+		button.addSelectionListener(new SelectionAdapter() {
 
+			public void widgetSelected(SelectionEvent e) {
+				handleAddParameter();
+			}
+
+		});
+	}
+
+	protected void handleAddParameter() {
+		generator.addParameter();
 	}
 
 	public void selectionChanged(IFormPart part, ISelection selection) {

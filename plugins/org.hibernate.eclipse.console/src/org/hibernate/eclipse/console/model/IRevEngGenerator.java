@@ -28,4 +28,6 @@ public interface IRevEngGenerator extends Notifiable {
 	IRevEngParameter[] getParameters();
 
 	void setGeneratorClassName(String value);
+	
+	void addParameter();
 }

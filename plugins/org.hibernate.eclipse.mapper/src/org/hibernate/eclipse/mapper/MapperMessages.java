@@ -34,6 +34,7 @@ public class MapperMessages extends NLS {
 	public static String CounterFormPart_debug_counter_for_property_changes;
 	public static String CounterFormPart_zero;
 	public static String GeneratorDetailsPage_class;
+	public static String GeneratorDetailsPage_add_param;
 	public static String GeneratorDetailsPage_id_generator_details;
 	public static String GeneratorDetailsPage_set_the_properties_of_the_selected_generator;
 	public static String HibernateConfigurationForm_hibernate_configuration;
