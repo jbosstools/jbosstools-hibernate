@@ -24,14 +24,20 @@
     <section id="download_base_project">
       <title>Download base project</title>
       <para>You can download example projects which are used for this chapter.</para>
-      <para><property>JPA base project</property> is available on <ulink url="http://docs.jboss.org/tools/resources/">documentation resources page </ulink> together with <ulink url="http://docs.jboss.org/tools/resources/TestHibernateproject_for_hibernate_jboss_tools.zip">base Java project</ulink>.</para>
-      <para>Also you need start <ulink url="http://docs.jboss.org/tools/resources/GSG_database.zip">database</ulink>.</para>
+      <para><property>JPA base project</property> is available on <ulink
+          url="http://docs.jboss.org/tools/resources/">documentation resources page </ulink>
+        together with <ulink
+          url="http://docs.jboss.org/tools/resources/TestHibernateproject_for_hibernate_jboss_tools.zip"
+          >base Java project</ulink>.</para>
+      <para>Also you need start <ulink url="http://docs.jboss.org/tools/resources/GSG_database.zip"
+          >database</ulink>.</para>
       <note>
         <title>Note:</title>
-        <para>How to run database you can know in <ulink url="http://docs.jboss.org/tools/3.0.1.GA/en/GettingStartedGuide/html/first_seam.html#start_dev_db">Getting Started Guide</ulink>.</para>
+        <para>How to run database you can know in <ulink
+            url="http://docs.jboss.org/tools/3.0.1.GA/en/GettingStartedGuide/html/first_seam.html#start_dev_db"
+            >Getting Started Guide</ulink>.</para>
       </note>
     </section>
-    
   </section>
   <section id="map_file_wizard">
     <title>Creating a Hibernate Mapping File</title>
@@ -45,9 +51,9 @@
     <para>At first you&apos;ll be asked to select a package or multiple individual classes to map.
       It's also possible to create an empty file, don&apos;t select any packages or classes and an
       empty .hbm will be created in the specified location</para>
-    <para id="depth_control">With <property>depth control</property> option you can define dependences depth for
-      choosing classes (it means to set level of references which is used to collect linked classes
-      to the selection). </para>
+    <para id="depth_control">With <property>depth control</property> option you can define
+      dependences depth for choosing classes (it means to set level of references which is used to
+      collect linked classes to the selection). </para>
     <figure>
       <title>Hibernate XML Mapping File Wizard</title>
       <mediaobject>
@@ -56,7 +62,10 @@
         </imageobject>
       </mediaobject>
     </figure>
-    <para>The next wizard page lists the mappings to be generated. As you see <property>Customers</property>, <property>Orders</property>, <property>Productlines</property> and <property>Products</property> classes added under <property>depth control</property> driving. </para>
+    <para>The next wizard page lists the mappings to be generated. As you see <property
+        >Customers</property>, <property>Orders</property>, <property>Productlines</property> and
+        <property>Products</property> classes added under <property>depth control</property>
+      driving. </para>
     <figure>
       <title>Mappings to be generated</title>
       <mediaobject>
@@ -65,7 +74,6 @@
         </imageobject>
       </mediaobject>
     </figure>
-    
     <para>This wizard page outputs a generated .hbm files preview.</para>
     <figure>
       <title>Preview Generated Mapping Files</title>
@@ -174,8 +182,8 @@
       </figure>
       <para>The following table describes the available settings on the <emphasis>
           <property>Main</property>
-        </emphasis> tab. The wizard can automatically detect the default values for most of them  if you
-        started the wizard with the relevant java project or resource selected.</para>
+        </emphasis> tab. The wizard can automatically detect the default values for most of them if
+        you started the wizard with the relevant java project or resource selected.</para>
       <table>
         <title>Hibernate Console Configuration Parameters</title>
         <tgroup cols="3">
@@ -275,8 +283,8 @@
                 <para>Name of the persistence unit to use</para>
               </entry>
               <entry>
-                <para>No default value (let Hibernate Entity Manager find the persistence unit or
-                  it can be defined manually using Browse button)</para>
+                <para>No default value (let Hibernate Entity Manager find the persistence unit or it
+                  can be defined manually using Browse button)</para>
               </entry>
             </row>
           </tbody>
@@ -284,7 +292,7 @@
       </table>
       <tip>
         <title>Tip:</title>
-        <para>The two latter settings are usually  not required if you specify a project and it has
+        <para>The two latter settings are usually not required if you specify a project and it has
             <emphasis>
             <property>
               <literal> /hibernate.cfg.xml </literal>
@@ -340,8 +348,8 @@
                 <para>Database dialect</para>
               </entry>
               <entry>
-                <para>Define a database dialect. It&apos;s possible either to write your value or choose
-                  from list. </para>
+                <para>Define a database dialect. It&apos;s possible either to write your value or
+                  choose from list. </para>
               </entry>
               <entry>
                 <para>No default value</para>
@@ -540,7 +548,8 @@
         <listitem>
           <para>right-click on the configuration in <emphasis>
               <property>Hibernate Configurations View->Edit Configuration </property>
-            </emphasis> or just double-click on <property>Console Configuration</property> item.</para>
+            </emphasis> or just double-click on <property>Console Configuration</property>
+            item.</para>
           <figure>
             <title>Opening Edit Configuration Wizard</title>
             <mediaobject>
@@ -662,8 +671,8 @@
                     <entry>
                       <para>Choose between &quot;CORE&quot;, &quot;ANNOTATIONS&quot; and
                         &quot;JPA&quot; according to the method of relational mapping you want to
-                        use. Note, the two latter requires running Eclipse IDE with a JDK 5
-                        runtime, otherwise you will get classloading and/or version errors.</para>
+                        use. Note, the two latter requires running Eclipse IDE with a JDK 5 runtime,
+                        otherwise you will get classloading and/or version errors.</para>
                     </entry>
                     <entry>
                       <para>True</para>
@@ -675,10 +684,10 @@
         </listitem>
       </itemizedlist>
     </section>
-    <section id='closing_conf_config'>
+    <section id="closing_conf_config">
       <title>Closing Hibernate Console Configuration</title>
-      <para>To close <property>Hibernate Console Configuration</property> you need do right-click your configuration
-        and choose <property>Close Configuration</property> option </para>
+      <para>To close <property>Hibernate Console Configuration</property> you need do right-click
+        your configuration and choose <property>Close Configuration</property> option </para>
       <figure>
         <title>Close Hibernate Console Configuration</title>
         <mediaobject>
@@ -2450,10 +2459,11 @@
     <title>Enable debug logging in the plugins</title>
     <para>It is possible to configure the eclipse plugin to route all logging made by the plugins
       and hibernate code it self to the <property>Error Log View</property> in Eclipse.</para>
-    <para><property>Error Log View</property> is very useful tool to solve any problem which appears in Hibernate Tools Plugins. 
-      You can use if there are troubles with setting up <property>Hibernate Console Configuration</property>.</para> 
+    <para><property>Error Log View</property> is very useful tool to solve any problem which appears
+      in Hibernate Tools Plugins. You can use if there are troubles with setting up <property
+        >Hibernate Console Configuration</property>.</para>
     <para>This is done by editing the <emphasis>
-      <property>hibernate-log4j.properties</property>
+        <property>hibernate-log4j.properties</property>
       </emphasis> in <emphasis>
         <property>org.hibernate.eclipse/ directory/jar</property>
       </emphasis>. This file includes a default configuration that only logs WARN and above to a set
@@ -2474,187 +2484,196 @@
       JPA development platform.</para>
     <section id="jpa_project_with_hibernate">
       <title>Creating JPA project with Hibernate support</title>
-    <para>When starting a new JPA project from <emphasis>
-        <property>New &gt; Other &gt; JPA &gt; JPA Project</property>
-      </emphasis> (or simply <emphasis>
-        <property>New &gt; JPA Project</property>
-      </emphasis> in <property>JPA Perspective</property>), the first wizard page looks as
-      follows.</para>
-    <figure>
-      <title>Starting JPA Project</title>
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="images/plugins/dali_integration1.png"/>
-        </imageobject>
-      </mediaobject>
-    </figure>
-    <para>It&apos;s possible here to select a target runtime and change the project configuration,
-      or you can leave everything as it is.</para>
-    <para>On the JPA Facet page you should choose Hibernate as a target platform. Also select the
-      proper database connection, if it is defined, or add a new one by clicking the <emphasis>
-        <property>Add connection</property>
-      </emphasis> link.</para>
-    <para>Hitting <emphasis>
-        <property>Finish</property>
-      </emphasis> will generate the project.</para>
-    <figure>
-      <title>Targeting at Hibernate Platform</title>
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="images/plugins/dali_integration2.png"/>
-        </imageobject>
-      </mediaobject>
-    </figure>
-    <note>
-      <title>Note:</title>
-      <para>Please note, if you choose Hibernate as a platform while creating a JPA/Dali project, a
-        Hibernate Console Configuration for the project is created automatically when the wizard
-        finishes its work. It allows a full usage of <property>Hibernate Tools</property> features
-        without additional setup.</para>
-    </note>
+      <para>When starting a new JPA project from <emphasis>
+          <property>New &gt; Other &gt; JPA &gt; JPA Project</property>
+        </emphasis> (or simply <emphasis>
+          <property>New &gt; JPA Project</property>
+        </emphasis> in <property>JPA Perspective</property>), the first wizard page looks as
+        follows.</para>
+      <figure>
+        <title>Starting JPA Project</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/plugins/dali_integration1.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <para>It&apos;s possible here to select a target runtime and change the project configuration,
+        or you can leave everything as it is.</para>
+      <para>On the JPA Facet page you should choose Hibernate as a target platform. Also select the
+        proper database connection, if it is defined, or add a new one by clicking the <emphasis>
+          <property>Add connection</property>
+        </emphasis> link.</para>
+      <para>Hitting <emphasis>
+          <property>Finish</property>
+        </emphasis> will generate the project.</para>
+      <figure>
+        <title>Targeting at Hibernate Platform</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/plugins/dali_integration2.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <note>
+        <title>Note:</title>
+        <para>Please note, if you choose Hibernate as a platform while creating a JPA/Dali project,
+          a Hibernate Console Configuration for the project is created automatically when the wizard
+          finishes its work. It allows a full usage of <property>Hibernate Tools</property> features
+          without additional setup.</para>
+      </note>
     </section>
-   <section id="generate_ddl_entities_with_hibernate"> 
-     <title>Generating DDL and Entities</title>
-     <para>By enabling Hibernate platform specific features you can now generate DDL and Entities.
-      For that find <emphasis>
-        <property>JPA Tools > Generate Tables from Entities/Generate Entities from Tables</property>
-      </emphasis> options in the context menu of your JPA project.</para>
-    <figure>
-      <title>Generate DDL/Entities</title>
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="images/plugins/dali_integration3.png"/>
-        </imageobject>
-      </mediaobject>
-    </figure>
-    <note>
-      <title>Note:</title>
-      <para>Please, remember to put the proper database driver to the classpath of your
-        project.</para>
-    </note>
-    <para>The <property>Generate Entities wizard</property> first will ask you to choose the
-      directory where all output will be written.</para>
-    <figure>
-      <title>Generate Entities Wizard</title>
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="images/plugins/dali_integration4.png"/>
-        </imageobject>
-      </mediaobject>
-    </figure>
-    <para>To generate entities you can use:</para>
-    <itemizedlist>
-      <listitem>
-        <para>a Hibernate Console Configuration (proposed by default)</para>
-        <para>Just make sure that the <emphasis>
-          <property>Use Console Configuration</property>
-        </emphasis> checkbox is selected and choose a needed configuration from the <emphasis>
-          <property>Console configurations</property>
-        </emphasis> list box.</para>
-        <figure>
-          <title>Generate Entities Wizard</title>
-          <mediaobject>
-            <imageobject>
-              <imagedata fileref="images/plugins/dali_integration5.png"/>
-            </imageobject>
-          </mediaobject>
-        </figure>
-      </listitem>
-    </itemizedlist>
-    <itemizedlist>
-      <listitem>
-        <para>or a DTP connection directly</para>
-        <para>Just uncheck <emphasis>
-            <property>Use Console Configuration</property>
-          </emphasis> and adjust database settings.</para>
-      </listitem>
-    </itemizedlist>
-    <para>All the same you do with Generate Entities Wizard you can do with Generate DDL wizard.
-      Special feature for Generate DDL wizard is possible automatic execution of Generation DDL in
-      the database. </para>
-    <figure>
-      <title>Generate DDL Wizard</title>
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="images/plugins/dali_integration6.png"/>
-        </imageobject>
-      </mediaobject>
-    </figure>
-    <para>Thus, you can now have the Hibernate runtime support in Eclipse JPA projects.</para>
-   </section>
-   <section id="hibernate_annotations_support">
-      <title>Hibernate Annotations Support</title>
-     <para>Also Hibernate Annotations are supported in <property>Dali Java Persistence Tools</property>.
-       The next annotations are integrated with <property>JPA Details</property> view:</para>
-     <itemizedlist>
-       <listitem>         
-         <para>Id Generator annotations - <property>@GenericGenerator</property> and <property>@GeneratedValue</property></para>
-         <figure>
-           <title>@GenericGenerator support in Dali</title>
-           <mediaobject>
-             <imageobject>
-                  <imagedata fileref="images/plugins/dali_integration7.png"/>
-             
+    <section id="generate_ddl_entities_with_hibernate">
+      <title>Generating DDL and Entities</title>
+      <para>By enabling Hibernate platform specific features you can now generate DDL and Entities.
+        For that find <emphasis>
+          <property>JPA Tools > Generate Tables from Entities/Generate Entities from
+            Tables</property>
+        </emphasis> options in the context menu of your JPA project.</para>
+      <figure>
+        <title>Generate DDL/Entities</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/plugins/dali_integration3.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <note>
+        <title>Note:</title>
+        <para>Please, remember to put the proper database driver to the classpath of your
+          project.</para>
+      </note>
+      <para>The <property>Generate Entities wizard</property> first will ask you to choose the
+        directory where all output will be written.</para>
+      <figure>
+        <title>Generate Entities Wizard</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/plugins/dali_integration4.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <para>To generate entities you can use:</para>
+      <itemizedlist>
+        <listitem>
+          <para>a Hibernate Console Configuration (proposed by default)</para>
+          <para>Just make sure that the <emphasis>
+              <property>Use Console Configuration</property>
+            </emphasis> checkbox is selected and choose a needed configuration from the <emphasis>
+              <property>Console configurations</property>
+            </emphasis> list box.</para>
+          <figure>
+            <title>Generate Entities Wizard</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="images/plugins/dali_integration5.png"/>
               </imageobject>
-           
-           </mediaobject>
-         </figure>
-         <figure>
-           <title>@GeneratedValue support in Dali</title>
-           <mediaobject>
-             <imageobject>
-               <imagedata fileref="images/plugins/dali_integration8.png"/>
-             </imageobject>
-             
-           </mediaobject>
-         </figure>         
-       </listitem>
-       <listitem>
-         <para>Property annotations- <property>@DiscriminatorFormula</property>, <property>@Generated Annotation</property>, <property>@Index annotation</property></para>
-         <figure>
-           <title>@Index support in Dali</title>
-           <mediaobject>
-             <imageobject>
-               <imagedata fileref="images/plugins/dali_integration9.png"/>
-             </imageobject>
-             
-           </mediaobject>
-         </figure>
-         
-       </listitem>
-       <listitem>
-         <para>Mapping Queries annotations - <property>@NamedQuery</property> and <property>@NamedNativeQuery</property></para>
-         <figure>
-           <title>Add New Named Query Dialog with Hibernate Support</title>
-           <mediaobject>
-             <imageobject>
-               <imagedata fileref="images/plugins/dali_integration10.png"/>
-             </imageobject>
-             
-           </mediaobject>
-         </figure>
-         
-         
-         
-         <figure>
-           <title>@NamedQuery support in Dali</title>
-             <mediaobject>
-               <imageobject>
-                 <imagedata fileref="images/plugins/dali_integration11.png"/>
-               </imageobject>
-               
-             </mediaobject>
-         </figure>
-       </listitem>
-     </itemizedlist>
-     <para>More information about Hibernate Annotation you can find in <ulink url="http://docs.jboss.org/hibernate/stable/annotations/reference/en/html/">Hibernate Annotations Reference Guide</ulink>. </para> 
-     
-   </section>
+            </mediaobject>
+          </figure>
+        </listitem>
+      </itemizedlist>
+      <itemizedlist>
+        <listitem>
+          <para>or a DTP connection directly</para>
+          <para>Just uncheck <emphasis>
+              <property>Use Console Configuration</property>
+            </emphasis> and adjust database settings.</para>
+        </listitem>
+      </itemizedlist>
+      <para>All the same you do with Generate Entities Wizard you can do with Generate DDL wizard.
+        Special feature for Generate DDL wizard is possible automatic execution of Generation DDL in
+        the database. </para>
+      <figure>
+        <title>Generate DDL Wizard</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/plugins/dali_integration6.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <para>Thus, you can now have the Hibernate runtime support in Eclipse JPA projects.</para>
+    </section>
+    <section id="hibernate_annotations_support">
+      <title>Hibernate Annotations Support</title>
+      <para>Also Hibernate Annotations are supported in <property>Dali Java Persistence
+          Tools</property>. The next annotations are integrated with <property>JPA
+          Details</property> view:</para>
+      <itemizedlist>
+        <listitem>
+          <para>Id Generator annotations - <property>@GenericGenerator</property> and <property
+              >@GeneratedValue</property></para>
+          <figure>
+            <title>@GenericGenerator support in Dali</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="images/plugins/dali_integration7.png"/>
+              </imageobject>
+            </mediaobject>
+          </figure>
+          <figure>
+            <title>@GeneratedValue support in Dali</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="images/plugins/dali_integration8.png"/>
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </listitem>
+        <listitem>
+          <para>Property annotations- <property>@DiscriminatorFormula</property>, <property
+              >@Generated Annotation</property>, <property>@Index annotation</property></para>
+          <figure>
+            <title>@Index support in Dali</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="images/plugins/dali_integration9.png"/>
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </listitem>
+        <listitem>
+          <para>Mapping Queries annotations - <property>@NamedQuery</property> and <property
+              >@NamedNativeQuery</property></para>
+          <figure>
+            <title>Add New Named Query Dialog with Hibernate Support</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="images/plugins/dali_integration10.png"/>
+              </imageobject>
+            </mediaobject>
+          </figure>
+          <figure>
+            <title>@NamedQuery support in Dali</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="images/plugins/dali_integration11.png"/>
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </listitem>
+        <listitem>
+          <para>Association annotations in an <property>embeddable</property> object (<property
+              >@OneToOne</property>, <property>@ManyToOne</property>, <property
+              >@OneToMany</property> or <property>@ManyToMany</property>)</para>
+          <figure>
+            <title>Hibernate Support for Embeddable Object</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="images/plugins/dali_integration12.png"/>
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </listitem>
+      </itemizedlist>
+      <para>More information about Hibernate Annotation you can find in <ulink
+          url="http://docs.jboss.org/hibernate/stable/annotations/reference/en/html/">Hibernate
+          Annotations Reference Guide</ulink>. </para>
+    </section>
     <section>
       <title>Relevant Resources Links</title>
-      <para>There is full information about native Dali plugin features on <ulink url="http://help.eclipse.org/galileo/index.jsp?nav=/8">Eclipse Documentation page</ulink>.</para> 
+      <para>There is full information about native Dali plugin features on <ulink
+          url="http://help.eclipse.org/galileo/index.jsp?nav=/8">Eclipse Documentation
+        page</ulink>.</para>
     </section>
-    
   </section>
-  
 </chapter>
