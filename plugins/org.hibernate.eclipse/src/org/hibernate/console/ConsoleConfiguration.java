@@ -156,6 +156,8 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			Map<Object,Object> overrides = new HashMap<Object,Object>();
 			if(properties!=null) {
 				overrides.putAll( properties );
+			} else {
+				overrides.put("hibernate.search.autoregister_listeners", "false"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			if(StringHelper.isNotEmpty( prefs.getNamingStrategy())) {
 				overrides.put( "hibernate.ejb.naming_strategy", prefs.getNamingStrategy() ); //$NON-NLS-1$
@@ -746,6 +748,8 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	private Configuration configureStandardConfiguration(final boolean includeMappings, Configuration localCfg, Properties properties) {
 		if(properties!=null) {
 			localCfg = localCfg.setProperties(properties);
+		} else {
+			localCfg.setProperty("hibernate.search.autoregister_listeners", "false"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		EntityResolver entityResolver = XMLHelper.DEFAULT_DTD_RESOLVER;
 		if(StringHelper.isNotEmpty(prefs.getEntityResolverName())) {
