@@ -49,7 +49,7 @@ public class CloseConfigAction extends SelectionListenerAction {
 				continue;
 			}
 			ConsoleConfiguration config = (ConsoleConfiguration) node;
-			((MTreeViewer)viewer).clearChildren(null);
+			((MTreeViewer)viewer).clearChildren(config);
 			config.reset();
 			viewer.refresh(node);
 		}

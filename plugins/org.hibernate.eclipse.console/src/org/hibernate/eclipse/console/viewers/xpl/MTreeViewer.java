@@ -48,7 +48,18 @@ public class MTreeViewer extends TreeViewer {
 	}
 
 	public void clearChildren(Object node) {
-		Widget[] items = getChildren(node == null ? getTree() : (Widget)node);
+		Widget widget = null;
+		if (node instanceof Widget) {
+			widget = (Widget)node;
+		} else if (node == null) {
+			widget = getTree();
+		}
+		Widget[] items = null;
+		if (widget == null && node != null) {
+			items = internalFindItems(node);
+		} else {
+			items = getChildren(widget);
+		}
 		for (int j = 0; j < items.length; j++) {
 			clearChildren(items[j]);
 			if (items[j] instanceof TreeItem) {
