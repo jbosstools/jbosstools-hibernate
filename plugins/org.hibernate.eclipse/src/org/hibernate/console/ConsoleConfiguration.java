@@ -156,8 +156,6 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			Map<Object,Object> overrides = new HashMap<Object,Object>();
 			if(properties!=null) {
 				overrides.putAll( properties );
-			} else {
-				overrides.put("hibernate.search.autoregister_listeners", "false"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			if(StringHelper.isNotEmpty( prefs.getNamingStrategy())) {
 				overrides.put( "hibernate.ejb.naming_strategy", prefs.getNamingStrategy() ); //$NON-NLS-1$
@@ -185,6 +183,13 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			if ( method.invoke(ejb3cfg, new Object[] { persistenceUnit, overrides } ) == null ) {
 				String out = NLS.bind(ConsoleMessages.ConsoleConfiguration_persistence_unit_not_found, persistenceUnit);
 				throw new HibernateConsoleRuntimeException(out);
+			}
+
+			method = clazz.getMethod("getProperties", new Class[] {}); //$NON-NLS-1$
+			Properties props = (Properties)method.invoke(ejb3cfg, new Object[] {} );
+			if (props.getProperty("hibernate.search.autoregister_listeners") == null) { //$NON-NLS-1$
+				method = clazz.getMethod("setProperty", new Class[] { String.class, String.class }); //$NON-NLS-1$
+				method.invoke(ejb3cfg, new Object[] { "hibernate.search.autoregister_listeners", "false" } ); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
 			method = clazz.getMethod("getHibernateConfiguration", new Class[0]);//$NON-NLS-1$
@@ -749,7 +754,9 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		if(properties!=null) {
 			localCfg = localCfg.setProperties(properties);
 		} else {
-			localCfg.setProperty("hibernate.search.autoregister_listeners", "false"); //$NON-NLS-1$ //$NON-NLS-2$
+			if (localCfg.getProperty("hibernate.search.autoregister_listeners") == null) { //$NON-NLS-1$
+				localCfg.setProperty("hibernate.search.autoregister_listeners", "false"); //$NON-NLS-1$ //$NON-NLS-2$
+			}
 		}
 		EntityResolver entityResolver = XMLHelper.DEFAULT_DTD_RESOLVER;
 		if(StringHelper.isNotEmpty(prefs.getEntityResolverName())) {
