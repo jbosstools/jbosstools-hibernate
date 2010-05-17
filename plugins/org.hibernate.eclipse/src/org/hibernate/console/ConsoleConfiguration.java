@@ -325,11 +325,6 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 					Properties properties = prefs.getProperties();
 
 					if(properties!=null) {
-						// to fix: JBIDE-5839 - setup this property: false is default value 
-						// to make hibernate tools diff hibernate versions compatible
-						if (properties.getProperty("hibernate.search.autoregister_listeners") == null) { //$NON-NLS-1$
-							properties.setProperty("hibernate.search.autoregister_listeners", "false"); //$NON-NLS-1$ //$NON-NLS-2$
-						}
 						// in case the transaction manager is empty then we need to inject a faketm since hibernate will still try and instantiate it.
 						String str = properties.getProperty( "hibernate.transaction.manager_lookup_class" ); //$NON-NLS-1$
 						if(str != null && StringHelper.isEmpty( str )) {
@@ -365,6 +360,12 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
                     // TODO: HBX-
 					localCfg.setProperty( "hibernate.temp.use_jdbc_metadata_defaults", "false" );  //$NON-NLS-1$//$NON-NLS-2$
 					localCfg.setProperty( Environment.HBM2DDL_AUTO, "false" ); //$NON-NLS-1$
+					// to fix: JBIDE-5839 & JBIDE-5997 - setup this property: false is default value 
+					// to make hibernate tools diff hibernate versions compatible:
+					// if the property not set get NoSuchMethodError with FullTextIndexEventListener
+					if (localCfg.getProperty("hibernate.search.autoregister_listeners") == null) { //$NON-NLS-1$
+						localCfg.setProperty("hibernate.search.autoregister_listeners", "false"); //$NON-NLS-1$ //$NON-NLS-2$
+					}
 
 					return localCfg;
 				}
