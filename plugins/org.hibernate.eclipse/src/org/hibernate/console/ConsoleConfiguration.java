@@ -185,13 +185,6 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 				throw new HibernateConsoleRuntimeException(out);
 			}
 
-			method = clazz.getMethod("getProperties", new Class[] {}); //$NON-NLS-1$
-			Properties props = (Properties)method.invoke(ejb3cfg, new Object[] {} );
-			if (props.getProperty("hibernate.search.autoregister_listeners") == null) { //$NON-NLS-1$
-				method = clazz.getMethod("setProperty", new Class[] { String.class, String.class }); //$NON-NLS-1$
-				method.invoke(ejb3cfg, new Object[] { "hibernate.search.autoregister_listeners", "false" } ); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-
 			method = clazz.getMethod("getHibernateConfiguration", new Class[0]);//$NON-NLS-1$
 			Configuration invoke = (Configuration) method.invoke(ejb3cfg, (Object[])null);
 			invoke = configureConnectionProfile(invoke);
@@ -332,11 +325,6 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 					Properties properties = prefs.getProperties();
 
 					if(properties!=null) {
-						// to fix: JBIDE-5839 - setup this property: false is default value 
-						// to make hibernate tools diff hibernate versions compatible
-						if (properties.getProperty("hibernate.search.autoregister_listeners") == null) { //$NON-NLS-1$
-							properties.setProperty("hibernate.search.autoregister_listeners", "false"); //$NON-NLS-1$ //$NON-NLS-2$
-						}
 						// in case the transaction manager is empty then we need to inject a faketm since hibernate will still try and instantiate it.
 						String str = properties.getProperty( "hibernate.transaction.manager_lookup_class" ); //$NON-NLS-1$
 						if(str != null && StringHelper.isEmpty( str )) {
@@ -372,6 +360,12 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
                     // TODO: HBX-
 					localCfg.setProperty( "hibernate.temp.use_jdbc_metadata_defaults", "false" );  //$NON-NLS-1$//$NON-NLS-2$
 					localCfg.setProperty( Environment.HBM2DDL_AUTO, "false" ); //$NON-NLS-1$
+					// to fix: JBIDE-5839 & JBIDE-5997 - setup this property: false is default value 
+					// to make hibernate tools diff hibernate versions compatible:
+					// if the property not set get NoSuchMethodError with FullTextIndexEventListener
+					if (localCfg.getProperty("hibernate.search.autoregister_listeners") == null) { //$NON-NLS-1$
+						localCfg.setProperty("hibernate.search.autoregister_listeners", "false"); //$NON-NLS-1$ //$NON-NLS-2$
+					}
 
 					return localCfg;
 				}
@@ -753,10 +747,6 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	private Configuration configureStandardConfiguration(final boolean includeMappings, Configuration localCfg, Properties properties) {
 		if(properties!=null) {
 			localCfg = localCfg.setProperties(properties);
-		} else {
-			if (localCfg.getProperty("hibernate.search.autoregister_listeners") == null) { //$NON-NLS-1$
-				localCfg.setProperty("hibernate.search.autoregister_listeners", "false"); //$NON-NLS-1$ //$NON-NLS-2$
-			}
 		}
 		EntityResolver entityResolver = XMLHelper.DEFAULT_DTD_RESOLVER;
 		if(StringHelper.isNotEmpty(prefs.getEntityResolverName())) {
