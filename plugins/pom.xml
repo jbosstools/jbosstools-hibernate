@@ -1,0 +1,28 @@
+<project
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+	  <relativePath>../../parent-pom.xml</relativePath>
+	  <groupId>org.jboss.tools</groupId>
+	  <artifactId>org.jboss.tools.parent.pom</artifactId>
+	  <version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<groupId>org.jboss.tools</groupId>
+	<artifactId>hibernatetools.plugins</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<modules>
+		<module>org.hibernate.eclipse</module>
+		<module>org.hibernate.eclipse.console</module>
+		<module>org.hibernate.eclipse.help</module>
+		<module>org.hibernate.eclipse.jdt.apt.ui</module>
+		<module>org.hibernate.eclipse.jdt.ui</module>
+		<module>org.hibernate.eclipse.mapper</module>
+		<module>org.jboss.tools.hibernate.jpt.core</module>
+		<module>org.jboss.tools.hibernate.jpt.ui</module>
+		<module>org.jboss.tools.hibernate.ui</module>
+		<module>org.jboss.tools.hibernate.xml</module>
+		<module>org.jboss.tools.hibernate.xml.ui</module>
+	</modules>
+</project>
+	
