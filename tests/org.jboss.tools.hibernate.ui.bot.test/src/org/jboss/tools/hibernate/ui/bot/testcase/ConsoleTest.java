@@ -16,6 +16,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
 import org.jboss.tools.hibernate.ui.bot.testsuite.Project;
+import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.EntityType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
@@ -192,7 +193,7 @@ public class ConsoleTest extends HibernateTest {
 	
 	private void openConsoleConfiguration() {
 		SWTBot viewBot = open.viewOpen(ActionItem.View.HibernateHibernateConfigurations.LABEL).bot();
-		SWTBotTreeItem item = eclipse.selectTreeLocation(viewBot, Project.PROJECT_NAME);
+		SWTBotTreeItem item = SWTEclipseExt.selectTreeLocation(viewBot, Project.PROJECT_NAME);
 		item.doubleClick();		
 	}
 }
