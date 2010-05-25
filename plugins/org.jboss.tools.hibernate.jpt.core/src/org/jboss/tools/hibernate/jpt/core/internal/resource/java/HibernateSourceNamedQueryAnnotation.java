@@ -111,6 +111,10 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Member
 		this.readOnlyAdapter = new ShortCircuitAnnotationElementAdapter<Boolean>(member, readOnlyDeclarationAdapter);
 	}
 
+	public String getAnnotationName() {
+		return ANNOTATION_NAME;
+	}
+	
 	public void initialize(CompilationUnit astRoot) {
 		this.name = this.buildName(astRoot);
 		this.query = this.buildQuery(astRoot);
@@ -124,21 +128,17 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Member
 		this.readOnly = this.buildReadOnly(astRoot);
 	}
 
-	public void update(CompilationUnit astRoot) {
-		this.setName(this.buildName(astRoot));
-		this.setQuery(this.buildQuery(astRoot));
-		this.setFlushMode(this.buildFlushMode(astRoot));
-		this.setCacheMode(this.buildCacheMode(astRoot));
-		this.setCacheable(this.buildCacheable(astRoot));
-		this.setCacheRegion(this.buildCacheRegion(astRoot));
-		this.setFetchSize(this.buildFetchSize(astRoot));
-		this.setTimeout(this.buildTimeout(astRoot));
-		this.setComment(this.buildComment(astRoot));
-		this.setReadOnly(this.buildReadOnly(astRoot));
-	}
-
-	public String getAnnotationName() {
-		return ANNOTATION_NAME;
+	public void synchronizeWith(CompilationUnit astRoot) {
+		this.syncName(this.buildName(astRoot));
+		this.syncQuery(this.buildQuery(astRoot));
+		this.syncFlushMode(this.buildFlushMode(astRoot));
+		this.syncCacheMode(this.buildCacheMode(astRoot));
+		this.syncCacheable(this.buildCacheable(astRoot));
+		this.syncCacheRegion(this.buildCacheRegion(astRoot));
+		this.syncFetchSize(this.buildFetchSize(astRoot));
+		this.syncTimeout(this.buildTimeout(astRoot));
+		this.syncComment(this.buildComment(astRoot));
+		this.syncReadOnly(this.buildReadOnly(astRoot));
 	}
 
 	/**
@@ -156,13 +156,16 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Member
 	}
 
 	public void setName(String name) {
-		if (this.attributeValueHasNotChanged(this.name, name)) {
-			return;
+		if (this.attributeValueHasChanged(this.name, name)) {
+			this.name = name;
+			this.nameAdapter.setValue(name);
 		}
+	}
+	
+	private void syncName(String astName) {
 		String old = this.name;
-		this.name = name;
-		this.nameAdapter.setValue(name);
-		this.firePropertyChanged(NAME_PROPERTY, old, name);
+		this.name = astName;
+		this.firePropertyChanged(NAME_PROPERTY, old, astName);
 	}
 
 	private String buildName(CompilationUnit astRoot) {
@@ -179,13 +182,16 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Member
 	}
 
 	public void setQuery(String query) {
-		if (this.attributeValueHasNotChanged(this.query, query)) {
-			return;
+		if (this.attributeValueHasChanged(this.query, query)) {
+			this.query = query;
+			this.queryAdapter.setValue(query);
 		}
+	}
+
+	private void syncQuery(String annotationQuery) {
 		String old = this.query;
-		this.query = query;
-		this.queryAdapter.setValue(query);
-		this.firePropertyChanged(QUERY_PROPERTY, old, query);
+		this.query = annotationQuery;
+		this.firePropertyChanged(QUERY_PROPERTY, old, annotationQuery);
 	}
 
 	private String buildQuery(CompilationUnit astRoot) {
@@ -194,10 +200,6 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Member
 
 	public TextRange getQueryTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.queryDeclarationAdapter, astRoot);
-	}
-
-	String getQueryElementName() {
-		return Hibernate.NAMED_QUERY__QUERY;
 	}
 	
 	// ***** hints
@@ -239,14 +241,17 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Member
 	public FlushModeType getFlushMode() {
 		return flushMode;
 	}
-
+	
 	public void setFlushMode(FlushModeType flushMode) {
-		if (this.attributeValueHasNotChanged(this.flushMode, flushMode)) {
-			return;
+		if (this.attributeValueHasChanged(this.flushMode, flushMode)) {
+			this.flushMode = flushMode;
+			this.flushModeAdapter.setValue(FlushModeType.toJavaAnnotationValue(flushMode));
 		}
+	}
+	
+	private void syncFlushMode(FlushModeType flushMode) {
 		FlushModeType old = this.flushMode;
 		this.flushMode = flushMode;
-		this.flushModeAdapter.setValue(FlushModeType.toJavaAnnotationValue(flushMode));
 		this.firePropertyChanged(FLUSH_MODE_PROPERTY, old, flushMode);
 	}
 
@@ -261,16 +266,19 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Member
 	// ***** caheMode
 
 	public CacheModeType getCacheMode() {
-		return cacheMode;
+		return this.cacheMode;
 	}
 
 	public void setCacheMode(CacheModeType cacheMode) {
-		if (this.attributeValueHasNotChanged(this.cacheMode, cacheMode)) {
-			return;
+		if (this.attributeValueHasChanged(this.cacheMode, cacheMode)) {
+			this.cacheMode = cacheMode;
+			this.cacheModeAdapter.setValue(CacheModeType.toJavaAnnotationValue(cacheMode));
 		}
+	}
+	
+	private void syncCacheMode(CacheModeType cacheMode) {
 		CacheModeType old = this.cacheMode;
 		this.cacheMode = cacheMode;
-		this.cacheModeAdapter.setValue(CacheModeType.toJavaAnnotationValue(cacheMode));
 		this.firePropertyChanged(CACHE_MODE_PROPERTY, old, cacheMode);
 	}
 	
@@ -288,12 +296,15 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Member
 	}
 	
 	public void setCacheable(Boolean cacheable){
-		if (this.attributeValueHasNotChanged(this.cacheable, cacheable)) {
-			return;
+		if (this.attributeValueHasChanged(this.cacheable, cacheable)) {
+			this.cacheable = cacheable;
+			this.cacheableAdapter.setValue(cacheable);
 		}
+	}
+	
+	private void syncCacheable(Boolean cacheable) {
 		Boolean old = this.cacheable;
 		this.cacheable = cacheable;
-		this.cacheableAdapter.setValue(cacheable);
 		this.firePropertyChanged(CACHEABLE_PROPERTY, old, cacheable);
 	}
 	
@@ -307,12 +318,15 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Member
 	}
 	
 	public void setCacheRegion(String cacheRegion){
-		if (this.attributeValueHasNotChanged(this.cacheRegion, cacheRegion)) {
-			return;
+		if (this.attributeValueHasChanged(this.cacheRegion, cacheRegion)) {
+			this.cacheRegion = cacheRegion;
+			this.cacheRegionAdapter.setValue(cacheRegion);
 		}
+	}
+	
+	private void syncCacheRegion(String cacheRegion) {
 		String old = this.cacheRegion;
 		this.cacheRegion = cacheRegion;
-		this.cacheRegionAdapter.setValue(cacheRegion);
 		this.firePropertyChanged(CACHE_REGION_PROPERTY, old, cacheRegion);
 	}
 	
@@ -325,12 +339,15 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Member
 	}
 	
 	public void setFetchSize(Integer fetchSize){
-		if (this.attributeValueHasNotChanged(this.fetchSize, fetchSize)) {
-			return;
+		if (this.attributeValueHasChanged(this.fetchSize, fetchSize)) {
+			this.fetchSize = fetchSize;
+			this.fetchSizeAdapter.setValue(fetchSize);
 		}
+	}
+	
+	private void syncFetchSize(Integer fetchSize) {
 		Integer old = this.fetchSize;
 		this.fetchSize = fetchSize;
-		this.fetchSizeAdapter.setValue(fetchSize);
 		this.firePropertyChanged(FETCH_SIZE_PROPERTY, old, fetchSize);
 	}
 	
@@ -342,12 +359,15 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Member
 		return this.timeout;	
 	}
 	public void setTimeout(Integer timeout){
-		if (this.attributeValueHasNotChanged(this.timeout, timeout)) {
-			return;
+		if (this.attributeValueHasChanged(this.timeout, timeout)) {
+			this.timeout = timeout;
+			this.timeoutAdapter.setValue(timeout);
 		}
+	}
+	
+	private void syncTimeout(Integer timeout) {
 		Integer old = this.timeout;
 		this.timeout = timeout;
-		this.timeoutAdapter.setValue(timeout);
 		this.firePropertyChanged(TIMEOUT_PROPERTY, old, timeout);
 	}
 
@@ -360,12 +380,15 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Member
 	}
 	
 	public void setComment(String comment){
-		if (this.attributeValueHasNotChanged(this.comment, comment)) {
-			return;
+		if (this.attributeValueHasChanged(this.comment, comment)) {
+			this.comment = comment;
+			this.commentAdapter.setValue(comment);
 		}
+	}
+	
+	private void syncComment(String comment) {
 		String old = this.comment;
 		this.comment = comment;
-		this.commentAdapter.setValue(comment);
 		this.firePropertyChanged(COMMENT_PROPERTY, old, comment);
 	}
 	
@@ -378,13 +401,16 @@ public class HibernateSourceNamedQueryAnnotation extends SourceAnnotation<Member
 	}
 	
 	public void setReadOnly(Boolean readOnly){
-		if (this.attributeValueHasNotChanged(this.readOnly, readOnly)) {
-			return;
-		}
+		if (this.attributeValueHasChanged(this.readOnly, readOnly)) {
+			this.readOnly = readOnly;
+			this.readOnlyAdapter.setValue(readOnly);
+		}	
+	}
+	
+	private void syncReadOnly(Boolean readOnly) {
 		Boolean old = this.readOnly;
 		this.readOnly = readOnly;
-		this.readOnlyAdapter.setValue(readOnly);
-		this.firePropertyChanged(READ_ONLY_PROPERTY, old, readOnly);	
+		this.firePropertyChanged(READ_ONLY_PROPERTY, old, readOnly);
 	}
 
 	private Boolean buildReadOnly(CompilationUnit astRoot) {

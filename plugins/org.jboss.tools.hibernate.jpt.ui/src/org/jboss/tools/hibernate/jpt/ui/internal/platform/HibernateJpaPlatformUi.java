@@ -22,10 +22,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
-import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.internal.platform.generic.GenericJpaPlatformUi;
 import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
-import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.ui.HibernateJptUIPlugin;
@@ -44,13 +42,10 @@ public class HibernateJpaPlatformUi extends GenericJpaPlatformUi {
 	public static final String full_exporter_id = HibernateLaunchConstants.ATTR_EXPORTERS + '.' + "hbmexporter"; //$NON-NLS-1$
 
 	public HibernateJpaPlatformUi(
-			JpaUiFactory jpaUiFactory,
 			JpaNavigatorProvider navigatorProvider, 
-			JpaStructureProvider persistenceStructureProvider, 
-			JpaStructureProvider javaStructureProvider,
-			JpaPlatformUiProvider... platformUiProviders) 
+			JpaPlatformUiProvider platformUiProvider) 
 	{
-		super(jpaUiFactory, navigatorProvider, persistenceStructureProvider, javaStructureProvider, platformUiProviders);
+		super(navigatorProvider, platformUiProvider);
 	}
 
 	@Override

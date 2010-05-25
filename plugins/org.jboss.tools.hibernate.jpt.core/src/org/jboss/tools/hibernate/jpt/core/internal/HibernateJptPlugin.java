@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.internal.JpaModelManager;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.KnownConfigurationsAdapter;
@@ -38,6 +38,8 @@ import org.osgi.framework.BundleContext;
 public class HibernateJptPlugin extends Plugin {
 	
 	public static final String ID = "org.jboss.tools.hibernate.jpt.core"; //$NON-NLS-1$
+	
+	public static final String JPA_FACET_VERSION_1_0 = "1.0"; //$NON-NLS-1$
 	
 	private static HibernateJptPlugin inst = null;
 	
@@ -102,21 +104,17 @@ public class HibernateJptPlugin extends Plugin {
 		KnownConfigurations.getInstance().addConsoleConfigurationListener(new KnownConfigurationsAdapter(){
 			
 			private void revalidateProjects(ConsoleConfiguration ccfg){
-				//FIXME: call only Dali's validator
-				try {
-					Iterator<JpaProject> jpaProjects = JpaModelManager.instance().getJpaModel().jpaProjects();
-					while (jpaProjects.hasNext()) {
-						JpaProject jpaProject = (JpaProject) jpaProjects.next();
-						if (jpaProject instanceof HibernateJpaProject) {
-							String ccName = ((HibernateJpaProject)jpaProject).getDefaultConsoleConfigurationName();
-							if (ccfg.getName().equals(ccName)){
-								rebuildJpaProject(jpaProject.getJavaProject().getProject());
-								//jpaProject.getJavaProject().getProject().build(IncrementalProjectBuilder.FULL_BUILD, null);
-							}
+				//INFO: should revalidate project to calculate correct naming strategy's values
+				Iterator<JpaProject> jpaProjects = JptCorePlugin.getJpaProjectManager().getJpaProjects().iterator();
+				while (jpaProjects.hasNext()) {
+					JpaProject jpaProject = (JpaProject) jpaProjects.next();
+					if (jpaProject instanceof HibernateJpaProject) {
+						String ccName = ((HibernateJpaProject)jpaProject).getDefaultConsoleConfigurationName();
+						if (ccfg.getName().equals(ccName)){
+							rebuildJpaProject(jpaProject.getJavaProject().getProject());
+							//jpaProject.getJavaProject().getProject().build(IncrementalProjectBuilder.FULL_BUILD, null);
 						}
 					}
-				} catch (CoreException e) {
-					logException(e);
 				}
 			}
 			
@@ -147,7 +145,7 @@ public class HibernateJptPlugin extends Plugin {
 			final IWorkspaceRunnable wr = new IWorkspaceRunnable() {
 				public void run(IProgressMonitor monitor)
 						throws CoreException {
-					JpaModelManager.instance().rebuildJpaProject(project);
+					JptCorePlugin.rebuildJpaProject(project);
 					project.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 				}
 			};

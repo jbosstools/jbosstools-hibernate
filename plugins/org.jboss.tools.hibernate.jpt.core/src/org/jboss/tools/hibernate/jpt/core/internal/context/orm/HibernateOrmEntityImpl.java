@@ -16,11 +16,14 @@ import java.util.ListIterator;
 
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmBaseJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEntity;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmCacheable2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
@@ -31,11 +34,11 @@ import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateTable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 
 /**
  * @author Dmitry Geraskov
@@ -43,10 +46,25 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceU
  */
 public class HibernateOrmEntityImpl extends AbstractOrmEntity
 implements HibernateOrmEntity {
+	
+	protected OrmCacheable2_0 cachable;
 
 	public HibernateOrmEntityImpl(OrmPersistentType parent,
 			XmlEntity resourceMapping) {
 		super(parent, resourceMapping);
+		this.cachable = buildOrmCachable();
+	}
+	
+	protected OrmCacheable2_0 buildOrmCachable() {
+		return new NullOrmCacheable2_0(this);
+	}
+	
+	public OrmCacheable2_0 getCacheable() {
+		return cachable;
+	}
+
+	public boolean calculateDefaultCacheable() {
+		return false;
 	}
 	
 	@Override
@@ -126,8 +144,29 @@ implements HibernateOrmEntity {
 			return parentEntity.getPrimaryKeyColumnName();
 		}
 		
+		public String getDefaultTableName() {
+			//FIXME: use NamingStrategy here
+			return HibernateOrmEntityImpl.this.getPrimaryTableName();
+		}
+		
 		public TextRange getValidationTextRange() {
 			return null;
+		}
+		
+		public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+			throw new UnsupportedOperationException("validation not supported yet: bug 148262"); //$NON-NLS-1$
+		}
+
+		public IMessage buildUnresolvedReferencedColumnNameMessage(BaseJoinColumn column, TextRange textRange) {
+			throw new UnsupportedOperationException("validation not supported yet: bug 148262"); //$NON-NLS-1$
+		}
+
+		public IMessage buildUnspecifiedNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
+			throw new UnsupportedOperationException("validation not supported yet: bug 148262"); //$NON-NLS-1$
+		}
+		
+		public IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
+			throw new UnsupportedOperationException("validation not supported yet: bug 148262"); //$NON-NLS-1$
 		}
 	}
 	

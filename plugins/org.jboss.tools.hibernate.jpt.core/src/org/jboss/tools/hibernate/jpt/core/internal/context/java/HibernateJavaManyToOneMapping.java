@@ -13,22 +13,20 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.java.JavaManyToOneRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaManyToOneMapping;
+import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaManyToOneMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.ForeignKey;
 import org.jboss.tools.hibernate.jpt.core.internal.context.ForeignKeyHolder;
-import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
-import org.jboss.tools.hibernate.jpt.core.internal.context.NamingStrategyMappingTools;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
+import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
@@ -45,18 +43,9 @@ implements ForeignKeyHolder {
 	}
 	
 	@Override
-	public String getJoinTableDefaultName() {
-		return NamingStrategyMappingTools.buildJoinTableDefaultName(this);
-	}
-
-	@Override
-	protected JavaManyToOneRelationshipReference buildRelationshipReference() {
-		return new HibernateJavaManyToOneRelationshipReference(this);
-	}
-	
-	public Iterator<String> supportingAnnotationNames() {
-		return new CompositeIterator<String>(super.supportingAnnotationNames(),
-			Hibernate.FOREIGN_KEY);
+	protected void addSupportingAnnotationNamesTo(Vector<String> names) {
+		super.addSupportingAnnotationNamesTo(names);
+		names.add(Hibernate.FOREIGN_KEY);
 	}
 	
 	@Override
@@ -109,7 +98,7 @@ implements ForeignKeyHolder {
 			throw new IllegalStateException("foreignKey already exists"); //$NON-NLS-1$
 		}
 		this.foreignKey = getJpaFactory().buildForeignKey(this);
-		ForeignKeyAnnotation foreignKeyResource = (ForeignKeyAnnotation) getResourcePersistentAttribute().addSupportingAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
+		ForeignKeyAnnotation foreignKeyResource = (ForeignKeyAnnotation) getResourcePersistentAttribute().addAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
 		this.foreignKey.initialize(foreignKeyResource);
 		firePropertyChanged(FOREIGN_KEY_PROPERTY, null, this.foreignKey);
 		return this.foreignKey;
@@ -131,7 +120,7 @@ implements ForeignKeyHolder {
 		}
 		ForeignKey oldForeignKey = this.foreignKey;
 		this.foreignKey = null;
-		this.getResourcePersistentAttribute().removeSupportingAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
+		this.getResourcePersistentAttribute().removeAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
 		firePropertyChanged(FOREIGN_KEY_PROPERTY, oldForeignKey, null);
 	}
 	
@@ -142,7 +131,7 @@ implements ForeignKeyHolder {
 	}
 	
 	protected ForeignKeyAnnotation getResourceForeignKey() {
-		return (ForeignKeyAnnotation) this.getResourcePersistentAttribute().getSupportingAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
+		return (ForeignKeyAnnotation) this.getResourcePersistentAttribute().getAnnotation(ForeignKeyAnnotation.ANNOTATION_NAME);
 	}
 	
 	public Table getForeignKeyDbTable() {
@@ -161,7 +150,7 @@ implements ForeignKeyHolder {
 		if (!shouldValidateAgainstDatabase() || foreignKey == null || table == null ){
 			return;
 		}		
-		Iterator<org.eclipse.jpt.db.ForeignKey> fks = table.foreignKeys();
+		Iterator<org.eclipse.jpt.db.ForeignKey> fks = table.getForeignKeys().iterator();
 		while (fks.hasNext()) {
 			org.eclipse.jpt.db.ForeignKey fk = (org.eclipse.jpt.db.ForeignKey) fks.next();
 			if (foreignKey.getName().equals(fk.getIdentifier())){

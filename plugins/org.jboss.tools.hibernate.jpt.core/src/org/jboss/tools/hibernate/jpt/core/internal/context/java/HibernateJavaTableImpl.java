@@ -14,7 +14,7 @@ import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaTable;
+import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaTable;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;

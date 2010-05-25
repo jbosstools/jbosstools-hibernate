@@ -12,17 +12,12 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.Iterator;
-import java.util.List;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.PersistentAttribute;
-import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaJoinColumn;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaJoinColumn;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.core.Message;
@@ -30,9 +25,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.context.NamingStrategyMappingTools;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 
 /**
  * @author Dmitry Geraskov
@@ -52,14 +47,10 @@ implements HibernateJavaJoinColumn {
 	
 	@Override
 	protected String buildDefaultName() {
-		return NamingStrategyMappingTools.buildJoinColumnDefaultName(this);
+		return NamingStrategyMappingTools.buildJoinColumnDefaultName(this, getOwner());
 	}
 
 	public PersistentAttribute getReferencedPersistentAttribute() {
-		RelationshipMapping relationshipMapping = this.getOwner().getRelationshipMapping();
-		if (relationshipMapping == null) {
-			return null;
-		}
 		if (this.getOwner().joinColumnsSize() != 1) {
 			return null;
 		}
@@ -143,7 +134,7 @@ implements HibernateJavaJoinColumn {
 		return specifiedReferencedColumnName;
 	}
 	
-	protected void validateName(List<IMessage> messages, CompilationUnit astRoot) {
+	/*protected void validateJoinColumnName(List<IMessage> messages, CompilationUnit astRoot) {
 		if ( ! this.isResolved() && getDbTable() != null) {
 			if (getDBColumnName() != null) {
 				messages.add(
@@ -157,14 +148,7 @@ implements HibernateJavaJoinColumn {
 				);
 			}
 			else if (getOwner().joinColumnsSize() > 1) {
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS,
-							this,
-							this.getNameTextRange(astRoot)
-						)
-					);
+				messages.add(this.buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(astRoot));
 			}
 			//If the name is null and there is only one join-column, one of these validation messages will apply
 			// 1. target entity does not have a primary key
@@ -201,7 +185,7 @@ implements HibernateJavaJoinColumn {
 			// 2. target entity is not specified
 			// 3. target entity is not an entity
 		}
-	}
+	}*/
 
 
 

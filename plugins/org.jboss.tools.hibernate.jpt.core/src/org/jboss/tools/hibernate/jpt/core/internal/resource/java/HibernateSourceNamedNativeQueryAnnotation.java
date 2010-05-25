@@ -14,9 +14,9 @@ import java.util.ListIterator;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
+import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
@@ -133,6 +133,10 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 		this.resultSetMappingDeclarationAdapter = this.buildResultSetMappingAdapter(daa);
 		this.resultSetMappingAdapter = this.buildAdapter(this.resultSetMappingDeclarationAdapter);
 	}
+	
+	public String getAnnotationName() {
+		return ANNOTATION_NAME;
+	}
 
 	public void initialize(CompilationUnit astRoot) {
 		this.name = this.buildName(astRoot);
@@ -151,26 +155,24 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 		this.resultSetMapping = this.buildResultSetMapping(astRoot);		
 	}
 
-	public void update(CompilationUnit astRoot) {
-		this.setName(this.buildName(astRoot));
-		this.setQuery(this.buildQuery(astRoot));
-		this.setFlushMode(this.buildFlushMode(astRoot));
-		this.setCacheMode(this.buildCacheMode(astRoot));
-		this.setCacheable(this.buildCacheable(astRoot));
-		this.setCacheRegion(this.buildCacheRegion(astRoot));
-		this.setFetchSize(this.buildFetchSize(astRoot));
-		this.setTimeout(this.buildTimeout(astRoot));
-		this.setComment(this.buildComment(astRoot));
-		this.setReadOnly(this.buildReadOnly(astRoot));
-		this.setCallable(this.buildCallable(astRoot));
-		this.setResultClass(this.buildResultClass(astRoot));
-		this.setFullyQualifiedResultClassName(this.buildFullyQualifiedResultClassName(astRoot));
-		this.setResultSetMapping(this.buildResultSetMapping(astRoot));		
+	public void synchronizeWith(CompilationUnit astRoot) {
+		this.syncName(this.buildName(astRoot));
+		this.syncQuery(this.buildQuery(astRoot));
+		this.syncFlushMode(this.buildFlushMode(astRoot));
+		this.syncCacheMode(this.buildCacheMode(astRoot));
+		this.syncCacheable(this.buildCacheable(astRoot));
+		this.syncCacheRegion(this.buildCacheRegion(astRoot));
+		this.syncFetchSize(this.buildFetchSize(astRoot));
+		this.syncTimeout(this.buildTimeout(astRoot));
+		this.syncComment(this.buildComment(astRoot));
+		this.syncReadOnly(this.buildReadOnly(astRoot));
+		this.syncCallable(this.buildCallable(astRoot));
+		this.syncResultClass(this.buildResultClass(astRoot));
+		this.syncFullyQualifiedResultClassName(this.buildFullyQualifiedResultClassName(astRoot));
+		this.syncResultSetMapping(this.buildResultSetMapping(astRoot));
 	}
 
-	public String getAnnotationName() {
-		return ANNOTATION_NAME;
-	}
+
 
 	/**
 	 * convenience method
@@ -187,13 +189,16 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 	}
 
 	public void setName(String name) {
-		if (this.attributeValueHasNotChanged(this.name, name)) {
-			return;
+		if (this.attributeValueHasChanged(this.name, name)) {
+			this.name = name;
+			this.nameAdapter.setValue(name);
 		}
+	}
+	
+	private void syncName(String astName) {
 		String old = this.name;
-		this.name = name;
-		this.nameAdapter.setValue(name);
-		this.firePropertyChanged(NAME_PROPERTY, old, name);
+		this.name = astName;
+		this.firePropertyChanged(NAME_PROPERTY, old, astName);
 	}
 
 	private String buildName(CompilationUnit astRoot) {
@@ -210,13 +215,16 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 	}
 
 	public void setQuery(String query) {
-		if (this.attributeValueHasNotChanged(this.query, query)) {
-			return;
+		if (this.attributeValueHasChanged(this.query, query)) {
+			this.query = query;
+			this.queryAdapter.setValue(query);
 		}
+	}
+
+	private void syncQuery(String annotationQuery) {
 		String old = this.query;
-		this.query = query;
-		this.queryAdapter.setValue(query);
-		this.firePropertyChanged(QUERY_PROPERTY, old, query);
+		this.query = annotationQuery;
+		this.firePropertyChanged(QUERY_PROPERTY, old, annotationQuery);
 	}
 
 	private String buildQuery(CompilationUnit astRoot) {
@@ -225,10 +233,6 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 
 	public TextRange getQueryTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(this.queryDeclarationAdapter, astRoot);
-	}
-
-	String getQueryElementName() {
-		return Hibernate.NAMED_NATIVE_QUERY__QUERY;
 	}
 	
 	// ***** hints
@@ -270,14 +274,17 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 	public FlushModeType getFlushMode() {
 		return flushMode;
 	}
-
+	
 	public void setFlushMode(FlushModeType flushMode) {
-		if (this.attributeValueHasNotChanged(this.flushMode, flushMode)) {
-			return;
+		if (this.attributeValueHasChanged(this.flushMode, flushMode)) {
+			this.flushMode = flushMode;
+			this.flushModeAdapter.setValue(FlushModeType.toJavaAnnotationValue(flushMode));
 		}
+	}
+	
+	private void syncFlushMode(FlushModeType flushMode) {
 		FlushModeType old = this.flushMode;
 		this.flushMode = flushMode;
-		this.flushModeAdapter.setValue(FlushModeType.toJavaAnnotationValue(flushMode));
 		this.firePropertyChanged(FLUSH_MODE_PROPERTY, old, flushMode);
 	}
 
@@ -292,16 +299,19 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 	// ***** caheMode
 
 	public CacheModeType getCacheMode() {
-		return cacheMode;
+		return this.cacheMode;
 	}
 
 	public void setCacheMode(CacheModeType cacheMode) {
-		if (this.attributeValueHasNotChanged(this.cacheMode, cacheMode)) {
-			return;
+		if (this.attributeValueHasChanged(this.cacheMode, cacheMode)) {
+			this.cacheMode = cacheMode;
+			this.cacheModeAdapter.setValue(CacheModeType.toJavaAnnotationValue(cacheMode));
 		}
+	}
+	
+	private void syncCacheMode(CacheModeType cacheMode) {
 		CacheModeType old = this.cacheMode;
 		this.cacheMode = cacheMode;
-		this.cacheModeAdapter.setValue(CacheModeType.toJavaAnnotationValue(cacheMode));
 		this.firePropertyChanged(CACHE_MODE_PROPERTY, old, cacheMode);
 	}
 	
@@ -319,12 +329,15 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 	}
 	
 	public void setCacheable(Boolean cacheable){
-		if (this.attributeValueHasNotChanged(this.cacheable, cacheable)) {
-			return;
+		if (this.attributeValueHasChanged(this.cacheable, cacheable)) {
+			this.cacheable = cacheable;
+			this.cacheableAdapter.setValue(cacheable);
 		}
+	}
+	
+	private void syncCacheable(Boolean cacheable) {
 		Boolean old = this.cacheable;
 		this.cacheable = cacheable;
-		this.cacheableAdapter.setValue(cacheable);
 		this.firePropertyChanged(CACHEABLE_PROPERTY, old, cacheable);
 	}
 	
@@ -338,12 +351,15 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 	}
 	
 	public void setCacheRegion(String cacheRegion){
-		if (this.attributeValueHasNotChanged(this.cacheRegion, cacheRegion)) {
-			return;
+		if (this.attributeValueHasChanged(this.cacheRegion, cacheRegion)) {
+			this.cacheRegion = cacheRegion;
+			this.cacheRegionAdapter.setValue(cacheRegion);
 		}
+	}
+	
+	private void syncCacheRegion(String cacheRegion) {
 		String old = this.cacheRegion;
 		this.cacheRegion = cacheRegion;
-		this.cacheRegionAdapter.setValue(cacheRegion);
 		this.firePropertyChanged(CACHE_REGION_PROPERTY, old, cacheRegion);
 	}
 	
@@ -356,12 +372,15 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 	}
 	
 	public void setFetchSize(Integer fetchSize){
-		if (this.attributeValueHasNotChanged(this.fetchSize, fetchSize)) {
-			return;
+		if (this.attributeValueHasChanged(this.fetchSize, fetchSize)) {
+			this.fetchSize = fetchSize;
+			this.fetchSizeAdapter.setValue(fetchSize);
 		}
+	}
+	
+	private void syncFetchSize(Integer fetchSize) {
 		Integer old = this.fetchSize;
 		this.fetchSize = fetchSize;
-		this.fetchSizeAdapter.setValue(fetchSize);
 		this.firePropertyChanged(FETCH_SIZE_PROPERTY, old, fetchSize);
 	}
 	
@@ -373,12 +392,15 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 		return this.timeout;	
 	}
 	public void setTimeout(Integer timeout){
-		if (this.attributeValueHasNotChanged(this.timeout, timeout)) {
-			return;
+		if (this.attributeValueHasChanged(this.timeout, timeout)) {
+			this.timeout = timeout;
+			this.timeoutAdapter.setValue(timeout);
 		}
+	}
+	
+	private void syncTimeout(Integer timeout) {
 		Integer old = this.timeout;
 		this.timeout = timeout;
-		this.timeoutAdapter.setValue(timeout);
 		this.firePropertyChanged(TIMEOUT_PROPERTY, old, timeout);
 	}
 
@@ -391,12 +413,15 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 	}
 	
 	public void setComment(String comment){
-		if (this.attributeValueHasNotChanged(this.comment, comment)) {
-			return;
+		if (this.attributeValueHasChanged(this.comment, comment)) {
+			this.comment = comment;
+			this.commentAdapter.setValue(comment);
 		}
+	}
+	
+	private void syncComment(String comment) {
 		String old = this.comment;
 		this.comment = comment;
-		this.commentAdapter.setValue(comment);
 		this.firePropertyChanged(COMMENT_PROPERTY, old, comment);
 	}
 	
@@ -409,13 +434,16 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 	}
 	
 	public void setReadOnly(Boolean readOnly){
-		if (this.attributeValueHasNotChanged(this.readOnly, readOnly)) {
-			return;
-		}
+		if (this.attributeValueHasChanged(this.readOnly, readOnly)) {
+			this.readOnly = readOnly;
+			this.readOnlyAdapter.setValue(readOnly);
+		}	
+	}
+	
+	private void syncReadOnly(Boolean readOnly) {
 		Boolean old = this.readOnly;
 		this.readOnly = readOnly;
-		this.readOnlyAdapter.setValue(readOnly);
-		this.firePropertyChanged(READ_ONLY_PROPERTY, old, readOnly);	
+		this.firePropertyChanged(READ_ONLY_PROPERTY, old, readOnly);
 	}
 
 	private Boolean buildReadOnly(CompilationUnit astRoot) {
@@ -427,13 +455,16 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 	}
 	
 	public void setCallable(Boolean callable){
-		if (this.attributeValueHasNotChanged(this.callable, callable)) {
-			return;
+		if (this.attributeValueHasChanged(this.callable, callable)) {
+			this.callable = callable;
+			this.callableAdapter.setValue(callable);
 		}
+	}
+	
+	private void syncCallable(Boolean callable) {
 		Boolean old = this.callable;
 		this.callable = callable;
-		this.callableAdapter.setValue(callable);
-		this.firePropertyChanged(CALLABLE_PROPERTY, old, callable);	
+		this.firePropertyChanged(CALLABLE_PROPERTY, old, callable);
 	}
 
 	private Boolean buildCallable(CompilationUnit astRoot) {
@@ -445,12 +476,15 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 	}
 
 	public void setResultClass(String resultClass) {
-		if (this.attributeValueHasNotChanged(this.resultClass, resultClass)) {
-			return;
+		if (this.attributeValueHasChanged(this.resultClass, resultClass)) {
+			this.resultClass = resultClass;
+			this.resultClassAdapter.setValue(resultClass);
 		}
+	}
+	
+	private void syncResultClass(String resultClass) {
 		String old = this.resultClass;
 		this.resultClass = resultClass;
-		this.resultClassAdapter.setValue(resultClass);
 		this.firePropertyChanged(RESULT_CLASS_PROPERTY, old, resultClass);
 	}
 
@@ -467,14 +501,14 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 		return this.fullyQualifiedResultClassName;
 	}
 
-	private void setFullyQualifiedResultClassName(String name) {
+	private void syncFullyQualifiedResultClassName(String name) {
 		String old = this.fullyQualifiedResultClassName;
 		this.fullyQualifiedResultClassName = name;
-		this.firePropertyChanged(FULLY_QUALIFIED_RESULT_CLASS_NAME_PROPERTY, old, name);
+		this.firePropertyChanged(FULLY_QUALIFIED_RESULT_CLASS_NAME_PROPERTY, old, fullyQualifiedResultClassName);
 	}
 
 	private String buildFullyQualifiedResultClassName(CompilationUnit astRoot) {
-		return (this.resultClass == null) ? null : JDTTools.resolveFullyQualifiedName(this.resultClassAdapter.getExpression(astRoot));
+		return (this.resultClass == null) ? null : ASTTools.resolveFullyQualifiedName(this.resultClassAdapter.getExpression(astRoot));
 	}
 
 	// ***** result set mapping
@@ -483,12 +517,15 @@ public class HibernateSourceNamedNativeQueryAnnotation extends SourceAnnotation<
 	}
 
 	public void setResultSetMapping(String resultSetMapping) {
-		if (this.attributeValueHasNotChanged(this.resultSetMapping, resultSetMapping)) {
-			return;
+		if (this.attributeValueHasChanged(this.resultSetMapping, resultSetMapping)) {
+			this.resultSetMapping = resultSetMapping;
+			this.resultSetMappingAdapter.setValue(resultSetMapping);
 		}
+	}
+	
+	private void syncResultSetMapping(String resultSetMapping) {
 		String old = this.resultSetMapping;
 		this.resultSetMapping = resultSetMapping;
-		this.resultSetMappingAdapter.setValue(resultSetMapping);
 		this.firePropertyChanged(RESULT_SET_MAPPING_PROPERTY, old, resultSetMapping);
 	}
 

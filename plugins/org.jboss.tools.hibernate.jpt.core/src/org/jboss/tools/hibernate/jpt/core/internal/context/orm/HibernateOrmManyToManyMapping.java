@@ -12,7 +12,7 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmManyToManyMapping;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmManyToManyMapping;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
 import org.jboss.tools.hibernate.jpt.core.internal.context.NamingStrategyMappingTools;
 
@@ -21,16 +21,16 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.NamingStrategyMapping
  *
  */
 public class HibernateOrmManyToManyMapping<T extends XmlManyToMany> extends
-		GenericOrmManyToManyMapping<T> {
+		AbstractOrmManyToManyMapping<T> {
 	
 	public HibernateOrmManyToManyMapping(OrmPersistentAttribute parent,
 			T resourceMapping) {
 		super(parent, resourceMapping);
 	}
 	
-	@Override
+	/*@Override
 	public String getJoinTableDefaultName() {
 		return NamingStrategyMappingTools.buildJoinTableDefaultName(this);
-	}
+	}*/
 
 }

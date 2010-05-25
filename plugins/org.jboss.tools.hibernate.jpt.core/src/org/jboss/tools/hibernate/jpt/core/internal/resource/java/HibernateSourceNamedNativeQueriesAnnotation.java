@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2009-2010 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,9 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
-import java.util.ListIterator;
 import java.util.Vector;
 
+import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.AnnotationContainerTools;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
@@ -21,7 +21,6 @@ import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
@@ -48,8 +47,8 @@ public class HibernateSourceNamedNativeQueriesAnnotation extends SourceAnnotatio
 		AnnotationContainerTools.initialize(this, astRoot);
 	}
 
-	public void update(CompilationUnit astRoot) {
-		AnnotationContainerTools.update(this, astRoot);
+	public void synchronizeWith(CompilationUnit astRoot) {
+		AnnotationContainerTools.synchronize(this, astRoot);
 	}
 
 	@Override
@@ -58,60 +57,61 @@ public class HibernateSourceNamedNativeQueriesAnnotation extends SourceAnnotatio
 	}
 	
 	// ********** AnnotationContainer implementation **********
+	public String getElementName() {
+		return Hibernate.NAMED_NATIVE_QUERIES__VALUE;
+	}
+	
+	public String getNestedAnnotationName() {
+		return HibernateNamedNativeQueryAnnotation.ANNOTATION_NAME;
+	}	
 
 	public String getContainerAnnotationName() {
 		return this.getAnnotationName();
 	}
-
-	public org.eclipse.jdt.core.dom.Annotation getContainerJdtAnnotation(CompilationUnit astRoot) {
-		return this.getJdtAnnotation(astRoot);
+	
+	public Iterable<HibernateNamedNativeQueryAnnotation> getNestedAnnotations() {
+		return this.hibernateNamedNativeQueries;
 	}
-
-	public String getElementName() {
-		return Hibernate.NAMED_NATIVE_QUERIES__VALUE;
-	}
-
-	public String getNestableAnnotationName() {
-		return HibernateNamedNativeQueryAnnotation.ANNOTATION_NAME;
-	}
-
-	public ListIterator<HibernateNamedNativeQueryAnnotation> nestedAnnotations() {
-		return new CloneListIterator<HibernateNamedNativeQueryAnnotation>(this.hibernateNamedNativeQueries);
-	}
-
-	public int nestedAnnotationsSize() {
+	
+	public int getNestedAnnotationsSize() {
 		return this.hibernateNamedNativeQueries.size();
 	}
-
-	public HibernateNamedNativeQueryAnnotation addNestedAnnotationInternal() {
-		HibernateNamedNativeQueryAnnotation namedQuery = this.buildHibernateNamedNativeQuery(this.hibernateNamedNativeQueries.size());
-		this.hibernateNamedNativeQueries.add(namedQuery);
-		return namedQuery;
+	
+	public HibernateNamedNativeQueryAnnotation addNestedAnnotation() {
+		return this.addNestedAnnotation(this.hibernateNamedNativeQueries.size());
 	}
-
+	
+	private HibernateNamedNativeQueryAnnotation addNestedAnnotation(int index) {
+		HibernateNamedNativeQueryAnnotation namedNativeQuery = this.buildHibernateNamedNativeQuery(index);
+		this.hibernateNamedNativeQueries.add(namedNativeQuery);
+		return namedNativeQuery;
+	}
+	
+	public void syncAddNestedAnnotation(Annotation astAnnotation) {
+		int index = this.hibernateNamedNativeQueries.size();
+		HibernateNamedNativeQueryAnnotation namedNativeQuery = this.addNestedAnnotation(index);
+		namedNativeQuery.initialize((CompilationUnit) astAnnotation.getRoot());
+		this.fireItemAdded(HIBERNATE_NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
+	}
+	
 	private HibernateNamedNativeQueryAnnotation buildHibernateNamedNativeQuery(int index) {
 		return HibernateSourceNamedNativeQueryAnnotation.createNestedHibernateNamedNativeQuery(this, member, index, this.daa);
 	}
-	
-	public void nestedAnnotationAdded(int index, HibernateNamedNativeQueryAnnotation nestedAnnotation) {
-		this.fireItemAdded(HIBERNATE_NAMED_NATIVE_QUERIES_LIST, index, nestedAnnotation);
+
+	public org.eclipse.jdt.core.dom.Annotation getContainerJdtAnnotation(CompilationUnit astRoot) {
+		return this.getAstAnnotation(astRoot);
 	}
 
-	public HibernateNamedNativeQueryAnnotation moveNestedAnnotationInternal(int targetIndex, int sourceIndex) {
+	public HibernateNamedNativeQueryAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
 		return CollectionTools.move(this.hibernateNamedNativeQueries, targetIndex, sourceIndex).get(targetIndex);
 	}
 
-	public void nestedAnnotationMoved(int targetIndex, int sourceIndex) {
-		this.fireItemMoved(HIBERNATE_NAMED_NATIVE_QUERIES_LIST, targetIndex, sourceIndex);
-	}
-
-	public HibernateNamedNativeQueryAnnotation removeNestedAnnotationInternal(int index) {
+	public HibernateNamedNativeQueryAnnotation removeNestedAnnotation(int index) {
 		return this.hibernateNamedNativeQueries.remove(index);
 	}
 
-	public void nestedAnnotationRemoved(int index, HibernateNamedNativeQueryAnnotation nestedAnnotation) {
-		this.fireItemRemoved(HIBERNATE_NAMED_NATIVE_QUERIES_LIST, index, nestedAnnotation);
+	public void syncRemoveNestedAnnotations(int index) {
+		this.removeItemsFromList(index, this.hibernateNamedNativeQueries, HIBERNATE_NAMED_NATIVE_QUERIES_LIST);
 	}
-
 
 }

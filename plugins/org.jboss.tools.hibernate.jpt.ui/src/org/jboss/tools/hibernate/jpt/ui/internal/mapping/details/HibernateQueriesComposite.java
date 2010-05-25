@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2009-2010 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -22,13 +22,13 @@ import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.QueryContainer;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.mappings.details.NamedNativeQueryPropertyComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.NamedQueryPropertyComposite;
+import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.ui.internal.details.NamedNativeQueryPropertyComposite;
+import org.eclipse.jpt.ui.internal.details.NamedQueryPropertyComposite;
 import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Transformer;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
@@ -48,17 +48,17 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.PageBook;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateQueryContainer;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaQueryContainer;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class HibernateQueriesComposite extends Pane<HibernateQueryContainer> {
+public class HibernateQueriesComposite extends Pane<HibernateJavaQueryContainer> {
 
 	private AddRemoveListPane<QueryContainer> listPane;
 	private NamedNativeQueryPropertyComposite namedNativeQueryPane;
-	private NamedQueryPropertyComposite namedQueryPane;
+	private NamedQueryPropertyComposite<? extends NamedQuery> namedQueryPane;
 	private HibernateNamedQueryPropertyComposite hibernateNamedQueryPane;
 	private HibernateNamedNativeQueryPropertyComposite hibernateNamedNativeQueryPane;
 	private WritablePropertyValueModel<Query> queryHolder;
@@ -69,10 +69,11 @@ public class HibernateQueriesComposite extends Pane<HibernateQueryContainer> {
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container
 	 */
-	public HibernateQueriesComposite(Pane<? extends HibernateQueryContainer> parentPane,
-	                        Composite parent) {
+	public HibernateQueriesComposite(Pane<?> parentPane, 
+			PropertyValueModel<? extends HibernateJavaQueryContainer> subjectHolder,
+			Composite parent) {
 
-		super(parentPane, parent, false);
+				super(parentPane, subjectHolder, parent, false);
 	}
 	
 	private void addQuery() {
@@ -105,7 +106,7 @@ public class HibernateQueriesComposite extends Pane<HibernateQueryContainer> {
 			throw new IllegalArgumentException();
 		}
 		query.setName(hibernateAddQueryDialog.getName());
-		this.queryHolder.setValue(query);//so that it gets selected in the List for the user to edit
+		this.getQueryHolder().setValue(query);//so that it gets selected in the List for the user to edit
 	}
 
 	private ListValueModel<Query> buildDisplayableQueriesListHolder() {
@@ -157,16 +158,16 @@ public class HibernateQueriesComposite extends Pane<HibernateQueryContainer> {
 	private ListValueModel<HibernateNamedQuery> buildHibernateNamedQueriesListHolder() {
 		return new ListAspectAdapter<QueryContainer, HibernateNamedQuery>(
 			getSubjectHolder(),
-			HibernateQueryContainer.HIBERNATE_NAMED_QUERIES_LIST)
+			HibernateJavaQueryContainer.HIBERNATE_NAMED_QUERIES_LIST)
 		{
 			@Override
 			protected ListIterator<HibernateNamedQuery> listIterator_() {
-				return ((HibernateQueryContainer)this.subject).hibernateNamedQueries();
+				return ((HibernateJavaQueryContainer)this.subject).hibernateNamedQueries();
 			}
 
 			@Override
 			protected int size_() {
-				return ((HibernateQueryContainer)this.subject).hibernateNamedQueriesSize();
+				return ((HibernateJavaQueryContainer)this.subject).hibernateNamedQueriesSize();
 			}
 		};
 	}
@@ -174,16 +175,16 @@ public class HibernateQueriesComposite extends Pane<HibernateQueryContainer> {
 	private ListValueModel<HibernateNamedNativeQuery> buildHibernateNamedNativeQueriesListHolder() {
 		return new ListAspectAdapter<QueryContainer, HibernateNamedNativeQuery>(
 			getSubjectHolder(),
-			HibernateQueryContainer.HIBERNATE_NAMED_NATIVE_QUERIES_LIST)
+			HibernateJavaQueryContainer.HIBERNATE_NAMED_NATIVE_QUERIES_LIST)
 		{
 			@Override
 			protected ListIterator<HibernateNamedNativeQuery> listIterator_() {
-				return ((HibernateQueryContainer)this.subject).hibernateNamedNativeQueries();
+				return ((HibernateJavaQueryContainer)this.subject).hibernateNamedNativeQueries();
 			}
 
 			@Override
 			protected int size_() {
-				return ((HibernateQueryContainer)this.subject).hibernateNamedNativeQueriesSize();
+				return ((HibernateJavaQueryContainer)this.subject).hibernateNamedNativeQueriesSize();
 			}
 		};
 	}
@@ -310,7 +311,7 @@ public class HibernateQueriesComposite extends Pane<HibernateQueryContainer> {
 						index = CollectionTools.indexOf(getSubject().namedNativeQueries(), query);
 					}
 
-					name = NLS.bind(JptUiMappingsMessages.QueriesComposite_displayString, index);
+					name = NLS.bind(JptUiDetailsMessages.QueriesComposite_displayString, index);
 				}
 
 				return name;
@@ -377,6 +378,10 @@ public class HibernateQueriesComposite extends Pane<HibernateQueryContainer> {
 
 	private void installPaneSwitcher(PageBook pageBook) {
 		new ControlSwitcher(this.queryHolder, buildPaneTransformer(), pageBook);
+	}
+	
+	protected WritablePropertyValueModel<Query> getQueryHolder() {
+		return queryHolder;
 	}
 
 }

@@ -14,7 +14,7 @@ import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaSecondaryTable;
+import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaSecondaryTable;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.db.Schema;
@@ -74,7 +74,7 @@ public class HibernateJavaSecondaryTableImpl extends GenericJavaSecondaryTable i
 		return this.getName();
 	}
 	
-	protected void validateAgainstDatabase(List<IMessage> messages, CompilationUnit astRoot) {
+	protected boolean validateAgainstDatabase(List<IMessage> messages, CompilationUnit astRoot) {
 		if ( ! this.hasResolvedCatalog()) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
@@ -85,7 +85,7 @@ public class HibernateJavaSecondaryTableImpl extends GenericJavaSecondaryTable i
 					this.getCatalogTextRange(astRoot)
 				)
 			);
-			return;
+			return false;
 		}
 		
 		if ( ! this.hasResolvedSchema()) {
@@ -98,7 +98,7 @@ public class HibernateJavaSecondaryTableImpl extends GenericJavaSecondaryTable i
 					this.getSchemaTextRange(astRoot)
 				)
 			);
-			return;
+			return false;
 		}
 		
 		if ( ! this.isResolved()) {
@@ -111,8 +111,9 @@ public class HibernateJavaSecondaryTableImpl extends GenericJavaSecondaryTable i
 					this.getNameTextRange(astRoot)
 				)
 			);
-			return;
+			return false;
 		}
+		return true;
 	}
 
 }

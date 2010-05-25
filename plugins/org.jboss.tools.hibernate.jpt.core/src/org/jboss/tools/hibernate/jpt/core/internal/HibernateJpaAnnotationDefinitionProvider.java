@@ -13,16 +13,16 @@ package org.jboss.tools.hibernate.jpt.core.internal;
 import java.util.List;
 
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.core.internal.platform.AbstractJpaAnnotationDefintionProvider;
+import org.eclipse.jpt.core.internal.AbstractJpaAnnotationDefintionProvider;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
-import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedNativeQueriesAnnotationDefinition;
-import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedNativeQueryAnnotationDefinition;
-import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQueriesAnnotationDefinition;
-import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQueryAnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.DiscriminatorFormulaAnnotationImpl.DiscriminatorFormulaAnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.ForeignKeyAnnotationImpl.ForeignKeyAnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GeneratedAnnotationImpl.GeneratedAnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorAnnotationImpl.GenericGeneratorAnnotationDefinition;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedNativeQueriesAnnotationDefinition;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedNativeQueryAnnotationDefinition;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQueriesAnnotationDefinition;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQueryAnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotationImpl.IndexAnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.SourceGenericGeneratorsAnnotation.GenericGeneratorsAnnotationDefinition;
 
@@ -50,11 +50,7 @@ public class HibernateJpaAnnotationDefinitionProvider extends AbstractJpaAnnotat
 	}
 
 	@Override
-	protected void addTypeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-	}
-
-	@Override
-	protected void addTypeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+	protected void addTypeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
 		definitions.add(GenericGeneratorAnnotationDefinition.instance());
 		definitions.add(GenericGeneratorsAnnotationDefinition.instance());
 		definitions.add(HibernateNamedQueryAnnotationDefinition.instance());
@@ -66,11 +62,7 @@ public class HibernateJpaAnnotationDefinitionProvider extends AbstractJpaAnnotat
 	}
 	
 	@Override
-	protected void addAttributeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-	}
-	
-	@Override
-	protected void addAttributeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+	protected void addAttributeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
 		definitions.add(GenericGeneratorAnnotationDefinition.instance());
 		definitions.add(GeneratedAnnotationDefinition.instance());
 		definitions.add(IndexAnnotationDefinition.instance());

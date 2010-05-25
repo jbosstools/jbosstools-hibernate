@@ -51,8 +51,8 @@ GeneratedAnnotation {
 		this.value = this.buildValue(astRoot);		
 	}
 
-	public void update(CompilationUnit astRoot) {
-		this.setValue(this.buildValue(astRoot));		
+	public void synchronizeWith(CompilationUnit astRoot) {
+		this.syncValue(this.buildValue(astRoot));		
 	}
 	
 	// ***** value	
@@ -61,12 +61,15 @@ GeneratedAnnotation {
 	}
 
 	public void setValue(GenerationTime value) {
-		if (this.attributeValueHasNotChanged(this.value, value)) {
-			return;
+		if (this.attributeValueHasChanged(this.value, value)) {
+			this.value = value;
+			this.valueAdapter.setValue(GenerationTime.toJavaAnnotationValue(value));
 		}
+	}
+	
+	private void syncValue(GenerationTime value) {
 		GenerationTime old = this.value;
 		this.value = value;
-		this.valueAdapter.setValue(GenerationTime.toJavaAnnotationValue(value));
 		this.firePropertyChanged(VALUE_PROPERTY, old, value);
 	}
 	
@@ -127,5 +130,6 @@ GeneratedAnnotation {
 		}
 
 	}
-	
+
+
 }

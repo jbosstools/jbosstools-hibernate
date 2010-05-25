@@ -11,16 +11,13 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import java.util.Iterator;
+import java.util.Vector;
 
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaBasicMapping;
-import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Generated;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenerationTime;
-import org.jboss.tools.hibernate.jpt.core.internal.context.Index;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GeneratedAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotation;
@@ -34,20 +31,16 @@ implements HibernateJavaBasicMapping {
 	
 	protected GenerationTime specifiedGenerationTime;
 	
-	protected Index index;
+	protected JavaIndex index;
 
 	public HibernateJavaBasicMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
 	}
 	
-	public Iterator<String> supportingAnnotationNames() {
-		return new ArrayIterator<String>(
-			JPA.COLUMN,
-			JPA.LOB,
-			JPA.TEMPORAL,
-			JPA.ENUMERATED,
-			Hibernate.GENERATED,
-			Hibernate.INDEX);
+	@Override
+	public void addSupportingAnnotationNamesTo(Vector<String> names) {
+		names.add(Hibernate.GENERATED);
+		names.add(Hibernate.INDEX);
 	}
 	
 	@Override
@@ -70,15 +63,15 @@ implements HibernateJavaBasicMapping {
 	}
 	
 	public GeneratedAnnotation getResourceGenerated() {
-		return (GeneratedAnnotation) getResourcePersistentAttribute().getSupportingAnnotation(GeneratedAnnotation.ANNOTATION_NAME);
+		return (GeneratedAnnotation) getResourcePersistentAttribute().getAnnotation(GeneratedAnnotation.ANNOTATION_NAME);
 	}
 	
 	public GeneratedAnnotation addResourceGenerated() {
-		return (GeneratedAnnotation) getResourcePersistentAttribute().addSupportingAnnotation(GeneratedAnnotation.ANNOTATION_NAME);
+		return (GeneratedAnnotation) getResourcePersistentAttribute().addAnnotation(GeneratedAnnotation.ANNOTATION_NAME);
 	}
 	
 	public void removeResourceGenerated() {
-		getResourcePersistentAttribute().removeSupportingAnnotation(GeneratedAnnotation.ANNOTATION_NAME);
+		getResourcePersistentAttribute().removeAnnotation(GeneratedAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected GenerationTime getResourceGenerationTime(){
@@ -109,11 +102,9 @@ implements HibernateJavaBasicMapping {
 		this.specifiedGenerationTime = newGenerationTime;
 		firePropertyChanged(Generated.GENERATION_TIME_PROPERTY, oldValue, newGenerationTime);
 	}
-
-
 	
 	public void removeResourceIndex() {
-		getResourcePersistentAttribute().removeSupportingAnnotation(IndexAnnotation.ANNOTATION_NAME);
+		getResourcePersistentAttribute().removeAnnotation(IndexAnnotation.ANNOTATION_NAME);
 	}
 	
 	// *** index
@@ -142,23 +133,23 @@ implements HibernateJavaBasicMapping {
 		}
 	}
 	
-	public Index addIndex() {
+	public JavaIndex addIndex() {
 		if (getIndex() != null) {
 			throw new IllegalStateException("index already exists"); //$NON-NLS-1$
 		}
 		this.index = getJpaFactory().buildIndex(this);
-		IndexAnnotation indexResource = (IndexAnnotation) getResourcePersistentAttribute().addSupportingAnnotation(IndexAnnotation.ANNOTATION_NAME);
+		IndexAnnotation indexResource = (IndexAnnotation) getResourcePersistentAttribute().addAnnotation(IndexAnnotation.ANNOTATION_NAME);
 		this.index.initialize(indexResource);
 		firePropertyChanged(INDEX_PROPERTY, null, this.index);
 		return this.index;
 	}
 
-	public Index getIndex() {
+	public JavaIndex getIndex() {
 		return this.index;
 	}
 	
-	protected void setIndex(Index newIndex) {
-		Index oldIndex = this.index;
+	protected void setIndex(JavaIndex newIndex) {
+		JavaIndex oldIndex = this.index;
 		this.index = newIndex;
 		firePropertyChanged(INDEX_PROPERTY, oldIndex, newIndex);
 	}
@@ -167,20 +158,20 @@ implements HibernateJavaBasicMapping {
 		if (getIndex() == null) {
 			throw new IllegalStateException("index does not exist, cannot be removed"); //$NON-NLS-1$
 		}
-		Index oldIndex = this.index;
+		JavaIndex oldIndex = this.index;
 		this.index = null;
-		this.getResourcePersistentAttribute().removeSupportingAnnotation(IndexAnnotation.ANNOTATION_NAME);
+		this.getResourcePersistentAttribute().removeAnnotation(IndexAnnotation.ANNOTATION_NAME);
 		firePropertyChanged(INDEX_PROPERTY, oldIndex, null);
 	}
 	
-	protected Index buildIndex(IndexAnnotation indexResource) {
-		Index index = getJpaFactory().buildIndex(this);
+	protected JavaIndex buildIndex(IndexAnnotation indexResource) {
+		JavaIndex index = getJpaFactory().buildIndex(this);
 		index.initialize(indexResource);
 		return index;
 	}
 	
 	protected IndexAnnotation getResourceIndex() {
-		return (IndexAnnotation) this.getResourcePersistentAttribute().getSupportingAnnotation(IndexAnnotation.ANNOTATION_NAME);
+		return (IndexAnnotation) this.getResourcePersistentAttribute().getAnnotation(IndexAnnotation.ANNOTATION_NAME);
 	}
 	
 }

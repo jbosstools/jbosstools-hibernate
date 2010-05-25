@@ -1,23 +1,19 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
- * Distributed under license by Red Hat, Inc. All rights reserved.
- * This program is made available under the terms of the
- * Eclipse Public License v1.0 which accompanies this distribution,
- * and is available at http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributor:
- *     Red Hat, Inc. - initial API and implementation
- ******************************************************************************/
-
+  * Copyright (c) 2010 Red Hat, Inc.
+  * Distributed under license by Red Hat, Inc. All rights reserved.
+  * This program is made available under the terms of the
+  * Eclipse Public License v1.0 which accompanies this distribution,
+  * and is available at http://www.eclipse.org/legal/epl-v10.html
+  *
+  * Contributor:
+  *     Red Hat, Inc. - initial API and implementation
+  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
-import org.eclipse.jpt.core.context.Column;
-import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.RelationshipMapping;
-import org.eclipse.jpt.core.internal.context.MappingTools;
+import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -30,53 +26,71 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceU
  * @author Dmitry Geraskov
  *
  */
-public class NamingStrategyMappingTools extends MappingTools {
+public class NamingStrategyMappingTools {
 	
-	public static String buildJoinTableDefaultName(RelationshipMapping relationshipMapping) {
-		if (relationshipMapping.getJpaProject().getDataSource().connectionProfileIsActive()) {
-			return buildDbJoinTableDefaultName(relationshipMapping);
+	public static String buildJoinTableDefaultName(RelationshipReference relationshipReference) {
+		if (relationshipReference.getJpaProject().getDataSource().connectionProfileIsActive()) {
+			return buildDbJoinTableDefaultName(relationshipReference);
 		}
-		// continue with a "best effort":
-		String owningTableName = relationshipMapping.getTypeMapping().getPrimaryTableName();
-		if (owningTableName == null) {
+		
+		RelationshipMapping relationshipMapping = relationshipReference.getRelationshipMapping();
+		if (relationshipMapping == null) {
 			return null;
 		}
+		Entity ownerEntity = (Entity) relationshipReference.getTypeMapping();
+		org.eclipse.jpt.core.context.Table ownerTable = ownerEntity.getTable();
+		if (ownerTable == null) {
+			return null;
+		}
+		
 		Entity targetEntity = relationshipMapping.getResolvedTargetEntity();
 		if (targetEntity == null) {
 			return null;
 		}
-		String targetTableName = targetEntity.getPrimaryTableName();
-		if (targetTableName == null) {
+		
+		org.eclipse.jpt.core.context.Table targetTable = targetEntity.getTable();
+		if (targetTable == null) {
 			return null;
 		}
-
-		HibernateJpaProject hibernateJpaProject = (HibernateJpaProject)targetEntity.getJpaProject();
-		NamingStrategy ns = hibernateJpaProject.getNamingStrategy();		
-		if (ns != null && hibernateJpaProject.isNamingStrategyEnabled()){
-			try{
-				String name = ns.collectionTableName(
-						relationshipMapping.getEntity().getPersistentType().getName(),//+
-						relationshipMapping.getEntity().getTable().getName(),//+
-						targetEntity.getPersistentType().getName(),//+
-						targetEntity.getTable().getName(),//+
-						relationshipMapping.getName()//+
-						);
-				/*Table primaryTable = relationshipMapping.getTypeMapping().getPrimaryDbTable();			
-				return primaryTable != null ? primaryTable.getDatabase().convertNameToIdentifier(name)
-						: name;*/
-				return name;
+		
+		NamingStrategy ns = getJpaProject(relationshipReference).getNamingStrategy();
+		if (getJpaProject(relationshipReference).isNamingStrategyEnabled() && ns != null){
+			/*
+			 * By testing generated DDL I have found for JPA console configuration:
+			 * 1) first parameter of the method is always fully qualified owner entity class name
+			 * 2) second and forth parameters of the method are always fully qualified target entity class name
+			 * 3) third parameter of the method is name attribute of @Table annotation,
+			 * 		if it is not specified, then it is *unqualified* name attribute of @Entity annotation
+			 * 		if @Entity annotation not specified it is *unqualified* name of the target entity class.
+			 * 4) fifth parameter is owner entity field name (even if @Column annotation set different name)
+			 * 
+			 */			
+			try {
+				String targetEntityName = targetEntity.getPersistentType().getName();
+				String ownerEntityName = ownerEntity.getPersistentType().getName();
+				String propName = relationshipMapping.getPersistentAttribute().getName();
+				return ns.collectionTableName(ownerEntityName, targetTable.getName(),
+						targetEntityName, targetTable.getName(), propName);
 			} catch (Exception e) {
-				Message m = new LocalMessage(IMessage.HIGH_SEVERITY, 
+				Message m = new LocalMessage(IMessage.HIGH_SEVERITY,
 						Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
 				HibernateJptPlugin.logException(m.getText(), e);
 			}
 		}
-		return owningTableName + '_' + targetTableName;
+		return ownerTable.getName() + '_' + targetTable.getName();
 	}
 	
-	protected static String buildDbJoinTableDefaultName(RelationshipMapping relationshipMapping) {
-		Table owningTable = relationshipMapping.getTypeMapping().getPrimaryDbTable();
+	public static HibernateJpaProject getJpaProject(RelationshipReference relationshipReference){
+		return (HibernateJpaProject)relationshipReference.getJpaProject();
+	}
+	
+	protected static String buildDbJoinTableDefaultName(RelationshipReference relationshipReference) {
+		Table owningTable = relationshipReference.getTypeMapping().getPrimaryDbTable();
 		if (owningTable == null) {
+			return null;
+		}
+		RelationshipMapping relationshipMapping = relationshipReference.getRelationshipMapping();
+		if (relationshipMapping == null) {
 			return null;
 		}
 		Entity targetEntity = relationshipMapping.getResolvedTargetEntity();
@@ -87,45 +101,22 @@ public class NamingStrategyMappingTools extends MappingTools {
 		if (targetTable == null) {
 			return null;
 		}
-		
-		HibernateJpaProject hibernateJpaProject = (HibernateJpaProject)targetEntity.getJpaProject();
-		NamingStrategy ns = hibernateJpaProject.getNamingStrategy();
-		if (ns != null && hibernateJpaProject.isNamingStrategyEnabled()){
-			try {
-				String name = ns.collectionTableName(
-						relationshipMapping.getEntity().getPersistentType().getName(),//+
-						relationshipMapping.getEntity().getTable().getName(),//+
-						targetEntity.getPersistentType().getName(),//+
-						targetEntity.getTable().getName(),//+
-						relationshipMapping.getName()//+
-						);
-				//return owningTable.getDatabase().convertNameToIdentifier(name);
-				return name;
-			} catch (Exception e) {
-				Message m = new LocalMessage(IMessage.HIGH_SEVERITY,
-						Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
-				HibernateJptPlugin.logException(m.getText(), e);
-			}
-		}
 		String name = owningTable.getName() + '_' + targetTable.getName();
 		return owningTable.getDatabase().convertNameToIdentifier(name);
 	}
 	
-	public static String buildJoinColumnDefaultName(HibernateJoinColumn joinColumn) {		
-		JoinColumn.Owner owner = joinColumn.getOwner();
-		RelationshipMapping relationshipMapping = owner.getRelationshipMapping();
-		if (relationshipMapping == null) {
-			return null;
-		}
+	public static String buildJoinColumnDefaultName(JoinColumn joinColumn, JoinColumn.Owner owner) {
 		if (owner.joinColumnsSize() != 1) {
 			return null;
 		}
 		String prefix = owner.getAttributeName();
-		Entity targetEntity = owner.getTargetEntity();
-		if (targetEntity == null) {
-			return null;
+		if (prefix == null) {
+			Entity targetEntity = owner.getTargetEntity();
+			if (targetEntity == null) {
+				return null;
+			}
+			prefix = targetEntity.getName();
 		}
-		String targetEntityName = targetEntity.getName();
 		// not sure which of these is correct...
 		// (the spec implies that the referenced column is always the
 		// primary key column of the target entity)
@@ -133,40 +124,6 @@ public class NamingStrategyMappingTools extends MappingTools {
 		String targetColumnName = joinColumn.getReferencedColumnName();
 		if (targetColumnName == null) {
 			return null;
-		}
-		HibernateJpaProject hibernateJpaProject = (HibernateJpaProject)targetEntity.getJpaProject();
-		NamingStrategy ns = hibernateJpaProject.getNamingStrategy();
-		if (ns != null && hibernateJpaProject.isNamingStrategyEnabled()){
-			String logicalTargetColumnName = null;
-			String name = null;
-			try {
-				if (joinColumn.getSpecifiedName() != null){
-					name = ns.columnName(joinColumn.getSpecifiedName());
-				} else {
-					PersistentAttribute pattr = joinColumn.getReferencedPersistentAttribute();
-					if (pattr != null && pattr.getMapping() instanceof ColumnMapping){
-						Column column = ((ColumnMapping)pattr.getMapping()).getColumn();
-						if (column != null){
-							logicalTargetColumnName = ns.logicalColumnName(column.getSpecifiedName(), pattr.getName());
-						} else {
-							logicalTargetColumnName = ns.logicalColumnName(null, pattr.getName());
-						}
-					}
-					
-					name = ns.foreignKeyColumnName(prefix,
-									targetEntity.getPersistentType().getName(),//+
-									targetEntity.getTable().getName(),//+
-									logicalTargetColumnName);//+
-				}
-				return name;
-			} catch (Exception e) {
-				Message m = new LocalMessage(IMessage.HIGH_SEVERITY,
-						Messages.NAMING_STRATEGY_EXCEPTION, new String[0], null);
-				HibernateJptPlugin.logException(m.getText(), e);
-			}
-		}
-		if (prefix == null) {
-			prefix = targetEntityName;
 		}
 		String name = prefix + '_' + targetColumnName;
 		// not sure which of these is correct...
@@ -176,6 +133,5 @@ public class NamingStrategyMappingTools extends MappingTools {
 		// return targetColumn.getDatabase().convertNameToIdentifier(name);
 		return name;
 	}
-	
 
 }

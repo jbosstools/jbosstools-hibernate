@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2009-2010 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -18,14 +18,13 @@ import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.mappings.details.BasicMappingComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.EmbeddedAttributeOverridesComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.IdMappingComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.VersionMappingComposite;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.details.BasicMappingComposite;
+import org.eclipse.jpt.ui.internal.details.IdMappingComposite;
+import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.ui.internal.details.VersionMappingComposite;
 import org.eclipse.jpt.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -38,6 +37,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateColumn;
 import org.jboss.tools.hibernate.jpt.ui.internal.mappings.db.xpl.ColumnCombo;
 import org.jboss.tools.hibernate.jpt.ui.internal.mappings.db.xpl.DatabaseObjectCombo;
+import org.jboss.tools.hibernate.jpt.ui.internal.mappings.db.xpl.TableCombo;
 
 /**
  * Here the layout of this pane:
@@ -89,7 +89,7 @@ import org.jboss.tools.hibernate.jpt.ui.internal.mappings.db.xpl.DatabaseObjectC
  * @version 2.0
  * @since 1.0
  */
-public class HibernateColumnComposite extends FormPane<HibernateColumn> {
+public class HibernateColumnComposite extends Pane<HibernateColumn> {
 
 	/**
 	 * Creates a new <code>HibernateColumnComposite</code>.
@@ -98,7 +98,7 @@ public class HibernateColumnComposite extends FormPane<HibernateColumn> {
 	 * @param subjectHolder The holder of the subject <code>IColumn</code>
 	 * @param parent The parent container
 	 */
-	public HibernateColumnComposite(FormPane<?> parentPane,
+	public HibernateColumnComposite(Pane<?> parentPane,
 	                       PropertyValueModel<? extends HibernateColumn> subjectHolder,
 	                       Composite parent) {
 
@@ -115,7 +115,7 @@ public class HibernateColumnComposite extends FormPane<HibernateColumn> {
 	 * this pane aligned with the widgets of the given parent controller;
 	 * <code>false</code> to not align them
 	 */
-	public HibernateColumnComposite(FormPane<?> parentPane,
+	public HibernateColumnComposite(Pane<?> parentPane,
 	                       PropertyValueModel<? extends HibernateColumn> subjectHolder,
 	                       Composite parent,
 	                       boolean automaticallyAlignWidgets) {
@@ -133,7 +133,7 @@ public class HibernateColumnComposite extends FormPane<HibernateColumn> {
 	 * this pane aligned with the widgets of the given parent controller;
 	 * <code>false</code> to not align them
 	 */
-	public HibernateColumnComposite(FormPane<?> parentPane,
+	public HibernateColumnComposite(Pane<?> parentPane,
 	                       PropertyValueModel<? extends HibernateColumn> subjectHolder,
 	                       Composite parent,
 	                       boolean automaticallyAlignWidgets,
@@ -265,16 +265,16 @@ public class HibernateColumnComposite extends FormPane<HibernateColumn> {
 				if ((getSubject() != null) && (value == null)) {
 					boolean defaultValue = getSubject().isDefaultInsertable();
 
-					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-						                                       JptUiMappingsMessages.Boolean_False;
+					String defaultStringValue = defaultValue ? JptUiDetailsMessages.Boolean_True :
+						                                       JptUiDetailsMessages.Boolean_False;
 
 					return NLS.bind(
-						JptUiMappingsMessages.ColumnComposite_insertableWithDefault,
+						JptUiDetailsMessages.ColumnComposite_insertableWithDefault,
 						defaultStringValue
 					);
 				}
 
-				return JptUiMappingsMessages.ColumnComposite_insertable;
+				return JptUiDetailsMessages.ColumnComposite_insertable;
 			}
 		};
 	}
@@ -282,52 +282,46 @@ public class HibernateColumnComposite extends FormPane<HibernateColumn> {
 
 	private WritablePropertyValueModel<Boolean> buildNullableHolder() {
 		return new PropertyAspectAdapter<Column, Boolean>(
-			getSubjectHolder(),
-			BaseColumn.DEFAULT_NULLABLE_PROPERTY,
-			BaseColumn.SPECIFIED_NULLABLE_PROPERTY)
-		{
+				getSubjectHolder(),
+				BaseColumn.SPECIFIED_NULLABLE_PROPERTY) {
+			
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedNullable();
 			}
-
+			
 			@Override
 			protected void setValue_(Boolean value) {
 				this.subject.setSpecifiedNullable(value);
 			}
-
+		};
+	}
+	
+	private PropertyValueModel<String> buildNullableStringHolder() {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultNullableHolder()) {
 			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
+			protected String transform(Boolean value) {
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.Boolean_True : JptUiDetailsMessages.Boolean_False;
+					return NLS.bind(JptUiDetailsMessages.ColumnComposite_nullableWithDefault, defaultStringValue);
 				}
+				return JptUiDetailsMessages.ColumnComposite_nullable;
 			}
 		};
 	}
-
-	private PropertyValueModel<String> buildNullableStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildNullableHolder()) {
+	
+	private PropertyValueModel<Boolean> buildDefaultNullableHolder() {
+		return new PropertyAspectAdapter<Column, Boolean>(
+				getSubjectHolder(),
+				BaseColumn.SPECIFIED_NULLABLE_PROPERTY,
+				BaseColumn.DEFAULT_NULLABLE_PROPERTY) {
+			
 			@Override
-			protected String transform(Boolean value) {
-
-				if ((getSubject() != null) && (value == null)) {
-					boolean defaultValue = getSubject().isDefaultNullable();
-
-					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-					                                           JptUiMappingsMessages.Boolean_False;
-
-					return NLS.bind(
-						JptUiMappingsMessages.ColumnComposite_nullableWithDefault,
-						defaultStringValue
-					);
+			protected Boolean buildValue_() {
+				if (this.subject.getSpecifiedNullable() != null) {
+					return null;
 				}
-
-				return JptUiMappingsMessages.ColumnComposite_nullable;
+				return Boolean.valueOf(this.subject.isDefaultNullable());
 			}
 		};
 	}
@@ -391,9 +385,14 @@ public class HibernateColumnComposite extends FormPane<HibernateColumn> {
 			}
 
 			@Override
-			protected Iterator<String> values() {
-				return this.getSubject().getOwner().getTypeMapping().associatedTableNamesIncludingInherited();
+			protected Iterable<String> getValues_() {
+				return CollectionTools.iterable(this.values());
 			}
+			
+			protected Iterator<String> values() {
+				return this.getSubject().candidateTableNames();
+			}
+			
 			@Override
 			public String toString() {
 				return "ColumnComposite.tableCombo"; //$NON-NLS-1$
@@ -403,108 +402,97 @@ public class HibernateColumnComposite extends FormPane<HibernateColumn> {
 
 	private WritablePropertyValueModel<Boolean> buildUniqueHolder() {
 		return new PropertyAspectAdapter<Column, Boolean>(
-			getSubjectHolder(),
-			BaseColumn.DEFAULT_UNIQUE_PROPERTY,
-			BaseColumn.SPECIFIED_UNIQUE_PROPERTY)
-		{
+				getSubjectHolder(),
+				BaseColumn.SPECIFIED_UNIQUE_PROPERTY) {
+			
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedUnique();
 			}
-
+			
 			@Override
 			protected void setValue_(Boolean value) {
 				this.subject.setSpecifiedUnique(value);
-			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
 			}
 		};
 	}
 
 	private PropertyValueModel<String> buildUniqueStringHolder() {
-
-		return new TransformationPropertyValueModel<Boolean, String>(buildUniqueHolder()) {
-
+		
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultUniqueHolder()) {
+			
 			@Override
 			protected String transform(Boolean value) {
-
-				if ((getSubject() != null) && (value == null)) {
-					boolean defaultValue = getSubject().isDefaultUnique();
-
-					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-					                                           JptUiMappingsMessages.Boolean_False;
-
-					return NLS.bind(
-						JptUiMappingsMessages.ColumnComposite_uniqueWithDefault,
-						defaultStringValue
-					);
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.Boolean_True : JptUiDetailsMessages.Boolean_False;
+					return NLS.bind(JptUiDetailsMessages.ColumnComposite_uniqueWithDefault, defaultStringValue);
 				}
-
-				return JptUiMappingsMessages.ColumnComposite_unique;
+				return JptUiDetailsMessages.ColumnComposite_unique;
 			}
 		};
 	}
-
+	
+	private PropertyValueModel<Boolean> buildDefaultUniqueHolder() {
+		return new PropertyAspectAdapter<Column, Boolean>(
+				getSubjectHolder(),
+				BaseColumn.SPECIFIED_UNIQUE_PROPERTY,
+				BaseColumn.DEFAULT_UNIQUE_PROPERTY) {
+			
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getSpecifiedUnique() != null) {
+					return null;
+				}
+				return Boolean.valueOf(this.subject.isDefaultUnique());
+			}
+		};
+	}
+	
 	private WritablePropertyValueModel<Boolean> buildUpdatableHolder() {
 		return new PropertyAspectAdapter<Column, Boolean>(
-			getSubjectHolder(),
-			BaseColumn.DEFAULT_UPDATABLE_PROPERTY,
-			BaseColumn.SPECIFIED_UPDATABLE_PROPERTY)
-		{
+				getSubjectHolder(),
+				BaseColumn.DEFAULT_UPDATABLE_PROPERTY,
+				BaseColumn.SPECIFIED_UPDATABLE_PROPERTY) {
+			
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedUpdatable();
 			}
-
+			
 			@Override
 			protected void setValue_(Boolean value) {
 				this.subject.setSpecifiedUpdatable(value);
 			}
-
+		};
+	}
+	
+	private PropertyValueModel<String> buildUpdatableStringHolder() {
+		
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultUpdatableHolder()) {
+			
 			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
+			protected String transform(Boolean value) {
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.Boolean_True : JptUiDetailsMessages.Boolean_False;
+					return NLS.bind(JptUiDetailsMessages.ColumnComposite_updatableWithDefault, defaultStringValue);
 				}
+				return JptUiDetailsMessages.ColumnComposite_updatable;
 			}
 		};
 	}
-
-	private PropertyValueModel<String> buildUpdatableStringHolder() {
-
-		return new TransformationPropertyValueModel<Boolean, String>(buildUpdatableHolder()) {
-
+	
+	private PropertyValueModel<Boolean> buildDefaultUpdatableHolder() {
+		return new PropertyAspectAdapter<Column, Boolean>(
+				getSubjectHolder(),
+				BaseColumn.SPECIFIED_UPDATABLE_PROPERTY,
+				BaseColumn.DEFAULT_UPDATABLE_PROPERTY) {
+			
 			@Override
-			protected String transform(Boolean value) {
-
-				if ((getSubject() != null) && (value == null)) {
-					boolean defaultValue = getSubject().isDefaultUpdatable();
-
-					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-					                                           JptUiMappingsMessages.Boolean_False;
-
-					return NLS.bind(
-						JptUiMappingsMessages.ColumnComposite_updatableWithDefault,
-						defaultStringValue
-					);
+			protected Boolean buildValue_() {
+				if (this.subject.getSpecifiedUpdatable() != null) {
+					return null;
 				}
-
-				return JptUiMappingsMessages.ColumnComposite_updatable;
+				return Boolean.valueOf(this.subject.isDefaultUpdatable());
 			}
 		};
 	}
@@ -515,13 +503,13 @@ public class HibernateColumnComposite extends FormPane<HibernateColumn> {
 		// Column group pane
 		container = addTitledGroup(
 			container,
-			JptUiMappingsMessages.ColumnComposite_columnSection
+			JptUiDetailsMessages.ColumnComposite_columnSection
 		);
 
 		// Column widgets
 		addLabeledComposite(
 			container,
-			JptUiMappingsMessages.ColumnComposite_name,
+			JptUiDetailsMessages.ColumnComposite_name,
 			addColumnCombo(container),
 			JpaHelpContextIds.MAPPING_COLUMN
 		);
@@ -529,24 +517,24 @@ public class HibernateColumnComposite extends FormPane<HibernateColumn> {
 		// Table widgets
 		addLabeledComposite(
 			container,
-			JptUiMappingsMessages.ColumnComposite_table,
+			JptUiDetailsMessages.ColumnComposite_table,
 			addTableCombo(container),
 			JpaHelpContextIds.MAPPING_COLUMN_TABLE
 		);
 
 		// Details sub-pane
-		container = addCollapsableSubSection(
+		container = addCollapsibleSubSection(
 			container,
-			JptUiMappingsMessages.ColumnComposite_details,
+			JptUiDetailsMessages.ColumnComposite_details,
 			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
 		);
 
 		new DetailsComposite(this, getSubjectHolder(), addSubPane(container, 0, 16));
 	}
 	
-	protected class DetailsComposite extends FormPane<HibernateColumn> {
+	protected class DetailsComposite extends Pane<HibernateColumn> {
 				
-		public DetailsComposite(FormPane<?> parentPane,
+		public DetailsComposite(Pane<?> parentPane,
             PropertyValueModel<? extends HibernateColumn> subjectHolder,
             Composite parent) {
 
@@ -559,7 +547,7 @@ public class HibernateColumnComposite extends FormPane<HibernateColumn> {
 			// Insertable tri-state check box
 			addTriStateCheckBoxWithDefault(
 				addSubPane(container, 4),
-				JptUiMappingsMessages.ColumnComposite_insertable,
+				JptUiDetailsMessages.ColumnComposite_insertable,
 				buildInsertableHolder(),
 				buildInsertableStringHolder(),
 				JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
@@ -568,7 +556,7 @@ public class HibernateColumnComposite extends FormPane<HibernateColumn> {
 			// Updatable tri-state check box
 			addTriStateCheckBoxWithDefault(
 				container,
-				JptUiMappingsMessages.ColumnComposite_updatable,
+				JptUiDetailsMessages.ColumnComposite_updatable,
 				buildUpdatableHolder(),
 				buildUpdatableStringHolder(),
 				JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
@@ -577,7 +565,7 @@ public class HibernateColumnComposite extends FormPane<HibernateColumn> {
 			// Unique tri-state check box
 			addTriStateCheckBoxWithDefault(
 				container,
-				JptUiMappingsMessages.ColumnComposite_unique,
+				JptUiDetailsMessages.ColumnComposite_unique,
 				buildUniqueHolder(),
 				buildUniqueStringHolder(),
 				JpaHelpContextIds.MAPPING_COLUMN_UNIQUE
@@ -586,7 +574,7 @@ public class HibernateColumnComposite extends FormPane<HibernateColumn> {
 			// Nullable tri-state check box
 			addTriStateCheckBoxWithDefault(
 				container,
-				JptUiMappingsMessages.ColumnComposite_nullable,
+				JptUiDetailsMessages.ColumnComposite_nullable,
 				buildNullableHolder(),
 				buildNullableStringHolder(),
 				JpaHelpContextIds.MAPPING_COLUMN_NULLABLE
@@ -599,7 +587,7 @@ public class HibernateColumnComposite extends FormPane<HibernateColumn> {
 			// Column Definition widgets
 			addLabeledText(
 				container,
-				JptUiMappingsMessages.ColumnComposite_columnDefinition,
+				JptUiDetailsMessages.ColumnComposite_columnDefinition,
 				buildColumnDefinitionHolder()
 			);
 		}
@@ -609,7 +597,7 @@ public class HibernateColumnComposite extends FormPane<HibernateColumn> {
 				
 				@Override
 				protected String getLabelText() {
-					return JptUiMappingsMessages.ColumnComposite_length;
+					return JptUiDetailsMessages.ColumnComposite_length;
 				}
 			
 				@Override
@@ -649,7 +637,7 @@ public class HibernateColumnComposite extends FormPane<HibernateColumn> {
 				
 				@Override
 				protected String getLabelText() {
-					return JptUiMappingsMessages.ColumnComposite_precision;
+					return JptUiDetailsMessages.ColumnComposite_precision;
 				}
 			
 				@Override
@@ -689,7 +677,7 @@ public class HibernateColumnComposite extends FormPane<HibernateColumn> {
 				
 				@Override
 				protected String getLabelText() {
-					return JptUiMappingsMessages.ColumnComposite_scale;
+					return JptUiDetailsMessages.ColumnComposite_scale;
 				}
 			
 				@Override
