@@ -436,6 +436,7 @@ public class HibernateConsoleMessages extends NLS {
 	public static String ConsoleConfigurationTab_browse;
 	public static String ConsoleConfigurationTab_create_new;
 	public static String ConsoleConfigurationTab_setup;
+	public static String ConsoleConfigurationTabGroup_archive_classpath_entry_does_not_exist;
 	public static String ConsoleConfigurationTabGroup_classpath_must_be_set_or_restored_to_default;
 	public static String DirectoryBrowseField_filesystem;
 	public static String DirectoryBrowseField_workspace;
