@@ -43,7 +43,7 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -72,6 +72,7 @@ import org.hibernate.eclipse.console.utils.ProjectUtils;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
+@SuppressWarnings("restriction")
 public class HibernatePropertyPage extends PropertyPage {
 
 	Control[] settings;
@@ -340,7 +341,7 @@ public class HibernatePropertyPage extends PropertyPage {
 				final IWorkspaceRunnable wr = new IWorkspaceRunnable() {
 					public void run(IProgressMonitor monitor)
 							throws CoreException {
-						JptCorePlugin.rebuildJpaProject(getProject());
+						JpaModelManager.instance().rebuildJpaProject(getProject());
 						getProject().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 					}
 				};

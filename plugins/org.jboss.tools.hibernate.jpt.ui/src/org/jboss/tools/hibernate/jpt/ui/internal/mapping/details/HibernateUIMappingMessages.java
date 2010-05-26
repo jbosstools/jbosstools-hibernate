@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008-2010 Red Hat, Inc.
+ * Copyright (c) 2008-2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -47,8 +47,6 @@ public class HibernateUIMappingMessages extends NLS {
 	public static String BasicGeneralSection_generated;
 	public static String IndexHolderComposite_name;
 	public static String Index_section_index;
-	public static String ParametersComposite_nameColumn;
-	public static String ParametersComposite_valueColumn;
 
 	private HibernateUIMappingMessages() {}
 

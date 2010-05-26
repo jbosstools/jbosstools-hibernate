@@ -17,7 +17,6 @@ import java.util.List;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -25,7 +24,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
@@ -53,7 +52,7 @@ import org.jboss.tools.hibernate.jpt.ui.wizard.Messages;
  * @author Dmitry Geraskov
  * 
  */
-public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties> implements
+public class HibernatePropertiesComposite extends FormPane<BasicHibernateProperties> implements
 		JpaPageComposite {
 
 	private Text cfgFile;
@@ -130,7 +129,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 				StringConverter.Default.<String>instance(),
 				null);
 				
-		dialectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, new SWTPropertyChangeListenerWrapper(
+		dialectHolder.addPropertyChangeListener(new SWTPropertyChangeListenerWrapper(
 				new PropertyChangeListener() {
 					public void propertyChanged(PropertyChangeEvent event) {
 						String dialectClass = helper.getDialectClass((String) event.getNewValue());
@@ -144,7 +143,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 			)
 		);
 
-		driverHolder.addPropertyChangeListener( PropertyValueModel.VALUE, new SWTPropertyChangeListenerWrapper(
+		driverHolder.addPropertyChangeListener( new SWTPropertyChangeListenerWrapper(
 				new PropertyChangeListener() {
 					public void propertyChanged(PropertyChangeEvent event) {
 						String driverClass = (String) event.getNewValue();
@@ -218,6 +217,7 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 			}
 
 			private void handleConfigurationFileCreate() {
+				StructuredSelection selection = null;
 				NewConfigurationWizard wizard = new NewConfigurationWizard();
 				wizard.init(PlatformUI.getWorkbench(), StructuredSelection.EMPTY );
 				IWorkbenchWindow win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
@@ -385,11 +385,5 @@ public class HibernatePropertiesComposite extends Pane<BasicHibernateProperties>
 
 	public String getPageText() {
 		return Messages.HibernatePropertiesComposite_hibernate;
-	}
-
-	@Override
-	public ImageDescriptor getPageImageDescriptor() {
-		// TODO hibernate tab in persistence.xml image
-		return null;
 	}
 }

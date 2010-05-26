@@ -12,7 +12,6 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
 import org.eclipse.jpt.core.context.JpaContextNode;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaIndex;
 
 /**
  * @author Dmitry Geraskov
@@ -24,9 +23,9 @@ public interface IndexHolder extends JpaContextNode {
 
 	String INDEX_PROPERTY = "index"; //$NON-NLS-1$
 	
-	JavaIndex getIndex();
+	Index getIndex();
 	
-	JavaIndex addIndex();
+	Index addIndex();
 	
 	void removeIndex();
 

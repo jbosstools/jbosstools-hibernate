@@ -14,7 +14,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 import java.util.List;
 
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.orm.AbstractOrmIdMapping;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmIdMapping;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.XmlId;
@@ -23,14 +23,14 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class HibernateOrmIdMappingImpl extends AbstractOrmIdMapping<XmlId>
+public class HibernateOrmIdMappingImpl extends GenericOrmIdMapping<XmlId>
 implements HibernateOrmIdMapping {
 
 	public HibernateOrmIdMappingImpl(OrmPersistentAttribute parent,
@@ -76,7 +76,7 @@ implements HibernateOrmIdMapping {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_TABLE_NOT_VALID,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_TABLE,
 						new String[] {pa.getName(), tableName, this.getColumn().getDBColumnName()},
 						this.column, 
 						this.column.getTableTextRange()

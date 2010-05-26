@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009-2010 Red Hat, Inc.
+ * Copyright (c) 2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.jpt.core.context.Query;
-import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.ui.internal.widgets.ValidatingDialog;
 import org.eclipse.jpt.utility.internal.StringConverter;
@@ -62,17 +62,17 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 
 	@Override
 	protected String getTitle() {
-		return JptUiDetailsMessages.AddQueryDialog_title;
+		return JptUiMappingsMessages.AddQueryDialog_title;
 	}
 
 	@Override
 	protected String getDescriptionTitle() {
-		return JptUiDetailsMessages.AddQueryDialog_descriptionTitle;
+		return JptUiMappingsMessages.AddQueryDialog_descriptionTitle;
 	}
 	
 	@Override
 	protected String getDescription() {
-		return JptUiDetailsMessages.AddQueryDialog_description;
+		return JptUiMappingsMessages.AddQueryDialog_description;
 	}
 	
 	@Override
@@ -119,13 +119,13 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 		protected void initializeLayout(Composite container) {
 			this.nameText = addLabeledText(
 				container,
-				JptUiDetailsMessages.AddQueryDialog_name,
+				JptUiMappingsMessages.AddQueryDialog_name,
 				buildNameHolder()
 			);
 			
 			addLabeledCombo(
 				container, 
-				JptUiDetailsMessages.AddQueryDialog_queryType, 
+				JptUiMappingsMessages.AddQueryDialog_queryType, 
 				buildQueryTypeListHolder(), 
 				buildQueryTypeHolder(), 
 				buildStringConverter(),
@@ -145,10 +145,10 @@ public class HibernateAddQueryDialog extends ValidatingDialog<AddQueryStateObjec
 			return new StringConverter<String>() {
 				public String convertToString(String value) {
 					if (value == Query.NAMED_QUERY) {
-						return JptUiDetailsMessages.AddQueryDialog_namedQuery;
+						return JptUiMappingsMessages.AddQueryDialog_namedQuery;
 					}
 					if (value == Query.NAMED_NATIVE_QUERY) {
-						return JptUiDetailsMessages.AddQueryDialog_namedNativeQuery;
+						return JptUiMappingsMessages.AddQueryDialog_namedNativeQuery;
 					}
 					if (value == HibernateNamedQuery.HIBERNATE_NAMED_QUERY) {
 						return HibernateUIMappingMessages.HibernateAddQueryDialog_hibernateNamedQuery;
@@ -237,13 +237,13 @@ final class AddQueryStateObject extends AbstractNode
 
 	private void addNameProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.stringIsEmpty(this.name)) {
-			currentProblems.add(buildProblem(JptUiDetailsMessages.QueryStateObject_nameMustBeSpecified));
+			currentProblems.add(buildProblem(JptUiMappingsMessages.QueryStateObject_nameMustBeSpecified));
 		}
 	}
 
 	private void addQueryTypeProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.stringIsEmpty(this.queryType)) {
-			currentProblems.add(buildProblem(JptUiDetailsMessages.QueryStateObject_typeMustBeSpecified));
+			currentProblems.add(buildProblem(JptUiMappingsMessages.QueryStateObject_typeMustBeSpecified));
 		}
 	}
 

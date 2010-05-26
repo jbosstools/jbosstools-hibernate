@@ -76,15 +76,15 @@ public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member>
 	}
 	
 	public void initialize(CompilationUnit astRoot) {
-		this.name = this.buildName(astRoot);
-		this.strategy = this.buildStrategy(astRoot);	
+		this.name = this.name(astRoot);
+		this.strategy = this.strategy(astRoot);	
 		AnnotationContainerTools.initialize(this.parametersContainer, astRoot);
 	}
 	
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncName(this.buildName(astRoot));
-		this.syncStrategy(this.buildStrategy(astRoot));		
-		AnnotationContainerTools.synchronize(this.parametersContainer, astRoot);
+	public void update(CompilationUnit astRoot) {
+		this.setStrategy(this.strategy(astRoot));
+		this.setName(this.name(astRoot));
+		AnnotationContainerTools.update(this.parametersContainer, astRoot);
 	}
 	
 	public String getAnnotationName() {
@@ -96,33 +96,27 @@ public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member>
 	}
 	
 	public void setStrategy(String newStrategy) {
-		if (attributeValueHasChanged(this.strategy, newStrategy)) {
-			this.strategy = newStrategy;
-			this.strategyAdapter.setValue(newStrategy);
+		if (attributeValueHasNotChanged(this.strategy, newStrategy)) {
+			return;
 		}
-	}
-	
-	private void syncStrategy(String strategy) {
-		String old = this.strategy;
-		this.strategy = strategy;
-		this.firePropertyChanged(STRATEGY_PROPERTY, old, strategy);
+		String oldStrategy = this.strategy;
+		this.strategy = newStrategy;
+		this.strategyAdapter.setValue(newStrategy);
+		firePropertyChanged(STRATEGY_PROPERTY, oldStrategy, newStrategy);
 	}
 	
 	public String getName() {
 		return this.name;
 	}
 	
-	public void setName(String name) {
-		if (this.attributeValueHasChanged(this.name, name)) {
-			this.name = name;
-			this.nameAdapter.setValue(name);
+	public void setName(String newName) {
+		if (attributeValueHasNotChanged(this.name, newName)) {
+			return;
 		}
-	}
-	
-	private void syncName(String astName) {
-		String old = this.name;
-		this.name = astName;
-		this.firePropertyChanged(NAME_PROPERTY, old, astName);
+		String oldName = this.name;
+		this.name = newName;
+		this.nameAdapter.setValue(newName);
+		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 	
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
@@ -158,11 +152,13 @@ public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member>
 	}
 	
 	// ********** java annotations -> persistence model **********
-	protected String buildStrategy(CompilationUnit astRoot) {
+	protected String strategy(CompilationUnit astRoot) {
+		//TODO: get Generator instead of String
+		//use buildJavaGenericGenerator method before this will be done
 		return this.strategyAdapter.getValue(astRoot);
 	}
 	
-	protected String buildName(CompilationUnit astRoot) {
+	protected String name(CompilationUnit astRoot) {
 		return this.nameAdapter.getValue(astRoot);
 	}	
 	
@@ -173,7 +169,7 @@ public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member>
 		return (NestableParameterAnnotation) AnnotationContainerTools.addNestedAnnotation(index, this.parametersContainer);
 	}
 	
-	NestableParameterAnnotation addParameter_() {
+	NestableParameterAnnotation addParameterInternal() {
 		NestableParameterAnnotation parameter = this.buildParameter(this.parameters.size());
 		this.parameters.add(parameter);
 		return parameter;
@@ -183,17 +179,15 @@ public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member>
 		return SourceParameterAnnotation.createGenericGeneratorParameter(this, this.member, this.daa, index);
 	}
 	
-	Iterable<NestableParameterAnnotation> nestableParameters() {
-		return this.parameters;
+	ListIterator<NestableParameterAnnotation> nestableParameters() {
+		return new CloneListIterator<NestableParameterAnnotation>(this.parameters);
 	}
 	
-	void syncAddParameterAnnotation(org.eclipse.jdt.core.dom.Annotation nestedAnnotation) {
-		NestableParameterAnnotation parameter = this.addParameter_();
-		parameter.initialize((CompilationUnit) nestedAnnotation.getRoot());
-		this.fireItemAdded(PARAMETERS_LIST, parametersSize() - 1, parameter);
+	void parameterAdded(int index, NestableParameterAnnotation parameter) {
+		this.fireItemAdded(PARAMETERS_LIST, index, parameter);
 	}
 	
-	NestableParameterAnnotation moveParameter_(int targetIndex, int sourceIndex) {
+	NestableParameterAnnotation moveParameterInternal(int targetIndex, int sourceIndex) {
 		return CollectionTools.move(this.parameters, targetIndex, sourceIndex).get(targetIndex);
 	}
 
@@ -225,12 +219,12 @@ public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member>
 		AnnotationContainerTools.removeNestedAnnotation(index, this.parametersContainer);	
 	}
 	
-	NestableParameterAnnotation removeParameter_(int index) {
+	NestableParameterAnnotation removeParameterInternal(int index) {
 		return this.parameters.remove(index);
 	}
 
-	void parameterRemoved(int index) {
-		this.removeItemsFromList(index, this.parameters, PARAMETERS_LIST);
+	void parameterRemoved(int index, NestableParameterAnnotation parameter) {
+		this.fireItemRemoved(PARAMETERS_LIST, index, parameter);
 	}
 	
 	// ********** NestableAnnotation implementation **********
@@ -283,51 +277,54 @@ public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member>
 			return GenericGeneratorAnnotationImpl.this.getAnnotationName();
 		}
 
-		public org.eclipse.jdt.core.dom.Annotation getAstAnnotation(CompilationUnit astRoot) {
-			return GenericGeneratorAnnotationImpl.this.getAstAnnotation(astRoot);
+		public org.eclipse.jdt.core.dom.Annotation getContainerJdtAnnotation(CompilationUnit astRoot) {
+			return GenericGeneratorAnnotationImpl.this.getJdtAnnotation(astRoot);
 		}
 
 		public String getElementName() {
 			return Hibernate.GENERIC_GENERATOR__PARAMETERS;
 		}
 
-		public String getNestedAnnotationName() {
+		public String getNestableAnnotationName() {
 			return ParameterAnnotation.ANNOTATION_NAME;
 		}
 
-		public Iterable<NestableParameterAnnotation> getNestedAnnotations() {
+		public ListIterator<NestableParameterAnnotation> nestedAnnotations() {
 			return GenericGeneratorAnnotationImpl.this.nestableParameters();
 		}
 
-		public int getNestedAnnotationsSize() {
+		public int nestedAnnotationsSize() {
 			return GenericGeneratorAnnotationImpl.this.parametersSize();
 		}
 
-		public NestableParameterAnnotation addNestedAnnotation() {
-			return GenericGeneratorAnnotationImpl.this.addParameter_();
+		public NestableParameterAnnotation addNestedAnnotationInternal() {
+			return GenericGeneratorAnnotationImpl.this.addParameterInternal();
 		}
 
-		public void syncAddNestedAnnotation(org.eclipse.jdt.core.dom.Annotation nestedAnnotation) {
-			GenericGeneratorAnnotationImpl.this.syncAddParameterAnnotation(nestedAnnotation);
+		public void nestedAnnotationAdded(int index, NestableParameterAnnotation nestedAnnotation) {
+			GenericGeneratorAnnotationImpl.this.parameterAdded(index, nestedAnnotation);
 		}
 
-		public NestableParameterAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
-			return GenericGeneratorAnnotationImpl.this.moveParameter_(targetIndex, sourceIndex);
+		public NestableParameterAnnotation moveNestedAnnotationInternal(int targetIndex, int sourceIndex) {
+			return GenericGeneratorAnnotationImpl.this.moveParameterInternal(targetIndex, sourceIndex);
 		}
 
-		public NestableParameterAnnotation removeNestedAnnotation(int index) {
-			return GenericGeneratorAnnotationImpl.this.removeParameter_(index);
+		public void nestedAnnotationMoved(int targetIndex, int sourceIndex) {
+			GenericGeneratorAnnotationImpl.this.parameterMoved(targetIndex, sourceIndex);
 		}
 
-		public void syncRemoveNestedAnnotations(int index) {
-			GenericGeneratorAnnotationImpl.this.parameterRemoved(index);
+		public NestableParameterAnnotation removeNestedAnnotationInternal(int index) {
+			return GenericGeneratorAnnotationImpl.this.removeParameterInternal(index);
+		}
+
+		public void nestedAnnotationRemoved(int index, NestableParameterAnnotation nestedAnnotation) {
+			GenericGeneratorAnnotationImpl.this.parameterRemoved(index, nestedAnnotation);
 		}
 
 		@Override
 		public String toString() {
 			return StringTools.buildToStringFor(this);
 		}
-
 	}
 
 	public static GenericGeneratorAnnotation createNestedGenericGenerator(
@@ -383,6 +380,5 @@ public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member>
 			throw new UnsupportedOperationException();
 		}
 	}
-
 
 }

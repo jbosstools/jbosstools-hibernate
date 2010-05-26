@@ -72,9 +72,9 @@ public class SourceParameterAnnotation extends SourceAnnotation<Member> implemen
 		this.value = this.buildValue(astRoot);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncName(this.buildName(astRoot));
-		this.syncValue(this.buildValue(astRoot));
+	public void update(CompilationUnit astRoot) {
+		this.setName(this.buildName(astRoot));
+		this.setValue(this.buildValue(astRoot));
 	}
 
 	public IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
@@ -95,16 +95,13 @@ public class SourceParameterAnnotation extends SourceAnnotation<Member> implemen
 	}
 
 	public void setName(String name) {
-		if (this.attributeValueHasChanged(this.name, name)) {
-			this.name = name;
-			this.nameAdapter.setValue(name);
+		if (this.attributeValueHasNotChanged(this.name, name)) {
+			return;
 		}
-	}
-	
-	private void syncName(String astName) {
 		String old = this.name;
-		this.name = astName;
-		this.firePropertyChanged(NAME_PROPERTY, old, astName);
+		this.name = name;
+		this.nameAdapter.setValue(name);
+		this.firePropertyChanged(NAME_PROPERTY, old, name);
 	}
 
 	private String buildName(CompilationUnit astRoot) {
@@ -121,15 +118,12 @@ public class SourceParameterAnnotation extends SourceAnnotation<Member> implemen
 	}
 
 	public void setValue(String value) {
-		if (this.attributeValueHasChanged(this.value, value)) {
-			this.value = value;
-			this.valueAdapter.setValue(value);
+		if (this.attributeValueHasNotChanged(this.value, value)) {
+			return;
 		}
-	}
-	
-	private void syncValue(String value) {
 		String old = this.value;
 		this.value = value;
+		this.valueAdapter.setValue(value);
 		this.firePropertyChanged(VALUE_PROPERTY, old, value);
 	}
 

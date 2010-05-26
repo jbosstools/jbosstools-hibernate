@@ -11,9 +11,16 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
+import java.util.List;
+
+import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumnsMapping;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateJoinColumn;
 
 /**
  * @author Dmitry Geraskov
@@ -28,7 +35,7 @@ public class HibernateOrmJoinColumnJoiningStrategy extends
 		super(parent, resource);
 	}
 	
-	/*@Override
+	@Override
 	protected void validateJoinColumnName(OrmJoinColumn joinColumn,
 			List<IMessage> messages) {
 		if ( ! joinColumn.isResolved() && joinColumn.getDbTable() != null) {
@@ -136,6 +143,6 @@ public class HibernateOrmJoinColumnJoiningStrategy extends
 				}
 			}			
 		}
-	}*/
+	}
 
 }

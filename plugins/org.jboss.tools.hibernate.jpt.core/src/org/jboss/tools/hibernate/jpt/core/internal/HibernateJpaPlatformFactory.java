@@ -14,10 +14,10 @@ import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
-import org.eclipse.jpt.core.JpaPlatformVariation;
-import org.eclipse.jpt.core.internal.GenericJpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.core.internal.GenericJpaAnnotationProvider;
-import org.eclipse.jpt.core.internal.GenericJpaPlatformFactory.SimpleVersion;
+import org.eclipse.jpt.core.JpaValidation;
+import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationDefinitionProvider;
+import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
+import org.eclipse.jpt.core.internal.platform.GenericJpaPlatformProvider;
 
 /**
  * @author Dmitry Geraskov
@@ -35,17 +35,10 @@ public class HibernateJpaPlatformFactory implements JpaPlatformFactory {
 	public JpaPlatform buildJpaPlatform(String id) {
 		return new HibernateJpaPlatform(
 			id,
-			this.buildJpaVersion(),
 			buildJpaFactory(), 
 			buildJpaAnnotationProvider(), 
-			HibernateJpaPlatformProvider.instance(),
-			this.buildJpaPlatformVariation());
-	}
-	
-	
-	
-	private JpaPlatform.Version buildJpaVersion() {
-		return new SimpleVersion(HibernateJptPlugin.JPA_FACET_VERSION_1_0);
+			buildJpaValidation(),
+			GenericJpaPlatformProvider.instance());
 	}
 	
 	protected JpaFactory buildJpaFactory() {
@@ -58,13 +51,10 @@ public class HibernateJpaPlatformFactory implements JpaPlatformFactory {
 			HibernateJpaAnnotationDefinitionProvider.instance());
 	}
 	
-	protected JpaPlatformVariation buildJpaPlatformVariation() {
-		return new JpaPlatformVariation() {
+	protected JpaValidation buildJpaValidation() {
+		return new JpaValidation() {
 			public Supported getTablePerConcreteClassInheritanceIsSupported() {
-				return Supported.YES;
-			}
-			public boolean isJoinTableOverridable() {
-				return false;
+				return Supported.MAYBE;
 			}
 		};
 	}

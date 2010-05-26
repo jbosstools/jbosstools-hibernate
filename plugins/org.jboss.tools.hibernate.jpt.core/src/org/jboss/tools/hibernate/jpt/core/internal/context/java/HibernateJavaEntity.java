@@ -20,8 +20,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateEntity;
  */
 public interface HibernateJavaEntity extends JavaEntity,
 HibernateEntity, ForeignKeyHolder{
-	
-	HibernateJavaGeneratorContainer getGeneratorContainer();
 
 	JavaDiscriminatorFormula getDiscriminatorFormula();
 	

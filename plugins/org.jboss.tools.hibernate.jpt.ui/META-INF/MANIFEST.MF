@@ -16,8 +16,8 @@ Require-Bundle:
  org.eclipse.ui.forms,
  org.jboss.tools.hibernate.jpt.core,
  org.eclipse.ui.ide,
- org.eclipse.jpt.core;bundle-version="[2.3.0,2.3.1)",
- org.eclipse.jpt.ui;bundle-version="[2.3.0,2.3.1)",
+ org.eclipse.jpt.core,
+ org.eclipse.jpt.ui,
  org.eclipse.jpt.utility,
  org.eclipse.jpt.db;bundle-version="1.2.100",
  org.eclipse.ui.views.properties.tabbed;bundle-version="3.5.0"

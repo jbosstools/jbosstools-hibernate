@@ -61,62 +61,46 @@ public class ForeignKeyAnnotationImpl extends SourceAnnotation<Member> implement
 		this.inverseName = this.buildInverseName(astRoot);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncName(this.buildName(astRoot));
-		this.syncInverseName(this.buildInverseName(astRoot));
+	public void update(CompilationUnit astRoot) {
+		this.setName(this.buildName(astRoot));
+		this.setInverseName(this.buildInverseName(astRoot));
 	}
 
-	// ***** name
+	public String getInverseName() {
+		return inverseName;
+	}
+
 	public String getName() {
-		return this.name;
+		return name;
 	}
-
-	public void setName(String name) {
-		if (this.attributeValueHasChanged(this.name, name)) {
-			this.name = name;
-			this.nameAdapter.setValue(name);
+	
+	public void setName(String newName) {
+		if (this.attributeValueHasNotChanged(this.name, newName)) {
+			return;
 		}
-	}
-
-	private void syncName(String astName) {
 		String old = this.name;
-		this.name = astName;
-		this.firePropertyChanged(NAME_PROPERTY, old, astName);
+		this.name = newName;
+		this.nameAdapter.setValue(newName);
+		this.firePropertyChanged(NAME_PROPERTY, old, newName);
 	}
-
+	
+	public void setInverseName(String newInverseName) {
+		if (this.attributeValueHasNotChanged(this.inverseName, newInverseName)) {
+			return;
+		}
+		String old = this.inverseName;
+		this.inverseName = newInverseName;
+		this.inverseNameAdapter.setValue(newInverseName);
+		this.firePropertyChanged(INVERSE_NAME_PROPERTY, old, newInverseName);
+	}
+	
 	private String buildName(CompilationUnit astRoot) {
 		return this.nameAdapter.getValue(astRoot);
 	}
-
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(NAME_ADAPTER, astRoot);
-	}
-
-	// ***** inverse name
-	public String getInverseName() {
-		return this.inverseName;
-	}
-
-	public void setInverseName(String inverseName) {
-		if (this.attributeValueHasChanged(this.inverseName, inverseName)) {
-			this.inverseName = inverseName;
-			this.inverseNameAdapter.setValue(inverseName);
-		}
-	}
-
-	private void syncInverseName(String astInverseName) {
-		String old = this.inverseName;
-		this.inverseName = astInverseName;
-		this.firePropertyChanged(INVERSE_NAME_PROPERTY, old, astInverseName);
-	}
-
+	
 	private String buildInverseName(CompilationUnit astRoot) {
 		return this.inverseNameAdapter.getValue(astRoot);
 	}
-
-	public TextRange getInverseNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(INVERSE_NAME_ADAPTER, astRoot);
-	}	
 	
 	private static DeclarationAnnotationElementAdapter<String> buildDeclarationAnnotationAdapter(String property) {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, property, true);
@@ -126,6 +110,13 @@ public class ForeignKeyAnnotationImpl extends SourceAnnotation<Member> implement
 		return new ShortCircuitAnnotationElementAdapter<String>(this.member, daea);
 	}
 
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
+		return this.getElementTextRange(NAME_ADAPTER, astRoot);
+	}
+	
+	public TextRange getInverseNameTextRange(CompilationUnit astRoot) {
+		return this.getElementTextRange(INVERSE_NAME_ADAPTER, astRoot);
+	}
 	
 	public static class ForeignKeyAnnotationDefinition implements AnnotationDefinition
 	{

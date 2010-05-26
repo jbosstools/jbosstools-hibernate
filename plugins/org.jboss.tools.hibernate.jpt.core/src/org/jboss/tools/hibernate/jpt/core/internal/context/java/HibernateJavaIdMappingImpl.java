@@ -10,11 +10,25 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import java.util.Vector;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.context.java.JavaGenerator;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.java.AbstractJavaIdMapping;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaIdMapping;
+import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
+import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
+import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
+import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
+import org.jboss.tools.hibernate.jpt.core.internal.context.Index;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotation;
@@ -23,12 +37,12 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotation
  * @author Dmitry Geraskov
  *
  */
-public class HibernateJavaIdMappingImpl extends AbstractJavaIdMapping 
+public class HibernateJavaIdMappingImpl extends GenericJavaIdMapping 
 implements HibernateJavaIdMapping {
 	
 	protected JavaGenericGenerator genericGenerator;
 	
-	protected JavaIndex index;
+	protected Index index;
 	
 	/**
 	 * @param parent
@@ -38,14 +52,9 @@ implements HibernateJavaIdMapping {
 	}
 	
 	@Override
-	public HibernateJavaGeneratorContainer getGeneratorContainer() {
-		return (HibernateJavaGeneratorContainer)super.getGeneratorContainer();
-	}
-	
-	@Override
-	protected void addSupportingAnnotationNamesTo(Vector<String> names) {
-		super.addSupportingAnnotationNamesTo(names);
-		names.add(Hibernate.INDEX);
+	public Iterator<String> supportingAnnotationNames() {
+		return new CompositeIterator<String>(super.supportingAnnotationNames(),
+				Hibernate.INDEX);
 	}
 	
 	@Override
@@ -56,12 +65,14 @@ implements HibernateJavaIdMapping {
 	@Override
 	protected void initialize() {
 		super.initialize();
+		this.initializeGenericGenerator();
 		this.initializeIndex();
 	}
 	
 	@Override
 	public void update() {
 		super.update();
+		updateGenericGenerator();
 		this.updateIndex();
 	}
 	
@@ -83,7 +94,7 @@ implements HibernateJavaIdMapping {
 	}
 	
 	protected GenericGeneratorAnnotation getResourceGenericGenerator() {
-		return (GenericGeneratorAnnotation) this.getResourcePersistentAttribute().getAnnotation(GenericGeneratorAnnotation.ANNOTATION_NAME);
+		return (GenericGeneratorAnnotation) this.getResourcePersistentAttribute().getSupportingAnnotation(GenericGeneratorAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected JavaGenericGenerator buildGenericGenerator(GenericGeneratorAnnotation genericGeneratorResource) {
@@ -92,7 +103,7 @@ implements HibernateJavaIdMapping {
 		return generator;
 	}
 	
-	/*@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public Iterator<JavaGenerator> generators() {
 		return new CompositeIterator<JavaGenerator>(super.generators(),
 			(getGenericGenerator() == null) ? EmptyIterator.instance() 
@@ -105,7 +116,7 @@ implements HibernateJavaIdMapping {
 		}
 		this.genericGenerator = ((HibernateJpaFactory)getJpaFactory()).buildJavaGenericGenerator(this);
 		GenericGeneratorAnnotation genericGeneratorResource = (GenericGeneratorAnnotation)getResourcePersistentAttribute()
-								.addAnnotation(GenericGeneratorAnnotation.ANNOTATION_NAME);
+								.addSupportingAnnotation(GenericGeneratorAnnotation.ANNOTATION_NAME);
 		this.genericGenerator.initialize(genericGeneratorResource);
 		firePropertyChanged(GENERIC_GENERATORS_LIST, null, this.genericGenerator);
 		return this.genericGenerator;
@@ -121,7 +132,7 @@ implements HibernateJavaIdMapping {
 		}
 		JavaGenericGenerator oldGenericGenerator = this.genericGenerator;
 		this.genericGenerator = null;
-		this.getResourcePersistentAttribute().removeAnnotation(GenericGeneratorAnnotation.ANNOTATION_NAME);
+		this.getResourcePersistentAttribute().removeSupportingAnnotation(GenericGeneratorAnnotation.ANNOTATION_NAME);
 		firePropertyChanged(GENERIC_GENERATORS_LIST, oldGenericGenerator,null);
 	}
 	
@@ -200,7 +211,7 @@ implements HibernateJavaIdMapping {
 		if (this.genericGenerator == generator){
 			removeGenericGenerator();
 		}
-	}*/
+	}
 	
 	// *** index
 	
@@ -228,23 +239,23 @@ implements HibernateJavaIdMapping {
 		}
 	}
 	
-	public JavaIndex addIndex() {
+	public Index addIndex() {
 		if (getIndex() != null) {
 			throw new IllegalStateException("index already exists"); //$NON-NLS-1$
 		}
 		this.index = getJpaFactory().buildIndex(this);
-		IndexAnnotation indexResource = (IndexAnnotation) getResourcePersistentAttribute().addAnnotation(IndexAnnotation.ANNOTATION_NAME);
+		IndexAnnotation indexResource = (IndexAnnotation) getResourcePersistentAttribute().addSupportingAnnotation(IndexAnnotation.ANNOTATION_NAME);
 		this.index.initialize(indexResource);
 		firePropertyChanged(INDEX_PROPERTY, null, this.index);
 		return this.index;
 	}
 
-	public JavaIndex getIndex() {
+	public Index getIndex() {
 		return this.index;
 	}
 	
-	protected void setIndex(JavaIndex newIndex) {
-		JavaIndex oldIndex = this.index;
+	protected void setIndex(Index newIndex) {
+		Index oldIndex = this.index;
 		this.index = newIndex;
 		firePropertyChanged(INDEX_PROPERTY, oldIndex, newIndex);
 	}
@@ -253,20 +264,20 @@ implements HibernateJavaIdMapping {
 		if (getIndex() == null) {
 			throw new IllegalStateException("index does not exist, cannot be removed"); //$NON-NLS-1$
 		}
-		JavaIndex oldIndex = this.index;
+		Index oldIndex = this.index;
 		this.index = null;
-		this.getResourcePersistentAttribute().removeAnnotation(IndexAnnotation.ANNOTATION_NAME);
+		this.getResourcePersistentAttribute().removeSupportingAnnotation(IndexAnnotation.ANNOTATION_NAME);
 		firePropertyChanged(INDEX_PROPERTY, oldIndex, null);
 	}
 	
-	protected JavaIndex buildIndex(IndexAnnotation indexResource) {
-		JavaIndex index = getJpaFactory().buildIndex(this);
+	protected Index buildIndex(IndexAnnotation indexResource) {
+		Index index = getJpaFactory().buildIndex(this);
 		index.initialize(indexResource);
 		return index;
 	}
 	
 	protected IndexAnnotation getResourceIndex() {
-		return (IndexAnnotation) this.getResourcePersistentAttribute().getAnnotation(IndexAnnotation.ANNOTATION_NAME);
+		return (IndexAnnotation) this.getResourcePersistentAttribute().getSupportingAnnotation(IndexAnnotation.ANNOTATION_NAME);
 	}
 
 }

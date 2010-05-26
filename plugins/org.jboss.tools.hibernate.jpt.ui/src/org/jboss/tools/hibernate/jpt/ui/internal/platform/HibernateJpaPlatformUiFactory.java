@@ -12,8 +12,10 @@ package org.jboss.tools.hibernate.jpt.ui.internal.platform;
 
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JpaPlatformUiFactory;
+import org.eclipse.jpt.ui.internal.GenericJpaPlatformUiProvider;
 import org.eclipse.jpt.ui.internal.platform.generic.GenericNavigatorProvider;
-import org.jboss.tools.hibernate.jpt.ui.internal.HibernateJpaPlatformUiProvider;
+import org.eclipse.jpt.ui.internal.structure.JavaResourceModelStructureProvider;
+import org.eclipse.jpt.ui.internal.structure.PersistenceResourceModelStructureProvider;
 
 /**
  * @author Dmitry Geraskov
@@ -27,8 +29,11 @@ public class HibernateJpaPlatformUiFactory implements JpaPlatformUiFactory {
 
 	public JpaPlatformUi buildJpaPlatformUi() {
 		return new HibernateJpaPlatformUi(
+			new HibernateJpaUiFactory(),
 			new GenericNavigatorProvider(),
-			HibernateJpaPlatformUiProvider.instance()
+			JavaResourceModelStructureProvider.instance(), 
+			PersistenceResourceModelStructureProvider.instance(),
+			GenericJpaPlatformUiProvider.instance()
 		);
 	}
 

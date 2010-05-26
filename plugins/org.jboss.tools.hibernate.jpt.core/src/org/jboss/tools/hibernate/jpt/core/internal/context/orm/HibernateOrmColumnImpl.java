@@ -13,7 +13,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
-import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmColumn;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmColumn;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.core.Message;
@@ -21,8 +21,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 
 /**
  * @author Dmitry Geraskov
@@ -70,8 +70,9 @@ implements HibernateOrmColumn {
 		return getDefaultName();
 	}
 	
-	public Table getDbTable() {
-		return getOwner().getDbTable(this.getDBTableName());
+	@Override
+	protected String getOwningTableName() {
+		return getDBTableName();
 	}
 	
 	public String getDBTableName() {

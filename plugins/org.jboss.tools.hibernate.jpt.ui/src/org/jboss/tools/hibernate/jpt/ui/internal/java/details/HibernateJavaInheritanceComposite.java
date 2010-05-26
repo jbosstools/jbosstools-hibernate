@@ -11,8 +11,8 @@
 package org.jboss.tools.hibernate.jpt.ui.internal.java.details;
 
 import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.eclipse.jpt.ui.internal.details.java.JavaPrimaryKeyJoinColumnsComposite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.ui.internal.java.details.JavaPrimaryKeyJoinColumnsComposite;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateAbstractInheritanceComposite;
@@ -24,9 +24,9 @@ import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateAbstra
 public class HibernateJavaInheritanceComposite extends HibernateAbstractInheritanceComposite<HibernateJavaEntity> {
 
 	@SuppressWarnings("unchecked")
-	public HibernateJavaInheritanceComposite(Pane<? extends JavaEntity> parentPane,
+	public HibernateJavaInheritanceComposite(FormPane<? extends JavaEntity> parentPane,
 	                            Composite parent) {
-		super((Pane<? extends HibernateJavaEntity>) parentPane, parent);
+		super((FormPane<? extends HibernateJavaEntity>) parentPane, parent);
 	}
 
 	protected void addPrimaryKeyJoinColumnsComposite(Composite container) {

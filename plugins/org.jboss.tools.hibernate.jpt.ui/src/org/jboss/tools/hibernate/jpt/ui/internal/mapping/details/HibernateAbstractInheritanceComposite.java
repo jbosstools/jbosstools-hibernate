@@ -1,5 +1,5 @@
 /*******************************************************************************
-  * Copyright (c) 2009-2010 Red Hat, Inc.
+  * Copyright (c) 2009 Red Hat, Inc.
   * Distributed under license by Red Hat, Inc. All rights reserved.
   * This program is made available under the terms of the
   * Eclipse Public License v1.0 which accompanies this distribution,
@@ -15,24 +15,25 @@ import java.util.Collection;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.AbstractEntityComposite;
-import org.eclipse.jpt.ui.internal.details.AbstractInheritanceComposite;
-import org.eclipse.jpt.ui.internal.details.DiscriminatorColumnComposite;
-import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
+import org.eclipse.jpt.ui.internal.mappings.details.AbstractEntityComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.AbstractInheritanceComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.DiscriminatorColumnComposite;
+import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
-import org.jboss.tools.hibernate.jpt.ui.internal.mappings.db.xpl.ColumnCombo;
 
 /**
  * Here the layout of this pane:
@@ -79,7 +80,7 @@ import org.jboss.tools.hibernate.jpt.ui.internal.mappings.db.xpl.ColumnCombo;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public abstract class HibernateAbstractInheritanceComposite<T extends HibernateEntity> extends Pane<T> {
+public abstract class HibernateAbstractInheritanceComposite<T extends HibernateEntity> extends FormPane<T> {
 
 	/**
 	 * A key used to represent the default value, this is required to convert
@@ -98,7 +99,7 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public HibernateAbstractInheritanceComposite(Pane<? extends T> parentPane,
+	public HibernateAbstractInheritanceComposite(FormPane<? extends T> parentPane,
 	                            Composite parent) {
 
 		super(parentPane, parent, false);
@@ -117,13 +118,13 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 		// Strategy widgets
 		addLabeledComposite(
 			subPane,
-			JptUiDetailsMessages.InheritanceComposite_strategy,
+			JptUiMappingsMessages.InheritanceComposite_strategy,
 			addStrategyCombo(subPane),
 			JpaHelpContextIds.ENTITY_INHERITANCE_STRATEGY
 		);
 
 		// Discriminator Value widgets
-		Combo discriminatorValueCombo = addEditableCombo(
+		CCombo discriminatorValueCombo = addEditableCCombo(
 			subPane,
 			buildDiscriminatorValueListHolder(),
 			buildDiscriminatorValueHolder(),
@@ -131,7 +132,7 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 		);
 		Label discriminatorValueLabel = addLabel(
 			subPane, 
-			JptUiDetailsMessages.InheritanceComposite_discriminatorValue
+			JptUiMappingsMessages.InheritanceComposite_discriminatorValue
 		);
 		addLabeledComposite(
 			subPane,
@@ -141,11 +142,14 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 			JpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_VALUE
 		);
 	
+		new ControlEnabler(buildDiscriminatorValueEnabledHolder(), discriminatorValueCombo, discriminatorValueLabel);
+		
 		if (getSubject() instanceof HibernateJavaEntity) {
-			new HibernateDiscriminatorColumnComposite((Pane<? extends HibernateJavaEntity>) this, container);			
+			new HibernateDiscriminatorColumnComposite((FormPane<? extends HibernateJavaEntity>) this, container);			
 		} else {
 			new DiscriminatorColumnComposite<Entity>(this, container);
-		}		
+		}
+		
 
 		// Primary Key Join Columns widgets
 		addPrimaryKeyJoinColumnsComposite(addSubPane(container, 5));
@@ -212,16 +216,16 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 
 					if (defaultName.length() > 0) {
 						value = NLS.bind(
-							JptUiDetailsMessages.DefaultWithOneParam,
+							JptUiMappingsMessages.DefaultWithOneParam,
 							defaultName
 						);
 					}
 					else {
-						value = JptUiDetailsMessages.ProviderDefault;
+						value = JptUiMappingsMessages.ProviderDefault;
 					}
 				}
 				if (value.startsWith(NONE_KEY)) {
-					value = JptUiDetailsMessages.NoneSelected;
+					value = JptUiMappingsMessages.NoneSelected;
 				}
 				return value;
 			}
@@ -278,7 +282,7 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 			@Override
 			protected String displayString(InheritanceType value) {
 				return buildDisplayString(
-					JptUiDetailsMessages.class,
+					JptUiMappingsMessages.class,
 					AbstractInheritanceComposite.class,
 					value
 				);

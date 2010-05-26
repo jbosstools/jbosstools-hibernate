@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009-2010 Red Hat, Inc.
+ * Copyright (c) 2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -13,7 +13,7 @@ package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 import java.util.Collection;
 
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
 import org.eclipse.jpt.ui.internal.util.LabeledLabel;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
@@ -51,13 +51,13 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 		
 		addLabeledText(
 			container, 
-			JptUiDetailsMessages.NamedQueryComposite_nameTextLabel, 
+			JptUiMappingsMessages.NamedQueryComposite_nameTextLabel, 
 			buildNameTextHolder());
 
 		// Query text area
 		addLabeledMultiLineText(
 			container,
-			JptUiDetailsMessages.NamedQueryPropertyComposite_query,
+			JptUiMappingsMessages.NamedQueryPropertyComposite_query,
 			buildQueryHolder(),
 			4,
 			null
@@ -136,7 +136,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 
 		Label label = addLabel(
 			container,
-			JptUiDetailsMessages.DefaultEmpty
+			JptUiMappingsMessages.DefaultEmpty
 		);
 
 		new LabeledControlUpdater(
@@ -158,7 +158,7 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 					HibernateNamedQuery.DEFAULT_FETCH_SIZE;
 
 				return NLS.bind(
-					JptUiDetailsMessages.DefaultWithOneParam,
+					JptUiMappingsMessages.DefaultWithOneParam,
 					Integer.valueOf(defaultValue)
 				);
 			}
@@ -170,6 +170,18 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 			@Override
 			protected Integer buildValue_() {
 				return Integer.valueOf(this.subject.getDefaultFetchSize());
+			}
+
+			@Override
+			protected synchronized void subjectChanged() {
+				Object oldValue = this.getValue();
+				super.subjectChanged();
+				Object newValue = this.getValue();
+
+				// Make sure the default value is appended to the text
+				if (oldValue == newValue && newValue == null) {
+					this.fireAspectChange(Integer.MIN_VALUE, newValue);
+				}
 			}
 		};
 	}
@@ -221,6 +233,18 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 			protected void setValue_(Boolean value) {
 				this.subject.setSpecifiedCacheable(value);
 			}
+
+			@Override
+			protected synchronized void subjectChanged() {
+				Object oldValue = this.getValue();
+				super.subjectChanged();
+				Object newValue = this.getValue();
+
+				// Make sure the default value is appended to the text
+				if (oldValue == newValue && newValue == null) {
+					this.fireAspectChange(Boolean.TRUE, newValue);
+				}
+			}
 		};
 	}
 
@@ -234,8 +258,8 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 				if ((getSubject() != null) && (value == null)) {
 					boolean defaultValue = getSubject().isDefaultCacheable();
 
-					String defaultStringValue = defaultValue ? JptUiDetailsMessages.Boolean_True :
-					                                           JptUiDetailsMessages.Boolean_False;
+					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+					                                           JptUiMappingsMessages.Boolean_False;
 
 					return NLS.bind(
 						HibernateUIMappingMessages.NamedQueryPropertyComposite_cacheableWithDefault,
@@ -264,6 +288,17 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 				this.subject.setSpecifiedReadOnly(value);
 			}
 
+			@Override
+			protected synchronized void subjectChanged() {
+				Object oldValue = this.getValue();
+				super.subjectChanged();
+				Object newValue = this.getValue();
+
+				// Make sure the default value is appended to the text
+				if (oldValue == newValue && newValue == null) {
+					this.fireAspectChange(Boolean.TRUE, newValue);
+				}
+			}
 		};
 	}
 
@@ -277,8 +312,8 @@ public class HibernateQueryPropertyComposite<T extends HibernateQuery> extends P
 				if ((getSubject() != null) && (value == null)) {
 					boolean defaultValue = getSubject().isDefaultReadOnly();
 
-					String defaultStringValue = defaultValue ? JptUiDetailsMessages.Boolean_True :
-					                                           JptUiDetailsMessages.Boolean_False;
+					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+					                                           JptUiMappingsMessages.Boolean_False;
 
 					return NLS.bind(
 						HibernateUIMappingMessages.NamedQueryPropertyComposite_readOnlyWithDefault,

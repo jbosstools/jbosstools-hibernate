@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009-2010 Red Hat, Inc.
+ * Copyright (c) 2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -16,13 +16,12 @@ import org.eclipse.jpt.core.context.Entity;
  * @author Dmitry Geraskov
  *
  */
-public interface HibernateEntity extends Entity {
+public interface HibernateEntity extends Entity,
+	GenericGeneratorHolder, HibernateQueryContainer {
 	
 	String DISCRIMINATOR_FORMULA_PROPERTY = "discriminatorFormula"; //$NON-NLS-1$
 	
 	HibernateTable getTable();
-	
-	//HibernateGeneratorContainer getGeneratorContainer();
 	
 	//Column getPrimaryIdColumn();
 	

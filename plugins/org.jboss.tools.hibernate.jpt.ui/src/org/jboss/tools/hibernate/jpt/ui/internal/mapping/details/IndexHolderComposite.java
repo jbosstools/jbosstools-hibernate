@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009-2010 Red Hat, Inc.
+ * Copyright (c) 2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -11,22 +11,22 @@
 
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
-import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
+import org.jboss.tools.hibernate.jpt.core.internal.context.Index;
 import org.jboss.tools.hibernate.jpt.core.internal.context.IndexHolder;
-import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaIndex;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class IndexHolderComposite extends Pane<IndexHolder> {
+public class IndexHolderComposite extends FormPane<IndexHolder> {
 	
-	private WritablePropertyValueModel<JavaIndex> indexHolder;
+	private WritablePropertyValueModel<Index> indexHolder;
 
-	protected IndexHolderComposite(Pane<? extends IndexHolder> parentPane,
+	protected IndexHolderComposite(FormPane<? extends IndexHolder> parentPane,
 			Composite parent) {
 		super(parentPane, parent);
 	}
@@ -50,7 +50,7 @@ public class IndexHolderComposite extends Pane<IndexHolder> {
 
 	
 	protected final WritablePropertyValueModel<String> buildIndexNameHolder() {
-		return new PropertyAspectAdapter<JavaIndex, String>(this.indexHolder, JavaIndex.INDEX_NAME) {
+		return new PropertyAspectAdapter<Index, String>(this.indexHolder, Index.INDEX_NAME) {
 			@Override
 			protected String buildValue_() {
 				return subject == null ? null : subject.getName();
@@ -67,7 +67,7 @@ public class IndexHolderComposite extends Pane<IndexHolder> {
 					return;
 				}
 				
-				JavaIndex index = 
+				Index index = 
 					(getSubject().getIndex() == null) ? getSubject().addIndex()
 																: getSubject().getIndex();
 				index.setName(value);
@@ -83,10 +83,10 @@ public class IndexHolderComposite extends Pane<IndexHolder> {
 		};
 	}
 	
-	private WritablePropertyValueModel<JavaIndex> buildIndexHolder() {
-		return new PropertyAspectAdapter<IndexHolder, JavaIndex>(getSubjectHolder(), IndexHolder.INDEX_PROPERTY) {
+	private WritablePropertyValueModel<Index> buildIndexHolder() {
+		return new PropertyAspectAdapter<IndexHolder, Index>(getSubjectHolder(), IndexHolder.INDEX_PROPERTY) {
 			@Override
-			protected JavaIndex buildValue_() {
+			protected Index buildValue_() {
 				return this.subject.getIndex();
 			}
 		};

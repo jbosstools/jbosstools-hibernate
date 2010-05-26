@@ -10,9 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaBaseColumn;
+import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaColumn;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaColumn;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
@@ -21,8 +21,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 
 /**
  * @author Dmitry Geraskov
@@ -30,7 +30,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
  */
 public class HibernateJavaColumnImpl extends GenericJavaColumn implements HibernateJavaColumn {
 	
-	public HibernateJavaColumnImpl(JavaJpaContextNode parent, JavaBaseColumn.Owner owner) {
+	public HibernateJavaColumnImpl(JavaJpaContextNode parent, JavaColumn.Owner owner) {
 		super(parent, owner);
 	}
 

@@ -12,8 +12,8 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.context.java.JavaRelationshipReference;
-import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaOneToManyMapping;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToManyMapping;
+import org.jboss.tools.hibernate.jpt.core.internal.context.NamingStrategyMappingTools;
 
 /**
  * @author Dmitry Geraskov
@@ -26,8 +26,8 @@ public class HibernateJavaOneToManyMapping extends GenericJavaOneToManyMapping {
 	}
 	
 	@Override
-	protected JavaRelationshipReference buildRelationshipReference() {
-		return super.buildRelationshipReference();
+	public String getJoinTableDefaultName() {
+		return NamingStrategyMappingTools.buildJoinTableDefaultName(this);
 	}
 
 }

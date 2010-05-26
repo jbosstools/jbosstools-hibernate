@@ -22,7 +22,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.context.persistence.Persistence;
-import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnit;
+import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -30,17 +30,15 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
-import org.jboss.tools.hibernate.jpt.core.internal.context.basic.HibernatePersistenceUnitProperties;
-import org.jboss.tools.hibernate.jpt.core.internal.context.persistence.HibernatePersistenceXmlContextNodeFactory;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class HibernatePersistenceUnit extends AbstractPersistenceUnit 
+public class HibernatePersistenceUnit extends GenericPersistenceUnit 
 	implements Messages, Hibernate {
 	
-	private HibernatePersistenceUnitProperties hibernateProperties;
+	private HibernateJpaProperties hibernateProperties;
 
 	/**
 	 * @param parent
@@ -49,34 +47,12 @@ public class HibernatePersistenceUnit extends AbstractPersistenceUnit
 	public HibernatePersistenceUnit(Persistence parent,
 			XmlPersistenceUnit persistenceUnit) {
 		super(parent, persistenceUnit);
-	}
-	
-	@Override
-	public HibernatePersistenceXmlContextNodeFactory getContextNodeFactory() {
-		return (HibernatePersistenceXmlContextNodeFactory) super.getContextNodeFactory();
-	}
-	
-	@Override
-	protected void initializeProperties() {
-		super.initializeProperties();
-		this.hibernateProperties = this.getContextNodeFactory().buildHibernatePersistenceUnitProperties(this);
-	}
-	
-	@Override
-	public void propertyRemoved(String propertyName) {
-		super.propertyRemoved(propertyName);
-		this.hibernateProperties.propertyRemoved(propertyName);
-	}
-	
-	@Override
-	public void propertyValueChanged(String propertyName, String newValue) {
-		super.propertyValueChanged(propertyName, newValue);
-		this.hibernateProperties.propertyValueChanged(propertyName, newValue);
+		this.hibernateProperties = new HibernateJpaProperties(this);
 	}
 
 	// ******** Behavior *********
-	public HibernatePersistenceUnitProperties getHibernatePersistenceUnitProperties() {
-		return this.hibernateProperties;
+	public BasicHibernateProperties getBasicProperties() {
+		return this.hibernateProperties.getBasicHibernate();
 	}
 
 	// ********** Validation ***********************************************
@@ -87,7 +63,7 @@ public class HibernatePersistenceUnit extends AbstractPersistenceUnit
 	}	
 
 	protected void validateHibernateConfigurationFileExists(List<IMessage> messages, IReporter reporter) {
-		String configFile = hibernateProperties.getConfigurationFile();
+		String configFile = getBasicProperties().getConfigurationFile();
 		if (configFile != null && configFile.length() > 0){
 			IPath path = new Path(configFile);
 				

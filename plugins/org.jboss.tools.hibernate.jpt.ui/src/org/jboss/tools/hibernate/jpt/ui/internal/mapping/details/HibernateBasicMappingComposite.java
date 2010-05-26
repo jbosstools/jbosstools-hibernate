@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009-2010 Red Hat, Inc.
+ * Copyright (c) 2009 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -11,18 +11,29 @@
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
 import org.eclipse.jpt.core.context.BasicMapping;
+import org.eclipse.jpt.core.context.Converter;
+import org.eclipse.jpt.core.context.ConvertibleMapping;
+import org.eclipse.jpt.core.context.EnumeratedConverter;
+import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.details.AbstractBasicMappingComposite;
-import org.eclipse.jpt.ui.internal.details.ColumnComposite;
-import org.eclipse.jpt.ui.internal.details.EnumTypeComposite;
-import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
-import org.eclipse.jpt.ui.internal.details.OptionalComposite;
-import org.eclipse.jpt.ui.internal.details.TemporalTypeComposite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.details.ColumnComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.EnumTypeComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.FetchTypeComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.OptionalComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.TemporalTypeComposite;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.jboss.tools.hibernate.jpt.core.internal.context.Generated;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateColumn;
 import org.jboss.tools.hibernate.jpt.core.internal.context.IndexHolder;
 
@@ -74,7 +85,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.IndexHolder;
  * @version 2.0
  * @since 1.0
  */
-public class HibernateBasicMappingComposite extends AbstractBasicMappingComposite<BasicMapping>
+public class HibernateBasicMappingComposite extends FormPane<BasicMapping>
                                    implements JpaComposite
 {
 	/**
@@ -93,30 +104,194 @@ public class HibernateBasicMappingComposite extends AbstractBasicMappingComposit
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		super.initializeLayout(container);
-		this.initializeIndexCollapsibleSection(container);
+		initializeGeneralPane(container);
+		initializeTypePane(container);
+		initializeIndexPane(container);
 	}
 	
-	protected void initializeBasicSection(Composite container) {
-		new HibernateColumnComposite(this, (PropertyValueModel<? extends HibernateColumn>) buildColumnHolder(), container);
+	@SuppressWarnings("unchecked")
+	private void initializeGeneralPane(Composite container) {
+		int groupBoxMargin = getGroupBoxMargin();
+
+		new HibernateColumnComposite(this, buildColumnHolder(), container);
+
+		// Align the widgets under the ColumnComposite
+		container = addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+
+		if (getSubject() instanceof Generated) {
+			new GeneratedComposite((FormPane<? extends Generated>) this, container);			
+		}
+		
 		new FetchTypeComposite(this, container);
 		new OptionalComposite(this, addSubPane(container, 4));
+
 	}
 	
-	protected void initializeIndexCollapsibleSection(Composite container) {
+	private void initializeTypePane(Composite container) {
+
+		container = addCollapsableSection(
+			container,
+			JptUiMappingsMessages.TypeSection_type
+		);
+		((GridLayout) container.getLayout()).numColumns = 2;
+
+		// No converter
+		Button noConverterButton = addRadioButton(
+			container, 
+			JptUiMappingsMessages.TypeSection_default, 
+			buildNoConverterHolder(), 
+			null);
+		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
+		
+		// Lob
+		Button lobButton = addRadioButton(
+			container, 
+			JptUiMappingsMessages.TypeSection_lob, 
+			buildLobConverterHolder(), 
+			null);
+		((GridData) lobButton.getLayoutData()).horizontalSpan = 2;
+		
+		PropertyValueModel<Converter> specifiedConverterHolder = buildSpecifiedConverterHolder();
+		// Temporal
+		addRadioButton(
+			container, 
+			JptUiMappingsMessages.TypeSection_temporal, 
+			buildTemporalBooleanHolder(), 
+			null);
+		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(specifiedConverterHolder), container, getWidgetFactory()));
+		
+		
+		// Enumerated
+		addRadioButton(
+			container, 
+			JptUiMappingsMessages.TypeSection_enumerated, 
+			buildEnumeratedBooleanHolder(), 
+			null);
+		registerSubPane(new EnumTypeComposite(buildEnumeratedConverterHolder(specifiedConverterHolder), container, getWidgetFactory()));
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void initializeIndexPane(Composite container) {
 		if (getSubject() instanceof IndexHolder) {
-			container = addCollapsibleSection(
+			container = addCollapsableSection(
 					container,
 					HibernateUIMappingMessages.Index_section_index
 				);
 			((GridLayout) container.getLayout()).numColumns = 2;
-			this.initializeIndexSection(container);
+			new IndexHolderComposite((FormPane<? extends IndexHolder>) this, container);			
 		}
+
+	}
+
+	private PropertyValueModel<HibernateColumn> buildColumnHolder() {
+		return new TransformationPropertyValueModel<BasicMapping, HibernateColumn>(getSubjectHolder()) {
+			@Override
+			protected HibernateColumn transform_(BasicMapping value) {
+				return (HibernateColumn) value.getColumn();
+			}
+		};
+	}
+
+	private WritablePropertyValueModel<Boolean> buildNoConverterHolder() {
+		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return Boolean.valueOf(this.subject.getSpecifiedConverter() == null);
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				if (value.booleanValue()) {
+					this.subject.setSpecifiedConverter(Converter.NO_CONVERTER);
+				}
+			}
+		};
 	}
 	
-	private void initializeIndexSection(Composite container) {
-		new IndexHolderComposite((Pane<? extends IndexHolder>) this, container);
+	private WritablePropertyValueModel<Boolean> buildLobConverterHolder() {
+		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				Converter converter = this.subject.getSpecifiedConverter();
+				if (converter == null) {
+					return Boolean.FALSE;
+				}
+				return Boolean.valueOf(converter.getType() == Converter.LOB_CONVERTER);
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				if (value.booleanValue()) {
+					this.subject.setSpecifiedConverter(Converter.LOB_CONVERTER);
+				}
+			}
+		};
+	}
+	
+	private PropertyValueModel<Converter> buildSpecifiedConverterHolder() {
+		return new PropertyAspectAdapter<BasicMapping, Converter>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {
+			@Override
+			protected Converter buildValue_() {
+				return this.subject.getSpecifiedConverter();
+			}
+		};
+	}
+	
+	private PropertyValueModel<TemporalConverter> buildTemporalConverterHolder(PropertyValueModel<Converter> converterHolder) {
+		return new TransformationPropertyValueModel<Converter, TemporalConverter>(converterHolder) {
+			@Override
+			protected TemporalConverter transform_(Converter converter) {
+				return (converter != null && converter.getType() == Converter.TEMPORAL_CONVERTER) ? (TemporalConverter) converter : null;
+			}
+		};
+	}
+	
+	private PropertyValueModel<EnumeratedConverter> buildEnumeratedConverterHolder(PropertyValueModel<Converter> converterHolder) {
+		return new TransformationPropertyValueModel<Converter, EnumeratedConverter>(converterHolder) {
+			@Override
+			protected EnumeratedConverter transform_(Converter converter) {
+				return (converter != null && converter.getType() == Converter.ENUMERATED_CONVERTER) ? (EnumeratedConverter) converter : null;
+			}
+		};
 	}
 
+	private WritablePropertyValueModel<Boolean> buildTemporalBooleanHolder() {
+		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), BasicMapping.SPECIFIED_CONVERTER_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				Converter converter = this.subject.getSpecifiedConverter();
+				if (converter == null) {
+					return Boolean.FALSE;
+				}
+				return Boolean.valueOf(converter.getType() == Converter.TEMPORAL_CONVERTER);
+			}
 
+			@Override
+			protected void setValue_(Boolean value) {
+				if (value.booleanValue()) {
+					this.subject.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
+				}
+			}
+		};
+	}
+	
+	private WritablePropertyValueModel<Boolean> buildEnumeratedBooleanHolder() {
+		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), BasicMapping.SPECIFIED_CONVERTER_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				Converter converter = this.subject.getSpecifiedConverter();
+				if (converter == null) {
+					return Boolean.FALSE;
+				}
+				return Boolean.valueOf(converter.getType() == Converter.ENUMERATED_CONVERTER);
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				if (value.booleanValue()) {
+					this.subject.setSpecifiedConverter(Converter.ENUMERATED_CONVERTER);
+				}
+			}
+		};
+	}
 }

@@ -63,9 +63,9 @@ implements IndexAnnotation{
 		this.columnNames = this.buildColumnNames(astRoot);
 	}
 
-	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncName(this.buildName(astRoot));
-		this.syncColumnNames(this.buildColumnNames(astRoot));
+	public void update(CompilationUnit astRoot) {
+		this.setName(this.buildName(astRoot));
+		this.setColumnNames(this.buildColumnNames(astRoot));
 	}
 
 	public String[] getColumnNames() {
@@ -77,29 +77,23 @@ implements IndexAnnotation{
 	}
 	
 	public void setName(String newName) {
-		if (this.attributeValueHasChanged(this.name, newName)) {
-			this.name = newName;
-			this.nameAdapter.setValue(newName);
+		if (this.attributeValueHasNotChanged(this.name, newName)) {
+			return;
 		}
-	}
-	
-	private void syncName(String astName) {
 		String old = this.name;
-		this.name = astName;
-		this.firePropertyChanged(NAME_PROPERTY, old, astName);
+		this.name = newName;
+		this.nameAdapter.setValue(newName);
+		this.firePropertyChanged(NAME_PROPERTY, old, newName);
 	}
 	
 	public void setColumnNames(String[] newColumnNames) {
-		if (this.attributeValueHasChanged(this.columnNames, newColumnNames)) {
-			this.columnNames = newColumnNames;
-			this.columnNamesAdapter.setValue(newColumnNames);
+		if (this.attributeValueHasNotChanged(this.columnNames, newColumnNames)) {
+			return;
 		}
-	}
-	
-	private void syncColumnNames(String[] columnNames) {
 		String[] old = this.columnNames;
-		this.columnNames = columnNames;
-		this.firePropertyChanged(COLUMN_NAMES_PROPERTY, old, columnNames);
+		this.columnNames = newColumnNames;
+		this.columnNamesAdapter.setValue(newColumnNames);
+		this.firePropertyChanged(COLUMN_NAMES_PROPERTY, old, newColumnNames);
 	}
 	
 	private String buildName(CompilationUnit astRoot) {

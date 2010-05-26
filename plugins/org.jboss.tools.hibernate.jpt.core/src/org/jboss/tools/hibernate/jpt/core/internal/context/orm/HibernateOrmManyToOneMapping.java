@@ -13,7 +13,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
-import org.eclipse.jpt.core.internal.context.orm.AbstractOrmManyToOneMapping;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmManyToOneMapping;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
 import org.jboss.tools.hibernate.jpt.core.internal.context.NamingStrategyMappingTools;
 
@@ -22,17 +22,17 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.NamingStrategyMapping
  *
  */
 public class HibernateOrmManyToOneMapping<T extends XmlManyToOne>
-extends AbstractOrmManyToOneMapping<T> {
+extends GenericOrmManyToOneMapping<T> {
 
 	public HibernateOrmManyToOneMapping(OrmPersistentAttribute parent,
 			T resourceMapping) {
 		super(parent, resourceMapping);
 	}
 	
-	/*@Override
+	@Override
 	public String getJoinTableDefaultName() {
 		return NamingStrategyMappingTools.buildJoinTableDefaultName(this);
-	}*/
+	}
 
 	@Override
 	protected OrmRelationshipReference buildRelationshipReference() {

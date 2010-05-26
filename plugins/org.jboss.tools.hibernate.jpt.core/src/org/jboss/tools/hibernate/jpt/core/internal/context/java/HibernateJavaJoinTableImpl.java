@@ -14,7 +14,7 @@ import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaJoinTable;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaJoinTable;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.db.Schema;
@@ -24,8 +24,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 
 /**
  * @author Dmitry Geraskov
@@ -73,7 +73,7 @@ implements HibernateJavaJoinTable {
 		return getDefaultName();
 	}
 	
-	protected boolean validateAgainstDatabase(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateAgainstDatabase(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		if ( ! this.hasResolvedCatalog()) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
@@ -84,7 +84,7 @@ implements HibernateJavaJoinTable {
 					this.getCatalogTextRange(astRoot)
 				)
 			);
-			return false;
+			return;
 		}
 		
 		if ( ! this.hasResolvedSchema()) {
@@ -97,7 +97,7 @@ implements HibernateJavaJoinTable {
 					this.getSchemaTextRange(astRoot)
 				)
 			);
-			return false;
+			return;
 		}
 		
 		if ( ! this.isResolved()) {
@@ -111,8 +111,10 @@ implements HibernateJavaJoinTable {
 							this.getNameTextRange(astRoot))
 					);				
 			}
-			return false;
+			return;
 		}
-		return true;
+		
+		this.validateJoinColumns(this.joinColumns(), messages, reporter, astRoot);
+		this.validateJoinColumns(this.inverseJoinColumns(), messages, reporter, astRoot);
 	}
 }
