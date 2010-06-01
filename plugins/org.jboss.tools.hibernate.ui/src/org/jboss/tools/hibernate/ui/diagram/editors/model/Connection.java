@@ -34,7 +34,7 @@ public class Connection extends BaseElement {
 	private static IPropertyDescriptor[] descriptors_connection_foreign_key_constraint;
 
 	private static final String PROPERTY_SOURCE = "source"; //$NON-NLS-1$
-	private static final String PROPERTY_TARGET = "targer"; //$NON-NLS-1$
+	private static final String PROPERTY_TARGET = "target"; //$NON-NLS-1$
 	private static final String PROPERTY_TYPE = "type"; //$NON-NLS-1$
 	private static final String PROPERTY_CLASS_NAME = "className"; //$NON-NLS-1$
 	private static final String PROPERTY_TABLE_NAME = "tableName"; //$NON-NLS-1$
