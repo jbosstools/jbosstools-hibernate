@@ -92,7 +92,20 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 * Adding the page to the wizard.
 	 */
 	public void addPages() {
-        cPage = new ExtendedWizardNewFileCreationPage( "Ccfgxml", (IStructuredSelection) selection ); //$NON-NLS-1$
+        cPage = new ExtendedWizardNewFileCreationPage( "Ccfgxml", (IStructuredSelection) selection ) {
+        	protected InputStream getInitialContents() {
+        		final Properties props = new Properties();
+                putIfNotNull(props, Environment.SESSION_FACTORY_NAME, connectionInfoPage.getSessionFactoryName() );
+                putIfNotNull(props, Environment.DIALECT, connectionInfoPage.getDialect() );
+                putIfNotNull(props, Environment.DRIVER, connectionInfoPage.getDriver() );
+                putIfNotNull(props, Environment.URL, connectionInfoPage.getConnectionURL() );
+                putIfNotNull(props, Environment.USER, connectionInfoPage.getUsername() );
+                putIfNotNull(props, Environment.PASS, connectionInfoPage.getPassword() );
+                putIfNotNull(props, Environment.DEFAULT_CATALOG, connectionInfoPage.getDefaultCatalog() );
+                putIfNotNull(props, Environment.DEFAULT_SCHEMA, connectionInfoPage.getDefaultSchema() );
+        		return openContentStream(props);
+        	}
+        }; //$NON-NLS-1$
         cPage.setTitle( HibernateConsoleMessages.NewConfigurationWizard_create_hibernate_cfg_file );
         cPage.setDescription( HibernateConsoleMessages.NewConfigurationWizard_create_new_hibernate_cfg_xml );
         cPage.setFileName("hibernate.cfg.xml"); //$NON-NLS-1$
@@ -112,38 +125,10 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 * using wizard as execution context.
 	 */
 	public boolean performFinish() {
-		final Properties props = new Properties();
-        putIfNotNull(props, Environment.SESSION_FACTORY_NAME, connectionInfoPage.getSessionFactoryName() );
-        putIfNotNull(props, Environment.DIALECT, connectionInfoPage.getDialect() );
-        putIfNotNull(props, Environment.DRIVER, connectionInfoPage.getDriver() );
-        putIfNotNull(props, Environment.URL, connectionInfoPage.getConnectionURL() );
-        putIfNotNull(props, Environment.USER, connectionInfoPage.getUsername() );
-        putIfNotNull(props, Environment.PASS, connectionInfoPage.getPassword() );
-        putIfNotNull(props, Environment.DEFAULT_CATALOG, connectionInfoPage.getDefaultCatalog() );
-        putIfNotNull(props, Environment.DEFAULT_SCHEMA, connectionInfoPage.getDefaultSchema() );
         final IFile file = cPage.createNewFile();
 
-		IRunnableWithProgress op = new IRunnableWithProgress() {
-			public void run(IProgressMonitor monitor) throws InvocationTargetException {
-				try {
-					createHibernateCfgXml(file, props, monitor);
-				} catch (CoreException e) {
-					throw new InvocationTargetException(e);
-				} finally {
-					monitor.done();
-				}
-			}
-		};
-		try {
-			getContainer().run(true, false, op);
-		} catch (InterruptedException e) {
-			return false;
-		} catch (InvocationTargetException e) {
-			Throwable realException = e.getTargetException();
-			HibernateConsolePlugin.getDefault().showError(getShell(), HibernateConsoleMessages.NewConfigurationWizard_error, realException);
-			return false;
-		}
-		
+        openHibernateCfgXml(file);
+
 		try {
 			if (connectionInfoPage.isCreateConsoleConfigurationEnabled()) {
 				confPage.performFinish();
@@ -177,30 +162,7 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
         }
     }
 
-    /**
-	 * The worker method. It will find the container, create the
-	 * file if missing or just replace its contents, and open
-	 * the editor on the newly created file.
-     * @param file
-     * @param props
-	 */
-	private void createHibernateCfgXml(
-		final IFile file, Properties props, IProgressMonitor monitor)
-		throws CoreException {
-		// create a sample file
-		monitor.beginTask(HibernateConsoleMessages.NewConfigurationWizard_creating + file.getName(), 2);
-		try {
-			InputStream stream = openContentStream(props);
-			if (file.exists() ) {
-                file.setContents(stream, true, true, monitor);
-			} else {
-				file.create(stream, true, monitor);
-			}
-			stream.close();
-		} catch (IOException e) {
-		}
-		monitor.worked(1);
-		monitor.setTaskName(HibernateConsoleMessages.NewConfigurationWizard_open_file_for_editing);
+	private void openHibernateCfgXml(final IFile file) {
 		getShell().getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				IWorkbenchPage page =
@@ -211,7 +173,6 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 				}
 			}
 		});
-		monitor.worked(1);
 	}
 
 	/**
