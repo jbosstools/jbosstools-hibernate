@@ -21,8 +21,6 @@
  */
 package org.hibernate.eclipse.console.wizards;
 
-import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
@@ -313,16 +311,6 @@ public class NewConfigurationWizardPage extends WizardPage {
         }
         if (fileName.replace('\\', '/').indexOf('/', 1) > 0) {
             updateStatus(HibernateConsoleMessages.NewConfigurationWizardPage_file_name_must_be_valid);
-            return;
-        }
-        if (!fileName.endsWith(".cfg.xml") ) { //$NON-NLS-1$
-            updateStatus(HibernateConsoleMessages.NewConfigurationWizardPage_file_extension_must_be_cfgxml);
-            return;
-        }
-
-        IFile file = ( (IContainer) container).getFile(new Path(fileName) );
-        if(file.exists() ) {
-            updateStatus(HibernateConsoleMessages.NewConfigurationWizardPage_file_already_exist);
             return;
         }
 

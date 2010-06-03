@@ -193,10 +193,13 @@ public class HibernateConsoleMessages extends NLS {
 	public static String NewConfigurationWizardPage_file_already_exist;
 	public static String NewConfigurationWizardPage_file_container_must_be_specified;
 	public static String NewConfigurationWizardPage_file_container_must_exist;
-	public static String NewConfigurationWizardPage_file_extension_must_be_cfgxml;
+	public static String NewConfigurationWizardPage_file_extension_should_be_cfgxml;
 	public static String NewConfigurationWizardPage_file_name;
 	public static String NewConfigurationWizardPage_file_name_must_be_specified;
 	public static String NewConfigurationWizardPage_file_name_must_be_valid;
+	public static String NewConfigurationWizardPage_filefile_name;
+	public static String NewConfigurationWizardPage_fileoutside_classpath;
+	public static String NewConfigurationWizardPage_fileshould_pass_configuration;
 	public static String NewConfigurationWizardPage_hibernate_config_file;
 	public static String NewConfigurationWizardPage_password;
 	public static String NewConfigurationWizardPage_project_must_be_writable;
@@ -437,6 +440,7 @@ public class HibernateConsoleMessages extends NLS {
 	public static String ConsoleConfigurationTab_create_new;
 	public static String ConsoleConfigurationTab_setup;
 	public static String ConsoleConfigurationTabGroup_archive_classpath_entry_does_not_exist;
+	
 	public static String ConsoleConfigurationTabGroup_classpath_must_be_set_or_restored_to_default;
 	public static String DirectoryBrowseField_filesystem;
 	public static String DirectoryBrowseField_workspace;

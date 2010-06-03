@@ -22,17 +22,31 @@
 package org.hibernate.eclipse.console.wizards;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -72,6 +86,7 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 
         public ExtendedWizardNewFileCreationPage(String pageName, IStructuredSelection selection) {
             super(pageName, selection);
+            setAllowExistingResources(false);
         }
 
         boolean firstTime = true;
@@ -81,6 +96,51 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
                 validatePage();
                 firstTime = false;
             }
+        }
+        
+        @Override
+        protected boolean validatePage() {
+        	if (super.validatePage()){
+        		String fileName = getFileName();
+        		if (!fileName.endsWith(".cfg.xml") ) { //$NON-NLS-1$
+        			setMessage(HibernateConsoleMessages.NewConfigurationWizardPage_file_extension_should_be_cfgxml, WARNING);
+                } else if (!fileName.equals(HibernateConsoleMessages.NewConfigurationWizardPage_filefile_name)){
+                	setMessage(NLS.bind(HibernateConsoleMessages.NewConfigurationWizardPage_fileshould_pass_configuration,
+                			fileName), WARNING);
+                }
+        		IPath path = getContainerFullPath();
+        		IContainer container = ResourcesPlugin.getWorkspace().getRoot().getFolder(path);
+        		
+        		try {
+					if (container != null && container.getProject().hasNature(JavaCore.NATURE_ID)) {
+						IJavaProject proj = JavaCore.create(container.getProject());
+						IPath projRelPath = container.getProjectRelativePath();
+						IPackageFragmentRoot[] roots;
+
+						roots = proj.getAllPackageFragmentRoots();
+						boolean found = false;
+						for (IPackageFragmentRoot root : roots) {
+							if (root.isArchive()) continue;
+							if (root.getResource() != null && root.getResource().getProjectRelativePath().isPrefixOf(projRelPath)){
+								if (!root.getResource().getProjectRelativePath().equals(projRelPath)){
+				                	//this is not "src" folder
+									setMessage(NLS.bind(HibernateConsoleMessages.NewConfigurationWizardPage_fileshould_pass_configuration,
+				                			fileName), WARNING);
+								}
+								found = true;
+								break;
+							}
+						}
+						if (!found){
+							setMessage(HibernateConsoleMessages.NewConfigurationWizardPage_fileoutside_classpath, WARNING);
+						}										
+					}
+				} catch (CoreException e) {
+					HibernateConsolePlugin.getDefault().log(e);
+				}
+        		return true;
+        	}
+        	return false;
         }
     }
     
@@ -122,10 +182,38 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 * using wizard as execution context.
 	 */
 	public boolean performFinish() {
+		final Properties props = new Properties();
+        putIfNotNull(props, Environment.SESSION_FACTORY_NAME, connectionInfoPage.getSessionFactoryName() );
+        putIfNotNull(props, Environment.DIALECT, connectionInfoPage.getDialect() );
+        putIfNotNull(props, Environment.DRIVER, connectionInfoPage.getDriver() );
+        putIfNotNull(props, Environment.URL, connectionInfoPage.getConnectionURL() );
+        putIfNotNull(props, Environment.USER, connectionInfoPage.getUsername() );
+        putIfNotNull(props, Environment.PASS, connectionInfoPage.getPassword() );
+        putIfNotNull(props, Environment.DEFAULT_CATALOG, connectionInfoPage.getDefaultCatalog() );
+        putIfNotNull(props, Environment.DEFAULT_SCHEMA, connectionInfoPage.getDefaultSchema() );
         final IFile file = cPage.createNewFile();
 
-        openHibernateCfgXml(file);
-
+		IRunnableWithProgress op = new IRunnableWithProgress() {
+			public void run(IProgressMonitor monitor) throws InvocationTargetException {
+				try {
+					createHibernateCfgXml(file, props, monitor);
+				} catch (CoreException e) {
+					throw new InvocationTargetException(e);
+				} finally {
+					monitor.done();
+				}
+			}
+		};
+		try {
+			getContainer().run(true, false, op);
+		} catch (InterruptedException e) {
+			return false;
+		} catch (InvocationTargetException e) {
+			Throwable realException = e.getTargetException();
+			HibernateConsolePlugin.getDefault().showError(getShell(), HibernateConsoleMessages.NewConfigurationWizard_error, realException);
+			return false;
+		}
+		
 		try {
 			if (connectionInfoPage.isCreateConsoleConfigurationEnabled()) {
 				confPage.performFinish();
@@ -159,7 +247,30 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
         }
     }
 
-	private void openHibernateCfgXml(final IFile file) {
+    /**
+	 * The worker method. It will find the container, create the
+	 * file if missing or just replace its contents, and open
+	 * the editor on the newly created file.
+     * @param file
+     * @param props
+	 */
+	private void createHibernateCfgXml(
+		final IFile file, Properties props, IProgressMonitor monitor)
+		throws CoreException {
+		// create a sample file
+		monitor.beginTask(HibernateConsoleMessages.NewConfigurationWizard_creating + file.getName(), 2);
+		try {
+			InputStream stream = openContentStream(props);
+			if (file.exists() ) {
+                file.setContents(stream, true, true, monitor);
+			} else {
+				file.create(stream, true, monitor);
+			}
+			stream.close();
+		} catch (IOException e) {
+		}
+		monitor.worked(1);
+		monitor.setTaskName(HibernateConsoleMessages.NewConfigurationWizard_open_file_for_editing);
 		getShell().getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				IWorkbenchPage page =
@@ -170,6 +281,7 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 				}
 			}
 		});
+		monitor.worked(1);
 	}
 
 	/**
@@ -197,6 +309,32 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 */
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		this.selection = selection;
+		if (!selection.isEmpty()){
+			IJavaProject jproj = null; 
+			if (selection.getFirstElement() instanceof IJavaProject) {
+				jproj = (IJavaProject) selection.getFirstElement();
+			}
+			if (selection.getFirstElement() instanceof IProject){
+				try {
+					if (((IProject)selection.getFirstElement()).getNature(JavaCore.NATURE_ID) != null) {
+						jproj =  (IJavaProject)((IProject)selection.getFirstElement()).getNature(JavaCore.NATURE_ID);
+					}
+				} catch (CoreException e) {
+					HibernateConsolePlugin.getDefault().log(e);
+				}
+			}
+			if (jproj != null){
+				IPackageFragmentRoot[] roots;
+				try {
+					roots = jproj.getAllPackageFragmentRoots();
+					if (roots.length > 0){
+						this.selection = new StructuredSelection(roots[0]);
+					}
+				} catch (JavaModelException e) {
+					HibernateConsolePlugin.getDefault().log(e);
+				}				
+			};			
+		}		
 	}
 
 	public IWizardPage getNextPage(IWizardPage page) {
