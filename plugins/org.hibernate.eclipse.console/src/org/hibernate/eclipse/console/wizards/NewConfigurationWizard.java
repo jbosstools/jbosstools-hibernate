@@ -22,17 +22,13 @@
 package org.hibernate.eclipse.console.wizards;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -92,7 +88,7 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 	 * Adding the page to the wizard.
 	 */
 	public void addPages() {
-        cPage = new ExtendedWizardNewFileCreationPage( "Ccfgxml", (IStructuredSelection) selection ) {
+        cPage = new ExtendedWizardNewFileCreationPage( "Ccfgxml", (IStructuredSelection) selection ) { //$NON-NLS-1$
         	protected InputStream getInitialContents() {
         		final Properties props = new Properties();
                 putIfNotNull(props, Environment.SESSION_FACTORY_NAME, connectionInfoPage.getSessionFactoryName() );
@@ -105,10 +101,11 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
                 putIfNotNull(props, Environment.DEFAULT_SCHEMA, connectionInfoPage.getDefaultSchema() );
         		return openContentStream(props);
         	}
-        }; //$NON-NLS-1$
+        };
         cPage.setTitle( HibernateConsoleMessages.NewConfigurationWizard_create_hibernate_cfg_file );
         cPage.setDescription( HibernateConsoleMessages.NewConfigurationWizard_create_new_hibernate_cfg_xml );
         cPage.setFileName("hibernate.cfg.xml"); //$NON-NLS-1$
+        cPage.setFileExtension("cfg.xml"); //$NON-NLS-1$
         addPage( cPage );
 
 
