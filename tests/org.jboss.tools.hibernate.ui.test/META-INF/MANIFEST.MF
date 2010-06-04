@@ -14,7 +14,6 @@ Require-Bundle: org.junit;bundle-version="3.8.2",
 Bundle-ActivationPolicy: lazy
 Export-Package: org.jboss.tools.hibernate.ui.test
 Bundle-Activator: org.jboss.tools.hibernate.ui.test.UiTestPlugin
-Bundle-ClassPath: org.jboss.tools.hibernate.ui.diagram.test.jar
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin
 Import-Package: org.eclipse.core.resources
