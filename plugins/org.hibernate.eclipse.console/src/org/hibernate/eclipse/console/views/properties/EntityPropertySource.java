@@ -27,6 +27,7 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource2;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.hibernate.EntityMode;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
@@ -35,7 +36,9 @@ import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.metadata.CollectionMetadata;
+import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.proxy.HibernateProxyHelper;
+import org.hibernate.tuple.entity.EntityMetamodel;
 
 
 
@@ -124,7 +127,21 @@ public class EntityPropertySource implements IPropertySource2
 		if(id.equals(classMetadata.getIdentifierPropertyName())) {
 			propertyValue = classMetadata.getIdentifier(reflectedObject, EntityMode.POJO);
 		} else {
-			propertyValue = classMetadata.getPropertyValue(reflectedObject, (String)id, EntityMode.POJO);
+			try {
+				propertyValue = classMetadata.getPropertyValue(reflectedObject, (String)id, EntityMode.POJO);
+			} catch (HibernateException he) {
+				propertyValue = HibernateConsoleMessages.EntityPropertySource_unable_to_resolve_property;
+				if (classMetadata instanceof AbstractEntityPersister) {
+					AbstractEntityPersister aep = (AbstractEntityPersister)classMetadata;
+					EntityMetamodel emm = aep.getEntityMetamodel();
+					if (emm != null) {
+						Integer idx = emm.getPropertyIndexOrNull((String)id);
+						if (idx != null) {
+							propertyValue = emm.getTuplizer(EntityMode.POJO).getPropertyValue(reflectedObject, idx);
+						}
+					}
+				}
+			}
 		}
 
 		if (propertyValue instanceof Collection<?>) {

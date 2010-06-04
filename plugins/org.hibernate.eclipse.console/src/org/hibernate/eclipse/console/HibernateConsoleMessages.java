@@ -157,6 +157,7 @@ public class HibernateConsoleMessages extends NLS {
 	//
 	public static String EntityPropertySource_identifier;
 	public static String EntityPropertySource_properties;
+	public static String EntityPropertySource_unable_to_resolve_property;
 	public static String QueryPagePropertySource_console_configuration;
 	public static String QueryPagePropertySource_millisec;
 	public static String QueryPagePropertySource_query_run_time;
