@@ -16,6 +16,8 @@ import org.eclipse.jdt.debug.ui.launchConfigurations.JavaClasspathTab;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.osgi.util.NLS;
+import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.eclipse.console.EclipseLaunchConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
@@ -57,6 +59,18 @@ public class ConsoleConfigurationJavaClasspathTab extends JavaClasspathTab {
 		}
 		if (!resUserClasses) {
 			setErrorMessage(HibernateConsoleMessages.ConsoleConfigurationTabGroup_classpath_must_be_set_or_restored_to_default);
+		}
+		if (resUserClasses && resExistArchive) {
+			try {
+				ConsoleConfiguration ccTest = new ConsoleConfiguration(new EclipseLaunchConsoleConfigurationPreferences(launchConfig));
+				// should not try to connect to db - refresh profile try to create db connection
+				// so just reject this
+				ccTest.setRejectProfileRefresh(true);
+				ccTest.buildWith(null, false);
+			} catch (Exception ex) {
+				resUserClasses = false;
+				setErrorMessage(ex.getMessage());
+			}
 		}
 		return resUserClasses && resExistArchive;
 	}

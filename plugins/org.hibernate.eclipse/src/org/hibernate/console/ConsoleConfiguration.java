@@ -84,6 +84,9 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	/* TODO: move this out to the actual users of the configuraiton/sf ? */
 	private Configuration configuration;
 	private SessionFactory sessionFactory;
+	
+	// internal flag to prohibit long time profile refresh
+	private boolean rejectProfileRefresh = false;
 
 	/** Unique name for this configuration */
 	public String getName() {
@@ -208,6 +211,9 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	}
 
 	protected void refreshProfile(IConnectionProfile profile) {
+		if (rejectProfileRefresh) {
+			return;
+		}
 		// refresh profile (refresh jpa connection):
 		// get fresh information about current db structure and update error markers  
 		if (profile.getConnectionState() == IConnectionProfile.CONNECTED_STATE){
@@ -816,6 +822,14 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			throw new HibernateConsoleRuntimeException(out);			
 		}
 		return localCfg;
+	}
+
+	public boolean isRejectProfileRefresh() {
+		return rejectProfileRefresh;
+	}
+
+	public void setRejectProfileRefresh(boolean rejectProfileRefresh) {
+		this.rejectProfileRefresh = rejectProfileRefresh;
 	}
 
 }
