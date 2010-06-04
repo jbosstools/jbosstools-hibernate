@@ -108,7 +108,7 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
                 	setMessage(NLS.bind(HibernateConsoleMessages.NewConfigurationWizardPage_fileshould_pass_configuration,
                 			fileName), WARNING);
                 }
-        		IPath path = getContainerFullPath();
+        		IPath path = getContainerFullPath().append(getFileName());
         		IContainer container = ResourcesPlugin.getWorkspace().getRoot().getFolder(path);
         		
         		try {
@@ -259,13 +259,13 @@ public class NewConfigurationWizard extends Wizard implements INewWizard {
 		throws CoreException {
 		// create a sample file
 		monitor.beginTask(HibernateConsoleMessages.NewConfigurationWizard_creating + file.getName(), 2);
+		InputStream stream = openContentStream(props);
+		if (file.exists() ) {
+            file.setContents(stream, true, true, monitor);
+		} else {
+			file.create(stream, true, monitor);
+		}
 		try {
-			InputStream stream = openContentStream(props);
-			if (file.exists() ) {
-                file.setContents(stream, true, true, monitor);
-			} else {
-				file.create(stream, true, monitor);
-			}
 			stream.close();
 		} catch (IOException e) {
 		}
