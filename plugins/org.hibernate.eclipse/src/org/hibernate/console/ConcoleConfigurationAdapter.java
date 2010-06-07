@@ -11,7 +11,6 @@
 package org.hibernate.console;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
 /**
  * This adapter class provides default implementations for the
