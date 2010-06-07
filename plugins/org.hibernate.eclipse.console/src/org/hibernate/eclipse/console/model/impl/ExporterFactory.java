@@ -23,6 +23,7 @@ import org.hibernate.eclipse.launch.PathHelper;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.GenericExporter;
+import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
 import org.hibernate.util.StringHelper;
 
 /**
@@ -175,7 +176,7 @@ public class ExporterFactory {
 		Properties props = new Properties();
 		props.putAll(globalProperties);
 		props.putAll(getProperties());
-
+		
 		exporter.setProperties(props);
 		exporter.setArtifactCollector(collector);
 
@@ -254,6 +255,13 @@ public class ExporterFactory {
 			ge.setForEach(props.getProperty("for_each",null)); //$NON-NLS-1$
 			props.remove("for_each"); //$NON-NLS-1$
 
+		}
+		// special handling for Hbm2DDLExporter
+		if(getExporterDefinition().getId().equals("org.hibernate.tools.hbm2ddl")) { //$NON-NLS-1$
+			Hbm2DDLExporter ddlExporter = (Hbm2DDLExporter) exporter;
+			//avoid users to delete their databases with a single click
+			ddlExporter.setExport(Boolean.getBoolean(props.getProperty("exportToDatabase", Boolean.toString(false)))); //$NON-NLS-1$
+			props.remove("exportToDatabase"); //$NON-NLS-1$
 		}
 		return exporter;
 	}
