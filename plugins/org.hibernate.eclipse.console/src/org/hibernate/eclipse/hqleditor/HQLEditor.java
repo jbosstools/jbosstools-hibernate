@@ -28,10 +28,14 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IDocumentExtension3;
 import org.eclipse.jface.text.ITextListener;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.TextEvent;
+import org.eclipse.jface.text.source.DefaultCharacterPairMatcher;
+import org.eclipse.jface.text.source.ICharacterPairMatcher;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
 import org.eclipse.jface.text.source.projection.ProjectionSupport;
@@ -51,6 +55,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.texteditor.DefaultRangeIndicator;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
+import org.eclipse.ui.texteditor.SourceViewerDecorationSupport;
 import org.eclipse.ui.texteditor.TextOperationAction;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.hibernate.Session;
@@ -59,8 +64,8 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.QueryPage;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.AbstractQueryEditor;
-import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.views.IQueryParametersPage;
 import org.hibernate.eclipse.console.views.QueryPageTabView;
 import org.hibernate.eclipse.console.views.QueryParametersPage;
@@ -213,7 +218,8 @@ public class HQLEditor extends AbstractQueryEditor {
 	protected ISourceViewer createSourceViewer( Composite parent, IVerticalRuler ruler, int styles ) {
 	    HQLSourceViewer viewer = new HQLSourceViewer( parent, ruler, getOverviewRuler(), isOverviewRulerVisible(),
 	            styles );
-
+	    // ensure decoration support has been created and configured.
+		getSourceViewerDecorationSupport(viewer);
 	    return viewer;
 	}
 
@@ -377,11 +383,31 @@ public class HQLEditor extends AbstractQueryEditor {
 	 *
 	 * @see org.eclipse.ui.editors.text.TextEditor#initializeEditor()
 	 */
-	    protected void initializeEditor() {
-	        super.initializeEditor();
-	        setSourceViewerConfiguration( createSourceViewerConfiguration() );
-	        setRangeIndicator( new DefaultRangeIndicator() );
-	    }
+	protected void initializeEditor() {
+	    super.initializeEditor();
+	    setSourceViewerConfiguration( createSourceViewerConfiguration() );
+	    setRangeIndicator( new DefaultRangeIndicator() );
+	}
+
+	public final static String HQL_EDITOR_MATCHING_BRACKETS = "matchingBrackets"; //$NON-NLS-1$
+	public final static String HQL_EDITOR_MATCHING_BRACKETS_COLOR = "matchingBracketsColor"; //$NON-NLS-1$
+
+    @Override
+    protected void configureSourceViewerDecorationSupport(
+    		SourceViewerDecorationSupport support) {
+    	super.configureSourceViewerDecorationSupport(support);		
+
+    	char[] matchChars = {'(', ')', '[', ']', '{', '}'}; //which brackets to match		
+    	ICharacterPairMatcher matcher = new DefaultCharacterPairMatcher(matchChars ,
+    			IDocumentExtension3.DEFAULT_PARTITIONING);
+    	support.setCharacterPairMatcher(matcher);
+    	support.setMatchingCharacterPainterPreferenceKeys(HQL_EDITOR_MATCHING_BRACKETS,HQL_EDITOR_MATCHING_BRACKETS_COLOR);
+
+    	//Enable bracket highlighting in the preference store
+    	IPreferenceStore store = getPreferenceStore();
+    	store.setDefault(HQL_EDITOR_MATCHING_BRACKETS, true);
+    	store.setDefault(HQL_EDITOR_MATCHING_BRACKETS_COLOR, "128,128,128"); //$NON-NLS-1$
+    }
 
 
 	    /**
