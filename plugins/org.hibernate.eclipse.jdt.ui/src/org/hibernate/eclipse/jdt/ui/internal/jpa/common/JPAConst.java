@@ -19,6 +19,7 @@ public class JPAConst {
 	public static final String IMPORT_ONE2MANY = "javax.persistence.OneToMany"; //$NON-NLS-1$
 	public static final String IMPORT_MANY2ONE = "javax.persistence.ManyToOne"; //$NON-NLS-1$
 	public static final String IMPORT_MANY2MANY = "javax.persistence.ManyToMany"; //$NON-NLS-1$
+	public static final String IMPORT_ENUMERATED = "javax.persistence.Enumerated"; //$NON-NLS-1$
 	public static final String IMPORT_MAPPEDSUPERCLASS = "javax.persistence.MappedSuperclass"; //$NON-NLS-1$
 	public static final String IMPORT_VERSION = "javax.persistence.Version"; //$NON-NLS-1$
 	public static final String IMPORT_COLUMN = "javax.persistence.Column"; //$NON-NLS-1$
@@ -32,6 +33,7 @@ public class JPAConst {
 	public static final String ANNOTATION_ONE2MANY = "OneToMany"; //$NON-NLS-1$
 	public static final String ANNOTATION_MANY2ONE = "ManyToOne"; //$NON-NLS-1$
 	public static final String ANNOTATION_MANY2MANY = "ManyToMany"; //$NON-NLS-1$
+	public static final String ANNOTATION_ENUMERATED = "Enumerated"; //$NON-NLS-1$
 	public static final String ANNOTATION_MAPPEDSUPERCLASS = "MappedSuperclass"; //$NON-NLS-1$
 	public static final String ANNOTATION_VERSION = "Version"; //$NON-NLS-1$
 	public static final String ANNOTATION_COLUMN = "Column"; //$NON-NLS-1$
@@ -48,6 +50,7 @@ public class JPAConst {
 		ALL_IMPORTS.add(IMPORT_ONE2MANY);
 		ALL_IMPORTS.add(IMPORT_MANY2ONE);
 		ALL_IMPORTS.add(IMPORT_MANY2MANY);
+		ALL_IMPORTS.add(IMPORT_ENUMERATED);
 		ALL_IMPORTS.add(IMPORT_MAPPEDSUPERCLASS);
 		ALL_IMPORTS.add(IMPORT_VERSION);
 		ALL_IMPORTS.add(IMPORT_COLUMN);
@@ -65,6 +68,9 @@ public class JPAConst {
 		}
 		else if (refType == RefType.MANY2MANY) {
 			return ANNOTATION_MANY2MANY;
+		}
+		else if (refType == RefType.ENUMERATED) {
+			return ANNOTATION_ENUMERATED;
 		}
 		return ""; //$NON-NLS-1$
 	}
@@ -120,6 +126,14 @@ public class JPAConst {
 	static public boolean isAnnotationMany2Many(String fullyQualifiedName) {
 		if (ANNOTATION_MANY2MANY.compareTo(fullyQualifiedName) == 0 ||
 			IMPORT_MANY2MANY.compareTo(fullyQualifiedName) == 0) {
+			return true;
+		}
+		return false;
+	}
+
+	static public boolean isAnnotationEnumerated(String fullyQualifiedName) {
+		if (ANNOTATION_ENUMERATED.compareTo(fullyQualifiedName) == 0 ||
+			IMPORT_ENUMERATED.compareTo(fullyQualifiedName) == 0) {
 			return true;
 		}
 		return false;

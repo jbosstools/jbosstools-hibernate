@@ -447,7 +447,8 @@ public class ProcessEntityInfo extends ASTVisitor {
 						addComplexNormalAnnotation(node, JPAConst.getRefType(refType), rei);
 					}
 				}
-				else if (refType == RefType.MANY2ONE || rei.mappedBy == null || rei.mappedBy == "") { //$NON-NLS-1$
+				else if (refType == RefType.MANY2ONE || refType == RefType.ENUMERATED || 
+						rei.mappedBy == null || rei.mappedBy == "") { //$NON-NLS-1$
 					addSimpleMarkerAnnotation(node, JPAConst.getRefType(refType));
 				}
 				else {
@@ -578,7 +579,8 @@ public class ProcessEntityInfo extends ASTVisitor {
 						addComplexNormalAnnotation(node, JPAConst.getRefType(refType), rei);
 					}
 				}
-				else if (refType == RefType.MANY2ONE || rei.mappedBy == null || rei.mappedBy == "") { //$NON-NLS-1$
+				else if (refType == RefType.MANY2ONE || refType == RefType.ENUMERATED || 
+						rei.mappedBy == null || rei.mappedBy == "") { //$NON-NLS-1$
 					addSimpleMarkerAnnotation(node, JPAConst.getRefType(refType));
 				}
 				else {

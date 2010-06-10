@@ -173,6 +173,10 @@ public class CollectEntityInfo extends ASTVisitor {
 			updateAnnotationRelInfo(node, mappedBy, fullyQualifiedName,
 				RefType.MANY2MANY, JPAConst.ANNOTATION_MANY2MANY, JPAConst.IMPORT_MANY2MANY);
 		}
+		else if (JPAConst.isAnnotationEnumerated(fullyQualifiedName)) {
+			updateAnnotationRelInfo(node, mappedBy, fullyQualifiedName,
+				RefType.ENUMERATED, JPAConst.ANNOTATION_ENUMERATED, JPAConst.IMPORT_ENUMERATED);
+		}
 		else if (JPAConst.isAnnotationMappedSuperclass(fullyQualifiedName)) {
 			ITypeBinding tb = node.resolveTypeBinding();
 			CompilationUnit cu = getCUFromTypeDeclaration(node);
@@ -477,10 +481,11 @@ public class CollectEntityInfo extends ASTVisitor {
 					SourceType sourceT = (SourceType)tb.getJavaElement();
 					entityFullyQualifiedName = sourceT.getFullyQualifiedName();
 					entityInfo.addDependency(entityFullyQualifiedName);
+					RefType refType2Use = tb.isEnum() ? RefType.ENUMERATED : RefType.MANY2ONE;
 					Iterator<String> itVarNames = list.iterator();
 					while (itVarNames.hasNext()) {
 						String name = itVarNames.next();
-						entityInfo.addReference(name, entityFullyQualifiedName, RefType.MANY2ONE);
+						entityInfo.addReference(name, entityFullyQualifiedName, refType2Use);
 					}
 				}
 				else if (tb.getJavaElement() instanceof BinaryType) {

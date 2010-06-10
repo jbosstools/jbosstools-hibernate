@@ -37,7 +37,6 @@ import junit.framework.TestCase;
  * 
  * @author Vitali Yemialyanchyk
  */
-@SuppressWarnings("restriction")
 public class JPAMapMockTests extends TestCase {
 
 

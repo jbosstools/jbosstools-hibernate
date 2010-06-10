@@ -46,7 +46,6 @@ import junit.framework.TestCase;
  * 
  * @author Vitali Yemialyanchyk
  */
-@SuppressWarnings("restriction")
 public class JPAMapTest extends TestCase {
 
 	public static final String PROJECT_NAME = "TestProject"; //$NON-NLS-1$
@@ -111,6 +110,8 @@ public class JPAMapTest extends TestCase {
 				"test.annotated." + testSelection + ".FotoXPerson"); //$NON-NLS-1$ //$NON-NLS-2$
 		ICompilationUnit icu4 = Utils.findCompilationUnit(javaProject,
 				"test.annotated." + testSelection + ".ZTypesComplex"); //$NON-NLS-1$ //$NON-NLS-2$
+		ICompilationUnit icu5 = Utils.findCompilationUnit(javaProject,
+				"test.annotated." + testSelection + ".Employee"); //$NON-NLS-1$ //$NON-NLS-2$
 		try {
 			icu4.becomeWorkingCopy(null);
 		} catch (JavaModelException e) {
@@ -129,11 +130,13 @@ public class JPAMapTest extends TestCase {
 		assertNotNull(icu2);
 		assertNotNull(icu3);
 		assertNotNull(icu4);
+		assertNotNull(icu5);
 		collector.initCollector();
 		collector.collect(icu, Integer.MAX_VALUE);
 		collector.collect(icu2, Integer.MAX_VALUE);
 		collector.collect(icu3, Integer.MAX_VALUE);
 		collector.collect(icu4, Integer.MAX_VALUE);
+		collector.collect(icu5, Integer.MAX_VALUE);
 		if (icu44 != null) {
 			collector.collect(icu44, Integer.MAX_VALUE);
 		}
@@ -152,6 +155,7 @@ public class JPAMapTest extends TestCase {
 		checkItem("Country"); //$NON-NLS-1$
 		checkItem("Visa"); //$NON-NLS-1$
 		checkItem("ZTypesComplex"); //$NON-NLS-1$
+		checkItem("Employee"); //$NON-NLS-1$
 		if (icu44 != null) {
 			checkItem("Entity"); //$NON-NLS-1$
 		}

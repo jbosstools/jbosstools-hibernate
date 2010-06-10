@@ -609,6 +609,7 @@ public class AllEntitiesInfoCollector {
 			boolean isOne2Many = false;
 			boolean isMany2One = false;
 			boolean isMany2Many = false;
+			boolean isEnumerated = false;
 			for ( ; referencesIt.hasNext(); ) {
 				Map.Entry<String, RefEntityInfo> entry2 = referencesIt.next();
 				RefEntityInfo refEntityInfo = entry2.getValue();
@@ -625,6 +626,9 @@ public class AllEntitiesInfoCollector {
 					else if (refEntityInfo.refType == RefType.MANY2MANY && !refEntityInfo.resolvedAnnotationName) {
 						isMany2Many = true;
 					}
+					else if (refEntityInfo.refType == RefType.ENUMERATED && !refEntityInfo.resolvedAnnotationName) {
+						isEnumerated = true;
+					}
 				}
 			}
 			if (isOne2One) {
@@ -638,6 +642,9 @@ public class AllEntitiesInfoCollector {
 			}
 			if (isMany2Many) {
 				entryInfo.addRequiredImport(JPAConst.IMPORT_MANY2MANY);
+			}
+			if (isEnumerated) {
+				entryInfo.addRequiredImport(JPAConst.IMPORT_ENUMERATED);
 			}
 		}
 		// re-generate RefFieldInfoMap (for simple process)
