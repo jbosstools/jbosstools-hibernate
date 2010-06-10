@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2009-2010 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -19,12 +19,11 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.swt.ColumnAdapter;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
+import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveTablePane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -58,7 +57,7 @@ public class ParametersComposite extends Pane<GenericGenerator> {
 	 * @param parent The parent container
 	 */
 	public ParametersComposite(Pane<?> parentPane,
-	      Composite container, WritablePropertyValueModel<GenericGenerator> generatorHolder) {
+	      Composite container, PropertyValueModel<GenericGenerator> generatorHolder) {
 
 		super(parentPane, generatorHolder, container, false);
 	}
@@ -182,11 +181,11 @@ public class ParametersComposite extends Pane<GenericGenerator> {
 
 			switch (columnIndex) {
 				case ParameterColumnAdapter.NAME_COLUMN_INDEX: {
-					return JptUiMappingsMessages.QueryHintsComposite_nameColumn;
+					return HibernateUIMappingMessages.ParametersComposite_nameColumn;
 				}
 
 				case ParameterColumnAdapter.VALUE_COLUMN_INDEX: {
-					return JptUiMappingsMessages.QueryHintsComposite_valueColumn;
+					return HibernateUIMappingMessages.ParametersComposite_valueColumn;
 				}
 
 				default: {

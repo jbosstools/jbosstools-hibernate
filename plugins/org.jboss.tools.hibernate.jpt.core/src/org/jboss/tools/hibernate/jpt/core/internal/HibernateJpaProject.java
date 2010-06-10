@@ -12,7 +12,6 @@
 package org.jboss.tools.hibernate.jpt.core.internal;
 
 import org.eclipse.core.resources.ProjectScope;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.internal.AbstractJpaProject;
@@ -29,10 +28,9 @@ import org.osgi.service.prefs.Preferences;
  */
 public class HibernateJpaProject extends AbstractJpaProject {
 	
-	private Boolean cachedNamingStrategyEnable;
-	
+	private Boolean cachedNamingStrategyEnable;	
 
-	public HibernateJpaProject(JpaProject.Config config) throws CoreException {
+	public HibernateJpaProject(JpaProject.Config config){
 		super(config);
 	}
 

@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.resource.java;
 
-import java.util.ListIterator;
 import java.util.Vector;
 
 import org.eclipse.jdt.core.IAnnotation;
@@ -25,7 +24,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 
 /**
@@ -52,8 +51,8 @@ public class SourceGenericGeneratorsAnnotation extends SourceAnnotation<Member> 
 		AnnotationContainerTools.initialize(this, astRoot);
 	}
 
-	public void update(CompilationUnit astRoot) {
-		AnnotationContainerTools.update(this, astRoot);
+	public void synchronizeWith(CompilationUnit astRoot) {
+		AnnotationContainerTools.synchronize(this, astRoot);
 	}
 
 	@Override
@@ -67,54 +66,53 @@ public class SourceGenericGeneratorsAnnotation extends SourceAnnotation<Member> 
 		return this.getAnnotationName();
 	}
 
-	public org.eclipse.jdt.core.dom.Annotation getContainerJdtAnnotation(CompilationUnit astRoot) {
-		return this.getJdtAnnotation(astRoot);
-	}
-
 	public String getElementName() {
 		return Hibernate.GENERIC_GENERATORS__VALUE;
 	}
 
-	public String getNestableAnnotationName() {
+	public String getNestedAnnotationName() {
 		return GenericGeneratorAnnotation.ANNOTATION_NAME;
 	}
 
-	public ListIterator<GenericGeneratorAnnotation> nestedAnnotations() {
-		return new CloneListIterator<GenericGeneratorAnnotation>(this.genericGenerators);
+	public Iterable<GenericGeneratorAnnotation> getNestedAnnotations() {
+		return new LiveCloneIterable<GenericGeneratorAnnotation>(this.genericGenerators);
 	}
 
-	public int nestedAnnotationsSize() {
+	public int getNestedAnnotationsSize() {
 		return this.genericGenerators.size();
 	}
-
-	public GenericGeneratorAnnotation addNestedAnnotationInternal() {
-		GenericGeneratorAnnotation genericGenerator = this.buildGenericGenerator(this.genericGenerators.size());
+	
+	public GenericGeneratorAnnotation addNestedAnnotation() {
+		return this.addNestedAnnotation(this.genericGenerators.size());
+	}
+	
+	private GenericGeneratorAnnotation addNestedAnnotation(int index) {
+		GenericGeneratorAnnotation genericGenerator = this.buildGenericGenerator(index);
 		this.genericGenerators.add(genericGenerator);
 		return genericGenerator;
+	}
+	
+	public void syncAddNestedAnnotation(org.eclipse.jdt.core.dom.Annotation astAnnotation) {
+		int index = this.genericGenerators.size();
+		GenericGeneratorAnnotation genericGenerator = this.addNestedAnnotation(index);
+		genericGenerator.initialize((CompilationUnit) astAnnotation.getRoot());
+		this.fireItemAdded(GENERIC_GENERATORS_LIST, index, genericGenerator);
 	}
 
 	private GenericGeneratorAnnotation buildGenericGenerator(int index) {
 		return GenericGeneratorAnnotationImpl.createNestedGenericGenerator(this, member, index, this.daa);
 	}
 	
-	public void nestedAnnotationAdded(int index, GenericGeneratorAnnotation nestedAnnotation) {
-		this.fireItemAdded(GENERIC_GENERATORS_LIST, index, nestedAnnotation);
-	}
-
-	public GenericGeneratorAnnotation moveNestedAnnotationInternal(int targetIndex, int sourceIndex) {
+	public GenericGeneratorAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
 		return CollectionTools.move(this.genericGenerators, targetIndex, sourceIndex).get(targetIndex);
 	}
 
-	public void nestedAnnotationMoved(int targetIndex, int sourceIndex) {
-		this.fireItemMoved(GENERIC_GENERATORS_LIST, targetIndex, sourceIndex);
-	}
-
-	public GenericGeneratorAnnotation removeNestedAnnotationInternal(int index) {
+	public GenericGeneratorAnnotation removeNestedAnnotation(int index) {
 		return this.genericGenerators.remove(index);
 	}
-
-	public void nestedAnnotationRemoved(int index, GenericGeneratorAnnotation nestedAnnotation) {
-		this.fireItemRemoved(GENERIC_GENERATORS_LIST, index, nestedAnnotation);
+	
+	public void syncRemoveNestedAnnotations(int index) {
+		this.removeItemsFromList(index, this.genericGenerators, GENERIC_GENERATORS_LIST);
 	}
 	
 	public static class GenericGeneratorsAnnotationDefinition implements AnnotationDefinition {

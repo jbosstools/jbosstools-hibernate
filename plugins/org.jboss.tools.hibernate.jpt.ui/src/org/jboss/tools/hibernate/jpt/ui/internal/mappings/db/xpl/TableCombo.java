@@ -9,13 +9,11 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.mappings.db.xpl;
 
-import java.util.Iterator;
-
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -25,32 +23,27 @@ import org.eclipse.swt.widgets.Composite;
 public abstract class TableCombo<T extends JpaNode>
 	extends DatabaseObjectCombo<T>
 {
-	public TableCombo(Pane<? extends T> parentPane, Composite parent) {
+	public TableCombo(
+			Pane<? extends T> parentPane,
+			Composite parent) {
+		
 		super(parentPane, parent);
 	}
-
+	
 	public TableCombo(
-						Pane<?> parentPane,
-						PropertyValueModel<? extends T> subjectHolder,
-						Composite parent
-	) {
+			Pane<?> parentPane,
+			PropertyValueModel<? extends T> subjectHolder,
+			Composite parent) {
+		
 		super(parentPane, subjectHolder, parent);
 	}
-
-	public TableCombo(
-						PropertyValueModel<? extends T> subjectHolder,
-						Composite parent,
-						WidgetFactory widgetFactory
-	) {
-		super(subjectHolder, parent, widgetFactory);
-	}
-
+	
 	@Override
-	protected Iterator<String> values() {
+	protected Iterable<String> getValues_() {
 		Schema dbSchema = this.getDbSchema();
-		return (dbSchema == null) ? EmptyIterator.<String>instance() : dbSchema.sortedTableIdentifiers();
+		return (dbSchema != null) ? dbSchema.getSortedTableIdentifiers() : EmptyIterable.<String>instance();
 	}
-
+	
 	protected Schema getDbSchema() {
 		return (this.getSubject() == null) ? null : this.getDbSchema_();
 	}

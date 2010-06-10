@@ -13,8 +13,11 @@ package org.jboss.tools.hibernate.jpt.core.internal;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaPlatformProvider;
-import org.eclipse.jpt.core.JpaValidation;
-import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
+import org.eclipse.jpt.core.JpaPlatformVariation;
+import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.core.ResourceDefinition;
+import org.eclipse.jpt.core.internal.GenericJpaPlatform;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
  * @author Dmitry Geraskov
@@ -23,9 +26,19 @@ import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
 public class HibernateJpaPlatform extends GenericJpaPlatform {
 	
 	public static final String ID = "hibernate"; //$NON-NLS-1$
+	
+	@Override
+	public ResourceDefinition getResourceDefinition(JpaResourceType resourceType) {
+		for (ResourceDefinition resourceDefinition : CollectionTools.iterable(resourceDefinitions())) {
+			if (resourceDefinition.getResourceType().equals(resourceType)) {
+				return resourceDefinition;
+			}
+		}
+		return super.getResourceDefinition(resourceType);
+	}
 
-	public HibernateJpaPlatform(String id, JpaFactory jpaFactory, JpaAnnotationProvider jpaAnnotationProvider, JpaValidation jpaValidation, JpaPlatformProvider... platformProviders) {
-		super(id, jpaFactory, jpaAnnotationProvider, jpaValidation, platformProviders);
+	public HibernateJpaPlatform(String id, Version jpaVersion, JpaFactory jpaFactory, JpaAnnotationProvider jpaAnnotationProvider, JpaPlatformProvider platformProvider, JpaPlatformVariation jpaVariation) {
+		super(id, jpaVersion, jpaFactory, jpaAnnotationProvider, platformProvider, jpaVariation);
 	}
 
 	@Override

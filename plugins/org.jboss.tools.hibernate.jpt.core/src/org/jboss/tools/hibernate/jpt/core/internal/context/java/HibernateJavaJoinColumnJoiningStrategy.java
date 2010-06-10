@@ -11,16 +11,9 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
-import java.util.List;
-
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateJoinColumn;
 
 /**
  * @author Dmitry Geraskov
@@ -33,8 +26,13 @@ public class HibernateJavaJoinColumnJoiningStrategy extends
 			JavaJoinColumnEnabledRelationshipReference parent) {
 		super(parent);
 	}
+	
+	@Override
+	protected JavaJoinColumn.Owner buildJoinColumnOwner() {
+		return new HibernateJoinColumnOwner();
+	}
 
-	protected void validateJoinColumnName(JavaJoinColumn joinColumn, List<IMessage> messages, CompilationUnit astRoot) {
+	/*protected void validateJoinColumnName(JavaJoinColumn joinColumn, List<IMessage> messages, CompilationUnit astRoot) {
 		if ( ! joinColumn.isResolved() && joinColumn.getDbTable() != null) {
 			if (((HibernateJoinColumn)joinColumn).getDBColumnName() != null) {
 				messages.add(
@@ -92,6 +90,14 @@ public class HibernateJavaJoinColumnJoiningStrategy extends
 			// 2. target entity is not specified
 			// 3. target entity is not an entity			
 		}
+	}*/
+	
+	protected class HibernateJoinColumnOwner extends JoinColumnOwner {
+		protected HibernateJoinColumnOwner() {
+			super();
+		}
+		
+		//TODO implement validator messages
 	}
 
 }

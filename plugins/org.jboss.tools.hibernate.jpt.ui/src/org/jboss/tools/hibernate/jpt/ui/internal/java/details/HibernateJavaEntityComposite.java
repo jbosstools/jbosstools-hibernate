@@ -10,16 +10,23 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.java.details;
 
+import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.GeneratorContainer;
+import org.eclipse.jpt.core.context.QueryContainer;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.java.details.JavaSecondaryTablesComposite;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.mappings.details.AbstractEntityComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.EntityNameComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.IdClassComposite;
+import org.eclipse.jpt.ui.internal.details.AbstractEntityComposite;
+import org.eclipse.jpt.ui.internal.details.EntityNameComposite;
+import org.eclipse.jpt.ui.internal.details.IdClassComposite;
+import org.eclipse.jpt.ui.internal.details.java.JavaInheritanceComposite;
+import org.eclipse.jpt.ui.internal.details.java.JavaSecondaryTablesComposite;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateGeneratorContainer;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateIdMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
-import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateGeneratorsComposite;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaQueryContainer;
+import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateGenerationComposite2;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateQueriesComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateTableComposite;
 
@@ -39,42 +46,41 @@ public class HibernateJavaEntityComposite extends AbstractEntityComposite<Hibern
 		super(subjectHolder, parent, widgetFactory);
 	}
 	
+	
 	@Override
-	protected void addSecondaryTablesComposite(Composite container) {
+	protected void initializeQueriesSection(Composite container, PropertyValueModel<QueryContainer> queryContainerHolder) {
+		new HibernateQueriesComposite(this, (PropertyValueModel<? extends HibernateJavaQueryContainer>) queryContainerHolder, container);
+	}
+	
+	private PropertyValueModel<HibernateGeneratorContainer> buildGeneratorContainer() {
+		return new PropertyAspectAdapter<HibernateJavaEntity, HibernateGeneratorContainer>(getSubjectHolder()) {
+			@Override
+			protected HibernateGeneratorContainer buildValue_() {
+				return this.subject.getGeneratorContainer();
+			}
+		};
+	}
+	
+	@Override
+	protected void initializeGeneratorsSection(Composite container, PropertyValueModel<GeneratorContainer> generatorContainerHolder) {
+		new HibernateGenerationComposite2(this, (PropertyValueModel<? extends HibernateGeneratorContainer>) generatorContainerHolder, addSubPane(container, 10), true);
+	}
+	
+	
+	protected void initializeEntitySection(Composite container) {
+		new HibernateTableComposite(this, container);
+		new EntityNameComposite(this, container);
+		new IdClassComposite(this, buildIdClassReferenceHolder(), container);
+	}
+	
+	@Override
+	protected void initializeSecondaryTablesSection(Composite container) {
 		new JavaSecondaryTablesComposite(this, container);
 	}
-	
-	@Override
-	protected void initializeQueriesPane(Composite container) {
-		container = addCollapsableSection(
-			container,
-			JptUiMappingsMessages.EntityComposite_queries
-		);
-		
-		new HibernateQueriesComposite(this, container);
-	}
-	
-	@Override
-	protected void initializeGeneratorsPane(Composite container) {
-		container = addCollapsableSection(
-			container,
-			JptUiMappingsMessages.IdMappingComposite_primaryKeyGenerationSection
-		);
-		
-		new HibernateGeneratorsComposite(this, container);
-	}
-	
-	@Override
-	protected void addInheritanceComposite(Composite container) {
-		new HibernateJavaInheritanceComposite(this, container);
-	}
-	
-	protected void initializeGeneralPane(Composite container) {
-		int groupBoxMargin = getGroupBoxMargin();
 
-		new HibernateTableComposite(this, container);
-		new EntityNameComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
-		new IdClassComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
+	@Override
+	protected void initializeInheritanceSection(Composite container) {
+		new JavaInheritanceComposite(this, container);
 	}
 
 }

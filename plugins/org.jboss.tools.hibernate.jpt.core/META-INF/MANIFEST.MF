@@ -14,17 +14,16 @@ Require-Bundle:
  org.eclipse.jdt.core,
  org.eclipse.wst.common.project.facet.core,
  org.eclipse.jst.common.project.facet.core,
- org.eclipse.jpt.core;bundle-version="[2.2.0,2.2.2)",
  org.eclipse.jpt.utility,
- org.eclipse.jpt.db
+ org.eclipse.jpt.db,
+ org.eclipse.jpt.core
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Vendor: %Bundle-Vendor.0
 Export-Package: org.jboss.tools.hibernate.jpt.core.internal,
  org.jboss.tools.hibernate.jpt.core.internal.context,
  org.jboss.tools.hibernate.jpt.core.internal.context.basic,
  org.jboss.tools.hibernate.jpt.core.internal.context.java,
- org.jboss.tools.hibernate.jpt.core.internal.context.orm,
- org.jboss.tools.hibernate.jpt.core.internal.resource.java
+ org.jboss.tools.hibernate.jpt.core.internal.context.orm
 Bundle-Localization: plugin
 Bundle-Activator: org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin
 Bundle-ActivationPolicy: lazy

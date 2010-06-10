@@ -13,12 +13,11 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.orm;
 
 import java.util.List;
 
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinTable;
+import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmJoinTable;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.orm.XmlJoinTableMapping;
+import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -26,8 +25,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
-import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
+import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 
 /**
  * @author Dmitry Geraskov
@@ -38,8 +37,8 @@ public class HibernateOrmJoinTableImpl extends GenericOrmJoinTable implements
 
 
 	public HibernateOrmJoinTableImpl(OrmJoinTableJoiningStrategy parent,
-			XmlJoinTableMapping resourceMapping) {
-		super(parent, resourceMapping);
+			XmlJoinTable resourceJoinTable) {
+		super(parent, resourceJoinTable);
 	}
 	
 	@Override
@@ -78,43 +77,41 @@ public class HibernateOrmJoinTableImpl extends GenericOrmJoinTable implements
 	}
 	
 	@Override
-	protected void validateAgainstDatabase(List<IMessage> messages,
+	protected boolean validateAgainstDatabase(List<IMessage> messages,
 			IReporter reporter) {
-		OrmRelationshipMapping mapping = this.getRelationshipMapping();
-
+		PersistentAttribute persistentAttribute = this.getPersistentAttribute();
 		if ( ! this.hasResolvedCatalog()) {
-			if (mapping.getPersistentAttribute().isVirtual()) {
+			if (persistentAttribute.isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_CATALOG,
-						new String[] {mapping.getName(), this.getCatalog(), this.getDBTableName()}, 
+						getVirtualAttributeUnresolvedCatalogMessageId(),
+						new String[] {persistentAttribute.getName(), this.getCatalog(), this.getDBTableName()}, 
 						this,
 						this.getCatalogTextRange()
 					)
 				);
-				
 			} else {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG,
+						getUnresolvedCatalogMessageId(),
 						new String[] {this.getCatalog(), this.getDBTableName()}, 
 						this,
 						this.getCatalogTextRange()
 					)
 				);
 			}
-			return;
+			return false;
 		}
-		
+
 		if ( ! this.hasResolvedSchema()) {
-			if (mapping.getPersistentAttribute().isVirtual()) {
+			if (persistentAttribute.isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_SCHEMA,
-						new String[] {mapping.getName(), this.getSchema(), this.getDBTableName()}, 
+						getVirtualAttributeUnresolvedSchemaMessageId(),
+						new String[] {persistentAttribute.getName(), this.getSchema(), this.getDBTableName()}, 
 						this,
 						this.getSchemaTextRange()
 					)
@@ -123,23 +120,23 @@ public class HibernateOrmJoinTableImpl extends GenericOrmJoinTable implements
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA,
+						getUnresolvedSchemaMessageId(),
 						new String[] {this.getSchema(), this.getDBTableName()}, 
 						this,
 						this.getSchemaTextRange()
 					)
 				);
 			}
-			return;
+			return false;
 		}
 		if ( ! this.isResolved()) {
-			if (getName() != null) { //if name is null, the validation will be handled elsewhere, such as the target entity is not defined
-				if (mapping.getPersistentAttribute().isVirtual()) {
+			if (getDBTableName() != null) { //if name is null, the validation will be handled elsewhere, such as the target entity is not defined
+				if (persistentAttribute.isVirtual()) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_NAME,
-							new String[] {mapping.getName(), this.getDBTableName()}, 
+							getVirtualAttributeUnresolvedNameMessageId(),
+							new String[] {persistentAttribute.getName(), this.getDBTableName()}, 
 							this,
 							this.getNameTextRange()
 						)
@@ -149,18 +146,16 @@ public class HibernateOrmJoinTableImpl extends GenericOrmJoinTable implements
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
-								JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME,
-								new String[] {this.getName()}, 
+								getUnresolvedNameMessageId(),
+								new String[] {this.getDBTableName()}, 
 								this, 
 								this.getNameTextRange())
-						);				
+						);
 				}
 			}
-			return;
+			return false;
 		}
-
-		this.validateJoinColumns(this.joinColumns(), messages, reporter);
-		this.validateJoinColumns(this.inverseJoinColumns(), messages, reporter);
+		return true;
 	}
 
 }

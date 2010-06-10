@@ -49,8 +49,8 @@ public class DiscriminatorFormulaAnnotationImpl extends SourceAnnotation<Type> i
 		this.value = this.buildValue(astRoot);		
 	}
 
-	public void update(CompilationUnit astRoot) {
-		this.setValue(this.buildValue(astRoot));		
+	public void synchronizeWith(CompilationUnit astRoot) {
+		this.syncValue(this.buildValue(astRoot));		
 	}
 	
 	// ***** value	
@@ -59,12 +59,15 @@ public class DiscriminatorFormulaAnnotationImpl extends SourceAnnotation<Type> i
 	}
 
 	public void setValue(String value) {
-		if (this.attributeValueHasNotChanged(this.value, value)) {
-			return;
+		if (this.attributeValueHasChanged(this.value, value)) {
+			this.value = value;
+			this.valueAdapter.setValue(value);
 		}
+	}
+	
+	private void syncValue(String value) {
 		String old = this.value;
 		this.value = value;
-		this.valueAdapter.setValue(value);
 		this.firePropertyChanged(VALUE_PROPERTY, old, value);
 	}
 	

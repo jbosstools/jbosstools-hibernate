@@ -13,7 +13,9 @@ Require-Bundle: org.junit;bundle-version="3.8.2",
  org.eclipse.jpt.db,
  org.eclipse.jdt.core,
  org.hibernate.eclipse.console.test,
- org.jboss.tools.hibernate.jpt.core
+ org.jboss.tools.hibernate.jpt.core,
+ org.jboss.tools.tests;bundle-version="2.0.0",
+ org.hibernate.eclipse;bundle-version="3.3.0"
 Bundle-ActivationPolicy: lazy
 Export-Package: org.jboss.tools.hibernate.jpt.core.test
 Bundle-Activator: org.jboss.tools.hibernate.jpt.core.test.HibernateJPTuiTestPlugin

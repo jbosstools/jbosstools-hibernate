@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2009-2010 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -11,7 +11,7 @@
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -69,7 +69,7 @@ public class HibernateNamedNativeQueryPropertyComposite extends
 
 			@Override
 			protected String getLabelText() {
-				return JptUiMappingsMessages.NamedNativeQueryPropertyComposite_resultClass;
+				return JptUiDetailsMessages.NamedNativeQueryPropertyComposite_resultClass;
 			}
 
 			@Override

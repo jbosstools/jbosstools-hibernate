@@ -329,7 +329,6 @@ public class RefactoringTest extends TestCase {
 	}
 
 //====================================================================================
-		@SuppressWarnings("unchecked")
 		static class TestWorkingCopy implements ILaunchConfigurationWorkingCopy{
 
 			private TestLaunchConfig parent;
@@ -533,6 +532,10 @@ public class RefactoringTest extends TestCase {
 
 			public Object getAdapter(Class adapter) {
 				return null;
+			}
+
+			public void setAttribute(String attributeName, Set value) {
+				attributes.put(attributeName, value);
 			}
 
 		}

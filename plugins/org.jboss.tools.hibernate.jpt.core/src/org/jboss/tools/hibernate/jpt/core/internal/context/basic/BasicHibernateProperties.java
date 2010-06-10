@@ -10,14 +10,13 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.basic;
 
-import org.eclipse.jpt.utility.model.Model;
-import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public interface BasicHibernateProperties extends Model, PropertyChangeListener {
+public interface BasicHibernateProperties extends PersistenceUnitProperties {
 	
 	String getDefaultConfigurationFile();
 	String getConfigurationFile();

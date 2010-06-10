@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Red Hat, Inc.
+ * Copyright (c) 2009-2010 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -15,11 +15,11 @@ import java.util.Collection;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.mappings.db.CatalogCombo;
-import org.eclipse.jpt.ui.internal.mappings.db.SchemaCombo;
+import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.ui.internal.details.db.CatalogCombo;
+import org.eclipse.jpt.ui.internal.details.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -62,7 +62,7 @@ import org.jboss.tools.hibernate.jpt.ui.internal.mappings.db.xpl.TableCombo;
  * @version 2.0
  * @since 1.0
  */
-public class HibernateTableComposite extends FormPane<HibernateEntity>
+public class HibernateTableComposite extends Pane<HibernateEntity>
 {
 	/**
 	 * Creates a new <code>HibernateTableComposite</code>.
@@ -71,7 +71,7 @@ public class HibernateTableComposite extends FormPane<HibernateEntity>
 	 * @param subjectHolder The holder of the subject
 	 * @param parent The parent container
 	 */
-	public HibernateTableComposite(FormPane<? extends HibernateEntity> parentPane,
+	public HibernateTableComposite(Pane<? extends HibernateEntity> parentPane,
 	                      Composite parent) {
 
 		super(parentPane, parent, false);
@@ -83,24 +83,23 @@ public class HibernateTableComposite extends FormPane<HibernateEntity>
 		// Table group pane
 		Group tableGroupPane = addTitledGroup(
 			container,
-			JptUiMappingsMessages.TableComposite_tableSection
+			JptUiDetailsMessages.TableComposite_tableSection
 		);
 
 		PropertyValueModel<HibernateTable> subjectHolder = buildTableHolder();
-		TableCombo<HibernateTable> tc = addTableCombo(subjectHolder, tableGroupPane);
 		
 		// Table widgets
 		addLabeledComposite(
-			tableGroupPane,
-			JptUiMappingsMessages.TableChooser_label,
-			tc,
-			JpaHelpContextIds.ENTITY_TABLE
-		);
-
+				tableGroupPane,
+				JptUiDetailsMessages.TableChooser_label,
+				addTableCombo(subjectHolder, tableGroupPane),
+				JpaHelpContextIds.ENTITY_TABLE
+			);
+		
 		// Catalog widgets
 		addLabeledComposite(
 			tableGroupPane,
-			JptUiMappingsMessages.CatalogChooser_label,
+			JptUiDetailsMessages.CatalogChooser_label,
 			addCatalogCombo(subjectHolder, tableGroupPane),
 			JpaHelpContextIds.ENTITY_CATALOG
 		);
@@ -108,7 +107,7 @@ public class HibernateTableComposite extends FormPane<HibernateEntity>
 		// Schema widgets
 		addLabeledComposite(
 			tableGroupPane,
-			JptUiMappingsMessages.SchemaChooser_label,
+			JptUiDetailsMessages.SchemaChooser_label,
 			addSchemaCombo(subjectHolder, tableGroupPane),
 			JpaHelpContextIds.ENTITY_SCHEMA
 		);

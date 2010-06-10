@@ -1,0 +1,4 @@
+#Mon May 10 13:11:52 EEST 2010
+default.configuration=testHibernateJpaProject
+eclipse.preferences.version=1
+hibernate3.enabled=true
