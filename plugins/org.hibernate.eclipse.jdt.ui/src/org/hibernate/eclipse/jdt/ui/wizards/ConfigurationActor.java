@@ -196,7 +196,7 @@ public class ConfigurationActor {
 					subclass.setDiscriminatorValue(StringHelper.unqualify(pastClass.getClassName()));
 					subclass.setAbstract(pastClass.isAbstract());
 					if (subclass instanceof JoinedSubclass) {
-						((JoinedSubclass) subclass).setTable(new Table(pastClass.getClassName().toUpperCase()));
+						((JoinedSubclass) subclass).setTable(new Table(StringHelper.unqualify(pastClass.getClassName()).toUpperCase()));
 						((JoinedSubclass) subclass).setKey((KeyValue) pc.getIdentifierProperty().getValue());
 					}
 					if (pastClass.getIdentifierProperty() != null) {
