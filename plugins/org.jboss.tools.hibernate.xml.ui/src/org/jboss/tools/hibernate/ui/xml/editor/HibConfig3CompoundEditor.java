@@ -11,9 +11,11 @@
 package org.jboss.tools.hibernate.ui.xml.editor;
 
 import org.jboss.tools.common.editor.TreeFormPage;
+import org.jboss.tools.common.model.XModelObject;
 import org.jboss.tools.common.model.ui.editor.EditorDescriptor;
 import org.jboss.tools.common.model.ui.editors.multipage.DefaultMultipageEditor;
 import org.jboss.tools.common.model.ui.texteditors.XMLTextEditorComponent;
+import org.jboss.tools.common.model.util.XModelObjectLoaderUtil;
 import org.jboss.tools.hibernate.ui.xml.HibernateUIXMLPlugin;
 import org.jboss.tools.hibernate.ui.xml.Messages;
 import org.jboss.tools.hibernate.xml.model.FileHibernateFilteredTreeConstraint;
@@ -31,14 +33,14 @@ public class HibConfig3CompoundEditor extends DefaultMultipageEditor {
 			sessionFactory.setLabel(Messages.HibConfig3CompoundEditor_SessionFactoryLabel);
 			sessionFactory.setTitle(Messages.HibConfig3CompoundEditor_SessionFactoryTitle);
 			((TreeFormPage)sessionFactory).addFilter(new FileHibernateFilteredTreeConstraint());
-			sessionFactory.initialize(object.getChildByPath("Session Factory")); //$NON-NLS-1$
+			sessionFactory.initialize(getSessionFactoryObject());
 			addFormPage(sessionFactory, "sessionFactoryEditor"); //$NON-NLS-1$
 
 			security = createTreeFormPage();
 			security.setLabel(Messages.HibConfig3CompoundEditor_SecurityLabel);
 			security.setTitle(Messages.HibConfig3CompoundEditor_SecurityTitle);
 			((TreeFormPage)security).addFilter(new FileHibernateFilteredTreeConstraint());
-			security.initialize(object.getChildByPath("Security")); //$NON-NLS-1$
+			security.initialize(getSecurityObject());
 			addFormPage(security, "securityEditor"); //$NON-NLS-1$
 
 		}
@@ -64,9 +66,9 @@ public class HibConfig3CompoundEditor extends DefaultMultipageEditor {
 
 	protected void setNormalMode() {
 		if (treeFormPage!=null) { // AU added
-			sessionFactory.initialize(getModelObject().getChildByPath("Session Factory")); // AU added //$NON-NLS-1$
+			sessionFactory.initialize(getSessionFactoryObject());
 			sessionFactory.setErrorMode(isErrorMode());
-			security.initialize(getModelObject().getChildByPath("Security")); // AU added //$NON-NLS-1$
+			security.initialize(getSecurityObject());
 			security.setErrorMode(isErrorMode());
 		} // AU added
 		if (selectionProvider!=null) {
@@ -77,11 +79,27 @@ public class HibConfig3CompoundEditor extends DefaultMultipageEditor {
 		}
 	}
 
+	XModelObject getSessionFactoryObject() {
+		XModelObject o = getModelObject().getChildByPath("Session Factory"); //$NON-NLS-1$
+		if(o == null) {
+			o = XModelObjectLoaderUtil.createValidObject(object.getModel(), "HibConfig3SessionFactory"); //$NON-NLS-1$
+		}
+		return o;
+	}
+
+	XModelObject getSecurityObject() {
+		XModelObject o = getModelObject().getChildByPath("Security"); //$NON-NLS-1$
+		if(o == null) {
+			o = XModelObjectLoaderUtil.createValidObject(object.getModel(), "HibConfig3Security"); //$NON-NLS-1$
+		}
+		return o;
+	}
+
 	protected void setErrorMode() {
 		if (treeFormPage!=null) { // AU added
-			sessionFactory.initialize(getModelObject().getChildByPath("Session Factory")); // AU added //$NON-NLS-1$
+			sessionFactory.initialize(getSessionFactoryObject());
 			sessionFactory.setErrorMode(isErrorMode());
-			security.initialize(getModelObject().getChildByPath("Security")); // AU added //$NON-NLS-1$
+			security.initialize(getSecurityObject());
 			security.setErrorMode(isErrorMode());
 		} // AU added
 		if (treeEditor!=null) { 
