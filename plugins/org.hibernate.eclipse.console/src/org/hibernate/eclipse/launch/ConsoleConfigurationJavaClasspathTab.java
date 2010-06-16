@@ -63,9 +63,6 @@ public class ConsoleConfigurationJavaClasspathTab extends JavaClasspathTab {
 		if (resUserClasses && resExistArchive) {
 			try {
 				ConsoleConfiguration ccTest = new ConsoleConfiguration(new EclipseLaunchConsoleConfigurationPreferences(launchConfig));
-				// should not try to connect to db - refresh profile try to create db connection
-				// so just reject this
-				ccTest.setRejectProfileRefresh(true);
 				ccTest.buildWith(null, false);
 			} catch (Exception ex) {
 				resUserClasses = false;

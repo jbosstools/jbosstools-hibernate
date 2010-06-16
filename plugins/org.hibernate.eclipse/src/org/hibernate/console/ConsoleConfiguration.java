@@ -35,10 +35,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
-import org.eclipse.datatools.connectivity.IConnectionProfile;
-import org.eclipse.datatools.connectivity.ProfileManager;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -60,9 +57,6 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	/* TODO: move this out to the actual users of the configuraiton/sf ? */
 	private Configuration configuration;
 	private SessionFactory sessionFactory;
-	
-	// internal flag to prohibit long time profile refresh
-	private boolean rejectProfileRefresh = false;
 
 	/** Unique name for this configuration */
 	public String getName() {
@@ -125,57 +119,51 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	}
 
 	/*
-	 * try get a path to the sql driver jar file from DTP connection profile
-	 */
-	protected String getConnectionProfileDriverURL() {
-		String connectionProfile = prefs.getConnectionProfileName();
-		if (connectionProfile == null) {
-			return null;
-		}
-		IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(connectionProfile);
-		if (profile == null) {
-			return null;
-		}
-		if (!rejectProfileRefresh) {
-			ConnectionProfileUtil.refreshProfile(profile);
-		}
-		//
-		Properties cpProperties = profile.getProperties(profile.getProviderId());
-		String driverJarPath = cpProperties.getProperty("jarList"); //$NON-NLS-1$
-		return driverJarPath;
-	}
-
-	/*
 	 * get custom classpath URLs 
 	 */
 	protected URL[] getCustomClassPathURLs() {
 		URL[] customClassPathURLsTmp = prefs.getCustomClassPathURLS();
 		URL[] customClassPathURLs = null;
-		String driverURL = getConnectionProfileDriverURL();
-		URL url = null;
+		String driverURL = ConnectionProfileUtil.getConnectionProfileDriverURL(prefs.getConnectionProfileName());
+		URL[] urls = null;
 		if (driverURL != null) {
-			try {
-				url = new URL("file:/" + driverURL); //$NON-NLS-1$
-			} catch (MalformedURLException e) {
-				// just ignore
-			}
-		}
-		// should DTP connection profile driver jar file be inserted
-		boolean insertFlag = ( url != null );
-		if (insertFlag) {
-			for (int i = 0; i < customClassPathURLsTmp.length; i++) {
-				if (url.equals(customClassPathURLsTmp[i])) {
-					insertFlag = false;
-					break;
+			String[] driverURLParts = driverURL.split(";"); //$NON-NLS-1$
+			urls = new URL[driverURLParts.length];
+			for (int i = 0; i < driverURLParts.length; i++) {
+				try {
+					urls[i] = new URL("file:/" + driverURLParts[i].trim()); //$NON-NLS-1$
+				} catch (MalformedURLException e) {
+					urls[i] = null; 
 				}
 			}
 		}
-		if (insertFlag) {
-			customClassPathURLs = new URL[customClassPathURLsTmp.length + 1];
+		// should DTP connection profile driver jar file be inserted
+		int insertItems = ( urls != null ) ? urls.length : 0;
+		if (insertItems > 0) {
+			insertItems = 0;
+			for (int i = 0; i < urls.length; i++) {
+				if (urls[i] == null) {
+					continue;
+				}
+				int j = 0;
+				for (; j < customClassPathURLsTmp.length; j++) {
+					if (customClassPathURLsTmp[j].equals(urls[i])) {
+						break;
+					}
+				}
+				if (j == customClassPathURLsTmp.length) {
+					urls[insertItems++] = urls[i];
+				}
+			}
+		}
+		if (insertItems > 0) {
+			customClassPathURLs = new URL[customClassPathURLsTmp.length + insertItems];
 	        System.arraycopy(customClassPathURLsTmp, 0, 
 	        		customClassPathURLs, 0, customClassPathURLsTmp.length);
 	        // insert DTP connection profile driver jar file URL after the default classpath entries
-			customClassPathURLs[customClassPathURLsTmp.length] = url;
+			for (int i = 0; i < insertItems; i++) {
+				customClassPathURLs[customClassPathURLsTmp.length + i] = urls[i];
+			}
 		} else {
 			customClassPathURLs = customClassPathURLsTmp;
 		}
@@ -227,7 +215,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		executionContext = new DefaultExecutionContext(getName(), classLoader);
 		Configuration result = (Configuration)execute(new Command() {
 			public Object execute() {
-				ConfigurationFactory csf = new ConfigurationFactory(prefs, fakeDrivers, rejectProfileRefresh);
+				ConfigurationFactory csf = new ConfigurationFactory(prefs, fakeDrivers);
 				return csf.createConfiguration(cfg, includeMappings);
 			}
 		});
@@ -235,7 +223,6 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	}
 
 	protected ClassLoader getParentClassLoader() {
-		//Thread.currentThread().setContextClassLoader(ClassLoader.getSystemClassLoader());
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		//ClassLoader cl = ConsoleConfiguration.class.getClassLoader();
 		return cl;
@@ -410,13 +397,4 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			}
 		});
 	}
-
-	public boolean isRejectProfileRefresh() {
-		return rejectProfileRefresh;
-	}
-
-	public void setRejectProfileRefresh(boolean rejectProfileRefresh) {
-		this.rejectProfileRefresh = rejectProfileRefresh;
-	}
-
 }

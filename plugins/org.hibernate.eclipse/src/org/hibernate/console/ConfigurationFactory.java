@@ -42,6 +42,7 @@ import org.dom4j.Node;
 import org.dom4j.io.DOMWriter;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.ProfileManager;
+import org.eclipse.datatools.connectivity.drivers.DriverInstance;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
@@ -64,13 +65,11 @@ public class ConfigurationFactory {
 
 	private ConsoleConfigurationPreferences prefs;
 	private Map<String, FakeDelegatingDriver> fakeDrivers;
-	private boolean rejectProfileRefresh;
 
 	public ConfigurationFactory(ConsoleConfigurationPreferences prefs,
-			Map<String, FakeDelegatingDriver> fakeDrivers, boolean rejectProfileRefresh) {
+			Map<String, FakeDelegatingDriver> fakeDrivers) {
 		this.prefs = prefs;
 		this.fakeDrivers = fakeDrivers;
-		this.rejectProfileRefresh = rejectProfileRefresh;
 	}
 
 	public ConsoleConfigurationPreferences getPreferences() {
@@ -375,36 +374,31 @@ public class ConfigurationFactory {
 		IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(
 				connectionProfile);
 		if (profile != null) {
-			if (!rejectProfileRefresh) {
-				ConnectionProfileUtil.refreshProfile(profile);
-			}
-			//
+			DriverInstance driverInstance = 
+				ConnectionProfileUtil.getDriverDefinition(prefs.getConnectionProfileName());
+			final Properties cpProperties = profile.getProperties(profile.getProviderId());
 			final Properties invokeProperties = localCfg.getProperties();
 			// set this property to null!
 			invokeProperties.remove(Environment.DATASOURCE);
 			localCfg.setProperties(invokeProperties);
-			Properties cpProperties = profile.getProperties(profile.getProviderId());
 			// seems we should not setup dialect here
 			// String dialect =
 			// "org.hibernate.dialect.HSQLDialect";//cpProperties.getProperty("org.eclipse.datatools.connectivity.db.driverClass");
 			// invoke.setProperty(Environment.DIALECT, dialect);
-			String driver = cpProperties
-					.getProperty("org.eclipse.datatools.connectivity.db.driverClass"); //$NON-NLS-1$
-			localCfg.setProperty(Environment.DRIVER, driver);
+			String driverClass = driverInstance.getProperty("org.eclipse.datatools.connectivity.db.driverClass"); //$NON-NLS-1$
+			localCfg.setProperty(Environment.DRIVER, driverClass);
 			// TODO:
 			@SuppressWarnings("unused")
-			String driverJarPath = cpProperties.getProperty("jarList"); //$NON-NLS-1$
+			String driverJarPath = driverInstance.getJarList();
 			String url = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.URL"); //$NON-NLS-1$
 			// url += "/";// +
 			// cpProperties.getProperty("org.eclipse.datatools.connectivity.db.databaseName");
 			localCfg.setProperty(Environment.URL, url);
-			String user = cpProperties
-					.getProperty("org.eclipse.datatools.connectivity.db.username"); //$NON-NLS-1$
+			String user = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.username"); //$NON-NLS-1$
 			if (null != user && user.length() > 0) {
 				localCfg.setProperty(Environment.USER, user);
 			}
-			String pass = cpProperties
-					.getProperty("org.eclipse.datatools.connectivity.db.password"); //$NON-NLS-1$
+			String pass = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.password"); //$NON-NLS-1$
 			if (null != pass && pass.length() > 0) {
 				localCfg.setProperty(Environment.PASS, pass);
 			}
@@ -454,4 +448,5 @@ public class ConfigurationFactory {
 			}
 		}
 	}
+
 }

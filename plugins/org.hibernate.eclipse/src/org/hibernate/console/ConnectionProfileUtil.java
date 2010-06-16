@@ -21,17 +21,47 @@
  */
 package org.hibernate.console;
 
+import org.eclipse.datatools.connectivity.ConnectionProfileConstants;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
+import org.eclipse.datatools.connectivity.ProfileManager;
+import org.eclipse.datatools.connectivity.drivers.DriverInstance;
 
+/**
+ * @author Vitali Yemialyanchyk
+ */
 public class ConnectionProfileUtil {
-	
-	public static void refreshProfile(IConnectionProfile profile) {
-		// refresh profile (refresh jpa connection):
-		// get fresh information about current db structure and update error markers  
-		if (profile.getConnectionState() == IConnectionProfile.CONNECTED_STATE){
-			profile.disconnect(null);
+
+	public static String getDriverDefinitionId(IConnectionProfile profile) {
+		if (profile == null) {
+			return null;
 		}
-		profile.connect(null);
+		return profile.getBaseProperties().getProperty(
+				ConnectionProfileConstants.PROP_DRIVER_DEFINITION_ID);
 	}
-	
+
+	public static DriverInstance getDriverDefinition(String connectionProfile) {
+		if (connectionProfile == null) {
+			return null;
+		}
+		IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(
+				connectionProfile);
+		if (profile == null) {
+			return null;
+		}
+		String driverID = getDriverDefinitionId(profile);
+		return org.eclipse.datatools.connectivity.drivers.DriverManager.getInstance()
+				.getDriverInstanceByID(driverID);
+	}
+
+	/*
+	 * try get a path to the sql driver jar file from DTP connection profile
+	 */
+	public static String getConnectionProfileDriverURL(String connectionProfile) {
+		DriverInstance di = getDriverDefinition(connectionProfile);
+		if (di == null) {
+			return null;
+		}
+		return di.getJarList();
+	}
+
 }
