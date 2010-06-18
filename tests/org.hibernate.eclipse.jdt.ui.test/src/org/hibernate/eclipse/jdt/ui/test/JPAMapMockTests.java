@@ -71,7 +71,7 @@ public class JPAMapMockTests extends TestCase {
 
 	public void testJPAMapToolActor() {
 
-		final JPAMapToolActor jpaMapToolActor = JPAMapToolActor.getInstance();
+		final JPAMapToolActor jpaMapToolActor = new JPAMapToolActor();
 		
 		final AllEntitiesProcessor allEntitiesProcessor = context.mock(AllEntitiesProcessor.class);
 		final AllEntitiesInfoCollector allEntitiesInfoCollector = context.mock(AllEntitiesInfoCollector.class);

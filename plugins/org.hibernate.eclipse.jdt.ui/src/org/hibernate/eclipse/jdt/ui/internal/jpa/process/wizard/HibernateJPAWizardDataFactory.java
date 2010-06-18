@@ -49,12 +49,12 @@ public class HibernateJPAWizardDataFactory {
 		return data;
 	}
 
-	@SuppressWarnings("unchecked")
 	static public IHibernateJPAWizardData createHibernateJPAWizardData(
 			final IStructuredSelection selection2Update, 
 			IHibernateJPAWizardParams params, int depth) {
 
 		CompilationUnitCollector compileUnitCollector = new CompilationUnitCollector();
+		@SuppressWarnings("rawtypes")
 		Iterator itSelection2Update = selection2Update.iterator();
 		while (itSelection2Update.hasNext()) {
 			Object obj = itSelection2Update.next();

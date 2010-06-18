@@ -10,6 +10,8 @@
   ******************************************************************************/
 package org.hibernate.eclipse.jdt.ui.internal.jpa.actions;
 
+import java.lang.ref.WeakReference;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,6 +19,10 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.expressions.EvaluationContext;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.ui.javaeditor.CompilationUnitEditor;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -39,14 +45,15 @@ import org.hibernate.eclipse.jdt.ui.Activator;
 public class JPAMapToolActionDelegate extends AbstractHandler implements IObjectActionDelegate,
 	IEditorActionDelegate, IViewActionDelegate {
 
-	public JPAMapToolActor actor = JPAMapToolActor.getInstance();
+	protected JPAMapToolActor actor = new JPAMapToolActor();
+
+	protected WeakReference<Object> refContextObject = null;
 
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
 	}
 
 	public void run(IAction action) {
-		actor.updateSelected(Integer.MAX_VALUE);
-		//actor.updateOpen();
+		runInternal();
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {
@@ -63,9 +70,15 @@ public class JPAMapToolActionDelegate extends AbstractHandler implements IObject
 	}
 
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		actor.updateSelected(Integer.MAX_VALUE);
-		//actor.updateOpen();
+		runInternal();
 		return null;
+	}
+
+	public void runInternal() {
+		if (refContextObject != null) {
+			processContextObjectElements();
+		}
+		actor.updateSelected(Integer.MAX_VALUE);
 	}
 
 	public void init(IViewPart view) {
@@ -86,28 +99,77 @@ public class JPAMapToolActionDelegate extends AbstractHandler implements IObject
 		return false;
 	}
 
-	@SuppressWarnings("unchecked")
 	public void setEnabled(Object evaluationContext) {
-		boolean enable = false;
-		actor.setSelection(null);
-		actor.clearSelectionCU();
-		if (!enable && evaluationContext instanceof EvaluationContext) {
+		if (evaluationContext instanceof EvaluationContext) {
 			EvaluationContext ec = (EvaluationContext)evaluationContext;
 			Object obj = ec.getDefaultVariable();
-			if (obj instanceof List) {
-				Iterator it = ((List)obj).iterator();
-				while (it.hasNext()) {
-					obj = it.next();
-					actor.processJavaElements(obj);
-				}
-			} else {
-				actor.processJavaElements(obj);
+			refContextObject = new WeakReference<Object>(obj);
+		} else {
+			refContextObject = null;
+		}
+		setBaseEnabled(checkEnabled());
+	}
+
+	protected boolean checkEnabled() {
+		boolean enable = false;
+		Object obj = refContextObject != null ? refContextObject.get() : null;
+		if (obj == null) {
+			return enable;
+		}
+		List<?> list = null;
+		if (obj instanceof List) {
+			list = (List<?>)obj;
+		} else {
+			list = Collections.singletonList(obj);
+		}
+		Iterator<?> it = list.iterator();
+		while (it.hasNext() && !enable) {
+			Object obj2 = it.next();
+			if (!(obj2 instanceof IJavaElement)) {
+				continue;
 			}
-			enable = actor.getSelectionCUSize() > 0;
+			int kind = IPackageFragmentRoot.K_SOURCE;
+			if (obj2 instanceof IPackageFragment) {
+				IPackageFragment pf = (IPackageFragment)obj2;
+				try {
+					kind = pf.getKind();
+				} catch (JavaModelException e) {
+					kind = IPackageFragmentRoot.K_BINARY;
+				}
+			} else if (obj2 instanceof IPackageFragmentRoot) {
+				IPackageFragmentRoot pfr = (IPackageFragmentRoot)obj2;
+				try {
+					kind = pfr.getKind();
+				} catch (JavaModelException e) {
+					kind = IPackageFragmentRoot.K_BINARY;
+				}
+			}
+			if (kind == IPackageFragmentRoot.K_SOURCE) {
+				enable = true;
+			}
 		}
 		if (!enable) {
 			enable = isCUSelected();
 		}
-		setBaseEnabled(enable);
+		return enable;
+	}
+
+	public void processContextObjectElements() {
+		actor.setSelection(null);
+		actor.clearSelectionCU();
+		Object obj = refContextObject != null ? refContextObject.get() : null;
+		if (obj == null) {
+			return;
+		}
+		if (obj instanceof List) {
+			@SuppressWarnings("rawtypes")
+			Iterator it = ((List)obj).iterator();
+			while (it.hasNext()) {
+				obj = it.next();
+				actor.processJavaElements(obj);
+			}
+		} else {
+			actor.processJavaElements(obj);
+		}
 	}
 }

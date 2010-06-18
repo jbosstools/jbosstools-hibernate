@@ -104,6 +104,7 @@ public class CompilationUnitCollector {
 	/**
 	 * Process object - java element to collect all it's children CompilationUnits
 	 * @param obj
+	 * @param bCollect
 	 */
 	public void processJavaElements(Object obj, boolean bCollect) {
 		if (obj instanceof ICompilationUnit) {

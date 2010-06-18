@@ -52,17 +52,12 @@ import org.hibernate.eclipse.jdt.ui.internal.jpa.process.AllEntitiesProcessor;
 
 /**
  * Actor to execute annotation generation.
- * It is singleton.
  *
  * @author Vitali Yemialyanchyk
  */
 @SuppressWarnings("restriction")
 public class JPAMapToolActor {
 
-	/**
-	 * instance
-	 */
-	private static JPAMapToolActor actor = null;
 	/**
 	 * selection - start point to generate annotations
 	 * could be java file, list of files, package, project, some other?
@@ -82,19 +77,12 @@ public class JPAMapToolActor {
 	 */
 	protected AllEntitiesProcessor processor = new AllEntitiesProcessor();
 
-	protected JPAMapToolActor() {
+	public JPAMapToolActor() {
 		initPreferences();
 	}
 
 	public void initPreferences() {
 		processor.initPreferences();
-	}
-
-	public static JPAMapToolActor getInstance() {
-		if (actor == null) {
-			actor = new JPAMapToolActor();
-		}
-		return actor;
 	}
 
 	/**
