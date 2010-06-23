@@ -284,7 +284,8 @@ public class HibernatePropertyPage extends PropertyPage {
 	
 	private boolean isHibernateJpaProject(){
 		JpaProject jpaProject = (JpaProject) getProject().getAdapter(JpaProject.class);
-		return (jpaProject != null) && (jpaProject.getJpaPlatform().getId().equals(HibernatePropertiesConstants.HIBERNATE_JPA_PLATFORM_ID));
+		return (jpaProject != null) && ((jpaProject.getJpaPlatform().getId().equals(HibernatePropertiesConstants.HIBERNATE_JPA_PLATFORM_ID))
+				|| (jpaProject.getJpaPlatform().getId().equals(HibernatePropertiesConstants.HIBERNATE_JPA2_0_PLATFORM_ID)));
 	}
 
 	private IProject getProject() {

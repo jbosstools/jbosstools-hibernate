@@ -15,7 +15,7 @@ import java.util.Vector;
 
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaBasicMapping;
-import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Generated;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenerationTime;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
@@ -44,8 +44,8 @@ implements HibernateJavaBasicMapping {
 	}
 	
 	@Override
-	protected HibernateJpaFactory getJpaFactory() {
-		return (HibernateJpaFactory) super.getJpaFactory();
+	protected HibernateAbstractJpaFactory getJpaFactory() {
+		return (HibernateAbstractJpaFactory) super.getJpaFactory();
 	}
 	
 	@Override

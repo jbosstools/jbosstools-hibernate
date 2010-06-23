@@ -25,7 +25,7 @@ import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
-import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedNativeQueriesAnnotation;
@@ -51,8 +51,8 @@ implements HibernateJavaQueryContainer{
 		this.hibernateNamedNativeQueries = new ArrayList<HibernateNamedNativeQuery>();
 	}
 	
-	public HibernateJpaFactory getJpaFactory(){
-		return (HibernateJpaFactory)super.getJpaFactory();
+	public HibernateAbstractJpaFactory getJpaFactory(){
+		return (HibernateAbstractJpaFactory)super.getJpaFactory();
 	}
 	
 	public void initialize(JavaResourcePersistentMember jrpm) {

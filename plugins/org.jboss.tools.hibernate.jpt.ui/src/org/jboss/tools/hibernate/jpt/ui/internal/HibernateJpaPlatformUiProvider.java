@@ -33,7 +33,7 @@ import org.jboss.tools.hibernate.jpt.ui.internal.platform.HibernateJpaPlatformUi
  *
  */
 public class HibernateJpaPlatformUiProvider extends
-AbstractJpaPlatformUiProvider {
+	AbstractJpaPlatformUiProvider {
 
 	// singleton
 	private static final JpaPlatformUiProvider INSTANCE = new HibernateJpaPlatformUiProvider();

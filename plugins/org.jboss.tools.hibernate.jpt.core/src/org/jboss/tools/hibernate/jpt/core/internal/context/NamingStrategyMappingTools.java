@@ -37,6 +37,10 @@ public class NamingStrategyMappingTools {
 		if (relationshipMapping == null) {
 			return null;
 		}
+		
+		if (!(relationshipReference.getTypeMapping() instanceof Entity))
+			return null;//could be JavaNullTypeMapping
+		
 		Entity ownerEntity = (Entity) relationshipReference.getTypeMapping();
 		org.eclipse.jpt.core.context.Table ownerTable = ownerEntity.getTable();
 		if (ownerTable == null) {

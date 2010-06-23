@@ -28,9 +28,9 @@ import org.eclipse.debug.internal.core.LaunchConfiguration;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
+import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent.Type;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
 import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent;
-import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent.Type;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.console.utils.ProjectUtils;
@@ -47,7 +47,8 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 			IProject project = event.getProject().getProject();
 			IProjectFacetActionEvent pEvent = (IProjectFacetActionEvent)event;
 			if (pEvent.getProjectFacet().getId().equals(JptCorePlugin.FACET_ID)
-					&& HibernateJpaPlatform.ID.equals(JptCorePlugin.getJpaPlatformId(project))){
+					&& (HibernateJpaPlatform.HIBERNATE_PLATFORM_ID.equals(JptCorePlugin.getJpaPlatformId(project))
+							|| HibernateJpaPlatform.HIBERNATE2_0_PLATFORM_ID.equals(JptCorePlugin.getJpaPlatformId(project)))){
 				if (checkPreConditions(project)){
 					buildConsoleConfiguration(project);
 				}				
@@ -96,7 +97,7 @@ public class JPAPostInstallFasetListener implements IFacetedProjectListener {
 	protected void buildConsoleConfiguration(IProject project){
 		ILaunchManager lm = DebugPlugin.getDefault().getLaunchManager();
 		ILaunchConfigurationType lct = LaunchHelper.getHibernateLaunchConfigsType();
-		String launchName = lm.generateUniqueLaunchConfigurationNameFrom(project.getName());
+		String launchName = lm.generateLaunchConfigurationName(project.getName());
 		ILaunchConfigurationWorkingCopy wc;
 		try {
 			wc = lct.newInstance(null, launchName);

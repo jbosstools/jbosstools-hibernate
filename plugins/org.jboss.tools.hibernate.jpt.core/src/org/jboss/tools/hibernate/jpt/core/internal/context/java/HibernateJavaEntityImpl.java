@@ -23,7 +23,9 @@ import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaEntity;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaCacheable2_0;
+import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
@@ -34,7 +36,7 @@ import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.hibernate.cfg.NamingStrategy;
-import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.core.internal.context.ForeignKey;
@@ -80,8 +82,8 @@ implements HibernateJavaEntity {
 		this.updateForeignKey();
 	}
 	
-	protected HibernateJpaFactory getJpaFactory() {
-		return (HibernateJpaFactory) this.getJpaPlatform().getJpaFactory();
+	protected HibernateAbstractJpaFactory getJpaFactory() {
+		return (HibernateAbstractJpaFactory) this.getJpaPlatform().getJpaFactory();
 	}
 	
 	@Override
@@ -435,11 +437,15 @@ implements HibernateJavaEntity {
 	}
 
 	public JavaCacheable2_0 getCacheable() {
-		return cachable;
+		return this.cachable;
 	}
 
-	public boolean calculateDefaultCacheable() {
-		return false;
+	public boolean calculateDefaultCacheable() {		
+		CacheableHolder2_0 parentEntity = (CacheableHolder2_0) getParentEntity();
+		if (parentEntity != null) {
+			return parentEntity.getCacheable().isCacheable();
+		}
+		return ((PersistenceUnit2_0) getPersistenceUnit()).calculateDefaultCacheable();
 	}
 	
 }

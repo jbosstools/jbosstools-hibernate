@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
-import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorsAnnotation;
@@ -42,8 +42,8 @@ public class HibernateJavaGeneratorContainerImpl extends
 		this.genericGenerators = new ArrayList<JavaGenericGenerator>();
 	}
 	
-	public HibernateJpaFactory getJpaFactory(){
-		return (HibernateJpaFactory)super.getJpaFactory();
+	public HibernateAbstractJpaFactory getJpaFactory(){
+		return (HibernateAbstractJpaFactory)super.getJpaFactory();
 	}
 	
 	@Override

@@ -11,15 +11,18 @@
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
+import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.orm.BaseOrmXmlUiFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
+import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmIdMapping;
+import org.jboss.tools.hibernate.jpt.ui.internal.details.orm.HibernateOrmEntityComposite;
+import org.jboss.tools.hibernate.jpt.ui.internal.details.orm.HibernateOrmIdMappingComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateBasicMappingComposite;
-import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateIdMappingComposite;
 
 /**
  * @author Dmitry Geraskov
@@ -41,7 +44,15 @@ public class HibernateOrmXmlUiFactory extends BaseOrmXmlUiFactory {
 			PropertyValueModel<OrmIdMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new HibernateIdMappingComposite((PropertyValueModel<? extends HibernateOrmIdMapping>) subjectHolder, parent, widgetFactory);
+		return new HibernateOrmIdMappingComposite((PropertyValueModel<? extends HibernateOrmIdMapping>) subjectHolder, parent, widgetFactory);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public JpaComposite createOrmEntityComposite(
+			PropertyValueModel<OrmEntity> subjectHolder, Composite parent,
+			WidgetFactory widgetFactory) {
+		return new HibernateOrmEntityComposite((PropertyValueModel<? extends HibernateOrmEntity>) subjectHolder, parent, widgetFactory);
 	}
 
 }

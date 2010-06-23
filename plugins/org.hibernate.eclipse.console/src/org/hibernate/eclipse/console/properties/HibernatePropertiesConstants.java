@@ -30,5 +30,7 @@ public class HibernatePropertiesConstants {
 	public static final String HIBERNATE_CONSOLE_NODE = "org.hibernate.eclipse.console"; //$NON-NLS-1$
 
 	public static final String HIBERNATE_JPA_PLATFORM_ID = "hibernate"; //$NON-NLS-1$
+	
+	public static final String HIBERNATE_JPA2_0_PLATFORM_ID = "hibernate2_0"; //$NON-NLS-1$
 
 }

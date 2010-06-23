@@ -29,6 +29,7 @@ public class HibernateJavaOneToManyRelationshipReference extends
 		super(parent);
 	}
 	
+	@Override
 	protected JavaJoinTableJoiningStrategy buildJoinTableJoiningStrategy() {
 		return new HibernateJavaJoinTableJoiningStrategy(this);
 	}

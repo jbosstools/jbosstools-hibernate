@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings version="1.0" xmlns="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd">
+	<entity class="entity.JustData" access="FIELD">
+		<attributes>
+			<id name="id3">
+			</id>
+			<one-to-many name="mtm1">
+			</one-to-many>
+		</attributes>
+	</entity>
+	<entity class="entity.ManyToMany1" access="FIELD">
+		<attributes>
+			<id name="id1"/>
+			<many-to-one name="justData1"/>
+			<many-to-many name="mtm2" mapped-by="mtm1"/>
+		</attributes>
+	</entity>
+	<entity class="entity.ManyToMany2" name="e.m22" access="FIELD">
+		<table name="ManyToMany22">
+		</table>
+		<attributes>
+			<id name="id2">
+				<column name="id"/></id>
+			<basic name="simpleData2">
+				<column name="simpleData"/></basic>
+			<many-to-many name="mtm1" />
+		</attributes>
+	</entity>
+</entity-mappings>

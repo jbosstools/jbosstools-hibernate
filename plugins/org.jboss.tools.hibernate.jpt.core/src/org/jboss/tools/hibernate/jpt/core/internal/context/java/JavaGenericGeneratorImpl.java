@@ -26,11 +26,11 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
-import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Parameter;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.ParameterAnnotation;
 
@@ -200,8 +200,8 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 	}
 	
 	@Override
-	protected HibernateJpaFactory getJpaFactory() {
-		return (HibernateJpaFactory) super.getJpaFactory();
+	protected HibernateAbstractJpaFactory getJpaFactory() {
+		return (HibernateAbstractJpaFactory) super.getJpaFactory();
 	}
 	
 	//************************ parameters ***********************

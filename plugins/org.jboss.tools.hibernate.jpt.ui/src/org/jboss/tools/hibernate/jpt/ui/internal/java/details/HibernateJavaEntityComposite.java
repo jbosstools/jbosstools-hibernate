@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.java.details;
 
-import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.GeneratorContainer;
 import org.eclipse.jpt.core.context.QueryContainer;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -23,12 +22,11 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateGeneratorContainer;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateIdMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaQueryContainer;
-import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateGenerationComposite2;
+import org.jboss.tools.hibernate.jpt.ui.internal.details.HibernateTableComposite;
+import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateGenerationComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateQueriesComposite;
-import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateTableComposite;
 
 /**
  * @author Dmitry Geraskov
@@ -47,11 +45,13 @@ public class HibernateJavaEntityComposite extends AbstractEntityComposite<Hibern
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void initializeQueriesSection(Composite container, PropertyValueModel<QueryContainer> queryContainerHolder) {
 		new HibernateQueriesComposite(this, (PropertyValueModel<? extends HibernateJavaQueryContainer>) queryContainerHolder, container);
 	}
 	
+	@SuppressWarnings("unused")
 	private PropertyValueModel<HibernateGeneratorContainer> buildGeneratorContainer() {
 		return new PropertyAspectAdapter<HibernateJavaEntity, HibernateGeneratorContainer>(getSubjectHolder()) {
 			@Override
@@ -61,9 +61,10 @@ public class HibernateJavaEntityComposite extends AbstractEntityComposite<Hibern
 		};
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void initializeGeneratorsSection(Composite container, PropertyValueModel<GeneratorContainer> generatorContainerHolder) {
-		new HibernateGenerationComposite2(this, (PropertyValueModel<? extends HibernateGeneratorContainer>) generatorContainerHolder, addSubPane(container, 10), true);
+		new HibernateGenerationComposite(this, (PropertyValueModel<? extends HibernateGeneratorContainer>) generatorContainerHolder, addSubPane(container, 10), true);
 	}
 	
 	

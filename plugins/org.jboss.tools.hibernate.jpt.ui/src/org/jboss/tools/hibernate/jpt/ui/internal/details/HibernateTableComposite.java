@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
+package org.jboss.tools.hibernate.jpt.ui.internal.details;
 
 import java.util.Collection;
 

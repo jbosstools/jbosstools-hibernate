@@ -25,7 +25,9 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
  */
 public class HibernateJpaPlatform extends GenericJpaPlatform {
 	
-	public static final String ID = "hibernate"; //$NON-NLS-1$
+	public static final String HIBERNATE_PLATFORM_ID = "hibernate"; //$NON-NLS-1$
+	
+	public static final String HIBERNATE2_0_PLATFORM_ID = "hibernate2_0"; //$NON-NLS-1$
 	
 	@Override
 	public ResourceDefinition getResourceDefinition(JpaResourceType resourceType) {
@@ -41,9 +43,4 @@ public class HibernateJpaPlatform extends GenericJpaPlatform {
 		super(id, jpaVersion, jpaFactory, jpaAnnotationProvider, platformProvider, jpaVariation);
 	}
 
-	@Override
-	public String getId() {
-		return ID;
-	}
-	
 }

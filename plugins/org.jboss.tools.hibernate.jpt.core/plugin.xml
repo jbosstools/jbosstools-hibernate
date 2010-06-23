@@ -8,6 +8,12 @@
 			default="false"
 			id="hibernate"
 			label="Hibernate">
+		</jpaPlatform>
+		<jpaPlatform 
+			factoryClass="org.jboss.tools.hibernate.jpt.core.internal.jpa2.HibernateJpa2_0PlatformFactory"
+			default="false"
+			id="hibernate2_0"
+			label="Hibernate jpa 2.0">
 		</jpaPlatform>		
 	</extension>
  <extension
@@ -30,9 +36,14 @@
 					<with variable="requestingProjectFacet">
 						<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
 					</with>
-					<with variable="jpaPlatform">
-						<equals value="hibernate"/>
-					</with>
+					<or>
+						<with variable="jpaPlatform">
+							<equals value="hibernate"/>
+						</with>
+						<with variable="jpaPlatform">
+							<equals value="hibernate2_0"/>
+						</with>
+					</or>
 				</and>
 			</enablement>
 		</provider>

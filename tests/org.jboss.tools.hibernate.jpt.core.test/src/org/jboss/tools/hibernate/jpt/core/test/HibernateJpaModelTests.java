@@ -13,7 +13,7 @@ package org.jboss.tools.hibernate.jpt.core.test;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import static junit.framework.Assert.*;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -40,26 +40,31 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaJoi
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaManyToManyMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaTable;
 import org.jboss.tools.test.util.ResourcesUtils;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * @author Dmitry Geraskov
  *
  */
-public class HibernateJpaModelTests extends TestCase {
+public class HibernateJpaModelTests {
 	
 	private static final String PROJECT_NAME = "testHibernateJpaProject";
 	private static final String PROJECT_PATH = "res/" + PROJECT_NAME;
 	
-	IProject project = null;
-	JpaProject jpaProject = null;
+	static IProject project = null;
+	static JpaProject jpaProject = null;
 
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
 		project = ResourcesUtils.importProject(Platform.getBundle("org.jboss.tools.hibernate.jpt.core.test"),
 				PROJECT_PATH, new NullProgressMonitor());
 		project.refreshLocal(IResource.DEPTH_INFINITE, null);
 		jpaProject = (JpaProject) project.getAdapter(JpaProject.class);
 	}
 	
+	@Test
 	public void testDefaultMapping(){
 		assertNotNull(jpaProject);
 		JpaRootContextNode rootContextNode = jpaProject.getRootContextNode();
@@ -78,9 +83,10 @@ public class HibernateJpaModelTests extends TestCase {
 		}
 	}
 	
+	@Test
 	public void testNamigStrategyMapping(){
 		ConsoleConfiguration cc = KnownConfigurations.getInstance().find(PROJECT_NAME);
-		assertNotNull("Console configuration not foun for project " + PROJECT_NAME, cc);
+		assertNotNull("Console configuration not found for project " + PROJECT_NAME, cc);
 		cc.build();
 		assertNotNull("Console configuration build problem", cc.getConfiguration());
 		assertNotNull("Naming Strategy not found", cc.getConfiguration().getNamingStrategy());
@@ -230,7 +236,8 @@ public class HibernateJpaModelTests extends TestCase {
 		assertEquals("col_entity.ManyToMany2_entity.ManyToMany1_ManyToMany1_entity.ManyToMany1_mtm1", hjjt.getDBTableName());
 	}
 	
-	protected void tearDown() throws Exception {
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
 		if(project != null) {
 			boolean saveAutoBuild = ResourcesUtils.setBuildAutomatically(false);
 			try {

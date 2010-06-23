@@ -9,7 +9,7 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 
-package org.jboss.tools.hibernate.jpt.ui.internal.orm.details;
+package org.jboss.tools.hibernate.jpt.ui.internal.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
@@ -26,7 +26,7 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmEntity;
-import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateTableComposite;
+import org.jboss.tools.hibernate.jpt.ui.internal.details.HibernateTableComposite;
 
 /**
  * @author Dmitry Geraskov

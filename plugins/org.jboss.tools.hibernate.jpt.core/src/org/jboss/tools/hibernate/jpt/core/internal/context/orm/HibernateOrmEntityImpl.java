@@ -23,7 +23,9 @@ import org.eclipse.jpt.core.context.orm.OrmBaseJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEntity;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmCacheable2_0;
+import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
+import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
@@ -34,9 +36,9 @@ import org.hibernate.cfg.NamingStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaProject;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
-import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedNativeQuery;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateNamedQuery;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateTable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 
@@ -64,9 +66,20 @@ implements HibernateOrmEntity {
 	}
 
 	public boolean calculateDefaultCacheable() {
-		return false;
+		if (!isMetadataComplete()) {
+			CacheableHolder2_0 javaEntity = (CacheableHolder2_0) getJavaEntity();
+			if (javaEntity != null) {
+				return javaEntity.getCacheable().isCacheable();
+			}
+		}
+		
+		CacheableHolder2_0 parentEntity = (CacheableHolder2_0) getParentEntity();
+		if (parentEntity != null) {
+			return parentEntity.getCacheable().isCacheable();
+		}
+		return ((PersistenceUnit2_0) getPersistenceUnit()).calculateDefaultCacheable();
 	}
-	
+
 	@Override
 	public HibernateJpaProject getJpaProject() {
 		return (HibernateJpaProject) super.getJpaProject();
@@ -129,11 +142,13 @@ implements HibernateOrmEntity {
 				return null;
 			}
 			Entity parentEntity = HibernateOrmEntityImpl.this.getParentEntity();
+			String colName = (parentEntity == null)
+				? getPrimaryKeyColumnName() : parentEntity.getPrimaryKeyColumnName();
 			NamingStrategy ns = HibernateOrmEntityImpl.this.getJpaProject().getNamingStrategy();
 			if (getJpaProject().isNamingStrategyEnabled() && ns != null){				
 				try {
-					String name = ns.joinKeyColumnName(parentEntity.getPrimaryKeyColumnName(),
-							parentEntity.getPrimaryTableName());
+					String name = ns.joinKeyColumnName(colName,	(parentEntity == null)
+								? getTable().getName() : parentEntity.getPrimaryTableName());
 					return name;
 				} catch (Exception e) {
 					Message m = new LocalMessage(IMessage.HIGH_SEVERITY, 
@@ -141,7 +156,7 @@ implements HibernateOrmEntity {
 					HibernateJptPlugin.logException(m.getText(), e);
 				}
 			}
-			return parentEntity.getPrimaryKeyColumnName();
+			return colName;
 		}
 		
 		public String getDefaultTableName() {

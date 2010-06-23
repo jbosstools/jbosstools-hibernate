@@ -14,7 +14,7 @@ import java.util.Vector;
 
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaIdMapping;
-import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotation;
@@ -49,8 +49,8 @@ implements HibernateJavaIdMapping {
 	}
 	
 	@Override
-	protected HibernateJpaFactory getJpaFactory() {
-		return (HibernateJpaFactory) super.getJpaFactory();
+	protected HibernateAbstractJpaFactory getJpaFactory() {
+		return (HibernateAbstractJpaFactory) super.getJpaFactory();
 	}
 	
 	@Override
@@ -87,7 +87,7 @@ implements HibernateJavaIdMapping {
 	}
 	
 	protected JavaGenericGenerator buildGenericGenerator(GenericGeneratorAnnotation genericGeneratorResource) {
-		JavaGenericGenerator generator = ((HibernateJpaFactory) getJpaFactory()).buildJavaGenericGenerator(this);
+		JavaGenericGenerator generator = ((HibernateAbstractJpaFactory) getJpaFactory()).buildJavaGenericGenerator(this);
 		generator.initialize(genericGeneratorResource);
 		return generator;
 	}

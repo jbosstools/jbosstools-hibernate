@@ -282,7 +282,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 	private String createConsoleConfiguration(){		
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 		String dialect = determineDialect();
-		String ccName = launchManager.generateUniqueLaunchConfigurationNameFrom(HibernateConsoleMessages.AddConfigurationAction_hibernate);
+		String ccName = launchManager.generateLaunchConfigurationName(HibernateConsoleMessages.AddConfigurationAction_hibernate);
 		ConsoleConfigurationPreferences prefs = new EclipseConsoleConfigurationPreferences(ccName, 
 				ConfigurationMode.JPA, jpaProject.getName(), true, 
 				null, null, null, 

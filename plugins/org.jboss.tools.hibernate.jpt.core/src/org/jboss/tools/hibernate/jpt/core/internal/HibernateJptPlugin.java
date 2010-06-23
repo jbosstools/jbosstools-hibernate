@@ -39,8 +39,6 @@ public class HibernateJptPlugin extends Plugin {
 	
 	public static final String ID = "org.jboss.tools.hibernate.jpt.core"; //$NON-NLS-1$
 	
-	public static final String JPA_FACET_VERSION_1_0 = "1.0"; //$NON-NLS-1$
-	
 	private static HibernateJptPlugin inst = null;
 	
     public static HibernateJptPlugin getDefault() {

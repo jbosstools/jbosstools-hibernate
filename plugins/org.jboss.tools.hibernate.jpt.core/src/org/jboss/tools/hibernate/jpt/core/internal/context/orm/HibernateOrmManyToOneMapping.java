@@ -15,7 +15,6 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmManyToOneMapping;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
-import org.jboss.tools.hibernate.jpt.core.internal.context.NamingStrategyMappingTools;
 
 /**
  * @author Dmitry Geraskov
@@ -28,11 +27,6 @@ extends AbstractOrmManyToOneMapping<T> {
 			T resourceMapping) {
 		super(parent, resourceMapping);
 	}
-	
-	/*@Override
-	public String getJoinTableDefaultName() {
-		return NamingStrategyMappingTools.buildJoinTableDefaultName(this);
-	}*/
 
 	@Override
 	protected OrmRelationshipReference buildRelationshipReference() {

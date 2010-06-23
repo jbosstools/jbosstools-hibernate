@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.ui.internal.mapping.details;
 
-import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.AbstractIdMappingComposite;
@@ -51,6 +50,7 @@ implements JpaComposite{
 		this.initializeIndexCollapsibleSection(container);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void initializeIdSection(Composite container) {
 		new HibernateColumnComposite(this, (PropertyValueModel<? extends HibernateColumn>) buildColumnHolder(), container);
@@ -69,7 +69,7 @@ implements JpaComposite{
 	protected void initializeGenerationCollapsibleSection(Composite container) {
 		if (getSubject() instanceof HibernateJavaIdMapping) {
 			// Generic Generator required only for Java.
-			new HibernateGenerationComposite2(this, buildGeneratorContainer(), addSubPane(container, 10), false);
+			new HibernateGenerationComposite(this, buildGeneratorContainer(), addSubPane(container, 10), false);
 		} else {
 			super.initializeGenerationCollapsibleSection(container);
 		}
@@ -87,6 +87,7 @@ implements JpaComposite{
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void initializeIndexSection(Composite container) {
 		new IndexHolderComposite((Pane<? extends IndexHolder>) this, container);	
 	}

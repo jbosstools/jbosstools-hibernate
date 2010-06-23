@@ -22,10 +22,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaEntity;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaIdMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmEntity;
+import org.jboss.tools.hibernate.jpt.ui.internal.details.orm.HibernateOrmEntityComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.java.details.HibernateJavaEntityComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateBasicMappingComposite;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.HibernateIdMappingComposite;
-import org.jboss.tools.hibernate.jpt.ui.internal.orm.details.HibernateOrmEntityComposite;
 
 /**
  * @author Dmitry Geraskov

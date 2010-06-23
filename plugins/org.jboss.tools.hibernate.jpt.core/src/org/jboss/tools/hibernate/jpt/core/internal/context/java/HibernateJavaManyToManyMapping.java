@@ -18,7 +18,7 @@ import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaRelationshipReference;
-import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaManyToManyMapping;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaManyToManyMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -36,7 +36,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
  */
  
 public class HibernateJavaManyToManyMapping extends
-		GenericJavaManyToManyMapping implements ForeignKeyHolder{
+AbstractJavaManyToManyMapping implements ForeignKeyHolder{
 	
 	protected ForeignKey foreignKey;
 

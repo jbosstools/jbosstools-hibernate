@@ -29,13 +29,13 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGener
  * @author Dmitry Geraskov
  *
  */
-public class HibernateGenerationComposite2 extends GenerationComposite {
+public class HibernateGenerationComposite extends GenerationComposite {
 	
 	private WritablePropertyValueModel<Boolean> genericGeneratorExpansionStateHolder;
 	private WritablePropertyValueModel<GenericGenerator> generatorHolder;
 	private boolean allowMany;
 	
-	public HibernateGenerationComposite2(Pane<?> parentPane,
+	public HibernateGenerationComposite(Pane<?> parentPane,
 			PropertyValueModel<? extends HibernateGeneratorContainer> subjectHolder,
 			Composite parent, boolean allowMany) {
 		super(parentPane, subjectHolder, parent);

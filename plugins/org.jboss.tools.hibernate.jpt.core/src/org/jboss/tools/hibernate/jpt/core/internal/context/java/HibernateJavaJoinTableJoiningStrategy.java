@@ -29,6 +29,7 @@ public class HibernateJavaJoinTableJoiningStrategy extends
 		super(parent);
 	}
 	
+	@Override
 	public String getJoinTableDefaultName() {
 		return NamingStrategyMappingTools.buildJoinTableDefaultName(getRelationshipReference());
 	}
