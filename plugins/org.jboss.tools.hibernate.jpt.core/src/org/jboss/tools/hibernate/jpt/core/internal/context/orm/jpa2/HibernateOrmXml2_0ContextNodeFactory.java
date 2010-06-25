@@ -11,6 +11,7 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.orm.jpa2;
 
 import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
@@ -35,6 +36,7 @@ import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmBasicMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmColumnImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmEntityImpl;
@@ -42,6 +44,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmIdMap
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmJoinColumnImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmJoinTableImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmManyToManyMapping;
+import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmPersistentType;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmTableImpl;
 
 /**
@@ -116,6 +119,12 @@ public class HibernateOrmXml2_0ContextNodeFactory extends GenericOrmXml2_0Contex
 	public OrmManyToManyMapping buildOrmManyToManyMapping(
 			OrmPersistentAttribute parent, XmlManyToMany resourceMapping) {
 		return new HibernateOrmManyToManyMapping(parent, resourceMapping);
+	}
+	
+	@Override
+	public OrmPersistentType buildOrmPersistentType(EntityMappings parent,
+			XmlTypeMapping resourceMapping) {
+		return new HibernateOrmPersistentType(parent, resourceMapping);
 	}
 
 }
