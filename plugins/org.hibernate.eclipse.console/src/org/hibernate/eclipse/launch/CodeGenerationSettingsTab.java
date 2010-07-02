@@ -67,6 +67,8 @@ import org.hibernate.eclipse.console.wizards.NewReverseEngineeringFileWizard;
 
 @SuppressWarnings("restriction")
 public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
+	
+	public static final String NULL_CONFIG = "<None>"; //$NON-NLS-1$
 
 	private ComboDialogField consoleConfigurationName;
 
@@ -114,10 +116,11 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 		consoleConfigurationName = new ComboDialogField(SWT.READ_ONLY);
 		consoleConfigurationName.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_console_configuration);
 		ConsoleConfiguration[] cfg = LaunchHelper.findFilteredSortedConsoleConfigs();
-		String[] names = new String[cfg.length];
+		String[] names = new String[cfg.length + 1];
+		names[0] = NULL_CONFIG;
 		for (int i = 0; i < cfg.length; i++) {
 			ConsoleConfiguration configuration = cfg[i];
-			names[i] = configuration.getName();
+			names[i + 1] = configuration.getName();
 		}
 		consoleConfigurationName.setItems(names);
 
@@ -373,7 +376,8 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
     }
 
 	public String getConfigurationName() {
-		return consoleConfigurationName.getText();
+		String text = consoleConfigurationName.getText();
+		return NULL_CONFIG.equals(text) ? "" : text;
 	}
 
 
@@ -422,7 +426,11 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
            ExporterAttributes attributes = new ExporterAttributes(configuration);
-           consoleConfigurationName.setText(attributes.getConsoleConfigurationName());
+           if ( consoleConfigurationName.getText() != attributes.getConsoleConfigurationName()){
+        	   consoleConfigurationName.selectItem(0);//NULL_CONFIG
+        	   consoleConfigurationName.setText(attributes.getConsoleConfigurationName());
+           }
+           
            preferRawCompositeIds.setSelection(attributes.isPreferBasicCompositeIds());
            autoManyToMany.setSelection( attributes.detectManyToMany() );
            autoVersioning.setSelection( attributes.detectOptimisticLock() );
