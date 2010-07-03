@@ -6,8 +6,8 @@
 		<artifactId>org.jboss.tools.parent.pom</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>org.jboss.tools</groupId>
-	<artifactId>hibernatetools.site</artifactId> 
+	<groupId>org.jboss.tools.hibernatetools</groupId>
+	<artifactId>site</artifactId> 
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>eclipse-update-site</packaging>
 </project>
