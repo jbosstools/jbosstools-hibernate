@@ -16,27 +16,18 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import junit.framework.TestCase;
 
-import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.debug.core.ILaunch;
-import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationType;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.core.ILaunchDelegate;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.launching.DefaultProjectClasspathEntry;
 import org.eclipse.jdt.internal.launching.RuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
+import org.hibernate.eclipse.console.test.launchcfg.TestLaunchConfig;
 import org.hibernate.eclipse.console.test.project.SimpleTestProject;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
@@ -49,10 +40,11 @@ import org.hibernate.eclipse.launch.core.refactoring.HibernateRefactoringUtil;
 @SuppressWarnings("restriction")
 public class RefactoringTest extends TestCase {
 
-	private static final String HBMTEMPLATE0 = "hbmtemplate0";
-	private static final String HBMTEMPLATE0_PROPERTIES = HibernateLaunchConstants.ATTR_EXPORTERS + '.' + HBMTEMPLATE0 + ".properties";
+	private static final String HBMTEMPLATE0 = "hbmtemplate0"; //$NON-NLS-1$
+	private static final String HBMTEMPLATE0_PROPERTIES = HibernateLaunchConstants.ATTR_EXPORTERS + '.' + HBMTEMPLATE0 + ".properties"; //$NON-NLS-1$
 	private final String[] oldPathElements = new String[]{"oldPrj","oldSrc", "oldPack", "oldHibernate.cfg.xml"};	  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	private final String[] newPathElements = new String[]{"newPrj","newSrc", "newPack", "newHibernate.cfg.xml"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	private static final String OUTDIR = "outputdir"; //$NON-NLS-1$
 
 	SimpleTestProject project = null;
 
@@ -94,7 +86,7 @@ public class RefactoringTest extends TestCase {
 		testCodeGenerationAttr.put(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_SETTINGS, oldPathStr.toString());
 		testCodeGenerationAttr.put(HibernateLaunchConstants.ATTR_EXPORTERS, Collections.singletonList(HBMTEMPLATE0));
 		Map<String, String> expProps = new HashMap<String, String>();
-		expProps.put("outputdir", generateOldPathForSegment(2).toString());
+		expProps.put(OUTDIR, generateOldPathForSegment(2).toString());
 		testCodeGenerationAttr.put(HBMTEMPLATE0_PROPERTIES,	expProps);
 		
 		testNotChangedCodeGenerationAttr.put(HibernateLaunchConstants.ATTR_TEMPLATE_DIR, notChangedPathStr.toString());
@@ -102,7 +94,7 @@ public class RefactoringTest extends TestCase {
 		testNotChangedCodeGenerationAttr.put(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_SETTINGS, notChangedPathStr.toString());
 		testCodeGenerationAttr.put(HibernateLaunchConstants.ATTR_EXPORTERS, Collections.singletonList(HBMTEMPLATE0));
 		Map<String, String> expProps2 = new HashMap<String, String>();
-		expProps2.put("outputdir", generateOldPathForSegment(2).toString());
+		expProps2.put(OUTDIR, generateOldPathForSegment(2).toString());
 		testNotChangedCodeGenerationAttr.put(HBMTEMPLATE0_PROPERTIES, expProps2);
 
 		
@@ -294,7 +286,7 @@ public class RefactoringTest extends TestCase {
 		assertEquals(truePath.removeLastSegments(1).makeAbsolute(), new Path(newPath).makeAbsolute());
 		Map<String, String> props = testCodeGenerationConfig.getAttribute(HBMTEMPLATE0_PROPERTIES,
 				new HashMap<String, String>());
-		assertEquals(truePath.removeLastSegments(1).makeAbsolute(), new Path(props.get("outputdir")).makeAbsolute());
+		assertEquals(truePath.removeLastSegments(1).makeAbsolute(), new Path(props.get(OUTDIR)).makeAbsolute());
 	}
 
 	private Path generateNewPathForSegment(int segmentNum){
@@ -328,399 +320,6 @@ public class RefactoringTest extends TestCase {
 		return new Path(newPath);
 	}
 
-//====================================================================================
-		static class TestWorkingCopy implements ILaunchConfigurationWorkingCopy{
-
-			private TestLaunchConfig parent;
-
-			private Map<String, Object> attributes = new HashMap<String, Object>();
-
-			TestWorkingCopy(TestLaunchConfig parent){
-				this.parent = parent;
-			}
-
-			public void addModes(Set modes) {}
-
-			public ILaunchConfiguration doSave() throws CoreException {
-				parent.updatedAttributes.putAll(attributes);
-				return parent;
-			}
-
-			public boolean hasAttribute(String attributeName)
-					throws CoreException {
-				fail(ConsoleTestMessages.RefactoringTest_method_not_tested);
-				return false;
-			}
-
-			public Object removeAttribute(String attributeName) {
-				fail(ConsoleTestMessages.RefactoringTest_method_not_tested);
-				return null;
-			}
-			public ILaunchConfiguration getOriginal() {
-				return parent;
-			}
-
-			public ILaunchConfigurationWorkingCopy getParent() {
-				return null;
-			}
-
-			public boolean isDirty() {
-				return true;
-			}
-
-			
-			public void removeModes(Set modes) {}
-
-			public void rename(String name) {}
-
-			public void setAttribute(String attributeName, int value) {	}
-
-			public void setAttribute(String attributeName, String value) {
-				attributes.put(attributeName, value);
-			}
-
-			public void setAttribute(String attributeName, List value) {
-				attributes.put(attributeName, value);
-			}
-
-			public void setAttribute(String attributeName, Map value) {
-				attributes.put(attributeName, value);
-			}
-
-			public void setAttribute(String attributeName, boolean value) {fail(ConsoleTestMessages.RefactoringTest_method_not_tested);}
-
-			public void setAttributes(Map attributes) {	fail(ConsoleTestMessages.RefactoringTest_method_not_tested);}
-
-			public void setContainer(IContainer container) {fail(ConsoleTestMessages.RefactoringTest_method_not_tested);}
-
-			public void setMappedResources(IResource[] resources) {fail(ConsoleTestMessages.RefactoringTest_method_not_tested);}
-
-			public void setModes(Set modes) {fail(ConsoleTestMessages.RefactoringTest_method_not_tested);}
-
-			public void setPreferredLaunchDelegate(Set modes, String delegateId) {fail(ConsoleTestMessages.RefactoringTest_method_not_tested);}
-
-			public boolean contentsEqual(ILaunchConfiguration configuration) {
-				return false;
-			}
-
-			public ILaunchConfigurationWorkingCopy copy(String name)
-					throws CoreException {
-				fail(ConsoleTestMessages.RefactoringTest_method_not_tested);
-				return null;
-			}
-
-			public void delete() throws CoreException {}
-
-			public boolean exists() {
-				return false;
-			}
-
-			public boolean getAttribute(String attributeName, boolean defaultValue)
-					throws CoreException {
-				return parent.getAttribute(attributeName, defaultValue);
-			}
-
-			public int getAttribute(String attributeName, int defaultValue)
-					throws CoreException {
-				fail(ConsoleTestMessages.RefactoringTest_method_not_tested);
-				return 0;
-			}
-
-			public List getAttribute(String attributeName, List defaultValue)
-					throws CoreException {
-				return parent.getAttribute(attributeName, defaultValue);
-			}
-
-			public Set getAttribute(String attributeName, Set defaultValue)
-					throws CoreException {
-				fail(ConsoleTestMessages.RefactoringTest_method_not_tested);
-				return null;
-			}
-
-			public Map getAttribute(String attributeName, Map defaultValue)
-					throws CoreException {
-				return parent.getAttribute(attributeName, defaultValue);
-			}
-
-			public String getAttribute(String attributeName, String defaultValue)
-					throws CoreException {
-				return parent.getAttribute(attributeName, defaultValue);
-			}
-
-			public Map getAttributes() throws CoreException {
-				return attributes;
-			}
-
-			public String getCategory() throws CoreException {
-				return parent.getCategory();
-			}
-
-			public IFile getFile() {
-				return null;
-			}
-
-			public IPath getLocation() {
-				return null;
-			}
-
-			public IResource[] getMappedResources() throws CoreException {
-				return null;
-			}
-
-			public String getMemento() throws CoreException {
-				return null;
-			}
-
-			public Set getModes() throws CoreException {
-				return null;
-			}
-
-			public String getName() {
-				return null;
-			}
-
-			public ILaunchDelegate getPreferredDelegate(Set modes)
-					throws CoreException {
-				return null;
-			}
-
-			public ILaunchConfigurationType getType() throws CoreException {
-				return null;
-			}
-
-			public ILaunchConfigurationWorkingCopy getWorkingCopy()
-					throws CoreException {
-				return null;
-			}
-
-			public boolean isLocal() {
-				return false;
-			}
-
-			public boolean isMigrationCandidate() throws CoreException {
-				return false;
-			}
-
-			public boolean isReadOnly() {
-				return false;
-			}
-
-			public boolean isWorkingCopy() {
-				return false;
-			}
-
-			public ILaunch launch(String mode, IProgressMonitor monitor)
-					throws CoreException {
-				return null;
-			}
-
-			public ILaunch launch(String mode, IProgressMonitor monitor,
-					boolean build) throws CoreException {
-				return null;
-			}
-
-			public ILaunch launch(String mode, IProgressMonitor monitor,
-					boolean build, boolean register) throws CoreException {
-				return null;
-			}
-
-			public void migrate() throws CoreException {}
-
-			public boolean supportsMode(String mode) throws CoreException {
-				return false;
-			}
-
-			public Object getAdapter(Class adapter) {
-				return null;
-			}
-
-			public void setAttribute(String attributeName, Set value) {
-				attributes.put(attributeName, value);
-			}
-
-		}
-
-		@SuppressWarnings("unchecked")
-		static class TestLaunchConfig implements ILaunchConfiguration{
-
-			private Map<String, Object> attributes = new HashMap<String, Object>();
-
-			public Map<String, Object> updatedAttributes = new HashMap<String, Object>();
-
-			// returns updated attribute
-			public Object getNewAttribute(String attributeName){
-				return updatedAttributes.get(attributeName);
-			}
-
-			TestLaunchConfig(Map<String, Object> attributes){
-				if (attributes != null){
-					this.attributes = attributes;
-				}
-			}
-
-			public boolean contentsEqual(ILaunchConfiguration configuration) {
-				return false;
-			}
-
-			public ILaunchConfigurationWorkingCopy copy(String name)
-					throws CoreException {
-				return null;
-			}
-
-			public void delete() throws CoreException {
-
-			}
-
-			public boolean exists() {
-				return false;
-			}
-
-			public boolean getAttribute(String attributeName, boolean defaultValue)
-					throws CoreException {
-				if (attributes.containsKey(attributeName)){
-					return (Boolean) attributes.get(attributeName);
-				} else {
-					return defaultValue;
-				}
-			}
-
-			public boolean hasAttribute(String attributeName)
-					throws CoreException {
-				return attributes.containsKey(attributeName);
-			}
-
-			public int getAttribute(String attributeName, int defaultValue)
-					throws CoreException {
-				if (attributes.containsKey(attributeName)){
-					return (Integer) attributes.get(attributeName);
-				} else {
-					return defaultValue;
-				}
-			}
-
-			public List getAttribute(String attributeName, List defaultValue)
-					throws CoreException {
-				if (attributes.containsKey(attributeName)){
-					return (List) attributes.get(attributeName);
-				} else {
-					return defaultValue;
-				}
-			}
-
-			public Set getAttribute(String attributeName, Set defaultValue)
-					throws CoreException {
-				return null;
-			}
-
-			public Map getAttribute(String attributeName, Map defaultValue)
-					throws CoreException {
-				if (attributes.containsKey(attributeName)){
-					return (Map) attributes.get(attributeName);
-				} else {
-					return defaultValue;
-				}
-			}
-
-			public String getAttribute(String attributeName, String defaultValue)
-					throws CoreException {
-				if (attributes.containsKey(attributeName)){
-					return (String) attributes.get(attributeName);
-				} else {
-					return defaultValue;
-				}
-			}
-
-			public Map getAttributes() throws CoreException {
-				return null;
-			}
-
-			public String getCategory() throws CoreException {
-				return ConsoleTestMessages.RefactoringTest_category;
-			}
-
-			public IFile getFile() {
-				return null;
-			}
-
-			public IPath getLocation() {
-				return null;
-			}
-
-			public IResource[] getMappedResources() throws CoreException {
-				return null;
-			}
-
-			public String getMemento() throws CoreException {
-				return null;
-			}
-
-			public Set getModes() throws CoreException {
-				return null;
-			}
-
-			public String getName() {
-				return ConsoleTestMessages.RefactoringTest_test_launch_config;
-			}
-
-			public ILaunchDelegate getPreferredDelegate(Set modes)
-					throws CoreException {
-				return null;
-			}
-
-			public ILaunchConfigurationType getType() throws CoreException {
-				return null;
-			}
-
-			public ILaunchConfigurationWorkingCopy getWorkingCopy()
-					throws CoreException {
-				return new TestWorkingCopy(this);
-			}
-
-			public boolean isLocal() {
-				return false;
-			}
-
-			public boolean isMigrationCandidate() throws CoreException {
-				return false;
-			}
-
-			public boolean isReadOnly() {
-				return false;
-			}
-
-			public boolean isWorkingCopy() {
-				return false;
-			}
-
-			public ILaunch launch(String mode, IProgressMonitor monitor)
-					throws CoreException {
-				return null;
-			}
-
-			public ILaunch launch(String mode, IProgressMonitor monitor,
-					boolean build) throws CoreException {
-				return null;
-			}
-
-			public ILaunch launch(String mode, IProgressMonitor monitor,
-					boolean build, boolean register) throws CoreException {
-				return null;
-			}
-
-			public void migrate() throws CoreException {
-
-			}
-
-			public boolean supportsMode(String mode) throws CoreException {
-				return false;
-			}
-
-			public Object getAdapter(Class adapter) {
-				return null;
-			}
-
-
-		};
 }
 
 

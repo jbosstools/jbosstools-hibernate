@@ -18,6 +18,7 @@ import org.eclipse.osgi.util.NLS;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
+import org.hibernate.eclipse.launch.ExporterAttributes;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.hibernate.eclipse.launch.PathHelper;
 import org.hibernate.tool.hbm2x.ArtifactCollector;
@@ -84,11 +85,6 @@ public class ExporterFactory {
 		return definition;
 	}
 
-	// todo: move to ExporterAttributes together with isEnabled functionallity...
-	String getLaunchAttributePrefix(String exporterId) {
-		return HibernateLaunchConstants.ATTR_EXPORTERS + "." + exporterId; //$NON-NLS-1$
-	}
-
 	public boolean isEnabled(ILaunchConfiguration configuration) {
 		boolean enabled = false;
 
@@ -96,7 +92,7 @@ public class ExporterFactory {
 		if(configuration.getAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, (List<String>)null)==null) {
 				enabled = configuration.getAttribute( getId(), false );
 		} else {
-			enabled = configuration.getAttribute( getLaunchAttributePrefix( getId() ), false );
+			enabled = configuration.getAttribute(ExporterAttributes.getLaunchAttributePrefix(getId()), false);
 		}
 		} catch(CoreException ce) {
 			// ignore; assume false
@@ -112,7 +108,7 @@ public class ExporterFactory {
 		if(oldSettings) {
 			configuration.setAttribute( getId(), isEnabled() );
 		} else {
-			configuration.setAttribute( getLaunchAttributePrefix( getId() ), isEnabled());
+			configuration.setAttribute(ExporterAttributes.getLaunchAttributePrefix(getId()), isEnabled());
 		}
 	}
 
@@ -138,6 +134,10 @@ public class ExporterFactory {
 
 	public String getId() {
 		return exporterId;
+	}
+
+	public String getExporterTag() {
+		return definition.getExporterTag();
 	}
 
 	public void setProperties(Map<String, String> props) {

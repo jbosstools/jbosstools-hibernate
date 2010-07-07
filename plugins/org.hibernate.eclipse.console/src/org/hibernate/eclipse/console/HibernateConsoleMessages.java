@@ -515,6 +515,12 @@ public class HibernateConsoleMessages extends NLS {
 	
 	public static String AddRemoveTableComposite_no_dependencies;
 	public static String AddRemoveTableComposite_control_depth_level;
+	
+	public static String ExportAntCodeGenWizard_title;
+	public static String ExportAntCodeGenWizard_description;
+	public static String ExportAntCodeGenWizard_page_name;
+	public static String ExportAntCodeGenWizardPage_hibernate_code_generation_configurations;
+	public static String ExportAntCodeGenWizardPage_empty_hibernate_code_generation_configuration;
 	//
 	static {
 		// initialize resource bundle

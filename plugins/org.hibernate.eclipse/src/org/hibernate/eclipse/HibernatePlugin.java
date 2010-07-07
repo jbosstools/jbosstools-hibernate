@@ -21,10 +21,15 @@
  */
 package org.hibernate.eclipse;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Plugin;
 import org.hibernate.eclipse.logging.LoggingHelper;
 import org.hibernate.eclipse.logging.PluginLogManager;
@@ -32,37 +37,65 @@ import org.osgi.framework.BundleContext;
 
 /**
  * @author max
- *
  */
 public class HibernatePlugin extends Plugin {
+
+	// The shared instance.
+	private static HibernatePlugin plugin;
+
+	/**
+	 * The constructor.
+	 */
+	public HibernatePlugin() {
+		super();
+		setPlugin(this);
+	}
 
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		configureLog4jHooks();
 		Log log = LogFactory.getLog(HibernatePlugin.class);
-		log.info("HibernatePlugin Started");		 //$NON-NLS-1$
+		log.info("HibernatePlugin Started"); //$NON-NLS-1$
 	}
-	
+
 	private void configureLog4jHooks() {
 		URL entry = getBundle().getEntry("hibernate-log4j.xml"); //$NON-NLS-1$
-		if(entry==null) {
-			entry = getBundle().getEntry("hibernate-log4j.properties");	 //$NON-NLS-1$
+		if (entry == null) {
+			entry = getBundle().getEntry("hibernate-log4j.properties"); //$NON-NLS-1$
 		}
-		
-		if(entry==null) {
+
+		if (entry == null) {
 			// should log this!
 		} else {
 			LoggingHelper helper = LoggingHelper.getDefault();
-			PluginLogManager manager = new PluginLogManager(this, helper, entry);			
+			PluginLogManager manager = new PluginLogManager(this, helper, entry);
 		}
-		
-		
-		
-		
 	}
 
 	public void stop(BundleContext context) throws Exception {
 		LoggingHelper.getDefault().stop(context);
-		super.stop( context );
+		super.stop(context);
+		setPlugin(null);
+	}
+
+	/**
+	 * Returns the shared instance.
+	 */
+	public static HibernatePlugin getDefault() {
+		return plugin;
+	}
+
+	private static void setPlugin(HibernatePlugin plugin) {
+		HibernatePlugin.plugin = plugin;
+	}
+
+	public static File getResourceItem(String strResPath) throws IOException {
+		IPath resourcePath = new Path(strResPath);
+		File resourceFolder = resourcePath.toFile();
+		URL entry = getDefault().getBundle().getEntry(strResPath);
+		URL resProject = FileLocator.resolve(entry);
+		String tplPrjLcStr = FileLocator.resolve(resProject).getFile();
+		resourceFolder = new File(tplPrjLcStr);
+		return resourceFolder;
 	}
 }

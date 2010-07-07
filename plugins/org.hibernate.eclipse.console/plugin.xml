@@ -749,6 +749,23 @@
                label="%GenerateEntities">
          </action>-->
    </extension>
+   <extension
+         point="org.eclipse.ui.exportWizards">
+      <wizard
+            category="org.hibernate.eclipse.console.HibernateToolsExport"
+            class="org.hibernate.eclipse.codegen.ExportAntCodeGenWizard"
+            icon="icons/images/ant_codegen_export.gif"
+            id="org.hibernate.eclipse.codegen.ExportAntCodeGenWizard"
+            name="%exportHibernateAntCodeGenerationWizardName">
+         <description>
+            %exportHibernateAntCodeGenerationWizardDescription
+         </description>
+      </wizard>
+      <category
+            id="org.hibernate.eclipse.console.HibernateToolsExport"
+            name="Hibernate">
+      </category>
+   </extension>
    <!--   <extension
          point="org.eclipse.ui.themes">
       <themeElementCategory

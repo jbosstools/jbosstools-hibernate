@@ -167,5 +167,7 @@ public class ExporterDefinition {
 		return id;
 	}
 
-
+	public String getExporterTag() {
+		return getId().substring(getId().lastIndexOf(".") + 1); //$NON-NLS-1$
+	}
 }

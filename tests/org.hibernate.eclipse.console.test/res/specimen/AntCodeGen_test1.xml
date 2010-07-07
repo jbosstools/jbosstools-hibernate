@@ -1,0 +1,17 @@
+<project name="CodeGen" default="JdbcCodeGen">
+  <property name="build.dir" location="ResLocation/test"/>
+  <property name="jdbc.driver" location="TestDriverPath.jar"/>
+  <target name="JdbcCodeGen">
+    <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask"/>
+    <hibernatetool destdir="${build.dir}">
+      <configuration configurationFile="project\src\hibernate.cfg.xml"/>
+      <hbm2doc/>
+      <hbm2cfgxml/>
+      <hbm2hbmxml/>
+      <hbmtemplate/>
+      <hbm2java/>
+      <hbm2ddl/>
+      <hbm2dao/>
+    </hibernatetool>
+  </target>
+</project>
