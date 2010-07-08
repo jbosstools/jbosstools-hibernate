@@ -84,7 +84,7 @@ public class HibernatePersistenceUnit extends AbstractPersistenceUnit
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		validateHibernateConfigurationFileExists(messages, reporter);
-	}	
+	}
 
 	protected void validateHibernateConfigurationFileExists(List<IMessage> messages, IReporter reporter) {
 		String configFile = hibernateProperties.getConfigurationFile();
