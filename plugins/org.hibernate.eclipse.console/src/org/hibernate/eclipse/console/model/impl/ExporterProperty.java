@@ -22,12 +22,13 @@
 package org.hibernate.eclipse.console.model.impl;
 
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
+import org.hibernate.eclipse.launch.CGS;
 
 public class ExporterProperty
 {
 	private static ExporterProperty[] globalProperties = new ExporterProperty[] {
-		new ExporterProperty ("jdk5", HibernateConsoleMessages.ExporterProperty_use_java5_syntax, "false", false), //$NON-NLS-1$ //$NON-NLS-2$
-		new ExporterProperty ("ejb3", HibernateConsoleMessages.ExporterProperty_generate_ejb3_annotations, "false", false) //$NON-NLS-1$ //$NON-NLS-2$
+		new ExporterProperty (CGS.JDK5, HibernateConsoleMessages.ExporterProperty_use_java5_syntax, "false", false), //$NON-NLS-1$
+		new ExporterProperty (CGS.EJB3, HibernateConsoleMessages.ExporterProperty_generate_ejb3_annotations, "false", false) //$NON-NLS-1$
 	};
 
 	private String defaultValue;

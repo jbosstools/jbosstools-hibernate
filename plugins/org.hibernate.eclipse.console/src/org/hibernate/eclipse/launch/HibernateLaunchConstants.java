@@ -40,6 +40,9 @@
  */
 package org.hibernate.eclipse.launch;
 
+import org.hibernate.console.CFS;
+import org.hibernate.eclipse.console.model.impl.EFS;
+
 public class HibernateLaunchConstants
 {
    public static final String ATTR_PREFIX = "org.hibernate.tools."; //$NON-NLS-1$
@@ -48,13 +51,13 @@ public class HibernateLaunchConstants
    public static final String ATTR_EXPORTERS = ATTR_PREFIX + "exporters"; //$NON-NLS-1$
    
    public static final String ATTR_CONSOLE_CONFIGURATION_NAME = ATTR_PREFIX + "configurationname"; //$NON-NLS-1$
-   public static final String ATTR_OUTPUT_DIR = ATTR_PREFIX + "outputdir"; //$NON-NLS-1$
+   public static final String ATTR_OUTPUT_DIR = ATTR_PREFIX + EFS.OUTPUTDIR;
    public static final String ATTR_REVERSE_ENGINEER = ATTR_PREFIX + "schema2hbm"; //$NON-NLS-1$
-   public static final String ATTR_REVERSE_ENGINEER_SETTINGS = ATTR_PREFIX + "revengfile"; //$NON-NLS-1$
+   public static final String ATTR_REVERSE_ENGINEER_SETTINGS = ATTR_PREFIX + CFS.REVENGFILE;
    public static final String ATTR_REVERSE_ENGINEER_STRATEGY = ATTR_PREFIX + "revengstrategy"; //$NON-NLS-1$
    public static final String ATTR_USE_OWN_TEMPLATES = ATTR_PREFIX + "useOwnTemplates"; //$NON-NLS-1$
-   public static final String ATTR_ENABLE_EJB3_ANNOTATIONS = ATTR_PREFIX + "ejb3"; //$NON-NLS-1$
-   public static final String ATTR_ENABLE_JDK5 = ATTR_PREFIX + "jdk5"; //$NON-NLS-1$
+   public static final String ATTR_ENABLE_EJB3_ANNOTATIONS = ATTR_PREFIX + CGS.EJB3;
+   public static final String ATTR_ENABLE_JDK5 = ATTR_PREFIX + CGS.JDK5;
    public static final String ATTR_PACKAGE_NAME = ATTR_PREFIX + "package"; //$NON-NLS-1$
    public static final String ATTR_ENABLE_TEMPLATE_DIR = ATTR_PREFIX + "templatepathenabled"; //$NON-NLS-1$
    public static final String ATTR_TEMPLATE_DIR = ATTR_PREFIX + "templatepath"; //$NON-NLS-1$

@@ -22,6 +22,7 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.hibernate.console.CFS;
 import org.hibernate.console.ConfigurationXMLFactory;
 import org.hibernate.console.ConnectionProfileUtil;
 import org.hibernate.console.ConsoleConfiguration;
@@ -57,49 +58,49 @@ public class CodeGenXMLFactory {
 		}
 		Properties props = new Properties();
 		if (attributes.isReverseEngineer()) {
-			props.setProperty("isRevEng", Boolean.toString(attributes.isReverseEngineer())); //$NON-NLS-1$
-			props.setProperty("packageName", attributes.getPackageName()); //$NON-NLS-1$
-			props.setProperty("detectManyToMany", Boolean.toString(attributes.detectManyToMany())); //$NON-NLS-1$
-			props.setProperty("detectOneToOne", Boolean.toString(attributes.detectOneToOne())); //$NON-NLS-1$
-			props.setProperty("detectOptimisticLock", Boolean.toString(attributes.detectOptimisticLock())); //$NON-NLS-1$
-			props.setProperty("reverseStrategy", attributes.getRevengStrategy()); //$NON-NLS-1$
+			props.setProperty(CFS.ISREVENG, Boolean.toString(attributes.isReverseEngineer()));
+			props.setProperty(CFS.PACKAGENAME, attributes.getPackageName());
+			props.setProperty(CFS.DETECTMANYTOMANY, Boolean.toString(attributes.detectManyToMany()));
+			props.setProperty(CFS.DETECTONTTOONE, Boolean.toString(attributes.detectOneToOne()));
+			props.setProperty(CFS.DETECTOPTIMISTICLOCK, Boolean.toString(attributes.detectOptimisticLock()));
+			props.setProperty(CFS.REVERSESTRATEGY, attributes.getRevengStrategy());
 			String revEngFile = getResLocation(attributes.getRevengSettings());
-			props.setProperty("revEngFile", revEngFile); //$NON-NLS-1$
+			props.setProperty(CFS.REVENGFILE, revEngFile);
 		}
 		String consoleConfigName = attributes.getConsoleConfigurationName();
 		ConsoleConfigurationPreferences consoleConfigPrefs = 
 			getConsoleConfigPreferences(consoleConfigName);
 		ConfigurationXMLFactory csfXML = new ConfigurationXMLFactory(
 			consoleConfigPrefs, props);
-		Element rootConsoleConfig = csfXML.createRoot(false);
+		Element rootConsoleConfig = csfXML.createRoot();
 		//
-		Element root = DocumentFactory.getInstance().createElement("project"); //$NON-NLS-1$
-		root.addAttribute("name", "CodeGen"); //$NON-NLS-1$ //$NON-NLS-2$
+		Element root = DocumentFactory.getInstance().createElement(CGS.PROJECT);
+		root.addAttribute(CGS.NAME, "CodeGen"); //$NON-NLS-1$
 		String defaultTargetName = "JdbcCodeGen"; //$NON-NLS-1$
-		root.addAttribute("default", defaultTargetName); //$NON-NLS-1$
-		Element el = root.addElement("property"); //$NON-NLS-1$
-		el.addAttribute("name", "build.dir"); //$NON-NLS-1$ //$NON-NLS-2$
+		root.addAttribute(CGS.DEFAULT, defaultTargetName);
+		Element el = root.addElement(CGS.PROPERTY);
+		el.addAttribute(CGS.NAME, "build.dir"); //$NON-NLS-1$
 		String location = getResLocation(attributes.getOutputPath());
-		el.addAttribute("location", location); //$NON-NLS-1$
-		el = root.addElement("property"); //$NON-NLS-1$
-		el.addAttribute("name", "jdbc.driver"); //$NON-NLS-1$ //$NON-NLS-2$
+		el.addAttribute(CGS.LOCATION, location);
+		el = root.addElement(CGS.PROPERTY);
+		el.addAttribute(CGS.NAME, "jdbc.driver"); //$NON-NLS-1$
 		String driverURL = getConnectionProfileDriverURL(consoleConfigPrefs.getConnectionProfileName());
-		el.addAttribute("location", driverURL); //$NON-NLS-1$
+		el.addAttribute(CGS.LOCATION, driverURL);
 		//
-		Element target = root.addElement("target"); //$NON-NLS-1$
-		target.addAttribute("name", defaultTargetName); //$NON-NLS-1$
+		Element target = root.addElement(CGS.TARGET);
+		target.addAttribute(CGS.NAME, defaultTargetName);
 		//
-		Element taskdef = target.addElement("taskdef"); //$NON-NLS-1$
-		taskdef.addAttribute("name", "hibernatetool"); //$NON-NLS-1$ //$NON-NLS-2$
-		taskdef.addAttribute("classname", "org.hibernate.tool.ant.HibernateToolTask"); //$NON-NLS-1$ //$NON-NLS-2$
+		Element taskdef = target.addElement(CGS.TASKDEF);
+		taskdef.addAttribute(CGS.NAME, CGS.HIBERNATETOOL);
+		taskdef.addAttribute(CGS.CLASSNAME, "org.hibernate.tool.ant.HibernateToolTask"); //$NON-NLS-1$
 		//
-		Element hibernatetool = target.addElement("hibernatetool"); //$NON-NLS-1$
-		hibernatetool.addAttribute("destdir", "${build.dir}"); //$NON-NLS-1$ //$NON-NLS-2$
+		Element hibernatetool = target.addElement(CGS.HIBERNATETOOL);
+		hibernatetool.addAttribute(CGS.DESTDIR, "${build.dir}"); //$NON-NLS-1$
 		hibernatetool.content().add(rootConsoleConfig);
 		//
 		Properties globalProps = new Properties();
-		globalProps.put("ejb3", "" + attributes.isEJB3Enabled()); //$NON-NLS-1$ //$NON-NLS-2$
-		globalProps.put("jdk5", "" + attributes.isJDK5Enabled()); //$NON-NLS-1$//$NON-NLS-2$
+		globalProps.put(CGS.EJB3, "" + attributes.isEJB3Enabled()); //$NON-NLS-1$
+		globalProps.put(CGS.JDK5, "" + attributes.isJDK5Enabled()); //$NON-NLS-1$
 		List<ExporterFactory> exporterFactories = attributes.getExporterFactories();
 		for (Iterator<ExporterFactory> iter = exporterFactories.iterator(); iter.hasNext();) {
 			ExporterFactory ef = iter.next();
@@ -112,6 +113,13 @@ public class CodeGenXMLFactory {
 			Properties expProps = new Properties();
 			expProps.putAll(globalProps);
 			expProps.putAll(ef.getProperties());
+			Properties extract = new Properties();
+			try {
+				ExporterFactory.extractExporterProperties(ef.getId(), expProps, extract);
+			} catch (CoreException e) {
+				// ignore
+			}
+			expProps.putAll(extract);
 			for (Map.Entry<String, ExporterProperty> name2prop : defExpProps.entrySet()) {
 				Object val = expProps.get(name2prop.getKey());
 				if (val == null || 0 == val.toString().compareTo(name2prop.getValue().getDefaultValue())) {
@@ -122,14 +130,14 @@ public class CodeGenXMLFactory {
 			if ("hbmtemplate".compareToIgnoreCase(expName) == 0 ) { //$NON-NLS-1$
 				Element property = null;
 				if (attributes.isJDK5Enabled()) {
-					property = exporter.addElement("property"); //$NON-NLS-1$
-					property.addAttribute("key", "jdk5"); //$NON-NLS-1$ //$NON-NLS-2$
-					property.addAttribute("value", "" + attributes.isJDK5Enabled()); //$NON-NLS-1$ //$NON-NLS-2$
+					property = exporter.addElement(CGS.PROPERTY);
+					property.addAttribute(CGS.KEY, CGS.JDK5);
+					property.addAttribute(CGS.VALUE, "" + attributes.isJDK5Enabled()); //$NON-NLS-1$
 				}
 				if (attributes.isEJB3Enabled()) {
-					property = exporter.addElement("property"); //$NON-NLS-1$
-					property.addAttribute("key", "ejb3"); //$NON-NLS-1$ //$NON-NLS-2$
-					property.addAttribute("value", "" + attributes.isEJB3Enabled()); //$NON-NLS-1$ //$NON-NLS-2$
+					property = exporter.addElement(CGS.PROPERTY);
+					property.addAttribute(CGS.KEY, CGS.EJB3);
+					property.addAttribute(CGS.VALUE, "" + attributes.isEJB3Enabled()); //$NON-NLS-1$
 				}
 			}
 		}

@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.hibernate.console;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Properties;
@@ -43,84 +44,74 @@ public class ConfigurationXMLFactory {
 		return prefs;
 	}
 
-	public Document createXML(boolean includeMappings) {
+	public Document createXML() {
 		Document res = DocumentFactory.getInstance().createDocument();
-		Element root = createRoot(includeMappings);
+		Element root = createRoot();
 		res.setRootElement(root);
 		return res;
 	}
 
-	public Element createRoot(boolean includeMappings) {
+	public Element createRoot() {
 		Properties properties = prefs.getProperties();
-		Element root = createRoot(properties, includeMappings);
+		Element root = createRoot(properties);
 		return root;
 	}
 
-	protected Element createRoot(Properties properties, boolean includeMappings) {
+	protected Element createRoot(Properties properties) {
 		String rootName = null;
-		Boolean jdbcConfig = Boolean.valueOf(additional.getProperty("isRevEng", "false")); //$NON-NLS-1$ //$NON-NLS-2$
+		Boolean jdbcConfig = Boolean.valueOf(additional.getProperty(CFS.ISREVENG, "false")); //$NON-NLS-1$
 		if (jdbcConfig) {
-			rootName = "jdbcconfiguration"; //$NON-NLS-1$
+			rootName = CFS.JDBCCONFIGURATION;
 		} else if (prefs.getConfigurationMode().equals(ConfigurationMode.ANNOTATIONS)) {
-			rootName = "annotationconfiguration"; //$NON-NLS-1$
+			rootName = CFS.ANNOTATIONCONFIGURATION;
 		} else if (prefs.getConfigurationMode().equals(ConfigurationMode.JPA)) {
-			rootName = "jpaconfiguration"; //$NON-NLS-1$
+			rootName = CFS.JPACONFIGURATION;
 		} else if (prefs.getConfigurationMode().equals(ConfigurationMode.CORE)) {
-			rootName = "configuration"; //$NON-NLS-1$
+			rootName = CFS.CONFIGURATION;
 		} else {
 			rootName = "undef"; //$NON-NLS-1$
 		}
 		Element root = DocumentFactory.getInstance().createElement(rootName);
-		final String configurationFile = getPreferences().getConfigXMLFile() == null ? null : 
-				getPreferences().getConfigXMLFile().toString();
-		if (!StringHelper.isEmpty(configurationFile)) {
-			root.addAttribute("configurationFile", configurationFile); //$NON-NLS-1$
-		}
-		final String propertyFile = getPreferences().getPropertyFile() == null ? null :
-			getPreferences().getPropertyFile().toString();
-		if (!StringHelper.isEmpty(propertyFile)) {
-			root.addAttribute("propertyFile", propertyFile); //$NON-NLS-1$
-		}
-		final String entityResolver = getPreferences().getEntityResolverName();
-		if (!StringHelper.isEmpty(entityResolver)) {
-			root.addAttribute("entityResolver", entityResolver); //$NON-NLS-1$
-		}
-		final String persistenceUnit = getPreferences().getPersistenceUnitName();
-		if (!StringHelper.isEmpty(persistenceUnit)) {
-			root.addAttribute("persistenceUnit", persistenceUnit); //$NON-NLS-1$
-		}
-		final String detectManyToMany = additional.getProperty("detectManyToMany", ""); //$NON-NLS-1$ //$NON-NLS-2$
-		if (!StringHelper.isEmpty(detectManyToMany)) {
-			root.addAttribute("detectManyToMany", detectManyToMany); //$NON-NLS-1$
-		}
-		final String detectOneToOne = additional.getProperty("detectOneToOne", ""); //$NON-NLS-1$ //$NON-NLS-2$
-		if (!StringHelper.isEmpty(detectOneToOne)) {
-			root.addAttribute("detectOneToOne", detectOneToOne); //$NON-NLS-1$
-		}
-		final String detectOptimisticLock = additional.getProperty("detectOptimisticLock", ""); //$NON-NLS-1$ //$NON-NLS-2$
-		if (!StringHelper.isEmpty(detectOptimisticLock)) {
-			root.addAttribute("detectOptimisticLock", detectOptimisticLock); //$NON-NLS-1$
-		}
-		final String packageName = additional.getProperty("packageName", ""); //$NON-NLS-1$ //$NON-NLS-2$
-		if (!StringHelper.isEmpty(packageName)) {
-			root.addAttribute("packageName", packageName); //$NON-NLS-1$
-		}
-		final String revEngFile = additional.getProperty("revEngFile", ""); //$NON-NLS-1$ //$NON-NLS-2$
-		if (!StringHelper.isEmpty(revEngFile)) {
-			root.addAttribute("revEngFile", revEngFile); //$NON-NLS-1$
-		}
-		final String reverseStrategy = additional.getProperty("reverseStrategy", ""); //$NON-NLS-1$ //$NON-NLS-2$
-		if (!StringHelper.isEmpty(reverseStrategy)) {
-			root.addAttribute("reverseStrategy", reverseStrategy); //$NON-NLS-1$
-		}
-		if (includeMappings) {
+		updateAttr(root, file2Str(getPreferences().getConfigXMLFile()), CFS.CONFIGURATIONFILE);
+		updateAttr(root, file2Str(getPreferences().getPropertyFile()), CFS.PROPERTYFILE);
+		updateAttr(root, getPreferences().getEntityResolverName(), CFS.ENTITYRESOLVER);
+		updateAttr(root, getPreferences().getNamingStrategy(), CFS.NAMINGSTRATEGY);
+		updateAttr(root, getPreferences().getPersistenceUnitName(), CFS.PERSISTENCEUNIT);
+		updateAttr(root, additional, CFS.DETECTMANYTOMANY);
+		updateAttr(root, additional, CFS.DETECTONTTOONE);
+		updateAttr(root, additional, CFS.DETECTOPTIMISTICLOCK);
+		updateAttr(root, additional, CFS.PACKAGENAME);
+		updateAttr(root, additional, CFS.REVENGFILE);
+		updateAttr(root, additional, CFS.REVERSESTRATEGY);
+		// includeMappings
+		File[] mappingFiles = prefs.getMappingFiles();
+		if (mappingFiles.length > 0) {
 			Element fileset = root.addElement("fileset"); //$NON-NLS-1$
 			fileset.addAttribute("dir", "./src"); //$NON-NLS-1$ //$NON-NLS-2$
 			fileset.addAttribute("id", "id"); //$NON-NLS-1$ //$NON-NLS-2$
-			Element include = fileset.addElement("include"); //$NON-NLS-1$
-			include.addAttribute("name", "**/*"); //$NON-NLS-1$ //$NON-NLS-2$
+			for (int i = 0; i < mappingFiles.length; i++) {
+				Element include = fileset.addElement("include"); //$NON-NLS-1$
+				include.addAttribute("name", mappingFiles[i].getAbsolutePath()); //$NON-NLS-1$
+			}
 		}
 		return root;
+	}
+
+	public static String file2Str(File file) {
+		return file == null ? null : file.toString();
+	}
+
+	public static void updateAttr(Element el, String val, String prName) {
+		if (!StringHelper.isEmpty(val)) {
+			el.addAttribute(prName, val);
+		}
+	}
+
+	public static void updateAttr(Element el, Properties prs, String prName) {
+		final String val = prs.getProperty(prName, ""); //$NON-NLS-1$
+		if (!StringHelper.isEmpty(val)) {
+			el.addAttribute(prName, val);
+		}
 	}
 	
 	public static void dump(OutputStream os, Element element) {
@@ -138,6 +129,5 @@ public class ConfigurationXMLFactory {
 				// ignore
 			}
 		}
-
 	}
 }

@@ -155,10 +155,11 @@ public class ExporterFactory {
 
 	/** Method that resolves an expression through eclipses built-in variable manager.
 	 * @throws CoreException if expression could not be evaluated. */
-	private String resolve(String expression) throws CoreException  {
-		if(expression==null) return null;
+	public static String resolve(String expression) throws CoreException {
+		if (expression == null) {
+			return null;
+		}
 		IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
-
 		return variableManager.performStringSubstitution(expression, false);
 	}
 
@@ -172,30 +173,30 @@ public class ExporterFactory {
 
 		Exporter exporter = getExporterDefinition().createExporterInstance();
 
-
+		Properties extract = new Properties();
 		Properties props = new Properties();
 		props.putAll(globalProperties);
 		props.putAll(getProperties());
-		
+
 		exporter.setProperties(props);
 		exporter.setArtifactCollector(collector);
 
+		extractExporterProperties(exporterId, props, extract);
+		
 		String outputPath = defaultOutputDirectory;
-		if(props.containsKey("outputdir")) { //$NON-NLS-1$
-			outputPath = props.getProperty("outputdir"); //$NON-NLS-1$
-			// done to avoid validation check in hibernate tools templates
-			props.remove("outputdir");	 //$NON-NLS-1$
+		if (extract.containsKey(EFS.OUTPUTDIR)) {
+			outputPath = extract.getProperty(EFS.OUTPUTDIR);
 		}
 
 		String resolvedOutputDir = resolve(outputPath);
 		String loc = PathHelper.getLocationAsStringPath(resolvedOutputDir);
-		if(outputPath != null && loc == null) {
+		if (outputPath != null && loc == null) {
 			String out = NLS.bind(HibernateConsoleMessages.ExporterFactory_output_dir_in_does_not_exist,
-					resolvedOutputDir, getExporterDefinition().getDescription());
+				resolvedOutputDir, getExporterDefinition().getDescription());
 			throw new HibernateConsoleRuntimeException(out);
 		}
 
-		if(StringHelper.isNotEmpty(loc)) { // only set if something valid found
+		if (StringHelper.isNotEmpty(loc)) { // only set if something valid found
 			outputDirectories.add(loc);
 			exporter.setOutputDirectory(new File(loc));
 		}
@@ -203,15 +204,15 @@ public class ExporterFactory {
 		exporter.setConfiguration(cfg);
 
 		List<String> templatePathList = new ArrayList<String>();
-		if(props.containsKey("template_path")) { //$NON-NLS-1$
-			String resolveTemplatePath = resolve(props.getProperty("template_path")); //$NON-NLS-1$
+		if (extract.containsKey(EFS.TEMPLATE_PATH)) {
+			String resolveTemplatePath = resolve(extract.getProperty(EFS.TEMPLATE_PATH));
 			StringTokenizer st = new StringTokenizer(resolveTemplatePath, ";"); //$NON-NLS-1$
 			String out = ""; //$NON-NLS-1$
 			while (st.hasMoreTokens()) {
 				String locationAsStringPath = PathHelper.getLocationAsStringPath(st.nextToken());
-				if(locationAsStringPath==null) {
+				if (locationAsStringPath == null) {
 					out += NLS.bind(HibernateConsoleMessages.ExporterFactory_template_dir_in_does_not_exist,
-							resolveTemplatePath, getExporterDefinition().getDescription()) + '\n';					
+						resolveTemplatePath, getExporterDefinition().getDescription()) + '\n';					
 				} else {
 					templatePathList.add(locationAsStringPath);
 				}				
@@ -220,50 +221,76 @@ public class ExporterFactory {
 				out = out.substring(0, out.length() - 1);
 				throw new HibernateConsoleRuntimeException(out);
 			}
-			props.remove("template_path"); // done to avoid validation check in hibernate tools templates //$NON-NLS-1$
 		}
-		if (StringHelper.isNotEmpty(customTemplatePath)){
+
+		if (StringHelper.isNotEmpty(customTemplatePath)) {
 			String resolvedCustomTemplatePath = resolve(customTemplatePath);
 			StringTokenizer st = new StringTokenizer(resolvedCustomTemplatePath, ";"); //$NON-NLS-1$
 			String out = ""; //$NON-NLS-1$
 			while (st.hasMoreTokens()) {
 				String locationAsStringPath = PathHelper.getLocationAsStringPath(st.nextToken());
-				if(locationAsStringPath != null) {
+				if (locationAsStringPath != null) {
 					templatePathList.add(locationAsStringPath);
 				} else {
 					out = NLS.bind(HibernateConsoleMessages.ExporterFactory_template_dir_in_does_not_exist,
-							resolvedCustomTemplatePath, getExporterDefinition().getDescription());
+						resolvedCustomTemplatePath, getExporterDefinition().getDescription());
 				}
 			}
-			if (!("".equals(out))){ //$NON-NLS-1$
+			if (!("".equals(out))) { //$NON-NLS-1$
 				out = out.substring(0, out.length() - 1);
 				throw new HibernateConsoleRuntimeException(out);
 			}
 		}
-
 		exporter.setTemplatePath(templatePathList.toArray(new String[templatePathList.size()]));
-
-
 		// special handling for GenericExporter (TODO: be delegated via plugin.xml)
-		if(getExporterDefinition().getId().equals("org.hibernate.tools.hbmtemplate")) { //$NON-NLS-1$
+		if (exporterId.equals("org.hibernate.tools.hbmtemplate")) { //$NON-NLS-1$
 			GenericExporter ge = (GenericExporter) exporter;
-
-			ge.setFilePattern(props.getProperty("file_pattern", null)); //$NON-NLS-1$
-			props.remove("file_pattern"); //$NON-NLS-1$
-			ge.setTemplateName(props.getProperty("template_name",null)); //$NON-NLS-1$
-			props.remove("template_name"); //$NON-NLS-1$
-			ge.setForEach(props.getProperty("for_each",null)); //$NON-NLS-1$
-			props.remove("for_each"); //$NON-NLS-1$
-
+			ge.setFilePattern(extract.getProperty(EFS.FILE_PATTERN));
+			ge.setTemplateName(extract.getProperty(EFS.TEMPLATE_NAME));
+			ge.setForEach(extract.getProperty(EFS.FOR_EACH));
 		}
 		// special handling for Hbm2DDLExporter
-		if(getExporterDefinition().getId().equals("org.hibernate.tools.hbm2ddl")) { //$NON-NLS-1$
+		if (exporterId.equals("org.hibernate.tools.hbm2ddl")) { //$NON-NLS-1$
 			Hbm2DDLExporter ddlExporter = (Hbm2DDLExporter) exporter;
 			//avoid users to delete their databases with a single click
-			ddlExporter.setExport(Boolean.getBoolean(props.getProperty("exportToDatabase", Boolean.toString(false)))); //$NON-NLS-1$
-			props.remove("exportToDatabase"); //$NON-NLS-1$
+			ddlExporter.setExport(Boolean.getBoolean(extract.getProperty(EFS.EXPORTTODATABASE)));
 		}
 		return exporter;
 	}
 
+	/**
+	 * Extract and update GUI specific exporter properties
+	 * 
+	 * @param exporterId
+	 * @param props - properties which values remain
+	 * @param extract - separated updated properties 
+	 * @throws CoreException 
+	 */
+	public static void extractExporterProperties(
+		String exporterId, Properties props, Properties extract) throws CoreException {
+		if (props.containsKey(EFS.OUTPUTDIR)) {
+			extract.put(EFS.OUTPUTDIR, resolve(props.getProperty(EFS.OUTPUTDIR)));
+			// done to avoid validation check in hibernate tools templates
+			props.remove(EFS.OUTPUTDIR);
+		}
+		if (props.containsKey(EFS.TEMPLATE_PATH)) {
+			extract.put(EFS.TEMPLATE_PATH, resolve(props.getProperty(EFS.TEMPLATE_PATH)));
+			// done to avoid validation check in hibernate tools templates
+			props.remove(EFS.TEMPLATE_PATH);
+		}
+		if (exporterId.equals("org.hibernate.tools.hbmtemplate")) { //$NON-NLS-1$
+			extract.put(EFS.FILE_PATTERN, props.getProperty(EFS.FILE_PATTERN, null));
+			props.remove(EFS.FILE_PATTERN);
+			extract.put(EFS.TEMPLATE_NAME, props.getProperty(EFS.TEMPLATE_NAME, null));
+			props.remove(EFS.TEMPLATE_NAME);
+			extract.put(EFS.FOR_EACH, props.getProperty(EFS.FOR_EACH, null));
+			props.remove(EFS.FOR_EACH);
+
+		}
+		// special handling for Hbm2DDLExporter
+		if (exporterId.equals("org.hibernate.tools.hbm2ddl")) { //$NON-NLS-1$
+			extract.put(EFS.EXPORTTODATABASE, props.getProperty(EFS.EXPORTTODATABASE, Boolean.toString(false)));
+			props.remove(EFS.EXPORTTODATABASE);
+		}
+	}
 }
