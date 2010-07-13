@@ -22,7 +22,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.HibernatePersis
  *
  */
 public class HibernatePersistenceXmlContextNodeFactory extends
-		GenericPersistenceXmlContextNodeFactory {
+		GenericPersistenceXmlContextNodeFactory implements HibernatePersistenceUnitPropertiesBuilder {
 
 	public PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
 		return new HibernatePersistenceUnit(parent, xmlPersistenceUnit);

@@ -56,7 +56,7 @@ public class Hibernate2_0PersistenceXmlDefinition extends
 	}
 	
 	public JpaResourceType getResourceType() {
-		return JptCorePlugin.PERSISTENCE_XML_1_0_RESOURCE_TYPE;
+		return JptCorePlugin.PERSISTENCE_XML_2_0_RESOURCE_TYPE;
 	}
 
 }

@@ -31,7 +31,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.HibernatePersistenceUnitProperties;
-import org.jboss.tools.hibernate.jpt.core.internal.context.persistence.HibernatePersistenceXmlContextNodeFactory;
+import org.jboss.tools.hibernate.jpt.core.internal.context.persistence.HibernatePersistenceUnitPropertiesBuilder;
 
 /**
  * @author Dmitry Geraskov
@@ -52,14 +52,10 @@ public class HibernatePersistenceUnit extends AbstractPersistenceUnit
 	}
 	
 	@Override
-	public HibernatePersistenceXmlContextNodeFactory getContextNodeFactory() {
-		return (HibernatePersistenceXmlContextNodeFactory) super.getContextNodeFactory();
-	}
-	
-	@Override
 	protected void initializeProperties() {
 		super.initializeProperties();
-		this.hibernateProperties = this.getContextNodeFactory().buildHibernatePersistenceUnitProperties(this);
+		this.hibernateProperties = ((HibernatePersistenceUnitPropertiesBuilder)this.getContextNodeFactory())
+			.buildHibernatePersistenceUnitProperties(this);
 	}
 	
 	@Override

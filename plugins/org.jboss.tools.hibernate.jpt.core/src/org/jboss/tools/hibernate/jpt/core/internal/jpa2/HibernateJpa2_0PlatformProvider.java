@@ -36,7 +36,9 @@ import org.eclipse.jpt.core.internal.context.java.JavaOneToManyMappingDefinition
 import org.eclipse.jpt.core.internal.context.java.JavaOneToOneMappingDefinition;
 import org.eclipse.jpt.core.internal.context.java.JavaTransientMappingDefinition;
 import org.eclipse.jpt.core.internal.context.java.JavaVersionMappingDefinition;
+import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmXmlDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.jpa2.HibernateOrmXml2_0Definition;
+import org.jboss.tools.hibernate.jpt.core.internal.context.persistence.HibernatePersistenceXmlDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.context.persistence.jpa2.Hibernate2_0PersistenceXmlDefinition;
 
 /**
@@ -143,7 +145,9 @@ public static final String ID = "hibernate2_0"; //$NON-NLS-1$
 	@Override
 	protected ResourceDefinition[] buildResourceDefinitions() {
 		return new ResourceDefinition[] {
+			HibernatePersistenceXmlDefinition.instance(),
 			Hibernate2_0PersistenceXmlDefinition.instance(),
+			HibernateOrmXmlDefinition.instance(),
 			HibernateOrmXml2_0Definition.instance()};
 	}
 	

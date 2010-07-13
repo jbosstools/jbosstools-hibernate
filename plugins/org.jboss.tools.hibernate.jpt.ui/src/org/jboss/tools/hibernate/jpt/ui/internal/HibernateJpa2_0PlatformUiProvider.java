@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.jpt.ui.internal;
 
 import java.util.List;
 
-import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.ui.ResourceUiDefinition;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
@@ -23,13 +22,11 @@ import org.eclipse.jpt.ui.internal.details.orm.EntityMappingsDetailsProvider;
 import org.eclipse.jpt.ui.internal.details.orm.OrmPersistentAttributeDetailsProvider;
 import org.eclipse.jpt.ui.internal.details.orm.OrmPersistentTypeDetailsProvider;
 import org.eclipse.jpt.ui.internal.jpa2.details.orm.EntityMappings2_0DetailsProvider;
-import org.eclipse.jpt.ui.internal.platform.generic.GenericNavigatorProvider;
 import org.jboss.tools.hibernate.jpt.ui.internal.jpa2.mapping.details.orm.Hibernate2_0OrmXmlUiDefinition;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.java.Hibernate2_0JavaResourceUiDefinition;
 import org.jboss.tools.hibernate.jpt.ui.internal.mapping.details.orm.HibernateOrmXmlUiDefinition;
 import org.jboss.tools.hibernate.jpt.ui.internal.persistence.details.HibernatePersistenceXmlUiDefinition;
 import org.jboss.tools.hibernate.jpt.ui.internal.persistence.details.jpa2.HibernatePersistenceXml2_0UiDefinition;
-import org.jboss.tools.hibernate.jpt.ui.internal.platform.HibernateJpaPlatformUi;
 
 /**
  * @author Dmitry Geraskov
@@ -53,11 +50,6 @@ public class HibernateJpa2_0PlatformUiProvider extends
 	 */
 	private HibernateJpa2_0PlatformUiProvider() {
 		super();
-	}
-
-	public JpaPlatformUi buildJpaPlatformUi() {
-		return new HibernateJpaPlatformUi(new GenericNavigatorProvider(),
-				HibernateJpa2_0PlatformUiProvider.instance());
 	}
 
 	// ********** details providers **********

@@ -82,21 +82,21 @@ public class HibernatePersistenceUnitProperties extends AbstractPersistenceUnitP
 	}
 	
 	public void propertyRemoved(String propertyName) {
-		if (propertyName.equals(CONFIG_FILE_PROPERTY)) {
+		if (propertyName.equals(HIBERNATE_CONFIG_FILE)) {
 			this.configurationFileChanged(null);
-		} else if (propertyName.equals(DIALECT_PROPERTY)) {
+		} else if (propertyName.equals(HIBERNATE_DIALECT)) {
 			this.dialectChanged(null);
-		} else if (propertyName.equals(DRIVER_PROPERTY)) {
+		} else if (propertyName.equals(HIBERNATE_DRIVER)) {
 			this.driverChanged(null);
-		} else if (propertyName.equals(URL_PROPERTY)) {
+		} else if (propertyName.equals(HIBERNATE_URL)) {
 			this.urlChanged(null);
-		} else if (propertyName.equals(SCHEMA_DEFAULT_PROPERTY)) {
+		} else if (propertyName.equals(HIBERNATE_SCHEMA_DEFAULT)) {
 			this.schemaDefaultChanged(null);
-		} else if (propertyName.equals(CATALOG_DEFAULT_PROPERTY)) {
+		} else if (propertyName.equals(HIBERNATE_CATALOG)) {
 			this.catalogDefaultChanged(null);
-		} else if (propertyName.equals(USERNAME_PROPERTY)) {
+		} else if (propertyName.equals(HIBERNATE_USERNAME)) {
 			this.usernameChanged(null);
-		} else if (propertyName.equals(PASSWORD_PROPERTY)) {
+		} else if (propertyName.equals(HIBERNATE_PASSWORD)) {
 			this.passwordChanged(null);
 		}
 	}
