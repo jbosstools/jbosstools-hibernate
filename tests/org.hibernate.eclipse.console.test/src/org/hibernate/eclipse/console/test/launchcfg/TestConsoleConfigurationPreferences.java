@@ -8,6 +8,7 @@ import java.util.Properties;
 import junit.framework.Assert;
 
 import org.eclipse.core.runtime.FileLocator;
+import org.hibernate.cfg.Environment;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin;
@@ -48,7 +49,7 @@ public class TestConsoleConfigurationPreferences implements ConsoleConfiguration
 
 	public Properties getProperties() {
 		Properties p = new Properties();
-		p.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+		p.setProperty(Environment.DIALECT, "org.hibernate.dialect.HSQLDialect"); //$NON-NLS-1$
 		return p;
 	}
 
@@ -73,17 +74,14 @@ public class TestConsoleConfigurationPreferences implements ConsoleConfiguration
 	}
 
 	public String getNamingStrategy() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public String getPersistenceUnitName() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public String getConnectionProfileName() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -92,7 +90,6 @@ public class TestConsoleConfigurationPreferences implements ConsoleConfiguration
 	 * @see org.hibernate.console.preferences.ConsoleConfigurationPreferences#getDialectName()
 	 */
 	public String getDialectName() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

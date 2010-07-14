@@ -1,0 +1,32 @@
+<project name="CodeGen" default="JdbcCodeGen">
+  <property name="build.dir" location="ResLocation/test"/>
+  <path id="toolslib">
+    <path location="ejb3-persistence.jar"/>
+    <path location="hibernate3.jar"/>
+    <path location="hsqldb.jar"/>
+  </path>
+  <target name="JdbcCodeGen">
+    <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="toolslib"/>
+    <hibernatetool destdir="${build.dir}">
+      <jpaconfiguration namingStrategy="testNamingStrategy" persistenceUnit="testPersistenceUnit">
+        <fileset dir="." id="id">
+          <include name="xxx.hbm.xml"/>
+          <include name="yyy.hbm.xml"/>
+        </fileset>
+      </jpaconfiguration>
+      <classpath>
+        <path location="${build.dir}"/>
+      </classpath>
+      <hbm2doc/>
+      <hbm2cfgxml/>
+      <hbm2hbmxml/>
+      <hbmtemplate>
+        <property key="jdk5" value="true"/>
+        <property key="ejb3" value="true"/>
+      </hbmtemplate>
+      <hbm2java jdk5="true" ejb3="true"/>
+      <hbm2ddl/>
+      <hbm2dao jdk5="true" ejb3="true"/>
+    </hibernatetool>
+  </target>
+</project>

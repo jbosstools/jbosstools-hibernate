@@ -17,18 +17,27 @@ package org.hibernate.eclipse.launch;
  */
 public class CGS {
 	//
+	public static final String ID = "id"; //$NON-NLS-1$
 	public static final String NAME = "name"; //$NON-NLS-1$
+	public static final String DEPENDS = "depends"; //$NON-NLS-1$
 	public static final String KEY = "key"; //$NON-NLS-1$
 	public static final String VALUE = "value"; //$NON-NLS-1$
 	public static final String LOCATION = "location"; //$NON-NLS-1$
 	public static final String DEFAULT = "default"; //$NON-NLS-1$
+	public static final String PATH = "path"; //$NON-NLS-1$
+	public static final String PATHELEMENT = "pathelement"; //$NON-NLS-1$
 	public static final String PROPERTY = "property"; //$NON-NLS-1$
 	public static final String PROJECT = "project"; //$NON-NLS-1$
 	public static final String TARGET = "target"; //$NON-NLS-1$
 	public static final String TASKDEF = "taskdef"; //$NON-NLS-1$
 	public static final String CLASSNAME = "classname"; //$NON-NLS-1$
+	public static final String CLASSPATH = "classpath"; //$NON-NLS-1$
+	public static final String CLASSPATHREF = "classpathref"; //$NON-NLS-1$
 	public static final String DESTDIR = "destdir"; //$NON-NLS-1$
+	public static final String TEMPLATEPATH = "templatepath"; //$NON-NLS-1$
 	public static final String EJB3 = "ejb3"; //$NON-NLS-1$
 	public static final String JDK5 = "jdk5"; //$NON-NLS-1$
 	public static final String HIBERNATETOOL = "hibernatetool"; //$NON-NLS-1$
+	public static final String ECHO = "echo"; //$NON-NLS-1$
+	public static final String FILE = "file"; //$NON-NLS-1$
 }

@@ -27,6 +27,7 @@ public class CFS {
 	public static final String ENTITYRESOLVER = "entityResolver"; //$NON-NLS-1$
 	public static final String NAMINGSTRATEGY = "namingStrategy"; //$NON-NLS-1$
 	public static final String PERSISTENCEUNIT = "persistenceUnit"; //$NON-NLS-1$
+	public static final String PREFERBASICCOMPOSITEIDS = "preferBasicCompositeIds"; //$NON-NLS-1$
 	public static final String DETECTMANYTOMANY = "detectManyToMany"; //$NON-NLS-1$
 	public static final String DETECTONTTOONE = "detectOneToOne"; //$NON-NLS-1$
 	public static final String DETECTOPTIMISTICLOCK = "detectOptimisticLock"; //$NON-NLS-1$

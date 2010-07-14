@@ -207,7 +207,7 @@ public class ConfigurationFactory {
 				overrides.put("hibernate.ejb.naming_strategy", prefs.getNamingStrategy()); //$NON-NLS-1$
 			}
 			if (StringHelper.isNotEmpty(prefs.getDialectName())) {
-				overrides.put("hibernate.dialect", prefs.getDialectName()); //$NON-NLS-1$
+				overrides.put(Environment.DIALECT, prefs.getDialectName());
 			}
 			if (!includeMappings) {
 				overrides.put("hibernate.archive.autodetection", "none"); //$NON-NLS-1$//$NON-NLS-2$
@@ -274,7 +274,7 @@ public class ConfigurationFactory {
 		localCfg = configureConnectionProfile(localCfg);
 		// replace dialect if it is set in preferences
 		if (StringHelper.isNotEmpty(prefs.getDialectName())) {
-			localCfg.setProperty("hibernate.dialect", prefs.getDialectName()); //$NON-NLS-1$
+			localCfg.setProperty(Environment.DIALECT, prefs.getDialectName());
 		}
 		return localCfg;
 	}
@@ -367,15 +367,14 @@ public class ConfigurationFactory {
 	}
 
 	private Configuration configureConnectionProfile(Configuration localCfg) {
-		String connectionProfile = prefs.getConnectionProfileName();
-		if (connectionProfile == null) {
+		String connProfileName = prefs.getConnectionProfileName();
+		if (connProfileName == null) {
 			return localCfg;
 		}
 		IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(
-				connectionProfile);
+				connProfileName);
 		if (profile != null) {
-			DriverInstance driverInstance = 
-				ConnectionProfileUtil.getDriverDefinition(prefs.getConnectionProfileName());
+			DriverInstance driverInstance = ConnectionProfileUtil.getDriverDefinition(connProfileName);
 			final Properties cpProperties = profile.getProperties(profile.getProviderId());
 			final Properties invokeProperties = localCfg.getProperties();
 			// set this property to null!
@@ -405,7 +404,7 @@ public class ConfigurationFactory {
 		} else {
 			String out = NLS.bind(
 					ConsoleMessages.ConsoleConfiguration_connection_profile_not_found,
-					connectionProfile);
+					connProfileName);
 			throw new HibernateConsoleRuntimeException(out);
 		}
 		return localCfg;

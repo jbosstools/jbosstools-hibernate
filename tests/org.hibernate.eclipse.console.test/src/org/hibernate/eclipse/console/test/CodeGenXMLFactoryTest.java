@@ -15,6 +15,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +47,7 @@ import junit.framework.TestCase;
 public class CodeGenXMLFactoryTest extends TestCase {
 
 	public static final String SPECIMEN_PATH = "res/specimen/".replaceAll("//", File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final String PROJECT_LIB_PATH = "res/project/lib/".replaceAll("//", File.separator); //$NON-NLS-1$ //$NON-NLS-2$
 
 	public static final String HBMTEMPLATE0 = "hbm2java"; //$NON-NLS-1$
 	public static final String HBMTEMPLATE0_PROPERTIES = HibernateLaunchConstants.ATTR_EXPORTERS
@@ -57,14 +61,70 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		}
 	}
 
-	public class CodeGenXMLFactory4Test extends CodeGenXMLFactory {
+	public class TestConsoleConfigPref2 extends TestConsoleConfigurationPreferences {
+		public File getConfigXMLFile() {
+			return null;
+		}
 
-		public CodeGenXMLFactory4Test(ILaunchConfiguration lc) {
+		public File[] getMappingFiles() {
+			File[] files = new File[2];
+			files[0] = new File("xxx.hbm.xml"); //$NON-NLS-1$
+			files[1] = new File("yyy.hbm.xml"); //$NON-NLS-1$
+			return files;
+		}
+
+		public URL[] getCustomClassPathURLS() {
+			URL[] urls = new URL[4];
+			try {
+				urls[0] = new File("ejb3-persistence.jar").toURL(); //$NON-NLS-1$
+				urls[1] = new File("hibernate3.jar").toURL(); //$NON-NLS-1$
+				urls[2] = new File("hsqldb.jar").toURL(); //$NON-NLS-1$
+				urls[3] = null;
+			} catch (IOException e) {
+			}
+			return urls;
+		}
+		public String getEntityResolverName() {
+			return ""; //$NON-NLS-1$
+		}
+
+		public ConfigurationMode getConfigurationMode() {
+			return ConfigurationMode.JPA;
+		}
+
+		public String getNamingStrategy() {
+			return "testNamingStrategy"; //$NON-NLS-1$
+		}
+
+		public String getPersistenceUnitName() {
+			return "testPersistenceUnit"; //$NON-NLS-1$
+		}
+
+		public String getConnectionProfileName() {
+			return "jdbc:mysql://localhost:3306/jpa"; //$NON-NLS-1$
+		}
+
+		public String getDialectName() {
+			return "testDialect"; //$NON-NLS-1$
+		}
+	}
+
+	public class CodeGenXMLFactory4Test extends CodeGenXMLFactory {
+		
+		protected boolean jpa = false;
+
+		public CodeGenXMLFactory4Test(ILaunchConfiguration lc, boolean jpa) {
 			super(lc);
+			this.jpa = jpa;
 		}
 
 		public ConsoleConfigurationPreferences getConsoleConfigPreferences(String consoleConfigName) {
-			ConsoleConfigurationPreferences pref = new TestConsoleConfigPref();
+			ConsoleConfigurationPreferences pref;
+			if (jpa) {
+				pref = new TestConsoleConfigPref2();
+			} else {
+				pref = new TestConsoleConfigPref();
+			}
 			return pref;
 		}
 
@@ -78,36 +138,66 @@ public class CodeGenXMLFactoryTest extends TestCase {
 	}
 
 	public void testCodeGenXMLFactoryRevengAll() {
-		String codeGen = codeGenXMLFactory(true, true);
+		String codeGen = codeGenXMLFactory(true, true, false);
 		String specimen = getSpecimen("AntCodeGenReveng_test1.xml"); //$NON-NLS-1$
 		assertEquals(specimen.trim(), codeGen.trim().replaceAll("\n", "\r\n")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void testCodeGenXMLFactoryRevengOne() {
-		String codeGen = codeGenXMLFactory(true, false);
+		String codeGen = codeGenXMLFactory(true, false, false);
 		String specimen = getSpecimen("AntCodeGenReveng_test2.xml"); //$NON-NLS-1$
 		assertEquals(specimen.trim(), codeGen.trim().replaceAll("\n", "\r\n")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void testCodeGenXMLFactoryAll() {
-		String codeGen = codeGenXMLFactory(false, true);
+		String codeGen = codeGenXMLFactory(false, true, false);
 		String specimen = getSpecimen("AntCodeGen_test1.xml"); //$NON-NLS-1$
 		assertEquals(specimen.trim(), codeGen.trim().replaceAll("\n", "\r\n")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void testCodeGenXMLFactoryOne() {
-		String codeGen = codeGenXMLFactory(false, false);
+		String codeGen = codeGenXMLFactory(false, false, false);
 		String specimen = getSpecimen("AntCodeGen_test2.xml"); //$NON-NLS-1$
 		assertEquals(specimen.trim(), codeGen.trim().replaceAll("\n", "\r\n")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	public String codeGenXMLFactory(boolean reveng, boolean exportersAll) {
+	public void testCodeGenXMLFactoryJpaAll() {
+		String codeGen = codeGenXMLFactory(false, true, true);
+		codeGen = updatePaths(codeGen);
+		String specimen = getSpecimen("AntCodeGenJpa_test1.xml"); //$NON-NLS-1$
+		assertEquals(specimen.trim(), codeGen.trim().replaceAll("\n", "\r\n")); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+
+	public void testCodeGenXMLFactoryJpaOne() {
+		String codeGen = codeGenXMLFactory(false, false, true);
+		codeGen = updatePaths(codeGen);
+		String specimen = getSpecimen("AntCodeGenJpa_test2.xml"); //$NON-NLS-1$
+		assertEquals(specimen.trim(), codeGen.trim().replaceAll("\n", "\r\n")); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	
+	public String updatePaths(String codeGen) {
+		String repl = ""; //$NON-NLS-1$
+		try {
+			URI uri = new File("").toURL().toURI(); //$NON-NLS-1$
+			repl = (new File(uri)).getPath();
+		} catch (MalformedURLException e) {
+		} catch (URISyntaxException e) {
+		}
+		codeGen = CodeGenXMLFactory.replaceString(codeGen, repl + File.separator, ""); //$NON-NLS-1$
+		return codeGen;
+	}
+
+	public String codeGenXMLFactory(boolean reveng, boolean exportersAll, boolean jpa) {
 		Map<String, ExporterDefinition> exDefinitions = ExtensionManager.findExporterDefinitionsAsMap();
 		Map<String, Object> testLCAttr = new HashMap<String, Object>();
 		String tmp = "12345678901234567890"; //$NON-NLS-1$
 		testLCAttr.put(HibernateLaunchConstants.ATTR_TEMPLATE_DIR, tmp);
 		testLCAttr.put(HibernateLaunchConstants.ATTR_OUTPUT_DIR, tmp);
 		testLCAttr.put(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_SETTINGS, tmp);
+		if (jpa) {
+			testLCAttr.put(HibernateLaunchConstants.ATTR_ENABLE_EJB3_ANNOTATIONS, true);
+			testLCAttr.put(HibernateLaunchConstants.ATTR_ENABLE_JDK5, true);
+		}
 		List<String> exportersList = new ArrayList<String>();
 		if (exportersAll) {
 			exportersList.clear();
@@ -130,7 +220,7 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		testLCAttr.put(HBMTEMPLATE0_PROPERTIES, expProps2);
 		testLCAttr.put(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER, reveng);
 		TestLaunchConfig testLC = new TestLaunchConfig(testLCAttr);
-		CodeGenXMLFactory cgfXML = new CodeGenXMLFactory4Test(testLC);
+		CodeGenXMLFactory cgfXML = new CodeGenXMLFactory4Test(testLC, jpa);
 		Element rootBuildXml = cgfXML.createRoot();
 		ConfigurationXMLFactory.dump(System.out, rootBuildXml);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -166,8 +256,11 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		File resourceFolder = resourcePath.toFile();
 		URL entry = HibernateConsoleTestPlugin.getDefault().getBundle().getEntry(
 				strResPath);
-		URL resProject = FileLocator.resolve(entry);
-		String tplPrjLcStr = FileLocator.resolve(resProject).getFile();
+		String tplPrjLcStr = strResPath;
+		if (entry != null) {
+			URL resProject = FileLocator.resolve(entry);
+			tplPrjLcStr = FileLocator.resolve(resProject).getFile();
+		}
 		resourceFolder = new File(tplPrjLcStr);
 		return resourceFolder;
 	}

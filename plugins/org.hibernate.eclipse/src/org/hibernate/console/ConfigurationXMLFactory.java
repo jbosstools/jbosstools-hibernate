@@ -87,7 +87,7 @@ public class ConfigurationXMLFactory {
 		File[] mappingFiles = prefs.getMappingFiles();
 		if (mappingFiles.length > 0) {
 			Element fileset = root.addElement("fileset"); //$NON-NLS-1$
-			fileset.addAttribute("dir", "./src"); //$NON-NLS-1$ //$NON-NLS-2$
+			fileset.addAttribute("dir", "."); //$NON-NLS-1$ //$NON-NLS-2$
 			fileset.addAttribute("id", "id"); //$NON-NLS-1$ //$NON-NLS-2$
 			for (int i = 0; i < mappingFiles.length; i++) {
 				Element include = fileset.addElement("include"); //$NON-NLS-1$

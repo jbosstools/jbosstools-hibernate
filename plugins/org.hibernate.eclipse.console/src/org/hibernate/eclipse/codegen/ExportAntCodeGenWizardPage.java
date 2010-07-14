@@ -42,36 +42,34 @@ import org.hibernate.eclipse.launch.CodeGenXMLFactory;
 public class ExportAntCodeGenWizardPage extends WizardNewFileCreationPage implements Listener {
 
 	protected ComboDialogField consoleConfigurationName;
-	
+
 	/**
-	 * Creates a new file creation (Ant code generation) wizard page. 
-	 * If the initial resource selection contains exactly one 
-	 * container resource then it will be used as
-	 * the default container resource.
+	 * Creates a new file creation (Ant code generation) wizard page. If the initial resource
+	 * selection contains exactly one container resource then it will be used as the default
+	 * container resource.
 	 * 
 	 * @param pageName
 	 *            the name of the page
 	 * @param selection
 	 *            the current resource selection
 	 */
-	public ExportAntCodeGenWizardPage(String pageName,
-			IStructuredSelection selection) {
+	public ExportAntCodeGenWizardPage(String pageName, IStructuredSelection selection) {
 		super(pageName, selection);
 		setPageComplete(false);
 	}
 
-    /**
-     * @see #setControl(Control)
-     */
+	/**
+	 * @see #setControl(Control)
+	 */
 	protected void setControl(Control newControl) {
 		newControl.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_FILL
 				| GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL));
 		super.setControl(newControl);
-    }
+	}
 
-    /**
-     * @see #createControl(Composite)
-     */
+	/**
+	 * @see #createControl(Composite)
+	 */
 	public void createControl(Composite parent) {
 		initializeDialogUnits(parent);
 		Composite topLevel = new Composite(parent, SWT.NONE);
@@ -80,7 +78,7 @@ public class ExportAntCodeGenWizardPage extends WizardNewFileCreationPage implem
 		layout.marginWidth = 0;
 		topLevel.setLayout(layout);
 		topLevel.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_FILL
-			| GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL));
+				| GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL));
 		topLevel.setFont(parent.getFont());
 		setControlCombo(topLevel);
 		super.createControl(topLevel);
@@ -89,8 +87,8 @@ public class ExportAntCodeGenWizardPage extends WizardNewFileCreationPage implem
 
 	protected void setControlCombo(Control newControl) {
 		consoleConfigurationName = new ComboDialogField(SWT.READ_ONLY);
-		consoleConfigurationName.setLabelText(
-			HibernateConsoleMessages.ExportAntCodeGenWizardPage_hibernate_code_generation_configurations);
+		consoleConfigurationName
+				.setLabelText(HibernateConsoleMessages.ExportAntCodeGenWizardPage_hibernate_code_generation_configurations);
 		ILaunchConfiguration[] launchCfgs;
 		try {
 			launchCfgs = LaunchHelper.findFilteredCodeGenerationConfigs();
@@ -109,12 +107,12 @@ public class ExportAntCodeGenWizardPage extends WizardNewFileCreationPage implem
 			}
 		};
 		consoleConfigurationName.setDialogFieldListener(fieldlistener);
-		consoleConfigurationName.doFillIntoGrid((Composite)newControl, 2);
-    }
+		consoleConfigurationName.doFillIntoGrid((Composite) newControl, 2);
+	}
 
-    /**
-     * @see #validatePage()
-     */
+	/**
+	 * @see #validatePage()
+	 */
 	protected boolean validatePage() {
 		boolean res = super.validatePage();
 		if (res) {
@@ -125,7 +123,7 @@ public class ExportAntCodeGenWizardPage extends WizardNewFileCreationPage implem
 		}
 		return res;
 	}
-	
+
 	public ILaunchConfiguration getSelectedLaunchConfig() {
 		ILaunchConfiguration[] launchCfgs;
 		try {
@@ -149,13 +147,15 @@ public class ExportAntCodeGenWizardPage extends WizardNewFileCreationPage implem
 		Element rootBuildXml = cgfXML.createRoot();
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ConfigurationXMLFactory.dump(baos, rootBuildXml);
+		String baosResult = CodeGenXMLFactory.replaceString(baos.toString(), 
+			cgfXML.getPropFileContentStubUID(), cgfXML.getPropFileContentPreSave());
 		//
 		ByteArrayInputStream bais = null;
 		try {
-			bais = new ByteArrayInputStream(baos.toString().getBytes("UTF-8")); //$NON-NLS-1$
+			bais = new ByteArrayInputStream(baosResult.getBytes("UTF-8")); //$NON-NLS-1$
 		} catch (UnsupportedEncodingException uec) {
 			HibernateConsolePlugin.getDefault()
-				.logErrorMessage("Problems converting to UTF-8", uec); //$NON-NLS-1$
+					.logErrorMessage("Problems converting to UTF-8", uec); //$NON-NLS-1$
 			bais = new ByteArrayInputStream(baos.toString().getBytes());
 		}
 		return bais;

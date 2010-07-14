@@ -1,10 +1,13 @@
 <project name="CodeGen" default="JdbcCodeGen">
   <property name="build.dir" location="ResLocation/test"/>
-  <property name="jdbc.driver" location="TestDriverPath.jar"/>
+  <path id="toolslib"/>
   <target name="JdbcCodeGen">
-    <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask"/>
+    <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="toolslib"/>
     <hibernatetool destdir="${build.dir}">
       <jdbcconfiguration configurationFile="project\src\hibernate.cfg.xml" detectManyToMany="true" detectOneToOne="true" detectOptimisticLock="true" revEngFile="ResLocation/test"/>
+      <classpath>
+        <path location="${build.dir}"/>
+      </classpath>
       <hbm2doc/>
       <hbm2cfgxml/>
       <hbm2hbmxml/>

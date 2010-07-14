@@ -30,6 +30,8 @@ public class ConsolePluginAllTests {
 		
 		suite.addTestSuite(QueryPageViewerTest.class);
 		suite.addTestSuite(HBMInfoExtractorTest.class);
+		
+		suite.addTestSuite(CodeGenXMLFactoryTest.class);
 
 		// core tests
 		//Properties properties = new Properties();

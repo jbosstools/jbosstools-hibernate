@@ -22,7 +22,6 @@
 package org.hibernate.console;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -46,6 +45,7 @@ import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.console.execution.ExecutionContextHolder;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
+import org.hibernate.console.preferences.PreferencesClassPathUtils;
 
 public class ConsoleConfiguration implements ExecutionContextHolder {
 
@@ -117,61 +117,9 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		configuration = buildWith(null, true);
 		fireConfigurationBuilt();
 	}
-
-	/*
-	 * get custom classpath URLs 
-	 */
-	protected URL[] getCustomClassPathURLs() {
-		URL[] customClassPathURLsTmp = prefs.getCustomClassPathURLS();
-		URL[] customClassPathURLs = null;
-		String driverURL = ConnectionProfileUtil.getConnectionProfileDriverURL(prefs.getConnectionProfileName());
-		URL[] urls = null;
-		if (driverURL != null) {
-			String[] driverURLParts = driverURL.split(";"); //$NON-NLS-1$
-			urls = new URL[driverURLParts.length];
-			for (int i = 0; i < driverURLParts.length; i++) {
-				try {
-					urls[i] = new URL("file:/" + driverURLParts[i].trim()); //$NON-NLS-1$
-				} catch (MalformedURLException e) {
-					urls[i] = null; 
-				}
-			}
-		}
-		// should DTP connection profile driver jar file be inserted
-		int insertItems = ( urls != null ) ? urls.length : 0;
-		if (insertItems > 0) {
-			insertItems = 0;
-			for (int i = 0; i < urls.length; i++) {
-				if (urls[i] == null) {
-					continue;
-				}
-				int j = 0;
-				for (; j < customClassPathURLsTmp.length; j++) {
-					if (customClassPathURLsTmp[j].equals(urls[i])) {
-						break;
-					}
-				}
-				if (j == customClassPathURLsTmp.length) {
-					urls[insertItems++] = urls[i];
-				}
-			}
-		}
-		if (insertItems > 0) {
-			customClassPathURLs = new URL[customClassPathURLsTmp.length + insertItems];
-	        System.arraycopy(customClassPathURLsTmp, 0, 
-	        		customClassPathURLs, 0, customClassPathURLsTmp.length);
-	        // insert DTP connection profile driver jar file URL after the default classpath entries
-			for (int i = 0; i < insertItems; i++) {
-				customClassPathURLs[customClassPathURLsTmp.length + i] = urls[i];
-			}
-		} else {
-			customClassPathURLs = customClassPathURLsTmp;
-		}
-		return customClassPathURLs;
-	}
 	
 	protected ConsoleConfigClassLoader createClassLoader() {
-		final URL[] customClassPathURLs = getCustomClassPathURLs();
+		final URL[] customClassPathURLs = PreferencesClassPathUtils.getCustomClassPathURLs(prefs);
 		ConsoleConfigClassLoader classLoader = AccessController.doPrivileged(new PrivilegedAction<ConsoleConfigClassLoader>() {
 			public ConsoleConfigClassLoader run() {
 				return new ConsoleConfigClassLoader(customClassPathURLs, getParentClassLoader()) {
