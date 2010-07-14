@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
-import org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaFactory;
+import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.ForeignKey;
 import org.jboss.tools.hibernate.jpt.core.internal.context.ForeignKeyHolder;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
@@ -56,8 +56,8 @@ AbstractJavaManyToManyMapping implements ForeignKeyHolder{
 	}
 	
 	@Override
-	protected HibernateJpaFactory getJpaFactory() {
-		return (HibernateJpaFactory) super.getJpaFactory();
+	protected HibernateAbstractJpaFactory getJpaFactory() {
+		return (HibernateAbstractJpaFactory) super.getJpaFactory();
 	}
 	
 	@Override
