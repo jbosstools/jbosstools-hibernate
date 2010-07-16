@@ -101,6 +101,22 @@ public class DriverClassHelpers {
                    "jdbc:ingres://localhost:II7/demodb", //$NON-NLS-1$
                    "jdbc:ingres://<server>:<port>/<databaseName>", //$NON-NLS-1$
                         }
+                         );
+        
+        addDriverAndURLS("org.hibernate.dialect.Ingres9Dialect", //$NON-NLS-1$
+                "com.ingres.jdbc.IngresDriver", //$NON-NLS-1$
+                new String[] {
+                   "jdbc:ingres://localhost:II7/demodb", //$NON-NLS-1$
+                   "jdbc:ingres://<server>:<port>/<databaseName>", //$NON-NLS-1$
+                        }
+                         ); 
+        
+        addDriverAndURLS("org.hibernate.dialect.Ingres10Dialect", //$NON-NLS-1$
+                "com.ingres.jdbc.IngresDriver", //$NON-NLS-1$
+                new String[] {
+                   "jdbc:ingres://localhost:II7/demodb", //$NON-NLS-1$
+                   "jdbc:ingres://<server>:<port>/<databaseName>", //$NON-NLS-1$
+                        }
                          ); 
 
         addDriverAndURLS("org.hibernate.dialect.OracleDialect",  //$NON-NLS-1$
