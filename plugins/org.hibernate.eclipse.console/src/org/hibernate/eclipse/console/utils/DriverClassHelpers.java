@@ -27,8 +27,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
 
 
 /**
@@ -37,8 +38,8 @@ import java.util.Map.Entry;
 public class DriverClassHelpers {
 
     private Map<String, String> dialectNames = new HashMap<String, String>();
-    private Map<String, Set<String>> connectionUrls = new HashMap<String, Set<String>>();
-    private Map<String, Set<String>> driverClasses = new HashMap<String, Set<String>>();
+    private Map<String, Set<String>> connectionUrls = new TreeMap<String, Set<String>>();
+    private Map<String, Set<String>> driverClasses = new TreeMap<String, Set<String>>();
     private Map<String, String> driverToDialect = new HashMap<String, String>();
     
     public DriverClassHelpers() {
@@ -93,6 +94,14 @@ public class DriverClassHelpers {
                    "jdbc:h2:tcp://<server>[:<port>]/<databaseName>" //$NON-NLS-1$                   
                    }
                 );
+        
+        addDriverAndURLS("org.hibernate.dialect.IngresDialect", //$NON-NLS-1$
+                "com.ingres.jdbc.IngresDriver", //$NON-NLS-1$
+                new String[] {
+                   "jdbc:ingres://localhost:II7/demodb", //$NON-NLS-1$
+                   "jdbc:ingres://<server>:<port>/<databaseName>", //$NON-NLS-1$
+                        }
+                         ); 
 
         addDriverAndURLS("org.hibernate.dialect.OracleDialect",  //$NON-NLS-1$
                          "oracle.jdbc.driver.OracleDriver", //$NON-NLS-1$
