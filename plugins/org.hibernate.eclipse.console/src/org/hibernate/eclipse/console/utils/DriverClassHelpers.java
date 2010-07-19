@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeMap;
 
 
 /**
@@ -38,8 +37,8 @@ import java.util.TreeMap;
 public class DriverClassHelpers {
 
     private Map<String, String> dialectNames = new HashMap<String, String>();
-    private Map<String, Set<String>> connectionUrls = new TreeMap<String, Set<String>>();
-    private Map<String, Set<String>> driverClasses = new TreeMap<String, Set<String>>();
+    private Map<String, Set<String>> connectionUrls = new HashMap<String, Set<String>>();
+    private Map<String, Set<String>> driverClasses = new HashMap<String, Set<String>>();
     private Map<String, String> driverToDialect = new HashMap<String, String>();
     
     public DriverClassHelpers() {
