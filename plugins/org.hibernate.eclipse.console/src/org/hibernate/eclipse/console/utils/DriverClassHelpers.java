@@ -53,6 +53,8 @@ public class DriverClassHelpers {
         dialectNames.put("H2", "org.hibernate.dialect.H2Dialect"); //$NON-NLS-1$ //$NON-NLS-2$
         dialectNames.put("Informix", "org.hibernate.dialect.InformixDialect"); //$NON-NLS-1$ //$NON-NLS-2$
         dialectNames.put("Ingres", "org.hibernate.dialect.IngresDialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("Ingres9", "org.hibernate.dialect.Ingres9Dialect"); //$NON-NLS-1$ //$NON-NLS-2$
+        dialectNames.put("Ingres10", "org.hibernate.dialect.Ingres10Dialect"); //$NON-NLS-1$ //$NON-NLS-2$
         dialectNames.put("Interbase", "org.hibernate.dialect.InterbaseDialect"); //$NON-NLS-1$ //$NON-NLS-2$
         dialectNames.put("Firebird", "org.hibernate.dialect.FirebirdDialect"); //$NON-NLS-1$ //$NON-NLS-2$
         dialectNames.put("Mckoi SQL", "org.hibernate.dialect.MckoiDialect"); //$NON-NLS-1$ //$NON-NLS-2$
