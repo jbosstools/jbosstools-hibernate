@@ -190,7 +190,7 @@ public class ExporterAttributes
 		for (String deleted : deletedExporterIds) {
 			configuration.setAttribute( getLaunchAttributePrefix( deleted ), (String)null);
 			configuration.setAttribute(getLaunchAttributePrefix(deleted ) + ".extension_id", (String)null);						 //$NON-NLS-1$
-			configuration.setAttribute(getLaunchAttributePrefix(deleted), (String)null);
+			configuration.setAttribute(getLaunchAttributePrefix(deleted) + ".properties", (String)null);						 //$NON-NLS-1$
 		}
 
 		configuration.setAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, names);
