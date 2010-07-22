@@ -8,14 +8,14 @@
         factoryClass="org.jboss.tools.hibernate.jpt.core.internal.HibernateJpaPlatformFactory"
         id="hibernate"
         jpaFacetVersion="1.0"
-        label="Hibernate JPA 1.0">
+        label="Hibernate (JPA 1.x)">
 		</jpaPlatform>
 		<jpaPlatform
         default="false"
         factoryClass="org.jboss.tools.hibernate.jpt.core.internal.jpa2.HibernateJpa2_0PlatformFactory"
         id="hibernate2_0"
         jpaFacetVersion="2.0"
-        label="Hibernate JPA2.0">
+        label="Hibernate (JPA 2.x)">
 		</jpaPlatform>		
 	</extension>
  <extension
