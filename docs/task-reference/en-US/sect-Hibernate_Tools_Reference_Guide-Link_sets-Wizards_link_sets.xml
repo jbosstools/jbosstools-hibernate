@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Hibernate_Tools_Reference_Guide.ent">
+%BOOK_ENTITIES;
+]>
+<section id="sect-Hibernate_Tools_Reference_Guide-Link_sets-Wizards_link_sets">
+  <title>Wizards link sets</title>
+  <para>
+
+  </para>
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Link_sets-Wizards_link_sets-Hibernate_mapping_file_link_set.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Link_sets-Wizards_link_sets-Hibernate_configuration_file_link_set.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Link_sets-Wizards_link_sets-Hibernate_console_configuration_link_set.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Link_sets-Wizards_link_sets-Code_generation_link_set.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Link_sets-Wizards_link_sets-Reverse_engineering_file_link_set.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Link_sets-Wizards_link_sets-Add_JPA_annotations_link_set.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Link_sets-Wizards_link_sets-New_JPA_project_link_set.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+</section>

@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Reference_Guide_Template.ent">
+%BOOK_ENTITIES;
+]>
+
+<procedure id="proc-HIB-New_Hibernate_XML_Mapping_files">
+    <title>New Hibernate XML Mapping Files</title>
+     
+      <step>
+         <title>Access the Hibernate console</title>
+          <para>
+            When performing Hibernate tasks, context sensitive menus will be available if the Hibernate console is the active perspective. Accessing the Hibernate console is described in <xref linkend="proc-JBT-Open_Perspective"></xref>.
+          </para>
+        <para>&HORIZ_LINE;</para>
+        </step>
+        <step>
+        <title>Access the New Hibernate XML file dialog</title>
+        <orderedlist numeration="loweralpha">
+          <listitem>
+            <para>
+             In the package explorer, expand the <filename>src</filename> folder and the relevant <package>package</package> node to reveal the class for which a mapping file is to be created.
+          </para>
+          </listitem>
+          <listitem>
+            <para>
+             Right click on the class and select <menuchoice><guimenu>New</guimenu><guisubmenu>Hibernate XML Mapping files</guisubmenu></menuchoice>.
+            </para>
+          </listitem>
+          </orderedlist>
+          <formalpara><title>Result:</title>
+          <para>
+            The <guilabel>New Hibernate XML Mapping files</guilabel> dialog displays.
+          </para>
+        </formalpara>
+           <figure id="figure-HIB-New_Hibernate_XML_Mapping_files_001">
+          <title>The New Hibernate XML Mapping files dialog</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/image-HIB-New_Hibernate_XML_Mapping_files_001.png" format="PNG"/>
+            </imageobject>
+            <textobject>
+              <para>The New Hibernate XML Mapping files dialog</para>
+            </textobject>
+          </mediaobject>
+        </figure>
+        <note><title>Depth control</title>
+          <para>
+           It is possible to specify the level to which object references are mapped relative to the selected class as indicated in <xref linkend="figure-HIB-New_Hibernate_XML_Mapping_files_001"></xref>.
+          </para>
+        </note>
+        <para>&HORIZ_LINE;</para>
+        </step>
+         <step>
+        <title>Access the sub-dialog</title>
+          <para>
+            Click the <guibutton>Next</guibutton> button to proceed.
+          </para>
+         <formalpara><title>Result:</title>
+          <para>
+            The class name and mapping file name are displayed in the wizard.  
+          </para>
+        </formalpara>
+           <figure id="figure-HIB-New_Hibernate_XML_Mapping_files_002">
+          <title>The New Hibernate XML Mapping files dialog - Mapping file name</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/image-HIB-New_Hibernate_XML_Mapping_files_002.png" format="PNG"/>
+            </imageobject>
+            <textobject>
+              <para>The New Hibernate XML Mapping files dialog - Mapping file name</para>
+            </textobject>
+          </mediaobject>
+        </figure>
+        <para>&HORIZ_LINE;</para>
+        </step>
+        <step>
+        <title>Review the file</title>
+          <para>
+            Click the <guilabel>Next</guilabel> button to view the file to be created.
+          </para>
+         <formalpara><title>Result:</title>
+          <para>
+            The file is displayed for review. 
+          </para>
+        </formalpara>
+           <figure id="figure-HIB-New_Hibernate_XML_Mapping_files_003">
+          <title>The New Hibernate XML Mapping files dialog - Review file</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/image-HIB-New_Hibernate_XML_Mapping_files_003.png" format="PNG"/>
+            </imageobject>
+            <textobject>
+              <para>The New Hibernate XML Mapping files dialog - Mapping file name</para>
+            </textobject>
+          </mediaobject>
+        </figure>
+        </step>
+        <step>
+        <title>Create the mapping file</title>
+          <para>
+            Click the <guilabel>Finish</guilabel> button to create the file.
+          </para>
+         <formalpara><title>Result:</title>
+          <para>
+            The file is created and ready for editing. 
+          </para>
+        </formalpara>
+           <figure id="figure-HIB-New_Hibernate_XML_Mapping_files_004">
+          <title>The New Hibernate XML Mapping files dialog - File created</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/image-HIB-New_Hibernate_XML_Mapping_files_004.png" format="PNG"/>
+            </imageobject>
+            <textobject>
+              <para>The New Hibernate XML Mapping files dialog - File created</para>
+            </textobject>
+          </mediaobject>
+        </figure>
+        <note><title>Creating multiple mapping files</title>
+          <para>
+            It is possible to select the project, src folder or an individual package to create multiple mapping files in a single action. All Java classes will be identified and listed in the display of <xref linkend="figure-HIB-New_Hibernate_XML_Mapping_files_003"></xref>. Individual classes may then be selected and deselected by using the appropriate checkbox.
+          </para>
+        </note>
+        </step>      
+</procedure>

@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Hibernate_Tools_Reference_Guide.ent">
+%BOOK_ENTITIES;
+]>
+<section id="sect-Hibernate_Tools_Reference_Guide-References-New_JPA_project">
+  <title>New JPA project</title>
+  <para>
+
+  </para>
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-References-Wizards-New_JPA_project-Generate_entities_link_set.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-References-Wizards-New_JPA_project-Data_definition_language_generation_link_set.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+</section>

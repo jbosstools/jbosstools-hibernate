@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Hibernate_Tools_Reference_Guide.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chap-Hibernate_Tools_Reference_Guide-Concepts">
+  <title>Concepts</title>
+  <para>
+
+  </para>
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Concepts-Object-relational_mapping.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Concepts-Hibernate_mapping.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Concepts-Hibernate_configuration.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Concepts-Hibernate_query_language.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Concepts-Code_generation_and_reverse_engineering.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Concepts-Ant_Tasks.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Concepts-Plain_old_Java_object_code_generation.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Concepts-Further_resources.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+</chapter>

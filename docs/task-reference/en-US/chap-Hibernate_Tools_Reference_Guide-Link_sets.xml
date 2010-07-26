@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Hibernate_Tools_Reference_Guide.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="chap-Hibernate_Tools_Reference_Guide-Link_sets">
+  <title>Link sets</title>
+  <para>
+
+  </para>
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Link_sets-Wizards_link_sets.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Link_sets-Views_link_sets.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Link_sets-Editors_link_sets.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Link_sets-Perspectives_link_sets.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Link_sets-Preferences_pages_link_sets.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Link_sets-Dialogs_link_sets.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Link_sets-Icons_and_buttons_link_sets.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+</chapter>

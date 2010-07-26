@@ -1,0 +1,331 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE procedure PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Reference_Guide_Template.ent">
+%BOOK_ENTITIES;
+]>  
+<procedure id="proc-HIB-Create_Hibernate_Configuration_File">
+     <title>Create a Hibernate configuration file</title>
+        <step>
+          <title>Access the dialog</title>
+          <orderedlist numeration ="loweralpha">
+          <listitem>
+	      <para>
+            Right click on the project in the <guilabel>Package Explorer</guilabel> view and select <menuchoice><guimenu>New</guimenu><guimenuitem>Hibernate XML mapping file</guimenuitem></menuchoice>.
+          </para>
+          </listitem>
+          <listitem>
+          <para>
+            Click the <guibutton>Next</guibutton> button to proceed.
+          </para>
+          </listitem>
+          </orderedlist>
+          <formalpara><title>Result:</title>
+            <para>
+              The <guilabel>Create Hibernate configuration file</guilabel> dialog displays. The file location will default to the <filename>src</filename> folder.
+            </para>
+          </formalpara>
+          <figure id="figure-HIB-Create_Hibernate_Configuration_File_001">
+              <title>Create Hibernate configuration file</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="images/image-HIB-Create_Hibernate_Configuration_File_001.png" format="PNG"/>
+                </imageobject>
+                <textobject>
+                  <para>The Create Hibernate configuration file dialog.</para>
+                </textobject>
+              </mediaobject>
+            </figure>
+          <para>&HORIZ_LINE;</para>
+        </step>
+      
+        <step>
+          <title>Define the file attributes</title>
+          <!-- 
+            <orderedlist numeration ="loweralpha">
+            <listitem>
+	          <para>
+               Specify the location of the file.
+              </para>
+            </listitem>
+            <listitem>
+	          <para>
+               Accept the default file name or specify an alternative.
+              </para>
+            </listitem>
+            <listitem>
+            <para>
+              Click the <guibutton>Next</guibutton> button to proceed.
+            </para>
+            </listitem>
+          </orderedlist>
+          <formalpara><title>Result:</title>
+            <para>
+              The <guilabel>Create Hibernate configuration file</guilabel> dialog displays. The file location will default to the <filename>src</filename> folder.
+            </para>
+          </formalpara>
+          <figure id="figure-HIB-Create_Hibernate_Configuration_File_001">
+              <title>Create Hibernate configuration file</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="images/image-HIB-Create_Hibernate_Configuration_File_001.png" format="PNG"/>
+                </imageobject>
+                <textobject>
+                  <para>The Create Hibernate configuration file dialog.</para>
+                </textobject>
+              </mediaobject>
+            </figure>
+          <para>&HORIZ_LINE;</para>
+        </step>
+         -->    
+            
+        <table id="table-HIB-Create_Hibernate_Configuration_File_001" frame='all'>
+            <title>New Hibernate configuration</title>
+    	    <tgroup cols='4' align='left' colsep='1' rowsep='1'>
+      		  <colspec colname='c1' colwidth="1*"/>
+              <colspec colname='c2' colwidth="1*"/>
+              <colspec colname='c3' colwidth="3*"/>
+              <colspec colname='c4' colwidth="3*"/>
+              <thead>
+                <row>
+                  <entry>Field</entry>
+                  <entry>Mandatory</entry>
+                  <entry>Instruction</entry>
+                  <entry>Description</entry>
+                </row>
+              </thead> 
+           
+              <tbody>
+                <row>
+                  <entry>parent folder</entry>
+                  <entry>yes</entry>
+                  <entry>Enter the location of the file.</entry>
+                  <entry>The recommended location is the <filename>src</filename> folder.</entry>
+                </row>
+                <row>
+                  <entry>File name</entry>
+                  <entry>yes</entry>
+                  <entry>Enter the configuration file name.</entry>
+                  <entry>For a single file, the recommended file name is <filename>hibernate.cfg.xml</filename> as displayed in the dialog</entry>
+                </row>
+                <row>
+                  <entry>Advanced</entry>
+                  <entry>no</entry>
+                  <entry>Click this button to link to a file on the file system.</entry>
+                  <entry>Storing the configuration file in the <filename>src</filename> folder of the project is recommended.</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+         <para>&HORIZ_LINE;</para>
+        </step>
+        <step><title>Access the sub-dialog</title>
+          <para>
+            Click <guilabel>Next</guilabel> to proceed.
+          </para>
+        <formalpara>
+          <title>Result:</title>
+            <para>
+              The <guilabel>Hibernate configuration file settings</guilabel> screen displays.
+            </para>
+        </formalpara>
+        <figure id="figure-HIB-Create_Hibernate_Configuration_File_002">
+              <title>Hibernate configuration file - settings</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="images/image-HIB-Create_Hibernate_Configuration_File_002.png" format="PNG"/>
+                </imageobject>
+                <textobject>
+                  <para>Hibernate configuration file - settings.</para>
+                </textobject>
+              </mediaobject>
+            </figure>  
+          
+       <para>&HORIZ_LINE;</para>
+       </step>
+        <step>
+          <title>Define the configutation file settings</title>
+            <para>
+              Define the configuration file settings according to the options displayed in <xref linkend="table-HIB-Create_Hibernate_Configuration_File_004"/> 
+            </para>
+            <table id="table-HIB-Create_Hibernate_Configuration_File_004" frame="all">
+            <title>hibernate configuration file - settings</title>
+    	    <tgroup cols='4' align='left' colsep='1' rowsep='1'>
+      		  <colspec colname='c1' colwidth="1*"/>
+              <colspec colname='c2' colwidth="1*"/>
+              <colspec colname='c3' colwidth="3*"/>
+              <colspec colname='c4' colwidth="3*"/>
+              <thead>
+                <row>
+                  <entry>Field</entry>
+                  <entry>Mandatory</entry>
+                  <entry>Instruction</entry>
+                  <entry>Description</entry>
+                </row>
+              </thead> 
+            
+              <tbody>
+                <row>
+                  <entry>Session factory name</entry>
+                  <entry>no</entry>
+                  <entry>Enter the session factory name</entry>
+                  <entry>A single session factory is responsible for a single database connection. For multiple databases, multiple session factories should be specified in their own configuration file</entry>
+                </row>
+                <row>
+                  <entry>Database dialect</entry>
+                  <entry>yes</entry>
+                  <entry>Enter or select the database dialect</entry>
+                  <entry>The dialect allows Hibernate to optimise the SQL for the targeted database</entry>
+                </row>
+                <row>
+                  <entry>Driver class</entry>
+                  <entry>yes</entry>
+                  <entry>Enter or select the appropriate driver class</entry>
+                  <entry>The driver class list compatible with the selected Database dialect will be displayed where available</entry>
+                </row>
+                <row>
+                  <entry>Connection url</entry>
+                  <entry>yes</entry>
+                  <entry>Enter the url for the database connection</entry>
+                  <entry>The url can be formed from the list of available templates</entry>
+                </row>
+                <row>
+                  <entry>Default Schema</entry>
+                  <entry>no</entry>
+                  <entry>If required specify a default schema for the database</entry>
+                  <entry>Any schema specified here will be applied to any class not supplting its own schema in the class mapping file</entry>
+                </row>
+                <row>
+                  <entry>Default Catalog</entry>
+                  <entry>no</entry>
+                  <entry></entry>
+                  <entry>
+                    <para>
+                     
+                    </para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>Username</entry>
+                  <entry>yes</entry>
+                  <entry></entry>
+                  <entry>
+                    <para>
+                     
+                    </para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>Password</entry>
+                  <entry>yes</entry>
+                  <entry></entry>
+                  <entry>
+                    <para>
+                     
+                    </para>
+                  </entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+          <table id="table-HIB-Create_Hibernate_Configuration_File_005" frame="all">
+          <!--   <table id="NewHIBProject_Web_ServletVersion" frame='all'> -->
+            <title>New HIB Project - Web - Servlet</title>
+            <tgroup cols='2' align='left' colsep='1' rowsep='1'>
+            <colspec colname='c1' colwidth="1*"/>
+            <colspec colname='c2' colwidth="4*"/>
+            <thead>
+              <row>
+                <entry>Label</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>2.3 </entry>
+                <entry>This servlet version supports/introduced .....</entry>
+              </row>
+              <row>
+                <entry>2.4</entry>
+                <entry>This servlet version supports/introduced .....</entry>
+              </row>
+              <row>
+                <entry>2.5</entry>
+                <entry>This servlet version supports/introduced .....</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+          <para>&HORIZ_LINE;</para>
+        </step>
+        
+        <step><title>Open the Web Development perspective.</title>
+        <orderedlist numeration="loweralpha">
+          <listitem>
+            <para>
+              Click the <guibutton>Finish</guibutton> button to complete the project setup.
+            </para>
+            <formalpara><title>Result:</title>
+            <para>
+              A dialog will appear prompting the user to open the relevant perspective.
+            </para>
+          </formalpara>
+          <figure id="figure-HIB-Create_Hibernate_Configuration_File_003">
+            <title>HIB Open Perspective Dialog</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="images/image-HIB-Create_Hibernate_Configuration_File_003.png" format="PNG"/>
+              </imageobject>
+              <textobject>
+                <para>Opening the Web Development perspective.</para>
+              </textobject>
+            </mediaobject>
+          </figure>
+          </listitem>
+          <listitem>
+            <para>
+              Click the <guibutton>Yes</guibutton> button to display the Web Development perspective.
+            </para>
+            <formalpara><title>Result:</title>
+            <para>
+              The project is configured and the Web development perspective is displayed.
+            </para>
+          </formalpara>
+          <figure id="figure-HIB-Create_Hibernate_Configuration_File_004">
+            <title>HIB Web Development Perspective</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="images/image-HIB-Create_Hibernate_Configuration_File_004.png" format="PNG"/>
+              </imageobject>
+              <textobject>
+                <para>The JBoss Developer Studio Web Development perspective.</para>
+              </textobject>
+            </mediaobject>
+          </figure>
+          </listitem>
+          </orderedlist>
+           <!--  Design Notes:
+            Link to other procedures relevant to the the final step, or those procedures which extend the step above.
+            For the development perspective the list would be vast so best not to bother in this situation. 
+           -->
+          <formalpara><title>Feature name</title>
+          <para>
+            Futher details regarding the <filename>feature</filename> are available in the following procedures:
+          </para>
+          </formalpara>
+          <itemizedlist>
+            <listitem>
+			    <para><xref linkend="chap-Hibernate_Tools_Reference_Guide-Link_placeholder"></xref>.</para>
+		    </listitem>
+          
+	          <!--  
+	          <listitem>
+			    <para><xref linkend="proc-HIB_Editor_faces-config"></xref>.</para>
+		      </listitem>
+		      <listitem>
+			    <para><xref linkend="proc-JSF_ProcedureNameOne"></xref>.</para>
+		      </listitem>
+		     -->
+          </itemizedlist>    
+        <para>&HORIZ_LINE;</para>
+        </step>
+  </procedure>
