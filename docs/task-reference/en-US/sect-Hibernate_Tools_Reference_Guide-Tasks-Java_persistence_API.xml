@@ -8,9 +8,8 @@
   <para>
 
   </para>
-  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Tasks-Java_persistence_API-Project_creation.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Tasks-Java_persistence_API-Project_creation.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />   
   <xi:include href="sect-Hibernate_Tools_Reference_Guide-Tasks-Java_persistence_API-Data_definition_language_generation.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
   <xi:include href="sect-Hibernate_Tools_Reference_Guide-Tasks-Java_persistence_API-Entity_generation.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Tasks-Java_persistence_API-Supported_annotations.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-
+  <xi:include href="sect-Hibernate_Tools_Reference_Guide-Tasks-Java_persistence_API-Supported_annotations.xml" xmlns:xi="http://www.w3.org/2001/XInclude" /> 
 </section>
