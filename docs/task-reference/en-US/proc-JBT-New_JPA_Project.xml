@@ -10,7 +10,7 @@
           <orderedlist numeration ="loweralpha">
           <listitem>
 	      <para>
-            Click on the <guilabel>JPA Project</guilabel> label by expanding the <menuchoice><guimenu>JPA</guimenu></menuchoice> folder.
+            Click the  <guilabel>JPA Project</guilabel> label by expanding the <menuchoice><guimenu>JPA</guimenu></menuchoice> folder.
           </para>
           </listitem>
           <listitem>
@@ -68,8 +68,8 @@
                 <row>
                   <entry>Project location</entry>
                   <entry>yes</entry>
-                  <entry>Click the <guilabel>Use default location</guilabel> checkbox to define the project location as the workspace or define a custom path in the <guilabel>Location</guilabel> field.</entry>
-                  <entry>The default location corresponds to the workspace location.</entry>
+                  <entry>Click the <guilabel>Use default location</guilabel> checkbox to define the project location as the Eclipse workspace or define a custom path in the <guilabel>Location</guilabel> field.</entry>
+                  <entry>The default location corresponds to the Eclipse workspace.</entry>
                 </row>
                 <row>
                   <entry>Target runtime</entry>
@@ -77,7 +77,7 @@
                   <entry>Select a pre-configured runtime from the available options or configure a new runtime environment.</entry>
                   <entry>
                     <para>
-                      The target runtime defines the server to which the application will be deployed. Runtime configuration is described in <xref linkend="new_server_runtime_placeholder"/>.
+                      The target runtime defines the server to which the application will be deployed. Runtime configuration is described in <xref linkend="TODO_new_server_runtime_placeholder"/>.
                     </para>
                   </entry>
                 </row>
@@ -229,14 +229,15 @@
                 <row>
                   <entry>Platform</entry>
                   <entry>yes</entry>
-                  <entry>Select from the available platforms.</entry>
-                  <entry>The project can be based on a variety of platforms as described in <xref linkend="table-JBT-New_JPA_Project_004"/></entry>
+                  <entry>Select from the list of available vendor specific JPA implementations.</entry>
+                  <entry>The project can be based on a variety of JPA implementations as described in <xref linkend="table-JBT-New_JPA_Project_004"/></entry>
                 </row>
                 <row>
                   <entry>JPA implementation</entry>
                   <entry>yes</entry>
-                  <entry>Select from a user library or disable the library configuration. Selecting the user library option results in the ability to package the libraries within the application by checking the checkbox.</entry>
-                  <entry>If a user library is selected, the libraries may be imported or created by clicking on the <guiicon>Manage libraries</guiicon> icon. Similarly, libraries may be downloaded by clicking on the <guiicon>Download libraries</guiicon> icon.</entry>
+                  <entry>Select from a user library or disable the library configuration for the JPA implementation.</entry>
+                  <entry>The libraries may be imported or created by clicking the <guiicon>Manage libraries</guiicon> icon.
+                   Similarly, libraries may be downloaded by clicking the <guiicon>Download libraries</guiicon> icon. The libraries also may be packaged within the application.</entry>
                 </row>
                 <row>
                   <entry>Connection</entry>
@@ -244,7 +245,7 @@
                   <entry>The database connection for the project is defined here. Select from <guilabel>None</guilabel> or <guilabel>BIRT Classic Model Sample Database</guilabel>.</entry>
                   <entry>
                     <para>
-                      Clicking on the <guilabel>Add connection</guilabel> link will display a list of database conections. Selecting the appropriate type and proceeding by selecting the driver will configure the connection for the project.
+                      Clicking the  <guilabel>Add connection</guilabel> link will display a list of database conections. Selecting the appropriate type and proceeding by selecting the driver will configure the connection for the project.
                     </para>
                   </entry>
                 </row>
@@ -264,7 +265,7 @@
                   <entry>Check the box to generate a mapping file which will be stored in the <filename>META-INF</filename> folder.</entry>
                   <entry>
                     <para>
-                      An orm.xml file specifies the persistence of classes in the form of meta-data rather than using annotated classes. TODO: Anything else here.
+                      An orm.xml file specifies the persistence of classes in the form of meta-data rather than using annotated classes.
                     </para>
                   </entry>
                 </row>
@@ -286,23 +287,23 @@
             <tbody>
               <row>
                 <entry>EclipseLink 2.0.x</entry>
-                <entry>TODO explanation here.</entry>
+                <entry>The project will be based on an Eclipse Persistence Services Project (EclipseLink) 2.0.x JPA implementation.</entry>
               </row>
               <row>
                 <entry>EclipseLink 2.1.x</entry>
-                <entry>TODO explanation here.</entry>
+                <entry>The project will be based on an EclipseLink 2.1.x configuration.</entry>
               </row>
               <row>
                 <entry>Generic 2.0</entry>
-                <entry>TODO explanation here.</entry>
+                <entry>The project will be based on a Generic JPA 2.0 configuration.</entry>
               </row>
               <row>
                 <entry>Hibernate</entry>
-                <entry>TODO explanation here.</entry>
+                <entry>The project will be based on a Hibernate configuration.</entry>
               </row>
               <row>
                 <entry>Hibernate jpa 2.0</entry>
-                <entry>TODO explanation here.</entry>
+                <entry>The project will be based on a Hibernate jpa 2.0 configuration.</entry>
               </row>
             </tbody>
           </tgroup>

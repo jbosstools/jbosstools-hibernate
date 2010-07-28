@@ -8,9 +8,9 @@
     <title>New Hibernate XML Mapping Files</title>
      
       <step>
-         <title>Access the Hibernate console</title>
+         <title>Access the Hibernate Console perspective</title>
           <para>
-            When performing Hibernate tasks, context sensitive menus will be available if the Hibernate console is the active perspective. Accessing the Hibernate console is described in <xref linkend="proc-JBT-Open_Perspective"></xref>.
+            When performing Hibernate tasks, context sensitive menus will be available if the Hibernate Console perspective is the active perspective. Accessing the Hibernate Console perspective is described in <xref linkend="proc-JBT-Open_Perspective"></xref>.
           </para>
         <para>&HORIZ_LINE;</para>
         </step>
@@ -46,7 +46,7 @@
         </figure>
         <note><title>Depth control</title>
           <para>
-           It is possible to specify the level to which object references are mapped relative to the selected class as indicated in <xref linkend="figure-HIB-New_Hibernate_XML_Mapping_files_001"></xref>.
+           It is possible to specify the level to which object references are mapped relative to the selected class as by clicking the checkbox in <xref linkend="figure-HIB-New_Hibernate_XML_Mapping_files_001"></xref>.
           </para>
         </note>
         <para>&HORIZ_LINE;</para>
@@ -119,7 +119,7 @@
         </figure>
         <note><title>Creating multiple mapping files</title>
           <para>
-            It is possible to select the project, src folder or an individual package to create multiple mapping files in a single action. All Java classes will be identified and listed in the display of <xref linkend="figure-HIB-New_Hibernate_XML_Mapping_files_003"></xref>. Individual classes may then be selected and deselected by using the appropriate checkbox.
+            It is possible to select the project, src folder or an individual package to create multiple mapping files in a single action. In this instance, all Java classes will be identified and listed in the display of <xref linkend="figure-HIB-New_Hibernate_XML_Mapping_files_003"></xref>. Individual classes may then be selected and deselected by clicking the appropriate checkbox.
           </para>
         </note>
         </step>      

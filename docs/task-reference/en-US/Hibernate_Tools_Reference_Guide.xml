@@ -4,7 +4,7 @@
 %BOOK_ENTITIES;
 ]>
 <book>
-<!--   
+   
   <xi:include href="Book_Info.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
   <xi:include href="Preface.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
   <xi:include href="chap-Hibernate_Tools_Reference_Guide-Legal_notices.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -12,18 +12,14 @@
   <xi:include href="chap-Hibernate_Tools_Reference_Guide-Latest_developments.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
   <xi:include href="chap-Hibernate_Tools_Reference_Guide-Getting_started.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
   <xi:include href="chap-Hibernate_Tools_Reference_Guide-Concepts.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-  -->
   <xi:include href="chap-Hibernate_Tools_Reference_Guide-Tasks.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-    
-  <xi:include href="chap-Hibernate_Tools_Reference_Guide-References.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-  
-  <!--  
+   
+  <xi:include href="chap-Hibernate_Tools_Reference_Guide-References.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />  
   <xi:include href="chap-Hibernate_Tools_Reference_Guide-Troubleshooting.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
   
   <xi:include href="chap-Hibernate_Tools_Reference_Guide-Hints.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
    
   <xi:include href="chap-Hibernate_Tools_Reference_Guide-Link_sets.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-  -->
   <xi:include href="chap-Hibernate_Tools_Reference_Guide-Link_placeholder.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
   <xi:include href="Revision_History.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
   <index />

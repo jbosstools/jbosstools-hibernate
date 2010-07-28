@@ -10,10 +10,14 @@
   </para>
   <xi:include href="sect-Hibernate_Tools_Reference_Guide-Tasks-Basic_tasks.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
   <xi:include href="sect-Hibernate_Tools_Reference_Guide-Tasks-Hibernate_mapping.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+
   <xi:include href="sect-Hibernate_Tools_Reference_Guide-Tasks-Hibernate_configuration.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+   
   <xi:include href="sect-Hibernate_Tools_Reference_Guide-Tasks-Hibernate_query_language.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
   <xi:include href="sect-Hibernate_Tools_Reference_Guide-Tasks-Code_generation_and_reverse_engineering.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+
   <xi:include href="sect-Hibernate_Tools_Reference_Guide-Tasks-Java_persistence_API.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  
   <xi:include href="sect-Hibernate_Tools_Reference_Guide-Tasks-Logging.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
   <xi:include href="sect-Hibernate_Tools_Reference_Guide-Tasks-Ant_tasks.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
   <xi:include href="sect-Hibernate_Tools_Reference_Guide-Tasks-Controlling_POJO_code_generation.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />

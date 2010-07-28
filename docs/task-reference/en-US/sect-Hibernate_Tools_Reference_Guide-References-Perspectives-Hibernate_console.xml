@@ -6,17 +6,17 @@
 <section id="sect-Hibernate_Tools_Reference_Guide-References-Hibernate_console">
   <title>Hibernate console</title>
   <para>
-    The relevant perspective for Hibernate Tools is the Hibernate console perspective. This perspective can be accessed according to <xref linkend="proc-JBT-Open_Perspective"/>. 
+    The relevant perspective for Hibernate Tools is the Hibernate Console perspective. This perspective can be accessed according to <xref linkend="proc-JBT-Open_Perspective"/>. 
   </para>
   
    <figure id="figure-HIB-Hibernate_Console_Perspective_001">
-     <title>The Hibernate Console Perspective</title>
+     <title>The Hibernate Console</title>
        <mediaobject>
          <imageobject>
            <imagedata fileref="images/image-HIB-Hibernate_Console_Perspective_001.png" format="PNG"/>
          </imageobject>
          <textobject>
-           <para>The Hibernate Console Perspective</para>
+           <para>The Hibernate Console</para>
          </textobject>
        </mediaobject>
    </figure>    
@@ -26,7 +26,7 @@
   
   <formalpara><title>Perspective Views</title>
   <para>
-   The <guilabel>Hibernate</guilabel> console perspective is made up of the following views:  
+   The <guilabel>Hibernate</guilabel> Console perspective is made up of the following views:  
   </para>
   </formalpara>
   <itemizedlist>
@@ -40,7 +40,7 @@
       <para><xref linkend="sect-Hibernate_Tools_Reference_Guide-References-Hibernate_query_result"></xref>.</para>
     </listitem>
     <listitem>
-      <para><xref linkend="query_parameters_view_placeholder"></xref>.</para>
+      <para><xref linkend="TODO_query_parameters_view_placeholder"></xref>.</para>
     </listitem>    
   </itemizedlist>
   <para>&FEEDBACK-References-Hibernate_console;</para>

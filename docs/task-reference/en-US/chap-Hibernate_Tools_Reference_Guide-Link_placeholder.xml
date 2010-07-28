@@ -5,12 +5,12 @@
 ]>
 <chapter id="chap-Hibernate_Tools_Reference_Guide-Link_placeholder">
   <title>Link Placeholder</title>
-  <formalpara id="new_server_runtime_placeholder"><title>New Target Runtime</title>
+  <formalpara id="TODO_new_server_runtime_placeholder"><title>TODO New Target Runtime</title>
   	<para>
    		TODO: Document new runtime server configuration.    
   	</para>
   </formalpara>
-  <formalpara id="query_parameters_view_placeholder"><title>Query Parameters View</title>
+  <formalpara id="TODO_query_parameters_view_placeholder"><title>TODO Query Parameters View</title>
   	<para>
    		TODO: Document query parameters view.    
   	</para>
