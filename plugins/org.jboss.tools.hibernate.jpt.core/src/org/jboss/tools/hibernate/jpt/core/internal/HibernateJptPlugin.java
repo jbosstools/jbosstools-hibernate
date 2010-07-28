@@ -128,8 +128,7 @@ public class HibernateJptPlugin extends Plugin {
 			@Override
 			public void configurationRemoved(ConsoleConfiguration root,
 					boolean forUpdate) {
-				if(forUpdate || root.getConfiguration() == null
-						|| root.getConfiguration().getNamingStrategy() == null) {
+				if(forUpdate) {
 					return;
 				}
 				revalidateProjects(root);
