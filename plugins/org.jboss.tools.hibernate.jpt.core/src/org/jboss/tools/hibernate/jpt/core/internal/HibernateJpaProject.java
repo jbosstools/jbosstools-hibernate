@@ -11,15 +11,21 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal;
 
+import java.util.List;
+
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.internal.AbstractJpaProject;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.properties.HibernatePropertiesConstants;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
+import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.osgi.service.prefs.Preferences;
 
 /**
@@ -70,6 +76,23 @@ public class HibernateJpaProject extends AbstractJpaProject {
 			}			
 		}
 		return cachedNamingStrategyEnable;
+	}
+	
+	@Override
+	protected void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateConsoleConfiguration(messages);
+	}
+
+	/**
+	 * @param messages
+	 */
+	protected void validateConsoleConfiguration(List<IMessage> messages) {
+		if (KnownConfigurations.getInstance().find(getDefaultConsoleConfigurationName()) == null){
+			IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY, 
+					Messages.CC_NOT_EXISTS, new String[]{getDefaultConsoleConfigurationName()}, getResource());
+        	messages.add(message);
+		}
 	}
 
 }
