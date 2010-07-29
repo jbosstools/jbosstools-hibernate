@@ -279,13 +279,22 @@ public class ExporterFactory {
 			props.remove(EFS.TEMPLATE_PATH);
 		}
 		if (exporterId.equals("org.hibernate.tools.hbmtemplate")) { //$NON-NLS-1$
-			extract.put(EFS.FILE_PATTERN, props.getProperty(EFS.FILE_PATTERN, null));
-			props.remove(EFS.FILE_PATTERN);
-			extract.put(EFS.TEMPLATE_NAME, props.getProperty(EFS.TEMPLATE_NAME, null));
-			props.remove(EFS.TEMPLATE_NAME);
-			extract.put(EFS.FOR_EACH, props.getProperty(EFS.FOR_EACH, null));
-			props.remove(EFS.FOR_EACH);
-
+			String tmp;
+			if (props.containsKey(EFS.FILE_PATTERN)) {
+				tmp = props.getProperty(EFS.FILE_PATTERN, ""); //$NON-NLS-1$
+				extract.put(EFS.FILE_PATTERN, tmp);
+				props.remove(EFS.FILE_PATTERN);
+			}
+			if (props.containsKey(EFS.TEMPLATE_NAME)) {
+				tmp = props.getProperty(EFS.TEMPLATE_NAME, ""); //$NON-NLS-1$
+				extract.put(EFS.TEMPLATE_NAME, tmp);
+				props.remove(EFS.TEMPLATE_NAME);
+			}
+			if (props.containsKey(EFS.FOR_EACH)) {
+				tmp = props.getProperty(EFS.FOR_EACH, ""); //$NON-NLS-1$
+				extract.put(EFS.FOR_EACH, tmp);
+				props.remove(EFS.FOR_EACH);
+			}
 		}
 		// special handling for Hbm2DDLExporter
 		if (exporterId.equals("org.hibernate.tools.hbm2ddl")) { //$NON-NLS-1$
