@@ -46,7 +46,7 @@ import junit.framework.TestCase;
  */
 public class CodeGenXMLFactoryTest extends TestCase {
 
-	public static final String SPECIMEN_PATH = "res/specimen/".replaceAll("//", File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final String SAMPLE_PATH = "res/sample/".replaceAll("//", File.separator); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final String PROJECT_LIB_PATH = "res/project/lib/".replaceAll("//", File.separator); //$NON-NLS-1$ //$NON-NLS-2$
 
 	public static final String HBMTEMPLATE0 = "hbm2java"; //$NON-NLS-1$
@@ -183,8 +183,7 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		} catch (MalformedURLException e) {
 		} catch (URISyntaxException e) {
 		}
-		codeGen = CodeGenXMLFactory.replaceString(codeGen, repl + File.separator, ""); //$NON-NLS-1$
-		return codeGen;
+		return codeGen.replace(repl + File.separator, ""); //$NON-NLS-1$
 	}
 
 	public String codeGenXMLFactory(boolean reveng, boolean exportersAll, boolean jpa) {
@@ -231,7 +230,7 @@ public class CodeGenXMLFactoryTest extends TestCase {
 	public String getSpecimen(String fileName) {
 		File resourceFile = null;
 		try {
-			resourceFile = getResourceItem(SPECIMEN_PATH + fileName);
+			resourceFile = getResourceItem(SAMPLE_PATH + fileName);
 		} catch (IOException e1) {
 		}
 		if (resourceFile == null || !resourceFile.exists()) {

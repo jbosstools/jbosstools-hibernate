@@ -11,11 +11,11 @@
 package org.hibernate.console;
 
 /**
- * XML Ant code generation strings
+ * XML Ant code generation strings for definition of configuration part
  *  
  * @author vitali
  */
-public class CFS {
+public interface ConfigurationXMLStrings {
 	//
 	public static final String JDBCCONFIGURATION = "jdbcconfiguration"; //$NON-NLS-1$
 	public static final String ANNOTATIONCONFIGURATION = "annotationconfiguration"; //$NON-NLS-1$

@@ -59,30 +59,30 @@ public class ConfigurationXMLFactory {
 
 	protected Element createRoot(Properties properties) {
 		String rootName = null;
-		Boolean jdbcConfig = Boolean.valueOf(additional.getProperty(CFS.ISREVENG, "false")); //$NON-NLS-1$
+		Boolean jdbcConfig = Boolean.valueOf(additional.getProperty(ConfigurationXMLStrings.ISREVENG, "false")); //$NON-NLS-1$
 		if (jdbcConfig) {
-			rootName = CFS.JDBCCONFIGURATION;
+			rootName = ConfigurationXMLStrings.JDBCCONFIGURATION;
 		} else if (prefs.getConfigurationMode().equals(ConfigurationMode.ANNOTATIONS)) {
-			rootName = CFS.ANNOTATIONCONFIGURATION;
+			rootName = ConfigurationXMLStrings.ANNOTATIONCONFIGURATION;
 		} else if (prefs.getConfigurationMode().equals(ConfigurationMode.JPA)) {
-			rootName = CFS.JPACONFIGURATION;
+			rootName = ConfigurationXMLStrings.JPACONFIGURATION;
 		} else if (prefs.getConfigurationMode().equals(ConfigurationMode.CORE)) {
-			rootName = CFS.CONFIGURATION;
+			rootName = ConfigurationXMLStrings.CONFIGURATION;
 		} else {
 			rootName = "undef"; //$NON-NLS-1$
 		}
 		Element root = DocumentFactory.getInstance().createElement(rootName);
-		updateAttr(root, file2Str(getPreferences().getConfigXMLFile()), CFS.CONFIGURATIONFILE);
-		updateAttr(root, file2Str(getPreferences().getPropertyFile()), CFS.PROPERTYFILE);
-		updateAttr(root, getPreferences().getEntityResolverName(), CFS.ENTITYRESOLVER);
-		updateAttr(root, getPreferences().getNamingStrategy(), CFS.NAMINGSTRATEGY);
-		updateAttr(root, getPreferences().getPersistenceUnitName(), CFS.PERSISTENCEUNIT);
-		updateAttr(root, additional, CFS.DETECTMANYTOMANY);
-		updateAttr(root, additional, CFS.DETECTONTTOONE);
-		updateAttr(root, additional, CFS.DETECTOPTIMISTICLOCK);
-		updateAttr(root, additional, CFS.PACKAGENAME);
-		updateAttr(root, additional, CFS.REVENGFILE);
-		updateAttr(root, additional, CFS.REVERSESTRATEGY);
+		updateAttr(root, file2Str(getPreferences().getConfigXMLFile()), ConfigurationXMLStrings.CONFIGURATIONFILE);
+		updateAttr(root, file2Str(getPreferences().getPropertyFile()), ConfigurationXMLStrings.PROPERTYFILE);
+		updateAttr(root, getPreferences().getEntityResolverName(), ConfigurationXMLStrings.ENTITYRESOLVER);
+		updateAttr(root, getPreferences().getNamingStrategy(), ConfigurationXMLStrings.NAMINGSTRATEGY);
+		updateAttr(root, getPreferences().getPersistenceUnitName(), ConfigurationXMLStrings.PERSISTENCEUNIT);
+		updateAttr(root, additional, ConfigurationXMLStrings.DETECTMANYTOMANY);
+		updateAttr(root, additional, ConfigurationXMLStrings.DETECTONTTOONE);
+		updateAttr(root, additional, ConfigurationXMLStrings.DETECTOPTIMISTICLOCK);
+		updateAttr(root, additional, ConfigurationXMLStrings.PACKAGENAME);
+		updateAttr(root, additional, ConfigurationXMLStrings.REVENGFILE);
+		updateAttr(root, additional, ConfigurationXMLStrings.REVERSESTRATEGY);
 		// includeMappings
 		File[] mappingFiles = prefs.getMappingFiles();
 		if (mappingFiles.length > 0) {
@@ -98,7 +98,7 @@ public class ConfigurationXMLFactory {
 	}
 
 	public static String file2Str(File file) {
-		return file == null ? null : file.toString();
+		return file == null ? null : file.getPath();
 	}
 
 	public static void updateAttr(Element el, String val, String prName) {
@@ -115,13 +115,13 @@ public class ConfigurationXMLFactory {
 	}
 	
 	public static void dump(OutputStream os, Element element) {
+		// try to "pretty print" it
+		OutputFormat outformat = OutputFormat.createPrettyPrint();
 		try {
-			// try to "pretty print" it
-			OutputFormat outformat = OutputFormat.createPrettyPrint();
 			XMLWriter writer = new XMLWriter(os, outformat);
 			writer.write(element);
 			writer.flush();
-		} catch (Throwable t) {
+		} catch (IOException e1) {
 			// otherwise, just dump it
 			try {
 				os.write(element.asXML().getBytes());
