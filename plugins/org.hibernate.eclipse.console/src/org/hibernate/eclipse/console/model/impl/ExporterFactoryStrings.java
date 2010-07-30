@@ -15,7 +15,7 @@ package org.hibernate.eclipse.console.model.impl;
  *  
  * @author vitali
  */
-public class EFS {
+public interface ExporterFactoryStrings {
 	//
 	public static final String OUTPUTDIR = "outputdir"; //$NON-NLS-1$
 	public static final String TEMPLATE_PATH = "template_path"; //$NON-NLS-1$

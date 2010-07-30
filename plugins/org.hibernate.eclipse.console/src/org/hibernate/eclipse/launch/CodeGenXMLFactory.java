@@ -28,7 +28,7 @@ import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.datatools.connectivity.drivers.DriverInstance;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.hibernate.cfg.Environment;
-import org.hibernate.console.CFS;
+import org.hibernate.console.ConfigurationXMLStrings;
 import org.hibernate.console.ConfigurationXMLFactory;
 import org.hibernate.console.ConnectionProfileUtil;
 import org.hibernate.console.ConsoleConfiguration;
@@ -72,32 +72,32 @@ public class CodeGenXMLFactory {
 		}
 		Properties props = new Properties();
 		if (attributes.isReverseEngineer()) {
-			props.setProperty(CFS.ISREVENG, Boolean.toString(attributes.isReverseEngineer()));
-			props.setProperty(CFS.PACKAGENAME, attributes.getPackageName());
-			props.setProperty(CFS.PREFERBASICCOMPOSITEIDS, Boolean.toString(attributes.isPreferBasicCompositeIds()));
-			props.setProperty(CFS.DETECTMANYTOMANY, Boolean.toString(attributes.detectManyToMany()));
-			props.setProperty(CFS.DETECTONTTOONE, Boolean.toString(attributes.detectOneToOne()));
-			props.setProperty(CFS.DETECTOPTIMISTICLOCK, Boolean.toString(attributes.detectOptimisticLock()));
-			props.setProperty(CFS.REVERSESTRATEGY, attributes.getRevengStrategy());
+			props.setProperty(ConfigurationXMLStrings.ISREVENG, Boolean.toString(attributes.isReverseEngineer()));
+			props.setProperty(ConfigurationXMLStrings.PACKAGENAME, attributes.getPackageName());
+			props.setProperty(ConfigurationXMLStrings.PREFERBASICCOMPOSITEIDS, Boolean.toString(attributes.isPreferBasicCompositeIds()));
+			props.setProperty(ConfigurationXMLStrings.DETECTMANYTOMANY, Boolean.toString(attributes.detectManyToMany()));
+			props.setProperty(ConfigurationXMLStrings.DETECTONTTOONE, Boolean.toString(attributes.detectOneToOne()));
+			props.setProperty(ConfigurationXMLStrings.DETECTOPTIMISTICLOCK, Boolean.toString(attributes.detectOptimisticLock()));
+			props.setProperty(ConfigurationXMLStrings.REVERSESTRATEGY, attributes.getRevengStrategy());
 			String revEngFile = getResLocation(attributes.getRevengSettings());
-			props.setProperty(CFS.REVENGFILE, revEngFile);
+			props.setProperty(ConfigurationXMLStrings.REVENGFILE, revEngFile);
 		}
 		String consoleConfigName = attributes.getConsoleConfigurationName();
 		ConsoleConfigurationPreferences consoleConfigPrefs = 
 			getConsoleConfigPreferences(consoleConfigName);
-		ConfigurationXMLFactory csfXML = new ConfigurationXMLFactory(
+		final ConfigurationXMLFactory configurationXMLFactory = new ConfigurationXMLFactory(
 			consoleConfigPrefs, props);
-		Element rootConsoleConfig = csfXML.createRoot();
+		Element rootConsoleConfig = configurationXMLFactory.createRoot();
 		//
-		String defaultTargetName = "JdbcCodeGen"; //$NON-NLS-1$
-		Element root = DocumentFactory.getInstance().createElement(CGS.PROJECT);
-		root.addAttribute(CGS.NAME, "CodeGen"); //$NON-NLS-1$
-		root.addAttribute(CGS.DEFAULT, defaultTargetName);
+		String defaultTargetName = "hibernateAntCodeGeneration"; //$NON-NLS-1$
+		Element root = DocumentFactory.getInstance().createElement(CodeGenerationStrings.PROJECT);
+		root.addAttribute(CodeGenerationStrings.NAME, "CodeGen"); //$NON-NLS-1$
+		root.addAttribute(CodeGenerationStrings.DEFAULT, defaultTargetName);
 		//
 		String location = getResLocation(attributes.getOutputPath());
-		Element el = root.addElement(CGS.PROPERTY);
-		el.addAttribute(CGS.NAME, "build.dir"); //$NON-NLS-1$
-		el.addAttribute(CGS.LOCATION, location);
+		Element el = root.addElement(CodeGenerationStrings.PROPERTY);
+		el.addAttribute(CodeGenerationStrings.NAME, "build.dir"); //$NON-NLS-1$
+		el.addAttribute(CodeGenerationStrings.LOCATION, location);
 		//
 		String hibernatePropFile = null;
 		String generateHibernatePropeties = null;
@@ -117,49 +117,49 @@ public class CodeGenXMLFactory {
 				/**/
 				//
 				String driverClass = driverInstance.getProperty("org.eclipse.datatools.connectivity.db.driverClass"); //$NON-NLS-1$
-				el = root.addElement(CGS.PROPERTY);
-				el.addAttribute(CGS.NAME, Environment.DRIVER);
-				el.addAttribute(CGS.VALUE, driverClass);
+				el = root.addElement(CodeGenerationStrings.PROPERTY);
+				el.addAttribute(CodeGenerationStrings.NAME, Environment.DRIVER);
+				el.addAttribute(CodeGenerationStrings.VALUE, driverClass);
 				addIntoPropFileContent(propFileContent, Environment.DRIVER);
 				//
 				String url = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.URL"); //$NON-NLS-1$
-				el = root.addElement(CGS.PROPERTY);
-				el.addAttribute(CGS.NAME, Environment.URL);
-				el.addAttribute(CGS.VALUE, url);
+				el = root.addElement(CodeGenerationStrings.PROPERTY);
+				el.addAttribute(CodeGenerationStrings.NAME, Environment.URL);
+				el.addAttribute(CodeGenerationStrings.VALUE, url);
 				addIntoPropFileContent(propFileContent, Environment.URL);
 				//
 				String user = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.username"); //$NON-NLS-1$
-				el = root.addElement(CGS.PROPERTY);
-				el.addAttribute(CGS.NAME, Environment.USER);
-				el.addAttribute(CGS.VALUE, user);
+				el = root.addElement(CodeGenerationStrings.PROPERTY);
+				el.addAttribute(CodeGenerationStrings.NAME, Environment.USER);
+				el.addAttribute(CodeGenerationStrings.VALUE, user);
 				addIntoPropFileContent(propFileContent, Environment.USER);
 				//
 				String pass = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.password"); //$NON-NLS-1$
-				el = root.addElement(CGS.PROPERTY);
-				el.addAttribute(CGS.NAME, Environment.PASS);
-				el.addAttribute(CGS.VALUE, pass);
+				el = root.addElement(CodeGenerationStrings.PROPERTY);
+				el.addAttribute(CodeGenerationStrings.NAME, Environment.PASS);
+				el.addAttribute(CodeGenerationStrings.VALUE, pass);
 				addIntoPropFileContent(propFileContent, Environment.PASS);
 				//
 				String dialectName = consoleConfigPrefs.getDialectName();
 				if (StringHelper.isNotEmpty(dialectName)) {
-					el = root.addElement(CGS.PROPERTY);
-					el.addAttribute(CGS.NAME, Environment.DIALECT);
-					el.addAttribute(CGS.VALUE, dialectName);
+					el = root.addElement(CodeGenerationStrings.PROPERTY);
+					el.addAttribute(CodeGenerationStrings.NAME, Environment.DIALECT);
+					el.addAttribute(CodeGenerationStrings.VALUE, dialectName);
 					addIntoPropFileContent(propFileContent, Environment.DIALECT);
 				}
 				//
 				hibernatePropFile = "hibernatePropFile"; //$NON-NLS-1$
-				el = root.addElement(CGS.PROPERTY);
-				el.addAttribute(CGS.NAME, hibernatePropFile);
-				el.addAttribute(CGS.VALUE, "${java.io.tmpdir}${ant.project.name}-hibernate.properties"); //$NON-NLS-1$
+				el = root.addElement(CodeGenerationStrings.PROPERTY);
+				el.addAttribute(CodeGenerationStrings.NAME, hibernatePropFile);
+				el.addAttribute(CodeGenerationStrings.VALUE, "${java.io.tmpdir}${ant.project.name}-hibernate.properties"); //$NON-NLS-1$
 				//
 				generateHibernatePropeties = "generateHibernatePropeties"; //$NON-NLS-1$
-				Element target = root.addElement(CGS.TARGET);
-				target.addAttribute(CGS.NAME, generateHibernatePropeties);
+				Element target = root.addElement(CodeGenerationStrings.TARGET);
+				target.addAttribute(CodeGenerationStrings.NAME, generateHibernatePropeties);
 				//
 				hibernatePropFile = "${" + hibernatePropFile + "}"; //$NON-NLS-1$ //$NON-NLS-2$
-				Element echo = target.addElement(CGS.ECHO);
-				echo.addAttribute(CGS.FILE, hibernatePropFile);
+				Element echo = target.addElement(CodeGenerationStrings.ECHO);
+				echo.addAttribute(CodeGenerationStrings.FILE, hibernatePropFile);
 				echo.addText(getPropFileContentStubUID());
 				//echo.addText(propFileContent.toString());
 				propFileContentPreSave = propFileContent.toString();
@@ -167,8 +167,8 @@ public class CodeGenXMLFactory {
 		}
 		// all jars from libraries should be here
 		String toolslibID = "toolslib"; //$NON-NLS-1$
-		Element toolslib = root.addElement(CGS.PATH);
-		toolslib.addAttribute(CGS.ID, toolslibID);
+		Element toolslib = root.addElement(CodeGenerationStrings.PATH);
+		toolslib.addAttribute(CodeGenerationStrings.ID, toolslibID);
 		final URL[] customClassPathURLs = PreferencesClassPathUtils.getCustomClassPathURLs(consoleConfigPrefs);
 		for (int i = 0; i < customClassPathURLs.length; i++) {
 			if (customClassPathURLs[i] == null) {
@@ -177,7 +177,7 @@ public class CodeGenXMLFactory {
 			// what is right here: CGS.PATH or CGS.PATHELEMENT?
 			// http://www.redhat.com/docs/en-US/JBoss_Developer_Studio/en/hibernatetools/html/ant.html
 			// use CGS.PATH - so may be error in documentation?
-			Element pathItem = toolslib.addElement(CGS.PATH);
+			Element pathItem = toolslib.addElement(CodeGenerationStrings.PATH);
 			//Element pathItem = toolslib.addElement(CGS.PATHELEMENT);
 			String strPathItem = customClassPathURLs[i].getPath();
 			try {
@@ -185,41 +185,41 @@ public class CodeGenXMLFactory {
 			} catch (URISyntaxException e) {
 				// ignore
 			}
-			pathItem.addAttribute(CGS.LOCATION, strPathItem);
+			pathItem.addAttribute(CodeGenerationStrings.LOCATION, strPathItem);
 		}
 		//
-		Element target = root.addElement(CGS.TARGET);
-		target.addAttribute(CGS.NAME, defaultTargetName);
+		Element target = root.addElement(CodeGenerationStrings.TARGET);
+		target.addAttribute(CodeGenerationStrings.NAME, defaultTargetName);
 		if (!isEmpty(generateHibernatePropeties)) {
-			target.addAttribute(CGS.DEPENDS, generateHibernatePropeties);
+			target.addAttribute(CodeGenerationStrings.DEPENDS, generateHibernatePropeties);
 		}
 		//
-		Element taskdef = target.addElement(CGS.TASKDEF);
-		taskdef.addAttribute(CGS.NAME, CGS.HIBERNATETOOL);
-		taskdef.addAttribute(CGS.CLASSNAME, "org.hibernate.tool.ant.HibernateToolTask"); //$NON-NLS-1$
-		taskdef.addAttribute(CGS.CLASSPATHREF, toolslibID);
+		Element taskdef = target.addElement(CodeGenerationStrings.TASKDEF);
+		taskdef.addAttribute(CodeGenerationStrings.NAME, CodeGenerationStrings.HIBERNATETOOL);
+		taskdef.addAttribute(CodeGenerationStrings.CLASSNAME, "org.hibernate.tool.ant.HibernateToolTask"); //$NON-NLS-1$
+		taskdef.addAttribute(CodeGenerationStrings.CLASSPATHREF, toolslibID);
 		//
-		Element hibernatetool = target.addElement(CGS.HIBERNATETOOL);
-		hibernatetool.addAttribute(CGS.DESTDIR, "${build.dir}"); //$NON-NLS-1$
+		Element hibernatetool = target.addElement(CodeGenerationStrings.HIBERNATETOOL);
+		hibernatetool.addAttribute(CodeGenerationStrings.DESTDIR, "${build.dir}"); //$NON-NLS-1$
 		String templatePath = getResLocation(attributes.getTemplatePath());
 		if (attributes.isUseOwnTemplates()) {
-			hibernatetool.addAttribute(CGS.TEMPLATEPATH, templatePath);
+			hibernatetool.addAttribute(CodeGenerationStrings.TEMPLATEPATH, templatePath);
 		}
 		//
 		if (StringHelper.isNotEmpty(hibernatePropFile)) {
-			rootConsoleConfig.addAttribute(CFS.PROPERTYFILE, hibernatePropFile);
+			rootConsoleConfig.addAttribute(ConfigurationXMLStrings.PROPERTYFILE, hibernatePropFile);
 		}
 		// add hibernate console configuration
 		hibernatetool.content().add(rootConsoleConfig);
 		//
 		// the path there are user classes
-		Element classpath = hibernatetool.addElement(CGS.CLASSPATH);
-		Element path = classpath.addElement(CGS.PATH);
-		path.addAttribute(CGS.LOCATION, "${build.dir}"); //$NON-NLS-1$
+		Element classpath = hibernatetool.addElement(CodeGenerationStrings.CLASSPATH);
+		Element path = classpath.addElement(CodeGenerationStrings.PATH);
+		path.addAttribute(CodeGenerationStrings.LOCATION, "${build.dir}"); //$NON-NLS-1$
 		//
 		Properties globalProps = new Properties();
-		globalProps.put(CGS.EJB3, "" + attributes.isEJB3Enabled()); //$NON-NLS-1$
-		globalProps.put(CGS.JDK5, "" + attributes.isJDK5Enabled()); //$NON-NLS-1$
+		globalProps.put(CodeGenerationStrings.EJB3, "" + attributes.isEJB3Enabled()); //$NON-NLS-1$
+		globalProps.put(CodeGenerationStrings.JDK5, "" + attributes.isJDK5Enabled()); //$NON-NLS-1$
 		List<ExporterFactory> exporterFactories = attributes.getExporterFactories();
 		for (Iterator<ExporterFactory> iter = exporterFactories.iterator(); iter.hasNext();) {
 			ExporterFactory ef = iter.next();
@@ -249,14 +249,14 @@ public class CodeGenXMLFactory {
 			if ("hbmtemplate".compareToIgnoreCase(expName) == 0 ) { //$NON-NLS-1$
 				Element property = null;
 				if (attributes.isJDK5Enabled()) {
-					property = exporter.addElement(CGS.PROPERTY);
-					property.addAttribute(CGS.KEY, CGS.JDK5);
-					property.addAttribute(CGS.VALUE, "" + attributes.isJDK5Enabled()); //$NON-NLS-1$
+					property = exporter.addElement(CodeGenerationStrings.PROPERTY);
+					property.addAttribute(CodeGenerationStrings.KEY, CodeGenerationStrings.JDK5);
+					property.addAttribute(CodeGenerationStrings.VALUE, "" + attributes.isJDK5Enabled()); //$NON-NLS-1$
 				}
 				if (attributes.isEJB3Enabled()) {
-					property = exporter.addElement(CGS.PROPERTY);
-					property.addAttribute(CGS.KEY, CGS.EJB3);
-					property.addAttribute(CGS.VALUE, "" + attributes.isEJB3Enabled()); //$NON-NLS-1$
+					property = exporter.addElement(CodeGenerationStrings.PROPERTY);
+					property.addAttribute(CodeGenerationStrings.KEY, CodeGenerationStrings.EJB3);
+					property.addAttribute(CodeGenerationStrings.VALUE, "" + attributes.isEJB3Enabled()); //$NON-NLS-1$
 				}
 			}
 		}
@@ -305,18 +305,5 @@ public class CodeGenXMLFactory {
 	
 	public String getPropFileContentPreSave() {
 		return propFileContentPreSave;
-	}
-	
-	public static String replaceString(String input, String repl, String with) {
-		final StringBuffer tmp = new StringBuffer();
-		int startIdx = 0;
-		int idxOld = 0;
-		while ((idxOld = input.indexOf(repl, startIdx)) >= 0) {
-			tmp.append(input.substring(startIdx, idxOld));
-			tmp.append(with);
-			startIdx = idxOld + repl.length();
-		}
-		tmp.append(input.substring(startIdx));
-		return tmp.toString();
 	}
 }

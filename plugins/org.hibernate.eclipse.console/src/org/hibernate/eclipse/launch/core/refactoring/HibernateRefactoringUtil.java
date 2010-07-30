@@ -50,7 +50,7 @@ import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.eclipse.console.model.impl.EFS;
+import org.hibernate.eclipse.console.model.impl.ExporterFactoryStrings;
 import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
@@ -127,7 +127,7 @@ public class HibernateRefactoringUtil {
 	@SuppressWarnings("unchecked")
 	private static boolean isExportersAffected(ILaunchConfiguration config,
 			IPath oldPath) throws CoreException {
-		String[] k = new String[]{EFS.OUTPUTDIR};
+		String[] k = new String[]{ExporterFactoryStrings.OUTPUTDIR};
 		List<String> exporterNames = config.getAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, Collections.EMPTY_LIST);
 		for (String exporterName : exporterNames) {
 			Map<String, String> props = config.getAttribute(HibernateLaunchConstants.ATTR_EXPORTERS + '.' + 
@@ -230,7 +230,7 @@ public class HibernateRefactoringUtil {
 	@SuppressWarnings("unchecked")
 	private static void updateExporters(IPath oldPath, IPath newPath,
 			ILaunchConfigurationWorkingCopy wc) throws CoreException {
-		String[] keys = new String[]{EFS.OUTPUTDIR};
+		String[] keys = new String[]{ExporterFactoryStrings.OUTPUTDIR};
 		List<String> exporterNames = wc.getAttribute(HibernateLaunchConstants.ATTR_EXPORTERS, Collections.EMPTY_LIST);
 		for (String exporterName : exporterNames) {
 			String exporterProp = HibernateLaunchConstants.ATTR_EXPORTERS + '.' + 

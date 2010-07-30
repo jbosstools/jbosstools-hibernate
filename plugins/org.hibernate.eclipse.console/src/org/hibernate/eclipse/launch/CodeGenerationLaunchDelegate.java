@@ -225,8 +225,8 @@ public class CodeGenerationLaunchDelegate extends
 
                     // Global properties
 	                Properties props = new Properties();
-	                props.put(CGS.EJB3, "" + attributes.isEJB3Enabled()); //$NON-NLS-1$
-                    props.put(CGS.JDK5, "" + attributes.isJDK5Enabled()); //$NON-NLS-1$
+	                props.put(CodeGenerationStrings.EJB3, "" + attributes.isEJB3Enabled()); //$NON-NLS-1$
+                    props.put(CodeGenerationStrings.JDK5, "" + attributes.isJDK5Enabled()); //$NON-NLS-1$
 
                     for (int i = 0; i < exporterFactories.length; i++)
                     {

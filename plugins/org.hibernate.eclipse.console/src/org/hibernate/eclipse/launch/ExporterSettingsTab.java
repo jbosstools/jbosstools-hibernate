@@ -88,7 +88,7 @@ import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.ExtensionManager;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
-import org.hibernate.eclipse.console.model.impl.EFS;
+import org.hibernate.eclipse.console.model.impl.ExporterFactoryStrings;
 import org.hibernate.eclipse.console.model.impl.ExporterDefinition;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 import org.hibernate.eclipse.console.utils.EclipseImages;
@@ -799,7 +799,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 		// hard-coded checks: this should be delegated to extension point that knows about the different exporters.
 		//Iterator iterator = observableFactoryList.getList().iterator(); // check all exporters
 		for (ExporterFactory ef : selectedExporters) {// check only selected exporters
-			String str = ef.getProperties().get(EFS.OUTPUTDIR);
+			String str = ef.getProperties().get(ExporterFactoryStrings.OUTPUTDIR);
 			String msg = null;
 			if(str!=null) {
 				msg = PathHelper.checkDirectory(str, HibernateConsoleMessages.ExporterSettingsTab_output_directory_for + " " + ef.getExporterDefinition().getDescription(), true); //$NON-NLS-1$
@@ -809,7 +809,7 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 				}
 			}
 
-			str = ef.getProperties().get(EFS.TEMPLATE_PATH);
+			str = ef.getProperties().get(ExporterFactoryStrings.TEMPLATE_PATH);
 			if(str!=null) {
 				msg = PathHelper.checkDirectory(str, HibernateConsoleMessages.ExporterSettingsTab_template_directory_for + " " + ef.getExporterDefinition().getDescription(), true); //$NON-NLS-1$
 				if(msg!=null) {

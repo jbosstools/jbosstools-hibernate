@@ -143,13 +143,12 @@ public class ExportAntCodeGenWizardPage extends WizardNewFileCreationPage implem
 		if (lc == null) {
 			return null;
 		}
-		CodeGenXMLFactory cgfXML = new CodeGenXMLFactory(lc);
-		Element rootBuildXml = cgfXML.createRoot();
+		final CodeGenXMLFactory codeGenXMLFactory = new CodeGenXMLFactory(lc);
+		Element rootBuildXml = codeGenXMLFactory.createRoot();
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ConfigurationXMLFactory.dump(baos, rootBuildXml);
-		String baosResult = CodeGenXMLFactory.replaceString(baos.toString(), 
-			cgfXML.getPropFileContentStubUID(), cgfXML.getPropFileContentPreSave());
-		//
+		String baosResult = baos.toString().replace(
+			codeGenXMLFactory.getPropFileContentStubUID(), codeGenXMLFactory.getPropFileContentPreSave());
 		ByteArrayInputStream bais = null;
 		try {
 			bais = new ByteArrayInputStream(baosResult.getBytes("UTF-8")); //$NON-NLS-1$

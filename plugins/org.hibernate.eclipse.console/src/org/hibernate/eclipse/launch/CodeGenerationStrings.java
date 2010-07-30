@@ -15,7 +15,7 @@ package org.hibernate.eclipse.launch;
  *  
  * @author vitali
  */
-public class CGS {
+public interface CodeGenerationStrings {
 	//
 	public static final String ID = "id"; //$NON-NLS-1$
 	public static final String NAME = "name"; //$NON-NLS-1$

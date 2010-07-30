@@ -184,8 +184,8 @@ public class ExporterFactory {
 		extractExporterProperties(exporterId, props, extract);
 		
 		String outputPath = defaultOutputDirectory;
-		if (extract.containsKey(EFS.OUTPUTDIR)) {
-			outputPath = extract.getProperty(EFS.OUTPUTDIR);
+		if (extract.containsKey(ExporterFactoryStrings.OUTPUTDIR)) {
+			outputPath = extract.getProperty(ExporterFactoryStrings.OUTPUTDIR);
 		}
 
 		String resolvedOutputDir = resolve(outputPath);
@@ -204,8 +204,8 @@ public class ExporterFactory {
 		exporter.setConfiguration(cfg);
 
 		List<String> templatePathList = new ArrayList<String>();
-		if (extract.containsKey(EFS.TEMPLATE_PATH)) {
-			String resolveTemplatePath = resolve(extract.getProperty(EFS.TEMPLATE_PATH));
+		if (extract.containsKey(ExporterFactoryStrings.TEMPLATE_PATH)) {
+			String resolveTemplatePath = resolve(extract.getProperty(ExporterFactoryStrings.TEMPLATE_PATH));
 			StringTokenizer st = new StringTokenizer(resolveTemplatePath, ";"); //$NON-NLS-1$
 			String out = ""; //$NON-NLS-1$
 			while (st.hasMoreTokens()) {
@@ -245,15 +245,15 @@ public class ExporterFactory {
 		// special handling for GenericExporter (TODO: be delegated via plugin.xml)
 		if (exporterId.equals("org.hibernate.tools.hbmtemplate")) { //$NON-NLS-1$
 			GenericExporter ge = (GenericExporter) exporter;
-			ge.setFilePattern(extract.getProperty(EFS.FILE_PATTERN));
-			ge.setTemplateName(extract.getProperty(EFS.TEMPLATE_NAME));
-			ge.setForEach(extract.getProperty(EFS.FOR_EACH));
+			ge.setFilePattern(extract.getProperty(ExporterFactoryStrings.FILE_PATTERN));
+			ge.setTemplateName(extract.getProperty(ExporterFactoryStrings.TEMPLATE_NAME));
+			ge.setForEach(extract.getProperty(ExporterFactoryStrings.FOR_EACH));
 		}
 		// special handling for Hbm2DDLExporter
 		if (exporterId.equals("org.hibernate.tools.hbm2ddl")) { //$NON-NLS-1$
 			Hbm2DDLExporter ddlExporter = (Hbm2DDLExporter) exporter;
 			//avoid users to delete their databases with a single click
-			ddlExporter.setExport(Boolean.getBoolean(extract.getProperty(EFS.EXPORTTODATABASE)));
+			ddlExporter.setExport(Boolean.getBoolean(extract.getProperty(ExporterFactoryStrings.EXPORTTODATABASE)));
 		}
 		return exporter;
 	}
@@ -268,38 +268,38 @@ public class ExporterFactory {
 	 */
 	public static void extractExporterProperties(
 		String exporterId, Properties props, Properties extract) throws CoreException {
-		if (props.containsKey(EFS.OUTPUTDIR)) {
-			extract.put(EFS.OUTPUTDIR, resolve(props.getProperty(EFS.OUTPUTDIR)));
+		if (props.containsKey(ExporterFactoryStrings.OUTPUTDIR)) {
+			extract.put(ExporterFactoryStrings.OUTPUTDIR, resolve(props.getProperty(ExporterFactoryStrings.OUTPUTDIR)));
 			// done to avoid validation check in hibernate tools templates
-			props.remove(EFS.OUTPUTDIR);
+			props.remove(ExporterFactoryStrings.OUTPUTDIR);
 		}
-		if (props.containsKey(EFS.TEMPLATE_PATH)) {
-			extract.put(EFS.TEMPLATE_PATH, resolve(props.getProperty(EFS.TEMPLATE_PATH)));
+		if (props.containsKey(ExporterFactoryStrings.TEMPLATE_PATH)) {
+			extract.put(ExporterFactoryStrings.TEMPLATE_PATH, resolve(props.getProperty(ExporterFactoryStrings.TEMPLATE_PATH)));
 			// done to avoid validation check in hibernate tools templates
-			props.remove(EFS.TEMPLATE_PATH);
+			props.remove(ExporterFactoryStrings.TEMPLATE_PATH);
 		}
 		if (exporterId.equals("org.hibernate.tools.hbmtemplate")) { //$NON-NLS-1$
 			String tmp;
-			if (props.containsKey(EFS.FILE_PATTERN)) {
-				tmp = props.getProperty(EFS.FILE_PATTERN, ""); //$NON-NLS-1$
-				extract.put(EFS.FILE_PATTERN, tmp);
-				props.remove(EFS.FILE_PATTERN);
+			if (props.containsKey(ExporterFactoryStrings.FILE_PATTERN)) {
+				tmp = props.getProperty(ExporterFactoryStrings.FILE_PATTERN, ""); //$NON-NLS-1$
+				extract.put(ExporterFactoryStrings.FILE_PATTERN, tmp);
+				props.remove(ExporterFactoryStrings.FILE_PATTERN);
 			}
-			if (props.containsKey(EFS.TEMPLATE_NAME)) {
-				tmp = props.getProperty(EFS.TEMPLATE_NAME, ""); //$NON-NLS-1$
-				extract.put(EFS.TEMPLATE_NAME, tmp);
-				props.remove(EFS.TEMPLATE_NAME);
+			if (props.containsKey(ExporterFactoryStrings.TEMPLATE_NAME)) {
+				tmp = props.getProperty(ExporterFactoryStrings.TEMPLATE_NAME, ""); //$NON-NLS-1$
+				extract.put(ExporterFactoryStrings.TEMPLATE_NAME, tmp);
+				props.remove(ExporterFactoryStrings.TEMPLATE_NAME);
 			}
-			if (props.containsKey(EFS.FOR_EACH)) {
-				tmp = props.getProperty(EFS.FOR_EACH, ""); //$NON-NLS-1$
-				extract.put(EFS.FOR_EACH, tmp);
-				props.remove(EFS.FOR_EACH);
+			if (props.containsKey(ExporterFactoryStrings.FOR_EACH)) {
+				tmp = props.getProperty(ExporterFactoryStrings.FOR_EACH, ""); //$NON-NLS-1$
+				extract.put(ExporterFactoryStrings.FOR_EACH, tmp);
+				props.remove(ExporterFactoryStrings.FOR_EACH);
 			}
 		}
 		// special handling for Hbm2DDLExporter
 		if (exporterId.equals("org.hibernate.tools.hbm2ddl")) { //$NON-NLS-1$
-			extract.put(EFS.EXPORTTODATABASE, props.getProperty(EFS.EXPORTTODATABASE, Boolean.toString(false)));
-			props.remove(EFS.EXPORTTODATABASE);
+			extract.put(ExporterFactoryStrings.EXPORTTODATABASE, props.getProperty(ExporterFactoryStrings.EXPORTTODATABASE, Boolean.toString(false)));
+			props.remove(ExporterFactoryStrings.EXPORTTODATABASE);
 		}
 	}
 }
