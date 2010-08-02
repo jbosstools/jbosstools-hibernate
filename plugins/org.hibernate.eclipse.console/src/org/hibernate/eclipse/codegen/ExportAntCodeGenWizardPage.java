@@ -86,7 +86,7 @@ public class ExportAntCodeGenWizardPage extends WizardNewFileCreationPage implem
 				.setLabelText(HibernateConsoleMessages.ExportAntCodeGenWizardPage_hibernate_code_generation_configurations);
 		ILaunchConfiguration[] launchCfgs;
 		try {
-			launchCfgs = LaunchHelper.findFilteredCodeGenerationConfigs();
+			launchCfgs = LaunchHelper.findFilteredCodeGenerationConfigsSorted();
 		} catch (CoreException e) {
 			launchCfgs = new ILaunchConfiguration[0];
 		}
@@ -122,7 +122,7 @@ public class ExportAntCodeGenWizardPage extends WizardNewFileCreationPage implem
 	public ILaunchConfiguration getSelectedLaunchConfig() {
 		ILaunchConfiguration[] launchCfgs;
 		try {
-			launchCfgs = LaunchHelper.findFilteredCodeGenerationConfigs();
+			launchCfgs = LaunchHelper.findFilteredCodeGenerationConfigsSorted();
 		} catch (CoreException e) {
 			launchCfgs = new ILaunchConfiguration[0];
 		}

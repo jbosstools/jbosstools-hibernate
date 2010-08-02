@@ -1,6 +1,8 @@
 package org.hibernate.eclipse.console.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
@@ -160,18 +162,38 @@ public class LaunchHelper {
 
 	//***************************** Hibernate Code Generation Launch Configurations ************
 	
-	public static ILaunchConfiguration[] findFilteredCodeGenerationConfigs() throws CoreException{
-		ILaunchConfiguration[] allHibernateLaunchConfigurations = findCodeGenerationConfigs();
-		List<ILaunchConfiguration> launchConfigurations = new ArrayList<ILaunchConfiguration>();
-		for (ILaunchConfiguration config : allHibernateLaunchConfigurations) {			
-			if (DebugUIPlugin.doLaunchConfigurationFiltering(config)) launchConfigurations.add(config);
+	public static ILaunchConfiguration[] filterCodeGenerationConfigs(ILaunchConfiguration[] launchConfigs) throws CoreException{
+		List<ILaunchConfiguration> res = new ArrayList<ILaunchConfiguration>();
+		for (ILaunchConfiguration config : launchConfigs) {			
+			if (DebugUIPlugin.doLaunchConfigurationFiltering(config)) {
+				res.add(config);
+			}
 		}
-		return launchConfigurations.toArray(new ILaunchConfiguration[launchConfigurations.size()]);
+		return res.toArray(new ILaunchConfiguration[res.size()]);
+	}
+	
+	public static ILaunchConfiguration[] findFilteredCodeGenerationConfigs() throws CoreException{
+		return filterCodeGenerationConfigs(findCodeGenerationConfigs());
+	}
+	
+	public static ILaunchConfiguration[] findFilteredCodeGenerationConfigsSorted() throws CoreException{
+		return filterCodeGenerationConfigs(findCodeGenerationConfigsSortedByName());
 	}
 	
 	public static ILaunchConfiguration[] findCodeGenerationConfigs() throws CoreException {
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 		return launchManager.getLaunchConfigurations(getCodeGenerationType());
+	}
+	
+	public static ILaunchConfiguration[] findCodeGenerationConfigsSortedByName() throws CoreException {
+		ILaunchConfiguration[] launchConfigs = findCodeGenerationConfigs();
+		Comparator<ILaunchConfiguration> comparator = new Comparator<ILaunchConfiguration>() {
+			public int compare(ILaunchConfiguration o1, ILaunchConfiguration o2) {
+				return o1.getName().compareToIgnoreCase(o2.getName());
+			}
+		};
+		Arrays.sort(launchConfigs, comparator);
+		return launchConfigs;
 	}
 	
 	public static ILaunchConfigurationType getCodeGenerationType(){
