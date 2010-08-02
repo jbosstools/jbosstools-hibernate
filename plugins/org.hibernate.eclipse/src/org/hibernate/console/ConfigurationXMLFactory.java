@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2010 Red Hat, Inc.
+ * Copyright (c) 2010 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.hibernate.console;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -112,6 +113,13 @@ public class ConfigurationXMLFactory {
 		if (!StringHelper.isEmpty(val)) {
 			el.addAttribute(prName, val);
 		}
+	}
+
+	public String createConfigurationXML() {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		Element element = createRoot();
+		dump(baos, element);
+		return baos.toString();
 	}
 	
 	public static void dump(OutputStream os, Element element) {

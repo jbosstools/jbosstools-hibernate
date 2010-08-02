@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2010 Red Hat, Inc.
+ * Copyright (c) 2010 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -11,7 +11,6 @@
 package org.hibernate.eclipse.console.test;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -24,12 +23,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.dom4j.Element;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.hibernate.console.ConfigurationXMLFactory;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.ExtensionManager;
 import org.hibernate.eclipse.console.model.impl.ExporterDefinition;
@@ -139,40 +136,40 @@ public class CodeGenXMLFactoryTest extends TestCase {
 
 	public void testCodeGenXMLFactoryRevengAll() {
 		String codeGen = codeGenXMLFactory(true, true, false);
-		String specimen = getSpecimen("AntCodeGenReveng_test1.xml"); //$NON-NLS-1$
-		assertEquals(specimen.trim(), codeGen.trim().replaceAll("\n", "\r\n")); //$NON-NLS-1$ //$NON-NLS-2$
+		String specimen = getSample("AntCodeGenReveng_test1.xml"); //$NON-NLS-1$
+		assertEquals(specimen.trim(), codeGen.replaceAll("\n", "\r\n")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void testCodeGenXMLFactoryRevengOne() {
 		String codeGen = codeGenXMLFactory(true, false, false);
-		String specimen = getSpecimen("AntCodeGenReveng_test2.xml"); //$NON-NLS-1$
-		assertEquals(specimen.trim(), codeGen.trim().replaceAll("\n", "\r\n")); //$NON-NLS-1$ //$NON-NLS-2$
+		String sample = getSample("AntCodeGenReveng_test2.xml"); //$NON-NLS-1$
+		assertEquals(sample.trim(), codeGen.replaceAll("\n", "\r\n")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void testCodeGenXMLFactoryAll() {
 		String codeGen = codeGenXMLFactory(false, true, false);
-		String specimen = getSpecimen("AntCodeGen_test1.xml"); //$NON-NLS-1$
-		assertEquals(specimen.trim(), codeGen.trim().replaceAll("\n", "\r\n")); //$NON-NLS-1$ //$NON-NLS-2$
+		String sample = getSample("AntCodeGen_test1.xml"); //$NON-NLS-1$
+		assertEquals(sample.trim(), codeGen.replaceAll("\n", "\r\n")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void testCodeGenXMLFactoryOne() {
 		String codeGen = codeGenXMLFactory(false, false, false);
-		String specimen = getSpecimen("AntCodeGen_test2.xml"); //$NON-NLS-1$
-		assertEquals(specimen.trim(), codeGen.trim().replaceAll("\n", "\r\n")); //$NON-NLS-1$ //$NON-NLS-2$
+		String sample = getSample("AntCodeGen_test2.xml"); //$NON-NLS-1$
+		assertEquals(sample.trim(), codeGen.replaceAll("\n", "\r\n")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void testCodeGenXMLFactoryJpaAll() {
 		String codeGen = codeGenXMLFactory(false, true, true);
 		codeGen = updatePaths(codeGen);
-		String specimen = getSpecimen("AntCodeGenJpa_test1.xml"); //$NON-NLS-1$
-		assertEquals(specimen.trim(), codeGen.trim().replaceAll("\n", "\r\n")); //$NON-NLS-1$ //$NON-NLS-2$
+		String sample = getSample("AntCodeGenJpa_test1.xml"); //$NON-NLS-1$
+		assertEquals(sample.trim(), codeGen.replaceAll("\n", "\r\n")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public void testCodeGenXMLFactoryJpaOne() {
 		String codeGen = codeGenXMLFactory(false, false, true);
 		codeGen = updatePaths(codeGen);
-		String specimen = getSpecimen("AntCodeGenJpa_test2.xml"); //$NON-NLS-1$
-		assertEquals(specimen.trim(), codeGen.trim().replaceAll("\n", "\r\n")); //$NON-NLS-1$ //$NON-NLS-2$
+		String sample = getSample("AntCodeGenJpa_test2.xml"); //$NON-NLS-1$
+		assertEquals(sample.trim(), codeGen.replaceAll("\n", "\r\n")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 	public String updatePaths(String codeGen) {
@@ -219,15 +216,11 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		testLCAttr.put(HBMTEMPLATE0_PROPERTIES, expProps2);
 		testLCAttr.put(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER, reveng);
 		TestLaunchConfig testLC = new TestLaunchConfig(testLCAttr);
-		CodeGenXMLFactory cgfXML = new CodeGenXMLFactory4Test(testLC, jpa);
-		Element rootBuildXml = cgfXML.createRoot();
-		ConfigurationXMLFactory.dump(System.out, rootBuildXml);
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ConfigurationXMLFactory.dump(baos, rootBuildXml);
-		return baos.toString();
+		CodeGenXMLFactory codeGenFactory = new CodeGenXMLFactory4Test(testLC, jpa);
+		return codeGenFactory.createCodeGenXML();
 	}
 
-	public String getSpecimen(String fileName) {
+	public String getSample(String fileName) {
 		File resourceFile = null;
 		try {
 			resourceFile = getResourceItem(SAMPLE_PATH + fileName);
