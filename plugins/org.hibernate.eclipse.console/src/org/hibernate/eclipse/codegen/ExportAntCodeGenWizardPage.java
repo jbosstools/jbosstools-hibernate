@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2010 Red Hat, Inc.
+ * Copyright (c) 2010 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -11,11 +11,8 @@
 package org.hibernate.eclipse.codegen;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 
-import org.dom4j.Element;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.ComboDialogField;
@@ -29,9 +26,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
-import org.hibernate.console.ConfigurationXMLFactory;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
-import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.launch.CodeGenXMLFactory;
 
@@ -144,19 +139,7 @@ public class ExportAntCodeGenWizardPage extends WizardNewFileCreationPage implem
 			return null;
 		}
 		final CodeGenXMLFactory codeGenXMLFactory = new CodeGenXMLFactory(lc);
-		Element rootBuildXml = codeGenXMLFactory.createRoot();
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ConfigurationXMLFactory.dump(baos, rootBuildXml);
-		String baosResult = baos.toString().replace(
-			codeGenXMLFactory.getPropFileContentStubUID(), codeGenXMLFactory.getPropFileContentPreSave());
-		ByteArrayInputStream bais = null;
-		try {
-			bais = new ByteArrayInputStream(baosResult.getBytes("UTF-8")); //$NON-NLS-1$
-		} catch (UnsupportedEncodingException uec) {
-			HibernateConsolePlugin.getDefault()
-					.logErrorMessage("Problems converting to UTF-8", uec); //$NON-NLS-1$
-			bais = new ByteArrayInputStream(baos.toString().getBytes());
-		}
-		return bais;
+		String buildXml = codeGenXMLFactory.createCodeGenXML();
+		return new ByteArrayInputStream(buildXml.getBytes());
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2010 Red Hat, Inc.
+ * Copyright (c) 2010 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.hibernate.eclipse.launch;
 
+import java.io.ByteArrayOutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Iterator;
@@ -51,7 +52,11 @@ public class CodeGenXMLFactory {
 	public static final String NL = System.getProperty("line.separator"); //$NON-NLS-1$
 	public static final long versionUID4PropFile = 1841714864553304000L;
 	
-	protected String propFileContentPreSave = null;
+	/**
+	 * presave generated Hibernate Properties file content,
+	 * this is necessary to proper content formating
+	 */
+	protected String propFileContentPreSave = ""; //$NON-NLS-1$
 	
 	protected ILaunchConfiguration lc = null;
 
@@ -60,7 +65,7 @@ public class CodeGenXMLFactory {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Element createRoot() {
+	protected Element createRoot() {
 		ExporterAttributes attributes = null;
 		try {
 			attributes = new ExporterAttributes(lc);
@@ -304,6 +309,15 @@ public class CodeGenXMLFactory {
 	}
 	
 	public String getPropFileContentPreSave() {
-		return propFileContentPreSave;
+		return propFileContentPreSave == null ? "" : propFileContentPreSave; //$NON-NLS-1$
+	}
+
+	public String createCodeGenXML() {
+		Element rootBuildXml = createRoot();
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ConfigurationXMLFactory.dump(baos, rootBuildXml);
+		String res = baos.toString().replace(
+			getPropFileContentStubUID(), getPropFileContentPreSave()).trim();
+		return res;
 	}
 }
