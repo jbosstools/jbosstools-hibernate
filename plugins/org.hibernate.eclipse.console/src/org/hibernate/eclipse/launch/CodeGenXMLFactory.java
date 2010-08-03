@@ -50,8 +50,11 @@ import org.hibernate.util.StringHelper;
 public class CodeGenXMLFactory {
 	
 	public static final String NL = System.getProperty("line.separator"); //$NON-NLS-1$
+	/**
+	 * UUID to make a stub for propFileContentPreSave,
+	 * before formatting
+	 */
 	public static final long versionUID4PropFile = 1841714864553304000L;
-	
 	/**
 	 * presave generated Hibernate Properties file content,
 	 * this is necessary to proper content formating
