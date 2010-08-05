@@ -30,9 +30,11 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.ExtensionManager;
 import org.hibernate.eclipse.console.model.impl.ExporterDefinition;
+import org.hibernate.eclipse.console.model.impl.ExporterFactoryStrings;
 import org.hibernate.eclipse.console.test.launchcfg.TestConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.test.launchcfg.TestLaunchConfig;
 import org.hibernate.eclipse.launch.CodeGenXMLFactory;
+import org.hibernate.eclipse.launch.CodeGenerationStrings;
 import org.hibernate.eclipse.launch.ExporterAttributes;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 
@@ -126,11 +128,11 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		}
 
 		public String getConnectionProfileDriverURL(String connectionProfile) {
-			return "TestDriverPath.jar"; //$NON-NLS-1$
+			return "test-driver-path.jar"; //$NON-NLS-1$
 		}
 
 		public String getResLocation(String path) {
-			return "ResLocation/test"; //$NON-NLS-1$
+			return "reslocation/test"; //$NON-NLS-1$
 		}
 	}
 
@@ -185,14 +187,14 @@ public class CodeGenXMLFactoryTest extends TestCase {
 
 	public String codeGenXMLFactory(boolean reveng, boolean exportersAll, boolean jpa) {
 		Map<String, ExporterDefinition> exDefinitions = ExtensionManager.findExporterDefinitionsAsMap();
-		Map<String, Object> testLCAttr = new HashMap<String, Object>();
+		Map<String, Object> testLaunchConfigAttr = new HashMap<String, Object>();
 		String tmp = "12345678901234567890"; //$NON-NLS-1$
-		testLCAttr.put(HibernateLaunchConstants.ATTR_TEMPLATE_DIR, tmp);
-		testLCAttr.put(HibernateLaunchConstants.ATTR_OUTPUT_DIR, tmp);
-		testLCAttr.put(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_SETTINGS, tmp);
+		testLaunchConfigAttr.put(HibernateLaunchConstants.ATTR_TEMPLATE_DIR, tmp);
+		testLaunchConfigAttr.put(HibernateLaunchConstants.ATTR_OUTPUT_DIR, tmp);
+		testLaunchConfigAttr.put(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_SETTINGS, tmp);
 		if (jpa) {
-			testLCAttr.put(HibernateLaunchConstants.ATTR_ENABLE_EJB3_ANNOTATIONS, true);
-			testLCAttr.put(HibernateLaunchConstants.ATTR_ENABLE_JDK5, true);
+			testLaunchConfigAttr.put(HibernateLaunchConstants.ATTR_ENABLE_EJB3_ANNOTATIONS, true);
+			testLaunchConfigAttr.put(HibernateLaunchConstants.ATTR_ENABLE_JDK5, true);
 		}
 		List<String> exportersList = new ArrayList<String>();
 		if (exportersAll) {
@@ -203,20 +205,27 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		for (Map.Entry<String, ExporterDefinition> exDef : exDefinitions.entrySet()) {
 			String tmp0 = exDef.getValue().getExporterTag();
 			String tmp1 = ExporterAttributes.getLaunchAttributePrefix(tmp0);
-			testLCAttr.put(tmp1 + ".extension_id", //$NON-NLS-1$ 
+			testLaunchConfigAttr.put(tmp1 + ".extension_id", //$NON-NLS-1$ 
 				HibernateLaunchConstants.ATTR_PREFIX + tmp0);
-			testLCAttr.put(tmp1, Boolean.TRUE);
+			testLaunchConfigAttr.put(tmp1, Boolean.TRUE);
 			if (exportersAll) {
 				exportersList.add(tmp0);
 			}
 		}
-		testLCAttr.put(HibernateLaunchConstants.ATTR_EXPORTERS, exportersList);
+		testLaunchConfigAttr.put(HibernateLaunchConstants.ATTR_EXPORTERS, exportersList);
 		Map<String, String> expProps2 = new HashMap<String, String>();
-		expProps2.put(HibernateLaunchConstants.ATTR_OUTPUT_DIR, OUTDIR_PATH);
-		testLCAttr.put(HBMTEMPLATE0_PROPERTIES, expProps2);
-		testLCAttr.put(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER, reveng);
-		TestLaunchConfig testLC = new TestLaunchConfig(testLCAttr);
-		CodeGenXMLFactory codeGenFactory = new CodeGenXMLFactory4Test(testLC, jpa);
+		// test properties overlap case: 
+		// ExporterFactoryStrings.OUTPUTDIR & CodeGenerationStrings.DESTDIR - is a same property
+		// ExporterFactoryStrings.OUTPUTDIR - is a GUI name for the property
+		// CodeGenerationStrings.DESTDIR - is Ant script name for the property
+		// GUI name is more preferable, i.e. "_test_suffix" should not be in generated file
+		expProps2.put(ExporterFactoryStrings.OUTPUTDIR, OUTDIR_PATH);
+		expProps2.put(CodeGenerationStrings.DESTDIR, OUTDIR_PATH + "_test_suffix"); //$NON-NLS-1$
+		expProps2.put("keyXXX", "valueYYY"); //$NON-NLS-1$ //$NON-NLS-2$
+		testLaunchConfigAttr.put(HBMTEMPLATE0_PROPERTIES, expProps2);
+		testLaunchConfigAttr.put(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER, reveng);
+		TestLaunchConfig testLaunchConfig = new TestLaunchConfig(testLaunchConfigAttr);
+		CodeGenXMLFactory codeGenFactory = new CodeGenXMLFactory4Test(testLaunchConfig, jpa);
 		return codeGenFactory.createCodeGenXML();
 	}
 

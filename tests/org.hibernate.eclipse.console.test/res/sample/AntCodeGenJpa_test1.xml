@@ -1,5 +1,5 @@
 <project name="CodeGen" default="hibernateAntCodeGeneration">
-  <property name="build.dir" location="ResLocation/test"/>
+  <property name="build.dir" location="reslocation/test"/>
   <path id="toolslib">
     <path location="ejb3-persistence.jar"/>
     <path location="hibernate3.jar"/>
@@ -17,16 +17,29 @@
       <classpath>
         <path location="${build.dir}"/>
       </classpath>
-      <hbm2doc/>
-      <hbm2cfgxml/>
-      <hbm2hbmxml/>
-      <hbmtemplate>
-        <property key="jdk5" value="true"/>
+      <hbm2doc>
         <property key="ejb3" value="true"/>
+        <property key="jdk5" value="true"/>
+      </hbm2doc>
+      <hbm2cfgxml ejb3="true">
+        <property key="jdk5" value="true"/>
+      </hbm2cfgxml>
+      <hbm2hbmxml>
+        <property key="ejb3" value="true"/>
+        <property key="jdk5" value="true"/>
+      </hbm2hbmxml>
+      <hbmtemplate>
+        <property key="ejb3" value="true"/>
+        <property key="jdk5" value="true"/>
       </hbmtemplate>
-      <hbm2java jdk5="true" ejb3="true"/>
-      <hbm2ddl/>
-      <hbm2dao jdk5="true" ejb3="true"/>
+      <hbm2java destdir="outputdir/test" ejb3="true" jdk5="true">
+        <property key="keyXXX" value="valueYYY"/>
+      </hbm2java>
+      <hbm2ddl>
+        <property key="ejb3" value="true"/>
+        <property key="jdk5" value="true"/>
+      </hbm2ddl>
+      <hbm2dao ejb3="true" jdk5="true"/>
     </hibernatetool>
   </target>
 </project>

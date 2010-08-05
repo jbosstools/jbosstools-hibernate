@@ -1,5 +1,5 @@
 <project name="CodeGen" default="hibernateAntCodeGeneration">
-  <property name="build.dir" location="ResLocation/test"/>
+  <property name="build.dir" location="reslocation/test"/>
   <path id="toolslib">
     <path location="ejb3-persistence.jar"/>
     <path location="hibernate3.jar"/>
@@ -17,7 +17,9 @@
       <classpath>
         <path location="${build.dir}"/>
       </classpath>
-      <hbm2java jdk5="true" ejb3="true"/>
+      <hbm2java destdir="outputdir/test" ejb3="true" jdk5="true">
+        <property key="keyXXX" value="valueYYY"/>
+      </hbm2java>
     </hibernatetool>
   </target>
 </project>
