@@ -13,10 +13,12 @@ package org.hibernate.eclipse.launch;
 import java.io.ByteArrayOutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
 
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
@@ -37,7 +39,7 @@ import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.PreferencesClassPathUtils;
 import org.hibernate.eclipse.console.model.impl.ExporterFactory;
-import org.hibernate.eclipse.console.model.impl.ExporterProperty;
+import org.hibernate.eclipse.launch.ExportersXMLAttributeDescription.AttributeDescription;
 import org.hibernate.util.StringHelper;
 
 /**
@@ -60,7 +62,9 @@ public class CodeGenXMLFactory {
 	 * this is necessary to proper content formating
 	 */
 	protected String propFileContentPreSave = ""; //$NON-NLS-1$
-	
+	/**
+	 * generate Ant scrip from this launch configuration
+	 */
 	protected ILaunchConfiguration lc = null;
 
 	public CodeGenXMLFactory(ILaunchConfiguration lc) {
@@ -225,7 +229,11 @@ public class CodeGenXMLFactory {
 		Element path = classpath.addElement(CodeGenerationStrings.PATH);
 		path.addAttribute(CodeGenerationStrings.LOCATION, "${build.dir}"); //$NON-NLS-1$
 		//
+		Map<String, Map<String, AttributeDescription>> exportersDescr = 
+			ExportersXMLAttributeDescription.getExportersDescription();
+		//
 		Properties globalProps = new Properties();
+		// obligatory global properties
 		globalProps.put(CodeGenerationStrings.EJB3, "" + attributes.isEJB3Enabled()); //$NON-NLS-1$
 		globalProps.put(CodeGenerationStrings.JDK5, "" + attributes.isJDK5Enabled()); //$NON-NLS-1$
 		List<ExporterFactory> exporterFactories = attributes.getExporterFactories();
@@ -234,38 +242,64 @@ public class CodeGenXMLFactory {
 			if (!ef.isEnabled(lc)) {
 				continue;
 			}
-			Map<String, ExporterProperty> defExpProps = ef.getDefaultExporterProperties();
+			//Map<String, ExporterProperty> defExpProps = ef.getDefaultExporterProperties();
+			//String expId = ef.getId();
 			String expName = ef.getExporterTag();
+			// mapping: guiName -> AttributeDescription
+			Map<String, AttributeDescription> attributesDescrGui = exportersDescr.get(expName);
+			// construct new mapping: name -> AttributeDescription
+			Map<String, AttributeDescription> attributesDescrAnt = new TreeMap<String, AttributeDescription>();
+			for (AttributeDescription ad : attributesDescrGui.values()) {
+				attributesDescrAnt.put(ad.name, ad);
+			}
+			//
 			Element exporter = hibernatetool.addElement(expName);
 			Properties expProps = new Properties();
 			expProps.putAll(globalProps);
 			expProps.putAll(ef.getProperties());
-			Properties extract = new Properties();
+			//
+			Properties extractGUISpecial = new Properties();
 			try {
-				ExporterFactory.extractExporterProperties(ef.getId(), expProps, extract);
+				ExporterFactory.extractExporterProperties(ef.getId(), expProps, extractGUISpecial);
 			} catch (CoreException e) {
 				// ignore
 			}
-			expProps.putAll(extract);
-			for (Map.Entry<String, ExporterProperty> name2prop : defExpProps.entrySet()) {
-				Object val = expProps.get(name2prop.getKey());
-				if (val == null || 0 == val.toString().compareTo(name2prop.getValue().getDefaultValue())) {
+			// convert gui special properties names into Ant names
+			for (Map.Entry<Object, Object> propEntry : extractGUISpecial.entrySet()) {
+				Object key = propEntry.getKey();
+				Object val = propEntry.getValue();
+				AttributeDescription ad = attributesDescrGui.get(key);
+				if (ad == null) {
+					expProps.put(key, val);
 					continue;
 				}
-				exporter.addAttribute(name2prop.getKey(), val.toString());
+				expProps.put(ad.name, val);
 			}
-			if ("hbmtemplate".compareToIgnoreCase(expName) == 0 ) { //$NON-NLS-1$
-				Element property = null;
-				if (attributes.isJDK5Enabled()) {
-					property = exporter.addElement(CodeGenerationStrings.PROPERTY);
-					property.addAttribute(CodeGenerationStrings.KEY, CodeGenerationStrings.JDK5);
-					property.addAttribute(CodeGenerationStrings.VALUE, "" + attributes.isJDK5Enabled()); //$NON-NLS-1$
+			// list2Remove - list to collect properties which put into attributes,
+			// all other properties be ordinal property definition
+			List<Object> list2Remove = new ArrayList<Object>();
+			for (Map.Entry<Object, Object> propEntry : expProps.entrySet()) {
+				Object key = propEntry.getKey();
+				Object val = propEntry.getValue();
+				AttributeDescription ad = attributesDescrAnt.get(key);
+				if (ad == null) {
+					continue;
 				}
-				if (attributes.isEJB3Enabled()) {
-					property = exporter.addElement(CodeGenerationStrings.PROPERTY);
-					property.addAttribute(CodeGenerationStrings.KEY, CodeGenerationStrings.EJB3);
-					property.addAttribute(CodeGenerationStrings.VALUE, "" + attributes.isEJB3Enabled()); //$NON-NLS-1$
+				list2Remove.add(key);
+				if (val == null || 0 == val.toString().compareTo(ad.defaultValue)) {
+					continue;
 				}
+				exporter.addAttribute(ad.name, val.toString());
+			}
+			for (Object obj : list2Remove) {
+				expProps.remove(obj);
+			}
+			for (Map.Entry<Object, Object> propEntry : expProps.entrySet()) {
+				Object key = propEntry.getKey();
+				Object val = propEntry.getValue();
+				Element property = exporter.addElement(CodeGenerationStrings.PROPERTY);
+				property.addAttribute(CodeGenerationStrings.KEY, key.toString());
+				property.addAttribute(CodeGenerationStrings.VALUE, "" + val); //$NON-NLS-1$
 			}
 		}
 		return root;
@@ -288,7 +322,7 @@ public class CodeGenXMLFactory {
 	
 	public String getResLocation(String path) {
 		final IResource outputPathRes = findResource(path);
-		String location = ""; //$NON-NLS-1$
+		String location = path == null ? "" : path; //$NON-NLS-1$
 		if (outputPathRes != null) {
 			location = outputPathRes.getLocation().toOSString();
 		}

@@ -1,0 +1,55 @@
+<ant-tasks>
+	<task name="hbm2doc" id="org.hibernate.tools.hbm2doc">
+		<attribute name="destdir" gui-name="outputdir" default=""/>
+		<attribute name="templatepath" gui-name="template_path" default=""/>
+		<attribute name="templateprefix" gui-name="templateprefix" default=""/>
+	</task>
+	<task name="hbm2cfgxml" id="org.hibernate.tools.hbm2cfgxml">
+		<attribute name="destdir" gui-name="outputdir" default=""/>
+		<attribute name="templatepath" gui-name="template_path" default=""/>
+		<attribute name="templateprefix" gui-name="templateprefix" default=""/>
+		<attribute name="ejb3" gui-name="ejb3" default="false"/>
+	</task>
+	<task name="hbm2hbmxml" id="org.hibernate.tools.hbm2hbmxml">
+		<attribute name="destdir" gui-name="outputdir" default=""/>
+		<attribute name="templatepath" gui-name="template_path" default=""/>
+		<attribute name="templateprefix" gui-name="templateprefix" default=""/>
+	</task>
+	<task name="hbmtemplate" id="org.hibernate.tools.hbmtemplate">
+		<attribute name="destdir" gui-name="outputdir" default=""/>
+		<attribute name="templatepath" gui-name="template_path" default=""/>
+		<attribute name="templateprefix" gui-name="templateprefix" default=""/>
+		<attribute name="filepattern" gui-name="file_pattern" default=""/>
+		<attribute name="foreach" gui-name="for_each" default=""/>
+		<attribute name="template" gui-name="template_name" default=""/>
+		<attribute name="exporterclass" gui-name="exporterclass" default=""/>
+	</task>
+	<task name="hbm2java" id="org.hibernate.tools.hbm2java">
+		<attribute name="destdir" gui-name="outputdir" default=""/>
+		<attribute name="templatepath" gui-name="template_path" default=""/>
+		<attribute name="templateprefix" gui-name="templateprefix" default=""/>
+		<attribute name="jdk5" gui-name="jdk5" default="false"/>
+		<attribute name="ejb3" gui-name="ejb3" default="false"/>
+	</task>
+	<task name="hbm2ddl" id="org.hibernate.tools.hbm2ddl">
+		<attribute name="destdir" gui-name="outputdir" default=""/>
+		<attribute name="templatepath" gui-name="template_path" default=""/>
+		<attribute name="templateprefix" gui-name="templateprefix" default=""/>
+		<attribute name="export" gui-name="exportToDatabase" default="true"/>
+		<attribute name="update" gui-name="schemaUpdate" default="false"/>
+		<attribute name="drop" gui-name="drop" default="false"/>
+		<attribute name="create" gui-name="create" default="true"/>
+		<attribute name="outputfilename" gui-name="outputfilename" default=""/>
+		<attribute name="delimiter" gui-name="delimiter" default=";"/>
+		<attribute name="format" gui-name="format" default="false"/>
+		<attribute name="haltonerror" gui-name="haltonerror" default="false"/>
+		<attribute name="console" gui-name="scriptToConsole" default="true"/>
+	</task>
+	<task name="hbm2dao" id="org.hibernate.tools.hbm2dao">
+		<attribute name="destdir" gui-name="outputdir" default=""/>
+		<attribute name="templatepath" gui-name="template_path" default=""/>
+		<attribute name="templateprefix" gui-name="templateprefix" default=""/>
+		<attribute name="jdk5" gui-name="jdk5" default="false"/>
+		<attribute name="ejb3" gui-name="ejb3" default="false"/>
+	</task>
+</ant-tasks>

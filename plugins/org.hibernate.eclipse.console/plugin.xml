@@ -552,7 +552,7 @@
                name="dot.executable"
                type="string"
                value="dot.exe"/>
-               <property
+         <property
                description="Output directory"
                name="outputdir"
                type="directory"
