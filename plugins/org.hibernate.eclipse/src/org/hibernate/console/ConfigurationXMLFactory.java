@@ -41,10 +41,6 @@ public class ConfigurationXMLFactory {
 		this.additional = additional;
 	}
 
-	public ConsoleConfigurationPreferences getPreferences() {
-		return prefs;
-	}
-
 	public Document createXML() {
 		Document res = DocumentFactory.getInstance().createDocument();
 		Element root = createRoot();
@@ -53,13 +49,12 @@ public class ConfigurationXMLFactory {
 	}
 
 	public Element createRoot() {
+		if (prefs == null) {
+			return null;
+		}
+		@SuppressWarnings("unused")
 		Properties properties = prefs.getProperties();
-		Element root = createRoot(properties);
-		return root;
-	}
-
-	protected Element createRoot(Properties properties) {
-		String rootName = null;
+		String rootName = "undef"; //$NON-NLS-1$
 		Boolean jdbcConfig = Boolean.valueOf(additional.getProperty(ConfigurationXMLStrings.ISREVENG, "false")); //$NON-NLS-1$
 		if (jdbcConfig) {
 			rootName = ConfigurationXMLStrings.JDBCCONFIGURATION;
@@ -69,15 +64,13 @@ public class ConfigurationXMLFactory {
 			rootName = ConfigurationXMLStrings.JPACONFIGURATION;
 		} else if (prefs.getConfigurationMode().equals(ConfigurationMode.CORE)) {
 			rootName = ConfigurationXMLStrings.CONFIGURATION;
-		} else {
-			rootName = "undef"; //$NON-NLS-1$
 		}
 		Element root = DocumentFactory.getInstance().createElement(rootName);
-		updateAttr(root, file2Str(getPreferences().getConfigXMLFile()), ConfigurationXMLStrings.CONFIGURATIONFILE);
-		updateAttr(root, file2Str(getPreferences().getPropertyFile()), ConfigurationXMLStrings.PROPERTYFILE);
-		updateAttr(root, getPreferences().getEntityResolverName(), ConfigurationXMLStrings.ENTITYRESOLVER);
-		updateAttr(root, getPreferences().getNamingStrategy(), ConfigurationXMLStrings.NAMINGSTRATEGY);
-		updateAttr(root, getPreferences().getPersistenceUnitName(), ConfigurationXMLStrings.PERSISTENCEUNIT);
+		updateAttr(root, file2Str(prefs.getConfigXMLFile()), ConfigurationXMLStrings.CONFIGURATIONFILE);
+		updateAttr(root, file2Str(prefs.getPropertyFile()), ConfigurationXMLStrings.PROPERTYFILE);
+		updateAttr(root, prefs.getEntityResolverName(), ConfigurationXMLStrings.ENTITYRESOLVER);
+		updateAttr(root, prefs.getNamingStrategy(), ConfigurationXMLStrings.NAMINGSTRATEGY);
+		updateAttr(root, prefs.getPersistenceUnitName(), ConfigurationXMLStrings.PERSISTENCEUNIT);
 		updateAttr(root, additional, ConfigurationXMLStrings.DETECTMANYTOMANY);
 		updateAttr(root, additional, ConfigurationXMLStrings.DETECTONTTOONE);
 		updateAttr(root, additional, ConfigurationXMLStrings.DETECTOPTIMISTICLOCK);

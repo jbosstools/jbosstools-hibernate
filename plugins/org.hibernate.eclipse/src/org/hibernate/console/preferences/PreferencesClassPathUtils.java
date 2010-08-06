@@ -23,9 +23,11 @@ public class PreferencesClassPathUtils {
 	 * get custom classpath URLs 
 	 */
 	public static URL[] getCustomClassPathURLs(ConsoleConfigurationPreferences prefs) {
-		URL[] customClassPathURLsTmp = prefs.getCustomClassPathURLS();
+		URL[] customClassPathURLsTmp = prefs == null ? new URL[0] :
+			prefs.getCustomClassPathURLS();
 		URL[] customClassPathURLs = null;
-		String driverURL = ConnectionProfileUtil.getConnectionProfileDriverURL(prefs.getConnectionProfileName());
+		String driverURL = prefs == null ? null :
+			ConnectionProfileUtil.getConnectionProfileDriverURL(prefs.getConnectionProfileName());
 		URL[] urls = null;
 		if (driverURL != null) {
 			String[] driverURLParts = driverURL.split(";"); //$NON-NLS-1$
