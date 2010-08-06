@@ -221,7 +221,7 @@ public class KnownConfigurations  {
 	public ConsoleConfiguration[] getConfigurationsSortedByName() {
 		return getConfigurations(new Comparator<ConsoleConfiguration>() {
 			public int compare(ConsoleConfiguration o1, ConsoleConfiguration o2) {
-				return o1.getName().compareTo(o2.getName());
+				return o1.getName().compareToIgnoreCase(o2.getName());
 			}
 		});
 	}
