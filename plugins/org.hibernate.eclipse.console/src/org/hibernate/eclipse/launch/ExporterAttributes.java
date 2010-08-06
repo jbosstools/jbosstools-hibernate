@@ -47,9 +47,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.eclipse.console.ExtensionManager;
@@ -351,4 +353,38 @@ public class ExporterAttributes
 		return autoOneToOneDetection;
 	}
 
+	/**
+	 * Check exporter attributes and return message with description what is wrong with attributes.
+	 *  
+	 * @return message
+	 */
+	public String checkExporterAttributes() {
+		String msg = null;
+		boolean notSelected = consoleConfigurationName == null || consoleConfigurationName.length() <= 0;
+		if (notSelected) {
+			msg = HibernateConsoleMessages.CodeGenerationSettingsTab_console_cfg_must_be_specified;
+		}
+        if (msg == null) {
+    		msg = PathHelper.checkDirectory(outputPath, HibernateConsoleMessages.CodeGenerationSettingsTab_output_directory, true);
+        }
+        if (msg == null) {
+            if (reverseEngineer && packageName.length() > 0) {
+                IStatus val= JavaConventions.validatePackageName(packageName);
+                if (val.getSeverity() == IStatus.ERROR || val.getSeverity() == IStatus.WARNING) {
+                	msg = val.getMessage();
+                }
+            }
+        }
+        if (msg == null) {
+            if (reverseEngineer && revengSettings.trim().length() > 0) {
+                msg = PathHelper.checkFile(revengSettings, HibernateConsoleMessages.CodeGenerationSettingsTab_reveng_xml_3, true);
+            }
+        }
+        if (msg == null) {
+            if (useOwnTemplates) {
+                msg = PathHelper.checkDirectory(templatePath, HibernateConsoleMessages.CodeGenerationSettingsTab_template_dir, true);
+            }
+        }
+		return msg;
+	}
 }

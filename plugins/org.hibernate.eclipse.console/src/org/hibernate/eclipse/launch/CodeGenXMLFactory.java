@@ -113,7 +113,8 @@ public class CodeGenXMLFactory {
 		//
 		String hibernatePropFile = null;
 		String generateHibernatePropeties = null;
-		String connProfileName = consoleConfigPrefs.getConnectionProfileName();
+		String connProfileName = consoleConfigPrefs == null ? null : 
+			consoleConfigPrefs.getConnectionProfileName();
 		if (!isEmpty(connProfileName)) {
 			IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(connProfileName);
 			if (profile != null) {
@@ -217,12 +218,13 @@ public class CodeGenXMLFactory {
 		if (attributes.isUseOwnTemplates()) {
 			hibernatetool.addAttribute(CodeGenerationStrings.TEMPLATEPATH, templatePath);
 		}
-		//
-		if (StringHelper.isNotEmpty(hibernatePropFile)) {
-			rootConsoleConfig.addAttribute(ConfigurationXMLStrings.PROPERTYFILE, hibernatePropFile);
+		if (rootConsoleConfig != null) {
+			if (StringHelper.isNotEmpty(hibernatePropFile)) {
+				rootConsoleConfig.addAttribute(ConfigurationXMLStrings.PROPERTYFILE, hibernatePropFile);
+			}
+			// add hibernate console configuration
+			hibernatetool.content().add(rootConsoleConfig);
 		}
-		// add hibernate console configuration
-		hibernatetool.content().add(rootConsoleConfig);
 		//
 		// the path there are user classes
 		Element classpath = hibernatetool.addElement(CodeGenerationStrings.CLASSPATH);
@@ -311,6 +313,9 @@ public class CodeGenXMLFactory {
 	
 	public ConsoleConfigurationPreferences getConsoleConfigPreferences(String consoleConfigName) {
 		ConsoleConfiguration consoleConfig = KnownConfigurations.getInstance().find(consoleConfigName);
+		if (consoleConfig == null) {
+			return null;
+		}
 		return consoleConfig.getPreferences();
 	}
 	

@@ -521,6 +521,8 @@ public class HibernateConsoleMessages extends NLS {
 	public static String ExportAntCodeGenWizard_page_name;
 	public static String ExportAntCodeGenWizardPage_hibernate_code_generation_configurations;
 	public static String ExportAntCodeGenWizardPage_empty_hibernate_code_generation_configuration;
+	public static String ExportAntCodeGenWizardPage_cannot_find_selected_hibernate_code_generation_configuration;
+	public static String ExportAntCodeGenWizardPage_error_in_hibernate_code_generation_configuration;
 	//
 	static {
 		// initialize resource bundle

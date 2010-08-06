@@ -18,6 +18,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.ComboDialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.DialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.IDialogFieldListener;
+import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -29,6 +30,7 @@ import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.launch.CodeGenXMLFactory;
+import org.hibernate.eclipse.launch.ExporterAttributes;
 
 /**
  * @author Vitali Yemialyanchyk
@@ -114,9 +116,33 @@ public class ExportAntCodeGenWizardPage extends WizardNewFileCreationPage implem
 			if (consoleConfigurationName.getSelectionIndex() == -1) {
 				setErrorMessage(HibernateConsoleMessages.ExportAntCodeGenWizardPage_empty_hibernate_code_generation_configuration);
 				res = false;
+			} else {
+				ILaunchConfiguration lc = getSelectedLaunchConfig();
+				if (lc == null) {
+					setErrorMessage(HibernateConsoleMessages.ExportAntCodeGenWizardPage_cannot_find_selected_hibernate_code_generation_configuration);
+					res = false;
+				} else {
+					String checkMessage = checkCodeGenLaunchConfig(lc);
+					if  (checkMessage != null) {
+						checkMessage = HibernateConsoleMessages.ExportAntCodeGenWizardPage_error_in_hibernate_code_generation_configuration 
+							+  " " + checkMessage; //$NON-NLS-1$
+						setMessage(checkMessage, IMessageProvider.WARNING);
+					}
+				}
 			}
 		}
 		return res;
+	}
+	
+	protected String checkCodeGenLaunchConfig(ILaunchConfiguration lc) {
+		String checkMessage = null;
+		try {
+			ExporterAttributes attributes = new ExporterAttributes(lc);
+			checkMessage = attributes.checkExporterAttributes();
+		} catch (CoreException e) {
+			checkMessage = e.getMessage();
+		}
+		return checkMessage;
 	}
 
 	public ILaunchConfiguration getSelectedLaunchConfig() {
