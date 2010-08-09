@@ -19,3 +19,16 @@ Bundle-Activator: org.hibernate.eclipse.jdt.ui.test.HibernateJDTuiTestPlugin
 Bundle-Vendor: %Bundle-Vendor.0
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Import-Package: org.jmock, 
+ org.jmock.api, 
+ org.jmock.integration.junit3, 
+ org.jmock.integration.junit4, 
+ org.jmock.internal, 
+ org.jmock.internal.matcher, 
+ org.jmock.lib, 
+ org.jmock.lib.action, 
+ org.jmock.lib.concurrent, 
+ org.jmock.lib.concurrent.internal, 
+ org.jmock.lib.legacy, 
+ org.jmock.lib.script, 
+ org.jmock.syntax 
