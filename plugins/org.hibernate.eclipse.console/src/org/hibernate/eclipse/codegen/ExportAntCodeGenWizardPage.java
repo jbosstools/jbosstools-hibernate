@@ -12,14 +12,25 @@ package org.hibernate.eclipse.codegen;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.ComboDialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.DialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.IDialogFieldListener;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -27,6 +38,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
+import org.eclipse.ui.ide.undo.CreateFileOperation;
+import org.eclipse.ui.ide.undo.WorkspaceUndoUtil;
+import org.eclipse.ui.internal.ide.IDEWorkbenchMessages;
+import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
+import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.launch.CodeGenXMLFactory;
@@ -39,6 +57,8 @@ import org.hibernate.eclipse.launch.ExporterAttributes;
 public class ExportAntCodeGenWizardPage extends WizardNewFileCreationPage implements Listener {
 
 	protected ComboDialogField consoleConfigurationName;
+
+	protected CodeGenXMLFactory codeGenXMLFactory = null;
 
 	/**
 	 * Creates a new file creation (Ant code generation) wizard page. If the initial resource
@@ -123,9 +143,7 @@ public class ExportAntCodeGenWizardPage extends WizardNewFileCreationPage implem
 					res = false;
 				} else {
 					String checkMessage = checkCodeGenLaunchConfig(lc);
-					if  (checkMessage != null) {
-						checkMessage = HibernateConsoleMessages.ExportAntCodeGenWizardPage_error_in_hibernate_code_generation_configuration 
-							+  " " + checkMessage; //$NON-NLS-1$
+					if (checkMessage != null) {
 						setMessage(checkMessage, IMessageProvider.WARNING);
 					}
 				}
@@ -134,13 +152,44 @@ public class ExportAntCodeGenWizardPage extends WizardNewFileCreationPage implem
 		return res;
 	}
 	
+	protected ConsoleConfigurationPreferences getConsoleConfigPreferences(String consoleConfigName) {
+		ConsoleConfiguration consoleConfig = KnownConfigurations.getInstance().find(consoleConfigName);
+		if (consoleConfig == null) {
+			return null;
+		}
+		return consoleConfig.getPreferences();
+	}
+
 	protected String checkCodeGenLaunchConfig(ILaunchConfiguration lc) {
 		String checkMessage = null;
+		ExporterAttributes attributes = null;
 		try {
-			ExporterAttributes attributes = new ExporterAttributes(lc);
+			attributes = new ExporterAttributes(lc);
 			checkMessage = attributes.checkExporterAttributes();
 		} catch (CoreException e) {
 			checkMessage = e.getMessage();
+		}
+		if (checkMessage != null) {
+			checkMessage = NLS.bind(HibernateConsoleMessages.ExportAntCodeGenWizardPage_error_in_hibernate_code_generation_configuration, 
+					checkMessage);
+		}
+		if (checkMessage == null && attributes != null) {
+			String consoleConfigName = attributes.getConsoleConfigurationName();
+			ConsoleConfigurationPreferences consoleConfigPrefs = 
+				getConsoleConfigPreferences(consoleConfigName);
+			String connProfileName = consoleConfigPrefs == null ? null : 
+				consoleConfigPrefs.getConnectionProfileName();
+			if (!CodeGenXMLFactory.isEmpty(connProfileName)) {
+				IWorkspace workspace = ResourcesPlugin.getWorkspace();
+				String externalPropFileName = CodeGenXMLFactory.propFileNameSuffix;
+				externalPropFileName = getFileName() + "." + externalPropFileName; //$NON-NLS-1$
+				String problemMessage = NLS.bind(HibernateConsoleMessages.ExportAntCodeGenWizardPage_warning, 
+						externalPropFileName);
+				IPath resourcePath = getContainerFullPath().append(externalPropFileName);
+				if (workspace.getRoot().getFile(resourcePath).exists()) {
+					checkMessage = problemMessage;
+				}
+			}
 		}
 		return checkMessage;
 	}
@@ -164,8 +213,83 @@ public class ExportAntCodeGenWizardPage extends WizardNewFileCreationPage implem
 		if (lc == null) {
 			return null;
 		}
-		final CodeGenXMLFactory codeGenXMLFactory = new CodeGenXMLFactory(lc);
+		codeGenXMLFactory = new CodeGenXMLFactory(lc);
+		String externalPropFileName = CodeGenXMLFactory.propFileNameSuffix;
+		externalPropFileName = getFileName() + "." + externalPropFileName; //$NON-NLS-1$
+		codeGenXMLFactory.setExternalPropFileName(externalPropFileName);
 		String buildXml = codeGenXMLFactory.createCodeGenXML();
 		return new ByteArrayInputStream(buildXml.getBytes());
+	}
+
+	public IFile createNewFile() {
+		codeGenXMLFactory = null;
+		IFile res = super.createNewFile();
+		if (codeGenXMLFactory != null && res != null) {
+			final String propFileContentPreSave = codeGenXMLFactory.getPropFileContentPreSave();
+			if (!CodeGenXMLFactory.isEmpty(propFileContentPreSave)) {
+				IPath path = res.getFullPath();
+				path = path.removeLastSegments(1);
+				path = path.append(codeGenXMLFactory.getExternalPropFileName());
+				final IFile newFileHandle = createFileHandle(path);
+				final InputStream initialContents = new ByteArrayInputStream(
+						propFileContentPreSave.getBytes());
+				IRunnableWithProgress op = new IRunnableWithProgress() {
+					public void run(IProgressMonitor monitor) {
+						CreateFileOperation op = new CreateFileOperation(newFileHandle, null,
+								initialContents,
+								IDEWorkbenchMessages.WizardNewFileCreationPage_title);
+						try {
+							// see bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=219901
+							// directly execute the operation so that the undo state is
+							// not preserved. Making this undoable resulted in too many
+							// accidental file deletions.
+							op.execute(monitor, WorkspaceUndoUtil.getUIInfoAdapter(getShell()));
+						} catch (final ExecutionException e) {
+							getContainer().getShell().getDisplay().syncExec(new Runnable() {
+								public void run() {
+									if (e.getCause() instanceof CoreException) {
+										ErrorDialog
+												.openError(
+														getContainer().getShell(), // Was
+														// Utilities.getFocusShell()
+														IDEWorkbenchMessages.WizardNewFileCreationPage_errorTitle,
+														null, // no special
+														// message
+														((CoreException) e.getCause()).getStatus());
+									} else {
+										IDEWorkbenchPlugin.log(getClass(),
+												"createNewFile()", e.getCause()); //$NON-NLS-1$
+										MessageDialog
+												.openError(
+														getContainer().getShell(),
+														IDEWorkbenchMessages.WizardNewFileCreationPage_internalErrorTitle,
+														NLS.bind(
+																IDEWorkbenchMessages.WizardNewFileCreationPage_internalErrorMessage,
+																e.getCause().getMessage()));
+									}
+								}
+							});
+						}
+					}
+				};
+				try {
+					getContainer().run(true, true, op);
+				} catch (InterruptedException e) {
+				} catch (InvocationTargetException e) {
+					// Execution Exceptions are handled above but we may still get
+					// unexpected runtime errors.
+					IDEWorkbenchPlugin.log(getClass(), "createNewFile()", e.getTargetException()); //$NON-NLS-1$
+					MessageDialog
+							.open(MessageDialog.ERROR,
+									getContainer().getShell(),
+									IDEWorkbenchMessages.WizardNewFileCreationPage_internalErrorTitle,
+									NLS.bind(
+											IDEWorkbenchMessages.WizardNewFileCreationPage_internalErrorMessage,
+											e.getTargetException().getMessage()), SWT.SHEET);
+
+				}
+			}
+		}
+		return res;
 	}
 }

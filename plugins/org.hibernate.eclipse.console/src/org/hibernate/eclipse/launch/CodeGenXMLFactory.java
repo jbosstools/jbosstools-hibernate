@@ -13,6 +13,7 @@ package org.hibernate.eclipse.launch;
 import java.io.ByteArrayOutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -58,14 +59,26 @@ public class CodeGenXMLFactory {
 	 */
 	public static final long versionUID4PropFile = 1841714864553304000L;
 	/**
+	 */
+	public static final String propFileNameSuffix = "hibernate.properties"; //$NON-NLS-1$
+	/**
 	 * presave generated Hibernate Properties file content,
 	 * this is necessary to proper content formating
 	 */
 	protected String propFileContentPreSave = ""; //$NON-NLS-1$
 	/**
-	 * generate Ant scrip from this launch configuration
+	 * generate Ant script from this launch configuration
 	 */
 	protected ILaunchConfiguration lc = null;
+	/**
+	 * generate external Hibernate Properties file or
+	 * put generated properties into Ant script directly
+	 */
+	protected boolean externalPropFile = true;
+	/**
+	 * file name for generated properties file
+	 */
+	protected String externalPropFileName = propFileNameSuffix;
 
 	public CodeGenXMLFactory(ILaunchConfiguration lc) {
 		this.lc = lc;
@@ -115,52 +128,73 @@ public class CodeGenXMLFactory {
 		String generateHibernatePropeties = null;
 		String connProfileName = consoleConfigPrefs == null ? null : 
 			consoleConfigPrefs.getConnectionProfileName();
-		if (!isEmpty(connProfileName)) {
-			IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(connProfileName);
-			if (profile != null) {
-				StringBuilder propFileContent = new StringBuilder();
-				DriverInstance driverInstance = ConnectionProfileUtil.getDriverDefinition(connProfileName);
-				final Properties cpProperties = profile.getProperties(profile.getProviderId());
+		IConnectionProfile profile = getConnectionProfile(connProfileName);
+		if (profile != null) {
+			StringBuilder propFileContent = new StringBuilder();
+			String driverClass = getDriverClass(connProfileName); 
+			final Properties cpProperties = profile.getProperties(profile.getProviderId());
+			//
+			String url = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.URL"); //$NON-NLS-1$
+			//
+			String user = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.username"); //$NON-NLS-1$
+			//
+			String pass = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.password"); //$NON-NLS-1$
+			//
+			String dialectName = consoleConfigPrefs.getDialectName();
+			if (consoleConfigPrefs.getPropertyFile() != null) {
+				props = consoleConfigPrefs.getProperties();
+				props.setProperty(Environment.DRIVER, driverClass);
+				props.setProperty(Environment.URL, url);
+				props.setProperty(Environment.USER, user);
+				props.setProperty(Environment.PASS, pass);
+				if (StringHelper.isNotEmpty(dialectName)) {
+					props.setProperty(Environment.DIALECT, dialectName);
+				}
+				// output keys in sort order
+				Object[] keys = props.keySet().toArray();
+				Arrays.sort(keys);
+				for (Object obj : keys) {
+					addIntoPropFileContent(propFileContent, obj.toString(), props.getProperty(obj.toString()));
+				}
+			} else {
 				//
 				/** /
 				String driverURL = getConnectionProfileDriverURL(connProfileName);
-				el = root.addElement(CGS.PROPERTY);
-				el.addAttribute(CGS.NAME, "jdbc.driver"); //$NON-NLS-1$
-				el.addAttribute(CGS.LOCATION, driverURL);
+				el = root.addElement(CodeGenerationStrings.PROPERTY);
+				el.addAttribute(CodeGenerationStrings.NAME, "jdbc.driver"); //$NON-NLS-1$
+				el.addAttribute(CodeGenerationStrings.LOCATION, driverURL);
 				/**/
 				//
-				String driverClass = driverInstance.getProperty("org.eclipse.datatools.connectivity.db.driverClass"); //$NON-NLS-1$
 				el = root.addElement(CodeGenerationStrings.PROPERTY);
 				el.addAttribute(CodeGenerationStrings.NAME, Environment.DRIVER);
 				el.addAttribute(CodeGenerationStrings.VALUE, driverClass);
 				addIntoPropFileContent(propFileContent, Environment.DRIVER);
 				//
-				String url = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.URL"); //$NON-NLS-1$
 				el = root.addElement(CodeGenerationStrings.PROPERTY);
 				el.addAttribute(CodeGenerationStrings.NAME, Environment.URL);
 				el.addAttribute(CodeGenerationStrings.VALUE, url);
 				addIntoPropFileContent(propFileContent, Environment.URL);
 				//
-				String user = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.username"); //$NON-NLS-1$
 				el = root.addElement(CodeGenerationStrings.PROPERTY);
 				el.addAttribute(CodeGenerationStrings.NAME, Environment.USER);
 				el.addAttribute(CodeGenerationStrings.VALUE, user);
 				addIntoPropFileContent(propFileContent, Environment.USER);
 				//
-				String pass = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.password"); //$NON-NLS-1$
 				el = root.addElement(CodeGenerationStrings.PROPERTY);
 				el.addAttribute(CodeGenerationStrings.NAME, Environment.PASS);
 				el.addAttribute(CodeGenerationStrings.VALUE, pass);
 				addIntoPropFileContent(propFileContent, Environment.PASS);
 				//
-				String dialectName = consoleConfigPrefs.getDialectName();
 				if (StringHelper.isNotEmpty(dialectName)) {
 					el = root.addElement(CodeGenerationStrings.PROPERTY);
 					el.addAttribute(CodeGenerationStrings.NAME, Environment.DIALECT);
 					el.addAttribute(CodeGenerationStrings.VALUE, dialectName);
 					addIntoPropFileContent(propFileContent, Environment.DIALECT);
 				}
-				//
+			}
+			if (externalPropFile) {
+				hibernatePropFile = externalPropFileName;
+			} else {
 				hibernatePropFile = "hibernatePropFile"; //$NON-NLS-1$
 				el = root.addElement(CodeGenerationStrings.PROPERTY);
 				el.addAttribute(CodeGenerationStrings.NAME, hibernatePropFile);
@@ -174,9 +208,8 @@ public class CodeGenXMLFactory {
 				Element echo = target.addElement(CodeGenerationStrings.ECHO);
 				echo.addAttribute(CodeGenerationStrings.FILE, hibernatePropFile);
 				echo.addText(getPropFileContentStubUID());
-				//echo.addText(propFileContent.toString());
-				propFileContentPreSave = propFileContent.toString();
 			}
+			propFileContentPreSave = propFileContent.toString().trim();
 		}
 		// all jars from libraries should be here
 		String toolslibID = "toolslib"; //$NON-NLS-1$
@@ -187,11 +220,11 @@ public class CodeGenXMLFactory {
 			if (customClassPathURLs[i] == null) {
 				continue;
 			}
-			// what is right here: CGS.PATH or CGS.PATHELEMENT?
+			// what is right here: CodeGenerationStrings.PATH or CodeGenerationStrings.PATHELEMENT?
 			// http://www.redhat.com/docs/en-US/JBoss_Developer_Studio/en/hibernatetools/html/ant.html
-			// use CGS.PATH - so may be error in documentation?
+			// use CodeGenerationStrings.PATH - so may be error in documentation?
 			Element pathItem = toolslib.addElement(CodeGenerationStrings.PATH);
-			//Element pathItem = toolslib.addElement(CGS.PATHELEMENT);
+			//Element pathItem = toolslib.addElement(CodeGenerationStrings.PATHELEMENT);
 			String strPathItem = customClassPathURLs[i].getPath();
 			try {
 				strPathItem = (new java.io.File(customClassPathURLs[i].toURI())).getPath();
@@ -307,8 +340,35 @@ public class CodeGenXMLFactory {
 		return root;
 	}
 	
+	public IConnectionProfile getConnectionProfile(String connProfileName) {
+		IConnectionProfile profile = null;
+		if (!isEmpty(connProfileName)) {
+			profile = ProfileManager.getInstance().getProfileByName(connProfileName);
+		}
+		return profile;
+	}
+	
+	public DriverInstance getDriverInstance(String connProfileName) {
+		DriverInstance driverInstance = null;
+		if (!isEmpty(connProfileName)) {
+			driverInstance = ConnectionProfileUtil.getDriverDefinition(connProfileName);
+		}
+		return driverInstance;
+	}
+
+	public String getDriverClass(String connProfileName) {
+		DriverInstance driverInstance = getDriverInstance(connProfileName);
+		String driverClass = driverInstance != null ? 
+			driverInstance.getProperty("org.eclipse.datatools.connectivity.db.driverClass") : ""; //$NON-NLS-1$ //$NON-NLS-2$
+		return driverClass;
+	}
+	
 	public void addIntoPropFileContent(StringBuilder pfc, String str) {
 		pfc.append(NL + str + "=${" + str + "}"); //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	
+	public void addIntoPropFileContent(StringBuilder pfc, String name, String value) {
+		pfc.append(NL + name + "=" + value); //$NON-NLS-1$
 	}
 	
 	public ConsoleConfigurationPreferences getConsoleConfigPreferences(String consoleConfigName) {
@@ -342,7 +402,7 @@ public class CodeGenXMLFactory {
 		return driverURL;
 	}
 	
-	public boolean isEmpty(String str) {
+	public static boolean isEmpty(String str) {
 		return (str == null || str.length() == 0);
 	}
 	
@@ -362,4 +422,17 @@ public class CodeGenXMLFactory {
 			getPropFileContentStubUID(), getPropFileContentPreSave()).trim();
 		return res;
 	}
+	
+	public void setExternalPropFile(boolean externalPropFile) {
+		this.externalPropFile = externalPropFile;
+	}
+	
+	public void setExternalPropFileName(String externalPropFileName) {
+		this.externalPropFileName = externalPropFileName;
+	}
+	
+	public String getExternalPropFileName() {
+		return externalPropFileName;
+	}
+	
 }

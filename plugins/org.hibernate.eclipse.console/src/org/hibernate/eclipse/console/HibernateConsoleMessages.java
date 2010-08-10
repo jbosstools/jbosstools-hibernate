@@ -385,6 +385,7 @@ public class HibernateConsoleMessages extends NLS {
 	public static String CodeGenerationSettingsTab_use_custom_templates;
 	public static String CodeGenerationSettingsTab_use_existing;
 	public static String CodeGenerationSettingsTab_workspace;
+	public static String CodeGenerationSettingsTab_use_generation_in_external_process;
 	public static String ConsoleConfigurationLaunchDelegate_direct_launch_not_supported;
 	public static String ConsoleConfigurationMainTab_annotations;
 	public static String ConsoleConfigurationMainTab_cfg_xml;
@@ -523,6 +524,11 @@ public class HibernateConsoleMessages extends NLS {
 	public static String ExportAntCodeGenWizardPage_empty_hibernate_code_generation_configuration;
 	public static String ExportAntCodeGenWizardPage_cannot_find_selected_hibernate_code_generation_configuration;
 	public static String ExportAntCodeGenWizardPage_error_in_hibernate_code_generation_configuration;
+	public static String ExportAntCodeGenWizardPage_warning;
+	
+	public static String QueryParametersPage_add_query_parameter_tooltip;
+	public static String QueryParametersPage_remove_query_parameter_tooltip;
+	public static String QueryParametersPage_enable_disable_parameters_tooltip;
 	//
 	static {
 		// initialize resource bundle
