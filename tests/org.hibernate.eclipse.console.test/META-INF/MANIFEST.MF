@@ -54,6 +54,8 @@ Require-Bundle: org.junit,
  org.jboss.tools.hibernate.ui,
  org.eclipse.jdt.apt.core,
  org.eclipse.debug.ui,
+ org.eclipse.datatools.connectivity.ui,
+ org.eclipse.datatools.connectivity,
  org.eclipse.ui.workbench.texteditor;bundle-version="3.5.0"
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin

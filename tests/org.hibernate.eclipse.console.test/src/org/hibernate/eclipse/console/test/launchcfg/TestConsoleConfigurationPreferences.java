@@ -19,6 +19,8 @@ public class TestConsoleConfigurationPreferences implements ConsoleConfiguration
 
 	public static final String HIBERNATE_CFG_XML_PATH = "/res/project/src/hibernate.cfg.xml".replaceAll("//", File.separator); //$NON-NLS-1$ //$NON-NLS-2$
 
+	public static final String HIBERNATE_PROPERTIES_PATH = "/res/project/src/hibernate.properties".replaceAll("//", File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+
 	public void setName(String name) {
 		Assert.fail();
 	}
