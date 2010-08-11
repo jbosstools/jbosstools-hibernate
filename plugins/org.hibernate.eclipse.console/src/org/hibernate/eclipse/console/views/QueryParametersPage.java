@@ -358,6 +358,7 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 	private class NewRowAction extends Action {
 		public NewRowAction() {
 			super( "" ); //$NON-NLS-1$
+			setToolTipText(HibernateConsoleMessages.QueryParametersPage_add_query_parameter_tooltip);
 			setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.NEW_PARAMETER));
 		}
 
@@ -414,6 +415,7 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 	private class RemoveRowAction extends Action {
 		public RemoveRowAction() {
 			super( "" ); //$NON-NLS-1$
+			setToolTipText(HibernateConsoleMessages.QueryParametersPage_remove_query_parameter_tooltip);
 			setImageDescriptor(getSite().getWorkbenchWindow().getWorkbench().getSharedImages().getImageDescriptor(org.eclipse.ui.ISharedImages.IMG_TOOL_DELETE));
 		}
 
@@ -432,6 +434,7 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 	private class ToggleActive extends Action {
 		public ToggleActive() {
 			super(""); //$NON-NLS-1$
+			setToolTipText(HibernateConsoleMessages.QueryParametersPage_enable_disable_parameters_tooltip);
 			setChecked(false);
 			setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.IGNORE_PARAMETER));
 		}
