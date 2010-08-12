@@ -21,6 +21,8 @@ import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences.ConfigurationMode;
 import org.hibernate.util.StringHelper;
@@ -33,8 +35,18 @@ import org.hibernate.util.StringHelper;
  * @author Vitali Yemialyanchyk
  */
 public class ConfigurationXMLFactory {
+	
 	protected ConsoleConfigurationPreferences prefs;
 	protected Properties additional;
+	/**
+	 * place to generate Ant script file (all paths in script should be
+	 * relative to this place)
+	 */
+	protected IPath pathPlace2Generate = null;
+	/**
+	 * workspace path
+	 */
+	protected IPath pathWorkspacePath = null;
 
 	public ConfigurationXMLFactory(ConsoleConfigurationPreferences prefs, Properties additional) {
 		this.prefs = prefs;
@@ -66,8 +78,12 @@ public class ConfigurationXMLFactory {
 			rootName = ConfigurationXMLStrings.CONFIGURATION;
 		}
 		Element root = DocumentFactory.getInstance().createElement(rootName);
-		updateAttr(root, file2Str(prefs.getConfigXMLFile()), ConfigurationXMLStrings.CONFIGURATIONFILE);
-		updateAttr(root, file2Str(prefs.getPropertyFile()), ConfigurationXMLStrings.PROPERTYFILE);
+		String tmp = file2Str(prefs.getConfigXMLFile());
+		tmp = makePathRelative(tmp, pathPlace2Generate, pathWorkspacePath);
+		updateAttr(root, tmp, ConfigurationXMLStrings.CONFIGURATIONFILE);
+		tmp = file2Str(prefs.getPropertyFile());
+		tmp = makePathRelative(tmp, pathPlace2Generate, pathWorkspacePath);
+		updateAttr(root, tmp, ConfigurationXMLStrings.PROPERTYFILE);
 		updateAttr(root, prefs.getEntityResolverName(), ConfigurationXMLStrings.ENTITYRESOLVER);
 		updateAttr(root, prefs.getNamingStrategy(), ConfigurationXMLStrings.NAMINGSTRATEGY);
 		updateAttr(root, prefs.getPersistenceUnitName(), ConfigurationXMLStrings.PERSISTENCEUNIT);
@@ -85,14 +101,21 @@ public class ConfigurationXMLFactory {
 			fileset.addAttribute("id", "id"); //$NON-NLS-1$ //$NON-NLS-2$
 			for (int i = 0; i < mappingFiles.length; i++) {
 				Element include = fileset.addElement("include"); //$NON-NLS-1$
-				include.addAttribute("name", mappingFiles[i].getAbsolutePath()); //$NON-NLS-1$
+				tmp = mappingFiles[i].getAbsolutePath();
+				tmp = new Path(tmp).toString();
+				tmp = makePathRelative(tmp, pathPlace2Generate, pathWorkspacePath);
+				include.addAttribute("name", tmp); //$NON-NLS-1$
 			}
 		}
 		return root;
 	}
 
 	public static String file2Str(File file) {
-		return file == null ? null : file.getPath();
+		String res = file == null ? null : file.getPath();
+		if (res != null) {
+			res = new Path(res).toString();
+		}
+		return res;
 	}
 
 	public static void updateAttr(Element el, String val, String prName) {
@@ -130,5 +153,36 @@ public class ConfigurationXMLFactory {
 				// ignore
 			}
 		}
+	}
+
+	public static String makePathRelative(String strPathItem, final IPath pathPlace2Generate, final IPath pathWorkspacePath) {
+		if (strPathItem != null && pathPlace2Generate != null && pathWorkspacePath != null) {
+			IPath tmpPath = new Path(strPathItem);
+			if (pathWorkspacePath.isPrefixOf(tmpPath)) {
+				tmpPath = tmpPath.makeRelativeTo(pathPlace2Generate);
+				strPathItem = pathPlace2Generate.toString();
+				String tmp = tmpPath.toString();
+				if (tmp.length() > 0) {
+					strPathItem += IPath.SEPARATOR + tmp;
+				}
+			}
+		}
+		return strPathItem;
+	}
+
+	public void setPlace2Generate(IPath pathPlace2Generate) {
+		this.pathPlace2Generate = pathPlace2Generate;
+	}
+	
+	public IPath getPlace2Generate() {
+		return pathPlace2Generate;
+	}
+	
+	public void setWorkspacePath(IPath pathWorkspacePath) {
+		this.pathWorkspacePath = pathWorkspacePath;
+	}
+	
+	public IPath getWorkspacePath() {
+		return pathWorkspacePath;
 	}
 }

@@ -27,6 +27,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.datatools.connectivity.drivers.DriverInstance;
@@ -52,12 +54,18 @@ import org.hibernate.util.StringHelper;
  */
 public class CodeGenXMLFactory {
 	
+	public static final String varBuildDir = "build.dir"; //$NON-NLS-1$
+	public static final String varCurrentDir = "current.dir"; //$NON-NLS-1$
+	public static final String varWorkspaceDir = "workspace.dir"; //$NON-NLS-1$
+	
 	public static final String NL = System.getProperty("line.separator"); //$NON-NLS-1$
 	/**
 	 * UUID to make a stub for propFileContentPreSave,
 	 * before formatting
 	 */
 	public static final long versionUID4PropFile = 1841714864553304000L;
+	public static final long place2GenerateUID = 3855319363698081943L;
+	public static final long workspacePathUID = 2720818065195124531L;
 	/**
 	 */
 	public static final String propFileNameSuffix = "hibernate.properties"; //$NON-NLS-1$
@@ -79,6 +87,15 @@ public class CodeGenXMLFactory {
 	 * file name for generated properties file
 	 */
 	protected String externalPropFileName = propFileNameSuffix;
+	/**
+	 * place to generate Ant script file (all paths in script should be
+	 * relative to this place)
+	 */
+	protected String place2Generate = ""; //$NON-NLS-1$
+	/**
+	 * workspace path
+	 */
+	protected String workspacePath = ""; //$NON-NLS-1$
 
 	public CodeGenXMLFactory(ILaunchConfiguration lc) {
 		this.lc = lc;
@@ -107,21 +124,39 @@ public class CodeGenXMLFactory {
 			String revEngFile = getResLocation(attributes.getRevengSettings());
 			props.setProperty(ConfigurationXMLStrings.REVENGFILE, revEngFile);
 		}
+		//
+		final IPath pathPlace2Generate = isEmpty(place2Generate) ? null : new Path(getResLocation(place2Generate));
+		final IPath pathWorkspacePath = isEmpty(workspacePath) ? null : new Path(getResLocation(workspacePath));
+		//
 		String consoleConfigName = attributes.getConsoleConfigurationName();
 		ConsoleConfigurationPreferences consoleConfigPrefs = 
 			getConsoleConfigPreferences(consoleConfigName);
 		final ConfigurationXMLFactory configurationXMLFactory = new ConfigurationXMLFactory(
 			consoleConfigPrefs, props);
+		configurationXMLFactory.setPlace2Generate(pathPlace2Generate);
+		configurationXMLFactory.setWorkspacePath(pathWorkspacePath);
 		Element rootConsoleConfig = configurationXMLFactory.createRoot();
 		//
 		String defaultTargetName = "hibernateAntCodeGeneration"; //$NON-NLS-1$
-		Element root = DocumentFactory.getInstance().createElement(CodeGenerationStrings.PROJECT);
+		Element el, root = DocumentFactory.getInstance().createElement(CodeGenerationStrings.PROJECT);
 		root.addAttribute(CodeGenerationStrings.NAME, "CodeGen"); //$NON-NLS-1$
 		root.addAttribute(CodeGenerationStrings.DEFAULT, defaultTargetName);
 		//
+		if (!isEmpty(place2Generate)) {
+			el = root.addElement(CodeGenerationStrings.PROPERTY);
+			el.addAttribute(CodeGenerationStrings.NAME, varCurrentDir);
+			el.addAttribute(CodeGenerationStrings.LOCATION, getPlace2GenerateUID());
+		}
+		if (!isEmpty(workspacePath)) {
+			el = root.addElement(CodeGenerationStrings.PROPERTY);
+			el.addAttribute(CodeGenerationStrings.NAME, varWorkspaceDir);
+			el.addAttribute(CodeGenerationStrings.LOCATION, getWorkspacePathUID());
+		}
+		//
 		String location = getResLocation(attributes.getOutputPath());
-		Element el = root.addElement(CodeGenerationStrings.PROPERTY);
-		el.addAttribute(CodeGenerationStrings.NAME, "build.dir"); //$NON-NLS-1$
+		location = ConfigurationXMLFactory.makePathRelative(location, pathPlace2Generate, pathWorkspacePath);
+		el = root.addElement(CodeGenerationStrings.PROPERTY);
+		el.addAttribute(CodeGenerationStrings.NAME, varBuildDir);
 		el.addAttribute(CodeGenerationStrings.LOCATION, location);
 		//
 		String hibernatePropFile = null;
@@ -204,7 +239,7 @@ public class CodeGenXMLFactory {
 				Element target = root.addElement(CodeGenerationStrings.TARGET);
 				target.addAttribute(CodeGenerationStrings.NAME, generateHibernatePropeties);
 				//
-				hibernatePropFile = "${" + hibernatePropFile + "}"; //$NON-NLS-1$ //$NON-NLS-2$
+				hibernatePropFile = getVar(hibernatePropFile);
 				Element echo = target.addElement(CodeGenerationStrings.ECHO);
 				echo.addAttribute(CodeGenerationStrings.FILE, hibernatePropFile);
 				echo.addText(getPropFileContentStubUID());
@@ -231,6 +266,8 @@ public class CodeGenXMLFactory {
 			} catch (URISyntaxException e) {
 				// ignore
 			}
+			strPathItem = new Path(strPathItem).toString();
+			strPathItem = ConfigurationXMLFactory.makePathRelative(strPathItem, pathPlace2Generate, pathWorkspacePath);
 			pathItem.addAttribute(CodeGenerationStrings.LOCATION, strPathItem);
 		}
 		//
@@ -246,7 +283,7 @@ public class CodeGenXMLFactory {
 		taskdef.addAttribute(CodeGenerationStrings.CLASSPATHREF, toolslibID);
 		//
 		Element hibernatetool = target.addElement(CodeGenerationStrings.HIBERNATETOOL);
-		hibernatetool.addAttribute(CodeGenerationStrings.DESTDIR, "${build.dir}"); //$NON-NLS-1$
+		hibernatetool.addAttribute(CodeGenerationStrings.DESTDIR, getVar(varBuildDir));
 		String templatePath = getResLocation(attributes.getTemplatePath());
 		if (attributes.isUseOwnTemplates()) {
 			hibernatetool.addAttribute(CodeGenerationStrings.TEMPLATEPATH, templatePath);
@@ -262,7 +299,7 @@ public class CodeGenXMLFactory {
 		// the path there are user classes
 		Element classpath = hibernatetool.addElement(CodeGenerationStrings.CLASSPATH);
 		Element path = classpath.addElement(CodeGenerationStrings.PATH);
-		path.addAttribute(CodeGenerationStrings.LOCATION, "${build.dir}"); //$NON-NLS-1$
+		path.addAttribute(CodeGenerationStrings.LOCATION, getVar(varBuildDir));
 		//
 		Map<String, Map<String, AttributeDescription>> exportersDescr = 
 			ExportersXMLAttributeDescription.getExportersDescription();
@@ -363,8 +400,12 @@ public class CodeGenXMLFactory {
 		return driverClass;
 	}
 	
+	public String getVar(String str) {
+		return "${" + str + "}"; //$NON-NLS-1$ //$NON-NLS-2$
+	}
+	
 	public void addIntoPropFileContent(StringBuilder pfc, String str) {
-		pfc.append(NL + str + "=${" + str + "}"); //$NON-NLS-1$ //$NON-NLS-2$
+		pfc.append(NL + str + "=" + getVar(str)); //$NON-NLS-1$
 	}
 	
 	public void addIntoPropFileContent(StringBuilder pfc, String name, String value) {
@@ -389,7 +430,9 @@ public class CodeGenXMLFactory {
 		final IResource outputPathRes = findResource(path);
 		String location = path == null ? "" : path; //$NON-NLS-1$
 		if (outputPathRes != null) {
-			location = outputPathRes.getLocation().toOSString();
+			location = outputPathRes.getLocation().toString();
+		} else {
+			location = new Path(location).toString();
 		}
 		return location;
 	}
@@ -406,8 +449,16 @@ public class CodeGenXMLFactory {
 		return (str == null || str.length() == 0);
 	}
 	
-	public String getPropFileContentStubUID() {
+	public static String getPropFileContentStubUID() {
 		return Long.toHexString(versionUID4PropFile);
+	}
+	
+	public static String getPlace2GenerateUID() {
+		return Long.toHexString(place2GenerateUID);
+	}
+	
+	public static String getWorkspacePathUID() {
+		return Long.toHexString(workspacePathUID);
 	}
 	
 	public String getPropFileContentPreSave() {
@@ -418,8 +469,18 @@ public class CodeGenXMLFactory {
 		Element rootBuildXml = createRoot();
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ConfigurationXMLFactory.dump(baos, rootBuildXml);
-		String res = baos.toString().replace(
-			getPropFileContentStubUID(), getPropFileContentPreSave()).trim();
+		String res = baos.toString().trim();
+		//place2Generate, workspacePath
+		if (!isEmpty(place2Generate)) {
+			String location = getResLocation(place2Generate);
+			res = res.replace(location, getVar(varCurrentDir));
+			res = res.replace(getPlace2GenerateUID(), location);
+		}
+		if (!isEmpty(workspacePath)) {
+			String location = getResLocation(workspacePath);
+			res = res.replace(getWorkspacePathUID(), location);
+		}
+		res = res.replace(getPropFileContentStubUID(), getPropFileContentPreSave());
 		return res;
 	}
 	
@@ -433,6 +494,22 @@ public class CodeGenXMLFactory {
 	
 	public String getExternalPropFileName() {
 		return externalPropFileName;
+	}
+	
+	public void setPlace2Generate(String place2Generate) {
+		this.place2Generate = place2Generate;
+	}
+	
+	public String getPlace2Generate() {
+		return place2Generate;
+	}
+	
+	public void setWorkspacePath(String workspacePath) {
+		this.workspacePath = workspacePath;
+	}
+	
+	public String getWorkspacePath() {
+		return workspacePath;
 	}
 	
 }
