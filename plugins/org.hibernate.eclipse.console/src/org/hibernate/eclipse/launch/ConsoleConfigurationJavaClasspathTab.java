@@ -17,6 +17,7 @@ import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.eclipse.console.EclipseLaunchConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -27,6 +28,8 @@ import org.hibernate.eclipse.console.HibernateConsolePlugin;
  */
 public class ConsoleConfigurationJavaClasspathTab extends JavaClasspathTab {
 
+	protected boolean configurationFileWillBeCreated = false;
+	
 	public boolean isShowBootpath() {
 		return false;
 	}
@@ -61,12 +64,24 @@ public class ConsoleConfigurationJavaClasspathTab extends JavaClasspathTab {
 			setErrorMessage(HibernateConsoleMessages.ConsoleConfigurationTabGroup_classpath_must_be_set_or_restored_to_default);
 		}
 		if (resUserClasses && resExistArchive) {
-			try {
-				ConsoleConfiguration ccTest = new ConsoleConfiguration(new EclipseLaunchConsoleConfigurationPreferences(launchConfig));
-				ccTest.buildWith(null, false);
-			} catch (Exception ex) {
-				resUserClasses = false;
-				setErrorMessage(ex.getMessage());
+			boolean flagTryToBuild = true;
+			ConsoleConfiguration ccTest = new ConsoleConfiguration(new EclipseLaunchConsoleConfigurationPreferences(launchConfig));
+			if (configurationFileWillBeCreated) {
+				// do not make a try to build console configuration in case of "configurationFileWillBeCreated" and
+				// exception to resolve the file
+				try {
+					ccTest.getConfigXMLFile();
+				} catch (HibernateConsoleRuntimeException ex) {
+					flagTryToBuild = false;
+				}
+			}
+			if (flagTryToBuild) {
+				try {
+					ccTest.buildWith(null, false);
+				} catch (Exception ex) {
+					resUserClasses = false;
+					setErrorMessage(ex.getMessage());
+				}
 			}
 		}
 		return resUserClasses && resExistArchive;
@@ -79,5 +94,9 @@ public class ConsoleConfigurationJavaClasspathTab extends JavaClasspathTab {
 
 	public boolean canSave() {
 		return super.canSave();
+	}
+
+	public void markConfigurationFileWillBeCreated() {
+		configurationFileWillBeCreated = true;
 	}
 }

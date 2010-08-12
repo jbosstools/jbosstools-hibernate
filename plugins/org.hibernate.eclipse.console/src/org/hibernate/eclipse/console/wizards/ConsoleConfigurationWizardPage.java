@@ -73,6 +73,7 @@ import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.actions.AddConfigurationAction;
 import org.hibernate.eclipse.console.utils.LaunchHelper;
+import org.hibernate.eclipse.launch.ConsoleConfigurationJavaClasspathTab;
 import org.hibernate.eclipse.launch.ConsoleConfigurationMainTab;
 import org.hibernate.eclipse.launch.ConsoleConfigurationTabGroup;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
@@ -568,15 +569,21 @@ public class ConsoleConfigurationWizardPage extends WizardPage implements
 			setPathAttribute(currentLaunchConfig, IConsoleConfigurationLaunchConstants.CFG_XML_FILE, configFullPath);
 			setStrAttribute(currentLaunchConfig, IConsoleConfigurationLaunchConstants.CONFIGURATION_FACTORY, ConfigurationMode.CORE.toString());
 			ConsoleConfigurationMainTab ccmt = null;
+			ConsoleConfigurationJavaClasspathTab classpathTab = null;
 			ILaunchConfigurationTab[] tabs = tabGroup.getTabs();
 			for (int i = 0; i < tabs.length; i++) {
 				if (tabs[i] instanceof ConsoleConfigurationMainTab) {
 					ccmt = (ConsoleConfigurationMainTab)tabs[i];
-					break;
+				}
+				if (tabs[i] instanceof ConsoleConfigurationJavaClasspathTab) {
+					classpathTab = (ConsoleConfigurationJavaClasspathTab)tabs[i];
 				}
 			}
 			if (ccmt != null) {
 				ccmt.markConfigurationFileWillBeCreated();
+			}
+			if (classpathTab != null) {
+				classpathTab.markConfigurationFileWillBeCreated();
 			}
 		}
 		performInit();
