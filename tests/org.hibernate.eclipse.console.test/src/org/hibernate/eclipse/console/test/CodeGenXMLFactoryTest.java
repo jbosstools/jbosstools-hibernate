@@ -51,13 +51,13 @@ public class CodeGenXMLFactoryTest extends TestCase {
 	public static final String LN_1 = "\n"; //$NON-NLS-1$
 	public static final String LN_2 = "\r\n"; //$NON-NLS-1$
 
-	public static final String SAMPLE_PATH = "res/sample/".replaceAll("//", File.separator); //$NON-NLS-1$ //$NON-NLS-2$
-	public static final String PROJECT_LIB_PATH = "res/project/lib/".replaceAll("//", File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final String SAMPLE_PATH = "res/sample/".replace('/', IPath.SEPARATOR); //$NON-NLS-1$
+	public static final String PROJECT_LIB_PATH = "res/project/lib/".replace('/', IPath.SEPARATOR); //$NON-NLS-1$
 
 	public static final String HBMTEMPLATE0 = "hbm2java"; //$NON-NLS-1$
 	public static final String HBMTEMPLATE0_PROPERTIES = HibernateLaunchConstants.ATTR_EXPORTERS
 			+ '.' + HBMTEMPLATE0 + ".properties"; //$NON-NLS-1$
-	public static final String OUTDIR_PATH = "outputdir/test"; //$NON-NLS-1$
+	public static final String OUTDIR_PATH = "outputdir/test".replace('/', IPath.SEPARATOR); //$NON-NLS-1$
 
 	public class TestConsoleConfigPref extends TestConsoleConfigurationPreferences {
 		public File getConfigXMLFile() {
@@ -131,6 +131,7 @@ public class CodeGenXMLFactoryTest extends TestCase {
 
 	public enum ETestCase {
 		simple,
+		relative,
 		jpa,
 		properties,
 		nullable,
@@ -149,6 +150,8 @@ public class CodeGenXMLFactoryTest extends TestCase {
 			ConsoleConfigurationPreferences pref = null;
 			if (testCase == ETestCase.simple) {
 				pref = new TestConsoleConfigPref();
+			} else if (testCase == ETestCase.relative) {
+				pref = new TestConsoleConfigPref();
 			} else if (testCase == ETestCase.jpa) {
 				pref = new TestConsoleConfigPref2();
 			} else if (testCase == ETestCase.properties) {
@@ -162,7 +165,10 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		}
 
 		public String getResLocation(String path) {
-			return "reslocation/test"; //$NON-NLS-1$
+			if (testCase == ETestCase.relative) {
+				return super.getResLocation(path);
+			}
+			return new Path("reslocation/test").toString(); //$NON-NLS-1$
 		}
 
 		public IConnectionProfile getConnectionProfile(String connProfileName) {
@@ -189,16 +195,6 @@ public class CodeGenXMLFactoryTest extends TestCase {
 			return driverClass;
 		}
 	}
-	
-	public class CodeGenXMLFactory4Test2 extends CodeGenXMLFactory4Test {
-		public CodeGenXMLFactory4Test2(ILaunchConfiguration lc, ETestCase testCase) {
-			super(lc, testCase);
-		}
-
-		public ConsoleConfigurationPreferences getConsoleConfigPreferences(String consoleConfigName) {
-			return new TestConsoleConfigPref2();
-		}
-	}
 
 	public void testCodeGenXMLFactoryRevengAll() {
 		CodeGenXMLFactory codeGenFactory = codeGenXMLFactory(true, true, ETestCase.simple);
@@ -219,7 +215,12 @@ public class CodeGenXMLFactoryTest extends TestCase {
 	}
 
 	public void testCodeGenXMLFactoryAll() {
-		CodeGenXMLFactory codeGenFactory = codeGenXMLFactory(false, true, ETestCase.simple);
+		CodeGenXMLFactory codeGenFactory = codeGenXMLFactory(false, true, ETestCase.relative);
+		//
+		String strPlace = "project/src".replace('/', IPath.SEPARATOR); //$NON-NLS-1$
+		codeGenFactory.setPlace2Generate(strPlace);
+		codeGenFactory.setWorkspacePath(strPlace);
+		//
 		String codeGen = codeGenFactory.createCodeGenXML();
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
 		String sample = getSample("AntCodeGen_test1.xml"); //$NON-NLS-1$
@@ -228,7 +229,12 @@ public class CodeGenXMLFactoryTest extends TestCase {
 	}
 
 	public void testCodeGenXMLFactoryOne() {
-		CodeGenXMLFactory codeGenFactory = codeGenXMLFactory(false, false, ETestCase.simple);
+		CodeGenXMLFactory codeGenFactory = codeGenXMLFactory(false, false, ETestCase.relative);
+		//
+		String strPlace = "project/src".replace('/', IPath.SEPARATOR); //$NON-NLS-1$
+		codeGenFactory.setPlace2Generate(strPlace);
+		codeGenFactory.setWorkspacePath(strPlace);
+		//
 		String codeGen = codeGenFactory.createCodeGenXML();
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
 		String sample = getSample("AntCodeGen_test2.xml"); //$NON-NLS-1$
@@ -327,10 +333,11 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		try {
 			URI uri = new File("").toURL().toURI(); //$NON-NLS-1$
 			repl = (new File(uri)).getPath();
+			repl = (new Path(repl)).toString();
 		} catch (MalformedURLException e) {
 		} catch (URISyntaxException e) {
 		}
-		return codeGen.replace(repl + File.separator, ""); //$NON-NLS-1$
+		return codeGen.replace(repl + IPath.SEPARATOR, ""); //$NON-NLS-1$
 	}
 
 	public CodeGenXMLFactory codeGenXMLFactory(boolean reveng, boolean exportersAll, ETestCase testCase) {

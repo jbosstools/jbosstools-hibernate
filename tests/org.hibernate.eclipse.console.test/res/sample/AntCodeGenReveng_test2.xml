@@ -4,7 +4,7 @@
   <target name="hibernateAntCodeGeneration">
     <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="toolslib"/>
     <hibernatetool destdir="${build.dir}">
-      <jdbcconfiguration configurationFile="project\src\hibernate.cfg.xml" propertyFile="project\src\hibernate.properties" detectManyToMany="true" detectOneToOne="true" detectOptimisticLock="true" revEngFile="reslocation/test"/>
+      <jdbcconfiguration configurationFile="project/src/hibernate.cfg.xml" propertyFile="project/src/hibernate.properties" detectManyToMany="true" detectOneToOne="true" detectOptimisticLock="true" revEngFile="reslocation/test"/>
       <classpath>
         <path location="${build.dir}"/>
       </classpath>

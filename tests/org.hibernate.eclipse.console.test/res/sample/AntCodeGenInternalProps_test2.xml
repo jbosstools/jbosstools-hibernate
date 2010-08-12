@@ -12,7 +12,7 @@ hibernate.dialect=testDialect</echo>
   <target name="hibernateAntCodeGeneration" depends="generateHibernatePropeties">
     <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="toolslib"/>
     <hibernatetool destdir="${build.dir}">
-      <configuration configurationFile="project\src\hibernate.cfg.xml" propertyFile="${hibernatePropFile}"/>
+      <configuration configurationFile="project/src/hibernate.cfg.xml" propertyFile="${hibernatePropFile}"/>
       <classpath>
         <path location="${build.dir}"/>
       </classpath>

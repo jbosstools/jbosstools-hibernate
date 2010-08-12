@@ -1,10 +1,12 @@
 <project name="CodeGen" default="hibernateAntCodeGeneration">
-  <property name="build.dir" location="reslocation/test"/>
+  <property name="current.dir" location="project/src"/>
+  <property name="workspace.dir" location="project/src"/>
+  <property name="build.dir" location="12345678901234567890"/>
   <path id="toolslib"/>
   <target name="hibernateAntCodeGeneration">
     <taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="toolslib"/>
     <hibernatetool destdir="${build.dir}">
-      <configuration configurationFile="project\src\hibernate.cfg.xml" propertyFile="project\src\hibernate.properties"/>
+      <configuration configurationFile="${current.dir}/hibernate.cfg.xml" propertyFile="${current.dir}/hibernate.properties"/>
       <classpath>
         <path location="${build.dir}"/>
       </classpath>
