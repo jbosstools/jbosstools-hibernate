@@ -32,6 +32,7 @@ import org.eclipse.jpt.core.internal.context.orm.OrmOneToManyMappingDefinition;
 import org.eclipse.jpt.core.internal.context.orm.OrmOneToOneMappingDefinition;
 import org.eclipse.jpt.core.internal.context.orm.OrmTransientMappingDefinition;
 import org.eclipse.jpt.core.internal.context.orm.OrmVersionMappingDefinition;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.OrmElementCollectionMapping2_0Definition;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 
 /**
@@ -72,7 +73,7 @@ public class HibernateOrmXml2_0Definition extends AbstractOrmXmlDefinition {
 	}
 	
 	public JpaResourceType getResourceType() {
-		return JptCorePlugin.ORM_XML_1_0_RESOURCE_TYPE;
+		return JptCorePlugin.ORM_XML_2_0_RESOURCE_TYPE;
 	}
 	
 	
@@ -81,7 +82,7 @@ public class HibernateOrmXml2_0Definition extends AbstractOrmXmlDefinition {
 	@Override
 	protected OrmTypeMappingDefinition[] buildOrmTypeMappingDefinitions() {
 		// order should not matter here, but we'll use the same order as for java 
-		// (@see {@link GenericJpaPlatformProvider})
+		// (@see {@link Generic2_0JpaPlatformProvider})
 		return new OrmTypeMappingDefinition[] {
 			OrmEntityDefinition.instance(),
 			OrmEmbeddableDefinition.instance(),
@@ -94,9 +95,10 @@ public class HibernateOrmXml2_0Definition extends AbstractOrmXmlDefinition {
 	@Override
 	protected OrmAttributeMappingDefinition[] buildOrmAttributeMappingDefinitions() {
 		// order should not matter here, but we'll use the same order as for java
-		// (@see {@link GenericJpaPlatformProvider})
+		// (@see {@link Generic2_0JpaPlatformProvider})
 		return new OrmAttributeMappingDefinition[] {
 			OrmTransientMappingDefinition.instance(),
+			OrmElementCollectionMapping2_0Definition.instance(),
 			OrmIdMappingDefinition.instance(),
 			OrmVersionMappingDefinition.instance(),
 			OrmBasicMappingDefinition.instance(),
