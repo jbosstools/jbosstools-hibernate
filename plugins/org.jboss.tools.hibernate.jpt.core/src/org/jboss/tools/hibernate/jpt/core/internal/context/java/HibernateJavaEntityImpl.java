@@ -12,6 +12,7 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
@@ -263,13 +264,14 @@ implements HibernateJavaEntity {
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		validateGenericGenerator(messages, reporter, astRoot);
+		this.validateGenericGenerator(messages, reporter, astRoot);
 		this.validateForeignKey(messages, astRoot);
 	}
 	
 	protected void validateGenericGenerator(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		while (getGeneratorContainer().genericGenerators().hasNext()) {
-			getGeneratorContainer().genericGenerators().next().validate(messages, reporter, astRoot);
+		ListIterator<JavaGenericGenerator> genericGenerators = getGeneratorContainer().genericGenerators();
+		while (genericGenerators.hasNext()) {
+			genericGenerators.next().validate(messages, reporter, astRoot);
 		}	
 	}
 	
