@@ -304,8 +304,9 @@ implements HibernateJavaEntity {
 		if (result != null) {
 			return result;
 		}
-		while (getGeneratorContainer().genericGenerators().hasNext()) {
-			result = getGeneratorContainer().genericGenerators().next()
+		ListIterator<JavaGenericGenerator> genericGenerators = getGeneratorContainer().genericGenerators();
+		while (genericGenerators.hasNext()) {
+			result = genericGenerators.next()
 				.javaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
