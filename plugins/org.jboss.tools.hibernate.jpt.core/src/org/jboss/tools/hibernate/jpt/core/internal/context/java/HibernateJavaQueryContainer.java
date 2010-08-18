@@ -53,7 +53,7 @@ public interface HibernateJavaQueryContainer extends JavaQueryContainer {
 
 	void moveHibernateNamedNativeQuery(int targetIndex, int sourceIndex);
 
-	String HIBERNATE_NAMED_NATIVE_QUERIES_LIST = "hibernateNamedQueries"; //$NON-NLS-1$
+	String HIBERNATE_NAMED_NATIVE_QUERIES_LIST = "hibernateNamedNativeQueries"; //$NON-NLS-1$
 	
 	
 	void initialize(JavaResourcePersistentMember jrpm);
