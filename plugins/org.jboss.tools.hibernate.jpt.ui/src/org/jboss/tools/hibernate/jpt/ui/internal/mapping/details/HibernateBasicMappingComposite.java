@@ -23,6 +23,7 @@ import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.jboss.tools.hibernate.jpt.core.internal.context.Generated;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernateColumn;
 import org.jboss.tools.hibernate.jpt.core.internal.context.IndexHolder;
 
@@ -99,6 +100,9 @@ public class HibernateBasicMappingComposite extends AbstractBasicMappingComposit
 	
 	protected void initializeBasicSection(Composite container) {
 		new HibernateColumnComposite(this, (PropertyValueModel<? extends HibernateColumn>) buildColumnHolder(), container);
+		if (getSubject() instanceof Generated) {
+			new GeneratedComposite((Pane<? extends Generated>) this, container);
+		}
 		new FetchTypeComposite(this, container);
 		new OptionalComposite(this, addSubPane(container, 4));
 	}

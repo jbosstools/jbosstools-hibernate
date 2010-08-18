@@ -16,7 +16,6 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractEntityComposite;
 import org.eclipse.jpt.ui.internal.details.EntityNameComposite;
 import org.eclipse.jpt.ui.internal.details.IdClassComposite;
-import org.eclipse.jpt.ui.internal.details.java.JavaInheritanceComposite;
 import org.eclipse.jpt.ui.internal.details.java.JavaSecondaryTablesComposite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -81,7 +80,7 @@ public class HibernateJavaEntityComposite extends AbstractEntityComposite<Hibern
 
 	@Override
 	protected void initializeInheritanceSection(Composite container) {
-		new JavaInheritanceComposite(this, container);
+		new HibernateJavaInheritanceComposite(this, container);
 	}
 
 }
