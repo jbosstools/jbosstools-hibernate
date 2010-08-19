@@ -1,0 +1,37 @@
+
+Material sent for review
+++++++++++++++++++++++++
+
+  Tasks
+  *****
+
+  * Open hibernate console perspective.
+
+  * Hibernate mapping file - create
+                           - edit
+                       
+  * JPA - project creation
+
+  Reference
+  *********
+  + Perspectives
+    * Hibernate console
+
+Material ready for review
++++++++++++++++++++++++++  
+
+  Tasks
+  *****
+  
+  * Hibernate configuration file - create
+  
+  Reference
+  *********
+    + Wizards
+      * Hibernate mapping file
+      * Hibernate configuration file
+      
+    + Editors
+      * Hibernate mapping - tree view
+  
+  

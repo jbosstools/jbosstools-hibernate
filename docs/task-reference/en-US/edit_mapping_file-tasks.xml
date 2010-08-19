@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Hibernate_Tools_Reference_Guide.ent">
+%BOOK_ENTITIES;
+]>
+<section id="tasks-hibernate_mapping_file-edit_mapping_file">
+  <title>Edit mapping file</title>
+  <para>
+    Hibernate mapping files can be edited in either a <guilabel>Tree</guilabel> or <guilabel>Source</guilabel> view. The <guilabel>Tree</guilabel> view facilitates the manipulation of xml entries with the aid of text fields while the <guilabel>Source</guilabel> view is used to edit the file directly. Once created, the mapping file should be edited to specify elements such as table data types, primary keys and schema updates. Editing with the aid of the <guilabel>Tree</guilabel> view is described in <xref linkend="proc-hib-edit_mapping_file"></xref>.
+  </para>
+  <xi:include href="proc-hib-edit_mapping_file.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <para>&FEEDBACK-tasks-hibernate_mapping_file-edit_mapping_file;</para>
+</section>

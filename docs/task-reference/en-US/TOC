@@ -1,0 +1,256 @@
+1. Legal notices
+
+2. Latest developments
+
+3. Getting started
+   3.1. Required installations
+   3.2. Quick start
+   
+4. Concepts
+   4.1. Object-relational mapping	
+
+     4.1.1. Relational database model
+            4.1.1.1. Data relationships
+            4.1.1.2. Entity relationships
+      4.1.2. Java objects				 
+             4.1.2.1. Object attributes	   			 
+             4.1.2.2. Object relationships     		  
+      4.1.3. Hibernate meta-model
+      
+   4.2. Hibernate mapping
+             4.2.1. Persistent classes
+             4.2.2. Hibernate mapping file
+             4.2.3. Hibernate mapping types 
+                    4.2.3.1. Core configuration			
+                    4.2.3.2. Annotation configuration	
+                    4.2.3.3. JPA configuration
+                    4.2.3.4. JDBC configuration	                             
+                    
+   4.3.  Hibernate configuration	 		
+         4.3.1. hibernate.properties			
+         4.3.2. hibernate.cfg.xml			
+         
+   4.4. Hibernate query language
+   
+   4.5. Code generation and reverse engineering
+        4.5.1. Exporters for code generation
+    
+   4.6. JPA 				
+        4.6.1. DDL 			 
+        4.6.2. Entities
+    
+   4.7. Logging						
+        4.7.1. Log4j					
+        4.7.2. JDK1.4		 						     
+   			       		                                  
+   4.6. Ant tasks
+        4.6.1. Overview			
+        4.6.2. Hibernate configurations		
+        	4.6.2.1. Standard configuration			
+                4.6.2.2. Annotation based configuration			
+                4.6.2.3. JPA based configuration
+                4.6.2.4. JDBC configuration for reverse engineering	
+       4.6.3. Exporters
+              4.6.3.1. Properties     
+       4.6.4. Reverse engineering control
+              4.6.4.1. Default
+              4.6.4.2. Reveng.xml file
+              4.6.4.3. Custom
+              4.6.4.4. Custom database metadata
+   
+   4.7. POJO code generation       							
+               
+   4.8. Further resources		
+                    
+5. Tasks 
+    5.1. Basic tasks
+         5.1.1. Open hibernate console perspective
+    5.2. Hibernate mapping
+         5.2.1. Persistent classes			
+         5.2.2. Hibernate mapping file
+                5.2.2.1. Create mapping file                        
+                5.2.2.2. Edit mapping file
+         5.2.3. Hibernate mapping types
+                5.2.3.1. Core configuration
+                5.2.3.2. Annotation configuration			
+                5.2.3.3. JPA configuration
+                5.2.3.4. JDBC configuration		
+                				                                  
+    5.3. Hibernate configuration
+         5.3.1. Hibernate properties file		
+                5.3.1.1. Create properties file                        
+                5.3.1.2. Edit properties file
+                          
+         5.3.2. Hibernate configuration file	
+                5.3.2.1. Create configuration file
+                5.3.2.2. Edit configuration file          
+                
+    5.4. Hibernate query language			
+         5.4.1. Prototyping queries			
+         5.4.2. Translating queries			
+         5.4.3. Query verification			
+                
+    5.5. Code generation and reverse engineering 	
+         5.5.1. Hibernate configuration based
+                5.5.1.1. Mapping files			
+                5.5.1.2. Annotated classes		
+         5.5.2. Existing database			
+         5.5.3. Exporters
+       
+    5.6. JPA				
+         5.6.1. Project creation			
+         5.6.2. DDL generation 	
+         5.6.3. Entity generation			
+         5.6.4. Supported annotations			
+         
+    5.7. Logging
+         5.7.1. Log4j					
+         5.7.2. JDK1.4		
+                        
+    5.8. Ant tasks					
+         5.8.1. Hibernate tool
+         				
+         5.8.2. Hibernate configurations		
+                5.8.2.1. Standard configuration			
+                5.8.2.2. Annotation based configuration			
+                5.8.2.3. JPA based configuration
+                5.8.2.4. JDBC configuration for reverse engineering			
+              
+         5.8.3. Ant task exporters
+         	5.8.3.1. DDL Exporter  	
+                5.8.3.2. Java code Exporter  	 		
+    		5.8.3.3. Hibernate mapping file exporter		
+    		5.8.3.4. Hibernate configuration file exporter		 
+    		5.8.3.5. Documentation exporter			
+    		5.8.3.6. Query exporter				
+                5.8.3.7. Generic hibernate meta-model exporter	
+    		5.8.3.8. Configuration using properties				
+                
+    5.9. Controlling POJO code generation		
+         5.9.1. The meta attribute
+                  
+    6. References					
+
+    6.1. Wizards								
+
+        6.1.1. Hibernate mapping file						
+        6.1.2. Hibernate configuration file					
+        6.1.3. Hibernate console configuration					
+               6.1.3.1. Edit configuration					
+        6.1.4. Code generation							
+        6.1.5. Reverse engineering file						
+        6.1.6. Add JPA annotations						
+        6.1.7. New JPA project							
+               6.1.7.1. Generate entities					
+               6.1.7.2. DDL generation						 
+
+    6.2. Views
+
+        6.2.1. Web projects							
+        6.2.2. Hibernate configurations						
+        6.2.3. Properties							
+        6.2.4. Mapping diagram
+        6.2.5. Hibernate query result						
+               6.2.5.1. Property					
+        6.2.6. Hibernate dynamic query translator               		
+        6.2.7. Error log							
+        6.2.8. Add JPA annotations view
+        6.2.9. JPA details							
+         
+    6.3. Editors
+         6.3.1. Hibernate mapping						
+                6.3.1.1. Tree view
+                6.3.1.2. Diagram view
+         6.3.2. Hibernate configuration
+                6.3.2.1. Session factory view
+                6.3.2.2. Security view
+         6.3.3. JBoss tools properties						
+         6.3.4. Reveng.xml							
+         6.3.5. Hibernate query language								
+         6.3.6. Criteria editor						
+
+    6.4. Perspectives 
+         6.4.1. Hibernate console						
+         6.4.2. JPA								
+
+    6.5. Preferences pages
+
+    6.6. Dialogs
+
+    6.7. Icons and buttons
+    
+    6.8. Developer documentation					
+
+7. Error and warning messages
+        7.1. Basic procedures							
+        7.2. Hibernate mapping						
+        7.3. Hibernate configuration						
+        7.4. Hibernate query language						
+        7.5. Code generation and reverse engineering				
+        7.6. Ant tasks							
+        7.7. Logging								
+        7.8. JPA						
+        7.9. Controlling POJO code generation        				
+
+8. Hints
+
+    8.1. Basic procedures							
+    8.2. Hibernate mapping							
+    8.3. Hibernate configuration						
+    8.4. Hibernate query language						
+    8.5. Code generation and reverse engineering				
+    8.6. Ant tasks								
+    8.7. Logging								
+    8.8. JPA							
+    8.9. Controlling POJO code generation        				
+    
+9. Link sets
+
+       9.1. Wizards 								
+
+        9.1.1. Hibernate mapping file  						
+        9.1.2. Hibernate configuration file 					
+        9.1.3. Hibernate console configuration 					
+               9.1.3.1. Edit configuration 					
+        9.1.4. Code generation 							
+        9.1.5. Reverse engineering file 
+        9.1.6. Add JPA annotations 						
+        9.1.7. New JPA project 							
+               6.1.7.1. Generate entities 					
+               6.1.7.2. DDL generation 
+
+    9.2. Views
+
+        9.2.1. Web projects 							
+        9.2.2. Hibernate configurations 
+        9.2.3. Properties view 							
+        9.2.4. Mapping diagram view   					
+        9.2.5. Hibernate query result 						
+               9.2.5.1. Property view 					
+        9.2.6. Hibernate dynamic query translator                		
+        9.2.7. Error log 							
+        9.2.8. Add JPA annotations view
+        9.2.9. JPA details 							
+         
+    9.3. Editors
+         9.3.1. Hibernate mapping 
+         9.3.2. Hibernate configuration
+                9.3.2.1. Tree view 
+                9.3.2.2. Diagram view 
+         9.3.3. JBoss tools properties 				
+         9.3.4. Reveng.xml 							
+         9.3.5. Hibernate query Language 
+         9.3.6. Criteria editor  						
+
+    9.4. Perspectives
+        9.4.1. Hibernate console 						
+        9.4.2. JPA perspective 								
+
+    9.5. Preferences pages
+
+    9.6. Dialogs
+
+    9.7. Icons and buttons
+
+10. Link placeholder
+

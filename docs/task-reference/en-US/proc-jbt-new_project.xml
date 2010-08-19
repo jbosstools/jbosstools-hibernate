@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE procedure PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Hibernate_Tools_Reference_Guide.ent">
+%BOOK_ENTITIES;
+]>
+<procedure id="proc-jbt-new_project">
+      <title>JBoss Tools Project Creation</title>  
+      <step>
+          <title>Access the New Project Dialog</title>
+          <para>
+            Select <menuchoice><guimenu>File</guimenu><guisubmenu>New</guisubmenu><guisubmenu>Project</guisubmenu></menuchoice>.
+          </para>
+          <formalpara><title>Result:</title>
+            <para>
+              The <guilabel>New Project</guilabel> screen displays.
+            </para>
+          </formalpara>
+          <figure id="figure-jbt-new_project_01">
+            <title>JBoss Tools Project Creation</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="images/image-jbt-new_project_01.png" format="PNG"/>
+              </imageobject>
+              <textobject>
+                <para>The New Project Dialog</para>
+              </textobject>
+            </mediaobject>
+          </figure>    
+          <para>&HORIZ_LINE;</para>
+  <note><title>Expanding Folders</title>
+    <para>
+      The <guilabel>General</guilabel> folder in the above image can be expanded by clicking on the arrow highlighted in the image. This same technique can be applied to expanding folders in the <guilabel>Package Explorer</guilabel> view and is the technique used throughout this document.
+    </para>
+  </note>
+  </step>
+</procedure>
+

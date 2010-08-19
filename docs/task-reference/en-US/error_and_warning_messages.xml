@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Hibernate_Tools_Reference_Guide.ent">
+%BOOK_ENTITIES;
+]>
+<chapter id="error_and_warning_messages">
+  <title>Error and warning messages</title>
+  <para>
+
+  </para>
+  <xi:include href="basic_procedures-error_and_warning_messages.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="hibernate_mapping-error_and_warning_messages.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="hibernate_configuration-error_and_warning_messages.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="hibernate_query_language-error_and_warning_messages.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="code_generation_and_reverse_engineering-error_and_warning_messages.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="ant_tasks-error_and_warning_messages.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="logging-error_and_warning_messages.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="jpa-error_and_warning_messages.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <xi:include href="controlling_pojo_code_generation-error_and_warning_messages.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+</chapter>

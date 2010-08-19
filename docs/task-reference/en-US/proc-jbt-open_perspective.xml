@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE procedure PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Hibernate_Tools_Reference_Guide.ent">
+%BOOK_ENTITIES;
+]>
+  
+     <procedure id="proc-jbt-open_perspective"> 
+        <title>Open Perspective</title>
+      
+        <step>
+          <title>Access the Open Perspective dialog</title>
+          <para>
+            Select <menuchoice><guimenu>Window</guimenu><guisubmenu>Open Perspective</guisubmenu><guisubmenu>Other</guisubmenu></menuchoice>.
+          </para>
+          <formalpara><title>Result:</title>
+          <para>
+            The Open perspective dialog is displayed.
+          </para>
+          </formalpara>
+            <figure id="figure-jbt-open_perspective_01">
+            <title>Open Perspective dialog</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="images/image-jbt-open_perspective_01.png" format="PNG"/>
+                </imageobject>
+                <textobject>
+                  <para>Open Perspective dialog</para>
+                </textobject>
+              </mediaobject>
+           </figure>
+           <para>&HORIZ_LINE;</para>
+        </step>
+        <step>
+          <title>Select the perspective</title>
+          <orderedlist numeration ="loweralpha">
+            <listitem>
+              <para>
+                Highlight the required perspective. 
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+               Click the <guibutton>OK</guibutton> button to proceed.
+              </para>
+              <formalpara><title>Result:</title>
+                <para>
+                  The user is returned to the main display with the development perspective changed to the selected type.
+                </para>
+              </formalpara>
+            </listitem>
+          </orderedlist>
+        <para>&HORIZ_LINE;</para>
+        </step>
+  </procedure>
+  

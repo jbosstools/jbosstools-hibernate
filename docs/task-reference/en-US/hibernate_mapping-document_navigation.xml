@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Hibernate_Tools_Reference_Guide.ent">
+%BOOK_ENTITIES;
+]>
+<section id="document_navigation-hibernate_mapping">
+  <title>Hibernate mapping</title>
+  <para>
+   <xref linkend="table-document_navigation-hibernate_mapping_01"/> lists the links to related concepts, tasks and references.  
+  </para>
+  <table id="table-document_navigation-hibernate_mapping_01" frame='all'>
+    <title>Hibernate mapping</title>
+    <tgroup cols='3' align='left' colsep='1' rowsep='1'>
+      <colspec colname='c1' colwidth="1*"/>
+      <colspec colname='c2' colwidth="1*"/>
+      <colspec colname='c3' colwidth="1*"/>
+      <thead>
+        <row>
+          <entry>Concepts</entry>
+          <entry>Tasks</entry>
+          <entry>Reference</entry>
+        </row>
+      </thead>  
+      <tbody>
+        <row>
+          <entry><xref linkend="link_placeholder"></xref></entry>
+          <entry><xref linkend="tasks-hibernate_mapping-persistent_classes"></xref></entry>
+          <entry><xref linkend="reference-wizards-hibernate_mapping_file"></xref></entry>
+        </row>
+        <row>
+          <entry><xref linkend="link_placeholder"></xref></entry>
+          <entry><xref linkend="tasks-hibernate_mapping-hibernate_mapping_file"></xref></entry>
+          <entry><xref linkend="reference-views-mapping_diagram"></xref></entry>
+        </row>
+        <row>
+          <entry><xref linkend="link_placeholder"></xref></entry>
+          <entry><xref linkend="tasks-hibernate_mapping-hibernate_mapping_types"></xref></entry>
+          <entry><xref linkend="reference-editors-hibernate_mapping"></xref></entry>
+        </row>
+        <row>
+          <entry><xref linkend="link_placeholder"></xref></entry>
+          <entry><xref linkend="link_placeholder"></xref></entry>
+          <entry><xref linkend="link_placeholder"></xref></entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+  <para>&FEEDBACK-document_navigation-hibernate_mapping;</para>
+</section>

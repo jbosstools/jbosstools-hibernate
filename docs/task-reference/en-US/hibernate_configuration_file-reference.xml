@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE section PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!ENTITY % BOOK_ENTITIES SYSTEM "Hibernate_Tools_Reference_Guide.ent">
+%BOOK_ENTITIES;
+]>
+<section id="reference-wizards-hibernate_configuration_file">
+  <title>Hibernate configuration file</title>
+  <para>
+    A Hibernate configuration file is necessary to perform such tasks as reverse engineering, query prototyping and to use Hibernate Core and Annotations. The file can be created manually or with the aid of a wizard as displayed in <xref linkend="figure-hibernate_configuration_file_01"/>
+  </para>
+    <figure id="figure-hibernate_configuration_file_01">
+      <title>Hibernate configuration file - Wizard</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/image-hib-create_hibernate_configuration_file_02.png" format="PNG"/>
+        </imageobject>
+        <textobject>
+          <para>Hibernate configuration file - Wizard.</para>
+        </textobject>
+      </mediaobject>
+    </figure>
+    <formalpara><title>Related material</title>
+    <para>
+      Further tasks and information relating to this wizard are accessible from:  <xref linkend="document_navigation-hibernate_configuration"/>.
+    </para>
+  </formalpara>      
+  <para>&FEEDBACK-reference-wizards-hibernate_configuration_file;</para>
+</section>
