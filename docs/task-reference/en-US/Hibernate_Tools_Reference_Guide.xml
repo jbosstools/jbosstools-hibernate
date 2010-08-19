@@ -17,8 +17,6 @@
   <!-- 
   <xi:include href="error_and_warning_messages.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
   <xi:include href="hints.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-  
-  <xi:include href="link_sets.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
   -->
   <xi:include href="document_navigation.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
   <xi:include href="link_placeholder.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
