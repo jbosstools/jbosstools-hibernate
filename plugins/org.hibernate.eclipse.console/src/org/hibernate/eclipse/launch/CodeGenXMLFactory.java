@@ -321,8 +321,10 @@ public class CodeGenXMLFactory {
 			Map<String, AttributeDescription> attributesDescrGui = exportersDescr.get(expName);
 			// construct new mapping: name -> AttributeDescription
 			Map<String, AttributeDescription> attributesDescrAnt = new TreeMap<String, AttributeDescription>();
-			for (AttributeDescription ad : attributesDescrGui.values()) {
-				attributesDescrAnt.put(ad.name, ad);
+			if(attributesDescrGui!=null) {
+				for (AttributeDescription ad : attributesDescrGui.values()) {
+					attributesDescrAnt.put(ad.name, ad);
+				}
 			}
 			//
 			Element exporter = hibernatetool.addElement(expName);
