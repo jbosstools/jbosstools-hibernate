@@ -9,6 +9,9 @@
    <PAIR name="ListEL" value="org.jboss.tools.hibernate.xml.model.constraint.ListELConstraint"/>
    <PAIR name="ListIntEL" value="org.jboss.tools.hibernate.xml.model.constraint.ListIntELConstraint"/>
   </MAPPING>
+  <MAPPING name="FilteredTrees">
+   <PAIR name="HibernateResourceTree" value="org.jboss.tools.hibernate.xml.model.HibernateResourceTree"/>
+  </MAPPING>
   <MAPPING name="Implementations">
    <PAIR name="ComplexProperty" value="org.jboss.tools.hibernate.xml.model.impl.HibConfigComplexPropertyImpl"/>
   </MAPPING>
@@ -669,9 +672,6 @@
      <value name="post-collection-recreate"/>
      <value name="post-collection-remove"/>
      <value name="post-collection-update"/>
-     <value name="post-commit-update"/>
-     <value name="post-commit-insert"/>
-     <value name="post-commit-delete"/>
      <value/>
     </Constraint>
     <Editor name="List"/>
@@ -760,7 +760,13 @@
    <XModelAttribute default="mapping" loader="ElementType" name="element type">
     <Editor name="Uneditable"/>
    </XModelAttribute>
-   <XModelAttribute PROPERTIES="category=advanced" name="resource" xmlname="resource"/>
+   <XModelAttribute PROPERTIES="category=advanced" name="resource" xmlname="resource">
+    <Constraint loader="Tree">
+     <value name="HibernateResourceTree"/>
+     <value name="linkAction=OpenMapping"/>
+    </Constraint>
+    <Editor name="TreeChooser"/>
+   </XModelAttribute>
    <XModelAttribute PROPERTIES="category=advanced" name="file" xmlname="file"/>
    <XModelAttribute PROPERTIES="category=advanced" name="jar" xmlname="jar"/>
    <XModelAttribute PROPERTIES="category=general" name="package" xmlname="package"/>
@@ -775,6 +781,10 @@
    </XModelAttribute>
   </XModelAttributes>
   <XActionItem kind="list">
+   <XActionItem
+    HandlerClassName="org.jboss.tools.hibernate.xml.model.handlers.OpenResourceHandler"
+    ICON="action.empty" PROPERTIES="actionpath=Open;attribute=resource"
+    displayName="Open Mapping" kind="action" name="OpenMapping"/>
    <XActionItem ICON="action.copy" displayName="Copy" kind="list" name="CopyActions">
     <XActionItem BaseActionName="Cut" HandlerClassName="%Cut%"
      ICON="action.cut" displayName="Cut" kind="action" name="Cut"/>

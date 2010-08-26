@@ -42,6 +42,9 @@
 			class="org.jboss.tools.hibernate.xml.model.HibernateLoader"/>
 		<xclass id="org.jboss.tools.hibernate.xml.model.HibernateRecognizer"
 			class="org.jboss.tools.hibernate.xml.model.HibernateRecognizer"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.HibernateResourceTree"
+			class="org.jboss.tools.hibernate.xml.model.HibernateResourceTree"/>
+
 		<xclass id="org.jboss.tools.hibernate.xml.model.handlers.AddHibernateAnyHandler"
 			class="org.jboss.tools.hibernate.xml.model.handlers.AddHibernateAnyHandler"/>
 		<xclass id="org.jboss.tools.hibernate.xml.model.handlers.AddHibernateCollectionHandler"
@@ -106,6 +109,8 @@
 			class="org.jboss.tools.hibernate.xml.model.handlers.DeletePropertyHandler"/>
 		<xclass id="org.jboss.tools.hibernate.xml.model.handlers.AddPropertySupport"
 			class="org.jboss.tools.hibernate.xml.model.handlers.AddPropertySupport"/>
+		<xclass id="org.jboss.tools.hibernate.xml.model.handlers.OpenResourceHandler"
+			class="org.jboss.tools.hibernate.xml.model.handlers.OpenResourceHandler"/>
 		
 		<xclass id="org.jboss.tools.hibernate.xml.model.GrantActionsConstraint"
 			class="org.jboss.tools.hibernate.xml.model.GrantActionsConstraint"/>
