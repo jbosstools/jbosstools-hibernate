@@ -51,6 +51,17 @@ public class DeleteConfigurationAction extends SelectionListenerAction {
 
 	public void run() {
 		List selectedNonResources = getSelectedNonResources();
+		boolean ccSelected = false;
+		Iterator iter = selectedNonResources.iterator();
+		while (iter.hasNext() ) {
+			if (iter.next() instanceof ConsoleConfiguration) {
+				ccSelected = true;
+				break;
+			}
+		}
+		
+		if (!ccSelected) return;
+		
 		String question =  HibernateConsoleMessages.DeleteConfigurationAction_do_you_wish_del_selected_config;
 		String title = HibernateConsoleMessages.DeleteConfigurationAction_delete_console_config;
 		if (selectedNonResources.size() > 1){
@@ -60,7 +71,7 @@ public class DeleteConfigurationAction extends SelectionListenerAction {
 		question += HibernateConsoleMessages.DeleteConfigurationAction_str_3;
 
 		if( MessageDialog.openConfirm( null, title, question)) {
-			Iterator iter = selectedNonResources.iterator();
+			iter = selectedNonResources.iterator();
 			while (iter.hasNext() ) {
 				Object selElement = iter.next();
 				if (selElement instanceof ConsoleConfiguration) {
