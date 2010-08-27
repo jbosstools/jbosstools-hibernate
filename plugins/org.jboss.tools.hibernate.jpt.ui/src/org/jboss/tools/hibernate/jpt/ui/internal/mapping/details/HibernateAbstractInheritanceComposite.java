@@ -25,6 +25,7 @@ import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Combo;
@@ -123,20 +124,23 @@ public abstract class HibernateAbstractInheritanceComposite<T extends HibernateE
 		);
 
 		// Discriminator Value widgets
+		PropertyValueModel<Boolean> dvEnabled = this.buildDiscriminatorValueEnabledHolder();
 		Combo discriminatorValueCombo = addEditableCombo(
 			subPane,
 			buildDiscriminatorValueListHolder(),
 			buildDiscriminatorValueHolder(),
-			buildDiscriminatorValueConverter()
+			buildDiscriminatorValueConverter(),
+			dvEnabled
 		);
 		Label discriminatorValueLabel = addLabel(
 			subPane, 
-			JptUiDetailsMessages.InheritanceComposite_discriminatorValue
+			JptUiDetailsMessages.InheritanceComposite_discriminatorValue,
+			dvEnabled
 		);
 		addLabeledComposite(
 			subPane,
 			discriminatorValueLabel,
-			discriminatorValueCombo.getParent(),
+			discriminatorValueCombo,
 			null,
 			JpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_VALUE
 		);
