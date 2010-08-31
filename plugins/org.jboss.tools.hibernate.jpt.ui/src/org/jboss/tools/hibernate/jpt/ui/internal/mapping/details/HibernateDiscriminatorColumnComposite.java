@@ -86,7 +86,7 @@ public class HibernateDiscriminatorColumnComposite extends Pane<HibernateJavaEnt
 	@Override
 	protected void initialize() {
 		super.initialize();
-		discriminatorFormulaHolder = new SimplePropertyValueModel<DiscriminatorFormula>();
+		discriminatorFormulaHolder = new SimplePropertyValueModel<DiscriminatorFormula>(getSubject().getDiscriminatorFormula());
 	}
 
 	@Override
