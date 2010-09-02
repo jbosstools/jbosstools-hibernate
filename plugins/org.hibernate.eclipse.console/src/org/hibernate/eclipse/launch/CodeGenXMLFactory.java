@@ -316,15 +316,17 @@ public class CodeGenXMLFactory {
 			}
 			//Map<String, ExporterProperty> defExpProps = ef.getDefaultExporterProperties();
 			//String expId = ef.getId();
+			String expDefId = ef.getExporterDefinitionId();
 			String expName = ef.getExporterTag();
 			// mapping: guiName -> AttributeDescription
 			Map<String, AttributeDescription> attributesDescrGui = exportersDescr.get(expName);
+			if (attributesDescrGui == null) {
+				attributesDescrGui = new TreeMap<String, AttributeDescription>();
+			}
 			// construct new mapping: name -> AttributeDescription
 			Map<String, AttributeDescription> attributesDescrAnt = new TreeMap<String, AttributeDescription>();
-			if(attributesDescrGui!=null) {
-				for (AttributeDescription ad : attributesDescrGui.values()) {
-					attributesDescrAnt.put(ad.name, ad);
-				}
+			for (AttributeDescription ad : attributesDescrGui.values()) {
+				attributesDescrAnt.put(ad.name, ad);
 			}
 			//
 			Element exporter = hibernatetool.addElement(expName);
@@ -334,7 +336,7 @@ public class CodeGenXMLFactory {
 			//
 			Properties extractGUISpecial = new Properties();
 			try {
-				ExporterFactory.extractExporterProperties(ef.getId(), expProps, extractGUISpecial);
+				ExporterFactory.extractExporterProperties(expDefId, expProps, extractGUISpecial);
 			} catch (CoreException e) {
 				// ignore
 			}

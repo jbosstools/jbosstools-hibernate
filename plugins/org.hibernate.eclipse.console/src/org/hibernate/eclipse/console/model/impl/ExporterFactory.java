@@ -140,6 +140,10 @@ public class ExporterFactory {
 		return definition.getExporterTag();
 	}
 
+	public String getExporterDefinitionId() {
+		return definition.getId();
+	}
+
 	public void setProperties(Map<String, String> props) {
 		inputProperties.clear();
 		inputProperties.putAll( props );
