@@ -25,7 +25,7 @@
       <hbm2java destdir="outputdir/test">
         <property key="keyXXX" value="valueYYY"/>
       </hbm2java>
-      <hbm2ddl>
+      <hbm2ddl export="false">
         <property key="ejb3" value="false"/>
         <property key="jdk5" value="false"/>
       </hbm2ddl>
