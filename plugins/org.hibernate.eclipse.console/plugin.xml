@@ -513,7 +513,7 @@
                description="File pattern"
                name="file_pattern"
                type="string"
-               value="${package-name}/${class-name}.java"/>
+               value="{package-name}/{class-name}.java"/>
             <property
                description="For each"
                name="for_each"
