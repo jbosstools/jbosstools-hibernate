@@ -17,7 +17,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.SWTGraphics;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.LayerConstants;
@@ -86,9 +85,6 @@ public class ExportImageActionTest extends TestCase {
 				oneOf(saveDialog).getResult();
 				will(returnValue(resPath));
 
-				allowing(editor).getSite();
-				will(returnValue(null));
-
 				allowing(editor).getEditPartViewer();
 				will(returnValue(graphicalViewer));
 
@@ -98,24 +94,8 @@ public class ExportImageActionTest extends TestCase {
 				allowing(scalableFreeformRootEditPart).getLayer(LayerConstants.PRINTABLE_LAYERS);
 				will(returnValue(figure));
 
-				allowing(graphicalViewer).getControl();
-				will(returnValue(control));
-
-				allowing(control).getDisplay();
-				will(returnValue(display));
-
 				allowing(figure).getBounds();
 				will(returnValue(rectangle));
-
-				allowing(display).internal_new_GC(null);
-				will(returnValue(0));
-
-				allowing(display).internal_dispose_GC(0, null);
-
-				oneOf(figure).paint(with(any(SWTGraphics.class)));
-
-				allowing(display).isDisposed();
-				will(returnValue(true));
 			}
 		});
 		final ExportImageAction exportImageAction = new ExportImageAction(editor);
