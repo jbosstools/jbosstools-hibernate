@@ -11,6 +11,7 @@
 package org.hibernate.eclipse.console.test;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -24,12 +25,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.internal.ConnectionProfile;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.hibernate.console.ConfigurationXMLFactory;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.ExtensionManager;
 import org.hibernate.eclipse.console.model.impl.ExporterDefinition;
@@ -196,21 +201,43 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		}
 	}
 
+	/**
+	 * Parse, i.e. adjust xml text so attributes for same xml 
+	 * will be in one order.
+	 * 
+	 * @param sample
+	 * @return adjusted xml
+	 */
+	public String adjustXmlText(String sample) {
+		Document doc = null;
+		try {
+			doc = DocumentHelper.parseText(sample);
+		} catch (DocumentException e) {
+			// ignore
+		}
+		if (doc == null) {
+			return sample;
+		}
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ConfigurationXMLFactory.dump(baos, doc.getRootElement());
+		return baos.toString().trim();
+	}
+	
 	public void testCodeGenXMLFactoryRevengAll() {
 		CodeGenXMLFactory codeGenFactory = codeGenXMLFactory(true, true, ETestCase.simple);
-		String codeGen = codeGenFactory.createCodeGenXML();
+		String codeGen = adjustXmlText(codeGenFactory.createCodeGenXML());
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
-		String specimen = getSample("AntCodeGenReveng_test1.xml"); //$NON-NLS-1$
-		assertEquals(specimen.trim(), codeGen.replaceAll(LN_1, LN_2));
+		String sample = getSample("AntCodeGenReveng_test1.xml"); //$NON-NLS-1$
+		assertEquals(sample, codeGen);
 		assertEquals(codeGenProperties.length(), 0);
 	}
 
 	public void testCodeGenXMLFactoryRevengOne() {
 		CodeGenXMLFactory codeGenFactory = codeGenXMLFactory(true, false, ETestCase.simple);
-		String codeGen = codeGenFactory.createCodeGenXML();
+		String codeGen = adjustXmlText(codeGenFactory.createCodeGenXML());
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
 		String sample = getSample("AntCodeGenReveng_test2.xml"); //$NON-NLS-1$
-		assertEquals(sample.trim(), codeGen.replaceAll(LN_1, LN_2));
+		assertEquals(sample, codeGen);
 		assertEquals(codeGenProperties.length(), 0);
 	}
 
@@ -221,10 +248,10 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		codeGenFactory.setPlace2Generate(strPlace);
 		codeGenFactory.setWorkspacePath(strPlace);
 		//
-		String codeGen = codeGenFactory.createCodeGenXML();
+		String codeGen = adjustXmlText(codeGenFactory.createCodeGenXML());
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
 		String sample = getSample("AntCodeGen_test1.xml"); //$NON-NLS-1$
-		assertEquals(sample.trim(), codeGen.replaceAll(LN_1, LN_2));
+		assertEquals(sample, codeGen);
 		assertEquals(codeGenProperties.length(), 0);
 	}
 
@@ -235,96 +262,96 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		codeGenFactory.setPlace2Generate(strPlace);
 		codeGenFactory.setWorkspacePath(strPlace);
 		//
-		String codeGen = codeGenFactory.createCodeGenXML();
+		String codeGen = adjustXmlText(codeGenFactory.createCodeGenXML());
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
 		String sample = getSample("AntCodeGen_test2.xml"); //$NON-NLS-1$
-		assertEquals(sample.trim(), codeGen.replaceAll(LN_1, LN_2));
+		assertEquals(sample, codeGen);
 		assertEquals(codeGenProperties.length(), 0);
 	}
 
 	public void testCodeGenXMLFactoryJpaAll() {
 		CodeGenXMLFactory codeGenFactory = codeGenXMLFactory(false, true, ETestCase.jpa);
-		String codeGen = codeGenFactory.createCodeGenXML();
+		String codeGen = adjustXmlText(codeGenFactory.createCodeGenXML());
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
 		codeGen = updatePaths(codeGen);
 		String sample = getSample("AntCodeGenJpa_test1.xml"); //$NON-NLS-1$
-		assertEquals(sample.trim(), codeGen.replaceAll(LN_1, LN_2));
+		assertEquals(sample, codeGen);
 		assertEquals(codeGenProperties.length(), 0);
 	}
 
 	public void testCodeGenXMLFactoryJpaOne() {
 		CodeGenXMLFactory codeGenFactory = codeGenXMLFactory(false, false, ETestCase.jpa);
-		String codeGen = codeGenFactory.createCodeGenXML();
+		String codeGen = adjustXmlText(codeGenFactory.createCodeGenXML());
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
 		codeGen = updatePaths(codeGen);
 		String sample = getSample("AntCodeGenJpa_test2.xml"); //$NON-NLS-1$
-		assertEquals(sample.trim(), codeGen.replaceAll(LN_1, LN_2));
+		assertEquals(sample, codeGen);
 		assertEquals(codeGenProperties.length(), 0);
 	}
 
 	public void testCodeGenXMLFactoryNullableAll() {
 		CodeGenXMLFactory codeGenFactory = codeGenXMLFactory(false, true, ETestCase.nullable);
-		String codeGen = codeGenFactory.createCodeGenXML();
+		String codeGen = adjustXmlText(codeGenFactory.createCodeGenXML());
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
 		codeGen = updatePaths(codeGen);
 		String sample = getSample("AntCodeGenNullable_test1.xml"); //$NON-NLS-1$
-		assertEquals(sample.trim(), codeGen.replaceAll(LN_1, LN_2));
+		assertEquals(sample, codeGen);
 		assertEquals(codeGenProperties.length(), 0);
 	}
 
 	public void testCodeGenXMLFactoryNullableOne() {
 		CodeGenXMLFactory codeGenFactory = codeGenXMLFactory(false, false, ETestCase.nullable);
-		String codeGen = codeGenFactory.createCodeGenXML();
+		String codeGen = adjustXmlText(codeGenFactory.createCodeGenXML());
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
 		codeGen = updatePaths(codeGen);
 		String sample = getSample("AntCodeGenNullable_test2.xml"); //$NON-NLS-1$
-		assertEquals(sample.trim(), codeGen.replaceAll(LN_1, LN_2));
+		assertEquals(sample, codeGen);
 		assertEquals(codeGenProperties.length(), 0);
 	}
 
 	public void testCodeGenXMLFactoryPropertiesAll() {
 		CodeGenXMLFactory codeGenFactory = codeGenXMLFactory(false, true, ETestCase.properties);
-		String codeGen = codeGenFactory.createCodeGenXML();
+		String codeGen = adjustXmlText(codeGenFactory.createCodeGenXML());
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
 		codeGen = updatePaths(codeGen);
 		String sample = getSample("AntCodeGenProps_test1.xml"); //$NON-NLS-1$
 		String sampleProperties = getSample("AntCodeGenProps.hibernate.properties"); //$NON-NLS-1$
-		assertEquals(sample.trim(), codeGen.replaceAll(LN_1, LN_2));
+		assertEquals(sample, codeGen);
 		assertEquals(sampleProperties.trim(), codeGenProperties);
 	}
 
 	public void testCodeGenXMLFactoryPropertiesOne() {
 		CodeGenXMLFactory codeGenFactory = codeGenXMLFactory(false, false, ETestCase.properties);
-		String codeGen = codeGenFactory.createCodeGenXML();
+		String codeGen = adjustXmlText(codeGenFactory.createCodeGenXML());
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
 		codeGen = updatePaths(codeGen);
 		String sample = getSample("AntCodeGenProps_test2.xml"); //$NON-NLS-1$
 		String sampleProperties = getSample("AntCodeGenProps.hibernate.properties"); //$NON-NLS-1$
-		assertEquals(sample.trim(), codeGen.replaceAll(LN_1, LN_2));
+		assertEquals(sample, codeGen);
 		assertEquals(sampleProperties.trim(), codeGenProperties);
 	}
 
 	public void testCodeGenXMLFactoryInternalPropertiesAll() {
 		CodeGenXMLFactory codeGenFactory = codeGenXMLFactory(false, true, ETestCase.properties);
 		codeGenFactory.setExternalPropFile(false);
-		String codeGen = codeGenFactory.createCodeGenXML();
+		String codeGen = adjustXmlText(codeGenFactory.createCodeGenXML());
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
 		codeGen = updatePaths(codeGen);
 		String sample = getSample("AntCodeGenInternalProps_test1.xml"); //$NON-NLS-1$
 		String sampleProperties = getSample("AntCodeGenProps.hibernate.properties"); //$NON-NLS-1$
-		assertEquals(sample.trim(), codeGen.replaceAll(LN_2, LN_1).replaceAll(LN_1, LN_2));
+		assertEquals(sample, codeGen);
 		assertEquals(sampleProperties.trim(), codeGenProperties);
 	}
 
 	public void testCodeGenXMLFactoryInternalPropertiesOne() {
 		CodeGenXMLFactory codeGenFactory = codeGenXMLFactory(false, false, ETestCase.properties);
 		codeGenFactory.setExternalPropFile(false);
-		String codeGen = codeGenFactory.createCodeGenXML();
+		String codeGen = adjustXmlText(codeGenFactory.createCodeGenXML());
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
 		codeGen = updatePaths(codeGen);
 		String sample = getSample("AntCodeGenInternalProps_test2.xml"); //$NON-NLS-1$
 		String sampleProperties = getSample("AntCodeGenProps.hibernate.properties"); //$NON-NLS-1$
-		assertEquals(sample.trim(), codeGen.replaceAll(LN_2, LN_1).replaceAll(LN_1, LN_2));
+		assertEquals(sample, codeGen);
 		assertEquals(sampleProperties.trim(), codeGenProperties);
 	}
 	
@@ -404,7 +431,7 @@ public class CodeGenXMLFactoryTest extends TestCase {
 			in.close();
 		} catch (IOException e) {
 		}
-		return cbuf.toString();
+		return adjustXmlText(cbuf.toString());
 	}
 
 	protected File getResourceItem(String strResPath) throws IOException {
