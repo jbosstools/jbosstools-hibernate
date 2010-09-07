@@ -32,7 +32,7 @@ public class ConsolePluginAllTests {
 		suite.addTestSuite(HBMInfoExtractorTest.class);
 		
 		// https://jira.jboss.org/browse/JBIDE-6838 
-		//suite.addTestSuite(CodeGenXMLFactoryTest.class);
+		suite.addTestSuite(CodeGenXMLFactoryTest.class);
 
 		// core tests
 		//Properties properties = new Properties();
