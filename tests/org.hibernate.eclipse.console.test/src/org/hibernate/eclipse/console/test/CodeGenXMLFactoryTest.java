@@ -406,6 +406,7 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		expProps2.put("keyXXX", "valueYYY"); //$NON-NLS-1$ //$NON-NLS-2$
 		testLaunchConfigAttr.put(HBMTEMPLATE0_PROPERTIES, expProps2);
 		testLaunchConfigAttr.put(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER, reveng);
+		testLaunchConfigAttr.put(HibernateLaunchConstants.ATTR_PREFER_BASIC_COMPOSITE_IDS, true);
 		TestLaunchConfig testLaunchConfig = new TestLaunchConfig(testLaunchConfigAttr);
 		CodeGenXMLFactory codeGenFactory = new CodeGenXMLFactory4Test(testLaunchConfig, testCase);
 		return codeGenFactory;
