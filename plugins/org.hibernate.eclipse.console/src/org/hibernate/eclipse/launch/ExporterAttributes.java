@@ -385,6 +385,11 @@ public class ExporterAttributes
                 msg = PathHelper.checkDirectory(templatePath, HibernateConsoleMessages.CodeGenerationSettingsTab_template_dir, true);
             }
         }
+        if (msg == null) {
+            if (reverseEngineer && !preferBasicCompositeIds) {
+                msg = HibernateConsoleMessages.CodeGenerationSettingsTab_script_can_not_be_generated_correctly_without;
+            }
+        }
 		return msg;
 	}
 }

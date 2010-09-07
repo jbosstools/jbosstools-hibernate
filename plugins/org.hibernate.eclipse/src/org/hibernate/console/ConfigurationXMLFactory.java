@@ -87,6 +87,8 @@ public class ConfigurationXMLFactory {
 		updateAttr(root, prefs.getEntityResolverName(), ConfigurationXMLStrings.ENTITYRESOLVER);
 		updateAttr(root, prefs.getNamingStrategy(), ConfigurationXMLStrings.NAMINGSTRATEGY);
 		updateAttr(root, prefs.getPersistenceUnitName(), ConfigurationXMLStrings.PERSISTENCEUNIT);
+		// very specific property, for more information -> JBIDE-6997 
+		//updateAttr(root, additional, ConfigurationXMLStrings.PREFERBASICCOMPOSITEIDS);
 		updateAttr(root, additional, ConfigurationXMLStrings.DETECTMANYTOMANY);
 		updateAttr(root, additional, ConfigurationXMLStrings.DETECTONTTOONE);
 		updateAttr(root, additional, ConfigurationXMLStrings.DETECTOPTIMISTICLOCK);
