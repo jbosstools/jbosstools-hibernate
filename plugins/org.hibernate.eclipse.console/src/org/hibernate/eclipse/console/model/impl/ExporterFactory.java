@@ -166,6 +166,36 @@ public class ExporterFactory {
 		IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
 		return variableManager.performStringSubstitution(expression, false);
 	}
+	
+	/**
+	 * ExporterFactory update a collection of output directories, 
+	 * true if new output directory was added into the set of outputDirs.
+	 * 
+	 * @param defOutDir
+	 * @param globalProps
+	 * @param outputDirs
+	 * @return true if new output directory added
+	 * @throws CoreException
+	 */
+	public boolean collectOutputDirectories(String defOutDir, final Properties globalProps, 
+			Set<String> outputDirs) throws CoreException {
+		Properties extract = new Properties();
+		Properties props = new Properties();
+		props.putAll(globalProps);
+		props.putAll(getProperties());
+		extractExporterProperties(exporterId, props, extract);
+		String outputPath = defOutDir;
+		if (extract.containsKey(ExporterFactoryStrings.OUTPUTDIR)) {
+			outputPath = extract.getProperty(ExporterFactoryStrings.OUTPUTDIR);
+		}
+		String resolvedOutputDir = resolve(outputPath);
+		String loc = PathHelper.getLocationAsStringPath(resolvedOutputDir);
+		boolean res = false;
+		if (StringHelper.isNotEmpty(loc)) { // only set if something valid found
+			res = outputDirs.add(loc);
+		}
+		return res;
+	}
 
 	/**
 	 * Creates exporter with the specified settings; also resolves any relevant properties via Eclipse VariablesPlugin.

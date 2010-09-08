@@ -516,4 +516,9 @@ public class CodeGenXMLFactory {
 		return workspacePath;
 	}
 	
+	public static String getExternalPropFileNameStandard(String fileName) {
+		String externalPropFileName = CodeGenXMLFactory.propFileNameSuffix;
+		externalPropFileName = fileName + "." + externalPropFileName; //$NON-NLS-1$
+		return externalPropFileName;
+	}
 }

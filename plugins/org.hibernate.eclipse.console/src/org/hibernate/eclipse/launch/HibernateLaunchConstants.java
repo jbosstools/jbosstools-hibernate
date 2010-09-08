@@ -56,6 +56,7 @@ public class HibernateLaunchConstants
    public static final String ATTR_REVERSE_ENGINEER_SETTINGS = ATTR_PREFIX + ConfigurationXMLStrings.REVENGFILE;
    public static final String ATTR_REVERSE_ENGINEER_STRATEGY = ATTR_PREFIX + "revengstrategy"; //$NON-NLS-1$
    public static final String ATTR_USE_OWN_TEMPLATES = ATTR_PREFIX + "useOwnTemplates"; //$NON-NLS-1$
+   public static final String ATTR_USE_EXTERNAL_PROCESS = ATTR_PREFIX + "useExternalProcess"; //$NON-NLS-1$
    public static final String ATTR_ENABLE_EJB3_ANNOTATIONS = ATTR_PREFIX + CodeGenerationStrings.EJB3;
    public static final String ATTR_ENABLE_JDK5 = ATTR_PREFIX + CodeGenerationStrings.JDK5;
    public static final String ATTR_PACKAGE_NAME = ATTR_PREFIX + "package"; //$NON-NLS-1$

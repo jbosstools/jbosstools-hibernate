@@ -92,7 +92,7 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
     private SelectionButtonDialogField useOwnTemplates;
     private DirectoryBrowseField templatedir;
 
-
+	private SelectionButtonDialogField useExternalProcess;
 
 	public CodeGenerationSettingsTab() {
 		super();
@@ -113,6 +113,16 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 		layout.numColumns = 4;
 		layout.verticalSpacing = 10;
 
+		IDialogFieldListener fieldlistener = new IDialogFieldListener() {
+			public void dialogFieldChanged(DialogField field) {
+				dialogChanged();
+			}
+		};
+
+		useExternalProcess = new SelectionButtonDialogField(SWT.CHECK);
+		useExternalProcess.setDialogFieldListener(fieldlistener);
+		useExternalProcess.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_use_generation_in_external_process);
+
 		consoleConfigurationName = new ComboDialogField(SWT.READ_ONLY);
 		consoleConfigurationName.setLabelText(HibernateConsoleMessages.CodeGenerationSettingsTab_console_configuration);
 		ConsoleConfiguration[] cfg = LaunchHelper.findFilteredSortedConsoleConfigs();
@@ -123,12 +133,6 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 			names[i + 1] = configuration.getName();
 		}
 		consoleConfigurationName.setItems(names);
-
-		IDialogFieldListener fieldlistener = new IDialogFieldListener() {
-			public void dialogFieldChanged(DialogField field) {
-				dialogChanged();
-			}
-		};
 
         consoleConfigurationName.setDialogFieldListener(fieldlistener);
 
@@ -242,6 +246,7 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 		useOwnTemplates.attachDialogField(templatedir);
         reverseengineer.attachDialogFields(new DialogField[] { packageName, preferRawCompositeIds, reverseEngineeringSettings, reverseEngineeringStrategy, autoManyToMany, autoOneToOne, autoVersioning });
 
+		useExternalProcess.doFillIntoGrid(container, 4);
 		consoleConfigurationName.doFillIntoGrid(container, 4);
 		Control[] controls = outputdir.doFillIntoGrid(container, 4);
 		// Hack to tell the text field to stretch!
@@ -280,12 +285,20 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 		outputdir.setEnabled(!configSelected);
 		reverseengineer.setEnabled(!configSelected);
 		useOwnTemplates.setEnabled(!configSelected);
+		useExternalProcess.setEnabled(!configSelected);
+
+		boolean useExternalProcessFlag = useExternalProcess.isSelected();
+		preferRawCompositeIds.setEnabled(reverseengineer.isSelected() && 
+			!configSelected && !useExternalProcessFlag);
+		if (useExternalProcessFlag) {
+			preferRawCompositeIds.setSelection(true);
+		}
 
 		if (configSelected) {
 			updateStatus(HibernateConsoleMessages.CodeGenerationSettingsTab_console_cfg_must_be_specified);
 			return;
 		}
-
+		
         String msg = PathHelper.checkDirectory(outputdir.getText(), HibernateConsoleMessages.CodeGenerationSettingsTab_output_directory, true);
 
         if (msg!=null) {
@@ -377,7 +390,7 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 
 	public String getConfigurationName() {
 		String text = consoleConfigurationName.getText();
-		return NULL_CONFIG.equals(text) ? "" : text;
+		return NULL_CONFIG.equals(text) ? "" : text; //$NON-NLS-1$
 	}
 
 
@@ -424,27 +437,29 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 	}
 
 	public void initializeFrom(ILaunchConfiguration configuration) {
+		ExporterAttributes attributes = null;
 		try {
-           ExporterAttributes attributes = new ExporterAttributes(configuration);
-           if ( consoleConfigurationName.getText() != attributes.getConsoleConfigurationName()){
-        	   consoleConfigurationName.selectItem(0);//NULL_CONFIG
-        	   consoleConfigurationName.setText(attributes.getConsoleConfigurationName());
-           }
-           
-           preferRawCompositeIds.setSelection(attributes.isPreferBasicCompositeIds());
-           autoManyToMany.setSelection( attributes.detectManyToMany() );
-           autoVersioning.setSelection( attributes.detectOptimisticLock() );
-           autoOneToOne.setSelection( attributes.detectOneToOne());
-           outputdir.setText(safeText(attributes.getOutputPath()));
-           reverseengineer.setSelection(attributes.isReverseEngineer());
-           reverseEngineeringSettings.setText(safeText(attributes.getRevengSettings()));
-           reverseEngineeringStrategy.setText(safeText(attributes.getRevengStrategy()));
-           useOwnTemplates.setSelection(attributes.isUseOwnTemplates());
-           packageName.setText(safeText(attributes.getPackageName()));
-           templatedir.setText(safeText(attributes.getTemplatePath()));
+			attributes = new ExporterAttributes(configuration);
 		} catch (CoreException ce) {
-			HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.CodeGenerationSettingsTab_problems_when_reading, ce);
+			HibernateConsolePlugin.getDefault().logErrorMessage(
+				HibernateConsoleMessages.CodeGenerationSettingsTab_problems_when_reading, ce);
 		}
+		if (attributes == null) {
+			return;
+		}
+		consoleConfigurationName.setText(attributes.getConsoleConfigurationName());
+		preferRawCompositeIds.setSelection(attributes.isPreferBasicCompositeIds());
+		autoManyToMany.setSelection( attributes.detectManyToMany() );
+		autoVersioning.setSelection( attributes.detectOptimisticLock() );
+		autoOneToOne.setSelection( attributes.detectOneToOne());
+		outputdir.setText(safeText(attributes.getOutputPath()));
+		reverseengineer.setSelection(attributes.isReverseEngineer());
+		reverseEngineeringSettings.setText(safeText(attributes.getRevengSettings()));
+		reverseEngineeringStrategy.setText(safeText(attributes.getRevengStrategy()));
+		useOwnTemplates.setSelection(attributes.isUseOwnTemplates());
+		packageName.setText(safeText(attributes.getPackageName()));
+		templatedir.setText(safeText(attributes.getTemplatePath()));
+		useExternalProcess.setSelection(attributes.isUseExternalProcess());
 	}
 
 	private String safeText(String text) {
@@ -453,28 +468,29 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 
 	private String strOrNull(String text) {
 		if(text==null || text.trim().length()==0) {
-			return null;
-		} else {
-			return text;
+			text = null;
 		}
+		return text;
 	}
 
-	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR, strOrNull(outputdir.getText()));
-		configuration.setAttribute(HibernateLaunchConstants.ATTR_PREFER_BASIC_COMPOSITE_IDS, preferRawCompositeIds.isSelected());
-		configuration.setAttribute(HibernateLaunchConstants.ATTR_AUTOMATIC_MANY_TO_MANY, autoManyToMany.isSelected());
-		configuration.setAttribute(HibernateLaunchConstants.ATTR_AUTOMATIC_ONE_TO_ONE, autoOneToOne.isSelected());
-		configuration.setAttribute(HibernateLaunchConstants.ATTR_AUTOMATIC_VERSIONING, autoVersioning.isSelected());
-		configuration.setAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER, isReverseEngineerEnabled());
-		configuration.setAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_STRATEGY, strOrNull(reverseEngineeringStrategy.getText()));
-		configuration.setAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_SETTINGS, strOrNull(reverseEngineeringSettings.getText()));
+	public void performApply(ILaunchConfigurationWorkingCopy config) {
+		config.setAttribute(HibernateLaunchConstants.ATTR_OUTPUT_DIR, strOrNull(outputdir.getText()));
+		config.setAttribute(HibernateLaunchConstants.ATTR_PREFER_BASIC_COMPOSITE_IDS, preferRawCompositeIds.isSelected());
+		config.setAttribute(HibernateLaunchConstants.ATTR_AUTOMATIC_MANY_TO_MANY, autoManyToMany.isSelected());
+		config.setAttribute(HibernateLaunchConstants.ATTR_AUTOMATIC_ONE_TO_ONE, autoOneToOne.isSelected());
+		config.setAttribute(HibernateLaunchConstants.ATTR_AUTOMATIC_VERSIONING, autoVersioning.isSelected());
+		config.setAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER, isReverseEngineerEnabled());
+		config.setAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_STRATEGY, strOrNull(reverseEngineeringStrategy.getText()));
+		config.setAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_SETTINGS, strOrNull(reverseEngineeringSettings.getText()));
 
 
-		configuration.setAttribute(HibernateLaunchConstants.ATTR_USE_OWN_TEMPLATES, useOwnTemplates.isSelected());
-		configuration.setAttribute(HibernateLaunchConstants.ATTR_TEMPLATE_DIR, strOrNull(templatedir.getText()));
+		config.setAttribute(HibernateLaunchConstants.ATTR_USE_OWN_TEMPLATES, useOwnTemplates.isSelected());
+		config.setAttribute(HibernateLaunchConstants.ATTR_TEMPLATE_DIR, strOrNull(templatedir.getText()));
 
-		configuration.setAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME, getConfigurationName());
-		configuration.setAttribute(HibernateLaunchConstants.ATTR_PACKAGE_NAME, getOutputPackage());
+		config.setAttribute(HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME, getConfigurationName());
+		config.setAttribute(HibernateLaunchConstants.ATTR_PACKAGE_NAME, getOutputPackage());
+
+		config.setAttribute(HibernateLaunchConstants.ATTR_USE_EXTERNAL_PROCESS, useExternalProcess.isSelected());
 
 	}
 

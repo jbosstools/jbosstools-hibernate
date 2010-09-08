@@ -214,8 +214,7 @@ public class ExportAntCodeGenWizardPage extends WizardNewFileCreationPage implem
 			return null;
 		}
 		codeGenXMLFactory = new CodeGenXMLFactory(lc);
-		String externalPropFileName = CodeGenXMLFactory.propFileNameSuffix;
-		externalPropFileName = getFileName() + "." + externalPropFileName; //$NON-NLS-1$
+		String externalPropFileName = CodeGenXMLFactory.getExternalPropFileNameStandard(getFileName());
 		codeGenXMLFactory.setExternalPropFileName(externalPropFileName);
 		codeGenXMLFactory.setPlace2Generate(getContainerFullPath().toString());
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();

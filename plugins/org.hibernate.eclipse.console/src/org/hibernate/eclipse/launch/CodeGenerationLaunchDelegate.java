@@ -22,6 +22,9 @@
 package org.hibernate.eclipse.launch;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -30,12 +33,16 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.eclipse.ant.internal.launching.launchConfigurations.AntLaunchDelegate;
+import org.eclipse.ant.launching.IAntLaunchConstants;
+import org.eclipse.core.externaltools.internal.IExternalToolConstants;
 import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBuffer;
 import org.eclipse.core.filebuffers.manipulation.FileBufferOperationRunner;
 import org.eclipse.core.filebuffers.manipulation.MultiTextEditWithProgress;
 import org.eclipse.core.filebuffers.manipulation.TextFileBufferOperation;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
@@ -46,14 +53,17 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.ui.RefreshTab;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.ToolFactory;
 import org.eclipse.jdt.core.formatter.CodeFormatter;
+import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jface.text.DocumentRewriteSessionType;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.osgi.util.NLS;
@@ -77,8 +87,10 @@ import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.util.ReflectHelper;
 import org.hibernate.util.StringHelper;
 
-public class CodeGenerationLaunchDelegate extends
-		LaunchConfigurationDelegate {
+@SuppressWarnings("restriction")
+public class CodeGenerationLaunchDelegate extends AntLaunchDelegate { 
+	
+	protected IPath path2GenBuildXml = null;
 
 	private static final class FormatGeneratedCode extends TextFileBufferOperation {
 		private FormatGeneratedCode(String name) {
@@ -115,28 +127,136 @@ public class CodeGenerationLaunchDelegate extends
 		}
 	}
 
+	/**
+	 * Create file with file name fileName and content fileContent
+	 * 
+	 * @param fileName - file name
+	 * @param fileContent - file content
+	 * @throws IOException 
+	 */
+	protected void createFile(String fileName, String fileContent) throws IOException {
+		FileOutputStream fos = null;
+		try {
+			File ff = new File(fileName);
+			if (!ff.exists()) {
+				ff.createNewFile();
+			}
+			fos = new FileOutputStream(fileName);
+			fos.write(fileContent.getBytes());
+			fos.flush();
+		} finally {
+			if (fos != null) {
+				try {
+					fos.close();
+				} catch (IOException e) {}
+			}
+		}
+	}
+	
+	/**
+	 * Create temporary build.xml and then erase it after code generation complete
+	 * 
+	 * @param lc
+	 * @throws IOException 
+	 * @throws UnsupportedEncodingException 
+	 */
+	protected void createBuildXmlFile(ILaunchConfiguration lc, String fileName) throws UnsupportedEncodingException, IOException {
+		CodeGenXMLFactory codeGenXMLFactory = new CodeGenXMLFactory(lc);
+		String externalPropFileName = CodeGenXMLFactory.getExternalPropFileNameStandard(fileName);
+		codeGenXMLFactory.setExternalPropFileName(externalPropFileName);
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		if (workspace != null && workspace.getRoot() != null && workspace.getRoot().getLocation() != null) {
+			codeGenXMLFactory.setWorkspacePath(workspace.getRoot().getLocation().toString());
+		}
+		String buildXml = codeGenXMLFactory.createCodeGenXML();
+		createFile(fileName, buildXml);
+		final String propFileContentPreSave = codeGenXMLFactory.getPropFileContentPreSave();
+		createFile(externalPropFileName, propFileContentPreSave);
+	}
+	
+	/**
+	 * Update launch configuration with attributes required for external process codegen.
+	 * 
+	 * @param lc
+	 * @return
+	 * @throws CoreException
+	 */
+	public ILaunchConfiguration updateLaunchConfig(ILaunchConfiguration lc) throws CoreException {
+		ILaunchConfigurationWorkingCopy lcwc = lc.getWorkingCopy();
+		String fileName = null;
+    	try {
+			fileName = getPath2GenBuildXml().toString();
+		} catch (IOException e) {
+			throw new CoreException(HibernateConsolePlugin.throwableToStatus(e, 666));
+		}
+		// setup location of Ant build.xml file 
+		lcwc.setAttribute(IExternalToolConstants.ATTR_LOCATION, fileName);
+		// setup Ant runner main type
+		lcwc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, 
+			IAntLaunchConstants.MAIN_TYPE_NAME);
+		// setup ant remote process factory
+		lcwc.setAttribute(DebugPlugin.ATTR_PROCESS_FACTORY_ID, "org.eclipse.ant.ui.remoteAntProcessFactory"); //$NON-NLS-1$
+		// refresh whole workspace
+		//lcwc.setAttribute(RefreshUtil.ATTR_REFRESH_SCOPE, RefreshUtil.MEMENTO_WORKSPACE);
+		return lcwc;
+	}
+
+	public ILaunch getLaunch(ILaunchConfiguration configuration, String mode)
+			throws CoreException {
+		configuration = updateLaunchConfig(configuration);
+		return super.getLaunch(configuration, mode);
+	}
 
 	public void launch(ILaunchConfiguration configuration, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		Assert.isNotNull(configuration);
 		Assert.isNotNull(monitor);
-		try {
-		    ExporterAttributes attributes = new ExporterAttributes(configuration);
-
-		    List<ExporterFactory> exporterFactories = attributes.getExporterFactories();
-		    for (Iterator<ExporterFactory> iter = exporterFactories.iterator(); iter.hasNext();) {
-				ExporterFactory exFactory = iter.next();
-				if(!exFactory.isEnabled(configuration)) {
-					iter.remove();
-				}
+		ExporterAttributes attributes = new ExporterAttributes(configuration);
+		List<ExporterFactory> exporterFactories = attributes.getExporterFactories();
+		for (Iterator<ExporterFactory> iter = exporterFactories.iterator(); iter.hasNext();) {
+			ExporterFactory exFactory = iter.next();
+			if (!exFactory.isEnabled(configuration)) {
+				iter.remove();
 			}
-
+		}
+		if (attributes.isUseExternalProcess()) {
+			// create temporary build.xml and then erase it after code generation complete
+			String fileName = null;
+			try {
+				fileName = getPath2GenBuildXml().toString();
+		    	createBuildXmlFile(configuration, fileName);
+			} catch (UnsupportedEncodingException e) {
+				throw new CoreException(HibernateConsolePlugin.throwableToStatus(e, 666));
+			} catch (IOException e) {
+				throw new CoreException(HibernateConsolePlugin.throwableToStatus(e, 666));
+			}
+			configuration = updateLaunchConfig(configuration);
+			super.launch(configuration, mode, launch, monitor);
+	    	//
+	    	final Properties props = new Properties();
+            props.put(CodeGenerationStrings.EJB3, "" + attributes.isEJB3Enabled()); //$NON-NLS-1$
+            props.put(CodeGenerationStrings.JDK5, "" + attributes.isJDK5Enabled()); //$NON-NLS-1$
+            Set<String> outputDirs = new HashSet<String>();
+			for (Iterator<ExporterFactory> iter = exporterFactories.iterator(); iter.hasNext();) {
+				ExporterFactory exFactory = iter.next();
+				exFactory.collectOutputDirectories(attributes.getOutputPath(), 
+						props, outputDirs);
+			}
+			//
+			final IProcess[] processes = launch.getProcesses();
+			// codegen listener to erase build.xml file after codegen process complete
+			CodeGenerationProcessListener refresher = new CodeGenerationProcessListener(
+				processes[0], fileName, outputDirs);
+			refresher.startBackgroundRefresh();
+			return;
+	    }
+		try {
 		    Set<String> outputDirectories = new HashSet<String>();
 		    ExporterFactory[] exporters = exporterFactories.toArray( new ExporterFactory[exporterFactories.size()] );
             ArtifactCollector collector = runExporters(attributes, exporters, outputDirectories, monitor);
 
             for (String path : outputDirectories) {
-            	refreshOutputDir( path );
+            	CodeGenerationUtils.refreshOutputDir(path);
 			}
 
 			RefreshTab.refreshResources(configuration, monitor);
@@ -184,18 +304,6 @@ public class CodeGenerationLaunchDelegate extends
 			}
 		}
 
-	}
-
-	private void refreshOutputDir(String outputdir) {
-		IResource bufferRes = PathHelper.findMember(ResourcesPlugin.getWorkspace().getRoot(), outputdir);
-
-		if (bufferRes != null && bufferRes.isAccessible()) {
-			try {
-				bufferRes.refreshLocal(IResource.DEPTH_INFINITE, null);
-			} catch (CoreException e) {
-				//ignore, maybe merge into possible existing status.
-			}
-		}
 	}
 
 	private ArtifactCollector runExporters (final ExporterAttributes attributes, final ExporterFactory[] exporterFactories, final Set<String> outputDirectories, final IProgressMonitor monitor)
@@ -380,5 +488,13 @@ public class CodeGenerationLaunchDelegate extends
 	protected void abort(String message, Throwable exception, int code)
 	throws CoreException {
 		throw new CoreException(new Status(IStatus.ERROR, HibernateConsolePlugin.ID, code, message, exception));
+	}
+
+	public IPath getPath2GenBuildXml() throws IOException {
+		if (path2GenBuildXml != null) {
+			return path2GenBuildXml;
+		}
+		path2GenBuildXml = new Path(File.createTempFile("build_", "xml").getAbsolutePath()); //$NON-NLS-1$ //$NON-NLS-2$
+		return path2GenBuildXml;
 	}
 }

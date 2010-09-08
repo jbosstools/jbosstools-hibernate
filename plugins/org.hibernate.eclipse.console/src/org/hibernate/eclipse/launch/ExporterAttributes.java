@@ -65,6 +65,7 @@ import org.hibernate.eclipse.console.model.impl.ExporterFactory;
 public class ExporterAttributes
 {
    private boolean reverseEngineer, useOwnTemplates, enableJDK5, enableEJB3, preferBasicCompositeIds;
+   private boolean useExternalProcess;
    private String consoleConfigurationName;
    private String revengSettings;
    private String revengStrategy;
@@ -95,6 +96,7 @@ public class ExporterAttributes
          revengSettings = configuration.getAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_SETTINGS, ""); //$NON-NLS-1$
          revengStrategy = configuration.getAttribute(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER_STRATEGY, ""); //$NON-NLS-1$
          useOwnTemplates = configuration.getAttribute(HibernateLaunchConstants.ATTR_USE_OWN_TEMPLATES,false);
+         useExternalProcess = configuration.getAttribute(HibernateLaunchConstants.ATTR_USE_EXTERNAL_PROCESS, false);
          enableJDK5 = configuration.getAttribute(HibernateLaunchConstants.ATTR_ENABLE_JDK5,false);
          enableEJB3 = configuration.getAttribute(HibernateLaunchConstants.ATTR_ENABLE_EJB3_ANNOTATIONS,false);
          packageName = configuration.getAttribute(HibernateLaunchConstants.ATTR_PACKAGE_NAME,""); //$NON-NLS-1$
@@ -335,6 +337,16 @@ public class ExporterAttributes
    public void setUseOwnTemplates(boolean useOwnTemplates)
    {
       this.useOwnTemplates = useOwnTemplates;
+   }
+   
+   public boolean isUseExternalProcess()
+   {
+      return useExternalProcess;
+   }
+	
+   public void setUseExternalProcess(boolean useExternalProcess)
+   {
+      this.useExternalProcess = useExternalProcess;
    }
 
    public List<ExporterFactory> getExporterFactories() {
