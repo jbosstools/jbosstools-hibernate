@@ -84,6 +84,21 @@ public class ConsoleConfigurationTest extends TestCase {
 
 
 	}
+	
+	public void testHQLComments() {
+		consoleCfg.build();
+		consoleCfg.buildSessionFactory();
+
+		try {
+			consoleCfg.buildSessionFactory();
+			fail(ConsoleTestMessages.ConsoleConfigurationTest_factory_already_exists);
+		} catch (HibernateConsoleRuntimeException hcre) {
+
+		}
+
+		QueryPage qp = consoleCfg.executeHQLQuery("from java.lang.Object --this is my comment"); //$NON-NLS-1$
+		assertNotNull(qp);
+	}
 
 	/*public void testCleanup() throws InterruptedException {
 
