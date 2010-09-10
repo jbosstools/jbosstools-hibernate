@@ -10,6 +10,11 @@
       <classpath>
         <path location="${build.dir}"/>
       </classpath>
+      <query> 
+        <hql>from testQuery</hql>  
+        <property key="ejb3" value="false"/>  
+        <property key="jdk5" value="false"/> 
+      </query>  
       <hbm2doc>
         <property key="ejb3" value="false"/>
         <property key="jdk5" value="false"/>

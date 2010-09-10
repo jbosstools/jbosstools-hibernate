@@ -62,6 +62,9 @@ public class CodeGenXMLFactoryTest extends TestCase {
 	public static final String HBMTEMPLATE0 = "hbm2java"; //$NON-NLS-1$
 	public static final String HBMTEMPLATE0_PROPERTIES = HibernateLaunchConstants.ATTR_EXPORTERS
 			+ '.' + HBMTEMPLATE0 + ".properties"; //$NON-NLS-1$
+	public static final String HBMTEMPLATE1 = "query"; //$NON-NLS-1$
+	public static final String HBMTEMPLATE1_PROPERTIES = HibernateLaunchConstants.ATTR_EXPORTERS
+			+ '.' + HBMTEMPLATE1 + ".properties"; //$NON-NLS-1$
 	public static final String OUTDIR_PATH = "outputdir/test".replace('/', IPath.SEPARATOR); //$NON-NLS-1$
 
 	public class TestConsoleConfigPref extends TestConsoleConfigurationPreferences {
@@ -404,7 +407,10 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		expProps2.put(ExporterFactoryStrings.OUTPUTDIR, OUTDIR_PATH);
 		expProps2.put(CodeGenerationStrings.DESTDIR, OUTDIR_PATH + "_test_suffix"); //$NON-NLS-1$
 		expProps2.put("keyXXX", "valueYYY"); //$NON-NLS-1$ //$NON-NLS-2$
+		Map<String, String> expProps3 = new HashMap<String, String>();
+		expProps3.put(ExporterFactoryStrings.QUERY_STRING, "from testQuery"); //$NON-NLS-1$
 		testLaunchConfigAttr.put(HBMTEMPLATE0_PROPERTIES, expProps2);
+		testLaunchConfigAttr.put(HBMTEMPLATE1_PROPERTIES, expProps3);
 		testLaunchConfigAttr.put(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER, reveng);
 		testLaunchConfigAttr.put(HibernateLaunchConstants.ATTR_PREFER_BASIC_COMPOSITE_IDS, true);
 		TestLaunchConfig testLaunchConfig = new TestLaunchConfig(testLaunchConfigAttr);

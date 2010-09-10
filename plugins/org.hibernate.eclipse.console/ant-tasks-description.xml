@@ -39,7 +39,7 @@
 		<attribute name="update" gui-name="schemaUpdate" default="false"/>
 		<attribute name="drop" gui-name="drop" default="false"/>
 		<attribute name="create" gui-name="create" default="true"/>
-		<attribute name="outputfilename" gui-name="outputfilename" default=""/>
+		<attribute name="outputfilename" gui-name="outputFileName" default=""/>
 		<attribute name="delimiter" gui-name="delimiter" default=";"/>
 		<attribute name="format" gui-name="format" default="false"/>
 		<attribute name="haltonerror" gui-name="haltonerror" default="false"/>
@@ -51,5 +51,12 @@
 		<attribute name="templateprefix" gui-name="templateprefix" default=""/>
 		<attribute name="jdk5" gui-name="jdk5" default="false"/>
 		<attribute name="ejb3" gui-name="ejb3" default="false"/>
+	</task>
+	<task name="query" id="org.hibernate.tools.query">
+		<attribute name="destfile" gui-name="outputFileName" default=""/>
+		<attribute name="destdir" gui-name="outputdir" default=""/>
+		<attribute name="templatepath" gui-name="template_path" default=""/>
+		<attribute name="templateprefix" gui-name="templateprefix" default=""/>
+		<subtag name="hql" gui-name="query_string" default=""/>
 	</task>
 </ant-tasks>

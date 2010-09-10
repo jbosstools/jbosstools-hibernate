@@ -619,6 +619,27 @@
                type="boolean"
                value="false"/>
       </exporter>
+      <exporter
+            classname="org.hibernate.tool.hbm2x.QueryExporter"
+            description="HQL Query Execution Exporter"
+            icon="icons/images/hql_editor_connect.gif"
+            id="org.hibernate.tools.query">
+         <property
+               description="Output directory"
+               name="outputdir"
+               type="directory"
+               value=""/>
+         <property
+               description="File name"
+               name="outputFileName"
+               type="string"
+               value=""/>
+         <property
+               description="Query"
+               name="query_string"
+               type="string"
+               value=""/>
+      </exporter>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">

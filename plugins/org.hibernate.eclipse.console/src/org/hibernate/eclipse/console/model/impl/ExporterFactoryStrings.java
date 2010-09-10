@@ -23,4 +23,6 @@ public interface ExporterFactoryStrings {
 	public static final String TEMPLATE_NAME = "template_name"; //$NON-NLS-1$
 	public static final String FOR_EACH = "for_each"; //$NON-NLS-1$
 	public static final String EXPORTTODATABASE = "exportToDatabase"; //$NON-NLS-1$
+	public static final String QUERY_STRING = "query_string"; //$NON-NLS-1$
+	public static final String OUTPUTFILENAME = "outputFileName"; //$NON-NLS-1$
 }

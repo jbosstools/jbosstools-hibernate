@@ -17,7 +17,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -47,12 +49,14 @@ public class ExportersXMLAttributeDescription {
 	}
 	
 	private static Map<String, Map<String, AttributeDescription>> mapExporter2AttributeDescr = null;
+	private static Map<String, Set<String>> mapExporter2SetSubTags = null;
 	
 	private static void initExportersDescriptionmap() {
 		if (mapExporter2AttributeDescr != null) {
 			return;
 		}
 		mapExporter2AttributeDescr = new TreeMap<String, Map<String, AttributeDescription>>();
+		mapExporter2SetSubTags = new TreeMap<String, Set<String>>();
 		Document doc = getDocument();
 		if (doc == null) {
 			return;
@@ -73,9 +77,21 @@ public class ExportersXMLAttributeDescription {
 				ad.defaultValue = elAttribute.attributeValue("default"); //$NON-NLS-1$
 				attributes.put(ad.guiName, ad);
 			}
+			Set<String> subtags = new TreeSet<String>();
+			itAttribute = elTask.elementIterator("subtag"); //$NON-NLS-1$
+			while (itAttribute.hasNext()) {
+				Element elAttribute = (Element)itAttribute.next();
+				AttributeDescription ad = new AttributeDescription();
+				ad.name = elAttribute.attributeValue("name"); //$NON-NLS-1$
+				ad.guiName = elAttribute.attributeValue("gui-name"); //$NON-NLS-1$
+				ad.defaultValue = elAttribute.attributeValue("default"); //$NON-NLS-1$
+				attributes.put(ad.guiName, ad);
+				subtags.add(ad.guiName);
+			}
 			//String taskId = elTask.attributeValue("id"); //$NON-NLS-1$
 			String taskName = elTask.attributeValue("name"); //$NON-NLS-1$
 			mapExporter2AttributeDescr.put(taskName, attributes);
+			mapExporter2SetSubTags.put(taskName, subtags);
 		}
 	}
 	
@@ -89,6 +105,13 @@ public class ExportersXMLAttributeDescription {
 		Map<String, Map<String, AttributeDescription>> res = 
 			new TreeMap<String, Map<String, AttributeDescription>>();
 		res.putAll(mapExporter2AttributeDescr);
+		return res;
+	}
+
+	public static Map<String, Set<String>> getExportersSetSubTags() {
+		initExportersDescriptionmap();
+		Map<String, Set<String>> res = new TreeMap<String, Set<String>>();
+		res.putAll(mapExporter2SetSubTags);
 		return res;
 	}
 	

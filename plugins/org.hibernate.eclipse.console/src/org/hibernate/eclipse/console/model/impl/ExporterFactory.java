@@ -25,6 +25,7 @@ import org.hibernate.tool.hbm2x.ArtifactCollector;
 import org.hibernate.tool.hbm2x.Exporter;
 import org.hibernate.tool.hbm2x.GenericExporter;
 import org.hibernate.tool.hbm2x.Hbm2DDLExporter;
+import org.hibernate.tool.hbm2x.QueryExporter;
 import org.hibernate.util.StringHelper;
 
 /**
@@ -289,6 +290,14 @@ public class ExporterFactory {
 			//avoid users to delete their databases with a single click
 			ddlExporter.setExport(Boolean.getBoolean(extract.getProperty(ExporterFactoryStrings.EXPORTTODATABASE)));
 		}
+		// special handling for QueryExporter
+		if (exporterId.equals("org.hibernate.tools.query")) { //$NON-NLS-1$
+			QueryExporter queryExporter = (QueryExporter) exporter;
+			List<String> queryStrings = new ArrayList<String>();
+			queryStrings.add(extract.getProperty(ExporterFactoryStrings.QUERY_STRING));
+			queryExporter.setQueries(queryStrings);
+			queryExporter.setFilename(extract.getProperty(ExporterFactoryStrings.OUTPUTFILENAME));
+		}
 		return exporter;
 	}
 
@@ -334,6 +343,20 @@ public class ExporterFactory {
 		if (exporterId.equals("org.hibernate.tools.hbm2ddl")) { //$NON-NLS-1$
 			extract.put(ExporterFactoryStrings.EXPORTTODATABASE, props.getProperty(ExporterFactoryStrings.EXPORTTODATABASE, Boolean.toString(false)));
 			props.remove(ExporterFactoryStrings.EXPORTTODATABASE);
+		}
+		// special handling for QueryExporter
+		if (exporterId.equals("org.hibernate.tools.query")) { //$NON-NLS-1$
+			String tmp;
+			if (props.containsKey(ExporterFactoryStrings.QUERY_STRING)) {
+				tmp = props.getProperty(ExporterFactoryStrings.QUERY_STRING, ""); //$NON-NLS-1$
+				extract.put(ExporterFactoryStrings.QUERY_STRING, tmp);
+				props.remove(ExporterFactoryStrings.QUERY_STRING);
+			}
+			if (props.containsKey(ExporterFactoryStrings.OUTPUTFILENAME)) {
+				tmp = props.getProperty(ExporterFactoryStrings.OUTPUTFILENAME, ""); //$NON-NLS-1$
+				extract.put(ExporterFactoryStrings.OUTPUTFILENAME, tmp);
+				props.remove(ExporterFactoryStrings.OUTPUTFILENAME);
+			}
 		}
 	}
 }

@@ -19,7 +19,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
@@ -303,6 +305,8 @@ public class CodeGenXMLFactory {
 		//
 		Map<String, Map<String, AttributeDescription>> exportersDescr = 
 			ExportersXMLAttributeDescription.getExportersDescription();
+		Map<String, Set<String>> exportersSetSubTags = 
+			ExportersXMLAttributeDescription.getExportersSetSubTags();
 		//
 		Properties globalProps = new Properties();
 		// obligatory global properties
@@ -322,6 +326,11 @@ public class CodeGenXMLFactory {
 			Map<String, AttributeDescription> attributesDescrGui = exportersDescr.get(expName);
 			if (attributesDescrGui == null) {
 				attributesDescrGui = new TreeMap<String, AttributeDescription>();
+			}
+			// mapping: guiName -> set of sub tags
+			Set<String> setSubTags = exportersSetSubTags.get(expName);
+			if (setSubTags == null) {
+				setSubTags = new TreeSet<String>();
 			}
 			// construct new mapping: name -> AttributeDescription
 			Map<String, AttributeDescription> attributesDescrAnt = new TreeMap<String, AttributeDescription>();
@@ -365,7 +374,12 @@ public class CodeGenXMLFactory {
 				if (val == null || 0 == val.toString().compareTo(ad.defaultValue)) {
 					continue;
 				}
-				exporter.addAttribute(ad.name, val.toString());
+				if (setSubTags.contains(ad.guiName)) {
+					Element subTag = exporter.addElement(ad.name);
+					subTag.addText(val.toString());
+				} else {
+					exporter.addAttribute(ad.name, val.toString());
+				}
 			}
 			for (Object obj : list2Remove) {
 				expProps.remove(obj);
