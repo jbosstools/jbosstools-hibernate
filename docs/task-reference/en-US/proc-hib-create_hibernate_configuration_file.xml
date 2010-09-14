@@ -24,6 +24,7 @@
               The <guilabel>Create Hibernate configuration file</guilabel> dialog displays. The file location will default to the <filename>src</filename> folder.
             </para>
           </formalpara>
+          <!-- 
           <figure id="figure-hib-create_hibernate_configuration_file_01">
               <title>Create Hibernate configuration file</title>
               <mediaobject>
@@ -35,48 +36,13 @@
                 </textobject>
               </mediaobject>
             </figure>
+             
           <para>&HORIZ_LINE;</para>
         </step>
       
         <step>
           <title>Define the file attributes</title>
-          <!-- 
-            <orderedlist numeration ="loweralpha">
-            <listitem>
-	          <para>
-               Specify the location of the file.
-              </para>
-            </listitem>
-            <listitem>
-	          <para>
-               Accept the default file name or specify an alternative.
-              </para>
-            </listitem>
-            <listitem>
-            <para>
-              Click the <guibutton>Next</guibutton> button to proceed.
-            </para>
-            </listitem>
-          </orderedlist>
-          <formalpara><title>Result:</title>
-            <para>
-              The <guilabel>Create Hibernate configuration file</guilabel> dialog displays. The file location will default to the <filename>src</filename> folder.
-            </para>
-          </formalpara>
-          <figure id="figure-hib-create_hibernate_configuration_file_01">
-              <title>Create Hibernate configuration file</title>
-              <mediaobject>
-                <imageobject>
-                  <imagedata fileref="images/image-hib-create_hibernate_configuration_file_01.png" format="PNG"/>
-                </imageobject>
-                <textobject>
-                  <para>The Create Hibernate configuration file dialog.</para>
-                </textobject>
-              </mediaobject>
-            </figure>
-          <para>&HORIZ_LINE;</para>
-        </step>
-         -->    
+              
             
         <table id="table-hib-create_hibernate_configuration_file_01" frame='all'>
             <title>New Hibernate configuration</title>
@@ -116,6 +82,7 @@
               </tbody>
             </tgroup>
           </table>
+          -->
          <para>&HORIZ_LINE;</para>
         </step>
         <step><title>Access the sub-dialog</title>
@@ -233,6 +200,7 @@
               The file is opened in the <guilabel>Session Factory</guilabel> view of the <guilabel>Hibernate Configuration XML Editor</guilabel> for editing.
             </para>
           </formalpara>
+          <!-- 
           <figure id="figure-hib-create_hibernate_configuration_file_03">
             <title>Hibernate configuration file - Session factory view</title>
             <mediaobject>
@@ -244,9 +212,7 @@
               </textobject>
             </mediaobject>
           </figure>
-          <!--  Design Notes:
-            Provide a single link to a document navigation section relating to the current task. This section will include all of the relevant concepts, tasks and references in a single table facilitating ease of maintenance.    
-           -->
+          -->
           <formalpara><title>Related material</title>
           <para>
             Further tasks and information relating to this task are accessible from:  <xref linkend="document_navigation-hibernate_configuration"/>.

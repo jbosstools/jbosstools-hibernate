@@ -54,8 +54,9 @@
          <step>
         <title>Access the sub-dialog</title>
           <para>
-            Click the <guibutton>Next</guibutton> button to proceed.
+            Click the <guibutton>Next</guibutton> button to proceed. The selected class name and mapping file name are displayed.
           </para>
+          <!-- 
          <formalpara><title>Result:</title>
           <para>
             The class name and mapping file name are displayed in the wizard.  
@@ -72,13 +73,14 @@
             </textobject>
           </mediaobject>
         </figure>
+         -->
         <para>&HORIZ_LINE;</para>
         </step>
         <step>
         <title>Review the file</title>
           <para>
             Click the <guilabel>Next</guilabel> button to view the file to be created.
-          </para>
+          </para> 
          <formalpara><title>Result:</title>
           <para>
             The file is displayed for review. 
@@ -95,6 +97,12 @@
             </textobject>
           </mediaobject>
         </figure>
+        <note><title>Creating multiple mapping files</title>
+          <para>
+            It is possible to select the project, src folder or an individual package to create multiple mapping files in a single action. In this instance, all Java classes will be identified and listed in the display of <xref linkend="figure-hib-new_hibernate_xml_mapping_files_03"></xref>. Individual classes may then be selected and deselected by clicking the appropriate checkbox.
+          </para>
+        </note>
+          <para>&HORIZ_LINE;</para>
         </step>
         <step>
         <title>Create the mapping file</title>
@@ -106,6 +114,8 @@
             The file is created and ready for editing. 
           </para>
         </formalpara>
+         <para>&HORIZ_LINE;</para>
+        <!-- 
            <figure id="figure-hib-new_hibernate_xml_mapping_files_04">
           <title>The New Hibernate XML Mapping files dialog - File created</title>
           <mediaobject>
@@ -117,11 +127,7 @@
             </textobject>
           </mediaobject>
         </figure>
-        <note><title>Creating multiple mapping files</title>
-          <para>
-            It is possible to select the project, src folder or an individual package to create multiple mapping files in a single action. In this instance, all Java classes will be identified and listed in the display of <xref linkend="figure-hib-new_hibernate_xml_mapping_files_03"></xref>. Individual classes may then be selected and deselected by clicking the appropriate checkbox.
-          </para>
-        </note>
+         -->
          <!--  Design Notes:
             Provide a single link to a document navigation section relating to the current task. This section will include all of the relevant concepts, tasks and references in a single table facilitating ease of maintenance.    
            -->

@@ -6,6 +6,43 @@
 <procedure id="proc-jbt-new_jpa_project">
      <title>JPA Project Creation</title>
         <step>
+          <title>Access the New JPA Project dialog</title>
+            <substeps>
+              <step>
+                <para>
+                  Click <menuchoice><guimenu>File</guimenu><guisubmenu>New</guisubmenu><guimenuitem>Other</guimenuitem></menuchoice>
+                </para>
+              </step>
+              <step>
+                <para>
+                  Expand the <guilabel>JPA</guilabel> node and select <guilabel>JPA Project</guilabel> 
+                </para>
+              </step>
+              <step>
+                <para>
+                  Click <guilabel>Next</guilabel> 
+                </para>
+              </step>
+            </substeps>
+            <formalpara><title>Result:</title>
+            <para>
+              The <guilabel>New JPA Project</guilabel> dialog displays.
+            </para>
+          </formalpara>
+          <figure id="figure-jbt-new_jpa_project_01">
+              <title>JPA Project Attributes</title>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="images/image-jbt-new_jpa_project_01.png" format="PNG"/>
+                </imageobject>
+                <textobject>
+                  <para>The New JPA Project Dialog.</para>
+                </textobject>
+              </mediaobject>
+            </figure>
+          <para>&HORIZ_LINE;</para>
+        </step>
+     <!--    <step>
           <title>Define the Project Type</title>
           <orderedlist numeration ="loweralpha">
           <listitem>
@@ -37,6 +74,7 @@
             </figure>
           <para>&HORIZ_LINE;</para>
         </step>
+        -->
         <step>
           <title>Define the Project Attributes</title>
             <para>
@@ -162,6 +200,7 @@
               The <guilabel>New JPA Project - Java</guilabel> dialog displays.
             </para>
         </formalpara>
+        <!-- 
         <figure id="figure-jbt-new_jpa_project_02">
               <title>New JPA Project - Java</title>
               <mediaobject>
@@ -172,7 +211,8 @@
                   <para>The New JPA Project - Java Dialog</para>
                 </textobject>
               </mediaobject>
-            </figure>  
+            </figure>
+        -->      
        <para>&HORIZ_LINE;</para>
        </step>
         <step>
@@ -310,7 +350,7 @@
         </table>
          <para>&HORIZ_LINE;</para>
         </step>
-         <step><title>Open the JPA perspective.</title>
+        <step><title>Open the JPA perspective.</title>
         <orderedlist numeration="loweralpha">
           <listitem>
             <para>
@@ -321,6 +361,7 @@
               A dialog will appear prompting the user to open the relevant perspective.
             </para>
           </formalpara>
+          <!-- 
           <figure id="figure-JBT_New_JPA_Project_04">
             <title>JPA Open Perspective Dialog</title>
             <mediaobject>
@@ -332,6 +373,7 @@
               </textobject>
             </mediaobject>
           </figure>
+           -->
           </listitem>
           <listitem>
             <para>
@@ -342,6 +384,7 @@
               The project is configured and the JPA perspective is displayed.
             </para>
           </formalpara>
+          <!-- 
           <figure id="figure-JBT_New_JPA_Project_05">
             <title>JPA Perspective</title>
             <mediaobject>
@@ -353,6 +396,7 @@
               </textobject>
             </mediaobject>
           </figure>
+           -->
           </listitem>
           </orderedlist>
         <formalpara><title>Related material</title>

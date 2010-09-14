@@ -5,12 +5,8 @@
 ]>
 <section id="tasks-jpa-project_creation">
   <title>Project creation</title>
-  <para>
-     <xref linkend="proc-jbt-new_project"/> describes the steps to create a new project in JBoss Tools.  
-  </para>
-     <xi:include href="proc-jbt-new_project.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
    <para>
-     Continue by defining a JPA project type as described in <xref linkend="proc-jbt-new_jpa_project"/>:
+     Creating a JPA project is described in <xref linkend="proc-jbt-new_jpa_project"/>:
    </para>
    <xi:include href="proc-jbt-new_jpa_project.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
   <para>&FEEDBACK-tasks-jpa-project_creation;</para>
