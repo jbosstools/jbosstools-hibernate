@@ -139,7 +139,7 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 
 	public String getConnectionProfileName() {
 		if (Boolean.parseBoolean(getAttribute(IConsoleConfigurationLaunchConstants.USE_JPA_PROJECT_PROFILE, null))){
-			String projName = getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, null);
+			String projName = getProjectName();
 			if (projName != null){
 				IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projName);
 				if (project != null){
@@ -161,12 +161,12 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 
 	public Properties getProperties() {		
 		File propFile = getPropertyFile();
-		if(propFile==null) return null;
-		Properties p = new Properties();
+		if(propFile==null) return getProjectOverrides();
+		Properties fileProp = new Properties();
 		FileInputStream fis = null;
 		try {
 			fis = new FileInputStream(propFile);
-			p.load(fis);
+			fileProp.load(fis);
 		}
 		catch(IOException io) {
 			throw new HibernateConsoleRuntimeException(NLS.bind(HibernateConsoleMessages.EclipseLaunchConsoleConfigurationPreferences_could_not_load_property_file, propFile), io);
@@ -180,7 +180,13 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 				}
 			}
 		}
-		return p;
+		//which properties are main?
+		Properties p = getProjectOverrides();
+		if (p != null){
+			p.putAll(fileProp);
+			return p;
+		}
+		return fileProp;
 	}
 
 	public File getPropertyFile() {
@@ -209,6 +215,32 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 			dialect = new DriverClassHelpers().getDialect(driver);
 		}
 		return dialect;
+	}
+	
+	public String getProjectName(){
+		return getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, null);
+		
+	}
+	
+	public Properties getProjectOverrides(){
+		Properties prop = new Properties();
+		String projName = getProjectName();
+		if (projName != null){
+			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projName);
+			if (project != null){
+				JpaProject jpaProject = (JpaProject) project.getAdapter(JpaProject.class);
+				if (jpaProject != null) {
+					if (jpaProject.getUserOverrideDefaultCatalog() != null){
+						prop.put("hibernate.default_catalog", jpaProject.getUserOverrideDefaultCatalog());
+					}
+					if (jpaProject.getUserOverrideDefaultSchema() != null){
+						prop.put("hibernate.default_schema", jpaProject.getUserOverrideDefaultSchema());
+					}
+					
+				}
+			}
+		}
+		return prop.size() == 0 ? null : prop;
 	}
 
 }
