@@ -123,7 +123,7 @@
             contributorClass="org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditorContributor"
             icon="icons/hibernate_small_icon.gif"
             id="org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor"
-            name="Hibernate reverse engineering editor">
+            name="Hibernate Reverse Engineering Editor">
          <contentTypeBinding contentTypeId="org.hibernate.eclipse.mapper.revengxmlsource"/>
       </editor>
    </extension>
