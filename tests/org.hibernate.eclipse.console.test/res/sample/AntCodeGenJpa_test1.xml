@@ -17,34 +17,34 @@
       <classpath>
         <path location="${build.dir}"/>
       </classpath>
-      <query> 
-        <hql>from testQuery</hql>  
-        <property key="ejb3" value="true"/>  
-        <property key="jdk5" value="true"/> 
-      </query>  
-      <hbm2doc>
-        <property key="ejb3" value="true"/>
-        <property key="jdk5" value="true"/>
-      </hbm2doc>
       <hbm2cfgxml ejb3="true">
         <property key="jdk5" value="true"/>
       </hbm2cfgxml>
-      <hbm2hbmxml>
-        <property key="ejb3" value="true"/>
-        <property key="jdk5" value="true"/>
-      </hbm2hbmxml>
-      <hbmtemplate>
-        <property key="ejb3" value="true"/>
-        <property key="jdk5" value="true"/>
-      </hbmtemplate>
-      <hbm2java destdir="outputdir/test" ejb3="true" jdk5="true">
-        <property key="keyXXX" value="valueYYY"/>
-      </hbm2java>
+      <hbm2dao ejb3="true" jdk5="true"/>
       <hbm2ddl export="false">
         <property key="ejb3" value="true"/>
         <property key="jdk5" value="true"/>
       </hbm2ddl>
-      <hbm2dao ejb3="true" jdk5="true"/>
+      <hbm2doc>
+        <property key="ejb3" value="true"/>
+        <property key="jdk5" value="true"/>
+      </hbm2doc>
+      <hbm2hbmxml>
+        <property key="ejb3" value="true"/>
+        <property key="jdk5" value="true"/>
+      </hbm2hbmxml>
+      <hbm2java destdir="outputdir/test" ejb3="true" jdk5="true">
+        <property key="keyXXX" value="valueYYY"/>
+      </hbm2java>
+      <hbmtemplate>
+        <property key="ejb3" value="true"/>
+        <property key="jdk5" value="true"/>
+      </hbmtemplate>
+      <query>
+        <hql>from testQuery</hql>
+        <property key="ejb3" value="true"/>
+        <property key="jdk5" value="true"/>
+      </query>
     </hibernatetool>
   </target>
 </project>
