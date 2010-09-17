@@ -23,7 +23,7 @@ public class JIRATest extends HibernateTest {
 	 */
 	@Test
 	public void issue1() {
-
+		// TODO
 	}
 
 }

@@ -37,6 +37,7 @@ import org.hamcrest.Matcher;
 import org.hsqldb.Server;
 import org.jboss.tools.hibernate.ui.bot.testcase.Activator;
 import org.jboss.tools.hibernate.ui.bot.testcase.ConsoleTest;
+import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
 import org.jboss.tools.ui.bot.ext.entity.JavaClassEntity;
 import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
@@ -49,7 +50,6 @@ import org.jboss.tools.ui.bot.ext.types.ViewType;
 
 public class HibernateTest extends SWTTestExt {
 
-	private static boolean finished = false;
 	private static boolean classesCreated = false;
 	private static boolean projectCreated = false;
 	private static boolean databasePrepared = false;
@@ -63,8 +63,7 @@ public class HibernateTest extends SWTTestExt {
 	 * Prepare project and classes
 	 */
 	public static void prepare() {	
-		prepareProject();
-		prepareClasses();
+		log.info("Hibernate All Test Started");
 	}
 	
 	/**
@@ -73,7 +72,12 @@ public class HibernateTest extends SWTTestExt {
 	public static void prepareClasses() {
 		
 		if (classesCreated) return; 
-		
+
+
+		// Package Explorer
+		SWTBot viewBot = eclipse.showView(ViewType.PACKAGE_EXPLORER);
+		SWTEclipseExt.selectTreeLocation(viewBot, Project.PROJECT_NAME,"src");
+
 		// Class 1
 		JavaClassEntity classEntity = new JavaClassEntity();
 		classEntity.setClassName(Project.CLASS1);
@@ -97,12 +101,14 @@ public class HibernateTest extends SWTTestExt {
 		
 		if (projectCreated) return;
 		
+		eclipse.openPerspective(PerspectiveType.JAVA);
 		eclipse.showView(ViewType.PACKAGE_EXPLORER);
 		bot.activeView();
 	
 		System.out.println("View Activated");
 		
 		// Show perspective and view
+		//open.viewClose(view)
 		eclipse.closeView(IDELabel.View.WELCOME);
 		eclipse.openPerspective(PerspectiveType.JAVA);
 
@@ -155,6 +161,7 @@ public class HibernateTest extends SWTTestExt {
 	    bot.tree().expandNode("Java Build Path").select();
 	    bot.tabItem("Libraries").activate();
 	    bot.button("Add JARs...").click();
+	    bot.sleep(TIME_500MS);
 	    bot.tree().expandNode(Project.PROJECT_NAME).expandNode("hsqldb.jar").select();
 	    
 	    bot.button(IDELabel.Button.OK).click();
@@ -189,9 +196,7 @@ public class HibernateTest extends SWTTestExt {
 	 * Clean after tests
 	 */
 	public static void clean() {
-		if (finished) return;
-		
-		log.info("Clean finished");
+		log.info("Hibernate All Test finished");
 	}
 
 	/**

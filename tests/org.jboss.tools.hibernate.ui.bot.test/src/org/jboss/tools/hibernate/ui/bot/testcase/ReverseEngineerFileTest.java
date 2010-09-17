@@ -14,23 +14,33 @@ import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
 import org.jboss.tools.hibernate.ui.bot.testsuite.Project;
 import org.jboss.tools.ui.bot.ext.types.EntityType;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class ReverseEngineerFileTest extends HibernateTest {
 
+	@BeforeClass
+	public static void prepare() {
+		prepareProject();
+	}
 	/**
 	 * TC 08
 	 */
 	@Test
 	public void createFile() {
-		// Create 
-		eclipse.createNew(EntityType.HIBERNATE_REVERSE_FILE);
 		
-		
+		bot.viewByTitle(IDELabel.View.PACKAGE_EXPLORER).setFocus();
 		packageExplorer.selectProject(Project.PROJECT_NAME);
 		
+		// Create reveng file
+		eclipse.createNew(EntityType.HIBERNATE_REVERSE_FILE);
+		bot.clickButton(IDELabel.Button.NEXT);
+		bot.clickButton("Include...");
+		bot.clickButton(IDELabel.Button.FINISH);				
 	}
 
 	/**
@@ -38,7 +48,10 @@ public class ReverseEngineerFileTest extends HibernateTest {
 	 */
 	@Test
 	public void editFile() {
-
+		// TBD
 	}
-
+	
+	@AfterClass
+	public static void finish() {
+	}
 }

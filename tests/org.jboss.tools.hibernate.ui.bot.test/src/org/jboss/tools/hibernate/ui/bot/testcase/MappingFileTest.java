@@ -31,12 +31,12 @@ public class MappingFileTest extends HibernateTest {
 
 	@BeforeClass
 	public static void setUpTest() {
-		HibernateTest.prepare();
+		prepareProject();
+		prepareClasses();
 	}
 	
 	@AfterClass
 	public static void tearDownTest() { 
-		HibernateTest.clean();
 	}
 
 	/**

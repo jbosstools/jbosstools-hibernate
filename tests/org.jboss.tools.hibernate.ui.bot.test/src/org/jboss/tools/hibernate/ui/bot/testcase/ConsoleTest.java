@@ -139,7 +139,7 @@ public class ConsoleTest extends HibernateTest {
 	}
 
 	/**
-	 * TC 16 - open console, change serveral value, apply changes and check changes if they were store correctly
+	 * TC 16 - open console, change several values, apply changes and check changes if they were store correctly
 	 */
 	@Test	
 	public void editConsole() {
@@ -149,10 +149,16 @@ public class ConsoleTest extends HibernateTest {
 		// open console
 		openConsoleConfiguration();		
 		editConsoleValues();
+		closeConsole();
 		
 		// open console again
 		openConsoleConfiguration();
-		checkConsoleValues();		
+		checkConsoleValues();
+		closeConsole();
+	}
+	
+	private void closeConsole() {
+		bot.clickButton(IDELabel.Button.OK);
 	}
 	
 	private void editConsoleValues() {
@@ -185,9 +191,7 @@ public class ConsoleTest extends HibernateTest {
 		assertTrue(bot.radioInGroup("Type:",1).isSelected());	
 		// - Option
 		bot.cTabItem(IDELabel.HBConsoleWizard.OPTIONS_TAB).activate();
-		assertEquals("MySQL", bot.comboBoxInGroup("Database dialect:").getText());
-		bot.clickButton(IDELabel.Button.OK);
-		
+		assertEquals("MySQL", bot.comboBoxInGroup("Database dialect:").getText());		
 		log.info("Changed console value checked");
 	}
 	

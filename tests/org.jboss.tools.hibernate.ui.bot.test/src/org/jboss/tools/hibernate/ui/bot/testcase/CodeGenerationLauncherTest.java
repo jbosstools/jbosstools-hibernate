@@ -39,6 +39,9 @@ public class CodeGenerationLauncherTest extends HibernateTest {
 	 */
 	public static void setUpTest() {
 
+		eclipse.maximizeActiveShell();
+		eclipse.closeView(IDELabel.View.WELCOME);
+		
 		prepareProject();
 		prepareConsole();
 		prepareDatabase();

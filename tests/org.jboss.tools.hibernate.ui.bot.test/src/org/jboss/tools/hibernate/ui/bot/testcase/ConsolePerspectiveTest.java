@@ -13,6 +13,7 @@ package org.jboss.tools.hibernate.ui.bot.testcase;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
+import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -24,7 +25,7 @@ public class ConsolePerspectiveTest extends HibernateTest {
 	 */
 	@Test
 	public void openPerspectiveElements() {
-		bot.viewByTitle("Welcome").close();
+		eclipse.closeView(IDELabel.View.WELCOME);
 		
 		open.perspective(ActionItem.Perspective.HIBERNATE.LABEL);
 		bot.sleep(TIME_1S);
@@ -36,5 +37,4 @@ public class ConsolePerspectiveTest extends HibernateTest {
 		open.viewOpen(ActionItem.View.HibernateHibernateQueryResult.LABEL);
 		bot.sleep(TIME_1S);
 	}
-
 }

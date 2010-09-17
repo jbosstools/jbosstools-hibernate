@@ -11,9 +11,17 @@
 package org.jboss.tools.hibernate.ui.bot.testsuite;
 
 import org.jboss.tools.hibernate.ui.bot.testcase.CodeGenerationLauncherTest;
+import org.jboss.tools.hibernate.ui.bot.testcase.ConfigurationContextTest;
 import org.jboss.tools.hibernate.ui.bot.testcase.ConfigurationFileTest;
+import org.jboss.tools.hibernate.ui.bot.testcase.ConsolePerspectiveTest;
 import org.jboss.tools.hibernate.ui.bot.testcase.ConsoleTest;
+import org.jboss.tools.hibernate.ui.bot.testcase.CriteriaEditorsTest;
+import org.jboss.tools.hibernate.ui.bot.testcase.DaliTest;
+import org.jboss.tools.hibernate.ui.bot.testcase.JIRATest;
 import org.jboss.tools.hibernate.ui.bot.testcase.MappingFileTest;
+import org.jboss.tools.hibernate.ui.bot.testcase.MappingsDiagramTest;
+import org.jboss.tools.hibernate.ui.bot.testcase.ReverseEngineerFileTest;
+import org.jboss.tools.hibernate.ui.bot.testcase.ViewsTest;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
@@ -21,7 +29,8 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-/*	CodeGenerationLauncherTest.class,
+		
+@SuiteClasses( { 	CodeGenerationLauncherTest.class,
 	ConfigurationContextTest.class,
 	ConfigurationFileTest.class,
 	ConsolePerspectiveTest.class, 
@@ -31,12 +40,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	JIRATest.class,
 	MappingFileTest.class, 
 	MappingsDiagramTest.class,
-	ReverseEngineerFileTest.class, ViewsTest.class */
-		
-@SuiteClasses( { 	ConfigurationFileTest.class,									
-					MappingFileTest.class,
-					CodeGenerationLauncherTest.class,
-					ConsoleTest.class})		
+	ReverseEngineerFileTest.class, 
+	ViewsTest.class})		
 		
 public class HibernateAllTests extends HibernateTest {
 
