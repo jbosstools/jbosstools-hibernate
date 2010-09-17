@@ -20,9 +20,9 @@ hibernate.dialect=testDialect</echo>
         <property key="jdk5" value="false"/>
       </hbm2cfgxml>
       <hbm2dao/>
-      <hbm2ddl export="false">
-        <property key="ejb3" value="false"/>
-        <property key="jdk5" value="false"/>
+      <hbm2ddl console="false" create="false" delimiter="@" destdir="outputdir/test_test_suffix" drop="true" export="false" format="true" haltonerror="true" templatepath="outputdir/test" update="true"> 
+        <property key="ejb3" value="true"/>
+        <property key="jdk5" value="true"/>
       </hbm2ddl>
       <hbm2doc>
         <property key="ejb3" value="false"/>
@@ -33,6 +33,9 @@ hibernate.dialect=testDialect</echo>
         <property key="jdk5" value="false"/>
       </hbm2hbmxml>
       <hbm2java destdir="outputdir/test">
+        <property key="keyAAA" value="valueYYY"/>
+        <property key="keyCCC" value="valueYYY"/>
+        <property key="keyDDD" value="valueYYY"/>
         <property key="keyXXX" value="valueYYY"/>
       </hbm2java>
       <hbmtemplate>

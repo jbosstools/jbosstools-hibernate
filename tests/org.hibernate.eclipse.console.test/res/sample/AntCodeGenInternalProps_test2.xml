@@ -17,6 +17,9 @@ hibernate.dialect=testDialect</echo>
         <path location="${build.dir}"/>
       </classpath>
       <hbm2java destdir="outputdir/test">
+        <property key="keyAAA" value="valueYYY"/>
+        <property key="keyCCC" value="valueYYY"/>
+        <property key="keyDDD" value="valueYYY"/>
         <property key="keyXXX" value="valueYYY"/>
       </hbm2java>
     </hibernatetool>

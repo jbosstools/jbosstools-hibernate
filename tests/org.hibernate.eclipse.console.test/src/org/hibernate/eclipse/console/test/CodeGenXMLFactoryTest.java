@@ -66,6 +66,9 @@ public class CodeGenXMLFactoryTest extends TestCase {
 	public static final String HBMTEMPLATE1 = "query"; //$NON-NLS-1$
 	public static final String HBMTEMPLATE1_PROPERTIES = HibernateLaunchConstants.ATTR_EXPORTERS
 			+ '.' + HBMTEMPLATE1 + ".properties"; //$NON-NLS-1$
+	public static final String HBMTEMPLATE2 = "hbm2ddl"; //$NON-NLS-1$
+	public static final String HBMTEMPLATE2_PROPERTIES = HibernateLaunchConstants.ATTR_EXPORTERS
+			+ '.' + HBMTEMPLATE2 + ".properties"; //$NON-NLS-1$
 	public static final String OUTDIR_PATH = "outputdir/test"; //$NON-NLS-1$
 
 	public class TestConsoleConfigPref extends TestConsoleConfigurationPreferences {
@@ -456,10 +459,30 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		expProps2.put(ExporterFactoryStrings.OUTPUTDIR, OUTDIR_PATH);
 		expProps2.put(CodeGenerationStrings.DESTDIR, OUTDIR_PATH + "_test_suffix"); //$NON-NLS-1$
 		expProps2.put("keyXXX", "valueYYY"); //$NON-NLS-1$ //$NON-NLS-2$
+		expProps2.put("keyCCC", "valueYYY"); //$NON-NLS-1$ //$NON-NLS-2$
+		expProps2.put("keyAAA", "valueYYY"); //$NON-NLS-1$ //$NON-NLS-2$
+		expProps2.put("keyDDD", "valueYYY"); //$NON-NLS-1$ //$NON-NLS-2$
+		//
 		Map<String, String> expProps3 = new HashMap<String, String>();
 		expProps3.put(ExporterFactoryStrings.QUERY_STRING, "from testQuery"); //$NON-NLS-1$
+		//
+		Map<String, String> expProps4 = new HashMap<String, String>();
+		expProps4.put(CodeGenerationStrings.DESTDIR, OUTDIR_PATH + "_test_suffix"); //$NON-NLS-1$
+		expProps4.put(CodeGenerationStrings.TEMPLATEPATH, OUTDIR_PATH);
+		expProps4.put("export", "false"); //$NON-NLS-1$ //$NON-NLS-2$
+		expProps4.put("update", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+		expProps4.put("drop", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+		expProps4.put("create", "false"); //$NON-NLS-1$ //$NON-NLS-2$
+		expProps4.put("delimiter", "@"); //$NON-NLS-1$ //$NON-NLS-2$
+		expProps4.put("format", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+		expProps4.put("haltonerror", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+		expProps4.put("console", "false"); //$NON-NLS-1$ //$NON-NLS-2$
+		expProps4.put(CodeGenerationStrings.EJB3, "true"); //$NON-NLS-1$
+		expProps4.put(CodeGenerationStrings.JDK5, "true"); //$NON-NLS-1$
+		//
 		testLaunchConfigAttr.put(HBMTEMPLATE0_PROPERTIES, expProps2);
 		testLaunchConfigAttr.put(HBMTEMPLATE1_PROPERTIES, expProps3);
+		testLaunchConfigAttr.put(HBMTEMPLATE2_PROPERTIES, expProps4);
 		testLaunchConfigAttr.put(HibernateLaunchConstants.ATTR_REVERSE_ENGINEER, reveng);
 		testLaunchConfigAttr.put(HibernateLaunchConstants.ATTR_PREFER_BASIC_COMPOSITE_IDS, true);
 		return testLaunchConfigAttr;

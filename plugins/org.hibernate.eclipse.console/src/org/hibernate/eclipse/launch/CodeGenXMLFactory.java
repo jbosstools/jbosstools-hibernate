@@ -360,10 +360,17 @@ public class CodeGenXMLFactory {
 				}
 				expProps.put(ad.name, val);
 			}
+			// to add attributes and properties in alphabetic order
+			Map<String, Object> expPropsSorted = new TreeMap<String, Object>();
+			for (Map.Entry<Object, Object> propEntry : expProps.entrySet()) {
+				Object key = propEntry.getKey();
+				Object val = propEntry.getValue();
+				expPropsSorted.put(key.toString(), val);
+			}
 			// list2Remove - list to collect properties which put into attributes,
 			// all other properties be ordinal property definition
 			List<Object> list2Remove = new ArrayList<Object>();
-			for (Map.Entry<Object, Object> propEntry : expProps.entrySet()) {
+			for (Map.Entry<String, Object> propEntry : expPropsSorted.entrySet()) {
 				Object key = propEntry.getKey();
 				Object val = propEntry.getValue();
 				AttributeDescription ad = attributesDescrAnt.get(key);
@@ -383,8 +390,9 @@ public class CodeGenXMLFactory {
 			}
 			for (Object obj : list2Remove) {
 				expProps.remove(obj);
+				expPropsSorted.remove(obj);
 			}
-			for (Map.Entry<Object, Object> propEntry : expProps.entrySet()) {
+			for (Map.Entry<String, Object> propEntry : expPropsSorted.entrySet()) {
 				Object key = propEntry.getKey();
 				Object val = propEntry.getValue();
 				Element property = exporter.addElement(CodeGenerationStrings.PROPERTY);
