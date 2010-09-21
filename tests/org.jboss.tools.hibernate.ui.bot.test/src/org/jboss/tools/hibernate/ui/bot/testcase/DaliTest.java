@@ -24,6 +24,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.osgi.framework.Version;
 
 @RunWith(SWTBotJunit4ClassRunner.class)
 public class DaliTest extends HibernateTest {
@@ -57,8 +58,12 @@ public class DaliTest extends HibernateTest {
 		bot.button(IDELabel.Button.NEXT).click();
 
 		// JPA Facet Page
-		bot.comboBoxInGroup("Platform").setSelection("Hibernate (JPA 2.x)");
-		//bot.comboBoxInGroup("JPA Implementation").setSelection("Library Provided by Target Runtime");
+		Version version = jbt.getJBTVersion();
+		if ((version.getMajor() == 3) && (version.getMinor() == 1))		
+			bot.comboBoxInGroup("Platform").setSelection("Hibernate");
+		else
+			bot.comboBoxInGroup("Platform").setSelection("Hibernate (JPA 2.x)");
+		
 		bot.comboBoxInGroup("JPA implementation").setSelection("Disable Library Configuration");
 
 		// Finish
