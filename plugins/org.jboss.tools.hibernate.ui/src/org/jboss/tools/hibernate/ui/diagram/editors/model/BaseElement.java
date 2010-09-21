@@ -150,6 +150,15 @@ public abstract class BaseElement implements IPropertySource, Comparable<BaseEle
 		}
 	}
 
+	public void cleanupSelection() {
+		Iterator<Shape> it = getChildrenIterator();
+		while (it.hasNext()) {
+			Shape me = it.next();
+			me.setSelected(false);
+		}
+		setSelected(false);
+	}
+	
 	public int compareTo(BaseElement be) {
 		return toString().compareToIgnoreCase(be.toString());
 	}

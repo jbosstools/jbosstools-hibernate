@@ -56,6 +56,9 @@ public class LexicalSortingAction extends Action {
 	private void valueChanged(final boolean on) {
 		BusyIndicator.showWhile(getDisplay(), new Runnable() {
 			public void run() {
+				if (outlinePage != null) {
+					outlinePage.cleanupSelection();
+				}
 				final OrmDiagram od = getOrmDiagram();
 				od.setDeepIntoSort(on);
 				od.refresh();
@@ -66,7 +69,7 @@ public class LexicalSortingAction extends Action {
 		});
 	}
 
-	protected Display getDisplay () {
+	protected Display getDisplay() {
 		if (diagramViewer != null && diagramViewer.getEditPartViewer() != null && 
 				diagramViewer.getEditPartViewer().getControl() != null) {
 			return diagramViewer.getEditPartViewer().getControl().getDisplay();

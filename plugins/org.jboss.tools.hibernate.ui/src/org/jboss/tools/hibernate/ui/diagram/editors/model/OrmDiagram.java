@@ -265,6 +265,17 @@ public class OrmDiagram extends BaseElement {
 		}
 	}
 
+	public void cleanupSelection() {
+		Iterator<OrmShape> it = elements.values().iterator();
+		while (it.hasNext()) {
+			OrmShape ormShape = it.next();
+			ormShape.cleanupSelection();
+		}
+		for (int i = 0; i < connections.size(); i++) {
+			connections.get(i).cleanupSelection();
+		}
+	}
+
 	protected void createRulers() {
 		leftRuler = new DiagramRuler(false);
 		topRuler = new DiagramRuler(true);

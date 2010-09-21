@@ -376,4 +376,8 @@ public class DiagramContentOutlinePage extends ContentOutlinePage implements
 	protected ActionRegistry getActionRegistry() {
 		return actionRegistry;
 	}
+
+	public void cleanupSelection() {
+		getViewer().deselectAll();
+	}
 }
