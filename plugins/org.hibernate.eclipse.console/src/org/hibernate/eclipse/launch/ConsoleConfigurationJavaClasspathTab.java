@@ -93,6 +93,7 @@ public class ConsoleConfigurationJavaClasspathTab extends JavaClasspathTab {
 			if (flagTryToBuild) {
 				try {
 					ccTest.buildWith(null, false);
+					ccTest.reset();
 				} catch (Exception ex) {
 					resUserClasses = false;
 					setErrorMessage(ex.getMessage());
