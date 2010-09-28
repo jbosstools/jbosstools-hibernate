@@ -35,8 +35,9 @@ public class ConsoleConfigurationJavaClasspathTab extends JavaClasspathTab {
 	protected boolean configurationFileWillBeCreated = false;
 	// for validation process optimization:
 	// presave last time validated configuration and validate result,
-	// to avoid several unnecessary validation -> rebuild for ConsoleConfig
-	// is rather slow operation - so several time rebuild is visible.
+	// to avoid several unnecessary validation -> buildWith for ConsoleConfig
+	// is rather slow operation (for classpaths with many jar files) - 
+	// so several time rebuild is visible for GUI performance operation.
 	protected ILaunchConfiguration lastValidatedLaunchConfig = null;
 	protected String lastErrorMessage = null;
 	protected boolean lastRes = false;
@@ -93,10 +94,18 @@ public class ConsoleConfigurationJavaClasspathTab extends JavaClasspathTab {
 			if (flagTryToBuild) {
 				try {
 					ccTest.buildWith(null, false);
-					ccTest.reset();
 				} catch (Exception ex) {
 					resUserClasses = false;
 					setErrorMessage(ex.getMessage());
+				}
+				// accurate reset for ccTest after buildWith, should avoid possible "leaks"
+				try {
+					ccTest.reset();
+				} catch (Exception ex) {
+					if (resUserClasses) {
+						resUserClasses = false;
+						setErrorMessage(ex.getMessage());
+					}
 				}
 				try {
 					lastValidatedLaunchConfig = launchConfig.getWorkingCopy();
