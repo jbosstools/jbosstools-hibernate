@@ -119,8 +119,8 @@ public class ConfigurationFileTest extends HibernateTest {
 		String roleName = "role1";
 		String entityName = "entity1";
 		
-		bot.textWithLabel("Role*").setText("role1");
-		bot.textWithLabel("Entity-Name*").setText("entity1");
+		bot.textWithLabel("Role:*").setText("role1");
+		bot.textWithLabel("Entity-Name:*").setText("entity1");
 		SWTBotShell shell = bot.shell("Add Grant");
 		
 		assertNotNull(shell);

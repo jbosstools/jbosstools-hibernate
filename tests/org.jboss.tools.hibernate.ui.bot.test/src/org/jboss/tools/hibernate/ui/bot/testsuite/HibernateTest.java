@@ -47,6 +47,7 @@ import org.jboss.tools.ui.bot.ext.types.DriverEntity;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
+import org.junit.BeforeClass;
 
 public class HibernateTest extends SWTTestExt {
 
@@ -62,8 +63,10 @@ public class HibernateTest extends SWTTestExt {
 	/**
 	 * Prepare project and classes
 	 */
+	@BeforeClass	
 	public static void prepare() {	
 		log.info("Hibernate All Test Started");
+		jbt.closeReportUsageWindowIfOpened(true);
 	}
 	
 	/**
