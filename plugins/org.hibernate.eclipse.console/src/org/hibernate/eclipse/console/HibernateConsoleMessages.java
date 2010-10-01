@@ -463,6 +463,7 @@ public class HibernateConsoleMessages extends NLS {
 	public static String ExporterSettingsTab_has_to_be_folder_or_project;
 	public static String ExporterSettingsTab_must_be_file;
 	public static String ExporterSettingsTab_output_directory_for;
+	public static String ExporterSettingsTab_query_should_have_not_empty_value;
 	public static String ExporterSettingsTab_problem_when_reading_hibernate_tools_launch_configuration;
 	public static String ExporterSettingsTab_project_for_is_closed;
 	public static String ExporterSettingsTab_properties;

@@ -795,31 +795,31 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 			return;
 		}
 
-
+		String msg = null;
 		// hard-coded checks: this should be delegated to extension point that knows about the different exporters.
 		//Iterator iterator = observableFactoryList.getList().iterator(); // check all exporters
 		for (ExporterFactory ef : selectedExporters) {// check only selected exporters
 			String str = ef.getProperties().get(ExporterFactoryStrings.OUTPUTDIR);
-			String msg = null;
-			if(str!=null) {
+			if (str != null) {
 				msg = PathHelper.checkDirectory(str, HibernateConsoleMessages.ExporterSettingsTab_output_directory_for + " " + ef.getExporterDefinition().getDescription(), true); //$NON-NLS-1$
-				if(msg!=null) {
-					updateStatus(msg);
-					return;
+				if (msg != null) {
+					break;
 				}
 			}
-
 			str = ef.getProperties().get(ExporterFactoryStrings.TEMPLATE_PATH);
-			if(str!=null) {
+			if (str != null) {
 				msg = PathHelper.checkDirectory(str, HibernateConsoleMessages.ExporterSettingsTab_template_directory_for + " " + ef.getExporterDefinition().getDescription(), true); //$NON-NLS-1$
-				if(msg!=null) {
-					updateStatus(msg);
-					return;
+				if (msg != null) {
+					break;
 				}
 			}
-
+			str = ef.getProperties().get(ExporterFactoryStrings.QUERY_STRING);
+			if (str != null && str.length() == 0) {
+				msg = NLS.bind(HibernateConsoleMessages.ExporterSettingsTab_query_should_have_not_empty_value, ef.getExporterDefinition().getDescription());
+				break;
+			}
 		}
-		updateStatus( null );
+		updateStatus(msg);
 	}
 
 	protected String checkDirectory(IPath path, String name) {
