@@ -638,7 +638,7 @@
                description="Query"
                name="query_string"
                type="string"
-               value=""/>
+               value="from $fullClassName"/>
       </exporter>
    </extension>
    <extension
