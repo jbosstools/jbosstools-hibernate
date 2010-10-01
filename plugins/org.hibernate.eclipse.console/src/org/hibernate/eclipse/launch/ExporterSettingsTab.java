@@ -814,9 +814,12 @@ public class ExporterSettingsTab extends AbstractLaunchConfigurationTab {
 				}
 			}
 			str = ef.getProperties().get(ExporterFactoryStrings.QUERY_STRING);
-			if (str != null && str.length() == 0) {
-				msg = NLS.bind(HibernateConsoleMessages.ExporterSettingsTab_query_should_have_not_empty_value, ef.getExporterDefinition().getDescription());
-				break;
+			if (str != null) {
+				str = str.trim();
+				if (str.length() == 0) {
+					msg = NLS.bind(HibernateConsoleMessages.ExporterSettingsTab_query_should_have_not_empty_value, ef.getExporterDefinition().getDescription());
+					break;
+				}
 			}
 		}
 		updateStatus(msg);
