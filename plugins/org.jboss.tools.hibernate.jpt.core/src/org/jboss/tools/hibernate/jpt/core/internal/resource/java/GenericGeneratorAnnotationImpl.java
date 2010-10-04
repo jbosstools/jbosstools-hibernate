@@ -366,10 +366,6 @@ public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member>
 				DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
 		}
 		
-		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
-			throw new UnsupportedOperationException();
-		}
-		
 		public String getAnnotationName() {
 			return GenericGeneratorAnnotation.ANNOTATION_NAME;
 		}
