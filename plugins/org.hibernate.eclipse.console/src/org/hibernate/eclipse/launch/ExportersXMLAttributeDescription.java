@@ -40,7 +40,7 @@ public class ExportersXMLAttributeDescription {
 	/**
 	 * path to file to store description
 	 */
-	public static final String ANT_TASKS_DESCRIPTION_PATH = "ant-tasks-description.xml".replaceAll("//", File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final String ANT_TASKS_DESCRIPTION_PATH = "ant-tasks-description.xml"; //$NON-NLS-1$
 
 	public static class AttributeDescription {
 		public String name;
@@ -123,6 +123,7 @@ public class ExportersXMLAttributeDescription {
 			HibernateConsolePlugin.getDefault().logErrorMessage("getResource: ", e); //$NON-NLS-1$
 		}
 		if (resourceFile == null || !resourceFile.exists()) {
+			HibernateConsolePlugin.getDefault().logErrorMessage("Can't read file: " + ANT_TASKS_DESCRIPTION_PATH, (Throwable)null); //$NON-NLS-1$
 			return null;
 		}
 		StringBuffer cbuf = new StringBuffer((int) resourceFile.length());
