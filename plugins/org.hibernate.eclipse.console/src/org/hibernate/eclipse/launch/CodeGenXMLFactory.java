@@ -178,55 +178,46 @@ public class CodeGenXMLFactory {
 			String pass = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.password"); //$NON-NLS-1$
 			//
 			String dialectName = consoleConfigPrefs.getDialectName();
+			//
+			Set<String> specialProps = new TreeSet<String>();
+			specialProps.add(Environment.DRIVER);
+			specialProps.add(Environment.URL);
+			specialProps.add(Environment.USER);
+			specialProps.add(Environment.PASS);
+			specialProps.add(Environment.DIALECT);
+			//
+			Properties propsTmp = null;
 			if (consoleConfigPrefs.getPropertyFile() != null) {
-				props = consoleConfigPrefs.getProperties();
-				props.setProperty(Environment.DRIVER, driverClass);
-				props.setProperty(Environment.URL, url);
-				props.setProperty(Environment.USER, user);
-				props.setProperty(Environment.PASS, pass);
-				if (StringHelper.isNotEmpty(dialectName)) {
-					props.setProperty(Environment.DIALECT, dialectName);
-				}
-				// output keys in sort order
-				Object[] keys = props.keySet().toArray();
-				Arrays.sort(keys);
+				propsTmp = consoleConfigPrefs.getProperties();
+			}
+			if (propsTmp == null) {
+				propsTmp = new Properties();
+			}
+			propsTmp.setProperty(Environment.DRIVER, driverClass);
+			propsTmp.setProperty(Environment.URL, url);
+			propsTmp.setProperty(Environment.USER, user);
+			propsTmp.setProperty(Environment.PASS, pass);
+			if (StringHelper.isNotEmpty(dialectName)) {
+				propsTmp.setProperty(Environment.DIALECT, dialectName);
+			}
+			// output keys in sort order
+			Object[] keys = propsTmp.keySet().toArray();
+			Arrays.sort(keys);
+			//
+			if (externalPropFile) {
 				for (Object obj : keys) {
-					addIntoPropFileContent(propFileContent, obj.toString(), props.getProperty(obj.toString()));
+					addIntoPropFileContent(propFileContent, obj.toString(), propsTmp.getProperty(obj.toString()));
 				}
 			} else {
-				//
-				/** /
-				String driverURL = getConnectionProfileDriverURL(connProfileName);
-				el = root.addElement(CodeGenerationStrings.PROPERTY);
-				el.addAttribute(CodeGenerationStrings.NAME, "jdbc.driver"); //$NON-NLS-1$
-				el.addAttribute(CodeGenerationStrings.LOCATION, driverURL);
-				/**/
-				//
-				el = root.addElement(CodeGenerationStrings.PROPERTY);
-				el.addAttribute(CodeGenerationStrings.NAME, Environment.DRIVER);
-				el.addAttribute(CodeGenerationStrings.VALUE, driverClass);
-				addIntoPropFileContent(propFileContent, Environment.DRIVER);
-				//
-				el = root.addElement(CodeGenerationStrings.PROPERTY);
-				el.addAttribute(CodeGenerationStrings.NAME, Environment.URL);
-				el.addAttribute(CodeGenerationStrings.VALUE, url);
-				addIntoPropFileContent(propFileContent, Environment.URL);
-				//
-				el = root.addElement(CodeGenerationStrings.PROPERTY);
-				el.addAttribute(CodeGenerationStrings.NAME, Environment.USER);
-				el.addAttribute(CodeGenerationStrings.VALUE, user);
-				addIntoPropFileContent(propFileContent, Environment.USER);
-				//
-				el = root.addElement(CodeGenerationStrings.PROPERTY);
-				el.addAttribute(CodeGenerationStrings.NAME, Environment.PASS);
-				el.addAttribute(CodeGenerationStrings.VALUE, pass);
-				addIntoPropFileContent(propFileContent, Environment.PASS);
-				//
-				if (StringHelper.isNotEmpty(dialectName)) {
-					el = root.addElement(CodeGenerationStrings.PROPERTY);
-					el.addAttribute(CodeGenerationStrings.NAME, Environment.DIALECT);
-					el.addAttribute(CodeGenerationStrings.VALUE, dialectName);
-					addIntoPropFileContent(propFileContent, Environment.DIALECT);
+				for (Object obj : keys) {
+					if (specialProps.contains(obj)) {
+						el = root.addElement(CodeGenerationStrings.PROPERTY);
+						el.addAttribute(CodeGenerationStrings.NAME, obj.toString());
+						el.addAttribute(CodeGenerationStrings.VALUE, propsTmp.getProperty(obj.toString()));
+						addIntoPropFileContent(propFileContent, obj.toString());
+					} else {
+						addIntoPropFileContent(propFileContent, obj.toString(), propsTmp.getProperty(obj.toString()));
+					}
 				}
 			}
 			if (externalPropFile) {

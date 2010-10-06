@@ -390,7 +390,7 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
 		codeGen = updatePaths(codeGen);
 		String sample = getSample("AntCodeGenInternalProps_test1.xml"); //$NON-NLS-1$
-		String sampleProperties = getSample("AntCodeGenProps.hibernate.properties"); //$NON-NLS-1$
+		String sampleProperties = getSample("AntCodeGenPropsInternal.hibernate.properties"); //$NON-NLS-1$
 		assertEquals(sample, codeGen);
 		assertEquals(sampleProperties.trim(), codeGenProperties);
 	}
@@ -403,7 +403,7 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		String codeGenProperties = codeGenFactory.getPropFileContentPreSave();
 		codeGen = updatePaths(codeGen);
 		String sample = getSample("AntCodeGenInternalProps_test2.xml"); //$NON-NLS-1$
-		String sampleProperties = getSample("AntCodeGenProps.hibernate.properties"); //$NON-NLS-1$
+		String sampleProperties = getSample("AntCodeGenPropsInternal.hibernate.properties"); //$NON-NLS-1$
 		assertEquals(sample, codeGen);
 		assertEquals(sampleProperties.trim(), codeGenProperties);
 	}
