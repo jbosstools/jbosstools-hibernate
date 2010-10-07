@@ -184,7 +184,7 @@ public class ExporterFactory {
 		Properties props = new Properties();
 		props.putAll(globalProps);
 		props.putAll(getProperties());
-		extractExporterProperties(exporterId, props, extract);
+		extractExporterProperties(getExporterDefinitionId(), props, extract);
 		String outputPath = defOutDir;
 		if (extract.containsKey(ExporterFactoryStrings.OUTPUTDIR)) {
 			outputPath = extract.getProperty(ExporterFactoryStrings.OUTPUTDIR);
@@ -216,7 +216,7 @@ public class ExporterFactory {
 		exporter.setProperties(props);
 		exporter.setArtifactCollector(collector);
 
-		extractExporterProperties(exporterId, props, extract);
+		extractExporterProperties(getExporterDefinitionId(), props, extract);
 		
 		String outputPath = defaultOutputDirectory;
 		if (extract.containsKey(ExporterFactoryStrings.OUTPUTDIR)) {
@@ -278,20 +278,20 @@ public class ExporterFactory {
 		}
 		exporter.setTemplatePath(templatePathList.toArray(new String[templatePathList.size()]));
 		// special handling for GenericExporter (TODO: be delegated via plugin.xml)
-		if (exporterId.equals("org.hibernate.tools.hbmtemplate")) { //$NON-NLS-1$
+		if (getExporterDefinitionId().equals("org.hibernate.tools.hbmtemplate")) { //$NON-NLS-1$
 			GenericExporter ge = (GenericExporter) exporter;
 			ge.setFilePattern(extract.getProperty(ExporterFactoryStrings.FILE_PATTERN));
 			ge.setTemplateName(extract.getProperty(ExporterFactoryStrings.TEMPLATE_NAME));
 			ge.setForEach(extract.getProperty(ExporterFactoryStrings.FOR_EACH));
 		}
 		// special handling for Hbm2DDLExporter
-		if (exporterId.equals("org.hibernate.tools.hbm2ddl")) { //$NON-NLS-1$
+		if (getExporterDefinitionId().equals("org.hibernate.tools.hbm2ddl")) { //$NON-NLS-1$
 			Hbm2DDLExporter ddlExporter = (Hbm2DDLExporter) exporter;
 			//avoid users to delete their databases with a single click
 			ddlExporter.setExport(Boolean.getBoolean(extract.getProperty(ExporterFactoryStrings.EXPORTTODATABASE)));
 		}
 		// special handling for QueryExporter
-		if (exporterId.equals("org.hibernate.tools.query")) { //$NON-NLS-1$
+		if (getExporterDefinitionId().equals("org.hibernate.tools.query")) { //$NON-NLS-1$
 			QueryExporter queryExporter = (QueryExporter) exporter;
 			List<String> queryStrings = new ArrayList<String>();
 			queryStrings.add(extract.getProperty(ExporterFactoryStrings.QUERY_STRING));
