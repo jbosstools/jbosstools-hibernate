@@ -384,11 +384,11 @@ public class ConfigurationFactory {
 			// String dialect =
 			// "org.hibernate.dialect.HSQLDialect";//cpProperties.getProperty("org.eclipse.datatools.connectivity.db.driverClass");
 			// invoke.setProperty(Environment.DIALECT, dialect);
-			String driverClass = driverInstance.getProperty("org.eclipse.datatools.connectivity.db.driverClass"); //$NON-NLS-1$
+			String driverClass = driverInstance != null ? 
+				driverInstance.getProperty("org.eclipse.datatools.connectivity.db.driverClass") : ""; //$NON-NLS-1$ //$NON-NLS-2$
 			localCfg.setProperty(Environment.DRIVER, driverClass);
-			// TODO:
-			@SuppressWarnings("unused")
-			String driverJarPath = driverInstance.getJarList();
+			//String driverJarPath = driverInstance != null ?
+			//	driverInstance.getJarList() : ""; //$NON-NLS-1$
 			String url = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.URL"); //$NON-NLS-1$
 			// url += "/";// +
 			// cpProperties.getProperty("org.eclipse.datatools.connectivity.db.databaseName");
