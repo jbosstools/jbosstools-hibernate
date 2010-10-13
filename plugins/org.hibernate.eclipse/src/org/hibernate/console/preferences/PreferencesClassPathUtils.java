@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.hibernate.console.preferences;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -33,8 +34,9 @@ public class PreferencesClassPathUtils {
 			String[] driverURLParts = driverURL.split(";"); //$NON-NLS-1$
 			urls = new URL[driverURLParts.length];
 			for (int i = 0; i < driverURLParts.length; i++) {
+				File file = new File(driverURLParts[i].trim());
 				try {
-					urls[i] = new URL("file:/" + driverURLParts[i].trim()); //$NON-NLS-1$
+					urls[i] = file.toURL();
 				} catch (MalformedURLException e) {
 					urls[i] = null; 
 				}
