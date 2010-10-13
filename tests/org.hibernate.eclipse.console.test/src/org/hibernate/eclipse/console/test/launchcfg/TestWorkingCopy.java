@@ -93,11 +93,11 @@ public class TestWorkingCopy implements ILaunchConfigurationWorkingCopy {
 	}
 
 	public void setAttribute(String attributeName, boolean value) {
-		Assert.fail(ConsoleTestMessages.RefactoringTest_method_not_tested);
+		attributes.put(attributeName, value);
 	}
 
-	public void setAttributes(Map attributes) {
-		Assert.fail(ConsoleTestMessages.RefactoringTest_method_not_tested);
+	public void setAttributes(Map attribs) {
+		attributes.putAll(attribs);
 	}
 
 	public void setContainer(IContainer container) {

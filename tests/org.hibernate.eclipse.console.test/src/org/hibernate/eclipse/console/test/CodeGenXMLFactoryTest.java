@@ -10,10 +10,7 @@
  ******************************************************************************/
 package org.hibernate.eclipse.console.test;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -26,22 +23,18 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
 
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.internal.ConnectionProfile;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.hibernate.console.ConfigurationXMLFactory;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.ExtensionManager;
 import org.hibernate.eclipse.console.model.impl.ExporterDefinition;
 import org.hibernate.eclipse.console.model.impl.ExporterFactoryStrings;
 import org.hibernate.eclipse.console.test.launchcfg.TestConsoleConfigurationPreferences;
 import org.hibernate.eclipse.console.test.launchcfg.TestLaunchConfig;
+import org.hibernate.eclipse.console.test.utils.ResourceReadUtils;
 import org.hibernate.eclipse.launch.CodeGenXMLFactory;
 import org.hibernate.eclipse.launch.CodeGenerationStrings;
 import org.hibernate.eclipse.launch.ExporterAttributes;
@@ -53,10 +46,6 @@ import junit.framework.TestCase;
  * @author Vitali Yemialyanchyk
  */
 public class CodeGenXMLFactoryTest extends TestCase {
-
-	public static final String LN_1 = "\n"; //$NON-NLS-1$
-	public static final String LN_2 = "\r\n"; //$NON-NLS-1$
-
 	public static final String SAMPLE_PATH = "res/sample/"; //$NON-NLS-1$
 	public static final String PROJECT_LIB_PATH = "res/project/lib/"; //$NON-NLS-1$
 
@@ -240,28 +229,6 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		public String getDriverClass(String connProfileName) {
 			return "driverClass"; //$NON-NLS-1$
 		}
-	}
-	
-	/**
-	 * Parse, i.e. adjust xml text so attributes for same xml 
-	 * will be in one order.
-	 * 
-	 * @param sample
-	 * @return adjusted xml
-	 */
-	public String adjustXmlText(String sample) {
-		Document doc = null;
-		try {
-			doc = DocumentHelper.parseText(sample);
-		} catch (DocumentException e) {
-			// ignore
-		}
-		if (doc == null) {
-			return sample;
-		}
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ConfigurationXMLFactory.dump(baos, doc.getRootElement());
-		return baos.toString().trim();
 	}
 	
 	public void testCodeGenXMLFactoryRevengAll() {
@@ -494,41 +461,12 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		return testLaunchConfig;
 	}
 
-
 	public String getSample(String fileName) {
-		File resourceFile = null;
-		try {
-			resourceFile = getResourceItem(SAMPLE_PATH + fileName);
-		} catch (IOException e1) {
-		}
-		if (resourceFile == null || !resourceFile.exists()) {
-			return null;
-		}
-		StringBuffer cbuf = new StringBuffer((int) resourceFile.length());
-		try {
-			String ls = System.getProperties().getProperty("line.separator", LN_1);  //$NON-NLS-1$
-			BufferedReader in = new BufferedReader(new FileReader(resourceFile));
-			String str;
-			while ((str = in.readLine()) != null) {
-				cbuf.append(str + ls);
-			}
-			in.close();
-		} catch (IOException e) {
-		}
-		return adjustXmlText(cbuf.toString());
+		return ResourceReadUtils.getSample(SAMPLE_PATH + fileName);
 	}
 
-	protected File getResourceItem(String strResPath) throws IOException {
-		IPath resourcePath = new Path(strResPath);
-		File resourceFolder = resourcePath.toFile();
-		URL entry = HibernateConsoleTestPlugin.getDefault().getBundle().getEntry(
-				strResPath);
-		String tplPrjLcStr = strResPath;
-		if (entry != null) {
-			URL resProject = FileLocator.resolve(entry);
-			tplPrjLcStr = FileLocator.resolve(resProject).getFile();
-		}
-		resourceFolder = new File(tplPrjLcStr);
-		return resourceFolder;
+	public String adjustXmlText(String sample) {
+		return ResourceReadUtils.adjustXmlText(sample);
 	}
+
 }

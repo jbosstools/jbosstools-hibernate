@@ -34,6 +34,9 @@ public class ConsolePluginAllTests {
 		// https://jira.jboss.org/browse/JBIDE-6838 
 		suite.addTestSuite(CodeGenXMLFactoryTest.class);
 
+		// https://jira.jboss.org/browse/JBIDE-7285 
+		suite.addTestSuite(ExporterAttributesTest.class);
+		
 		// core tests
 		//Properties properties = new Properties();
 		//properties.load(ConsolePluginAllTests.class.getResourceAsStream("plugintest-hibernate.properties"));
