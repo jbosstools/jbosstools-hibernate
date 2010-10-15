@@ -85,12 +85,11 @@ public class CodeGenXMLFactoryTest extends TestCase {
 		}
 
 		public URL[] getCustomClassPathURLS() {
-			URL[] urls = new URL[4];
+			URL[] urls = new URL[3];
 			try {
 				urls[0] = new File("ejb3-persistence.jar").toURL(); //$NON-NLS-1$
 				urls[1] = new File("hibernate3.jar").toURL(); //$NON-NLS-1$
 				urls[2] = new File("hsqldb.jar").toURL(); //$NON-NLS-1$
-				urls[3] = null;
 			} catch (IOException e) {
 			}
 			return urls;

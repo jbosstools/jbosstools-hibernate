@@ -78,7 +78,9 @@ public class ConfigurationXMLFactory {
 			rootName = ConfigurationXMLStrings.CONFIGURATION;
 		}
 		Element root = DocumentFactory.getInstance().createElement(rootName);
-		String tmp = file2Str(prefs.getConfigXMLFile());
+		final ConsoleConfiguration cc2ExtractConfigXMLFile = new ConsoleConfiguration(prefs);
+		final File configXMLFile = cc2ExtractConfigXMLFile.getConfigXMLFile();
+		String tmp = file2Str(configXMLFile);
 		tmp = makePathRelative(tmp, pathPlace2Generate, pathWorkspacePath);
 		updateAttr(root, tmp, ConfigurationXMLStrings.CONFIGURATIONFILE);
 		tmp = file2Str(prefs.getPropertyFile());

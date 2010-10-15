@@ -77,10 +77,14 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	 * Reset so a new configuration or sessionfactory is needed.
 	 *
 	 */
-	public void reset() {
+	public boolean reset() {
+		boolean res = false;
 		// reseting state
-		configuration = null;
-		closeSessionFactory();
+		if (configuration != null) {
+			configuration = null;
+			res = true;
+		}
+		res = res || closeSessionFactory();
 		if (executionContext != null) {
 			executionContext.execute(new Command() {
 				public Object execute() {
@@ -96,21 +100,60 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 				}
 			});
 		}
-		fakeDrivers.clear();
-		cleanUpClassLoader();
-		fireConfigurationReset();
+		if (fakeDrivers.size() > 0) {
+			fakeDrivers.clear();
+			res = true;
+		}
+		res = res || cleanUpClassLoader();
+		if (res) {
+			fireConfigurationReset();
+		}
 		executionContext = null;
+		return res;
 	}
 
-	public void cleanUpClassLoader() {
+	protected boolean cleanUpClassLoader() {
+		boolean res = false;
 		ClassLoader classLoaderTmp = classLoader;
 		while (classLoaderTmp != null) {
 			if (classLoaderTmp instanceof ConsoleConfigClassLoader) {
 				((ConsoleConfigClassLoader)classLoaderTmp).close();
+				res = true;
 			}
 			classLoaderTmp = classLoaderTmp.getParent();
 		}
-		classLoader = null;
+		if (classLoader != null) {
+			classLoader = null;
+			res = true;
+		}
+		return res;
+	}
+	
+	/**
+	 * Create class loader - so it uses the original urls list from preferences. 
+	 */
+	protected void reinitClassLoader() {
+		boolean recreateFlag = true;
+		final URL[] customClassPathURLs = PreferencesClassPathUtils.getCustomClassPathURLs(prefs);
+		if (classLoader != null) {
+			// check -> do not recreate class loader in case if urls list is the same
+			final URL[] oldURLS = classLoader.getURLs();
+			if (customClassPathURLs.length == oldURLS.length) {
+				int i = 0;
+				for (; i < oldURLS.length; i++) {
+					if (!customClassPathURLs[i].sameFile(oldURLS[i])) {
+						break;
+					}
+				}
+				if (i == oldURLS.length) {
+					recreateFlag = false;
+				}
+			}
+		}
+		if (recreateFlag) {
+			reset();
+			classLoader = createClassLoader(customClassPathURLs);
+		}
 	}
 
 	public void build() {
@@ -118,8 +161,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		fireConfigurationBuilt();
 	}
 	
-	protected ConsoleConfigClassLoader createClassLoader() {
-		final URL[] customClassPathURLs = PreferencesClassPathUtils.getCustomClassPathURLs(prefs);
+	protected ConsoleConfigClassLoader createClassLoader(final URL[] customClassPathURLs) {
 		ConsoleConfigClassLoader classLoader = AccessController.doPrivileged(new PrivilegedAction<ConsoleConfigClassLoader>() {
 			public ConsoleConfigClassLoader run() {
 				return new ConsoleConfigClassLoader(customClassPathURLs, getParentClassLoader()) {
@@ -157,9 +199,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	 *
 	 */
 	public Configuration buildWith(final Configuration cfg, final boolean includeMappings) {
-		if (classLoader == null) {
-			classLoader = createClassLoader();
-		}
+		reinitClassLoader();
 		executionContext = new DefaultExecutionContext(getName(), classLoader);
 		Configuration result = (Configuration)execute(new Command() {
 			public Object execute() {
@@ -295,8 +335,12 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		if (prefs != null) {
 			configXMLFile = prefs.getConfigXMLFile();
 		}
-		if (configXMLFile == null && classLoader != null) {
-			URL url = classLoader.findResource("hibernate.cfg.xml"); //$NON-NLS-1$
+		if (configXMLFile == null) {
+			URL url = null;
+			reinitClassLoader();
+			if (classLoader != null) {
+				url = classLoader.findResource("hibernate.cfg.xml"); //$NON-NLS-1$
+			}
 			if (url != null) {
 				URI uri = null;
 				try {
@@ -330,12 +374,15 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		return executionContext;
 	}
 
-	public void closeSessionFactory() {
+	public boolean closeSessionFactory() {
+		boolean res = false;
 		if (sessionFactory != null) {
 			fireFactoryClosing(sessionFactory);
 			sessionFactory.close();
 			sessionFactory = null;
+			res = true;
 		}
+		return res;
 	}
 
 	public Settings getSettings(final Configuration cfg) {
