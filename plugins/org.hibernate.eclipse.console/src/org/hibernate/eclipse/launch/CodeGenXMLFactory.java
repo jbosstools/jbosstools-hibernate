@@ -277,8 +277,8 @@ public class CodeGenXMLFactory {
 		//
 		Element hibernatetool = target.addElement(CodeGenerationStrings.HIBERNATETOOL);
 		hibernatetool.addAttribute(CodeGenerationStrings.DESTDIR, getVar(varBuildDir));
-		String templatePath = getResLocation(attributes.getTemplatePath());
 		if (attributes.isUseOwnTemplates()) {
+			String templatePath = getResLocation(attributes.getTemplatePath());
 			hibernatetool.addAttribute(CodeGenerationStrings.TEMPLATEPATH, templatePath);
 		}
 		if (rootConsoleConfig != null) {
@@ -372,11 +372,12 @@ public class CodeGenXMLFactory {
 				if (val == null || 0 == val.toString().compareTo(ad.defaultValue)) {
 					continue;
 				}
+				String processedVal = processPropertyValue(val);
 				if (setSubTags.contains(ad.guiName)) {
 					Element subTag = exporter.addElement(ad.name);
-					subTag.addText(val.toString());
+					subTag.addText(processedVal);
 				} else {
-					exporter.addAttribute(ad.name, val.toString());
+					exporter.addAttribute(ad.name, processedVal);
 				}
 			}
 			for (Object obj : list2Remove) {
@@ -386,9 +387,10 @@ public class CodeGenXMLFactory {
 			for (Map.Entry<String, Object> propEntry : expPropsSorted.entrySet()) {
 				Object key = propEntry.getKey();
 				Object val = propEntry.getValue();
+				String processedVal = processPropertyValue(val);
 				Element property = exporter.addElement(CodeGenerationStrings.PROPERTY);
 				property.addAttribute(CodeGenerationStrings.KEY, key.toString());
-				property.addAttribute(CodeGenerationStrings.VALUE, "" + val); //$NON-NLS-1$
+				property.addAttribute(CodeGenerationStrings.VALUE, processedVal);
 			}
 		}
 		return root;
@@ -435,6 +437,26 @@ public class CodeGenXMLFactory {
 			return null;
 		}
 		return consoleConfig.getPreferences();
+	}
+
+	/**
+	 * Check is the value a path in current file system,
+	 * if true - update result value (workspace related path is 
+	 * converted to absolute path).
+	 * 
+	 * @param val
+	 * @return
+	 */
+	public String processPropertyValue(Object val) {
+		if (val == null) {
+			return ""; //$NON-NLS-1$
+		}
+		String res = val.toString();
+		String processedVal = getResLocation(res);
+		if ((new java.io.File(processedVal)).exists()) {
+			res = processedVal;
+		}
+		return res;
 	}
 	
 	public IResource findResource(String path) {
