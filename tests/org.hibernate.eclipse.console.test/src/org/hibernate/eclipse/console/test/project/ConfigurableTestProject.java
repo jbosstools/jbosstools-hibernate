@@ -170,7 +170,8 @@ public class ConfigurableTestProject extends TestProject {
 
 	public void fullBuild() throws CoreException {
 		IPackageFragmentRoot sourcePackageFragment = createSourceFolder();
-		sourcePackageFragment.getResource().refreshLocal(IResource.DEPTH_INFINITE, null);
+		project.refreshLocal(IResource.DEPTH_INFINITE, null);
+		//sourcePackageFragment.getResource().refreshLocal();
 		project.build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
 	}
 }

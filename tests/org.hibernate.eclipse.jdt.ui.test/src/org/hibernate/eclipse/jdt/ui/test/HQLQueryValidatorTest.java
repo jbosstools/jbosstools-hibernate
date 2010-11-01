@@ -67,8 +67,12 @@ public class HQLQueryValidatorTest extends HibernateConsoleTest {
 				assertEquals(3,getIJavaProject().getRawClasspath().length);
 			
 				getIProject().getFolder("src/META-INF").create(true, true, new NullProgressMonitor()); //$NON-NLS-1$
-				 getIProject().getFile("src/META-INF/persistence.xml").create( //$NON-NLS-1$
-		                    new ByteArrayInputStream(("<persistence>\n" +  //$NON-NLS-1$
+				getIProject().getFile("src/META-INF/persistence.xml").create( //$NON-NLS-1$
+		                    new ByteArrayInputStream(("<persistence version=\"1.0\" xmlns=\"http://java.sun.com/xml/ns/persistence\"\n" + 
+		                    		"xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" + 
+		                    		"xsi:schemaLocation=\"http://java.sun.com/xml/ns/persistence " +
+		                    		"http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd\">\n" + 
+		                    		"   \n" +  //$NON-NLS-1$
 		                    		"   <persistence-unit name=\"manager1\" transaction-type=\"RESOURCE_LOCAL\">\n" + //$NON-NLS-1$ 
 		                    		"      <class>test.TestClass</class>\n" +  //$NON-NLS-1$
 		                    		"      <properties>\n" +  //$NON-NLS-1$

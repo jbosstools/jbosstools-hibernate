@@ -124,6 +124,9 @@ public class OpenSourceFileTest extends TestCase {
 		Throwable ex = null;
 		try {
 			editor = OpenSourceAction.run(consCFG, selection, fullyQualifiedName);
+			if (Object.class.getName().equals(fullyQualifiedName)){
+				return;
+			}
 			boolean highlighted = Utils.hasSelection(editor);
 			if (!highlighted) {
 				String out = NLS.bind(ConsoleTestMessages.OpenSourceFileTest_highlighted_region_for_is_empty, selection);

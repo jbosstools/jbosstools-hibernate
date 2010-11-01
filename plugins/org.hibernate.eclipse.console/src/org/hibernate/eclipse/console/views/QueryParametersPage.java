@@ -48,6 +48,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -62,6 +63,7 @@ import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 import org.hibernate.console.ConsoleQueryParameter;
 import org.hibernate.console.ImageConstants;
+import org.hibernate.console.ParametersListDialog;
 import org.hibernate.console.QueryInputModel;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.QueryEditor;
@@ -122,8 +124,6 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 		toggleActive.setChecked(model.ignoreParameters());
 		tableViewer.getTable().setEnabled(!model.ignoreParameters());
 		tableViewer.setInput(model);
-
-
 	}
 
 	private void createStatusLabel() {
@@ -224,11 +224,27 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 					}
 				}
 				if ( VALUE_PROPERTY.equals( property ) ) {
-					cqp.setValueFromString((String) value);
+					String[] inputStrings;
+					if (value instanceof String[]){
+						inputStrings = (String[])value;
+					} else {
+						inputStrings = new String[]{(String) value};
+					}
+					Object[] values = new Object[inputStrings.length];
+					for (int i = 0; i < inputStrings.length; i++) {
+						values[i] = cqp.convertStringToValue(inputStrings[i]);
+					}
+					if (values.length > 1){
+						cqp.setValue(values);
+					} else if (values.length == 1){
+						cqp.setValue(values[0]);
+					} else {
+						cqp.setValue(null);
+					}
 				}
 				if ( NULL_PROPERTY.equals( property ) ) {
 					if(cqp.isNull()) {
-						cqp.setValueFromString( "" ); // best attempt to "unnull" //$NON-NLS-1$
+						cqp.setValue(cqp.convertStringToValue( "" )); // best attempt to "unnull" //$NON-NLS-1$
 					} else {
 						cqp.setNull();
 					}
@@ -253,7 +269,11 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 					}
 				}
 				if ( VALUE_PROPERTY.equals( property ) ) {
-					return cqp.getValueAsString();
+					return cqp.getStringValues();
+					/*if (cqp.isArrayValue()){
+						return cqp.convertValueToString(((Object[])cqp.getValue())[0]);
+					}
+					return cqp.convertValueToString(cqp.getValue());*/
 				}
 				if ( NULL_PROPERTY.equals( property )) {
 					return Boolean.valueOf(cqp.isNull());
@@ -294,7 +314,21 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 		CellEditor[] editors = new CellEditor[columnProperties.length];
 		editors[0] = new TextCellEditor( queryParametersTable );
 		editors[1] = new ComboBoxCellEditor( queryParametersTable, valueTypes );
-		editors[2] = new TextCellEditor( queryParametersTable );
+		editors[2] = new TextDialogCellEditor(queryParametersTable) {
+			
+			@Override
+			protected Object openDialogBox(Control cellEditorWindow) {
+				Object firstElement = ((IStructuredSelection)tableViewer.getSelection()).getFirstElement();
+				if(firstElement instanceof ConsoleQueryParameter) {
+					ParametersListDialog pld = new ParametersListDialog(null, (ConsoleQueryParameter) firstElement);
+					if (pld.open()==Window.OK){
+						return pld.getValue();//String[]
+					}
+				}
+				return getValue();//could be String or String[]
+			}
+		};
+		
 		editors[3] = new CheckboxCellEditor( queryParametersTable );
 
 		tableViewer.setCellEditors( editors );
@@ -323,7 +357,7 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 				case 1:
 					return cqp.getType().getName();
 				case 2:
-					return cqp.getValueAsString();
+					return cqp.getStringValues()[0];
 				case 3:
 					return null; //cqp.isNull()?"X":"";
 				default:
