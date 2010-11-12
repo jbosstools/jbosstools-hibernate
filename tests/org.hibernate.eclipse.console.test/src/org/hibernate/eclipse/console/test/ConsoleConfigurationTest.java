@@ -1,14 +1,31 @@
 package org.hibernate.eclipse.console.test;
 
+import java.lang.reflect.Field;
+import java.util.Map;
+
 import junit.framework.TestCase;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Mappings;
 import org.hibernate.console.ConcoleConfigurationAdapter;
 import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.ConsoleQueryParameter;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.console.KnownConfigurations;
+import org.hibernate.console.QueryInputModel;
 import org.hibernate.console.QueryPage;
 import org.hibernate.eclipse.console.test.launchcfg.TestConsoleConfigurationPreferences;
+import org.hibernate.impl.AbstractQueryImpl;
+import org.hibernate.mapping.Column;
+import org.hibernate.mapping.KeyValue;
+import org.hibernate.mapping.PrimaryKey;
+import org.hibernate.mapping.Property;
+import org.hibernate.mapping.RootClass;
+import org.hibernate.mapping.SimpleValue;
+import org.hibernate.mapping.Table;
 
 public class ConsoleConfigurationTest extends TestCase {
 
@@ -98,6 +115,58 @@ public class ConsoleConfigurationTest extends TestCase {
 
 		QueryPage qp = consoleCfg.executeHQLQuery("from java.lang.Object --this is my comment"); //$NON-NLS-1$
 		assertNotNull(qp);
+	}
+	
+	public void testHQLListParameters() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+		consoleCfg.build();
+		Configuration c = consoleCfg.getConfiguration();
+		Mappings mappings = c.createMappings();
+		RootClass rc = new RootClass();
+		rc.setEntityName("java.awt.Button");
+		rc.setClassName( "java.awt.Button" );
+		Column column = new Column("label");
+		PrimaryKey pk = new PrimaryKey();
+		pk.addColumn(column);
+		Table table = new Table("faketable");
+		rc.setTable(table);
+		table.addColumn(column);
+		table.setPrimaryKey(pk);
+		Property fakeProp = new Property();
+		fakeProp.setName("label");
+		SimpleValue sv = new SimpleValue();
+		sv.addColumn(column);
+		sv.setTypeName("string");
+		sv.setTable(table);
+		fakeProp.setValue(sv);
+		rc.setIdentifierProperty(fakeProp);
+		rc.setIdentifier((KeyValue) fakeProp.getValue());
+		mappings.addClass(rc);
+
+		consoleCfg.buildSessionFactory();
+		
+		ConsoleQueryParameter paramA = new ConsoleQueryParameter("a", Hibernate.INTEGER,
+				new Integer[]{new Integer(1), new Integer(2)});
+		ConsoleQueryParameter paramB = new ConsoleQueryParameter("b", Hibernate.INTEGER, new Integer(3));
+		ConsoleQueryParameter paramOrdered = new ConsoleQueryParameter("0", Hibernate.INTEGER, new Integer(4));
+		QueryInputModel model = new QueryInputModel();
+		model.addParameter(paramA);
+		model.addParameter(paramB);
+		model.addParameter(paramOrdered);
+		QueryPage qp = consoleCfg.executeHQLQuery("select count(*) from java.awt.Button where 1 in ( ?, :a, :b )", model); //$NON-NLS-1$
+		assertNotNull(qp);
+		try{
+			qp.getList();//execute the query
+		} catch (Exception e){
+			//ignore - there is fake mapping
+		}
+		Field qField = qp.getClass().getDeclaredField("query");
+		qField.setAccessible(true);
+		Query query = (Query) qField.get(qp);
+		assertTrue(query.getNamedParameters().length == 2); // a and b
+		Field listParam = AbstractQueryImpl.class.getDeclaredField("namedParameterLists");
+		listParam.setAccessible(true);
+		Map namedParameterLists = (Map) listParam.get(query);
+		assertTrue(namedParameterLists.size() == 1);//"a" added as a list parameter
 	}
 
 	/*public void testCleanup() throws InterruptedException {

@@ -22,6 +22,7 @@
 package org.hibernate.console;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -75,12 +76,20 @@ public class HQLQueryPage extends AbstractQueryPage {
 		ConsoleQueryParameter[] qp = model.getQueryParameters();
 		for (int i = 0; i < qp.length; i++) {
 			ConsoleQueryParameter parameter = qp[i];
+		
 			try {
 				int pos = Integer.parseInt(parameter.getName());
+				//FIXME no method to set positioned list value
 				query2.setParameter(pos, calcValue( parameter ), parameter.getType());
 			} catch(NumberFormatException nfe) {
-				query2.setParameter(parameter.getName(), calcValue( parameter ), parameter.getType());	
-			}			
+				Object value = parameter.getValue();
+				if (value != null && value.getClass().isArray()){
+					Object[] values = (Object[])value;
+					query2.setParameterList(parameter.getName(), Arrays.asList(values), parameter.getType());
+				} else {
+					query2.setParameter(parameter.getName(), calcValue( parameter ), parameter.getType());
+				}
+			}
 		}		
 	}
 

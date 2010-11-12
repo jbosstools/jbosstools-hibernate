@@ -118,18 +118,26 @@ public class ConsoleQueryParameter {
 		//if(value == null) { throw new IllegalArgumentException("Value must not be set to null"); }
 		this.value = value;
 	}
-	
-	public String getValueAsString() {
-		if(isNull()) return ""; //$NON-NLS-1$
-		return type.toString(getValue());
+
+	public String[] getStringValues() {
+		if(value == null) return new String[]{""}; //$NON-NLS-1$
+		if (value.getClass().isArray()){
+			Object[] arr = (Object[])value;
+			String[] values = new String[arr.length];
+			for (int i = 0; i < arr.length; i++) {
+				values[i] = type.toString(arr[i]);
+			}
+			return values;
+		} else {
+			return new String[]{type.toString(value)};
+		}
 	}
 	
-	public void setValueFromString(String value) {
+	public Object convertStringToValue(String value){
 		try {
-			Object object = type.fromStringValue(value);
-			setValue(object);
+			return type.fromStringValue(value);
 		} catch(Exception he) {
-			setNull();
+			return NULL_MARKER;
 		}
 	}
 
