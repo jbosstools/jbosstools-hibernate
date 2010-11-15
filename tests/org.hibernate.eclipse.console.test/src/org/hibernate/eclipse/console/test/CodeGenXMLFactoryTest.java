@@ -26,6 +26,7 @@ import java.util.TreeMap;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
+import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.eclipse.datatools.connectivity.internal.ConnectionProfile;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
@@ -216,9 +217,9 @@ public class CodeGenXMLFactoryTest extends TestCase {
 			IConnectionProfile profile = new ConnectionProfile("testName", null, null) { //$NON-NLS-1$
 				public Properties getProperties(String type) {
 					Properties res = new Properties();
-					res.setProperty("org.eclipse.datatools.connectivity.db.URL", "url"); //$NON-NLS-1$ //$NON-NLS-2$
-					res.setProperty("org.eclipse.datatools.connectivity.db.username", "username"); //$NON-NLS-1$ //$NON-NLS-2$
-					res.setProperty("org.eclipse.datatools.connectivity.db.password", "passw"); //$NON-NLS-1$ //$NON-NLS-2$
+					res.setProperty(IJDBCDriverDefinitionConstants.URL_PROP_ID, "url"); //$NON-NLS-1$
+					res.setProperty(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID, "username"); //$NON-NLS-1$
+					res.setProperty(IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID, "passw"); //$NON-NLS-1$
 					return res;
 				}
 			};

@@ -13,23 +13,15 @@ package org.hibernate.eclipse.console.test.project;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.osgi.util.NLS;
-import org.hibernate.eclipse.console.test.ConsoleTestMessages;
-import org.hibernate.eclipse.console.test.HibernateConsoleTestPlugin;
 import org.hibernate.eclipse.console.test.mappingproject.Customization;
 import org.hibernate.eclipse.console.test.utils.FilesTransfer;
 
@@ -87,18 +79,6 @@ public class ConfigurableTestProject extends TestProject {
 		IPackageFragmentRoot sourcePackageFragment = createFolder(SRC_FOLDER + File.separator + pack);
 		FilesTransfer.copyFolder(srcFolder, (IFolder)sourcePackageFragment.getResource());
 		return true;
-	}
-
-	protected File getFolder(String path) throws IOException {
-		URL entry = HibernateConsoleTestPlugin.getDefault().getBundle().getEntry(path);
-		URL resProject = FileLocator.resolve(entry);
-		String resolvePath = FileLocator.resolve(resProject).getFile();
-		File folder = new File(resolvePath);
-		if (!folder.exists()) {
-			String out = NLS.bind(ConsoleTestMessages.MappingTestProject_folder_not_found, path);
-			throw new RuntimeException(out);
-		}
-		return folder;
 	}
 
 	public boolean createTestFoldersList(FileFilter filterFiles, FileFilter filterFolders) {
@@ -166,12 +146,5 @@ public class ConfigurableTestProject extends TestProject {
 		foldersList = new ArrayList<String>();
 		foldersList.add(""); //$NON-NLS-1$
 		return true;
-	}
-
-	public void fullBuild() throws CoreException {
-		IPackageFragmentRoot sourcePackageFragment = createSourceFolder();
-		project.refreshLocal(IResource.DEPTH_INFINITE, null);
-		//sourcePackageFragment.getResource().refreshLocal();
-		project.build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
 	}
 }
