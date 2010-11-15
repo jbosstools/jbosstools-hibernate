@@ -34,8 +34,10 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.datatools.connectivity.drivers.DriverInstance;
+import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.hibernate.cfg.Environment;
+import org.hibernate.console.ConfigurationFactory;
 import org.hibernate.console.ConfigurationXMLStrings;
 import org.hibernate.console.ConfigurationXMLFactory;
 import org.hibernate.console.ConnectionProfileUtil;
@@ -166,19 +168,19 @@ public class CodeGenXMLFactory {
 		String connProfileName = consoleConfigPrefs == null ? null : 
 			consoleConfigPrefs.getConnectionProfileName();
 		IConnectionProfile profile = getConnectionProfile(connProfileName);
-		if (profile != null) {
-			StringBuilder propFileContent = new StringBuilder();
-			String driverClass = getDriverClass(connProfileName); 
-			final Properties cpProperties = profile.getProperties(profile.getProviderId());
-			//
-			String url = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.URL"); //$NON-NLS-1$
-			//
-			String user = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.username"); //$NON-NLS-1$
-			//
-			String pass = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.password"); //$NON-NLS-1$
-			//
-			String dialectName = consoleConfigPrefs.getDialectName();
-			//
+		boolean bPropFile = profile != null;
+		// update property with fake tm
+		Properties propsTmp = null;
+		if (consoleConfigPrefs != null && consoleConfigPrefs.getPropertyFile() != null) {
+			propsTmp = consoleConfigPrefs.getProperties();
+			String tmStrategy = propsTmp.getProperty(Environment.TRANSACTION_MANAGER_STRATEGY);
+			if (tmStrategy != null && StringHelper.isEmpty(tmStrategy)) {
+				propsTmp.setProperty(Environment.TRANSACTION_MANAGER_STRATEGY,
+					ConfigurationFactory.FAKE_TM_LOOKUP);
+				bPropFile = true;
+			}
+		}
+		if (bPropFile) {
 			Set<String> specialProps = new TreeSet<String>();
 			specialProps.add(Environment.DRIVER);
 			specialProps.add(Environment.URL);
@@ -186,19 +188,29 @@ public class CodeGenXMLFactory {
 			specialProps.add(Environment.PASS);
 			specialProps.add(Environment.DIALECT);
 			//
-			Properties propsTmp = null;
-			if (consoleConfigPrefs.getPropertyFile() != null) {
-				propsTmp = consoleConfigPrefs.getProperties();
-			}
 			if (propsTmp == null) {
 				propsTmp = new Properties();
 			}
-			propsTmp.setProperty(Environment.DRIVER, driverClass);
-			propsTmp.setProperty(Environment.URL, url);
-			propsTmp.setProperty(Environment.USER, user);
-			propsTmp.setProperty(Environment.PASS, pass);
-			if (StringHelper.isNotEmpty(dialectName)) {
-				propsTmp.setProperty(Environment.DIALECT, dialectName);
+			StringBuilder propFileContent = new StringBuilder();
+			String driverClass = getDriverClass(connProfileName); 
+			if (profile != null) {
+				final Properties cpProperties = profile.getProperties(profile.getProviderId());
+				//
+				String url = cpProperties.getProperty(IJDBCDriverDefinitionConstants.URL_PROP_ID);
+				//
+				String user = cpProperties.getProperty(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID);
+				//
+				String pass = cpProperties.getProperty(IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID);
+				//
+				String dialectName = consoleConfigPrefs.getDialectName();
+				//
+				propsTmp.setProperty(Environment.DRIVER, driverClass);
+				propsTmp.setProperty(Environment.URL, url);
+				propsTmp.setProperty(Environment.USER, user);
+				propsTmp.setProperty(Environment.PASS, pass);
+				if (StringHelper.isNotEmpty(dialectName)) {
+					propsTmp.setProperty(Environment.DIALECT, dialectName);
+				}
 			}
 			// output keys in sort order
 			Object[] keys = propsTmp.keySet().toArray();
@@ -415,7 +427,7 @@ public class CodeGenXMLFactory {
 	public String getDriverClass(String connProfileName) {
 		DriverInstance driverInstance = getDriverInstance(connProfileName);
 		String driverClass = driverInstance != null ? 
-			driverInstance.getProperty("org.eclipse.datatools.connectivity.db.driverClass") : ""; //$NON-NLS-1$ //$NON-NLS-2$
+			driverInstance.getProperty(IJDBCDriverDefinitionConstants.DRIVER_CLASS_PROP_ID) : ""; //$NON-NLS-1$
 		return driverClass;
 	}
 	

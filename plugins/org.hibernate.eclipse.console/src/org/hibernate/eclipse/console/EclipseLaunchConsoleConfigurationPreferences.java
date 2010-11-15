@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.ProfileManager;
+import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jpt.core.JpaDataSource;
@@ -208,10 +209,10 @@ public class EclipseLaunchConsoleConfigurationPreferences implements ConsoleConf
 	public String getDialectName() {
 		String dialect = getAttribute( IConsoleConfigurationLaunchConstants.DIALECT, null );
 		// determine dialect when connection profile is used
-		if (dialect == null && getConnectionProfileName() != null && getConnectionProfileName() != null) {
+		if (dialect == null && getConnectionProfileName() != null) {
 			IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(getConnectionProfileName());	
 			if (profile == null) return null;
-			String driver = profile.getProperties(profile.getProviderId()).getProperty("org.eclipse.datatools.connectivity.db.driverClass"); //$NON-NLS-1$
+			String driver = profile.getProperties(profile.getProviderId()).getProperty(IJDBCDriverDefinitionConstants.DRIVER_CLASS_PROP_ID);
 			dialect = new DriverClassHelpers().getDialect(driver);
 		}
 		return dialect;

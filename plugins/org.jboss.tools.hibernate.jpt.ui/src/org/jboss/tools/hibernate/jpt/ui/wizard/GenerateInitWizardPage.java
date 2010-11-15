@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.ProfileManager;
+import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -340,7 +341,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 		}
 		if (!selectMethod.getSelection()){
 			IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(getConnectionProfileName());
-			String driver = profile.getProperties(profile.getProviderId()).getProperty("org.eclipse.datatools.connectivity.db.driverClass"); //$NON-NLS-1$
+			String driver = profile.getProperties(profile.getProviderId()).getProperty(IJDBCDriverDefinitionConstants.DRIVER_CLASS_PROP_ID);
 			return helper.getDialect(driver);
 		}
 		return null;

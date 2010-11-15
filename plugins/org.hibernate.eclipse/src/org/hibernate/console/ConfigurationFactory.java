@@ -43,6 +43,7 @@ import org.dom4j.io.DOMWriter;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.datatools.connectivity.drivers.DriverInstance;
+import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
@@ -63,6 +64,8 @@ import org.xml.sax.InputSource;
 
 public class ConfigurationFactory {
 
+	public static final String FAKE_TM_LOOKUP = "org.hibernate.console.FakeTransactionManagerLookup"; //$NON-NLS-1$
+	
 	private ConsoleConfigurationPreferences prefs;
 	private Map<String, FakeDelegatingDriver> fakeDrivers;
 
@@ -82,11 +85,9 @@ public class ConfigurationFactory {
 		if (properties != null) {
 			// in case the transaction manager is empty then we need to inject a faketm since
 			// hibernate will still try and instantiate it.
-			String str = properties.getProperty("hibernate.transaction.manager_lookup_class"); //$NON-NLS-1$
+			String str = properties.getProperty(Environment.TRANSACTION_MANAGER_STRATEGY);
 			if (str != null && StringHelper.isEmpty(str)) {
-				properties
-						.setProperty(
-								"hibernate.transaction.manager_lookup_class", "org.hibernate.console.FakeTransactionManagerLookup"); //$NON-NLS-1$ //$NON-NLS-2$
+				properties.setProperty(Environment.TRANSACTION_MANAGER_STRATEGY, FAKE_TM_LOOKUP);
 				// properties.setProperty( "hibernate.transaction.factory_class", "");
 			}
 		}
@@ -382,22 +383,22 @@ public class ConfigurationFactory {
 			localCfg.setProperties(invokeProperties);
 			// seems we should not setup dialect here
 			// String dialect =
-			// "org.hibernate.dialect.HSQLDialect";//cpProperties.getProperty("org.eclipse.datatools.connectivity.db.driverClass");
+			// "org.hibernate.dialect.HSQLDialect";//cpProperties.getProperty(IJDBCDriverDefinitionConstants.DRIVER_CLASS_PROP_ID);
 			// invoke.setProperty(Environment.DIALECT, dialect);
 			String driverClass = driverInstance != null ? 
-				driverInstance.getProperty("org.eclipse.datatools.connectivity.db.driverClass") : ""; //$NON-NLS-1$ //$NON-NLS-2$
+				driverInstance.getProperty(IJDBCDriverDefinitionConstants.DRIVER_CLASS_PROP_ID) : ""; //$NON-NLS-1$
 			localCfg.setProperty(Environment.DRIVER, driverClass);
 			//String driverJarPath = driverInstance != null ?
 			//	driverInstance.getJarList() : ""; //$NON-NLS-1$
-			String url = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.URL"); //$NON-NLS-1$
+			String url = cpProperties.getProperty(IJDBCDriverDefinitionConstants.URL_PROP_ID);
 			// url += "/";// +
-			// cpProperties.getProperty("org.eclipse.datatools.connectivity.db.databaseName");
+			// cpProperties.getProperty(IJDBCDriverDefinitionConstants.DATABASE_NAME_PROP_ID);
 			localCfg.setProperty(Environment.URL, url);
-			String user = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.username"); //$NON-NLS-1$
+			String user = cpProperties.getProperty(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID);
 			if (null != user && user.length() > 0) {
 				localCfg.setProperty(Environment.USER, user);
 			}
-			String pass = cpProperties.getProperty("org.eclipse.datatools.connectivity.db.password"); //$NON-NLS-1$
+			String pass = cpProperties.getProperty(IJDBCDriverDefinitionConstants.PASSWORD_PROP_ID);
 			if (null != pass && pass.length() > 0) {
 				localCfg.setProperty(Environment.PASS, pass);
 			}
