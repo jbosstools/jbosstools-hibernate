@@ -40,6 +40,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
+import org.hibernate.console.ConnectionProfileUtil;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.preferences.ConsoleConfigurationPreferences;
@@ -340,8 +341,7 @@ public abstract class GenerateInitWizardPage extends WizardPage {
 			return helper.getDialectClass(dialectName.getText());
 		}
 		if (!selectMethod.getSelection()){
-			IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(getConnectionProfileName());
-			String driver = profile.getProperties(profile.getProviderId()).getProperty(IJDBCDriverDefinitionConstants.DRIVER_CLASS_PROP_ID);
+			String driver = ConnectionProfileUtil.getDriverClass(getConnectionProfileName());
 			return helper.getDialect(driver);
 		}
 		return null;

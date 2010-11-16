@@ -42,7 +42,6 @@ import org.dom4j.Node;
 import org.dom4j.io.DOMWriter;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.ProfileManager;
-import org.eclipse.datatools.connectivity.drivers.DriverInstance;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.eclipse.osgi.util.NLS;
 import org.hibernate.HibernateException;
@@ -375,18 +374,15 @@ public class ConfigurationFactory {
 		IConnectionProfile profile = ProfileManager.getInstance().getProfileByName(
 				connProfileName);
 		if (profile != null) {
-			DriverInstance driverInstance = ConnectionProfileUtil.getDriverDefinition(connProfileName);
 			final Properties cpProperties = profile.getProperties(profile.getProviderId());
 			final Properties invokeProperties = localCfg.getProperties();
 			// set this property to null!
 			invokeProperties.remove(Environment.DATASOURCE);
 			localCfg.setProperties(invokeProperties);
 			// seems we should not setup dialect here
-			// String dialect =
-			// "org.hibernate.dialect.HSQLDialect";//cpProperties.getProperty(IJDBCDriverDefinitionConstants.DRIVER_CLASS_PROP_ID);
-			// invoke.setProperty(Environment.DIALECT, dialect);
-			String driverClass = driverInstance != null ? 
-				driverInstance.getProperty(IJDBCDriverDefinitionConstants.DRIVER_CLASS_PROP_ID) : ""; //$NON-NLS-1$
+			//String dialect = "org.hibernate.dialect.HSQLDialect";
+			//invoke.setProperty(Environment.DIALECT, dialect);
+			String driverClass = ConnectionProfileUtil.getDriverClass(connProfileName);
 			localCfg.setProperty(Environment.DRIVER, driverClass);
 			//String driverJarPath = driverInstance != null ?
 			//	driverInstance.getJarList() : ""; //$NON-NLS-1$

@@ -33,7 +33,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.ProfileManager;
-import org.eclipse.datatools.connectivity.drivers.DriverInstance;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.hibernate.cfg.Environment;
@@ -415,20 +414,9 @@ public class CodeGenXMLFactory {
 		}
 		return profile;
 	}
-	
-	public DriverInstance getDriverInstance(String connProfileName) {
-		DriverInstance driverInstance = null;
-		if (!isEmpty(connProfileName)) {
-			driverInstance = ConnectionProfileUtil.getDriverDefinition(connProfileName);
-		}
-		return driverInstance;
-	}
 
 	public String getDriverClass(String connProfileName) {
-		DriverInstance driverInstance = getDriverInstance(connProfileName);
-		String driverClass = driverInstance != null ? 
-			driverInstance.getProperty(IJDBCDriverDefinitionConstants.DRIVER_CLASS_PROP_ID) : ""; //$NON-NLS-1$
-		return driverClass;
+		return ConnectionProfileUtil.getDriverClass(connProfileName);
 	}
 	
 	public String getVar(String str) {

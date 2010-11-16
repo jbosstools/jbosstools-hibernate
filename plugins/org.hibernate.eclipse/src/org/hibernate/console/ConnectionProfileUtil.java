@@ -25,6 +25,7 @@ import org.eclipse.datatools.connectivity.ConnectionProfileConstants;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.datatools.connectivity.drivers.DriverInstance;
+import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 
 /**
  * @author Vitali Yemialyanchyk
@@ -64,4 +65,10 @@ public class ConnectionProfileUtil {
 		return di.getJarList();
 	}
 
+	public static String getDriverClass(String connectionProfile) {
+		DriverInstance di = getDriverDefinition(connectionProfile);
+		String driverClass = di != null ? 
+			di.getProperty(IJDBCDriverDefinitionConstants.DRIVER_CLASS_PROP_ID) : ""; //$NON-NLS-1$
+		return driverClass;
+	}
 }
