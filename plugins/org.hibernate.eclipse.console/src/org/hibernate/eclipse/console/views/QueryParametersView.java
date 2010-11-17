@@ -60,7 +60,7 @@ public class QueryParametersView extends PageBookView {
 	}
 
 	protected void doDestroyPage(IWorkbenchPart part, PageRec pageRecord) {
-		QueryParametersPage qppage = (QueryParametersPage)pageRecord.page;
+		IQueryParametersPage qppage = (IQueryParametersPage)pageRecord.page;
 		qppage.dispose();
 		pageRecord.dispose();
 	}

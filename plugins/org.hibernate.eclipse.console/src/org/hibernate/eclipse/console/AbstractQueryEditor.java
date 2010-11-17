@@ -114,7 +114,7 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 		if(getEditorInput() instanceof QueryEditorInput) {
 			QueryEditorInput hei = (QueryEditorInput) getEditorInput();
 			hei.setConsoleConfigurationName( name );
-			hei.setQuery( getQueryString() );
+			hei.setQuery( getEditorText() );
 			hei.resetName();
 		}
 		this.consoleConfigurationName = name;
@@ -150,7 +150,7 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 		QueryEditorInput hei = null;
 		if (getEditorInput() instanceof QueryEditorInput) {
 			hei = (QueryEditorInput) getEditorInput();
-			hei.setQuery( getQueryString() );
+			hei.setQuery( getEditorText() );
 		}
 		IDocumentProvider p = getDocumentProvider();
 		if (p != null && p.isDeleted(getEditorInput())) {
@@ -175,11 +175,15 @@ public abstract class AbstractQueryEditor extends TextEditor implements
 		super.doSetInput(input);
 	}
 
-	final public String getQueryString() {
+	final public String getEditorText() {
 		IEditorInput editorInput = getEditorInput();
 		IDocumentProvider docProvider = getDocumentProvider();
 		IDocument doc = docProvider.getDocument( editorInput );
 		return doc.get();
+	}
+	
+	public String getQueryString() {
+		return getEditorText();
 	}
 
 	/**

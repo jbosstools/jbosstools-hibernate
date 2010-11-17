@@ -137,7 +137,7 @@ public class SaveQueryEditorListener implements IPropertyListener {
 				return;
 			}
 
-			final String newQuery = editor.getQueryString();
+			final String newQuery = editor.getEditorText();
 
 			final String wizard_title = NLS.bind(JdtUiMessages.SaveQueryEditorListener_refactoringtitle, editor_name);
 

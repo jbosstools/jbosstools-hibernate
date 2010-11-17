@@ -111,7 +111,7 @@ public class HQLQueryPage extends AbstractQueryPage {
 	public void setSession(Session s) {
 		super.setSession(s);
 		try {			             
-			query = this.getSession().createQuery(getHQLQueryString());
+			query = this.getSession().createQuery(getQueryString());
 		} catch (HibernateException e) {
 			addException(e);			
 		} catch (Exception e) {
@@ -124,57 +124,6 @@ public class HQLQueryPage extends AbstractQueryPage {
      */
     public String getQueryString() {
     	return queryString; // cannot use query since it might be null because of an error!    
-    }
-    
-    /**
-     * The method removes SQL comments from <code>queryString</code>
-     * as HSL doesn't support comments.
-     * @return
-     */
-    public String getHQLQueryString(){
-    	StringBuilder clearHQL = new StringBuilder();
-    	int state = 0;
-    	
-		for (int j = 0; j < queryString.length(); j++) {
-			if ((queryString.charAt(j) == '\n')
-					|| ((queryString.charAt(j) == '\r')
-							&& (j + 1 < queryString.length())
-							&& (queryString.charAt(j + 1) == '\r'))) {
-				state = 0;
-			}
-
-			switch (state) {
-			case -1:// skip all till the end of the line
-				break;
-			case 0:// initial state
-				switch (queryString.charAt(j)) {
-				case '-':
-					if (queryString.length() > j + 1 && queryString.charAt(j + 1) == '-') {
-						state = -1;
-					}
-					break;
-				case '\'':
-					state = 1;
-					break;
-				}
-				break;
-			case 1:// quoted string
-				/*
-				 * Escape character for the quote is doubled quote:
-				 * Example: 'This is escaped quote ('') inside 1 string'.
-				 * Our parser switches to state 0 and back to state 1, hence works correct
-				 * without additional efforts.
-				 */
-				if (queryString.charAt(j) == '\'') {/*there is no way to escape it in HQL string*/
-					state = 0;
-				}
-				break;
-			}
-			if (state != -1) {
-				clearHQL.append(queryString.charAt(j));
-			}
-		}
-    	return clearHQL.toString();
     }
     
 	public void setQueryString(String queryString) {

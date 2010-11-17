@@ -2,14 +2,15 @@ package org.hibernate.eclipse.console.test;
 
 import java.io.IOException;
 
+import junit.framework.Test;
+import junit.framework.TestSuite;
+
 import org.hibernate.eclipse.console.test.mappingproject.MappingTestsCore;
 import org.hibernate.eclipse.console.test.mappingproject.MappingTestsJpa;
 import org.hibernate.eclipse.console.views.test.QueryPageViewerTest;
+import org.hibernate.eclipse.hqleditor.HQLEditorTest;
 import org.hibernate.eclipse.hqleditor.preferences.HQLEditorPreferencePageTest;
 import org.hibernate.eclipse.mapper.HBMInfoExtractorTest;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
 public class ConsolePluginAllTests {
 
@@ -23,6 +24,7 @@ public class ConsolePluginAllTests {
 		suite.addTestSuite(ConsoleConfigurationTest.class);
 		suite.addTestSuite(JavaFormattingTest.class);
 		suite.addTestSuite(RefactoringTest.class);
+		suite.addTestSuite(HQLEditorTest.class);
 		
 		suite.addTestSuite(MappingTestsCore.class);
 		suite.addTestSuite(MappingTestsJpa.class);

@@ -31,6 +31,16 @@ public interface QueryEditor {
 
 	boolean askUserForConfiguration(String name);
 
+	/**
+	 * 
+	 * @return the text typed in the editor
+	 */
+	String getEditorText();
+	
+	/**
+	 * @return the text typed in the editor which should be executed ( without comments ).
+	 * Compare with {@link #getEditorString}
+	 */
 	String getQueryString();
 
 	QueryInputModel getQueryInputModel();
