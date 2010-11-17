@@ -47,6 +47,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.hibernate.console.HibernateConsoleRuntimeException;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
@@ -123,12 +124,15 @@ public class ExporterDefinition {
 		   exporter = (Exporter) ReflectHelper.classForName( classname ).newInstance();
 	   }
 	   catch (InstantiationException e) {
-		   throw new HibernateConsoleRuntimeException(HibernateConsoleMessages.ExporterDefinition_problem_creating_exporter_class + classname);
+		   throw new HibernateConsoleRuntimeException(NLS.bind(
+				   HibernateConsoleMessages.ExporterDefinition_problem_creating_exporter_class, classname));
 	   }
 	   catch (IllegalAccessException e) {
-		   throw new HibernateConsoleRuntimeException(HibernateConsoleMessages.ExporterDefinition_problem_creating_exporter_class + classname);	}
+		   throw new HibernateConsoleRuntimeException(NLS.bind(
+				   HibernateConsoleMessages.ExporterDefinition_problem_creating_exporter_class, classname));	}
 	   catch (ClassNotFoundException e) {
-		   throw new HibernateConsoleRuntimeException(HibernateConsoleMessages.ExporterDefinition_problem_creating_exporter_class + classname);
+		   throw new HibernateConsoleRuntimeException(NLS.bind(
+				   HibernateConsoleMessages.ExporterDefinition_problem_creating_exporter_class, classname));
 	   }
 
 	   return exporter;
