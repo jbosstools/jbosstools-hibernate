@@ -46,7 +46,8 @@ public class LaunchConfigTestProject2 extends TestProject {
 	public static final String RESOURCE_LIB_PATH = "res/project2/lib/".replaceAll("//", File.separator); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final String HIBERNATE_PLUGIN_LIB_PATH = "lib"; //$NON-NLS-1$
 	
-	public static final String LAUNCH_CODE_GEN_TEST_FILE = "testLaunchCfg.launch"; //$NON-NLS-1$
+	public static final String LAUNCH_CODE_GEN_TEST_FILE_EXTERN = "testLaunchCfg_external.launch"; //$NON-NLS-1$
+	public static final String LAUNCH_CODE_GEN_TEST_FILE_INTERN = "testLaunchCfg_internal.launch"; //$NON-NLS-1$
 	public static final String LAUNCH_CONSOLE_CONFIG_TEST_FILE = "LaunchConfigTestProject2.launch"; //$NON-NLS-1$
 	public static final String HIBERNATE_CONSOLE_PROPERTIES_FILE = "hibernate-console.properties"; //$NON-NLS-1$
 	public static final String PERSISTENCE_XML_FILE = "persistence.xml"; //$NON-NLS-1$
@@ -77,7 +78,8 @@ public class LaunchConfigTestProject2 extends TestProject {
 		IPackageFragmentRoot tst = createFolder(TEST_TMP_OUT_FOLDER);
 		tst.getResource().refreshLocal(IResource.DEPTH_INFINITE, null);
 		//
-		importFileToProject(LAUNCH_CODE_GEN_TEST_FILE);
+		importFileToProject(LAUNCH_CODE_GEN_TEST_FILE_EXTERN);
+		importFileToProject(LAUNCH_CODE_GEN_TEST_FILE_INTERN);
 		importFileToProject(LAUNCH_CONSOLE_CONFIG_TEST_FILE);
 		importFileToProject(HIBERNATE_CONSOLE_PROPERTIES_FILE);
 		long startCopyFiles = System.currentTimeMillis();

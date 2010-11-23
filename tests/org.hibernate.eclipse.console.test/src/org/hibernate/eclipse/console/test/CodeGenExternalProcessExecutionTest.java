@@ -59,11 +59,27 @@ public class CodeGenExternalProcessExecutionTest extends TestCase {
 	}
 
 	protected void tearDown() throws Exception {
-		this.project.deleteIProject();
-		this.project = null;
-		
+		consoleCfg.reset();
 		KnownConfigurations.getInstance().removeAllConfigurations();
 		consoleCfg = null;
+		//
+		Exception ex = null;
+		for (int i = 0; i < 4; i++) {
+			ex = null;
+			try {
+				this.project.deleteIProject();
+				i = 4;
+			} catch (Exception e) {
+				ex = e;
+				if (i < 3) {
+					Thread.sleep(3000);
+				}
+			}
+		}
+		if (ex != null) {
+			throw ex;
+		}
+		this.project = null;
 	}
 	
 	public void testExecuteExternalLaunchConfig() {
@@ -74,9 +90,30 @@ public class CodeGenExternalProcessExecutionTest extends TestCase {
 		} catch (CoreException e) {
 		}
 		assertEquals(0, nTest);
-		final String fileNameCodeGen = LaunchConfigTestProject2.LAUNCH_CODE_GEN_TEST_FILE;
-		ILaunchConfiguration launchConfig = loadLaunchConfigFromFile(fileNameCodeGen);
+		ILaunchConfiguration launchConfig = null;
 		ILaunchConfigurationWorkingCopy launchConfigWC = null;
+		//
+		final String fileNameCodeGenExtern = LaunchConfigTestProject2.LAUNCH_CODE_GEN_TEST_FILE_EXTERN;
+		launchConfig = loadLaunchConfigFromFile(fileNameCodeGenExtern);
+		launchConfigWC = null;
+		try {
+			launchConfigWC = launchConfig.getWorkingCopy();
+		} catch (CoreException e) {
+		}
+		assertNotNull(launchConfigWC);
+		launchConfigWC.setAttribute(IExternalToolConstants.ATTR_LAUNCH_IN_BACKGROUND, false);
+		DebugUIPlugin.launchInForeground(launchConfigWC, ILaunchManager.RUN_MODE);
+		nTest = -1;
+		try {
+			nTest = testFolder.members().length;
+		} catch (CoreException e) {
+		}
+		// TODO: uncomment when JBIDE-7441 be fixed
+		//assertTrue(nTest > 0);
+		//
+		final String fileNameCodeGenIntern = LaunchConfigTestProject2.LAUNCH_CODE_GEN_TEST_FILE_INTERN;
+		launchConfig = loadLaunchConfigFromFile(fileNameCodeGenIntern);
+		launchConfigWC = null;
 		try {
 			launchConfigWC = launchConfig.getWorkingCopy();
 		} catch (CoreException e) {
