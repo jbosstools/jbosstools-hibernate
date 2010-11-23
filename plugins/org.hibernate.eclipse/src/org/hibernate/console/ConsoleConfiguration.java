@@ -84,7 +84,8 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			configuration = null;
 			res = true;
 		}
-		res = res || closeSessionFactory();
+		boolean tmp = closeSessionFactory();
+		res = res || tmp;
 		if (executionContext != null) {
 			executionContext.execute(new Command() {
 				public Object execute() {
@@ -104,7 +105,8 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 			fakeDrivers.clear();
 			res = true;
 		}
-		res = res || cleanUpClassLoader();
+		tmp = cleanUpClassLoader();
+		res = res || tmp;
 		if (res) {
 			fireConfigurationReset();
 		}
