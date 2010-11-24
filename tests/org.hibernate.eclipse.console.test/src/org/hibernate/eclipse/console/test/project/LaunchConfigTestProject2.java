@@ -40,12 +40,16 @@ import org.hibernate.eclipse.console.test.utils.ResourceReadUtils;
 public class LaunchConfigTestProject2 extends TestProject {
 	
 	public static final String TEST_TMP_OUT_FOLDER = "temp_test_out_folder"; //$NON-NLS-1$
+	public static final String TEST_TMP_OUT_FOLDER_ALL_EXPORTERS_EXTERNAL = "temp_test_out_folder_all_exporters_external"; //$NON-NLS-1$
+	public static final String TEST_TMP_OUT_FOLDER_ALL_EXPORTERS_INTERNAL = "temp_test_out_folder_all_exporters_internal"; //$NON-NLS-1$
 	public static final String META_INF_FOLDER = "src/META-INF".replaceAll("//", File.separator); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final String PROJECT_PATH = "res/project2/".replaceAll("//", File.separator); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final String RESOURCE_SRC_PATH = "res/project2/src/".replaceAll("//", File.separator); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final String RESOURCE_LIB_PATH = "res/project2/lib/".replaceAll("//", File.separator); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final String HIBERNATE_PLUGIN_LIB_PATH = "lib"; //$NON-NLS-1$
 	
+	public static final String LAUNCH_CODE_GEN_TEST_FILE_ALL_EXPORTERS_EXTERN = "testLaunchCfg_all_exporters_external.launch"; //$NON-NLS-1$
+	public static final String LAUNCH_CODE_GEN_TEST_FILE_ALL_EXPORTERS_INTERN = "testLaunchCfg_all_exporters_internal.launch"; //$NON-NLS-1$
 	public static final String LAUNCH_CODE_GEN_TEST_FILE_EXTERN = "testLaunchCfg_external.launch"; //$NON-NLS-1$
 	public static final String LAUNCH_CODE_GEN_TEST_FILE_INTERN = "testLaunchCfg_internal.launch"; //$NON-NLS-1$
 	public static final String LAUNCH_CONSOLE_CONFIG_TEST_FILE = "LaunchConfigTestProject2.launch"; //$NON-NLS-1$
@@ -77,7 +81,13 @@ public class LaunchConfigTestProject2 extends TestProject {
 		super.buildProject();
 		IPackageFragmentRoot tst = createFolder(TEST_TMP_OUT_FOLDER);
 		tst.getResource().refreshLocal(IResource.DEPTH_INFINITE, null);
+		tst = createFolder(TEST_TMP_OUT_FOLDER_ALL_EXPORTERS_EXTERNAL);
+		tst.getResource().refreshLocal(IResource.DEPTH_INFINITE, null);
+		tst = createFolder(TEST_TMP_OUT_FOLDER_ALL_EXPORTERS_INTERNAL);
+		tst.getResource().refreshLocal(IResource.DEPTH_INFINITE, null);
 		//
+		importFileToProject(LAUNCH_CODE_GEN_TEST_FILE_ALL_EXPORTERS_EXTERN);
+		importFileToProject(LAUNCH_CODE_GEN_TEST_FILE_ALL_EXPORTERS_INTERN);
 		importFileToProject(LAUNCH_CODE_GEN_TEST_FILE_EXTERN);
 		importFileToProject(LAUNCH_CODE_GEN_TEST_FILE_INTERN);
 		importFileToProject(LAUNCH_CONSOLE_CONFIG_TEST_FILE);
@@ -102,6 +112,14 @@ public class LaunchConfigTestProject2 extends TestProject {
 	
 	public IFolder getTestFolder() {
 		return project.getFolder(TEST_TMP_OUT_FOLDER);
+	}
+	
+	public IFolder getTestFolderAllExportersExternal() {
+		return project.getFolder(TEST_TMP_OUT_FOLDER_ALL_EXPORTERS_EXTERNAL);
+	}
+	
+	public IFolder getTestFolderAllExportersInternal() {
+		return project.getFolder(TEST_TMP_OUT_FOLDER_ALL_EXPORTERS_INTERNAL);
 	}
 
 	public boolean setupSourceTestFolder() throws IOException, CoreException {
