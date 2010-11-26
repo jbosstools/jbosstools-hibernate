@@ -26,6 +26,12 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.internal.core.LaunchManager;
 import org.eclipse.debug.internal.ui.DebugUIPlugin;
+import org.eclipse.jdt.core.ToolFactory;
+import org.eclipse.jdt.core.formatter.CodeFormatter;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.Document;
+import org.eclipse.text.edits.MalformedTreeException;
+import org.eclipse.text.edits.TextEdit;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.EclipseLaunchConsoleConfigurationPreferences;
@@ -51,6 +57,8 @@ public class CodeGenExternalProcessExecutionTest extends TestCase {
 	private ConsoleConfiguration consoleCfg;
 	private LaunchConfigTestProject2 project;
 	private LaunchManager launchManager = new LaunchManager();
+	private final CodeFormatter codeFormatter = ToolFactory.createCodeFormatter(null);
+	private final String ls = System.getProperties().getProperty("line.separator", ResourceReadUtils.LN_1);  //$NON-NLS-1$
 
 	public CodeGenExternalProcessExecutionTest(String name) {
 		super(name);
@@ -198,18 +206,104 @@ public class CodeGenExternalProcessExecutionTest extends TestCase {
 		}
 		assertTrue(nTest > 0);
 		//
-		boolean res = compareFolders(testFolderAllExportersExternal, testFolderAllExportersInternal);
+		boolean res = compareFolders(testFolderAllExportersExternal, testFolderAllExportersInternal, true);
 		assertTrue(res);
 	}
 
 	protected class ResComparator implements Comparator<IResource> {
 
 		public int compare(IResource o1, IResource o2) {
-			return o1.getName().compareTo(o2.getName());
+			int res = o1.getName().compareTo(o2.getName());
+			if (res == 0) {
+				if (o1.getType() < o2.getType()) {
+					res = -1;
+				} else if (o1.getType() > o2.getType()) {
+					res = 1;
+				}
+			}
+			return res;
 		}
 	}
+
+	/**
+	 * Clean up string of substrings in between [cmtB, cmtE],
+	 * cmtB, cmtE - are markers of substring to delete.
+	 * 
+	 * @param str
+	 * @param cmtB
+	 * @param cmtE
+	 * @return
+	 */
+	public String stripComments(String str, final String cmtB, final String cmtE) {
+		boolean process = true;
+		while (process) {
+			int fromIndex = 0;
+			int commentStart = str.indexOf(cmtB, fromIndex);
+			fromIndex = commentStart;
+			int commentEnd = str.indexOf(cmtE, fromIndex);
+			if (commentStart < commentEnd && commentStart != -1) {
+				str = str.substring(0, commentStart) + str.substring(commentEnd + cmtE.length());
+			} else {
+				process = false;
+			}
+		}
+		return str;
+	}
 	
-	public boolean compareFiles(IFile testFile1, IFile testFile2) {
+	/**
+	 * get rid of xml comments.
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public String stripXmlComments(String str) {
+		final String cmtB = "<!--"; //$NON-NLS-1$
+		final String cmtE = "-->"; //$NON-NLS-1$
+		return stripComments(str, cmtB, cmtE);
+	}
+	
+	/**
+	 * get rid of java comments.
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public String stripJavaComments(String str) {
+		final String cmtB = "/*"; //$NON-NLS-1$
+		final String cmtE = "*/"; //$NON-NLS-1$
+		str = stripComments(str, cmtB, cmtE);
+		final String cmt2B = "//"; //$NON-NLS-1$
+		final String cmt2E = ls;
+		str = stripComments(str, cmt2B, cmt2E);
+		return str;
+	}
+
+	/**
+	 * format string as java file.
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public String formatJavaFile(String str) {
+		Document doc = new Document(str);
+		TextEdit edit = codeFormatter.format(CodeFormatter.K_COMPILATION_UNIT, str, 0, str.length(), 0, null);
+		try {
+			edit.apply(doc);
+		} catch (MalformedTreeException e) {
+		} catch (BadLocationException e) {
+		}
+		return doc.get();
+	}
+	
+	/**
+	 * Compares 2 files, if identical for test purposes return true.
+	 * 
+	 * @param testFile1
+	 * @param testFile2
+	 * @param assertFlag - if true execute assertion
+	 * @return
+	 */
+	public boolean compareFiles(IFile testFile1, IFile testFile2, boolean assertFlag) {
 		boolean res = false;
 		InputStream is1 = null, is2 = null;
 		try {
@@ -222,8 +316,8 @@ public class CodeGenExternalProcessExecutionTest extends TestCase {
 		}
 		if (is1 == null || is2 == null) {
 			res = is1 == is2;
-			if (!res) {
-				res = false;
+			if (!res && assertFlag) {
+				assertEquals(is1, is2);
 			}
 			return res;
 		}
@@ -231,19 +325,47 @@ public class CodeGenExternalProcessExecutionTest extends TestCase {
 		String str2 = ResourceReadUtils.readStream(is2);
 		if (str1 == null || str2 == null) {
 			res = str1 == str2;
-			if (!res) {
-				res = false;
+			if (!res && assertFlag) {
+				assertEquals(str1, str2);
 			}
 			return res;
 		}
-		res = 0 == str1.compareTo(str2);
-		if (!res) {
-			res = false;
+		final String useExt = testFile1.getFileExtension();
+		if (0 == "xml".compareToIgnoreCase(useExt)) { //$NON-NLS-1$
+			str1 = stripXmlComments(str1);
+			str2 = stripXmlComments(str2);
+		} else if (0 == "java".compareToIgnoreCase(useExt)) { //$NON-NLS-1$
+			str1 = formatJavaFile(str1);
+			str2 = formatJavaFile(str2);
+			str1 = stripJavaComments(str1);
+			str2 = stripJavaComments(str2);
+		}
+		if (testFile1.getName().endsWith("cfg.xml")) { //$NON-NLS-1$
+			// do not compare generated cfg.xml files till the time of 
+			// open question for Environment.HBM2DDL_AUTO settings
+			//res = 0 == str1.compareTo(str2);
+			//if (!res && assertFlag) {
+			//	assertEquals(str1, str2);
+			//}
+			res = true;
+		} else {
+			res = 0 == str1.compareTo(str2);
+			if (!res && assertFlag) {
+				assertEquals(str1, str2);
+			}
 		}
 		return res;
 	}
 	
-	public boolean compareFolders(IFolder testFolder1, IFolder testFolder2) {
+	/**
+	 * Compares 2 folders, if identical for test purposes return true.
+	 * 
+	 * @param testFolder1
+	 * @param testFolder2
+	 * @param assertFlag - if true execute assertion
+	 * @return
+	 */
+	public boolean compareFolders(IFolder testFolder1, IFolder testFolder2, boolean assertFlag) {
 		boolean res = false;
 		IResource[] res1 = null, res2 = null;
 		try {
@@ -255,9 +377,17 @@ public class CodeGenExternalProcessExecutionTest extends TestCase {
 		} catch (CoreException e) {
 		}
 		if (res1 == null || res2 == null) {
-			return res1 == res2;
+			res = res1 == res2;
+			if (!res && assertFlag) {
+				assertEquals(res1, res2);
+			}
+			return res;
 		}
-		if (res1.length != res2.length) {
+		res = res1.length == res2.length;
+		if (!res) {
+			if (!res && assertFlag) {
+				assertEquals(res1.length, res2.length);
+			}
 			return res;
 		}
 		final ResComparator cmp = new ResComparator();
@@ -267,20 +397,26 @@ public class CodeGenExternalProcessExecutionTest extends TestCase {
 		for (int i = 0; res && i < res1.length; i++) {
 			if (0 != res1[i].getName().compareTo(res2[i].getName())) {
 				res = false;
+				if (!res && assertFlag) {
+					assertEquals(res1[i].getName(), res2[i].getName());
+				}
 			}
 			if (res1[i].getType() != res2[i].getType()) {
 				res = false;
+				if (!res && assertFlag) {
+					assertEquals(res1[i].getType(), res2[i].getType());
+				}
 			}
 			if (res && ((IResource.FOLDER & res1[i].getType()) == IResource.FOLDER)) {
 				IFolder tf1 = (IFolder)res1[i];
 				IFolder tf2 = (IFolder)res2[i];
-				res = compareFolders(tf1, tf2);
+				res = compareFolders(tf1, tf2, assertFlag);
 			}
-			//if (res && ((IResource.FILE & res1[i].getType()) == IResource.FILE)) {
-			//	IFile tf1 = (IFile)res1[i];
-			//	IFile tf2 = (IFile)res2[i];
-			//	res = compareFiles(tf1, tf2);
-			//}
+			if (res && ((IResource.FILE & res1[i].getType()) == IResource.FILE)) {
+				IFile tf1 = (IFile)res1[i];
+				IFile tf2 = (IFile)res2[i];
+				res = compareFiles(tf1, tf2, assertFlag);
+			}
 		}
 		return res;
 	}
