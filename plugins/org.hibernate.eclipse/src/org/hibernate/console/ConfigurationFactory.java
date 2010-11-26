@@ -212,6 +212,9 @@ public class ConfigurationFactory {
 			if (!includeMappings) {
 				overrides.put("hibernate.archive.autodetection", "none"); //$NON-NLS-1$//$NON-NLS-2$
 			}
+			if (StringHelper.isEmpty((String) overrides.get("javax.persistence.validation.mode"))) {//$NON-NLS-1$
+				overrides.put("javax.persistence.validation.mode", "none"); //$NON-NLS-1$//$NON-NLS-2$
+			}
 			Class<?> clazz = ReflectHelper.classForName(
 					"org.hibernate.ejb.Ejb3Configuration", ConsoleConfiguration.class); //$NON-NLS-1$
 			Object ejb3cfg = clazz.newInstance();
