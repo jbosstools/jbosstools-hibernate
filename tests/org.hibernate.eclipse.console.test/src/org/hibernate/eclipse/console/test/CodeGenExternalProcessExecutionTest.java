@@ -203,7 +203,7 @@ public class CodeGenExternalProcessExecutionTest extends TestCase {
 	}
 
 	protected class ResComparator implements Comparator<IResource> {
-		@Override
+
 		public int compare(IResource o1, IResource o2) {
 			return o1.getName().compareTo(o2.getName());
 		}
