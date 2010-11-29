@@ -94,7 +94,7 @@ public class JavaCompletionProcessor implements IContentAssistProcessor {
 			IJavaCompletionProposal[] results = new IJavaCompletionProposal[0];
 			IJavaProject[] projects = null;
 			//try {
-				ProjectUtils.findJavaProjects(editor.getConsoleConfiguration());
+				projects = ProjectUtils.findJavaProjects(editor.getConsoleConfiguration());
 			/*} catch (RuntimeException e){
 				String mess = NLS.bind(HibernateConsoleMessages.JavaCompletionProcessor_error_find_project,
 						editor.getConsoleConfiguration().getName());
