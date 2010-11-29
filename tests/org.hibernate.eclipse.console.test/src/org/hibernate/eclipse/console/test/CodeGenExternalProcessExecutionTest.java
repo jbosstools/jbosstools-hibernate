@@ -81,23 +81,7 @@ public class CodeGenExternalProcessExecutionTest extends TestCase {
 		consoleCfg.reset();
 		KnownConfigurations.getInstance().removeAllConfigurations();
 		consoleCfg = null;
-		//
-		Exception ex = null;
-		for (int i = 0; i < 4; i++) {
-			ex = null;
-			try {
-				this.project.deleteIProject();
-				i = 4;
-			} catch (Exception e) {
-				ex = e;
-				if (i < 3) {
-					Thread.sleep(3000);
-				}
-			}
-		}
-		if (ex != null) {
-			throw ex;
-		}
+		this.project.deleteIProject();
 		this.project = null;
 	}
 	

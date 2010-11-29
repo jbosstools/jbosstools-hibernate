@@ -88,12 +88,26 @@ public class TestProject {
 	}
 
 	public void deleteIProject(boolean deleteContent) {
-		try {
-			IContainer container = project.getParent();
-			project.delete(deleteContent, true, null);
-			container.refreshLocal(IResource.DEPTH_ONE, null);
-		} catch (CoreException ce) {
-			throw new RuntimeException(ce);
+		Exception ex = null;
+		for (int i = 0; i < 4; i++) {
+			ex = null;
+			try {
+				IContainer container = project.getParent();
+				project.delete(deleteContent, true, null);
+				container.refreshLocal(IResource.DEPTH_ONE, null);
+				i = 4;
+			} catch (CoreException e) {
+				ex = e;
+				if (i < 3) {
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e1) {
+					}
+				}
+			}
+		}
+		if (ex != null) {
+			throw new RuntimeException(ex);
 		}
 		javaProject = null;
 		project = null;

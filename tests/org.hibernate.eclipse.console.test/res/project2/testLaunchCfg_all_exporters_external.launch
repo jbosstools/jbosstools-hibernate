@@ -3,7 +3,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.ant.ui.AntClasspathProvider"/>
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.eclipse.ant.internal.launching.remote.InternalAntRunner"/>
-<stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="\LaunchConfigTestProject2\build_2794024212908788293xml"/>
+<stringAttribute key="org.eclipse.ui.externaltools.ATTR_LOCATION" value="/LaunchConfigTestProject2/build_2794024212908788293xml"/>
 <stringAttribute key="org.hibernate.tools.configurationname" value="LaunchConfigTestProject2"/>
 <booleanAttribute key="org.hibernate.tools.ejb3" value="false"/>
 <listAttribute key="org.hibernate.tools.exporters">
@@ -34,11 +34,11 @@
 <stringAttribute key="org.hibernate.tools.exporters.org.hibernate.tools.query.extension_id" value="org.hibernate.tools.query"/>
 <mapAttribute key="org.hibernate.tools.exporters.org.hibernate.tools.query.properties">
 <mapEntry key="outputFileName" value="asdf.txt"/>
-<mapEntry key="outputdir" value="\LaunchConfigTestProject2\temp_test_out_folder_all_exporters_external"/>
+<mapEntry key="outputdir" value="/LaunchConfigTestProject2/temp_test_out_folder_all_exporters_external"/>
 <mapEntry key="query_string" value="from org.jboss.seam.example.booking.Booking"/>
 </mapAttribute>
 <booleanAttribute key="org.hibernate.tools.jdk5" value="false"/>
-<stringAttribute key="org.hibernate.tools.outputdir" value="\LaunchConfigTestProject2\temp_test_out_folder_all_exporters_external"/>
+<stringAttribute key="org.hibernate.tools.outputdir" value="/LaunchConfigTestProject2/temp_test_out_folder_all_exporters_external"/>
 <stringAttribute key="org.hibernate.tools.package" value="hsql"/>
 <booleanAttribute key="org.hibernate.tools.prefercompositeids" value="true"/>
 <booleanAttribute key="org.hibernate.tools.reveng.detect_many_to_many" value="true"/>
