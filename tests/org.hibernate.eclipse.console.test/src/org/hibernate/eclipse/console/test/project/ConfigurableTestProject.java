@@ -20,6 +20,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.hibernate.eclipse.console.test.mappingproject.Customization;
@@ -79,6 +80,20 @@ public class ConfigurableTestProject extends TestProject {
 		IPackageFragmentRoot sourcePackageFragment = createFolder(SRC_FOLDER + File.separator + pack);
 		FilesTransfer.copyFolder(srcFolder, (IFolder)sourcePackageFragment.getResource());
 		return true;
+	}
+	
+	public IPackageFragment getCurrentPackage() throws JavaModelException{
+		if (activePackage < foldersList.size()) {
+			final String pack = foldersList.get(activePackage).replaceAll("\\\\", ".");
+			IPackageFragment[] packageFragments = javaProject.getPackageFragments();
+			for (IPackageFragment iPackageFragment : packageFragments) {
+				if (iPackageFragment.getKind() == IPackageFragmentRoot.K_SOURCE
+						&& iPackageFragment.getElementName().equals(pack)){
+					return iPackageFragment;
+				}
+			}
+		}
+		return null;
 	}
 
 	public boolean createTestFoldersList(FileFilter filterFiles, FileFilter filterFolders) {
