@@ -11,10 +11,11 @@
 package org.hibernate.eclipse.launch;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -25,9 +26,6 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 
 /**
@@ -40,7 +38,7 @@ public class ExportersXMLAttributeDescription {
 	/**
 	 * path to file to store description
 	 */
-	public static final String ANT_TASKS_DESCRIPTION_PATH = "ant-tasks-description.xml"; //$NON-NLS-1$
+	public static final String ANT_TASKS_DESCRIPTION_PATH = "org/hibernate/eclipse/launch/ant-tasks-description.xml"; //$NON-NLS-1$
 
 	public static class AttributeDescription {
 		public String name;
@@ -116,27 +114,44 @@ public class ExportersXMLAttributeDescription {
 	}
 	
 	private static Document getDocument() {
-		File resourceFile = null;
-		try {
-			resourceFile = getResourceItem(ANT_TASKS_DESCRIPTION_PATH);
-		} catch (IOException e) {
-			HibernateConsolePlugin.getDefault().logErrorMessage("getResource: ", e); //$NON-NLS-1$
-		}
-		if (resourceFile == null || !resourceFile.exists()) {
-			HibernateConsolePlugin.getDefault().logErrorMessage("Can't read file: " + ANT_TASKS_DESCRIPTION_PATH, (Throwable)null); //$NON-NLS-1$
+		InputStream input = getResInputStream(ANT_TASKS_DESCRIPTION_PATH, ExportersXMLAttributeDescription.class);
+		if (input == null) {
+			HibernateConsolePlugin.getDefault().logErrorMessage("Can't read resource: " + ANT_TASKS_DESCRIPTION_PATH, (Throwable)null); //$NON-NLS-1$
 			return null;
 		}
-		StringBuffer cbuf = new StringBuffer((int) resourceFile.length());
+		StringBuffer cbuf = new StringBuffer();
+		InputStreamReader isReader = null;
+		BufferedReader in = null;
 		try {
 			String ls = System.getProperties().getProperty("line.separator", "\n");  //$NON-NLS-1$//$NON-NLS-2$
-			BufferedReader in = new BufferedReader(new FileReader(resourceFile));
+			isReader = new InputStreamReader(input);
+			in = new BufferedReader(isReader);
 			String str;
 			while ((str = in.readLine()) != null) {
 				cbuf.append(str + ls);
 			}
-			in.close();
 		} catch (IOException e) {
 			HibernateConsolePlugin.getDefault().logErrorMessage("IOException: ", e); //$NON-NLS-1$
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					// ignore
+				}
+			}
+			if (isReader != null) {
+				try {
+					isReader.close();
+				} catch (IOException e) {
+					// ignore
+				}
+			}
+			try {
+				input.close();
+			} catch (IOException e) {
+				// ignore
+			}
 		}
 		Document res = null;
 		try {
@@ -146,17 +161,30 @@ public class ExportersXMLAttributeDescription {
 		}
 		return res;
 	}
-	
-	private static File getResourceItem(String strResPath) throws IOException {
-		IPath resourcePath = new Path(strResPath);
-		File resourceFile = resourcePath.toFile();
-		URL entry = HibernateConsolePlugin.getDefault().getBundle().getEntry(
-				strResPath);
-		if (entry != null) {
-			URL resProject = FileLocator.resolve(entry);
-			strResPath = FileLocator.resolve(resProject).getFile();
+
+	/**
+	 * @param resName fully qualified path of the resource
+	 * @param clazz the class where the resource will exist
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static InputStream getResInputStream(final String resName, final Class clazz) {
+		InputStream input = null;
+		if (System.getSecurityManager() == null) {
+			input = getResInputStreamInternal(resName, clazz);
+		} else {
+			input = AccessController.doPrivileged(new PrivilegedAction() {
+				public Object run() {
+					return getResInputStreamInternal(resName, clazz);
+				}
+			});
 		}
-		resourceFile = new File(strResPath);
-		return resourceFile;
+		return input;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	static InputStream getResInputStreamInternal(final String resName, Class clazz) {
+		ClassLoader loader = clazz.getClassLoader();
+		final InputStream input = loader == null ? ClassLoader.getSystemResourceAsStream(resName) : loader.getResourceAsStream(resName);
+		return input;
 	}
 }
