@@ -382,7 +382,13 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 				case 1:
 					return cqp.getType().getName();
 				case 2:
-					return cqp.getStringValues()[0];
+					{
+						String label = cqp.getStringValues()[0];
+						for (int j = 1; j < cqp.getStringValues().length; j++) {
+							label += "|" + cqp.getStringValues()[j]; //$NON-NLS-1$
+						}
+						return label;
+					}
 				case 3:
 					return null; //cqp.isNull()?"X":"";
 				default:
