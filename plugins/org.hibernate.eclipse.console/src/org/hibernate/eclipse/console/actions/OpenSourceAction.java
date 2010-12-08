@@ -99,7 +99,9 @@ public class OpenSourceAction extends SelectionListenerAction {
 	 */
 	public static IEditorPart run(ConsoleConfiguration consoleConfig, Object selection, 
 			String fullyQualifiedName) throws JavaModelException, PartInitException, FileNotFoundException {
-		if (fullyQualifiedName == null) return null;
+		if (fullyQualifiedName == null) {
+			return null;
+		}
 		IJavaProject[] projs = ProjectUtils.findJavaProjects(consoleConfig);
 		String remainder = null;
 		IType type = null;
@@ -109,7 +111,7 @@ public class OpenSourceAction extends SelectionListenerAction {
 			fullyQualifiedName = fullyQualifiedName.substring(0, fullyQualifiedName.indexOf("$")); //$NON-NLS-1$
 			for (int i = 0; i < projs.length && type == null; i++) {
 				proj = projs[i];
-				type = proj.findType(fullyQualifiedName);
+				type = ProjectUtils.findType(proj, fullyQualifiedName);
 			}
 			while ( remainder.indexOf("$") > 0 ){ //$NON-NLS-1$
 				String subtype = remainder.substring(0, fullyQualifiedName.indexOf("$")); //$NON-NLS-1$
@@ -120,7 +122,7 @@ public class OpenSourceAction extends SelectionListenerAction {
 		} else {
 			for (int i = 0; i < projs.length && type == null; i++) {
 				proj = projs[i];
-				type = proj.findType(fullyQualifiedName);
+				type = ProjectUtils.findType(proj, fullyQualifiedName);
 			}
 		}
 		IJavaElement jElement = null;
@@ -136,10 +138,10 @@ public class OpenSourceAction extends SelectionListenerAction {
 				if (parentClassName == null) {
 					break;
 				}
-				type = proj.findType(parentClassName);
+				type = ProjectUtils.findType(proj, parentClassName);
 				for (int i = 0; i < projs.length && type == null; i++) {
 					proj = projs[i];
-					type = proj.findType(fullyQualifiedName);
+					type = ProjectUtils.findType(proj, fullyQualifiedName);
 				}
 				if (type == null) {
 					break;
