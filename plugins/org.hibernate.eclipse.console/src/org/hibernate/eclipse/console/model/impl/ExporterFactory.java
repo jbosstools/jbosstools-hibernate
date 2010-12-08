@@ -294,7 +294,7 @@ public class ExporterFactory {
 		if (getExporterDefinitionId().equals("org.hibernate.tools.query")) { //$NON-NLS-1$
 			QueryExporter queryExporter = (QueryExporter) exporter;
 			List<String> queryStrings = new ArrayList<String>();
-			queryStrings.add(extract.getProperty(ExporterFactoryStrings.QUERY_STRING));
+			queryStrings.add(extract.getProperty(ExporterFactoryStrings.QUERY_STRING, "")); //$NON-NLS-1$
 			queryExporter.setQueries(queryStrings);
 			queryExporter.setFilename(extract.getProperty(ExporterFactoryStrings.OUTPUTFILENAME));
 		}
