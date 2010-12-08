@@ -32,7 +32,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Session;
@@ -247,7 +246,7 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 
 
 	int execcount;
-	List<ConsoleConfigurationListener> consoleCfgListeners = new ArrayList<ConsoleConfigurationListener>();
+	ArrayList<ConsoleConfigurationListener> consoleCfgListeners = new ArrayList<ConsoleConfigurationListener>();
 
 	public QueryPage executeHQLQuery(final String hql) {
 		return executeHQLQuery(hql, new QueryInputModel());
@@ -281,32 +280,38 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 		});
 	}
 	
+	@SuppressWarnings("unchecked")
+	// clone listeners to thread safe iterate over array
+	private ArrayList<ConsoleConfigurationListener> cloneConsoleCfgListeners() {
+		return (ArrayList<ConsoleConfigurationListener>)consoleCfgListeners.clone();
+	}
+
 	private void fireConfigurationBuilt() {
-		for (ConsoleConfigurationListener view : consoleCfgListeners) {
+		for (ConsoleConfigurationListener view : cloneConsoleCfgListeners()) {
 			view.configurationBuilt(this);
 		}
 	}	
 
 	private void fireConfigurationReset() {
-		for (ConsoleConfigurationListener view : consoleCfgListeners) {
+		for (ConsoleConfigurationListener view : cloneConsoleCfgListeners()) {
 			view.configurationReset(this);
 		}
 	}	
 
 	private void fireQueryPageCreated(QueryPage qp) {
-		for (ConsoleConfigurationListener view : consoleCfgListeners) {
+		for (ConsoleConfigurationListener view : cloneConsoleCfgListeners()) {
 			view.queryPageCreated(qp);
 		}
 	}
 
 	private void fireFactoryBuilt() {
-		for (ConsoleConfigurationListener view : consoleCfgListeners) {
+		for (ConsoleConfigurationListener view : cloneConsoleCfgListeners()) {
 			view.sessionFactoryBuilt(this, sessionFactory);
 		}
 	}
 
 	private void fireFactoryClosing(SessionFactory sessionFactory2) {
-		for (ConsoleConfigurationListener view : consoleCfgListeners) {
+		for (ConsoleConfigurationListener view : cloneConsoleCfgListeners()) {
 			view.sessionFactoryClosing(this, sessionFactory2);
 		}
 	}
