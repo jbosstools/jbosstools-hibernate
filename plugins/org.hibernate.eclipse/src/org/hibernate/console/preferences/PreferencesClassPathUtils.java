@@ -27,7 +27,8 @@ public class PreferencesClassPathUtils {
 		URL[] customClassPathURLsTmp = prefs == null ? new URL[0] :
 			prefs.getCustomClassPathURLS();
 		URL[] customClassPathURLs = null;
-		String[] driverURLParts = ConnectionProfileUtil.getConnectionProfileDriverURL(prefs.getConnectionProfileName());
+		String[] driverURLParts = prefs == null ? null :
+			ConnectionProfileUtil.getConnectionProfileDriverURL(prefs.getConnectionProfileName());
 		URL[] urls = null;
 		if (driverURLParts != null) {
 			urls = new URL[driverURLParts.length];
