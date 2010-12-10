@@ -64,8 +64,8 @@ import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 import org.hibernate.console.ConsoleQueryParameter;
 import org.hibernate.console.ImageConstants;
-import org.hibernate.console.ParametersListDialog;
 import org.hibernate.console.QueryInputModel;
+import org.hibernate.console.StringListDialog;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.QueryEditor;
 import org.hibernate.eclipse.console.utils.EclipseImages;
@@ -271,10 +271,6 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 				}
 				if ( VALUE_PROPERTY.equals( property ) ) {
 					return cqp.getStringValues();
-					/*if (cqp.isArrayValue()){
-						return cqp.convertValueToString(((Object[])cqp.getValue())[0]);
-					}
-					return cqp.convertValueToString(cqp.getValue());*/
 				}
 				if ( NULL_PROPERTY.equals( property )) {
 					return Boolean.valueOf(cqp.isNull());
@@ -315,34 +311,20 @@ public class QueryParametersPage extends Page implements IQueryParametersPage {
 		CellEditor[] editors = new CellEditor[columnProperties.length];
 		editors[0] = new TextCellEditor( queryParametersTable );
 		editors[1] = new ComboBoxCellEditor( queryParametersTable, valueTypes );
-		editors[2] = new TextDialogCellEditor(queryParametersTable) {
+		editors[2] = new StringArrayDialogCellEditor(queryParametersTable) {
 			
 			private Button b;
 			
-			@Override
-			protected Object openDialogBox(Control cellEditorWindow) {
-				Object firstElement = ((IStructuredSelection)tableViewer.getSelection()).getFirstElement();
-				if(firstElement instanceof ConsoleQueryParameter) {
-					ParametersListDialog pld = new ParametersListDialog(null, (ConsoleQueryParameter) firstElement);
-					if (pld.open()==Window.OK){
-						return pld.getValue();//String[]
-					}
-				}
-				return getValue();//could be String or String[]
-			}
-			
 			public void activate() {
-				Object param = ((IStructuredSelection)tableViewer.getSelection()).getFirstElement();
-				if(param instanceof ConsoleQueryParameter) {
+				Object param = ((IStructuredSelection) tableViewer.getSelection()).getFirstElement();
+				if (param instanceof ConsoleQueryParameter) {
 					try {
 						Integer.parseInt(((ConsoleQueryParameter) param).getName());
-						/*
-						 * "ordered" parameter doesn't allow list value
-						 * see also HQLQueryPage#setupParameters()
-						 */
+						// "ordered" parameter doesn't allow list value
+						// see also HQLQueryPage#setupParameters()
 						b.setVisible(false);
-					} catch(NumberFormatException nfe) {
-						/*"named" parameter allows parameter list value*/
+					} catch (NumberFormatException nfe) {
+						// "named" parameter allows parameter list value
 						b.setVisible(true);
 					}
 				}

@@ -31,6 +31,13 @@ public class ConsoleMessages extends NLS {
 	public static String AbstractConsoleConfigurationPreferences_unknown;
 	public static String StandAloneConsoleConfigurationPreferences_could_not_resolve_classpaths;
 	public static String StandAloneConsoleConfigurationPreferences_errors_while_parsing;
+	public static String StringListDialog_Add;
+	public static String StringListDialog_Add_Element;
+	public static String StringListDialog_Elements;
+	public static String StringListDialog_Modify;
+	public static String StringListDialog_Modify_Element;
+	public static String StringListDialog_New_Element;
+	public static String StringListDialog_Remove;
 	public static String PluginFileAppender_missing_plugin_state_location;
 	public static String PluginLogAppender_missing_layout_for_appender;
 	static {
