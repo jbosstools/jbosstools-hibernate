@@ -57,12 +57,12 @@ public class ConnectionProfileUtil {
 	/*
 	 * try get a path to the sql driver jar file from DTP connection profile
 	 */
-	public static String getConnectionProfileDriverURL(String connectionProfile) {
+	public static String[] getConnectionProfileDriverURL(String connectionProfile) {
 		DriverInstance di = getDriverDefinition(connectionProfile);
 		if (di == null) {
 			return null;
 		}
-		return di.getJarList();
+		return di.getJarListAsArray();
 	}
 
 	public static String getDriverClass(String connectionProfile) {

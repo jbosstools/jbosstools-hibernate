@@ -27,16 +27,14 @@ public class PreferencesClassPathUtils {
 		URL[] customClassPathURLsTmp = prefs == null ? new URL[0] :
 			prefs.getCustomClassPathURLS();
 		URL[] customClassPathURLs = null;
-		String driverURL = prefs == null ? null :
-			ConnectionProfileUtil.getConnectionProfileDriverURL(prefs.getConnectionProfileName());
+		String[] driverURLParts = ConnectionProfileUtil.getConnectionProfileDriverURL(prefs.getConnectionProfileName());
 		URL[] urls = null;
-		if (driverURL != null) {
-			String[] driverURLParts = driverURL.split(";"); //$NON-NLS-1$
+		if (driverURLParts != null) {
 			urls = new URL[driverURLParts.length];
 			for (int i = 0; i < driverURLParts.length; i++) {
 				File file = new File(driverURLParts[i].trim());
 				try {
-					urls[i] = file.toURL();
+					urls[i] = file.toURI().toURL();
 				} catch (MalformedURLException e) {
 					urls[i] = null; 
 				}

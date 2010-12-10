@@ -476,14 +476,6 @@ public class CodeGenXMLFactory {
 		return location;
 	}
 	
-	public String getConnectionProfileDriverURL(String connectionProfile) {
-		String driverURL = ConnectionProfileUtil.getConnectionProfileDriverURL(connectionProfile);
-		if (driverURL == null) {
-			driverURL = ""; //$NON-NLS-1$
-		}
-		return driverURL;
-	}
-	
 	public static boolean isEmpty(String str) {
 		return (str == null || str.length() == 0);
 	}
