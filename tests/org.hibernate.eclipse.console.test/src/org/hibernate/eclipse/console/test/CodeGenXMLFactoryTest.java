@@ -23,6 +23,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
 
+import junit.framework.TestCase;
+
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
@@ -40,8 +42,6 @@ import org.hibernate.eclipse.launch.CodeGenXMLFactory;
 import org.hibernate.eclipse.launch.CodeGenerationStrings;
 import org.hibernate.eclipse.launch.ExporterAttributes;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
-
-import junit.framework.TestCase;
 
 /**
  * @author Vitali Yemialyanchyk
@@ -137,10 +137,6 @@ public class CodeGenXMLFactoryTest extends TestCase {
 
 		public ConsoleConfigurationPreferences getConsoleConfigPreferences(String consoleConfigName) {
 			return null;
-		}
-
-		public String getConnectionProfileDriverURL(String connectionProfile) {
-			return "test-driver-path.jar"; //$NON-NLS-1$
 		}
 
 		public IConnectionProfile getConnectionProfile(String connProfileName) {
