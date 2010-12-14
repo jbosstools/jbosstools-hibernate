@@ -156,10 +156,15 @@ public class ConfigurationFactory {
 	// TODO: delegate to some extension point
 	private Configuration buildConfiguration(Properties properties, boolean includeMappings) {
 		Configuration localCfg = null;
+		Properties overrides = new Properties();
+		overrides.put("javax.persistence.validation.mode", "none"); //$NON-NLS-1$//$NON-NLS-2$
+		if (properties != null) {
+			overrides.putAll(properties);
+		}
 		if (prefs.getConfigurationMode().equals(ConfigurationMode.ANNOTATIONS)) {
 			try {
 				localCfg = buildAnnotationConfiguration();
-				localCfg = configureStandardConfiguration(includeMappings, localCfg, properties);
+				localCfg = configureStandardConfiguration(includeMappings, localCfg, overrides);
 			} catch (HibernateConsoleRuntimeException he) {
 				throw he;
 			} catch (Exception e) {
@@ -170,7 +175,7 @@ public class ConfigurationFactory {
 		} else if (prefs.getConfigurationMode().equals(ConfigurationMode.JPA)) {
 			try {
 				localCfg = buildJPAConfiguration(getPreferences().getPersistenceUnitName(),
-						properties, prefs.getEntityResolverName(), includeMappings);
+						overrides, prefs.getEntityResolverName(), includeMappings);
 			} catch (HibernateConsoleRuntimeException he) {
 				throw he;
 			} catch (Exception e) {
@@ -179,7 +184,7 @@ public class ConfigurationFactory {
 			}
 		} else {
 			localCfg = new Configuration();
-			localCfg = configureStandardConfiguration(includeMappings, localCfg, properties);
+			localCfg = configureStandardConfiguration(includeMappings, localCfg, overrides);
 		}
 		return localCfg;
 	}
@@ -200,9 +205,8 @@ public class ConfigurationFactory {
 		}
 		try {
 			Map<Object, Object> overrides = new HashMap<Object, Object>();
-			if (properties != null) {
-				overrides.putAll(properties);
-			}
+			overrides.putAll(properties);
+
 			if (StringHelper.isNotEmpty(prefs.getNamingStrategy())) {
 				overrides.put("hibernate.ejb.naming_strategy", prefs.getNamingStrategy()); //$NON-NLS-1$
 			}
@@ -211,9 +215,6 @@ public class ConfigurationFactory {
 			}
 			if (!includeMappings) {
 				overrides.put("hibernate.archive.autodetection", "none"); //$NON-NLS-1$//$NON-NLS-2$
-			}
-			if (StringHelper.isEmpty((String) overrides.get("javax.persistence.validation.mode"))) {//$NON-NLS-1$
-				overrides.put("javax.persistence.validation.mode", "none"); //$NON-NLS-1$//$NON-NLS-2$
 			}
 			Class<?> clazz = ReflectHelper.classForName(
 					"org.hibernate.ejb.Ejb3Configuration", ConsoleConfiguration.class); //$NON-NLS-1$
@@ -247,9 +248,8 @@ public class ConfigurationFactory {
 
 	private Configuration configureStandardConfiguration(final boolean includeMappings,
 			Configuration localCfg, Properties properties) {
-		if (properties != null) {
-			localCfg = localCfg.setProperties(properties);
-		}
+		localCfg = localCfg.setProperties(properties);
+
 		EntityResolver entityResolver = XMLHelper.DEFAULT_DTD_RESOLVER;
 		if (StringHelper.isNotEmpty(prefs.getEntityResolverName())) {
 			try {
