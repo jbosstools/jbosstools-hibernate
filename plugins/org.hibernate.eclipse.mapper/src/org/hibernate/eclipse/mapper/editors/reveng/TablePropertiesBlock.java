@@ -48,7 +48,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
-import org.eclipse.ui.dialogs.CheckedTreeSelectionDialog;
 import org.eclipse.ui.forms.DetailsPart;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.MasterDetailsBlock;
@@ -68,6 +67,7 @@ import org.hibernate.eclipse.console.workbench.LazyDatabaseSchema;
 import org.hibernate.eclipse.console.workbench.xpl.AnyAdaptableLabelProvider;
 import org.hibernate.eclipse.mapper.MapperMessages;
 import org.hibernate.eclipse.mapper.editors.ReverseEngineeringEditor;
+import org.hibernate.eclipse.mapper.editors.reveng.xpl.CheckedTreeSelectionDialog;
 import org.hibernate.eclipse.mapper.model.RevEngColumnAdapter;
 import org.hibernate.eclipse.mapper.model.RevEngGeneratorAdapter;
 import org.hibernate.eclipse.mapper.model.RevEngParamAdapter;
@@ -346,6 +346,9 @@ public class TablePropertiesBlock extends MasterDetailsBlock {
 		        return buttonComposite;
 		    }
 
+			protected boolean evaluateIfTreeEmpty(Object input) {
+				return false;
+			}
 
 		};
 	}
