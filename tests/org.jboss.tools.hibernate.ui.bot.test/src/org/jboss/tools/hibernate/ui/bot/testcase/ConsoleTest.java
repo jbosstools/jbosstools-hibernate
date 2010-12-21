@@ -11,22 +11,24 @@
 package org.jboss.tools.hibernate.ui.bot.testcase;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
 import org.jboss.tools.hibernate.ui.bot.testsuite.Project;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
+import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
+import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
+import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
+import org.jboss.tools.ui.bot.ext.helper.DatabaseHelper;
 import org.jboss.tools.ui.bot.ext.types.EntityType;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-@RunWith(SWTBotJunit4ClassRunner.class)
+@SWTBotTestRequires( clearProjects = false,  db=@DB, perspective="Hibernate")
 public class ConsoleTest extends HibernateTest {
 
 	@BeforeClass	
@@ -83,9 +85,13 @@ public class ConsoleTest extends HibernateTest {
 		bot.button(IDELabel.HBConsoleWizard.CREATE_NEW_BUTTON).click();
 		eclipse.selectTreeLocation(Project.PROJECT_NAME, "src");
 		bot.button(IDELabel.Button.NEXT).click();
-		bot.comboBoxWithLabel(IDELabel.HBConsoleWizard.DATABASE_DIALECT).setSelection(Project.DB_DIALECT);
-		bot.comboBoxWithLabel(IDELabel.HBConsoleWizard.DRIVER_CLASS).setSelection(Project.DRIVER_CLASS);
-		bot.comboBoxWithLabel(IDELabel.HBConsoleWizard.CONNECTION_URL).setText(Project.JDBC_STRING);
+		
+		String dialect = DatabaseHelper.getDialect(TestConfigurator.currentConfig.getDB().dbType);
+		bot.comboBoxWithLabel(IDELabel.HBConsoleWizard.DATABASE_DIALECT).setSelection(dialect);
+		String drvClass = DatabaseHelper.getDriverClass(TestConfigurator.currentConfig.getDB().dbType);
+		bot.comboBoxWithLabel(IDELabel.HBConsoleWizard.DRIVER_CLASS).setSelection(drvClass);		
+		String jdbc = TestConfigurator.currentConfig.getDB().jdbcString;
+		bot.comboBoxWithLabel(IDELabel.HBConsoleWizard.CONNECTION_URL).setText(jdbc);
 		
 		SWTBotShell shell = bot.activeShell();
 		bot.button(IDELabel.Button.FINISH).click();
@@ -102,8 +108,8 @@ public class ConsoleTest extends HibernateTest {
 		mainShell.activate();
 		bot.cTabItem(IDELabel.HBConsoleWizard.OPTIONS_TAB).activate();
 				
-
-		bot.comboBoxWithLabelInGroup("", IDELabel.HBConsoleWizard.DATABASE_DIALECT).setSelection(Project.DB_DIALECT);
+		String dialect = DatabaseHelper.getDialect(TestConfigurator.currentConfig.getDB().dbType);
+		bot.comboBoxWithLabelInGroup("", IDELabel.HBConsoleWizard.DATABASE_DIALECT).setSelection(dialect);
 		log.info("HB Console Option tab DONE");
 		bot.sleep(TIME_1S);
 	}

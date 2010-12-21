@@ -12,22 +12,22 @@ package org.jboss.tools.hibernate.ui.bot.testcase;
 
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swtbot.eclipse.finder.matchers.WidgetMatcherFactory;
-import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.hamcrest.Matcher;
 import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
 import org.jboss.tools.hibernate.ui.bot.testsuite.Project;
+import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
+import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
 import org.jboss.tools.ui.bot.ext.gen.ActionItem;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-@RunWith(SWTBotJunit4ClassRunner.class)
+@SWTBotTestRequires( db=@DB, perspective="Hibernate")
 public class CodeGenerationLauncherTest extends HibernateTest {
 
 	SWTBotShell mainShell = null;
@@ -44,7 +44,6 @@ public class CodeGenerationLauncherTest extends HibernateTest {
 		
 		prepareProject();
 		prepareConsole();
-		prepareDatabase();
 		util.waitForNonIgnoredJobs();
 	}
 	

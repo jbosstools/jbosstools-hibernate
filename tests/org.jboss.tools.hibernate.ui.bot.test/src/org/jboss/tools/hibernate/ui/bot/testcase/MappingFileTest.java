@@ -13,10 +13,10 @@ package org.jboss.tools.hibernate.ui.bot.testcase;
 import java.util.List;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
-import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
 import org.jboss.tools.hibernate.ui.bot.testsuite.Project;
+import org.jboss.tools.ui.bot.ext.config.Annotations.SWTBotTestRequires;
 import org.jboss.tools.ui.bot.ext.parts.ObjectMultiPageEditorBot;
 import org.jboss.tools.ui.bot.ext.parts.SWTBotEditorExt;
 import org.jboss.tools.ui.bot.ext.types.EntityType;
@@ -24,9 +24,8 @@ import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-@RunWith(SWTBotJunit4ClassRunner.class)
+@SWTBotTestRequires( clearProjects = false,  perspective="Hibernate")
 public class MappingFileTest extends HibernateTest {
 
 	@BeforeClass

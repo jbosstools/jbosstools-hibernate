@@ -10,40 +10,26 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.ui.bot.testsuite;
 
-import static org.eclipse.swtbot.eclipse.finder.matchers.WithPartName.withPartName;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.datatools.connectivity.ConnectionProfileException;
-import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.eclipse.ui.IViewReference;
-import org.hamcrest.Matcher;
-import org.hsqldb.Server;
 import org.jboss.tools.hibernate.ui.bot.testcase.Activator;
 import org.jboss.tools.hibernate.ui.bot.testcase.ConsoleTest;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
 import org.jboss.tools.ui.bot.ext.SWTTestExt;
+import org.jboss.tools.ui.bot.ext.config.TestConfigurator;
 import org.jboss.tools.ui.bot.ext.entity.JavaClassEntity;
 import org.jboss.tools.ui.bot.ext.entity.JavaProjectEntity;
 import org.jboss.tools.ui.bot.ext.helper.ContextMenuHelper;
-import org.jboss.tools.ui.bot.ext.helper.DatabaseHelper;
-import org.jboss.tools.ui.bot.ext.types.DriverEntity;
 import org.jboss.tools.ui.bot.ext.types.IDELabel;
 import org.jboss.tools.ui.bot.ext.types.PerspectiveType;
 import org.jboss.tools.ui.bot.ext.types.ViewType;
@@ -53,13 +39,7 @@ public class HibernateTest extends SWTTestExt {
 
 	private static boolean classesCreated = false;
 	private static boolean projectCreated = false;
-	private static boolean databasePrepared = false;
-	private static boolean dbRunning = false;
 	
-	private static Thread hsqlThread = null;  
-	
-	//private static Properties properties;	
-
 	/**
 	 * Prepare project and classes
 	 */
@@ -67,6 +47,7 @@ public class HibernateTest extends SWTTestExt {
 	public static void prepare() {	
 		log.info("Hibernate All Test Started");
 		jbt.closeReportUsageWindowIfOpened(true);
+		util.waitForNonIgnoredJobs();
 	}
 	
 	/**
@@ -75,7 +56,6 @@ public class HibernateTest extends SWTTestExt {
 	public static void prepareClasses() {
 		
 		if (classesCreated) return; 
-
 
 		// Package Explorer
 		SWTBot viewBot = eclipse.showView(ViewType.PACKAGE_EXPLORER);
@@ -111,7 +91,6 @@ public class HibernateTest extends SWTTestExt {
 		System.out.println("View Activated");
 		
 		// Show perspective and view
-		//open.viewClose(view)
 		eclipse.closeView(IDELabel.View.WELCOME);
 		eclipse.openPerspective(PerspectiveType.JAVA);
 
@@ -165,12 +144,18 @@ public class HibernateTest extends SWTTestExt {
 	    bot.tabItem("Libraries").activate();
 	    bot.button("Add JARs...").click();
 	    bot.sleep(TIME_500MS);
-	    bot.tree().expandNode(Project.PROJECT_NAME).expandNode("hsqldb.jar").select();
+	    String file = getDriverFileName(TestConfigurator.currentConfig.getDB().driverPath);
+	    bot.tree().expandNode(Project.PROJECT_NAME).expandNode(file).select();
 	    
 	    bot.button(IDELabel.Button.OK).click();
 	    bot.sleep(TIME_1S);
 	    bot.button(IDELabel.Button.OK).click();
 	    bot.sleep(TIME_1S);
+	}	
+	
+	public static String getDriverFileName(String filePath) {
+		String[] fragments = filePath.split(File.separator);
+		return fragments[fragments.length - 1];
 	}
 	
 	/**
@@ -179,7 +164,14 @@ public class HibernateTest extends SWTTestExt {
 	 * @throws IOException
 	 */
 	public static void addDriverIntoProject() throws FileNotFoundException, IOException {
-		File in = util.getResourceFile(Activator.PLUGIN_ID, "drv","hsqldb.jar");
+		File in = null;
+		if (TestConfigurator.currentConfig.getDB().internal) {		
+			in = util.getResourceFile(Activator.PLUGIN_ID, "drv","hsqldb.jar");
+		}
+		else {
+			in = util.getResourceFile(TestConfigurator.currentConfig.getDB().driverPath);
+		}
+		
 		File out = new File(Platform.getLocation() + File.separator + Project.PROJECT_NAME + File.separator + "hsqldb.jar");
 		
         FileChannel inChannel = null;
@@ -192,7 +184,7 @@ public class HibernateTest extends SWTTestExt {
 
     	if (inChannel != null) inChannel.close();
     	if (outChannel != null) outChannel.close();
-    	log.info("Driver hsqldb.jar copied");
+    	log.info("JDBC Driver copied");
 	}
 
 	/**
@@ -208,115 +200,5 @@ public class HibernateTest extends SWTTestExt {
 	public static void prepareConsole() {
 		ConsoleTest consoleTest = new ConsoleTest();
 		consoleTest.createConsole();
-	}
-		
-	/**
-	 * Prepares database and insert test data by using connection profile and sql scrapbook
-	 */
-	public static void prepareDatabase()  {
-		if (databasePrepared) return;
-		
-		runHSQLDBServer(Project.DB_FILE,Project.DB_NAME);
-		
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(Platform.getLocation());
-		stringBuilder.append(File.separator);
-		stringBuilder.append(Project.PROJECT_NAME);
-		stringBuilder.append(File.separator);
-		stringBuilder.append("hsqldb.jar");
-		
-		try {
-			DriverEntity entity = new DriverEntity();
-			entity.setDrvPath(stringBuilder.toString());
-			entity.setJdbcString("jdbc:hsqldb:hsql://localhost/xdb");
-			DatabaseHelper.createDriver(entity);
-		} catch (ConnectionProfileException e) {
-			log.error("Unable to create HSQL Driver" + e);
-			fail();			
-		}
-
-		eclipse.openPerspective(PerspectiveType.DB_DEVELOPMENT);
-		eclipse.showView(ViewType.DATA_SOURCE_EXPLORER);		
-		
-		bot.sleep(TIME_1S);
-		
-		//bot.activetree().expandNode("Database Connections").select();
-		
-		Matcher<IViewReference> matcher = withPartName("Data Source Explorer");
-		SWTBotView view = bot.view(matcher);
-		
-		bot.sleep(TIME_1S);
-		SWTBotTree tree = view.bot().tree();
-
-		// Open SQL Scrapbook 
-		SWTBotTreeItem item = tree.expandNode("Database Connections").expandNode("DefaultDS");
-		item.contextMenu("Connect").click();		
-		item.contextMenu("Open SQL Scrapbook").click();
-						
-		// Set SQL Scrapbook		
-		SWTBotEditor editor = bot.editorByTitle("SQL Scrapbook 0");
-		editor.setFocus();
-		bot.comboBoxWithLabelInGroup("Type:","Connection profile").setSelection("HSQLDB_1.8");
-		bot.comboBoxWithLabelInGroup("Name:","Connection profile").setSelection("DefaultDS");
-		bot.comboBoxWithLabelInGroup("Database:","Connection profile").setSelection("Default");
-
-		// Insert SQL script into editor
-		eclipse.setClassContentFromResource(false, Activator.PLUGIN_ID, "sql", "SQL Scrapbook 0");
-		
-		// Execute Script and close
-		bot.editorByTitle("SQL Scrapbook 0").toTextEditor().contextMenu("Execute All").click();		
-		editor.close();
-		
-		bot.sleep(TIME_5S);
-	}
-	
-	/**
-	 * Run HSQLDB database in server mode
-	 * @param file
-	 * @param dbname
-	 */
-	public static void runHSQLDBServer(final String file, final String dbname) {
-		if (dbRunning) return;
-
-		log.info("Starting HSQLDB");
-		Runnable runable = new Runnable() {
-			
-			public void run() {
-				Server.main(new String[] {"-database.0","file:" + file,"-dbname.0",dbname });
-			}
-		};
-		
-		hsqlThread = new Thread(runable);
-		hsqlThread.start();
-		log.info("HSQLDB started");
-		dbRunning = true;
-	}
-	
-	/**
-	 * Stop HSQL Database by sending SHUTDOWN command
-	 */
-	public static void stopHSQLDBServer() {
-		
-		try {		
-			Class.forName("org.hsqldb.jdbcDriver");
-			
-			Connection connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/xdb");
-			
-			Statement statement = connection.createStatement();
-			ResultSet resultset = statement.executeQuery("SHUTDOWN");
-			
-			resultset.close();
-			statement.close();
-			connection.close();
-			
-			
-		} catch (SQLException e) {
-			
-		}
-		catch (ClassNotFoundException e) {
-			log.error("Unable to stop HSQLDB " + e);
-		}
-
-		
 	}
 }
