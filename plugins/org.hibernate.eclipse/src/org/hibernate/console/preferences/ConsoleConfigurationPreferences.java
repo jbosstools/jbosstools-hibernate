@@ -24,8 +24,7 @@ package org.hibernate.console.preferences;
 import java.io.File;
 import java.io.Serializable;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import org.w3c.dom.Element;
@@ -52,16 +51,20 @@ public interface ConsoleConfigurationPreferences {
 	// TODO: we should move this to some classhandler
 	static public class ConfigurationMode implements Serializable {
 
-		private static final Map<String, ConfigurationMode> INSTANCES = new HashMap<String, ConfigurationMode>();
+		private static final ArrayList<ConfigurationMode> INSTANCES = new ArrayList<ConfigurationMode>();
+		private static final ArrayList<String> LABELS = new ArrayList<String>();
 
 		public static final ConfigurationMode CORE = new ConfigurationMode( "CORE" ); //$NON-NLS-1$
 		public static final ConfigurationMode ANNOTATIONS = new ConfigurationMode( "ANNOTATIONS" ); //$NON-NLS-1$
 		public static final ConfigurationMode JPA = new ConfigurationMode( "JPA" ); //$NON-NLS-1$
 
 		static {
-			INSTANCES.put( CORE.name, CORE );
-			INSTANCES.put( ANNOTATIONS.name, ANNOTATIONS );
-			INSTANCES.put( JPA.name, JPA );
+			INSTANCES.add(CORE);
+			INSTANCES.add(ANNOTATIONS);
+			INSTANCES.add(JPA);
+			LABELS.add("Core"); //$NON-NLS-1$
+			LABELS.add("Annotations"); //$NON-NLS-1$
+			LABELS.add("JPA"); //$NON-NLS-1$
 		}
 
 		private final String name;
@@ -75,11 +78,22 @@ public interface ConsoleConfigurationPreferences {
 		}
 
 		private Object readResolve() {
-			return INSTANCES.get( name );
+			Object res = null;
+			for (int i = 0; i < INSTANCES.size() && res == null; i++) {
+				if (INSTANCES.get(i).name.equals(name)) {
+					res = INSTANCES.get(i);
+				}
+			}
+			return res;
 		}
 
 		public static ConfigurationMode parse(String name) {
-			ConfigurationMode rtn = INSTANCES.get( name );
+			ConfigurationMode rtn = null;
+			for (int i = 0; i < INSTANCES.size() && rtn == null; i++) {
+				if (INSTANCES.get(i).name.equals(name)) {
+					rtn = INSTANCES.get(i);
+				}
+			}
 			if ( rtn == null ) {
 				// default is POJO
 				rtn = CORE;
@@ -87,8 +101,16 @@ public interface ConsoleConfigurationPreferences {
 			return rtn;
 		}
 		
-		public static String[] values(){
-			return INSTANCES.keySet().toArray(new String[INSTANCES.size()]);
+		public static String[] values() {
+			final String[] res = new String[INSTANCES.size()];
+			for (int i = 0; i < INSTANCES.size(); i++) {
+				res[i] = INSTANCES.get(i).name;
+			}
+			return res;
+		}
+		
+		public static String[] labels() {
+			return LABELS.toArray(new String[LABELS.size()]);
 		}
 	}
 

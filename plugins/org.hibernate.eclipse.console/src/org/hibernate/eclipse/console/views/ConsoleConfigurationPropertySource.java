@@ -37,7 +37,6 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.internal.core.LaunchConfiguration;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jface.viewers.ICellEditorValidator;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.views.properties.ComboBoxPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
@@ -63,20 +62,7 @@ public class ConsoleConfigurationPropertySource implements IPropertySource {
 		ComboBoxPropertyDescriptor modeDescriptor = new ComboBoxPropertyDescriptor(
 			"mode",  //$NON-NLS-1$
 			HibernateConsoleMessages.ConsoleConfigurationPropertySource_mode,
-			ConfigurationMode.values());
-		modeDescriptor.setLabelProvider(new LabelProvider(){
-			
-			@Override
-			public String getText(Object element) {
-				if (ConfigurationMode.CORE.toString().equals(element)){
-					return "Core"; //$NON-NLS-1$
-				}
-				if (ConfigurationMode.ANNOTATIONS.toString().equals(element)){
-					return "Annotations"; //$NON-NLS-1$
-				}
-				return super.getText(element);
-			}		
-		});
+			ConfigurationMode.labels());
 		
 		List<IPropertyDescriptor> l = new ArrayList<IPropertyDescriptor>();
 		l.add(new TextPropertyDescriptor("name", HibernateConsoleMessages.ConsoleConfigurationPropertySource_name)); //$NON-NLS-1$
