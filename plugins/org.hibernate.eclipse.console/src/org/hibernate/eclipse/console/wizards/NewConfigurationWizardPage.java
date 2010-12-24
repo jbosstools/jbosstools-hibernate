@@ -28,6 +28,7 @@ import org.eclipse.jface.dialogs.IDialogPage;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -116,7 +117,11 @@ public class NewConfigurationWizardPage extends WizardPage {
 
 		};
 
-        Composite container = new Composite(parent, SWT.NULL);
+		final ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+		sc.setExpandHorizontal(true);
+		sc.setExpandVertical(true);
+		Composite container = new Composite(sc, SWT.NULL);
+		sc.setContent(container);
         GridLayout layout = new GridLayout();
         container.setLayout(layout);
         layout.numColumns = 2;
@@ -227,11 +232,13 @@ public class NewConfigurationWizardPage extends WizardPage {
         createConsoleConfiguration.setLayoutData(gd);
         createConsoleConfiguration.setText(HibernateConsoleMessages.NewConfigurationWizardPage_create_console_configuration);
         createConsoleConfiguration.addSelectionListener(selectionListener);
+        
+        sc.setMinSize(container.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
         initialize();
         dialogChanged();
 
-        setControl(container);
+        setControl(sc);
     }
 
     /**
