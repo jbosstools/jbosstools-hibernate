@@ -135,7 +135,10 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
 				Configuration configuration = consoleConfiguration!=null?consoleConfiguration.getConfiguration():null;
 				IHQLCodeAssist hqlEval = new HQLCodeAssist(configuration);
 				EclipseHQLCompletionRequestor eclipseHQLCompletionCollector = new EclipseHQLCompletionRequestor();
-				hqlEval.codeComplete(doc.get(), currentOffset, eclipseHQLCompletionCollector);
+				String query = doc.get();
+				// workaround to fix JBIDE-7991
+				query = query.replace('\t', ' ');
+				hqlEval.codeComplete(query, currentOffset, eclipseHQLCompletionCollector);
 				proposalList.addAll(eclipseHQLCompletionCollector.getCompletionProposals());
 				errorMessage = eclipseHQLCompletionCollector.getLastErrorMessage();
 
