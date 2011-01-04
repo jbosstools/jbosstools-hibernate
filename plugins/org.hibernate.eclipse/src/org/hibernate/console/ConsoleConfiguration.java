@@ -67,7 +67,11 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	}
 
 	public Object execute(Command c) {
-		return executionContext.execute(c);
+		// to avoid npe, in case when configuration closed from other thread during it's load time
+		if (executionContext != null) {
+			return executionContext.execute(c);
+		}
+		return null;
 	}
 
 	public ConsoleConfigurationPreferences prefs = null;

@@ -13,7 +13,6 @@ package org.hibernate.eclipse.console.actions;
 import java.util.Iterator;
 
 import org.eclipse.jface.viewers.StructuredViewer;
-import org.eclipse.ui.actions.SelectionListenerAction;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
@@ -23,22 +22,29 @@ import org.hibernate.eclipse.console.viewers.xpl.MTreeViewer;
 /**
  * @author Vitali Yemialyanchyk
  */
-public class CloseConfigAction extends SelectionListenerAction {
+public class CloseConfigAction extends ConsoleConfigReadyUseBaseAction {
 
 	public static final String CLOSECONFIG_ACTIONID = "actionid.closeconfig"; //$NON-NLS-1$
 
-	private StructuredViewer viewer;
+	/**
+	 * @param text
+	 */
+	protected CloseConfigAction(String text) {
+		super(text);
+		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.CLOSE));
+		setId(CLOSECONFIG_ACTIONID);
+		init(null);
+	}
 
 	public CloseConfigAction(StructuredViewer sv) {
 		super(HibernateConsoleMessages.CloseConfigAction_close_config);
-		setEnabled(false);
-		this.viewer = sv;
 		setText(HibernateConsoleMessages.CloseConfigAction_close_config);
 		setImageDescriptor(EclipseImages.getImageDescriptor(ImageConstants.CLOSE));
 		setId(CLOSECONFIG_ACTIONID);
+		init(sv);
 	}
 
-	public void run() {
+	public void doRun() {
 		doCloseConfig();
 	}
 
@@ -53,22 +59,5 @@ public class CloseConfigAction extends SelectionListenerAction {
 			config.reset();
 			viewer.refresh(node);
 		}
-	}
-
-	@Override
-	public boolean isEnabled() {
-		boolean res = false;
-		for (Iterator<?> i = getSelectedNonResources().iterator(); i.hasNext();) {
-			Object node = i.next();
-			if (!(node instanceof ConsoleConfiguration)) {
-				continue;
-			}
-			ConsoleConfiguration config = (ConsoleConfiguration) node;
-			if (config.hasConfiguration()) {
-				res = true;
-			}
-		}
-		//return res;
-		return true;
 	}
 }
