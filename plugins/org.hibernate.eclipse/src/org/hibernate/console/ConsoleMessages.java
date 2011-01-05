@@ -16,6 +16,7 @@ public class ConsoleMessages extends NLS {
 	public static String ConsoleConfiguration_invalid_configuration;
 	public static String ConsoleConfiguration_persistence_unit_not_found;
 	public static String ConsoleConfiguration_problems_while_loading_database_driverclass;
+	public static String ConsoleConfiguration_null_execution_context;
 	public static String JavaPage_no_info;
 	public static String JavaPage_not_allowed;
 	public static String KnownConfigurations_could_not_write_state;

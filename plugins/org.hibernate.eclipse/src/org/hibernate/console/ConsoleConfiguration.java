@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.osgi.util.NLS;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -67,11 +68,11 @@ public class ConsoleConfiguration implements ExecutionContextHolder {
 	}
 
 	public Object execute(Command c) {
-		// to avoid npe, in case when configuration closed from other thread during it's load time
 		if (executionContext != null) {
 			return executionContext.execute(c);
 		}
-		return null;
+		final String msg = NLS.bind(ConsoleMessages.ConsoleConfiguration_null_execution_context, getName());
+		throw new HibernateConsoleRuntimeException(msg);
 	}
 
 	public ConsoleConfigurationPreferences prefs = null;
