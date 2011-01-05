@@ -63,18 +63,22 @@ public class HQLCompletionProcessor implements IContentAssistProcessor {
         completionComparator = DisplayStringProposalComparator.INSTANCE;
     }
 
-    public ICompletionProposal[] computeCompletionProposals( ITextViewer viewer, int documentOffset ) {
+    public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer, int documentOffset) {
+        IDocument doc = viewer.getDocument();
+        return computeCompletionProposals(doc, documentOffset);
+    }
+
+    public ICompletionProposal[] computeCompletionProposals(IDocument doc, int documentOffset) {
         ICompletionProposal[] result = new ICompletionProposal[0];
 
         try {
-            IDocument doc = viewer.getDocument();
             ITypedRegion partition = null;
 
             if (documentOffset > 0) {
-                partition = viewer.getDocument().getPartition( documentOffset - 1 );
+                partition = doc.getPartition( documentOffset - 1 );
             }
             else {
-            	partition = viewer.getDocument().getPartition( documentOffset );
+            	partition = doc.getPartition( documentOffset );
             }
 
             if(partition!=null) {
