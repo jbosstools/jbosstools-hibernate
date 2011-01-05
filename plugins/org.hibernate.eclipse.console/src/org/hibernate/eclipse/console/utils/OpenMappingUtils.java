@@ -539,7 +539,7 @@ public class OpenMappingUtils {
         	return file;
     	}
 		final ConsoleConfiguration cc2 = consoleConfig;
-		List<String> documentPaths = (List<String>)consoleConfig.getExecutionContext().execute(new ExecutionContext.Command() {
+		List<String> documentPaths = (List<String>)consoleConfig.execute(new ExecutionContext.Command() {
 			public Object execute() {
 				return OpenMappingUtilsEjb3.enumDocuments(cc2);
 			}
