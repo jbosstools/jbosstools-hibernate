@@ -246,7 +246,10 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 		useOwnTemplates.attachDialogField(templatedir);
         reverseengineer.attachDialogFields(new DialogField[] { packageName, preferRawCompositeIds, reverseEngineeringSettings, reverseEngineeringStrategy, autoManyToMany, autoOneToOne, autoVersioning });
 
-		useExternalProcess.doFillIntoGrid(container, 4);
+        // do not show the option cause: JBIDE-8072
+		//useExternalProcess.doFillIntoGrid(container, 4);
+		useExternalProcess.setSelection(false);
+		
 		consoleConfigurationName.doFillIntoGrid(container, 4);
 		Control[] controls = outputdir.doFillIntoGrid(container, 4);
 		// Hack to tell the text field to stretch!
@@ -459,7 +462,8 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 		useOwnTemplates.setSelection(attributes.isUseOwnTemplates());
 		packageName.setText(safeText(attributes.getPackageName()));
 		templatedir.setText(safeText(attributes.getTemplatePath()));
-		useExternalProcess.setSelection(attributes.isUseExternalProcess());
+		//useExternalProcess.setSelection(attributes.isUseExternalProcess());
+		useExternalProcess.setSelection(false);
 	}
 
 	private String safeText(String text) {
