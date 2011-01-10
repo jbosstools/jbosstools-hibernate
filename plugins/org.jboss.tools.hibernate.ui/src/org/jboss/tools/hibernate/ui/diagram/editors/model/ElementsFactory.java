@@ -16,7 +16,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -115,8 +117,14 @@ public class ElementsFactory {
 		OrmShape s = null;
 		Property property = (Property)element;
 		if (!property.isComposite()) {
-			Type type = ((Property)element).getType();
-			if (type.isEntityType()) {
+			Type type = null;
+			try {
+				type = property.getType();
+			} catch (HibernateException e) {
+				//type is not accessible
+				HibernateConsolePlugin.getDefault().logErrorMessage("HibernateException: ", e); //$NON-NLS-1$
+			}
+			if (type != null && type.isEntityType()) {
 				EntityType et = (EntityType) type;
 				Object clazz = config != null ? 
 						config.getClassMapping(et.getAssociatedEntityName()) : null;
@@ -139,7 +147,7 @@ public class ElementsFactory {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	protected void refreshComponentReferences(ComponentShape componentShape) {
 		Property property = (Property)componentShape.getOrmElement();
 		if (!(property.getValue() instanceof Collection)) {
@@ -230,7 +238,7 @@ public class ElementsFactory {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	protected OrmShape getOrCreateDatabaseTable(Table databaseTable) {
 		OrmShape tableShape = null;
 		if (databaseTable != null) {
@@ -256,7 +264,7 @@ public class ElementsFactory {
 		return tableShape;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected OrmShape getOrCreatePersistentClass(PersistentClass persistentClass, 
 			Table componentClassDatabaseTable) {
 		OrmShape classShape = null;
@@ -432,7 +440,7 @@ public class ElementsFactory {
 		return ormShape;
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private boolean createConnections(ExpandableShape persistentClass, ExpandableShape dbTable) {
 		boolean res = false;
 		if (persistentClass == null || dbTable == null) {

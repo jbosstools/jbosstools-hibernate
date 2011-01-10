@@ -17,10 +17,13 @@ import java.util.Properties;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
+import org.hibernate.HibernateException;
+import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.Value;
+import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Connection.ConnectionType;
 import org.jboss.tools.hibernate.ui.view.HibernateUtils;
 
@@ -290,7 +293,16 @@ public class Shape extends BaseElement {
 				if (value instanceof Component) {
 					res = prop.getValue().toString();
 				} else {
-					res = prop.getType().getReturnedClass().getName();
+					Type type = null;
+					try {
+						type = prop.getType();
+					} catch (HibernateException e) {
+						//type is not accessible
+						HibernateConsolePlugin.getDefault().logErrorMessage("HibernateException: ", e); //$NON-NLS-1$
+					}
+					if (type != null) {
+						res = type.getReturnedClass().getName();
+					}
 				}
 			} else if (PROPERTY_VALUE.equals(propertyId)) {
 				res = prop.getValue().toString();

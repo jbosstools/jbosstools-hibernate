@@ -12,7 +12,7 @@ package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
 import java.util.Iterator;
 
-import org.hibernate.MappingException;
+import org.hibernate.HibernateException;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.execution.ExecutionContext.Command;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
@@ -60,13 +60,14 @@ public class SpecialOrmShape extends OrmShape {
 				type = (Type) cfg.execute(new Command() {
 					public Object execute() {
 						return fField.getValue().getType();
-					}});								
+					}
+				});								
 			} else {
-				try{
+				try {
 					type = field.getValue().getType();
-				} catch (MappingException e) {
+				} catch (HibernateException e) {
 					//type is not accessible
-					HibernateConsolePlugin.getDefault().logErrorMessage("MappingException: ", e); //$NON-NLS-1$
+					HibernateConsolePlugin.getDefault().logErrorMessage("HibernateException: ", e); //$NON-NLS-1$
 				}
 			}
 			Shape bodyOrmShape = null;
