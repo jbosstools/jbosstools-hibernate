@@ -9,8 +9,8 @@
     <para>Hibernate Eclipse Tools include wizards for creating Hibernate mapping files,
       configuration files (.cfg.xml), revenge.xml as well as wizards for adjusting Console
       Configuration and Code Generation. Special structured and XML editors, editors for executing
-      HQL and Criteria queries are also provided in Hibernate Console. Refer to <link
-        linkend="hibernate_key_features">Key Features</link> section to find all benefits that you
+      HQL and Criteria queries are also provided in Hibernate Console. Refer to <xref
+        linkend="hibernate_key_features"/> section to find all benefits that you
       can take advantage of while using the tools within Eclipse.</para>
     <note>
       <title>Note:</title>
@@ -290,7 +290,7 @@
           </tbody>
         </tgroup>
       </table>
-      <tip>
+      <note>
         <title>Tip:</title>
         <para>The two latter settings are usually not required if you specify a project and it has
             <emphasis>
@@ -302,7 +302,7 @@
               <literal>/META-INF/persistence.xml</literal>
             </property>
           </emphasis> in its project classpath.</para>
-      </tip>
+      </note>
       <itemizedlist>
         <listitem>
           <para>
@@ -561,8 +561,7 @@
           <para> After clicking you will see the Edit Configuration Wizard that is similar to
               <emphasis>
               <property>Create Console Configuration</property>
-            </emphasis>,described in <link linkend="creat_console_conf">Creating a Hibernate Console
-              Configuration section</link>. </para>
+            </emphasis>,described in <xref linkend="creat_console_conf"/>. </para>
         </listitem>
         <listitem>
           <para>use Properties view for modifying some of Console Configuration properties.</para>
@@ -749,12 +748,12 @@
         name, otherwise the default prefix <emphasis>
           <property>New_Generation</property>
         </emphasis> will be used.</para>
-      <tip>
+      <note>
         <title>Tip:</title>
         <para>The &quot;At least one exporter option must be selected&quot; is just a warning
           stating that for this launch to work you need to select an exporter on the Exporter tab.
           When an exporter has been selected the warning will disappear.</para>
-      </tip>
+      </note>
       <para>The dialog also have the standard tabs <emphasis>
           <property>Refresh</property>
         </emphasis> and <emphasis>
@@ -1195,11 +1194,11 @@
           </imageobject>
         </mediaobject>
       </figure>
-      <tip>
+      <note>
         <title>Tip:</title>
         <para>If the property is a directory, it is possible to browse directories in the Value
           field.</para>
-      </tip>
+      </note>
       <figure>
         <title>Specifying the Property Value</title>
         <mediaobject>
@@ -1457,8 +1456,7 @@
     <para>Or you can get it via the <property>Code Generation Launcher</property> by checking the
       proper section in the <emphasis>
         <property>Main</property>
-      </emphasis> tab of the <link linkend="hib_code_gen">Hibernate Code Generation
-      Wizard</link>.</para>
+      </emphasis> tab of the <xref linkend="hib_code_gen"/>.</para>
     <para>The following screenshot shows the <emphasis>
         <property>Overview</property>
       </emphasis> page where the wanted console configuration is selected (auto-detected if
@@ -1499,8 +1497,8 @@
       (including usertypes) if the default rules are not applicable. Here again to see the database
       tables press <emphasis>
         <property>Refresh</property>
-      </emphasis> button underneath. More about type mappings you can find further in the <link
-        linkend="type_map">Type Mappings</link> section.</para>
+      </emphasis> button underneath. More about type mappings you can find further in the <xref
+        linkend="type_map"/> section.</para>
     <figure>
       <title>Type Mappings Page</title>
       <mediaobject>
@@ -1517,8 +1515,7 @@
         <property>Table and Columns</property>
       </emphasis> page allows you to explicit set e.g. which hibernatetype and propertyname that
       should be used in the reverse engineered model. For more details on how to configure the
-      tables while reverse engineering read the <link linkend="tab_and_col">Specific table
-        configuration</link> section.</para>
+      tables while reverse engineering read the <xref linkend="tab_and_col"/> section.</para>
     <figure>
       <title>Table and Columns Page</title>
       <mediaobject>
@@ -1538,8 +1535,8 @@
     <title>Hibernate Console Perspective</title>
     <para>The <property>Hibernate Console Perspective</property> combines a set of views which allow
       you to see the structure of your mapped entities/classes, edit HQL queries, execute the
-      queries, and see the results. To use this perspective you need to create a <link
-        linkend="console_conf">Console configuration</link>.</para>
+      queries, and see the results. To use this perspective you need to create a <xref
+        linkend="console_conf"/>.</para>
     <section>
       <title>Viewing the entity structure</title>
       <para>To view your new configuration and entity/class structure, switch to <property>Hibernate
@@ -1865,11 +1862,11 @@
             </tbody>
           </tgroup>
         </table>
-        <tip>
+        <note>
           <title>Tip:</title>
           <para>All the described types of the context menu are also available in the <property
               >Outline</property> view.</para>
-        </tip>
+        </note>
         <para>The below table lists the actions that could be performed using the keyboard keys (or
           keys combinations).</para>
         <table>
@@ -1946,12 +1943,12 @@
             </imageobject>
           </mediaobject>
         </figure>
-        <tip>
+        <note>
           <title>Note:</title>
           <para>If you restart the Eclipse with the mapping diagram opened, the mapping diagram will
             be restored with the message like on the figure below. To view the diagram content, you
             should perform the refreshing.</para>
-        </tip>
+        </note>
         <figure>
           <title>The Diagram after Restarting the Eclipse</title>
           <mediaobject>
@@ -2133,12 +2130,12 @@
             </imageobject>
           </mediaobject>
         </figure>
-        <tip>
+        <note>
           <title>Tip:</title>
           <para>If the context menu items are disabled then you need at first to create a <property
               >Session Factory</property>. That is done by simply expanding the <property>Session
               Factory</property> node.</para>
-        </tip>
+        </note>
         <para>When open the editors they should automatically detect the chosen Console
           Configuration.</para>
         <para>To get a prefill query for any entity (or any entity child node) listed in the
@@ -2278,8 +2275,7 @@
         </mediaobject>
       </figure>
       <para>You can also use <property>Properties view</property> when clicking on the configuration
-        itself in Hibernate Configuration View( <link linkend="modif_console_conf">Modifying a
-          Hibernate Console Configuration section</link>). </para>
+        itself in Hibernate Configuration View( <xref linkend="modif_console_conf"/>). </para>
     </section>
   </section>
   <section id="jpa_annotations">
@@ -2344,8 +2340,7 @@
       <listitem>
         <para><emphasis>
             <property>@Version</property>
-          </emphasis> is declared in case you select <link linkend="optim_lock">Enable optimistic
-            locking</link>.</para>
+          </emphasis> is declared in case you select <xref linkend="optim_lock"/>.</para>
       </listitem>
     </itemizedlist>
     <note>
@@ -2383,7 +2378,7 @@
     </figure>
     <para>Here you can add one more classes or whole package, moreover you can limit dependencies
       depth by selecting <property>depth control</property> option (more about this option you will
-      find in <link linkend="depth_control">Creating a Hibernate Mapping File</link>). When finished
+      find in <xref linkend="depth_control"/>). When finished
       just press the <property>Next</property> button and you will be returned to <property>The
         following classes will be changed</property> page and will be able to continue work with
       it.</para>

@@ -597,7 +597,7 @@ public class Person implements Serializable {
         <para>In conclusion, this document is intended to introduce you to Hibernate plugin specific
           features related to tools bath for the Eclipse and Ant tasks.</para>
 
-        <para>In the <link linkend="plugins">Eclipse Plugins</link> chapter you&apos;ve learnt
+        <para>In the <xref linkend="plugins"/> chapter you&apos;ve learnt
           about a set of wizards for creating Mapping files, Configuration file, Console
           Configuration, got familiar with Mapping and Configuration files editors, tooling for
           organizing and controlling Reverse Engineering, Hibernate Console and Mapping diagram as

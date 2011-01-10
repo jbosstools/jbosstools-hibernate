@@ -110,6 +110,6 @@
       directory at <emphasis>
         <property>/plugins/org.hibernate.eclipse.x.x.x/lib/tools/</property>
       </emphasis>. These libraries are 100% independent from the eclipse platform. How to use these
-      via ant tasks are described in the <link linkend="ant">Ant Tools</link> chapter.</para>
+      via ant tasks are described in the <xref linkend="ant"/> chapter.</para>
   </section>
 </chapter>

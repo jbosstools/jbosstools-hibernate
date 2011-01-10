@@ -42,7 +42,7 @@
                                 engineering, schema generation and generation of other artifacts
                                 during the build process.</para>
                         </entry>     
-                        <entry><link linkend="ant">ant task</link></entry>
+                        <entry><xref linkend="ant"/></entry>
                     </row>
 
                     <row>
@@ -59,9 +59,9 @@
                                 there is even support for completely reverse engineer an existing
                                 database schema.</para>
                         </entry>                   
-                        <entry> <link linkend="map_file_wizard">hibernate mapping file</link>
-                                       <link linkend="hib_config_file">hibernate configuration file</link>
-                                       <link linkend="code_gen">code generation</link>                                     
+                        <entry> <xref linkend="map_file_wizard"/>
+                                       <xref linkend="hib_config_file"/>
+                                       <xref linkend="code_gen"/>                                     
                         </entry>
                     </row>
 
@@ -79,7 +79,7 @@
                                 names, making it much more versatile than a normal XML
                             editor.</para>
                         </entry>
-                        <entry> <link linkend="map_config_editor">mapping and configuration files editors</link></entry>
+                        <entry> <xref linkend="map_config_editor"/></entry>
                     </row>
 
                     <row>
@@ -92,8 +92,8 @@
                                 mapping files, annotated EJB3 entity beans, etc. and reveng.xml file
                                 editor allows to control this processes.</para>
                         </entry>
-                        <entry><link linkend="code_gen">code generation</link> 
-                            <link linkend="rev_xml_editor">reveng.xml editor</link></entry>
+                        <entry><xref linkend="code_gen"/> 
+                            <xref linkend="rev_xml_editor"/></entry>
                     </row>
 
                     <row>
@@ -107,7 +107,7 @@
                                 The console allows you to execute HQL queries against your database
                                 and browse the result directly in Eclipse.</para>
                         </entry>
-                        <entry><link linkend="hib_console">hibernate console</link></entry>
+                        <entry><xref linkend="hib_console"/></entry>
                     </row>
                 	
                 	<row>
@@ -118,7 +118,7 @@
                 			<para>The editors are intended for writing, editing and executing HQL queries and criterias. They also support the functionality for generating 
                 			simple queries.</para>
                 		</entry>
-                		<entry><link linkend="hql_and_criteria_editors">hql and hibernate criteria editors</link></entry>
+                		<entry><xref linkend="hql_and_criteria_editors"/></entry>
                 	</row>
 
                     <row>
@@ -129,7 +129,7 @@
                             <para>Makes possible to visualize structure of entities and
                                 relationships between them.</para>
                         </entry>                      
-                        <entry><link linkend="map_diagram">mapping diagram</link></entry>
+                        <entry><xref linkend="map_diagram"/></entry>
                     </row>
 
 

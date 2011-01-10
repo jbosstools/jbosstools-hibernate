@@ -102,8 +102,8 @@
       the job of the exporter to generate a set of code artifacts.</para>
 
     <para>The tools provides a default set of Exporter's which can be used in both Ant and the
-      Eclipse UI. Documentation for these Exporters is in the <link linkend="ant">Ant Tools</link>
-      and <link linkend="plugins">Eclipse Plugins</link> chapters.</para>
+      Eclipse UI. Documentation for these Exporters is in the <xref linkend="ant"/>
+      and <xref linkend="plugins"/> chapters.</para>
 
     <para>Users can provide their own customer Exporter's, either by custom classes implementing the
       Exporter interface or simply be providing custom templates. This is documented at <xref
