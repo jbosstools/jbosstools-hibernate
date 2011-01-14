@@ -48,12 +48,15 @@ public class TestSet {
 		test4.setTestPackage(testPackage);
 		/**/
 		//
-		suite.addTest(test1);
 		/**/
+		suite.addTest(test4);
 		suite.addTest(test2);
 		suite.addTest(test3);
-		suite.addTest(test4);
 		/**/
+		// HbmExportExceptionTest should be a last test in the suite array,
+		// cause it clean up all hbm.xml files and could be a reason of exceptions during 
+		// other test executions
+		suite.addTest(test1);
 		return suite;
 	}
 }

@@ -87,6 +87,7 @@ public class HbmExportExceptionTest extends TestCase {
 			
 			//delete old hbm files
 			assertNotNull( testPackage );
+			int nDeleted = 0;
 			if (testPackage.getNonJavaResources().length > 0){
 				Object[] ress = testPackage.getNonJavaResources();
 				for (int i = 0; i < ress.length; i++) {
@@ -94,6 +95,7 @@ public class HbmExportExceptionTest extends TestCase {
 						IFile res = (IFile)ress[i];
 						if (res.getName().endsWith(".hbm.xml")) { //$NON-NLS-1$
 							res.delete(true, false, null);
+							nDeleted++;
 						}
 					}
 				}
@@ -138,6 +140,21 @@ public class HbmExportExceptionTest extends TestCase {
 			} catch (ExporterException e){
 				throw (Exception)e.getCause();
 			}
+			//
+			int nCreated = 0;
+			if (testPackage.getNonJavaResources().length > 0){
+				Object[] ress = testPackage.getNonJavaResources();
+				for (int i = 0; i < ress.length; i++) {
+					if (ress[i] instanceof IFile){
+						IFile res = (IFile)ress[i];
+						if (res.getName().endsWith(".hbm.xml")) { //$NON-NLS-1$
+							nCreated++;
+						}
+					}
+				}
+			}
+			//
+			assert(nDeleted <= nCreated);
 		} catch (Exception e){
 			String newMessage = "\nPackage " + testPackage.getElementName() + ":"; //$NON-NLS-1$ //$NON-NLS-2$
 			throw new WripperException(newMessage, e);
