@@ -20,7 +20,7 @@ import java.sql.Blob;
  * <p/>
  * {@link #materializedBlob} is used to hold BLOB data that is materialized
  * into a byte array immediately; it is mapped via the
- * {@link org.hibernate.test.lob.MaterializedBlobType}.
+ * {@link org.hibernate.type.MaterializedBlobType}.
  * <p/>
  * {@link #blobLocator} is used to hold BLOB data that is materialized lazily
  * via a JDBC BLOB locator; it is mapped via the
