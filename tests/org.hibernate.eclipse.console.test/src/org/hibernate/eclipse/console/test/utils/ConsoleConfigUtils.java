@@ -2,6 +2,8 @@ package org.hibernate.eclipse.console.test.utils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import org.apache.tools.ant.filters.StringInputStream;
 import org.eclipse.core.resources.IFile;
@@ -49,6 +51,8 @@ public class ConsoleConfigUtils {
 
 	/**
 	 * Create hibernate.cfg.xml file content for the particular test package content.
+	 * Use alphabetic order to resources in cfg.xml
+	 * 
 	 * @param pack
 	 * @return a string, which is hibernate.cfg.xml content
 	 * @throws CoreException
@@ -57,20 +61,27 @@ public class ConsoleConfigUtils {
 		StringBuilder str = new StringBuilder();
 		str.append(XML_HEADER);
 		str.append(XML_CFG_START);
-		if (pack.getNonJavaResources().length > 0){
+		if (pack.getNonJavaResources().length > 0) {
+			ArrayList<String> collect = new ArrayList<String>();
 			Object[] ress = pack.getNonJavaResources();
 			for (int i = 0; i < ress.length; i++) {
 				if (!(ress[i] instanceof IFile)) {
 					continue;
 				}
 				IFile file = (IFile)ress[i];
-				if (file.getName().endsWith(".hbm.xml")){ //$NON-NLS-1$
-					str.append("<mapping resource=\"");//$NON-NLS-1$
-					str.append(pack.getElementName().replace('.', '/'));
-					str.append('/');
-					str.append(file.getName());
-					str.append("\"/>\n");  //$NON-NLS-1$
+				if (file.getName().endsWith(".hbm.xml")) { //$NON-NLS-1$
+					collect.add(file.getName());
 				}
+			}
+			// use alphabetic order to resources in cfg.xml
+			Collections.sort(collect);
+			final String packElementName = pack.getElementName().replace('.', '/');
+			for (int i = 0; i < collect.size(); i++) {
+				str.append("<mapping resource=\"");//$NON-NLS-1$
+				str.append(packElementName);
+				str.append('/');
+				str.append(collect.get(i));
+				str.append("\"/>\n");  //$NON-NLS-1$
 			}
 		}
 		str.append(XML_CFG_END);
