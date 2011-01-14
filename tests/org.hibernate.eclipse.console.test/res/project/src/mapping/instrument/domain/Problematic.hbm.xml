@@ -9,6 +9,6 @@
             <generator class="increment" />
         </id>
         <property name="name" type="string" column="NAME" />
-        <property name="bytes" type="org.hibernate.test.instrument.domain.CustomBlobType" column="DATA" lazy="true" />
+        <property name="bytes" type="mapping.instrument.domain.CustomBlobType" column="DATA" lazy="true" />
     </class>
 </hibernate-mapping>

@@ -9,7 +9,7 @@
 
 <hibernate-mapping package="mapping.rowid">
 
-	<typedef name="rowid" class="org.hibernate.test.rowid.RowIdType"/>
+	<typedef name="rowid" class="mapping.rowid.RowIdType"/>
 	
 	<class name="Point" rowid="rowid">
 		<composite-id>

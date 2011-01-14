@@ -15,7 +15,7 @@
 		<property name="materializedClob" column="MAT_CLOB_DATA" type="text" length="15000"/>
         <property name="clobLocator" column="CLOB_DATA" type="clob" length="15000" />
 
-		<property name="materializedBlob" column="MAT_BLOB_DATA" type="org.hibernate.test.lob.MaterializedBlobType" length="15000"/>
+		<property name="materializedBlob" column="MAT_BLOB_DATA" type="org.hibernate.type.MaterializedBlobType" length="15000"/>
         <property name="blobLocator" column="BLOB_DATA" type="blob" length="15000" />
     </class>
 

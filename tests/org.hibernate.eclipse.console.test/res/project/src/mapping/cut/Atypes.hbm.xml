@@ -4,5 +4,5 @@
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="mapping.cut">
-	<typedef name="money" class="org.hibernate.test.cut.MonetoryAmountUserType"/>
+	<typedef name="money" class="mapping.cut.MonetoryAmountUserType"/>
 </hibernate-mapping>
