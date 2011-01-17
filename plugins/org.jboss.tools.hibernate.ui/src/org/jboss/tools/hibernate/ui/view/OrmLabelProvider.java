@@ -97,7 +97,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 
 	@Override
 	public Image getImage(Object element) {
-		ImageDescriptor descriptor = OrmImageMap.getImageDescriptor(element);
+		ImageDescriptor descriptor = OrmImageMap.getImageDescriptor(element, getConsoleConfig());
 		if (descriptor == null) {
 			return null;
 		}
@@ -114,7 +114,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 		if (obj instanceof Column) {
 			updateColumnSqlType((Column)obj);
 		}
-		return OrmLabelMap.getLabel(obj);
+		return OrmLabelMap.getLabel(obj, getConsoleConfig());
 	}
 
 	public void dispose() {

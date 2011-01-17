@@ -12,10 +12,6 @@ package org.jboss.tools.hibernate.ui.diagram.editors.model;
 
 import java.util.Iterator;
 
-import org.hibernate.HibernateException;
-import org.hibernate.console.ConsoleConfiguration;
-import org.hibernate.console.execution.ExecutionContext.Command;
-import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.mapping.Property;
 import org.hibernate.mapping.RootClass;
 import org.hibernate.type.Type;
@@ -27,8 +23,8 @@ import org.hibernate.type.Type;
 public class SpecialOrmShape extends OrmShape {
 	private Shape parentShape;
 
-	public SpecialOrmShape(SpecialRootClass ioe) {
-		super(ioe);
+	public SpecialOrmShape(SpecialRootClass ioe, String consoleConfigName) {
+		super(ioe, consoleConfigName);
 	}
 
 	/**
@@ -40,12 +36,12 @@ public class SpecialOrmShape extends OrmShape {
 		RootClass rootClass = (RootClass)getOrmElement();
 		Property identifierProperty = rootClass.getIdentifierProperty();
 		if (identifierProperty != null) {
-			addChild(new Shape(identifierProperty));
+			addChild(new Shape(identifierProperty, getConsoleConfigName()));
 		}
 
 		SpecialRootClass src = (SpecialRootClass)getOrmElement();
 		if (src.getParentProperty() != null) {
-			Shape bodyOrmShape = new Shape(src.getParentProperty());
+			Shape bodyOrmShape = new Shape(src.getParentProperty(), getConsoleConfigName());
 			addChild(bodyOrmShape);
 			parentShape = bodyOrmShape;
 		}
@@ -53,30 +49,14 @@ public class SpecialOrmShape extends OrmShape {
 		Iterator<Property> iterator = rootClass.getPropertyIterator();
 		while (iterator.hasNext()) {
 			Property field = iterator.next();
-			Type type = null;
-			if (getOrmDiagram() != null) {
-				ConsoleConfiguration cfg = getOrmDiagram().getConsoleConfig();
-				final Property fField = field;
-				type = (Type) cfg.execute(new Command() {
-					public Object execute() {
-						return fField.getValue().getType();
-					}
-				});								
-			} else {
-				try {
-					type = field.getValue().getType();
-				} catch (HibernateException e) {
-					//type is not accessible
-					HibernateConsolePlugin.getDefault().logErrorMessage("HibernateException: ", e); //$NON-NLS-1$
-				}
-			}
+			Type type = getTypeUsingExecContext(field.getValue());
 			Shape bodyOrmShape = null;
 			if (type != null && type.isEntityType()) {
-				bodyOrmShape = new ExpandableShape(field);
+				bodyOrmShape = new ExpandableShape(field, getConsoleConfigName());
 			} else if (type != null && type.isCollectionType()) {
-				bodyOrmShape = new ComponentShape(field);
+				bodyOrmShape = new ComponentShape(field, getConsoleConfigName());
 			} else {
-				bodyOrmShape = new Shape(field);
+				bodyOrmShape = new Shape(field, getConsoleConfigName());
 			}
 			addChild(bodyOrmShape);
 		}

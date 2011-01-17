@@ -17,8 +17,8 @@ import java.util.Properties;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
-import org.hibernate.HibernateException;
-import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.KnownConfigurations;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Property;
@@ -54,6 +54,10 @@ public class Shape extends BaseElement {
 	 * only one BaseElement offspring has a parent - this is Shape
 	 */
 	private BaseElement parent;
+	/**
+	 * name of Hibernate Console Configuration
+	 */
+	private final String consoleConfigName;
 	
 	private static IPropertyDescriptor[] descriptors_property;
 	private static IPropertyDescriptor[] descriptors_column;
@@ -105,8 +109,9 @@ public class Shape extends BaseElement {
 
 	} // static
 
-	protected Shape(Object ioe) {
+	protected Shape(Object ioe, String consoleConfigName) {
 		ormElement = ioe;
+		this.consoleConfigName = consoleConfigName;
 	}
 	
 	@Override
@@ -129,6 +134,10 @@ public class Shape extends BaseElement {
 			el = el.getParent();
 		}
 		return res;
+	}
+
+	public String getConsoleConfigName() {
+		return consoleConfigName;
 	}
 
 	public void addConnection(Connection conn) {
@@ -293,13 +302,7 @@ public class Shape extends BaseElement {
 				if (value instanceof Component) {
 					res = prop.getValue().toString();
 				} else {
-					Type type = null;
-					try {
-						type = prop.getType();
-					} catch (HibernateException e) {
-						//type is not accessible
-						HibernateConsolePlugin.getDefault().logErrorMessage("HibernateException: ", e); //$NON-NLS-1$
-					}
+					Type type = getTypeUsingExecContext(prop.getValue());
 					if (type != null) {
 						res = type.getReturnedClass().getName();
 					}
@@ -359,5 +362,15 @@ public class Shape extends BaseElement {
 			res = super.getPropertyValue(propertyId);
 		}
 		return toEmptyStr(res);
+	}
+
+	public ConsoleConfiguration getConsoleConfig() {
+		final KnownConfigurations knownConfigurations = KnownConfigurations.getInstance();
+		ConsoleConfiguration consoleConfig = knownConfigurations.find(consoleConfigName);
+		return consoleConfig;
+	}
+
+	public Type getTypeUsingExecContext(final Value val) {
+		return UtilTypeExtract.getTypeUsingExecContext(val, getConsoleConfig());
 	}
 }

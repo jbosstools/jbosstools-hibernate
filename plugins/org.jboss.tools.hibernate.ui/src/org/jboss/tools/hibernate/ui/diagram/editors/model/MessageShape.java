@@ -16,8 +16,8 @@ package org.jboss.tools.hibernate.ui.diagram.editors.model;
 */
 public class MessageShape extends OrmShape {
 
-	protected MessageShape(String error) {
-		super(error);
+	protected MessageShape(String error, String consoleConfigName) {
+		super(error, consoleConfigName);
 	}
 
 	@Override

@@ -11,6 +11,7 @@
 package org.jboss.tools.hibernate.ui.view;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.mapping.Any;
 import org.hibernate.mapping.Array;
 import org.hibernate.mapping.Bag;
@@ -32,6 +33,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.ui.diagram.UiPlugin;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.UtilTypeExtract;
 
 /**
  * Map: ORM object -> Image descriptor 
@@ -40,14 +42,14 @@ public class OrmImageMap {
 	
 	private OrmImageMap() {}
 
-	public static ImageDescriptor getImageDescriptor(final Object obj) {
+	public static ImageDescriptor getImageDescriptor(final Object obj, final ConsoleConfiguration cfg) {
 		String imageName = null;
 		if (obj instanceof Table) {
 			imageName = getImageName((Table)obj);
 		} else if (obj instanceof Column) {
 			imageName = getImageName((Column)obj);
 		} else if (obj instanceof Property) {
-			imageName = getImageName((Property)obj);
+			imageName = getImageName((Property)obj, cfg);
 		} else if (obj instanceof OneToMany) {
 			imageName = getImageName((OneToMany)obj);
 		} else if (obj instanceof SimpleValue) {
@@ -100,7 +102,7 @@ public class OrmImageMap {
 	 * @param field
 	 * @return
 	 */
-	public static String getImageName(Property field) {
+	public static String getImageName(Property field, final ConsoleConfiguration cfg) {
 		String str = "Image_PersistentFieldSimple"; //$NON-NLS-1$
 		if (field == null) {
 			return str;
@@ -121,12 +123,7 @@ public class OrmImageMap {
 			} else if (value instanceof Any) {
 				str = "Image_PersistentFieldAny"; //$NON-NLS-1$
 			} else {
-				Type type = null;
-				try {
-					type = field.getType();
-				} catch (Exception ex) {
-					// ignore it
-				}
+				Type type = UtilTypeExtract.getTypeUsingExecContext(value, cfg);
 				if (type != null && type.isCollectionType()) {
 					if (value instanceof PrimitiveArray) {
 						str = "Image_Collection_primitive_array"; //$NON-NLS-1$

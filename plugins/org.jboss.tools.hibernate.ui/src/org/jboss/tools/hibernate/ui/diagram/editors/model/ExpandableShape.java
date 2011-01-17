@@ -25,8 +25,8 @@ public class ExpandableShape extends Shape {
 
 	protected boolean expanded = true;
 	
-	public ExpandableShape(Object ioe) {
-		super(ioe);
+	public ExpandableShape(Object ioe, String consoleConfigName) {
+		super(ioe, consoleConfigName);
 	}
 
 	public boolean isExpanded() {
