@@ -180,6 +180,49 @@ public class ConsoleConfigUtils {
 	}
 
 	/**
+	 * "Launch" the wizard and create hibernate annotations console configuration in the current workspace. 
+	 * @param name - console configuration name
+	 * @param cfgFilePath - path to hibernate.cfg.xml
+	 * @param project - name of java project selected for console configuration
+	 * @throws CoreException
+	 * @throws NoSuchFieldException
+	 * @throws IllegalAccessException
+	 */
+	public static void createAnnotationsConsoleConfig(String name, String project, String cfgFilePath) throws CoreException, NoSuchFieldException, IllegalAccessException {
+		final IWorkbenchWindow win = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+		final ConsoleConfigurationCreationWizard wiz = new ConsoleConfigurationCreationWizard();
+		final WizardDialog wdialog = new WizardDialog(win.getShell(), wiz);
+		wdialog.create();
+		ConsoleConfigurationWizardPage page = ((ConsoleConfigurationWizardPage)wiz.getPages()[0]);			
+		ILaunchConfigurationTab[] tabs = page.getTabs();
+		ConsoleConfigurationMainTab main = (ConsoleConfigurationMainTab) tabs[0];
+		Class<? extends ConsoleConfigurationMainTab> clazz = main.getClass();
+		//
+		Field projectName = clazz.getDeclaredField("projectNameText"); //$NON-NLS-1$
+		projectName.setAccessible(true);
+		Text text = (Text)projectName.get(main);
+		text.setText(project);
+		//
+		Field configurationFile = clazz.getDeclaredField("configurationFileText"); //$NON-NLS-1$
+		configurationFile.setAccessible(true);
+		text = (Text)configurationFile.get(main);
+		text.setText(cfgFilePath);
+		//
+		Field annotationsMode = clazz.getDeclaredField("annotationsMode"); //$NON-NLS-1$
+		Field coreMode = clazz.getDeclaredField("coreMode"); //$NON-NLS-1$
+		annotationsMode.setAccessible(true);
+		coreMode.setAccessible(true);
+		Button button = (Button)coreMode.get(main);
+		button.setSelection(false);
+		button = (Button)annotationsMode.get(main);
+		button.setSelection(true);
+		//
+		page.setName(name);
+		page.performFinish();
+		wdialog.close();
+	}
+
+	/**
 	 * Delete console configuration with given name. 
 	 * @param name
 	 */

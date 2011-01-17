@@ -84,7 +84,7 @@ public class ConfigurableTestProject extends TestProject {
 	
 	public IPackageFragment getCurrentPackage() throws JavaModelException{
 		if (activePackage < foldersList.size()) {
-			final String pack = foldersList.get(activePackage).replaceAll("\\\\", ".");
+			final String pack = foldersList.get(activePackage).replaceAll("\\\\", "."); //$NON-NLS-1$ //$NON-NLS-2$
 			IPackageFragment[] packageFragments = javaProject.getPackageFragments();
 			for (IPackageFragment iPackageFragment : packageFragments) {
 				if (iPackageFragment.getKind() == IPackageFragmentRoot.K_SOURCE
