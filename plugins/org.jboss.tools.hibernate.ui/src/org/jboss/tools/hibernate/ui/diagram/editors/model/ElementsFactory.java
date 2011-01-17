@@ -16,9 +16,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.hibernate.HibernateException;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.eclipse.console.HibernateConsolePlugin;
+import org.hibernate.console.ConsoleConfiguration;
+import org.hibernate.console.KnownConfigurations;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -44,13 +44,13 @@ import org.hibernate.type.Type;
  */
 public class ElementsFactory {
 
-	private final Configuration config;
+	private final String consoleConfigName;
 	private final HashMap<String, OrmShape> elements;
 	private final ArrayList<Connection> connections;
 	
-	public ElementsFactory(Configuration config, HashMap<String, OrmShape> elements,
+	public ElementsFactory(String consoleConfigName, HashMap<String, OrmShape> elements,
 			ArrayList<Connection> connections) {
-		this.config = config;
+		this.consoleConfigName = consoleConfigName;
 		this.elements = elements;
 		this.connections = connections;
 	}
@@ -117,13 +117,9 @@ public class ElementsFactory {
 		OrmShape s = null;
 		Property property = (Property)element;
 		if (!property.isComposite()) {
-			Type type = null;
-			try {
-				type = property.getType();
-			} catch (HibernateException e) {
-				//type is not accessible
-				HibernateConsolePlugin.getDefault().logErrorMessage("HibernateException: ", e); //$NON-NLS-1$
-			}
+			final Configuration config = getConfig();
+			//
+			Type type = UtilTypeExtract.getTypeUsingExecContext(property.getValue(), getConsoleConfig());
 			if (type != null && type.isEntityType()) {
 				EntityType et = (EntityType) type;
 				Object clazz = config != null ? 
@@ -245,6 +241,7 @@ public class ElementsFactory {
 			tableShape = getShape(databaseTable);
 			if (tableShape == null) {
 				tableShape = createShape(databaseTable);
+				final Configuration config = getConfig();
 				if (config != null) {
 					Iterator iterator = config.getClassMappings();
 					while (iterator.hasNext()) {
@@ -426,14 +423,14 @@ public class ElementsFactory {
 			String key = Utils.getName(specialRootClass.getEntityName());
 			ormShape = elements.get(key);
 			if (null == ormShape) {
-				ormShape = new SpecialOrmShape(specialRootClass);
+				ormShape = new SpecialOrmShape(specialRootClass, consoleConfigName);
 				elements.put(key, ormShape);
 			}
 		} else {
 			String key = Utils.getName(ormElement);
 			ormShape = elements.get(key);
 			if (null == ormShape) {
-				ormShape = new OrmShape(ormElement);
+				ormShape = new OrmShape(ormElement, consoleConfigName);
 				elements.put(key, ormShape);
 			}
 		}
@@ -522,5 +519,20 @@ public class ElementsFactory {
 			return false;
 		}
 		return true;
+	}
+
+	public ConsoleConfiguration getConsoleConfig() {
+		final KnownConfigurations knownConfigurations = KnownConfigurations.getInstance();
+		ConsoleConfiguration consoleConfig = knownConfigurations.find(consoleConfigName);
+		return consoleConfig;
+	}
+
+	public Configuration getConfig() {
+		Configuration config = null;
+		final ConsoleConfiguration consoleConfig = getConsoleConfig();
+		if (consoleConfig != null) {
+			config = consoleConfig.getConfiguration();
+		}
+		return config;
 	}
 }

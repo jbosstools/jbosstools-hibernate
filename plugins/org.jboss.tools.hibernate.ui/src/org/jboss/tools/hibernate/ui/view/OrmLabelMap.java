@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.ui.view;
 
+import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.eclipse.console.workbench.TypeNameValueVisitor;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Component;
@@ -21,6 +22,7 @@ import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.type.Type;
+import org.jboss.tools.hibernate.ui.diagram.editors.model.UtilTypeExtract;
 import org.jboss.tools.hibernate.ui.diagram.editors.model.Utils;
 
 /**
@@ -34,14 +36,14 @@ public class OrmLabelMap {
 	
 	private OrmLabelMap() {}
 
-	public static String getLabel(final Object obj) {
+	public static String getLabel(final Object obj, final ConsoleConfiguration cfg) {
 		String label = null;
 		if (obj instanceof Table) {
 			label = getParticularLabel((Table)obj);
 		} else if (obj instanceof Column) {
 			label = getParticularLabel((Column)obj);
 		} else if (obj instanceof Property) {
-			label = getParticularLabel((Property)obj);
+			label = getParticularLabel((Property)obj, cfg);
 		} else if (obj instanceof OneToMany) {
 			label = getParticularLabel((OneToMany)obj);
 		} else if (obj instanceof SimpleValue) {
@@ -80,17 +82,12 @@ public class OrmLabelMap {
 		return name.toString();
 	}
 
-	public static String getParticularLabel(Property field) {
+	public static String getParticularLabel(Property field, final ConsoleConfiguration cfg) {
 		StringBuffer name = new StringBuffer();
 		name.append(field.getName());
 		name.append(" :"); //$NON-NLS-1$
 		String typeString = null;
-		Type type = null;
-		try {
-			type = field.getType();
-		} catch (Exception e) {
-			// ignore - this is only way to catch java.lang.reflect.InvocationTargetException
-		}
+		Type type = UtilTypeExtract.getTypeUsingExecContext(field.getValue(), cfg);
 		if (type != null && type.getReturnedClass() != null) {
 			typeString = type.getReturnedClass().getName();
 		} else {

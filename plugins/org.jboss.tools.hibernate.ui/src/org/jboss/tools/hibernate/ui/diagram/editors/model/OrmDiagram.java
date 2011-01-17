@@ -219,7 +219,7 @@ public class OrmDiagram extends BaseElement {
 		StringBuilder errorMessage = new StringBuilder();
 		Configuration config = getConfig(errorMessage);
 		final ElementsFactory factory = new ElementsFactory(
-			config, elements, connections);
+			consoleConfigName, elements, connections);
 		for (int i = 0; i < roots.size(); i++) {
 			RootClass rc = roots.get(i);
 			if (rc != null) {
@@ -242,7 +242,7 @@ public class OrmDiagram extends BaseElement {
 			if (errorMessage.length() > 0) {
 				error = errorMessage.toString();
 			}
-			addChild(new MessageShape(error));
+			addChild(new MessageShape(error, getConsoleConfigName()));
 		}
 	}
 

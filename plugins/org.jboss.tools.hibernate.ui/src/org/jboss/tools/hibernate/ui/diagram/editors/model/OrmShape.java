@@ -26,6 +26,8 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.SimpleValue;
 import org.hibernate.mapping.Subclass;
 import org.hibernate.mapping.Table;
+import org.hibernate.mapping.Value;
+import org.hibernate.type.Type;
 import org.jboss.tools.hibernate.ui.diagram.rulers.DiagramGuide;
 
 /**
@@ -147,22 +149,22 @@ public class OrmShape extends ExpandableShape {
 
 	} // static
 	
-	public OrmShape(Object ioe) {	
-		super(ioe);
+	public OrmShape(Object ioe, String consoleConfigName) {	
+		super(ioe, consoleConfigName);
 		initModel();
 	}
 	
 	/**
 	 * creates children of the shape, 
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void initModel() {
 		Object ormElement = getOrmElement();
 		if (ormElement instanceof RootClass) {
 			RootClass rootClass = (RootClass)ormElement;
 			Property identifierProperty = rootClass.getIdentifierProperty();
 			if (identifierProperty != null) {
-				addChild(new Shape(identifierProperty));
+				addChild(new Shape(identifierProperty, getConsoleConfigName()));
 			}
 
 			KeyValue identifier = rootClass.getIdentifier();
@@ -172,7 +174,7 @@ public class OrmShape extends ExpandableShape {
 					Iterator<Property> iterator = ((Component)identifier).getPropertyIterator();
 					while (iterator.hasNext()) {
 						Property property = iterator.next();
-						addChild(new Shape(property));
+						addChild(new Shape(property, getConsoleConfigName()));
 					}
 				}
 			}
@@ -182,27 +184,25 @@ public class OrmShape extends ExpandableShape {
 				Property field = iterator.next();
 				if (!field.isBackRef()) {
 					if (!field.isComposite()) {
-						boolean typeIsAccessible = true;
-						if (field.getValue().isSimpleValue() && ((SimpleValue)field.getValue()).isTypeSpecified()) {
-							try {
-								field.getValue().getType();
-							} catch (Exception e) {
-								typeIsAccessible = false;
-							}
-						}
+						final Value val = field.getValue();
 						Shape bodyOrmShape = null;
-						if (field.getValue().isSimpleValue() && !((SimpleValue)field.getValue()).isTypeSpecified()) {
-							bodyOrmShape = new Shape(field);
-						} else if (typeIsAccessible && field.getValue() instanceof Collection) {
-							bodyOrmShape = new ComponentShape(field);
-						} else if (typeIsAccessible && field.getValue().getType().isEntityType()) {
-							bodyOrmShape = new ExpandableShape(field);
+						if (val.isSimpleValue() && !((SimpleValue)val).isTypeSpecified()) {
+							bodyOrmShape = new Shape(field, getConsoleConfigName());
 						} else {
-							bodyOrmShape = new Shape(field);
+							if (val instanceof Collection) {
+								bodyOrmShape = new ComponentShape(field, getConsoleConfigName());
+							} else {
+								Type type = getTypeUsingExecContext(val);
+								if (type != null && type.isEntityType()) {
+									bodyOrmShape = new ExpandableShape(field, getConsoleConfigName());
+								} else {
+									bodyOrmShape = new Shape(field, getConsoleConfigName());
+								}
+							}
 						}
 						addChild(bodyOrmShape);
 					} else {
-						Shape bodyOrmShape = new ExpandableShape(field);
+						Shape bodyOrmShape = new ExpandableShape(field, getConsoleConfigName());
 						addChild(bodyOrmShape);
 					}
 				}
@@ -212,7 +212,7 @@ public class OrmShape extends ExpandableShape {
 
 			Property identifierProperty = rootClass.getIdentifierProperty();
 			if (identifierProperty != null) {
-				addChild(new Shape(identifierProperty));
+				addChild(new Shape(identifierProperty, getConsoleConfigName()));
 			}
 
 			KeyValue identifier = rootClass.getIdentifier();
@@ -220,7 +220,7 @@ public class OrmShape extends ExpandableShape {
 				Iterator<Property> iterator = ((Component)identifier).getPropertyIterator();
 				while (iterator.hasNext()) {
 					Property property = iterator.next();
-					addChild(new Shape(property));
+					addChild(new Shape(property, getConsoleConfigName()));
 				}
 			}
 
@@ -240,17 +240,17 @@ public class OrmShape extends ExpandableShape {
 						}
 						Shape bodyOrmShape = null;
 						if (typeIsAccessible && field.getValue().isSimpleValue()) {
-							bodyOrmShape = new Shape(field);
+							bodyOrmShape = new Shape(field, getConsoleConfigName());
 						} else if (typeIsAccessible && field.getValue().getType().isEntityType()) {
-							bodyOrmShape = new ExpandableShape(field);
+							bodyOrmShape = new ExpandableShape(field, getConsoleConfigName());
 						} else if (typeIsAccessible && field.getValue().getType().isCollectionType()) {
-							bodyOrmShape = new ComponentShape(field);
+							bodyOrmShape = new ComponentShape(field, getConsoleConfigName());
 						} else {
-							bodyOrmShape = new Shape(field);
+							bodyOrmShape = new Shape(field, getConsoleConfigName());
 						}
 						addChild(bodyOrmShape);
 					} else {
-						Shape bodyOrmShape = new ExpandableShape(field);
+						Shape bodyOrmShape = new ExpandableShape(field, getConsoleConfigName());
 						addChild(bodyOrmShape);
 					}
 				}
@@ -271,15 +271,15 @@ public class OrmShape extends ExpandableShape {
 						}						
 						Shape bodyOrmShape = null;
 						if (typeIsAccessible && property.getValue().getType().isEntityType()) {
-							bodyOrmShape = new ExpandableShape(property);
+							bodyOrmShape = new ExpandableShape(property, getConsoleConfigName());
 						} else if (typeIsAccessible && property.getValue().getType().isCollectionType()) {
-							bodyOrmShape = new ComponentShape(property);
+							bodyOrmShape = new ComponentShape(property, getConsoleConfigName());
 						} else {
-							bodyOrmShape = new Shape(property);
+							bodyOrmShape = new Shape(property, getConsoleConfigName());
 						}
 						addChild(bodyOrmShape);
 					} else {
-						Shape bodyOrmShape = new ExpandableShape(property);
+						Shape bodyOrmShape = new ExpandableShape(property, getConsoleConfigName());
 						addChild(bodyOrmShape);
 					}
 				}
@@ -288,7 +288,7 @@ public class OrmShape extends ExpandableShape {
 			Iterator iterator = ((Table)getOrmElement()).getColumnIterator();
 			while (iterator.hasNext()) {
 				Column column = (Column)iterator.next();
-				Shape bodyOrmShape = new Shape(column);
+				Shape bodyOrmShape = new Shape(column, getConsoleConfigName());
 				addChild(bodyOrmShape);
 			}
 		}

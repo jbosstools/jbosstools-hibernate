@@ -20,8 +20,8 @@ import org.hibernate.mapping.Property;
  */
 public class ComponentShape extends ExpandableShape {
 
-	public ComponentShape(Object ioe) {	
-		super(ioe);
+	public ComponentShape(Object ioe, String consoleConfigName) {	
+		super(ioe, consoleConfigName);
 		initModel();
 	}
 
@@ -32,10 +32,10 @@ public class ComponentShape extends ExpandableShape {
 		Object ormElement = getOrmElement();
 		if (ormElement instanceof Property) {
 			Collection collection = (Collection)((Property)ormElement).getValue();
-			Shape bodyOrmShape = new Shape(collection.getKey());
+			Shape bodyOrmShape = new Shape(collection.getKey(), getConsoleConfigName());
 			bodyOrmShape.setIndent(20);
 			addChild(bodyOrmShape);
-			bodyOrmShape = new Shape(collection.getElement());
+			bodyOrmShape = new Shape(collection.getElement(), getConsoleConfigName());
 			bodyOrmShape.setIndent(20);
 			addChild(bodyOrmShape);
 		}
