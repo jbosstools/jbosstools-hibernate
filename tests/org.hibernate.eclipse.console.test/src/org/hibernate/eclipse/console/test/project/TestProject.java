@@ -210,7 +210,7 @@ public class TestProject {
 		javaProject.setRawClasspath(entries.toArray(new IClasspathEntry[0]), null);
 	}
 	
-	protected File getFolder(String path) throws IOException {
+	static public File getFolder(String path) throws IOException {
 		URL entry = HibernateConsoleTestPlugin.getDefault().getBundle().getEntry(path);
 		URL resProject = FileLocator.resolve(entry);
 		String resolvePath = FileLocator.resolve(resProject).getFile();
