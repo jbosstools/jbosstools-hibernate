@@ -56,11 +56,11 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 	@SuppressWarnings("unchecked")
 	public synchronized Object[] getChildren(Object o, final IProgressMonitor monitor) {
 		LazyDatabaseSchema dbs = getLazyDatabaseSchema( o );
-		final DefaultDatabaseCollector db = new DefaultDatabaseCollector();
 
 		ConsoleConfiguration consoleConfiguration = dbs.getConsoleConfiguration();
+
 		try{
-			readDatabaseSchema(monitor, db, consoleConfiguration, dbs.getReverseEngineeringStrategy());
+			DefaultDatabaseCollector db = readDatabaseSchema(monitor, consoleConfiguration, dbs.getReverseEngineeringStrategy());
 
 			List<TableContainer> result = new ArrayList<TableContainer>();
 
@@ -101,30 +101,30 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 		return getLazyDatabaseSchema(o).getConsoleConfiguration();
 	}
 
-	protected void readDatabaseSchema(final IProgressMonitor monitor, final DefaultDatabaseCollector db, ConsoleConfiguration consoleConfiguration, final ReverseEngineeringStrategy strategy) {
+	protected DefaultDatabaseCollector readDatabaseSchema(final IProgressMonitor monitor, ConsoleConfiguration consoleConfiguration, final ReverseEngineeringStrategy strategy) {
 		final Configuration configuration = consoleConfiguration.buildWith(null, false);
-
-		consoleConfiguration.execute(new ExecutionContext.Command() {
+		return (DefaultDatabaseCollector) consoleConfiguration.execute(new ExecutionContext.Command() {
 
 			public Object execute() {
+				DefaultDatabaseCollector db = null;
 				Settings settings = configuration.buildSettings();
 				ConnectionProvider connectionProvider = null;
 				try {
 					connectionProvider = settings.getConnectionProvider();
 
 					JDBCReader reader = JDBCReaderFactory.newJDBCReader(configuration.getProperties(), settings, strategy);
+					db = new DefaultDatabaseCollector(reader.getMetaDataDialect());
 					reader.readDatabaseSchema(db, settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), new ProgressListenerMonitor(monitor));
+					return db;
 				} catch(HibernateException he) {
 					HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.LazyDatabaseSchemaWorkbenchAdapter_problem_while_reading_database_schema, he);
-					return new Object[] { HibernateConsoleMessages.LazyDatabaseSchemaWorkbenchAdapter_schema_not_available};
 				}
 			    finally {
 					if (connectionProvider!=null) {
 						connectionProvider.close();
 					}
 				}
-
-				return null;
+			    return null;
 			}
 		});
 	}
