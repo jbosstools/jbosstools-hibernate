@@ -115,16 +115,15 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 					JDBCReader reader = JDBCReaderFactory.newJDBCReader(configuration.getProperties(), settings, strategy);
 					db = new DefaultDatabaseCollector(reader.getMetaDataDialect());
 					reader.readDatabaseSchema(db, settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), new ProgressListenerMonitor(monitor));
-					return db;
 				} catch(HibernateException he) {
-					HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.LazyDatabaseSchemaWorkbenchAdapter_problem_while_reading_database_schema, he);
+					throw he;
 				}
 			    finally {
 					if (connectionProvider!=null) {
 						connectionProvider.close();
 					}
 				}
-			    return null;
+				return db;
 			}
 		});
 	}
