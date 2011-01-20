@@ -89,7 +89,7 @@
 				<guimenuitem>New</guimenuitem>
 				<guimenuitem>File</guimenuitem>
 				<guimenuitem>Hibernate Configuration 3.0</guimenuitem>
-			</menuchoice>. After selecting the wanted location for the <filename>hibernate.cfg.xml</filename> file, you will see the following page:</para>
+			</menuchoice>. After selecting the desired location for the <filename>hibernate.cfg.xml</filename> file, you will see the following page:</para>
 		<figure>
 			<title>Hibernate Configuration File Wizard</title>
 			<mediaobject>
@@ -103,49 +103,39 @@
 		</figure>
 		<note>
 			<title>Note:</title>
-			<para>The contents in the combo boxes for the JDBC driver class and JDBC URL change
-        automatically, depending on the Dialect and actual driver you have chosen.</para>
+			<para>
+				The contents in the combo boxes for the JDBC driver class and JDBC URL change automatically, depending on the Dialect and actual driver you have chosen.
+			</para>
 		</note>
-		<para>Enter your configuration information in this dialog. Details about the configuration
-      options can be found in <ulink url="http://docs.jboss.org/ejb3/app-server/Hibernate3/reference/en/html_single">Hibernate
-        Reference Documentation</ulink>.</para>
-		<para>Press <emphasis>
-        <property>Finish</property>
-			</emphasis> to create the configuration file, after optionally creating a Console
-      configuration, the <filename>hibernate.cfg.xml</filename>  file will be automatically opened in an editor. The last option <emphasis>
-        <property>Create Console Configuration</property>
-			</emphasis> is enabled by default and when enabled, it will automatically use the <filename>hibernate.cfg.xml</filename> file for the basis of a Console configuration.</para>
+		<para>
+			Enter your configuration information in this dialog. Details about the configuration options can be found in <ulink url="http://docs.jboss.org/ejb3/app-server/Hibernate3/reference/en/html_single">Hibernate Reference Documentation</ulink>.
+		</para>
+		<para>
+			Click the <guibutton>Finish</guibutton> to create the configuration file, and after optionally creating a Console configuration, the <filename>hibernate.cfg.xml</filename> file will be automatically opened in an editor. The last option <guilabel>Create Console Configuration</guilabel> is enabled by default and when enabled, it will automatically use the <filename>hibernate.cfg.xml</filename> file for the basis of a Console configuration.
+		</para>
 	</section>
 	<section id="console_conf">
 		<title>Hibernate Console Configuration</title>
-		<para>A Console configuration describes how the <property>Hibernate plugin</property> should
-      configure <property>Hibernate</property> and what configuration files, including which
-      classpath are needed to load the POJO's, JDBC drivers etc. It is required to make usage of
-      query prototyping, reverse engineering and code generation. You can have multiple named
-      console configurations. Normally you would just need one per project, but more is definitely
-      possible if your project requires this.</para>
+		<para>
+			A Console configuration describes how the <property>Hibernate plugin</property> should configure <property>Hibernate</property> and what configuration files, including which classpaths are needed to load the POJO's, JDBC drivers etc. It is required to make use of query prototyping, reverse engineering and code generation. You can have multiple named console configurations. Normally you would just need one per project, but it is definitely possible to create more if required by your project.
+		</para>
 		<section id="creat_console_conf">
 			<title>Creating a Hibernate Console Configuration</title>
-			<para>You can create a console configuration by running the <property>Console Configuration
-          Wizard</property>, shown in the following screenshot. The same wizard will also be used if
-        you are coming from the <emphasis>
-          <property>hibernate.cfg.xml</property>
-				</emphasis> wizard and had enabled <emphasis>
-          <property>Create Console Configuration</property>
-				</emphasis>.</para>
+			<para>
+				You can create a console configuration by running the <guilabel>Console Configuration Wizard</guilabel>, shown in the following screenshot. The same wizard will also be used if you are coming from the <filename>hibernate.cfg.xml</filename> wizard and had enabled the <guilabel>Create Console Configuration</guilabel> option.
+			</para>
 			<note>
 				<title>Note:</title>
-				<para>The wizard will look at the current selection in the IDE and try and auto-detect the
-          settings which you then can just approve or modify to suit your needs.</para>
+				<para>
+					The wizard will look at the current selection in the IDE and try to auto-detect the appropriate settings, which you then can just approve or modify to suit your needs.
+				</para>
 			</note>
 			<para/>
 			<para>The dialog consists of five tabs: </para>
 			<itemizedlist>
 				<listitem>
 					<para>
-						<emphasis>
-							<property>Main</property>
-						</emphasis> for the basic/required settings</para>
+						<guilabel>Main</guilabel> for the basic and required settings</para>
 				</listitem>
 			</itemizedlist>
 			<figure>
@@ -159,10 +149,9 @@
 					</imageobject>
 				</mediaobject>
 			</figure>
-			<para>The following table describes the available settings on the <emphasis>
-          <property>Main</property>
-				</emphasis> tab. The wizard can automatically detect the default values for most of them if
-        you started the wizard with the relevant java project or resource selected.</para>
+			<para>
+				The following table describes the available settings on the <guilabel>Main</guilabel> tab. The wizard can automatically detect the default values for most of the settings if you started the wizard with the relevant java project or resource selected.
+			</para>
 			<table>
 				<title>Hibernate Console Configuration Parameters</title>
 				<tgroup cols="3">
@@ -199,9 +188,9 @@
 								<para>Type</para>
 							</entry>
 							<entry>
-								<para>Choose between &quot;Core&quot;, &quot;Annotations&quot; and &quot;JPA&quot;.
-                  Note that the two latter requires running Eclipse IDE with a JDK 5 runtime,
-                  otherwise you will get classloading and/or version errors.</para>
+								<para>
+									Choose between &quot;Core&quot;, &quot;Annotations&quot; and &quot;JPA&quot;. Note that the two latter requires running Eclipse IDE with a JDK 5 runtime, otherwise you will get classloading and/or version errors.
+								</para>
 							</entry>
 							<entry>
 								<para>No default value</para>
@@ -212,8 +201,7 @@
 								<para>Project</para>
 							</entry>
 							<entry>
-								<para>The name of a java project which classpath should be used in the console
-                  configuration</para>
+								<para>The name of a java project whose classpath should be used in the console configuration</para>
 							</entry>
 							<entry>
 								<para>Name of the selected project</para>
@@ -224,9 +212,9 @@
 								<para>Database connection</para>
 							</entry>
 							<entry>
-								<para>DTP provided connection that you can use instead of what is in cfg.xml and jpa
-                  persistence.xml. It&apos;s possible to use either already configured hibernate or
-                  JPA connection or specify a new one here.</para>
+								<para>
+									DTP provided connection that you can use instead of what is defined in the <filename>cfg.xml</filename> and <filename>jpa persistence.xml</filename> files. It is possible to use an already configured hibernate or JPA connection, or specify a new one here.
+								</para>
 							</entry>
 							<entry>
 								<para>[Hibernate Configured connection]</para>
@@ -237,10 +225,10 @@
 								<para>Property file</para>
 							</entry>
 							<entry>
-								<para>Path to a hibernate.properties file</para>
+								<para>Path to a <filename>hibernate.properties</filename> file</para>
 							</entry>
 							<entry>
-								<para>First hibernate.properties file found in the selected project</para>
+								<para>First <filename>hibernate.properties</filename> file found in the selected project</para>
 							</entry>
 						</row>
 						<row>
@@ -248,10 +236,10 @@
 								<para>Configuration file</para>
 							</entry>
 							<entry>
-								<para>Path to a hibernate.cfg.xml file</para>
+								<para>Path to a <filename>hibernate.cfg.xml</filename> file</para>
 							</entry>
 							<entry>
-								<para>First hibernate.cfg.xml file found in the selected project</para>
+								<para>First <filename>hibernate.cfg.xml</filename> file found in the selected project</para>
 							</entry>
 						</row>
 						<row>
@@ -262,8 +250,9 @@
 								<para>Name of the persistence unit to use</para>
 							</entry>
 							<entry>
-								<para>No default value (let Hibernate Entity Manager find the persistence unit or it
-                  can be defined manually using Browse button)</para>
+								<para>
+									No default value (let Hibernate Entity Manager find the persistence unit or it can be defined manually using the <guibutton>Browse</guibutton> button)
+								</para>
 							</entry>
 						</row>
 					</tbody>
@@ -271,16 +260,8 @@
 			</table>
 			<note>
 				<title>Tip:</title>
-				<para>The two latter settings are usually not required if you specify a project and it has
-            <emphasis>
-            <property>
-              <literal> /hibernate.cfg.xml </literal>
-						</property>
-					</emphasis> or <emphasis>
-            <property>
-              <literal>/META-INF/persistence.xml</literal>
-						</property>
-					</emphasis> in its project classpath.</para>
+				<para>
+					The two latter settings are usually not required if you specify a project and it has a <filename> /hibernate.cfg.xml </filename> or <filename>/META-INF/persistence.xml</filename> file in the projects classpath.</para>
 			</note>
 			<itemizedlist>
 				<listitem>
@@ -298,10 +279,7 @@
 					</imageobject>
 				</mediaobject>
 			</figure>
-			<para>The next table describes Hibernate Console Configuration options available on the
-          <emphasis>
-          <property>Options</property>
-				</emphasis> tab.</para>
+			<para>The next table describes Hibernate Console Configuration options available on the <guilabel>Options</guilabel> tab.</para>
 			<table>
 				<title>Hibernate Console Configuration Options</title>
 				<tgroup cols="3">

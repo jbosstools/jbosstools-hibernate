@@ -71,7 +71,7 @@
 
 			</listitem>
 			<listitem>
-				<para>Unpack <property>Hibernate Tools</property> in <filename>eclipse/dropins</filename> folder</para>
+				<para>Unpack <property>Hibernate Tools</property> in the <filename>eclipse/dropins</filename> folder</para>
 			</listitem>
 		</itemizedlist>
 		<note>
