@@ -1,49 +1,47 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <chapter id="plugins" role="updated">
 	<title>Eclipse Plugins</title>
-	<para>This chapter will introduce you to the functionality that <property>Hibernate
-      Tools</property> provide within Eclipse. That is a set of wizards and editors for simplifying
-    the work with <property>Hibernate</property>.</para>
+	<para>
+		This chapter will introduce you to the set of wizards and editors that <property>Hibernate Tools</property> provide within Eclipse for simplifying work with <property>Hibernate</property>.
+	</para>
 	<section>
 		<title>Introduction</title>
-		<para>Hibernate Eclipse Tools include wizards for creating Hibernate mapping files,
-      configuration files (.cfg.xml), revenge.xml as well as wizards for adjusting Console
-      Configuration and Code Generation. Special structured and XML editors, editors for executing
-      HQL and Criteria queries are also provided in Hibernate Console. Refer to <xref linkend="hibernate_key_features"/> to find all benefits that you
-      can take advantage of while using the tools within Eclipse.</para>
+		<para>
+			Hibernate Eclipse Tools include wizards for creating Hibernate mapping files, configuration files (<filename>.cfg.xml</filename>), <filename>revenge.xml</filename> files as well as wizards for adjusting Console Configuration and Code Generation. Special structured and XML editors, editors for executing HQL and Criteria queries are also provided in Hibernate Console. Refer to <xref linkend="hibernate_key_features"/> to find all benefits that are provided by these tools within Eclipse.
+		</para>
 		<note>
 			<title>Note:</title>
-			<para>Please note that these tools do not try to hide any functionality of <property>Hibernate</property>. The tools make working with <property>Hibernate</property> easier,
-        but you are still encouraged to read the <ulink url="http://www.hibernate.org/5.html">Hibernate Documentation</ulink> to fully utilize
-          <property>Hibernate Tools</property> and especially <property>Hibernate</property> it
-        self.</para>
+			<para>
+				Please note that these tools do not try to hide any functionality of <property>Hibernate</property>; rather the tools make working with <property>Hibernate</property> easier. You are still encouraged to read the <ulink url="http://www.hibernate.org/5.html">Hibernate Documentation</ulink> to fully utilize <property>Hibernate Tools</property> and especially <property>Hibernate</property> it self.
+			</para>
 		</note>
 		<section id="download_base_project">
 			<title>Download base project</title>
 			<para>You can download example projects which are used for this chapter.</para>
 			<para>
-				<property>JPA base project</property> is available on <ulink url="http://docs.jboss.org/tools/resources/">documentation resources page </ulink>
-        together with <ulink url="http://docs.jboss.org/tools/resources/TestHibernateproject_for_hibernate_jboss_tools.zip">base Java project</ulink>.</para>
-			<para>Also you need start <ulink url="http://docs.jboss.org/tools/resources/GSG_database.zip">database</ulink>.</para>
+				A <property>JPA base project</property> is available on the <ulink url="http://docs.jboss.org/tools/resources/">documentation resources page </ulink> together with a <ulink url="http://docs.jboss.org/tools/resources/TestHibernateproject_for_hibernate_jboss_tools.zip">base Java project</ulink>.
+      </para>
+			<para>Also you need start the <ulink url="http://docs.jboss.org/tools/resources/GSG_database.zip">database</ulink>.</para>
 			<note>
 				<title>Note:</title>
-				<para>How to run database is documented in the <ulink url="http://docs.jboss.org/tools/3.0.1.GA/en/GettingStartedGuide/html/first_seam.html#start_dev_db">Getting Started Guide</ulink>.</para>
+				<para>The stes for running the database are documented in the <ulink url="http://docs.jboss.org/tools/3.0.1.GA/en/GettingStartedGuide/html/first_seam.html#start_dev_db">Getting Started Guide</ulink>.</para>
 			</note>
 		</section>
 	</section>
 	<section id="map_file_wizard">
 		<title>Creating a Hibernate Mapping File</title>
-		<para>Hibernate mapping files are used to specify how your objects are related to database
-      tables.</para>
-		<para>To create basic mappings for properties and associations, i. e. generate <filename>.hbm.xml</filename> files, Hibernate Tools provide a basic wizard which you can bring up selecting <menuchoice><guimenuitem>New</guimenuitem>
+		<para>Hibernate mapping files are used to specify how your objects relate to database tables.</para>
+		<para>
+			To create basic mappings for properties and associations, i. e. generate <filename>.hbm.xml</filename> files, Hibernate Tools provide a basic wizard which you can bring up selecting <menuchoice><guimenuitem>New</guimenuitem>
 				<guimenuitem>Hibernate XML mapping file</guimenuitem>
-			</menuchoice>.</para>
-		<para>At first you will be asked to select a package or multiple individual classes to map.
-      It's also possible to create an empty file, don&apos;t select any packages or classes and an
-      empty .hbm will be created in the specified location</para>
-		<para id="depth_control">With <property>depth control</property> option you can define
-      dependences depth for choosing classes (it means to set level of references which is used to
-      collect linked classes to the selection). </para>
+			</menuchoice>.
+		</para>
+		<para>
+			At first you will be asked to select a package or multiple individual classes to map. It's also possible to create an empty file: do not select any packages or classes and an empty <filename>.hbm</filename> will be created in the specified location.
+		</para>
+		<para id="depth_control">
+			Using the <property>depth control</property> option you can define the dependency depth used when choosing classes. 
+		</para>
 		<figure>
 			<title>Hibernate XML Mapping File Wizard</title>
 			<mediaobject>
@@ -52,9 +50,9 @@
 				</imageobject>
 			</mediaobject>
 		</figure>
-		<para>The next wizard page lists the mappings to be generated. As you see <property>Customers</property>, <property>Orders</property>, <property>Productlines</property> and
-        <property>Products</property> classes added under <property>depth control</property>
-      driving. </para>
+		<para>
+			The next wizard page lists the mappings to be generated. You can see the <guilabel>Customers</guilabel>, <guilabel>Orders</guilabel>, <guilabel>Productlines</guilabel> and <guilabel>Products</guilabel> classes added under <property>depth control</property> driving.
+		</para>
 		<figure>
 			<title>Mappings to be generated</title>
 			<mediaobject>
@@ -63,7 +61,7 @@
 				</imageobject>
 			</mediaobject>
 		</figure>
-		<para>This wizard page outputs a generated .hbm files preview.</para>
+		<para>This wizard page outputs a generated <filename>.hbm</filename> files preview.</para>
 		<figure>
 			<title>Preview Generated Mapping Files</title>
 			<mediaobject>
@@ -72,17 +70,18 @@
 				</imageobject>
 			</mediaobject>
 		</figure>
-		<para>Pressing <property>Finish</property> creates the files.</para>
+		<para>Clicking the <guibutton>Finish</guibutton> button creates the files.</para>
 	</section>
 	<section id="hib_config_file">
 		<title>Creating a Hibernate Configuration File</title>
-		<para>To be able to reverse engineer, prototype queries, and of course to simply use <property>Hibernate Core</property> a <filename>hibernate.properties</filename> or <filename>hibernate.cfg.xml</filename> file is needed. The <property>Hibernate Tools</property> provide a wizard for
-      generating the <filename>hibernate.cfg.xml</filename> file if you do not already have such one.</para>
+		<para>
+			To be able to perform reverse engineering, prototype queries, and of course to simply use <property>Hibernate Core</property> a <filename>hibernate.properties</filename> or <filename>hibernate.cfg.xml</filename> file is needed. <property>Hibernate Tools</property> provides a wizard for generating the <filename>hibernate.cfg.xml</filename> file if you do not already have one.
+		</para>
 		<para>Start the wizard by clicking <menuchoice><guimenuitem>New</guimenuitem>
 				<guimenuitem>Other</guimenuitem>
 			</menuchoice> (<keycombo><keycap>Ctrl</keycap>
 				<keycap>N</keycap>
-			</keycombo>), then
+			</keycombo>), then select
     
     <menuchoice><guimenuitem>Hibernate</guimenuitem>
 				<guimenuitem>Hibernate Configuration File (cfg.xml)</guimenuitem>
@@ -528,7 +527,9 @@
 			<itemizedlist>
 				<listitem>
 					<para>
-						Right-click on the configuration in <menuchoice><guimenuitem>Hibernate Configurations View</guimenuitem><guimenuitem>Edit Configuration</guimenuitem></menuchoice> or just double-click on <property>Console Configuration</property>
+						Right-click on the configuration in <menuchoice><guimenuitem>Hibernate Configurations View</guimenuitem>
+							<guimenuitem>Edit Configuration</guimenuitem>
+						</menuchoice> or just double-click on <property>Console Configuration</property>
             item.
           </para>
 					<figure>
@@ -540,7 +541,8 @@
 						</mediaobject>
 					</figure>
 					<para>
-						After clicking you will see the Edit Configuration Wizard that is similar to<emphasis><property>Create Console Configuration</property></emphasis>, described in <xref linkend="creat_console_conf"/>. 
+						After clicking you will see the Edit Configuration Wizard that is similar to<emphasis><property>Create Console Configuration</property>
+						</emphasis>, described in <xref linkend="creat_console_conf"/>. 
 					</para>
 				</listitem>
 				<listitem>
@@ -686,7 +688,9 @@
       already existing Hibernate configuration, be that mapping files or annotated classes. Some of
       these are POJO Java source file, Hibernate <filename>.hbm.xml</filename>, <filename>hibernate.cfg.xml</filename> generation and schema documentation.</para>
 		<para>
-			To start working with this process, start the <property>Hibernate Code Generation</property> which is available in the toolbar via the <property>Hibernate</property> icon or via the <menuchoice><guimenuitem>Run</guimenuitem><guimenuitem>Hibernate Code Generation</guimenuitem></menuchoice> menu item.
+			To start working with this process, start the <property>Hibernate Code Generation</property> which is available in the toolbar via the <property>Hibernate</property> icon or via the <menuchoice><guimenuitem>Run</guimenuitem>
+				<guimenuitem>Hibernate Code Generation</guimenuitem>
+			</menuchoice> menu item.
 		</para>
 		<section id="code_gen">
 			<title>Code Generation Launcher</title>
@@ -1269,7 +1273,9 @@
       structure of the file and its elements with the help of tables provided on the right-hand
       area.</para>
 		<para>
-			To open any mapping file in the editor, choose <menuchoice><guimenuitem>Open With</guimenuitem><guimenuitem>Hibernate 3.0 XML Editor</guimenuitem></menuchoice> option from the context menu of the file. The editor should look as follows:
+			To open any mapping file in the editor, choose <menuchoice><guimenuitem>Open With</guimenuitem>
+				<guimenuitem>Hibernate 3.0 XML Editor</guimenuitem>
+			</menuchoice> option from the context menu of the file. The editor should look as follows:
     </para>
 		<figure>
 			<title>Structured hbm.xml Editor</title>
@@ -1279,7 +1285,9 @@
 				</imageobject>
 			</mediaobject>
 		</figure>
-		<para>For the configuration file you should choose <menuchoice><guimenuitem>Open With</guimenuitem><guimenuitem>Hibernate Configuration 3.0 XML Editor</guimenuitem></menuchoice> option.</para>
+		<para>For the configuration file you should choose <menuchoice><guimenuitem>Open With</guimenuitem>
+				<guimenuitem>Hibernate Configuration 3.0 XML Editor</guimenuitem>
+			</menuchoice> option.</para>
 		<figure>
 			<title>Structured cfg.xml Editor</title>
 			<mediaobject>
@@ -1309,7 +1317,9 @@
 		</figure>
 		<para>In the <emphasis>
         <property>Name</property>
-			</emphasis> field press <keycombo><keycap>Ctrl</keycap><keycap>Space</keycap></keycombo> to invoke the content assist. It will suggest <emphasis>
+			</emphasis> field press <keycombo><keycap>Ctrl</keycap>
+				<keycap>Space</keycap>
+			</keycombo> to invoke the content assist. It will suggest <emphasis>
         <property>&apos;hibernate.&apos;</property>
 			</emphasis> which is the prefix for all hibernate properties. After selecting <emphasis>
         <property>&apos;hibernate.&apos;</property>
@@ -1367,7 +1377,11 @@
         is there. To understand the full flexibility of the <filename>reveng.xml</filename>, please see <xref linkend="hibernaterevengxmlfile"/>
 			</para>
 		</note>
-		<para>The editor is activated as soon as an <filename>.reveng.xml </filename> file is opened. To get an initial <filename>reveng.xml </filename> file the <property>Reverse Engineering File Wizard</property> can be started via <keycombo><keycap>Ctrl</keycap><keycap>N</keycap></keycombo> and <menuchoice><guimenuitem>Hibernate</guimenuitem><guimenuitem>Hibernate Reverse Engineering File (reveng.xml)</guimenuitem></menuchoice> then.</para>
+		<para>The editor is activated as soon as an <filename>.reveng.xml </filename> file is opened. To get an initial <filename>reveng.xml </filename> file the <property>Reverse Engineering File Wizard</property> can be started via <keycombo><keycap>Ctrl</keycap>
+				<keycap>N</keycap>
+			</keycombo> and <menuchoice><guimenuitem>Hibernate</guimenuitem>
+				<guimenuitem>Hibernate Reverse Engineering File (reveng.xml)</guimenuitem>
+			</menuchoice> then.</para>
 		<figure>
 			<title>ChooseReverse Engineering File Wizard </title>
 			<mediaobject>
@@ -1800,7 +1814,13 @@
 									<para>Scroll the diagram content</para>
 								</entry>
 								<entry>
-									<para><keycombo><keycap>Ctrl</keycap><keycap>Shift</keycap><keycap>arrows</keycap></keycombo></para>
+									<para>
+										<keycombo>
+											<keycap>Ctrl</keycap>
+											<keycap>Shift</keycap>
+											<keycap>arrows</keycap>
+										</keycombo>
+									</para>
 								</entry>
 							</row>
 							<row>
@@ -1808,7 +1828,9 @@
 									<para>Collapse/Expand selected item(s)</para>
 								</entry>
 								<entry>
-									<para> <keycap>Enter</keycap> </para>
+									<para>
+										<keycap>Enter</keycap>
+									</para>
 								</entry>
 							</row>
 							<row>
@@ -1816,7 +1838,9 @@
 									<para>Show/Hide selected item(s)</para>
 								</entry>
 								<entry>
-									<para> <keycap>+</keycap> </para>
+									<para>
+										<keycap>+</keycap>
+									</para>
 								</entry>
 							</row>
 							<row>
@@ -1824,7 +1848,9 @@
 									<para>Sort items in alphabetical order or return the initial state</para>
 								</entry>
 								<entry>
-									<para><keycap>Space</keycap></para>
+									<para>
+										<keycap>Space</keycap>
+									</para>
 								</entry>
 							</row>
 							<row>
@@ -1832,13 +1858,17 @@
 									<para>Navigate between the items</para>
 								</entry>
 								<entry>
-									<para><keycap>Arrows</keycap></para>
+									<para>
+										<keycap>Arrows</keycap>
+									</para>
 								</entry>
 							</row>
 						</tbody>
 					</tgroup>
 				</table>
-				<para>It&apos;s possible to save the diagram in the eclipse workspace. Click the usual <menuchoice><guimenuitem>File</guimenuitem><guimenuitem>Save As</guimenuitem></menuchoice> option, the wizard will ask you to set the location within you project where
+				<para>It&apos;s possible to save the diagram in the eclipse workspace. Click the usual <menuchoice><guimenuitem>File</guimenuitem>
+						<guimenuitem>Save As</guimenuitem>
+					</menuchoice> option, the wizard will ask you to set the location within you project where
           to save the file and give the name for the diagram. The item&apos;s names concatenated
           with the ampersand symbols are set as the default name for a diagram. The file is saved
           with the <literal>.hibernate</literal> extension.</para>
@@ -2018,7 +2048,9 @@
 			<title>Prototyping Queries</title>
 			<para>Queries can be prototyped by entering them into the <property>HQL</property> or
           <property>Criteria Editor</property>. To execute a query you should click the green run
-        button in the editor toolbar or press <keycombo><keycap>Ctrl</keycap><keycap>Enter</keycap></keycombo>.</para>
+        button in the editor toolbar or press <keycombo><keycap>Ctrl</keycap>
+					<keycap>Enter</keycap>
+				</keycombo>.</para>
 			<section id="hql_and_criteria_editors">
 				<title>HQL Editor and Hibernate Criteria Editor</title>
 				<para>To open the query editors right-click your project <property>Console
@@ -2062,7 +2094,10 @@
 					</mediaobject>
 				</figure>
 				<para>
-					It&apos;s also possible to copy a portion of code from <emphasis><property>.java</property></emphasis> file into the <property>HQL</property> or <property>Criteria editor</property>. To do this make use of the Quick Fix option (<keycombo><keycap>Ctrl</keycap><keycap>1</keycap></keycombo>).
+					It&apos;s also possible to copy a portion of code from <emphasis><property>.java</property>
+					</emphasis> file into the <property>HQL</property> or <property>Criteria editor</property>. To do this make use of the Quick Fix option (<keycombo><keycap>Ctrl</keycap>
+						<keycap>1</keycap>
+					</keycombo>).
 				</para>
 				<figure>
 					<title>Quick Fix Option Demonstration</title>
@@ -2093,7 +2128,9 @@
 					</inlinemediaobject> ). In the issue query executions results will be shown in one tab (no
           more will be opened). </para>
 				<para> Moreover you are able to rename tab in <property>Hibernate Query Result</property>.
-          Click the tab, and type a new name in <menuchoice><guimenuitem>Property View</guimenuitem><guimenuitem>Tab name field</guimenuitem></menuchoice>. </para>
+          Click the tab, and type a new name in <menuchoice><guimenuitem>Property View</guimenuitem>
+						<guimenuitem>Tab name field</guimenuitem>
+					</menuchoice>. </para>
 				<figure>
 					<title>Tab Renaming</title>
 					<mediaobject>
@@ -2249,7 +2286,9 @@
           Annotations Documentation</ulink> .</para>
 		</note>
 		<para>
-			To open this wizard you should right click the class you want to enrich with annotations and select <menuchoice><guimenuitem>Source</guimenuitem><guimenuitem>Generate Hibernate/JPA annotations</guimenuitem></menuchoice>. You will see the Hibernate:add JPA annotations dialog.
+			To open this wizard you should right click the class you want to enrich with annotations and select <menuchoice><guimenuitem>Source</guimenuitem>
+				<guimenuitem>Generate Hibernate/JPA annotations</guimenuitem>
+			</menuchoice>. You will see the Hibernate:add JPA annotations dialog.
 		</para>
 		<figure>
 			<title>Starting Hibernate:add JPA annotations dialog</title>
@@ -2365,7 +2404,13 @@
 		<section id="jpa_project_with_hibernate">
 			<title>Creating JPA project with Hibernate support</title>
 			<para>When starting a new JPA project from 
-			<menuchoice><guimenuitem>New</guimenuitem><guimenuitem>Other</guimenuitem><guimenuitem>JPA</guimenuitem><guimenuitem>JPA Project</guimenuitem></menuchoice> (or simply <menuchoice><guimenuitem>New</guimenuitem><guimenuitem>JPA Project</guimenuitem></menuchoice> in <property>JPA Perspective</property>), the first wizard page looks as
+			<menuchoice><guimenuitem>New</guimenuitem>
+					<guimenuitem>Other</guimenuitem>
+					<guimenuitem>JPA</guimenuitem>
+					<guimenuitem>JPA Project</guimenuitem>
+				</menuchoice> (or simply <menuchoice><guimenuitem>New</guimenuitem>
+					<guimenuitem>JPA Project</guimenuitem>
+				</menuchoice> in <property>JPA Perspective</property>), the first wizard page looks as
         follows.</para>
 			<figure>
 				<title>Starting JPA Project</title>
@@ -2399,8 +2444,10 @@
 		<section id="generate_ddl_entities_with_hibernate">
 			<title>Generating DDL and Entities</title>
 			<para>By enabling Hibernate platform specific features you can now generate DDL and Entities.
-        For that find <menuchoice><guimenuitem>JPA Tools</guimenuitem><guimenuitem>Generate Tables from Entities/Generate Entities from
-            Tables</guimenuitem></menuchoice> options in the context menu of your JPA project.</para>
+        For that find <menuchoice><guimenuitem>JPA Tools</guimenuitem>
+					<guimenuitem>Generate Tables from Entities/Generate Entities from
+            Tables</guimenuitem>
+				</menuchoice> options in the context menu of your JPA project.</para>
 			<figure>
 				<title>Generate DDL/Entities</title>
 				<mediaobject>
