@@ -146,7 +146,7 @@
 </type-mapping>]]></programlisting>
 
       <para>
-      	The number of attributes specified and the sequence of the <code>sql-type</code>'s is important. Meaning that <programname>Hibernate</programname> will search for the most specific first, and if no specific match is found it will seek from top to bottom when trying to resolve a type mapping.
+      	The number of attributes specified and the sequence of the <code>sql-type</code>'s is important. Meaning that <productname>Hibernate</productname> will search for the most specific first, and if no specific match is found it will seek from top to bottom when trying to resolve a type mapping.
       </para>
 
       <section>
