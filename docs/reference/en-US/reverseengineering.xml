@@ -152,7 +152,7 @@
       <section>
         <title>Example</title>
 
-        <para>The following is an example of a type-mapping which shows the flexibility and the importance of ordering of the type mappings.</para>
+        <para>The following is an example of a type-mapping which shows the flexibility and the importance of the ordering of the type mappings.</para>
 
         <programlisting role="XML"><![CDATA[<type-mapping>
  <sql-type jdbc-type="NUMERIC" precision="15" hibernate-type="big_decimal"/>
