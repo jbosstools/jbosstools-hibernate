@@ -477,7 +477,7 @@ public class OpenMappingUtils {
 				if (resourceAttr == null) {
 					continue;
 				}
-				IPath path = paths.get(i).append(resourceAttr.getValue());
+				IPath path = paths.get(i).append(resourceAttr.getValue().trim());
 				file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
 				if (file == null || !file.exists()) {
 					file = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(path);
