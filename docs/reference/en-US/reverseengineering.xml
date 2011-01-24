@@ -3,22 +3,25 @@
   <title>Controlling reverse engineering</title>
 
   <para>
-  	When using the <code>&lt;jdbcconfiguration&gt;</code>, the Ant task will read the database metadata and then perform a reverse engineering of the database schema into a normal Hibernate Configuration. It is from this object e.g. <code>&lt;hbm2java&gt;</code>can generate other artifacts such as <filename>.java</filename>, <filename>.hbm.xml</filename> etc.
+  	When using the <code>&lt;jdbcconfiguration&gt;</code> tag, the Ant task will read the database metadata and then reverse engineer the database schema into a normal Hibernate Configuration. It is from this object (e.g. <code>&lt;hbm2java&gt;</code>) that other artifacts, such as <filename>.java</filename> and <filename>.hbm.xml</filename>, can be generated.
   </para>
 
   <para>
-  	To govern this process <productname>Hibernate</productname> uses a reverse engineering strategy. A reverse engineering strategy is mainly called to provide more Java like names for tables, column and foreign keys into classes, properties and associations. It also used to provide mappings from SQL types to <productname>Hibernate</productname> types. The strategy can be customized by a user. The user can even provide its own custom reverse engineering strategy if the provided strategy does not provide the required functionality, or simply define a small component of the strategy and delegate the rest to the default strategy.
+  	To govern this process <productname>Hibernate</productname> uses a reverse engineering strategy. A reverse engineering strategy is mainly called to provide more Java like names for tables, column and foreign keys into classes, properties and associations. It is also used to provide mappings from SQL types to <productname>Hibernate</productname> types.
+  </para>
+  <para>
+  	The strategy can be customized by the user. This can be done by providing a custom reverse engineering strategy should the default strategy does not include the required functionality, or simply define a small component of the strategy and delegate the rest to the default strategy.
   </para>
 
   <para>
-  	Thus, further in this chapter we will discuss how you can configure the process of reverse engineering, what the default reverse engineering strategy includes as well as some custom concepts.
+  	Further in this chapter we will discuss how you can configure the process of reverse engineering, what the default reverse engineering strategy includes, as well as some custom concepts.
   </para>
   
   <section>
     <title>Default reverse engineering strategy</title>
 
     <para>
-    	The default strategy uses some rules for mapping JDBC artifact names to java artifact names. It also provide basic typemappings from JDBC types to <productname>Hibernate</productname> types. It is the default strategy that uses the packagename attribute to convert a table name to a fully qualified classname.
+    	The default strategy uses a collection of rules for mapping JDBC artifact names to Java artifact names. It also provide basic type mappings from JDBC types to <productname>Hibernate</productname> types. It is the default strategy that uses the <code>packagename</code> attribute to convert a table name into a fully qualified class name.
     </para>
   </section>
 
@@ -26,17 +29,17 @@
     <title>hibernate.reveng.xml file</title>
 
     <para>
-    	A <filename>hibernate.reveng.xml</filename> file can provide a finer degree of control of the process. In this file you can specify type mappings and table filtering. This file can be created by hand (it&apos;s just basic XML) or you can use the <ulink url="http://www.hibernate.org/30.html">Hibernate plugins</ulink> which has a specialized editor.
+    	A <filename>hibernate.reveng.xml</filename> file can provide a finer degree of control of the reverse engineering process. In this file you can specify type mappings and table filtering. This file can be created by hand (it&apos;s just basic XML) or you can use the <ulink url="http://www.hibernate.org/30.html">Hibernate plugins</ulink>, which provides a specialized editor.
     </para>
 
     <note>
       <title>Note:</title>
       <para>
-      	Many databases have case-sensitive names and thus if a table does not match, and you are sure it is not excluded by a <code>&lt;table-filter&gt;</code>,  check if the case matches. Most databases stores table names in uppercase.
+      	Many databases have case-sensitive names, so if a table does not match, and you are sure it is not excluded by a <code>&lt;table-filter&gt;</code>,  check that the case matches. Most databases stores table names in uppercase.
       </para>
     </note>
 
-    <para>Below you can see an example of a <filename>reveng.xml</filename> file. Following the example gives you more details about the format.</para>
+    <para>Below you can see an example of a <filename>reveng.xml</filename> file.</para>
 
     <programlisting role="XML"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-reverse-engineering 
@@ -93,20 +96,20 @@
     <section>
       <title>Schema Selection (&lt;schema-selection&gt;)</title>
 
-      <para><code>&lt;schema-selection&gt;</code> is used to determine which schemas the reverse engineering will try and process.</para>
+      <para>The <code>&lt;schema-selection&gt;</code> tag is used to determine which schemas the reverse engineering will try and process.</para>
 
       <para>
-      	By default the reverse engineering will read all schemas and then use <code>&lt;table-filter&gt;</code> to decide which tables get reverse engineered and which do not; this makes it easy to get started but can be inefficient on databases with many schemas.
+      	By default the reverse engineering will read all schemas and then use the <code>&lt;table-filter&gt;</code> tag to decide which tables are reverse engineered and which are not. This makes it easy to get started but can be inefficient on databases with many schemas.
       </para>
 
       <para>
-      	With <code>&lt;schema-selection&gt;</code> it is thus possible to limit which schemas are processed, thus significantly speed-up the reverse engineering. <code>&lt;table-filter&gt;</code> is still used to then decide which tables will be included and excluded.
+      	With the <code>&lt;schema-selection&gt;</code> tag it is thus possible to limit which schemas are processed, which in turn can significantly speed-up the reverse engineering. The <code>&lt;table-filter&gt;</code> tag is still used to then decide which tables will be included and excluded.
       </para>
 
       <note>
         <title>Note:</title>
         <para>
-        	If no <code>&lt;schema-selection&gt;</code> is specified, the reverse engineering works as if all schemas should be processed. This is equal to: <![CDATA[<schema-selection/>]]>, which in turn is equal to: <![CDATA[<schema-selection match-catalog=".*" match-schema=".*" match-table=".*"/>]]>
+        	If no <code>&lt;schema-selection&gt;</code> tag is specified, the reverse engineering works as if all schemas should be processed. This is equal to: <![CDATA[<schema-selection/>]]>, which in turn is equal to: <![CDATA[<schema-selection match-catalog=".*" match-schema=".*" match-table=".*"/>]]>
         </para>
       </note>
 
@@ -118,7 +121,7 @@
         <programlisting role="XML"><![CDATA[<schema-selection match-schema="MY_SCHEMA"/>]]></programlisting>
 
         <para>
-        	It is possible to have multiple <code>schema-selection</code>'s to support multi-schema reading, or simply to limit the processing to very specific tables. The following example processes all tables in <code>&quot;MY_SCHEMA&quot;</code>, a specific <code>&quot;CITY&quot;</code> table plus all tables that start with <code>&quot;CODES_&quot;</code> in <code>&quot;COMMON_SCHEMA&quot;</code>.
+        	It is possible to have multiple <code>schema-selection</code>'s to support multi-schema reading, or to limit the processing to very specific tables. The following example processes all tables in <code>&quot;MY_SCHEMA&quot;</code>, a specific <code>&quot;CITY&quot;</code> table plus all tables that start with <code>&quot;CODES_&quot;</code> in <code>&quot;COMMON_SCHEMA&quot;</code>.
         </para>
 
         <programlisting role="XML"><![CDATA[<schema-selection match-schema="MY_SCHEMA"/>
@@ -146,13 +149,13 @@
 </type-mapping>]]></programlisting>
 
       <para>
-      	The number of attributes specified and the sequence of the <code>sql-type</code>'s is important. Meaning that <productname>Hibernate</productname> will search for the most specific first, and if no specific match is found it will seek from top to bottom when trying to resolve a type mapping.
+      	The number of attributes specified and the sequence of the <code>sql-type</code> tags are important. This is because <productname>Hibernate</productname> will search for the most specific first, and if no specific match is found it will seek from top to bottom when trying to resolve a type mapping.
       </para>
 
       <section>
         <title>Example</title>
 
-        <para>The following is an example of a type-mapping which shows the flexibility and the importance of the ordering of the type mappings.</para>
+        <para>The following is an example of a type-mapping which shows the flexibility and importance of the ordering of the type mappings.</para>
 
         <programlisting role="XML"><![CDATA[<type-mapping>
  <sql-type jdbc-type="NUMERIC" precision="15" hibernate-type="big_decimal"/>
@@ -314,7 +317,7 @@
       <title>Table filters (&lt;table-filter&gt;)</title>
 
       <para>
-      	The <code>&lt;table-filter&gt;</code> lets you specify matching rules for performing general filtering and setup for tables, e.g. let you include or exclude specific tables based on the schema or even a specific prefix.
+      	The <code>&lt;table-filter&gt;</code> tag lets you specify matching rules for performing general filtering and setup of tables, e.g. let you include or exclude specific tables based on the schema or even a specific prefix.
       </para>
 
         <programlisting role="XML"><![CDATA[<table-filter
@@ -400,7 +403,7 @@
       <title>Specific table configuration (&lt;table&gt;)</title>
 
       <para>
-      	<code>&lt;table&gt;</code> allows you to provide explicit configuration on how a table should be reverse engineered. Amongst other things it allows control over the naming of a class for the table, provides a way to specify which identifier generator should be used for the primary key etc.
+      	The <code>&lt;table&gt;</code> tag allows you to explicitly define how a table should be reverse engineered. It allows control over the naming of a class for the table, provides a way to specify which identifier generator should be used for the primary key and more.
       </para>
 
           <programlisting role="XML"><![CDATA[<table 
@@ -485,7 +488,7 @@
         <title>&lt;primary-key&gt;</title>
 
         <para>
-        	A <code>&lt;primary-key&gt;</code> allows you to define a primary-key for tables that do not have one defined in the database, and probably more importantly it allows you to define which identifier strategy should be used (even for already existing primary-key's).
+        	A <code>&lt;primary-key&gt;</code> tag allows you to define a primary-key for tables that do not have one defined in the database, and more importantly it allows you to define which identifier strategy should be used (even for preexisting primary-key's).
         </para>
 
            <programlisting role="XML"><![CDATA[<primary-key
@@ -561,7 +564,7 @@
         <title>&lt;column&gt;</title>
 
         <para>
-        	With a <code>&lt;column&gt;</code> it is possible to explicitly name the resulting property for a column. It is also possible to redefine what JDBC and/or Hibernate type a column should be processed as and finally it is possible to completely exclude a column from processing.
+        	With a <code>&lt;column&gt;</code> tag it is possible to explicitly name the resulting property for a column, to redefine what JDBC and/or Hibernate type a column should be processed as, and to completely exclude a column from processing.
         </para>
         
         <programlisting role="XML"><![CDATA[<column
@@ -651,7 +654,7 @@
         <title>&lt;foreign-key&gt;</title>
 
         <para>
-        	The <code>&lt;foreign-key&gt;</code> has two purposes. The first is to define foreign-keys in databases that does not support them or do not have them defined in their schema. The second is to define the name of the resulting properties (many-to-one, one-to-one and one-to-many's).
+        	The <code>&lt;foreign-key&gt;</code> tag has two purposes. The first is to define foreign-keys in databases that does not support them or do not have them defined in their schema. The second is to define the name of the resulting properties (many-to-one, one-to-one and one-to-many's).
         </para>
          
         <programlisting role="XML"><![CDATA[<foreign-key
@@ -807,7 +810,7 @@
     <title>Custom strategy</title>
 
     <para>
-    	It is possible to implement a user strategy. Such a strategy must implement <code>org.hibernate.cfg.reveng.ReverseEngineeringStrategy</code>. It is recommended that you use the <code>DelegatingReverseEngineeringStrategy</code> and provide a public constructor which takes another <code>ReverseEngineeringStrategy</code> as an argument. This will allow you to only implement the relevant methods and provide a fall back strategy. Below is an example of a custom delegating strategy which converts all column names that ends with <code>&quot;PK&quot;</code> into a property named <code>&quot;id&quot;</code>.
+    	It is possible to implement a user strategy. Such a strategy must implement <code>org.hibernate.cfg.reveng.ReverseEngineeringStrategy</code>. It is recommended that you use the <code>DelegatingReverseEngineeringStrategy</code> and provide a public constructor which takes another <code>ReverseEngineeringStrategy</code> as an argument. This will allow you to only implement the relevant methods and provide a fall back strategy. An example is shown below of a custom delegating strategy that converts all column names ending with <code>&quot;PK&quot;</code> into a property named <code>&quot;id&quot;</code>.
     </para>
 
     <programlisting role="JAVA"><![CDATA[public class ExampleStrategy extends DelegatingReverseEngineeringStrategy {
@@ -830,11 +833,11 @@
     <title>Custom Database Metadata</title>
 
     <para>
-    	By default the reverse engineering is performed using the JDBC database metadata API. This is done via the class <code>org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect</code> which is an implementation of <code>org.hibernate.cfg.reveng.dialect.MetaDataDialect</code>.
+    	By default the reverse engineering is performed using the JDBC database metadata API. This is done via the class <code>org.hibernate.cfg.reveng.dialect.JDBCMetaDataDialect</code>, which is an implementation of <code>org.hibernate.cfg.reveng.dialect.MetaDataDialect</code>.
     </para>
 
     <para>
-    	The default implementation can be replaced with an alternative implementation by setting the property <code>hibernatetool.metadatadialect</code> to a fully qualified classname for a class that implements <code>JDBCMetaDataDialect</code>.
+    	The default implementation can be replaced with an alternative implementation by setting the <code>hibernatetool.metadatadialect</code> property to a fully qualified class name for a class that implements <code>JDBCMetaDataDialect</code>.
     </para>
 
     <para>
