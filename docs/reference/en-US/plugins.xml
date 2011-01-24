@@ -2,29 +2,29 @@
 <chapter id="plugins" role="updated">
 	<title>Eclipse Plugins</title>
 	<para>
-		This chapter will introduce you to the set of wizards and editors that <property>Hibernate Tools</property> provide within Eclipse for simplifying work with <property>Hibernate</property>.
+		This chapter will introduce you to the set of wizards and editors provided by <productname>Hibernate Tools</productname> within Eclipse to simplify working with <productname>Hibernate</productname>.
 	</para>
 	<section>
 		<title>Introduction</title>
 		<para>
-			Hibernate Eclipse Tools include wizards for creating Hibernate mapping files, configuration files (<filename>.cfg.xml</filename>), <filename>revenge.xml</filename> files as well as wizards for adjusting Console Configuration and Code Generation. Special structured and XML editors, editors for executing HQL and Criteria queries are also provided in Hibernate Console. Refer to <xref linkend="hibernate_key_features"/> to find all benefits that are provided by these tools within Eclipse.
+			Hibernate Eclipse Tools includes wizards for creating Hibernate mapping files, configuration files (<filename>.cfg.xml</filename>), <filename>revenge.xml</filename> files as well as wizards for adjusting Console Configuration and Code Generation. Special structured and XML editors, and editors for executing HQL and Criteria queries are also provided in Hibernate Console. Refer to <xref linkend="hibernate_key_features"/> to find all the benefits that are provided by these tools within Eclipse.
 		</para>
 		<note>
 			<title>Note:</title>
 			<para>
-				Please note that these tools do not try to hide any functionality of <property>Hibernate</property>; rather the tools make working with <property>Hibernate</property> easier. You are still encouraged to read the <ulink url="http://www.hibernate.org/5.html">Hibernate Documentation</ulink> to fully utilize <property>Hibernate Tools</property> and especially <property>Hibernate</property> it self.
+				Please note that these tools do not try to hide any of <productname>Hibernates</productname> functionality; rather the tools make working with <productname>Hibernate</productname> easier. You are still encouraged to read the <ulink url="http://www.hibernate.org/5.html">Hibernate Documentation</ulink> in order to be able to fully utilize <productname>Hibernate Tools</productname> and especially <productname>Hibernate</productname> it self.
 			</para>
 		</note>
 		<section id="download_base_project">
 			<title>Download base project</title>
-			<para>You can download example projects which are used for this chapter.</para>
+			<para>You can download the example projects that are used in this chapter.</para>
 			<para>
 				A <property>JPA base project</property> is available on the <ulink url="http://docs.jboss.org/tools/resources/">documentation resources page </ulink> together with a <ulink url="http://docs.jboss.org/tools/resources/TestHibernateproject_for_hibernate_jboss_tools.zip">base Java project</ulink>.
       </para>
 			<para>Also you need start the <ulink url="http://docs.jboss.org/tools/resources/GSG_database.zip">database</ulink>.</para>
 			<note>
 				<title>Note:</title>
-				<para>The stes for running the database are documented in the <ulink url="http://docs.jboss.org/tools/3.0.1.GA/en/GettingStartedGuide/html/first_seam.html#start_dev_db">Getting Started Guide</ulink>.</para>
+				<para>The steps for running the database are documented in the <ulink url="http://docs.jboss.org/tools/3.0.1.GA/en/GettingStartedGuide/html/first_seam.html#start_dev_db">Getting Started Guide</ulink>.</para>
 			</note>
 		</section>
 	</section>
@@ -32,12 +32,12 @@
 		<title>Creating a Hibernate Mapping File</title>
 		<para>Hibernate mapping files are used to specify how your objects relate to database tables.</para>
 		<para>
-			To create basic mappings for properties and associations, i. e. generate <filename>.hbm.xml</filename> files, Hibernate Tools provide a basic wizard which you can bring up selecting <menuchoice><guimenuitem>New</guimenuitem>
+			To create basic mappings for properties and associations, i. e. generate <filename>.hbm.xml</filename> files, Hibernate Tools provide a basic wizard which you can display by selecting <menuchoice><guimenuitem>New</guimenuitem>
 				<guimenuitem>Hibernate XML mapping file</guimenuitem>
 			</menuchoice>.
 		</para>
 		<para>
-			At first you will be asked to select a package or multiple individual classes to map. It's also possible to create an empty file: do not select any packages or classes and an empty <filename>.hbm</filename> will be created in the specified location.
+			At first you will be asked to select a package or multiple individual classes to map. It is also possible to create an empty file: do not select any packages or classes and an empty <filename>.hbm</filename> file will be created in the specified location.
 		</para>
 		<para id="depth_control">
 			Using the <property>depth control</property> option you can define the dependency depth used when choosing classes. 
@@ -61,7 +61,7 @@
 				</imageobject>
 			</mediaobject>
 		</figure>
-		<para>This wizard page outputs a generated <filename>.hbm</filename> files preview.</para>
+		<para>This wizard page display a preview of the generated <filename>.hbm</filename> files.</para>
 		<figure>
 			<title>Preview Generated Mapping Files</title>
 			<mediaobject>
@@ -85,11 +85,10 @@
     
     <menuchoice><guimenuitem>Hibernate</guimenuitem>
 				<guimenuitem>Hibernate Configuration File (cfg.xml)</guimenuitem>
-			</menuchoice> and click the <guibutton>Next</guibutton> button or on a web Seam project in the <property>Web Projects</property> select <menuchoice><guimenuitem>WebContent</guimenuitem>
-				<guimenuitem>New</guimenuitem>
+			</menuchoice> and click the <guibutton>Next</guibutton> button. For a web Seam project select, in the <property>Web Projects</property> right click on the <filename>WebContent</filename> folder and select <menuchoice><guimenuitem>New</guimenuitem>
 				<guimenuitem>File</guimenuitem>
 				<guimenuitem>Hibernate Configuration 3.0</guimenuitem>
-			</menuchoice>. After selecting the desired location for the <filename>hibernate.cfg.xml</filename> file, you will see the following page:</para>
+			</menuchoice>. After selecting the desired location for the <filename>hibernate.cfg.xml</filename> file, you will see the following screen:</para>
 		<figure>
 			<title>Hibernate Configuration File Wizard</title>
 			<mediaobject>
@@ -111,13 +110,13 @@
 			Enter your configuration information in this dialog. Details about the configuration options can be found in <ulink url="http://docs.jboss.org/ejb3/app-server/Hibernate3/reference/en/html_single">Hibernate Reference Documentation</ulink>.
 		</para>
 		<para>
-			Click the <guibutton>Finish</guibutton> to create the configuration file, and after optionally creating a Console configuration, the <filename>hibernate.cfg.xml</filename> file will be automatically opened in an editor. The last option <guilabel>Create Console Configuration</guilabel> is enabled by default and when enabled, it will automatically use the <filename>hibernate.cfg.xml</filename> file for the basis of a Console configuration.
+			Click the <guibutton>Finish</guibutton> button to create the configuration file, and after optionally creating a Console configuration, the <filename>hibernate.cfg.xml</filename> file will be automatically opened in an editor. The last option, <guilabel>Create Console Configuration</guilabel>, is enabled by default and when enabled, it will automatically use the <filename>hibernate.cfg.xml</filename> file for the basis of a Console configuration.
 		</para>
 	</section>
 	<section id="console_conf">
 		<title>Hibernate Console Configuration</title>
 		<para>
-			A Console configuration describes how the <property>Hibernate plugin</property> should configure <property>Hibernate</property> and what configuration files, including which classpaths are needed to load the POJO's, JDBC drivers etc. It is required to make use of query prototyping, reverse engineering and code generation. You can have multiple named console configurations. Normally you would just need one per project, but it is definitely possible to create more if required by your project.
+			A Console configuration describes how the <property>Hibernate plugin</property> should configure <property>Hibernate</property> and what configuration files and classpaths are needed to load the POJO's, JDBC drivers etc. It is required to make use of query prototyping, reverse engineering and code generation. You can have multiple named console configurations. Normally you would just need one per project, but it is definitely possible to create more if required.
 		</para>
 		<section id="creat_console_conf">
 			<title>Creating a Hibernate Console Configuration</title>
@@ -127,7 +126,7 @@
 			<note>
 				<title>Note:</title>
 				<para>
-					The wizard will look at the current selection in the IDE and try to auto-detect the appropriate settings, which you then can just approve or modify to suit your needs.
+					The wizard will look at the current selection in the IDE and try to auto-detect the appropriate settings, which you then can approve or modify to suit your needs.
 				</para>
 			</note>
 			<para/>
@@ -135,7 +134,7 @@
 			<itemizedlist>
 				<listitem>
 					<para>
-						<guilabel>Main</guilabel> for the basic and required settings</para>
+						<guilabel>Main</guilabel>, which displays the basic and required settings</para>
 				</listitem>
 			</itemizedlist>
 			<figure>
@@ -150,7 +149,7 @@
 				</mediaobject>
 			</figure>
 			<para>
-				The following table describes the available settings on the <guilabel>Main</guilabel> tab. The wizard can automatically detect the default values for most of the settings if you started the wizard with the relevant java project or resource selected.
+				The following table describes the available settings on the <guilabel>Main</guilabel> tab. The wizard can automatically detect the default values for most of the settings if you started the wizard with the relevant Java project or resource selected.
 			</para>
 			<table>
 				<title>Hibernate Console Configuration Parameters</title>
@@ -267,7 +266,7 @@
 				<listitem>
 					<para>
 						<emphasis>
-							<property>Options</property>
+							<guilabel>Options</guilabel>
 						</emphasis> for the additional/optional settings</para>
 				</listitem>
 			</itemizedlist>
