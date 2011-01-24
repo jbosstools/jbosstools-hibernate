@@ -1411,7 +1411,7 @@
 			<section id="map_diagram">
 				<title>Mapping Diagram</title>
 				<para>
-					In order to visualize on how entities are related as well as view their structures, a <guilabel>Mapping Diagram</guilabel> is provided. It is available by right clicking on the entity you want view a mapping diagram for and then choosing <guilabel>Mapping Diagram</guilabel>.
+					In order to visualize how entities are related, as well as view their structures, a <guilabel>Mapping Diagram</guilabel> is provided. It is available by right clicking on the entity you want view a mapping diagram for and then selecting <guilabel>Mapping Diagram</guilabel>.
 				</para>
 				<figure>
 					<title>Mapping Diagram</title>
@@ -1425,7 +1425,7 @@
 					</mediaobject>
 				</figure>
 				<para>
-					To make <guilabel>Mapping Diagram</guilabel> usage easier you can use <guilabel>Rules</guilabel>, <guilabel>Grid</guilabel>, <guilabel>Snap to Geometry</guilabel> checkboxes in the <guimenu>View</guimenu> menu. 
+					To make <guilabel>Mapping Diagram</guilabel> usage easier you can use the <guilabel>Rules</guilabel>, <guilabel>Grid</guilabel>, <guilabel>Snap to Geometry</guilabel> checkboxes in the <guimenu>View</guimenu> menu. 
 				</para>
 				<figure>
 					<title>View menu</title>
@@ -1436,7 +1436,7 @@
 					</mediaobject>
 				</figure>
 				<para>
-					If you will select <guilabel>Rules</guilabel> checkbox, the view print page scale will be added to the page. The numbers on the scale show its size in inches. If you click on the scale a <guilabel>Ruler Guide</guilabel> will appear on the diagram. You can connect any diagram item to it. To connect the items you should move their tops to the Ruler Guide. And while moving the ruler guide, the items will be moved together with it as a whole.
+					If you select the <guilabel>Rules</guilabel> checkbox, the view print page scale will be added to the page. The numbers on the scale displays its size in inches. If you click on the scale a <guilabel>Ruler Guide</guilabel> will appear on the diagram. You can connect any diagram item to it. To connect the items you should move their tops to the Ruler Guide. And while moving the ruler guide, the items will be moved together with it as a whole.
         </para>
 				<figure>
 					<title>Moving the Ruler guide</title>
@@ -1446,7 +1446,7 @@
 						</imageobject>
 					</mediaobject>
 				</figure>
-				<para>If you select the <guilabel>Grid</guilabel> checkbox, the grid will appear on the diagram.</para>
+				<para>If you select the <guilabel>Grid</guilabel> checkbox, a grid will appear on the diagram.</para>
 				<figure>
 					<title>Grid on Mapping diagram</title>
 					<mediaobject>
@@ -1455,7 +1455,7 @@
 						</imageobject>
 					</mediaobject>
 				</figure>
-				<para>The checkbox <guilabel>Snap to Geometry</guilabel> helps to put the items of the diagram into alignment with the grid.</para>
+				<para>The <guilabel>Snap to Geometry</guilabel> checkbox helps to put the items of the diagram into alignment with the grid.</para>
 				<para>For better navigating through the diagram use <guilabel>Outline view</guilabel> which is available in the structural and graphical modes.</para>
 				<figure>
 					<title>Navigating in the Structural Mode</title>
@@ -1566,14 +1566,15 @@
 									<para>Export as Image</para>
 								</entry>
 								<entry>
-									<para>Allows the diagram to be exported as a <filename>.png</filename>,<filename>.jpeg</filename> or <filename>.bmp </filename>
+									<para>
+										Allows the diagram to be exported as a <filename>.png</filename>,<filename>.jpeg</filename> or <filename>.bmp </filename> file
 									</para>
 								</entry>
 							</row>
 						</tbody>
 					</tgroup>
 				</table>
-				<para>When you open the context menu while clicking an item on the diagram, it quite differs from the one described before.</para>
+				<para>When you open the context menu for an item in the diagram, it differs quite significantly from the one described before.</para>
 				<figure>
 					<title>Context Menu in Mapping Item</title>
 					<mediaobject>
@@ -1682,7 +1683,7 @@
 					<title>Tip:</title>
 					<para>All the described types of the context menu are also available in the <guilabel>Outline</guilabel> view.</para>
 				</note>
-				<para>The below table lists the actions that could be performed using the keyboard keys (or keys combinations).</para>
+				<para>The following table lists the actions that can be performed using the keyboard keys (or keys combinations).</para>
 				<table>
 					<title>Hibernate Mapping Diagram Shortcut Keys</title>
 					<tgroup cols="2">
@@ -1757,7 +1758,7 @@
 					</tgroup>
 				</table>
 				<para>
-					It is possible to save the diagram in the eclipse workspace. Click the usual <menuchoice><guimenuitem>File</guimenuitem><guimenuitem>Save As</guimenuitem></menuchoice> option, the wizard will ask you to set the location within you project where to save the file and give the name for the diagram. The item&apos;s names concatenated with the ampersand symbols are set as the default name for a diagram. The file is saved with the <filename>.hibernate</filename> extension.
+					It is possible to save the diagram in the Eclipse workspace. Select <menuchoice><guimenuitem>File</guimenuitem><guimenuitem>Save As</guimenuitem></menuchoice>, and the wizard will ask you to set the location within you project where you wish to save the file and give the name for the diagram. The default name is the item&apos;s names concatenated with the ampersand symbols. The file is saved with the <filename>.hibernate</filename> extension.
 				</para>
 				<figure>
 					<title>The Diagram saved in the Workspace</title>
@@ -1770,7 +1771,7 @@
 				<note>
 					<title>Note:</title>
 					<para>
-						If you restart Eclipse with the mapping diagram opened, the mapping diagram will be restored with the message like on the figure below. To view the diagram content, you should perform the refreshing.
+						If you restart Eclipse with the mapping diagram opened, the mapping diagram will be restored with the message like on the figure below. To view the diagram content, you should refresh the view.
            </para>
 				</note>
 				<figure>
@@ -1851,7 +1852,7 @@
 								</entry>
 								<entry>
 									<para>
-										Used to define scale of the diagram. Also it's used for <guilabel>Mapping Diagram</guilabel> printing. If you want to put the whole <guilabel>diagram</guilabel> to one print page, you need select <guilabel>Page</guilabel> option in the <guilabel>Zoom Box</guilabel>.
+										Used to define scale of the diagram. It is also used for printing <guilabel>Mapping Diagrams</guilabel>. If you want to print the whole <guilabel>diagram</guilabel> to one print page, you need select the <guilabel>Page</guilabel> option in the <guilabel>Zoom Box</guilabel> drop down list.
 									</para>
 								</entry>
 							</row>
@@ -1887,7 +1888,7 @@
 								</entry>
 								<entry>
 									<para>
-										Used to show or hide a connection on the diagram. Moreover you can choose what type of connections must be present on the diagram (<guilabel>Property Mappings</guilabel>, <guilabel>Class Mappings</guilabel>, <guilabel>Associations</guilabel> or <guilabel>Foreign key constraints</guilabel>).
+										Used to show or hide a connection on the diagram. You can also choose what type of connections must be present on the diagram (<guilabel>Property Mappings</guilabel>, <guilabel>Class Mappings</guilabel>, <guilabel>Associations</guilabel> or <guilabel>Foreign key constraints</guilabel>).
 									</para>
 								</entry>
 							</row>
@@ -1905,7 +1906,7 @@
 									<para>Expand|Collapse</para>
 								</entry>
 								<entry>
-									<para>Used for expanding/collapsing fields of the item.</para>
+									<para>Used for expanding or collapsing fields of the item.</para>
 								</entry>
 							</row>
 							<row>
@@ -1933,7 +1934,7 @@
 		<section>
 			<title>Prototyping Queries</title>
 			<para>
-				Queries can be prototyped by entering them into the <guilabel>HQL</guilabel> or <guilabel>Criteria Editor</guilabel>. To execute a query you should click the green run button in the editor toolbar or press <keycombo><keycap>Ctrl</keycap><keycap>Enter</keycap></keycombo>.
+				Queries can be prototyped by entering them into the <guilabel>HQL</guilabel> or <guilabel>Criteria Editor</guilabel>. To execute a query click the green run button in the editor toolbar or press <keycombo><keycap>Ctrl</keycap><keycap>Enter</keycap></keycombo>.
 			</para>
 			<section id="hql_and_criteria_editors">
 				<title>HQL Editor and Hibernate Criteria Editor</title>
@@ -1951,15 +1952,15 @@
 				<note>
 					<title>Tip:</title>
 					<para>
-						If the context menu items are disabled then you need at first to create a <guilabel>Session Factory</guilabel>. That is done by simply expanding the <guilabel>Session Factory</guilabel> node.
+						If the context menu items are disabled then you need at first to create a <guilabel>Session Factory</guilabel>. That is done by expanding the <guilabel>Session Factory</guilabel> node.
 					</para>
 				</note>
-				<para>When open the editors they should automatically detect the chosen <guilabel>Console Configuration</guilabel>.</para>
+				<para>When they are opened, the editors they should automatically detect the chosen <guilabel>Console Configuration</guilabel>.</para>
 				<para>
 					To get a prefill query for any entity (or any entity child node) listed in the <guilabel>Session Factory</guilabel> you should double-click it. This will open the <guilabel>HQL Editor</guilabel> with the associated query.
 				</para>
 				<para>
-					Choosing <guimenuitem>HQL Editor</guimenuitem> in the context menu for any entity (or any entity child node) will also open the HQL editor with the associated query. If you choose <guimenuitem>Hibernate Criteria Editor</guimenuitem> in the context menu, it will open <guilabel>Hibernate Criteria Editor</guilabel> with the associated criteria.
+					Choosing <guimenuitem>HQL Editor</guimenuitem> in the context menu for any entity (or any entity child node) will also open the HQL Editor with the associated query. If you select <guimenuitem>Hibernate Criteria Editor</guimenuitem> in the context menu, it will open <guilabel>Hibernate Criteria Editor</guilabel> with the associated criteria.
 				</para>
 				<figure>
 					<title>Generating Simple Queries</title>
@@ -1984,7 +1985,7 @@
 					</mediaobject>
 				</figure>
 				<para>
-					You can also update the original java code with changes made in the HQL or Criteria editor. For that you should save your HQL/Criteria query and submit the replacing in appeared confirmation dialog.
+					You can also update the original Java code with changes made in the HQL or Criteria editor. For that you should save your HQL/Criteria query and submit the replacement code when prompted by the confirmation dialog.
 				</para>
 				<figure>
 					<title>Updating Java Code</title>
@@ -1995,10 +1996,10 @@
 					</mediaobject>
 				</figure>
 				<para>
-					Also you can pin the <guilabel>HQL editor</guilabel> and <guilabel>Criteria editor</guilabel> as a tab in the <property>Hibernate Query Result</property> view. For that you need click on <guibutton>Stick result to one tab</guibutton> button (<inlinemediaobject><imageobject><imagedata fileref="images/plugins/sticky_but.png"/></imageobject></inlinemediaobject>). In this state query executions results will be shown in one tab (no more will be opened). 
+					Also you can pin the <guilabel>HQL editor</guilabel> and <guilabel>Criteria editor</guilabel> as a tab in the <property>Hibernate Query Result</property> view. For that you need click on the <guibutton>Stick result to one tab</guibutton> button (<inlinemediaobject><imageobject><imagedata fileref="images/plugins/sticky_but.png"/></imageobject></inlinemediaobject>). In this state query executions results will be shown in one tab (no more will be opened). 
 				</para>
 				<para>
-					Moreover you are able to rename tab in <guilabel>Hibernate Query Result</guilabel>. Click the tab, and type a new name in <menuchoice><guimenuitem>Property View</guimenuitem><guimenuitem>Tab name field</guimenuitem></menuchoice>. 
+					You are able to rename the <guilabel>Hibernate Query Result</guilabel> tab. Click the tab, and type a new name in the <menuchoice><guimenuitem>Property View</guimenuitem><guimenuitem>Tab name</guimenuitem></menuchoice> field. 
 				</para>
 				<figure>
 					<title>Tab Renaming</title>
@@ -2012,7 +2013,7 @@
 			<section>
 				<title>Error Handling</title>
 				<para>
-					Errors raised during the creation of the <guilabel>Session Factory</guilabel> or running the queries (e.g. if your configuration or query is incorrect) will be shown in a message dialog or inclined in the view that detected the error. You may get more information about the error in the <guilabel>Error Log View</guilabel> on the right pane.
+					Errors raised during the creation of the <guilabel>Session Factory</guilabel> or when executing the queries (e.g. if your configuration or query is incorrect) will be shown in a message dialog or inclined in the view that detected the error. You may get more information about the error in the <guilabel>Error Log View</guilabel> on the right pane.
 				</para>
 				<para>
 					Results of a query will be shown in the <guilabel>Hibernate Query Result View</guilabel> and details of possible errors (syntax errors, database errors, etc.) can be seen in the <guilabel>Error Log View</guilabel>.
@@ -2020,14 +2021,14 @@
 				<note>
 					<title>Note:</title>
 					<para>
-						HQL queries are executed by default using the <code>list()</code> function thus without any row limit could return a large result set. You might run out of memory. To avoid this you can put a value in the <guilabel>Max</guilabel> results field to reduce the number of elements returned.
+						HQL queries are executed by default using the <code>list()</code> function, and without any row limit could return a large result set. You may run out of memory. To avoid this you can enter a value in the <guilabel>Max</guilabel> results field to reduce the number of elements that are returned.
            </para>
 				</note>
 			</section>
 			<section>
 				<title>Dynamic Query Translator</title>
 				<para>
-					If the <guilabel>Hibernate Dynamic Query Translator View</guilabel> is visible while writing in the <guilabel>HQL Editor</guilabel> it will show the generated SQL for a HQL query.
+					If the <guilabel>Hibernate Dynamic Query Translator View</guilabel> is visible, it will show the generated SQL for a HQL query while you write in the <guilabel>HQL Editor</guilabel> .
 				</para>
 				<figure>
 					<title>Hibernate Dynamic Query Translator View</title>
@@ -2041,14 +2042,14 @@
 					</mediaobject>
 				</figure>
 				<para>
-					The translation is performed each time you stop typing into the editor. If there are errors in the HQL the parse exception will be shown embedded in the view.
+					The translation is performed each time you stop typing in the editor. If there are errors in the HQL code the parse exception will be shown embedded in the view.
 				</para>
 			</section>
 		</section>
 		<section>
 			<title>Properties View</title>
 			<para>
-				As you can see in the figure below, when clicking on class/entity the <guilabel>Properties view</guilabel> shows the number of query results as well as the execution time.
+				As you can see in the figure below, when clicking on class or entity the <guilabel>Properties view</guilabel> shows the number of query results as well as the execution time.
 			</para>
 			<figure>
 				<title>Properties View</title>
@@ -2082,7 +2083,7 @@
 	</section>
 	<section id="jpa_annotations">
 		<title>Hibernate:add JPA annotations refactoring </title>
-		<para>Using this wizard you can add the next Hibernate annotations to the class: <code>@Column</code>, <code>@Entity</code>, <code>@ManyToOne</code>, <code>@OneToMany</code>, <code>@OneToOne</code>, <code>@ManyToMany</code>, <code>@MappedSuperclass</code>, <code>@Id</code>, <code>@GeneratedValue</code>, <code>@Version </code>
+		<para>Using this wizard you can add the following Hibernate annotations to a class: <code>@Column</code>, <code>@Entity</code>, <code>@ManyToOne</code>, <code>@OneToMany</code>, <code>@OneToOne</code>, <code>@ManyToMany</code>, <code>@MappedSuperclass</code>, <code>@Id</code>, <code>@GeneratedValue</code>, <code>@Version </code>
 		</para>
 		<itemizedlist>
 			<listitem>
@@ -2090,11 +2091,11 @@
 			</listitem>
 			<listitem>
 				<para>
-					<code>@Entity</code> is always declared before any class where it doesn't present.</para>
+					<code>@Entity</code> is always declared before any class where it has not yet been defined.</para>
 			</listitem>
 			<listitem>
 				<para>
-					<code>@ManyToOne</code>, <code>@OneToMany</code>, <code>@OneToOne</code>, <code>@ManyToMany</code> - this annotations are declared according to the classes hierarchy.
+					<code>@ManyToOne</code>, <code>@OneToMany</code>, <code>@OneToOne</code>, <code>@ManyToMany</code> - these annotations are declared according to the classes hierarchy.
 				</para>
 			</listitem>
 			<listitem>
@@ -2103,22 +2104,22 @@
 			</listitem>
 			<listitem>
 				<para>
-					<code>@Id</code>, <code>@GeneratedValue</code> are added automatically only to the properties under the name "Id",where they don't present.
+					<code>@Id</code>, <code>@GeneratedValue</code> are only added automatically to the properties under the name "Id", where they have not yet been defined.
         </para>
 			</listitem>
 			<listitem>
 				<para>
-					<code>@Version</code> is declared in case you select <xref linkend="optim_lock"/>.</para>
+					<code>@Version</code> is declared in case you select optimistic locking (see <xref linkend="optim_lock"/>).</para>
 			</listitem>
 		</itemizedlist>
 		<note>
 			<title>Note:</title>
 			<para>
-				This section doesn't cover the meaning of the <property>Hibernate annotations</property>, for more information read <ulink url="http://docs.jboss.org/hibernate/stable/annotations/reference/en/html/">Hibernate Annotations Documentation</ulink>.
+				This section doesn't cover the definitions of the <property>Hibernate annotations</property>. For more information read the <ulink url="http://docs.jboss.org/hibernate/stable/annotations/reference/en/html/">Hibernate Annotations Documentation</ulink>.
 			</para>
 		</note>
 		<para>
-			To open this wizard you should right click the class you want to enrich with annotations and select <menuchoice><guimenuitem>Source</guimenuitem><guimenuitem>Generate Hibernate/JPA annotations</guimenuitem></menuchoice>. You will see the Hibernate:add JPA annotations dialog.
+			To open this wizard you should right click the class you want to add the annotations to and select <menuchoice><guimenuitem>Source</guimenuitem><guimenuitem>Generate Hibernate/JPA annotations</guimenuitem></menuchoice>. You will see the <guilabel>Hibernate: add JPA annotations</guilabel> dialog.
 		</para>
 		<figure>
 			<title>Starting Hibernate:add JPA annotations dialog</title>
@@ -2129,7 +2130,7 @@
 			</mediaobject>
 		</figure>
 		<para>
-			In the top of it you can see the list of all classes that will be passed through refactoring. Besides the class you have selected in this list you can also find its superclasses and the classes that objects present in the current class as properties. If you want to add new classes or package to the list of classes, you should click the <guibutton>Back</guibutton> button. In result you will see <guilabel>Add classes and packages</guilabel> page.
+			In the top of this dialog you can see a list of all the classes that will be passed through refactoring. Besides the class you have selected, this list also shows its superclasses and the classes that objects present in the current class as properties. If you want to add new classes or packages to the list, you should click the <guibutton>Back</guibutton> button. In result you will see <guilabel>Add classes and packages</guilabel> page.
 		</para>
 		<figure>
 			<title>Add classes and packages page </title>
@@ -2140,17 +2141,17 @@
 			</mediaobject>
 		</figure>
 		<para>
-			Here you can add one more classes or whole package, moreover you can limit dependencies depth by selecting <guilabel>depth control</guilabel> option (you can find more information on this option in the <xref linkend="depth_control"/> section). When finished just press the <guibutton>Next</guibutton> button and you will be returned to <guilabel>The following classes will be changed</guilabel> page.</para>
+			Here you can add more classes or whole packages, and you can limit the dependencies depth by selecting the <guilabel>depth control</guilabel> option (you can find more information on this option in <xref linkend="depth_control"/>). When finished click the <guibutton>Next</guibutton> button and you will be returned to <guilabel>The following classes will be changed</guilabel> page.</para>
 		<para>
-			By default the tags are added to the fields of selected classes. But you can change this option to <guilabel>Getters</guilabel> in <guilabel> Preferred location of Annotations</guilabel> drop down list and then all the annotations will be added to the getter methods. If you choose <guilabel>Auto select from class preference</guilabel> then the annotations are added according to the majority of the already existed ones positions. 
+			By default the tags are added to the fields of selected classes. But you can change this option to <guilabel>Getters</guilabel> in the <guilabel> Preferred location of Annotations</guilabel> drop down list, which results in the annotations being added to the getter methods. If you choose <guilabel>Auto select from class preference</guilabel> then the annotations are added according to the position of the majority of the existing annotations. 
 		</para>
 		<para>
-			If it is necessary to map your String properties to the columns that length differ from the default value(255), change the <guilabel>Default string length</guilabel> field and <code>@Column(length = your length)</code> will be created for every String property.
+			If it is necessary to map your <code>String</code> properties to the columns that length differ from the default value (255), change the <guilabel>Default string length</guilabel> field and the <code>@Column(length = your length)</code> annotation will be created for every <code>String</code> property.
 		</para>
 		<para id="optim_lock">
-			You can add optimistic locking capability to an entity bean by selecting the <guilabel>Enable optimistic locking</guilabel> checkbox. This operation will add version property to all the selected classes. The property will be also annotated with <code>@Version</code>, and a getter and setter will be created. If the property is already exists, it won't be created, but the getters and setters will be generated. If there is already <code>@MappedSuperclass</code> annotation with version in the base class of the current class - <code>version</code> is not inserted into the current class.
+			You can add optimistic locking capability to an entity bean by selecting the <guilabel>Enable optimistic locking</guilabel> checkbox. This operation will add the version property to all the selected classes. The property will be also annotated with <code>@Version</code>, and a getter and setter will be created. If the property is already exists, it won't be created, but the getters and setters will be generated. If there is already <code>@MappedSuperclass</code> annotation with version in the base class of the current class, <code>version</code> is not inserted into the current class.
     </para>
-		<para>After defining all necessary settings in the current step click the <guibutton>Next</guibutton> button and follow the next wizard steps. </para>
+		<para>After defining all the required settings click the <guibutton>Next</guibutton> button and follow the next wizard steps. </para>
 		<figure>
 			<title>Hibernate:add JPA annotations view</title>
 			<mediaobject>
@@ -2175,25 +2176,25 @@
 	<section id="debug_log">
 		<title>Enable debug logging in the plugins</title>
 		<para>
-			It is possible to configure the Eclipse plugin to route all logging made by the plugins and hibernate code it self to the <guilabel>Error Log View</guilabel> in Eclipse.
+			It is possible to configure the Eclipse plugin to route all logging performed by the plugins and Hibernate code it self to the <guilabel>Error Log View</guilabel> in Eclipse.
 		</para>
 		<para>
-			The <guilabel>Error Log View</guilabel> is very useful tool to help solve any problem which appears in Hibernate Tools Plugins. You can use if there are troubles with setting up <guilabel>Hibernate Console Configuration</guilabel>.
+			The <guilabel>Error Log View</guilabel> is very useful tool when solving any problems which appear in the Hibernate Tools plugins. You can use it if there are troubles setting up a <guilabel>Hibernate Console Configuration</guilabel>.
 		</para>
 		<para>
-			This is done by editing the <filename>hibernate-log4j.properties</filename> file in the <filename>org.hibernate.eclipse/</filename> directory/jar. This file includes a default configuration that only logs WARN and above to a set of custom appenders (PluginFileAppender and PluginLogAppender). You can change these settings to be as verbose or silent as you please - see <ulink url="http://www.hibernate.org/5.html">Hibernate Documentation</ulink> for more information on logging categories and Log4j documentation.
+			This is done by editing the <filename>hibernate-log4j.properties</filename> file in the <filename>org.hibernate.eclipse/</filename> directory or JAR. This file includes a default configuration that only logs WARN and above to a set of custom appenders (PluginFileAppender and PluginLogAppender). You can change these settings to be as verbose or silent as you please. See <ulink url="http://www.hibernate.org/5.html">Hibernate Documentation</ulink> for more information on logging categories and Log4j documentation.
 		</para>
 		<section>
 			<title>Relevant Resources Links</title>
 			<para>
-				Find more on how to configure logging via a Log4j property file in <ulink url="http://supportweb.cs.bham.ac.uk/docs/tutorials/docsystem/build/tutorials/log4j/log4j.html">Log4j documentation</ulink>.
+				More information on how to  to configure logging via a Log4j property file can be found in the <ulink url="http://supportweb.cs.bham.ac.uk/docs/tutorials/docsystem/build/tutorials/log4j/log4j.html">Log4j documentation</ulink>.
 			</para>
 		</section>
 	</section>
 	<section id="dali_integration">
 		<title>Hibernate support for Dali plugins in Eclipse WTP</title>
 		<para>
-			Starting from 3.0.0 Alpha1 version of <property>JBoss Tools</property> Hibernate plugins support Eclipse Dali integration what now makes it possible to use a Hibernate as a complete JPA development platform.
+			Starting from version 3.0.0 Alpha1, <productname>JBoss Tools</productname> Hibernate plugins support Eclipse Dali integration, which makes it possible to use a Hibernate as a complete JPA development platform.
 		</para>
 		<section id="jpa_project_with_hibernate">
 			<title>Creating JPA project with Hibernate support</title>
