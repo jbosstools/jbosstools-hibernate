@@ -4,14 +4,14 @@
 	<title>Introduction</title>
 
 	<para>
-		<property>Hibernate Tools</property> is a toolset for <ulink url="http://www.hibernate.org/6.html">Hibernate 3</ulink> and <ulink url="http://www.hibernate.org/27.html">related projects</ulink>. The tools provide Ant
+		<property>Hibernate Tools</property> is a toolset for <ulink url="http://www.hibernate.org/">Hibernate 3</ulink> and related projects. The tools provide Ant
         tasks and Eclipse plugins for performing reverse engineering, code generation, visualization
         and interaction with Hibernate.</para>
 
 	<section id="hibernate_key_features">
 		<title>Key Features</title>
 
-		<para>The table below lists the key features of <property>Hibernate Tools</property>.</para>
+		<para>The table below lists the key features found in <property>Hibernate Tools</property>.</para>
 
 		<table>
 			<title>Key Functionality for Hibernate Tools</title>
@@ -37,7 +37,7 @@
 						</entry>
 						<entry>
 							<para>
-								Allows to execute mapping or Java code generation from reverse engineering, schema generation and generation of other artifacts during the build process.
+								Allows to generate mapping or Java code through reverse engineering, schema generation and generation of other artifacts during the build process.
 							</para>
 						</entry>
 						<entry>
@@ -51,7 +51,7 @@
 						</entry>
 						<entry>
 							<para>
-								A set of wizards are provided with the Hibernate Eclipse tools to quickly create common Hibernate files such as configuration (<filename>cfg.xml</filename>) files, mapping files and <filename>revenge.xml</filename> as well. Code Generation wizard helps to generate a series of various artifacts, there is even support for completely reverse engineer an existing database schema.
+								A set of wizards are provided with the <productname>Hibernate Eclipse Tools</productname> to quickly create common <productname>Hibernate</productname> files such as configuration (<filename>cfg.xml</filename>) files, mapping files and <filename>revenge.xml</filename> as well. The Code Generation wizard helps by generating a series of various artifacts, and there is even support for completely reverse engineering an existing database schema.
 							</para>
 						</entry>
 						<entry>
@@ -82,7 +82,7 @@
 						</entry>
 						<entry>
 							<para>
-								Code Generation wizard provides powerful functionality for generating a series of various artifacts like domain model classes, mapping files, annotated EJB3 entity beans, etc. and <filename>reveng.xml</filename> file editor allows to control this processes.
+								The Code Generation wizard provides powerful functionality for generating a series of various artifacts such as domain model classes, mapping files, and annotated EJB3 entity beans, and the <filename>reveng.xml</filename> file editor provides control over this processes.
 							</para>
 						</entry>
 						<entry>
@@ -97,7 +97,7 @@
 						</entry>
 						<entry>
 							<para>
-								It is a new perspective in Eclipse which provides an overview of your Hibernate Console configurations, were you also can get an interactive view of your persistent classes and their relationships. The console allows you to execute HQL queries against your database and browse the result directly in Eclipse.
+								It is a new perspective in Eclipse which provides an overview of your Hibernate Console configurations, and were you also can get an interactive view of your persistent classes and their relationships. The console allows you to execute HQL queries against your database and browse the result directly in Eclipse.
 							</para>
 						</entry>
 						<entry>
@@ -111,7 +111,7 @@
 						</entry>
 						<entry>
 							<para>
-								The editors are intended for writing, editing and executing HQL queries and criterias. They also support the functionality for generating simple queries.
+								The editors are provided for writing, editing and executing HQL queries and criterias. They also have the ability to generate simple queries.
 							</para>
 						</entry>
 						<entry>
@@ -124,7 +124,7 @@
 							<para>Functional Mapping Diagram</para>
 						</entry>
 						<entry>
-							<para>Makes possible to visualize structure of entities and relationships between them.</para>
+							<para>Makes possible to visualize the structure of entities and the relationships between them.</para>
 						</entry>
 						<entry>
 							<xref linkend="map_diagram"/>
@@ -138,7 +138,7 @@
 						</entry>
 						<entry>
 							<para>
-								Hibernate Tools integrates into the Java code completion and build support of Java in Eclipse. This gives you code completion of HQL inside Java code. Additionally, Hibernate Tools will add problem markers if your queries are not valid against the console configuration associated with the project.
+								<productname>Hibernate Tools</productname> integrates into the Java code completion and build support for Java in Eclipse. This gives you HQL code completion inside Java code. Additionally, <productname>Hibernate Tools</productname> will display problem markers if your queries are not valid against the console configuration associated with the project.
 							</para>
 						</entry>
 					</row>
@@ -151,12 +151,12 @@
 	<section>
 		<title>Other relevant resources on the topic</title>
         
-        <!--para>Hibernate Tools page on the <ulink url="http://www.hibernate.org/255.html">hibernate.org</ulink>.</para-->
+    <para><productname>Hibernate Tools</productname> page on the <ulink url="http://www.hibernate.org/">hibernate.org</ulink>.</para>
 		<para>
-			All JBoss Developer Studio/JBoss Tools release documentation you can find at<ulink url="http://docs.jboss.org/tools/">http://docs.jboss.org/tools</ulink> in the corresponding release directory.
+			All <productname>JBoss Developer Studio</productname>/<productname>JBoss Tools</productname> release documentation can be found at <ulink url="http://docs.jboss.org/tools/">http://docs.jboss.org/tools</ulink> in the corresponding release directory.
 		</para>
 		<para>
-			There is some extra information about Hidernate on <ulink url="http://www.jboss.org/community/wiki/JBossHibernate3">JBoss Wiki page. </ulink>
+			There is some extra information about <productname>Hibernate</productname> on the <ulink url="http://www.jboss.org/community/wiki/JBossHibernate3">JBoss Wiki page. </ulink>
 		</para>
 		<para>
 			The latest documentation builds are available at <ulink url="http://download.jboss.org/jbosstools/nightly-docs/">http://download.jboss.org/jbosstools/nightly-docs</ulink>.
