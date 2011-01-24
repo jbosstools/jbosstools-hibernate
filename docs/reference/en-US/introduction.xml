@@ -151,7 +151,7 @@
 	<section>
 		<title>Other relevant resources on the topic</title>
         
-    <para><productname>Hibernate Tools</productname> page on the <ulink url="http://www.hibernate.org/">hibernate.org</ulink>.</para>
+    <para><productname>Hibernate Tools</productname> page on <ulink url="http://www.hibernate.org/">hibernate.org</ulink>.</para>
 		<para>
 			All <productname>JBoss Developer Studio</productname>/<productname>JBoss Tools</productname> release documentation can be found at <ulink url="http://docs.jboss.org/tools/">http://docs.jboss.org/tools</ulink> in the corresponding release directory.
 		</para>
