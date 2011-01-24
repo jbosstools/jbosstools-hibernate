@@ -200,7 +200,7 @@
 								<para>Project</para>
 							</entry>
 							<entry>
-								<para>The name of a java project whose classpath should be used in the console configuration</para>
+								<para>The name of a Java project whose classpath should be used in the console configuration</para>
 							</entry>
 							<entry>
 								<para>Name of the selected project</para>
@@ -212,7 +212,7 @@
 							</entry>
 							<entry>
 								<para>
-									DTP provided connection that you can use instead of what is defined in the <filename>cfg.xml</filename> and <filename>jpa persistence.xml</filename> files. It is possible to use an already configured hibernate or JPA connection, or specify a new one here.
+									DTP provided connection that you can use instead of what is defined in the <filename>cfg.xml</filename> and JPA <filename>persistence.xml</filename> files. It is possible to use an already configured Hibernate or JPA connection, or specify a new one here.
 								</para>
 							</entry>
 							<entry>
@@ -260,14 +260,14 @@
 			<note>
 				<title>Tip:</title>
 				<para>
-					The two latter settings are usually not required if you specify a project and it has a <filename> /hibernate.cfg.xml </filename> or <filename>/META-INF/persistence.xml</filename> file in the projects classpath.</para>
+					The two latter settings are usually not required if you specify a project that has a <filename> /hibernate.cfg.xml </filename> or <filename>/META-INF/persistence.xml</filename> file in its classpath.</para>
 			</note>
 			<itemizedlist>
 				<listitem>
 					<para>
 						<emphasis>
 							<guilabel>Options</guilabel>
-						</emphasis> for the additional/optional settings</para>
+						</emphasis> for the optional settings</para>
 				</listitem>
 			</itemizedlist>
 			<figure>
@@ -278,7 +278,7 @@
 					</imageobject>
 				</mediaobject>
 			</figure>
-			<para>The next table describes Hibernate Console Configuration options available on the <guilabel>Options</guilabel> tab.</para>
+			<para>The next table describes the Hibernate Console Configuration options available on the <guilabel>Options</guilabel> tab.</para>
 			<table>
 				<title>Hibernate Console Configuration Options</title>
 				<tgroup cols="3">
@@ -326,7 +326,7 @@
 								<para>Entity resolver</para>
 							</entry>
 							<entry>
-								<para>Fully qualified classname of a custom EntityResolver. Only required if you have special xml entity includes in your mapping files.</para>
+								<para>Fully qualified classname of a custom EntityResolver. Only required if you have special XML entity includes in your mapping files.</para>
 							</entry>
 							<entry>
 								<para>No default value</para>
@@ -337,10 +337,7 @@
 			</table>
 			<itemizedlist>
 				<listitem>
-					<para>
-						<emphasis>
-							<property>Classpath</property>
-						</emphasis> for classpath</para>
+					<para>Classpath</guilabel> for classpath</para>
 				</listitem>
 			</itemizedlist>
 			<figure>
@@ -354,7 +351,7 @@
 					</imageobject>
 				</mediaobject>
 			</figure>
-			<para>The following table specifies the parameters of the Classpath tab of the wizard.</para>
+			<para>The following table specifies the parameters of the <guilabel>Classpath</guilabel> tab of the wizard.</para>
 			<table>
 				<title>Hibernate Console Configuration Classpath</title>
 				<tgroup cols="3">
@@ -381,7 +378,7 @@
 							</entry>
 							<entry>
 								<para>
-									The classpath for loading POJO and JDBC drivers; only needed if the default classpath of the Project does not contain the required classes. Do not add Hibernate core libraries or dependencies, they are already included. If you get ClassNotFound errors then check this list for possible missing or redundant directories/jars.
+									The classpath for loading POJO and JDBC drivers; only needed if the default classpath of the Project does not contain the required classes. Do not add Hibernate core libraries or dependencies, they are already included. If you get ClassNotFound errors then check this list for possible missing or redundant directories or JAR files.
 								</para>
 							</entry>
 							<entry>
@@ -405,9 +402,7 @@
 			<itemizedlist>
 				<listitem>
 					<para>
-						<emphasis>
-							<property>Mappings</property>
-						</emphasis> for additional mappings</para>
+						<guilabel>Mappings</guilabel> for additional mappings</para>
 				</listitem>
 			</itemizedlist>
 			<figure>
@@ -421,7 +416,7 @@
 					</imageobject>
 				</mediaobject>
 			</figure>
-			<para>Parameters of the Mappings tab of the <property>Hibernate Console Configuration wizard</property> are explained below:</para>
+			<para>Parameters of the <guilabel>Mappings</guilabel> tab of the <property>Hibernate Console Configuration wizard</property> are explained below:</para>
 			<table>
 				<title>Hibernate Console Configuration Mappings</title>
 				<tgroup cols="3">
@@ -460,9 +455,7 @@
 			</table>
 			<itemizedlist>
 				<listitem>
-					<para>and the last tab <emphasis>
-              <property>Common</property>
-						</emphasis>
+					<para>and the last tab <guilabel>Common</guilabel>
 					</para>
 				</listitem>
 			</itemizedlist>
@@ -474,7 +467,7 @@
 					</imageobject>
 				</mediaobject>
 			</figure>
-			<para>It allows to define general aspects of the launch configuration including storage location, console encoding and some others.</para>
+			<para>The <guilabel>Common</guilabel> tab allows you to define the general aspects of the launch configuration including storage location, console encoding and some others.</para>
 			<para>
 				Clicking the <guibutton>Finish</guibutton> button creates the configuration and shows it in the <property>Hibernate Configurations view</property>.
 			</para>
@@ -492,11 +485,11 @@
 		</section>
 		<section id="modif_console_conf">
 			<title>Modifying a Hibernate Console Configuration </title>
-			<para>When you created a hibernate console configuration you can modify it in two ways: </para>
+			<para>When you created a Hibernate Console Configuration you can modify it in two ways: </para>
 			<itemizedlist>
 				<listitem>
 					<para>
-						Right-click on the configuration in <menuchoice><guimenuitem>Hibernate Configurations View</guimenuitem><guimenuitem>Edit Configuration</guimenuitem></menuchoice> or just double-click on the <guilabel>Console Configuration</guilabel> item.
+						Right-click on the configuration in the <guilabel>Hibernate Configurations View</guilabel> and select <guimenuitem>Edit Configuration</guimenuitem>, or just double-click on the <guilabel>Console Configuration</guilabel> item.
           </para>
 					<figure>
 						<title>Opening Edit Configuration Wizard</title>
@@ -507,11 +500,11 @@
 						</mediaobject>
 					</figure>
 					<para>
-						After clicking you will see the <guilabel>Edit Configuration Wizard</guilabel> which is similar to <guilabel>Create Console Configuration</guilabel>, described in <xref linkend="creat_console_conf"/>. 
+						You will then see the <guilabel>Edit Configuration Wizard</guilabel>, which is similar to <guilabel>Create Console Configuration</guilabel>, described in <xref linkend="creat_console_conf"/>. 
 					</para>
 				</listitem>
 				<listitem>
-					<para>use Properties view for modifying some of Console Configuration properties.</para>
+					<para>Use the <guilabel>Properties</guilabel> view to modify the Console Configuration properties.</para>
 					<figure>
 						<title>Properties View</title>
 						<mediaobject>
@@ -570,7 +563,7 @@
 										</entry>
 										<entry>
 											<para>
-												DTP provided connection that you can use instead of what is in <filename>cfg.xml</filename> and jpa <filename>persistence.xml</filename>. It is possible to use either an already configured hibernate or JPA connection, or specify a new one here.
+												DTP provided connection that you can use instead of what is in the <filename>cfg.xml</filename> and JPA <filename>persistence.xml</filename> files. It is possible to use either an already configured Hibernate or JPA connection, or specify a new one here.
                       </para>
 										</entry>
 										<entry>
@@ -593,7 +586,7 @@
 											<para>Project</para>
 										</entry>
 										<entry>
-											<para>The name of a java project which classpath should be used in the console configuration</para>
+											<para>The name of a Java project which classpath should be used in the console configuration</para>
 										</entry>
 										<entry>
 											<para>True</para>
@@ -645,17 +638,17 @@
 				</mediaobject>
 			</figure>
 			<para>
-				Whe closing the configuration the connection with database will be closed, jar libs will be unlock (for Windows) and other resources will set as free.
+				When closing the configuration the connection with database will be closed, JAR libs will be unlock (for Windows) and other resources will set as free.
 			</para>
 		</section>
 	</section>
 	<section id="refeng_codegen" role="updated">
 		<title>Reverse Engineering and Code Generation</title>
 		<para>
-			A &quot;click-and-generate&quot; reverse engineering and code generation facility is available. This facility allows you to generate a range of artifacts based on database or an already existing Hibernate configuration, be that mapping files or annotated classes. Some of these are POJO Java source file, Hibernate <filename>.hbm.xml</filename>, <filename>hibernate.cfg.xml</filename> generation and schema documentation.
+			Hibernate provides &quot;click-and-generate&quot; reverse engineering and code generation facilities. This allows you to generate a range of artifacts based on database or an already existing Hibernate configuration, be that mapping files or annotated classes. Some of these are POJO Java source files, Hibernate <filename>.hbm.xml</filename>, <filename>hibernate.cfg.xml</filename> generation and schema documentation.
 		</para>
 		<para>
-			To start working with this process, start the <guilabel>Hibernate Code Generation</guilabel> which is available from the toolbar via the <property>Hibernate</property> icon or via the <menuchoice><guimenuitem>Run</guimenuitem><guimenuitem>Hibernate Code Generation</guimenuitem></menuchoice> menu item.
+			To start working with this process, start the <guilabel>Hibernate Code Generation</guilabel> tool which is available from the toolbar via the <property>Hibernate</property> icon or via the <menuchoice><guimenuitem>Run</guimenuitem><guimenuitem>Hibernate Code Generation</guimenuitem></menuchoice> menu item.
 		</para>
 		<section id="code_gen">
 			<title>Code Generation Launcher</title>
@@ -695,11 +688,9 @@
 				</para>
 			</note>
 			<para>
-				The dialog also has the standard tabs <guilabel>Refresh</guilabel> and <guilabel>Common</guilabel> that can be used to configure which directories should be automatically refreshed and various general settings launchers, such as saving them in a project for sharing the launcher within a team.
+				The dialog also has the standard <guilabel>Refresh</guilabel> and <guilabel>Common</guilabel> tabs that can be used to configure which directories should be automatically refreshed and various general settings for launchers, such as saving them in a project for sharing the launcher within a team.
 			</para>
-			<para>On the <emphasis>
-          <property>Main</property>
-				</emphasis> tab you see the following fields:</para>
+			<para>On the <guilabel>Main</guilabel> tab you see the following fields:</para>
 			<table>
 				<title>Code generation "Main" tab fields</title>
 				<tgroup cols="2">
@@ -722,7 +713,7 @@
 								<para>Console Configuration</para>
 							</entry>
 							<entry>
-								<para>The name of the console configuration which should be used when code generating</para>
+								<para>The name of the console configuration which should be used when generating code</para>
 							</entry>
 						</row>
 						<row>
@@ -759,7 +750,7 @@
 							</entry>
 							<entry>
 								<para>
-									Path to a <filename>reveng.xml</filename> file. A <filename>reveng.xml</filename> file allows you to control certain aspects of the reverse engineering. e.g. how jdbc types are mapped to hibernate types and especially important which tables are included/excluded from the process. Clicking the <guibutton>setup</guibutton> button allows you to select an existing <filename>reveng.xml</filename> file or create a new one. See more details about the <filename>reveng.xml</filename> file in <xref linkend="reverseengineering"/>.
+									Path to a <filename>reveng.xml</filename> file. A <filename>reveng.xml</filename> file allows you to control certain aspects of the reverse engineering such as how JDBC types are mapped to Hibernate types, and which tables are included and excluded from the process (which is especially important). Clicking the <guibutton>Setup</guibutton> button allows you to select an existing <filename>reveng.xml</filename> file or create a new one. See more details about the <filename>reveng.xml</filename> file in <xref linkend="reverseengineering"/>.
 								</para>
 							</entry>
 						</row>
@@ -769,7 +760,7 @@
 							</entry>
 							<entry>
 								<para>
-									If the <filename>reveng.xml</filename> file does not provide enough customization you can provide your own implementation of an ReverseEngineeringStrategy. The class needs to be in the classpath of the Console Configuration, otherwise you will get class not found exceptions. See <xref linkend="custom-reveng-strategy"/> for details and an example of a custom strategy.
+									If the <filename>reveng.xml</filename> file does not provide enough customization you can provide your own implementation of a ReverseEngineeringStrategy. The class needs to be in the classpath of the Console Configuration, otherwise you will get class not found exceptions. See <xref linkend="custom-reveng-strategy"/> for details and an example of a custom strategy.
 								</para>
 							</entry>
 						</row>
@@ -779,7 +770,7 @@
 							</entry>
 							<entry>
 								<para>
-									A table that has a multi-column primary key a &lt;composite-id&gt; mapping will always be created. If this option is enabled and there are matching foreign-keys each key column is still considered a 'basic' scalar (string, long, etc.) instead of a reference to an entity. If you disable this option a <code>&lt;key-many-to-one&gt;</code> instead. Note: a <code>&lt;many-to-one&gt;</code> property is still created, but is simply marked as non-updatable and non-insertable.
+									When a table that has a multi-column primary key a <code>&lt;composite-id&gt;</code> mapping will always be created. If this option is enabled and there are matching foreign-keys each key column is still considered a 'basic' scalar (string, long, etc.) instead of a reference to an entity. If you disable this option a <code>&lt;key-many-to-one&gt;</code> instead. Note: a <code>&lt;many-to-one&gt;</code> property is still created, but is simply marked as non-updatable and non-insertable.
 								</para>
 							</entry>
 						</row>
@@ -1097,7 +1088,7 @@
 				</table>
 			</para>
 			<para>
-				To add a property to the chosen Exporter click the <guibutton>Add</guibutton> button in the <guilabel>Properties</guilabel> section. In the appeared dialog you should select the property from the proposed list and the value for it.
+				To add a property to the chosen Exporter click the <guibutton>Add</guibutton> button in the <guilabel>Properties</guilabel> section. In the resulting dialog you should select the property from the proposed list and the value for it.
 			</para>
 			<figure>
 				<title>Adding the Property for Schema Export (.ddl)</title>
@@ -1109,7 +1100,7 @@
 			</figure>
 			<note>
 				<title>Tip:</title>
-				<para>If the property is a directory, it is possible to browse directories in the Value field.</para>
+				<para>If the property is a directory, it is possible to browse directories in the <guilabel>Value</guilabel> field.</para>
 			</note>
 			<figure>
 				<title>Specifying the Property Value</title>
@@ -1140,7 +1131,7 @@
 		<section>
 			<title>Java property/class completion</title>
 			<para>
-				Package, class, and field completion is enabled for relevant XML attributes. The auto-completion detects its context and limits the completion for e.g. <code>&lt;property&gt;</code> and only shows the properties/fields available in the enclosing <code>&lt;class&gt;</code>, <code>&lt;subclass&gt;</code> etc. It is also possible to navigate from the <filename>hbm.xml</filename> files to the relevant class/field in java code.
+				Package, class, and field completion is enabled for relevant XML attributes. The auto-completion tool detects its context and limits the completion for a tag (such as <code>&lt;property&gt;</code>) and only shows the properties and fields available in the enclosing <code>&lt;class&gt;</code>, <code>&lt;subclass&gt;</code> etc. It is also possible to navigate from the <filename>hbm.xml</filename> files to the relevant classes and fields in your Java code.
 			</para>
 			<figure>
 				<title>Navigation Functionality</title>
@@ -1154,9 +1145,9 @@
 				</mediaobject>
 			</figure>
 			<para>
-				This is done via the standard hyperlink navigation functionality in Eclipse; per default it is done by pressing <keycap>F3</keycap> while the cursor is on a class/field or by pressing <keycap>Ctrl</keycap> and the mouse button to perform the same navigation.
+				This is done via the standard hyperlink navigation functionality in Eclipse. By default this is done by pressing <keycap>F3</keycap> while the cursor is on a class or field, or by pressing <keycap>Ctrl</keycap> and the mouse button.
 			</para>
-			<para>For java completion and navigation to work the file needs to reside inside an Eclipse Java project, otherwise no completion will occur.</para>
+			<para>For Java completion and navigation to work the file needs to reside inside an Eclipse Java project, otherwise the feature is not available.</para>
 			<note>
 				<title>Note:</title>
 				<para>Java completion does not require a Hibernate console configuration to be used.</para>
@@ -1179,11 +1170,11 @@
 			<important>
 				<title>Important:</title>
 				<para>
-					Table/Column completion requires a properly configured hibernate console configuration and this configuration should be the default for the project where the <filename>hbm.xml</filename> resides.
+					Table/Column completion requires a properly configured Hibernate console configuration and this configuration should be the default for the project where the <filename>hbm.xml</filename> resides.
 				</para>
 			</important>
 			<para>
-				You can check which console configuration is selected under the Properties of a project and look under the <guilabel>Hibernate Settings</guilabel> page. When a proper configuration is selected it will be used to fetch the table/column names in the background.
+				You can check which console configuration is selected in the Properties of a project under the <guilabel>Hibernate Settings</guilabel> page. When a proper configuration is selected it will be used to fetch the table and column names in the background.
 			</para>
 			<note>
 				<title>Note:</title>
@@ -1194,7 +1185,9 @@
 		</section>
 		<section>
 			<title>Configuration property completion</title>
-			<para>In <filename>cfg.xml</filename> code completion for the value of <code>&lt;property&gt; name</code> attributes are available.</para>
+			<para>
+				Code completion for the value of <code>&lt;property&gt; name</code> attributes are available when editing the <filename>cfg.xml</filename> file.
+			</para>
 			<figure>
 				<title>Property Completion</title>
 				<mediaobject>
@@ -1211,10 +1204,10 @@
 	<section id="map_config_struct_editor">
 		<title>Structured Hibernate Mapping and Configuration File Editor</title>
 		<para>
-			The structured editor represents the file in a tree form. It also provides a way to modify the structure of the file and its elements with the help of tables provided on the right-hand area.
+			The structured editor represents a file in a tree form. It also provides a way to modify the structure of the file and its elements with the help of tables provided on the right-hand area.
 		</para>
 		<para>
-			To open any mapping file in the editor, select <menuchoice><guimenuitem>Open With</guimenuitem><guimenuitem>Hibernate 3.0 XML Editor</guimenuitem></menuchoice> option from the context menu of the file. The editor is shown in the following image:
+			To open any mapping file in the editor, select <menuchoice><guimenuitem>Open With</guimenuitem><guimenuitem>Hibernate 3.0 XML Editor</guimenuitem></menuchoice> from the context menu of the file. The editor is shown in the following image:
     </para>
 		<figure>
 			<title>Structured hbm.xml Editor</title>
@@ -1225,7 +1218,7 @@
 			</mediaobject>
 		</figure>
 		<para>
-			For the configuration file you should choose <menuchoice><guimenuitem>Open With</guimenuitem><guimenuitem>Hibernate Configuration 3.0 XML Editor</guimenuitem></menuchoice> option.
+			For the configuration file you should select <menuchoice><guimenuitem>Open With</guimenuitem><guimenuitem>Hibernate Configuration 3.0 XML Editor</guimenuitem></menuchoice>.
 		</para>
 		<figure>
 			<title>Structured cfg.xml Editor</title>
@@ -1239,10 +1232,10 @@
 	<section id="properties_editor">
 		<title>JBoss Tools Properties Editor</title>
 		<para>
-			The editor is meant for editing <filename>.properties</filename> files. It contains two tabs: the <guilabel>Properties</guilabel> (UI) tab and the <guilabel>Source</guilabel> tab for manual editing.
+			The editor is designed to edit <filename>.properties</filename> files. It contains two tabs: the <guilabel>Properties</guilabel> (UI) tab and the <guilabel>Source</guilabel> tab for manual editing.
 		</para>
 		<para>
-			For <filename>hibernate.properties</filename> file <guilabel>JBoss Tools Properties Editor</guilabel> provides content assist for both hibernate properties and property values. You can make use of the content assist while editing the file in the <guilabel>Source</guilabel> view and in the <guilabel>Properties</guilabel> view of the editor.
+			For <filename>hibernate.properties</filename> files the <guilabel>JBoss Tools Properties Editor</guilabel> provides content assist for both Hibernate properties and values. You can make use of the content assist while editing the file in the <guilabel>Source</guilabel> view and in the <guilabel>Properties</guilabel> view of the editor.
 		</para>
 		<para>To add the property in the <guilabel>Properties</guilabel> view, click the <guibutton>Add</guibutton> button.</para>
 		<figure>
@@ -1254,7 +1247,7 @@
 			</mediaobject>
 		</figure>
 		<para>
-			In the <guilabel>Name</guilabel> field press <keycombo><keycap>Ctrl</keycap><keycap>Space</keycap></keycombo> to invoke the content assist. It will suggest <code>&apos;hibernate.&apos;</code> which is the prefix for all hibernate properties. After selecting <code>&apos;hibernate.&apos;</code> and invoking the content assist again, other prefixes and properties are displayed as the proposals with a description of each one.
+			In the <guilabel>Name</guilabel> field press <keycombo><keycap>Ctrl</keycap><keycap>Space</keycap></keycombo> to invoke the content assist. It will suggest <code>&apos;hibernate.&apos;</code> which is the prefix for all hibernate properties. After selecting <code>&apos;hibernate.&apos;</code> and invoking the content assist again, other prefixes and properties are displayed as the proposals, with a description for each one.
 		</para>
 		<figure>
 			<title>Content Assist for Properties Names</title>
@@ -1294,10 +1287,10 @@
 	<section id="rev_xml_editor">
 		<title>Reveng.xml Editor</title>
 		<para>
-			A <filename>reveng.xml </filename> file is used to customize and control how reverse engineering is performed by the tools. The plugins provide an editor to ease the editing of this file and hence used to configure the reverse engineering process.
+			A <filename>reveng.xml </filename> file is used to customize and control how reverse engineering is performed by the tools. The plugins provide an editor to assist in the editing of this file.
 		</para>
 		<para>
-			The editor is intended to allow easy definition of type mappings, table include/excludes and specific override settings for columns, e.g. define an explicit name for a column when the default naming rules are not applicable.
+			The editor is intended to allow easy definition of type mappings, table include and excludes, and specific override settings for columns, e.g. define an explicit name for a column when the default naming rules are not applicable.
 		</para>
 		<note>
 			<title>Note:</title>
@@ -1306,7 +1299,7 @@
 			</para>
 		</note>
 		<para>
-			The editor is activated as soon as a <filename>.reveng.xml </filename> file is opened. To get an initial <filename>reveng.xml </filename> file the <guilabel>Reverse Engineering File Wizard</guilabel> can be started via <keycombo><keycap>Ctrl</keycap><keycap>N</keycap></keycombo> and then selecting <menuchoice><guimenuitem>Hibernate</guimenuitem><guimenuitem>Hibernate Reverse Engineering File (reveng.xml)</guimenuitem></menuchoice>.
+			The editor is activated as soon as a <filename>.reveng.xml </filename> file is opened. To create an initial <filename>reveng.xml </filename> file the <guilabel>Reverse Engineering File Wizard</guilabel> can be started by pressing <keycombo><keycap>Ctrl</keycap><keycap>N</keycap></keycombo> and then selecting <menuchoice><guimenuitem>Hibernate</guimenuitem><guimenuitem>Hibernate Reverse Engineering File (reveng.xml)</guimenuitem></menuchoice>.
 		</para>
 		<figure>
 			<title>ChooseReverse Engineering File Wizard </title>
@@ -1320,10 +1313,10 @@
 			</mediaobject>
 		</figure>
 		<para>
-			Or you can get it via the <guilabel>Code Generation Launcher</guilabel> by checking the proper section in the <guilabel>Main</guilabel> tab of the <guilabel>Getting Hibernate Code Generation Wizard</guilabel> (see <xref linkend="hib_code_gen"/>).
+			Or you can get it via the <guilabel>Code Generation Launcher</guilabel> by checking the appropriate section in the <guilabel>Main</guilabel> tab of the <guilabel>Getting Hibernate Code Generation Wizard</guilabel> (see <xref linkend="hib_code_gen"/>).
     </para>
 		<para>
-			The following screenshot shows the <guilabel>Overview</guilabel> page where the appropriate console configuration is selected (auto-detected if Hibernate 3 support is enabled for the project).
+			The following screenshot shows the <guilabel>Overview</guilabel> page where the appropriate console configuration is selected (it is auto-detected if Hibernate 3 support is enabled for the project).
 		</para>
 		<figure>
 			<title>Overview Page</title>
@@ -1351,7 +1344,7 @@
 			</mediaobject>
 		</figure>
 		<para>
-			The <guilabel>Type Mappings</guilabel> page is used to specify type mappings from JBDC types to any Hibernate type (including usertypes) if the default rules are not applicable. Here again to see the database tables press the <guibutton>Refresh</guibutton> button underneath. For more information on type mappings please see the <xref linkend="type_map"/> section.
+			The <guilabel>Type Mappings</guilabel> page is used to specify type mappings from JBDC types to any Hibernate type (including user types) if the default rules are not applicable. To see the database tables press the <guibutton>Refresh</guibutton> button underneath. For more information on type mappings please see the <xref linkend="type_map"/> section.
 		</para>
 		<figure>
 			<title>Type Mappings Page</title>
@@ -1378,17 +1371,17 @@
 				</imageobject>
 			</mediaobject>
 		</figure>
-		<para>Now that you have configured all the necessary settings, you can learn how to work with <property>Hibernate Console Perspective</property>.</para>
+		<para>Now that you have configured all the necessary settings, you can learn how to work with the <property>Hibernate Console Perspective</property>.</para>
 	</section>
 	<section id="hib_console">
 		<title>Hibernate Console Perspective</title>
 		<para>
-			The <guilabel>Hibernate Console Perspective</guilabel> combines a set of views which allow you to see the structure of your mapped entities/classes, edit HQL queries, execute the queries, and see the results. To use this perspective you need to create a <guilabel>Hibernate Console Configuration</guilabel> (see <xref linkend="console_conf"/>).
+			The <guilabel>Hibernate Console Perspective</guilabel> combines a set of views which allow you to see the structure of your mapped entities and classes, edit HQL queries, execute the queries, and see the results. To use this perspective you need to create a <guilabel>Hibernate Console Configuration</guilabel> (see <xref linkend="console_conf"/>).
 		</para>
 		<section>
 			<title>Viewing the entity structure</title>
 			<para>
-				To view your new configuration and entity/class structure, switch to the <guilabel>Hibernate Configurations View</guilabel>. Expanding the tree allows you to browse the class/entity structure and see the relationships.
+				To view your new configuration and entity or class structure, switch to the <guilabel>Hibernate Configurations View</guilabel>. Expanding the tree allows you to browse the class or entity structure, as well as view the relationships.
 			</para>
 			<figure>
 				<title>Hibernate Console Perspective</title>
@@ -1402,10 +1395,10 @@
 				</mediaobject>
 			</figure>
 			<para>
-				The <guilabel>Console Configuration</guilabel> does not dynamically adjust to changes done in mappings and Java code. To reload the configuration select the configuration and click the <guibutton>Reload</guibutton> button in the view toolbar or in the context menu.
+				The <guilabel>Console Configuration</guilabel> does not dynamically adjust to changes performed in mappings and Java code. To reload the configuration select the configuration and click the <guibutton>Reload</guibutton> button in the view toolbar or in the context menu.
 			</para>
 			<para>
-				It is possible to open source and mapping files for objects showed in the <guilabel>Hibernate Configurations View</guilabel>. Just bring up the context menu for a necessary object and select <guimenuitem>Open Source File</guimenuitem> to see appropriate Java class or <guimenuitem>Open Mapping File</guimenuitem> to open a proper <filename>.hbm.xml</filename> file.
+				It is possible to open source and mapping files for objects showed in the <guilabel>Hibernate Configurations View</guilabel>. Just bring up the context menu for an object and select <guimenuitem>Open Source File</guimenuitem> to see the appropriate Java class or <guimenuitem>Open Mapping File</guimenuitem> to open a <filename>.hbm.xml</filename> file.
 			</para>
 			<figure>
 				<title>Opening Source for Objects</title>
