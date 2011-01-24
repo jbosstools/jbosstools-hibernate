@@ -105,6 +105,7 @@ public class DiagramViewer extends GraphicalEditor {
 	private GEFRootEditPart gefRootEditPart = new GEFRootEditPart();
 	private KeyHandler sharedKeyHandler;
 	private RulerComposite rulerComp;
+	private DiagramContentOutlinePage outlinePage;
 
 	public DiagramViewer() {
 		setEditDomain(new DefaultEditDomain(this));
@@ -383,14 +384,21 @@ public class DiagramViewer extends GraphicalEditor {
 		setPartName(getDiagramInput().getName());
 	}
 
+	protected DiagramContentOutlinePage getDiagramContentOutlinePage() {
+		if (outlinePage == null) {
+			outlinePage = new DiagramContentOutlinePage(
+				new TreeViewer(), getActionRegistry());
+		}
+		return outlinePage;
+	}
+
 	/**
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class type) {
 		if (type == IContentOutlinePage.class) {
-			DiagramContentOutlinePage outline = new DiagramContentOutlinePage(
-					new TreeViewer(), getActionRegistry());
+			final DiagramContentOutlinePage outline = getDiagramContentOutlinePage();
 			outline.setGraphicalViewer(getGraphicalViewer());
 			outline.setSelectionSynchronizer(getSelectionSynchronizer());
 			outline.setOrmDiagram(getOrmDiagram());
