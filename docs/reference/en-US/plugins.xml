@@ -337,7 +337,7 @@
 			</table>
 			<itemizedlist>
 				<listitem>
-					<para>Classpath</guilabel> for classpath</para>
+					<para><guilabel>Classpath</guilabel> for classpath</para>
 				</listitem>
 			</itemizedlist>
 			<figure>
@@ -2199,7 +2199,7 @@
 		<section id="jpa_project_with_hibernate">
 			<title>Creating JPA project with Hibernate support</title>
 			<para>
-				When starting a new JPA project from <menuchoice><guimenuitem>New</guimenuitem><guimenuitem>Other</guimenuitem><guimenuitem>JPA</guimenuitem><guimenuitem>JPA Project</guimenuitem></menuchoice> (or simply <menuchoice><guimenuitem>New</guimenuitem><guimenuitem>JPA Project</guimenuitem></menuchoice> in the <guilabel>JPA Perspective</guilabel>), the first wizard page is shwn in the image below.
+				When starting a new JPA project by selecting <menuchoice><guimenuitem>New</guimenuitem><guimenuitem>Other</guimenuitem><guimenuitem>JPA</guimenuitem><guimenuitem>JPA Project</guimenuitem></menuchoice> (or simply <menuchoice><guimenuitem>New</guimenuitem><guimenuitem>JPA Project</guimenuitem></menuchoice> in the <guilabel>JPA Perspective</guilabel>), the first wizard page is shown in the image below.
 			</para>
 			<figure>
 				<title>Starting JPA Project</title>
@@ -2225,7 +2225,7 @@
 			<note>
 				<title>Note:</title>
 				<para>
-					Please note, if you choose Hibernate as a platform while creating a JPA/Dali project, a Hibernate Console Configuration for the project is created automatically when the wizard finishes its work. It allows a full usage of <guilabel>Hibernate Tools</guilabel> features without additional setup.
+					If you choose Hibernate as a platform while creating a JPA/Dali project, a Hibernate Console Configuration for the project is created automatically when the wizard is finished. It allows all the <guilabel>Hibernate Tools</guilabel> features to be used without any additional setup.
 				</para>
 			</note>
 		</section>
@@ -2244,7 +2244,7 @@
 			</figure>
 			<note>
 				<title>Note:</title>
-				<para>Please, remember to put the proper database driver to the classpath of your project.</para>
+				<para>Remember to put the proper database driver to the classpath of your project.</para>
 			</note>
 			<para>The <guilabel>Generate Entities wizard</guilabel> will first ask you to choose the directory where all output will be written.</para>
 			<figure>
@@ -2258,9 +2258,9 @@
 			<para>To generate entities you can use:</para>
 			<itemizedlist>
 				<listitem>
-					<para>a Hibernate Console Configuration (proposed by default)</para>
+					<para>A Hibernate Console Configuration (proposed by default)</para>
 					<para>
-						Just make sure that the <guilabel>Use Console Configuration</guilabel> checkbox is selected and choose a needed configuration from the <guilabel>Console configurations</guilabel> list box.
+						To select this option make sure that the <guilabel>Use Console Configuration</guilabel> checkbox is selected and select a configuration from the <guilabel>Console configurations</guilabel> list box.
 					</para>
 					<figure>
 						<title>Generate Entities Wizard</title>
@@ -2274,8 +2274,8 @@
 			</itemizedlist>
 			<itemizedlist>
 				<listitem>
-					<para>or a DTP connection directly</para>
-					<para>Just uncheck the <guilabel>Use Console Configuration</guilabel> option and adjust the database settings.</para>
+					<para>Or a DTP connection directly</para>
+					<para>To select this option uncheck the <guilabel>Use Console Configuration</guilabel> option and adjust the database settings.</para>
 				</listitem>
 			</itemizedlist>
 			<para>
@@ -2289,12 +2289,12 @@
 					</imageobject>
 				</mediaobject>
 			</figure>
-			<para>Thus, you can now have the Hibernate runtime support in Eclipse JPA projects.</para>
+			<para>In this way you can enable Hibernate runtime support in Eclipse JPA projects.</para>
 		</section>
 		<section id="hibernate_annotations_support">
 			<title>Hibernate Annotations Support</title>
 			<para>
-				Hibernate Annotations are also supported in <guilabel>Dali Java Persistence Tools</guilabel>. The next annotations are integrated with <guilabel>JPA Details</guilabel> view:
+				Hibernate Annotations are also supported in <guilabel>Dali Java Persistence Tools</guilabel>. The following annotations are integrated with the <guilabel>JPA Details</guilabel> view:
       </para>
 			<itemizedlist>
 				<listitem>
@@ -2318,7 +2318,7 @@
 					</figure>
 				</listitem>
 				<listitem>
-					<para>Property annotations- <code>@DiscriminatorFormula</code>, <code>@Generated Annotation</code>, <code>@Index annotation</code>
+					<para>Property annotations - <code>@DiscriminatorFormula</code>, <code>@Generated</code>, <code>@Index</code>
 					</para>
 					<figure>
 						<title>@Index support in Dali</title>
@@ -2364,13 +2364,13 @@
 				</listitem>
 			</itemizedlist>
 			<para>
-				More information about Hibernate Annotation can be found in the <ulink url="http://docs.jboss.org/hibernate/stable/annotations/reference/en/html/">Hibernate Annotations Reference Guide</ulink>.
+				More information about Hibernate Annotations can be found in the <ulink url="http://docs.jboss.org/hibernate/stable/annotations/reference/en/html/">Hibernate Annotations Reference Guide</ulink>.
       </para>
 		</section>
 		<section>
 			<title>Relevant Resources Links</title>
 			<para>
-				More information about native Dali plugin features on <ulink url="http://help.eclipse.org/galileo/index.jsp?nav=/8">Eclipse Documentation page</ulink>.
+				Find more information about native Dali plugin features on the <ulink url="http://help.eclipse.org/galileo/index.jsp?nav=/8">Eclipse Documentation page</ulink>.
       </para>
 		</section>
 	</section>
