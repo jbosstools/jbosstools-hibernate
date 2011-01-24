@@ -3,18 +3,18 @@
   <title>Controlling POJO code generation</title>
 
   <para>
-  	When using <code>&lt;hbm2java&gt;</code> or the Eclipse plugin to generate POJO Java code you have the ability to control certain aspects of the code generation. This is primarily done with the <code>&lt;meta&gt;</code> tag in the mapping files. The following section describes the possible <code>&lt;meta&gt;</code> tags and their use.
+  	When using the <code>&lt;hbm2java&gt;</code> tag or the Eclipse plugin to generate POJO Java code you have the ability to control certain aspects of the code generation process. This is primarily done with the <code>&lt;meta&gt;</code> tag in the mapping files. The following section describes the possible <code>&lt;meta&gt;</code> tags and their use.
   </para>
 
   <section>
     <title>The &lt;meta&gt; attribute</title>
 
     <para>
-    	The <code>&lt;meta&gt;</code> tag is a simple way of annotating the <filename>hbm.xml</filename> with information, so tools have a natural place to store and read information that is not directly related to the Hibernate core.
+    	The <code>&lt;meta&gt;</code> tag is a simple way of annotating the <filename>hbm.xml</filename> file with information, so tools have a natural place to store and read information that is not directly related to the Hibernate core.
     </para>
 
     <para>
-    	As an example, you can use the <code>&lt;meta&gt;</code> tag to tell <code>&lt;hbm2java&gt;</code> to only generate <code>&quot;protected&quot;</code> setters, have classes always implement a certain set of interfaces or even have them extend a certain base class and even more.
+    	As an example, you can use the <code>&lt;meta&gt;</code> tag to tell the <code>&lt;hbm2java&gt;</code> tag to only generate <code>&quot;protected&quot;</code> setters, have classes always implement a certain set of interfaces, have them extend a certain base class and more.
     </para>
 
     <para>The following example shows how to use various <code>&lt;meta&gt;</code> attributes and the resulting Java code.</para>
@@ -35,7 +35,7 @@
 </class>]]></programlisting>
 
     <para>
-    	The above <filename>hbm.xml</filename> file will produce something like the following (the code abbreviated for clarity). Notice the Javadoc comment and the protected set methods:
+    	The above <filename>hbm.xml</filename> file will produce something like the following (the code has been abbreviated for clarity). Notice the Javadoc comment and the protected set methods:
     </para>
 
     <programlisting role="JAVA"><![CDATA[// default package
@@ -242,22 +242,22 @@ public class Person implements Serializable, IAuditable {
     </table>
 
     <para>
-    	Attributes declared via the <code>&lt;meta&gt;</code> tag are per default <code>&quot;inherited&quot;</code> inside an <code>hbm.xml</code> file.
+    	Attributes declared via the <code>&lt;meta&gt;</code> tag <code>&quot;inherited&quot;</code> inside an <code>hbm.xml</code> file by default.
     </para>
 
     <para>
-    	What does that mean? As an example if you want to have all your classes implement <code>IAuditable</code> then you just add an <code> &lt;meta attribute="implements"&gt;IAuditable&lt;/meta&gt;</code> in the top of the <filename>hbm.xml</filename> file, just after <code>&lt;hibernate-mapping&gt;</code>. Now all classes defined in that <filename>hbm.xml</filename> file will implement <property>IAuditable</property>.
+    	What does that mean? As an example if you want to have all your classes implement <code>IAuditable</code> then you just add <code> &lt;meta attribute="implements"&gt;IAuditable&lt;/meta&gt;</code> in the top of the <filename>hbm.xml</filename> file, just after <code>&lt;hibernate-mapping&gt;</code>. Now all classes defined in that <filename>hbm.xml</filename> file will implement <code>IAuditable</code>.
     </para>
 
     <note>
       <title>Note:</title>
       <para>
-      	This applies to <emphasis>all</emphasis> <code>&lt;meta&gt;</code>-tags. Thus it can also be used to specify that all fields should be declare protected, instead of the default private. This is done by adding <code>&lt;meta attribute="scope-field"&gt;protected&lt;/meta&gt;</code> just under the <code>&lt;class&gt;</code> tag and all fields of that class will be protected.
+      	This applies to <emphasis>all</emphasis> <code>&lt;meta&gt;</code>-tags. Thus it can also be used to specify that all fields should be declare <code>protected</code>, instead of the default <code>private</code>. This is done by adding <code>&lt;meta attribute="scope-field"&gt;protected&lt;/meta&gt;</code> just under the <code>&lt;class&gt;</code> tag, and all fields of that class will be <code>protected</code>.
       </para>
     </note>
 
     <para>
-    	To avoid having a <code>&lt;meta&gt;</code> tag inherited then you can simply specify <code> inherit = "false"</code> for the attribute. For example <code> &lt;meta attribute = "scope-class" inherit = "false"&gt;public abstract&lt;/meta&gt;</code> will restrict the <code>&quot;class-scope&quot;</code> to the current class, not the subclasses.
+    	To avoid having a <code>&lt;meta&gt;</code> tag inherited then you can specify <code> inherit = "false"</code> for the attribute. For example <code> &lt;meta attribute = "scope-class" inherit = "false"&gt;public abstract&lt;/meta&gt;</code> will restrict the <code>&quot;class-scope&quot;</code> to the current class, not the subclasses.
     </para>
 
     <section>
@@ -266,10 +266,10 @@ public class Person implements Serializable, IAuditable {
       <para>The following are some good practices to employ when using <code>&lt;meta&gt;</code> attributes.</para>
 
       <section>
-        <title>Dangers of a class level <property>use-in-string and use-in-equals</property> meta attributes when having bi-directional associations</title>
+        <title>Dangers of a class level <property>use-in-string and use-in-equals</property> meta attributes when using bi-directional associations</title>
 
         <para>
-        	If we have two entities with a bi-directional association between them and define at class scope level the meta attributes: <code>use-in-string</code>, <code>use-in-equals</code>: 
+        	In the following example we have two entities with a bi-directional association between them and define the <code>use-in-string</code> and <code>use-in-equals</code> meta attributes at the class scope level the meta attributes:
         </para>
 
         <programlisting role="XML"><![CDATA[<hibernate-mapping>
@@ -280,7 +280,7 @@ public class Person implements Serializable, IAuditable {
   </class>
 </hibernate-mapping>]]></programlisting>
 
-        <para>And for <filename>Event.hbm</filename> file:</para>
+        <para>Here is the <filename>Event.hbm</filename> file:</para>
 
         <programlisting role="XML"><![CDATA[<hibernate-mapping>              
   <class name="events.Event" table="EVENTS">
@@ -299,14 +299,14 @@ public class Person implements Serializable, IAuditable {
 </hibernate-mapping>]]></programlisting>
 
         <para>
-        	Then <code>&lt;hbm2java&gt;</code> will assume you want to include all properties and collections in the <code>toString()</code> and <code>equals()</code> methods and this can result in infinite recursive calls.
+        	In this situation the <code>&lt;hbm2java&gt;</code> tag will assume you want to include all properties and collections in the <code>toString()</code> and <code>equals()</code> methods. This can result in infinite recursive calls.
         </para>
 
         <para>
-        	To remedy this you have to decide which side of the association will include the other part (if at all) in the <code>toString()</code> and <code>equals()</code> methods. Therefore it is not a good practice to put at class scope such <code>meta</code> attributes, unless you are defining a class without bi-directional associations.
+        	To remedy this you have to decide which side of the association will include the other part (if at all) in the <code>toString()</code> and <code>equals()</code> methods. Therefore it is not a good practice to define these <code>meta</code> attributes at the class scope, unless you are defining a class without bi-directional associations.
         </para>
 
-        <para>We recommend instead to add the <code>meta</code> attributes at the property level:</para>
+        <para>Instead it is recommended that the <code>meta</code> attributes are defined at the property level, like so:</para>
 
         <programlisting role="XML"><![CDATA[<hibernate-mapping>             
   <class name="events.Event" table="EVENTS">                  
@@ -326,7 +326,7 @@ public class Person implements Serializable, IAuditable {
   </class>
 </hibernate-mapping>]]></programlisting>
 
-        <para>and now for <code>Person</code>:</para>
+        <para>and for <code>Person</code>:</para>
 
         <programlisting role="XML"><![CDATA[<hibernate-mapping>
     <class name="Person">
@@ -352,7 +352,7 @@ public class Person implements Serializable, IAuditable {
         <title>Be aware of putting at class scope level &lt;meta&gt; attributeuse-in-equals</title>
 
         <para>
-        	For <code>equal()</code> and <code>hashCode()</code> method generation, you have to take into account that the attributes that participate on such method definition, should take into account only attributes with business meaning (the name, social security number, etc, but no generated id's, for example).
+        	Only attributes with business meaning (e.g. the name, social security number, etc, but no generated id's) should be referenced when calculating the return value for the <code>equal()</code> and <code>hashCode()</code> methods.
         </para>
 
         <para>
@@ -364,7 +364,7 @@ public class Person implements Serializable, IAuditable {
         </para>
 
         <para>
-        	On <ulink url="http://www.hibernate.org/109.html">www.hibernate.org </ulink> you can get a more in-depth explanation on the subject of <code>equals()</code> and <code>hashcode()</code> methods.
+        	On <ulink url="http://www.hibernate.org/109.html">www.hibernate.org </ulink> you can find more in-depth explanation on the subject of <code>equals()</code> and <code>hashcode()</code> methods.
         </para>
       </section>
     </section>
@@ -373,29 +373,29 @@ public class Person implements Serializable, IAuditable {
       <title>Advanced &lt;meta&gt; attribute examples</title>
 
       <para>
-      	This section shows an example for using meta attributes (including userspecific attributes) together with the code generation features in <productname>Hibernate Tools</productname>.
+      	This section shows an example for using meta attributes (including user specific attributes) together with the code generation features in <productname>Hibernate Tools</productname>.
       </para>
 
-      <para>The example shown below automatically inserts some pre and post conditions into the getter and setters of the generated POJO. </para>
+      <para>The example shown below automatically inserts some pre and post conditions into the getter and setter methods of the generated POJO. </para>
 
       <section>
         <title>Generate pre/post-conditions for methods</title>
 
         <para>
-        	With the <code> &lt;meta attribute="class-code"&gt;</code>, you can add additional methods on a given class, nevertheless such <code>&lt;meta&gt;</code> attribute can not be used at a property scope level and <property>Hibernate Tools</property> does not provide such <code>&lt;meta&gt;</code> attributes.
+        	With <code> &lt;meta attribute="class-code"&gt;</code> you can add additional methods on a given class. However, such <code>&lt;meta&gt;</code> attributes can not be used at a property scope level and <property>Hibernate Tools</property> does not provide such <code>&lt;meta&gt;</code> attributes.
         </para>
 
         <para>
-        	A possible solution for this is to modify the freemarker templates responsible for generating the POJO's. If you look inside <filename>hibernate-tools.jar</filename>, you can find the template <filename>pojo/PojoPropertyAccessor.ftl</filename>.
+        	A possible solution for this is to modify the Freemarker templates responsible for generating the POJOs. If you look inside the <filename>hibernate-tools.jar</filename> archive, you can find the template <filename>pojo/PojoPropertyAccessor.ftl</filename>.
         </para>
 
-        <para>As its name indicates, this file is used to generate property accessors for POJO's.</para>
+        <para>As its name indicates, this file is used to generate property accessors for POJOs.</para>
 
         <para>
-        	Extract the <filename>PojoPropertyAccessor.ftl</filename> into a local folder i.e. <filename>${hbm.template.path}</filename>, respecting the whole path, for example: <filename>${hbm.template.path}/pojo/PojoPropertyAccessor.ftl</filename>.
+        	Extract the <filename>PojoPropertyAccessor.ftl</filename> file into a local folder e.g. <filename>${hbm.template.path}</filename>, respecting the whole path, for example: <filename>${hbm.template.path}/pojo/PojoPropertyAccessor.ftl</filename>.
         </para>
 
-        <para>The contents of the file is something like this:</para>
+        <para>The contents of the file will be something like this:</para>
 
         <programlisting role="XML"><![CDATA[<#foreach property in pojo.getAllPropertiesIterator()>
     ${pojo.getPropertyGetModifiers(property)} 
@@ -412,7 +412,7 @@ public class Person implements Serializable, IAuditable {
 </#foreach>]]></programlisting>
 
         <para>
-        	We can add conditionally pre and post conditions on our <code>set</code> method generation just adding a little Freemarker syntax to the above source code:
+        	We can add pre and post conditions on our <code>set</code> method generation just by adding a little Freemarker syntax to the above source code:
         </para>
 
         <programlisting role="XML"><![CDATA[<#foreach property in pojo.getAllPropertiesIterator()>
@@ -442,7 +442,7 @@ public class Person implements Serializable, IAuditable {
         </para>
 
         <para>
-        	As an example let us add a pre-condition for property <code>name</code> which will prevent the <code>Person</code> class from having an empty name. To achieve this we have to modify the <filename>Person.hbm.xml</filename> file like so:
+        	As an example let us add a pre-condition for the <code>name</code> property which will prevent the <code>Person</code> class from having an empty name. To achieve this we have to modify the <filename>Person.hbm.xml</filename> file like so:
         </para>
 
         <programlisting role="XML"><![CDATA[<hibernate-mapping>
@@ -462,14 +462,14 @@ public class Person implements Serializable, IAuditable {
 
         <note>
           <title>Note:</title>
-          <para>I) To escape the &amp; symbol we put &amp;amp;. You can use <code> &lt;![CDATA[]]&gt;</code> instead.</para>
+          <para>I) To escape the &amp; symbol we put &amp;amp;. You could use <code> &lt;![CDATA[]]&gt;</code> instead.</para>
           <para>
           	II) Note that we are referring to <code>firstName</code> directly and this is the parameter name not the actual field name. If you want to refer the field you have to use <code>this.firstName</code> instead. 
           </para>
         </note>
 
         <para>
-        	Finally we have to generate the <filename>Person.java</filename> class. For this we can use both Eclipse and Ant, as long as you remember to set or fill in the templatepath setting. For Ant we configure <code>&lt;hibernatetool&gt;</code> task via <literal>the templatepath</literal> attribute as in:
+        	Finally we have to generate the <filename>Person.java</filename> class. For this we can use either Eclipse or Ant, as long as you remember to set or fill in the <code>templatepath</code> setting. For Ant we configure the <code>&lt;hibernatetool&gt;</code> task via the <code>templatepath</code> attribute as in:
         </para>
 
         <programlisting role="XML"><![CDATA[
@@ -492,7 +492,7 @@ public class Person implements Serializable, IAuditable {
     </target>]]></programlisting>
 
         <para>
-        	Invoking the target <code>&lt;hbm2java&gt;</code> will generate on the <filename>${hbm2java.dest.dir}</filename> the file <filename>Person.java</filename>:
+        	Invoking the target <code>&lt;hbm2java&gt;</code> will generate file <filename>Person.java</filename> in <filename>${hbm2java.dest.dir}</filename>:
         </para>
 
         <programlisting role="JAVA"><![CDATA[// default package
@@ -531,11 +531,11 @@ public class Person implements Serializable {
     }]]></programlisting>
 
         <para>
-        	In conclusion, this document is intended to introduce you to Hibernate plugin specific features related to tools bath for the Eclipse and Ant tasks.
+        	In conclusion, this document is intended to introduce you to Hibernate plugin specific features related to tools both for the Eclipse and Ant tasks.
         </para>
 
         <para>
-        	In the <xref linkend="plugins"/> chapter you&apos;ve learned about a set of wizards for creating Mapping files, Configuration file, Console Configuration, become familiar with Mapping and Configuration files editors, tooling for organizing and controlling Reverse Engineering, Hibernate Console and Mapping diagram as well.
+        	In <xref linkend="plugins"/> you&apos;ve learned about a set of wizards for creating Mapping files, Configuration files, Console Configurations, become familiar with Mapping and Configuration files editors, tooling for organizing and controlling Reverse Engineering, Hibernate Console and Mapping diagrams.
         </para>
 
         <para>The rest chapters have explored the use of the <productname>Hibernate Tools</productname> via Ant tasks.</para>
