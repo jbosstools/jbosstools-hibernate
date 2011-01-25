@@ -27,7 +27,6 @@ import org.eclipse.core.filebuffers.ITextFileBufferManager;
 import org.eclipse.core.filebuffers.LocationKind;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -205,76 +204,51 @@ public class NewHibernateMappingPreviewPage extends PreviewWizardPage {
 	 * @return
 	 */
 	protected boolean updateOneChange(final CompositeChange cc, final IJavaProject proj, File fileSrc) {
+		boolean res = false;
 		if (!fileSrc.exists()) {
-			return false;
+			return res;
 		}
 		if (fileSrc.isDirectory()) {
-			return false;
+			return res;
 		}
-		final IPath basePath = proj.getResource().getParent().getLocation();
-		final IPath projPath = proj.getResource().getLocation();
 		final IPath place2Gen = getRootPlace2Gen().append(proj.getElementName());
-		IPath filePathFrom = new Path(fileSrc.getPath());
-		IPath filePathTo = filePathFrom.makeRelativeTo(place2Gen);
-		filePathTo = projPath.append(filePathTo);
-		final IPath filePathTo_Show = filePathTo.makeRelativeTo(basePath);
-		File fileOrig = filePathTo.toFile();
-		if (fileOrig.exists()) {
-			final IPath filePathTo_Proj = filePathTo.makeRelativeTo(projPath);
-			class ResHolder {
-				public IResource res2Update = null;
+		final IPath filePathFrom = new Path(fileSrc.getPath());
+		final IPath filePathTo_Proj = filePathFrom.makeRelativeTo(place2Gen);
+		final IPath filePathTo_Show = proj.getPath().append(filePathTo_Proj);
+		final IResource res2Update = proj.getProject().findMember(filePathTo_Proj);
+		if (res2Update != null) {
+			final ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
+			ITextFileBuffer textFileBuffer = bufferManager.getTextFileBuffer(filePathTo_Show, LocationKind.IFILE);
+			if (textFileBuffer == null) {
+				try {
+					bufferManager.connect(filePathTo_Show, LocationKind.IFILE, null);
+					paths2Disconnect.add(filePathTo_Show);
+				} catch (CoreException e) {
+					HibernateConsolePlugin.getDefault().logErrorMessage("CoreException: ", e); //$NON-NLS-1$
+				}
+				textFileBuffer = bufferManager.getTextFileBuffer(filePathTo_Show, LocationKind.IFILE);
 			}
-			final ResHolder res2UpdateHolder = new ResHolder();
-			IResourceVisitor visitor = new IResourceVisitor() {
-
-				public boolean visit(IResource resource) throws CoreException {
-					if (resource.getProjectRelativePath().equals(filePathTo_Proj)) {
-						res2UpdateHolder.res2Update = resource;
-						return false;
-					}
-					if (resource.getProjectRelativePath().isPrefixOf(filePathTo_Proj)) {
-						return true;
-					}
-					return false;
-				}
-				
-			};
-			try {
-				proj.getResource().accept(visitor);
-			} catch (CoreException e1) {
-				//ignore
-			}
-			if (res2UpdateHolder.res2Update != null) {
-				final ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
-				ITextFileBuffer textFileBuffer = bufferManager.getTextFileBuffer(filePathTo_Show, LocationKind.IFILE);
-				if (textFileBuffer == null) {
-					try {
-						bufferManager.connect(filePathTo_Show, LocationKind.IFILE, null);
-						paths2Disconnect.add(filePathTo_Show);
-					} catch (CoreException e) {
-						HibernateConsolePlugin.getDefault().logErrorMessage("CoreException: ", e); //$NON-NLS-1$
-					}
-					textFileBuffer = bufferManager.getTextFileBuffer(filePathTo_Show, LocationKind.IFILE);
-				}
-				if (textFileBuffer != null) {
-					IDocument documentChange = textFileBuffer.getDocument();
-					//
-					String str = readInto(fileSrc);
-					TextEdit textEdit = new ReplaceEdit(0, documentChange.getLength(), str.toString());
-					//
-					TextFileChange change = new TextFileChange(filePathTo_Show.toString(), 
-							(IFile)res2UpdateHolder.res2Update);
-					change.setSaveMode(TextFileChange.LEAVE_DIRTY);
-					change.setEdit(textEdit);
-					cc.add(change);
-				}
+			if (textFileBuffer != null) {
+				IDocument documentChange = textFileBuffer.getDocument();
+				//
+				String str = readInto(fileSrc);
+				TextEdit textEdit = new ReplaceEdit(0, documentChange.getLength(), str.toString());
+				//
+				TextFileChange change = new TextFileChange(filePathTo_Show.toString(), (IFile)res2Update);
+				change.setSaveMode(TextFileChange.LEAVE_DIRTY);
+				change.setEdit(textEdit);
+				cc.add(change);
+				//
+				res = true;
 			}
 		} else {
 			String str = readInto(fileSrc);
 			CreateTextFileChange change = new CreateTextFileChange(filePathTo_Show, str.toString(), null, "hbm.xml"); //$NON-NLS-1$
 			cc.add(change);
+			//
+			res = true;
 		}
-		return true;
+		return res;
 	}
 	
 	/**
