@@ -59,13 +59,13 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 
 		ConsoleConfiguration consoleConfiguration = dbs.getConsoleConfiguration();
 
-		try{
+		try {
 			DefaultDatabaseCollector db = readDatabaseSchema(monitor, consoleConfiguration, dbs.getReverseEngineeringStrategy());
 
 			List<TableContainer> result = new ArrayList<TableContainer>();
 
 			Iterator<Map.Entry<String, List<Table>>> qualifierEntries = db.getQualifierEntries();
-			while ( qualifierEntries.hasNext() ) {
+			while (qualifierEntries.hasNext()) {
 				Map.Entry<String, List<Table>> entry = qualifierEntries.next();
 				result.add(new TableContainer(entry.getKey(), entry.getValue()));
 			}
@@ -77,7 +77,7 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 				}
 
 			});
-		} catch (HibernateException e){
+		} catch (HibernateException e) {
 			HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.LazyDatabaseSchemaWorkbenchAdapter_problems_while_reading_database_schema, e);
 			String out = NLS.bind(HibernateConsoleMessages.LazyDatabaseSchemaWorkbenchAdapter_reading_schema_error, e.getMessage());
 			return new Object[]{out};
@@ -115,11 +115,13 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 					JDBCReader reader = JDBCReaderFactory.newJDBCReader(configuration.getProperties(), settings, strategy);
 					db = new DefaultDatabaseCollector(reader.getMetaDataDialect());
 					reader.readDatabaseSchema(db, settings.getDefaultCatalogName(), settings.getDefaultSchemaName(), new ProgressListenerMonitor(monitor));
-				} catch(HibernateException he) {
+				} catch (HibernateException he) {
 					throw he;
+				} catch (UnsupportedOperationException he) {
+					throw new HibernateException(he);
 				}
-			    finally {
-					if (connectionProvider!=null) {
+				finally {
+					if (connectionProvider != null) {
 						connectionProvider.close();
 					}
 				}
