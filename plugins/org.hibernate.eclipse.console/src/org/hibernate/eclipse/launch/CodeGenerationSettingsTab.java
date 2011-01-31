@@ -309,11 +309,14 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
             return;
         }
 
+        String warning = null;
         if(packageName.isEnabled() && getOutputPackage().length()>0) {
             IStatus val= JavaConventions.validatePackageName(getOutputPackage() );
-            if (val.getSeverity() == IStatus.ERROR || val.getSeverity() == IStatus.WARNING) {
+            if (val.getSeverity() == IStatus.ERROR ) {
                 updateStatus(val.getMessage() );
                 return;
+            } else if (val.getSeverity() == IStatus.WARNING){
+            	warning = val.getMessage();
             }
         }
 
@@ -356,6 +359,10 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
                     setMessage(null);
                 }*/
             }
+        }
+        
+        if (warning != null){
+        	setMessage(warning);
         } else {
             setMessage(null);
         }
