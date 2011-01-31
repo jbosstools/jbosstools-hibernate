@@ -280,16 +280,10 @@ public class ConsoleConfigurationWizardPage extends WizardPage implements
 			if (tabs[i].isValid(currentLaunchConfig)) {
 				if (messageWarning == null) {
 					messageWarning = tabs[i].getMessage();
-					if(messageWarning!=null) {
-						System.out.println(NLS.bind(HibernateConsoleMessages.ConsoleConfigurationWizardPage_warnings, tabs[i].getName(), messageWarning));
-					}
 				}
 			} else {
 				if (messageError == null) {
 					messageError = tabs[i].getErrorMessage();
-					if(messageError!=null) {
-						System.out.println(NLS.bind(HibernateConsoleMessages.ConsoleConfigurationWizardPage_errors, tabs[i].getName(), messageError));
-					}
 				}
 			}
 		}
