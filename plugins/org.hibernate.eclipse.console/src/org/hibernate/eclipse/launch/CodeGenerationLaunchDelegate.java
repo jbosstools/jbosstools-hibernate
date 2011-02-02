@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2005, JBoss Inc., and individual contributors as indicated
+ * Copyright 2005-2011, JBoss Inc., and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -198,13 +198,11 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 		lcwc.setAttribute(DebugPlugin.ATTR_PROCESS_FACTORY_ID, "org.eclipse.ant.ui.remoteAntProcessFactory"); //$NON-NLS-1$
 		// refresh whole workspace
 		//lcwc.setAttribute(RefreshUtil.ATTR_REFRESH_SCOPE, RefreshUtil.MEMENTO_WORKSPACE);
-		return lcwc;
-	}
-
-	public ILaunch getLaunch(ILaunchConfiguration configuration, String mode)
-			throws CoreException {
-		configuration = updateLaunchConfig(configuration);
-		return super.getLaunch(configuration, mode);
+		
+		// https://issues.jboss.org/browse/JBIDE-8235
+		throw new IllegalStateException("'Run in External Process' is not fully implemented. Please do not use it"); //$NON-NLS-1$
+		//1. return lcwc(); - this doesn't print output to console
+		//2. return lcwc.doSave();- This works, but we don't want these temp attributes to be saved
 	}
 
 	public void launch(ILaunchConfiguration configuration, String mode,
