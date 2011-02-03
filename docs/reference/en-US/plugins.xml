@@ -77,7 +77,7 @@
 		<para>
 			To be able to perform reverse engineering, prototype queries, and of course to simply use <property>Hibernate Core</property> a <filename>hibernate.properties</filename> or <filename>hibernate.cfg.xml</filename> file is needed. <property>Hibernate Tools</property> provides a wizard for generating the <filename>hibernate.cfg.xml</filename> file if you do not already have one.
 		</para>
-		<para>Start the wizard by clicking <menuchoice><guimenuitem>New</guimenuitem>
+		<para>Start the wizard by clicking <menuchoice><guimenuitem>File</guimenuitem><guimenuitem>New</guimenuitem>
 				<guimenuitem>Other</guimenuitem>
 			</menuchoice> (<keycombo><keycap>Ctrl</keycap>
 				<keycap>N</keycap>
@@ -85,10 +85,7 @@
     
     <menuchoice><guimenuitem>Hibernate</guimenuitem>
 				<guimenuitem>Hibernate Configuration File (cfg.xml)</guimenuitem>
-			</menuchoice> and click the <guibutton>Next</guibutton> button. For a web Seam project select, in the <property>Web Projects</property> right click on the <filename>WebContent</filename> folder and select <menuchoice><guimenuitem>New</guimenuitem>
-				<guimenuitem>File</guimenuitem>
-				<guimenuitem>Hibernate Configuration 3.0</guimenuitem>
-			</menuchoice>. After selecting the desired location for the <filename>hibernate.cfg.xml</filename> file, you will see the following screen:</para>
+	</menuchoice> and click the <guibutton>Next</guibutton> button.</para>
 		<figure>
 			<title>Hibernate Configuration File Wizard</title>
 			<mediaobject>
@@ -540,7 +537,7 @@
 											<para>Additional mapping files </para>
 										</entry>
 										<entry>
-											<para>List of additional mapping files that should be loaded. </para>
+											<para>Count of additional mapping files that should be loaded. </para>
 										</entry>
 										<entry>
 											<para>False</para>
@@ -656,7 +653,7 @@
 				When you click on the <guimenuitem>Open Hibernate Code Generation Dialog...</guimenuitem> option the standard Eclipse launcher dialog will appear. 	In this dialog you can create, edit and delete named Hibernate code generation "launchers".
 			</para>
 			<figure id="hib_code_gen">
-				<title>Getting Hibernate Code Generation Wizard</title>
+				<title>Getting Hibernate Code Generation Launcher</title>
 				<mediaobject>
 					<imageobject role="fo">
 						<imagedata fileref="images/plugins/plugins_6.png" format="PNG"/>
@@ -668,7 +665,7 @@
 			</figure>
 			<para/>
 			<figure>
-				<title>Hibernate Code Generation Wizard</title>
+				<title>Hibernate Code Generation Launcher</title>
 				<mediaobject>
 					<imageobject role="fo">
 						<imagedata align="center" scale="80" fileref="images/plugins/plugins_7.png" format="PNG" />
