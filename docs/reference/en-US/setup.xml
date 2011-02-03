@@ -6,75 +6,19 @@
   </para>
 	<note>
 		<title>Note:</title>
-		<para>The <productname>Hibernate Tools 3.3.0</productname> (the current release version) requires Eclipse Galileo 3.5.</para>
+		<para>The <productname>Hibernate Tools 3.4.0</productname> (the current release version) requires Eclipse Helios (3.6).</para>
 	</note>
 	<section>
 		<title>JBoss Tools</title>
 		<para>
-			<productname>JBoss Tools 3.2.0</productname> (the latest release) includes <productname>Hibernate Tools 3.3.0</productname> and thus no additional steps are required beyond downloading and installing <productname>JBoss Tools</productname>. If you need to update to a newer version of the <productname>Hibernate Tools</productname> just follow the instructions in <xref linkend="eclipse_ide"/>.
+			<productname>JBoss Tools 3.4.0</productname> (the latest release) includes <productname>Hibernate Tools 3.3.0</productname> and thus no additional steps are required beyond downloading and installing <productname>JBoss Tools</productname>. If you need to update to a newer version of the <productname>Hibernate Tools</productname> just follow the instructions in <xref linkend="eclipse_ide"/>.
 		</para>
 	</section>
 	<section id="eclipse_ide">
 		<title>Eclipse IDE</title>
 		<para>
-			To install the <productname>Hibernate Tools</productname> into any <productname>Eclipse 3.5</productname> based IDE you can either use the <ulink url="http://download.jboss.org/jbosstools/updates/stable/">JBoss Tools Update Site</ulink> or install it manually.
+			To install the <productname>Hibernate Tools</productname> into any <productname>Eclipse 3.6</productname> based IDE you can either use the <ulink url="http://download.jboss.org/jbosstools/updates/stable/">JBoss Tools Update Site</ulink>.
     </para>
-		<para>If you want to install the <property>Hibernate Tools</property> distribution manually you need to:</para>
-		<itemizedlist>
-			<listitem>
-				<para>Download from www.eclipse.org:</para>
-				<itemizedlist>
-					<listitem>
-						<para>birt-report-framework-2_5_0.zip</para>
-					</listitem>
-					<listitem>
-						<para>birt-wtp-integration-sdk-2_3_2.zip</para>
-					</listitem>
-					<listitem>
-						<para>dtp-sdk_1.7.0.zip</para>
-					</listitem>
-					<listitem>
-						<para>eclipse-SDK-3.5-win32.zip</para>
-					</listitem>
-					<listitem>
-						<para>emf-runtime-2.5.0.zip</para>
-					</listitem>
-					<listitem>
-						<para>GEF-SDK-3.5.0.zip</para>
-					</listitem>
-					<listitem>
-						<para>org.eclipse.swtbot.eclipse.test-2.0.0.371-dev-e35.zip</para>
-					</listitem>
-					<listitem>
-						<para>org.eclipse.swtbot.eclipse-2.0.0.340-dev.zip</para>
-					</listitem>
-					<listitem>
-						<para>site-1.6.2.zip</para>
-					</listitem>
-					<listitem>
-						<para>tptp.sdk-TPTP-4.6.0.zip</para>
-					</listitem>
-					<listitem>
-						<para>wtp-sdk-R-3.1-20090616035105.zip</para>
-					</listitem>
-					<listitem>
-						<para>xsd-runtime-2.5.0.zip</para>
-					</listitem>
-				</itemizedlist>
-			</listitem>
-			<listitem>
-				<para>Unpack these files into the <productname>Eclipse</productname> install folder.</para>
-			</listitem>
-			<listitem>
-				<para>
-					Download <ulink url="http://downloads.sourceforge.net/project/jboss/JBossTools/JBossTools3.1.0.CR1/HibernateTools-3.3.0.v200912250601M-H198-CR1.zip">Hibernate Tools</ulink>from <ulink url="https://www.hibernate.org/6.html">hibernate.org-Download Overview</ulink>.
-				</para>
-
-			</listitem>
-			<listitem>
-				<para>Unpack <property>Hibernate Tools</property> in the <filename>eclipse/dropins</filename> folder</para>
-			</listitem>
-		</itemizedlist>
 		<note>
 			<title>Note:</title>
 			<para>
