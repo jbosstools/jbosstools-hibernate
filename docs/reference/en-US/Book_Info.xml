@@ -7,7 +7,7 @@
 	<productname>JBoss Developer Studio</productname>
 	<productnumber>4.0</productnumber>
 	<edition>4.0.0</edition>
-	<pubsnumber>13</pubsnumber>
+	<pubsnumber>14</pubsnumber>
 	<abstract>
 		<para>
 			The Hibernate Tools Reference Guide explains how to use the Hibernate Tools to perform reverse engineering, code generation, visualization and interaction with Hibernate.
