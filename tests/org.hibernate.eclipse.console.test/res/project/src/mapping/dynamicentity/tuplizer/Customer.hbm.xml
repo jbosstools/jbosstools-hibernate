@@ -3,7 +3,7 @@
 	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping package="mapping.dynamicentity">
+<hibernate-mapping package="mapping.dynamicentity.tuplizer">
 
     <!--
         Mapping the Customer and Company interfaces.  Our custom Interceptor

@@ -43,7 +43,7 @@ public class MappingTestsAnnotations extends MappingTestsBase {
 			projName, File.separator + projName + File.separator + annotationsMarkerCfgXml);
 	}
 
-	static final String annotationsMarkerStr = TestProject.SRC_FOLDER + File.separator + "annotations"; //$NON-NLS-1$
+	public static final String annotationsMarkerStr = TestProject.SRC_FOLDER + File.separator + "annotations"; //$NON-NLS-1$
 
 	public static final FileFilter filterFoldersAnnotations = new FileFilter() {
 		public boolean accept(File f) {

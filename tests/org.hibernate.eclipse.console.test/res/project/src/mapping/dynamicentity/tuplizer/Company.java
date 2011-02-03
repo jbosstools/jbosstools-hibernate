@@ -1,4 +1,4 @@
-package mapping.dynamicentity;
+package mapping.dynamicentity.tuplizer;
 
 /**
  * @author <a href="mailto:steve@hibernate.org">Steve Ebersole </a>

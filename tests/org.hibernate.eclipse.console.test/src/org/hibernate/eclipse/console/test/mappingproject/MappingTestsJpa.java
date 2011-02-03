@@ -35,8 +35,8 @@ public class MappingTestsJpa extends MappingTestsBase {
 				testProject.getIProject().getName(), "PetClinic"); //$NON-NLS-1$
 	}
 
-	static final String jpaMarkerStr = TestProject.SRC_FOLDER + File.separator + "jpa"; //$NON-NLS-1$
-	static final String jpaMarkerMetaInf = TestProject.SRC_FOLDER + File.separator + "meta-inf"; //$NON-NLS-1$
+	public static final String jpaMarkerStr = TestProject.SRC_FOLDER + File.separator + "jpa"; //$NON-NLS-1$
+	public static final String jpaMarkerMetaInf = TestProject.SRC_FOLDER + File.separator + "meta-inf"; //$NON-NLS-1$
 
 	public static final FileFilter filterFoldersJpa = new FileFilter() {
 		public boolean accept(File f) {

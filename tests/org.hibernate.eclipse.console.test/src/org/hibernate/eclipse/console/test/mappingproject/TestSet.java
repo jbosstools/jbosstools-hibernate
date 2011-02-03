@@ -47,7 +47,13 @@ public class TestSet {
 		test4.setConsoleConfigName(consoleConfigName);
 		test4.setTestPackage(testPackage);
 		/**/
+		CheckConsoleConfigTest test0 = new CheckConsoleConfigTest("testCheckConsoleConfiguration"); //$NON-NLS-1$
+		test0.setConsoleConfigName(consoleConfigName);
+		test0.setTestPackage(testPackage);
 		//
+		// CheckConsoleConfigTest should be a first test in the suite array,
+		// cause it build Hibernate Console Configuration for testing 
+		suite.addTest(test0);
 		/**/
 		suite.addTest(test4);
 		suite.addTest(test2);

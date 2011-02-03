@@ -1,4 +1,4 @@
-package mapping.dynamicentity;
+package mapping.dynamicentity.tuplizer;
 
 import java.util.Set;
 

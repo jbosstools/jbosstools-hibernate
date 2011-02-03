@@ -13,17 +13,24 @@ package org.hibernate.eclipse.console.test.project;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.osgi.util.NLS;
+import org.hibernate.eclipse.HibernatePlugin;
+import org.hibernate.eclipse.console.test.ConsoleTestMessages;
 import org.hibernate.eclipse.console.test.mappingproject.Customization;
+import org.hibernate.eclipse.console.test.mappingproject.MappingTestsAnnotations;
+import org.hibernate.eclipse.console.test.mappingproject.MappingTestsJpa;
 import org.hibernate.eclipse.console.test.utils.FilesTransfer;
 
 /**
@@ -35,6 +42,7 @@ public class ConfigurableTestProject extends TestProject {
 
 	public static final String RESOURCE_SRC_PATH = "res/project/src/".replaceAll("//", File.separator); //$NON-NLS-1$ //$NON-NLS-2$
 	public static final String RESOURCE_LIB_PATH = "res/project/lib/".replaceAll("//", File.separator); //$NON-NLS-1$ //$NON-NLS-2$
+	public static final String HIBERNATE_PLUGIN_LIB_PATH = "lib"; //$NON-NLS-1$
 	
 	protected ArrayList<String> foldersList = new ArrayList<String>();
 
@@ -53,6 +61,9 @@ public class ConfigurableTestProject extends TestProject {
 	   	long startCopyLibs = System.currentTimeMillis();
 		final File libFolder = getFolder(RESOURCE_LIB_PATH);
 		List<IPath> libs = copyLibs(libFolder);
+		final File libFolderHibernatePlugin = getHibernatePluginFolder(HIBERNATE_PLUGIN_LIB_PATH);
+		List<IPath> libsHibernatePlugin = copyLibs(libFolderHibernatePlugin);
+		libs.addAll(libsHibernatePlugin);
 	   	long startBuild = System.currentTimeMillis();
 		generateClassPath(libs, sourcePackageFragment);
 		fullBuild();
@@ -63,6 +74,18 @@ public class ConfigurableTestProject extends TestProject {
 			System.out.println("copyLibs: " + ( ( startBuild - startCopyLibs ) / 1000 )); //$NON-NLS-1$
 			System.out.println("build: " + ( ( stopBuild - startBuild ) / 1000 )); //$NON-NLS-1$
 		}
+	}
+	
+	protected File getHibernatePluginFolder(String path) throws IOException {
+		URL entry = HibernatePlugin.getDefault().getBundle().getEntry(path);
+		URL resProject = FileLocator.resolve(entry);
+		String resolvePath = FileLocator.resolve(resProject).getFile();
+		File folder = new File(resolvePath);
+		if (!folder.exists()) {
+			String out = NLS.bind(ConsoleTestMessages.MappingTestProject_folder_not_found, path);
+			throw new RuntimeException(out);
+		}
+		return folder;
 	}
 
 	public void restartTestFolders() {
@@ -119,8 +142,17 @@ public class ConfigurableTestProject extends TestProject {
 		return true;
 	}
 
+	public static final FileFilter filterFoldersOnlyCore = new FileFilter() {
+		public boolean accept(File f) {
+			return f.exists() && f.isDirectory() && !f.isHidden() &&
+				(!f.getAbsolutePath().toLowerCase().contains(MappingTestsAnnotations.annotationsMarkerStr)) &&
+				(!f.getAbsolutePath().toLowerCase().contains(MappingTestsJpa.jpaMarkerStr)) && 
+				(!f.getAbsolutePath().toLowerCase().contains(MappingTestsJpa.jpaMarkerMetaInf));
+		}
+	};
+	
 	public boolean createTestFoldersList() {
-		return createTestFoldersList(FilesTransfer.filterFilesJava, FilesTransfer.filterFolders);
+		return createTestFoldersList(FilesTransfer.filterFilesJava, filterFoldersOnlyCore);
 	}
 
 	public boolean useAllSources() {
