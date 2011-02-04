@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <chapter id="codegen">
   <title>Controlling POJO code generation</title>
 
@@ -462,7 +463,7 @@ public class Person implements Serializable, IAuditable {
 
         <note>
           <title>Note:</title>
-          <para>I) To escape the &amp; symbol we put &amp;amp;. You could use <code> &lt;![CDATA[]]&gt;</code> instead.</para>
+          <para>I) To escape the &amp; symbol we put &amp;amp&semi;. You could use <code> &lt;![CDATA[]]&gt;</code> instead.</para>
           <para>
           	II) Note that we are referring to <code>firstName</code> directly and this is the parameter name not the actual field name. If you want to refer the field you have to use <code>this.firstName</code> instead. 
           </para>
