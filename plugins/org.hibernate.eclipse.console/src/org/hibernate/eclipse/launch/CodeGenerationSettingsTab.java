@@ -58,6 +58,7 @@ import org.eclipse.ui.PlatformUI;
 import org.hibernate.cfg.reveng.ReverseEngineeringStrategy;
 import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.ImageConstants;
+import org.hibernate.console.KnownConfigurations;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.utils.DialogSelectionHelper;
@@ -457,7 +458,12 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
 		if (attributes == null) {
 			return;
 		}
-		consoleConfigurationName.setText(attributes.getConsoleConfigurationName());
+		if (attributes.getConsoleConfigurationName() == null
+				|| !KnownConfigurations.getInstance().isKnownConfiguration(attributes.getConsoleConfigurationName())){
+			consoleConfigurationName.setText(NULL_CONFIG);
+		} else {
+			consoleConfigurationName.setText(attributes.getConsoleConfigurationName());
+		}
 		preferRawCompositeIds.setSelection(attributes.isPreferBasicCompositeIds());
 		autoManyToMany.setSelection( attributes.detectManyToMany() );
 		autoVersioning.setSelection( attributes.detectOptimisticLock() );
