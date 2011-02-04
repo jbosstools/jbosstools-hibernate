@@ -26,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -58,6 +59,8 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
+import org.eclipse.debug.internal.core.LaunchConfiguration;
+import org.eclipse.debug.internal.core.LaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.RefreshTab;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -174,6 +177,51 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 		createFile(externalPropFileName, propFileContentPreSave);
 	}
 	
+	public class MockLaunchConfigWorkingCopy extends LaunchConfigurationWorkingCopy {
+		
+		protected final Map<String, String> tmpAttr;
+
+		public MockLaunchConfigWorkingCopy(LaunchConfiguration original, Map<String, String> tmpAttr) throws CoreException {
+			super(original);
+			this.tmpAttr = tmpAttr;
+		}
+		
+		@Override
+		public String getAttribute(String attributeName, String defaultValue) throws CoreException {
+			String res = tmpAttr.get(attributeName);
+			if (res == null) {
+				res = super.getAttribute(attributeName, defaultValue);
+			}
+			return res;
+		}
+	}
+	
+	public class MockLaunchConfig extends LaunchConfiguration {
+		
+		protected final Map<String, String> tmpAttr = new HashMap<String, String>();
+
+		public MockLaunchConfig(ILaunchConfiguration original) throws CoreException {
+			super(original.getMemento());
+		}
+
+		public void setTmpAttribute(String attributeName, String value) {
+			tmpAttr.put(attributeName, value);
+		}
+		
+		@Override
+		public String getAttribute(String attributeName, String defaultValue) throws CoreException {
+			String res = tmpAttr.get(attributeName);
+			if (res == null) {
+				res = super.getAttribute(attributeName, defaultValue);
+			}
+			return res;
+		}
+		
+		public ILaunchConfigurationWorkingCopy getWorkingCopy() throws CoreException {
+			return new MockLaunchConfigWorkingCopy(this, tmpAttr);
+		}
+	}
+	
 	/**
 	 * Update launch configuration with attributes required for external process codegen.
 	 * 
@@ -182,7 +230,7 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 	 * @throws CoreException
 	 */
 	public ILaunchConfiguration updateLaunchConfig(ILaunchConfiguration lc) throws CoreException {
-		ILaunchConfigurationWorkingCopy lcwc = lc.getWorkingCopy();
+		MockLaunchConfig mlc = new MockLaunchConfig(lc);
 		String fileName = null;
     	try {
 			fileName = getPath2GenBuildXml().toString();
@@ -190,15 +238,15 @@ public class CodeGenerationLaunchDelegate extends AntLaunchDelegate {
 			throw new CoreException(HibernateConsolePlugin.throwableToStatus(e, 666));
 		}
 		// setup location of Ant build.xml file 
-		lcwc.setAttribute(IExternalToolConstants.ATTR_LOCATION, fileName);
+		mlc.setTmpAttribute(IExternalToolConstants.ATTR_LOCATION, fileName);
 		// setup Ant runner main type
-		lcwc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, 
+		mlc.setTmpAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, 
 			IAntLaunchConstants.MAIN_TYPE_NAME);
 		// setup ant remote process factory
-		lcwc.setAttribute(DebugPlugin.ATTR_PROCESS_FACTORY_ID, "org.eclipse.ant.ui.remoteAntProcessFactory"); //$NON-NLS-1$
+		mlc.setTmpAttribute(DebugPlugin.ATTR_PROCESS_FACTORY_ID, "org.eclipse.ant.ui.remoteAntProcessFactory"); //$NON-NLS-1$
 		// refresh whole workspace
-		//lcwc.setAttribute(RefreshUtil.ATTR_REFRESH_SCOPE, RefreshUtil.MEMENTO_WORKSPACE);
-		return lcwc;
+		//mlc.setTmpAttribute(RefreshUtil.ATTR_REFRESH_SCOPE, RefreshUtil.MEMENTO_WORKSPACE);
+		return mlc;
 	}
 
 	public ILaunch getLaunch(ILaunchConfiguration configuration, String mode)
