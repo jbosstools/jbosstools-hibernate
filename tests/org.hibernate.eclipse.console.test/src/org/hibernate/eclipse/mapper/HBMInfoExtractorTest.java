@@ -26,7 +26,7 @@ public class HBMInfoExtractorTest extends TestCase {
 	private ConfigurableTestProject testProj = null;
 
 	protected void setUp() throws Exception {
-		testProj = new ConfigurableTestProject("HBMInfoProj"); //$NON-NLS-1$
+		testProj = new ConfigurableTestProject("HBMInfoProj" + System.currentTimeMillis()); //$NON-NLS-1$
 	}
 
 	protected void tearDown() throws Exception {
