@@ -124,13 +124,24 @@ public interface ImageConstants {
 	public static final String CHECKBOX_EMPTY = "images/xpl/incomplete_tsk.gif"; //$NON-NLS-1$
 	public static final String RELOAD = "images/reload.gif"; //$NON-NLS-1$
 	public static final String ERROR = "images/error.gif"; //$NON-NLS-1$
+	public static final String EXCLAMATION = "images/exclamation.gif"; //$NON-NLS-1$
 
 	public static final String PINUP = "PINUP"; //$NON-NLS-1$
 	public static final String PINUP_PATH = "images/pinup.png"; //$NON-NLS-1$
-
 	public static final String PINDOWN = "PINDOWN"; //$NON-NLS-1$
 	public static final String PINDOWN_PATH = "images/pindown.png"; //$NON-NLS-1$
+
+	public static final String RUNEXTERN_NO = "RUNEXTERN_NO"; //$NON-NLS-1$
+	public static final String RUNEXTERN_NO_PATH = "images/runextern_no.png"; //$NON-NLS-1$
+	public static final String RUNEXTERN_YES = "RUNEXTERN_YES"; //$NON-NLS-1$
+	public static final String RUNEXTERN_YES_PATH = "images/runextern_yes.png"; //$NON-NLS-1$
+
+	public static final String OVR_ERROR = "images/ovr16/error_co.gif"; //$NON-NLS-1$
+	public static final String OVR_ERROR2 = "images/ovr16/obj_ovr_error.gif"; //$NON-NLS-1$
+	public static final String OVR_DBS_OFF = "images/ovr16/obj_ovr_server_off.gif"; //$NON-NLS-1$
+	public static final String OVR_DBS_CONNECTED = "images/ovr16/obj_ovr_server.gif"; //$NON-NLS-1$
+	public static final String OVR_WARNING = "images/ovr16/warning_co.gif"; //$NON-NLS-1$
+	
 	public static final String PRIMARY_KEY = "PRIMARY_KEY";//$NON-NLS-1$
 	public static final String GENERATOR = "GENERATOR";//$NON-NLS-1$
-
 }

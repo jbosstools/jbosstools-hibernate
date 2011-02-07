@@ -75,8 +75,16 @@ public abstract class ImageMap implements ImageConstants {
         declareRegistryImage(CHECKBOX_FULL, "images/xpl/complete_tsk.gif"); //$NON-NLS-1$
         declareRegistryImage(RELOAD, "images/reload.gif"); //$NON-NLS-1$
         declareRegistryImage(ERROR, "images/error.gif"); //$NON-NLS-1$
+        declareRegistryImage(EXCLAMATION, EXCLAMATION);
 		declareRegistryImage(PINUP, PINUP_PATH);
 		declareRegistryImage(PINDOWN, PINDOWN_PATH);
+		declareRegistryImage(RUNEXTERN_NO, RUNEXTERN_NO_PATH);
+		declareRegistryImage(RUNEXTERN_YES, RUNEXTERN_YES_PATH);
+		declareRegistryImage(OVR_ERROR, OVR_ERROR);
+		declareRegistryImage(OVR_ERROR2, OVR_ERROR2);
+		declareRegistryImage(OVR_DBS_OFF, OVR_DBS_OFF);
+		declareRegistryImage(OVR_DBS_CONNECTED, OVR_DBS_CONNECTED);
+		declareRegistryImage(OVR_WARNING, OVR_WARNING);
 		declareRegistryImage(PRIMARY_KEY, "images/primary_key.gif"); //$NON-NLS-1$
 		declareRegistryImage(GENERATOR, "images/generator.gif"); //$NON-NLS-1$
 	}
