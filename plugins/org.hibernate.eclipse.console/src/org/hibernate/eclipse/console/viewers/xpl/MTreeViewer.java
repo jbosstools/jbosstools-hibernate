@@ -98,6 +98,8 @@ public class MTreeViewer extends TreeViewer {
 
 		for (int i = 0; i < widgets.length; i++) {
 			internalAdd(widgets[i], parentElementOrTreePath, childElements);
+			// call this to refresh icon of parent item
+			updateItem(widgets[i], parentElementOrTreePath);
 		}
 	}
 

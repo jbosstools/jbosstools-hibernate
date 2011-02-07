@@ -23,6 +23,7 @@ package org.hibernate.eclipse.console.workbench;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +49,7 @@ import org.hibernate.eclipse.console.utils.EclipseImages;
 import org.hibernate.mapping.Table;
 
 public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
-
+	
 	public Object[] getChildren(Object o) {
 		return getChildren(o, new NullProgressMonitor());
 	}
@@ -56,9 +57,10 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 	@SuppressWarnings("unchecked")
 	public synchronized Object[] getChildren(Object o, final IProgressMonitor monitor) {
 		LazyDatabaseSchema dbs = getLazyDatabaseSchema( o );
-
+		dbs.setConnected(false);
+		dbs.setErrorFlag(false);
 		ConsoleConfiguration consoleConfiguration = dbs.getConsoleConfiguration();
-
+		Object[] res;
 		try {
 			DefaultDatabaseCollector db = readDatabaseSchema(monitor, consoleConfiguration, dbs.getReverseEngineeringStrategy());
 
@@ -69,20 +71,19 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 				Map.Entry<String, List<Table>> entry = qualifierEntries.next();
 				result.add(new TableContainer(entry.getKey(), entry.getValue()));
 			}
-			return toArray(result.iterator(), TableContainer.class, new Comparator<TableContainer>() {
-
+			res = toArray(result.iterator(), TableContainer.class, new Comparator<TableContainer>() {
 				public int compare(TableContainer arg0, TableContainer arg1) {
-
 					return arg0.getName().compareTo(arg1.getName());
 				}
-
 			});
+			dbs.setConnected(true);
 		} catch (HibernateException e) {
 			HibernateConsolePlugin.getDefault().logErrorMessage(HibernateConsoleMessages.LazyDatabaseSchemaWorkbenchAdapter_problems_while_reading_database_schema, e);
 			String out = NLS.bind(HibernateConsoleMessages.LazyDatabaseSchemaWorkbenchAdapter_reading_schema_error, e.getMessage());
-			return new Object[]{out};
+			res = new Object[] { out };
+			dbs.setErrorFlag(true);
 		}
-
+		return res;
 	}
 
 	private LazyDatabaseSchema getLazyDatabaseSchema(Object o) {
@@ -90,7 +91,15 @@ public class LazyDatabaseSchemaWorkbenchAdapter extends BasicWorkbenchAdapter {
 	}
 
 	public ImageDescriptor getImageDescriptor(Object object) {
-		return EclipseImages.getImageDescriptor(ImageConstants.TABLE);
+		LazyDatabaseSchema dbs = getLazyDatabaseSchema(object);
+		Map<String, Integer> imageMap = new HashMap<String, Integer>();
+		if (dbs.isConnected()) {
+			imageMap.put(ImageConstants.OVR_DBS_CONNECTED, OverlayImageIcon.BOTTOM_LEFT);
+		}
+		if (dbs.getErrorFlag()) {
+			imageMap.put(ImageConstants.OVR_WARNING, OverlayImageIcon.BOTTOM_LEFT);
+		}
+        return new OverlayImageIcon(EclipseImages.getImage(ImageConstants.TABLE), imageMap);
 	}
 
 	public String getLabel(Object o) {

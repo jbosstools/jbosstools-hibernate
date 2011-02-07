@@ -29,6 +29,8 @@ public class LazyDatabaseSchema {
 
 	private final ConsoleConfiguration ccfg;
 	private final ReverseEngineeringStrategy res;
+	protected boolean connectedFlag = false;
+	protected boolean errorFlag = false;
 	
 	public LazyDatabaseSchema(ConsoleConfiguration ccfg) {
 		this(ccfg, new DefaultReverseEngineeringStrategy());
@@ -44,6 +46,22 @@ public class LazyDatabaseSchema {
 
 	public ReverseEngineeringStrategy getReverseEngineeringStrategy() {
 		return res;
+	}
+	
+	public boolean isConnected() {
+		return connectedFlag;
+	}
+	
+	public void setConnected(boolean connectedFlag) {
+		this.connectedFlag = connectedFlag;
+	}
+	
+	public boolean getErrorFlag() {
+		return errorFlag;
+	}
+	
+	public void setErrorFlag(boolean errorFlag) {
+		this.errorFlag = errorFlag;
 	}
 		
 }
