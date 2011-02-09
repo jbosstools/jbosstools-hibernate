@@ -30,6 +30,7 @@ import org.hibernate.console.ConsoleConfiguration;
 import org.hibernate.console.KnownConfigurations;
 import org.hibernate.console.execution.ExecutionContext;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.dialect.resolver.DialectFactory;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.engine.Mapping;
 import org.hibernate.mapping.Column;
@@ -154,27 +155,37 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 		}
 		final Configuration config = getConfig();
 		if (mapping == null && config != null) {
-			mapping = config.buildMapping();
+			final ConsoleConfiguration consoleConfig = getConsoleConfig();
+			mapping = (Mapping)consoleConfig.execute(new ExecutionContext.Command() {
+				public Object execute() {
+					return config.buildMapping();
+				}
+			} );
 		}
 		if (dialect == null && config != null) {
 			final String dialectName = config.getProperty(Environment.DIALECT);
 			if (dialectName != null) {
 				try {
-					dialect = (Dialect) Class.forName(dialectName).newInstance();
-				} catch (InstantiationException e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage("Exception: ", e); //$NON-NLS-1$
-				} catch (IllegalAccessException e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage("Exception: ", e); //$NON-NLS-1$
-				} catch (ClassNotFoundException e) {
-					HibernateConsolePlugin.getDefault().logErrorMessage("Exception: ", e); //$NON-NLS-1$
+					dialect = DialectFactory.buildDialect(config.getProperties());
+				} catch (HibernateException e) {
+					HibernateConsolePlugin.getDefault().logErrorMessage("HibernateException: ", e); //$NON-NLS-1$
 				}
 			}
 		}
 		if (dialect != null) {
+			final ConsoleConfiguration consoleConfig = getConsoleConfig();
 			try {
-				sqlType = column.getSqlType(dialect, mapping);
-			} catch (Exception ex) {
-				// ignore it
+				sqlType = (String)consoleConfig.execute(new ExecutionContext.Command() {
+					public Object execute() {
+						return column.getSqlType(dialect, mapping);
+					}
+				} );
+			} catch (HibernateException e) {
+				//type is not accessible
+				HibernateConsolePlugin.getDefault().logErrorMessage("HibernateException: ", e); //$NON-NLS-1$
+			} catch (Exception e) {
+				// do not ignore it - print in Error Log
+				HibernateConsolePlugin.getDefault().logErrorMessage("Exception: ", e); //$NON-NLS-1$
 			}
 		}
 		if (sqlType != null) {
