@@ -89,18 +89,19 @@ public class TestProject {
 
 	public void deleteIProject(boolean deleteContent) {
 		Exception ex = null;
-		for (int i = 0; i < 4; i++) {
+		final int maxTryNum = 20;
+		for (int i = 0; i < maxTryNum; i++) {
 			ex = null;
 			try {
 				IContainer container = project.getParent();
 				project.delete(deleteContent, true, null);
 				container.refreshLocal(IResource.DEPTH_ONE, null);
-				i = 4;
+				i = maxTryNum;
 			} catch (CoreException e) {
 				ex = e;
-				if (i < 3) {
+				if (i + 1 < maxTryNum) {
 					try {
-						Thread.sleep(3000);
+						Thread.sleep((i + 1) * 500);
 					} catch (InterruptedException e1) {
 					}
 				}
@@ -226,7 +227,12 @@ public class TestProject {
 	public void fullBuild() throws CoreException {
 		IPackageFragmentRoot sourcePackageFragment = createSourceFolder();
 		project.refreshLocal(IResource.DEPTH_INFINITE, null);
-		//sourcePackageFragment.getResource().refreshLocal();
+		////sourcePackageFragment.getResource().refreshLocal();
+		//project.build(IncrementalProjectBuilder.CLEAN_BUILD, new NullProgressMonitor());
+		//project.refreshLocal(IResource.DEPTH_INFINITE, null);
 		project.build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
+		project.refreshLocal(IResource.DEPTH_INFINITE, null);
+		project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, new NullProgressMonitor());
+		project.refreshLocal(IResource.DEPTH_INFINITE, null);
 	}
 }
