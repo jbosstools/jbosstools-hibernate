@@ -33,6 +33,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.jdt.core.JavaConventions;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.ComboDialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.DialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.IDialogFieldListener;
@@ -327,6 +328,16 @@ public class CodeGenerationSettingsTab extends	AbstractLaunchConfigurationTab {
         		updateStatus(msg);
         		return;
         	}
+        }
+        
+        if(reverseEngineeringStrategy.isEnabled() && reverseEngineeringStrategy.getText().trim().length()>0) {
+        	IStatus val= JavaConventions.validateJavaTypeName(getReverseEngineeringStrategy(),JavaCore.VERSION_1_5, JavaCore.VERSION_1_5 );
+            if (val.getSeverity() == IStatus.ERROR ) {
+                updateStatus(val.getMessage() );
+                return;
+            } else if (val.getSeverity() == IStatus.WARNING){
+            	warning = val.getMessage();
+            }
         }
 
         if(useOwnTemplates.isSelected() ) {
