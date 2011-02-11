@@ -1,5 +1,5 @@
 /*******************************************************************************
-  * Copyright (c) 2007-2008 Red Hat, Inc.
+  * Copyright (c) 2007-2011 Red Hat, Inc.
   * Distributed under license by Red Hat, Inc. All rights reserved.
   * This program is made available under the terms of the
   * Eclipse Public License v1.0 which accompanies this distribution,
@@ -63,7 +63,7 @@ public class RenameResourceParticipant extends RenameParticipant {
 		
 		configs = HibernateRefactoringUtil.getAffectedCodeGenerationConfigs(fResource.getFullPath());
 		for (int i= 0; i < configs.length; i++) {
-			change = new CodeGenerationReseourceNameChange(configs[i], fResource.getFullPath(),
+			change = new CodeGenerationResourceNameChange(configs[i], fResource.getFullPath(),
 					fResource.getParent().getFullPath().append(getArguments().getNewName()));
 			changes.add(change);
 		}
