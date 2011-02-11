@@ -1,5 +1,5 @@
 /*******************************************************************************
-  * Copyright (c) 2007-2008 Red Hat, Inc.
+  * Copyright (c) 2007-2011 Red Hat, Inc.
   * Distributed under license by Red Hat, Inc. All rights reserved.
   * This program is made available under the terms of the
   * Eclipse Public License v1.0 which accompanies this distribution,
@@ -30,12 +30,15 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ProjectScope;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -43,6 +46,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
@@ -51,9 +55,12 @@ import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.hibernate.eclipse.console.HibernateConsoleMessages;
 import org.hibernate.eclipse.console.HibernateConsolePlugin;
 import org.hibernate.eclipse.console.model.impl.ExporterFactoryStrings;
+import org.hibernate.eclipse.console.properties.HibernatePropertiesConstants;
 import org.hibernate.eclipse.console.utils.LaunchHelper;
 import org.hibernate.eclipse.launch.HibernateLaunchConstants;
 import org.hibernate.eclipse.launch.IConsoleConfigurationLaunchConstants;
+import org.hibernate.eclipse.nature.HibernateNature;
+import org.osgi.service.prefs.Preferences;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -96,6 +103,10 @@ public class HibernateRefactoringUtil {
 	public static boolean isCodeGenerationConfigAffected(ILaunchConfiguration config, IPath oldPath) throws CoreException{
 		return isAttributesAffected(config, oldPath, cgKeys) || isExportersAffected(config, oldPath);
 	}
+	
+	public static boolean isCodeGenerationConfigAffected(ILaunchConfiguration config, String oldCCName) throws CoreException{
+		return isAttributesAffected(config, oldCCName, HibernateLaunchConstants.ATTR_CONSOLE_CONFIGURATION_NAME);
+	}
 
 	private static boolean isAttributesAffected(ILaunchConfiguration config, IPath oldPath, String[] paths) throws CoreException{
 		String attrib = null;
@@ -103,6 +114,22 @@ public class HibernateRefactoringUtil {
 			attrib = config.getAttribute(paths[i], (String)null);
 			if (isAttributeChanged(attrib, oldPath))
 				return true;
+		}
+		return false;
+	}
+	
+	private static boolean isAttributesAffected(ILaunchConfiguration config, String oldValue, String attribute) throws CoreException{
+		String value = config.getAttribute(attribute, (String)null);
+		return value == null ? (oldValue == null) : value.equals(oldValue);
+	}
+	
+	private static boolean isProjectAffected(IProject project, String oldCCName) throws CoreException {
+		if (project.isOpen() && project.hasNature(HibernateNature.ID)){
+			IScopeContext scope = new ProjectScope(project);
+
+			Preferences node = scope.getNode(HibernatePropertiesConstants.HIBERNATE_CONSOLE_NODE);
+			String defaultConfiguration = node.get(HibernatePropertiesConstants.DEFAULT_CONFIGURATION, "");
+			return defaultConfiguration.equals(oldCCName);
 		}
 		return false;
 	}
@@ -437,6 +464,38 @@ public class HibernateRefactoringUtil {
 			List<ILaunchConfiguration> list = new ArrayList<ILaunchConfiguration>();
 			for(int i = 0; i < configs.length && configs[i].exists(); i++) {
 				if (HibernateRefactoringUtil.isCodeGenerationConfigAffected(configs[i], path)) list.add(configs[i]);
+			}
+			configs = list.toArray(new ILaunchConfiguration[list.size()]);
+		}
+		catch(CoreException e) {
+			configs = new ILaunchConfiguration[0];
+			HibernateConsolePlugin.getDefault().logErrorMessage( ERROR_MESS, e );
+		}
+
+		return configs;
+	}
+	
+	public static IProject[] getAffectedProjects(String oldConsoleConfigurationName){
+		List<IProject> affectedProjects = new ArrayList<IProject>();
+		for (IProject project : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
+			try {
+				if (isProjectAffected(project, oldConsoleConfigurationName)){
+					affectedProjects.add(project);
+				}
+			} catch (CoreException e) {
+				HibernateConsolePlugin.getDefault().logErrorMessage( ERROR_MESS, e );
+			}
+		}
+		return affectedProjects.toArray(new IProject[affectedProjects.size()]);
+	}
+	
+	public static ILaunchConfiguration[] getAffectedCodeGenerationConfigs(String oldCCName){
+		ILaunchConfiguration[] configs = null;
+		try {
+			configs = LaunchHelper.findCodeGenerationConfigs();
+			List<ILaunchConfiguration> list = new ArrayList<ILaunchConfiguration>();
+			for(int i = 0; i < configs.length && configs[i].exists(); i++) {
+				if (HibernateRefactoringUtil.isCodeGenerationConfigAffected(configs[i], oldCCName)) list.add(configs[i]);
 			}
 			configs = list.toArray(new ILaunchConfiguration[list.size()]);
 		}

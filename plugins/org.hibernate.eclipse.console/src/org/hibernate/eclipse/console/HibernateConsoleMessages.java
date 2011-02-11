@@ -485,6 +485,8 @@ public class HibernateConsoleMessages extends NLS {
 	public static String PathHelper_has_to_be_folder_or_project;
 	public static String PathHelper_has_to_be_file;
 	public static String PathHelper_project_for_is_closed;
+	
+	public static String EditConsoleConfiguration_rename_refactoring_error_totle;
 	//
 	public static String HibernateRefactoringUtil_error_during_refactoring;
 	public static String HibernateRefactoringUtil_error_occured_while_updating_classpath;

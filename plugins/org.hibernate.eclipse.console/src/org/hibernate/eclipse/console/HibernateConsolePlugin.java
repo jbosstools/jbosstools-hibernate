@@ -28,10 +28,12 @@ import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdapterManager;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
@@ -47,6 +49,9 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentExtension3;
 import org.eclipse.jface.text.IDocumentPartitioner;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.ltk.core.refactoring.CheckConditionsOperation;
+import org.eclipse.ltk.core.refactoring.PerformRefactoringOperation;
+import org.eclipse.ltk.core.refactoring.participants.ProcessorBasedRefactoring;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorPart;
@@ -69,6 +74,7 @@ import org.hibernate.eclipse.criteriaeditor.CriteriaEditorStorage;
 import org.hibernate.eclipse.hqleditor.HQLEditorInput;
 import org.hibernate.eclipse.hqleditor.HQLEditorStorage;
 import org.hibernate.eclipse.launch.ICodeGenerationLaunchConstants;
+import org.hibernate.eclipse.launch.core.refactoring.ConsoleConfigurationRenameProcessor;
 import org.hibernate.eclipse.logging.PluginLogger;
 import org.hibernate.eclipse.logging.xpl.EclipseLogger;
 import org.osgi.framework.BundleContext;
@@ -196,6 +202,7 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 						KnownConfigurations instance = KnownConfigurations.getInstance();
 						ConsoleConfiguration oldcfg = instance.find( movedFrom.getName() );
 						if(oldcfg!=null) {
+							refactor(movedFrom, configuration);//call this before we remove old configuration
 							oldcfg.reset(); // reset it no matter what.
 							instance.removeConfiguration(oldcfg, false);
 						}
@@ -209,8 +216,33 @@ public class HibernateConsolePlugin extends AbstractUIPlugin implements PluginLo
 						instance.addConfiguration(new ConsoleConfiguration(adapter), true);
 					}
 
-					}
 				}
+			}
+			
+			private void refactor (ILaunchConfiguration oldConfiguration, ILaunchConfiguration newConfiguration) {
+				if (!oldConfiguration.getName().equals(newConfiguration.getName())){
+					//only rename of console configuration refactoring is supported.
+					ConsoleConfigurationRenameProcessor proc = new ConsoleConfigurationRenameProcessor(oldConfiguration, newConfiguration.getName());
+
+			    	//  Refactor for rename
+			    	PerformRefactoringOperation refOperation = new PerformRefactoringOperation(
+			    			new ProcessorBasedRefactoring(proc), 
+			    				CheckConditionsOperation.ALL_CONDITIONS);
+			    	try 
+			    	{
+			    		ResourcesPlugin.getWorkspace().run(refOperation, null);
+			    	}
+			    	catch (OperationCanceledException oce) 
+			    	{
+			    		throw new OperationCanceledException();			
+			    	}
+			    	catch (CoreException ce) 
+			    	{
+			    		HibernateConsolePlugin.openError(new Shell(), HibernateConsoleMessages.EditConsoleConfiguration_rename_refactoring_error_totle,
+			    				ce.getLocalizedMessage(), ce, HibernateConsolePlugin.PERFORM_SYNC_EXEC);
+			    	}
+				}
+			}
 
 			private boolean isTemporary(ILaunchConfiguration configuration) {
 				boolean temporary = true;

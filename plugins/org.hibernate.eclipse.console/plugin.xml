@@ -714,6 +714,21 @@
             </with>
          </enablement>
       </renameParticipant>
+      <renameParticipant
+            class="org.hibernate.eclipse.launch.core.refactoring.ConsoleConfigurationRenameParticipant"
+            id="org.hibernate.eclipse.console.renameParticipant1"
+            name="ConsoleConfigurationRenameParticipant">
+         <enablement>
+            <with
+                  variable="element">
+               <and>
+                  <instanceof
+                        value="org.eclipse.debug.internal.core.LaunchConfiguration">
+                  </instanceof>
+               </and>
+            </with>
+         </enablement>
+      </renameParticipant>
    </extension>
    <extension
          point="org.eclipse.ltk.core.refactoring.moveParticipants">
