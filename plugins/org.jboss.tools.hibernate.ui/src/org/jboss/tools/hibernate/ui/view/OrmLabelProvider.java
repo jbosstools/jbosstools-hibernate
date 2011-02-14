@@ -190,7 +190,7 @@ public class OrmLabelProvider extends LabelProvider implements IColorProvider, I
 		}
 		if (sqlType != null) {
 			column.setSqlType(sqlType);
-			return true;
+			return true; 
 		}
 		return false;
 	}
