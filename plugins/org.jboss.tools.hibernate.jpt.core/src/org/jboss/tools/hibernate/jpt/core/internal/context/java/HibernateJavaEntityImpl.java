@@ -12,7 +12,6 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
@@ -29,7 +28,6 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -264,15 +262,7 @@ implements HibernateJavaEntity {
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		this.validateGenericGenerator(messages, reporter, astRoot);
 		this.validateForeignKey(messages, astRoot);
-	}
-	
-	protected void validateGenericGenerator(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		ListIterator<JavaGenericGenerator> genericGenerators = getGeneratorContainer().genericGenerators();
-		while (genericGenerators.hasNext()) {
-			genericGenerators.next().validate(messages, reporter, astRoot);
-		}	
 	}
 	
 	protected void validateForeignKey(List<IMessage> messages, CompilationUnit astRoot) {
@@ -295,24 +285,6 @@ implements HibernateJavaEntity {
 		message.setOffset(textRange.getOffset());
 		message.setLength(textRange.getLength());
 		messages.add(message);		
-	}
-	
-	@Override
-	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter,
-			CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
-		if (result != null) {
-			return result;
-		}
-		ListIterator<JavaGenericGenerator> genericGenerators = getGeneratorContainer().genericGenerators();
-		while (genericGenerators.hasNext()) {
-			result = genericGenerators.next()
-				.javaCompletionProposals(pos, filter, astRoot);
-			if (result != null) {
-				return result;
-			}
-		}
-		return null;
 	}
 	
 	/*protected String getResourceDefaultName() {

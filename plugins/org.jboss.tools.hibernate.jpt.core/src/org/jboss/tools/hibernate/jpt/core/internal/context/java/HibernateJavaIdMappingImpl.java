@@ -16,7 +16,6 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaIdMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
-import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotation;
 
 /**
@@ -25,8 +24,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotation
  */
 public class HibernateJavaIdMappingImpl extends AbstractJavaIdMapping 
 implements HibernateJavaIdMapping {
-	
-	protected JavaGenericGenerator genericGenerator;
 	
 	protected JavaIndex index;
 	
@@ -74,133 +71,6 @@ implements HibernateJavaIdMapping {
 	public String getPrimaryKeyColumnName() {
 		return this.getColumn().getDBColumnName();
 	}
-	
-	protected void initializeGenericGenerator() {
-		GenericGeneratorAnnotation genericGeneratorResource = getResourceGenericGenerator();
-		if (genericGeneratorResource != null) {
-			this.genericGenerator = buildGenericGenerator(genericGeneratorResource);
-		}
-	}
-	
-	protected GenericGeneratorAnnotation getResourceGenericGenerator() {
-		return (GenericGeneratorAnnotation) this.getResourcePersistentAttribute().getAnnotation(GenericGeneratorAnnotation.ANNOTATION_NAME);
-	}
-	
-	protected JavaGenericGenerator buildGenericGenerator(GenericGeneratorAnnotation genericGeneratorResource) {
-		JavaGenericGenerator generator = ((HibernateAbstractJpaFactory) getJpaFactory()).buildJavaGenericGenerator(this);
-		generator.initialize(genericGeneratorResource);
-		return generator;
-	}
-	
-	/*@SuppressWarnings("unchecked")
-	public Iterator<JavaGenerator> generators() {
-		return new CompositeIterator<JavaGenerator>(super.generators(),
-			(getGenericGenerator() == null) ? EmptyIterator.instance() 
-											: new SingleElementIterator(getGenericGenerator()));
-	}
-
-	public JavaGenericGenerator addGenericGenerator(int index) {
-		if (getGenericGenerator() != null) {
-			throw new IllegalStateException("genericGenerator already exists"); //$NON-NLS-1$
-		}
-		this.genericGenerator = ((HibernateJpaFactory)getJpaFactory()).buildJavaGenericGenerator(this);
-		GenericGeneratorAnnotation genericGeneratorResource = (GenericGeneratorAnnotation)getResourcePersistentAttribute()
-								.addAnnotation(GenericGeneratorAnnotation.ANNOTATION_NAME);
-		this.genericGenerator.initialize(genericGeneratorResource);
-		firePropertyChanged(GENERIC_GENERATORS_LIST, null, this.genericGenerator);
-		return this.genericGenerator;
-	}
-
-	private JavaGenericGenerator getGenericGenerator() {
-		return genericGenerator;
-	}
-
-	private void removeGenericGenerator() {
-		if (getGenericGenerator() == null) {
-			throw new IllegalStateException("genericGenerator does not exist, cannot be removed"); //$NON-NLS-1$
-		}
-		JavaGenericGenerator oldGenericGenerator = this.genericGenerator;
-		this.genericGenerator = null;
-		this.getResourcePersistentAttribute().removeAnnotation(GenericGeneratorAnnotation.ANNOTATION_NAME);
-		firePropertyChanged(GENERIC_GENERATORS_LIST, oldGenericGenerator,null);
-	}
-	
-	private void setGenericGenerator(JavaGenericGenerator newGenericGenerator) {
-		JavaGenericGenerator oldGenericGenerator = this.genericGenerator;
-		this.genericGenerator = newGenericGenerator;
-		firePropertyChanged(GENERIC_GENERATORS_LIST, oldGenericGenerator, newGenericGenerator);
-	}
-	
-	protected void updateGenericGenerator() {
-		GenericGeneratorAnnotation genericGeneratorResource = getResourceGenericGenerator();
-		if (genericGeneratorResource == null) {
-			if (getGenericGenerator() != null) {
-				setGenericGenerator(null);
-			}
-		}
-		else {
-			if (getGenericGenerator() == null) {
-				setGenericGenerator(buildGenericGenerator(genericGeneratorResource));
-			}
-			else {
-				getGenericGenerator().update(genericGeneratorResource);
-			}
-		}
-	}
-	
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		validateGenericGenerator(messages, reporter, astRoot);
-	}
-	
-	private void validateGenericGenerator(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		if (genericGenerator != null){
-			genericGenerator.validate(messages, reporter, astRoot);
-		}
-	}
-	
-	@Override
-	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter,
-			CompilationUnit astRoot) {
-		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
-		if (result != null) {
-			return result;
-		}
-		if (this.getGenericGenerator() != null) {
-			result = this.getGenericGenerator().javaCompletionProposals(pos, filter, astRoot);
-			if (result != null) {
-				return result;
-			}
-		}
-		return null;
-	}
-
-	public ListIterator<GenericGenerator> genericGenerators() {
-		return genericGenerator == null ? EmptyListIterator.<GenericGenerator>instance()				
-					: new SingleElementListIterator<GenericGenerator>(genericGenerator);
-	}
-
-	public int genericGeneratorsSize() {
-		return genericGenerator == null ? 0 : 1;
-	}
-
-	public void moveGenericGenerator(int targetIndex, int sourceIndex) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void removeGenericGenerator(int index) {
-		if (genericGeneratorsSize() < index + 1){
-			throw new IndexOutOfBoundsException();
-		}
-		removeGenericGenerator();
-	}
-
-	public void removeGenericGenerator(GenericGenerator generator) {
-		if (this.genericGenerator == generator){
-			removeGenericGenerator();
-		}
-	}*/
 	
 	// *** index
 	

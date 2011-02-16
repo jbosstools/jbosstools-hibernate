@@ -15,13 +15,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaGenerator;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaGeneratorContainer;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenericGenerator;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GenericGeneratorAnnotation;
@@ -148,6 +152,44 @@ public class HibernateJavaGeneratorContainerImpl extends
 			addGenericGenerator(buildGenericGenerator((GenericGeneratorAnnotation) resourceGenericGenerators.next()));
 		}
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaGeneratorContainer#validate(java.util.List, org.eclipse.wst.validation.internal.provisional.core.IReporter, org.eclipse.jdt.core.dom.CompilationUnit)
+	 */
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter,
+			CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		this.validateGenericGenerators(messages, reporter, astRoot);
+	}
 
+
+	protected void validateGenericGenerators(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		ListIterator<JavaGenericGenerator> genericGenerators = genericGenerators();
+		while (genericGenerators.hasNext()) {
+			genericGenerators.next().validate(messages, reporter, astRoot);
+		}	
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaGeneratorContainer#javaCompletionProposals(int, org.eclipse.jpt.utility.Filter, org.eclipse.jdt.core.dom.CompilationUnit)
+	 */
+	@Override
+	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter,
+			CompilationUnit astRoot) {
+		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		ListIterator<JavaGenericGenerator> genericGenerators = genericGenerators();
+		while (genericGenerators.hasNext()) {
+			result = genericGenerators.next()
+				.javaCompletionProposals(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
 
 }
