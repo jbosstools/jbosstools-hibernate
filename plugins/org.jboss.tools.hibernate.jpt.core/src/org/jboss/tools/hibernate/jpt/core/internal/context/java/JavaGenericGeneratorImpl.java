@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009-2009 Red Hat, Inc.
+ * Copyright (c) 2009-2011 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -11,7 +11,6 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -160,7 +159,7 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 					if (lwType == null || !lwType.isClass()){
 						messages.add(creatErrorMessage(STRATEGY_CLASS_NOT_FOUND, new String[]{strategy}, lineNum));
 					} else {
-						 if (!isImplementsIdentifierInterface(lwType)){
+						 if (!JpaUtil.isTypeImplementsInterface(getJpaProject().getJavaProject(), lwType, "org.hibernate.id.IdentifierGenerator")){//$NON-NLS-1$
 							messages.add(creatErrorMessage(STRATEGY_INTERFACE, new String[]{strategy}, lineNum));
 						 }
 					}
@@ -170,26 +169,6 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 				
 			}
 		}
-	}
-	
-	/**
-	 * 
-	 * @param lwType
-	 * @return <code>true</code> if type implements IdentifierGenerator interface.
-	 * @throws JavaModelException
-	 */
-	protected boolean isImplementsIdentifierInterface(IType type) throws JavaModelException{
-		if (type == null) return false;
-		String[] interfaces = type.getSuperInterfaceNames();
-		if (Arrays.binarySearch(interfaces, "org.hibernate.id.IdentifierGenerator") >= 0) {//$NON-NLS-1$
-			return true;
-		} else if (type.getSuperclassName() != null){
-			IType parentType = getJpaProject().getJavaProject().findType(type.getSuperclassName());
-			if (parentType != null){
-				return isImplementsIdentifierInterface(parentType);
-			}			
-		}
-		return false;
 	}
 	
 	protected IMessage creatErrorMessage(String strmessage, String[] params, int lineNum){

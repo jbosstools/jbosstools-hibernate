@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Red Hat, Inc.
+ * Copyright (c) 2011 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -12,16 +12,14 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
-import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
+import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
 
 /**
@@ -101,7 +99,7 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 					if (lwType == null || !lwType.isClass()){
 						messages.add(creatErrorMessage(STRATEGY_CLASS_NOT_FOUND, new String[]{type}, lineNum));
 					} else {
-						 if (!isImplementsUserTypeInterface(lwType)){
+						 if (!JpaUtil.isTypeImplementsInterface(getJpaProject().getJavaProject(), lwType, "org.hibernate.usertype.UserType")){//$NON-NLS-1$
 							messages.add(creatErrorMessage(USER_TYPE_INTERFACE, new String[]{type}, lineNum));
 						 }
 					}
@@ -110,36 +108,6 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 				}
 			}
 		}*/
-	}
-	
-	/**
-	 * 
-	 * @param lwType
-	 * @return <code>true</code> if type implements UserType interface.
-	 * @throws JavaModelException
-	 */
-	protected boolean isImplementsUserTypeInterface(IType type) throws JavaModelException{
-		if (type == null) return false;
-		String[] interfaces = type.getSuperInterfaceNames();
-		for (String interface_ : interfaces) {
-			if ("org.hibernate.usertype.UserType".equals(interface_)) //$NON-NLS-1$
-				return true;
-		}
-		if (type.getSuperclassName() != null){
-			IType parentType = getJpaProject().getJavaProject().findType(type.getSuperclassName());
-			if (parentType != null){
-				if (isImplementsUserTypeInterface(parentType)){
-					return true;
-				}
-			}			
-		}
-		for (String interface_ : interfaces) {
-			IType parentType = getJpaProject().getJavaProject().findType(interface_);
-			if (isImplementsUserTypeInterface(parentType)){
-				return true;
-			}
-		}
-		return false;
 	}
 	
 	protected IMessage creatErrorMessage(String strmessage, String[] params, int lineNum){
