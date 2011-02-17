@@ -21,14 +21,14 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
  */
 
 public interface ParameterAnnotation extends Annotation {
-	String ANNOTATION_NAME = Hibernate.GENERATOR_PARAMETER;
+	String ANNOTATION_NAME = Hibernate.PARAMETER;
 
 	/**
 	 * Corresponds to the 'name' element of the ParameterAnnotation annotation.
 	 * Return null if the element does not exist in the annotation
 	 */
 	String getName();
-		String NAME_PROPERTY = Hibernate.GENERATOR_PARAMETER__NAME;
+		String NAME_PROPERTY = Hibernate.PARAMETER__NAME;
 	
 	/**
 	 * Corresponds to the 'name' element of the ParameterAnnotation annotation.
@@ -48,7 +48,7 @@ public interface ParameterAnnotation extends Annotation {
 	 * Return null if the element does not exist in the annotation
 	 */
 	String getValue();
-		String VALUE_PROPERTY = Hibernate.GENERATOR_PARAMETER__VALUE;
+		String VALUE_PROPERTY = Hibernate.PARAMETER__VALUE;
 	
 	/**
 	 * Corresponds to the 'value' element of the ParameterAnnotation annotation.

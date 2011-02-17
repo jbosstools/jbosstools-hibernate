@@ -25,6 +25,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQ
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQueryAnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotationImpl.IndexAnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.SourceGenericGeneratorsAnnotation.GenericGeneratorsAnnotationDefinition;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotationImpl.TypeAnnotationDefinition;
 
 /**
  * @author Dmitry Geraskov
@@ -66,6 +67,7 @@ public class HibernateJpa2_0AnnotationDefinitionProvider extends AbstractJpaAnno
 		definitions.add(GenericGeneratorAnnotationDefinition.instance());
 		definitions.add(GeneratedAnnotationDefinition.instance());
 		definitions.add(IndexAnnotationDefinition.instance());
+		definitions.add(TypeAnnotationDefinition.instance());
 		definitions.add(ForeignKeyAnnotationDefinition.instance());
 	}
 }

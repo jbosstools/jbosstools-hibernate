@@ -46,6 +46,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGener
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGeneratorImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaIndex;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaParameter;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaType;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.TypeImpl;
 
 public abstract class HibernateAbstractJpaFactory extends AbstractJpaFactory {
 	
@@ -147,6 +149,10 @@ public abstract class HibernateAbstractJpaFactory extends AbstractJpaFactory {
 
 	public ForeignKey buildForeignKey(JavaJpaContextNode parent) {
 		return new ForeignKeyImpl(parent);
+	}
+
+	public JavaType buildType(JavaJpaContextNode parent) {
+		return new TypeImpl(parent);
 	}
 
 }

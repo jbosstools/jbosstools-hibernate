@@ -28,9 +28,9 @@ public interface Hibernate {
 		String GENERIC_GENERATOR__STRATEGY = "strategy"; //$NON-NLS-1$
 		String GENERIC_GENERATOR__PARAMETERS = "parameters"; //$NON-NLS-1$
 
-	String GENERATOR_PARAMETER = PACKAGE_ + "Parameter"; //$NON-NLS-1$
-		String GENERATOR_PARAMETER__NAME = "name"; //$NON-NLS-1$
-		String GENERATOR_PARAMETER__VALUE = "value"; //$NON-NLS-1$
+	String PARAMETER = PACKAGE_ + "Parameter"; //$NON-NLS-1$
+		String PARAMETER__NAME = "name"; //$NON-NLS-1$
+		String PARAMETER__VALUE = "value"; //$NON-NLS-1$
 
 	String GENERIC_GENERATORS = PACKAGE_ + "GenericGenerators"; //$NON-NLS-1$
 		String GENERIC_GENERATORS__VALUE = "value"; //$NON-NLS-1$
@@ -105,4 +105,7 @@ public interface Hibernate {
 	String FOREIGN_KEY = PACKAGE_ + "ForeignKey"; //$NON-NLS-1$
 		String FOREIGN_KEY__NAME = "name"; //$NON-NLS-1$
 		String FOREIGN_KEY__INVERSE_NAME = "inverseName"; //$NON-NLS-1$
+		
+	String TYPE = PACKAGE_ + "Type"; //$NON-NLS-1$
+		String TYPE__TYPE = "type"; //$NON-NLS-1$
 }

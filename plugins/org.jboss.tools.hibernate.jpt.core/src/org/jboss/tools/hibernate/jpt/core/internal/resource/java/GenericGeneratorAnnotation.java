@@ -41,7 +41,6 @@ public interface GenericGeneratorAnnotation extends
 	String STRATEGY_PROPERTY = "strategyProperty";	 //$NON-NLS-1$
 	
 	/**
-	 * Corresponds to the 'parameters' element of the *Generic Generator annotation.
 	 * Return an empty iterator if the element does not exist in Java.
 	 */
 	ListIterator<ParameterAnnotation> parameters();

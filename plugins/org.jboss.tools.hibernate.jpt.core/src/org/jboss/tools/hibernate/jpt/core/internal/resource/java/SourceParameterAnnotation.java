@@ -161,7 +161,7 @@ public class SourceParameterAnnotation extends SourceAnnotation<Member> implemen
 	}
 
 	private static IndexedDeclarationAnnotationAdapter buildGenericGeneratorParameterAnnotationAdapter(DeclarationAnnotationAdapter genericGeneratorAdapter, int index) {
-		return new NestedIndexedDeclarationAnnotationAdapter(genericGeneratorAdapter, Hibernate.GENERIC_GENERATOR__PARAMETERS, index, Hibernate.GENERATOR_PARAMETER);
+		return new NestedIndexedDeclarationAnnotationAdapter(genericGeneratorAdapter, Hibernate.GENERIC_GENERATOR__PARAMETERS, index, Hibernate.PARAMETER);
 	}
 
 }

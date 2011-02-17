@@ -11,16 +11,21 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
+import java.util.List;
 import java.util.Vector;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaBasicMapping;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Generated;
 import org.jboss.tools.hibernate.jpt.core.internal.context.GenerationTime;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.GeneratedAnnotation;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotation;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
 
 /**
  * @author Dmitry Geraskov
@@ -33,6 +38,8 @@ implements HibernateJavaBasicMapping {
 	
 	protected JavaIndex index;
 
+	protected JavaType type;
+
 	public HibernateJavaBasicMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
 	}
@@ -41,6 +48,7 @@ implements HibernateJavaBasicMapping {
 	public void addSupportingAnnotationNamesTo(Vector<String> names) {
 		names.add(Hibernate.GENERATED);
 		names.add(Hibernate.INDEX);
+		names.add(Hibernate.TYPE);
 	}
 	
 	@Override
@@ -53,6 +61,7 @@ implements HibernateJavaBasicMapping {
 		super.initialize();
 		this.specifiedGenerationTime = this.getResourceGenerationTime();
 		this.initializeIndex();
+		this.initializeType();
 	}
 	
 	@Override
@@ -60,6 +69,7 @@ implements HibernateJavaBasicMapping {
 		super.update();
 		this.setGenerationTime_(this.getResourceGenerationTime());
 		this.updateIndex();
+		this.updateType();
 	}
 	
 	public GeneratedAnnotation getResourceGenerated() {
@@ -172,6 +182,88 @@ implements HibernateJavaBasicMapping {
 	
 	protected IndexAnnotation getResourceIndex() {
 		return (IndexAnnotation) this.getResourcePersistentAttribute().getAnnotation(IndexAnnotation.ANNOTATION_NAME);
+	}
+	
+	// *** type
+	
+	protected void initializeType() {
+		TypeAnnotation typeResource = getTypeResource();
+		if (typeResource != null) {
+			this.type = buildType(typeResource);
+		}
+	}
+	
+	protected void updateType() {
+		TypeAnnotation typeResource = getTypeResource();
+		if (typeResource == null) {
+			if (getType() != null) {
+				setType(null);
+			}
+		}
+		else {
+			if (getType() == null) {
+				setType(buildType(typeResource));
+			}
+			else {
+				getType().update(typeResource);
+			}
+		}
+	}
+	
+	public JavaType addType() {
+		if (getType() != null) {
+			throw new IllegalStateException("type already exists"); //$NON-NLS-1$
+		}
+		this.type = getJpaFactory().buildType(this);
+		TypeAnnotation typeResource = (TypeAnnotation) getResourcePersistentAttribute().addAnnotation(TypeAnnotation.ANNOTATION_NAME);
+		this.type.initialize(typeResource);
+		firePropertyChanged(TYPE_PROPERTY, null, this.type);
+		return this.type;
+	}
+
+	public JavaType getType() {
+		return this.type;
+	}
+	
+	protected void setType(JavaType newType) {
+		JavaType oldType = this.type;
+		this.type = newType;
+		firePropertyChanged(TYPE_PROPERTY, oldType, newType);
+	}
+
+	public void removeType() {
+		if (getType() == null) {
+			throw new IllegalStateException("type does not exist, cannot be removed"); //$NON-NLS-1$
+		}
+		JavaType oldType = this.type;
+		this.type = null;
+		this.getResourcePersistentAttribute().removeAnnotation(TypeAnnotation.ANNOTATION_NAME);
+		firePropertyChanged(TYPE_PROPERTY, oldType, null);
+	}
+	
+	protected JavaType buildType(TypeAnnotation typeResource) {
+		JavaType type = getJpaFactory().buildType(this);
+		type.initialize(typeResource);
+		return type;
+	}
+	
+	protected TypeAnnotation getTypeResource() {
+		return (TypeAnnotation) this.getResourcePersistentAttribute().getAnnotation(TypeAnnotation.ANNOTATION_NAME);
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jpt.core.internal.context.java.AbstractJavaBasicMapping#validate(java.util.List, org.eclipse.wst.validation.internal.provisional.core.IReporter, org.eclipse.jdt.core.dom.CompilationUnit)
+	 */
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter,
+			CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		if (this.index != null){
+			this.index.validate(messages, reporter, astRoot);
+		}
+		if (this.type != null){
+			this.type.validate(messages, reporter, astRoot);
+		}
 	}
 	
 }
