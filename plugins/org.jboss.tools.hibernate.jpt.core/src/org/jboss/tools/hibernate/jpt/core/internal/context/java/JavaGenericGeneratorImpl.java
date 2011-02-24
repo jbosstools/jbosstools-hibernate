@@ -124,6 +124,10 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 		this.strategy = strategy;
 		firePropertyChanged(GENERIC_STRATEGY_PROPERTY, oldStrategy, strategy);
 	}
+	
+	public TextRange getStrategyTextRange(CompilationUnit astRoot){
+		return this.generatorResource.getStrategyTextRange(astRoot);
+	}
 
 	protected String getCatalog() {
 		return null;
@@ -149,32 +153,33 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 	 */
 	protected void validateStrategy(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot){
 		if (strategy != null) {
-			int lineNum = getValidationTextRange(astRoot) == null ? 0 : getValidationTextRange(astRoot).getLineNumber();
+			TextRange range = getStrategyTextRange(astRoot) == null ? TextRange.Empty.instance() : getStrategyTextRange(astRoot);
 			if (strategy.trim().length() == 0) {
-				messages.add(creatErrorMessage(STRATEGY_CANT_BE_EMPTY, new String[]{}, lineNum));
+				messages.add(creatErrorMessage(STRATEGY_CANT_BE_EMPTY, new String[]{}, range));
 			} else if (!generatorClasses.contains(strategy)){
 				IType lwType = null;
 				try {
 					lwType = getJpaProject().getJavaProject().findType(strategy);
 					if (lwType == null || !lwType.isClass()){
-						messages.add(creatErrorMessage(STRATEGY_CLASS_NOT_FOUND, new String[]{strategy}, lineNum));
+						messages.add(creatErrorMessage(STRATEGY_CLASS_NOT_FOUND, new String[]{strategy}, range));
 					} else {
 						 if (!JpaUtil.isTypeImplementsInterface(getJpaProject().getJavaProject(), lwType, "org.hibernate.id.IdentifierGenerator")){//$NON-NLS-1$
-							messages.add(creatErrorMessage(STRATEGY_INTERFACE, new String[]{strategy}, lineNum));
+							messages.add(creatErrorMessage(STRATEGY_INTERFACE, new String[]{strategy}, range));
 						 }
 					}
 				} catch (JavaModelException e) {
 					// just ignore it!
 				}
-				
 			}
 		}
 	}
 	
-	protected IMessage creatErrorMessage(String strmessage, String[] params, int lineNum){
+	protected IMessage creatErrorMessage(String strmessage, String[] params, TextRange range){
 		IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY, 
 			strmessage, params, getResource());
-			message.setLineNo(lineNum);
+		message.setLineNo(range.getLineNumber());
+		message.setOffset(range.getOffset());
+		message.setLength(range.getLength());
 		return message;
 	}
 	

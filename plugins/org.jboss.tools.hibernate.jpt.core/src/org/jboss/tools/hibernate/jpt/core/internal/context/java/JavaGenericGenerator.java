@@ -33,6 +33,8 @@ public interface JavaGenericGenerator extends JavaGenerator, GenericGenerator {
 	
 	TextRange getNameTextRange(CompilationUnit astRoot);
 	
+	TextRange getStrategyTextRange(CompilationUnit astRoot);
+	
 	void initialize(GenericGeneratorAnnotation generator);
 	
 	void update(GenericGeneratorAnnotation generator);
