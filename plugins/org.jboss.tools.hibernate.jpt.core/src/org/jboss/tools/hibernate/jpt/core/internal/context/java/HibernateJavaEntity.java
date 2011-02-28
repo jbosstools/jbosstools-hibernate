@@ -22,6 +22,8 @@ public interface HibernateJavaEntity extends JavaEntity,
 HibernateEntity, ForeignKeyHolder{
 	
 	HibernateJavaGeneratorContainer getGeneratorContainer();
+	
+	HibernateJavaTypeDefContainer getTypeDefContainer();
 
 	JavaDiscriminatorFormula getDiscriminatorFormula();
 	

@@ -108,4 +108,13 @@ public interface Hibernate {
 		
 	String TYPE = PACKAGE_ + "Type"; //$NON-NLS-1$
 		String TYPE__TYPE = "type"; //$NON-NLS-1$
+		
+	String TYPE_DEF = PACKAGE_ + "TypeDef"; //$NON-NLS-1$
+		String TYPE_DEF__NAME = "name"; //$NON-NLS-1$
+		String TYPE_DEF__DEF_FOR_TYPE = "defaultForType"; //$NON-NLS-1$
+		String TYPE_DEF__TYPE_CLASS = "typeClass"; //$NON-NLS-1$
+		String TYPE_DEF__PARAMETERS = "parameters"; //$NON-NLS-1$
+
+	String TYPE_DEFS = PACKAGE_ + "TypeDefs"; //$NON-NLS-1$
+		String TYPE_DEFS__VALUE = "value"; //$NON-NLS-1$
 }

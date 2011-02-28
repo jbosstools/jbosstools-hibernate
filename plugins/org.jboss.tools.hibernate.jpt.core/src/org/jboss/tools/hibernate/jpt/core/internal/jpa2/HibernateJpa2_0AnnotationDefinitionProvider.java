@@ -26,6 +26,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.HibernateNamedQ
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.IndexAnnotationImpl.IndexAnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.SourceGenericGeneratorsAnnotation.GenericGeneratorsAnnotationDefinition;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotationImpl.TypeAnnotationDefinition;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeDefAnnotationImpl.TypeDefAnnotationDefinition;
+import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeDefsAnnotationImpl.TypeDefsAnnotationDefinition;
 
 /**
  * @author Dmitry Geraskov
@@ -54,6 +56,8 @@ public class HibernateJpa2_0AnnotationDefinitionProvider extends AbstractJpaAnno
 	protected void addTypeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
 		definitions.add(GenericGeneratorAnnotationDefinition.instance());
 		definitions.add(GenericGeneratorsAnnotationDefinition.instance());
+		definitions.add(TypeDefAnnotationDefinition.instance());
+		definitions.add(TypeDefsAnnotationDefinition.instance());
 		definitions.add(HibernateNamedQueryAnnotationDefinition.instance());
 		definitions.add(HibernateNamedQueriesAnnotationDefinition.instance());
 		definitions.add(HibernateNamedNativeQueryAnnotationDefinition.instance());
@@ -66,6 +70,8 @@ public class HibernateJpa2_0AnnotationDefinitionProvider extends AbstractJpaAnno
 	protected void addAttributeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
 		definitions.add(GenericGeneratorAnnotationDefinition.instance());
 		definitions.add(GeneratedAnnotationDefinition.instance());
+		definitions.add(TypeDefAnnotationDefinition.instance());
+		definitions.add(TypeDefsAnnotationDefinition.instance());
 		definitions.add(IndexAnnotationDefinition.instance());
 		definitions.add(TypeAnnotationDefinition.instance());
 		definitions.add(ForeignKeyAnnotationDefinition.instance());

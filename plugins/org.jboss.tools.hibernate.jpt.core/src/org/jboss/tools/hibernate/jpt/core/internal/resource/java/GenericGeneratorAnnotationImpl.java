@@ -180,7 +180,7 @@ public class GenericGeneratorAnnotationImpl extends SourceAnnotation<Member>
 	}
 	
 	NestableParameterAnnotation buildParameter(int index) {
-		return SourceParameterAnnotation.createGenericGeneratorParameter(this, this.member, this.daa, index);
+		return SourceParameterAnnotation.createParameter(this, this.member, this.daa, Hibernate.GENERIC_GENERATOR__PARAMETERS, index);
 	}
 	
 	Iterable<NestableParameterAnnotation> nestableParameters() {

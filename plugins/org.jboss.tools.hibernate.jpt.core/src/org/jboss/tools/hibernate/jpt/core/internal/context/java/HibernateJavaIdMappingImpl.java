@@ -10,12 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaIdMapping;
+import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
@@ -30,6 +32,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
 public class HibernateJavaIdMappingImpl extends AbstractJavaIdMapping 
 implements HibernateJavaIdMapping {
 	
+	protected final HibernateJavaTypeDefContainer typeDefContainer;
+	
 	protected JavaIndex index;
 	
 	protected JavaType type;
@@ -39,6 +43,7 @@ implements HibernateJavaIdMapping {
 	 */
 	public HibernateJavaIdMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
+		this.typeDefContainer = getJpaFactory().buildJavaTypeDefContainer(parent);
 	}
 	
 	@Override
@@ -61,6 +66,7 @@ implements HibernateJavaIdMapping {
 	@Override
 	protected void initialize() {
 		super.initialize();
+		this.typeDefContainer.initialize(this.getResourcePersistentAttribute());
 		this.initializeIndex();
 		this.initializeType();
 	}
@@ -68,6 +74,7 @@ implements HibernateJavaIdMapping {
 	@Override
 	public void update() {
 		super.update();
+		this.typeDefContainer.update(this.getResourcePersistentAttribute());
 		this.updateIndex();
 		this.updateType();
 	}
@@ -80,6 +87,10 @@ implements HibernateJavaIdMapping {
 	@Override
 	public String getPrimaryKeyColumnName() {
 		return this.getColumn().getDBColumnName();
+	}
+	
+	public HibernateJavaTypeDefContainer getTypeDefContainer() {
+		return this.typeDefContainer;
 	}
 	
 	// *** index
@@ -220,12 +231,30 @@ implements HibernateJavaIdMapping {
 	public void validate(List<IMessage> messages, IReporter reporter,
 			CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
+		this.typeDefContainer.validate(messages, reporter, astRoot);
 		if (this.index != null){
 			this.index.validate(messages, reporter, astRoot);
 		}
 		if (this.type != null){
 			this.type.validate(messages, reporter, astRoot);
 		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jpt.core.internal.context.java.AbstractJavaIdMapping#javaCompletionProposals(int, org.eclipse.jpt.utility.Filter, org.eclipse.jdt.core.dom.CompilationUnit)
+	 */
+	@Override
+	public Iterator<String> javaCompletionProposals(int pos,
+			Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		result = this.getTypeDefContainer().javaCompletionProposals(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		return null;
 	}
 
 }

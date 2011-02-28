@@ -156,12 +156,12 @@ public class SourceParameterAnnotation extends SourceAnnotation<Member> implemen
 
 	// ********** static methods **********
 
-	public static SourceParameterAnnotation createGenericGeneratorParameter(JavaResourceNode parent, Member member,  DeclarationAnnotationAdapter genericGeneratorAdapter, int index) {
-		return new SourceParameterAnnotation(parent, member, buildGenericGeneratorParameterAnnotationAdapter(genericGeneratorAdapter, index));
+	public static SourceParameterAnnotation createParameter(JavaResourceNode parent, Member member,  DeclarationAnnotationAdapter annotationAdapter, String elementName, int index) {
+		return new SourceParameterAnnotation(parent, member, buildParameterAnnotationAdapter(annotationAdapter, elementName, index));
 	}
 
-	private static IndexedDeclarationAnnotationAdapter buildGenericGeneratorParameterAnnotationAdapter(DeclarationAnnotationAdapter genericGeneratorAdapter, int index) {
-		return new NestedIndexedDeclarationAnnotationAdapter(genericGeneratorAdapter, Hibernate.GENERIC_GENERATOR__PARAMETERS, index, Hibernate.PARAMETER);
+	private static IndexedDeclarationAnnotationAdapter buildParameterAnnotationAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, int index) {
+		return new NestedIndexedDeclarationAnnotationAdapter(annotationAdapter, elementName, index, Hibernate.PARAMETER);
 	}
 
 }

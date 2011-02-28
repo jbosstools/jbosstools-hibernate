@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -52,6 +53,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.DiscriminatorFo
 public class HibernateJavaEntityImpl extends AbstractJavaEntity 
 implements HibernateJavaEntity {
 	
+	protected final HibernateJavaTypeDefContainer typeDefContainer;
+	
 	protected JavaDiscriminatorFormula discriminatorFormula;
 	
 	protected JavaCacheable2_0 cachable;
@@ -60,6 +63,7 @@ implements HibernateJavaEntity {
 	
 	public HibernateJavaEntityImpl(JavaPersistentType parent) {
 		super(parent);
+		this.typeDefContainer = getJpaFactory().buildJavaTypeDefContainer(parent);
 		this.cachable = buildJavaCachable();
 	}
 	
@@ -70,6 +74,7 @@ implements HibernateJavaEntity {
 	@Override
 	public void initialize(JavaResourcePersistentType resourcePersistentType) {
 		super.initialize(resourcePersistentType);
+		this.typeDefContainer.initialize(resourcePersistentType);
 		this.initializeDiscriminatorFormula();
 		this.initializeForeignKey();
 	}
@@ -77,6 +82,7 @@ implements HibernateJavaEntity {
 	@Override
 	public void update(JavaResourcePersistentType resourcePersistentType) {
 		super.update(resourcePersistentType);
+		this.typeDefContainer.update(resourcePersistentType);
 		this.updateDiscriminatorFormula();
 		this.updateForeignKey();
 	}
@@ -90,15 +96,21 @@ implements HibernateJavaEntity {
 		return (HibernateJpaProject) super.getJpaProject();
 	}
 	
+	public HibernateJavaTypeDefContainer getTypeDefContainer() {
+		return this.typeDefContainer;
+	}
+	
 	protected static final String[] SUPPORTING_ANNOTATION_NAMES_ARRAY2 = new String[] {
 		Hibernate.GENERIC_GENERATOR,
-		Hibernate.GENERIC_GENERATORS, 
+		Hibernate.GENERIC_GENERATORS,
+		Hibernate.TYPE_DEF,
+		Hibernate.TYPE_DEFS,
 		Hibernate.NAMED_QUERY,
 		Hibernate.NAMED_QUERIES,
 		Hibernate.NAMED_NATIVE_QUERY,
 		Hibernate.NAMED_NATIVE_QUERIES,
 		Hibernate.DISCRIMINATOR_FORMULA,
-		Hibernate.FOREIGN_KEY
+		Hibernate.FOREIGN_KEY,
 	};
 	
 	protected static final Iterable<String> SUPPORTING_ANNOTATION_NAMES2 = new ArrayIterable<String>(SUPPORTING_ANNOTATION_NAMES_ARRAY2);
@@ -262,6 +274,7 @@ implements HibernateJavaEntity {
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
+		getTypeDefContainer().validate(messages, reporter, astRoot);
 		this.validateForeignKey(messages, astRoot);
 	}
 	
@@ -421,6 +434,23 @@ implements HibernateJavaEntity {
 			return parentEntity.getCacheable().isCacheable();
 		}
 		return ((PersistenceUnit2_0) getPersistenceUnit()).calculateDefaultCacheable();
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jpt.core.internal.context.java.AbstractJavaEntity#javaCompletionProposals(int, org.eclipse.jpt.utility.Filter, org.eclipse.jdt.core.dom.CompilationUnit)
+	 */
+	@Override
+	public Iterator<String> javaCompletionProposals(int pos,
+			Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		result = this.getTypeDefContainer().javaCompletionProposals(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		return null;
 	}
 	
 }

@@ -32,16 +32,28 @@ public class JpaUtil {
 		if (type == null) return false;
 		String[] interfaces = type.getSuperInterfaceNames();
 		for (String interface_ : interfaces) {
-			if (interfaceName.equals(interface_))
-				return true;
+			String[][] resolvedInterfaces = type.resolveType(interface_);
+			if (resolvedInterfaces != null){
+				for (String[] parts : resolvedInterfaces) {
+					String fullName = parts[0].length() > 0 ? parts[0] + '.' + parts[1] : parts[1];
+					if (interfaceName.equals(fullName))
+						return true;
+				}
+			}
 		}
 		if (type.getSuperclassName() != null){
-			IType parentType = javaProject.findType(type.getSuperclassName());
-			if (parentType != null){
-				if (isTypeImplementsInterface(javaProject, parentType, interfaceName)){
+			String[][] resolvedSuperClass = type.resolveType(type.getSuperclassName());
+			if (resolvedSuperClass != null){
+				String fullName = resolvedSuperClass[0][0].length() > 0 ? resolvedSuperClass[0][0] + '.' + resolvedSuperClass[0][1] : resolvedSuperClass[0][1];
+				if (interfaceName.equals(fullName))
 					return true;
+				IType parentType = javaProject.findType(fullName);
+				if (parentType != null){
+					if (isTypeImplementsInterface(javaProject, parentType, interfaceName)){
+						return true;
+					}
 				}
-			}			
+			}
 		}
 		for (String interface_ : interfaces) {
 			IType parentInterface = javaProject.findType(interface_);

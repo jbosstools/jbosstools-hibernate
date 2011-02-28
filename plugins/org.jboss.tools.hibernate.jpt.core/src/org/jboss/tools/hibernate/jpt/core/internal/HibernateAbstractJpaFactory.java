@@ -1,6 +1,7 @@
 package org.jboss.tools.hibernate.jpt.core.internal;
 
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaBaseColumn;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaColumn;
@@ -37,6 +38,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaQue
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaSecondaryTableImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaTable;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaTableImpl;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaTypeDefContainer;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateJavaTypeDefContainerImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedNativeQueryImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.HibernateNamedQueryImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.IndexImpl;
@@ -47,6 +50,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaGenericGener
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaIndex;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaParameter;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaType;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaTypeDef;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaTypeDefImpl;
 import org.jboss.tools.hibernate.jpt.core.internal.context.java.TypeImpl;
 
 public abstract class HibernateAbstractJpaFactory extends AbstractJpaFactory {
@@ -71,6 +76,10 @@ public abstract class HibernateAbstractJpaFactory extends AbstractJpaFactory {
 		return new JavaGenericGeneratorImpl(parent);
 	}
 	
+	public JavaTypeDef buildJavaTypeDef(JavaJpaContextNode parent) {
+		return new JavaTypeDefImpl(parent);
+	}
+	
 	@Override
 	public JavaDiscriminatorColumn buildJavaDiscriminatorColumn(
 			JavaEntity parent,
@@ -86,8 +95,8 @@ public abstract class HibernateAbstractJpaFactory extends AbstractJpaFactory {
 		return new HibernateNamedNativeQueryImpl(parent);
 	}
 
-	public JavaParameter buildJavaParameter(JavaGenericGeneratorImpl javaGenericGeneratorImpl) {
-		return new HibernateJavaParameter(javaGenericGeneratorImpl);
+	public JavaParameter buildJavaParameter(JpaContextNode parent) {
+		return new HibernateJavaParameter(parent);
 	}
 
 	public JavaDiscriminatorFormula buildJavaDiscriminatorFormula(
@@ -141,6 +150,10 @@ public abstract class HibernateAbstractJpaFactory extends AbstractJpaFactory {
 	@Override
 	public JavaGeneratorContainer buildJavaGeneratorContainer(JavaJpaContextNode parent) {
 		return new HibernateJavaGeneratorContainerImpl(parent);
+	}
+
+	public HibernateJavaTypeDefContainer buildJavaTypeDefContainer(JavaJpaContextNode parent) {
+		return new HibernateJavaTypeDefContainerImpl(parent);
 	}
 	
 	public JavaIndex buildIndex(JavaJpaContextNode parent) {

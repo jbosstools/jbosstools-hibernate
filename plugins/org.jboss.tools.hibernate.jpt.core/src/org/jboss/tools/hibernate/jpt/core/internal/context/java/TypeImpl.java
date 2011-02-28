@@ -12,12 +12,15 @@ package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.List;
 
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit.LocalMessage;
 import org.jboss.tools.hibernate.jpt.core.internal.context.Messages;
 import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
@@ -79,6 +82,14 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 		super.validate(messages, reporter, astRoot);
 		validateType(messages, reporter, astRoot);
 	}
+	
+	public HibernatePersistenceUnit getPersistenceUnit() {
+		return (HibernatePersistenceUnit) this.getParent().getPersistenceUnit();
+	}
+	
+	public TextRange getTypeTextRange(CompilationUnit astRoot) {
+		return this.typeResource.getTypeTextRange(astRoot);
+	}
 
 	/**
 	 * @param messages
@@ -87,33 +98,35 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 	 */
 	protected void validateType(List<IMessage> messages, IReporter reporter,
 			CompilationUnit astRoot) {
-		//TODO implement TypeDefs first as type could be a TypeDef
-		/*if (type != null) {
-			int lineNum = getValidationTextRange(astRoot) == null ? 0 : getValidationTextRange(astRoot).getLineNumber();
+		//TODO implement TypeDefs package-level support
+		if (type != null) {
+			TextRange range = getTypeTextRange(astRoot) == null ? TextRange.Empty.instance() : getTypeTextRange(astRoot);
 			if (type.trim().length() == 0) {
-				messages.add(creatErrorMessage(TYPE_CANT_BE_EMPTY, new String[]{}, lineNum));
-			} else if (!persistentUnit.hasTypeDef(contains(type)))	{
+				messages.add(creatErrorMessage(TYPE_CANT_BE_EMPTY, new String[]{}, range));
+			} else if (!getPersistenceUnit().hasTypeDef(type))	{
 				IType lwType = null;
 				try {
 					lwType = getJpaProject().getJavaProject().findType(type);
 					if (lwType == null || !lwType.isClass()){
-						messages.add(creatErrorMessage(STRATEGY_CLASS_NOT_FOUND, new String[]{type}, lineNum));
+						messages.add(creatErrorMessage(TYPE_CLASS_NOT_FOUND, new String[]{type}, range));
 					} else {
 						 if (!JpaUtil.isTypeImplementsInterface(getJpaProject().getJavaProject(), lwType, "org.hibernate.usertype.UserType")){//$NON-NLS-1$
-							messages.add(creatErrorMessage(USER_TYPE_INTERFACE, new String[]{type}, lineNum));
+							messages.add(creatErrorMessage(USER_TYPE_INTERFACE, new String[]{type}, range));
 						 }
 					}
 				} catch (JavaModelException e) {
 					// just ignore it!
 				}
 			}
-		}*/
+		}
 	}
 	
-	protected IMessage creatErrorMessage(String strmessage, String[] params, int lineNum){
+	protected IMessage creatErrorMessage(String strmessage, String[] params, TextRange range){
 		IMessage message = new LocalMessage(IMessage.HIGH_SEVERITY, 
 			strmessage, params, getResource());
-			message.setLineNo(lineNum);
+		message.setLineNo(range.getLineNumber());
+		message.setOffset(range.getOffset());
+		message.setLength(range.getLength());
 		return message;
 	}
 

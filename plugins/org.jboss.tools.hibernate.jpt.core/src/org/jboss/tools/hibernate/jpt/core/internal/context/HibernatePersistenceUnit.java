@@ -11,7 +11,12 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Set;
+import java.util.Vector;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
@@ -24,6 +29,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -31,6 +37,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.HibernateJptPlugin;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.BasicHibernateProperties;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.Hibernate;
 import org.jboss.tools.hibernate.jpt.core.internal.context.basic.HibernatePersistenceUnitProperties;
+import org.jboss.tools.hibernate.jpt.core.internal.context.java.JavaTypeDef;
 import org.jboss.tools.hibernate.jpt.core.internal.context.persistence.HibernatePersistenceUnitPropertiesBuilder;
 
 /**
@@ -40,7 +47,12 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.persistence.Hibernate
 public class HibernatePersistenceUnit extends AbstractPersistenceUnit 
 	implements Messages, Hibernate {
 	
+	public String TYPE_DEF_LIST = "typeDefs"; //$NON-NLS-1$
+	
 	private HibernatePersistenceUnitProperties hibernateProperties;
+	
+	/* global type def definitions, defined elsewhere in model */
+	protected final Vector<JavaTypeDef> typeDefs = new Vector<JavaTypeDef>();
 
 	/**
 	 * @param parent
@@ -49,6 +61,18 @@ public class HibernatePersistenceUnit extends AbstractPersistenceUnit
 	public HibernatePersistenceUnit(Persistence parent,
 			XmlPersistenceUnit persistenceUnit) {
 		super(parent, persistenceUnit);
+	}
+	
+	protected void addNonUpdateAspectNamesTo(Set<String> nonUpdateAspectNames) {
+		super.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
+		nonUpdateAspectNames.add(TYPE_DEF_LIST);
+	}
+	
+	@Override
+	public void update(XmlPersistenceUnit xpu) {
+		this.typeDefs.clear();
+		super.update(xpu);
+		this.fireListChanged(TYPE_DEF_LIST, this.typeDefs);
 	}
 	
 	@Override
@@ -73,6 +97,45 @@ public class HibernatePersistenceUnit extends AbstractPersistenceUnit
 	// ******** Behavior *********
 	public HibernatePersistenceUnitProperties getHibernatePersistenceUnitProperties() {
 		return this.hibernateProperties;
+	}
+	
+	// ******** Type Def *********
+
+	public ListIterator<JavaTypeDef> typeDefs() {
+		return new CloneListIterator<JavaTypeDef>(this.typeDefs);
+	}
+
+	public int typeDefsSize() {
+		return this.typeDefs.size();
+	}
+
+	public void addTypeDef(JavaTypeDef typeDef) {
+		this.typeDefs.add(typeDef);
+	}
+
+	public String[] uniqueTypeDefNames() {
+		HashSet<String> names = new HashSet<String>(this.typeDefs.size());
+		this.addNonNullTypeDefNamesTo(names);
+		return names.toArray(new String[names.size()]);
+	}
+	
+	public boolean hasTypeDef(String name) {
+		for (Iterator<JavaTypeDef> stream = this.typeDefs(); stream.hasNext(); ) {
+			String typeDefName = stream.next().getName();
+			if (name.equals(typeDefName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	protected void addNonNullTypeDefNamesTo(Set<String> names) {
+		for (Iterator<JavaTypeDef> stream = this.typeDefs(); stream.hasNext(); ) {
+			String typeDefName = stream.next().getName();
+			if (typeDefName != null) {
+				names.add(typeDefName);
+			}
+		}
 	}
 
 	// ********** Validation ***********************************************

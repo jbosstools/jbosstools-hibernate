@@ -35,5 +35,7 @@ public interface Messages {
 	String TYPE_CANT_BE_EMPTY = "TYPE_CANT_BE_EMPTY";	 //$NON-NLS-1$
 	
 	String USER_TYPE_INTERFACE = "USER_TYPE_INTERFACE";	 //$NON-NLS-1$
+	
+	String TYPE_CLASS_NOT_FOUND = "TYPE_CLASS_NOT_FOUND";	 //$NON-NLS-1$
 
 }
