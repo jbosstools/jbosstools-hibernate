@@ -151,15 +151,15 @@
 	<section>
 		<title>Other relevant resources on the topic</title>
         
-    <para><productname>Hibernate Tools</productname> page on <ulink url="http://www.hibernate.org/">hibernate.org</ulink>.</para>
+    <para>The <productname>Hibernate Tools</productname> page on <ulink url="http://www.hibernate.org/subprojects/tools.html">hibernate.org</ulink>.</para>
 		<para>
-			All <productname>JBoss Tools</productname> release documentation can be found at <ulink url="http://docs.jboss.org/tools/">http://docs.jboss.org/tools</ulink> in the corresponding release directory.
+			All <productname>JBDS</productname> release documentation can be found on the <ulink url="http://docs.redhat.com/docs/en-US/JBoss_Developer_Studio/index.html">RedHat Documentation</ulink> website.
 		</para>
 		<para>
-			There is some extra information about <productname>Hibernate</productname> on the <ulink url="http://www.jboss.org/community/wiki/JBossHibernate3">JBoss Wiki page. </ulink>
+			There is some additional information on <productname>Hibernate</productname> on the <ulink url="http://www.jboss.org/community/wiki/JBossHibernate3">JBoss Wiki</ulink> page. 
 		</para>
 		<para>
-			The latest <productname>JBoss Tools</productname> documentation builds are available at <ulink url="http://download.jboss.org/jbosstools/nightly-docs/">http://download.jboss.org/jbosstools/nightly-docs</ulink>.
+			Nighly documentation builds are available <ulink url="http://download.jboss.org/jbosstools/nightly-docs/">here</ulink>.
 		</para>
 	</section>
 

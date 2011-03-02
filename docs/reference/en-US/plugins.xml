@@ -2,29 +2,29 @@
 <chapter id="plugins" role="updated">
 	<title>Eclipse Plugins</title>
 	<para>
-		This chapter will introduce you to the set of wizards and editors provided by <productname>Hibernate Tools</productname> within Eclipse to simplify working with <productname>Hibernate</productname>.
+		This chapter will introduce you to the set of wizards and editors provided by <productname>Hibernate Tools</productname> within Eclipse, which are designed to simplify working with <productname>Hibernate</productname>.
 	</para>
 	<section>
 		<title>Introduction</title>
 		<para>
-			Hibernate Eclipse Tools includes wizards for creating Hibernate mapping files, configuration files (<filename>.cfg.xml</filename>), <filename>revenge.xml</filename> files as well as wizards for adjusting Console Configuration and Code Generation. Special structured and XML editors, and editors for executing HQL and Criteria queries are also provided in Hibernate Console. Refer to <xref linkend="hibernate_key_features"/> to find all the benefits that are provided by these tools within Eclipse.
+			Hibernate Eclipse Tools includes wizards for creating Hibernate mapping files, configuration files (<filename>.cfg.xml</filename>), <filename>revenge.xml</filename> files as well as wizards for adjusting Console Configuration and Code Generation. Special structured and XML editors and editors for executing HQL and Criteria queries are also provided in Hibernate Console. Refer to <xref linkend="hibernate_key_features"/> to find all the benefits that are provided by these tools within Eclipse.
 		</para>
 		<note>
 			<title>Note:</title>
 			<para>
-				Please note that these tools do not try to hide any of <productname>Hibernates</productname> functionality; rather the tools make working with <productname>Hibernate</productname> easier. You are still encouraged to read the <ulink url="http://www.hibernate.org/5.html">Hibernate Documentation</ulink> in order to be able to fully utilize <productname>Hibernate Tools</productname> and especially <productname>Hibernate</productname> it self.
+				Please note that these tools do not try to hide any of <productname>Hibernates</productname> functionality; rather the tools make working with <productname>Hibernate</productname> easier. You are still encouraged to read the <ulink url="http://hibernate.org/docs">Hibernate Documentation</ulink> in order to be able to fully utilize <productname>Hibernate Tools</productname> and especially <productname>Hibernate</productname> itself.
 			</para>
 		</note>
 		<section id="download_base_project">
 			<title>Download base project</title>
 			<para>You can download the example projects that are used in this chapter.</para>
 			<para>
-				A <property>JPA base project</property> is available on the <ulink url="http://docs.jboss.org/tools/resources/">documentation resources page </ulink> together with a <ulink url="http://docs.jboss.org/tools/resources/TestHibernateproject_for_hibernate_jboss_tools.zip">base Java project</ulink>.
+				A <property>JPA base project</property> is available on the <ulink url="http://docs.jboss.org/tools/resources/">documentation resources page</ulink>  together with a <ulink url="http://docs.jboss.org/tools/resources/TestHibernateproject_for_hibernate_jboss_tools.zip">base Java project</ulink>.
       </para>
 			<para>Also you need start the <ulink url="http://docs.jboss.org/tools/resources/GSG_database.zip">database</ulink>.</para>
 			<note>
 				<title>Note:</title>
-				<para>The steps for running the database are documented in the <ulink url="http://docs.jboss.org/tools/3.0.1.GA/en/GettingStartedGuide/html/first_seam.html#start_dev_db">Getting Started Guide</ulink>.</para>
+				<para>The steps for running the database are documented in the <ulink url="http://docs.redhat.com/docs/en-US/JBoss_Developer_Studio/4.0/html-single/Getting_Started_Guide/index.html#start_dev_db">Getting Started Guide</ulink>.</para>
 			</note>
 		</section>
 	</section>
@@ -32,7 +32,7 @@
 		<title>Creating a Hibernate Mapping File</title>
 		<para>Hibernate mapping files are used to specify how your objects relate to database tables.</para>
 		<para>
-			To create basic mappings for properties and associations, i. e. generate <filename>.hbm.xml</filename> files, Hibernate Tools provide a basic wizard which you can display by selecting <menuchoice><guimenuitem>New</guimenuitem>
+			To create basic mappings for properties and associations, i. e. generate <filename>.hbm.xml</filename> files, Hibernate Tools provide a basic wizard which you can display by selecting <menuchoice><guimenuitem>File</guimenuitem><guimenuitem>New</guimenuitem>
 				<guimenuitem>Hibernate XML mapping file</guimenuitem>
 			</menuchoice>.
 		</para>
@@ -262,9 +262,7 @@
 			<itemizedlist>
 				<listitem>
 					<para>
-						<emphasis>
-							<guilabel>Options</guilabel>
-						</emphasis> for the optional settings</para>
+						The <guilabel>Options</guilabel> tab the optional settings</para>
 				</listitem>
 			</itemizedlist>
 			<figure>
@@ -301,7 +299,7 @@
 								<para>Database dialect</para>
 							</entry>
 							<entry>
-								<para>Define a database dialect. It is possible either to write your value or choose from list. </para>
+								<para>Define a database dialect. It is possible either to enter your own value or choose from list. </para>
 							</entry>
 							<entry>
 								<para>No default value</para>
@@ -312,7 +310,7 @@
 								<para>Naming strategy</para>
 							</entry>
 							<entry>
-								<para>Fully qualified classname of a custom NamingStrategy. Only required if you use a special naming strategy.</para>
+								<para>Fully qualified classname of a custom <code>NamingStrategy</code>. Only required if you use a special naming strategy.</para>
 							</entry>
 							<entry>
 								<para>No default value</para>
@@ -323,7 +321,7 @@
 								<para>Entity resolver</para>
 							</entry>
 							<entry>
-								<para>Fully qualified classname of a custom EntityResolver. Only required if you have special XML entity includes in your mapping files.</para>
+								<para>Fully qualified classname of a custom <code>EntityResolver</code>. Only required if you have special XML entity includes in your mapping files.</para>
 							</entry>
 							<entry>
 								<para>No default value</para>
@@ -511,7 +509,7 @@
 						</mediaobject>
 					</figure>
 					<para>
-						The following table describes the available settings in the <guilabel>Properties</guilabel> view. Most properties can be changed by left clicking on them but some are not. 
+						The following table describes the available settings in the <guilabel>Properties</guilabel> view. Most properties can be changed by left clicking on them, but some can not. 
 						<table>
               <title>Properties</title>
 							<tgroup cols="3">
@@ -624,7 +622,7 @@
 		<section id="closing_conf_config">
 			<title>Closing Hibernate Console Configuration</title>
 			<para>
-				To close <guilabel>Hibernate Console Configuration</guilabel> you need to right-click your configuration and choose the <guimenuitem>Close Configuration</guimenuitem> option
+				To close <guilabel>Hibernate Console Configuration</guilabel> you need to right-click your configuration and choose the <guimenuitem>Close Configuration</guimenuitem> option.
 			</para>
 			<figure>
 				<title>Close Hibernate Console Configuration</title>
@@ -642,7 +640,7 @@
 	<section id="refeng_codegen" role="updated">
 		<title>Reverse Engineering and Code Generation</title>
 		<para>
-			Hibernate provides &quot;click-and-generate&quot; reverse engineering and code generation facilities. This allows you to generate a range of artifacts based on database or an already existing Hibernate configuration, be that mapping files or annotated classes. Some of these are POJO Java source files, Hibernate <filename>.hbm.xml</filename>, <filename>hibernate.cfg.xml</filename> generation and schema documentation.
+			Hibernate provides &quot;click-and-generate&quot; reverse engineering and code generation facilities. This allows you to generate a range of artifacts based on database or an existing Hibernate configuration, be that mapping files or annotated classes. Some of these are POJO Java source files, Hibernate <filename>.hbm.xml</filename> files, <filename>hibernate.cfg.xml</filename> generation and schema documentation.
 		</para>
 		<para>
 			To start working with this process, start the <guilabel>Hibernate Code Generation</guilabel> tool which is available from the toolbar via the <property>Hibernate</property> icon or via the <menuchoice><guimenuitem>Run</guimenuitem><guimenuitem>Hibernate Code Generation</guimenuitem></menuchoice> menu item.
@@ -681,7 +679,7 @@
 			<note>
 				<title>Tip:</title>
 				<para>
-					The &quot;At least one exporter option must be selected&quot; warning is just stating that for this launch to work you need to select an exporter on the <guilabel>Exporter</guilabel> tab. When an exporter has been selected the warning will disappear.
+					The &quot;At least one exporter option must be selected&quot; warning indicates that for this launcher to work you need to select an exporter on the <guilabel>Exporter</guilabel> tab. When an exporter has been selected the warning will disappear.
 				</para>
 			</note>
 			<para>
@@ -710,7 +708,7 @@
 								<para>Console Configuration</para>
 							</entry>
 							<entry>
-								<para>The name of the console configuration which should be used when generating code</para>
+								<para>The name of the console configuration that should be used when generating code</para>
 							</entry>
 						</row>
 						<row>
@@ -729,7 +727,7 @@
 							</entry>
 							<entry>
 								<para>
-									If enabled, the tools will reverse engineer the database available via the connection information in the selected Hibernate Console Configuration, and generate code based on the database schema. If not enabled, the code generation will just be based on the mappings already specified in the Hibernate Console configuration.
+									If enabled, the tools will reverse engineer the database defined in the connection information in the selected Hibernate Console Configuration, and generate code based on the database schema. If not enabled, the code generation will be based on the existing mappings specified in the Hibernate Console configuration.
 								</para>
 							</entry>
 						</row>
@@ -747,7 +745,7 @@
 							</entry>
 							<entry>
 								<para>
-									Path to a <filename>reveng.xml</filename> file. A <filename>reveng.xml</filename> file allows you to control certain aspects of the reverse engineering such as how JDBC types are mapped to Hibernate types, and which tables are included and excluded from the process (which is especially important). Clicking the <guibutton>Setup</guibutton> button allows you to select an existing <filename>reveng.xml</filename> file or create a new one. See more details about the <filename>reveng.xml</filename> file in <xref linkend="reverseengineering"/>.
+									Path to a <filename>reveng.xml</filename> file. A <filename>reveng.xml</filename> file allows you to control certain aspects of the reverse engineering process such as how JDBC types are mapped to Hibernate types, and which tables are included and excluded from the process (which is especially important). Clicking the <guibutton>Setup</guibutton> button allows you to select an existing <filename>reveng.xml</filename> file, or create a new one. See more details about the <filename>reveng.xml</filename> file in <xref linkend="reverseengineering"/>.
 								</para>
 							</entry>
 						</row>
@@ -757,7 +755,7 @@
 							</entry>
 							<entry>
 								<para>
-									If the <filename>reveng.xml</filename> file does not provide enough customization you can provide your own implementation of a ReverseEngineeringStrategy. The class needs to be in the classpath of the Console Configuration, otherwise you will get class not found exceptions. See <xref linkend="custom-reveng-strategy"/> for details and an example of a custom strategy.
+									If the <filename>reveng.xml</filename> file does not provide enough customization you can provide your own implementation of a <code>ReverseEngineeringStrategy</code>. The class needs to be in the classpath of the Console Configuration, otherwise you will get class not found exceptions. See <xref linkend="custom-reveng-strategy"/> for details and an example of a custom strategy.
 								</para>
 							</entry>
 						</row>
@@ -767,7 +765,7 @@
 							</entry>
 							<entry>
 								<para>
-									When a table that has a multi-column primary key a <code>&lt;composite-id&gt;</code> mapping will always be created. If this option is enabled and there are matching foreign-keys each key column is still considered a 'basic' scalar (string, long, etc.) instead of a reference to an entity. If you disable this option a <code>&lt;key-many-to-one&gt;</code> instead. Note: a <code>&lt;many-to-one&gt;</code> property is still created, but is simply marked as non-updatable and non-insertable.
+									When a table that has a multi-column primary key a <code>&lt;composite-id&gt;</code> mapping will always be created. If this option is enabled and there are matching foreign-keys, each key column is still considered a 'basic' scalar (string, long, etc.) instead of a reference to an entity. If you disable this option a <code>&lt;key-many-to-one&gt;</code> instead. Note: a <code>&lt;many-to-one&gt;</code> property is still created, but is simply marked as non-updatable and non-insertable.
 								</para>
 							</entry>
 						</row>
@@ -798,7 +796,7 @@
 									Reverse engineering detects one-to-one associations via primary key and both the <filename>hbm.xml</filename> file and annotation generation generates the proper code for it.
 								</para>
 								<para> 
-									The detection is enabled by default (except for Seam 1.2 and Seam 2.0) reverse engineering. For Hibernate Tools generation there is a checkbox to disable if not wanted. 
+									The detection is enabled by default (except for Seam 1.2 and Seam 2.0) reverse engineering. For Hibernate Tools generation there is a checkbox to disable this feature if it is not required. 
 								</para>
 							</entry>
 						</row>
@@ -889,7 +887,7 @@
 							</entry>
 							<entry>
 								<para>
-									Generate a <filename>hibernate.cfg.xml</filename> file. Used to keep the <filename>hibernate.cfg.xml</filename> update with any new found mapping files.
+									Generate a <filename>hibernate.cfg.xml</filename> file. Used to keep the <filename>hibernate.cfg.xml</filename> file updated with any newly discovered mapping files.
 								</para>
 							</entry>
 						</row>
