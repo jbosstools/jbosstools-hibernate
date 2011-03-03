@@ -2175,10 +2175,10 @@
 			It is possible to configure the Eclipse plugin to route all logging performed by the plugins and Hibernate code it self to the <guilabel>Error Log</guilabel> view in Eclipse.
 		</para>
 		<para>
-			The <guilabel>Error Log</guilabel> view is very useful tool when solving any problems which appear in the Hibernate Tools plugins. You can use it if there are troubles setting up a <guilabel>Hibernate Console Configuration</guilabel>.
+			The <guilabel>Error Log</guilabel> view is very useful tool to use when solving any problems which appear in the Hibernate Tools plugins. You can use it if there are troubles setting up a <guilabel>Hibernate Console Configuration</guilabel>.
 		</para>
 		<para>
-			This is done by editing the <filename>hibernate-log4j.properties</filename> file in the <filename>org.hibernate.eclipse/</filename> directory or JAR. This file includes a default configuration that only logs WARN and above to a set of custom appenders (PluginFileAppender and PluginLogAppender). You can change these settings to be as verbose or silent as you please. See <ulink url="http://www.hibernate.org/5.html">Hibernate Documentation</ulink> for more information on logging categories and Log4j documentation.
+			This is done by editing the <filename>hibernate-log4j.properties</filename> file in the <filename>org.hibernate.eclipse/</filename> directory or JAR. This file includes a default configuration that only logs WARN and above to a set of custom appenders (PluginFileAppender and PluginLogAppender). You can change these settings to be as verbose or silent as you please. See the <ulink url="http://www.hibernate.org/5.html">Hibernate Documentation</ulink> for more information on logging categories and Log4j documentation.
 		</para>
 		<section>
 			<title>Relevant Resources Links</title>
@@ -2240,7 +2240,7 @@
 			</figure>
 			<note>
 				<title>Note:</title>
-				<para>Remember to put the proper database driver to the classpath of your project.</para>
+				<para>Remember to put the appropriate database driver to the classpath of your project.</para>
 			</note>
 			<para>The <guilabel>Generate Entities wizard</guilabel> will first ask you to choose the directory where all output will be written.</para>
 			<figure>
