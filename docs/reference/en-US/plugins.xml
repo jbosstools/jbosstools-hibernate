@@ -1430,7 +1430,7 @@
 					</mediaobject>
 				</figure>
 				<para>
-					If you select the <guilabel>Rules</guilabel> checkbox, the view print page scale will be added to the page. The numbers on the scale displays its size in inches. If you click on the scale a <guilabel>Ruler Guide</guilabel> will appear on the diagram. You can connect any diagram item to it. To connect the items you should move their tops to the Ruler Guide. And while moving the ruler guide, the items will be moved together with it as a whole.
+					If you select the <guilabel>Rulers</guilabel> checkbox, the view print page scale will be added to the page. The numbers on the scale displays its size in inches. If you click on the scale a <guilabel>Ruler Guide</guilabel> will appear on the diagram. You can connect any diagram item to it. To connect the items you should move their tops to the Ruler Guide. And while moving the ruler guide, the items will be moved together with it as a whole.
         </para>
 				<figure>
 					<title>Moving the Ruler guide</title>
@@ -1449,8 +1449,10 @@
 						</imageobject>
 					</mediaobject>
 				</figure>
-				<para>The <guilabel>Snap to Geometry</guilabel> checkbox helps to put the items of the diagram into alignment with the grid.</para>
-				<para>For better navigating through the diagram use <guilabel>Outline view</guilabel> which is available in the structural and graphical modes.</para>
+				<para>The <guilabel>Snap to Geometry</guilabel> checkbox allows you to align the diagram items with the grid.</para>
+				<para>
+					For better navigating through the diagram use the <guilabel>Outline view</guilabel>, which is available in the structural and graphical modes.
+				</para>
 				<figure>
 					<title>Navigating in the Structural Mode</title>
 					<mediaobject>
@@ -1459,7 +1461,7 @@
 						</imageobject>
 					</mediaobject>
 				</figure>
-				<para>To switch over between the modes use the buttons in the top-right corner of the <guilabel>Outline view</guilabel>.</para>
+				<para>To switch between the view modes, use the buttons in the top-right corner of the <guilabel>Outline view</guilabel>.</para>
 				<figure>
 					<title>Navigating in the Graphical Mode</title>
 					<mediaobject>
@@ -1502,7 +1504,7 @@
 								<entry>
 									<para>Show|Hide connections</para>
 								</entry>
-								<entry>Allows to select what types of connections should be shown on the diagram: <itemizedlist>
+								<entry>Allows you to select what types of connections should be shown on the diagram: <itemizedlist>
                     <listitem>
                       <para>Property Mappings</para>
 										</listitem>
@@ -1526,7 +1528,7 @@
 									<para>Select All</para>
 								</entry>
 								<entry>
-									<para>Makes all the diagram elements selected</para>
+									<para>Selects all the diagram elements</para>
 								</entry>
 							</row>
 							<row>
@@ -1543,7 +1545,7 @@
 									<para>Auto layout</para>
 								</entry>
 								<entry>
-									<para>Used to dispose all the items of the diagram in a standard manner</para>
+									<para>Used to dispose all the items in the diagram in a standard manner</para>
 								</entry>
 							</row>
 							<row>
@@ -1561,7 +1563,7 @@
 								</entry>
 								<entry>
 									<para>
-										Allows the diagram to be exported as a <filename>.png</filename>,<filename>.jpeg</filename> or <filename>.bmp </filename> file
+										Allows the diagram to be exported as a <filename>PNG</filename>,<filename>JPEG</filename> or <filename>BMP</filename> file
 									</para>
 								</entry>
 							</row>
