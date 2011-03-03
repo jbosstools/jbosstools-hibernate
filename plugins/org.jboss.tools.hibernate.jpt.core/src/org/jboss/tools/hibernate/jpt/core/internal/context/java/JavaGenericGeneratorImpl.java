@@ -11,6 +11,7 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -21,7 +22,10 @@ import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaGenerator;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -74,6 +78,7 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 		this.parameters = new ArrayList<JavaParameter>();
 	}
 	
+	@Override
 	protected GenericGeneratorAnnotation getResourceGenerator() {
 		return this.generatorResource;
 	}
@@ -93,6 +98,7 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 		this.getPersistenceUnit().addGenerator(this);
 	}
 	
+	@Override
 	public void setName(String name) {
 		String old = this.name;
 		this.name = name;
@@ -100,10 +106,12 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 		this.firePropertyChanged(Generator.NAME_PROPERTY, old, name);
 	}
 	
+	@Override
 	public TextRange getSelectionTextRange(CompilationUnit astRoot) {
 		return this.generatorResource.getTextRange(astRoot);
 	}
 	
+	@Override
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		return this.generatorResource.getNameTextRange(astRoot);
 	}
@@ -129,10 +137,12 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 		return this.generatorResource.getStrategyTextRange(astRoot);
 	}
 
+	@Override
 	protected String getCatalog() {
 		return null;
 	}
 
+	@Override
 	protected String getSchema() {
 		return null;
 	}
@@ -270,6 +280,31 @@ public class JavaGenericGeneratorImpl extends AbstractJavaGenerator
 
 	public int getDefaultInitialValue() {
 		return GenericGenerator.DEFAULT_INITIAL_VALUE;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode#javaCompletionProposals(int, org.eclipse.jpt.utility.Filter, org.eclipse.jdt.core.dom.CompilationUnit)
+	 */
+	@Override
+	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		TextRange strategyRange = getStrategyTextRange(astRoot);
+		if (strategyRange != null && strategyRange.touches(pos)) {
+			return getJavaCandidateNames(filter).iterator();
+		}
+		return null;
+	}
+
+	private Iterable<String> getJavaCandidateNames(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this
+				.getCandidateNames(filter));
+	}
+
+	private Iterable<String> getCandidateNames(Filter<String> filter) {
+		return new FilteringIterable<String>(generatorClasses, filter);
 	}
 
 }
