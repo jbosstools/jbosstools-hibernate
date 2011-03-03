@@ -1579,7 +1579,7 @@
 						</imageobject>
 					</mediaobject>
 				</figure>
-				<para>The next table describes all the extra options in the menu of mapping items:</para>
+				<para>The next table describes the additional options found in the mapping items context menu:</para>
 				<table>
 					<title>Extra Options in the Context Menu of Mapping Item</title>
 					<tgroup cols="3">
@@ -1615,7 +1615,7 @@
 								</entry>
 								<entry>
 									<para>
-										Makes it possible to open the source file for a chosen object or element. The selected element will be highlighted in the open file.
+										Opens the source file for a chosen object or element. The selected element will be highlighted in the open file.
 									</para>
 								</entry>
 							</row>
@@ -1634,7 +1634,7 @@
 								</entry>
 								<entry>
 									<para>
-										Makes it possible to open a mapping file for a chosen object/element. The selected element will be highlighted in the open file.
+										Opens a mapping file for a chosen object or element. The selected element will be highlighted in the open file.
 									</para>
 								</entry>
 							</row>
@@ -1652,7 +1652,7 @@
 									<para>Show|Hide shape(s)</para>
 								</entry>
 								<entry>
-									<para>Used to hide/show an item on the mapping diagram</para>
+									<para>Used to hide or show an item on the mapping diagram</para>
 								</entry>
 							</row>
 							<row>
@@ -1669,7 +1669,7 @@
 									<para>Expand|Collapse shape(s)</para>
 								</entry>
 								<entry>
-									<para>Used for expanding and collapsing fields of the item</para>
+									<para>Used to expand and collapse fields displayed by the item</para>
 								</entry>
 							</row>
 						</tbody>
@@ -1677,9 +1677,9 @@
 				</table>
 				<note>
 					<title>Tip:</title>
-					<para>All the described types of the context menu are also available in the <guilabel>Outline</guilabel> view.</para>
+					<para>All these context menu options are also available in the <guilabel>Outline</guilabel> view.</para>
 				</note>
-				<para>The following table lists the actions that can be performed using the keyboard keys (or keys combinations).</para>
+				<para>The following table lists the available keyboard shortcuts.</para>
 				<table>
 					<title>Hibernate Mapping Diagram Shortcut Keys</title>
 					<tgroup cols="2">
@@ -1754,7 +1754,7 @@
 					</tgroup>
 				</table>
 				<para>
-					It is possible to save the diagram in the Eclipse workspace. Select <menuchoice><guimenuitem>File</guimenuitem><guimenuitem>Save As</guimenuitem></menuchoice>, and the wizard will ask you to set the location within you project where you wish to save the file and give the name for the diagram. The default name is the item&apos;s names concatenated with the ampersand symbols. The file is saved with the <filename>.hibernate</filename> extension.
+					It is possible to save the diagram in the Eclipse workspace. Select <menuchoice><guimenuitem>File</guimenuitem><guimenuitem>Save As</guimenuitem></menuchoice>, and the wizard will ask you to specify the location within you project where you wish to save the file, and provide the name for the diagram. The default name is the item&apos;s names concatenated with the ampersand symbols. The file is saved with the <filename>.hibernate</filename> extension.
 				</para>
 				<figure>
 					<title>The Diagram saved in the Workspace</title>
@@ -1848,7 +1848,7 @@
 								</entry>
 								<entry>
 									<para>
-										Used to define scale of the diagram. It is also used for printing <guilabel>Mapping Diagrams</guilabel>. If you want to print the whole <guilabel>diagram</guilabel> to one print page, you need select the <guilabel>Page</guilabel> option in the <guilabel>Zoom Box</guilabel> drop down list.
+										Used to define scale of the diagram. It is also used for printing <guilabel>Mapping Diagrams</guilabel>. If you want to print the whole <guilabel>diagram</guilabel> to one page, you need select the <guilabel>Page</guilabel> option in the <guilabel>Zoom Box</guilabel> drop down list.
 									</para>
 								</entry>
 							</row>
@@ -1930,7 +1930,7 @@
 		<section>
 			<title>Prototyping Queries</title>
 			<para>
-				Queries can be prototyped by entering them into the <guilabel>HQL</guilabel> or <guilabel>Criteria Editor</guilabel>. To execute a query click the green run button in the editor toolbar or press <keycombo><keycap>Ctrl</keycap><keycap>Enter</keycap></keycombo>.
+				Queries can be prototyped by entering them into the <guilabel>HQL</guilabel> or <guilabel>Criteria Editor</guilabel>. To execute a query click the green run button in the editor toolbar, or press <keycombo><keycap>Ctrl</keycap><keycap>Enter</keycap></keycombo>.
 			</para>
 			<section id="hql_and_criteria_editors">
 				<title>HQL Editor and Hibernate Criteria Editor</title>
@@ -1953,7 +1953,7 @@
 				</note>
 				<para>When they are opened, the editors they should automatically detect the chosen <guilabel>Console Configuration</guilabel>.</para>
 				<para>
-					To get a prefill query for any entity (or any entity child node) listed in the <guilabel>Session Factory</guilabel> you should double-click it. This will open the <guilabel>HQL Editor</guilabel> with the associated query.
+					To generate a predefined query for any entity (or any entity child node) listed in the <guilabel>Session Factory</guilabel> you should double-click it. This will open the <guilabel>HQL Editor</guilabel> with the associated query.
 				</para>
 				<para>
 					Choosing <guimenuitem>HQL Editor</guimenuitem> in the context menu for any entity (or any entity child node) will also open the HQL Editor with the associated query. If you select <guimenuitem>Hibernate Criteria Editor</guimenuitem> in the context menu, it will open <guilabel>Hibernate Criteria Editor</guilabel> with the associated criteria.
@@ -1992,7 +1992,7 @@
 					</mediaobject>
 				</figure>
 				<para>
-					Also you can pin the <guilabel>HQL editor</guilabel> and <guilabel>Criteria editor</guilabel> as a tab in the <property>Hibernate Query Result</property> view. For that you need click on the <guibutton>Stick result to one tab</guibutton> button (<inlinemediaobject><imageobject><imagedata fileref="images/plugins/sticky_but.png"/></imageobject></inlinemediaobject>). In this state query executions results will be shown in one tab (no more will be opened). 
+					In addition, you can pin the <guilabel>HQL editor</guilabel> and <guilabel>Criteria editor</guilabel> as a tab in the <guilabel>Hibernate Query Result</guilabel> view. For that you need click on the <guibutton>Stick result to one tab</guibutton> button (<inlinemediaobject><imageobject><imagedata fileref="images/plugins/sticky_but.png"/></imageobject></inlinemediaobject>). In this state query executions results will be shown in one tab (no more will be opened). 
 				</para>
 				<para>
 					You are able to rename the <guilabel>Hibernate Query Result</guilabel> tab. Click the tab, and type a new name in the <menuchoice><guimenuitem>Property View</guimenuitem><guimenuitem>Tab name</guimenuitem></menuchoice> field. 
@@ -2009,10 +2009,10 @@
 			<section>
 				<title>Error Handling</title>
 				<para>
-					Errors raised during the creation of the <guilabel>Session Factory</guilabel> or when executing the queries (e.g. if your configuration or query is incorrect) will be shown in a message dialog or inclined in the view that detected the error. You may get more information about the error in the <guilabel>Error Log View</guilabel> on the right pane.
+					Errors raised during the creation of the <guilabel>Session Factory</guilabel>, or when executing the queries (e.g. if your configuration or query is incorrect), will be shown in a message dialog or inclined in the view that detected the error. You may get more information about the error in the <guilabel>Error Log</guilabel> view on the right pane.
 				</para>
 				<para>
-					Results of a query will be shown in the <guilabel>Hibernate Query Result View</guilabel> and details of possible errors (syntax errors, database errors, etc.) can be seen in the <guilabel>Error Log View</guilabel>.
+					Results of a query will be shown in the <guilabel>Hibernate Query Result</guilabel> view and details of possible errors (syntax errors, database errors, etc.) can be seen in the <guilabel>Error Log</guilabel> view.
 				</para>
 				<note>
 					<title>Note:</title>
@@ -2024,7 +2024,7 @@
 			<section>
 				<title>Dynamic Query Translator</title>
 				<para>
-					If the <guilabel>Hibernate Dynamic Query Translator View</guilabel> is visible, it will show the generated SQL for a HQL query while you write in the <guilabel>HQL Editor</guilabel> .
+					If the <guilabel>Hibernate Dynamic Query Translator</guilabel> view is visible, it will show the generated SQL for a HQL query while you write in the <guilabel>HQL Editor</guilabel> .
 				</para>
 				<figure>
 					<title>Hibernate Dynamic Query Translator View</title>
@@ -2045,7 +2045,7 @@
 		<section>
 			<title>Properties View</title>
 			<para>
-				As you can see in the figure below, when clicking on class or entity the <guilabel>Properties view</guilabel> shows the number of query results as well as the execution time.
+				As you can see in the figure below, when clicking on class or entity the <guilabel>Properties</guilabel> view shows the number of query results as well as the execution time.
 			</para>
 			<figure>
 				<title>Properties View</title>
@@ -2073,7 +2073,7 @@
 				</mediaobject>
 			</figure>
 			<para>
-				You can also use <guilabel>Properties view</guilabel> when clicking on the configuration itself in Hibernate Configuration View (see <xref linkend="modif_console_conf"/>).
+				You can also use <guilabel>Properties</guilabel> view when clicking on the configuration itself in <guilabel>Hibernate Configuration</guilabel> view (see <xref linkend="modif_console_conf"/>).
 			</para>
 		</section>
 	</section>
