@@ -1353,7 +1353,7 @@
 			</mediaobject>
 		</figure>
 		<para>
-			The <guilabel>Table and Columns</guilabel> page allows you to explicit set which details (e.g. which hibernatetype and propertyname) should be used in the reverse engineered model. For more details on how to configure the tables while reverse engineering read <xref linkend="tab_and_col"/>.
+			The <guilabel>Table and Columns</guilabel> page allows you to explicitly set which details (e.g. which hibernatetype and propertyname) should be used in the reverse engineered model. For more details on how to configure the tables while reverse engineering read <xref linkend="tab_and_col"/>.
 		</para>
 		<figure>
 			<title>Table and Columns Page</title>
@@ -1366,12 +1366,11 @@
 				</imageobject>
 			</mediaobject>
 		</figure>
-		<para>Now that you have configured all the necessary settings, you can learn how to work with the <property>Hibernate Console Perspective</property>.</para>
 	</section>
 	<section id="hib_console">
 		<title>Hibernate Console Perspective</title>
 		<para>
-			The <guilabel>Hibernate Console Perspective</guilabel> combines a set of views which allow you to see the structure of your mapped entities and classes, edit HQL queries, execute the queries, and see the results. To use this perspective you need to create a <guilabel>Hibernate Console Configuration</guilabel> (see <xref linkend="console_conf"/>).
+			The <guilabel>Hibernate Console Perspective</guilabel> combines a set of views which allow you to see the structure of your mapped entities and classes, edit HQL queries, execute the queries, and view the results. To use this perspective you need to create a <guilabel>Hibernate Console Configuration</guilabel> (see <xref linkend="console_conf"/> for more information).
 		</para>
 		<section>
 			<title>Viewing the entity structure</title>
