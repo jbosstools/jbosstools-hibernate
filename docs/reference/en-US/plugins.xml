@@ -896,7 +896,7 @@
 								<para>Schema Documentation (.html)</para>
 							</entry>
 							<entry>
-								<para>Generates a set of html pages that documents the database schema and some of the mappings.</para>
+								<para>Generates a set of HTML pages that documents the database schema and some of the mappings.</para>
 							</entry>
 						</row>
 						<row>
@@ -919,7 +919,7 @@
 				</tgroup>
 			</table>
 			<para>
-				Each Exporter listens to certain properties and these can be setup in the <guilabel>Properties</guilabel> section where you can add and remove predefined or customer properties for each of the exporters. The following table lists the time of writing predefined properties:
+				Each Exporter listens to certain properties which can be setup in the <guilabel>Properties</guilabel> section where you can add and remove predefined or customer properties for each of the exporters. The following table lists the time of writing predefined properties:
 			</para>
 			<para>
 				<table>
@@ -1165,7 +1165,7 @@
 			<important>
 				<title>Important:</title>
 				<para>
-					Table/Column completion requires a properly configured Hibernate console configuration and this configuration should be the default for the project where the <filename>hbm.xml</filename> resides.
+					Table and Column completion requires a properly configured Hibernate console configuration, and this configuration should be the default for the project where the <filename>hbm.xml</filename> resides.
 				</para>
 			</important>
 			<para>
@@ -1282,7 +1282,7 @@
 	<section id="rev_xml_editor">
 		<title>Reveng.xml Editor</title>
 		<para>
-			A <filename>reveng.xml </filename> file is used to customize and control how reverse engineering is performed by the tools. The plugins provide an editor to assist in the editing of this file.
+			A <filename>reveng.xml </filename> file is used to customize and control how reverse engineering is performed by the tools. The plugins provide an editor to assist in editing this file.
 		</para>
 		<para>
 			The editor is intended to allow easy definition of type mappings, table include and excludes, and specific override settings for columns, e.g. define an explicit name for a column when the default naming rules are not applicable.
