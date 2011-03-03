@@ -1353,7 +1353,7 @@
 			</mediaobject>
 		</figure>
 		<para>
-			The <guilabel>Table and Columns</guilabel> page allows you to explicit set which details (e.g. which hibernatetype and propertyname) should be used in the reverse engineered model. For more details on how to configure the tables while reverse engineering read the <xref linkend="tab_and_col"/> section.
+			The <guilabel>Table and Columns</guilabel> page allows you to explicit set which details (e.g. which hibernatetype and propertyname) should be used in the reverse engineered model. For more details on how to configure the tables while reverse engineering read <xref linkend="tab_and_col"/>.
 		</para>
 		<figure>
 			<title>Table and Columns Page</title>
