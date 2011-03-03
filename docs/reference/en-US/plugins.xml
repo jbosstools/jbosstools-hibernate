@@ -2115,7 +2115,7 @@
 			</para>
 		</note>
 		<para>
-			To open this wizard you should right click the class you want to add the annotations to and select <menuchoice><guimenuitem>Source</guimenuitem><guimenuitem>Generate Hibernate/JPA annotations</guimenuitem></menuchoice>. You will see the <guilabel>Hibernate: add JPA annotations</guilabel> dialog.
+			To open this wizard you should right click the class you want to add the annotations to and select <menuchoice><guimenuitem>Source</guimenuitem><guimenuitem>Generate Hibernate/JPA annotations</guimenuitem></menuchoice> from the context menu. You will see the <guilabel>Hibernate: add JPA annotations</guilabel> dialog.
 		</para>
 		<figure>
 			<title>Starting Hibernate:add JPA annotations dialog</title>
@@ -2126,7 +2126,7 @@
 			</mediaobject>
 		</figure>
 		<para>
-			In the top of this dialog you can see a list of all the classes that will be passed through refactoring. Besides the class you have selected, this list also shows its superclasses and the classes that objects present in the current class as properties. If you want to add new classes or packages to the list, you should click the <guibutton>Back</guibutton> button. In result you will see <guilabel>Add classes and packages</guilabel> page.
+			The top section of this dialog lists all the classes that will be passed through refactoring. Next to the class you have selected, this list also displays its superclasses and the classes that the objects present in the current class as properties. If you want to add new classes or packages to the list, you should click the <guibutton>Back</guibutton> button. This will display the <guilabel>Add classes and packages</guilabel> page.
 		</para>
 		<figure>
 			<title>Add classes and packages page </title>
@@ -2137,17 +2137,17 @@
 			</mediaobject>
 		</figure>
 		<para>
-			Here you can add more classes or whole packages, and you can limit the dependencies depth by selecting the <guilabel>depth control</guilabel> option (you can find more information on this option in <xref linkend="depth_control"/>). When finished click the <guibutton>Next</guibutton> button and you will be returned to <guilabel>The following classes will be changed</guilabel> page.</para>
+			Here you can add additional classes or entire packages, and you can limit the dependencies depth by selecting the <guilabel>depth control</guilabel> option (you can find more information on this option in <xref linkend="depth_control"/>). When you are finished click the <guibutton>Next</guibutton> button and you will be returned to <guilabel>The following classes will be changed</guilabel> page.</para>
 		<para>
-			By default the tags are added to the fields of selected classes. But you can change this option to <guilabel>Getters</guilabel> in the <guilabel> Preferred location of Annotations</guilabel> drop down list, which results in the annotations being added to the getter methods. If you choose <guilabel>Auto select from class preference</guilabel> then the annotations are added according to the position of the majority of the existing annotations. 
+			By default the tags are added to the fields of selected classes. You can change this option to <guilabel>Getters</guilabel> in the <guilabel>Preferred location of Annotations</guilabel> drop down list, which results in the annotations being added to the getter methods. If you choose <guilabel>Auto select from class preference</guilabel> then the annotations are added according to the position of the majority of the existing annotations. 
 		</para>
 		<para>
 			If it is necessary to map your <code>String</code> properties to the columns that length differ from the default value (255), change the <guilabel>Default string length</guilabel> field and the <code>@Column(length = your length)</code> annotation will be created for every <code>String</code> property.
 		</para>
 		<para id="optim_lock">
-			You can add optimistic locking capability to an entity bean by selecting the <guilabel>Enable optimistic locking</guilabel> checkbox. This operation will add the version property to all the selected classes. The property will be also annotated with <code>@Version</code>, and a getter and setter will be created. If the property is already exists, it won't be created, but the getters and setters will be generated. If there is already <code>@MappedSuperclass</code> annotation with version in the base class of the current class, <code>version</code> is not inserted into the current class.
+			You can add optimistic locking capabilities to an entity bean by selecting the <guilabel>Enable optimistic locking</guilabel> checkbox. This operation will add the version property to all the selected classes. The property will be also annotated with <code>@Version</code>, and a getter and setter will be created. If the property is already exists, it won't be created, but the getters and setters will be generated. If there is already <code>@MappedSuperclass</code> annotation with <code>@Version</code> in the base class of the current class, <code>@Version</code> is not inserted into the current class.
     </para>
-		<para>After defining all the required settings click the <guibutton>Next</guibutton> button and follow the next wizard steps. </para>
+		<para>After defining all the required settings click the <guibutton>Next</guibutton> button.</para>
 		<figure>
 			<title>Hibernate:add JPA annotations view</title>
 			<mediaobject>
@@ -2172,10 +2172,10 @@
 	<section id="debug_log">
 		<title>Enable debug logging in the plugins</title>
 		<para>
-			It is possible to configure the Eclipse plugin to route all logging performed by the plugins and Hibernate code it self to the <guilabel>Error Log View</guilabel> in Eclipse.
+			It is possible to configure the Eclipse plugin to route all logging performed by the plugins and Hibernate code it self to the <guilabel>Error Log</guilabel> view in Eclipse.
 		</para>
 		<para>
-			The <guilabel>Error Log View</guilabel> is very useful tool when solving any problems which appear in the Hibernate Tools plugins. You can use it if there are troubles setting up a <guilabel>Hibernate Console Configuration</guilabel>.
+			The <guilabel>Error Log</guilabel> view is very useful tool when solving any problems which appear in the Hibernate Tools plugins. You can use it if there are troubles setting up a <guilabel>Hibernate Console Configuration</guilabel>.
 		</para>
 		<para>
 			This is done by editing the <filename>hibernate-log4j.properties</filename> file in the <filename>org.hibernate.eclipse/</filename> directory or JAR. This file includes a default configuration that only logs WARN and above to a set of custom appenders (PluginFileAppender and PluginLogAppender). You can change these settings to be as verbose or silent as you please. See <ulink url="http://www.hibernate.org/5.html">Hibernate Documentation</ulink> for more information on logging categories and Log4j documentation.
