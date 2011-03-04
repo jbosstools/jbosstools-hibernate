@@ -429,11 +429,11 @@
       </para>
 
       <para>
-      	The <code>persistenceunit</code> attribute can be used to select a specific persistence unit. If no <code>persistenceunit</code> attribute is specified it will automatically search for one and if a unique one is found, use it. However, having multiple persistence units will result in an error.
+      	The <code>persistenceunit</code> attribute can be used to select a specific persistence unit. If no <code>persistenceunit</code> attribute is specified it will automatically search for one, and if a unique one is found, use it. However, having multiple persistence units will result in an error.
       </para>
 
       <para>
-      	To use a <code>&lt;jpaconfiguration&gt;</code> tag you will need to specify some additional JARs from Hibernate EntityManager in the <code>&lt;taskdef&gt;</code> section of the hibernatetool. The following demonstrates a full setup:
+      	To use a <code>&lt;jpaconfiguration&gt;</code> tag you will need to specify some additional JARs from the Hibernate EntityManager in the <code>&lt;taskdef&gt;</code> section of the hibernatetool. The following demonstrates a full setup:
       </para>
 
       <programlisting role="XML"><![CDATA[<path id="ejb3toolslib">
@@ -466,7 +466,7 @@
       <note>
         <title>Note:</title>
         <para>
-        	ejb3configuration was the name used in previous versions. It still works but will display a warning telling you to use <literal>jpaconfiguration</literal> instead.
+        	<literal>ejb3configuration</literal> was the name used in previous versions. It still works but will display a warning telling you to use <literal>jpaconfiguration</literal> instead.
         </para>
       </note>
 
