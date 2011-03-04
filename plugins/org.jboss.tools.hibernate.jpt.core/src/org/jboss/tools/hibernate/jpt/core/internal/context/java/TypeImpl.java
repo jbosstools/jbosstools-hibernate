@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jdt.core.IType;
@@ -18,6 +20,9 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.context.HibernatePersistenceUnit;
@@ -83,12 +88,47 @@ public class TypeImpl extends AbstractJavaJpaContextNode implements JavaType, Me
 		validateType(messages, reporter, astRoot);
 	}
 	
+	@Override
 	public HibernatePersistenceUnit getPersistenceUnit() {
 		return (HibernatePersistenceUnit) this.getParent().getPersistenceUnit();
 	}
 	
 	public TextRange getTypeTextRange(CompilationUnit astRoot) {
 		return this.typeResource.getTypeTextRange(astRoot);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode
+	 * #javaCompletionProposals(int, org.eclipse.jpt.utility.Filter,
+	 * org.eclipse.jdt.core.dom.CompilationUnit)
+	 */
+	@Override
+	public Iterator<String> javaCompletionProposals(int pos,
+			Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.javaCompletionProposals(pos, filter,
+				astRoot);
+		if (result != null) {
+			return result;
+		}
+		System.out.println(getPersistenceUnit().uniqueTypeDefNames());
+		TextRange typeRange = getTypeTextRange(astRoot);
+		if (typeRange != null && typeRange.touches(pos)) {
+			return getJavaCandidateNames(filter).iterator();
+		}
+		return null;
+	}
+
+	private Iterable<String> getJavaCandidateNames(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this
+				.getCandidateNames(filter));
+	}
+
+	private Iterable<String> getCandidateNames(Filter<String> filter) {
+		return new FilteringIterable<String>(Arrays.asList(getPersistenceUnit()
+				.uniqueTypeDefNames()), filter);
 	}
 
 	/**

@@ -11,12 +11,14 @@
 
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaBasicMapping;
+import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 import org.jboss.tools.hibernate.jpt.core.internal.HibernateAbstractJpaFactory;
@@ -34,6 +36,8 @@ import org.jboss.tools.hibernate.jpt.core.internal.resource.java.TypeAnnotation;
 public class HibernateJavaBasicMappingImpl extends AbstractJavaBasicMapping
 implements HibernateJavaBasicMapping {
 	
+	protected final HibernateJavaTypeDefContainer typeDefContainer;
+
 	protected GenerationTime specifiedGenerationTime;
 	
 	protected JavaIndex index;
@@ -42,6 +46,7 @@ implements HibernateJavaBasicMapping {
 
 	public HibernateJavaBasicMappingImpl(JavaPersistentAttribute parent) {
 		super(parent);
+		this.typeDefContainer = getJpaFactory().buildJavaTypeDefContainer(parent);
 	}
 	
 	@Override
@@ -59,6 +64,7 @@ implements HibernateJavaBasicMapping {
 	@Override
 	protected void initialize() {
 		super.initialize();
+		this.typeDefContainer.initialize(this.getResourcePersistentAttribute());
 		this.specifiedGenerationTime = this.getResourceGenerationTime();
 		this.initializeIndex();
 		this.initializeType();
@@ -67,11 +73,16 @@ implements HibernateJavaBasicMapping {
 	@Override
 	protected void update() {
 		super.update();
+		this.typeDefContainer.update(this.getResourcePersistentAttribute());
 		this.setGenerationTime_(this.getResourceGenerationTime());
 		this.updateIndex();
 		this.updateType();
 	}
 	
+	public HibernateJavaTypeDefContainer getTypeDefContainer() {
+		return this.typeDefContainer;
+	}
+
 	public GeneratedAnnotation getResourceGenerated() {
 		return (GeneratedAnnotation) getResourcePersistentAttribute().getAnnotation(GeneratedAnnotation.ANNOTATION_NAME);
 	}
@@ -250,14 +261,51 @@ implements HibernateJavaBasicMapping {
 	protected TypeAnnotation getTypeResource() {
 		return (TypeAnnotation) this.getResourcePersistentAttribute().getAnnotation(TypeAnnotation.ANNOTATION_NAME);
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.jpt.core.internal.context.java.AbstractJavaBasicMapping#validate(java.util.List, org.eclipse.wst.validation.internal.provisional.core.IReporter, org.eclipse.jdt.core.dom.CompilationUnit)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jpt.core.internal.context.java.AbstractJavaBasicMapping#
+	 * javaCompletionProposals(int, org.eclipse.jpt.utility.Filter,
+	 * org.eclipse.jdt.core.dom.CompilationUnit)
+	 */
+	@Override
+	public Iterator<String> javaCompletionProposals(int pos,
+			Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.javaCompletionProposals(pos, filter,
+				astRoot);
+		if (result != null) {
+			return result;
+		}
+		result = this.getTypeDefContainer().javaCompletionProposals(pos,
+				filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		if (this.getType() != null) {
+			result = this.getType().javaCompletionProposals(pos, filter,
+					astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.jpt.core.internal.context.java.AbstractJavaBasicMapping#validate
+	 * (java.util.List,
+	 * org.eclipse.wst.validation.internal.provisional.core.IReporter,
+	 * org.eclipse.jdt.core.dom.CompilationUnit)
 	 */
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter,
 			CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
+		this.typeDefContainer.validate(messages, reporter, astRoot);
 		if (this.index != null){
 			this.index.validate(messages, reporter, astRoot);
 		}

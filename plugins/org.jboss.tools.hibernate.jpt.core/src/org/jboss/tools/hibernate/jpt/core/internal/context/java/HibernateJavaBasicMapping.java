@@ -22,4 +22,6 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.TypeHolder;
  */
 public interface HibernateJavaBasicMapping extends JavaBasicMapping, Generated, IndexHolder, TypeHolder {
 
+	HibernateJavaTypeDefContainer getTypeDefContainer();
+
 }
