@@ -180,7 +180,7 @@
       <title>Basic examples</title>
 
       <para>
-      	The following example shows the most basic setup for generating POJOs via <code>&lt;hbm2java&gt;</code> from a normal <filename>hibernate.cfg.xml</filename>. The output will be placed in the <filename>${build.dir}/generated</filename> directory.
+      	The following example shows the most basic setup for generating POJOs via <code>&lt;hbm2java&gt;</code> from a normal <filename>hibernate.cfg.xml</filename> file. The output will be placed in the <filename>${build.dir}/generated</filename> directory.
       </para>
 
       <programlisting role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
@@ -194,11 +194,11 @@
 
 
       <para>
-      	The following example is similar, but now we are performing multiple exports from the same configuration. We are exporting the schema via <code>&lt;hbm2dll&gt;</code>, generating some DAO code via <code>&lt;hbm2dao&gt;</code> and finally running some custom code generation via <code>&lt;hbmtemplate&gt;</code>. This is again from a normal <filename>hibernate.cfg.xml</filename> file, and the output is still placed in the <filename>${build.dir}/generated</filename> directory.
+      	The following example is similar, but now we are performing multiple exports from the same configuration. We are exporting the schema via <code>&lt;hbm2dll&gt;</code>, generating some DAO code via <code>&lt;hbm2dao&gt;</code>, and finally running some custom code generation via <code>&lt;hbmtemplate&gt;</code>. This is again from a normal <filename>hibernate.cfg.xml</filename> file, and the output is still placed in the <filename>${build.dir}/generated</filename> directory.
       </para> 
       	
       <para>
-      		The example also shows how a classpath is specified, which is useful when you have custom user types or some mappings that is needed to be looked up as a classpath resource.
+      		The example also shows how a classpath is specified, which is useful when you have custom user types or some mappings that are required to be looked up as a classpath resource.
       </para>
 
       <programlisting role="XML"><![CDATA[<hibernatetool destdir="${build.dir}/generated">
@@ -223,7 +223,7 @@
     <title>Hibernate Configurations</title>
 
     <para>
-    	<emphasis>Hibernatetool</emphasis> supports four different Hibernate configurations: A standard Hibernate configuration (<code>&lt;configuration&gt;</code>),  Annotation based configuration  (<code>&lt;annotationconfiguration&gt;</code>), JPA persistence based configuration (<code>&lt;jpaconfiguration&gt;</code>)  and a JDBC based configuration  (<code>&lt;jdbcconfiguration&gt;</code>) used when reverse engineering.
+    	<productname>Hibernatetool</productname> supports four different Hibernate configurations: A standard Hibernate configuration (<code>&lt;configuration&gt;</code>),  Annotation based configuration  (<code>&lt;annotationconfiguration&gt;</code>), JPA persistence based configuration (<code>&lt;jpaconfiguration&gt;</code>)  and a JDBC based configuration  (<code>&lt;jdbcconfiguration&gt;</code>) used when reverse engineering.
     </para>
 
     <para>
@@ -396,12 +396,12 @@
       <important>
         <title>Important:</title>
         <para>
-        	To use it remember to put the JAR files needed for using Hibernate annotations in the classpath of the <code>&lt;taskdef&gt;</code>,  i.e. <filename>hibernate-annotations.jar</filename> and <filename>hibernate-commons-annotations.jar</filename>.
+        	To use an <code>&lt;annotationconfiguration&gt;</code> tag remember to place the JAR files required to use Hibernate annotations in the classpath of the <code>&lt;taskdef&gt;</code>,  i.e. <filename>hibernate-annotations.jar</filename> and <filename>hibernate-commons-annotations.jar</filename>.
         </para>
       </important>
 
       <para>
-      	The <code>&lt;annotationconfiguration&gt;</code> tag supports the same attributes as the <code>&lt;configuration&gt;</code> tag except that the <code>configurationfile</code> attribute is now required as that is where an <emphasis>AnnotationConfiguration</emphasis> gets the list of classes and packages it should load.
+      	The <code>&lt;annotationconfiguration&gt;</code> tag supports the same attributes as the <code>&lt;configuration&gt;</code> tag, with the exception being that the <code>configurationfile</code> attribute is now required as that is where an <emphasis>AnnotationConfiguration</emphasis> gets the list of classes and packages it should load.
       </para>
 
       <para>Thus the minimal usage is:</para>
