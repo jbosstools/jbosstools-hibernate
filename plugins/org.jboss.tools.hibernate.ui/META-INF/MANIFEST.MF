@@ -17,7 +17,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt.core,
  org.eclipse.jdt.ui,
  org.hibernate.eclipse.console
-Bundle-Version: 3.4.0.qualifier
+Bundle-Version: 3.4.1.qualifier
 Export-Package: org.jboss.tools.hibernate.ui.diagram,
  org.jboss.tools.hibernate.ui.diagram.editors,
  org.jboss.tools.hibernate.ui.diagram.editors.actions,

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name.0
 Bundle-SymbolicName: org.hibernate.eclipse.console.test
-Bundle-Version: 3.4.0.qualifier
+Bundle-Version: 3.4.1.qualifier
 Bundle-ClassPath: .,
  lib/hibernate-tools-tests.jar,
  lib/hsqldb.jar,
