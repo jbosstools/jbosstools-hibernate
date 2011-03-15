@@ -13,6 +13,7 @@ package org.jboss.tools.hibernate.ui.bot.testcase;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.jboss.tools.hibernate.ui.bot.test.util.DataHolder;
 import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
 import org.jboss.tools.hibernate.ui.bot.testsuite.Project;
 import org.jboss.tools.ui.bot.ext.SWTEclipseExt;
@@ -67,6 +68,9 @@ public class ConsoleTest extends HibernateTest {
 		
 		bot.button(IDELabel.Button.FINISH).click();
 		util.waitForNonIgnoredJobs();
+		
+		expandDatabaseInConsole();
+		
 		log.info("HB Console creation FINISHED");
 		
 		consoleCreated = true;
@@ -86,6 +90,7 @@ public class ConsoleTest extends HibernateTest {
 		eclipse.selectTreeLocation(Project.PROJECT_NAME, "src");
 		bot.button(IDELabel.Button.NEXT).click();
 		
+		// Dialect, driver, jdbc
 		String dialect = DatabaseHelper.getDialect(TestConfigurator.currentConfig.getDB().dbType);
 		bot.comboBoxWithLabel(IDELabel.HBConsoleWizard.DATABASE_DIALECT).setSelection(dialect);
 		String drvClass = DatabaseHelper.getDriverClass(TestConfigurator.currentConfig.getDB().dbType);
@@ -93,6 +98,12 @@ public class ConsoleTest extends HibernateTest {
 		String jdbc = TestConfigurator.currentConfig.getDB().jdbcString;
 		bot.comboBoxWithLabel(IDELabel.HBConsoleWizard.CONNECTION_URL).setText(jdbc);
 		
+		// Username, password
+		String username = TestConfigurator.currentConfig.getDB().username;
+		bot.textWithLabel("Username:").setText(username);		
+		String password = TestConfigurator.currentConfig.getDB().password;
+		bot.textWithLabel("Password:").setText(password);
+				
 		SWTBotShell shell = bot.activeShell();
 		bot.button(IDELabel.Button.FINISH).click();
 		eclipse.waitForClosedShell(shell);
@@ -144,6 +155,24 @@ public class ConsoleTest extends HibernateTest {
 		bot.sleep(TIME_1S);
 	}
 
+
+	private void expandDatabaseInConsole() {
+		SWTBot viewBot = open.viewOpen(ActionItem.View.HibernateHibernateConfigurations.LABEL).bot();
+		SWTBotTreeItem console = viewBot.tree().expandNode(Project.PROJECT_NAME);
+		bot.sleep(TIME_500MS);
+		SWTBotTreeItem db = console.expandNode("Database").select();
+		bot.sleep(TIME_500MS);		
+		SWTBotTreeItem pub = db.expandNode("public").select();
+		bot.sleep(TIME_500MS);
+		
+		// Workaround, DB content isn't correcly expanded (SWTBot 2.0.3)
+		pub.doubleClick(); 
+		bot.sleep(TIME_500MS);
+		pub.doubleClick();
+		bot.sleep(TIME_500MS);	
+		DataHolder.tables = pub.getNodes();	
+	}
+	
 	/**
 	 * TC 16 - open console, change several values, apply changes and check changes if they were store correctly
 	 */
