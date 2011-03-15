@@ -16,6 +16,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.hamcrest.Matcher;
+import org.jboss.tools.hibernate.ui.bot.test.util.DataHolder;
 import org.jboss.tools.hibernate.ui.bot.testsuite.HibernateTest;
 import org.jboss.tools.hibernate.ui.bot.testsuite.Project;
 import org.jboss.tools.ui.bot.ext.config.Annotations.DB;
@@ -89,10 +90,11 @@ public class CodeGenerationLauncherTest extends HibernateTest {
 					 
 		open.viewOpen(ActionItem.View.JavaPackageExplorer.LABEL);					
 
-		packageExplorer.openFile(Project.PROJECT_NAME,"gen","org","test","Customers.java");
-		packageExplorer.openFile(Project.PROJECT_NAME,"gen","org","test","Customers.java");
-		packageExplorer.openFile(Project.PROJECT_NAME,"gen","org","test","Employees.java");
-		packageExplorer.openFile(Project.PROJECT_NAME,"gen","org","test","Offices.java");
+		
+		for (String table : DataHolder.tables) {
+			String className = table.substring(0,1).toUpperCase() + table.substring(1).toLowerCase();
+			packageExplorer.openFile(Project.PROJECT_NAME,"gen","org","test", className + ".java"); 
+		}
 
 		log.info("Generated files check DONE");
 	}
