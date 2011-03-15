@@ -11,6 +11,7 @@
 package org.jboss.tools.hibernate.ui.bot.testcase;
 
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.jboss.tools.hibernate.ui.bot.test.util.DataHolder;
@@ -161,8 +162,15 @@ public class ConsoleTest extends HibernateTest {
 		SWTBotTreeItem console = viewBot.tree().expandNode(Project.PROJECT_NAME);
 		bot.sleep(TIME_500MS);
 		SWTBotTreeItem db = console.expandNode("Database").select();
-		bot.sleep(TIME_500MS);		
-		SWTBotTreeItem pub = db.expandNode("public").select();
+		bot.sleep(TIME_500MS);
+		SWTBotTreeItem pub = null;
+		try {
+			pub = db.expandNode("public").select();
+		} 
+		catch (WidgetNotFoundException e) {
+			pub = db.expandNode("PUBLIC").select();
+		}
+		
 		bot.sleep(TIME_500MS);
 		
 		// Workaround, DB content isn't correcly expanded (SWTBot 2.0.3)
