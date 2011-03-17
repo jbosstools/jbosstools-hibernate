@@ -605,7 +605,7 @@
 										<entry>
 											<para>
 												Choose between &quot;CORE&quot;, &quot;ANNOTATIONS&quot; and &quot;JPA&quot; according to the method of relational mapping you want to
-                        use. Note, the two latter requires running Eclipse IDE with a JDK 5 runtime, otherwise you will get classloading and/or version errors.
+                        use. Note, the two latter requires running Eclipse IDE with a JDK 5 runtime, otherwise you will get class loading and/or version errors.
                       </para>
 										</entry>
 										<entry>
