@@ -120,7 +120,7 @@
             </entry>
 
             <entry>
-              <para>A classpath to be used to resolve resources, such as mappings and usertypes</para>
+              <para>A classpath to be used to resolve resources, such as mappings and user types</para>
             </entry>
 
             <entry>
@@ -421,7 +421,7 @@
       <title>JPA based configuration (&lt;jpaconfiguration&gt;)</title>
 
       <para>
-      	A <code>&lt;jpaconfiguration&gt;</code> tag is used when you want to read the metamodel from JPA or Hibernate Annotation where you want to use the auto-scan configuration as defined in the JPA spec (part of EJB3). In other words, when you do not have a <filename>hibernate.cfg.xml</filename>, but instead have a setup where you use a <filename>persistence.xml</filename> file packaged in a JPA compliant manner.
+      	A <code>&lt;jpaconfiguration&gt;</code> tag is used when you want to read the metamodel from JPA or Hibernate Annotation where you want to use the auto-scan configuration as defined in the JPA specification (part of EJB3). In other words, when you do not have a <filename>hibernate.cfg.xml</filename>, but instead have a setup where you use a <filename>persistence.xml</filename> file packaged in a JPA compliant manner.
       </para>
 
       <para>

@@ -35,7 +35,7 @@
     <note>
       <title>Note:</title>
       <para>
-      	Many databases have case-sensitive names, so if a table does not match, and you are sure it is not excluded by a <code>&lt;table-filter&gt;</code>,  check that the case matches. Most databases stores table names in uppercase.
+      	Many databases have case-sensitive names, so if a table does not match, and you are sure it is not excluded by a <code>&lt;table-filter&gt;</code>,  check that the case matches. Most databases stores table names in upper case.
       </para>
     </note>
 

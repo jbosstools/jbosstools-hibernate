@@ -4,7 +4,7 @@
 	<title>Introduction</title>
 
 	<para>
-		<property>Hibernate Tools</property> is a toolset for <ulink url="http://www.hibernate.org/">Hibernate 3</ulink> and related projects. The tools provide Ant
+		<property>Hibernate Tools</property> is a collection of tools for <ulink url="http://www.hibernate.org/">Hibernate 3</ulink> and related projects. The tools provide Ant
         tasks and Eclipse plugins for performing reverse engineering, code generation, visualization
         and interaction with Hibernate.</para>
 
@@ -159,7 +159,7 @@
 			There is some additional information on <productname>Hibernate</productname> on the <ulink url="http://www.jboss.org/community/wiki/JBossHibernate3">JBoss Wiki</ulink> page. 
 		</para>
 		<para>
-			Nighly documentation builds are available <ulink url="http://download.jboss.org/jbosstools/nightly-docs/">here</ulink>.
+			Nightly documentation builds are available <ulink url="http://download.jboss.org/jbosstools/nightly-docs/">here</ulink>.
 		</para>
 	</section>
 

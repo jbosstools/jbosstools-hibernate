@@ -100,7 +100,7 @@
 		<note>
 			<title>Note:</title>
 			<para>
-				The contents in the combo boxes for the JDBC driver class and JDBC URL change automatically, depending on the Dialect and actual driver you have chosen.
+				The contents in the comboboxes for the JDBC driver class and JDBC URL change automatically, depending on the Dialect and actual driver you have chosen.
 			</para>
 		</note>
 		<para>
@@ -185,7 +185,7 @@
 							</entry>
 							<entry>
 								<para>
-									Choose between &quot;Core&quot;, &quot;Annotations&quot; and &quot;JPA&quot;. Note that the two latter requires running Eclipse IDE with a JDK 5 runtime, otherwise you will get classloading and/or version errors.
+									Choose between &quot;Core&quot;, &quot;Annotations&quot; and &quot;JPA&quot;. Note that the two latter requires running Eclipse IDE with a JDK 5 runtime, otherwise you will get class loading and/or version errors.
 								</para>
 							</entry>
 							<entry>
@@ -310,7 +310,7 @@
 								<para>Naming strategy</para>
 							</entry>
 							<entry>
-								<para>Fully qualified classname of a custom <code>NamingStrategy</code>. Only required if you use a special naming strategy.</para>
+								<para>Fully qualified class name of a custom <code>NamingStrategy</code>. Only required if you use a special naming strategy.</para>
 							</entry>
 							<entry>
 								<para>No default value</para>
@@ -321,7 +321,7 @@
 								<para>Entity resolver</para>
 							</entry>
 							<entry>
-								<para>Fully qualified classname of a custom <code>EntityResolver</code>. Only required if you have special XML entity includes in your mapping files.</para>
+								<para>Fully qualified class name of a custom <code>EntityResolver</code>. Only required if you have special XML entity includes in your mapping files.</para>
 							</entry>
 							<entry>
 								<para>No default value</para>
