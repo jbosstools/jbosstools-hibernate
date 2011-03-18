@@ -51,7 +51,7 @@
 						</entry>
 						<entry>
 							<para>
-								A set of wizards are provided with the <productname>Hibernate Eclipse Tools</productname> to quickly create common <productname>Hibernate</productname> files such as configuration (<filename>cfg.xml</filename>) files, mapping files and <filename>revenge.xml</filename> as well. The Code Generation wizard helps by generating a series of various artifacts, and there is even support for completely reverse engineering an existing database schema.
+								A set of wizards are provided with the <productname>Hibernate Eclipse Tools</productname> to quickly create common <productname>Hibernate</productname> files such as configuration (<filename>cfg.xml</filename>) files, mapping files and <filename>reveng.xml</filename> as well. The Code Generation wizard helps by generating a series of various artifacts, and there is even support for completely reverse engineering an existing database schema.
 							</para>
 						</entry>
 						<entry>

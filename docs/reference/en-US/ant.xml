@@ -8,7 +8,7 @@
     <title>Introduction</title>
 
     <para>
-    	The <filename>hibernate-tools.jar</filename> file, available from <ulink url="http://www.hibernate.org/subprojects/tools.html">tools.hibernate.org</ulink>,  contains the core code for <productname>Hibernate Tools</productname>. It is used as the basis for both the Ant tasks described in this document and the Eclipse plugins availble as part of JBoss Developer Studio. The <filename>hibernate-tools.jar</filename> file is located in your Eclipse plugins directory at <filename>/plugins/org.hibernate.eclipse.x.x.x/lib/tools/hibernate-tools.jar</filename>.
+    	The <filename>hibernate-tools.jar</filename> file, available from <ulink url="http://www.hibernate.org/subprojects/tools.html">tools.hibernate.org</ulink>,  contains the core code for <productname>Hibernate Tools</productname>. It is used as the basis for both the Ant tasks described in this document and the Eclipse plugins available as part of JBoss Developer Studio. The <filename>hibernate-tools.jar</filename> file is located in your Eclipse plugins directory at <filename>/plugins/org.hibernate.eclipse.x.x.x/lib/tools/hibernate-tools.jar</filename>.
     </para>
     <para>This jar is 100% independent from the Eclipse platform and can thus be used independently of Eclipse.</para>
 
