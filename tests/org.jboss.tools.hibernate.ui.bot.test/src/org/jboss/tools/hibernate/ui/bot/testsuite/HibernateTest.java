@@ -169,7 +169,7 @@ public class HibernateTest extends SWTTestExt {
 			in = util.getResourceFile(Activator.PLUGIN_ID, "drv","hsqldb.jar");
 		}
 		else {
-			in = util.getResourceFile(TestConfigurator.currentConfig.getDB().driverPath);
+			in = new File(TestConfigurator.currentConfig.getDB().driverPath);
 		}
 		
 		File out = new File(Platform.getLocation() + File.separator + Project.PROJECT_NAME + File.separator + "hsqldb.jar");
