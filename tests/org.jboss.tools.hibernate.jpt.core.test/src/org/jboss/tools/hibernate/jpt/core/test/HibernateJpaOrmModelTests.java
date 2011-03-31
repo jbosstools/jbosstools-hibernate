@@ -43,6 +43,7 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmJoinT
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmManyToManyMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmManyToOneMapping;
 import org.jboss.tools.hibernate.jpt.core.internal.context.orm.HibernateOrmTable;
+import org.jboss.tools.test.util.ResourcesUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
