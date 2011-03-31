@@ -12,16 +12,18 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.jpa.core.context.java.JavaMappingJoinColumnRelationship;
+import org.eclipse.jpt.jpa.core.internal.context.java.GenericJavaMappingJoinColumnRelationshipStrategy;
 
 /**
  * @author Dmitry Geraskov
  *
  */
 public class HibernateJavaJoinColumnJoiningStrategy extends
-		GenericJavaJoinColumnJoiningStrategy {
+		GenericJavaMappingJoinColumnRelationshipStrategy {
 
 	public HibernateJavaJoinColumnJoiningStrategy(
-			JavaJoinColumnEnabledRelationshipReference parent) {
+			JavaMappingJoinColumnRelationship parent) {
 		super(parent);
 	}
 	

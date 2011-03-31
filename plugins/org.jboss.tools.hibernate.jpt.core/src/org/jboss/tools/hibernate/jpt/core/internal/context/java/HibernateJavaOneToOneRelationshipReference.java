@@ -12,20 +12,21 @@
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
+import org.eclipse.jpt.jpa.core.internal.context.java.GenericJavaOneToOneRelationship;
 
 /**
  * @author Dmitry Geraskov
  *
  */
 public class HibernateJavaOneToOneRelationshipReference extends
-		GenericJavaOneToOneRelationshipReference {
+		GenericJavaOneToOneRelationship {
 
 	public HibernateJavaOneToOneRelationshipReference(JavaOneToOneMapping parent) {
 		super(parent);
 	}
 	
-	protected JavaJoinColumnJoiningStrategy buildJoinColumnJoiningStrategy() {
+	/*protected JavaJoinColumnJoiningStrategy buildJoinColumnJoiningStrategy() {
 		return new HibernateJavaJoinColumnJoiningStrategy(this);
-	}
+	}*/
 
 }

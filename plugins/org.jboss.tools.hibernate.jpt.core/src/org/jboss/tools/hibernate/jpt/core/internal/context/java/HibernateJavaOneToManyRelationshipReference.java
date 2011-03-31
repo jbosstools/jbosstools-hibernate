@@ -10,26 +10,28 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
+import org.eclipse.jpt.jpa.core.context.java.JavaJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
+import org.eclipse.jpt.jpa.core.internal.context.java.GenericJavaOneToManyRelationship;
 
 /**
  * @author Dmitry Geraskov
  *
  */
 public class HibernateJavaOneToManyRelationshipReference extends
-		GenericJavaOneToManyRelationshipReference {
+		GenericJavaOneToManyRelationship {
 
 	/**
 	 * @param parent
 	 */
-	public HibernateJavaOneToManyRelationshipReference(
-			JavaOneToManyMapping parent) {
-		super(parent);
+	public HibernateJavaOneToManyRelationshipReference(JavaOneToManyMapping parent, boolean supportsJoinColumnStrategy) {
+		super(parent, supportsJoinColumnStrategy);
 	}
 	
-	@Override
+	
+	/*@Override
 	protected JavaJoinTableJoiningStrategy buildJoinTableJoiningStrategy() {
 		return new HibernateJavaJoinTableJoiningStrategy(this);
-	}
+	}*/
 
 }

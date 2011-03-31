@@ -10,6 +10,8 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
+import org.eclipse.jpt.jpa.core.context.java.JavaMappingJoinTableRelationship;
+import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.GenericJavaMappingJoinTableRelationshipStrategy;
 import org.jboss.tools.hibernate.jpt.core.internal.context.NamingStrategyMappingTools;
 
 /**
@@ -17,19 +19,18 @@ import org.jboss.tools.hibernate.jpt.core.internal.context.NamingStrategyMapping
  *
  */
 public class HibernateJavaJoinTableJoiningStrategy extends
-		GenericJavaJoinTableJoiningStrategy {
+	GenericJavaMappingJoinTableRelationshipStrategy {
 
 	/**
 	 * @param parent
 	 */
-	public HibernateJavaJoinTableJoiningStrategy(
-			JavaJoinTableEnabledRelationshipReference parent) {
+	public HibernateJavaJoinTableJoiningStrategy(JavaMappingJoinTableRelationship parent) {
 		super(parent);
 	}
 	
 	@Override
 	public String getJoinTableDefaultName() {
-		return NamingStrategyMappingTools.buildJoinTableDefaultName(getRelationshipReference());
+		return NamingStrategyMappingTools.buildJoinTableDefaultName(getRelationship());
 	}
 
 }

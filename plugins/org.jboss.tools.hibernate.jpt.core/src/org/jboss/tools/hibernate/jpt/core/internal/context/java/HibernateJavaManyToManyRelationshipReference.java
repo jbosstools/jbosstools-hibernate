@@ -10,14 +10,16 @@
   ******************************************************************************/
 package org.jboss.tools.hibernate.jpt.core.internal.context.java;
 
+import org.eclipse.jpt.jpa.core.context.java.JavaJoinTableRelationshipStrategy;
 import org.eclipse.jpt.jpa.core.context.java.JavaManyToManyMapping;
+import org.eclipse.jpt.jpa.core.internal.context.java.GenericJavaManyToManyRelationship;
 
 /**
  * @author Dmitry Geraskov
  *
  */
 public class HibernateJavaManyToManyRelationshipReference extends
-		GenericJavaManyToManyRelationshipReference {
+		GenericJavaManyToManyRelationship {
 
 	/**
 	 * @param parent
@@ -27,7 +29,7 @@ public class HibernateJavaManyToManyRelationshipReference extends
 		super(parent);
 	}
 	
-	protected JavaJoinTableJoiningStrategy buildJoinTableJoiningStrategy() {
+	protected JavaJoinTableRelationshipStrategy buildJoinTableStrategy() {
 		return new HibernateJavaJoinTableJoiningStrategy(this);
 	}
 
